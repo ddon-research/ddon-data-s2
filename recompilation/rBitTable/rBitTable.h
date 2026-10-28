@@ -108,12 +108,18 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cBitTable::cBitTable() {
-    this->mBitData = static_cast<BitData>(0);
-    this->mCommandType = static_cast<u32>(0);
+    this->mBitData = 0;
+    this->mCommandType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline BitData cBitTable::getBitData() const {
     return this->mBitData;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cBitCtrl::doBitCommand at 0x33576-0x33579; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cBitTable::getBitCommand() const {
+    return this->mCommandType;
 }

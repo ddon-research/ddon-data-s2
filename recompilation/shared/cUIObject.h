@@ -142,6 +142,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::getCaplinkIcon at 0x7a1b5c-0x7a1b62; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cTexturePNG::getId() {
+    return this->mId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::getCaplinkIcon at 0x7a1b7e-0x7a1b85; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rTexturePNG* cTexturePNG::getTexture() {
+    return this->mpTex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cUIObject::cUIObject() {
 }
 

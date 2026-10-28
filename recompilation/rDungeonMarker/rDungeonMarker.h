@@ -194,7 +194,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rDungeonMarker::cWarpInfo::cWarpInfo() {
-    this->mGroupNo = static_cast<s16>(-1);
-    this->mTargetStageNo = static_cast<u16>(0);
-    this->mTargetGroupNo = static_cast<s16>(-1);
+    this->mGroupNo = -1;
+    this->mTargetStageNo = 0;
+    this->mTargetGroupNo = -1;
 }

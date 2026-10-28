@@ -37,7 +37,7 @@ const MtDTI& ItemGetInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* ItemGetInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::ItemGetInfo::DTI)->memAlloc(sz, align, ::ItemGetInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(ItemGetInfo::DTI)->memAlloc(sz, align, ItemGetInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* ItemGetInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11ItemGetInfoD0Ev at 0x01a5e230-0x01a5e25a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void ItemGetInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::ItemGetInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(ItemGetInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,6 +104,8 @@ inline void ItemGetInfo::operator delete(void* p_addr) {
 //   and 8 more (every copy is in <bundle>.inlined.json)
 // void ItemGetInfo::setNum(u32 NewValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): ItemGetInfo::MyDTI ItemGetInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpOmGather.cpp at 0x0050ca9e-0x0050cad7 (called at cpOmGather.cpp:56)
 //   in _GLOBAL__sub_I_cpOmGather.cpp at 0x0050ca9e-0x0050cad7 (called at cpOmGather.h:26)
@@ -112,7 +114,7 @@ inline void ItemGetInfo::operator delete(void* p_addr) {
 // Address: 0x00509b30 - 0x00509b7f (79 bytes)
 MtObject* ItemGetInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::ItemGetInfo;
+    return new (16u) ItemGetInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ const MtDTI& cGatherItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGatherItemList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGatherItemList::DTI);
+    return MtMemoryAllocator::getAllocator(cGatherItemList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,7 +153,7 @@ inline MtAllocator* cGatherItemList::getAllocator() {
 // Address: 0x00509ad0 - 0x00509afa (42 bytes)
 __attribute__((weak)) void cGatherItemList::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cGatherItemList::getAllocator()->memFree(p_addr);
+    cGatherItemList::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -185,93 +187,93 @@ __attribute__((weak)) bool cGatherItemList::move() {
 // Address: 0x0050a100 - 0x0050a230 (304 bytes)
 void cGatherItemList::reqGather(u32 groupId, u32 layerNo, u32 posId, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroupId = groupId;
-    this->mLayerNo = layerNo;
-    this->mPosId = posId;
-    this->mGatherType = type;
-    if (this->mRno != static_cast<u8>(0)) {
-        if (this->mRno == static_cast<u8>(3)) {
-            this->mRno = static_cast<u8>(1);
+    mGroupId = groupId;
+    mLayerNo = layerNo;
+    mPosId = posId;
+    mGatherType = type;
+    if (mRno != 0) {
+        if (mRno == 3) {
+            mRno = 1;
         }
     } else {
-        this->mRno = static_cast<u8>(1);
+        mRno = 1;
     }
-    this->mItemGetInfo[0].mID = static_cast<s32>(0);
-    this->mItemGetInfo[0].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[0].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[1].mID = static_cast<s32>(0);
-    this->mItemGetInfo[1].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[1].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[2].mID = static_cast<s32>(0);
-    this->mItemGetInfo[2].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[2].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[3].mID = static_cast<s32>(0);
-    this->mItemGetInfo[3].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[3].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[4].mID = static_cast<s32>(0);
-    this->mItemGetInfo[4].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[4].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[5].mID = static_cast<s32>(0);
-    this->mItemGetInfo[5].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[5].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[6].mID = static_cast<s32>(0);
-    this->mItemGetInfo[6].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[6].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[7].mID = static_cast<s32>(0);
-    this->mItemGetInfo[7].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[7].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[8].mID = static_cast<s32>(0);
-    this->mItemGetInfo[8].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[8].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[9].mID = static_cast<s32>(0);
-    this->mItemGetInfo[9].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[9].mNum = static_cast<u32>(0);
-    this->mError = false;
+    mItemGetInfo[0].mID = 0;
+    mItemGetInfo[0].mItemID = 0;
+    mItemGetInfo[0].mNum = 0;
+    mItemGetInfo[1].mID = 0;
+    mItemGetInfo[1].mItemID = 0;
+    mItemGetInfo[1].mNum = 0;
+    mItemGetInfo[2].mID = 0;
+    mItemGetInfo[2].mItemID = 0;
+    mItemGetInfo[2].mNum = 0;
+    mItemGetInfo[3].mID = 0;
+    mItemGetInfo[3].mItemID = 0;
+    mItemGetInfo[3].mNum = 0;
+    mItemGetInfo[4].mID = 0;
+    mItemGetInfo[4].mItemID = 0;
+    mItemGetInfo[4].mNum = 0;
+    mItemGetInfo[5].mID = 0;
+    mItemGetInfo[5].mItemID = 0;
+    mItemGetInfo[5].mNum = 0;
+    mItemGetInfo[6].mID = 0;
+    mItemGetInfo[6].mItemID = 0;
+    mItemGetInfo[6].mNum = 0;
+    mItemGetInfo[7].mID = 0;
+    mItemGetInfo[7].mItemID = 0;
+    mItemGetInfo[7].mNum = 0;
+    mItemGetInfo[8].mID = 0;
+    mItemGetInfo[8].mItemID = 0;
+    mItemGetInfo[8].mNum = 0;
+    mItemGetInfo[9].mID = 0;
+    mItemGetInfo[9].mItemID = 0;
+    mItemGetInfo[9].mNum = 0;
+    mError = false;
 }
 
 // Address: 0x0050a230 - 0x0050a340 (272 bytes)
 void cGatherItemList::reqGatherAgain() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x108 from cGatherItemList*
-    if (this->mRno == static_cast<u8>(3)) {
-        this->mRno = static_cast<u8>(1);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mRno == 3) {
+        mRno = 1;
     }
-    this->mItemGetInfo[0].mID = static_cast<s32>(0);
-    this->mItemGetInfo[0].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[0].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[1].mID = static_cast<s32>(0);
-    this->mItemGetInfo[1].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[1].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[2].mID = static_cast<s32>(0);
-    this->mItemGetInfo[2].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[2].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[3].mID = static_cast<s32>(0);
-    this->mItemGetInfo[3].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[3].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[4].mID = static_cast<s32>(0);
-    this->mItemGetInfo[4].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[4].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[5].mID = static_cast<s32>(0);
-    this->mItemGetInfo[5].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[5].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[6].mID = static_cast<s32>(0);
-    this->mItemGetInfo[6].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[6].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[7].mID = static_cast<s32>(0);
-    this->mItemGetInfo[7].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[7].mNum = static_cast<u32>(0);
-    this->mItemGetInfo[8].mID = static_cast<s32>(0);
-    this->mItemGetInfo[8].mItemID = static_cast<s32>(0);
-    this->mItemGetInfo[8].mNum = static_cast<u32>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(264)) = static_cast<unsigned long>(0);
-    this->mItemGetInfo[9].mNum = static_cast<u32>(0);
+    mItemGetInfo[0].mID = 0;
+    mItemGetInfo[0].mItemID = 0;
+    mItemGetInfo[0].mNum = 0;
+    mItemGetInfo[1].mID = 0;
+    mItemGetInfo[1].mItemID = 0;
+    mItemGetInfo[1].mNum = 0;
+    mItemGetInfo[2].mID = 0;
+    mItemGetInfo[2].mItemID = 0;
+    mItemGetInfo[2].mNum = 0;
+    mItemGetInfo[3].mID = 0;
+    mItemGetInfo[3].mItemID = 0;
+    mItemGetInfo[3].mNum = 0;
+    mItemGetInfo[4].mID = 0;
+    mItemGetInfo[4].mItemID = 0;
+    mItemGetInfo[4].mNum = 0;
+    mItemGetInfo[5].mID = 0;
+    mItemGetInfo[5].mItemID = 0;
+    mItemGetInfo[5].mNum = 0;
+    mItemGetInfo[6].mID = 0;
+    mItemGetInfo[6].mItemID = 0;
+    mItemGetInfo[6].mNum = 0;
+    mItemGetInfo[7].mID = 0;
+    mItemGetInfo[7].mItemID = 0;
+    mItemGetInfo[7].mNum = 0;
+    mItemGetInfo[8].mID = 0;
+    mItemGetInfo[8].mItemID = 0;
+    mItemGetInfo[8].mNum = 0;
+    mItemGetInfo[9].mID = 0;
+    mItemGetInfo[9].mItemID = 0;
+    mItemGetInfo[9].mNum = 0;
 }
 
 // Address: 0x0050a340 - 0x0050a354 (20 bytes)
 bool cGatherItemList::isItemGetListComplete() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRno == static_cast<u8>(3)) {
-        return this->mAppearEnemy == false;
+    if (mRno == 3) {
+        return !mAppearEnemy;
     } else {
         return false;
     }
@@ -280,16 +282,16 @@ bool cGatherItemList::isItemGetListComplete() {
 // Address: 0x0050a360 - 0x0050a364 (4 bytes)
 bool cGatherItemList::isError() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mError;
+    return mError;
 }
 
 // Address: 0x0050a370 - 0x0050a381 (17 bytes)
 bool cGatherItemList::isAppearEnemy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGatherType != static_cast<u32>(0)) {
+    if (mGatherType != 0) {
         return false;
     } else {
-        return this->mAppearEnemy != false;
+        return mAppearEnemy;
     }
 }
 
@@ -314,10 +316,10 @@ __attribute__((weak)) u32 cGatherItemList::getItemGetInfoNum() const {
 // Address: 0x0050a3f0 - 0x0050a403 (19 bytes)
 ItemGetInfo* cGatherItemList::getItemGetInfo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(9)) {
-        return &this->mItemGetInfo[idx];
+    if (idx <= 9u) {
+        return &mItemGetInfo[idx];
     } else {
-        return static_cast<ItemGetInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -343,19 +345,19 @@ __attribute__((weak)) void cGatherItemList::setItemGetList(const GatheringItemEl
 u32 cGatherItemList::getItemListGroupId() {
     // DWARF local not rendered: u32 groupId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGatherType != static_cast<u32>(2)) {
-        if (this->mGatherType == static_cast<u32>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket() != static_cast<nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES*>(nullptr)) {
-                return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket()->m_LayoutId.m_unGroupID;
+    if (mGatherType != 2) {
+        if (mGatherType == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket() != nullptr) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket()->m_LayoutId.m_unGroupID;
             }
         } else {
-            if (this->mGatherType == static_cast<u32>(0)) {
-                return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGatheringItemListGroupId();
+            if (mGatherType == 0) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGatheringItemListGroupId();
             }
         }
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        return static_cast<u32>(77);
+        return 77;
     }
 }
 
@@ -363,35 +365,35 @@ u32 cGatherItemList::getItemListGroupId() {
 u32 cGatherItemList::getItemListLayerNo() {
     // DWARF local not rendered: u32 layerNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGatherType == static_cast<u32>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket() != static_cast<nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES*>(nullptr)) {
-            return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket()->m_LayoutId.m_ucLayerNo;
+    if (mGatherType == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket() != nullptr) {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket()->m_LayoutId.m_ucLayerNo;
         }
     } else {
-        if (this->mGatherType == static_cast<u32>(0)) {
-            return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGatheringItemListLayerNo();
+        if (mGatherType == 0) {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGatheringItemListLayerNo();
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0050a730 - 0x0050a79c (108 bytes)
 u32 cGatherItemList::getItemListPosId() {
     // DWARF local not rendered: u32 posId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGatherType != static_cast<u32>(2)) {
-        if (this->mGatherType == static_cast<u32>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket() != static_cast<nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES*>(nullptr)) {
-                return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket()->::nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::Id();
+    if (mGatherType != 2) {
+        if (mGatherType == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket() != nullptr) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemListPacket()->Id();
             }
         } else {
-            if (this->mGatherType == static_cast<u32>(0)) {
-                return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGatheringItemListPosId();
+            if (mGatherType == 0) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGatheringItemListPosId();
             }
         }
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        return this->mPosId;
+        return mPosId;
     }
 }
 
@@ -418,6 +420,8 @@ __attribute__((weak)) bool cGatherItemList::getItemList(u32 groupId, u32 layerNo
     DDON_STUB("cGatherItemList::getItemList")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGatherItemList::MyDTI cGatherItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpOmGather.cpp at 0x0050ca5e-0x0050ca9e (called at cpOmGather.cpp:55)

@@ -256,5 +256,23 @@ inline u32 cCaughtInfo::getCatchUid() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpCatchCtrl::cancelCaughtActionReq() {
-    this->mCaughtActionReq = static_cast<u32>(4294967295);
+    this->mCaughtActionReq = 0xFFFFFFFF;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpCatchCtrl::setupContextCatchCtrl at 0x453fc0-0x453fc8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCatchCtrl::setCatchType(u8 type) {
+    this->mCatchType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cpCatchCtrl::getCatchUid() {
+    return this->mCatchInfo.mCatchUid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cpCatchCtrl::getCaughtUid() {
+    return this->mCaughtInfo.mCatchUid;
 }

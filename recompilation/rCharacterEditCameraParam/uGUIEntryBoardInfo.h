@@ -256,3 +256,9 @@ public:
 inline void uGUIEntryBoardInfo::reqCancel() {
     this->mReqCancel = true;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIEntryBoardInfo::moveEvent at 0xa7d23e-0xa7d245; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIEntryBoardInfo::evChangeWindow() {
+    this->mReqChangeWindow = true;
+}

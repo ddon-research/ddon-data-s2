@@ -44,7 +44,7 @@ const MtDTI& uGUIPopDetail01::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopDetail01::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopDetail01::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline MtAllocator* uGUIPopDetail01::getAllocator() {
 // Address: 0x00b9f5e0 - 0x00b9f620 (64 bytes)
 void* uGUIPopDetail01::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopDetail01::getAllocator()->memAlloc(sz, align, ::uGUIPopDetail01::DTI.::MtDTI::getID());
+    return uGUIPopDetail01::getAllocator()->memAlloc(sz, align, uGUIPopDetail01::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ void* uGUIPopDetail01::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopDetail01::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,21 +93,21 @@ uGUIPopDetail01::~uGUIPopDetail01() {
 // Address: 0x00ba0530 - 0x00ba062e (254 bytes)
 bool uGUIPopDetail01::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_DETAIL01_GUI"), static_cast<u32>(129), static_cast<t64>(1460101462)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POPDETAIL01_RES_GMD", static_cast<u32>(0)) != false) {
-                if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PARAMETER_GMD", static_cast<u32>(1)) != false) {
-                    if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ITEM_WORK_GMD", static_cast<u32>(2)) != false) {
-                        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_JEWELRY_CTGR_GMD", static_cast<u32>(3));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_DETAIL01_GUI"), 129u, 1460101462l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_POPDETAIL01_RES_GMD", 0u)) {
+                if (loadGMDarc(getArcTag(0u), "RES_ID_PARAMETER_GMD", 1u)) {
+                    if (loadGMDarc(getArcTag(0u), "RES_ID_ITEM_WORK_GMD", 2u)) {
+                        return loadGMDarc(getArcTag(0u), "RES_ID_JEWELRY_CTGR_GMD", 3u);
                     }
                 }
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POPDETAIL01_RES_GMD", static_cast<u32>(0)) != false) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PARAMETER_GMD", static_cast<u32>(1)) != false) {
-                if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ITEM_WORK_GMD", static_cast<u32>(2)) != false) {
-                    return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_JEWELRY_CTGR_GMD", static_cast<u32>(3));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_POPDETAIL01_RES_GMD", 0u)) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_PARAMETER_GMD", 1u)) {
+                if (loadGMDarc(getArcTag(0u), "RES_ID_ITEM_WORK_GMD", 2u)) {
+                    return loadGMDarc(getArcTag(0u), "RES_ID_JEWELRY_CTGR_GMD", 3u);
                 }
             }
         }
@@ -133,36 +133,36 @@ __attribute__((weak)) void uGUIPopDetail01::setup() {
 // Address: 0x00ba23b0 - 0x00ba23ed (61 bytes)
 void uGUIPopDetail01::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    this->updatePtr();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    updatePtr();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00ba23f0 - 0x00ba2471 (129 bytes)
 void uGUIPopDetail01::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopBase::updatePtr();
-    if (this->mpOwner != static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpOwner->::cUnit::isEnable() == false) {
-            this->mpOwner = static_cast<uGUIBase*>(nullptr);
+    this->uGUIPopBase::updatePtr();
+    if (mpOwner != nullptr) {
+        if (!mpOwner->isEnable()) {
+            mpOwner = nullptr;
         }
     }
-    if (this->mpCraftDetail != static_cast<uGUIPopCraftDetail*>(nullptr)) {
-        if (this->mpCraftDetail->::cUnit::isEnable() == false) {
-            this->mpCraftDetail = static_cast<uGUIPopCraftDetail*>(nullptr);
+    if (mpCraftDetail != nullptr) {
+        if (!mpCraftDetail->isEnable()) {
+            mpCraftDetail = nullptr;
         }
     }
-    if (this->mpMockUp == static_cast<uUIMockUp*>(nullptr)) {
+    if (mpMockUp == nullptr) {
         return;
     }
-    if (this->mpMockUp->::cUnit::isEnable() != false) {
+    if (mpMockUp->isEnable()) {
         return;
     }
-    this->mpMockUp = static_cast<uUIMockUp*>(nullptr);
+    mpMockUp = nullptr;
 }
 
 // Address: 0x00ba2480 - 0x00ba25e3 (355 bytes)
@@ -185,40 +185,40 @@ __attribute__((weak)) void uGUIPopDetail01::move() {
 void uGUIPopDetail01::setItemParam(nGUIItem::cItem* p, nCharacterData::EQUIP_SLOT_TYPE equipSlotType) {
     // DWARF local not rendered: bool rebuild;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    this->mEquipSlotType = equipSlotType;
-    if (p != static_cast<nGUIItem::cItem*>(nullptr)) {
-        if (this->mItem.::nGUIItem::cItem::isSameData(*p) != false) {
+    mEquipSlotType = equipSlotType;
+    if (p != nullptr) {
+        if (mItem.isSameData(*p)) {
             // inferred: a temporary for the result of the call at 0xba5d06, used once; no DWARF local holds it
-            u32 t0 = this->mItem.::nGUIItem::cItem::getNum();
-            if (t0 != p->::nGUIItem::cItem::getNum()) {
-                this->mItem.::nGUIItem::cItem::copy(*p);
-                this->mItemParam.::cItemParam::init(static_cast<u32>(0));
-                cItemParam* const item_param = p->::nGUIItem::cItem::getItemParam();
-                if (item_param != static_cast<cItemParam* const>(nullptr)) {
-                    this->mItemParam.::cItemParam::copyParam(item_param);
-                    this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
+            u32 t0 = mItem.getNum();
+            if (t0 != p->getNum()) {
+                mItem.copy(*p);
+                mItemParam.init(0u);
+                cItemParam* const item_param = p->getItemParam();
+                if (item_param != nullptr) {
+                    mItemParam.copyParam(item_param);
+                    mItem.setItemParam(&mItemParam);
                 } else {
-                    this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
+                    mItem.setItemParam(static_cast<cItemParam*>(nullptr));
                 }
-                this->::uGUIPopDetail01::updateEquipData();
-                this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+                updateEquipData();
+                mRequestRefresh = REFRESH_MODE_FORCE;
             }
         } else {
-            this->mItem.::nGUIItem::cItem::copy(*p);
-            this->mItemParam.::cItemParam::init(static_cast<u32>(0));
-            cItemParam* const item_param = p->::nGUIItem::cItem::getItemParam();
-            if (item_param != static_cast<cItemParam* const>(nullptr)) {
-                this->mItemParam.::cItemParam::copyParam(item_param);
-                this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
+            mItem.copy(*p);
+            mItemParam.init(0u);
+            cItemParam* const item_param = p->getItemParam();
+            if (item_param != nullptr) {
+                mItemParam.copyParam(item_param);
+                mItem.setItemParam(&mItemParam);
             } else {
-                this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
+                mItem.setItemParam(static_cast<cItemParam*>(nullptr));
             }
-            this->::uGUIPopDetail01::updateEquipData();
-            this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+            updateEquipData();
+            mRequestRefresh = REFRESH_MODE_FORCE;
         }
     } else {
-        this->mItem.::nGUIItem::cItem::init();
-        this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+        mItem.init();
+        mRequestRefresh = REFRESH_MODE_FORCE;
     }
 }
 
@@ -226,49 +226,49 @@ void uGUIPopDetail01::setItemParam(nGUIItem::cItem* p, nCharacterData::EQUIP_SLO
 void uGUIPopDetail01::setItemParam(cItemParam* pItemParam, rItemList::rItemParam* prItemParam, nCharacterData::EQUIP_SLOT_TYPE equipSlotType) {
     // DWARF local not rendered: const u32 item_num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEquipSlotType = equipSlotType;
-    if (this->mItem.::nGUIItem::cItem::isSameData(pItemParam, prItemParam) != false) {
-        if (pItemParam != static_cast<cItemParam*>(nullptr)) {
+    mEquipSlotType = equipSlotType;
+    if (mItem.isSameData(pItemParam, prItemParam)) {
+        if (pItemParam != nullptr) {
             // inferred: a temporary for the value the load at 0xba5fa8 read, used once; no DWARF local holds it
             u16 t0 = pItemParam->mItemParam.mItemNum_Guard;
-            if (t0 != this->mItem.::nGUIItem::cItem::getNum()) {
-                this->mItem.::nGUIItem::cItem::init();
-                this->mItemParam.::cItemParam::init(static_cast<u32>(0));
-                this->mItemParam.::cItemParam::copyParam(pItemParam);
-                this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
-                this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
-                this->::uGUIPopDetail01::updateEquipData();
-                this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+            if (t0 != mItem.getNum()) {
+                mItem.init();
+                mItemParam.init(0u);
+                mItemParam.copyParam(pItemParam);
+                mItem.setItemParam(&mItemParam);
+                mItem.setResourceParam(prItemParam);
+                updateEquipData();
+                mRequestRefresh = REFRESH_MODE_FORCE;
             }
         } else {
-            if (this->mItem.::nGUIItem::cItem::getNum() != static_cast<u32>(0)) {
-                this->mItem.::nGUIItem::cItem::init();
-                this->mItemParam.::cItemParam::init(static_cast<u32>(0));
-                this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
-                this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
-                this->::uGUIPopDetail01::updateEquipData();
-                this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+            if (mItem.getNum() != 0) {
+                mItem.init();
+                mItemParam.init(0u);
+                mItem.setItemParam(static_cast<cItemParam*>(nullptr));
+                mItem.setResourceParam(prItemParam);
+                updateEquipData();
+                mRequestRefresh = REFRESH_MODE_FORCE;
             }
         }
     } else {
-        this->mItem.::nGUIItem::cItem::init();
-        this->mItemParam.::cItemParam::init(static_cast<u32>(0));
-        if (pItemParam != static_cast<cItemParam*>(nullptr)) {
-            this->mItemParam.::cItemParam::copyParam(pItemParam);
-            this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
+        mItem.init();
+        mItemParam.init(0u);
+        if (pItemParam != nullptr) {
+            mItemParam.copyParam(pItemParam);
+            mItem.setItemParam(&mItemParam);
         } else {
-            this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
+            mItem.setItemParam(static_cast<cItemParam*>(nullptr));
         }
-        this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
-        this->::uGUIPopDetail01::updateEquipData();
-        this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+        mItem.setResourceParam(prItemParam);
+        updateEquipData();
+        mRequestRefresh = REFRESH_MODE_FORCE;
     }
 }
 
 // Address: 0x00ba6030 - 0x00ba603b (11 bytes)
 void uGUIPopDetail01::reqRefresh() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+    mRequestRefresh = REFRESH_MODE_FORCE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -385,15 +385,15 @@ __attribute__((weak)) void uGUIPopDetail01::refreshMockUp() {
 // Address: 0x00ba6120 - 0x00ba6175 (85 bytes)
 void uGUIPopDetail01::setTargetChara(nGUIExt::TARGET target, u32 id, bool isRequestServer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (target == static_cast<nGUIExt::TARGET>(1)) {
-        if (isRequestServer != false) {
-            if (this->mTarget != static_cast<nGUIExt::TARGET>(1)) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getMyPawnList();
+    if (target == nGUIExt::TARGET_PAWN) {
+        if (isRequestServer) {
+            if (mTarget != nGUIExt::TARGET_PAWN) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getMyPawnList();
             }
         }
     }
-    this->mTarget = target;
-    this->mTargetId = id;
+    mTarget = target;
+    mTargetId = id;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -854,6 +854,10 @@ __attribute__((weak)) u32 uGUIPopDetail01::evCtrlTop(cControl::Message* msg) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::MyDTI uGUIPopDetail01::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uGUIPopDetail01::SP_ITEM uGUIPopDetail01::special_item_tbl[];
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa723-0x00baa760 (called at uGUIPopDetail01.cpp:42)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa723-0x00baa760 (called at uGUIPopDetail01.h:22)
@@ -902,7 +906,7 @@ const MtDTI& uGUIPopDetail01::cDupParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail019cDupParamD0Ev at 0x01afc970-0x01afc99a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cDupParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cDupParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cDupParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -920,6 +924,8 @@ inline void uGUIPopDetail01::cDupParam::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::setup at 0x00ba15fd-0x00ba161d, 0x00ba166d-0x00ba16bd (called at uGUIPopDetail01.cpp:438)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIPopDetail01::cDupParam::cDupParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cDupParam::MyDTI uGUIPopDetail01::cDupParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa92f-0x00baa968 (called at uGUIPopDetail01.cpp:51)
@@ -969,7 +975,7 @@ const MtDTI& uGUIPopDetail01::cDupCraftParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0114cDupCraftParamD0Ev at 0x01afc920-0x01afc94a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cDupCraftParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cDupCraftParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cDupCraftParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -987,6 +993,8 @@ inline void uGUIPopDetail01::cDupCraftParam::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::setup at 0x00ba19ac-0x00ba19bd, 0x00ba19f9-0x00ba1a39 (called at uGUIPopDetail01.cpp:459)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIPopDetail01::cDupCraftParam::cDupCraftParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cDupCraftParam::MyDTI uGUIPopDetail01::cDupCraftParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa968-0x00baa9a1 (called at uGUIPopDetail01.cpp:52)
@@ -1034,7 +1042,7 @@ const MtDTI& uGUIPopDetail01::cPartsBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0110cPartsBaseD0Ev at 0x01afca10-0x01afca3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1052,6 +1060,8 @@ inline void uGUIPopDetail01::cPartsBase::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsCraft::MyDTI::newInstance at 0x00b9f79d-0x00b9f7c8 (called at uGUIPopDetail01.h:145)
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // uGUIPopDetail01::cPartsBase::cPartsBase();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsBase::MyDTI uGUIPopDetail01::cPartsBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa760-0x00baa7a0 (called at uGUIPopDetail01.cpp:43)
@@ -1099,7 +1109,7 @@ const MtDTI& uGUIPopDetail01::cPartsCraft::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0111cPartsCraftD0Ev at 0x01afcbf0-0x01afcc1a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsCraft::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsCraft::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsCraft::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1115,6 +1125,8 @@ inline void uGUIPopDetail01::cPartsCraft::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsCraft::MyDTI::newInstance at 0x00b9f79d-0x00b9f7d6 (called at uGUIPopDetail01.cpp:44)
 //   in uGUIPopDetail01::cPartsCraft::MyDTI::newInstance at 0x00b9f79d-0x00b9f7d6 (called at uGUIPopDetail01.h:145)
 // uGUIPopDetail01::cPartsCraft::cPartsCraft();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsCraft::MyDTI uGUIPopDetail01::cPartsCraft::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa7a0-0x00baa7d9 (called at uGUIPopDetail01.cpp:44)
@@ -1162,7 +1174,7 @@ const MtDTI& uGUIPopDetail01::cPartsParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0111cPartsParamD0Ev at 0x01afcba0-0x01afcbca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1178,6 +1190,8 @@ inline void uGUIPopDetail01::cPartsParam::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsParam::MyDTI::newInstance at 0x00b9f87d-0x00b9f8b6 (called at uGUIPopDetail01.cpp:45)
 //   in uGUIPopDetail01::cPartsParam::MyDTI::newInstance at 0x00b9f87d-0x00b9f8b6 (called at uGUIPopDetail01.h:156)
 // uGUIPopDetail01::cPartsParam::cPartsParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsParam::MyDTI uGUIPopDetail01::cPartsParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa7d9-0x00baa812 (called at uGUIPopDetail01.cpp:45)
@@ -1225,7 +1239,7 @@ const MtDTI& uGUIPopDetail01::cPartsItemRank::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0114cPartsItemRankD0Ev at 0x01afcb50-0x01afcb7a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsItemRank::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsItemRank::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsItemRank::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1241,6 +1255,8 @@ inline void uGUIPopDetail01::cPartsItemRank::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsItemRank::MyDTI::newInstance at 0x00b9f95d-0x00b9f996 (called at uGUIPopDetail01.cpp:46)
 //   in uGUIPopDetail01::cPartsItemRank::MyDTI::newInstance at 0x00b9f95d-0x00b9f996 (called at uGUIPopDetail01.h:167)
 // uGUIPopDetail01::cPartsItemRank::cPartsItemRank();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsItemRank::MyDTI uGUIPopDetail01::cPartsItemRank::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa812-0x00baa84b (called at uGUIPopDetail01.cpp:46)
@@ -1288,7 +1304,7 @@ const MtDTI& uGUIPopDetail01::cPartsStatus::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0112cPartsStatusD0Ev at 0x01afcb00-0x01afcb2a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1304,6 +1320,8 @@ inline void uGUIPopDetail01::cPartsStatus::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsStatus::MyDTI::newInstance at 0x00b9fa3d-0x00b9fa76 (called at uGUIPopDetail01.cpp:47)
 //   in uGUIPopDetail01::cPartsStatus::MyDTI::newInstance at 0x00b9fa3d-0x00b9fa76 (called at uGUIPopDetail01.h:178)
 // uGUIPopDetail01::cPartsStatus::cPartsStatus();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsStatus::MyDTI uGUIPopDetail01::cPartsStatus::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa84b-0x00baa884 (called at uGUIPopDetail01.cpp:47)
@@ -1351,7 +1369,7 @@ const MtDTI& uGUIPopDetail01::cPartsCaption::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0113cPartsCaptionD0Ev at 0x01afcab0-0x01afcada, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsCaption::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsCaption::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsCaption::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1367,6 +1385,8 @@ inline void uGUIPopDetail01::cPartsCaption::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsCaption::MyDTI::newInstance at 0x00b9fb1d-0x00b9fb56 (called at uGUIPopDetail01.cpp:48)
 //   in uGUIPopDetail01::cPartsCaption::MyDTI::newInstance at 0x00b9fb1d-0x00b9fb56 (called at uGUIPopDetail01.h:189)
 // uGUIPopDetail01::cPartsCaption::cPartsCaption();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsCaption::MyDTI uGUIPopDetail01::cPartsCaption::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa884-0x00baa8bd (called at uGUIPopDetail01.cpp:48)
@@ -1414,7 +1434,7 @@ const MtDTI& uGUIPopDetail01::cPartsFooter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail0112cPartsFooterD0Ev at 0x01afca60-0x01afca8a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsFooter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsFooter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsFooter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1430,6 +1450,8 @@ inline void uGUIPopDetail01::cPartsFooter::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsFooter::MyDTI::newInstance at 0x00b9fbfd-0x00b9fc36 (called at uGUIPopDetail01.cpp:49)
 //   in uGUIPopDetail01::cPartsFooter::MyDTI::newInstance at 0x00b9fbfd-0x00b9fc36 (called at uGUIPopDetail01.h:200)
 // uGUIPopDetail01::cPartsFooter::cPartsFooter();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsFooter::MyDTI uGUIPopDetail01::cPartsFooter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa8bd-0x00baa8f6 (called at uGUIPopDetail01.cpp:49)
@@ -1477,7 +1499,7 @@ const MtDTI& uGUIPopDetail01::cPartsJob::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIPopDetail019cPartsJobD0Ev at 0x01afc9c0-0x01afc9ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopDetail01::cPartsJob::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsJob::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsJob::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1493,6 +1515,8 @@ inline void uGUIPopDetail01::cPartsJob::operator delete(void* p_addr) {
 //   in uGUIPopDetail01::cPartsJob::MyDTI::newInstance at 0x00b9fcdd-0x00b9fd16 (called at uGUIPopDetail01.cpp:50)
 //   in uGUIPopDetail01::cPartsJob::MyDTI::newInstance at 0x00b9fcdd-0x00b9fd16 (called at uGUIPopDetail01.h:211)
 // uGUIPopDetail01::cPartsJob::cPartsJob();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopDetail01::cPartsJob::MyDTI uGUIPopDetail01::cPartsJob::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIPopDetail01.cpp at 0x00baa8f6-0x00baa92f (called at uGUIPopDetail01.cpp:50)

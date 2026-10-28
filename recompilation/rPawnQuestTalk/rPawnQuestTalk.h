@@ -146,9 +146,15 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in rPawnQuestTalk::getTalkData at 0x6b50ac-0x6b50af; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 rPawnQuestTalk::cTalkData::getGroupSerial() const {
+    return this->mGroupSerial;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rPawnQuestTalk::cTalkData::cTalkData() {
-    this->mGroupSerial = static_cast<u32>(0);
-    this->mMsgType = static_cast<u8>(0);
-    this->mResType = static_cast<u8>(1);
-    this->mParsonality = static_cast<u8>(1);
+    this->mGroupSerial = 0;
+    this->mMsgType = 0;
+    this->mResType = 1;
+    this->mParsonality = 1;
 }

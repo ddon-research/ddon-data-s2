@@ -28,7 +28,7 @@ const MtDTI& CDataDispelBaseItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelBaseItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelBaseItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelBaseItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* CDataDispelBaseItem::getAllocator() {
 // Address: 0x003ddf70 - 0x003ddfb0 (64 bytes)
 void* CDataDispelBaseItem::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelBaseItem::getAllocator()->memAlloc(sz, align, ::CDataDispelBaseItem::DTI.::MtDTI::getID());
+    return CDataDispelBaseItem::getAllocator()->memAlloc(sz, align, CDataDispelBaseItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* CDataDispelBaseItem::operator new(size_t sz, u32 align) {
 // Address: 0x003ddfe0 - 0x003de00a (42 bytes)
 __attribute__((weak)) void CDataDispelBaseItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelBaseItem::getAllocator()->memFree(p_addr);
+    CDataDispelBaseItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,6 +73,8 @@ __attribute__((weak)) void CDataDispelBaseItem::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataDispelBaseItem::CDataDispelBaseItem(u32, s64, s64, const MtTypedArray<CDataDispelBaseItemData>&, const MtTypedArray<CDataWalletPoint>&, b8, const MtTypedArray<CDataDispelLotData>&, u32, const char*, u8);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelBaseItem::MyDTI CDataDispelBaseItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f946-0x0041f97f (called at DispelItemImplement.inc:14)
@@ -99,7 +101,7 @@ const MtDTI& CDataDispelBaseItemData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelBaseItemData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelBaseItemData::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelBaseItemData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +110,7 @@ inline MtAllocator* CDataDispelBaseItemData::getAllocator() {
 // Address: 0x003ddda0 - 0x003ddde0 (64 bytes)
 void* CDataDispelBaseItemData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelBaseItemData::getAllocator()->memAlloc(sz, align, ::CDataDispelBaseItemData::DTI.::MtDTI::getID());
+    return CDataDispelBaseItemData::getAllocator()->memAlloc(sz, align, CDataDispelBaseItemData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ void* CDataDispelBaseItemData::operator new(size_t sz, u32 align) {
 // Address: 0x003dde10 - 0x003dde3a (42 bytes)
 __attribute__((weak)) void CDataDispelBaseItemData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelBaseItemData::getAllocator()->memFree(p_addr);
+    CDataDispelBaseItemData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,6 +147,8 @@ __attribute__((weak)) void CDataDispelBaseItemData::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataDispelBaseItemData::CDataDispelBaseItemData(u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelBaseItemData::MyDTI CDataDispelBaseItemData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f90d-0x0041f946 (called at DispelItemImplement.inc:13)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f90d-0x0041f946 (called at DispelItem.h:381)
@@ -153,7 +157,7 @@ __attribute__((weak)) void CDataDispelBaseItemData::operator delete(void* p_addr
 // Address: 0x003ddd50 - 0x003ddd9b (75 bytes)
 MtObject* CDataDispelBaseItemData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelBaseItemData;
+    return new (16u) CDataDispelBaseItemData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,7 +174,7 @@ const MtDTI& CDataDispelCategoryInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelCategoryInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelCategoryInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelCategoryInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,7 +183,7 @@ inline MtAllocator* CDataDispelCategoryInfo::getAllocator() {
 // Address: 0x003de2b0 - 0x003de2f0 (64 bytes)
 void* CDataDispelCategoryInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelCategoryInfo::getAllocator()->memAlloc(sz, align, ::CDataDispelCategoryInfo::DTI.::MtDTI::getID());
+    return CDataDispelCategoryInfo::getAllocator()->memAlloc(sz, align, CDataDispelCategoryInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -194,7 +198,7 @@ void* CDataDispelCategoryInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003de320 - 0x003de34a (42 bytes)
 __attribute__((weak)) void CDataDispelCategoryInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelCategoryInfo::getAllocator()->memFree(p_addr);
+    CDataDispelCategoryInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,6 +220,8 @@ __attribute__((weak)) void CDataDispelCategoryInfo::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataDispelCategoryInfo::CDataDispelCategoryInfo(u8, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelCategoryInfo::MyDTI CDataDispelCategoryInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f9f1-0x0041fa2a (called at DispelItemImplement.inc:17)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f9f1-0x0041fa2a (called at DispelItem.h:677)
@@ -224,7 +230,7 @@ __attribute__((weak)) void CDataDispelCategoryInfo::operator delete(void* p_addr
 // Address: 0x003de260 - 0x003de2ac (76 bytes)
 MtObject* CDataDispelCategoryInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelCategoryInfo;
+    return new (16u) CDataDispelCategoryInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +247,7 @@ const MtDTI& CDataDispelLotColor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelLotColor::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotColor::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelLotColor::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,7 +256,7 @@ inline MtAllocator* CDataDispelLotColor::getAllocator() {
 // Address: 0x003dd8b0 - 0x003dd8f0 (64 bytes)
 void* CDataDispelLotColor::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelLotColor::getAllocator()->memAlloc(sz, align, ::CDataDispelLotColor::DTI.::MtDTI::getID());
+    return CDataDispelLotColor::getAllocator()->memAlloc(sz, align, CDataDispelLotColor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,7 +271,7 @@ void* CDataDispelLotColor::operator new(size_t sz, u32 align) {
 // Address: 0x003dd920 - 0x003dd94a (42 bytes)
 __attribute__((weak)) void CDataDispelLotColor::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelLotColor::getAllocator()->memFree(p_addr);
+    CDataDispelLotColor::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,6 +293,8 @@ __attribute__((weak)) void CDataDispelLotColor::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataDispelLotColor::CDataDispelLotColor(u8, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelLotColor::MyDTI CDataDispelLotColor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f829-0x0041f862 (called at DispelItemImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f829-0x0041f862 (called at DispelItem.h:134)
@@ -295,7 +303,7 @@ __attribute__((weak)) void CDataDispelLotColor::operator delete(void* p_addr) {
 // Address: 0x003dd860 - 0x003dd8a6 (70 bytes)
 MtObject* CDataDispelLotColor::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelLotColor;
+    return new (16u) CDataDispelLotColor;
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +320,7 @@ const MtDTI& CDataDispelLotCrest::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelLotCrest::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotCrest::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelLotCrest::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -321,7 +329,7 @@ inline MtAllocator* CDataDispelLotCrest::getAllocator() {
 // Address: 0x003dd790 - 0x003dd7d0 (64 bytes)
 void* CDataDispelLotCrest::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelLotCrest::getAllocator()->memAlloc(sz, align, ::CDataDispelLotCrest::DTI.::MtDTI::getID());
+    return CDataDispelLotCrest::getAllocator()->memAlloc(sz, align, CDataDispelLotCrest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,7 +344,7 @@ void* CDataDispelLotCrest::operator new(size_t sz, u32 align) {
 // Address: 0x003dd800 - 0x003dd82a (42 bytes)
 __attribute__((weak)) void CDataDispelLotCrest::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelLotCrest::getAllocator()->memFree(p_addr);
+    CDataDispelLotCrest::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -358,6 +366,8 @@ __attribute__((weak)) void CDataDispelLotCrest::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataDispelLotCrest::CDataDispelLotCrest(u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelLotCrest::MyDTI CDataDispelLotCrest::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f7f0-0x0041f829 (called at DispelItemImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f7f0-0x0041f829 (called at DispelItem.h:81)
@@ -366,7 +376,7 @@ __attribute__((weak)) void CDataDispelLotCrest::operator delete(void* p_addr) {
 // Address: 0x003dd740 - 0x003dd78b (75 bytes)
 MtObject* CDataDispelLotCrest::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelLotCrest;
+    return new (16u) CDataDispelLotCrest;
 }
 
 // No out-of-line body: no code in the ELF
@@ -383,7 +393,7 @@ const MtDTI& CDataDispelLotData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelLotData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotData::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelLotData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -392,7 +402,7 @@ inline MtAllocator* CDataDispelLotData::getAllocator() {
 // Address: 0x003ddc80 - 0x003ddcc0 (64 bytes)
 void* CDataDispelLotData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelLotData::getAllocator()->memAlloc(sz, align, ::CDataDispelLotData::DTI.::MtDTI::getID());
+    return CDataDispelLotData::getAllocator()->memAlloc(sz, align, CDataDispelLotData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -407,7 +417,7 @@ void* CDataDispelLotData::operator new(size_t sz, u32 align) {
 // Address: 0x003ddcf0 - 0x003ddd1a (42 bytes)
 __attribute__((weak)) void CDataDispelLotData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelLotData::getAllocator()->memFree(p_addr);
+    CDataDispelLotData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -429,6 +439,8 @@ __attribute__((weak)) void CDataDispelLotData::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataDispelLotData::CDataDispelLotData(u32, const CDataDispelLotItem&, const MtTypedArray<CDataDispelLotCrest>&, const MtTypedArray<CDataDispelLotColor>&, const MtTypedArray<CDataDispelLotPlus>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelLotData::MyDTI CDataDispelLotData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f8d4-0x0041f90d (called at DispelItemImplement.inc:12)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f8d4-0x0041f90d (called at DispelItem.h:307)
@@ -437,7 +449,7 @@ __attribute__((weak)) void CDataDispelLotData::operator delete(void* p_addr) {
 // Address: 0x003ddb90 - 0x003ddc7a (234 bytes)
 MtObject* CDataDispelLotData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelLotData;
+    return new (16u) CDataDispelLotData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -454,7 +466,7 @@ const MtDTI& CDataDispelLotItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelLotItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelLotItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -463,7 +475,7 @@ inline MtAllocator* CDataDispelLotItem::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataDispelLotItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotItem::DTI)->memAlloc(sz, align, ::CDataDispelLotItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataDispelLotItem::DTI)->memAlloc(sz, align, CDataDispelLotItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -478,7 +490,7 @@ inline void* CDataDispelLotItem::operator new(size_t sz, u32 align) {
 // Address: 0x003ddb30 - 0x003ddb5a (42 bytes)
 __attribute__((weak)) void CDataDispelLotItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelLotItem::getAllocator()->memFree(p_addr);
+    CDataDispelLotItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -500,6 +512,8 @@ __attribute__((weak)) void CDataDispelLotItem::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataDispelLotItem::CDataDispelLotItem(u32, u8, u8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelLotItem::MyDTI CDataDispelLotItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f89b-0x0041f8d4 (called at DispelItemImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f89b-0x0041f8d4 (called at DispelItem.h:240)
@@ -508,7 +522,7 @@ __attribute__((weak)) void CDataDispelLotItem::operator delete(void* p_addr) {
 // Address: 0x003ddaa0 - 0x003ddaf6 (86 bytes)
 MtObject* CDataDispelLotItem::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelLotItem;
+    return new (16u) CDataDispelLotItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -525,7 +539,7 @@ const MtDTI& CDataDispelLotPlus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelLotPlus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotPlus::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelLotPlus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -534,7 +548,7 @@ inline MtAllocator* CDataDispelLotPlus::getAllocator() {
 // Address: 0x003dd9d0 - 0x003dda10 (64 bytes)
 void* CDataDispelLotPlus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelLotPlus::getAllocator()->memAlloc(sz, align, ::CDataDispelLotPlus::DTI.::MtDTI::getID());
+    return CDataDispelLotPlus::getAllocator()->memAlloc(sz, align, CDataDispelLotPlus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -549,7 +563,7 @@ void* CDataDispelLotPlus::operator new(size_t sz, u32 align) {
 // Address: 0x003dda40 - 0x003dda6a (42 bytes)
 __attribute__((weak)) void CDataDispelLotPlus::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelLotPlus::getAllocator()->memFree(p_addr);
+    CDataDispelLotPlus::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -571,6 +585,8 @@ __attribute__((weak)) void CDataDispelLotPlus::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataDispelLotPlus::CDataDispelLotPlus(u8, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelLotPlus::MyDTI CDataDispelLotPlus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f862-0x0041f89b (called at DispelItemImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f862-0x0041f89b (called at DispelItem.h:187)
@@ -579,7 +595,7 @@ __attribute__((weak)) void CDataDispelLotPlus::operator delete(void* p_addr) {
 // Address: 0x003dd980 - 0x003dd9c6 (70 bytes)
 MtObject* CDataDispelLotPlus::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataDispelLotPlus;
+    return new (16u) CDataDispelLotPlus;
 }
 
 // No out-of-line body: no code in the ELF
@@ -596,7 +612,7 @@ const MtDTI& CDataDispelResultInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDispelResultInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDispelResultInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDispelResultInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -605,7 +621,7 @@ inline MtAllocator* CDataDispelResultInfo::getAllocator() {
 // Address: 0x003de0c0 - 0x003de100 (64 bytes)
 void* CDataDispelResultInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDispelResultInfo::getAllocator()->memAlloc(sz, align, ::CDataDispelResultInfo::DTI.::MtDTI::getID());
+    return CDataDispelResultInfo::getAllocator()->memAlloc(sz, align, CDataDispelResultInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -620,7 +636,7 @@ void* CDataDispelResultInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003de130 - 0x003de15a (42 bytes)
 __attribute__((weak)) void CDataDispelResultInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDispelResultInfo::getAllocator()->memFree(p_addr);
+    CDataDispelResultInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -641,6 +657,8 @@ __attribute__((weak)) void CDataDispelResultInfo::operator delete(void* p_addr) 
 
 // No out-of-line body: no code in the ELF
 // CDataDispelResultInfo::CDataDispelResultInfo(u32, u32, u8, u8, const MtTypedArray<CDataEquipElementParam>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDispelResultInfo::MyDTI CDataDispelResultInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f97f-0x0041f9b8 (called at DispelItemImplement.inc:15)

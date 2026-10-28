@@ -25,6 +25,7 @@ class cGUIFontFilter;
 class cGUIMessageAnalyzer;
 class cGUIObjMessage;
 class cGUIObjPolygon;
+class cGUIObjTexture;
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
@@ -37,9 +38,11 @@ namespace nGUI { class WrapPoint; }
 class rGUI;
 class rGUIFont;
 class rGUIIconInfo;
+class rItemList;
 class uGUI;
 class uGUIGameMenu;
 class uGUIMap;
+class uGUIRetry;
 
 // Declarations
 class sGUI;
@@ -66,10 +69,16 @@ class sGUI : public cSystem
     friend class cGUIObjMessage;
     // inferred: cGUIObjPolygon::setUpdateDraw names sGUI::mpInstance
     friend class cGUIObjPolygon;
+    // inferred: cGUIObjTexture::setTiling names sGUI::mpInstance
+    friend class cGUIObjTexture;
+    // inferred: rItemList::rItemParam::getItemName names sGUI::mpInstance, through its enclosing class rItemList
+    friend class rItemList;
     // inferred: uGUIGameMenu::kill names sGUI::mpInstance
     friend class uGUIGameMenu;
     // inferred: uGUIMap::changeLandType names sGUI::mpInstance
     friend class uGUIMap;
+    // inferred: uGUIRetry::updateDialog names sGUI::mpInstance
+    friend class uGUIRetry;
 public:
     class MyDTI;
     struct DESC;
@@ -278,4 +287,16 @@ inline sGUI* sGUI::getInstance() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 sGUI::getBufferIndexBit() const {
     return this->mBufferIndexBit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIObjFreePolygonDDO::setUpdateDraw at 0x196f6fa-0x196f700; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGUI::getBufferUpdateFlag() const {
+    return this->mBufferBit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIObjFreePolygonDDO::draw at 0xd9d92-0xd9da0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nDraw::VertexBuffer* sGUI::getVertexBuffer() const {
+    return this->mpVertexBuffer[this->mBufferIndex];
 }

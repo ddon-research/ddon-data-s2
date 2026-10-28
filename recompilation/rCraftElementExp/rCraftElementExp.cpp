@@ -36,7 +36,7 @@ const MtDTI& cCraftElementExpData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftElementExpData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memAlloc(sz, align, ::cCraftElementExpData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftElementExpData::DTI)->memAlloc(sz, align, cCraftElementExpData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCraftElementExpData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftElementExpData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftElementExpData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -93,6 +93,8 @@ __attribute__((weak)) void cCraftElementExpData::createProperty(MtPropertyList& 
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // u32 cCraftElementExpData::getPrice();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftElementExpData::MyDTI cCraftElementExpData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCraftElementExp.cpp at 0x00659500-0x00659542 (called at rCraftElementExp.cpp:39)
 //   in _GLOBAL__sub_I_rCraftElementExp.cpp at 0x00659500-0x00659542 (called at rCraftElementExp.h:33)
@@ -101,7 +103,7 @@ __attribute__((weak)) void cCraftElementExpData::createProperty(MtPropertyList& 
 // Address: 0x00659180 - 0x006591cf (79 bytes)
 MtObject* cCraftElementExpData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftElementExpData;
+    return new (16u) cCraftElementExpData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ const MtDTI& rCraftElementExp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftElementExp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftElementExp::DTI)->memAlloc(sz, align, ::rCraftElementExp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftElementExp::DTI)->memAlloc(sz, align, rCraftElementExp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +143,7 @@ inline void* rCraftElementExp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rCraftElementExpD0Ev at 0x01a81654-0x01a81673, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftElementExp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftElementExp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftElementExp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,10 +160,10 @@ bool rCraftElementExp::loadData(MtDataReader& in, cCraftElementExpData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mExp);
+    nDDOIO::readData(in, pData->mExp);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPrice);
+    nDDOIO::readData(in, pData->mPrice);
     return true;
 }
 
@@ -174,8 +176,10 @@ MT_CTSTR rCraftElementExp::getExt() const {
 // Address: 0x01a817a0 - 0x01a817a6 (6 bytes)
 u32 rCraftElementExp::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftElementExp::MyDTI rCraftElementExp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftElementExp.cpp at 0x00659542-0x0065957f (called at rCraftElementExp.cpp:74)
@@ -185,7 +189,7 @@ u32 rCraftElementExp::getDataVersion() const {
 // Address: 0x006593f0 - 0x00659454 (100 bytes)
 MtObject* rCraftElementExp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftElementExp;
+    return new (16u) rCraftElementExp;
 }
 
 // Instance at 0x01a81750 - 0x01a81766 (22 bytes) of the generic rTbl2<T>::getData

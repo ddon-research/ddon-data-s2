@@ -34,13 +34,13 @@ const MtDTI& MtFile::getDTI() const {
 // Address: 0x00dc3da0 - 0x00dc3de0 (64 bytes)
 void* MtFile::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtFile::DTI)->memAlloc(sz, align, ::MtFile::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtFile::DTI)->memAlloc(sz, align, MtFile::DTI.mID);
 }
 
 // Address: 0x00dc3df0 - 0x00dc3e30 (64 bytes)
 void* MtFile::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtFile::DTI)->memAlloc(sz, align, ::MtFile::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtFile::DTI)->memAlloc(sz, align, MtFile::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,13 +52,13 @@ void* MtFile::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6MtFileD0Ev at 0x00dc54bc-0x00dc54dd, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtFile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtFile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtFile::DTI)->memFree(p_addr);
 }
 
 // Address: 0x00dc3e60 - 0x00dc3e8a (42 bytes)
 void MtFile::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtFile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtFile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,13 +159,13 @@ __attribute__((weak)) bool MtFile::isExist(MT_CTSTR path) {
 // Address: 0x00dc51b0 - 0x00dc51b8 (8 bytes)
 MT_CTSTR MtFile::getCurrentPath() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtFile::mCurrentPath;
+    return MtFile::mCurrentPath;
 }
 
 // Address: 0x00dc51c0 - 0x00dc51d2 (18 bytes)
 void MtFile::setCurrentPath(MT_CTSTR path) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::strcpy(::MtFile::mCurrentPath, path);
+    strcpy(MtFile::mCurrentPath, path);
 }
 
 // No out-of-line body: no code in the ELF
@@ -174,7 +174,7 @@ void MtFile::setCurrentPath(MT_CTSTR path) {
 // Address: 0x00dc5b40 - 0x00dc5b52 (18 bytes)
 void MtFile::setCachePath(MT_CTSTR path) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::strcpy(::MtFile::mCachePath, path);
+    strcpy(MtFile::mCachePath, path);
 }
 
 // No out-of-line body: no code in the ELF
@@ -186,17 +186,17 @@ void MtFile::setCachePath(MT_CTSTR path) {
 // Address: 0x00dc5360 - 0x00dc53c8 (104 bytes)
 MtFile::MtFile(MT_CTSTR path, MtFile::MODE mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHandle = static_cast<FILE_HANDLE>(-1);
-    this->mMode = static_cast<MtFile::MODE>(16);
-    this->mPath[0] = static_cast<char>(0);
-    this->mSeekPt = static_cast<u32>(0);
-    this->mSize = static_cast<u32>(0);
-    this->mDLCHandle = static_cast<MtFile::DLC_HANDLE>(4294967295);
-    this->mAsyncExec = false;
-    if (path != static_cast<MT_CTSTR>(nullptr)) {
-        this->::MtFile::open(path, mode, false);
+    mHandle = -1;
+    mMode = MODE_UNDEFINED;
+    mPath[0] = 0;
+    mSeekPt = 0;
+    mSize = 0;
+    mDLCHandle = 0xFFFFFFFF;
+    mAsyncExec = false;
+    if (path != nullptr) {
+        this->MtFile::open(path, mode, false);
     }
-    this->mLastErrorCode = static_cast<MtFile::FileError>(0);
+    mLastErrorCode = 0;
 }
 
 // Address: 0x00dc53d0 - 0x00dc5443 (115 bytes)
@@ -251,7 +251,7 @@ __attribute__((weak)) void MtFile::readWait() {
 // Address: 0x00dc58c0 - 0x00dc58c7 (7 bytes)
 bool MtFile::isAsyncReading() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAsyncExec;
+    return mAsyncExec;
 }
 
 // Address: 0x00dc5710 - 0x00dc5769 (89 bytes)
@@ -271,7 +271,7 @@ __attribute__((weak)) u32 MtFile::seek(s32 offset, MtFile::SEEKBASE base) {
 // Address: 0x00dc5ad0 - 0x00dc5ad4 (4 bytes)
 u32 MtFile::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSeekPt;
+    return mSeekPt;
 }
 
 // Address: 0x00dc5200 - 0x00dc5261 (97 bytes)
@@ -292,19 +292,19 @@ __attribute__((weak)) void MtFile::setLength(u32 len) {
 // Address: 0x00dc51f0 - 0x00dc51ff (15 bytes)
 bool MtFile::isReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->isReadableMode(this->mMode);
+    return isReadableMode(mMode);
 }
 
 // Address: 0x00dc5af0 - 0x00dc5aff (15 bytes)
 bool MtFile::isWritable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->isWritableMode(this->mMode);
+    return isWritableMode(mMode);
 }
 
 // Address: 0x00dc5ae0 - 0x00dc5aef (15 bytes)
 bool MtFile::isAsyncReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->isAsyncReadableMode(this->mMode);
+    return isAsyncReadableMode(mMode);
 }
 
 // No out-of-line body: no code in the ELF
@@ -360,7 +360,7 @@ __attribute__((weak)) bool MtFile::checkAcceptableName(MT_CTSTR filename, MT_CTS
 // Address: 0x01b4ecd0 - 0x01b4ecd7 (7 bytes)
 u32 MtFile::getAsyncTransferredSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAsyncTransferredSize;
+    return mAsyncTransferredSize;
 }
 
 // Address: 0x00dc57b0 - 0x00dc57c5 (21 bytes)
@@ -378,7 +378,7 @@ __attribute__((weak)) bool MtFile::isWritableMode(MtFile::MODE mode) {
 // Address: 0x00dc57e0 - 0x00dc57e7 (7 bytes)
 bool MtFile::isAsyncReadableMode(MtFile::MODE mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return mode == static_cast<MtFile::MODE>(18);
+    return mode == MODE_READ_ASYNC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -407,6 +407,24 @@ bool MtFile::isAsyncReadableMode(MtFile::MODE mode) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool MtFile::isOpenedAsDLC() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtFile::MyDTI MtFile::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MT_CHAR MtFile::mCurrentPath[1024];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtFile::FileError MtFile::mLastError;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MT_CHAR MtFile::mCachePath[1024];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): MtFile::PATH_DRIVETYPE_FUNC MtFile::mpPathDriveTypeFunc;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtFile::DLC_CLOSE_FUNC MtFile::mpDLCcloseFunc;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtFile::AsyncThreadPool MtFile::mAsyncThreadPool;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtFile::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -485,7 +503,7 @@ const MtDTI& MtFile::FileInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6MtFile8FileInfoD0Ev at 0x00dc360e-0x00dc362f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtFile::FileInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtFile::FileInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtFile::FileInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -561,7 +579,7 @@ __attribute__((weak)) void MtFile::FileInfo::createProperty(MtPropertyList& s) {
 // Address: 0x00dc3bd0 - 0x00dc3bd5 (5 bytes)
 MtUI* MtFile::FileInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -572,6 +590,8 @@ MtUI* MtFile::FileInfo::createUI(MtProperty& prop) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void MtFile::FileInfo::setLastErrorCode(MtFile::FileInfo::FileError error);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtFile::FileInfo::MyDTI MtFile::FileInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtFile::FileInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -35,7 +35,7 @@ const MtDTI& uUIMockUp::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uUIMockUp::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uUIMockUp::DTI);
+    return MtMemoryAllocator::getAllocator(uUIMockUp::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* uUIMockUp::getAllocator() {
 // Address: 0x00d522a0 - 0x00d522e0 (64 bytes)
 void* uUIMockUp::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uUIMockUp::getAllocator()->memAlloc(sz, align, ::uUIMockUp::DTI.::MtDTI::getID());
+    return uUIMockUp::getAllocator()->memAlloc(sz, align, uUIMockUp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* uUIMockUp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uUIMockUp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uUIMockUp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uUIMockUp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,7 +114,7 @@ __attribute__((weak)) void uUIMockUp::updatePtr() {
 // Address: 0x00d540a0 - 0x00d540a5 (5 bytes)
 void uUIMockUp::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uUIMockUp::setupActive();
+    setupActive();
 }
 
 // Address: 0x00d541b0 - 0x00d54317 (359 bytes)
@@ -145,38 +145,38 @@ __attribute__((weak)) void uUIMockUp::setupFromSaveData(cCharacterData* pEdit, r
 // Address: 0x00d55250 - 0x00d5525a (10 bytes)
 void uUIMockUp::setupPawnModelContext(const cContextInstHm* pPawnContext) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uUIMockUp::setupModelContext(pPawnContext, static_cast<u32>(1));
+    setupModelContext(pPawnContext, 1u);
 }
 
 // Address: 0x00d553e0 - 0x00d553ea (10 bytes)
 void uUIMockUp::setupPlayerModelContext(const cContextInstHm* pContextHm) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uUIMockUp::setupModelContext(pContextHm, static_cast<u32>(2));
+    setupModelContext(pContextHm, 2u);
 }
 
 // Address: 0x00d55480 - 0x00d5551a (154 bytes)
 void uUIMockUp::setRenderTargetTexture(rRenderTargetTexture* pRTT) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uScreenSpace::mpRenderTarget != static_cast<rRenderTargetTexture*>(nullptr)) {
-        this->::uScreenSpace::mpRenderTarget->::cResource::release();
-        this->::uScreenSpace::mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
-        if (pRTT != static_cast<rRenderTargetTexture*>(nullptr)) {
-            this->releaseTexture();
-            this->::uScreenSpace::mpRenderTarget = pRTT;
-            pRTT->::cResource::addRef();
-            this->createDepth(this->::uScreenSpace::mpRenderTarget);
+    if (mpRenderTarget != nullptr) {
+        mpRenderTarget->release();
+        mpRenderTarget = nullptr;
+        if (pRTT != nullptr) {
+            releaseTexture();
+            mpRenderTarget = pRTT;
+            pRTT->addRef();
+            createDepth(mpRenderTarget);
         } else {
-            this->::uScreenSpace::mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
-            this->createTexture(this->::uScreenSpace::mTextureSize);
+            mpRenderTarget = nullptr;
+            createTexture(mTextureSize);
         }
     } else {
-        if (pRTT != static_cast<rRenderTargetTexture*>(nullptr)) {
-            this->releaseTexture();
-            this->::uScreenSpace::mpRenderTarget = pRTT;
-            pRTT->::cResource::addRef();
-            this->createDepth(this->::uScreenSpace::mpRenderTarget);
+        if (pRTT != nullptr) {
+            releaseTexture();
+            mpRenderTarget = pRTT;
+            pRTT->addRef();
+            createDepth(mpRenderTarget);
         } else {
-            this->::uScreenSpace::mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
+            mpRenderTarget = nullptr;
         }
     }
 }
@@ -184,10 +184,10 @@ void uUIMockUp::setRenderTargetTexture(rRenderTargetTexture* pRTT) {
 // Address: 0x00d55520 - 0x00d55538 (24 bytes)
 void uUIMockUp::changeEquip(const cItemParam* pItemParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pItemParam == static_cast<const cItemParam*>(nullptr)) {
+    if (pItemParam == nullptr) {
         return;
     }
-    this->::uUIMockUp::changeEquip(pItemParam->::cItemParam::getItemNo(), pItemParam->mColorNo, pItemParam);
+    changeEquip(pItemParam->getItemNo(), pItemParam->mColorNo, pItemParam);
 }
 
 // Address: 0x00d55540 - 0x00d55623 (227 bytes)
@@ -288,34 +288,34 @@ __attribute__((weak)) void uUIMockUp::setMannequinEquip(u32 itemId, s32 color, c
 void uUIMockUp::setMannequinEquip(const cContextInstHm* pContext, u32 itemId, s32 color, cItemParam* pParam) {
     // DWARF local not rendered: bool isMale;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (pContext == static_cast<const cContextInstHm*>(nullptr)) {
+    if (pContext == nullptr) {
         // inferred: a temporary for the result of the call at 0xd56925, used once; no DWARF local holds it
-        u32 t0 = ::cContextInterface::getSex(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
-        const rItemList::rItemParam* pParamRes = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
-        if (pParamRes != static_cast<const rItemList::rItemParam*>(nullptr)) {
-            if (pParamRes->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
-                this->::uUIMockUp::setupMannequineModel(pParamRes->::rItemList::rItemParam::getSex() == static_cast<u8>(2));
+        u32 t0 = cContextInterface::getSex(sContextManager::getInstance()->getContextMyPlayer());
+        const rItemList::rItemParam* pParamRes = sItemManager::getInstance()->getItemParam(itemId);
+        if (pParamRes != nullptr) {
+            if (pParamRes->rItemList::rItemParam::getSex() != 1) {
+                setupMannequineModel(pParamRes->rItemList::rItemParam::getSex() == 2);
             } else {
-                this->::uUIMockUp::setupMannequineModel(t0 == static_cast<u32>(0));
+                setupMannequineModel(t0 == 0);
             }
         } else {
-            this->::uUIMockUp::setupMannequineModel(t0 == static_cast<u32>(0));
+            setupMannequineModel(t0 == 0);
         }
-        this->::uUIMockUp::setMannequinEquip(itemId, color, pParam);
+        setMannequinEquip(itemId, color, pParam);
     } else {
         // inferred: a temporary for the result of the call at 0xd56925, used once; no DWARF local holds it
-        u32 t0 = ::cContextInterface::getSex(pContext);
-        const rItemList::rItemParam* pParamRes = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
-        if (pParamRes != static_cast<const rItemList::rItemParam*>(nullptr)) {
-            if (pParamRes->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
-                this->::uUIMockUp::setupMannequineModel(pParamRes->::rItemList::rItemParam::getSex() == static_cast<u8>(2));
+        u32 t0 = cContextInterface::getSex(pContext);
+        const rItemList::rItemParam* pParamRes = sItemManager::getInstance()->getItemParam(itemId);
+        if (pParamRes != nullptr) {
+            if (pParamRes->rItemList::rItemParam::getSex() != 1) {
+                setupMannequineModel(pParamRes->rItemList::rItemParam::getSex() == 2);
             } else {
-                this->::uUIMockUp::setupMannequineModel(t0 == static_cast<u32>(0));
+                setupMannequineModel(t0 == 0);
             }
         } else {
-            this->::uUIMockUp::setupMannequineModel(t0 == static_cast<u32>(0));
+            setupMannequineModel(t0 == 0);
         }
-        this->::uUIMockUp::setMannequinEquip(itemId, color, pParam);
+        setMannequinEquip(itemId, color, pParam);
     }
 }
 
@@ -342,16 +342,16 @@ bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
     // DWARF local not rendered: const bool is_man_context;
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pContext == static_cast<const cContextInstHm*>(nullptr)) {
+    if (pContext == nullptr) {
         // inferred: a temporary for the result of the call at 0xd56d6b, used twice; no DWARF local holds it
-        cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
-        const rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
-        if (pParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
-            if (pParam->::rItemList::rItemParam::getUseJob(::cContextInterface::getJob(t0)) != false) {
-                if (pParam->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
+        cContextInstHm* t0 = sContextManager::getInstance()->getContextMyPlayer();
+        const rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemId);
+        if (pParam != nullptr) {
+            if (pParam->rItemList::rItemParam::getUseJob(cContextInterface::getJob(t0))) {
+                if (pParam->rItemList::rItemParam::getSex() != 1) {
                     // inferred: a temporary for the result of the call at 0xd56db6, used once; no DWARF local holds it
-                    u8 t1 = pParam->::rItemList::rItemParam::getSex();
-                    if ((static_cast<unsigned long>(t1 == static_cast<u8>(2)) ^ static_cast<unsigned long>(::cContextInterface::getSex(t0) == static_cast<u32>(0))) != static_cast<unsigned long>(0)) {
+                    u8 t1 = pParam->rItemList::rItemParam::getSex();
+                    if ((static_cast<unsigned long>(t1 == 2) ^ static_cast<unsigned long>(cContextInterface::getSex(t0) == 0)) != 0) {
                         return false;
                     } else {
                         return true;
@@ -366,13 +366,13 @@ bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
             return true;
         }
     } else {
-        const rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
-        if (pParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
-            if (pParam->::rItemList::rItemParam::getUseJob(::cContextInterface::getJob(pContext)) != false) {
-                if (pParam->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
+        const rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemId);
+        if (pParam != nullptr) {
+            if (pParam->rItemList::rItemParam::getUseJob(cContextInterface::getJob(pContext))) {
+                if (pParam->rItemList::rItemParam::getSex() != 1) {
                     // inferred: a temporary for the result of the call at 0xd56db6, used once; no DWARF local holds it
-                    u8 t1 = pParam->::rItemList::rItemParam::getSex();
-                    if ((static_cast<unsigned long>(t1 == static_cast<u8>(2)) ^ static_cast<unsigned long>(::cContextInterface::getSex(pContext) == static_cast<u32>(0))) != static_cast<unsigned long>(0)) {
+                    u8 t1 = pParam->rItemList::rItemParam::getSex();
+                    if ((static_cast<unsigned long>(t1 == 2) ^ static_cast<unsigned long>(cContextInterface::getSex(pContext) == 0)) != 0) {
                         return false;
                     } else {
                         return true;
@@ -461,20 +461,20 @@ __attribute__((weak)) void uUIMockUp::resetModel() {
 // Address: 0x00d580a0 - 0x00d580c1 (33 bytes)
 void uUIMockUp::setMotion(u32 MotNo, f32 Frame, f32 hokan) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::uUIMockUp::mpModel) == static_cast<uMockUpModel*>(nullptr)) {
+    if ((uUIMockUp::mpModel) == nullptr) {
         return;
     }
-    if (this->mIsActive == false) {
+    if (!mIsActive) {
         return;
     }
-    (::uUIMockUp::mpModel)->::uMockUpModel::setStopPauseAction(MotNo, Frame, hokan);
+    (uUIMockUp::mpModel)->uMockUpModel::setStopPauseAction(MotNo, Frame, hokan);
 }
 
 // Address: 0x00d580d0 - 0x00d580ed (29 bytes)
 f32 uUIMockUp::getMotionMaxFrame(u32 MotNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::uUIMockUp::mpModel) != static_cast<uMockUpModel*>(nullptr)) {
-        return (::uUIMockUp::mpModel)->::uMockUpModel::getMotionMaxFrame(MotNo);
+    if ((uUIMockUp::mpModel) != nullptr) {
+        return (uUIMockUp::mpModel)->uMockUpModel::getMotionMaxFrame(MotNo);
     } else {
         return 1.0f;
     }
@@ -569,6 +569,24 @@ __attribute__((weak)) void uUIMockUp::delList() {
     DDON_STUB("uUIMockUp::delList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uUIMockUp::MyDTI uUIMockUp::DTI;
+
+// Not defined (a .ctors initializer touches it: a byte written twice): uUIMockUp::DispInfo uUIMockUp::mModelInfo;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+uInfiniteLightExt* uUIMockUp::mpLight;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+uMockUpModel* uUIMockUp::mpModel;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection uUIMockUp::mCS;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+u32 uUIMockUp::mRefCount;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+uUIMockUp* uUIMockUp::mMockUpList[5];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uUIMockUp.cpp at 0x00d58ae8-0x00d58b25 (called at uUIMockUp.cpp:44)

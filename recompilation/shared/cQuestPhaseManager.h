@@ -18,6 +18,7 @@ class MtPropertyList;
 class MtUI;
 class cQuestPhaseEvent;
 class cQuestPhaseState;
+class cQuestTask;
 
 // Declarations
 class cQuestPhaseManager;
@@ -32,6 +33,8 @@ using u32 = unsigned int;
 
 class cQuestPhaseManager : public cQuestFunctionManagerBase
 {
+    // inferred: cQuestTask::cQuestProcess::checkNowPhase names cQuestPhaseManager::mPhaseId, through its enclosing class cQuestTask
+    friend class cQuestTask;
 public:
     class MyDTI;
 public:

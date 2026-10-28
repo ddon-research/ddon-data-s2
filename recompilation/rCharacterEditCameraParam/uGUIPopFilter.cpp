@@ -33,7 +33,7 @@ const MtDTI& uGUIPopFilter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopFilter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopFilter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUIPopFilter::getAllocator() {
 // Address: 0x00bac400 - 0x00bac440 (64 bytes)
 void* uGUIPopFilter::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopFilter::getAllocator()->memAlloc(sz, align, ::uGUIPopFilter::DTI.::MtDTI::getID());
+    return uGUIPopFilter::getAllocator()->memAlloc(sz, align, uGUIPopFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUIPopFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,14 +82,14 @@ uGUIPopFilter::~uGUIPopFilter() {
 // Address: 0x00bacde0 - 0x00bace65 (133 bytes)
 bool uGUIPopFilter::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_FILTER"), static_cast<u32>(129), static_cast<t64>(1477029345)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POP_FILTER_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_FILTER"), 129u, 1477029345l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_POP_FILTER_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POP_FILTER_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_POP_FILTER_GMD", 0u);
     }
 }
 
@@ -107,19 +107,19 @@ __attribute__((weak)) void uGUIPopFilter::setup() {
 
 // Address: 0x00baddc0 - 0x00bade39 (121 bytes)
 void uGUIPopFilter::kill() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xa20 from uGUIPopFilter*
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    this->mList.mListCtrl.::uGUIBase::cScrollList::clearInfo();
-    if (this->mData.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mData.::MtArray::mpArray));
+    mList.mListCtrl.clearInfo();
+    if (mData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mData.mpArray));
     }
-    this->mData.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2592)) = static_cast<unsigned long>(0);
+    mData.mpArray = nullptr;
+    mData.mLength = 0;
+    mData.mBufsiz = 0;
 }
 
 // Address: 0x00bad830 - 0x00bad8ca (154 bytes)
@@ -138,13 +138,13 @@ __attribute__((weak)) void uGUIPopFilter::setupListItem(uGUIBase::cScrollListIte
 void uGUIPopFilter::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
     // DWARF local not rendered: cListItem* pItem;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pItemBase == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pItemBase == nullptr) {
         return;
     }
-    if (pItemBase->mpInstBase != static_cast<cGUIInstNull*>(nullptr)) {
-        pItemBase->mpInstBase->::cGUIInstance::setVisible(false);
+    if (pItemBase->mpInstBase != nullptr) {
+        pItemBase->mpInstBase->setVisible(false);
     }
-    this->::uGUIPopFilter::setVisibleRef(static_cast<uGUIPopFilter::cListItem*>(pItemBase), false);
+    setVisibleRef(static_cast<cListItem*>(pItemBase), false);
 }
 
 // Address: 0x00bb0d60 - 0x00bb0ef0 (400 bytes)
@@ -158,32 +158,32 @@ __attribute__((weak)) void uGUIPopFilter::setVisibleRef(uGUIPopFilter::cListItem
 void uGUIPopFilter::setWindowTitle(MT_CTSTR title) {
     // DWARF local not rendered: cGUIInstAnimation* pAnm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((*title) == static_cast<char>(0)) {
+    if ((*title) == 0) {
         return;
     }
-    this->::uGUIBase::setObjectMessage(this->::uGUIBase::getObjectFromId(this->getInstance(static_cast<u32>(5), false), static_cast<u32>(2)), title, static_cast<u32>(0), false);
-    this->mWindowTitle = title;
+    setObjectMessage(getObjectFromId(getInstance(5u, false), 2u), title, 0u, false);
+    mWindowTitle = title;
 }
 
 // Address: 0x00bb0ef0 - 0x00bb0efe (14 bytes)
 void uGUIPopFilter::setWindowTitle(s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWindowTitleId = id;
-    this->mRefresh = true;
+    mWindowTitleId = id;
+    mRefresh = true;
 }
 
 // Address: 0x00bb0f00 - 0x00bb0f4d (77 bytes)
 void uGUIPopFilter::setBtnTitle(MT_CTSTR btitle1, MT_CTSTR btitle2) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((*btitle1) != static_cast<char>(0)) {
-        this->mBtnTitle1 = btitle1;
-        this->mBtn[0].::uGUIBase::cReferenceUIButton::setMessage(btitle1);
+    if ((*btitle1) != 0) {
+        mBtnTitle1 = btitle1;
+        mBtn[0].setMessage(btitle1);
     }
-    if ((*btitle2) == static_cast<char>(0)) {
+    if ((*btitle2) == 0) {
         return;
     }
-    this->mBtnTitle2 = btitle2;
-    this->mBtn[1].::uGUIBase::cReferenceUIButton::setMessage(btitle2);
+    mBtnTitle2 = btitle2;
+    mBtn[1].setMessage(btitle2);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (15 bytes)
@@ -236,23 +236,41 @@ __attribute__((weak)) bool uGUIPopFilter::addJobIcon(s32 def, s32 strid, bool al
 // bool uGUIPopFilter::addReferenceMaxMin(s32 defmax, s32 defmin, s32 max, s32 min, MT_CTSTR title, MT_CTSTR strmax, MT_CTSTR strmin, uGUIPopFilter::TITLE_PRE style);
 
 // Address: 0x00bb18c0 - 0x00bb1991 (209 bytes)
-__attribute__((weak)) bool uGUIPopFilter::addReferenceMaxMin(s32 defmax, s32 defmin, s32 max, s32 min, s32 titleid, s32 strmaxid, s32 strminid, uGUIPopFilter::TITLE_PRE style) {
-    // local: u32 minindex;
-    // local: u32 maxindex;
-    DDON_STUB("uGUIPopFilter::addReferenceMaxMin")
-    return {};
+bool uGUIPopFilter::addReferenceMaxMin(s32 defmax, s32 defmin, s32 max, s32 min, s32 titleid, s32 strmaxid, s32 strminid, uGUIPopFilter::TITLE_PRE style) {
+    // DWARF local not rendered: u32 minindex;
+    // DWARF local not rendered: u32 maxindex;
+    // Approximate from the ELF: a cast to the other signedness; a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa20 from uGUIPopFilter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x38 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x4a from MtObject*
+    if (addReference(REF_NUMBOX, defmin, titleid, style, strminid, max, min, ATTR_MIN)) {
+        // inferred: a temporary for the value the load at 0xbb1913 read, used twice; no DWARF local holds it
+        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592);
+        if (addReference(REF_NUMBOX, defmax, -1, style, strmaxid, max, min, ATTR_MAX)) {
+            // inferred: a temporary for the value the load at 0xbb1947 read, used twice; no DWARF local holds it
+            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592);
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t1 - 1u)]) + 56) = t0 - 1u;
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t0 - 1u)]) + 56) = t1 - 1u;
+            return true;
+        } else {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t0 - 1u)]) + 74) = 0;
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00bb1300 - 0x00bb1334 (52 bytes)
 bool uGUIPopFilter::addCheckBox(s32 nameid, s32 def, s32 titleid, uGUIPopFilter::TITLE_PRE style) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUIPopFilter::addReference(static_cast<uGUIPopFilter::REF_TYPE>(1), def, titleid, style, nameid, static_cast<s32>(0), static_cast<s32>(0), static_cast<uGUIPopFilter::ATTR_BIT>(0));
+    return addReference(REF_CHECKBOX, def, titleid, style, nameid, 0, 0, ATTR_NONE);
 }
 
 // Address: 0x00bb0fd0 - 0x00bb0fff (47 bytes)
 bool uGUIPopFilter::addCheckBox(MT_CTSTR name, s32 def, MT_CTSTR title, uGUIPopFilter::TITLE_PRE style) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUIPopFilter::addReference(static_cast<uGUIPopFilter::REF_TYPE>(1), def, title, style, static_cast<s32>(0), static_cast<s32>(0), name, static_cast<uGUIPopFilter::ATTR_BIT>(0));
+    return addReference(REF_CHECKBOX, def, title, style, 0, 0, name, ATTR_NONE);
 }
 
 // Address: 0x00bb1640 - 0x00bb166e (46 bytes)
@@ -261,11 +279,11 @@ void uGUIPopFilter::setCheckBoxTitle(u32 idx, s32 titleid, s32 val) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x68 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6c from MtObject*
-    if (this->mData.::MtArray::mLength >= idx) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(40))) == static_cast<unsigned int>(1)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(104)) = static_cast<unsigned int>(titleid);
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(108)) = static_cast<unsigned int>(val);
-            this->mRefresh = true;
+    if (mData.mLength >= idx) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 40)) == 1) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 104) = static_cast<unsigned int>(titleid);
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 108) = static_cast<unsigned int>(val);
+            mRefresh = true;
         }
     }
 }
@@ -274,9 +292,9 @@ void uGUIPopFilter::setCheckBoxTitle(u32 idx, s32 titleid, s32 val) {
 // bool uGUIPopFilter::addNumBox(s32 def, s32 max, s32 min, s32 nameid, s32 titleid, uGUIPopFilter::TITLE_PRE style);
 
 // Address: 0x00bb1670 - 0x00bb16a9 (57 bytes)
-__attribute__((weak)) bool uGUIPopFilter::addNumBox(s32 def, s32 max, s32 min, MT_CTSTR name, MT_CTSTR title, uGUIPopFilter::TITLE_PRE style) {
-    DDON_STUB("uGUIPopFilter::addNumBox")
-    return {};
+bool uGUIPopFilter::addNumBox(s32 def, s32 max, s32 min, MT_CTSTR name, MT_CTSTR title, uGUIPopFilter::TITLE_PRE style) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return addReference(REF_NUMBOX, def, title, style, max, min, name, ATTR_NONE);
 }
 
 // No out-of-line body: no code in the ELF
@@ -291,8 +309,8 @@ bool uGUIPopFilter::addPullDown(s32 def, MT_CTSTR title, s32 listsize, uGUIPopFi
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa20 from uGUIPopFilter*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from MtObject*
-    if (this->::uGUIPopFilter::addReference(static_cast<uGUIPopFilter::REF_TYPE>(4), def, title, style, static_cast<s32>(0), static_cast<s32>(0), "", static_cast<uGUIPopFilter::ATTR_BIT>(0)) != false) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(2592))) - static_cast<unsigned int>(1))]) + static_cast<long>(120)) = static_cast<unsigned int>(listsize);
+    if (addReference(REF_PULLDOWN, def, title, style, 0, 0, "", ATTR_NONE)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2592)) - 1u)]) + 120) = static_cast<unsigned int>(listsize);
         return true;
     } else {
         return false;
@@ -324,9 +342,9 @@ void uGUIPopFilter::setReferenceEnable(u32 idx, bool enable) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x49 from MtObject*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (idx < this->mData.::MtArray::mLength) {
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(73)) = static_cast<unsigned char>(enable);
-        this->mRefresh = true;
+    if (idx < mData.mLength) {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 73) = static_cast<unsigned char>(enable);
+        mRefresh = true;
     }
 }
 
@@ -335,9 +353,9 @@ void uGUIPopFilter::setGrayOut(u32 idx, bool flag) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x4b from MtObject*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (idx < this->mData.::MtArray::mLength) {
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mData.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(75)) = static_cast<unsigned char>(flag);
-        this->mRefresh = true;
+    if (idx < mData.mLength) {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 75) = static_cast<unsigned char>(flag);
+        mRefresh = true;
     }
 }
 
@@ -387,8 +405,8 @@ __attribute__((weak)) void uGUIPopFilter::onChangeNumBox() {
 // Address: 0x00bb1dd0 - 0x00bb1df8 (40 bytes)
 void uGUIPopFilter::setDecideEnable(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBtn[0].::uGUIBase::cReferenceUIButton::setEnable(flag);
-    this->mIsEnable[0] = flag;
+    mBtn[0].setEnable(flag);
+    mIsEnable[0] = flag;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (121 bytes)
@@ -411,10 +429,10 @@ void uGUIPopFilter::setDecideEnable(bool flag) {
 // Address: 0x00bb1d40 - 0x00bb1d66 (38 bytes)
 void uGUIPopFilter::setBtnDefautPos(u32 pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pos <= static_cast<u32>(1)) {
-        this->mBtnPos = pos;
-        if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpHCtrl->setCurrentPos(static_cast<s32>(pos), false);
+    if (pos <= 1u) {
+        mBtnPos = pos;
+        if (mpHCtrl != nullptr) {
+            mpHCtrl->setCurrentPos(static_cast<s32>(pos), false);
         }
     }
 }
@@ -461,11 +479,11 @@ __attribute__((weak)) void uGUIPopFilter::updateWait() {
 // Address: 0x00baeca0 - 0x00baeccd (45 bytes)
 void uGUIPopFilter::updateNone() {
     // Approximate from the ELF: a bool compared with true; the body oracle reports this body.
-    if (this->mWaitReq == true) {
+    if (mWaitReq == true) {
         return;
     }
-    this->mDecide = false;
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopFilter::updateWait);
+    mDecide = false;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopFilter::updateWait);
 }
 
 // Address: 0x00baebb0 - 0x00baec80 (208 bytes)
@@ -479,7 +497,7 @@ __attribute__((weak)) void uGUIPopFilter::updateWakeUp() {
 // Address: 0x00baecd0 - 0x00baecd9 (9 bytes)
 void uGUIPopFilter::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00baece0 - 0x00baee81 (417 bytes)
@@ -599,8 +617,8 @@ __attribute__((weak)) u32 uGUIPopFilter::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x01afccd0 - 0x01afcce2 (18 bytes)
 u32 uGUIPopFilter::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00bad980 - 0x00bad9c4 (68 bytes)
@@ -612,15 +630,15 @@ __attribute__((weak)) u32 uGUIPopFilter::evCtrlStart(cControl::Message* msg) {
 // Address: 0x01afccf0 - 0x01afcd02 (18 bytes)
 u32 uGUIPopFilter::evCtrlUp(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x01afcd10 - 0x01afcd22 (18 bytes)
 u32 uGUIPopFilter::evCtrlDown(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (25 bytes)
@@ -715,6 +733,8 @@ __attribute__((weak)) void uGUIPopFilter::resetParam() {
 //   in uGUIPopFilter::evDecide at 0x00baf646-0x00baf66f, 0x00baf6c7-0x00baf70a, 0x00baf728-0x00baf731, 0x00baf760-0x00baf778 (called at uGUIPopFilter.cpp:1038)
 // bool uGUIPopFilter::isCheckNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopFilter::MyDTI uGUIPopFilter::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopFilter.cpp at 0x00bb1eff-0x00bb1f3c (called at uGUIPopFilter.cpp:22)
 //   in _GLOBAL__sub_I_uGUIPopFilter.cpp at 0x00bb1eff-0x00bb1f3c (called at uGUIPopFilter.h:24)
@@ -781,6 +801,8 @@ const MtDTI& uGUIPopFilter::cData::getDTI() const {
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // uGUIPopFilter::cData::cData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopFilter::cData::MyDTI uGUIPopFilter::cData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopFilter.cpp at 0x00bb1f79-0x00bb1fb6 (called at uGUIPopFilter.cpp:24)
 //   in _GLOBAL__sub_I_uGUIPopFilter.cpp at 0x00bb1f79-0x00bb1fb6 (called at uGUIPopFilter.h:105)
@@ -838,7 +860,7 @@ const MtDTI& uGUIPopFilter::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uGUIPopFilter9cListItemD0Ev at 0x01afd063-0x01afd082, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopFilter::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopFilter::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -855,6 +877,8 @@ uGUIPopFilter::cListItem::cListItem() {
     DDON_STUB("uGUIPopFilter::cListItem::cListItem")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopFilter::cListItem::MyDTI uGUIPopFilter::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopFilter.cpp at 0x00bb1f3c-0x00bb1f79 (called at uGUIPopFilter.cpp:23)

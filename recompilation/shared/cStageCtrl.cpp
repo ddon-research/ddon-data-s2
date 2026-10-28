@@ -46,7 +46,7 @@ const MtDTI& cStageCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cStageCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStageCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStageCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,34 +68,34 @@ cStageCtrl::cStageCtrl() {
 // Also emitted as: _ZN10cStageCtrlD0Ev at 0x0056e650
 cStageCtrl::~cStageCtrl() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAreaArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAreaArray.mLength != 0) {
         // inferred: the value the loop at 0x56e5e0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAreaArray.::MtArray::mLength;
+        u32 v0_0 = mAreaArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAreaArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAreaArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaArray.::MtArray::mLength) {
-                    v0_0 = this->mAreaArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaArray.mpArray[i0_3] != nullptr) {
+                delete mAreaArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaArray.mLength) {
+                    v0_0 = mAreaArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAreaArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaArray.::MtArray::mpArray));
+    if (mAreaArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaArray.mpArray));
     }
-    this->mAreaArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAreaArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAreaArray.::MtArray::mLength = static_cast<u32>(0);
+    mAreaArray.mpArray = nullptr;
+    mAreaArray.mBufsiz = 0;
+    mAreaArray.mLength = 0;
 }
 
 // Address: 0x0056e710 - 0x0056e971 (609 bytes)
@@ -107,36 +107,36 @@ __attribute__((weak)) void cStageCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x0056e980 - 0x0056ea09 (137 bytes)
 void cStageCtrl::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAreaArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAreaArray.mLength != 0) {
         // inferred: the value the loop at 0x56e9a0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAreaArray.::MtArray::mLength;
+        u32 v0_0 = mAreaArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAreaArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAreaArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaArray.::MtArray::mLength) {
-                    v0_0 = this->mAreaArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaArray.mpArray[i0_3] != nullptr) {
+                delete mAreaArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaArray.mLength) {
+                    v0_0 = mAreaArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAreaArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaArray.::MtArray::mpArray));
+    if (mAreaArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaArray.mpArray));
     }
-    this->mAreaArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAreaArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAreaArray.::MtArray::mLength = static_cast<u32>(0);
-    this->mPartsDungeonNo = static_cast<s32>(-1);
-    this->mIsInit = false;
+    mAreaArray.mpArray = nullptr;
+    mAreaArray.mBufsiz = 0;
+    mAreaArray.mLength = 0;
+    mPartsDungeonNo = -1;
+    mIsInit = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,10 +145,10 @@ void cStageCtrl::clear() {
 // Address: 0x0056ea10 - 0x0056ea23 (19 bytes)
 cStageCtrl::Area* cStageCtrl::getArea(u32 idx) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (idx < this->mAreaArray.::MtArray::mLength) {
-        return static_cast<cStageCtrl::Area*>(this->mAreaArray.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    if (idx < mAreaArray.mLength) {
+        return static_cast<Area*>(mAreaArray.getBuffer()[static_cast<int>(idx)]);
     } else {
-        return static_cast<cStageCtrl::Area*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -177,6 +177,8 @@ __attribute__((weak)) void cStageCtrl::createCustomArea(rStageCustom* pRes) {
 
 // No out-of-line body: no code in the ELF
 // bool cStageCtrl::isInit() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageCtrl::MyDTI cStageCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cStageCtrl.cpp at 0x0056ed04-0x0056ed3d (called at cStageCtrl.cpp:30)
@@ -213,7 +215,7 @@ const MtDTI& cStageCtrl::Area::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cStageCtrl::Area::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStageCtrl::Area::DTI)->memAlloc(sz, align, ::cStageCtrl::Area::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStageCtrl::Area::DTI)->memAlloc(sz, align, cStageCtrl::Area::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -227,7 +229,7 @@ inline void* cStageCtrl::Area::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStageCtrl::Area::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStageCtrl::Area::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStageCtrl::Area::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -258,6 +260,8 @@ __attribute__((weak)) void cStageCtrl::Area::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageCtrl::Area::MyDTI cStageCtrl::Area::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cStageCtrl.cpp at 0x0056ecc0-0x0056ed04 (called at cStageCtrl.cpp:29)
 //   in _GLOBAL__sub_I_cStageCtrl.cpp at 0x0056ecc0-0x0056ed04 (called at cStageCtrl.h:32)
@@ -266,7 +270,7 @@ __attribute__((weak)) void cStageCtrl::Area::createProperty(MtPropertyList& s) {
 // Address: 0x0056e2d0 - 0x0056e31f (79 bytes)
 MtObject* cStageCtrl::Area::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStageCtrl::Area;
+    return new (16u) cStageCtrl::Area;
 }
 
 // Instance at 0x01a619e0 - 0x01a619e5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

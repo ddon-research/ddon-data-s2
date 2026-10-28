@@ -50,7 +50,7 @@ const MtDTI& rCameraParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCameraParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCameraParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,8 +96,8 @@ __attribute__((weak)) bool rCameraParamList::load(MtStream& in) {
 // Address: 0x0064e780 - 0x0064e806 (134 bytes)
 bool rCameraParamList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCameraParamList::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraParamList::DTI));
 }
 
 // Address: 0x01a7adb0 - 0x01a7adb8 (8 bytes)
@@ -115,10 +115,10 @@ MT_CTSTR rCameraParamList::getExt() const {
 // Address: 0x0064e820 - 0x0064e835 (21 bytes)
 const cCamExParam* rCameraParamList::getParam(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mParamList.mLength) {
-        return static_cast<const cCamExParam*>(this->mParamList.mpArray[index]);
+    if (index < mParamList.mLength) {
+        return static_cast<const cCamExParam*>(mParamList.mpArray[index]);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -133,23 +133,25 @@ void rCameraParamList::addPriority(u32 add) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rCameraParamList*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x88 from rCameraParamList*
     // inferred: the value the loop at 0x64e850 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x64e850 carries; no location-less local in scope fits
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(136));
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 136);
         // inferred: DWARF's location-less 'i' (lexical block [0x64e840, 0x64e863)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(28)) = add + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(28)));
+        for (u32 i = 0;;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 28) = add + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 28));
             }
-            if ((i + static_cast<u32>(1)) < v0_0) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < v0_0) {
+                i = i + 1u;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCameraParamList::MyDTI rCameraParamList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCameraParamList.cpp at 0x0064e870-0x0064e8b2 (called at rCameraParamList.cpp:28)

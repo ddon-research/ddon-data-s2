@@ -23,7 +23,7 @@ const MtDTI& sRemoteProcedureExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sRemoteProcedureExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sRemoteProcedureExt::DTI);
+    return MtMemoryAllocator::getAllocator(sRemoteProcedureExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* sRemoteProcedureExt::getAllocator() {
 // Address: 0x008304b0 - 0x008304f0 (64 bytes)
 void* sRemoteProcedureExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sRemoteProcedureExt::getAllocator()->memAlloc(sz, align, ::sRemoteProcedureExt::DTI.::MtDTI::getID());
+    return sRemoteProcedureExt::getAllocator()->memAlloc(sz, align, sRemoteProcedureExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* sRemoteProcedureExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sRemoteProcedureExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sRemoteProcedureExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sRemoteProcedureExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,13 +62,13 @@ inline void sRemoteProcedureExt::operator delete(void* p_addr) {
 // Address: 0x00830560 - 0x008305e2 (130 bytes)
 sRemoteProcedureExt::sRemoteProcedureExt() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sRemoteProcedureExt::init();
-    this->::sRemoteProcedure::makeCategory("PLAYER");
-    this->::sRemoteProcedure::makeCategory("CMC");
-    this->::sRemoteProcedure::makeCategory("NPC");
-    this->::sRemoteProcedure::makeCategory("ENEMY");
-    this->::sRemoteProcedure::makeCategory("OBJECT");
-    this->::sRemoteProcedure::setUserLocation(static_cast<u32>(4294966295));
+    this->sRemoteProcedureExt::init();
+    makeCategory("PLAYER");
+    makeCategory("CMC");
+    makeCategory("NPC");
+    makeCategory("ENEMY");
+    makeCategory("OBJECT");
+    setUserLocation(0xFFFFFC17u);
 }
 
 // Address: 0x008305f0 - 0x008305f5 (5 bytes)
@@ -80,7 +80,7 @@ sRemoteProcedureExt::~sRemoteProcedureExt() {
 // Address: 0x00830630 - 0x00830635 (5 bytes)
 void sRemoteProcedureExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sRemoteProcedure::createProperty(s);
+    this->sRemoteProcedure::createProperty(s);
 }
 
 // Address: 0x00830640 - 0x008306d8 (152 bytes)
@@ -92,7 +92,7 @@ __attribute__((weak)) void sRemoteProcedureExt::init() {
 // Address: 0x008309e0 - 0x008309e5 (5 bytes)
 void sRemoteProcedureExt::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sRemoteProcedure::move();
+    this->sRemoteProcedure::move();
 }
 
 // Address: 0x008309f0 - 0x00830a75 (133 bytes)
@@ -121,6 +121,8 @@ __attribute__((weak)) void sRemoteProcedureExt::receiveNetwork(s32 sessionId, u3
     DDON_STUB("sRemoteProcedureExt::receiveNetwork")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sRemoteProcedureExt::MyDTI sRemoteProcedureExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sRemoteProcedureExt.cpp at 0x00830b7f-0x00830bbc (called at sRemoteProcedureExt.cpp:36)

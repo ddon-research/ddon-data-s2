@@ -36,7 +36,7 @@ const MtDTI& rSwingModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK11rSwingModel5MyDTI11newInstanceEv at 0x011e1220-0x011e124d, code DWARF attributes to no inlined copy; sz is the class's size (144), align the allocation's other whole constant (16)
 inline void* rSwingModel::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memAlloc(sz, align, ::rSwingModel::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memAlloc(sz, align, rSwingModel::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rSwingModel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rSwingModelD0Ev at 0x011e1410-0x011e142f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSwingModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,16 +71,16 @@ inline void rSwingModel::operator delete(void* p_addr) {
 rSwingModel::~rSwingModel() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x11e1358 read, used twice; no DWARF local holds it
-    rSwingModel::PRIMITIVE_QUANT_INFO* t0 = this->mpPrimQuantInfo;
-    if (t0 != static_cast<rSwingModel::PRIMITIVE_QUANT_INFO*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memFree(static_cast<void*>(t0));
-        this->mpPrimQuantInfo = static_cast<rSwingModel::PRIMITIVE_QUANT_INFO*>(nullptr);
+    PRIMITIVE_QUANT_INFO* t0 = mpPrimQuantInfo;
+    if (t0 != nullptr) {
+        MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memFree(static_cast<void*>(t0));
+        mpPrimQuantInfo = nullptr;
     }
-    if (this->mpVertexBuffer == static_cast<nDraw::VertexBuffer*>(nullptr)) {
+    if (mpVertexBuffer == nullptr) {
         return;
     }
-    this->mpVertexBuffer->release();
-    this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
+    mpVertexBuffer->release();
+    mpVertexBuffer = nullptr;
 }
 
 // Address: 0x011e1430 - 0x011e190d (1245 bytes)
@@ -146,13 +146,15 @@ __attribute__((weak)) MtTime rSwingModel::getUpdateTime(MT_CTSTR fullpath) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 rSwingModel::getFrequencyFactor() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSwingModel::MyDTI rSwingModel::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSwingModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011e1220 - 0x011e12b5 (149 bytes)
 MtObject* rSwingModel::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSwingModel;
+    return new (16u) rSwingModel;
 }
 
 // No out-of-line body: no code in the ELF

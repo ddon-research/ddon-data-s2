@@ -24,7 +24,7 @@ const MtDTI& uSkyCloudModel::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSkyCloudModel::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSkyCloudModel::DTI);
+    return MtMemoryAllocator::getAllocator(uSkyCloudModel::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uSkyCloudModel::getAllocator() {
 // Address: 0x00d0e300 - 0x00d0e340 (64 bytes)
 void* uSkyCloudModel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSkyCloudModel::getAllocator()->memAlloc(sz, align, ::uSkyCloudModel::DTI.::MtDTI::getID());
+    return uSkyCloudModel::getAllocator()->memAlloc(sz, align, uSkyCloudModel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uSkyCloudModel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSkyCloudModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSkyCloudModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSkyCloudModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,7 +75,7 @@ uSkyCloudModel::~uSkyCloudModel() {
 // Address: 0x00d0e520 - 0x00d0e525 (5 bytes)
 MtUI* uSkyCloudModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uBaseModel::createUI(prop);
+    return this->uBaseModel::createUI(prop);
 }
 
 // Address: 0x00d0e530 - 0x00d0ef97 (2663 bytes)
@@ -155,8 +155,10 @@ __attribute__((weak)) void uSkyCloudModel::setCommonState(cDraw* pdraw) {
 // Address: 0x00d0f240 - 0x00d0f256 (22 bytes)
 u32 uSkyCloudModel::getAddTransparentDrawPriority() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned int>(static_cast<long>(this->::uBaseModel::getTransparency() * 100.0f));
+    return static_cast<unsigned int>(static_cast<long>(getTransparency() * 100.0f));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSkyCloudModel::MyDTI uSkyCloudModel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSkyCloud.cpp at 0x00d0f70f-0x00d0f74c (called at uSkyCloud.cpp:32)

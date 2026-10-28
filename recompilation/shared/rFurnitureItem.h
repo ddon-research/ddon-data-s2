@@ -260,24 +260,24 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFurnitureGroup::cFurnitureGroup() {
-    this->mSortNo = static_cast<u8>(0);
-    this->mGmdIdx = static_cast<u32>(0);
-    this->mID = static_cast<u32>(0);
-    this->mCameraNo = static_cast<u32>(0);
+    this->mSortNo = 0;
+    this->mGmdIdx = 0;
+    this->mID = 0;
+    this->mCameraNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFurnitureItem::cFurnitureItem() {
-    this->mItemId = static_cast<u32>(0);
-    this->mLayoutId = static_cast<u32>(0);
-    this->mOmId = static_cast<u32>(0);
+    this->mItemId = 0;
+    this->mLayoutId = 0;
+    this->mOmId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFurnitureLayout::cFurnitureLayout() {
-    this->mGmdIdx = static_cast<u32>(0);
+    this->mGmdIdx = 0;
     this->mIsRemovable = false;
-    this->mSortNo = static_cast<u8>(0);
-    this->mID = static_cast<u32>(0);
-    this->mGroupId = static_cast<u32>(0);
+    this->mSortNo = 0;
+    this->mID = 0;
+    this->mGroupId = 0;
 }

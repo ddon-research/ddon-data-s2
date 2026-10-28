@@ -69,6 +69,7 @@ class sMenu;
 class uDDOModel;
 class uGUIBase;
 class uGUIBoughtBox;
+class uGUICommunityList;
 class uGUIDialogTextBox;
 class uGUIGPShop;
 class uGUIGPShopDialog;
@@ -258,6 +259,8 @@ class cMenuBase : public MtObject
     friend class cMenuSupportMenu;
     // inferred: sMenu::updateMenu names cMenuBase::mNowMoveFlag
     friend class sMenu;
+    // inferred: uGUICommunityList::cTabDataFriendList::isMenuListCompListup names sMenu::mMenuFriendList.::cMenuBase::mMenuRno[0], through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     class MyDTI;
 public:
@@ -2715,6 +2718,8 @@ public:
 
 class cMenuFriendList : public cMenuBase
 {
+    // inferred: uGUICommunityList::cTabDataFriendList::getListIndex names sMenu::mMenuFriendList.mpSortList, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     enum LIST_TYPE
     {
@@ -6838,6 +6843,8 @@ public:
 
 class cMenuRecentList : public cMenuBase
 {
+    // inferred: uGUICommunityList::cTabDataNearPlayerList::getListIndex names sMenu::mMenuRecentList.mpSortList, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     enum
     {
@@ -8346,6 +8353,8 @@ public:
 
 class cMenuActiveList : public cMenuBase
 {
+    // inferred: uGUICommunityList::cTabDataActiveList::getListIndex names sMenu::mMenuActiveList.mpSortList, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     enum LIST_TYPE
     {
@@ -8981,6 +8990,12 @@ inline cMenuBaggageMenu::cMenuBaggageMenu() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSupportMenu::initialize at 0x14f3d1-0x14f3d5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cMenuBase::setMenuList(s32* pMenuList) {
+    this->mpMenuList = pMenuList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool cMenuBase::getNowMove() {
     return this->mNowMoveFlag;
@@ -9024,7 +9039,7 @@ inline cMenuCharacterList::cMenuCharacterList() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftColorItem::cMenuCraftColorItem() {
-    this->mKickPartyCtr = static_cast<u32>(0);
+    this->mKickPartyCtr = 0;
     this->mIsEffect = false;
 }
 
@@ -9032,23 +9047,23 @@ inline cMenuCraftColorItem::cMenuCraftColorItem() {
 // approximate: only approximate callers check this inline body
 inline cMenuCraftCreateItem::cMenuCraftCreateItem() {
     this->mNextMoveLine = static_cast<MOVE_LINE>(64);
-    this->mKickPartyCtr = static_cast<u32>(0);
-    this->mCreateStyle = static_cast<s32>(-1);
-    this->mErrorState = static_cast<u32>(0);
+    this->mKickPartyCtr = 0;
+    this->mCreateStyle = -1;
+    this->mErrorState = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftElementItem::cMenuCraftElementItem() {
-    this->mType = static_cast<u32>(0);
-    this->mSlotNo = static_cast<u32>(0);
-    this->mKickPartyCtr = static_cast<u32>(0);
+    this->mType = 0;
+    this->mSlotNo = 0;
+    this->mKickPartyCtr = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftGoldStoneDialog::cMenuCraftGoldStoneDialog() {
-    this->mType = static_cast<u32>(0);
+    this->mType = 0;
     this->mMoveLine = static_cast<MOVE_LINE>(64);
 }
 
@@ -9056,41 +9071,41 @@ inline cMenuCraftGoldStoneDialog::cMenuCraftGoldStoneDialog() {
 // approximate: only approximate callers check this inline body
 inline cMenuCraftItemSelect::cMenuCraftItemSelect() {
     this->mReqType = static_cast<rItemList::MATERIAL_CATEGORY>(0);
-    this->mItemId = static_cast<u32>(0);
-    this->mListType = static_cast<u32>(0);
-    this->mSlotNo = static_cast<u32>(0);
+    this->mItemId = 0;
+    this->mListType = 0;
+    this->mSlotNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftMenu::cMenuCraftMenu() {
-    this->mRecipeList = static_cast<u32>(0);
-    this->mElementSlot = static_cast<u32>(0);
-    this->mColorSlot = static_cast<u32>(0);
-    this->mPawnSlot = static_cast<u32>(0);
-    this->mProcessSlot = static_cast<u32>(0);
+    this->mRecipeList = 0;
+    this->mElementSlot = 0;
+    this->mColorSlot = 0;
+    this->mPawnSlot = 0;
+    this->mProcessSlot = 0;
     this->mNextMoveLine = static_cast<MOVE_LINE>(64);
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftMyPawnList::cMenuCraftMyPawnList() {
-    this->mSaveSlot = static_cast<u32>(0);
-    this->mListType = static_cast<u32>(0);
+    this->mSaveSlot = 0;
+    this->mListType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftPoint::cMenuCraftPoint() {
-    this->mPointNum = static_cast<u32>(0);
-    this->mSkillReq = static_cast<u32>(0);
+    this->mPointNum = 0;
+    this->mSkillReq = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftProcessMenu::cMenuCraftProcessMenu() {
-    this->mPawnSlot = static_cast<u32>(0);
-    this->mListType = static_cast<u32>(0);
+    this->mPawnSlot = 0;
+    this->mListType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -9102,7 +9117,7 @@ inline cMenuCraftRecipeList::cMenuCraftRecipeList() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuCraftSupportList::cMenuCraftSupportList() {
-    this->mSlotNo = static_cast<u32>(0);
+    this->mSlotNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -9110,8 +9125,8 @@ inline cMenuCraftSupportList::cMenuCraftSupportList() {
 inline cMenuCraftTask::cMenuCraftTask() {
     this->mIsClassUp = false;
     this->mIsReceiveFurniture = false;
-    this->mSaveIdx = static_cast<u32>(0);
-    this->mGetItemIdx = static_cast<u32>(0);
+    this->mSaveIdx = 0;
+    this->mGetItemIdx = 0;
     this->mMoveLine = static_cast<MOVE_LINE>(64);
 }
 
@@ -9181,17 +9196,17 @@ inline cMenuGetFriendList::cMenuGetFriendList() {
 // approximate: only approximate callers check this inline body
 inline cMenuGetItemBaggageListToServer::cMenuGetItemBaggageListToServer() {
     this->mStorageList.::MtArray::mAutoDelete = true;
-    this->mBagIdx = static_cast<u32>(0);
-    this->mBagNum = static_cast<u32>(0);
-    this->mServerResult = static_cast<u32>(0);
+    this->mBagIdx = 0;
+    this->mBagNum = 0;
+    this->mServerResult = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuGetItemListToServer::cMenuGetItemListToServer() {
-    this->mBagIdx = static_cast<u32>(0);
-    this->mBagNum = static_cast<u32>(0);
-    this->mServerResult = static_cast<u32>(0);
+    this->mBagIdx = 0;
+    this->mBagNum = 0;
+    this->mServerResult = 0;
     this->mStorageList.::MtArray::mAutoDelete = true;
 }
 
@@ -9318,7 +9333,7 @@ inline cMenuMyPawnList::cMenuMyPawnList() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuOnlineShop::cMenuOnlineShop() {
-    this->mType = static_cast<u32>(0);
+    this->mType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -9374,7 +9389,7 @@ inline cMenuPawnManager::cMenuPawnManager() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuPawnPoint::cMenuPawnPoint() {
-    this->mPawnId = static_cast<u32>(0);
+    this->mPawnId = 0;
     this->mUseSupportPointVec.::MtArray::mAutoDelete = true;
 }
 
@@ -9491,7 +9506,7 @@ inline cMenuSimplePartyReq::cMenuSimplePartyReq() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cMenuStartGameSession::cMenuStartGameSession() {
-    this->mStartType = static_cast<u32>(0);
+    this->mStartType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

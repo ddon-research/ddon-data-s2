@@ -1276,6 +1276,13 @@ inline bool cQuestPersonalData::hasOrdered() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::callbackCancel at 0x552fc1-0x552fcf; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cQuestPersonalData::cancel() {
+    this->mIsCancel = true;
+    this->mIsOrder = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cQuestPersonalData::isCancel() const {
     return this->mIsCancel;
 }
@@ -1286,25 +1293,49 @@ inline bool cQuestPersonalData::isClear() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::callbackClear at 0x5531f9-0x553200; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cQuestPersonalData::clear() {
+    this->mIsClear = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::getLastDecideDeliverBlockNo at 0x5509bd-0x5509c3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cQuestPersonalData::getLastDecideDeliverBlockNo() const {
+    return this->mLastDecideDeliverBlockNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::getCurrentDeliverBlockNo at 0x550a2d-0x550a33; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cQuestPersonalData::getCurrentDeliverBlockNo() const {
+    return this->mCurrentDeliverBlockNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cQuestPersonalData::cQuestPurpose::cQuestPurpose() {
-    this->mPurposeNo = static_cast<u32>(0);
+    this->mPurposeNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestPersonalData::cQuestFlag::cQuestFlag() {
-    this->mFlagNo = static_cast<u32>(0);
+    this->mFlagNo = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::addProcessState at 0x5501d7-0x5501df; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cQuestTask::getWaitOrderProcessNo() const {
+    return this->mWaitOrderProcessNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cQuestTask::cLayoutFlagInfo::cLayoutFlagInfo() {
-    this->mFlagNo = static_cast<u32>(0);
+    this->mFlagNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestTask::cLayoutFlagInfo::cSetInfo::cSetInfo() {
-    this->mGroupId = static_cast<u32>(0);
-    this->mStageNo = static_cast<u32>(0);
+    this->mGroupId = 0;
+    this->mStageNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1319,16 +1350,28 @@ inline u32 cQuestTask::cEnemyGroupInfo::getEnemyLevel() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestTask::cEnemyGroupInfo::cEnemyGroupInfo() {
-    this->mEnemyGroupId = static_cast<u32>(0);
-    this->mEnemyLevel = static_cast<u32>(0);
+    this->mEnemyGroupId = 0;
+    this->mEnemyLevel = 0;
     this->mIsPartyRecommanded = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::move at 0x551ac7-0x551aca; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cQuestTask::cLeaderQuestProgress::getProcessNo() const {
+    return this->mProcessNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::move at 0x551aca-0x551ace; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cQuestTask::cLeaderQuestProgress::getBlockNo() const {
+    return this->mBlockNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cQuestTask::cLeaderQuestProgress::cLeaderQuestProgress() {
-    this->mCharacterId = static_cast<u32>(0);
-    this->mProcessNo = static_cast<u32>(0);
-    this->mBlockNo = static_cast<u32>(0);
+    this->mCharacterId = 0;
+    this->mProcessNo = 0;
+    this->mBlockNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1343,8 +1386,14 @@ inline u32 cQuestTask::cDeliveryItemInfo::getItemNum() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestTask::cDeliveryItemInfo::cDeliveryItemInfo() {
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemId = 0;
+    this->mItemNum = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestTask::overwriteEnemyDieNumForLight at 0x54ffec-0x54fff2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cQuestTask::cQuestProcess::setDieEmNum(u32 dieEmNum) {
+    this->mDieEmNum = dieEmNum;
 }
 
 // Inline, no code of its own: checked where it is inlined.

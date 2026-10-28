@@ -50,7 +50,7 @@ const MtDTI& cMenuApplyClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuApplyClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuApplyClan::DTI)->memAlloc(sz, align, ::cMenuApplyClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuApplyClan::DTI)->memAlloc(sz, align, cMenuApplyClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,6 +111,8 @@ __attribute__((weak)) void cMenuApplyClan::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuApplyClan::MyDTI cMenuApplyClan::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147c65-0x00147c9e (called at cMenuBaseClan.cpp:4323)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147c65-0x00147c9e (called at cMenuBaseClan.h:1261)
@@ -119,7 +121,7 @@ __attribute__((weak)) void cMenuApplyClan::exitMenu() {
 // Address: 0x00141a40 - 0x00141a99 (89 bytes)
 MtObject* cMenuApplyClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuApplyClan;
+    return new (16u) cMenuApplyClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,6 +207,8 @@ __attribute__((weak)) void cMenuApproveClan::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuApproveClan::MyDTI cMenuApproveClan::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147d10-0x00147d49 (called at cMenuBaseClan.cpp:4635)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147d10-0x00147d49 (called at cMenuBaseClan.h:1414)
@@ -239,7 +243,7 @@ const MtDTI& cMenuApproveInvitedClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuApproveInvitedClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuApproveInvitedClan::DTI)->memAlloc(sz, align, ::cMenuApproveInvitedClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuApproveInvitedClan::DTI)->memAlloc(sz, align, cMenuApproveInvitedClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -299,6 +303,8 @@ __attribute__((weak)) void cMenuApproveInvitedClan::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuApproveInvitedClan::MyDTI cMenuApproveInvitedClan::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148112-0x0014814b (called at cMenuBaseClan.cpp:7385)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148112-0x0014814b (called at cMenuBaseClan.h:2461)
@@ -307,7 +313,7 @@ __attribute__((weak)) void cMenuApproveInvitedClan::exitMenu() {
 // Address: 0x001461b0 - 0x00146209 (89 bytes)
 MtObject* cMenuApproveInvitedClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuApproveInvitedClan;
+    return new (16u) cMenuApproveInvitedClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -333,7 +339,7 @@ const MtDTI& cMenuCancelApplyClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuCancelApplyClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCancelApplyClan::DTI)->memAlloc(sz, align, ::cMenuCancelApplyClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCancelApplyClan::DTI)->memAlloc(sz, align, cMenuCancelApplyClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -375,10 +381,10 @@ cMenuCancelApplyClan::~cMenuCancelApplyClan() {
 // Address: 0x00141f80 - 0x00141fb1 (49 bytes)
 void cMenuCancelApplyClan::initCancelApplyClan(u32 reqId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mReqId = reqId;
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(3));
+    initMenu();
+    mMenuRno[0] = 0;
+    mReqId = reqId;
+    setupDialogFlow(3u);
 }
 
 // Address: 0x00141fc0 - 0x00142148 (392 bytes)
@@ -391,8 +397,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCancelApplyClan::moveCancelApplyClan(
 // Address: 0x00142150 - 0x00142155 (5 bytes)
 void cMenuCancelApplyClan::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCancelApplyClan::MyDTI cMenuCancelApplyClan::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147c9e-0x00147cd7 (called at cMenuBaseClan.cpp:4428)
@@ -402,7 +410,7 @@ void cMenuCancelApplyClan::exitMenu() {
 // Address: 0x00141eb0 - 0x00141f09 (89 bytes)
 MtObject* cMenuCancelApplyClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuCancelApplyClan;
+    return new (16u) cMenuCancelApplyClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -428,7 +436,7 @@ const MtDTI& cMenuCancelClanScoutEntry::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuCancelClanScoutEntry::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCancelClanScoutEntry::DTI)->memAlloc(sz, align, ::cMenuCancelClanScoutEntry::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCancelClanScoutEntry::DTI)->memAlloc(sz, align, cMenuCancelClanScoutEntry::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -443,7 +451,7 @@ inline void* cMenuCancelClanScoutEntry::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCancelClanScoutEntry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCancelClanScoutEntry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCancelClanScoutEntry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -471,101 +479,101 @@ cMenuCancelClanScoutEntry::~cMenuCancelClanScoutEntry() {
 // Address: 0x00145160 - 0x0014517c (28 bytes)
 void cMenuCancelClanScoutEntry::initCancelClanScoutEntry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x00145180 - 0x00145384 (516 bytes)
 nMenu::MENU_RET cMenuCancelClanScoutEntry::moveCancelClanScoutEntry() {
     // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    switch (this->::cMenuBase::mMenuRno[0]) {
-        case static_cast<int>(0):
+    moveMenu();
+    switch (mMenuRno[0]) {
+        case 0:
         {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
+            mMenuRno[0] = 1;
             // inferred: a temporary for the result of the call at 0x1451d4, used once; no DWARF local holds it
-            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(267));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 267u);
             // inferred: a temporary for the result of the call at 0x1451ec, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
-            this->::cMenuBase::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(0), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
-            return static_cast<nMenu::MENU_RET>(0);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+            reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 0, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+            return nMenu::MENU_RET_CONTINUE;
         }
-        case static_cast<int>(1):
+        case 1:
         {
-            if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->::cMenuBase::mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-                    s32 choice = this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1));
-                    if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                        this->::cMenuBase::mpGUISystemMsg->kill();
-                        this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                        if (choice == static_cast<s32>(0)) {
-                            this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqClanScoutEntryCancel();
-                            return static_cast<nMenu::MENU_RET>(0);
+            if (mpGUISystemMsg != nullptr) {
+                if (mpGUISystemMsg->mResult == uGUIBase::RESULT_EXIT) {
+                    s32 choice = mpGUISystemMsg->getChoicePos(-1);
+                    if (mpGUISystemMsg != nullptr) {
+                        mpGUISystemMsg->kill();
+                        mpGUISystemMsg = nullptr;
+                        if (choice == 0) {
+                            mMenuRno[0] = 2;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqClanScoutEntryCancel();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(2);
+                            return nMenu::MENU_RET_CANCEL;
                         }
                     } else {
-                        if (choice == static_cast<s32>(0)) {
-                            this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqClanScoutEntryCancel();
-                            return static_cast<nMenu::MENU_RET>(0);
+                        if (choice == 0) {
+                            mMenuRno[0] = 2;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqClanScoutEntryCancel();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(2);
+                            return nMenu::MENU_RET_CANCEL;
                         }
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(2);
+                return nMenu::MENU_RET_CANCEL;
             }
             break;
         }
-        case static_cast<int>(2):
+        case 2:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[297] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(3);
-                return static_cast<nMenu::MENU_RET>(0);
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[297] == sNetworkExt::NET_STAT_ERROR) {
+                mMenuRno[0] = 3;
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[297] == static_cast<sNetworkExt::NET_STAT>(2)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
-                    this->::cMenuBase::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(268)), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
-                    return static_cast<nMenu::MENU_RET>(0);
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[297] == sNetworkExt::NET_STAT_SUCCESS) {
+                    mMenuRno[0] = 4;
+                    reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 268u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+                    return nMenu::MENU_RET_CONTINUE;
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             }
             break;
         }
-        case static_cast<int>(3):
+        case 3:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() == false) {
-                return static_cast<nMenu::MENU_RET>(2);
+            if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+                return nMenu::MENU_RET_CANCEL;
             } else {
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             }
             break;
         }
-        case static_cast<int>(4):
+        case 4:
         {
-            if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->::cMenuBase::mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-                    this->::cMenuBase::mpGUISystemMsg->kill();
-                    this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                    return static_cast<nMenu::MENU_RET>(3);
+            if (mpGUISystemMsg != nullptr) {
+                if (mpGUISystemMsg->mResult == uGUIBase::RESULT_EXIT) {
+                    mpGUISystemMsg->kill();
+                    mpGUISystemMsg = nullptr;
+                    return nMenu::MENU_RET_EXIT;
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
             break;
         }
         default:
         {
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     }
 }
@@ -573,8 +581,10 @@ nMenu::MENU_RET cMenuCancelClanScoutEntry::moveCancelClanScoutEntry() {
 // Address: 0x00145390 - 0x00145395 (5 bytes)
 void cMenuCancelClanScoutEntry::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCancelClanScoutEntry::MyDTI cMenuCancelClanScoutEntry::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147fbc-0x00147ff5 (called at cMenuBaseClan.cpp:6755)
@@ -584,7 +594,7 @@ void cMenuCancelClanScoutEntry::exitMenu() {
 // Address: 0x001450a0 - 0x001450ee (78 bytes)
 MtObject* cMenuCancelClanScoutEntry::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuCancelClanScoutEntry;
+    return new (16u) cMenuCancelClanScoutEntry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -610,7 +620,7 @@ const MtDTI& cMenuCancelInviteClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuCancelInviteClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCancelInviteClan::DTI)->memAlloc(sz, align, ::cMenuCancelInviteClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCancelInviteClan::DTI)->memAlloc(sz, align, cMenuCancelInviteClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -625,7 +635,7 @@ inline void* cMenuCancelInviteClan::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCancelInviteClan::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCancelInviteClan::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCancelInviteClan::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -653,10 +663,10 @@ cMenuCancelInviteClan::~cMenuCancelInviteClan() {
 // Address: 0x00145f00 - 0x00145f31 (49 bytes)
 void cMenuCancelInviteClan::initCancelInviteClan(u32 inviteId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mInviteId = inviteId;
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(7));
+    initMenu();
+    mMenuRno[0] = 0;
+    mInviteId = inviteId;
+    setupDialogFlow(7u);
 }
 
 // Address: 0x00145f40 - 0x001460d4 (404 bytes)
@@ -669,8 +679,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCancelInviteClan::moveCancelInviteCla
 // Address: 0x001460e0 - 0x001460e5 (5 bytes)
 void cMenuCancelInviteClan::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCancelInviteClan::MyDTI cMenuCancelInviteClan::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001480a0-0x001480d9 (called at cMenuBaseClan.cpp:7174)
@@ -680,7 +692,7 @@ void cMenuCancelInviteClan::exitMenu() {
 // Address: 0x00145e40 - 0x00145e8e (78 bytes)
 MtObject* cMenuCancelInviteClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuCancelInviteClan;
+    return new (16u) cMenuCancelInviteClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -706,7 +718,7 @@ const MtDTI& cMenuClanApplyList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanApplyList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanApplyList::DTI)->memAlloc(sz, align, ::cMenuClanApplyList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanApplyList::DTI)->memAlloc(sz, align, cMenuClanApplyList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -721,7 +733,7 @@ inline void* cMenuClanApplyList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanApplyList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanApplyList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanApplyList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -759,6 +771,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanApplyList::moveClanApplyList() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanApplyList::MyDTI cMenuClanApplyList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147c2c-0x00147c65 (called at cMenuBaseClan.cpp:4199)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147c2c-0x00147c65 (called at cMenuBaseClan.h:1207)
@@ -767,7 +781,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanApplyList::moveClanApplyList() {
 // Address: 0x00141980 - 0x001419ce (78 bytes)
 MtObject* cMenuClanApplyList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanApplyList;
+    return new (16u) cMenuClanApplyList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -793,7 +807,7 @@ const MtDTI& cMenuClanApplyManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanApplyManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanApplyManager::DTI)->memAlloc(sz, align, ::cMenuClanApplyManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanApplyManager::DTI)->memAlloc(sz, align, cMenuClanApplyManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -808,7 +822,7 @@ inline void* cMenuClanApplyManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanApplyManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanApplyManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanApplyManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -864,11 +878,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanApplyManager::moveClanApplyManage
 // Address: 0x0013cfa0 - 0x0013cfa5 (5 bytes)
 void cMenuClanApplyManager::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // cMenuClanApplyManager::MODE cMenuClanApplyManager::getMode();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanApplyManager::MyDTI cMenuClanApplyManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001478ce-0x0014790e (called at cMenuBaseClan.cpp:505)
@@ -878,7 +894,7 @@ void cMenuClanApplyManager::exitMenu() {
 // Address: 0x0013bd00 - 0x0013bd4e (78 bytes)
 MtObject* cMenuClanApplyManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanApplyManager;
+    return new (16u) cMenuClanApplyManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -904,7 +920,7 @@ const MtDTI& cMenuClanApproveDirectInvite::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanApproveDirectInvite::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanApproveDirectInvite::DTI)->memAlloc(sz, align, ::cMenuClanApproveDirectInvite::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanApproveDirectInvite::DTI)->memAlloc(sz, align, cMenuClanApproveDirectInvite::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -964,6 +980,8 @@ __attribute__((weak)) void cMenuClanApproveDirectInvite::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanApproveDirectInvite::MyDTI cMenuClanApproveDirectInvite::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001481f6-0x0014822f (called at cMenuBaseClan.cpp:7845)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001481f6-0x0014822f (called at cMenuBaseClan.h:2683)
@@ -972,7 +990,7 @@ __attribute__((weak)) void cMenuClanApproveDirectInvite::exitMenu() {
 // Address: 0x00146da0 - 0x00146df9 (89 bytes)
 MtObject* cMenuClanApproveDirectInvite::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanApproveDirectInvite;
+    return new (16u) cMenuClanApproveDirectInvite;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1056,8 +1074,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanAuthority::moveClanAuthority() {
 // Address: 0x001477c0 - 0x001477c5 (5 bytes)
 void cMenuClanAuthority::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanAuthority::MyDTI cMenuClanAuthority::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x0014822f-0x00148268 (called at cMenuBaseClan.cpp:7969)
@@ -1151,6 +1171,8 @@ __attribute__((weak)) void cMenuClanChangeMaster::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanChangeMaster::MyDTI cMenuClanChangeMaster::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147ed8-0x00147f11 (called at cMenuBaseClan.cpp:5667)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147ed8-0x00147f11 (called at cMenuBaseClan.h:1812)
@@ -1243,6 +1265,8 @@ __attribute__((weak)) void cMenuClanDirectInvite::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanDirectInvite::MyDTI cMenuClanDirectInvite::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001481bd-0x001481f6 (called at cMenuBaseClan.cpp:7747)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001481bd-0x001481f6 (called at cMenuBaseClan.h:2634)
@@ -1277,7 +1301,7 @@ const MtDTI& cMenuClanDirectInvitedList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanDirectInvitedList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanDirectInvitedList::DTI)->memAlloc(sz, align, ::cMenuClanDirectInvitedList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanDirectInvitedList::DTI)->memAlloc(sz, align, cMenuClanDirectInvitedList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1292,7 +1316,7 @@ inline void* cMenuClanDirectInvitedList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanDirectInvitedList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanDirectInvitedList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanDirectInvitedList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1330,6 +1354,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanDirectInvitedList::moveClanDirect
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanDirectInvitedList::MyDTI cMenuClanDirectInvitedList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148184-0x001481bd (called at cMenuBaseClan.cpp:7644)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148184-0x001481bd (called at cMenuBaseClan.h:2576)
@@ -1338,7 +1364,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanDirectInvitedList::moveClanDirect
 // Address: 0x001466f0 - 0x0014673e (78 bytes)
 MtObject* cMenuClanDirectInvitedList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanDirectInvitedList;
+    return new (16u) cMenuClanDirectInvitedList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1422,6 +1448,8 @@ __attribute__((weak)) void cMenuClanExpelMember::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanExpelMember::MyDTI cMenuClanExpelMember::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e9f-0x00147ed8 (called at cMenuBaseClan.cpp:5566)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e9f-0x00147ed8 (called at cMenuBaseClan.h:1765)
@@ -1456,7 +1484,7 @@ const MtDTI& cMenuClanHistory::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanHistory::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanHistory::DTI)->memAlloc(sz, align, ::cMenuClanHistory::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanHistory::DTI)->memAlloc(sz, align, cMenuClanHistory::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1471,7 +1499,7 @@ inline void* cMenuClanHistory::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanHistory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanHistory::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanHistory::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1499,8 +1527,8 @@ cMenuClanHistory::~cMenuClanHistory() {
 // Address: 0x00142f10 - 0x00142f3d (45 bytes)
 void cMenuClanHistory::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearClanGetHistoryPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanGetHistoryPacket();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -1517,6 +1545,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanHistory::moveClanHistory() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanHistory::MyDTI cMenuClanHistory::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e2d-0x00147e66 (called at cMenuBaseClan.cpp:5329)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e2d-0x00147e66 (called at cMenuBaseClan.h:1687)
@@ -1525,7 +1555,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanHistory::moveClanHistory() {
 // Address: 0x00142e50 - 0x00142e9e (78 bytes)
 MtObject* cMenuClanHistory::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanHistory;
+    return new (16u) cMenuClanHistory;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1551,7 +1581,7 @@ const MtDTI& cMenuClanInfoDisp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanInfoDisp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanInfoDisp::DTI)->memAlloc(sz, align, ::cMenuClanInfoDisp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanInfoDisp::DTI)->memAlloc(sz, align, cMenuClanInfoDisp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1566,7 +1596,7 @@ inline void* cMenuClanInfoDisp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanInfoDisp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanInfoDisp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanInfoDisp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1610,6 +1640,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInfoDisp::moveClanInfoDisp() {
 // No out-of-line body: no code in the ELF
 // s32 cMenuClanInfoDisp::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanInfoDisp::MyDTI cMenuClanInfoDisp::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147bba-0x00147bf3 (called at cMenuBaseClan.cpp:3817)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147bba-0x00147bf3 (called at cMenuBaseClan.h:1077)
@@ -1618,7 +1650,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInfoDisp::moveClanInfoDisp() {
 // Address: 0x001412c0 - 0x0014130e (78 bytes)
 MtObject* cMenuClanInfoDisp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanInfoDisp;
+    return new (16u) cMenuClanInfoDisp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1644,7 +1676,7 @@ const MtDTI& cMenuClanInfoManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanInfoManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanInfoManager::DTI)->memAlloc(sz, align, ::cMenuClanInfoManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanInfoManager::DTI)->memAlloc(sz, align, cMenuClanInfoManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1659,7 +1691,7 @@ inline void* cMenuClanInfoManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanInfoManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanInfoManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanInfoManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1706,11 +1738,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInfoManager::moveClanInfoManager(
 // Address: 0x0013ddf0 - 0x0013ddf5 (5 bytes)
 void cMenuClanInfoManager::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // cMenuClanInfoManager::MODE cMenuClanInfoManager::getMode();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanInfoManager::MyDTI cMenuClanInfoManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x0014790e-0x00147947 (called at cMenuBaseClan.cpp:910)
@@ -1720,7 +1754,7 @@ void cMenuClanInfoManager::exitMenu() {
 // Address: 0x0013cfb0 - 0x0013cffe (78 bytes)
 MtObject* cMenuClanInfoManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanInfoManager;
+    return new (16u) cMenuClanInfoManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1746,7 +1780,7 @@ const MtDTI& cMenuClanInviteList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanInviteList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanInviteList::DTI)->memAlloc(sz, align, ::cMenuClanInviteList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanInviteList::DTI)->memAlloc(sz, align, cMenuClanInviteList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1761,7 +1795,7 @@ inline void* cMenuClanInviteList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanInviteList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanInviteList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanInviteList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1802,9 +1836,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInviteList::moveClanInviteList() 
 // Address: 0x001466c0 - 0x001466ed (45 bytes)
 void cMenuClanInviteList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearClanInviteListPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanInviteListPacket();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanInviteList::MyDTI cMenuClanInviteList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x0014814b-0x00148184 (called at cMenuBaseClan.cpp:7508)
@@ -1814,7 +1850,7 @@ void cMenuClanInviteList::exitMenu() {
 // Address: 0x00146600 - 0x0014664e (78 bytes)
 MtObject* cMenuClanInviteList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanInviteList;
+    return new (16u) cMenuClanInviteList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1840,7 +1876,7 @@ const MtDTI& cMenuClanInvitedList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanInvitedList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanInvitedList::DTI)->memAlloc(sz, align, ::cMenuClanInvitedList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanInvitedList::DTI)->memAlloc(sz, align, cMenuClanInvitedList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1855,7 +1891,7 @@ inline void* cMenuClanInvitedList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanInvitedList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanInvitedList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanInvitedList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1893,6 +1929,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInvitedList::moveClanInvitedList(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanInvitedList::MyDTI cMenuClanInvitedList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001480d9-0x00148112 (called at cMenuBaseClan.cpp:7258)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001480d9-0x00148112 (called at cMenuBaseClan.h:2403)
@@ -1901,7 +1939,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanInvitedList::moveClanInvitedList(
 // Address: 0x001460f0 - 0x0014613e (78 bytes)
 MtObject* cMenuClanInvitedList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanInvitedList;
+    return new (16u) cMenuClanInvitedList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1927,7 +1965,7 @@ const MtDTI& cMenuClanJoinReqList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanJoinReqList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanJoinReqList::DTI)->memAlloc(sz, align, ::cMenuClanJoinReqList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanJoinReqList::DTI)->memAlloc(sz, align, cMenuClanJoinReqList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1942,7 +1980,7 @@ inline void* cMenuClanJoinReqList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanJoinReqList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanJoinReqList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanJoinReqList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1980,6 +2018,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanJoinReqList::moveClanJoinReqList(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanJoinReqList::MyDTI cMenuClanJoinReqList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147cd7-0x00147d10 (called at cMenuBaseClan.cpp:4511)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147cd7-0x00147d10 (called at cMenuBaseClan.h:1356)
@@ -1988,7 +2028,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanJoinReqList::moveClanJoinReqList(
 // Address: 0x00142160 - 0x001421ae (78 bytes)
 MtObject* cMenuClanJoinReqList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanJoinReqList;
+    return new (16u) cMenuClanJoinReqList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2014,7 +2054,7 @@ const MtDTI& cMenuClanList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanList::DTI)->memAlloc(sz, align, ::cMenuClanList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanList::DTI)->memAlloc(sz, align, cMenuClanList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2029,7 +2069,7 @@ inline void* cMenuClanList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2074,12 +2114,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanList::moveClanList() {
 // Address: 0x00141950 - 0x0014197d (45 bytes)
 void cMenuClanList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearClanSearchListPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanSearchListPacket();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // const cCharacterData::stSearchFilterSetting& cMenuClanList::getSearchSetting();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanList::MyDTI cMenuClanList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147bf3-0x00147c2c (called at cMenuBaseClan.cpp:3934)
@@ -2089,7 +2131,7 @@ void cMenuClanList::exitMenu() {
 // Address: 0x00141430 - 0x0014147e (78 bytes)
 MtObject* cMenuClanList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanList;
+    return new (16u) cMenuClanList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2115,7 +2157,7 @@ const MtDTI& cMenuClanMemberList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanMemberList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanMemberList::DTI)->memAlloc(sz, align, ::cMenuClanMemberList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanMemberList::DTI)->memAlloc(sz, align, cMenuClanMemberList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2130,7 +2172,7 @@ inline void* cMenuClanMemberList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanMemberList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanMemberList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanMemberList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2158,8 +2200,8 @@ cMenuClanMemberList::~cMenuClanMemberList() {
 // Address: 0x00142e20 - 0x00142e4d (45 bytes)
 void cMenuClanMemberList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearClanMemberListPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanMemberListPacket();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x0013d570 - 0x0013d781 (529 bytes)
@@ -2188,11 +2230,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanMemberList::moveClanMemberList() 
 // Address: 0x00142d30 - 0x00142d7f (79 bytes)
 bool cMenuClanMemberList::isMyClan() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mClanId != static_cast<u32>(0)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan() != false) {
+    if (mClanId != 0) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isBelongClan()) {
             // inferred: a temporary for the value the load at 0x142d5c read, used once; no DWARF local holds it
-            u32 t0 = this->mClanId;
-            if (t0 != static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getMyClanId()) {
+            u32 t0 = mClanId;
+            if (t0 != static_cast<sNetworkExt*>(sNetwork::getInstance())->getMyClanId()) {
                 return false;
             } else {
                 return true;
@@ -2223,6 +2265,8 @@ __attribute__((weak)) void cMenuClanMemberList::checkMenuPartsParam(cMenuSupport
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // u32 cMenuClanMemberList::getListLength();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanMemberList::MyDTI cMenuClanMemberList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147df4-0x00147e2d (called at cMenuBaseClan.cpp:4984)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147df4-0x00147e2d (called at cMenuBaseClan.h:1604)
@@ -2231,7 +2275,7 @@ __attribute__((weak)) void cMenuClanMemberList::checkMenuPartsParam(cMenuSupport
 // Address: 0x00142c70 - 0x00142cbe (78 bytes)
 MtObject* cMenuClanMemberList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanMemberList;
+    return new (16u) cMenuClanMemberList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2257,7 +2301,7 @@ const MtDTI& cMenuClanScoutEntry::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuClanScoutEntry::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntry::DTI)->memAlloc(sz, align, ::cMenuClanScoutEntry::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanScoutEntry::DTI)->memAlloc(sz, align, cMenuClanScoutEntry::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2316,6 +2360,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntry::moveClanScoutEntry() 
 // No out-of-line body: no code in the ELF
 // u32 cMenuClanScoutEntry::getIndexBitParam(u32 bits);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanScoutEntry::MyDTI cMenuClanScoutEntry::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f4a-0x00147f83 (called at cMenuBaseClan.cpp:6226)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f4a-0x00147f83 (called at cMenuBaseClan.h:2025)
@@ -2324,7 +2370,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntry::moveClanScoutEntry() 
 // Address: 0x00144420 - 0x001444ab (139 bytes)
 MtObject* cMenuClanScoutEntry::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuClanScoutEntry;
+    return new (16u) cMenuClanScoutEntry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2350,7 +2396,7 @@ const MtDTI& cMenuClanScoutEntryList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuClanScoutEntryList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntryList::DTI)->memAlloc(sz, align, ::cMenuClanScoutEntryList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuClanScoutEntryList::DTI)->memAlloc(sz, align, cMenuClanScoutEntryList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2365,7 +2411,7 @@ inline void* cMenuClanScoutEntryList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuClanScoutEntryList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntryList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuClanScoutEntryList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2408,9 +2454,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntryList::moveClanScoutEntr
 // Address: 0x001456a0 - 0x001456cd (45 bytes)
 void cMenuClanScoutEntryList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearClanScoutEntryListPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearClanScoutEntryListPacket();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanScoutEntryList::MyDTI cMenuClanScoutEntryList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147ff5-0x0014802e (called at cMenuBaseClan.cpp:6880)
@@ -2420,7 +2468,7 @@ void cMenuClanScoutEntryList::exitMenu() {
 // Address: 0x001453a0 - 0x001453ee (78 bytes)
 MtObject* cMenuClanScoutEntryList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuClanScoutEntryList;
+    return new (16u) cMenuClanScoutEntryList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2504,6 +2552,8 @@ __attribute__((weak)) void cMenuClanSetMemberRank::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuClanSetMemberRank::MyDTI cMenuClanSetMemberRank::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f11-0x00147f4a (called at cMenuBaseClan.cpp:5766)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f11-0x00147f4a (called at cMenuBaseClan.h:1859)
@@ -2551,7 +2601,7 @@ const MtDTI& cMenuCreateClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCreateClan::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCreateClan::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCreateClan::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2580,9 +2630,9 @@ cMenuCreateClan::~cMenuCreateClan() {
 // Address: 0x0013e090 - 0x0013e0ba (42 bytes)
 void cMenuCreateClan::initCreateClan() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    ::nNet::resetClanParam(this->mClanParam);
+    initMenu();
+    mMenuRno[0] = 0;
+    nNet::resetClanParam(mClanParam);
 }
 
 // Address: 0x0013e0c0 - 0x0013e214 (340 bytes)
@@ -2595,12 +2645,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCreateClan::moveCreateClan() {
 // Address: 0x0013f920 - 0x0013f943 (35 bytes)
 void cMenuCreateClan::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::resetClanParam(this->mClanParam);
-    this->::cMenuBase::exitMenu();
+    nNet::resetClanParam(mClanParam);
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuCreateClan::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCreateClan::MyDTI cMenuCreateClan::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147947-0x00147980 (called at cMenuBaseClan.cpp:1176)
@@ -2649,7 +2701,7 @@ const MtDTI& cMenuEditClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClan::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClan::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClan::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2697,8 +2749,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClan::moveEditClan() {
 // Address: 0x00141240 - 0x00141263 (35 bytes)
 void cMenuEditClan::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::resetClanParam(this->mClanParamBackup);
-    this->::cMenuBase::exitMenu();
+    nNet::resetClanParam(mClanParamBackup);
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -2707,16 +2759,16 @@ void cMenuEditClan::exitMenu() {
 // Address: 0x00141280 - 0x001412b7 (55 bytes)
 void cMenuEditClan::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(10)) {
+    if (menuId != 10) {
         return;
     }
-    if (this->mEditType != static_cast<s32>(0)) {
+    if (mEditType != 0) {
         return;
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan() == false) {
+    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->isBelongClan()) {
         return;
     }
-    pParts->attr = static_cast<u32>(1);
+    pParts->attr = 1;
 }
 
 // Address: 0x001410a0 - 0x00141240 (416 bytes)
@@ -2734,6 +2786,8 @@ __attribute__((weak)) bool cMenuEditClan::checkCancel() {
 
 // No out-of-line body: no code in the ELF
 // u32 cMenuEditClan::getIndexBitParam(u32 bits);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClan::MyDTI cMenuEditClan::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147b81-0x00147bba (called at cMenuBaseClan.cpp:3026)
@@ -2769,7 +2823,7 @@ const MtDTI& cMenuEditClanComment::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanComment::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanComment::DTI)->memAlloc(sz, align, ::cMenuEditClanComment::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanComment::DTI)->memAlloc(sz, align, cMenuEditClanComment::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2784,7 +2838,7 @@ inline void* cMenuEditClanComment::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanComment::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanComment::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanComment::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2820,6 +2874,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanComment::moveEditClanComment(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanComment::MyDTI cMenuEditClanComment::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147b0f-0x00147b48 (called at cMenuBaseClan.cpp:2684)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147b0f-0x00147b48 (called at cMenuBaseClan.h:847)
@@ -2828,7 +2884,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanComment::moveEditClanComment(
 // Address: 0x00140810 - 0x0014085e (78 bytes)
 MtObject* cMenuEditClanComment::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanComment;
+    return new (16u) cMenuEditClanComment;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2854,7 +2910,7 @@ const MtDTI& cMenuEditClanDay::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanDay::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanDay::DTI)->memAlloc(sz, align, ::cMenuEditClanDay::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanDay::DTI)->memAlloc(sz, align, cMenuEditClanDay::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2869,7 +2925,7 @@ inline void* cMenuEditClanDay::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanDay::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanDay::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanDay::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2897,17 +2953,17 @@ cMenuEditClanDay::~cMenuEditClanDay() {
 // Address: 0x00140180 - 0x00140215 (149 bytes)
 void cMenuEditClanDay::initEditClanDay(u32* pDay, uGUIBase* pRefGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(5), static_cast<u32>(4), static_cast<u32>(6));
-    if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(4));
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(5));
-        this->::cMenuBase::createList(static_cast<u32>(5));
+    initMenu();
+    mMenuRno[0] = 0;
+    cMenuSupportList* pList = setupSupportList(5u, 4u, 6u);
+    if (pList != nullptr) {
+        pList->cMenuSupportList::addBelowMenu(4);
+        pList->cMenuSupportList::addBelowMenu(5);
+        createList(5u);
     }
-    this->mDay = *pDay;
-    this->mpDay = pDay;
-    this->setRefGUI(pRefGUI, true);
+    mDay = *pDay;
+    mpDay = pDay;
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x00140220 - 0x00140316 (246 bytes)
@@ -2922,6 +2978,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanDay::moveEditClanDay() {
 //   in cMenuEditClanDay::moveEditClanDay at 0x001402c9-0x001402e5 (called at cMenuBaseClan.cpp:2242)
 // u32 cMenuEditClanDay::getClanDayIndex(u32 cursor);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanDay::MyDTI cMenuEditClanDay::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a64-0x00147a9d (called at cMenuBaseClan.cpp:2173)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a64-0x00147a9d (called at cMenuBaseClan.h:658)
@@ -2930,7 +2988,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanDay::moveEditClanDay() {
 // Address: 0x001400c0 - 0x0014010e (78 bytes)
 MtObject* cMenuEditClanDay::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanDay;
+    return new (16u) cMenuEditClanDay;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2956,7 +3014,7 @@ const MtDTI& cMenuEditClanEmblem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanEmblem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanEmblem::DTI)->memAlloc(sz, align, ::cMenuEditClanEmblem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanEmblem::DTI)->memAlloc(sz, align, cMenuEditClanEmblem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2971,7 +3029,7 @@ inline void* cMenuEditClanEmblem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanEmblem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanEmblem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanEmblem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3010,15 +3068,17 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanEmblem::moveEditClanEmblem() 
 // Address: 0x0013fe20 - 0x0013fe4b (43 bytes)
 void cMenuEditClanEmblem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuBase::mpRefGUI != static_cast<uGUIBase*>(nullptr)) {
-        this->::cMenuBase::mpRefGUI->setStopAllContol(false);
+    if (mpRefGUI != nullptr) {
+        mpRefGUI->setStopAllContol(false);
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (85 bytes)
 //   in cMenuEditClanEmblem::moveEditClanEmblem at 0x0013fca6-0x0013fcfb (called at cMenuBaseClan.cpp:1827)
 // bool cMenuEditClanEmblem::checkCancel();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanEmblem::MyDTI cMenuEditClanEmblem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001479f2-0x00147a2b (called at cMenuBaseClan.cpp:1762)
@@ -3028,7 +3088,7 @@ void cMenuEditClanEmblem::exitMenu() {
 // Address: 0x0013fb50 - 0x0013fb9e (78 bytes)
 MtObject* cMenuEditClanEmblem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanEmblem;
+    return new (16u) cMenuEditClanEmblem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3054,7 +3114,7 @@ const MtDTI& cMenuEditClanEntryComment::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanEntryComment::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanEntryComment::DTI)->memAlloc(sz, align, ::cMenuEditClanEntryComment::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanEntryComment::DTI)->memAlloc(sz, align, cMenuEditClanEntryComment::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3069,7 +3129,7 @@ inline void* cMenuEditClanEntryComment::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanEntryComment::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanEntryComment::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanEntryComment::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3105,6 +3165,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanEntryComment::moveEditClanEnt
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanEntryComment::MyDTI cMenuEditClanEntryComment::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f83-0x00147fbc (called at cMenuBaseClan.cpp:6580)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147f83-0x00147fbc (called at cMenuBaseClan.h:2100)
@@ -3113,7 +3175,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanEntryComment::moveEditClanEnt
 // Address: 0x00144fe0 - 0x0014502e (78 bytes)
 MtObject* cMenuEditClanEntryComment::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanEntryComment;
+    return new (16u) cMenuEditClanEntryComment;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3139,7 +3201,7 @@ const MtDTI& cMenuEditClanFeature::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanFeature::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanFeature::DTI)->memAlloc(sz, align, ::cMenuEditClanFeature::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanFeature::DTI)->memAlloc(sz, align, cMenuEditClanFeature::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3154,7 +3216,7 @@ inline void* cMenuEditClanFeature::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanFeature::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanFeature::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanFeature::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3182,17 +3244,17 @@ cMenuEditClanFeature::~cMenuEditClanFeature() {
 // Address: 0x00140660 - 0x001406f5 (149 bytes)
 void cMenuEditClanFeature::initEditClanFeature(u32* pFeature, uGUIBase* pRefGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(23), static_cast<u32>(8), static_cast<u32>(10));
-    if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(9));
-        this->::cMenuBase::createList(static_cast<u32>(23));
+    initMenu();
+    mMenuRno[0] = 0;
+    cMenuSupportList* pList = setupSupportList(23u, 8u, 10u);
+    if (pList != nullptr) {
+        pList->cMenuSupportList::addBelowMenu(8);
+        pList->cMenuSupportList::addBelowMenu(9);
+        createList(23u);
     }
-    this->mFeature = *pFeature;
-    this->mpFeature = pFeature;
-    this->setRefGUI(pRefGUI, true);
+    mFeature = *pFeature;
+    mpFeature = pFeature;
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x00140700 - 0x001407f6 (246 bytes)
@@ -3207,6 +3269,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanFeature::moveEditClanFeature(
 //   in cMenuEditClanFeature::moveEditClanFeature at 0x001407a9-0x001407c5 (called at cMenuBaseClan.cpp:2580)
 // u32 cMenuEditClanFeature::getClanFeatureIndex(u32 cursor);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanFeature::MyDTI cMenuEditClanFeature::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147ad6-0x00147b0f (called at cMenuBaseClan.cpp:2509)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147ad6-0x00147b0f (called at cMenuBaseClan.h:782)
@@ -3215,7 +3279,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanFeature::moveEditClanFeature(
 // Address: 0x001405a0 - 0x001405ee (78 bytes)
 MtObject* cMenuEditClanFeature::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanFeature;
+    return new (16u) cMenuEditClanFeature;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3241,7 +3305,7 @@ const MtDTI& cMenuEditClanHour::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanHour::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanHour::DTI)->memAlloc(sz, align, ::cMenuEditClanHour::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanHour::DTI)->memAlloc(sz, align, cMenuEditClanHour::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3256,7 +3320,7 @@ inline void* cMenuEditClanHour::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanHour::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanHour::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanHour::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3284,17 +3348,17 @@ cMenuEditClanHour::~cMenuEditClanHour() {
 // Address: 0x001403f0 - 0x00140485 (149 bytes)
 void cMenuEditClanHour::initEditClanHour(u32* pHour, uGUIBase* pRefGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(5), static_cast<u32>(4), static_cast<u32>(6));
-    if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(4));
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(5));
-        this->::cMenuBase::createList(static_cast<u32>(5));
+    initMenu();
+    mMenuRno[0] = 0;
+    cMenuSupportList* pList = setupSupportList(5u, 4u, 6u);
+    if (pList != nullptr) {
+        pList->cMenuSupportList::addBelowMenu(4);
+        pList->cMenuSupportList::addBelowMenu(5);
+        createList(5u);
     }
-    this->mHour = *pHour;
-    this->mpHour = pHour;
-    this->setRefGUI(pRefGUI, true);
+    mHour = *pHour;
+    mpHour = pHour;
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x00140490 - 0x00140586 (246 bytes)
@@ -3309,6 +3373,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanHour::moveEditClanHour() {
 //   in cMenuEditClanHour::moveEditClanHour at 0x00140539-0x00140555 (called at cMenuBaseClan.cpp:2405)
 // u32 cMenuEditClanHour::getClanHourIndex(u32 cursor);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanHour::MyDTI cMenuEditClanHour::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a9d-0x00147ad6 (called at cMenuBaseClan.cpp:2342)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a9d-0x00147ad6 (called at cMenuBaseClan.h:720)
@@ -3317,7 +3383,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanHour::moveEditClanHour() {
 // Address: 0x00140330 - 0x0014037e (78 bytes)
 MtObject* cMenuEditClanHour::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanHour;
+    return new (16u) cMenuEditClanHour;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3343,7 +3409,7 @@ const MtDTI& cMenuEditClanMessage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanMessage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanMessage::DTI)->memAlloc(sz, align, ::cMenuEditClanMessage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanMessage::DTI)->memAlloc(sz, align, cMenuEditClanMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3358,7 +3424,7 @@ inline void* cMenuEditClanMessage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanMessage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanMessage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanMessage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3391,80 +3457,82 @@ cMenuEditClanMessage::~cMenuEditClanMessage() {
 nMenu::MENU_RET cMenuEditClanMessage::moveEditClanMessage() {
     // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                this->::cMenuBase::moveSupportMenu(static_cast<s32>(-1));
-                if (this->isCancel(static_cast<u32>(5)) == false) {
-                    if (this->::cMenuBase::isDecideMenu(static_cast<u32>(4), static_cast<u32>(20)) != false) {
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] != 1) {
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                moveSupportMenu(-1);
+                if (!isCancel(5u)) {
+                    if (isDecideMenu(4u, 20u)) {
                         // inferred: a temporary for the result of the call at 0x140d1a, used 3 times; no DWARF local holds it
-                        s32 t0 = this->::cMenuBase::getMenuId(static_cast<s32>(-1));
-                        if (t0 != static_cast<s32>(2)) {
-                            if (t0 == static_cast<s32>(1)) {
-                                ::snprintf(this->mpClanMessage, static_cast<size_t>(217), "%s", &this->mClanMessage[0]);
-                                return static_cast<nMenu::MENU_RET>(3);
+                        s32 t0 = getMenuId(-1);
+                        if (t0 != 2) {
+                            if (t0 == 1) {
+                                snprintf(mpClanMessage, 217ul, "%s", &mClanMessage[0]);
+                                return nMenu::MENU_RET_EXIT;
                             } else {
-                                if (t0 == static_cast<s32>(0)) {
-                                    if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() == false) {
-                                        this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                                        ::sKeyboardInterface::getInstance()->::sKeyboardInterface::setKeyboardSetting(static_cast<sKeyboardInterface::KEYBOARD_TYPE>(2), "", &this->mClanMessage[0], static_cast<s32>(72));
-                                        ::sKeyboardInterface::getInstance()->::sKeyboardInterface::requestOpenPad(static_cast<u32>(0), static_cast<cInputTextKeyboardHook*>(nullptr));
+                                if (t0 == 0) {
+                                    if (!sKeyboardInterface::getInstance()->isBusy()) {
+                                        mMenuRno[0] = 2;
+                                        sKeyboardInterface::getInstance()->setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE_JAPANESE, "", &mClanMessage[0], 72);
+                                        sKeyboardInterface::getInstance()->requestOpenPad(0u, static_cast<cInputTextKeyboardHook*>(nullptr));
                                     }
                                 }
-                                return static_cast<nMenu::MENU_RET>(0);
+                                return nMenu::MENU_RET_CONTINUE;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(2);
+                            return nMenu::MENU_RET_CANCEL;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(2);
+                    return nMenu::MENU_RET_CANCEL;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             }
         } else {
-            this->::cMenuBase::moveSupportMenu(static_cast<s32>(-1));
-            if (this->isCancel(static_cast<u32>(5)) == false) {
-                if (this->::cMenuBase::isDecideMenu(static_cast<u32>(4), static_cast<u32>(20)) != false) {
+            moveSupportMenu(-1);
+            if (!isCancel(5u)) {
+                if (isDecideMenu(4u, 20u)) {
                     // inferred: a temporary for the result of the call at 0x140d1a, used 3 times; no DWARF local holds it
-                    s32 t0 = this->::cMenuBase::getMenuId(static_cast<s32>(-1));
-                    if (t0 != static_cast<s32>(2)) {
-                        if (t0 == static_cast<s32>(1)) {
-                            ::snprintf(this->mpClanMessage, static_cast<size_t>(217), "%s", &this->mClanMessage[0]);
-                            return static_cast<nMenu::MENU_RET>(3);
+                    s32 t0 = getMenuId(-1);
+                    if (t0 != 2) {
+                        if (t0 == 1) {
+                            snprintf(mpClanMessage, 217ul, "%s", &mClanMessage[0]);
+                            return nMenu::MENU_RET_EXIT;
                         } else {
-                            if (t0 == static_cast<s32>(0)) {
-                                if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() == false) {
-                                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                                    ::sKeyboardInterface::getInstance()->::sKeyboardInterface::setKeyboardSetting(static_cast<sKeyboardInterface::KEYBOARD_TYPE>(2), "", &this->mClanMessage[0], static_cast<s32>(72));
-                                    ::sKeyboardInterface::getInstance()->::sKeyboardInterface::requestOpenPad(static_cast<u32>(0), static_cast<cInputTextKeyboardHook*>(nullptr));
+                            if (t0 == 0) {
+                                if (!sKeyboardInterface::getInstance()->isBusy()) {
+                                    mMenuRno[0] = 2;
+                                    sKeyboardInterface::getInstance()->setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE_JAPANESE, "", &mClanMessage[0], 72);
+                                    sKeyboardInterface::getInstance()->requestOpenPad(0u, static_cast<cInputTextKeyboardHook*>(nullptr));
                                 }
                             }
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(2);
+                        return nMenu::MENU_RET_CANCEL;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(2);
+                return nMenu::MENU_RET_CANCEL;
             }
         }
     } else {
-        if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() == false) {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-            ::snprintf(&this->mClanMessage[0], static_cast<size_t>(217), "%s", &::sKeyboardInterface::getInstance()->mOutputText_utf8[0]);
+        if (!sKeyboardInterface::getInstance()->isBusy()) {
+            mMenuRno[0] = 1;
+            snprintf(&mClanMessage[0], 217ul, "%s", &sKeyboardInterface::getInstance()->mOutputText_utf8[0]);
         }
-        return static_cast<nMenu::MENU_RET>(0);
+        return nMenu::MENU_RET_CONTINUE;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanMessage::MyDTI cMenuEditClanMessage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147b48-0x00147b81 (called at cMenuBaseClan.cpp:2876)
@@ -3474,7 +3542,7 @@ nMenu::MENU_RET cMenuEditClanMessage::moveEditClanMessage() {
 // Address: 0x00140bd0 - 0x00140c1e (78 bytes)
 MtObject* cMenuEditClanMessage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanMessage;
+    return new (16u) cMenuEditClanMessage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3500,7 +3568,7 @@ const MtDTI& cMenuEditClanMotto::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditClanMotto::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanMotto::DTI)->memAlloc(sz, align, ::cMenuEditClanMotto::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditClanMotto::DTI)->memAlloc(sz, align, cMenuEditClanMotto::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3515,7 +3583,7 @@ inline void* cMenuEditClanMotto::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditClanMotto::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditClanMotto::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditClanMotto::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3543,17 +3611,17 @@ cMenuEditClanMotto::~cMenuEditClanMotto() {
 // Address: 0x0013ff10 - 0x0013ffa5 (149 bytes)
 void cMenuEditClanMotto::initEditClanMotto(u32* pMotto, uGUIBase* pRefGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(7), static_cast<u32>(8), static_cast<u32>(10));
-    if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(9));
-        this->::cMenuBase::createList(static_cast<u32>(7));
+    initMenu();
+    mMenuRno[0] = 0;
+    cMenuSupportList* pList = setupSupportList(7u, 8u, 10u);
+    if (pList != nullptr) {
+        pList->cMenuSupportList::addBelowMenu(8);
+        pList->cMenuSupportList::addBelowMenu(9);
+        createList(7u);
     }
-    this->mMotto = *pMotto;
-    this->mpMotto = pMotto;
-    this->setRefGUI(pRefGUI, true);
+    mMotto = *pMotto;
+    mpMotto = pMotto;
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x0013ffb0 - 0x001400a6 (246 bytes)
@@ -3568,6 +3636,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanMotto::moveEditClanMotto() {
 //   in cMenuEditClanMotto::moveEditClanMotto at 0x00140059-0x00140075 (called at cMenuBaseClan.cpp:2064)
 // u32 cMenuEditClanMotto::getClanMottoIndex(u32 cursor);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditClanMotto::MyDTI cMenuEditClanMotto::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a2b-0x00147a64 (called at cMenuBaseClan.cpp:1991)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147a2b-0x00147a64 (called at cMenuBaseClan.h:596)
@@ -3576,7 +3646,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditClanMotto::moveEditClanMotto() {
 // Address: 0x0013fe50 - 0x0013fe9e (78 bytes)
 MtObject* cMenuEditClanMotto::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditClanMotto;
+    return new (16u) cMenuEditClanMotto;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3602,7 +3672,7 @@ const MtDTI& cMenuGetClanBaseInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuGetClanBaseInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetClanBaseInfo::DTI)->memAlloc(sz, align, ::cMenuGetClanBaseInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetClanBaseInfo::DTI)->memAlloc(sz, align, cMenuGetClanBaseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3617,7 +3687,7 @@ inline void* cMenuGetClanBaseInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetClanBaseInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetClanBaseInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetClanBaseInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3645,40 +3715,42 @@ cMenuGetClanBaseInfo::~cMenuGetClanBaseInfo() {
 // Address: 0x00142bc0 - 0x00142bdc (28 bytes)
 void cMenuGetClanBaseInfo::initGetClanBaseInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x00142be0 - 0x00142c70 (144 bytes)
 nMenu::MENU_RET cMenuGetClanBaseInfo::moveGetClanBaseInfo() {
     // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[308] != static_cast<sNetworkExt::NET_STAT>(2)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[308] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[308] != sNetworkExt::NET_STAT_SUCCESS) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[308] == sNetworkExt::NET_STAT_ERROR) {
+                    mMenuRno[0] = 2;
                 }
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
         } else {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getClanBaseInfo();
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanBaseInfo();
             }
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetClanBaseInfo::MyDTI cMenuGetClanBaseInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147dbb-0x00147df4 (called at cMenuBaseClan.cpp:4916)
@@ -3688,7 +3760,7 @@ nMenu::MENU_RET cMenuGetClanBaseInfo::moveGetClanBaseInfo() {
 // Address: 0x00142b00 - 0x00142b4e (78 bytes)
 MtObject* cMenuGetClanBaseInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuGetClanBaseInfo;
+    return new (16u) cMenuGetClanBaseInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3714,7 +3786,7 @@ const MtDTI& cMenuGetClanDetail::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuGetClanDetail::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetClanDetail::DTI)->memAlloc(sz, align, ::cMenuGetClanDetail::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetClanDetail::DTI)->memAlloc(sz, align, cMenuGetClanDetail::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3729,7 +3801,7 @@ inline void* cMenuGetClanDetail::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetClanDetail::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetClanDetail::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetClanDetail::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3768,6 +3840,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetClanDetail::moveGetClanDetail() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetClanDetail::MyDTI cMenuGetClanDetail::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147d82-0x00147dbb (called at cMenuBaseClan.cpp:4825)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147d82-0x00147dbb (called at cMenuBaseClan.h:1512)
@@ -3776,7 +3850,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetClanDetail::moveGetClanDetail() {
 // Address: 0x00142910 - 0x0014295e (78 bytes)
 MtObject* cMenuGetClanDetail::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuGetClanDetail;
+    return new (16u) cMenuGetClanDetail;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3802,7 +3876,7 @@ const MtDTI& cMenuGetMyClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuGetMyClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetMyClan::DTI)->memAlloc(sz, align, ::cMenuGetMyClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetMyClan::DTI)->memAlloc(sz, align, cMenuGetMyClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3817,7 +3891,7 @@ inline void* cMenuGetMyClan::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetMyClan::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetMyClan::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetMyClan::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3845,40 +3919,42 @@ cMenuGetMyClan::~cMenuGetMyClan() {
 // Address: 0x00141380 - 0x0014139c (28 bytes)
 void cMenuGetMyClan::initGetMyClan() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x001413a0 - 0x00141430 (144 bytes)
 nMenu::MENU_RET cMenuGetMyClan::moveGetMyClan() {
     // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[288] != static_cast<sNetworkExt::NET_STAT>(2)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[288] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[288] != sNetworkExt::NET_STAT_SUCCESS) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[288] == sNetworkExt::NET_STAT_ERROR) {
+                    mMenuRno[0] = 2;
                 }
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
         } else {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getMyClan();
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getMyClan();
             }
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetMyClan::MyDTI cMenuGetMyClan::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147d49-0x00147d82 (called at cMenuBaseClan.cpp:4758)
@@ -3888,7 +3964,7 @@ nMenu::MENU_RET cMenuGetMyClan::moveGetMyClan() {
 // Address: 0x00142850 - 0x0014289e (78 bytes)
 MtObject* cMenuGetMyClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuGetMyClan;
+    return new (16u) cMenuGetMyClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3914,7 +3990,7 @@ const MtDTI& cMenuGetMyScoutEntry::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuGetMyScoutEntry::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetMyScoutEntry::DTI)->memAlloc(sz, align, ::cMenuGetMyScoutEntry::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetMyScoutEntry::DTI)->memAlloc(sz, align, cMenuGetMyScoutEntry::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3929,7 +4005,7 @@ inline void* cMenuGetMyScoutEntry::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetMyScoutEntry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetMyScoutEntry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetMyScoutEntry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3957,40 +4033,42 @@ cMenuGetMyScoutEntry::~cMenuGetMyScoutEntry() {
 // Address: 0x00145790 - 0x001457ac (28 bytes)
 void cMenuGetMyScoutEntry::initGetMyScoutEntry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x001457b0 - 0x00145840 (144 bytes)
 nMenu::MENU_RET cMenuGetMyScoutEntry::moveGetMyScoutEntry() {
     // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[299] != static_cast<sNetworkExt::NET_STAT>(2)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[299] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[299] != sNetworkExt::NET_STAT_SUCCESS) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[299] == sNetworkExt::NET_STAT_ERROR) {
+                    mMenuRno[0] = 2;
                 }
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
         } else {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getMyClanScoutEntry();
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getMyClanScoutEntry();
             }
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetMyScoutEntry::MyDTI cMenuGetMyScoutEntry::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x0014802e-0x00148067 (called at cMenuBaseClan.cpp:7007)
@@ -4000,7 +4078,7 @@ nMenu::MENU_RET cMenuGetMyScoutEntry::moveGetMyScoutEntry() {
 // Address: 0x001456d0 - 0x0014571e (78 bytes)
 MtObject* cMenuGetMyScoutEntry::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuGetMyScoutEntry;
+    return new (16u) cMenuGetMyScoutEntry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4084,6 +4162,8 @@ __attribute__((weak)) void cMenuInviteClan::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuInviteClan::MyDTI cMenuInviteClan::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148067-0x001480a0 (called at cMenuBaseClan.cpp:7072)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00148067-0x001480a0 (called at cMenuBaseClan.h:2308)
@@ -4118,7 +4198,7 @@ const MtDTI& cMenuQuitClan::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuQuitClan::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuQuitClan::DTI)->memAlloc(sz, align, ::cMenuQuitClan::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuQuitClan::DTI)->memAlloc(sz, align, cMenuQuitClan::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4133,7 +4213,7 @@ inline void* cMenuQuitClan::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuQuitClan::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuQuitClan::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuQuitClan::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4161,9 +4241,9 @@ cMenuQuitClan::~cMenuQuitClan() {
 // Address: 0x00143000 - 0x00143028 (40 bytes)
 void cMenuQuitClan::initQuitClan() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(7));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(7u);
 }
 
 // Address: 0x00143030 - 0x001431bc (396 bytes)
@@ -4173,6 +4253,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuQuitClan::moveQuitClan() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuQuitClan::MyDTI cMenuQuitClan::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e66-0x00147e9f (called at cMenuBaseClan.cpp:5489)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147e66-0x00147e9f (called at cMenuBaseClan.h:1722)
@@ -4181,7 +4263,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuQuitClan::moveQuitClan() {
 // Address: 0x00142f40 - 0x00142f8e (78 bytes)
 MtObject* cMenuQuitClan::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuQuitClan;
+    return new (16u) cMenuQuitClan;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4207,7 +4289,7 @@ const MtDTI& cMenuSetClanName::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuSetClanName::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSetClanName::DTI)->memAlloc(sz, align, ::cMenuSetClanName::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSetClanName::DTI)->memAlloc(sz, align, cMenuSetClanName::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4222,7 +4304,7 @@ inline void* cMenuSetClanName::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSetClanName::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSetClanName::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSetClanName::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4263,12 +4345,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSetClanName::moveSetClanName() {
 // Address: 0x0013fa10 - 0x0013fa44 (52 bytes)
 void cMenuSetClanName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(1)) {
+    if (menuId != 1) {
         return;
     }
-    if (::strlen(&this->mClanName[0]) <= static_cast<size_t>(1)) {
-        pParts->attr = static_cast<u32>(1);
-        pParts->param = static_cast<u32>(1);
+    if (strlen(&mClanName[0]) <= 1ul) {
+        pParts->attr = 1;
+        pParts->param = 1;
     }
 }
 
@@ -4278,6 +4360,8 @@ void cMenuSetClanName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_
 // No out-of-line body: no code in the ELF
 // s32 cMenuSetClanName::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSetClanName::MyDTI cMenuSetClanName::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147980-0x001479b9 (called at cMenuBaseClan.cpp:1300)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x00147980-0x001479b9 (called at cMenuBaseClan.h:371)
@@ -4286,7 +4370,7 @@ void cMenuSetClanName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_
 // Address: 0x0013f950 - 0x0013f99e (78 bytes)
 MtObject* cMenuSetClanName::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuSetClanName;
+    return new (16u) cMenuSetClanName;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4312,7 +4396,7 @@ const MtDTI& cMenuSetClanNickName::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuSetClanNickName::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSetClanNickName::DTI)->memAlloc(sz, align, ::cMenuSetClanNickName::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSetClanNickName::DTI)->memAlloc(sz, align, cMenuSetClanNickName::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4327,7 +4411,7 @@ inline void* cMenuSetClanNickName::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSetClanNickName::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSetClanNickName::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSetClanNickName::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4368,12 +4452,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSetClanNickName::moveSetClanNickName(
 // Address: 0x0013fb10 - 0x0013fb44 (52 bytes)
 void cMenuSetClanNickName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(1)) {
+    if (menuId != 1) {
         return;
     }
-    if (::strlen(&this->mClanNickName[0]) <= static_cast<size_t>(1)) {
-        pParts->attr = static_cast<u32>(1);
-        pParts->param = static_cast<u32>(1);
+    if (strlen(&mClanNickName[0]) <= 1ul) {
+        pParts->attr = 1;
+        pParts->param = 1;
     }
 }
 
@@ -4383,6 +4467,8 @@ void cMenuSetClanNickName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::M
 // No out-of-line body: no code in the ELF
 // void cMenuSetClanNickName::setCursor(s32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSetClanNickName::MyDTI cMenuSetClanNickName::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001479b9-0x001479f2 (called at cMenuBaseClan.cpp:1534)
 //   in _GLOBAL__sub_I_cMenuBaseClan.cpp at 0x001479b9-0x001479f2 (called at cMenuBaseClan.h:452)
@@ -4391,6 +4477,6 @@ void cMenuSetClanNickName::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::M
 // Address: 0x0013fa50 - 0x0013fa9e (78 bytes)
 MtObject* cMenuSetClanNickName::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuSetClanNickName;
+    return new (16u) cMenuSetClanNickName;
 }
 

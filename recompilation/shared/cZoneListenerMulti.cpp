@@ -56,7 +56,7 @@ const MtDTI& cZoneContactInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cZoneContactInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneContactInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneContactInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,6 +121,8 @@ __attribute__((weak)) void cZoneContactInfo::createProperty(MtPropertyList& s) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // bool cZoneContactInfo::isSameData(cZoneContactInfo* pData);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneContactInfo::MyDTI cZoneContactInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x00598013-0x00598053 (called at cZoneListenerMulti.cpp:50)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x00598013-0x00598053 (called at cZoneListenerMulti.h:31)
@@ -168,7 +170,7 @@ const MtDTI& cZoneContactInfoList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneContactInfoList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneContactInfoList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneContactInfoList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,62 +205,62 @@ __attribute__((weak)) void cZoneContactInfoList::createProperty(MtPropertyList& 
 // Address: 0x01a669e0 - 0x01a66acc (236 bytes)
 void cZoneContactInfoList::initList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mContactPairListStart.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mContactPairListStart.mLength != 0) {
         // inferred: the value the loop at 0x1a66a00 carries; no location-less local in scope fits
-        u32 v0_0 = this->mContactPairListStart.::MtArray::mLength;
+        u32 v0_0 = mContactPairListStart.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mContactPairListStart.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mContactPairListStart.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mContactPairListStart.::MtArray::mLength) {
-                    v0_0 = this->mContactPairListStart.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mContactPairListStart.mpArray[i0_3] != nullptr) {
+                delete mContactPairListStart.mpArray[i0_3];
+                if ((i0_3 + 1u) < mContactPairListStart.mLength) {
+                    v0_0 = mContactPairListStart.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mContactPairListStart.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mContactPairListStart.::MtArray::mpArray));
+    if (mContactPairListStart.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mContactPairListStart.mpArray));
     }
-    this->mContactPairListStart.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mContactPairListStart.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mContactPairListStart.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mContactPairListEnd.::MtArray::mLength != static_cast<u32>(0)) {
+    mContactPairListStart.mpArray = nullptr;
+    mContactPairListStart.mBufsiz = 0;
+    mContactPairListStart.mLength = 0;
+    if (mContactPairListEnd.mLength != 0) {
         // inferred: the value the loop at 0x1a66a70 carries; no location-less local in scope fits
-        u32 v2_0 = this->mContactPairListEnd.::MtArray::mLength;
+        u32 v2_0 = mContactPairListEnd.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mContactPairListEnd.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mContactPairListEnd.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mContactPairListEnd.::MtArray::mLength) {
-                    v2_0 = this->mContactPairListEnd.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mContactPairListEnd.mpArray[i2_3] != nullptr) {
+                delete mContactPairListEnd.mpArray[i2_3];
+                if ((i2_3 + 1u) < mContactPairListEnd.mLength) {
+                    v2_0 = mContactPairListEnd.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mContactPairListEnd.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mContactPairListEnd.::MtArray::mpArray));
+    if (mContactPairListEnd.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mContactPairListEnd.mpArray));
     }
-    this->mContactPairListEnd.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mContactPairListEnd.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mContactPairListEnd.::MtArray::mLength = static_cast<u32>(0);
+    mContactPairListEnd.mpArray = nullptr;
+    mContactPairListEnd.mBufsiz = 0;
+    mContactPairListEnd.mLength = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (153 bytes)
@@ -285,6 +287,8 @@ __attribute__((weak)) bool cZoneContactInfoList::isContactEnd(cZoneContactPairIn
     DDON_STUB("cZoneContactInfoList::isContactEnd")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneContactInfoList::MyDTI cZoneContactInfoList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x0059808c-0x005980c5 (called at cZoneListenerMulti.cpp:52)
@@ -334,7 +338,7 @@ const MtDTI& cZoneContactPairInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cZoneContactPairInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneContactPairInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneContactPairInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -423,6 +427,8 @@ __attribute__((weak)) void cZoneContactPairInfo::createProperty(MtPropertyList& 
 //   in cZoneContactInfoList::isContactStart at 0x01a67077-0x01a6707d, 0x01a67084-0x01a670a4 (called at cZoneListenerMulti.cpp:75)
 // bool cZoneContactPairInfo::isContact(cZoneContactPairInfo* pData);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneContactPairInfo::MyDTI cZoneContactPairInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x00598053-0x0059808c (called at cZoneListenerMulti.cpp:51)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x00598053-0x0059808c (called at cZoneListenerMulti.h:63)
@@ -470,7 +476,7 @@ const MtDTI& cZoneListenerMulti::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneListenerMulti::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListenerMulti::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListenerMulti::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -534,6 +540,8 @@ cZoneListenerMulti::~cZoneListenerMulti() {
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // void cZoneListenerMulti::releaseZoneAll();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneListenerMulti::MyDTI cZoneListenerMulti::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x0059813b-0x00598174 (called at cZoneListenerMulti.cpp:757)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x0059813b-0x00598174 (called at cZoneListenerMulti.h:391)
@@ -581,7 +589,7 @@ const MtDTI& cZoneMultiListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneMultiListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneMultiListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneMultiListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -666,6 +674,8 @@ __attribute__((weak)) MtLineSegment cZoneMultiListener::myLineSegment() {
     __builtin_unreachable();
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneMultiListener::MyDTI cZoneMultiListener::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x005980fe-0x0059813b (called at cZoneListenerMulti.cpp:604)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x005980fe-0x0059813b (called at cZoneListenerMulti.h:261)
@@ -718,7 +728,7 @@ const MtDTI& cZoneMultiStack::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneMultiStack::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneMultiStack::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneMultiStack::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -777,30 +787,30 @@ __attribute__((weak)) void cZoneMultiStack::releaseZone(u32 handle) {
 void cZoneMultiStack::releaseZoneAll() {
     // DWARF local not rendered: MtAutoCriticalSection cs;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-        if (this->mNotifiedStack.::MtArray::mAutoDelete != false) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        if (mNotifiedStack.mAutoDelete) {
             // inferred: the value carried to 0x597863; no location-less local in scope fits
             u32 v2_0;
-            if (this->mNotifiedStack.::MtArray::mLength != static_cast<u32>(0)) {
+            if (mNotifiedStack.mLength != 0) {
                 // inferred: the value the loop at 0x597840 carries; no location-less local in scope fits
-                u32 v0_0 = this->mNotifiedStack.::MtArray::mLength;
+                u32 v0_0 = mNotifiedStack.mLength;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                unsigned int i0_3 = static_cast<unsigned int>(0);
+                unsigned int i0_3 = 0;
                 // inferred: the value carried to 0x59785f; no location-less local in scope fits
                 u32 v1_0;
                 for (;;) {
-                    if (this->mNotifiedStack.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                        delete this->mNotifiedStack.::MtArray::mpArray[i0_3];
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mNotifiedStack.::MtArray::mLength) {
-                            v0_0 = this->mNotifiedStack.::MtArray::mLength;
-                            i0_3 += static_cast<unsigned int>(1);
+                    if (mNotifiedStack.mpArray[i0_3] != nullptr) {
+                        delete mNotifiedStack.mpArray[i0_3];
+                        if ((i0_3 + 1u) < mNotifiedStack.mLength) {
+                            v0_0 = mNotifiedStack.mLength;
+                            i0_3 += 1u;
                         } else {
-                            v1_0 = this->mNotifiedStack.::MtArray::mLength;
+                            v1_0 = mNotifiedStack.mLength;
                             break;
                         }
                     } else {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < v0_0) {
+                            i0_3 += 1u;
                         } else {
                             v1_0 = v0_0;
                             break;
@@ -809,22 +819,22 @@ void cZoneMultiStack::releaseZoneAll() {
                 }
                 v2_0 = v1_0;
             } else {
-                v2_0 = static_cast<u32>(0);
+                v2_0 = 0;
             }
-            ::memset(static_cast<void*>(this->mNotifiedStack.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+            memset(static_cast<void*>(mNotifiedStack.mpArray), 0, static_cast<size_t>(v2_0) * 8);
         }
-        this->mNotifiedStack.::MtArray::mLength = static_cast<u32>(0);
-        if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
+        mNotifiedStack.mLength = 0;
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
             return;
         }
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x005978a0 - 0x005978a4 (4 bytes)
 u32 cZoneMultiStack::getZoneNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNotifiedStack.::MtArray::mLength;
+    return mNotifiedStack.mLength;
 }
 
 // Address: 0x005978b0 - 0x005978d6 (38 bytes)
@@ -896,6 +906,8 @@ __attribute__((weak)) bool cZoneMultiStack::isZoneContact(u32 BasicHandle, u32 O
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneMultiStack::MyDTI cZoneMultiStack::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x005980c5-0x005980fe (called at cZoneListenerMulti.cpp:213)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x005980c5-0x005980fe (called at cZoneListenerMulti.h:180)
@@ -947,7 +959,7 @@ const MtDTI& cZoneMultiStackNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneMultiStackNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneMultiStackNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneMultiStackNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1021,6 +1033,8 @@ __attribute__((weak)) void cZoneMultiStackNode::setZone(rZone* pZone, const MtVe
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)
 //   in cZoneMultiStack::isZoneContact at 0x00597268-0x0059727d (called at cZoneListenerMulti.cpp:394)
 // bool cZoneMultiStackNode::isZoneContactEnd(cZoneContactPairInfo* pData);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneMultiStackNode::MyDTI cZoneMultiStackNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerMulti.cpp at 0x00597fd3-0x00598013 (called at cZoneListenerMulti.cpp:49)

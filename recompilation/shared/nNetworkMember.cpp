@@ -85,75 +85,75 @@ MtUI* nNetwork::Member::createUI(MtProperty& prop) {
 // Address: 0x01199ff0 - 0x0119a05a (106 bytes)
 void nNetwork::Member::clear() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    ::MtNetSession::clearMember(&this->mInfo);
-    this->mId = static_cast<u32>(0);
-    this->mTag = static_cast<u32>(0);
-    this->mRouteIndex = static_cast<s32>(-1);
-    this->mConfiguration = static_cast<u32>(0);
-    this->mConfig[56] = static_cast<unsigned char>(0);
-    this->mConfig[57] = static_cast<unsigned char>(0);
-    this->mConfig[58] = static_cast<unsigned char>(0);
-    this->mConfig[59] = static_cast<unsigned char>(0);
-    this->mConfig[60] = static_cast<unsigned char>(0);
-    this->mConfig[61] = static_cast<unsigned char>(0);
-    this->mConfig[62] = static_cast<unsigned char>(0);
-    this->mConfig[63] = static_cast<unsigned char>(0);
-    this->mConfig[48] = static_cast<unsigned char>(0);
-    this->mConfig[49] = static_cast<unsigned char>(0);
-    this->mConfig[50] = static_cast<unsigned char>(0);
-    this->mConfig[51] = static_cast<unsigned char>(0);
-    this->mConfig[52] = static_cast<unsigned char>(0);
-    this->mConfig[53] = static_cast<unsigned char>(0);
-    this->mConfig[54] = static_cast<unsigned char>(0);
-    this->mConfig[55] = static_cast<unsigned char>(0);
-    this->mConfig[40] = static_cast<unsigned char>(0);
-    this->mConfig[41] = static_cast<unsigned char>(0);
-    this->mConfig[42] = static_cast<unsigned char>(0);
-    this->mConfig[43] = static_cast<unsigned char>(0);
-    this->mConfig[44] = static_cast<unsigned char>(0);
-    this->mConfig[45] = static_cast<unsigned char>(0);
-    this->mConfig[46] = static_cast<unsigned char>(0);
-    this->mConfig[47] = static_cast<unsigned char>(0);
-    this->mConfig[32] = static_cast<unsigned char>(0);
-    this->mConfig[33] = static_cast<unsigned char>(0);
-    this->mConfig[34] = static_cast<unsigned char>(0);
-    this->mConfig[35] = static_cast<unsigned char>(0);
-    this->mConfig[36] = static_cast<unsigned char>(0);
-    this->mConfig[37] = static_cast<unsigned char>(0);
-    this->mConfig[38] = static_cast<unsigned char>(0);
-    this->mConfig[39] = static_cast<unsigned char>(0);
-    this->mConfig[24] = static_cast<unsigned char>(0);
-    this->mConfig[25] = static_cast<unsigned char>(0);
-    this->mConfig[26] = static_cast<unsigned char>(0);
-    this->mConfig[27] = static_cast<unsigned char>(0);
-    this->mConfig[28] = static_cast<unsigned char>(0);
-    this->mConfig[29] = static_cast<unsigned char>(0);
-    this->mConfig[30] = static_cast<unsigned char>(0);
-    this->mConfig[31] = static_cast<unsigned char>(0);
-    this->mConfig[16] = static_cast<unsigned char>(0);
-    this->mConfig[17] = static_cast<unsigned char>(0);
-    this->mConfig[18] = static_cast<unsigned char>(0);
-    this->mConfig[19] = static_cast<unsigned char>(0);
-    this->mConfig[20] = static_cast<unsigned char>(0);
-    this->mConfig[21] = static_cast<unsigned char>(0);
-    this->mConfig[22] = static_cast<unsigned char>(0);
-    this->mConfig[23] = static_cast<unsigned char>(0);
-    this->mConfig[8] = static_cast<unsigned char>(0);
-    this->mConfig[9] = static_cast<unsigned char>(0);
-    this->mConfig[10] = static_cast<unsigned char>(0);
-    this->mConfig[11] = static_cast<unsigned char>(0);
-    this->mConfig[12] = static_cast<unsigned char>(0);
-    this->mConfig[13] = static_cast<unsigned char>(0);
-    this->mConfig[14] = static_cast<unsigned char>(0);
-    this->mConfig[15] = static_cast<unsigned char>(0);
-    this->mConfig[0] = static_cast<unsigned char>(0);
-    this->mConfig[1] = static_cast<unsigned char>(0);
-    this->mConfig[2] = static_cast<unsigned char>(0);
-    this->mConfig[3] = static_cast<unsigned char>(0);
-    this->mConfig[4] = static_cast<unsigned char>(0);
-    this->mConfig[5] = static_cast<unsigned char>(0);
-    this->mConfig[6] = static_cast<unsigned char>(0);
-    this->mConfig[7] = static_cast<unsigned char>(0);
+    ::MtNetSession::clearMember(&mInfo);
+    mId = 0;
+    mTag = 0;
+    mRouteIndex = -1;
+    this->mConfiguration = 0;
+    mConfig[56] = 0;
+    mConfig[57] = 0;
+    mConfig[58] = 0;
+    mConfig[59] = 0;
+    mConfig[60] = 0;
+    mConfig[61] = 0;
+    mConfig[62] = 0;
+    mConfig[63] = 0;
+    mConfig[48] = 0;
+    mConfig[49] = 0;
+    mConfig[50] = 0;
+    mConfig[51] = 0;
+    mConfig[52] = 0;
+    mConfig[53] = 0;
+    mConfig[54] = 0;
+    mConfig[55] = 0;
+    mConfig[40] = 0;
+    mConfig[41] = 0;
+    mConfig[42] = 0;
+    mConfig[43] = 0;
+    mConfig[44] = 0;
+    mConfig[45] = 0;
+    mConfig[46] = 0;
+    mConfig[47] = 0;
+    mConfig[32] = 0;
+    mConfig[33] = 0;
+    mConfig[34] = 0;
+    mConfig[35] = 0;
+    mConfig[36] = 0;
+    mConfig[37] = 0;
+    mConfig[38] = 0;
+    mConfig[39] = 0;
+    mConfig[24] = 0;
+    mConfig[25] = 0;
+    mConfig[26] = 0;
+    mConfig[27] = 0;
+    mConfig[28] = 0;
+    mConfig[29] = 0;
+    mConfig[30] = 0;
+    mConfig[31] = 0;
+    mConfig[16] = 0;
+    mConfig[17] = 0;
+    mConfig[18] = 0;
+    mConfig[19] = 0;
+    mConfig[20] = 0;
+    mConfig[21] = 0;
+    mConfig[22] = 0;
+    mConfig[23] = 0;
+    mConfig[8] = 0;
+    mConfig[9] = 0;
+    mConfig[10] = 0;
+    mConfig[11] = 0;
+    mConfig[12] = 0;
+    mConfig[13] = 0;
+    mConfig[14] = 0;
+    mConfig[15] = 0;
+    mConfig[0] = 0;
+    mConfig[1] = 0;
+    mConfig[2] = 0;
+    mConfig[3] = 0;
+    mConfig[4] = 0;
+    mConfig[5] = 0;
+    mConfig[6] = 0;
+    mConfig[7] = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -174,20 +174,20 @@ void nNetwork::Member::clear() {
 // Address: 0x01b864f0 - 0x01b864f8 (8 bytes)
 MT_CTSTR nNetwork::Member::getName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mInfo.mName[0];
+    return &mInfo.mName[0];
 }
 
 // Address: 0x01b86510 - 0x01b86517 (7 bytes)
 bool nNetwork::Member::isSelf() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mConfiguration & static_cast<u32>(1));
+    return static_cast<bool>(this->mConfiguration & 1u);
 }
 
 // Address: 0x01b86520 - 0x01b86535 (21 bytes)
 void nNetwork::Member::setSelf(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967294)) : (this->mConfiguration | static_cast<u32>(1));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFEu) : (this->mConfiguration | 1u);
 }
 
 // Address: 0x01b86540 - 0x01b86548 (8 bytes)
@@ -196,13 +196,13 @@ bool nNetwork::Member::isEntry() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 2) >> 1);
 }
 
 // Address: 0x01b86550 - 0x01b86565 (21 bytes)
 void nNetwork::Member::setEntry(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967293)) : (this->mConfiguration | static_cast<u32>(2));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFDu) : (this->mConfiguration | 2u);
 }
 
 // Address: 0x01b86570 - 0x01b86579 (9 bytes)
@@ -211,13 +211,13 @@ bool nNetwork::Member::isMatch() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 4) >> 2);
 }
 
 // Address: 0x01b86580 - 0x01b86595 (21 bytes)
 void nNetwork::Member::setMatch(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967291)) : (this->mConfiguration | static_cast<u32>(4));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFFBu) : (this->mConfiguration | 4u);
 }
 
 // Address: 0x01b865a0 - 0x01b865a9 (9 bytes)
@@ -226,13 +226,13 @@ bool nNetwork::Member::isTerminate() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 8) >> 3);
 }
 
 // Address: 0x01b865b0 - 0x01b865c5 (21 bytes)
 void nNetwork::Member::setTerminate(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967287)) : (this->mConfiguration | static_cast<u32>(8));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFF7u) : (this->mConfiguration | 8u);
 }
 
 // Address: 0x01b865d0 - 0x01b865d9 (9 bytes)
@@ -241,22 +241,22 @@ bool nNetwork::Member::isMute() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 16) >> 4);
 }
 
 // Address: 0x01b865e0 - 0x01b865f5 (21 bytes)
 void nNetwork::Member::setMute(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967279)) : (this->mConfiguration | static_cast<u32>(16));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFEFu) : (this->mConfiguration | 16u);
 }
 
 // Address: 0x01b86600 - 0x01b8662d (45 bytes)
 bool nNetwork::Member::isTalking() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mConfiguration & static_cast<u32>(32)) != static_cast<u32>(0)) {
+    if ((this->mConfiguration & 32u) != 0) {
         // inferred: a temporary for the result of the call at 0x1b86616, used once; no DWARF local holds it
-        MtNetTime::Total t0 = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
-        return t0 < this->mTalkTime;
+        MtNetTime::Total t0 = ::MtNetTime::mInstance.getTotalTime();
+        return t0 < mTalkTime;
     } else {
         return false;
     }
@@ -265,11 +265,11 @@ bool nNetwork::Member::isTalking() const {
 // Address: 0x01b86630 - 0x01b8666c (60 bytes)
 void nNetwork::Member::setTalking(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (f != false) {
-        this->mConfiguration = this->mConfiguration | static_cast<u32>(32);
-        this->mTalkTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime() + static_cast<MtNetTime::Total>(250);
+    if (f) {
+        this->mConfiguration = this->mConfiguration | 32u;
+        mTalkTime = ::MtNetTime::mInstance.getTotalTime() + 250ul;
     } else {
-        this->mConfiguration = this->mConfiguration & static_cast<u32>(4294967263);
+        this->mConfiguration = this->mConfiguration & 0xFFFFFFDFu;
     }
 }
 
@@ -279,22 +279,22 @@ bool nNetwork::Member::isRestrict() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 20)) & 64) >> 6);
 }
 
 // Address: 0x01b86680 - 0x01b86695 (21 bytes)
 void nNetwork::Member::setRestrict(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mConfiguration = (f == false) ? (this->mConfiguration & static_cast<u32>(4294967231)) : (this->mConfiguration | static_cast<u32>(64));
+    this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFBFu) : (this->mConfiguration | 64u);
 }
 
 // Address: 0x01b866a0 - 0x01b866cd (45 bytes)
 bool nNetwork::Member::isNewbie() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mInfo.mIsValid != false) {
+    if (mInfo.mIsValid) {
         // inferred: a temporary for the result of the call at 0x1b866b6, used once; no DWARF local holds it
-        MtNetTime::Total t0 = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
-        return this->mJoinTime == t0;
+        MtNetTime::Total t0 = ::MtNetTime::mInstance.getTotalTime();
+        return mJoinTime == t0;
     } else {
         return false;
     }
@@ -303,10 +303,10 @@ bool nNetwork::Member::isNewbie() const {
 // Address: 0x01b866d0 - 0x01b866fc (44 bytes)
 void nNetwork::Member::setNewbie(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (f != false) {
-        this->mJoinTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+    if (f) {
+        mJoinTime = ::MtNetTime::mInstance.getTotalTime();
     } else {
-        this->mJoinTime = static_cast<MtNetTime::Total>(-1);
+        mJoinTime = 0xFFFFFFFFFFFFFFFFul;
     }
 }
 
@@ -314,7 +314,7 @@ void nNetwork::Member::setNewbie(bool f) {
 u32 nNetwork::Member::getGroup() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x16 from const nNetwork::Member*
-    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(22));
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 22);
 }
 
 // Address: 0x01b86700 - 0x01b86705 (5 bytes)
@@ -369,6 +369,8 @@ __attribute__((weak)) void nNetwork::Member::setGroup(u32 group_attr) {
 __attribute__((weak)) void nNetwork::Member::setName(MT_CTSTR name) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Member::MyDTI nNetwork::Member::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Member::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -37,7 +37,7 @@ const MtDTI& cCollIndex::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCollIndex::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memAlloc(sz, align, ::cCollIndex::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCollIndex::DTI)->memAlloc(sz, align, cCollIndex::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cCollIndex::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCollIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCollIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cCollIndex::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCollIndex::MyDTI cCollIndex::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCollIndex.cpp at 0x00657d70-0x00657db2 (called at rCollIndex.cpp:23)
 //   in _GLOBAL__sub_I_rCollIndex.cpp at 0x00657d70-0x00657db2 (called at rCollIndex.h:25)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cCollIndex::createProperty(MtPropertyList& s) {
 // Address: 0x006577e0 - 0x00657836 (86 bytes)
 MtObject* cCollIndex::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCollIndex;
+    return new (16u) cCollIndex;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +110,7 @@ const MtDTI& rCollIndex::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rCollIndex::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rCollIndex::DTI);
+    return MtMemoryAllocator::getAllocator(rCollIndex::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ inline MtAllocator* rCollIndex::getAllocator() {
 // Address: 0x00657cc0 - 0x00657d00 (64 bytes)
 void* rCollIndex::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rCollIndex::getAllocator()->memAlloc(sz, align, ::rCollIndex::DTI.::MtDTI::getID());
+    return rCollIndex::getAllocator()->memAlloc(sz, align, rCollIndex::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ void* rCollIndex::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rCollIndexD0Ev at 0x01a80204-0x01a80223, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCollIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCollIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCollIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,14 +152,14 @@ bool rCollIndex::loadData(MtDataReader& in, cCollIndex* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNode);
+    nDDOIO::readData(in, pData->mNode);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAttack);
+    nDDOIO::readData(in, pData->mAttack);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLinkID);
-    pData->mLinkTop = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    nDDOIO::readData(in, pData->mLinkID);
+    pData->mLinkTop = in.readU8() != 0;
     return true;
 }
 
@@ -170,8 +172,10 @@ MT_CTSTR rCollIndex::getExt() const {
 // Address: 0x01a80350 - 0x01a80356 (6 bytes)
 u32 rCollIndex::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(110);
+    return 110;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCollIndex::MyDTI rCollIndex::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCollIndex.cpp at 0x00657db2-0x00657def (called at rCollIndex.cpp:100)
@@ -181,7 +185,7 @@ u32 rCollIndex::getDataVersion() const {
 // Address: 0x00657c50 - 0x00657cb4 (100 bytes)
 MtObject* rCollIndex::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCollIndex;
+    return new (16u) rCollIndex;
 }
 
 // Instance at 0x01a80300 - 0x01a80312 (18 bytes) of the generic rTbl2<T>::getData

@@ -63,8 +63,8 @@ inline void nNetwork::BlockBuffer::operator delete(void* p_addr) {
 // Also emitted as: _ZN8nNetwork11BlockBufferD0Ev at 0x0119b130
 nNetwork::BlockBuffer::~BlockBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHead = this->mTail;
-    this->::nNetwork::BlockBuffer::adjust(static_cast<u32>(0));
+    mHead = mTail;
+    adjust(0u);
 }
 
 // Address: 0x0119b180 - 0x0119b2f3 (371 bytes)
@@ -99,7 +99,7 @@ __attribute__((weak)) u32 nNetwork::BlockBuffer::length() const {
 // Address: 0x0119b700 - 0x0119b70a (10 bytes)
 bool nNetwork::BlockBuffer::empty() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHead == this->mTail;
+    return mHead == mTail;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -130,6 +130,8 @@ __attribute__((weak)) bool nNetwork::BlockBuffer::adjust(u32 data_size) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::BlockBuffer::read(MtStream& stream, u32 data_size, u32 seek) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::BlockBuffer::MyDTI nNetwork::BlockBuffer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::BlockBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -216,17 +218,17 @@ __attribute__((weak)) void nNetwork::BlockPool::init(MtAllocator* alloc, u32 poo
 // Address: 0x0119ad40 - 0x0119ad90 (80 bytes)
 void nNetwork::BlockPool::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mAutoFree != false) {
-        this->mpPoolAllocator->memFree(this->mpPool);
+    if (mAutoFree) {
+        mpPoolAllocator->memFree(mpPool);
     }
-    this->mpPool = static_cast<void*>(nullptr);
-    this->mAutoFree = false;
-    this->mHead = static_cast<u32>(0);
-    this->mTail = static_cast<u32>(0);
-    this->mPoolSize = static_cast<u32>(0);
-    this->mPoolCount = static_cast<u32>(0);
-    this->mpBlock = static_cast<void*>(nullptr);
-    this->mpPoolAllocator = static_cast<MtAllocator*>(nullptr);
+    mpPool = nullptr;
+    mAutoFree = false;
+    mHead = 0;
+    mTail = 0;
+    mPoolSize = 0;
+    mPoolCount = 0;
+    mpBlock = nullptr;
+    mpPoolAllocator = nullptr;
 }
 
 // Address: 0x0119af30 - 0x0119af92 (98 bytes)
@@ -249,6 +251,8 @@ __attribute__((weak)) void nNetwork::BlockPool::free(void* pblock) {
 
 // No out-of-line body: no code in the ELF
 // u32 nNetwork::BlockPool::avail() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::BlockPool::MyDTI nNetwork::BlockPool::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::BlockPool::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -379,18 +383,20 @@ __attribute__((weak)) bool nNetwork::BlockQueue::overwrite(const void* data_ptr,
 // Address: 0x0119bc70 - 0x0119bc78 (8 bytes)
 bool nNetwork::BlockQueue::adjust(u32 total, u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::nNetwork::BlockBuffer::adjust(total + (num * static_cast<u32>(4)));
+    return this->::nNetwork::BlockBuffer::adjust(total + (num * 4u));
 }
 
 // Address: 0x0119c3f0 - 0x0119c412 (34 bytes)
 void nNetwork::BlockQueue::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCount = static_cast<s32>(0);
-    this->mIndex = static_cast<s32>(-1);
-    this->mSeek = static_cast<u32>(0);
-    this->::nNetwork::BlockBuffer::mHead = this->::nNetwork::BlockBuffer::mTail;
-    this->::nNetwork::BlockBuffer::adjust(static_cast<u32>(0));
+    mCount = 0;
+    mIndex = -1;
+    mSeek = 0;
+    mHead = mTail;
+    this->::nNetwork::BlockBuffer::adjust(0u);
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nNetwork::BlockQueue::MyDTI nNetwork::BlockQueue::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::BlockQueue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

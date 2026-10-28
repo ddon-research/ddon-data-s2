@@ -68,6 +68,7 @@ class cpEffectProvider;
 class cpEffectStatusManager;
 class cpEnemyThink;
 class cpEquip;
+class cpErosionEnemy;
 class cpErosionEnemySmall;
 class cpHpDamageCtrl;
 class cpHugeble;
@@ -162,6 +163,8 @@ class uDDOModel : public uModel
     friend class cpCorePointCtrl;
     // inferred: cpEnemyThink::callbackGetAction names uDDOModel::mGuardComponent.mpActMgr
     friend class cpEnemyThink;
+    // inferred: cpErosionEnemy::killErosionCheckNode names uDDOModel::mGuardComponent.mpObjCollision
+    friend class cpErosionEnemy;
     // inferred: cpErosionEnemySmall::checkReciveMsg names uDDOModel::mContextInterface.mpContextInstance
     friend class cpErosionEnemySmall;
     // inferred: cpHpDamageCtrl::callbackHealedAfter_make names uDDOModel::mContextInterface.mpContextInstance
@@ -182,6 +185,8 @@ class uDDOModel : public uModel
     friend class cpJob09;
     // inferred: cpJob10::callbackAttack names uDDOModel::mGuardComponent.mpActMgr
     friend class cpJob10;
+    // inferred: cpLayout::setFadeOut names uDDOModel::mpCtrl
+    friend class cpLayout;
     // inferred: cpObjCollisionBase::getHitGroupAtk names uDDOModel::mGuardComponent.mpObjCollision
     friend class cpObjCollisionBase;
     // inferred: cpPawnThink::sortFuncCharacterHp names uDDOModel::mContextInterface.mpContextInstance
@@ -951,18 +956,24 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 285 DWARF copies materializes its result; approximate: only approximate callers check this inline body
 inline bool uDDOModel::isEnemy() const {
-    return (this->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0);
+    return (this->mUnitId & 2u) != 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a bit-test accessor's polarity, true when its bits are set: none of its 238 DWARF copies materializes its result; approximate: only approximate callers check this inline body
+inline bool uDDOModel::isCharacter() const {
+    return (this->mUnitId & 4u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool uDDOModel::isHuman() const {
-    return (this->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0);
+    return (this->mUnitId & 16u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uDDOModel::isNpc() const {
-    return (this->mUnitId & static_cast<u32>(128)) != static_cast<u32>(0);
+    return (this->mUnitId & 128u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -976,6 +987,12 @@ inline cpWorkRate* uDDOModel::getWorkRatePtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6da6-0x8d6dad; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setWorkRatePtr(cpWorkRate* NewValue) {
+    this->mGuardComponent.mpWorkRate = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpObjCollisionBase* uDDOModel::getObjCollisionPtr() const {
     return this->mGuardComponent.mpObjCollision;
 }
@@ -986,8 +1003,20 @@ inline cpScrCollision* uDDOModel::getScrCollisionPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6dee-0x8d6df5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setScrCollisionPtr(cpScrCollision* NewValue) {
+    this->mGuardComponent.mpScrCollision = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpActionManager* uDDOModel::getActMgrPtr() const {
     return this->mGuardComponent.mpActMgr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6e12-0x8d6e19; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setActMgrPtr(cpActionManager* NewValue) {
+    this->mGuardComponent.mpActMgr = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -996,8 +1025,26 @@ inline cpInput* uDDOModel::getInputPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6e36-0x8d6e3d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setInputPtr(cpInput* NewValue) {
+    this->mGuardComponent.mpInput = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6e5a-0x8d6e61; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setActionSelectPtr(cpActionSelect* NewValue) {
+    this->mGuardComponent.mpActionSelect = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpActionRequest* uDDOModel::getActionRequestPtr() const {
     return this->mGuardComponent.mpActionRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6e7e-0x8d6e85; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setActionRequestPtr(cpActionRequest* NewValue) {
+    this->mGuardComponent.mpActionRequest = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1006,8 +1053,20 @@ inline cpSequenceCtrl* uDDOModel::getSequenceCtrlPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6ea2-0x8d6ea9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setSequenceCtrlPtr(cpSequenceCtrl* NewValue) {
+    this->mGuardComponent.mpSequenceCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpHpDamageCtrl* uDDOModel::getHpDamageCtrlPtr() const {
     return this->mGuardComponent.mpHpDamageCtrl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6ec6-0x8d6ecd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setHpDamageCtrlPtr(cpHpDamageCtrl* NewValue) {
+    this->mGuardComponent.mpHpDamageCtrl = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1016,13 +1075,31 @@ inline cpCatchCtrl* uDDOModel::getCatchCtrlPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6eea-0x8d6ef1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setCatchCtrlPtr(cpCatchCtrl* NewValue) {
+    this->mGuardComponent.mpCatchCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpStateManager* uDDOModel::getStateActionPtr() const {
     return this->mGuardComponent.mpStateAction;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6f09-0x8d6f10; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setStateActionPtr(cpStateManager* NewValue) {
+    this->mGuardComponent.mpStateAction = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpStateManager* uDDOModel::getStateLivePtr() const {
     return this->mGuardComponent.mpStateLive;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d6f28-0x8d6f2f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setStateLivePtr(cpStateManager* NewValue) {
+    this->mGuardComponent.mpStateLive = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1036,8 +1113,26 @@ inline cpChargeCtrl* uDDOModel::getChargeCtrlPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7000-0x8d7007; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setChargeCtrlPtr(cpChargeCtrl* NewValue) {
+    this->mGuardComponent.mpChargeCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpShlShotCtrl* uDDOModel::getShlShotCtrlPtr() const {
     return this->mGuardComponent.mpShlShotCtrl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7048-0x8d704f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setShlShotCtrlPtr(cpShlShotCtrl* NewValue) {
+    this->mGuardComponent.mpShlShotCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7090-0x8d7097; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setRegionStatusCtrlPtr(cpRegionStatusCtrl* NewValue) {
+    this->mGuardComponent.mpRegionStatusCtrl = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1046,8 +1141,26 @@ inline cpLayout* uDDOModel::getLayoutPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d70d8-0x8d70df; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setLayoutPtr(cpLayout* NewValue) {
+    this->mGuardComponent.mpLayout = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpSlave* uDDOModel::getSlavePtr() const {
     return this->mGuardComponent.mpSlave;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7120-0x8d7127; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setSlavePtr(cpSlave* NewValue) {
+    this->mGuardComponent.mpSlave = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d71b0-0x8d71b7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setLockOnTargetMgrPtr(cpLockOnTargetManager* NewValue) {
+    this->mGuardComponent.mpLockOnTargetMgr = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1056,8 +1169,26 @@ inline cpKeepAtkAdjust* uDDOModel::getKeepAtkAdjustPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d71d4-0x8d71db; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setKeepAtkAdjustPtr(cpKeepAtkAdjust* NewValue) {
+    this->mGuardComponent.mpKeepAtkAdjust = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d721c-0x8d7223; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setPathFindingPtr(cpPathFinding* NewValue) {
+    this->mGuardComponent.mpPathFinding = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpStatusChange* uDDOModel::getStatusChangePtr() const {
     return this->mGuardComponent.mpStatusChange;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d70b4-0x8d70bb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setStatusChangePtr(cpStatusChange* NewValue) {
+    this->mGuardComponent.mpStatusChange = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1066,13 +1197,43 @@ inline cpPawnThink* uDDOModel::getPawnThinkPtr() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7240-0x8d7247; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setPawnThinkPtr(cpPawnThink* NewValue) {
+    this->mGuardComponent.mpPawnThink = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d7264-0x8d726b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setAISensorPtr(cpAISensor* NewValue) {
+    this->mGuardComponent.mpAISensor = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpInvincibleCtrl* uDDOModel::getInvincibleCtrlPtr() const {
     return this->mGuardComponent.mpInvincibleCtrl;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d72ac-0x8d72b3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setInvincibleCtrlPtr(cpInvincibleCtrl* NewValue) {
+    this->mGuardComponent.mpInvincibleCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpOcdCtrl* uDDOModel::getOcdCtrlPtr() const {
     return this->mGuardComponent.mpOcdCtrl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setupComponentPtr at 0x8d72f4-0x8d72fb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setOcdCtrlPtr(cpOcdCtrl* NewValue) {
+    this->mGuardComponent.mpOcdCtrl = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::requestDie at 0x8db6a3-0x8db6aa; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uDDOModel::setSelfDead() {
+    this->mIsSelfDead = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1085,4 +1246,10 @@ inline u64 uDDOModel::getObjStatus() {
 // approximate: only approximate callers check this inline body
 inline nDDOModel::TOUCH_TYPE uDDOModel::getTouchType() const {
     return this->mTouchType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uDDOModel::setTouchTarget(uDDOModel* pTag) {
+    this->mpTouchTarget = pTag;
 }

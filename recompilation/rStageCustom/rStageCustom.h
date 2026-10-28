@@ -137,7 +137,7 @@ inline s32 rStageCustom::getPartsDataNo() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rStageCustom::Area::Area() {
-    this->mAreaNo = static_cast<s8>(-1);
-    this->mFilterNo = static_cast<u8>(0);
-    this->mGroupNo = static_cast<s32>(-1);
+    this->mAreaNo = -1;
+    this->mFilterNo = 0;
+    this->mGroupNo = -1;
 }

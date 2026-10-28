@@ -9,10 +9,10 @@
 // Address: 0x00d7ee00 - 0x00d7ee1c (28 bytes)
 MtRandom::MtRandom() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRandomX = static_cast<u32>(3400880726);
-    this->mRandomY = static_cast<u32>(139467079);
-    this->mRandomZ = static_cast<u32>(1548750404);
-    this->mRandomW = static_cast<u32>(3651730850);
+    mRandomX = 0xCAB55256;
+    mRandomY = 0x8501947;
+    mRandomZ = 0x5C500E44;
+    mRandomW = 0xD9A8FDA2;
 }
 
 // Address: 0x00d7eed0 - 0x00d7ef70 (160 bytes)
@@ -83,13 +83,16 @@ u32 MtRandom::nrand() {
     // DWARF local not rendered: u32 t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xd7ef70 read, used twice; no DWARF local holds it
-    u32 t0 = this->mRandomX;
-    this->mRandomX = this->mRandomY;
-    this->mRandomY = this->mRandomZ;
+    u32 t0 = mRandomX;
+    mRandomX = mRandomY;
+    mRandomY = mRandomZ;
     // inferred: a temporary for the value the load at 0xd7ef84 read, used 3 times; no DWARF local holds it
-    u32 t1 = this->mRandomW;
-    this->mRandomZ = t1;
-    this->mRandomW = (((t0 ^ t1) ^ (t0 * static_cast<u32>(32768))) ^ (t1 >> static_cast<u32>(21))) ^ ((t0 ^ (t0 * static_cast<u32>(32768))) >> static_cast<u32>(4));
-    return this->mRandomW;
+    u32 t1 = mRandomW;
+    mRandomZ = t1;
+    mRandomW = (((t0 ^ t1) ^ (t0 * 32768u)) ^ (t1 >> 21)) ^ ((t0 ^ (t0 * 32768u)) >> 4);
+    return mRandomW;
 }
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtRandom.cpp leave in .bss, under its symbol (D-S1b): MtRandom MtRandom::instance;
+alignas(4) unsigned char MtRandom_instance_bytes[16] __asm__("_ZN8MtRandom8instanceE") = {0x56, 0x52, 0xb5, 0xca, 0x47, 0x19, 0x50, 0x08, 0x44, 0x0e, 0x50, 0x5c, 0xa2, 0xfd, 0xa8, 0xd9};
 

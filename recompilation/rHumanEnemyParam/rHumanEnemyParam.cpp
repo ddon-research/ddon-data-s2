@@ -49,7 +49,7 @@ const MtDTI& cHumanEnemyParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cHumanEnemyParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanEnemyParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -73,6 +73,8 @@ inline void cHumanEnemyParam::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cHumanEnemyParam::~cHumanEnemyParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHumanEnemyParam::MyDTI cHumanEnemyParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyParam.cpp at 0x0067f250-0x0067f292 (called at rHumanEnemyParam.cpp:39)
@@ -107,7 +109,7 @@ const MtDTI& rHumanEnemyParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rHumanEnemyParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rHumanEnemyParam::DTI)->memAlloc(sz, align, ::rHumanEnemyParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rHumanEnemyParam::DTI)->memAlloc(sz, align, rHumanEnemyParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ inline void* rHumanEnemyParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rHumanEnemyParamD0Ev at 0x01a94794-0x01a947b3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rHumanEnemyParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rHumanEnemyParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rHumanEnemyParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,8 +161,10 @@ MT_CTSTR rHumanEnemyParam::getExt() const {
 // Address: 0x01a948e0 - 0x01a948e6 (6 bytes)
 u32 rHumanEnemyParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(10);
+    return 10;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rHumanEnemyParam::MyDTI rHumanEnemyParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyParam.cpp at 0x0067f292-0x0067f2cf (called at rHumanEnemyParam.cpp:40)
@@ -170,7 +174,7 @@ u32 rHumanEnemyParam::getDataVersion() const {
 // Address: 0x0067eb20 - 0x0067eb84 (100 bytes)
 MtObject* rHumanEnemyParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rHumanEnemyParam;
+    return new (16u) rHumanEnemyParam;
 }
 
 // Instance at 0x01a94890 - 0x01a948a6 (22 bytes) of the generic rTbl2<T>::getData

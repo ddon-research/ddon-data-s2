@@ -69,11 +69,11 @@ const MtDTI& cShadowPriorityState::getDTI() const {
 // Also emitted as: _ZN20cShadowPriorityStateD0Ev at 0x01281020
 cShadowPriorityState::~cShadowPriorityState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOcclusionQuery == static_cast<nDraw::OcclusionQuery*>(nullptr)) {
+    if (mpOcclusionQuery == nullptr) {
         return;
     }
-    this->mpOcclusionQuery->release();
-    this->mpOcclusionQuery = static_cast<nDraw::OcclusionQuery*>(nullptr);
+    mpOcclusionQuery->release();
+    mpOcclusionQuery = nullptr;
 }
 
 // Address: 0x01281070 - 0x012816be (1614 bytes)
@@ -85,7 +85,7 @@ __attribute__((weak)) void cShadowPriorityState::createProperty(MtPropertyList& 
 // Address: 0x012816c0 - 0x012816c5 (5 bytes)
 MtUI* cShadowPriorityState::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -211,6 +211,8 @@ __attribute__((weak)) f32 cShadowPriorityState::getPriorityProjectionArea(const 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool cShadowPriorityState::isVisibleTriggerCurrentFrame(const sShadow& system) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShadowPriorityState::MyDTI cShadowPriorityState::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cShadowPriorityState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -241,7 +243,7 @@ const MtDTI& sShadow::getDTI() const {
 // Address: 0x01284db0 - 0x01284df0 (64 bytes)
 void* sShadow::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sShadow::DTI)->memAlloc(sz, align, ::sShadow::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sShadow::DTI)->memAlloc(sz, align, sShadow::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -256,7 +258,7 @@ void* sShadow::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sShadowD0Ev at 0x012858de-0x012858ff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sShadow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShadow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShadow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -289,69 +291,68 @@ inline void sShadow::operator delete(void* p_addr) {
 
 // Address: 0x01285900 - 0x01285a2e (302 bytes)
 void sShadow::reset() {
-    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
-    if (this->mNodes.mLength != static_cast<u32>(0)) {
+    if (mNodes.mLength != 0) {
         // inferred: the value the loop at 0x1285940 carries; no location-less local in scope fits
-        u32 v0_0 = this->mNodes.mLength;
+        u32 v0_0 = mNodes.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mNodes.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mNodes.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mNodes.mLength) {
-                    v0_0 = this->mNodes.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mNodes.mpArray[i0_3] != nullptr) {
+                delete mNodes.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNodes.mLength) {
+                    v0_0 = mNodes.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mNodes.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodes.mpArray));
-        this->mNodes.mpArray = static_cast<MtObject* *>(nullptr);
-        this->mNodes.mBufsiz = static_cast<u32>(0);
-        this->mNodes.mLength = static_cast<u32>(0);
+    if (mNodes.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodes.mpArray));
+        mNodes.mpArray = nullptr;
+        mNodes.mBufsiz = 0;
+        mNodes.mLength = 0;
         // inferred: a temporary for the result of the call at 0x12859b6, used 3 times; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(1024), static_cast<u32>(16));
-        ::memset(t0, static_cast<int>(0), static_cast<size_t>(1024));
-        ::memcpy(t0, static_cast<const void*>(this->mNodes.mpArray), static_cast<size_t>(this->mNodes.mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodes.mpArray));
-        this->mNodes.mpArray = static_cast<MtObject* *>(t0);
-        this->mNodes.mBufsiz = static_cast<u32>(128);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(1024ul, 16u);
+        memset(t0, 0, 1024ul);
+        memcpy(t0, static_cast<const void*>(mNodes.mpArray), static_cast<size_t>(mNodes.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodes.mpArray));
+        mNodes.mpArray = static_cast<MtObject* *>(t0);
+        mNodes.mBufsiz = 128;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
         return;
     } else {
-        this->mNodes.mpArray = static_cast<MtObject* *>(nullptr);
-        this->mNodes.mBufsiz = static_cast<u32>(0);
-        this->mNodes.mLength = static_cast<u32>(0);
+        mNodes.mpArray = nullptr;
+        mNodes.mBufsiz = 0;
+        mNodes.mLength = 0;
         // inferred: a temporary for the result of the call at 0x12859b6, used 3 times; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(1024), static_cast<u32>(16));
-        ::memset(t0, static_cast<int>(0), static_cast<size_t>(1024));
-        ::memcpy(t0, static_cast<const void*>(this->mNodes.mpArray), static_cast<size_t>(this->mNodes.mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodes.mpArray));
-        this->mNodes.mpArray = static_cast<MtObject* *>(t0);
-        this->mNodes.mBufsiz = static_cast<u32>(128);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(1024ul, 16u);
+        memset(t0, 0, 1024ul);
+        memcpy(t0, static_cast<const void*>(mNodes.mpArray), static_cast<size_t>(mNodes.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodes.mpArray));
+        mNodes.mpArray = static_cast<MtObject* *>(t0);
+        mNodes.mBufsiz = 128;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
@@ -414,7 +415,7 @@ __attribute__((weak)) void sShadow::createProperty(MtPropertyList& s) {
 // Address: 0x01288480 - 0x01288485 (5 bytes)
 MtUI* sShadow::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01288490 - 0x0128862b (411 bytes)
@@ -484,7 +485,7 @@ __attribute__((weak)) void sShadow::setResourceNumber(u32 num) {
 // Address: 0x01287f30 - 0x01287f37 (7 bytes)
 u32 sShadow::getResourceNumber() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceNum;
+    return mResourceNum;
 }
 
 // Address: 0x01287d80 - 0x01287eef (367 bytes)
@@ -497,7 +498,7 @@ __attribute__((weak)) void sShadow::setCacheEnabledViewNumber(u32 num) {
 // Address: 0x01287d70 - 0x01287d77 (7 bytes)
 u32 sShadow::getCacheEnabledViewNumber() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCacheEnabledViewNumber;
+    return mCacheEnabledViewNumber;
 }
 
 // No out-of-line body: no code in the ELF
@@ -530,33 +531,33 @@ u32 sShadow::getCacheEnabledViewNumber() const {
 // Address: 0x01287ef0 - 0x01287f0f (31 bytes)
 void sShadow::setFadeDistance(f32 distance) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (distance >= this->mVisibleDistance) {
-        this->mFadeDistance = this->mVisibleDistance + (-1.0f);
+    if (distance >= mVisibleDistance) {
+        mFadeDistance = mVisibleDistance + -1.0f;
     } else {
-        this->mFadeDistance = distance;
+        mFadeDistance = distance;
     }
 }
 
 // Address: 0x01ba7400 - 0x01ba7409 (9 bytes)
 f32 sShadow::getFadeDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFadeDistance;
+    return mFadeDistance;
 }
 
 // Address: 0x01287f10 - 0x01287f2f (31 bytes)
 void sShadow::setVisibleDistance(f32 distance) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFadeDistance >= distance) {
-        this->mVisibleDistance = this->mFadeDistance + 1.0f;
+    if (mFadeDistance >= distance) {
+        mVisibleDistance = mFadeDistance + 1.0f;
     } else {
-        this->mVisibleDistance = distance;
+        mVisibleDistance = distance;
     }
 }
 
 // Address: 0x01ba7410 - 0x01ba7419 (9 bytes)
 f32 sShadow::getVisibleDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVisibleDistance;
+    return mVisibleDistance;
 }
 
 // No out-of-line body: no code in the ELF
@@ -596,7 +597,7 @@ __attribute__((weak)) void sShadow::setShadowMapCacheEnable(bool enable) {
 // Address: 0x01ba7480 - 0x01ba7487 (7 bytes)
 bool sShadow::isShadowMapCacheEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowMapCacheEnable;
+    return mShadowMapCacheEnable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -644,7 +645,7 @@ __attribute__((weak)) void sShadow::freeShadowCacheID(const uintptr cache_id) {
 // Address: 0x01288090 - 0x01288097 (7 bytes)
 bool sShadow::isActiveShadowMulValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsActiveShadowMulValue;
+    return mIsActiveShadowMulValue;
 }
 
 // Address: 0x012880a0 - 0x012881df (319 bytes)
@@ -657,8 +658,8 @@ __attribute__((weak)) void sShadow::setActiveShadowMulValue(bool NewIsActiveShad
 // Address: 0x01283f30 - 0x01283f4b (27 bytes)
 f32 sShadow::getShadowSizeMulValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsActiveShadowMulValue != false) {
-        return this->mShadowSizeMulValue;
+    if (mIsActiveShadowMulValue) {
+        return mShadowSizeMulValue;
     } else {
         return 1.0f;
     }
@@ -674,8 +675,8 @@ __attribute__((weak)) void sShadow::setShadowSizeMulValue(f32 NewShadowSizeMulVa
 // Address: 0x01288320 - 0x0128833b (27 bytes)
 f32 sShadow::getShadowViewDistanceMulValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsActiveShadowMulValue != false) {
-        return this->mShadowDistanceMulValue;
+    if (mIsActiveShadowMulValue) {
+        return mShadowDistanceMulValue;
     } else {
         return 1.0f;
     }
@@ -742,10 +743,10 @@ __attribute__((weak)) void sShadow::updateShadowMapCache(u32 viewNum) {
 // Address: 0x01ba7660 - 0x01ba7672 (18 bytes)
 sShadow::Node* sShadow::getNode(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNodes.mLength) {
-        return static_cast<sShadow::Node*>(this->mNodes.mpArray[index]);
+    if (index < mNodes.mLength) {
+        return static_cast<Node*>(mNodes.mpArray[index]);
     } else {
-        return static_cast<sShadow::Node*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -757,15 +758,37 @@ __attribute__((weak)) void sShadow::setNode(sShadow::Node* unit, u32 index) {
 // Address: 0x01ba7690 - 0x01ba7694 (4 bytes)
 u32 sShadow::getNodeNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNodes.mLength;
+    return mNodes.mLength;
 }
 
 // Address: 0x01ba76a0 - 0x01ba76f8 (88 bytes)
-__attribute__((weak)) void sShadow::setNodeNum(u32 num) {
-    // local: u32 i;
-    // local: MtObject* o;
-    DDON_STUB("sShadow::setNodeNum")
-    /* stub */
+void sShadow::setNodeNum(u32 num) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: MtObject* o;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (num < mNodes.mLength) {
+        // inferred: the value the loop at 0x1ba76c0 carries; no location-less local in scope fits
+        u32 v0_0 = mNodes.mLength;
+        // inferred: the value the loop at 0x1ba76c0 carries; no location-less local in scope fits
+        for (u32 v0_3 = num;;) {
+            if (mNodes.mpArray[v0_3] != nullptr) {
+                delete mNodes.mpArray[v0_3];
+                if ((v0_3 + 1u) < mNodes.mLength) {
+                    v0_0 = mNodes.mLength;
+                    v0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((v0_3 + 1u) < v0_0) {
+                    v0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    mNodes.resize(num);
 }
 
 // Address: 0x01ba74a0 - 0x01ba751f (127 bytes)
@@ -777,24 +800,23 @@ __attribute__((weak)) void sShadow::setSpotShadowMapSize(u32 size) {
 // Address: 0x01ba7490 - 0x01ba7494 (4 bytes)
 u32 sShadow::getSpotShadowMapSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceGroup[0].mShadowMapSize;
+    return mResourceGroup[0].mShadowMapSize;
 }
 
 // Address: 0x01ba7530 - 0x01ba7562 (50 bytes)
 void sShadow::setSpotShadowMapType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mResourceGroup[0].mShadowMapType == type) {
-    } else {
-        this->mResourceGroup[0].mShadowMapType = type;
-        this->mResourceGroup[0].::sShadow::ResourceGroup::releaseResources();
-        this->mResourceGroup[0].::sShadow::ResourceGroup::acquireResources();
+    if (mResourceGroup[0].mShadowMapType != type) {
+        mResourceGroup[0].mShadowMapType = type;
+        mResourceGroup[0].releaseResources();
+        mResourceGroup[0].acquireResources();
     }
 }
 
 // Address: 0x01ba7520 - 0x01ba7524 (4 bytes)
 u32 sShadow::getSpotShadowMapType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceGroup[0].mShadowMapType;
+    return mResourceGroup[0].mShadowMapType;
 }
 
 // Address: 0x01ba7580 - 0x01ba760b (139 bytes)
@@ -806,24 +828,23 @@ __attribute__((weak)) void sShadow::setPointShadowMapSize(u32 size) {
 // Address: 0x01ba7570 - 0x01ba7577 (7 bytes)
 u32 sShadow::getPointShadowMapSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceGroup[1].mShadowMapSize;
+    return mResourceGroup[1].mShadowMapSize;
 }
 
 // Address: 0x01ba7620 - 0x01ba765b (59 bytes)
 void sShadow::setPointShadowMapType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mResourceGroup[1].mShadowMapType == type) {
-    } else {
-        this->mResourceGroup[1].mShadowMapType = type;
-        this->mResourceGroup[1].::sShadow::ResourceGroup::releaseResources();
-        this->mResourceGroup[1].::sShadow::ResourceGroup::acquireResources();
+    if (mResourceGroup[1].mShadowMapType != type) {
+        mResourceGroup[1].mShadowMapType = type;
+        mResourceGroup[1].releaseResources();
+        mResourceGroup[1].acquireResources();
     }
 }
 
 // Address: 0x01ba7610 - 0x01ba7617 (7 bytes)
 u32 sShadow::getPointShadowMapType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceGroup[1].mShadowMapType;
+    return mResourceGroup[1].mShadowMapType;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -858,6 +879,11 @@ u32 sShadow::getPointShadowMapType() const {
 
 // No out-of-line body: no code in the ELF
 // bool sShadow::isRestoreShadowMapCacheEnable();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShadow::MyDTI sShadow::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sShadow* sShadow::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sShadow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -901,7 +927,7 @@ const MtDTI& sShadow::ResourceGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sShadow13ResourceGroupD0Ev at 0x0128389c-0x012838bd, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sShadow::ResourceGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShadow::ResourceGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShadow::ResourceGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -920,7 +946,7 @@ inline void sShadow::ResourceGroup::operator delete(void* p_addr) {
 // Also emitted as: _ZN7sShadow13ResourceGroupD0Ev at 0x01283880
 sShadow::ResourceGroup::~ResourceGroup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sShadow::ResourceGroup::releaseResources();
+    releaseResources();
 }
 
 // Address: 0x012838c0 - 0x01283a3c (380 bytes)
@@ -932,7 +958,7 @@ __attribute__((weak)) void sShadow::ResourceGroup::createProperty(MtPropertyList
 // Address: 0x01283aa0 - 0x01283aa5 (5 bytes)
 MtUI* sShadow::ResourceGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -947,18 +973,17 @@ MtUI* sShadow::ResourceGroup::createUI(MtProperty& prop) {
 // Address: 0x01283a60 - 0x01283a98 (56 bytes)
 void sShadow::ResourceGroup::setResourceNumber(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mResourceNum == ((num <= static_cast<u32>(16)) ? num : static_cast<u32>(16))) {
-    } else {
-        this->::sShadow::ResourceGroup::releaseResources();
-        this->mResourceNum = (num <= static_cast<u32>(16)) ? num : static_cast<u32>(16);
-        this->::sShadow::ResourceGroup::acquireResources();
+    if (mResourceNum != ((num <= 16u) ? num : 16u)) {
+        releaseResources();
+        mResourceNum = (num <= 16u) ? num : 16u;
+        acquireResources();
     }
 }
 
 // Address: 0x01283a50 - 0x01283a54 (4 bytes)
 u32 sShadow::ResourceGroup::getResourceNumber() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceNum;
+    return mResourceNum;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1017,10 +1042,10 @@ __attribute__((weak)) void sShadow::ResourceGroup::releaseResources() {
 const sShadow::Resource* sShadow::ResourceGroup::getResource(u32 index) const {
     // DWARF local not rendered: Resource* res;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mResourceNum) {
-        return this->mResources[index];
+    if (index < mResourceNum) {
+        return mResources[index];
     } else {
-        return static_cast<const sShadow::Resource*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1040,6 +1065,8 @@ const sShadow::Resource* sShadow::ResourceGroup::getResource(u32 index) const {
 __attribute__((weak)) void sShadow::ResourceGroup::setResource(sShadow::Resource*, u32 index) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShadow::ResourceGroup::MyDTI sShadow::ResourceGroup::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sShadow::ResourceGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1082,7 +1109,7 @@ const MtDTI& sShadow::Resource::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sShadow::Resource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShadow::Resource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShadow::Resource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1103,7 +1130,7 @@ __attribute__((weak)) void sShadow::Resource::createProperty(MtPropertyList& s) 
 // Address: 0x012830c0 - 0x012830c5 (5 bytes)
 MtUI* sShadow::Resource::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1135,6 +1162,8 @@ MtUI* sShadow::Resource::createUI(MtProperty& prop) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sShadow::Resource::release();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShadow::Resource::MyDTI sShadow::Resource::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sShadow::Resource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1177,7 +1206,7 @@ const MtDTI& sShadow::ViewConsistentResource::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sShadow::ViewConsistentResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShadow::ViewConsistentResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShadow::ViewConsistentResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1198,7 +1227,7 @@ __attribute__((weak)) void sShadow::ViewConsistentResource::createProperty(MtPro
 // Address: 0x01283380 - 0x01283385 (5 bytes)
 MtUI* sShadow::ViewConsistentResource::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1224,6 +1253,8 @@ MtUI* sShadow::ViewConsistentResource::createUI(MtProperty& prop) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sShadow::ViewConsistentResource::release();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShadow::ViewConsistentResource::MyDTI sShadow::ViewConsistentResource::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sShadow::ViewConsistentResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1303,7 +1334,7 @@ const MtDTI& sShadow::Node::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sShadow4NodeD0Ev at 0x012842fe-0x0128431f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sShadow::Node::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShadow::Node::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1335,7 +1366,7 @@ __attribute__((weak)) void sShadow::Node::createProperty(MtPropertyList& s) {
 // Address: 0x01284590 - 0x01284595 (5 bytes)
 MtUI* sShadow::Node::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1391,6 +1422,8 @@ __attribute__((weak)) void sShadow::Node::updatePriority(const sShadow& system, 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cShadowPriorityState* sShadow::Node::createState(uShadow* unit, u32 viewNum) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShadow::Node::MyDTI sShadow::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sShadow::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1467,53 +1500,73 @@ __attribute__((weak)) void sShadow::Context::updateView(u32 viewNum) {
 
 // Address: 0x01282db0 - 0x01282dc2 (18 bytes)
 u32 sShadow::Parameter::getShadowMapSize() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x8 from const sShadow::Resource*
-    if (this->mpResource != static_cast<const sShadow::Resource*>(nullptr)) {
-        return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this->mpResource) + static_cast<long>(8));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResource != nullptr) {
+        return mpResource->mShadowMapSize;
     } else {
-        return static_cast<u32>(128);
+        return 128;
     }
 }
 
 // Address: 0x01282dd0 - 0x01282ddf (15 bytes)
 u32 sShadow::Parameter::getShadowMapType() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0xc from const sShadow::Resource*
-    if (this->mpResource != static_cast<const sShadow::Resource*>(nullptr)) {
-        return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this->mpResource) + static_cast<long>(12));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResource != nullptr) {
+        return mpResource->mShadowMapType;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01282de0 - 0x01282df0 (16 bytes)
-__attribute__((weak)) nDraw::Texture* sShadow::Parameter::getDepthMap() const {
-    DDON_STUB("sShadow::Parameter::getDepthMap")
-    return nullptr;
+nDraw::Texture* sShadow::Parameter::getDepthMap() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResource != nullptr) {
+        return mpResource->mDepthMap;
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x01282df0 - 0x01282e00 (16 bytes)
-__attribute__((weak)) nDraw::Texture* sShadow::Parameter::getTempMap() const {
-    DDON_STUB("sShadow::Parameter::getTempMap")
-    return nullptr;
+nDraw::Texture* sShadow::Parameter::getTempMap() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResource != nullptr) {
+        return mpResource->mTempMap;
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x01282e00 - 0x01282e10 (16 bytes)
-__attribute__((weak)) nDraw::Texture* sShadow::Parameter::getDepthStencilMap() const {
-    DDON_STUB("sShadow::Parameter::getDepthStencilMap")
-    return nullptr;
+nDraw::Texture* sShadow::Parameter::getDepthStencilMap() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResource != nullptr) {
+        return mpResource->mDepthStencilMap;
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x01282e10 - 0x01282e2b (27 bytes)
-__attribute__((weak)) nDraw::Texture* sShadow::Parameter::getDepthMapCache() const {
-    DDON_STUB("sShadow::Parameter::getDepthMapCache")
+nDraw::Texture* sShadow::Parameter::getDepthMapCache() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpNode != nullptr) {
+        if (mpNode->mpVCResource != nullptr) {
+            return mpNode->mpVCResource->mDepthMapCache;
+        }
+    }
     return nullptr;
 }
 
 // Address: 0x01282e30 - 0x01282e4b (27 bytes)
-__attribute__((weak)) nDraw::Texture* sShadow::Parameter::getDepthStencilMapCache() const {
-    DDON_STUB("sShadow::Parameter::getDepthStencilMapCache")
+nDraw::Texture* sShadow::Parameter::getDepthStencilMapCache() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpNode != nullptr) {
+        if (mpNode->mpVCResource != nullptr) {
+            return mpNode->mpVCResource->mDepthStencilMapCache;
+        }
+    }
     return nullptr;
 }
 

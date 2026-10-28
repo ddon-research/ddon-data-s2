@@ -161,35 +161,35 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataNamedEnemyParamClient::CDataNamedEnemyParamClient() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucNameTypeId = static_cast<u8>(0);
-    this->m_usRateShrinkDefPart = static_cast<u16>(0);
-    this->m_usRateBlowDefPart = static_cast<u16>(0);
-    this->m_usRateOcdDef = static_cast<u16>(0);
-    this->m_usRateOcdAtk = static_cast<u16>(0);
-    this->m_usRateShrinkDef = static_cast<u16>(0);
-    this->m_usRateBlowDef = static_cast<u16>(0);
-    this->m_usRateDownDef = static_cast<u16>(0);
-    this->m_usRateShakeDef = static_cast<u16>(0);
-    this->m_usRateStr = static_cast<u16>(0);
-    this->m_usRateGuardAtk = static_cast<u16>(0);
-    this->m_usRateGuardDefBase = static_cast<u16>(0);
-    this->m_usRateGuardDefEq = static_cast<u16>(0);
-    this->m_usRateMagAttackBase = static_cast<u16>(0);
-    this->m_usRateMagAttackEq = static_cast<u16>(0);
-    this->m_usRateMagDefenceBase = static_cast<u16>(0);
-    this->m_usRateMagDefenceEq = static_cast<u16>(0);
-    this->m_usRatePhyAttackBase = static_cast<u16>(0);
-    this->m_usRatePhyAttackEq = static_cast<u16>(0);
-    this->m_usRatePhyDefenceBase = static_cast<u16>(0);
-    this->m_usRatePhyDefenceEq = static_cast<u16>(0);
-    this->m_unId = static_cast<u32>(0);
-    this->m_usRateHp = static_cast<u16>(0);
-    this->m_usRateHpPart = static_cast<u16>(0);
+    this->m_ucNameTypeId = 0;
+    this->m_usRateShrinkDefPart = 0;
+    this->m_usRateBlowDefPart = 0;
+    this->m_usRateOcdDef = 0;
+    this->m_usRateOcdAtk = 0;
+    this->m_usRateShrinkDef = 0;
+    this->m_usRateBlowDef = 0;
+    this->m_usRateDownDef = 0;
+    this->m_usRateShakeDef = 0;
+    this->m_usRateStr = 0;
+    this->m_usRateGuardAtk = 0;
+    this->m_usRateGuardDefBase = 0;
+    this->m_usRateGuardDefEq = 0;
+    this->m_usRateMagAttackBase = 0;
+    this->m_usRateMagAttackEq = 0;
+    this->m_usRateMagDefenceBase = 0;
+    this->m_usRateMagDefenceEq = 0;
+    this->m_usRatePhyAttackBase = 0;
+    this->m_usRatePhyAttackEq = 0;
+    this->m_usRatePhyDefenceBase = 0;
+    this->m_usRatePhyDefenceEq = 0;
+    this->m_unId = 0;
+    this->m_usRateHp = 0;
+    this->m_usRateHpPart = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataTraningRoomEnemyHeader::CDataTraningRoomEnemyHeader() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unID = static_cast<u32>(0);
+    this->m_unID = 0;
 }

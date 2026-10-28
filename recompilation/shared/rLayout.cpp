@@ -39,7 +39,7 @@ const MtDTI& rLayout::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rLayout::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLayout::DTI)->memAlloc(sz, align, ::rLayout::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLayout::DTI)->memAlloc(sz, align, rLayout::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ inline void* rLayout::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,34 +69,34 @@ inline void rLayout::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rLayout::rLayout() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mpArray = static_cast<rLayout::SetInfo*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
-    this->mLotType = static_cast<rLayout::TYPE>(0);
-    this->mSetInfoNeedNums[20] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[21] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[18] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[19] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[16] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[17] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[14] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[15] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[12] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[13] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[10] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[11] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[8] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[9] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[6] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[7] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[4] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[5] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[2] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[3] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[0] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[1] = static_cast<unsigned int>(0);
-    this->mpSetInfoBuffer = static_cast<void*>(nullptr);
-    this->mSetInfoSingleNewArray.mAutoDelete = true;
+    setAttribute(22u);
+    mpArray = nullptr;
+    mArrayNum = 0;
+    mLotType = TYPE_SCR;
+    mSetInfoNeedNums[20] = 0;
+    mSetInfoNeedNums[21] = 0;
+    mSetInfoNeedNums[18] = 0;
+    mSetInfoNeedNums[19] = 0;
+    mSetInfoNeedNums[16] = 0;
+    mSetInfoNeedNums[17] = 0;
+    mSetInfoNeedNums[14] = 0;
+    mSetInfoNeedNums[15] = 0;
+    mSetInfoNeedNums[12] = 0;
+    mSetInfoNeedNums[13] = 0;
+    mSetInfoNeedNums[10] = 0;
+    mSetInfoNeedNums[11] = 0;
+    mSetInfoNeedNums[8] = 0;
+    mSetInfoNeedNums[9] = 0;
+    mSetInfoNeedNums[6] = 0;
+    mSetInfoNeedNums[7] = 0;
+    mSetInfoNeedNums[4] = 0;
+    mSetInfoNeedNums[5] = 0;
+    mSetInfoNeedNums[2] = 0;
+    mSetInfoNeedNums[3] = 0;
+    mSetInfoNeedNums[0] = 0;
+    mSetInfoNeedNums[1] = 0;
+    mpSetInfoBuffer = nullptr;
+    mSetInfoSingleNewArray.mAutoDelete = true;
 }
 
 // Address: 0x00693590 - 0x006935c6 (54 bytes)
@@ -142,32 +142,32 @@ __attribute__((weak)) void rLayout::destruct() {
 // Address: 0x00694e20 - 0x00694ebe (158 bytes)
 void rLayout::clear() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mpArray = static_cast<rLayout::SetInfo*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
-    this->mLotType = static_cast<rLayout::TYPE>(0);
-    this->mSetInfoNeedNums[20] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[21] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[18] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[19] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[16] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[17] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[14] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[15] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[12] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[13] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[10] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[11] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[8] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[9] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[6] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[7] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[4] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[5] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[2] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[3] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[0] = static_cast<unsigned int>(0);
-    this->mSetInfoNeedNums[1] = static_cast<unsigned int>(0);
-    this->mpSetInfoBuffer = static_cast<void*>(nullptr);
+    mpArray = nullptr;
+    mArrayNum = 0;
+    mLotType = TYPE_SCR;
+    mSetInfoNeedNums[20] = 0;
+    mSetInfoNeedNums[21] = 0;
+    mSetInfoNeedNums[18] = 0;
+    mSetInfoNeedNums[19] = 0;
+    mSetInfoNeedNums[16] = 0;
+    mSetInfoNeedNums[17] = 0;
+    mSetInfoNeedNums[14] = 0;
+    mSetInfoNeedNums[15] = 0;
+    mSetInfoNeedNums[12] = 0;
+    mSetInfoNeedNums[13] = 0;
+    mSetInfoNeedNums[10] = 0;
+    mSetInfoNeedNums[11] = 0;
+    mSetInfoNeedNums[8] = 0;
+    mSetInfoNeedNums[9] = 0;
+    mSetInfoNeedNums[6] = 0;
+    mSetInfoNeedNums[7] = 0;
+    mSetInfoNeedNums[4] = 0;
+    mSetInfoNeedNums[5] = 0;
+    mSetInfoNeedNums[2] = 0;
+    mSetInfoNeedNums[3] = 0;
+    mSetInfoNeedNums[0] = 0;
+    mSetInfoNeedNums[1] = 0;
+    mpSetInfoBuffer = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -204,26 +204,26 @@ void rLayout::clear() {
 // Address: 0x01a99a30 - 0x01a99a42 (18 bytes)
 rLayout::SetInfo* rLayout::getSetInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mArrayNum) {
-        return &this->mpArray[index];
+    if (index < mArrayNum) {
+        return &mpArray[index];
     } else {
-        return static_cast<rLayout::SetInfo*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01a99a50 - 0x01a99a54 (4 bytes)
 u32 rLayout::getSetInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x01a99a60 - 0x01a99a76 (22 bytes)
 s32 rLayout::getID(u32 no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no < this->mArrayNum) {
-        return this->mpArray[no].mID;
+    if (no < mArrayNum) {
+        return mpArray[no].mID;
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -250,6 +250,12 @@ __attribute__((weak)) void rLayout::filePath2SplitID(nLayout::stSplitID& splitID
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLayout::MyDTI rLayout::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const s32 rLayout::DATA_VERSION;
+
+// Not defined (relocated bytes): MT_CTSTR rLayout::typeKeyWord[5];
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rLayout.cpp at 0x00695b60-0x00695ba2 (called at rLayout.cpp:147)
 //   in _GLOBAL__sub_I_rLayout.cpp at 0x00695b60-0x00695ba2 (called at rLayout.h:87)
@@ -258,7 +264,7 @@ __attribute__((weak)) void rLayout::filePath2SplitID(nLayout::stSplitID& splitID
 // Address: 0x006933d0 - 0x0069350e (318 bytes)
 MtObject* rLayout::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rLayout;
+    return new (16u) rLayout;
 }
 
 // No out-of-line body: no code in the ELF
@@ -297,7 +303,7 @@ const MtDTI& rLayout::SetInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLayout::SetInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLayout::SetInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLayout::SetInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -313,21 +319,21 @@ inline void rLayout::SetInfo::operator delete(void* p_addr) {
 // a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
 inline rLayout::SetInfo::SetInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: nLayout::stLayoutID(), nLayout::stSplitID() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mID = static_cast<s32>(0);
-    this->mLayoutID.mLayoutID = static_cast<u32>(67108863);
-    this->mSplitID.mSplitID = static_cast<u32>(0);
-    this->mpInfo = static_cast<cSetInfo*>(nullptr);
+    mID = 0;
+    mLayoutID.mLayoutID = 0x3FFFFFF;
+    mSplitID.mSplitID = 0;
+    mpInfo = nullptr;
 }
 
 // Address: 0x00694f90 - 0x00694fc5 (53 bytes)
 // Also emitted as: _ZN7rLayout7SetInfoD0Ev at 0x00694fd0
 rLayout::SetInfo::~SetInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpInfo == static_cast<cSetInfo*>(nullptr)) {
+    if (mpInfo == nullptr) {
         return;
     }
-    delete this->mpInfo;
-    this->mpInfo = static_cast<cSetInfo*>(nullptr);
+    delete mpInfo;
+    mpInfo = nullptr;
 }
 
 // Address: 0x00695030 - 0x00695471 (1089 bytes)
@@ -361,13 +367,13 @@ __attribute__((weak)) void rLayout::SetInfo::setDummy(const MtString&) {
 // Address: 0x00695480 - 0x00695484 (4 bytes)
 s32 rLayout::SetInfo::getID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mID;
+    return mID;
 }
 
 // Address: 0x00695490 - 0x00695494 (4 bytes)
 void rLayout::SetInfo::setID(s32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mID = val;
+    mID = val;
 }
 
 // No out-of-line body: no code in the ELF
@@ -385,13 +391,13 @@ void rLayout::SetInfo::setID(s32 val) {
 // Address: 0x01a99940 - 0x01a99949 (9 bytes)
 u32 rLayout::SetInfo::getArea() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLayoutID.mLayoutID & static_cast<u32>(1023);
+    return mLayoutID.mLayoutID & 1023u;
 }
 
 // Address: 0x01a99970 - 0x01a99977 (7 bytes)
 u32 rLayout::SetInfo::getGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLayoutID.mLayoutID >> static_cast<u32>(10);
+    return mLayoutID.mLayoutID >> 10;
 }
 
 // No out-of-line body: no code in the ELF
@@ -400,13 +406,13 @@ u32 rLayout::SetInfo::getGroup() const {
 // Address: 0x01a99950 - 0x01a99964 (20 bytes)
 void rLayout::SetInfo::setArea(u32 area) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLayoutID.mLayoutID = (area & static_cast<u32>(1023)) | (this->mLayoutID.mLayoutID & static_cast<u32>(4294966272));
+    mLayoutID.mLayoutID = (area & 1023u) | (mLayoutID.mLayoutID & 0xFFFFFC00u);
 }
 
 // Address: 0x01a99980 - 0x01a99991 (17 bytes)
 void rLayout::SetInfo::setGroup(u32 group) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLayoutID.mLayoutID = (group * static_cast<u32>(1024)) | (this->mLayoutID.mLayoutID & static_cast<u32>(1023));
+    mLayoutID.mLayoutID = (group * 1024u) | (mLayoutID.mLayoutID & 1023u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -416,14 +422,14 @@ void rLayout::SetInfo::setGroup(u32 group) {
 s32 rLayout::SetInfo::getSplitX() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1c from const rLayout::SetInfo*
-    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(28));
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 28);
 }
 
 // Address: 0x01a999c0 - 0x01a999c5 (5 bytes)
 s32 rLayout::SetInfo::getSplitZ() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1e from const rLayout::SetInfo*
-    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(30));
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 30);
 }
 
 // No out-of-line body: no code in the ELF
@@ -450,6 +456,8 @@ __attribute__((weak)) MtVector3 rLayout::SetInfo::getSetPos() const {
 
 // No out-of-line body: no code in the ELF
 // void rLayout::SetInfo::setSetPos(MtVector3& pos);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLayout::SetInfo::MyDTI rLayout::SetInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLayout.cpp at 0x00695ba2-0x00695bdf (called at rLayout.cpp:543)

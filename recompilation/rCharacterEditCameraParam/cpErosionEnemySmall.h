@@ -108,6 +108,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemySmall::setupBeforeContext at 0x154896-0x15489c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemySmall::setErosionSmallMode(nErosionEnemySmall::EROSION_SMALL_MODE mode) {
+    this->mErosionSmallMode = mode;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nErosionEnemySmall::EROSION_SMALL_MODE cpErosionEnemySmall::getErosionSmallMode() const {
     return this->mErosionSmallMode;
 }

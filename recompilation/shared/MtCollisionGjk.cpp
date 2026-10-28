@@ -45,7 +45,7 @@ const MtDTI& MtCollisionGjk::getDTI() const {
 // Address: 0x00d7f750 - 0x00d7f77a (42 bytes)
 __attribute__((weak)) void MtCollisionGjk::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtCollisionGjk::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtCollisionGjk::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,6 +115,10 @@ __attribute__((weak)) void MtCollisionGjk::operator delete(void* p_addr) {
 __attribute__((weak)) void MtCollisionGjk::testDrawSolverVertex(MtCollisionUtil::MtSimplexSolver& solver, u32 LoopCount, const MtVector3& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCollisionGjk::MyDTI MtCollisionGjk::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 MtCollisionGjk::DEFAULT_EPSILON;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtCollisionGjk::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

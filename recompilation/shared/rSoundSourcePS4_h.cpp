@@ -2,10 +2,9 @@
 #include <new>
 #include <_pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #include "rSoundSourcePS4_h.h"
-#include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtMemoryAllocator.h"
 #include "MtSynchronize.h"
 #include "rSoundSource.h"
 #include "../rSoundStreamRequest/rSoundStreamSourcePackage.h"
@@ -82,7 +81,7 @@ const MtDTI* rSoundSourceAT9::getDTINative() const {
 bool rSoundSourceAT9::checkNativeEncodeParameter(const u32 encodeParam) const {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEncodeParam == encodeParam;
+    return mEncodeParam == encodeParam;
 }
 
 // Address: 0x01373f40 - 0x013741f4 (692 bytes)
@@ -122,6 +121,8 @@ __attribute__((weak)) bool rSoundSourceAT9::initAT9(MtStream& in) {
     DDON_STUB("rSoundSourceAT9::initAT9")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSourceAT9::MyDTI rSoundSourceAT9::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundSourceAT9::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -192,223 +193,78 @@ const MtDTI* rSoundSourceStreamAT9::getDTINative() const {
 }
 
 // Address: 0x01374d90 - 0x01374f21 (401 bytes)
-bool rSoundSourceStreamAT9::prepareToBuffer() {
-    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place read twice with no call between; the body oracle reports this body.
-    if (this->mpStreamSourcePackage != static_cast<rSoundStreamSourcePackage*>(nullptr)) {
-        if (::scePthreadMutexLock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
-        }
-        if (this->::rSoundSource::mpBuffer == static_cast<void*>(nullptr)) {
-            // inferred: a temporary for the value the load at 0x1374dd1 read, used once; no DWARF local holds it
-            u32 t0 = this->::rSoundSource::mDescriptor.mStreamSize;
-            void* pbuf = ::MtMemoryAllocator::getAllocator(::rSoundSource::DTI)->memAlloc(t0, static_cast<u32>(16), ::rSoundSource::DTI.::MtDTI::mID);
-            if (pbuf != static_cast<void*>(nullptr)) {
-                if (this->mpStreamSourcePackage != static_cast<rSoundStreamSourcePackage*>(nullptr)) {
-                    if (this->mpStreamSourcePackage->::rSoundSource::mOpenCtr != static_cast<s32>(0)) {
-                        this->mpStreamSourcePackage->::rSoundSource::mGlobalID = (this->mPackageFileOffset < this->mpStreamSourcePackage->::rSoundSource::mDescriptor.mStreamSize) ? this->mPackageFileOffset : (this->mpStreamSourcePackage->::rSoundSource::mDescriptor.mStreamSize - static_cast<u32>(1));
-                        u32 read_size = this->::rSoundSourceStreamAT9::read(pbuf, this->::rSoundSource::mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
-                        if (this->::rSoundSource::mDescriptor.mStreamSize == read_size) {
-                            if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                                delete this->::rSoundSource::mpFile;
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = this->::rSoundSource::mDescriptor.mStreamSize;
-                            } else {
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = read_size;
-                            }
-                            this->::rSoundSource::mSelfAllocation = true;
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return true;
-                        } else {
-                            ::MtMemoryAllocator::getAllocator(::rSoundSourceStreamAT9::DTI)->memFree(pbuf);
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return false;
-                        }
-                    } else {
-                        u32 read_size = this->::rSoundSourceStreamAT9::read(pbuf, this->::rSoundSource::mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
-                        if (this->::rSoundSource::mDescriptor.mStreamSize == read_size) {
-                            if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                                delete this->::rSoundSource::mpFile;
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = this->::rSoundSource::mDescriptor.mStreamSize;
-                            } else {
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = read_size;
-                            }
-                            this->::rSoundSource::mSelfAllocation = true;
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return true;
-                        } else {
-                            ::MtMemoryAllocator::getAllocator(::rSoundSourceStreamAT9::DTI)->memFree(pbuf);
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return false;
-                        }
-                    }
-                } else {
-                    if (this->::rSoundSource::mOpenCtr != static_cast<s32>(0)) {
-                        this->::rSoundSource::mGlobalID = (this->::rSoundSource::mDescriptor.mStreamSize == static_cast<u32>(0)) ? (this->::rSoundSource::mDescriptor.mStreamSize - static_cast<u32>(1)) : static_cast<u32>(0);
-                        u32 read_size = this->::rSoundSourceStreamAT9::read(pbuf, this->::rSoundSource::mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
-                        if (this->::rSoundSource::mDescriptor.mStreamSize == read_size) {
-                            if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                                delete this->::rSoundSource::mpFile;
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = this->::rSoundSource::mDescriptor.mStreamSize;
-                            } else {
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = read_size;
-                            }
-                            this->::rSoundSource::mSelfAllocation = true;
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return true;
-                        } else {
-                            ::MtMemoryAllocator::getAllocator(::rSoundSourceStreamAT9::DTI)->memFree(pbuf);
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return false;
-                        }
-                    } else {
-                        u32 read_size = this->::rSoundSourceStreamAT9::read(pbuf, this->::rSoundSource::mDescriptor.mStreamSize, static_cast<u32*>(nullptr));
-                        if (this->::rSoundSource::mDescriptor.mStreamSize == read_size) {
-                            if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                                delete this->::rSoundSource::mpFile;
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = this->::rSoundSource::mDescriptor.mStreamSize;
-                            } else {
-                                this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
-                                this->::rSoundSource::mpBuffer = pbuf;
-                                this->::rSoundSource::mBufferLength = read_size;
-                            }
-                            this->::rSoundSource::mSelfAllocation = true;
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return true;
-                        } else {
-                            ::MtMemoryAllocator::getAllocator(::rSoundSourceStreamAT9::DTI)->memFree(pbuf);
-                            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
-                            }
-                            return false;
-                        }
-                    }
-                }
-            } else {
-                if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
-                }
-                return false;
-            }
-        } else {
-            if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
-            }
-            return true;
-        }
-    } else {
-        return this->::rSoundSource::prepareToBuffer();
-    }
+__attribute__((weak)) bool rSoundSourceStreamAT9::prepareToBuffer() {
+    // local: void* pbuf;
+    // local: u32 read_size;
+    DDON_STUB("rSoundSourceStreamAT9::prepareToBuffer")
+    return {};
 }
 
 // Address: 0x013750c0 - 0x013750df (31 bytes)
 bool rSoundSourceStreamAT9::open() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStreamSourcePackage != static_cast<rSoundStreamSourcePackage*>(nullptr)) {
-        this->::rSoundSource::mOpenCtr = this->::rSoundSource::mOpenCtr + static_cast<s32>(1);
+    if (mpStreamSourcePackage != nullptr) {
+        mOpenCtr = mOpenCtr + 1;
         return true;
     } else {
-        return this->::rSoundSource::open();
+        return this->rSoundSource::open();
     }
 }
 
 // Address: 0x013750e0 - 0x0137517e (158 bytes)
 bool rSoundSourceStreamAT9::close() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpStreamSourcePackage != static_cast<rSoundStreamSourcePackage*>(nullptr)) {
-        this->::rSoundSource::mOpenCtr = this->::rSoundSource::mOpenCtr - static_cast<s32>(1);
+    if (mpStreamSourcePackage != nullptr) {
+        mOpenCtr = mOpenCtr - 1;
         return true;
     } else {
-        if (::scePthreadMutexLock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        if (this->::rSoundSource::mpBuffer == static_cast<void*>(nullptr)) {
-            if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
+        if (mpBuffer == nullptr) {
+            if (mpFile != nullptr) {
                 // inferred: a temporary for the value the load at 0x1375129 read, used twice; no DWARF local holds it
-                s32 t0 = this->::rSoundSource::mOpenCtr;
-                this->::rSoundSource::mOpenCtr = t0 - static_cast<s32>(1);
-                if (t0 > static_cast<s32>(0)) {
-                    if (this->::rSoundSource::mOpenCtr == static_cast<s32>(0)) {
-                        if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                            this->::rSoundSource::mpFile->close();
+                s32 t0 = mOpenCtr;
+                mOpenCtr = t0 - 1;
+                if (t0 > 0) {
+                    if (mOpenCtr == 0) {
+                        if (mpFile != nullptr) {
+                            mpFile->close();
                         }
                     }
-                    if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                     return true;
                 } else {
-                    if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                     return false;
                 }
             } else {
-                if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
                 return false;
             }
         } else {
             // inferred: a temporary for the value the load at 0x1375129 read, used twice; no DWARF local holds it
-            s32 t0 = this->::rSoundSource::mOpenCtr;
-            this->::rSoundSource::mOpenCtr = t0 - static_cast<s32>(1);
-            if (t0 > static_cast<s32>(0)) {
-                if (this->::rSoundSource::mOpenCtr == static_cast<s32>(0)) {
-                    if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-                        this->::rSoundSource::mpFile->close();
+            s32 t0 = mOpenCtr;
+            mOpenCtr = t0 - 1;
+            if (t0 > 0) {
+                if (mOpenCtr == 0) {
+                    if (mpFile != nullptr) {
+                        mpFile->close();
                     }
                 }
-                if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
                 return true;
             } else {
-                if (::scePthreadMutexUnlock(&this->::rSoundSource::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
                 return false;
             }
@@ -423,22 +279,69 @@ __attribute__((weak)) u32 rSoundSourceStreamAT9::seek(u32 pos, u32* pid) {
 }
 
 // Address: 0x01374fa0 - 0x013750b3 (275 bytes)
-__attribute__((weak)) u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
-    DDON_STUB("rSoundSourceStreamAT9::read")
-    return {};
+u32 rSoundSourceStreamAT9::read(void* pdest, u32 size, u32* pid) {
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a byte step from a void* through char*: void* stepped by bytes
+    if (mpStreamSourcePackage != nullptr) {
+        return mpStreamSourcePackage->read(pdest, size, pid, mPackageFileOffset);
+    } else {
+        if (mOpenCtr != 0) {
+            if (mpBuffer != nullptr) {
+                // inferred: a temporary for the value the load at 0x137500d read, used 4 times; no DWARF local holds it
+                unsigned int t0 = *((pid == nullptr) ? (&mGlobalID) : pid);
+                // inferred: a temporary for the value the load at 0x1375011 read, used 4 times; no DWARF local holds it
+                u32 t1 = mBufferLength;
+                memcpy(pdest, static_cast<char*>(mpBuffer) + t0, (t1 < (size + t0)) ? (t1 - t0) : size);
+                *((pid == nullptr) ? (&mGlobalID) : pid) = (*((pid == nullptr) ? (&mGlobalID) : pid)) + ((t1 < (size + t0)) ? (t1 - t0) : size);
+                mFilePosition = *((pid == nullptr) ? (&mGlobalID) : pid);
+                return (t1 < (size + t0)) ? (t1 - t0) : size;
+            } else {
+                if (mpFile != nullptr) {
+                    if (mpFile->isReadable()) {
+                        if ((*((pid == nullptr) ? (&mGlobalID) : pid)) != mFilePosition) {
+                            mpFile->seek(static_cast<s32>(*((pid == nullptr) ? (&mGlobalID) : pid)), MtStream::ORG_BEGIN);
+                            // inferred: a temporary for the result of the call at 0x137508d, used 3 times; no DWARF local holds it
+                            u32 t3 = mpFile->read(pdest, size);
+                            // inferred: a temporary for the value the load at 0x1375093 read, used twice; no DWARF local holds it
+                            unsigned int t4 = *((pid == nullptr) ? (&mGlobalID) : pid);
+                            *((pid == nullptr) ? (&mGlobalID) : pid) = t4 + t3;
+                            mFilePosition = *((pid == nullptr) ? (&mGlobalID) : pid);
+                            return t3;
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x137508d, used 3 times; no DWARF local holds it
+                            u32 t3 = mpFile->read(pdest, size);
+                            // inferred: a temporary for the value the load at 0x1375093 read, used twice; no DWARF local holds it
+                            unsigned int t4 = *((pid == nullptr) ? (&mGlobalID) : pid);
+                            *((pid == nullptr) ? (&mGlobalID) : pid) = t4 + t3;
+                            mFilePosition = *((pid == nullptr) ? (&mGlobalID) : pid);
+                            return t3;
+                        }
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        } else {
+            return 0;
+        }
+    }
 }
 
 // Address: 0x01375180 - 0x01375188 (8 bytes)
 rSoundStreamSourcePackage* rSoundSourceStreamAT9::getSourcePackage() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpStreamSourcePackage;
+    return mpStreamSourcePackage;
 }
 
 // Address: 0x01375190 - 0x01375197 (7 bytes)
 u32 rSoundSourceStreamAT9::getPackageFileOffset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPackageFileOffset;
+    return mPackageFileOffset;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSourceStreamAT9::MyDTI rSoundSourceStreamAT9::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundSourceStreamAT9::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

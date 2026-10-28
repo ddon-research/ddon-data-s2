@@ -88,3 +88,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uFSMTask::move at 0x8fde8d-0x8fde91; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline MtObject* cFSMCore::getOwner() const {
+    return this->mpOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cFSMTaskCtrl::addFSMTaskCamEvFromName at 0x8fd777-0x8fd77b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cFSMCore::setOwner(MtObject* pOwner) {
+    this->mpOwner = pOwner;
+}

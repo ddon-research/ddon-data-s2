@@ -53,7 +53,7 @@ const MtDTI& uColorCorrectFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19uColorCorrectFilterD0Ev at 0x00ea9c98-0x00ea9cb9, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uColorCorrectFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uColorCorrectFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,16 +88,16 @@ __attribute__((weak)) void uColorCorrectFilter::move() {
 // Address: 0x00ea9ec0 - 0x00ea9ee8 (40 bytes)
 void uColorCorrectFilter::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pdraw->mContext.pscene == static_cast<nDraw::Scene*>(nullptr)) {
+    if (pdraw->mContext.pscene == nullptr) {
         return;
     }
-    ::uColorCorrectFilter::drawColorCorrect(pdraw, static_cast<uFilter*>(this), this->mParam, 1.0f);
+    uColorCorrectFilter::drawColorCorrect(pdraw, static_cast<uFilter*>(this), mParam, 1.0f);
 }
 
 // Address: 0x00eabab0 - 0x00eabab5 (5 bytes)
 MtUI* uColorCorrectFilter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00eabac0 - 0x00eac40f (2383 bytes)
@@ -118,7 +118,7 @@ __attribute__((weak)) void uColorCorrectFilter::createProperty(MtPropertyList& s
 // Address: 0x01b5eb70 - 0x01b5eb79 (9 bytes)
 f32 uColorCorrectFilter::getAttenuationStartZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam.mStartZ;
+    return mParam.mStartZ;
 }
 
 // Address: 0x01b5eb80 - 0x01b5ebaf (47 bytes)
@@ -130,7 +130,7 @@ __attribute__((weak)) void uColorCorrectFilter::setAttenuationStartZ(f32 StartZ)
 // Address: 0x01b5ebb0 - 0x01b5ebb9 (9 bytes)
 f32 uColorCorrectFilter::getAttenuationEndZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam.mEndZ;
+    return mParam.mEndZ;
 }
 
 // Address: 0x01b5ebc0 - 0x01b5ebdf (31 bytes)
@@ -178,6 +178,8 @@ __attribute__((weak)) MtHermiteCurve uColorCorrectFilter::getToneCurve() {
     __builtin_unreachable();
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uColorCorrectFilter::MyDTI uColorCorrectFilter::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uColorCorrectFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -219,7 +221,7 @@ const MtDTI& uColorCorrectFilter::Corrector::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uColorCorrectFilter::Corrector::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::Corrector::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uColorCorrectFilter::Corrector::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -240,7 +242,7 @@ inline void uColorCorrectFilter::Corrector::operator delete(void* p_addr) {
 // Address: 0x00ea8c70 - 0x00ea8c75 (5 bytes)
 MtUI* uColorCorrectFilter::Corrector::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00ea8c80 - 0x00ea8faa (810 bytes)
@@ -275,6 +277,8 @@ __attribute__((weak)) void uColorCorrectFilter::Corrector::createProperty(MtProp
 
 // No out-of-line body: no code in the ELF
 // void uColorCorrectFilter::Corrector::setFactor2(const MtVector3&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uColorCorrectFilter::Corrector::MyDTI uColorCorrectFilter::Corrector::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uColorCorrectFilter::Corrector::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -381,22 +385,22 @@ __attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::createTexture
 // Address: 0x00ea93d0 - 0x00ea9419 (73 bytes)
 void uColorCorrectFilter::ColorCorrectParam::releaseTextures() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpToneMap != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpToneMap->release();
-        this->mpToneMap = static_cast<nDraw::Texture*>(nullptr);
+    if (mpToneMap != nullptr) {
+        mpToneMap->release();
+        mpToneMap = nullptr;
     }
-    if (this->mpVolumeColorCorrect == static_cast<rTexture*>(nullptr)) {
+    if (mpVolumeColorCorrect == nullptr) {
         return;
     }
-    this->mpVolumeColorCorrect->::cResource::release();
-    this->mpVolumeColorCorrect = static_cast<rTexture*>(nullptr);
+    mpVolumeColorCorrect->release();
+    mpVolumeColorCorrect = nullptr;
 }
 
 // Address: 0x00ea9420 - 0x00ea9439 (25 bytes)
 bool uColorCorrectFilter::ColorCorrectParam::isTexturesCreated() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpToneMap != static_cast<nDraw::Texture*>(nullptr)) {
-        return this->mpVolumeColorCorrect != static_cast<rTexture*>(nullptr);
+    if (mpToneMap != nullptr) {
+        return mpVolumeColorCorrect != nullptr;
     } else {
         return false;
     }
@@ -481,7 +485,7 @@ const MtDTI& uDOFFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10uDOFFilterD0Ev at 0x00e8a06e-0x00e8a08f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uDOFFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uDOFFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uDOFFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -520,17 +524,17 @@ __attribute__((weak)) void uDOFFilter::sync() {
 // Address: 0x00e8a2c0 - 0x00e8a2d0 (16 bytes)
 void uDOFFilter::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mbGSDOF != false) {
-        this->::uDOFFilter::drawGSDOF(pdraw);
+    if (mbGSDOF) {
+        drawGSDOF(pdraw);
     } else {
-        this->::uDOFFilter::drawNormalDOF(pdraw);
+        drawNormalDOF(pdraw);
     }
 }
 
 // Address: 0x00e8d540 - 0x00e8d545 (5 bytes)
 MtUI* uDOFFilter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00e8d550 - 0x00e8e3bd (3693 bytes)
@@ -542,34 +546,34 @@ __attribute__((weak)) void uDOFFilter::createProperty(MtPropertyList& s) {
 // Address: 0x00e8d520 - 0x00e8d525 (5 bytes)
 void uDOFFilter::setGSDOF(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbGSDOF = enable;
+    mbGSDOF = enable;
 }
 
 // Address: 0x01b5e920 - 0x01b5e924 (4 bytes)
 bool uDOFFilter::isGSDOF() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mbGSDOF;
+    return mbGSDOF;
 }
 
 // Address: 0x01b5e910 - 0x01b5e914 (4 bytes)
 u32 uDOFFilter::getBlurCount() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBlurCount;
+    return mBlurCount;
 }
 
 // Address: 0x00e8d530 - 0x00e8d539 (9 bytes)
 void uDOFFilter::setBlurCount(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBlurCount == n) {
+    if (mBlurCount == n) {
         return;
     }
-    this->mBlurCount = n;
+    mBlurCount = n;
 }
 
 // Address: 0x00e8e3e0 - 0x00e8e3e9 (9 bytes)
 f32 uDOFFilter::getNear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNear;
+    return mNear;
 }
 
 // Address: 0x00e8e3f0 - 0x00e8e451 (97 bytes)
@@ -577,32 +581,32 @@ void uDOFFilter::setNear(f32 f) {
     // DWARF local not rendered: uCamera* pCamera;
     // DWARF local not rendered: f32 fNearLimit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNear = f;
-    if (f > this->mFocal) {
-        this->mNear = this->mFocal;
-        if ((::sCamera::mpInstance)->mViewport[0].mpCamera != static_cast<uCamera*>(nullptr)) {
-            if ((::sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane > this->mNear) {
-                this->mNear = (::sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane;
+    mNear = f;
+    if (f > mFocal) {
+        mNear = mFocal;
+        if ((sCamera::mpInstance)->mViewport[0].mpCamera != nullptr) {
+            if ((sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane > mNear) {
+                mNear = (sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane;
             }
         }
-        if (0.0f > this->mNear) {
-            this->mNear = 0.0f;
+        if (0.0f > mNear) {
+            mNear = 0.0f;
         }
     } else {
-        if ((::sCamera::mpInstance)->mViewport[0].mpCamera != static_cast<uCamera*>(nullptr)) {
-            if ((::sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane > f) {
-                this->mNear = (::sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane;
-                if (0.0f > this->mNear) {
-                    this->mNear = 0.0f;
+        if ((sCamera::mpInstance)->mViewport[0].mpCamera != nullptr) {
+            if ((sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane > f) {
+                mNear = (sCamera::mpInstance)->mViewport[0].mpCamera->mNearPlane;
+                if (0.0f > mNear) {
+                    mNear = 0.0f;
                 }
             } else {
                 if (0.0f > f) {
-                    this->mNear = 0.0f;
+                    mNear = 0.0f;
                 }
             }
         } else {
             if (0.0f > f) {
-                this->mNear = 0.0f;
+                mNear = 0.0f;
             }
         }
     }
@@ -611,7 +615,7 @@ void uDOFFilter::setNear(f32 f) {
 // Address: 0x00e8e460 - 0x00e8e469 (9 bytes)
 f32 uDOFFilter::getFar() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFar;
+    return mFar;
 }
 
 // Address: 0x00e8e470 - 0x00e8e4b9 (73 bytes)
@@ -619,18 +623,18 @@ void uDOFFilter::setFar(f32 f) {
     // DWARF local not rendered: uCamera* pCamera;
     // DWARF local not rendered: f32 fFarLimit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFar = f;
-    if (this->mFocal > f) {
-        this->mFar = this->mFocal;
-        if ((::sCamera::mpInstance)->mViewport[0].mpCamera != static_cast<uCamera*>(nullptr)) {
-            if (this->mFar > (::sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane) {
-                this->mFar = (::sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane;
+    mFar = f;
+    if (mFocal > f) {
+        mFar = mFocal;
+        if ((sCamera::mpInstance)->mViewport[0].mpCamera != nullptr) {
+            if (mFar > (sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane) {
+                mFar = (sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane;
             }
         }
     } else {
-        if ((::sCamera::mpInstance)->mViewport[0].mpCamera != static_cast<uCamera*>(nullptr)) {
-            if (f > (::sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane) {
-                this->mFar = (::sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane;
+        if ((sCamera::mpInstance)->mViewport[0].mpCamera != nullptr) {
+            if (f > (sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane) {
+                mFar = (sCamera::mpInstance)->mViewport[0].mpCamera->mFarPlane;
             }
         }
     }
@@ -639,13 +643,13 @@ void uDOFFilter::setFar(f32 f) {
 // Address: 0x00e8e3c0 - 0x00e8e3c9 (9 bytes)
 f32 uDOFFilter::getFocal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFocal;
+    return mFocal;
 }
 
 // Address: 0x00e8e3d0 - 0x00e8e3d9 (9 bytes)
 void uDOFFilter::setFocal(f32 f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFocal = f;
+    mFocal = f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -785,6 +789,8 @@ __attribute__((weak)) void uDOFFilter::drawGSDOF(cDraw* pdraw) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uDOFFilter::MyDTI uDOFFilter::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uDOFFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -827,7 +833,7 @@ const MtDTI& uFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7uFilterD0Ev at 0x00e88ffe-0x00e8901f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -842,10 +848,10 @@ inline void uFilter::operator delete(void* p_addr) {
 // Address: 0x00e88fa0 - 0x00e88fd8 (56 bytes)
 uFilter::uFilter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::mDrawMode = static_cast<u32>(1);
-    this->mPass = static_cast<u16>(5);
-    this->mPriority = static_cast<u32>(1);
-    this->mScreenLayer = static_cast<u32>(0);
+    mDrawMode = 1;
+    mPass = 5;
+    mPriority = 1;
+    mScreenLayer = 0;
 }
 
 // Address: 0x00e88fe0 - 0x00e88fe5 (5 bytes)
@@ -863,13 +869,13 @@ __attribute__((weak)) void uFilter::createProperty(MtPropertyList& s) {
 // Address: 0x00e893b0 - 0x00e893b5 (5 bytes)
 MtUI* uFilter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00e893c0 - 0x00e893c6 (6 bytes)
 u64 uFilter::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(1);
+    return 1;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (38 bytes)
@@ -975,6 +981,8 @@ __attribute__((weak)) f32 uFilter::calcScreenAttenuate(cDraw* pDraw, f32 ScreenA
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 uFilter::GaussianDistribution(f32 x, f32 y, f32 rho);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uFilter::MyDTI uFilter::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1005,7 +1013,7 @@ const MtDTI& uMotionBlurFilter::getDTI() const {
 // Address: 0x00e9a2b0 - 0x00e9a2f0 (64 bytes)
 void* uMotionBlurFilter::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uMotionBlurFilter::DTI)->memAlloc(sz, align, ::uMotionBlurFilter::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uMotionBlurFilter::DTI)->memAlloc(sz, align, uMotionBlurFilter::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1020,7 +1028,7 @@ void* uMotionBlurFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17uMotionBlurFilterD0Ev at 0x00e9a53e-0x00e9a55f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uMotionBlurFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uMotionBlurFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uMotionBlurFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1059,20 +1067,20 @@ __attribute__((weak)) void uMotionBlurFilter::sync() {
 // Address: 0x00e9aad0 - 0x00e9aaf4 (36 bytes)
 void uMotionBlurFilter::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sRender::mpInstance)->mIsDrawFilterArray[13] == false) {
+    if (!(sRender::mpInstance)->mIsDrawFilterArray[13]) {
         return;
     }
-    if (this->mReconstructBlur != false) {
-        this->::uMotionBlurFilter::drawReconstructBlur(pdraw);
+    if (mReconstructBlur) {
+        drawReconstructBlur(pdraw);
     } else {
-        this->::uMotionBlurFilter::drawStretchBlur(pdraw);
+        drawStretchBlur(pdraw);
     }
 }
 
 // Address: 0x00ea0c70 - 0x00ea0c75 (5 bytes)
 MtUI* uMotionBlurFilter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00ea0c80 - 0x00ea1d08 (4232 bytes)
@@ -1102,14 +1110,14 @@ __attribute__((weak)) void uMotionBlurFilter::createProperty(MtPropertyList& s) 
 // Address: 0x00ea0c50 - 0x00ea0c62 (18 bytes)
 void uMotionBlurFilter::setReconstructBlur(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReconstructBlur = enable;
-    this->mPrevFrameVelocityResolution = static_cast<uMotionBlurFilter::VRESOLUTION>(-1);
+    mReconstructBlur = enable;
+    mPrevFrameVelocityResolution = __VRESOLUTION__U32;
 }
 
 // Address: 0x01b5eaf0 - 0x01b5eaf7 (7 bytes)
 bool uMotionBlurFilter::isReconstructBlur() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReconstructBlur;
+    return mReconstructBlur;
 }
 
 // Address: 0x00e9d5d0 - 0x00ea0c41 (13937 bytes)
@@ -1185,6 +1193,8 @@ __attribute__((weak)) void uMotionBlurFilter::drawReconstructBlur(cDraw* pdraw) 
     DDON_STUB("uMotionBlurFilter::drawReconstructBlur")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uMotionBlurFilter::MyDTI uMotionBlurFilter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uMotionBlurFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

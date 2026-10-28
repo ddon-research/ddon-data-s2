@@ -396,6 +396,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICharacter::updateHpGauge at 0x9f1003-0x9f1007; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const nJobParam::cHumanBaseInfo& cContextPlayerInfo::getBaseInfo() const {
+    return this->mBaseInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::setRespawn at 0x48822f-0x488234; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextPlayerInfo::getMaxHP() const {
+    return this->mBaseInfo.mMaxHP_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline f32 cContextPlayerInfo::getFinalMaxStamina() const {
     return this->mBaseInfo.mFinalMaxStamina_pri;
@@ -420,7 +432,7 @@ inline nHuman::CUSTOM_SKILL_GROUP cContextPlayerInfo::getNowCustomSkillGroup() c
 // Inline, no code of its own: checked where it is inlined.
 inline cContextPlayerInfo::cAbility::cAbility() {
     this->mAbilityId = static_cast<nAbility::ABILITY_ID>(-1);
-    this->mLevel = static_cast<s32>(1);
+    this->mLevel = 1;
     this->mIsEnable = true;
     this->mIsUsed = false;
 }

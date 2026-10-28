@@ -35,7 +35,7 @@ const MtDTI& MtGeomCapsule::getDTI() const {
 // Address: 0x00d6f3d0 - 0x00d6f410 (64 bytes)
 void* MtGeomCapsule::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomCapsule::DTI)->memAlloc(sz, align, ::MtGeomCapsule::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomCapsule::DTI)->memAlloc(sz, align, MtGeomCapsule::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomCapsule::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomCapsule::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomCapsule::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomCapsule::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,30 +81,30 @@ inline void MtGeomCapsule::operator delete(void* p_addr) {
 void MtGeomCapsule::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCapsule.p0.x = fin.readF32();
-    this->mCapsule.p1.x = fin.readF32();
-    this->mCapsule.p0.y = fin.readF32();
-    this->mCapsule.p1.y = fin.readF32();
-    this->mCapsule.p0.z = fin.readF32();
-    this->mCapsule.p1.z = fin.readF32();
-    this->mCapsule.p0.pad_ = fin.readF32();
-    this->mCapsule.p1.pad_ = fin.readF32();
-    this->mCapsule.r = fin.readF32();
+    mCapsule.p0.x = fin.readF32();
+    mCapsule.p1.x = fin.readF32();
+    mCapsule.p0.y = fin.readF32();
+    mCapsule.p1.y = fin.readF32();
+    mCapsule.p0.z = fin.readF32();
+    mCapsule.p1.z = fin.readF32();
+    mCapsule.p0.pad_ = fin.readF32();
+    mCapsule.p1.pad_ = fin.readF32();
+    mCapsule.r = fin.readF32();
 }
 
 // Address: 0x00d6f520 - 0x00d6f5bb (155 bytes)
 void MtGeomCapsule::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mCapsule.p0.x);
-    fout.writeF32(this->mCapsule.p1.x);
-    fout.writeF32(this->mCapsule.p0.y);
-    fout.writeF32(this->mCapsule.p1.y);
-    fout.writeF32(this->mCapsule.p0.z);
-    fout.writeF32(this->mCapsule.p1.z);
-    fout.writeF32(this->mCapsule.p0.pad_);
-    fout.writeF32(this->mCapsule.p1.pad_);
-    fout.writeF32(this->mCapsule.r);
+    fout.writeF32(mCapsule.p0.x);
+    fout.writeF32(mCapsule.p1.x);
+    fout.writeF32(mCapsule.p0.y);
+    fout.writeF32(mCapsule.p1.y);
+    fout.writeF32(mCapsule.p0.z);
+    fout.writeF32(mCapsule.p1.z);
+    fout.writeF32(mCapsule.p0.pad_);
+    fout.writeF32(mCapsule.p1.pad_);
+    fout.writeF32(mCapsule.r);
 }
 
 // Address: 0x00d6f5c0 - 0x00d6f8f5 (821 bytes)
@@ -140,55 +140,55 @@ __attribute__((weak)) void MtGeomCapsule::copy(const MtGeometry& input) {
 // Address: 0x01b29e70 - 0x01b29e79 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, pos);
+    return MtCollision::intersect(mCapsule, pos);
 }
 
 // Address: 0x01b29e80 - 0x01b29e89 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, line);
+    return MtCollision::intersect(mCapsule, line);
 }
 
 // Address: 0x01b29e90 - 0x01b29e99 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, ray);
+    return MtCollision::intersect(mCapsule, ray);
 }
 
 // Address: 0x01b29ea0 - 0x01b29ea9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, ls);
+    return MtCollision::intersect(mCapsule, ls);
 }
 
 // Address: 0x01b29eb0 - 0x01b29eb9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, sphere);
+    return MtCollision::intersect(mCapsule, sphere);
 }
 
 // Address: 0x01b29ec0 - 0x01b29ec9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, capsule);
+    return MtCollision::intersect(mCapsule, capsule);
 }
 
 // Address: 0x01b29ed0 - 0x01b29ed9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, aabb);
+    return MtCollision::intersect(mCapsule, aabb);
 }
 
 // Address: 0x01b29ee0 - 0x01b29ee9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, obb);
+    return MtCollision::intersect(mCapsule, obb);
 }
 
 // Address: 0x01b29ef0 - 0x01b29ef9 (9 bytes)
 bool MtGeomCapsule::isIntersect(const MtPlane& plane) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCapsule, plane);
+    return MtCollision::intersect(mCapsule, plane);
 }
 
 // Address: 0x01b29f00 - 0x01b29f03 (3 bytes)
@@ -200,67 +200,67 @@ bool MtGeomCapsule::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01b29f10 - 0x01b29f1f (15 bytes)
 bool MtGeomCapsule::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(tri, this->mCapsule);
+    return MtCollision::intersect(tri, mCapsule);
 }
 
 // Address: 0x01b29f20 - 0x01b29f2f (15 bytes)
 bool MtGeomCapsule::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(cylinder, this->mCapsule);
+    return MtCollision::intersect(cylinder, mCapsule);
 }
 
 // Address: 0x01b29f30 - 0x01b29f39 (9 bytes)
 bool MtGeomCapsule::getClosest(const MtVector3& pos, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, pos, pContact);
+    return MtCollision::closest(mCapsule, pos, pContact);
 }
 
 // Address: 0x01b29f40 - 0x01b29f4b (11 bytes)
 bool MtGeomCapsule::getClosest(const MtLine& line, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, line, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCapsule, line, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b29f50 - 0x01b29f5b (11 bytes)
 bool MtGeomCapsule::getClosest(const MtRay& ray, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, ray, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCapsule, ray, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b29f60 - 0x01b29f6b (11 bytes)
 bool MtGeomCapsule::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, ls, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCapsule, ls, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b29f70 - 0x01b29f7b (11 bytes)
 bool MtGeomCapsule::getClosest(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mCapsule, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b29f80 - 0x01b29f8b (11 bytes)
 bool MtGeomCapsule::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mCapsule, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b29f90 - 0x01b29fa7 (23 bytes)
 bool MtGeomCapsule::getClosest(const MtAABB& aabb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(aabb, this->mCapsule, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(aabb, mCapsule, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b29fb0 - 0x01b29fc7 (23 bytes)
 bool MtGeomCapsule::getClosest(const MtOBB& obb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(obb, this->mCapsule, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(obb, mCapsule, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b29fd0 - 0x01b29fdb (11 bytes)
 bool MtGeomCapsule::getClosest(const MtPlane& plane, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCapsule, plane, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mCapsule, plane, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b29fe0 - 0x01b29fe3 (3 bytes)
@@ -272,55 +272,55 @@ bool MtGeomCapsule::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact) co
 // Address: 0x01b29ff0 - 0x01b2a007 (23 bytes)
 bool MtGeomCapsule::getClosest(const MtTriangle& tri, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(tri, this->mCapsule, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(tri, mCapsule, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b2a010 - 0x01b2a01b (11 bytes)
 bool MtGeomCapsule::getClosestXZ(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mCapsule, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mCapsule, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a020 - 0x01b2a02b (11 bytes)
 bool MtGeomCapsule::getClosestXZ(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mCapsule, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mCapsule, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a030 - 0x01b2a03b (11 bytes)
 bool MtGeomCapsule::getClosestXZ(const MtAABB& aabb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mCapsule, aabb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mCapsule, aabb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a040 - 0x01b2a04b (11 bytes)
 bool MtGeomCapsule::getClosestXZ(const MtOBB& obb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mCapsule, obb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mCapsule, obb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a050 - 0x01b2a064 (20 bytes)
 bool MtGeomCapsule::isFind(const MtSphere& sphere, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mCapsule, sphere, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mCapsule, sphere, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a070 - 0x01b2a084 (20 bytes)
 bool MtGeomCapsule::isFind(const MtCapsule& capsule, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mCapsule, capsule, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mCapsule, capsule, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a090 - 0x01b2a0a4 (20 bytes)
 bool MtGeomCapsule::isFind(const MtAABB& aabb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mCapsule, aabb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mCapsule, aabb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a0b0 - 0x01b2a0c4 (20 bytes)
 bool MtGeomCapsule::isFind(const MtOBB& obb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mCapsule, obb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mCapsule, obb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a0d0 - 0x01b2a0d3 (3 bytes)
@@ -338,19 +338,19 @@ bool MtGeomCapsule::isFind(const MtPlaneXZ& planeXZ, const MtVector3& v, MtConta
 // Address: 0x01b2a0f0 - 0x01b2a104 (20 bytes)
 bool MtGeomCapsule::isFind(const MtTriangle& tri, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mCapsule, tri, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mCapsule, tri, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b2a110 - 0x01b2a134 (36 bytes)
 bool MtGeomCapsule::isContact(const MtSphere& sphere, const MtVector3& v0, const MtVector3& v1, MtContact* pContact0, MtContact* pContact1) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::contact(this->mCapsule, sphere, v0, v1, static_cast<f32*>(nullptr), pContact0, pContact1);
+    return MtCollision::contact(mCapsule, sphere, v0, v1, static_cast<f32*>(nullptr), pContact0, pContact1);
 }
 
 // Address: 0x01b2a140 - 0x01b2a164 (36 bytes)
 bool MtGeomCapsule::isContact(const MtCapsule& capsule, const MtVector3& v0, const MtVector3& v1, MtContact* pContact0, MtContact* pContact1) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::contact(this->mCapsule, capsule, v0, v1, static_cast<f32*>(nullptr), pContact0, pContact1);
+    return MtCollision::contact(mCapsule, capsule, v0, v1, static_cast<f32*>(nullptr), pContact0, pContact1);
 }
 
 // Address: 0x01b2a170 - 0x01b2a231 (193 bytes)
@@ -368,13 +368,13 @@ __attribute__((weak)) MtVector3 MtGeomCapsule::getInternalPos() const {
 // Address: 0x01b2a2f0 - 0x01b2a337 (71 bytes)
 void MtGeomCapsule::setScale(f32 scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCapsule.p0.x = this->mCapsule.p0.x * scale;
-    this->mCapsule.p0.y = this->mCapsule.p0.y * scale;
-    this->mCapsule.p0.z = this->mCapsule.p0.z * scale;
-    this->mCapsule.p1.x = this->mCapsule.p1.x * scale;
-    this->mCapsule.p1.y = this->mCapsule.p1.y * scale;
-    this->mCapsule.p1.z = this->mCapsule.p1.z * scale;
-    this->mCapsule.r = this->mCapsule.r * scale;
+    mCapsule.p0.x = mCapsule.p0.x * scale;
+    mCapsule.p0.y = mCapsule.p0.y * scale;
+    mCapsule.p0.z = mCapsule.p0.z * scale;
+    mCapsule.p1.x = mCapsule.p1.x * scale;
+    mCapsule.p1.y = mCapsule.p1.y * scale;
+    mCapsule.p1.z = mCapsule.p1.z * scale;
+    mCapsule.r = mCapsule.r * scale;
 }
 
 // Address: 0x01b2a340 - 0x01b2a399 (89 bytes)
@@ -460,6 +460,8 @@ __attribute__((weak)) void MtGeomCapsule::addPos(const MtVector3& pos) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 MtGeomCapsule::getCapSurfaceAxisPos(const MtCapsule& capsule, const MtVector3& SurfacePos);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtGeomCapsule::MyDTI MtGeomCapsule::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomCapsule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -29,7 +29,7 @@ const MtDTI& uGUIMenuCmdPawn::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMenuCmdPawn::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMenuCmdPawn::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMenuCmdPawn::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIMenuCmdPawn::getAllocator() {
 // Address: 0x00b0e190 - 0x00b0e1d0 (64 bytes)
 void* uGUIMenuCmdPawn::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMenuCmdPawn::getAllocator()->memAlloc(sz, align, ::uGUIMenuCmdPawn::DTI.::MtDTI::getID());
+    return uGUIMenuCmdPawn::getAllocator()->memAlloc(sz, align, uGUIMenuCmdPawn::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIMenuCmdPawn::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMenuCmdPawn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuCmdPawn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuCmdPawn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,17 +78,17 @@ uGUIMenuCmdPawn::~uGUIMenuCmdPawn() {
 // Address: 0x00b0e980 - 0x00b0e985 (5 bytes)
 void uGUIMenuCmdPawn::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b0e990 - 0x00b0ea3f (175 bytes)
 bool uGUIMenuCmdPawn::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PAWNORDER_GUI"), static_cast<u32>(129), static_cast<t64>(1418971024)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUCMDPAWN_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsgGuide;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PAWNORDER_GUI"), 129u, 1418971024l))) != nullptr) {
+            if (mpGUIMsgGuide == nullptr) {
+                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUCMDPAWN_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsgGuide;
                     return true;
                 } else {
                     return false;
@@ -100,9 +100,9 @@ bool uGUIMenuCmdPawn::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUCMDPAWN_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsgGuide;
+        if (mpGUIMsgGuide == nullptr) {
+            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUCMDPAWN_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsgGuide;
                 return true;
             } else {
                 return false;
@@ -133,21 +133,21 @@ __attribute__((weak)) void uGUIMenuCmdPawn::setup() {
 // Address: 0x00b10030 - 0x00b1007f (79 bytes)
 void uGUIMenuCmdPawn::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGUIMsgGuide != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGUIMsgGuide->::cResource::release();
-        this->mpGUIMsgGuide = static_cast<rGUIMessage*>(nullptr);
+    if (mpGUIMsgGuide != nullptr) {
+        mpGUIMsgGuide->release();
+        mpGUIMsgGuide = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b10010 - 0x00b1002a (26 bytes)
 void uGUIMenuCmdPawn::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateWait);
 }
 
 // Address: 0x00b105f0 - 0x00b107ea (506 bytes)
@@ -159,7 +159,7 @@ __attribute__((weak)) void uGUIMenuCmdPawn::updateWait() {
 // Address: 0x00b107f0 - 0x00b107f9 (9 bytes)
 void uGUIMenuCmdPawn::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b10080 - 0x00b100f5 (117 bytes)
@@ -177,7 +177,7 @@ __attribute__((weak)) void uGUIMenuCmdPawn::moveEvent() {
 // Address: 0x00b10800 - 0x00b1081a (26 bytes)
 void uGUIMenuCmdPawn::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateExit);
 }
 
 // Address: 0x00b104a0 - 0x00b105b3 (275 bytes)
@@ -210,57 +210,57 @@ __attribute__((weak)) void uGUIMenuCmdPawn::evDecide() {
 // Address: 0x00b0f610 - 0x00b0f622 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b0f660 - 0x00b0f672 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlVLCtgrMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00b0f630 - 0x00b0f642 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlVLCtgrDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b0f650 - 0x00b0f653 (3 bytes)
 u32 uGUIMenuCmdPawn::evCtrlVLCtgrSubMenu(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b0f680 - 0x00b0f699 (25 bytes)
 u32 uGUIMenuCmdPawn::evCtrlVLCtgrMouseDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    msg->changeSE = static_cast<u32>(4);
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    msg->changeSE = 4;
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b0f6a0 - 0x00b0f6b2 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlVLCtgrMouseSelect(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return static_cast<u32>(0);
+    setInputEvent(72u);
+    return 0;
 }
 
 // Address: 0x00b0f6c0 - 0x00b0f6d2 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00b0f6e0 - 0x00b0f6f2 (18 bytes)
 u32 uGUIMenuCmdPawn::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00b0fce0 - 0x00b10008 (808 bytes)
@@ -319,6 +319,8 @@ __attribute__((weak)) void uGUIMenuCmdPawn::updateScrollListHide(uGUIBase::cScro
 //   in uGUIMenuCmdPawn::updateScrollList at 0x00b0fc45-0x00b0fcc9 (called at uGUIMenuCmdPawn.cpp:920)
 //   in uGUIMenuCmdPawn::moveEvent at 0x00b10129-0x00b101a5 (called at uGUIMenuCmdPawn.cpp:401)
 // void uGUIMenuCmdPawn::setScrollPos();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIMenuCmdPawn::MyDTI uGUIMenuCmdPawn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuCmdPawn.cpp at 0x00b10b9f-0x00b10bdc (called at uGUIMenuCmdPawn.cpp:59)

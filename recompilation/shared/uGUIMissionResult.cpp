@@ -36,7 +36,7 @@ const MtDTI& uGUIMissionResult::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMissionResult::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMissionResult::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uGUIMissionResult::getAllocator() {
 // Address: 0x00b1ee00 - 0x00b1ee40 (64 bytes)
 void* uGUIMissionResult::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMissionResult::getAllocator()->memAlloc(sz, align, ::uGUIMissionResult::DTI.::MtDTI::getID());
+    return uGUIMissionResult::getAllocator()->memAlloc(sz, align, uGUIMissionResult::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uGUIMissionResult::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMissionResult::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,14 +85,14 @@ uGUIMissionResult::~uGUIMissionResult() {
 // Address: 0x00b200c0 - 0x00b20145 (133 bytes)
 bool uGUIMissionResult::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MISSION_RESULT_GUI"), static_cast<u32>(129), static_cast<t64>(1442307639)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_MISSIONRESULT_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MISSION_RESULT_GUI"), 129u, 1442307639l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_MISSIONRESULT_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_MISSIONRESULT_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_MISSIONRESULT_RES_GMD", 0u);
     }
 }
 
@@ -105,103 +105,103 @@ __attribute__((weak)) void uGUIMissionResult::setup() {
 // Address: 0x00b25df0 - 0x00b25fe1 (497 bytes)
 void uGUIMissionResult::kill() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpGUIPopDetail->kill();
-        this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        mpGUIPopDetail->kill();
+        mpGUIPopDetail = nullptr;
     }
-    if (this->mResultData.mResPointList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mResultData.mResPointList.mLength != 0) {
         // inferred: the value the loop at 0xb25e70 carries; no location-less local in scope fits
-        u32 v0_0 = this->mResultData.mResPointList.::MtArray::mLength;
+        u32 v0_0 = mResultData.mResPointList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mResultData.mResPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mResultData.mResPointList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mResultData.mResPointList.::MtArray::mLength) {
-                    v0_0 = this->mResultData.mResPointList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mResultData.mResPointList.mpArray[i0_3] != nullptr) {
+                delete mResultData.mResPointList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mResultData.mResPointList.mLength) {
+                    v0_0 = mResultData.mResPointList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mResultData.mResPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mResultData.mResPointList.::MtArray::mpArray));
+    if (mResultData.mResPointList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResultData.mResPointList.mpArray));
     }
-    this->mResultData.mResPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mResultData.mResPointList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mResultData.mResPointList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mResultData.mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+    mResultData.mResPointList.mpArray = nullptr;
+    mResultData.mResPointList.mBufsiz = 0;
+    mResultData.mResPointList.mLength = 0;
+    if (mResultData.mRewardList.mLength != 0) {
         // inferred: the value the loop at 0xb25ef0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mResultData.mRewardList.::MtArray::mLength;
+        u32 v2_0 = mResultData.mRewardList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mResultData.mRewardList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mResultData.mRewardList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mResultData.mRewardList.::MtArray::mLength) {
-                    v2_0 = this->mResultData.mRewardList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mResultData.mRewardList.mpArray[i2_3] != nullptr) {
+                delete mResultData.mRewardList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mResultData.mRewardList.mLength) {
+                    v2_0 = mResultData.mRewardList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mResultData.mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mResultData.mRewardList.::MtArray::mpArray));
+    if (mResultData.mRewardList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResultData.mRewardList.mpArray));
     }
-    this->mResultData.mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mResultData.mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mResultData.mRewardList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mChargeEffectEnableList.::MtArray::mLength != static_cast<u32>(0)) {
+    mResultData.mRewardList.mpArray = nullptr;
+    mResultData.mRewardList.mBufsiz = 0;
+    mResultData.mRewardList.mLength = 0;
+    if (mChargeEffectEnableList.mLength != 0) {
         // inferred: the value the loop at 0xb25f70 carries; no location-less local in scope fits
-        u32 v4_0 = this->mChargeEffectEnableList.::MtArray::mLength;
+        u32 v4_0 = mChargeEffectEnableList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mChargeEffectEnableList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mChargeEffectEnableList.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mChargeEffectEnableList.::MtArray::mLength) {
-                    v4_0 = this->mChargeEffectEnableList.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mChargeEffectEnableList.mpArray[i4_3] != nullptr) {
+                delete mChargeEffectEnableList.mpArray[i4_3];
+                if ((i4_3 + 1u) < mChargeEffectEnableList.mLength) {
+                    v4_0 = mChargeEffectEnableList.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mChargeEffectEnableList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mChargeEffectEnableList.::MtArray::mpArray));
+    if (mChargeEffectEnableList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mChargeEffectEnableList.mpArray));
     }
-    this->mChargeEffectEnableList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mChargeEffectEnableList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mChargeEffectEnableList.::MtArray::mLength = static_cast<u32>(0);
+    mChargeEffectEnableList.mpArray = nullptr;
+    mChargeEffectEnableList.mBufsiz = 0;
+    mChargeEffectEnableList.mLength = 0;
 }
 
 // Address: 0x00b26040 - 0x00b26bb3 (2931 bytes)
@@ -226,18 +226,18 @@ __attribute__((weak)) void uGUIMissionResult::move() {
 // Address: 0x00b25ff0 - 0x00b26039 (73 bytes)
 void uGUIMissionResult::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable() == false) {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUIPopDetail == static_cast<uGUIPopDetail01*>(nullptr)) {
+    if (mpGUIPopDetail == nullptr) {
         return;
     }
-    if (this->mpGUIPopDetail->::cUnit::isEnable() != false) {
+    if (mpGUIPopDetail->isEnable()) {
         return;
     }
-    this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    mpGUIPopDetail = nullptr;
 }
 
 // Address: 0x00b24240 - 0x00b242bc (124 bytes)
@@ -281,7 +281,7 @@ __attribute__((weak)) void uGUIMissionResult::updateScoreWait() {
 // Address: 0x00b26bc0 - 0x00b26bc9 (9 bytes)
 void uGUIMissionResult::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b274f0 - 0x00b275f8 (264 bytes)
@@ -293,74 +293,74 @@ __attribute__((weak)) void uGUIMissionResult::moveInput() {
 // Address: 0x00b27600 - 0x00b276e0 (224 bytes)
 void uGUIMissionResult::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) {
-        case static_cast<u32>(0):
+    switch (getInputEvent() - 52u) {
+        case 0:
         {
-            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mNowTab == static_cast<u32>(1)) {
-                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
-                    this->::uGUIMissionResult::updateDisp();
+            if (mpVLCmnCtrl != nullptr) {
+                if (mNowTab == 1) {
+                    mpVLCmnCtrl->setCurrentPos(0, false);
+                    updateDisp();
                 } else {
-                    this->::uGUIMissionResult::updateDisp();
+                    updateDisp();
                 }
             } else {
-                this->::uGUIMissionResult::updateDisp();
+                updateDisp();
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mNowTab == static_cast<u32>(1)) {
-                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
-                    this->::uGUIMissionResult::updateDisp();
+            if (mpVLCmnCtrl != nullptr) {
+                if (mNowTab == 1) {
+                    mpVLCmnCtrl->setCurrentPos(0, false);
+                    updateDisp();
                 } else {
-                    this->::uGUIMissionResult::updateDisp();
+                    updateDisp();
                 }
             } else {
-                this->::uGUIMissionResult::updateDisp();
+                updateDisp();
             }
             break;
         }
-        case static_cast<u32>(14):
+        case 14:
         {
-            this->::uGUIMissionResult::setControl();
-            this->::uGUIMissionResult::updateDisp();
+            setControl();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(15):
+        case 15:
         {
-            this->::uGUIMissionResult::setControl();
-            this->::uGUIMissionResult::updateDisp();
+            setControl();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(16):
+        case 16:
         {
-            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mNowTab == static_cast<u32>(1)) {
-                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
-                    this->::uGUIMissionResult::updateDisp();
+            if (mpVLCmnCtrl != nullptr) {
+                if (mNowTab == 1) {
+                    mpVLCmnCtrl->setCurrentPos(0, false);
+                    updateDisp();
                 } else {
-                    this->::uGUIMissionResult::updateDisp();
+                    updateDisp();
                 }
             } else {
-                this->::uGUIMissionResult::updateDisp();
+                updateDisp();
             }
             break;
         }
-        case static_cast<u32>(17):
+        case 17:
         {
-            this->::uGUIMissionResult::updateDisp();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(18):
+        case 18:
         {
-            this->::uGUIMissionResult::evTabMove();
+            evTabMove();
             break;
         }
-        case static_cast<u32>(19):
+        case 19:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateExit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateExit);
             break;
         }
         default:
@@ -397,8 +397,8 @@ __attribute__((weak)) void uGUIMissionResult::evTabMove() {
 // Address: 0x00b247a0 - 0x00b247b5 (21 bytes)
 u32 uGUIMissionResult::evVLCtrlMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00b247c0 - 0x00b2481b (91 bytes)
@@ -410,35 +410,35 @@ __attribute__((weak)) u32 uGUIMissionResult::evVLCtrlToFinish(cControl::Message*
 // Address: 0x00b24820 - 0x00b24840 (32 bytes)
 u32 uGUIMissionResult::evHLPageMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNowTab == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-        return static_cast<u32>(1);
+    if (mNowTab == 1) {
+        setInputEvent(68u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b24840 - 0x00b2487b (59 bytes)
 u32 uGUIMissionResult::evHLItemMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNowTab == static_cast<u32>(0)) {
-        if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpVLCmnCtrl->::cControl::getCurrentPos() != static_cast<s32>(1)) {
-                if (this->mpVLCmnCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                    return static_cast<u32>(1);
+    if (mNowTab == 0) {
+        if (mpVLCmnCtrl != nullptr) {
+            if (mpVLCmnCtrl->getCurrentPos() != 1) {
+                if (mpVLCmnCtrl->getCurrentPos() == 0) {
+                    setInputEvent(69u);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                return static_cast<u32>(1);
+                setInputEvent(69u);
+                return 1;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -451,15 +451,15 @@ __attribute__((weak)) u32 uGUIMissionResult::evHLItemMoveMouse(cControl::Message
 // Address: 0x00b242c0 - 0x00b242d2 (18 bytes)
 u32 uGUIMissionResult::evFinishCtrlExit(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(0);
+    setInputEvent(71u);
+    return 0;
 }
 
 // Address: 0x00b24780 - 0x00b24795 (21 bytes)
 u32 uGUIMissionResult::evCtrlTabMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(1);
+    setInputEvent(70u);
+    return 1;
 }
 
 // Address: 0x00b256c0 - 0x00b258cd (525 bytes)
@@ -499,14 +499,14 @@ __attribute__((weak)) void uGUIMissionResult::updateRewardItemDisp(uGUIBase::cSc
 void uGUIMissionResult::updateRewardItemHide(uGUIBase::cScrollListItemBase* pDispItem) {
     // DWARF local not rendered: cResultScrollItem* pItem;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pDispItem == nullptr) {
         return;
     }
-    if (pDispItem->mpInstBase == static_cast<cGUIInstNull*>(nullptr)) {
+    if (pDispItem->mpInstBase == nullptr) {
         return;
     }
-    pDispItem->mpInstBase->::cGUIInstance::setVisible(false);
-    pDispItem->mpInstBase->::cGUIInstance::setExecute(false);
+    pDispItem->mpInstBase->setVisible(false);
+    pDispItem->mpInstBase->setExecute(false);
 }
 
 // Address: 0x00b273e0 - 0x00b274eb (267 bytes)
@@ -681,22 +681,22 @@ __attribute__((weak)) void uGUIMissionResult::setRewardTab() {
 void uGUIMissionResult::setScoreTab() {
     // DWARF local not rendered: MtString str;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(1), true, true);
-    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(5)), true);
-    this->::uGUIMissionResult::setCommon();
-    this->mpVLCmnCtrl->::cControl::resetItemNum(static_cast<s32>(2), static_cast<const u32*>(nullptr), static_cast<s32>(0));
-    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
-    this->::uGUIMissionResult::setControl();
-    if (this->mScore.mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        if (this->::uGUIMissionResult::isRanking() != false) {
-            this->mScore.mpInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000003));
+    mTab.uGUIBase::cReferenceUITab::setFocus(1u, true, true);
+    setPlayingFlow(getFlow(5u), true);
+    setCommon();
+    mpVLCmnCtrl->resetItemNum(2, static_cast<const u32*>(nullptr), 0);
+    mpVLCmnCtrl->setCurrentPos(0, false);
+    setControl();
+    if (mScore.mpInst != nullptr) {
+        if (isRanking()) {
+            mScore.mpInst->setSequenceId(0xF4243u);
         } else {
-            this->mScore.mpInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000001));
+            mScore.mpInst->setSequenceId(0xF4241u);
         }
     }
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::execute();
-    this->::uGUIMissionResult::updateDisp();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateScoreWait);
+    mCloseButton.execute();
+    updateDisp();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateScoreWait);
 }
 
 // Address: 0x00b253b0 - 0x00b25502 (338 bytes)
@@ -746,6 +746,10 @@ __attribute__((weak)) void uGUIMissionResult::setChargeEffect() {
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // bool uGUIMissionResult::isRanking();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::MyDTI uGUIMissionResult::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const nGpCourse::E_GP_COURSE_EFFECT uGUIMissionResult::mChargeEffectTable[];
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27cde-0x00b27d1b (called at uGUIMissionResult.cpp:97)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27cde-0x00b27d1b (called at uGUIMissionResult.h:35)
@@ -781,7 +785,7 @@ const MtDTI& uGUIMissionResult::cChargeEffectInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* uGUIMissionResult::cChargeEffectInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cChargeEffectInfo::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cChargeEffectInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cChargeEffectInfo::DTI)->memAlloc(sz, align, uGUIMissionResult::cChargeEffectInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -795,7 +799,7 @@ inline void* uGUIMissionResult::cChargeEffectInfo::operator new(size_t sz, u32 a
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMissionResult::cChargeEffectInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cChargeEffectInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::cChargeEffectInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -817,6 +821,8 @@ inline void uGUIMissionResult::cChargeEffectInfo::operator delete(void* p_addr) 
 // Defined in the class (its body was written in a header).
 // uGUIMissionResult::cChargeEffectInfo::~cChargeEffectInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::cChargeEffectInfo::MyDTI uGUIMissionResult::cChargeEffectInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27d94-0x00b27dcd (called at uGUIMissionResult.cpp:100)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27d94-0x00b27dcd (called at uGUIMissionResult.h:193)
@@ -825,7 +831,7 @@ inline void uGUIMissionResult::cChargeEffectInfo::operator delete(void* p_addr) 
 // Address: 0x00b1f050 - 0x00b1f098 (72 bytes)
 MtObject* uGUIMissionResult::cChargeEffectInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIMissionResult::cChargeEffectInfo;
+    return new (16u) uGUIMissionResult::cChargeEffectInfo;
 }
 
 // Address: 0x01af8470 - 0x01af85e0 (368 bytes)
@@ -875,7 +881,7 @@ const MtDTI& uGUIMissionResult::cPointList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMissionResult::cPointList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cPointList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::cPointList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -887,12 +893,16 @@ inline void uGUIMissionResult::cPointList::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void uGUIMissionResult::cPointList::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 10 inlined copies in 3 functions (612 bytes)
-//   in uGUIMissionResult::cPointList::MyDTI::newInstance at 0x00b1eedd-0x00b1ef13 (called at uGUIMissionResult.cpp:98)
-//   in uGUIMissionResult::cPointList::MyDTI::newInstance at 0x00b1eedd-0x00b1ef13 (called at uGUIMissionResult.h:106)
-//   in uGUIMissionResult::setupResultData at 0x00b2123d-0x00b21274, 0x00b21284-0x00b21292 (called at uGUIMissionResult.cpp:937)
-//   and 7 more (every copy is in <bundle>.inlined.json)
-// uGUIMissionResult::cPointList::cPointList();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline uGUIMissionResult::cPointList::cPointList() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mStrPtClass.value = nullptr;
+    mStrPt.value = nullptr;
+    mStrNumClass.value = nullptr;
+    mStrNum.value = nullptr;
+    mStrName.value = nullptr;
+}
 
 // Address: 0x01af8750 - 0x01af8755 (5 bytes)
 // Also emitted as: _ZN17uGUIMissionResult10cPointListD0Ev at 0x01af8760
@@ -901,6 +911,8 @@ uGUIMissionResult::cPointList::~cPointList() {
     DDON_STUB("uGUIMissionResult::cPointList::~cPointList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::cPointList::MyDTI uGUIMissionResult::cPointList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27d1b-0x00b27d5b (called at uGUIMissionResult.cpp:98)
@@ -938,7 +950,7 @@ const MtDTI& uGUIMissionResult::cItemList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* uGUIMissionResult::cItemList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cItemList::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cItemList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cItemList::DTI)->memAlloc(sz, align, uGUIMissionResult::cItemList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -952,7 +964,7 @@ inline void* uGUIMissionResult::cItemList::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMissionResult::cItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::cItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -974,6 +986,8 @@ inline void uGUIMissionResult::cItemList::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // uGUIMissionResult::cItemList::~cItemList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::cItemList::MyDTI uGUIMissionResult::cItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27d5b-0x00b27d94 (called at uGUIMissionResult.cpp:99)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27d5b-0x00b27d94 (called at uGUIMissionResult.h:129)
@@ -982,7 +996,7 @@ inline void uGUIMissionResult::cItemList::operator delete(void* p_addr) {
 // Address: 0x00b1ef90 - 0x00b1efd8 (72 bytes)
 MtObject* uGUIMissionResult::cItemList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIMissionResult::cItemList;
+    return new (16u) uGUIMissionResult::cItemList;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (308 bytes)
@@ -1025,7 +1039,7 @@ const MtDTI& uGUIMissionResult::cResultScrollItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMissionResult::cResultScrollItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cResultScrollItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1046,6 +1060,8 @@ inline void uGUIMissionResult::cResultScrollItem::operator delete(void* p_addr) 
 
 // Defined in the class (its body was written in a header).
 // uGUIMissionResult::cResultScrollItem::~cResultScrollItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::cResultScrollItem::MyDTI uGUIMissionResult::cResultScrollItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27dcd-0x00b27e0a (called at uGUIMissionResult.cpp:102)
@@ -1098,7 +1114,7 @@ const MtDTI& uGUIMissionResult::cResultScrollInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMissionResult::cResultScrollInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cResultScrollInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1119,6 +1135,8 @@ inline void uGUIMissionResult::cResultScrollInfo::operator delete(void* p_addr) 
 
 // Defined in the class (its body was written in a header).
 // uGUIMissionResult::cResultScrollInfo::~cResultScrollInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionResult::cResultScrollInfo::MyDTI uGUIMissionResult::cResultScrollInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionResult.cpp at 0x00b27e0a-0x00b27e47 (called at uGUIMissionResult.cpp:103)

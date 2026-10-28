@@ -25,7 +25,7 @@ const MtDTI& uGUIHudJob10Gauge::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIHudJob10Gauge::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIHudJob10Gauge::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIHudJob10Gauge::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* uGUIHudJob10Gauge::getAllocator() {
 // Address: 0x00ac0190 - 0x00ac01d0 (64 bytes)
 void* uGUIHudJob10Gauge::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIHudJob10Gauge::getAllocator()->memAlloc(sz, align, ::uGUIHudJob10Gauge::DTI.::MtDTI::getID());
+    return uGUIHudJob10Gauge::getAllocator()->memAlloc(sz, align, uGUIHudJob10Gauge::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* uGUIHudJob10Gauge::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIHudJob10Gauge::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIHudJob10Gauge::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIHudJob10Gauge::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,14 +101,14 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIHudJob10Gauge::getGuiResIn
 // Address: 0x00ac03f0 - 0x00ac03f6 (6 bytes)
 t64 uGUIHudJob10Gauge::getGuiResUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<t64>(1474355302);
+    return 1474355302;
 }
 
 // Address: 0x00ac0400 - 0x00ac0423 (35 bytes)
 void uGUIHudJob10Gauge::onSetupAfterLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(13), false);
-    this->::uGUIHudJob10Gauge::setupObjects();
+    setFlowAndInit(13u, false);
+    setupObjects();
 }
 
 // Address: 0x00ac0560 - 0x00ac075c (508 bytes)
@@ -156,6 +156,8 @@ __attribute__((weak)) void uGUIHudJob10Gauge::setupObjects() {
 //   in uGUIHudJob10Gauge::onShow at 0x00ac06dc-0x00ac070e, 0x00ac071c-0x00ac0721 (called at uGUIHudJob10Gauge.cpp:290)
 //   in uGUIHudJob10Gauge::onUpdateShow at 0x00ac096e-0x00ac09a0, 0x00ac09b8-0x00ac09c7 (called at uGUIHudJob10Gauge.cpp:329)
 // void uGUIHudJob10Gauge::applyGaugeValue(f32 gaugeValue, f32 gaugeValueMax);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIHudJob10Gauge::MyDTI uGUIHudJob10Gauge::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIHudJob10Gauge.cpp at 0x00ac0b8f-0x00ac0bcc (called at uGUIHudJob10Gauge.cpp:92)

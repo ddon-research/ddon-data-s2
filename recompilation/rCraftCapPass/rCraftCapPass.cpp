@@ -37,7 +37,7 @@ const MtDTI& cCraftCapPassData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftCapPassData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memAlloc(sz, align, ::cCraftCapPassData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftCapPassData::DTI)->memAlloc(sz, align, cCraftCapPassData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cCraftCapPassData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftCapPassData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftCapPassData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -101,6 +101,8 @@ __attribute__((weak)) void cCraftCapPassData::createProperty(MtPropertyList& s) 
 // No out-of-line body: no code in the ELF
 // u8 cCraftCapPassData::getType();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftCapPassData::MyDTI cCraftCapPassData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCraftCapPass.cpp at 0x006590f0-0x00659132 (called at rCraftCapPass.cpp:44)
 //   in _GLOBAL__sub_I_rCraftCapPass.cpp at 0x006590f0-0x00659132 (called at rCraftCapPass.h:32)
@@ -109,7 +111,7 @@ __attribute__((weak)) void cCraftCapPassData::createProperty(MtPropertyList& s) 
 // Address: 0x006589c0 - 0x00658a1f (95 bytes)
 MtObject* cCraftCapPassData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftCapPassData;
+    return new (16u) cCraftCapPassData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +136,7 @@ const MtDTI& rCraftCapPass::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftCapPass::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftCapPass::DTI)->memAlloc(sz, align, ::rCraftCapPass::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftCapPass::DTI)->memAlloc(sz, align, rCraftCapPass::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -149,7 +151,7 @@ inline void* rCraftCapPass::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rCraftCapPassD0Ev at 0x01a81184-0x01a811a3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftCapPass::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftCapPass::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftCapPass::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -166,20 +168,20 @@ bool rCraftCapPass::loadData(MtDataReader& in, cCraftCapPassData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRecipeId);
+    nDDOIO::readData(in, pData->mRecipeId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStartLv);
+    nDDOIO::readData(in, pData->mStartLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLvCap);
+    nDDOIO::readData(in, pData->mLvCap);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mVer);
+    nDDOIO::readData(in, pData->mVer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRound);
-    pData->mType = in.::MtDataReader::readU8();
+    nDDOIO::readData(in, pData->mRound);
+    pData->mType = in.readU8();
     return true;
 }
 
@@ -192,8 +194,10 @@ MT_CTSTR rCraftCapPass::getExt() const {
 // Address: 0x01a812d0 - 0x01a812d6 (6 bytes)
 u32 rCraftCapPass::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftCapPass::MyDTI rCraftCapPass::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftCapPass.cpp at 0x00659132-0x0065916f (called at rCraftCapPass.cpp:112)
@@ -203,7 +207,7 @@ u32 rCraftCapPass::getDataVersion() const {
 // Address: 0x00658f60 - 0x00658fc4 (100 bytes)
 MtObject* rCraftCapPass::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftCapPass;
+    return new (16u) rCraftCapPass;
 }
 
 // Instance at 0x01a81280 - 0x01a81296 (22 bytes) of the generic rTbl2<T>::getData

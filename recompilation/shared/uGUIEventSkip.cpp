@@ -27,7 +27,7 @@ const MtDTI& uGUIEventSkip::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIEventSkip::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIEventSkip::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIEventSkip::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* uGUIEventSkip::getAllocator() {
 // Address: 0x00a86f10 - 0x00a86f50 (64 bytes)
 void* uGUIEventSkip::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIEventSkip::getAllocator()->memAlloc(sz, align, ::uGUIEventSkip::DTI.::MtDTI::getID());
+    return uGUIEventSkip::getAllocator()->memAlloc(sz, align, uGUIEventSkip::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* uGUIEventSkip::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIEventSkip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEventSkip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEventSkip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,11 +76,11 @@ uGUIEventSkip::~uGUIEventSkip() {
 // Address: 0x00a87180 - 0x00a8722f (175 bytes)
 bool uGUIEventSkip::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_EVENT_SKIP_GUI"), static_cast<u32>(129), static_cast<t64>(1433988778)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_EVENTSKIP_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsgGuide;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_EVENT_SKIP_GUI"), 129u, 1433988778l))) != nullptr) {
+            if (mpGUIMsgGuide == nullptr) {
+                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_EVENTSKIP_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsgGuide;
                     return true;
                 } else {
                     return false;
@@ -92,9 +92,9 @@ bool uGUIEventSkip::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_EVENTSKIP_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsgGuide;
+        if (mpGUIMsgGuide == nullptr) {
+            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_EVENTSKIP_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsgGuide;
                 return true;
             } else {
                 return false;
@@ -114,12 +114,12 @@ __attribute__((weak)) void uGUIEventSkip::setup() {
 // Address: 0x00a873f0 - 0x00a87421 (49 bytes)
 void uGUIEventSkip::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -130,7 +130,7 @@ void uGUIEventSkip::kill() {
 // Address: 0x00a873d0 - 0x00a873ea (26 bytes)
 void uGUIEventSkip::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEventSkip::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEventSkip::updateWait);
 }
 
 // Address: 0x00a87430 - 0x00a874e4 (180 bytes)
@@ -157,6 +157,8 @@ __attribute__((weak)) void uGUIEventSkip::updateEventMode() {
 // No out-of-line body: 1 inlined copy in 1 function (125 bytes)
 //   in uGUIEventSkip::updateWait at 0x00a8744e-0x00a87498, 0x00a874b1-0x00a874e4 (called at uGUIEventSkip.cpp:216)
 // void uGUIEventSkip::updateGeneralMode();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEventSkip::MyDTI uGUIEventSkip::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEventSkip.cpp at 0x00a8787f-0x00a878bc (called at uGUIEventSkip.cpp:48)

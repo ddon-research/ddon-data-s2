@@ -32,7 +32,7 @@ const MtDTI& uGUIGaugeExp::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeExp::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeExp::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIGaugeExp::getAllocator() {
 // Address: 0x00a97940 - 0x00a97980 (64 bytes)
 void* uGUIGaugeExp::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeExp::getAllocator()->memAlloc(sz, align, ::uGUIGaugeExp::DTI.::MtDTI::getID());
+    return uGUIGaugeExp::getAllocator()->memAlloc(sz, align, uGUIGaugeExp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIGaugeExp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeExp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeExp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,19 +75,19 @@ inline void uGUIGaugeExp::operator delete(void* p_addr) {
 // Also emitted as: _ZN12uGUIGaugeExpD0Ev at 0x00a97b40
 uGUIGaugeExp::~uGUIGaugeExp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a97ba0 - 0x00a97c08 (104 bytes)
 bool uGUIGaugeExp::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAUGE_EXP_GUI"), static_cast<u32>(129), static_cast<t64>(1471327649)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAUGE_EXP_GUI"), 129u, 1471327649l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -100,64 +100,64 @@ bool uGUIGaugeExp::loadResource() {
 // Address: 0x00a97c10 - 0x00a97df0 (480 bytes)
 void uGUIGaugeExp::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
-    this->setPlay(true);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(7u), true);
+    setPlay(true);
     // inferred: a temporary for the result of the call at 0xa97c72, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(2), false);
-    this->mpInstNull = static_cast<cGUIInstNull*>(t0);
-    this->::uGUIBase::setInstNull(static_cast<cGUIInstNull*>(t0), true);
-    this->mpINST_PL_gauge00 = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(12), false));
+    cGUIInstance* t0 = getInstance(2u, false);
+    mpInstNull = static_cast<cGUIInstNull*>(t0);
+    setInstNull(static_cast<cGUIInstNull*>(t0), true);
+    mpINST_PL_gauge00 = static_cast<cGUIInstNull*>(getInstance(12u, false));
     // inferred: a temporary for the result of the call at 0xa97cb6, used twice; no DWARF local holds it
-    cGUIInstance* t1 = this->getInstance(static_cast<u32>(5), false);
-    this->mpINST_msg_fix_gauge = static_cast<cGUIInstAnimation*>(t1);
-    this->mpOBJ_msg_fix_gauge_f_exp = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(t1, static_cast<u32>(28)));
+    cGUIInstance* t1 = getInstance(5u, false);
+    mpINST_msg_fix_gauge = static_cast<cGUIInstAnimation*>(t1);
+    mpOBJ_msg_fix_gauge_f_exp = static_cast<cGUIObjTexture*>(getObjectFromId(t1, 28u));
     // inferred: a temporary for the value the load at 0xa97cda read, used once; no DWARF local holds it
-    cGUIInstAnimation* t2 = this->mpINST_msg_fix_gauge;
+    cGUIInstAnimation* t2 = mpINST_msg_fix_gauge;
     // inferred: a temporary for the result of the call at 0xa97cf1, used once; no DWARF local holds it
-    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgHud(), static_cast<u32>(44));
+    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgHud(), 44u);
     // inferred: a temporary for the result of the call at 0xa97d04, used twice; no DWARF local holds it
-    cGUIObject* t4 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(t2), static_cast<u32>(38));
-    this->mpOBJ_msg_fix_gauge_m_lv = static_cast<cGUIObjMessage*>(t4);
-    this->::uGUIBase::setObjectMessage(t4, t3, static_cast<u32>(0), false);
-    this->mpOBJ_msg_fix_gauge_m_num01 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(31)));
-    this->mpOBJ_msg_fix_gauge_m_num02 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(62)));
+    cGUIObject* t4 = getObjectFromId(static_cast<cGUIInstance*>(t2), 38u);
+    mpOBJ_msg_fix_gauge_m_lv = static_cast<cGUIObjMessage*>(t4);
+    setObjectMessage(t4, t3, 0u, false);
+    mpOBJ_msg_fix_gauge_m_num01 = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_msg_fix_gauge), 31u));
+    mpOBJ_msg_fix_gauge_m_num02 = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_msg_fix_gauge), 62u));
     // inferred: a temporary for the value the load at 0xa97d59 read, used once; no DWARF local holds it
-    cGUIInstAnimation* t5 = this->mpINST_msg_fix_gauge;
+    cGUIInstAnimation* t5 = mpINST_msg_fix_gauge;
     // inferred: a temporary for the result of the call at 0xa97d70, used once; no DWARF local holds it
-    MT_CTSTR t6 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14));
+    MT_CTSTR t6 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 14u);
     // inferred: a temporary for the result of the call at 0xa97d83, used twice; no DWARF local holds it
-    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(t5), static_cast<u32>(60));
-    this->mpOBJ_msg_fix_gauge_m_xp = static_cast<cGUIObjMessage*>(t7);
-    this->::uGUIBase::setObjectMessage(t7, t6, static_cast<u32>(0), false);
-    this->mpOBJ_msg_fix_gauge_m_p = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(27)));
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpINST_PL_gauge00), false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateInit);
+    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(t5), 60u);
+    mpOBJ_msg_fix_gauge_m_xp = static_cast<cGUIObjMessage*>(t7);
+    setObjectMessage(t7, t6, 0u, false);
+    mpOBJ_msg_fix_gauge_m_p = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_msg_fix_gauge), 27u));
+    setInstanceVisible(static_cast<cGUIInstance*>(mpINST_PL_gauge00), false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateInit);
 }
 
 // Address: 0x00a97e40 - 0x00a97e71 (49 bytes)
 void uGUIGaugeExp::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a97df0 - 0x00a97e36 (70 bytes)
 void uGUIGaugeExp::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGaugeType = static_cast<u8>(0);
-    this->mGaugeInfo.mExpLatest = static_cast<u64>(-1);
-    this->mGaugeInfo.mLvLatest = static_cast<u16>(65535);
-    this->mGaugeInfo.mJobIdLatest = static_cast<u8>(255);
-    this->mGaugeInfo.mPlayPointLatest = static_cast<u32>(4294967295);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateWait);
+    mGaugeType = 0;
+    mGaugeInfo.mExpLatest = 0xFFFFFFFFFFFFFFFFul;
+    mGaugeInfo.mLvLatest = 0xFFFF;
+    mGaugeInfo.mJobIdLatest = 0xFF;
+    mGaugeInfo.mPlayPointLatest = 0xFFFFFFFF;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateWait);
 }
 
 // Address: 0x00a97e90 - 0x00a97f75 (229 bytes)
@@ -187,37 +187,37 @@ __attribute__((weak)) void uGUIGaugeExp::updateWait() {
 void uGUIGaugeExp::setupExpEnablePP() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cGUIObjTexture*
-    if (this->mpINST_msg_fix_gauge != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpINST_msg_fix_gauge->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000005));
-        this->::uGUI::play(0.0f);
+    if (mpINST_msg_fix_gauge != nullptr) {
+        mpINST_msg_fix_gauge->setSequenceId(0xF4245u);
+        play(0.0f);
         // inferred: a temporary for the value the load at 0xa983ac read, used twice; no DWARF local holds it
-        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
-        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 14u), 0u, false);
         }
-        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        if (mpOBJ_msg_fix_gauge_f_exp != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84)) | 8;
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(true);
+        if (mpOBJ_msg_fix_gauge_m_num01 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num01->setVisible(true);
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(false);
+        if (mpOBJ_msg_fix_gauge_m_num02 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num02->setVisible(false);
         }
     } else {
         // inferred: a temporary for the value the load at 0xa983ac read, used twice; no DWARF local holds it
-        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
-        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 14u), 0u, false);
         }
-        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        if (mpOBJ_msg_fix_gauge_f_exp != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84)) | 8;
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(true);
+        if (mpOBJ_msg_fix_gauge_m_num01 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num01->setVisible(true);
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(false);
+        if (mpOBJ_msg_fix_gauge_m_num02 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num02->setVisible(false);
         }
     }
 }
@@ -226,37 +226,37 @@ void uGUIGaugeExp::setupExpEnablePP() {
 void uGUIGaugeExp::setupPp() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cGUIObjTexture*
-    if (this->mpINST_msg_fix_gauge != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpINST_msg_fix_gauge->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000004));
-        this->::uGUI::play(0.0f);
+    if (mpINST_msg_fix_gauge != nullptr) {
+        mpINST_msg_fix_gauge->setSequenceId(0xF4244u);
+        play(0.0f);
         // inferred: a temporary for the value the load at 0xa9845c read, used twice; no DWARF local holds it
-        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
-        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(118)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 118u), 0u, false);
         }
-        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        if (mpOBJ_msg_fix_gauge_f_exp != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84)) | 8;
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(false);
+        if (mpOBJ_msg_fix_gauge_m_num01 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num01->setVisible(false);
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(true);
+        if (mpOBJ_msg_fix_gauge_m_num02 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num02->setVisible(true);
         }
     } else {
         // inferred: a temporary for the value the load at 0xa9845c read, used twice; no DWARF local holds it
-        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
-        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(118)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 118u), 0u, false);
         }
-        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        if (mpOBJ_msg_fix_gauge_f_exp != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpOBJ_msg_fix_gauge_f_exp) + 84)) | 8;
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(false);
+        if (mpOBJ_msg_fix_gauge_m_num01 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num01->setVisible(false);
         }
-        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(true);
+        if (mpOBJ_msg_fix_gauge_m_num02 != nullptr) {
+            mpOBJ_msg_fix_gauge_m_num02->setVisible(true);
         }
     }
 }
@@ -312,6 +312,8 @@ __attribute__((weak)) void uGUIGaugeExp::updateExpGauge() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeExp::MyDTI uGUIGaugeExp::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeExp.cpp at 0x00a98b4f-0x00a98b8c (called at uGUIGaugeExp.cpp:70)
 //   in _GLOBAL__sub_I_uGUIGaugeExp.cpp at 0x00a98b4f-0x00a98b8c (called at uGUIGaugeExp.h:49)
@@ -345,7 +347,7 @@ const MtDTI& uGUIGaugeExp::cGaugeInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIGaugeExp::cGaugeInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::cGaugeInfo::DTI)->memAlloc(sz, align, ::uGUIGaugeExp::cGaugeInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIGaugeExp::cGaugeInfo::DTI)->memAlloc(sz, align, uGUIGaugeExp::cGaugeInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -360,7 +362,7 @@ inline void* uGUIGaugeExp::cGaugeInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12uGUIGaugeExp10cGaugeInfoD0Ev at 0x01af18e0-0x01af190a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIGaugeExp::cGaugeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::cGaugeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeExp::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,6 +393,8 @@ __attribute__((weak)) void uGUIGaugeExp::cGaugeInfo::createProperty(MtPropertyLi
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // void uGUIGaugeExp::cGaugeInfo::initGaugeInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeExp::cGaugeInfo::MyDTI uGUIGaugeExp::cGaugeInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeExp.cpp at 0x00a98b8c-0x00a98bc9 (called at uGUIGaugeExp.cpp:660)
 //   in _GLOBAL__sub_I_uGUIGaugeExp.cpp at 0x00a98b8c-0x00a98bc9 (called at uGUIGaugeExp.h:61)
@@ -399,6 +403,6 @@ __attribute__((weak)) void uGUIGaugeExp::cGaugeInfo::createProperty(MtPropertyLi
 // Address: 0x00a98700 - 0x00a98759 (89 bytes)
 MtObject* uGUIGaugeExp::cGaugeInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIGaugeExp::cGaugeInfo;
+    return new (16u) uGUIGaugeExp::cGaugeInfo;
 }
 

@@ -184,6 +184,36 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::lockCameraMove at 0x8a75fc-0x8a7603; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCharacterEditCameraBase::lockCameraMove() {
+    this->mIsLock = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEditCameraBase::move at 0x8aa041-0x8aa048; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCharacterEditCameraBase::clearLock() {
+    this->mIsLock = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a parameter's register held from a copy's entry: 1 of the copies' parameters DWARF locates in a register only after the copy's entry, bound from the entry where every instruction to there falls through and none writes it (026 plan-P80); then inferred: a single inlined copy's body: the copy inlined in uCharacterEditBase::setScrScheduler at 0x8a0ce2-0x8a0d1a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCharacterEditCameraBase::addRotateRSY(f32 add_y) {
+    if ((this->mRotateRS.y + add_y) > 3.141593f) {
+        if (-3.141593f > (-6.283186f + (this->mRotateRS.y + add_y))) {
+            this->mRotateRS.y = 6.283186f + (-6.283186f + (this->mRotateRS.y + add_y));
+        } else {
+            this->mRotateRS.y = -6.283186f + (this->mRotateRS.y + add_y);
+        }
+    } else {
+        if (-3.141593f > (this->mRotateRS.y + add_y)) {
+            this->mRotateRS.y = 6.283186f + (this->mRotateRS.y + add_y);
+        } else {
+            this->mRotateRS.y = this->mRotateRS.y + add_y;
+        }
+    }
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uCharacterEditCameraBase::cLimit::cLimit() {
     this->max = 0.0f;
     this->min = 0.0f;

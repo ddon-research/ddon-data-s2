@@ -38,7 +38,7 @@ const MtDTI& uGUIPhotoAlbum::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPhotoAlbum::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPhotoAlbum::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPhotoAlbum::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* uGUIPhotoAlbum::getAllocator() {
 // Address: 0x00b3f710 - 0x00b3f750 (64 bytes)
 void* uGUIPhotoAlbum::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPhotoAlbum::getAllocator()->memAlloc(sz, align, ::uGUIPhotoAlbum::DTI.::MtDTI::getID());
+    return uGUIPhotoAlbum::getAllocator()->memAlloc(sz, align, uGUIPhotoAlbum::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* uGUIPhotoAlbum::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPhotoAlbum::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPhotoAlbum::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPhotoAlbum::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,11 +87,11 @@ uGUIPhotoAlbum::~uGUIPhotoAlbum() {
 // Address: 0x00b3fd80 - 0x00b3fe2f (175 bytes)
 bool uGUIPhotoAlbum::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GUI"), static_cast<u32>(129), static_cast<t64>(1435891201)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GUI"), 129u, 1435891201l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -103,9 +103,9 @@ bool uGUIPhotoAlbum::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_ALBUM_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -138,29 +138,29 @@ __attribute__((weak)) void uGUIPhotoAlbum::setup() {
 // Address: 0x00b40cf0 - 0x00b40d9b (171 bytes)
 void uGUIPhotoAlbum::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mAlbum.mpObjTexRefSamnail != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        this->mAlbum.mpObjTexRefSamnail->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
+    this->uGUIBase::kill();
+    if (mAlbum.mpObjTexRefSamnail != nullptr) {
+        mAlbum.mpObjTexRefSamnail->setReferenceTexture(static_cast<rTexture*>(nullptr));
     }
-    if (this->mFull.mpObjTexRefSamnailFull != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        this->mFull.mpObjTexRefSamnailFull->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
+    if (mFull.mpObjTexRefSamnailFull != nullptr) {
+        mFull.mpObjTexRefSamnailFull->setReferenceTexture(static_cast<rTexture*>(nullptr));
     }
-    if (::sScreenShot::getInstance() != static_cast<sScreenShot*>(nullptr)) {
-        ::sScreenShot::getInstance()->::sScreenShot::releaseScreenShotTexture();
+    if (sScreenShot::getInstance() != nullptr) {
+        sScreenShot::getInstance()->releaseScreenShotTexture();
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIPhotoUpload != static_cast<uGUIPhotoUpload*>(nullptr)) {
-        this->mpGUIPhotoUpload->kill();
-        this->mpGUIPhotoUpload = static_cast<uGUIPhotoUpload*>(nullptr);
+    if (mpGUIPhotoUpload != nullptr) {
+        mpGUIPhotoUpload->kill();
+        mpGUIPhotoUpload = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,49 +180,49 @@ __attribute__((weak)) void uGUIPhotoAlbum::updatePtr() {
 // Address: 0x00b40db0 - 0x00b40e69 (185 bytes)
 void uGUIPhotoAlbum::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPhotoAlbum::init();
-    if (this->mFlowId == static_cast<u32>(7)) {
-        this->::uGUIPhotoAlbum::updateAlpha();
-        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+    init();
+    if (mFlowId == 7) {
+        updateAlpha();
+        mFull.mNumPageBtn.uGUIBase::cReferenceUINumPager::update();
     } else {
-        if (this->mFlowId == static_cast<u32>(3)) {
-            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
-            this->mAlbum.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        if (mFlowId == 3) {
+            mAlbum.mNumPageBtn.uGUIBase::cReferenceUINumPager::update();
+            mAlbum.mClose.uGUIBase::cReferenceUICloseBtn::update();
         }
     }
-    this->mCateList.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mCateList.mEnable[0] = true;
-    this->mCateList.mEnable[1] = this->mbSetupPhoto;
-    if (this->::uGUIPhotoAlbum::changePhoto() != false) {
-        if (this->mAlbumMode == static_cast<uGUIPhotoAlbum::ALBUM_MODE>(1)) {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
+    mCateList.mCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mCateList.mEnable[0] = true;
+    mCateList.mEnable[1] = mbSetupPhoto;
+    if (changePhoto()) {
+        if (mAlbumMode == UPLOAD_MODE) {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
         }
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateWait);
 }
 
 // Address: 0x00b41200 - 0x00b4129b (155 bytes)
 void uGUIPhotoAlbum::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(7)) {
-        this->::uGUIPhotoAlbum::updateAlpha();
-        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+    if (mFlowId == 7) {
+        updateAlpha();
+        mFull.mNumPageBtn.uGUIBase::cReferenceUINumPager::update();
     } else {
-        if (this->mFlowId == static_cast<u32>(3)) {
-            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
-            this->mAlbum.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        if (mFlowId == 3) {
+            mAlbum.mNumPageBtn.uGUIBase::cReferenceUINumPager::update();
+            mAlbum.mClose.uGUIBase::cReferenceUICloseBtn::update();
         }
     }
-    this->mCateList.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mCateList.mEnable[0] = true;
-    this->mCateList.mEnable[1] = this->mbSetupPhoto;
-    if (this->::uGUIPhotoAlbum::changePhoto() == false) {
+    mCateList.mCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mCateList.mEnable[0] = true;
+    mCateList.mEnable[1] = mbSetupPhoto;
+    if (!changePhoto()) {
         return;
     }
-    if (this->mAlbumMode != static_cast<uGUIPhotoAlbum::ALBUM_MODE>(1)) {
+    if (mAlbumMode != UPLOAD_MODE) {
         return;
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
 }
 
 // Address: 0x00b41780 - 0x00b418e6 (358 bytes)
@@ -234,7 +234,7 @@ __attribute__((weak)) void uGUIPhotoAlbum::updateUpload() {
 // Address: 0x00b418f0 - 0x00b418f9 (9 bytes)
 void uGUIPhotoAlbum::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b41900 - 0x00b41a01 (257 bytes)
@@ -246,56 +246,55 @@ __attribute__((weak)) void uGUIPhotoAlbum::moveInput() {
 // Address: 0x00b41a20 - 0x00b41b48 (296 bytes)
 void uGUIPhotoAlbum::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-        case static_cast<u32>(0):
+    switch (getInputEvent() - 66u) {
+        case 0:
         {
-            this->::uGUIPhotoAlbum::adjustCategory();
-            this->::uGUIPhotoAlbum::evDecide();
+            adjustCategory();
+            evDecide();
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            if (this->mFlowId == static_cast<u32>(7)) {
-                this->mFlowId = static_cast<u32>(3);
-                this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(3)), true);
-                if (this->mFlowId == static_cast<u32>(7)) {
-                    if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                        this->mFull.mNumPageBtn.mNum = this->mpHCtrl->::cControl::getCurrentPos();
-                        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+            if (mFlowId == 7) {
+                mFlowId = 3;
+                setPlayingFlow(getFlow(3u), true);
+                if (mFlowId == 7) {
+                    if (mpHCtrl != nullptr) {
+                        mFull.mNumPageBtn.mNum = mpHCtrl->getCurrentPos();
+                        mFull.mNumPageBtn.changeString();
                     } else {
-                        this->mFull.mNumPageBtn.mNum = static_cast<s32>(0);
-                        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+                        mFull.mNumPageBtn.mNum = 0;
+                        mFull.mNumPageBtn.changeString();
                     }
                 } else {
-                    if (this->mFlowId == static_cast<u32>(3)) {
-                        if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                            this->mAlbum.mNumPageBtn.mNum = this->mpHCtrl->::cControl::getCurrentPos();
-                            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
-                            this->::uGUIPhotoAlbum::adjustCategory();
+                    if (mFlowId == 3) {
+                        if (mpHCtrl != nullptr) {
+                            mAlbum.mNumPageBtn.mNum = mpHCtrl->getCurrentPos();
+                            mAlbum.mNumPageBtn.changeString();
+                            adjustCategory();
                         } else {
-                            this->mAlbum.mNumPageBtn.mNum = static_cast<s32>(0);
-                            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
-                            this->::uGUIPhotoAlbum::adjustCategory();
+                            mAlbum.mNumPageBtn.mNum = 0;
+                            mAlbum.mNumPageBtn.changeString();
+                            adjustCategory();
                         }
                     }
                 }
             } else {
-                if (this->mFlowId == static_cast<u32>(3)) {
-                    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
+                if (mFlowId == 3) {
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
                 }
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUIPhotoAlbum::adjustCategory();
+            adjustCategory();
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            if (this->mFlowId != static_cast<u32>(3)) {
-            } else {
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
+            if (mFlowId == 3) {
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
             }
             break;
         }
@@ -396,79 +395,79 @@ __attribute__((weak)) u32 uGUIPhotoAlbum::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x01afaca0 - 0x01afacb2 (18 bytes)
 u32 uGUIPhotoAlbum::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x01afacc0 - 0x01afacd2 (18 bytes)
 u32 uGUIPhotoAlbum::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x01aface0 - 0x01afacf2 (18 bytes)
 u32 uGUIPhotoAlbum::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b40c20 - 0x00b40c42 (34 bytes)
 u32 uGUIPhotoAlbum::evCtrlAdjustSideCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(7)) {
-        if (this->mFlowId == static_cast<u32>(3)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (mFlowId != 7) {
+        if (mFlowId == 3) {
+            setInputEvent(69u);
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+        setInputEvent(69u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b40c50 - 0x00b40cdf (143 bytes)
 u32 uGUIPhotoAlbum::evCtrlMouse(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg->reason == static_cast<nGUIExt::MSG_REASON>(37)) {
-        if (msg->mouse_hit_id <= static_cast<s32>(1)) {
-            if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (msg != static_cast<cControl::Message*>(nullptr)) {
-                    msg->changeSE = static_cast<u32>(4);
-                    if (this->mFlowId == static_cast<u32>(3)) {
-                        if (this->mpVCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                            if (::sScreenShot::getInstance()->::sScreenShot::isExistsScreenShot() != false) {
-                                if (this->mbSetupPhoto == false) {
-                                    msg->changeSE = static_cast<u32>(0);
+    if (msg->reason == nGUIExt::MOUSE_LCLICK) {
+        if (msg->mouse_hit_id <= 1) {
+            if (mpVCtrl != nullptr) {
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
+                    if (mFlowId == 3) {
+                        if (mpVCtrl->mCurrentPos != 0) {
+                            if (sScreenShot::getInstance()->isExistsScreenShot()) {
+                                if (!mbSetupPhoto) {
+                                    msg->changeSE = 0;
                                 } else {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                    setInputEvent(66u);
                                 }
                             } else {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                setInputEvent(66u);
                             }
                         } else {
-                            if (this->mMaxPage > static_cast<s32>(0)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                            if (mMaxPage > 0) {
+                                setInputEvent(66u);
                             }
                         }
                     } else {
-                        msg->changeSE = static_cast<u32>(0);
+                        msg->changeSE = 0;
                     }
                 } else {
-                    if (this->mFlowId == static_cast<u32>(3)) {
-                        if (this->mpVCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                            if (::sScreenShot::getInstance()->::sScreenShot::isExistsScreenShot() != false) {
-                                if (this->mbSetupPhoto == false) {
-                                    msg->changeSE = static_cast<u32>(0);
+                    if (mFlowId == 3) {
+                        if (mpVCtrl->mCurrentPos != 0) {
+                            if (sScreenShot::getInstance()->isExistsScreenShot()) {
+                                if (!mbSetupPhoto) {
+                                    msg->changeSE = 0;
                                 } else {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                    setInputEvent(66u);
                                 }
                             } else {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                setInputEvent(66u);
                             }
                         } else {
-                            if (this->mMaxPage > static_cast<s32>(0)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                            if (mMaxPage > 0) {
+                                setInputEvent(66u);
                             }
                         }
                     }
@@ -476,7 +475,7 @@ u32 uGUIPhotoAlbum::evCtrlMouse(cControl::Message* msg) {
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (20 bytes)
@@ -492,65 +491,65 @@ u32 uGUIPhotoAlbum::evCtrlMouse(cControl::Message* msg) {
 // Address: 0x00b41f00 - 0x00b4200a (266 bytes)
 void uGUIPhotoAlbum::adjustScale() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpInstNullAlbum == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullAlbum == nullptr) {
         return;
     }
-    if (this->mpInstNullRBottom == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullRBottom == nullptr) {
         return;
     }
-    if (this->mpInstNullLTop == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullLTop == nullptr) {
         return;
     }
-    f32 fScaleRate = this->getScaleForDefaultResolution(1.0f);
+    f32 fScaleRate = getScaleForDefaultResolution(1.0f);
     // inferred: a temporary for the value the load at 0xb41f4c read, used 4 times; no DWARF local holds it
-    cGUIInstNull* t0 = this->mpInstNullAlbum;
-    if (t0 != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstNull::setScaleX(fScaleRate);
-        t0->::cGUIInstNull::setScaleY(fScaleRate);
-        t0->::cGUIInstNull::setScaleZ(fScaleRate);
+    cGUIInstNull* t0 = mpInstNullAlbum;
+    if (t0 != nullptr) {
+        t0->setScaleX(fScaleRate);
+        t0->setScaleY(fScaleRate);
+        t0->setScaleZ(fScaleRate);
         // inferred: a temporary for the value the load at 0xb41f89 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullRBottom;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(fScaleRate);
-            t1->::cGUIInstNull::setScaleY(fScaleRate);
-            t1->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = mpInstNullRBottom;
+        if (t1 != nullptr) {
+            t1->setScaleX(fScaleRate);
+            t1->setScaleY(fScaleRate);
+            t1->setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb41fc6 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullLTop;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullLTop;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb41fc6 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullLTop;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullLTop;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xb41f89 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullRBottom;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(fScaleRate);
-            t1->::cGUIInstNull::setScaleY(fScaleRate);
-            t1->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = mpInstNullRBottom;
+        if (t1 != nullptr) {
+            t1->setScaleX(fScaleRate);
+            t1->setScaleY(fScaleRate);
+            t1->setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb41fc6 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullLTop;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullLTop;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb41fc6 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullLTop;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullLTop;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         }
     }
@@ -560,9 +559,9 @@ void uGUIPhotoAlbum::adjustScale() {
 bool uGUIPhotoAlbum::isForceSamplerLinear(cGUIObject* pObj) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
-        if (this->mpInstNullAlbum != static_cast<cGUIInstNull*>(nullptr)) {
-            if (this->mpInstNullAlbum->mScale.x > 1.0f) {
+    if (!this->uGUIBase::isForceSamplerLinear(pObj)) {
+        if (mpInstNullAlbum != nullptr) {
+            if (mpInstNullAlbum->mScale.x > 1.0f) {
                 return true;
             }
         }
@@ -571,6 +570,8 @@ bool uGUIPhotoAlbum::isForceSamplerLinear(cGUIObject* pObj) const {
         return true;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIPhotoAlbum::MyDTI uGUIPhotoAlbum::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (142 bytes)
 //   in _GLOBAL__sub_I_uGUIPhotoAlbum.cpp at 0x00b4214f-0x00b42196 (called at uGUIPhotoAlbum.cpp:29)

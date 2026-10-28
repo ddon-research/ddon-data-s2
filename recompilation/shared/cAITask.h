@@ -222,6 +222,6 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK18cAITaskJobPrimList5MyDTI11newInstanceEv at 0x0105fbb0-0x0105fbde, code DWARF attributes to no inlined copy
 inline cAITaskJobPrimList::cAITaskJobPrimList() {
-    this->mpListBottom = static_cast<cAITaskJobPrim*>(nullptr);
-    this->mpList = static_cast<cAITaskJobPrim*>(nullptr);
+    this->mpListBottom = nullptr;
+    this->mpList = nullptr;
 }

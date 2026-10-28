@@ -29,7 +29,7 @@ const MtDTI& uStageFieldCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStageFieldCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStageFieldCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uStageFieldCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uStageFieldCtrl::getAllocator() {
 // Address: 0x00d2c050 - 0x00d2c090 (64 bytes)
 void* uStageFieldCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStageFieldCtrl::getAllocator()->memAlloc(sz, align, ::uStageFieldCtrl::DTI.::MtDTI::getID());
+    return uStageFieldCtrl::getAllocator()->memAlloc(sz, align, uStageFieldCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uStageFieldCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageFieldCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageFieldCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageFieldCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,14 +118,14 @@ __attribute__((weak)) void uStageFieldCtrl::kill() {
 void uStageFieldCtrl::updatePtr() {
     // DWARF local not rendered: cSplitLot* pSplitLot;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 idx = static_cast<u32>(0);
-    if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 idx = 0;
+    if (mSplitLotAry.mLength != 0) {
         do {
-            if (this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(idx)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cSplitLot*>(this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(idx)])->::cSplitLot::updatePtr();
+            if (mSplitLotAry.getBuffer()[static_cast<int>(idx)] != nullptr) {
+                static_cast<cSplitLot*>(mSplitLotAry.getBuffer()[static_cast<int>(idx)])->updatePtr();
             }
-            idx += static_cast<u32>(1);
-        } while (idx < this->mSplitLotAry.::MtArray::mLength);
+            idx += 1u;
+        } while (idx < mSplitLotAry.mLength);
     }
 }
 
@@ -134,28 +134,27 @@ void uStageFieldCtrl::initSplitData(s32 stageNo) {
     // DWARF local not rendered: const stStageSplitData* p;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0xd2d0b9, 0xd2d0de), [0xd2d0df, 0xd2d12b)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const stStageSplitData* p1 = ::uStageFieldCtrl::mSplitDataTbl;
+    const stStageSplitData* p1 = uStageFieldCtrl::mSplitDataTbl;
     do {
-        if (p1 != static_cast<const stStageSplitData*>(nullptr)) {
+        if (p1 != nullptr) {
             if (stageNo >= p1->mStageNo) {
-                if (stageNo >= (p1->mStageNo + static_cast<s32>(10))) {
-                } else {
-                    this->mSplitData.mStageNo = stageNo;
-                    this->mSplitData.mStartPosX = ::uStageFieldCtrl::mSplitDataTbl[i].mStartPosX;
-                    this->mSplitData.mStartPosZ = ::uStageFieldCtrl::mSplitDataTbl[i].mStartPosZ;
-                    this->mSplitData.mSplitNumX = ::uStageFieldCtrl::mSplitDataTbl[i].mSplitNumX;
-                    this->mSplitData.mSplitNumZ = ::uStageFieldCtrl::mSplitDataTbl[i].mSplitNumZ;
-                    this->mSplitData.mLengthX = ::uStageFieldCtrl::mSplitDataTbl[i].mLengthX;
-                    this->mSplitData.mLengthZ = ::uStageFieldCtrl::mSplitDataTbl[i].mLengthZ;
+                if (stageNo < (p1->mStageNo + 10)) {
+                    mSplitData.mStageNo = stageNo;
+                    mSplitData.mStartPosX = uStageFieldCtrl::mSplitDataTbl[i].mStartPosX;
+                    mSplitData.mStartPosZ = uStageFieldCtrl::mSplitDataTbl[i].mStartPosZ;
+                    mSplitData.mSplitNumX = uStageFieldCtrl::mSplitDataTbl[i].mSplitNumX;
+                    mSplitData.mSplitNumZ = uStageFieldCtrl::mSplitDataTbl[i].mSplitNumZ;
+                    mSplitData.mLengthX = uStageFieldCtrl::mSplitDataTbl[i].mLengthX;
+                    mSplitData.mLengthZ = uStageFieldCtrl::mSplitDataTbl[i].mLengthZ;
                     return;
                 }
             }
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(1));
+    } while (i <= 1u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,6 +335,10 @@ __attribute__((weak)) bool uStageFieldCtrl::updateArc(bool isBlocking, bool upda
 // No out-of-line body: 1 inlined copy in 1 function (121 bytes)
 //   in uStageFieldCtrl::updateLot at 0x00d2c560-0x00d2c57d, 0x00d2c5d1-0x00d2c62d (called at uStageField.cpp:852)
 // bool uStageFieldCtrl::isBlockArcLoadOk(s32 x, s32 z);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageFieldCtrl::MyDTI uStageFieldCtrl::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const stStageSplitData uStageFieldCtrl::mSplitDataTbl[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageField.cpp at 0x00d2ddaf-0x00d2ddec (called at uStageField.cpp:43)

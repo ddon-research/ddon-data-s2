@@ -112,5 +112,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rMapSpotStageList::Data::Data() {
-    this->mStageNo = static_cast<s32>(0);
+    this->mStageNo = 0;
 }

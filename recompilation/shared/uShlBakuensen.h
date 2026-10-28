@@ -146,6 +146,15 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uBakuenseSpark::uBakuenseSpark() {
-    this->mpOwner = static_cast<uShlBakuensen*>(nullptr);
+    this->mpOwner = nullptr;
     this->mRequestSetCollision = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uShlBakuensen::updateSub at 0xcc0b6e-0xcc0b97; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uShlBakuensen::waitShot() {
+    this->mShotWaitTimer = this->mShotWaitTimer - this->::cUnit::mDeltaTime;
+    if (0.0f > this->mShotWaitTimer) {
+        this->mBakuenPhase = static_cast<nShlBakuensen::BAKUENSEN_PHASE>(5);
+    }
 }

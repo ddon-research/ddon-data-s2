@@ -69,7 +69,7 @@ uControlEnemy::~uControlEnemy() {
 // Address: 0x008ca0c0 - 0x008ca0c5 (5 bytes)
 void uControlEnemy::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::createProperty(s);
+    this->uControl::createProperty(s);
 }
 
 // Address: 0x008ca0f0 - 0x008ca1af (191 bytes)
@@ -82,25 +82,25 @@ __attribute__((weak)) void uControlEnemy::move() {
 // Address: 0x008ca0d0 - 0x008ca0d5 (5 bytes)
 void uControlEnemy::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::updatePtr();
+    this->uControl::updatePtr();
 }
 
 // Address: 0x008ca0e0 - 0x008ca0e5 (5 bytes)
 void uControlEnemy::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::setup();
+    this->uControl::setup();
 }
 
 // Address: 0x008ca1c0 - 0x008ca1c5 (5 bytes)
 void uControlEnemy::setOwner(uDDOModel* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::mpModel = pOwner;
+    mpModel = pOwner;
 }
 
 // Address: 0x008ca360 - 0x008ca372 (18 bytes)
 bool uControlEnemy::isHumanEnemy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->::uControl::mUnitId - static_cast<u32>(149)) <= static_cast<u32>(56);
+    return (mUnitId - 149u) <= 56u;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -274,6 +274,8 @@ __attribute__((weak)) MT_CTSTR uControlEnemy::getName() {
 
 // No out-of-line body: no code in the ELF
 // void uControlEnemy::setNamedEnemyParam(const CNamedEnemyParamClient&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uControlEnemy::MyDTI uControlEnemy::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uControlEnemy.cpp at 0x008ca47f-0x008ca4bc (called at uControlEnemy.cpp:45)

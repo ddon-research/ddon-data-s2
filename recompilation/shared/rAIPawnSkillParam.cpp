@@ -52,7 +52,7 @@ const MtDTI& cAIPawnSkillParamNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnSkillParamNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnSkillParamNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (120 bytes)
@@ -83,34 +83,34 @@ cAIPawnSkillParamNode::~cAIPawnSkillParamNode() {
 // Address: 0x006406d0 - 0x00640851 (385 bytes)
 __attribute__((weak)) void cAIPawnSkillParamNode::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mJob = r.readS32();
-    this->mActNo = r.readS32();
-    this->mNormalSkillId = r.readS32();
-    this->mInputInfo = r.readU32();
-    this->mInputInfoReady = r.readU32();
-    this->mSkillRange.MaxRangeXZ = r.readF32();
-    this->mSkillRange.MinRangeXZ = r.readF32();
-    this->mSkillRange.MaxRangeY = r.readF32();
-    this->mSkillRange.MinRangeY = r.readF32();
-    this->mSkillOcd.elems[0] = r.readU32();
-    this->mSkillOcd.elems[1] = r.readU32();
-    this->mSkillOcd.elems[2] = r.readU32();
-    this->mSkillOcd.elems[3] = r.readU32();
-    this->mSkillOcd.elems[4] = r.readU32();
-    this->mSkillOcd.elems[5] = r.readU32();
-    this->mSkillOcd.elems[6] = r.readU32();
-    this->mSkillOcd.elems[7] = r.readU32();
-    this->mSkillOcd.elems[8] = r.readU32();
-    this->mSkillOcd.elems[9] = r.readU32();
-    this->mSkillOcd.elems[10] = r.readU32();
-    this->mSkillOcd.elems[11] = r.readU32();
-    this->mSkillOcd.elems[12] = r.readU32();
-    this->mSkillOcd.elems[13] = r.readU32();
-    this->mSkillOcd.elems[14] = r.readU32();
-    this->mSkillOcd.elems[15] = r.readU32();
+    mJob = r.readS32();
+    mActNo = r.readS32();
+    mNormalSkillId = r.readS32();
+    mInputInfo = r.readU32();
+    mInputInfoReady = r.readU32();
+    mSkillRange.MaxRangeXZ = r.readF32();
+    mSkillRange.MinRangeXZ = r.readF32();
+    mSkillRange.MaxRangeY = r.readF32();
+    mSkillRange.MinRangeY = r.readF32();
+    mSkillOcd.elems[0] = r.readU32();
+    mSkillOcd.elems[1] = r.readU32();
+    mSkillOcd.elems[2] = r.readU32();
+    mSkillOcd.elems[3] = r.readU32();
+    mSkillOcd.elems[4] = r.readU32();
+    mSkillOcd.elems[5] = r.readU32();
+    mSkillOcd.elems[6] = r.readU32();
+    mSkillOcd.elems[7] = r.readU32();
+    mSkillOcd.elems[8] = r.readU32();
+    mSkillOcd.elems[9] = r.readU32();
+    mSkillOcd.elems[10] = r.readU32();
+    mSkillOcd.elems[11] = r.readU32();
+    mSkillOcd.elems[12] = r.readU32();
+    mSkillOcd.elems[13] = r.readU32();
+    mSkillOcd.elems[14] = r.readU32();
+    mSkillOcd.elems[15] = r.readU32();
     // inferred: a temporary for the result of the call at 0x640834, used once; no DWARF local holds it
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&this->mAIPawnSkillParamFlag), t0 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mAIPawnSkillParamFlag), t0 * 4u);
 }
 
 // Address: 0x00640860 - 0x0064088a (42 bytes)
@@ -129,8 +129,10 @@ __attribute__((weak)) void cAIPawnSkillParamNode::calcSkillRange(stSkillRangeXZY
 // Address: 0x00640890 - 0x00640894 (4 bytes)
 s32 cAIPawnSkillParamNode::getActionNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActNo;
+    return mActNo;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnSkillParamNode::MyDTI cAIPawnSkillParamNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnSkillParam.cpp at 0x00640c9f-0x00640cdc (called at rAIPawnSkillParam.cpp:137)
@@ -166,7 +168,7 @@ const MtDTI& rAIPawnSkillParamTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnSkillParamTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnSkillParamTbl::DTI)->memAlloc(sz, align, ::rAIPawnSkillParamTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnSkillParamTbl::DTI)->memAlloc(sz, align, rAIPawnSkillParamTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -181,7 +183,7 @@ inline void* rAIPawnSkillParamTbl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAIPawnSkillParamTbl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAIPawnSkillParamTbl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAIPawnSkillParamTbl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,7 +216,7 @@ __attribute__((weak)) bool rAIPawnSkillParamTbl::loadCore(MtDataReader& r) {
 // Address: 0x01a73050 - 0x01a73060 (16 bytes)
 bool rAIPawnSkillParamTbl::loadData(MtDataReader& r, cAIPawnSkillParamNode* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->::cAIPawnSkillParamNode::load(r);
+    pData->load(r);
     return true;
 }
 
@@ -227,8 +229,10 @@ MT_CTSTR rAIPawnSkillParamTbl::getExt() const {
 // Address: 0x01a730b0 - 0x01a730b6 (6 bytes)
 u32 rAIPawnSkillParamTbl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnSkillParamTbl::MyDTI rAIPawnSkillParamTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnSkillParam.cpp at 0x00640cdc-0x00640d19 (called at rAIPawnSkillParam.cpp:484)
@@ -238,7 +242,7 @@ u32 rAIPawnSkillParamTbl::getDataVersion() const {
 // Address: 0x006408a0 - 0x00640904 (100 bytes)
 MtObject* rAIPawnSkillParamTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnSkillParamTbl;
+    return new (16u) rAIPawnSkillParamTbl;
 }
 
 // Instance at 0x01a73060 - 0x01a73072 (18 bytes) of the generic rTbl2<T>::getData

@@ -36,7 +36,7 @@ const MtDTI& cCraftSkillSpdData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCraftSkillSpdData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftSkillSpdData::DTI)->memAlloc(sz, align, ::cCraftSkillSpdData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftSkillSpdData::DTI)->memAlloc(sz, align, cCraftSkillSpdData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCraftSkillSpdData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftSkillSpdData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftSkillSpdData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftSkillSpdData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,16 +83,18 @@ __attribute__((weak)) void cCraftSkillSpdData::createProperty(MtPropertyList& s)
 // Address: 0x0065dd80 - 0x0065dd95 (21 bytes)
 u32 cCraftSkillSpdData::getRate(u32 type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type == static_cast<u32>(1)) {
-        return this->mSpdRate2;
+    if (type == 1) {
+        return mSpdRate2;
     } else {
-        if (type == static_cast<u32>(0)) {
-            return this->mSpdRate1;
+        if (type == 0) {
+            return mSpdRate1;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftSkillSpdData::MyDTI cCraftSkillSpdData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCraftSkillSpd.cpp at 0x0065deb0-0x0065def2 (called at rCraftSkillSpd.cpp:40)
@@ -102,7 +104,7 @@ u32 cCraftSkillSpdData::getRate(u32 type) const {
 // Address: 0x0065db10 - 0x0065db58 (72 bytes)
 MtObject* cCraftSkillSpdData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftSkillSpdData;
+    return new (16u) cCraftSkillSpdData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ const MtDTI& rCraftSkillSpd::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftSkillSpd::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftSkillSpd::DTI)->memAlloc(sz, align, ::rCraftSkillSpd::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftSkillSpd::DTI)->memAlloc(sz, align, rCraftSkillSpd::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,7 +144,7 @@ inline void* rCraftSkillSpd::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rCraftSkillSpdD0Ev at 0x01a84514-0x01a84533, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftSkillSpd::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftSkillSpd::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftSkillSpd::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,10 +161,10 @@ bool rCraftSkillSpd::loadData(MtDataReader& in, cCraftSkillSpdData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSpdRate1);
+    nDDOIO::readData(in, pData->mSpdRate1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSpdRate2);
+    nDDOIO::readData(in, pData->mSpdRate2);
     return true;
 }
 
@@ -175,8 +177,10 @@ MT_CTSTR rCraftSkillSpd::getExt() const {
 // Address: 0x01a84660 - 0x01a84666 (6 bytes)
 u32 rCraftSkillSpd::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftSkillSpd::MyDTI rCraftSkillSpd::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftSkillSpd.cpp at 0x0065def2-0x0065df2f (called at rCraftSkillSpd.cpp:124)
@@ -186,7 +190,7 @@ u32 rCraftSkillSpd::getDataVersion() const {
 // Address: 0x0065dda0 - 0x0065de04 (100 bytes)
 MtObject* rCraftSkillSpd::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftSkillSpd;
+    return new (16u) rCraftSkillSpd;
 }
 
 // Instance at 0x01a84610 - 0x01a84622 (18 bytes) of the generic rTbl2<T>::getData

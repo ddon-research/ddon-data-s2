@@ -34,7 +34,7 @@ const MtDTI& cAIGraph::getDTI() const {
 // Address: 0x010299a0 - 0x010299e0 (64 bytes)
 void* cAIGraph::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cAIGraph::DTI)->memAlloc(sz, align, ::cAIGraph::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memAlloc(sz, align, cAIGraph::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cAIGraph::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cAIGraphD0Ev at 0x01029dfe-0x01029e1f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIGraph::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIGraph::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,19 +64,19 @@ inline void cAIGraph::operator delete(void* p_addr) {
 // Address: 0x01029a50 - 0x01029ac9 (121 bytes)
 cAIGraph::cAIGraph() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeleteNode = false;
-    this->mDeleteArea = false;
-    this->mNumberOfArea = static_cast<u16>(0);
-    this->mNumberOfAreaChild = static_cast<u16>(0);
-    this->mNumberOfAreaLink = static_cast<u16>(0);
-    this->mAddID = static_cast<u16>(0);
-    this->mNumberOfNode = static_cast<u32>(0);
-    this->mNumberOfLink = static_cast<u32>(0);
-    this->mpNode = static_cast<cAIGraph::Node*>(nullptr);
-    this->mpAreaLink = static_cast<cAIGraph::Link*>(nullptr);
-    this->mpAreaChild = static_cast<cAIGraph::Link*>(nullptr);
-    this->mpArea = static_cast<cAIGraph::Area*>(nullptr);
-    this->mpLink = static_cast<cAIGraph::Link*>(nullptr);
+    mDeleteNode = false;
+    mDeleteArea = false;
+    mNumberOfArea = 0;
+    mNumberOfAreaChild = 0;
+    mNumberOfAreaLink = 0;
+    mAddID = 0;
+    mNumberOfNode = 0;
+    mNumberOfLink = 0;
+    mpNode = nullptr;
+    mpAreaLink = nullptr;
+    mpAreaChild = nullptr;
+    mpArea = nullptr;
+    mpLink = nullptr;
 }
 
 // Address: 0x01029ad0 - 0x01029dc5 (757 bytes)
@@ -91,7 +91,7 @@ cAIGraph::~cAIGraph() {
 // Address: 0x01b6a070 - 0x01b6a075 (5 bytes)
 void cAIGraph::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAITask::createProperty(s);
+    this->cAITask::createProperty(s);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,24 +170,24 @@ __attribute__((weak)) void cAIGraph::setSize(u32 num) {
 // Address: 0x0102a960 - 0x0102a9bf (95 bytes)
 void cAIGraph::setData(MtObject* obj, u32 index) {
     // Approximate from the ELF: a store at a join copied into the arms; a temporary declared in several branches; the body oracle reports this body.
-    if (this->mDeleteNode != false) {
-        if (this->mpNode[index].mpCurrent != static_cast<MtObject*>(nullptr)) {
-            delete this->mpNode[index].mpCurrent;
+    if (mDeleteNode) {
+        if (mpNode[index].mpCurrent != nullptr) {
+            delete mpNode[index].mpCurrent;
             // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
-            cAIGraph::Node* t0 = this->mpNode;
+            Node* t0 = mpNode;
             t0[index].mpCurrent = obj;
             t0[index].mID = static_cast<unsigned short>(index);
             t0[index].mpParent = this;
         } else {
             // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
-            cAIGraph::Node* t0 = this->mpNode;
+            Node* t0 = mpNode;
             t0[index].mpCurrent = obj;
             t0[index].mID = static_cast<unsigned short>(index);
             t0[index].mpParent = this;
         }
     } else {
         // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
-        cAIGraph::Node* t0 = this->mpNode;
+        Node* t0 = mpNode;
         t0[index].mpCurrent = obj;
         t0[index].mID = static_cast<unsigned short>(index);
         t0[index].mpParent = this;
@@ -221,27 +221,27 @@ __attribute__((weak)) void cAIGraph::setAreaSize(u32 num) {
 // Address: 0x0102add0 - 0x0102ae2f (95 bytes)
 void cAIGraph::setAreaData(MtObject* obj, u32 index) {
     // Approximate from the ELF: a store at a join copied into the arms; a temporary declared in several branches; the body oracle reports this body.
-    if (this->mDeleteArea != false) {
-        if (this->mpArea[index].::cAIGraph::Node::mpCurrent != static_cast<MtObject*>(nullptr)) {
-            delete this->mpArea[index].::cAIGraph::Node::mpCurrent;
+    if (mDeleteArea) {
+        if (mpArea[index].mpCurrent != nullptr) {
+            delete mpArea[index].mpCurrent;
             // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
-            cAIGraph::Area* t0 = this->mpArea;
-            t0[index].::cAIGraph::Node::mpCurrent = obj;
-            t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
-            t0[index].::cAIGraph::Node::mpParent = this;
+            Area* t0 = mpArea;
+            t0[index].mpCurrent = obj;
+            t0[index].mID = static_cast<unsigned short>(index);
+            t0[index].mpParent = this;
         } else {
             // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
-            cAIGraph::Area* t0 = this->mpArea;
-            t0[index].::cAIGraph::Node::mpCurrent = obj;
-            t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
-            t0[index].::cAIGraph::Node::mpParent = this;
+            Area* t0 = mpArea;
+            t0[index].mpCurrent = obj;
+            t0[index].mID = static_cast<unsigned short>(index);
+            t0[index].mpParent = this;
         }
     } else {
         // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
-        cAIGraph::Area* t0 = this->mpArea;
-        t0[index].::cAIGraph::Node::mpCurrent = obj;
-        t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
-        t0[index].::cAIGraph::Node::mpParent = this;
+        Area* t0 = mpArea;
+        t0[index].mpCurrent = obj;
+        t0[index].mID = static_cast<unsigned short>(index);
+        t0[index].mpParent = this;
     }
 }
 
@@ -262,23 +262,23 @@ void cAIGraph::insert(cAIGraph::Node* pNode, cAIGraph::Link* addLink) {
     // DWARF local not rendered: Link* pLink;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x102ae40 carries; no location-less local in scope fits
-    cAIGraph::Link* v0_0;
-    if (pNode->mpLink == static_cast<cAIGraph::Link*>(nullptr)) {
+    Link* v0_0;
+    if (pNode->mpLink == nullptr) {
         pNode->mpLink = addLink;
-        pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(1));
+        pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + 1);
         return;
     } else {
         v0_0 = pNode->mpLink;
     }
     for (;;) {
-        if (v0_0->mpNext != static_cast<cAIGraph::Link*>(nullptr)) {
+        if (v0_0->mpNext != nullptr) {
             v0_0 = v0_0->mpNext;
         } else {
             break;
         }
     }
     v0_0->mpNext = addLink;
-    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(1));
+    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + 1);
 }
 
 // Address: 0x0102ae60 - 0x0102ae9f (63 bytes)
@@ -287,9 +287,9 @@ void cAIGraph::remove(cAIGraph::Node* pNode, cAIGraph::Link* removeLink) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (removeLink != pNode->mpLink) {
         // inferred: the value the loop at 0x102ae70 carries; no location-less local in scope fits
-        cAIGraph::Link* v0_1 = pNode->mpLink;
+        Link* v0_1 = pNode->mpLink;
         for (;;) {
-            if (v0_1 == static_cast<cAIGraph::Link*>(nullptr)) {
+            if (v0_1 == nullptr) {
                 return;
             } else {
                 if (removeLink != v0_1->mpNext) {
@@ -303,8 +303,8 @@ void cAIGraph::remove(cAIGraph::Node* pNode, cAIGraph::Link* removeLink) {
     } else {
         pNode->mpLink = removeLink->mpNext;
     }
-    removeLink->mpNext = static_cast<cAIGraph::Link*>(nullptr);
-    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(255));
+    removeLink->mpNext = nullptr;
+    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + 255);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -318,6 +318,8 @@ void cAIGraph::remove(cAIGraph::Node* pNode, cAIGraph::Link* removeLink) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAIGraph::setData(u32 data);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIGraph::MyDTI cAIGraph::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIGraph::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -376,22 +378,21 @@ const MtDTI& cAIGraph::Node::getDTI() const {
 // Address: 0x0102af70 - 0x0102afef (127 bytes)
 // Also emitted as: _ZN8cAIGraph4NodeD0Ev at 0x0102aff0
 cAIGraph::Node::~Node() {
-    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAutoDeleteLink != false) {
-        if (this->mpLink != static_cast<cAIGraph::Link*>(nullptr)) {
-            for (cAIGraph::Link* e = this->mpLink;;) {
-                this->mpLink = e->mpNext;
-                e->mpNext = static_cast<cAIGraph::Link*>(nullptr);
-                e->mpCurrent = static_cast<cAIGraph::Node*>(nullptr);
-                ::MtMemoryAllocator::getAllocator(::cAIGraph::DTI)->memFree(static_cast<void*>(e));
-                if (this->mpLink != static_cast<cAIGraph::Link*>(nullptr)) {
-                    e = this->mpLink;
-                } else {
-                    break;
-                }
-            }
-        }
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (!mAutoDeleteLink) {
+        return;
     }
+    if (mpLink == nullptr) {
+        return;
+    }
+    Link* e = mpLink;
+    do {
+        mpLink = e->mpNext;
+        e->mpNext = nullptr;
+        e->mpCurrent = nullptr;
+        MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memFree(static_cast<void*>(e));
+        e = mpLink;
+    } while (e != nullptr);
 }
 
 // Address: 0x0102b090 - 0x0102b222 (402 bytes)
@@ -402,6 +403,8 @@ __attribute__((weak)) void cAIGraph::Node::createProperty(MtPropertyList& s) {
 
 // No out-of-line body: no code in the ELF
 // cAIGraph::Node* cAIGraph::Node::getLink(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIGraph::Node::MyDTI cAIGraph::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIGraph::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -479,6 +482,8 @@ cAIGraph::Area::~Area() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIGraph::Area::MyDTI cAIGraph::Area::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIGraph::Area::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -509,7 +514,7 @@ const MtDTI& cAIQuadTree::getDTI() const {
 // Address: 0x0102d2f0 - 0x0102d330 (64 bytes)
 void* cAIQuadTree::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cAIQuadTree::DTI)->memAlloc(sz, align, ::cAIQuadTree::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memAlloc(sz, align, cAIQuadTree::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -524,7 +529,7 @@ void* cAIQuadTree::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cAIQuadTreeD0Ev at 0x0102d60e-0x0102d62f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIQuadTree::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIQuadTree::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -625,6 +630,8 @@ __attribute__((weak)) MtAABB cAIQuadTree::getRegion() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 cAIQuadTree::bitSeparate2D(u32 bit);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIQuadTree::MyDTI cAIQuadTree::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIQuadTree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -655,7 +662,7 @@ const MtDTI& cAITreeBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK11cAITreeBase5MyDTI11newInstanceEv at 0x0102cb60-0x0102cb8d, code DWARF attributes to no inlined copy; sz is the class's size (160), align the allocation's other whole constant (16)
 inline void* cAITreeBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAITreeBase::DTI)->memAlloc(sz, align, ::cAITreeBase::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAITreeBase::DTI)->memAlloc(sz, align, cAITreeBase::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -704,13 +711,15 @@ cAITreeBase::~cAITreeBase() {
 // No out-of-line body: no code in the ELF
 // bool cAITreeBase::isDelete();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAITreeBase::MyDTI cAITreeBase::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITreeBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0102cb60 - 0x0102cbd8 (120 bytes)
 MtObject* cAITreeBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAITreeBase;
+    return new (16u) cAITreeBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -791,6 +800,8 @@ cAITreeBase::Node::~Node() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAITreeBase::Node::removeAll();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAITreeBase::Node::MyDTI cAITreeBase::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITreeBase::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

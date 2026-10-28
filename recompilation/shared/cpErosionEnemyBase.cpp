@@ -60,7 +60,7 @@ const MtDTI& cpErosionEnemyBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpErosionEnemyBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpErosionEnemyBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpErosionEnemyBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,21 +76,21 @@ inline void cpErosionEnemyBase::operator delete(void* p_addr) {
 cpErosionEnemyBase::cpErosionEnemyBase() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpErosionLinpunNode = static_cast<cHitNode*>(nullptr);
-    this->mpEnemy = static_cast<uCharacter*>(nullptr);
-    this->mErosionCurrentLevel = static_cast<nErosionEnemyBase::EROSION_LEVEL>(0);
-    this->mErosionStatus = static_cast<nErosionEnemyBase::EROSION_STATUS>(0);
-    this->mErosionRealLevel = static_cast<nErosionEnemyBase::EROSION_LEVEL>(0);
-    this->mpErosionSoundRes = static_cast<rSoundRequest*>(nullptr);
-    this->mLinpunEpvIndexNo = static_cast<s32>(-1);
-    this->mpErosionAttackParamRes[4] = static_cast<rAttackParam*>(nullptr);
-    this->mpErosionAttackParamRes[3] = static_cast<rAttackParam*>(nullptr);
-    this->mpErosionAttackParamRes[2] = static_cast<rAttackParam*>(nullptr);
-    this->mpErosionAttackParamRes[1] = static_cast<rAttackParam*>(nullptr);
-    this->mpErosionAttackParamRes[0] = static_cast<rAttackParam*>(nullptr);
-    this->mIsErosionEnemy = false;
-    this->mIsErosionEnemySmall = false;
-    this->mIsErosionEnemySuper = false;
+    mpErosionLinpunNode = nullptr;
+    mpEnemy = nullptr;
+    mErosionCurrentLevel = nErosionEnemyBase::EROSION_LEVEL_NONE;
+    mErosionStatus = nErosionEnemyBase::EROSION_STATUS_NORMAL;
+    mErosionRealLevel = nErosionEnemyBase::EROSION_LEVEL_NONE;
+    mpErosionSoundRes = nullptr;
+    mLinpunEpvIndexNo = -1;
+    mpErosionAttackParamRes[4] = nullptr;
+    mpErosionAttackParamRes[3] = nullptr;
+    mpErosionAttackParamRes[2] = nullptr;
+    mpErosionAttackParamRes[1] = nullptr;
+    mpErosionAttackParamRes[0] = nullptr;
+    mIsErosionEnemy = false;
+    mIsErosionEnemySmall = false;
+    mIsErosionEnemySuper = false;
 }
 
 // Address: 0x00153b30 - 0x00153b35 (5 bytes)
@@ -111,56 +111,56 @@ void cpErosionEnemyBase::kill() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpErosionLinpunNode != static_cast<cHitNode*>(nullptr)) {
-        this->mpEnemy->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpErosionLinpunNode);
+    if (mpErosionLinpunNode != nullptr) {
+        mpEnemy->getObjCollisionPtr()->killNode(mpErosionLinpunNode);
     }
-    this->mpErosionLinpunNode = static_cast<cHitNode*>(nullptr);
-    if (this->mpErosionAttackParamRes[0] != static_cast<rAttackParam*>(nullptr)) {
-        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[0]);
-        if (this->mpErosionAttackParamRes[0] != static_cast<rAttackParam*>(nullptr)) {
-            this->mpErosionAttackParamRes[0]->::cResource::release();
-            this->mpErosionAttackParamRes[0] = static_cast<rAttackParam*>(nullptr);
+    mpErosionLinpunNode = nullptr;
+    if (mpErosionAttackParamRes[0] != nullptr) {
+        sObjCollision::getInstance()->releaseAttackParamTable(mpErosionAttackParamRes[0]);
+        if (mpErosionAttackParamRes[0] != nullptr) {
+            mpErosionAttackParamRes[0]->cResource::release();
+            mpErosionAttackParamRes[0] = nullptr;
         }
     }
-    if (this->mpErosionAttackParamRes[1] != static_cast<rAttackParam*>(nullptr)) {
-        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[1]);
-        if (this->mpErosionAttackParamRes[1] != static_cast<rAttackParam*>(nullptr)) {
-            this->mpErosionAttackParamRes[1]->::cResource::release();
-            this->mpErosionAttackParamRes[1] = static_cast<rAttackParam*>(nullptr);
+    if (mpErosionAttackParamRes[1] != nullptr) {
+        sObjCollision::getInstance()->releaseAttackParamTable(mpErosionAttackParamRes[1]);
+        if (mpErosionAttackParamRes[1] != nullptr) {
+            mpErosionAttackParamRes[1]->cResource::release();
+            mpErosionAttackParamRes[1] = nullptr;
         }
     }
-    if (this->mpErosionAttackParamRes[2] != static_cast<rAttackParam*>(nullptr)) {
-        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[2]);
-        if (this->mpErosionAttackParamRes[2] != static_cast<rAttackParam*>(nullptr)) {
-            this->mpErosionAttackParamRes[2]->::cResource::release();
-            this->mpErosionAttackParamRes[2] = static_cast<rAttackParam*>(nullptr);
+    if (mpErosionAttackParamRes[2] != nullptr) {
+        sObjCollision::getInstance()->releaseAttackParamTable(mpErosionAttackParamRes[2]);
+        if (mpErosionAttackParamRes[2] != nullptr) {
+            mpErosionAttackParamRes[2]->cResource::release();
+            mpErosionAttackParamRes[2] = nullptr;
         }
     }
-    if (this->mpErosionAttackParamRes[3] != static_cast<rAttackParam*>(nullptr)) {
-        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[3]);
-        if (this->mpErosionAttackParamRes[3] != static_cast<rAttackParam*>(nullptr)) {
-            this->mpErosionAttackParamRes[3]->::cResource::release();
-            this->mpErosionAttackParamRes[3] = static_cast<rAttackParam*>(nullptr);
+    if (mpErosionAttackParamRes[3] != nullptr) {
+        sObjCollision::getInstance()->releaseAttackParamTable(mpErosionAttackParamRes[3]);
+        if (mpErosionAttackParamRes[3] != nullptr) {
+            mpErosionAttackParamRes[3]->cResource::release();
+            mpErosionAttackParamRes[3] = nullptr;
         }
     }
-    if (this->mpErosionAttackParamRes[4] != static_cast<rAttackParam*>(nullptr)) {
-        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[4]);
-        if (this->mpErosionAttackParamRes[4] != static_cast<rAttackParam*>(nullptr)) {
-            this->mpErosionAttackParamRes[4]->::cResource::release();
-            this->mpErosionAttackParamRes[4] = static_cast<rAttackParam*>(nullptr);
+    if (mpErosionAttackParamRes[4] != nullptr) {
+        sObjCollision::getInstance()->releaseAttackParamTable(mpErosionAttackParamRes[4]);
+        if (mpErosionAttackParamRes[4] != nullptr) {
+            mpErosionAttackParamRes[4]->cResource::release();
+            mpErosionAttackParamRes[4] = nullptr;
         }
     }
-    if (this->mpErosionSoundRes != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpErosionSoundRes->::cResource::release();
-        this->mpErosionSoundRes = static_cast<rSoundRequest*>(nullptr);
+    if (mpErosionSoundRes != nullptr) {
+        mpErosionSoundRes->release();
+        mpErosionSoundRes = nullptr;
     }
 }
 
 // Address: 0x00153eb0 - 0x00153eb9 (9 bytes)
 void cpErosionEnemyBase::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpEnemy = static_cast<uCharacter*>(pOwner);
+    mpOwner = pOwner;
+    mpEnemy = static_cast<uCharacter*>(pOwner);
 }
 
 // Defined in the class (its body was written in a header).
@@ -169,16 +169,16 @@ void cpErosionEnemyBase::setOwner(MtObject* pOwner) {
 // Address: 0x00153f20 - 0x00153faf (143 bytes)
 void cpErosionEnemyBase::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpErosionEnemyBase::getErosionStatus() == static_cast<nErosionEnemyBase::EROSION_STATUS>(1)) {
-        if (this->isErosionCancelStatus(true) == false) {
-            this->callbackChangeErosionCurrentLevel(this->mErosionRealLevel, this->mErosionCurrentLevel, false);
-            this->mErosionStatus = static_cast<nErosionEnemyBase::EROSION_STATUS>(0);
+    if (getErosionStatus() == nErosionEnemyBase::EROSION_STATUS_CANCEL) {
+        if (!isErosionCancelStatus(true)) {
+            callbackChangeErosionCurrentLevel(mErosionRealLevel, mErosionCurrentLevel, false);
+            mErosionStatus = nErosionEnemyBase::EROSION_STATUS_NORMAL;
         }
     } else {
-        if (this->::cpErosionEnemyBase::getErosionStatus() == static_cast<nErosionEnemyBase::EROSION_STATUS>(0)) {
-            if (this->isErosionCancelStatus(true) != false) {
-                this->callbackChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(0), this->mErosionCurrentLevel, false);
-                this->mErosionStatus = static_cast<nErosionEnemyBase::EROSION_STATUS>(1);
+        if (getErosionStatus() == nErosionEnemyBase::EROSION_STATUS_NORMAL) {
+            if (isErosionCancelStatus(true)) {
+                callbackChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_NONE, mErosionCurrentLevel, false);
+                mErosionStatus = nErosionEnemyBase::EROSION_STATUS_CANCEL;
             }
         }
     }
@@ -187,14 +187,14 @@ void cpErosionEnemyBase::update() {
 // Address: 0x00154030 - 0x00154063 (51 bytes)
 void cpErosionEnemyBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpEnemy == static_cast<uCharacter*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpEnemy == nullptr) {
         return;
     }
-    if (this->mpEnemy->::cUnit::isEnable() != false) {
+    if (mpEnemy->isEnable()) {
         return;
     }
-    this->mpEnemy = static_cast<uCharacter*>(nullptr);
+    mpEnemy = nullptr;
 }
 
 // Address: 0x00154070 - 0x00154071 (1 bytes)
@@ -206,11 +206,11 @@ __attribute__((weak)) void cpErosionEnemyBase::updateEfcHandle() {
 void cpErosionEnemyBase::setupBeforeContext(bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x153ed1 read, used once; no DWARF local holds it
-    sEffect* t0 = ::sEffect::getInstance();
-    if (this->mpEnemy->::uDDOModel::mpEffectProvider != static_cast<cpEffectProvider*>(nullptr)) {
-        this->mLinpunEpvIndexNo = static_cast<sEffectExt*>(t0)->::sEffectExt::getErosionScalesEpvIndex(this->mpEnemy->::uDDOModel::mpEffectProvider->::cpEffectProvider::getResource(static_cast<cpEffectProvider::EPV_TYPE>(2)));
+    sEffect* t0 = sEffect::getInstance();
+    if (mpEnemy->mpEffectProvider != nullptr) {
+        mLinpunEpvIndexNo = static_cast<sEffectExt*>(t0)->getErosionScalesEpvIndex(mpEnemy->mpEffectProvider->getResource(cpEffectProvider::EPV_TYPE_ORIGINAL));
     } else {
-        this->mLinpunEpvIndexNo = static_cast<sEffectExt*>(t0)->::sEffectExt::getErosionScalesEpvIndex(static_cast<rEffectProvider*>(nullptr));
+        mLinpunEpvIndexNo = static_cast<sEffectExt*>(t0)->getErosionScalesEpvIndex(static_cast<rEffectProvider*>(nullptr));
     }
 }
 
@@ -229,9 +229,9 @@ bool cpErosionEnemyBase::callbackErosionCancel(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: const cAttackParam* pAttackParam;
     // DWARF local not rendered: bool isErosionCancel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (pHitInfo->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-            return pHitInfo->mCommonInfo.mpAttackParam->mAttackID != static_cast<u16>(19);
+    if (pHitInfo != nullptr) {
+        if (pHitInfo->mCommonInfo.mpAttackParam != nullptr) {
+            return pHitInfo->mCommonInfo.mpAttackParam->mAttackID != 19;
         } else {
             return true;
         }
@@ -259,21 +259,30 @@ __attribute__((weak)) void cpErosionEnemyBase::setErosionAttackParam(rAttackPara
     /* stub */
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (300 bytes)
-//   in cpErosionEnemyBase::kill at 0x00153d3a-0x00153e32 (called at cpErosionEnemyBase.cpp:122)
-//   in cpErosionEnemyBase::setErosionAttackParam at 0x00154117-0x0015414b (called at cpErosionEnemyBase.cpp:372)
-// void cpErosionEnemyBase::releaseErosionAttackParam(nErosionEnemyBase::EROSION_LEVEL level);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemyBase::setErosionAttackParam at 0x154117-0x15414b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemyBase::releaseErosionAttackParam(nErosionEnemyBase::EROSION_LEVEL level) {
+    if (mpErosionAttackParamRes[level] == nullptr) {
+        return;
+    }
+    (sObjCollision::mpInstance)->sObjCollision::releaseAttackParamTable(mpErosionAttackParamRes[level]);
+    if (mpErosionAttackParamRes[level] == nullptr) {
+        return;
+    }
+    mpErosionAttackParamRes[level]->cResource::release();
+    mpErosionAttackParamRes[level] = nullptr;
+}
 
 // Address: 0x00154000 - 0x00154007 (7 bytes)
 nErosionEnemyBase::EROSION_LEVEL cpErosionEnemyBase::getErosionCurrentLevel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionCurrentLevel;
+    return mErosionCurrentLevel;
 }
 
 // Address: 0x00154020 - 0x00154027 (7 bytes)
 nErosionEnemyBase::EROSION_LEVEL cpErosionEnemyBase::getErosionRealLevel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionRealLevel;
+    return mErosionRealLevel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -324,32 +333,32 @@ bool cpErosionEnemyBase::isErosionRegionActiveAll() const {
 // Address: 0x00153fc0 - 0x00153fe6 (38 bytes)
 bool cpErosionEnemyBase::reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet, bool isForce) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (isForce == false) {
-        if (this->mErosionStatus == static_cast<nErosionEnemyBase::EROSION_STATUS>(1)) {
+    if (!isForce) {
+        if (mErosionStatus == nErosionEnemyBase::EROSION_STATUS_CANCEL) {
             return false;
         }
     }
-    this->callbackChangeErosionCurrentLevel(level, oldLevel, initSet);
+    callbackChangeErosionCurrentLevel(level, oldLevel, initSet);
     return true;
 }
 
 // Address: 0x001541b0 - 0x001541c4 (20 bytes)
 bool cpErosionEnemyBase::reqChangeErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet, bool isForce) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->callbackChangeErosionRealLevel(level, oldLevel, initSet);
+    callbackChangeErosionRealLevel(level, oldLevel, initSet);
     return true;
 }
 
 // Address: 0x001541d0 - 0x001541d7 (7 bytes)
 void cpErosionEnemyBase::callbackChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mErosionCurrentLevel = level;
+    mErosionCurrentLevel = level;
 }
 
 // Address: 0x001541e0 - 0x001541e7 (7 bytes)
 void cpErosionEnemyBase::callbackChangeErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mErosionRealLevel = level;
+    mErosionRealLevel = level;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (55 bytes)
@@ -368,19 +377,19 @@ __attribute__((weak)) void cpErosionEnemyBase::reqSetSynchronizeEffect(u64 syncF
 // Address: 0x001543d0 - 0x001543e6 (22 bytes)
 void cpErosionEnemyBase::reqEndSynchronizeEffect(s32 indexNo, s32 elementNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEnemy->::uDDOModel::mpEffectStatusManager == static_cast<cpEffectStatusManager*>(nullptr)) {
+    if (mpEnemy->mpEffectStatusManager == nullptr) {
         return;
     }
-    this->mpEnemy->::uDDOModel::mpEffectStatusManager->::cpEffectStatusManager::endEffect(indexNo, elementNo);
+    mpEnemy->mpEffectStatusManager->endEffect(indexNo, elementNo);
 }
 
 // Address: 0x001543b0 - 0x001543c5 (21 bytes)
 void cpErosionEnemyBase::reqOnSyncFlag(u64 syncFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEnemy->::uDDOModel::mpEffectStatusManager == static_cast<cpEffectStatusManager*>(nullptr)) {
+    if (mpEnemy->mpEffectStatusManager == nullptr) {
         return;
     }
-    this->mpEnemy->::uDDOModel::mpEffectStatusManager->mSyncFlag = syncFlag | this->mpEnemy->::uDDOModel::mpEffectStatusManager->mSyncFlag;
+    mpEnemy->mpEffectStatusManager->mSyncFlag = syncFlag | mpEnemy->mpEffectStatusManager->mSyncFlag;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (22 bytes)
@@ -403,42 +412,42 @@ bool cpErosionEnemyBase::isErosionCancelStatus(bool isCheckOcdCnacel) const {
     // DWARF local not rendered: uEnemy* pEnemy;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2768 from uCharacter*
-    if (this->mpEnemy->::uCharacter::isMoveFreeze() == false) {
-        if (isCheckOcdCnacel != false) {
-            if (this->mpEnemy->::uDDOModel::getOcdCtrlPtr() != static_cast<cpOcdCtrl*>(nullptr)) {
-                if (this->mpEnemy->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(16386)) == false) {
-                    if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
-                            return this->mpEnemy->::uDDOModel::isDead();
+    if (!mpEnemy->isMoveFreeze()) {
+        if (isCheckOcdCnacel) {
+            if (mpEnemy->getOcdCtrlPtr() != nullptr) {
+                if (!mpEnemy->getOcdCtrlPtr()->isOcdActive(16386u)) {
+                    if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
+                            return mpEnemy->isDead();
                         } else {
                             return true;
                         }
                     } else {
-                        return this->mpEnemy->::uDDOModel::isDead();
+                        return mpEnemy->isDead();
                     }
                 } else {
                     return true;
                 }
             } else {
-                if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
-                        return this->mpEnemy->::uDDOModel::isDead();
+                if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
+                        return mpEnemy->isDead();
                     } else {
                         return true;
                     }
                 } else {
-                    return this->mpEnemy->::uDDOModel::isDead();
+                    return mpEnemy->isDead();
                 }
             }
         } else {
-            if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
-                    return this->mpEnemy->::uDDOModel::isDead();
+            if ((mpEnemy->uDDOModel::mUnitId & 2u) != 0) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpEnemy) + 10088)) == 0) {
+                    return mpEnemy->isDead();
                 } else {
                     return true;
                 }
             } else {
-                return this->mpEnemy->::uDDOModel::isDead();
+                return mpEnemy->isDead();
             }
         }
     } else {
@@ -449,10 +458,10 @@ bool cpErosionEnemyBase::isErosionCancelStatus(bool isCheckOcdCnacel) const {
 // Address: 0x00153e60 - 0x00153e91 (49 bytes)
 void cpErosionEnemyBase::killErosionLinpunNode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpErosionLinpunNode != static_cast<cHitNode*>(nullptr)) {
-        this->mpEnemy->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpErosionLinpunNode);
+    if (mpErosionLinpunNode != nullptr) {
+        mpEnemy->getObjCollisionPtr()->killNode(mpErosionLinpunNode);
     }
-    this->mpErosionLinpunNode = static_cast<cHitNode*>(nullptr);
+    mpErosionLinpunNode = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (12 bytes)
@@ -470,6 +479,8 @@ void cpErosionEnemyBase::killErosionLinpunNode() {
 
 // No out-of-line body: no code in the ELF
 // nErosionEnemyBase::EROSION_LEVEL cpErosionEnemyBase::getErosionCancelLevel() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpErosionEnemyBase::MyDTI cpErosionEnemyBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpErosionEnemyBase.cpp at 0x0015456f-0x001545af (called at cpErosionEnemyBase.cpp:40)

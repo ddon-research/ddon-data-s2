@@ -101,8 +101,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEvaluationTable::cEvaluationTable() {
-    this->mEvalutionCategory = static_cast<u32>(0);
-    this->mEvalutionCategoryMax = static_cast<u32>(0);
+    this->mEvalutionCategory = 0;
+    this->mEvalutionCategoryMax = 0;
     this->mEvalutionCategoryDecPer = 0.0f;
     this->mEvalutionCategoryHosei = 1.0f;
     this->mEvalutionCategoryEizokuHosei = 1.0f;

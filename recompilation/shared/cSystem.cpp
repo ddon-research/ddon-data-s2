@@ -42,7 +42,7 @@ __attribute__((weak)) void cSystem::createProperty(MtPropertyList& s) {
 // Address: 0x00e5eb20 - 0x00e5eb25 (5 bytes)
 MtUI* cSystem::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Defined in the class (its body was written in a header).
@@ -109,7 +109,7 @@ cSystem::~cSystem() {
 // Address: 0x00e5e9e0 - 0x00e5ea0a (42 bytes)
 __attribute__((weak)) void cSystem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::cSystem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSystem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,9 +124,14 @@ __attribute__((weak)) void cSystem::operator delete(void* p_addr) {
 // Address: 0x00e5eaf0 - 0x00e5eb05 (21 bytes)
 void cSystem::setJobSafe(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cSystem::mJobSafe = f;
-    ::MtAllocator::mJobSafe = ::cSystem::mJobSafe;
+    cSystem::mJobSafe = f;
+    MtAllocator::mJobSafe = cSystem::mJobSafe;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSystem::MyDTI cSystem::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+bool cSystem::mJobSafe;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cSystem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

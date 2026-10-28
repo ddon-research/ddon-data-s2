@@ -70,14 +70,14 @@ const MtDTI& cCamExParam::getDTI() const {
 // Address: 0x01ad0d90 - 0x01ad0df3 (99 bytes)
 void cCamExParam::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCamExParam::createPropertyCommon(s);
-    this->::cCamExParam::createPropertyCameraTarget(s);
-    this->::cCamExParam::createPropertyCoord(s);
-    this->::cCamExParam::createPropertyInterporate(s);
-    this->::cCamExParam::createPropertyCtrl(s);
-    this->::cCamExParam::createPropertyChangeInterporate(s);
-    this->::cCamExParam::createPropertyAdjust(s);
-    this->::cCamExParam::createPropertyEx(s);
+    createPropertyCommon(s);
+    createPropertyCameraTarget(s);
+    createPropertyCoord(s);
+    createPropertyInterporate(s);
+    createPropertyCtrl(s);
+    createPropertyChangeInterporate(s);
+    createPropertyAdjust(s);
+    createPropertyEx(s);
 }
 
 // Address: 0x01952420 - 0x01953188 (3432 bytes)
@@ -171,6 +171,8 @@ __attribute__((weak)) void cCamExParam::copy(const cCamExParam* pParam) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCamExParam::MyDTI cCamExParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x00896635-0x00896671 (called at uCameraGame.cpp:3216)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x00896635-0x00896671 (called at uCameraGame.h:809)
@@ -215,7 +217,7 @@ const MtDTI& cCamImpBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCamImpBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCamImpBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCamImpBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,10 +298,10 @@ __attribute__((weak)) void cCamImpBase::move(MtVector3& idealCam, MtVector3& ide
 // Address: 0x0088bac0 - 0x0088bafe (62 bytes)
 void cCamImpBase::interporate(MtVector3& cameraPos, MtVector3& targetPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsInterporate != false) {
-        this->mpC->::uCameraGame::exeInterporate();
+    if (mIsInterporate) {
+        mpC->exeInterporate();
     }
-    this->interporateSub(cameraPos, targetPos);
+    interporateSub(cameraPos, targetPos);
 }
 
 // Address: 0x0088c340 - 0x0088d8e4 (5540 bytes)
@@ -541,6 +543,8 @@ __attribute__((weak)) bool cCamImpBase::checkCameraReset() const {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCamImpBase::MyDTI cCamImpBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (134 bytes)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x00896580-0x008965c3 (called at uCameraGame.cpp:2020)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x00896580-0x008965c3 (called at uCameraGame.h:549)
@@ -636,7 +640,7 @@ inline MtAllocator* nCameraGame::cTemplateParam::getAllocator() {
 // Address: 0x00896210 - 0x00896250 (64 bytes)
 void* nCameraGame::cTemplateParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nCameraGame::cTemplateParam::getAllocator()->memAlloc(sz, align, ::nCameraGame::cTemplateParam::DTI.::MtDTI::getID());
+    return ::nCameraGame::cTemplateParam::getAllocator()->memAlloc(sz, align, ::nCameraGame::cTemplateParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -702,6 +706,8 @@ __attribute__((weak)) const uCoord* nCameraGame::cTemplateParam::getTempTarget(n
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCameraGame::cTemplateParam::MyDTI nCameraGame::cTemplateParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x0089671c-0x00896755 (called at uCameraGame.cpp:3791)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x0089671c-0x00896755 (called at uCameraGame.h:1656)
@@ -727,7 +733,7 @@ const MtDTI& uCameraGame::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCameraGame::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCameraGame::DTI);
+    return MtMemoryAllocator::getAllocator(uCameraGame::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -736,7 +742,7 @@ inline MtAllocator* uCameraGame::getAllocator() {
 // Address: 0x008872f0 - 0x00887330 (64 bytes)
 void* uCameraGame::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCameraGame::getAllocator()->memAlloc(sz, align, ::uCameraGame::DTI.::MtDTI::getID());
+    return uCameraGame::getAllocator()->memAlloc(sz, align, uCameraGame::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -751,7 +757,7 @@ void* uCameraGame::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCameraGame::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCameraGame::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCameraGame::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -809,9 +815,8 @@ __attribute__((weak)) void uCameraGame::updatePtr() {
 // Address: 0x00889950 - 0x00889963 (19 bytes)
 void uCameraGame::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCameraBase::mbInitial != false) {
-    } else {
-        this->init();
+    if (!mbInitial) {
+        init();
     }
 }
 
@@ -826,7 +831,7 @@ __attribute__((weak)) void uCameraGame::moveAfter() {
 // Address: 0x00888000 - 0x00888005 (5 bytes)
 void uCameraGame::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCameraBase::createProperty(s);
+    this->uCameraBase::createProperty(s);
 }
 
 // Address: 0x0088dcf0 - 0x0088ddc0 (208 bytes)
@@ -854,14 +859,14 @@ __attribute__((weak)) void uCameraGame::copy(const uCameraGame* pParam) {
 // Address: 0x0088f210 - 0x0088f27a (106 bytes)
 bool uCameraGame::isStageCamera(u32 no) const {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    aStage* pStage = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::getCurrentStage();
-    if (pStage != static_cast<aStage*>(nullptr)) {
+    aStage* pStage = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
+    if (pStage != nullptr) {
         // inferred: a temporary for the result of the call at 0x88f23e, used once; no DWARF local holds it
-        const cCamExParam* t0 = pStage->::aStage::getCameraParamFld(no);
-        if (this->mpImple->mpParam != t0) {
+        const cCamExParam* t0 = pStage->aStage::getCameraParamFld(no);
+        if (mpImple->mpParam != t0) {
             // inferred: a temporary for the result of the call at 0x88f259, used once; no DWARF local holds it
-            const cCamExParam* t1 = pStage->::aStage::getCameraParamEvt(no);
-            if (this->mpImple->mpParam != t1) {
+            const cCamExParam* t1 = pStage->aStage::getCameraParamEvt(no);
+            if (mpImple->mpParam != t1) {
                 return false;
             } else {
                 return true;
@@ -880,10 +885,10 @@ bool uCameraGame::isStageCamera(u32 no) const {
 // Address: 0x0088f290 - 0x0088f2c8 (56 bytes)
 bool uCameraGame::isEventCamera(u32 no) const {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (::sEventManager::getInstance() != static_cast<sEventManager*>(nullptr)) {
+    if (sEventManager::getInstance() != nullptr) {
         // inferred: a temporary for the result of the call at 0x88f2a8, used once; no DWARF local holds it
-        const cCamExParam* t0 = ::sEventManager::getInstance()->::sEventManager::getEventCameraParam(no);
-        if (this->mpImple->mpParam != t0) {
+        const cCamExParam* t0 = sEventManager::getInstance()->getEventCameraParam(no);
+        if (mpImple->mpParam != t0) {
             return false;
         } else {
             return true;
@@ -968,16 +973,16 @@ __attribute__((weak)) bool uCameraGame::canChangeExCamera(const cCamExParam* pPa
 // Address: 0x0088e070 - 0x0088e07b (11 bytes)
 bool uCameraGame::isAnmEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpImple->::cCamImpBase::isAnmEnd();
+    return mpImple->isAnmEnd();
 }
 
 // Address: 0x0088e080 - 0x0088e095 (21 bytes)
 s32 uCameraGame::getCut() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpImple != static_cast<cCamImpBase*>(nullptr)) {
-        return this->mpImple->::cCamImpBase::getCut();
+    if (mpImple != nullptr) {
+        return mpImple->getCut();
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -1002,12 +1007,12 @@ s32 uCameraGame::getCut() const {
 // Address: 0x0088de00 - 0x0088de3e (62 bytes)
 void uCameraGame::addPhotoFov(f32 fov) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPhotoAddFov = this->mPhotoAddFov + fov;
-    if ((-38.0f) > this->mPhotoAddFov) {
-        this->mPhotoAddFov = -38.0f;
+    mPhotoAddFov = mPhotoAddFov + fov;
+    if (-38.0f > mPhotoAddFov) {
+        mPhotoAddFov = -38.0f;
     } else {
-        if (this->mPhotoAddFov > 20.0f) {
-            this->mPhotoAddFov = 20.0f;
+        if (mPhotoAddFov > 20.0f) {
+            mPhotoAddFov = 20.0f;
         }
     }
 }
@@ -1089,55 +1094,55 @@ __attribute__((weak)) void uCameraGame::initDOFFilterParam() {
 // Address: 0x0088fc50 - 0x0088fc6f (31 bytes)
 void uCameraGame::setDOFFilterNear(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDOFFilter == static_cast<uDOFFilter*>(nullptr)) {
+    if (mpDOFFilter == nullptr) {
         return;
     }
-    if (this->mpDOFFilter->::cUnit::isEnable()) {
-        this->mpDOFFilter->::uDOFFilter::setNear(val);
+    if (mpDOFFilter->isEnable()) {
+        mpDOFFilter->setNear(val);
     }
 }
 
 // Address: 0x0088fc70 - 0x0088fc92 (34 bytes)
 void uCameraGame::setDOFFilterNearBlurLimit(f32 nearBlurLimit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDOFFilter == static_cast<uDOFFilter*>(nullptr)) {
+    if (mpDOFFilter == nullptr) {
         return;
     }
-    if (this->mpDOFFilter->::cUnit::isEnable()) {
-        this->mpDOFFilter->mNearBlurLimit = nearBlurLimit;
+    if (mpDOFFilter->isEnable()) {
+        mpDOFFilter->mNearBlurLimit = nearBlurLimit;
     }
 }
 
 // Address: 0x0088fca0 - 0x0088fcc2 (34 bytes)
 void uCameraGame::setDOFFilterFarBlurLimit(f32 farBlurLimit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDOFFilter == static_cast<uDOFFilter*>(nullptr)) {
+    if (mpDOFFilter == nullptr) {
         return;
     }
-    if (this->mpDOFFilter->::cUnit::isEnable()) {
-        this->mpDOFFilter->mFarBlurLimit = farBlurLimit;
+    if (mpDOFFilter->isEnable()) {
+        mpDOFFilter->mFarBlurLimit = farBlurLimit;
     }
 }
 
 // Address: 0x0088fcd0 - 0x0088fcef (31 bytes)
 void uCameraGame::setDOFFilterFar(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDOFFilter == static_cast<uDOFFilter*>(nullptr)) {
+    if (mpDOFFilter == nullptr) {
         return;
     }
-    if (this->mpDOFFilter->::cUnit::isEnable()) {
-        this->mpDOFFilter->::uDOFFilter::setFar(val);
+    if (mpDOFFilter->isEnable()) {
+        mpDOFFilter->setFar(val);
     }
 }
 
 // Address: 0x0088fcf0 - 0x0088fd0f (31 bytes)
 void uCameraGame::setDOFFilterFocal(f32 focal) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDOFFilter == static_cast<uDOFFilter*>(nullptr)) {
+    if (mpDOFFilter == nullptr) {
         return;
     }
-    if (this->mpDOFFilter->::cUnit::isEnable()) {
-        this->mpDOFFilter->::uDOFFilter::setFocal(focal);
+    if (mpDOFFilter->isEnable()) {
+        mpDOFFilter->setFocal(focal);
     }
 }
 
@@ -1166,11 +1171,11 @@ __attribute__((weak)) void uCameraGame::createMotionBlurFilter() {
 // Address: 0x0088ddc0 - 0x0088ddf0 (48 bytes)
 void uCameraGame::killMotionBlurFilter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMotionBlurFilter == static_cast<uMotionBlurFilter*>(nullptr)) {
+    if (mpMotionBlurFilter == nullptr) {
         return;
     }
-    this->mpMotionBlurFilter->kill();
-    this->mpMotionBlurFilter = static_cast<uMotionBlurFilter*>(nullptr);
+    mpMotionBlurFilter->kill();
+    mpMotionBlurFilter = nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (21 bytes)
@@ -1253,7 +1258,7 @@ __attribute__((weak)) f32 uCameraGame::getCameraWorkRate() const {
 // Address: 0x0088fd90 - 0x0088fd9d (13 bytes)
 nCameraGame::CAMERA_TYPE uCameraGame::getCamType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpImple->getType();
+    return mpImple->getType();
 }
 
 // No out-of-line body: no code in the ELF
@@ -1262,7 +1267,7 @@ nCameraGame::CAMERA_TYPE uCameraGame::getCamType() const {
 // Address: 0x0088fda0 - 0x0088fdaf (15 bytes)
 nCameraGame::TARGET_TYPE uCameraGame::getCameraTargetType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpImple->::cCamImpBase::getParam()->mCameraTarget;
+    return mpImple->getParam()->mCameraTarget;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (28 bytes)
@@ -1478,6 +1483,8 @@ __attribute__((weak)) void uCameraGame::updateChangeCamera() {
     DDON_STUB("uCameraGame::updateChangeCamera")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCameraGame::MyDTI uCameraGame::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCameraGame.cpp at 0x00896543-0x00896580 (called at uCameraGame.cpp:73)

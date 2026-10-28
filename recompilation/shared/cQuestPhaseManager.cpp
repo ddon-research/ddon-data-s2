@@ -27,7 +27,7 @@ const MtDTI& cQuestPhaseManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestPhaseManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseManager::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestPhaseManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cQuestPhaseManager::getAllocator() {
 // Address: 0x0015d790 - 0x0015d7d0 (64 bytes)
 void* cQuestPhaseManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestPhaseManager::getAllocator()->memAlloc(sz, align, ::cQuestPhaseManager::DTI.::MtDTI::getID());
+    return cQuestPhaseManager::getAllocator()->memAlloc(sz, align, cQuestPhaseManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cQuestPhaseManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestPhaseManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ inline void cQuestPhaseManager::operator delete(void* p_addr) {
 // Address: 0x0015d840 - 0x0015d845 (5 bytes)
 cQuestPhaseState* cQuestPhaseManager::getQuestPhaseState() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpState;
+    return mpState;
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,39 +103,39 @@ __attribute__((weak)) void cQuestPhaseManager::callbackQuestPhaseNotice(void* pP
 // Address: 0x0015dc40 - 0x0015dcdc (156 bytes)
 void cQuestPhaseManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpState != static_cast<cQuestPhaseState*>(nullptr)) {
-        delete this->mpState;
-        this->mpState = static_cast<cQuestPhaseState*>(nullptr);
+    if (mpState != nullptr) {
+        delete mpState;
+        mpState = nullptr;
     }
-    this->mPhaseId = static_cast<u32>(0);
-    if (this->mEventList.::MtArray::mLength != static_cast<u32>(0)) {
+    mPhaseId = 0;
+    if (mEventList.mLength != 0) {
         // inferred: the value the loop at 0x15dc80 carries; no location-less local in scope fits
-        u32 v0_0 = this->mEventList.::MtArray::mLength;
+        u32 v0_0 = mEventList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mEventList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mEventList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mEventList.::MtArray::mLength) {
-                    v0_0 = this->mEventList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mEventList.mpArray[i0_3] != nullptr) {
+                delete mEventList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEventList.mLength) {
+                    v0_0 = mEventList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mEventList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mEventList.::MtArray::mpArray));
+    if (mEventList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEventList.mpArray));
     }
-    this->mEventList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mEventList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mEventList.::MtArray::mLength = static_cast<u32>(0);
+    mEventList.mpArray = nullptr;
+    mEventList.mBufsiz = 0;
+    mEventList.mLength = 0;
 }
 
 // Address: 0x0015dce0 - 0x0015dd69 (137 bytes)
@@ -149,38 +149,38 @@ cQuestPhaseManager::cQuestPhaseManager() {
 // Also emitted as: _ZN18cQuestPhaseManagerD0Ev at 0x0015de30
 cQuestPhaseManager::~cQuestPhaseManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpState != static_cast<cQuestPhaseState*>(nullptr)) {
-        delete this->mpState;
-        this->mpState = static_cast<cQuestPhaseState*>(nullptr);
+    if (mpState != nullptr) {
+        delete mpState;
+        mpState = nullptr;
     }
-    if (this->mEventList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mEventList.mLength != 0) {
         // inferred: the value the loop at 0x15ddb0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mEventList.::MtArray::mLength;
+        u32 v0_0 = mEventList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mEventList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mEventList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mEventList.::MtArray::mLength) {
-                    v0_0 = this->mEventList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mEventList.mpArray[i0_3] != nullptr) {
+                delete mEventList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEventList.mLength) {
+                    v0_0 = mEventList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mEventList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mEventList.::MtArray::mpArray));
+    if (mEventList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEventList.mpArray));
     }
-    this->mEventList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mEventList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mEventList.::MtArray::mLength = static_cast<u32>(0);
+    mEventList.mpArray = nullptr;
+    mEventList.mBufsiz = 0;
+    mEventList.mLength = 0;
 }
 
 // Address: 0x0015de60 - 0x0015df43 (227 bytes)
@@ -192,8 +192,10 @@ __attribute__((weak)) void cQuestPhaseManager::createProperty(MtPropertyList& s)
 // Address: 0x0015df50 - 0x0015df55 (5 bytes)
 MtUI* cQuestPhaseManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseManager::MyDTI cQuestPhaseManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseManager.cpp at 0x0015e02e-0x0015e06b (called at cQuestPhaseManager.cpp:55)

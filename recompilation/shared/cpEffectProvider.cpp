@@ -28,7 +28,7 @@ const MtDTI& cpEffectProvider::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpEffectProvider::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpEffectProvider::DTI);
+    return MtMemoryAllocator::getAllocator(cpEffectProvider::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpEffectProvider::getAllocator() {
 // Address: 0x0046ffa0 - 0x0046ffe0 (64 bytes)
 void* cpEffectProvider::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpEffectProvider::getAllocator()->memAlloc(sz, align, ::cpEffectProvider::DTI.::MtDTI::getID());
+    return cpEffectProvider::getAllocator()->memAlloc(sz, align, cpEffectProvider::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpEffectProvider::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEffectProvider::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEffectProvider::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEffectProvider::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void cpEffectProvider::operator delete(void* p_addr) {
 cpEffectProvider::cpEffectProvider() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mprResource[0]), static_cast<int>(0), static_cast<size_t>(256));
+    memset(static_cast<void*>(&mprResource[0]), 0, 256ul);
 }
 
 // Address: 0x00470090 - 0x004700fe (110 bytes)
@@ -96,7 +96,7 @@ __attribute__((weak)) void cpEffectProvider::after() {
 // Address: 0x00470420 - 0x00470425 (5 bytes)
 void cpEffectProvider::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x004701e0 - 0x00470298 (184 bytes)
@@ -120,21 +120,21 @@ __attribute__((weak)) void cpEffectProvider::setResource(rEffectProvider* pRes, 
 // Address: 0x00470100 - 0x00470148 (72 bytes)
 void cpEffectProvider::releaseResource(cpEffectProvider::EPV_TYPE Type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprResource[Type] != static_cast<rEffectProvider*>(nullptr)) {
-        this->mprResource[Type]->::cResource::release();
-        this->mprResource[Type] = static_cast<rEffectProvider*>(nullptr);
+    if (mprResource[Type] != nullptr) {
+        mprResource[Type]->cResource::release();
+        mprResource[Type] = nullptr;
     }
-    if (this->mpMotSync[Type] == static_cast<cEfcMotSync*>(nullptr)) {
+    if (mpMotSync[Type] == nullptr) {
         return;
     }
-    delete this->mpMotSync[Type];
-    this->mpMotSync[Type] = static_cast<cEfcMotSync*>(nullptr);
+    delete mpMotSync[Type];
+    mpMotSync[Type] = nullptr;
 }
 
 // Address: 0x00470530 - 0x00470538 (8 bytes)
 rEffectProvider* cpEffectProvider::getResource(cpEffectProvider::EPV_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprResource[type];
+    return mprResource[type];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (73 bytes)
@@ -148,6 +148,8 @@ rEffectProvider* cpEffectProvider::getResource(cpEffectProvider::EPV_TYPE type) 
 //   in cpEffectProvider::after at 0x004703d3-0x004703e8 (called at cpEffectProvider.cpp:78)
 // cEfcMotSync* cpEffectProvider::getMotSync(u32 Type);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEffectProvider::MyDTI cpEffectProvider::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpEffectProvider.cpp at 0x00470540-0x00470582 (called at cpEffectProvider.cpp:21)
 //   in _GLOBAL__sub_I_cpEffectProvider.cpp at 0x00470540-0x00470582 (called at cpEffectProvider.h:26)
@@ -156,6 +158,6 @@ rEffectProvider* cpEffectProvider::getResource(cpEffectProvider::EPV_TYPE type) 
 // Address: 0x0046ff40 - 0x0046ff9e (94 bytes)
 MtObject* cpEffectProvider::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpEffectProvider;
+    return new (16u) cpEffectProvider;
 }
 

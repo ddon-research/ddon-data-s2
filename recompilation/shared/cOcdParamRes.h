@@ -173,6 +173,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpOcdCtrl::setImmuneParamRes at 0x4deef4-0x4deef7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cOcdImmuneParamRes::getOcdUID() const {
+    return this->mOcdUID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in rOcdStatusParamRes::loadData at 0x6c5b66-0x6c5b6a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setOcdUID(u32 OcdUID) {
+    this->mOcdUID = OcdUID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cOcdStatusParamRes::getCureWaitTime() const {
     return this->mCureWaitTime;
 }
@@ -184,8 +196,44 @@ inline void cOcdStatusParamRes::setCureWaitTime(f32 value) {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setEnduranceCheatCheck(f32 value) {
+    this->mEnduranceCheatCheck = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setActiveTimeCheatCheck(f32 value) {
+    this->mActiveTimeCheatCheck = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setCureValueCheatCheck(f32 value) {
+    this->mCureValueCheatCheck = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam0CheatCheck(f32 value) {
+    this->mFreeParam0CheatCheck = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam1CheatCheck(f32 value) {
+    this->mFreeParam1CheatCheck = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cOcdStatusParamRes::getEndurancePrivate() const {
     return this->mEndurance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setEndurancePrivate(f32 NewValue) {
+    this->mEndurance = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -194,8 +242,20 @@ inline f32 cOcdStatusParamRes::getActiveTimePrivate() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setActiveTimePrivate(f32 NewValue) {
+    this->mActiveTime = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cOcdStatusParamRes::getCureValuePrivate() const {
     return this->mCureValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setCureValuePrivate(f32 NewValue) {
+    this->mCureValue = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -204,6 +264,78 @@ inline f32 cOcdStatusParamRes::getFreeParam0Private() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam0Private(f32 NewValue) {
+    this->mFreeParam0 = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cOcdStatusParamRes::getFreeParam1Private() const {
     return this->mFreeParam1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam1Private(f32 NewValue) {
+    this->mFreeParam1 = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdStatusParamRes::getEnduranceCheatCheck at 0x3a9b50-0x3a9b55; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cOcdStatusParamRes::getEnduranceCheatCheckPrivate() const {
+    return this->mEnduranceCheatCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setEnduranceCheatCheckPrivate(f32 NewValue) {
+    this->mEnduranceCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdStatusParamRes::getActiveTimeCheatCheck at 0x3a9b70-0x3a9b75; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cOcdStatusParamRes::getActiveTimeCheatCheckPrivate() const {
+    return this->mActiveTimeCheatCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setActiveTimeCheatCheckPrivate(f32 NewValue) {
+    this->mActiveTimeCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdStatusParamRes::getCureValueCheatCheck at 0x3a9b90-0x3a9b95; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cOcdStatusParamRes::getCureValueCheatCheckPrivate() const {
+    return this->mCureValueCheatCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setCureValueCheatCheckPrivate(f32 NewValue) {
+    this->mCureValueCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdStatusParamRes::getFreeParam0CheatCheck at 0x3a9bb0-0x3a9bb5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cOcdStatusParamRes::getFreeParam0CheatCheckPrivate() const {
+    return this->mFreeParam0CheatCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam0CheatCheckPrivate(f32 NewValue) {
+    this->mFreeParam0CheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdStatusParamRes::getFreeParam1CheatCheck at 0x3a9bd0-0x3a9bd5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cOcdStatusParamRes::getFreeParam1CheatCheckPrivate() const {
+    return this->mFreeParam1CheatCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdStatusParamRes::setFreeParam1CheatCheckPrivate(f32 NewValue) {
+    this->mFreeParam1CheatCheck = NewValue;
 }

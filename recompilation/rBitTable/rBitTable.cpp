@@ -36,7 +36,7 @@ const MtDTI& cBitTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cBitTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memAlloc(sz, align, ::cBitTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cBitTable::DTI)->memAlloc(sz, align, cBitTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cBitTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cBitTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBitTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -90,6 +90,8 @@ __attribute__((weak)) void cBitTable::createProperty(MtPropertyList& s) {
 //   in cBitCtrl::doBitCommand at 0x00033576-0x00033579 (called at cBitCtrl.cpp:225)
 // u32 cBitTable::getBitCommand() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBitTable::MyDTI cBitTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rBitTable.cpp at 0x006485d0-0x00648612 (called at rBitTable.cpp:48)
 //   in _GLOBAL__sub_I_rBitTable.cpp at 0x006485d0-0x00648612 (called at rBitTable.h:28)
@@ -98,7 +100,7 @@ __attribute__((weak)) void cBitTable::createProperty(MtPropertyList& s) {
 // Address: 0x006483e0 - 0x0064842f (79 bytes)
 MtObject* cBitTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cBitTable;
+    return new (16u) cBitTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ const MtDTI& rBitTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rBitTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rBitTable::DTI)->memAlloc(sz, align, ::rBitTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rBitTable::DTI)->memAlloc(sz, align, rBitTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,7 +140,7 @@ inline void* rBitTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rBitTableD0Ev at 0x01a76e24-0x01a76e43, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rBitTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rBitTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rBitTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,10 +157,10 @@ bool rBitTable::loadData(MtDataReader& in, cBitTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBitData);
+    nDDOIO::readData(in, pData->mBitData);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCommandType);
+    nDDOIO::readData(in, pData->mCommandType);
     return true;
 }
 
@@ -171,8 +173,10 @@ MT_CTSTR rBitTable::getExt() const {
 // Address: 0x01a76f70 - 0x01a76f76 (6 bytes)
 u32 rBitTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rBitTable::MyDTI rBitTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rBitTable.cpp at 0x00648612-0x0064864f (called at rBitTable.cpp:49)
@@ -182,7 +186,7 @@ u32 rBitTable::getDataVersion() const {
 // Address: 0x006484a0 - 0x00648504 (100 bytes)
 MtObject* rBitTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rBitTable;
+    return new (16u) rBitTable;
 }
 
 // Instance at 0x01a76f20 - 0x01a76f36 (22 bytes) of the generic rTbl2<T>::getData

@@ -133,7 +133,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cLegCtrl::cLegCtrl() {
-    this->mValue = static_cast<u32>(0);
+    this->mValue = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -157,6 +157,6 @@ inline rLegCtrl::rLegCtrl() {
     this->mFootHeel = 5.0f;
     this->mCheckHeight = 100.0f;
     this->mCheckHeightHand = 100.0f;
-    this->mLegType = static_cast<u32>(0);
-    this->mFlag = static_cast<u32>(0);
+    this->mLegType = 0;
+    this->mFlag = 0;
 }

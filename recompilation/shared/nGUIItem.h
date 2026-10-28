@@ -293,28 +293,27 @@ namespace nGUIItem {
 inline nGUIItem::cItem::cItem() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->mSelect = false;
-    this->mpParent = static_cast<nGUIItem::cItemList*>(nullptr);
-    this->mprItemParam = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mpParam = static_cast<cItemParam*>(nullptr);
+    this->mpParent = nullptr;
+    this->mprItemParam = nullptr;
+    this->mpParam = nullptr;
     this->mUseEnable = true;
     this->mIsPut = true;
     this->mCheckMode = false;
     this->mFirstSelect = false;
-    this->mItemNo = static_cast<u32>(0);
-    this->mSlotNo = static_cast<s32>(0);
-    this->mLimitNum2 = static_cast<u32>(0);
-    this->mLimitNum3 = static_cast<u32>(0);
-    this->mNum = static_cast<s32>(0);
-    this->mLimitNum = static_cast<u32>(0);
-    this->mToSlotNo = static_cast<s32>(-1);
-    this->mOmId = static_cast<u32>(0);
+    this->mItemNo = 0;
+    this->mSlotNo = 0;
+    this->mLimitNum2 = 0;
+    this->mLimitNum3 = 0;
+    this->mNum = 0;
+    this->mLimitNum = 0;
+    this->mToSlotNo = -1;
+    this->mOmId = 0;
     this->mLoadFrom = static_cast<nGUIItem::LOAD_FROM>(0);
     this->mBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
     this->mToBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline u32 nGUIItem::cItem::getItemNo() const {
     return this->mItemNo;
 }
@@ -327,4 +326,22 @@ inline cItemParam* nGUIItem::cItem::getItemParam() {
 // Inline, no code of its own: checked where it is inlined.
 inline rItemList::rItemParam* nGUIItem::cItem::getResourceParam() {
     return this->mprItemParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void nGUIItem::cItem::setLimitNumToBag(u32 num) {
+    this->mLimitNum3 = num;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIUseItemBase::callbackExchangeItem at 0xc67cd2-0xc67cd9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MoveItemUIDFromToVec& nGUIItem::cItemList::getItemList() {
+    return this->mItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIUseItemBase::callbackExchangeItem at 0xc67cb0-0xc67cb6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType() {
+    return this->mBagType;
 }

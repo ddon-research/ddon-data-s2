@@ -310,13 +310,13 @@ inline uGUISystemMsg* uGUIUseItemBase::getPopSystemMsg() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIUseItemBase::cEquipInfo::cEquipInfo() {
-    this->mJobId = static_cast<u32>(4294967295);
-    this->mLv = static_cast<u32>(4294967295);
-    this->mpItem = static_cast<nGUIItem::cItem*>(nullptr);
+    this->mJobId = 0xFFFFFFFF;
+    this->mLv = 0xFFFFFFFF;
+    this->mpItem = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIUseItemBase::cGetItemInfo::cGetItemInfo() {
-    this->mNum = static_cast<u32>(0);
-    this->mpParam = static_cast<MtObject*>(nullptr);
+    this->mNum = 0;
+    this->mpParam = nullptr;
 }

@@ -25,7 +25,7 @@ const MtDTI& sAIPawnNotice::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sAIPawnNotice::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sAIPawnNotice::DTI);
+    return MtMemoryAllocator::getAllocator(sAIPawnNotice::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* sAIPawnNotice::getAllocator() {
 // Address: 0x0071a540 - 0x0071a580 (64 bytes)
 void* sAIPawnNotice::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sAIPawnNotice::getAllocator()->memAlloc(sz, align, ::sAIPawnNotice::DTI.::MtDTI::getID());
+    return sAIPawnNotice::getAllocator()->memAlloc(sz, align, sAIPawnNotice::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* sAIPawnNotice::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sAIPawnNotice::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sAIPawnNotice::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sAIPawnNotice::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,22 +64,22 @@ inline void sAIPawnNotice::operator delete(void* p_addr) {
 // Address: 0x0071a5f0 - 0x0071a63e (78 bytes)
 sAIPawnNotice::sAIPawnNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sAIPawnNotice::mpInstance) == static_cast<sAIPawnNotice*>(nullptr)) {
-        ::sAIPawnNotice::mpInstance = this;
+    if ((sAIPawnNotice::mpInstance) == nullptr) {
+        sAIPawnNotice::mpInstance = this;
     }
-    this->mRefNodeStackIdx = static_cast<s32>(0);
-    this->mRefNodeNum = static_cast<s32>(0);
-    ::memset(static_cast<void*>(&this->mRefNodeStack), static_cast<int>(0), static_cast<size_t>(2049));
+    mRefNodeStackIdx = 0;
+    mRefNodeNum = 0;
+    memset(static_cast<void*>(&mRefNodeStack), 0, 2049ul);
 }
 
 // Address: 0x0071a640 - 0x0071a666 (38 bytes)
 // Also emitted as: _ZN13sAIPawnNoticeD0Ev at 0x0071a670
 sAIPawnNotice::~sAIPawnNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this != (::sAIPawnNotice::mpInstance)) {
+    if (this != (sAIPawnNotice::mpInstance)) {
         return;
     }
-    ::sAIPawnNotice::mpInstance = static_cast<sAIPawnNotice*>(nullptr);
+    sAIPawnNotice::mpInstance = nullptr;
 }
 
 // Address: 0x0071a6d0 - 0x0071a768 (152 bytes)
@@ -96,9 +96,9 @@ __attribute__((weak)) void sAIPawnNotice::move() {
 // Address: 0x0071a850 - 0x0071a866 (22 bytes)
 void sAIPawnNotice::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRefNodeStackIdx = static_cast<s32>(0);
-    this->mRefNodeNum = static_cast<s32>(0);
-    this->mReqDelete = false;
+    mRefNodeStackIdx = 0;
+    mRefNodeNum = 0;
+    mReqDelete = false;
 }
 
 // No out-of-line body: 8 inlined copies in 7 functions (81 bytes)
@@ -111,7 +111,7 @@ void sAIPawnNotice::reset() {
 // Address: 0x0071a870 - 0x0071a876 (6 bytes)
 void sAIPawnNotice::initGame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->reset();
+    reset();
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,18 +120,18 @@ void sAIPawnNotice::initGame() {
 // Address: 0x0071a960 - 0x0071a964 (4 bytes)
 s32 sAIPawnNotice::getRefNodeNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRefNodeNum;
+    return mRefNodeNum;
 }
 
 // Address: 0x0071a970 - 0x0071a991 (33 bytes)
 const cHitNode* sAIPawnNotice::getRefNode(s32 idx) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (idx > static_cast<s32>(-1)) {
-        if (idx < this->mRefNodeNum) {
-            return this->mRefNodeStack.elems[(static_cast<unsigned int>(idx) <= static_cast<unsigned int>(255)) ? static_cast<unsigned int>(idx) : static_cast<unsigned int>(0)];
+    if (idx > -1) {
+        if (idx < mRefNodeNum) {
+            return mRefNodeStack.elems[(static_cast<unsigned int>(idx) <= 255) ? static_cast<unsigned int>(idx) : 0u];
         }
     }
-    return static_cast<const cHitNode*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x0071a890 - 0x0071a8f6 (102 bytes)
@@ -161,6 +161,11 @@ __attribute__((weak)) void sAIPawnNotice::updateCheckNodeNotice() {
     DDON_STUB("sAIPawnNotice::updateCheckNodeNotice")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAIPawnNotice::MyDTI sAIPawnNotice::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sAIPawnNotice* sAIPawnNotice::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sAIPawnNotice.cpp at 0x0071aa9f-0x0071aadc (called at sAIPawnNotice.cpp:45)

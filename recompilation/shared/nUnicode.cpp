@@ -16,7 +16,7 @@
 // Address: 0x0063aaf0 - 0x0063aaf5 (5 bytes)
 u32 nUnicode::GetLength(MT_CWSTR wstr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned int>(::wcslen(wstr));
+    return static_cast<unsigned int>(wcslen(wstr));
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (110 bytes)

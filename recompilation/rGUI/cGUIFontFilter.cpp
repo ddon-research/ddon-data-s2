@@ -69,9 +69,9 @@ void cGUIFontFilter::calcBufferSize(nGUI::MTAG::DRAW& dw) {
     // inferred: a temporary for the value the load at 0x1bd6eba read, used twice; no DWARF local holds it
     u32 t0 = dw.totalCharNum;
     // inferred: a temporary for the result of the call at 0x1bd6ec1, used twice; no DWARF local holds it
-    u32 t1 = this->getDrawCharCount();
-    dw.totalVertexNum = (t0 * t1) * static_cast<u32>(4);
-    dw.totalIndexNum = ((t0 * t1) * static_cast<u32>(6)) + static_cast<u32>(65534);
+    u32 t1 = getDrawCharCount();
+    dw.totalVertexNum = (t0 * t1) * 4u;
+    dw.totalIndexNum = ((t0 * t1) * 6u) + 0xFFFEu;
 }
 
 // Address: 0x01bd6ef0 - 0x01bd6ef3 (3 bytes)
@@ -129,7 +129,7 @@ bool cGUIFontFilter::isChangeLine() const {
 // Address: 0x01bd6f60 - 0x01bd6f66 (6 bytes)
 u32 cGUIFontFilter::getDrawCharCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,6 +140,8 @@ u32 cGUIFontFilter::getDrawCharCount() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cGUIFontFilter::setId(u32 id);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIFontFilter::MyDTI cGUIFontFilter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIFontFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

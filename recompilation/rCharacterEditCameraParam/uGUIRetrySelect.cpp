@@ -30,7 +30,7 @@ const MtDTI& uGUIRetrySelect::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIRetrySelect::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIRetrySelect::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIRetrySelect::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUIRetrySelect::getAllocator() {
 // Address: 0x00c214a0 - 0x00c214e0 (64 bytes)
 void* uGUIRetrySelect::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIRetrySelect::getAllocator()->memAlloc(sz, align, ::uGUIRetrySelect::DTI.::MtDTI::getID());
+    return uGUIRetrySelect::getAllocator()->memAlloc(sz, align, uGUIRetrySelect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUIRetrySelect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIRetrySelect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRetrySelect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRetrySelect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,31 +73,31 @@ inline void uGUIRetrySelect::operator delete(void* p_addr) {
 // Also emitted as: _ZN15uGUIRetrySelectD0Ev at 0x00c21670
 uGUIRetrySelect::~uGUIRetrySelect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c216f0 - 0x00c216f5 (5 bytes)
 void uGUIRetrySelect::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c21700 - 0x00c217af (175 bytes)
 bool uGUIRetrySelect::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_RETRY_SELECT_GUI"), static_cast<u32>(129), static_cast<t64>(1436533414)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RETRY_SELECT_GUI"), 129u, 1436533414l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -109,9 +109,9 @@ bool uGUIRetrySelect::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -131,13 +131,13 @@ __attribute__((weak)) void uGUIRetrySelect::setup() {
 // Address: 0x00c217b0 - 0x00c217b5 (5 bytes)
 void uGUIRetrySelect::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00c217c0 - 0x00c217c5 (5 bytes)
 void uGUIRetrySelect::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -190,12 +190,12 @@ __attribute__((weak)) void uGUIRetrySelect::moveInput() {
 // Address: 0x00c226d0 - 0x00c226f6 (38 bytes)
 void uGUIRetrySelect::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::getInputEvent() == static_cast<u32>(67)) {
-        this->::uGUIRetrySelect::eventAdjustCursor();
+    if (getInputEvent() == 67) {
+        eventAdjustCursor();
     } else {
-        if (this->::uGUIBase::getInputEvent() == static_cast<u32>(66)) {
-            if (this->mFlowId == static_cast<u32>(2)) {
-                this->mIsDecide = true;
+        if (getInputEvent() == 66) {
+            if (mFlowId == 2) {
+                mIsDecide = true;
             }
         }
     }
@@ -220,7 +220,7 @@ __attribute__((weak)) void uGUIRetrySelect::updateFinish() {
 // Address: 0x00c22190 - 0x00c22199 (9 bytes)
 void uGUIRetrySelect::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00c225b0 - 0x00c2264f (159 bytes)
@@ -286,18 +286,18 @@ __attribute__((weak)) void uGUIRetrySelect::eventAdjustCursor() {
 // Address: 0x00c21d70 - 0x00c21d82 (18 bytes)
 u32 uGUIRetrySelect::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00c21e60 - 0x00c21e7e (30 bytes)
 u32 uGUIRetrySelect::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00c21d90 - 0x00c21e53 (195 bytes)
@@ -313,6 +313,8 @@ __attribute__((weak)) u32 uGUIRetrySelect::evCtrlMouseClick(cControl::Message* m
 //   in uGUIRetrySelect::updateText at 0x00c2243e-0x00c2245c (called at uGUIRetrySelect.cpp:481)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIRetrySelect::getMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRetrySelect::MyDTI uGUIRetrySelect::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIRetrySelect.cpp at 0x00c2296f-0x00c229ac (called at uGUIRetrySelect.cpp:31)

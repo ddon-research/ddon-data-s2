@@ -303,6 +303,14 @@ __attribute__((weak)) void nGUI::Draw::endAlphaMask() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nGUI::Draw::setVisible(bool v);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nGUI::Draw::MyDTI nGUI::Draw::DTI;
+
+// From the ELF: its bytes in .data (D-S1).
+u32 nGUI::Draw::PassTable[5] = {0, 1, 2, 3, 3};
+
+// From the ELF: its bytes in .data (D-S1).
+SO_HANDLE nGUI::Draw::DepthStencil[5][5] = {{3937673656, 3937673656, 3937673656, 3937673656, 3937673656}, {3937673656, 140235488, 1195365089, 2736906978, 3274040035}, {2100257211, 810619327, 2351592164, 2020389605, 2539672294}, {2842149308, 3617456573, 3011216103, 4111213288, 2491437801}, {3088290233, 3356123582, 155509482, 4225639147, 2034823916}};
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nGUI::Draw::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 

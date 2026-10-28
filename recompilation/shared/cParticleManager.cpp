@@ -43,13 +43,13 @@ __attribute__((weak)) bool cEffectJoint::allocMemory() {
 // Address: 0x01146230 - 0x01146280 (80 bytes)
 void cEffectJoint::freeMemory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExtendedBuff == static_cast<u8*>(nullptr)) {
+    if (mpExtendedBuff == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::uEffect::DTI)->memFree(static_cast<void*>(this->mpExtendedBuff));
-    this->mpAngle = static_cast<cEffectJointAngle*>(nullptr);
-    this->mpKeyframe = static_cast<cEffectJointKeyframe*>(nullptr);
-    this->mpExtendedBuff = static_cast<u8*>(nullptr);
+    MtMemoryAllocator::getAllocator(uEffect::DTI)->memFree(static_cast<void*>(mpExtendedBuff));
+    mpAngle = nullptr;
+    mpKeyframe = nullptr;
+    mpExtendedBuff = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -345,45 +345,45 @@ cParticleManager::cParticleManager() {
 // Also emitted as: _ZN16cParticleManagerD0Ev at 0x01147a20
 cParticleManager::~cParticleManager() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if ((::sEffect::mpInstance)->mVibrationEnable != false) {
-        if ((this->mStatus & static_cast<u32>(32)) != static_cast<u32>(0)) {
-            (::sVibration::mpInstance)->::sVibration::stopVib(this->mVibrationId);
-            this->mVibrationId = static_cast<s32>(-1);
+    if ((sEffect::mpInstance)->mVibrationEnable) {
+        if ((mStatus & 32u) != 0) {
+            (sVibration::mpInstance)->sVibration::stopVib(mVibrationId);
+            mVibrationId = -1;
             // inferred: a temporary for the value the load at 0x114795f read, used twice; no DWARF local holds it
-            u32 t0 = this->mStatus;
-            this->mStatus = t0 & static_cast<u32>(4294967247);
-            if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-                this->mpOwner->stopSoundSe(this);
-                this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+            u32 t0 = mStatus;
+            mStatus = t0 & 0xFFFFFFCFu;
+            if ((mStatus & 64u) != 0) {
+                mpOwner->stopSoundSe(this);
+                mStatus = mStatus & 0xFFFFFFBFu;
             }
-            if (this->mpContext != static_cast<sGpuParticle::Context*>(nullptr)) {
-                (::sGpuParticle::mpInstance)->::sGpuParticle::destroyContext(this->mpContext);
-                this->mpContext = static_cast<sGpuParticle::Context*>(nullptr);
+            if (mpContext != nullptr) {
+                (sGpuParticle::mpInstance)->sGpuParticle::destroyContext(mpContext);
+                mpContext = nullptr;
             }
         } else {
             // inferred: a temporary for the value the load at 0x114795f read, used twice; no DWARF local holds it
-            u32 t0 = this->mStatus;
-            this->mStatus = t0 & static_cast<u32>(4294967247);
-            if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-                this->mpOwner->stopSoundSe(this);
-                this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+            u32 t0 = mStatus;
+            mStatus = t0 & 0xFFFFFFCFu;
+            if ((mStatus & 64u) != 0) {
+                mpOwner->stopSoundSe(this);
+                mStatus = mStatus & 0xFFFFFFBFu;
             }
-            if (this->mpContext != static_cast<sGpuParticle::Context*>(nullptr)) {
-                (::sGpuParticle::mpInstance)->::sGpuParticle::destroyContext(this->mpContext);
-                this->mpContext = static_cast<sGpuParticle::Context*>(nullptr);
+            if (mpContext != nullptr) {
+                (sGpuParticle::mpInstance)->sGpuParticle::destroyContext(mpContext);
+                mpContext = nullptr;
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x114795f read, used twice; no DWARF local holds it
-        u32 t0 = this->mStatus;
-        this->mStatus = t0 & static_cast<u32>(4294967247);
-        if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-            this->mpOwner->stopSoundSe(this);
-            this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+        u32 t0 = mStatus;
+        mStatus = t0 & 0xFFFFFFCFu;
+        if ((mStatus & 64u) != 0) {
+            mpOwner->stopSoundSe(this);
+            mStatus = mStatus & 0xFFFFFFBFu;
         }
-        if (this->mpContext != static_cast<sGpuParticle::Context*>(nullptr)) {
-            (::sGpuParticle::mpInstance)->::sGpuParticle::destroyContext(this->mpContext);
-            this->mpContext = static_cast<sGpuParticle::Context*>(nullptr);
+        if (mpContext != nullptr) {
+            (sGpuParticle::mpInstance)->sGpuParticle::destroyContext(mpContext);
+            mpContext = nullptr;
         }
     }
 }
@@ -399,7 +399,7 @@ __attribute__((weak)) bool cParticleManager::constructParam(uEffect* pOwner, u32
 // Address: 0x01b7de30 - 0x01b7de37 (7 bytes)
 bool cParticleManager::setParticleBuff(u8* pBuff) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParticleBuff = pBuff;
+    mpParticleBuff = pBuff;
     return true;
 }
 
@@ -413,45 +413,45 @@ __attribute__((weak)) void cParticleManager::initParam() {
 // Address: 0x01147df0 - 0x01147dfb (11 bytes)
 void cParticleManager::resetParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParticleRandCtr = this->mStartRandCtr;
-    this->mRandCtr = this->mParticleRandCtr;
+    mParticleRandCtr = mStartRandCtr;
+    mRandCtr = mParticleRandCtr;
 }
 
 // Address: 0x01147e00 - 0x01147e1d (29 bytes)
 void cParticleManager::restart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (this->mStatus & static_cast<u32>(2147483640)) | static_cast<u32>(7);
-    this->mRno = static_cast<u32>(0);
-    this->mParticleRandCtr = this->mStartRandCtr;
-    this->mRandCtr = this->mParticleRandCtr;
+    mStatus = (mStatus & 0x7FFFFFF8u) | 7u;
+    mRno = 0;
+    mParticleRandCtr = mStartRandCtr;
+    mRandCtr = mParticleRandCtr;
 }
 
 // Address: 0x01147e20 - 0x01147e2a (10 bytes)
 void cParticleManager::finish(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Mode == false) {
+    if (!Mode) {
         return;
     }
-    this->mKeepHoldFlag = static_cast<u32>(0);
+    mKeepHoldFlag = 0;
 }
 
 // Address: 0x01147e30 - 0x01147e51 (33 bytes)
 void cParticleManager::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTimeInterpolationRate = this->mpOwner->::uBaseEffect::mTimeInterpolationRate;
-    this->mIntTimeInterpolationRate = this->mpOwner->::uBaseEffect::mIntTimeInterpolationRate;
+    mTimeInterpolationRate = mpOwner->mTimeInterpolationRate;
+    mIntTimeInterpolationRate = mpOwner->mIntTimeInterpolationRate;
 }
 
 // Address: 0x01b7de40 - 0x01b7de43 (3 bytes)
 u32 cParticleManager::getParticleNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b7de50 - 0x01b7de53 (3 bytes)
 u32 cParticleManager::getParticleMoveNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b7de60 - 0x01b7de63 (3 bytes)
@@ -472,10 +472,10 @@ __attribute__((weak)) bool cParticleManager::isDraw(cDraw* pDraw) const {
 // Address: 0x01148130 - 0x01148140 (16 bytes)
 rSoundRequest* cParticleManager::getSoundRequest() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResourceInfo != static_cast<rEffectList::ResourceInfo*>(nullptr)) {
-        return this->mpResourceInfo->mpSoundRequest;
+    if (mpResourceInfo != nullptr) {
+        return mpResourceInfo->mpSoundRequest;
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -672,33 +672,33 @@ __attribute__((weak)) void cParticleManager::setRequest() {
 // Address: 0x011479b0 - 0x01147a1b (107 bytes)
 void cParticleManager::stopRequest() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if ((::sEffect::mpInstance)->mVibrationEnable != false) {
-        if ((this->mStatus & static_cast<u32>(32)) != static_cast<u32>(0)) {
-            (::sVibration::mpInstance)->::sVibration::stopVib(this->mVibrationId);
-            this->mVibrationId = static_cast<s32>(-1);
+    if ((sEffect::mpInstance)->mVibrationEnable) {
+        if ((mStatus & 32u) != 0) {
+            (sVibration::mpInstance)->sVibration::stopVib(mVibrationId);
+            mVibrationId = -1;
             // inferred: a temporary for the value the load at 0x11479f1 read, used twice; no DWARF local holds it
-            u32 t0 = this->mStatus;
-            this->mStatus = t0 & static_cast<u32>(4294967247);
-            if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-                this->mpOwner->stopSoundSe(this);
-                this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+            u32 t0 = mStatus;
+            mStatus = t0 & 0xFFFFFFCFu;
+            if ((mStatus & 64u) != 0) {
+                mpOwner->stopSoundSe(this);
+                mStatus = mStatus & 0xFFFFFFBFu;
             }
         } else {
             // inferred: a temporary for the value the load at 0x11479f1 read, used twice; no DWARF local holds it
-            u32 t0 = this->mStatus;
-            this->mStatus = t0 & static_cast<u32>(4294967247);
-            if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-                this->mpOwner->stopSoundSe(this);
-                this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+            u32 t0 = mStatus;
+            mStatus = t0 & 0xFFFFFFCFu;
+            if ((mStatus & 64u) != 0) {
+                mpOwner->stopSoundSe(this);
+                mStatus = mStatus & 0xFFFFFFBFu;
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x11479f1 read, used twice; no DWARF local holds it
-        u32 t0 = this->mStatus;
-        this->mStatus = t0 & static_cast<u32>(4294967247);
-        if ((this->mStatus & static_cast<u32>(64)) != static_cast<u32>(0)) {
-            this->mpOwner->stopSoundSe(this);
-            this->mStatus = this->mStatus & static_cast<u32>(4294967231);
+        u32 t0 = mStatus;
+        mStatus = t0 & 0xFFFFFFCFu;
+        if ((mStatus & 64u) != 0) {
+            mpOwner->stopSoundSe(this);
+            mStatus = mStatus & 0xFFFFFFBFu;
         }
     }
 }
@@ -923,6 +923,8 @@ __attribute__((weak)) bool cParticleManager::isBoundaryCulling(u32 ViewportNo) c
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
 //   in uEffectExt::moveAfter at 0x008e51f4-0x008e5202 (called at uEffectExt.cpp:849)
 // void cParticleManager::releaseLimitedRestart();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cParticleManager::MyDTI cParticleManager::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cParticleManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

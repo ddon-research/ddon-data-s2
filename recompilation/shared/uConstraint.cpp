@@ -46,7 +46,7 @@ const MtDTI& uConstraint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uConstraintD0Ev at 0x01b68e3e-0x01b68e5f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uConstraint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uConstraint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uConstraint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,25 +74,25 @@ uConstraint::~uConstraint() {
 // Address: 0x010184f0 - 0x01018556 (102 bytes)
 void uConstraint::initMember() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParentJnt = static_cast<uModel::Joint*>(nullptr);
-    this->mpNextCns = static_cast<uConstraint*>(nullptr);
-    this->mpPrevCns = static_cast<uConstraint*>(nullptr);
-    this->mEnable = true;
-    this->mBlendWeight = 1.0f;
-    this->mBlendSpeed = 0.02f;
-    this->mBlend = 1.0f;
-    this->mID = static_cast<u32>(0);
-    this->mIgnoreRate = false;
-    this->mPri = static_cast<u32>(1000);
-    this->mpModel = static_cast<uModel*>(nullptr);
-    this->mConstraint.mpParent = this;
-    this->mOrder = static_cast<s32>(-1);
+    mpParentJnt = nullptr;
+    mpNextCns = nullptr;
+    mpPrevCns = nullptr;
+    mEnable = true;
+    mBlendWeight = 1.0f;
+    mBlendSpeed = 0.02f;
+    mBlend = 1.0f;
+    mID = 0;
+    mIgnoreRate = false;
+    mPri = 1000;
+    mpModel = nullptr;
+    mConstraint.mpParent = this;
+    mOrder = -1;
 }
 
 // Address: 0x01017bc0 - 0x01017bc5 (5 bytes)
 MtUI* uConstraint::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x01017bd0 - 0x010184e3 (2323 bytes)
@@ -134,7 +134,7 @@ __attribute__((weak)) void uConstraint::createProperty(MtPropertyList& s) {
 // Address: 0x01ad3460 - 0x01ad3468 (8 bytes)
 void uConstraint::setConstraintEnable(bool flg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnable = flg;
+    mEnable = flg;
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,7 +153,7 @@ void uConstraint::setConstraintEnable(bool flg) {
 // Address: 0x01ad3470 - 0x01ad3473 (3 bytes)
 u32 uConstraint::getDependentJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01ad3480 - 0x01ad3483 (3 bytes)
@@ -203,31 +203,31 @@ bool uConstraint::setConstraint(uModel* pModel, s32 JntNo) {
     // DWARF local not rendered: u32 Idx;
     // DWARF local not rendered: Joint* pJnt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParentJnt != static_cast<uModel::Joint*>(nullptr)) {
-        if (this->mpPrevCns != static_cast<uConstraint*>(nullptr)) {
-            this->mpPrevCns->mpNextCns = static_cast<uConstraint*>(nullptr);
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpPrevCns->mpNextCns = this->mpNextCns;
-                this->mpNextCns->mpPrevCns = this->mpPrevCns;
+    if (mpParentJnt != nullptr) {
+        if (mpPrevCns != nullptr) {
+            mpPrevCns->mpNextCns = nullptr;
+            if (mpNextCns != nullptr) {
+                mpPrevCns->mpNextCns = mpNextCns;
+                mpNextCns->mpPrevCns = mpPrevCns;
             }
         } else {
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpNextCns->mpPrevCns = static_cast<uConstraint*>(nullptr);
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(&this->mpNextCns->mConstraint));
+            if (mpNextCns != nullptr) {
+                mpNextCns->mpPrevCns = nullptr;
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(&mpNextCns->mConstraint));
             } else {
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(nullptr));
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(nullptr));
             }
         }
-        this->mpParentJnt = static_cast<uModel::Joint*>(nullptr);
-        this->mpNextCns = static_cast<uConstraint*>(nullptr);
-        this->mpPrevCns = static_cast<uConstraint*>(nullptr);
-        this->mOrder = static_cast<s32>(-1);
+        mpParentJnt = nullptr;
+        mpNextCns = nullptr;
+        mpPrevCns = nullptr;
+        mOrder = -1;
     }
-    if (pModel != static_cast<uModel*>(nullptr)) {
-        if (static_cast<unsigned int>(JntNo) <= static_cast<unsigned int>(255)) {
+    if (pModel != nullptr) {
+        if (static_cast<unsigned int>(JntNo) <= 255) {
             if (pModel->mJointTable[static_cast<unsigned char>(JntNo)] < pModel->mJointNum) {
-                if ((&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]) != static_cast<uModel::Joint*>(nullptr)) {
-                    this->::uConstraint::setConstraint(&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]);
+                if ((&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]) != nullptr) {
+                    setConstraint(&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]);
                     return true;
                 }
             }
@@ -239,25 +239,25 @@ bool uConstraint::setConstraint(uModel* pModel, s32 JntNo) {
 // Address: 0x01018700 - 0x0101878b (139 bytes)
 bool uConstraint::removeConstraint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParentJnt != static_cast<uModel::Joint*>(nullptr)) {
-        if (this->mpPrevCns != static_cast<uConstraint*>(nullptr)) {
-            this->mpPrevCns->mpNextCns = static_cast<uConstraint*>(nullptr);
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpPrevCns->mpNextCns = this->mpNextCns;
-                this->mpNextCns->mpPrevCns = this->mpPrevCns;
+    if (mpParentJnt != nullptr) {
+        if (mpPrevCns != nullptr) {
+            mpPrevCns->mpNextCns = nullptr;
+            if (mpNextCns != nullptr) {
+                mpPrevCns->mpNextCns = mpNextCns;
+                mpNextCns->mpPrevCns = mpPrevCns;
             }
         } else {
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpNextCns->mpPrevCns = static_cast<uConstraint*>(nullptr);
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(&this->mpNextCns->mConstraint));
+            if (mpNextCns != nullptr) {
+                mpNextCns->mpPrevCns = nullptr;
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(&mpNextCns->mConstraint));
             } else {
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(nullptr));
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(nullptr));
             }
         }
-        this->mpParentJnt = static_cast<uModel::Joint*>(nullptr);
-        this->mpNextCns = static_cast<uConstraint*>(nullptr);
-        this->mpPrevCns = static_cast<uConstraint*>(nullptr);
-        this->mOrder = static_cast<s32>(-1);
+        mpParentJnt = nullptr;
+        mpNextCns = nullptr;
+        mpPrevCns = nullptr;
+        mOrder = -1;
         return true;
     } else {
         return false;
@@ -270,25 +270,25 @@ bool uConstraint::removeConstraint() {
 // Address: 0x010188c0 - 0x0101894b (139 bytes)
 bool uConstraint::removeConstraint(uModel* pModel, s32 JntNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParentJnt != static_cast<uModel::Joint*>(nullptr)) {
-        if (this->mpPrevCns != static_cast<uConstraint*>(nullptr)) {
-            this->mpPrevCns->mpNextCns = static_cast<uConstraint*>(nullptr);
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpPrevCns->mpNextCns = this->mpNextCns;
-                this->mpNextCns->mpPrevCns = this->mpPrevCns;
+    if (mpParentJnt != nullptr) {
+        if (mpPrevCns != nullptr) {
+            mpPrevCns->mpNextCns = nullptr;
+            if (mpNextCns != nullptr) {
+                mpPrevCns->mpNextCns = mpNextCns;
+                mpNextCns->mpPrevCns = mpPrevCns;
             }
         } else {
-            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
-                this->mpNextCns->mpPrevCns = static_cast<uConstraint*>(nullptr);
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(&this->mpNextCns->mConstraint));
+            if (mpNextCns != nullptr) {
+                mpNextCns->mpPrevCns = nullptr;
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(&mpNextCns->mConstraint));
             } else {
-                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(nullptr));
+                mpParentJnt->setConstraint(static_cast<uModel::Constraint*>(nullptr));
             }
         }
-        this->mpParentJnt = static_cast<uModel::Joint*>(nullptr);
-        this->mpNextCns = static_cast<uConstraint*>(nullptr);
-        this->mpPrevCns = static_cast<uConstraint*>(nullptr);
-        this->mOrder = static_cast<s32>(-1);
+        mpParentJnt = nullptr;
+        mpNextCns = nullptr;
+        mpPrevCns = nullptr;
+        mOrder = -1;
         return true;
     } else {
         return false;
@@ -312,24 +312,24 @@ __attribute__((weak)) void uConstraint::sortByPri() {
 // Address: 0x010189a0 - 0x010189a8 (8 bytes)
 void uConstraint::setPri(u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPri = Pri;
-    this->::uConstraint::sortByPri();
+    mPri = Pri;
+    sortByPri();
 }
 
 // Address: 0x01b68d90 - 0x01b68d94 (4 bytes)
 u32 uConstraint::getPri() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPri;
+    return mPri;
 }
 
 // Address: 0x01018880 - 0x010188ab (43 bytes)
 bool uConstraint::checkJointNo(uModel* pModel, s32 JntNo) {
     // DWARF local not rendered: u32 Idx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(JntNo) > static_cast<unsigned int>(255)) {
+    if (static_cast<unsigned int>(JntNo) > 255) {
         return false;
     } else {
-        if (pModel != static_cast<uModel*>(nullptr)) {
+        if (pModel != nullptr) {
             return pModel->mJointTable[static_cast<unsigned char>(JntNo)] < pModel->mJointNum;
         } else {
             return true;
@@ -340,7 +340,7 @@ bool uConstraint::checkJointNo(uModel* pModel, s32 JntNo) {
 // Address: 0x01018b60 - 0x01018b68 (8 bytes)
 void uConstraint::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::mDrawMode = static_cast<u32>(1);
+    mDrawMode = 1;
 }
 
 // Address: 0x01018b70 - 0x01018c35 (197 bytes)
@@ -354,12 +354,11 @@ __attribute__((weak)) void uConstraint::move() {
 void uConstraint::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uConstraint*
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
-    } else {
-        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) == 0) {
+        if ((mBeFlag - 1u) <= 1u) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
         }
-        this->remove();
+        remove();
     }
 }
 
@@ -375,22 +374,22 @@ void uConstraint::setResource(cResource* pRes) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cResource*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cResource*
-    if (pRes != static_cast<cResource*>(nullptr)) {
+    if (pRes != nullptr) {
         // inferred: a temporary for the result of the call at 0x1018968, used once; no DWARF local holds it
         const MtDTI& t0 = pRes->getDTI();
         // inferred: the value the loop at 0x1018976 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::rConstraint::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = rConstraint::DTI.mName;
         // inferred: the value the loop at 0x1018976 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 != v0_0->mName) {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                this->mPri = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + static_cast<long>(116));
-                this->mID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + static_cast<long>(112));
+                mPri = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + 116);
+                mID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + 112);
                 return;
             }
         }
@@ -400,23 +399,23 @@ void uConstraint::setResource(cResource* pRes) {
 // Address: 0x01ad3490 - 0x01ad3498 (8 bytes)
 uModel* uConstraint::getModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModel;
+    return mpModel;
 }
 
 // Address: 0x01018560 - 0x0101858f (47 bytes)
 void uConstraint::setModel(uModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel != static_cast<uModel*>(nullptr)) {
-        this->remove();
+    if (mpModel != nullptr) {
+        remove();
     }
-    this->mpModel = pModel;
+    mpModel = pModel;
 }
 
 // Address: 0x01018590 - 0x010185b4 (36 bytes)
 void uConstraint::setModelUpdate(uModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->update();
+    setModel(pModel);
+    update();
 }
 
 // Defined in the class (its body was written in a header).
@@ -489,6 +488,8 @@ __attribute__((weak)) void uConstraint::setRotateVector(MtMatrix& mtx, const u32
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uConstraint::MyDTI uConstraint::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uConstraint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -531,7 +532,7 @@ const MtDTI& uConstraint::cConstraint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uConstraint11cConstraintD0Ev at 0x01b68dd0-0x01b68dfa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uConstraint::cConstraint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uConstraint::cConstraint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uConstraint::cConstraint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -548,8 +549,8 @@ void uConstraint::cConstraint::adjust(uModel::Joint* pjnt, uModel* pmod) {
     // DWARF local not rendered: uConstraint* pCns;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1017aa6 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    for (uConstraint* v0_3 = this->mpParent;;) {
-        if (v0_3 == static_cast<uConstraint*>(nullptr)) {
+    for (uConstraint* v0_3 = mpParent;;) {
+        if (v0_3 == nullptr) {
             break;
         } else {
             v0_3->adjust(pjnt, pmod);
@@ -568,10 +569,10 @@ __attribute__((weak)) void uConstraint::cConstraint::createProperty(MtPropertyLi
 u32 uConstraint::cConstraint::getDependentJointNum() {
     // DWARF local not rendered: u32 Num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent != static_cast<uConstraint*>(nullptr)) {
-        return this->mpParent->getDependentJointNum();
+    if (mpParent != nullptr) {
+        return mpParent->getDependentJointNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -579,17 +580,17 @@ u32 uConstraint::cConstraint::getDependentJointNum() {
 uModel::Joint* uConstraint::cConstraint::getDependentJoint(u32 idx) {
     // DWARF local not rendered: Joint* pJnt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent != static_cast<uConstraint*>(nullptr)) {
-        return this->mpParent->getDependentJoint(idx);
+    if (mpParent != nullptr) {
+        return mpParent->getDependentJoint(idx);
     } else {
-        return static_cast<uModel::Joint*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b68e10 - 0x01b68e15 (5 bytes)
 uConstraint* uConstraint::cConstraint::getUConstraint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpParent;
+    return mpParent;
 }
 
 // Address: 0x01017b00 - 0x01017b1c (28 bytes)
@@ -603,6 +604,8 @@ __attribute__((weak)) uModel::Constraint* uConstraint::cConstraint::getPrevConst
     DDON_STUB("uConstraint::cConstraint::getPrevConstraint")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uConstraint::cConstraint::MyDTI uConstraint::cConstraint::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uConstraint::cConstraint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

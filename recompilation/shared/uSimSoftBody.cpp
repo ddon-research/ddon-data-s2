@@ -40,7 +40,7 @@ const MtDTI& uSimSoftBody::getDTI() const {
 // Address: 0x00f85480 - 0x00f854c0 (64 bytes)
 void* uSimSoftBody::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uSimSoftBody::DTI)->memAlloc(sz, align, ::uSimSoftBody::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uSimSoftBody::DTI)->memAlloc(sz, align, uSimSoftBody::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uSimSoftBody::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12uSimSoftBodyD0Ev at 0x00f86cce-0x00f86cef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSimSoftBody::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSimSoftBody::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSimSoftBody::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,7 +118,7 @@ __attribute__((weak)) void uSimSoftBody::moveAfter() {
 // Address: 0x00f88580 - 0x00f88585 (5 bytes)
 MtUI* uSimSoftBody::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00f88590 - 0x00f8bc67 (14039 bytes)
@@ -130,8 +130,8 @@ __attribute__((weak)) void uSimSoftBody::createProperty(MtPropertyList& s) {
 // Address: 0x01ad3d40 - 0x01ad3d69 (41 bytes)
 void uSimSoftBody::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset = offset;
-    this->mIsApplyWorldOffset = true;
+    mWorldOffset = offset;
+    mIsApplyWorldOffset = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -240,7 +240,7 @@ __attribute__((weak)) void uSimSoftBody::setDeformWeightMap(rDeformWeightMap* p)
 // Address: 0x01b64760 - 0x01b64768 (8 bytes)
 rDeformWeightMap* uSimSoftBody::getDeformWeightMap() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResWeightMap;
+    return mpResWeightMap;
 }
 
 // Address: 0x00f883f0 - 0x00f88491 (161 bytes)
@@ -252,7 +252,7 @@ __attribute__((weak)) void uSimSoftBody::setSPS(rSoundPhysicsSoftBody* p) {
 // Address: 0x01b64770 - 0x01b64778 (8 bytes)
 rSoundPhysicsSoftBody* uSimSoftBody::getSPS() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResSPS;
+    return mpResSPS;
 }
 
 // Address: 0x00f87720 - 0x00f88295 (2933 bytes)
@@ -399,9 +399,15 @@ __attribute__((weak)) void uSimSoftBody::broadPhaseCollision() {
 // void uSimSoftBody::updateBounding();
 
 // Address: 0x00f8bca0 - 0x00f8bcea (74 bytes)
-__attribute__((weak)) void uSimSoftBody::colliderContactCallback(sCollision::CALLBACK_MODE mode, sCollision::Node* pThisNode, sCollision::Node* pNode, MtContact* pContact, u32 param, sCollision::TriangleInfo* pTriInfo, u32 HitGeomThisID, u32 HitGeomID, bool Hited) {
-    DDON_STUB("uSimSoftBody::colliderContactCallback")
-    /* stub */
+void uSimSoftBody::colliderContactCallback(sCollision::CALLBACK_MODE mode, sCollision::Node* pThisNode, sCollision::Node* pNode, MtContact* pContact, u32 param, sCollision::TriangleInfo* pTriInfo, u32 HitGeomThisID, u32 HitGeomID, bool Hited) {
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    if (mode != sCollision::PHASE_ENUM) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0xf8bcb6, used once; no DWARF local holds it
+    MtGeomConvex* t0 = pNode->getGeometry(HitGeomID);
+    mpColliderGeoms[mIntersectedColliderNum] = t0;
+    mIntersectedColliderNum = ((mIntersectedColliderNum + 1u) <= 24u) ? (mIntersectedColliderNum + 1u) : 23u;
 }
 
 // No out-of-line body: no code in the ELF
@@ -431,15 +437,15 @@ __attribute__((weak)) uISC* uSimSoftBody::getUnitISC() {
 // Address: 0x01b646f0 - 0x01b646f8 (8 bytes)
 void uSimSoftBody::setUnitISC(uISC* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpISC = pUnit;
+    mpISC = pUnit;
 }
 
 // Address: 0x00f86cf0 - 0x00f86d24 (52 bytes)
 void uSimSoftBody::evRebuildSkinningData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xf86cfd, used once; no DWARF local holds it
-    nDraw::VertexBuffer* t0 = this->getTargetVertexBuffer();
-    this->::uSimSoftBody::rebuildSkinningData(t0, this->getTargetPrimitives());
+    nDraw::VertexBuffer* t0 = getTargetVertexBuffer();
+    rebuildSkinningData(t0, getTargetPrimitives());
 }
 
 // Address: 0x00f93530 - 0x00f93beb (1723 bytes)
@@ -577,13 +583,13 @@ __attribute__((weak)) void uSimSoftBody::setTargetUnit(uModel* pTU) {
 // Address: 0x00f8be70 - 0x00f8beab (59 bytes)
 void uSimSoftBody::restartSimulation(u32 loopNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->applyWorldOffset(::MtVector3::Zero, ::MtVector3::Zero);
-    if (this->mResetRestart == false) {
-        if (loopNum == static_cast<u32>(4294967295)) {
-            this->mInitOk = static_cast<u32>(0);
+    applyWorldOffset(MtVector3::Zero, MtVector3::Zero);
+    if (!mResetRestart) {
+        if (loopNum == 0xFFFFFFFFu) {
+            mInitOk = 0;
         }
     } else {
-        this->mInitOk = static_cast<u32>(0);
+        mInitOk = 0;
     }
 }
 
@@ -612,31 +618,31 @@ void uSimSoftBody::restartSimulation(u32 loopNum) {
 // Address: 0x00f8bed0 - 0x00f8bed8 (8 bytes)
 void uSimSoftBody::stopSimulation() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSimON = false;
+    mSimON = false;
 }
 
 // Address: 0x00f8beb0 - 0x00f8bec1 (17 bytes)
 void uSimSoftBody::startSimulation(u32 loopNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSimON != false) {
+    if (mSimON) {
         return;
     }
-    this->mSimON = true;
+    mSimON = true;
 }
 
 // Address: 0x00f8bc80 - 0x00f8bc91 (17 bytes)
 void uSimSoftBody::evButtonStartSimulation() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSimON != false) {
+    if (mSimON) {
         return;
     }
-    this->mSimON = true;
+    mSimON = true;
 }
 
 // Address: 0x00f8bc70 - 0x00f8bc78 (8 bytes)
 void uSimSoftBody::evButtonStopSimulation() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSimON = false;
+    mSimON = false;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (13 bytes)
@@ -773,9 +779,9 @@ void uSimSoftBody::evButtonStopSimulation() {
 // Address: 0x00f8d8d0 - 0x00f8d8e9 (25 bytes)
 void uSimSoftBody::enableApproxScrCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mApproxScrCollision = true;
-    this->mColTerrainListSize = static_cast<u32>(1);
-    this->mCallCreateApproxScrCollisionGPU = true;
+    mApproxScrCollision = true;
+    mColTerrainListSize = 1;
+    mCallCreateApproxScrCollisionGPU = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (24 bytes)
@@ -791,14 +797,14 @@ __attribute__((weak)) void uSimSoftBody::enableColliderCollision() {
 // Address: 0x00f883b0 - 0x00f883ed (61 bytes)
 void uSimSoftBody::disableColliderCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mColliderCollision == false) {
+    if (!mColliderCollision) {
         return;
     }
-    if (this->mpColliderNode != static_cast<sCollision::Node*>(nullptr)) {
-        delete this->mpColliderNode;
-        this->mpColliderNode = static_cast<sCollision::Node*>(nullptr);
+    if (mpColliderNode != nullptr) {
+        delete mpColliderNode;
+        mpColliderNode = nullptr;
     }
-    this->mColliderCollision = false;
+    mColliderCollision = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -824,15 +830,15 @@ void uSimSoftBody::disableColliderCollision() {
 // Address: 0x01b64710 - 0x01b64760 (80 bytes)
 void uSimSoftBody::setColliderCollision(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (flag != false) {
-        this->::uSimSoftBody::enableColliderCollision();
+    if (flag) {
+        enableColliderCollision();
     } else {
-        if (this->mColliderCollision != false) {
-            if (this->mpColliderNode != static_cast<sCollision::Node*>(nullptr)) {
-                delete this->mpColliderNode;
-                this->mpColliderNode = static_cast<sCollision::Node*>(nullptr);
+        if (mColliderCollision) {
+            if (mpColliderNode != nullptr) {
+                delete mpColliderNode;
+                mpColliderNode = nullptr;
             }
-            this->mColliderCollision = false;
+            mColliderCollision = false;
         }
     }
 }
@@ -840,7 +846,7 @@ void uSimSoftBody::setColliderCollision(bool flag) {
 // Address: 0x01b64700 - 0x01b64707 (7 bytes)
 bool uSimSoftBody::getColliderCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColliderCollision;
+    return mColliderCollision;
 }
 
 // No out-of-line body: no code in the ELF
@@ -938,14 +944,14 @@ __attribute__((weak)) void uSimSoftBody::rebuildSkinningData(nDraw::VertexBuffer
 // Address: 0x01b648d0 - 0x01b648dc (12 bytes)
 void uSimSoftBody::setNullTarget() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetUnit = nullptr;
+    mpTargetUnit = nullptr;
 }
 
 // Address: 0x01b648e0 - 0x01b648fb (27 bytes)
 bool uSimSoftBody::hasTarget() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTargetUnit != static_cast<uModel*>(nullptr)) {
-        return this->mpTargetUnit->::uBaseModel::mpModel != static_cast<rModel*>(nullptr);
+    if (mpTargetUnit != nullptr) {
+        return mpTargetUnit->mpModel != nullptr;
     } else {
         return false;
     }
@@ -954,37 +960,37 @@ bool uSimSoftBody::hasTarget() const {
 // Address: 0x01b64900 - 0x01b64916 (22 bytes)
 bool uSimSoftBody::isTargetEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mpTargetUnit->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1);
+    return (mpTargetUnit->mBeFlag - 1u) <= 1u;
 }
 
 // Address: 0x01b64920 - 0x01b64936 (22 bytes)
 nDraw::VertexBuffer* uSimSoftBody::getTargetVertexBuffer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::mpModel->mpVertexBuffer;
+    return mpTargetUnit->mpModel->mpVertexBuffer;
 }
 
 // Address: 0x01b64940 - 0x01b64956 (22 bytes)
 nDraw::IndexBuffer* uSimSoftBody::getTargetIndexBuffer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::mpModel->mpIndexBuffer;
+    return mpTargetUnit->mpModel->mpIndexBuffer;
 }
 
 // Address: 0x01b64960 - 0x01b64976 (22 bytes)
 const rModel::PRIMITIVE_INFO* uSimSoftBody::getTargetPrimitives() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::mpModel->mPrimitiveInfo;
+    return mpTargetUnit->mpModel->mPrimitiveInfo;
 }
 
 // Address: 0x01b64980 - 0x01b64995 (21 bytes)
 u32 uSimSoftBody::getTargetPrimitiveNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::mpModel->mPrimitiveNum;
+    return mpTargetUnit->mpModel->mPrimitiveNum;
 }
 
 // Address: 0x01b649a0 - 0x01b649ae (14 bytes)
 u32 uSimSoftBody::getTargetJointNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->mJointNum;
+    return mpTargetUnit->mJointNum;
 }
 
 // Address: 0x01b649b0 - 0x01b649ca (26 bytes)
@@ -996,7 +1002,7 @@ __attribute__((weak)) bool uSimSoftBody::isTargetPartsDisp(u32 no) const {
 // Address: 0x01b649d0 - 0x01b649dc (12 bytes)
 const MtVector3& uSimSoftBody::getTargetPos() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uCoord::mPos;
+    return mpTargetUnit->mPos;
 }
 
 // Address: 0x01ad3e40 - 0x01ad3e5f (31 bytes)
@@ -1008,22 +1014,22 @@ __attribute__((weak)) MtVector3 uSimSoftBody::calcTargetBaseCenterPos() {
 // Address: 0x01ad3e60 - 0x01ad3e73 (19 bytes)
 u32 uSimSoftBody::getTargetLODLevel(s32 dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->getLODLevel(dist);
+    return mpTargetUnit->getLODLevel(dist);
 }
 
 // Address: 0x01ad3e80 - 0x01ad3e8c (12 bytes)
 void uSimSoftBody::setTargetPrimState(cDraw* pdraw, const rModel::PRIMITIVE_INFO* pp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetUnit->::uBaseModel::setPrimState(pdraw, pp);
+    mpTargetUnit->setPrimState(pdraw, pp);
 }
 
 // Address: 0x01b649e0 - 0x01b64a09 (41 bytes)
 const MtMatrix& uSimSoftBody::getTargetJointMatrix(s32 jointIndex) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (jointIndex > static_cast<s32>(-1)) {
-        return this->mpTargetUnit->mJoint[static_cast<unsigned int>(jointIndex)].mWmat;
+    if (jointIndex > -1) {
+        return mpTargetUnit->mJoint[static_cast<unsigned int>(jointIndex)].mWmat;
     } else {
-        return this->mpTargetUnit->::uCoord::mWmat;
+        return mpTargetUnit->mWmat;
     }
 }
 
@@ -1043,43 +1049,43 @@ s32 uSimSoftBody::getTargetJointIndexFromNo(s32 no) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x11e0 from uModel*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x0 from unsigned long
     // inferred: a value cast to the type its use takes: unsigned char used as int
-    if (no > static_cast<s32>(-1)) {
-        if (static_cast<int>(this->mpTargetUnit->mJointNum) >= static_cast<int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpTargetUnit) + static_cast<long>(4576))) + static_cast<unsigned char>(no)) + static_cast<long>(0)))) {
-            return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpTargetUnit) + static_cast<long>(4576))) + static_cast<unsigned char>(no)) + static_cast<long>(0));
+    if (no > -1) {
+        if (static_cast<int>(mpTargetUnit->mJointNum) >= static_cast<int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpTargetUnit) + 4576)) + static_cast<unsigned char>(no)) + 0))) {
+            return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpTargetUnit) + 4576)) + static_cast<unsigned char>(no)) + 0);
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // Address: 0x01ad4220 - 0x01ad422c (12 bytes)
 s32 uSimSoftBody::cullingTargetModel(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::cullingModel(pdraw);
+    return mpTargetUnit->cullingModel(pdraw);
 }
 
 // Address: 0x01b64a10 - 0x01b64a23 (19 bytes)
 void uSimSoftBody::setTargetCommonState(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetUnit->setCommonState(pdraw);
+    mpTargetUnit->setCommonState(pdraw);
 }
 
 // Address: 0x01ad4230 - 0x01ad423c (12 bytes)
 void uSimSoftBody::updateTargetBoundary() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetUnit->::uModel::updateBoundary();
+    mpTargetUnit->updateBoundary();
 }
 
 // Address: 0x01b64a30 - 0x01b64a3d (13 bytes)
 const MtSphere& uSimSoftBody::getTargetBoundingSphere() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTargetUnit->::uBaseModel::mBoundingSphere;
+    return mpTargetUnit->mBoundingSphere;
 }
 
 // Address: 0x01b64a40 - 0x01b64ab1 (113 bytes)
 void uSimSoftBody::getTargetBoundingAABB(MtAABB& aabb) const {
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x1b64a4c, used 7 times; no DWARF local holds it
-    const MtSphere& t0 = this->getTargetBoundingSphere();
+    const MtSphere& t0 = getTargetBoundingSphere();
     // inferred: a temporary for the value the load at 0x1b64a52 read, used 6 times; no DWARF local holds it
     const f32 t1 = t0.r;
     // inferred: a temporary for the value the load at 0x1b64a5b read, used once; no DWARF local holds it
@@ -1120,12 +1126,14 @@ __attribute__((weak)) void uSimSoftBody::createSkinningMatrix(MtVector4* pdst, u
 // Address: 0x01ad4480 - 0x01ad4496 (22 bytes)
 bool uSimSoftBody::isThisUnit(cUnit* punit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (punit != this->mpTargetUnit) {
-        return punit == this->mpTargetUnit->::uCoord::mpParent;
+    if (punit != mpTargetUnit) {
+        return punit == mpTargetUnit->mpParent;
     } else {
         return true;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uSimSoftBody::MyDTI uSimSoftBody::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uSimSoftBody::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

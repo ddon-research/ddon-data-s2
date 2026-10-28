@@ -26,7 +26,7 @@ const MtDTI& sCollisionExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sCollisionExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sCollisionExt::DTI);
+    return MtMemoryAllocator::getAllocator(sCollisionExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* sCollisionExt::getAllocator() {
 // Address: 0x0074b560 - 0x0074b5a0 (64 bytes)
 void* sCollisionExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sCollisionExt::getAllocator()->memAlloc(sz, align, ::sCollisionExt::DTI.::MtDTI::getID());
+    return sCollisionExt::getAllocator()->memAlloc(sz, align, sCollisionExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* sCollisionExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCollisionExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollisionExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollisionExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,19 +74,19 @@ sCollisionExt::~sCollisionExt() {
 // Address: 0x0074b6c0 - 0x0074b6c5 (5 bytes)
 void sCollisionExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::createProperty(s);
+    this->sCollision::createProperty(s);
 }
 
 // Address: 0x0074b6d0 - 0x0074b6d5 (5 bytes)
 MtUI* sCollisionExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0074b6e0 - 0x0074b6e5 (5 bytes)
 void sCollisionExt::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::move();
+    this->sCollision::move();
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,9 +106,9 @@ __attribute__((weak)) f32 sCollisionExt::checkHeight(const MtVector3& Pos, u32 C
 u32 sCollisionExt::findIntersectionEx(const MtLineSegment& ls, const bool both_sides, sCollision::TriangleInfo* pTriInfo, const sCollision::Param& param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.01f > ((((ls.p0.x - ls.p1.x) * (ls.p0.x - ls.p1.x)) + ((ls.p0.y - ls.p1.y) * (ls.p0.y - ls.p1.y))) + ((ls.p0.z - ls.p1.z) * (ls.p0.z - ls.p1.z)))) {
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        return this->::sCollision::findIntersection(ls, both_sides, pTriInfo, param);
+        return findIntersection(ls, both_sides, pTriInfo, param);
     }
 }
 
@@ -118,7 +118,7 @@ bool sCollisionExt::isIntersectEx(const MtLineSegment& ls, const sCollision::Par
     if (0.01f > ((((ls.p0.x - ls.p1.x) * (ls.p0.x - ls.p1.x)) + ((ls.p0.y - ls.p1.y) * (ls.p0.y - ls.p1.y))) + ((ls.p0.z - ls.p1.z) * (ls.p0.z - ls.p1.z)))) {
         return false;
     } else {
-        return this->::sCollision::isIntersect(ls, param);
+        return isIntersect(ls, param);
     }
 }
 
@@ -140,6 +140,8 @@ __attribute__((weak)) void sCollisionExt::replaceAttribute(rCollision::MaterialI
 
 // No out-of-line body: no code in the ELF
 // u32 sCollisionExt::enumEffectAttr(rCollision* pSbc, u32* buff);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollisionExt::MyDTI sCollisionExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sCollisionExt.cpp at 0x0074ba40-0x0074ba82 (called at sCollisionExt.cpp:40)

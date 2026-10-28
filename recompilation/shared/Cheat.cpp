@@ -24,7 +24,7 @@ const MtDTI& CDataCheatInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCheatInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCheatInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCheatInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataCheatInfo::getAllocator() {
 // Address: 0x003de3e0 - 0x003de420 (64 bytes)
 void* CDataCheatInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCheatInfo::getAllocator()->memAlloc(sz, align, ::CDataCheatInfo::DTI.::MtDTI::getID());
+    return CDataCheatInfo::getAllocator()->memAlloc(sz, align, CDataCheatInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataCheatInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003de450 - 0x003de47a (42 bytes)
 __attribute__((weak)) void CDataCheatInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCheatInfo::getAllocator()->memFree(p_addr);
+    CDataCheatInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataCheatInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataCheatInfo::CDataCheatInfo(u8, u8, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCheatInfo::MyDTI CDataCheatInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fa2a-0x0041fa63 (called at CheatImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fa2a-0x0041fa63 (called at Cheat.h:20)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataCheatInfo::operator delete(void* p_addr) {
 // Address: 0x003de380 - 0x003de3d7 (87 bytes)
 MtObject* CDataCheatInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCheatInfo;
+    return new (16u) CDataCheatInfo;
 }
 

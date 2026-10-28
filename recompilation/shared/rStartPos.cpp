@@ -77,7 +77,7 @@ const MtDTI& rStartPos::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStartPos::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStartPos::DTI)->memAlloc(sz, align, ::rStartPos::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStartPos::DTI)->memAlloc(sz, align, rStartPos::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,7 +92,7 @@ inline void* rStartPos::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStartPos::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStartPos::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStartPos::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +106,7 @@ inline void rStartPos::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStartPos::rStartPos() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x00707ab0 - 0x00707b26 (118 bytes)
@@ -138,21 +138,21 @@ __attribute__((weak)) void rStartPos::createProperty(MtPropertyList& s) {
 // Address: 0x00707cc0 - 0x00707cc5 (5 bytes)
 MtUI* rStartPos::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x00707cd0 - 0x00707d51 (129 bytes)
 bool rStartPos::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x00707d60 - 0x00707dde (126 bytes)
 bool rStartPos::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    sz.::MtSerializer::serializeBinary(out, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    MtSerializer sz(65536);
+    sz.MtSerializer::serializeBinary(out, static_cast<u16>(2), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     return true;
 }
 
@@ -166,6 +166,8 @@ __attribute__((weak)) void rStartPos::getData(cStartPos& data, u32 posNo) {
 // No out-of-line body: no code in the ELF
 // u32 rStartPos::getInfoNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStartPos::MyDTI rStartPos::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStartPos.cpp at 0x00708420-0x00708462 (called at rStartPos.cpp:57)
 //   in _GLOBAL__sub_I_rStartPos.cpp at 0x00708420-0x00708462 (called at rStartPos.h:26)
@@ -174,7 +176,7 @@ __attribute__((weak)) void rStartPos::getData(cStartPos& data, u32 posNo) {
 // Address: 0x007079a0 - 0x00707a24 (132 bytes)
 MtObject* rStartPos::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStartPos;
+    return new (16u) rStartPos;
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,7 +214,7 @@ const MtDTI& rStartPos::Info::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rStartPos::Info::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStartPos::Info::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStartPos::Info::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,13 +251,13 @@ __attribute__((weak)) MtVector3 rStartPos::Info::getOfsPos(u32 idx) const {
 // Address: 0x01ab3db0 - 0x01ab3ddf (47 bytes)
 void rStartPos::Info::setOfsPos(MtVector3& ofs, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfsPos[idx] = ofs;
+    mOfsPos[idx] = ofs;
 }
 
 // Address: 0x01ab3de0 - 0x01ab3de6 (6 bytes)
 u32 rStartPos::Info::getOfsPosNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
 
 // Address: 0x01ab3df0 - 0x01ab3df1 (1 bytes)
@@ -266,25 +268,27 @@ __attribute__((weak)) void rStartPos::Info::setOfsPosNum(u32 num) {
 // Address: 0x01ab3e00 - 0x01ab3e0c (12 bytes)
 f32 rStartPos::Info::getOfsAng(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOfsAng[idx];
+    return mOfsAng[idx];
 }
 
 // Address: 0x01ab3e10 - 0x01ab3e1c (12 bytes)
 void rStartPos::Info::setOfsAng(f32 ang, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfsAng[idx] = ang;
+    mOfsAng[idx] = ang;
 }
 
 // Address: 0x01ab3e20 - 0x01ab3e26 (6 bytes)
 u32 rStartPos::Info::getOfsAngNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
 
 // Address: 0x01ab3e30 - 0x01ab3e31 (1 bytes)
 __attribute__((weak)) void rStartPos::Info::setOfsAngNum(u32 num) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStartPos::Info::MyDTI rStartPos::Info::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStartPos.cpp at 0x00708462-0x0070849f (called at rStartPos.cpp:141)

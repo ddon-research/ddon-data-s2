@@ -57,7 +57,7 @@ const MtDTI& sSetManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sSetManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sSetManager::DTI);
+    return MtMemoryAllocator::getAllocator(sSetManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ inline MtAllocator* sSetManager::getAllocator() {
 // Address: 0x0083d6e0 - 0x0083d720 (64 bytes)
 void* sSetManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sSetManager::getAllocator()->memAlloc(sz, align, ::sSetManager::DTI.::MtDTI::getID());
+    return sSetManager::getAllocator()->memAlloc(sz, align, sSetManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,7 +81,7 @@ void* sSetManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSetManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSetManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSetManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,7 +116,7 @@ __attribute__((weak)) void sSetManager::createProperty(MtPropertyList& s) {
 // Address: 0x0083f190 - 0x0083f195 (5 bytes)
 MtUI* sSetManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0083f1b0 - 0x0083f1b1 (1 bytes)
@@ -238,35 +238,32 @@ bool sSetManager::setKilledMgrData(sSetManager::ManageDataArrayCur& ar, const nL
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from sSetManager::cOmGroupData*
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    if (this->mIsSetup != false) {
-        if (setNo > static_cast<s32>(-1)) {
-            if (pGp != static_cast<cGroupParam*>(nullptr)) {
+    if (mIsSetup) {
+        if (setNo > -1) {
+            if (pGp != nullptr) {
                 // inferred: a temporary for the value the load at 0x8431c9 read, used 4 times; no DWARF local holds it
                 const u32 t0 = layoutID.mLayoutID;
-                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
-                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
-                if ((ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData & static_cast<u32>(511)) == static_cast<u32>(511)) {
-                    u32 stageSeq = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::convertStageIndex(static_cast<s32>(layoutID.mLayoutID & static_cast<u32>(1023)));
+                if ((ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData & 511u) == 511) {
+                    u32 stageSeq = static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(static_cast<s32>(layoutID.mLayoutID & 1023u));
                     // inferred: a temporary for the value the load at 0x84323b read, used twice; no DWARF local holds it
-                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)]) + static_cast<long>(8));
-                    ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData = (t1 & static_cast<unsigned int>(4294966784)) | (stageSeq & static_cast<u32>(511));
-                    ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData = static_cast<u32>(static_cast<unsigned long>(((t1 & static_cast<unsigned int>(4294966784)) | (stageSeq & static_cast<u32>(511))) & static_cast<unsigned int>(4294705663)) | static_cast<unsigned long>((layoutID.mLayoutID >> static_cast<u32>(1)) & static_cast<u32>(261632)));
-                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
-                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u]) + 8);
+                    ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData = (t1 & 0xFFFFFE00u) | (stageSeq & 511u);
+                    ar.elems[(t0 <= 0x7FFFFu) ? (t0 >> 10) : 0u].mGroupData = static_cast<u32>(static_cast<unsigned long>(((t1 & 0xFFFFFE00u) | (stageSeq & 511u)) & 0xFFFC01FFu) | static_cast<unsigned long>((layoutID.mLayoutID >> 1) & 0x3FE00u));
+                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                     return true;
                 } else {
-                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
-                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                    if ((static_cast<unsigned long>(cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16))) != 0) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                     return true;
@@ -749,33 +746,33 @@ __attribute__((weak)) void sSetManager::addPartsGroup(cGroupParam* pParam, rLayo
 uControl* sSetManager::createControlInstance(u32 ctrlType, u32 uid, u32 unit_id) {
     // DWARF local not rendered: uControl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sControlManager::getInstance()->::sControlManager::createControl(static_cast<unsigned char>(ctrlType), static_cast<u32>(0), uid, unit_id, static_cast<cContextInstance*>(nullptr));
+    return sControlManager::getInstance()->createControl(static_cast<unsigned char>(ctrlType), 0u, uid, unit_id, static_cast<cContextInstance*>(nullptr));
 }
 
 // Address: 0x00845040 - 0x008450b2 (114 bytes)
 uDDOModel* sSetManager::createCharacterInstance(uControl* pCtrl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pCtrl != static_cast<uControl*>(nullptr)) {
-        uDDOModel* pMod = this->::sSetManager::createUnit(pCtrl->mCtrlType, pCtrl->::uControl::getUniqueId(), pCtrl->::uControl::getUnitId());
-        if (pMod != static_cast<uDDOModel*>(nullptr)) {
-            pCtrl->::uControl::connectModel(pMod);
-            if (pCtrl->mCtrlType != static_cast<u8>(16)) {
-                if (pCtrl->mCtrlType == static_cast<u8>(32)) {
-                    if (::cContextInterface::getMasterChangeFlag(pCtrl->mContextInterface.mpContextInstance) == false) {
+    if (pCtrl != nullptr) {
+        uDDOModel* pMod = createUnit(pCtrl->mCtrlType, pCtrl->getUniqueId(), pCtrl->getUnitId());
+        if (pMod != nullptr) {
+            pCtrl->connectModel(pMod);
+            if (pCtrl->mCtrlType != 16) {
+                if (pCtrl->mCtrlType == 32) {
+                    if (!cContextInterface::getMasterChangeFlag(pCtrl->mContextInterface.mpContextInstance)) {
                         pMod->setMaster(true);
                     }
                 }
             } else {
-                if (::cContextInterface::getMasterChangeFlag(pCtrl->mContextInterface.mpContextInstance) == false) {
+                if (!cContextInterface::getMasterChangeFlag(pCtrl->mContextInterface.mpContextInstance)) {
                     pMod->setMaster(true);
                 }
             }
             return pMod;
         } else {
-            return static_cast<uDDOModel*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<uDDOModel*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -810,20 +807,20 @@ __attribute__((weak)) void sSetManager::loadCmnResource() {
 // Address: 0x00845470 - 0x008454f3 (131 bytes)
 void sSetManager::releaseCmnResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLotPreset != static_cast<rLayoutPreset*>(nullptr)) {
-        this->mpLotPreset->::cResource::release();
-        this->mpLotPreset = static_cast<rLayoutPreset*>(nullptr);
+    if (mpLotPreset != nullptr) {
+        mpLotPreset->release();
+        mpLotPreset = nullptr;
     }
-    if (this->mpNamedParam != static_cast<rNamedParam*>(nullptr)) {
-        this->mpNamedParam->::cResource::release();
-        this->mpNamedParam = static_cast<rNamedParam*>(nullptr);
+    if (mpNamedParam != nullptr) {
+        mpNamedParam->release();
+        mpNamedParam = nullptr;
     }
-    if (this->mpNamed_ID2Idx == static_cast<sSetManager::stNamedIndex*>(nullptr)) {
+    if (mpNamed_ID2Idx == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::sSetManager::DTI)->memFree(static_cast<void*>(this->mpNamed_ID2Idx));
-    this->mpNamed_ID2Idx = static_cast<sSetManager::stNamedIndex*>(nullptr);
-    this->mNamed_ID2IdxMax = static_cast<u32>(0);
+    MtMemoryAllocator::getAllocator(sSetManager::DTI)->memFree(static_cast<void*>(mpNamed_ID2Idx));
+    mpNamed_ID2Idx = nullptr;
+    mNamed_ID2IdxMax = 0;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (39 bytes)
@@ -854,7 +851,7 @@ __attribute__((weak)) bool sSetManager::getNamedMessage(u32 namedId, u32& mesTyp
 // Address: 0x00845610 - 0x0084561f (15 bytes)
 s32 sSetManager::getEmNameMsgId(u32 enemyId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEnemyManager::getInstance()->::sEnemyManager::getMsgIndexFromEnemyId(enemyId);
+    return sEnemyManager::getInstance()->getMsgIndexFromEnemyId(enemyId);
 }
 
 // No out-of-line body: no code in the ELF
@@ -898,20 +895,18 @@ __attribute__((weak)) uDDOModel* sSetManager::createUnit(u32 ctrlType, u32 uid, 
 void sSetManager::sendThrowMaster(u32 uniqueId, s32 index) {
     // DWARF local not rendered: cContextInstance* pInst;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqMasterThrow(uniqueId, index);
-    ::cContextInterface::setMasterIndex(::sContextManager::getInstance()->::sContextManager::getContextInstFromUniqueId(uniqueId), static_cast<s32>(-1));
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqMasterThrow(uniqueId, index);
+    cContextInterface::setMasterIndex(sContextManager::getInstance()->getContextInstFromUniqueId(uniqueId), -1);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1009,43 +1004,43 @@ void sSetManager::sendRequestCreateContext() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
-    u32 id = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(8));
-    u32 uniqueId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(12));
-    s32 stageNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(16));
-    s32 encountArea = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(20));
+    u32 id = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 8);
+    u32 uniqueId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 12);
+    s32 stageNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 16);
+    s32 encountArea = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*mRequestCreateContextInfo.getBuffer()) + 20);
     // inferred: a temporary for the value the load at 0x845af6 read, used once; no DWARF local holds it
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (t0->::cNetGameServer::reqGetSetContext(id, uniqueId, stageNo, encountArea, static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby()) != false) {
-        ::sContextManager::getInstance()->::sContextManager::createContextInstance(id, uniqueId, stageNo, encountArea);
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (t0->reqGetSetContext(id, uniqueId, stageNo, encountArea, static_cast<sAreaExt*>(sArea::getInstance())->isLobby())) {
+        sContextManager::getInstance()->createContextInstance(id, uniqueId, stageNo, encountArea);
     }
-    if (this->mRequestCreateContextInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mRequestCreateContextInfo.mLength != 0) {
         // inferred: the value the loop at 0x845b60 carries; no location-less local in scope fits
-        u32 v0_0 = this->mRequestCreateContextInfo.::MtArray::mLength;
+        u32 v0_0 = mRequestCreateContextInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRequestCreateContextInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRequestCreateContextInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRequestCreateContextInfo.::MtArray::mLength) {
-                    v0_0 = this->mRequestCreateContextInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRequestCreateContextInfo.mpArray[i0_3] != nullptr) {
+                delete mRequestCreateContextInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mRequestCreateContextInfo.mLength) {
+                    v0_0 = mRequestCreateContextInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRequestCreateContextInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRequestCreateContextInfo.::MtArray::mpArray));
+    if (mRequestCreateContextInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRequestCreateContextInfo.mpArray));
     }
-    this->mRequestCreateContextInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRequestCreateContextInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRequestCreateContextInfo.::MtArray::mLength = static_cast<u32>(0);
+    mRequestCreateContextInfo.mpArray = nullptr;
+    mRequestCreateContextInfo.mBufsiz = 0;
+    mRequestCreateContextInfo.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1225,62 +1220,62 @@ __attribute__((weak)) void sSetManager::initQuestList() {
 void sSetManager::clearQuestList() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
-    if (this->mQuestUnitMgr.::MtArray::mLength == static_cast<u32>(0)) {
-        if (this->mQuestUnitMgr.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestUnitMgr.::MtArray::mpArray));
+    if (mQuestUnitMgr.mLength == 0) {
+        if (mQuestUnitMgr.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestUnitMgr.mpArray));
         }
-        this->mQuestUnitMgr.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mQuestUnitMgr.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mQuestUnitMgr.::MtArray::mLength = static_cast<u32>(0);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        mQuestUnitMgr.mpArray = nullptr;
+        mQuestUnitMgr.mBufsiz = 0;
+        mQuestUnitMgr.mLength = 0;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
         return;
     } else {
         // inferred: the value the loop at 0x83ed50 carries; no location-less local in scope fits
-        u32 v0_0 = this->mQuestUnitMgr.::MtArray::mLength;
+        u32 v0_0 = mQuestUnitMgr.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the value carried to 0x83ed77; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
-            if (this->mQuestUnitMgr.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cQuestUnitManager*>(this->mQuestUnitMgr.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cQuestUnitManager::release();
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestUnitMgr.::MtArray::mLength) {
-                    v0_0 = this->mQuestUnitMgr.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+            if (mQuestUnitMgr.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cQuestUnitManager*>(mQuestUnitMgr.getBuffer()[static_cast<int>(i0_3)])->release();
+                if ((i0_3 + 1u) < mQuestUnitMgr.mLength) {
+                    v0_0 = mQuestUnitMgr.mLength;
+                    i0_3 += 1u;
                 } else {
-                    v1_0 = this->mQuestUnitMgr.::MtArray::mLength;
+                    v1_0 = mQuestUnitMgr.mLength;
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     v1_0 = v0_0;
                     break;
                 }
             }
         }
-        if (v1_0 == static_cast<u32>(0)) {
-            if (this->mQuestUnitMgr.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestUnitMgr.::MtArray::mpArray));
+        if (v1_0 == 0) {
+            if (mQuestUnitMgr.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestUnitMgr.mpArray));
             }
-            this->mQuestUnitMgr.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mQuestUnitMgr.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mQuestUnitMgr.::MtArray::mLength = static_cast<u32>(0);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            mQuestUnitMgr.mpArray = nullptr;
+            mQuestUnitMgr.mBufsiz = 0;
+            mQuestUnitMgr.mLength = 0;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                     return;
                 }
             }
@@ -1289,32 +1284,32 @@ void sSetManager::clearQuestList() {
             // inferred: the value the loop at 0x83ed90 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                if (this->mQuestUnitMgr.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mQuestUnitMgr.::MtArray::mpArray[i2_3];
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mQuestUnitMgr.::MtArray::mLength) {
-                        v2_0 = this->mQuestUnitMgr.::MtArray::mLength;
-                        i2_3 += static_cast<unsigned int>(1);
+            for (unsigned int i2_3 = 0;;) {
+                if (mQuestUnitMgr.mpArray[i2_3] != nullptr) {
+                    delete mQuestUnitMgr.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mQuestUnitMgr.mLength) {
+                        v2_0 = mQuestUnitMgr.mLength;
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            if (this->mQuestUnitMgr.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestUnitMgr.::MtArray::mpArray));
+            if (mQuestUnitMgr.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestUnitMgr.mpArray));
             }
-            this->mQuestUnitMgr.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mQuestUnitMgr.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mQuestUnitMgr.::MtArray::mLength = static_cast<u32>(0);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            mQuestUnitMgr.mpArray = nullptr;
+            mQuestUnitMgr.mBufsiz = 0;
+            mQuestUnitMgr.mLength = 0;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                     return;
                 }
             }
@@ -1376,38 +1371,38 @@ __attribute__((weak)) void sSetManager::createPawnExpeditionRewardDrop(const u32
 void sSetManager::clearPawnExpeditionAllRewardDrop() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPawnExpeditionUnitIdToBoxIdAry[0] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[0]);
-    this->mPawnExpeditionOmControlAry[0] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[1] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[1]);
-    this->mPawnExpeditionOmControlAry[1] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[2] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[2]);
-    this->mPawnExpeditionOmControlAry[2] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[3] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[3]);
-    this->mPawnExpeditionOmControlAry[3] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[4] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[4]);
-    this->mPawnExpeditionOmControlAry[4] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[5] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[5]);
-    this->mPawnExpeditionOmControlAry[5] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[6] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[6]);
-    this->mPawnExpeditionOmControlAry[6] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[7] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[7]);
-    this->mPawnExpeditionOmControlAry[7] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[8] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[8]);
-    this->mPawnExpeditionOmControlAry[8] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionUnitIdToBoxIdAry[9] = static_cast<unsigned int>(99999);
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[9]);
-    this->mPawnExpeditionOmControlAry[9] = static_cast<cOmControl*>(nullptr);
-    this->mPawnExpeditionNoOfBoxes = static_cast<u32>(0);
-    this->mIsPawnExpeditionOmSet = false;
+    mPawnExpeditionUnitIdToBoxIdAry[0] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[0]);
+    mPawnExpeditionOmControlAry[0] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[1] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[1]);
+    mPawnExpeditionOmControlAry[1] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[2] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[2]);
+    mPawnExpeditionOmControlAry[2] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[3] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[3]);
+    mPawnExpeditionOmControlAry[3] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[4] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[4]);
+    mPawnExpeditionOmControlAry[4] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[5] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[5]);
+    mPawnExpeditionOmControlAry[5] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[6] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[6]);
+    mPawnExpeditionOmControlAry[6] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[7] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[7]);
+    mPawnExpeditionOmControlAry[7] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[8] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[8]);
+    mPawnExpeditionOmControlAry[8] = nullptr;
+    mPawnExpeditionUnitIdToBoxIdAry[9] = 0x1869F;
+    sOmManager::getInstance()->releaseOmCtrl(mPawnExpeditionOmControlAry[9]);
+    mPawnExpeditionOmControlAry[9] = nullptr;
+    mPawnExpeditionNoOfBoxes = 0;
+    mIsPawnExpeditionOmSet = false;
 }
 
 // Address: 0x00846c80 - 0x00846ced (109 bytes)
@@ -1433,7 +1428,7 @@ __attribute__((weak)) void sSetManager::setPawnExpeditionRewardDropItemList(cons
 // Address: 0x00846e40 - 0x00846e47 (7 bytes)
 bool sSetManager::isPawnExpeditionOmSet() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPawnExpeditionOmSet;
+    return mIsPawnExpeditionOmSet;
 }
 
 // Address: 0x00846900 - 0x00846c77 (887 bytes)
@@ -1452,6 +1447,11 @@ __attribute__((weak)) cOmControl* sSetManager::createPawnExpeditionRewardDropOm(
 //   in cLayoutSetOm::moveSetUnitClient at 0x002d6e78-0x002d6e81 (called at cLayoutSetOm.cpp:224)
 //   in cLayoutSetOm::setLayoutUnitClient at 0x002d71dc-0x002d71e5 (called at cLayoutSetOm.cpp:430)
 // bool sSetManager::isLayoutBurst() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSetManager::MyDTI sSetManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sSetManager* sSetManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x008473de-0x0084741b (called at sSetManager.cpp:219)
@@ -1499,7 +1499,7 @@ const MtDTI& sSetManager::cUnitData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sSetManager::cUnitData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSetManager::cUnitData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSetManager::cUnitData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1530,7 +1530,7 @@ __attribute__((weak)) void sSetManager::cUnitData::createProperty(MtPropertyList
 // Address: 0x008446d0 - 0x008446d5 (5 bytes)
 MtUI* sSetManager::cUnitData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (102 bytes)
@@ -1547,9 +1547,9 @@ MtUI* sSetManager::cUnitData::createUI(MtProperty& prop) {
 // Address: 0x00844700 - 0x0084470f (15 bytes)
 void sSetManager::cUnitData::set(cUnit* pUnit, u32 prio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpUnit = pUnit;
-    this->mState = static_cast<sSetManager::UNIT_STATE>(1);
-    this->mPrio = prio;
+    mpUnit = pUnit;
+    mState = sSetManager::UNIT_STATE_MOVE;
+    mPrio = prio;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (166 bytes)
@@ -1576,13 +1576,13 @@ __attribute__((weak)) void sSetManager::cUnitData::reserveCancel(const nLayout::
 // Address: 0x008446c0 - 0x008446c4 (4 bytes)
 u32 sSetManager::cUnitData::getPrio() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPrio;
+    return mPrio;
 }
 
 // Address: 0x01acbe90 - 0x01acbe94 (4 bytes)
 void sSetManager::cUnitData::setPrio(u32 prio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPrio = prio;
+    mPrio = prio;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1592,14 +1592,14 @@ void sSetManager::cUnitData::setPrio(u32 prio) {
 u32 sSetManager::cUnitData::getReserveIDGroup() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x18 from const sSetManager::cUnitData*
-    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(24));
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 24);
 }
 
 // Address: 0x01acdba0 - 0x01acdba5 (5 bytes)
 u32 sSetManager::cUnitData::getReserveIDID() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1a from const sSetManager::cUnitData*
-    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(26));
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 26);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1611,6 +1611,8 @@ u32 sSetManager::cUnitData::getReserveIDID() const {
 // No out-of-line body: 1 inlined copy in 1 function (20 bytes)
 //   in sSetManager::move at 0x00841aa5-0x00841ab9 (called at sSetManager.cpp:1278)
 // const cGroupParam* sSetManager::cUnitData::getGroupParam() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSetManager::cUnitData::MyDTI sSetManager::cUnitData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x00847494-0x008474cd (called at sSetManager.cpp:2870)
@@ -1646,7 +1648,7 @@ const MtDTI& sSetManager::cOmGroupData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sSetManager::cOmGroupData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sSetManager::cOmGroupData::DTI)->memAlloc(sz, align, ::sSetManager::cOmGroupData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sSetManager::cOmGroupData::DTI)->memAlloc(sz, align, sSetManager::cOmGroupData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1660,7 +1662,7 @@ inline void* sSetManager::cOmGroupData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sSetManager::cOmGroupData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSetManager::cOmGroupData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSetManager::cOmGroupData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1690,7 +1692,7 @@ __attribute__((weak)) void sSetManager::cOmGroupData::createProperty(MtPropertyL
 // Address: 0x00844100 - 0x00844105 (5 bytes)
 MtUI* sSetManager::cOmGroupData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1756,6 +1758,8 @@ MtUI* sSetManager::cOmGroupData::createUI(MtProperty& prop) {
 // No out-of-line body: no code in the ELF
 // void sSetManager::cOmGroupData::setGroupData(const u32&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSetManager::cOmGroupData::MyDTI sSetManager::cOmGroupData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x0084741b-0x0084745b (called at sSetManager.cpp:2819)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x0084741b-0x0084745b (called at sSetManager.h:102)
@@ -1764,7 +1768,7 @@ MtUI* sSetManager::cOmGroupData::createUI(MtProperty& prop) {
 // Address: 0x00844030 - 0x00844077 (71 bytes)
 MtObject* sSetManager::cOmGroupData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sSetManager::cOmGroupData;
+    return new (16u) sSetManager::cOmGroupData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1804,7 +1808,7 @@ const MtDTI& sSetManager::cEnemyDie::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11sSetManager9cEnemyDieD0Ev at 0x01acf4d0-0x01acf4fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sSetManager::cEnemyDie::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSetManager::cEnemyDie::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSetManager::cEnemyDie::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1849,6 +1853,8 @@ inline void sSetManager::cEnemyDie::operator delete(void* p_addr) {
 //   in sSetManager::cEnemyDie::MyDTI::newInstance at 0x00844160-0x00844167 (called at sSetManager.h:237)
 // void sSetManager::cEnemyDie::setEnemyId(u32 NewValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSetManager::cEnemyDie::MyDTI sSetManager::cEnemyDie::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x0084745b-0x00847494 (called at sSetManager.cpp:2864)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x0084745b-0x00847494 (called at sSetManager.h:231)
@@ -1883,7 +1889,7 @@ const MtDTI& sSetManager::CreateContextParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sSetManager::CreateContextParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sSetManager::CreateContextParam::DTI)->memAlloc(sz, align, ::sSetManager::CreateContextParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sSetManager::CreateContextParam::DTI)->memAlloc(sz, align, sSetManager::CreateContextParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1898,7 +1904,7 @@ inline void* sSetManager::CreateContextParam::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11sSetManager18CreateContextParamD0Ev at 0x01acf480-0x01acf4aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sSetManager::CreateContextParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSetManager::CreateContextParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSetManager::CreateContextParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1917,6 +1923,8 @@ inline void sSetManager::CreateContextParam::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sSetManager::CreateContextParam::CreateContextParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSetManager::CreateContextParam::MyDTI sSetManager::CreateContextParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x008475b1-0x008475ea (called at sSetManager.cpp:4297)
 //   in _GLOBAL__sub_I_sSetManager.cpp at 0x008475b1-0x008475ea (called at sSetManager.h:1138)
@@ -1925,7 +1933,7 @@ inline void sSetManager::CreateContextParam::operator delete(void* p_addr) {
 // Address: 0x00845880 - 0x008458d0 (80 bytes)
 MtObject* sSetManager::CreateContextParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sSetManager::CreateContextParam;
+    return new (16u) sSetManager::CreateContextParam;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (24 bytes)

@@ -33,7 +33,7 @@ const MtDTI& sMenu::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sMenu::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sMenu::DTI);
+    return MtMemoryAllocator::getAllocator(sMenu::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* sMenu::getAllocator() {
 // Address: 0x007e6690 - 0x007e66d0 (64 bytes)
 void* sMenu::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMenu::getAllocator()->memAlloc(sz, align, ::sMenu::DTI.::MtDTI::getID());
+    return sMenu::getAllocator()->memAlloc(sz, align, sMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* sMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,13 +86,13 @@ sMenu::~sMenu() {
 // Address: 0x007ea9f0 - 0x007ea9f5 (5 bytes)
 MtUI* sMenu::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007eaa00 - 0x007eaa05 (5 bytes)
 void sMenu::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007eaa10 - 0x007eaaa9 (153 bytes)
@@ -118,28 +118,28 @@ __attribute__((weak)) void sMenu::reset() {
 bool sMenu::isMaskMenu(const nMenu::MENU_PARTS* pParts, u32 index) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    if (pParts != static_cast<const nMenu::MENU_PARTS*>(nullptr)) {
+    if (pParts != nullptr) {
         // inferred: a temporary for the value the load at 0x7eaaee read, used 3 times; no DWARF local holds it
         const u32 t0 = pParts[index].attr;
         // inferred: a temporary for the result of the call at 0x7eab02, used once; no DWARF local holds it
-        bool t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+        bool t1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
         // inferred: a temporary for the result of the call at 0x7eab1d, used twice; no DWARF local holds it
-        bool t2 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
-        if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
-            if (t1 == false) {
-                if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-                    if (t2 == false) {
+        bool t2 = sContextManager::getInstance()->isExistPartyPawn(static_cast<u8>(1), 0u, false);
+        if (((t0 >> 8) & 1u) != 0) {
+            if (!t1) {
+                if (((t0 >> 8) & 128u) != 0) {
+                    if (!t2) {
                     }
                 }
                 return true;
             }
         }
-        if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-            if (t2 == false) {
+        if (((t0 >> 8) & 128u) != 0) {
+            if (!t2) {
                 return true;
             }
         }
-        return static_cast<bool>(t0 & static_cast<u32>(1));
+        return static_cast<bool>(t0 & 1u);
     } else {
         return false;
     }
@@ -152,24 +152,24 @@ bool sMenu::isMaskMenu(const nMenu::MENU_PARTS& Parts) {
     // inferred: a temporary for the value the load at 0x7eab57 read, used 3 times; no DWARF local holds it
     const u32 t0 = Parts.attr;
     // inferred: a temporary for the result of the call at 0x7eab6a, used once; no DWARF local holds it
-    bool t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+    bool t1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
     // inferred: a temporary for the result of the call at 0x7eab85, used twice; no DWARF local holds it
-    bool t2 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
-    if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        if (t1 == false) {
-            if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-                if (t2 == false) {
+    bool t2 = sContextManager::getInstance()->isExistPartyPawn(static_cast<u8>(1), 0u, false);
+    if (((t0 >> 8) & 1u) != 0) {
+        if (!t1) {
+            if (((t0 >> 8) & 128u) != 0) {
+                if (!t2) {
                 }
             }
             return true;
         }
     }
-    if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-        if (t2 == false) {
+    if (((t0 >> 8) & 128u) != 0) {
+        if (!t2) {
             return true;
         }
     }
-    return static_cast<bool>(t0 & static_cast<u32>(1));
+    return static_cast<bool>(t0 & 1u);
 }
 
 // Address: 0x007eabb0 - 0x007eac0e (94 bytes)
@@ -179,24 +179,24 @@ bool sMenu::checkMask(u32 attr) {
     // DWARF local not rendered: bool isNotExistPawn;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    bool isLeader = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+    bool isLeader = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
     // inferred: a temporary for the result of the call at 0x7eabe5, used twice; no DWARF local holds it
-    bool t0 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
-    if (((attr >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        if (isLeader == false) {
-            if (((attr >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-                if (t0 == false) {
+    bool t0 = sContextManager::getInstance()->isExistPartyPawn(static_cast<u8>(1), 0u, false);
+    if (((attr >> 8) & 1u) != 0) {
+        if (!isLeader) {
+            if (((attr >> 8) & 128u) != 0) {
+                if (!t0) {
                 }
             }
             return true;
         }
     }
-    if (((attr >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
-        if (t0 == false) {
+    if (((attr >> 8) & 128u) != 0) {
+        if (!t0) {
             return true;
         }
     }
-    return static_cast<bool>(attr & static_cast<u32>(1));
+    return static_cast<bool>(attr & 1u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -240,15 +240,14 @@ void sMenu::updateMenu(cMenuBase* pMenu) {
 // Address: 0x007eade0 - 0x007eae2a (74 bytes)
 bool sMenu::checkMoveMenu(cMenuBase* pMenu, bool checkNowMove) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mMenuArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMenuArray.mLength != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i1 = static_cast<unsigned int>(0);
+        unsigned int i1 = 0;
         do {
-            if (pMenu != this->mMenuArray.::MtArray::mpArray[i1]) {
-            } else {
-                if (static_cast<int>(i1) > static_cast<int>(-1)) {
-                    if (checkNowMove != false) {
-                        if (pMenu->::cMenuBase::getNowMove() != false) {
+            if (pMenu == mMenuArray.mpArray[i1]) {
+                if (static_cast<int>(i1) > -1) {
+                    if (checkNowMove) {
+                        if (pMenu->getNowMove()) {
                             return true;
                         } else {
                             return false;
@@ -260,8 +259,8 @@ bool sMenu::checkMoveMenu(cMenuBase* pMenu, bool checkNowMove) {
                     return false;
                 }
             }
-            i1 += static_cast<unsigned int>(1);
-        } while (i1 < this->mMenuArray.::MtArray::mLength);
+            i1 += 1u;
+        } while (i1 < mMenuArray.mLength);
     }
     return false;
 }
@@ -1217,6 +1216,13 @@ bool sMenu::checkMoveMenu(cMenuBase* pMenu, bool checkNowMove) {
 //   in uGUIOption::updateWaitKeyJobLink at 0x00b93a33-0x00b93a3a (called at uGUIOption.cpp:1229)
 //   in uGUIOption::evDataDecide at 0x00b9429f-0x00b942a6 (called at uGUIOption.cpp:1684)
 // cMenuKeyJobLink* sMenu::getMenuKeyJobLink();
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const nMenu::MENU_PARTS sMenu::mDefMenuParts;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sMenu::MyDTI sMenu::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sMenu* sMenu::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sMenu.cpp at 0x007eb02f-0x007eb06c (called at sMenu.cpp:154)

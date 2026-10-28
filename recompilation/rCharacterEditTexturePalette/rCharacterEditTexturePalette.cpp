@@ -39,7 +39,7 @@ const MtDTI& cCharacterEditTexturePalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCharacterEditTexturePalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharacterEditTexturePalette::DTI)->memAlloc(sz, align, ::cCharacterEditTexturePalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharacterEditTexturePalette::DTI)->memAlloc(sz, align, cCharacterEditTexturePalette::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (76 bytes)
@@ -55,7 +55,7 @@ inline void* cCharacterEditTexturePalette::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharacterEditTexturePalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditTexturePalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditTexturePalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -81,6 +81,8 @@ inline void cCharacterEditTexturePalette::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cCharacterEditTexturePalette::~cCharacterEditTexturePalette();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditTexturePalette::MyDTI cCharacterEditTexturePalette::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditTexturePalette.cpp at 0x00654980-0x006549c2 (called at rCharacterEditTexturePalette.cpp:39)
 //   in _GLOBAL__sub_I_rCharacterEditTexturePalette.cpp at 0x00654980-0x006549c2 (called at rCharacterEditTexturePalette.h:52)
@@ -89,7 +91,7 @@ inline void cCharacterEditTexturePalette::operator delete(void* p_addr) {
 // Address: 0x006545f0 - 0x00654653 (99 bytes)
 MtObject* cCharacterEditTexturePalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharacterEditTexturePalette;
+    return new (16u) cCharacterEditTexturePalette;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rCharacterEditTexturePalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditTexturePalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditTexturePalette::DTI)->memAlloc(sz, align, ::rCharacterEditTexturePalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditTexturePalette::DTI)->memAlloc(sz, align, rCharacterEditTexturePalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rCharacterEditTexturePalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCharacterEditTexturePalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEditTexturePalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEditTexturePalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,14 +161,14 @@ bool rCharacterEditTexturePalette::loadData(MtDataReader& r, cCharacterEditTextu
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    pData->::cCharacterEditPaletteBase::loadData(r);
-    ::nDDOIO::readData(r, pData->mUID);
+    pData->loadData(r);
+    nDDOIO::readData(r, pData->mUID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mPath);
+    nDDOIO::readData(r, pData->mPath);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRandom);
+    nDDOIO::readData(r, pData->mRandom);
     return true;
 }
 
@@ -179,7 +181,7 @@ MT_CTSTR rCharacterEditTexturePalette::getExt() const {
 // Address: 0x01a7f3b0 - 0x01a7f3b6 (6 bytes)
 u32 rCharacterEditTexturePalette::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(34);
+    return 34;
 }
 
 // Address: 0x00654800 - 0x00654972 (370 bytes)
@@ -187,6 +189,8 @@ __attribute__((weak)) bool rCharacterEditTexturePalette::loadCore(MtDataReader& 
     DDON_STUB("rCharacterEditTexturePalette::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditTexturePalette::MyDTI rCharacterEditTexturePalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditTexturePalette.cpp at 0x006549c2-0x006549ff (called at rCharacterEditTexturePalette.cpp:40)
@@ -196,7 +200,7 @@ __attribute__((weak)) bool rCharacterEditTexturePalette::loadCore(MtDataReader& 
 // Address: 0x006546d0 - 0x00654734 (100 bytes)
 MtObject* rCharacterEditTexturePalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditTexturePalette;
+    return new (16u) rCharacterEditTexturePalette;
 }
 
 // Instance at 0x01a7f360 - 0x01a7f376 (22 bytes) of the generic rTbl2<T>::getData

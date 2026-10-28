@@ -33,10 +33,10 @@ __attribute__((weak)) void cResPtrBase::setPtr(cResource* & pDst, cResource* pRe
 // Address: 0x00672610 - 0x00672634 (36 bytes)
 void cResPtrBase::releasePtr(cResource* & pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((pRes) == static_cast<cResource*>(nullptr)) {
+    if ((pRes) == nullptr) {
         return;
     }
-    (pRes)->::cResource::release();
-    pRes = static_cast<cResource*>(nullptr);
+    (pRes)->cResource::release();
+    pRes = nullptr;
 }
 

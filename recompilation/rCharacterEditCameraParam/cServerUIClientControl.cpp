@@ -25,7 +25,7 @@ const MtDTI& cServerUIClientControl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cServerUIClientControl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cServerUIClientControl::DTI);
+    return MtMemoryAllocator::getAllocator(cServerUIClientControl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cServerUIClientControl::getAllocator() {
 // Address: 0x0015f380 - 0x0015f3c0 (64 bytes)
 void* cServerUIClientControl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cServerUIClientControl::getAllocator()->memAlloc(sz, align, ::cServerUIClientControl::DTI.::MtDTI::getID());
+    return cServerUIClientControl::getAllocator()->memAlloc(sz, align, cServerUIClientControl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cServerUIClientControl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cServerUIClientControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cServerUIClientControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cServerUIClientControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,9 +92,9 @@ __attribute__((weak)) void cServerUIClientControl::move() {
 // Address: 0x0015f9d0 - 0x0015f9e1 (17 bytes)
 void cServerUIClientControl::openServerUI(u32 UIId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mServerUIList.::MtArray::mLength <= static_cast<u32>(4)) {
-        this->mRequestId = UIId;
-        this->mState = static_cast<u32>(1);
+    if (mServerUIList.mLength <= 4u) {
+        mRequestId = UIId;
+        mState = 1;
     }
 }
 
@@ -128,6 +128,8 @@ __attribute__((weak)) void cServerUIClientControl::closeServerUIChild() {
 // No out-of-line body: 1 inlined copy in 1 function (26 bytes)
 //   in cServerUIClientControl::catchServerUINtc at 0x0015faab-0x0015fac5 (called at cServerUIClientControl.cpp:264)
 // void cServerUIClientControl::setupCurrent(uGUIServerUIBase* pCurrent);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cServerUIClientControl::MyDTI cServerUIClientControl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cServerUIClientControl.cpp at 0x0015fd5f-0x0015fd9c (called at cServerUIClientControl.cpp:29)

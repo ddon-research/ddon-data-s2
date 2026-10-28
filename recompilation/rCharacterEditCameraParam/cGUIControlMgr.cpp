@@ -46,7 +46,7 @@ const MtDTI& cGUIControlMgr::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cGUIControlMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIControlMgr::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIControlMgr::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ inline void cGUIControlMgr::operator delete(void* p_addr) {
 // Address: 0x000d49c0 - 0x000d49c5 (5 bytes)
 void cGUIControlMgr::setup(uGUIBase* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent = pParent;
+    mpParent = pParent;
 }
 
 // Address: 0x000d49d0 - 0x000d4bb5 (485 bytes)
@@ -88,10 +88,135 @@ __attribute__((weak)) void cGUIControlMgr::moveInput() {
 // u32 cGUIControlMgr::addControl(uGUIBase::cScrollList* pScrollList, u32 MgrId, u32 CategoryId);
 
 // Address: 0x000d55b0 - 0x000d56be (270 bytes)
-__attribute__((weak)) u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, cGUIControlMgr::CONTROL_KIND Kind, u32 MgrId, u32 ItemNum, u32 InitPos) {
-    // local: MOVE_PRIO prio;
-    DDON_STUB("cGUIControlMgr::addChildControl")
-    return {};
+u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, cGUIControlMgr::CONTROL_KIND Kind, u32 MgrId, u32 ItemNum, u32 InitPos) {
+    // DWARF local not rendered: MOVE_PRIO prio;
+    // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: unsigned char used as s8
+    if (ParentMgrId <= 15u) {
+        if (mControl[ParentMgrId].mpScrollList != nullptr) {
+            if (mControl[ParentMgrId].mpScrollList->getCtrl() != nullptr) {
+                if (cGUIControlMgr::mCTKindTable[Kind] != mControl[ParentMgrId].mType) {
+                    // inferred: a temporary for the result of the call at 0xd563e, used 10 times; no DWARF local holds it
+                    u32 t0 = addControl(Kind, MgrId, mControl[ParentMgrId].mCategoryId, ItemNum, InitPos, MOVE_PRIO_2);
+                    if (t0 <= 15u) {
+                        if (mControl[t0].mpScrollList != nullptr) {
+                            if (mControl[t0].mpScrollList->getCtrl() != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        } else {
+                            if (mControl[t0].mpCtrl != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        }
+                    }
+                    return t0;
+                } else {
+                    // inferred: a temporary for the result of the call at 0xd563e, used 10 times; no DWARF local holds it
+                    u32 t0 = addControl(Kind, MgrId, mControl[ParentMgrId].mCategoryId, ItemNum, InitPos, MOVE_PRIO_0);
+                    if (t0 <= 15u) {
+                        if (mControl[t0].mpScrollList != nullptr) {
+                            if (mControl[t0].mpScrollList->getCtrl() != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        } else {
+                            if (mControl[t0].mpCtrl != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        }
+                    }
+                    return t0;
+                }
+            } else {
+                return 255;
+            }
+        } else {
+            if (mControl[ParentMgrId].mpCtrl != nullptr) {
+                if (cGUIControlMgr::mCTKindTable[Kind] != mControl[ParentMgrId].mType) {
+                    // inferred: a temporary for the result of the call at 0xd563e, used 10 times; no DWARF local holds it
+                    u32 t0 = addControl(Kind, MgrId, mControl[ParentMgrId].mCategoryId, ItemNum, InitPos, MOVE_PRIO_2);
+                    if (t0 <= 15u) {
+                        if (mControl[t0].mpScrollList != nullptr) {
+                            if (mControl[t0].mpScrollList->getCtrl() != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        } else {
+                            if (mControl[t0].mpCtrl != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        }
+                    }
+                    return t0;
+                } else {
+                    // inferred: a temporary for the result of the call at 0xd563e, used 10 times; no DWARF local holds it
+                    u32 t0 = addControl(Kind, MgrId, mControl[ParentMgrId].mCategoryId, ItemNum, InitPos, MOVE_PRIO_0);
+                    if (t0 <= 15u) {
+                        if (mControl[t0].mpScrollList != nullptr) {
+                            if (mControl[t0].mpScrollList->getCtrl() != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        } else {
+                            if (mControl[t0].mpCtrl != nullptr) {
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[t0].mType == mControl[ParentMgrId].mType) {
+                                    mControl[t0].mpCtrl->setTrgLoop(false);
+                                    mControl[t0].mpCtrl->mIsSetNoMoveEvent = false;
+                                }
+                            }
+                        }
+                    }
+                    return t0;
+                }
+            } else {
+                return 255;
+            }
+        }
+    } else {
+        return 255;
+    }
 }
 
 // Address: 0x000d56c0 - 0x000d57cd (269 bytes)
@@ -99,27 +224,27 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
     // DWARF local not rendered: MOVE_PRIO prio;
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned char used as s8
-    if (ParentMgrId <= static_cast<u32>(15)) {
-        if (this->mControl[ParentMgrId].mpScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
-            if (this->mControl[ParentMgrId].mpScrollList->::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (pScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
-                    if (this->mControl[ParentMgrId].mType != static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+    if (ParentMgrId <= 15u) {
+        if (mControl[ParentMgrId].mpScrollList != nullptr) {
+            if (mControl[ParentMgrId].mpScrollList->getCtrl() != nullptr) {
+                if (pScrollList != nullptr) {
+                    if (mControl[ParentMgrId].mType != TYPE_V) {
                         // inferred: a temporary for the result of the call at 0xd5750, used 7 times; no DWARF local holds it
-                        u32 t0 = this->::cGUIControlMgr::addControl(static_cast<cGUIControlMgr::CONTROL_TYPE>(2), MgrId, this->mControl[ParentMgrId].mCategoryId, static_cast<u32>(0), static_cast<u32>(0), static_cast<cGUIControlMgr::MOVE_PRIO>(2));
-                        if (t0 <= static_cast<u32>(15)) {
-                            this->mControl[t0].mpScrollList = pScrollList;
-                            cControl* pctrl = pScrollList->::uGUIBase::cScrollList::getCtrl();
-                            if (pctrl != static_cast<cControl*>(nullptr)) {
-                                this->mControl[t0].mItemNum = static_cast<u32>(pctrl->::cControl::getItemNum());
-                                this->mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
-                                this->mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
-                                this->mControl[t0].mMovePos = MovePos;
-                                if (this->mControl[ParentMgrId].mType == static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+                        u32 t0 = addControl(TYPE_SCROLLLIST, MgrId, mControl[ParentMgrId].mCategoryId, 0u, 0u, MOVE_PRIO_2);
+                        if (t0 <= 15u) {
+                            mControl[t0].mpScrollList = pScrollList;
+                            cControl* pctrl = pScrollList->getCtrl();
+                            if (pctrl != nullptr) {
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[ParentMgrId].mType == TYPE_V) {
                                     pctrl->setTrgLoop(false);
                                     pctrl->mIsSetNoMoveEvent = false;
                                 }
                             } else {
-                                this->mControl[t0].mItemNum = static_cast<u32>(0);
+                                mControl[t0].mItemNum = 0;
                             }
                             return t0;
                         } else {
@@ -127,21 +252,21 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                         }
                     } else {
                         // inferred: a temporary for the result of the call at 0xd5750, used 7 times; no DWARF local holds it
-                        u32 t0 = this->::cGUIControlMgr::addControl(static_cast<cGUIControlMgr::CONTROL_TYPE>(2), MgrId, this->mControl[ParentMgrId].mCategoryId, static_cast<u32>(0), static_cast<u32>(0), static_cast<cGUIControlMgr::MOVE_PRIO>(0));
-                        if (t0 <= static_cast<u32>(15)) {
-                            this->mControl[t0].mpScrollList = pScrollList;
-                            cControl* pctrl = pScrollList->::uGUIBase::cScrollList::getCtrl();
-                            if (pctrl != static_cast<cControl*>(nullptr)) {
-                                this->mControl[t0].mItemNum = static_cast<u32>(pctrl->::cControl::getItemNum());
-                                this->mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
-                                this->mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
-                                this->mControl[t0].mMovePos = MovePos;
-                                if (this->mControl[ParentMgrId].mType == static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+                        u32 t0 = addControl(TYPE_SCROLLLIST, MgrId, mControl[ParentMgrId].mCategoryId, 0u, 0u, MOVE_PRIO_0);
+                        if (t0 <= 15u) {
+                            mControl[t0].mpScrollList = pScrollList;
+                            cControl* pctrl = pScrollList->getCtrl();
+                            if (pctrl != nullptr) {
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[ParentMgrId].mType == TYPE_V) {
                                     pctrl->setTrgLoop(false);
                                     pctrl->mIsSetNoMoveEvent = false;
                                 }
                             } else {
-                                this->mControl[t0].mItemNum = static_cast<u32>(0);
+                                mControl[t0].mItemNum = 0;
                             }
                             return t0;
                         } else {
@@ -149,31 +274,31 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                         }
                     }
                 } else {
-                    return static_cast<u32>(255);
+                    return 255;
                 }
             } else {
-                return static_cast<u32>(255);
+                return 255;
             }
         } else {
-            if (this->mControl[ParentMgrId].mpCtrl != static_cast<cControl*>(nullptr)) {
-                if (pScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
-                    if (this->mControl[ParentMgrId].mType != static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+            if (mControl[ParentMgrId].mpCtrl != nullptr) {
+                if (pScrollList != nullptr) {
+                    if (mControl[ParentMgrId].mType != TYPE_V) {
                         // inferred: a temporary for the result of the call at 0xd5750, used 7 times; no DWARF local holds it
-                        u32 t0 = this->::cGUIControlMgr::addControl(static_cast<cGUIControlMgr::CONTROL_TYPE>(2), MgrId, this->mControl[ParentMgrId].mCategoryId, static_cast<u32>(0), static_cast<u32>(0), static_cast<cGUIControlMgr::MOVE_PRIO>(2));
-                        if (t0 <= static_cast<u32>(15)) {
-                            this->mControl[t0].mpScrollList = pScrollList;
-                            cControl* pctrl = pScrollList->::uGUIBase::cScrollList::getCtrl();
-                            if (pctrl != static_cast<cControl*>(nullptr)) {
-                                this->mControl[t0].mItemNum = static_cast<u32>(pctrl->::cControl::getItemNum());
-                                this->mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
-                                this->mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
-                                this->mControl[t0].mMovePos = MovePos;
-                                if (this->mControl[ParentMgrId].mType == static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+                        u32 t0 = addControl(TYPE_SCROLLLIST, MgrId, mControl[ParentMgrId].mCategoryId, 0u, 0u, MOVE_PRIO_2);
+                        if (t0 <= 15u) {
+                            mControl[t0].mpScrollList = pScrollList;
+                            cControl* pctrl = pScrollList->getCtrl();
+                            if (pctrl != nullptr) {
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[ParentMgrId].mType == TYPE_V) {
                                     pctrl->setTrgLoop(false);
                                     pctrl->mIsSetNoMoveEvent = false;
                                 }
                             } else {
-                                this->mControl[t0].mItemNum = static_cast<u32>(0);
+                                mControl[t0].mItemNum = 0;
                             }
                             return t0;
                         } else {
@@ -181,21 +306,21 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                         }
                     } else {
                         // inferred: a temporary for the result of the call at 0xd5750, used 7 times; no DWARF local holds it
-                        u32 t0 = this->::cGUIControlMgr::addControl(static_cast<cGUIControlMgr::CONTROL_TYPE>(2), MgrId, this->mControl[ParentMgrId].mCategoryId, static_cast<u32>(0), static_cast<u32>(0), static_cast<cGUIControlMgr::MOVE_PRIO>(0));
-                        if (t0 <= static_cast<u32>(15)) {
-                            this->mControl[t0].mpScrollList = pScrollList;
-                            cControl* pctrl = pScrollList->::uGUIBase::cScrollList::getCtrl();
-                            if (pctrl != static_cast<cControl*>(nullptr)) {
-                                this->mControl[t0].mItemNum = static_cast<u32>(pctrl->::cControl::getItemNum());
-                                this->mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
-                                this->mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
-                                this->mControl[t0].mMovePos = MovePos;
-                                if (this->mControl[ParentMgrId].mType == static_cast<cGUIControlMgr::CONTROL_TYPE>(0)) {
+                        u32 t0 = addControl(TYPE_SCROLLLIST, MgrId, mControl[ParentMgrId].mCategoryId, 0u, 0u, MOVE_PRIO_0);
+                        if (t0 <= 15u) {
+                            mControl[t0].mpScrollList = pScrollList;
+                            cControl* pctrl = pScrollList->getCtrl();
+                            if (pctrl != nullptr) {
+                                mControl[t0].mItemNum = static_cast<u32>(pctrl->cControl::getItemNum());
+                                mControl[t0].mParentMgrId = static_cast<unsigned char>(ParentMgrId);
+                                mControl[t0].mTopOfs = static_cast<s8>(static_cast<unsigned char>(TopOfs));
+                                mControl[t0].mMovePos = MovePos;
+                                if (mControl[ParentMgrId].mType == TYPE_V) {
                                     pctrl->setTrgLoop(false);
                                     pctrl->mIsSetNoMoveEvent = false;
                                 }
                             } else {
-                                this->mControl[t0].mItemNum = static_cast<u32>(0);
+                                mControl[t0].mItemNum = 0;
                             }
                             return t0;
                         } else {
@@ -203,38 +328,51 @@ u32 cGUIControlMgr::addChildControl(u32 ParentMgrId, s32 MovePos, s32 TopOfs, uG
                         }
                     }
                 } else {
-                    return static_cast<u32>(255);
+                    return 255;
                 }
             } else {
-                return static_cast<u32>(255);
+                return 255;
             }
         }
     } else {
-        return static_cast<u32>(255);
+        return 255;
     }
 }
 
 // Address: 0x000d5fc0 - 0x000d6026 (102 bytes)
-__attribute__((weak)) void cGUIControlMgr::addMouseTouchList(u32 MgrId, cGUIInstance* pInst, cGUIObject* pObj, s32 sPos, cGUIObject* pObjMO, u32 uMOType, u32 uAnmType, s32 sClickVol) {
-    // local: cControl* pctrl;
-    DDON_STUB("cGUIControlMgr::addMouseTouchList")
-    /* stub */
+void cGUIControlMgr::addMouseTouchList(u32 MgrId, cGUIInstance* pInst, cGUIObject* pObj, s32 sPos, cGUIObject* pObjMO, u32 uMOType, u32 uAnmType, s32 sClickVol) {
+    // DWARF local not rendered: cControl* pctrl;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpParent == nullptr) {
+        return;
+    }
+    if (MgrId <= 15u) {
+        if (mControl[MgrId].mpScrollList != nullptr) {
+            if (mControl[MgrId].mpScrollList->getCtrl() != nullptr) {
+                mControl[MgrId].mpScrollList->getCtrl()->addMouseTouchList(pInst, pObj, sPos, pObjMO, uMOType, uAnmType, sClickVol);
+            }
+        } else {
+            if (mControl[MgrId].mpCtrl != nullptr) {
+                mControl[MgrId].mpCtrl->addMouseTouchList(pInst, pObj, sPos, pObjMO, uMOType, uAnmType, sClickVol);
+            }
+        }
+    }
 }
 
 // Address: 0x000d6030 - 0x000d6093 (99 bytes)
 void cGUIControlMgr::addMouseTouchListLight(u32 MgrId, cGUIInstance* pInst, cGUIObject* pObj, s32 sPos, s32 sClickVol) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent == static_cast<uGUIBase*>(nullptr)) {
+    if (mpParent == nullptr) {
         return;
     }
-    if (MgrId <= static_cast<u32>(15)) {
-        if (this->mControl[MgrId].mpScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
-            if (this->mControl[MgrId].mpScrollList->::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mControl[MgrId].mpScrollList->::uGUIBase::cScrollList::getCtrl()->::cControl::addMouseTouchList(pInst, pObj, sPos, static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), sClickVol);
+    if (MgrId <= 15u) {
+        if (mControl[MgrId].mpScrollList != nullptr) {
+            if (mControl[MgrId].mpScrollList->getCtrl() != nullptr) {
+                mControl[MgrId].mpScrollList->getCtrl()->addMouseTouchList(pInst, pObj, sPos, static_cast<cGUIObject*>(nullptr), 1u, 1u, sClickVol);
             }
         } else {
-            if (this->mControl[MgrId].mpCtrl != static_cast<cControl*>(nullptr)) {
-                this->mControl[MgrId].mpCtrl->::cControl::addMouseTouchList(pInst, pObj, sPos, static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), sClickVol);
+            if (mControl[MgrId].mpCtrl != nullptr) {
+                mControl[MgrId].mpCtrl->addMouseTouchList(pInst, pObj, sPos, static_cast<cGUIObject*>(nullptr), 1u, 1u, sClickVol);
             }
         }
     }
@@ -299,22 +437,22 @@ __attribute__((weak)) void cGUIControlMgr::setCategoryFocus(u32 CategoryId, bool
 void cGUIControlMgr::offAllFocus() {
     // DWARF local not rendered: u32 idx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mControl[0].mIsActive = false;
-    this->mControl[1].mIsActive = false;
-    this->mControl[2].mIsActive = false;
-    this->mControl[3].mIsActive = false;
-    this->mControl[4].mIsActive = false;
-    this->mControl[5].mIsActive = false;
-    this->mControl[6].mIsActive = false;
-    this->mControl[7].mIsActive = false;
-    this->mControl[8].mIsActive = false;
-    this->mControl[9].mIsActive = false;
-    this->mControl[10].mIsActive = false;
-    this->mControl[11].mIsActive = false;
-    this->mControl[12].mIsActive = false;
-    this->mControl[13].mIsActive = false;
-    this->mControl[14].mIsActive = false;
-    this->mControl[15].mIsActive = false;
+    mControl[0].mIsActive = false;
+    mControl[1].mIsActive = false;
+    mControl[2].mIsActive = false;
+    mControl[3].mIsActive = false;
+    mControl[4].mIsActive = false;
+    mControl[5].mIsActive = false;
+    mControl[6].mIsActive = false;
+    mControl[7].mIsActive = false;
+    mControl[8].mIsActive = false;
+    mControl[9].mIsActive = false;
+    mControl[10].mIsActive = false;
+    mControl[11].mIsActive = false;
+    mControl[12].mIsActive = false;
+    mControl[13].mIsActive = false;
+    mControl[14].mIsActive = false;
+    mControl[15].mIsActive = false;
 }
 
 // Address: 0x000d5800 - 0x000d5839 (57 bytes)
@@ -389,12 +527,12 @@ __attribute__((weak)) s32 cGUIControlMgr::getOldPos(u32 MgrId) const {
 // Address: 0x000d5d00 - 0x000d5d3e (62 bytes)
 void cGUIControlMgr::setCurrentPos(u32 MgrId, s32 Pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (MgrId <= static_cast<u32>(15)) {
-        if (this->mControl[MgrId].mpScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
-            this->mControl[MgrId].mpScrollList->::uGUIBase::cScrollList::setListPos(static_cast<u32>(Pos), false);
+    if (MgrId <= 15u) {
+        if (mControl[MgrId].mpScrollList != nullptr) {
+            mControl[MgrId].mpScrollList->setListPos(static_cast<u32>(Pos), false);
         } else {
-            if (this->mControl[MgrId].mpCtrl != static_cast<cControl*>(nullptr)) {
-                this->mControl[MgrId].mpCtrl->setCurrentPos(Pos, false);
+            if (mControl[MgrId].mpCtrl != nullptr) {
+                mControl[MgrId].mpCtrl->setCurrentPos(Pos, false);
             }
         }
     }
@@ -436,9 +574,9 @@ __attribute__((weak)) void cGUIControlMgr::resetItemNum(u32 MgrId, u32 ItemNum, 
 void cGUIControlMgr::setMovePos(u32 MgrId, s32 movePos) {
     // DWARF local not rendered: stControl& control;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (MgrId <= static_cast<u32>(15)) {
-        if (this->mControl[MgrId].mParentMgrId <= static_cast<u8>(15)) {
-            this->mControl[MgrId].mMovePos = movePos;
+    if (MgrId <= 15u) {
+        if (mControl[MgrId].mParentMgrId <= 15) {
+            mControl[MgrId].mMovePos = movePos;
         }
     }
 }
@@ -475,20 +613,20 @@ __attribute__((weak)) u32 cGUIControlMgr::addControl(cGUIControlMgr::CONTROL_KIN
 u32 cGUIControlMgr::addControl(uGUIBase::cScrollList* pScrollList, u32 MgrId, u32 CategoryId, cGUIControlMgr::MOVE_PRIO MovePrio) {
     // DWARF local not rendered: cControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
+    if (pScrollList != nullptr) {
         // inferred: a temporary for the result of the call at 0xd556d, used 4 times; no DWARF local holds it
-        u32 t0 = this->::cGUIControlMgr::addControl(static_cast<cGUIControlMgr::CONTROL_TYPE>(2), MgrId, CategoryId, static_cast<u32>(0), static_cast<u32>(0), MovePrio);
-        if (t0 <= static_cast<u32>(15)) {
-            this->mControl[t0].mpScrollList = pScrollList;
-            if (pScrollList->::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mControl[t0].mItemNum = static_cast<u32>(pScrollList->::uGUIBase::cScrollList::getCtrl()->::cControl::getItemNum());
+        u32 t0 = addControl(TYPE_SCROLLLIST, MgrId, CategoryId, 0u, 0u, MovePrio);
+        if (t0 <= 15u) {
+            mControl[t0].mpScrollList = pScrollList;
+            if (pScrollList->getCtrl() != nullptr) {
+                mControl[t0].mItemNum = static_cast<u32>(pScrollList->getCtrl()->getItemNum());
             } else {
-                this->mControl[t0].mItemNum = static_cast<u32>(0);
+                mControl[t0].mItemNum = 0;
             }
         }
         return t0;
     } else {
-        return static_cast<u32>(255);
+        return 255;
     }
 }
 
@@ -549,6 +687,10 @@ __attribute__((weak)) void cGUIControlMgr::afterExecute(cGUIControlMgr::stContro
 // No out-of-line body: 1 inlined copy in 1 function (166 bytes)
 //   in cGUIControlMgr::addControl at 0x000d512c-0x000d51d2 (called at cGUIControlMgr.cpp:215)
 // void cGUIControlMgr::releaseOrder(u32 MgrId);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIControlMgr::MyDTI cGUIControlMgr::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const cGUIControlMgr::CONTROL_TYPE cGUIControlMgr::mCTKindTable[4];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGUIControlMgr.cpp at 0x000d624f-0x000d628c (called at cGUIControlMgr.cpp:21)

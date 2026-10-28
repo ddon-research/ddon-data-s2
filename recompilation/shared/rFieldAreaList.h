@@ -164,5 +164,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rFieldAreaList::cFieldAreaInfo::cStageNo::cStageNo() {
-    this->mStageNo = static_cast<s32>(-1);
+    this->mStageNo = -1;
 }

@@ -120,12 +120,12 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK20rSoundDirectionalSet5MyDTI11newInstanceEv at 0x011fa7b0-0x011fa80f, code DWARF attributes to no inlined copy
 inline rSoundDirectionalSet::rSoundDirectionalSet() {
-    this->mIdToIndexTblNum = static_cast<u16>(0);
-    this->mpIdToIndexTbl = static_cast<u16*>(nullptr);
-    this->mpRawData = static_cast<void*>(nullptr);
-    this->mpCurves = static_cast<rSoundDirectionalSet::DirectionalCurve*>(nullptr);
-    this->mpLists = static_cast<rSoundDirectionalSet::List*>(nullptr);
-    this->mListNum = static_cast<u32>(0);
-    this->mCurveNum = static_cast<u32>(0);
-    this->::cResource::mAttr = static_cast<u32>(18);
+    this->mIdToIndexTblNum = 0;
+    this->mpIdToIndexTbl = nullptr;
+    this->mpRawData = nullptr;
+    this->mpCurves = nullptr;
+    this->mpLists = nullptr;
+    this->mListNum = 0;
+    this->mCurveNum = 0;
+    this->::cResource::mAttr = 18;
 }

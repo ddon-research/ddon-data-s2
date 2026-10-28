@@ -62,7 +62,7 @@ inline MtAllocator* nTalk::cSelectData::getAllocator() {
 // Address: 0x00639b90 - 0x00639bd0 (64 bytes)
 void* nTalk::cSelectData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nTalk::cSelectData::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectData::DTI.::MtDTI::getID());
+    return ::nTalk::cSelectData::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,13 +92,13 @@ inline void nTalk::cSelectData::operator delete(void* p_addr) {
 // Address: 0x00639c40 - 0x00639c44 (4 bytes)
 nTalk::cSelectData::SELECT_TYPE nTalk::cSelectData::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nTalk::cSelectData::SELECT_TYPE>(this->mType);
+    return static_cast<nTalk::cSelectData::SELECT_TYPE>(mType);
 }
 
 // Address: 0x00639c50 - 0x00639c54 (4 bytes)
 u32 nTalk::cSelectData::getParam0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam0;
+    return mParam0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,15 +111,17 @@ u32 nTalk::cSelectData::getParam0() const {
 // Address: 0x00639c80 - 0x00639c98 (24 bytes)
 nTalk::cSelectData::cSelectData(nTalk::cSelectData::SELECT_TYPE type, u32 param0, u32 param1) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = static_cast<u32>(type);
-    this->mParam0 = param0;
-    this->mParam1 = param1;
+    mType = static_cast<u32>(type);
+    mParam0 = param0;
+    mParam1 = param1;
 }
 
 // Address: 0x00639ca0 - 0x00639ca1 (1 bytes)
 __attribute__((weak)) void nTalk::cSelectData::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nTalk::cSelectData::MyDTI nTalk::cSelectData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_nTalk.cpp at 0x0063a9ee-0x0063aa2e (called at nTalk.cpp:140)
@@ -129,7 +131,7 @@ __attribute__((weak)) void nTalk::cSelectData::createProperty(MtPropertyList& s)
 // Address: 0x00639b40 - 0x00639b8f (79 bytes)
 MtObject* nTalk::cSelectData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nTalk::cSelectData;
+    return new (16u) ::nTalk::cSelectData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ inline MtAllocator* nTalk::cSelectMember::getAllocator() {
 // Address: 0x00639d20 - 0x00639d60 (64 bytes)
 void* nTalk::cSelectMember::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nTalk::cSelectMember::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectMember::DTI.::MtDTI::getID());
+    return ::nTalk::cSelectMember::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectMember::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -185,13 +187,13 @@ inline void nTalk::cSelectMember::operator delete(void* p_addr) {
 // Address: 0x00639dd0 - 0x00639dd4 (4 bytes)
 u32 nTalk::cSelectMember::getSlot() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSlot;
+    return mSlot;
 }
 
 // Address: 0x00639de0 - 0x00639de4 (4 bytes)
 u32 nTalk::cSelectMember::getPawnId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPawnId;
+    return mPawnId;
 }
 
 // Address: 0x00639df0 - 0x00639e11 (33 bytes)
@@ -214,6 +216,8 @@ nTalk::cSelectMember::cSelectMember(u32 slot, u32 pawnId, CHAR_NAME name) {
 __attribute__((weak)) void nTalk::cSelectMember::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nTalk::cSelectMember::MyDTI nTalk::cSelectMember::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nTalk.cpp at 0x0063aa2e-0x0063aa67 (called at nTalk.cpp:231)

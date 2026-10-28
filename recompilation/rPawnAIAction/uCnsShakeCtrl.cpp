@@ -27,7 +27,7 @@ const MtDTI& uCnsShakeCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCnsShakeCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCnsShakeCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uCnsShakeCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* uCnsShakeCtrl::getAllocator() {
 // Address: 0x008c3140 - 0x008c3180 (64 bytes)
 void* uCnsShakeCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCnsShakeCtrl::getAllocator()->memAlloc(sz, align, ::uCnsShakeCtrl::DTI.::MtDTI::getID());
+    return uCnsShakeCtrl::getAllocator()->memAlloc(sz, align, uCnsShakeCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* uCnsShakeCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsShakeCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsShakeCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsShakeCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,26 +118,26 @@ __attribute__((weak)) void uCnsShakeCtrl::adjust(uModel::Joint* pJnt, uModel* pM
 // Address: 0x008c3460 - 0x008c3465 (5 bytes)
 void uCnsShakeCtrl::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008c3430 - 0x008c3459 (41 bytes)
 void uCnsShakeCtrl::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008c3470 - 0x008c34c8 (88 bytes)
 void uCnsShakeCtrl::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (121 bytes)
@@ -151,13 +151,13 @@ void uCnsShakeCtrl::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
 // Address: 0x008c3380 - 0x008c3385 (5 bytes)
 void uCnsShakeCtrl::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::createProperty(s);
+    this->uConstraint::createProperty(s);
 }
 
 // Address: 0x008c3390 - 0x008c3395 (5 bytes)
 MtUI* uCnsShakeCtrl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008c4410 - 0x008c4411 (1 bytes)
@@ -174,21 +174,21 @@ void uCnsShakeCtrl::shake(const MtVector3& dir) {
     // DWARF local not rendered: f32 shake_axis;
     // DWARF local not rendered: f32 shake_trans;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShakeCtrl == static_cast<cpShakeCtrl*>(nullptr)) {
+    if (mpShakeCtrl == nullptr) {
         return;
     }
-    if (this->mpShakeCtrl->mpResource == static_cast<rShakeCtrl*>(nullptr)) {
+    if (mpShakeCtrl->mpResource == nullptr) {
         return;
     }
-    if (this->mpShakeCtrlData == static_cast<cShakeCtrl*>(nullptr)) {
+    if (mpShakeCtrlData == nullptr) {
         return;
     }
-    this->::uCnsShakeCtrl::shake(this->mpShakeCtrlData->mShakeRot, this->mpShakeCtrlData->mShakeAxis, this->mpShakeCtrlData->mShakeTrans, dir);
-    this->mIK = this->mpShakeCtrlData->mIK;
-    if (this->mpChild == static_cast<uCnsShakeCtrl*>(nullptr)) {
+    shake(mpShakeCtrlData->mShakeRot, mpShakeCtrlData->mShakeAxis, mpShakeCtrlData->mShakeTrans, dir);
+    mIK = mpShakeCtrlData->mIK;
+    if (mpChild == nullptr) {
         return;
     }
-    this->mpChild->::uCnsShakeCtrl::shake(this->mpShakeCtrlData->mChildRate * this->mpChild->mpShakeCtrlData->mShakeRot, this->mpShakeCtrlData->mChildRate * this->mpChild->mpShakeCtrlData->mShakeAxis, this->mpShakeCtrlData->mChildRate * this->mpChild->mpShakeCtrlData->mShakeTrans, dir);
+    mpChild->shake(mpShakeCtrlData->mChildRate * mpChild->mpShakeCtrlData->mShakeRot, mpShakeCtrlData->mChildRate * mpChild->mpShakeCtrlData->mShakeAxis, mpShakeCtrlData->mChildRate * mpChild->mpShakeCtrlData->mShakeTrans, dir);
 }
 
 // Address: 0x008c3570 - 0x008c3948 (984 bytes)
@@ -204,14 +204,16 @@ __attribute__((weak)) void uCnsShakeCtrl::shake(f32 shake_rot, f32 shake_axis, f
 // Address: 0x008c33a0 - 0x008c3415 (117 bytes)
 void uCnsShakeCtrl::set(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsShakeCtrl::MyDTI uCnsShakeCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsShakeCtrl.cpp at 0x008c4440-0x008c4482 (called at uCnsShakeCtrl.cpp:37)

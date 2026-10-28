@@ -32,7 +32,7 @@ const MtDTI& cLeverGacha::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cLeverGacha::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cLeverGacha::DTI)->memAlloc(sz, align, ::cLeverGacha::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cLeverGacha::DTI)->memAlloc(sz, align, cLeverGacha::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cLeverGacha::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cLeverGacha::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLeverGacha::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLeverGacha::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,15 +61,15 @@ inline void cLeverGacha::operator delete(void* p_addr) {
 // Address: 0x002d7fe0 - 0x002d8019 (57 bytes)
 cLeverGacha::cLeverGacha() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCntMax = static_cast<s32>(0);
-    this->mResult = false;
-    this->mOldMouseZ = static_cast<s32>(0);
-    this->mOldMouseX = static_cast<s32>(0);
-    this->mOldMouseY = static_cast<s32>(0);
-    this->mOldLvLx = 0.0f;
-    this->mOldLvLy = 0.0f;
-    this->mCnt = 0.0f;
-    this->mOldAngleType = static_cast<s32>(0);
+    mCntMax = 0;
+    mResult = false;
+    mOldMouseZ = 0;
+    mOldMouseX = 0;
+    mOldMouseY = 0;
+    mOldLvLx = 0.0f;
+    mOldLvLy = 0.0f;
+    mCnt = 0.0f;
+    mOldAngleType = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -90,15 +90,15 @@ __attribute__((weak)) void cLeverGacha::createProperty(MtPropertyList& proplist)
 // Address: 0x002d81c0 - 0x002d81e7 (39 bytes)
 void cLeverGacha::initLeverGacha(s32 count) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCntMax = count;
-    this->mResult = false;
-    this->mOldMouseZ = static_cast<s32>(0);
-    this->mOldMouseX = static_cast<s32>(0);
-    this->mOldMouseY = static_cast<s32>(0);
-    this->mOldLvLx = 0.0f;
-    this->mOldLvLy = 0.0f;
-    this->mCnt = 0.0f;
-    this->mOldAngleType = static_cast<s32>(0);
+    mCntMax = count;
+    mResult = false;
+    mOldMouseZ = 0;
+    mOldMouseX = 0;
+    mOldMouseY = 0;
+    mOldLvLx = 0.0f;
+    mOldLvLy = 0.0f;
+    mCnt = 0.0f;
+    mOldAngleType = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -125,6 +125,8 @@ __attribute__((weak)) bool cLeverGacha::checkLeverGacha(const cpInput& Input, co
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLeverGacha::MyDTI cLeverGacha::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cLeverGacha.cpp at 0x002d871f-0x002d875c (called at cLeverGacha.cpp:39)
 //   in _GLOBAL__sub_I_cLeverGacha.cpp at 0x002d871f-0x002d875c (called at cLeverGacha.h:20)
@@ -133,6 +135,6 @@ __attribute__((weak)) bool cLeverGacha::checkLeverGacha(const cpInput& Input, co
 // Address: 0x002d7f00 - 0x002d7f6a (106 bytes)
 MtObject* cLeverGacha::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLeverGacha;
+    return new (16u) cLeverGacha;
 }
 

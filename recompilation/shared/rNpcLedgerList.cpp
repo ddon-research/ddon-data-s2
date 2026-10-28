@@ -35,7 +35,7 @@ const MtDTI& rNpcLedgerList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcLedgerList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::DTI)->memAlloc(sz, align, ::rNpcLedgerList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcLedgerList::DTI)->memAlloc(sz, align, rNpcLedgerList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rNpcLedgerList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNpcLedgerList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcLedgerList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,13 +65,13 @@ inline void rNpcLedgerList::operator delete(void* p_addr) {
 // Address: 0x006ac0a0 - 0x006ac0a4 (4 bytes)
 u32 rNpcLedgerList::getLedgerSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArray.::MtArray::mLength;
+    return mArray.mLength;
 }
 
 // Address: 0x006ac0b0 - 0x006ac0be (14 bytes)
 const rNpcLedgerList::cItem* rNpcLedgerList::getNpcInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const rNpcLedgerList::cItem*>(this->mArray.::MtArray::mpArray[index]);
+    return static_cast<const cItem*>(mArray.mpArray[index]);
 }
 
 // Address: 0x006ac0c0 - 0x006ac0f7 (55 bytes)
@@ -79,17 +79,17 @@ const rNpcLedgerList::cItem* rNpcLedgerList::searchNpcInfo(u32 npcId) const {
     // DWARF local not rendered: const u32 num;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from MtObject*
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x6ac0c6, 0x6ac0f3)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::mpArray[i]) + static_cast<long>(40))) == npcId) {
-                return static_cast<const rNpcLedgerList::cItem*>(this->mArray.::MtArray::mpArray[i]);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.mpArray[i]) + 40)) == npcId) {
+                return static_cast<const cItem*>(mArray.mpArray[i]);
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mArray.::MtArray::mLength);
+            i += 1u;
+        } while (i < mArray.mLength);
     }
-    return static_cast<const rNpcLedgerList::cItem*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +106,7 @@ MT_CTSTR rNpcLedgerList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rNpcLedgerList::rNpcLedgerList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x006ac120 - 0x006ac2f7 (471 bytes)
@@ -126,19 +126,19 @@ __attribute__((weak)) void rNpcLedgerList::createProperty(MtPropertyList& s) {
 // Address: 0x006ac430 - 0x006ac50d (221 bytes)
 bool rNpcLedgerList::save(MtStream& out) {
     // Approximate from the ELF: a cast to the other signedness; code after the loop copied into an arm that skips it; the body oracle reports this body.
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(7105646));
-    (&w)->writeU32(static_cast<u32>(6));
-    (&w)->writeU32(this->mArray.::MtArray::mLength);
-    if (this->mArray.::MtArray::mLength == static_cast<u32>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x6C6C6Eu);
+    (&w)->writeU32(6u);
+    (&w)->writeU32(mArray.mLength);
+    if (mArray.mLength == 0) {
         return true;
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
+    unsigned int i3 = 0;
     do {
-        static_cast<rNpcLedgerList::cItem*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i3)])->::rNpcLedgerList::cItem::save(w);
-        i3 += static_cast<unsigned int>(1);
-    } while (i3 < this->mArray.::MtArray::mLength);
+        static_cast<rNpcLedgerList::cItem*>(mArray.getBuffer()[static_cast<int>(i3)])->save(w);
+        i3 += 1u;
+    } while (i3 < mArray.mLength);
     return true;
 }
 
@@ -155,6 +155,8 @@ __attribute__((weak)) bool rNpcLedgerList::load(MtStream& in) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcLedgerList::MyDTI rNpcLedgerList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rNpcLedgerList.cpp at 0x006adee0-0x006adf21 (called at rNpcLedgerList.cpp:32)
 //   in _GLOBAL__sub_I_rNpcLedgerList.cpp at 0x006adee0-0x006adf21 (called at rNpcLedgerList.h:32)
@@ -163,7 +165,7 @@ __attribute__((weak)) bool rNpcLedgerList::load(MtStream& in) {
 // Address: 0x006abfa0 - 0x006ac024 (132 bytes)
 MtObject* rNpcLedgerList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcLedgerList;
+    return new (16u) rNpcLedgerList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,7 +207,7 @@ const MtDTI& rNpcLedgerList::cItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNpcLedgerList::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (55 bytes)
@@ -222,61 +224,61 @@ inline void rNpcLedgerList::cItem::operator delete(void* p_addr) {
 // Address: 0x006ac100 - 0x006ac104 (4 bytes)
 u32 rNpcLedgerList::cItem::getNpcId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNpcId;
+    return mNpcId;
 }
 
 // Address: 0x006acbc0 - 0x006acbc5 (5 bytes)
 u8 rNpcLedgerList::cItem::getSex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSex;
+    return mSex;
 }
 
 // Address: 0x006acbd0 - 0x006acbd4 (4 bytes)
 u32 rNpcLedgerList::cItem::getNameId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNameId;
+    return mNameId;
 }
 
 // Address: 0x006acbe0 - 0x006acbe4 (4 bytes)
 u32 rNpcLedgerList::cItem::getClassNameId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClassNameId;
+    return mClassNameId;
 }
 
 // Address: 0x006acbf0 - 0x006acbf5 (5 bytes)
 u8 rNpcLedgerList::cItem::getJobId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJobId;
+    return mJobId;
 }
 
 // Address: 0x006acc00 - 0x006acc05 (5 bytes)
 u8 rNpcLedgerList::cItem::getFinger() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFinger;
+    return mFinger;
 }
 
 // Address: 0x006acc10 - 0x006acc15 (5 bytes)
 u8 rNpcLedgerList::cItem::getVoiceType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVoiceType;
+    return mVoiceType;
 }
 
 // Address: 0x006acc20 - 0x006acc25 (5 bytes)
 u8 rNpcLedgerList::cItem::getUnitType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnitType;
+    return mUnitType;
 }
 
 // Address: 0x006acc30 - 0x006acc34 (4 bytes)
 u32 rNpcLedgerList::cItem::getUnitTypeParam() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnitTypeParam;
+    return mUnitTypeParam;
 }
 
 // Address: 0x006acc40 - 0x006acc45 (5 bytes)
 const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& rNpcLedgerList::cItem::getInstitutionList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mInstitutionList;
+    return mInstitutionList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,8 +287,35 @@ const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& rNpcLedgerList::cItem::
 // Address: 0x006acc60 - 0x006accfd (157 bytes)
 // Also emitted as: _ZN14rNpcLedgerList5cItemD0Ev at 0x006acd00
 rNpcLedgerList::cItem::~cItem() {
-    DDON_STUB("rNpcLedgerList::cItem::~cItem")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mInstitutionList.mLength != 0) {
+        // inferred: the value the loop at 0x6acc90 carries; no location-less local in scope fits
+        u32 v0_0 = mInstitutionList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mInstitutionList.mpArray[i0_3] != nullptr) {
+                delete mInstitutionList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mInstitutionList.mLength) {
+                    v0_0 = mInstitutionList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mInstitutionList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mInstitutionList.mpArray));
+    }
+    mInstitutionList.mpArray = nullptr;
+    mInstitutionList.mBufsiz = 0;
+    mInstitutionList.mLength = 0;
 }
 
 // Address: 0x006acdc0 - 0x006ad5a0 (2016 bytes)
@@ -311,6 +340,8 @@ __attribute__((weak)) bool rNpcLedgerList::cItem::save(MtDataWriter& w) {
 //   in rNpcLedgerList::load at 0x006ac76c-0x006ac7d0 (called at rNpcLedgerList.cpp:195)
 //   in rNpcLedgerList::cItem::MyDTI::newInstance at 0x006acafd-0x006acb4f (called at rNpcLedgerList.cpp:225)
 // rNpcLedgerList::cItem::cItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcLedgerList::cItem::MyDTI rNpcLedgerList::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rNpcLedgerList.cpp at 0x006adf21-0x006adf61 (called at rNpcLedgerList.cpp:225)
@@ -361,7 +392,7 @@ const MtDTI& rNpcLedgerList::cItem::cInstitution::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNpcLedgerList::cItem::cInstitution::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::cInstitution::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitution::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -376,8 +407,35 @@ inline void rNpcLedgerList::cItem::cInstitution::operator delete(void* p_addr) {
 // Address: 0x006adaf0 - 0x006adb8d (157 bytes)
 // Also emitted as: _ZN14rNpcLedgerList5cItem12cInstitutionD0Ev at 0x006adb90
 rNpcLedgerList::cItem::cInstitution::~cInstitution() {
-    DDON_STUB("rNpcLedgerList::cItem::cInstitution::~cInstitution")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mInstitutionOpenList.mLength != 0) {
+        // inferred: the value the loop at 0x6adb20 carries; no location-less local in scope fits
+        u32 v0_0 = mInstitutionOpenList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mInstitutionOpenList.mpArray[i0_3] != nullptr) {
+                delete mInstitutionOpenList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mInstitutionOpenList.mLength) {
+                    v0_0 = mInstitutionOpenList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mInstitutionOpenList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mInstitutionOpenList.mpArray));
+    }
+    mInstitutionOpenList.mpArray = nullptr;
+    mInstitutionOpenList.mBufsiz = 0;
+    mInstitutionOpenList.mLength = 0;
 }
 
 // Address: 0x006adc50 - 0x006adeb1 (609 bytes)
@@ -393,6 +451,8 @@ __attribute__((weak)) void rNpcLedgerList::cItem::cInstitution::createProperty(M
 // No out-of-line body: 1 inlined copy in 1 function (100 bytes)
 //   in rNpcLedgerList::cItem::save at 0x006ad70b-0x006ad76f (called at nDDOIO.h:463)
 // bool rNpcLedgerList::cItem::cInstitution::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcLedgerList::cItem::cInstitution::MyDTI rNpcLedgerList::cItem::cInstitution::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rNpcLedgerList.cpp at 0x006adf9a-0x006adfd3 (called at rNpcLedgerList.cpp:544)
@@ -442,7 +502,7 @@ const MtDTI& rNpcLedgerList::cItem::cInstitutionOpenData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rNpcLedgerList5cItem20cInstitutionOpenDataD0Ev at 0x01a9fd50-0x01a9fd7a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcLedgerList::cItem::cInstitutionOpenData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -467,6 +527,8 @@ __attribute__((weak)) void rNpcLedgerList::cItem::cInstitutionOpenData::createPr
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
 //   in rNpcLedgerList::cItem::save at 0x006ad74b-0x006ad767 (called at nDDOIO.h:463)
 // bool rNpcLedgerList::cItem::cInstitutionOpenData::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcLedgerList::cItem::cInstitutionOpenData::MyDTI rNpcLedgerList::cItem::cInstitutionOpenData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rNpcLedgerList.cpp at 0x006adf61-0x006adf9a (called at rNpcLedgerList.cpp:488)

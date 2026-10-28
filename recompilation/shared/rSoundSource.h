@@ -21,7 +21,7 @@ class MtProperty;
 class MtPropertyList;
 class MtStream;
 class MtUI;
-class rSoundSourceStreamAT9;
+class sSound;
 
 // Declarations
 class rSoundSource;
@@ -39,8 +39,8 @@ using u8 = unsigned char;
 
 class rSoundSource : public cResource
 {
-    // inferred: rSoundSourceStreamAT9::prepareToBuffer names rSoundSource::mOpenCtr
-    friend class rSoundSourceStreamAT9;
+    // inferred: sSound::NativeSystem::preparePICOLAPitchShift names rSoundSource::mDescriptor.mpPeriod, through its enclosing class sSound
+    friend class sSound;
 public:
     enum Format
     {

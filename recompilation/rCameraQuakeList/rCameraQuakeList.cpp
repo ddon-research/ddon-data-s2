@@ -60,9 +60,36 @@ const MtDTI& cQuakeParam::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cQuakeParam::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 1 inlined copy in 1 function (186 bytes)
-//   in cQuakeParam::MyDTI::newInstance at 0x0064edbd-0x0064ee77 (called at rCameraQuakeList.cpp:113)
-// cQuakeParam::cQuakeParam();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cQuakeParam::cQuakeParam() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString(), MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mTailTime = 0.0f;
+    mHeadTime = 0.0f;
+    mMainTime = 0.0f;
+    mName.value = nullptr;
+    mMagnitude.x = MtVector3::Zero.x;
+    mMagnitude.y = MtVector3::Zero.y;
+    mMagnitude.z = MtVector3::Zero.z;
+    mMagnitude.pad_ = 0.0f;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mbAsync = false;
+    mBalance = 0.0f;
+    mPeriod = 0.0f;
+    mRoll = 0.0f;
+    mSpread = 0.0f;
+    mDamping = 0.0f;
+    mPos.pad_ = 0.0f;
+    mRadius = 0.0f;
+    mCamera1QuakeTime = 0.1f;
+    mTarget1QuakeTime = 0.1f;
+    mRoll1QuakeTime = 0.1f;
+    mRandDrop = 0.5f;
+    mHeadCurve = 1;
+    mTailCurve = 1;
+}
 
 // Address: 0x0064ef00 - 0x0064ef7b (123 bytes)
 // Also emitted as: _ZN11cQuakeParamD0Ev at 0x0064ef80
@@ -74,7 +101,7 @@ cQuakeParam::~cQuakeParam() {
 // Address: 0x006501d0 - 0x006501d5 (5 bytes)
 MtUI* cQuakeParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0064f020 - 0x0064ff11 (3825 bytes)
@@ -115,6 +142,8 @@ __attribute__((weak)) void cQuakeParam::QuakeCancel(uintptr task) const {
 // No out-of-line body: no code in the ELF
 // void cQuakeParam::copy(const cQuakeParam* pParam);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuakeParam::MyDTI cQuakeParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCameraQuakeList.cpp at 0x006502e2-0x0065031f (called at rCameraQuakeList.cpp:113)
 //   in _GLOBAL__sub_I_rCameraQuakeList.cpp at 0x006502e2-0x0065031f (called at rCameraQuakeList.h:23)
@@ -149,7 +178,7 @@ const MtDTI& rCameraQuakeList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCameraQuakeList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCameraQuakeList::DTI)->memAlloc(sz, align, ::rCameraQuakeList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCameraQuakeList::DTI)->memAlloc(sz, align, rCameraQuakeList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,7 +193,7 @@ inline void* rCameraQuakeList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCameraQuakeList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCameraQuakeList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCameraQuakeList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,8 +207,8 @@ inline void rCameraQuakeList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rCameraQuakeList::rCameraQuakeList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mQuakeList.mAutoDelete = true;
+    setAttribute(18u);
+    mQuakeList.mAutoDelete = true;
 }
 
 // Address: 0x0064e9d0 - 0x0064ea81 (177 bytes)
@@ -203,15 +232,15 @@ __attribute__((weak)) void rCameraQuakeList::clear() {
 // Address: 0x0064ec60 - 0x0064ece1 (129 bytes)
 bool rCameraQuakeList::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x0064ecf0 - 0x0064ed76 (134 bytes)
 bool rCameraQuakeList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCameraQuakeList::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCameraQuakeList::DTI));
 }
 
 // Address: 0x01a7ae10 - 0x01a7ae18 (8 bytes)
@@ -232,6 +261,8 @@ MT_CTSTR rCameraQuakeList::getExt() const {
 //   in sCameraExt::cancelQuake at 0x00732187-0x00732195 (called at sCameraExt.cpp:906)
 // const cQuakeParam* rCameraQuakeList::getQuakeParam(u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCameraQuakeList::MyDTI rCameraQuakeList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCameraQuakeList.cpp at 0x006502a0-0x006502e2 (called at rCameraQuakeList.cpp:27)
 //   in _GLOBAL__sub_I_rCameraQuakeList.cpp at 0x006502a0-0x006502e2 (called at rCameraQuakeList.h:93)
@@ -240,6 +271,6 @@ MT_CTSTR rCameraQuakeList::getExt() const {
 // Address: 0x0064e8c0 - 0x0064e944 (132 bytes)
 MtObject* rCameraQuakeList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCameraQuakeList;
+    return new (16u) rCameraQuakeList;
 }
 

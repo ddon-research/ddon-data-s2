@@ -140,9 +140,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cGeomIterator::cGeomIterator() {
     this->mIsEnd = false;
-    this->mNodeIndex = static_cast<u32>(0);
-    this->mGeomIndex = static_cast<u32>(0);
-    this->mpObjCollision = static_cast<cpObjCollisionBase*>(nullptr);
-    this->mpGeom = static_cast<cHitGeom*>(nullptr);
-    this->mpNode = static_cast<cHitNode*>(nullptr);
+    this->mNodeIndex = 0;
+    this->mGeomIndex = 0;
+    this->mpObjCollision = nullptr;
+    this->mpGeom = nullptr;
+    this->mpNode = nullptr;
 }

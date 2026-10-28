@@ -13,7 +13,7 @@
 // Address: 0x00dcb120 - 0x00dcb127 (7 bytes)
 MtSerializer::MtSerializer(s32 MaxClassID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClassIDMax = MaxClassID;
+    mClassIDMax = MaxClassID;
 }
 
 // Address: 0x00dcb130 - 0x00dcb131 (1 bytes)
@@ -43,9 +43,9 @@ __attribute__((weak)) MtObject* MtSerializer::deserializeXML(MtStream& in, MT_CT
 // Address: 0x00dcd460 - 0x00dcd524 (196 bytes)
 bool MtSerializer::serializeBinary(MtStream& out, u16 version, MtObject* proot, MtSerializer::MODE mode, const MtDTI* prootdti) {
     // Approximate from the ELF: a frame slot read as the DWARF object it holds; the body oracle reports this body.
-    if (out.isWritable() != false) {
-        MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-        return this->::MtSerializer::serializeBinary(w, version, proot, mode, prootdti);
+    if (out.isWritable()) {
+        MtDataWriter w(out, 4096u, 4096u);
+        return serializeBinary(w, version, proot, mode, prootdti);
     } else {
         return false;
     }

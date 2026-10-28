@@ -29,7 +29,7 @@ const MtDTI& uCustomSimSoftBody::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCustomSimSoftBody::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCustomSimSoftBody::DTI);
+    return MtMemoryAllocator::getAllocator(uCustomSimSoftBody::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uCustomSimSoftBody::getAllocator() {
 // Address: 0x008cf3c0 - 0x008cf400 (64 bytes)
 void* uCustomSimSoftBody::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCustomSimSoftBody::getAllocator()->memAlloc(sz, align, ::uCustomSimSoftBody::DTI.::MtDTI::getID());
+    return uCustomSimSoftBody::getAllocator()->memAlloc(sz, align, uCustomSimSoftBody::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uCustomSimSoftBody::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCustomSimSoftBody::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCustomSimSoftBody::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCustomSimSoftBody::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,11 +68,11 @@ inline void uCustomSimSoftBody::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 uCustomSimSoftBody::uCustomSimSoftBody() {
-    this->mBakeRebuildComplete = false;
-    this->mIsPause = false;
-    this->mIsDeleteComplete = false;
-    this->mpBakeModel = static_cast<cBakeModelEx*>(nullptr);
-    this->::uSimSoftBody::enableResetRestart();
+    mBakeRebuildComplete = false;
+    mIsPause = false;
+    mIsDeleteComplete = false;
+    mpBakeModel = nullptr;
+    enableResetRestart();
 }
 
 // Address: 0x008cf470 - 0x008cf475 (5 bytes)
@@ -84,15 +84,15 @@ uCustomSimSoftBody::~uCustomSimSoftBody() {
 // Address: 0x008cf6f0 - 0x008cf73a (74 bytes)
 void uCustomSimSoftBody::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBakeRebuildComplete != false) {
-        this->::uSimSoftBody::startSimulation(static_cast<u32>(10));
+    if (mBakeRebuildComplete) {
+        startSimulation(10u);
     } else {
-        this->::uSimSoftBody::stopSimulation();
+        stopSimulation();
     }
-    if (this->mBakeRebuildComplete == false) {
+    if (!mBakeRebuildComplete) {
         return;
     }
-    this->::uSimSoftBody::draw(pdraw);
+    this->uSimSoftBody::draw(pdraw);
 }
 
 // Defined in the class (its body was written in a header).
@@ -101,10 +101,10 @@ void uCustomSimSoftBody::draw(cDraw* pdraw) {
 // Address: 0x01ad3d80 - 0x01ad3db4 (52 bytes)
 bool uCustomSimSoftBody::hasTarget() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBakeModel != static_cast<cBakeModelEx*>(nullptr)) {
-        if (this->mpBakeModel->::cBakeModel::mpModel != static_cast<rModel*>(nullptr)) {
-            if (this->::uSimSoftBody::mpTargetUnit != static_cast<uModel*>(nullptr)) {
-                return this->::uSimSoftBody::mpTargetUnit->::uBaseModel::mpModel != static_cast<rModel*>(nullptr);
+    if (mpBakeModel != nullptr) {
+        if (mpBakeModel->mpModel != nullptr) {
+            if (mpTargetUnit != nullptr) {
+                return mpTargetUnit->mpModel != nullptr;
             }
         }
     }
@@ -120,25 +120,25 @@ __attribute__((weak)) bool uCustomSimSoftBody::isTargetEnable() const {
 // Address: 0x01ad3dd0 - 0x01ad3ddc (12 bytes)
 nDraw::VertexBuffer* uCustomSimSoftBody::getTargetVertexBuffer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpBakeModel->::cBakeModel::getVertexBuffer();
+    return mpBakeModel->getVertexBuffer();
 }
 
 // Address: 0x01ad3de0 - 0x01ad3dec (12 bytes)
 nDraw::IndexBuffer* uCustomSimSoftBody::getTargetIndexBuffer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpBakeModel->::cBakeModel::getIndexBuffer();
+    return mpBakeModel->getIndexBuffer();
 }
 
 // Address: 0x01ad3df0 - 0x01ad3dfc (12 bytes)
 const rModel::PRIMITIVE_INFO* uCustomSimSoftBody::getTargetPrimitives() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpBakeModel->::cBakeModel::getPrimitives();
+    return mpBakeModel->getPrimitives();
 }
 
 // Address: 0x01ad3e00 - 0x01ad3e0b (11 bytes)
 u32 uCustomSimSoftBody::getTargetPrimitiveNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpBakeModel->::cBakeModel::getPrimitiveNum();
+    return mpBakeModel->getPrimitiveNum();
 }
 
 // Address: 0x01ad3e10 - 0x01ad3e1c (12 bytes)
@@ -162,7 +162,7 @@ __attribute__((weak)) const MtVector3& uCustomSimSoftBody::getTargetPos() const 
 // Address: 0x008cf740 - 0x008cf767 (39 bytes)
 void uCustomSimSoftBody::setTargetCommonState(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sBakingJointOrder::getInstance()->::sBakingJointOrder::setCommonStateModelOrder(pdraw, this->mpBakeModel->mpCallerUnit, this->mpBakeModel->mpCallBack);
+    sBakingJointOrder::getInstance()->setCommonStateModelOrder(pdraw, mpBakeModel->mpCallerUnit, mpBakeModel->mpCallBack);
 }
 
 // Address: 0x01ad3e90 - 0x01ad3eb1 (33 bytes)
@@ -174,14 +174,14 @@ __attribute__((weak)) const MtMatrix& uCustomSimSoftBody::getTargetJointMatrix(s
 // Address: 0x01ad4240 - 0x01ad424d (13 bytes)
 const MtSphere& uCustomSimSoftBody::getTargetBoundingSphere() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSimSoftBody::mpTargetUnit->::uBaseModel::mBoundingSphere;
+    return mpTargetUnit->mBoundingSphere;
 }
 
 // Address: 0x01ad4250 - 0x01ad42c1 (113 bytes)
 void uCustomSimSoftBody::getTargetBoundingAABB(MtAABB& aabb) const {
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x1ad425c, used 7 times; no DWARF local holds it
-    const MtSphere& t0 = this->getTargetBoundingSphere();
+    const MtSphere& t0 = getTargetBoundingSphere();
     // inferred: a temporary for the value the load at 0x1ad4262 read, used 6 times; no DWARF local holds it
     const f32 t1 = t0.r;
     // inferred: a temporary for the value the load at 0x1ad426b read, used once; no DWARF local holds it
@@ -249,12 +249,14 @@ bool uCustomSimSoftBody::isDivideDelete() const {
 // Address: 0x01ad44b0 - 0x01ad44b7 (7 bytes)
 bool uCustomSimSoftBody::isDeleteComplete() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDeleteComplete;
+    return mIsDeleteComplete;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in cBakeModelEx::finalize at 0x000329fa-0x00032a01 (called at cBakeModel.cpp:2426)
 // void uCustomSimSoftBody::setDeleteComplete(bool f);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCustomSimSoftBody::MyDTI uCustomSimSoftBody::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCustomSimSoftBody.cpp at 0x008cf86f-0x008cf8ac (called at uCustomSimSoftBody.cpp:37)
@@ -264,6 +266,6 @@ bool uCustomSimSoftBody::isDeleteComplete() const {
 // Address: 0x008cf350 - 0x008cf3c0 (112 bytes)
 MtObject* uCustomSimSoftBody::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uCustomSimSoftBody;
+    return new (16u) uCustomSimSoftBody;
 }
 

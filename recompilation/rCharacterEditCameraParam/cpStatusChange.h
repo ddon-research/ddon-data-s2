@@ -44,6 +44,8 @@ using u32 = unsigned int;
 
 class cStatusChange : public MtObject
 {
+    // inferred: cpStatusChange::repeat_ExecFunc names cStatusChange::mData.mIsRepeatFuncUse
+    friend class cpStatusChange;
 public:
     enum
     {

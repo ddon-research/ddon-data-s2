@@ -49,7 +49,7 @@ const MtDTI& cParticleGenerator::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18cParticleGeneratorD0Ev at 0x010a2d0e-0x010a2d2f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cParticleGenerator::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cParticleGenerator::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cParticleGenerator::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,26 +106,26 @@ void cParticleGenerator::resetParam() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from rEffectList::EFL_LIFE_FRAME*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x52 from rEffectList::EFL_GENERATOR*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x56 from rEffectList::EFL_GENERATOR*
-    this->::cParticleManager::resetParam();
-    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15)) <= static_cast<unsigned int>(6)) {
-        if (((static_cast<unsigned long>(102) >> static_cast<unsigned long>((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            this->::cParticleManager::mKeepHoldFlag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cParticleManager::mpLifeParam) + static_cast<long>(12));
+    this->cParticleManager::resetParam();
+    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 104)) >> 12) & 15u) <= 6u) {
+        if (((102ul >> static_cast<unsigned long>((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 104)) >> 12) & 15u)) & 1ul) != 0) {
+            mKeepHoldFlag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpLifeParam) + 12);
         } else {
-            this->::cParticleManager::mKeepHoldFlag = static_cast<u32>(1);
+            mKeepHoldFlag = 1;
         }
     } else {
-        this->::cParticleManager::mKeepHoldFlag = static_cast<u32>(1);
+        mKeepHoldFlag = 1;
     }
-    this->mPathInitFlag = static_cast<u32>(0);
-    if (0.0f > this->::cParticleManager::mpGeneratorParam->SetFrameDist) {
-        this->mSetFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->::cParticleManager::mpGeneratorParam) + static_cast<long>(82)));
+    mPathInitFlag = 0;
+    if (0.0f > mpGeneratorParam->SetFrameDist) {
+        mSetFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpGeneratorParam) + 82));
     } else {
-        this->mSetFrameOfs = 0.0f;
+        mSetFrameOfs = 0.0f;
     }
-    if (0.0f > this->::cParticleManager::mpGeneratorParam->IntervalFrameDist) {
-        this->mIntervalFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->::cParticleManager::mpGeneratorParam) + static_cast<long>(86)));
+    if (0.0f > mpGeneratorParam->IntervalFrameDist) {
+        mIntervalFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpGeneratorParam) + 86));
     } else {
-        this->mIntervalFrameOfs = 0.0f;
+        mIntervalFrameOfs = 0.0f;
     }
 }
 
@@ -150,19 +150,19 @@ __attribute__((weak)) void cParticleGenerator::setup() {
 // Address: 0x01b75090 - 0x01b75098 (8 bytes)
 u32 cParticleGenerator::getParticleNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParticleNum;
+    return mParticleNum;
 }
 
 // Address: 0x01b73a50 - 0x01b73a58 (8 bytes)
 u32 cParticleGenerator::getParticleMoveNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParticleMoveNum;
+    return mParticleMoveNum;
 }
 
 // Address: 0x010a3ab0 - 0x010a3ab7 (7 bytes)
 bool cParticleGenerator::allocMemory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cParticleGenerator::initParticleMoveParam(static_cast<u32>(0));
+    return initParticleMoveParam(0u);
 }
 
 // Address: 0x010a3ef0 - 0x010a4160 (624 bytes)
@@ -195,29 +195,29 @@ __attribute__((weak)) bool cParticleGenerator::move() {
 void cParticleGenerator::updateConst() {
     // DWARF local not rendered: cParticle* pParticle;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->updateWorldMatrix();
-    if (this->mpPath != static_cast<cEffectPath*>(nullptr)) {
-        if ((this->mPathInitFlag & static_cast<u32>(1)) != static_cast<u32>(0)) {
-            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
-                this->::cParticleGenerator::calcPathStripLength(false);
+    updateWorldMatrix();
+    if (mpPath != nullptr) {
+        if ((mPathInitFlag & 1u) != 0) {
+            if ((mMoveType & 15u) == 3) {
+                calcPathStripLength(false);
             }
         } else {
-            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(4)) {
-                this->::cParticleGenerator::initPathChain();
+            if ((mMoveType & 15u) == 4) {
+                initPathChain();
             } else {
-                if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
-                    this->::cParticleGenerator::calcPathStripLength(true);
+                if ((mMoveType & 15u) == 3) {
+                    calcPathStripLength(true);
                 }
             }
-            this->mPathInitFlag = static_cast<u32>(1);
+            mPathInitFlag = 1;
         }
     }
-    if (this->mpMoveTopParticle != static_cast<cParticle*>(nullptr)) {
-        if ((this->::cParticleManager::mStatus & static_cast<u32>(4)) != static_cast<u32>(0)) {
+    if (mpMoveTopParticle != nullptr) {
+        if ((mStatus & 4u) != 0) {
             // inferred: the value the loop at 0x10a4fe0 carries; no location-less local in scope fits
-            for (cParticle* v0_3 = this->mpMoveTopParticle;;) {
-                this->::cParticleGenerator::updateConstParticleMove(v0_3);
-                if (v0_3->mpNext != static_cast<cParticle*>(nullptr)) {
+            for (cParticle* v0_3 = mpMoveTopParticle;;) {
+                updateConstParticleMove(v0_3);
+                if (v0_3->mpNext != nullptr) {
                     v0_3 = v0_3->mpNext;
                 } else {
                     break;
@@ -233,8 +233,8 @@ void cParticleGenerator::updateConst() {
 // Address: 0x010a5280 - 0x010a52a8 (40 bytes)
 bool cParticleGenerator::isDraw(cDraw* pDraw) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cParticleManager::isDraw(pDraw) != false) {
-        return this->mpMoveTopParticle != static_cast<cParticle*>(nullptr);
+    if (this->cParticleManager::isDraw(pDraw)) {
+        return mpMoveTopParticle != nullptr;
     } else {
         return false;
     }
@@ -247,91 +247,91 @@ bool cParticleGenerator::isDraw(cDraw* pDraw) const {
 cParticle* cParticleGenerator::closeParticle(cParticle* pParticle) {
     // DWARF local not rendered: cParticle* pNext;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    pParticle->::cParticle::kill();
+    pParticle->kill();
     // inferred: a temporary for the value the load at 0x10a4ea8 read, used 3 times; no DWARF local holds it
     cParticle* t0 = pParticle->mpNext;
-    if (pParticle->mpPrev != static_cast<cParticle*>(nullptr)) {
+    if (pParticle->mpPrev != nullptr) {
         pParticle->mpPrev->mpNext = t0;
         // inferred: a temporary for the value the load at 0x10a4eb5 read, used 3 times; no DWARF local holds it
         cParticle* t1 = pParticle->mpNext;
-        if (t1 != static_cast<cParticle*>(nullptr)) {
+        if (t1 != nullptr) {
             t1->mpPrev = pParticle->mpPrev;
-            if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
+            if (mpStockTopParticle != nullptr) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t2 = this->mpStockBotParticle;
+                cParticle* t2 = mpStockBotParticle;
                 pParticle->mpPrev = t2;
                 t2->mpNext = pParticle;
-                this->mpStockBotParticle = pParticle;
+                mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
                 cParticle* t3 = pParticle->mpNext;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpNext = nullptr;
                 return t3;
             } else {
-                pParticle->mpPrev = static_cast<cParticle*>(nullptr);
-                this->mpStockBotParticle = pParticle;
-                this->mpStockTopParticle = pParticle;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpPrev = nullptr;
+                mpStockBotParticle = pParticle;
+                mpStockTopParticle = pParticle;
+                pParticle->mpNext = nullptr;
                 return t1;
             }
         } else {
-            this->mpMoveBotParticle = pParticle->mpPrev;
-            if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
+            mpMoveBotParticle = pParticle->mpPrev;
+            if (mpStockTopParticle != nullptr) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t2 = this->mpStockBotParticle;
+                cParticle* t2 = mpStockBotParticle;
                 pParticle->mpPrev = t2;
                 t2->mpNext = pParticle;
-                this->mpStockBotParticle = pParticle;
+                mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
                 cParticle* t3 = pParticle->mpNext;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpNext = nullptr;
                 return t3;
             } else {
-                pParticle->mpPrev = static_cast<cParticle*>(nullptr);
-                this->mpStockBotParticle = pParticle;
-                this->mpStockTopParticle = pParticle;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return static_cast<cParticle*>(nullptr);
+                pParticle->mpPrev = nullptr;
+                mpStockBotParticle = pParticle;
+                mpStockTopParticle = pParticle;
+                pParticle->mpNext = nullptr;
+                return nullptr;
             }
         }
     } else {
-        this->mpMoveTopParticle = t0;
-        if (this->mpMoveTopParticle != static_cast<cParticle*>(nullptr)) {
-            t0->mpPrev = static_cast<cParticle*>(nullptr);
-            if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
+        mpMoveTopParticle = t0;
+        if (mpMoveTopParticle != nullptr) {
+            t0->mpPrev = nullptr;
+            if (mpStockTopParticle != nullptr) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t2 = this->mpStockBotParticle;
+                cParticle* t2 = mpStockBotParticle;
                 pParticle->mpPrev = t2;
                 t2->mpNext = pParticle;
-                this->mpStockBotParticle = pParticle;
+                mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
                 cParticle* t3 = pParticle->mpNext;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpNext = nullptr;
                 return t3;
             } else {
-                pParticle->mpPrev = static_cast<cParticle*>(nullptr);
-                this->mpStockBotParticle = pParticle;
-                this->mpStockTopParticle = pParticle;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpPrev = nullptr;
+                mpStockBotParticle = pParticle;
+                mpStockTopParticle = pParticle;
+                pParticle->mpNext = nullptr;
                 return t0;
             }
         } else {
-            this->mpMoveBotParticle = static_cast<cParticle*>(nullptr);
-            if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
+            mpMoveBotParticle = nullptr;
+            if (mpStockTopParticle != nullptr) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t2 = this->mpStockBotParticle;
+                cParticle* t2 = mpStockBotParticle;
                 pParticle->mpPrev = t2;
                 t2->mpNext = pParticle;
-                this->mpStockBotParticle = pParticle;
+                mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
                 cParticle* t3 = pParticle->mpNext;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
+                pParticle->mpNext = nullptr;
                 return t3;
             } else {
-                pParticle->mpPrev = static_cast<cParticle*>(nullptr);
-                this->mpStockBotParticle = pParticle;
-                this->mpStockTopParticle = pParticle;
-                pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return static_cast<cParticle*>(nullptr);
+                pParticle->mpPrev = nullptr;
+                mpStockBotParticle = pParticle;
+                mpStockTopParticle = pParticle;
+                pParticle->mpNext = nullptr;
+                return nullptr;
             }
         }
     }
@@ -511,25 +511,25 @@ __attribute__((weak)) void cParticleGenerator::setClothVertexBuff(u32 ClothType,
 // Address: 0x010a4e00 - 0x010a4e7e (126 bytes)
 void cParticleGenerator::movePath(bool ConstUpdateMode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mPathInitFlag & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(4)) {
-            if (ConstUpdateMode == false) {
-                this->::cParticleGenerator::movePathChain();
+    if ((mPathInitFlag & 1u) != 0) {
+        if ((mMoveType & 15u) == 4) {
+            if (!ConstUpdateMode) {
+                movePathChain();
             }
         } else {
-            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
-                this->::cParticleGenerator::calcPathStripLength(false);
+            if ((mMoveType & 15u) == 3) {
+                calcPathStripLength(false);
             }
         }
     } else {
-        if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(4)) {
-            this->::cParticleGenerator::initPathChain();
+        if ((mMoveType & 15u) == 4) {
+            initPathChain();
         } else {
-            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
-                this->::cParticleGenerator::calcPathStripLength(true);
+            if ((mMoveType & 15u) == 3) {
+                calcPathStripLength(true);
             }
         }
-        this->mPathInitFlag = static_cast<u32>(1);
+        mPathInitFlag = 1;
     }
 }
 
@@ -1616,29 +1616,29 @@ __attribute__((weak)) MtVector3 cParticleGenerator::calcParticleDir(const MtVect
 // Address: 0x010a96f0 - 0x010a97d0 (224 bytes)
 bool cParticleGenerator::initRangeStripOfs(cEffectStrip& Strip, MtVector3& Ofs, MtVector3& Dir, u32 SetNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::cParticleManager::mpGeneratorParam->RangeStripType) {
-        case static_cast<u32>(0):
+    switch (mpGeneratorParam->RangeStripType) {
+        case 0:
         {
-            return this->::cParticleGenerator::initRangeStripOfsVertex(Strip, Ofs, Dir, SetNo);
+            return initRangeStripOfsVertex(Strip, Ofs, Dir, SetNo);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::cParticleGenerator::initRangeStripOfsPathCommon(Strip, SetNo);
-            return this->::cParticleGenerator::calcRangeStripOfsPathLinear(Strip, Ofs, Dir);
+            initRangeStripOfsPathCommon(Strip, SetNo);
+            return calcRangeStripOfsPathLinear(Strip, Ofs, Dir);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::cParticleGenerator::initRangeStripOfsPathCommon(Strip, SetNo);
-            return this->::cParticleGenerator::calcRangeStripOfsPathHermite(Strip, Ofs, Dir);
+            initRangeStripOfsPathCommon(Strip, SetNo);
+            return calcRangeStripOfsPathHermite(Strip, Ofs, Dir);
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::cParticleGenerator::initRangeStripOfsPathCommon(Strip, SetNo);
-            return this->::cParticleGenerator::calcRangeStripOfsPathSpline(Strip, Ofs, Dir);
+            initRangeStripOfsPathCommon(Strip, SetNo);
+            return calcRangeStripOfsPathSpline(Strip, Ofs, Dir);
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            return this->::cParticleGenerator::initRangeStripOfsModel(Strip, Ofs, Dir, SetNo);
+            return initRangeStripOfsModel(Strip, Ofs, Dir, SetNo);
         }
         default:
         {
@@ -2472,6 +2472,8 @@ __attribute__((weak)) void cParticleGenerator::moveParticleLifeCurveframeLoop() 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cParticleGenerator::moveParticleMaterial();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cParticleGenerator::MyDTI cParticleGenerator::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cParticleGenerator::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

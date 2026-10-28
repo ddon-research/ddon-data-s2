@@ -68,6 +68,9 @@
 // No out-of-line body: no code in the ELF
 // const MtPoint MtPoint::operator-() const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtPoint MtPoint::Zero;
+alignas(8) unsigned char MtPoint_Zero_bytes[8] __asm__("_ZN7MtPoint4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtPointF::MtPointF();
 
@@ -136,6 +139,9 @@
 // No out-of-line body: no code in the ELF
 // const MtPointF MtPointF::operator-() const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtPointF MtPointF::Zero;
+alignas(4) unsigned char MtPointF_Zero_bytes[8] __asm__("_ZN8MtPointF4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtRange::MtRange();
 
@@ -196,6 +202,9 @@
 // No out-of-line body: no code in the ELF
 // bool MtRange::isInside(s32) const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtRange MtRange::Zero;
+alignas(4) unsigned char MtRange_Zero_bytes[8] __asm__("_ZN7MtRange4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtRangeF::MtRangeF();
 
@@ -254,6 +263,9 @@
 // No out-of-line body: no code in the ELF
 // bool MtRangeF::isInside(f32) const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtRangeF MtRangeF::Zero;
+alignas(4) unsigned char MtRangeF_Zero_bytes[8] __asm__("_ZN8MtRangeF4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtRangeU16::MtRangeU16();
 
@@ -310,6 +322,9 @@
 
 // No out-of-line body: no code in the ELF
 // bool MtRangeU16::isInside(u32) const;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtRangeU16 MtRangeU16::Zero;
+alignas(4) unsigned char MtRangeU16_Zero_bytes[4] __asm__("_ZN10MtRangeU164ZeroE") = {0x00, 0x00, 0x00, 0x00};
 
 // No out-of-line body: 6 inlined copies in 3 functions (98 bytes)
 //   in sBrowser::sBrowser at 0x0072e88e-0x0072e893 (called at sBrowser.cpp:98)
@@ -512,6 +527,9 @@ __attribute__((weak)) u32 MtRect::tessellate(const MtRect& src, MtRect* dest_rec
 
 // No out-of-line body: no code in the ELF
 // void MtRect::swap(s32&, s32&);
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtRect MtRect::Zero;
+alignas(4) unsigned char MtRect_Zero_bytes[16] __asm__("_ZN6MtRect4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // No out-of-line body: 12 inlined copies in 6 functions (236 bytes)
 //   in sGUIExt::getChatFormSize at 0x007a4f1c-0x007a4f2b (called at sGUIExt.cpp:12055)
@@ -721,6 +739,9 @@ __attribute__((weak)) u32 MtRect::tessellate(const MtRect& src, MtRect* dest_rec
 // No out-of-line body: no code in the ELF
 // void MtRectF::swap(f32& a, f32& b);
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtRectF MtRectF::Zero;
+alignas(4) unsigned char MtRectF_Zero_bytes[16] __asm__("_ZN7MtRectF4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtSize::MtSize();
 
@@ -806,6 +827,9 @@ __attribute__((weak)) u32 MtRect::tessellate(const MtRect& src, MtRect* dest_rec
 
 // No out-of-line body: no code in the ELF
 // MtSize MtSize::unpack(u32);
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtSize MtSize::Zero;
+alignas(8) unsigned char MtSize_Zero_bytes[8] __asm__("_ZN6MtSize4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // No out-of-line body: no code in the ELF
 // MtSizeF::MtSizeF();
@@ -894,4 +918,7 @@ __attribute__((weak)) u32 MtRect::tessellate(const MtRect& src, MtRect* dest_rec
 
 // No out-of-line body: no code in the ELF
 // const MtSizeF MtSizeF::operator-() const;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtPrimitive2D.cpp leave in .bss, under its symbol (D-S1b): const MtSizeF MtSizeF::Zero;
+alignas(4) unsigned char MtSizeF_Zero_bytes[8] __asm__("_ZN7MtSizeF4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 

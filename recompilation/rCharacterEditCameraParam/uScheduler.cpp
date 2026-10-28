@@ -36,7 +36,7 @@ const MtDTI& uScheduler::getDTI() const {
 // Address: 0x00f62c10 - 0x00f62c50 (64 bytes)
 void* uScheduler::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uScheduler::DTI)->memAlloc(sz, align, ::uScheduler::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uScheduler::DTI)->memAlloc(sz, align, uScheduler::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* uScheduler::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10uSchedulerD0Ev at 0x00f62eac-0x00f62ecd, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uScheduler::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uScheduler::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uScheduler::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,33 +66,33 @@ inline void uScheduler::operator delete(void* p_addr) {
 // Address: 0x00f62cc0 - 0x00f62d31 (113 bytes)
 uScheduler::uScheduler() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpScheduler = static_cast<rScheduler*>(nullptr);
-    this->mPause = true;
-    this->mLoop = true;
-    this->mFrame = 0.0f;
-    this->mSpeed = 1.0f;
-    this->mPrevFrame = -1.0f;
-    this->mTrackNum = static_cast<u32>(0);
-    this->mFloorFrame = false;
-    this->mUnitTrackNum = static_cast<u32>(0);
-    this->mpUnitTrack = static_cast<uScheduler::TRACK_WORK* *>(nullptr);
-    this->mTrackWork = static_cast<uScheduler::TRACK_WORK*>(nullptr);
-    this->mMarkerAdjust = true;
-    this->mAutoDelete = true;
-    this->mPauseToFullStop = false;
-    this->mPauseToFullStopMoved = false;
+    mpScheduler = nullptr;
+    mPause = true;
+    mLoop = true;
+    mFrame = 0.0f;
+    mSpeed = 1.0f;
+    mPrevFrame = -1.0f;
+    mTrackNum = 0;
+    mFloorFrame = false;
+    mUnitTrackNum = 0;
+    mpUnitTrack = nullptr;
+    mTrackWork = nullptr;
+    mMarkerAdjust = true;
+    mAutoDelete = true;
+    mPauseToFullStop = false;
+    mPauseToFullStopMoved = false;
 }
 
 // Address: 0x00f62d40 - 0x00f62d82 (66 bytes)
 // Also emitted as: _ZN10uSchedulerD0Ev at 0x00f62e70
 uScheduler::~uScheduler() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uScheduler::deleteTrackWork(false);
-    if (this->mpScheduler == static_cast<rScheduler*>(nullptr)) {
+    deleteTrackWork(false);
+    if (mpScheduler == nullptr) {
         return;
     }
-    this->mpScheduler->::cResource::release();
-    this->mpScheduler = static_cast<rScheduler*>(nullptr);
+    mpScheduler->release();
+    mpScheduler = nullptr;
 }
 
 // Address: 0x00f62f30 - 0x00f63069 (313 bytes)
@@ -106,18 +106,17 @@ void uScheduler::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; an | of disjoint bits; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uScheduler*
     // inferred: a temporary for the value the load at 0xf62ed0 read, used 4 times; no DWARF local holds it
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16));
-    if (((t0 >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+    if (((t0 >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = (t0 & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
-        if (((((t0 & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3)) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
-        } else {
-            this->::uScheduler::deleteTrackWork(false);
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = (t0 & 0xFFFFFFF8u) | 3u;
+        if (((((t0 & 0xFFFFFFF8u) | 3u) >> 8) & 32u) == 0) {
+            deleteTrackWork(false);
         }
     } else {
-        this->::uScheduler::deleteTrackWork(false);
+        deleteTrackWork(false);
     }
 }
 
@@ -130,17 +129,17 @@ __attribute__((weak)) void uScheduler::setData(rScheduler* pr) {
 // Address: 0x01b63ba0 - 0x01b63ba5 (5 bytes)
 rScheduler* uScheduler::getData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpScheduler;
+    return mpScheduler;
 }
 
 // Address: 0x00f62f00 - 0x00f62f23 (35 bytes)
 void uScheduler::setPause(bool pause) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPause == pause) {
+    if (mPause == pause) {
         return;
     }
-    this->mPause = pause;
-    this->mPrevFrame = this->mFrame + (-1.0f);
+    mPause = pause;
+    mPrevFrame = mFrame + -1.0f;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -159,7 +158,7 @@ void uScheduler::setPause(bool pause) {
 // Address: 0x00f639b0 - 0x00f639b5 (5 bytes)
 MtUI* uScheduler::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00f639c0 - 0x00f64287 (2247 bytes)
@@ -171,28 +170,28 @@ __attribute__((weak)) void uScheduler::createProperty(MtPropertyList& s) {
 // Address: 0x01b63bc0 - 0x01b63bd4 (20 bytes)
 void uScheduler::setFrame(u32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScheduler == static_cast<rScheduler*>(nullptr)) {
+    if (mpScheduler == nullptr) {
         return;
     }
-    this->mFrame = static_cast<float>(frame);
+    mFrame = static_cast<float>(frame);
 }
 
 // Address: 0x01b63bb0 - 0x01b63bb7 (7 bytes)
 u32 uScheduler::getFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned int>(static_cast<long>(this->mFrame));
+    return static_cast<unsigned int>(static_cast<long>(mFrame));
 }
 
 // Address: 0x01b63be0 - 0x01b63be6 (6 bytes)
 f32 uScheduler::getFrameF() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFrame;
+    return mFrame;
 }
 
 // Address: 0x01b63bf0 - 0x01b63bf6 (6 bytes)
 void uScheduler::setFrameF(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFrame = v;
+    mFrame = v;
 }
 
 // No out-of-line body: no code in the ELF
@@ -235,39 +234,39 @@ u32 uScheduler::getMarker() const {
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from rScheduler::TRACK*
     // inferred: an ordered temporary, read before a later effect: the value read at 0xf642ba, held ahead of the effects the ELF orders after it
-    rScheduler* t0 = this->mpScheduler;
+    rScheduler* t0 = mpScheduler;
     // inferred: the value carried to 0xf64306; the location-less local in scope that fits is declared on no line of the value's writes
     unsigned int v2_3;
-    if (t0 == static_cast<rScheduler*>(nullptr)) {
-        v2_3 = static_cast<unsigned int>(0);
+    if (t0 == nullptr) {
+        v2_3 = 0;
     } else {
-        rScheduler::TRACK* ptrack = t0->::rScheduler::getBaseTrack();
-        if (ptrack == static_cast<rScheduler::TRACK*>(nullptr)) {
-            v2_3 = static_cast<unsigned int>(0);
+        rScheduler::TRACK* ptrack = t0->getBaseTrack();
+        if (ptrack == nullptr) {
+            v2_3 = 0;
         } else {
-            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + static_cast<long>(0))) >> static_cast<unsigned int>(16)) == static_cast<unsigned int>(0)) {
-                v2_3 = static_cast<unsigned int>(4294967295);
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + 0)) >> 16) == 0) {
+                v2_3 = 0xFFFFFFFF;
             } else {
                 // inferred: the pointer this loop steps by one element; no location-less local in scope fits
                 rScheduler::KEY* p0_0 = ptrack->key_frame;
                 // inferred: the value the loop at 0xf642f0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                unsigned int v0_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + static_cast<long>(0))) >> static_cast<unsigned int>(16);
+                unsigned int v0_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + 0)) >> 16;
                 // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-                unsigned int i0_2 = static_cast<unsigned int>(0);
+                unsigned int i0_2 = 0;
                 // inferred: the value the loop at 0xf642f0 carries; no location-less local in scope fits
-                for (long v0_4 = static_cast<long>(this->mFrame);;) {
+                for (long v0_4 = static_cast<long>(mFrame);;) {
                     if (static_cast<unsigned int>(v0_4) < p0_0->frame) {
-                        return (i0_2 == static_cast<unsigned int>(0)) ? i0_2 : (i0_2 - static_cast<unsigned int>(1));
+                        return (i0_2 == 0) ? i0_2 : (i0_2 - 1u);
                     } else {
-                        if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                            p0_0 += static_cast<int>(1);
-                            i0_2 += static_cast<unsigned int>(1);
+                        if ((i0_2 + 1u) < v0_1) {
+                            p0_0 += 1;
+                            i0_2 += 1u;
                         } else {
                             break;
                         }
                     }
                 }
-                v2_3 = v0_1 - static_cast<unsigned int>(1);
+                v2_3 = v0_1 - 1u;
             }
         }
     }
@@ -311,10 +310,10 @@ __attribute__((weak)) void uScheduler::mapping() {
 // Address: 0x00f636b0 - 0x00f636c5 (21 bytes)
 u32 uScheduler::getFrameMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScheduler != static_cast<rScheduler*>(nullptr)) {
-        return this->mpScheduler->getFrameMax();
+    if (mpScheduler != nullptr) {
+        return mpScheduler->getFrameMax();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -329,25 +328,25 @@ __attribute__((weak)) s32 uScheduler::getUnitIndex(const MtDTI& dti, MT_CTSTR tr
 // Address: 0x00f64540 - 0x00f64556 (22 bytes)
 cUnit* uScheduler::getUnit(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mUnitTrackNum) {
-        return static_cast<cUnit*>(this->mpUnitTrack[index]->pobj);
+    if (index < mUnitTrackNum) {
+        return static_cast<cUnit*>(mpUnitTrack[index]->pobj);
     } else {
-        return static_cast<cUnit*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x00f64560 - 0x00f64574 (20 bytes)
 void uScheduler::setUnit(cUnit* punit, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mUnitTrackNum) {
-        this->mpUnitTrack[index]->pobj = static_cast<MtObject*>(punit);
+    if (index < mUnitTrackNum) {
+        mpUnitTrack[index]->pobj = static_cast<MtObject*>(punit);
     }
 }
 
 // Address: 0x00f64580 - 0x00f64584 (4 bytes)
 u32 uScheduler::getUnitNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnitTrackNum;
+    return mUnitTrackNum;
 }
 
 // Address: 0x00f63070 - 0x00f636a4 (1588 bytes)
@@ -378,23 +377,23 @@ __attribute__((weak)) void uScheduler::updateTrack(bool apply) {
 // Address: 0x01b63b80 - 0x01b63b84 (4 bytes)
 bool uScheduler::isPauseToFullStop() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPauseToFullStop;
+    return mPauseToFullStop;
 }
 
 // Address: 0x00f64290 - 0x00f642a5 (21 bytes)
 void uScheduler::setPauseToFullStop(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPauseToFullStop == v) {
+    if (mPauseToFullStop == v) {
         return;
     }
-    this->mPauseToFullStop = v;
-    this->mPauseToFullStopMoved = false;
+    mPauseToFullStop = v;
+    mPauseToFullStopMoved = false;
 }
 
 // Address: 0x01b63b90 - 0x01b63b94 (4 bytes)
 bool uScheduler::isPauseToFullStopMoved() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPauseToFullStopMoved;
+    return mPauseToFullStopMoved;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -471,6 +470,8 @@ __attribute__((weak)) void uScheduler::deleteTrackWork(bool force) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uScheduler::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uScheduler::MyDTI uScheduler::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScheduler::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -57,9 +57,9 @@ inline void nDraw::Resource::operator delete(void* p_addr) {
 // Address: 0x0115dc00 - 0x0115dc24 (36 bytes)
 nDraw::Resource::Resource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRefFrame = static_cast<s32>(-1);
-    this->mRefCount = static_cast<s32>(1);
-    this->mCRC = static_cast<u32>(0);
+    mRefFrame = -1;
+    mRefCount = 1;
+    mCRC = 0;
 }
 
 // Address: 0x0115dc30 - 0x0115dc5d (45 bytes)
@@ -151,6 +151,14 @@ __attribute__((weak)) bool nDraw::Resource::terminate(s32 destruction_seed) {
     DDON_STUB("nDraw::Resource::terminate")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nDraw::Resource::MyDTI nDraw::Resource::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 nDraw::Resource::mRenderFrame;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 nDraw::Resource::mProtectFrame;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Resource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

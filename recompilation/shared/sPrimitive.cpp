@@ -11,6 +11,7 @@
 #include "MtSynchronize.h"
 #include "cBlendState.h"
 #include "cPrim.h"
+#include "cPrimBufferManager.h"
 #include "cPrimTagList.h"
 #include "cPrimTexHandleManager.h"
 #include "cSystem.h"
@@ -41,7 +42,7 @@ const MtDTI& sPrimitive::getDTI() const {
 // Address: 0x012548e0 - 0x01254920 (64 bytes)
 void* sPrimitive::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sPrimitive::DTI)->memAlloc(sz, align, ::sPrimitive::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sPrimitive::DTI)->memAlloc(sz, align, sPrimitive::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +57,7 @@ void* sPrimitive::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sPrimitiveD0Ev at 0x01254cce-0x01254cef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sPrimitive::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPrimitive::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPrimitive::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,7 +174,7 @@ __attribute__((weak)) void sPrimitive::createProperty(MtPropertyList& prop_list)
 // Address: 0x012560c0 - 0x012560c5 (5 bytes)
 MtUI* sPrimitive::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,13 +331,12 @@ MtUI* sPrimitive::createUI(MtProperty& prop) {
 u32 sPrimitive::reserveTex(nPrim::Texture* * p_tex, u32* idx, u32 num_tex) {
     // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the value the load at 0x1b6cd18 read, used 4 times; no DWARF local holds it
-        cPrimTexHandleManager* t0 = this->mpTexHandleMgr;
+        cPrimTexHandleManager* t0 = mpTexHandleMgr;
         // inferred: a temporary for the value the load at 0x1b6cd20 read, used twice; no DWARF local holds it
         u32 t1 = t0->mTextureMax;
         // inferred: a temporary for the value the load at 0x1b6cd23 read, used 4 times; no DWARF local holds it
@@ -345,27 +345,25 @@ u32 sPrimitive::reserveTex(nPrim::Texture* * p_tex, u32* idx, u32 num_tex) {
             *p_tex = &t0->mpTexture[t2];
             *idx = t2;
             t0->mUsedTex = num_tex + t0->mUsedTex;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return (t1 < (num_tex + t2)) ? (t1 - t2) : num_tex;
         } else {
-            *p_tex = static_cast<nPrim::Texture*>(nullptr);
-            *idx = static_cast<unsigned int>(0);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            *p_tex = nullptr;
+            *idx = 0;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
         // inferred: a temporary for the value the load at 0x1b6cd18 read, used 4 times; no DWARF local holds it
-        cPrimTexHandleManager* t0 = this->mpTexHandleMgr;
+        cPrimTexHandleManager* t0 = mpTexHandleMgr;
         // inferred: a temporary for the value the load at 0x1b6cd20 read, used twice; no DWARF local holds it
         u32 t1 = t0->mTextureMax;
         // inferred: a temporary for the value the load at 0x1b6cd23 read, used 4 times; no DWARF local holds it
@@ -374,32 +372,86 @@ u32 sPrimitive::reserveTex(nPrim::Texture* * p_tex, u32* idx, u32 num_tex) {
             *p_tex = &t0->mpTexture[t2];
             *idx = t2;
             t0->mUsedTex = num_tex + t0->mUsedTex;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return (t1 < (num_tex + t2)) ? (t1 - t2) : num_tex;
         } else {
-            *p_tex = static_cast<nPrim::Texture*>(nullptr);
-            *idx = static_cast<unsigned int>(0);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            *p_tex = nullptr;
+            *idx = 0;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
 
 // Address: 0x01b6cb70 - 0x01b6cc17 (167 bytes)
-__attribute__((weak)) u32 sPrimitive::reserveBuffer(void* * ptr, u32 size) {
-    // local: u32 ret;
-    DDON_STUB("sPrimitive::reserveBuffer")
-    return {};
+u32 sPrimitive::reserveBuffer(void* * ptr, u32 size) {
+    // DWARF local not rendered: u32 ret;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a byte step from a void* through char*: void* stepped by bytes
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        // inferred: a temporary for the value the load at 0x1b6cba4 read, used 6 times; no DWARF local holds it
+        cPrimBufferManager* t0 = mpBufferMgr;
+        *ptr = nullptr;
+        if (t0->mpBuffer != nullptr) {
+            // inferred: a temporary for the value the load at 0x1b6cbbc read, used 3 times; no DWARF local holds it
+            u32 t1 = t0->mCurrentSize;
+            // inferred: a temporary for the value the load at 0x1b6cbc3 read, used 3 times; no DWARF local holds it
+            u32 t2 = t0->mTotalSize;
+            *ptr = t0->mpCurrentPtr;
+            t0->mpCurrentPtr = static_cast<void*>(static_cast<char*>(t0->mpCurrentPtr) + ((t2 < (size + t1)) ? (t2 - t1) : size));
+            t0->mCurrentSize = t1 + ((t2 < (size + t1)) ? (t2 - t1) : size);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return (t2 < (size + t1)) ? (t2 - t1) : size;
+        } else {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return 0;
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0x1b6cba4 read, used 6 times; no DWARF local holds it
+        cPrimBufferManager* t0 = mpBufferMgr;
+        *ptr = nullptr;
+        if (t0->mpBuffer != nullptr) {
+            // inferred: a temporary for the value the load at 0x1b6cbbc read, used 3 times; no DWARF local holds it
+            u32 t1 = t0->mCurrentSize;
+            // inferred: a temporary for the value the load at 0x1b6cbc3 read, used 3 times; no DWARF local holds it
+            u32 t2 = t0->mTotalSize;
+            *ptr = t0->mpCurrentPtr;
+            t0->mpCurrentPtr = static_cast<void*>(static_cast<char*>(t0->mpCurrentPtr) + ((t2 < (size + t1)) ? (t2 - t1) : size));
+            t0->mCurrentSize = t1 + ((t2 < (size + t1)) ? (t2 - t1) : size);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return (t2 < (size + t1)) ? (t2 - t1) : size;
+        } else {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return 0;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -577,12 +629,12 @@ __attribute__((weak)) void sPrimitive::setMetaData(cDraw* p_draw, const nPrim::M
 void sPrimitive::clearTag() {
     // DWARF local not rendered: u32 ui;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpPrim[0]->::cPrim::clear();
-    this->mpPrim[1]->::cPrim::clear();
-    this->mpPrim[2]->::cPrim::clear();
-    this->mpPrim[3]->::cPrim::clear();
-    this->mpPrim[4]->::cPrim::clear();
-    this->mpPrim[5]->::cPrim::clear();
+    mpPrim[0]->cPrim::clear();
+    mpPrim[1]->cPrim::clear();
+    mpPrim[2]->cPrim::clear();
+    mpPrim[3]->cPrim::clear();
+    mpPrim[4]->cPrim::clear();
+    mpPrim[5]->cPrim::clear();
 }
 
 // No out-of-line body: no code in the ELF
@@ -664,6 +716,11 @@ sPrimitive::~sPrimitive() {
     DDON_STUB("sPrimitive::~sPrimitive")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPrimitive::MyDTI sPrimitive::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sPrimitive* sPrimitive::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sPrimitive::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

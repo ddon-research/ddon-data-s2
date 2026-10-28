@@ -31,7 +31,7 @@ const MtDTI& uGUIPointer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPointer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPointer::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPointer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* uGUIPointer::getAllocator() {
 // Address: 0x00b48f50 - 0x00b48f90 (64 bytes)
 void* uGUIPointer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPointer::getAllocator()->memAlloc(sz, align, ::uGUIPointer::DTI.::MtDTI::getID());
+    return uGUIPointer::getAllocator()->memAlloc(sz, align, uGUIPointer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uGUIPointer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPointer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPointer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPointer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,9 +80,9 @@ uGUIPointer::~uGUIPointer() {
 // Address: 0x00b49420 - 0x00b49488 (104 bytes)
 bool uGUIPointer::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POINTER_GUI"), static_cast<u32>(129), static_cast<t64>(1417529718)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POINTER_GUI"), 129u, 1417529718l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -101,19 +101,19 @@ __attribute__((weak)) void uGUIPointer::setup() {
 // Address: 0x00b49490 - 0x00b49495 (5 bytes)
 void uGUIPointer::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b494a0 - 0x00b494a5 (5 bytes)
 void uGUIPointer::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00b494b0 - 0x00b494b5 (5 bytes)
 void uGUIPointer::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x00b49a60 - 0x00b49d39 (729 bytes)
@@ -131,8 +131,8 @@ __attribute__((weak)) void uGUIPointer::setPointerPos(const MtVector2& pos, s32 
 // Address: 0x00b49d40 - 0x00b49d4f (15 bytes)
 void uGUIPointer::hideReq(u32 uPrio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (uPrio < this->mRequestHidePrio) {
-        this->mRequestHidePrio = uPrio;
+    if (uPrio < mRequestHidePrio) {
+        mRequestHidePrio = uPrio;
     }
 }
 
@@ -160,13 +160,13 @@ __attribute__((weak)) void uGUIPointer::pickItem(cItemParam* pParam, u32 uPrio) 
 // Address: 0x00b49e00 - 0x00b49e7b (123 bytes)
 void uGUIPointer::releaseItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOffset = ::MtVector2::Zero;
-    this->::uGUIPointer::setPointerPos(this->mBasePos, static_cast<s32>(2));
-    this->mIsCatch = false;
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpInstNullItemIcon), false);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpInstNullSkillIcon), false);
-    this->mRequestIconPrio = static_cast<u32>(11);
-    this->mDrawIconFlag = static_cast<u8>(0);
+    mOffset = MtVector2::Zero;
+    setPointerPos(mBasePos, 2);
+    mIsCatch = false;
+    setInstanceVisible(static_cast<cGUIInstance*>(mpInstNullItemIcon), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mpInstNullSkillIcon), false);
+    mRequestIconPrio = 11;
+    mDrawIconFlag = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,9 +203,9 @@ __attribute__((weak)) void uGUIPointer::setGuideMsg(MT_CTSTR msg, u32 height_typ
 // Address: 0x00b4a490 - 0x00b4a4bf (47 bytes)
 void uGUIPointer::hideGuide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpInstAnimGuide), false);
-    this->mRequestGuidePrio = static_cast<u32>(11);
-    this->mIsDrawGuide = false;
+    setInstanceVisible(static_cast<cGUIInstance*>(mpInstAnimGuide), false);
+    mRequestGuidePrio = 11;
+    mIsDrawGuide = false;
 }
 
 // Address: 0x00b4a4c0 - 0x00b4a5ee (302 bytes)
@@ -231,11 +231,11 @@ __attribute__((weak)) void uGUIPointer::setPosRequest(const MtVector2& pos, u32 
 // Address: 0x00b4a740 - 0x00b4a770 (48 bytes)
 void uGUIPointer::setPopTarget(const MtVector2& popTarget, u32 uPrio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPopTargetPrio >= uPrio) {
-        if (this->mPopCmdPrio < uPrio) {
-            this->mPopCmdTarget.x = popTarget.x;
-            this->mPopCmdTarget.y = popTarget.y;
-            this->mPopTargetPrio = uPrio;
+    if (mPopTargetPrio >= uPrio) {
+        if (mPopCmdPrio < uPrio) {
+            mPopCmdTarget.x = popTarget.x;
+            mPopCmdTarget.y = popTarget.y;
+            mPopTargetPrio = uPrio;
         }
     }
 }
@@ -243,15 +243,15 @@ void uGUIPointer::setPopTarget(const MtVector2& popTarget, u32 uPrio) {
 // Address: 0x00b4a770 - 0x00b4a7a1 (49 bytes)
 void uGUIPointer::setPopCmdPrio(u32 uPrio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPopTargetPrio = static_cast<u32>(11);
-    this->mPopCmdPrio = uPrio;
-    this->mPopCmdTarget = ::MtVector2::Zero;
+    mPopTargetPrio = 11;
+    mPopCmdPrio = uPrio;
+    mPopCmdTarget = MtVector2::Zero;
 }
 
 // Address: 0x00b4a7b0 - 0x00b4a7bb (11 bytes)
 bool uGUIPointer::isEnablePosPopCmd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPopTargetPrio != static_cast<u32>(11);
+    return mPopTargetPrio != 11;
 }
 
 // Address: 0x00b4a7c0 - 0x00b4aa39 (633 bytes)
@@ -280,65 +280,65 @@ __attribute__((weak)) void uGUIPointer::setupPosFromReq() {
 // Address: 0x00b4aa40 - 0x00b4ab4a (266 bytes)
 void uGUIPointer::adjustScale() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpInstNullPointer == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullPointer == nullptr) {
         return;
     }
-    if (this->mpInstNullPopCmd == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullPopCmd == nullptr) {
         return;
     }
-    if (this->mpInstNullGuide == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpInstNullGuide == nullptr) {
         return;
     }
-    f32 fScaleRate = this->getScaleForDefaultResolution(1.0f);
+    f32 fScaleRate = getScaleForDefaultResolution(1.0f);
     // inferred: a temporary for the value the load at 0xb4aa8c read, used 4 times; no DWARF local holds it
-    cGUIInstNull* t0 = this->mpInstNullPointer;
-    if (t0 != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstNull::setScaleX(fScaleRate);
-        t0->::cGUIInstNull::setScaleY(fScaleRate);
-        t0->::cGUIInstNull::setScaleZ(fScaleRate);
+    cGUIInstNull* t0 = mpInstNullPointer;
+    if (t0 != nullptr) {
+        t0->setScaleX(fScaleRate);
+        t0->setScaleY(fScaleRate);
+        t0->setScaleZ(fScaleRate);
         // inferred: a temporary for the value the load at 0xb4aac9 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullPopCmd;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(fScaleRate);
-            t1->::cGUIInstNull::setScaleY(fScaleRate);
-            t1->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = mpInstNullPopCmd;
+        if (t1 != nullptr) {
+            t1->setScaleX(fScaleRate);
+            t1->setScaleY(fScaleRate);
+            t1->setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullGuide;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullGuide;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullGuide;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullGuide;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xb4aac9 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullPopCmd;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(fScaleRate);
-            t1->::cGUIInstNull::setScaleY(fScaleRate);
-            t1->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = mpInstNullPopCmd;
+        if (t1 != nullptr) {
+            t1->setScaleX(fScaleRate);
+            t1->setScaleY(fScaleRate);
+            t1->setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullGuide;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullGuide;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullGuide;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(fScaleRate);
-                t2->::cGUIInstNull::setScaleY(fScaleRate);
-                t2->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = mpInstNullGuide;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
             }
         }
     }
@@ -348,9 +348,9 @@ void uGUIPointer::adjustScale() {
 bool uGUIPointer::isForceSamplerLinear(cGUIObject* pObj) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
-        if (this->mpInstNullPointer != static_cast<cGUIInstNull*>(nullptr)) {
-            if (this->mpInstNullPointer->mScale.x > 1.0f) {
+    if (!this->uGUIBase::isForceSamplerLinear(pObj)) {
+        if (mpInstNullPointer != nullptr) {
+            if (mpInstNullPointer->mScale.x > 1.0f) {
                 return true;
             }
         }
@@ -363,7 +363,7 @@ bool uGUIPointer::isForceSamplerLinear(cGUIObject* pObj) const {
 // Address: 0x00b497f0 - 0x00b4980a (26 bytes)
 void uGUIPointer::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPointer::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPointer::updateWait);
 }
 
 // Address: 0x00b49810 - 0x00b49a4b (571 bytes)
@@ -379,6 +379,8 @@ __attribute__((weak)) void uGUIPointer::updateWait() {
 
 // No out-of-line body: no code in the ELF
 // void uGUIPointer::setObjVisible(cGUIObject*, bool);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPointer::MyDTI uGUIPointer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPointer.cpp at 0x00b4aca3-0x00b4ace0 (called at uGUIPointer.cpp:33)

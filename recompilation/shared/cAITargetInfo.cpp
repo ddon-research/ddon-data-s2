@@ -35,7 +35,7 @@ const MtDTI& cAITargetInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cAITargetInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAITargetInfo::DTI)->memAlloc(sz, align, ::cAITargetInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAITargetInfo::DTI)->memAlloc(sz, align, cAITargetInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cAITargetInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cAITargetInfoD0Ev at 0x0194fc10-0x0194fc31, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAITargetInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAITargetInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAITargetInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,6 +86,8 @@ __attribute__((weak)) const MtVector3& cAITargetInfo::getAITargetInfoOfsPos() co
 //   in cAITargetInfoArray::findNearFunc at 0x000239b9-0x000239f0 (called at cAITargetInfo.cpp:330)
 // f32 cAITargetInfo::getAITargetInfRadius() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAITargetInfo::MyDTI cAITargetInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cAITargetInfo.cpp at 0x00023f6f-0x00023fac (called at cAITargetInfo.cpp:50)
 //   in _GLOBAL__sub_I_cAITargetInfo.cpp at 0x00023f6f-0x00023fac (called at cAITargetInfo.h:31)
@@ -94,7 +96,7 @@ __attribute__((weak)) const MtVector3& cAITargetInfo::getAITargetInfoOfsPos() co
 // Address: 0x000233d0 - 0x0002342f (95 bytes)
 MtObject* cAITargetInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAITargetInfo;
+    return new (16u) cAITargetInfo;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (1228 bytes)
@@ -135,7 +137,7 @@ __attribute__((weak)) void cAITargetInfoArray::updatePtr() {
 // Address: 0x000238c0 - 0x000238c9 (9 bytes)
 cAITargetInfo* cAITargetInfoArray::findNear(const MtVector3& pos, f32 maxLen) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAITargetInfoArray::findNearFunc(pos, static_cast<cAITargetInfoArray::CheckFuncStatic>(nullptr), static_cast<void*>(nullptr), maxLen);
+    return findNearFunc(pos, static_cast<cAITargetInfoArray::CheckFuncStatic>(nullptr), static_cast<void*>(nullptr), maxLen);
 }
 
 // Address: 0x000238d0 - 0x00023a77 (423 bytes)

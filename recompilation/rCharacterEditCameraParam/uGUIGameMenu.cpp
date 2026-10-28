@@ -65,7 +65,7 @@ const MtDTI& uGUIGameMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGameMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGameMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,9 +117,9 @@ __attribute__((weak)) u32 uGUIGameMenu::getSCMMenuIdFromMsgIdx(u32 uMsgIdx) {
 // Address: 0x00b53980 - 0x00b539aa (42 bytes)
 void uGUIGameMenu::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableExtraMenu = false;
-    this->mUnitWatcher.::uGUIBase::cUnitWatcher::update();
-    this->::uGUIBase::move();
+    mIsEnableExtraMenu = false;
+    mUnitWatcher.uGUIBase::cUnitWatcher::update();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00b4ebf0 - 0x00b4ec39 (73 bytes)
@@ -288,8 +288,8 @@ __attribute__((weak)) void uGUIGameMenu::evSelectLoginBonus() {
 void uGUIGameMenu::evSelectTimeEvent() {
     // DWARF local not rendered: const u32 event_achieve_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestOpenServerUI(static_cast<u32>(0));
-    this->mIsServerUI = true;
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestOpenServerUI(0u);
+    mIsServerUI = true;
 }
 
 // Address: 0x00b4e5c0 - 0x00b4e6d9 (281 bytes)
@@ -311,8 +311,8 @@ __attribute__((weak)) void uGUIGameMenu::evSelectMenuSystem() {
 // Address: 0x00b4f820 - 0x00b4f82f (15 bytes)
 void uGUIGameMenu::evGacha() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsGachaInit = false;
-    this->mIsGacha = true;
+    mIsGachaInit = false;
+    mIsGacha = true;
 }
 
 // Address: 0x00b4ef20 - 0x00b4effb (219 bytes)
@@ -345,9 +345,9 @@ __attribute__((weak)) void uGUIGameMenu::sleep() {
 // Address: 0x00b4fda0 - 0x00b4fe08 (104 bytes)
 bool uGUIGameMenu::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAMEMENU_GUI"), static_cast<u32>(129), static_cast<t64>(1454328857)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAMEMENU_GUI"), 129u, 1454328857l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -390,64 +390,57 @@ __attribute__((weak)) void uGUIGameMenu::setup() {
 // Address: 0x00b53840 - 0x00b53916 (214 bytes)
 void uGUIGameMenu::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
-    } else {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUICaplinkMenu == static_cast<uGUICaplinkTopMenu*>(nullptr)) {
-    } else {
-        this->mpGUICaplinkMenu->kill();
-        this->mpGUICaplinkMenu = static_cast<uGUICaplinkTopMenu*>(nullptr);
+    if (mpGUICaplinkMenu != nullptr) {
+        mpGUICaplinkMenu->kill();
+        mpGUICaplinkMenu = nullptr;
     }
-    if (::sGUI::getInstance() == static_cast<sGUI*>(nullptr)) {
-    } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (sGUI::getInstance() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    if (this->mpGUIClanExecutor == static_cast<cGUIClanExecutor*>(nullptr)) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo() == static_cast<uGUIInfo*>(nullptr)) {
-        } else {
-            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->mFlowId == static_cast<u32>(1)) {
-            } else {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->::uGUIInfo::setFlowId(static_cast<u32>(0));
+    if (mpGUIClanExecutor == nullptr) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo() != nullptr) {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->mFlowId != 1) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->setFlowId(0u);
             }
         }
     } else {
-        delete this->mpGUIClanExecutor;
-        this->mpGUIClanExecutor = static_cast<cGUIClanExecutor*>(nullptr);
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo() != static_cast<uGUIInfo*>(nullptr)) {
-            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->mFlowId != static_cast<u32>(1)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->::uGUIInfo::setFlowId(static_cast<u32>(0));
+        delete mpGUIClanExecutor;
+        mpGUIClanExecutor = nullptr;
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo() != nullptr) {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->mFlowId != 1) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->setFlowId(0u);
             }
         }
     }
-    if (this->mIsDispBanner == false) {
-    } else {
-        if (this->mIsBrowser != false) {
-        } else {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::sleepEventBanner();
+    if (mIsDispBanner) {
+        if (!mIsBrowser) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->sleepEventBanner();
         }
-        this->mIsDispBanner = false;
+        mIsDispBanner = false;
     }
-    ::sBrowser::getInstance()->::sBrowser::resetJSCallback_jumpSetPosSize();
-    this->::uGUIBase::kill();
+    sBrowser::getInstance()->resetJSCallback_jumpSetPosSize();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b53930 - 0x00b53979 (73 bytes)
 void uGUIGameMenu::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable() == false) {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUICaplinkMenu == static_cast<uGUICaplinkTopMenu*>(nullptr)) {
+    if (mpGUICaplinkMenu == nullptr) {
         return;
     }
-    if (this->mpGUICaplinkMenu->::cUnit::isEnable() != false) {
+    if (mpGUICaplinkMenu->isEnable()) {
         return;
     }
-    this->mpGUICaplinkMenu = static_cast<uGUICaplinkTopMenu*>(nullptr);
+    mpGUICaplinkMenu = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -492,19 +485,19 @@ __attribute__((weak)) void uGUIGameMenu::updateWait() {
 // Address: 0x00b51e10 - 0x00b51e80 (112 bytes)
 void uGUIGameMenu::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo() != static_cast<uGUIInfo*>(nullptr)) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->mFlowId != static_cast<u32>(1)) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->::uGUIInfo::setFlowId(static_cast<u32>(0));
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo() != nullptr) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->mFlowId != 1) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->setFlowId(0u);
         }
     }
-    if (this->mIsDispBanner != false) {
-        if (this->mIsBrowser == false) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::sleepEventBanner();
+    if (mIsDispBanner) {
+        if (!mIsBrowser) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->sleepEventBanner();
         }
-        this->mIsDispBanner = false;
+        mIsDispBanner = false;
     }
-    ::sBrowser::getInstance()->::sBrowser::resetJSCallback_jumpSetPosSize();
-    this->end();
+    sBrowser::getInstance()->resetJSCallback_jumpSetPosSize();
+    end();
 }
 
 // Address: 0x00b55830 - 0x00b558f5 (197 bytes)
@@ -656,16 +649,16 @@ __attribute__((weak)) void uGUIGameMenu::updateEntryBoard() {
 // Address: 0x00b548d0 - 0x00b5494a (122 bytes)
 void uGUIGameMenu::updateWakeup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo() != static_cast<uGUIInfo*>(nullptr)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->::uGUIInfo::setFlowId(static_cast<u32>(2));
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->getGUIInfo()->setFlowId(2u);
     }
-    this->::uGUIGameMenu::wakeupBanner();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGameMenu::updateWait);
-    this->::uGUIBase::setWindowActive(true);
-    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance == static_cast<cGUIInstAnimation*>(nullptr)) {
+    wakeupBanner();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGameMenu::updateWait);
+    setWindowActive(true);
+    if (mCursor.mpInstance == nullptr) {
         return;
     }
-    this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+    mCursor.mpInstance->setVisible(true);
 }
 
 // Address: 0x00b4eed0 - 0x00b4ef1a (74 bytes)
@@ -934,14 +927,14 @@ __attribute__((weak)) u32 uGUIGameMenu::evCtrlTop(cControl::Message* msg) {
 // Address: 0x00b54220 - 0x00b5428e (110 bytes)
 u32 uGUIGameMenu::evCtrlBanner(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEnableBanner != false) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setActiveEventBanner(false);
-        ::sBrowser::getInstance()->::sBrowser::callJSFunction("activeEnd()");
-        this->::uGUIGameMenu::wakeupPrivate(true);
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
-        return static_cast<u32>(1);
+    if (mIsEnableBanner) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->setActiveEventBanner(false);
+        sBrowser::getInstance()->callJSFunction("activeEnd()");
+        wakeupPrivate(true);
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -993,7 +986,7 @@ __attribute__((weak)) void uGUIGameMenu::createDialogLogOut(u32 uReqType) {
 // Address: 0x00b55ce0 - 0x00b55cf6 (22 bytes)
 bool uGUIGameMenu::reportUrlRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getReportSiteAddress();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getReportSiteAddress();
 }
 
 // Address: 0x00b55d00 - 0x00b55d42 (66 bytes)
@@ -1001,13 +994,13 @@ void uGUIGameMenu::reportUrlCallBack() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x284c from uGUIGameMenu*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2848 from uGUIGameMenu*
-    this->mIsBrowser = true;
-    this->mIsInitBrowser = false;
-    this->mBrowserSize.w = static_cast<s32>(480);
-    this->mBrowserSize.h = static_cast<s32>(500);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(10316)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(10312)) = static_cast<unsigned int>(0);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::endBrowser();
+    mIsBrowser = true;
+    mIsInitBrowser = false;
+    mBrowserSize.w = 480;
+    mBrowserSize.h = 500;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 10316) = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 10312) = 0;
+    static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (36 bytes)
@@ -1031,6 +1024,24 @@ __attribute__((weak)) void uGUIGameMenu::adjustScale() {
     DDON_STUB("uGUIGameMenu::adjustScale")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGameMenu::MyDTI uGUIGameMenu::DTI;
+
+// Not defined (relocated bytes): const uGUIGameMenu::PARAM* uGUIGameMenu::mpParamList[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_parsonal[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_jounal[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_world[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_social[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_communication[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_system[];
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const uGUIGameMenu::PARAM uGUIGameMenu::param_shop[];
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGameMenu.cpp at 0x00b566de-0x00b5671e (called at uGUIGameMenu.cpp:104)
@@ -1090,7 +1101,7 @@ const MtDTI& uGUIGameMenu::cGameMenuUnitWatcher::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memAlloc(sz, align, ::uGUIGameMenu::cGameMenuUnitWatcher::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memAlloc(sz, align, uGUIGameMenu::cGameMenuUnitWatcher::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1104,7 +1115,7 @@ inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, u32 ali
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGameMenu::cGameMenuUnitWatcher::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1129,8 +1140,10 @@ inline void uGUIGameMenu::cGameMenuUnitWatcher::operator delete(void* p_addr) {
 // Address: 0x00b539b0 - 0x00b539b5 (5 bytes)
 void uGUIGameMenu::cGameMenuUnitWatcher::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::cUnitWatcher::update();
+    this->uGUIBase::cUnitWatcher::update();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGameMenu::cGameMenuUnitWatcher::MyDTI uGUIGameMenu::cGameMenuUnitWatcher::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGameMenu.cpp at 0x00b5671e-0x00b5675b (called at uGUIGameMenu.cpp:105)
@@ -1140,6 +1153,6 @@ void uGUIGameMenu::cGameMenuUnitWatcher::update() {
 // Address: 0x00b4e500 - 0x00b4e54e (78 bytes)
 MtObject* uGUIGameMenu::cGameMenuUnitWatcher::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIGameMenu::cGameMenuUnitWatcher;
+    return new (16u) uGUIGameMenu::cGameMenuUnitWatcher;
 }
 

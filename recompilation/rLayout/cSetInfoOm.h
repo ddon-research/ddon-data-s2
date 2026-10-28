@@ -923,10 +923,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cSetInfoOmCtrl::cLinkParam::cLinkParam() {
-    this->mKind = static_cast<u16>(0);
-    this->mGroup = static_cast<u16>(0);
-    this->mID = static_cast<u16>(0);
-    this->mTransition = static_cast<u32>(0);
-    this->mState = static_cast<u32>(0);
-    this->mCamEvNo = static_cast<s32>(-1);
+    this->mKind = 0;
+    this->mGroup = 0;
+    this->mID = 0;
+    this->mTransition = 0;
+    this->mState = 0;
+    this->mCamEvNo = -1;
 }

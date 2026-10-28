@@ -24,7 +24,7 @@ const MtDTI& cBlowShrinkDmInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cBlowShrinkDmInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cBlowShrinkDmInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cBlowShrinkDmInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cBlowShrinkDmInfo::getAllocator() {
 // Address: 0x00033830 - 0x00033870 (64 bytes)
 void* cBlowShrinkDmInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cBlowShrinkDmInfo::getAllocator()->memAlloc(sz, align, ::cBlowShrinkDmInfo::DTI.::MtDTI::getID());
+    return cBlowShrinkDmInfo::getAllocator()->memAlloc(sz, align, cBlowShrinkDmInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cBlowShrinkDmInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cBlowShrinkDmInfoD0Ev at 0x019512b0-0x019512da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cBlowShrinkDmInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBlowShrinkDmInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBlowShrinkDmInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -229,6 +229,8 @@ __attribute__((weak)) void cBlowShrinkDmInfo::clear() {
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
 //   in cpHpDamageCtrl::applyShrinkBlowDamage_Down at 0x00487ebb-0x00487ec1 (called at cpHpDamageCtrl.cpp:6442)
 // nObjCollision::FORCE_REACTION_TYPE cBlowShrinkDmInfo::getForceDownType() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBlowShrinkDmInfo::MyDTI cBlowShrinkDmInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cBlowShrinkDmInfo.cpp at 0x00033b6f-0x00033bac (called at cBlowShrinkDmInfo.cpp:21)

@@ -41,7 +41,7 @@ const MtDTI& uEffect2D::getDTI() const {
 // Address: 0x00fcca80 - 0x00fccac0 (64 bytes)
 void* uEffect2D::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uEffect2D::DTI)->memAlloc(sz, align, ::uEffect2D::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memAlloc(sz, align, uEffect2D::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uEffect2D::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9uEffect2DD0Ev at 0x00fcce6e-0x00fcce8f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uEffect2D::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uEffect2D::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,18 +108,18 @@ __attribute__((weak)) void uEffect2D::moveAfter() {
 void uEffect2D::draw(cDraw* pDraw) {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEffect2D == static_cast<rEffect2D*>(nullptr)) {
+    if (mpEffect2D == nullptr) {
         return;
     }
-    if (this->getSleepMode() != false) {
+    if (getSleepMode()) {
         return;
     }
-    if ((this->mRTFlag & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        if (this->isSubSceneDraw(pDraw) != false) {
-            this->::uEffect2D::drawSubScene(pDraw);
+    if ((mRTFlag & 1u) != 0) {
+        if (isSubSceneDraw(pDraw)) {
+            drawSubScene(pDraw);
         }
     } else {
-        this->::uEffect2D::drawScene(pDraw);
+        drawScene(pDraw);
     }
 }
 
@@ -132,21 +132,21 @@ __attribute__((weak)) void uEffect2D::createProperty(MtPropertyList& s) {
 // Address: 0x00fd0480 - 0x00fd0485 (5 bytes)
 MtUI* uEffect2D::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCoord::createUI(prop);
+    return this->uCoord::createUI(prop);
 }
 
 // Address: 0x00fd0490 - 0x00fd0496 (6 bytes)
 u64 uEffect2D::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(16);
+    return 16;
 }
 
 // Address: 0x00fd04a0 - 0x00fd04c7 (39 bytes)
 bool uEffect2D::getBoundary(MtSphere* pdst) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pdst->pos.x = this->::uCoord::mPos.x;
-    pdst->pos.y = this->::uCoord::mPos.y;
-    pdst->pos.z = this->::uCoord::mPos.z;
+    pdst->pos.x = mPos.x;
+    pdst->pos.y = mPos.y;
+    pdst->pos.z = mPos.z;
     pdst->r = 100.0f;
     return true;
 }
@@ -173,11 +173,11 @@ __attribute__((weak)) void uEffect2D::applyWorldOffset(const MtVector3& offset, 
 // Address: 0x00fd0890 - 0x00fd08aa (26 bytes)
 void uEffect2D::setEffectParent(uCoord* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pParent != static_cast<uCoord*>(nullptr)) {
-        this->::uCoord::mpParent = pParent;
-        this->mStatus = this->mStatus | static_cast<u32>(512);
+    if (pParent != nullptr) {
+        mpParent = pParent;
+        mStatus = mStatus | 512u;
     } else {
-        this->::uCoord::mpParent = static_cast<uCoord*>(nullptr);
+        mpParent = nullptr;
     }
 }
 
@@ -187,16 +187,16 @@ bool uEffect2D::getSleepMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 2) >> 1);
 }
 
 // Address: 0x01ad60c0 - 0x01ad60db (27 bytes)
 void uEffect2D::setSleepMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Mode) {
-        this->mStatus = this->mStatus | static_cast<u32>(2);
+        mStatus = mStatus | 2u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65533);
+        mStatus = mStatus & 65533u;
     }
 }
 
@@ -206,16 +206,16 @@ bool uEffect2D::getSchedulerMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 4) >> 2);
 }
 
 // Address: 0x01b66260 - 0x01b6627b (27 bytes)
 void uEffect2D::setSchedulerMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Mode) {
-        this->mStatus = this->mStatus | static_cast<u32>(4);
+        mStatus = mStatus | 4u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65531);
+        mStatus = mStatus & 65531u;
     }
 }
 
@@ -225,16 +225,16 @@ bool uEffect2D::getEventMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 8) >> 3);
 }
 
 // Address: 0x01b66290 - 0x01b662ab (27 bytes)
 void uEffect2D::setEventMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Mode) {
-        this->mStatus = this->mStatus | static_cast<u32>(8);
+        mStatus = mStatus | 8u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65527);
+        mStatus = mStatus & 65527u;
     }
 }
 
@@ -243,16 +243,16 @@ bool uEffect2D::getTimerControlMode() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect2D*
     // inferred: a value cast to the type its use takes: const unsigned char used as bool
-    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(1));
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 1);
 }
 
 // Address: 0x01b662b0 - 0x01b662d0 (32 bytes)
 void uEffect2D::setTimerControlMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Mode) {
-        this->mStatus = this->mStatus | static_cast<u32>(256);
+        mStatus = mStatus | 256u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65279);
+        mStatus = mStatus & 65279u;
     }
 }
 
@@ -262,16 +262,16 @@ bool uEffect2D::getWorldPosMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect2D*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 2) >> 1);
 }
 
 // Address: 0x01b662e0 - 0x01b66300 (32 bytes)
 void uEffect2D::setWorldPosMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Mode) {
-        this->mStatus = this->mStatus | static_cast<u32>(512);
+        mStatus = mStatus | 512u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65023);
+        mStatus = mStatus & 65023u;
     }
 }
 
@@ -281,16 +281,16 @@ bool uEffect2D::getRestartFlag() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 16) >> 4);
 }
 
 // Address: 0x01ad60f0 - 0x01ad610b (27 bytes)
 void uEffect2D::setRestartFlag(bool Flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Flag) {
-        this->mStatus = this->mStatus | static_cast<u32>(16);
+        mStatus = mStatus | 16u;
     } else {
-        this->mStatus = this->mStatus & static_cast<u32>(65519);
+        mStatus = mStatus & 65519u;
     }
 }
 
@@ -304,7 +304,7 @@ void uEffect2D::setRestartFlag(bool Flag) {
 // Address: 0x01b66370 - 0x01b66378 (8 bytes)
 u32 uEffect2D::getLoopFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLoopFrame;
+    return mLoopFrame;
 }
 
 // Address: 0x01b66380 - 0x01b663b7 (55 bytes)
@@ -316,7 +316,7 @@ __attribute__((weak)) void uEffect2D::setLoopFrame(u32 LoopFrame) {
 // Address: 0x01b663c0 - 0x01b663c8 (8 bytes)
 u32 uEffect2D::getLifeFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLifeFrame;
+    return mLifeFrame;
 }
 
 // Address: 0x01b663d0 - 0x01b66422 (82 bytes)
@@ -328,52 +328,52 @@ __attribute__((weak)) void uEffect2D::setLifeFrame(u32 LifeFrame) {
 // Address: 0x01b66430 - 0x01b66438 (8 bytes)
 u32 uEffect2D::getWaitFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWaitFrame;
+    return mWaitFrame;
 }
 
 // Address: 0x01b66440 - 0x01b66448 (8 bytes)
 void uEffect2D::setWaitFrame(u32 WaitFrame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWaitFrame = WaitFrame;
+    mWaitFrame = WaitFrame;
 }
 
 // Address: 0x01b66350 - 0x01b66357 (7 bytes)
 u32 uEffect2D::getTimer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTimer;
+    return mTimer;
 }
 
 // Address: 0x01b66360 - 0x01b66370 (16 bytes)
 void uEffect2D::setTimer(u32 Timer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mStatus & static_cast<u32>(256)) == static_cast<u32>(0)) {
+    if ((mStatus & 256u) == 0) {
         return;
     }
-    this->mTimer = Timer;
+    mTimer = Timer;
 }
 
 // Address: 0x01b66300 - 0x01b66309 (9 bytes)
 f32 uEffect2D::getDeltaTimeCoef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTimeCoef;
+    return mDeltaTimeCoef;
 }
 
 // Address: 0x01b66310 - 0x01b66319 (9 bytes)
 void uEffect2D::setDeltaTimeCoef(f32 DeltaTimeCoef) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTimeCoef = DeltaTimeCoef;
+    mDeltaTimeCoef = DeltaTimeCoef;
 }
 
 // Address: 0x01b66450 - 0x01b66458 (8 bytes)
 u32 uEffect2D::getKillNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKillNo;
+    return mKillNo;
 }
 
 // Address: 0x01b66460 - 0x01b66468 (8 bytes)
 void uEffect2D::setKillNo(u32 KillNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mKillNo = KillNo;
+    mKillNo = KillNo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -388,12 +388,12 @@ void uEffect2D::setKillNo(u32 KillNo) {
 // Address: 0x00fd08c0 - 0x00fd08f2 (50 bytes)
 void uEffect2D::setAlphaRate(f32 AlphaRate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAlphaRate = AlphaRate;
+    mAlphaRate = AlphaRate;
     if (0.0f > AlphaRate) {
-        this->mAlphaRate = 0.0f;
+        mAlphaRate = 0.0f;
     } else {
         if (AlphaRate > 1.0f) {
-            this->mAlphaRate = 1.0f;
+            mAlphaRate = 1.0f;
         }
     }
 }
@@ -401,25 +401,25 @@ void uEffect2D::setAlphaRate(f32 AlphaRate) {
 // Address: 0x01b66320 - 0x01b6632f (15 bytes)
 u32 uEffect2D::getEndType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndType;
+    return mEndType;
 }
 
 // Address: 0x01b66330 - 0x01b6634a (26 bytes)
 void uEffect2D::setEndType(u32 EndType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndType = EndType;
+    mEndType = EndType;
 }
 
 // Address: 0x01b66470 - 0x01b6647b (11 bytes)
 u32 uEffect2D::getSizeAdjustType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSizeAdjustType;
+    return mSizeAdjustType;
 }
 
 // Address: 0x01b66480 - 0x01b6649a (26 bytes)
 void uEffect2D::setSizeAdjustType(u32 SizeAdjustType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSizeAdjustType = SizeAdjustType;
+    mSizeAdjustType = SizeAdjustType;
 }
 
 // No out-of-line body: no code in the ELF
@@ -432,7 +432,7 @@ void uEffect2D::setSizeAdjustType(u32 SizeAdjustType) {
 // Address: 0x01b66560 - 0x01b66568 (8 bytes)
 rEffect2D* uEffect2D::getEffect2D() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpEffect2D;
+    return mpEffect2D;
 }
 
 // Address: 0x00fd01b0 - 0x00fd027a (202 bytes)
@@ -445,14 +445,14 @@ __attribute__((weak)) void uEffect2D::setEffect2D(rEffect2D* pEffect2D) {
 // Address: 0x01b664f0 - 0x01b664f6 (6 bytes)
 u32 uEffect2D::getFlagBitNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(32);
+    return 32;
 }
 
 // Address: 0x01b664a0 - 0x01b664b6 (22 bytes)
 bool uEffect2D::getGroupFlagBit(u32 No) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mGroupFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mGroupFlag) >> static_cast<unsigned long>(No & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x01b664c0 - 0x01b664e2 (34 bytes)
@@ -468,7 +468,7 @@ __attribute__((weak)) void uEffect2D::setGroupFlagBit(bool Flag, u32 No) {
 bool uEffect2D::getMaterialFlagBit(u32 No) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mMaterialFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mMaterialFlag) >> static_cast<unsigned long>(No & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x01b66530 - 0x01b66552 (34 bytes)
@@ -495,31 +495,31 @@ __attribute__((weak)) void uEffect2D::setMaterialFlagBit(bool Flag, u32 No) {
 // Address: 0x01b665a0 - 0x01b665a7 (7 bytes)
 u32 uEffect2D::getRTMaskMapAlpha() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRTMaskMapAlpha;
+    return mRTMaskMapAlpha;
 }
 
 // Address: 0x01b665b0 - 0x01b665b7 (7 bytes)
 void uEffect2D::setRTMaskMapAlpha(u32 RTMaskMapAlpha) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRTMaskMapAlpha = RTMaskMapAlpha;
+    mRTMaskMapAlpha = RTMaskMapAlpha;
 }
 
 // Address: 0x01b66590 - 0x01b66597 (7 bytes)
 u32 uEffect2D::getGeneratorBuffSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeneratorBuffSize;
+    return mGeneratorBuffSize;
 }
 
 // Address: 0x01b66570 - 0x01b66578 (8 bytes)
 u32 uEffect2D::getGeneratorNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeneratorNum;
+    return mGeneratorNum;
 }
 
 // Address: 0x01b66580 - 0x01b66588 (8 bytes)
 u32 uEffect2D::getGeneratorMoveNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeneratorMoveNum;
+    return mGeneratorMoveNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -533,9 +533,9 @@ __attribute__((weak)) void uEffect2D::setDummyU32(u32) {
 // Address: 0x00fd0900 - 0x00fd0911 (17 bytes)
 void uEffect2D::setResourceParam(rEffect2D* pEffect2D, u32 GroupFlag, u32 MaterialFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroupFlag = GroupFlag;
-    this->mMaterialFlag = MaterialFlag;
-    this->::uEffect2D::setEffect2D(pEffect2D);
+    mGroupFlag = GroupFlag;
+    mMaterialFlag = MaterialFlag;
+    setEffect2D(pEffect2D);
 }
 
 // Address: 0x00fd0280 - 0x00fd02f5 (117 bytes)
@@ -550,76 +550,76 @@ void uEffect2D::doRestart() {
     // Approximate from the ELF: a bitfield unit stored one field at a time; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; code after the loop copied into an arm that skips it; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x138 from uEffect2D*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x130 from uEffect2D*
-    if (static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312))) == static_cast<unsigned short>(0)) {
-        this->mStatus = (this->mStatus & static_cast<u32>(36812)) | static_cast<u32>(1);
-        this->mTimeInterpolationRate = 1.0f;
-        this->mIntTimeInterpolationRate = static_cast<s32>(256);
-        this->mTimer = static_cast<u32>(0);
-        this->mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
-        this->mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
-        this->mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) >> static_cast<unsigned long>(32);
+    if (static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312)) == 0) {
+        mStatus = (mStatus & 36812u) | 1u;
+        mTimeInterpolationRate = 1.0f;
+        mIntTimeInterpolationRate = 256;
+        mTimer = 0;
+        mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+        mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+        mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 304)) >> 32;
         return;
     }
-    u32 ctr = static_cast<u32>(0);
+    u32 ctr = 0;
     do {
-        this->mGenerator[ctr].::cParticle2DGenerator::restart();
-        this->mGenerator[ctr].::cParticle2DGenerator::closeParticleAll();
-        ctr += static_cast<u32>(1);
-    } while (ctr < static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312))));
-    this->mStatus = (this->mStatus & static_cast<u32>(36812)) | static_cast<u32>(1);
-    this->mTimeInterpolationRate = 1.0f;
-    this->mIntTimeInterpolationRate = static_cast<s32>(256);
-    this->mTimer = static_cast<u32>(0);
-    this->mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
-    this->mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
-    this->mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) >> static_cast<unsigned long>(32);
+        mGenerator[ctr].restart();
+        mGenerator[ctr].closeParticleAll();
+        ctr += 1u;
+    } while (ctr < static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312)));
+    mStatus = (mStatus & 36812u) | 1u;
+    mTimeInterpolationRate = 1.0f;
+    mIntTimeInterpolationRate = 256;
+    mTimer = 0;
+    mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+    mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 312);
+    mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 304)) >> 32;
 }
 
 // Address: 0x00fd0300 - 0x00fd042f (303 bytes)
 void uEffect2D::doClear() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->releaseGenerator();
-    this->mCreateFlag = static_cast<u32>(0);
-    this->mRTFlag = static_cast<u32>(0);
-    if (this->mpEffect2D != static_cast<rEffect2D*>(nullptr)) {
-        this->mpEffect2D->::cResource::release();
-        this->mpEffect2D = static_cast<rEffect2D*>(nullptr);
+    releaseGenerator();
+    mCreateFlag = 0;
+    mRTFlag = 0;
+    if (mpEffect2D != nullptr) {
+        mpEffect2D->release();
+        mpEffect2D = nullptr;
     }
-    if (this->mpTempTexture[0] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpTempTexture[0]->release();
-        this->mpTempTexture[0] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpTempTexture[0] != nullptr) {
+        mpTempTexture[0]->release();
+        mpTempTexture[0] = nullptr;
     }
-    if (this->mpTempTexture[1] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpTempTexture[1]->release();
-        this->mpTempTexture[1] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpTempTexture[1] != nullptr) {
+        mpTempTexture[1]->release();
+        mpTempTexture[1] = nullptr;
     }
-    if (this->mpTempTexture[2] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpTempTexture[2]->release();
-        this->mpTempTexture[2] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpTempTexture[2] != nullptr) {
+        mpTempTexture[2]->release();
+        mpTempTexture[2] = nullptr;
     }
-    if (this->mpTempTexture[3] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpTempTexture[3]->release();
-        this->mpTempTexture[3] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpTempTexture[3] != nullptr) {
+        mpTempTexture[3]->release();
+        mpTempTexture[3] = nullptr;
     }
-    if (this->mpDepthStencil[0] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDepthStencil[0]->release();
-        this->mpDepthStencil[0] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDepthStencil[0] != nullptr) {
+        mpDepthStencil[0]->release();
+        mpDepthStencil[0] = nullptr;
     }
-    if (this->mpDepthStencil[1] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDepthStencil[1]->release();
-        this->mpDepthStencil[1] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDepthStencil[1] != nullptr) {
+        mpDepthStencil[1]->release();
+        mpDepthStencil[1] = nullptr;
     }
-    if (this->mpDepthStencil[2] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDepthStencil[2]->release();
-        this->mpDepthStencil[2] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDepthStencil[2] != nullptr) {
+        mpDepthStencil[2]->release();
+        mpDepthStencil[2] = nullptr;
     }
-    if (this->mpDepthStencil[3] != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDepthStencil[3]->release();
-        this->mpDepthStencil[3] = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDepthStencil[3] != nullptr) {
+        mpDepthStencil[3]->release();
+        mpDepthStencil[3] = nullptr;
     }
-    this->mGroupFlag = static_cast<u32>(4294967295);
-    this->mMaterialFlag = static_cast<u32>(4294967295);
+    mGroupFlag = 0xFFFFFFFF;
+    mMaterialFlag = 0xFFFFFFFF;
 }
 
 // Address: 0x00fd0430 - 0x00fd047a (74 bytes)
@@ -702,15 +702,15 @@ __attribute__((weak)) bool uEffect2D::createGenerator() {
 // Address: 0x00fd15c0 - 0x00fd161f (95 bytes)
 void uEffect2D::releaseGenerator() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGenerator != static_cast<cParticle2DGenerator*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::uEffect2D::DTI)->memFree(static_cast<void*>(this->mGenerator));
-        this->mGenerator = static_cast<cParticle2DGenerator*>(nullptr);
+    if (mGenerator != nullptr) {
+        MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memFree(static_cast<void*>(mGenerator));
+        mGenerator = nullptr;
     }
-    this->mGeneratorNum = static_cast<u32>(0);
-    this->mGeneratorMoveNum = static_cast<u32>(0);
-    this->mDrawBuffSize = static_cast<u32>(0);
-    this->mKillNo = static_cast<u32>(0);
-    this->mCreateFlag = static_cast<u32>(0);
+    mGeneratorNum = 0;
+    mGeneratorMoveNum = 0;
+    mDrawBuffSize = 0;
+    mKillNo = 0;
+    mCreateFlag = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -741,37 +741,37 @@ __attribute__((weak)) void uEffect2D::drawScene(cDraw* pDraw) {
     // DWARF local not rendered: u8* pDrawBuff;
     // DWARF local not rendered: u32 generatorCtr;
     // Approximate from the ELF: code after a join copied into the arms; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    s32 intAlphaRate = this->::uEffect2D::getDrawAlphaRate(pDraw);
+    s32 intAlphaRate = getDrawAlphaRate(pDraw);
     // inferred: the value the loop at 0xfce7e0 carries; no location-less local in scope fits
     u8* v0_0;
     cPrim* pPrim;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_10;
-    if (intAlphaRate != static_cast<s32>(0)) {
+    if (intAlphaRate != 0) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xfce78f, held ahead of the effects the ELF orders after it
-        sPrimitive* t1 = ::sPrimitive::mpInstance;
+        sPrimitive* t1 = sPrimitive::mpInstance;
         // inferred: an ordered temporary, read before a later effect: the value read at 0xfce792, held ahead of the effects the ELF orders after it
-        u32 t2 = this->mDrawPass;
-        pPrim = t1->::sPrimitive::getCPrim(pDraw, static_cast<nDraw::PASS_TYPE>(t2), static_cast<cUnit*>(this));
+        u32 t2 = mDrawPass;
+        pPrim = t1->getCPrim(pDraw, static_cast<nDraw::PASS_TYPE>(t2), static_cast<cUnit*>(this));
         // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7a7, held ahead of the effects the ELF orders after it
-        u32 t4 = this->mDrawBuffSize;
-        if (t4 != static_cast<u32>(0)) {
+        u32 t4 = mDrawBuffSize;
+        if (t4 != 0) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7ba, held ahead of the effects the ELF orders after it
-            sEffect* t5 = ::sEffect::mpInstance;
+            sEffect* t5 = sEffect::mpInstance;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7bd, held ahead of the effects the ELF orders after it
             u32 t6 = pDraw->mJobThreadIndex;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7c4, held ahead of the effects the ELF orders after it
-            u8* t7 = t5->::sEffect::getTempBuff(t6, t4);
-            if (this->mGeneratorNum != static_cast<u32>(0)) {
+            u8* t7 = t5->getTempBuff(t6, t4);
+            if (mGeneratorNum != 0) {
                 v0_0 = t7;
-                i0_10 = static_cast<unsigned int>(0);
+                i0_10 = 0;
             } else {
                 return;
             }
         } else {
-            if (this->mGeneratorNum != static_cast<u32>(0)) {
-                v0_0 = static_cast<u8*>(nullptr);
-                i0_10 = static_cast<unsigned int>(0);
+            if (mGeneratorNum != 0) {
+                v0_0 = nullptr;
+                i0_10 = 0;
             } else {
                 return;
             }
@@ -781,10 +781,10 @@ __attribute__((weak)) void uEffect2D::drawScene(cDraw* pDraw) {
     }
     for (;;) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7eb, held ahead of the effects the ELF orders after it
-        cParticle2DGenerator* t9 = this->mGenerator;
-        t9[i0_10].::cParticle2DGenerator::draw(pDraw, pPrim, intAlphaRate, static_cast<u32>(0), v0_0);
-        if ((i0_10 + static_cast<unsigned int>(1)) < this->mGeneratorNum) {
-            i0_10 += static_cast<unsigned int>(1);
+        cParticle2DGenerator* t9 = mGenerator;
+        t9[i0_10].draw(pDraw, pPrim, intAlphaRate, 0u, v0_0);
+        if ((i0_10 + 1u) < mGeneratorNum) {
+            i0_10 += 1u;
         } else {
             break;
         }
@@ -796,7 +796,7 @@ bool uEffect2D::isSubSceneDraw(cDraw* pDraw) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x230 from cDraw*
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pDraw) + static_cast<long>(560))) & static_cast<unsigned long>(281474976710656)) >> static_cast<unsigned long>(48));
+    return static_cast<bool>(((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pDraw) + 560)) & 0x1000000000000ul) >> 48);
 }
 
 // Address: 0x00fcd5e0 - 0x00fce754 (4468 bytes)
@@ -870,6 +870,8 @@ __attribute__((weak)) u32 uEffect2D::getParticleMoveSize(u32 MoveType) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 uEffect2D::convertAlphaToF32(u32 Alpha);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uEffect2D::MyDTI uEffect2D::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uEffect2D::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

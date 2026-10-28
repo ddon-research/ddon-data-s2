@@ -24,7 +24,7 @@ const MtDTI& CDataRankingBoard::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataRankingBoard::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataRankingBoard::DTI);
+    return MtMemoryAllocator::getAllocator(CDataRankingBoard::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataRankingBoard::getAllocator() {
 // Address: 0x003ce100 - 0x003ce140 (64 bytes)
 void* CDataRankingBoard::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataRankingBoard::getAllocator()->memAlloc(sz, align, ::CDataRankingBoard::DTI.::MtDTI::getID());
+    return CDataRankingBoard::getAllocator()->memAlloc(sz, align, CDataRankingBoard::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataRankingBoard::operator new(size_t sz, u32 align) {
 // Address: 0x003ce170 - 0x003ce19a (42 bytes)
 __attribute__((weak)) void CDataRankingBoard::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataRankingBoard::getAllocator()->memFree(p_addr);
+    CDataRankingBoard::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ __attribute__((weak)) void CDataRankingBoard::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataRankingBoard::CDataRankingBoard(u32, u32, u8, u32, s64, s64, s64, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataRankingBoard::MyDTI CDataRankingBoard::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041c8bc-0x0041c8f5 (called at RankingImplement.inc:7)
@@ -95,7 +97,7 @@ const MtDTI& CDataRankingData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataRankingData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataRankingData::DTI);
+    return MtMemoryAllocator::getAllocator(CDataRankingData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +106,7 @@ inline MtAllocator* CDataRankingData::getAllocator() {
 // Address: 0x003ce260 - 0x003ce2a0 (64 bytes)
 void* CDataRankingData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataRankingData::getAllocator()->memAlloc(sz, align, ::CDataRankingData::DTI.::MtDTI::getID());
+    return CDataRankingData::getAllocator()->memAlloc(sz, align, CDataRankingData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ void* CDataRankingData::operator new(size_t sz, u32 align) {
 // Address: 0x003ce2d0 - 0x003ce2fa (42 bytes)
 __attribute__((weak)) void CDataRankingData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataRankingData::getAllocator()->memFree(p_addr);
+    CDataRankingData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,6 +142,8 @@ __attribute__((weak)) void CDataRankingData::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataRankingData::CDataRankingData(u32, u32, s64, const CCommunityCharacterBaseInfo&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataRankingData::MyDTI CDataRankingData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041c8f5-0x0041c92e (called at RankingImplement.inc:8)

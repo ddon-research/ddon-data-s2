@@ -31,7 +31,7 @@ const MtDTI& cpMotionSe::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpMotionSe::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpMotionSe::DTI);
+    return MtMemoryAllocator::getAllocator(cpMotionSe::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpMotionSe::getAllocator() {
 // Address: 0x004d2bb0 - 0x004d2bf0 (64 bytes)
 void* cpMotionSe::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpMotionSe::getAllocator()->memAlloc(sz, align, ::cpMotionSe::DTI.::MtDTI::getID());
+    return cpMotionSe::getAllocator()->memAlloc(sz, align, cpMotionSe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpMotionSe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpMotionSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpMotionSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpMotionSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,28 +70,28 @@ inline void cpMotionSe::operator delete(void* p_addr) {
 // Address: 0x004d2c60 - 0x004d2cb6 (86 bytes)
 cpMotionSe::cpMotionSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpChatVoice = static_cast<rSoundStreamRequest*>(nullptr);
-    this->mNowX = static_cast<s32>(-1);
-    this->mNowZ = static_cast<s32>(-1);
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpChatVoice = nullptr;
+    mNowX = -1;
+    mNowZ = -1;
+    mpModel = nullptr;
 }
 
 // Address: 0x004d2cc0 - 0x004d2d0a (74 bytes)
 // Also emitted as: _ZN10cpMotionSeD0Ev at 0x004d2d10
 cpMotionSe::~cpMotionSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpChatVoice == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (mpChatVoice == nullptr) {
         return;
     }
-    this->mpChatVoice->::cResource::release();
-    this->mpChatVoice = static_cast<rSoundStreamRequest*>(nullptr);
+    mpChatVoice->release();
+    mpChatVoice = nullptr;
 }
 
 // Address: 0x01a5c2f0 - 0x01a5c2fc (12 bytes)
 void cpMotionSe::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004d2d80 - 0x004d2e9e (286 bytes)
@@ -105,22 +105,22 @@ __attribute__((weak)) void cpMotionSe::setup() {
 // Address: 0x004d2ec0 - 0x004d2ecc (12 bytes)
 void cpMotionSe::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     }
-    this->::cpMotionSe::calcPartsArea();
+    calcPartsArea();
 }
 
 // Address: 0x004d2eb0 - 0x004d2eb5 (5 bytes)
 void cpMotionSe::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x004d3300 - 0x004d3309 (9 bytes)
 void cpMotionSe::setMotionSe(rSoundMotionSe* pMotionSe) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::setMotionSe(pMotionSe);
+    mMotionSe.setMotionSe(pMotionSe);
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,13 +129,13 @@ void cpMotionSe::setMotionSe(rSoundMotionSe* pMotionSe) {
 // Address: 0x004d3320 - 0x004d3329 (9 bytes)
 void cpMotionSe::setRequest(rSoundRequest* pReq, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::setRequest(pReq, type);
+    mMotionSe.setRequest(pReq, type);
 }
 
 // Address: 0x004d3330 - 0x004d3339 (9 bytes)
 rSoundRequest* cpMotionSe::getRequest(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotionSe.::uSoundMotionSe::getRequest(type);
+    return mMotionSe.getRequest(type);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,13 +150,13 @@ rSoundRequest* cpMotionSe::getRequest(u32 type) {
 // Address: 0x004d3360 - 0x004d3369 (9 bytes)
 rSoundStreamRequest* cpMotionSe::getStreamRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotionSe.::uSoundMotionSe::getStreamRequest();
+    return mMotionSe.getStreamRequest();
 }
 
 // Address: 0x004d3370 - 0x004d3379 (9 bytes)
 void cpMotionSe::setAttributeSe(rSoundAttributeSe* pAttributeSe) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::setAttributeSe(pAttributeSe);
+    mMotionSe.setAttributeSe(pAttributeSe);
 }
 
 // No out-of-line body: no code in the ELF
@@ -188,7 +188,7 @@ void cpMotionSe::setAttributeSe(rSoundAttributeSe* pAttributeSe) {
 // Address: 0x004d33d0 - 0x004d33d8 (8 bytes)
 rSoundStreamRequest* cpMotionSe::getChatStreamRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpChatVoice;
+    return mpChatVoice;
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +200,7 @@ rSoundStreamRequest* cpMotionSe::getChatStreamRequest() {
 // Address: 0x004d3400 - 0x004d3408 (8 bytes)
 void cpMotionSe::setMotType(u8 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.mMotType = type;
+    mMotionSe.mMotType = type;
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,43 +209,43 @@ void cpMotionSe::setMotType(u8 type) {
 // Address: 0x004d3420 - 0x004d3466 (70 bytes)
 void cpMotionSe::setMotionSeVoice(u32 sex, u32 voiceType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadPlVoiceSRQResource(sex, voiceType);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadPlVoiceSRQResource(sex, voiceType);
+    if (pRes == nullptr) {
         return;
     }
-    this->mMotionSe.::uSoundMotionSe::setRequest(static_cast<rSoundRequest*>(pRes), static_cast<u32>(1));
-    pRes->::cResource::release();
+    mMotionSe.setRequest(static_cast<rSoundRequest*>(pRes), 1u);
+    pRes->cResource::release();
 }
 
 // Address: 0x004d3470 - 0x004d34b6 (70 bytes)
 void cpMotionSe::setMotionSeVoicePawn(u32 sex, u32 voiceType, u32 personality) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadPawnVoiceSRQResource(sex, voiceType, personality);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadPawnVoiceSRQResource(sex, voiceType, personality);
+    if (pRes == nullptr) {
         return;
     }
-    this->mMotionSe.::uSoundMotionSe::setRequest(static_cast<rSoundRequest*>(pRes), static_cast<u32>(1));
-    pRes->::cResource::release();
+    mMotionSe.setRequest(static_cast<rSoundRequest*>(pRes), 1u);
+    pRes->cResource::release();
 }
 
 // Address: 0x004d34c0 - 0x004d3538 (120 bytes)
 void cpMotionSe::setChatVoice(u32 sex, u32 voiceType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpChatVoice != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mpChatVoice->::cResource::release();
-        this->mpChatVoice = static_cast<rSoundStreamRequest*>(nullptr);
-        rSoundStreamRequest* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadChatVoiceStreamResource(sex, voiceType);
-        if (pRes != static_cast<rSoundStreamRequest*>(nullptr)) {
-            pRes->::cResource::addRef();
-            this->mpChatVoice = pRes;
-            pRes->::cResource::release();
+    if (mpChatVoice != nullptr) {
+        mpChatVoice->release();
+        mpChatVoice = nullptr;
+        rSoundStreamRequest* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadChatVoiceStreamResource(sex, voiceType);
+        if (pRes != nullptr) {
+            pRes->cResource::addRef();
+            mpChatVoice = pRes;
+            pRes->cResource::release();
         }
     } else {
-        rSoundStreamRequest* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadChatVoiceStreamResource(sex, voiceType);
-        if (pRes != static_cast<rSoundStreamRequest*>(nullptr)) {
-            pRes->::cResource::addRef();
-            this->mpChatVoice = pRes;
-            pRes->::cResource::release();
+        rSoundStreamRequest* pRes = static_cast<sSoundExt*>(sSound::getInstance())->loadChatVoiceStreamResource(sex, voiceType);
+        if (pRes != nullptr) {
+            pRes->cResource::addRef();
+            mpChatVoice = pRes;
+            pRes->cResource::release();
         }
     }
 }
@@ -275,13 +275,13 @@ __attribute__((weak)) void cpMotionSe::calcPartsArea() {
 // Address: 0x004d3540 - 0x004d354e (14 bytes)
 void cpMotionSe::requestMotionSe(u16 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::requestMotionSebyWork(id, static_cast<u8>(1));
+    mMotionSe.requestMotionSebyWork(id, static_cast<u8>(1));
 }
 
 // Address: 0x004d3550 - 0x004d355c (12 bytes)
 void cpMotionSe::setMotionSeCallFlag(u32 Index, bool Flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::setMotionSeCallFlag(Index, Flag);
+    mMotionSe.setMotionSeCallFlag(Index, Flag);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (24 bytes)
@@ -299,8 +299,10 @@ void cpMotionSe::setMotionSeCallFlag(u32 Index, bool Flag) {
 // Address: 0x004d2ea0 - 0x004d2ea9 (9 bytes)
 void cpMotionSe::updateMotion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMotionSe.::uSoundMotionSe::move();
+    mMotionSe.uSoundMotionSe::move();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpMotionSe::MyDTI cpMotionSe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpMotionSe.cpp at 0x004d365f-0x004d369c (called at cpMotionSe.cpp:42)
@@ -310,6 +312,6 @@ void cpMotionSe::updateMotion() {
 // Address: 0x004d2b20 - 0x004d2ba1 (129 bytes)
 MtObject* cpMotionSe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpMotionSe;
+    return new (16u) cpMotionSe;
 }
 

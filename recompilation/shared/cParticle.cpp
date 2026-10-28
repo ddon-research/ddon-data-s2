@@ -329,9 +329,9 @@
 // Address: 0x0133a0f0 - 0x0133a113 (35 bytes)
 bool cParticle::updateSynchroEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSynchroUnit != static_cast<cUnit*>(nullptr)) {
-        if ((this->mpSynchroUnit->mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
-            this->mpSynchroUnit = static_cast<cUnit*>(nullptr);
+    if (mpSynchroUnit != nullptr) {
+        if ((mpSynchroUnit->mBeFlag - 1u) > 1u) {
+            mpSynchroUnit = nullptr;
             return false;
         } else {
             return true;
@@ -350,13 +350,13 @@ bool cParticle::updateSynchroEnable() {
 // Address: 0x0133a120 - 0x0133a15b (59 bytes)
 void cParticle::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnableFlag = static_cast<u32>(0);
-    if (this->mpSynchroUnit == static_cast<cUnit*>(nullptr)) {
+    mEnableFlag = 0;
+    if (mpSynchroUnit == nullptr) {
         return;
     }
-    if ((this->mpSynchroUnit->mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        this->mpSynchroUnit->kill();
-        this->mpSynchroUnit = static_cast<cUnit*>(nullptr);
+    if ((mpSynchroUnit->mBeFlag - 1u) <= 1u) {
+        mpSynchroUnit->kill();
+        mpSynchroUnit = nullptr;
     }
 }
 

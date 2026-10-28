@@ -41,7 +41,7 @@ const MtDTI& cBlendState::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cBlendState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBlendState::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBlendState::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ cBlendState::~cBlendState() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // SO_HANDLE cBlendState::getBlendStateHandle(cBlendState::eDefaultBState abst);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBlendState::MyDTI cBlendState::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cBlendState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

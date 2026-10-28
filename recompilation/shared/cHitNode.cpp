@@ -31,7 +31,7 @@ const MtDTI& cHitNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cHitNode::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cHitNode::DTI);
+    return MtMemoryAllocator::getAllocator(cHitNode::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cHitNode::getAllocator() {
 // Address: 0x000ddce0 - 0x000ddd20 (64 bytes)
 void* cHitNode::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cHitNode::getAllocator()->memAlloc(sz, align, ::cHitNode::DTI.::MtDTI::getID());
+    return cHitNode::getAllocator()->memAlloc(sz, align, cHitNode::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cHitNode::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cHitNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHitNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHitNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,12 +112,12 @@ __attribute__((weak)) void cHitNode::createProperty(MtPropertyList& s) {
 cAttackParam* cHitNode::getAttackParamFromAttackNo(u32 no) const {
     // DWARF local not rendered: cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParamRes != static_cast<rAttackParam*>(nullptr)) {
-        if (no < this->mpAttackParamRes->getDataNum()) {
-            return this->mpAttackParamRes->getData(no);
+    if (mpAttackParamRes != nullptr) {
+        if (no < mpAttackParamRes->getDataNum()) {
+            return mpAttackParamRes->getData(no);
         }
     }
-    return static_cast<cAttackParam*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,31 +134,31 @@ __attribute__((weak)) void cHitNode::setSCollisionNodeAttr(u32 attr) {
 // Address: 0x000de6a0 - 0x000de6b7 (23 bytes)
 void cHitNode::setAttackParam(const cAttackParam* pAttackParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    if (pAttackParam == static_cast<const cAttackParam*>(nullptr)) {
+    if (pAttackParam == nullptr) {
         return;
     }
-    this->mpAttackParam->::cAttackParam::copy(*pAttackParam);
+    mpAttackParam->copy(*pAttackParam);
 }
 
 // Address: 0x000de6c0 - 0x000de735 (117 bytes)
 void cHitNode::setAttackParamFromAttackNo(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParamRes == static_cast<rAttackParam*>(nullptr)) {
+    if (mpAttackParamRes == nullptr) {
         return;
     }
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    if (this->mpAttackParamRes->getDataNum() == static_cast<u32>(0)) {
+    if (mpAttackParamRes->getDataNum() == 0) {
         return;
     }
-    if (no < this->mpAttackParamRes->getDataNum()) {
-        cAttackParam* pParam = this->mpAttackParamRes->getData(no);
-        if (pParam != static_cast<cAttackParam*>(nullptr)) {
-            this->mpAttackParam->::cAttackParam::copy(*pParam);
+    if (no < mpAttackParamRes->getDataNum()) {
+        cAttackParam* pParam = mpAttackParamRes->getData(no);
+        if (pParam != nullptr) {
+            mpAttackParam->copy(*pParam);
         }
     }
 }
@@ -189,10 +189,10 @@ __attribute__((weak)) void cHitNode::setAttackParamRes(rAttackParam* mpr) {
 const MtSphere* cHitNode::getSphere(u32 index) const {
     // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGeomArray.mpArray[index] != static_cast<MtObject*>(nullptr)) {
-        return static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::getSphere();
+    if (mGeomArray.mpArray[index] != nullptr) {
+        return static_cast<cHitGeom*>(mGeomArray.mpArray[index])->getSphere();
     } else {
-        return static_cast<const MtSphere*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -200,20 +200,20 @@ const MtSphere* cHitNode::getSphere(u32 index) const {
 void cHitNode::setSphere(u32 index, const MtSphere& sphere) {
     // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGeomArray.mpArray[index] == static_cast<MtObject*>(nullptr)) {
+    if (mGeomArray.mpArray[index] == nullptr) {
         return;
     }
-    static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::setSphere(sphere);
+    static_cast<cHitGeom*>(mGeomArray.mpArray[index])->setSphere(sphere);
 }
 
 // Address: 0x000de5f0 - 0x000de607 (23 bytes)
 const MtCapsule* cHitNode::getCapsule(u32 index) const {
     // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGeomArray.mpArray[index] != static_cast<MtObject*>(nullptr)) {
-        return static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::getCapsule();
+    if (mGeomArray.mpArray[index] != nullptr) {
+        return static_cast<cHitGeom*>(mGeomArray.mpArray[index])->getCapsule();
     } else {
-        return static_cast<const MtCapsule*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -221,10 +221,10 @@ const MtCapsule* cHitNode::getCapsule(u32 index) const {
 void cHitNode::setCapsule(u32 index, const MtCapsule& capsule) {
     // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGeomArray.mpArray[index] == static_cast<MtObject*>(nullptr)) {
+    if (mGeomArray.mpArray[index] == nullptr) {
         return;
     }
-    static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::setCapsule(capsule);
+    static_cast<cHitGeom*>(mGeomArray.mpArray[index])->setCapsule(capsule);
 }
 
 // No out-of-line body: no code in the ELF
@@ -240,19 +240,19 @@ void cHitNode::updateNode() {
     // DWARF local not rendered: u32 Num;
     // DWARF local not rendered: cHitGeom* pGeom;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpObjCollision->::cpObjCollisionBase::getModel() != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpCollNode != static_cast<cCollNode*>(nullptr)) {
-            this->::cHitNode::setSCollisionNodeAttr(this->mpObjCollision->::cpObjCollisionBase::getModel()->replaceCollisionAttr(this->mpCollNode->::cCollNode::getAttr(), this->mpCollNode));
+    if (mpObjCollision->getModel() != nullptr) {
+        if (mpCollNode != nullptr) {
+            setSCollisionNodeAttr(mpObjCollision->getModel()->replaceCollisionAttr(mpCollNode->getAttr(), mpCollNode));
             // inferred: the value the loop at 0xde030 carries; the location-less local in scope that fits is declared on no line of the value's writes
-            u32 v0_10 = this->mGeomArray.mLength;
-            if (v0_10 != static_cast<u32>(0)) {
+            u32 v0_10 = mGeomArray.mLength;
+            if (v0_10 != 0) {
                 // inferred: DWARF's location-less 'i' (lexical block [0xde02a, 0xde04a)) is the counter this loop steps (DWARF's stale constant 0)
-                for (u32 i = static_cast<u32>(0);;) {
-                    if (this->mGeomArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                        static_cast<cHitGeom*>(this->mGeomArray.mpArray[i])->::cHitGeom::updateGeom();
+                for (u32 i = 0;;) {
+                    if (mGeomArray.mpArray[i] != nullptr) {
+                        static_cast<cHitGeom*>(mGeomArray.mpArray[i])->updateGeom();
                     }
-                    if (v0_10 != (i + static_cast<u32>(1))) {
-                        i = i + static_cast<u32>(1);
+                    if (v0_10 != (i + 1u)) {
+                        i = i + 1u;
                     } else {
                         break;
                     }
@@ -286,13 +286,13 @@ void cHitNode::updateNode() {
 // Address: 0x000de780 - 0x000de7a1 (33 bytes)
 void cHitNode::resetHitNode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    if (this->mpOrgAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpOrgAttackParam == nullptr) {
         return;
     }
-    this->mpAttackParam->::cAttackParam::copy(*this->mpOrgAttackParam);
+    mpAttackParam->copy(*mpOrgAttackParam);
 }
 
 // No out-of-line body: no code in the ELF
@@ -301,12 +301,14 @@ void cHitNode::resetHitNode() {
 // Address: 0x000de7c0 - 0x000de7d3 (19 bytes)
 uDDOModel* cHitNode::getOwnerUnit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjCollision != static_cast<cpObjCollisionBase*>(nullptr)) {
-        return this->mpObjCollision->::cpObjCollisionBase::getModel();
+    if (mpObjCollision != nullptr) {
+        return mpObjCollision->getModel();
     } else {
-        return static_cast<uDDOModel*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitNode::MyDTI cHitNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cHitNode.cpp at 0x000de8f0-0x000de934 (called at cHitNode.cpp:19)

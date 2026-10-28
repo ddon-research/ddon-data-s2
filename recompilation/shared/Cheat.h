@@ -63,9 +63,9 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataCheatInfo::CDataCheatInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucId = static_cast<u8>(0);
-    this->m_ucCount = static_cast<u8>(0);
-    this->m_unParam1 = static_cast<u32>(0);
-    this->m_unParam2 = static_cast<u32>(0);
-    this->m_unParam3 = static_cast<u32>(0);
+    this->m_ucId = 0;
+    this->m_ucCount = 0;
+    this->m_unParam1 = 0;
+    this->m_unParam2 = 0;
+    this->m_unParam3 = 0;
 }

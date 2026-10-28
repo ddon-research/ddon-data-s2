@@ -54,7 +54,7 @@ const MtDTI& cGameHttpClient::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGameHttpClient::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGameHttpClient::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGameHttpClient::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,7 +90,7 @@ __attribute__((weak)) void cGameHttpClient::createProperty(MtPropertyList& s) {
 // Address: 0x007bf640 - 0x007bf645 (5 bytes)
 MtUI* cGameHttpClient::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +112,7 @@ __attribute__((weak)) void cGameHttpClient::init() {
 // Address: 0x007bf7d0 - 0x007bf7db (11 bytes)
 void cGameHttpClient::abort() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<s32>(5);
+    mRno = 5;
 }
 
 // Address: 0x007bf7e0 - 0x007bf9ea (522 bytes)
@@ -217,6 +217,8 @@ __attribute__((weak)) s32 cGameHttpClient::analyzeDownloadPic() {
 // No out-of-line body: no code in the ELF
 // cGameHttpClient::cLoginBackDoorInfo& cGameHttpClient::getLoginBackDoorInfoRef();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGameHttpClient::MyDTI cGameHttpClient::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sHttpClient.cpp at 0x007c0b4a-0x007c0b87 (called at sHttpClient.cpp:36)
 //   in _GLOBAL__sub_I_sHttpClient.cpp at 0x007c0b4a-0x007c0b87 (called at sHttpClient.h:30)
@@ -287,6 +289,8 @@ cGameHttpClient::cLoginBackDoorInfo::~cLoginBackDoorInfo() {
     DDON_STUB("cGameHttpClient::cLoginBackDoorInfo::~cLoginBackDoorInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGameHttpClient::cLoginBackDoorInfo::MyDTI cGameHttpClient::cLoginBackDoorInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sHttpClient.cpp at 0x007c0bc7-0x007c0c00 (called at sHttpClient.cpp:38)
@@ -388,10 +392,15 @@ const MtDTI& cGameHttpClient::cServerEnvironmentInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cGameHttpClient::cServerEnvironmentInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 1 function (90 bytes)
-//   in cGameHttpClient::cServerEnvironmentInfo::MyDTI::newInstance at 0x007bee2d-0x007bee5a (called at sHttpClient.cpp:37)
-//   in cGameHttpClient::cServerEnvironmentInfo::MyDTI::newInstance at 0x007bee2d-0x007bee5a (called at sHttpClient.h:332)
-// cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mRomVersion = 0;
+    mUraguchiURL.value = nullptr;
+    mUraguchiURN.value = nullptr;
+    mInfo.value = nullptr;
+}
 
 // Address: 0x01ac5270 - 0x01ac535d (237 bytes)
 // Also emitted as: _ZN15cGameHttpClient22cServerEnvironmentInfoD0Ev at 0x01ac5360
@@ -399,6 +408,8 @@ cGameHttpClient::cServerEnvironmentInfo::~cServerEnvironmentInfo() {
     DDON_STUB("cGameHttpClient::cServerEnvironmentInfo::~cServerEnvironmentInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGameHttpClient::cServerEnvironmentInfo::MyDTI cGameHttpClient::cServerEnvironmentInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sHttpClient.cpp at 0x007c0b87-0x007c0bc7 (called at sHttpClient.cpp:37)
@@ -488,7 +499,7 @@ const MtDTI& sHttpClient::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sHttpClient::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sHttpClient::DTI);
+    return MtMemoryAllocator::getAllocator(sHttpClient::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -497,7 +508,7 @@ inline MtAllocator* sHttpClient::getAllocator() {
 // Address: 0x007bebb0 - 0x007bebf0 (64 bytes)
 void* sHttpClient::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sHttpClient::getAllocator()->memAlloc(sz, align, ::sHttpClient::DTI.::MtDTI::getID());
+    return sHttpClient::getAllocator()->memAlloc(sz, align, sHttpClient::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -512,7 +523,7 @@ void* sHttpClient::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sHttpClient::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sHttpClient::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sHttpClient::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -554,7 +565,7 @@ __attribute__((weak)) void sHttpClient::createProperty(MtPropertyList& s) {
 // Address: 0x007c0690 - 0x007c0695 (5 bytes)
 MtUI* sHttpClient::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007c06a0 - 0x007c06a1 (1 bytes)
@@ -582,7 +593,7 @@ __attribute__((weak)) void sHttpClient::move() {
 // Address: 0x007c0790 - 0x007c0796 (6 bytes)
 u32 sHttpClient::getConnectServerNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (86 bytes)
@@ -663,6 +674,11 @@ __attribute__((weak)) u32 sHttpClient::createClient() {
     DDON_STUB("sHttpClient::createClient")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sHttpClient::MyDTI sHttpClient::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sHttpClient* sHttpClient::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sHttpClient.cpp at 0x007c0b0d-0x007c0b4a (called at sHttpClient.cpp:35)

@@ -45,7 +45,7 @@ const MtDTI& rDeformWeightMap::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rDeformWeightMapD0Ev at 0x011c4dd4-0x011c4df5, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDeformWeightMap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDeformWeightMap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ inline void rDeformWeightMap::operator delete(void* p_addr) {
 // Address: 0x011c4f40 - 0x011c4f45 (5 bytes)
 void rDeformWeightMap::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
 
 // Address: 0x011c4f50 - 0x011c5a11 (2753 bytes)
@@ -115,7 +115,7 @@ __attribute__((weak)) void rDeformWeightMap::clear() {
 // Also emitted as: _ZN16rDeformWeightMapD0Ev at 0x011c4db0
 rDeformWeightMap::~rDeformWeightMap() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rDeformWeightMap::clear();
+    this->rDeformWeightMap::clear();
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,6 +132,8 @@ rDeformWeightMap::~rDeformWeightMap() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rDeformWeightMap::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDeformWeightMap::MyDTI rDeformWeightMap::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rDeformWeightMap::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

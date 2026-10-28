@@ -69,34 +69,34 @@ nCollision::cCollisionNode::cCollisionNode(const MtDTI* pEditGeometryDTI) {
 // Also emitted as: _ZN10nCollision14cCollisionNodeD0Ev at 0x0118df00
 nCollision::cCollisionNode::~cCollisionNode() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGeometryArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGeometryArray.mLength != 0) {
         // inferred: the value the loop at 0x118de90 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGeometryArray.::MtArray::mLength;
+        u32 v0_0 = mGeometryArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGeometryArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGeometryArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGeometryArray.::MtArray::mLength) {
-                    v0_0 = this->mGeometryArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGeometryArray.mpArray[i0_3] != nullptr) {
+                delete mGeometryArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGeometryArray.mLength) {
+                    v0_0 = mGeometryArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGeometryArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGeometryArray.::MtArray::mpArray));
+    if (mGeometryArray.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mGeometryArray.mpArray));
     }
-    this->mGeometryArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGeometryArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGeometryArray.::MtArray::mLength = static_cast<u32>(0);
+    mGeometryArray.mpArray = nullptr;
+    mGeometryArray.mBufsiz = 0;
+    mGeometryArray.mLength = 0;
 }
 
 // Address: 0x0118dfc0 - 0x0118e2b0 (752 bytes)
@@ -161,7 +161,7 @@ __attribute__((weak)) void nCollision::cCollisionNode::copyEx(const nCollision::
 // Address: 0x0118ec70 - 0x0118ec75 (5 bytes)
 void nCollision::cCollisionNode::initialize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgSetup = false;
+    mFlgSetup = false;
 }
 
 // Address: 0x0118ec80 - 0x0118ec81 (1 bytes)
@@ -196,19 +196,19 @@ u32 nCollision::cCollisionNode::setGeometry(MtGeomConvex* pGeomConvex, u32 Regis
     // DWARF local not rendered: cGeometry* pTargetIndexGeometry;
     // DWARF local not rendered: cGeometry* pGeometry;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
-        if (RegistArrayIndex < this->mGeometryArray.::MtArray::mLength) {
-            if (this->mGeometryArray.::MtArray::mpArray[RegistArrayIndex] != static_cast<MtObject*>(nullptr)) {
-                static_cast<nCollision::cGeometry*>(this->mGeometryArray.::MtArray::mpArray[RegistArrayIndex])->::nCollision::cGeometry::registGeometry(pGeomConvex, FlgEnableDeepCopy);
+    if (mpEditDTI != nullptr) {
+        if (RegistArrayIndex < mGeometryArray.mLength) {
+            if (mGeometryArray.mpArray[RegistArrayIndex] != nullptr) {
+                static_cast<nCollision::cGeometry*>(mGeometryArray.mpArray[RegistArrayIndex])->registGeometry(pGeomConvex, FlgEnableDeepCopy);
             } else {
-                this->addGeometry(pGeomConvex, FlgEnableDeepCopy);
+                addGeometry(pGeomConvex, FlgEnableDeepCopy);
             }
         } else {
-            this->addGeometry(pGeomConvex, FlgEnableDeepCopy);
+            addGeometry(pGeomConvex, FlgEnableDeepCopy);
         }
         return RegistArrayIndex;
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -216,21 +216,21 @@ u32 nCollision::cCollisionNode::setGeometry(MtGeomConvex* pGeomConvex, u32 Regis
 u32 nCollision::cCollisionNode::insertGeometry(MtGeomConvex* pGeomConvex, u32 RegistArrayIndex, bool FlgEnableDeepCopy) {
     // DWARF local not rendered: const u32 NowGeometryNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
-        if (RegistArrayIndex < this->mGeometryArray.::MtArray::mLength) {
-            nCollision::cGeometry* pTargetIndexGeometry = static_cast<nCollision::cGeometry*>(this->mpEditDTI->newInstance());
-            if (pTargetIndexGeometry != static_cast<nCollision::cGeometry*>(nullptr)) {
+    if (mpEditDTI != nullptr) {
+        if (RegistArrayIndex < mGeometryArray.mLength) {
+            nCollision::cGeometry* pTargetIndexGeometry = static_cast<nCollision::cGeometry*>(mpEditDTI->newInstance());
+            if (pTargetIndexGeometry != nullptr) {
                 pTargetIndexGeometry->::nCollision::cGeometry::registGeometry(pGeomConvex, FlgEnableDeepCopy);
-                this->mGeometryArray.::MtArray::insert(static_cast<MtObject*>(pTargetIndexGeometry), RegistArrayIndex);
+                mGeometryArray.insert(static_cast<MtObject*>(pTargetIndexGeometry), RegistArrayIndex);
                 return RegistArrayIndex;
             } else {
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         } else {
-            return this->setGeometry(pGeomConvex, RegistArrayIndex, FlgEnableDeepCopy);
+            return setGeometry(pGeomConvex, RegistArrayIndex, FlgEnableDeepCopy);
         }
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -259,34 +259,34 @@ __attribute__((weak)) bool nCollision::cCollisionNode::eraseGeometry(u32 TargetG
 // Address: 0x0118ef90 - 0x0118f00c (124 bytes)
 void nCollision::cCollisionNode::eraseGeometryAll() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGeometryArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGeometryArray.mLength != 0) {
         // inferred: the value the loop at 0x118efb0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGeometryArray.::MtArray::mLength;
+        u32 v0_0 = mGeometryArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGeometryArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGeometryArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGeometryArray.::MtArray::mLength) {
-                    v0_0 = this->mGeometryArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGeometryArray.mpArray[i0_3] != nullptr) {
+                delete mGeometryArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGeometryArray.mLength) {
+                    v0_0 = mGeometryArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGeometryArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGeometryArray.::MtArray::mpArray));
+    if (mGeometryArray.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mGeometryArray.mpArray));
     }
-    this->mGeometryArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGeometryArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGeometryArray.::MtArray::mLength = static_cast<u32>(0);
+    mGeometryArray.mpArray = nullptr;
+    mGeometryArray.mBufsiz = 0;
+    mGeometryArray.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -331,7 +331,7 @@ void nCollision::cCollisionNode::eraseGeometryAll() {
 // Address: 0x0118ec40 - 0x0118ec45 (5 bytes)
 const MtAABB& nCollision::cCollisionNode::getBoundingAABB() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBoundingAABB;
+    return mBoundingAABB;
 }
 
 // No out-of-line body: no code in the ELF
@@ -343,8 +343,8 @@ const MtAABB& nCollision::cCollisionNode::getBoundingAABB() const {
 // Address: 0x0118e2b0 - 0x0118e2c6 (22 bytes)
 MT_CTSTR nCollision::cCollisionNode::getEditDTIName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
-        return this->mpEditDTI->mName;
+    if (mpEditDTI != nullptr) {
+        return mpEditDTI->mName;
     } else {
         return "NoRegist";
     }
@@ -364,10 +364,10 @@ nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClass(u32 TargetIn
     // DWARF local not rendered: cGeometry* pTargetGeometry;
     // DWARF local not rendered: const u32 GeometryNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetIndex < this->mGeometryArray.::MtArray::mLength) {
-        return static_cast<nCollision::cGeometry*>(this->mGeometryArray.::MtArray::mpArray[TargetIndex]);
+    if (TargetIndex < mGeometryArray.mLength) {
+        return static_cast<nCollision::cGeometry*>(mGeometryArray.mpArray[TargetIndex]);
     } else {
-        return static_cast<nCollision::cGeometry*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -376,10 +376,10 @@ const nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClassConst(u
     // DWARF local not rendered: const cGeometry* pTargetGeometry;
     // DWARF local not rendered: const u32 GeometryNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetIndex < this->mGeometryArray.::MtArray::mLength) {
-        return static_cast<const nCollision::cGeometry*>(this->mGeometryArray.::MtArray::mpArray[TargetIndex]);
+    if (TargetIndex < mGeometryArray.mLength) {
+        return static_cast<const nCollision::cGeometry*>(mGeometryArray.mpArray[TargetIndex]);
     } else {
-        return static_cast<const nCollision::cGeometry*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -422,13 +422,13 @@ __attribute__((weak)) void nCollision::cCollisionNode::callbackGeometryDelete(u3
 // Address: 0x0118f100 - 0x0118f116 (22 bytes)
 bool nCollision::cCollisionNode::isSetupMove(bool FlgSetupUpdate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlgSetup == false) {
-        if ((FlgSetupUpdate == false) == false) {
-            this->mFlgSetup = true;
+    if (!mFlgSetup) {
+        if (!!FlgSetupUpdate) {
+            mFlgSetup = true;
             return true;
         }
     }
-    return this->mFlgSetup == false;
+    return !mFlgSetup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -460,6 +460,8 @@ bool nCollision::cCollisionNode::isSetupMove(bool FlgSetupUpdate) {
 
 // No out-of-line body: no code in the ELF
 // void nCollision::cCollisionNode::callbackGeometryDeleteNoResizeInterface(u32 ElementIndex);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nCollision::cCollisionNode::MyDTI nCollision::cCollisionNode::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cCollisionNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -571,26 +573,26 @@ u32 nCollision::cCollisionNodeObject::addGeometry(MtGeomConvex* pGeomConvex, boo
 // Address: 0x01b85860 - 0x01b858a7 (71 bytes)
 u32 nCollision::cCollisionNodeObject::setGeometry(MtGeomConvex* pGeomConvex, u32 RegistArrayIndex, bool FlgEnableDeepCopy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::nCollision::cCollisionNode::mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
-        if (RegistArrayIndex < this->::nCollision::cCollisionNode::mGeometryArray.::MtArray::mLength) {
-            if (this->::nCollision::cCollisionNode::mGeometryArray.::MtArray::mpArray[RegistArrayIndex] != static_cast<MtObject*>(nullptr)) {
-                static_cast<nCollision::cGeometry*>(this->::nCollision::cCollisionNode::mGeometryArray.::MtArray::mpArray[RegistArrayIndex])->::nCollision::cGeometry::registGeometry(pGeomConvex, FlgEnableDeepCopy);
+    if (mpEditDTI != nullptr) {
+        if (RegistArrayIndex < mGeometryArray.mLength) {
+            if (mGeometryArray.mpArray[RegistArrayIndex] != nullptr) {
+                static_cast<nCollision::cGeometry*>(mGeometryArray.mpArray[RegistArrayIndex])->registGeometry(pGeomConvex, FlgEnableDeepCopy);
             } else {
-                this->addGeometry(pGeomConvex, FlgEnableDeepCopy);
+                addGeometry(pGeomConvex, FlgEnableDeepCopy);
             }
         } else {
-            this->addGeometry(pGeomConvex, FlgEnableDeepCopy);
+            addGeometry(pGeomConvex, FlgEnableDeepCopy);
         }
         return RegistArrayIndex;
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x01190270 - 0x01190275 (5 bytes)
 void nCollision::cCollisionNodeObject::initialize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nCollision::cCollisionNode::mFlgSetup = false;
+    mFlgSetup = false;
 }
 
 // Address: 0x01190280 - 0x011902be (62 bytes)
@@ -749,7 +751,7 @@ __attribute__((weak)) MtObject* nCollision::cCollisionNodeObject::getGeometryUse
 // Address: 0x01b85730 - 0x01b8573c (12 bytes)
 bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCallbackFuncSetup != static_cast<const MT_MFUNC>(0);
+    return mpCallbackFuncSetup != static_cast<const MT_MFUNC>(0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -764,7 +766,7 @@ bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
 // Address: 0x01b85750 - 0x01b85758 (8 bytes)
 MtObject* nCollision::cCollisionNodeObject::getUserDataPtr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpUserDataPtr;
+    return mpUserDataPtr;
 }
 
 // Address: 0x01190d00 - 0x01190d3f (63 bytes)
@@ -808,6 +810,8 @@ __attribute__((weak)) void nCollision::cCollisionNodeObject::setUserDataPtr(MtOb
 
 // No out-of-line body: no code in the ELF
 // uintptr nCollision::cCollisionNodeObject::getUserPtrAddr();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nCollision::cCollisionNodeObject::MyDTI nCollision::cCollisionNodeObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cCollisionNodeObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -876,15 +880,15 @@ nCollision::cGeometry::cGeometry() {
 // Also emitted as: _ZN10nCollision9cGeometryD0Ev at 0x01187d10
 nCollision::cGeometry::~cGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlgAllocateGeometry != false) {
-        if (this->mpGeometry != static_cast<MtGeomConvex*>(nullptr)) {
-            delete this->mpGeometry;
-            this->mpGeometry = static_cast<MtGeomConvex*>(nullptr);
+    if (mFlgAllocateGeometry) {
+        if (mpGeometry != nullptr) {
+            delete mpGeometry;
+            mpGeometry = nullptr;
         }
     } else {
-        this->mpGeometry = static_cast<MtGeomConvex*>(nullptr);
+        mpGeometry = nullptr;
     }
-    this->mFlgAllocateGeometry = false;
+    mFlgAllocateGeometry = false;
 }
 
 // Address: 0x01187d70 - 0x011880ec (892 bytes)
@@ -910,10 +914,10 @@ __attribute__((weak)) bool nCollision::cGeometry::save(MtDataWriter& w, MtStream
 // Address: 0x01188290 - 0x0118829d (13 bytes)
 void nCollision::cGeometry::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::nCollision::cObjectBase::mFlgActive == false) {
+    if (!mFlgActive) {
         return;
     }
-    this->updateBoundingAABB();
+    updateBoundingAABB();
 }
 
 // Address: 0x011882a0 - 0x01188340 (160 bytes)
@@ -959,37 +963,37 @@ __attribute__((weak)) void nCollision::cGeometry::registGeometry(MtGeomConvex* p
 // Address: 0x01187cd0 - 0x01187d01 (49 bytes)
 void nCollision::cGeometry::unregistGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlgAllocateGeometry != false) {
-        if (this->mpGeometry != static_cast<MtGeomConvex*>(nullptr)) {
-            delete this->mpGeometry;
-            this->mpGeometry = static_cast<MtGeomConvex*>(nullptr);
+    if (mFlgAllocateGeometry) {
+        if (mpGeometry != nullptr) {
+            delete mpGeometry;
+            mpGeometry = nullptr;
         }
     } else {
-        this->mpGeometry = static_cast<MtGeomConvex*>(nullptr);
+        mpGeometry = nullptr;
     }
-    this->mFlgAllocateGeometry = false;
+    mFlgAllocateGeometry = false;
 }
 
 // Address: 0x011880f0 - 0x011880ff (15 bytes)
 u32 nCollision::cGeometry::getGeometryType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry != static_cast<MtGeomConvex*>(nullptr)) {
-        return this->mpGeometry->::MtGeometry::mType;
+    if (mpGeometry != nullptr) {
+        return mpGeometry->mType;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01188100 - 0x01188105 (5 bytes)
 MtGeomConvex* nCollision::cGeometry::getRegistGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeometry;
+    return mpGeometry;
 }
 
 // Address: 0x01188410 - 0x01188415 (5 bytes)
 MtGeomConvex* nCollision::cGeometry::getRegistGeometryConst() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeometry;
+    return mpGeometry;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1154,21 +1158,23 @@ MtGeomConvex* nCollision::cGeometry::getRegistGeometryConst() const {
 // Address: 0x01188110 - 0x01188124 (20 bytes)
 void nCollision::cGeometry::registGeometryForUI(MtGeomConvex* pRegistGeomConvex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlgAllocateGeometry == false) {
+    if (!mFlgAllocateGeometry) {
         return;
     }
-    if (pRegistGeomConvex == static_cast<MtGeomConvex*>(nullptr)) {
+    if (pRegistGeomConvex == nullptr) {
         return;
     }
-    this->mpGeometry = pRegistGeomConvex;
-    this->mFlgAllocateGeometry = true;
+    mpGeometry = pRegistGeomConvex;
+    mFlgAllocateGeometry = true;
 }
 
 // Address: 0x01188b20 - 0x01188b29 (9 bytes)
 void nCollision::cGeometry::registGeometryByTypeInterface(u32 GeometryType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->registGeometryByType(GeometryType);
+    registGeometryByType(GeometryType);
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nCollision::cGeometry::MyDTI nCollision::cGeometry::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cGeometry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1260,7 +1266,7 @@ __attribute__((weak)) void nCollision::cGeometryJointGroup::move() {
 // Address: 0x011927e0 - 0x011927e4 (4 bytes)
 bool nCollision::cGeometryJointGroup::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::nCollision::cObjectBase::mFlgActive;
+    return mFlgActive;
 }
 
 // Address: 0x011927f0 - 0x01192972 (386 bytes)
@@ -1308,7 +1314,7 @@ __attribute__((weak)) void nCollision::cGeometryJointGroup::copyEx(const nCollis
 // Address: 0x011929b0 - 0x011929b8 (8 bytes)
 MtObject* nCollision::cGeometryJointGroup::getFreeObject() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpFreeObject;
+    return mpFreeObject;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1407,7 +1413,7 @@ __attribute__((weak)) void nCollision::cGeometryJointGroup::setAttachModel(uMode
 // Address: 0x011927d0 - 0x011927d8 (8 bytes)
 uModel* nCollision::cGeometryJointGroup::getAttachModel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAttachModel;
+    return mpAttachModel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1452,38 +1458,40 @@ uModel* nCollision::cGeometryJointGroup::getAttachModel() const {
 // Address: 0x01192020 - 0x011920a5 (133 bytes)
 void nCollision::cGeometryJointGroup::setUniqueIDTableNumForInside(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mUniqueIDTableNum == num) {
+    if (mUniqueIDTableNum == num) {
         return;
     }
     // inferred: a temporary for the value the load at 0x1192039 read, used twice; no DWARF local holds it
-    u32* t0 = this->mpUniqueIDTable;
-    if (t0 != static_cast<u32*>(nullptr)) {
+    u32* t0 = mpUniqueIDTable;
+    if (t0 != nullptr) {
         ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memFree(static_cast<void*>(t0));
-        this->mpUniqueIDTable = static_cast<u32*>(nullptr);
+        mpUniqueIDTable = nullptr;
     }
-    this->mpUniqueIDTable = static_cast<u32*>(::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16)));
-    this->mUniqueIDTableNum = num;
+    mpUniqueIDTable = static_cast<u32*>(::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memAlloc(static_cast<size_t>(num) * 4, 16u));
+    mUniqueIDTableNum = num;
 }
 
 // Address: 0x01192010 - 0x01192017 (7 bytes)
 u32 nCollision::cGeometryJointGroup::getUniqueIDTableNumForInside() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUniqueIDTableNum;
+    return mUniqueIDTableNum;
 }
 
 // Address: 0x01191ff0 - 0x01192005 (21 bytes)
 void nCollision::cGeometryJointGroup::setUniqueIDTableForInside(u32 UniqueID, u32 TargetIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetIndex < this->mUniqueIDTableNum) {
-        this->mpUniqueIDTable[TargetIndex] = UniqueID;
+    if (TargetIndex < mUniqueIDTableNum) {
+        mpUniqueIDTable[TargetIndex] = UniqueID;
     }
 }
 
 // Address: 0x01191fe0 - 0x01191fed (13 bytes)
 u32 nCollision::cGeometryJointGroup::getUniqueIDTableForInside(u32 TargetIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpUniqueIDTable[TargetIndex];
+    return mpUniqueIDTable[TargetIndex];
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCollision::cGeometryJointGroup::MyDTI nCollision::cGeometryJointGroup::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cGeometryJointGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1607,6 +1615,8 @@ __attribute__((weak)) void nCollision::cMotionSequenceSupport::createProperty(Mt
 // No out-of-line body: no code in the ELF
 // size_t nCollision::cMotionSequenceSupport::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCollision::cMotionSequenceSupport::MyDTI nCollision::cMotionSequenceSupport::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cMotionSequenceSupport::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1686,12 +1696,12 @@ bool nCollision::cObjectBase::save(MtDataWriter& w, MtStream& out) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: a temporary for the value the load at 0x1187a3a read, used once; no DWARF local holds it
-    bool t0 = this->mFlgActive;
+    bool t0 = mFlgActive;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    w.mSeekPt = w.mSeekPt + 1u;
     return true;
 }
 
@@ -1703,19 +1713,19 @@ __attribute__((weak)) void nCollision::cObjectBase::move() {
 // Address: 0x01187a80 - 0x01187a87 (7 bytes)
 void nCollision::cObjectBase::copy(const nCollision::cObjectBase& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgActive = src.mFlgActive;
+    mFlgActive = src.mFlgActive;
 }
 
 // Address: 0x01187a90 - 0x01187a94 (4 bytes)
 bool nCollision::cObjectBase::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlgActive;
+    return mFlgActive;
 }
 
 // Address: 0x01187aa0 - 0x01187aa5 (5 bytes)
 void nCollision::cObjectBase::setActive(bool FlgSetActive) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgActive = FlgSetActive;
+    mFlgActive = FlgSetActive;
 }
 
 // Address: 0x01187ab0 - 0x01187ab3 (3 bytes)
@@ -1776,6 +1786,8 @@ __attribute__((weak)) void nCollision::cObjectBase::setDummyBool(bool flg) {
 __attribute__((weak)) void nCollision::cObjectBase::setDummyString(const MtString& str) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCollision::cObjectBase::MyDTI nCollision::cObjectBase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cObjectBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

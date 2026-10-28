@@ -32,7 +32,7 @@ const MtDTI& sArchiveManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sArchiveManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sArchiveManager::DTI);
+    return MtMemoryAllocator::getAllocator(sArchiveManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* sArchiveManager::getAllocator() {
 // Address: 0x0071fe80 - 0x0071fec0 (64 bytes)
 void* sArchiveManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sArchiveManager::getAllocator()->memAlloc(sz, align, ::sArchiveManager::DTI.::MtDTI::getID());
+    return sArchiveManager::getAllocator()->memAlloc(sz, align, sArchiveManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* sArchiveManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sArchiveManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sArchiveManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sArchiveManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,18 +79,18 @@ __attribute__((weak)) TICKET sArchiveManager::IssueTicket() {
 // Address: 0x007215c0 - 0x007215e4 (36 bytes)
 void sArchiveManager::returnTicket(TICKET ticket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ticket == static_cast<TICKET>(nullptr)) {
+    if (ticket == nullptr) {
         return;
     }
-    ticket->::cArcLoaderBase::clear();
-    this->mTicket3Release = true;
+    ticket->clear();
+    mTicket3Release = true;
 }
 
 // Address: 0x00721660 - 0x0072167b (27 bytes)
 bool sArchiveManager::addTagEx(TICKET ticket, ARC_TAGID tag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ticket != static_cast<TICKET>(nullptr)) {
-        ticket->::cArcLoaderBase::addTag(tag);
+    if (ticket != nullptr) {
+        ticket->addTag(tag);
         return true;
     } else {
         return false;
@@ -101,9 +101,9 @@ bool sArchiveManager::addTagEx(TICKET ticket, ARC_TAGID tag) {
 bool sArchiveManager::addTagEx(TICKET ticket, MT_CTSTR tagName) {
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x72168c, used once; no DWARF local holds it
-    ARC_TAGID t0 = ::rArchiveListArray::convTagId(tagName);
-    if (ticket != static_cast<TICKET>(nullptr)) {
-        ticket->::cArcLoaderBase::addTag(t0);
+    ARC_TAGID t0 = rArchiveListArray::convTagId(tagName);
+    if (ticket != nullptr) {
+        ticket->addTag(t0);
         return true;
     } else {
         return false;
@@ -113,8 +113,8 @@ bool sArchiveManager::addTagEx(TICKET ticket, MT_CTSTR tagName) {
 // Address: 0x00721610 - 0x00721627 (23 bytes)
 bool sArchiveManager::attestationTicket(TICKET ticket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ticket != static_cast<TICKET>(nullptr)) {
-        return ticket->::cArcLoaderBase::loadReqTag();
+    if (ticket != nullptr) {
+        return ticket->loadReqTag();
     } else {
         return false;
     }
@@ -123,8 +123,8 @@ bool sArchiveManager::attestationTicket(TICKET ticket) {
 // Address: 0x00721640 - 0x00721655 (21 bytes)
 bool sArchiveManager::isTicketLoadFinish(TICKET ticket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ticket != static_cast<TICKET>(nullptr)) {
-        return ticket->::cArcLoaderBase::loadReqTag();
+    if (ticket != nullptr) {
+        return ticket->loadReqTag();
     } else {
         return true;
     }
@@ -136,8 +136,8 @@ bool sArchiveManager::isTicketLoadFinish(TICKET ticket) {
 // Address: 0x007215f0 - 0x00721609 (25 bytes)
 bool sArchiveManager::annulmentTicketArchive(TICKET ticket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ticket != static_cast<TICKET>(nullptr)) {
-        ticket->::cArcLoaderBase::releaseArc();
+    if (ticket != nullptr) {
+        ticket->releaseArc();
         return true;
     } else {
         return false;
@@ -212,11 +212,10 @@ void sArchiveManager::moveArcLoaderErase() {
     // DWARF local not rendered: cArcLoaderBase* p_tmp;
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x720fc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    s32 v0_2 = this->mArcLoaderNum;
-    if (v0_2 <= static_cast<s32>(0)) {
-    } else {
+    s32 v0_2 = mArcLoaderNum;
+    if (v0_2 > 0) {
         // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-        int i0_0 = static_cast<int>(0);
+        int i0_0 = 0;
         // inferred: the value the loop at 0x720ff2 carries; the location-less local in scope that fits is declared on no line of the value's writes
         int v1_1;
         // inferred: the value the loop at 0x720ff2 carries; no location-less local in scope fits
@@ -237,72 +236,72 @@ void sArchiveManager::moveArcLoaderErase() {
         // inferred: the value carried to 0x72109d; the location-less local in scope that fits is declared on no line of the value's writes
         s32 v6_5;
         for (;;) {
-            if (this->mArcLoaderStack.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(255)) ? i0_0 : static_cast<int>(0)] != static_cast<cArcLoaderBase*>(nullptr)) {
-                if ((i0_0 + static_cast<int>(1)) < v0_2) {
-                    i0_0 = i0_0 + static_cast<int>(1);
+            if (mArcLoaderStack.elems[(static_cast<unsigned int>(i0_0) <= 255) ? i0_0 : 0] != nullptr) {
+                if ((i0_0 + 1) < v0_2) {
+                    i0_0 = i0_0 + 1;
                 } else {
                     v6_5 = v0_2;
                     break;
                 }
             } else {
-                if (i0_0 <= static_cast<int>(-1)) {
+                if (i0_0 <= -1) {
                     v6_5 = v0_2;
                 } else {
                     v1_1 = i0_0;
                     v1_3 = i0_0;
                     v1_4 = v0_2;
                     for (;;) {
-                        if (static_cast<int>(v1_3 + static_cast<unsigned int>(1)) >= v1_4) {
+                        if (static_cast<int>(v1_3 + 1u) >= v1_4) {
                             v6_5 = v1_4;
                             goto loop_720fc0_end;
                         } else {
-                            v2_2 = v1_3 + static_cast<unsigned int>(1);
+                            v2_2 = v1_3 + 1u;
                         }
                         for (;;) {
-                            v3_0 = this->mArcLoaderStack.elems[(v2_2 <= static_cast<unsigned int>(255)) ? v2_2 : static_cast<unsigned int>(0)];
-                            if (v3_0 != static_cast<cArcLoaderBase*>(nullptr)) {
-                                v3_1 = (v2_2 <= static_cast<unsigned int>(255)) ? v2_2 : static_cast<unsigned int>(0);
+                            v3_0 = mArcLoaderStack.elems[(v2_2 <= 255u) ? v2_2 : 0u];
+                            if (v3_0 != nullptr) {
+                                v3_1 = (v2_2 <= 255u) ? v2_2 : 0u;
                                 break;
                             } else {
-                                if (static_cast<int>(v2_2 + static_cast<unsigned int>(1)) < v1_4) {
-                                    v2_2 += static_cast<unsigned int>(1);
+                                if (static_cast<int>(v2_2 + 1u) < v1_4) {
+                                    v2_2 += 1u;
                                 } else {
                                     v6_5 = v1_4;
                                     goto loop_720fc0_end;
                                 }
                             }
                         }
-                        if (static_cast<int>(v2_2) <= static_cast<int>(-1)) {
+                        if (static_cast<int>(v2_2) <= -1) {
                             v6_5 = v1_4;
                             goto loop_720fc0_end;
                         } else {
                             // inferred: a temporary for the value the load at 0x721039 read, used once; no DWARF local holds it
-                            cArcLoaderBase* t0 = this->mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= static_cast<unsigned int>(255)) ? static_cast<unsigned int>(v1_1) : static_cast<unsigned int>(0)];
-                            this->mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= static_cast<unsigned int>(255)) ? static_cast<unsigned int>(v1_1) : static_cast<unsigned int>(0)] = v3_0;
-                            this->mArcLoaderStack.elems[v3_1] = t0;
+                            cArcLoaderBase* t0 = mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= 255) ? static_cast<unsigned int>(v1_1) : 0u];
+                            mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= 255) ? static_cast<unsigned int>(v1_1) : 0u] = v3_0;
+                            mArcLoaderStack.elems[v3_1] = t0;
                             v3_0->mHandle = static_cast<s16>(static_cast<unsigned short>(v1_1));
-                            v4_4 = this->mArcLoaderNum;
-                            if ((v1_1 + static_cast<int>(1)) >= v4_4) {
+                            v4_4 = mArcLoaderNum;
+                            if ((v1_1 + 1) >= v4_4) {
                                 v6_5 = v4_4;
                                 goto loop_720fc0_end;
                             } else {
-                                v4_1 = v1_1 + static_cast<int>(1);
+                                v4_1 = v1_1 + 1;
                                 enable_idx = v2_2;
                             }
                         }
                         for (;;) {
-                            if (this->mArcLoaderStack.elems[(v4_1 <= static_cast<unsigned int>(255)) ? v4_1 : static_cast<unsigned int>(0)] == static_cast<cArcLoaderBase*>(nullptr)) {
+                            if (mArcLoaderStack.elems[(v4_1 <= 255u) ? v4_1 : 0u] == nullptr) {
                                 break;
                             } else {
-                                if (static_cast<int>(v4_1 + static_cast<unsigned int>(1)) < v4_4) {
-                                    v4_1 += static_cast<unsigned int>(1);
+                                if (static_cast<int>(v4_1 + 1u) < v4_4) {
+                                    v4_1 += 1u;
                                 } else {
                                     v6_5 = v4_4;
                                     goto loop_720fc0_end;
                                 }
                             }
                         }
-                        if (static_cast<int>(v4_1) > static_cast<int>(-1)) {
+                        if (static_cast<int>(v4_1) > -1) {
                             v1_1 = v4_1;
                             v1_3 = enable_idx;
                             v1_4 = v4_4;
@@ -316,19 +315,18 @@ void sArchiveManager::moveArcLoaderErase() {
             }
         }
         loop_720fc0_end:;
-        if (v6_5 <= static_cast<s32>(0)) {
-        } else {
+        if (v6_5 > 0) {
             // inferred: DWARF's location-less 'i' (lexical block [0x72109f, 0x7210d8)) is the counter this loop steps (DWARF's stale constant 0)
-            s32 i = static_cast<s32>(0);
+            s32 i = 0;
             for (s32 ref_num = v6_5;;) {
-                if (this->mArcLoaderStack.elems[(static_cast<unsigned int>(i) <= static_cast<unsigned int>(255)) ? i : static_cast<s32>(0)] != static_cast<cArcLoaderBase*>(nullptr)) {
-                    if ((i + static_cast<s32>(1)) < ref_num) {
-                        i = i + static_cast<s32>(1);
+                if (mArcLoaderStack.elems[(static_cast<unsigned int>(i) <= 255) ? i : 0] != nullptr) {
+                    if ((i + 1) < ref_num) {
+                        i = i + 1;
                     } else {
                         break;
                     }
                 } else {
-                    this->mArcLoaderNum = i;
+                    mArcLoaderNum = i;
                     return;
                 }
             }
@@ -390,63 +388,63 @@ __attribute__((weak)) void sArchiveManager::moveArcLoaderLoadFinish(cArcLoaderBa
 cResource* sArchiveManager::createRes(u64 resId, u32 mode, bool warningOff) {
     // DWARF local not rendered: cResource* p_res;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (resId != static_cast<u64>(0)) {
-        return ::sResource::getInstance()->create(resId);
+    if (resId != 0) {
+        return sResource::getInstance()->create(resId);
     } else {
-        return static_cast<cResource*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x00720c80 - 0x00720d18 (152 bytes)
 cResource* sArchiveManager::createRes(ARC_TAGID tag, ARC_SEARCHID searchId, u32 mode, bool warningOff) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tag != static_cast<ARC_TAGID>(0)) {
+    if (tag != 0) {
         // inferred: a temporary for the result of the call at 0x720c9c, used 3 times; no DWARF local holds it
-        u32 t0 = ::rArchiveListArray::convTargetTagtNo(tag);
-        this->::sArchiveManager::loadAlaFile(t0);
-        if (this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
-            cArchiveListNode* p_node = this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListNode(tag, searchId);
-            if (p_node != static_cast<cArchiveListNode*>(nullptr)) {
+        u32 t0 = rArchiveListArray::convTargetTagtNo(tag);
+        loadAlaFile(t0);
+        if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
+            cArchiveListNode* p_node = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListNode(tag, searchId);
+            if (p_node != nullptr) {
                 u64 res_id = p_node->mResId;
-                if (res_id != static_cast<u64>(0)) {
-                    cResource* p_res = ::sResource::getInstance()->create(res_id);
-                    if (p_res == static_cast<cResource*>(nullptr)) {
-                        this->mLastError = static_cast<u32>(2);
-                        return static_cast<cResource*>(nullptr);
+                if (res_id != 0) {
+                    cResource* p_res = sResource::getInstance()->create(res_id);
+                    if (p_res == nullptr) {
+                        mLastError = 2;
+                        return nullptr;
                     } else {
                         return p_res;
                     }
                 } else {
-                    return static_cast<cResource*>(nullptr);
+                    return nullptr;
                 }
             } else {
-                this->mLastError = static_cast<u32>(1);
-                return static_cast<cResource*>(nullptr);
+                mLastError = 1;
+                return nullptr;
             }
         } else {
-            this->mLastError = static_cast<u32>(1);
-            return static_cast<cResource*>(nullptr);
+            mLastError = 1;
+            return nullptr;
         }
     } else {
-        this->mLastError = static_cast<u32>(1);
-        return static_cast<cResource*>(nullptr);
+        mLastError = 1;
+        return nullptr;
     }
 }
 
 // Address: 0x00720d20 - 0x00720d6e (78 bytes)
 cResource* sArchiveManager::createRes(const MtDTI& dti, MT_CTSTR path, u32 mode, bool warningOff) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((*path) != static_cast<char>(0)) {
-        u64 resId = ::sResource::getInstance()->::sResource::makeID(dti, path);
-        cResource* p_res = ::sResource::getInstance()->create(resId);
-        if (p_res == static_cast<cResource*>(nullptr)) {
-            this->mLastError = static_cast<u32>(2);
+    if ((*path) != 0) {
+        u64 resId = sResource::getInstance()->makeID(dti, path);
+        cResource* p_res = sResource::getInstance()->create(resId);
+        if (p_res == nullptr) {
+            mLastError = 2;
         }
         return p_res;
     } else {
-        cResource* p_res = ::sResource::getInstance()->create(static_cast<u64>(0));
-        if (p_res == static_cast<cResource*>(nullptr)) {
-            this->mLastError = static_cast<u32>(2);
+        cResource* p_res = sResource::getInstance()->create(0ul);
+        if (p_res == nullptr) {
+            mLastError = 2;
         }
         return p_res;
     }
@@ -456,40 +454,40 @@ cResource* sArchiveManager::createRes(const MtDTI& dti, MT_CTSTR path, u32 mode,
 cResource* sArchiveManager::createRes(MT_CTSTR tagName, MT_CTSTR searchName, u32 mode, bool warningOff) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x720d84, used 3 times; no DWARF local holds it
-    ARC_TAGID t0 = ::rArchiveListArray::convTagId(tagName);
+    ARC_TAGID t0 = rArchiveListArray::convTagId(tagName);
     // inferred: a temporary for the result of the call at 0x720d8f, used once; no DWARF local holds it
-    ARC_SEARCHID t1 = ::rArchiveListArray::convSearchId(searchName);
-    if (t0 != static_cast<ARC_TAGID>(0)) {
+    ARC_SEARCHID t1 = rArchiveListArray::convSearchId(searchName);
+    if (t0 != 0) {
         // inferred: a temporary for the result of the call at 0x720d9f, used 3 times; no DWARF local holds it
-        u32 t2 = ::rArchiveListArray::convTargetTagtNo(t0);
-        this->::sArchiveManager::loadAlaFile(t2);
-        if (this->mpArchiveListArray.elems[(t2 <= static_cast<u32>(127)) ? t2 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
+        u32 t2 = rArchiveListArray::convTargetTagtNo(t0);
+        loadAlaFile(t2);
+        if (mpArchiveListArray.elems[(t2 <= 127u) ? t2 : 0u].mpPtr != nullptr) {
             // inferred: a temporary for the result of the call at 0x720dce, used 3 times; no DWARF local holds it
-            cArchiveListNode* t3 = this->mpArchiveListArray.elems[(t2 <= static_cast<u32>(127)) ? t2 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListNode(t0, t1);
-            if (t3 != static_cast<cArchiveListNode*>(nullptr)) {
-                if (t3->mResId != static_cast<u64>(0)) {
+            cArchiveListNode* t3 = mpArchiveListArray.elems[(t2 <= 127u) ? t2 : 0u].mpPtr->searchListNode(t0, t1);
+            if (t3 != nullptr) {
+                if (t3->mResId != 0) {
                     // inferred: a temporary for the result of the call at 0x720df0, used twice; no DWARF local holds it
-                    cResource* t4 = ::sResource::getInstance()->create(t3->mResId);
-                    if (t4 == static_cast<cResource*>(nullptr)) {
-                        this->mLastError = static_cast<u32>(2);
-                        return static_cast<cResource*>(nullptr);
+                    cResource* t4 = sResource::getInstance()->create(t3->mResId);
+                    if (t4 == nullptr) {
+                        mLastError = 2;
+                        return nullptr;
                     } else {
                         return t4;
                     }
                 } else {
-                    return static_cast<cResource*>(nullptr);
+                    return nullptr;
                 }
             } else {
-                this->mLastError = static_cast<u32>(1);
-                return static_cast<cResource*>(nullptr);
+                mLastError = 1;
+                return nullptr;
             }
         } else {
-            this->mLastError = static_cast<u32>(1);
-            return static_cast<cResource*>(nullptr);
+            mLastError = 1;
+            return nullptr;
         }
     } else {
-        this->mLastError = static_cast<u32>(1);
-        return static_cast<cResource*>(nullptr);
+        mLastError = 1;
+        return nullptr;
     }
 }
 
@@ -505,22 +503,22 @@ __attribute__((weak)) u32 sArchiveManager::getTagLoadState(ARC_TAGID t) {
 // Address: 0x00720f30 - 0x00720f93 (99 bytes)
 MT_CTSTR sArchiveManager::getArchivePath(ARC_TAGID tag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tag != static_cast<ARC_TAGID>(0)) {
+    if (tag != 0) {
         // inferred: a temporary for the result of the call at 0x720f4a, used 3 times; no DWARF local holds it
-        u32 t0 = ::rArchiveListArray::convTargetTagtNo(tag);
-        this->::sArchiveManager::loadAlaFile(t0);
-        if (this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
-            cArchiveListTag* p_tag = this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListTag(tag);
-            if (p_tag != static_cast<cArchiveListTag*>(nullptr)) {
+        u32 t0 = rArchiveListArray::convTargetTagtNo(tag);
+        loadAlaFile(t0);
+        if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
+            cArchiveListTag* p_tag = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListTag(tag);
+            if (p_tag != nullptr) {
                 return p_tag->mpArcPath;
             } else {
-                return static_cast<MT_CTSTR>(nullptr);
+                return nullptr;
             }
         } else {
-            return static_cast<MT_CTSTR>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<MT_CTSTR>(nullptr);
+        return nullptr;
     }
 }
 
@@ -537,14 +535,14 @@ MT_CTSTR sArchiveManager::getArchivePath(ARC_TAGID tag) {
 bool sArchiveManager::isEnableArcTag(ARC_TAGID tagId) {
     // DWARF local not rendered: cArchiveListTag* p_tag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tagId != static_cast<ARC_TAGID>(0)) {
+    if (tagId != 0) {
         // inferred: a temporary for the result of the call at 0x720b78, used 3 times; no DWARF local holds it
-        u32 t0 = ::rArchiveListArray::convTargetTagtNo(tagId);
-        this->::sArchiveManager::loadAlaFile(t0);
-        if (this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
+        u32 t0 = rArchiveListArray::convTargetTagtNo(tagId);
+        loadAlaFile(t0);
+        if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
             // inferred: a temporary for the result of the call at 0x720ba9, used once; no DWARF local holds it
-            cArchiveListTag* t1 = this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListTag(tagId);
-            return t1 != static_cast<cArchiveListTag*>(nullptr);
+            cArchiveListTag* t1 = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListTag(tagId);
+            return t1 != nullptr;
         } else {
             return false;
         }
@@ -556,14 +554,14 @@ bool sArchiveManager::isEnableArcTag(ARC_TAGID tagId) {
 // Address: 0x00720bd0 - 0x00720c43 (115 bytes)
 bool sArchiveManager::isEnableArcRes(ARC_TAGID tagId, ARC_SEARCHID searchId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tagId != static_cast<ARC_TAGID>(0)) {
+    if (tagId != 0) {
         // inferred: a temporary for the result of the call at 0x720bec, used 3 times; no DWARF local holds it
-        u32 t0 = ::rArchiveListArray::convTargetTagtNo(tagId);
-        this->::sArchiveManager::loadAlaFile(t0);
-        if (this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
-            cArchiveListNode* p_node = this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListNode(tagId, searchId);
-            if (p_node != static_cast<cArchiveListNode*>(nullptr)) {
-                return p_node->mResId != static_cast<u64>(0);
+        u32 t0 = rArchiveListArray::convTargetTagtNo(tagId);
+        loadAlaFile(t0);
+        if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
+            cArchiveListNode* p_node = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListNode(tagId, searchId);
+            if (p_node != nullptr) {
+                return p_node->mResId != 0;
             } else {
                 return false;
             }
@@ -612,29 +610,29 @@ __attribute__((weak)) void sArchiveManager::loadAlaFile(u32 targetTagNo) {
 // Address: 0x00720af0 - 0x00720b60 (112 bytes)
 ARC_TAGID sArchiveManager::getArchiveListNodeOnTag(ARC_TAGID tagId, ARC_SEARCHID searchId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tagId != static_cast<ARC_TAGID>(0)) {
+    if (tagId != 0) {
         // inferred: a temporary for the result of the call at 0x720b0c, used 3 times; no DWARF local holds it
-        u32 t0 = ::rArchiveListArray::convTargetTagtNo(tagId);
-        this->::sArchiveManager::loadAlaFile(t0);
-        if (this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr != static_cast<rArchiveListArray*>(nullptr)) {
-            cArchiveListNode* p_node = this->mpArchiveListArray.elems[(t0 <= static_cast<u32>(127)) ? t0 : static_cast<u32>(0)].mpPtr->::rArchiveListArray::searchListNode(tagId, searchId);
-            if (p_node != static_cast<cArchiveListNode*>(nullptr)) {
-                return p_node->::cArchiveListNode::getTagId();
+        u32 t0 = rArchiveListArray::convTargetTagtNo(tagId);
+        loadAlaFile(t0);
+        if (mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr != nullptr) {
+            cArchiveListNode* p_node = mpArchiveListArray.elems[(t0 <= 127u) ? t0 : 0u].mpPtr->searchListNode(tagId, searchId);
+            if (p_node != nullptr) {
+                return p_node->cArchiveListNode::getTagId();
             } else {
-                return static_cast<ARC_TAGID>(0);
+                return 0;
             }
         } else {
-            return static_cast<ARC_TAGID>(0);
+            return 0;
         }
     } else {
-        return static_cast<ARC_TAGID>(0);
+        return 0;
     }
 }
 
 // Address: 0x00720e20 - 0x00720e27 (7 bytes)
 void sArchiveManager::setArcLoadMode(u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoaderMode = mode;
+    mArcLoaderMode = mode;
 }
 
 // Address: 0x0071ff30 - 0x007202fd (973 bytes)
@@ -657,20 +655,18 @@ sArchiveManager::~sArchiveManager() {
 void sArchiveManager::move() {
     // DWARF local not rendered: Profile __profile;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((::sResource::getInstance()->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&::sResource::getInstance()->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (sResource::getInstance()->mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&sResource::getInstance()->mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->::sArchiveManager::moveTicket();
-    this->::sArchiveManager::moveArcLoader();
-    if ((::sResource::getInstance()->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    moveTicket();
+    moveArcLoader();
+    if (!(sResource::getInstance()->mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&::sResource::getInstance()->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&sResource::getInstance()->mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -690,7 +686,7 @@ __attribute__((weak)) void sArchiveManager::reset() {
 // Address: 0x007216b0 - 0x007216b5 (5 bytes)
 void sArchiveManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007216c0 - 0x00721840 (384 bytes)
@@ -720,6 +716,13 @@ __attribute__((weak)) bool sArchiveManager::isPackOK() {
     DDON_STUB("sArchiveManager::isPackOK")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sArchiveManager::MyDTI sArchiveManager::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const TICKET sArchiveManager::INVALID_TICKET;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sArchiveManager* sArchiveManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sArchiveManager.cpp at 0x007219bf-0x007219fc (called at sArchiveManager.cpp:62)

@@ -29,7 +29,7 @@ const MtDTI& cpSequenceCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpSequenceCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpSequenceCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpSequenceCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cpSequenceCtrl::getAllocator() {
 // Address: 0x0052e840 - 0x0052e880 (64 bytes)
 void* cpSequenceCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpSequenceCtrl::getAllocator()->memAlloc(sz, align, ::cpSequenceCtrl::DTI.::MtDTI::getID());
+    return cpSequenceCtrl::getAllocator()->memAlloc(sz, align, cpSequenceCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cpSequenceCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpSequenceCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpSequenceCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpSequenceCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,8 +85,8 @@ cpSequenceCtrl::~cpSequenceCtrl() {
 // Address: 0x01a5f6c0 - 0x01a5f6cc (12 bytes)
 void cpSequenceCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x0052ecd0 - 0x0052f022 (850 bytes)
@@ -105,14 +105,14 @@ __attribute__((weak)) void cpSequenceCtrl::move() {
 // Address: 0x0052ec90 - 0x0052ecc9 (57 bytes)
 void cpSequenceCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0052f040 - 0x0052f2d0 (656 bytes)
@@ -126,7 +126,7 @@ __attribute__((weak)) void cpSequenceCtrl::callbackSetMotion(u32 blend, u32 mot_
 // Address: 0x0052f030 - 0x0052f035 (5 bytes)
 void cpSequenceCtrl::callbackAfterUpdateMotion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpSequenceCtrl::updateSequence();
+    updateSequence();
 }
 
 // Address: 0x0052faa0 - 0x0052fc37 (407 bytes)
@@ -163,31 +163,37 @@ __attribute__((weak)) bool cpSequenceCtrl::checkSequence(u32 bit, u32 page, MOT_
 }
 
 // Address: 0x0052fa10 - 0x0052fa45 (53 bytes)
-__attribute__((weak)) void cpSequenceCtrl::setupSequenceCallback(nSequence::SEQ_CALLBACK_NO no, cpSequenceCtrl::CHECK_TYPE check_type, MOT_TYPE blend, u32 page, u32 top, u32 bottom) {
-    DDON_STUB("cpSequenceCtrl::setupSequenceCallback")
-    /* stub */
+void cpSequenceCtrl::setupSequenceCallback(nSequence::SEQ_CALLBACK_NO no, cpSequenceCtrl::CHECK_TYPE check_type, MOT_TYPE blend, u32 page, u32 top, u32 bottom) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<unsigned int>(no) <= 9) {
+        mTrgRange[no].mCheckType = check_type;
+        mTrgRange[no].mBlend = static_cast<u32>(blend);
+        mTrgRange[no].mPage = page;
+        mTrgRange[no].mTop = top;
+        mTrgRange[no].mBottom = bottom;
+    }
 }
 
 // Address: 0x0052fa50 - 0x0052fa7b (43 bytes)
 void cpSequenceCtrl::setupSequenceCount(s32 no, bool active, MOT_TYPE blend, u32 page, u32 bit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(no) <= static_cast<unsigned int>(9)) {
-        this->mSeqCnt[no].mActive = active;
-        this->mSeqCnt[no].mBlend = static_cast<u32>(blend);
-        this->mSeqCnt[no].mPage = page;
-        this->mSeqCnt[no].mBit = bit;
+    if (static_cast<unsigned int>(no) <= 9) {
+        mSeqCnt[no].mActive = active;
+        mSeqCnt[no].mBlend = static_cast<u32>(blend);
+        mSeqCnt[no].mPage = page;
+        mSeqCnt[no].mBit = bit;
     }
 }
 
 // Address: 0x0052fa80 - 0x0052faa0 (32 bytes)
 s32 cpSequenceCtrl::getSequenceCount(s32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(no) <= static_cast<unsigned int>(9)) {
-        if (this->mSeqCnt[no].mActive != false) {
-            return this->mSeqCnt[no].mCount;
+    if (static_cast<unsigned int>(no) <= 9) {
+        if (mSeqCnt[no].mActive) {
+            return mSeqCnt[no].mCount;
         }
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x0052f710 - 0x0052f9f9 (745 bytes)
@@ -221,6 +227,8 @@ __attribute__((weak)) void cpSequenceCtrl::updateMotion() {
     DDON_STUB("cpSequenceCtrl::updateMotion")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpSequenceCtrl::MyDTI cpSequenceCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpSequenceCtrl.cpp at 0x0052fdaf-0x0052fdec (called at cpSequenceCtrl.cpp:27)

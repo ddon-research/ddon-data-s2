@@ -8,6 +8,8 @@
 #include "../shared/MtObject.h"
 #include "../shared/cControl.h"
 #include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
+#include "cMenuSupport.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/nCharacterData.h"
@@ -40,7 +42,7 @@ const MtDTI& uGUICommunityList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICommunityList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICommunityList::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICommunityList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +51,7 @@ inline MtAllocator* uGUICommunityList::getAllocator() {
 // Address: 0x00a44e30 - 0x00a44e70 (64 bytes)
 void* uGUICommunityList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICommunityList::getAllocator()->memAlloc(sz, align, ::uGUICommunityList::DTI.::MtDTI::getID());
+    return uGUICommunityList::getAllocator()->memAlloc(sz, align, uGUICommunityList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +66,7 @@ void* uGUICommunityList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,11 +91,11 @@ uGUICommunityList::~uGUICommunityList() {
 // Address: 0x00a492b0 - 0x00a4935f (175 bytes)
 bool uGUICommunityList::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_COMMUNITY_GUI"), static_cast<u32>(129), static_cast<t64>(1432718118)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDComList == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDComList = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_COMMUNITYLIST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDComList;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNITY_GUI"), 129u, 1432718118l))) != nullptr) {
+            if (mpGMDComList == nullptr) {
+                if ((mpGMDComList = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNITYLIST_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDComList;
                     return true;
                 } else {
                     return false;
@@ -105,9 +107,9 @@ bool uGUICommunityList::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDComList == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDComList = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_COMMUNITYLIST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDComList;
+        if (mpGMDComList == nullptr) {
+            if ((mpGMDComList = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNITYLIST_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDComList;
                 return true;
             } else {
                 return false;
@@ -129,15 +131,15 @@ __attribute__((weak)) void uGUICommunityList::setup() {
 void uGUICommunityList::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x3348
-    this->::uGUIBase::kill();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mpGUICommunityList = static_cast<uGUICommunityList*>(nullptr);
-    this->mClearFlag = true;
+    this->uGUIBase::kill();
+    static_cast<sGUIExt*>(sGUI::getInstance())->mpGUICommunityList = nullptr;
+    mClearFlag = true;
 }
 
 // Address: 0x00a49700 - 0x00a49705 (5 bytes)
 void uGUICommunityList::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // No out-of-line body: no code in the ELF
@@ -176,8 +178,8 @@ __attribute__((weak)) void uGUICommunityList::moveEvent() {
 // Address: 0x00a48130 - 0x00a48142 (18 bytes)
 u32 uGUICommunityList::evCtrlTabLeft(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (126 bytes)
@@ -187,8 +189,8 @@ u32 uGUICommunityList::evCtrlTabLeft(cControl::Message* msg) {
 // Address: 0x00a48100 - 0x00a48112 (18 bytes)
 u32 uGUICommunityList::evCtrlTabRight(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (78 bytes)
@@ -213,10 +215,10 @@ __attribute__((weak)) void uGUICommunityList::evCtrlTabCommon() {
 // Address: 0x00a48300 - 0x00a4831b (27 bytes)
 u32 uGUICommunityList::evCtrlDispModeChange(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRoNo == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (mRoNo == 1) {
+        setInputEvent(70u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (27 bytes)
@@ -237,17 +239,17 @@ __attribute__((weak)) void uGUICommunityList::setDispMode(bool mode) {
 // Address: 0x00a48280 - 0x00a4829b (27 bytes)
 u32 uGUICommunityList::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRoNo == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(4));
+    if (mRoNo == 1) {
+        setInputEvent(4u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a482a0 - 0x00a482b2 (18 bytes)
 u32 uGUICommunityList::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(5));
-    return static_cast<u32>(0);
+    setInputEvent(5u);
+    return 0;
 }
 
 // Address: 0x00a48e50 - 0x00a48f98 (328 bytes)
@@ -305,10 +307,18 @@ __attribute__((weak)) void uGUICommunityList::updateScrollListDisp(uGUIBase::cSc
 }
 
 // Address: 0x00a483e0 - 0x00a48416 (54 bytes)
-__attribute__((weak)) void uGUICommunityList::updateScrollListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollDispList* pdisp;
-    DDON_STUB("uGUICommunityList::updateScrollListHide")
-    /* stub */
+void uGUICommunityList::updateScrollListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollDispList* pdisp = static_cast<cScrollDispList*>(pDispItem);
+    if (pdisp->mpInstance == nullptr) {
+        return;
+    }
+    pdisp->mpInstance->cGUIInstance::setVisible(false);
+    pdisp->mpInstance->cGUIInstance::setExecute(false);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (254 bytes)
@@ -329,56 +339,56 @@ void uGUICommunityList::setFixedMessage() {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xa48fc8, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(11));
-    this->::uGUIBase::setWindowTitle(static_cast<u32>(6), static_cast<u32>(9), static_cast<u32>(10), t0, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(12)));
-    if ((this->mModeBit & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(13)));
-        if ((this->mModeBit & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(14)));
-            if ((this->mModeBit & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(15)));
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(3), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 11u);
+    setWindowTitle(6u, 9u, 10u, t0, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 12u));
+    if ((mModeBit & 1u) != 0) {
+        mTab.setTabMessage(0u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 13u));
+        if ((mModeBit & 2u) != 0) {
+            mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 14u));
+            if ((mModeBit & 4u) != 0) {
+                mTab.setTabMessage(2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 15u));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             } else {
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             }
         } else {
-            if ((this->mModeBit & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(15)));
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+            if ((mModeBit & 4u) != 0) {
+                mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 15u));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             } else {
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             }
         }
     } else {
-        if ((this->mModeBit & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(14)));
-            if ((this->mModeBit & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(15)));
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+        if ((mModeBit & 2u) != 0) {
+            mTab.setTabMessage(0u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 14u));
+            if ((mModeBit & 4u) != 0) {
+                mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 15u));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             } else {
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             }
         } else {
-            if ((this->mModeBit & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(15)));
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+            if ((mModeBit & 4u) != 0) {
+                mTab.setTabMessage(0u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 15u));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             } else {
-                if ((this->mModeBit & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                    this->mTab.::uGUIBase::cReferenceUITab::setTabMessage(static_cast<u32>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(0)));
+                if ((mModeBit & 8u) != 0) {
+                    mTab.setTabMessage(0u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(getMessageRes(), 0u));
                 }
             }
         }
@@ -417,6 +427,8 @@ __attribute__((weak)) void uGUICommunityList::loop() {
 //   in uGUICommunityList::evCtrlTabCommon at 0x00a47f2b-0x00a47f45 (called at uGUICommunityList.cpp:1086)
 //   and 8 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUICommunityList::getGMDMessage(u32 GmdIdx);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUICommunityList::MyDTI uGUICommunityList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a49813-0x00a49850 (called at uGUICommunityList.cpp:53)
@@ -465,7 +477,7 @@ const MtDTI& uGUICommunityList::cTabData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::cTabData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -498,25 +510,24 @@ __attribute__((weak)) void uGUICommunityList::cTabData::init() {
 
 // Address: 0x00a456c0 - 0x00a45706 (70 bytes)
 nMenu::MENU_RET uGUICommunityList::cTabData::move() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x158 from uGUICommunityList::cTabData*
-    this->mScrollList.::uGUIBase::cScrollList::update(this->::uGUICommunityList::cTabData::getOwner()->::cUnit::getDeltaTime());
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(344))) == static_cast<unsigned int>(0)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::hidePointer(this->::uGUICommunityList::cTabData::getOwner()->::uGUIBase::getBasePointerPriority());
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mScrollList.uGUIBase::cScrollList::update(getOwner()->getDeltaTime());
+    if (mScrollList.mInfoArray.mLength == 0) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->hidePointer(getOwner()->getBasePointerPriority());
     }
-    return static_cast<nMenu::MENU_RET>(0);
+    return nMenu::MENU_RET_CONTINUE;
 }
 
 // Address: 0x01aee3d0 - 0x01aee3d6 (6 bytes)
 u32 uGUICommunityList::cTabData::getDispDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // Address: 0x01aee3e0 - 0x01aee3e6 (6 bytes)
 u32 uGUICommunityList::cTabData::getMakeArrayDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -555,7 +566,7 @@ u32 uGUICommunityList::cTabData::getMakeArrayDataNum() {
 // Address: 0x00a46120 - 0x00a4612f (15 bytes)
 void uGUICommunityList::cTabData::updateScrollList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner->::uGUICommunityList::updateScrollList(this);
+    mpOwner->updateScrollList(this);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (25 bytes)
@@ -594,9 +605,9 @@ __attribute__((weak)) void uGUICommunityList::cTabData::createData(u32 tabIndex)
 }
 
 // Address: 0x00a47a20 - 0x00a47a32 (18 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabData::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
-    DDON_STUB("uGUICommunityList::cTabData::linkInstancePointer")
-    /* stub */
+void uGUICommunityList::cTabData::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    static_cast<uGUICommunityList::cTabDataInData*>(mDataArray.mpArray[DataPos])->setInstancePointer(pInst);
 }
 
 // Address: 0x00a47a50 - 0x00a47a9b (75 bytes)
@@ -659,13 +670,17 @@ bool uGUICommunityList::cTabData::isMenuListCompListup() {
 // Address: 0x01aee430 - 0x01aee433 (3 bytes)
 s32 uGUICommunityList::cTabData::getSMenuCursorX() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x00a47aa0 - 0x00a47ab5 (21 bytes)
-__attribute__((weak)) s32 uGUICommunityList::cTabData::getSMenuCursorY() {
-    DDON_STUB("uGUICommunityList::cTabData::getSMenuCursorY")
-    return {};
+s32 uGUICommunityList::cTabData::getSMenuCursorY() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mScrollList.mpVCtrl != nullptr) {
+        return mScrollList.mpVCtrl->getCurrentPos();
+    } else {
+        return 0;
+    }
 }
 
 // Address: 0x01aee440 - 0x01aee443 (3 bytes)
@@ -683,19 +698,19 @@ __attribute__((weak)) cMenuBase* uGUICommunityList::cTabData::getMyMenu() {
 // Address: 0x01aee460 - 0x01aee463 (3 bytes)
 u32 uGUICommunityList::cTabData::getListCount() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01aee470 - 0x01aee473 (3 bytes)
 u32 uGUICommunityList::cTabData::getListIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01aee480 - 0x01aee483 (3 bytes)
 s32 uGUICommunityList::cTabData::getListType(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (24 bytes)
@@ -709,6 +724,8 @@ s32 uGUICommunityList::cTabData::getListType(u32 index) {
 //   in uGUICommunityList::cTabDataNearPlayerList::setNoListMessage at 0x00a46653-0x00a46678 (called at uGUICommunityList.cpp:403)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUICommunityList::cTabData::getGMDMessage(u32 GmdIdx);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabData::MyDTI uGUICommunityList::cTabData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a4990a-0x00a49943 (called at uGUICommunityList.cpp:57)
@@ -745,7 +762,7 @@ const MtDTI& uGUICommunityList::cTabDataInData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUICommunityList::cTabDataInData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataInData::DTI)->memAlloc(sz, align, ::uGUICommunityList::cTabDataInData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataInData::DTI)->memAlloc(sz, align, uGUICommunityList::cTabDataInData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -759,7 +776,7 @@ inline void* uGUICommunityList::cTabDataInData::operator new(size_t sz, u32 alig
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICommunityList::cTabDataInData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataInData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataInData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -790,8 +807,28 @@ inline void uGUICommunityList::cTabDataInData::operator delete(void* p_addr) {
 
 // Address: 0x00a461f0 - 0x00a46283 (147 bytes)
 __attribute__((weak)) void uGUICommunityList::cTabDataInData::setInstancePointer(cGUIInstNull* pInst) {
-    DDON_STUB("uGUICommunityList::cTabDataInData::setInstancePointer")
-    /* stub */
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x128 from cGUIObject*
+    mpInst = pInst;
+    if (pInst->mDuplicateId != 0xFFFFFFFFu) {
+        mpInstMesList00 = pInst->getDuplicateInstanceFromId(11u);
+        mpInstFixIcon = pInst->getDuplicateInstanceFromId(294u);
+        mpObjMouseOver = mpOwner->getObjectFromId(mpInstMesList00, 41u);
+        // inferred: a temporary for the result of the call at 0xa4626d, used twice; no DWARF local holds it
+        cGUIObject* t0 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+        if (t0 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296)) & 247;
+        }
+    } else {
+        mpInstMesList00 = pInst->getInstanceFromId(11u);
+        mpInstFixIcon = pInst->getInstanceFromId(294u);
+        mpObjMouseOver = mpOwner->getObjectFromId(mpInstMesList00, 41u);
+        // inferred: a temporary for the result of the call at 0xa4626d, used twice; no DWARF local holds it
+        cGUIObject* t0 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+        if (t0 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296)) & 247;
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (90 bytes)
@@ -819,29 +856,137 @@ __attribute__((weak)) void uGUICommunityList::cTabDataInData::reflectMessage() {
 
 // Address: 0x00a471b0 - 0x00a47208 (88 bytes)
 void uGUICommunityList::cTabDataInData::reflectIcon() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from cGUIInstNull*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpInst) + static_cast<long>(84))) != static_cast<unsigned int>(4294967295)) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpInst->mDuplicateId != 0xFFFFFFFFu) {
         // inferred: a temporary for the result of the call at 0xa471c8, used twice; no DWARF local holds it
-        cGUIInstance* t0 = this->mpInst->::cGUIInstance::getDuplicateInstanceFromId(static_cast<u32>(227));
-        if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-            t0->::cGUIInstance::setVisible(this->mIsFavorite);
+        cGUIInstance* t0 = mpInst->getDuplicateInstanceFromId(227u);
+        if (t0 != nullptr) {
+            t0->setVisible(mIsFavorite);
         }
-        this->mOnlineStatusIcon.::uGUIBase::cReferenceUIIconOnlineStatus::setOnlineStatus(this->mOnlineStatus);
+        mOnlineStatusIcon.setOnlineStatus(mOnlineStatus);
     } else {
         // inferred: a temporary for the result of the call at 0xa471d4, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->mpInst->::cGUIInstance::getInstanceFromId(static_cast<u32>(227));
-        if (t1 != static_cast<cGUIInstance*>(nullptr)) {
-            t1->::cGUIInstance::setVisible(this->mIsFavorite);
+        cGUIInstance* t1 = mpInst->getInstanceFromId(227u);
+        if (t1 != nullptr) {
+            t1->setVisible(mIsFavorite);
         }
-        this->mOnlineStatusIcon.::uGUIBase::cReferenceUIIconOnlineStatus::setOnlineStatus(this->mOnlineStatus);
+        mOnlineStatusIcon.setOnlineStatus(mOnlineStatus);
     }
 }
 
 // Address: 0x00a470a0 - 0x00a471a9 (265 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataInData::switchCommentUnion(bool IsComment) {
-    DDON_STUB("uGUICommunityList::cTabDataInData::switchCommentUnion")
-    /* stub */
+void uGUICommunityList::cTabDataInData::switchCommentUnion(bool IsComment) {
+    // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
+    if (mpInstMesList00 == nullptr) {
+        return;
+    }
+    if ((mDispPattern - 1u) <= 1u) {
+        // inferred: a temporary for the result of the call at 0xa470d3, used twice; no DWARF local holds it
+        cGUIObject* t0 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+        if (t0 != nullptr) {
+            t0->setVisible(IsComment);
+        }
+    } else {
+        if (mLv != 0) {
+            // inferred: a temporary for the result of the call at 0xa470fc, used twice; no DWARF local holds it
+            cGUIObject* t1 = mpOwner->getObjectFromId(mpInstMesList00, 23u);
+            if (t1 != nullptr) {
+                t1->setVisible(!IsComment);
+                // inferred: a temporary for the result of the call at 0xa47124, used twice; no DWARF local holds it
+                cGUIObject* t2 = mpOwner->getObjectFromId(mpInstMesList00, 26u);
+                if (t2 != nullptr) {
+                    t2->setVisible(!IsComment);
+                    // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                    cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                    if (t3 != nullptr) {
+                        t3->setVisible(IsComment);
+                    }
+                    if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                        // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                        cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                        if (t4 != nullptr) {
+                            t4->setVisible(!IsComment);
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                    cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                    if (t3 != nullptr) {
+                        t3->setVisible(IsComment);
+                    }
+                    if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                        // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                        cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                        if (t4 != nullptr) {
+                            t4->setVisible(!IsComment);
+                        }
+                    }
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xa47124, used twice; no DWARF local holds it
+                cGUIObject* t2 = mpOwner->getObjectFromId(mpInstMesList00, 26u);
+                if (t2 != nullptr) {
+                    t2->setVisible(!IsComment);
+                    // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                    cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                    if (t3 != nullptr) {
+                        t3->setVisible(IsComment);
+                    }
+                    if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                        // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                        cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                        if (t4 != nullptr) {
+                            t4->setVisible(!IsComment);
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                    cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                    if (t3 != nullptr) {
+                        t3->setVisible(IsComment);
+                    }
+                    if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                        // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                        cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                        if (t4 != nullptr) {
+                            t4->setVisible(!IsComment);
+                        }
+                    }
+                }
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0xa47124, used twice; no DWARF local holds it
+            cGUIObject* t2 = mpOwner->getObjectFromId(mpInstMesList00, 26u);
+            if (t2 != nullptr) {
+                t2->setVisible(!IsComment);
+                // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                if (t3 != nullptr) {
+                    t3->setVisible(IsComment);
+                }
+                if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                    // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                    cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                    if (t4 != nullptr) {
+                        t4->setVisible(!IsComment);
+                    }
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xa4714e, used twice; no DWARF local holds it
+                cGUIObject* t3 = mpOwner->getObjectFromId(mpInstMesList00, 40u);
+                if (t3 != nullptr) {
+                    t3->setVisible(IsComment);
+                }
+                if (static_cast<unsigned int>(mAddInfo - 1) <= 1) {
+                    // inferred: a temporary for the result of the call at 0xa4717e, used twice; no DWARF local holds it
+                    cGUIObject* t4 = mpOwner->getObjectFromId(mpInstMesList00, 38u);
+                    if (t4 != nullptr) {
+                        t4->setVisible(!IsComment);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (20 bytes)
@@ -855,6 +1000,8 @@ __attribute__((weak)) void uGUICommunityList::cTabDataInData::switchCommentUnion
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUICommunityList::cTabDataInData::getGMDMessage(u32 GmdIdx);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabDataInData::MyDTI uGUICommunityList::cTabDataInData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a498ca-0x00a4990a (called at uGUICommunityList.cpp:56)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a498ca-0x00a4990a (called at uGUICommunityList.h:128)
@@ -863,7 +1010,7 @@ __attribute__((weak)) void uGUICommunityList::cTabDataInData::switchCommentUnion
 // Address: 0x00a45100 - 0x00a451d6 (214 bytes)
 MtObject* uGUICommunityList::cTabDataInData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUICommunityList::cTabDataInData;
+    return new (16u) uGUICommunityList::cTabDataInData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -901,7 +1048,7 @@ const MtDTI& uGUICommunityList::cScrollDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICommunityList::cScrollDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cScrollDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -922,6 +1069,8 @@ inline void uGUICommunityList::cScrollDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICommunityList::cScrollDispList::~cScrollDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cScrollDispList::MyDTI uGUICommunityList::cScrollDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a49850-0x00a4988d (called at uGUICommunityList.cpp:54)
@@ -971,7 +1120,7 @@ const MtDTI& uGUICommunityList::cScrollItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICommunityList::cScrollItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cScrollItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -995,6 +1144,8 @@ inline void uGUICommunityList::cScrollItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICommunityList::cScrollItemList::~cScrollItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cScrollItemList::MyDTI uGUICommunityList::cScrollItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a4988d-0x00a498ca (called at uGUICommunityList.cpp:55)
@@ -1045,7 +1196,7 @@ const MtDTI& uGUICommunityList::cTabDataFriendList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::cTabDataFriendList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataFriendList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataFriendList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1072,9 +1223,9 @@ uGUICommunityList::cTabDataFriendList::~cTabDataFriendList() {
 }
 
 // Address: 0x00a45600 - 0x00a4560f (15 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataFriendList::init() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::init")
-    /* stub */
+void uGUICommunityList::cTabDataFriendList::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
 
 // Address: 0x00a45630 - 0x00a456b4 (132 bytes)
@@ -1086,14 +1237,13 @@ __attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabDataFriendList::mov
 // Address: 0x01aee4f0 - 0x01aee501 (17 bytes)
 u32 uGUICommunityList::cTabDataFriendList::getMakeArrayDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getFriendListMax();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getFriendListMax();
 }
 
 // Address: 0x01aee510 - 0x01aee525 (21 bytes)
 bool uGUICommunityList::cTabDataFriendList::isMenuListCompListup() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74d0 from sMenu*
-    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(29904))) == static_cast<unsigned int>(3);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return sMenu::getInstance()->mMenuFriendList.mMenuRno[0] == 3;
 }
 
 // Address: 0x00a45710 - 0x00a45aac (924 bytes)
@@ -1131,14 +1281,11 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataFriendList::getListCount() 
 
 // Address: 0x01aee580 - 0x01aee59e (30 bytes)
 u32 uGUICommunityList::cTabDataFriendList::getListIndex(u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7598 from sMenu*
-    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(30104))) != static_cast<unsigned long>(0)) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(30104))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuFriendList.mpSortList != nullptr) {
+        return sMenu::getInstance()->mMenuFriendList.mpSortList[index];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1147,6 +1294,8 @@ __attribute__((weak)) s32 uGUICommunityList::cTabDataFriendList::getListType(u32
     DDON_STUB("uGUICommunityList::cTabDataFriendList::getListType")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabDataFriendList::MyDTI uGUICommunityList::cTabDataFriendList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a49943-0x00a4997c (called at uGUICommunityList.cpp:58)
@@ -1197,7 +1346,7 @@ const MtDTI& uGUICommunityList::cTabDataActiveList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::cTabDataActiveList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataActiveList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataActiveList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1224,9 +1373,9 @@ uGUICommunityList::cTabDataActiveList::~cTabDataActiveList() {
 }
 
 // Address: 0x00a45b90 - 0x00a45b9f (15 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataActiveList::init() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::init")
-    /* stub */
+void uGUICommunityList::cTabDataActiveList::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
 
 // Address: 0x00a45f80 - 0x00a46004 (132 bytes)
@@ -1237,16 +1386,15 @@ __attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabDataActiveList::mov
 
 // Address: 0x01aee620 - 0x01aee637 (23 bytes)
 u32 uGUICommunityList::cTabDataActiveList::getMakeArrayDataNum() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x169c from sNetwork*
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getClanMemberMax() + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sNetwork::getInstance()) + static_cast<long>(5788)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x169c
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getClanMemberMax() + static_cast<sNetworkExt*>(sNetwork::getInstance())->mFriendListMax;
 }
 
 // Address: 0x01aee640 - 0x01aee655 (21 bytes)
 bool uGUICommunityList::cTabDataActiveList::isMenuListCompListup() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13058 from sMenu*
-    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(77912))) == static_cast<unsigned int>(2);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return sMenu::getInstance()->mMenuActiveList.mMenuRno[0] == 2;
 }
 
 // Address: 0x00a45ba0 - 0x00a45f7a (986 bytes)
@@ -1291,29 +1439,25 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataActiveList::getListCount() 
 
 // Address: 0x01aee6b0 - 0x01aee6ce (30 bytes)
 u32 uGUICommunityList::cTabDataActiveList::getListIndex(u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x13108 from sMenu*
-    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78088))) != static_cast<unsigned long>(0)) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78088))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuActiveList.mpSortList != nullptr) {
+        return sMenu::getInstance()->mMenuActiveList.mpSortList[index];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01aee6d0 - 0x01aee6f1 (33 bytes)
 s32 uGUICommunityList::cTabDataActiveList::getListType(u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x13118 from sMenu*
-    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78104))) != static_cast<unsigned long>(0)) {
-        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78104))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuActiveList.mpListType != nullptr) {
+        return static_cast<s32>(sMenu::getInstance()->mMenuActiveList.mpListType[index]);
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabDataActiveList::MyDTI uGUICommunityList::cTabDataActiveList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a4997c-0x00a499b5 (called at uGUICommunityList.cpp:59)
@@ -1364,7 +1508,7 @@ const MtDTI& uGUICommunityList::cTabDataNearPlayerList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::cTabDataNearPlayerList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataNearPlayerList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataNearPlayerList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1391,9 +1535,9 @@ uGUICommunityList::cTabDataNearPlayerList::~cTabDataNearPlayerList() {
 }
 
 // Address: 0x00a46130 - 0x00a4613f (15 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataNearPlayerList::init() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::init")
-    /* stub */
+void uGUICommunityList::cTabDataNearPlayerList::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
 
 // Address: 0x00a46140 - 0x00a461c4 (132 bytes)
@@ -1405,20 +1549,21 @@ __attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabDataNearPlayerList:
 // Address: 0x01aee760 - 0x01aee771 (17 bytes)
 u32 uGUICommunityList::cTabDataNearPlayerList::getMakeArrayDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getRecentListMax();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getRecentListMax();
 }
 
 // Address: 0x00a461d0 - 0x00a461e8 (24 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataNearPlayerList::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::linkInstancePointer")
-    /* stub */
+void uGUICommunityList::cTabDataNearPlayerList::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (DataPos <= 15u) {
+        static_cast<uGUICommunityList::cTabDataInData*>(mDataArray.mpArray[DataPos])->setInstancePointer(pInst);
+    }
 }
 
 // Address: 0x01aee780 - 0x01aee795 (21 bytes)
 bool uGUICommunityList::cTabDataNearPlayerList::isMenuListCompListup() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13200 from sMenu*
-    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78336))) == static_cast<unsigned int>(1);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return sMenu::getInstance()->mMenuRecentList.mMenuRno[0] == 1;
 }
 
 // Address: 0x00a46290 - 0x00a465d6 (838 bytes)
@@ -1457,16 +1602,15 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataNearPlayerList::getListCoun
 
 // Address: 0x01aee7f0 - 0x01aee80e (30 bytes)
 u32 uGUICommunityList::cTabDataNearPlayerList::getListIndex(u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x132a8 from sMenu*
-    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78504))) != static_cast<unsigned long>(0)) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78504))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuRecentList.mpSortList != nullptr) {
+        return sMenu::getInstance()->mMenuRecentList.mpSortList[index];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabDataNearPlayerList::MyDTI uGUICommunityList::cTabDataNearPlayerList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a499b5-0x00a499ee (called at uGUICommunityList.cpp:61)
@@ -1517,7 +1661,7 @@ const MtDTI& uGUICommunityList::cTabDataBlackList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICommunityList::cTabDataBlackList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataBlackList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataBlackList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1544,9 +1688,9 @@ uGUICommunityList::cTabDataBlackList::~cTabDataBlackList() {
 }
 
 // Address: 0x00a466a0 - 0x00a466af (15 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataBlackList::init() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::init")
-    /* stub */
+void uGUICommunityList::cTabDataBlackList::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
 
 // Address: 0x00a466b0 - 0x00a46734 (132 bytes)
@@ -1558,20 +1702,21 @@ __attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabDataBlackList::move
 // Address: 0x01aee870 - 0x01aee881 (17 bytes)
 u32 uGUICommunityList::cTabDataBlackList::getMakeArrayDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getBlackListMax();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getBlackListMax();
 }
 
 // Address: 0x00a46740 - 0x00a46758 (24 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataBlackList::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::linkInstancePointer")
-    /* stub */
+void uGUICommunityList::cTabDataBlackList::linkInstancePointer(u32 DataPos, cGUIInstNull* pInst) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (DataPos <= 15u) {
+        static_cast<uGUICommunityList::cTabDataInData*>(mDataArray.mpArray[DataPos])->setInstancePointer(pInst);
+    }
 }
 
 // Address: 0x01aee890 - 0x01aee8a5 (21 bytes)
 bool uGUICommunityList::cTabDataBlackList::isMenuListCompListup() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13370 from sMenu*
-    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78704))) == static_cast<unsigned int>(1);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return sMenu::getInstance()->mMenuBlackList.mMenuRno[0] == 1;
 }
 
 // Address: 0x00a46760 - 0x00a4698f (559 bytes)
@@ -1590,9 +1735,13 @@ __attribute__((weak)) void uGUICommunityList::cTabDataBlackList::setNoListMessag
 }
 
 // Address: 0x01aee8b0 - 0x01aee8d1 (33 bytes)
-__attribute__((weak)) bool uGUICommunityList::cTabDataBlackList::getRemakeListFlag() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::getRemakeListFlag")
-    return {};
+bool uGUICommunityList::cTabDataBlackList::getRemakeListFlag() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuBlackList.mpList != nullptr) {
+        return sMenu::getInstance()->mMenuBlackList.mpList->getRemakeListFlag();
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01aee8e0 - 0x01aee8f0 (16 bytes)
@@ -1602,9 +1751,13 @@ __attribute__((weak)) cMenuBase* uGUICommunityList::cTabDataBlackList::getMyMenu
 }
 
 // Address: 0x01aee8f0 - 0x01aee90c (28 bytes)
-__attribute__((weak)) u32 uGUICommunityList::cTabDataBlackList::getListCount() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::getListCount")
-    return {};
+u32 uGUICommunityList::cTabDataBlackList::getListCount() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (sMenu::getInstance()->mMenuBlackList.mpList != nullptr) {
+        return sMenu::getInstance()->mMenuBlackList.mpList->getSortListCount();
+    } else {
+        return 0;
+    }
 }
 
 // Address: 0x01aee910 - 0x01aee93f (47 bytes)
@@ -1613,6 +1766,8 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataBlackList::getListIndex(u32
     DDON_STUB("uGUICommunityList::cTabDataBlackList::getListIndex")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICommunityList::cTabDataBlackList::MyDTI uGUICommunityList::cTabDataBlackList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICommunityList.cpp at 0x00a499ee-0x00a49a27 (called at uGUICommunityList.cpp:62)

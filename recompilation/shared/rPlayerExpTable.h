@@ -99,6 +99,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cPlayerExpTable::cPlayerExpTable() {
-    this->mNeedExp = static_cast<u32>(0);
-    this->mGainJobPoint = static_cast<u32>(0);
+    this->mNeedExp = 0;
+    this->mGainJobPoint = 0;
 }

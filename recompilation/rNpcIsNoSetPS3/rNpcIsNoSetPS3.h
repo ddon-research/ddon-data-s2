@@ -105,8 +105,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cNpcIsNoSetPS3::cNpcIsNoSetPS3() {
-    this->mStageNo = static_cast<u16>(0);
-    this->mGroupNo = static_cast<u16>(0);
-    this->mUnitNo = static_cast<u8>(0);
-    this->mQuestId = static_cast<u32>(0);
+    this->mStageNo = 0;
+    this->mGroupNo = 0;
+    this->mUnitNo = 0;
+    this->mQuestId = 0;
 }

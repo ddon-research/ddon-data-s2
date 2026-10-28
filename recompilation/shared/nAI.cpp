@@ -143,6 +143,8 @@ __attribute__((weak)) nAI::EnumProp& nAI::EnumProp::operator=(nAI::EnumProp& p) 
 // No out-of-line body: no code in the ELF
 // nAI::EnumProp::operator unsigned long();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nAI::EnumProp::MyDTI nAI::EnumProp::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nAI::EnumProp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 

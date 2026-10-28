@@ -25,7 +25,7 @@ const MtDTI& sFlag::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sFlag::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sFlag::DTI);
+    return MtMemoryAllocator::getAllocator(sFlag::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* sFlag::getAllocator() {
 // Address: 0x00780260 - 0x007802a0 (64 bytes)
 void* sFlag::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sFlag::getAllocator()->memAlloc(sz, align, ::sFlag::DTI.::MtDTI::getID());
+    return sFlag::getAllocator()->memAlloc(sz, align, sFlag::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* sFlag::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sFlag::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sFlag::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sFlag::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,31 +77,31 @@ sFlag::~sFlag() {
 // Address: 0x007803c0 - 0x007803c5 (5 bytes)
 void sFlag::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007803d0 - 0x007803d5 (5 bytes)
 MtUI* sFlag::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007803e0 - 0x007803e6 (6 bytes)
 void sFlag::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->reset();
+    reset();
 }
 
 // Address: 0x007803f0 - 0x00780406 (22 bytes)
 void sFlag::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mSystemFlag), static_cast<int>(0), static_cast<size_t>(884));
+    memset(static_cast<void*>(&mSystemFlag), 0, 884ul);
 }
 
 // Address: 0x00780410 - 0x00780416 (6 bytes)
 void sFlag::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->update();
+    update();
 }
 
 // Address: 0x00780420 - 0x00780421 (1 bytes)
@@ -303,6 +303,11 @@ __attribute__((weak)) void sFlag::setFlag(u32 Type, u32 FlagNo, bool Set, bool I
 
 // No out-of-line body: no code in the ELF
 // void sFlag::resetFlag(u32 Type, u32 StartFlagNo);
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sFlag* sFlag::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sFlag::MyDTI sFlag::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sFlag.cpp at 0x0078081f-0x0078085c (called at sFlag.cpp:31)

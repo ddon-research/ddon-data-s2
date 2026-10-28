@@ -51,7 +51,7 @@ const MtDTI& cEventParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEventParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEventParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -153,6 +153,8 @@ __attribute__((weak)) MT_CTSTR cEventParam::getFileName() const {
 //   in aStage::move_event_fsm at 0x0000f8de-0x0000f8e2 (called at aStage.cpp:4624)
 // s16 cEventParam::getSubMixerAfter() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEventParam::MyDTI cEventParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674610-0x00674654 (called at rEventParam.cpp:32)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674610-0x00674654 (called at rEventParam.h:93)
@@ -187,7 +189,7 @@ const MtDTI& cEventParam::cOmList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEventParam::cOmList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEventParam::cOmList::DTI)->memAlloc(sz, align, ::cEventParam::cOmList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEventParam::cOmList::DTI)->memAlloc(sz, align, cEventParam::cOmList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -202,7 +204,7 @@ inline void* cEventParam::cOmList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cEventParam7cOmListD0Ev at 0x01a8f300-0x01a8f32a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cEventParam::cOmList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEventParam::cOmList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEventParam::cOmList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -237,6 +239,8 @@ __attribute__((weak)) void cEventParam::cOmList::createProperty(MtPropertyList& 
 // No out-of-line body: no code in the ELF
 // bool cEventParam::cOmList::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEventParam::cOmList::MyDTI cEventParam::cOmList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674691-0x006746ca (called at rEventParam.cpp:478)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674691-0x006746ca (called at rEventParam.h:69)
@@ -245,7 +249,7 @@ __attribute__((weak)) void cEventParam::cOmList::createProperty(MtPropertyList& 
 // Address: 0x00674090 - 0x006740e5 (85 bytes)
 MtObject* cEventParam::cOmList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEventParam::cOmList;
+    return new (16u) cEventParam::cOmList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -270,7 +274,7 @@ const MtDTI& rEventParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEventParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEventParam::DTI)->memAlloc(sz, align, ::rEventParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEventParam::DTI)->memAlloc(sz, align, rEventParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +316,7 @@ MT_CTSTR rEventParam::getExt() const {
 // Address: 0x01a8f520 - 0x01a8f526 (6 bytes)
 u32 rEventParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(18);
+    return 18;
 }
 
 // Address: 0x00673f80 - 0x00674089 (265 bytes)
@@ -327,6 +331,8 @@ __attribute__((weak)) bool rEventParam::load(MtStream& in) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEventParam::MyDTI rEventParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674654-0x00674691 (called at rEventParam.cpp:229)
 //   in _GLOBAL__sub_I_rEventParam.cpp at 0x00674654-0x00674691 (called at rEventParam.h:185)
@@ -335,7 +341,7 @@ __attribute__((weak)) bool rEventParam::load(MtStream& in) {
 // Address: 0x00673ad0 - 0x00673b34 (100 bytes)
 MtObject* rEventParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEventParam;
+    return new (16u) rEventParam;
 }
 
 // Instance at 0x01a8f130 - 0x01a8f135 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -59,7 +59,7 @@ const MtDTI& uWeapon::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uWeapon::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uWeapon::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uWeapon::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,41 +79,41 @@ inline void uWeapon::operator delete(void* p_addr) {
 // Also emitted as: _ZN7uWeaponD0Ev at 0x00d59630
 uWeapon::~uWeapon() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mCnsWeapon.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mCnsWeapon.mLength != 0) {
         // inferred: the value the loop at 0xd59560 carries; no location-less local in scope fits
-        u32 v0_0 = this->mCnsWeapon.::MtArray::mLength;
+        u32 v0_0 = mCnsWeapon.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mCnsWeapon.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mCnsWeapon.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCnsWeapon.::MtArray::mLength) {
-                    v0_0 = this->mCnsWeapon.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mCnsWeapon.mpArray[i0_3] != nullptr) {
+                delete mCnsWeapon.mpArray[i0_3];
+                if ((i0_3 + 1u) < mCnsWeapon.mLength) {
+                    v0_0 = mCnsWeapon.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mCnsWeapon.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCnsWeapon.::MtArray::mpArray));
+    if (mCnsWeapon.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCnsWeapon.mpArray));
     }
-    this->mCnsWeapon.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mCnsWeapon.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mCnsWeapon.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mpModelRes != static_cast<rModel*>(nullptr)) {
-        this->mpModelRes->::cResource::release();
-        this->mpModelRes = static_cast<rModel*>(nullptr);
+    mCnsWeapon.mpArray = nullptr;
+    mCnsWeapon.mBufsiz = 0;
+    mCnsWeapon.mLength = 0;
+    if (mpModelRes != nullptr) {
+        mpModelRes->release();
+        mpModelRes = nullptr;
     }
-    if (this->mpMontage != static_cast<rDDOModelMontage*>(nullptr)) {
-        this->mpMontage->::cResource::release();
-        this->mpMontage = static_cast<rDDOModelMontage*>(nullptr);
+    if (mpMontage != nullptr) {
+        mpMontage->release();
+        mpMontage = nullptr;
     }
 }
 
@@ -121,8 +121,8 @@ uWeapon::~uWeapon() {
 uWeapon* uWeapon::createWeaponModel(nWeapon::WEAPON_CATEGORY wepCategory, cWeaponResTable* pWepResData, uModel* pParent, nWeapon::MODEL_TYPE model_type, u8 partsPatern, s8 colorPatern) {
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned int used as s8
-    uWeapon* pWpn = ::uWeapon::createWeaponModelCore(static_cast<u32>(wepCategory), pWepResData, pParent, model_type, partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
-    if (pWpn != static_cast<uWeapon*>(nullptr)) {
+    uWeapon* pWpn = uWeapon::createWeaponModelCore(static_cast<u32>(wepCategory), pWepResData, pParent, model_type, partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
+    if (pWpn != nullptr) {
         pWpn->mWepCategory = wepCategory;
     }
     return pWpn;
@@ -133,17 +133,17 @@ uWeapon* uWeapon::createWeaponModel(nWeapon::OTHER_MODEL_INDEX index, cWeaponRes
     // DWARF local not rendered: uWeapon* pWpn;
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned int used as s8
-    return ::uWeapon::createWeaponModelCore(static_cast<u32>(index), pWepResData, pParent, static_cast<nWeapon::MODEL_TYPE>(2), partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
+    return uWeapon::createWeaponModelCore(static_cast<u32>(index), pWepResData, pParent, nWeapon::MODEL_TYPE_OTHER, partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
 }
 
 // Address: 0x00d59300 - 0x00d59353 (83 bytes)
 uWeapon* uWeapon::createWeaponModel(nWeapon::NPC_ITEM_INDEX index, uModel* pParent) {
     // DWARF local not rendered: cWeaponResTable* pWepResData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cNpcConstItem* pConstItem = ::sNpcManager::getInstance()->::sNpcManager::getNpcConstItem(static_cast<u32>(index));
-    u32 mtag = pConstItem->::cNpcConstItem::getMTag();
-    u32 offset = pConstItem->::cNpcConstItem::getOffset();
-    uWeapon* pWpn = ::uWeapon::createWeaponModelCore(offset, ::sGame::getInstance()->::sGame::getWepResData(mtag, static_cast<u32>(0)), pParent, static_cast<nWeapon::MODEL_TYPE>(2), static_cast<u8>(0), static_cast<s8>(-1));
+    cNpcConstItem* pConstItem = sNpcManager::getInstance()->getNpcConstItem(static_cast<u32>(index));
+    u32 mtag = pConstItem->cNpcConstItem::getMTag();
+    u32 offset = pConstItem->cNpcConstItem::getOffset();
+    uWeapon* pWpn = uWeapon::createWeaponModelCore(offset, sGame::getInstance()->getWepResData(mtag, 0u), pParent, nWeapon::MODEL_TYPE_OTHER, static_cast<u8>(0), static_cast<s8>(-1));
     return pWpn;
 }
 
@@ -191,30 +191,30 @@ __attribute__((weak)) void uWeapon::move() {
 // Address: 0x00d5a6a0 - 0x00d5a6d7 (55 bytes)
 void uWeapon::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::moveAfter();
-    if (this->mpOwner == static_cast<uModel*>(nullptr)) {
+    this->uDDOModel::moveAfter();
+    if (mpOwner == nullptr) {
         return;
     }
-    this->::uBaseModel::mTransparency = this->mpOwner->::uBaseModel::getTransparency();
-    this->::cUnit::mDrawMode = this->mpOwner->::cUnit::mDrawMode;
+    mTransparency = mpOwner->getTransparency();
+    mDrawMode = mpOwner->mDrawMode;
 }
 
 // Address: 0x00d5a490 - 0x00d5a495 (5 bytes)
 void uWeapon::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::kill();
+    this->uDDOModel::kill();
 }
 
 // Address: 0x00d5a6e0 - 0x00d5a705 (37 bytes)
 void uWeapon::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner == static_cast<uModel*>(nullptr)) {
+    if (mpOwner == nullptr) {
         return;
     }
-    if (this->mpOwner->::cUnit::isEnable() != false) {
+    if (mpOwner->isEnable()) {
         return;
     }
-    this->mpOwner = static_cast<uModel*>(nullptr);
+    mpOwner = nullptr;
 }
 
 // Address: 0x00d5a4a0 - 0x00d5a69c (508 bytes)
@@ -312,6 +312,8 @@ __attribute__((weak)) void uWeapon::setColor(s8 colorPatern) {
 //   in cpEquip::setNpcItem at 0x0047c3ab-0x0047c3b2 (called at cpEquip.cpp:1003)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uModel* uWeapon::getOwner();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uWeapon::MyDTI uWeapon::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uWeapon.cpp at 0x00d5a87f-0x00d5a8bc (called at uWeapon.cpp:58)

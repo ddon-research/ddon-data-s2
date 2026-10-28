@@ -41,11 +41,11 @@ bool nHuman::CSGroupConvertCSMsg2Info(const u8 csSlotMsg, nHuman::CUSTOM_SKILL_G
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as nHuman::CUSTOM_SKILL_GROUP
-    slot = csSlotMsg & static_cast<u8>(15);
-    if (csSlotMsg > static_cast<u8>(31)) {
+    slot = csSlotMsg & 15;
+    if (csSlotMsg > 31) {
         return false;
     } else {
-        group = static_cast<nHuman::CUSTOM_SKILL_GROUP>(static_cast<unsigned long>(csSlotMsg) >> static_cast<unsigned long>(4));
+        group = static_cast<nHuman::CUSTOM_SKILL_GROUP>(static_cast<unsigned long>(csSlotMsg) >> 4);
         return true;
     }
 }

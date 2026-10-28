@@ -390,8 +390,20 @@ inline cBrowserPS4* sBrowser::getBrowser() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sBrowser::setupError at 0x72fc94-0x72fc9a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setErrorType(int type) {
+    this->mErrorType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline int sBrowser::getErrorType() {
     return this->mErrorType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sBrowser::setupError at 0x72fc9a-0x72fca0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setErrorKind(int kind) {
+    this->mErrorKind = kind;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -400,8 +412,32 @@ inline int sBrowser::getErrorKind() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sBrowser::setupError at 0x72fcad-0x72fcb3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setErrorCategory(int category) {
+    this->mErrorCategory = category;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sBrowser::setupError at 0x72fcc8-0x72fcce; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setErrorFlowType(int FlowType) {
+    this->mErrorFlowType = FlowType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline int sBrowser::getErrorFlowType() {
     return this->mErrorFlowType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::startBrowser at 0x7ab3b2-0x7ab3b5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setBufferSize(u32 buf_size) {
+    this->mBufferSize = buf_size;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in _Z18setLoginServerPortPvPS_S0_S_ at 0x19afc-0x19b02; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sBrowser::setLoginServerPort(u32 port) {
+    this->mLoginServerPort = port;
 }
 
 // Inline, no code of its own: checked where it is inlined.

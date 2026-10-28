@@ -33,7 +33,7 @@ const MtDTI& cpShlShotCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpShlShotCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpShlShotCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* cpShlShotCtrl::getAllocator() {
 // Address: 0x00530f30 - 0x00530f70 (64 bytes)
 void* cpShlShotCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpShlShotCtrl::getAllocator()->memAlloc(sz, align, ::cpShlShotCtrl::DTI.::MtDTI::getID());
+    return cpShlShotCtrl::getAllocator()->memAlloc(sz, align, cpShlShotCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* cpShlShotCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpShlShotCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpShlShotCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,14 +103,14 @@ __attribute__((weak)) void cpShlShotCtrl::move() {
 // Address: 0x005315b0 - 0x005315e3 (51 bytes)
 void cpShlShotCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpShlOwner == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpShlOwner == nullptr) {
         return;
     }
-    if (this->mpShlOwner->::cUnit::isEnable() != false) {
+    if (mpShlOwner->isEnable()) {
         return;
     }
-    this->mpShlOwner = static_cast<uDDOModel*>(nullptr);
+    mpShlOwner = nullptr;
 }
 
 // Address: 0x00531730 - 0x00531886 (342 bytes)
@@ -322,22 +322,22 @@ void cpShlShotCtrl::registShellRequestMsg(const nHuman::stShellRequestMsg& srcMs
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x534900 carries; no location-less local in scope fits
-    bool* v0_0 = &this->mShlReqArray.elems[0].mIsSeted;
+    bool* v0_0 = &mShlReqArray.elems[0].mIsSeted;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-        if ((*v0_0) == false) {
-            this->mShlReqArray.elems[i0_1].mReqMsg.mShlOwnerUID = srcMsg.mShlOwnerUID;
-            this->mShlReqArray.elems[i0_1].mReqMsg.mTargetUID = srcMsg.mTargetUID;
-            this->mShlReqArray.elems[i0_1].mReqMsg.mShotSys = srcMsg.mShotSys;
-            this->mShlReqArray.elems[i0_1].mReqMsg.mShotGroup = srcMsg.mShotGroup;
-            this->mShlReqArray.elems[i0_1].mReqMsg.mShotIndex = srcMsg.mShotIndex;
-            this->mShlReqArray.elems[i0_1].mReqMsg.mLockOnIndex = srcMsg.mLockOnIndex;
+    for (unsigned int i0_1 = 0;;) {
+        if (!(*v0_0)) {
+            mShlReqArray.elems[i0_1].mReqMsg.mShlOwnerUID = srcMsg.mShlOwnerUID;
+            mShlReqArray.elems[i0_1].mReqMsg.mTargetUID = srcMsg.mTargetUID;
+            mShlReqArray.elems[i0_1].mReqMsg.mShotSys = srcMsg.mShotSys;
+            mShlReqArray.elems[i0_1].mReqMsg.mShotGroup = srcMsg.mShotGroup;
+            mShlReqArray.elems[i0_1].mReqMsg.mShotIndex = srcMsg.mShotIndex;
+            mShlReqArray.elems[i0_1].mReqMsg.mLockOnIndex = srcMsg.mLockOnIndex;
             *v0_0 = true;
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_0 += static_cast<int>(20);
-                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                v0_0 += 20;
+                i0_1 = i0_1 + 1u;
             } else {
                 break;
             }
@@ -357,6 +357,8 @@ __attribute__((weak)) void cpShlShotCtrl::checkShellRequest() {
 // No out-of-line body: 1 inlined copy in 1 function (400 bytes)
 //   in cpShlShotCtrl::checkShellRequest at 0x0053223f-0x005323cf (called at cpShlShotCtrl.cpp:1247)
 // void cpShlShotCtrl::clearShellRequestArray();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpShlShotCtrl::MyDTI cpShlShotCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpShlShotCtrl.cpp at 0x00534a5f-0x00534a9c (called at cpShlShotCtrl.cpp:55)
@@ -407,7 +409,7 @@ const MtDTI& cpShlShotCtrl::cShlShotReqInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpShlShotCtrl::cShlShotReqInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::cShlShotReqInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpShlShotCtrl::cShlShotReqInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -507,31 +509,25 @@ __attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::copyParam(const cpShl
 // Address: 0x005340d0 - 0x00534136 (102 bytes)
 void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x518 from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x51c from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x520 from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x524 from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x528 from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x52c from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x530 from cpObjCollisionBase*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x534 from cpObjCollisionBase*
-    if (pSrc == static_cast<cpObjCollisionBase*>(nullptr)) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pSrc == nullptr) {
         return;
     }
-    this->mSharedUID[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1304));
-    this->mSharedUID[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1308));
-    this->mSharedUID[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1312));
-    this->mSharedUID[3] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1316));
-    this->mSharedUID[4] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1320));
-    this->mSharedUID[5] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1324));
-    this->mSharedUID[6] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1328));
-    this->mSharedUID[7] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1332));
+    mSharedUID[0] = pSrc->mSharedUID[0];
+    mSharedUID[1] = pSrc->mSharedUID[1];
+    mSharedUID[2] = pSrc->mSharedUID[2];
+    mSharedUID[3] = pSrc->mSharedUID[3];
+    mSharedUID[4] = pSrc->mSharedUID[4];
+    mSharedUID[5] = pSrc->mSharedUID[5];
+    mSharedUID[6] = pSrc->mSharedUID[6];
+    mSharedUID[7] = pSrc->mSharedUID[7];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)
 //   in cpShlShotCtrl::shotShell at 0x00532c11-0x00532c79 (called at cpShlShotCtrl.cpp:1048)
 // void cpShlShotCtrl::cShlShotReqInfo::copySharedUIDToObjCollision(cpObjCollisionBase* pDst);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpShlShotCtrl::cShlShotReqInfo::MyDTI cpShlShotCtrl::cShlShotReqInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpShlShotCtrl.cpp at 0x00534a9c-0x00534ad9 (called at cpShlShotCtrl.cpp:56)

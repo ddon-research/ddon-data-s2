@@ -57,7 +57,7 @@ const MtDTI& uGUIEntryBoardInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIEntryBoardInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoardInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEntryBoardInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,14 +82,14 @@ uGUIEntryBoardInfo::~uGUIEntryBoardInfo() {
 // Address: 0x00a79300 - 0x00a79387 (135 bytes)
 bool uGUIEntryBoardInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_INFO_GUI"), static_cast<u32>(129), static_cast<t64>(1463467966)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_INFO_GUI"), 129u, 1463467966l))) != nullptr) {
+            return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+        return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
     }
 }
 
@@ -115,12 +115,12 @@ __attribute__((weak)) void uGUIEntryBoardInfo::setup() {
 // Address: 0x00a7ada0 - 0x00a7add1 (49 bytes)
 void uGUIEntryBoardInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a7ace0 - 0x00a7ada0 (192 bytes)
@@ -312,40 +312,40 @@ u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x420 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x394 from sQuestManagerExt*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x390 from sQuestManagerExt*
-    if (this->mProc == static_cast<uGUIEntryBoardInfo::PR>(1)) {
-        if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3096)))]) + static_cast<long>(1052))) != (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21536)))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3096)))]) + static_cast<long>(1056))) != static_cast<unsigned char>(0)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sQuestManagerExt::getInstance()) + static_cast<long>(916))) == static_cast<unsigned int>(4)) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(::sQuestManagerExt::getInstance()) + static_cast<long>(912))) == static_cast<unsigned char>(0)) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mProc == PR_SELECT) {
+        if (mpVCtrl != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1052)) != (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 21536))) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1056)) != 0) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 916)) == 4) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 912)) == 0) {
+                            setInputEvent(66u);
                         }
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                        setInputEvent(66u);
                     }
                 }
             }
         } else {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sQuestManagerExt::getInstance()) + static_cast<long>(916))) == static_cast<unsigned int>(4)) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(::sQuestManagerExt::getInstance()) + static_cast<long>(912))) == static_cast<unsigned char>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 916)) == 4) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sQuestManagerExt::getInstance()) + 912)) == 0) {
+                    setInputEvent(66u);
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                setInputEvent(66u);
             }
         }
-        if (this->::uGUIBase::mInputEventId == static_cast<u32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                msg->changeSE = static_cast<u32>(2);
+        if (mInputEventId == 0) {
+            setInputEvent(68u);
+            if (msg != nullptr) {
+                msg->changeSE = 2;
             }
         }
     } else {
-        if (this->mProc == static_cast<uGUIEntryBoardInfo::PR>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+        if (mProc == PR_VIEW) {
+            setInputEvent(69u);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a7ab70 - 0x00a7abed (125 bytes)
@@ -354,54 +354,56 @@ u32 uGUIEntryBoardInfo::evCtrlDecide(cControl::Message* msg) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc18 from uGUIBase::cVerticalList*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x41c from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x420 from MtObject*
-    if (this->mProc == static_cast<uGUIEntryBoardInfo::PR>(1)) {
-        if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3096)))]) + static_cast<long>(1052))) != static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3096)))]) + static_cast<long>(1056))) != static_cast<unsigned char>(0)) {
-                    if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-                        if (::sQuestManagerExt::getInstance()->mEntrySolo == false) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mProc == PR_SELECT) {
+        if (mpVCtrl != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpVCtrl) + 3096))]) + 1056)) != 0) {
+                    if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+                        if (!sQuestManagerExt::getInstance()->mEntrySolo) {
+                            setInputEvent(66u);
                         }
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                        setInputEvent(66u);
                     }
                 }
             }
         } else {
-            if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-                if (::sQuestManagerExt::getInstance()->mEntrySolo == false) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+            if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+                if (!sQuestManagerExt::getInstance()->mEntrySolo) {
+                    setInputEvent(66u);
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                setInputEvent(66u);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01af1390 - 0x01af13a2 (18 bytes)
 u32 uGUIEntryBoardInfo::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x01af13b0 - 0x01af13c2 (18 bytes)
 u32 uGUIEntryBoardInfo::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00a7abf0 - 0x00a7ac0b (27 bytes)
 u32 uGUIEntryBoardInfo::evCtrlClickWindow(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mProc == static_cast<uGUIEntryBoardInfo::PR>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (mProc == PR_VIEW) {
+        setInputEvent(69u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEntryBoardInfo::MyDTI uGUIEntryBoardInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEntryBoardInfo.cpp at 0x00a7d39f-0x00a7d3dc (called at uGUIEntryBoardInfo.cpp:27)
@@ -451,7 +453,7 @@ const MtDTI& uGUIEntryBoardInfo::cData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18uGUIEntryBoardInfo5cDataD0Ev at 0x01af1430-0x01af145a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIEntryBoardInfo::cData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoardInfo::cData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEntryBoardInfo::cData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -469,6 +471,8 @@ inline void uGUIEntryBoardInfo::cData::operator delete(void* p_addr) {
 //   in uGUIEntryBoardInfo::setup at 0x00a79bcc-0x00a79bfb, 0x00a79c89-0x00a79deb (called at uGUIEntryBoardInfo.cpp:240)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIEntryBoardInfo::cData::cData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEntryBoardInfo::cData::MyDTI uGUIEntryBoardInfo::cData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEntryBoardInfo.cpp at 0x00a7d3dc-0x00a7d419 (called at uGUIEntryBoardInfo.cpp:28)

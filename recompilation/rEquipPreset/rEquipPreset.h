@@ -100,7 +100,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEquipPreset::cEquipPreset() {
-    this->mItemId = static_cast<u32>(0);
+    this->mItemId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

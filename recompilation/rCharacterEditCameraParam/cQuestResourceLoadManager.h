@@ -125,9 +125,15 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cQuestResourceLoadManager::setClass at 0x1b70b5-0x1b70b9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cQuestResourceLoadManager::cLoadTask::setClass(MtObject* pClass) {
+    this->mpClass = pClass;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cQuestResourceLoadManager::cLoadTask::cLoadTask() {
     this->mHasStarted = false;
     this->mpCallbackFuncWithList = static_cast<cQuestResourceLoadManager::PCALLBACK_FUNC_WITH_LIST>(0);
     this->mpCallbackFunc = static_cast<cQuestResourceLoadManager::PCALLBACK_FUNC>(0);
-    this->mpClass = static_cast<MtObject*>(nullptr);
+    this->mpClass = nullptr;
 }

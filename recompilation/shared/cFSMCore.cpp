@@ -50,7 +50,7 @@ const MtDTI& cFSMCore::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMCore::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMCore::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMCore::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,15 +101,15 @@ __attribute__((weak)) void cFSMCore::move() {
 // Address: 0x000cbf00 - 0x000cbf8b (139 bytes)
 bool cFSMCore::setupFSM(MT_CTSTR resourcePath) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFSM.mpOwner = static_cast<MtObject*>(this);
-    if (resourcePath != static_cast<MT_CTSTR>(nullptr)) {
-        rAIFSM* pFSMRes = static_cast<rAIFSM*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(::rAIFSM::DTI, resourcePath, static_cast<u32>(128), false));
-        if (pFSMRes != static_cast<rAIFSM*>(nullptr)) {
-            this->mFSM.::cAIFSM::setResource(pFSMRes, static_cast<u32>(0));
-            this->mFSM.::cAIFSM::reset();
-            pFSMRes->::cResource::release();
-            this->mIsEnable = true;
-            this->mChangeCountState = -1.0f;
+    mFSM.mpOwner = static_cast<MtObject*>(this);
+    if (resourcePath != nullptr) {
+        rAIFSM* pFSMRes = static_cast<rAIFSM*>(sArchiveManager::getInstance()->createRes(rAIFSM::DTI, resourcePath, 128u, false));
+        if (pFSMRes != nullptr) {
+            mFSM.setResource(pFSMRes, 0u);
+            mFSM.cAIFSM::reset();
+            pFSMRes->cResource::release();
+            mIsEnable = true;
+            mChangeCountState = -1.0f;
             return true;
         } else {
             return false;
@@ -122,22 +122,22 @@ bool cFSMCore::setupFSM(MT_CTSTR resourcePath) {
 // Address: 0x000cbf90 - 0x000cbfce (62 bytes)
 u32 cFSMCore::stateDefUpdate(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mChangeCountState > 0.0f) {
-        this->mCountState = this->mCountState - this->mChangeCountState;
+    if (mChangeCountState > 0.0f) {
+        mCountState = mCountState - mChangeCountState;
     } else {
-        this->mCountState = 0.0f;
+        mCountState = 0.0f;
     }
-    this->mChangeCountState = -1.0f;
-    this->callbackUpdate();
-    return static_cast<u32>(0);
+    mChangeCountState = -1.0f;
+    callbackUpdate();
+    return 0;
 }
 
 // Address: 0x000cbfd0 - 0x000cbfe5 (21 bytes)
 u32 cFSMCore::stateUpdateFinish(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnable = false;
-    this->callbackFinish();
-    return static_cast<u32>(0);
+    mIsEnable = false;
+    callbackFinish();
+    return 0;
 }
 
 // Address: 0x000cbff0 - 0x000cc169 (377 bytes)
@@ -167,8 +167,8 @@ __attribute__((weak)) void cFSMCore::addFSMAction(MT_CTSTR name, const MtDTI* pO
 // Address: 0x0196dee0 - 0x0196def1 (17 bytes)
 f32 cFSMCore::getCountState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mChangeCountState = this->mCountState;
-    return this->mChangeCountState;
+    mChangeCountState = mCountState;
+    return mChangeCountState;
 }
 
 // Address: 0x000cc350 - 0x000cc468 (280 bytes)
@@ -181,7 +181,7 @@ cFSMCore::cFSMCore() {
 // Also emitted as: _ZN8cFSMCoreD0Ev at 0x000cc4b0
 cFSMCore::~cFSMCore() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFSM.::cAIFSM::reset();
+    mFSM.cAIFSM::reset();
 }
 
 // Address: 0x000cc510 - 0x000cc60d (253 bytes)
@@ -195,6 +195,8 @@ __attribute__((weak)) void cFSMCore::createPropertyFSM(MtPropertyList& s) {
     DDON_STUB("cFSMCore::createPropertyFSM")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cFSMCore::MyDTI cFSMCore::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cFSMCore.cpp at 0x000cc790-0x000cc7d2 (called at cFSMCore.cpp:35)

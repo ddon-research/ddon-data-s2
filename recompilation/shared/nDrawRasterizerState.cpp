@@ -32,7 +32,7 @@ const MtDTI& nDraw::RasterizerState::getDTI() const {
 // Address: 0x0115d8a0 - 0x0115d8e0 (64 bytes)
 void* nDraw::RasterizerState::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::RasterizerState::DTI)->memAlloc(sz, align, ::nDraw::RasterizerState::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::RasterizerState::DTI)->memAlloc(sz, align, ::nDraw::RasterizerState::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,6 +80,8 @@ nDraw::RasterizerState::RasterizerState(const nDraw::RASTERIZER_DESC* pdesc) {
 nDraw::RasterizerState::~RasterizerState() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::RasterizerState::MyDTI nDraw::RasterizerState::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::RasterizerState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

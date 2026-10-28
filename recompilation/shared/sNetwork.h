@@ -29,6 +29,7 @@ class MtString;
 class MtUI;
 class cMenuInviteEntryBoardItem;
 class cNetGameServer;
+class cQuestTask;
 namespace nNetwork { class BlockPool; }
 namespace nNetwork { class Context; }
 namespace nNetwork { class Session; }
@@ -42,6 +43,8 @@ namespace nNetwork { namespace nSharedMemory2 { class Object; } }
 namespace nSessionManager { class cNetSessionManager; }
 class sEventManager;
 class sGame;
+class sNetworkExt;
+class sQuestManagerExt;
 
 // Declarations
 class sNetwork;
@@ -62,6 +65,8 @@ class sNetwork : public cSystem
     friend class cMenuInviteEntryBoardItem;
     // inferred: cNetGameServer::move names sNetwork::mpInstance
     friend class cNetGameServer;
+    // inferred: cQuestTask::cQuestProcess::checkMyQstFlagOn names sNetwork::mpInstance, through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: nNetwork::Context::reset calls sNetwork::notifyServiceStateChange
     friend class nNetwork::Context;
     // inferred: nNetwork::Session::~Session names sNetwork::mpInstance
@@ -74,6 +79,10 @@ class sNetwork : public cSystem
     friend class sEventManager;
     // inferred: sGame::initDecideCharacter names sNetwork::mpInstance
     friend class sGame;
+    // inferred: sNetworkExt::updateLeaveOnTheWayTimer names sNetwork::mpInstance
+    friend class sNetworkExt;
+    // inferred: sQuestManagerExt::cTimer::stopTimer names sNetwork::mpInstance, through its enclosing class sQuestManagerExt
+    friend class sQuestManagerExt;
 public:
     enum
     {
@@ -293,4 +302,10 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 inline sNetwork* sNetwork::getInstance() {
     return ::sNetwork::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::cNetSessionManager::abortSessionCommand at 0x391462-0x391469; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nNetwork::Session* sNetwork::getSession() {
+    return this->mpSession[0];
 }

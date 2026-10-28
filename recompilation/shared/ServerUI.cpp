@@ -26,7 +26,7 @@ const MtDTI& CDataUIListCommand::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataUIListCommand::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataUIListCommand::DTI);
+    return MtMemoryAllocator::getAllocator(CDataUIListCommand::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataUIListCommand::getAllocator() {
 // Address: 0x003de8d0 - 0x003de910 (64 bytes)
 void* CDataUIListCommand::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataUIListCommand::getAllocator()->memAlloc(sz, align, ::CDataUIListCommand::DTI.::MtDTI::getID());
+    return CDataUIListCommand::getAllocator()->memAlloc(sz, align, CDataUIListCommand::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataUIListCommand::operator new(size_t sz, u32 align) {
 // Address: 0x003de940 - 0x003de96a (42 bytes)
 __attribute__((weak)) void CDataUIListCommand::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataUIListCommand::getAllocator()->memFree(p_addr);
+    CDataUIListCommand::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataUIListCommand::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataUIListCommand::CDataUIListCommand(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataUIListCommand::MyDTI CDataUIListCommand::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fb0e-0x0041fb47 (called at ServerUIImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fb0e-0x0041fb47 (called at ServerUI.h:21)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataUIListCommand::operator delete(void* p_addr) {
 // Address: 0x003de880 - 0x003de8c8 (72 bytes)
 MtObject* CDataUIListCommand::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataUIListCommand;
+    return new (16u) CDataUIListCommand;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataUIListElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataUIListElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataUIListElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataUIListElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataUIListElement::getAllocator() {
 // Address: 0x003deb50 - 0x003deb90 (64 bytes)
 void* CDataUIListElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataUIListElement::getAllocator()->memAlloc(sz, align, ::CDataUIListElement::DTI.::MtDTI::getID());
+    return CDataUIListElement::getAllocator()->memAlloc(sz, align, CDataUIListElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataUIListElement::operator new(size_t sz, u32 align) {
 // Address: 0x003debc0 - 0x003debea (42 bytes)
 __attribute__((weak)) void CDataUIListElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataUIListElement::getAllocator()->memFree(p_addr);
+    CDataUIListElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataUIListElement::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataUIListElement::CDataUIListElement(const char*, const char*, u32, u32, u32, u64, const MtTypedArray<CDataUIListElementChild>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataUIListElement::MyDTI CDataUIListElement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fb80-0x0041fbb9 (called at ServerUIImplement.inc:9)
@@ -168,7 +172,7 @@ const MtDTI& CDataUIListElementChild::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataUIListElementChild::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataUIListElementChild::DTI);
+    return MtMemoryAllocator::getAllocator(CDataUIListElementChild::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataUIListElementChild::getAllocator() {
 // Address: 0x003de9f0 - 0x003dea30 (64 bytes)
 void* CDataUIListElementChild::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataUIListElementChild::getAllocator()->memAlloc(sz, align, ::CDataUIListElementChild::DTI.::MtDTI::getID());
+    return CDataUIListElementChild::getAllocator()->memAlloc(sz, align, CDataUIListElementChild::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataUIListElementChild::operator new(size_t sz, u32 align) {
 // Address: 0x003dea60 - 0x003dea8a (42 bytes)
 __attribute__((weak)) void CDataUIListElementChild::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataUIListElementChild::getAllocator()->memFree(p_addr);
+    CDataUIListElementChild::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataUIListElementChild::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataUIListElementChild::CDataUIListElementChild(u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataUIListElementChild::MyDTI CDataUIListElementChild::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fb47-0x0041fb80 (called at ServerUIImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fb47-0x0041fb80 (called at ServerUI.h:74)
@@ -222,6 +228,6 @@ __attribute__((weak)) void CDataUIListElementChild::operator delete(void* p_addr
 // Address: 0x003de9a0 - 0x003de9ef (79 bytes)
 MtObject* CDataUIListElementChild::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataUIListElementChild;
+    return new (16u) CDataUIListElementChild;
 }
 

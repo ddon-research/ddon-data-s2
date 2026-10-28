@@ -37,7 +37,7 @@ const MtDTI& sObjCondition::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sObjCondition::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sObjCondition::DTI);
+    return MtMemoryAllocator::getAllocator(sObjCondition::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* sObjCondition::getAllocator() {
 // Address: 0x007f7dd0 - 0x007f7e10 (64 bytes)
 void* sObjCondition::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sObjCondition::getAllocator()->memAlloc(sz, align, ::sObjCondition::DTI.::MtDTI::getID());
+    return sObjCondition::getAllocator()->memAlloc(sz, align, sObjCondition::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* sObjCondition::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sObjCondition::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sObjCondition::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sObjCondition::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,7 +102,7 @@ __attribute__((weak)) void sObjCondition::reset() {
 // Address: 0x007f8000 - 0x007f8005 (5 bytes)
 void sObjCondition::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sObjCondition::cheatCheck();
+    cheatCheck();
 }
 
 // Address: 0x007f8530 - 0x007f85a0 (112 bytes)
@@ -128,27 +128,27 @@ const cOcdPriorityParam* sObjCondition::getPriorityData(u32 OcdUID) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f8686; no location-less local in scope fits
     cOcdPriorityParam* v1_0;
-    if (this->mpPriOrityTable == static_cast<rOcdPriorityParam*>(nullptr)) {
-        v1_0 = static_cast<cOcdPriorityParam*>(nullptr);
+    if (mpPriOrityTable == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpPriOrityTable->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cOcdPriorityParam*>(nullptr);
+        u32 dataNum = mpPriOrityTable->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f8669, used 3 times; no DWARF local holds it
-                cOcdPriorityParam* t0 = this->mpPriOrityTable->getData(i0_2);
-                if (t0 != static_cast<cOcdPriorityParam*>(nullptr)) {
+                cOcdPriorityParam* t0 = mpPriOrityTable->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mOcdUID == OcdUID) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < dataNum) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cOcdPriorityParam*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -160,26 +160,26 @@ const cOcdPriorityParam* sObjCondition::getPriorityData(u32 OcdUID) const {
 // Address: 0x007f8690 - 0x007f86da (74 bytes)
 u32 sObjCondition::getOcdUID(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index > static_cast<u32>(26)) {
-        if ((index - static_cast<u32>(27)) <= static_cast<u32>(30)) {
-            return ((index - static_cast<u32>(27)) | static_cast<u32>(4096)) + static_cast<u32>(1);
+    if (index > 26u) {
+        if ((index - 27u) <= 30u) {
+            return ((index - 27u) | 4096u) + 1u;
         } else {
-            if ((index - static_cast<u32>(58)) <= static_cast<u32>(4)) {
-                return ((index - static_cast<u32>(58)) | static_cast<u32>(8192)) + static_cast<u32>(1);
+            if ((index - 58u) <= 4u) {
+                return ((index - 58u) | 8192u) + 1u;
             } else {
-                if ((index - static_cast<u32>(63)) <= static_cast<u32>(8)) {
-                    return ((index - static_cast<u32>(63)) | static_cast<u32>(12288)) + static_cast<u32>(1);
+                if ((index - 63u) <= 8u) {
+                    return ((index - 63u) | 12288u) + 1u;
                 } else {
-                    if ((index - static_cast<u32>(72)) <= static_cast<u32>(2)) {
-                        return ((index - static_cast<u32>(72)) | static_cast<u32>(16384)) + static_cast<u32>(1);
+                    if ((index - 72u) <= 2u) {
+                        return ((index - 72u) | 16384u) + 1u;
                     } else {
-                        return static_cast<u32>(0);
+                        return 0;
                     }
                 }
             }
         }
     } else {
-        return index + static_cast<u32>(1);
+        return index + 1u;
     }
 }
 
@@ -202,141 +202,141 @@ void sObjCondition::createResource() {
     // DWARF local not rendered: MT_CTSTR tag_pl;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    rOcdPriorityParam* pRes = static_cast<rOcdPriorityParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_OCD_PRIORITY", static_cast<u32>(1), false));
-    if (pRes != static_cast<rOcdPriorityParam*>(nullptr)) {
-        if (this->mpPriOrityTable != pRes) {
-            if (this->mpPriOrityTable != static_cast<rOcdPriorityParam*>(nullptr)) {
-                this->mpPriOrityTable->::cResource::release();
-                this->mpPriOrityTable = static_cast<rOcdPriorityParam*>(nullptr);
+    rOcdPriorityParam* pRes = static_cast<rOcdPriorityParam*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_OCD_PRIORITY", 1u, false));
+    if (pRes != nullptr) {
+        if (mpPriOrityTable != pRes) {
+            if (mpPriOrityTable != nullptr) {
+                mpPriOrityTable->release();
+                mpPriOrityTable = nullptr;
             }
-            this->mpPriOrityTable = pRes;
-            pRes->::cResource::addRef();
+            mpPriOrityTable = pRes;
+            pRes->cResource::addRef();
         }
-        pRes->::cResource::release();
+        pRes->cResource::release();
     }
-    rOcdStatusParamRes* pOcdResEm = static_cast<rOcdStatusParamRes*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("em_common", "RES_ID_OCDCOMMONPARAM_OSP", static_cast<u32>(1), false));
-    if (pOcdResEm != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        if (this->mpOcdStatusCommonRes.elems[0] != pOcdResEm) {
-            if (this->mpOcdStatusCommonRes.elems[0] != static_cast<rOcdStatusParamRes*>(nullptr)) {
-                this->mpOcdStatusCommonRes.elems[0]->::cResource::release();
-                this->mpOcdStatusCommonRes.elems[0] = static_cast<rOcdStatusParamRes*>(nullptr);
+    rOcdStatusParamRes* pOcdResEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDCOMMONPARAM_OSP", 1u, false));
+    if (pOcdResEm != nullptr) {
+        if (mpOcdStatusCommonRes.elems[0] != pOcdResEm) {
+            if (mpOcdStatusCommonRes.elems[0] != nullptr) {
+                mpOcdStatusCommonRes.elems[0]->cResource::release();
+                mpOcdStatusCommonRes.elems[0] = nullptr;
             }
-            this->mpOcdStatusCommonRes.elems[0] = pOcdResEm;
-            pOcdResEm->::cResource::addRef();
+            mpOcdStatusCommonRes.elems[0] = pOcdResEm;
+            pOcdResEm->cResource::addRef();
         }
-        pOcdResEm->::cResource::release();
+        pOcdResEm->cResource::release();
     }
-    rOcdStatusParamRes* pOcdResBigEm = static_cast<rOcdStatusParamRes*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("em_common", "RES_ID_OCDCOMMONPARAM_BIG_OSP", static_cast<u32>(1), false));
-    if (pOcdResBigEm != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        if (this->mpOcdStatusCommonRes.elems[1] != pOcdResBigEm) {
-            if (this->mpOcdStatusCommonRes.elems[1] != static_cast<rOcdStatusParamRes*>(nullptr)) {
-                this->mpOcdStatusCommonRes.elems[1]->::cResource::release();
-                this->mpOcdStatusCommonRes.elems[1] = static_cast<rOcdStatusParamRes*>(nullptr);
+    rOcdStatusParamRes* pOcdResBigEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDCOMMONPARAM_BIG_OSP", 1u, false));
+    if (pOcdResBigEm != nullptr) {
+        if (mpOcdStatusCommonRes.elems[1] != pOcdResBigEm) {
+            if (mpOcdStatusCommonRes.elems[1] != nullptr) {
+                mpOcdStatusCommonRes.elems[1]->cResource::release();
+                mpOcdStatusCommonRes.elems[1] = nullptr;
             }
-            this->mpOcdStatusCommonRes.elems[1] = pOcdResBigEm;
-            pOcdResBigEm->::cResource::addRef();
+            mpOcdStatusCommonRes.elems[1] = pOcdResBigEm;
+            pOcdResBigEm->cResource::addRef();
         }
-        pOcdResBigEm->::cResource::release();
+        pOcdResBigEm->cResource::release();
     }
-    rOcdStatusParamRes* pOcdResHmEm = static_cast<rOcdStatusParamRes*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("em_common", "RES_ID_STATUS_COMMON_OSP", static_cast<u32>(1), false));
-    if (pOcdResHmEm != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        if (this->mpOcdStatusCommonRes.elems[2] != pOcdResHmEm) {
-            if (this->mpOcdStatusCommonRes.elems[2] != static_cast<rOcdStatusParamRes*>(nullptr)) {
-                this->mpOcdStatusCommonRes.elems[2]->::cResource::release();
-                this->mpOcdStatusCommonRes.elems[2] = static_cast<rOcdStatusParamRes*>(nullptr);
+    rOcdStatusParamRes* pOcdResHmEm = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_STATUS_COMMON_OSP", 1u, false));
+    if (pOcdResHmEm != nullptr) {
+        if (mpOcdStatusCommonRes.elems[2] != pOcdResHmEm) {
+            if (mpOcdStatusCommonRes.elems[2] != nullptr) {
+                mpOcdStatusCommonRes.elems[2]->cResource::release();
+                mpOcdStatusCommonRes.elems[2] = nullptr;
             }
-            this->mpOcdStatusCommonRes.elems[2] = pOcdResHmEm;
-            pOcdResHmEm->::cResource::addRef();
+            mpOcdStatusCommonRes.elems[2] = pOcdResHmEm;
+            pOcdResHmEm->cResource::addRef();
         }
-        pOcdResHmEm->::cResource::release();
+        pOcdResHmEm->cResource::release();
     }
-    rOcdStatusParamRes* pOcdResPL = static_cast<rOcdStatusParamRes*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_STATUS_COMMON_OSP", static_cast<u32>(1), false));
-    if (pOcdResPL != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        if (this->mpOcdStatusCommonRes.elems[3] != pOcdResPL) {
-            if (this->mpOcdStatusCommonRes.elems[3] != static_cast<rOcdStatusParamRes*>(nullptr)) {
-                this->mpOcdStatusCommonRes.elems[3]->::cResource::release();
-                this->mpOcdStatusCommonRes.elems[3] = static_cast<rOcdStatusParamRes*>(nullptr);
+    rOcdStatusParamRes* pOcdResPL = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("Human", "RES_ID_STATUS_COMMON_OSP", 1u, false));
+    if (pOcdResPL != nullptr) {
+        if (mpOcdStatusCommonRes.elems[3] != pOcdResPL) {
+            if (mpOcdStatusCommonRes.elems[3] != nullptr) {
+                mpOcdStatusCommonRes.elems[3]->cResource::release();
+                mpOcdStatusCommonRes.elems[3] = nullptr;
             }
-            this->mpOcdStatusCommonRes.elems[3] = pOcdResPL;
-            pOcdResPL->::cResource::addRef();
+            mpOcdStatusCommonRes.elems[3] = pOcdResPL;
+            pOcdResPL->cResource::addRef();
         }
-        pOcdResPL->::cResource::release();
+        pOcdResPL->cResource::release();
     }
-    rOcdIrAdj* pOcdIrRes = static_cast<rOcdIrAdj*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ", static_cast<u32>(1), false));
-    if (pOcdIrRes != static_cast<rOcdIrAdj*>(nullptr)) {
-        if (this->mpOcdIrAdjRes != pOcdIrRes) {
-            if (this->mpOcdIrAdjRes != static_cast<rOcdIrAdj*>(nullptr)) {
-                this->mpOcdIrAdjRes->::cResource::release();
-                this->mpOcdIrAdjRes = static_cast<rOcdIrAdj*>(nullptr);
+    rOcdIrAdj* pOcdIrRes = static_cast<rOcdIrAdj*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ", 1u, false));
+    if (pOcdIrRes != nullptr) {
+        if (mpOcdIrAdjRes != pOcdIrRes) {
+            if (mpOcdIrAdjRes != nullptr) {
+                mpOcdIrAdjRes->release();
+                mpOcdIrAdjRes = nullptr;
             }
-            this->mpOcdIrAdjRes = pOcdIrRes;
-            pOcdIrRes->::cResource::addRef();
+            mpOcdIrAdjRes = pOcdIrRes;
+            pOcdIrRes->cResource::addRef();
         }
-        pOcdIrRes->::cResource::release();
+        pOcdIrRes->cResource::release();
     }
-    rOcdIrAdjPL* pOcdIrPLRes = static_cast<rOcdIrAdjPL*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ_PL", static_cast<u32>(1), false));
-    if (pOcdIrPLRes == static_cast<rOcdIrAdjPL*>(nullptr)) {
+    rOcdIrAdjPL* pOcdIrPLRes = static_cast<rOcdIrAdjPL*>(sArchiveManager::getInstance()->createRes("em_common", "RES_ID_OCDIRADJ_IR_ADJ_PL", 1u, false));
+    if (pOcdIrPLRes == nullptr) {
         return;
     }
-    if (pOcdIrPLRes != this->mpOcdIrAdjPLRes) {
-        if (this->mpOcdIrAdjPLRes != static_cast<rOcdIrAdjPL*>(nullptr)) {
-            this->mpOcdIrAdjPLRes->::cResource::release();
-            this->mpOcdIrAdjPLRes = static_cast<rOcdIrAdjPL*>(nullptr);
+    if (pOcdIrPLRes != mpOcdIrAdjPLRes) {
+        if (mpOcdIrAdjPLRes != nullptr) {
+            mpOcdIrAdjPLRes->release();
+            mpOcdIrAdjPLRes = nullptr;
         }
-        this->mpOcdIrAdjPLRes = pOcdIrPLRes;
-        pOcdIrPLRes->::cResource::addRef();
+        mpOcdIrAdjPLRes = pOcdIrPLRes;
+        pOcdIrPLRes->cResource::addRef();
     }
-    pOcdIrPLRes->::cResource::release();
+    pOcdIrPLRes->cResource::release();
 }
 
 // Address: 0x007f83a0 - 0x007f83dc (60 bytes)
 void sObjCondition::releaseResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPriOrityTable != static_cast<rOcdPriorityParam*>(nullptr)) {
-        this->mpPriOrityTable->::cResource::release();
-        this->mpPriOrityTable = static_cast<rOcdPriorityParam*>(nullptr);
+    if (mpPriOrityTable != nullptr) {
+        mpPriOrityTable->release();
+        mpPriOrityTable = nullptr;
     }
-    if (this->mpSystemParamRes == static_cast<rAdjustParam*>(nullptr)) {
+    if (mpSystemParamRes == nullptr) {
         return;
     }
-    this->mpSystemParamRes->::cResource::release();
-    this->mpSystemParamRes = static_cast<rAdjustParam*>(nullptr);
+    mpSystemParamRes->release();
+    mpSystemParamRes = nullptr;
 }
 
 // Address: 0x007f8010 - 0x007f80cb (187 bytes)
 __attribute__((weak)) void sObjCondition::cheatCheck() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x7f8028, used once; no DWARF local holds it
-    f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-    this->mSendInterval = this->mSendInterval + t0;
-    if (450.0f > this->mSendInterval) {
+    f32 t0 = sWorkRate::getInstance()->calc(3u);
+    mSendInterval = mSendInterval + t0;
+    if (450.0f > mSendInterval) {
     } else {
-        if (this->mCntCheatOcdAlter_PL != static_cast<u32>(0)) {
-            this->mCntCheatOcdAlter_PL = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(11));
+        if (mCntCheatOcdAlter_PL != 0) {
+            mCntCheatOcdAlter_PL = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(11));
         }
-        if (this->mCntCheatOcdAlter_EM != static_cast<u32>(0)) {
-            this->mCntCheatOcdAlter_EM = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(12));
+        if (mCntCheatOcdAlter_EM != 0) {
+            mCntCheatOcdAlter_EM = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(12));
         }
-        if (this->mCntCheatOcdAlter_Gold != static_cast<u32>(0)) {
-            this->mCntCheatOcdAlter_Gold = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(13));
+        if (mCntCheatOcdAlter_Gold != 0) {
+            mCntCheatOcdAlter_Gold = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(13));
         }
-        this->mSendInterval = 0.0f;
+        mSendInterval = 0.0f;
     }
 }
 
 // Address: 0x007f8720 - 0x007f872b (11 bytes)
 void sObjCondition::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, const nObjCondition::stOcdActiveInfo& srcInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNetMsgData::composeOcdActiveMsg(dstMsg, srcInfo);
+    nNetMsgData::composeOcdActiveMsg(dstMsg, srcInfo);
 }
 
 // Address: 0x007f8730 - 0x007f873b (11 bytes)
 void sObjCondition::decomposeOcdActiveMsg(nObjCondition::stOcdActiveInfo& dstInfo, const nObjCondition::stOcdActiveMsg& srcMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNetMsgData::decomposeOcdActiveMsg(dstInfo, srcMsg);
+    nNetMsgData::decomposeOcdActiveMsg(dstInfo, srcMsg);
 }
 
 // Address: 0x007f83e0 - 0x007f83f1 (17 bytes)
@@ -423,6 +423,11 @@ __attribute__((weak)) const cOcdIrAdjPL* sObjCondition::getOcdIrAdjPLData(u32 it
 //   in cOcdInfo::checkCheckOcd at 0x003a8ce4-0x003a8ce9 (called at cOcdInfo.cpp:622)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void sObjCondition::setCntCheatOcdAlter_Gold(u32 NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sObjCondition::MyDTI sObjCondition::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sObjCondition* sObjCondition::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sObjCondition.cpp at 0x007f883f-0x007f887c (called at sObjCondition.cpp:47)

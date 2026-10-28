@@ -47,7 +47,7 @@ const MtDTI& uGUIOption::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIOption::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIOption::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIOption::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline MtAllocator* uGUIOption::getAllocator() {
 // Address: 0x00b8e670 - 0x00b8e6b0 (64 bytes)
 void* uGUIOption::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIOption::getAllocator()->memAlloc(sz, align, ::uGUIOption::DTI.::MtDTI::getID());
+    return uGUIOption::getAllocator()->memAlloc(sz, align, uGUIOption::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ void* uGUIOption::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIOption::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIOption::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIOption::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,21 +96,21 @@ uGUIOption::~uGUIOption() {
 // Address: 0x00b8fe90 - 0x00b8fe95 (5 bytes)
 void uGUIOption::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b8fea0 - 0x00b8fff8 (344 bytes)
 bool uGUIOption::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_GUI"), static_cast<u32>(129), static_cast<t64>(1418969807)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mOptionType != static_cast<u32>(2)) {
-                if (this->mOptionType == static_cast<u32>(1)) {
-                    if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                        if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                    this->mpGUIMsg;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_GUI"), 129u, 1418969807l))) != nullptr) {
+            if (mOptionType != 2) {
+                if (mOptionType == 1) {
+                    if (mpTblMORes == nullptr) {
+                        if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), 129u, 0l))) != nullptr) {
+                            if (mpGUIMsg == nullptr) {
+                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                    mpGUIMsg;
                                     return true;
                                 } else {
                                     return false;
@@ -122,9 +122,9 @@ bool uGUIOption::loadResource() {
                             return false;
                         }
                     } else {
-                        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGUIMsg;
+                        if (mpGUIMsg == nullptr) {
+                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                mpGUIMsg;
                                 return true;
                             } else {
                                 return false;
@@ -134,12 +134,12 @@ bool uGUIOption::loadResource() {
                         }
                     }
                 } else {
-                    if (this->mOptionType == static_cast<u32>(0)) {
-                        if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                            if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                                if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                                    if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                        this->mpGUIMsg;
+                    if (mOptionType == 0) {
+                        if (mpTblMORes == nullptr) {
+                            if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), 129u, 0l))) != nullptr) {
+                                if (mpGUIMsg == nullptr) {
+                                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                        mpGUIMsg;
                                         return true;
                                     } else {
                                         return false;
@@ -151,9 +151,9 @@ bool uGUIOption::loadResource() {
                                 return false;
                             }
                         } else {
-                            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                    this->mpGUIMsg;
+                            if (mpGUIMsg == nullptr) {
+                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                    mpGUIMsg;
                                     return true;
                                 } else {
                                     return false;
@@ -163,9 +163,9 @@ bool uGUIOption::loadResource() {
                             }
                         }
                     } else {
-                        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGUIMsg;
+                        if (mpGUIMsg == nullptr) {
+                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                mpGUIMsg;
                                 return true;
                             } else {
                                 return false;
@@ -176,11 +176,11 @@ bool uGUIOption::loadResource() {
                     }
                 }
             } else {
-                if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                    if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGUIMsg;
+                if (mpTblMORes == nullptr) {
+                    if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), 129u, 0l))) != nullptr) {
+                        if (mpGUIMsg == nullptr) {
+                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                mpGUIMsg;
                                 return true;
                             } else {
                                 return false;
@@ -192,9 +192,9 @@ bool uGUIOption::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGUIMsg;
+                    if (mpGUIMsg == nullptr) {
+                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsg;
                             return true;
                         } else {
                             return false;
@@ -208,13 +208,13 @@ bool uGUIOption::loadResource() {
             return false;
         }
     } else {
-        if (this->mOptionType != static_cast<u32>(2)) {
-            if (this->mOptionType == static_cast<u32>(1)) {
-                if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                    if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGUIMsg;
+        if (mOptionType != 2) {
+            if (mOptionType == 1) {
+                if (mpTblMORes == nullptr) {
+                    if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INTITLE_PS4_TMO"), 129u, 0l))) != nullptr) {
+                        if (mpGUIMsg == nullptr) {
+                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                mpGUIMsg;
                                 return true;
                             } else {
                                 return false;
@@ -226,9 +226,9 @@ bool uGUIOption::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGUIMsg;
+                    if (mpGUIMsg == nullptr) {
+                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsg;
                             return true;
                         } else {
                             return false;
@@ -238,12 +238,12 @@ bool uGUIOption::loadResource() {
                     }
                 }
             } else {
-                if (this->mOptionType == static_cast<u32>(0)) {
-                    if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                        if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                    this->mpGUIMsg;
+                if (mOptionType == 0) {
+                    if (mpTblMORes == nullptr) {
+                        if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONSYS_INSTAGE_PS4_TMO"), 129u, 0l))) != nullptr) {
+                            if (mpGUIMsg == nullptr) {
+                                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                    mpGUIMsg;
                                     return true;
                                 } else {
                                     return false;
@@ -255,9 +255,9 @@ bool uGUIOption::loadResource() {
                             return false;
                         }
                     } else {
-                        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGUIMsg;
+                        if (mpGUIMsg == nullptr) {
+                            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                                mpGUIMsg;
                                 return true;
                             } else {
                                 return false;
@@ -267,9 +267,9 @@ bool uGUIOption::loadResource() {
                         }
                     }
                 } else {
-                    if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGUIMsg;
+                    if (mpGUIMsg == nullptr) {
+                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsg;
                             return true;
                         } else {
                             return false;
@@ -280,11 +280,11 @@ bool uGUIOption::loadResource() {
                 }
             }
         } else {
-            if (this->mpTblMORes == static_cast<rTblMenuOption*>(nullptr)) {
-                if ((this->mpTblMORes = static_cast<rTblMenuOption*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rTblMenuOption*>(nullptr)) {
-                    if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGUIMsg;
+            if (mpTblMORes == nullptr) {
+                if ((mpTblMORes = static_cast<rTblMenuOption*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENUOPTIONCHARACTER_TMO"), 129u, 0l))) != nullptr) {
+                    if (mpGUIMsg == nullptr) {
+                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsg;
                             return true;
                         } else {
                             return false;
@@ -296,9 +296,9 @@ bool uGUIOption::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGUIMsg;
+                if (mpGUIMsg == nullptr) {
+                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_OPTION_RES_GMD"), 129u, 0l))) != nullptr) {
+                        mpGUIMsg;
                         return true;
                     } else {
                         return false;
@@ -339,28 +339,28 @@ __attribute__((weak)) void uGUIOption::setup() {
 // Address: 0x00b930b0 - 0x00b93159 (169 bytes)
 void uGUIOption::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpTblMORes != static_cast<rTblMenuOption*>(nullptr)) {
-        this->mpTblMORes->::cResource::release();
-        this->mpTblMORes = static_cast<rTblMenuOption*>(nullptr);
+    if (mpTblMORes != nullptr) {
+        mpTblMORes->release();
+        mpTblMORes = nullptr;
     }
-    if (this->mpGUIMsg != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGUIMsg->::cResource::release();
-        this->mpGUIMsg = static_cast<rGUIMessage*>(nullptr);
+    if (mpGUIMsg != nullptr) {
+        mpGUIMsg->release();
+        mpGUIMsg = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUISubWindow == static_cast<uGUIBase*>(nullptr)) {
+    if (mpGUISubWindow == nullptr) {
         return;
     }
-    this->mpGUISubWindow->kill();
-    this->mpGUISubWindow = static_cast<uGUIBase*>(nullptr);
+    mpGUISubWindow->kill();
+    mpGUISubWindow = nullptr;
 }
 
 // Address: 0x00b93160 - 0x00b9337b (539 bytes)
@@ -382,26 +382,26 @@ __attribute__((weak)) void uGUIOption::move() {
 // Address: 0x00b96df0 - 0x00b96e15 (37 bytes)
 u8 uGUIOption::getOnlineStatusIndex(nCharacter::E_ONLINE_STATUS status) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacter::E_ONLINE_STATUS* p1 = ::uGUIOption::onlineStatusTblId;
+    const nCharacter::E_ONLINE_STATUS* p1 = uGUIOption::onlineStatusTblId;
     do {
         if ((*p1) == status) {
             return static_cast<unsigned char>(i);
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(3));
-    return static_cast<u8>(0);
+    } while (i <= 3u);
+    return 0;
 }
 
 // Address: 0x00b8fb30 - 0x00b8fb47 (23 bytes)
 nCharacter::E_ONLINE_STATUS uGUIOption::getOnlineStatus(u32 uIdx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (uIdx <= static_cast<u32>(3)) {
-        return ::uGUIOption::onlineStatusTblId[uIdx];
+    if (uIdx <= 3u) {
+        return uGUIOption::onlineStatusTblId[uIdx];
     } else {
-        return static_cast<nCharacter::E_ONLINE_STATUS>(1);
+        return nCharacter::ONLINE_STATUS_ONLINE;
     }
 }
 
@@ -424,31 +424,31 @@ __attribute__((weak)) void uGUIOption::moveEvent() {
 // Address: 0x00b93090 - 0x00b930aa (26 bytes)
 void uGUIOption::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWait);
 }
 
 // Address: 0x00b944e0 - 0x00b9457a (154 bytes)
 void uGUIOption::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCsrCtgr.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    if (this->mpVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpVLCtgr->::cControl::mCtrlF = this->mpVLCtgr->::cControl::mCtrlF & static_cast<u32>(4294967287);
+    mCsrCtgr.uGUIBase::cReferenceUIVlCursor::update();
+    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    if (mpVLCtgr != nullptr) {
+        mpVLCtgr->mCtrlF = mpVLCtgr->mCtrlF & 0xFFFFFFF7u;
     }
-    if (this->mpHLTab != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpHLTab->::cControl::mCtrlF = this->mpHLTab->::cControl::mCtrlF & static_cast<u32>(4294967287);
+    if (mpHLTab != nullptr) {
+        mpHLTab->mCtrlF = mpHLTab->mCtrlF & 0xFFFFFFF7u;
     }
-    if (this->mpHLAOI != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpHLAOI->::cControl::mCtrlF = this->mpHLAOI->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpHLAOI != nullptr) {
+        mpHLAOI->mCtrlF = mpHLAOI->mCtrlF | 8u;
     }
-    if (this->mpVLData != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpVLData->::cControl::mCtrlF = this->mpVLData->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpVLData != nullptr) {
+        mpVLData->mCtrlF = mpVLData->mCtrlF | 8u;
     }
-    if (this->mpCtrlApply != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlApply->mCtrlF = this->mpCtrlApply->mCtrlF & static_cast<u32>(4294967287);
+    if (mpCtrlApply != nullptr) {
+        mpCtrlApply->mCtrlF = mpCtrlApply->mCtrlF & 0xFFFFFFF7u;
     }
-    this->::uGUIOption::scrollPageNull();
+    scrollPageNull();
 }
 
 // Address: 0x00b94730 - 0x00b94933 (515 bytes)
@@ -471,7 +471,7 @@ __attribute__((weak)) void uGUIOption::updateWaitDataPulldown() {
 // Address: 0x00b939b0 - 0x00b939ca (26 bytes)
 void uGUIOption::updateWaitCalibration() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
 }
 
 // Address: 0x00b939d0 - 0x00b93a14 (68 bytes)
@@ -499,31 +499,31 @@ __attribute__((weak)) void uGUIOption::setIdxPulldown(u32 pulldownId) {
 // Address: 0x00b93a70 - 0x00b93b12 (162 bytes)
 void uGUIOption::updateSaveData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpVLCtgr->::cControl::mCtrlF = this->mpVLCtgr->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpVLCtgr != nullptr) {
+        mpVLCtgr->mCtrlF = mpVLCtgr->mCtrlF | 8u;
     }
-    if (this->mpHLTab != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpHLTab->::cControl::mCtrlF = this->mpHLTab->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpHLTab != nullptr) {
+        mpHLTab->mCtrlF = mpHLTab->mCtrlF | 8u;
     }
-    if (this->mpHLAOI != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpHLAOI->::cControl::mCtrlF = this->mpHLAOI->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpHLAOI != nullptr) {
+        mpHLAOI->mCtrlF = mpHLAOI->mCtrlF | 8u;
     }
-    if (this->mpVLData != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpVLData->::cControl::mCtrlF = this->mpVLData->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpVLData != nullptr) {
+        mpVLData->mCtrlF = mpVLData->mCtrlF | 8u;
     }
-    if (this->mpCtrlApply != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlApply->mCtrlF = this->mpCtrlApply->mCtrlF | static_cast<u32>(8);
+    if (mpCtrlApply != nullptr) {
+        mpCtrlApply->mCtrlF = mpCtrlApply->mCtrlF | 8u;
     }
-    if (this->mOptionType <= static_cast<u32>(1)) {
-        static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::saveData(static_cast<SAVEDATA_TYPE>(0));
+    if (mOptionType <= 1u) {
+        static_cast<sSavedataExt*>(sSavedata::getInstance())->saveData(SAVEDATA_TYPE_MAIN);
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
 }
 
 // Address: 0x00b94c80 - 0x00b94c89 (9 bytes)
 void uGUIOption::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (186 bytes)
@@ -586,53 +586,53 @@ __attribute__((weak)) void uGUIOption::evAOIDecide() {
 // Address: 0x00b91a90 - 0x00b91aa2 (18 bytes)
 u32 uGUIOption::evCtrlCtgrEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00b91ab0 - 0x00b91ac2 (18 bytes)
 u32 uGUIOption::evCtrlCtgrMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00b91ad0 - 0x00b91ae2 (18 bytes)
 u32 uGUIOption::evCtrlCtgrDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b91af0 - 0x00b91b19 (41 bytes)
 u32 uGUIOption::evCtrlTabMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender->mItemNum > static_cast<s32>(1)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender->mItemNum > 1) {
+                setInputEvent(69u);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+            setInputEvent(69u);
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+        setInputEvent(69u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b91b20 - 0x00b91b32 (18 bytes)
 u32 uGUIOption::evCtrlDataCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b91b40 - 0x00b91b52 (18 bytes)
 u32 uGUIOption::evCtrlDataMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(0);
+    setInputEvent(71u);
+    return 0;
 }
 
 // Address: 0x00b91b60 - 0x00b91e31 (721 bytes)
@@ -649,15 +649,15 @@ __attribute__((weak)) u32 uGUIOption::evCtrlDataDecide(cControl::Message* msg) {
 // Address: 0x00b91e40 - 0x00b91e52 (18 bytes)
 u32 uGUIOption::evCtrlAOIMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(0);
+    setInputEvent(73u);
+    return 0;
 }
 
 // Address: 0x00b91e60 - 0x00b91e72 (18 bytes)
 u32 uGUIOption::evCtrlApplyApply(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(75));
-    return static_cast<u32>(0);
+    setInputEvent(75u);
+    return 0;
 }
 
 // Address: 0x00b961e0 - 0x00b96c4c (2668 bytes)
@@ -782,31 +782,31 @@ __attribute__((weak)) void uGUIOption::scrollPageNull() {
 // Address: 0x00b938a0 - 0x00b93996 (246 bytes)
 bool uGUIOption::execDialog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            if (this->mpGUISystemMsg->::uGUISystemMsg::getSerialNo() == static_cast<u32>(1)) {
-                if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) != static_cast<s32>(0)) {
-                    if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) == static_cast<s32>(1)) {
-                        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
+    if (mpGUISystemMsg != nullptr) {
+        if (mpGUISystemMsg->mResult == RESULT_EXIT) {
+            if (mpGUISystemMsg->getSerialNo() == 1) {
+                if (mpGUISystemMsg->getChoicePos(-1) != 0) {
+                    if (mpGUISystemMsg->getChoicePos(-1) == 1) {
+                        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
                     }
                 } else {
-                    this->::uGUIOption::saveOptionData();
-                    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateSaveData);
+                    saveOptionData();
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateSaveData);
                 }
             } else {
-                if (this->mpGUISystemMsg->::uGUISystemMsg::getSerialNo() == static_cast<u32>(0)) {
-                    if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) == static_cast<s32>(0)) {
-                        this->::uGUIOption::updatePage(true, false);
-                        this->::uGUIOption::updateDisp();
+                if (mpGUISystemMsg->getSerialNo() == 0) {
+                    if (mpGUISystemMsg->getChoicePos(-1) == 0) {
+                        updatePage(true, false);
+                        updateDisp();
                     }
                 }
             }
-            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                this->mpGUISystemMsg->::uGUIBase::mEndType = static_cast<u32>(0);
-                this->mpGUISystemMsg->end();
+            if (mpGUISystemMsg != nullptr) {
+                mpGUISystemMsg->mEndType = 0;
+                mpGUISystemMsg->end();
             }
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
+            mpGUISystemMsg = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
         }
         return true;
     } else {
@@ -828,35 +828,35 @@ __attribute__((weak)) u32 uGUIOption::getDataType(u32 uCtgr, u32 uTab, u32 uCapt
 void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
     // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb67, held ahead of the effects the ELF orders after it
-    sRender* t0 = ::sRender::getInstance();
-    if (t0 == static_cast<sRender*>(nullptr)) {
+    sRender* t0 = sRender::getInstance();
+    if (t0 == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb7a, held ahead of the effects the ELF orders after it
-    sSound* t1 = ::sSound::mpInstance;
-    if (t1 == static_cast<sSound*>(nullptr)) {
+    sSound* t1 = sSound::mpInstance;
+    if (t1 == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb8d, held ahead of the effects the ELF orders after it
-    sSavedata* t2 = ::sSavedata::mpInstance;
-    if (t2 == static_cast<sSavedata*>(nullptr)) {
+    sSavedata* t2 = sSavedata::mpInstance;
+    if (t2 == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fba0, held ahead of the effects the ELF orders after it
-    sPad* t3 = ::sPad::mpInstance;
-    if (t3 == static_cast<sPad*>(nullptr)) {
+    sPad* t3 = sPad::mpInstance;
+    if (t3 == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbac, held ahead of the effects the ELF orders after it
-    bool t4 = this->::uGUIBase::mIsEndLoadResource;
-    if (t4 == false) {
+    bool t4 = mIsEndLoadResource;
+    if (!t4) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbb9, held ahead of the effects the ELF orders after it
-    u32 t5 = this->mOptionType;
-    if (t5 != static_cast<u32>(0)) {
-        if (t5 == static_cast<u32>(1)) {
-            if (pOptionSys != static_cast<const cStorageData::stOptionDataSystem*>(nullptr)) {
+    u32 t5 = mOptionType;
+    if (t5 != 0) {
+        if (t5 == 1) {
+            if (pOptionSys != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbd5, held ahead of the effects the ELF orders after it
                 const u8 t6 = pOptionSys->mGamma;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbdf, held ahead of the effects the ELF orders after it
@@ -865,120 +865,120 @@ void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pO
                 float t8 = 100.0f;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbf3, held ahead of the effects the ELF orders after it
                 float t9 = 1.0f;
-                t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - static_cast<int>(50))) / t8);
+                t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - 50)) / t8);
                 t0->mUpdateGamma = true;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc0a, held ahead of the effects the ELF orders after it
                 const u8 t10 = pOptionSys->mVolChatRcv;
-                static_cast<sSoundExt*>(t1)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(0), static_cast<float>(t10) / t8);
+                static_cast<sSoundExt*>(t1)->setOptVolume(0u, 0u, static_cast<float>(t10) / t8);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc23, held ahead of the effects the ELF orders after it
-                sSound* t11 = ::sSound::getInstance();
+                sSound* t11 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc26, held ahead of the effects the ELF orders after it
                 const u8 t12 = pOptionSys->mVolSysSE;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc32, held ahead of the effects the ELF orders after it
                 float t13 = 100.0f;
-                static_cast<sSoundExt*>(t11)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(2), static_cast<float>(t12) / t13);
+                static_cast<sSoundExt*>(t11)->setOptVolume(0u, 2u, static_cast<float>(t12) / t13);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc46, held ahead of the effects the ELF orders after it
-                sSound* t14 = ::sSound::getInstance();
+                sSound* t14 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc49, held ahead of the effects the ELF orders after it
                 const u8 t15 = pOptionSys->mVolVoiceNpc;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc55, held ahead of the effects the ELF orders after it
                 float t16 = 100.0f;
-                static_cast<sSoundExt*>(t14)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(0), static_cast<float>(t15) / t16);
+                static_cast<sSoundExt*>(t14)->setOptVolume(1u, 0u, static_cast<float>(t15) / t16);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc69, held ahead of the effects the ELF orders after it
-                sSound* t17 = ::sSound::getInstance();
+                sSound* t17 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc6c, held ahead of the effects the ELF orders after it
                 const u8 t18 = pOptionSys->mVolVoicePawn;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc78, held ahead of the effects the ELF orders after it
                 float t19 = 100.0f;
-                static_cast<sSoundExt*>(t17)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(1), static_cast<float>(t18) / t19);
+                static_cast<sSoundExt*>(t17)->setOptVolume(1u, 1u, static_cast<float>(t18) / t19);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc8f, held ahead of the effects the ELF orders after it
-                sSound* t20 = ::sSound::getInstance();
+                sSound* t20 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc92, held ahead of the effects the ELF orders after it
                 const u8 t21 = pOptionSys->mVolVoicePl;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc9e, held ahead of the effects the ELF orders after it
                 float t22 = 100.0f;
-                static_cast<sSoundExt*>(t20)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(2), static_cast<float>(t21) / t22);
+                static_cast<sSoundExt*>(t20)->setOptVolume(1u, 2u, static_cast<float>(t21) / t22);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb5, held ahead of the effects the ELF orders after it
-                sSound* t23 = ::sSound::getInstance();
+                sSound* t23 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb8, held ahead of the effects the ELF orders after it
                 const u8 t24 = pOptionSys->mVolVoicePt;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcc4, held ahead of the effects the ELF orders after it
                 float t25 = 100.0f;
-                static_cast<sSoundExt*>(t23)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(3), static_cast<float>(t24) / t25);
+                static_cast<sSoundExt*>(t23)->setOptVolume(1u, 3u, static_cast<float>(t24) / t25);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcdb, held ahead of the effects the ELF orders after it
-                sSound* t26 = ::sSound::getInstance();
+                sSound* t26 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcde, held ahead of the effects the ELF orders after it
                 const u8 t27 = pOptionSys->mVolVoiceEm;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcea, held ahead of the effects the ELF orders after it
                 float t28 = 100.0f;
-                static_cast<sSoundExt*>(t26)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(4), static_cast<float>(t27) / t28);
+                static_cast<sSoundExt*>(t26)->setOptVolume(1u, 4u, static_cast<float>(t27) / t28);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd01, held ahead of the effects the ELF orders after it
-                sSound* t29 = ::sSound::getInstance();
+                sSound* t29 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd04, held ahead of the effects the ELF orders after it
                 const u8 t30 = pOptionSys->mVolVoiceSCC;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd10, held ahead of the effects the ELF orders after it
                 float t31 = 100.0f;
-                static_cast<sSoundExt*>(t29)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(5), static_cast<float>(t30) / t31);
+                static_cast<sSoundExt*>(t29)->setOptVolume(1u, 5u, static_cast<float>(t30) / t31);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd27, held ahead of the effects the ELF orders after it
-                sSound* t32 = ::sSound::getInstance();
+                sSound* t32 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd2a, held ahead of the effects the ELF orders after it
                 const u8 t33 = pOptionSys->mVolBGMBattle;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd36, held ahead of the effects the ELF orders after it
                 float t34 = 100.0f;
-                static_cast<sSoundExt*>(t32)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(0), static_cast<float>(t33) / t34);
+                static_cast<sSoundExt*>(t32)->setOptVolume(2u, 0u, static_cast<float>(t33) / t34);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4a, held ahead of the effects the ELF orders after it
-                sSound* t35 = ::sSound::getInstance();
+                sSound* t35 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4d, held ahead of the effects the ELF orders after it
                 const u8 t36 = pOptionSys->mVolBGMOther;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd59, held ahead of the effects the ELF orders after it
                 float t37 = 100.0f;
-                static_cast<sSoundExt*>(t35)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(1), static_cast<float>(t36) / t37);
+                static_cast<sSoundExt*>(t35)->setOptVolume(2u, 1u, static_cast<float>(t36) / t37);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd70, held ahead of the effects the ELF orders after it
-                sSound* t38 = ::sSound::getInstance();
+                sSound* t38 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd73, held ahead of the effects the ELF orders after it
                 const u8 t39 = pOptionSys->mVolSEEnv;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd7f, held ahead of the effects the ELF orders after it
                 float t40 = 100.0f;
-                static_cast<sSoundExt*>(t38)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(0), static_cast<float>(t39) / t40);
+                static_cast<sSoundExt*>(t38)->setOptVolume(3u, 0u, static_cast<float>(t39) / t40);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd93, held ahead of the effects the ELF orders after it
-                sSound* t41 = ::sSound::getInstance();
+                sSound* t41 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd96, held ahead of the effects the ELF orders after it
                 const u8 t42 = pOptionSys->mVolSEEm;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fda2, held ahead of the effects the ELF orders after it
                 float t43 = 100.0f;
-                static_cast<sSoundExt*>(t41)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(1), static_cast<float>(t42) / t43);
+                static_cast<sSoundExt*>(t41)->setOptVolume(3u, 1u, static_cast<float>(t42) / t43);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdb9, held ahead of the effects the ELF orders after it
-                sSound* t44 = ::sSound::getInstance();
+                sSound* t44 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdbc, held ahead of the effects the ELF orders after it
                 const u8 t45 = pOptionSys->mVolSEPl;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdc8, held ahead of the effects the ELF orders after it
                 float t46 = 100.0f;
-                static_cast<sSoundExt*>(t44)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(2), static_cast<float>(t45) / t46);
+                static_cast<sSoundExt*>(t44)->setOptVolume(3u, 2u, static_cast<float>(t45) / t46);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fddf, held ahead of the effects the ELF orders after it
-                sSound* t47 = ::sSound::getInstance();
+                sSound* t47 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fde2, held ahead of the effects the ELF orders after it
                 const u8 t48 = pOptionSys->mVolSEPt;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdee, held ahead of the effects the ELF orders after it
                 float t49 = 100.0f;
-                static_cast<sSoundExt*>(t47)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(3), static_cast<float>(t48) / t49);
+                static_cast<sSoundExt*>(t47)->setOptVolume(3u, 3u, static_cast<float>(t48) / t49);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe05, held ahead of the effects the ELF orders after it
-                sSound* t50 = ::sSound::getInstance();
+                sSound* t50 = sSound::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe08, held ahead of the effects the ELF orders after it
                 const u8 t51 = pOptionSys->mVolSEOther;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe14, held ahead of the effects the ELF orders after it
                 float t52 = 100.0f;
-                static_cast<sSoundExt*>(t50)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(4), static_cast<float>(t51) / t52);
+                static_cast<sSoundExt*>(t50)->setOptVolume(3u, 4u, static_cast<float>(t51) / t52);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe2b, held ahead of the effects the ELF orders after it
-                sPad* t55 = ::sPad::getInstance();
-                if (t55 != static_cast<sPad*>(nullptr)) {
+                sPad* t55 = sPad::getInstance();
+                if (t55 != nullptr) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe33, held ahead of the effects the ELF orders after it
                     const bool t56 = pOptionSys->mPadVibration;
-                    static_cast<sPadExt*>(t55)->::sPadExt::setVibrationEnable(t56);
+                    static_cast<sPadExt*>(t55)->setVibrationEnable(t56);
                 }
             }
         }
     } else {
-        if (pOptionSys != static_cast<const cStorageData::stOptionDataSystem*>(nullptr)) {
+        if (pOptionSys != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbd5, held ahead of the effects the ELF orders after it
             const u8 t6 = pOptionSys->mGamma;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbdf, held ahead of the effects the ELF orders after it
@@ -987,115 +987,115 @@ void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pO
             float t8 = 100.0f;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbf3, held ahead of the effects the ELF orders after it
             float t9 = 1.0f;
-            t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - static_cast<int>(50))) / t8);
+            t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - 50)) / t8);
             t0->mUpdateGamma = true;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc0a, held ahead of the effects the ELF orders after it
             const u8 t10 = pOptionSys->mVolChatRcv;
-            static_cast<sSoundExt*>(t1)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(0), static_cast<float>(t10) / t8);
+            static_cast<sSoundExt*>(t1)->setOptVolume(0u, 0u, static_cast<float>(t10) / t8);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc23, held ahead of the effects the ELF orders after it
-            sSound* t11 = ::sSound::getInstance();
+            sSound* t11 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc26, held ahead of the effects the ELF orders after it
             const u8 t12 = pOptionSys->mVolSysSE;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc32, held ahead of the effects the ELF orders after it
             float t13 = 100.0f;
-            static_cast<sSoundExt*>(t11)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(2), static_cast<float>(t12) / t13);
+            static_cast<sSoundExt*>(t11)->setOptVolume(0u, 2u, static_cast<float>(t12) / t13);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc46, held ahead of the effects the ELF orders after it
-            sSound* t14 = ::sSound::getInstance();
+            sSound* t14 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc49, held ahead of the effects the ELF orders after it
             const u8 t15 = pOptionSys->mVolVoiceNpc;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc55, held ahead of the effects the ELF orders after it
             float t16 = 100.0f;
-            static_cast<sSoundExt*>(t14)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(0), static_cast<float>(t15) / t16);
+            static_cast<sSoundExt*>(t14)->setOptVolume(1u, 0u, static_cast<float>(t15) / t16);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc69, held ahead of the effects the ELF orders after it
-            sSound* t17 = ::sSound::getInstance();
+            sSound* t17 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc6c, held ahead of the effects the ELF orders after it
             const u8 t18 = pOptionSys->mVolVoicePawn;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc78, held ahead of the effects the ELF orders after it
             float t19 = 100.0f;
-            static_cast<sSoundExt*>(t17)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(1), static_cast<float>(t18) / t19);
+            static_cast<sSoundExt*>(t17)->setOptVolume(1u, 1u, static_cast<float>(t18) / t19);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc8f, held ahead of the effects the ELF orders after it
-            sSound* t20 = ::sSound::getInstance();
+            sSound* t20 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc92, held ahead of the effects the ELF orders after it
             const u8 t21 = pOptionSys->mVolVoicePl;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc9e, held ahead of the effects the ELF orders after it
             float t22 = 100.0f;
-            static_cast<sSoundExt*>(t20)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(2), static_cast<float>(t21) / t22);
+            static_cast<sSoundExt*>(t20)->setOptVolume(1u, 2u, static_cast<float>(t21) / t22);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb5, held ahead of the effects the ELF orders after it
-            sSound* t23 = ::sSound::getInstance();
+            sSound* t23 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb8, held ahead of the effects the ELF orders after it
             const u8 t24 = pOptionSys->mVolVoicePt;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcc4, held ahead of the effects the ELF orders after it
             float t25 = 100.0f;
-            static_cast<sSoundExt*>(t23)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(3), static_cast<float>(t24) / t25);
+            static_cast<sSoundExt*>(t23)->setOptVolume(1u, 3u, static_cast<float>(t24) / t25);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcdb, held ahead of the effects the ELF orders after it
-            sSound* t26 = ::sSound::getInstance();
+            sSound* t26 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcde, held ahead of the effects the ELF orders after it
             const u8 t27 = pOptionSys->mVolVoiceEm;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcea, held ahead of the effects the ELF orders after it
             float t28 = 100.0f;
-            static_cast<sSoundExt*>(t26)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(4), static_cast<float>(t27) / t28);
+            static_cast<sSoundExt*>(t26)->setOptVolume(1u, 4u, static_cast<float>(t27) / t28);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd01, held ahead of the effects the ELF orders after it
-            sSound* t29 = ::sSound::getInstance();
+            sSound* t29 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd04, held ahead of the effects the ELF orders after it
             const u8 t30 = pOptionSys->mVolVoiceSCC;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd10, held ahead of the effects the ELF orders after it
             float t31 = 100.0f;
-            static_cast<sSoundExt*>(t29)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(5), static_cast<float>(t30) / t31);
+            static_cast<sSoundExt*>(t29)->setOptVolume(1u, 5u, static_cast<float>(t30) / t31);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd27, held ahead of the effects the ELF orders after it
-            sSound* t32 = ::sSound::getInstance();
+            sSound* t32 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd2a, held ahead of the effects the ELF orders after it
             const u8 t33 = pOptionSys->mVolBGMBattle;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd36, held ahead of the effects the ELF orders after it
             float t34 = 100.0f;
-            static_cast<sSoundExt*>(t32)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(0), static_cast<float>(t33) / t34);
+            static_cast<sSoundExt*>(t32)->setOptVolume(2u, 0u, static_cast<float>(t33) / t34);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4a, held ahead of the effects the ELF orders after it
-            sSound* t35 = ::sSound::getInstance();
+            sSound* t35 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4d, held ahead of the effects the ELF orders after it
             const u8 t36 = pOptionSys->mVolBGMOther;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd59, held ahead of the effects the ELF orders after it
             float t37 = 100.0f;
-            static_cast<sSoundExt*>(t35)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(1), static_cast<float>(t36) / t37);
+            static_cast<sSoundExt*>(t35)->setOptVolume(2u, 1u, static_cast<float>(t36) / t37);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd70, held ahead of the effects the ELF orders after it
-            sSound* t38 = ::sSound::getInstance();
+            sSound* t38 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd73, held ahead of the effects the ELF orders after it
             const u8 t39 = pOptionSys->mVolSEEnv;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd7f, held ahead of the effects the ELF orders after it
             float t40 = 100.0f;
-            static_cast<sSoundExt*>(t38)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(0), static_cast<float>(t39) / t40);
+            static_cast<sSoundExt*>(t38)->setOptVolume(3u, 0u, static_cast<float>(t39) / t40);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd93, held ahead of the effects the ELF orders after it
-            sSound* t41 = ::sSound::getInstance();
+            sSound* t41 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd96, held ahead of the effects the ELF orders after it
             const u8 t42 = pOptionSys->mVolSEEm;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fda2, held ahead of the effects the ELF orders after it
             float t43 = 100.0f;
-            static_cast<sSoundExt*>(t41)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(1), static_cast<float>(t42) / t43);
+            static_cast<sSoundExt*>(t41)->setOptVolume(3u, 1u, static_cast<float>(t42) / t43);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdb9, held ahead of the effects the ELF orders after it
-            sSound* t44 = ::sSound::getInstance();
+            sSound* t44 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdbc, held ahead of the effects the ELF orders after it
             const u8 t45 = pOptionSys->mVolSEPl;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdc8, held ahead of the effects the ELF orders after it
             float t46 = 100.0f;
-            static_cast<sSoundExt*>(t44)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(2), static_cast<float>(t45) / t46);
+            static_cast<sSoundExt*>(t44)->setOptVolume(3u, 2u, static_cast<float>(t45) / t46);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fddf, held ahead of the effects the ELF orders after it
-            sSound* t47 = ::sSound::getInstance();
+            sSound* t47 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fde2, held ahead of the effects the ELF orders after it
             const u8 t48 = pOptionSys->mVolSEPt;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdee, held ahead of the effects the ELF orders after it
             float t49 = 100.0f;
-            static_cast<sSoundExt*>(t47)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(3), static_cast<float>(t48) / t49);
+            static_cast<sSoundExt*>(t47)->setOptVolume(3u, 3u, static_cast<float>(t48) / t49);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe05, held ahead of the effects the ELF orders after it
-            sSound* t50 = ::sSound::getInstance();
+            sSound* t50 = sSound::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe08, held ahead of the effects the ELF orders after it
             const u8 t51 = pOptionSys->mVolSEOther;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe14, held ahead of the effects the ELF orders after it
             float t52 = 100.0f;
-            static_cast<sSoundExt*>(t50)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(4), static_cast<float>(t51) / t52);
+            static_cast<sSoundExt*>(t50)->setOptVolume(3u, 4u, static_cast<float>(t51) / t52);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe2b, held ahead of the effects the ELF orders after it
-            sPad* t55 = ::sPad::getInstance();
-            if (t55 != static_cast<sPad*>(nullptr)) {
+            sPad* t55 = sPad::getInstance();
+            if (t55 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe33, held ahead of the effects the ELF orders after it
                 const bool t56 = pOptionSys->mPadVibration;
-                static_cast<sPadExt*>(t55)->::sPadExt::setVibrationEnable(t56);
+                static_cast<sPadExt*>(t55)->setVibrationEnable(t56);
             }
         }
     }
@@ -1200,6 +1200,16 @@ __attribute__((weak)) void uGUIOption::updateDisp() {
 // No out-of-line body: 1 inlined copy in 1 function (134 bytes)
 //   in uGUIOption::evCtrlDataDecide at 0x00b91c6d-0x00b91ce6, 0x00b91cec-0x00b91cef, 0x00b91cf2-0x00b91cfc (called at uGUIOption.cpp:1536)
 // bool uGUIOption::isDecideCalibration(s32 sPosCtgr, s32 sPosTab, u32 uCaptionNum);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIOption::MyDTI uGUIOption::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const nCharacter::E_ONLINE_STATUS uGUIOption::onlineStatusTblId[];
+
+// Not defined (no member-wise spelling: an array of no extent): const nNet::PAWN_SHARE_RANGE uGUIOption::shareRangeTblId[];
+
+// Not defined (no member-wise spelling: an array of no extent): const nPCGraphicOption::LIGHT_HARDWARE_MODE uGUIOption::lightHardwareModeTbl[];
+
+// Not defined (no member-wise spelling: an array of no extent): const sEffectExt::OPTION_OTHERS_EFC_TYPE uGUIOption::othersEfcTypeTbl[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIOption.cpp at 0x00b96f1f-0x00b96f5c (called at uGUIOption.cpp:122)

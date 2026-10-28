@@ -44,7 +44,7 @@ const MtDTI& cZoneListener::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cZoneListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,15 +59,15 @@ inline void cZoneListener::operator delete(void* p_addr) {
 // Address: 0x0106ad60 - 0x0106adaf (79 bytes)
 cZoneListener::cZoneListener() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpZoneLayout = static_cast<cZoneLayout*>(nullptr);
-    this->mTargetZoneLayoutIndex = ::cZoneLayout::INVALID_INDEX;
-    this->mTargetZoneLayoutHandle = ::cZoneLayout::INVALID_ID;
-    this->mpGroupManager = static_cast<cZoneLayout::cInGameGroupManager*>(nullptr);
-    this->mTargetShapeType = static_cast<u32>(4294967295);
-    this->mPriorityRuleType = static_cast<u32>(1);
-    this->mFlgCallNotifiedFunction = true;
-    this->mFlgCallContentsCallbackFunction = false;
-    this->mFlgCallbackSingleCallContentsGroup = false;
+    mpZoneLayout = nullptr;
+    mTargetZoneLayoutIndex = cZoneLayout::INVALID_INDEX;
+    mTargetZoneLayoutHandle = cZoneLayout::INVALID_ID;
+    mpGroupManager = nullptr;
+    mTargetShapeType = 0xFFFFFFFF;
+    mPriorityRuleType = 1;
+    mFlgCallNotifiedFunction = true;
+    mFlgCallContentsCallbackFunction = false;
+    mFlgCallbackSingleCallContentsGroup = false;
 }
 
 // Address: 0x0106adb0 - 0x0106adb1 (1 bytes)
@@ -122,8 +122,8 @@ __attribute__((weak)) const MtVector3& cZoneListener::getZoneLayoutWorldOffset()
 // Address: 0x0106b530 - 0x0106b547 (23 bytes)
 bool cZoneListener::isRotateZoneLayout() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
-        return this->mpZoneLayout->mFlgEnableQuaternion != false;
+    if (mpZoneLayout != nullptr) {
+        return mpZoneLayout->mFlgEnableQuaternion;
     } else {
         return false;
     }
@@ -189,10 +189,10 @@ __attribute__((weak)) void cZoneListener::registerTargetZoneLayout(cZoneLayout& 
 // Address: 0x0106b5a0 - 0x0106b5c9 (41 bytes)
 void cZoneListener::unregisterTargetZoneLayout() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpZoneLayout = static_cast<cZoneLayout*>(nullptr);
-    this->mTargetZoneLayoutIndex = ::cZoneLayout::INVALID_INDEX;
-    this->mTargetZoneLayoutHandle = ::cZoneLayout::INVALID_ID;
-    this->mpGroupManager = static_cast<cZoneLayout::cInGameGroupManager*>(nullptr);
+    mpZoneLayout = nullptr;
+    mTargetZoneLayoutIndex = cZoneLayout::INVALID_INDEX;
+    mTargetZoneLayoutHandle = cZoneLayout::INVALID_ID;
+    mpGroupManager = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -206,6 +206,8 @@ void cZoneListener::unregisterTargetZoneLayout() {
 
 // No out-of-line body: no code in the ELF
 // void cZoneListener::setCallContentsCallback(bool);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cZoneListener::MyDTI cZoneListener::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

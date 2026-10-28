@@ -38,7 +38,7 @@ const MtDTI& uGeometry2Group::getDTI() const {
 // Address: 0x01313e50 - 0x01313e90 (64 bytes)
 void* uGeometry2Group::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uGeometry2Group::DTI)->memAlloc(sz, align, ::uGeometry2Group::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uGeometry2Group::DTI)->memAlloc(sz, align, uGeometry2Group::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGeometry2Group::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGeometry2GroupD0Ev at 0x0131411e-0x0131413f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry2Group::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2Group::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2Group::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,13 +87,13 @@ __attribute__((weak)) void uGeometry2Group::createProperty(MtPropertyList& s) {
 // Address: 0x01314c20 - 0x01314c2c (12 bytes)
 MT_CTSTR uGeometry2Group::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGeometry2Group::DTI.::MtDTI::mName;
+    return uGeometry2Group::DTI.mName;
 }
 
 // Address: 0x01314c30 - 0x01314c35 (5 bytes)
 void uGeometry2Group::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x01314c40 - 0x01314da3 (355 bytes)
@@ -137,24 +137,24 @@ void uGeometry2Group::registOwner(uModel* pOwner) {
     // DWARF local not rendered: const u32 GroupNum;
     // DWARF local not rendered: uGeometry2* pNowGeometry;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mOwnerSystem.::nCollisionUtil::cOwnerSystem::registOwner(static_cast<MtObject*>(pOwner));
-    if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
+    mOwnerSystem.registOwner(static_cast<MtObject*>(pOwner));
+    if (mGeometryGroupArray.mLength != 0) {
         // inferred: the value the loop at 0x1314f48 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
+        u32 v0_0 = mGeometryGroupArray.mLength;
         // inferred: DWARF's location-less 'i' (lexical block [0x1314f30, 0x1314f67)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         // inferred: the value the loop at 0x1314f48 carries; no location-less local in scope fits
-        for (u32 v0_10 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
+        for (u32 v0_10 = mGeometryGroupArray.mLength - 1u;;) {
             if (i < v0_0) {
-                if (this->mGeometryGroupArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[i])->::uGeometry2::registOwner(pOwner);
+                if (mGeometryGroupArray.mpArray[i] != nullptr) {
+                    static_cast<uGeometry2*>(mGeometryGroupArray.mpArray[i])->registOwner(pOwner);
                 }
             }
             if (i == v0_10) {
                 break;
             } else {
-                v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-                i = i + static_cast<u32>(1);
+                v0_0 = mGeometryGroupArray.mLength;
+                i = i + 1u;
             }
         }
     }
@@ -194,17 +194,17 @@ __attribute__((weak)) void uGeometry2Group::restoreGeometryFromResource() {
 // Address: 0x01314e30 - 0x01314e42 (18 bytes)
 uGeometry2* uGeometry2Group::getGeometryGroup(u32 GroupIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (GroupIndex < this->mGeometryGroupArray.::MtArray::mLength) {
-        return static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[GroupIndex]);
+    if (GroupIndex < mGeometryGroupArray.mLength) {
+        return static_cast<uGeometry2*>(mGeometryGroupArray.mpArray[GroupIndex]);
     } else {
-        return static_cast<uGeometry2*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01314db0 - 0x01314db4 (4 bytes)
 u32 uGeometry2Group::getGeometryGroupNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeometryGroupArray.::MtArray::mLength;
+    return mGeometryGroupArray.mLength;
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,23 +216,23 @@ u32 uGeometry2Group::getGeometryGroupNum() const {
 // Address: 0x01314a70 - 0x01314ac2 (82 bytes)
 void uGeometry2Group::setGeometryGroupDispAllON() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGeometryGroupArray.mLength != 0) {
         // inferred: the value the loop at 0x1314a97 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
+        u32 v0_0 = mGeometryGroupArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the value the loop at 0x1314a97 carries; no location-less local in scope fits
-        for (u32 v0_8 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
+        for (u32 v0_8 = mGeometryGroupArray.mLength - 1u;;) {
             if (i0_3 < v0_0) {
-                if (this->mGeometryGroupArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[i0_3])->::uGeometry2::setGeometryDraw(true);
+                if (mGeometryGroupArray.mpArray[i0_3] != nullptr) {
+                    static_cast<uGeometry2*>(mGeometryGroupArray.mpArray[i0_3])->setGeometryDraw(true);
                 }
             }
             if (i0_3 == v0_8) {
                 break;
             } else {
-                v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+                v0_0 = mGeometryGroupArray.mLength;
+                i0_3 = i0_3 + 1u;
             }
         }
     }
@@ -241,23 +241,23 @@ void uGeometry2Group::setGeometryGroupDispAllON() {
 // Address: 0x01314ad0 - 0x01314b1f (79 bytes)
 void uGeometry2Group::setGeometryGroupDispAllOFF() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGeometryGroupArray.mLength != 0) {
         // inferred: the value the loop at 0x1314af7 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
+        u32 v0_0 = mGeometryGroupArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the value the loop at 0x1314af7 carries; no location-less local in scope fits
-        for (u32 v0_8 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
+        for (u32 v0_8 = mGeometryGroupArray.mLength - 1u;;) {
             if (i0_3 < v0_0) {
-                if (this->mGeometryGroupArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[i0_3])->::uGeometry2::setGeometryDraw(false);
+                if (mGeometryGroupArray.mpArray[i0_3] != nullptr) {
+                    static_cast<uGeometry2*>(mGeometryGroupArray.mpArray[i0_3])->setGeometryDraw(false);
                 }
             }
             if (i0_3 == v0_8) {
                 break;
             } else {
-                v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+                v0_0 = mGeometryGroupArray.mLength;
+                i0_3 = i0_3 + 1u;
             }
         }
     }
@@ -278,7 +278,7 @@ void uGeometry2Group::setGeometryGroupDispAllOFF() {
 // Address: 0x013150e0 - 0x013150e5 (5 bytes)
 void uGeometry2Group::evLoadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGeometry2Group::restoreGeometryFromResource();
+    restoreGeometryFromResource();
 }
 
 // Address: 0x01314dc0 - 0x01314ddb (27 bytes)
@@ -299,6 +299,8 @@ __attribute__((weak)) cResource* uGeometry2Group::getResourceForUI() {
     DDON_STUB("uGeometry2Group::getResourceForUI")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry2Group::MyDTI uGeometry2Group::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2Group::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

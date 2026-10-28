@@ -50,7 +50,7 @@ const MtDTI& cCaughtInfoParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCaughtInfoParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCaughtInfoParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCaughtInfoParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -70,10 +70,10 @@ inline void cCaughtInfoParam::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cCaughtInfoParam::cCaughtInfoParam() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mCatchType = static_cast<u32>(0);
-    this->mCaughtActionTblNo = static_cast<u32>(0);
-    this->mConstOffsetPos = ::MtVector3::Zero;
-    this->mConstOffsetAngle = ::MtVector3::Zero;
+    mCatchType = 0;
+    mCaughtActionTblNo = 0;
+    mConstOffsetPos = MtVector3::Zero;
+    mConstOffsetAngle = MtVector3::Zero;
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,6 +87,8 @@ __attribute__((weak)) void cCaughtInfoParam::createProperty(MtPropertyList& s) {
     DDON_STUB("cCaughtInfoParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCaughtInfoParam::MyDTI cCaughtInfoParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCaughtInfoParam.cpp at 0x00651c20-0x00651c62 (called at rCaughtInfoParam.cpp:25)
@@ -121,7 +123,7 @@ const MtDTI& rCaughtInfoParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCaughtInfoParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCaughtInfoParam::DTI)->memAlloc(sz, align, ::rCaughtInfoParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCaughtInfoParam::DTI)->memAlloc(sz, align, rCaughtInfoParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,7 +138,7 @@ inline void* rCaughtInfoParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rCaughtInfoParamD0Ev at 0x01a7bee4-0x01a7bf03, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCaughtInfoParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCaughtInfoParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCaughtInfoParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -167,7 +169,7 @@ MT_CTSTR rCaughtInfoParam::getExt() const {
 // Address: 0x01a7c030 - 0x01a7c036 (6 bytes)
 u32 rCaughtInfoParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // Address: 0x00651b30 - 0x00651c1c (236 bytes)
@@ -175,6 +177,8 @@ __attribute__((weak)) void rCaughtInfoParam::createProperty(MtPropertyList& s) {
     DDON_STUB("rCaughtInfoParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCaughtInfoParam::MyDTI rCaughtInfoParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCaughtInfoParam.cpp at 0x00651c62-0x00651c9f (called at rCaughtInfoParam.cpp:26)
@@ -184,7 +188,7 @@ __attribute__((weak)) void rCaughtInfoParam::createProperty(MtPropertyList& s) {
 // Address: 0x006516b0 - 0x00651714 (100 bytes)
 MtObject* rCaughtInfoParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCaughtInfoParam;
+    return new (16u) rCaughtInfoParam;
 }
 
 // Instance at 0x01a7bfe0 - 0x01a7bff6 (22 bytes) of the generic rTbl2<T>::getData

@@ -11,84 +11,84 @@
 // Address: 0x00d795a0 - 0x00d7969b (251 bytes)
 MtCipher::MtCipher() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mTransKey_Guard[8] = static_cast<char>(32);
-    this->mTransKey_Guard[9] = static_cast<char>(99);
-    this->mTransKey_Guard[10] = static_cast<char>(97);
-    this->mTransKey_Guard[11] = static_cast<char>(112);
-    this->mTransKey_Guard[12] = static_cast<char>(99);
-    this->mTransKey_Guard[13] = static_cast<char>(111);
-    this->mTransKey_Guard[14] = static_cast<char>(109);
-    this->mTransKey_Guard[15] = static_cast<char>(40);
-    this->mTransKey_Guard[0] = static_cast<char>(109);
-    this->mTransKey_Guard[1] = static_cast<char>(111);
-    this->mTransKey_Guard[2] = static_cast<char>(102);
-    this->mTransKey_Guard[3] = static_cast<char>(117);
-    this->mTransKey_Guard[4] = static_cast<char>(109);
-    this->mTransKey_Guard[5] = static_cast<char>(111);
-    this->mTransKey_Guard[6] = static_cast<char>(102);
-    this->mTransKey_Guard[7] = static_cast<char>(117);
-    this->mTransKey_Guard[48] = static_cast<char>(0);
-    this->mTransKey_Guard[49] = static_cast<char>(0);
-    this->mTransKey_Guard[50] = static_cast<char>(0);
-    this->mTransKey_Guard[51] = static_cast<char>(0);
-    this->mTransKey_Guard[52] = static_cast<char>(0);
-    this->mTransKey_Guard[53] = static_cast<char>(0);
-    this->mTransKey_Guard[54] = static_cast<char>(0);
-    this->mTransKey_Guard[55] = static_cast<char>(0);
-    this->mTransKey_Guard[40] = static_cast<char>(0);
-    this->mTransKey_Guard[41] = static_cast<char>(0);
-    this->mTransKey_Guard[42] = static_cast<char>(0);
-    this->mTransKey_Guard[43] = static_cast<char>(0);
-    this->mTransKey_Guard[44] = static_cast<char>(0);
-    this->mTransKey_Guard[45] = static_cast<char>(0);
-    this->mTransKey_Guard[46] = static_cast<char>(0);
-    this->mTransKey_Guard[47] = static_cast<char>(0);
-    this->mTransKey_Guard[32] = static_cast<char>(0);
-    this->mTransKey_Guard[33] = static_cast<char>(0);
-    this->mTransKey_Guard[34] = static_cast<char>(0);
-    this->mTransKey_Guard[35] = static_cast<char>(0);
-    this->mTransKey_Guard[36] = static_cast<char>(0);
-    this->mTransKey_Guard[37] = static_cast<char>(0);
-    this->mTransKey_Guard[38] = static_cast<char>(0);
-    this->mTransKey_Guard[39] = static_cast<char>(0);
-    this->mTransKey_Guard[24] = static_cast<char>(0);
-    this->mTransKey_Guard[25] = static_cast<char>(0);
-    this->mTransKey_Guard[26] = static_cast<char>(0);
-    this->mTransKey_Guard[27] = static_cast<char>(0);
-    this->mTransKey_Guard[28] = static_cast<char>(0);
-    this->mTransKey_Guard[29] = static_cast<char>(0);
-    this->mTransKey_Guard[30] = static_cast<char>(0);
-    this->mTransKey_Guard[31] = static_cast<char>(0);
-    this->mTransKey_Guard[16] = static_cast<char>(94);
-    this->mTransKey_Guard[17] = static_cast<char>(45);
-    this->mTransKey_Guard[18] = static_cast<char>(94);
-    this->mTransKey_Guard[19] = static_cast<char>(41);
-    this->mTransKey_Guard[20] = static_cast<char>(0);
-    this->mTransKey_Guard[21] = static_cast<char>(0);
-    this->mTransKey_Guard[22] = static_cast<char>(0);
-    this->mTransKey_Guard[23] = static_cast<char>(0);
-    this->mKeyLength_Guard = static_cast<u32>(20);
-    this->mBlockSize_Guard = static_cast<u32>(0);
-    this->desKey2 = static_cast<u64>(0);
-    this->desKey1 = static_cast<u64>(0);
-    this->desKey = static_cast<u64>(0);
-    this->mpSBox = static_cast<u32*>(nullptr);
-    this->mpPArray = static_cast<u32*>(nullptr);
+    mTransKey_Guard[8] = 32;
+    mTransKey_Guard[9] = 99;
+    mTransKey_Guard[10] = 97;
+    mTransKey_Guard[11] = 112;
+    mTransKey_Guard[12] = 99;
+    mTransKey_Guard[13] = 111;
+    mTransKey_Guard[14] = 109;
+    mTransKey_Guard[15] = 40;
+    mTransKey_Guard[0] = 109;
+    mTransKey_Guard[1] = 111;
+    mTransKey_Guard[2] = 102;
+    mTransKey_Guard[3] = 117;
+    mTransKey_Guard[4] = 109;
+    mTransKey_Guard[5] = 111;
+    mTransKey_Guard[6] = 102;
+    mTransKey_Guard[7] = 117;
+    mTransKey_Guard[48] = 0;
+    mTransKey_Guard[49] = 0;
+    mTransKey_Guard[50] = 0;
+    mTransKey_Guard[51] = 0;
+    mTransKey_Guard[52] = 0;
+    mTransKey_Guard[53] = 0;
+    mTransKey_Guard[54] = 0;
+    mTransKey_Guard[55] = 0;
+    mTransKey_Guard[40] = 0;
+    mTransKey_Guard[41] = 0;
+    mTransKey_Guard[42] = 0;
+    mTransKey_Guard[43] = 0;
+    mTransKey_Guard[44] = 0;
+    mTransKey_Guard[45] = 0;
+    mTransKey_Guard[46] = 0;
+    mTransKey_Guard[47] = 0;
+    mTransKey_Guard[32] = 0;
+    mTransKey_Guard[33] = 0;
+    mTransKey_Guard[34] = 0;
+    mTransKey_Guard[35] = 0;
+    mTransKey_Guard[36] = 0;
+    mTransKey_Guard[37] = 0;
+    mTransKey_Guard[38] = 0;
+    mTransKey_Guard[39] = 0;
+    mTransKey_Guard[24] = 0;
+    mTransKey_Guard[25] = 0;
+    mTransKey_Guard[26] = 0;
+    mTransKey_Guard[27] = 0;
+    mTransKey_Guard[28] = 0;
+    mTransKey_Guard[29] = 0;
+    mTransKey_Guard[30] = 0;
+    mTransKey_Guard[31] = 0;
+    mTransKey_Guard[16] = 94;
+    mTransKey_Guard[17] = 45;
+    mTransKey_Guard[18] = 94;
+    mTransKey_Guard[19] = 41;
+    mTransKey_Guard[20] = 0;
+    mTransKey_Guard[21] = 0;
+    mTransKey_Guard[22] = 0;
+    mTransKey_Guard[23] = 0;
+    mKeyLength_Guard = 20;
+    mBlockSize_Guard = 0;
+    desKey2 = 0;
+    desKey1 = 0;
+    desKey = 0;
+    mpSBox = nullptr;
+    mpPArray = nullptr;
 }
 
 // Address: 0x00d79700 - 0x00d7976e (110 bytes)
 // Also emitted as: _ZN8MtCipherD0Ev at 0x00d79770
 MtCipher::~MtCipher() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPArray != static_cast<u32*>(nullptr)) {
-        ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memFree(static_cast<void*>(this->mpPArray));
-        this->mpPArray = static_cast<u32*>(nullptr);
+    if (mpPArray != nullptr) {
+        MtMemory::mpAllocatorType[1]->memFree(static_cast<void*>(mpPArray));
+        mpPArray = nullptr;
     }
-    if (this->mpSBox == static_cast<u32*>(nullptr)) {
+    if (mpSBox == nullptr) {
         return;
     }
-    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memFree(static_cast<void*>(this->mpSBox));
-    this->mpSBox = static_cast<u32*>(nullptr);
+    MtMemory::mpAllocatorType[1]->memFree(static_cast<void*>(mpSBox));
+    mpSBox = nullptr;
 }
 
 // Address: 0x00d796a0 - 0x00d796f2 (82 bytes)
@@ -121,7 +121,7 @@ __attribute__((weak)) void MtCipher::getSHA1(u8* in, size_t size, u32* hash_out)
 // Address: 0x00d7aa20 - 0x00d7aa32 (18 bytes)
 u32 MtCipher::getPlainBufferSizePKCS1v15() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mBlockSize_Guard <= static_cast<u32>(11)) ? static_cast<u32>(0) : (this->mBlockSize_Guard - static_cast<u32>(11));
+    return (mBlockSize_Guard <= 11u) ? 0u : (mBlockSize_Guard - 11u);
 }
 
 // No out-of-line body: no code in the ELF

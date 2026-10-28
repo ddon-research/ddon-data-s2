@@ -40,7 +40,7 @@ const MtDTI& uModel::getDTI() const {
 // Address: 0x00f29250 - 0x00f29290 (64 bytes)
 void* uModel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uModel::DTI)->memAlloc(sz, align, ::uModel::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uModel::DTI)->memAlloc(sz, align, uModel::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uModel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uModelD0Ev at 0x00f299ce-0x00f299ef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,11 +94,11 @@ __attribute__((weak)) MT_CTSTR uModel::getName() {
 void uModel::move() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uBaseModel::updateViewDraw();
-    this->::uModel::updateShaderAttributes();
-    this->::uModel::moveMotion();
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateViewDraw();
+    updateShaderAttributes();
+    moveMotion();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
 
 // Defined in the class (its body was written in a header).
@@ -108,19 +108,19 @@ void uModel::move() {
 void uModel::draw(cDraw* pdraw) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x230 from cDraw*
-    if ((((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pdraw) + static_cast<long>(560))) & static_cast<unsigned long>(1095216660480)) ^ static_cast<unsigned long>(38654705664)) == static_cast<unsigned long>(0)) {
-        if (this->::uBaseModel::mpModel != static_cast<rModel*>(nullptr)) {
-            if (this->::uBaseModel::mpModel->mRCNInfo.map_vertex_base != static_cast<u32*>(nullptr)) {
-                if (this->::uBaseModel::mIsRCNEnable != false) {
-                    this->::uModel::updatePosition(pdraw);
-                    this->::uModel::updateNormal(pdraw);
+    if ((((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pdraw) + 560)) & 0xFF00000000ul) ^ 0x900000000ul) == 0) {
+        if (mpModel != nullptr) {
+            if (mpModel->mRCNInfo.map_vertex_base != nullptr) {
+                if (mIsRCNEnable) {
+                    updatePosition(pdraw);
+                    updateNormal(pdraw);
                 }
             }
         }
     } else {
-        pdraw->::cDraw::pushContext(false);
-        this->::uBaseModel::draw(pdraw);
-        pdraw->::cDraw::popContext(false);
+        pdraw->pushContext(false);
+        this->uBaseModel::draw(pdraw);
+        pdraw->popContext(false);
     }
 }
 
@@ -134,11 +134,11 @@ __attribute__((weak)) void uModel::applyWorldOffset(const MtVector3& offset, con
 // Address: 0x00f47850 - 0x00f4787d (45 bytes)
 void uModel::updateLocalMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCoord::updateLocalMatrix();
-    if (this->mCalcBuiltInIKReq != false) {
-        this->::uModel::calcBuiltInIK();
+    this->uCoord::updateLocalMatrix();
+    if (mCalcBuiltInIKReq) {
+        calcBuiltInIK();
     }
-    this->::uModel::interpolateMotion();
+    interpolateMotion();
 }
 
 // Address: 0x00f47880 - 0x00f478dd (93 bytes)
@@ -169,12 +169,12 @@ __attribute__((weak)) void uModel::updateJointWorldMatrix(const u8* jointTable, 
 const MtMatrix& uModel::getWorldMatrix(s32 parent_no) const {
     // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (parent_no > static_cast<s32>(-1)) {
-        if (this->mJointTable[static_cast<unsigned char>(parent_no)] != static_cast<unsigned char>(255)) {
-            return this->mJoint[this->mJointTable[static_cast<unsigned char>(parent_no)]].mWmat;
+    if (parent_no > -1) {
+        if (mJointTable[static_cast<unsigned char>(parent_no)] != 0xFF) {
+            return mJoint[mJointTable[static_cast<unsigned char>(parent_no)]].mWmat;
         }
     }
-    return this->::uCoord::mWmat;
+    return mWmat;
 }
 
 // Address: 0x00f2ade0 - 0x00f2c6a2 (6338 bytes)
@@ -188,7 +188,7 @@ __attribute__((weak)) void uModel::createProperty(MtPropertyList& s) {
 // Address: 0x00f2add0 - 0x00f2add5 (5 bytes)
 MtUI* uModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uBaseModel::createUI(prop);
+    return this->uBaseModel::createUI(prop);
 }
 
 // Address: 0x00f29a90 - 0x00f2a398 (2312 bytes)
@@ -250,7 +250,7 @@ __attribute__((weak)) void uModel::calcJointDependency() {
 // Address: 0x01b63360 - 0x01b63367 (7 bytes)
 u32 uModel::getJointNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJointNum;
+    return mJointNum;
 }
 
 // No out-of-line body: 320 inlined copies in 187 functions (6054 bytes)
@@ -361,7 +361,7 @@ __attribute__((weak)) void uModel::setMotionList(rMotionList* pmot, u32 bank) {
 // Address: 0x01a5ad90 - 0x01a5ada8 (24 bytes)
 bool uModel::setMotion(u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->setMotionEx(static_cast<u32>(0), mot_no, hokan, frame, speed, attr);
+    return setMotionEx(0u, mot_no, hokan, frame, speed, attr);
 }
 
 // Address: 0x00f4ebd0 - 0x00f4f0cf (1279 bytes)
@@ -481,7 +481,7 @@ __attribute__((weak)) void uModel::setBlendNum(u32 n) {
 // Address: 0x01b63320 - 0x01b63327 (7 bytes)
 u32 uModel::getBlendNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBlendNum;
+    return mBlendNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -490,7 +490,7 @@ u32 uModel::getBlendNum() const {
 // Address: 0x01b63330 - 0x01b63338 (8 bytes)
 void uModel::updateJointDependency() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUpdateJointDependencyReq = true;
+    mUpdateJointDependencyReq = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -517,7 +517,7 @@ __attribute__((weak)) void uModel::recomputeLocalMatrix() {
 // Address: 0x01b63310 - 0x01b63317 (7 bytes)
 u32 uModel::getKeyFrameNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKeyFrameNum;
+    return mKeyFrameNum;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -556,7 +556,7 @@ bool uModel::isJointInitIdentity() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11fb from const uModel*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(4603))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 4603)) & 16) >> 4);
 }
 
 // No out-of-line body: no code in the ELF
@@ -737,9 +737,8 @@ __attribute__((weak)) void uModel::drawModel(cDraw* pdraw, rModel* pmod, nDraw::
 // Address: 0x00f2c720 - 0x00f2c72f (15 bytes)
 void uModel::cullingCommandCache(cDraw* pdraw, nDraw::CommandCache* pcache, rModel* pmod, s32 basecullmask, u32 lod) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mJointNum != static_cast<u32>(0)) {
-    } else {
-        this->::uBaseModel::cullingCommandCache(pdraw, pcache, pmod, basecullmask, lod);
+    if (mJointNum == 0) {
+        this->uBaseModel::cullingCommandCache(pdraw, pcache, pmod, basecullmask, lod);
     }
 }
 
@@ -1268,13 +1267,13 @@ __attribute__((weak)) void uModel::calcIk2(const MtMatrix& nullmat, u32 jnt_no, 
 // Address: 0x01b63340 - 0x01b63352 (18 bytes)
 uModel::Joint* uModel::getJointFromIndexForProp(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mJoint[index];
+    return &mJoint[index];
 }
 
 // Address: 0x01b632e0 - 0x01b632eb (11 bytes)
 rMotionList* uModel::getMotionListProp(u32 bank) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMotionList[bank];
+    return mpMotionList[bank];
 }
 
 // No out-of-line body: no code in the ELF
@@ -1283,7 +1282,7 @@ rMotionList* uModel::getMotionListProp(u32 bank) {
 // Address: 0x01b632f0 - 0x01b632f6 (6 bytes)
 u32 uModel::getMotionListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(16);
+    return 16;
 }
 
 // Address: 0x01b63300 - 0x01b63301 (1 bytes)
@@ -1526,6 +1525,10 @@ __attribute__((weak)) void uModel::setupMotion() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uModel::MyDTI uModel::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u8 uModel::mDefaultJointTable[256];
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1558,9 +1561,8 @@ const MtDTI& uModel::Joint::getDTI() const {
 
 // Address: 0x00f461b0 - 0x00f461f0 (64 bytes)
 void* uModel::Joint::operator new[](size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uModel::Joint::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uModel::Joint::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memAlloc(sz, align, uModel::Joint::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1572,13 +1574,13 @@ void* uModel::Joint::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uModel5JointD0Ev at 0x01b63692-0x01b636b3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uModel::Joint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memFree(p_addr);
 }
 
 // Address: 0x00f46220 - 0x00f4624a (42 bytes)
 void uModel::Joint::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1594,7 +1596,7 @@ void uModel::Joint::operator delete[](void* p_addr) {
 // Also emitted as: _ZN6uModel5JointD0Ev at 0x01b63670
 uModel::Joint::~Joint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpModel = static_cast<uModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00f462d0 - 0x00f46d14 (2628 bytes)
@@ -1606,7 +1608,7 @@ __attribute__((weak)) void uModel::Joint::createProperty(MtPropertyList& s) {
 // Address: 0x00f462c0 - 0x00f462c5 (5 bytes)
 MtUI* uModel::Joint::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -1679,7 +1681,7 @@ __attribute__((weak)) void uModel::Joint::inverseCalcLMat(uModel* pModel, bool S
 // Address: 0x01b635a0 - 0x01b635a8 (8 bytes)
 u32 uModel::Joint::getAttr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttr;
+    return mAttr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1688,7 +1690,7 @@ u32 uModel::Joint::getAttr() const {
 // Address: 0x01b635b0 - 0x01b635b8 (8 bytes)
 void uModel::Joint::setAttr(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = attr;
+    mAttr = attr;
 }
 
 // Address: 0x00f46280 - 0x00f462b1 (49 bytes)
@@ -1696,47 +1698,47 @@ uModel::Joint* uModel::Joint::getParentJoint() {
     // DWARF local not rendered: u32 ParentIndex;
     // DWARF local not rendered: Joint* pJnt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mParentIndex != static_cast<u32>(255)) {
-        return &this->mpModel->mJoint[this->mParentIndex];
+    if (mParentIndex != 255) {
+        return &mpModel->mJoint[mParentIndex];
     } else {
-        return static_cast<uModel::Joint*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b63590 - 0x01b6359f (15 bytes)
 u32 uModel::Joint::getParentIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParentIndex;
+    return mParentIndex;
 }
 
 // Address: 0x01b635c0 - 0x01b635c8 (8 bytes)
 void uModel::Joint::setParentIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParentIndex = index;
+    mParentIndex = index;
 }
 
 // Address: 0x01b635d0 - 0x01b635d8 (8 bytes)
 u32 uModel::Joint::getSymmetryIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSymmetryIndex;
+    return mSymmetryIndex;
 }
 
 // Address: 0x01b635e0 - 0x01b635e8 (8 bytes)
 void uModel::Joint::setSymmetryIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSymmetryIndex = index;
+    mSymmetryIndex = index;
 }
 
 // Address: 0x01b63610 - 0x01b63618 (8 bytes)
 u32 uModel::Joint::getNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNo;
+    return mNo;
 }
 
 // Address: 0x01b63620 - 0x01b63628 (8 bytes)
 void uModel::Joint::setNo(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNo = no;
+    mNo = no;
 }
 
 // Address: 0x01b635f0 - 0x01b635ff (15 bytes)
@@ -1748,7 +1750,7 @@ __attribute__((weak)) u32 uModel::Joint::getType() const {
 // Address: 0x01b63600 - 0x01b63608 (8 bytes)
 void uModel::Joint::setType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = type;
+    mType = type;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1763,31 +1765,30 @@ void uModel::Joint::setConstraint(uModel::Constraint* pc) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x11fb from uModel*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xa0 from uModel::Joint*
-    this->mpConstraint = pc;
+    mpConstraint = pc;
     // inferred: an ordered temporary, read before a later effect: the value read at 0xf46d94, held ahead of the effects the ELF orders after it
-    uModel* t0 = this->mpModel;
-    if (t0 != static_cast<uModel*>(nullptr)) {
+    uModel* t0 = mpModel;
+    if (t0 != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xf46da0, held ahead of the effects the ELF orders after it
-        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(16));
-        if (((t1 & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
-        } else {
+        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 16);
+        if ((t0->mBeFlag - 1u) <= 1u) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xf46db7, held ahead of the effects the ELF orders after it
-            unsigned char t2 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(4603));
-            t0->mMotionCalcFlag = t0->mMotionCalcFlag | static_cast<u32>(16777216);
+            unsigned char t2 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 4603);
+            t0->mMotionCalcFlag = t0->mMotionCalcFlag | 0x1000000u;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xf46dbe, held ahead of the effects the ELF orders after it
-            unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(160));
-            this->mPreUpdate = static_cast<u32>(1);
+            unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 160);
+            mPreUpdate = 1;
             // inferred: the value the loop at 0xf46e0c carries; no location-less local in scope fits
-            for (unsigned int v0_3 = (static_cast<unsigned int>(t3) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);;) {
-                if (v0_3 == static_cast<unsigned int>(255)) {
+            for (unsigned int v0_3 = (static_cast<unsigned int>(t3) >> 8) & 255u;;) {
+                if (v0_3 == 255) {
                     break;
                 } else {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xf46de2, held ahead of the effects the ELF orders after it
-                    uModel::Joint* t4 = t0->mJoint;
+                    Joint* t4 = t0->mJoint;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xf46df1, held ahead of the effects the ELF orders after it
-                    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t4[v0_3]) + static_cast<long>(160));
-                    t4[v0_3].mPreUpdate = static_cast<u32>(1);
-                    v0_3 = (static_cast<unsigned int>(t5) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+                    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t4[v0_3]) + 160);
+                    t4[v0_3].mPreUpdate = 1;
+                    v0_3 = (static_cast<unsigned int>(t5) >> 8) & 255u;
                 }
             }
         }
@@ -1810,7 +1811,7 @@ void uModel::Joint::setConstraint(uModel::Constraint* pc) {
 u32 uModel::Joint::getChildNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xa0 from const uModel::Joint*
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(160))) >> static_cast<unsigned long>(40));
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 160)) >> 40);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1843,6 +1844,8 @@ __attribute__((weak)) u8 uModel::Joint::getCalcNo() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtColor uModel::Joint::getShaderAttributes();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uModel::Joint::MyDTI uModel::Joint::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uModel::Joint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1895,7 +1898,7 @@ __attribute__((weak)) MtObject* uModel::Joint::MyDTI::newInstance() const {
 // Address: 0x01b634e0 - 0x01b634e3 (3 bytes)
 u32 uModel::Constraint::getDependentJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b634f0 - 0x01b634f3 (3 bytes)
@@ -1921,6 +1924,8 @@ uModel::Constraint* uModel::Constraint::getPrevConstraint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uModel::Constraint::MyDTI uModel::Constraint::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uModel::Constraint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1983,13 +1988,13 @@ uModel::Motion::Motion() {
 // Also emitted as: _ZN6uModel6MotionD0Ev at 0x00f496f0
 uModel::Motion::~Motion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::uModel::Motion::DTI)->memFree(static_cast<void*>(this->mJoint));
+    MtMemoryAllocator::getAllocator(uModel::Motion::DTI)->memFree(static_cast<void*>(mJoint));
 }
 
 // Address: 0x00f49750 - 0x00f49755 (5 bytes)
 MtUI* uModel::Motion::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00f49760 - 0x00f4a761 (4097 bytes)
@@ -2019,7 +2024,7 @@ __attribute__((weak)) void uModel::Motion::setMotionNo(u32 no) {
 // Address: 0x01b63800 - 0x01b63805 (5 bytes)
 u32 uModel::Motion::getMotionNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotionNo;
+    return mMotionNo;
 }
 
 // No out-of-line body: 65 inlined copies in 54 functions (611 bytes)
@@ -2032,8 +2037,8 @@ u32 uModel::Motion::getMotionNo() const {
 // Address: 0x01b63820 - 0x01b6382b (11 bytes)
 void uModel::Motion::setFrame(f32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFrame = frame;
-    this->mPrevFrame = frame;
+    mFrame = frame;
+    mPrevFrame = frame;
 }
 
 // No out-of-line body: 65 inlined copies in 54 functions (611 bytes)
@@ -2063,7 +2068,7 @@ void uModel::Motion::setFrame(f32 frame) {
 // Address: 0x01b63810 - 0x01b63816 (6 bytes)
 f32 uModel::Motion::getPrevFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPrevFrame;
+    return mPrevFrame;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2089,13 +2094,13 @@ bool uModel::Motion::isMotionEnd() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xa from const uModel::Motion*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(10))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 10)) & 4) >> 2);
 }
 
 // Address: 0x00f4a880 - 0x00f4a888 (8 bytes)
 bool uModel::Motion::isMotionNextEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mState & static_cast<u16>(5)) != static_cast<u16>(0);
+    return (mState & 5) != 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -2145,13 +2150,13 @@ bool uModel::Motion::isMotionNextEnd() const {
 // Address: 0x01b63830 - 0x01b63836 (6 bytes)
 f32 uModel::Motion::getSpeed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed;
+    return mSpeed;
 }
 
 // Address: 0x01b637f0 - 0x01b637f6 (6 bytes)
 void uModel::Motion::setSpeed(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpeed = NewValue;
+    mSpeed = NewValue;
 }
 
 // No out-of-line body: 24 inlined copies in 19 functions (271 bytes)
@@ -2241,7 +2246,7 @@ __attribute__((weak)) u32 uModel::Motion::calcSequence(u32 page, s32 minframe, s
 // Address: 0x01b63840 - 0x01b63847 (7 bytes)
 u32 uModel::Motion::getKeyFrameNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKeyFrameNum;
+    return mKeyFrameNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2269,10 +2274,10 @@ __attribute__((weak)) u16 uModel::Motion::getKeyFrameWork(u32 idx) const {
 u32 uModel::Motion::getKeyFrame(u32 idx) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4 from uModel::Motion::KeyFrameData*
-    if (idx < this->mKeyFrameNum) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&this->mpKeyFrameData[idx]) + static_cast<long>(4));
+    if (idx < mKeyFrameNum) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mpKeyFrameData[idx]) + 4);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2283,7 +2288,7 @@ u32 uModel::Motion::getKeyFrame(u32 idx) const {
 u32 uModel::Motion::getPrevKeyFrame(u32 idx) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from uModel::Motion::KeyFrameData*
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&this->mpKeyFrameData[idx]) + static_cast<long>(8));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&mpKeyFrameData[idx]) + 8);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2323,6 +2328,8 @@ __attribute__((weak)) void uModel::Motion::calcKeyFrame(f32 frame) {
     DDON_STUB("uModel::Motion::calcKeyFrame")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uModel::Motion::MyDTI uModel::Motion::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uModel::Motion::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -2366,7 +2373,7 @@ const MtDTI& uModel::JointDAGNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uModel12JointDAGNodeD0Ev at 0x01b637a4-0x01b637c3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uModel::JointDAGNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uModel::JointDAGNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uModel::JointDAGNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2387,6 +2394,8 @@ uModel::JointDAGNode::~JointDAGNode() {
     DDON_STUB("uModel::JointDAGNode::~JointDAGNode")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uModel::JointDAGNode::MyDTI uModel::JointDAGNode::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uModel::JointDAGNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -28,7 +28,7 @@ const MtDTI& uGUIGaugeSkill::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeSkill::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeSkill::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeSkill::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIGaugeSkill::getAllocator() {
 // Address: 0x00a98d50 - 0x00a98d90 (64 bytes)
 void* uGUIGaugeSkill::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeSkill::getAllocator()->memAlloc(sz, align, ::uGUIGaugeSkill::DTI.::MtDTI::getID());
+    return uGUIGaugeSkill::getAllocator()->memAlloc(sz, align, uGUIGaugeSkill::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uGUIGaugeSkill::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeSkill::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeSkill::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeSkill::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,19 +71,19 @@ inline void uGUIGaugeSkill::operator delete(void* p_addr) {
 // Also emitted as: _ZN14uGUIGaugeSkillD0Ev at 0x00a98fa0
 uGUIGaugeSkill::~uGUIGaugeSkill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a99000 - 0x00a99068 (104 bytes)
 bool uGUIGaugeSkill::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAUGE_COMMON_GUI"), static_cast<u32>(129), static_cast<t64>(1447667993)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAUGE_COMMON_GUI"), 129u, 1447667993l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -107,63 +107,63 @@ __attribute__((weak)) void uGUIGaugeSkill::setup() {
 // Address: 0x00a993a0 - 0x00a993d1 (49 bytes)
 void uGUIGaugeSkill::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a993e0 - 0x00a99426 (70 bytes)
 void uGUIGaugeSkill::rendaStart(nKeyCustom::KB_CUSTOM keyCustom, bool isIgnoreModifierKey) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInputGuideMonitor.mLastActPltType = static_cast<u8>(255);
-    this->mMode = static_cast<uGUIGaugeSkill::MODE>(1);
-    this->mRendaCount = static_cast<u32>(0);
-    this->mRendaCountMax = static_cast<u32>(0);
-    this->mRendaLevel = static_cast<u32>(0);
-    this->mRendaLevelMax = static_cast<u32>(1);
-    this->mRendaKeyCustom = keyCustom;
-    this->mIsIgnoreModifierKey = isIgnoreModifierKey;
+    mInputGuideMonitor.mLastActPltType = 0xFF;
+    mMode = MODE_RENDA;
+    mRendaCount = 0;
+    mRendaCountMax = 0;
+    mRendaLevel = 0;
+    mRendaLevelMax = 1;
+    mRendaKeyCustom = keyCustom;
+    mIsIgnoreModifierKey = isIgnoreModifierKey;
 }
 
 // Address: 0x00a99430 - 0x00a99452 (34 bytes)
 void uGUIGaugeSkill::rendaEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRendaCountMax = static_cast<u32>(0);
-    this->mRendaLevel = static_cast<u32>(0);
-    this->mMode = static_cast<uGUIGaugeSkill::MODE>(0);
-    this->mRendaCount = static_cast<u32>(0);
-    this->mRendaLevelMax = static_cast<u32>(1);
-    this->mRendaKeyCustom = static_cast<nKeyCustom::KB_CUSTOM>(0);
+    mRendaCountMax = 0;
+    mRendaLevel = 0;
+    mMode = MODE_DEFAULT;
+    mRendaCount = 0;
+    mRendaLevelMax = 1;
+    mRendaKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
 }
 
 // Address: 0x00a99460 - 0x00a9947a (26 bytes)
 void uGUIGaugeSkill::rendaUpdate(u32 count, u32 countMax, u32 level, u32 levelMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRendaCount = count;
-    this->mRendaCountMax = countMax;
-    this->mRendaLevel = level;
-    this->mRendaLevelMax = levelMax;
+    mRendaCount = count;
+    mRendaCountMax = countMax;
+    mRendaLevel = level;
+    mRendaLevelMax = levelMax;
 }
 
 // Address: 0x00a99350 - 0x00a9939f (79 bytes)
 void uGUIGaugeSkill::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpINST_fix_charge != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpINST_fix_charge->::cGUIInstance::setVisible(false);
-        if (this->mpINST_fix_charge != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mpINST_fix_charge->::cGUIInstance::setExecute(false);
+    if (mpINST_fix_charge != nullptr) {
+        mpINST_fix_charge->setVisible(false);
+        if (mpINST_fix_charge != nullptr) {
+            mpINST_fix_charge->setExecute(false);
         }
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeSkill::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeSkill::updateWait);
 }
 
 // Address: 0x00a99480 - 0x00a99485 (5 bytes)
 void uGUIGaugeSkill::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIGaugeSkill::updateDisp();
+    updateDisp();
 }
 
 // No out-of-line body: no code in the ELF
@@ -208,6 +208,8 @@ __attribute__((weak)) bool uGUIGaugeSkill::updateModeDefault(uGUIGaugeSkill::Upd
 // No out-of-line body: 1 inlined copy in 1 function (117 bytes)
 //   in uGUIGaugeSkill::updateDisp at 0x00a99510-0x00a99585 (called at uGUIGaugeSkill.cpp:392)
 // bool uGUIGaugeSkill::updateModeRenda(uGUIGaugeSkill::UpdateParam& updateParam);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeSkill::MyDTI uGUIGaugeSkill::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeSkill.cpp at 0x00a99d0f-0x00a99d4c (called at uGUIGaugeSkill.cpp:51)

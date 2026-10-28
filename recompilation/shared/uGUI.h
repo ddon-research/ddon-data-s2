@@ -59,6 +59,7 @@ namespace nGUI { struct PARAM_WORK; }
 namespace nGUI { struct PROCESS_WORK; }
 namespace nGUI { struct SWITCH_CONDITION; }
 class rGUI;
+class uGUIBase;
 
 // Declarations
 class uGUI;
@@ -78,6 +79,8 @@ using u8 = unsigned char;
 
 class uGUI : public uCoord
 {
+    // inferred: uGUIBase::cTexArcLoader::replaceTex names uGUI::mpResource, through its enclosing class uGUIBase
+    friend class uGUIBase;
 public:
     class MyDTI;
     struct DuplicateBuffer;

@@ -95,3 +95,23 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::moveGainInfoQueue at 0x792107-0x792112; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGainInfo::setType(u32 uType) {
+    if (uType <= 7u) {
+        this->mType = uType;
+    }
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::moveGainInfoQueue at 0x79211a-0x792120; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGainInfo::setData0(s32 sData) {
+    this->mData0 = sData;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::moveGainInfoQueue at 0x792128-0x792130; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGainInfo::setData1(s32 sData) {
+    this->mData1 = sData;
+}

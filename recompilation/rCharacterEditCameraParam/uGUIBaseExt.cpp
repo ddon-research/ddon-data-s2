@@ -47,7 +47,7 @@ const MtDTI& uGUIBaseExt::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIBaseExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIBaseExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIBaseExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,8 +81,8 @@ __attribute__((weak)) void uGUIBaseExt::setAutoShow(bool isAutoShow) {
 bool uGUIBaseExt::isShowable() const {
     // DWARF local not rendered: bool is_showable;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        return this->mUpdateMode != static_cast<uGUIBaseExt::UPDATE_MODE>(2);
+    if (isAttachedResource()) {
+        return mUpdateMode != UPDATE_MODE_SHOW;
     } else {
         return false;
     }
@@ -91,8 +91,8 @@ bool uGUIBaseExt::isShowable() const {
 // Address: 0x00983400 - 0x00983417 (23 bytes)
 bool uGUIBaseExt::isShow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        return this->mUpdateMode == static_cast<uGUIBaseExt::UPDATE_MODE>(2);
+    if (isAttachedResource()) {
+        return mUpdateMode == UPDATE_MODE_SHOW;
     } else {
         return false;
     }
@@ -106,13 +106,13 @@ bool uGUIBaseExt::isShow() const {
 bool uGUIBaseExt::show() {
     // DWARF local not rendered: bool is_show;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        if (this->mUpdateMode != static_cast<uGUIBaseExt::UPDATE_MODE>(2)) {
-            this->mUpdateMode = static_cast<uGUIBaseExt::UPDATE_MODE>(2);
-            this->onShow();
+    if (isAttachedResource()) {
+        if (mUpdateMode != UPDATE_MODE_SHOW) {
+            mUpdateMode = UPDATE_MODE_SHOW;
+            onShow();
             return true;
         } else {
-            return this->mUpdateMode == static_cast<uGUIBaseExt::UPDATE_MODE>(2);
+            return mUpdateMode == UPDATE_MODE_SHOW;
         }
     } else {
         return false;
@@ -160,7 +160,7 @@ const nGUIBaseExt::ResInfo* uGUIBaseExt::getGuiResInfo() const {
 // Address: 0x00983540 - 0x00983543 (3 bytes)
 t64 uGUIBaseExt::getGuiResUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<t64>(0);
+    return 0;
 }
 
 // Address: 0x00983550 - 0x00983553 (3 bytes)
@@ -172,7 +172,7 @@ const nGUIBaseExt::ResInfo* uGUIBaseExt::getGmdResInfo(u32 gmdResIndex) const {
 // Address: 0x00983560 - 0x00983563 (3 bytes)
 u32 uGUIBaseExt::getGmdResNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00983570 - 0x00983573 (3 bytes)
@@ -184,17 +184,17 @@ const nGUIBaseExt::ResInfo* uGUIBaseExt::getResInfo(u32 resIndex) const {
 // Address: 0x00983580 - 0x00983583 (3 bytes)
 u32 uGUIBaseExt::getResNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00983590 - 0x009835a8 (24 bytes)
 cResource* uGUIBaseExt::getRes(u32 resIndex) const {
     // DWARF local not rendered: cResource* resource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (resIndex < this->mResources.::MtArray::mLength) {
-        return static_cast<cResource*>(this->mResources.::MtArray::mpArray[resIndex]);
+    if (resIndex < mResources.mLength) {
+        return static_cast<cResource*>(mResources.mpArray[resIndex]);
     } else {
-        return static_cast<cResource*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -309,9 +309,9 @@ __attribute__((weak)) void uGUIBaseExt::setup() {
 // Address: 0x00983b40 - 0x00983b68 (40 bytes)
 void uGUIBaseExt::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    this->::uGUIBaseExt::releaseResources();
-    this->onKill();
+    this->uGUIBase::kill();
+    releaseResources();
+    onKill();
 }
 
 // Address: 0x00983b70 - 0x00983ba7 (55 bytes)
@@ -330,40 +330,40 @@ __attribute__((weak)) void uGUIBaseExt::moveEvent() {
 __attribute__((weak)) void uGUIBaseExt::releaseResources() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    this->::uGUIBase::releaseGMD();
-    if (this->mResources.::MtArray::size() != static_cast<u32>(0)) {
+    releaseGMD();
+    if (mResources.size() != 0) {
         // inferred: the value the loop at 0x9832d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mResources.::MtArray::size();
+        u32 v0_0 = mResources.size();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mResources.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cResource*>(this->mResources.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cResource::release();
-                this->mResources.::MtArray::getBuffer()[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mResources.::MtArray::size()) {
-                    v0_0 = this->mResources.::MtArray::size();
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mResources.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cResource*>(mResources.getBuffer()[static_cast<int>(i0_3)])->release();
+                mResources.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+                if ((i0_3 + 1u) < mResources.size()) {
+                    v0_0 = mResources.size();
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mResources.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mResources.::MtArray::mpArray));
+    if (mResources.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResources.mpArray));
     }
-    this->mResources.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mResources.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mResources.::MtArray::mLength = static_cast<u32>(0);
+    mResources.mpArray = nullptr;
+    mResources.mBufsiz = 0;
+    mResources.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -381,6 +381,8 @@ __attribute__((weak)) void uGUIBaseExt::updateMain() {
 //   in uGUIBaseExt::hide at 0x0098349d-0x009834bb (called at uGUIBaseExt.cpp:175)
 //   in uGUIBaseExt::setup at 0x00983a54-0x00983a5d, 0x00983a62-0x00983a7c (called at uGUIBaseExt.cpp:513)
 // void uGUIBaseExt::setUpdateMode(uGUIBaseExt::UPDATE_MODE updateMode);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIBaseExt::MyDTI uGUIBaseExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIBaseExt.cpp at 0x0098423e-0x0098427e (called at uGUIBaseExt.cpp:23)
@@ -463,7 +465,7 @@ __attribute__((weak)) void uGUIBaseExtHud::onShow() {
 // Address: 0x00983e30 - 0x00983e3b (11 bytes)
 void uGUIBaseExtHud::onHide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAlpha = 1.0f;
+    mAlpha = 1.0f;
 }
 
 // Address: 0x00983e40 - 0x00983f12 (210 bytes)
@@ -491,6 +493,8 @@ __attribute__((weak)) void uGUIBaseExtHud::setupAfterLoad() {
     DDON_STUB("uGUIBaseExtHud::setupAfterLoad")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIBaseExtHud::MyDTI uGUIBaseExtHud::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_uGUIBaseExt.cpp at 0x0098427e-0x009842ba (called at uGUIBaseExt.cpp:640)
@@ -557,6 +561,8 @@ uGUIBaseExtWindow::~uGUIBaseExtWindow() {
     DDON_STUB("uGUIBaseExtWindow::~uGUIBaseExtWindow")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIBaseExtWindow::MyDTI uGUIBaseExtWindow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_uGUIBaseExt.cpp at 0x009842ba-0x009842f6 (called at uGUIBaseExt.cpp:798)

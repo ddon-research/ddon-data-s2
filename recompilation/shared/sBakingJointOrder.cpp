@@ -72,18 +72,18 @@ void sBakingJointOrder::syncBakeJointOrder() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    for (BakedQueue* p0_2 = &this->mBakeModelQueue[0];;) {
-        if (p0_2->::BakedQueue::getState() == static_cast<BakedQueue::BAKED_STATE::DECL>(4)) {
-            this->mBakeModelQueue[i0_0].mpInfoCallBack->setRenewalEnvelope();
+    for (BakedQueue* p0_2 = &mBakeModelQueue[0];;) {
+        if (p0_2->getState() == BakedQueue::BAKED_STATE::SYNC) {
+            mBakeModelQueue[i0_0].mpInfoCallBack->setRenewalEnvelope();
             p0_2->mBakeState = static_cast<volatile BakedQueue::BAKED_STATE::DECL>(8);
-            this->mBakeModelQueue[i0_0].mpOrderUnit->::uBaseModel::resetAllMaterial();
+            mBakeModelQueue[i0_0].mpOrderUnit->resetAllMaterial();
             return;
         } else {
-            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(159)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
-                p0_2 += static_cast<int>(1);
+            if ((i0_0 + 1u) <= 159u) {
+                i0_0 = i0_0 + 1u;
+                p0_2 += 1;
             } else {
                 break;
             }
@@ -108,7 +108,7 @@ const MtDTI& sBakingJointOrder::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sBakingJointOrder::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sBakingJointOrder::DTI);
+    return MtMemoryAllocator::getAllocator(sBakingJointOrder::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +117,7 @@ inline MtAllocator* sBakingJointOrder::getAllocator() {
 // Address: 0x00724220 - 0x00724260 (64 bytes)
 void* sBakingJointOrder::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sBakingJointOrder::getAllocator()->memAlloc(sz, align, ::sBakingJointOrder::DTI.::MtDTI::getID());
+    return sBakingJointOrder::getAllocator()->memAlloc(sz, align, sBakingJointOrder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +132,7 @@ void* sBakingJointOrder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sBakingJointOrder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sBakingJointOrder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sBakingJointOrder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -172,7 +172,7 @@ __attribute__((weak)) void sBakingJointOrder::createProperty(MtPropertyList& s) 
 // Address: 0x00728060 - 0x00728065 (5 bytes)
 MtUI* sBakingJointOrder::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x00728070 - 0x00728071 (1 bytes)
@@ -325,8 +325,8 @@ __attribute__((weak)) void sBakingJointOrder::drawBakingModelOrder(cDraw* pdraw,
 bool sBakingJointOrder::isBaked(const sBakingJointOrder::BAKE_HANDLE index) {
     // DWARF local not rendered: BakedQueue* pbq;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index != static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295)) {
-        return this->mBakeModelQueue[index].mBakeState == static_cast<volatile BakedQueue::BAKED_STATE::DECL>(8);
+    if (index != 0xFFFFFFFFu) {
+        return mBakeModelQueue[index].mBakeState == static_cast<volatile BakedQueue::BAKED_STATE::DECL>(8);
     } else {
         return false;
     }
@@ -356,19 +356,17 @@ __attribute__((weak)) void sBakingJointOrder::buildInverseMatrix(BakedQueue* pbq
 // Address: 0x007280a0 - 0x007280ee (78 bytes)
 void sBakingJointOrder::removeProtectUnits(cUnit* punit) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -385,41 +383,41 @@ __attribute__((weak)) void sBakingJointOrder::checkProtectUnits() {
 void sBakingJointOrder::addDeleteUnitsQueue(cUnit* punit) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cUnit* * p0_0 = &this->maDeleteUnits[0];
+    cUnit* * p0_0 = &maDeleteUnits[0];
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     // inferred: the value carried to 0x728144; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
-        if ((*p0_0) == static_cast<cUnit*>(nullptr)) {
+        if ((*p0_0) == nullptr) {
             *p0_0 = punit;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                     return;
                 }
             }
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(319)) {
-                p0_0 += static_cast<int>(1);
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 319u) {
+                p0_0 += 1;
+                i0_1 += 1u;
             } else {
-                v1_1 = i0_1 + static_cast<unsigned int>(1);
+                v1_1 = i0_1 + 1u;
                 break;
             }
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -456,6 +454,11 @@ __attribute__((weak)) void sBakingJointOrder::flushAllCache() {
     /* stub */
 }
 
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sBakingJointOrder* sBakingJointOrder::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sBakingJointOrder::MyDTI sBakingJointOrder::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sBakingJointOrder.cpp at 0x007283cf-0x0072840c (called at sBakingJointOrder.cpp:90)
 //   in _GLOBAL__sub_I_sBakingJointOrder.cpp at 0x007283cf-0x0072840c (called at sBakingJointOrder.h:198)
@@ -481,6 +484,6 @@ sBakingJointOrder::BakeJointThread::~BakeJointThread() {
 // Address: 0x01abcc40 - 0x01abcc49 (9 bytes)
 void sBakingJointOrder::BakeJointThread::execute(void* pcontext) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpBJSystem->::sBakingJointOrder::asyncBakeJointOrder();
+    mpBJSystem->asyncBakeJointOrder();
 }
 

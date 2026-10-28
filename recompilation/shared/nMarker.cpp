@@ -34,7 +34,7 @@ inline MtAllocator* nMarker::cMarkerInfo::getAllocator() {
 // Address: 0x0016fe40 - 0x0016fe80 (64 bytes)
 void* nMarker::cMarkerInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nMarker::cMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cMarkerInfo::DTI.::MtDTI::getID());
+    return ::nMarker::cMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cMarkerInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ inline void nMarker::cMarkerInfo::operator delete(void* p_addr) {
 // Address: 0x0016fef0 - 0x0016fef5 (5 bytes)
 const nMarker::cMarkerInfo::Vector3Array& nMarker::cMarkerInfo::getPosList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPosList;
+    return mPosList;
 }
 
 // Address: 0x0016ff00 - 0x00170021 (289 bytes)
@@ -76,7 +76,7 @@ __attribute__((weak)) nMarker::cMarkerInfo& nMarker::cMarkerInfo::addPosition(co
 // Address: 0x00170030 - 0x00170035 (5 bytes)
 const nMarker::cMarkerInfo::CtrlFlagArray& nMarker::cMarkerInfo::getCtrlFlagList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCtrlFlagList;
+    return mCtrlFlagList;
 }
 
 // Address: 0x00170040 - 0x00170148 (264 bytes)
@@ -94,26 +94,26 @@ __attribute__((weak)) nMarker::cMarkerInfo& nMarker::cMarkerInfo::setPosition(u3
 // Address: 0x00170190 - 0x00170195 (5 bytes)
 s16 nMarker::cMarkerInfo::getStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo;
+    return mStageNo;
 }
 
 // Address: 0x001701a0 - 0x001701a8 (8 bytes)
 nMarker::cMarkerInfo& nMarker::cMarkerInfo::setStageNo(s16 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = stageNo;
+    mStageNo = stageNo;
     return *this;
 }
 
 // Address: 0x001701b0 - 0x001701b4 (4 bytes)
 bool nMarker::cMarkerInfo::isAdjoin() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsAdjoin;
+    return mIsAdjoin;
 }
 
 // Address: 0x001701c0 - 0x001701c8 (8 bytes)
 nMarker::cMarkerInfo& nMarker::cMarkerInfo::setIsAdjoin(bool isAdj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsAdjoin = isAdj;
+    mIsAdjoin = isAdj;
     return *this;
 }
 
@@ -127,68 +127,70 @@ nMarker::cMarkerInfo::cMarkerInfo() {
 // Also emitted as: _ZN7nMarker11cMarkerInfoD0Ev at 0x00170360
 nMarker::cMarkerInfo::~cMarkerInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPosList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPosList.mLength != 0) {
         // inferred: the value the loop at 0x170270 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPosList.::MtArray::mLength;
+        u32 v0_0 = mPosList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPosList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPosList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPosList.::MtArray::mLength) {
-                    v0_0 = this->mPosList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPosList.mpArray[i0_3] != nullptr) {
+                delete mPosList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPosList.mLength) {
+                    v0_0 = mPosList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPosList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPosList.::MtArray::mpArray));
+    if (mPosList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mPosList.mpArray));
     }
-    this->mPosList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPosList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPosList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mCtrlFlagList.::MtArray::mLength != static_cast<u32>(0)) {
+    mPosList.mpArray = nullptr;
+    mPosList.mBufsiz = 0;
+    mPosList.mLength = 0;
+    if (mCtrlFlagList.mLength != 0) {
         // inferred: the value the loop at 0x1702e0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mCtrlFlagList.::MtArray::mLength;
+        u32 v2_0 = mCtrlFlagList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mCtrlFlagList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mCtrlFlagList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mCtrlFlagList.::MtArray::mLength) {
-                    v2_0 = this->mCtrlFlagList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mCtrlFlagList.mpArray[i2_3] != nullptr) {
+                delete mCtrlFlagList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mCtrlFlagList.mLength) {
+                    v2_0 = mCtrlFlagList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mCtrlFlagList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlFlagList.::MtArray::mpArray));
+    if (mCtrlFlagList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mCtrlFlagList.mpArray));
     }
-    this->mCtrlFlagList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mCtrlFlagList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mCtrlFlagList.::MtArray::mLength = static_cast<u32>(0);
+    mCtrlFlagList.mpArray = nullptr;
+    mCtrlFlagList.mBufsiz = 0;
+    mCtrlFlagList.mLength = 0;
 }
 
 // Address: 0x00170390 - 0x00170391 (1 bytes)
 __attribute__((weak)) void nMarker::cMarkerInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cMarkerInfo::MyDTI nMarker::cMarkerInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x001715a0-0x001715e9 (called at nMarker.cpp:28)
@@ -260,9 +262,15 @@ __attribute__((weak)) nMarker::cMarkerInfo::cVector3::operator MtVector3() {
     __builtin_unreachable();
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (57 bytes)
-//   in nMarker::cMarkerInfo::cVector3::MyDTI::newInstance at 0x001703cd-0x00170406 (called at nMarker.cpp:201)
-// nMarker::cMarkerInfo::cVector3::cVector3();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline nMarker::cMarkerInfo::cVector3::cVector3() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mRealPos.x = ::MtVector3::Zero.x;
+    mRealPos.y = ::MtVector3::Zero.y;
+    mRealPos.z = ::MtVector3::Zero.z;
+    mRealPos.pad_ = 0.0f;
+}
 
 // Address: 0x001704c0 - 0x001704f3 (51 bytes)
 nMarker::cMarkerInfo::cVector3::cVector3(const MtVector3& pos) {
@@ -278,6 +286,8 @@ __attribute__((weak)) void nMarker::cMarkerInfo::cVector3::createProperty(MtProp
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
 //   in nMarker::cWarpMarkerInfoStage::cTargetInfo::getTargetPos at 0x0017128d-0x00171291 (called at nMarker.cpp:631)
 // const MtVector3& nMarker::cMarkerInfo::cVector3::getVector3() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cMarkerInfo::cVector3::MyDTI nMarker::cMarkerInfo::cVector3::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x001715e9-0x00171622 (called at nMarker.cpp:201)
@@ -313,7 +323,7 @@ const MtDTI& nMarker::cMarkerInfo::cCtrlFlag::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nMarker::cMarkerInfo::cCtrlFlag::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cCtrlFlag::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cCtrlFlag::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -343,13 +353,13 @@ inline void nMarker::cMarkerInfo::cCtrlFlag::operator delete(void* p_addr) {
 // Address: 0x001705e0 - 0x001705e4 (4 bytes)
 u32 nMarker::cMarkerInfo::cCtrlFlag::getQuestId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestId;
+    return mQuestId;
 }
 
 // Address: 0x001705f0 - 0x001705f4 (4 bytes)
 u32 nMarker::cMarkerInfo::cCtrlFlag::getFalgNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlagNo;
+    return mFlagNo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
@@ -365,6 +375,8 @@ __attribute__((weak)) void nMarker::cMarkerInfo::cCtrlFlag::createProperty(MtPro
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cMarkerInfo::cCtrlFlag::MyDTI nMarker::cMarkerInfo::cCtrlFlag::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x00171622-0x0017165b (called at nMarker.cpp:275)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x00171622-0x0017165b (called at nMarker.h:141)
@@ -373,7 +385,7 @@ __attribute__((weak)) void nMarker::cMarkerInfo::cCtrlFlag::createProperty(MtPro
 // Address: 0x00170520 - 0x00170568 (72 bytes)
 MtObject* nMarker::cMarkerInfo::cCtrlFlag::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nMarker::cMarkerInfo::cCtrlFlag;
+    return new (16u) ::nMarker::cMarkerInfo::cCtrlFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -399,7 +411,7 @@ inline MtAllocator* nMarker::cWarpMarkerInfo::getAllocator() {
 // Address: 0x00170700 - 0x00170740 (64 bytes)
 void* nMarker::cWarpMarkerInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nMarker::cWarpMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfo::DTI.::MtDTI::getID());
+    return ::nMarker::cWarpMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -429,7 +441,7 @@ inline void nMarker::cWarpMarkerInfo::operator delete(void* p_addr) {
 // Address: 0x001707b0 - 0x001707b5 (5 bytes)
 const nMarker::cMarkerInfo::Vector3Array& nMarker::cWarpMarkerInfo::getTargetPosList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetPos;
+    return mTargetPos;
 }
 
 // Address: 0x001707c0 - 0x0017081a (90 bytes)
@@ -453,13 +465,13 @@ __attribute__((weak)) nMarker::cWarpMarkerInfo& nMarker::cWarpMarkerInfo::addTar
 // Address: 0x001709a0 - 0x001709a4 (4 bytes)
 s32 nMarker::cWarpMarkerInfo::getTargetFloorGroupNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetFloorGroupNo;
+    return mTargetFloorGroupNo;
 }
 
 // Address: 0x001709b0 - 0x001709b7 (7 bytes)
 nMarker::cWarpMarkerInfo& nMarker::cWarpMarkerInfo::setTargetFloorGroupNo(s32 floorGroupNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetFloorGroupNo = floorGroupNo;
+    mTargetFloorGroupNo = floorGroupNo;
     return *this;
 }
 
@@ -486,6 +498,8 @@ nMarker::cWarpMarkerInfo::~cWarpMarkerInfo() {
 __attribute__((weak)) void nMarker::cWarpMarkerInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cWarpMarkerInfo::MyDTI nMarker::cWarpMarkerInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x0017165b-0x00171694 (called at nMarker.cpp:351)
@@ -521,7 +535,7 @@ inline MtAllocator* nMarker::cWarpMarkerInfoStage::getAllocator() {
 // Address: 0x00170d20 - 0x00170d60 (64 bytes)
 void* nMarker::cWarpMarkerInfoStage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nMarker::cWarpMarkerInfoStage::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::DTI.::MtDTI::getID());
+    return ::nMarker::cWarpMarkerInfoStage::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -551,20 +565,20 @@ inline void nMarker::cWarpMarkerInfoStage::operator delete(void* p_addr) {
 // Address: 0x00170dd0 - 0x00170dd5 (5 bytes)
 s16 nMarker::cWarpMarkerInfoStage::getTargetStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetStageNo;
+    return mTargetStageNo;
 }
 
 // Address: 0x00170de0 - 0x00170de8 (8 bytes)
 nMarker::cWarpMarkerInfoStage& nMarker::cWarpMarkerInfoStage::setTargetStageNo(s16 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetStageNo = stageNo;
+    mTargetStageNo = stageNo;
     return *this;
 }
 
 // Address: 0x00170df0 - 0x00170df5 (5 bytes)
 const nMarker::cWarpMarkerInfoStage::TargetInfoArray& nMarker::cWarpMarkerInfoStage::getTargetInfoList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetInfoList;
+    return mTargetInfoList;
 }
 
 // Address: 0x00170e00 - 0x00170ef1 (241 bytes)
@@ -596,6 +610,8 @@ nMarker::cWarpMarkerInfoStage::~cWarpMarkerInfoStage() {
 __attribute__((weak)) void nMarker::cWarpMarkerInfoStage::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cWarpMarkerInfoStage::MyDTI nMarker::cWarpMarkerInfoStage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x00171694-0x001716cd (called at nMarker.cpp:502)
@@ -632,7 +648,7 @@ const MtDTI& nMarker::cWarpMarkerInfoStage::cTargetInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nMarker::cWarpMarkerInfoStage::cTargetInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -684,14 +700,43 @@ nMarker::cWarpMarkerInfoStage::cTargetInfo::cTargetInfo(const MtVector3& pos) {
 // Address: 0x00171430 - 0x001714cd (157 bytes)
 // Also emitted as: _ZN7nMarker20cWarpMarkerInfoStage11cTargetInfoD0Ev at 0x001714d0
 nMarker::cWarpMarkerInfoStage::cTargetInfo::~cTargetInfo() {
-    DDON_STUB("nMarker::cWarpMarkerInfoStage::cTargetInfo::~cTargetInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mTargetPosList.mLength != 0) {
+        // inferred: the value the loop at 0x171460 carries; no location-less local in scope fits
+        u32 v0_0 = mTargetPosList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mTargetPosList.mpArray[i0_3] != nullptr) {
+                delete mTargetPosList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTargetPosList.mLength) {
+                    v0_0 = mTargetPosList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mTargetPosList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mTargetPosList.mpArray));
+    }
+    mTargetPosList.mpArray = nullptr;
+    mTargetPosList.mBufsiz = 0;
+    mTargetPosList.mLength = 0;
 }
 
 // Address: 0x00171590 - 0x00171591 (1 bytes)
 __attribute__((weak)) void nMarker::cWarpMarkerInfoStage::cTargetInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nMarker::cWarpMarkerInfoStage::cTargetInfo::MyDTI nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nMarker.cpp at 0x001716cd-0x00171706 (called at nMarker.cpp:616)
@@ -701,7 +746,7 @@ __attribute__((weak)) void nMarker::cWarpMarkerInfoStage::cTargetInfo::createPro
 // Address: 0x001711a0 - 0x00171209 (105 bytes)
 MtObject* nMarker::cWarpMarkerInfoStage::cTargetInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nMarker::cWarpMarkerInfoStage::cTargetInfo;
+    return new (16u) ::nMarker::cWarpMarkerInfoStage::cTargetInfo;
 }
 
 // Instance at 0x019808b0 - 0x019808b5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

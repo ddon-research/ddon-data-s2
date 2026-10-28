@@ -36,7 +36,7 @@ const MtDTI& cEnemyBloodStain::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEnemyBloodStain::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memAlloc(sz, align, ::cEnemyBloodStain::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyBloodStain::DTI)->memAlloc(sz, align, cEnemyBloodStain::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEnemyBloodStain::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyBloodStain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyBloodStain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -74,6 +74,8 @@ inline void cEnemyBloodStain::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEnemyBloodStain::~cEnemyBloodStain();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyBloodStain::MyDTI cEnemyBloodStain::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyBloodStain.cpp at 0x0066af9f-0x0066afdc (called at rEnemyBloodStain.cpp:38)
 //   in _GLOBAL__sub_I_rEnemyBloodStain.cpp at 0x0066af9f-0x0066afdc (called at rEnemyBloodStain.h:46)
@@ -82,7 +84,7 @@ inline void cEnemyBloodStain::operator delete(void* p_addr) {
 // Address: 0x0066ac50 - 0x0066acc1 (113 bytes)
 MtObject* cEnemyBloodStain::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyBloodStain;
+    return new (16u) cEnemyBloodStain;
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +109,7 @@ const MtDTI& rEnemyBloodStain::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyBloodStain::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyBloodStain::DTI)->memAlloc(sz, align, ::rEnemyBloodStain::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyBloodStain::DTI)->memAlloc(sz, align, rEnemyBloodStain::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ inline void* rEnemyBloodStain::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rEnemyBloodStainD0Ev at 0x01a8a214-0x01a8a233, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyBloodStain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyBloodStain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyBloodStain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,25 +141,25 @@ bool rEnemyBloodStain::loadData(MtDataReader& r, cEnemyBloodStain* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBloodStainType);
+    nDDOIO::readData(r, pData->mBloodStainType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHpRateLv1);
+    nDDOIO::readData(r, pData->mHpRateLv1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHpRateLv2);
+    nDDOIO::readData(r, pData->mHpRateLv2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHpRateLv3);
+    nDDOIO::readData(r, pData->mHpRateLv3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRegionNoLv1);
+    nDDOIO::readData(r, pData->mRegionNoLv1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRegionNoLv2);
+    nDDOIO::readData(r, pData->mRegionNoLv2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRegionNoLv3);
+    nDDOIO::readData(r, pData->mRegionNoLv3);
     return true;
 }
 
@@ -170,8 +172,10 @@ MT_CTSTR rEnemyBloodStain::getExt() const {
 // Address: 0x01a8a360 - 0x01a8a366 (6 bytes)
 u32 rEnemyBloodStain::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyBloodStain::MyDTI rEnemyBloodStain::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyBloodStain.cpp at 0x0066afdc-0x0066b019 (called at rEnemyBloodStain.cpp:39)
@@ -181,7 +185,7 @@ u32 rEnemyBloodStain::getDataVersion() const {
 // Address: 0x0066ad40 - 0x0066ada4 (100 bytes)
 MtObject* rEnemyBloodStain::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyBloodStain;
+    return new (16u) rEnemyBloodStain;
 }
 
 // Instance at 0x01a8a310 - 0x01a8a326 (22 bytes) of the generic rTbl2<T>::getData

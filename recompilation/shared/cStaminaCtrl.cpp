@@ -49,7 +49,7 @@ const MtDTI& cStaminaCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStaminaCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStaminaCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStaminaCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,7 +81,7 @@ __attribute__((weak)) void cStaminaCtrl::createProperty(MtPropertyList& proplist
 // Address: 0x0056fb30 - 0x0056fb35 (5 bytes)
 MtUI* cStaminaCtrl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0056fb40 - 0x0056ff0a (970 bytes)
@@ -216,54 +216,54 @@ void cStaminaCtrl::calcRateFromWeight(uHuman& owner, f32 weight, f32& recoveryRa
     // Proven from the ELF: the body oracle checks this body (022 D5).
     recoveryRate = 1.0f;
     decreaseRate = 1.0f;
-    if (owner.::uHuman::getContextPlayerInfo() != static_cast<cContextPlayerInfo*>(nullptr)) {
-        switch (::cContextPlayerInfo::getWeightType(owner.::uHuman::getContextPlayerInfo()->::cContextPlayerInfo::getWeight())) {
-            case static_cast<nHuman::WEIGHT_TYPE>(0):
+    if (owner.getContextPlayerInfo() != nullptr) {
+        switch (cContextPlayerInfo::getWeightType(owner.getContextPlayerInfo()->getWeight())) {
+            case nHuman::WEIGHT_VERY_LIGHT:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(13));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(7));
+                recoveryRate = owner.getComAdjustParam(13u);
+                decreaseRate = owner.getComAdjustParam(7u);
                 break;
             }
-            case static_cast<nHuman::WEIGHT_TYPE>(1):
+            case nHuman::WEIGHT_LIGHT:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(14));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(8));
+                recoveryRate = owner.getComAdjustParam(14u);
+                decreaseRate = owner.getComAdjustParam(8u);
                 break;
             }
-            case static_cast<nHuman::WEIGHT_TYPE>(2):
+            case nHuman::WEIGHT_MIDDLE:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(15));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(9));
+                recoveryRate = owner.getComAdjustParam(15u);
+                decreaseRate = owner.getComAdjustParam(9u);
                 break;
             }
-            case static_cast<nHuman::WEIGHT_TYPE>(3):
+            case nHuman::WEIGHT_HEAVY:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(16));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(10));
+                recoveryRate = owner.getComAdjustParam(16u);
+                decreaseRate = owner.getComAdjustParam(10u);
                 break;
             }
-            case static_cast<nHuman::WEIGHT_TYPE>(4):
+            case nHuman::WEIGHT_VERY_HEAVY:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(17));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(11));
+                recoveryRate = owner.getComAdjustParam(17u);
+                decreaseRate = owner.getComAdjustParam(11u);
                 break;
             }
-            case static_cast<nHuman::WEIGHT_TYPE>(5):
+            case nHuman::WEIGHT_OVER:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(18));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(12));
+                recoveryRate = owner.getComAdjustParam(18u);
+                decreaseRate = owner.getComAdjustParam(12u);
                 break;
             }
             default:
             {
-                recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(18));
-                decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(12));
+                recoveryRate = owner.getComAdjustParam(18u);
+                decreaseRate = owner.getComAdjustParam(12u);
                 break;
             }
         }
     } else {
-        recoveryRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(18));
-        decreaseRate = owner.::uHuman::getComAdjustParam(static_cast<u32>(12));
+        recoveryRate = owner.getComAdjustParam(18u);
+        decreaseRate = owner.getComAdjustParam(12u);
     }
 }
 
@@ -281,15 +281,17 @@ __attribute__((weak)) void cStaminaCtrl::clearRequestParam() {
 void cStaminaCtrl::setJumpSTRecoverSlow() {
     // DWARF local not rendered: uHuman* pHm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwner == nullptr) {
         return;
     }
-    if ((this->mpOwner->mUnitId & static_cast<u32>(16)) == static_cast<u32>(0)) {
+    if ((mpOwner->mUnitId & 16u) == 0) {
         return;
     }
-    this->mIsJumpRecoverSlow = true;
-    this->mJumpRecoverSlowTime = static_cast<uHuman*>(this->mpOwner)->::uHuman::getComAdjustParam(static_cast<u32>(143));
+    mIsJumpRecoverSlow = true;
+    mJumpRecoverSlowTime = static_cast<uHuman*>(mpOwner)->getComAdjustParam(143u);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStaminaCtrl::MyDTI cStaminaCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cStaminaCtrl.cpp at 0x0057096f-0x005709ac (called at cStaminaCtrl.cpp:160)

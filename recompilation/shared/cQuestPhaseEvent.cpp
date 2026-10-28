@@ -25,7 +25,7 @@ const MtDTI& cQuestPhaseEvent::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestPhaseEvent::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestPhaseEvent::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cQuestPhaseEvent::getAllocator() {
 // Address: 0x0015ccb0 - 0x0015ccf0 (64 bytes)
 void* cQuestPhaseEvent::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestPhaseEvent::getAllocator()->memAlloc(sz, align, ::cQuestPhaseEvent::DTI.::MtDTI::getID());
+    return cQuestPhaseEvent::getAllocator()->memAlloc(sz, align, cQuestPhaseEvent::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cQuestPhaseEvent::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestPhaseEvent::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseEvent::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,11 +83,11 @@ __attribute__((weak)) bool cQuestPhaseEvent::callPhaseEvent(cQuestPhaseState* pS
 // Address: 0x0015d1e0 - 0x0015d1f8 (24 bytes)
 void cQuestPhaseEvent::callPhaseEventCancel(cQuestPhaseState* pState, cQuestPhaseEvent* pEvent, const cQuestPhaseEvent::ParamArray& paramList) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pEvent->::cQuestPhaseEvent::getEventId() == static_cast<u32>(5)) {
-        ::cQuestPhaseState::resetReturnPlayerId(pState);
+    if (pEvent->getEventId() == 5) {
+        cQuestPhaseState::resetReturnPlayerId(pState);
     } else {
-        if (pEvent->::cQuestPhaseEvent::getEventId() == static_cast<u32>(2)) {
-            ::cQuestPhaseState::resetWarpPlayerId(pState);
+        if (pEvent->getEventId() == 2) {
+            cQuestPhaseState::resetWarpPlayerId(pState);
         }
     }
 }
@@ -104,42 +104,42 @@ bool cQuestPhaseEvent::phaseEventDicideDividePlayer(cQuestPhaseState* pState, co
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x8 from const MtTypedArray<cQuestPhaseEvent::cParam>*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x18 from const MtTypedArray<cQuestPhaseEvent::cParam>*
     // inferred: the value the loop at 0x15cee0 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&paramList) + static_cast<long>(8));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&paramList) + 8);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x15cee0 carries; no location-less local in scope fits
-        unsigned long v0_1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&paramList) + static_cast<long>(24));
+        unsigned long v0_1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&paramList) + 24);
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == static_cast<unsigned int>(1)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(12))) == static_cast<unsigned int>(0)) {
+        for (unsigned int i0_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 8)) == 1) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 12)) == 0) {
                     // inferred: a temporary for the value the load at 0x15cf12 read, used 3 times; no DWARF local holds it
-                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(16));
-                    ::cQuestPhaseState::setDivideSuccess(pState, t0, false);
-                    if (t0 != static_cast<unsigned int>(0)) {
-                        ::cQuestPhaseState::setWarpPlayerId(pState, t0);
-                        ::cQuestPhaseState::setWarpPlayer(pState);
-                        ::cQuestPhaseState::resetDivideSetup(pState);
+                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * 8u)) + 0)) + 16);
+                    cQuestPhaseState::setDivideSuccess(pState, t0, false);
+                    if (t0 != 0) {
+                        cQuestPhaseState::setWarpPlayerId(pState, t0);
+                        cQuestPhaseState::setWarpPlayer(pState);
+                        cQuestPhaseState::resetDivideSetup(pState);
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    ::cQuestPhaseState::setDivideSuccess(pState, static_cast<u32>(0), false);
+    cQuestPhaseState::setDivideSuccess(pState, 0u, false);
     return false;
 }
 
@@ -152,78 +152,78 @@ bool cQuestPhaseEvent::phaseEventDicideDividePlayerEx(cQuestPhaseState* pState, 
     // DWARF local not rendered: u32 characterId_1;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x15d140 carries; no location-less local in scope fits
-    u32 v0_0 = paramList.::MtArray::mLength;
+    u32 v0_0 = paramList.mLength;
     // inferred: the value carried to 0x15d17e; no location-less local in scope fits
     u32 v3_3;
     // inferred: the value carried to 0x15d17e; no location-less local in scope fits
     u32 v3_5;
-    if (v0_0 == static_cast<u32>(0)) {
-        v3_3 = static_cast<u32>(0);
-        v3_5 = static_cast<u32>(0);
+    if (v0_0 == 0) {
+        v3_3 = 0;
+        v3_5 = 0;
     } else {
         // inferred: the value the loop at 0x15d140 carries; no location-less local in scope fits
-        MtObject* * v0_1 = paramList.::MtArray::mpArray;
+        MtObject* * v0_1 = paramList.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_2 = static_cast<unsigned int>(0);
+        unsigned int i0_2 = 0;
         // inferred: the value carried to 0x15d15d; no location-less local in scope fits
         u32 v1_4;
         for (;;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == static_cast<unsigned int>(1)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(12))) != static_cast<unsigned int>(0)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 1) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 12)) != 0) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<u32>(0);
+                        v1_4 = 0;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<cQuestPhaseEvent::cParam*>(v0_1[i0_2])->::cQuestPhaseEvent::cParam::getValue();
+                    v1_4 = static_cast<cQuestPhaseEvent::cParam*>(v0_1[i0_2])->getValue();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<u32>(0);
+                    v1_4 = 0;
                     break;
                 }
             }
         }
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i2_2]) + static_cast<long>(8))) == static_cast<unsigned int>(1)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i2_2]) + static_cast<long>(12))) != static_cast<unsigned int>(1)) {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+        for (unsigned int i2_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i2_2]) + 8)) == 1) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i2_2]) + 12)) != 1) {
+                    if ((i2_2 + 1u) < v0_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_3 = static_cast<u32>(0);
+                        v3_3 = 0;
                         v3_5 = v1_4;
                         break;
                     }
                 } else {
-                    v3_3 = static_cast<cQuestPhaseEvent::cParam*>(v0_1[i2_2])->::cQuestPhaseEvent::cParam::getValue();
+                    v3_3 = static_cast<cQuestPhaseEvent::cParam*>(v0_1[i2_2])->getValue();
                     v3_5 = v1_4;
                     break;
                 }
             } else {
-                if ((i2_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i2_2 = i2_2 + static_cast<unsigned int>(1);
+                if ((i2_2 + 1u) < v0_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    v3_3 = static_cast<u32>(0);
+                    v3_3 = 0;
                     v3_5 = v1_4;
                     break;
                 }
             }
         }
     }
-    ::cQuestPhaseState::resetDivideSetup(pState);
-    ::cQuestPhaseState::setDivideSuccess(pState, v3_5, false);
-    ::cQuestPhaseState::setDivideSuccess(pState, v3_3, false);
-    ::cQuestPhaseState::resetReturnPlayerId(pState);
-    if (v3_5 != static_cast<u32>(0)) {
-        if (v3_3 != static_cast<u32>(0)) {
-            ::cQuestPhaseState::setDivideCharacterId(pState, v3_5, static_cast<u32>(0));
-            ::cQuestPhaseState::setDivideCharacterId(pState, v3_3, static_cast<u32>(1));
+    cQuestPhaseState::resetDivideSetup(pState);
+    cQuestPhaseState::setDivideSuccess(pState, v3_5, false);
+    cQuestPhaseState::setDivideSuccess(pState, v3_3, false);
+    cQuestPhaseState::resetReturnPlayerId(pState);
+    if (v3_5 != 0) {
+        if (v3_3 != 0) {
+            cQuestPhaseState::setDivideCharacterId(pState, v3_5, 0u);
+            cQuestPhaseState::setDivideCharacterId(pState, v3_3, 1u);
         }
     }
     return true;
@@ -257,7 +257,7 @@ __attribute__((weak)) bool cQuestPhaseEvent::phaseEventReturnPlayer(cQuestPhaseS
 // Address: 0x0015d220 - 0x0015d225 (5 bytes)
 const cQuestPhaseEvent::ParamArray& cQuestPhaseEvent::getParamList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParamList;
+    return mParamList;
 }
 
 // Address: 0x0015d230 - 0x0015d342 (274 bytes)
@@ -279,47 +279,49 @@ __attribute__((weak)) void cQuestPhaseEvent::addParam(u32 type, u32 idx, u32 val
 // Address: 0x0015d360 - 0x0015d39b (59 bytes)
 cQuestPhaseEvent::cQuestPhaseEvent(u32 eventId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEventId = eventId;
+    mEventId = eventId;
 }
 
 // Address: 0x0015d3a0 - 0x0015d43d (157 bytes)
 // Also emitted as: _ZN16cQuestPhaseEventD0Ev at 0x0015d440
 cQuestPhaseEvent::~cQuestPhaseEvent() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mParamList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mParamList.mLength != 0) {
         // inferred: the value the loop at 0x15d3d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mParamList.::MtArray::mLength;
+        u32 v0_0 = mParamList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mParamList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mParamList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mParamList.::MtArray::mLength) {
-                    v0_0 = this->mParamList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mParamList.mpArray[i0_3] != nullptr) {
+                delete mParamList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mParamList.mLength) {
+                    v0_0 = mParamList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mParamList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mParamList.::MtArray::mpArray));
+    if (mParamList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mParamList.mpArray));
     }
-    this->mParamList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mParamList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mParamList.::MtArray::mLength = static_cast<u32>(0);
+    mParamList.mpArray = nullptr;
+    mParamList.mBufsiz = 0;
+    mParamList.mLength = 0;
 }
 
 // Address: 0x0015d500 - 0x0015d501 (1 bytes)
 __attribute__((weak)) void cQuestPhaseEvent::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseEvent::MyDTI cQuestPhaseEvent::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseEvent.cpp at 0x0015d640-0x0015d684 (called at cQuestPhaseEvent.cpp:27)
@@ -329,7 +331,7 @@ __attribute__((weak)) void cQuestPhaseEvent::createProperty(MtPropertyList& s) {
 // Address: 0x0015cc40 - 0x0015ccb0 (112 bytes)
 MtObject* cQuestPhaseEvent::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestPhaseEvent;
+    return new (16u) cQuestPhaseEvent;
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,7 +358,7 @@ const MtDTI& cQuestPhaseEvent::cParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestPhaseEvent::cParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::cParam::DTI)->memAlloc(sz, align, ::cQuestPhaseEvent::cParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestPhaseEvent::cParam::DTI)->memAlloc(sz, align, cQuestPhaseEvent::cParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -370,7 +372,7 @@ inline void* cQuestPhaseEvent::cParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestPhaseEvent::cParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::cParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseEvent::cParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -414,6 +416,8 @@ __attribute__((weak)) void cQuestPhaseEvent::cParam::createProperty(MtPropertyLi
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseEvent::cParam::MyDTI cQuestPhaseEvent::cParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseEvent.cpp at 0x0015d684-0x0015d6bd (called at cQuestPhaseEvent.cpp:405)
 //   in _GLOBAL__sub_I_cQuestPhaseEvent.cpp at 0x0015d684-0x0015d6bd (called at cQuestPhaseEvent.h:136)
@@ -422,7 +426,7 @@ __attribute__((weak)) void cQuestPhaseEvent::cParam::createProperty(MtPropertyLi
 // Address: 0x0015d510 - 0x0015d55f (79 bytes)
 MtObject* cQuestPhaseEvent::cParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestPhaseEvent::cParam;
+    return new (16u) cQuestPhaseEvent::cParam;
 }
 
 // Instance at 0x0197ff10 - 0x0197ff15 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

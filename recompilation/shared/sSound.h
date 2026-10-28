@@ -1269,6 +1269,8 @@ public:
 public:
     class NGS2Voice
     {
+        // inferred: sSound::NGS2Routing::getDstVoiceHandleDry names sSound::NGS2Routing::mVoiceMastering.::sSound::NGS2Voice::mVoiceHandle, through its enclosing class sSound
+        friend class sSound;
     public:
         NGS2Voice();
         // Address: 0x012a0580 - 0x012a0581 (1 bytes)
@@ -1365,6 +1367,8 @@ public:
 public:
     class NGS2VoiceSubmixer : public sSound::NGS2Voice
     {
+        // inferred: sSound::NGS2VoiceSubmixerEQ::process names sSound::NGS2VoiceSubmixer::mRefCount, through its enclosing class sSound
+        friend class sSound;
     public:
         NGS2VoiceSubmixer();
         virtual ~NGS2VoiceSubmixer() {}
@@ -1580,6 +1584,8 @@ public:
 public:
     class AudioOut
     {
+        // inferred: sSound::NativeVoiceStreamPS4::setupVoice names sSound::NativeSystemPS4::mNGS2System.mAudioOut.mRestrictedPortEnable, through its enclosing class sSound
+        friend class sSound;
     public:
         enum AUDIO_OUT_PORT_TYPE
         {
@@ -1797,6 +1803,8 @@ public:
 public:
     class NGS2System
     {
+        // inferred: sSound::NativeSystemPS4::getFX names sSound::NativeSystemPS4::mNGS2System.mpNGS2RoutingMain, through its enclosing class sSound
+        friend class sSound;
     public:
         enum ROUTING
         {
@@ -1947,6 +1955,8 @@ public:
 public:
     class NativeSystemPS4 : public sSound::NativeSystem
     {
+        // inferred: sSound::NativeVoiceStreamPS4::setupVoice names sSound::NativeSystemPS4::mNGS2System.mAudioOut.mRestrictedPortEnable, through its enclosing class sSound
+        friend class sSound;
     public:
         class PS4Property;
         class ReverbResourceWorkPS4;

@@ -34,7 +34,7 @@ const MtDTI& nLayout::cGameDataCache::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nLayout::cGameDataCache::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memAlloc(sz, align, ::nLayout::cGameDataCache::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memAlloc(sz, align, ::nLayout::cGameDataCache::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ inline void nLayout::cGameDataCache::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 nLayout::cGameDataCache::cGameDataCache() {
-    ::memset(static_cast<void*>(&this->mBuff), static_cast<int>(0), static_cast<size_t>(260));
+    ::memset(static_cast<void*>(&mBuff), 0, 260ul);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -94,15 +94,17 @@ nLayout::cGameDataCache::cGameDataCache() {
 void nLayout::cGameDataCache::setGameData(u32 data, bool isSend) {
     // DWARF local not rendered: stFlagData flagData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((data & static_cast<u32>(15)) != static_cast<u32>(1)) {
+    if ((data & 15u) != 1) {
         return;
     }
-    if ((data & static_cast<u32>(16)) != static_cast<u32>(0)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(2), (data & static_cast<u32>(131040)) + ((data >> static_cast<u32>(17)) & static_cast<u32>(4095)), true, isSend, true);
+    if ((data & 16u) != 0) {
+        ::sFlag::getInstance()->setFlag(2u, (data & 0x1FFE0u) + ((data >> 17) & 4095u), true, isSend, true);
     } else {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(2), (data & static_cast<u32>(131040)) + ((data >> static_cast<u32>(17)) & static_cast<u32>(4095)), false, isSend, true);
+        ::sFlag::getInstance()->setFlag(2u, (data & 0x1FFE0u) + ((data >> 17) & 4095u), false, isSend, true);
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLayout::cGameDataCache::MyDTI nLayout::cGameDataCache::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGameDataCache.cpp at 0x001fe2ff-0x001fe33c (called at cGameDataCache.cpp:26)
@@ -112,7 +114,7 @@ void nLayout::cGameDataCache::setGameData(u32 data, bool isSend) {
 // Address: 0x001fe0d0 - 0x001fe126 (86 bytes)
 MtObject* nLayout::cGameDataCache::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nLayout::cGameDataCache;
+    return new (16u) ::nLayout::cGameDataCache;
 }
 
 // No out-of-line body: no code in the ELF

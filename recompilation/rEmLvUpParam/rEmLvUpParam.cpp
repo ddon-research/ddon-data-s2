@@ -25,7 +25,7 @@ const MtDTI& cEmLvUpParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* cEmLvUpParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI);
+    return MtMemoryAllocator::getAllocator(cEmLvUpParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ MtAllocator* cEmLvUpParam::getAllocator() {
 // Address: 0x00667290 - 0x006672d0 (64 bytes)
 void* cEmLvUpParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cEmLvUpParam::getAllocator()->memAlloc(sz, align, ::cEmLvUpParam::DTI.::MtDTI::getID());
+    return cEmLvUpParam::getAllocator()->memAlloc(sz, align, cEmLvUpParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -49,7 +49,7 @@ void* cEmLvUpParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmLvUpParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmLvUpParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -80,6 +80,8 @@ __attribute__((weak)) void cEmLvUpParam::copy(const cEmLvUpParam* pParam) {
     DDON_STUB("cEmLvUpParam::copy")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmLvUpParam::MyDTI cEmLvUpParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmLvUpParam.cpp at 0x006678df-0x0066791c (called at rEmLvUpParam.cpp:26)
@@ -114,7 +116,7 @@ const MtDTI& rEmLvUpParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmLvUpParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmLvUpParam::DTI)->memAlloc(sz, align, ::rEmLvUpParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmLvUpParam::DTI)->memAlloc(sz, align, rEmLvUpParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ inline void* rEmLvUpParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rEmLvUpParamD0Ev at 0x01a86f74-0x01a86f93, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmLvUpParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmLvUpParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmLvUpParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,8 +159,10 @@ MT_CTSTR rEmLvUpParam::getExt() const {
 // Address: 0x01a870c0 - 0x01a870c6 (6 bytes)
 u32 rEmLvUpParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmLvUpParam::MyDTI rEmLvUpParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmLvUpParam.cpp at 0x0066791c-0x00667959 (called at rEmLvUpParam.cpp:198)
@@ -168,7 +172,7 @@ u32 rEmLvUpParam::getDataVersion() const {
 // Address: 0x00667580 - 0x006675e4 (100 bytes)
 MtObject* rEmLvUpParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmLvUpParam;
+    return new (16u) rEmLvUpParam;
 }
 
 // Instance at 0x01a87070 - 0x01a87086 (22 bytes) of the generic rTbl2<T>::getData

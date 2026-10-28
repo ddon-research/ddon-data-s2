@@ -6,6 +6,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtTime.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cNetGameServer.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
@@ -37,7 +38,7 @@ const MtDTI& uGUIGPShopDialog::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGPShopDialog::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +47,7 @@ inline MtAllocator* uGUIGPShopDialog::getAllocator() {
 // Address: 0x00ab96a0 - 0x00ab96e0 (64 bytes)
 void* uGUIGPShopDialog::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGPShopDialog::getAllocator()->memAlloc(sz, align, ::uGUIGPShopDialog::DTI.::MtDTI::getID());
+    return uGUIGPShopDialog::getAllocator()->memAlloc(sz, align, uGUIGPShopDialog::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +62,7 @@ void* uGUIGPShopDialog::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGPShopDialog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,11 +99,11 @@ uGUIGPShopDialog::~uGUIGPShopDialog() {
 // Address: 0x00abafc0 - 0x00abb06f (175 bytes)
 bool uGUIGPShopDialog::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOP_DIALOG_GUI"), static_cast<u32>(129), static_cast<t64>(1428652135)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_DIALOG_GUI"), 129u, 1428652135l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -114,9 +115,9 @@ bool uGUIGPShopDialog::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOPDIALOG_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -130,60 +131,60 @@ bool uGUIGPShopDialog::loadResource() {
 // Address: 0x00abb070 - 0x00abb095 (37 bytes)
 void uGUIGPShopDialog::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGPShop == static_cast<uGUIGPShop*>(nullptr)) {
+    if (mpGPShop == nullptr) {
         return;
     }
-    if (this->mpGPShop->::cUnit::isEnable() != false) {
+    if (mpGPShop->isEnable()) {
         return;
     }
-    this->mpGPShop = static_cast<uGUIGPShop*>(nullptr);
+    mpGPShop = nullptr;
 }
 
 // Address: 0x00abb0a0 - 0x00abb159 (185 bytes)
 void uGUIGPShopDialog::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
-    this->setPlay(true);
-    this->mGuideCode.::uGUIBase::cReferenceUIBtnGuide::setup(static_cast<uGUIBase*>(this), this->getInstance(static_cast<u32>(286), false), 0.0f);
-    this->mGuideDialog.::uGUIBase::cReferenceUIBtnGuide::setup(static_cast<uGUIBase*>(this), this->getInstance(static_cast<u32>(287), false), 0.0f);
-    this->::uGUIGPShopDialog::initType();
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    setPlay(true);
+    mGuideCode.setup(static_cast<uGUIBase*>(this), getInstance(286u, false), 0.0f);
+    mGuideDialog.setup(static_cast<uGUIBase*>(this), getInstance(287u, false), 0.0f);
+    initType();
 }
 
 // Address: 0x00abb1e0 - 0x00abb24d (109 bytes)
 void uGUIGPShopDialog::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpGPShop == static_cast<uGUIGPShop*>(nullptr)) {
+    if (mpGPShop == nullptr) {
         return;
     }
-    this->mpGPShop->kill();
-    this->mpGPShop = static_cast<uGUIGPShop*>(nullptr);
+    mpGPShop->kill();
+    mpGPShop = nullptr;
 }
 
 // Address: 0x00abb250 - 0x00abb2b5 (101 bytes)
 void uGUIGPShopDialog::adjustScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::adjustScale();
-    if (this->mpGPShop != static_cast<uGUIGPShop*>(nullptr)) {
+    this->uGUIBase::adjustScale();
+    if (mpGPShop != nullptr) {
         return;
     }
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isExecBrowser() == false) {
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isExecBrowser()) {
         return;
     }
-    f32 scale = this->getScaleForDefaultResolution(1.0f);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setBrowserPos(580.0f * scale, 114.0f * scale);
+    f32 scale = getScaleForDefaultResolution(1.0f);
+    static_cast<sGUIExt*>(sGUI::getInstance())->setBrowserPos(580.0f * scale, 114.0f * scale);
 }
 
 // Address: 0x00abb2c0 - 0x00abb504 (580 bytes)
@@ -205,7 +206,7 @@ __attribute__((weak)) void uGUIGPShopDialog::moveEvent() {
 // Address: 0x00abbd00 - 0x00abbd0c (12 bytes)
 void uGUIGPShopDialog::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00abbdb0 - 0x00abbe62 (178 bytes)
@@ -217,8 +218,8 @@ __attribute__((weak)) void uGUIGPShopDialog::updateLimit() {
 // Address: 0x00abbe70 - 0x00abbe9f (47 bytes)
 void uGUIGPShopDialog::updateHistory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    this->mHistoryScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    mHistoryScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
 }
 
 // Address: 0x00abbd10 - 0x00abbdae (158 bytes)
@@ -238,98 +239,98 @@ __attribute__((weak)) void uGUIGPShopDialog::updateEventCode() {
 // Address: 0x00abbf90 - 0x00abbfc6 (54 bytes)
 u32 uGUIGPShopDialog::evCtrlCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrl->setFocus(false);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(false);
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00abbfd0 - 0x00abbfe5 (21 bytes)
 u32 uGUIGPShopDialog::evCtrlTabLR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x00abbff0 - 0x00abc015 (37 bytes)
 u32 uGUIGPShopDialog::evCtrlGSDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsOnlineShopOpen != false) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+    if (mIsOnlineShopOpen) {
+        setInputEvent(72u);
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+        setInputEvent(71u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00abc020 - 0x00abc035 (21 bytes)
 u32 uGUIGPShopDialog::evCtrlLimitDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x00abc040 - 0x00abc087 (71 bytes)
 u32 uGUIGPShopDialog::evCtrlLimitCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mLimitListNum > static_cast<s32>(3)) {
-        if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(1)) {
-                this->mScrollDir = static_cast<s32>(1);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                return static_cast<u32>(1);
+    if (mLimitListNum > 3) {
+        if (pMsg != nullptr) {
+            if (pMsg->reason == nGUIExt::TRG_DOWN) {
+                mScrollDir = 1;
+                setInputEvent(69u);
+                return 1;
             } else {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(0)) {
-                    this->mScrollDir = static_cast<s32>(-1);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                    return static_cast<u32>(1);
+                if (pMsg->reason == nGUIExt::BTN_START) {
+                    mScrollDir = -1;
+                    setInputEvent(69u);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00abc090 - 0x00abc0d7 (71 bytes)
 u32 uGUIGPShopDialog::evCtrlHistoryCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHistoryListNum > static_cast<s32>(8)) {
-        if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(1)) {
-                this->mScrollDir = static_cast<s32>(1);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                return static_cast<u32>(1);
+    if (mHistoryListNum > 8) {
+        if (pMsg != nullptr) {
+            if (pMsg->reason == nGUIExt::TRG_DOWN) {
+                mScrollDir = 1;
+                setInputEvent(70u);
+                return 1;
             } else {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(0)) {
-                    this->mScrollDir = static_cast<s32>(-1);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                    return static_cast<u32>(1);
+                if (pMsg->reason == nGUIExt::BTN_START) {
+                    mScrollDir = -1;
+                    setInputEvent(70u);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00abc0e0 - 0x00abc116 (54 bytes)
 u32 uGUIGPShopDialog::evCtrlEventCodeCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrl->setFocus(false);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(false);
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00abc120 - 0x00abc1a9 (137 bytes)
@@ -341,8 +342,8 @@ __attribute__((weak)) u32 uGUIGPShopDialog::evCtrlEventCodeDecide(cControl::Mess
 // Address: 0x00abc1b0 - 0x00abc1c5 (21 bytes)
 u32 uGUIGPShopDialog::evCtrlEventCodeCursorLR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(1);
+    setInputEvent(73u);
+    return 1;
 }
 
 // Address: 0x00abc1d0 - 0x00abc23a (106 bytes)
@@ -360,10 +361,10 @@ __attribute__((weak)) u32 uGUIGPShopDialog::evCtrlEventCodeMouseClick(cControl::
 // Address: 0x00abc2c0 - 0x00abc2d7 (23 bytes)
 u32 uGUIGPShopDialog::evCtrlEventCodeNext(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(78));
+    if (pMsg != nullptr) {
+        setInputEvent(78u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00abb160 - 0x00abb1dd (125 bytes)
@@ -424,40 +425,40 @@ __attribute__((weak)) void uGUIGPShopDialog::initEventCode() {
 // Address: 0x00abe5c0 - 0x00abe5d6 (22 bytes)
 bool uGUIGPShopDialog::initConfirmRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPPeriod();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPPeriod();
 }
 
 // Address: 0x00abe5f0 - 0x00abe606 (22 bytes)
 bool uGUIGPShopDialog::limitRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPPeriod();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPPeriod();
 }
 
 // Address: 0x00abe620 - 0x00abe63b (27 bytes)
 bool uGUIGPShopDialog::historyRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPDetailHistory(true);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPDetailHistory(true);
 }
 
 // Address: 0x00abe5e0 - 0x00abe5ec (12 bytes)
 void uGUIGPShopDialog::initConfirmCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsGoldStoneRequest = true;
-    this->::uGUIGPShopDialog::setupGoldStone();
+    mIsGoldStoneRequest = true;
+    setupGoldStone();
 }
 
 // Address: 0x00abe610 - 0x00abe61c (12 bytes)
 void uGUIGPShopDialog::limitCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsLimitRequest = true;
-    this->::uGUIGPShopDialog::setupLimit();
+    mIsLimitRequest = true;
+    setupLimit();
 }
 
 // Address: 0x00abe640 - 0x00abe64c (12 bytes)
 void uGUIGPShopDialog::historyCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsHistoryRequest = true;
-    this->::uGUIGPShopDialog::setupHistory();
+    mIsHistoryRequest = true;
+    setupHistory();
 }
 
 // Address: 0x00abe650 - 0x00abe92f (735 bytes)
@@ -552,10 +553,17 @@ __attribute__((weak)) void uGUIGPShopDialog::updateScrollLimitListDisp(uGUIBase:
 }
 
 // Address: 0x00abf1f0 - 0x00abf206 (22 bytes)
-__attribute__((weak)) void uGUIGPShopDialog::updateScrollLimitListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollLimitDispList* pdisp;
-    DDON_STUB("uGUIGPShopDialog::updateScrollLimitListHide")
-    /* stub */
+void uGUIGPShopDialog::updateScrollLimitListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollLimitDispList* pdisp = static_cast<cScrollLimitDispList*>(pDispItem);
+    if (pdisp->mpInst == nullptr) {
+        return;
+    }
+    pdisp->mpInst->cGUIInstance::setVisible(false);
 }
 
 // Address: 0x00abf210 - 0x00abf504 (756 bytes)
@@ -569,10 +577,17 @@ __attribute__((weak)) void uGUIGPShopDialog::updateScrollHistoryListDisp(uGUIBas
 }
 
 // Address: 0x00abf510 - 0x00abf526 (22 bytes)
-__attribute__((weak)) void uGUIGPShopDialog::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollHistoryDispList* pdisp;
-    DDON_STUB("uGUIGPShopDialog::updateScrollHistoryListHide")
-    /* stub */
+void uGUIGPShopDialog::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollHistoryDispList* pdisp = static_cast<cScrollHistoryDispList*>(pDispItem);
+    if (pdisp->mpInst == nullptr) {
+        return;
+    }
+    pdisp->mpInst->cGUIInstance::setVisible(false);
 }
 
 // Address: 0x00abcbd0 - 0x00abd03c (1132 bytes)
@@ -622,20 +637,24 @@ __attribute__((weak)) bool uGUIGPShopDialog::initEventCodeSend() {
 // Address: 0x00abf7f0 - 0x00abf803 (19 bytes)
 void uGUIGPShopDialog::initEventCodeSendCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mEndReason = static_cast<uGUIBase::END_REASON>(2);
-    this->end();
+    mEndReason = END_REASON_START_BTN;
+    end();
 }
 
 // Address: 0x00abf810 - 0x00abf844 (52 bytes)
 bool uGUIGPShopDialog::onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode) {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isSoftwareKeyboard() != false) {
+    if (sKeyboardInterface::getInstance()->isSoftwareKeyboard()) {
         return false;
     } else {
-        return this->::uGUIBase::onKeyEvent(keycode);
+        return this->uGUIBase::onKeyEvent(keycode);
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIGPShopDialog::MyDTI uGUIGPShopDialog::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 uGUIGPShopDialog::mCTType2TabTable[5];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abf953-0x00abf990 (called at uGUIGPShopDialog.cpp:32)
@@ -683,7 +702,7 @@ const MtDTI& uGUIGPShopDialog::cScrollLimitDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShopDialog::cScrollLimitDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollLimitDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollLimitDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -704,6 +723,8 @@ inline void uGUIGPShopDialog::cScrollLimitDispList::operator delete(void* p_addr
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShopDialog::cScrollLimitDispList::~cScrollLimitDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShopDialog::cScrollLimitDispList::MyDTI uGUIGPShopDialog::cScrollLimitDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abf9d0-0x00abfa10 (called at uGUIGPShopDialog.cpp:34)
@@ -751,7 +772,7 @@ const MtDTI& uGUIGPShopDialog::cScrollHistoryDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShopDialog::cScrollHistoryDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -772,6 +793,8 @@ inline void uGUIGPShopDialog::cScrollHistoryDispList::operator delete(void* p_ad
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShopDialog::cScrollHistoryDispList::~cScrollHistoryDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShopDialog::cScrollHistoryDispList::MyDTI uGUIGPShopDialog::cScrollHistoryDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abfa49-0x00abfa82 (called at uGUIGPShopDialog.cpp:36)
@@ -845,6 +868,8 @@ const MtDTI& uGUIGPShopDialog::cScrollLimitItemList::getDTI() const {
 // Defined in the class (its body was written in a header).
 // uGUIGPShopDialog::cScrollLimitItemList::~cScrollLimitItemList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShopDialog::cScrollLimitItemList::MyDTI uGUIGPShopDialog::cScrollLimitItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abf990-0x00abf9d0 (called at uGUIGPShopDialog.cpp:33)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abf990-0x00abf9d0 (called at uGUIGPShopDialog.h:112)
@@ -916,6 +941,8 @@ const MtDTI& uGUIGPShopDialog::cScrollHistoryItemList::getDTI() const {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShopDialog::cScrollHistoryItemList::~cScrollHistoryItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShopDialog::cScrollHistoryItemList::MyDTI uGUIGPShopDialog::cScrollHistoryItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShopDialog.cpp at 0x00abfa10-0x00abfa49 (called at uGUIGPShopDialog.cpp:35)

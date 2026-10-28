@@ -58,7 +58,7 @@ const MtDTI& uControlNpc::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uControlNpc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uControlNpc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uControlNpc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,16 +95,16 @@ __attribute__((weak)) void uControlNpc::updatePtr() {
 // Address: 0x008cb010 - 0x008cb075 (101 bytes)
 void uControlNpc::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::setup();
-    this->mIsDispWepMain = true;
-    this->mIsDispWepSub = true;
-    this->::uControlNpc::setupNpcLedgerParam();
-    if (this->getNpcId() == static_cast<s32>(9012)) {
-        this->mIsInvincible = false;
-        this->mIsDisableTouchAction = true;
+    this->uControl::setup();
+    mIsDispWepMain = true;
+    mIsDispWepSub = true;
+    setupNpcLedgerParam();
+    if (getNpcId() == 9012) {
+        mIsInvincible = false;
+        mIsDisableTouchAction = true;
     }
-    ::cContextInterface::getCharacterEdit(this->::uControl::mContextInterface.mpContextInstance)->mpEditParam->mUnitType = static_cast<u32>(2);
-    this->mIsSetup = true;
+    cContextInterface::getCharacterEdit(mContextInterface.mpContextInstance)->mpEditParam->mUnitType = 2;
+    mIsSetup = true;
 }
 
 // Address: 0x008cb640 - 0x008cb7d4 (404 bytes)
@@ -120,7 +120,7 @@ __attribute__((weak)) void uControlNpc::move() {
 // Address: 0x008cc850 - 0x008cc855 (5 bytes)
 void uControlNpc::setOwner(uDDOModel* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uControl::mpModel = pOwner;
+    mpModel = pOwner;
 }
 
 // Address: 0x008ce2d0 - 0x008ce325 (85 bytes)
@@ -304,7 +304,7 @@ __attribute__((weak)) void uControlNpc::setJobParam() {
 // Address: 0x008ce2c0 - 0x008ce2c8 (8 bytes)
 void uControlNpc::setInvincible(bool IsInvincible) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsInvincible = IsInvincible;
+    mIsInvincible = IsInvincible;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (29 bytes)
@@ -322,22 +322,21 @@ void uControlNpc::setInvincible(bool IsInvincible) {
 // Address: 0x008ccac0 - 0x008ccb82 (194 bytes)
 void uControlNpc::setPawnId(u32 pawnId, bool equip) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPawnId == pawnId) {
-    } else {
-        if (this->::uControl::mpModel != static_cast<uDDOModel*>(nullptr)) {
-            this->::uControl::mpModel->kill();
-            this->::uControl::mpModel = static_cast<uDDOModel*>(nullptr);
+    if (mPawnId != pawnId) {
+        if (mpModel != nullptr) {
+            mpModel->kill();
+            mpModel = nullptr;
         }
-        this->mPawnId = pawnId;
-        this->mIsPawnData = false;
-        this->mIsEquip = equip;
-        this->mRnoGetPawnData = static_cast<u8>(0);
-        this->mIsNpcInfo = false;
-        this->mIsNpcArc = true;
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::returnTicket();
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::condisionInit(this->::uControl::getContextInst());
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).mPlayerLoadStatus = static_cast<s32>(0);
-        ::cContextInterface::setPlayerLoadStatus(this->::uControl::mContextInterface.mpContextInstance, static_cast<s32>(0));
+        mPawnId = pawnId;
+        mIsPawnData = false;
+        mIsEquip = equip;
+        mRnoGetPawnData = 0;
+        mIsNpcInfo = false;
+        mIsNpcArc = true;
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).returnTicket();
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).condisionInit(getContextInst());
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).mPlayerLoadStatus = 0;
+        cContextInterface::setPlayerLoadStatus(mContextInterface.mpContextInstance, 0);
     }
 }
 
@@ -351,23 +350,22 @@ void uControlNpc::setPawnId(u32 pawnId, bool equip) {
 // Address: 0x008ccb90 - 0x008ccc5c (204 bytes)
 void uControlNpc::setMyPawnSlotNo(u32 slotNo, bool equip) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMyPawnSlotNo == slotNo) {
-    } else {
-        if (this->::uControl::mpModel != static_cast<uDDOModel*>(nullptr)) {
-            this->::uControl::mpModel->kill();
-            this->::uControl::mpModel = static_cast<uDDOModel*>(nullptr);
+    if (mMyPawnSlotNo != slotNo) {
+        if (mpModel != nullptr) {
+            mpModel->kill();
+            mpModel = nullptr;
         }
-        this->mMyPawnSlotNo = slotNo;
-        this->mRentalPawnSlotNo = static_cast<u32>(4294967295);
-        this->mIsPawnData = false;
-        this->mIsEquip = equip;
-        this->mRnoGetPawnData = static_cast<u8>(0);
-        this->mIsNpcInfo = false;
-        this->mIsNpcArc = true;
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::returnTicket();
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::condisionInit(this->::uControl::getContextInst());
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).mPlayerLoadStatus = static_cast<s32>(0);
-        ::cContextInterface::setPlayerLoadStatus(this->::uControl::mContextInterface.mpContextInstance, static_cast<s32>(0));
+        mMyPawnSlotNo = slotNo;
+        mRentalPawnSlotNo = 0xFFFFFFFF;
+        mIsPawnData = false;
+        mIsEquip = equip;
+        mRnoGetPawnData = 0;
+        mIsNpcInfo = false;
+        mIsNpcArc = true;
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).returnTicket();
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).condisionInit(getContextInst());
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).mPlayerLoadStatus = 0;
+        cContextInterface::setPlayerLoadStatus(mContextInterface.mpContextInstance, 0);
     }
 }
 
@@ -377,23 +375,22 @@ void uControlNpc::setMyPawnSlotNo(u32 slotNo, bool equip) {
 // Address: 0x008ccc60 - 0x008ccd2c (204 bytes)
 void uControlNpc::setRentalPawnSlotNo(u32 slotNo, bool equip) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRentalPawnSlotNo == slotNo) {
-    } else {
-        if (this->::uControl::mpModel != static_cast<uDDOModel*>(nullptr)) {
-            this->::uControl::mpModel->kill();
-            this->::uControl::mpModel = static_cast<uDDOModel*>(nullptr);
+    if (mRentalPawnSlotNo != slotNo) {
+        if (mpModel != nullptr) {
+            mpModel->kill();
+            mpModel = nullptr;
         }
-        this->mMyPawnSlotNo = static_cast<u32>(4294967295);
-        this->mRentalPawnSlotNo = slotNo;
-        this->mIsPawnData = false;
-        this->mIsEquip = equip;
-        this->mRnoGetPawnData = static_cast<u8>(0);
-        this->mIsNpcInfo = false;
-        this->mIsNpcArc = true;
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::returnTicket();
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).::cPlayerLoadManager::condisionInit(this->::uControl::getContextInst());
-        ::cContextInterface::getPlayerLoadMgr(this->::uControl::mContextInterface.mpContextInstance).mPlayerLoadStatus = static_cast<s32>(0);
-        ::cContextInterface::setPlayerLoadStatus(this->::uControl::mContextInterface.mpContextInstance, static_cast<s32>(0));
+        mMyPawnSlotNo = 0xFFFFFFFF;
+        mRentalPawnSlotNo = slotNo;
+        mIsPawnData = false;
+        mIsEquip = equip;
+        mRnoGetPawnData = 0;
+        mIsNpcInfo = false;
+        mIsNpcArc = true;
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).returnTicket();
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).condisionInit(getContextInst());
+        cContextInterface::getPlayerLoadMgr(mContextInterface.mpContextInstance).mPlayerLoadStatus = 0;
+        cContextInterface::setPlayerLoadStatus(mContextInterface.mpContextInstance, 0);
     }
 }
 
@@ -403,22 +400,22 @@ void uControlNpc::setRentalPawnSlotNo(u32 slotNo, bool equip) {
 // Address: 0x008cca80 - 0x008ccab4 (52 bytes)
 bool uControlNpc::isCharaData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPawnId == static_cast<u32>(4294967295)) {
-        if (this->mMyPawnSlotNo == static_cast<u32>(4294967295)) {
-            if (this->mRentalPawnSlotNo == static_cast<u32>(4294967295)) {
-                if (this->mUnitType == static_cast<u8>(6)) {
-                    return this->mIsPawnData != false;
+    if (mPawnId == 0xFFFFFFFFu) {
+        if (mMyPawnSlotNo == 0xFFFFFFFFu) {
+            if (mRentalPawnSlotNo == 0xFFFFFFFFu) {
+                if (mUnitType == 6) {
+                    return mIsPawnData;
                 } else {
                     return true;
                 }
             } else {
-                return this->mIsPawnData != false;
+                return mIsPawnData;
             }
         } else {
-            return this->mIsPawnData != false;
+            return mIsPawnData;
         }
     } else {
-        return this->mIsPawnData != false;
+        return mIsPawnData;
     }
 }
 
@@ -545,25 +542,25 @@ __attribute__((weak)) void uControlNpc::setHumanData(u32 type, u32 index) {
 void uControlNpc::setAttend(bool IsAttend) {
     // DWARF local not rendered: uNpc* pNpc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsAttend = IsAttend;
-    if (this->::uControl::mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->::uControl::mpModel->mUnitId & static_cast<u32>(128)) != static_cast<u32>(0)) {
-            if (IsAttend != false) {
-                static_cast<uNpc*>(this->::uControl::mpModel)->::uNpc::setCheckedCollisionBtl();
+    mIsAttend = IsAttend;
+    if (mpModel != nullptr) {
+        if ((mpModel->mUnitId & 128u) != 0) {
+            if (IsAttend) {
+                static_cast<uNpc*>(mpModel)->setCheckedCollisionBtl();
             } else {
-                static_cast<uNpc*>(this->::uControl::mpModel)->::uNpc::setCheckedCollisionNml();
+                static_cast<uNpc*>(mpModel)->setCheckedCollisionNml();
             }
-            if (this->mIsAttend != false) {
-                this->mIsInvincible = false;
+            if (mIsAttend) {
+                mIsInvincible = false;
             }
         } else {
-            if (IsAttend != false) {
-                this->mIsInvincible = false;
+            if (IsAttend) {
+                mIsInvincible = false;
             }
         }
     } else {
-        if (IsAttend != false) {
-            this->mIsInvincible = false;
+        if (IsAttend) {
+            mIsInvincible = false;
         }
     }
 }
@@ -585,8 +582,8 @@ void uControlNpc::setAttend(bool IsAttend) {
 // Address: 0x008ce330 - 0x008ce346 (22 bytes)
 bool uControlNpc::isDisableTouchAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsDisableTouchAction == false) {
-        return this->::uControl::isFadeOut() != false;
+    if (!mIsDisableTouchAction) {
+        return isFadeOut();
     } else {
         return true;
     }
@@ -688,8 +685,8 @@ bool uControlNpc::isDisableTouchAction() {
 u32 uControlNpc::getFunctionType(u32 Idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x8ce151 read, used once; no DWARF local holds it
-    sNpcManager* t0 = ::sNpcManager::getInstance();
-    return t0->::sNpcManager::getFunctionId(static_cast<u32>(this->getNpcId()), Idx);
+    sNpcManager* t0 = sNpcManager::getInstance();
+    return t0->getFunctionId(static_cast<u32>(getNpcId()), Idx);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (156 bytes)
@@ -718,15 +715,15 @@ __attribute__((weak)) void uControlNpc::checkMasterChange() {
 // Address: 0x008ce170 - 0x008ce1db (107 bytes)
 bool uControlNpc::isUseMotionListLight() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsFsmEventNpc != false) {
+    if (mIsFsmEventNpc) {
         return false;
     } else {
-        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isPartyLargeStage() == false) {
-            if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea() != false) {
-                if (::sGame::getInstance()->::sGame::isPlayPrologue() != false) {
+        if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isPartyLargeStage()) {
+            if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea()) {
+                if (sGame::getInstance()->isPlayPrologue()) {
                     return false;
                 } else {
-                    return this->::uControl::mLayout.mQuestId != static_cast<u32>(0);
+                    return mLayout.mQuestId != 0;
                 }
             } else {
                 return false;
@@ -740,35 +737,35 @@ bool uControlNpc::isUseMotionListLight() {
 // Address: 0x008ce1e0 - 0x008ce265 (133 bytes)
 bool uControlNpc::isArcLoadFinish() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->::uControlNpc::isFsmEventNpc() != false) {
-        if (::sNpcManager::getInstance()->::sNpcManager::isFinishLoadFsmMotionArc() != false) {
+    if (isFsmEventNpc()) {
+        if (sNpcManager::getInstance()->isFinishLoadFsmMotionArc()) {
             // inferred: a temporary for the value the load at 0x8ce210 read, used once; no DWARF local holds it
-            sNpcManager* t0 = ::sNpcManager::getInstance();
-            u32 voiceType = t0->::sNpcManager::getNpcVoiceType(static_cast<u32>(this->getNpcId()));
-            if (::sNpcManager::getInstance()->::sNpcManager::isCommonVoiceCategory(voiceType) != false) {
-                if (::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCommonVoiceArc(voiceType) != false) {
-                    return this->::uControl::isArcLoadFinish();
+            sNpcManager* t0 = sNpcManager::getInstance();
+            u32 voiceType = t0->getNpcVoiceType(static_cast<u32>(getNpcId()));
+            if (sNpcManager::getInstance()->isCommonVoiceCategory(voiceType)) {
+                if (sNpcManager::getInstance()->isFinishLoadCommonVoiceArc(voiceType)) {
+                    return this->uControl::isArcLoadFinish();
                 } else {
                     return false;
                 }
             } else {
-                return this->::uControl::isArcLoadFinish();
+                return this->uControl::isArcLoadFinish();
             }
         } else {
             return false;
         }
     } else {
         // inferred: a temporary for the value the load at 0x8ce210 read, used once; no DWARF local holds it
-        sNpcManager* t0 = ::sNpcManager::getInstance();
-        u32 voiceType = t0->::sNpcManager::getNpcVoiceType(static_cast<u32>(this->getNpcId()));
-        if (::sNpcManager::getInstance()->::sNpcManager::isCommonVoiceCategory(voiceType) != false) {
-            if (::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCommonVoiceArc(voiceType) != false) {
-                return this->::uControl::isArcLoadFinish();
+        sNpcManager* t0 = sNpcManager::getInstance();
+        u32 voiceType = t0->getNpcVoiceType(static_cast<u32>(getNpcId()));
+        if (sNpcManager::getInstance()->isCommonVoiceCategory(voiceType)) {
+            if (sNpcManager::getInstance()->isFinishLoadCommonVoiceArc(voiceType)) {
+                return this->uControl::isArcLoadFinish();
             } else {
                 return false;
             }
         } else {
-            return this->::uControl::isArcLoadFinish();
+            return this->uControl::isArcLoadFinish();
         }
     }
 }
@@ -881,6 +878,8 @@ __attribute__((weak)) void uControlNpc::setupNpcLedgerParam() {
 // No out-of-line body: 1 inlined copy in 1 function (17 bytes)
 //   in cContextPlayerInfo::setContextCalcParam at 0x00069db6-0x00069dc7 (called at cContextPlayerInfo.cpp:2897)
 // f32 uControlNpc::getWepMAtk();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uControlNpc::MyDTI uControlNpc::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uControlNpc.cpp at 0x008ce44f-0x008ce48c (called at uControlNpc.cpp:49)

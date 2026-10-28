@@ -24,7 +24,7 @@ const MtDTI& uCnsMotFilter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCnsMotFilter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCnsMotFilter::DTI);
+    return MtMemoryAllocator::getAllocator(uCnsMotFilter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uCnsMotFilter::getAllocator() {
 // Address: 0x008c1860 - 0x008c18a0 (64 bytes)
 void* uCnsMotFilter::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCnsMotFilter::getAllocator()->memAlloc(sz, align, ::uCnsMotFilter::DTI.::MtDTI::getID());
+    return uCnsMotFilter::getAllocator()->memAlloc(sz, align, uCnsMotFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uCnsMotFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsMotFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsMotFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsMotFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,13 +97,13 @@ __attribute__((weak)) void uCnsMotFilter::adjust(uModel::Joint* pJnt, uModel* pM
 // Address: 0x008c1e20 - 0x008c1e25 (5 bytes)
 void uCnsMotFilter::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008c1df0 - 0x008c1e19 (41 bytes)
 void uCnsMotFilter::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008c29b0 - 0x008c29b1 (1 bytes)
@@ -120,35 +120,35 @@ __attribute__((weak)) void uCnsMotFilter::createProperty(MtPropertyList& s) {
 // Address: 0x008c1d50 - 0x008c1d55 (5 bytes)
 MtUI* uCnsMotFilter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008c1d00 - 0x008c1d47 (71 bytes)
 void uCnsMotFilter::setJoint(u32 JntNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x01ad3ad0 - 0x01ad3ad7 (7 bytes)
 u32 uCnsMotFilter::getJoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJoint;
+    return mJoint;
 }
 
 // Address: 0x008c1d60 - 0x008c1dd4 (116 bytes)
 void uCnsMotFilter::set(uModel* pModel, u32 JntNo, cpMotionFilter* pMotFilter, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() != static_cast<uModel*>(nullptr)) {
-        this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() != nullptr) {
+        setConstraint(getModel(), static_cast<s32>(mJoint));
     }
-    this->mpMotFlt = pMotFilter;
+    mpMotFlt = pMotFilter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -166,6 +166,8 @@ void uCnsMotFilter::set(uModel* pModel, u32 JntNo, cpMotionFilter* pMotFilter, u
 
 // No out-of-line body: no code in the ELF
 // void uCnsMotFilter::setSleep(bool);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsMotFilter::MyDTI uCnsMotFilter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsMotFilter.cpp at 0x008c29c0-0x008c2a02 (called at uCnsMotFilter.cpp:26)

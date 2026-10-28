@@ -16,7 +16,7 @@
 // Address: 0x01abe510 - 0x01abe537 (39 bytes)
 void nCaplink::UserProfileGetAns::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mUserProfile), static_cast<int>(0), static_cast<size_t>(1704));
+    ::memset(static_cast<void*>(&mUserProfile), 0, 1704ul);
     this->::nCaplink::ContextListener::init();
 }
 

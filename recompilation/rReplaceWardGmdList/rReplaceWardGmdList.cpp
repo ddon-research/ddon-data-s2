@@ -38,7 +38,7 @@ const MtDTI& cReplaceWardGmdList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cReplaceWardGmdList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memAlloc(sz, align, ::cReplaceWardGmdList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cReplaceWardGmdList::DTI)->memAlloc(sz, align, cReplaceWardGmdList::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -53,7 +53,7 @@ inline void* cReplaceWardGmdList::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cReplaceWardGmdList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cReplaceWardGmdList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -78,6 +78,8 @@ inline void cReplaceWardGmdList::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cReplaceWardGmdList::~cReplaceWardGmdList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cReplaceWardGmdList::MyDTI cReplaceWardGmdList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rReplaceWardGmdList.cpp at 0x006b9c70-0x006b9cb2 (called at rReplaceWardGmdList.cpp:38)
 //   in _GLOBAL__sub_I_rReplaceWardGmdList.cpp at 0x006b9c70-0x006b9cb2 (called at rReplaceWardGmdList.h:31)
@@ -86,7 +88,7 @@ inline void cReplaceWardGmdList::operator delete(void* p_addr) {
 // Address: 0x006b9ac0 - 0x006b9b00 (64 bytes)
 MtObject* cReplaceWardGmdList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cReplaceWardGmdList;
+    return new (16u) cReplaceWardGmdList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,7 +113,7 @@ const MtDTI& rReplaceWardGmdList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rReplaceWardGmdList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rReplaceWardGmdList::DTI)->memAlloc(sz, align, ::rReplaceWardGmdList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rReplaceWardGmdList::DTI)->memAlloc(sz, align, rReplaceWardGmdList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ inline void* rReplaceWardGmdList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rReplaceWardGmdListD0Ev at 0x01aa48e4-0x01aa4903, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rReplaceWardGmdList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rReplaceWardGmdList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rReplaceWardGmdList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,7 +144,7 @@ inline void rReplaceWardGmdList::operator delete(void* p_addr) {
 bool rReplaceWardGmdList::loadData(MtDataReader& r, cReplaceWardGmdList* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, pData->mGmdResPath);
+    nDDOIO::readData(r, pData->mGmdResPath);
     return true;
 }
 
@@ -155,8 +157,10 @@ MT_CTSTR rReplaceWardGmdList::getExt() const {
 // Address: 0x01aa4a30 - 0x01aa4a36 (6 bytes)
 u32 rReplaceWardGmdList::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rReplaceWardGmdList::MyDTI rReplaceWardGmdList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rReplaceWardGmdList.cpp at 0x006b9cb2-0x006b9cef (called at rReplaceWardGmdList.cpp:39)
@@ -166,7 +170,7 @@ u32 rReplaceWardGmdList::getDataVersion() const {
 // Address: 0x006b9b70 - 0x006b9bd4 (100 bytes)
 MtObject* rReplaceWardGmdList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rReplaceWardGmdList;
+    return new (16u) rReplaceWardGmdList;
 }
 
 // Instance at 0x01aa49e0 - 0x01aa49f2 (18 bytes) of the generic rTbl2<T>::getData

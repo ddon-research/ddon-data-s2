@@ -39,10 +39,10 @@ void nDDOUtility::requestOnTutorialFlg(s32 questTarget) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from unsigned long
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(176))) != static_cast<unsigned int>(550)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 176)) != 550) {
         return;
     }
-    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(10), static_cast<u32>(questTarget), true, true, false);
+    sFlag::getInstance()->setFlag(10u, static_cast<u32>(questTarget), true, true, false);
 }
 
 // Address: 0x005b5420 - 0x005b5493 (115 bytes)
@@ -62,9 +62,9 @@ __attribute__((weak)) void nDDOUtility::arraySuffle(MtArray& dst, s32 begin, s32
 // Address: 0x005b4b00 - 0x005b4b1e (30 bytes)
 nDDOUtility::cRNSplineBase::cRNSplineBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxDistance = 0.0f;
-    this->mMaxNodeNum = static_cast<s32>(0);
-    this->mNodeCount = static_cast<s32>(0);
+    mMaxDistance = 0.0f;
+    mMaxNodeNum = 0;
+    mNodeCount = 0;
 }
 
 // Address: 0x005b4b20 - 0x005b4b21 (1 bytes)
@@ -76,8 +76,8 @@ nDDOUtility::cRNSplineBase::~cRNSplineBase() {
 // Address: 0x005b4b40 - 0x005b4b4f (15 bytes)
 void nDDOUtility::cRNSplineBase::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxDistance = 0.0f;
-    this->mNodeCount = static_cast<s32>(0);
+    mMaxDistance = 0.0f;
+    mNodeCount = 0;
 }
 
 // Address: 0x005b4b50 - 0x005b4c87 (311 bytes)

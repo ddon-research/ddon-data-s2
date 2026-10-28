@@ -123,12 +123,12 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK14rSoundCurveSet5MyDTI11newInstanceEv at 0x01370710-0x01370770, code DWARF attributes to no inlined copy
 inline rSoundCurveSet::rSoundCurveSet() {
-    this->::cResource::mAttr = static_cast<u32>(18);
-    this->mCurveDataSize = static_cast<u32>(0);
-    this->mpRawData = static_cast<void*>(nullptr);
-    this->mpCurveRefs = static_cast<rSoundCurveSet::Curve* *>(nullptr);
-    this->mpCurves = static_cast<rSoundCurveSet::Curve*>(nullptr);
-    this->mpLists = static_cast<rSoundCurveSet::List*>(nullptr);
-    this->mListNum = static_cast<u32>(0);
-    this->mCurveNum = static_cast<u32>(0);
+    this->::cResource::mAttr = 18;
+    this->mCurveDataSize = 0;
+    this->mpRawData = nullptr;
+    this->mpCurveRefs = nullptr;
+    this->mpCurves = nullptr;
+    this->mpLists = nullptr;
+    this->mListNum = 0;
+    this->mCurveNum = 0;
 }

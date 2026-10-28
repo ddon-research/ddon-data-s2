@@ -23,7 +23,7 @@ const MtDTI& sMouseExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sMouseExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sMouseExt::DTI);
+    return MtMemoryAllocator::getAllocator(sMouseExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* sMouseExt::getAllocator() {
 // Address: 0x007eb110 - 0x007eb150 (64 bytes)
 void* sMouseExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMouseExt::getAllocator()->memAlloc(sz, align, ::sMouseExt::DTI.::MtDTI::getID());
+    return sMouseExt::getAllocator()->memAlloc(sz, align, sMouseExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* sMouseExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sMouseExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMouseExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMouseExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,13 +74,13 @@ sMouseExt::~sMouseExt() {
 // Address: 0x007eb270 - 0x007eb275 (5 bytes)
 void sMouseExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sMouse::createProperty(s);
+    this->sMouse::createProperty(s);
 }
 
 // Address: 0x007eb280 - 0x007eb285 (5 bytes)
 MtUI* sMouseExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sMouse::createUI(prop);
+    return this->sMouse::createUI(prop);
 }
 
 // Address: 0x007eb290 - 0x007eb318 (136 bytes)
@@ -100,14 +100,14 @@ __attribute__((weak)) void sMouseExt::move() {
 // Address: 0x007eb320 - 0x007eb323 (3 bytes)
 sMouse::TYPE sMouseExt::getCurrentType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sMouse::TYPE>(0);
+    return TYPE_DEFAULT;
 }
 
 // Address: 0x007eb330 - 0x007eb337 (7 bytes)
 bool sMouseExt::isConnect() {
     // DWARF local not rendered: bool isConnected;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sMouse::isMouseConnected(static_cast<s32>(0));
+    return isMouseConnected(0);
 }
 
 // No out-of-line body: 17 inlined copies in 9 functions (263 bytes)
@@ -146,6 +146,8 @@ bool sMouseExt::isConnect() {
 //   in sInputManager::getKeyCommon at 0x007c44c8-0x007c44da (called at sInputManager.cpp:1070)
 //   in sInputManager::getKeyCommon at 0x007c45f0-0x007c4602 (called at sInputManager.cpp:1084)
 // u32 sMouseExt::getRepeat(sMouse::TYPE type) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sMouseExt::MyDTI sMouseExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sMouseExt.cpp at 0x007eb340-0x007eb382 (called at sMouseExt.cpp:26)

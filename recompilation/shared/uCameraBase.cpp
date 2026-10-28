@@ -49,7 +49,7 @@ const MtDTI& cCameraQuake::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12cCameraQuakeD0Ev at 0x01ad0900-0x01ad092a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCameraQuake::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCameraQuake::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCameraQuake::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,7 +75,7 @@ __attribute__((weak)) void cCameraQuake::createProperty(MtPropertyList& s) {
 // Address: 0x00885a50 - 0x00885a55 (5 bytes)
 MtUI* cCameraQuake::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00885a60 - 0x00885cd7 (631 bytes)
@@ -89,8 +89,8 @@ __attribute__((weak)) void cCameraQuake::init() {
 // Address: 0x00885ce0 - 0x00885d0a (42 bytes)
 void cCameraQuake::update(const f32 deltaTime, const f32 deltaSec) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCameraQuake::scheduler(deltaSec);
-    this->::cCameraQuake::execute(deltaSec);
+    scheduler(deltaSec);
+    execute(deltaSec);
 }
 
 // Address: 0x00886eb0 - 0x00886fcc (284 bytes)
@@ -188,6 +188,8 @@ __attribute__((weak)) void cCameraQuake::execute(f32 deltaSec) {
 //   in cCameraQuake::execute at 0x0088681f-0x00886855 (called at uCameraBase.cpp:1228)
 // MtMatrix cCameraQuake::getViewMat();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCameraQuake::MyDTI cCameraQuake::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uCameraBase.cpp at 0x00887262-0x0088729b (called at uCameraBase.cpp:627)
 //   in _GLOBAL__sub_I_uCameraBase.cpp at 0x00887262-0x0088729b (called at uCameraBase.h:67)
@@ -235,7 +237,7 @@ const MtDTI& uCameraBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCameraBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCameraBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCameraBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,13 +266,13 @@ uCameraBase::~uCameraBase() {
 // Address: 0x0087f450 - 0x0087f455 (5 bytes)
 void uCameraBase::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCamera::createProperty(s);
+    this->uCamera::createProperty(s);
 }
 
 // Address: 0x0087f460 - 0x0087f465 (5 bytes)
 MtUI* uCameraBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCamera::createUI(prop);
+    return this->uCamera::createUI(prop);
 }
 
 // Address: 0x0087f470 - 0x0087f49a (42 bytes)
@@ -295,14 +297,14 @@ __attribute__((weak)) void uCameraBase::draw(cDraw* pdraw) {
 // Address: 0x0087f520 - 0x0087f528 (8 bytes)
 void uCameraBase::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbInitial = true;
+    mbInitial = true;
 }
 
 // Address: 0x0087f530 - 0x0087f537 (7 bytes)
 void uCameraBase::update(const f32 deltaTime, const f32 deltaSec) {
     // DWARF local not rendered: bool bDisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCameraBase::calcFrustum(false);
+    calcFrustum(false);
 }
 
 // Defined in the class (its body was written in a header).
@@ -388,13 +390,13 @@ void uCameraBase::update(const f32 deltaTime, const f32 deltaSec) {
 // Address: 0x0087fa90 - 0x0087faa0 (16 bytes)
 f32 uCameraBase::getDeltaTime() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMain::getInstance()->mDeltaTime;
+    return sMain::getInstance()->mDeltaTime;
 }
 
 // Address: 0x0087faa0 - 0x0087fab5 (21 bytes)
 f32 uCameraBase::getDeltaSec() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMain::getInstance()->mDeltaTime / ::sMain::getInstance()->mFps;
+    return sMain::getInstance()->mDeltaTime / sMain::getInstance()->mFps;
 }
 
 // No out-of-line body: no code in the ELF
@@ -424,7 +426,7 @@ __attribute__((weak)) f32 uCameraBase::calcAngleX(const MtVector3& vec) {
 // Address: 0x0087fa70 - 0x0087fa88 (24 bytes)
 f32 uCameraBase::calcAngleY(const MtVector3& vec) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nDDOMath::clampRadian(::atan2f(vec.x, vec.z));
+    return nDDOMath::clampRadian(atan2f(vec.x, vec.z));
 }
 
 // Address: 0x0087eaa0 - 0x0087f410 (2416 bytes)
@@ -473,6 +475,8 @@ __attribute__((weak)) bool uCameraBase::calcCameraUp(const MtVector3& cameraPos,
 
 // No out-of-line body: no code in the ELF
 // void uCameraBase::setQuakeSleep(bool);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCameraBase::MyDTI uCameraBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCameraBase.cpp at 0x00887172-0x008871af (called at uCameraBase.cpp:30)

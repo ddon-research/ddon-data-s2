@@ -34,7 +34,7 @@ const MtDTI& rOccluder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK9rOccluder5MyDTI11newInstanceEv at 0x011dc840-0x011dc86d, code DWARF attributes to no inlined copy; sz is the class's size (128), align the allocation's other whole constant (16)
 inline void* rOccluder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOccluder::DTI)->memAlloc(sz, align, ::rOccluder::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rOccluder::DTI)->memAlloc(sz, align, rOccluder::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rOccluder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rOccluderD0Ev at 0x011dd16d-0x011dd18c, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOccluder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOccluder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOccluder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,7 +80,7 @@ __attribute__((weak)) void rOccluder::createProperty(MtPropertyList& s) {
 // Address: 0x011dd340 - 0x011dd345 (5 bytes)
 MtUI* rOccluder::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x011dd350 - 0x011dd42b (219 bytes)
@@ -111,13 +111,15 @@ MT_CTSTR rOccluder::getExt() const {
 // No out-of-line body: no code in the ELF
 // u32 rOccluder::getOccluderCount() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOccluder::MyDTI rOccluder::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rOccluder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011dc840 - 0x011dc8a4 (100 bytes)
 MtObject* rOccluder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOccluder;
+    return new (16u) rOccluder;
 }
 
 // No out-of-line body: no code in the ELF
@@ -152,7 +154,7 @@ const MtDTI& rOccluder::cQuad::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rOccluder::cQuad::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOccluder::cQuad::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -182,7 +184,7 @@ __attribute__((weak)) void rOccluder::cQuad::createProperty(MtPropertyList& s) {
 // Address: 0x011dcf50 - 0x011dcf55 (5 bytes)
 MtUI* rOccluder::cQuad::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -212,6 +214,8 @@ __attribute__((weak)) void rOccluder::cQuad::fitting() {
     DDON_STUB("rOccluder::cQuad::fitting")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOccluder::cQuad::MyDTI rOccluder::cQuad::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rOccluder::cQuad::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

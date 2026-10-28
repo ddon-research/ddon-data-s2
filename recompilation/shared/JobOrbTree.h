@@ -109,7 +109,7 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataJobOrbTreeStatus::CDataJobOrbTreeStatus() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJobID = static_cast<u8>(0);
+    this->m_ucJobID = 0;
     this->m_bIsReleased = false;
     this->m_fRate = 0.0f;
 }

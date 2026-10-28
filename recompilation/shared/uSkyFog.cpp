@@ -26,7 +26,7 @@ const MtDTI& cCommonSkyFogData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCommonSkyFogData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCommonSkyFogData::DTI);
+    return MtMemoryAllocator::getAllocator(cCommonSkyFogData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline MtAllocator* cCommonSkyFogData::getAllocator() {
 // Address: 0x00d12740 - 0x00d1276a (42 bytes)
 __attribute__((weak)) void cCommonSkyFogData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCommonSkyFogData::getAllocator()->memFree(p_addr);
+    cCommonSkyFogData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,16 +144,16 @@ __attribute__((weak)) void cCommonSkyFogData::operator delete(void* p_addr) {
 // Address: 0x00d154c0 - 0x00d15522 (98 bytes)
 void cCommonSkyFogData::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnable = false;
-    this->mColor = ::MtVector3::One;
-    this->mIntensity = 1.0f;
-    this->mDensity = 1.0f;
-    this->mExponentDensity = 1.0f;
-    this->mStart = 1000.0f;
-    this->mEnd = 3000.0f;
-    this->mSupplementFrame = 30.0f;
-    this->mKind = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
+    mIsEnable = false;
+    mColor = MtVector3::One;
+    mIntensity = 1.0f;
+    mDensity = 1.0f;
+    mExponentDensity = 1.0f;
+    mStart = 1000.0f;
+    mEnd = 3000.0f;
+    mSupplementFrame = 30.0f;
+    mKind = 0;
+    mId = 0;
 }
 
 // No out-of-line body: 5 inlined copies in 1 function (387 bytes)
@@ -166,16 +166,16 @@ void cCommonSkyFogData::init() {
 // Address: 0x00d15540 - 0x00d155a4 (100 bytes)
 void cCommonSkyFogData::initFromData(cIndoorSkyFogParam* pData, MtVector3& color, f32 exdensity, f32 frame, bool enable, u32 kind) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnable = enable;
-    this->mSupplementFrame = frame;
-    this->mColor = color;
-    this->mIntensity = pData->::cIndoorSkyFogParam::getIntensity();
-    this->mDensity = pData->::cIndoorSkyFogParam::getDensity();
-    this->mExponentDensity = exdensity;
-    this->mStart = pData->::cIndoorSkyFogParam::getStart();
-    this->mEnd = pData->::cIndoorSkyFogParam::getEnd();
-    this->mKind = kind;
-    this->mId = pData->::cIndoorSkyFogParam::getId();
+    mIsEnable = enable;
+    mSupplementFrame = frame;
+    mColor = color;
+    mIntensity = pData->getIntensity();
+    mDensity = pData->getDensity();
+    mExponentDensity = exdensity;
+    mStart = pData->getStart();
+    mEnd = pData->getEnd();
+    mKind = kind;
+    mId = pData->getId();
 }
 
 // Address: 0x00d155b0 - 0x00d1560f (95 bytes)
@@ -192,6 +192,8 @@ __attribute__((weak)) void cCommonSkyFogData::updateDataFromLerp(cCommonSkyFogDa
     DDON_STUB("cCommonSkyFogData::updateDataFromLerp")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCommonSkyFogData::MyDTI cCommonSkyFogData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSkyFog.cpp at 0x00d1570e-0x00d1574b (called at uSkyFog.cpp:29)
@@ -239,7 +241,7 @@ const MtDTI& cDayNightColorFogParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDayNightColorFogParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDayNightColorFogParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDayNightColorFogParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -278,6 +280,8 @@ __attribute__((weak)) void cDayNightColorFogParam::createProperty(MtPropertyList
     DDON_STUB("cDayNightColorFogParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDayNightColorFogParam::MyDTI cDayNightColorFogParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSkyFog.cpp at 0x00d1574b-0x00d15788 (called at uSkyFog.cpp:38)

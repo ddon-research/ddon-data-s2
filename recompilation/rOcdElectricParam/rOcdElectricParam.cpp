@@ -36,7 +36,7 @@ const MtDTI& cOcdElectricParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cOcdElectricParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdElectricParam::DTI)->memAlloc(sz, align, ::cOcdElectricParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdElectricParam::DTI)->memAlloc(sz, align, cOcdElectricParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -51,7 +51,7 @@ inline void* cOcdElectricParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOcdElectricParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdElectricParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdElectricParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cOcdElectricParam::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cOcdElectricParam::~cOcdElectricParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdElectricParam::MyDTI cOcdElectricParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rOcdElectricParam.cpp at 0x006b1a80-0x006b1ac2 (called at rOcdElectricParam.cpp:37)
 //   in _GLOBAL__sub_I_rOcdElectricParam.cpp at 0x006b1a80-0x006b1ac2 (called at rOcdElectricParam.h:28)
@@ -84,7 +86,7 @@ inline void cOcdElectricParam::operator delete(void* p_addr) {
 // Address: 0x006b18c0 - 0x006b1907 (71 bytes)
 MtObject* cOcdElectricParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdElectricParam;
+    return new (16u) cOcdElectricParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rOcdElectricParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOcdElectricParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOcdElectricParam::DTI)->memAlloc(sz, align, ::rOcdElectricParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOcdElectricParam::DTI)->memAlloc(sz, align, rOcdElectricParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rOcdElectricParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rOcdElectricParamD0Ev at 0x01aa0674-0x01aa0693, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOcdElectricParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOcdElectricParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOcdElectricParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,7 +142,7 @@ inline void rOcdElectricParam::operator delete(void* p_addr) {
 bool rOcdElectricParam::loadData(MtDataReader& r, cOcdElectricParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, pData->mJointNo);
+    nDDOIO::readData(r, pData->mJointNo);
     return true;
 }
 
@@ -153,8 +155,10 @@ MT_CTSTR rOcdElectricParam::getExt() const {
 // Address: 0x01aa07c0 - 0x01aa07c6 (6 bytes)
 u32 rOcdElectricParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOcdElectricParam::MyDTI rOcdElectricParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOcdElectricParam.cpp at 0x006b1ac2-0x006b1aff (called at rOcdElectricParam.cpp:38)
@@ -164,7 +168,7 @@ u32 rOcdElectricParam::getDataVersion() const {
 // Address: 0x006b1980 - 0x006b19e4 (100 bytes)
 MtObject* rOcdElectricParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOcdElectricParam;
+    return new (16u) rOcdElectricParam;
 }
 
 // Instance at 0x01aa0770 - 0x01aa0782 (18 bytes) of the generic rTbl2<T>::getData

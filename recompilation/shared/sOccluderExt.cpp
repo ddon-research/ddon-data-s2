@@ -29,7 +29,7 @@ const MtDTI& sOccluderEx::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sOccluderEx::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::DTI);
+    return MtMemoryAllocator::getAllocator(sOccluderEx::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* sOccluderEx::getAllocator() {
 // Address: 0x007f8910 - 0x007f8950 (64 bytes)
 void* sOccluderEx::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sOccluderEx::getAllocator()->memAlloc(sz, align, ::sOccluderEx::DTI.::MtDTI::getID());
+    return sOccluderEx::getAllocator()->memAlloc(sz, align, sOccluderEx::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* sOccluderEx::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOccluderEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOccluderEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOccluderEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,53 +68,53 @@ inline void sOccluderEx::operator delete(void* p_addr) {
 // Address: 0x007f89c0 - 0x007f8a0e (78 bytes)
 sOccluderEx::sOccluderEx() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sOccluder::mpInstance = static_cast<sOccluder*>(this);
-    this->mprOCC = static_cast<rOccluderEx*>(nullptr);
-    this->mpFilterTarget = static_cast<uCamera*>(nullptr);
-    this->mCameraAreaNum = static_cast<u32>(0);
-    this->mCameraAreaNo = static_cast<u32>(0);
+    sOccluder::mpInstance = static_cast<sOccluder*>(this);
+    mprOCC = nullptr;
+    mpFilterTarget = nullptr;
+    mCameraAreaNum = 0;
+    mCameraAreaNo = 0;
 }
 
 // Address: 0x007f8a10 - 0x007f8a31 (33 bytes)
 // Also emitted as: _ZN11sOccluderExD0Ev at 0x007f8a40
 sOccluderEx::~sOccluderEx() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sOccluder::mpInstance = static_cast<sOccluder*>(nullptr);
+    sOccluder::mpInstance = nullptr;
 }
 
 // Address: 0x007f8a90 - 0x007f8a95 (5 bytes)
 void sOccluderEx::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sOccluder::createProperty(s);
+    this->sOccluder::createProperty(s);
 }
 
 // Address: 0x007f8aa0 - 0x007f8aa5 (5 bytes)
 MtUI* sOccluderEx::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sOccluder::createUI(prop);
+    return this->sOccluder::createUI(prop);
 }
 
 // Address: 0x007f8ab0 - 0x007f8b08 (88 bytes)
 void sOccluderEx::move() {
     // DWARF local not rendered: Profile __profile;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::sOccluderEx::updateCameraArea();
+    updateCameraArea();
     // inferred: a temporary for the value the load at 0x7f8abf read, used 3 times; no DWARF local holds it
-    rOccluderEx* t0 = this->mprOCC;
-    if (t0 == static_cast<rOccluderEx*>(nullptr)) {
+    rOccluderEx* t0 = mprOCC;
+    if (t0 == nullptr) {
         return;
     }
-    if (t0->::rOccluderEx::getArea(this->mCameraAreaNo) != static_cast<sOccluderEx::Area*>(nullptr)) {
+    if (t0->getArea(mCameraAreaNo) != nullptr) {
         // inferred: a temporary for the result of the call at 0x7f8ae9, used twice; no DWARF local holds it
-        sOccluderEx::Area* t1 = t0->::rOccluderEx::getArea(this->mCameraAreaNo);
-        if (t1 != static_cast<sOccluderEx::Area*>(nullptr)) {
-            this->::sOccluder::setResource(t1->mprOCC);
+        Area* t1 = t0->getArea(mCameraAreaNo);
+        if (t1 != nullptr) {
+            setResource(t1->mprOCC);
         }
     } else {
         // inferred: a temporary for the result of the call at 0x7f8ae9, used twice; no DWARF local holds it
-        sOccluderEx::Area* t1 = t0->::rOccluderEx::getArea(static_cast<u32>(0));
-        if (t1 != static_cast<sOccluderEx::Area*>(nullptr)) {
-            this->::sOccluder::setResource(t1->mprOCC);
+        Area* t1 = t0->getArea(0u);
+        if (t1 != nullptr) {
+            setResource(t1->mprOCC);
         }
     }
 }
@@ -178,12 +178,12 @@ __attribute__((weak)) void sOccluderEx::stageInit() {
 // Address: 0x007f9080 - 0x007f90b3 (51 bytes)
 void sOccluderEx::stageFinal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sOccluder::setResource(static_cast<rOccluder*>(nullptr));
-    if (this->mprOCC == static_cast<rOccluderEx*>(nullptr)) {
+    setResource(static_cast<rOccluder*>(nullptr));
+    if (mprOCC == nullptr) {
         return;
     }
-    this->mprOCC->::cResource::release();
-    this->mprOCC = static_cast<rOccluderEx*>(nullptr);
+    mprOCC->release();
+    mprOCC = nullptr;
 }
 
 // Address: 0x007f90c0 - 0x007f912a (106 bytes)
@@ -195,13 +195,15 @@ __attribute__((weak)) void sOccluderEx::partsInit(rOccluderEx* prOCC) {
 // Address: 0x007f9130 - 0x007f9163 (51 bytes)
 void sOccluderEx::partsFinal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sOccluder::setResource(static_cast<rOccluder*>(nullptr));
-    if (this->mprOCC == static_cast<rOccluderEx*>(nullptr)) {
+    setResource(static_cast<rOccluder*>(nullptr));
+    if (mprOCC == nullptr) {
         return;
     }
-    this->mprOCC->::cResource::release();
-    this->mprOCC = static_cast<rOccluderEx*>(nullptr);
+    mprOCC->release();
+    mprOCC = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOccluderEx::MyDTI sOccluderEx::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_sOccluderExt.cpp at 0x007f9dd0-0x007f9e11 (called at sOccluderExt.cpp:38)
@@ -211,7 +213,7 @@ void sOccluderEx::partsFinal() {
 // Address: 0x007f8890 - 0x007f8909 (121 bytes)
 MtObject* sOccluderEx::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sOccluderEx;
+    return new (16u) sOccluderEx;
 }
 
 // No out-of-line body: no code in the ELF
@@ -237,7 +239,7 @@ const MtDTI& sOccluderEx::Area::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sOccluderEx::Area::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::Area::DTI)->memAlloc(sz, align, ::sOccluderEx::Area::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sOccluderEx::Area::DTI)->memAlloc(sz, align, sOccluderEx::Area::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -252,7 +254,7 @@ inline void* sOccluderEx::Area::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOccluderEx::Area::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOccluderEx::Area::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOccluderEx::Area::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,16 +289,20 @@ __attribute__((weak)) void sOccluderEx::Area::createProperty(MtPropertyList& s) 
 // Address: 0x007f9ce0 - 0x007f9ce5 (5 bytes)
 MtUI* sOccluderEx::Area::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
 // MtUI* sOccluderEx::Area::createAreaUI(MtProperty& prop);
 
 // Address: 0x007f9d00 - 0x007f9d12 (18 bytes)
-__attribute__((weak)) sOccluderEx::Shape* sOccluderEx::Area::getShape(u32 index) {
-    DDON_STUB("sOccluderEx::Area::getShape")
-    return nullptr;
+sOccluderEx::Shape* sOccluderEx::Area::getShape(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < mShapeList.mLength) {
+        return static_cast<Shape*>(mShapeList.mpArray[index]);
+    } else {
+        return nullptr;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -304,10 +310,11 @@ __attribute__((weak)) sOccluderEx::Shape* sOccluderEx::Area::getShape(u32 index)
 
 // Address: 0x007f9d30 - 0x007f9d34 (4 bytes)
 u32 sOccluderEx::Area::getShapeNum() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sOccluderEx::Area*
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mShapeList.mLength;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOccluderEx::Area::MyDTI sOccluderEx::Area::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sOccluderExt.cpp at 0x007f9ebb-0x007f9ef4 (called at sOccluderExt.cpp:724)
@@ -317,7 +324,7 @@ u32 sOccluderEx::Area::getShapeNum() {
 // Address: 0x007f96c0 - 0x007f9744 (132 bytes)
 MtObject* sOccluderEx::Area::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sOccluderEx::Area;
+    return new (16u) sOccluderEx::Area;
 }
 
 // No out-of-line body: no code in the ELF
@@ -343,7 +350,7 @@ const MtDTI& sOccluderEx::Shape::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sOccluderEx::Shape::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::Shape::DTI)->memAlloc(sz, align, ::sOccluderEx::Shape::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sOccluderEx::Shape::DTI)->memAlloc(sz, align, sOccluderEx::Shape::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -358,7 +365,7 @@ inline void* sOccluderEx::Shape::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOccluderEx::Shape::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOccluderEx::Shape::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOccluderEx::Shape::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -372,9 +379,9 @@ inline void sOccluderEx::Shape::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline sOccluderEx::Shape::Shape() {
-    this->mbEnable = true;
-    this->mType = static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(3);
-    this->mpZShape = static_cast<nZone::ShapeInfoBase*>(new (static_cast<u32>(16)) ::nZone::ShapeInfoOBB);
+    mbEnable = true;
+    mType = nZone::ShapeInfoBase::SHAPE_TYPE_OBB;
+    mpZShape = static_cast<nZone::ShapeInfoBase*>(new (16u) nZone::ShapeInfoOBB);
 }
 
 // No out-of-line body: no code in the ELF
@@ -384,11 +391,11 @@ inline sOccluderEx::Shape::Shape() {
 // Also emitted as: _ZN11sOccluderEx5ShapeD0Ev at 0x007f92a0
 sOccluderEx::Shape::~Shape() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpZShape == static_cast<nZone::ShapeInfoBase*>(nullptr)) {
+    if (mpZShape == nullptr) {
         return;
     }
-    delete this->mpZShape;
-    this->mpZShape = static_cast<nZone::ShapeInfoBase*>(nullptr);
+    delete mpZShape;
+    mpZShape = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -403,13 +410,13 @@ __attribute__((weak)) void sOccluderEx::Shape::createProperty(MtPropertyList& s)
 // Address: 0x007f96b0 - 0x007f96b5 (5 bytes)
 MtUI* sOccluderEx::Shape::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x007f9510 - 0x007f9514 (4 bytes)
 nZone::ShapeInfoBase::SHAPE_TYPE sOccluderEx::Shape::getShapeType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mType;
+    return mType;
 }
 
 // Address: 0x007f9520 - 0x007f9668 (328 bytes)
@@ -422,7 +429,7 @@ __attribute__((weak)) void sOccluderEx::Shape::setShapeType(nZone::ShapeInfoBase
 // Address: 0x007f8ff0 - 0x007f8ff5 (5 bytes)
 nZone::ShapeInfoBase* sOccluderEx::Shape::getZone() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpZShape;
+    return mpZShape;
 }
 
 // Address: 0x007f9670 - 0x007f96a2 (50 bytes)
@@ -430,6 +437,8 @@ __attribute__((weak)) void sOccluderEx::Shape::setZone(nZone::ShapeInfoBase* pIn
     DDON_STUB("sOccluderEx::Shape::setZone")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOccluderEx::Shape::MyDTI sOccluderEx::Shape::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sOccluderExt.cpp at 0x007f9e7b-0x007f9ebb (called at sOccluderExt.cpp:563)
@@ -439,6 +448,6 @@ __attribute__((weak)) void sOccluderEx::Shape::setZone(nZone::ShapeInfoBase* pIn
 // Address: 0x007f9170 - 0x007f91df (111 bytes)
 MtObject* sOccluderEx::Shape::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sOccluderEx::Shape;
+    return new (16u) sOccluderEx::Shape;
 }
 

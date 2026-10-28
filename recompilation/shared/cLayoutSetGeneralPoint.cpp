@@ -26,7 +26,7 @@ const MtDTI& cLayoutSetGeneralPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cLayoutSetGeneralPoint::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cLayoutSetGeneralPoint::DTI);
+    return MtMemoryAllocator::getAllocator(cLayoutSetGeneralPoint::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cLayoutSetGeneralPoint::getAllocator() {
 // Address: 0x002d5aa0 - 0x002d5ae0 (64 bytes)
 void* cLayoutSetGeneralPoint::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cLayoutSetGeneralPoint::getAllocator()->memAlloc(sz, align, ::cLayoutSetGeneralPoint::DTI.::MtDTI::getID());
+    return cLayoutSetGeneralPoint::getAllocator()->memAlloc(sz, align, cLayoutSetGeneralPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cLayoutSetGeneralPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cLayoutSetGeneralPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLayoutSetGeneralPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLayoutSetGeneralPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ cLayoutSetGeneralPoint::~cLayoutSetGeneralPoint() {
 // Address: 0x002d5c70 - 0x002d5c75 (5 bytes)
 void cLayoutSetGeneralPoint::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::move();
+    this->cLayoutSet::move();
 }
 
 // Address: 0x002d5ee0 - 0x002d5fd1 (241 bytes)
@@ -115,6 +115,8 @@ bool cLayoutSetGeneralPoint::isUseUnitData() const {
 // No out-of-line body: 1 inlined copy in 1 function (29 bytes)
 //   in cLayoutSetGeneralPoint::setLayoutUnit at 0x002d5ceb-0x002d5d08 (called at cLayoutSetGeneralPoint.cpp:109)
 // bool cLayoutSetGeneralPoint::isCreated(u32 no) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLayoutSetGeneralPoint::MyDTI cLayoutSetGeneralPoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cLayoutSetGeneralPoint.cpp at 0x002d5fe0-0x002d6022 (called at cLayoutSetGeneralPoint.cpp:41)

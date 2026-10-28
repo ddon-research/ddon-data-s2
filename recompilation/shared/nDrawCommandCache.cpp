@@ -83,7 +83,7 @@ const MtDTI& nDraw::CommandCache::getDTI() const {
 // Also emitted as: _ZN5nDraw12CommandCacheD0Ev at 0x0115ac70
 nDraw::CommandCache::~CommandCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::nDraw::CommandCache::DTI)->memFree(this->mpBuffer);
+    ::MtMemoryAllocator::getAllocator(::nDraw::CommandCache::DTI)->memFree(mpBuffer);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -190,6 +190,8 @@ __attribute__((weak)) void nDraw::CommandCache::addGlobalFunc(SO_HANDLE handle, 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 nDraw::CommandCache::calcGlobalCRC(const nDraw::SHADER_STATE* states);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::CommandCache::MyDTI nDraw::CommandCache::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::CommandCache::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

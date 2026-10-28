@@ -51,7 +51,7 @@ const MtDTI& cTargetCursorOffset::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cTargetCursorOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cTargetCursorOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -75,6 +75,8 @@ inline void cTargetCursorOffset::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cTargetCursorOffset::~cTargetCursorOffset();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cTargetCursorOffset::MyDTI cTargetCursorOffset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTargetCursorOffset.cpp at 0x00712dc0-0x00712e02 (called at rTargetCursorOffset.cpp:20)
@@ -109,7 +111,7 @@ const MtDTI& rTargetCursorOffset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTargetCursorOffset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTargetCursorOffset::DTI)->memAlloc(sz, align, ::rTargetCursorOffset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTargetCursorOffset::DTI)->memAlloc(sz, align, rTargetCursorOffset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rTargetCursorOffset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rTargetCursorOffsetD0Ev at 0x01ab92b4-0x01ab92d3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rTargetCursorOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTargetCursorOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTargetCursorOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,8 +156,10 @@ MT_CTSTR rTargetCursorOffset::getExt() const {
 // Address: 0x01ab9400 - 0x01ab9406 (6 bytes)
 u32 rTargetCursorOffset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(272);
+    return 272;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTargetCursorOffset::MyDTI rTargetCursorOffset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTargetCursorOffset.cpp at 0x00712e02-0x00712e3f (called at rTargetCursorOffset.cpp:21)
@@ -165,7 +169,7 @@ u32 rTargetCursorOffset::getDataVersion() const {
 // Address: 0x00712c80 - 0x00712ce4 (100 bytes)
 MtObject* rTargetCursorOffset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTargetCursorOffset;
+    return new (16u) rTargetCursorOffset;
 }
 
 // Instance at 0x01ab93b0 - 0x01ab93c2 (18 bytes) of the generic rTbl2<T>::getData

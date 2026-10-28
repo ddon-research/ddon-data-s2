@@ -105,13 +105,13 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cHumanEnemyCustomSkill::cHumanEnemyCustomSkill() {
-    this->mCustomLevel3 = static_cast<u32>(0);
-    this->mCustomLevel1 = static_cast<u32>(0);
-    this->mCustomLevel2 = static_cast<u32>(0);
-    this->mCustomSkill3 = static_cast<u32>(0);
-    this->mCustomLevel0 = static_cast<u32>(0);
-    this->mCustomSkill1 = static_cast<u32>(0);
-    this->mCustomSkill2 = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
-    this->mCustomSkill0 = static_cast<u32>(0);
+    this->mCustomLevel3 = 0;
+    this->mCustomLevel1 = 0;
+    this->mCustomLevel2 = 0;
+    this->mCustomSkill3 = 0;
+    this->mCustomLevel0 = 0;
+    this->mCustomSkill1 = 0;
+    this->mCustomSkill2 = 0;
+    this->mId = 0;
+    this->mCustomSkill0 = 0;
 }

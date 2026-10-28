@@ -26,7 +26,7 @@ const MtDTI& sPadExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sPadExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sPadExt::DTI);
+    return MtMemoryAllocator::getAllocator(sPadExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* sPadExt::getAllocator() {
 // Address: 0x00804ab0 - 0x00804af0 (64 bytes)
 void* sPadExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sPadExt::getAllocator()->memAlloc(sz, align, ::sPadExt::DTI.::MtDTI::getID());
+    return sPadExt::getAllocator()->memAlloc(sz, align, sPadExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* sPadExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sPadExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPadExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPadExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,9 +128,9 @@ __attribute__((weak)) void sPadExt::initRepeat() {
 // Address: 0x00804cd0 - 0x00804ce4 (20 bytes)
 void sPadExt::setGamePad(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPadInfo[0].mPadId = id;
-    this->mPadInfo[0].mIsEnable = false;
-    this->mGamePadId = static_cast<s32>(id);
+    mPadInfo[0].mPadId = id;
+    mPadInfo[0].mIsEnable = false;
+    mGamePadId = static_cast<s32>(id);
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,20 +155,20 @@ __attribute__((weak)) void sPadExt::setVibrationEnable(bool flag) {
 // Address: 0x01ac8b90 - 0x01ac8bad (29 bytes)
 u32 sPadExt::getDecideButton() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEnableReplaceDC != false) {
-        return this->::sPad::mCancelButton;
+    if (mIsEnableReplaceDC) {
+        return mCancelButton;
     } else {
-        return this->::sPad::mDecideButton;
+        return mDecideButton;
     }
 }
 
 // Address: 0x01ac8bb0 - 0x01ac8bcd (29 bytes)
 u32 sPadExt::getCancelButton() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEnableReplaceDC != false) {
-        return this->::sPad::mDecideButton;
+    if (mIsEnableReplaceDC) {
+        return mDecideButton;
     } else {
-        return this->::sPad::mCancelButton;
+        return mCancelButton;
     }
 }
 
@@ -194,7 +194,7 @@ u32 sPadExt::getCancelButton() const {
 // Address: 0x01ac8a20 - 0x01ac8a27 (7 bytes)
 s32 sPadExt::getGamePadId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGamePadId;
+    return mGamePadId;
 }
 
 // No out-of-line body: 39 inlined copies in 20 functions (273 bytes)
@@ -233,64 +233,66 @@ __attribute__((weak)) bool sPadExt::isOnCheck(sPadExt::PAD_BTN_TYPE button, u32 
 // Address: 0x01ac8a60 - 0x01ac8b8d (301 bytes)
 void sPadExt::clearInputData() {
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x15c8 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12e4 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12dc from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x135c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1354 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x134c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1344 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x133c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1334 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x132c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1324 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x131c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1314 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x130c from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1304 from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12fc from sPadExt*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12f4 from sPadExt*
-    this->::sPad::mPad[0].::sPad::Pad::initData();
-    this->::sPad::mPad[0].::sPad::Pad::initVib();
-    this->::sPad::mPad[1].::sPad::Pad::initData();
-    this->::sPad::mPad[1].::sPad::Pad::initVib();
-    this->::sPad::mPad[2].::sPad::Pad::initData();
-    this->::sPad::mPad[2].::sPad::Pad::initVib();
-    this->::sPad::mPad[3].::sPad::Pad::initData();
-    this->::sPad::mPad[3].::sPad::Pad::initVib();
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5576)) = static_cast<unsigned long>(0);
-    this->mPadInfo[0].mBtn.acl = static_cast<u32>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4836)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4828)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4956)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4948)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4940)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4932)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4924)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4916)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4908)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4900)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4892)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4884)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4876)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4868)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4860)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4852)) = static_cast<unsigned long>(0);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mPad[0].initData();
+    mPad[0].initVib();
+    mPad[1].initData();
+    mPad[1].initVib();
+    mPad[2].initData();
+    mPad[2].initVib();
+    mPad[3].initData();
+    mPad[3].initVib();
+    mPadInfo[0].mRepTimer = 0.0f;
+    mPadInfo[0].mAclTimer = 0.0f;
+    mPadInfo[0].mBtn.acl = 0;
+    mPadInfo[0].mBtn.rel = 0;
+    mPadInfo[0].mBtn.rep = 0;
+    mPadInfo[0].mBtn.on = 0;
+    mPadInfo[0].mBtn.trg = 0;
+    mPadInfo[0].mSensor.z = 0.0f;
+    mPadInfo[0].mSensor.g = 0.0f;
+    mPadInfo[0].mSensor.x = 0.0f;
+    mPadInfo[0].mSensor.y = 0.0f;
+    mPadInfo[0].mPress.L3 = 0.0f;
+    mPadInfo[0].mPress.R3 = 0.0f;
+    mPadInfo[0].mPress.R2 = 0.0f;
+    mPadInfo[0].mPress.Select = 0.0f;
+    mPadInfo[0].mPress.L2 = 0.0f;
+    mPadInfo[0].mPress.R1 = 0.0f;
+    mPadInfo[0].mPress.Rleft = 0.0f;
+    mPadInfo[0].mPress.L1 = 0.0f;
+    mPadInfo[0].mPress.Rright = 0.0f;
+    mPadInfo[0].mPress.Rdown = 0.0f;
+    mPadInfo[0].mPress.Lleft = 0.0f;
+    mPadInfo[0].mPress.Rup = 0.0f;
+    mPadInfo[0].mPress.Lright = 0.0f;
+    mPadInfo[0].mPress.Ldown = 0.0f;
+    mPadInfo[0].mAnlg[1].y = 0.0f;
+    mPadInfo[0].mPress.Lup = 0.0f;
+    mPadInfo[0].mAnlg[0].y = 0.0f;
+    mPadInfo[0].mAnlg[1].x = 0.0f;
+    mPadInfo[0].mBtnUDRL.acl = 0;
+    mPadInfo[0].mAnlg[0].x = 0.0f;
+    mPadInfo[0].mBtnUDRL.rel = 0;
+    mPadInfo[0].mBtnUDRL.rep = 0;
+    mPadInfo[0].mBtnUDRL.on = 0;
+    mPadInfo[0].mBtnUDRL.trg = 0;
 }
 
 // Address: 0x00805c20 - 0x00805c4a (42 bytes)
 void sPadExt::onAutoRunButtonHold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::getInputMode() != static_cast<u32>(0)) {
+    if (sInputManager::getInstance()->getInputMode() != 0) {
         return;
     }
-    this->mIsAutoRunButtonHold = true;
+    mIsAutoRunButtonHold = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
 //   in uHuman::requestStraightAutoRun at 0x00c6b166-0x00c6b16f (called at uHuman.cpp:9000)
 // bool sPadExt::isAutoRunButtonHold() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPadExt::MyDTI sPadExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sPadExt.cpp at 0x0080853f-0x0080857c (called at sPadExt.cpp:37)
@@ -338,7 +340,7 @@ const MtDTI& sPadExt::cPadInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sPadExt::cPadInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPadExt::cPadInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPadExt::cPadInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -376,44 +378,44 @@ __attribute__((weak)) void sPadExt::cPadInfo::createProperty(MtPropertyList& s) 
 // Address: 0x008054b0 - 0x00805558 (168 bytes)
 void sPadExt::cPadInfo::clear(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (flag == false) {
-        this->mPadEnableId = static_cast<u32>(65535);
+    if (!flag) {
+        mPadEnableId = 0xFFFF;
     }
-    this->mRepTimer = 0.0f;
-    this->mAclTimer = 0.0f;
-    this->mBtn.acl = static_cast<u32>(0);
-    this->mBtn.rel = static_cast<u32>(0);
-    this->mBtn.rep = static_cast<u32>(0);
-    this->mBtn.on = static_cast<u32>(0);
-    this->mBtn.trg = static_cast<u32>(0);
-    this->mSensor.z = 0.0f;
-    this->mSensor.g = 0.0f;
-    this->mSensor.x = 0.0f;
-    this->mSensor.y = 0.0f;
-    this->mPress.L3 = 0.0f;
-    this->mPress.R3 = 0.0f;
-    this->mPress.R2 = 0.0f;
-    this->mPress.Select = 0.0f;
-    this->mPress.L2 = 0.0f;
-    this->mPress.R1 = 0.0f;
-    this->mPress.Rleft = 0.0f;
-    this->mPress.L1 = 0.0f;
-    this->mPress.Rright = 0.0f;
-    this->mPress.Rdown = 0.0f;
-    this->mPress.Lleft = 0.0f;
-    this->mPress.Rup = 0.0f;
-    this->mPress.Lright = 0.0f;
-    this->mPress.Ldown = 0.0f;
-    this->mAnlg[1].y = 0.0f;
-    this->mPress.Lup = 0.0f;
-    this->mAnlg[0].y = 0.0f;
-    this->mAnlg[1].x = 0.0f;
-    this->mBtnUDRL.acl = static_cast<u32>(0);
-    this->mAnlg[0].x = 0.0f;
-    this->mBtnUDRL.rel = static_cast<u32>(0);
-    this->mBtnUDRL.rep = static_cast<u32>(0);
-    this->mBtnUDRL.on = static_cast<u32>(0);
-    this->mBtnUDRL.trg = static_cast<u32>(0);
+    mRepTimer = 0.0f;
+    mAclTimer = 0.0f;
+    mBtn.acl = 0;
+    mBtn.rel = 0;
+    mBtn.rep = 0;
+    mBtn.on = 0;
+    mBtn.trg = 0;
+    mSensor.z = 0.0f;
+    mSensor.g = 0.0f;
+    mSensor.x = 0.0f;
+    mSensor.y = 0.0f;
+    mPress.L3 = 0.0f;
+    mPress.R3 = 0.0f;
+    mPress.R2 = 0.0f;
+    mPress.Select = 0.0f;
+    mPress.L2 = 0.0f;
+    mPress.R1 = 0.0f;
+    mPress.Rleft = 0.0f;
+    mPress.L1 = 0.0f;
+    mPress.Rright = 0.0f;
+    mPress.Rdown = 0.0f;
+    mPress.Lleft = 0.0f;
+    mPress.Rup = 0.0f;
+    mPress.Lright = 0.0f;
+    mPress.Ldown = 0.0f;
+    mAnlg[1].y = 0.0f;
+    mPress.Lup = 0.0f;
+    mAnlg[0].y = 0.0f;
+    mAnlg[1].x = 0.0f;
+    mBtnUDRL.acl = 0;
+    mAnlg[0].x = 0.0f;
+    mBtnUDRL.rel = 0;
+    mBtnUDRL.rep = 0;
+    mBtnUDRL.on = 0;
+    mBtnUDRL.trg = 0;
 }
 
 // Address: 0x00805560 - 0x00805ada (1402 bytes)
@@ -494,10 +496,10 @@ __attribute__((weak)) void sPadExt::cPadInfo::stopVibration() {
 // Address: 0x008080a0 - 0x008080b4 (20 bytes)
 u32 sPadExt::cPadInfo::getPadSetting(sPadExt::PAD_BTN_TYPE button) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (button <= static_cast<int>(56)) {
-        return this->mPadSetting[button];
+    if (button <= 56) {
+        return mPadSetting[button];
     } else {
-        return static_cast<u32>(63);
+        return 63;
     }
 }
 
@@ -563,20 +565,20 @@ u32 sPadExt::cPadInfo::getPadSetting(sPadExt::PAD_BTN_TYPE button) {
 // Address: 0x00805af0 - 0x00805b1a (42 bytes)
 u32 sPadExt::cPadInfo::getBtnInfoOn() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mBtn.on;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mBtn.on;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00808170 - 0x0080819a (42 bytes)
 u32 sPadExt::cPadInfo::getBtnInfoTrg() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mBtn.trg;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mBtn.trg;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -592,8 +594,8 @@ u32 sPadExt::cPadInfo::getBtnInfoTrg() const {
 // Address: 0x008081d0 - 0x008081fc (44 bytes)
 f32 sPadExt::cPadInfo::getAnlgInfoLx() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mAnlg[0].x;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mAnlg[0].x;
     } else {
         return 0.0f;
     }
@@ -602,8 +604,8 @@ f32 sPadExt::cPadInfo::getAnlgInfoLx() const {
 // Address: 0x00808200 - 0x0080822c (44 bytes)
 f32 sPadExt::cPadInfo::getAnlgInfoLy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mAnlg[0].y;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mAnlg[0].y;
     } else {
         return 0.0f;
     }
@@ -612,8 +614,8 @@ f32 sPadExt::cPadInfo::getAnlgInfoLy() const {
 // Address: 0x00808230 - 0x0080825c (44 bytes)
 f32 sPadExt::cPadInfo::getAnlgInfoRx() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mAnlg[1].x;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mAnlg[1].x;
     } else {
         return 0.0f;
     }
@@ -622,8 +624,8 @@ f32 sPadExt::cPadInfo::getAnlgInfoRx() const {
 // Address: 0x00808260 - 0x0080828c (44 bytes)
 f32 sPadExt::cPadInfo::getAnlgInfoRy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sInputManager::getInstance()->::sInputManager::isDisableInputGame() == false) {
-        return this->mAnlg[1].y;
+    if (!sInputManager::getInstance()->isDisableInputGame()) {
+        return mAnlg[1].y;
     } else {
         return 0.0f;
     }
@@ -668,6 +670,8 @@ f32 sPadExt::cPadInfo::getAnlgInfoRy() const {
 //   in sPadExt::cPadInfo::getBtnInfoTrg at 0x00808179-0x0080818c (called at sPadExt.cpp:3081)
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // bool sPadExt::cPadInfo::isDisableInputGamePadInfo() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPadExt::cPadInfo::MyDTI sPadExt::cPadInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sPadExt.cpp at 0x0080857c-0x008085b9 (called at sPadExt.cpp:38)

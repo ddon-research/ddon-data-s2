@@ -100,7 +100,7 @@ public:
 // approximate: only approximate callers check this inline body
 inline cQuestHistoryData::cQuestHistoryData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mQuestId = static_cast<u32>(0);
-    this->mImageId = static_cast<u16>(0);
-    this->mSortId = static_cast<u16>(0);
+    this->mQuestId = 0;
+    this->mImageId = 0;
+    this->mSortId = 0;
 }

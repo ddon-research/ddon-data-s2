@@ -25,7 +25,7 @@ const MtDTI& CDataStampBonus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataStampBonus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataStampBonus::DTI);
+    return MtMemoryAllocator::getAllocator(CDataStampBonus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* CDataStampBonus::getAllocator() {
 // Address: 0x003db120 - 0x003db160 (64 bytes)
 void* CDataStampBonus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataStampBonus::getAllocator()->memAlloc(sz, align, ::CDataStampBonus::DTI.::MtDTI::getID());
+    return CDataStampBonus::getAllocator()->memAlloc(sz, align, CDataStampBonus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* CDataStampBonus::operator new(size_t sz, u32 align) {
 // Address: 0x003db190 - 0x003db1ba (42 bytes)
 __attribute__((weak)) void CDataStampBonus::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataStampBonus::getAllocator()->memFree(p_addr);
+    CDataStampBonus::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataStampBonus::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataStampBonus::CDataStampBonus(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataStampBonus::MyDTI CDataStampBonus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f025-0x0041f05e (called at StampBonusImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f025-0x0041f05e (called at StampBonus.h:21)
@@ -79,7 +81,7 @@ __attribute__((weak)) void CDataStampBonus::operator delete(void* p_addr) {
 // Address: 0x003db0d0 - 0x003db118 (72 bytes)
 MtObject* CDataStampBonus::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataStampBonus;
+    return new (16u) CDataStampBonus;
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,7 +98,7 @@ const MtDTI& CDataStampBonusDaily::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataStampBonusDaily::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataStampBonusDaily::DTI);
+    return MtMemoryAllocator::getAllocator(CDataStampBonusDaily::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -105,7 +107,7 @@ inline MtAllocator* CDataStampBonusDaily::getAllocator() {
 // Address: 0x003db270 - 0x003db2b0 (64 bytes)
 void* CDataStampBonusDaily::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataStampBonusDaily::getAllocator()->memAlloc(sz, align, ::CDataStampBonusDaily::DTI.::MtDTI::getID());
+    return CDataStampBonusDaily::getAllocator()->memAlloc(sz, align, CDataStampBonusDaily::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ void* CDataStampBonusDaily::operator new(size_t sz, u32 align) {
 // Address: 0x003db2e0 - 0x003db30a (42 bytes)
 __attribute__((weak)) void CDataStampBonusDaily::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataStampBonusDaily::getAllocator()->memFree(p_addr);
+    CDataStampBonusDaily::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataStampBonusDaily::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataStampBonusDaily::CDataStampBonusDaily(const MtTypedArray<CDataStampBonus>&, u16, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataStampBonusDaily::MyDTI CDataStampBonusDaily::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f05e-0x0041f097 (called at StampBonusImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f05e-0x0041f097 (called at StampBonus.h:74)
@@ -150,7 +154,7 @@ __attribute__((weak)) void CDataStampBonusDaily::operator delete(void* p_addr) {
 // Address: 0x003db1f0 - 0x003db263 (115 bytes)
 MtObject* CDataStampBonusDaily::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataStampBonusDaily;
+    return new (16u) CDataStampBonusDaily;
 }
 
 // No out-of-line body: no code in the ELF
@@ -167,7 +171,7 @@ const MtDTI& CDataStampBonusTotal::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataStampBonusTotal::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataStampBonusTotal::DTI);
+    return MtMemoryAllocator::getAllocator(CDataStampBonusTotal::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -176,7 +180,7 @@ inline MtAllocator* CDataStampBonusTotal::getAllocator() {
 // Address: 0x003db3c0 - 0x003db400 (64 bytes)
 void* CDataStampBonusTotal::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataStampBonusTotal::getAllocator()->memAlloc(sz, align, ::CDataStampBonusTotal::DTI.::MtDTI::getID());
+    return CDataStampBonusTotal::getAllocator()->memAlloc(sz, align, CDataStampBonusTotal::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -191,7 +195,7 @@ void* CDataStampBonusTotal::operator new(size_t sz, u32 align) {
 // Address: 0x003db430 - 0x003db45a (42 bytes)
 __attribute__((weak)) void CDataStampBonusTotal::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataStampBonusTotal::getAllocator()->memFree(p_addr);
+    CDataStampBonusTotal::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,6 +217,8 @@ __attribute__((weak)) void CDataStampBonusTotal::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataStampBonusTotal::CDataStampBonusTotal(const MtTypedArray<CDataStampBonus>&, u16, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataStampBonusTotal::MyDTI CDataStampBonusTotal::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f097-0x0041f0d0 (called at StampBonusImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f097-0x0041f0d0 (called at StampBonus.h:134)
@@ -221,6 +227,6 @@ __attribute__((weak)) void CDataStampBonusTotal::operator delete(void* p_addr) {
 // Address: 0x003db340 - 0x003db3b3 (115 bytes)
 MtObject* CDataStampBonusTotal::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataStampBonusTotal;
+    return new (16u) CDataStampBonusTotal;
 }
 

@@ -46,8 +46,10 @@ namespace nMotion { struct SEQUENCE_INFO; }
 class rModel;
 class rMotionList;
 class uCnsDDOIK;
+class uCnsTinyChain;
 class uConstraint;
 class uDDOModel;
+class uHuman;
 class uSimSoftBody;
 
 // Declarations
@@ -93,8 +95,12 @@ class uModel : public uBaseModel
     friend class cpShakeCtrl;
     // inferred: uCnsDDOIK::getDependentJointNum names uModel::mJointTable
     friend class uCnsDDOIK;
+    // inferred: uCnsTinyChain::getDependentJoint names uModel::mJoint
+    friend class uCnsTinyChain;
     // inferred: uConstraint::setConstraint names uModel::mJointTable
     friend class uConstraint;
+    // inferred: uHuman::cBlendMotionCtrl::getBlendMotion names uModel::mMotion[1], through its enclosing class uHuman
+    friend class uHuman;
     // inferred: uSimSoftBody::getTargetJointIndexFromNo names uModel::mJointNum
     friend class uSimSoftBody;
 public:
@@ -805,4 +811,10 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 inline u32 uModel::getEnvelopeHandle() const {
     return this->mEnvelopeHandle;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uModel::setEnvelopeHandle(u32 env_handle) {
+    this->mEnvelopeHandle = env_handle;
 }

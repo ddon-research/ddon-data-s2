@@ -119,12 +119,12 @@ public:
 // approximate: only approximate callers check this inline body
 inline nKeyConfigTextTable::cKeyText::cKeyText() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mKeyCustom = static_cast<u32>(0);
-    this->mDetailMsgId = static_cast<u32>(4294967295);
-    this->mSerialNumber = static_cast<u32>(0);
-    this->mCustomSortNo = static_cast<u32>(0);
-    this->mSortNo = static_cast<u32>(0);
-    this->mGroupMsgId = static_cast<u32>(0);
+    this->mKeyCustom = 0;
+    this->mDetailMsgId = 0xFFFFFFFF;
+    this->mSerialNumber = 0;
+    this->mCustomSortNo = 0;
+    this->mSortNo = 0;
+    this->mGroupMsgId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

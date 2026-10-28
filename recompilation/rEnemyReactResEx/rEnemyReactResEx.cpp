@@ -36,7 +36,7 @@ const MtDTI& cEnemyReactRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEnemyReactRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memAlloc(sz, align, ::cEnemyReactRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyReactRes::DTI)->memAlloc(sz, align, cEnemyReactRes::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
@@ -52,7 +52,7 @@ inline void* cEnemyReactRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyReactRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyReactRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -78,6 +78,8 @@ inline void cEnemyReactRes::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEnemyReactRes::~cEnemyReactRes();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyReactRes::MyDTI cEnemyReactRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyReactResEx.cpp at 0x0066e00f-0x0066e04c (called at rEnemyReactResEx.cpp:40)
 //   in _GLOBAL__sub_I_rEnemyReactResEx.cpp at 0x0066e00f-0x0066e04c (called at rEnemyReactResEx.h:48)
@@ -86,7 +88,7 @@ inline void cEnemyReactRes::operator delete(void* p_addr) {
 // Address: 0x0066d4d0 - 0x0066d527 (87 bytes)
 MtObject* cEnemyReactRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyReactRes;
+    return new (16u) cEnemyReactRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,7 +127,7 @@ const MtDTI& rEnemyReactResEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEnemyReactResEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyReactResEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyReactResEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,19 +156,19 @@ bool rEnemyReactResEx::loadData(MtDataReader& r, cEnemyReactRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCountStart);
+    nDDOIO::readData(r, pData->mCountStart);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCountEnd);
+    nDDOIO::readData(r, pData->mCountEnd);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mPercent);
+    nDDOIO::readData(r, pData->mPercent);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mParam0);
+    nDDOIO::readData(r, pData->mParam0);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mParam1);
+    nDDOIO::readData(r, pData->mParam1);
     return true;
 }
 
@@ -179,7 +181,7 @@ MT_CTSTR rEnemyReactResEx::getExt() const {
 // Address: 0x01a8bd20 - 0x01a8bd26 (6 bytes)
 u32 rEnemyReactResEx::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
 
 // Address: 0x0066d820 - 0x0066df10 (1776 bytes)
@@ -189,6 +191,8 @@ __attribute__((weak)) bool rEnemyReactResEx::loadCore(MtDataReader& r) {
     DDON_STUB("rEnemyReactResEx::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyReactResEx::MyDTI rEnemyReactResEx::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyReactResEx.cpp at 0x0066e04c-0x0066e089 (called at rEnemyReactResEx.cpp:41)

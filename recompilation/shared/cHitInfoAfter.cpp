@@ -40,7 +40,7 @@ const MtDTI& cHealedInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cHealedInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cHealedInfo::DTI)->memAlloc(sz, align, ::cHealedInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cHealedInfo::DTI)->memAlloc(sz, align, cHealedInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline void* cHealedInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cHealedInfoD0Ev at 0x0198ab90-0x0198abba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cHealedInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHealedInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHealedInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,6 +111,8 @@ inline void cHealedInfo::operator delete(void* p_addr) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cHealedInfo::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHealedInfo::MyDTI cHealedInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHitInfoAfter.cpp at 0x0020c340-0x0020c379 (called at cHitInfoAfter.cpp:39)
 //   in _GLOBAL__sub_I_cHitInfoAfter.cpp at 0x0020c340-0x0020c379 (called at cHitInfoAfter.h:238)
@@ -119,7 +121,7 @@ inline void cHealedInfo::operator delete(void* p_addr) {
 // Address: 0x0020b3a0 - 0x0020b438 (152 bytes)
 MtObject* cHealedInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cHealedInfo;
+    return new (16u) cHealedInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,7 +138,7 @@ const MtDTI& cHitInfoAfter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cHitInfoAfter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cHitInfoAfter::DTI);
+    return MtMemoryAllocator::getAllocator(cHitInfoAfter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +160,7 @@ inline MtAllocator* cHitInfoAfter::getAllocator() {
 // Address: 0x0020b050 - 0x0020b07a (42 bytes)
 __attribute__((weak)) void cHitInfoAfter::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cHitInfoAfter::getAllocator()->memFree(p_addr);
+    cHitInfoAfter::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -189,20 +191,20 @@ void cHitInfoAfter::makeInfoFromDmMsg(const cDamageMsg* pDmMsg, uDDOModel* pRece
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x7c from const cDamageMsg*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (pDmMsg == static_cast<const cDamageMsg*>(nullptr)) {
+    if (pDmMsg == nullptr) {
         return;
     }
-    this->mIsReceiveInfo = pDmMsg->::cDamageMsg::isReceiveInfo();
-    this->mCommonInfo.::cHitInfoAfterCommon::makeInfoFromDmMsg(pDmMsg, pReceiver);
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        if (this->mCommonInfo.mpChildRegion != static_cast<cChildRegionStatus*>(nullptr)) {
-            if (this->mCommonInfo.mpAttackParam->mAttackType2 <= static_cast<u8>(3)) {
-                this->mHpDamageInfo.mAttackReactionType = this->mCommonInfo.mpChildRegion->mAttackReactionType[this->mCommonInfo.mpAttackParam->mAttackType2];
+    mIsReceiveInfo = pDmMsg->isReceiveInfo();
+    mCommonInfo.makeInfoFromDmMsg(pDmMsg, pReceiver);
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        if (mCommonInfo.mpChildRegion != nullptr) {
+            if (mCommonInfo.mpAttackParam->mAttackType2 <= 3) {
+                mHpDamageInfo.mAttackReactionType = mCommonInfo.mpChildRegion->mAttackReactionType[mCommonInfo.mpAttackParam->mAttackType2];
             }
         }
     }
-    this->mOcdDamageInfo.::cOcdDamageInfo::getInfoFromCM(this->mCommonInfo);
-    if (this->mIsReceiveInfo != false) {
+    mOcdDamageInfo.getInfoFromCM(mCommonInfo);
+    if (mIsReceiveInfo) {
         return;
     }
     // inferred: a temporary for the value the load at 0x20bc79 read, used once; no DWARF local holds it
@@ -214,15 +216,15 @@ void cHitInfoAfter::makeInfoFromDmMsg(const cDamageMsg* pDmMsg, uDDOModel* pRece
     // inferred: a temporary for the value the load at 0x20bc89 read, used once; no DWARF local holds it
     const f32 t3 = pDmMsg->mLocalInfo.mHitStopTime;
     // inferred: a temporary for the value the load at 0x20bc8f read, used twice; no DWARF local holds it
-    const unsigned short t4 = *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(pDmMsg) + static_cast<long>(124));
-    this->mLocalInfo.mHitPos.x = pDmMsg->mLocalInfo.mHitPos.x;
-    this->mLocalInfo.mHitPos.y = t0;
-    this->mLocalInfo.mHitPos.z = t1;
-    this->mLocalInfo.mHitPos.pad_ = 0.0f;
-    this->mLocalInfo.mpShlAtkPtr = t2;
-    this->mLocalInfo.mHitStopTime = t3;
-    this->mLocalInfo.mHitStopFlag = static_cast<unsigned char>(t4);
-    this->mLocalInfo.mIsForceHitStop = static_cast<bool>(static_cast<unsigned long>(t4) >> static_cast<unsigned long>(8));
+    const unsigned short t4 = *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(pDmMsg) + 124);
+    mLocalInfo.mHitPos.x = pDmMsg->mLocalInfo.mHitPos.x;
+    mLocalInfo.mHitPos.y = t0;
+    mLocalInfo.mHitPos.z = t1;
+    mLocalInfo.mHitPos.pad_ = 0.0f;
+    mLocalInfo.mpShlAtkPtr = t2;
+    mLocalInfo.mHitStopTime = t3;
+    mLocalInfo.mHitStopFlag = static_cast<unsigned char>(t4);
+    mLocalInfo.mIsForceHitStop = static_cast<bool>(static_cast<unsigned long>(t4) >> 8);
 }
 
 // No out-of-line body: no code in the ELF
@@ -231,8 +233,8 @@ void cHitInfoAfter::makeInfoFromDmMsg(const cDamageMsg* pDmMsg, uDDOModel* pRece
 // Address: 0x0020bce0 - 0x0020bcf7 (23 bytes)
 bool cHitInfoAfter::checkAttackParamFlag(u64 flag) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        return (flag & this->mCommonInfo.mpAttackParam->mFlag3) != static_cast<u64>(0);
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        return (flag & mCommonInfo.mpAttackParam->mFlag3) != 0;
     } else {
         return false;
     }
@@ -241,8 +243,8 @@ bool cHitInfoAfter::checkAttackParamFlag(u64 flag) const {
 // Address: 0x0020bd00 - 0x0020bd13 (19 bytes)
 bool cHitInfoAfter::checkAttackParamAngleFlag(u32 flag) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        return (flag & this->mCommonInfo.mpAttackParam->mDamageFlag) != static_cast<u32>(0);
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        return (flag & mCommonInfo.mpAttackParam->mDamageFlag) != 0;
     } else {
         return false;
     }
@@ -252,8 +254,8 @@ bool cHitInfoAfter::checkAttackParamAngleFlag(u32 flag) const {
 bool cHitInfoAfter::checkAttackParamGuard(nObjCollision::GUARD_ANGLE_TYPE type) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: nObjCollision::GUARD_ANGLE_TYPE used as unsigned int
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        return this->mCommonInfo.mpAttackParam->mGuardAngle == static_cast<unsigned int>(type);
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        return mCommonInfo.mpAttackParam->mGuardAngle == static_cast<unsigned int>(type);
     } else {
         return false;
     }
@@ -262,8 +264,8 @@ bool cHitInfoAfter::checkAttackParamGuard(nObjCollision::GUARD_ANGLE_TYPE type) 
 // Address: 0x0020bd40 - 0x0020bd56 (22 bytes)
 bool cHitInfoAfter::checkAttackParamAttackId(u32 attackId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        return this->mCommonInfo.mpAttackParam->mAttackID == attackId;
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        return mCommonInfo.mpAttackParam->mAttackID == attackId;
     } else {
         return false;
     }
@@ -278,10 +280,10 @@ bool cHitInfoAfter::isWeakRegionDamage() const {
     // DWARF local not rendered: u32 phsType;
     // DWARF local not rendered: ELEMENT_TYPE elementType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        if (this->mCommonInfo.mpChildRegion != static_cast<cChildRegionStatus*>(nullptr)) {
-            if (this->mCommonInfo.mpChildRegion->mAttackReactionType[this->mCommonInfo.mpAttackParam->mAttackType2] != static_cast<unsigned int>(0)) {
-                return this->mCommonInfo.mpChildRegion->mIsElementWeakRegion[this->mOcdDamageInfo.mElementResultType] != false;
+    if (mCommonInfo.mpAttackParam != nullptr) {
+        if (mCommonInfo.mpChildRegion != nullptr) {
+            if (mCommonInfo.mpChildRegion->mAttackReactionType[mCommonInfo.mpAttackParam->mAttackType2] != 0) {
+                return mCommonInfo.mpChildRegion->mIsElementWeakRegion[mOcdDamageInfo.mElementResultType];
             } else {
                 return true;
             }
@@ -303,24 +305,24 @@ bool cHitInfoAfter::isWeakRegionDamage() const {
 // Address: 0x0020bbb0 - 0x0020bbfc (76 bytes)
 void cHitInfoAfter::setHitInfoType(nObjCollision::HIT_INFO_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHitInfoType = type;
-    if (type == static_cast<nObjCollision::HIT_INFO_TYPE>(1)) {
-        this->mIsHpDamage = false;
-        this->mIsShrinkBlow = false;
-        this->mIsShake = true;
-        this->mIsStromQuake = false;
-        this->mIsFlick = false;
-        this->mIsOcd = false;
-        this->mIsVisualEffect = false;
+    mHitInfoType = type;
+    if (type == nObjCollision::HIT_INFO_TYPE_SHRINK_BOUNUS) {
+        mIsHpDamage = false;
+        mIsShrinkBlow = false;
+        mIsShake = true;
+        mIsStromQuake = false;
+        mIsFlick = false;
+        mIsOcd = false;
+        mIsVisualEffect = false;
     } else {
-        if (type == static_cast<nObjCollision::HIT_INFO_TYPE>(0)) {
-            this->mIsVisualEffect = true;
-            this->mIsFlick = true;
-            this->mIsOcd = true;
-            this->mIsHpDamage = true;
-            this->mIsShrinkBlow = true;
-            this->mIsShake = true;
-            this->mIsStromQuake = true;
+        if (type == nObjCollision::HIT_INFO_TYPE_NORMAL) {
+            mIsVisualEffect = true;
+            mIsFlick = true;
+            mIsOcd = true;
+            mIsHpDamage = true;
+            mIsShrinkBlow = true;
+            mIsShake = true;
+            mIsStromQuake = true;
         }
     }
 }
@@ -328,7 +330,7 @@ void cHitInfoAfter::setHitInfoType(nObjCollision::HIT_INFO_TYPE type) {
 // Address: 0x0020bda0 - 0x0020bda7 (7 bytes)
 void cHitInfoAfter::setResultBounusType(nObjCollision::RESULT_BONOUS_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResultBounusType = type;
+    mResultBounusType = type;
 }
 
 // No out-of-line body: no code in the ELF
@@ -368,6 +370,8 @@ void cHitInfoAfter::setResultBounusType(nObjCollision::RESULT_BONOUS_TYPE type) 
 
 // No out-of-line body: no code in the ELF
 // cHitInfoAfter::cHitInfoAfter(const cHitInfoAfter&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitInfoAfter::MyDTI cHitInfoAfter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cHitInfoAfter.cpp at 0x0020c28e-0x0020c2ce (called at cHitInfoAfter.cpp:35)
@@ -416,7 +420,7 @@ const MtDTI& cHitInfoAfterCommon::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cHitInfoAfterCommon::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHitInfoAfterCommon::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHitInfoAfterCommon::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -438,11 +442,11 @@ inline void cHitInfoAfterCommon::operator delete(void* p_addr) {
 // Also emitted as: _ZN19cHitInfoAfterCommonD0Ev at 0x0020b510
 cHitInfoAfterCommon::~cHitInfoAfterCommon() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    delete this->mpAttackParam;
-    this->mpAttackParam = static_cast<cAttackParam*>(nullptr);
+    delete mpAttackParam;
+    mpAttackParam = nullptr;
 }
 
 // Address: 0x0020b580 - 0x0020b7fa (634 bytes)
@@ -473,18 +477,18 @@ __attribute__((weak)) void cHitInfoAfterCommon::makeInfoFromDmMsg(const cDamageM
 // Address: 0x0020b560 - 0x0020b57c (28 bytes)
 uDDOModel* cHitInfoAfterCommon::getAttckerPtr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsAttackerShl != false) {
-        return this->mpShlOwnerModel;
+    if (mIsAttackerShl) {
+        return mpShlOwnerModel;
     } else {
-        return this->mpAtkModel;
+        return mpAtkModel;
     }
 }
 
 // Address: 0x0020b800 - 0x0020b81e (30 bytes)
 f32 cHitInfoAfterCommon::getLvAdj(nObjCollision::LV_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLvAdjData != static_cast<const cCalcDamageLvAdj*>(nullptr)) {
-        return this->mpLvAdjData->mLvAdj[type];
+    if (mpLvAdjData != nullptr) {
+        return mpLvAdjData->mLvAdj[type];
     } else {
         return 1.0f;
     }
@@ -501,6 +505,8 @@ f32 cHitInfoAfterCommon::getLvAdj(nObjCollision::LV_ADJ_TYPE type) const {
 
 // No out-of-line body: no code in the ELF
 // cHitInfoAfterCommon::cHitInfoAfterCommon(const cHitInfoAfterCommon&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitInfoAfterCommon::MyDTI cHitInfoAfterCommon::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHitInfoAfter.cpp at 0x0020c2ce-0x0020c307 (called at cHitInfoAfter.cpp:36)
@@ -548,7 +554,7 @@ const MtDTI& cHpDamageInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cHpDamageInfoD0Ev at 0x0198abd0-0x0198abfa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cHpDamageInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHpDamageInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHpDamageInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -584,13 +590,13 @@ inline void cHpDamageInfo::operator delete(void* p_addr) {
 // Address: 0x0020b830 - 0x0020b83f (15 bytes)
 void cHpDamageInfo::addDamageAttackAdj(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE type, f32 Adj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDamageAttackAdj[type] = this->mDamageAttackAdj[type] + Adj;
+    mDamageAttackAdj[type] = mDamageAttackAdj[type] + Adj;
 }
 
 // Address: 0x0020b840 - 0x0020b855 (21 bytes)
 void cHpDamageInfo::addDamageDefenceAdj(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_TYPE type, f32 Adj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDamageDefenceAdj[type] = this->mDamageDefenceAdj[type] + Adj;
+    mDamageDefenceAdj[type] = mDamageDefenceAdj[type] + Adj;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (579 bytes)
@@ -632,6 +638,8 @@ __attribute__((weak)) f32 cHpDamageInfo::calcDefenceAdjWithType() const {
     DDON_STUB("cHpDamageInfo::calcDefenceAdjWithType")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHpDamageInfo::MyDTI cHpDamageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHitInfoAfter.cpp at 0x0020c307-0x0020c340 (called at cHitInfoAfter.cpp:37)

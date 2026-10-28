@@ -234,7 +234,7 @@ namespace cEvaluationName {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEvaluationName::cEvaluationPoint::cEvaluationPoint() {
-    this->mCategory = static_cast<u32>(0);
+    this->mCategory = 0;
     this->mAddValue = 0.0f;
     this->mDecValue = 0.0f;
     this->mEnable = false;

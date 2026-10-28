@@ -197,8 +197,39 @@ inline u32 cpScrCollision::getFilter() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEnemy::setup at 0x8f3192-0x8f319a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpScrCollision::setFallLimit(f32 fallLimig) {
+    this->mFallLimit = fallLimig;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::resetPos at 0xc6d19c-0xc6d1a6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpScrCollision::resetLastNormal() {
+    this->mLastNormal = 1.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cpScrCollision::isHitLand() const {
     return this->mIsHitLand;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::getGroundInfoScr at 0x8dbb17-0x8dbb1e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cGroundAttrInfo& cpScrCollision::getGroundAttrInfoScr() {
+    return this->mGroundAttrInfoScr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::getGroundInfoWaterDepth at 0x8dbb37-0x8dbb3e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cGroundAttrInfo& cpScrCollision::getGroundAttrInfoWaterDepth() {
+    return this->mGroundAttrInfoWaterDepth;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEnemy::setup at 0x8f31a5-0x8f31b4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpScrCollision::onLandCastConvex(f32 radius) {
+    this->mIsLandCastConvex = true;
+    this->mCastConvexSphereRadius = radius;
 }
 
 // Inline, no code of its own: checked where it is inlined.

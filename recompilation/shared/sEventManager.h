@@ -22,6 +22,7 @@ class cCamExParam;
 class cContextInstHm;
 class cEfcHandle;
 class cEventParam;
+class cQuestTask;
 namespace nStage { struct stEventParam; }
 class rCameraParamList;
 class rEffectProvider;
@@ -53,6 +54,8 @@ using u32 = unsigned int;
 
 class sEventManager : public cSystem
 {
+    // inferred: cQuestTask::cQuestProcess::resultExeEventAfterStageJumpContinue names sEventManager::mpInstance, through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: uCameraGame::isEventCamera names sEventManager::mpInstance
     friend class uCameraGame;
 public:
@@ -343,6 +346,30 @@ inline sEventManager* sEventManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOActorModelEm::initEnemy at 0x8d0d0d-0x8d0d14; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cEventParam* sEventManager::getExecEventParam() {
+    return this->mpParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cFSMOrder::stateUpdatePlayBGM at 0x1e3a75-0x1e3a7c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rSoundStreamRequest* sEventManager::getFsmBgmStqr() {
+    return this->mpFsmBgmStqr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpAnim::initSub at 0x34b17-0x34b1e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uHuman* sEventManager::getAdjustTarget() {
+    return this->mpAdjustTarget;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sQuestManagerExt::updateBarricade at 0x81f969-0x81f970; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sEventManager::onContentInterrupt() {
+    this->mIsContentsInterrupt = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sEventManager::clearContentInterrupt() {
     this->mIsContentsInterrupt = false;
@@ -350,5 +377,5 @@ inline void sEventManager::clearContentInterrupt() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sEventManager::cNpcId::cNpcId() {
-    this->mNpcId = static_cast<u32>(0);
+    this->mNpcId = 0;
 }

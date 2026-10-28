@@ -41,6 +41,7 @@ class cGameTime;
 class cGameWeather;
 class cPlayPointInfo;
 class cPlayerExpTable;
+class cQuestTask;
 class cStageCtrl;
 class cStageToSpot;
 class cTalkMsgData;
@@ -156,6 +157,8 @@ class sGame : public cSystem
     friend class aStage;
     // inferred: cGUIUtility::IsChargeAttributeEnable names sGame::mCharData.mCharData.mOption.mIsDispCharges
     friend class cGUIUtility;
+    // inferred: cQuestTask::cQuestProcess::checkIsSetPartnerPawn names sGame::mPartnerPawnId, through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: cpJob02::update names sGame::mCharData.mCharData.mOption.mIsCamDrama
     friend class cpJob02;
     // inferred: nJobParam::cHumanBaseInfo::init names sGame::mpInstance
@@ -746,6 +749,13 @@ inline sGame* sGame::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sGame::requestNextStage(s32 stageNo, s32 posNo) {
+    this->mGuardData.mReqStageNo = stageNo;
+    this->mGuardData.mReqStartPosNo = posNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 sGame::getReqStageNo() const {
     return this->mGuardData.mReqStageNo;
 }
@@ -754,6 +764,13 @@ inline s32 sGame::getReqStageNo() const {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline s32 sGame::getReqStartPosNo() const {
     return this->mGuardData.mReqStartPosNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::load at 0x87c1-0x87ca; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setStageNo(s32 stageNo) {
+    this->mStageNoOld = this->mStageNo;
+    this->mStageNo = stageNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -769,9 +786,28 @@ inline s32 sGame::getStageNoOld() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::load at 0x87cd-0x87d0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setStartPosNo(s32 posNo) {
+    this->mStartPosNo = posNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_GET_RETURN_LOCATION_RES at 0x308fed-0x308ff3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setReturnStage(s32 stageNo, s32 posNo) {
+    this->mReturnStageNo = stageNo;
+    this->mReturnStartPosNo = posNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline s32 sGame::getReturnStageNo() const {
     return this->mReturnStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::moveGameover at 0x126dd-0x126e0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sGame::getReturnStartPosNo() const {
+    return this->mReturnStartPosNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -801,13 +837,73 @@ inline bool sGame::isParty(s32 memberIndex) {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x4a09-0x4a0f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setLimitJobPoint(u32 jp) {
+    this->mLimitJobPoint = jp;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_GET_VERSION_RES at 0x30c49d-0x30c4a9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setChargeCourseVersion(u32 version) {
+    this->mChargeCourseVersion = version;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedLoginSvConnection::OnPacket_L2C_GP_COURSE_GET_INFO_RES at 0x37d4cf-0x37d4d6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES& sGame::PacketGPCourseInfo() {
+    return this->mPacketGPCourseInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::move_main at 0xd0a6-0xd0ac; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setFadeType(s32 type) {
+    this->mFadeType = static_cast<u32>(type);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aCharacterEditGame::init at 0x1128-0x112e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGame::getCharEditType() const {
+    return this->mCharEditType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aCharacterEditGame::init at 0x1134-0x113a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGame::getCharEditPawnSlotNo() const {
+    return this->mCharEditSlotNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x5847-0x584d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setPawnCreateItemID(u32 id) {
+    this->mPawnCreateItemID = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sGame::setPartnerPawnId(u32 id) {
+    this->mPartnerPawnId = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sGame::setLikability(u32 likability) {
+    this->mLikability = likability;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x585f-0x5865; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGame::setPawnPresentItemID(u32 id) {
+    this->mPawnPresentItemID = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline u32* sGame::getWepResIndexTbl() {
     return this->mpWepResIndexTbl;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+// approximate: only approximate callers check this inline body
 inline cTalkMsgData* sGame::getExmineMsgData() const {
     return this->mpCommonMsgData;
 }
@@ -815,4 +911,10 @@ inline cTalkMsgData* sGame::getExmineMsgData() const {
 // Inline, no code of its own: checked where it is inlined.
 inline u32 sGame::getPartyWarpId() {
     return this->mPartyWarpId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::analyzeTagExtend at 0x795dc4-0x795dca; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGame::getPartyWarpSecOrigin() {
+    return this->mPartyWarpSecOrigin;
 }

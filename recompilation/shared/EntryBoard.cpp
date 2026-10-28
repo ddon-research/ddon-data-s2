@@ -28,7 +28,7 @@ const MtDTI& CDataEntryBoardItemSearchParameter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryBoardItemSearchParameter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryBoardItemSearchParameter::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryBoardItemSearchParameter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline MtAllocator* CDataEntryBoardItemSearchParameter::getAllocator() {
 // Address: 0x003d08f0 - 0x003d091a (42 bytes)
 __attribute__((weak)) void CDataEntryBoardItemSearchParameter::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryBoardItemSearchParameter::getAllocator()->memFree(p_addr);
+    CDataEntryBoardItemSearchParameter::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataEntryBoardItemSearchParameter::operator delete(v
 
 // No out-of-line body: no code in the ELF
 // CDataEntryBoardItemSearchParameter::CDataEntryBoardItemSearchParameter(const MtTypedArray<CDataCommonU8>&, const char*, const char*, b8, u32, u32, u32, b8, u32, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryBoardItemSearchParameter::MyDTI CDataEntryBoardItemSearchParameter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d015-0x0041d04e (called at EntryBoardImplement.inc:12)
@@ -97,7 +99,7 @@ const MtDTI& CDataEntryItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataEntryItem::getAllocator() {
 // Address: 0x003d0750 - 0x003d0790 (64 bytes)
 void* CDataEntryItem::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataEntryItem::getAllocator()->memAlloc(sz, align, ::CDataEntryItem::DTI.::MtDTI::getID());
+    return CDataEntryItem::getAllocator()->memAlloc(sz, align, CDataEntryItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataEntryItem::operator new(size_t sz, u32 align) {
 // Address: 0x003d07c0 - 0x003d07ea (42 bytes)
 __attribute__((weak)) void CDataEntryItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryItem::getAllocator()->memFree(p_addr);
+    CDataEntryItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataEntryItem::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataEntryItem::CDataEntryItem(u32, const CEntryItemParam&, const MtTypedArray<CDataEntryMemberData>&, u16, u16, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryItem::MyDTI CDataEntryItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cfdc-0x0041d015 (called at EntryBoardImplement.inc:11)
@@ -168,7 +172,7 @@ const MtDTI& CDataEntryItemParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryItemParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryItemParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryItemParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -190,7 +194,7 @@ inline MtAllocator* CDataEntryItemParam::getAllocator() {
 // Address: 0x003d0600 - 0x003d062a (42 bytes)
 __attribute__((weak)) void CDataEntryItemParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryItemParam::getAllocator()->memFree(p_addr);
+    CDataEntryItemParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -211,6 +215,8 @@ __attribute__((weak)) void CDataEntryItemParam::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataEntryItemParam::CDataEntryItemParam(b8, b8, s32, s32, u16, u8, u32, u16, u16, const char*, const MtTypedArray<CDataEntryRecruitData>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryItemParam::MyDTI CDataEntryItemParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cfa3-0x0041cfdc (called at EntryBoardImplement.inc:10)
@@ -237,7 +243,7 @@ const MtDTI& CDataEntryMemberData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryMemberData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryMemberData::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryMemberData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -246,7 +252,7 @@ inline MtAllocator* CDataEntryMemberData::getAllocator() {
 // Address: 0x003d0460 - 0x003d04a0 (64 bytes)
 void* CDataEntryMemberData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataEntryMemberData::getAllocator()->memAlloc(sz, align, ::CDataEntryMemberData::DTI.::MtDTI::getID());
+    return CDataEntryMemberData::getAllocator()->memAlloc(sz, align, CDataEntryMemberData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,7 +267,7 @@ void* CDataEntryMemberData::operator new(size_t sz, u32 align) {
 // Address: 0x003d04d0 - 0x003d04fa (42 bytes)
 __attribute__((weak)) void CDataEntryMemberData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryMemberData::getAllocator()->memFree(p_addr);
+    CDataEntryMemberData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -282,6 +288,8 @@ __attribute__((weak)) void CDataEntryMemberData::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataEntryMemberData::CDataEntryMemberData(u16, b8, const CCharacterListElement&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryMemberData::MyDTI CDataEntryMemberData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cf6a-0x0041cfa3 (called at EntryBoardImplement.inc:9)
@@ -308,7 +316,7 @@ const MtDTI& CDataEntryRecruitData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryRecruitData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryRecruitData::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryRecruitData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -317,7 +325,7 @@ inline MtAllocator* CDataEntryRecruitData::getAllocator() {
 // Address: 0x003d02c0 - 0x003d0300 (64 bytes)
 void* CDataEntryRecruitData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataEntryRecruitData::getAllocator()->memAlloc(sz, align, ::CDataEntryRecruitData::DTI.::MtDTI::getID());
+    return CDataEntryRecruitData::getAllocator()->memAlloc(sz, align, CDataEntryRecruitData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -332,7 +340,7 @@ void* CDataEntryRecruitData::operator new(size_t sz, u32 align) {
 // Address: 0x003d0330 - 0x003d035a (42 bytes)
 __attribute__((weak)) void CDataEntryRecruitData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryRecruitData::getAllocator()->memFree(p_addr);
+    CDataEntryRecruitData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -354,6 +362,8 @@ __attribute__((weak)) void CDataEntryRecruitData::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataEntryRecruitData::CDataEntryRecruitData(u16, const MtTypedArray<CDataEntryRecruitJob>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryRecruitData::MyDTI CDataEntryRecruitData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cf31-0x0041cf6a (called at EntryBoardImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cf31-0x0041cf6a (called at EntryBoard.h:68)
@@ -362,7 +372,7 @@ __attribute__((weak)) void CDataEntryRecruitData::operator delete(void* p_addr) 
 // Address: 0x003d0250 - 0x003d02bf (111 bytes)
 MtObject* CDataEntryRecruitData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataEntryRecruitData;
+    return new (16u) CDataEntryRecruitData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -379,7 +389,7 @@ const MtDTI& CDataEntryRecruitJob::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEntryRecruitJob::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEntryRecruitJob::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEntryRecruitJob::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -388,7 +398,7 @@ inline MtAllocator* CDataEntryRecruitJob::getAllocator() {
 // Address: 0x003d0180 - 0x003d01c0 (64 bytes)
 void* CDataEntryRecruitJob::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataEntryRecruitJob::getAllocator()->memAlloc(sz, align, ::CDataEntryRecruitJob::DTI.::MtDTI::getID());
+    return CDataEntryRecruitJob::getAllocator()->memAlloc(sz, align, CDataEntryRecruitJob::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -403,7 +413,7 @@ void* CDataEntryRecruitJob::operator new(size_t sz, u32 align) {
 // Address: 0x003d01f0 - 0x003d021a (42 bytes)
 __attribute__((weak)) void CDataEntryRecruitJob::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEntryRecruitJob::getAllocator()->memFree(p_addr);
+    CDataEntryRecruitJob::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -425,6 +435,8 @@ __attribute__((weak)) void CDataEntryRecruitJob::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataEntryRecruitJob::CDataEntryRecruitJob(u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEntryRecruitJob::MyDTI CDataEntryRecruitJob::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cef8-0x0041cf31 (called at EntryBoardImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041cef8-0x0041cf31 (called at EntryBoard.h:22)
@@ -433,6 +445,6 @@ __attribute__((weak)) void CDataEntryRecruitJob::operator delete(void* p_addr) {
 // Address: 0x003d0130 - 0x003d0174 (68 bytes)
 MtObject* CDataEntryRecruitJob::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataEntryRecruitJob;
+    return new (16u) CDataEntryRecruitJob;
 }
 

@@ -167,3 +167,9 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpLockOn::setLockOnTargetState at 0x4ce0cf-0x4ce0d5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpLockOn::cLockOnTarget::setLockOnTargetState(nLockOnTarget::LOCKON_TARGET_STATE state) {
+    this->mLockOnState = state;
+}

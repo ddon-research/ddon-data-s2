@@ -10,10 +10,12 @@
 #include "MtObject.h"
 #include "cBakeModel.h"
 #include "cUnit.h"
+#include "cpDDMrlMgr.h"
 #include "nDDOMath.h"
 #include "nDrawMaterial.h"
 #include "nDrawMaterialStdEst.h"
 #include "sEffectExt.h"
+#include "sMain.h"
 #include "sOmManager.h"
 #include "sWeatherManager.h"
 #include "uBaseModel.h"
@@ -35,7 +37,7 @@ const MtDTI& cDDMaterialCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cDDMaterialCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +46,7 @@ inline MtAllocator* cDDMaterialCtrl::getAllocator() {
 // Address: 0x0007b010 - 0x0007b050 (64 bytes)
 void* cDDMaterialCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cDDMaterialCtrl::getAllocator()->memAlloc(sz, align, ::cDDMaterialCtrl::DTI.::MtDTI::getID());
+    return cDDMaterialCtrl::getAllocator()->memAlloc(sz, align, cDDMaterialCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +61,7 @@ void* cDDMaterialCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,36 +103,36 @@ void cDDMaterialCtrl::setCommonState() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpBakeModel != static_cast<cBakeModel*>(nullptr)) {
-        if (this->mpBakeModel->mMaterialNum != static_cast<u32>(0)) {
+    if (mpBakeModel != nullptr) {
+        if (mpBakeModel->mMaterialNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value the loop at 0x84440 carries; no location-less local in scope fits
-            for (cBakeModel* v0_5 = this->mpBakeModel;;) {
+            for (cBakeModel* v0_5 = mpBakeModel;;) {
                 // inferred: a temporary for the result of the call at 0x84442, used once; no DWARF local holds it
-                nDraw::Material* t0 = v0_5->::cBakeModel::getMaterial(i0_3);
-                this->::cDDMaterialCtrl::setCommonState(t0, this->mpBakeModel->::cBakeModel::getModel(), i0_3);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mpBakeModel->mMaterialNum) {
-                    i0_3 += static_cast<unsigned int>(1);
-                    v0_5 = this->mpBakeModel;
+                nDraw::Material* t0 = v0_5->getMaterial(i0_3);
+                setCommonState(t0, mpBakeModel->getModel(), i0_3);
+                if ((i0_3 + 1u) < mpBakeModel->mMaterialNum) {
+                    i0_3 += 1u;
+                    v0_5 = mpBakeModel;
                 } else {
                     break;
                 }
             }
         }
     } else {
-        if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-            if (this->mpOwner->mMaterialNum != static_cast<u32>(0)) {
+        if (mpOwner != nullptr) {
+            if (mpOwner->mMaterialNum != 0) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                unsigned int i2_3 = static_cast<unsigned int>(0);
+                unsigned int i2_3 = 0;
                 // inferred: the value the loop at 0x84490 carries; no location-less local in scope fits
-                for (uBaseModel* v2_5 = this->mpOwner;;) {
+                for (uBaseModel* v2_5 = mpOwner;;) {
                     // inferred: a temporary for the result of the call at 0x84492, used once; no DWARF local holds it
-                    nDraw::Material* t1 = v2_5->::uBaseModel::getMaterial(i2_3);
-                    this->::cDDMaterialCtrl::setCommonState(t1, this->mpOwner->mpModel, i2_3);
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mpOwner->mMaterialNum) {
-                        i2_3 += static_cast<unsigned int>(1);
-                        v2_5 = this->mpOwner;
+                    nDraw::Material* t1 = v2_5->getMaterial(i2_3);
+                    setCommonState(t1, mpOwner->mpModel, i2_3);
+                    if ((i2_3 + 1u) < mpOwner->mMaterialNum) {
+                        i2_3 += 1u;
+                        v2_5 = mpOwner;
                     } else {
                         break;
                     }
@@ -138,7 +140,7 @@ void cDDMaterialCtrl::setCommonState() {
             }
         }
     }
-    this->::cDDMaterialCtrl::setCacheNone();
+    setCacheNone();
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,61 +158,61 @@ __attribute__((weak)) void cDDMaterialCtrl::setCommonState(nDraw::Material* pmat
 __attribute__((weak)) void cDDMaterialCtrl::setCacheNone() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from MtObject*
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mBaseShaderData.::MtArray::mpArray[this->mBaseShaderMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mShaderData.::MtArray::mpArray[this->mShaderMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mEmissionData.::MtArray::mpArray[this->mEmissionMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mOutlineData.::MtArray::mpArray[this->mOutlineMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mMaterialData.::MtArray::mpArray[this->mMaterialMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimAdvData.::MtArray::mpArray) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimRetData.::MtArray::mpArray) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
-                                if (static_cast<cDDMaterialCtrl::cShaderData*>(*this->mOldData.::MtArray::mpArray)->::cDDMaterialCtrl::cShaderData::getCacheFlag() != false) {
-                                    if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                                        this->mpOwner->mCommandCacheOffNow = true;
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mBaseShaderData.mpArray[mBaseShaderMode]) + 32)) == 0) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mShaderData.mpArray[mShaderMode]) + 32)) == 0) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mEmissionData.mpArray[mEmissionMode]) + 32)) == 0) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOutlineData.mpArray[mOutlineMode]) + 32)) == 0) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mMaterialData.mpArray[mMaterialMode]) + 32)) == 0) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimAdvData.mpArray) + 32)) == 0) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimRetData.mpArray) + 32)) == 0) {
+                                if (static_cast<cDDMaterialCtrl::cShaderData*>(*mOldData.mpArray)->getCacheFlag()) {
+                                    if (mpOwner != nullptr) {
+                                        mpOwner->mCommandCacheOffNow = true;
                                     }
                                 }
                             } else {
-                                if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                                    this->mpOwner->mCommandCacheOffNow = true;
+                                if (mpOwner != nullptr) {
+                                    mpOwner->mCommandCacheOffNow = true;
                                 }
                             }
                         } else {
-                            if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                                this->mpOwner->mCommandCacheOffNow = true;
+                            if (mpOwner != nullptr) {
+                                mpOwner->mCommandCacheOffNow = true;
                             }
                         }
                     } else {
-                        if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                            this->mpOwner->mCommandCacheOffNow = true;
+                        if (mpOwner != nullptr) {
+                            mpOwner->mCommandCacheOffNow = true;
                         }
                     }
                 } else {
-                    if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                        this->mpOwner->mCommandCacheOffNow = true;
+                    if (mpOwner != nullptr) {
+                        mpOwner->mCommandCacheOffNow = true;
                     }
                 }
             } else {
-                if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                    this->mpOwner->mCommandCacheOffNow = true;
+                if (mpOwner != nullptr) {
+                    mpOwner->mCommandCacheOffNow = true;
                 }
             }
         } else {
-            if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-                this->mpOwner->mCommandCacheOffNow = true;
+            if (mpOwner != nullptr) {
+                mpOwner->mCommandCacheOffNow = true;
             }
         }
     } else {
-        if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
-            this->mpOwner->mCommandCacheOffNow = true;
+        if (mpOwner != nullptr) {
+            mpOwner->mCommandCacheOffNow = true;
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mBaseShaderData.::MtArray::mpArray[this->mBaseShaderMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mShaderData.::MtArray::mpArray[this->mShaderMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mEmissionData.::MtArray::mpArray[this->mEmissionMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mOutlineData.::MtArray::mpArray[this->mOutlineMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mMaterialData.::MtArray::mpArray[this->mMaterialMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimAdvData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimRetData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mOldData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mBaseShaderData.mpArray[mBaseShaderMode]) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mShaderData.mpArray[mShaderMode]) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mEmissionData.mpArray[mEmissionMode]) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOutlineData.mpArray[mOutlineMode]) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mMaterialData.mpArray[mMaterialMode]) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimAdvData.mpArray) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimRetData.mpArray) + 32) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mOldData.mpArray) + 32) = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -271,7 +273,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setBaseShaderMode(u32 mode) {
 // Address: 0x01964320 - 0x01964327 (7 bytes)
 u32 cDDMaterialCtrl::getBaseShaderMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBaseShaderMode;
+    return mBaseShaderMode;
 }
 
 // Address: 0x00084080 - 0x000840f5 (117 bytes)
@@ -283,7 +285,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setShaderMode(u32 mode) {
 // Address: 0x01964330 - 0x01964337 (7 bytes)
 u32 cDDMaterialCtrl::getShaderMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShaderMode;
+    return mShaderMode;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (88 bytes)
@@ -302,7 +304,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setEmissionMode(u32 mode) {
 // Address: 0x01964340 - 0x01964347 (7 bytes)
 u32 cDDMaterialCtrl::getEmissionMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEmissionMode;
+    return mEmissionMode;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (88 bytes)
@@ -321,7 +323,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setOutlineMode(u32 mode) {
 // Address: 0x01964350 - 0x01964357 (7 bytes)
 u32 cDDMaterialCtrl::getOutlineMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOutlineMode;
+    return mOutlineMode;
 }
 
 // Address: 0x00084180 - 0x000841f0 (112 bytes)
@@ -339,7 +341,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setMaterialMode(u32 mode) {
 // Address: 0x01964360 - 0x01964367 (7 bytes)
 u32 cDDMaterialCtrl::getMaterialMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaterialMode;
+    return mMaterialMode;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (12 bytes)
@@ -369,10 +371,10 @@ __attribute__((weak)) void cDDMaterialCtrl::setDataMaterialSpecularColor(const M
 void cDDMaterialCtrl::resetDataMaterialDefaultColors() {
     // DWARF local not rendered: cShaderDataMaterialToDefaultColor* p_to_def;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((*this->mMaterialData.::MtArray::mpArray) == static_cast<MtObject*>(nullptr)) {
+    if ((*mMaterialData.mpArray) == nullptr) {
         return;
     }
-    static_cast<cDDMaterialCtrl::cShaderDataMaterialToDefaultColor*>(*this->mMaterialData.::MtArray::mpArray)->::cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::createDefaultColors();
+    static_cast<cDDMaterialCtrl::cShaderDataMaterialToDefaultColor*>(*mMaterialData.mpArray)->createDefaultColors();
 }
 
 // Address: 0x00091670 - 0x000917d3 (355 bytes)
@@ -490,31 +492,31 @@ __attribute__((weak)) void cDDMaterialCtrl::resetAllMode() {
 // Address: 0x01964370 - 0x0196437b (11 bytes)
 cDDMaterialCtrl::cShaderDataDamage* cDDMaterialCtrl::getBaseShaderData(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<cDDMaterialCtrl::cShaderDataDamage*>(this->mBaseShaderData.::MtArray::mpArray[index]);
+    return static_cast<cShaderDataDamage*>(mBaseShaderData.mpArray[index]);
 }
 
 // Address: 0x019643b0 - 0x019643bb (11 bytes)
 cDDMaterialCtrl::cShaderDataStatusAilments* cDDMaterialCtrl::getShaderData(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(this->mShaderData.::MtArray::mpArray[index]);
+    return static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[index]);
 }
 
 // Address: 0x019643f0 - 0x019643fe (14 bytes)
 cDDMaterialCtrl::cShaderDataEmission* cDDMaterialCtrl::getEmissionData(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<cDDMaterialCtrl::cShaderDataEmission*>(this->mEmissionData.::MtArray::mpArray[index]);
+    return static_cast<cShaderDataEmission*>(mEmissionData.mpArray[index]);
 }
 
 // Address: 0x01964430 - 0x0196443b (11 bytes)
 cDDMaterialCtrl::cShaderDataOutline* cDDMaterialCtrl::getOutlineData(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<cDDMaterialCtrl::cShaderDataOutline*>(this->mOutlineData.::MtArray::mpArray[index]);
+    return static_cast<cShaderDataOutline*>(mOutlineData.mpArray[index]);
 }
 
 // Address: 0x01964470 - 0x0196447e (14 bytes)
 cDDMaterialCtrl::cShaderDataMaterial* cDDMaterialCtrl::getMaterialData(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<cDDMaterialCtrl::cShaderDataMaterial*>(this->mMaterialData.::MtArray::mpArray[index]);
+    return static_cast<cShaderDataMaterial*>(mMaterialData.mpArray[index]);
 }
 
 // Address: 0x01964380 - 0x01964381 (1 bytes)
@@ -545,31 +547,31 @@ __attribute__((weak)) void cDDMaterialCtrl::setMaterialData(cDDMaterialCtrl::cSh
 // Address: 0x01964390 - 0x01964394 (4 bytes)
 u32 cDDMaterialCtrl::getBaseShaderDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBaseShaderData.::MtArray::mLength;
+    return mBaseShaderData.mLength;
 }
 
 // Address: 0x019643d0 - 0x019643d4 (4 bytes)
 u32 cDDMaterialCtrl::getShaderDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShaderData.::MtArray::mLength;
+    return mShaderData.mLength;
 }
 
 // Address: 0x01964410 - 0x01964414 (4 bytes)
 u32 cDDMaterialCtrl::getEmissionDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEmissionData.::MtArray::mLength;
+    return mEmissionData.mLength;
 }
 
 // Address: 0x01964450 - 0x01964454 (4 bytes)
 u32 cDDMaterialCtrl::getOutlineDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOutlineData.::MtArray::mLength;
+    return mOutlineData.mLength;
 }
 
 // Address: 0x01964490 - 0x01964497 (7 bytes)
 u32 cDDMaterialCtrl::getMaterialDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaterialData.::MtArray::mLength;
+    return mMaterialData.mLength;
 }
 
 // Address: 0x019643a0 - 0x019643a1 (1 bytes)
@@ -596,6 +598,16 @@ __attribute__((weak)) void cDDMaterialCtrl::setOutlineDataNum(u32 num) {
 __attribute__((weak)) void cDDMaterialCtrl::setMaterialDataNum(u32 num) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const SO_HANDLE cDDMaterialCtrl::outlineBlendType[4];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const SO_HANDLE cDDMaterialCtrl::outlineColorType[3];
+
+// Not defined (no member-wise spelling: a class with constructors or bases): const MtFloat3 cDDMaterialCtrl::outlineColorMaskType[3];
+
+// Not defined (no member-wise spelling: a class with constructors or bases): const MtFloat4 cDDMaterialCtrl::outlineBlendMaskType[4];
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::MyDTI cDDMaterialCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091b15-0x00091b55 (called at cDDMaterialCtrl.cpp:40)
@@ -643,7 +655,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDamage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataDamage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -695,7 +707,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataDamage::createProperty(Mt
 // Address: 0x01964f40 - 0x01964f43 (3 bytes)
 u32 cDDMaterialCtrl::cShaderDataDamage::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -744,6 +756,8 @@ u32 cDDMaterialCtrl::cShaderDataDamage::getMyShaderMode() {
 // No out-of-line body: no code in the ELF
 // void cDDMaterialCtrl::cShaderDataDamage::setEmissionFactor(f32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataDamage::MyDTI cDDMaterialCtrl::cShaderDataDamage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091d59-0x00091d93 (called at cDDMaterialCtrl.cpp:50)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091d59-0x00091d93 (called at cDDMaterialCtrl.h:394)
@@ -778,7 +792,7 @@ const MtDTI& cDDMaterialCtrl::cShaderData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDDMaterialCtrl::cShaderData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderData::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -792,7 +806,7 @@ inline void* cDDMaterialCtrl::cShaderData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -817,10 +831,10 @@ inline void cDDMaterialCtrl::cShaderData::operator delete(void* p_addr) {
 // Address: 0x019644b0 - 0x019644c1 (17 bytes)
 void cDDMaterialCtrl::cShaderData::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = bm;
-    this->mpBakeModel = pBakeModel;
-    this->mpMaterialCtrl = pMaterialCtrl;
-    this->mIsCacheNone = true;
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
 }
 
 // Defined in the class (its body was written in a header).
@@ -958,6 +972,8 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderData::getDefAlbedoColor(
 //   and 38 more (every copy is in <bundle>.inlined.json)
 // void cDDMaterialCtrl::cShaderData::setCacheFlag(bool set);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderData::MyDTI cDDMaterialCtrl::cShaderData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091b55-0x00091b8e (called at cDDMaterialCtrl.cpp:41)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091b55-0x00091b8e (called at cDDMaterialCtrl.h:132)
@@ -966,7 +982,7 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderData::getDefAlbedoColor(
 // Address: 0x0007b0c0 - 0x0007b11c (92 bytes)
 MtObject* cDDMaterialCtrl::cShaderData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDDMaterialCtrl::cShaderData;
+    return new (16u) cDDMaterialCtrl::cShaderData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1004,7 +1020,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataStatusAilments::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataStatusAilments::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataStatusAilments::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataStatusAilments::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1036,19 +1052,19 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::init(uBas
 // Address: 0x000854e0 - 0x0008553c (92 bytes)
 void cDDMaterialCtrl::cShaderDataStatusAilments::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResetFactorS = this->::cDDMaterialCtrl::cShaderDataStatusAilments::getFactorS();
-    if (::sWeatherManager::getInstance() == static_cast<sWeatherManager*>(nullptr)) {
+    mResetFactorS = getFactorS();
+    if (sWeatherManager::getInstance() == nullptr) {
         return;
     }
-    f32 NightRate = ::sWeatherManager::getInstance()->::sWeatherManager::getDayNightBlendRate();
-    f32 SpecularRate = ::nDDOMath::lerp(1.0f, 4.0f, NightRate);
-    this->mFactorS = this->mFactorS * (1.0f / SpecularRate);
+    f32 NightRate = sWeatherManager::getInstance()->getDayNightBlendRate();
+    f32 SpecularRate = nDDOMath::lerp(1.0f, 4.0f, NightRate);
+    mFactorS = mFactorS * (1.0f / SpecularRate);
 }
 
 // Address: 0x01964da0 - 0x01964da4 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataStatusAilments::isEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnd;
+    return mIsEnd;
 }
 
 // Address: 0x000864c0 - 0x0008650a (74 bytes)
@@ -1091,9 +1107,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setTextur
 void cDDMaterialCtrl::cShaderDataStatusAilments::copy(cDDMaterialCtrl::cShaderData* sd) {
     // DWARF local not rendered: cShaderDataStatusAilments* sdsa;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mApplicateA = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->::cDDMaterialCtrl::cShaderDataStatusAilments::getApplicateA();
-    this->mFactorN = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->::cDDMaterialCtrl::cShaderDataStatusAilments::getFactorN();
-    this->mFactorS = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->::cDDMaterialCtrl::cShaderDataStatusAilments::getFactorS();
+    mApplicateA = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->getApplicateA();
+    mFactorN = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->getFactorN();
+    mFactorS = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->getFactorS();
 }
 
 // Address: 0x0007eb90 - 0x0007ef83 (1011 bytes)
@@ -1185,7 +1201,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::createPro
 // Address: 0x01964dc0 - 0x01964dc6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataStatusAilments::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (8 bytes)
@@ -1202,6 +1218,8 @@ u32 cDDMaterialCtrl::cShaderDataStatusAilments::getAlimentsTextureId() {
 
 // No out-of-line body: no code in the ELF
 // void cDDMaterialCtrl::cShaderDataStatusAilments::setEnd(bool);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataStatusAilments::MyDTI cDDMaterialCtrl::cShaderDataStatusAilments::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091b8e-0x00091bc8 (called at cDDMaterialCtrl.cpp:42)
@@ -1249,7 +1267,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataOutline::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataOutline::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataOutline::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataOutline::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1281,55 +1299,55 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setCommonState(c
 // Address: 0x01964530 - 0x01964534 (4 bytes)
 u32 cDDMaterialCtrl::cShaderDataOutline::getBlendType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBlendType;
+    return mBlendType;
 }
 
 // Address: 0x019644d0 - 0x019644d4 (4 bytes)
 u32 cDDMaterialCtrl::cShaderDataOutline::getColorType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorType;
+    return mColorType;
 }
 
 // Address: 0x019644e0 - 0x019644ed (13 bytes)
 MtVector4 cDDMaterialCtrl::cShaderDataOutline::getOColor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOColor;
+    return mOColor;
 }
 
 // Address: 0x019644f0 - 0x019644fd (13 bytes)
 MtVector4 cDDMaterialCtrl::cShaderDataOutline::getIColor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIColor;
+    return mIColor;
 }
 
 // Address: 0x01964500 - 0x01964506 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceOffset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBalanceOffset;
+    return mBalanceOffset;
 }
 
 // Address: 0x01964510 - 0x01964516 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataOutline::getBalanceScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBalanceScale;
+    return mBalanceScale;
 }
 
 // Address: 0x01964520 - 0x01964526 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataOutline::getBalance() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBalance;
+    return mBalance;
 }
 
 // Address: 0x01964540 - 0x01964544 (4 bytes)
 void cDDMaterialCtrl::cShaderDataOutline::setBlendType(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBlendType = set;
+    mBlendType = set;
 }
 
 // Address: 0x01964550 - 0x01964554 (4 bytes)
 void cDDMaterialCtrl::cShaderDataOutline::setColorType(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColorType = set;
+    mColorType = set;
 }
 
 // Address: 0x01964560 - 0x0196456a (10 bytes)
@@ -1347,19 +1365,19 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setIColor(MtVect
 // Address: 0x01964580 - 0x01964586 (6 bytes)
 void cDDMaterialCtrl::cShaderDataOutline::setBalanceOffset(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBalanceOffset = set;
+    mBalanceOffset = set;
 }
 
 // Address: 0x01964590 - 0x01964596 (6 bytes)
 void cDDMaterialCtrl::cShaderDataOutline::setBalanceScale(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBalanceScale = set;
+    mBalanceScale = set;
 }
 
 // Address: 0x019645a0 - 0x019645a6 (6 bytes)
 void cDDMaterialCtrl::cShaderDataOutline::setBalance(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBalance = set;
+    mBalance = set;
 }
 
 // Address: 0x00086f50 - 0x0008734b (1019 bytes)
@@ -1367,6 +1385,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::createProperty(M
     DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataOutline::MyDTI cDDMaterialCtrl::cShaderDataOutline::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091f24-0x00091f5d (called at cDDMaterialCtrl.cpp:58)
@@ -1414,7 +1434,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataEmission::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataEmission::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmission::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmission::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1484,6 +1504,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataEmission::createProperty(
 // No out-of-line body: no code in the ELF
 // void cDDMaterialCtrl::cShaderDataEmission::setDiffuseBlendFactor(f32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataEmission::MyDTI cDDMaterialCtrl::cShaderDataEmission::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091eb1-0x00091eea (called at cDDMaterialCtrl.cpp:56)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091eb1-0x00091eea (called at cDDMaterialCtrl.h:545)
@@ -1530,7 +1552,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterial::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterial::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterial::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterial::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1564,22 +1586,28 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterial::end(uBaseModel*
 }
 
 // Address: 0x019645c0 - 0x019645d3 (19 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterial::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterial::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterial::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
 }
 
 // Address: 0x01965280 - 0x01965285 (5 bytes)
 void cDDMaterialCtrl::cShaderDataMaterial::setEnd(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnd = f;
+    mIsEnd = f;
 }
 
 // Address: 0x01965270 - 0x01965274 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataMaterial::isEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnd;
+    return mIsEnd;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterial::MyDTI cDDMaterialCtrl::cShaderDataMaterial::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091f96-0x00091fd0 (called at cDDMaterialCtrl.cpp:60)
@@ -1628,7 +1656,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataAnimation::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataAnimation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1650,14 +1678,73 @@ inline void cDDMaterialCtrl::cShaderDataAnimation::operator delete(void* p_addr)
 // Address: 0x01963e70 - 0x01963f0d (157 bytes)
 // Also emitted as: _ZN15cDDMaterialCtrl20cShaderDataAnimationD0Ev at 0x01965970
 cDDMaterialCtrl::cShaderDataAnimation::~cShaderDataAnimation() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimation::~cShaderDataAnimation")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mAnimData.mLength != 0) {
+        // inferred: the value the loop at 0x1963ea0 carries; no location-less local in scope fits
+        u32 v0_0 = mAnimData.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mAnimData.mpArray[i0_3] != nullptr) {
+                delete mAnimData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAnimData.mLength) {
+                    v0_0 = mAnimData.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAnimData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAnimData.mpArray));
+    }
+    mAnimData.mpArray = nullptr;
+    mAnimData.mBufsiz = 0;
+    mAnimData.mLength = 0;
 }
 
 // Address: 0x0008e6d0 - 0x0008e75c (140 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimation::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimation::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataAnimation::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
+    if (mAnimData.mLength != 0) {
+        // inferred: the value the loop at 0x8e700 carries; no location-less local in scope fits
+        u32 v0_0 = mAnimData.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mAnimData.mpArray[i0_3] != nullptr) {
+                delete mAnimData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAnimData.mLength) {
+                    v0_0 = mAnimData.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAnimData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAnimData.mpArray));
+    }
+    mAnimData.mpArray = nullptr;
+    mAnimData.mBufsiz = 0;
+    mAnimData.mLength = 0;
 }
 
 // Address: 0x0008e7f0 - 0x0008eda5 (1461 bytes)
@@ -1716,25 +1803,24 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimation::addRequestData
 
 // Address: 0x0008e610 - 0x0008e618 (8 bytes)
 bool cDDMaterialCtrl::cShaderDataAnimation::judgeValidAnimation(cDDMaterialCtrl::TitleMaterial* pm) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from cDDMaterialCtrl::cShaderDataAnimation*
-    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) != static_cast<unsigned int>(0);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mAnimData.mLength != 0;
 }
 
 // Address: 0x0008e630 - 0x0008e63b (11 bytes)
 s32 cDDMaterialCtrl::cShaderDataAnimation::getEndValueInt(const nDraw::Animation::PARAM_INT* ParamInt, cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ParamInt != static_cast<const nDraw::Animation::PARAM_INT*>(nullptr)) {
+    if (ParamInt != nullptr) {
         return ParamInt->keys[0].value;
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0008e640 - 0x0008e64f (15 bytes)
 f32 cDDMaterialCtrl::cShaderDataAnimation::getEndValueFloat(const nDraw::Animation::PARAM_FLOAT* ParamFloat, cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ParamFloat != static_cast<const nDraw::Animation::PARAM_FLOAT*>(nullptr)) {
+    if (ParamFloat != nullptr) {
         return ParamFloat->keys[0].value;
     } else {
         return 0.0f;
@@ -1759,6 +1845,12 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimation::setAnimation(c
 //   in cDDMaterialCtrl::cShaderDataAnimationToDefault::getEndValueFloat at 0x0008ee2c-0x0008ee3b (called at cDDMaterialCtrl.cpp:4210)
 //   in cDDMaterialCtrl::cShaderDataAnimationToDefault::getEndValueVector at 0x0008ee90-0x0008ee9f (called at cDDMaterialCtrl.cpp:4225)
 // const nDraw::Material* cDDMaterialCtrl::cShaderDataAnimation::getResMaterial(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataAnimation::MyDTI cDDMaterialCtrl::cShaderDataAnimation::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataAnimation::CHANGE_MRL_ANIM_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cDDMaterialCtrl::cShaderDataAnimation::MRL_ANIM_LEVEL_START_MATERIAL_ID;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009256c-0x000925a5 (called at cDDMaterialCtrl.cpp:87)
@@ -1794,7 +1886,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataAnimation::cAnimData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1809,7 +1901,7 @@ inline void* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator new(size
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl20cShaderDataAnimation9cAnimDataD0Ev at 0x019661c0-0x019661ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1865,6 +1957,8 @@ inline void cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator delete(vo
 //   in cDDMaterialCtrl::cShaderDataAnimation::setCommonState at 0x0008e87f-0x0008e885 (called at cDDMaterialCtrl.cpp:4082)
 // u32 cDDMaterialCtrl::cShaderDataAnimation::cAnimData::getMaterialId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataAnimation::cAnimData::MyDTI cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000925df-0x00092618 (called at cDDMaterialCtrl.cpp:89)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000925df-0x00092618 (called at cDDMaterialCtrl.h:1318)
@@ -1873,7 +1967,7 @@ inline void cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator delete(vo
 // Address: 0x0007e300 - 0x0007e359 (89 bytes)
 MtObject* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDDMaterialCtrl::cShaderDataAnimation::cAnimData;
+    return new (16u) cDDMaterialCtrl::cShaderDataAnimation::cAnimData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1912,7 +2006,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataAnimationToDefault::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataAnimationToDefault::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1963,12 +2057,18 @@ __attribute__((weak)) MtFloat4 cDDMaterialCtrl::cShaderDataAnimationToDefault::g
 }
 
 // Address: 0x0008eed0 - 0x0008ef40 (112 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimationToDefault::setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame) {
-    // local: Animation* pMateAnim;
-    // local: s32 DefAnimIndex;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimationToDefault::setAnimation")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataAnimationToDefault::setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    nDraw::Animation* pMateAnim = pm->getAnimationData();
+    s32 DefAnimIndex = pMateAnim->nDraw::Animation::getNo(*cpDDMrlMgr::ANIM_NAME_TBL);
+    if (AnimIndex == pm->getAnimation(nDraw::Material::SLOT_0)) {
+        pm->setAnimation(nDraw::Material::SLOT_0, DefAnimIndex);
+    }
+    pm->mAnimationState[0].frame = StartFrame;
+    pm->setAnimation(nDraw::Material::SLOT_1, -1);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataAnimationToDefault::MyDTI cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000925a5-0x000925df (called at cDDMaterialCtrl.cpp:88)
@@ -2017,7 +2117,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialOldData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataMaterialOldData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2044,9 +2144,15 @@ cDDMaterialCtrl::cShaderDataMaterialOldData::~cShaderDataMaterialOldData() {
 }
 
 // Address: 0x00091540 - 0x00091574 (52 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOldData::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOldData::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialOldData::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
+    setEnd(false);
+    createData();
 }
 
 // Address: 0x00091580 - 0x0009166f (239 bytes)
@@ -2075,6 +2181,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOldData::createDa
 
 // No out-of-line body: no code in the ELF
 // f32 cDDMaterialCtrl::cShaderDataMaterialOldData::getBAlphaClipThresholdOld(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialOldData::MyDTI cDDMaterialCtrl::cShaderDataMaterialOldData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009268a-0x000926c3 (called at cDDMaterialCtrl.cpp:92)
@@ -2122,7 +2230,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDamageDrawOn::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl23cShaderDataDamageDrawOnD0Ev at 0x01967cd0-0x01967cfa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataDamageDrawOn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2137,8 +2245,10 @@ inline void cDDMaterialCtrl::cShaderDataDamageDrawOn::operator delete(void* p_ad
 // Address: 0x01967d10 - 0x01967d16 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataDamageDrawOn::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091d93-0x00091dcc (called at cDDMaterialCtrl.cpp:51)
@@ -2186,7 +2296,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDead::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataDead::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDead::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDead::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2209,9 +2319,14 @@ inline void cDDMaterialCtrl::cShaderDataDead::operator delete(void* p_addr) {
 // cDDMaterialCtrl::cShaderDataDead::~cShaderDataDead();
 
 // Address: 0x000868a0 - 0x000868bc (28 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataDead::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataDead::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataDead::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mPassageFrame = 0.0f;
+    mIsEnd = false;
 }
 
 // Address: 0x000865d0 - 0x00086894 (708 bytes)
@@ -2233,14 +2348,24 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataDead::setCommonState(cDDM
 // Address: 0x01964fa0 - 0x01964fa6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataDead::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x01964f90 - 0x01964f94 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataDead::isEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnd;
+    return mIsEnd;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataDead::MyDTI cDDMaterialCtrl::cShaderDataDead::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataDead::ALL_USE_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataDead::BLACK_USE_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataDead::ALPHA_USE_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataDead::CLIP_USE_FRAME;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091dcc-0x00091e05 (called at cDDMaterialCtrl.cpp:52)
@@ -2288,7 +2413,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataBloodStain::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataBloodStain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2322,7 +2447,7 @@ inline void cDDMaterialCtrl::cShaderDataBloodStain::operator delete(void* p_addr
 // Address: 0x01965000 - 0x01965006 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataBloodStain::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x000868c0 - 0x0008698e (206 bytes)
@@ -2346,8 +2471,10 @@ __attribute__((weak)) bool cDDMaterialCtrl::cShaderDataBloodStain::isSetCommonSt
 // Address: 0x00086ba0 - 0x00086bac (12 bytes)
 void cDDMaterialCtrl::cShaderDataBloodStain::requestPhase(u32 phase) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPhase = (phase <= static_cast<u32>(3)) ? phase : static_cast<u32>(0);
+    mPhase = (phase <= 3u) ? phase : 0u;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataBloodStain::MyDTI cDDMaterialCtrl::cShaderDataBloodStain::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091e05-0x00091e3e (called at cDDMaterialCtrl.cpp:53)
@@ -2395,7 +2522,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataHakuryuStone::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataHakuryuStone::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2420,22 +2547,22 @@ inline void cDDMaterialCtrl::cShaderDataHakuryuStone::operator delete(void* p_ad
 // Address: 0x000869a0 - 0x000869ea (74 bytes)
 void cDDMaterialCtrl::cShaderDataHakuryuStone::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isSetCommonState(pm, pBaseModel, index) == false) {
+    if (!isSetCommonState(pm, pBaseModel, index)) {
         return;
     }
-    this->setCommonCB(pm, pBaseModel, index);
+    setCommonCB(pm, pBaseModel, index);
 }
 
 // Address: 0x01965070 - 0x01965076 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataHakuryuStone::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x01965060 - 0x01965067 (7 bytes)
 bool cDDMaterialCtrl::cShaderDataHakuryuStone::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr);
+    return pm != nullptr;
 }
 
 // Address: 0x00086bb0 - 0x00086bcf (31 bytes)
@@ -2444,6 +2571,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataHakuryuStone::requestPhas
     DDON_STUB("cDDMaterialCtrl::cShaderDataHakuryuStone::requestPhase")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI cDDMaterialCtrl::cShaderDataHakuryuStone::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091e3e-0x00091e78 (called at cDDMaterialCtrl.cpp:54)
@@ -2491,7 +2620,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataFireDamage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataFireDamage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2516,7 +2645,7 @@ inline void cDDMaterialCtrl::cShaderDataFireDamage::operator delete(void* p_addr
 // Address: 0x019650d0 - 0x019650d6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataFireDamage::getMyShaderMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
 
 // Address: 0x00086b50 - 0x00086b9f (79 bytes)
@@ -2529,6 +2658,8 @@ __attribute__((weak)) bool cDDMaterialCtrl::cShaderDataFireDamage::isSetCommonSt
 
 // No out-of-line body: no code in the ELF
 // void cDDMaterialCtrl::cShaderDataFireDamage::requestPhase(u32 phase);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataFireDamage::MyDTI cDDMaterialCtrl::cShaderDataFireDamage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091e78-0x00091eb1 (called at cDDMaterialCtrl.cpp:55)
@@ -2576,7 +2707,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataFire::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataFire::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFire::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFire::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2612,7 +2743,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::setCommonState(cDDM
 // Address: 0x01965e00 - 0x01965e06 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataFire::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00085540 - 0x00085644 (260 bytes)
@@ -2631,6 +2762,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::createProperty(MtPr
     DDON_STUB("cDDMaterialCtrl::cShaderDataFire::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataFire::MyDTI cDDMaterialCtrl::cShaderDataFire::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091bc8-0x00091c01 (called at cDDMaterialCtrl.cpp:43)
@@ -2678,7 +2811,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataFreeze::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataFreeze::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFreeze::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFreeze::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2716,14 +2849,22 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFreeze::setCommonState(cD
 // Address: 0x01964e30 - 0x01964e36 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataFreeze::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x00085650 - 0x000856ac (92 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataFreeze::update() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataFreeze::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataFreeze::update() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mFactorS = getResetFactorS();
+    if (sWeatherManager::getInstance() == nullptr) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0x8568a, used once; no DWARF local holds it
+    f32 t0 = nDDOMath::lerp(1.0f, 4.0f, sWeatherManager::getInstance()->getDayNightBlendRate());
+    mFactorS = mFactorS * (1.0f / t0);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataFreeze::MyDTI cDDMaterialCtrl::cShaderDataFreeze::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091c01-0x00091c3a (called at cDDMaterialCtrl.cpp:44)
@@ -2771,7 +2912,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataGeneral::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataGeneral::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataGeneral::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataGeneral::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2800,7 +2941,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGeneral::init(uBaseModel*
 // Address: 0x01965db0 - 0x01965db6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataGeneral::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x000856b0 - 0x00085734 (132 bytes)
@@ -2815,6 +2956,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGeneral::createProperty(M
     DDON_STUB("cDDMaterialCtrl::cShaderDataGeneral::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataGeneral::MyDTI cDDMaterialCtrl::cShaderDataGeneral::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091c3a-0x00091c74 (called at cDDMaterialCtrl.cpp:45)
@@ -2862,7 +3005,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataWetOil::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataWetOil::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataWetOil::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWetOil::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2916,7 +3059,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::setTextureForMate
 // Address: 0x01965ef0 - 0x01965ef6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataWetOil::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x00085740 - 0x0008580d (205 bytes)
@@ -2933,6 +3076,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::createProperty(Mt
     DDON_STUB("cDDMaterialCtrl::cShaderDataWetOil::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataWetOil::MyDTI cDDMaterialCtrl::cShaderDataWetOil::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091c74-0x00091cad (called at cDDMaterialCtrl.cpp:46)
@@ -2980,7 +3125,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataStone::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataStone::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataStone::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataStone::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3018,22 +3163,45 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStone::setCommonState(cDD
 // Address: 0x01964eb0 - 0x01964eb6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataStone::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
 
 // Address: 0x00085810 - 0x000858dc (204 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataStone::update() {
-    // local: const f32 MAX_FACTORS;
-    // local: const f32 MAX_FACTORN;
-    // local: const f32 MAX_APPLICATEA;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStone::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataStone::update() {
+    // DWARF local not rendered: const f32 MAX_FACTORS;
+    // DWARF local not rendered: const f32 MAX_FACTORN;
+    // DWARF local not rendered: const f32 MAX_APPLICATEA;
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    mFactorS = getResetFactorS();
+    // inferred: a temporary for the value the load at 0x8582d read, used 5 times; no DWARF local holds it
+    f32 t0 = sMain::getInstance()->mDeltaTime;
+    // inferred: a temporary for the value the load at 0x85832 read, used 5 times; no DWARF local holds it
+    f32 t1 = mPassageFrame;
+    mPassageFrame = t0 + t1;
+    if (mPassageFrame > MAX_FRAME) {
+        mApplicateA = 1.0f;
+        mFactorN = 1.0f;
+        mFactorS = 0.1f;
+    } else {
+        mApplicateA = (t0 + t1) * (1.0f / MAX_FRAME);
+        mFactorN = mApplicateA;
+        mFactorS = (t0 + t1) * (0.1f / MAX_FRAME);
+    }
+    mResetFactorS = mFactorS;
+    if (sWeatherManager::getInstance() == nullptr) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0x858ba, used once; no DWARF local holds it
+    f32 t2 = nDDOMath::lerp(1.0f, 4.0f, sWeatherManager::getInstance()->getDayNightBlendRate());
+    mFactorS = mFactorS * (1.0f / t2);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (12 bytes)
 //   in cpDDMrlMgr::setStonePassageFrame at 0x0046d59b-0x0046d5a2 (called at cpDDMrlMgr.cpp:493)
 //   in cpDDMrlMgr::setStonePassageFrame at 0x0046d5c5-0x0046d5ca (called at cpDDMrlMgr.cpp:493)
 // void cDDMaterialCtrl::cShaderDataStone::setPassageFrame(f32 set);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataStone::MyDTI cDDMaterialCtrl::cShaderDataStone::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091cad-0x00091ce6 (called at cDDMaterialCtrl.cpp:47)
@@ -3081,7 +3249,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataGold::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataGold::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataGold::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataGold::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3110,22 +3278,45 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGold::init(uBaseModel* bm
 // Address: 0x01965e50 - 0x01965e56 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataGold::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
 
 // Address: 0x000858e0 - 0x000859ac (204 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataGold::update() {
-    // local: const f32 MAX_FACTORS;
-    // local: const f32 MAX_FACTORN;
-    // local: const f32 MAX_APPLICATEA;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataGold::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataGold::update() {
+    // DWARF local not rendered: const f32 MAX_FACTORS;
+    // DWARF local not rendered: const f32 MAX_FACTORN;
+    // DWARF local not rendered: const f32 MAX_APPLICATEA;
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    mFactorS = getResetFactorS();
+    // inferred: a temporary for the value the load at 0x858fd read, used 5 times; no DWARF local holds it
+    f32 t0 = sMain::getInstance()->mDeltaTime;
+    // inferred: a temporary for the value the load at 0x85902 read, used 5 times; no DWARF local holds it
+    f32 t1 = mPassageFrame;
+    mPassageFrame = t0 + t1;
+    if (mPassageFrame > MAX_FRAME) {
+        mApplicateA = 0.3f;
+        mFactorN = 1.0f;
+        mFactorS = 1.0f;
+    } else {
+        mApplicateA = (t0 + t1) * (0.3f / MAX_FRAME);
+        mFactorN = (t0 + t1) * (1.0f / MAX_FRAME);
+        mFactorS = mFactorN;
+    }
+    mResetFactorS = mFactorS;
+    if (sWeatherManager::getInstance() == nullptr) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0x8598a, used once; no DWARF local holds it
+    f32 t2 = nDDOMath::lerp(1.0f, 4.0f, sWeatherManager::getInstance()->getDayNightBlendRate());
+    mFactorS = mFactorS * (1.0f / t2);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (12 bytes)
 //   in cpDDMrlMgr::setGoldPassageFrame at 0x0046d5fb-0x0046d602 (called at cpDDMrlMgr.cpp:507)
 //   in cpDDMrlMgr::setGoldPassageFrame at 0x0046d625-0x0046d62a (called at cpDDMrlMgr.cpp:507)
 // void cDDMaterialCtrl::cShaderDataGold::setPassageFrame(f32 set);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataGold::MyDTI cDDMaterialCtrl::cShaderDataGold::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091ce6-0x00091d20 (called at cDDMaterialCtrl.cpp:48)
@@ -3173,7 +3364,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataErosion::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataErosion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataErosion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataErosion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3202,25 +3393,71 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataErosion::init(uBaseModel*
 // Address: 0x01965ea0 - 0x01965ea6 (6 bytes)
 u32 cDDMaterialCtrl::cShaderDataErosion::getAlimentsTextureId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
 
 // Address: 0x000859b0 - 0x00085ace (286 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataErosion::update() {
-    // local: f32 Rate;
-    // local: f32 SetApplicateA;
-    // local: f32 SetFactorN;
-    // local: f32 SetFactorS;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataErosion::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataErosion::update() {
+    // DWARF local not rendered: f32 Rate;
+    // DWARF local not rendered: f32 SetApplicateA;
+    // DWARF local not rendered: f32 SetFactorN;
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    if (mLevel != -1) {
+        mFactorS = getResetFactorS();
+        // inferred: a temporary for the value the load at 0x859de read, used 4 times; no DWARF local holds it
+        f32 t0 = sMain::getInstance()->mDeltaTime;
+        // inferred: a temporary for the value the load at 0x859e3 read, used 4 times; no DWARF local holds it
+        f32 t1 = mPassageFrame;
+        mPassageFrame = t0 + t1;
+        // inferred: a temporary for the value the load at 0x859ed read, used 5 times; no DWARF local holds it
+        f32 t2 = USE_FRAME;
+        if (mPassageFrame > t2) {
+            mPassageFrame = t2;
+            // inferred: a temporary for the result of the call at 0x85a15, used once; no DWARF local holds it
+            f32 t3 = nDDOMath::lerp(getApplicateA(), mApplicateATbl[mLevel], t2 / t2);
+            // inferred: a temporary for the result of the call at 0x85a33, used once; no DWARF local holds it
+            f32 t4 = nDDOMath::lerp(getFactorN(), mFactorNTbl[mLevel], t2 / t2);
+            f32 SetFactorS = nDDOMath::lerp(getFactorS(), mFactorSTbl[mLevel], t2 / t2);
+            mApplicateA = t3;
+            mFactorN = t4;
+            mFactorS = SetFactorS;
+            mResetFactorS = mFactorS;
+            if (sWeatherManager::getInstance() != nullptr) {
+                // inferred: a temporary for the result of the call at 0x85a9b, used once; no DWARF local holds it
+                f32 t5 = nDDOMath::lerp(1.0f, 4.0f, sWeatherManager::getInstance()->getDayNightBlendRate());
+                mFactorS = mFactorS * (1.0f / t5);
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0x85a15, used once; no DWARF local holds it
+            f32 t3 = nDDOMath::lerp(getApplicateA(), mApplicateATbl[mLevel], (t0 + t1) / t2);
+            // inferred: a temporary for the result of the call at 0x85a33, used once; no DWARF local holds it
+            f32 t4 = nDDOMath::lerp(getFactorN(), mFactorNTbl[mLevel], (t0 + t1) / t2);
+            f32 SetFactorS = nDDOMath::lerp(getFactorS(), mFactorSTbl[mLevel], (t0 + t1) / t2);
+            mApplicateA = t3;
+            mFactorN = t4;
+            mFactorS = SetFactorS;
+            mResetFactorS = mFactorS;
+            if (sWeatherManager::getInstance() != nullptr) {
+                // inferred: a temporary for the result of the call at 0x85a9b, used once; no DWARF local holds it
+                f32 t5 = nDDOMath::lerp(1.0f, 4.0f, sWeatherManager::getInstance()->getDayNightBlendRate());
+                mFactorS = mFactorS * (1.0f / t5);
+            }
+        }
+    } else {
+        mApplicateA = 0.0f;
+        mFactorN = 0.0f;
+        mFactorS = 0.0f;
+    }
 }
 
 // Address: 0x00085ad0 - 0x00085af7 (39 bytes)
 void cDDMaterialCtrl::cShaderDataErosion::requestLevel(s32 OcdBadErisionLv) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    this->mPassageFrame = 0.0f;
-    this->mLevel = static_cast<s32>(((((OcdBadErisionLv - static_cast<s32>(4123)) <= static_cast<s32>(-2)) ? static_cast<unsigned int>(4294967295) : static_cast<unsigned int>(OcdBadErisionLv - static_cast<s32>(4123))) <= static_cast<unsigned int>(3)) ? (((OcdBadErisionLv - static_cast<s32>(4123)) <= static_cast<s32>(-2)) ? static_cast<unsigned int>(4294967295) : static_cast<unsigned int>(OcdBadErisionLv - static_cast<s32>(4123))) : static_cast<unsigned int>(3));
+    mPassageFrame = 0.0f;
+    mLevel = static_cast<s32>(((((OcdBadErisionLv - 4123) <= -2) ? 0xFFFFFFFFu : static_cast<unsigned int>(OcdBadErisionLv - 4123)) <= 3u) ? (((OcdBadErisionLv - 4123) <= -2) ? 0xFFFFFFFFu : static_cast<unsigned int>(OcdBadErisionLv - 4123)) : 3u);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataErosion::MyDTI cDDMaterialCtrl::cShaderDataErosion::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091d20-0x00091d59 (called at cDDMaterialCtrl.cpp:49)
@@ -3268,7 +3505,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataOutlineOn::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataOutlineOn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataOutlineOn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataOutlineOn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3297,6 +3534,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutlineOn::setCommonState
     DDON_STUB("cDDMaterialCtrl::cShaderDataOutlineOn::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataOutlineOn::MyDTI cDDMaterialCtrl::cShaderDataOutlineOn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091f5d-0x00091f96 (called at cDDMaterialCtrl.cpp:59)
@@ -3344,7 +3583,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataEmissionEye::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3370,10 +3609,9 @@ inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_add
 bool cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // DWARF local not rendered: const u16 MATERIAL_EMISSION_EYE_ID_START;
     // DWARF local not rendered: const u16 MATERIAL_EMISSION_EYE_ID_END;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65236)) <= static_cast<unsigned short>(99);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pm != nullptr) {
+        return static_cast<unsigned short>(pm->mID + 65236) <= 99;
     } else {
         return false;
     }
@@ -3386,6 +3624,10 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataEmissionEye::setCommonSta
     DDON_STUB("cDDMaterialCtrl::cShaderDataEmissionEye::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI cDDMaterialCtrl::cShaderDataEmissionEye::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataEmissionEye::FIXED_EYE_INTENSITY;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091eea-0x00091f24 (called at cDDMaterialCtrl.cpp:57)
@@ -3434,7 +3676,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::getDTI() const 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3462,15 +3704,33 @@ cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::~cShaderDataMaterialToDefaul
 }
 
 // Address: 0x00088030 - 0x00088080 (80 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mPastFrame = 0.0f;
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
+    setEnd(false);
+    if (mpDiffuseColor != nullptr) {
+        return;
+    }
+    if (mpSpecularColor == nullptr) {
+        createDefaultColors();
+    }
 }
 
 // Address: 0x00088080 - 0x000880dc (92 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::update() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::update() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (isEnd()) {
+        return;
+    }
+    if (mPastFrame > (mEndFrame * 1.5f)) {
+        setEnd(true);
+    }
+    mPastFrame = mPastFrame + sMain::getInstance()->mDeltaTime;
 }
 
 // Address: 0x000880e0 - 0x00088474 (916 bytes)
@@ -3610,6 +3870,8 @@ __attribute__((weak)) bool cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::a
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::MyDTI cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091fd0-0x00092009 (called at cDDMaterialCtrl.cpp:61)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00091fd0-0x00092009 (called at cDDMaterialCtrl.h:675)
@@ -3656,7 +3918,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialColor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterialColor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialColor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialColor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3705,8 +3967,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialColor::setCommonS
 // Address: 0x000889f0 - 0x00088a00 (16 bytes)
 bool cDDMaterialCtrl::cShaderDataMaterialColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return this->mTargetAll != false;
+    if (pm != nullptr) {
+        return mTargetAll;
     } else {
         return false;
     }
@@ -3717,6 +3979,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialColor::createProp
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialColor::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialColor::MyDTI cDDMaterialCtrl::cShaderDataMaterialColor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092009-0x00092043 (called at cDDMaterialCtrl.cpp:62)
@@ -3764,7 +4028,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialDead::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterialDead::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3805,6 +4069,16 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialDead::setCommonSt
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialDead::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialDead::MyDTI cDDMaterialCtrl::cShaderDataMaterialDead::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialDead::PL_COLOR_DOWN;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialDead::EM_COLOR_DOWN;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialDead::PL_DEAD_COLMAX;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialDead::CL_DEAD_COLMIN;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092043-0x0009207c (called at cDDMaterialCtrl.cpp:63)
@@ -3852,7 +4126,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantFire::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl30cShaderDataMaterialEnchantFireD0Ev at 0x01965c70-0x01965c9a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantFire::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3880,6 +4154,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantFire::setC
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantFire::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantFire::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000920b5-0x000920ef (called at cDDMaterialCtrl.cpp:65)
@@ -3927,7 +4203,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchant::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchant::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3966,10 +4242,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchant::setCommo
 bool cDDMaterialCtrl::cShaderDataMaterialEnchant::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_START;
     // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_END;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pm != nullptr) {
+        return static_cast<unsigned short>(pm->mID + 65436) <= 99;
     } else {
         return false;
     }
@@ -4043,6 +4318,10 @@ bool cDDMaterialCtrl::cShaderDataMaterialEnchant::isSetCommonState(cDDMaterialCt
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // MtVector4 cDDMaterialCtrl::cShaderDataMaterialEnchant::makeEnchantColor(cDDMaterialCtrl::cShaderDataMaterialEnchant::CALC_DATA_TABLEv4* cdt);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchant::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialEnchant::USE_FRAME;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009207c-0x000920b5 (called at cDDMaterialCtrl.cpp:64)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009207c-0x000920b5 (called at cDDMaterialCtrl.h:843)
@@ -4089,7 +4368,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantIce::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl29cShaderDataMaterialEnchantIceD0Ev at 0x01965cb0-0x01965cda, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantIce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4117,6 +4396,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantIce::setCo
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantIce::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantIce::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000920ef-0x00092129 (called at cDDMaterialCtrl.cpp:66)
@@ -4164,7 +4445,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::getDTI() const 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl33cShaderDataMaterialEnchantThunderD0Ev at 0x01965cf0-0x01965d1a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4192,6 +4473,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::s
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092129-0x00092163 (called at cDDMaterialCtrl.cpp:67)
@@ -4239,7 +4522,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl30cShaderDataMaterialEnchantHolyD0Ev at 0x01965d30-0x01965d5a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4267,6 +4550,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::setC
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092163-0x0009219d (called at cDDMaterialCtrl.cpp:68)
@@ -4314,7 +4599,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantDark::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl30cShaderDataMaterialEnchantDarkD0Ev at 0x019655e0-0x0196560a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4352,6 +4637,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::setC
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
 //   in cDDMaterialCtrl::cShaderDataMaterialEnchantDark::setCommonState at 0x0008c752-0x0008c774 (called at cDDMaterialCtrl.cpp:3285)
 // void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::setFoundationAlbedoColor(MtVector3& set);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantDark::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009219d-0x000921d7 (called at cDDMaterialCtrl.cpp:69)
@@ -4400,7 +4687,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataWaterColor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataWaterColor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4434,9 +4721,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWaterColor::init(uBaseMod
 
 // Address: 0x0008d870 - 0x0008d881 (17 bytes)
 bool cDDMaterialCtrl::cShaderDataWaterColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned short>(pm->mID + 65436) <= 99;
 }
 
 // Address: 0x0008d890 - 0x0008dcc2 (1074 bytes)
@@ -4507,6 +4793,8 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataWaterColor::getDunge
     __builtin_unreachable();
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataWaterColor::MyDTI cDDMaterialCtrl::cShaderDataWaterColor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000924c1-0x000924fa (called at cDDMaterialCtrl.cpp:83)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000924c1-0x000924fa (called at cDDMaterialCtrl.h:1229)
@@ -4553,7 +4841,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataConstantMaterialColor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataConstantMaterialColor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4581,6 +4869,8 @@ __attribute__((weak)) bool cDDMaterialCtrl::cShaderDataConstantMaterialColor::is
     DDON_STUB("cDDMaterialCtrl::cShaderDataConstantMaterialColor::isSetCommonState")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataConstantMaterialColor::MyDTI cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092533-0x0009256c (called at cDDMaterialCtrl.cpp:86)
@@ -4629,7 +4919,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataSdl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cDDMaterialCtrl::cShaderDataSdl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataSdl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataSdl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4651,8 +4941,35 @@ inline void cDDMaterialCtrl::cShaderDataSdl::operator delete(void* p_addr) {
 // Address: 0x01963fd0 - 0x01964064 (148 bytes)
 // Also emitted as: _ZN15cDDMaterialCtrl14cShaderDataSdlD0Ev at 0x01965b40
 cDDMaterialCtrl::cShaderDataSdl::~cShaderDataSdl() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdl::~cShaderDataSdl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mSdlData.mLength != 0) {
+        // inferred: the value the loop at 0x1964000 carries; no location-less local in scope fits
+        u32 v0_0 = mSdlData.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mSdlData.mpArray[i0_3] != nullptr) {
+                delete mSdlData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSdlData.mLength) {
+                    v0_0 = mSdlData.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mSdlData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSdlData.mpArray));
+    }
+    mSdlData.mpArray = nullptr;
+    mSdlData.mBufsiz = 0;
+    mSdlData.mLength = 0;
 }
 
 // Address: 0x0008efd0 - 0x0008f977 (2471 bytes)
@@ -4713,19 +5030,19 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::copy(cDDMaterialCtrl
 // Address: 0x01964600 - 0x01964604 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataSdl::getTargetMaterialAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetMaterialAll;
+    return mTargetMaterialAll;
 }
 
 // Address: 0x01964610 - 0x01964614 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataSdl::getTargetChildAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetChildAll;
+    return mTargetChildAll;
 }
 
 // Address: 0x01964650 - 0x01964654 (4 bytes)
 bool cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransformEnable;
+    return mUVTransformEnable;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (138 bytes)
@@ -4747,19 +5064,19 @@ bool cDDMaterialCtrl::cShaderDataSdl::getUVTransformEnable() {
 // Address: 0x01964630 - 0x01964635 (5 bytes)
 void cDDMaterialCtrl::cShaderDataSdl::setTargetMaterialAll(bool set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetMaterialAll = set;
+    mTargetMaterialAll = set;
 }
 
 // Address: 0x01964640 - 0x01964645 (5 bytes)
 void cDDMaterialCtrl::cShaderDataSdl::setTargetChildAll(bool set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetChildAll = set;
+    mTargetChildAll = set;
 }
 
 // Address: 0x01964660 - 0x01964665 (5 bytes)
 void cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable(bool set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransformEnable = set;
+    mUVTransformEnable = set;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (129 bytes)
@@ -4781,7 +5098,7 @@ void cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable(bool set) {
 // Address: 0x01964620 - 0x0196462c (12 bytes)
 cDDMaterialCtrl::cShaderDataSdlData* cDDMaterialCtrl::cShaderDataSdl::getSdlData(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    return static_cast<cDDMaterialCtrl::cShaderDataSdlData*>(this->mSdlData.::MtArray::getBuffer()[static_cast<int>(index)]);
+    return static_cast<cShaderDataSdlData*>(mSdlData.getBuffer()[static_cast<int>(index)]);
 }
 
 // Address: 0x01964670 - 0x01964671 (1 bytes)
@@ -4791,9 +5108,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::setSdlData(cDDMateri
 
 // Address: 0x01964680 - 0x01964684 (4 bytes)
 u32 cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from cDDMaterialCtrl::cShaderDataSdl*
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mSdlData.mLength;
 }
 
 // Address: 0x01964690 - 0x01964691 (1 bytes)
@@ -4806,6 +5122,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::createProperty(MtPro
     DDON_STUB("cDDMaterialCtrl::cShaderDataSdl::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataSdl::MyDTI cDDMaterialCtrl::cShaderDataSdl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092651-0x0009268a (called at cDDMaterialCtrl.cpp:91)
@@ -4855,7 +5173,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataSdlData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataSdlData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataSdlData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataSdlData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4882,67 +5200,67 @@ inline void cDDMaterialCtrl::cShaderDataSdlData::operator delete(void* p_addr) {
 // Address: 0x019646a0 - 0x019646a4 (4 bytes)
 u32 cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetMaterialId;
+    return mTargetMaterialId;
 }
 
 // Address: 0x019646b0 - 0x019646c7 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Offset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm0Offset;
+    return mUVTransForm0Offset;
 }
 
 // Address: 0x019646d0 - 0x019646e7 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Offset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm1Offset;
+    return mUVTransForm1Offset;
 }
 
 // Address: 0x019646f0 - 0x01964707 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Offset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm2Offset;
+    return mUVTransForm2Offset;
 }
 
 // Address: 0x01964710 - 0x01964727 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm0Scale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm0Scale;
+    return mUVTransForm0Scale;
 }
 
 // Address: 0x01964730 - 0x01964747 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm1Scale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm1Scale;
+    return mUVTransForm1Scale;
 }
 
 // Address: 0x01964750 - 0x01964767 (23 bytes)
 MtVector2 cDDMaterialCtrl::cShaderDataSdlData::getUVTransForm2Scale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUVTransForm2Scale;
+    return mUVTransForm2Scale;
 }
 
 // Address: 0x01964770 - 0x01964776 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalUVScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDetailNormalUVScale;
+    return mDetailNormalUVScale;
 }
 
 // Address: 0x01964780 - 0x01964786 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getDetailNormalPower() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDetailNormalPower;
+    return mDetailNormalPower;
 }
 
 // Address: 0x01964790 - 0x01964796 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getTransparency() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTransparency;
+    return mTransparency;
 }
 
 // Address: 0x019647a0 - 0x019647a6 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getShininess() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShininess;
+    return mShininess;
 }
 
 // Address: 0x019647b0 - 0x019647d8 (40 bytes)
@@ -4978,25 +5296,25 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getReflecti
 // Address: 0x019648d0 - 0x019648d9 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlphaClipThreshold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBAlphaClipThreshold;
+    return mBAlphaClipThreshold;
 }
 
 // Address: 0x019648e0 - 0x019648e9 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaBand() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBBlendAlphaBand;
+    return mBBlendAlphaBand;
 }
 
 // Address: 0x019648f0 - 0x019648f9 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getBBlendAlphaThreshold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBBlendAlphaThreshold;
+    return mBBlendAlphaThreshold;
 }
 
 // Address: 0x01964900 - 0x01964909 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getBAlbedoBlendRate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBAlbedoBlendRate;
+    return mBAlbedoBlendRate;
 }
 
 // Address: 0x01964910 - 0x01964941 (49 bytes)
@@ -5008,193 +5326,193 @@ __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderDataSdlData::getBBlendMa
 // Address: 0x01964950 - 0x01964959 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getEmissionFactor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBEmissionFactor;
+    return mBEmissionFactor;
 }
 
 // Address: 0x01964960 - 0x01964966 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVtxDispStart;
+    return mVtxDispStart;
 }
 
 // Address: 0x01964970 - 0x01964976 (6 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVtxDispScale;
+    return mVtxDispScale;
 }
 
 // Address: 0x01964980 - 0x01964989 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispStart2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVtxDispStart2;
+    return mVtxDispStart2;
 }
 
 // Address: 0x01964990 - 0x01964999 (9 bytes)
 f32 cDDMaterialCtrl::cShaderDataSdlData::getVtxDispScale2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVtxDispScale2;
+    return mVtxDispScale2;
 }
 
 // Address: 0x019649a0 - 0x019649a4 (4 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setTargetMaterialId(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetMaterialId = set;
+    mTargetMaterialId = set;
 }
 
 // Address: 0x019649b0 - 0x019649c4 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Offset(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm0Offset.x = set.x;
-    this->mUVTransForm0Offset.y = set.y;
+    mUVTransForm0Offset.x = set.x;
+    mUVTransForm0Offset.y = set.y;
 }
 
 // Address: 0x019649d0 - 0x019649e4 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Offset(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm1Offset.x = set.x;
-    this->mUVTransForm1Offset.y = set.y;
+    mUVTransForm1Offset.x = set.x;
+    mUVTransForm1Offset.y = set.y;
 }
 
 // Address: 0x019649f0 - 0x01964a04 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Offset(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm2Offset.x = set.x;
-    this->mUVTransForm2Offset.y = set.y;
+    mUVTransForm2Offset.x = set.x;
+    mUVTransForm2Offset.y = set.y;
 }
 
 // Address: 0x01964a10 - 0x01964a24 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm0Scale(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm0Scale.x = set.x;
-    this->mUVTransForm0Scale.y = set.y;
+    mUVTransForm0Scale.x = set.x;
+    mUVTransForm0Scale.y = set.y;
 }
 
 // Address: 0x01964a30 - 0x01964a44 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm1Scale(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm1Scale.x = set.x;
-    this->mUVTransForm1Scale.y = set.y;
+    mUVTransForm1Scale.x = set.x;
+    mUVTransForm1Scale.y = set.y;
 }
 
 // Address: 0x01964a50 - 0x01964a64 (20 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setUVTransForm2Scale(MtVector2& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUVTransForm2Scale.x = set.x;
-    this->mUVTransForm2Scale.y = set.y;
+    mUVTransForm2Scale.x = set.x;
+    mUVTransForm2Scale.y = set.y;
 }
 
 // Address: 0x01964a70 - 0x01964a76 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalUVScale(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDetailNormalUVScale = set;
+    mDetailNormalUVScale = set;
 }
 
 // Address: 0x01964a80 - 0x01964a86 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setDetailNormalPower(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDetailNormalPower = set;
+    mDetailNormalPower = set;
 }
 
 // Address: 0x01964a90 - 0x01964a96 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setTransparency(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTransparency = set;
+    mTransparency = set;
 }
 
 // Address: 0x01964aa0 - 0x01964aa6 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setShininess(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShininess = set;
+    mShininess = set;
 }
 
 // Address: 0x01964ab0 - 0x01964ad5 (37 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAlbedoColor = set;
+    mAlbedoColor = set;
 }
 
 // Address: 0x01964ae0 - 0x01964b05 (37 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setDiffuseColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDiffuseColor = set;
+    mDiffuseColor = set;
 }
 
 // Address: 0x01964b10 - 0x01964b41 (49 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setSpecularColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpecularColor = set;
+    mSpecularColor = set;
 }
 
 // Address: 0x01964b50 - 0x01964b81 (49 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setEmissionColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEmissionColor = set;
+    mEmissionColor = set;
 }
 
 // Address: 0x01964b90 - 0x01964bc1 (49 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReflectiveColor = set;
+    mReflectiveColor = set;
 }
 
 // Address: 0x01964bd0 - 0x01964bd9 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setBAlphaClipThreshold(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBAlphaClipThreshold = set;
+    mBAlphaClipThreshold = set;
 }
 
 // Address: 0x01964be0 - 0x01964be9 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaBand(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBBlendAlphaBand = set;
+    mBBlendAlphaBand = set;
 }
 
 // Address: 0x01964bf0 - 0x01964bf9 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setBBlendAlphaThreshold(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBBlendAlphaThreshold = set;
+    mBBlendAlphaThreshold = set;
 }
 
 // Address: 0x01964c00 - 0x01964c09 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBAlbedoBlendRate = set;
+    mBAlbedoBlendRate = set;
 }
 
 // Address: 0x01964c10 - 0x01964c41 (49 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor(MtVector3& set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBBlendMapColor = set;
+    mBBlendMapColor = set;
 }
 
 // Address: 0x01964c50 - 0x01964c59 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setEmissionFactor(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBEmissionFactor = set;
+    mBEmissionFactor = set;
 }
 
 // Address: 0x01964c60 - 0x01964c66 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVtxDispStart = set;
+    mVtxDispStart = set;
 }
 
 // Address: 0x01964c70 - 0x01964c76 (6 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVtxDispScale = set;
+    mVtxDispScale = set;
 }
 
 // Address: 0x01964c80 - 0x01964c89 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispStart2(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVtxDispStart2 = set;
+    mVtxDispStart2 = set;
 }
 
 // Address: 0x01964c90 - 0x01964c99 (9 bytes)
 void cDDMaterialCtrl::cShaderDataSdlData::setVtxDispScale2(f32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVtxDispScale2 = set;
+    mVtxDispScale2 = set;
 }
 
 // Address: 0x00090540 - 0x000913d8 (3736 bytes)
@@ -5202,6 +5520,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::createProperty(M
     DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataSdlData::MyDTI cDDMaterialCtrl::cShaderDataSdlData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092618-0x00092651 (called at cDDMaterialCtrl.cpp:90)
@@ -5249,7 +5569,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialEnchantCraftFireD0Ev at 0x01967c90-0x01967cba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5266,6 +5586,8 @@ cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::cShaderDataMaterialEnchant
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::cShaderDataMaterialEnchantCraftFire")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092210-0x00092249 (called at cDDMaterialCtrl.cpp:71)
@@ -5313,7 +5635,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl31cShaderDataMaterialEnchantCraftD0Ev at 0x01965640-0x0196566a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5336,17 +5658,22 @@ inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::operator delete(vo
 // cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::cShaderDataMaterialEnchantCraft(MtColorHLS, MtColorHLS);
 
 // Address: 0x0008ca90 - 0x0008caac (28 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
+    mPastFrame = 0.0f;
 }
 
 // Address: 0x0008ca60 - 0x0008ca8f (47 bytes)
 void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPastFrame = this->::cDDMaterialCtrl::cShaderData::getOwner()->::cUnit::getDeltaTime() + this->mPastFrame;
-    if (this->mPastFrame > (this->mStayFrame + (this->mChangeFrame + this->mChangeFrame))) {
-        this->mPastFrame = 0.0f;
+    mPastFrame = getOwner()->getDeltaTime() + mPastFrame;
+    if (mPastFrame > (mStayFrame + (mChangeFrame + mChangeFrame))) {
+        mPastFrame = 0.0f;
     }
 }
 
@@ -5367,10 +5694,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::set
 bool cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_START;
     // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_END;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pm != nullptr) {
+        return static_cast<unsigned short>(pm->mID + 65436) <= 99;
     } else {
         return false;
     }
@@ -5401,6 +5727,16 @@ bool cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::isSetCommonState(cDDMater
 //   in cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::cShaderDataMaterialEnchantCraftThunder at 0x0196749f-0x019674a6 (called at cDDMaterialCtrl.h:1032)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::setEmissionIntensity(f32 set);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::CRAFT_ENCHANT_CHANGE_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::CRAFT_ENCHANT_STAY_FRAME;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::CRAFT_ENCHANT_ALBEDOBLEND_INTENSITY;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::CRAFT_ENCHANT_EMISSION_INTENSITY;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000921d7-0x00092210 (called at cDDMaterialCtrl.cpp:70)
@@ -5448,7 +5784,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::getDTI() const
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl34cShaderDataMaterialEnchantCraftIceD0Ev at 0x019679a0-0x019679ca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5465,6 +5801,8 @@ cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::cShaderDataMaterialEnchantC
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::cShaderDataMaterialEnchantCraftIce")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092249-0x00092282 (called at cDDMaterialCtrl.cpp:72)
@@ -5512,7 +5850,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::getDTI() c
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl38cShaderDataMaterialEnchantCraftThunderD0Ev at 0x019676b0-0x019676da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5529,6 +5867,8 @@ cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::cShaderDataMaterialEnch
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::cShaderDataMaterialEnchantCraftThunder")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092282-0x000922bb (called at cDDMaterialCtrl.cpp:73)
@@ -5576,7 +5916,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialEnchantCraftHolyD0Ev at 0x019673c0-0x019673ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5593,6 +5933,8 @@ cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::cShaderDataMaterialEnchant
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::cShaderDataMaterialEnchantCraftHoly")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000922bb-0x000922f4 (called at cDDMaterialCtrl.cpp:74)
@@ -5640,7 +5982,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialEnchantCraftDarkD0Ev at 0x019656d0-0x019656fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5686,6 +6028,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark:
 // No out-of-line body: 1 inlined copy in 1 function (234 bytes)
 //   in cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::cShaderDataMaterialEnchantCraftDark at 0x0196700b-0x0196703a, 0x01967040-0x019670fb (called at cDDMaterialCtrl.h:1060)
 // void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::setAlbedoColor(MtColorHLS Color);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::MyDTI cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000922f4-0x0009232d (called at cDDMaterialCtrl.cpp:75)
@@ -5733,7 +6077,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5781,7 +6125,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::set
 // Address: 0x0008d0e0 - 0x0008d0e7 (7 bytes)
 bool cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr);
+    return pm != nullptr;
 }
 
 // Address: 0x0008d0f0 - 0x0008d3bd (717 bytes)
@@ -5798,6 +6142,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::req
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::requestLevel")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::MyDTI cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009232d-0x00092366 (called at cDDMaterialCtrl.cpp:76)
@@ -5845,7 +6191,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialElementEnemyFireD0Ev at 0x01966af0-0x01966b1a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5862,6 +6208,8 @@ cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::cShaderDataMaterialElement
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::cShaderDataMaterialElementEnemyFire")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009239f-0x000923d9 (called at cDDMaterialCtrl.cpp:78)
@@ -5909,7 +6257,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemy::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl31cShaderDataMaterialElementEnemyD0Ev at 0x01965780-0x019657aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5929,23 +6277,27 @@ inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator delete(vo
 // cDDMaterialCtrl::cShaderDataMaterialElementEnemy::cShaderDataMaterialElementEnemy();
 
 // Address: 0x00091810 - 0x0009182c (28 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemy::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    mIsEnd = false;
+    mPastFrame = 0.0f;
 }
 
 // Address: 0x00091830 - 0x0009184a (26 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::update() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemy::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::update() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mPastFrame = sMain::getInstance()->mDeltaTime + mPastFrame;
 }
 
 // Address: 0x00091850 - 0x0009186b (27 bytes)
 bool cDDMaterialCtrl::cShaderDataMaterialElementEnemy::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65036)) <= static_cast<unsigned short>(20);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pm != nullptr) {
+        return static_cast<unsigned short>(pm->mID + 65036) <= 20;
     } else {
         return false;
     }
@@ -5985,6 +6337,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::set
 
 // No out-of-line body: no code in the ELF
 // MtColor cDDMaterialCtrl::cShaderDataMaterialElementEnemy::getEmissionColorColor();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemy::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092366-0x0009239f (called at cDDMaterialCtrl.cpp:77)
@@ -6032,7 +6386,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::getDTI() const
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl34cShaderDataMaterialElementEnemyIceD0Ev at 0x01966920-0x0196694a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6049,6 +6403,8 @@ cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::cShaderDataMaterialElementE
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::cShaderDataMaterialElementEnemyIce")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000923d9-0x00092413 (called at cDDMaterialCtrl.cpp:79)
@@ -6096,7 +6452,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::getDTI() c
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl38cShaderDataMaterialElementEnemyThunderD0Ev at 0x01966750-0x0196677a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6113,6 +6469,8 @@ cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::cShaderDataMaterialElem
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::cShaderDataMaterialElementEnemyThunder")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092413-0x0009244d (called at cDDMaterialCtrl.cpp:80)
@@ -6160,7 +6518,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialElementEnemyHolyD0Ev at 0x01966580-0x019665aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6177,6 +6535,8 @@ cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::cShaderDataMaterialElement
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::cShaderDataMaterialElementEnemyHoly")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x0009244d-0x00092487 (called at cDDMaterialCtrl.cpp:81)
@@ -6224,7 +6584,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::getDTI() cons
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15cDDMaterialCtrl35cShaderDataMaterialElementEnemyDarkD0Ev at 0x019663b0-0x019663da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6241,6 +6601,8 @@ cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::cShaderDataMaterialElement
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::cShaderDataMaterialElementEnemyDark")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::MyDTI cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x00092487-0x000924c1 (called at cDDMaterialCtrl.cpp:82)
@@ -6288,7 +6650,7 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialOmBlink::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6311,9 +6673,9 @@ inline void cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator delete(void* p
 // Address: 0x0008e2d0 - 0x0008e2fa (42 bytes)
 void cDDMaterialCtrl::cShaderDataMaterialOmBlink::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPassageFrame = 0.0f;
-    this->mLoopFrame = ::sOmManager::getInstance()->::sOmManager::getDiffuseTime() + ::sOmManager::getInstance()->::sOmManager::getDiffuseTime();
-    this->mIntensity = 1.0f;
+    mPassageFrame = 0.0f;
+    mLoopFrame = sOmManager::getInstance()->getDiffuseTime() + sOmManager::getInstance()->getDiffuseTime();
+    mIntensity = 1.0f;
 }
 
 // Address: 0x0008e300 - 0x0008e39e (158 bytes)
@@ -6328,10 +6690,9 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOmBlink::update()
 
 // Address: 0x0008e3a0 - 0x0008e3b1 (17 bytes)
 bool cDDMaterialCtrl::cShaderDataMaterialOmBlink::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
-    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
-        return (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) == static_cast<unsigned short>(0);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pm != nullptr) {
+        return pm->mID == 0;
     } else {
         return false;
     }
@@ -6343,6 +6704,8 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOmBlink::setCommo
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOmBlink::setCommonState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDDMaterialCtrl::cShaderDataMaterialOmBlink::MyDTI cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDDMaterialCtrl.cpp at 0x000924fa-0x00092533 (called at cDDMaterialCtrl.cpp:84)

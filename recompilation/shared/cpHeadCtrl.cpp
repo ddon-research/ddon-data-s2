@@ -30,7 +30,7 @@ const MtDTI& cpHeadCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpHeadCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpHeadCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpHeadCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* cpHeadCtrl::getAllocator() {
 // Address: 0x00480500 - 0x00480540 (64 bytes)
 void* cpHeadCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpHeadCtrl::getAllocator()->memAlloc(sz, align, ::cpHeadCtrl::DTI.::MtDTI::getID());
+    return cpHeadCtrl::getAllocator()->memAlloc(sz, align, cpHeadCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* cpHeadCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpHeadCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpHeadCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpHeadCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ cpHeadCtrl::~cpHeadCtrl() {
 // Address: 0x00480820 - 0x00480825 (5 bytes)
 void cpHeadCtrl::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00481460 - 0x0048149f (63 bytes)
@@ -94,8 +94,8 @@ __attribute__((weak)) void cpHeadCtrl::applyWorldOffset(const MtVector3& offset,
 // Address: 0x00480830 - 0x00480839 (9 bytes)
 void cpHeadCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00480810 - 0x00480811 (1 bytes)
@@ -159,15 +159,15 @@ __attribute__((weak)) void cpHeadCtrl::adjustPitch() {
 // Address: 0x004814a0 - 0x004814e0 (64 bytes)
 void cpHeadCtrl::setResource(rHeadCtrl* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rHeadCtrl*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rHeadCtrl*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes != static_cast<rHeadCtrl*>(nullptr)) {
-        this->mpResource = pRes;
-        pRes->::cResource::addRef();
+    if (pRes != nullptr) {
+        mpResource = pRes;
+        pRes->addRef();
     }
-    this->::cpHeadCtrl::initHeadCtrl();
+    initHeadCtrl();
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,7 +180,7 @@ void cpHeadCtrl::setResource(rHeadCtrl* pRes) {
 // Address: 0x00480a80 - 0x00480ab1 (49 bytes)
 void cpHeadCtrl::setTargetPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetPos = pos;
+    mTargetPos = pos;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -241,6 +241,8 @@ void cpHeadCtrl::setTargetPos(const MtVector3& pos) {
 //   in cpHeadCtrl::~cpHeadCtrl at 0x004806f8-0x00480797 (called at cpHeadCtrl.cpp:77)
 //   in cpHeadCtrl::initHeadCtrl at 0x0048085c-0x004808f7 (called at cpHeadCtrl.cpp:127)
 // void cpHeadCtrl::removeConstraint();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpHeadCtrl::MyDTI cpHeadCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpHeadCtrl.cpp at 0x004814e0-0x00481522 (called at cpHeadCtrl.cpp:27)

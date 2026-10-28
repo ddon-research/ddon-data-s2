@@ -52,7 +52,7 @@ const MtDTI& cHeadCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cHeadCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHeadCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (96 bytes)
@@ -77,6 +77,8 @@ inline void cHeadCtrl::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cHeadCtrl::~cHeadCtrl();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHeadCtrl::MyDTI cHeadCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rHeadCtrl.cpp at 0x0067e360-0x0067e3a2 (called at rHeadCtrl.cpp:39)
@@ -124,7 +126,7 @@ const MtDTI& rHeadCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rHeadCtrlD0Ev at 0x01a93964-0x01a93983, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rHeadCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rHeadCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rHeadCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,7 +152,7 @@ bool rHeadCtrl::loadData(MtDataReader& r, cHeadCtrl* pData) {
     pData->mAngleLimit.y = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLocal);
+    nDDOIO::readData(r, pData->mLocal);
     pData->mLocalAxis = r.readU32();
     pData->mPitchBlend = r.readF32();
     pData->mPitchLimit.x = r.readF32();
@@ -167,7 +169,7 @@ MT_CTSTR rHeadCtrl::getExt() const {
 // Address: 0x01a93ab0 - 0x01a93ab6 (6 bytes)
 u32 rHeadCtrl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x0067e0f0 - 0x0067e355 (613 bytes)
@@ -175,6 +177,8 @@ __attribute__((weak)) bool rHeadCtrl::loadCore(MtDataReader& r) {
     DDON_STUB("rHeadCtrl::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rHeadCtrl::MyDTI rHeadCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rHeadCtrl.cpp at 0x0067e3a2-0x0067e3df (called at rHeadCtrl.cpp:40)

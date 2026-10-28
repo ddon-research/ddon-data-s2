@@ -98,6 +98,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEmBaseInfoSv::cEmBaseInfoSv() {
-    this->mEnemyID = static_cast<u32>(0);
-    this->mEmCategory = static_cast<u32>(0);
+    this->mEnemyID = 0;
+    this->mEmCategory = 0;
 }

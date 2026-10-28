@@ -29,7 +29,7 @@ const MtDTI& uGUICaplinkMailNotice::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkMailNotice::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMailNotice::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkMailNotice::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUICaplinkMailNotice::getAllocator() {
 // Address: 0x009c1a80 - 0x009c1ac0 (64 bytes)
 void* uGUICaplinkMailNotice::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkMailNotice::getAllocator()->memAlloc(sz, align, ::uGUICaplinkMailNotice::DTI.::MtDTI::getID());
+    return uGUICaplinkMailNotice::getAllocator()->memAlloc(sz, align, uGUICaplinkMailNotice::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUICaplinkMailNotice::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkMailNotice::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMailNotice::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkMailNotice::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,30 +72,30 @@ inline void uGUICaplinkMailNotice::operator delete(void* p_addr) {
 // Also emitted as: _ZN21uGUICaplinkMailNoticeD0Ev at 0x009c1dc0
 uGUICaplinkMailNotice::~uGUICaplinkMailNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x009c1e20 - 0x009c1e25 (5 bytes)
 void uGUICaplinkMailNotice::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009c1e30 - 0x009c1eb5 (133 bytes)
 bool uGUICaplinkMailNotice::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_MAIL_GUI"), static_cast<u32>(129), static_cast<t64>(1430977997)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_MAIL_GUI"), 129u, 1430977997l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -108,13 +108,13 @@ __attribute__((weak)) void uGUICaplinkMailNotice::setup() {
 // Address: 0x009c1ec0 - 0x009c1ec5 (5 bytes)
 void uGUICaplinkMailNotice::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009c1ed0 - 0x009c1ed5 (5 bytes)
 void uGUICaplinkMailNotice::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009c1ee0 - 0x009c1ee1 (1 bytes)
@@ -125,7 +125,7 @@ __attribute__((weak)) void uGUICaplinkMailNotice::updatePtr() {
 // Address: 0x009c1ef0 - 0x009c1ef5 (5 bytes)
 void uGUICaplinkMailNotice::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -159,18 +159,18 @@ __attribute__((weak)) void uGUICaplinkMailNotice::setFlowId(u32 flow_id) {
 // Address: 0x009c3180 - 0x009c31eb (107 bytes)
 void uGUICaplinkMailNotice::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mFlowId - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpCancelCtrl->execute();
+    if ((mFlowId - 1u) <= 1u) {
+        if (mpCancelCtrl != nullptr) {
+            mpCancelCtrl->execute();
         }
-        if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpDecideCtrl->execute();
+        if (mpDecideCtrl != nullptr) {
+            mpDecideCtrl->execute();
         }
-        if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            this->mpListCtrl->execute();
+        if (mpListCtrl != nullptr) {
+            mpListCtrl->execute();
         }
-        if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpBtnCtrl->execute();
+        if (mpBtnCtrl != nullptr) {
+            mpBtnCtrl->execute();
         }
     }
 }
@@ -185,19 +185,19 @@ __attribute__((weak)) void uGUICaplinkMailNotice::moveEvent() {
 void uGUICaplinkMailNotice::updateMove() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mTop.mCheckItem[0].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-    this->mTop.mCheckItem[1].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-    this->mTop.mCheckItem[2].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-    this->mTop.mCheckItem[3].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-    this->mTop.mCheckItem[4].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-    (&this->mTop.mBtn[0])->update();
-    (&this->mTop.mBtn[1])->update();
+    mTop.mCheckItem[0].mCheck.uGUIBase::cReferenceUICheckbox::update();
+    mTop.mCheckItem[1].mCheck.uGUIBase::cReferenceUICheckbox::update();
+    mTop.mCheckItem[2].mCheck.uGUIBase::cReferenceUICheckbox::update();
+    mTop.mCheckItem[3].mCheck.uGUIBase::cReferenceUICheckbox::update();
+    mTop.mCheckItem[4].mCheck.uGUIBase::cReferenceUICheckbox::update();
+    (&mTop.mBtn[0])->update();
+    (&mTop.mBtn[1])->update();
 }
 
 // Address: 0x009c3040 - 0x009c3049 (9 bytes)
 void uGUICaplinkMailNotice::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009c29f0 - 0x009c2c79 (649 bytes)
@@ -252,52 +252,54 @@ __attribute__((weak)) void uGUICaplinkMailNotice::eventDecide() {
 // Address: 0x009c2700 - 0x009c271e (30 bytes)
 u32 uGUICaplinkMailNotice::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x009c2720 - 0x009c2741 (33 bytes)
 u32 uGUICaplinkMailNotice::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009c2750 - 0x009c276e (30 bytes)
 u32 uGUICaplinkMailNotice::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x009c2770 - 0x009c27e0 (112 bytes)
 u32 uGUICaplinkMailNotice::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender == this->mpBtnCtrl) {
-                if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                    this->mpListCtrl->setCurrentPos(this->mpListCtrl->::cControl::getItemNum() - static_cast<s32>(1), false);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender == mpBtnCtrl) {
+                if (mpListCtrl != nullptr) {
+                    mpListCtrl->setCurrentPos(mpListCtrl->getItemNum() - 1, false);
                 }
             }
         }
-        this->::uGUICaplinkMailNotice::adjustCursor();
-        msg->changeSE = static_cast<u32>(4);
+        adjustCursor();
+        msg->changeSE = 4;
     } else {
-        this->::uGUICaplinkMailNotice::adjustCursor();
+        adjustCursor();
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkMailNotice::MyDTI uGUICaplinkMailNotice::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkMailNotice.cpp at 0x009c360f-0x009c364c (called at uGUICaplinkMailNotice.cpp:33)

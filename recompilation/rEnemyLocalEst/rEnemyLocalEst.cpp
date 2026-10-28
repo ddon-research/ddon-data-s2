@@ -37,7 +37,7 @@ const MtDTI& cEnemyLocalEstTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEnemyLocalEstTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memAlloc(sz, align, ::cEnemyLocalEstTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyLocalEstTable::DTI)->memAlloc(sz, align, cEnemyLocalEstTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cEnemyLocalEstTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyLocalEstTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyLocalEstTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cEnemyLocalEstTable::createProperty(MtPropertyList& s
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyLocalEstTable::MyDTI cEnemyLocalEstTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyLocalEst.cpp at 0x0066c4ff-0x0066c53c (called at rEnemyLocalEst.cpp:23)
 //   in _GLOBAL__sub_I_rEnemyLocalEst.cpp at 0x0066c4ff-0x0066c53c (called at rEnemyLocalEst.h:35)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cEnemyLocalEstTable::createProperty(MtPropertyList& s
 // Address: 0x0066ba10 - 0x0066ba86 (118 bytes)
 MtObject* cEnemyLocalEstTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyLocalEstTable;
+    return new (16u) cEnemyLocalEstTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,7 +118,7 @@ const MtDTI& rEnemyLocalEst::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyLocalEst::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyLocalEst::DTI)->memAlloc(sz, align, ::rEnemyLocalEst::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyLocalEst::DTI)->memAlloc(sz, align, rEnemyLocalEst::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,7 +133,7 @@ inline void* rEnemyLocalEst::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rEnemyLocalEstD0Ev at 0x01a8ace4-0x01a8ad03, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyLocalEst::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyLocalEst::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyLocalEst::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,30 +150,30 @@ bool rEnemyLocalEst::loadData(MtDataReader& in, cEnemyLocalEstTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIdx);
+    nDDOIO::readData(in, pData->mIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBitNo);
+    nDDOIO::readData(in, pData->mBitNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStatus);
+    nDDOIO::readData(in, pData->mStatus);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCheckBit);
+    nDDOIO::readData(in, pData->mCheckBit);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mPlayAlways = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mPlayAlways = in.readU8() != 0;
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mControlType);
+    nDDOIO::readData(in, pData->mControlType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mControlIndex);
+    nDDOIO::readData(in, pData->mControlIndex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBitContrlCommand);
+    nDDOIO::readData(in, pData->mBitContrlCommand);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSetUpOff);
+    nDDOIO::readData(in, pData->mSetUpOff);
     return true;
 }
 
@@ -184,8 +186,10 @@ MT_CTSTR rEnemyLocalEst::getExt() const {
 // Address: 0x01a8ae30 - 0x01a8ae36 (6 bytes)
 u32 rEnemyLocalEst::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(259);
+    return 259;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyLocalEst::MyDTI rEnemyLocalEst::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyLocalEst.cpp at 0x0066c53c-0x0066c579 (called at rEnemyLocalEst.cpp:197)
@@ -195,7 +199,7 @@ u32 rEnemyLocalEst::getDataVersion() const {
 // Address: 0x0066c320 - 0x0066c384 (100 bytes)
 MtObject* rEnemyLocalEst::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyLocalEst;
+    return new (16u) rEnemyLocalEst;
 }
 
 // Instance at 0x01a8ade0 - 0x01a8adf6 (22 bytes) of the generic rTbl2<T>::getData

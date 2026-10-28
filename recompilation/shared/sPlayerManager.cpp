@@ -48,7 +48,7 @@ const MtDTI& sPlayerManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sPlayerManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sPlayerManager::DTI);
+    return MtMemoryAllocator::getAllocator(sPlayerManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ inline MtAllocator* sPlayerManager::getAllocator() {
 // Address: 0x00808c20 - 0x00808c60 (64 bytes)
 void* sPlayerManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sPlayerManager::getAllocator()->memAlloc(sz, align, ::sPlayerManager::DTI.::MtDTI::getID());
+    return sPlayerManager::getAllocator()->memAlloc(sz, align, sPlayerManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,7 +72,7 @@ void* sPlayerManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sPlayerManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPlayerManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPlayerManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,43 +96,43 @@ sPlayerManager::sPlayerManager() {
 sPlayerManager::~sPlayerManager() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprActBowParamList.elems[0] != static_cast<rBowActParamList*>(nullptr)) {
-        this->mprActBowParamList.elems[0]->::cResource::release();
-        this->mprActBowParamList.elems[0] = static_cast<rBowActParamList*>(nullptr);
+    if (mprActBowParamList.elems[0] != nullptr) {
+        mprActBowParamList.elems[0]->cResource::release();
+        mprActBowParamList.elems[0] = nullptr;
     }
-    if (this->mprActBowParamList.elems[1] != static_cast<rBowActParamList*>(nullptr)) {
-        this->mprActBowParamList.elems[1]->::cResource::release();
-        this->mprActBowParamList.elems[1] = static_cast<rBowActParamList*>(nullptr);
+    if (mprActBowParamList.elems[1] != nullptr) {
+        mprActBowParamList.elems[1]->cResource::release();
+        mprActBowParamList.elems[1] = nullptr;
     }
-    if (this->mprPrologueHmStatus != static_cast<rPrologueHmStatus*>(nullptr)) {
-        this->mprPrologueHmStatus->::cResource::release();
-        this->mprPrologueHmStatus = static_cast<rPrologueHmStatus*>(nullptr);
+    if (mprPrologueHmStatus != nullptr) {
+        mprPrologueHmStatus->release();
+        mprPrologueHmStatus = nullptr;
     }
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
-        this->mprHumanAdjustParam->::cResource::release();
-        this->mprHumanAdjustParam = static_cast<rAdjustParam*>(nullptr);
+    if (mprHumanAdjustParam != nullptr) {
+        mprHumanAdjustParam->release();
+        mprHumanAdjustParam = nullptr;
     }
-    if (this->mprHumanStatusParam != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        this->mprHumanStatusParam->::cResource::release();
-        this->mprHumanStatusParam = static_cast<rOcdStatusParamRes*>(nullptr);
+    if (mprHumanStatusParam != nullptr) {
+        mprHumanStatusParam->release();
+        mprHumanStatusParam = nullptr;
     }
-    if (this->mprNewBattleFlow != static_cast<rAdjustParam*>(nullptr)) {
-        this->mprNewBattleFlow->::cResource::release();
-        this->mprNewBattleFlow = static_cast<rAdjustParam*>(nullptr);
+    if (mprNewBattleFlow != nullptr) {
+        mprNewBattleFlow->release();
+        mprNewBattleFlow = nullptr;
     }
-    ::sPlayerManager::mpInstance = static_cast<sPlayerManager*>(nullptr);
+    sPlayerManager::mpInstance = nullptr;
 }
 
 // Address: 0x00808fc0 - 0x00808fc5 (5 bytes)
 void sPlayerManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::createProperty(s);
+    this->sUnitManager::createProperty(s);
 }
 
 // Address: 0x00808fd0 - 0x00808fd5 (5 bytes)
 MtUI* sPlayerManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sUnitManager::createUI(prop);
+    return this->sUnitManager::createUI(prop);
 }
 
 // Address: 0x00808ff0 - 0x0080928c (668 bytes)
@@ -150,14 +150,14 @@ __attribute__((weak)) void sPlayerManager::move() {
 // Address: 0x00809970 - 0x00809990 (32 bytes)
 void sPlayerManager::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::clear();
-    this->mpMyPlayer = static_cast<uPlayer*>(nullptr);
+    this->sUnitManager::clear();
+    mpMyPlayer = nullptr;
 }
 
 // Address: 0x00809960 - 0x00809965 (5 bytes)
 void sPlayerManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::reset();
+    this->sUnitManager::reset();
 }
 
 // Address: 0x00808fe0 - 0x00808fe1 (1 bytes)
@@ -168,20 +168,20 @@ __attribute__((weak)) void sPlayerManager::initGame() {
 // Address: 0x00809990 - 0x008099a9 (25 bytes)
 void sPlayerManager::releaseUnit(uBaseModel* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (p == this->mpMyPlayer) {
-        this->mpMyPlayer = static_cast<uPlayer*>(nullptr);
+    if (p == mpMyPlayer) {
+        mpMyPlayer = nullptr;
     }
-    this->::sUnitManager::releaseUnit(p);
+    this->sUnitManager::releaseUnit(p);
 }
 
 // Address: 0x008099b0 - 0x008099e6 (54 bytes)
 void sPlayerManager::releaseUnit(u32 uniqId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    uBaseModel* p = this->getLayoutUnit(uniqId);
-    if (this->mpMyPlayer == p) {
-        this->mpMyPlayer = static_cast<uPlayer*>(nullptr);
+    uBaseModel* p = getLayoutUnit(uniqId);
+    if (mpMyPlayer == p) {
+        mpMyPlayer = nullptr;
     }
-    this->::sUnitManager::releaseUnit(uniqId);
+    this->sUnitManager::releaseUnit(uniqId);
 }
 
 // No out-of-line body: 614 inlined copies in 421 functions (6163 bytes)
@@ -246,12 +246,12 @@ __attribute__((weak)) void sPlayerManager::playerSyncLoadCoreSub(cContextInstHm*
 // Address: 0x00809a80 - 0x00809ac3 (67 bytes)
 void sPlayerManager::returnTicket(u32 uniqId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::searchContext(uniqId);
-    if (pContext == static_cast<cContextInstHm*>(nullptr)) {
+    cContextInstHm* pContext = sContextManager::getInstance()->searchContext(uniqId);
+    if (pContext == nullptr) {
         return;
     }
-    ::cContextInterface::getPlayerLoadMgr(pContext).::cPlayerLoadManager::returnTicket();
-    ::cContextInterface::getPlayerLoadMgr(pContext).mPlayerLoadStatus = static_cast<s32>(0);
+    cContextInterface::getPlayerLoadMgr(pContext).returnTicket();
+    cContextInterface::getPlayerLoadMgr(pContext).mPlayerLoadStatus = 0;
 }
 
 // No out-of-line body: 365 inlined copies in 290 functions (2829 bytes)
@@ -264,7 +264,7 @@ void sPlayerManager::returnTicket(u32 uniqId) {
 // Address: 0x00809b20 - 0x00809b28 (8 bytes)
 void sPlayerManager::registerMyPlayer(uPlayer* pPl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpMyPlayer = pPl;
+    mpMyPlayer = pPl;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (29 bytes)
@@ -297,39 +297,39 @@ __attribute__((weak)) void sPlayerManager::updateCalcStatus() {
 void sPlayerManager::loadResource() {
     // DWARF local not rendered: u32 mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
-        this->mprHumanAdjustParam->::cResource::release();
-        this->mprHumanAdjustParam = static_cast<rAdjustParam*>(nullptr);
+    if (mprHumanAdjustParam != nullptr) {
+        mprHumanAdjustParam->release();
+        mprHumanAdjustParam = nullptr;
     }
-    if (this->mprHumanStatusParam != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        this->mprHumanStatusParam->::cResource::release();
-        this->mprHumanStatusParam = static_cast<rOcdStatusParamRes*>(nullptr);
+    if (mprHumanStatusParam != nullptr) {
+        mprHumanStatusParam->release();
+        mprHumanStatusParam = nullptr;
     }
-    if (this->mprNewBattleFlow != static_cast<rAdjustParam*>(nullptr)) {
-        this->mprNewBattleFlow->::cResource::release();
-        this->mprNewBattleFlow = static_cast<rAdjustParam*>(nullptr);
+    if (mprNewBattleFlow != nullptr) {
+        mprNewBattleFlow->release();
+        mprNewBattleFlow = nullptr;
     }
-    this->mprHumanAdjustParam = static_cast<rAdjustParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_HM_COM_AJP", static_cast<u32>(1), false));
-    this->mprHumanStatusParam = static_cast<rOcdStatusParamRes*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_STATUS_OSP", static_cast<u32>(1), false));
-    this->mprNewBattleFlow = static_cast<rAdjustParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("base", "RES_ID_NEW_BATTLE_ON_AJP", static_cast<u32>(129), false));
+    mprHumanAdjustParam = static_cast<rAdjustParam*>(sArchiveManager::getInstance()->createRes("Human", "RES_ID_HM_COM_AJP", 1u, false));
+    mprHumanStatusParam = static_cast<rOcdStatusParamRes*>(sArchiveManager::getInstance()->createRes("Human", "RES_ID_STATUS_OSP", 1u, false));
+    mprNewBattleFlow = static_cast<rAdjustParam*>(sArchiveManager::getInstance()->createRes("base", "RES_ID_NEW_BATTLE_ON_AJP", 129u, false));
 }
 
 // Address: 0x0080aca0 - 0x0080ad04 (100 bytes)
 void sPlayerManager::releaseResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
-        this->mprHumanAdjustParam->::cResource::release();
-        this->mprHumanAdjustParam = static_cast<rAdjustParam*>(nullptr);
+    if (mprHumanAdjustParam != nullptr) {
+        mprHumanAdjustParam->release();
+        mprHumanAdjustParam = nullptr;
     }
-    if (this->mprHumanStatusParam != static_cast<rOcdStatusParamRes*>(nullptr)) {
-        this->mprHumanStatusParam->::cResource::release();
-        this->mprHumanStatusParam = static_cast<rOcdStatusParamRes*>(nullptr);
+    if (mprHumanStatusParam != nullptr) {
+        mprHumanStatusParam->release();
+        mprHumanStatusParam = nullptr;
     }
-    if (this->mprNewBattleFlow == static_cast<rAdjustParam*>(nullptr)) {
+    if (mprNewBattleFlow == nullptr) {
         return;
     }
-    this->mprNewBattleFlow->::cResource::release();
-    this->mprNewBattleFlow = static_cast<rAdjustParam*>(nullptr);
+    mprNewBattleFlow->release();
+    mprNewBattleFlow = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -395,14 +395,14 @@ void sPlayerManager::resetOnsenFlag() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 k;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mIsOnsenTime[1][2] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[1][3] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[1][0] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[1][1] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[0][2] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[0][3] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[0][0] = static_cast<unsigned int>(0);
-    this->mIsOnsenTime[0][1] = static_cast<unsigned int>(0);
+    mIsOnsenTime[1][2] = 0;
+    mIsOnsenTime[1][3] = 0;
+    mIsOnsenTime[1][0] = 0;
+    mIsOnsenTime[1][1] = 0;
+    mIsOnsenTime[0][2] = 0;
+    mIsOnsenTime[0][3] = 0;
+    mIsOnsenTime[0][0] = 0;
+    mIsOnsenTime[0][1] = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -454,49 +454,49 @@ void sPlayerManager::updatePawnLobbyHeal() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_3;
-    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
-        i0_3 = static_cast<unsigned int>(0);
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+        i0_3 = 0;
     } else {
-        if (::sGame::getInstance()->mStageNo == static_cast<s32>(211)) {
-            i0_3 = static_cast<unsigned int>(0);
+        if (sGame::getInstance()->mStageNo == 211) {
+            i0_3 = 0;
         } else {
             return;
         }
     }
     for (;;) {
         // inferred: a temporary for the result of the call at 0x80a211, used 4 times; no DWARF local holds it
-        cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_3, true);
-        if (t0 != static_cast<cContextInstHm*>(nullptr)) {
-            if (::cContextInterface::getHumanType(t0) == static_cast<u8>(1)) {
-                if (::cContextInterface::isPawnOwner(t0) != false) {
+        cContextInstHm* t0 = sContextManager::getInstance()->getContextPartyPlayerIndex(i0_3, true);
+        if (t0 != nullptr) {
+            if (cContextInterface::getHumanType(t0) == 1) {
+                if (cContextInterface::isPawnOwner(t0)) {
                     // inferred: a temporary for the result of the call at 0x80a23d, used 3 times; no DWARF local holds it
-                    cContextPlayerInfo* t1 = ::cContextInterface::getContextPlayerInfo(t0);
-                    if (t1 != static_cast<cContextPlayerInfo*>(nullptr)) {
-                        t1->::cContextPlayerInfo::recoverHP();
-                        t1->::cContextPlayerInfo::recoverBadStatusInLobby();
+                    cContextPlayerInfo* t1 = cContextInterface::getContextPlayerInfo(t0);
+                    if (t1 != nullptr) {
+                        t1->recoverHP();
+                        t1->recoverBadStatusInLobby();
                     }
-                    if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) != 8) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) != 8) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) != 8) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         } else {
-            if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                i0_3 += static_cast<unsigned int>(1);
+            if ((i0_3 + 1u) != 8) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -551,45 +551,45 @@ void sPlayerManager::recoveryPrologueStatus() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as nHuman::JOB_ENUM
     // inferred: a value cast to the type its use takes: u8 used as const nHuman::JOB_ENUM
-    cContextInstHm* pInstHm = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
-    if (pInstHm == static_cast<cContextInstHm*>(nullptr)) {
+    cContextInstHm* pInstHm = sContextManager::getInstance()->getContextMyPlayer();
+    if (pInstHm == nullptr) {
         return;
     }
-    cContextPlayerInfo* pInfo = ::cContextInterface::getContextPlayerInfo(pInstHm);
-    if (pInfo == static_cast<cContextPlayerInfo*>(nullptr)) {
+    cContextPlayerInfo* pInfo = cContextInterface::getContextPlayerInfo(pInstHm);
+    if (pInfo == nullptr) {
         return;
     }
-    pInfo->::cContextPlayerInfo::resetCustomSkillPallet();
-    pInfo->::cContextPlayerInfo::resetCustomSkillLv(static_cast<nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
-    pInfo->::cContextPlayerInfo::setCustomSkillPalletR(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(this->mPrologueBackUpCustomSkill[0]), static_cast<nHuman::CUSTOM_SKILL_PALLET>(0), static_cast<nHuman::CUSTOM_SKILL_GROUP>(1000));
-    pInfo->::cContextPlayerInfo::setCustomSkillLv(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(this->mPrologueBackUpCustomSkill[0]), static_cast<nHuman::HM_SKILL_LV>(this->mPrologueBackUpCustomSkill[1]));
-    pInfo->::cContextPlayerInfo::resetNormalSkillLv(static_cast<const nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
+    pInfo->cContextPlayerInfo::resetCustomSkillPallet();
+    pInfo->cContextPlayerInfo::resetCustomSkillLv(static_cast<nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
+    pInfo->cContextPlayerInfo::setCustomSkillPalletR(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), nHuman::CUSTOM_SKILL_PALLET_1, nHuman::CSUTOM_SKILL_GROUP_CURRENT);
+    pInfo->cContextPlayerInfo::setCustomSkillLv(static_cast<const nHuman::CUSTOM_SKILL_ENUM>(mPrologueBackUpCustomSkill[0]), static_cast<nHuman::HM_SKILL_LV>(mPrologueBackUpCustomSkill[1]));
+    pInfo->cContextPlayerInfo::resetNormalSkillLv(static_cast<const nHuman::JOB_ENUM>(pInfo->mCurrentJob_pri));
     // inferred: a temporary for the value the load at 0x80aac9 read, used twice; no DWARF local holds it
     u8 t0 = pInfo->mCurrentJob_pri;
     // inferred: a temporary for the result of the call at 0x80aad1, used once; no DWARF local holds it
-    u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(t0));
-    ::memcpy(static_cast<void*>(&pInfo->mJobInfoList.elems[(t1 <= static_cast<u32>(9)) ? t1 : static_cast<u32>(0)].mLv_pri), static_cast<const void*>(&this->mPrologueBackUpJobInfo.mLv_pri), static_cast<size_t>(101));
-    pInfo->::cContextPlayerInfo::calcStatus(t0);
+    u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(t0));
+    memcpy(static_cast<void*>(&pInfo->mJobInfoList.elems[(t1 <= 9u) ? t1 : 0u].mLv_pri), static_cast<const void*>(&mPrologueBackUpJobInfo.mLv_pri), 101ul);
+    pInfo->cContextPlayerInfo::calcStatus(t0);
 }
 
 // Address: 0x0080ab20 - 0x0080ab78 (88 bytes)
 void sPlayerManager::createPrologueHmStatus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprPrologueHmStatus != static_cast<rPrologueHmStatus*>(nullptr)) {
-        this->mprPrologueHmStatus->::cResource::release();
-        this->mprPrologueHmStatus = static_cast<rPrologueHmStatus*>(nullptr);
+    if (mprPrologueHmStatus != nullptr) {
+        mprPrologueHmStatus->release();
+        mprPrologueHmStatus = nullptr;
     }
-    this->mprPrologueHmStatus = static_cast<rPrologueHmStatus*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_PROLOGUE_STATUS_PHS", static_cast<u32>(1), false));
+    mprPrologueHmStatus = static_cast<rPrologueHmStatus*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_PROLOGUE_STATUS_PHS", 1u, false));
 }
 
 // Address: 0x0080ab80 - 0x0080abac (44 bytes)
 void sPlayerManager::releasePrologueHmStatus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprPrologueHmStatus == static_cast<rPrologueHmStatus*>(nullptr)) {
+    if (mprPrologueHmStatus == nullptr) {
         return;
     }
-    this->mprPrologueHmStatus->::cResource::release();
-    this->mprPrologueHmStatus = static_cast<rPrologueHmStatus*>(nullptr);
+    mprPrologueHmStatus->release();
+    mprPrologueHmStatus = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -625,10 +625,10 @@ __attribute__((weak)) u32 sPlayerManager::getAbility227Hp() const {
 // Address: 0x0080ae00 - 0x0080ae32 (50 bytes)
 f32 sPlayerManager::getHpAbilityHighBorder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
+    if (mprHumanAdjustParam != nullptr) {
         // inferred: a temporary for the result of the call at 0x80ae1c, used twice; no DWARF local holds it
-        cAdjustParam* t0 = this->mprHumanAdjustParam->getData(static_cast<u32>(108));
-        if (t0 != static_cast<cAdjustParam*>(nullptr)) {
+        cAdjustParam* t0 = mprHumanAdjustParam->getData(108u);
+        if (t0 != nullptr) {
             return t0->mParam;
         } else {
             return 0.0f;
@@ -641,10 +641,10 @@ f32 sPlayerManager::getHpAbilityHighBorder() const {
 // Address: 0x0080ae70 - 0x0080aea2 (50 bytes)
 f32 sPlayerManager::getStaminaAbilityHighBorder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
+    if (mprHumanAdjustParam != nullptr) {
         // inferred: a temporary for the result of the call at 0x80ae8c, used twice; no DWARF local holds it
-        cAdjustParam* t0 = this->mprHumanAdjustParam->getData(static_cast<u32>(109));
-        if (t0 != static_cast<cAdjustParam*>(nullptr)) {
+        cAdjustParam* t0 = mprHumanAdjustParam->getData(109u);
+        if (t0 != nullptr) {
             return t0->mParam;
         } else {
             return 0.0f;
@@ -657,10 +657,10 @@ f32 sPlayerManager::getStaminaAbilityHighBorder() const {
 // Address: 0x0080aeb0 - 0x0080aee2 (50 bytes)
 f32 sPlayerManager::getWeightMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
+    if (mprHumanAdjustParam != nullptr) {
         // inferred: a temporary for the result of the call at 0x80aecc, used twice; no DWARF local holds it
-        cAdjustParam* t0 = this->mprHumanAdjustParam->getData(static_cast<u32>(23));
-        if (t0 != static_cast<cAdjustParam*>(nullptr)) {
+        cAdjustParam* t0 = mprHumanAdjustParam->getData(23u);
+        if (t0 != nullptr) {
             return t0->mParam;
         } else {
             return 0.0f;
@@ -673,9 +673,9 @@ f32 sPlayerManager::getWeightMax() const {
 // Address: 0x0080ae40 - 0x0080ae6d (45 bytes)
 f32 sPlayerManager::getHumanAdjustParam(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
-        cAdjustParam* pParam = this->mprHumanAdjustParam->getData(index);
-        if (pParam != static_cast<cAdjustParam*>(nullptr)) {
+    if (mprHumanAdjustParam != nullptr) {
+        cAdjustParam* pParam = mprHumanAdjustParam->getData(index);
+        if (pParam != nullptr) {
             return pParam->mParam;
         } else {
             return 0.0f;
@@ -688,7 +688,7 @@ f32 sPlayerManager::getHumanAdjustParam(u32 index) const {
 // Address: 0x0080aef0 - 0x0080aefc (12 bytes)
 bool sPlayerManager::isEnableNewBattleFlow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprNewBattleFlow != static_cast<rAdjustParam*>(nullptr);
+    return mprNewBattleFlow != nullptr;
 }
 
 // Address: 0x0080af00 - 0x0080af85 (133 bytes)
@@ -698,26 +698,26 @@ const cOcdStatusParamRes* sPlayerManager::getOcdStatusParamRes(u32 OcdUID) const
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x80af7a; no location-less local in scope fits
     cOcdStatusParamRes* v1_0;
-    if (this->mprHumanStatusParam == static_cast<rOcdStatusParamRes*>(nullptr)) {
-        v1_0 = static_cast<cOcdStatusParamRes*>(nullptr);
+    if (mprHumanStatusParam == nullptr) {
+        v1_0 = nullptr;
     } else {
-        if (this->mprHumanStatusParam->getDataNum() == static_cast<u32>(0)) {
-            v1_0 = static_cast<cOcdStatusParamRes*>(nullptr);
+        if (mprHumanStatusParam->getDataNum() == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x80af4c, used 3 times; no DWARF local holds it
-                cOcdStatusParamRes* t0 = this->mprHumanStatusParam->getData(i0_2);
-                if (t0 != static_cast<cOcdStatusParamRes*>(nullptr)) {
+                cOcdStatusParamRes* t0 = mprHumanStatusParam->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mOcdUID == OcdUID) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < this->mprHumanStatusParam->getDataNum()) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < mprHumanStatusParam->getDataNum()) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cOcdStatusParamRes*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -731,8 +731,8 @@ bool sPlayerManager::isItemSeal(const uHuman* pHuman) const {
     // DWARF local not rendered: bool isSealed;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (pHuman != static_cast<const uHuman*>(nullptr)) {
-        return pHuman->::uDDOModel::isAbnormalConditionActive(static_cast<u32>(4127));
+    if (pHuman != nullptr) {
+        return pHuman->isAbnormalConditionActive(4127u);
     } else {
         return false;
     }
@@ -742,8 +742,8 @@ bool sPlayerManager::isItemSeal(const uHuman* pHuman) const {
 bool sPlayerManager::isItemSealMyPlayer() const {
     // DWARF local not rendered: uHuman* pHuman;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-        return this->::sPlayerManager::getMyPlayer()->::uDDOModel::isAbnormalConditionActive(static_cast<u32>(4127));
+    if (getMyPlayer() != nullptr) {
+        return getMyPlayer()->isAbnormalConditionActive(4127u);
     } else {
         return false;
     }
@@ -767,15 +767,15 @@ __attribute__((weak)) void sPlayerManager::callbackDeadEnemy() {
 void sPlayerManager::registCSLoadWait(const u32 char_id) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayer(char_id, static_cast<u32>(0)) != static_cast<cContextInstHm*>(nullptr)) {
+    if (sContextManager::getInstance()->getContextPartyPlayer(char_id, 0u) != nullptr) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-        for (unsigned int* p0_10 = &this->mLoadWaitCharId[0];;) {
-            if ((*p0_10) != static_cast<unsigned int>(4294967295)) {
-                if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                    i0_3 += static_cast<unsigned int>(1);
-                    p0_10 += static_cast<int>(1);
+        for (unsigned int* p0_10 = &mLoadWaitCharId[0];;) {
+            if ((*p0_10) != 0xFFFFFFFFu) {
+                if ((i0_3 + 1u) <= 7u) {
+                    i0_3 += 1u;
+                    p0_10 += 1;
                 } else {
                     break;
                 }
@@ -803,6 +803,11 @@ __attribute__((weak)) void sPlayerManager::updateCSLoadWait() {
 //   in sPlayerManager::MyDTI::newInstance at 0x00808be9-0x00808c15 (called at sPlayerManager.cpp:131)
 //   in sPlayerManager::sPlayerManager at 0x00808e5f-0x00808e8b (called at sPlayerManager.cpp:131)
 // void sPlayerManager::initCSLoadWait();
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sPlayerManager* sPlayerManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPlayerManager::MyDTI sPlayerManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sPlayerManager.cpp at 0x0080b54f-0x0080b58c (called at sPlayerManager.cpp:78)

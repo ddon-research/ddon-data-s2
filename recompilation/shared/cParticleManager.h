@@ -493,3 +493,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffectExt::requestSoundSe at 0x8e978c-0x8e9791; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cParticleManager::getJointNo() const {
+    return this->mJointNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffectExt::initParticleCustom at 0x8e6a9d-0x8e6aa1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rEffectList::EFL_PARTICLE_COMMON* cParticleManager::getParticleParam() const {
+    return this->mpParticleParam;
+}

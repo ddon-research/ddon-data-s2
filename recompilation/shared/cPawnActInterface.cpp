@@ -46,7 +46,7 @@ const MtDTI& cPawnActInterBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cPawnActInterBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnActInterBase::DTI)->memAlloc(sz, align, ::cPawnActInterBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnActInterBase::DTI)->memAlloc(sz, align, cPawnActInterBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ inline void* cPawnActInterBase::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPawnActInterBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnActInterBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnActInterBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,13 +88,13 @@ cPawnActInterBase::~cPawnActInterBase() {
 // Address: 0x0042ef20 - 0x0042ef23 (3 bytes)
 ACTINTER_CODERET cPawnActInterBase::initInter(cPawnActInterIO& param, uCharacter& owner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<ACTINTER_CODERET>(0);
+    return ACTINTER_CODERET_END;
 }
 
 // Address: 0x0042ef30 - 0x0042ef33 (3 bytes)
 ACTINTER_CODERET cPawnActInterBase::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<ACTINTER_CODERET>(0);
+    return ACTINTER_CODERET_END;
 }
 
 // Address: 0x0042ef40 - 0x0042ef41 (1 bytes)
@@ -107,19 +107,19 @@ void cPawnActInterBase::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mLifeFrame);
+    nDDOIO::readData(r, mLifeFrame);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mDisableNotice);
+    nDDOIO::readData(r, mDisableNotice);
 }
 
 // Address: 0x0042efb0 - 0x0042efe0 (48 bytes)
 void cPawnActInterBase::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mLifeFrame);
+    nDDOIO::writeData(w, mLifeFrame);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mDisableNotice);
+    nDDOIO::writeData(w, mDisableNotice);
 }
 
 // Address: 0x0042efe0 - 0x0042efe1 (1 bytes)
@@ -543,6 +543,8 @@ __attribute__((weak)) void cPawnActInterBase::setResultActNoInput(cPawnActInterI
 //   and 20 more (every copy is in <bundle>.inlined.json)
 // void cPawnActInterBase::setResultBtnDirect(cPawnActInterIO& param, uCharacter& owner, cpInput::unBtnInfo btnOn, cpInput::unBtnInfo btnTrg);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnActInterBase::MyDTI cPawnActInterBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x004528f3-0x00452930 (called at cPawnActInterface.cpp:1434)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x004528f3-0x00452930 (called at cPawnActInterface.h:455)
@@ -551,7 +553,7 @@ __attribute__((weak)) void cPawnActInterBase::setResultActNoInput(cPawnActInterI
 // Address: 0x0042ee10 - 0x0042ee58 (72 bytes)
 MtObject* cPawnActInterBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnActInterBase;
+    return new (16u) cPawnActInterBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -589,7 +591,7 @@ const MtDTI& cPawnActInterBreak::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18cPawnActInterBreakD0Ev at 0x01a57640-0x01a5766a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPawnActInterBreak::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnActInterBreak::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnActInterBreak::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -615,6 +617,8 @@ __attribute__((weak)) ACTINTER_CODERET cPawnActInterBreak::updateInter(cPawnActI
     DDON_STUB("cPawnActInterBreak::updateInter")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnActInterBreak::MyDTI cPawnActInterBreak::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x00453420-0x00453459 (called at cPawnActInterface.cpp:25585)
@@ -662,7 +666,7 @@ const MtDTI& cPawnActInterCommon::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cPawnActInterCommonD0Ev at 0x01a575a0-0x01a575ca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPawnActInterCommon::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnActInterCommon::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnActInterCommon::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -723,9 +727,11 @@ __attribute__((weak)) ACTINTER_CODERET cPawnActInterCommon::updateInter(cPawnAct
 // Address: 0x00451720 - 0x0045174e (46 bytes)
 void cPawnActInterCommon::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cPawnActInterBase::mLifeFrame = r.readF32();
-    this->::cPawnActInterBase::mDisableNotice = r.readU32();
+    mLifeFrame = r.readF32();
+    mDisableNotice = r.readU32();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnActInterCommon::MyDTI cPawnActInterCommon::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x004533ae-0x004533e7 (called at cPawnActInterface.cpp:24984)
@@ -798,10 +804,10 @@ cAITargetInfo* cPawnActInterIO::getNearEnemyTargetInfo(const MtVector3& pos, f32
     // DWARF local not rendered: cAITargetInfoArray* p_em_list;
     // DWARF local not rendered: cAITargetInfo* p_near;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mInParam.mpEnemyList != static_cast<cAITargetInfoArray*>(nullptr)) {
-        return this->mInParam.mpEnemyList->::cAITargetInfoArray::findNear(pos, maxLen);
+    if (mInParam.mpEnemyList != nullptr) {
+        return mInParam.mpEnemyList->findNear(pos, maxLen);
     } else {
-        return static_cast<cAITargetInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -894,7 +900,7 @@ const MtDTI& cPawnActInterWaitFootwork::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cPawnActInterWaitFootwork::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnActInterWaitFootwork::DTI)->memAlloc(sz, align, ::cPawnActInterWaitFootwork::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnActInterWaitFootwork::DTI)->memAlloc(sz, align, cPawnActInterWaitFootwork::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -909,7 +915,7 @@ inline void* cPawnActInterWaitFootwork::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25cPawnActInterWaitFootworkD0Ev at 0x01a575f0-0x01a5761a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPawnActInterWaitFootwork::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnActInterWaitFootwork::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnActInterWaitFootwork::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -930,16 +936,18 @@ cPawnActInterWaitFootwork::cPawnActInterWaitFootwork() {
 ACTINTER_CODERET cPawnActInterWaitFootwork::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     // DWARF local not rendered: uHuman* pHm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((owner.::uDDOModel::mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-        if (static_cast<uHuman*>(&owner)->::uHuman::isFootWork() != false) {
-            return static_cast<ACTINTER_CODERET>(0);
+    if ((owner.uDDOModel::mUnitId & 16u) != 0) {
+        if (static_cast<uHuman*>(&owner)->isFootWork()) {
+            return ACTINTER_CODERET_END;
         } else {
-            return static_cast<ACTINTER_CODERET>(2);
+            return ACTINTER_CODERET_CONTINUE;
         }
     } else {
-        return static_cast<ACTINTER_CODERET>(0);
+        return ACTINTER_CODERET_END;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnActInterWaitFootwork::MyDTI cPawnActInterWaitFootwork::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x004533e7-0x00453420 (called at cPawnActInterface.cpp:25533)
@@ -949,7 +957,7 @@ ACTINTER_CODERET cPawnActInterWaitFootwork::updateInter(cPawnActInterIO& param, 
 // Address: 0x00451750 - 0x0045179e (78 bytes)
 MtObject* cPawnActInterWaitFootwork::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnActInterWaitFootwork;
+    return new (16u) cPawnActInterWaitFootwork;
 }
 
 // No out-of-line body: no code in the ELF
@@ -988,7 +996,7 @@ const MtDTI& cPawnActInterface::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPawnActInterface::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnActInterface::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnActInterface::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1128,10 +1136,10 @@ cPawnActInterBase* cPawnActInterface::getActiveActInter() {
     // DWARF local not rendered: cPawnActInterBase* p_cur;
     // DWARF local not rendered: u32 step;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mActInterStep < this->mActIntersMain.::MtArray::mLength) {
-        return static_cast<cPawnActInterBase*>(this->mActIntersMain.::MtArray::mpArray[this->mActInterStep]);
+    if (mActInterStep < mActIntersMain.mLength) {
+        return static_cast<cPawnActInterBase*>(mActIntersMain.mpArray[mActInterStep]);
     } else {
-        return static_cast<cPawnActInterBase*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1187,6 +1195,8 @@ __attribute__((weak)) void cPawnActInterface::updateAfterInput(uCharacter& owner
     DDON_STUB("cPawnActInterface::updateAfterInput")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnActInterface::MyDTI cPawnActInterface::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPawnActInterface.cpp at 0x00452970-0x004529a9 (called at cPawnActInterface.cpp:4229)

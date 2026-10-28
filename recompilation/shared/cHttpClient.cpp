@@ -36,7 +36,7 @@ const MtDTI& cHttpClient::getDTI() const {
 // Address: 0x00e3f040 - 0x00e3f080 (64 bytes)
 void* cHttpClient::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cHttpClient::DTI)->memAlloc(sz, align, ::cHttpClient::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cHttpClient::DTI)->memAlloc(sz, align, cHttpClient::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cHttpClient::operator new(size_t sz, u32 align) {
 // Address: 0x00e3f0b0 - 0x00e3f0da (42 bytes)
 __attribute__((weak)) void cHttpClient::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::cHttpClient::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHttpClient::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,67 +80,67 @@ cHttpClient::~cHttpClient() {
 s32 cHttpClient::move() {
     // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    switch (static_cast<unsigned int>(this->mState - static_cast<s32>(1))) {
-        case static_cast<unsigned int>(0):
+    switch (static_cast<unsigned int>(mState - 1)) {
+        case 0:
         {
-            this->mState = static_cast<s32>(3);
-            this->mPhase = static_cast<s32>(0);
-            return static_cast<s32>(1);
+            mState = 3;
+            mPhase = 0;
+            return 1;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            this->::cHttpClient::nativeRead();
-            return static_cast<s32>(1);
+            nativeRead();
+            return 1;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            this->::cHttpClient::nativeWait();
-            return static_cast<s32>(1);
+            nativeWait();
+            return 1;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            if (this->mpRequestUrl != static_cast<MT_STR>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::cHttpClient::DTI)->memFree(static_cast<void*>(this->mpRequestUrl));
-                this->mpRequestUrl = static_cast<MT_STR>(nullptr);
-                if (this->mpRequestData != static_cast<MT_CTSTR>(nullptr)) {
-                    this->mpRequestData = static_cast<MT_CTSTR>(nullptr);
-                    this->::cHttpClient::nativeFinal();
-                    if (this->mState != static_cast<s32>(0)) {
-                        this->mState = static_cast<s32>(0);
-                        this->mPhase = static_cast<s32>(0);
-                        return static_cast<s32>(1);
+            if (mpRequestUrl != nullptr) {
+                MtMemoryAllocator::getAllocator(cHttpClient::DTI)->memFree(static_cast<void*>(mpRequestUrl));
+                mpRequestUrl = nullptr;
+                if (mpRequestData != nullptr) {
+                    mpRequestData = nullptr;
+                    nativeFinal();
+                    if (mState != 0) {
+                        mState = 0;
+                        mPhase = 0;
+                        return 1;
                     } else {
-                        return static_cast<s32>(1);
+                        return 1;
                     }
                 } else {
-                    this->::cHttpClient::nativeFinal();
-                    if (this->mState != static_cast<s32>(0)) {
-                        this->mState = static_cast<s32>(0);
-                        this->mPhase = static_cast<s32>(0);
-                        return static_cast<s32>(1);
+                    nativeFinal();
+                    if (mState != 0) {
+                        mState = 0;
+                        mPhase = 0;
+                        return 1;
                     } else {
-                        return static_cast<s32>(1);
+                        return 1;
                     }
                 }
             } else {
-                if (this->mpRequestData != static_cast<MT_CTSTR>(nullptr)) {
-                    this->mpRequestData = static_cast<MT_CTSTR>(nullptr);
-                    this->::cHttpClient::nativeFinal();
-                    if (this->mState != static_cast<s32>(0)) {
-                        this->mState = static_cast<s32>(0);
-                        this->mPhase = static_cast<s32>(0);
-                        return static_cast<s32>(1);
+                if (mpRequestData != nullptr) {
+                    mpRequestData = nullptr;
+                    nativeFinal();
+                    if (mState != 0) {
+                        mState = 0;
+                        mPhase = 0;
+                        return 1;
                     } else {
-                        return static_cast<s32>(1);
+                        return 1;
                     }
                 } else {
-                    this->::cHttpClient::nativeFinal();
-                    if (this->mState != static_cast<s32>(0)) {
-                        this->mState = static_cast<s32>(0);
-                        this->mPhase = static_cast<s32>(0);
-                        return static_cast<s32>(1);
+                    nativeFinal();
+                    if (mState != 0) {
+                        mState = 0;
+                        mPhase = 0;
+                        return 1;
                     } else {
-                        return static_cast<s32>(1);
+                        return 1;
                     }
                 }
             }
@@ -148,7 +148,7 @@ s32 cHttpClient::move() {
         }
         default:
         {
-            return static_cast<s32>(0);
+            return 0;
         }
     }
 }
@@ -206,14 +206,14 @@ __attribute__((weak)) s32 cHttpClient::sendRequest(cHttpClient::Listener* pListe
 // Address: 0x00e3f4b0 - 0x00e3f4e6 (54 bytes)
 void cHttpClient::cbErrorEncounterd(s32 error) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpListener != static_cast<cHttpClient::Listener*>(nullptr)) {
-        this->mpListener->onErrorEncounterd(error);
+    if (mpListener != nullptr) {
+        mpListener->onErrorEncounterd(error);
     }
-    if (this->mState == static_cast<s32>(4)) {
+    if (mState == 4) {
         return;
     }
-    this->mState = static_cast<s32>(4);
-    this->mPhase = static_cast<s32>(0);
+    mState = 4;
+    mPhase = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -319,6 +319,10 @@ __attribute__((weak)) MT_CTSTR cHttpClient::parseHeader(MtString& field_str, MtS
     DDON_STUB("cHttpClient::parseHeader")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cHttpClient::MyDTI cHttpClient::DTI;
+
+// Not defined (relocated bytes): MT_CTSTR cHttpClient::mpDefaultUserAgent;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cHttpClient::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

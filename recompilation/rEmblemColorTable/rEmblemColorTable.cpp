@@ -50,7 +50,7 @@ const MtDTI& cEmblemColorTable::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmblemColorTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmblemColorTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmblemColorTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -74,6 +74,8 @@ inline void cEmblemColorTable::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cEmblemColorTable::~cEmblemColorTable();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmblemColorTable::MyDTI cEmblemColorTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmblemColorTable.cpp at 0x0065ccee-0x0065cd2b (called at rEmblemColorTable.cpp:20)
@@ -108,7 +110,7 @@ const MtDTI& rEmblemColorTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmblemColorTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmblemColorTable::DTI)->memAlloc(sz, align, ::rEmblemColorTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmblemColorTable::DTI)->memAlloc(sz, align, rEmblemColorTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ inline void* rEmblemColorTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rEmblemColorTableD0Ev at 0x01a83a14-0x01a83a33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmblemColorTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmblemColorTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmblemColorTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,7 +145,7 @@ bool rEmblemColorTable::loadData(MtDataReader& r, cEmblemColorTable* pData) {
     s32 gg = r.readS32();
     s32 bb = r.readS32();
     s32 aa = r.readS32();
-    pData->mColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(aa * static_cast<s32>(16777216)) | static_cast<unsigned long>((bb * static_cast<s32>(65536)) & static_cast<s32>(16711680))) | static_cast<unsigned long>(static_cast<unsigned char>(rr))) | static_cast<unsigned long>(static_cast<unsigned short>(gg * static_cast<s32>(256))));
+    pData->mColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(aa * 16777216) | static_cast<unsigned long>((bb * 65536) & 0xFF0000)) | static_cast<unsigned long>(static_cast<unsigned char>(rr))) | static_cast<unsigned long>(static_cast<unsigned short>(gg * 256)));
     return true;
 }
 
@@ -156,8 +158,10 @@ MT_CTSTR rEmblemColorTable::getExt() const {
 // Address: 0x01a83b60 - 0x01a83b66 (6 bytes)
 u32 rEmblemColorTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmblemColorTable::MyDTI rEmblemColorTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmblemColorTable.cpp at 0x0065cd2b-0x0065cd68 (called at rEmblemColorTable.cpp:21)
@@ -167,7 +171,7 @@ u32 rEmblemColorTable::getDataVersion() const {
 // Address: 0x0065cb50 - 0x0065cbb4 (100 bytes)
 MtObject* rEmblemColorTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmblemColorTable;
+    return new (16u) rEmblemColorTable;
 }
 
 // Instance at 0x01a83b10 - 0x01a83b22 (18 bytes) of the generic rTbl2<T>::getData

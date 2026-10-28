@@ -36,7 +36,7 @@ const MtDTI& uBaseModel::getDTI() const {
 // Address: 0x00e65f80 - 0x00e65fc0 (64 bytes)
 void* uBaseModel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uBaseModel::DTI)->memAlloc(sz, align, ::uBaseModel::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uBaseModel::DTI)->memAlloc(sz, align, uBaseModel::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* uBaseModel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10uBaseModelD0Ev at 0x00e6660e-0x00e6662f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uBaseModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uBaseModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uBaseModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,17 +89,17 @@ __attribute__((weak)) MT_CTSTR uBaseModel::getName() {
 // Address: 0x00e66f40 - 0x00e66f46 (6 bytes)
 u64 uBaseModel::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(32);
+    return 32;
 }
 
 // Address: 0x00e66f50 - 0x00e66f84 (52 bytes)
 void uBaseModel::move() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uBaseModel::updateViewDraw();
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
-    this->::uBaseModel::updateCommandCacheLevel();
+    updateViewDraw();
+    updateLocalMatrix();
+    updateWorldMatrix();
+    updateCommandCacheLevel();
 }
 
 // Address: 0x01b5d770 - 0x01b5d7b4 (68 bytes)
@@ -117,26 +117,26 @@ void uBaseModel::moveAfter() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    if (this->mpModel != static_cast<rModel*>(nullptr)) {
-        if (this->mMaterialNum != static_cast<u32>(0)) {
+    if (mpModel != nullptr) {
+        if (mMaterialNum != 0) {
             // inferred: the value the loop at 0xe672b0 carries; no location-less local in scope fits
-            u32 v0_0 = this->mMaterialNum;
+            u32 v0_0 = mMaterialNum;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (this->mpMaterials[i0_3] != static_cast<nDraw::Material*>(nullptr)) {
-                    this->mpMaterials[i0_3]->update(this->::cUnit::mDeltaTime);
+            for (unsigned int i0_3 = 0;;) {
+                if (mpMaterials[i0_3] != nullptr) {
+                    mpMaterials[i0_3]->update(mDeltaTime);
                     // inferred: a temporary for the result of the call at 0xe672d9, used once; no DWARF local holds it
-                    bool t0 = this->mpMaterials[i0_3]->::nDraw::Material::isCBuffer();
-                    this->mMaterialCBuffer = static_cast<u32>(static_cast<unsigned long>(this->mMaterialCBuffer) | static_cast<unsigned long>(t0));
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mMaterialNum) {
-                        v0_0 = this->mMaterialNum;
-                        i0_3 += static_cast<unsigned int>(1);
+                    bool t0 = mpMaterials[i0_3]->nDraw::Material::isCBuffer();
+                    mMaterialCBuffer = static_cast<u32>(static_cast<unsigned long>(mMaterialCBuffer) | static_cast<unsigned long>(t0));
+                    if ((i0_3 + 1u) < mMaterialNum) {
+                        v0_0 = mMaterialNum;
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -173,7 +173,7 @@ __attribute__((weak)) void uBaseModel::createProperty(MtPropertyList& s) {
 // Address: 0x00e67300 - 0x00e67305 (5 bytes)
 MtUI* uBaseModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCoord::createUI(prop);
+    return this->uCoord::createUI(prop);
 }
 
 // Address: 0x00e66670 - 0x00e66cc4 (1620 bytes)
@@ -190,7 +190,7 @@ __attribute__((weak)) void uBaseModel::setModel(rModel* pmod) {
 // Address: 0x01b5d290 - 0x01b5d298 (8 bytes)
 rModel* uBaseModel::getModel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModel;
+    return mpModel;
 }
 
 // Address: 0x00e66d10 - 0x00e66d90 (128 bytes)
@@ -202,7 +202,7 @@ __attribute__((weak)) void uBaseModel::setMaterialData(rMaterial* pmat) {
 // Address: 0x01b5d2a0 - 0x01b5d2a8 (8 bytes)
 rMaterial* uBaseModel::getMaterialData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaterialData;
+    return mpMaterialData;
 }
 
 // Address: 0x00e68ea0 - 0x00e692c2 (1058 bytes)
@@ -223,11 +223,11 @@ __attribute__((weak)) void uBaseModel::updateBoundary() {
 // Address: 0x00e68e80 - 0x00e68e9c (28 bytes)
 bool uBaseModel::getBoundary(MtSphere* pdst) {
     // Approximate from the ELF: a vector copy split into members it may not keep apart; the body oracle reports this body.
-    if (this->mpModel != static_cast<rModel*>(nullptr)) {
-        pdst->pos.x = this->mBoundingSphere.pos.x;
-        pdst->pos.y = this->mBoundingSphere.pos.y;
-        pdst->pos.z = this->mBoundingSphere.pos.z;
-        pdst->r = this->mBoundingSphere.r;
+    if (mpModel != nullptr) {
+        pdst->pos.x = mBoundingSphere.pos.x;
+        pdst->pos.y = mBoundingSphere.pos.y;
+        pdst->pos.z = mBoundingSphere.pos.z;
+        pdst->r = mBoundingSphere.r;
         return true;
     } else {
         return false;
@@ -238,7 +238,7 @@ bool uBaseModel::getBoundary(MtSphere* pdst) {
 bool uBaseModel::isPartsDisp(u32 no) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mPartsDisp[no >> static_cast<u32>(5)]) >> static_cast<unsigned long>(no & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mPartsDisp[no >> 5]) >> static_cast<unsigned long>(no & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x01b5d370 - 0x01b5d39b (43 bytes)
@@ -252,40 +252,40 @@ __attribute__((weak)) void uBaseModel::setPartsDisp(bool disp, u32 no) {
 // Address: 0x01b5d2c0 - 0x01b5d34c (140 bytes)
 void uBaseModel::setPartsDispAll(bool disp) {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    if (disp != false) {
-        this->mPartsDisp[14] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[15] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[12] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[13] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[10] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[11] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[8] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[9] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[6] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[7] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[4] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[5] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[2] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[3] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[0] = static_cast<unsigned int>(4294967295);
-        this->mPartsDisp[1] = static_cast<unsigned int>(4294967295);
+    if (disp) {
+        mPartsDisp[14] = 0xFFFFFFFF;
+        mPartsDisp[15] = 0xFFFFFFFF;
+        mPartsDisp[12] = 0xFFFFFFFF;
+        mPartsDisp[13] = 0xFFFFFFFF;
+        mPartsDisp[10] = 0xFFFFFFFF;
+        mPartsDisp[11] = 0xFFFFFFFF;
+        mPartsDisp[8] = 0xFFFFFFFF;
+        mPartsDisp[9] = 0xFFFFFFFF;
+        mPartsDisp[6] = 0xFFFFFFFF;
+        mPartsDisp[7] = 0xFFFFFFFF;
+        mPartsDisp[4] = 0xFFFFFFFF;
+        mPartsDisp[5] = 0xFFFFFFFF;
+        mPartsDisp[2] = 0xFFFFFFFF;
+        mPartsDisp[3] = 0xFFFFFFFF;
+        mPartsDisp[0] = 0xFFFFFFFF;
+        mPartsDisp[1] = 0xFFFFFFFF;
     } else {
-        this->mPartsDisp[14] = static_cast<unsigned int>(0);
-        this->mPartsDisp[15] = static_cast<unsigned int>(0);
-        this->mPartsDisp[12] = static_cast<unsigned int>(0);
-        this->mPartsDisp[13] = static_cast<unsigned int>(0);
-        this->mPartsDisp[10] = static_cast<unsigned int>(0);
-        this->mPartsDisp[11] = static_cast<unsigned int>(0);
-        this->mPartsDisp[8] = static_cast<unsigned int>(0);
-        this->mPartsDisp[9] = static_cast<unsigned int>(0);
-        this->mPartsDisp[6] = static_cast<unsigned int>(0);
-        this->mPartsDisp[7] = static_cast<unsigned int>(0);
-        this->mPartsDisp[4] = static_cast<unsigned int>(0);
-        this->mPartsDisp[5] = static_cast<unsigned int>(0);
-        this->mPartsDisp[2] = static_cast<unsigned int>(0);
-        this->mPartsDisp[3] = static_cast<unsigned int>(0);
-        this->mPartsDisp[0] = static_cast<unsigned int>(0);
-        this->mPartsDisp[1] = static_cast<unsigned int>(0);
+        mPartsDisp[14] = 0;
+        mPartsDisp[15] = 0;
+        mPartsDisp[12] = 0;
+        mPartsDisp[13] = 0;
+        mPartsDisp[10] = 0;
+        mPartsDisp[11] = 0;
+        mPartsDisp[8] = 0;
+        mPartsDisp[9] = 0;
+        mPartsDisp[6] = 0;
+        mPartsDisp[7] = 0;
+        mPartsDisp[4] = 0;
+        mPartsDisp[5] = 0;
+        mPartsDisp[2] = 0;
+        mPartsDisp[3] = 0;
+        mPartsDisp[0] = 0;
+        mPartsDisp[1] = 0;
     }
 }
 
@@ -300,7 +300,7 @@ void uBaseModel::setPartsDispAll(bool disp) {
 // Address: 0x01b5d4e0 - 0x01b5d504 (36 bytes)
 void uBaseModel::setVFCullLevel(uBaseModel::VFCULL_LEVEL level) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVFCullLevel = level;
+    mVFCullLevel = level;
 }
 
 // Address: 0x01b5d4d0 - 0x01b5d4e0 (16 bytes)
@@ -312,19 +312,19 @@ __attribute__((weak)) uBaseModel::VFCULL_LEVEL uBaseModel::getVFCullLevel() cons
 // Address: 0x01b5d550 - 0x01b5d557 (7 bytes)
 s32 uBaseModel::getZPrepassDist() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mZPrepassDist;
+    return mZPrepassDist;
 }
 
 // Address: 0x01b5d560 - 0x01b5d567 (7 bytes)
 void uBaseModel::setZPrepassDist(s32 dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mZPrepassDist = dist;
+    mZPrepassDist = dist;
 }
 
 // Address: 0x01b5d570 - 0x01b5d577 (7 bytes)
 u32 uBaseModel::getDrawPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDrawPriority;
+    return mDrawPriority;
 }
 
 // Address: 0x00e6c170 - 0x00e6c188 (24 bytes)
@@ -337,30 +337,30 @@ __attribute__((weak)) bool uBaseModel::isPrioAttrTransparency(cDraw* pDraw) {
 // Address: 0x01a5ad30 - 0x01a5ad33 (3 bytes)
 u32 uBaseModel::getAddTransparentDrawPriority() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b5d580 - 0x01b5d587 (7 bytes)
 void uBaseModel::setDrawPriority(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrawPriority = v;
+    mDrawPriority = v;
 }
 
 // Address: 0x01b5d590 - 0x01b5d597 (7 bytes)
 s32 uBaseModel::getPriorityBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPriorityBias;
+    return mPriorityBias;
 }
 
 // Address: 0x01b5d5a0 - 0x01b5d5cc (44 bytes)
 void uBaseModel::setPriorityBias(s32 b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPriorityBias = b;
-    if (b > static_cast<s32>(2147418112)) {
-        this->mPriorityBias = static_cast<s32>(2147418112);
+    mPriorityBias = b;
+    if (b > 0x7FFF0000) {
+        mPriorityBias = 0x7FFF0000;
     } else {
-        if (b <= static_cast<s32>(-2147418113)) {
-            this->mPriorityBias = static_cast<s32>(-2147418112);
+        if (b <= -2147418113) {
+            mPriorityBias = -2147418112;
         }
     }
 }
@@ -368,37 +368,37 @@ void uBaseModel::setPriorityBias(s32 b) {
 // Address: 0x01b5d510 - 0x01b5d520 (16 bytes)
 uBaseModel::LOD_TYPE uBaseModel::getLODType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<uBaseModel::LOD_TYPE>(this->mLODType);
+    return static_cast<LOD_TYPE>(mLODType);
 }
 
 // Address: 0x01b5d520 - 0x01b5d544 (36 bytes)
 void uBaseModel::setLODType(uBaseModel::LOD_TYPE lod) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODType = lod;
+    mLODType = lod;
 }
 
 // Address: 0x01b5d5d0 - 0x01b5d5e0 (16 bytes)
 uBaseModel::SHADER_QUALITY uBaseModel::getShaderQuality() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<uBaseModel::SHADER_QUALITY>(this->mShaderQuality);
+    return static_cast<SHADER_QUALITY>(mShaderQuality);
 }
 
 // Address: 0x01b5d5e0 - 0x01b5d604 (36 bytes)
 void uBaseModel::setShaderQuality(uBaseModel::SHADER_QUALITY q) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShaderQuality = q;
+    mShaderQuality = q;
 }
 
 // Address: 0x01b5d730 - 0x01b5d737 (7 bytes)
 u32 uBaseModel::getMaterialNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaterialNum;
+    return mMaterialNum;
 }
 
 // Address: 0x00e68b20 - 0x00e68b2e (14 bytes)
 nDraw::Material* uBaseModel::getMaterial(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaterials[index];
+    return mpMaterials[index];
 }
 
 // Address: 0x00e68c10 - 0x00e68e7e (622 bytes)
@@ -413,12 +413,12 @@ __attribute__((weak)) void uBaseModel::resetMaterial(u32 index) {
 // Address: 0x00e66cd0 - 0x00e66d0a (58 bytes)
 void uBaseModel::resetAllMaterial() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if (this->mMaterialNum != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mMaterialNum != 0) {
         do {
-            this->::uBaseModel::resetMaterial(i);
-            i += static_cast<u32>(1);
-        } while (i < this->mMaterialNum);
+            resetMaterial(i);
+            i += 1u;
+        } while (i < mMaterialNum);
     }
 }
 
@@ -448,37 +448,37 @@ __attribute__((weak)) void uBaseModel::setMaterial(nDraw::Material* pmaterial, u
 // Address: 0x01b5d260 - 0x01b5d284 (36 bytes)
 void uBaseModel::setDissolveEnable(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDissolveEnable = enable;
+    mDissolveEnable = enable;
 }
 
 // Address: 0x01b5d650 - 0x01b5d65c (12 bytes)
 bool uBaseModel::getDissolveEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDissolveEnable;
+    return mDissolveEnable;
 }
 
 // Address: 0x01b5d670 - 0x01b5d694 (36 bytes)
 void uBaseModel::setFixPosition(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFixPosition = v;
+    mFixPosition = v;
 }
 
 // Address: 0x01b5d660 - 0x01b5d66c (12 bytes)
 bool uBaseModel::isFixPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFixPosition;
+    return mFixPosition;
 }
 
 // Address: 0x01b5d6b0 - 0x01b5d6d4 (36 bytes)
 void uBaseModel::setShaderAttributes(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShaderAttributes = enable;
+    mShaderAttributes = enable;
 }
 
 // Address: 0x01b5d6a0 - 0x01b5d6ac (12 bytes)
 bool uBaseModel::isShaderAttributes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShaderAttributes;
+    return mShaderAttributes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -487,13 +487,13 @@ bool uBaseModel::isShaderAttributes() {
 // Address: 0x01b5d620 - 0x01b5d644 (36 bytes)
 void uBaseModel::setFlatTransparency(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlatTransparency = v;
+    mFlatTransparency = v;
 }
 
 // Address: 0x01b5d610 - 0x01b5d61a (10 bytes)
 bool uBaseModel::isFlatTransparency() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlatTransparency;
+    return mFlatTransparency;
 }
 
 // Address: 0x00e66580 - 0x00e665fe (126 bytes)
@@ -507,7 +507,7 @@ __attribute__((weak)) void uBaseModel::clearCommandCache() {
 // Address: 0x01b5d6e0 - 0x01b5d6e7 (7 bytes)
 uBaseModel::CACHE_MODE uBaseModel::getCacheMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<uBaseModel::CACHE_MODE>(this->mCacheMode);
+    return static_cast<CACHE_MODE>(mCacheMode);
 }
 
 // Address: 0x00e68a90 - 0x00e68b1e (142 bytes)
@@ -531,25 +531,25 @@ __attribute__((weak)) void uBaseModel::setCacheMode(uBaseModel::CACHE_MODE v) {
 // Address: 0x01b5d3d0 - 0x01b5d3ea (26 bytes)
 void uBaseModel::setLightAttr(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLightAttr = attr;
+    mLightAttr = attr;
 }
 
 // Address: 0x01b5d3c0 - 0x01b5d3ca (10 bytes)
 u32 uBaseModel::getLightAttr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLightAttr;
+    return mLightAttr;
 }
 
 // Address: 0x01b5d400 - 0x01b5d424 (36 bytes)
 void uBaseModel::setMaxLightNum(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxLightNum = n;
+    mMaxLightNum = n;
 }
 
 // Address: 0x01b5d3f0 - 0x01b5d3ff (15 bytes)
 u32 uBaseModel::getMaxLightNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxLightNum;
+    return mMaxLightNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -575,37 +575,37 @@ __attribute__((weak)) s32 uBaseModel::setupShadow(cDraw* pdraw) {
 // Address: 0x01b5d440 - 0x01b5d45e (30 bytes)
 void uBaseModel::setMultiShadowReceive(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiShadowReceive = enable;
+    mMultiShadowReceive = enable;
 }
 
 // Address: 0x01b5d430 - 0x01b5d43c (12 bytes)
 bool uBaseModel::isMultiShadowReceive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMultiShadowReceive;
+    return mMultiShadowReceive;
 }
 
 // Address: 0x01b5d470 - 0x01b5d48d (29 bytes)
 void uBaseModel::setMaxNumGroup0MultiShadowReceive(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxNumGroup0MultiShadowReceive = n;
+    mMaxNumGroup0MultiShadowReceive = n;
 }
 
 // Address: 0x01b5d460 - 0x01b5d46f (15 bytes)
 u32 uBaseModel::getMaxNumGroup0MultiShadowReceive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxNumGroup0MultiShadowReceive;
+    return mMaxNumGroup0MultiShadowReceive;
 }
 
 // Address: 0x01b5d4a0 - 0x01b5d4c3 (35 bytes)
 void uBaseModel::setMaxNumGroup1MultiShadowReceive(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxNumGroup1MultiShadowReceive = n;
+    mMaxNumGroup1MultiShadowReceive = n;
 }
 
 // Address: 0x01b5d490 - 0x01b5d49f (15 bytes)
 u32 uBaseModel::getMaxNumGroup1MultiShadowReceive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxNumGroup1MultiShadowReceive;
+    return mMaxNumGroup1MultiShadowReceive;
 }
 
 // No out-of-line body: 9 inlined copies in 5 functions (77 bytes)
@@ -622,13 +622,13 @@ u32 uBaseModel::getMaxNumGroup1MultiShadowReceive() const {
 u32 uBaseModel::getDebugFlags() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x138 from const uBaseModel*
-    return static_cast<signed char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(312))) >> static_cast<unsigned long>(45));
+    return static_cast<signed char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 312)) >> 45);
 }
 
 // Address: 0x01b5d700 - 0x01b5d727 (39 bytes)
 void uBaseModel::setDebugFlags(u32 f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDebugFlags = f;
+    mDebugFlags = f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -640,7 +640,7 @@ void uBaseModel::setDebugFlags(u32 f) {
 // Address: 0x01b5d2b0 - 0x01b5d2b8 (8 bytes)
 u32 uBaseModel::getViewDraw() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mViewDraw;
+    return mViewDraw;
 }
 
 // No out-of-line body: no code in the ELF
@@ -776,18 +776,18 @@ __attribute__((weak)) s32 uBaseModel::cullingNonSkin(cDraw* pdraw, const rModel:
 u32 uBaseModel::getLODLevel(s32 dist) {
     // DWARF local not rendered: MODEL_INFO* pmi;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mLODType <= static_cast<s32>(-1)) {
-        if (static_cast<float>(dist) > this->mLODLowDist) {
-            return static_cast<u32>(4);
+    if (mLODType <= -1) {
+        if (static_cast<float>(dist) > mLODLowDist) {
+            return 4;
         } else {
-            if (static_cast<float>(dist) > this->mLODMidDist) {
-                return static_cast<u32>(2);
+            if (static_cast<float>(dist) > mLODMidDist) {
+                return 2;
             } else {
-                return static_cast<u32>(1);
+                return 1;
             }
         }
     } else {
-        return static_cast<u32>(this->mLODType);
+        return static_cast<u32>(mLODType);
     }
 }
 
@@ -822,7 +822,7 @@ __attribute__((weak)) void uBaseModel::updateViewDraw() {
 // Address: 0x01b5d3a0 - 0x01b5d3a6 (6 bytes)
 u32 uBaseModel::getPartsNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(512);
+    return 512;
 }
 
 // Address: 0x01b5d3b0 - 0x01b5d3b1 (1 bytes)
@@ -862,13 +862,13 @@ __attribute__((weak)) void uBaseModel::setMaterialNum(u32) {
 // Address: 0x01a5ad10 - 0x01a5ad17 (7 bytes)
 u32 uBaseModel::getUseCommandCacheNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseCacheNum;
+    return mUseCacheNum;
 }
 
 // Address: 0x01a5ad20 - 0x01a5ad27 (7 bytes)
 u32 uBaseModel::getUseMaxCommandCacheNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMsxUseCacheNum;
+    return mMsxUseCacheNum;
 }
 
 // Address: 0x00e6c6b0 - 0x00e6c706 (86 bytes)
@@ -923,7 +923,7 @@ __attribute__((weak)) void uBaseModel::updateCommandCacheLevel() {
 // Address: 0x01ad75c0 - 0x01ad75c6 (6 bytes)
 u32 uBaseModel::getHitLightToModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // No out-of-line body: 8 inlined copies in 8 functions (376 bytes)
@@ -932,6 +932,8 @@ u32 uBaseModel::getHitLightToModel() {
 //   in uDDOBaseModel::setup at 0x008d58be-0x008d58ed (called at uBaseModel.h:77)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // void uBaseModel::setMaxLightNum();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uBaseModel::MyDTI uBaseModel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uBaseModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

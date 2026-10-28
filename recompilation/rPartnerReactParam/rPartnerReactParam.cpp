@@ -36,7 +36,7 @@ const MtDTI& cPartnerReactParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPartnerReactParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memAlloc(sz, align, ::cPartnerReactParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPartnerReactParam::DTI)->memAlloc(sz, align, cPartnerReactParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cPartnerReactParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPartnerReactParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPartnerReactParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -89,10 +89,10 @@ __attribute__((weak)) void cPartnerReactParam::createProperty(MtPropertyList& s)
 // Address: 0x006b4cd0 - 0x006b4cdf (15 bytes)
 u32 cPartnerReactParam::getActNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsNmlAct == false) {
-        return this->mActNo + static_cast<u32>(242);
+    if (!mIsNmlAct) {
+        return mActNo + 242u;
     } else {
-        return this->mActNo;
+        return mActNo;
     }
 }
 
@@ -108,6 +108,8 @@ u32 cPartnerReactParam::getActNo() {
 // No out-of-line body: no code in the ELF
 // s16 cPartnerReactParam::getNpcMotNo4();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPartnerReactParam::MyDTI cPartnerReactParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPartnerReactParam.cpp at 0x006b4e50-0x006b4e92 (called at rPartnerReactParam.cpp:46)
 //   in _GLOBAL__sub_I_rPartnerReactParam.cpp at 0x006b4e50-0x006b4e92 (called at rPartnerReactParam.h:37)
@@ -116,7 +118,7 @@ u32 cPartnerReactParam::getActNo() {
 // Address: 0x006b46f0 - 0x006b4743 (83 bytes)
 MtObject* cPartnerReactParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPartnerReactParam;
+    return new (16u) cPartnerReactParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +143,7 @@ const MtDTI& rPartnerReactParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPartnerReactParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPartnerReactParam::DTI)->memAlloc(sz, align, ::rPartnerReactParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPartnerReactParam::DTI)->memAlloc(sz, align, rPartnerReactParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,7 +158,7 @@ inline void* rPartnerReactParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rPartnerReactParamD0Ev at 0x01aa1e04-0x01aa1e23, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPartnerReactParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPartnerReactParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPartnerReactParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,22 +175,22 @@ bool rPartnerReactParam::loadData(MtDataReader& in, cPartnerReactParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIsNmlAct);
+    nDDOIO::readData(in, pData->mIsNmlAct);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mActNo);
+    nDDOIO::readData(in, pData->mActNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNpcMotNo);
+    nDDOIO::readData(in, pData->mNpcMotNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNpcMotNo2);
+    nDDOIO::readData(in, pData->mNpcMotNo2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNpcMotNo3);
+    nDDOIO::readData(in, pData->mNpcMotNo3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNpcMotNo4);
+    nDDOIO::readData(in, pData->mNpcMotNo4);
     return true;
 }
 
@@ -201,8 +203,10 @@ MT_CTSTR rPartnerReactParam::getExt() const {
 // Address: 0x01aa1f50 - 0x01aa1f56 (6 bytes)
 u32 rPartnerReactParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPartnerReactParam::MyDTI rPartnerReactParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPartnerReactParam.cpp at 0x006b4e92-0x006b4ecf (called at rPartnerReactParam.cpp:246)
@@ -212,7 +216,7 @@ u32 rPartnerReactParam::getDataVersion() const {
 // Address: 0x006b4ce0 - 0x006b4d44 (100 bytes)
 MtObject* rPartnerReactParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPartnerReactParam;
+    return new (16u) rPartnerReactParam;
 }
 
 // Instance at 0x01aa1f00 - 0x01aa1f16 (22 bytes) of the generic rTbl2<T>::getData

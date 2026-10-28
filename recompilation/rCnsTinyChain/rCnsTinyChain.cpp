@@ -44,7 +44,7 @@ const MtDTI& rCnsTinyChain::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rCnsTinyChainD0Ev at 0x0120fbcb-0x0120fbec, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCnsTinyChain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCnsTinyChain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,13 +75,13 @@ MT_CTSTR rCnsTinyChain::getExt() const {
 // Address: 0x0120fbf0 - 0x0120fbf5 (5 bytes)
 MtUI* rCnsTinyChain::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x0120fc00 - 0x0120fc05 (5 bytes)
 void rCnsTinyChain::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rConstraint::createProperty(s);
+    this->rConstraint::createProperty(s);
 }
 
 // Address: 0x0120fc20 - 0x0120fdb8 (408 bytes)
@@ -102,32 +102,34 @@ bool rCnsTinyChain::save(MtStream& out) {
 // Address: 0x0120fdd0 - 0x0120fe83 (179 bytes)
 void rCnsTinyChain::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mData.calcNum1 = static_cast<u32>(0);
-    this->mData.WindScaling = 0.0f;
-    this->mData.calcNum0 = static_cast<u32>(0);
-    this->mData.GlobalTransForceCoef = 0.0f;
-    this->mData.SpringScaling = 0.0f;
-    this->mData.GravityScaling = 0.0f;
-    this->mData.GlobalDamping = 0.0f;
-    this->mData.Attr = static_cast<u32>(0);
-    this->mData.StepTime = 0.0f;
-    this->mData.ChainGroupNum = static_cast<u32>(0);
-    this->mData.ChainNodeAllNum = static_cast<u32>(0);
-    if (this->mpChainGroup != static_cast<rCnsTinyChain::ChainGroup*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rCnsTinyChain::DTI)->memFree(static_cast<void*>(this->mpChainGroup));
-        this->mpChainGroup = static_cast<rCnsTinyChain::ChainGroup*>(nullptr);
+    mData.calcNum1 = 0;
+    mData.WindScaling = 0.0f;
+    mData.calcNum0 = 0;
+    mData.GlobalTransForceCoef = 0.0f;
+    mData.SpringScaling = 0.0f;
+    mData.GravityScaling = 0.0f;
+    mData.GlobalDamping = 0.0f;
+    mData.Attr = 0;
+    mData.StepTime = 0.0f;
+    mData.ChainGroupNum = 0;
+    mData.ChainNodeAllNum = 0;
+    if (mpChainGroup != nullptr) {
+        MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(static_cast<void*>(mpChainGroup));
+        mpChainGroup = nullptr;
     }
-    if (this->mpChainNode == static_cast<rCnsTinyChain::ChainNode*>(nullptr)) {
+    if (mpChainNode == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rCnsTinyChain::DTI)->memFree(static_cast<void*>(this->mpChainNode));
-    this->mpChainNode = static_cast<rCnsTinyChain::ChainNode*>(nullptr);
+    MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(static_cast<void*>(mpChainNode));
+    mpChainNode = nullptr;
 }
 
 // Address: 0x0120fc10 - 0x0120fc11 (1 bytes)
 __attribute__((weak)) void rCnsTinyChain::copyUnitProperty(uConstraint* pSrcUnit) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCnsTinyChain::MyDTI rCnsTinyChain::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCnsTinyChain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

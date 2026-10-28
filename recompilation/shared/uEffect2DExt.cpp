@@ -29,7 +29,7 @@ const MtDTI& uEffect2DExt::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* uEffect2DExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI);
+    return MtMemoryAllocator::getAllocator(uEffect2DExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ MtAllocator* uEffect2DExt::getAllocator() {
 // Address: 0x008e15d0 - 0x008e1610 (64 bytes)
 void* uEffect2DExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uEffect2DExt::getAllocator()->memAlloc(sz, align, ::uEffect2DExt::DTI.::MtDTI::getID());
+    return uEffect2DExt::getAllocator()->memAlloc(sz, align, uEffect2DExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uEffect2DExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uEffect2DExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uEffect2DExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,14 +75,14 @@ uEffect2DExt::uEffect2DExt() {
 // Also emitted as: _ZN12uEffect2DExtD0Ev at 0x008e17f0
 uEffect2DExt::~uEffect2DExt() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sEffect::getInstance() != static_cast<sEffect*>(nullptr)) {
-        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::removeEffect2D(this->mpHandle, this->mGroupNo, static_cast<u32>(2));
+    if (sEffect::getInstance() != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->removeEffect2D(mpHandle, mGroupNo, 2u);
     }
-    if (this->mCorrectColorParam.mpZoneParam != static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
-        delete[] this->mCorrectColorParam.mpZoneParam;
-        this->mCorrectColorParam.mpZoneParam = static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr);
+    if (mCorrectColorParam.mpZoneParam != nullptr) {
+        delete[] mCorrectColorParam.mpZoneParam;
+        mCorrectColorParam.mpZoneParam = nullptr;
     }
-    this->mCorrectColorParam.mZoneParamNum = static_cast<u32>(0);
+    mCorrectColorParam.mZoneParamNum = 0;
 }
 
 // Address: 0x008e1890 - 0x008e18da (74 bytes)
@@ -118,10 +118,10 @@ __attribute__((weak)) void uEffect2DExt::moveAfter() {
 // Address: 0x008e1d00 - 0x008e1d2e (46 bytes)
 void uEffect2DExt::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isPossibleDrawFromDrawBuffer() == false) {
+    if (!isPossibleDrawFromDrawBuffer()) {
         return;
     }
-    this->::uEffect2D::draw(pDraw);
+    this->uEffect2D::draw(pDraw);
 }
 
 // Address: 0x008e1d40 - 0x008e2331 (1521 bytes)
@@ -133,7 +133,7 @@ __attribute__((weak)) void uEffect2DExt::createProperty(MtPropertyList& s) {
 // Address: 0x008e1d30 - 0x008e1d35 (5 bytes)
 MtUI* uEffect2DExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uEffect2D::createUI(prop);
+    return this->uEffect2D::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,18 +175,18 @@ MtUI* uEffect2DExt::createUI(MtProperty& prop) {
 // Address: 0x008e2ba0 - 0x008e2be3 (67 bytes)
 void uEffect2DExt::updateParentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCoord::mpParent != static_cast<uCoord*>(nullptr)) {
-        if (this->::uCoord::mpParent->::cUnit::isEnable() == false) {
-            this->::uCoord::mpParent = static_cast<uCoord*>(nullptr);
+    if (mpParent != nullptr) {
+        if (!mpParent->isEnable()) {
+            mpParent = nullptr;
         }
     }
-    if (this->mpParentActor == static_cast<uDDOModel*>(nullptr)) {
+    if (mpParentActor == nullptr) {
         return;
     }
-    if (this->mpParentActor->::cUnit::isEnable() != false) {
+    if (mpParentActor->isEnable()) {
         return;
     }
-    this->mpParentActor = static_cast<uDDOModel*>(nullptr);
+    mpParentActor = nullptr;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (38 bytes)
@@ -242,25 +242,25 @@ void uEffect2DExt::updateParentPtr() {
 // Address: 0x01ad6030 - 0x01ad6039 (9 bytes)
 f32 uEffect2DExt::getDeltaTimeCoefEx() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTimeCoefEx;
+    return mDeltaTimeCoefEx;
 }
 
 // Address: 0x01ad6040 - 0x01ad6049 (9 bytes)
 void uEffect2DExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTimeCoefEx = DeltaTimeCoef;
+    mDeltaTimeCoefEx = DeltaTimeCoef;
 }
 
 // Address: 0x01ad6060 - 0x01ad6068 (8 bytes)
 void uEffect2DExt::setColorUpdateFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColorUpdate = flag;
+    mColorUpdate = flag;
 }
 
 // Address: 0x01ad6050 - 0x01ad6057 (7 bytes)
 bool uEffect2DExt::getColorUpdateFlag() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorUpdate;
+    return mColorUpdate;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
@@ -288,8 +288,8 @@ __attribute__((weak)) void uEffect2DExt::buildCorrectColorFromZone() {
 // Address: 0x008e2bf0 - 0x008e2bfc (12 bytes)
 bool uEffect2DExt::createGenerator() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mZoneUpdateFlag = true;
-    return this->::uEffect2D::createGenerator();
+    mZoneUpdateFlag = true;
+    return this->uEffect2D::createGenerator();
 }
 
 // Address: 0x008e2c00 - 0x008e2e57 (599 bytes)
@@ -350,6 +350,8 @@ __attribute__((weak)) void uEffect2DExt::updateCorrectColorParam(u32 no) {
 // No out-of-line body: no code in the ELF
 // u32 uEffect2DExt::getCreateCost();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uEffect2DExt::MyDTI uEffect2DExt::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uEffect2DExt.cpp at 0x008e31ce-0x008e320b (called at uEffect2DExt.cpp:41)
 //   in _GLOBAL__sub_I_uEffect2DExt.cpp at 0x008e31ce-0x008e320b (called at uEffect2DExt.h:117)
@@ -398,6 +400,6 @@ __attribute__((weak)) MtObject* uEffect2DExt::MyDTI::newInstance() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
-    ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(padr);
+    MtMemoryAllocator::getAllocator(uEffect2DExt::DTI)->memFree(padr);
 }
 

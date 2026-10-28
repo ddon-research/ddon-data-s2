@@ -51,7 +51,7 @@ const MtDTI& rGUIMapSetting::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rGUIMapSetting::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIMapSetting::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,34 +71,34 @@ inline void rGUIMapSetting::operator delete(void* p_addr) {
 // Also emitted as: _ZN14rGUIMapSettingD0Ev at 0x0067c180
 rGUIMapSetting::~rGUIMapSetting() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x67c0f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x01a93290 - 0x01a93298 (8 bytes)
@@ -122,7 +122,7 @@ __attribute__((weak)) void rGUIMapSetting::createProperty(MtPropertyList& s) {
 // Address: 0x0067cb20 - 0x0067cb25 (5 bytes)
 MtUI* rGUIMapSetting::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x0067cb30 - 0x0067cd45 (533 bytes)
@@ -145,34 +145,34 @@ __attribute__((weak)) bool rGUIMapSetting::save(MtStream& out) {
 // Address: 0x0067cf90 - 0x0067d018 (136 bytes)
 void rGUIMapSetting::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x67cfb0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x0067d020 - 0x0067d05d (61 bytes)
@@ -187,6 +187,8 @@ __attribute__((weak)) u32 rGUIMapSetting::getHouseTopNum() {
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in sGUIExt::cMap::createFloorNormal at 0x007b714d-0x007b7154 (called at sGUIExt.cpp:25548)
 // bool rGUIMapSetting::getUseIdTex();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGUIMapSetting::MyDTI rGUIMapSetting::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rGUIMapSetting.cpp at 0x0067d7a0-0x0067d7e2 (called at rGUIMapSetting.cpp:30)
@@ -224,7 +226,7 @@ const MtDTI& rGUIMapSetting::cData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::cData::DTI)->memAlloc(sz, align, ::rGUIMapSetting::cData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rGUIMapSetting::cData::DTI)->memAlloc(sz, align, rGUIMapSetting::cData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,7 +241,7 @@ void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rGUIMapSetting::cData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::cData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIMapSetting::cData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -260,11 +262,11 @@ inline void rGUIMapSetting::cData::operator delete(void* p_addr) {
 // Also emitted as: _ZN14rGUIMapSetting5cDataD0Ev at 0x0067d190
 rGUIMapSetting::cData::~cData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShape == static_cast<AreaHitShape*>(nullptr)) {
+    if (mpShape == nullptr) {
         return;
     }
-    delete this->mpShape;
-    this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    delete mpShape;
+    mpShape = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (46 bytes)
@@ -281,7 +283,7 @@ __attribute__((weak)) void rGUIMapSetting::cData::createProperty(MtPropertyList&
 // Address: 0x0067d790 - 0x0067d795 (5 bytes)
 MtUI* rGUIMapSetting::cData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0067d5a0 - 0x0067d65d (189 bytes)
@@ -295,7 +297,7 @@ __attribute__((weak)) void rGUIMapSetting::cData::setShapeType(s32 n) {
 // Address: 0x01a93250 - 0x01a93254 (4 bytes)
 s32 rGUIMapSetting::cData::getShapeType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShapeType;
+    return mShapeType;
 }
 
 // Address: 0x0067d660 - 0x0067d71b (187 bytes)
@@ -309,15 +311,17 @@ bool rGUIMapSetting::cData::save(MtDataWriter& w) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; an | of disjoint bits; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as u32
     // inferred: a temporary for the value the load at 0x67d730 read, used 4 times; no DWARF local holds it
-    AreaHitShape* t0 = this->mpShape;
-    w.writeU32(static_cast<u32>(t0 != static_cast<AreaHitShape*>(nullptr)));
-    if (t0 != static_cast<AreaHitShape*>(nullptr)) {
-        w.::MtDataWriter::writeString(t0->getDTI().::MtDTI::getName());
+    AreaHitShape* t0 = mpShape;
+    w.writeU32(static_cast<u32>(t0 != nullptr));
+    if (t0 != nullptr) {
+        w.writeString(t0->getDTI().getName());
         t0->save(w);
     }
-    w.writeU32(this->mFloorId);
+    w.writeU32(mFloorId);
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGUIMapSetting::cData::MyDTI rGUIMapSetting::cData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rGUIMapSetting.cpp at 0x0067d7e2-0x0067d81f (called at rGUIMapSetting.cpp:213)
@@ -327,7 +331,7 @@ bool rGUIMapSetting::cData::save(MtDataWriter& w) {
 // Address: 0x0067d060 - 0x0067d0ba (90 bytes)
 MtObject* rGUIMapSetting::cData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rGUIMapSetting::cData;
+    return new (16u) rGUIMapSetting::cData;
 }
 
 // Instance at 0x01a92f40 - 0x01a92f45 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

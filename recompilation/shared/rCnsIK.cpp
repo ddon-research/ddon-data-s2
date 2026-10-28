@@ -48,7 +48,7 @@ const MtDTI& rCnsIK::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6rCnsIKD0Ev at 0x0120b0be-0x0120b0df, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCnsIK::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCnsIK::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCnsIK::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ MT_CTSTR rCnsIK::getExt() const {
 // Address: 0x0120b0e0 - 0x0120b0e5 (5 bytes)
 MtUI* rCnsIK::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x0120b0f0 - 0x0120d0d8 (8168 bytes)
@@ -99,16 +99,18 @@ __attribute__((weak)) void rCnsIK::copyUnitProperty(uConstraint* pSrcUnit) {
 // Address: 0x0120d0f0 - 0x0120d171 (129 bytes)
 bool rCnsIK::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x0120d180 - 0x0120d206 (134 bytes)
 bool rCnsIK::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCnsIK::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rCnsIK::DTI));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCnsIK::MyDTI rCnsIK::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCnsIK::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -151,7 +153,7 @@ const MtDTI& rCnsIK::JointInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rCnsIK::JointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCnsIK::JointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCnsIK::JointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,6 +179,8 @@ __attribute__((weak)) void rCnsIK::JointInfo::createProperty(MtPropertyList& s) 
     DDON_STUB("rCnsIK::JointInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCnsIK::JointInfo::MyDTI rCnsIK::JointInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCnsIK::JointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

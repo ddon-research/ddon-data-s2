@@ -59,41 +59,41 @@ const MtDTI& cUnit::getDTI() const {
 // Address: 0x00e5ec00 - 0x00e5ec5b (91 bytes)
 cUnit::cUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrawMode = static_cast<u32>(0);
-    this->mBeFlag = static_cast<u32>(1);
-    this->mMoveLine = static_cast<u32>(127);
-    this->mUnitAttr = static_cast<u32>(19);
-    this->mDrawView = static_cast<u32>(15);
-    this->mRno = static_cast<u32>(0);
-    this->mpPrevUnit = static_cast<cUnit*>(nullptr);
-    this->mpNextUnit = static_cast<cUnit*>(nullptr);
-    this->mDeltaTime = 1.0f;
-    this->mUnitParam = static_cast<u32>(0);
-    this->mUnitGroup = static_cast<u64>(0);
-    this->mpHardwareDispCtrl = static_cast<cUnit::cHardwareDispCtrl*>(nullptr);
+    mDrawMode = 0;
+    mBeFlag = 1;
+    mMoveLine = 127;
+    mUnitAttr = 19;
+    mDrawView = 15;
+    this->mRno = 0;
+    mpPrevUnit = nullptr;
+    mpNextUnit = nullptr;
+    mDeltaTime = 1.0f;
+    mUnitParam = 0;
+    mUnitGroup = 0;
+    mpHardwareDispCtrl = nullptr;
 }
 
 // Address: 0x00e5ec90 - 0x00e5ecc5 (53 bytes)
 // Also emitted as: _ZN5cUnitD0Ev at 0x00e5ecd0
 cUnit::~cUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    delete this->mpHardwareDispCtrl;
-    this->mpHardwareDispCtrl = static_cast<cUnit::cHardwareDispCtrl*>(nullptr);
+    delete mpHardwareDispCtrl;
+    mpHardwareDispCtrl = nullptr;
 }
 
 // Address: 0x00e5ec60 - 0x00e5ec7d (29 bytes)
 void cUnit::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpHardwareDispCtrl = this->createHardwareDispCtrl();
+    mpHardwareDispCtrl = createHardwareDispCtrl();
 }
 
 // Address: 0x01b5bc80 - 0x01b5bc8c (12 bytes)
 s32 cUnit::getMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(this->mMoveLine);
+    return static_cast<s32>(mMoveLine);
 }
 
 // No out-of-line body: 198 inlined copies in 167 functions (931 bytes)
@@ -107,19 +107,19 @@ s32 cUnit::getMoveLine() const {
 bool cUnit::checkUnitGroup(u32 group) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mUnitGroup) >> static_cast<unsigned long>(group & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mUnitGroup) >> static_cast<unsigned long>(group & 63u)) & 1ul) != 0;
 }
 
 // Address: 0x01989b70 - 0x01989b73 (3 bytes)
 u64 cUnit::getDefaultUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(0);
+    return 0;
 }
 
 // Address: 0x01989b80 - 0x01989b83 (3 bytes)
 u64 cUnit::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(0);
+    return 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -143,13 +143,13 @@ bool cUnit::getBoundary(MtSphere* pdst) {
 // Address: 0x00e5ec80 - 0x00e5ec85 (5 bytes)
 MtUI* cUnit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00e5ed20 - 0x00e5ed30 (16 bytes)
 MT_CTSTR cUnit::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI().mName;
+    return getDTI().mName;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (12 bytes)
@@ -174,11 +174,11 @@ __attribute__((weak)) void cUnit::createProperty(MtPropertyList& s) {
 void cUnit::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cUnit*
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        this->mBeFlag = static_cast<u32>(3);
+    if ((mBeFlag - 1u) <= 1u) {
+        mBeFlag = 3;
     }
 }
 
@@ -193,9 +193,9 @@ void cUnit::kill() {
 void cUnit::setFix(bool fix) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (fix) {
-        this->mUnitAttr = this->mUnitAttr | static_cast<u32>(8);
+        mUnitAttr = mUnitAttr | 8u;
     } else {
-        this->mUnitAttr = this->mUnitAttr & static_cast<u32>(55);
+        mUnitAttr = mUnitAttr & 55u;
     }
 }
 
@@ -203,9 +203,9 @@ void cUnit::setFix(bool fix) {
 void cUnit::setMove(bool move) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (move) {
-        this->mUnitAttr = this->mUnitAttr | static_cast<u32>(1);
+        mUnitAttr = mUnitAttr | 1u;
     } else {
-        this->mUnitAttr = this->mUnitAttr & static_cast<u32>(62);
+        mUnitAttr = mUnitAttr & 62u;
     }
 }
 
@@ -219,25 +219,25 @@ __attribute__((weak)) void cUnit::setDraw(bool draw) {
 // Address: 0x01b5bc30 - 0x01b5bc34 (4 bytes)
 void cUnit::setDrawMode(u32 draw_mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrawMode = draw_mode;
+    mDrawMode = draw_mode;
 }
 
 // Address: 0x01b5bc20 - 0x01b5bc24 (4 bytes)
 u32 cUnit::getDrawMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDrawMode;
+    return mDrawMode;
 }
 
 // Address: 0x01b5bc50 - 0x01b5bc67 (23 bytes)
 void cUnit::setDrawView(u32 draw_scene) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrawView = draw_scene;
+    mDrawView = draw_scene;
 }
 
 // Address: 0x01b5bc40 - 0x01b5bc4a (10 bytes)
 u32 cUnit::getDrawView() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDrawView;
+    return mDrawView;
 }
 
 // No out-of-line body: 308 inlined copies in 250 functions (1851 bytes)
@@ -256,7 +256,7 @@ u32 cUnit::getDrawView() const {
 // Address: 0x01b5bcb0 - 0x01b5bcb7 (7 bytes)
 u32 cUnit::getBeFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBeFlag;
+    return mBeFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,7 +285,7 @@ bool cUnit::isFix() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11 from const cUnit*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(17))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 17)) & 32) >> 5);
 }
 
 // Address: 0x01b5bb60 - 0x01b5bb71 (17 bytes)
@@ -327,8 +327,8 @@ __attribute__((weak)) bool cUnit::isMove() const {
 // Address: 0x00e5f720 - 0x00e5f72d (13 bytes)
 void cUnit::getDrawUnitState(u32& type, u32& priority) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    type = static_cast<unsigned int>(9);
-    priority = static_cast<unsigned int>(0);
+    type = 9;
+    priority = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -337,31 +337,31 @@ void cUnit::getDrawUnitState(u32& type, u32& priority) const {
 // Address: 0x01989be0 - 0x01989be3 (3 bytes)
 u32 cUnit::getUseCommandCacheNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01989bf0 - 0x01989bf3 (3 bytes)
 u32 cUnit::getUseMaxCommandCacheNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00e5f730 - 0x00e5f740 (16 bytes)
 bool cUnit::isPossibleDrawFromDrawBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (::sRender::mpInstance)->isPossibleDrawFromDrawBuffer();
+    return (sRender::mpInstance)->isPossibleDrawFromDrawBuffer();
 }
 
 // Address: 0x01989b50 - 0x01989b5f (15 bytes)
 bool cUnit::isEnableInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1);
+    return (mBeFlag - 1u) <= 1u;
 }
 
 // Address: 0x01b5bcc0 - 0x01b5bccf (15 bytes)
 void cUnit::setBeFlag(u32 bf) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBeFlag = bf;
+    mBeFlag = bf;
 }
 
 // Address: 0x01b5bba0 - 0x01b5bba9 (9 bytes)
@@ -370,7 +370,7 @@ bool cUnit::getTrans() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11 from const cUnit*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(17))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 17)) & 8) >> 3);
 }
 
 // No out-of-line body: no code in the ELF
@@ -379,7 +379,7 @@ bool cUnit::getTrans() const {
 // Address: 0x01b5bc90 - 0x01b5bca4 (20 bytes)
 void cUnit::setMoveLine(u32 line) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMoveLine = line;
+    mMoveLine = line;
 }
 
 // Address: 0x01b5bc70 - 0x01b5bc71 (1 bytes)
@@ -399,13 +399,15 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* cUnit::createHardwareDispCtrl() 
 // Address: 0x01b5bcd0 - 0x01b5bcd5 (5 bytes)
 cUnit::cHardwareDispCtrl* cUnit::getHardwareDispCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpHardwareDispCtrl;
+    return mpHardwareDispCtrl;
 }
 
 // Address: 0x01b5bce0 - 0x01b5bce1 (1 bytes)
 __attribute__((weak)) void cUnit::setHardwareDispCtrl(cUnit::cHardwareDispCtrl* set) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cUnit::MyDTI cUnit::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cUnit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -449,9 +451,8 @@ const MtDTI& cUnit::cHardwareDispCtrl::getDTI() const {
 
 // Address: 0x00e5f7a0 - 0x00e5f7e0 (64 bytes)
 void* cUnit::cHardwareDispCtrl::operator new(size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from cUnit::cHardwareDispCtrl::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::cUnit::cHardwareDispCtrl::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::cUnit::cHardwareDispCtrl::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(cUnit::cHardwareDispCtrl::DTI)->memAlloc(sz, align, cUnit::cHardwareDispCtrl::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -465,7 +466,7 @@ void* cUnit::cHardwareDispCtrl::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cUnit::cHardwareDispCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cUnit::cHardwareDispCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cUnit::cHardwareDispCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -486,10 +487,10 @@ __attribute__((weak)) void cUnit::cHardwareDispCtrl::createProperty(MtPropertyLi
 // Address: 0x00e5f900 - 0x00e5f91e (30 bytes)
 void cUnit::cHardwareDispCtrl::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHard = static_cast<u32>(1);
-    this->mFlag = static_cast<u32>(0);
-    this->mOldFlag = static_cast<u32>(0);
-    this->mpOwner = nullptr;
+    mHard = 1;
+    mFlag = 0;
+    mOldFlag = 0;
+    mpOwner = nullptr;
 }
 
 // Address: 0x00e5f850 - 0x00e5f8f1 (161 bytes)
@@ -503,14 +504,14 @@ __attribute__((weak)) void cUnit::cHardwareDispCtrl::update() {
 bool cUnit::cHardwareDispCtrl::isDispOperateHard() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mFlag) >> static_cast<unsigned long>(this->mHard & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mFlag) >> static_cast<unsigned long>(mHard & 31u)) & 1ul) == 0;
 }
 
 // Address: 0x01b5bd80 - 0x01b5bd8d (13 bytes)
 bool cUnit::cHardwareDispCtrl::isDispOperateHardOld() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mOldFlag) >> static_cast<unsigned long>(this->mHard & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mOldFlag) >> static_cast<unsigned long>(mHard & 31u)) & 1ul) == 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -533,6 +534,8 @@ bool cUnit::cHardwareDispCtrl::isDispOperateHardOld() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cUnit* cUnit::cHardwareDispCtrl::getOwner();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cUnit::cHardwareDispCtrl::MyDTI cUnit::cHardwareDispCtrl::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cUnit::cHardwareDispCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -51,7 +51,7 @@ const MtDTI& cJointInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cJointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cJointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cJointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -71,11 +71,11 @@ inline void cJointInfo::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cJointInfo::cJointInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mJntNo = static_cast<u16>(255);
-    this->mAttr = static_cast<u16>(0);
-    this->mRadius = 0.0f;
-    this->mOfsPos = ::MtVector3::Zero;
-    this->mJointInfoID = static_cast<u16>(0);
+    mJntNo = 255;
+    mAttr = 0;
+    mRadius = 0.0f;
+    mOfsPos = MtVector3::Zero;
+    mJointInfoID = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -86,6 +86,8 @@ __attribute__((weak)) void cJointInfo::createProperty(MtPropertyList& s) {
     DDON_STUB("cJointInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cJointInfo::MyDTI cJointInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJointInfo.cpp at 0x0068fb00-0x0068fb42 (called at rJointInfo.cpp:23)
@@ -120,7 +122,7 @@ const MtDTI& rJointInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJointInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJointInfo::DTI)->memAlloc(sz, align, ::rJointInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJointInfo::DTI)->memAlloc(sz, align, rJointInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* rJointInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rJointInfoD0Ev at 0x01a96c44-0x01a96c63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rJointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,7 +158,7 @@ bool rJointInfo::loadData(MtDataReader& in, cJointInfo* pData) {
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mOfsPos = in.readV3();
-    ::nDDOIO::readData(in, pData->mJointInfoID);
+    nDDOIO::readData(in, pData->mJointInfoID);
     return true;
 }
 
@@ -169,8 +171,10 @@ MT_CTSTR rJointInfo::getExt() const {
 // Address: 0x01a96d90 - 0x01a96d96 (6 bytes)
 u32 rJointInfo::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(259);
+    return 259;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJointInfo::MyDTI rJointInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJointInfo.cpp at 0x0068fb42-0x0068fb7f (called at rJointInfo.cpp:116)
@@ -180,7 +184,7 @@ u32 rJointInfo::getDataVersion() const {
 // Address: 0x0068fa20 - 0x0068fa84 (100 bytes)
 MtObject* rJointInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJointInfo;
+    return new (16u) rJointInfo;
 }
 
 // Instance at 0x01a96d40 - 0x01a96d56 (22 bytes) of the generic rTbl2<T>::getData

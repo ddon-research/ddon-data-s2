@@ -24,7 +24,7 @@ const MtDTI& CDataAchieveRewardCommon::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAchieveRewardCommon::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchieveRewardCommon::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAchieveRewardCommon::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataAchieveRewardCommon::getAllocator() {
 // Address: 0x003bbea0 - 0x003bbee0 (64 bytes)
 void* CDataAchieveRewardCommon::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAchieveRewardCommon::getAllocator()->memAlloc(sz, align, ::CDataAchieveRewardCommon::DTI.::MtDTI::getID());
+    return CDataAchieveRewardCommon::getAllocator()->memAlloc(sz, align, CDataAchieveRewardCommon::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataAchieveRewardCommon::operator new(size_t sz, u32 align) {
 // Address: 0x003bbf10 - 0x003bbf3a (42 bytes)
 __attribute__((weak)) void CDataAchieveRewardCommon::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAchieveRewardCommon::getAllocator()->memFree(p_addr);
+    CDataAchieveRewardCommon::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataAchieveRewardCommon::operator delete(void* p_add
 //   in uGUIAchievement::decideList at 0x0091a8f6-0x0091a90c (called at Achievement.h:296)
 // CDataAchieveRewardCommon::CDataAchieveRewardCommon(u8 in_Type, u32 in_RewardId);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAchieveRewardCommon::MyDTI CDataAchieveRewardCommon::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419b50-0x00419b89 (called at AchievementImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419b50-0x00419b89 (called at Achievement.h:283)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataAchieveRewardCommon::operator delete(void* p_add
 // Address: 0x003bbe50 - 0x003bbe9b (75 bytes)
 MtObject* CDataAchieveRewardCommon::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAchieveRewardCommon;
+    return new (16u) CDataAchieveRewardCommon;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataAchievementFurnitureReward::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAchievementFurnitureReward::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchievementFurnitureReward::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAchievementFurnitureReward::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataAchievementFurnitureReward::getAllocator() {
 // Address: 0x003bbd80 - 0x003bbdc0 (64 bytes)
 void* CDataAchievementFurnitureReward::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAchievementFurnitureReward::getAllocator()->memAlloc(sz, align, ::CDataAchievementFurnitureReward::DTI.::MtDTI::getID());
+    return CDataAchievementFurnitureReward::getAllocator()->memAlloc(sz, align, CDataAchievementFurnitureReward::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataAchievementFurnitureReward::operator new(size_t sz, u32 align) {
 // Address: 0x003bbdf0 - 0x003bbe1a (42 bytes)
 __attribute__((weak)) void CDataAchievementFurnitureReward::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAchievementFurnitureReward::getAllocator()->memFree(p_addr);
+    CDataAchievementFurnitureReward::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,6 +145,8 @@ __attribute__((weak)) void CDataAchievementFurnitureReward::operator delete(void
 // No out-of-line body: no code in the ELF
 // CDataAchievementFurnitureReward::CDataAchievementFurnitureReward(u32, u32, const CAchievementIdentifier&, u32, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAchievementFurnitureReward::MyDTI CDataAchievementFurnitureReward::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419b17-0x00419b50 (called at AchievementImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419b17-0x00419b50 (called at Achievement.h:209)
@@ -151,7 +155,7 @@ __attribute__((weak)) void CDataAchievementFurnitureReward::operator delete(void
 // Address: 0x003bbd10 - 0x003bbd80 (112 bytes)
 MtObject* CDataAchievementFurnitureReward::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAchievementFurnitureReward;
+    return new (16u) CDataAchievementFurnitureReward;
 }
 
 // No out-of-line body: no code in the ELF
@@ -168,7 +172,7 @@ const MtDTI& CDataAchievementIdentifier::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAchievementIdentifier::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchievementIdentifier::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAchievementIdentifier::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataAchievementIdentifier::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* CDataAchievementIdentifier::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchievementIdentifier::DTI)->memAlloc(sz, align, ::CDataAchievementIdentifier::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataAchievementIdentifier::DTI)->memAlloc(sz, align, CDataAchievementIdentifier::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ inline void* CDataAchievementIdentifier::operator new(size_t sz, u32 align) {
 // Address: 0x003bba40 - 0x003bba6a (42 bytes)
 __attribute__((weak)) void CDataAchievementIdentifier::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAchievementIdentifier::getAllocator()->memFree(p_addr);
+    CDataAchievementIdentifier::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataAchievementIdentifier::operator delete(void* p_a
 // No out-of-line body: no code in the ELF
 // CDataAchievementIdentifier::CDataAchievementIdentifier(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAchievementIdentifier::MyDTI CDataAchievementIdentifier::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419a6c-0x00419aa5 (called at AchievementImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419a6c-0x00419aa5 (called at Achievement.h:22)
@@ -222,7 +228,7 @@ __attribute__((weak)) void CDataAchievementIdentifier::operator delete(void* p_a
 // Address: 0x003bb9c0 - 0x003bba08 (72 bytes)
 MtObject* CDataAchievementIdentifier::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAchievementIdentifier;
+    return new (16u) CDataAchievementIdentifier;
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,7 +245,7 @@ const MtDTI& CDataAchievementProgress::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAchievementProgress::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchievementProgress::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAchievementProgress::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,7 +254,7 @@ inline MtAllocator* CDataAchievementProgress::getAllocator() {
 // Address: 0x003bbb10 - 0x003bbb50 (64 bytes)
 void* CDataAchievementProgress::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAchievementProgress::getAllocator()->memAlloc(sz, align, ::CDataAchievementProgress::DTI.::MtDTI::getID());
+    return CDataAchievementProgress::getAllocator()->memAlloc(sz, align, CDataAchievementProgress::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,7 +269,7 @@ void* CDataAchievementProgress::operator new(size_t sz, u32 align) {
 // Address: 0x003bbb80 - 0x003bbbaa (42 bytes)
 __attribute__((weak)) void CDataAchievementProgress::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAchievementProgress::getAllocator()->memFree(p_addr);
+    CDataAchievementProgress::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,6 +291,8 @@ __attribute__((weak)) void CDataAchievementProgress::operator delete(void* p_add
 // No out-of-line body: no code in the ELF
 // CDataAchievementProgress::CDataAchievementProgress(const CAchievementIdentifier&, u32, u32, s64);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAchievementProgress::MyDTI CDataAchievementProgress::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419aa5-0x00419ade (called at AchievementImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419aa5-0x00419ade (called at Achievement.h:75)
@@ -293,7 +301,7 @@ __attribute__((weak)) void CDataAchievementProgress::operator delete(void* p_add
 // Address: 0x003bbaa0 - 0x003bbb07 (103 bytes)
 MtObject* CDataAchievementProgress::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAchievementProgress;
+    return new (16u) CDataAchievementProgress;
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,7 +318,7 @@ const MtDTI& CDataAchievementRewardProgress::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAchievementRewardProgress::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAchievementRewardProgress::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAchievementRewardProgress::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,7 +327,7 @@ inline MtAllocator* CDataAchievementRewardProgress::getAllocator() {
 // Address: 0x003bbc40 - 0x003bbc80 (64 bytes)
 void* CDataAchievementRewardProgress::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAchievementRewardProgress::getAllocator()->memAlloc(sz, align, ::CDataAchievementRewardProgress::DTI.::MtDTI::getID());
+    return CDataAchievementRewardProgress::getAllocator()->memAlloc(sz, align, CDataAchievementRewardProgress::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -334,7 +342,7 @@ void* CDataAchievementRewardProgress::operator new(size_t sz, u32 align) {
 // Address: 0x003bbcb0 - 0x003bbcda (42 bytes)
 __attribute__((weak)) void CDataAchievementRewardProgress::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAchievementRewardProgress::getAllocator()->memFree(p_addr);
+    CDataAchievementRewardProgress::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,6 +364,8 @@ __attribute__((weak)) void CDataAchievementRewardProgress::operator delete(void*
 // No out-of-line body: no code in the ELF
 // CDataAchievementRewardProgress::CDataAchievementRewardProgress(u32, u32, u32, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAchievementRewardProgress::MyDTI CDataAchievementRewardProgress::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419ade-0x00419b17 (called at AchievementImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419ade-0x00419b17 (called at Achievement.h:142)
@@ -364,6 +374,6 @@ __attribute__((weak)) void CDataAchievementRewardProgress::operator delete(void*
 // Address: 0x003bbbe0 - 0x003bbc33 (83 bytes)
 MtObject* CDataAchievementRewardProgress::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAchievementRewardProgress;
+    return new (16u) CDataAchievementRewardProgress;
 }
 

@@ -35,7 +35,7 @@ const MtDTI& cpJob08::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpJob08::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpJob08::DTI);
+    return MtMemoryAllocator::getAllocator(cpJob08::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* cpJob08::getAllocator() {
 // Address: 0x004b2a90 - 0x004b2ad0 (64 bytes)
 void* cpJob08::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpJob08::getAllocator()->memAlloc(sz, align, ::cpJob08::DTI.::MtDTI::getID());
+    return cpJob08::getAllocator()->memAlloc(sz, align, cpJob08::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* cpJob08::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJob08::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJob08::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJob08::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,39 +88,39 @@ cpJob08::~cpJob08() {
 // Address: 0x004b2d30 - 0x004b2d35 (5 bytes)
 void cpJob08::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::setup();
+    this->cpJobBase::setup();
 }
 
 // Address: 0x004b2d40 - 0x004b2dee (174 bytes)
 void cpJob08::reset() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::reset();
-    if (this->mpCstmSkillShlSeList.elems[0] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[0]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[0] = static_cast<rSoundRequest*>(nullptr);
+    this->cpJobBase::reset();
+    if (mpCstmSkillShlSeList.elems[0] != nullptr) {
+        mpCstmSkillShlSeList.elems[0]->cResource::release();
+        mpCstmSkillShlSeList.elems[0] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[1] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[1]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[1] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[1] != nullptr) {
+        mpCstmSkillShlSeList.elems[1]->cResource::release();
+        mpCstmSkillShlSeList.elems[1] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[2] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[2]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[2] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[2] != nullptr) {
+        mpCstmSkillShlSeList.elems[2]->cResource::release();
+        mpCstmSkillShlSeList.elems[2] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[3] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[3]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[3] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[3] != nullptr) {
+        mpCstmSkillShlSeList.elems[3]->cResource::release();
+        mpCstmSkillShlSeList.elems[3] = nullptr;
     }
-    if (this->mpShlCommonSe != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpShlCommonSe->::cResource::release();
-        this->mpShlCommonSe = static_cast<rSoundRequest*>(nullptr);
+    if (mpShlCommonSe != nullptr) {
+        mpShlCommonSe->release();
+        mpShlCommonSe = nullptr;
     }
-    if (this->mpEfcElement == static_cast<cEfcHandle*>(nullptr)) {
+    if (mpEfcElement == nullptr) {
         return;
     }
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpEfcElement, static_cast<u32>(4));
-    this->mpEfcElement = static_cast<cEfcHandle*>(nullptr);
+    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcElement, 4u);
+    mpEfcElement = nullptr;
 }
 
 // Address: 0x004b2df0 - 0x004b315f (879 bytes)
@@ -138,14 +138,14 @@ __attribute__((weak)) void cpJob08::update() {
 // Address: 0x004b2ce0 - 0x004b2d29 (73 bytes)
 void cpJob08::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEfcElement == static_cast<cEfcHandle*>(nullptr)) {
+    if (mpEfcElement == nullptr) {
         return;
     }
-    if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcElement) == false) {
+    if (!static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcElement)) {
         return;
     }
-    this->mpEfcElement->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mpEfcElement = static_cast<cEfcHandle*>(nullptr);
+    mpEfcElement->mpOwner = nullptr;
+    mpEfcElement = nullptr;
 }
 
 // Address: 0x004b3160 - 0x004b3361 (513 bytes)
@@ -196,14 +196,14 @@ __attribute__((weak)) void cpJob08::makeShlDamageAttackInfo(cHitInfoAfter* pHitI
 void cpJob08::makeHealedAttackInfo(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: u32 adjUid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo->mCommonInfo.mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
+    if (pHitInfo->mCommonInfo.mpAtkModel != nullptr) {
         return;
     }
-    if (pHitInfo->mCommonInfo.mpShlOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (pHitInfo->mCommonInfo.mpShlOwnerModel == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x4b3a6c, used once; no DWARF local holds it
-    f32 t0 = pHitInfo->mCommonInfo.mpShlOwnerModel->::uDDOModel::getKeepAtkAdjustPtr()->::cpKeepAtkAdjust::getMgcBowAdjust(pHitInfo->mCommonInfo.mAtkAdjustUniqueId, static_cast<u32>(1));
+    f32 t0 = pHitInfo->mCommonInfo.mpShlOwnerModel->getKeepAtkAdjustPtr()->getMgcBowAdjust(pHitInfo->mCommonInfo.mAtkAdjustUniqueId, 1u);
     pHitInfo->mHealedInfo.mHpHealAtkAdj[0] = pHitInfo->mHealedInfo.mHpHealAtkAdj[0] + t0;
 }
 
@@ -212,22 +212,22 @@ void cpJob08::callbackAttack(cHitInfo* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x4b3a9a read, used 3 times; no DWARF local holds it
     uDDOModel* t0 = pHitInfo->mpAtkModel;
-    if (t0 == static_cast<uDDOModel*>(nullptr)) {
+    if (t0 == nullptr) {
         return;
     }
-    if (t0->::uDDOModel::isMaster() == false) {
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->mUnitId & 8u) == 0) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam() == static_cast<cAttackParam*>(nullptr)) {
+    if (pHitInfo->getAttackParam() == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam()->mAttackID != static_cast<u16>(11)) {
+    if (pHitInfo->getAttackParam()->mAttackID != 11) {
         return;
     }
-    ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(38));
+    nDDOUtility::requestOnTutorialFlg(38);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
@@ -331,6 +331,8 @@ void cpJob08::callbackAttack(cHitInfo* pHitInfo) {
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in cJob08MyHeal::move at 0x002c5ff5-0x002c5ffc (called at cJob08Action.cpp:100)
 // u32 cpJob08::getAirHealCnt() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJob08::MyDTI cpJob08::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpJob08.cpp at 0x004b3bdf-0x004b3c1c (called at cpJob08.cpp:43)

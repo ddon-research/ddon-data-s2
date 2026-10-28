@@ -24,7 +24,7 @@ const MtDTI& CDataEditInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataEditInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataEditInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataEditInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataEditInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataEditInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataEditInfo::DTI)->memAlloc(sz, align, ::CDataEditInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataEditInfo::DTI)->memAlloc(sz, align, CDataEditInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* CDataEditInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003c9710 - 0x003c973a (42 bytes)
 __attribute__((weak)) void CDataEditInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataEditInfo::getAllocator()->memFree(p_addr);
+    CDataEditInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataEditInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataEditInfo::CDataEditInfo(u8, u8, u16, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataEditInfo::MyDTI CDataEditInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041bb60-0x0041bb99 (called at CharacterEditImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041bb60-0x0041bb99 (called at CharacterEdit.h:21)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataEditInfo::operator delete(void* p_addr) {
 // Address: 0x003c9610 - 0x003c96d1 (193 bytes)
 MtObject* CDataEditInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataEditInfo;
+    return new (16u) CDataEditInfo;
 }
 

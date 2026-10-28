@@ -209,24 +209,24 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestGroup::cQuestGroup() {
-    this->mGroupNo = static_cast<u32>(16);
-    this->mCondition = static_cast<s32>(0);
-    this->mEraseCondition = static_cast<s32>(0);
+    this->mGroupNo = 16;
+    this->mCondition = 0;
+    this->mEraseCondition = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestSet::cQuestSet() {
-    this->mSetID = static_cast<s32>(0);
-    this->mpSetInfo = static_cast<cSetInfo*>(nullptr);
-    this->mpUnit = static_cast<cUnit*>(nullptr);
-    this->mUnitNo = static_cast<u32>(16);
-    this->mOmID = static_cast<u32>(0);
-    this->mKind = static_cast<u32>(0);
+    this->mSetID = 0;
+    this->mpSetInfo = nullptr;
+    this->mpUnit = nullptr;
+    this->mUnitNo = 16;
+    this->mOmID = 0;
+    this->mKind = 0;
     this->mIsDisp = false;
-    this->mQuestId = static_cast<u32>(0);
+    this->mQuestId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestStage::cQuestStage() {
-    this->mStageNo = static_cast<s32>(0);
+    this->mStageNo = 0;
 }

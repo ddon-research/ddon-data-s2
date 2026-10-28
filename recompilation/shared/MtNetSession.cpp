@@ -13,7 +13,7 @@
 // Address: 0x00de7340 - 0x00de739f (95 bytes)
 void MtNetSession::clearMember(MtNetSession::Member* member) {
     // Approximate from the ELF: a constant over array elements; a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    if (member == static_cast<MtNetSession::Member*>(nullptr)) {
+    if (member == nullptr) {
         return;
     }
     member->mIsValid = false;
@@ -21,38 +21,38 @@ void MtNetSession::clearMember(MtNetSession::Member* member) {
     member->mIsPrivate = false;
     member->mIsOmittedName = false;
     member->mIsHost = false;
-    member->mName[24] = static_cast<char>(0);
-    member->mName[25] = static_cast<char>(0);
-    member->mName[26] = static_cast<char>(0);
-    member->mName[27] = static_cast<char>(0);
-    member->mName[28] = static_cast<char>(0);
-    member->mName[29] = static_cast<char>(0);
-    member->mName[30] = static_cast<char>(0);
-    member->mName[31] = static_cast<char>(0);
-    member->mName[16] = static_cast<char>(0);
-    member->mName[17] = static_cast<char>(0);
-    member->mName[18] = static_cast<char>(0);
-    member->mName[19] = static_cast<char>(0);
-    member->mName[20] = static_cast<char>(0);
-    member->mName[21] = static_cast<char>(0);
-    member->mName[22] = static_cast<char>(0);
-    member->mName[23] = static_cast<char>(0);
-    member->mName[8] = static_cast<char>(0);
-    member->mName[9] = static_cast<char>(0);
-    member->mName[10] = static_cast<char>(0);
-    member->mName[11] = static_cast<char>(0);
-    member->mName[12] = static_cast<char>(0);
-    member->mName[13] = static_cast<char>(0);
-    member->mName[14] = static_cast<char>(0);
-    member->mName[15] = static_cast<char>(0);
-    member->mName[0] = static_cast<char>(0);
-    member->mName[1] = static_cast<char>(0);
-    member->mName[2] = static_cast<char>(0);
-    member->mName[3] = static_cast<char>(0);
-    member->mName[4] = static_cast<char>(0);
-    member->mName[5] = static_cast<char>(0);
-    member->mName[6] = static_cast<char>(0);
-    member->mName[7] = static_cast<char>(0);
+    member->mName[24] = 0;
+    member->mName[25] = 0;
+    member->mName[26] = 0;
+    member->mName[27] = 0;
+    member->mName[28] = 0;
+    member->mName[29] = 0;
+    member->mName[30] = 0;
+    member->mName[31] = 0;
+    member->mName[16] = 0;
+    member->mName[17] = 0;
+    member->mName[18] = 0;
+    member->mName[19] = 0;
+    member->mName[20] = 0;
+    member->mName[21] = 0;
+    member->mName[22] = 0;
+    member->mName[23] = 0;
+    member->mName[8] = 0;
+    member->mName[9] = 0;
+    member->mName[10] = 0;
+    member->mName[11] = 0;
+    member->mName[12] = 0;
+    member->mName[13] = 0;
+    member->mName[14] = 0;
+    member->mName[15] = 0;
+    member->mName[0] = 0;
+    member->mName[1] = 0;
+    member->mName[2] = 0;
+    member->mName[3] = 0;
+    member->mName[4] = 0;
+    member->mName[5] = 0;
+    member->mName[6] = 0;
+    member->mName[7] = 0;
 }
 
 // Address: 0x00de73a0 - 0x00de7414 (116 bytes)
@@ -113,7 +113,7 @@ __attribute__((weak)) void MtNetSession::reqFinalize(u32* req_seq) {
 // Address: 0x00de75e0 - 0x00de75e9 (9 bytes)
 void MtNetSession::abortRequest(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestController.::MtNetRequestController::abort(req_seq);
+    mRequestController.abort(req_seq);
 }
 
 // No out-of-line body: no code in the ELF

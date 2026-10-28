@@ -36,7 +36,7 @@ const MtDTI& cEmScrAdjust::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEmScrAdjust::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memAlloc(sz, align, ::cEmScrAdjust::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmScrAdjust::DTI)->memAlloc(sz, align, cEmScrAdjust::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEmScrAdjust::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmScrAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmScrAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cEmScrAdjust::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEmScrAdjust::~cEmScrAdjust();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmScrAdjust::MyDTI cEmScrAdjust::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmScrAdjust.cpp at 0x00669560-0x006695a2 (called at rEmScrAdjust.cpp:38)
 //   in _GLOBAL__sub_I_rEmScrAdjust.cpp at 0x00669560-0x006695a2 (called at rEmScrAdjust.h:44)
@@ -84,7 +86,7 @@ inline void cEmScrAdjust::operator delete(void* p_addr) {
 // Address: 0x00669360 - 0x006693bc (92 bytes)
 MtObject* cEmScrAdjust::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmScrAdjust;
+    return new (16u) cEmScrAdjust;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rEmScrAdjust::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmScrAdjust::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmScrAdjust::DTI)->memAlloc(sz, align, ::rEmScrAdjust::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmScrAdjust::DTI)->memAlloc(sz, align, rEmScrAdjust::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rEmScrAdjust::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rEmScrAdjustD0Ev at 0x01a88454-0x01a88473, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmScrAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmScrAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmScrAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,16 +143,16 @@ bool rEmScrAdjust::loadData(MtDataReader& r, cEmScrAdjust* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRadius);
+    nDDOIO::readData(r, pData->mRadius);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHeight);
+    nDDOIO::readData(r, pData->mHeight);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mFallLimit);
+    nDDOIO::readData(r, pData->mFallLimit);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mNormalCheckRange);
+    nDDOIO::readData(r, pData->mNormalCheckRange);
     return true;
 }
 
@@ -163,8 +165,10 @@ MT_CTSTR rEmScrAdjust::getExt() const {
 // Address: 0x01a885a0 - 0x01a885a6 (6 bytes)
 u32 rEmScrAdjust::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmScrAdjust::MyDTI rEmScrAdjust::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmScrAdjust.cpp at 0x006695a2-0x006695df (called at rEmScrAdjust.cpp:39)
@@ -174,7 +178,7 @@ u32 rEmScrAdjust::getDataVersion() const {
 // Address: 0x00669430 - 0x00669494 (100 bytes)
 MtObject* rEmScrAdjust::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmScrAdjust;
+    return new (16u) rEmScrAdjust;
 }
 
 // Instance at 0x01a88550 - 0x01a88566 (22 bytes) of the generic rTbl2<T>::getData

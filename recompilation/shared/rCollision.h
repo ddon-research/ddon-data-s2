@@ -33,6 +33,7 @@ class cGridCollision;
 class cGridCollisionRegistInfo;
 namespace nCollision { struct ScrMaterialInfo; }
 namespace nCollisionUtil { struct LoadBuffer; }
+class sCollision;
 
 // Declarations
 class rCollision;
@@ -53,6 +54,8 @@ using u8 = unsigned char;
 
 class rCollision : public cResource
 {
+    // inferred: sCollision::Sbc::Parts::getRPartsAABB names rCollision::mpPartsInfo, through its enclosing class sCollision
+    friend class sCollision;
 public:
     enum ADJACENT_TYPE
     {

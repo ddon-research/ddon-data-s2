@@ -139,7 +139,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rTexDetailEdit::DetailParam::DetailParam() {
-    this->mForm = static_cast<u32>(4294967295);
-    this->mType = static_cast<u32>(0);
-    this->mIgnoreLimit = static_cast<u32>(0);
+    this->mForm = 0xFFFFFFFF;
+    this->mType = 0;
+    this->mIgnoreLimit = 0;
 }

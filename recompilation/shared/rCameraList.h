@@ -115,6 +115,6 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK11rCameraList5MyDTI11newInstanceEv at 0x011c2090-0x011c20bd, code DWARF attributes to no inlined copy
 inline rCameraList::rCameraList() {
-    this->::cResource::mAttr = static_cast<u32>(18);
-    this->mpHdr = static_cast<rCameraList::CAMERA_LIST_HDR*>(nullptr);
+    this->::cResource::mAttr = 18;
+    this->mpHdr = nullptr;
 }

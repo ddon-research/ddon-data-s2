@@ -62,18 +62,20 @@ bool cCharacterEditPaletteBase::loadData(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mIconNo);
+    nDDOIO::readData(r, mIconNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mReleaseVersion);
+    nDDOIO::readData(r, mReleaseVersion);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mFlag);
+    nDDOIO::readData(r, mFlag);
     return true;
 }
 
 // No out-of-line body: no code in the ELF
 // bool cCharacterEditPaletteBase::saveData(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCharacterEditPaletteBase::MyDTI cCharacterEditPaletteBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (138 bytes)
 //   in _GLOBAL__sub_I_cCharacterEditPaletteBase.cpp at 0x0004cdc0-0x0004ce05 (called at cCharacterEditPaletteBase.cpp:39)

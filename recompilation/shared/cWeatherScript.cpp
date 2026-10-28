@@ -50,7 +50,7 @@ const MtDTI& cWeatherScript::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherScript::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherScript::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherScript::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,10 +79,10 @@ cWeatherScript::~cWeatherScript() {
 // Address: 0x0058eef0 - 0x0058ef0a (26 bytes)
 void cWeatherScript::initScript() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScriptStepCur = static_cast<u32>(0);
-    this->mScriptStepReq = static_cast<u32>(0);
-    this->mScriptStepReqOn = false;
-    this->mEffectAlphaRate = 1.0f;
+    mScriptStepCur = 0;
+    mScriptStepReq = 0;
+    mScriptStepReqOn = false;
+    mEffectAlphaRate = 1.0f;
 }
 
 // Address: 0x0058ef10 - 0x0058f0d0 (448 bytes)
@@ -106,50 +106,50 @@ __attribute__((weak)) void cWeatherScript::updateScript() {
 // Address: 0x0058f400 - 0x0058f409 (9 bytes)
 void cWeatherScript::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScriptIO.::cWeatherScriptIO::updatePtr();
+    mScriptIO.updatePtr();
 }
 
 // Address: 0x0058f3e0 - 0x0058f3e8 (8 bytes)
 void cWeatherScript::reqStepScript(u32 step) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScriptStepReq = step;
-    this->mScriptStepReqOn = true;
+    mScriptStepReq = step;
+    mScriptStepReqOn = true;
 }
 
 // Address: 0x0058f3f0 - 0x0058f3fc (12 bytes)
 void cWeatherScript::endScript() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScriptStepReq = static_cast<u32>(0);
-    this->mScriptStepReqOn = true;
+    mScriptStepReq = 0;
+    mScriptStepReqOn = true;
 }
 
 // Address: 0x0058f410 - 0x0058f5b6 (422 bytes)
 void cWeatherScript::releaseScript() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mScripts.elems[0].::MtArray::mAutoDelete != false) {
+    if (mScripts.elems[0].mAutoDelete) {
         // inferred: the value carried to 0x58f453; no location-less local in scope fits
         u32 v2_0;
-        if (this->mScripts.elems[0].::MtArray::mLength != static_cast<u32>(0)) {
+        if (mScripts.elems[0].mLength != 0) {
             // inferred: the value the loop at 0x58f430 carries; no location-less local in scope fits
-            u32 v0_0 = this->mScripts.elems[0].::MtArray::mLength;
+            u32 v0_0 = mScripts.elems[0].mLength;
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value carried to 0x58f44f; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                if (this->mScripts.elems[0].::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mScripts.elems[0].::MtArray::mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mScripts.elems[0].::MtArray::mLength) {
-                        v0_0 = this->mScripts.elems[0].::MtArray::mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+                if (mScripts.elems[0].mpArray[i0_3] != nullptr) {
+                    delete mScripts.elems[0].mpArray[i0_3];
+                    if ((i0_3 + 1u) < mScripts.elems[0].mLength) {
+                        v0_0 = mScripts.elems[0].mLength;
+                        i0_3 += 1u;
                     } else {
-                        v1_0 = this->mScripts.elems[0].::MtArray::mLength;
+                        v1_0 = mScripts.elems[0].mLength;
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         v1_0 = v0_0;
                         break;
@@ -158,34 +158,34 @@ void cWeatherScript::releaseScript() {
             }
             v2_0 = v1_0;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mScripts.elems[0].::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mScripts.elems[0].mpArray), 0, static_cast<size_t>(v2_0) * 8);
     }
-    this->mScripts.elems[0].::MtArray::mLength = static_cast<u32>(0);
-    if (this->mScripts.elems[1].::MtArray::mAutoDelete != false) {
+    mScripts.elems[0].mLength = 0;
+    if (mScripts.elems[1].mAutoDelete) {
         // inferred: the value carried to 0x58f4b9; no location-less local in scope fits
         u32 v6_0;
-        if (this->mScripts.elems[1].::MtArray::mLength != static_cast<u32>(0)) {
+        if (mScripts.elems[1].mLength != 0) {
             // inferred: the value the loop at 0x58f490 carries; no location-less local in scope fits
-            u32 v4_0 = this->mScripts.elems[1].::MtArray::mLength;
+            u32 v4_0 = mScripts.elems[1].mLength;
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            unsigned int i4_3 = static_cast<unsigned int>(0);
+            unsigned int i4_3 = 0;
             // inferred: the value carried to 0x58f4b5; no location-less local in scope fits
             u32 v5_0;
             for (;;) {
-                if (this->mScripts.elems[1].::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mScripts.elems[1].::MtArray::mpArray[i4_3];
-                    if ((i4_3 + static_cast<unsigned int>(1)) < this->mScripts.elems[1].::MtArray::mLength) {
-                        v4_0 = this->mScripts.elems[1].::MtArray::mLength;
-                        i4_3 += static_cast<unsigned int>(1);
+                if (mScripts.elems[1].mpArray[i4_3] != nullptr) {
+                    delete mScripts.elems[1].mpArray[i4_3];
+                    if ((i4_3 + 1u) < mScripts.elems[1].mLength) {
+                        v4_0 = mScripts.elems[1].mLength;
+                        i4_3 += 1u;
                     } else {
-                        v5_0 = this->mScripts.elems[1].::MtArray::mLength;
+                        v5_0 = mScripts.elems[1].mLength;
                         break;
                     }
                 } else {
-                    if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                        i4_3 += static_cast<unsigned int>(1);
+                    if ((i4_3 + 1u) < v4_0) {
+                        i4_3 += 1u;
                     } else {
                         v5_0 = v4_0;
                         break;
@@ -194,34 +194,34 @@ void cWeatherScript::releaseScript() {
             }
             v6_0 = v5_0;
         } else {
-            v6_0 = static_cast<u32>(0);
+            v6_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mScripts.elems[1].::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v6_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mScripts.elems[1].mpArray), 0, static_cast<size_t>(v6_0) * 8);
     }
-    this->mScripts.elems[1].::MtArray::mLength = static_cast<u32>(0);
-    if (this->mScripts.elems[2].::MtArray::mAutoDelete != false) {
+    mScripts.elems[1].mLength = 0;
+    if (mScripts.elems[2].mAutoDelete) {
         // inferred: the value carried to 0x58f519; no location-less local in scope fits
         u32 v10_0;
-        if (this->mScripts.elems[2].::MtArray::mLength != static_cast<u32>(0)) {
+        if (mScripts.elems[2].mLength != 0) {
             // inferred: the value the loop at 0x58f4f0 carries; no location-less local in scope fits
-            u32 v8_0 = this->mScripts.elems[2].::MtArray::mLength;
+            u32 v8_0 = mScripts.elems[2].mLength;
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            unsigned int i8_3 = static_cast<unsigned int>(0);
+            unsigned int i8_3 = 0;
             // inferred: the value carried to 0x58f515; no location-less local in scope fits
             u32 v9_0;
             for (;;) {
-                if (this->mScripts.elems[2].::MtArray::mpArray[i8_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mScripts.elems[2].::MtArray::mpArray[i8_3];
-                    if ((i8_3 + static_cast<unsigned int>(1)) < this->mScripts.elems[2].::MtArray::mLength) {
-                        v8_0 = this->mScripts.elems[2].::MtArray::mLength;
-                        i8_3 += static_cast<unsigned int>(1);
+                if (mScripts.elems[2].mpArray[i8_3] != nullptr) {
+                    delete mScripts.elems[2].mpArray[i8_3];
+                    if ((i8_3 + 1u) < mScripts.elems[2].mLength) {
+                        v8_0 = mScripts.elems[2].mLength;
+                        i8_3 += 1u;
                     } else {
-                        v9_0 = this->mScripts.elems[2].::MtArray::mLength;
+                        v9_0 = mScripts.elems[2].mLength;
                         break;
                     }
                 } else {
-                    if ((i8_3 + static_cast<unsigned int>(1)) < v8_0) {
-                        i8_3 += static_cast<unsigned int>(1);
+                    if ((i8_3 + 1u) < v8_0) {
+                        i8_3 += 1u;
                     } else {
                         v9_0 = v8_0;
                         break;
@@ -230,34 +230,34 @@ void cWeatherScript::releaseScript() {
             }
             v10_0 = v9_0;
         } else {
-            v10_0 = static_cast<u32>(0);
+            v10_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mScripts.elems[2].::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v10_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mScripts.elems[2].mpArray), 0, static_cast<size_t>(v10_0) * 8);
     }
-    this->mScripts.elems[2].::MtArray::mLength = static_cast<u32>(0);
-    if (this->mScripts.elems[3].::MtArray::mAutoDelete != false) {
+    mScripts.elems[2].mLength = 0;
+    if (mScripts.elems[3].mAutoDelete) {
         // inferred: the value carried to 0x58f579; no location-less local in scope fits
         u32 v14_0;
-        if (this->mScripts.elems[3].::MtArray::mLength != static_cast<u32>(0)) {
+        if (mScripts.elems[3].mLength != 0) {
             // inferred: the value the loop at 0x58f550 carries; no location-less local in scope fits
-            u32 v12_0 = this->mScripts.elems[3].::MtArray::mLength;
+            u32 v12_0 = mScripts.elems[3].mLength;
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            unsigned int i12_3 = static_cast<unsigned int>(0);
+            unsigned int i12_3 = 0;
             // inferred: the value carried to 0x58f575; no location-less local in scope fits
             u32 v13_0;
             for (;;) {
-                if (this->mScripts.elems[3].::MtArray::mpArray[i12_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mScripts.elems[3].::MtArray::mpArray[i12_3];
-                    if ((i12_3 + static_cast<unsigned int>(1)) < this->mScripts.elems[3].::MtArray::mLength) {
-                        v12_0 = this->mScripts.elems[3].::MtArray::mLength;
-                        i12_3 += static_cast<unsigned int>(1);
+                if (mScripts.elems[3].mpArray[i12_3] != nullptr) {
+                    delete mScripts.elems[3].mpArray[i12_3];
+                    if ((i12_3 + 1u) < mScripts.elems[3].mLength) {
+                        v12_0 = mScripts.elems[3].mLength;
+                        i12_3 += 1u;
                     } else {
-                        v13_0 = this->mScripts.elems[3].::MtArray::mLength;
+                        v13_0 = mScripts.elems[3].mLength;
                         break;
                     }
                 } else {
-                    if ((i12_3 + static_cast<unsigned int>(1)) < v12_0) {
-                        i12_3 += static_cast<unsigned int>(1);
+                    if ((i12_3 + 1u) < v12_0) {
+                        i12_3 += 1u;
                     } else {
                         v13_0 = v12_0;
                         break;
@@ -266,27 +266,27 @@ void cWeatherScript::releaseScript() {
             }
             v14_0 = v13_0;
         } else {
-            v14_0 = static_cast<u32>(0);
+            v14_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mScripts.elems[3].::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v14_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mScripts.elems[3].mpArray), 0, static_cast<size_t>(v14_0) * 8);
     }
-    this->mScripts.elems[3].::MtArray::mLength = static_cast<u32>(0);
-    this->mScriptIO.::cWeatherScriptIO::releaseWSCParamAll();
-    this->mEffectAlphaRate = 1.0f;
-    this->mScriptStepCur = static_cast<u32>(0);
-    this->mScriptStepReq = static_cast<u32>(0);
+    mScripts.elems[3].mLength = 0;
+    mScriptIO.releaseWSCParamAll();
+    mEffectAlphaRate = 1.0f;
+    mScriptStepCur = 0;
+    mScriptStepReq = 0;
 }
 
 // Address: 0x0058f5c0 - 0x0058f5c6 (6 bytes)
 void cWeatherScript::setScriptEffectRate(f32 rate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEffectAlphaRate = rate;
+    mEffectAlphaRate = rate;
 }
 
 // Address: 0x0058f5d0 - 0x0058f5d6 (6 bytes)
 void cWeatherScript::setScriptSoundAddVolume(f32 add) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScriptIO.mReqSoundVolumeAdd = add;
+    mScriptIO.mReqSoundVolumeAdd = add;
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,6 +319,8 @@ __attribute__((weak)) bool cWeatherScript::updateScriptCore(cWeatherScriptCmdCtr
 // No out-of-line body: 1 inlined copy in 1 function (88 bytes)
 //   in cWeatherScript::updateScript at 0x0058f105-0x0058f15d (called at cWeatherScript.cpp:298)
 // void cWeatherScript::endScriptCore(cWeatherScriptCmdCtrlArray& script);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherScript::MyDTI cWeatherScript::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cWeatherScript.cpp at 0x0058f71e-0x0058f757 (called at cWeatherScript.cpp:205)
@@ -368,7 +370,7 @@ const MtDTI& cWeatherScriptCmdCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN21cWeatherScriptCmdCtrlD0Ev at 0x01a65b00-0x01a65b2a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cWeatherScriptCmdCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmdCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherScriptCmdCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,6 +408,8 @@ inline void cWeatherScriptCmdCtrl::operator delete(void* p_addr) {
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
 //   in cWeatherScript::updateScriptCore at 0x0058f339-0x0058f349 (called at cWeatherScript.cpp:447)
 // bool cWeatherScriptCmdCtrl::isEnd();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherScriptCmdCtrl::MyDTI cWeatherScriptCmdCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cWeatherScript.cpp at 0x0058f6de-0x0058f71e (called at cWeatherScript.cpp:60)

@@ -61,19 +61,19 @@ __attribute__((weak)) void cSoundMeterRms::update(f32* data_ptr, const size_t fr
 // Address: 0x013791a0 - 0x013791a8 (8 bytes)
 const cSoundMeterRms::Volume& cSoundMeterRms::getRmsMono() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRmsMono;
+    return mRmsMono;
 }
 
 // Address: 0x013791b0 - 0x013791b8 (8 bytes)
 const cSoundMeterRms::VolumeStereo& cSoundMeterRms::getRmsStereo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRmsStereo;
+    return mRmsStereo;
 }
 
 // Address: 0x013791c0 - 0x013791c8 (8 bytes)
 const cSoundMeterRms::VolumeSurround51& cSoundMeterRms::getRmsSurround51() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRmsSurround51;
+    return mRmsSurround51;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

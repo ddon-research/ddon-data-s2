@@ -149,12 +149,12 @@ __attribute__((weak)) void rZone::clear() {
 // Address: 0x01221710 - 0x0122172f (31 bytes)
 u32 rZone::getLayoutIndexFromUniqueID(u32 UniqueID) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (UniqueID < this->mUniqueIDTableNum) {
-        if (this->mpUniqueIDTable != static_cast<u32*>(nullptr)) {
-            return this->mpUniqueIDTable[UniqueID];
+    if (UniqueID < mUniqueIDTableNum) {
+        if (mpUniqueIDTable != nullptr) {
+            return mpUniqueIDTable[UniqueID];
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -175,10 +175,10 @@ u32 rZone::getLayoutIndexFromUniqueID(u32 UniqueID) const {
 // Address: 0x01221750 - 0x0122176a (26 bytes)
 u32 rZone::getGlobalLayoutIndex(u32 GlobalLayoutIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (GlobalLayoutIndex < this->mGlobalLayoutIndexArrayNum) {
-        return this->mpGlobalLayoutIndexArray[GlobalLayoutIndex];
+    if (GlobalLayoutIndex < mGlobalLayoutIndexArrayNum) {
+        return mpGlobalLayoutIndexArray[GlobalLayoutIndex];
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -251,6 +251,8 @@ __attribute__((weak)) bool rZone::divideMemory(rZone::cMemoryHeader& MemoryInfo,
 // No out-of-line body: no code in the ELF
 // void rZone::setUniqueIDToIndexTableNumForIO(u32 TableElementNum);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rZone::MyDTI rZone::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rZone::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -293,7 +295,7 @@ const MtDTI& rZone::cGroupManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5rZone13cGroupManagerD0Ev at 0x0121f8fc-0x0121f91d, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rZone::cGroupManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rZone::cGroupManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rZone::cGroupManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -312,7 +314,7 @@ inline void rZone::cGroupManager::operator delete(void* p_addr) {
 // Also emitted as: _ZN5rZone13cGroupManagerD0Ev at 0x0121f8e0
 rZone::cGroupManager::~cGroupManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rZone::cGroupManager::deleteWorkMember();
+    deleteWorkMember();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -348,7 +350,7 @@ __attribute__((weak)) bool rZone::cGroupManager::saveBinary(MtDataWriter& w) {
 // Address: 0x0121fc30 - 0x0121fc34 (4 bytes)
 s32 rZone::cGroupManager::getGroupID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupID;
+    return mGroupID;
 }
 
 // No out-of-line body: 6 inlined copies in 4 functions (27 bytes)
@@ -361,10 +363,10 @@ s32 rZone::cGroupManager::getGroupID() const {
 // Address: 0x0121fc40 - 0x0121fc54 (20 bytes)
 u32 rZone::cGroupManager::getGroupLayoutIndex(u32 GroupLayoutIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (GroupLayoutIndex < this->mLayoutIndexArrayNum) {
-        return this->mpLayoutIndexArray[GroupLayoutIndex];
+    if (GroupLayoutIndex < mLayoutIndexArrayNum) {
+        return mpLayoutIndexArray[GroupLayoutIndex];
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -374,23 +376,23 @@ u32 rZone::cGroupManager::getGroupLayoutIndex(u32 GroupLayoutIndex) const {
 // Address: 0x0121ef80 - 0x0121ef84 (4 bytes)
 u32 rZone::cGroupManager::getGroupLayoutIndexNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLayoutIndexArrayNum;
+    return mLayoutIndexArrayNum;
 }
 
 // Address: 0x0121fc60 - 0x0121fc74 (20 bytes)
 u32 rZone::cGroupManager::getGroupGlobalLayoutIndex(u32 GroupGlobalLayoutIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (GroupGlobalLayoutIndex < this->mGlobalLayoutIndexArrayNum) {
-        return this->mpGlobalLayoutIndexArray[GroupGlobalLayoutIndex];
+    if (GroupGlobalLayoutIndex < mGlobalLayoutIndexArrayNum) {
+        return mpGlobalLayoutIndexArray[GroupGlobalLayoutIndex];
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x0121ef90 - 0x0121ef94 (4 bytes)
 u32 rZone::cGroupManager::getGroupGlobalLayoutIndexNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGlobalLayoutIndexArrayNum;
+    return mGlobalLayoutIndexArrayNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -438,6 +440,8 @@ __attribute__((weak)) void rZone::cGroupManager::deleteWorkMember() {
     DDON_STUB("rZone::cGroupManager::deleteWorkMember")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rZone::cGroupManager::MyDTI rZone::cGroupManager::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rZone::cGroupManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

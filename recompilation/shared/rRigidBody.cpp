@@ -48,7 +48,7 @@ const MtDTI& rRigidBody::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rRigidBodyD0Ev at 0x01206ae2-0x01206b03, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rRigidBody::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rRigidBody::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rRigidBody::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,8 +82,8 @@ MT_CTSTR rRigidBody::getExt() const {
 // Address: 0x01206b10 - 0x01206b7c (108 bytes)
 bool rRigidBody::save(MtStream& output) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataWriter writer(output, static_cast<u32>(4096), static_cast<u32>(4096));
-    this->::rRigidBody::saveCore(writer);
+    MtDataWriter writer(output, 4096u, 4096u);
+    saveCore(writer);
     return true;
 }
 
@@ -91,10 +91,10 @@ bool rRigidBody::save(MtStream& output) {
 bool rRigidBody::load(MtStream& input) {
     // DWARF local not rendered: u32 length;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->clear();
-    if (input.getLength() != static_cast<u32>(0)) {
-        MtDataReader reader(input, static_cast<u32>(4096));
-        return this->::rRigidBody::loadCore(reader);
+    clear();
+    if (input.getLength() != 0) {
+        MtDataReader reader(input, 4096u);
+        return loadCore(reader);
     } else {
         return false;
     }
@@ -156,6 +156,8 @@ __attribute__((weak)) void rRigidBody::clear() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool rRigidBody::isStartShowParts(const u32 index);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rRigidBody::MyDTI rRigidBody::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rRigidBody::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

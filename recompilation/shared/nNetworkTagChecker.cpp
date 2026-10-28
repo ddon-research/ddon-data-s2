@@ -59,30 +59,30 @@ const MtDTI& nNetwork::TagChecker::getDTI() const {
 // Address: 0x011a2910 - 0x011a2941 (49 bytes)
 nNetwork::TagChecker::TagChecker() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInit = false;
-    this->mDst = static_cast<s32>(128);
-    this->mRecordSize = static_cast<u32>(0);
-    this->mpRecordList = static_cast<nNetwork::TagChecker::Record*>(nullptr);
-    this->mpSession = static_cast<nNetwork::Session*>(nullptr);
+    mInit = false;
+    mDst = 128;
+    mRecordSize = 0;
+    mpRecordList = nullptr;
+    mpSession = nullptr;
 }
 
 // Address: 0x011a2950 - 0x011a2998 (72 bytes)
 // Also emitted as: _ZN8nNetwork10TagCheckerD0Ev at 0x011a29e0
 nNetwork::TagChecker::~TagChecker() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mInit == false) {
+    if (!mInit) {
         return;
     }
-    this->mpSession->mpPool->::nNetwork::BlockPool::free(static_cast<void*>(this->mpRecordList));
-    this->mpRecordList = static_cast<nNetwork::TagChecker::Record*>(nullptr);
-    this->mRecordSize = static_cast<u32>(0);
-    this->mInit = false;
+    mpSession->mpPool->free(static_cast<void*>(mpRecordList));
+    mpRecordList = nullptr;
+    mRecordSize = 0;
+    mInit = false;
 }
 
 // Address: 0x011a2a50 - 0x011a2a55 (5 bytes)
 void nNetwork::TagChecker::setup(nNetwork::Session* session) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession = session;
+    mpSession = session;
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,13 +91,13 @@ void nNetwork::TagChecker::setup(nNetwork::Session* session) {
 // Address: 0x011a29a0 - 0x011a29da (58 bytes)
 void nNetwork::TagChecker::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mInit == false) {
+    if (!mInit) {
         return;
     }
-    this->mpSession->mpPool->::nNetwork::BlockPool::free(static_cast<void*>(this->mpRecordList));
-    this->mpRecordList = static_cast<nNetwork::TagChecker::Record*>(nullptr);
-    this->mRecordSize = static_cast<u32>(0);
-    this->mInit = false;
+    mpSession->mpPool->free(static_cast<void*>(mpRecordList));
+    mpRecordList = nullptr;
+    mRecordSize = 0;
+    mInit = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,6 +175,8 @@ __attribute__((weak)) void nNetwork::TagChecker::procSyncReq(nNetwork::TagChecke
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::TagChecker::Record* nNetwork::TagChecker::findRecord(u32 member_id);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::TagChecker::MyDTI nNetwork::TagChecker::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::TagChecker::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -217,8 +219,11 @@ const MtDTI& nNetwork::TagChecker::RpcSyncReq::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nNetwork::TagChecker::RpcSyncReq::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* nNetwork::TagChecker::RpcSyncReq::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK8nNetwork10TagChecker10RpcSyncReq5MyDTI11newInstanceEv at 0x011a3040-0x011a306d, code DWARF attributes to no inlined copy; sz is the class's size (24), align the allocation's other whole constant (16)
+inline void* nNetwork::TagChecker::RpcSyncReq::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncReq::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::RpcSyncReq::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* nNetwork::TagChecker::RpcSyncReq::operator new[](size_t sz, u32 align);
@@ -251,27 +256,29 @@ inline void nNetwork::TagChecker::RpcSyncReq::operator delete(void* p_addr) {
 void nNetwork::TagChecker::RpcSyncReq::serialize(MtStream& stream) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Coder cod(stream);
-    cod.::nNetwork::Coder::writeU32(static_cast<u32>(this->mMemberIndex));
-    cod.::nNetwork::Coder::writeU32(this->mMemberId);
-    cod.::nNetwork::Coder::writeU32(this->mTag);
+    cod.::nNetwork::Coder::writeU32(static_cast<u32>(mMemberIndex));
+    cod.::nNetwork::Coder::writeU32(mMemberId);
+    cod.::nNetwork::Coder::writeU32(mTag);
 }
 
 // Address: 0x011a3250 - 0x011a32bd (109 bytes)
 void nNetwork::TagChecker::RpcSyncReq::deserialize(MtStream& stream) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Decoder dec(stream);
-    this->mMemberIndex = static_cast<s32>(dec.::nNetwork::Decoder::readU32());
-    this->mMemberId = dec.::nNetwork::Decoder::readU32();
-    this->mTag = dec.::nNetwork::Decoder::readU32();
+    mMemberIndex = static_cast<s32>(dec.::nNetwork::Decoder::readU32());
+    mMemberId = dec.::nNetwork::Decoder::readU32();
+    mTag = dec.::nNetwork::Decoder::readU32();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::TagChecker::RpcSyncReq::MyDTI nNetwork::TagChecker::RpcSyncReq::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::TagChecker::RpcSyncReq::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011a3040 - 0x011a3095 (85 bytes)
-__attribute__((weak)) MtObject* nNetwork::TagChecker::RpcSyncReq::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::TagChecker::RpcSyncReq::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::TagChecker::RpcSyncReq::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) ::nNetwork::TagChecker::RpcSyncReq;
 }
 
 // No out-of-line body: no code in the ELF
@@ -318,6 +325,8 @@ inline void nNetwork::TagChecker::RpcSyncAns::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void nNetwork::TagChecker::RpcSyncAns::operator delete[](void* p_addr, u32 align);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::TagChecker::RpcSyncAns::MyDTI nNetwork::TagChecker::RpcSyncAns::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::TagChecker::RpcSyncAns::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

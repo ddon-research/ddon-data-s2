@@ -38,7 +38,7 @@ const MtDTI& nKeyConfigTextTable::cKeyText::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -80,6 +80,8 @@ inline void nKeyConfigTextTable::cKeyText::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void nKeyConfigTextTable::cKeyText::copy(const nKeyConfigTextTable::cKeyText& other);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nKeyConfigTextTable::cKeyText::MyDTI nKeyConfigTextTable::cKeyText::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rKeyConfigTextTable.cpp at 0x0069120f-0x0069124c (called at rKeyConfigTextTable.cpp:25)
 //   in _GLOBAL__sub_I_rKeyConfigTextTable.cpp at 0x0069120f-0x0069124c (called at rKeyConfigTextTable.h:22)
@@ -88,7 +90,7 @@ inline void nKeyConfigTextTable::cKeyText::operator delete(void* p_addr) {
 // Address: 0x00690a70 - 0x00690ace (94 bytes)
 MtObject* nKeyConfigTextTable::cKeyText::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nKeyConfigTextTable::cKeyText;
+    return new (16u) ::nKeyConfigTextTable::cKeyText;
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,7 +116,7 @@ const MtDTI& rKeyConfigTextTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rKeyConfigTextTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rKeyConfigTextTable::DTI)->memAlloc(sz, align, ::rKeyConfigTextTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rKeyConfigTextTable::DTI)->memAlloc(sz, align, rKeyConfigTextTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ inline void* rKeyConfigTextTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rKeyConfigTextTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rKeyConfigTextTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rKeyConfigTextTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,13 +163,13 @@ MT_CTSTR rKeyConfigTextTable::getExt() const {
 // Address: 0x01a98270 - 0x01a98276 (6 bytes)
 u32 rKeyConfigTextTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00690df0 - 0x00690e41 (81 bytes)
 bool rKeyConfigTextTable::loadData(MtDataReader& r, nKeyConfigTextTable::cKeyText* data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (data != static_cast<nKeyConfigTextTable::cKeyText*>(nullptr)) {
+    if (data != nullptr) {
         data->mKeyCustom = r.readU32();
         data->mDetailMsgId = r.readU32();
         data->mSortNo = r.readU32();
@@ -202,10 +204,10 @@ __attribute__((weak)) void rKeyConfigTextTable::sort(rKeyConfigTextTable::Predic
 const nKeyConfigTextTable::cKeyText* rKeyConfigTextTable::getSortedData(u32 index) const {
     // DWARF local not rendered: const cKeyText* key_text;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mSortedArray.::MtArray::mLength) {
-        return static_cast<const nKeyConfigTextTable::cKeyText*>(this->mSortedArray.::MtArray::mpArray[index]);
+    if (index < mSortedArray.mLength) {
+        return static_cast<const nKeyConfigTextTable::cKeyText*>(mSortedArray.mpArray[index]);
     } else {
-        return static_cast<const nKeyConfigTextTable::cKeyText*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -214,12 +216,14 @@ void rKeyConfigTextTable::setCustomSortNo(u32 index, u32 customSortNo) {
     // DWARF local not rendered: cKeyText* const key_text;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from MtObject*
-    if (index < this->mSortedArray.::MtArray::mLength) {
-        if (this->mSortedArray.::MtArray::getBuffer()[static_cast<int>(index)] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSortedArray.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(28)) = customSortNo;
+    if (index < mSortedArray.mLength) {
+        if (mSortedArray.getBuffer()[static_cast<int>(index)] != nullptr) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSortedArray.getBuffer()[static_cast<int>(index)]) + 28) = customSortNo;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rKeyConfigTextTable::MyDTI rKeyConfigTextTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rKeyConfigTextTable.cpp at 0x0069124c-0x00691289 (called at rKeyConfigTextTable.cpp:145)
@@ -229,7 +233,7 @@ void rKeyConfigTextTable::setCustomSortNo(u32 index, u32 customSortNo) {
 // Address: 0x00690bd0 - 0x00690c6c (156 bytes)
 MtObject* rKeyConfigTextTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rKeyConfigTextTable;
+    return new (16u) rKeyConfigTextTable;
 }
 
 // Instance at 0x01a98120 - 0x01a98125 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

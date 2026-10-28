@@ -221,11 +221,11 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK10rSoundBank5MyDTI11newInstanceEv at 0x00e45800-0x00e4585e, code DWARF attributes to no inlined copy
 inline rSoundBank::rSoundBank() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mProgramNum = static_cast<u32>(0);
-    this->mpProgramArray = static_cast<rSoundBank::Program*>(nullptr);
-    this->mElementNum = static_cast<u32>(0);
-    this->mpElementArray = static_cast<rSoundBank::Element*>(nullptr);
-    this->mBusNum = static_cast<u32>(0);
-    this->mpBusArray = static_cast<rSoundBank::Bus*>(nullptr);
+    this->::cResource::mAttr = 16;
+    this->mProgramNum = 0;
+    this->mpProgramArray = nullptr;
+    this->mElementNum = 0;
+    this->mpElementArray = nullptr;
+    this->mBusNum = 0;
+    this->mpBusArray = nullptr;
 }

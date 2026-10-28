@@ -28,7 +28,7 @@ const MtDTI& sScreenShot::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sScreenShot::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sScreenShot::DTI);
+    return MtMemoryAllocator::getAllocator(sScreenShot::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* sScreenShot::getAllocator() {
 // Address: 0x00839f70 - 0x00839fb0 (64 bytes)
 void* sScreenShot::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sScreenShot::getAllocator()->memAlloc(sz, align, ::sScreenShot::DTI.::MtDTI::getID());
+    return sScreenShot::getAllocator()->memAlloc(sz, align, sScreenShot::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* sScreenShot::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sScreenShot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sScreenShot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,30 +86,30 @@ __attribute__((weak)) void sScreenShot::createProperty(MtPropertyList& s) {
 // Address: 0x0083aa40 - 0x0083aae2 (162 bytes)
 void sScreenShot::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsSShotReq == false) {
-        if (this->mIsSetup != false) {
-            if (this->mpJpg != static_cast<void*>(nullptr)) {
-                ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(this->mpJpg);
+    if (!mIsSShotReq) {
+        if (mIsSetup) {
+            if (mpJpg != nullptr) {
+                MtMemory::mpAllocatorType[7]->memFree(mpJpg);
             }
-            this->mpJpg = static_cast<void*>(nullptr);
-            this->mJpg_size = static_cast<u32>(0);
-            this->mIsSetup = false;
+            mpJpg = nullptr;
+            mJpg_size = 0;
+            mIsSetup = false;
         }
     }
-    if (this->mpScreenShotJpg != static_cast<void*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::sScreenShot::DTI)->memFree(this->mpScreenShotJpg);
+    if (mpScreenShotJpg != nullptr) {
+        MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(mpScreenShotJpg);
     }
-    this->mpScreenShotJpg = static_cast<void*>(nullptr);
-    this->mScreenShotJpgSize = static_cast<u32>(0);
-    if (this->mpScreenShotTexture != static_cast<rTextureJpeg*>(nullptr)) {
-        if (this->mScreenShotHandle != static_cast<JOBHANDLE>(0)) {
-            this->mReqDeleteScreenShot = true;
+    mpScreenShotJpg = nullptr;
+    mScreenShotJpgSize = 0;
+    if (mpScreenShotTexture != nullptr) {
+        if (mScreenShotHandle != 0) {
+            mReqDeleteScreenShot = true;
         } else {
-            ::rTextureJpeg::deleteTextureJpeg(this->mpScreenShotTexture);
-            this->mpScreenShotTexture = static_cast<rTextureJpeg*>(nullptr);
+            rTextureJpeg::deleteTextureJpeg(mpScreenShotTexture);
+            mpScreenShotTexture = nullptr;
         }
     }
-    this->::sScreenShot::releaseUpload();
+    releaseUpload();
 }
 
 // Address: 0x0083ab40 - 0x0083abfb (187 bytes)
@@ -164,18 +164,18 @@ __attribute__((weak)) void sScreenShot::init() {
 // Address: 0x0083aaf0 - 0x0083ab39 (73 bytes)
 void sScreenShot::requestKill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsSShotReq != false) {
+    if (mIsSShotReq) {
         return;
     }
-    if (this->mIsSetup == false) {
+    if (!mIsSetup) {
         return;
     }
-    if (this->mpJpg != static_cast<void*>(nullptr)) {
-        ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(this->mpJpg);
+    if (mpJpg != nullptr) {
+        MtMemory::mpAllocatorType[7]->memFree(mpJpg);
     }
-    this->mpJpg = static_cast<void*>(nullptr);
-    this->mJpg_size = static_cast<u32>(0);
-    this->mIsSetup = false;
+    mpJpg = nullptr;
+    mJpg_size = 0;
+    mIsSetup = false;
 }
 
 // Address: 0x0083c1a0 - 0x0083c241 (161 bytes)
@@ -228,14 +228,14 @@ __attribute__((weak)) bool sScreenShot::createScreenShotTexture() {
 // Address: 0x0083a680 - 0x0083a6b3 (51 bytes)
 void sScreenShot::releaseScreenShotTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScreenShotTexture == static_cast<rTextureJpeg*>(nullptr)) {
+    if (mpScreenShotTexture == nullptr) {
         return;
     }
-    if (this->mScreenShotHandle != static_cast<JOBHANDLE>(0)) {
-        this->mReqDeleteScreenShot = true;
+    if (mScreenShotHandle != 0) {
+        mReqDeleteScreenShot = true;
     } else {
-        ::rTextureJpeg::deleteTextureJpeg(this->mpScreenShotTexture);
-        this->mpScreenShotTexture = static_cast<rTextureJpeg*>(nullptr);
+        rTextureJpeg::deleteTextureJpeg(mpScreenShotTexture);
+        mpScreenShotTexture = nullptr;
     }
 }
 
@@ -248,8 +248,8 @@ __attribute__((weak)) rTexture* sScreenShot::getScreenShotTexture() {
 // Address: 0x0083c330 - 0x0083c342 (18 bytes)
 bool sScreenShot::isExistsScreenShot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScreenShotJpg != static_cast<void*>(nullptr)) {
-        return this->mScreenShotJpgSize != static_cast<u32>(0);
+    if (mpScreenShotJpg != nullptr) {
+        return mScreenShotJpgSize != 0;
     } else {
         return false;
     }
@@ -319,7 +319,7 @@ __attribute__((weak)) void sScreenShot::releaseUpload() {
 // Address: 0x0083c530 - 0x0083c53c (12 bytes)
 u32 sScreenShot::uploadScreenShot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sScreenShot::uploadScreenShot(this->mpScreenShotJpg, this->mScreenShotJpgSize);
+    return uploadScreenShot(mpScreenShotJpg, mScreenShotJpgSize);
 }
 
 // Address: 0x0083c540 - 0x0083cccb (1931 bytes)
@@ -335,13 +335,13 @@ __attribute__((weak)) u32 sScreenShot::uploadScreenShot(void* jpg_ptr, u32 jpg_s
 // Address: 0x0083ccf0 - 0x0083cd08 (24 bytes)
 bool sScreenShot::isUpload() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mHttpType == static_cast<u32>(2)) && (this->mpHttpClient != static_cast<cHttpClient*>(nullptr));
+    return (mHttpType == 2) && (mpHttpClient != nullptr);
 }
 
 // Address: 0x0083ccd0 - 0x0083cce8 (24 bytes)
 bool sScreenShot::isGetToken() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mHttpType == static_cast<u32>(1)) && (this->mpHttpClient != static_cast<cHttpClient*>(nullptr));
+    return (mHttpType == 1) && (mpHttpClient != nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -403,6 +403,11 @@ __attribute__((weak)) void sScreenShot::setTokenParam(MtString key, MtString urn
 //   in uGUIPhotoUpload::updateWait at 0x00b43b1c-0x00b43b25 (called at uGUIPhotoUpload.cpp:857)
 // bool sScreenShot::isAuthAddrReqSucces();
 
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sScreenShot* sScreenShot::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sScreenShot::MyDTI sScreenShot::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sScreenShot.cpp at 0x0083d64f-0x0083d68c (called at sScreenShot.cpp:48)
 //   in _GLOBAL__sub_I_sScreenShot.cpp at 0x0083d64f-0x0083d68c (called at sScreenShot.h:32)
@@ -418,8 +423,8 @@ __attribute__((weak)) MtObject* sScreenShot::MyDTI::newInstance() const {
 void sScreenShot::HttpListener::onReceiveHeader(const cHttpClient::ResponseHeader* head_ptr) {
     // DWARF local not rendered: HttpResult& r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(head_ptr->mStatusCode - static_cast<s32>(200)) > static_cast<unsigned int>(99)) {
-        this->mHttpResult.mIsError = true;
+    if (static_cast<unsigned int>(head_ptr->mStatusCode - 200) > 99) {
+        mHttpResult.mIsError = true;
     }
 }
 
@@ -434,7 +439,7 @@ __attribute__((weak)) void sScreenShot::HttpListener::onReceiveData(void* data_p
 void sScreenShot::HttpListener::onErrorEncounterd(s32 error_code) {
     // DWARF local not rendered: HttpResult& r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHttpResult.mIsError = true;
+    mHttpResult.mIsError = true;
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (116 bytes)

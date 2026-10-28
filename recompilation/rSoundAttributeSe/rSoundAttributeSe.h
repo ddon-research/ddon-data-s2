@@ -212,9 +212,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rSoundAttributeSe::rSoundAttributeSe() {
-    this->mAttributeSeDataNum = static_cast<s32>(0);
-    this->mpAttributeSeData = static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(16);
+    this->mAttributeSeDataNum = 0;
+    this->mpAttributeSeData = nullptr;
+    this->::cResource::mAttr = 16;
 }
 
 // Inline, no code of its own: checked where it is inlined.

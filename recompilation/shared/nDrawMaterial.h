@@ -25,6 +25,7 @@ class MtPropertyList;
 class MtUI;
 class MtVector2;
 class MtVector4;
+class cDDMaterialCtrl;
 class cDraw;
 namespace nDraw { class BlendState; }
 namespace nDraw { class ConstantTable; }
@@ -383,6 +384,8 @@ namespace nDraw {
 namespace nDraw {
     class Material : public nDraw::Resource
     {
+        // inferred: cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState names nDraw::Material::mID, through its enclosing class cDDMaterialCtrl
+        friend class ::cDDMaterialCtrl;
         // inferred: nDraw::MaterialStdEst::MaterialStdEst names nDraw::Material::mTechnique
         friend class nDraw::MaterialStdEst;
     public:
@@ -601,3 +604,8 @@ namespace nDraw {
         static MyDTI DTI;
     };
 }  // namespace nDraw
+
+// Inline, no code of its own: checked where it is inlined.
+inline nDraw::Animation* nDraw::Material::getAnimationData() const {
+    return this->mpAnimation;
+}

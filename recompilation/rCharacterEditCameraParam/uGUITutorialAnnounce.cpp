@@ -29,7 +29,7 @@ const MtDTI& uGUITutorialAnnounce::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUITutorialAnnounce::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUITutorialAnnounce::DTI);
+    return MtMemoryAllocator::getAllocator(uGUITutorialAnnounce::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUITutorialAnnounce::getAllocator() {
 // Address: 0x00c63f60 - 0x00c63fa0 (64 bytes)
 void* uGUITutorialAnnounce::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUITutorialAnnounce::getAllocator()->memAlloc(sz, align, ::uGUITutorialAnnounce::DTI.::MtDTI::getID());
+    return uGUITutorialAnnounce::getAllocator()->memAlloc(sz, align, uGUITutorialAnnounce::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUITutorialAnnounce::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUITutorialAnnounce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUITutorialAnnounce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUITutorialAnnounce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,72 +68,58 @@ inline void uGUITutorialAnnounce::operator delete(void* p_addr) {
 // Address: 0x00c64910 - 0x00c649d7 (199 bytes)
 void uGUITutorialAnnounce::ctrlVisible() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObj_Null_icon == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_icon->::cGUIObject::setVisible(this->mDispObjIcon);
+    if (mpObj_Null_icon != nullptr) {
+        mpObj_Null_icon->setVisible(mDispObjIcon);
     }
-    if (this->mpObj_Null_icon_pt == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_icon_pt->::cGUIObject::setVisible(this->mDispObjIconPt);
+    if (mpObj_Null_icon_pt != nullptr) {
+        mpObj_Null_icon_pt->setVisible(mDispObjIconPt);
     }
-    if (this->mpObj_Null_icon_entry == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_icon_entry->::cGUIObject::setVisible(this->mDispObjIconEntry);
+    if (mpObj_Null_icon_entry != nullptr) {
+        mpObj_Null_icon_entry->setVisible(mDispObjIconEntry);
     }
-    if (this->mpObj_Null_icon_matching == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_icon_matching->::cGUIObject::setVisible(this->mDispObjIconMatching);
+    if (mpObj_Null_icon_matching != nullptr) {
+        mpObj_Null_icon_matching->setVisible(mDispObjIconMatching);
     }
-    if (this->mpObj_Null_msg == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_msg->::cGUIObject::setVisible(this->mDispObjMsg);
+    if (mpObj_Null_msg != nullptr) {
+        mpObj_Null_msg->setVisible(mDispObjMsg);
     }
-    if (this->mpObj_Null_msg_pt == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_msg_pt->::cGUIObject::setVisible(this->mDispObjMsgPt);
+    if (mpObj_Null_msg_pt != nullptr) {
+        mpObj_Null_msg_pt->setVisible(mDispObjMsgPt);
     }
-    if (this->mpObj_Null_entry == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_Null_entry->::cGUIObject::setVisible(this->mDispObjMsgEntry);
+    if (mpObj_Null_entry != nullptr) {
+        mpObj_Null_entry->setVisible(mDispObjMsgEntry);
     }
-    this->::uGUITutorialAnnounce::setLineFrame(this->mLineFrame);
+    setLineFrame(mLineFrame);
 }
 
 // Address: 0x00c64c10 - 0x00c64d3f (303 bytes)
 __attribute__((weak)) void uGUITutorialAnnounce::setLineFrame(f32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObj_line_top00 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top00->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top00 != nullptr) {
+        mpObj_line_top00->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top01 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top01->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top01 != nullptr) {
+        mpObj_line_top01->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top02 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top02->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top02 != nullptr) {
+        mpObj_line_top02->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top03 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top03->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top03 != nullptr) {
+        mpObj_line_top03->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top10 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top10->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top10 != nullptr) {
+        mpObj_line_top10->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top11 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top11->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top11 != nullptr) {
+        mpObj_line_top11->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top12 == static_cast<cGUIObject*>(nullptr)) {
-    } else {
-        this->mpObj_line_top12->::cGUIObject::setCurrentFrame(frame, true);
+    if (mpObj_line_top12 != nullptr) {
+        mpObj_line_top12->setCurrentFrame(frame, true);
     }
-    if (this->mpObj_line_top13 == static_cast<cGUIObject*>(nullptr)) {
+    if (mpObj_line_top13 == nullptr) {
         return;
     }
-    this->mpObj_line_top13->::cGUIObject::setCurrentFrame(frame, true);
+    mpObj_line_top13->setCurrentFrame(frame, true);
 }
 
 // Omitted: mem-initializer not recorded in DWARF (base uGUIBase has no default constructor)
@@ -149,15 +135,15 @@ uGUITutorialAnnounce::~uGUITutorialAnnounce() {
 // Address: 0x00c64180 - 0x00c64185 (5 bytes)
 void uGUITutorialAnnounce::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c64190 - 0x00c641f8 (104 bytes)
 bool uGUITutorialAnnounce::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_ANNOUNCE_GUI"), static_cast<u32>(129), static_cast<t64>(1439441373)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_ANNOUNCE_GUI"), 129u, 1439441373l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -180,12 +166,12 @@ __attribute__((weak)) void uGUITutorialAnnounce::setup() {
 // Address: 0x00c64a00 - 0x00c64a31 (49 bytes)
 void uGUITutorialAnnounce::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c64a40 - 0x00c64ab6 (118 bytes)
@@ -207,7 +193,7 @@ __attribute__((weak)) void uGUITutorialAnnounce::move() {
 // Address: 0x00c649e0 - 0x00c649fa (26 bytes)
 void uGUITutorialAnnounce::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialAnnounce::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialAnnounce::updateWait);
 }
 
 // Address: 0x00c64ac0 - 0x00c64bf2 (306 bytes)
@@ -220,6 +206,8 @@ __attribute__((weak)) void uGUITutorialAnnounce::updateWait() {
 
 // No out-of-line body: no code in the ELF
 // void uGUITutorialAnnounce::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUITutorialAnnounce::MyDTI uGUITutorialAnnounce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUITutorialAnnounce.cpp at 0x00c64e3f-0x00c64e7c (called at uGUITutorialAnnounce.cpp:50)

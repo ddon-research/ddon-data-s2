@@ -42,7 +42,7 @@ const MtDTI& sCameraExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sCameraExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sCameraExt::DTI);
+    return MtMemoryAllocator::getAllocator(sCameraExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline MtAllocator* sCameraExt::getAllocator() {
 // Address: 0x00731450 - 0x00731490 (64 bytes)
 void* sCameraExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sCameraExt::getAllocator()->memAlloc(sz, align, ::sCameraExt::DTI.::MtDTI::getID());
+    return sCameraExt::getAllocator()->memAlloc(sz, align, sCameraExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ void* sCameraExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCameraExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCameraExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCameraExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,13 +94,13 @@ sCameraExt::~sCameraExt() {
 // Address: 0x00731790 - 0x00731795 (5 bytes)
 MtUI* sCameraExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCamera::createUI(prop);
+    return this->sCamera::createUI(prop);
 }
 
 // Address: 0x00731780 - 0x00731785 (5 bytes)
 void sCameraExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCamera::createProperty(s);
+    this->sCamera::createProperty(s);
 }
 
 // Address: 0x007317b0 - 0x0073195b (427 bytes)
@@ -112,7 +112,7 @@ __attribute__((weak)) void sCameraExt::move() {
 // Address: 0x007317a0 - 0x007317a5 (5 bytes)
 void sCameraExt::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCamera::reset();
+    this->sCamera::reset();
 }
 
 // Address: 0x007319a0 - 0x00731af0 (336 bytes)
@@ -126,21 +126,21 @@ void sCameraExt::init() {
     // DWARF local not rendered: u8 camPosType;
     // DWARF local not rendered: u8 preset;
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
-    if (((::sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType == static_cast<u8>(0)) || (static_cast<unsigned char>(::sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType + static_cast<int>(2)) == static_cast<unsigned char>(3))) == false) {
-        this->mDefaultPreset = static_cast<u8>(2);
+    if (!((sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType == 0) || (static_cast<unsigned char>(sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType + 2) == 3))) {
+        mDefaultPreset = 2;
     } else {
-        this->mDefaultPreset = static_cast<unsigned char>(::sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType + static_cast<int>(2));
+        mDefaultPreset = static_cast<unsigned char>(sGame::getInstance()->mCharData.mCharData.mOption.mCamPosType + 2);
     }
 }
 
 // Address: 0x00732d00 - 0x00732d48 (72 bytes)
 void sCameraExt::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCamera::move();
-    if (this->mpPlayerCamera == static_cast<uCameraGame*>(nullptr)) {
+    this->sCamera::move();
+    if (mpPlayerCamera == nullptr) {
         return;
     }
-    this->mpPlayerCamera->applyWorldOffset(offset, absolute_offset);
+    mpPlayerCamera->applyWorldOffset(offset, absolute_offset);
 }
 
 // No out-of-line body: no code in the ELF
@@ -165,26 +165,24 @@ __attribute__((weak)) void sCameraExt::setGameCamera(u32 id) {
 // Address: 0x00731c50 - 0x00731cc4 (116 bytes)
 void sCameraExt::setMotionCamera(uCamera* pCam) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mpOldCamera != static_cast<uCamera*>(nullptr)) {
+    if (mpOldCamera != nullptr) {
         return;
     }
-    if (pCam == static_cast<uCamera*>(nullptr)) {
+    if (pCam == nullptr) {
         return;
     }
-    this->mpOldCamera = this->::sCamera::mViewport[0].mpCamera;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    mpOldCamera = mViewport[0].mpCamera;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->::sCamera::mViewport[0].mpCamera = pCam;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mViewport[0].mpCamera = pCam;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -195,21 +193,19 @@ void sCameraExt::setMotionCamera(uCamera* pCam) {
 void sCameraExt::cancelMotionCamera(f32 interFrame) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x731ced read, used once; no DWARF local holds it
-    uCamera* t0 = this->mpOldCamera;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    uCamera* t0 = mpOldCamera;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->::sCamera::mViewport[0].mpCamera = t0;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    mViewport[0].mpCamera = t0;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mpOldCamera = static_cast<uCamera*>(nullptr);
+    mpOldCamera = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -229,19 +225,19 @@ void sCameraExt::cancelMotionCamera(f32 interFrame) {
 // Address: 0x00731d70 - 0x00731d78 (8 bytes)
 uCameraGame* sCameraExt::getGameCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGameCamera;
+    return mpGameCamera;
 }
 
 // Address: 0x00731d80 - 0x00731d88 (8 bytes)
 uCameraGame* sCameraExt::getPlayerCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpPlayerCamera;
+    return mpPlayerCamera;
 }
 
 // Address: 0x00731d90 - 0x00731d95 (5 bytes)
 uCamera* sCameraExt::getMainCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCamera::mViewport[0].mpCamera;
+    return mViewport[0].mpCamera;
 }
 
 // Address: 0x007329e0 - 0x00732a67 (135 bytes)
@@ -275,39 +271,39 @@ __attribute__((weak)) bool sCameraExt::isPlayerTargetCamera() {
 // Address: 0x00731da0 - 0x00731ecd (301 bytes)
 void sCameraExt::createParamList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
-        this->mprParamListCmnAct->::cResource::release();
-        this->mprParamListCmnAct = static_cast<rCameraParamList*>(nullptr);
+    if (mprParamListCmnAct != nullptr) {
+        mprParamListCmnAct->release();
+        mprParamListCmnAct = nullptr;
     }
-    this->mprParamListCmnAct = static_cast<rCameraParamList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("camera", "RES_ID_CMN_ACT_CPL", static_cast<u32>(1), false));
-    if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
-        this->mprParamListCmnEvt->::cResource::release();
-        this->mprParamListCmnEvt = static_cast<rCameraParamList*>(nullptr);
+    mprParamListCmnAct = static_cast<rCameraParamList*>(sArchiveManager::getInstance()->createRes("camera", "RES_ID_CMN_ACT_CPL", 1u, false));
+    if (mprParamListCmnEvt != nullptr) {
+        mprParamListCmnEvt->release();
+        mprParamListCmnEvt = nullptr;
     }
-    this->mprParamListCmnEvt = static_cast<rCameraParamList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("camera", "RES_ID_CMN_EVT_CPL", static_cast<u32>(1), false));
-    if (this->mprParamListTemplate != static_cast<rCameraParamList*>(nullptr)) {
-        this->mprParamListTemplate->::cResource::release();
-        this->mprParamListTemplate = static_cast<rCameraParamList*>(nullptr);
+    mprParamListCmnEvt = static_cast<rCameraParamList*>(sArchiveManager::getInstance()->createRes("camera", "RES_ID_CMN_EVT_CPL", 1u, false));
+    if (mprParamListTemplate != nullptr) {
+        mprParamListTemplate->release();
+        mprParamListTemplate = nullptr;
     }
-    this->mprParamListTemplate = static_cast<rCameraParamList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("camera", "RES_ID_TEMPLATE_CPL", static_cast<u32>(1), false));
-    if (this->mprLargeCameraParam != static_cast<rLargeCameraParam*>(nullptr)) {
-        this->mprLargeCameraParam->::cResource::release();
-        this->mprLargeCameraParam = static_cast<rLargeCameraParam*>(nullptr);
+    mprParamListTemplate = static_cast<rCameraParamList*>(sArchiveManager::getInstance()->createRes("camera", "RES_ID_TEMPLATE_CPL", 1u, false));
+    if (mprLargeCameraParam != nullptr) {
+        mprLargeCameraParam->release();
+        mprLargeCameraParam = nullptr;
     }
-    this->mprLargeCameraParam = static_cast<rLargeCameraParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("camera", "RES_ID_EM_LARGE_CAMERA_LCP", static_cast<u32>(1), false));
-    if (this->mpGameCamera == static_cast<uCameraGame*>(nullptr)) {
+    mprLargeCameraParam = static_cast<rLargeCameraParam*>(sArchiveManager::getInstance()->createRes("camera", "RES_ID_EM_LARGE_CAMERA_LCP", 1u, false));
+    if (mpGameCamera == nullptr) {
         return;
     }
-    this->mpGameCamera->mIsResetReq = true;
+    mpGameCamera->mIsResetReq = true;
 }
 
 // Address: 0x00731ed0 - 0x00731ee4 (20 bytes)
 const cCamExParam* sCameraExt::getCameraParamCmnAct(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
-        return this->mprParamListCmnAct->::rCameraParamList::getParam(no);
+    if (mprParamListCmnAct != nullptr) {
+        return mprParamListCmnAct->getParam(no);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -319,10 +315,10 @@ const cCamExParam* sCameraExt::getCameraParamCmnAct(u32 no) {
 // Address: 0x00731f00 - 0x00731f14 (20 bytes)
 const cCamExParam* sCameraExt::getCameraParamTemplate(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprParamListTemplate != static_cast<rCameraParamList*>(nullptr)) {
-        return this->mprParamListTemplate->::rCameraParamList::getParam(no);
+    if (mprParamListTemplate != nullptr) {
+        return mprParamListTemplate->getParam(no);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -340,44 +336,41 @@ __attribute__((weak)) void sCameraExt::setParamListJob(rCameraParamList* pRes) {
 // Address: 0x00731f70 - 0x00731fc8 (88 bytes)
 void sCameraExt::createQuakeList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprQuakeList != static_cast<rCameraQuakeList*>(nullptr)) {
-        this->mprQuakeList->::cResource::release();
-        this->mprQuakeList = static_cast<rCameraQuakeList*>(nullptr);
+    if (mprQuakeList != nullptr) {
+        mprQuakeList->release();
+        mprQuakeList = nullptr;
     }
-    this->mprQuakeList = static_cast<rCameraQuakeList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("camera", "RES_ID_CAM_QUAKE_CQL", static_cast<u32>(1), false));
+    mprQuakeList = static_cast<rCameraQuakeList*>(sArchiveManager::getInstance()->createRes("camera", "RES_ID_CAM_QUAKE_CQL", 1u, false));
 }
 
 // Address: 0x00731fd0 - 0x00732072 (162 bytes)
 void sCameraExt::setQuake(u32 resIndex, uintptr task) {
     // DWARF local not rendered: const cQuakeParam* pParam;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-        if (this->mprQuakeList != static_cast<rCameraQuakeList*>(nullptr)) {
-            static_cast<cQuakeParam*>(this->mprQuakeList->mQuakeList.mpArray[resIndex])->::cQuakeParam::QuakeStart(task);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+    if (mpGameCamera != nullptr) {
+        if (mprQuakeList != nullptr) {
+            static_cast<cQuakeParam*>(mprQuakeList->mQuakeList.mpArray[resIndex])->QuakeStart(task);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -387,33 +380,30 @@ void sCameraExt::setQuake(u32 resIndex, uintptr task) {
 void sCameraExt::setQuakePos(u32 resIndex, uintptr task, const MtVector3& pos) {
     // DWARF local not rendered: const cQuakeParam* pParam;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-        if (this->mprQuakeList != static_cast<rCameraQuakeList*>(nullptr)) {
-            static_cast<cQuakeParam*>(this->mprQuakeList->mQuakeList.mpArray[resIndex])->::cQuakeParam::QuakeStartPos(task, pos);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+    if (mpGameCamera != nullptr) {
+        if (mprQuakeList != nullptr) {
+            static_cast<cQuakeParam*>(mprQuakeList->mQuakeList.mpArray[resIndex])->QuakeStartPos(task, pos);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -423,33 +413,30 @@ void sCameraExt::setQuakePos(u32 resIndex, uintptr task, const MtVector3& pos) {
 void sCameraExt::cancelQuake(u32 resIndex, uintptr task) {
     // DWARF local not rendered: const cQuakeParam* pParam;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-        if (this->mprQuakeList != static_cast<rCameraQuakeList*>(nullptr)) {
-            static_cast<cQuakeParam*>(this->mprQuakeList->mQuakeList.mpArray[resIndex])->::cQuakeParam::QuakeCancel(task);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+    if (mpGameCamera != nullptr) {
+        if (mprQuakeList != nullptr) {
+            static_cast<cQuakeParam*>(mprQuakeList->mQuakeList.mpArray[resIndex])->QuakeCancel(task);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -474,21 +461,19 @@ __attribute__((weak)) void sCameraExt::cancelQuakeAll() {
 // Address: 0x007324e0 - 0x0073253b (91 bytes)
 void sCameraExt::resetGameCamera() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-        this->mpGameCamera->mIsResetReq = true;
+    if (mpGameCamera != nullptr) {
+        mpGameCamera->mIsResetReq = true;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -503,33 +488,32 @@ __attribute__((weak)) bool sCameraExt::requestExGameCamera(const cCamExParam* pP
 bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReqOwner, bool isForceSet) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (::sPlayerManager::getInstance()->mpMyPlayer != static_cast<uPlayer*>(nullptr)) {
-        if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
-            if (this->mRequestStop != static_cast<u32>(0)) {
+    if (sPlayerManager::getInstance()->mpMyPlayer != nullptr) {
+        if (mprParamListCmnAct != nullptr) {
+            if (mRequestStop != 0) {
                 return false;
             } else {
                 // inferred: a temporary for the value the load at 0x7326a8 read, used twice; no DWARF local holds it
-                uCameraGame* t0 = this->mpGameCamera;
-                if (t0 != static_cast<uCameraGame*>(nullptr)) {
-                    if (isForceSet == false) {
-                        if (t0->::uCameraGame::canChangeExCamera(this->mprParamListCmnAct->::rCameraParamList::getParam(no), pReqOwner) != false) {
-                            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                uCameraGame* t0 = mpGameCamera;
+                if (t0 != nullptr) {
+                    if (!isForceSet) {
+                        if (t0->canChangeExCamera(mprParamListCmnAct->getParam(no), pReqOwner)) {
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                    abort();
                                 }
                                 // inferred: a temporary for the value the load at 0x7326f9 read, used once; no DWARF local holds it
-                                uCameraGame* t1 = this->mpGameCamera;
-                                if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
+                                uCameraGame* t1 = mpGameCamera;
+                                if (mprParamListCmnAct != nullptr) {
                                     // inferred: a temporary for the result of the call at 0x732713, used once; no DWARF local holds it
-                                    const cCamExParam* t2 = this->mprParamListCmnAct->::rCameraParamList::getParam(no);
+                                    const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
                                     // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -537,12 +521,12 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -551,17 +535,17 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the value the load at 0x7326f9 read, used once; no DWARF local holds it
-                                uCameraGame* t1 = this->mpGameCamera;
-                                if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
+                                uCameraGame* t1 = mpGameCamera;
+                                if (mprParamListCmnAct != nullptr) {
                                     // inferred: a temporary for the result of the call at 0x732713, used once; no DWARF local holds it
-                                    const cCamExParam* t2 = this->mprParamListCmnAct->::rCameraParamList::getParam(no);
+                                    const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
                                     // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -569,12 +553,12 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -586,23 +570,22 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                             return false;
                         }
                     } else {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                             // inferred: a temporary for the value the load at 0x7326f9 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (mprParamListCmnAct != nullptr) {
                                 // inferred: a temporary for the result of the call at 0x732713, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListCmnAct->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -610,12 +593,12 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -624,17 +607,17 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                             }
                         } else {
                             // inferred: a temporary for the value the load at 0x7326f9 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (this->mprParamListCmnAct != static_cast<rCameraParamList*>(nullptr)) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (mprParamListCmnAct != nullptr) {
                                 // inferred: a temporary for the result of the call at 0x732713, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListCmnAct->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListCmnAct->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -642,12 +625,12 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x732731, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73274f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -672,33 +655,32 @@ bool sCameraExt::requestExGameCameraCmnActResource(u32 no, const uDDOModel* pReq
 bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReqOwner, bool isForceSet) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (::sPlayerManager::getInstance()->mpMyPlayer != static_cast<uPlayer*>(nullptr)) {
-        if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
-            if (this->mRequestStop != static_cast<u32>(0)) {
+    if (sPlayerManager::getInstance()->mpMyPlayer != nullptr) {
+        if (mprParamListCmnEvt != nullptr) {
+            if (mRequestStop != 0) {
                 return false;
             } else {
                 // inferred: a temporary for the value the load at 0x7327d8 read, used twice; no DWARF local holds it
-                uCameraGame* t0 = this->mpGameCamera;
-                if (t0 != static_cast<uCameraGame*>(nullptr)) {
-                    if (isForceSet == false) {
-                        if (t0->::uCameraGame::canChangeExCamera(this->mprParamListCmnEvt->::rCameraParamList::getParam(no), pReqOwner) != false) {
-                            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                uCameraGame* t0 = mpGameCamera;
+                if (t0 != nullptr) {
+                    if (!isForceSet) {
+                        if (t0->canChangeExCamera(mprParamListCmnEvt->getParam(no), pReqOwner)) {
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
+                                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                    abort();
                                 }
                                 // inferred: a temporary for the value the load at 0x732829 read, used once; no DWARF local holds it
-                                uCameraGame* t1 = this->mpGameCamera;
-                                if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
+                                uCameraGame* t1 = mpGameCamera;
+                                if (mprParamListCmnEvt != nullptr) {
                                     // inferred: a temporary for the result of the call at 0x732843, used once; no DWARF local holds it
-                                    const cCamExParam* t2 = this->mprParamListCmnEvt->::rCameraParamList::getParam(no);
+                                    const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
                                     // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -706,12 +688,12 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -720,17 +702,17 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the value the load at 0x732829 read, used once; no DWARF local holds it
-                                uCameraGame* t1 = this->mpGameCamera;
-                                if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
+                                uCameraGame* t1 = mpGameCamera;
+                                if (mprParamListCmnEvt != nullptr) {
                                     // inferred: a temporary for the result of the call at 0x732843, used once; no DWARF local holds it
-                                    const cCamExParam* t2 = this->mprParamListCmnEvt->::rCameraParamList::getParam(no);
+                                    const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
                                     // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -738,12 +720,12 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                    bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                        int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t4 != static_cast<int>(0)) {
-                                            ::abort();
+                                        int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t4 != 0) {
+                                            abort();
                                         }
                                         return t3;
                                     } else {
@@ -755,23 +737,22 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                             return false;
                         }
                     } else {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                             // inferred: a temporary for the value the load at 0x732829 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (mprParamListCmnEvt != nullptr) {
                                 // inferred: a temporary for the result of the call at 0x732843, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListCmnEvt->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -779,12 +760,12 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -793,17 +774,17 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                             }
                         } else {
                             // inferred: a temporary for the value the load at 0x732829 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (this->mprParamListCmnEvt != static_cast<rCameraParamList*>(nullptr)) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (mprParamListCmnEvt != nullptr) {
                                 // inferred: a temporary for the result of the call at 0x732843, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListCmnEvt->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListCmnEvt->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -811,12 +792,12 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x732861, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x73287f, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -841,34 +822,33 @@ bool sCameraExt::requestExGameCameraCmnEvtResource(u32 no, const uDDOModel* pReq
 bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwner, bool isForceSet) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (::sPlayerManager::getInstance()->mpMyPlayer != static_cast<uPlayer*>(nullptr)) {
-        if (this->mprParamListJob != static_cast<rCameraParamList*>(nullptr)) {
-            if (this->mRequestStop != static_cast<u32>(0)) {
+    if (sPlayerManager::getInstance()->mpMyPlayer != nullptr) {
+        if (mprParamListJob != nullptr) {
+            if (mRequestStop != 0) {
                 return false;
             } else {
                 // inferred: a temporary for the value the load at 0x732908 read, used twice; no DWARF local holds it
-                uCameraGame* t0 = this->mpGameCamera;
-                if (t0 != static_cast<uCameraGame*>(nullptr)) {
-                    if (isForceSet == false) {
-                        if (no < this->mprParamListJob->mParamList.mLength) {
-                            if (t0->::uCameraGame::canChangeExCamera(this->mprParamListJob->::rCameraParamList::getParam(no), pReqOwner) != false) {
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                uCameraGame* t0 = mpGameCamera;
+                if (t0 != nullptr) {
+                    if (!isForceSet) {
+                        if (no < mprParamListJob->mParamList.mLength) {
+                            if (t0->canChangeExCamera(mprParamListJob->getParam(no), pReqOwner)) {
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
+                                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                        abort();
                                     }
                                     // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                                    uCameraGame* t1 = this->mpGameCamera;
-                                    if (no < this->mprParamListJob->mParamList.mLength) {
+                                    uCameraGame* t1 = mpGameCamera;
+                                    if (no < mprParamListJob->mParamList.mLength) {
                                         // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                        const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                        const cCamExParam* t2 = mprParamListJob->getParam(no);
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -876,12 +856,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -890,17 +870,17 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                     }
                                 } else {
                                     // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                                    uCameraGame* t1 = this->mpGameCamera;
-                                    if (no < this->mprParamListJob->mParamList.mLength) {
+                                    uCameraGame* t1 = mpGameCamera;
+                                    if (no < mprParamListJob->mParamList.mLength) {
                                         // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                        const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                        const cCamExParam* t2 = mprParamListJob->getParam(no);
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -908,12 +888,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -925,24 +905,23 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                 return false;
                             }
                         } else {
-                            if (t0->::uCameraGame::canChangeExCamera(static_cast<const cCamExParam*>(nullptr), pReqOwner) != false) {
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                            if (t0->canChangeExCamera(static_cast<const cCamExParam*>(nullptr), pReqOwner)) {
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
+                                    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                        abort();
                                     }
                                     // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                                    uCameraGame* t1 = this->mpGameCamera;
-                                    if (no < this->mprParamListJob->mParamList.mLength) {
+                                    uCameraGame* t1 = mpGameCamera;
+                                    if (no < mprParamListJob->mParamList.mLength) {
                                         // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                        const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                        const cCamExParam* t2 = mprParamListJob->getParam(no);
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -950,12 +929,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -964,17 +943,17 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                     }
                                 } else {
                                     // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                                    uCameraGame* t1 = this->mpGameCamera;
-                                    if (no < this->mprParamListJob->mParamList.mLength) {
+                                    uCameraGame* t1 = mpGameCamera;
+                                    if (no < mprParamListJob->mParamList.mLength) {
                                         // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                        const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                        const cCamExParam* t2 = mprParamListJob->getParam(no);
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -982,12 +961,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                        bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                            int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t4 != static_cast<int>(0)) {
-                                                ::abort();
+                                            int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t4 != 0) {
+                                                abort();
                                             }
                                             return t3;
                                         } else {
@@ -1000,23 +979,22 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                             }
                         }
                     } else {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                             // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (no < this->mprParamListJob->mParamList.mLength) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (no < mprParamListJob->mParamList.mLength) {
                                 // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListJob->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -1024,12 +1002,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -1038,17 +1016,17 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                             }
                         } else {
                             // inferred: a temporary for the value the load at 0x732961 read, used once; no DWARF local holds it
-                            uCameraGame* t1 = this->mpGameCamera;
-                            if (no < this->mprParamListJob->mParamList.mLength) {
+                            uCameraGame* t1 = mpGameCamera;
+                            if (no < mprParamListJob->mParamList.mLength) {
                                 // inferred: a temporary for the result of the call at 0x73297c, used once; no DWARF local holds it
-                                const cCamExParam* t2 = this->mprParamListJob->::rCameraParamList::getParam(no);
+                                const cCamExParam* t2 = mprParamListJob->getParam(no);
                                 // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(t2, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(t2, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -1056,12 +1034,12 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x73299a, used once; no DWARF local holds it
-                                bool t3 = t1->::uCameraGame::requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pReqOwner, true);
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                bool t3 = t1->requestExCamera(static_cast<const cCamExParam*>(nullptr), static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pReqOwner, true);
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7329b8, used twice; no DWARF local holds it
-                                    int t4 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t4 != static_cast<int>(0)) {
-                                        ::abort();
+                                    int t4 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t4 != 0) {
+                                        abort();
                                     }
                                     return t3;
                                 } else {
@@ -1098,22 +1076,20 @@ bool sCameraExt::requestExGameCameraJobResource(u32 no, const uDDOModel* pReqOwn
 // Address: 0x00732c60 - 0x00732cfa (154 bytes)
 void sCameraExt::requestRecoil(f32 scaleX, f32 frameX, f32 scaleY, f32 frameY) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mRecoilScaleX = scaleX;
-    this->mRecoilFrameX = frameX;
-    this->mRecoilScaleY = scaleY;
-    this->mRecoilFrameY = frameY;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mRecoilScaleX = scaleX;
+    mRecoilFrameX = frameX;
+    mRecoilScaleY = scaleY;
+    mRecoilFrameY = frameY;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1204,33 +1180,33 @@ __attribute__((weak)) u32 sCameraExt::getLargeCameraRange(u32 emid, f32& range1,
 void sCameraExt::setPhotoMode() {
     // DWARF local not rendered: const cCamImpNml* pImpNml;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-        this->mpGameCamera->mPhotoAddHeight = 0.0f;
-        this->mpGameCamera->mPhotoAddOffsetX = 0.0f;
-        this->mpGameCamera->mPhotoAddFov = 0.0f;
-        this->mCameraOffsetX = 0.0f;
-        if (this->mpGameCamera == this->::sCamera::mViewport[0].mpCamera) {
-            if (this->mpGameCamera->::uCameraGame::getCamType() == static_cast<nCameraGame::CAMERA_TYPE>(0)) {
-                if (this->mpGameCamera->::uCameraGame::getCamImp() != static_cast<const cCamImpBase*>(nullptr)) {
-                    if (this->mpGameCamera->::uCameraGame::getCamImp()->::cCamImpBase::getParam() != static_cast<const cCamExParam*>(nullptr)) {
-                        if (this->mpGameCamera->::uCameraGame::getCamImp()->::cCamImpBase::getParam()->mCameraTarget == static_cast<nCameraGame::TARGET_TYPE>(0)) {
-                            this->mCameraOffsetX = this->mpGameCamera->::uCameraGame::getCamImp()->::cCamImpBase::getParam()->mOffsetX;
+    if (mpGameCamera != nullptr) {
+        mpGameCamera->mPhotoAddHeight = 0.0f;
+        mpGameCamera->mPhotoAddOffsetX = 0.0f;
+        mpGameCamera->mPhotoAddFov = 0.0f;
+        mCameraOffsetX = 0.0f;
+        if (mpGameCamera == mViewport[0].mpCamera) {
+            if (mpGameCamera->getCamType() == nCameraGame::TYPE_NML) {
+                if (mpGameCamera->getCamImp() != nullptr) {
+                    if (mpGameCamera->getCamImp()->getParam() != nullptr) {
+                        if (mpGameCamera->getCamImp()->getParam()->mCameraTarget == nCameraGame::TARGET_TYPE_PLAYER) {
+                            mCameraOffsetX = mpGameCamera->getCamImp()->getParam()->mOffsetX;
                         }
                     }
                 }
             }
         }
     } else {
-        this->mCameraOffsetX = 0.0f;
+        mCameraOffsetX = 0.0f;
     }
-    this->mPhotoMode = true;
+    mPhotoMode = true;
 }
 
 // Address: 0x00732ed0 - 0x00732eda (10 bytes)
 void sCameraExt::resetPhotoMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPhotoMode = false;
-    this->mPhotoModeException = false;
+    mPhotoMode = false;
+    mPhotoModeException = false;
 }
 
 // No out-of-line body: 12 inlined copies in 12 functions (134 bytes)
@@ -1243,16 +1219,16 @@ void sCameraExt::resetPhotoMode() {
 // Address: 0x00732ee0 - 0x00732ef1 (17 bytes)
 void sCameraExt::setPhotoModeException() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPhotoMode == false) {
+    if (!mPhotoMode) {
         return;
     }
-    this->mPhotoModeException = true;
+    mPhotoModeException = true;
 }
 
 // Address: 0x00732f00 - 0x00732f08 (8 bytes)
 void sCameraExt::resetPhotoModeException() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPhotoModeException = false;
+    mPhotoModeException = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -1296,27 +1272,25 @@ void sCameraExt::resetPhotoModeException() {
 // Address: 0x00732f10 - 0x00732f7e (110 bytes)
 void sCameraExt::resetFallinstantdeath() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mpGameCamera == static_cast<uCameraGame*>(nullptr)) {
+    if (mpGameCamera == nullptr) {
         return;
     }
-    this->mpGameCamera->mIsFallinstantdeathOld = false;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    mpGameCamera->mIsFallinstantdeathOld = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-            this->mpGameCamera->mIsResetReq = true;
+        if (mpGameCamera != nullptr) {
+            mpGameCamera->mIsResetReq = true;
         }
     } else {
-        this->mpGameCamera->mIsResetReq = true;
+        mpGameCamera->mIsResetReq = true;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1324,11 +1298,11 @@ void sCameraExt::resetFallinstantdeath() {
 bool sCameraExt::isCtrlCameraPhotoMode() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mPhotoMode != false) {
-        if (this->mpGameCamera != static_cast<uCameraGame*>(nullptr)) {
-            if (this->mpGameCamera->mIsCtrlX == false) {
-                if (this->mpGameCamera->mIsCtrlY == false) {
-                    if (this->mpGameCamera->mIsMoveCam == false) {
+    if (mPhotoMode) {
+        if (mpGameCamera != nullptr) {
+            if (!mpGameCamera->mIsCtrlX) {
+                if (!mpGameCamera->mIsCtrlY) {
+                    if (!mpGameCamera->mIsMoveCam) {
                         return false;
                     }
                 }
@@ -1363,6 +1337,12 @@ __attribute__((weak)) bool sCameraExt::isDispPoint4AndLength(f32 length, MtVecto
 
 // No out-of-line body: no code in the ELF
 // void sCameraExt::setGameScreenRectVRatio(f32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCameraExt::MyDTI sCameraExt::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCameraExt::BASE_GAME_SCREEN_RECT_V_RATIO;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCameraExt::CINESCO_SCREEN_RECT_V_RATIO;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sCameraExt.cpp at 0x007331af-0x007331ec (called at sCameraExt.cpp:43)

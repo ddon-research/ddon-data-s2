@@ -36,7 +36,7 @@ const MtDTI& rBrowserFont::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rBrowserFont::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memAlloc(sz, align, ::rBrowserFont::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memAlloc(sz, align, rBrowserFont::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rBrowserFont::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rBrowserFont::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,20 +65,20 @@ inline void rBrowserFont::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rBrowserFont::rBrowserFont() {
-    this->mFontSize = static_cast<u32>(0);
-    this->mpFontData = static_cast<void*>(nullptr);
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    mFontSize = 0;
+    mpFontData = nullptr;
+    setAttribute(16u);
 }
 
 // Address: 0x00648c90 - 0x00648cdd (77 bytes)
 // Also emitted as: _ZN12rBrowserFontD0Ev at 0x00648ce0
 rBrowserFont::~rBrowserFont() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFontData == static_cast<void*>(nullptr)) {
+    if (mpFontData == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memFree(this->mpFontData);
-    this->mpFontData = static_cast<void*>(nullptr);
+    MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memFree(mpFontData);
+    mpFontData = nullptr;
 }
 
 // Address: 0x01a77260 - 0x01a77268 (8 bytes)
@@ -108,24 +108,24 @@ MT_CTSTR rBrowserFont::getName() const {
 // Address: 0x00648d50 - 0x00648d88 (56 bytes)
 void rBrowserFont::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFontData == static_cast<void*>(nullptr)) {
+    if (mpFontData == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memFree(this->mpFontData);
-    this->mpFontData = static_cast<void*>(nullptr);
+    MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memFree(mpFontData);
+    mpFontData = nullptr;
 }
 
 // Address: 0x00648d90 - 0x00648e58 (200 bytes)
 bool rBrowserFont::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    this->clear();
-    if (r.::MtDataReader::readU32() == static_cast<u32>(538181632)) {
-        this->mFontSize = r.::MtDataReader::readU32();
+    MtDataReader r(in, 4096u);
+    clear();
+    if (r.MtDataReader::readU32() == 0x20140000) {
+        mFontSize = r.MtDataReader::readU32();
         // inferred: a temporary for the result of the call at 0x648e06, used twice; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memAlloc(this->mFontSize, static_cast<u32>(16));
-        if ((this->mpFontData = t0) != static_cast<void*>(nullptr)) {
-            r.::MtDataReader::read(t0, this->mFontSize);
+        void* t0 = MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memAlloc(mFontSize, 16u);
+        if ((mpFontData = t0) != nullptr) {
+            r.MtDataReader::read(t0, mFontSize);
         }
         return true;
     } else {
@@ -139,6 +139,8 @@ bool rBrowserFont::save(MtStream& out) {
     return true;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rBrowserFont::MyDTI rBrowserFont::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rBrowserFont.cpp at 0x00648e70-0x00648eb2 (called at rBrowserFont.cpp:26)
 //   in _GLOBAL__sub_I_rBrowserFont.cpp at 0x00648e70-0x00648eb2 (called at rBrowserFont.h:23)
@@ -147,6 +149,6 @@ bool rBrowserFont::save(MtStream& out) {
 // Address: 0x00648ba0 - 0x00648c04 (100 bytes)
 MtObject* rBrowserFont::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rBrowserFont;
+    return new (16u) rBrowserFont;
 }
 

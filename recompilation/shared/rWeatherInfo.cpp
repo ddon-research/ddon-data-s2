@@ -62,7 +62,7 @@ const MtDTI& cWeatherCloudModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherCloudModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherCloudModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherCloudModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,6 +94,8 @@ __attribute__((weak)) void cWeatherCloudModel::load(MtDataReader& r) {
 
 // No out-of-line body: no code in the ELF
 // void cWeatherCloudModel::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherCloudModel::MyDTI cWeatherCloudModel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007165dc-0x00716615 (called at rWeatherInfo.cpp:483)
@@ -144,7 +146,7 @@ const MtDTI& cWeatherFogInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWeatherFogInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherFogInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -204,6 +206,8 @@ __attribute__((weak)) void cWeatherFogInfo::lerp(cWeatherFogInfo* pDst, const cW
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // void cWeatherFogInfo::resetParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherFogInfo::MyDTI cWeatherFogInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007166f9-0x00716732 (called at rWeatherInfo.cpp:962)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007166f9-0x00716732 (called at rWeatherInfo.h:352)
@@ -254,7 +258,7 @@ const MtDTI& cWeatherInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -281,6 +285,8 @@ cWeatherInfo::~cWeatherInfo() {
     DDON_STUB("cWeatherInfo::~cWeatherInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherInfo::MyDTI cWeatherInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x00716523-0x00716563 (called at rWeatherInfo.cpp:59)
@@ -328,7 +334,7 @@ const MtDTI& cWeatherParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cWeatherParamD0Ev at 0x01abb180-0x01abb1aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cWeatherParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -384,6 +390,8 @@ __attribute__((weak)) void cWeatherParam::setupDefault(cWeatherParam* pDst) {
 // No out-of-line body: no code in the ELF
 // void cWeatherParam::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherParam::MyDTI cWeatherParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007165a3-0x007165dc (called at rWeatherInfo.cpp:234)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007165a3-0x007165dc (called at rWeatherInfo.h:94)
@@ -434,7 +442,7 @@ const MtDTI& cWeatherParamEfcInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherParamEfcInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherParamEfcInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -462,6 +470,8 @@ cWeatherParamEfcInfo::~cWeatherParamEfcInfo() {
     DDON_STUB("cWeatherParamEfcInfo::~cWeatherParamEfcInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherParamEfcInfo::MyDTI cWeatherParamEfcInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x00716687-0x007166c0 (called at rWeatherInfo.cpp:847)
@@ -513,7 +523,7 @@ const MtDTI& cWeatherParamInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherParamInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherParamInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -541,6 +551,8 @@ cWeatherParamInfo::~cWeatherParamInfo() {
     DDON_STUB("cWeatherParamInfo::~cWeatherParamInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherParamInfo::MyDTI cWeatherParamInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x00716615-0x0071664e (called at rWeatherInfo.cpp:635)
@@ -575,7 +587,7 @@ const MtDTI& rWeatherFogInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeatherFogInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeatherFogInfo::DTI)->memAlloc(sz, align, ::rWeatherFogInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeatherFogInfo::DTI)->memAlloc(sz, align, rWeatherFogInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -590,7 +602,7 @@ inline void* rWeatherFogInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rWeatherFogInfoD0Ev at 0x01abacb4-0x01abacd3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rWeatherFogInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWeatherFogInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWeatherFogInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -622,8 +634,10 @@ MT_CTSTR rWeatherFogInfo::getExt() const {
 // Address: 0x01abae00 - 0x01abae06 (6 bytes)
 u32 rWeatherFogInfo::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherFogInfo::MyDTI rWeatherFogInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x00716732-0x0071676b (called at rWeatherInfo.cpp:1192)
@@ -633,7 +647,7 @@ u32 rWeatherFogInfo::getDataVersion() const {
 // Address: 0x00715100 - 0x00715164 (100 bytes)
 MtObject* rWeatherFogInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeatherFogInfo;
+    return new (16u) rWeatherFogInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -658,7 +672,7 @@ const MtDTI& rWeatherInfoTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeatherInfoTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeatherInfoTbl::DTI)->memAlloc(sz, align, ::rWeatherInfoTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeatherInfoTbl::DTI)->memAlloc(sz, align, rWeatherInfoTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -690,9 +704,9 @@ bool rWeatherInfoTbl::loadData(MtDataReader& in, cWeatherInfo* pData) {
     pData->mWaterLRate = in.readF32();
     // inferred: a temporary for the result of the call at 0x713d89, used once; no DWARF local holds it
     u32 t0 = in.readU32();
-    in.read(static_cast<void*>(&pData->mWeatherAttrFlag), t0 * static_cast<u32>(4));
-    pData->mScriptsEfc.::cWeatherScriptCmds::load(in);
-    pData->mScriptsSound.::cWeatherScriptCmds::load(in);
+    in.read(static_cast<void*>(&pData->mWeatherAttrFlag), t0 * 4u);
+    pData->mScriptsEfc.load(in);
+    pData->mScriptsSound.load(in);
     return true;
 }
 
@@ -705,8 +719,10 @@ MT_CTSTR rWeatherInfoTbl::getExt() const {
 // Address: 0x01aba170 - 0x01aba176 (6 bytes)
 u32 rWeatherInfoTbl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(16);
+    return 16;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherInfoTbl::MyDTI rWeatherInfoTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x00716563-0x007165a3 (called at rWeatherInfo.cpp:151)
@@ -716,7 +732,7 @@ u32 rWeatherInfoTbl::getDataVersion() const {
 // Address: 0x00713c60 - 0x00713cc4 (100 bytes)
 MtObject* rWeatherInfoTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeatherInfoTbl;
+    return new (16u) rWeatherInfoTbl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -741,7 +757,7 @@ const MtDTI& rWeatherParamEfcInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeatherParamEfcInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeatherParamEfcInfo::DTI)->memAlloc(sz, align, ::rWeatherParamEfcInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeatherParamEfcInfo::DTI)->memAlloc(sz, align, rWeatherParamEfcInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -780,8 +796,10 @@ MT_CTSTR rWeatherParamEfcInfo::getExt() const {
 // Address: 0x01abab40 - 0x01abab46 (6 bytes)
 u32 rWeatherParamEfcInfo::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherParamEfcInfo::MyDTI rWeatherParamEfcInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x007166c0-0x007166f9 (called at rWeatherInfo.cpp:907)
@@ -791,7 +809,7 @@ u32 rWeatherParamEfcInfo::getDataVersion() const {
 // Address: 0x00714d80 - 0x00714de4 (100 bytes)
 MtObject* rWeatherParamEfcInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeatherParamEfcInfo;
+    return new (16u) rWeatherParamEfcInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -816,7 +834,7 @@ const MtDTI& rWeatherParamInfoTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeatherParamInfoTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeatherParamInfoTbl::DTI)->memAlloc(sz, align, ::rWeatherParamInfoTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeatherParamInfoTbl::DTI)->memAlloc(sz, align, rWeatherParamInfoTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -855,8 +873,10 @@ MT_CTSTR rWeatherParamInfoTbl::getExt() const {
 // Address: 0x01aba550 - 0x01aba556 (6 bytes)
 u32 rWeatherParamInfoTbl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(12);
+    return 12;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherParamInfoTbl::MyDTI rWeatherParamInfoTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x0071664e-0x00716687 (called at rWeatherInfo.cpp:772)
@@ -866,7 +886,7 @@ u32 rWeatherParamInfoTbl::getDataVersion() const {
 // Address: 0x00714890 - 0x007148f4 (100 bytes)
 MtObject* rWeatherParamInfoTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeatherParamInfoTbl;
+    return new (16u) rWeatherParamInfoTbl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -905,7 +925,7 @@ const MtDTI& rWeatherStageInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rWeatherStageInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWeatherStageInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWeatherStageInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -983,6 +1003,8 @@ __attribute__((weak)) bool rWeatherStageInfo::save(MtStream& out) {
     DDON_STUB("rWeatherStageInfo::save")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherStageInfo::MyDTI rWeatherStageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWeatherInfo.cpp at 0x0071676b-0x007167a8 (called at rWeatherInfo.cpp:1411)

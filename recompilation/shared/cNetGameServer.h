@@ -200,6 +200,7 @@ class cMenuQuickMatchRetry;
 class cMenuReadyEntryBoardItem;
 class cMenuSimplePartyReq;
 class cQuestSvRequestManager;
+class cQuestTask;
 namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stPawnFeedback; }
@@ -2494,11 +2495,13 @@ class cNetGameServer : public MtObject
     friend class cMenuSimplePartyReq;
     // inferred: cQuestSvRequestManager::canReqQuestProgres names cNetGameServer::mStatus[43]
     friend class cQuestSvRequestManager;
+    // inferred: cQuestTask::cQuestProcess::checkMyQstFlagOn names cNetGameServer::mLeaderCharacterId, through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: nSessionManager::cNetSessionManager::endQuickMatch names cNetGameServer::mInvitedPosNo
     friend class nSessionManager::cNetSessionManager;
     // inferred: sContextManager::move names cNetGameServer::mIsResetInstanceArea
     friend class sContextManager;
-    // inferred: sCraftManager::getMyPawnNum names cNetGameServer::mMyPawnList.::MtArray::mLength
+    // inferred: sCraftManager::cCraftPawnCtrl::getCraftProductInfoReqResult names cNetGameServer::mStatus[252], through its enclosing class sCraftManager
     friend class sCraftManager;
     // inferred: sGame::initDecideCharacter names cNetGameServer::mDeathPenaltyWait
     friend class sGame;
@@ -5118,17 +5121,41 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCompleteQuest::cCompleteQuest() {
-    this->m_unScheduleId = static_cast<u32>(0);
+    this->m_unScheduleId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEditSalonInfo::cEditSalonInfo() {
-    this->mEditPrice = static_cast<s32>(5);
+    this->mEditPrice = 5;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuChangeServer::moveChangeServer at 0x1250d4-0x1250da; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::setSelectServerNo(u32 serverNo) {
+    this->mLoginData.mSelectServerNo = serverNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuChangeServer::moveChangeServer at 0x1250d4-0x1250da; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::setSelectServerNoPrivate(u32 NewValue) {
+    this->mLoginData.mSelectServerNo = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline MtCipher* cNetGameServer::getCipher() {
+    return &this->mCipher;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline u32 cNetGameServer::getCharacterId() {
     return this->mLobbyCharacterId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cNetGameServer::setJoinPartyId(u32 partyId) {
+    this->mJoinPartyId = partyId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5142,8 +5169,32 @@ inline s32 cNetGameServer::getSelfIndex() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::cNetSessionManager::isGameSessionMySelf at 0x391ea1-0x391eaa; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline bool cNetGameServer::isMySelf(s32 memberIndex) {
+    return this->mSelfMemberIndex == memberIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline bool cNetGameServer::isMySelfCharacterId(u32 characterId) {
+    return this->mLobbyCharacterId == characterId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::MyListener::onLobbyInviteMsgNotice at 0x3903b1-0x3903b9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cNetGameServer::getInvitedTimeOutFrame() {
+    return this->mInvitedTimeOutFrame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cNetGameServer::getInvitedStageNo() {
     return this->mInvitedStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuReadyCheck::moveReadyCheckCore at 0x12630c-0x126312; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cNetGameServer::getInvitedPosNo() {
+    return this->mInvitedPosNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5152,9 +5203,21 @@ inline u32 cNetGameServer::getInvitedPosOffset() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cNetGameServer::setMyPartyContentNumber(u64 number) {
+    this->mPartyContentNumber = number;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nNet::QUICK_MATCH_TYPE cNetGameServer::getLastQuickType() {
     return this->mQuickPartyType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuQuickMatchRetry::moveQuickMatchRetry at 0xff4f5-0xff4fc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline CQuickPartyMatching& cNetGameServer::getLastQuickSetting() {
+    return this->mQuickPartySetting;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5173,6 +5236,12 @@ inline EquipJobItemVec& cNetGameServer::getChangeEquipJobItemListRef() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline EquipJobItemVec& cNetGameServer::getChangePawnEquipJobItemListRef() {
     return this->mRecvChangePawnEquipJobItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES at 0x32fd63-0x32fd6a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cNetGameServer::getCharEditPawnSlotNo() const {
+    return this->mCharEditPawnSlotNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5202,15 +5271,40 @@ inline QuestProcessStateVec* cNetGameServer::getQuestProcessStateList() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE at 0x3124f5-0x3124fb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cNetGameServer::getRecvGetRewardBoxListNum() {
+    return this->mRecvGetRewardBoxListNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cNetGameServer::getRequestQuestScheduleId() const {
     return this->mQuestScheduleId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cTalkStateEndQuest::routineSynchroLeader at 0x1d0ef5-0x1d0efb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::setPlayStartQuestScheduleId(u32 questScheduleId) {
+    this->mPlayStartQuestScheduleId = questScheduleId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cNetGameServer::getGachaPrice() const {
     return this->mGachaPrice;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBoxGachaInfo::setupDialog at 0x9a4732-0x9a4739; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cNetGameServer::getGachaDrawNum() const {
+    return this->mGachaDrawNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBoxGachaInfo::dispError at 0x9a59e1-0x9a59f1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::setGachaPrePrice(u64 gp, u64 ticket) {
+    this->mGachaPrePriceGP = gp;
+    this->mGachaPrePriceTicket = ticket;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5244,6 +5338,36 @@ inline bool cNetGameServer::getRecvGPShopCanBuyPawnVoice() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICharacter::setupMoney at 0x9f6877-0x9f687d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline COrbGainExtendParam& cNetGameServer::getMyOrbGainExtendParam() {
+    return this->mMyExtendParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICharacter::setupMoney at 0x9f686f-0x9f6877; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline COrbGainExtendParam& cNetGameServer::getPawnOrbGainExtendParam() {
+    return this->mPawnExtendParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cNetGameServer::setMyTotalClanPoint(u32 totalPoint) {
+    this->mMyClanParam.m_ClanServerParam.m_unTotalClanPoint = totalPoint;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES at 0x3241b5-0x3241bc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u64 cNetGameServer::getGetInfoBoardId() {
+    return this->mGetInfoBoardId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES at 0x3241bc-0x3241c2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cNetGameServer::getGetInfoEntryId() {
+    return this->mGetInfoEntryId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline MailInfoVec& cNetGameServer::getMailListRef() {
     return this->mMailList;
@@ -5271,8 +5395,8 @@ inline cPawnVoiceData::cPawnVoiceData() {
     this->mIsPitchChange = false;
     this->mIsValid = false;
     this->mIsGp = false;
-    this->mVoiceType = static_cast<u32>(0);
-    this->mVoiceID = static_cast<u32>(0);
+    this->mVoiceType = 0;
+    this->mVoiceID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

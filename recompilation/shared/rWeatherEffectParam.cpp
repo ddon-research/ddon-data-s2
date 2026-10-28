@@ -10,6 +10,7 @@
 #include "MtObject.h"
 #include "cResource.h"
 #include "nDDOIO.h"
+#include "nDDOMath.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -51,7 +52,7 @@ const MtDTI& cEffectCorrectParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEffectCorrectParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEffectCorrectParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEffectCorrectParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,9 +171,71 @@ cEffectCorrectParam::~cEffectCorrectParam() {
 // void cEffectCorrectParam::setShadowIntensityBlend(f32);
 
 // Address: 0x00713060 - 0x0071326e (526 bytes)
-__attribute__((weak)) void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam* pDst, const stEffectColorParam& a, const stEffectColorParam& b, f32 rate) {
-    DDON_STUB("cEffectCorrectParam::lerpEffectColorParam")
-    /* stub */
+void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam* pDst, const stEffectColorParam& a, const stEffectColorParam& b, f32 rate) {
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71307c, held ahead of the effects the ELF orders after it
+    const u32 t0 = a.Color.rgba;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713080, held ahead of the effects the ELF orders after it
+    const u32 t1 = b.Color.rgba;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713083, held ahead of the effects the ELF orders after it
+    float t2 = 256.0f;
+    pDst->Color.rgba = static_cast<u32>(((static_cast<unsigned long>((((((t1 >> 8) & 255u) - ((t0 >> 8) & 255u)) * static_cast<int>(t2 * rate)) + (t0 & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((t0 >> 16) * 0x10000u) + ((((((t1 >> 16) & 255u) - ((t0 >> 16) & 255u)) * static_cast<int>(t2 * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(static_cast<unsigned int>((static_cast<unsigned char>(t1) - static_cast<unsigned char>(t0)) * static_cast<int>(t2 * rate)) >> 8)))) | static_cast<unsigned long>(((t0 >> 24) * 0x1000000u) + (((((t1 >> 24) - (t0 >> 24)) * static_cast<int>(t2 * rate)) >> 8) * 0x1000000u)));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713111, held ahead of the effects the ELF orders after it
+    const f32 t3 = a.ColorBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713118, held ahead of the effects the ELF orders after it
+    const f32 t4 = b.ColorBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71311e, held ahead of the effects the ELF orders after it
+    f32 t5 = nDDOMath::lerp(t3, t4, rate);
+    pDst->ColorBlend = t5;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713129, held ahead of the effects the ELF orders after it
+    const f32 t6 = a.Intensity;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713130, held ahead of the effects the ELF orders after it
+    const f32 t7 = b.Intensity;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71313b, held ahead of the effects the ELF orders after it
+    f32 t8 = nDDOMath::lerp(t6, t7, rate);
+    pDst->Intensity = t8;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713146, held ahead of the effects the ELF orders after it
+    const f32 t9 = a.IntensityBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71314d, held ahead of the effects the ELF orders after it
+    const f32 t10 = b.IntensityBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713158, held ahead of the effects the ELF orders after it
+    f32 t11 = nDDOMath::lerp(t9, t10, rate);
+    pDst->IntensityBlend = t11;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713163, held ahead of the effects the ELF orders after it
+    const f32 t12 = a.EnvMapPowerScale;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71316a, held ahead of the effects the ELF orders after it
+    const f32 t13 = b.EnvMapPowerScale;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713175, held ahead of the effects the ELF orders after it
+    f32 t14 = nDDOMath::lerp(t12, t13, rate);
+    pDst->EnvMapPowerScale = t14;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713180, held ahead of the effects the ELF orders after it
+    const u32 t15 = a.ShadowColor.rgba;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713185, held ahead of the effects the ELF orders after it
+    const u32 t16 = b.ShadowColor.rgba;
+    pDst->ShadowColor.rgba = static_cast<u32>(((static_cast<unsigned long>((((((t16 >> 8) & 255u) - ((t15 >> 8) & 255u)) * static_cast<int>(t2 * rate)) + (t15 & 0xFFFFFF00u)) & 0xFF00u) | static_cast<unsigned long>((((t15 >> 16) * 0x10000u) + ((((((t16 >> 16) & 255u) - ((t15 >> 16) & 255u)) * static_cast<int>(t2 * rate)) >> 8) * 0x10000u)) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(static_cast<unsigned long>(t15) + static_cast<unsigned long>(static_cast<unsigned int>((static_cast<unsigned char>(t16) - static_cast<unsigned char>(t15)) * static_cast<int>(t2 * rate)) >> 8)))) | static_cast<unsigned long>(((t15 >> 24) * 0x1000000u) + (((((t16 >> 24) - (t15 >> 24)) * static_cast<int>(t2 * rate)) >> 8) * 0x1000000u)));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713208, held ahead of the effects the ELF orders after it
+    const f32 t17 = a.ShadowColorBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71320f, held ahead of the effects the ELF orders after it
+    const f32 t18 = b.ShadowColorBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71321a, held ahead of the effects the ELF orders after it
+    f32 t19 = nDDOMath::lerp(t17, t18, rate);
+    pDst->ShadowColorBlend = t19;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713225, held ahead of the effects the ELF orders after it
+    const f32 t20 = a.ShadowIntensity;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x71322c, held ahead of the effects the ELF orders after it
+    const f32 t21 = b.ShadowIntensity;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713237, held ahead of the effects the ELF orders after it
+    f32 t22 = nDDOMath::lerp(t20, t21, rate);
+    pDst->ShadowIntensity = t22;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713242, held ahead of the effects the ELF orders after it
+    const f32 t23 = a.ShadowIntensityBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713249, held ahead of the effects the ELF orders after it
+    const f32 t24 = b.ShadowIntensityBlend;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x713254, held ahead of the effects the ELF orders after it
+    f32 t26 = nDDOMath::lerp(t23, t24, rate);
+    pDst->ShadowIntensityBlend = t26;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (23 bytes)
@@ -184,6 +247,8 @@ __attribute__((weak)) void cEffectCorrectParam::lerpEffectColorParam(stEffectCol
 
 // No out-of-line body: no code in the ELF
 // void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam*, const cEffectCorrectParam&, const stEffectColorParam&, f32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEffectCorrectParam::MyDTI cEffectCorrectParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rWeatherEffectParam.cpp at 0x00713a80-0x00713ac2 (called at rWeatherEffectParam.cpp:55)
@@ -232,7 +297,7 @@ const MtDTI& rWeatherEffectParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rWeatherEffectParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWeatherEffectParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWeatherEffectParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,16 +326,16 @@ bool rWeatherEffectParam::load(MtStream& in) {
     // DWARF local not rendered: u32 varsion;
     // DWARF local not rendered: u32 type;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(7366007)) {
-        if ((&r)->readU32() == static_cast<u32>(3)) {
-            ::nDDOIO::readMtArray(r, this->mpParamList[0]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[1]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[2]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[3]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[4]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[5]);
-            ::nDDOIO::readMtArray(r, this->mpParamList[6]);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x706577) {
+        if ((&r)->readU32() == 3) {
+            nDDOIO::readMtArray(r, mpParamList[0]);
+            nDDOIO::readMtArray(r, mpParamList[1]);
+            nDDOIO::readMtArray(r, mpParamList[2]);
+            nDDOIO::readMtArray(r, mpParamList[3]);
+            nDDOIO::readMtArray(r, mpParamList[4]);
+            nDDOIO::readMtArray(r, mpParamList[5]);
+            nDDOIO::readMtArray(r, mpParamList[6]);
             return true;
         }
     }
@@ -295,22 +360,22 @@ MT_CTSTR rWeatherEffectParam::getExt() const {
 const cEffectCorrectParam* rWeatherEffectParam::getCorrectParam(u32 type, u32 index) const {
     // DWARF local not rendered: const MtTypedArray<cEffectCorrectParam>& list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<u32>(6)) {
-        if (index < this->mpParamList[type].::MtArray::mLength) {
-            return static_cast<const cEffectCorrectParam*>(this->mpParamList[type].::MtArray::mpArray[index]);
+    if (type <= 6u) {
+        if (index < mpParamList[type].mLength) {
+            return static_cast<const cEffectCorrectParam*>(mpParamList[type].mpArray[index]);
         }
     }
-    return static_cast<const cEffectCorrectParam*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x01ab9a70 - 0x01ab9a82 (18 bytes)
 u32 rWeatherEffectParam::getCorrectParamNum(u32 type) const {
     // DWARF local not rendered: const MtTypedArray<cEffectCorrectParam>& list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<u32>(6)) {
-        return this->mpParamList[type].::MtArray::mLength;
+    if (type <= 6u) {
+        return mpParamList[type].mLength;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -335,6 +400,8 @@ __attribute__((weak)) bool rWeatherEffectParam::calcEffectColorParam(stEffectCol
 // No out-of-line body: 1 inlined copy in 1 function (129 bytes)
 //   in rWeatherEffectParam::~rWeatherEffectParam at 0x007134b2-0x00713533 (called at rWeatherEffectParam.cpp:288)
 // void rWeatherEffectParam::destruct();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeatherEffectParam::MyDTI rWeatherEffectParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWeatherEffectParam.cpp at 0x00713ac2-0x00713aff (called at rWeatherEffectParam.cpp:268)

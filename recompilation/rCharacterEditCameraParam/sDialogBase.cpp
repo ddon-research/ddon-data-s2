@@ -24,7 +24,7 @@ const MtDTI& sDialogBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sDialogBase::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sDialogBase::DTI);
+    return MtMemoryAllocator::getAllocator(sDialogBase::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* sDialogBase::getAllocator() {
 // Address: 0x00767110 - 0x00767150 (64 bytes)
 void* sDialogBase::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sDialogBase::getAllocator()->memAlloc(sz, align, ::sDialogBase::DTI.::MtDTI::getID());
+    return sDialogBase::getAllocator()->memAlloc(sz, align, sDialogBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* sDialogBase::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sDialogBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sDialogBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sDialogBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,13 +101,13 @@ __attribute__((weak)) void sDialogBase::move() {
 // Address: 0x007675c0 - 0x007675c5 (5 bytes)
 void sDialogBase::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007675d0 - 0x007675d5 (5 bytes)
 MtUI* sDialogBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 65 inlined copies in 29 functions (608 bytes)
@@ -124,7 +124,7 @@ MtUI* sDialogBase::createUI(MtProperty& prop) {
 bool sDialogBase::isDialogExecute() {
     // DWARF local not rendered: stInfo& info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mInfoOrderTbl[0] > static_cast<int>(-1)) && ((this->mInfo[this->mInfoOrderTbl[0]].state != static_cast<nDialog::STATE>(0)) && (this->mInfo[this->mInfoOrderTbl[0]].state != static_cast<nDialog::STATE>(6)));
+    return (mInfoOrderTbl[0] > -1) && ((mInfo[mInfoOrderTbl[0]].state != nDialog::STATE_NONE) && (mInfo[mInfoOrderTbl[0]].state != nDialog::STATE_END));
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,20 +201,19 @@ nDialog::stInfo* sDialogBase::getInfo(u32 handle) {
     // DWARF local not rendered: stInfo* pInfo;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x7679f0, 0x767a11)) is the counter this loop steps (DWARF's stale constant 0)
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    nDialog::stInfo* p2 = &this->mInfo[0];
+    nDialog::stInfo* p2 = &mInfo[0];
     do {
-        if (p2->state != static_cast<nDialog::STATE>(0)) {
-            if (p2->handle != handle) {
-            } else {
+        if (p2->state != nDialog::STATE_NONE) {
+            if (p2->handle == handle) {
                 return p2;
             }
         }
-        i += static_cast<s32>(1);
+        i += 1;
         p2 += static_cast<int>(1);
-    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(7));
-    return static_cast<nDialog::stInfo*>(nullptr);
+    } while ((i + 0) <= 7);
+    return nullptr;
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (41 bytes)
@@ -227,7 +226,7 @@ nDialog::stInfo* sDialogBase::getInfo(u32 handle) {
 // Address: 0x00767610 - 0x00767621 (17 bytes)
 bool sDialogBase::isActiveInfo(const nDialog::stInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (info.state != static_cast<nDialog::STATE>(0)) && (info.state != static_cast<nDialog::STATE>(6));
+    return (info.state != nDialog::STATE_NONE) && (info.state != nDialog::STATE_END);
 }
 
 // Address: 0x00767630 - 0x007678c7 (663 bytes)
@@ -361,20 +360,28 @@ __attribute__((weak)) void sDialogBase::callbackOffline() {
 s32 sDialogBase::convReturnMsgNo(s32 msgNo) {
     // DWARF local not rendered: s32 retMsgNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (i != static_cast<u32>(6)) {
-            if (::sDialogBase::convReturnMsgNoTbl[i].srcMsgNo != msgNo) {
-            } else {
-                return ::sDialogBase::convReturnMsgNoTbl[i].dstMsgNo;
+        if (i != 6) {
+            if (sDialogBase::convReturnMsgNoTbl[i].srcMsgNo == msgNo) {
+                return sDialogBase::convReturnMsgNoTbl[i].dstMsgNo;
             }
         } else {
             return msgNo;
         }
-        i += static_cast<u32>(1);
-    } while (i <= static_cast<u32>(6));
+        i += 1u;
+    } while (i <= 6u);
     return msgNo;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sDialogBase::MyDTI sDialogBase::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sDialogBase* sDialogBase::mpInstance;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const sDialogBase::stDialogTbl sDialogBase::msgTbl[23];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const sDialogBase::stConvRetMsgNo sDialogBase::convReturnMsgNoTbl[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sDialogBase.cpp at 0x00768e2f-0x00768e6c (called at sDialogBase.cpp:44)

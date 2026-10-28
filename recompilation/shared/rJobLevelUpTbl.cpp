@@ -36,7 +36,7 @@ const MtDTI& cIncreaseParam2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cIncreaseParam2::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memAlloc(sz, align, ::cIncreaseParam2::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cIncreaseParam2::DTI)->memAlloc(sz, align, cIncreaseParam2::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cIncreaseParam2::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cIncreaseParam2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cIncreaseParam2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -87,6 +87,8 @@ __attribute__((weak)) void cIncreaseParam2::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // bool cIncreaseParam2::saveData(MtDataWriter& out);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cIncreaseParam2::MyDTI cIncreaseParam2::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJobLevelUpTbl.cpp at 0x0068dbb0-0x0068dbf2 (called at rJobLevelUpTbl.cpp:19)
 //   in _GLOBAL__sub_I_rJobLevelUpTbl.cpp at 0x0068dbb0-0x0068dbf2 (called at rJobLevelUpTbl.h:25)
@@ -95,7 +97,7 @@ __attribute__((weak)) void cIncreaseParam2::createProperty(MtPropertyList& s) {
 // Address: 0x0068d570 - 0x0068d5c7 (87 bytes)
 MtObject* cIncreaseParam2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cIncreaseParam2;
+    return new (16u) cIncreaseParam2;
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ const MtDTI& rJobLevelUpTbl2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJobLevelUpTbl2::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJobLevelUpTbl2::DTI)->memAlloc(sz, align, ::rJobLevelUpTbl2::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJobLevelUpTbl2::DTI)->memAlloc(sz, align, rJobLevelUpTbl2::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* rJobLevelUpTbl2::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rJobLevelUpTbl2D0Ev at 0x01a95b64-0x01a95b83, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rJobLevelUpTbl2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJobLevelUpTbl2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJobLevelUpTbl2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,7 +152,7 @@ inline void rJobLevelUpTbl2::operator delete(void* p_addr) {
 // Address: 0x0068da70 - 0x0068dace (94 bytes)
 bool rJobLevelUpTbl2::loadData(MtDataReader& in, cIncreaseParam2* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cIncreaseParam2*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mLv = in.readU32();
         pData->mAtk = in.readU32();
         pData->mDef = in.readU32();
@@ -171,8 +173,10 @@ MT_CTSTR rJobLevelUpTbl2::getExt() const {
 // Address: 0x01a95cb0 - 0x01a95cb6 (6 bytes)
 u32 rJobLevelUpTbl2::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJobLevelUpTbl2::MyDTI rJobLevelUpTbl2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJobLevelUpTbl.cpp at 0x0068dbf2-0x0068dc2f (called at rJobLevelUpTbl.cpp:89)
@@ -182,7 +186,7 @@ u32 rJobLevelUpTbl2::getDataVersion() const {
 // Address: 0x0068dad0 - 0x0068db34 (100 bytes)
 MtObject* rJobLevelUpTbl2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJobLevelUpTbl2;
+    return new (16u) rJobLevelUpTbl2;
 }
 
 // Instance at 0x01a95c60 - 0x01a95c72 (18 bytes) of the generic rTbl2<T>::getData

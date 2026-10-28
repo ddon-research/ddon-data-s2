@@ -28,7 +28,7 @@ const MtDTI& uGUIDamage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIDamage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIDamage::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIDamage::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIDamage::getAllocator() {
 // Address: 0x00b4b2d0 - 0x00b4b310 (64 bytes)
 void* uGUIDamage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIDamage::getAllocator()->memAlloc(sz, align, ::uGUIDamage::DTI.::MtDTI::getID());
+    return uGUIDamage::getAllocator()->memAlloc(sz, align, uGUIDamage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uGUIDamage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIDamage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIDamage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIDamage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,19 +71,19 @@ inline void uGUIDamage::operator delete(void* p_addr) {
 // Also emitted as: _ZN10uGUIDamageD0Ev at 0x00b4be50
 uGUIDamage::~uGUIDamage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b4beb0 - 0x00b4bf18 (104 bytes)
 bool uGUIDamage::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_DAMAGE_GUI"), static_cast<u32>(129), static_cast<t64>(1427088956)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_DAMAGE_GUI"), 129u, 1427088956l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -105,12 +105,12 @@ __attribute__((weak)) void uGUIDamage::setup() {
 // Address: 0x00b4c230 - 0x00b4c261 (49 bytes)
 void uGUIDamage::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b4c270 - 0x00b4c473 (515 bytes)
@@ -163,7 +163,7 @@ __attribute__((weak)) void uGUIDamage::adjustScale() {
 // Address: 0x00b4c210 - 0x00b4c22a (26 bytes)
 void uGUIDamage::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDamage::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDamage::updateWait);
 }
 
 // Address: 0x00b4c9a0 - 0x00b4cab5 (277 bytes)
@@ -251,6 +251,8 @@ __attribute__((weak)) void uGUIDamage::updateTextInstInfo(f32 deltaTime) {
     DDON_STUB("uGUIDamage::updateTextInstInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIDamage::MyDTI uGUIDamage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIDamage.cpp at 0x00b4dc95-0x00b4dcd2 (called at uGUIDamage.cpp:108)

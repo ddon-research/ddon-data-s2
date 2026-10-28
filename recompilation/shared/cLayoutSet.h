@@ -235,3 +235,15 @@ inline MtArray& cLayoutSet::getUnitArray() {
 inline u32 cLayoutSet::getAreaHitBit() const {
     return this->mAreaHitBit;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cLayoutSet::update at 0x2d2f57-0x2d2f7c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cLayoutSet::cUnitData::update() {
+    if (this->mState == static_cast<cLayoutSet::STATE>(3)) {
+        this->mState = static_cast<cLayoutSet::STATE>(4);
+    } else {
+        if (this->mState == static_cast<cLayoutSet::STATE>(2)) {
+            this->mState = static_cast<cLayoutSet::STATE>(3);
+        }
+    }
+}

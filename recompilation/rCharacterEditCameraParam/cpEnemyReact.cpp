@@ -43,7 +43,7 @@ const MtDTI& cpEnemyReact::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpEnemyReact::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpEnemyReact::DTI);
+    return MtMemoryAllocator::getAllocator(cpEnemyReact::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline MtAllocator* cpEnemyReact::getAllocator() {
 // Address: 0x00182320 - 0x00182360 (64 bytes)
 void* cpEnemyReact::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpEnemyReact::getAllocator()->memAlloc(sz, align, ::cpEnemyReact::DTI.::MtDTI::getID());
+    return cpEnemyReact::getAllocator()->memAlloc(sz, align, cpEnemyReact::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,7 +67,7 @@ void* cpEnemyReact::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEnemyReact::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEnemyReact::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEnemyReact::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +97,7 @@ cpEnemyReact::~cpEnemyReact() {
 // Address: 0x001829d0 - 0x001829d5 (5 bytes)
 void cpEnemyReact::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x001837c0 - 0x00183824 (100 bytes)
@@ -105,27 +105,27 @@ void cpEnemyReact::move() {
     // DWARF local not rendered: uDDOModel* p_owner;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     }
-    if (this->::cpComponent::getOwner() == static_cast<MtObject*>(nullptr)) {
+    if (getOwner() == nullptr) {
         return;
     }
-    this->::cpEnemyReact::addTimer(static_cast<cUnit*>(this->::cpComponent::getOwner())->::cUnit::getDeltaTime());
-    this->mEnemyReactManager[0].mResetTiming = false;
-    this->mEnemyReactManager[1].mResetTiming = false;
-    this->mEnemyReactManager[2].mResetTiming = false;
-    this->mEnemyReactManager[3].mResetTiming = false;
-    this->mEnemyReactManager[4].mResetTiming = false;
-    this->mEnemyReactManager[5].mResetTiming = false;
-    this->mEnemyReactManager[6].mResetTiming = false;
-    this->mEnemyReactManager[7].mResetTiming = false;
+    addTimer(static_cast<cUnit*>(getOwner())->getDeltaTime());
+    mEnemyReactManager[0].mResetTiming = false;
+    mEnemyReactManager[1].mResetTiming = false;
+    mEnemyReactManager[2].mResetTiming = false;
+    mEnemyReactManager[3].mResetTiming = false;
+    mEnemyReactManager[4].mResetTiming = false;
+    mEnemyReactManager[5].mResetTiming = false;
+    mEnemyReactManager[6].mResetTiming = false;
+    mEnemyReactManager[7].mResetTiming = false;
 }
 
 // Address: 0x001829e0 - 0x001829e5 (5 bytes)
 void cpEnemyReact::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x001829f0 - 0x0018305f (1647 bytes)
@@ -150,31 +150,31 @@ __attribute__((weak)) bool cpEnemyReact::checkReaction(u32 reactCheckType, uDDOM
 // Address: 0x00183060 - 0x00183380 (800 bytes)
 bool cpEnemyReact::resetCheck(u32 idx, u32 reactCheckType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx > static_cast<u32>(7)) {
+    if (idx > 7u) {
         return false;
     } else {
         switch (reactCheckType) {
-            case static_cast<u32>(0):
+            case 0:
             {
-                if (this->mEnemyReactManager[idx].mResetType == static_cast<u32>(2)) {
-                    if (this->mEnemyReactManager[idx].mResetTimer >= this->mEnemyReactManager[idx].mFResetParam) {
-                        this->mEnemyReactManager[idx].mUCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFCount = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTimer = 0.0f;
-                        this->mEnemyReactManager[idx].mResetType = static_cast<u32>(1);
-                        this->mEnemyReactManager[idx].mEnable = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlow = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeShrink = false;
-                        this->mEnemyReactManager[idx].mResetTypeShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDown = false;
-                        this->mEnemyReactManager[idx].mShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mUResetParam = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFResetParam = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTiming = true;
+                if (mEnemyReactManager[idx].mResetType == 2) {
+                    if (mEnemyReactManager[idx].mResetTimer >= mEnemyReactManager[idx].mFResetParam) {
+                        mEnemyReactManager[idx].mUCount = 0;
+                        mEnemyReactManager[idx].mFCount = 0.0f;
+                        mEnemyReactManager[idx].mResetTimer = 0.0f;
+                        mEnemyReactManager[idx].mResetType = 1;
+                        mEnemyReactManager[idx].mEnable = false;
+                        mEnemyReactManager[idx].mResetTypeBlow = false;
+                        mEnemyReactManager[idx].mResetTypeBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeShrink = false;
+                        mEnemyReactManager[idx].mResetTypeShrinkCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDown = false;
+                        mEnemyReactManager[idx].mShrinkCount = 0;
+                        mEnemyReactManager[idx].mDownCount = 0;
+                        mEnemyReactManager[idx].mUResetParam = 0;
+                        mEnemyReactManager[idx].mBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDownCount = 0;
+                        mEnemyReactManager[idx].mFResetParam = 0.0f;
+                        mEnemyReactManager[idx].mResetTiming = true;
                         return true;
                     } else {
                         return false;
@@ -184,29 +184,29 @@ bool cpEnemyReact::resetCheck(u32 idx, u32 reactCheckType) {
                 }
                 break;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
-                if (this->mEnemyReactManager[idx].mResetTypeShrink != false) {
-                    if (this->mEnemyReactManager[idx].mShrinkCount < this->mEnemyReactManager[idx].mResetTypeShrinkCount) {
+                if (mEnemyReactManager[idx].mResetTypeShrink) {
+                    if (mEnemyReactManager[idx].mShrinkCount < mEnemyReactManager[idx].mResetTypeShrinkCount) {
                         return false;
                     } else {
-                        this->mEnemyReactManager[idx].mUCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFCount = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTimer = 0.0f;
-                        this->mEnemyReactManager[idx].mResetType = static_cast<u32>(1);
-                        this->mEnemyReactManager[idx].mEnable = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlow = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeShrink = false;
-                        this->mEnemyReactManager[idx].mResetTypeShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDown = false;
-                        this->mEnemyReactManager[idx].mShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mUResetParam = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFResetParam = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTiming = true;
+                        mEnemyReactManager[idx].mUCount = 0;
+                        mEnemyReactManager[idx].mFCount = 0.0f;
+                        mEnemyReactManager[idx].mResetTimer = 0.0f;
+                        mEnemyReactManager[idx].mResetType = 1;
+                        mEnemyReactManager[idx].mEnable = false;
+                        mEnemyReactManager[idx].mResetTypeBlow = false;
+                        mEnemyReactManager[idx].mResetTypeBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeShrink = false;
+                        mEnemyReactManager[idx].mResetTypeShrinkCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDown = false;
+                        mEnemyReactManager[idx].mShrinkCount = 0;
+                        mEnemyReactManager[idx].mDownCount = 0;
+                        mEnemyReactManager[idx].mUResetParam = 0;
+                        mEnemyReactManager[idx].mBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDownCount = 0;
+                        mEnemyReactManager[idx].mFResetParam = 0.0f;
+                        mEnemyReactManager[idx].mResetTiming = true;
                         return true;
                     }
                 } else {
@@ -214,29 +214,29 @@ bool cpEnemyReact::resetCheck(u32 idx, u32 reactCheckType) {
                 }
                 break;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                if (this->mEnemyReactManager[idx].mResetTypeBlow != false) {
-                    if (this->mEnemyReactManager[idx].mBlowCount < this->mEnemyReactManager[idx].mResetTypeBlowCount) {
+                if (mEnemyReactManager[idx].mResetTypeBlow) {
+                    if (mEnemyReactManager[idx].mBlowCount < mEnemyReactManager[idx].mResetTypeBlowCount) {
                         return false;
                     } else {
-                        this->mEnemyReactManager[idx].mUCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFCount = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTimer = 0.0f;
-                        this->mEnemyReactManager[idx].mResetType = static_cast<u32>(1);
-                        this->mEnemyReactManager[idx].mEnable = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlow = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeShrink = false;
-                        this->mEnemyReactManager[idx].mResetTypeShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDown = false;
-                        this->mEnemyReactManager[idx].mShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mUResetParam = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFResetParam = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTiming = true;
+                        mEnemyReactManager[idx].mUCount = 0;
+                        mEnemyReactManager[idx].mFCount = 0.0f;
+                        mEnemyReactManager[idx].mResetTimer = 0.0f;
+                        mEnemyReactManager[idx].mResetType = 1;
+                        mEnemyReactManager[idx].mEnable = false;
+                        mEnemyReactManager[idx].mResetTypeBlow = false;
+                        mEnemyReactManager[idx].mResetTypeBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeShrink = false;
+                        mEnemyReactManager[idx].mResetTypeShrinkCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDown = false;
+                        mEnemyReactManager[idx].mShrinkCount = 0;
+                        mEnemyReactManager[idx].mDownCount = 0;
+                        mEnemyReactManager[idx].mUResetParam = 0;
+                        mEnemyReactManager[idx].mBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDownCount = 0;
+                        mEnemyReactManager[idx].mFResetParam = 0.0f;
+                        mEnemyReactManager[idx].mResetTiming = true;
                         return true;
                     }
                 } else {
@@ -244,29 +244,29 @@ bool cpEnemyReact::resetCheck(u32 idx, u32 reactCheckType) {
                 }
                 break;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                if (this->mEnemyReactManager[idx].mResetTypeShrink != false) {
-                    if (this->mEnemyReactManager[idx].mDownCount < this->mEnemyReactManager[idx].mResetTypeDownCount) {
+                if (mEnemyReactManager[idx].mResetTypeShrink) {
+                    if (mEnemyReactManager[idx].mDownCount < mEnemyReactManager[idx].mResetTypeDownCount) {
                         return false;
                     } else {
-                        this->mEnemyReactManager[idx].mUCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFCount = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTimer = 0.0f;
-                        this->mEnemyReactManager[idx].mResetType = static_cast<u32>(1);
-                        this->mEnemyReactManager[idx].mEnable = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlow = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeShrink = false;
-                        this->mEnemyReactManager[idx].mResetTypeShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDown = false;
-                        this->mEnemyReactManager[idx].mShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mUResetParam = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFResetParam = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTiming = true;
+                        mEnemyReactManager[idx].mUCount = 0;
+                        mEnemyReactManager[idx].mFCount = 0.0f;
+                        mEnemyReactManager[idx].mResetTimer = 0.0f;
+                        mEnemyReactManager[idx].mResetType = 1;
+                        mEnemyReactManager[idx].mEnable = false;
+                        mEnemyReactManager[idx].mResetTypeBlow = false;
+                        mEnemyReactManager[idx].mResetTypeBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeShrink = false;
+                        mEnemyReactManager[idx].mResetTypeShrinkCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDown = false;
+                        mEnemyReactManager[idx].mShrinkCount = 0;
+                        mEnemyReactManager[idx].mDownCount = 0;
+                        mEnemyReactManager[idx].mUResetParam = 0;
+                        mEnemyReactManager[idx].mBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDownCount = 0;
+                        mEnemyReactManager[idx].mFResetParam = 0.0f;
+                        mEnemyReactManager[idx].mResetTiming = true;
                         return true;
                     }
                 } else {
@@ -274,27 +274,27 @@ bool cpEnemyReact::resetCheck(u32 idx, u32 reactCheckType) {
                 }
                 break;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
-                if (this->mEnemyReactManager[idx].mResetType == static_cast<u32>(3)) {
-                    if (this->mEnemyReactManager[idx].mFCount >= this->mEnemyReactManager[idx].mFResetParam) {
-                        this->mEnemyReactManager[idx].mUCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFCount = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTimer = 0.0f;
-                        this->mEnemyReactManager[idx].mResetType = static_cast<u32>(1);
-                        this->mEnemyReactManager[idx].mEnable = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlow = false;
-                        this->mEnemyReactManager[idx].mResetTypeBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeShrink = false;
-                        this->mEnemyReactManager[idx].mResetTypeShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDown = false;
-                        this->mEnemyReactManager[idx].mShrinkCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mUResetParam = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mBlowCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mResetTypeDownCount = static_cast<u32>(0);
-                        this->mEnemyReactManager[idx].mFResetParam = 0.0f;
-                        this->mEnemyReactManager[idx].mResetTiming = true;
+                if (mEnemyReactManager[idx].mResetType == 3) {
+                    if (mEnemyReactManager[idx].mFCount >= mEnemyReactManager[idx].mFResetParam) {
+                        mEnemyReactManager[idx].mUCount = 0;
+                        mEnemyReactManager[idx].mFCount = 0.0f;
+                        mEnemyReactManager[idx].mResetTimer = 0.0f;
+                        mEnemyReactManager[idx].mResetType = 1;
+                        mEnemyReactManager[idx].mEnable = false;
+                        mEnemyReactManager[idx].mResetTypeBlow = false;
+                        mEnemyReactManager[idx].mResetTypeBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeShrink = false;
+                        mEnemyReactManager[idx].mResetTypeShrinkCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDown = false;
+                        mEnemyReactManager[idx].mShrinkCount = 0;
+                        mEnemyReactManager[idx].mDownCount = 0;
+                        mEnemyReactManager[idx].mUResetParam = 0;
+                        mEnemyReactManager[idx].mBlowCount = 0;
+                        mEnemyReactManager[idx].mResetTypeDownCount = 0;
+                        mEnemyReactManager[idx].mFResetParam = 0.0f;
+                        mEnemyReactManager[idx].mResetTiming = true;
                         return true;
                     } else {
                         return false;
@@ -359,6 +359,8 @@ __attribute__((weak)) void cpEnemyReact::setResource(u32 index, rEnemyReactResEx
     DDON_STUB("cpEnemyReact::setResource")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEnemyReact::MyDTI cpEnemyReact::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEnemyReact.cpp at 0x00183a0f-0x00183a4c (called at cpEnemyReact.cpp:39)

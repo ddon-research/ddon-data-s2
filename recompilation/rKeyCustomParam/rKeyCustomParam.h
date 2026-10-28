@@ -182,14 +182,14 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cKeyCustomParam::cKeyCustomParam() {
-    this->mPad = static_cast<u32>(0);
-    this->mPad2 = static_cast<u32>(0);
-    this->mPadFlags2 = static_cast<u16>(0);
-    this->mKbmFlags = static_cast<u16>(0);
-    this->mKey = static_cast<u16>(0);
-    this->mBtn = static_cast<u16>(0);
-    this->mPadFlags = static_cast<u16>(0);
-    this->mKbc = static_cast<u16>(0);
-    this->mOverlapGroup = static_cast<u16>(0);
-    this->mGmdId = static_cast<u32>(0);
+    this->mPad = 0;
+    this->mPad2 = 0;
+    this->mPadFlags2 = 0;
+    this->mKbmFlags = 0;
+    this->mKey = 0;
+    this->mBtn = 0;
+    this->mPadFlags = 0;
+    this->mKbc = 0;
+    this->mOverlapGroup = 0;
+    this->mGmdId = 0;
 }

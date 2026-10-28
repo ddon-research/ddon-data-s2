@@ -124,15 +124,15 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cShakeCtrl::cShakeCtrl() {
-    this->mJntNo = static_cast<s32>(-1);
+    this->mJntNo = -1;
     this->mShakeRot = 20.0f;
     this->mShakeAxis = 10.0f;
     this->mShakeTrans = 20.0f;
-    this->mJntNoChild = static_cast<s32>(-1);
+    this->mJntNoChild = -1;
     this->mChildRate = 1.0f;
-    this->mAxis = static_cast<u32>(1);
-    this->mFlag = static_cast<u32>(0);
-    this->mIK = static_cast<u32>(0);
+    this->mAxis = 1;
+    this->mFlag = 0;
+    this->mIK = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

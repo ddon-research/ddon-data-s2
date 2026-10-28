@@ -142,6 +142,12 @@ inline bool rSoundAreaInfo::isCycleStage() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundManager::updateStgBGMTemp at 0x859f73-0x859f79; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 rSoundAreaInfo::getCycleBgmNo() {
+    return this->mCycleBgmNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 rSoundAreaInfo::getBtlBgmNo() {
     return this->mBtlBgmNo;

@@ -26,7 +26,7 @@ const MtDTI& cpTransparencyCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpTransparencyCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpTransparencyCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpTransparencyCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpTransparencyCtrl::getAllocator() {
 // Address: 0x0053e7f0 - 0x0053e830 (64 bytes)
 void* cpTransparencyCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpTransparencyCtrl::getAllocator()->memAlloc(sz, align, ::cpTransparencyCtrl::DTI.::MtDTI::getID());
+    return cpTransparencyCtrl::getAllocator()->memAlloc(sz, align, cpTransparencyCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpTransparencyCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpTransparencyCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpTransparencyCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpTransparencyCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,18 +65,18 @@ inline void cpTransparencyCtrl::operator delete(void* p_addr) {
 // Address: 0x0053e8a0 - 0x0053e904 (100 bytes)
 cpTransparencyCtrl::cpTransparencyCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBaseTrp = 1.0f;
-    this->mStartTrp = 0.1f;
-    this->mEndTrp = 1.0f;
-    this->mIsClimbEnemy = false;
-    this->mIsActive = false;
-    this->mWaitTimer = 0.0f;
-    this->mCamFadeStart = 0.0f;
-    this->mCamFadeEnd = 0.0f;
-    this->mCamFadeRno = static_cast<u32>(0);
-    this->mCamFadeTimer = 0.0f;
-    this->mSpeed = 0.01f;
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mBaseTrp = 1.0f;
+    mStartTrp = 0.1f;
+    mEndTrp = 1.0f;
+    mIsClimbEnemy = false;
+    mIsActive = false;
+    mWaitTimer = 0.0f;
+    mCamFadeStart = 0.0f;
+    mCamFadeEnd = 0.0f;
+    mCamFadeRno = 0;
+    mCamFadeTimer = 0.0f;
+    mSpeed = 0.01f;
+    mpModel = nullptr;
 }
 
 // Address: 0x0053e910 - 0x0053e915 (5 bytes)
@@ -116,21 +116,21 @@ __attribute__((weak)) void cpTransparencyCtrl::update() {
 // Address: 0x0053eff0 - 0x0053f023 (51 bytes)
 void cpTransparencyCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0053ecb0 - 0x0053ecb9 (9 bytes)
 void cpTransparencyCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x0053fb40 - 0x0053fbd4 (148 bytes)
@@ -249,6 +249,8 @@ __attribute__((weak)) bool cpTransparencyCtrl::checkFadeBellyVector() {
 // No out-of-line body: no code in the ELF
 // f32 cpTransparencyCtrl::getClimbFadeDist() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpTransparencyCtrl::MyDTI cpTransparencyCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpTransparencyCtrl.cpp at 0x0053fdff-0x0053fe3c (called at cpTransparencyCtrl.cpp:61)
 //   in _GLOBAL__sub_I_cpTransparencyCtrl.cpp at 0x0053fdff-0x0053fe3c (called at cpTransparencyCtrl.h:30)
@@ -257,6 +259,6 @@ __attribute__((weak)) bool cpTransparencyCtrl::checkFadeBellyVector() {
 // Address: 0x0053e760 - 0x0053e7ef (143 bytes)
 MtObject* cpTransparencyCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpTransparencyCtrl;
+    return new (16u) cpTransparencyCtrl;
 }
 

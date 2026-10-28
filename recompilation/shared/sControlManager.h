@@ -272,7 +272,7 @@ inline sControlManager* sControlManager::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sControlManager::cDispPriorityData::cDispPriorityData() {
-    this->mPriorityType = static_cast<u8>(0);
-    this->mCameraLengthType = static_cast<u8>(0);
-    this->mPriority = static_cast<u16>(65535);
+    this->mPriorityType = 0;
+    this->mCameraLengthType = 0;
+    this->mPriority = 0xFFFF;
 }

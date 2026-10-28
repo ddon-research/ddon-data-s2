@@ -452,6 +452,30 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob10::before at 0x18a78f-0x18a799; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob10::resetUseNumCs02Air() {
+    this->mUseNumCustom02Air = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 cpJob10::cSpiritManager::getSpirit() const {
+    return this->mSpirit_Gi;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uHuman* cpJob10::cSpiritManager::getHuman() const {
+    return this->mpParent->::cpJobBase::mpHuman;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob10::cSpiritManager::decreaseSpirit at 0x191eef-0x191ef4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cpJob10::cSpiritManager::setSpirit_Gi(f32 NewValue) {
+    this->mSpirit_Gi = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpJob10::cSpiritManager::cSpiritState::cSpiritState() {
-    this->mpParent = static_cast<cpJob10::cSpiritManager*>(nullptr);
+    this->mpParent = nullptr;
 }

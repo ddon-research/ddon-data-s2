@@ -107,6 +107,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::callbackAltitudeFallLand at 0xc86d31-0xc86d39; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpAltitudeFallCtrl::getFallDistance() {
+    return this->mFallDistance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 cpAltitudeFallCtrl::getLastFallDistance() {
     return this->mLastFallDistance;

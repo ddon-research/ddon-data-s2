@@ -52,7 +52,7 @@ const MtDTI& cShotReqInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShotReqInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShotReqInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -72,14 +72,14 @@ inline void cShotReqInfo::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cShotReqInfo::cShotReqInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mShotGroup = static_cast<u32>(0);
-    this->mShotIndex = static_cast<u32>(0);
-    this->mSetTarget = static_cast<u32>(0);
-    this->mJointNo = static_cast<u32>(255);
-    this->mIsConst = false;
-    this->mOffsetPos = ::MtVector3::Zero;
-    this->mOffsetDir = ::MtVector3::Zero;
-    this->mIsLockOnTarget = false;
+    mShotGroup = 0;
+    mShotIndex = 0;
+    mSetTarget = 0;
+    mJointNo = 255;
+    mIsConst = false;
+    mOffsetPos = MtVector3::Zero;
+    mOffsetDir = MtVector3::Zero;
+    mIsLockOnTarget = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,6 +93,8 @@ __attribute__((weak)) void cShotReqInfo::createProperty(MtPropertyList& s) {
     DDON_STUB("cShotReqInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShotReqInfo::MyDTI cShotReqInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rShotReqInfo.cpp at 0x006e7bc0-0x006e7c02 (called at rShotReqInfo.cpp:25)
@@ -127,7 +129,7 @@ const MtDTI& rShotReqInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShotReqInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShotReqInfo::DTI)->memAlloc(sz, align, ::rShotReqInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShotReqInfo::DTI)->memAlloc(sz, align, rShotReqInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,7 +144,7 @@ inline void* rShotReqInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rShotReqInfoD0Ev at 0x01ab1454-0x01ab1473, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rShotReqInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShotReqInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShotReqInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,24 +161,24 @@ bool rShotReqInfo::loadData(MtDataReader& in, cShotReqInfo* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mShotGroup);
+    nDDOIO::readData(in, pData->mShotGroup);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mShotIndex);
+    nDDOIO::readData(in, pData->mShotIndex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSetTarget);
+    nDDOIO::readData(in, pData->mSetTarget);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mJointNo);
+    nDDOIO::readData(in, pData->mJointNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIsConst);
+    nDDOIO::readData(in, pData->mIsConst);
     pData->mOffsetPos = in.readV3();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetDir = in.readV3();
-    ::nDDOIO::readData(in, pData->mIsLockOnTarget);
+    nDDOIO::readData(in, pData->mIsLockOnTarget);
     return true;
 }
 
@@ -189,14 +191,16 @@ MT_CTSTR rShotReqInfo::getExt() const {
 // Address: 0x01ab15a0 - 0x01ab15a6 (6 bytes)
 u32 rShotReqInfo::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(9);
+    return 9;
 }
 
 // Address: 0x006e7bb0 - 0x006e7bb5 (5 bytes)
 void rShotReqInfo::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShotReqInfo::MyDTI rShotReqInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShotReqInfo.cpp at 0x006e7c02-0x006e7c3f (called at rShotReqInfo.cpp:26)
@@ -206,7 +210,7 @@ void rShotReqInfo::createProperty(MtPropertyList& s) {
 // Address: 0x006e7380 - 0x006e73e4 (100 bytes)
 MtObject* rShotReqInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShotReqInfo;
+    return new (16u) rShotReqInfo;
 }
 
 // Instance at 0x01ab1550 - 0x01ab1566 (22 bytes) of the generic rTbl2<T>::getData

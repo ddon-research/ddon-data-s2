@@ -66,11 +66,11 @@ const MtDTI& nDraw::RenderTargetView::getDTI() const {
 // Also emitted as: _ZN5nDraw16RenderTargetViewD0Ev at 0x01161560
 nDraw::RenderTargetView::~RenderTargetView() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHandle == static_cast<nDraw::HRenderTarget>(nullptr)) {
+    if (mpHandle == nullptr) {
         return;
     }
-    this->mpSurfaceAddress = static_cast<void*>(nullptr);
-    this->mpHandle = static_cast<nDraw::HRenderTarget>(nullptr);
+    mpSurfaceAddress = nullptr;
+    mpHandle = nullptr;
 }
 
 // Address: 0x01bbc850 - 0x01bbc85f (15 bytes)
@@ -105,6 +105,8 @@ __attribute__((weak)) nDraw::HRenderTarget nDraw::RenderTargetView::getHandle() 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool nDraw::RenderTargetView::isSRGB() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::RenderTargetView::MyDTI nDraw::RenderTargetView::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::RenderTargetView::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -135,7 +137,7 @@ const MtDTI& nDraw::Texture::getDTI() const {
 // Address: 0x01161960 - 0x011619a0 (64 bytes)
 void* nDraw::Texture::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::Texture::DTI)->memAlloc(sz, align, ::nDraw::Texture::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::Texture::DTI)->memAlloc(sz, align, ::nDraw::Texture::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +243,7 @@ __attribute__((weak)) void nDraw::Texture::unmap(u32 subresource) {
 // Address: 0x01b82e90 - 0x01b82e95 (5 bytes)
 u32 nDraw::Texture::getWidth() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWidth;
+    return mWidth;
 }
 
 // Address: 0x01b82ea0 - 0x01b82eac (12 bytes)
@@ -253,26 +255,26 @@ __attribute__((weak)) u32 nDraw::Texture::getHeight() const {
 // Address: 0x01b82f00 - 0x01b82f0a (10 bytes)
 u32 nDraw::Texture::getDepth() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDepth;
+    return mDepth;
 }
 
 // Address: 0x01b82f10 - 0x01b82f15 (5 bytes)
 u32 nDraw::Texture::getArrayCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayCount;
+    return mArrayCount;
 }
 
 // Address: 0x01b82e80 - 0x01b82e8c (12 bytes)
 u32 nDraw::Texture::getLevelCount() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x2a from const nDraw::Texture*
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(42))) >> static_cast<unsigned long>(40));
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 42)) >> 40);
 }
 
 // Address: 0x01b82f20 - 0x01b82f24 (4 bytes)
 nDraw::FORMAT_TYPE nDraw::Texture::getFormat() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nDraw::FORMAT_TYPE>(this->mFormatType);
+    return static_cast<nDraw::FORMAT_TYPE>(mFormatType);
 }
 
 // Address: 0x01b82ed0 - 0x01b82ed4 (4 bytes)
@@ -292,7 +294,7 @@ __attribute__((weak)) void nDraw::Texture::setTextureData(const u32& w, const u3
 // Address: 0x01b82ec0 - 0x01b82ec9 (9 bytes)
 bool nDraw::Texture::isSRGB() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSRGB;
+    return mSRGB;
 }
 
 // No out-of-line body: no code in the ELF
@@ -307,7 +309,7 @@ bool nDraw::Texture::isSRGB() const {
 // Address: 0x01b82eb0 - 0x01b82eb4 (4 bytes)
 u32 nDraw::Texture::getMiscFlags() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMiscFlags;
+    return mMiscFlags;
 }
 
 // Address: 0x01bbca80 - 0x01bbca8f (15 bytes)
@@ -363,10 +365,10 @@ u32 nDraw::Texture::calcMipLevelCount(u32 size) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i1 = static_cast<unsigned int>(4294967295);
+    unsigned int i1 = 0xFFFFFFFF;
     do {
-        i1 += static_cast<unsigned int>(1);
-    } while (size >= static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(i1 + static_cast<unsigned int>(256)) & static_cast<unsigned char>(31))));
+        i1 += 1u;
+    } while (size >= static_cast<unsigned int>(1ul << static_cast<unsigned long>(static_cast<unsigned char>(i1 + 256u) & 31)));
     return i1;
 }
 
@@ -396,7 +398,7 @@ __attribute__((weak)) void nDraw::Texture::createProperty(MtPropertyList& s) {
 // Address: 0x01162c30 - 0x01162c35 (5 bytes)
 void nDraw::Texture::registerScratchTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Resource::addRef();
+    addRef();
 }
 
 // Address: 0x01162c40 - 0x01162c41 (1 bytes)
@@ -444,38 +446,40 @@ __attribute__((weak)) void nDraw::Texture::create(nDraw::Texture* psharedtex, u3
 // Address: 0x01b82f40 - 0x01b82f49 (9 bytes)
 u32 nDraw::Texture::getEncodeMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMiscFlags & static_cast<u32>(15728640);
+    return mMiscFlags & 0xF00000u;
 }
 
 // Address: 0x01b82f50 - 0x01b82f5e (14 bytes)
 void nDraw::Texture::setEncodeMode(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMiscFlags = v | (this->mMiscFlags & static_cast<u32>(4279238655));
+    mMiscFlags = v | (mMiscFlags & 0xFF0FFFFFu);
 }
 
 // Address: 0x01b82f60 - 0x01b82f69 (9 bytes)
 u32 nDraw::Texture::getDecodeMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMiscFlags & static_cast<u32>(258048);
+    return mMiscFlags & 0x3F000u;
 }
 
 // Address: 0x01b82f70 - 0x01b82f7e (14 bytes)
 void nDraw::Texture::setDecodeMode(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMiscFlags = v | (this->mMiscFlags & static_cast<u32>(4293922815));
+    mMiscFlags = v | (mMiscFlags & 0xFFF00FFFu);
 }
 
 // Address: 0x01b82f80 - 0x01b82f89 (9 bytes)
 u32 nDraw::Texture::getMSAAMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMiscFlags & static_cast<u32>(3840);
+    return mMiscFlags & 3840u;
 }
 
 // Address: 0x01b82f90 - 0x01b82f9e (14 bytes)
 void nDraw::Texture::setMSAAMode(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMiscFlags = v | (this->mMiscFlags & static_cast<u32>(4294963455));
+    mMiscFlags = v | (mMiscFlags & 0xFFFFF0FFu);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::Texture::MyDTI nDraw::Texture::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Texture::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

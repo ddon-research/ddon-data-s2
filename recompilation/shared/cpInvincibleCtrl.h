@@ -229,9 +229,70 @@ inline u32 cpInvincibleCtrl::getInvTypeFlagPrivate() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setInvTypeFlagPrivate(u32 NewValue) {
+    this->mInvTypeFlag = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpInvincibleCtrl::clear at 0x498626-0x49862c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setInvTypeFlagOldPrivate(u32 NewValue) {
+    this->mInvTypeFlagOld = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setInvTypeFlagCheatCheckPrivate(u32 NewValue) {
+    this->mInvTypeFlagCheatCheak = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpInvincibleCtrl::clear at 0x49862e-0x498634; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setInvTypeFlagOldCheatCheckPrivate(u32 NewValue) {
+    this->mInvTypeFlagOldCheatCheak = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setDamageAttrPrivate(u32 NewValue) {
+    this->mDamageAttr = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpInvincibleCtrl::clear at 0x4984f6-0x4984fc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setDamageAttrOldPrivate(u32 NewValue) {
+    this->mDamageAttrOld = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setDamageAttrCheatCheckPrivate(u32 NewValue) {
+    this->mDamageAttrCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpInvincibleCtrl::clear at 0x4984fe-0x498504; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpInvincibleCtrl::setDamageAttrOldCheatCheckPrivate(u32 NewValue) {
+    this->mDamageAttrOldCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpInvincibleCtrl::cpInvincibleCtrl at 0x4977b9-0x497803; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpInvincibleCtrl::defineInvincibleThrough() {
+    this->mInvThroughInfo[1].mAttr = 0xFFFFFEC;
+    this->mInvThroughInfo[1].mAttrCheatCheack = 0xF0000013;
+    this->mInvThroughInfo[1].mPriority = 75;
+    this->mInvThroughInfo[1].mPriorityCheatCheack = 0xFFFFFFB4;
+    this->mInvThroughInfo[2].mAttr = 0x8001E00;
+    this->mInvThroughInfo[2].mAttrCheatCheack = 0xF7FFE1FF;
+    this->mInvThroughInfo[2].mPriority = 150;
+    this->mInvThroughInfo[2].mPriorityCheatCheack = 0xFFFFFF69;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpInvincibleCtrl::cInvInfo::cInvInfo() {
-    this->mAttr = static_cast<u32>(0);
-    this->mAttrCheatCheack = static_cast<u32>(4294967295);
-    this->mPriority = static_cast<u32>(0);
-    this->mPriorityCheatCheack = static_cast<u32>(4294967295);
+    this->mAttr = 0;
+    this->mAttrCheatCheack = 0xFFFFFFFF;
+    this->mPriority = 0;
+    this->mPriorityCheatCheack = 0xFFFFFFFF;
 }

@@ -9,6 +9,8 @@
 #include "../shared/MtPrimitive2D.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/rArchiveListArray.h"
@@ -38,7 +40,7 @@ const MtDTI& uGUIChat::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIChat::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIChat::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +49,7 @@ inline MtAllocator* uGUIChat::getAllocator() {
 // Address: 0x00a1fe00 - 0x00a1fe40 (64 bytes)
 void* uGUIChat::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIChat::getAllocator()->memAlloc(sz, align, ::uGUIChat::DTI.::MtDTI::getID());
+    return uGUIChat::getAllocator()->memAlloc(sz, align, uGUIChat::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +64,7 @@ void* uGUIChat::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIChat::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,15 +137,15 @@ uGUIChat::~uGUIChat() {
 // Address: 0x00a211a0 - 0x00a2124c (172 bytes)
 bool uGUIChat::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CHAT_GUI"), static_cast<u32>(129), static_cast<t64>(1464316096)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CHAT_RES_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CHATFILTER_RES_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CHAT_GUI"), 129u, 1464316096l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_CHAT_RES_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_CHATFILTER_RES_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CHAT_RES_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CHATFILTER_RES_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_CHAT_RES_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CHATFILTER_RES_GMD", 1u);
         }
     }
     return false;
@@ -171,16 +173,16 @@ __attribute__((weak)) void uGUIChat::setup() {
 // Address: 0x00a26a10 - 0x00a26a61 (81 bytes)
 void uGUIChat::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGUICList == static_cast<uGUICommunityList*>(nullptr)) {
+    if (mpGUICList == nullptr) {
         return;
     }
-    this->mpGUICList->kill();
-    this->mpGUICList = static_cast<uGUICommunityList*>(nullptr);
+    mpGUICList->kill();
+    mpGUICList = nullptr;
 }
 
 // Address: 0x00a26a70 - 0x00a26c65 (501 bytes)
@@ -196,20 +198,19 @@ __attribute__((weak)) void uGUIChat::move() {
 // Address: 0x00a26fd0 - 0x00a27004 (52 bytes)
 void uGUIChat::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getCharacterEditMode() != static_cast<u32>(0)) {
-    } else {
-        this->::uGUIBase::draw(pDraw);
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->getCharacterEditMode() == 0) {
+        this->uGUIBase::draw(pDraw);
     }
 }
 
 // Address: 0x00a27010 - 0x00a2703d (45 bytes)
 void uGUIChat::replacePriority(u32 uPrioGrp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPriorityGroup == uPrioGrp) {
+    if (mPriorityGroup == uPrioGrp) {
         return;
     }
-    this->::uGUIBase::replacePriority(uPrioGrp);
-    this->mPriorityGroup = uPrioGrp;
+    this->uGUIBase::replacePriority(uPrioGrp);
+    mPriorityGroup = uPrioGrp;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (181 bytes)
@@ -219,12 +220,12 @@ void uGUIChat::replacePriority(u32 uPrioGrp) {
 // Address: 0x00a2a5a0 - 0x00a2a5f8 (88 bytes)
 void uGUIChat::finish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBootUp = false;
-    this->mAlpha = 0.0f;
-    this->::uGUIChat::disableMenu(true);
-    this->::uGUIChat::updateDisp();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
-    this->::uGUIChat::setButtonGuide(true);
+    mBootUp = false;
+    mAlpha = 0.0f;
+    disableMenu(true);
+    updateDisp();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
+    setButtonGuide(true);
 }
 
 // Address: 0x00a2a600 - 0x00a2a62e (46 bytes)
@@ -316,7 +317,7 @@ __attribute__((weak)) bool uGUIChat::isMenuUI() const {
 // Address: 0x00a2a460 - 0x00a2a487 (39 bytes)
 bool uGUIChat::isChatInput() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUIBase::mpCurrentFunc == static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWaitInput);
+    return mpCurrentFunc == static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWaitInput);
 }
 
 // Address: 0x00a2a490 - 0x00a2a58d (253 bytes)
@@ -375,37 +376,37 @@ __attribute__((weak)) void uGUIChat::updateHide() {
 // Address: 0x00a27570 - 0x00a275fc (140 bytes)
 void uGUIChat::updateIn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    this->::uGUIChat::execDirectChat();
-    this->mAlpha = this->mAlpha + (::sMain::getInstance()->mDeltaTime * 0.5f);
-    if (this->mAlpha >= 1.0f) {
-        this->mAlpha = 1.0f;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWait);
-        this->::uGUIChat::setButtonGuide(true);
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    execDirectChat();
+    mAlpha = mAlpha + (sMain::getInstance()->mDeltaTime * 0.5f);
+    if (mAlpha >= 1.0f) {
+        mAlpha = 1.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWait);
+        setButtonGuide(true);
     }
-    this->::uGUIChat::updateDisp();
+    updateDisp();
 }
 
 // Address: 0x00a27600 - 0x00a276b4 (180 bytes)
 void uGUIChat::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2280
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    if (this->mIsReqTellState != false) {
-        this->::uGUIChat::enableMenu();
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    if (mIsReqTellState) {
+        enableMenu();
     } else {
-        this->::uGUIChat::execDirectChat();
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->mChat.mIsDefaultBoot == false) {
-            this->mFrmCntNoneCtrl = ::sMain::getInstance()->mDeltaTime + this->mFrmCntNoneCtrl;
-            if (this->mFrmCntNoneCtrl >= this->mFrmNoneCtrl) {
-                this->mFrmCntNoneCtrl = 0.0f;
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateOutToHide);
-                this->::uGUIChat::setButtonGuide(true);
+        execDirectChat();
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->mChat.mIsDefaultBoot) {
+            mFrmCntNoneCtrl = sMain::getInstance()->mDeltaTime + mFrmCntNoneCtrl;
+            if (mFrmCntNoneCtrl >= mFrmNoneCtrl) {
+                mFrmCntNoneCtrl = 0.0f;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateOutToHide);
+                setButtonGuide(true);
             } else {
-                this->::uGUIChat::updateDisp();
+                updateDisp();
             }
         } else {
-            this->::uGUIChat::updateDisp();
+            updateDisp();
         }
     }
 }
@@ -448,9 +449,9 @@ __attribute__((weak)) void uGUIChat::updateWaitAddressCL() {
 // Address: 0x00a27d60 - 0x00a27d9a (58 bytes)
 void uGUIChat::updateWaitLog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::hidePointer(this->::uGUIBase::getBasePointerPriority() + static_cast<u32>(1));
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    this->::uGUIChat::updateDisp();
+    static_cast<sGUIExt*>(sGUI::getInstance())->hidePointer(getBasePointerPriority() + 1u);
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    updateDisp();
 }
 
 // Address: 0x00a29400 - 0x00a295ca (458 bytes)
@@ -464,52 +465,52 @@ __attribute__((weak)) void uGUIChat::updateWaitLogSubCmd() {
 // Address: 0x00a27dc0 - 0x00a27df2 (50 bytes)
 void uGUIChat::updateWaitFilterSubCmd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    this->::uGUIChat::updateDisp();
-    this->mPopWndwChSubCmd.::uGUIChat::cPopWndwChSubCmd::update();
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    updateDisp();
+    mPopWndwChSubCmd.update();
 }
 
 // Address: 0x00a27e00 - 0x00a27e48 (72 bytes)
 void uGUIChat::updateWaitFilterSubCmdDelete() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    this->::uGUIChat::updateDisp();
-    (&this->mPopWndwYoN.mBtnDecide)->update();
-    (&this->mPopWndwYoN.mBtnCancel)->update();
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    updateDisp();
+    (&mPopWndwYoN.mBtnDecide)->update();
+    (&mPopWndwYoN.mBtnCancel)->update();
 }
 
 // Address: 0x00a29790 - 0x00a2981c (140 bytes)
 void uGUIChat::updateOutToHide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    this->::uGUIChat::execDirectChat();
-    this->mAlpha = this->mAlpha + (::sMain::getInstance()->mDeltaTime * (-0.5f));
-    if (0.0f >= this->mAlpha) {
-        this->mAlpha = 0.0f;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
-        this->::uGUIChat::setButtonGuide(true);
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    execDirectChat();
+    mAlpha = mAlpha + (sMain::getInstance()->mDeltaTime * -0.5f);
+    if (0.0f >= mAlpha) {
+        mAlpha = 0.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
+        setButtonGuide(true);
     }
-    this->::uGUIChat::updateDisp();
+    updateDisp();
 }
 
 // Address: 0x00a29a80 - 0x00a29aea (106 bytes)
 void uGUIChat::updateWaitFrame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mWaitFrame > static_cast<s32>(0)) {
-        this->mWaitFrame = this->mWaitFrame - static_cast<s32>(1);
+    if (mWaitFrame > 0) {
+        mWaitFrame = mWaitFrame - 1;
     } else {
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(this->mpNextFunc);
-        this->::uGUIChat::setButtonGuide(true);
-        this->mpNextFunc = static_cast<void(uGUIChat::*)()>(0);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(mpNextFunc);
+        setButtonGuide(true);
+        mpNextFunc = static_cast<void(uGUIChat::*)()>(0);
     }
-    this->::uGUIChat::updateDisp();
+    updateDisp();
 }
 
 // Address: 0x00a29af0 - 0x00a29b11 (33 bytes)
 void uGUIChat::updateDisableMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIChat::disableMenu(true);
-    this->::uGUIChat::updateDisp();
+    disableMenu(true);
+    updateDisp();
 }
 
 // No out-of-line body: no code in the ELF
@@ -518,25 +519,25 @@ void uGUIChat::updateDisableMenu() {
 // Address: 0x00a246a0 - 0x00a2472d (141 bytes)
 u32 uGUIChat::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() == false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isActiveNumBox() == false) {
-            if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mpCtrlMenu->::cControl::getFocus() != false) {
-                    if (msg != static_cast<cControl::Message*>(nullptr)) {
-                        msg->changeSE = static_cast<u32>(5);
+    if (!sKeyboardInterface::getInstance()->isBusy()) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->isActiveNumBox()) {
+            if (mpCtrlMenu != nullptr) {
+                if (mpCtrlMenu->getFocus()) {
+                    if (msg != nullptr) {
+                        msg->changeSE = 5;
                     }
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                    setInputEvent(66u);
                 } else {
-                    if (msg != static_cast<cControl::Message*>(nullptr)) {
-                        msg->changeSE = static_cast<u32>(445);
+                    if (msg != nullptr) {
+                        msg->changeSE = 445;
                     }
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                    setInputEvent(67u);
                 }
             }
-            return static_cast<u32>(1);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a247e0 - 0x00a2481d (61 bytes)
@@ -544,19 +545,19 @@ u32 uGUIChat::evCtrlMenuMoveV(cControl::Message* msg) {
     // DWARF local not rendered: const s32 ctrl_menu_pos;
     // DWARF local not rendered: const u32 input_event;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(1);
+    if (msg != nullptr) {
+        msg->changeSE = 1;
     }
-    if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (this->mpCtrlMenu->::cControl::mCurrentPos != static_cast<s32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if (mpCtrlMenu != nullptr) {
+        if (mpCtrlMenu->mCurrentPos != 0) {
+            setInputEvent(68u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+            setInputEvent(74u);
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+        setInputEvent(74u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a24730 - 0x00a247d7 (167 bytes)
@@ -584,49 +585,49 @@ __attribute__((weak)) u32 uGUIChat::evCtrlMenuDecide(cControl::Message* msg) {
 // Address: 0x00a24870 - 0x00a24891 (33 bytes)
 u32 uGUIChat::evCtrlMenuCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(1);
+    setInputEvent(71u);
+    return 1;
 }
 
 // Address: 0x00a248a0 - 0x00a248d8 (56 bytes)
 u32 uGUIChat::evCtrlMenuTopBtn(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpCtrlMenu->::cControl::mCurrentPos == static_cast<s32>(2)) {
-                msg->changeSE = static_cast<u32>(4);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-                return static_cast<u32>(1);
+    if (msg != nullptr) {
+        if (mpCtrlMenu != nullptr) {
+            if (mpCtrlMenu->mCurrentPos == 2) {
+                msg->changeSE = 4;
+                setInputEvent(72u);
+                return 1;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a248e0 - 0x00a248fe (30 bytes)
 u32 uGUIChat::evCtrlMenuChgWndwSize(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(0);
+    setInputEvent(73u);
+    return 0;
 }
 
 // Address: 0x00a24900 - 0x00a2494a (74 bytes)
 u32 uGUIChat::evCtrlMenuToLog(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrlMenu->setCurrentPos(static_cast<s32>(0), false);
+    if (mpCtrlMenu != nullptr) {
+        mpCtrlMenu->setCurrentPos(0, false);
     }
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
-    return static_cast<u32>(1);
+    setInputEvent(74u);
+    return 1;
 }
 
 // Address: 0x00a24950 - 0x00a24998 (72 bytes)
@@ -638,33 +639,33 @@ __attribute__((weak)) u32 uGUIChat::evCtrlMenuMouseDecide(cControl::Message* msg
 // Address: 0x00a249a0 - 0x00a249f4 (84 bytes)
 u32 uGUIChat::evCtrlMenuMouseSelect(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender->::cControl::getCurrentPos() != msg->pSender->mOldPos) {
-                msg->changeSE = static_cast<u32>(1);
-                if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                    if (this->mpCtrlMenu->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender->getCurrentPos() != msg->pSender->mOldPos) {
+                msg->changeSE = 1;
+                if (mpCtrlMenu != nullptr) {
+                    if (mpCtrlMenu->mCurrentPos != 0) {
+                        setInputEvent(68u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                        setInputEvent(74u);
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                    setInputEvent(74u);
                 }
             }
         }
     } else {
-        if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpCtrlMenu->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+        if (mpCtrlMenu != nullptr) {
+            if (mpCtrlMenu->mCurrentPos != 0) {
+                setInputEvent(68u);
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                setInputEvent(74u);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+            setInputEvent(74u);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a25230 - 0x00a25450 (544 bytes)
@@ -699,14 +700,14 @@ __attribute__((weak)) u32 uGUIChat::evCtrlMenuSpecialKeyMoveFilter(cControl::Mes
 // Address: 0x00a24b30 - 0x00a24b7a (74 bytes)
 u32 uGUIChat::evCtrlFilterToMenu(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlMenu != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrlMenu->setCurrentPos(static_cast<s32>(2), false);
+    if (mpCtrlMenu != nullptr) {
+        mpCtrlMenu->setCurrentPos(2, false);
     }
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(1);
+    if (msg != nullptr) {
+        msg->changeSE = 1;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00a24a20 - 0x00a24b24 (260 bytes)
@@ -726,26 +727,26 @@ __attribute__((weak)) u32 uGUIChat::evCtrlFilterDecide(cControl::Message* msg) {
 // Address: 0x00a24c50 - 0x00a24c75 (37 bytes)
 u32 uGUIChat::evCtrlLogCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg->pSender != static_cast<cControl*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(1);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(79));
-        return static_cast<u32>(1);
+    if (msg->pSender != nullptr) {
+        msg->changeSE = 1;
+        setInputEvent(79u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00a24c80 - 0x00a24cbe (62 bytes)
 u32 uGUIChat::evCtrlLogDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIChat::evCtrlLogDecideCheck() != false) {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(4);
+    if (evCtrlLogDecideCheck()) {
+        if (msg != nullptr) {
+            msg->changeSE = 4;
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(80));
-        return static_cast<u32>(1);
+        setInputEvent(80u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -755,21 +756,21 @@ u32 uGUIChat::evCtrlLogDecide(cControl::Message* msg) {
 // Address: 0x00a24cc0 - 0x00a24cde (30 bytes)
 u32 uGUIChat::evCtrlAddChVlMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+    if (msg != nullptr) {
+        msg->changeSE = 2;
+        setInputEvent(81u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a24ce0 - 0x00a24d01 (33 bytes)
 u32 uGUIChat::evCtrlAddChVlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(82));
-    return static_cast<u32>(1);
+    setInputEvent(82u);
+    return 1;
 }
 
 // Address: 0x00a24d10 - 0x00a24e10 (256 bytes)
@@ -782,66 +783,66 @@ __attribute__((weak)) u32 uGUIChat::evCtrlAddChVlDecide(cControl::Message* msg) 
 // Address: 0x00a24e10 - 0x00a24e72 (98 bytes)
 u32 uGUIChat::evCtrlAddChVlClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlAddChVl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrlAddChVl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpCtrlAddChVl != nullptr) {
+        mpCtrlAddChVl->setCurrentPos(0, false);
     }
-    this->mPopWndwAddCh.mTextBox.::uGUIBase::cReferenceUITextBox::setFocus(true);
-    this->mPopWndwAddCh.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(false);
-    this->mPopWndwAddCh.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus(false);
-    return this->::uGUIChat::evCtrlAddChVlDecide(msg);
+    mPopWndwAddCh.mTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+    mPopWndwAddCh.mBtnDecide.uGUIBase::cReferenceUIButton::setFocus(false);
+    mPopWndwAddCh.mBtnCancel.uGUIBase::cReferenceUIButton::setFocus(false);
+    return evCtrlAddChVlDecide(msg);
 }
 
 // Address: 0x00a24e80 - 0x00a24e9e (30 bytes)
 u32 uGUIChat::evCtrlYoNMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(84));
-    return static_cast<u32>(0);
+    setInputEvent(84u);
+    return 0;
 }
 
 // Address: 0x00a24ea0 - 0x00a24f56 (182 bytes)
 u32 uGUIChat::evCtrlYoNClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlAddChVl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrlAddChVl->setCurrentPos(static_cast<s32>(1), false);
+    if (mpCtrlAddChVl != nullptr) {
+        mpCtrlAddChVl->setCurrentPos(1, false);
     }
-    this->mPopWndwAddCh.mTextBox.::uGUIBase::cReferenceUITextBox::setFocus(false);
-    if (this->mpCtrlYoN != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        if (this->mpCtrlYoN->::cControl::mCurrentPos != static_cast<s32>(0)) {
-            this->mPopWndwAddCh.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(false);
-            this->mPopWndwAddCh.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus(true);
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                msg->changeSE = static_cast<u32>(5);
+    mPopWndwAddCh.mTextBox.uGUIBase::cReferenceUITextBox::setFocus(false);
+    if (mpCtrlYoN != nullptr) {
+        if (mpCtrlYoN->mCurrentPos != 0) {
+            mPopWndwAddCh.mBtnDecide.uGUIBase::cReferenceUIButton::setFocus(false);
+            mPopWndwAddCh.mBtnCancel.uGUIBase::cReferenceUIButton::setFocus(true);
+            if (msg != nullptr) {
+                msg->changeSE = 5;
             }
-            this->::uGUIBase::setInputEvent(static_cast<u32>(82));
-            return static_cast<u32>(1);
+            setInputEvent(82u);
+            return 1;
         }
     }
-    this->mPopWndwAddCh.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(true);
-    this->mPopWndwAddCh.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus(false);
-    return this->::uGUIChat::evCtrlAddChVlDecide(msg);
+    mPopWndwAddCh.mBtnDecide.uGUIBase::cReferenceUIButton::setFocus(true);
+    mPopWndwAddCh.mBtnCancel.uGUIBase::cReferenceUIButton::setFocus(false);
+    return evCtrlAddChVlDecide(msg);
 }
 
 // Address: 0x00a24f60 - 0x00a24f7e (30 bytes)
 u32 uGUIChat::evCtrlAddressMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(85));
+    if (msg != nullptr) {
+        msg->changeSE = 2;
+        setInputEvent(85u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a24f80 - 0x00a24fa1 (33 bytes)
 u32 uGUIChat::evCtrlAddressCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(86));
-    return static_cast<u32>(1);
+    setInputEvent(86u);
+    return 1;
 }
 
 // Address: 0x00a24fb0 - 0x00a24fdf (47 bytes)
@@ -859,55 +860,55 @@ __attribute__((weak)) u32 uGUIChat::evCtrlAddressClick(cControl::Message* msg) {
 // Address: 0x00a25020 - 0x00a2503e (30 bytes)
 u32 uGUIChat::evCtrlFilterSubCmdMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+    if (msg != nullptr) {
+        msg->changeSE = 2;
+        setInputEvent(88u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a25040 - 0x00a25061 (33 bytes)
 u32 uGUIChat::evCtrlFilterSubCmdCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(89));
-    return static_cast<u32>(1);
+    setInputEvent(89u);
+    return 1;
 }
 
 // Address: 0x00a25070 - 0x00a25093 (35 bytes)
 u32 uGUIChat::evCtrlFilterSubCmdDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(90));
-        return static_cast<u32>(1);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
+        setInputEvent(90u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00a250a0 - 0x00a250c3 (35 bytes)
 u32 uGUIChat::evCtrlFilterSubCmdClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(90));
-        return static_cast<u32>(1);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
+        setInputEvent(90u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00a250d0 - 0x00a250ee (30 bytes)
 u32 uGUIChat::evCtrlYoNDelMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(91));
+    if (msg != nullptr) {
+        msg->changeSE = 2;
+        setInputEvent(91u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00a25120 - 0x00a25158 (56 bytes)
@@ -919,11 +920,11 @@ __attribute__((weak)) u32 uGUIChat::evCtrlYoNDelDecide(cControl::Message* msg) {
 // Address: 0x00a250f0 - 0x00a25111 (33 bytes)
 u32 uGUIChat::evCtrlYoNDelCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(93));
-    return static_cast<u32>(1);
+    setInputEvent(93u);
+    return 1;
 }
 
 // Address: 0x00a25160 - 0x00a251ec (140 bytes)
@@ -931,49 +932,49 @@ u32 uGUIChat::evCtrlYoNDelClick(cControl::Message* msg) {
     // DWARF local not rendered: const bool isSelectDecide;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc18 from uGUIBase::cHorizontalList*
-    if (this->mpCtrlYoNDel != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    if (mpCtrlYoNDel != nullptr) {
         // inferred: a temporary for the value the load at 0xa2517e read, used twice; no DWARF local holds it
-        s32 t0 = this->mpCtrlYoNDel->::cControl::mCurrentPos;
-        this->mPopWndwYoN.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(t0 == static_cast<s32>(0));
-        this->mPopWndwYoN.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus((t0 == static_cast<s32>(0)) == false);
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            if (this->mpCtrlFilter != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrlFilter) + static_cast<long>(3096))) > static_cast<unsigned int>(1)) {
-                    msg->changeSE = static_cast<u32>(4);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
-                    return static_cast<u32>(1);
+        s32 t0 = mpCtrlYoNDel->mCurrentPos;
+        mPopWndwYoN.mBtnDecide.uGUIBase::cReferenceUIButton::setFocus(t0 == 0);
+        mPopWndwYoN.mBtnCancel.uGUIBase::cReferenceUIButton::setFocus(!(t0 == 0));
+        if (msg != nullptr) {
+            if (mpCtrlFilter != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpCtrlFilter) + 3096)) > 1u) {
+                    msg->changeSE = 4;
+                    setInputEvent(92u);
+                    return 1;
                 }
             }
         }
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        this->mPopWndwYoN.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(true);
-        this->mPopWndwYoN.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus(false);
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            if (this->mpCtrlFilter != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrlFilter) + static_cast<long>(3096))) > static_cast<unsigned int>(1)) {
-                    msg->changeSE = static_cast<u32>(4);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
-                    return static_cast<u32>(1);
+        mPopWndwYoN.mBtnDecide.uGUIBase::cReferenceUIButton::setFocus(true);
+        mPopWndwYoN.mBtnCancel.uGUIBase::cReferenceUIButton::setFocus(false);
+        if (msg != nullptr) {
+            if (mpCtrlFilter != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpCtrlFilter) + 3096)) > 1u) {
+                    msg->changeSE = 4;
+                    setInputEvent(92u);
+                    return 1;
                 }
             }
         }
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00a251f0 - 0x00a25205 (21 bytes)
 u32 uGUIChat::evCtrlFormLDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(94));
-    return static_cast<u32>(1);
+    setInputEvent(94u);
+    return 1;
 }
 
 // Address: 0x00a25210 - 0x00a25225 (21 bytes)
 u32 uGUIChat::evCtrlFormLCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(95));
-    return static_cast<u32>(1);
+    setInputEvent(95u);
+    return 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (51 bytes)
@@ -1148,8 +1149,10 @@ __attribute__((weak)) void uGUIChat::evFilterDecide() {
 // Address: 0x00a2a6f0 - 0x00a2a6f5 (5 bytes)
 bool uGUIChat::onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUIBase::onKeyEvent(keycode);
+    return this->uGUIBase::onKeyEvent(keycode);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::MyDTI uGUIChat::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b56e-0x00a2b5ab (called at uGUIChat.cpp:184)
@@ -1185,7 +1188,7 @@ const MtDTI& uGUIChat::cWindow::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIChat::cWindow::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cWindow::DTI)->memAlloc(sz, align, ::uGUIChat::cWindow::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cWindow::DTI)->memAlloc(sz, align, uGUIChat::cWindow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1199,7 +1202,7 @@ inline void* uGUIChat::cWindow::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cWindow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cWindow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cWindow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1261,6 +1264,8 @@ __attribute__((weak)) void uGUIChat::cWindow::setWindowSizeH(bool isLarge, bool 
 //   in uGUIChat::moveInput at 0x00a2718f-0x00a271b6 (called at uGUIChat.cpp:999)
 // void uGUIChat::cWindow::clearMouseTouchListFlg(cControl* pCtrl, u32 uFlag);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cWindow::MyDTI uGUIChat::cWindow::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b5ab-0x00a2b5eb (called at uGUIChat.cpp:185)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b5ab-0x00a2b5eb (called at uGUIChat.h:140)
@@ -1269,7 +1274,7 @@ __attribute__((weak)) void uGUIChat::cWindow::setWindowSizeH(bool isLarge, bool 
 // Address: 0x00a1feb0 - 0x00a1ff84 (212 bytes)
 MtObject* uGUIChat::cWindow::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIChat::cWindow;
+    return new (16u) uGUIChat::cWindow;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1295,7 +1300,7 @@ const MtDTI& uGUIChat::cPopWndwChSubCmd::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIChat::cPopWndwChSubCmd::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwChSubCmd::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwChSubCmd::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwChSubCmd::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwChSubCmd::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1309,7 +1314,7 @@ inline void* uGUIChat::cPopWndwChSubCmd::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cPopWndwChSubCmd::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwChSubCmd::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwChSubCmd::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1355,10 +1360,29 @@ __attribute__((weak)) void uGUIChat::cPopWndwChSubCmd::setup() {
 // void uGUIChat::cPopWndwChSubCmd::addList(MT_CTSTR pMsg);
 
 // Address: 0x00a24140 - 0x00a24209 (201 bytes)
-__attribute__((weak)) void uGUIChat::cPopWndwChSubCmd::clearList() {
-    // local: u32 i;
-    DDON_STUB("uGUIChat::cPopWndwChSubCmd::clearList")
-    /* stub */
+void uGUIChat::cPopWndwChSubCmd::clearList() {
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpParentGUI == nullptr) {
+        return;
+    }
+    if (mpInstMsg[0] != nullptr) {
+        mpInstMsg[0]->cGUIInstance::setVisible(false);
+        mpParentGUI->setObjectMessage(static_cast<cGUIObject*>(mpObjMsg[0]), "", 0u, false);
+    }
+    if (mpInstMsg[1] != nullptr) {
+        mpInstMsg[1]->cGUIInstance::setVisible(false);
+        mpParentGUI->setObjectMessage(static_cast<cGUIObject*>(mpObjMsg[1]), "", 0u, false);
+    }
+    if (mpInstMsg[2] != nullptr) {
+        mpInstMsg[2]->cGUIInstance::setVisible(false);
+        mpParentGUI->setObjectMessage(static_cast<cGUIObject*>(mpObjMsg[2]), "", 0u, false);
+    }
+    if (mpInstMsg[3] != nullptr) {
+        mpInstMsg[3]->cGUIInstance::setVisible(false);
+        mpParentGUI->setObjectMessage(static_cast<cGUIObject*>(mpObjMsg[3]), "", 0u, false);
+    }
+    mListCount = 0;
 }
 
 // Address: 0x00a2a0e0 - 0x00a2a361 (641 bytes)
@@ -1390,6 +1414,8 @@ __attribute__((weak)) void uGUIChat::cPopWndwChSubCmd::update() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cPopWndwChSubCmd::MyDTI uGUIChat::cPopWndwChSubCmd::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b5eb-0x00a2b624 (called at uGUIChat.cpp:186)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b5eb-0x00a2b624 (called at uGUIChat.h:192)
@@ -1398,7 +1424,7 @@ __attribute__((weak)) void uGUIChat::cPopWndwChSubCmd::update() {
 // Address: 0x00a20000 - 0x00a200d6 (214 bytes)
 MtObject* uGUIChat::cPopWndwChSubCmd::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIChat::cPopWndwChSubCmd;
+    return new (16u) uGUIChat::cPopWndwChSubCmd;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1424,7 +1450,7 @@ const MtDTI& uGUIChat::cPopWndwAddress::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* uGUIChat::cPopWndwAddress::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddress::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwAddress::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddress::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwAddress::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1438,7 +1464,7 @@ inline void* uGUIChat::cPopWndwAddress::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cPopWndwAddress::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddress::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddress::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1453,8 +1479,8 @@ inline void uGUIChat::cPopWndwAddress::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline uGUIChat::cPopWndwAddress::cPopWndwAddress() {
-    this->mCursorWidth = 0.0f;
-    ::memset(static_cast<void*>(&this->mpParentGUI), static_cast<int>(0), static_cast<size_t>(304));
+    mCursorWidth = 0.0f;
+    memset(static_cast<void*>(&mpParentGUI), 0, 304ul);
 }
 
 // Defined in the class (its body was written in a header).
@@ -1495,6 +1521,8 @@ __attribute__((weak)) void uGUIChat::cPopWndwAddress::setupList(cGUIInstance* pI
 //   in uGUIChat::updateWaitAddress at 0x00a27c72-0x00a27d21 (called at uGUIChat.cpp:1803)
 // void uGUIChat::cPopWndwAddress::update();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cPopWndwAddress::MyDTI uGUIChat::cPopWndwAddress::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b624-0x00a2b65d (called at uGUIChat.cpp:187)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b624-0x00a2b65d (called at uGUIChat.h:225)
@@ -1503,7 +1531,7 @@ __attribute__((weak)) void uGUIChat::cPopWndwAddress::setupList(cGUIInstance* pI
 // Address: 0x00a20150 - 0x00a201c8 (120 bytes)
 MtObject* uGUIChat::cPopWndwAddress::MyDTI::newInstance() const {
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::uGUIChat::cPopWndwAddress;
+    return new (16u) uGUIChat::cPopWndwAddress;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1529,7 +1557,7 @@ const MtDTI& uGUIChat::cPopWndwYoN::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIChat::cPopWndwYoN::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwYoN::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwYoN::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwYoN::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwYoN::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1543,7 +1571,7 @@ inline void* uGUIChat::cPopWndwYoN::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cPopWndwYoN::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwYoN::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwYoN::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1569,6 +1597,8 @@ inline void uGUIChat::cPopWndwYoN::operator delete(void* p_addr) {
 //   in uGUIChat::updateDisp at 0x00a2684a-0x00a26861 (called at uGUIChat.cpp:3597)
 // void uGUIChat::cPopWndwYoN::setVisible(bool bVisible);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cPopWndwYoN::MyDTI uGUIChat::cPopWndwYoN::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b65d-0x00a2b696 (called at uGUIChat.cpp:188)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b65d-0x00a2b696 (called at uGUIChat.h:275)
@@ -1577,7 +1607,7 @@ inline void uGUIChat::cPopWndwYoN::operator delete(void* p_addr) {
 // Address: 0x00a20240 - 0x00a202ab (107 bytes)
 MtObject* uGUIChat::cPopWndwYoN::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIChat::cPopWndwYoN;
+    return new (16u) uGUIChat::cPopWndwYoN;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1603,7 +1633,7 @@ const MtDTI& uGUIChat::cPopWndwAddCh::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddCh::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwAddCh::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddCh::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwAddCh::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1618,7 +1648,7 @@ inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIChat::cPopWndwAddCh::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddCh::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddCh::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1647,6 +1677,8 @@ uGUIChat::cPopWndwAddCh::~cPopWndwAddCh() {
 //   in uGUIChat::updateDisp at 0x00a268c0-0x00a268d9 (called at uGUIChat.cpp:3608)
 // void uGUIChat::cPopWndwAddCh::setVisible(bool bVisible);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cPopWndwAddCh::MyDTI uGUIChat::cPopWndwAddCh::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b696-0x00a2b6cf (called at uGUIChat.cpp:189)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b696-0x00a2b6cf (called at uGUIChat.h:254)
@@ -1655,7 +1687,7 @@ uGUIChat::cPopWndwAddCh::~cPopWndwAddCh() {
 // Address: 0x00a20320 - 0x00a203a3 (131 bytes)
 MtObject* uGUIChat::cPopWndwAddCh::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIChat::cPopWndwAddCh;
+    return new (16u) uGUIChat::cPopWndwAddCh;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1681,7 +1713,7 @@ const MtDTI& uGUIChat::cCheckList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uGUIChat::cCheckList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cCheckList::DTI)->memAlloc(sz, align, ::uGUIChat::cCheckList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIChat::cCheckList::DTI)->memAlloc(sz, align, uGUIChat::cCheckList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1696,7 +1728,7 @@ inline void* uGUIChat::cCheckList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIChat::cCheckList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cCheckList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cCheckList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1742,6 +1774,8 @@ __attribute__((weak)) void uGUIChat::cCheckList::setWindowSize(uGUIBase::cAdjust
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cCheckList::MyDTI uGUIChat::cCheckList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b6cf-0x00a2b70c (called at uGUIChat.cpp:190)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b6cf-0x00a2b70c (called at uGUIChat.h:311)
@@ -1750,7 +1784,7 @@ __attribute__((weak)) void uGUIChat::cCheckList::setWindowSize(uGUIBase::cAdjust
 // Address: 0x00a20420 - 0x00a2046e (78 bytes)
 MtObject* uGUIChat::cCheckList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIChat::cCheckList;
+    return new (16u) uGUIChat::cCheckList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1791,7 +1825,7 @@ const MtDTI& uGUIChat::cLogItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cLogItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cLogItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cLogItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1812,11 +1846,33 @@ inline void uGUIChat::cLogItem::operator delete(void* p_addr) {
 // uGUIChat::cLogItem::~cLogItem();
 
 // Address: 0x00a23ba0 - 0x00a23c64 (196 bytes)
-__attribute__((weak)) void uGUIChat::cLogItem::setup(uGUIChat& owner, cGUIInstNull* inst_null_log_item) {
-    // local: cGUIInstNull* inst_copy;
-    // local: cGUIInstAnimation* inst_msg_log_item;
-    DDON_STUB("uGUIChat::cLogItem::setup")
-    /* stub */
+void uGUIChat::cLogItem::setup(uGUIChat& owner, cGUIInstNull* inst_null_log_item) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (inst_null_log_item == nullptr) {
+        return;
+    }
+    cGUIInstNull* inst_copy = static_cast<cGUIInstNull*>(owner.ManageDuplicate(static_cast<cGUIInstance*>(inst_null_log_item), inst_null_log_item->getParent()));
+    if (inst_copy == nullptr) {
+        return;
+    }
+    mpINST_Null_log_item = inst_copy;
+    cGUIInstAnimation* inst_msg_log_item = static_cast<cGUIInstAnimation*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(429u));
+    if (inst_msg_log_item != nullptr) {
+        mpINST_msg_log_item = inst_msg_log_item;
+        mpOBJ_msg_id_m_id = static_cast<cGUIObjMessage*>(owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_log_item), 94u));
+        // inferred: a temporary for the result of the call at 0xa23c14, used twice; no DWARF local holds it
+        cGUIObject* t0 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_log_item), 11u);
+        mpOBJ_msg_id_mouseover = static_cast<cGUIObjPolygon*>(t0);
+        mpInstMouseCollision = static_cast<cGUIInstance*>(inst_msg_log_item);
+        mpObjMouseCollision = t0;
+        inst_msg_log_item->cGUIInstance::setVisible(true);
+        inst_msg_log_item->cGUIInstance::setExecute(true);
+        inst_copy->cGUIInstance::setVisible(false);
+        inst_copy->cGUIInstance::setExecute(false);
+    } else {
+        inst_copy->cGUIInstance::setVisible(false);
+        inst_copy->cGUIInstance::setExecute(false);
+    }
 }
 
 // Address: 0x00a2b220 - 0x00a2b35b (315 bytes)
@@ -1833,6 +1889,8 @@ __attribute__((weak)) void uGUIChat::cLogItem::show(uGUIChat& owner, uGUIChat::c
 
 // No out-of-line body: no code in the ELF
 // const uGUIChat::LogCursorInfo& uGUIChat::cLogItem::refCursorInfo() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cLogItem::MyDTI uGUIChat::cLogItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b749-0x00a2b786 (called at uGUIChat.cpp:5634)
@@ -1880,7 +1938,7 @@ const MtDTI& uGUIChat::cLogInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIChat::cLogInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChat::cLogInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChat::cLogInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1928,6 +1986,8 @@ inline void uGUIChat::cLogInfo::operator delete(void* p_addr) {
 //   in uGUIChat::updateDisp at 0x00a25f08-0x00a25f14 (called at uGUIChat.cpp:5858)
 //   in uGUIChat::updateDisp at 0x00a2623c-0x00a26252 (called at uGUIChat.cpp:3255)
 // void uGUIChat::cLogInfo::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChat::cLogInfo::MyDTI uGUIChat::cLogInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIChat.cpp at 0x00a2b70c-0x00a2b749 (called at uGUIChat.cpp:5525)

@@ -36,7 +36,7 @@ const MtDTI& cGUIDogmaOrbRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cGUIDogmaOrbRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cGUIDogmaOrbRes::DTI)->memAlloc(sz, align, ::cGUIDogmaOrbRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cGUIDogmaOrbRes::DTI)->memAlloc(sz, align, cGUIDogmaOrbRes::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cGUIDogmaOrbRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cGUIDogmaOrbRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIDogmaOrbRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIDogmaOrbRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -77,6 +77,8 @@ cGUIDogmaOrbRes::~cGUIDogmaOrbRes() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIDogmaOrbRes::MyDTI cGUIDogmaOrbRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rGUIDogmaOrb.cpp at 0x0067bed0-0x0067bf12 (called at rGUIDogmaOrb.cpp:21)
 //   in _GLOBAL__sub_I_rGUIDogmaOrb.cpp at 0x0067bed0-0x0067bf12 (called at rGUIDogmaOrb.h:38)
@@ -85,7 +87,7 @@ cGUIDogmaOrbRes::~cGUIDogmaOrbRes() {
 // Address: 0x0067bc60 - 0x0067bcb8 (88 bytes)
 MtObject* cGUIDogmaOrbRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cGUIDogmaOrbRes;
+    return new (16u) cGUIDogmaOrbRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -110,7 +112,7 @@ const MtDTI& rGUIDogmaOrb::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rGUIDogmaOrb::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rGUIDogmaOrb::DTI)->memAlloc(sz, align, ::rGUIDogmaOrb::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rGUIDogmaOrb::DTI)->memAlloc(sz, align, rGUIDogmaOrb::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,7 +127,7 @@ inline void* rGUIDogmaOrb::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rGUIDogmaOrbD0Ev at 0x01a92b94-0x01a92bb3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGUIDogmaOrb::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGUIDogmaOrb::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIDogmaOrb::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,22 +144,22 @@ bool rGUIDogmaOrb::loadData(MtDataReader& Reader, cGUIDogmaOrbRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mElementId);
+    nDDOIO::readData(Reader, pData->mElementId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mParamType);
+    nDDOIO::readData(Reader, pData->mParamType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mParamId);
+    nDDOIO::readData(Reader, pData->mParamId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mParamValue);
+    nDDOIO::readData(Reader, pData->mParamValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mRequireOrb);
+    nDDOIO::readData(Reader, pData->mRequireOrb);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(Reader, pData->mIconNo);
+    nDDOIO::readData(Reader, pData->mIconNo);
     return true;
 }
 
@@ -170,8 +172,10 @@ MT_CTSTR rGUIDogmaOrb::getExt() const {
 // Address: 0x01a92ce0 - 0x01a92ce6 (6 bytes)
 u32 rGUIDogmaOrb::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGUIDogmaOrb::MyDTI rGUIDogmaOrb::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rGUIDogmaOrb.cpp at 0x0067bf12-0x0067bf4f (called at rGUIDogmaOrb.cpp:22)
@@ -181,7 +185,7 @@ u32 rGUIDogmaOrb::getDataVersion() const {
 // Address: 0x0067bd30 - 0x0067bd94 (100 bytes)
 MtObject* rGUIDogmaOrb::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rGUIDogmaOrb;
+    return new (16u) rGUIDogmaOrb;
 }
 
 // Instance at 0x01a92c90 - 0x01a92ca2 (18 bytes) of the generic rTbl2<T>::getData

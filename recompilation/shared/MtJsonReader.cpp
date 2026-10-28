@@ -53,7 +53,7 @@ __attribute__((weak)) bool MtJsonReader::parse(MtJsonReader::Handler& handler) {
 // Address: 0x00d5b5f0 - 0x00d5b603 (19 bytes)
 MtJsonReader::Handler::Handler() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mError = false;
+    mError = false;
 }
 
 // Address: 0x00d5b610 - 0x00d5b611 (1 bytes)
@@ -125,7 +125,7 @@ __attribute__((weak)) void MtJsonReader::Handler::nullValue() {
 // Address: 0x00d5b670 - 0x00d5b675 (5 bytes)
 void MtJsonReader::Handler::error(MT_CTSTR error) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mError = true;
+    mError = true;
 }
 
 // No out-of-line body: no code in the ELF

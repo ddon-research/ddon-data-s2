@@ -47,7 +47,7 @@ const MtDTI& uGUIGPShop::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGPShop::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGPShop::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGPShop::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline MtAllocator* uGUIGPShop::getAllocator() {
 // Address: 0x00aa31a0 - 0x00aa31e0 (64 bytes)
 void* uGUIGPShop::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGPShop::getAllocator()->memAlloc(sz, align, ::uGUIGPShop::DTI.::MtDTI::getID());
+    return uGUIGPShop::getAllocator()->memAlloc(sz, align, uGUIGPShop::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ void* uGUIGPShop::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGPShop::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,29 +87,29 @@ inline void uGUIGPShop::operator delete(void* p_addr) {
 void uGUIGPShop::setStartType(uGUIGPShop::SHOPMENU_TYPE Type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (Type) {
-        case static_cast<uGUIGPShop::SHOPMENU_TYPE>(0):
+        case SHOPMENU_CHARGE:
         {
-            this->mType = static_cast<u32>(1);
+            mType = 1;
             break;
         }
-        case static_cast<uGUIGPShop::SHOPMENU_TYPE>(1):
+        case SHOPMENU_USED:
         {
-            this->mType = static_cast<u32>(2);
+            mType = 2;
             break;
         }
-        case static_cast<uGUIGPShop::SHOPMENU_TYPE>(2):
+        case SHOPMENU_VOICE_PICKUP:
         {
-            this->mType = static_cast<u32>(0);
+            mType = 0;
             break;
         }
-        case static_cast<uGUIGPShop::SHOPMENU_TYPE>(3):
+        case SHOPMENU_VOICE_MAN:
         {
-            this->mType = static_cast<u32>(0);
+            mType = 0;
             break;
         }
-        case static_cast<uGUIGPShop::SHOPMENU_TYPE>(4):
+        case SHOPMENU_VOICE_WOMAN:
         {
-            this->mType = static_cast<u32>(0);
+            mType = 0;
             break;
         }
         default:
@@ -149,11 +149,11 @@ uGUIGPShop::~uGUIGPShop() {
 // Address: 0x00aa7bf0 - 0x00aa7c9f (175 bytes)
 bool uGUIGPShop::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOP_GUI"), static_cast<u32>(129), static_cast<t64>(1473837398)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_GUI"), 129u, 1473837398l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -165,9 +165,9 @@ bool uGUIGPShop::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPSHOP_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -181,23 +181,23 @@ bool uGUIGPShop::loadResource() {
 // Address: 0x00aa7ca0 - 0x00aa7d0d (109 bytes)
 void uGUIGPShop::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGPDialog != static_cast<uGUIGPShopDialog*>(nullptr)) {
-        if (this->mpGPDialog->::cUnit::isEnable() == false) {
-            this->mpGPDialog = static_cast<uGUIGPShopDialog*>(nullptr);
+    if (mpGPDialog != nullptr) {
+        if (!mpGPDialog->isEnable()) {
+            mpGPDialog = nullptr;
         }
     }
-    if (this->mpGPConfirm != static_cast<uGUIGPConfirm*>(nullptr)) {
-        if (this->mpGPConfirm->::cUnit::isEnable() == false) {
-            this->mpGPConfirm = static_cast<uGUIGPConfirm*>(nullptr);
+    if (mpGPConfirm != nullptr) {
+        if (!mpGPConfirm->isEnable()) {
+            mpGPConfirm = nullptr;
         }
     }
-    if (this->mpDialog == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpDialog == nullptr) {
         return;
     }
-    if (this->mpDialog->::cUnit::isEnable() != false) {
+    if (mpDialog->isEnable()) {
         return;
     }
-    this->mpDialog = static_cast<uGUISystemMsg*>(nullptr);
+    mpDialog = nullptr;
 }
 
 // Address: 0x00aa7d10 - 0x00aa7e95 (389 bytes)
@@ -209,64 +209,57 @@ __attribute__((weak)) void uGUIGPShop::setup() {
 // Address: 0x00aac190 - 0x00aac2ac (284 bytes)
 void uGUIGPShop::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHoldBrowserType = static_cast<u32>(1);
-    this->mReqBrowserType = static_cast<u32>(0);
-    if (this->mpGPConfirm != static_cast<uGUIGPConfirm*>(nullptr)) {
-    } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::endBrowser();
+    mHoldBrowserType = 1;
+    mReqBrowserType = 0;
+    if (mpGPConfirm == nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
     }
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-    } else {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-    } else {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpGPDialog == static_cast<uGUIGPShopDialog*>(nullptr)) {
-    } else {
-        this->mpGPDialog->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpGPDialog->end();
+    if (mpGPDialog != nullptr) {
+        mpGPDialog->mEndType = 0;
+        mpGPDialog->end();
     }
-    this->mpGPDialog = static_cast<uGUIGPShopDialog*>(nullptr);
-    if (this->mpGPConfirm == static_cast<uGUIGPConfirm*>(nullptr)) {
-    } else {
-        this->mpGPConfirm->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpGPConfirm->end();
+    mpGPDialog = nullptr;
+    if (mpGPConfirm != nullptr) {
+        mpGPConfirm->mEndType = 0;
+        mpGPConfirm->end();
     }
-    this->mpGPConfirm = static_cast<uGUIGPConfirm*>(nullptr);
-    if (this->mpDialog == static_cast<uGUISystemMsg*>(nullptr)) {
-    } else {
-        this->mpDialog->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpDialog->end();
+    mpGPConfirm = nullptr;
+    if (mpDialog != nullptr) {
+        mpDialog->mEndType = 0;
+        mpDialog->end();
     }
-    this->mpDialog = static_cast<uGUISystemMsg*>(nullptr);
-    if (this->mpDialog2 == static_cast<uGUISystemMsg*>(nullptr)) {
-    } else {
-        this->mpDialog2->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpDialog2->end();
+    mpDialog = nullptr;
+    if (mpDialog2 != nullptr) {
+        mpDialog2->mEndType = 0;
+        mpDialog2->end();
     }
-    this->mpDialog2 = static_cast<uGUISystemMsg*>(nullptr);
+    mpDialog2 = nullptr;
 }
 
 // Address: 0x00aac2b0 - 0x00aac31f (111 bytes)
 void uGUIGPShop::adjustScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::adjustScale();
-    if (this->mpGPConfirm != static_cast<uGUIGPConfirm*>(nullptr)) {
+    this->uGUIBase::adjustScale();
+    if (mpGPConfirm != nullptr) {
         return;
     }
-    if (this->mpGPDialog != static_cast<uGUIGPShopDialog*>(nullptr)) {
+    if (mpGPDialog != nullptr) {
         return;
     }
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isExecBrowser() == false) {
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isExecBrowser()) {
         return;
     }
-    f32 scale = this->getScaleForDefaultResolution(1.0f);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setBrowserPos(this->mBrowserPos.x * scale, this->mBrowserPos.y * scale);
+    f32 scale = getScaleForDefaultResolution(1.0f);
+    static_cast<sGUIExt*>(sGUI::getInstance())->setBrowserPos(mBrowserPos.x * scale, mBrowserPos.y * scale);
 }
 
 // Address: 0x00aac320 - 0x00aac4c0 (416 bytes)
@@ -284,8 +277,8 @@ __attribute__((weak)) void uGUIGPShop::moveEvent() {
 // Address: 0x00aafda0 - 0x00aafdc3 (35 bytes)
 void uGUIGPShop::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    this->::uGUIGPShop::updateGP();
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    updateGP();
 }
 
 // Address: 0x00aafde0 - 0x00aaff16 (310 bytes)
@@ -293,50 +286,50 @@ void uGUIGPShop::updateShop() {
     // DWARF local not rendered: s32 idx;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x850 from uGUIGPShop*
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    this->::uGUIGPShop::updateGP();
-    this->::uGUIGPShop::manageExecBrowser();
-    if (this->mIsBrowserLowPriority != false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    updateGP();
+    manageExecBrowser();
+    if (mIsBrowserLowPriority) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
         } else {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLowPriorityBrowser();
+            static_cast<sGUIExt*>(sGUI::getInstance())->setLowPriorityBrowser();
         }
     } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+        static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
     }
-    this->mShopMenuCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mShopScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2128))) != static_cast<unsigned long>(0)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqDispCommIndicator();
+    mShopMenuCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mShopScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) != 0) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->reqDispCommIndicator();
     }
-    if (this->mMode != static_cast<u32>(1)) {
-        if (this->mMode == static_cast<u32>(0)) {
-            this->::uGUIGPShop::updateShopMenuPointer();
+    if (mMode != 1) {
+        if (mMode == 0) {
+            updateShopMenuPointer();
             return;
         }
     } else {
         // inferred: the value the loop at 0xaafea0 carries; no location-less local in scope fits
-        s32 v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(4));
+        s32 v0_0 = mShopControl.getCurrentPos(4u);
         // inferred: the counter this loop steps; no location-less local in scope fits
-        int i0_1 = static_cast<int>(0);
+        int i0_1 = 0;
         // inferred: the value the loop at 0xaafea0 carries; no location-less local in scope fits
-        for (s32* v0_2 = &this->mShopItem[0].mIndex;;) {
+        for (s32* v0_2 = &mShopItem[0].mIndex;;) {
             if ((*v0_2) == v0_0) {
-                if (i0_1 > static_cast<int>(-1)) {
-                    if (this->mShopCursorX == static_cast<s32>(1)) {
-                        this->::uGUIGPShop::setPointerPos(static_cast<cGUIObject*>(this->mShopItem[i0_1].mInst.pDetailPointerPos), ::MtVector2::Zero);
+                if (i0_1 > -1) {
+                    if (mShopCursorX == 1) {
+                        setPointerPos(static_cast<cGUIObject*>(mShopItem[i0_1].mInst.pDetailPointerPos), MtVector2::Zero);
                     } else {
-                        if (this->mShopCursorX == static_cast<s32>(0)) {
-                            this->::uGUIGPShop::setPointerPos(static_cast<cGUIObject*>(this->mShopItem[i0_1].mInst.pBuyPointerPos), ::MtVector2::Zero);
+                        if (mShopCursorX == 0) {
+                            setPointerPos(static_cast<cGUIObject*>(mShopItem[i0_1].mInst.pBuyPointerPos), MtVector2::Zero);
                         }
                     }
                 }
                 return;
             } else {
-                if ((i0_1 + static_cast<int>(1)) <= static_cast<int>(8)) {
-                    i0_1 = i0_1 + static_cast<int>(1);
-                    v0_2 += static_cast<int>(54);
+                if ((i0_1 + 1) <= 8) {
+                    i0_1 = i0_1 + 1;
+                    v0_2 += 54;
                 } else {
                     break;
                 }
@@ -349,44 +342,44 @@ void uGUIGPShop::updateShop() {
 void uGUIGPShop::updateCharge() {
     // DWARF local not rendered: s32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    this->::uGUIGPShop::updateGP();
-    this->::uGUIGPShop::manageExecBrowser();
-    if (this->mIsBrowserLowPriority != false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    updateGP();
+    manageExecBrowser();
+    if (mIsBrowserLowPriority) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
         } else {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLowPriorityBrowser();
+            static_cast<sGUIExt*>(sGUI::getInstance())->setLowPriorityBrowser();
         }
     } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+        static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
     }
-    this->mShopMenuCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mChargeScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    if (this->mMode != static_cast<u32>(1)) {
-        if (this->mMode == static_cast<u32>(0)) {
-            this->::uGUIGPShop::updateShopMenuPointer();
+    mShopMenuCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mChargeScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
+    if (mMode != 1) {
+        if (mMode == 0) {
+            updateShopMenuPointer();
         }
         return;
     } else {
-        if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5)) != static_cast<s32>(0)) {
+        if (mShopControl.getCurrentPos(5u) != 0) {
             // inferred: the value the loop at 0xab0230 carries; no location-less local in scope fits
-            s32 v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(7));
+            s32 v0_0 = mShopControl.getCurrentPos(7u);
             // inferred: the counter this loop steps; no location-less local in scope fits
-            int i0_1 = static_cast<int>(0);
+            int i0_1 = 0;
             // inferred: the value the loop at 0xab0230 carries; no location-less local in scope fits
-            for (s32* v0_2 = &this->mChargeItem[0].mIndex;;) {
+            for (s32* v0_2 = &mChargeItem[0].mIndex;;) {
                 if ((*v0_2) == v0_0) {
-                    if (i0_1 > static_cast<int>(-1)) {
-                        this->::uGUIGPShop::setPointerPos(static_cast<cGUIObject*>(this->mChargeItem[i0_1].mInst.pBuyPointerPos), ::MtVector2::Zero);
+                    if (i0_1 > -1) {
+                        setPointerPos(static_cast<cGUIObject*>(mChargeItem[i0_1].mInst.pBuyPointerPos), MtVector2::Zero);
                         return;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i0_1 + static_cast<int>(1)) <= static_cast<int>(6)) {
-                        i0_1 = i0_1 + static_cast<int>(1);
-                        v0_2 += static_cast<int>(54);
+                    if ((i0_1 + 1) <= 6) {
+                        i0_1 = i0_1 + 1;
+                        v0_2 += 54;
                     } else {
                         break;
                     }
@@ -394,7 +387,7 @@ void uGUIGPShop::updateCharge() {
             }
         }
     }
-    this->::uGUIGPShop::setPointerPos(static_cast<cGUIObject*>(this->mpCAPChargePointerPos), ::MtVector2::Zero);
+    setPointerPos(static_cast<cGUIObject*>(mpCAPChargePointerPos), MtVector2::Zero);
 }
 
 // Address: 0x00ab02a0 - 0x00ab040a (362 bytes)
@@ -414,21 +407,21 @@ __attribute__((weak)) void uGUIGPShop::updateNoUse() {
 // Address: 0x00ab0690 - 0x00ab0714 (132 bytes)
 void uGUIGPShop::updateHistory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    this->::uGUIGPShop::updateGP();
-    this->::uGUIGPShop::manageExecBrowser();
-    if (this->mIsBrowserLowPriority != false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    updateGP();
+    manageExecBrowser();
+    if (mIsBrowserLowPriority) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
         } else {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLowPriorityBrowser();
+            static_cast<sGUIExt*>(sGUI::getInstance())->setLowPriorityBrowser();
         }
     } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+        static_cast<sGUIExt*>(sGUI::getInstance())->resetPriorityBrowser();
     }
-    this->mStatusMenuCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mHistoryScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    this->::uGUIGPShop::updateStatusMenuPointer();
+    mStatusMenuCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mHistoryScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
+    updateStatusMenuPointer();
 }
 
 // No out-of-line body: no code in the ELF
@@ -577,10 +570,10 @@ __attribute__((weak)) void uGUIGPShop::initCallBack4() {
 // Address: 0x00ab3950 - 0x00ab3987 (55 bytes)
 void uGUIGPShop::initCallBack5() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCOGId != static_cast<cGUIObjMessage*>(nullptr)) {
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpCOGId), "", static_cast<u32>(0), false);
+    if (mpCOGId != nullptr) {
+        setObjectMessage(static_cast<cGUIObject*>(mpCOGId), "", 0u, false);
     }
-    this->::uGUIGPShop::startType();
+    startType();
 }
 
 // Address: 0x00ab3990 - 0x00ab3c6a (730 bytes)
@@ -604,34 +597,34 @@ __attribute__((weak)) void uGUIGPShop::urlCallBack() {
 // Address: 0x00ab09d0 - 0x00ab0a4b (123 bytes)
 void uGUIGPShop::chargeCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsChargeRequest = true;
-    this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(5), static_cast<s32>(1));
-    this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(7), static_cast<s32>(0));
-    this->::uGUIGPShop::setupCharge();
-    if (this->mType != static_cast<u32>(1)) {
+    mIsChargeRequest = true;
+    mShopControl.setCurrentPos(5u, 1);
+    mShopControl.setCurrentPos(7u, 0);
+    setupCharge();
+    if (mType != 1) {
         return;
     }
-    this->::uGUIGPShop::updateChargeCursor(false);
-    if (this->mpNoList == static_cast<cGUIInstAnimation*>(nullptr)) {
+    updateChargeCursor(false);
+    if (mpNoList == nullptr) {
         return;
     }
-    this->mpNoList->::cGUIInstance::setVisible(this->mChargeNum == static_cast<s32>(0));
+    mpNoList->setVisible(mChargeNum == 0);
 }
 
 // Address: 0x00ab0bf0 - 0x00ab0c56 (102 bytes)
 void uGUIGPShop::usedCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsUsedRequest = true;
-    this->::uGUIGPShop::setupStatusUsed();
-    this->mStatusControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(3), static_cast<s32>(0));
-    this->mUsedCursorX = static_cast<s32>(1);
-    if (this->mType != static_cast<u32>(2)) {
+    mIsUsedRequest = true;
+    setupStatusUsed();
+    mStatusControl.setCurrentPos(3u, 0);
+    mUsedCursorX = 1;
+    if (mType != 2) {
         return;
     }
-    if (this->mpNoListUsed == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpNoListUsed == nullptr) {
         return;
     }
-    this->mpNoListUsed->::cGUIInstance::setVisible(this->mUsedListNum <= static_cast<s32>(1));
+    mpNoListUsed->setVisible(mUsedListNum <= 1);
 }
 
 // Address: 0x00ab0a90 - 0x00ab0bcc (316 bytes)
@@ -643,47 +636,47 @@ __attribute__((weak)) void uGUIGPShop::legendpawnCallBack() {
 // Address: 0x00ab0ca0 - 0x00ab0d06 (102 bytes)
 void uGUIGPShop::nouseCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsNoUseRequest = true;
-    this->::uGUIGPShop::setupStatusNoUse();
-    this->mStatusControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(4), static_cast<s32>(0));
-    this->mNoUseCursorX = static_cast<s32>(0);
-    if (this->mType != static_cast<u32>(3)) {
+    mIsNoUseRequest = true;
+    setupStatusNoUse();
+    mStatusControl.setCurrentPos(4u, 0);
+    mNoUseCursorX = 0;
+    if (mType != 3) {
         return;
     }
-    if (this->mpNoList == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpNoList == nullptr) {
         return;
     }
-    this->mpNoList->::cGUIInstance::setVisible(this->mNoUseListNum == static_cast<s32>(0));
+    mpNoList->setVisible(mNoUseListNum == 0);
 }
 
 // Address: 0x00ab5070 - 0x00ab50d7 (103 bytes)
 void uGUIGPShop::nouseCallBackForDetail() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsNoUseRequest = true;
-    this->::uGUIGPShop::setupStatusNoUse();
-    this->mStatusControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(4), static_cast<s32>(0));
-    this->mNoUseCursorX = static_cast<s32>(0);
-    if (this->mType == static_cast<u32>(3)) {
-        if (this->mpNoList != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mpNoList->::cGUIInstance::setVisible(this->mNoUseListNum == static_cast<s32>(0));
+    mIsNoUseRequest = true;
+    setupStatusNoUse();
+    mStatusControl.setCurrentPos(4u, 0);
+    mNoUseCursorX = 0;
+    if (mType == 3) {
+        if (mpNoList != nullptr) {
+            mpNoList->setVisible(mNoUseListNum == 0);
         }
     }
-    this->::uGUIGPShop::updateDetail();
+    updateDetail();
 }
 
 // Address: 0x00ab0d50 - 0x00ab0dac (92 bytes)
 void uGUIGPShop::historyCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsHistoryRequest = true;
-    this->::uGUIGPShop::setupStatusHistory();
-    this->mStatusControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(5), static_cast<s32>(0));
-    if (this->mType != static_cast<u32>(4)) {
+    mIsHistoryRequest = true;
+    setupStatusHistory();
+    mStatusControl.setCurrentPos(5u, 0);
+    if (mType != 4) {
         return;
     }
-    if (this->mpNoList == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpNoList == nullptr) {
         return;
     }
-    this->mpNoList->::cGUIInstance::setVisible(this->mHistoryListNum == static_cast<s32>(0));
+    mpNoList->setVisible(mHistoryListNum == 0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -692,10 +685,10 @@ void uGUIGPShop::historyCallBack() {
 // Address: 0x00ab2f20 - 0x00ab2f67 (71 bytes)
 void uGUIGPShop::initGetCAPCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCAPNum = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getRecvGetCAP();
-    this->::uGUIGPShop::updateCAP();
-    this->mChargeScrollbar.::uGUIBase::cScrollList::setupAllItem();
-    this->::uGUIGPShop::updateChargeCursor(false);
+    mCAPNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGetCAP();
+    updateCAP();
+    mChargeScrollbar.setupAllItem();
+    updateChargeCursor(false);
 }
 
 // Address: 0x00ab3060 - 0x00ab37c9 (1897 bytes)
@@ -789,198 +782,198 @@ __attribute__((weak)) void uGUIGPShop::setupStatusHistory() {
 // Address: 0x00ab0950 - 0x00ab0965 (21 bytes)
 u32 uGUIGPShop::evCtrlStart(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00ab5cc0 - 0x00ab5cd5 (21 bytes)
 u32 uGUIGPShop::evCtrlShopMenuCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00ab5ce0 - 0x00ab5d5e (126 bytes)
 u32 uGUIGPShop::evCtrlShopMenuDecide(cControl::Message* pMsg) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x850 from uGUIGPShop*
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2128))) == static_cast<unsigned long>(0)) {
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
         // inferred: a temporary for the result of the call at 0xab5d00, used 3 times; no DWARF local holds it
-        s32 t0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
-        if (t0 != static_cast<s32>(2)) {
-            if (t0 == static_cast<s32>(1)) {
-                if (this->mShopItemNum > static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+        s32 t0 = mShopControl.getCurrentPos(0u);
+        if (t0 != 2) {
+            if (t0 == 1) {
+                if (mShopItemNum > 0) {
+                    setInputEvent(72u);
                 }
             } else {
-                if (t0 == static_cast<s32>(0)) {
-                    if (this->mChargeNum > static_cast<s32>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+                if (t0 == 0) {
+                    if (mChargeNum > 0) {
+                        setInputEvent(81u);
                     }
                 }
             }
         } else {
-            if (this->mIsGPDialogOpen != false) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+            if (mIsGPDialogOpen) {
+                setInputEvent(66u);
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                setInputEvent(67u);
             }
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab5d60 - 0x00ab5d75 (21 bytes)
 u32 uGUIGPShop::evCtrlShopMenuCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(1);
+    setInputEvent(70u);
+    return 1;
 }
 
 // Address: 0x00ab5d80 - 0x00ab5efe (382 bytes)
 u32 uGUIGPShop::evCtrlShopMenuMouseClick(cControl::Message* pMsg) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x850 from uGUIGPShop*
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->click_vol != static_cast<s32>(2)) {
-            if (pMsg->click_vol == static_cast<s32>(1)) {
-                if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0)) == static_cast<s32>(1)) {
+    if (pMsg != nullptr) {
+        if (pMsg->click_vol != 2) {
+            if (pMsg->click_vol == 1) {
+                if (mShopControl.getCurrentPos(0u) == 1) {
                     // inferred: a temporary for the result of the call at 0xab5dcc, used once; no DWARF local holds it
-                    s32 t0 = this->mShopControl.::cGUIControlMgr::getOldPos(static_cast<u32>(2));
+                    s32 t0 = mShopControl.getOldPos(2u);
                     if (pMsg->mouse_hit_id != t0) {
-                        this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(0), static_cast<s32>(1));
-                        this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(2), pMsg->mouse_hit_id);
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                        mShopControl.setCurrentPos(0u, 1);
+                        mShopControl.setCurrentPos(2u, pMsg->mouse_hit_id);
+                        setInputEvent(74u);
                     } else {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2128))) == static_cast<unsigned long>(0)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
                             // inferred: a temporary for the result of the call at 0xab5e78, used 3 times; no DWARF local holds it
-                            s32 t2 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
-                            if (t2 != static_cast<s32>(2)) {
-                                if (t2 == static_cast<s32>(1)) {
-                                    if (this->mShopItemNum > static_cast<s32>(0)) {
-                                        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                            s32 t2 = mShopControl.getCurrentPos(0u);
+                            if (t2 != 2) {
+                                if (t2 == 1) {
+                                    if (mShopItemNum > 0) {
+                                        setInputEvent(72u);
                                     }
                                 } else {
-                                    if (t2 == static_cast<s32>(0)) {
-                                        if (this->mChargeNum > static_cast<s32>(0)) {
-                                            this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+                                    if (t2 == 0) {
+                                        if (mChargeNum > 0) {
+                                            setInputEvent(81u);
                                         }
                                     }
                                 }
                             } else {
-                                if (this->mIsGPDialogOpen != false) {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                if (mIsGPDialogOpen) {
+                                    setInputEvent(66u);
                                 } else {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                                    setInputEvent(67u);
                                 }
                             }
-                            return static_cast<u32>(1);
+                            return 1;
                         }
                     }
-                    return static_cast<u32>(1);
+                    return 1;
                 } else {
-                    this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(0), static_cast<s32>(1));
-                    this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(2), pMsg->mouse_hit_id);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
-                    return static_cast<u32>(1);
+                    mShopControl.setCurrentPos(0u, 1);
+                    mShopControl.setCurrentPos(2u, pMsg->mouse_hit_id);
+                    setInputEvent(74u);
+                    return 1;
                 }
             } else {
-                if (pMsg->click_vol == static_cast<s32>(0)) {
+                if (pMsg->click_vol == 0) {
                     // inferred: a temporary for the result of the call at 0xab5e59, used once; no DWARF local holds it
-                    s32 t1 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
+                    s32 t1 = mShopControl.getCurrentPos(0u);
                     if (pMsg->click_vol == t1) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2128))) == static_cast<unsigned long>(0)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
                             // inferred: a temporary for the result of the call at 0xab5e78, used 3 times; no DWARF local holds it
-                            s32 t2 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
-                            if (t2 != static_cast<s32>(2)) {
-                                if (t2 == static_cast<s32>(1)) {
-                                    if (this->mShopItemNum > static_cast<s32>(0)) {
-                                        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                            s32 t2 = mShopControl.getCurrentPos(0u);
+                            if (t2 != 2) {
+                                if (t2 == 1) {
+                                    if (mShopItemNum > 0) {
+                                        setInputEvent(72u);
                                     }
                                 } else {
-                                    if (t2 == static_cast<s32>(0)) {
-                                        if (this->mChargeNum > static_cast<s32>(0)) {
-                                            this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+                                    if (t2 == 0) {
+                                        if (mChargeNum > 0) {
+                                            setInputEvent(81u);
                                         }
                                     }
                                 }
                             } else {
-                                if (this->mIsGPDialogOpen != false) {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                                if (mIsGPDialogOpen) {
+                                    setInputEvent(66u);
                                 } else {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                                    setInputEvent(67u);
                                 }
                             }
-                            return static_cast<u32>(1);
+                            return 1;
                         }
                     } else {
-                        this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(0), static_cast<s32>(0));
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                        mShopControl.setCurrentPos(0u, 0);
+                        setInputEvent(74u);
                     }
-                    return static_cast<u32>(1);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(0), static_cast<s32>(2));
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2128))) == static_cast<unsigned long>(0)) {
+            mShopControl.setCurrentPos(0u, 2);
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2128)) == 0) {
                 // inferred: a temporary for the result of the call at 0xab5e78, used 3 times; no DWARF local holds it
-                s32 t2 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
-                if (t2 != static_cast<s32>(2)) {
-                    if (t2 == static_cast<s32>(1)) {
-                        if (this->mShopItemNum > static_cast<s32>(0)) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                s32 t2 = mShopControl.getCurrentPos(0u);
+                if (t2 != 2) {
+                    if (t2 == 1) {
+                        if (mShopItemNum > 0) {
+                            setInputEvent(72u);
                         }
                     } else {
-                        if (t2 == static_cast<s32>(0)) {
-                            if (this->mChargeNum > static_cast<s32>(0)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+                        if (t2 == 0) {
+                            if (mChargeNum > 0) {
+                                setInputEvent(81u);
                             }
                         }
                     }
                 } else {
-                    if (this->mIsGPDialogOpen != false) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                    if (mIsGPDialogOpen) {
+                        setInputEvent(66u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                        setInputEvent(67u);
                     }
                 }
-                return static_cast<u32>(1);
+                return 1;
             } else {
-                return static_cast<u32>(1);
+                return 1;
             }
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab0f30 - 0x00ab0f45 (21 bytes)
 u32 uGUIGPShop::evCtrlShopMenuChangeStatus(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(88));
-    return static_cast<u32>(1);
+    setInputEvent(88u);
+    return 1;
 }
 
 // Address: 0x00ab0f10 - 0x00ab0f30 (32 bytes)
 u32 uGUIGPShop::evCtrlShopToBrowser(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHoldBrowserType == static_cast<u32>(2)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-        return static_cast<u32>(1);
+    if (mHoldBrowserType == 2) {
+        setInputEvent(71u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab0dc0 - 0x00ab0dd2 (18 bytes)
 u32 uGUIGPShop::evCtrlShopCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(0);
+    setInputEvent(73u);
+    return 0;
 }
 
 // Address: 0x00ab0de0 - 0x00ab0e7c (156 bytes)
@@ -992,52 +985,52 @@ __attribute__((weak)) u32 uGUIGPShop::evCtrlShopDecide(cControl::Message* pMsg) 
 // Address: 0x00ab0e80 - 0x00ab0e92 (18 bytes)
 u32 uGUIGPShop::evCtrlShopCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(75));
-    return static_cast<u32>(0);
+    setInputEvent(75u);
+    return 0;
 }
 
 // Address: 0x00ab0ea0 - 0x00ab0f03 (99 bytes)
 u32 uGUIGPShop::evCtrlShopCursorLR(cControl::Message* pMsg) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-            this->mShopCursorX = static_cast<s32>((this->mShopCursorX - (((this->mShopCursorX + (static_cast<unsigned int>(this->mShopCursorX + static_cast<s32>(3)) >> static_cast<unsigned int>(31))) + static_cast<unsigned int>(3)) & static_cast<unsigned int>(4294967294))) + static_cast<unsigned int>(3));
+    if (pMsg != nullptr) {
+        if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+            mShopCursorX = static_cast<s32>((mShopCursorX - (((mShopCursorX + (static_cast<unsigned int>(mShopCursorX + 3) >> 31)) + 3u) & 0xFFFFFFFEu)) + 3u);
         } else {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                this->mShopCursorX = static_cast<s32>((this->mShopCursorX - (((this->mShopCursorX + (static_cast<unsigned int>(this->mShopCursorX + static_cast<s32>(1)) >> static_cast<unsigned int>(31))) + static_cast<unsigned int>(1)) & static_cast<unsigned int>(4294967294))) + static_cast<unsigned int>(1));
+            if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                mShopCursorX = static_cast<s32>((mShopCursorX - (((mShopCursorX + (static_cast<unsigned int>(mShopCursorX + 1) >> 31)) + 1u) & 0xFFFFFFFEu)) + 1u);
             }
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(79));
-        return static_cast<u32>(1);
+        setInputEvent(79u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab0f50 - 0x00ab0fa4 (84 bytes)
 u32 uGUIGPShop::evCtrlShopMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(4), pMsg->mouse_hit_id);
+    if (pMsg != nullptr) {
+        mShopControl.setCurrentPos(4u, pMsg->mouse_hit_id);
         // inferred: a temporary for the value the load at 0xab0f78 read, used twice; no DWARF local holds it
         s32 t0 = pMsg->click_vol;
-        this->mShopCursorX = t0;
-        if (t0 != static_cast<s32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+        mShopCursorX = t0;
+        if (t0 != 0) {
+            setInputEvent(77u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(76));
+            setInputEvent(76u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab1b40 - 0x00ab1b55 (21 bytes)
 u32 uGUIGPShop::evCtrlChargeCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(1);
+    setInputEvent(73u);
+    return 1;
 }
 
 // Address: 0x00ab1b60 - 0x00ab1c31 (209 bytes)
@@ -1049,134 +1042,134 @@ u32 uGUIGPShop::evCtrlChargeDecide(cControl::Message* pMsg) {
     int i0_1;
     // inferred: the value the loop at 0xab1bc0 carries; no location-less local in scope fits
     s32* v0_2;
-    if (this->mpCAPChargeButton != static_cast<cGUIInstAnimation*>(nullptr)) {
-        if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5)) != static_cast<s32>(0)) {
-            if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5)) == static_cast<s32>(0)) {
-                return static_cast<u32>(1);
+    if (mpCAPChargeButton != nullptr) {
+        if (mShopControl.getCurrentPos(5u) != 0) {
+            if (mShopControl.getCurrentPos(5u) == 0) {
+                return 1;
             } else {
-                v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(7));
-                i0_1 = static_cast<int>(0);
-                v0_2 = &this->mChargeItem[0].mIndex;
+                v0_0 = mShopControl.getCurrentPos(7u);
+                i0_1 = 0;
+                v0_2 = &mChargeItem[0].mIndex;
             }
         } else {
-            if (this->mIsNGCAPCharge == false) {
-                if (::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(86));
+            if (!mIsNGCAPCharge) {
+                if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
+                    setInputEvent(86u);
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(85));
+                    setInputEvent(85u);
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(86));
+                setInputEvent(86u);
             }
-            return static_cast<u32>(1);
+            return 1;
         }
     } else {
-        if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5)) == static_cast<s32>(0)) {
-            return static_cast<u32>(1);
+        if (mShopControl.getCurrentPos(5u) == 0) {
+            return 1;
         } else {
-            v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(7));
-            i0_1 = static_cast<int>(0);
-            v0_2 = &this->mChargeItem[0].mIndex;
+            v0_0 = mShopControl.getCurrentPos(7u);
+            i0_1 = 0;
+            v0_2 = &mChargeItem[0].mIndex;
         }
     }
     for (;;) {
         if ((*v0_2) != v0_0) {
-            if ((i0_1 + static_cast<int>(1)) > static_cast<int>(6)) {
-                return static_cast<u32>(1);
+            if ((i0_1 + 1) > 6) {
+                return 1;
             } else {
-                i0_1 = i0_1 + static_cast<int>(1);
-                v0_2 += static_cast<int>(54);
+                i0_1 = i0_1 + 1;
+                v0_2 += 54;
             }
         } else {
             break;
         }
     }
-    if (i0_1 > static_cast<int>(-1)) {
-        if (this->mChargeItem[i0_1].mInst.isEnable != false) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(87));
+    if (i0_1 > -1) {
+        if (mChargeItem[i0_1].mInst.isEnable) {
+            setInputEvent(87u);
         }
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00ab1c40 - 0x00ab1c55 (21 bytes)
 u32 uGUIGPShop::evCtrlChargeCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(82));
-    return static_cast<u32>(1);
+    setInputEvent(82u);
+    return 1;
 }
 
 // Address: 0x00ab1c60 - 0x00ab1c75 (21 bytes)
 u32 uGUIGPShop::evCtrlChargeToBrowser(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(89));
-    return static_cast<u32>(1);
+    setInputEvent(89u);
+    return 1;
 }
 
 // Address: 0x00ab1c80 - 0x00ab1d0b (139 bytes)
 u32 uGUIGPShop::evCtrlChargeMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->click_vol == static_cast<s32>(1)) {
-            this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(5), static_cast<s32>(1));
-            this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(7), pMsg->mouse_hit_id);
-            this->::uGUIBase::setInputEvent(static_cast<u32>(84));
+    if (pMsg != nullptr) {
+        if (pMsg->click_vol == 1) {
+            mShopControl.setCurrentPos(5u, 1);
+            mShopControl.setCurrentPos(7u, pMsg->mouse_hit_id);
+            setInputEvent(84u);
         } else {
-            this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(5), static_cast<s32>(0));
-            this->::uGUIBase::setInputEvent(static_cast<u32>(83));
+            mShopControl.setCurrentPos(5u, 0);
+            setInputEvent(83u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab5f20 - 0x00ab5f35 (21 bytes)
 u32 uGUIGPShop::evCtrlStatusMenuCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00ab5f40 - 0x00ab5fd6 (150 bytes)
 u32 uGUIGPShop::evCtrlStatusMenuDecide(cControl::Message* pMsg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0)) == static_cast<s32>(1)) {
-        if (this->mIsGPDialogOpen != false) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mStatusControl.getCurrentPos(0u) == 1) {
+        if (mIsGPDialogOpen) {
+            setInputEvent(66u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+            setInputEvent(68u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
         // inferred: a temporary for the result of the call at 0xab5f79, used 3 times; no DWARF local holds it
-        s32 t0 = this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1));
-        if (t0 != static_cast<s32>(2)) {
-            if (t0 == static_cast<s32>(1)) {
-                if (this->mNoUseListNum > static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(100));
+        s32 t0 = mStatusControl.getCurrentPos(1u);
+        if (t0 != 2) {
+            if (t0 == 1) {
+                if (mNoUseListNum > 0) {
+                    setInputEvent(100u);
                 }
             } else {
-                if (t0 == static_cast<s32>(0)) {
-                    if (this->mUsedListNum > static_cast<s32>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(94));
+                if (t0 == 0) {
+                    if (mUsedListNum > 0) {
+                        setInputEvent(94u);
                     }
                 }
             }
         } else {
-            if (this->mHistoryListNum > static_cast<s32>(0)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(103));
+            if (mHistoryListNum > 0) {
+                setInputEvent(103u);
             }
         }
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
 // Address: 0x00ab5fe0 - 0x00ab5ff5 (21 bytes)
 u32 uGUIGPShop::evCtrlStatusMenuCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(90));
-    return static_cast<u32>(1);
+    setInputEvent(90u);
+    return 1;
 }
 
 // Address: 0x00ab6020 - 0x00ab60b0 (144 bytes)
@@ -1188,26 +1181,26 @@ __attribute__((weak)) u32 uGUIGPShop::evCtrlStatusMenuMouseClick(cControl::Messa
 // Address: 0x00ab6000 - 0x00ab6015 (21 bytes)
 u32 uGUIGPShop::evCtrlStatusMenuChangeShop(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(93));
-    return static_cast<u32>(1);
+    setInputEvent(93u);
+    return 1;
 }
 
 // Address: 0x00ab60b0 - 0x00ab60c2 (18 bytes)
 u32 uGUIGPShop::evCtrlUsedCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
-    return static_cast<u32>(0);
+    setInputEvent(92u);
+    return 0;
 }
 
 // Address: 0x00ab60d0 - 0x00ab610e (62 bytes)
 u32 uGUIGPShop::evCtrlUsedDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(3)) > static_cast<s32>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(97));
+    if (mStatusControl.getCurrentPos(3u) > 0) {
+        setInputEvent(97u);
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(107));
+        setInputEvent(107u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1219,19 +1212,19 @@ u32 uGUIGPShop::evCtrlUsedDecide(cControl::Message* pMsg) {
 // Address: 0x00ab6110 - 0x00ab6122 (18 bytes)
 u32 uGUIGPShop::evCtrlNoUseCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
-    return static_cast<u32>(0);
+    setInputEvent(92u);
+    return 0;
 }
 
 // Address: 0x00ab6130 - 0x00ab615c (44 bytes)
 u32 uGUIGPShop::evCtrlNoUseDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNoUseCursorX != static_cast<s32>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(99));
-        return static_cast<u32>(0);
+    if (mNoUseCursorX != 0) {
+        setInputEvent(99u);
+        return 0;
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(98));
-        return static_cast<u32>(1);
+        setInputEvent(98u);
+        return 1;
     }
 }
 
@@ -1241,33 +1234,33 @@ u32 uGUIGPShop::evCtrlNoUseDecide(cControl::Message* pMsg) {
 // Address: 0x00ab6160 - 0x00ab61c3 (99 bytes)
 u32 uGUIGPShop::evCtrlNoUseCursorLR(cControl::Message* pMsg) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-            this->mNoUseCursorX = static_cast<s32>((this->mNoUseCursorX - (((this->mNoUseCursorX + (static_cast<unsigned int>(this->mNoUseCursorX + static_cast<s32>(3)) >> static_cast<unsigned int>(31))) + static_cast<unsigned int>(3)) & static_cast<unsigned int>(4294967294))) + static_cast<unsigned int>(3));
+    if (pMsg != nullptr) {
+        if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+            mNoUseCursorX = static_cast<s32>((mNoUseCursorX - (((mNoUseCursorX + (static_cast<unsigned int>(mNoUseCursorX + 3) >> 31)) + 3u) & 0xFFFFFFFEu)) + 3u);
         } else {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                this->mNoUseCursorX = static_cast<s32>((this->mNoUseCursorX - (((this->mNoUseCursorX + (static_cast<unsigned int>(this->mNoUseCursorX + static_cast<s32>(1)) >> static_cast<unsigned int>(31))) + static_cast<unsigned int>(1)) & static_cast<unsigned int>(4294967294))) + static_cast<unsigned int>(1));
+            if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                mNoUseCursorX = static_cast<s32>((mNoUseCursorX - (((mNoUseCursorX + (static_cast<unsigned int>(mNoUseCursorX + 1) >> 31)) + 1u) & 0xFFFFFFFEu)) + 1u);
             }
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(102));
-        return static_cast<u32>(1);
+        setInputEvent(102u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ab61d0 - 0x00ab61e5 (21 bytes)
 u32 uGUIGPShop::evCtrlHistoryCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
-    return static_cast<u32>(1);
+    setInputEvent(92u);
+    return 1;
 }
 
 // Address: 0x00ab61f0 - 0x00ab6205 (21 bytes)
 u32 uGUIGPShop::evCtrlHistoryDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(104));
-    return static_cast<u32>(1);
+    setInputEvent(104u);
+    return 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1323,36 +1316,36 @@ __attribute__((weak)) void uGUIGPShop::updateShopButton(bool IsOperate) {
     // DWARF local not rendered: s32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xaaf760 carries; no location-less local in scope fits
-    s32 v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(4));
+    s32 v0_0 = mShopControl.getCurrentPos(4u);
     // inferred: the counter this loop steps; no location-less local in scope fits
-    int i0_1 = static_cast<int>(0);
+    int i0_1 = 0;
     // inferred: the value the loop at 0xaaf760 carries; no location-less local in scope fits
-    for (s32* v0_2 = &this->mShopItem[0].mIndex;;) {
+    for (s32* v0_2 = &mShopItem[0].mIndex;;) {
         if ((*v0_2) == v0_0) {
-            if (i0_1 > static_cast<int>(-1)) {
+            if (i0_1 > -1) {
                 // inferred: a temporary for the value the load at 0xaaf77c read, used twice; no DWARF local holds it
-                s32 t0 = this->mShopCursorX;
-                this->::uGUIGPShop::setButtonSequenceCore(this->mShopItem[i0_1].mInst.pBuyButton, IsOperate, t0 == static_cast<s32>(0), this->mShopItem[i0_1].mInst.isEnable);
-                if (this->mShopItem[i0_1].mInst.pDetailButton != static_cast<cGUIInstAnimation*>(nullptr)) {
-                    if (this->mType == static_cast<u32>(2)) {
-                        if (t0 == static_cast<s32>(0)) {
-                            this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+                s32 t0 = mShopCursorX;
+                setButtonSequenceCore(mShopItem[i0_1].mInst.pBuyButton, IsOperate, t0 == 0, mShopItem[i0_1].mInst.isEnable);
+                if (mShopItem[i0_1].mInst.pDetailButton != nullptr) {
+                    if (mType == 2) {
+                        if (t0 == 0) {
+                            mShopItem[i0_1].mInst.pDetailButton->setSequenceId(7u);
                         } else {
-                            if (IsOperate != false) {
-                                this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                            if (IsOperate) {
+                                mShopItem[i0_1].mInst.pDetailButton->setSequenceId(4u);
                             } else {
-                                this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                                mShopItem[i0_1].mInst.pDetailButton->setSequenceId(1u);
                             }
                         }
                     } else {
-                        if (IsOperate != false) {
-                            if (t0 != static_cast<s32>(0)) {
-                                this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                        if (IsOperate) {
+                            if (t0 != 0) {
+                                mShopItem[i0_1].mInst.pDetailButton->setSequenceId(4u);
                             } else {
-                                this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(6));
+                                mShopItem[i0_1].mInst.pDetailButton->setSequenceId(6u);
                             }
                         } else {
-                            this->mShopItem[i0_1].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                            mShopItem[i0_1].mInst.pDetailButton->setSequenceId(1u);
                         }
                     }
                 }
@@ -1361,9 +1354,9 @@ __attribute__((weak)) void uGUIGPShop::updateShopButton(bool IsOperate) {
                 return;
             }
         } else {
-            if ((i0_1 + static_cast<int>(1)) <= static_cast<int>(8)) {
-                i0_1 = i0_1 + static_cast<int>(1);
-                v0_2 += static_cast<int>(54);
+            if ((i0_1 + 1) <= 8) {
+                i0_1 = i0_1 + 1;
+                v0_2 += 54;
             } else {
                 break;
             }
@@ -1416,43 +1409,43 @@ void uGUIGPShop::updateUsedButton(bool IsOperate) {
     // DWARF local not rendered: u32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xaad920 carries; no location-less local in scope fits
-    s32* v0_3 = &this->mUsedList[0].::uGUIGPShop::cScrollStatusDispBase::mIndex;
+    s32* v0_3 = &mUsedList[0].mIndex;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_8 = static_cast<unsigned int>(0);;) {
+    for (unsigned int i0_8 = 0;;) {
         // inferred: a temporary for the value the load at 0xaad920 read, used once; no DWARF local holds it
         int t0 = *v0_3;
-        if (t0 == this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(3))) {
+        if (t0 == mStatusControl.getCurrentPos(3u)) {
             // inferred: a temporary for the value the load at 0xaad947 read, used twice; no DWARF local holds it
-            s32 t1 = this->mUsedCursorX;
-            this->::uGUIGPShop::setButtonSequenceCore(this->mUsedList[i0_8].mInst.pBuyButton, IsOperate, t1 == static_cast<s32>(0), this->mUsedList[i0_8].mInst.isEnable);
-            if (this->mUsedList[i0_8].mInst.pDetailButton != static_cast<cGUIInstAnimation*>(nullptr)) {
-                if (this->mType == static_cast<u32>(2)) {
-                    if (t1 == static_cast<s32>(0)) {
-                        this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            s32 t1 = mUsedCursorX;
+            setButtonSequenceCore(mUsedList[i0_8].mInst.pBuyButton, IsOperate, t1 == 0, mUsedList[i0_8].mInst.isEnable);
+            if (mUsedList[i0_8].mInst.pDetailButton != nullptr) {
+                if (mType == 2) {
+                    if (t1 == 0) {
+                        mUsedList[i0_8].mInst.pDetailButton->setSequenceId(7u);
                     } else {
-                        if (IsOperate != false) {
-                            this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                        if (IsOperate) {
+                            mUsedList[i0_8].mInst.pDetailButton->setSequenceId(4u);
                         } else {
-                            this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                            mUsedList[i0_8].mInst.pDetailButton->setSequenceId(1u);
                         }
                     }
                 } else {
-                    if (IsOperate != false) {
-                        if (t1 != static_cast<s32>(0)) {
-                            this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                    if (IsOperate) {
+                        if (t1 != 0) {
+                            mUsedList[i0_8].mInst.pDetailButton->setSequenceId(4u);
                         } else {
-                            this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(6));
+                            mUsedList[i0_8].mInst.pDetailButton->setSequenceId(6u);
                         }
                     } else {
-                        this->mUsedList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                        mUsedList[i0_8].mInst.pDetailButton->setSequenceId(1u);
                     }
                 }
             }
             return;
         } else {
-            if ((i0_8 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_3 += static_cast<int>(58);
-                i0_8 = i0_8 + static_cast<unsigned int>(1);
+            if ((i0_8 + 1u) <= 7u) {
+                v0_3 += 58;
+                i0_8 = i0_8 + 1u;
             } else {
                 break;
             }
@@ -1481,43 +1474,43 @@ void uGUIGPShop::updateNoUseButton(bool IsOperate) {
     // DWARF local not rendered: u32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xaadd60 carries; no location-less local in scope fits
-    s32* v0_3 = &this->mNoUseList[0].::uGUIGPShop::cScrollStatusDispBase::mIndex;
+    s32* v0_3 = &mNoUseList[0].mIndex;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_8 = static_cast<unsigned int>(0);;) {
+    for (unsigned int i0_8 = 0;;) {
         // inferred: a temporary for the value the load at 0xaadd60 read, used once; no DWARF local holds it
         int t0 = *v0_3;
-        if (t0 == this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(4))) {
+        if (t0 == mStatusControl.getCurrentPos(4u)) {
             // inferred: a temporary for the value the load at 0xaadd87 read, used twice; no DWARF local holds it
-            s32 t1 = this->mNoUseCursorX;
-            this->::uGUIGPShop::setButtonSequenceCore(this->mNoUseList[i0_8].mInst.pBuyButton, IsOperate, t1 == static_cast<s32>(0), this->mNoUseList[i0_8].mInst.isEnable);
-            if (this->mNoUseList[i0_8].mInst.pDetailButton != static_cast<cGUIInstAnimation*>(nullptr)) {
-                if (this->mType == static_cast<u32>(2)) {
-                    if (t1 == static_cast<s32>(0)) {
-                        this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            s32 t1 = mNoUseCursorX;
+            setButtonSequenceCore(mNoUseList[i0_8].mInst.pBuyButton, IsOperate, t1 == 0, mNoUseList[i0_8].mInst.isEnable);
+            if (mNoUseList[i0_8].mInst.pDetailButton != nullptr) {
+                if (mType == 2) {
+                    if (t1 == 0) {
+                        mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(7u);
                     } else {
-                        if (IsOperate != false) {
-                            this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                        if (IsOperate) {
+                            mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(4u);
                         } else {
-                            this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                            mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(1u);
                         }
                     }
                 } else {
-                    if (IsOperate != false) {
-                        if (t1 != static_cast<s32>(0)) {
-                            this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+                    if (IsOperate) {
+                        if (t1 != 0) {
+                            mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(4u);
                         } else {
-                            this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(6));
+                            mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(6u);
                         }
                     } else {
-                        this->mNoUseList[i0_8].mInst.pDetailButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                        mNoUseList[i0_8].mInst.pDetailButton->setSequenceId(1u);
                     }
                 }
             }
             return;
         } else {
-            if ((i0_8 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_3 += static_cast<int>(58);
-                i0_8 = i0_8 + static_cast<unsigned int>(1);
+            if ((i0_8 + 1u) <= 7u) {
+                v0_3 += 58;
+                i0_8 = i0_8 + 1u;
             } else {
                 break;
             }
@@ -1569,10 +1562,18 @@ __attribute__((weak)) void uGUIGPShop::updateScrollChargeListDisp(uGUIBase::cScr
 }
 
 // Address: 0x00ab1b10 - 0x00ab1b3f (47 bytes)
-__attribute__((weak)) void uGUIGPShop::updateScrollChargeListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollChargeDispList* pdisp;
-    DDON_STUB("uGUIGPShop::updateScrollChargeListHide")
-    /* stub */
+void uGUIGPShop::updateScrollChargeListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollChargeDispList* pdisp = static_cast<cScrollChargeDispList*>(pDispItem);
+    if (pdisp->mInst.pNull == nullptr) {
+        return;
+    }
+    setInstanceVisibleTree(static_cast<cGUIInstance*>(pdisp->mInst.pNull), false);
+    pdisp->mIndex = -1;
 }
 
 // Address: 0x00ab1d80 - 0x00ab26d2 (2386 bytes)
@@ -1597,13 +1598,29 @@ __attribute__((weak)) void uGUIGPShop::updateScrollUsedListDisp(uGUIBase::cScrol
 }
 
 // Address: 0x00ab26e0 - 0x00ab2714 (52 bytes)
-__attribute__((weak)) void uGUIGPShop::updateScrollUsedListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: s32 idx;
-    // local: cScrollStatusDispBase* pbase;
-    // local: cScrollStatusDispList* pdisp;
-    // local: cScrollTicketDispList* pdisp;
-    DDON_STUB("uGUIGPShop::updateScrollUsedListHide")
-    /* stub */
+void uGUIGPShop::updateScrollUsedListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pbase, its location optimized out, declared in the lexical block that holds the access
+    cScrollStatusDispBase* pbase = static_cast<cScrollStatusDispBase*>(pDispItem);
+    s32 idx = pbase->mIndex;
+    if (idx == -1) {
+        return;
+    }
+    pbase->mIndex = -1;
+    if (idx > 0) {
+        // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+        cScrollStatusDispList* pdisp = static_cast<cScrollStatusDispList*>(pDispItem);
+        setInstanceVisibleTree(static_cast<cGUIInstance*>(pdisp->mInst.pNull), false);
+    } else {
+        // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+        cScrollTicketDispList* pdisp = static_cast<cScrollTicketDispList*>(pDispItem);
+        if (pdisp->mpInst != nullptr) {
+            pdisp->mpInst->cGUIInstance::setVisible(false);
+        }
+    }
 }
 
 // Address: 0x00ab2720 - 0x00ab29ec (716 bytes)
@@ -1618,10 +1635,18 @@ __attribute__((weak)) void uGUIGPShop::updateScrollNoUseListDisp(uGUIBase::cScro
 }
 
 // Address: 0x00ab29f0 - 0x00ab2a1c (44 bytes)
-__attribute__((weak)) void uGUIGPShop::updateScrollNoUseListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollStatusDispList* pdisp;
-    DDON_STUB("uGUIGPShop::updateScrollNoUseListHide")
-    /* stub */
+void uGUIGPShop::updateScrollNoUseListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollStatusDispList* pdisp = static_cast<cScrollStatusDispList*>(pDispItem);
+    if (pdisp->mInst.pNull == nullptr) {
+        return;
+    }
+    setInstanceVisibleTree(static_cast<cGUIInstance*>(pdisp->mInst.pNull), false);
+    pdisp->::uGUIGPShop::cScrollStatusDispBase::mIndex = -1;
 }
 
 // Address: 0x00ab2a20 - 0x00ab2c6e (590 bytes)
@@ -1636,10 +1661,18 @@ __attribute__((weak)) void uGUIGPShop::updateScrollHistoryListDisp(uGUIBase::cSc
 }
 
 // Address: 0x00ab2c70 - 0x00ab2c9c (44 bytes)
-__attribute__((weak)) void uGUIGPShop::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollHistoryDispList* pdisp;
-    DDON_STUB("uGUIGPShop::updateScrollHistoryListHide")
-    /* stub */
+void uGUIGPShop::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollHistoryDispList* pdisp = static_cast<cScrollHistoryDispList*>(pDispItem);
+    if (pdisp->mInst.pInst == nullptr) {
+        return;
+    }
+    pdisp->mInst.pInst->cGUIInstance::setVisible(false);
+    pdisp->mIndex = -1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1662,10 +1695,18 @@ __attribute__((weak)) void uGUIGPShop::updateScrollShopListDisp(uGUIBase::cScrol
 }
 
 // Address: 0x00ab13b0 - 0x00ab13df (47 bytes)
-__attribute__((weak)) void uGUIGPShop::updateScrollShopListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollShopDispList* pdisp;
-    DDON_STUB("uGUIGPShop::updateScrollShopListHide")
-    /* stub */
+void uGUIGPShop::updateScrollShopListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollShopDispList* pdisp = static_cast<cScrollShopDispList*>(pDispItem);
+    if (pdisp->mInst.pNull == nullptr) {
+        return;
+    }
+    setInstanceVisibleTree(static_cast<cGUIInstance*>(pdisp->mInst.pNull), false);
+    pdisp->mIndex = -1;
 }
 
 // Address: 0x00aabe00 - 0x00aabf90 (400 bytes)
@@ -1683,78 +1724,78 @@ __attribute__((weak)) void uGUIGPShop::startType() {
 // Address: 0x00aaf820 - 0x00aafa04 (484 bytes)
 __attribute__((weak)) void uGUIGPShop::setKeyStatus(u32 Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = Mode;
-    switch (this->mType) {
-        case static_cast<u32>(0):
+    mMode = Mode;
+    switch (mType) {
+        case 0:
         {
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(0), true);
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(4), true);
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(5), false);
-            if (Mode != static_cast<u32>(0)) {
-                this->mShopControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(0));
-                this->mShopControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(4));
+            mShopControl.setFocus(0u, true);
+            mShopControl.setFocus(4u, true);
+            mShopControl.setFocus(5u, false);
+            if (Mode != 0) {
+                mShopControl.disablePadControl(0u);
+                mShopControl.enablePadControl(4u);
             } else {
-                this->mShopControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(0));
-                this->mShopControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(4));
+                mShopControl.enablePadControl(0u);
+                mShopControl.disablePadControl(4u);
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(0), true);
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(5), true);
-            this->mShopControl.::cGUIControlMgr::setFocus(static_cast<u32>(4), false);
-            if (Mode != static_cast<u32>(0)) {
-                this->mShopControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(0));
-                this->mShopControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(5));
+            mShopControl.setFocus(0u, true);
+            mShopControl.setFocus(5u, true);
+            mShopControl.setFocus(4u, false);
+            if (Mode != 0) {
+                mShopControl.disablePadControl(0u);
+                mShopControl.enablePadControl(5u);
             } else {
-                this->mShopControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(0));
-                this->mShopControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(5));
+                mShopControl.enablePadControl(0u);
+                mShopControl.disablePadControl(5u);
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(0), true);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(3), true);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(4), false);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(5), false);
-            if (Mode != static_cast<u32>(0)) {
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(3));
+            mStatusControl.setFocus(0u, true);
+            mStatusControl.setFocus(3u, true);
+            mStatusControl.setFocus(4u, false);
+            mStatusControl.setFocus(5u, false);
+            if (Mode != 0) {
+                mStatusControl.disablePadControl(0u);
+                mStatusControl.enablePadControl(3u);
             } else {
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(3));
+                mStatusControl.enablePadControl(0u);
+                mStatusControl.disablePadControl(3u);
             }
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(0), true);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(3), false);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(4), true);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(5), false);
-            if (Mode != static_cast<u32>(0)) {
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(4));
+            mStatusControl.setFocus(0u, true);
+            mStatusControl.setFocus(3u, false);
+            mStatusControl.setFocus(4u, true);
+            mStatusControl.setFocus(5u, false);
+            if (Mode != 0) {
+                mStatusControl.disablePadControl(0u);
+                mStatusControl.enablePadControl(4u);
             } else {
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(4));
+                mStatusControl.enablePadControl(0u);
+                mStatusControl.disablePadControl(4u);
             }
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(0), true);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(3), false);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(4), false);
-            this->mStatusControl.::cGUIControlMgr::setFocus(static_cast<u32>(5), true);
-            if (Mode != static_cast<u32>(0)) {
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(5));
+            mStatusControl.setFocus(0u, true);
+            mStatusControl.setFocus(3u, false);
+            mStatusControl.setFocus(4u, false);
+            mStatusControl.setFocus(5u, true);
+            if (Mode != 0) {
+                mStatusControl.disablePadControl(0u);
+                mStatusControl.enablePadControl(5u);
             } else {
-                this->mStatusControl.::cGUIControlMgr::enablePadControl(static_cast<u32>(0));
-                this->mStatusControl.::cGUIControlMgr::disablePadControl(static_cast<u32>(5));
+                mStatusControl.enablePadControl(0u);
+                mStatusControl.disablePadControl(5u);
             }
             break;
         }
@@ -1799,47 +1840,47 @@ __attribute__((weak)) bool uGUIGPShop::updateDetail() {
 // Address: 0x00ab1d10 - 0x00ab1d7e (110 bytes)
 __attribute__((weak)) void uGUIGPShop::setButtonSequenceCore(cGUIInstAnimation* pButton, bool IsOperate, bool IsFocus, bool Enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pButton == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (pButton == nullptr) {
         return;
     }
-    if (this->mType == static_cast<u32>(2)) {
-        if (IsFocus != false) {
-            if (IsOperate != false) {
-                if (Enable != false) {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+    if (mType == 2) {
+        if (IsFocus) {
+            if (IsOperate) {
+                if (Enable) {
+                    pButton->setSequenceId(4u);
                 } else {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000028));
+                    pButton->setSequenceId(0xF425Cu);
                 }
             } else {
-                if (Enable != false) {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+                if (Enable) {
+                    pButton->setSequenceId(1u);
                 } else {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+                    pButton->setSequenceId(7u);
                 }
             }
         } else {
-            pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            pButton->setSequenceId(7u);
         }
     } else {
-        if (IsOperate != false) {
-            if (IsFocus != false) {
-                if (Enable != false) {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(4));
+        if (IsOperate) {
+            if (IsFocus) {
+                if (Enable) {
+                    pButton->setSequenceId(4u);
                 } else {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000028));
+                    pButton->setSequenceId(0xF425Cu);
                 }
             } else {
-                if (Enable != false) {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(6));
+                if (Enable) {
+                    pButton->setSequenceId(6u);
                 } else {
-                    pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+                    pButton->setSequenceId(7u);
                 }
             }
         } else {
-            if (Enable != false) {
-                pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
+            if (Enable) {
+                pButton->setSequenceId(1u);
             } else {
-                pButton->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+                pButton->setSequenceId(7u);
             }
         }
     }
@@ -2009,31 +2050,31 @@ __attribute__((weak)) void uGUIGPShop::useCallBack3() {
 // Address: 0x00aabf90 - 0x00aabfab (27 bytes)
 bool uGUIGPShop::initRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sItemManager::getInstance()->::sItemManager::reqGetGP() != static_cast<u32>(2);
+    return sItemManager::getInstance()->reqGetGP() != 2;
 }
 
 // Address: 0x00ab2cd0 - 0x00ab2ce6 (22 bytes)
 bool uGUIGPShop::capRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCAP();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCAP();
 }
 
 // Address: 0x00ab2f70 - 0x00ab2f86 (22 bytes)
 bool uGUIGPShop::menuRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPShopMenuList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPShopMenuList();
 }
 
 // Address: 0x00ab69f0 - 0x00ab6a06 (22 bytes)
 bool uGUIGPShop::urlRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCAPChargeURL();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCAPChargeURL();
 }
 
 // Address: 0x00ab09b0 - 0x00ab09c6 (22 bytes)
 bool uGUIGPShop::goldstoneRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::changeCAPToGP();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->changeCAPToGP();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (218 bytes)
@@ -2049,31 +2090,31 @@ __attribute__((weak)) bool uGUIGPShop::lineupRequestServer() {
 // Address: 0x00ab0bd0 - 0x00ab0be6 (22 bytes)
 bool uGUIGPShop::usedRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPValidList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPValidList();
 }
 
 // Address: 0x00ab3930 - 0x00ab3946 (22 bytes)
 bool uGUIGPShop::cogidRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCogId();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCogId();
 }
 
 // Address: 0x00ab0a70 - 0x00ab0a86 (22 bytes)
 bool uGUIGPShop::legendpawnRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getFreeRentalPawnList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getFreeRentalPawnList();
 }
 
 // Address: 0x00ab0c80 - 0x00ab0c96 (22 bytes)
 bool uGUIGPShop::nouseRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPAvailableList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPAvailableList();
 }
 
 // Address: 0x00ab0d30 - 0x00ab0d46 (22 bytes)
 bool uGUIGPShop::historyRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPBuyHistory();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPBuyHistory();
 }
 
 // No out-of-line body: no code in the ELF
@@ -2106,7 +2147,7 @@ __attribute__((weak)) bool uGUIGPShop::useRequestServer() {
 // Address: 0x00ab6bb0 - 0x00ab6bcf (31 bytes)
 bool uGUIGPShop::use2RequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGPUseAvailableItem(this->mBuyId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPUseAvailableItem(mBuyId);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (268 bytes)
@@ -2212,34 +2253,34 @@ __attribute__((weak)) void uGUIGPShop::setDetailExplain(uGUIGPShop::_ItemDetail&
 // Address: 0x00ab1760 - 0x00ab1870 (272 bytes)
 MT_CTSTR uGUIGPShop::getCategoryName(u32 CategoryId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (CategoryId - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (CategoryId - 1u) {
+        case 0:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(71));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 71u);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(72));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 72u);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(74));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 74u);
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(38));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 38u);
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(83));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 83u);
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(84));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 84u);
         }
         default:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(73));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 73u);
         }
     }
 }
@@ -2291,21 +2332,21 @@ __attribute__((weak)) void uGUIGPShop::changeStatusList() {
 // Address: 0x00aaf2b0 - 0x00aaf341 (145 bytes)
 void uGUIGPShop::shiftShopList() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    this->::uGUIGPShop::setKeyStatus(static_cast<u32>(1));
-    this->::uGUIGPShop::updateShopCursor(true);
-    this->::uGUIGPShop::updateShopButton(true);
+    setKeyStatus(1u);
+    updateShopCursor(true);
+    updateShopButton(true);
     // inferred: a temporary for the value the load at 0xaaf2f5 read, used twice; no DWARF local holds it
-    cGUIInstAnimation* t0 = this->mShopMenuList[this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2))].pInst;
-    if (this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    cGUIInstAnimation* t0 = mShopMenuList[mShopControl.getCurrentPos(2u)].pInst;
+    if (mShopMenuCursor.mpInstance != nullptr) {
+        mShopMenuCursor.mpInstance->setVisible(false);
     }
-    if (this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    if (mStatusMenuCursor.mpInstance != nullptr) {
+        mStatusMenuCursor.mpInstance->setVisible(false);
     }
-    if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-        t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
+    if (t0 != nullptr) {
+        t0->setSequenceId(5u);
     }
-    this->mIsBrowserLowPriority = true;
+    mIsBrowserLowPriority = true;
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (138 bytes)
@@ -2328,32 +2369,32 @@ void uGUIGPShop::shiftShopList() {
 void uGUIGPShop::shiftHistoryList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xaae281 read, used twice; no DWARF local holds it
-    cGUIInstAnimation* t0 = this->mStatusMenuList[2].pInst;
-    if (this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    cGUIInstAnimation* t0 = mStatusMenuList[2].pInst;
+    if (mShopMenuCursor.mpInstance != nullptr) {
+        mShopMenuCursor.mpInstance->setVisible(false);
     }
-    if (this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    if (mStatusMenuCursor.mpInstance != nullptr) {
+        mStatusMenuCursor.mpInstance->setVisible(false);
     }
-    if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-        t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
+    if (t0 != nullptr) {
+        t0->setSequenceId(5u);
     }
-    this->::uGUIGPShop::setKeyStatus(static_cast<u32>(1));
+    setKeyStatus(1u);
     // inferred: the value the loop at 0xaae2e0 carries; no location-less local in scope fits
-    s32* v0_3 = &this->mHistoryList[0].mIndex;
+    s32* v0_3 = &mHistoryList[0].mIndex;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_10 = static_cast<unsigned int>(0);;) {
+    for (unsigned int i0_10 = 0;;) {
         // inferred: a temporary for the value the load at 0xaae2e0 read, used once; no DWARF local holds it
         int t1 = *v0_3;
-        if (t1 == this->mStatusControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5))) {
-            if (this->mHistoryList[i0_10].mInst.pInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mHistoryScrollbar.::uGUIBase::cScrollList::setFocusCursor(true);
+        if (t1 == mStatusControl.getCurrentPos(5u)) {
+            if (mHistoryList[i0_10].mInst.pInst != nullptr) {
+                mHistoryScrollbar.setFocusCursor(true);
             }
             return;
         } else {
-            if ((i0_10 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(16)) {
-                v0_3 += static_cast<int>(32);
-                i0_10 = i0_10 + static_cast<unsigned int>(1);
+            if ((i0_10 + 1u) <= 16u) {
+                v0_3 += 32;
+                i0_10 = i0_10 + 1u;
             } else {
                 break;
             }
@@ -2405,20 +2446,20 @@ __attribute__((weak)) void uGUIGPShop::checkBuyCallBack() {
 // Address: 0x00ab6dc0 - 0x00ab6de4 (36 bytes)
 void uGUIGPShop::checkBuyCallBackPawn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getRecvGPShopCanBuyPawn() != false) {
-        this->::uGUIGPShop::checkBuyCallBack();
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGPShopCanBuyPawn()) {
+        checkBuyCallBack();
     } else {
-        this->::uGUIGPShop::setAlreadyBuyDialog();
+        setAlreadyBuyDialog();
     }
 }
 
 // Address: 0x00ab6e90 - 0x00ab6eb4 (36 bytes)
 void uGUIGPShop::checkBuyCallBackPawnVoice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getRecvGPShopCanBuyPawnVoice() != false) {
-        this->::uGUIGPShop::checkBuyCallBack();
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGPShopCanBuyPawnVoice()) {
+        checkBuyCallBack();
     } else {
-        this->::uGUIGPShop::setAlreadyBuyDialog();
+        setAlreadyBuyDialog();
     }
 }
 
@@ -2494,7 +2535,7 @@ __attribute__((weak)) void uGUIGPShop::funcErrorGetCAPCallBack(nError::ERROR_COD
 // Address: 0x00ab5cb0 - 0x00ab5cb8 (8 bytes)
 void uGUIGPShop::funcErrorGetCAPCallBackAfterBrowser(nError::ERROR_CODE Error) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsGetCAPSuccess = false;
+    mIsGetCAPSuccess = false;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (22 bytes)
@@ -2506,6 +2547,14 @@ void uGUIGPShop::funcErrorGetCAPCallBackAfterBrowser(nError::ERROR_CODE Error) {
 //   in uGUIGPShop::updateShop at 0x00aafe58-0x00aafe71 (called at uGUIGPShop.cpp:1125)
 //   in uGUIGPShop::updateNoUse at 0x00ab0591-0x00ab05aa (called at uGUIGPShop.cpp:1270)
 // void uGUIGPShop::updateIndicator();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIGPShop::MyDTI uGUIGPShop::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 uGUIGPShop::mCTStatusMenuNameTable[3];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 uGUIGPShop::mCTTicketNameTable[1];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uGUIGPShop::_COGInfo uGUIGPShop::mCTCOGInfoTable[4];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9312-0x00ab934f (called at uGUIGPShop.cpp:41)
@@ -2563,7 +2612,7 @@ const MtDTI& uGUIGPShop::cScrollShopDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollShopDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollShopDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollShopDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2584,6 +2633,8 @@ inline void uGUIGPShop::cScrollShopDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollShopDispList::~cScrollShopDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollShopDispList::MyDTI uGUIGPShop::cScrollShopDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab938f-0x00ab93cf (called at uGUIGPShop.cpp:43)
@@ -2638,7 +2689,7 @@ const MtDTI& uGUIGPShop::cScrollChargeDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollChargeDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollChargeDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollChargeDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2659,6 +2710,8 @@ inline void uGUIGPShop::cScrollChargeDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollChargeDispList::~cScrollChargeDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollChargeDispList::MyDTI uGUIGPShop::cScrollChargeDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9408-0x00ab9441 (called at uGUIGPShop.cpp:45)
@@ -2706,7 +2759,7 @@ const MtDTI& uGUIGPShop::cScrollTicketDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollTicketDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollTicketDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2727,6 +2780,8 @@ inline void uGUIGPShop::cScrollTicketDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollTicketDispList::~cScrollTicketDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollTicketDispList::MyDTI uGUIGPShop::cScrollTicketDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab94b7-0x00ab94f0 (called at uGUIGPShop.cpp:48)
@@ -2788,6 +2843,8 @@ __attribute__((weak)) MtObject* uGUIGPShop::cScrollTicketDispList::MyDTI::newIns
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // uGUIGPShop::cScrollStatusDispBase::~cScrollStatusDispBase();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollStatusDispBase::MyDTI uGUIGPShop::cScrollStatusDispBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9441-0x00ab947e (called at uGUIGPShop.cpp:46)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9441-0x00ab947e (called at uGUIGPShop.h:549)
@@ -2834,7 +2891,7 @@ const MtDTI& uGUIGPShop::cScrollStatusDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollStatusDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollStatusDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollStatusDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2855,6 +2912,8 @@ inline void uGUIGPShop::cScrollStatusDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollStatusDispList::~cScrollStatusDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollStatusDispList::MyDTI uGUIGPShop::cScrollStatusDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9529-0x00ab9562 (called at uGUIGPShop.cpp:50)
@@ -2902,7 +2961,7 @@ const MtDTI& uGUIGPShop::cScrollHistoryDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollHistoryDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollHistoryDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2923,6 +2982,8 @@ inline void uGUIGPShop::cScrollHistoryDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollHistoryDispList::~cScrollHistoryDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollHistoryDispList::MyDTI uGUIGPShop::cScrollHistoryDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab959b-0x00ab95d4 (called at uGUIGPShop.cpp:52)
@@ -2975,7 +3036,7 @@ const MtDTI& uGUIGPShop::cScrollCOGDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollCOGDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollCOGDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollCOGDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2996,6 +3057,8 @@ inline void uGUIGPShop::cScrollCOGDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollCOGDispList::~cScrollCOGDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollCOGDispList::MyDTI uGUIGPShop::cScrollCOGDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab960d-0x00ab9646 (called at uGUIGPShop.cpp:54)
@@ -3045,7 +3108,7 @@ const MtDTI& uGUIGPShop::cScrollShopItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollShopItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollShopItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollShopItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3069,6 +3132,8 @@ inline void uGUIGPShop::cScrollShopItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollShopItemList::~cScrollShopItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollShopItemList::MyDTI uGUIGPShop::cScrollShopItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab934f-0x00ab938f (called at uGUIGPShop.cpp:42)
@@ -3118,7 +3183,7 @@ const MtDTI& uGUIGPShop::cScrollChargeItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollChargeItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollChargeItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollChargeItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3142,6 +3207,8 @@ inline void uGUIGPShop::cScrollChargeItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollChargeItemList::~cScrollChargeItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollChargeItemList::MyDTI uGUIGPShop::cScrollChargeItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab93cf-0x00ab9408 (called at uGUIGPShop.cpp:44)
@@ -3191,7 +3258,7 @@ const MtDTI& uGUIGPShop::cScrollTicketItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollTicketItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollTicketItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3215,6 +3282,8 @@ inline void uGUIGPShop::cScrollTicketItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollTicketItemList::~cScrollTicketItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollTicketItemList::MyDTI uGUIGPShop::cScrollTicketItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab947e-0x00ab94b7 (called at uGUIGPShop.cpp:47)
@@ -3267,7 +3336,7 @@ const MtDTI& uGUIGPShop::cScrollStatusItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollStatusItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollStatusItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollStatusItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3295,10 +3364,23 @@ inline void uGUIGPShop::cScrollStatusItemList::operator delete(void* p_addr) {
 // uGUIGPShop::cScrollStatusItemList::~cScrollStatusItemList();
 
 // Address: 0x01af2000 - 0x01af206f (111 bytes)
-__attribute__((weak)) void uGUIGPShop::cScrollStatusItemList::addMouseTouchList(cControl* pCtrl, s32 Pos) {
-    DDON_STUB("uGUIGPShop::cScrollStatusItemList::addMouseTouchList")
-    /* stub */
+void uGUIGPShop::cScrollStatusItemList::addMouseTouchList(cControl* pCtrl, s32 Pos) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd8 from uGUIBase::cScrollListItemBase*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cGUIInstance*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from uGUIBase::cScrollListItemBase*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cGUIObject*, which no DWARF type of the place gives; read with caution
+    if (pCtrl == nullptr) {
+        return;
+    }
+    if (mpItem == nullptr) {
+        return;
+    }
+    pCtrl->addMouseTouchListLight(mpItem->mpInstMouseCollision, mpItem->mpObjMouseCollision, Pos, 0);
+    pCtrl->addMouseTouchListLight(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpItem) + 216)), reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpItem) + 224)), Pos, 1);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollStatusItemList::MyDTI uGUIGPShop::cScrollStatusItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab94f0-0x00ab9529 (called at uGUIGPShop.cpp:49)
@@ -3348,7 +3430,7 @@ const MtDTI& uGUIGPShop::cScrollHistoryItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollHistoryItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollHistoryItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3372,6 +3454,8 @@ inline void uGUIGPShop::cScrollHistoryItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollHistoryItemList::~cScrollHistoryItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollHistoryItemList::MyDTI uGUIGPShop::cScrollHistoryItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab9562-0x00ab959b (called at uGUIGPShop.cpp:51)
@@ -3419,7 +3503,7 @@ const MtDTI& uGUIGPShop::cScrollCOGItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGPShop::cScrollCOGItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollCOGItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollCOGItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3441,6 +3525,8 @@ inline void uGUIGPShop::cScrollCOGItemList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIGPShop::cScrollCOGItemList::~cScrollCOGItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPShop::cScrollCOGItemList::MyDTI uGUIGPShop::cScrollCOGItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGPShop.cpp at 0x00ab95d4-0x00ab960d (called at uGUIGPShop.cpp:53)

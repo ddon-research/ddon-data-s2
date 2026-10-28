@@ -33,7 +33,7 @@ const MtDTI& rCameraList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK11rCameraList5MyDTI11newInstanceEv at 0x011c2060-0x011c208d, code DWARF attributes to no inlined copy; sz is the class's size (120), align the allocation's other whole constant (16)
 inline void* rCameraList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memAlloc(sz, align, ::rCameraList::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rCameraList::DTI)->memAlloc(sz, align, rCameraList::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rCameraList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rCameraListD0Ev at 0x011c21da-0x011c21fb, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCameraList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCameraList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,9 +68,9 @@ inline void rCameraList::operator delete(void* p_addr) {
 rCameraList::~rCameraList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11c2158 read, used once; no DWARF local holds it
-    rCameraList::CAMERA_LIST_HDR* t0 = this->mpHdr;
-    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(static_cast<void*>(t0));
-    this->mpHdr = static_cast<rCameraList::CAMERA_LIST_HDR*>(nullptr);
+    CAMERA_LIST_HDR* t0 = mpHdr;
+    MtMemoryAllocator::getAllocator(rCameraList::DTI)->memFree(static_cast<void*>(t0));
+    mpHdr = nullptr;
 }
 
 // Address: 0x01b91730 - 0x01b91738 (8 bytes)
@@ -104,9 +104,9 @@ bool rCameraList::save(MtStream& out) {
 void rCameraList::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11c220a read, used once; no DWARF local holds it
-    rCameraList::CAMERA_LIST_HDR* t0 = this->mpHdr;
-    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(static_cast<void*>(t0));
-    this->mpHdr = static_cast<rCameraList::CAMERA_LIST_HDR*>(nullptr);
+    CAMERA_LIST_HDR* t0 = mpHdr;
+    MtMemoryAllocator::getAllocator(rCameraList::DTI)->memFree(static_cast<void*>(t0));
+    mpHdr = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,13 +122,15 @@ void rCameraList::clear() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rCameraList::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCameraList::MyDTI rCameraList::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCameraList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011c2060 - 0x011c20bd (93 bytes)
 MtObject* rCameraList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCameraList;
+    return new (16u) rCameraList;
 }
 
 // No out-of-line body: no code in the ELF

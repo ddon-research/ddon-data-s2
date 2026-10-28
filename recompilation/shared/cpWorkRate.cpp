@@ -26,7 +26,7 @@ const MtDTI& cpWorkRate::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpWorkRate::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpWorkRate::DTI);
+    return MtMemoryAllocator::getAllocator(cpWorkRate::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpWorkRate::getAllocator() {
 // Address: 0x00540fc0 - 0x00541000 (64 bytes)
 void* cpWorkRate::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpWorkRate::getAllocator()->memAlloc(sz, align, ::cpWorkRate::DTI.::MtDTI::getID());
+    return cpWorkRate::getAllocator()->memAlloc(sz, align, cpWorkRate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpWorkRate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpWorkRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpWorkRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpWorkRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,27 +78,27 @@ cpWorkRate::~cpWorkRate() {
 // Address: 0x00541120 - 0x00541129 (9 bytes)
 void cpWorkRate::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00541130 - 0x00541135 (5 bytes)
 void cpWorkRate::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00541140 - 0x00541173 (51 bytes)
 void cpWorkRate::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00541310 - 0x00541c97 (2439 bytes)
@@ -129,19 +129,19 @@ __attribute__((weak)) void cpWorkRate::reUpdateRate() {
 // Address: 0x00541ca0 - 0x00541ca9 (9 bytes)
 void cpWorkRate::setSpeed(f32 spd, cpWorkRate::RATE_INDEX Idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpeed[Idx] = spd;
+    mSpeed[Idx] = spd;
 }
 
 // Address: 0x00541cc0 - 0x00541cc7 (7 bytes)
 void cpWorkRate::setTypeBit(u32 typeBit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTypeBit = typeBit;
+    mTypeBit = typeBit;
 }
 
 // Address: 0x00541cd0 - 0x00541cd7 (7 bytes)
 u32 cpWorkRate::getTypeBit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTypeBit;
+    return mTypeBit;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (49 bytes)
@@ -154,7 +154,7 @@ u32 cpWorkRate::getTypeBit() const {
 f32 cpWorkRate::getCollisionCacheRate() const {
     // DWARF local not rendered: f32 speed;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed[0] * this->mSpeed[5];
+    return mSpeed[0] * mSpeed[5];
 }
 
 // Address: 0x00541cf0 - 0x00541d2b (59 bytes)
@@ -162,14 +162,16 @@ f32 cpWorkRate::getSpeedAll() const {
     // DWARF local not rendered: f32 speed;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed[10] * (this->mSpeed[9] * (this->mSpeed[8] * (this->mSpeed[7] * (this->mSpeed[6] * (this->mSpeed[5] * (this->mSpeed[4] * (this->mSpeed[3] * (this->mSpeed[2] * (this->mSpeed[0] * this->mSpeed[1])))))))));
+    return mSpeed[10] * (mSpeed[9] * (mSpeed[8] * (mSpeed[7] * (mSpeed[6] * (mSpeed[5] * (mSpeed[4] * (mSpeed[3] * (mSpeed[2] * (mSpeed[0] * mSpeed[1])))))))));
 }
 
 // Address: 0x00541cb0 - 0x00541cb9 (9 bytes)
 f32 cpWorkRate::getSpeed(cpWorkRate::RATE_INDEX Idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed[Idx];
+    return mSpeed[Idx];
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpWorkRate::MyDTI cpWorkRate::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpWorkRate.cpp at 0x00541d30-0x00541d72 (called at cpWorkRate.cpp:24)

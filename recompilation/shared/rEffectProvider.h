@@ -396,6 +396,8 @@ public:
 public:
     class EffectIndex : public MtObject
     {
+        // inferred: rEffectProvider::INFO_EFFECT::getEffectElement names rEffectProvider::EffectIndex::mEffectElementNum, through its enclosing class rEffectProvider
+        friend class rEffectProvider;
     public:
         class MyDTI;
     public:
@@ -857,12 +859,12 @@ protected:
 // approximate: only approximate callers check this inline body
 inline rEffectProvider::INFO_EFFECT::INFO_EFFECT() {
     // inferred: the base constructor inlined with no DWARF copy left no code: rEffectProvider::INFO_BASE() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mpEffectIndex = static_cast<rEffectProvider::EffectIndex*>(nullptr);
-    this->mEffectIndexNum = static_cast<u32>(0);
-    this->mpMotSyncList = static_cast<rEffectProvider::EffectMotSyncParam*>(nullptr);
-    this->mMotSyncListNum = static_cast<u32>(0);
-    this->mpEventList = static_cast<rEffectProvider::EffectEventParam*>(nullptr);
-    this->mEventListNum = static_cast<u32>(0);
+    this->mpEffectIndex = nullptr;
+    this->mEffectIndexNum = 0;
+    this->mpMotSyncList = nullptr;
+    this->mMotSyncListNum = 0;
+    this->mpEventList = nullptr;
+    this->mEventListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -871,26 +873,26 @@ inline rEffectProvider::INFO_BASE::INFO_BASE() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEffectProvider::EffectIndex::EffectIndex() {
-    this->mpEffectElement = static_cast<rEffectProvider::EffectElement*>(nullptr);
-    this->mEffectElementNum = static_cast<u32>(0);
+    this->mpEffectElement = nullptr;
+    this->mEffectElementNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEffectProvider::EffectMotSyncParam::EffectMotSyncParam() {
-    this->mMotionNo = static_cast<u32>(65535);
-    this->mBlendIndex = static_cast<u32>(255);
+    this->mMotionNo = 0xFFFF;
+    this->mBlendIndex = 255;
     this->mStartFrame = 0.0f;
     this->mEndFrame = 0.0f;
     this->mInterval = 0.0f;
-    this->mLeaveFlag = static_cast<u32>(0);
-    this->mSetOnceFlag = static_cast<u32>(0);
-    this->mEfcIndexNo = static_cast<u32>(65535);
-    this->mEfcElementNo = static_cast<u32>(65535);
+    this->mLeaveFlag = 0;
+    this->mSetOnceFlag = 0;
+    this->mEfcIndexNo = 0xFFFF;
+    this->mEfcElementNo = 0xFFFF;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEffectProvider::EffectEventParam::EffectEventParam() {
-    this->mEventWorkNo = static_cast<u32>(0);
-    this->mEfcIndexNo = static_cast<u32>(65535);
-    this->mEfcElementNo = static_cast<u32>(65535);
+    this->mEventWorkNo = 0;
+    this->mEfcIndexNo = 0xFFFF;
+    this->mEfcElementNo = 0xFFFF;
 }

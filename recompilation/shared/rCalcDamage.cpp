@@ -38,7 +38,7 @@ const MtDTI& cAdjLimitParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cAdjLimitParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memAlloc(sz, align, ::cAdjLimitParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAdjLimitParam::DTI)->memAlloc(sz, align, cAdjLimitParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (40 bytes)
@@ -53,7 +53,7 @@ inline void* cAdjLimitParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAdjLimitParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAdjLimitParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -71,15 +71,17 @@ inline void cAdjLimitParam::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cAdjLimitParam::cAdjLimitParam() {
-    ::memset(static_cast<void*>(&this->mGuardAtkAdjMax[0]), static_cast<int>(0), static_cast<size_t>(792));
-    this->mHolyAbsorpMax = static_cast<u16>(3000);
-    this->mHolyAbsorpMin = static_cast<u16>(0);
-    this->mDamageMax = 9999.0f;
-    this->mDamageMin = 0.0f;
+    memset(static_cast<void*>(&mGuardAtkAdjMax[0]), 0, 792ul);
+    mHolyAbsorpMax = 3000;
+    mHolyAbsorpMin = 0;
+    mDamageMax = 9999.0f;
+    mDamageMin = 0.0f;
 }
 
 // Defined in the class (its body was written in a header).
 // cAdjLimitParam::~cAdjLimitParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAdjLimitParam::MyDTI cAdjLimitParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064df01-0x0064df3a (called at rCalcDamage.cpp:687)
@@ -89,7 +91,7 @@ cAdjLimitParam::cAdjLimitParam() {
 // Address: 0x0064b450 - 0x0064b4c3 (115 bytes)
 MtObject* cAdjLimitParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAdjLimitParam;
+    return new (16u) cAdjLimitParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ const MtDTI& cBlowSaveEmLvParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memAlloc(sz, align, ::cBlowSaveEmLvParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cBlowSaveEmLvParam::DTI)->memAlloc(sz, align, cBlowSaveEmLvParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -132,7 +134,7 @@ inline void* cBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cBlowSaveEmLvParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBlowSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -161,6 +163,8 @@ __attribute__((weak)) void cBlowSaveEmLvParam::createProperty(MtPropertyList& s)
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBlowSaveEmLvParam::MyDTI cBlowSaveEmLvParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e0c9-0x0064e102 (called at rCalcDamage.cpp:2421)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e0c9-0x0064e102 (called at rCalcDamage.h:618)
@@ -169,7 +173,7 @@ __attribute__((weak)) void cBlowSaveEmLvParam::createProperty(MtPropertyList& s)
 // Address: 0x0064d2e0 - 0x0064d328 (72 bytes)
 MtObject* cBlowSaveEmLvParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cBlowSaveEmLvParam;
+    return new (16u) cBlowSaveEmLvParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +201,7 @@ const MtDTI& cCalcDamageAtdmAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, cCalcDamageAtdmAdj::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -212,7 +216,7 @@ inline void* cCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCalcDamageAtdmAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -241,6 +245,8 @@ __attribute__((weak)) void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s)
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCalcDamageAtdmAdj::MyDTI cCalcDamageAtdmAdj::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dd39-0x0064dd72 (called at rCalcDamage.cpp:149)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dd39-0x0064dd72 (called at rCalcDamage.h:90)
@@ -249,7 +255,7 @@ __attribute__((weak)) void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s)
 // Address: 0x00649690 - 0x006496de (78 bytes)
 MtObject* cCalcDamageAtdmAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCalcDamageAtdmAdj;
+    return new (16u) cCalcDamageAtdmAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -277,7 +283,7 @@ const MtDTI& cCalcDamageAtdmAdjRate::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdjRate::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, cCalcDamageAtdmAdjRate::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -292,7 +298,7 @@ inline void* cCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -321,6 +327,8 @@ __attribute__((weak)) void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCalcDamageAtdmAdjRate::MyDTI cCalcDamageAtdmAdjRate::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064ddab-0x0064dde4 (called at rCalcDamage.cpp:260)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064ddab-0x0064dde4 (called at rCalcDamage.h:146)
@@ -329,7 +337,7 @@ __attribute__((weak)) void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList
 // Address: 0x00649a20 - 0x00649a6e (78 bytes)
 MtObject* cCalcDamageAtdmAdjRate::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCalcDamageAtdmAdjRate;
+    return new (16u) cCalcDamageAtdmAdjRate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -370,7 +378,7 @@ const MtDTI& cCalcDamageLvAdj::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCalcDamageLvAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCalcDamageLvAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -398,6 +406,8 @@ __attribute__((weak)) void cCalcDamageLvAdj::createProperty(MtPropertyList& s) {
     DDON_STUB("cCalcDamageLvAdj::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCalcDamageLvAdj::MyDTI cCalcDamageLvAdj::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dcb0-0x0064dcf9 (called at rCalcDamage.cpp:24)
@@ -435,7 +445,7 @@ const MtDTI& cDamageSaveEmLvParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memAlloc(sz, align, ::cDamageSaveEmLvParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDamageSaveEmLvParam::DTI)->memAlloc(sz, align, cDamageSaveEmLvParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -450,7 +460,7 @@ inline void* cDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDamageSaveEmLvParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDamageSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -479,6 +489,8 @@ __attribute__((weak)) void cDamageSaveEmLvParam::createProperty(MtPropertyList& 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDamageSaveEmLvParam::MyDTI cDamageSaveEmLvParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e057-0x0064e090 (called at rCalcDamage.cpp:2299)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e057-0x0064e090 (called at rCalcDamage.h:563)
@@ -487,7 +499,7 @@ __attribute__((weak)) void cDamageSaveEmLvParam::createProperty(MtPropertyList& 
 // Address: 0x0064cdb0 - 0x0064ce00 (80 bytes)
 MtObject* cDamageSaveEmLvParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDamageSaveEmLvParam;
+    return new (16u) cDamageSaveEmLvParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -515,7 +527,7 @@ const MtDTI& cDamageSpecialAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cDamageSpecialAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memAlloc(sz, align, ::cDamageSpecialAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDamageSpecialAdj::DTI)->memAlloc(sz, align, cDamageSpecialAdj::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -530,7 +542,7 @@ inline void* cDamageSpecialAdj::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDamageSpecialAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDamageSpecialAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -559,6 +571,8 @@ __attribute__((weak)) void cDamageSpecialAdj::createProperty(MtPropertyList& s) 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDamageSpecialAdj::MyDTI cDamageSpecialAdj::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e13b-0x0064e174 (called at rCalcDamage.cpp:2534)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e13b-0x0064e174 (called at rCalcDamage.h:670)
@@ -567,7 +581,7 @@ __attribute__((weak)) void cDamageSpecialAdj::createProperty(MtPropertyList& s) 
 // Address: 0x0064d660 - 0x0064d6a7 (71 bytes)
 MtObject* cDamageSpecialAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDamageSpecialAdj;
+    return new (16u) cDamageSpecialAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -608,7 +622,7 @@ const MtDTI& cDmJobAdjParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDmJobAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDmJobAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -636,6 +650,8 @@ __attribute__((weak)) void cDmJobAdjParam::createProperty(MtPropertyList& s) {
     DDON_STUB("cDmJobAdjParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDmJobAdjParam::MyDTI cDmJobAdjParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064de1d-0x0064de56 (called at rCalcDamage.cpp:371)
@@ -673,7 +689,7 @@ const MtDTI& cDmJobPawnAdjParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmJobPawnAdjParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDmJobPawnAdjParam::DTI)->memAlloc(sz, align, cDmJobPawnAdjParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -688,7 +704,7 @@ inline void* cDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDmJobPawnAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDmJobPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -717,6 +733,8 @@ __attribute__((weak)) void cDmJobPawnAdjParam::createProperty(MtPropertyList& s)
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDmJobPawnAdjParam::MyDTI cDmJobPawnAdjParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064df73-0x0064dfac (called at rCalcDamage.cpp:2058)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064df73-0x0064dfac (called at rCalcDamage.h:455)
@@ -725,7 +743,7 @@ __attribute__((weak)) void cDmJobPawnAdjParam::createProperty(MtPropertyList& s)
 // Address: 0x0064c420 - 0x0064c470 (80 bytes)
 MtObject* cDmJobPawnAdjParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDmJobPawnAdjParam;
+    return new (16u) cDmJobPawnAdjParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -753,7 +771,7 @@ const MtDTI& cDmLvPawnAdjParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmLvPawnAdjParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDmLvPawnAdjParam::DTI)->memAlloc(sz, align, cDmLvPawnAdjParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -768,7 +786,7 @@ inline void* cDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDmLvPawnAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDmLvPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -797,6 +815,8 @@ __attribute__((weak)) void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDmLvPawnAdjParam::MyDTI cDmLvPawnAdjParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dfe5-0x0064e01e (called at rCalcDamage.cpp:2182)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dfe5-0x0064e01e (called at rCalcDamage.h:509)
@@ -805,7 +825,7 @@ __attribute__((weak)) void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) 
 // Address: 0x0064c950 - 0x0064c99f (79 bytes)
 MtObject* cDmLvPawnAdjParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDmLvPawnAdjParam;
+    return new (16u) cDmLvPawnAdjParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -833,7 +853,7 @@ const MtDTI& cErosionShakeConvert::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cErosionShakeConvert::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memAlloc(sz, align, ::cErosionShakeConvert::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cErosionShakeConvert::DTI)->memAlloc(sz, align, cErosionShakeConvert::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -848,7 +868,7 @@ inline void* cErosionShakeConvert::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionShakeConvert::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionShakeConvert::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -884,6 +904,8 @@ __attribute__((weak)) void cErosionShakeConvert::createProperty(MtPropertyList& 
 //   in sObjCollision::findErosionCoreAddTime at 0x007f76f3-0x007f76fa (called at sObjCollision.cpp:3206)
 // f32 cErosionShakeConvert::getAddCoreTime() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionShakeConvert::MyDTI cErosionShakeConvert::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e1ad-0x0064e1e6 (called at rCalcDamage.cpp:2643)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e1ad-0x0064e1e6 (called at rCalcDamage.h:722)
@@ -892,7 +914,7 @@ __attribute__((weak)) void cErosionShakeConvert::createProperty(MtPropertyList& 
 // Address: 0x0064d920 - 0x0064d96e (78 bytes)
 MtObject* cErosionShakeConvert::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cErosionShakeConvert;
+    return new (16u) cErosionShakeConvert;
 }
 
 // No out-of-line body: no code in the ELF
@@ -920,7 +942,7 @@ const MtDTI& cShrinkBlowValue::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cShrinkBlowValue::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memAlloc(sz, align, ::cShrinkBlowValue::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cShrinkBlowValue::DTI)->memAlloc(sz, align, cShrinkBlowValue::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -935,7 +957,7 @@ inline void* cShrinkBlowValue::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShrinkBlowValue::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShrinkBlowValue::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -964,6 +986,8 @@ __attribute__((weak)) void cShrinkBlowValue::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShrinkBlowValue::MyDTI cShrinkBlowValue::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064de8f-0x0064dec8 (called at rCalcDamage.cpp:548)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064de8f-0x0064dec8 (called at rCalcDamage.h:273)
@@ -972,7 +996,7 @@ __attribute__((weak)) void cShrinkBlowValue::createProperty(MtPropertyList& s) {
 // Address: 0x0064ad60 - 0x0064adbe (94 bytes)
 MtObject* cShrinkBlowValue::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cShrinkBlowValue;
+    return new (16u) cShrinkBlowValue;
 }
 
 // No out-of-line body: no code in the ELF
@@ -997,7 +1021,7 @@ const MtDTI& rAdjLimitParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAdjLimitParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAdjLimitParam::DTI)->memAlloc(sz, align, ::rAdjLimitParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAdjLimitParam::DTI)->memAlloc(sz, align, rAdjLimitParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1012,7 +1036,7 @@ inline void* rAdjLimitParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rAdjLimitParamD0Ev at 0x01a78864-0x01a78883, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAdjLimitParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAdjLimitParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAdjLimitParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1246,16 +1270,16 @@ bool rAdjLimitParam::loadData(MtDataReader& r, cAdjLimitParam* pData) {
     pData->mStaminaHealDefAdjMin[4] = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHolyAbsorpMax);
+    nDDOIO::readData(r, pData->mHolyAbsorpMax);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHolyAbsorpMin);
+    nDDOIO::readData(r, pData->mHolyAbsorpMin);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mDamageMax);
+    nDDOIO::readData(r, pData->mDamageMax);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mDamageMin);
+    nDDOIO::readData(r, pData->mDamageMin);
     return true;
 }
 
@@ -1268,8 +1292,10 @@ MT_CTSTR rAdjLimitParam::getExt() const {
 // Address: 0x01a789b0 - 0x01a789b6 (6 bytes)
 u32 rAdjLimitParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAdjLimitParam::MyDTI rAdjLimitParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064df3a-0x0064df73 (called at rCalcDamage.cpp:1420)
@@ -1279,7 +1305,7 @@ u32 rAdjLimitParam::getDataVersion() const {
 // Address: 0x0064b550 - 0x0064b5b4 (100 bytes)
 MtObject* rAdjLimitParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAdjLimitParam;
+    return new (16u) rAdjLimitParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1304,7 +1330,7 @@ const MtDTI& rBlowSaveEmLvParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rBlowSaveEmLvParam::DTI)->memAlloc(sz, align, ::rBlowSaveEmLvParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rBlowSaveEmLvParam::DTI)->memAlloc(sz, align, rBlowSaveEmLvParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1319,7 +1345,7 @@ inline void* rBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rBlowSaveEmLvParamD0Ev at 0x01a797b4-0x01a797d3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rBlowSaveEmLvParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rBlowSaveEmLvParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rBlowSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1336,10 +1362,10 @@ bool rBlowSaveEmLvParam::loadData(MtDataReader& in, cBlowSaveEmLvParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKeyLv);
+    nDDOIO::readData(in, pData->mKeyLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSaveRate);
+    nDDOIO::readData(in, pData->mSaveRate);
     return true;
 }
 
@@ -1352,8 +1378,10 @@ MT_CTSTR rBlowSaveEmLvParam::getExt() const {
 // Address: 0x01a79900 - 0x01a79906 (6 bytes)
 u32 rBlowSaveEmLvParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rBlowSaveEmLvParam::MyDTI rBlowSaveEmLvParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e102-0x0064e13b (called at rCalcDamage.cpp:2481)
@@ -1363,7 +1391,7 @@ u32 rBlowSaveEmLvParam::getDataVersion() const {
 // Address: 0x0064d550 - 0x0064d5b4 (100 bytes)
 MtObject* rBlowSaveEmLvParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rBlowSaveEmLvParam;
+    return new (16u) rBlowSaveEmLvParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1388,7 +1416,7 @@ const MtDTI& rCalcDamageAtdmAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, ::rCalcDamageAtdmAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, rCalcDamageAtdmAdj::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1403,7 +1431,7 @@ inline void* rCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rCalcDamageAtdmAdjD0Ev at 0x01a77a54-0x01a77a73, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCalcDamageAtdmAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1420,10 +1448,10 @@ bool rCalcDamageAtdmAdj::loadData(MtDataReader& in, cCalcDamageAtdmAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAtdmRate);
+    nDDOIO::readData(in, pData->mAtdmRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDamageAdj);
+    nDDOIO::readData(in, pData->mDamageAdj);
     return true;
 }
 
@@ -1436,8 +1464,10 @@ MT_CTSTR rCalcDamageAtdmAdj::getExt() const {
 // Address: 0x01a77ba0 - 0x01a77ba6 (6 bytes)
 u32 rCalcDamageAtdmAdj::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCalcDamageAtdmAdj::MyDTI rCalcDamageAtdmAdj::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dd72-0x0064ddab (called at rCalcDamage.cpp:209)
@@ -1447,7 +1477,7 @@ u32 rCalcDamageAtdmAdj::getDataVersion() const {
 // Address: 0x00649900 - 0x00649964 (100 bytes)
 MtObject* rCalcDamageAtdmAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCalcDamageAtdmAdj;
+    return new (16u) rCalcDamageAtdmAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1472,7 +1502,7 @@ const MtDTI& rCalcDamageAtdmAdjRate::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, ::rCalcDamageAtdmAdjRate::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, rCalcDamageAtdmAdjRate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1487,7 +1517,7 @@ inline void* rCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22rCalcDamageAtdmAdjRateD0Ev at 0x01a77e14-0x01a77e33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1504,10 +1534,10 @@ bool rCalcDamageAtdmAdjRate::loadData(MtDataReader& in, cCalcDamageAtdmAdjRate* 
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKeyValue);
+    nDDOIO::readData(in, pData->mKeyValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAtdmAdjRate);
+    nDDOIO::readData(in, pData->mAtdmAdjRate);
     return true;
 }
 
@@ -1520,8 +1550,10 @@ MT_CTSTR rCalcDamageAtdmAdjRate::getExt() const {
 // Address: 0x01a77f60 - 0x01a77f66 (6 bytes)
 u32 rCalcDamageAtdmAdjRate::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCalcDamageAtdmAdjRate::MyDTI rCalcDamageAtdmAdjRate::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dde4-0x0064de1d (called at rCalcDamage.cpp:320)
@@ -1531,7 +1563,7 @@ u32 rCalcDamageAtdmAdjRate::getDataVersion() const {
 // Address: 0x00649c90 - 0x00649cf4 (100 bytes)
 MtObject* rCalcDamageAtdmAdjRate::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCalcDamageAtdmAdjRate;
+    return new (16u) rCalcDamageAtdmAdjRate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1556,7 +1588,7 @@ const MtDTI& rCalcDamageLvAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCalcDamageLvAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCalcDamageLvAdj::DTI)->memAlloc(sz, align, ::rCalcDamageLvAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCalcDamageLvAdj::DTI)->memAlloc(sz, align, rCalcDamageLvAdj::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1571,7 +1603,7 @@ inline void* rCalcDamageLvAdj::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rCalcDamageLvAdjD0Ev at 0x01a77684-0x01a776a3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCalcDamageLvAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCalcDamageLvAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1606,8 +1638,10 @@ MT_CTSTR rCalcDamageLvAdj::getExt() const {
 // Address: 0x01a777d0 - 0x01a777d6 (6 bytes)
 u32 rCalcDamageLvAdj::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(17);
+    return 17;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCalcDamageLvAdj::MyDTI rCalcDamageLvAdj::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dcf9-0x0064dd39 (called at rCalcDamage.cpp:91)
@@ -1617,7 +1651,7 @@ u32 rCalcDamageLvAdj::getDataVersion() const {
 // Address: 0x00649530 - 0x00649594 (100 bytes)
 MtObject* rCalcDamageLvAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCalcDamageLvAdj;
+    return new (16u) rCalcDamageLvAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1642,7 +1676,7 @@ const MtDTI& rDamageSaveEmLvParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDamageSaveEmLvParam::DTI)->memAlloc(sz, align, ::rDamageSaveEmLvParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDamageSaveEmLvParam::DTI)->memAlloc(sz, align, rDamageSaveEmLvParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1657,7 +1691,7 @@ inline void* rDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rDamageSaveEmLvParamD0Ev at 0x01a793e4-0x01a79403, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDamageSaveEmLvParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDamageSaveEmLvParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDamageSaveEmLvParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1674,16 +1708,16 @@ bool rDamageSaveEmLvParam::loadData(MtDataReader& in, cDamageSaveEmLvParam* pDat
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKeyLv);
+    nDDOIO::readData(in, pData->mKeyLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSaveParamA);
+    nDDOIO::readData(in, pData->mSaveParamA);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSaveParamB);
+    nDDOIO::readData(in, pData->mSaveParamB);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSaveParamC);
+    nDDOIO::readData(in, pData->mSaveParamC);
     return true;
 }
 
@@ -1696,8 +1730,10 @@ MT_CTSTR rDamageSaveEmLvParam::getExt() const {
 // Address: 0x01a79530 - 0x01a79536 (6 bytes)
 u32 rDamageSaveEmLvParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDamageSaveEmLvParam::MyDTI rDamageSaveEmLvParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e090-0x0064e0c9 (called at rCalcDamage.cpp:2363)
@@ -1707,7 +1743,7 @@ u32 rDamageSaveEmLvParam::getDataVersion() const {
 // Address: 0x0064d1b0 - 0x0064d214 (100 bytes)
 MtObject* rDamageSaveEmLvParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDamageSaveEmLvParam;
+    return new (16u) rDamageSaveEmLvParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1732,7 +1768,7 @@ const MtDTI& rDamageSpecialAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDamageSpecialAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDamageSpecialAdj::DTI)->memAlloc(sz, align, ::rDamageSpecialAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDamageSpecialAdj::DTI)->memAlloc(sz, align, rDamageSpecialAdj::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1747,7 +1783,7 @@ inline void* rDamageSpecialAdj::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rDamageSpecialAdjD0Ev at 0x01a79c04-0x01a79c23, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDamageSpecialAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDamageSpecialAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDamageSpecialAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1763,7 +1799,7 @@ inline void rDamageSpecialAdj::operator delete(void* p_addr) {
 bool rDamageSpecialAdj::loadData(MtDataReader& in, cDamageSpecialAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(in, pData->mDamageRate);
+    nDDOIO::readData(in, pData->mDamageRate);
     return true;
 }
 
@@ -1776,8 +1812,10 @@ MT_CTSTR rDamageSpecialAdj::getExt() const {
 // Address: 0x01a79d50 - 0x01a79d56 (6 bytes)
 u32 rDamageSpecialAdj::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDamageSpecialAdj::MyDTI rDamageSpecialAdj::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e174-0x0064e1ad (called at rCalcDamage.cpp:2592)
@@ -1787,7 +1825,7 @@ u32 rDamageSpecialAdj::getDataVersion() const {
 // Address: 0x0064d820 - 0x0064d884 (100 bytes)
 MtObject* rDamageSpecialAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDamageSpecialAdj;
+    return new (16u) rDamageSpecialAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1812,7 +1850,7 @@ const MtDTI& rDmJobAdjParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDmJobAdjParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDmJobAdjParam::DTI)->memAlloc(sz, align, ::rDmJobAdjParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDmJobAdjParam::DTI)->memAlloc(sz, align, rDmJobAdjParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1827,7 +1865,7 @@ inline void* rDmJobAdjParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rDmJobAdjParamD0Ev at 0x01a781d4-0x01a781f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDmJobAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDmJobAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDmJobAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1844,52 +1882,52 @@ bool rDmJobAdjParam::loadData(MtDataReader& in, cDmJobAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mJobType);
+    nDDOIO::readData(in, pData->mJobType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mActionRateAdj);
+    nDDOIO::readData(in, pData->mActionRateAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDamageAdj);
+    nDDOIO::readData(in, pData->mDamageAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStaminaDamageAdj);
+    nDDOIO::readData(in, pData->mStaminaDamageAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEnchantDamageAdj);
+    nDDOIO::readData(in, pData->mEnchantDamageAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAbilityBlowAdj);
+    nDDOIO::readData(in, pData->mAbilityBlowAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mHumanEmOcdAdj);
+    nDDOIO::readData(in, pData->mHumanEmOcdAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mTiredDamageAdj);
+    nDDOIO::readData(in, pData->mTiredDamageAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChanceDamageAdj);
+    nDDOIO::readData(in, pData->mChanceDamageAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAtDmRateMaxPhys);
+    nDDOIO::readData(in, pData->mAtDmRateMaxPhys);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAtDmRateMaxMagic);
+    nDDOIO::readData(in, pData->mAtDmRateMaxMagic);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mHealBaseMagicAdjAdd);
+    nDDOIO::readData(in, pData->mHealBaseMagicAdjAdd);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mHealBaseMagicAdjMulti);
+    nDDOIO::readData(in, pData->mHealBaseMagicAdjMulti);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mHealWepMagicAdjAdd);
+    nDDOIO::readData(in, pData->mHealWepMagicAdjAdd);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mHealWepMagicAdjMulti);
+    nDDOIO::readData(in, pData->mHealWepMagicAdjMulti);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mShrinkBlowSaveAdj);
+    nDDOIO::readData(in, pData->mShrinkBlowSaveAdj);
     return true;
 }
 
@@ -1902,8 +1940,10 @@ MT_CTSTR rDmJobAdjParam::getExt() const {
 // Address: 0x01a78320 - 0x01a78326 (6 bytes)
 u32 rDmJobAdjParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(9);
+    return 9;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDmJobAdjParam::MyDTI rDmJobAdjParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064de56-0x0064de8f (called at rCalcDamage.cpp:465)
@@ -1913,7 +1953,7 @@ u32 rDmJobAdjParam::getDataVersion() const {
 // Address: 0x0064ab70 - 0x0064abd4 (100 bytes)
 MtObject* rDmJobAdjParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDmJobAdjParam;
+    return new (16u) rDmJobAdjParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1938,7 +1978,7 @@ const MtDTI& rDmJobPawnAdjParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDmJobPawnAdjParam::DTI)->memAlloc(sz, align, ::rDmJobPawnAdjParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDmJobPawnAdjParam::DTI)->memAlloc(sz, align, rDmJobPawnAdjParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1953,7 +1993,7 @@ inline void* rDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rDmJobPawnAdjParamD0Ev at 0x01a78c54-0x01a78c73, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDmJobPawnAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDmJobPawnAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDmJobPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1970,16 +2010,16 @@ bool rDmJobPawnAdjParam::loadData(MtDataReader& in, cDmJobPawnAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mJobType);
+    nDDOIO::readData(in, pData->mJobType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBaseAttackAdj);
+    nDDOIO::readData(in, pData->mBaseAttackAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBaseMagicAttackAdj);
+    nDDOIO::readData(in, pData->mBaseMagicAttackAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBaseBlowShrinkAdj);
+    nDDOIO::readData(in, pData->mBaseBlowShrinkAdj);
     return true;
 }
 
@@ -1992,8 +2032,10 @@ MT_CTSTR rDmJobPawnAdjParam::getExt() const {
 // Address: 0x01a78da0 - 0x01a78da6 (6 bytes)
 u32 rDmJobPawnAdjParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDmJobPawnAdjParam::MyDTI rDmJobPawnAdjParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dfac-0x0064dfe5 (called at rCalcDamage.cpp:2125)
@@ -2003,7 +2045,7 @@ u32 rDmJobPawnAdjParam::getDataVersion() const {
 // Address: 0x0064c820 - 0x0064c884 (100 bytes)
 MtObject* rDmJobPawnAdjParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDmJobPawnAdjParam;
+    return new (16u) rDmJobPawnAdjParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2028,7 +2070,7 @@ const MtDTI& rDmLvPawnAdjParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDmLvPawnAdjParam::DTI)->memAlloc(sz, align, ::rDmLvPawnAdjParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDmLvPawnAdjParam::DTI)->memAlloc(sz, align, rDmLvPawnAdjParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2043,7 +2085,7 @@ inline void* rDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rDmLvPawnAdjParamD0Ev at 0x01a79024-0x01a79043, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDmLvPawnAdjParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDmLvPawnAdjParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDmLvPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2060,13 +2102,13 @@ bool rDmLvPawnAdjParam::loadData(MtDataReader& in, cDmLvPawnAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKeyLv);
+    nDDOIO::readData(in, pData->mKeyLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLvAdjRateBase);
+    nDDOIO::readData(in, pData->mLvAdjRateBase);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLvAdjRateWep);
+    nDDOIO::readData(in, pData->mLvAdjRateWep);
     return true;
 }
 
@@ -2079,8 +2121,10 @@ MT_CTSTR rDmLvPawnAdjParam::getExt() const {
 // Address: 0x01a79170 - 0x01a79176 (6 bytes)
 u32 rDmLvPawnAdjParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDmLvPawnAdjParam::MyDTI rDmLvPawnAdjParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e01e-0x0064e057 (called at rCalcDamage.cpp:2244)
@@ -2090,7 +2134,7 @@ u32 rDmLvPawnAdjParam::getDataVersion() const {
 // Address: 0x0064cc90 - 0x0064ccf4 (100 bytes)
 MtObject* rDmLvPawnAdjParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDmLvPawnAdjParam;
+    return new (16u) rDmLvPawnAdjParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2115,7 +2159,7 @@ const MtDTI& rErosionShakeConvert::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionShakeConvert::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionShakeConvert::DTI)->memAlloc(sz, align, ::rErosionShakeConvert::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionShakeConvert::DTI)->memAlloc(sz, align, rErosionShakeConvert::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2130,7 +2174,7 @@ inline void* rErosionShakeConvert::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rErosionShakeConvertD0Ev at 0x01a7a044-0x01a7a063, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionShakeConvert::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionShakeConvert::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionShakeConvert::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2147,10 +2191,10 @@ bool rErosionShakeConvert::loadData(MtDataReader& in, cErosionShakeConvert* pDat
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKeyShakesRate);
+    nDDOIO::readData(in, pData->mKeyShakesRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAddCoreTime);
+    nDDOIO::readData(in, pData->mAddCoreTime);
     return true;
 }
 
@@ -2163,8 +2207,10 @@ MT_CTSTR rErosionShakeConvert::getExt() const {
 // Address: 0x01a7a190 - 0x01a7a196 (6 bytes)
 u32 rErosionShakeConvert::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionShakeConvert::MyDTI rErosionShakeConvert::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064e1e6-0x0064e21f (called at rCalcDamage.cpp:2703)
@@ -2174,7 +2220,7 @@ u32 rErosionShakeConvert::getDataVersion() const {
 // Address: 0x0064db90 - 0x0064dbf4 (100 bytes)
 MtObject* rErosionShakeConvert::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionShakeConvert;
+    return new (16u) rErosionShakeConvert;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2199,7 +2245,7 @@ const MtDTI& rShrinkBlowValue::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShrinkBlowValue::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShrinkBlowValue::DTI)->memAlloc(sz, align, ::rShrinkBlowValue::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShrinkBlowValue::DTI)->memAlloc(sz, align, rShrinkBlowValue::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2214,7 +2260,7 @@ inline void* rShrinkBlowValue::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rShrinkBlowValueD0Ev at 0x01a784e4-0x01a78503, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rShrinkBlowValue::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShrinkBlowValue::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShrinkBlowValue::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2231,22 +2277,22 @@ bool rShrinkBlowValue::loadData(MtDataReader& in, cShrinkBlowValue* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDamageType);
+    nDDOIO::readData(in, pData->mDamageType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLv);
+    nDDOIO::readData(in, pData->mLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSpeedXZ);
+    nDDOIO::readData(in, pData->mSpeedXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAccelerateXZ);
+    nDDOIO::readData(in, pData->mAccelerateXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSpeedY);
+    nDDOIO::readData(in, pData->mSpeedY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGravityY);
+    nDDOIO::readData(in, pData->mGravityY);
     return true;
 }
 
@@ -2259,8 +2305,10 @@ MT_CTSTR rShrinkBlowValue::getExt() const {
 // Address: 0x01a78630 - 0x01a78636 (6 bytes)
 u32 rShrinkBlowValue::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShrinkBlowValue::MyDTI rShrinkBlowValue::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCalcDamage.cpp at 0x0064dec8-0x0064df01 (called at rCalcDamage.cpp:627)
@@ -2270,7 +2318,7 @@ u32 rShrinkBlowValue::getDataVersion() const {
 // Address: 0x0064b300 - 0x0064b364 (100 bytes)
 MtObject* rShrinkBlowValue::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShrinkBlowValue;
+    return new (16u) rShrinkBlowValue;
 }
 
 // Instance at 0x01a78960 - 0x01a78975 (21 bytes) of the generic rTbl2<T>::getData

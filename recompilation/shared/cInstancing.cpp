@@ -124,11 +124,11 @@ const MtDTI& cInstancingCulling::getDTI() const {
 // Also emitted as: _ZN18cInstancingCullingD0Ev at 0x01019870
 cInstancingCulling::~cInstancingCulling() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBillboardTexture == static_cast<rTexture*>(nullptr)) {
+    if (mpBillboardTexture == nullptr) {
         return;
     }
-    this->mpBillboardTexture->::cResource::release();
-    this->mpBillboardTexture = static_cast<rTexture*>(nullptr);
+    mpBillboardTexture->release();
+    mpBillboardTexture = nullptr;
 }
 
 // Address: 0x010198c0 - 0x01019d1e (1118 bytes)
@@ -140,16 +140,16 @@ __attribute__((weak)) void cInstancingCulling::createProperty(MtPropertyList& s)
 // Address: 0x01019d20 - 0x01019d25 (5 bytes)
 MtUI* cInstancingCulling::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01019d30 - 0x01019d55 (37 bytes)
 void cInstancingCulling::updateLODParam(rModel::MODEL_INFO* pmi) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cInstancing::mLODDistance[0] = 0.0f;
-    this->::cInstancing::mLODDistance[1] = static_cast<float>(pmi->middist);
-    this->::cInstancing::mLODDistance[2] = static_cast<float>(pmi->lowdist);
-    this->::cInstancing::mLODDistance[3] = this->mLodBillboardDistance + static_cast<float>(pmi->lowdist);
+    mLODDistance[0] = 0.0f;
+    mLODDistance[1] = static_cast<float>(pmi->middist);
+    mLODDistance[2] = static_cast<float>(pmi->lowdist);
+    mLODDistance[3] = mLodBillboardDistance + static_cast<float>(pmi->lowdist);
 }
 
 // Address: 0x01019ed0 - 0x0101a146 (630 bytes)
@@ -171,7 +171,7 @@ __attribute__((weak)) void cInstancingCulling::end(cDraw* pdraw) {
 // Address: 0x01019e00 - 0x01019e17 (23 bytes)
 void cInstancingCulling::beginRecord(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRecord[pdraw->mJobThreadIndex].vb_buf = static_cast<nDraw::VertexBuffer*>(nullptr);
+    mRecord[pdraw->mJobThreadIndex].vb_buf = nullptr;
 }
 
 // Address: 0x01019e20 - 0x01019ec6 (166 bytes)
@@ -239,7 +239,7 @@ __attribute__((weak)) void cInstancingCulling::drawBillboard(cDraw* pdraw) {
 // Address: 0x01b69220 - 0x01b69228 (8 bytes)
 const MtMatrix& cInstancingCulling::getWorldMatrix() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferenceWorldMatrix;
+    return mReferenceWorldMatrix;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -296,10 +296,10 @@ s32 cInstancingCulling::compare(const void* p_src1, const void* p_src2) {
     // DWARF local not rendered: InstanceInfo* p_s2;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const void*
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src2) + static_cast<long>(0))) >= (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src1) + static_cast<long>(0)))) {
-        return static_cast<s32>(-1);
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src2) + 0)) >= (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src1) + 0))) {
+        return -1;
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
 
@@ -342,6 +342,18 @@ __attribute__((weak)) bool cInstancingCulling::culling(cDraw* pdraw, cInstancing
     DDON_STUB("cInstancingCulling::culling")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cInstancingCulling::MyDTI cInstancingCulling::DTI;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection cInstancingCulling::mCS;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 cInstancingCulling::mListCount;
+
+// Not defined (no member-wise spelling: a class outside the bundle): cInstancingCulling::VisibleList cInstancingCulling::mList[32];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtAllocator* cInstancingCulling::mpAllocator;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cInstancingCulling::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -554,6 +566,8 @@ __attribute__((weak)) MtVector4 cInstancingDynamic::getInstanceColor(u32 index, 
     __builtin_unreachable();
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cInstancingDynamic::MyDTI cInstancingDynamic::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cInstancingDynamic::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -719,17 +733,17 @@ __attribute__((weak)) void cInstancingFromMatrices::move() {
 s32 cInstancingFromMatrices::getId() {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x101fc20, 0x101fc3a)) is the counter this loop steps (DWARF's stale constant 0)
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cInstancingFromMatrices::Area* p2 = &this->mArea[0];
+    Area* p2 = &mArea[0];
     do {
-        if ((p2->mEmpty & static_cast<u32>(1)) != static_cast<u32>(0)) {
+        if ((p2->mEmpty & 1u) != 0) {
             return i;
         }
-        i += static_cast<s32>(1);
+        i += 1;
         p2 += static_cast<int>(1);
-    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(255));
-    return static_cast<s32>(-1);
+    } while ((i + 0) <= 255);
+    return -1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -760,7 +774,7 @@ __attribute__((weak)) void cInstancingFromMatrices::delInstance(u32 user_id) {
 // Address: 0x0101fb00 - 0x0101fb07 (7 bytes)
 u32 cInstancingFromMatrices::getInstanceNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mInstanceNum;
+    return mInstanceNum;
 }
 
 // Address: 0x0101fb10 - 0x0101fbd3 (195 bytes)
@@ -775,7 +789,7 @@ __attribute__((weak)) MtMatrix cInstancingFromMatrices::getInstanceMatrix(u32 in
 MtFloat3x4& cInstancingFromMatrices::getInstanceMatrix3x4(u32 index) {
     // DWARF local not rendered: AreaInfo area;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArea[(index >> static_cast<u32>(8)) & static_cast<u32>(255)].mpInstanceMatrices[static_cast<unsigned char>(index)];
+    return mArea[(index >> 8) & 255u].mpInstanceMatrices[static_cast<unsigned char>(index)];
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -792,6 +806,8 @@ __attribute__((weak)) void cInstancingFromMatrices::delInstanceProcess(u32 user_
     DDON_STUB("cInstancingFromMatrices::delInstanceProcess")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cInstancingFromMatrices::MyDTI cInstancingFromMatrices::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cInstancingFromMatrices::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

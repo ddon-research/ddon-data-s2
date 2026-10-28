@@ -986,7 +986,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cBlowSaveEmLvParam::cBlowSaveEmLvParam() {
-    this->mKeyLv = static_cast<u32>(0);
+    this->mKeyLv = 0;
     this->mSaveRate = 0.0f;
 }
 
@@ -1006,7 +1006,7 @@ inline cCalcDamageAtdmAdjRate::cCalcDamageAtdmAdjRate() {
 inline cDamageSaveEmLvParam::cDamageSaveEmLvParam() {
     this->mSaveParamB = 0.0f;
     this->mSaveParamC = 0.0f;
-    this->mKeyLv = static_cast<u32>(0);
+    this->mKeyLv = 0;
     this->mSaveParamA = 0.0f;
 }
 
@@ -1017,7 +1017,7 @@ inline cDamageSpecialAdj::cDamageSpecialAdj() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cDmJobPawnAdjParam::cDmJobPawnAdjParam() {
-    this->mJobType = static_cast<u32>(255);
+    this->mJobType = 255;
     this->mBaseAttackAdj = 0.0f;
     this->mBaseMagicAttackAdj = 0.0f;
     this->mBaseBlowShrinkAdj = 0.0f;
@@ -1025,7 +1025,7 @@ inline cDmJobPawnAdjParam::cDmJobPawnAdjParam() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cDmLvPawnAdjParam::cDmLvPawnAdjParam() {
-    this->mKeyLv = static_cast<u32>(0);
+    this->mKeyLv = 0;
     this->mLvAdjRateBase = 0.0f;
     this->mLvAdjRateWep = 0.0f;
 }
@@ -1044,8 +1044,8 @@ inline f32 cErosionShakeConvert::getAddCoreTime() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cShrinkBlowValue::cShrinkBlowValue() {
-    this->mDamageType = static_cast<u32>(0);
-    this->mLv = static_cast<u32>(1);
+    this->mDamageType = 0;
+    this->mLv = 1;
     this->mSpeedY = 0.0f;
     this->mGravityY = 0.0f;
     this->mSpeedXZ = 0.0f;

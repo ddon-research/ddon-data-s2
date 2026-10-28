@@ -35,7 +35,7 @@ const MtDTI& nNetwork::SessionDatabase::getDTI() const {
 // Address: 0x01198790 - 0x011987d0 (64 bytes)
 void* nNetwork::SessionDatabase::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDatabase::DTI)->memAlloc(sz, align, ::nNetwork::SessionDatabase::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDatabase::DTI)->memAlloc(sz, align, ::nNetwork::SessionDatabase::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,10 +117,10 @@ __attribute__((weak)) void nNetwork::SessionDatabase::createProperty(MtPropertyL
 // Address: 0x01199c30 - 0x01199c4e (30 bytes)
 bool nNetwork::SessionDatabase::isValid(s32 member_index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(member_index) > static_cast<unsigned int>(15)) {
+    if (static_cast<unsigned int>(member_index) > 15) {
         return false;
     } else {
-        return this->mMemberList[member_index].mInfo.mIsValid != false;
+        return mMemberList[member_index].mInfo.mIsValid;
     }
 }
 
@@ -280,12 +280,12 @@ __attribute__((weak)) void nNetwork::SessionDatabase::setMemberData(s32 member_i
 // Address: 0x01199c50 - 0x01199c97 (71 bytes)
 void nNetwork::SessionDatabase::deleteMemberData(s32 member_index, MtNetSession::Member* member) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMemberList[member_index].::nNetwork::Member::clear();
-    this->mSessionInfo.mSlotNum.mTotalUse = this->mSessionInfo.mSlotNum.mTotalUse - static_cast<s32>(1);
-    if (member->mIsPrivate != false) {
-        this->mSessionInfo.mSlotNum.mPrivateUse = this->mSessionInfo.mSlotNum.mPrivateUse - static_cast<s32>(1);
+    mMemberList[member_index].clear();
+    mSessionInfo.mSlotNum.mTotalUse = mSessionInfo.mSlotNum.mTotalUse - 1;
+    if (member->mIsPrivate) {
+        mSessionInfo.mSlotNum.mPrivateUse = mSessionInfo.mSlotNum.mPrivateUse - 1;
     } else {
-        this->mSessionInfo.mSlotNum.mPublicUse = this->mSessionInfo.mSlotNum.mPublicUse - static_cast<s32>(1);
+        mSessionInfo.mSlotNum.mPublicUse = mSessionInfo.mSlotNum.mPublicUse - 1;
     }
 }
 
@@ -293,104 +293,104 @@ void nNetwork::SessionDatabase::deleteMemberData(s32 member_index, MtNetSession:
 void nNetwork::SessionDatabase::deleteMemberDataAll() {
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a constant over array elements; zero stores the recompile merges past a memset; the body oracle reports this body.
-    this->mMemberList[0].::nNetwork::Member::clear();
-    this->mMemberList[1].::nNetwork::Member::clear();
-    this->mMemberList[2].::nNetwork::Member::clear();
-    this->mMemberList[3].::nNetwork::Member::clear();
-    this->mMemberList[4].::nNetwork::Member::clear();
-    this->mMemberList[5].::nNetwork::Member::clear();
-    this->mMemberList[6].::nNetwork::Member::clear();
-    this->mMemberList[7].::nNetwork::Member::clear();
-    this->mMemberList[8].::nNetwork::Member::clear();
-    this->mMemberList[9].::nNetwork::Member::clear();
-    this->mMemberList[10].::nNetwork::Member::clear();
-    this->mMemberList[11].::nNetwork::Member::clear();
-    this->mMemberList[12].::nNetwork::Member::clear();
-    this->mMemberList[13].::nNetwork::Member::clear();
-    this->mMemberList[14].::nNetwork::Member::clear();
-    this->mMemberList[15].::nNetwork::Member::clear();
-    ::memset(static_cast<void*>(&this->mSessionInfo), static_cast<int>(0), static_cast<size_t>(520));
-    this->mConfig[56] = static_cast<unsigned char>(0);
-    this->mConfig[57] = static_cast<unsigned char>(0);
-    this->mConfig[58] = static_cast<unsigned char>(0);
-    this->mConfig[59] = static_cast<unsigned char>(0);
-    this->mConfig[60] = static_cast<unsigned char>(0);
-    this->mConfig[61] = static_cast<unsigned char>(0);
-    this->mConfig[62] = static_cast<unsigned char>(0);
-    this->mConfig[63] = static_cast<unsigned char>(0);
-    this->mConfig[48] = static_cast<unsigned char>(0);
-    this->mConfig[49] = static_cast<unsigned char>(0);
-    this->mConfig[50] = static_cast<unsigned char>(0);
-    this->mConfig[51] = static_cast<unsigned char>(0);
-    this->mConfig[52] = static_cast<unsigned char>(0);
-    this->mConfig[53] = static_cast<unsigned char>(0);
-    this->mConfig[54] = static_cast<unsigned char>(0);
-    this->mConfig[55] = static_cast<unsigned char>(0);
-    this->mConfig[40] = static_cast<unsigned char>(0);
-    this->mConfig[41] = static_cast<unsigned char>(0);
-    this->mConfig[42] = static_cast<unsigned char>(0);
-    this->mConfig[43] = static_cast<unsigned char>(0);
-    this->mConfig[44] = static_cast<unsigned char>(0);
-    this->mConfig[45] = static_cast<unsigned char>(0);
-    this->mConfig[46] = static_cast<unsigned char>(0);
-    this->mConfig[47] = static_cast<unsigned char>(0);
-    this->mConfig[32] = static_cast<unsigned char>(0);
-    this->mConfig[33] = static_cast<unsigned char>(0);
-    this->mConfig[34] = static_cast<unsigned char>(0);
-    this->mConfig[35] = static_cast<unsigned char>(0);
-    this->mConfig[36] = static_cast<unsigned char>(0);
-    this->mConfig[37] = static_cast<unsigned char>(0);
-    this->mConfig[38] = static_cast<unsigned char>(0);
-    this->mConfig[39] = static_cast<unsigned char>(0);
-    this->mConfig[24] = static_cast<unsigned char>(0);
-    this->mConfig[25] = static_cast<unsigned char>(0);
-    this->mConfig[26] = static_cast<unsigned char>(0);
-    this->mConfig[27] = static_cast<unsigned char>(0);
-    this->mConfig[28] = static_cast<unsigned char>(0);
-    this->mConfig[29] = static_cast<unsigned char>(0);
-    this->mConfig[30] = static_cast<unsigned char>(0);
-    this->mConfig[31] = static_cast<unsigned char>(0);
-    this->mConfig[16] = static_cast<unsigned char>(0);
-    this->mConfig[17] = static_cast<unsigned char>(0);
-    this->mConfig[18] = static_cast<unsigned char>(0);
-    this->mConfig[19] = static_cast<unsigned char>(0);
-    this->mConfig[20] = static_cast<unsigned char>(0);
-    this->mConfig[21] = static_cast<unsigned char>(0);
-    this->mConfig[22] = static_cast<unsigned char>(0);
-    this->mConfig[23] = static_cast<unsigned char>(0);
-    this->mConfig[8] = static_cast<unsigned char>(0);
-    this->mConfig[9] = static_cast<unsigned char>(0);
-    this->mConfig[10] = static_cast<unsigned char>(0);
-    this->mConfig[11] = static_cast<unsigned char>(0);
-    this->mConfig[12] = static_cast<unsigned char>(0);
-    this->mConfig[13] = static_cast<unsigned char>(0);
-    this->mConfig[14] = static_cast<unsigned char>(0);
-    this->mConfig[15] = static_cast<unsigned char>(0);
-    this->mConfig[0] = static_cast<unsigned char>(0);
-    this->mConfig[1] = static_cast<unsigned char>(0);
-    this->mConfig[2] = static_cast<unsigned char>(0);
-    this->mConfig[3] = static_cast<unsigned char>(0);
-    this->mConfig[4] = static_cast<unsigned char>(0);
-    this->mConfig[5] = static_cast<unsigned char>(0);
-    this->mConfig[6] = static_cast<unsigned char>(0);
-    this->mConfig[7] = static_cast<unsigned char>(0);
-    this->mHostIndex = static_cast<s32>(-1);
-    this->mSelfIndex = static_cast<s32>(-1);
-    this->mAttribute = static_cast<u32>(0);
-    ::memset(static_cast<void*>(&this->mSendBroadcast), static_cast<int>(0), static_cast<size_t>(176));
+    mMemberList[0].clear();
+    mMemberList[1].clear();
+    mMemberList[2].clear();
+    mMemberList[3].clear();
+    mMemberList[4].clear();
+    mMemberList[5].clear();
+    mMemberList[6].clear();
+    mMemberList[7].clear();
+    mMemberList[8].clear();
+    mMemberList[9].clear();
+    mMemberList[10].clear();
+    mMemberList[11].clear();
+    mMemberList[12].clear();
+    mMemberList[13].clear();
+    mMemberList[14].clear();
+    mMemberList[15].clear();
+    ::memset(static_cast<void*>(&mSessionInfo), 0, 520ul);
+    mConfig[56] = 0;
+    mConfig[57] = 0;
+    mConfig[58] = 0;
+    mConfig[59] = 0;
+    mConfig[60] = 0;
+    mConfig[61] = 0;
+    mConfig[62] = 0;
+    mConfig[63] = 0;
+    mConfig[48] = 0;
+    mConfig[49] = 0;
+    mConfig[50] = 0;
+    mConfig[51] = 0;
+    mConfig[52] = 0;
+    mConfig[53] = 0;
+    mConfig[54] = 0;
+    mConfig[55] = 0;
+    mConfig[40] = 0;
+    mConfig[41] = 0;
+    mConfig[42] = 0;
+    mConfig[43] = 0;
+    mConfig[44] = 0;
+    mConfig[45] = 0;
+    mConfig[46] = 0;
+    mConfig[47] = 0;
+    mConfig[32] = 0;
+    mConfig[33] = 0;
+    mConfig[34] = 0;
+    mConfig[35] = 0;
+    mConfig[36] = 0;
+    mConfig[37] = 0;
+    mConfig[38] = 0;
+    mConfig[39] = 0;
+    mConfig[24] = 0;
+    mConfig[25] = 0;
+    mConfig[26] = 0;
+    mConfig[27] = 0;
+    mConfig[28] = 0;
+    mConfig[29] = 0;
+    mConfig[30] = 0;
+    mConfig[31] = 0;
+    mConfig[16] = 0;
+    mConfig[17] = 0;
+    mConfig[18] = 0;
+    mConfig[19] = 0;
+    mConfig[20] = 0;
+    mConfig[21] = 0;
+    mConfig[22] = 0;
+    mConfig[23] = 0;
+    mConfig[8] = 0;
+    mConfig[9] = 0;
+    mConfig[10] = 0;
+    mConfig[11] = 0;
+    mConfig[12] = 0;
+    mConfig[13] = 0;
+    mConfig[14] = 0;
+    mConfig[15] = 0;
+    mConfig[0] = 0;
+    mConfig[1] = 0;
+    mConfig[2] = 0;
+    mConfig[3] = 0;
+    mConfig[4] = 0;
+    mConfig[5] = 0;
+    mConfig[6] = 0;
+    mConfig[7] = 0;
+    mHostIndex = -1;
+    mSelfIndex = -1;
+    mAttribute = 0;
+    ::memset(static_cast<void*>(&mSendBroadcast), 0, 176ul);
 }
 
 // Address: 0x01199ca0 - 0x01199ce3 (67 bytes)
 void nNetwork::SessionDatabase::changeHostIndex(s32 member_index, MtNetSession::Member* member) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMemberList[this->mHostIndex].mInfo.mIsValid != false) {
-        this->mMemberList[this->mHostIndex].mInfo.mIsHost = false;
+    if (mMemberList[mHostIndex].mInfo.mIsValid) {
+        mMemberList[mHostIndex].mInfo.mIsHost = false;
     }
-    if (this->mMemberList[member_index].mInfo.mIsValid == false) {
+    if (!mMemberList[member_index].mInfo.mIsValid) {
         return;
     }
-    this->mMemberList[member_index].mInfo.mIsHost = true;
-    this->mHostIndex = member_index;
+    mMemberList[member_index].mInfo.mIsHost = true;
+    mHostIndex = member_index;
 }
 
 // Address: 0x011996e0 - 0x011997f5 (277 bytes)
@@ -496,6 +496,8 @@ __attribute__((weak)) void nNetwork::SessionDatabase::updateBroadcast(u32 delta)
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::SessionDatabase::setMemberConfig(s32 member_index, const u8* conf);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SessionDatabase::MyDTI nNetwork::SessionDatabase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SessionDatabase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

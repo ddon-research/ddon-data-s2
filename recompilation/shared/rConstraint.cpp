@@ -43,7 +43,7 @@ const MtDTI& rConstraint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rConstraintD0Ev at 0x01b9dcce-0x01b9dcef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rConstraint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rConstraint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rConstraint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,9 +78,11 @@ void rConstraint::copyUnitProperty(uConstraint* pSrcUnit) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from rConstraint*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from rConstraint*
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(116)) = pSrcUnit->mPri;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(112)) = pSrcUnit->mID;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = pSrcUnit->mPri;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 112) = pSrcUnit->mID;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rConstraint::MyDTI rConstraint::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rConstraint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

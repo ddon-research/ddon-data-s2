@@ -50,7 +50,7 @@ const MtDTI& rWaypoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rWaypoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWaypoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWaypoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,62 +84,62 @@ rWaypoint::rWaypoint() {
 // Also emitted as: _ZN9rWaypointD0Ev at 0x00710940
 rWaypoint::~rWaypoint() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPointList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPointList.mLength != 0) {
         // inferred: the value the loop at 0x710820 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPointList.::MtArray::mLength;
+        u32 v0_0 = mPointList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPointList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPointList.::MtArray::mLength) {
-                    v0_0 = this->mPointList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPointList.mpArray[i0_3] != nullptr) {
+                delete mPointList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPointList.mLength) {
+                    v0_0 = mPointList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPointList.::MtArray::mpArray));
+    if (mPointList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPointList.mpArray));
     }
-    this->mPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPointList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPointList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mRouteList.::MtArray::mLength != static_cast<u32>(0)) {
+    mPointList.mpArray = nullptr;
+    mPointList.mBufsiz = 0;
+    mPointList.mLength = 0;
+    if (mRouteList.mLength != 0) {
         // inferred: the value the loop at 0x7108a0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mRouteList.::MtArray::mLength;
+        u32 v2_0 = mRouteList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRouteList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRouteList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mRouteList.::MtArray::mLength) {
-                    v2_0 = this->mRouteList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mRouteList.mpArray[i2_3] != nullptr) {
+                delete mRouteList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mRouteList.mLength) {
+                    v2_0 = mRouteList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRouteList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRouteList.::MtArray::mpArray));
+    if (mRouteList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRouteList.mpArray));
     }
-    this->mRouteList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRouteList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRouteList.::MtArray::mLength = static_cast<u32>(0);
+    mRouteList.mpArray = nullptr;
+    mRouteList.mBufsiz = 0;
+    mRouteList.mLength = 0;
 }
 
 // Address: 0x00710970 - 0x00710b05 (405 bytes)
@@ -153,11 +153,11 @@ bool rWaypoint::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5525591)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mPointList);
-            ::nDDOIO::readMtArray(r, this->mRouteList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x545057) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mPointList);
+            nDDOIO::readMtArray(r, mRouteList);
             return true;
         }
     }
@@ -170,6 +170,8 @@ __attribute__((weak)) bool rWaypoint::save(MtStream& out) {
     DDON_STUB("rWaypoint::save")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rWaypoint::MyDTI rWaypoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rWaypoint.cpp at 0x007113f0-0x00711431 (called at rWaypoint.cpp:26)
@@ -219,7 +221,7 @@ const MtDTI& rWaypoint::cPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rWaypoint::cPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWaypoint::cPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWaypoint::cPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -231,10 +233,17 @@ inline void rWaypoint::cPoint::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rWaypoint::cPoint::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (144 bytes)
-//   in rWaypoint::cPoint::MyDTI::newInstance at 0x00710dcd-0x00710e0d (called at rWaypoint.cpp:129)
-//   in _ZN6nDDOIO11readMtArrayIN9rWaypoint6cPointEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01ab7d28-0x01ab7d37, 0x01ab7d6c-0x01ab7dad (called at rWaypoint.cpp:129)
-// rWaypoint::cPoint::cPoint();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rWaypoint::cPoint::cPoint() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mRadius = 100.0f;
+}
 
 // Address: 0x00710ea0 - 0x00710ea1 (1 bytes)
 // Also emitted as: _ZN9rWaypoint6cPointD0Ev at 0x00710eb0
@@ -251,7 +260,7 @@ __attribute__((weak)) void rWaypoint::cPoint::createProperty(MtPropertyList& s) 
 // Address: 0x00711080 - 0x00711085 (5 bytes)
 MtUI* rWaypoint::cPoint::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (51 bytes)
@@ -263,6 +272,8 @@ __attribute__((weak)) bool rWaypoint::cPoint::save(MtDataWriter& w) {
     DDON_STUB("rWaypoint::cPoint::save")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWaypoint::cPoint::MyDTI rWaypoint::cPoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rWaypoint.cpp at 0x00711431-0x00711471 (called at rWaypoint.cpp:129)
@@ -300,7 +311,7 @@ const MtDTI& rWaypoint::cRoute::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rWaypoint::cRoute::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWaypoint::cRoute::DTI)->memAlloc(sz, align, ::rWaypoint::cRoute::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWaypoint::cRoute::DTI)->memAlloc(sz, align, rWaypoint::cRoute::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -314,7 +325,7 @@ void* rWaypoint::cRoute::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rWaypoint::cRoute::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWaypoint::cRoute::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWaypoint::cRoute::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -346,7 +357,7 @@ __attribute__((weak)) void rWaypoint::cRoute::createProperty(MtPropertyList& s) 
 // Address: 0x007113c0 - 0x007113c5 (5 bytes)
 MtUI* rWaypoint::cRoute::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (68 bytes)
@@ -357,6 +368,8 @@ MtUI* rWaypoint::cRoute::createUI(MtProperty& prop) {
 //   in rWaypoint::save at 0x00710cfe-0x00710d54 (called at nDDOIO.h:463)
 // bool rWaypoint::cRoute::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWaypoint::cRoute::MyDTI rWaypoint::cRoute::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWaypoint.cpp at 0x00711471-0x007114aa (called at rWaypoint.cpp:227)
 //   in _GLOBAL__sub_I_rWaypoint.cpp at 0x00711471-0x007114aa (called at rWaypoint.h:142)
@@ -365,7 +378,7 @@ MtUI* rWaypoint::cRoute::createUI(MtProperty& prop) {
 // Address: 0x00711120 - 0x00711160 (64 bytes)
 MtObject* rWaypoint::cRoute::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWaypoint::cRoute;
+    return new (16u) rWaypoint::cRoute;
 }
 
 // Instance at 0x01ab7c10 - 0x01ab7c15 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

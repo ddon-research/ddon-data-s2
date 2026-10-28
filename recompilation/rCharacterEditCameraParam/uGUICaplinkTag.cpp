@@ -6,6 +6,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
@@ -31,7 +32,7 @@ const MtDTI& uGUICaplinkTag::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkTag::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTag::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkTag::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +41,7 @@ inline MtAllocator* uGUICaplinkTag::getAllocator() {
 // Address: 0x009d4c70 - 0x009d4cb0 (64 bytes)
 void* uGUICaplinkTag::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkTag::getAllocator()->memAlloc(sz, align, ::uGUICaplinkTag::DTI.::MtDTI::getID());
+    return uGUICaplinkTag::getAllocator()->memAlloc(sz, align, uGUICaplinkTag::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +56,7 @@ void* uGUICaplinkTag::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkTag::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTag::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTag::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,20 +81,20 @@ uGUICaplinkTag::~uGUICaplinkTag() {
 // Address: 0x009d5120 - 0x009d5125 (5 bytes)
 void uGUICaplinkTag::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009d5130 - 0x009d51b5 (133 bytes)
 bool uGUICaplinkTag::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_TAG_GUI"), static_cast<u32>(129), static_cast<t64>(1430136490)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TAG_GUI"), 129u, 1430136490l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -116,25 +117,25 @@ __attribute__((weak)) void uGUICaplinkTag::kill() {
 // Address: 0x009d5240 - 0x009d5245 (5 bytes)
 void uGUICaplinkTag::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009d5250 - 0x009d5275 (37 bytes)
 void uGUICaplinkTag::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUITextBox == static_cast<uGUIDialogTextBox*>(nullptr)) {
+    if (mpGUITextBox == nullptr) {
         return;
     }
-    if (this->mpGUITextBox->::cUnit::isEnable() != false) {
+    if (mpGUITextBox->isEnable()) {
         return;
     }
-    this->mpGUITextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+    mpGUITextBox = nullptr;
 }
 
 // Address: 0x009d5280 - 0x009d5285 (5 bytes)
 void uGUICaplinkTag::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x009d5960 - 0x009d5af8 (408 bytes)
@@ -146,46 +147,46 @@ __attribute__((weak)) void uGUICaplinkTag::setFlowId(u32 flow_id, bool isInit) {
 // Address: 0x009d6650 - 0x009d66ab (91 bytes)
 void uGUICaplinkTag::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(1)) {
+    if (mFlowId != 1) {
         return;
     }
-    this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    this->mMain.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-    if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpDecideCtrl->execute();
+    mMain.mClose.execute();
+    mMain.mListCtrl.executeCtrl();
+    if (mpDecideCtrl != nullptr) {
+        mpDecideCtrl->execute();
     }
-    if (this->mpCancelCtrl == static_cast<cControl*>(nullptr)) {
+    if (mpCancelCtrl == nullptr) {
         return;
     }
-    this->mpCancelCtrl->execute();
+    mpCancelCtrl->execute();
 }
 
 // Address: 0x009d66b0 - 0x009d6751 (161 bytes)
 void uGUICaplinkTag::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMain.mListCtrl.::uGUIBase::cScrollList::moveEvent() != false) {
-        if (this->mMain.mListCtrl.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            this->mMain.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mMain.mListCtrl.::uGUIBase::cScrollList::getCtrl()->::cControl::getCurrentPos()), false);
+    if (mMain.mListCtrl.moveEvent()) {
+        if (mMain.mListCtrl.getCtrl() != nullptr) {
+            mMain.mListCtrl.setListPos(static_cast<u32>(mMain.mListCtrl.getCtrl()->getCurrentPos()), false);
         } else {
-            this->mMain.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(0), false);
+            mMain.mListCtrl.setListPos(0u, false);
         }
-        if (this->mMain.mListCtrl.::uGUIBase::cScrollList::getInputEvent() == static_cast<u32>(14)) {
-            this->::uGUICaplinkTag::setFlowId(static_cast<u32>(2), false);
+        if (mMain.mListCtrl.getInputEvent() == 14) {
+            setFlowId(2u, false);
         }
     } else {
-        if (this->::uGUIBase::getInputEvent() != static_cast<u32>(68)) {
-            if (this->::uGUIBase::getInputEvent() == static_cast<u32>(67)) {
-                this->::uGUICaplinkTag::setFlowId(static_cast<u32>(5), false);
+        if (getInputEvent() != 68) {
+            if (getInputEvent() == 67) {
+                setFlowId(5u, false);
             } else {
-                if (this->::uGUIBase::getInputEvent() == static_cast<u32>(66)) {
-                    this->::uGUICaplinkTag::setFlowId(static_cast<u32>(2), false);
+                if (getInputEvent() == 66) {
+                    setFlowId(2u, false);
                 }
             }
         } else {
-            if (this->mMain.mListCtrl.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mMain.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mMain.mListCtrl.::uGUIBase::cScrollList::getCtrl()->::cControl::getCurrentPos()), false);
+            if (mMain.mListCtrl.getCtrl() != nullptr) {
+                mMain.mListCtrl.setListPos(static_cast<u32>(mMain.mListCtrl.getCtrl()->getCurrentPos()), false);
             } else {
-                this->mMain.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(0), false);
+                mMain.mListCtrl.setListPos(0u, false);
             }
         }
     }
@@ -200,7 +201,7 @@ __attribute__((weak)) void uGUICaplinkTag::updateMove() {
 // Address: 0x009d5c00 - 0x009d5c09 (9 bytes)
 void uGUICaplinkTag::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009d5e90 - 0x009d6094 (516 bytes)
@@ -222,10 +223,14 @@ __attribute__((weak)) void uGUICaplinkTag::setupListItem(uGUIBase::cScrollListIt
 }
 
 // Address: 0x009d5920 - 0x009d593b (27 bytes)
-__attribute__((weak)) void uGUICaplinkTag::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUICaplinkTag::hideListItem")
-    /* stub */
+void uGUICaplinkTag::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsg), "", 0u, false);
 }
 
 // Address: 0x009d60a0 - 0x009d62ee (590 bytes)
@@ -280,19 +285,21 @@ __attribute__((weak)) void uGUICaplinkTag::setupRenameReq() {
 // Address: 0x009d5940 - 0x009d5955 (21 bytes)
 u32 uGUICaplinkTag::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x009d5880 - 0x009d5895 (21 bytes)
 u32 uGUICaplinkTag::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // No out-of-line body: no code in the ELF
 // u32 uGUICaplinkTag::evCtrlAdjustCursor(cControl::Message* msg);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTag::MyDTI uGUICaplinkTag::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTag.cpp at 0x009d689f-0x009d68dc (called at uGUICaplinkTag.cpp:33)
@@ -349,7 +356,7 @@ const MtDTI& uGUICaplinkTag::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uGUICaplinkTag9cListItemD0Ev at 0x01ae51b0-0x01ae51da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkTag::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTag::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -367,6 +374,8 @@ inline void uGUICaplinkTag::cListItem::operator delete(void* p_addr) {
 //   in uGUICaplinkTag::stMain::stMain at 0x01ae4af9-0x01ae513a (called at uGUICaplinkTag.h:81)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkTag::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTag::cListItem::MyDTI uGUICaplinkTag::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTag.cpp at 0x009d68dc-0x009d6919 (called at uGUICaplinkTag.cpp:34)
@@ -416,7 +425,7 @@ const MtDTI& uGUICaplinkTag::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uGUICaplinkTag9cListInfoD0Ev at 0x01ae5170-0x01ae519a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkTag::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTag::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -434,6 +443,8 @@ inline void uGUICaplinkTag::cListInfo::operator delete(void* p_addr) {
 //   in uGUICaplinkTag::setupList at 0x009d5ecf-0x009d5ede, 0x009d5f09-0x009d5f3a (called at uGUICaplinkTag.cpp:447)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkTag::cListInfo::cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTag::cListInfo::MyDTI uGUICaplinkTag::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTag.cpp at 0x009d6919-0x009d6956 (called at uGUICaplinkTag.cpp:35)

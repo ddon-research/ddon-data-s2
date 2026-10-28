@@ -43,7 +43,7 @@ __attribute__((weak)) void rEffect2D::usage() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK9rEffect2D5MyDTI11newInstanceEv at 0x011f1b60-0x011f1b8d, code DWARF attributes to no inlined copy; sz is the class's size (208), align the allocation's other whole constant (16)
 inline void* rEffect2D::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffect2D::DTI)->memAlloc(sz, align, ::rEffect2D::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memAlloc(sz, align, rEffect2D::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ inline void* rEffect2D::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rEffect2DD0Ev at 0x011f1d3e-0x011f1d5f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffect2D::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffect2D::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,26 +96,26 @@ bool rEffect2D::save(MtStream& out) {
     // DWARF local not rendered: E2D_HEADER* pHeader;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff); declared on line 375 at function scope, its scope starts at the row 0x11f2311 (line 376); pTempBuff's location [0x11f2302, 0x11f237e) covers it from there through its last access
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    if (mpParamBuff != nullptr) {
         // inferred: a temporary for the value the load at 0x11f22da read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mParamBuffSize;
-        u8* pTempBuff = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(t0 + static_cast<u32>(32), static_cast<u32>(16)));
-        if (pTempBuff != static_cast<u8*>(nullptr)) {
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->Magic = static_cast<u32>(4469317);
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->Version = static_cast<u32>(538051334);
+        u32 t0 = mParamBuffSize;
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(t0 + 32u, 16u));
+        if (pTempBuff != nullptr) {
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->Magic = 0x443245;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->Version = 0x20120306;
             // inferred: a temporary for the value the load at 0x11f2314 read, used twice; no DWARF local holds it
-            u32 t1 = this->mParamBuffSize;
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->ParamBuffSize = t1;
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->ListNum = this->mListNum;
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->BaseFps = this->mBaseFps;
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->E2DHeader3214 = static_cast<u32>(0);
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->E2DHeader3218 = static_cast<u32>(0);
-            reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff)->E2DHeader321c = static_cast<u32>(0);
-            ::memcpy(static_cast<void*>(&pTempBuff[static_cast<int>(32)]), static_cast<const void*>(this->mpParamBuff), t1);
-            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + static_cast<u32>(32));
-            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
-            return writeSize == (t0 + static_cast<u32>(32));
+            u32 t1 = mParamBuffSize;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->ParamBuffSize = t1;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->ListNum = mListNum;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->BaseFps = mBaseFps;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->E2DHeader3214 = 0;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->E2DHeader3218 = 0;
+            reinterpret_cast<E2D_HEADER*>(pTempBuff)->E2DHeader321c = 0;
+            memcpy(static_cast<void*>(&pTempBuff[32]), static_cast<const void*>(mpParamBuff), t1);
+            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + 32u);
+            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
+            return writeSize == (t0 + 32u);
         } else {
             return false;
         }
@@ -127,21 +127,21 @@ bool rEffect2D::save(MtStream& out) {
 // Address: 0x011f23c0 - 0x011f2457 (151 bytes)
 void rEffect2D::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rEffect2D::freeMemory();
-    this->mBaseFps = 0.0f;
-    this->mRTTextureNum = static_cast<u32>(0);
-    this->mpRTTexture[2] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpRTTexture[1] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpRTTexture[0] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpBackTexture[2] = static_cast<rTexture*>(nullptr);
-    this->mpBackTexture[1] = static_cast<rTexture*>(nullptr);
-    this->mpBackTexture[0] = static_cast<rTexture*>(nullptr);
-    this->mResourceInfoNum = static_cast<u32>(0);
-    this->mResourceInfo = static_cast<rEffect2D::ResourceInfo*>(nullptr);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mListNum = static_cast<u32>(0);
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    freeMemory();
+    mBaseFps = 0.0f;
+    mRTTextureNum = 0;
+    mpRTTexture[2] = nullptr;
+    mpRTTexture[1] = nullptr;
+    mpRTTexture[0] = nullptr;
+    mpBackTexture[2] = nullptr;
+    mpBackTexture[1] = nullptr;
+    mpBackTexture[0] = nullptr;
+    mResourceInfoNum = 0;
+    mResourceInfo = nullptr;
+    mParamBuffSize = 0;
+    mListNum = 0;
+    mpParamBuff = nullptr;
+    mAttr = 22;
 }
 
 // Address: 0x011f2460 - 0x011f2597 (311 bytes)
@@ -153,7 +153,7 @@ __attribute__((weak)) void rEffect2D::createProperty(MtPropertyList& s) {
 // Address: 0x011f25a0 - 0x011f25a5 (5 bytes)
 MtUI* rEffect2D::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -162,7 +162,7 @@ MtUI* rEffect2D::createUI(MtProperty& prop) {
 // Address: 0x01b94dc0 - 0x01b94dc7 (7 bytes)
 u32 rEffect2D::getListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mListNum;
+    return mListNum;
 }
 
 // Address: 0x01b94db0 - 0x01b94db1 (1 bytes)
@@ -227,15 +227,15 @@ __attribute__((weak)) void rEffect2D::setDummyU32(u32) {
 // Address: 0x01b94d90 - 0x01b94da5 (21 bytes)
 u32 rEffect2D::getResourceSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mParamBuffSize + (this->mResourceInfoNum * static_cast<u32>(48))) + static_cast<u32>(208);
+    return (mParamBuffSize + (mResourceInfoNum * 48u)) + 208u;
 }
 
 // Address: 0x011f1cc0 - 0x011f1cf4 (52 bytes)
 // Also emitted as: _ZN9rEffect2DD0Ev at 0x011f1d10
 rEffect2D::~rEffect2D() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rEffect2D::freeMemory();
-    this->mListNum = static_cast<u32>(0);
+    freeMemory();
+    mListNum = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -264,13 +264,15 @@ __attribute__((weak)) void rEffect2D::freeMemory() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffect2D::MyDTI rEffect2D::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rEffect2D::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011f1b60 - 0x011f1c30 (208 bytes)
 MtObject* rEffect2D::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffect2D;
+    return new (16u) rEffect2D;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -306,13 +308,13 @@ __attribute__((weak)) void rEffect2D::ResourceInfo::createParticleResources(rEff
 // Address: 0x011f1b10 - 0x011f1b15 (5 bytes)
 rEffectAnim* rEffect2D::ResourceInfo::getAnim() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<rEffectAnim*>(this->mpChar);
+    return static_cast<rEffectAnim*>(mpChar);
 }
 
 // Address: 0x011f1b20 - 0x011f1b25 (5 bytes)
 rModel* rEffect2D::ResourceInfo::getModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<rModel*>(this->mpChar);
+    return static_cast<rModel*>(mpChar);
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,7 +332,7 @@ rModel* rEffect2D::ResourceInfo::getModel() {
 // Address: 0x011f1b50 - 0x011f1b59 (9 bytes)
 bool rEffect2D::ResourceInfo::checkCreate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned short>(this->mStatus) == static_cast<unsigned short>(0);
+    return static_cast<unsigned short>(mStatus) == 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

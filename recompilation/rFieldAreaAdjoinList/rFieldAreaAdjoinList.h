@@ -151,3 +151,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline rFieldAreaAdjoinList::cAdjoinInfo::cAdjoinInfo() {
+    this->mDestinationStageNo = -1;
+    this->mNextStageNo = -1;
+    this->mPriority = 0;
+    this->mPositions.::MtArray::mAutoDelete = true;
+}

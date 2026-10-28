@@ -29,7 +29,7 @@ const MtDTI& cMenuDialogFlow::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuDialogFlow::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuDialogFlow::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuDialogFlow::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cMenuDialogFlow::getAllocator() {
 // Address: 0x0014ea70 - 0x0014eab0 (64 bytes)
 void* cMenuDialogFlow::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cMenuDialogFlow::getAllocator()->memAlloc(sz, align, ::cMenuDialogFlow::DTI.::MtDTI::getID());
+    return cMenuDialogFlow::getAllocator()->memAlloc(sz, align, cMenuDialogFlow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cMenuDialogFlow::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuDialogFlow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuDialogFlow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuDialogFlow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,54 +70,54 @@ cMenuDialogFlow::cMenuDialogFlow() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from cMenuDialogFlow*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from cMenuDialogFlow*
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-    this->mDialogId = static_cast<s32>(0);
-    this->mRno = static_cast<u32>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(24)) = static_cast<unsigned long>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = static_cast<unsigned long>(0);
-    this->mChoice = static_cast<s32>(-1);
-    this->mComId = static_cast<s32>(-1);
-    this->mAttr = static_cast<u32>(0);
-    this->mNextPointerPriority = static_cast<u32>(10);
+    mpGUISystemMsg = nullptr;
+    mDialogId = 0;
+    mRno = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24) = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 16) = 0;
+    mChoice = -1;
+    mComId = -1;
+    mAttr = 0;
+    mNextPointerPriority = 10;
 }
 
 // Address: 0x0014ebd0 - 0x0014ec08 (56 bytes)
 // Also emitted as: _ZN15cMenuDialogFlowD0Ev at 0x0014ec10
 cMenuDialogFlow::~cMenuDialogFlow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->kill();
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpGUISystemMsg->kill();
+    mpGUISystemMsg = nullptr;
 }
 
 // Address: 0x0014ec70 - 0x0014ec8f (31 bytes)
 void cMenuDialogFlow::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    if (this->mpGUISystemMsg->::cUnit::isEnable() != false) {
+    if (mpGUISystemMsg->isEnable()) {
         return;
     }
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpGUISystemMsg = nullptr;
 }
 
 // Address: 0x0014eb80 - 0x0014ebd0 (80 bytes)
 void cMenuDialogFlow::initialize(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<u32>(0);
-    this->mDialogId = static_cast<s32>(0);
-    this->mChoice = static_cast<s32>(-1);
-    this->mComId = static_cast<s32>(-1);
-    this->mAttr = attr;
-    this->mNextPointerPriority = static_cast<u32>(10);
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    mRno = 0;
+    mDialogId = 0;
+    mChoice = -1;
+    mComId = -1;
+    mAttr = attr;
+    mNextPointerPriority = 10;
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->kill();
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpGUISystemMsg->kill();
+    mpGUISystemMsg = nullptr;
 }
 
 // Address: 0x0014ec90 - 0x0014edae (286 bytes)
@@ -128,45 +128,45 @@ __attribute__((weak)) void cMenuDialogFlow::setDialog(nGUIExt::REQ_DIALOG_TYPE d
 }
 
 // Address: 0x0014ee00 - 0x0014ee2c (44 bytes)
-__attribute__((weak)) void cMenuDialogFlow::setDialogNoCancel(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
-    DDON_STUB("cMenuDialogFlow::setDialogNoCancel")
-    /* stub */
+void cMenuDialogFlow::setDialogNoCancel(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    setDialog(dialogType, mainMsg, defPos, choice1, choice2, choice3, choice4, true);
 }
 
 // Address: 0x0014ee30 - 0x0014ee3f (15 bytes)
 void cMenuDialogFlow::setMsgAnalyzerWork(u32 uIdx, MT_CTSTR pAnalyzeMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->::uGUIBase::setMsgAnalyzerWork(uIdx, pAnalyzeMsg);
+    mpGUISystemMsg->setMsgAnalyzerWork(uIdx, pAnalyzeMsg);
 }
 
 // Address: 0x0014ee40 - 0x0014ee4f (15 bytes)
 void cMenuDialogFlow::setMsgAnalyzerWork(u32 uIdx, s32 sAnalyzeNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->::uGUIBase::setMsgAnalyzerWork(uIdx, sAnalyzeNum);
+    mpGUISystemMsg->setMsgAnalyzerWork(uIdx, sAnalyzeNum);
 }
 
 // Address: 0x0014ee50 - 0x0014ee62 (18 bytes)
 void cMenuDialogFlow::setChoiceEnable(u32 idx, bool isEnable, s32 sPage) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->::uGUISystemMsg::setChoiceEnable(idx, isEnable, sPage);
+    mpGUISystemMsg->setChoiceEnable(idx, isEnable, sPage);
 }
 
 // Address: 0x0014ee70 - 0x0014ee7f (15 bytes)
 void cMenuDialogFlow::setChoiceErrorMsg(u32 idx, MT_CTSTR pErrorMsg, s32 sPage) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->::uGUISystemMsg::setChoiceErrorMsg(idx, pErrorMsg, sPage);
+    mpGUISystemMsg->setChoiceErrorMsg(idx, pErrorMsg, sPage);
 }
 
 // Address: 0x0014ee80 - 0x0014eece (78 bytes)
@@ -190,11 +190,11 @@ __attribute__((weak)) void cMenuDialogFlow::pushFlow() {
 // Address: 0x0014f080 - 0x0014f091 (17 bytes)
 void cMenuDialogFlow::retryFlow(s32 dialogId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRno != static_cast<u32>(1)) {
+    if (mRno != 1) {
         return;
     }
-    this->mRno = static_cast<u32>(0);
-    this->mDialogId = dialogId;
+    mRno = 0;
+    mDialogId = dialogId;
 }
 
 // No out-of-line body: 6 inlined copies in 3 functions (42 bytes)
@@ -225,10 +225,10 @@ void cMenuDialogFlow::retryFlow(s32 dialogId) {
 // Address: 0x0014f0a0 - 0x0014f0af (15 bytes)
 void cMenuDialogFlow::setDialogSE(u32 reason, u32 seId, rSoundRequest* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    this->mpGUISystemMsg->::uGUISystemMsg::setSE(static_cast<nGUIExt::MSG_REASON>(reason), seId, pRes);
+    mpGUISystemMsg->setSE(static_cast<nGUIExt::MSG_REASON>(reason), seId, pRes);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -256,6 +256,8 @@ void cMenuDialogFlow::setDialogSE(u32 reason, u32 seId, rSoundRequest* pRes) {
 //   in cMenuDialogFlow::setComWait at 0x0014eea4-0x0014eeb9 (called at cMenuSupport.cpp:286)
 // void cMenuDialogFlow::setEnd();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuDialogFlow::MyDTI cMenuDialogFlow::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x001503e0-0x00150419 (called at cMenuSupport.cpp:58)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x001503e0-0x00150419 (called at cMenuSupport.h:51)
@@ -264,7 +266,7 @@ void cMenuDialogFlow::setDialogSE(u32 reason, u32 seId, rSoundRequest* pRes) {
 // Address: 0x0014e9e0 - 0x0014ea6a (138 bytes)
 MtObject* cMenuDialogFlow::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuDialogFlow;
+    return new (16u) cMenuDialogFlow;
 }
 
 // No out-of-line body: no code in the ELF
@@ -290,7 +292,7 @@ const MtDTI& cMenuSupport::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cMenuSupport::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSupport::DTI)->memAlloc(sz, align, ::cMenuSupport::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSupport::DTI)->memAlloc(sz, align, cMenuSupport::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -304,7 +306,7 @@ inline void* cMenuSupport::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMenuSupport::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSupport::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSupport::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -335,6 +337,8 @@ inline void cMenuSupport::operator delete(void* p_addr) {
 //   in cMenuBase::setupSupportList at 0x000f1308-0x000f130c (called at cMenuSupport.h:303)
 // void cMenuSupport::setParent(cMenuBase* pParentMenu);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSupport::MyDTI cMenuSupport::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x001503a3-0x001503e0 (called at cMenuSupport.cpp:31)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x001503a3-0x001503e0 (called at cMenuSupport.h:32)
@@ -343,7 +347,7 @@ inline void cMenuSupport::operator delete(void* p_addr) {
 // Address: 0x0014e920 - 0x0014e968 (72 bytes)
 MtObject* cMenuSupport::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuSupport;
+    return new (16u) cMenuSupport;
 }
 
 // No out-of-line body: no code in the ELF
@@ -360,7 +364,7 @@ const MtDTI& cMenuSupportList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuSupportList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuSupportList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -369,7 +373,7 @@ inline MtAllocator* cMenuSupportList::getAllocator() {
 // Address: 0x0014f860 - 0x0014f8a0 (64 bytes)
 void* cMenuSupportList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cMenuSupportList::getAllocator()->memAlloc(sz, align, ::cMenuSupportList::DTI.::MtDTI::getID());
+    return cMenuSupportList::getAllocator()->memAlloc(sz, align, cMenuSupportList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -384,7 +388,7 @@ void* cMenuSupportList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSupportList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSupportList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -427,61 +431,61 @@ void cMenuSupportList::createList(u32 listNum) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mSortListCount = static_cast<u32>(0);
-    this->mListNum = listNum;
-    this->::cMenuSupportMenu::mMenuNum = static_cast<u32>(0);
-    this->mPageNo = static_cast<s32>(0);
-    this->mReqRemake = false;
+    mSortListCount = 0;
+    mListNum = listNum;
+    mMenuNum = 0;
+    mPageNo = 0;
+    mReqRemake = false;
     // inferred: the value the loop at 0x14fda0 carries; no location-less local in scope fits
-    s32* v0_1 = this->mpSortList;
-    if (v0_1 != static_cast<s32*>(nullptr)) {
+    s32* v0_1 = mpSortList;
+    if (v0_1 != nullptr) {
         // inferred: the value carried to 0x14fdbb; no location-less local in scope fits
         u32 v2_0;
         // inferred: the value carried to 0x14fdbb; no location-less local in scope fits
         u32 v2_3;
-        if (this->mListMax != static_cast<u32>(0)) {
+        if (mListMax != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_2 = static_cast<unsigned int>(0);
+            unsigned int i0_2 = 0;
             // inferred: the value carried to 0x14fdb3; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                v0_1[i0_2] = static_cast<int>(0);
-                v1_0 = this->mListMax;
-                if ((i0_2 + static_cast<unsigned int>(1)) < v1_0) {
-                    i0_2 += static_cast<unsigned int>(1);
+                v0_1[i0_2] = 0;
+                v1_0 = mListMax;
+                if ((i0_2 + 1u) < v1_0) {
+                    i0_2 += 1u;
                 } else {
                     break;
                 }
             }
             v2_0 = v1_0;
-            v2_3 = this->mListNum;
+            v2_3 = mListNum;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
             v2_3 = listNum;
         }
-        if (v2_3 != static_cast<u32>(0)) {
+        if (v2_3 != 0) {
             // inferred: the value the loop at 0x14fdd4 carries; no location-less local in scope fits
             u32 v3_0 = v2_0;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
-                if (this->mSortListCount >= v3_0) {
+            for (unsigned int i3_3 = 0;;) {
+                if (mSortListCount >= v3_0) {
                     break;
                 } else {
-                    if (this->::cMenuSupport::mpParentMenu->checkListFilter(i3_3) != false) {
-                        this->mpSortList[this->mSortListCount] = static_cast<int>(i3_3);
-                        this->mSortListCount = this->mSortListCount + static_cast<u32>(1);
+                    if (mpParentMenu->checkListFilter(i3_3)) {
+                        mpSortList[mSortListCount] = static_cast<int>(i3_3);
+                        mSortListCount = mSortListCount + 1u;
                     }
-                    if ((i3_3 + static_cast<unsigned int>(1)) >= this->mListNum) {
+                    if ((i3_3 + 1u) >= mListNum) {
                         break;
                     } else {
-                        v3_0 = this->mListMax;
-                        i3_3 += static_cast<unsigned int>(1);
+                        v3_0 = mListMax;
+                        i3_3 += 1u;
                     }
                 }
             }
         }
-        this->::cMenuSupportList::createMenuList();
-        this->mIsRemakeList = true;
+        createMenuList();
+        mIsRemakeList = true;
     }
 }
 
@@ -490,57 +494,57 @@ __attribute__((weak)) void cMenuSupportList::createMenuList() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 sortListIndex;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cMenuSupportMenu::mMenuNum = static_cast<u32>(0);
+    mMenuNum = 0;
     // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
-    s32* v0_3 = this->::cMenuSupportMenu::mpMenuList;
-    if (v0_3 != static_cast<s32*>(nullptr)) {
+    s32* v0_3 = mpMenuList;
+    if (v0_3 != nullptr) {
         // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
-        cMenuSupportList::stAddMenu* v0_4 = this->mpAddMenu;
+        stAddMenu* v0_4 = mpAddMenu;
         // inferred: the value carried to 0x15007a; no location-less local in scope fits
         u32 v1_1;
-        if (v0_4 == static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
-            v1_1 = static_cast<u32>(0);
+        if (v0_4 == nullptr) {
+            v1_1 = 0;
         } else {
-            if (this->mAddMenuNum == static_cast<u32>(0)) {
-                v1_1 = static_cast<u32>(0);
+            if (mAddMenuNum == 0) {
+                v1_1 = 0;
             } else {
                 // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
-                u32 v0_0 = this->mAddMenuNum;
+                u32 v0_0 = mAddMenuNum;
                 // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
-                u32 v0_1 = static_cast<u32>(0);
+                u32 v0_1 = 0;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i0_2 = 0;;) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x150052, held ahead of the effects the ELF orders after it
-                    cMenuSupportList::ADD_TYPE t0 = v0_4[i0_2].mAddType;
-                    if (t0 == static_cast<cMenuSupportList::ADD_TYPE>(1)) {
+                    ADD_TYPE t0 = v0_4[i0_2].mAddType;
+                    if (t0 == ADD_TYPE_ABOVE) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0x15005a, held ahead of the effects the ELF orders after it
-                        u32 t1 = this->::cMenuSupportMenu::mMenuMax;
+                        u32 t1 = mMenuMax;
                         if (v0_1 < t1) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0x15005f, held ahead of the effects the ELF orders after it
                             s32 t2 = v0_4[i0_2].mMenuId;
                             v0_3[v0_1] = t2;
                             // inferred: an ordered temporary, read before a later effect: the value read at 0x150069, held ahead of the effects the ELF orders after it
-                            u32 t3 = this->::cMenuSupportMenu::mMenuNum;
-                            this->::cMenuSupportMenu::mMenuNum = t3 + static_cast<u32>(1);
-                            if ((i0_2 + static_cast<unsigned int>(1)) < this->mAddMenuNum) {
-                                v0_0 = this->mAddMenuNum;
-                                v0_1 = t3 + static_cast<u32>(1);
-                                i0_2 += static_cast<unsigned int>(1);
+                            u32 t3 = mMenuNum;
+                            mMenuNum = t3 + 1u;
+                            if ((i0_2 + 1u) < mAddMenuNum) {
+                                v0_0 = mAddMenuNum;
+                                v0_1 = t3 + 1u;
+                                i0_2 += 1u;
                             } else {
-                                v1_1 = t3 + static_cast<u32>(1);
+                                v1_1 = t3 + 1u;
                                 break;
                             }
                         } else {
-                            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                                i0_2 += static_cast<unsigned int>(1);
+                            if ((i0_2 + 1u) < v0_0) {
+                                i0_2 += 1u;
                             } else {
                                 v1_1 = v0_1;
                                 break;
                             }
                         }
                     } else {
-                        if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                            i0_2 += static_cast<unsigned int>(1);
+                        if ((i0_2 + 1u) < v0_0) {
+                            i0_2 += 1u;
                         } else {
                             v1_1 = v0_1;
                             break;
@@ -551,43 +555,43 @@ __attribute__((weak)) void cMenuSupportList::createMenuList() {
         }
         // inferred: the value carried to 0x1500be; no location-less local in scope fits
         u32 v3_2;
-        if (this->mPageElemMax == static_cast<u32>(0)) {
+        if (mPageElemMax == 0) {
             v3_2 = v1_1;
         } else {
             // inferred: the value the loop at 0x150090 carries; no location-less local in scope fits
-            u32 v2_0 = this->mPageElemMax;
+            u32 v2_0 = mPageElemMax;
             // inferred: the value the loop at 0x150090 carries; no location-less local in scope fits
             u32 v2_2 = v1_1;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i2_3 = 0;;) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x150090, held ahead of the effects the ELF orders after it
-                s32 t4 = this->mPageNo;
+                s32 t4 = mPageNo;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x150098, held ahead of the effects the ELF orders after it
-                u32 t5 = this->mSortListCount;
+                u32 t5 = mSortListCount;
                 if ((i2_3 + (v2_0 * t4)) >= t5) {
                     v3_2 = v2_2;
                     break;
                 } else {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x15009d, held ahead of the effects the ELF orders after it
-                    u32 t6 = this->::cMenuSupportMenu::mMenuMax;
+                    u32 t6 = mMenuMax;
                     if (v2_2 < t6) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0x1500a4, held ahead of the effects the ELF orders after it
-                        s32 t7 = this->mMenuTopId;
+                        s32 t7 = mMenuTopId;
                         v0_3[v2_2] = static_cast<int>(i2_3 + t7);
                         // inferred: an ordered temporary, read before a later effect: the value read at 0x1500ad, held ahead of the effects the ELF orders after it
-                        u32 t8 = this->::cMenuSupportMenu::mMenuNum;
-                        this->::cMenuSupportMenu::mMenuNum = t8 + static_cast<u32>(1);
-                        if ((i2_3 + static_cast<unsigned int>(1)) < this->mPageElemMax) {
-                            v2_0 = this->mPageElemMax;
-                            v2_2 = t8 + static_cast<u32>(1);
-                            i2_3 += static_cast<unsigned int>(1);
+                        u32 t8 = mMenuNum;
+                        mMenuNum = t8 + 1u;
+                        if ((i2_3 + 1u) < mPageElemMax) {
+                            v2_0 = mPageElemMax;
+                            v2_2 = t8 + 1u;
+                            i2_3 += 1u;
                         } else {
-                            v3_2 = t8 + static_cast<u32>(1);
+                            v3_2 = t8 + 1u;
                             break;
                         }
                     } else {
-                        if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_3 += static_cast<unsigned int>(1);
+                        if ((i2_3 + 1u) < v2_0) {
+                            i2_3 += 1u;
                         } else {
                             v3_2 = v2_2;
                             break;
@@ -596,43 +600,43 @@ __attribute__((weak)) void cMenuSupportList::createMenuList() {
                 }
             }
         }
-        if (v0_4 != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
-            if (this->mAddMenuNum != static_cast<u32>(0)) {
+        if (v0_4 != nullptr) {
+            if (mAddMenuNum != 0) {
                 // inferred: the value the loop at 0x1500d0 carries; no location-less local in scope fits
-                u32 v4_0 = this->mAddMenuNum;
+                u32 v4_0 = mAddMenuNum;
                 // inferred: the value the loop at 0x1500d0 carries; no location-less local in scope fits
                 u32 v4_2 = v3_2;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i4_3 = 0;;) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x1500d2, held ahead of the effects the ELF orders after it
-                    cMenuSupportList::ADD_TYPE t9 = v0_4[i4_3].mAddType;
-                    if (t9 == static_cast<cMenuSupportList::ADD_TYPE>(2)) {
+                    ADD_TYPE t9 = v0_4[i4_3].mAddType;
+                    if (t9 == ADD_TYPE_BELOW) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0x1500da, held ahead of the effects the ELF orders after it
-                        u32 t10 = this->::cMenuSupportMenu::mMenuMax;
+                        u32 t10 = mMenuMax;
                         if (v4_2 < t10) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0x1500df, held ahead of the effects the ELF orders after it
                             s32 t11 = v0_4[i4_3].mMenuId;
                             v0_3[v4_2] = t11;
                             // inferred: an ordered temporary, read before a later effect: the value read at 0x1500e9, held ahead of the effects the ELF orders after it
-                            u32 t12 = this->::cMenuSupportMenu::mMenuNum;
-                            this->::cMenuSupportMenu::mMenuNum = t12 + static_cast<u32>(1);
-                            if ((i4_3 + static_cast<unsigned int>(1)) < this->mAddMenuNum) {
-                                v4_0 = this->mAddMenuNum;
-                                v4_2 = t12 + static_cast<u32>(1);
-                                i4_3 += static_cast<unsigned int>(1);
+                            u32 t12 = mMenuNum;
+                            mMenuNum = t12 + 1u;
+                            if ((i4_3 + 1u) < mAddMenuNum) {
+                                v4_0 = mAddMenuNum;
+                                v4_2 = t12 + 1u;
+                                i4_3 += 1u;
                             } else {
                                 break;
                             }
                         } else {
-                            if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                                i4_3 += static_cast<unsigned int>(1);
+                            if ((i4_3 + 1u) < v4_0) {
+                                i4_3 += 1u;
                             } else {
                                 break;
                             }
                         }
                     } else {
-                        if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                            i4_3 += static_cast<unsigned int>(1);
+                        if ((i4_3 + 1u) < v4_0) {
+                            i4_3 += 1u;
                         } else {
                             break;
                         }
@@ -660,51 +664,51 @@ __attribute__((weak)) void cMenuSupportList::createMenuList() {
 // Address: 0x001501c0 - 0x001501d4 (20 bytes)
 s32 cMenuSupportList::getBaseListIndex(u32 sortListIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (sortListIndex < this->mSortListCount) {
-        return this->mpSortList[sortListIndex];
+    if (sortListIndex < mSortListCount) {
+        return mpSortList[sortListIndex];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x001501e0 - 0x00150221 (65 bytes)
 s32 cMenuSupportList::getBaseListIndexFromCursor(s32 cursor) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuSupportMenu::mpMenuList != static_cast<s32*>(nullptr)) {
-        if (this->::cMenuSupportMenu::mpMenuList[cursor] >= this->mMenuTopId) {
-            if (this->::cMenuSupportMenu::mpMenuList[cursor] < static_cast<int>(this->mMenuTopId + this->mPageElemMax)) {
-                if (((this->::cMenuSupportMenu::mpMenuList[cursor] - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)) < this->mSortListCount) {
-                    return this->mpSortList[(this->::cMenuSupportMenu::mpMenuList[cursor] - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)];
+    if (mpMenuList != nullptr) {
+        if (mpMenuList[cursor] >= mMenuTopId) {
+            if (mpMenuList[cursor] < static_cast<int>(mMenuTopId + mPageElemMax)) {
+                if (((mpMenuList[cursor] - mMenuTopId) + (mPageElemMax * mPageNo)) < mSortListCount) {
+                    return mpSortList[(mpMenuList[cursor] - mMenuTopId) + (mPageElemMax * mPageNo)];
                 }
             }
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // Address: 0x00150230 - 0x00150250 (32 bytes)
 s32 cMenuSupportList::getBaseListIndexFromMenuId(s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (((menuId - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)) < this->mSortListCount) {
-        return this->mpSortList[(menuId - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)];
+    if (((menuId - mMenuTopId) + (mPageElemMax * mPageNo)) < mSortListCount) {
+        return mpSortList[(menuId - mMenuTopId) + (mPageElemMax * mPageNo)];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x00150250 - 0x00150292 (66 bytes)
 s32 cMenuSupportList::getBaseListIndexNow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuSupportMenu::mpMenuList != static_cast<s32*>(nullptr)) {
-        if (this->::cMenuSupportMenu::mpMenuList[this->::cMenuSupportMenu::mListCursor] >= this->mMenuTopId) {
-            if (this->::cMenuSupportMenu::mpMenuList[this->::cMenuSupportMenu::mListCursor] < static_cast<int>(this->mMenuTopId + this->mPageElemMax)) {
-                if (((this->::cMenuSupportMenu::mpMenuList[this->::cMenuSupportMenu::mListCursor] - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)) < this->mSortListCount) {
-                    return this->mpSortList[(this->::cMenuSupportMenu::mpMenuList[this->::cMenuSupportMenu::mListCursor] - this->mMenuTopId) + (this->mPageElemMax * this->mPageNo)];
+    if (mpMenuList != nullptr) {
+        if (mpMenuList[mListCursor] >= mMenuTopId) {
+            if (mpMenuList[mListCursor] < static_cast<int>(mMenuTopId + mPageElemMax)) {
+                if (((mpMenuList[mListCursor] - mMenuTopId) + (mPageElemMax * mPageNo)) < mSortListCount) {
+                    return mpSortList[(mpMenuList[mListCursor] - mMenuTopId) + (mPageElemMax * mPageNo)];
                 }
             }
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: 16 inlined copies in 14 functions (55 bytes)
@@ -756,26 +760,26 @@ __attribute__((weak)) u32 cMenuSupportList::getPageNum() {
 void cMenuSupportList::addBelowMenu(s32 menuId) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
-    cMenuSupportList::stAddMenu* v0_0 = this->::cMenuSupportList::getEmptyAddMenu();
-    if (v0_0 != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+    stAddMenu* v0_0 = getEmptyAddMenu();
+    if (v0_0 != nullptr) {
         // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
-        u32 v0_2 = this->mAddMenuNum;
-        if (v0_2 != static_cast<u32>(0)) {
+        u32 v0_2 = mAddMenuNum;
+        if (v0_2 != 0) {
             // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
-            cMenuSupportList::ADD_TYPE* v0_1 = &v0_0->mAddType;
+            ADD_TYPE* v0_1 = &v0_0->mAddType;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if ((*v0_1) != static_cast<cMenuSupportList::ADD_TYPE>(0)) {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_2) {
-                        v0_1 += static_cast<int>(2);
-                        i0_3 = i0_3 + static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                if ((*v0_1) != ADD_TYPE_NONE) {
+                    if ((i0_3 + 1u) < v0_2) {
+                        v0_1 += 2;
+                        i0_3 = i0_3 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((&v0_0[i0_3]) != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+                    if ((&v0_0[i0_3]) != nullptr) {
                         v0_0[i0_3].mMenuId = menuId;
-                        *v0_1 = static_cast<cMenuSupportList::ADD_TYPE>(2);
+                        *v0_1 = ADD_TYPE_BELOW;
                     }
                     return;
                 }
@@ -791,17 +795,17 @@ void cMenuSupportList::addBelowMenu(s32 menuId) {
 // Address: 0x0014fc10 - 0x0014fcb2 (162 bytes)
 void cMenuSupportList::releaseList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->::cMenuSupportMenu::mpMenuList));
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->::cMenuSupportMenu::mpMenuParts));
-    this->::cMenuSupportMenu::mpMenuList = static_cast<s32*>(nullptr);
-    this->::cMenuSupportMenu::mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    if (this->::cMenuSupport::mpParentMenu != static_cast<cMenuBase*>(nullptr)) {
-        this->::cMenuSupport::mpParentMenu->mpMenuList = static_cast<s32*>(nullptr);
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuList));
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuParts));
+    mpMenuList = nullptr;
+    mpMenuParts = nullptr;
+    if (mpParentMenu != nullptr) {
+        mpParentMenu->mpMenuList = nullptr;
     }
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI)->memFree(static_cast<void*>(this->mpSortList));
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI)->memFree(static_cast<void*>(this->mpAddMenu));
-    this->mpAddMenu = static_cast<cMenuSupportList::stAddMenu*>(nullptr);
-    this->mpSortList = static_cast<s32*>(nullptr);
+    MtMemoryAllocator::getAllocator(cMenuSupportList::DTI)->memFree(static_cast<void*>(mpSortList));
+    MtMemoryAllocator::getAllocator(cMenuSupportList::DTI)->memFree(static_cast<void*>(mpAddMenu));
+    mpAddMenu = nullptr;
+    mpSortList = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (54 bytes)
@@ -816,6 +820,8 @@ void cMenuSupportList::releaseList() {
 //   in cMenuSupportList::createMenuList at 0x00150034-0x0015007a (called at cMenuSupport.cpp:689)
 //   in cMenuSupportList::createMenuList at 0x001500c3-0x001500fa (called at cMenuSupport.cpp:697)
 // void cMenuSupportList::setAddMenu(cMenuSupportList::ADD_TYPE addType);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSupportList::MyDTI cMenuSupportList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x00150452-0x0015048b (called at cMenuSupport.cpp:556)
@@ -842,7 +848,7 @@ const MtDTI& cMenuSupportMenu::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuSupportMenu::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -851,7 +857,7 @@ inline MtAllocator* cMenuSupportMenu::getAllocator() {
 // Address: 0x0014f180 - 0x0014f1c0 (64 bytes)
 void* cMenuSupportMenu::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cMenuSupportMenu::getAllocator()->memAlloc(sz, align, ::cMenuSupportMenu::DTI.::MtDTI::getID());
+    return cMenuSupportMenu::getAllocator()->memAlloc(sz, align, cMenuSupportMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -866,7 +872,7 @@ void* cMenuSupportMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSupportMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -881,33 +887,33 @@ inline void cMenuSupportMenu::operator delete(void* p_addr) {
 // Address: 0x0014f230 - 0x0014f2d0 (160 bytes)
 cMenuSupportMenu::cMenuSupportMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpMenuList = static_cast<s32*>(nullptr);
-    this->mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    this->mAutoUpdateMenu = true;
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->mpMenuList));
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->mpMenuParts));
-    this->mpMenuList = static_cast<s32*>(nullptr);
-    this->mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    if (this->::cMenuSupport::mpParentMenu != static_cast<cMenuBase*>(nullptr)) {
-        this->::cMenuSupport::mpParentMenu->mpMenuList = static_cast<s32*>(nullptr);
+    mpMenuList = nullptr;
+    mpMenuParts = nullptr;
+    mAutoUpdateMenu = true;
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuList));
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuParts));
+    mpMenuList = nullptr;
+    mpMenuParts = nullptr;
+    if (mpParentMenu != nullptr) {
+        mpParentMenu->mpMenuList = nullptr;
     }
-    this->mMenuMax = static_cast<u32>(0);
-    this->mMenuNum = static_cast<u32>(0);
-    this->mListCursor = static_cast<s32>(0);
+    mMenuMax = 0;
+    mMenuNum = 0;
+    mListCursor = 0;
 }
 
 // Address: 0x0014f3f0 - 0x0014f45f (111 bytes)
 // Also emitted as: _ZN16cMenuSupportMenuD0Ev at 0x0014f470
 cMenuSupportMenu::~cMenuSupportMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->mpMenuList));
-    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(static_cast<void*>(this->mpMenuParts));
-    this->mpMenuList = static_cast<s32*>(nullptr);
-    this->mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    if (this->::cMenuSupport::mpParentMenu == static_cast<cMenuBase*>(nullptr)) {
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuList));
+    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(static_cast<void*>(mpMenuParts));
+    mpMenuList = nullptr;
+    mpMenuParts = nullptr;
+    if (mpParentMenu == nullptr) {
         return;
     }
-    this->::cMenuSupport::mpParentMenu->mpMenuList = static_cast<s32*>(nullptr);
+    mpParentMenu->mpMenuList = nullptr;
 }
 
 // Address: 0x0014f2d0 - 0x0014f3e7 (279 bytes)
@@ -927,8 +933,8 @@ __attribute__((weak)) void cMenuSupportMenu::updateMenu() {
 void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cCursor cursor;
-    cursor.::cCursor::setupY(static_cast<s32>(0), static_cast<s32>(this->mMenuNum - static_cast<u32>(1)), true, false, true, true);
-    this->::cMenuSupport::mpParentMenu->::cMenuBase::updateCursorY(cursor, this->mListCursor, cursorOrderId);
+    cursor.cCursor::setupY(0, static_cast<s32>(mMenuNum - 1u), true, false, true, true);
+    mpParentMenu->updateCursorY(cursor, mListCursor, cursorOrderId);
 }
 
 // No out-of-line body: 34 inlined copies in 14 functions (224 bytes)
@@ -964,15 +970,15 @@ void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {
 void cMenuSupportMenu::createMenuListSimple() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mMenuNum = this->mMenuMax;
-    if (this->mMenuMax != static_cast<u32>(0)) {
+    mMenuNum = mMenuMax;
+    if (mMenuMax != 0) {
         // inferred: the value the loop at 0x14f650 carries; no location-less local in scope fits
-        s32* v0_0 = this->mpMenuList;
+        s32* v0_0 = mpMenuList;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_1 = 0;;) {
             v0_0[i0_1] = static_cast<int>(i0_1);
-            if ((i0_1 + static_cast<unsigned int>(1)) < this->mMenuNum) {
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) < mMenuNum) {
+                i0_1 += 1u;
             } else {
                 break;
             }
@@ -990,9 +996,9 @@ __attribute__((weak)) void cMenuSupportMenu::createMenuListTbl(const s32* pTbl, 
 // Address: 0x0014f6a0 - 0x0014f6b3 (19 bytes)
 void cMenuSupportMenu::addMenuList(s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMenuNum < this->mMenuMax) {
-        this->mpMenuList[this->mMenuNum] = menuId;
-        this->mMenuNum = this->mMenuNum + static_cast<u32>(1);
+    if (mMenuNum < mMenuMax) {
+        mpMenuList[mMenuNum] = menuId;
+        mMenuNum = mMenuNum + 1u;
     }
 }
 
@@ -1000,24 +1006,24 @@ void cMenuSupportMenu::addMenuList(s32 menuId) {
 void cMenuSupportMenu::convertMenuId(s32 from, s32 to) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMenuNum != static_cast<u32>(0)) {
+    if (mMenuNum != 0) {
         // inferred: the value the loop at 0x14f6d0 carries; no location-less local in scope fits
-        s32* v0_1 = this->mpMenuList;
+        s32* v0_1 = mpMenuList;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_0 = static_cast<unsigned int>(0);
+        unsigned int i0_0 = 0;
         // inferred: the value the loop at 0x14f6d0 carries; no location-less local in scope fits
-        for (u32 v0_2 = this->mMenuNum;;) {
+        for (u32 v0_2 = mMenuNum;;) {
             if (v0_1[i0_0] == from) {
                 v0_1[i0_0] = to;
-                if ((i0_0 + static_cast<unsigned int>(1)) < this->mMenuNum) {
-                    i0_0 += static_cast<unsigned int>(1);
-                    v0_2 = this->mMenuNum;
+                if ((i0_0 + 1u) < mMenuNum) {
+                    i0_0 += 1u;
+                    v0_2 = mMenuNum;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_0 + static_cast<unsigned int>(1)) < v0_2) {
-                    i0_0 += static_cast<unsigned int>(1);
+                if ((i0_0 + 1u) < v0_2) {
+                    i0_0 += 1u;
                 } else {
                     break;
                 }
@@ -1037,17 +1043,17 @@ void cMenuSupportMenu::convertMenuId(s32 from, s32 to) {
 // Address: 0x0014f6f0 - 0x0014f713 (35 bytes)
 s32 cMenuSupportMenu::getIndexFromMenuId(s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMenuNum != static_cast<u32>(0)) {
+    if (mMenuNum != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x14f6f0, 0x14f710)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mpMenuList[i] == menuId) {
+            if (mpMenuList[i] == menuId) {
                 return static_cast<s32>(i);
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mMenuNum);
+            i += 1u;
+        } while (i < mMenuNum);
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x0014f720 - 0x0014f73d (29 bytes)
@@ -1072,6 +1078,8 @@ __attribute__((weak)) s32 cMenuSupportMenu::getMenuId(s32 index) {
 //   in cMenuSupportMenu::initialize at 0x0014f2e0-0x0014f332 (called at cMenuSupport.cpp:370)
 //   and 7 more (every copy is in <bundle>.inlined.json)
 // void cMenuSupportMenu::releaseList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSupportMenu::MyDTI cMenuSupportMenu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuSupport.cpp at 0x00150419-0x00150452 (called at cMenuSupport.cpp:338)

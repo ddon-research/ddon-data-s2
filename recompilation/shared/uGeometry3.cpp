@@ -48,7 +48,7 @@ const MtDTI& uGeometry3::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10uGeometry3D0Ev at 0x01315e9b-0x01315ebc, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry3::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry3::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,15 +67,15 @@ inline void uGeometry3::operator delete(void* p_addr) {
 // Also emitted as: _ZN10uGeometry3D0Ev at 0x01315e40
 uGeometry3::~uGeometry3() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRGeometry != static_cast<rGeometry3*>(nullptr)) {
-        this->mpRGeometry->::cResource::release();
-        this->mpRGeometry = static_cast<rGeometry3*>(nullptr);
+    if (mpRGeometry != nullptr) {
+        mpRGeometry->release();
+        mpRGeometry = nullptr;
     }
-    if (this->mpColliderNode == static_cast<sCollision::Node*>(nullptr)) {
+    if (mpColliderNode == nullptr) {
         return;
     }
-    delete this->mpColliderNode;
-    this->mpColliderNode = static_cast<sCollision::Node*>(nullptr);
+    delete mpColliderNode;
+    mpColliderNode = nullptr;
 }
 
 // Address: 0x01315ec0 - 0x0131655c (1692 bytes)
@@ -110,14 +110,14 @@ MT_CTSTR uGeometry3::getName() {
 // Address: 0x01316960 - 0x01316965 (5 bytes)
 void uGeometry3::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x01316970 - 0x01316997 (39 bytes)
 void uGeometry3::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::move();
-    this->::uGeometry3::setGeometryToColliderNode(this->mpColliderNode);
+    mGeometryGroup.nCollision::cGeometryJointGroup::move();
+    setGeometryToColliderNode(mpColliderNode);
 }
 
 // Address: 0x01316b00 - 0x01316b01 (1 bytes)
@@ -138,7 +138,7 @@ __attribute__((weak)) void uGeometry3::draw(cDraw* pdraw) {
 // Address: 0x01316570 - 0x01316579 (9 bytes)
 void uGeometry3::registAttachModel(uModel* pAttachModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::setAttachModel(pAttachModel);
+    mGeometryGroup.setAttachModel(pAttachModel);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,7 +147,7 @@ void uGeometry3::registAttachModel(uModel* pAttachModel) {
 // Address: 0x01316560 - 0x01316569 (9 bytes)
 uModel* uGeometry3::getAttachModel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::nCollision::cGeometryJointGroup&>(this->mGeometryGroup).::nCollision::cGeometryJointGroup::getAttachModel();
+    return static_cast<const nCollision::cGeometryJointGroup&>(mGeometryGroup).getAttachModel();
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,24 +175,24 @@ __attribute__((weak)) bool uGeometry3::loadResource(rGeometry3* pRGeometry) {
 void uGeometry3::restoreGeometryFromResource() {
     // DWARF local not rendered: const cGeometryJointGroup* pSrcGroup;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
+    if (mpRGeometry == nullptr) {
         return;
     }
-    if (this->mFlgUseGroupID != false) {
+    if (mFlgUseGroupID) {
         // inferred: a temporary for the result of the call at 0x1316725, used twice; no DWARF local holds it
-        nCollision::cGeometryJointGroup* t0 = this->mpRGeometry->::rGeometry3::getGeometryGroupFromID(this->mUseGroupID);
-        if (t0 != static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
-            uModel* pAttachModel = this->mGeometryGroup.::nCollision::cGeometryJointGroup::getAttachModel();
-            this->mGeometryGroup.::nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
-            this->mGeometryGroup.::nCollision::cGeometryJointGroup::setAttachModel(pAttachModel);
+        nCollision::cGeometryJointGroup* t0 = mpRGeometry->getGeometryGroupFromID(mUseGroupID);
+        if (t0 != nullptr) {
+            uModel* pAttachModel = mGeometryGroup.getAttachModel();
+            mGeometryGroup.nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
+            mGeometryGroup.setAttachModel(pAttachModel);
         }
     } else {
         // inferred: a temporary for the result of the call at 0x1316732, used twice; no DWARF local holds it
-        nCollision::cGeometryJointGroup* t1 = this->mpRGeometry->::rGeometry3::getGeometryGroupFromIndex(this->mUseGroupIndex);
-        if (t1 != static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
-            uModel* pAttachModel = this->mGeometryGroup.::nCollision::cGeometryJointGroup::getAttachModel();
-            this->mGeometryGroup.::nCollision::cGeometryJointGroup::copyEx(*t1, true, true, true);
-            this->mGeometryGroup.::nCollision::cGeometryJointGroup::setAttachModel(pAttachModel);
+        nCollision::cGeometryJointGroup* t1 = mpRGeometry->getGeometryGroupFromIndex(mUseGroupIndex);
+        if (t1 != nullptr) {
+            uModel* pAttachModel = mGeometryGroup.getAttachModel();
+            mGeometryGroup.nCollision::cGeometryJointGroup::copyEx(*t1, true, true, true);
+            mGeometryGroup.setAttachModel(pAttachModel);
         }
     }
 }
@@ -215,73 +215,73 @@ void uGeometry3::restoreGeometryFromResource() {
 // Address: 0x013165a0 - 0x013165a7 (7 bytes)
 u32 uGeometry3::getUseGroupID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseGroupID;
+    return mUseGroupID;
 }
 
 // Address: 0x013165b0 - 0x01316650 (160 bytes)
 void uGeometry3::setUseGroupID(u32 NewTargetGroupID) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mUseGroupID == NewTargetGroupID) {
+    if (mUseGroupID == NewTargetGroupID) {
         return;
     }
-    if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
+    if (mpRGeometry == nullptr) {
         return;
     }
-    if (this->mpRGeometry->::rGeometry3::getGeometryGroupFromID(NewTargetGroupID) == static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
+    if (mpRGeometry->getGeometryGroupFromID(NewTargetGroupID) == nullptr) {
         return;
     }
-    this->mUseGroupID = NewTargetGroupID;
-    if (this->mFlgUseGroupID == false) {
+    mUseGroupID = NewTargetGroupID;
+    if (!mFlgUseGroupID) {
         return;
     }
-    if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
+    if (mpRGeometry == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x13165f9, used twice; no DWARF local holds it
-    nCollision::cGeometryJointGroup* t0 = this->mpRGeometry->::rGeometry3::getGeometryGroupFromID(NewTargetGroupID);
-    if (t0 == static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
+    nCollision::cGeometryJointGroup* t0 = mpRGeometry->getGeometryGroupFromID(NewTargetGroupID);
+    if (t0 == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x131660d, used once; no DWARF local holds it
-    uModel* t1 = this->mGeometryGroup.::nCollision::cGeometryJointGroup::getAttachModel();
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::setAttachModel(t1);
+    uModel* t1 = mGeometryGroup.getAttachModel();
+    mGeometryGroup.nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
+    mGeometryGroup.setAttachModel(t1);
 }
 
 // Address: 0x01316650 - 0x01316657 (7 bytes)
 u32 uGeometry3::getUseGroupIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseGroupIndex;
+    return mUseGroupIndex;
 }
 
 // Address: 0x01316660 - 0x01316700 (160 bytes)
 void uGeometry3::setUseGroupIndex(u32 NewGroupIndex) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mUseGroupIndex == NewGroupIndex) {
+    if (mUseGroupIndex == NewGroupIndex) {
         return;
     }
-    if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
+    if (mpRGeometry == nullptr) {
         return;
     }
-    if (this->mpRGeometry->::rGeometry3::getGeometryGroupFromIndex(NewGroupIndex) == static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
+    if (mpRGeometry->getGeometryGroupFromIndex(NewGroupIndex) == nullptr) {
         return;
     }
-    this->mUseGroupIndex = NewGroupIndex;
-    if (this->mFlgUseGroupID != false) {
+    mUseGroupIndex = NewGroupIndex;
+    if (mFlgUseGroupID) {
         return;
     }
-    if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
+    if (mpRGeometry == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x13166a9, used twice; no DWARF local holds it
-    nCollision::cGeometryJointGroup* t0 = this->mpRGeometry->::rGeometry3::getGeometryGroupFromIndex(NewGroupIndex);
-    if (t0 == static_cast<nCollision::cGeometryJointGroup*>(nullptr)) {
+    nCollision::cGeometryJointGroup* t0 = mpRGeometry->getGeometryGroupFromIndex(NewGroupIndex);
+    if (t0 == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x13166bd, used once; no DWARF local holds it
-    uModel* t1 = this->mGeometryGroup.::nCollision::cGeometryJointGroup::getAttachModel();
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
-    this->mGeometryGroup.::nCollision::cGeometryJointGroup::setAttachModel(t1);
+    uModel* t1 = mGeometryGroup.getAttachModel();
+    mGeometryGroup.nCollision::cGeometryJointGroup::copyEx(*t0, true, true, true);
+    mGeometryGroup.setAttachModel(t1);
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,13 +330,13 @@ __attribute__((weak)) void uGeometry3::setGeometryToColliderNode(sCollision::Nod
 // Address: 0x01316590 - 0x01316595 (5 bytes)
 void uGeometry3::setResourceForUI(cResource* pRGeometry) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGeometry3::loadResource(static_cast<rGeometry3*>(pRGeometry));
+    loadResource(static_cast<rGeometry3*>(pRGeometry));
 }
 
 // Address: 0x01316580 - 0x01316585 (5 bytes)
 cResource* uGeometry3::getResourceForUI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRGeometry;
+    return mpRGeometry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -347,6 +347,8 @@ cResource* uGeometry3::getResourceForUI() {
 
 // No out-of-line body: no code in the ELF
 // void uGeometry3::setDummyU32(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry3::MyDTI uGeometry3::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry3::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

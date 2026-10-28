@@ -102,7 +102,7 @@ const MtDTI& sCaplinkManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sCaplinkManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::DTI);
+    return MtMemoryAllocator::getAllocator(sCaplinkManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,7 +111,7 @@ inline MtAllocator* sCaplinkManager::getAllocator() {
 // Address: 0x00733240 - 0x00733280 (64 bytes)
 void* sCaplinkManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sCaplinkManager::getAllocator()->memAlloc(sz, align, ::sCaplinkManager::DTI.::MtDTI::getID());
+    return sCaplinkManager::getAllocator()->memAlloc(sz, align, sCaplinkManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +126,7 @@ void* sCaplinkManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCaplinkManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,13 +155,13 @@ sCaplinkManager::~sCaplinkManager() {
 // Address: 0x00737d70 - 0x00737d75 (5 bytes)
 MtUI* sCaplinkManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x00737d80 - 0x00737d85 (5 bytes)
 void sCaplinkManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x00737d90 - 0x00737d91 (1 bytes)
@@ -187,71 +187,71 @@ void sCaplinkManager::end(bool isForce) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x2f24 from sCaplinkManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x25fc from sCaplinkManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x25f8 from sCaplinkManager*
-    this->mIsConnection = false;
-    if (isForce == false) {
-        if (this->mListener.::MtArray::mLength == static_cast<u32>(0)) {
-            if (this->mProfIconLoader.::MtArray::mLength == static_cast<u32>(0)) {
-                this->mUpdateFlag = static_cast<u32>(0);
-                if (this->mpCaplink != static_cast<nCaplink::Object*>(nullptr)) {
-                    this->mpCaplink->::nCaplink::Object::wsClose();
-                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(12068)) = static_cast<unsigned short>(0);
-                    this->mWebsocketListener.mIsRegistDevice = false;
-                    this->mpCaplink->::nCaplink::Object::final();
-                    if (this->mpCaplink != static_cast<nCaplink::Object*>(nullptr)) {
-                        delete this->mpCaplink;
-                        this->mpCaplink = static_cast<nCaplink::Object*>(nullptr);
+    mIsConnection = false;
+    if (!isForce) {
+        if (mListener.mLength == 0) {
+            if (mProfIconLoader.mLength == 0) {
+                mUpdateFlag = 0;
+                if (mpCaplink != nullptr) {
+                    mpCaplink->wsClose();
+                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 12068) = 0;
+                    mWebsocketListener.mIsRegistDevice = false;
+                    mpCaplink->final();
+                    if (mpCaplink != nullptr) {
+                        delete mpCaplink;
+                        mpCaplink = nullptr;
                     }
                 }
-                this->mIsLogin = false;
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(9724)) = static_cast<unsigned char>(0);
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(9720)) = static_cast<unsigned int>(0);
-                this->mNextNotifyTime.mTime = static_cast<t64>(0);
-                this->mIsNoDispCOGError = false;
-                this->mIsFirstBoot = true;
-                this->mRnoMain = static_cast<u8>(0);
-                this->mTimeCountRno = static_cast<u32>(0);
-                this->mTimeoutTimer = 0.0f;
-                this->mIsMaintenanceNow = false;
-                this->mIsInfoFriendOnline = false;
-                this->mIsInfoFriendRequest = false;
-                this->mIsInfoFriendConsent = false;
-                this->mIsInfoFriendModify = false;
-                this->mIsInfoInvite = false;
-                this->mIsInfoNewChat = false;
-                this->mIsInfoMessage = false;
-                this->mIsMaintenance = false;
+                mIsLogin = false;
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 9724) = 0;
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 9720) = 0;
+                mNextNotifyTime.mTime = 0;
+                mIsNoDispCOGError = false;
+                mIsFirstBoot = true;
+                mRnoMain = 0;
+                mTimeCountRno = 0;
+                mTimeoutTimer = 0.0f;
+                mIsMaintenanceNow = false;
+                mIsInfoFriendOnline = false;
+                mIsInfoFriendRequest = false;
+                mIsInfoFriendConsent = false;
+                mIsInfoFriendModify = false;
+                mIsInfoInvite = false;
+                mIsInfoNewChat = false;
+                mIsInfoMessage = false;
+                mIsMaintenance = false;
             }
         }
     } else {
-        this->mUpdateFlag = static_cast<u32>(0);
-        if (this->mpCaplink != static_cast<nCaplink::Object*>(nullptr)) {
-            this->mpCaplink->::nCaplink::Object::wsClose();
-            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(12068)) = static_cast<unsigned short>(0);
-            this->mWebsocketListener.mIsRegistDevice = false;
-            this->mpCaplink->::nCaplink::Object::final();
-            if (this->mpCaplink != static_cast<nCaplink::Object*>(nullptr)) {
-                delete this->mpCaplink;
-                this->mpCaplink = static_cast<nCaplink::Object*>(nullptr);
+        mUpdateFlag = 0;
+        if (mpCaplink != nullptr) {
+            mpCaplink->wsClose();
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 12068) = 0;
+            mWebsocketListener.mIsRegistDevice = false;
+            mpCaplink->final();
+            if (mpCaplink != nullptr) {
+                delete mpCaplink;
+                mpCaplink = nullptr;
             }
         }
-        this->mIsLogin = false;
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(9724)) = static_cast<unsigned char>(0);
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(9720)) = static_cast<unsigned int>(0);
-        this->mNextNotifyTime.mTime = static_cast<t64>(0);
-        this->mIsNoDispCOGError = false;
-        this->mIsFirstBoot = true;
-        this->mRnoMain = static_cast<u8>(0);
-        this->mTimeCountRno = static_cast<u32>(0);
-        this->mTimeoutTimer = 0.0f;
-        this->mIsMaintenanceNow = false;
-        this->mIsInfoFriendOnline = false;
-        this->mIsInfoFriendRequest = false;
-        this->mIsInfoFriendConsent = false;
-        this->mIsInfoFriendModify = false;
-        this->mIsInfoInvite = false;
-        this->mIsInfoNewChat = false;
-        this->mIsInfoMessage = false;
-        this->mIsMaintenance = false;
+        mIsLogin = false;
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 9724) = 0;
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 9720) = 0;
+        mNextNotifyTime.mTime = 0;
+        mIsNoDispCOGError = false;
+        mIsFirstBoot = true;
+        mRnoMain = 0;
+        mTimeCountRno = 0;
+        mTimeoutTimer = 0.0f;
+        mIsMaintenanceNow = false;
+        mIsInfoFriendOnline = false;
+        mIsInfoFriendRequest = false;
+        mIsInfoFriendConsent = false;
+        mIsInfoFriendModify = false;
+        mIsInfoInvite = false;
+        mIsInfoNewChat = false;
+        mIsInfoMessage = false;
+        mIsMaintenance = false;
     }
 }
 
@@ -302,24 +302,118 @@ __attribute__((weak)) void sCaplinkManager::addListener(nCaplink::ContextListene
 }
 
 // Address: 0x00738350 - 0x00738419 (201 bytes)
-__attribute__((weak)) void sCaplinkManager::updateListener() {
-    // local: u32 i;
-    // local: s32 i;
-    DDON_STUB("sCaplinkManager::updateListener")
-    /* stub */
+void sCaplinkManager::updateListener() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: s32 i;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mListener.mLength != 0) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_3 = 0;
+        // inferred: the value carried to 0x73838c; no location-less local in scope fits
+        u32 v1_0;
+        for (;;) {
+            static_cast<sCaplinkManager::cCaplinkListenerQueue*>(mListener.getBuffer()[static_cast<int>(i0_3)])->update();
+            v1_0 = mListener.mLength;
+            if ((i0_3 + 1u) < v1_0) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (static_cast<int>(v1_0 - 1u) > -1) {
+            // inferred: the value the loop at 0x7383a0 carries; no location-less local in scope fits
+            u32 v2_0 = v1_0;
+            // inferred: the value the loop at 0x7383a0 carries; the location-less local in scope that fits shares its name with another DWARF local
+            int v2_10 = static_cast<int>(v1_0 - 1u);
+            // inferred: the value the loop at 0x7383a0 carries; no location-less local in scope fits
+            u32 v2_11 = v1_0;
+            // inferred: the value the loop at 0x7383e0 carries; no location-less local in scope fits
+            u32 v3_0;
+            // inferred: the value the loop at 0x7383e0 carries; no location-less local in scope fits
+            u32 v3_1;
+            // inferred: the value the loop at 0x7383e0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+            int v3_2;
+            // inferred: the value the loop at 0x7383e0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+            int v3_4;
+            // inferred: the value carried to 0x7383fb; no location-less local in scope fits
+            u32 v4_0;
+            // inferred: the value carried to 0x738402; no location-less local in scope fits
+            u32 v5_0;
+            for (;;) {
+                if (!static_cast<sCaplinkManager::cCaplinkListenerQueue*>(mListener.getBuffer()[v2_10])->isEnd()) {
+                    v5_0 = v2_0;
+                } else {
+                    if (mListener.mAutoDelete) {
+                        if (mListener.getBuffer()[v2_10] != nullptr) {
+                            delete mListener.getBuffer()[v2_10];
+                            if (static_cast<int>(v2_11) >= static_cast<int>(mListener.mLength)) {
+                                v4_0 = mListener.mLength;
+                                goto region_7383fb;
+                            } else {
+                                v3_0 = mListener.mLength;
+                                v3_1 = mListener.mLength;
+                                v3_2 = v2_10;
+                                v3_4 = static_cast<int>(v2_11);
+                            }
+                        } else {
+                            if (static_cast<int>(v2_11) >= static_cast<int>(v2_0)) {
+                                v4_0 = v2_0;
+                                goto region_7383fb;
+                            } else {
+                                v3_0 = v2_0;
+                                v3_1 = v2_0;
+                                v3_2 = v2_10;
+                                v3_4 = static_cast<int>(v2_11);
+                            }
+                        }
+                    } else {
+                        if (static_cast<int>(v2_11) >= static_cast<int>(v2_0)) {
+                            v4_0 = v2_0;
+                            goto region_7383fb;
+                        } else {
+                            v3_0 = v2_0;
+                            v3_1 = v2_0;
+                            v3_2 = v2_10;
+                            v3_4 = static_cast<int>(v2_11);
+                        }
+                    }
+                    for (;;) {
+                        mListener.mpArray[v3_2] = mListener.mpArray[v3_4];
+                        if (v3_1 != static_cast<unsigned int>(v3_4 + 1)) {
+                            v3_2 = v3_4;
+                            v3_4 = v3_4 + 1;
+                        } else {
+                            v4_0 = v3_0;
+                            break;
+                        }
+                    }
+                    region_7383fb:;
+                    mListener.mLength = v4_0 - 1u;
+                    v5_0 = v4_0 - 1u;
+                }
+                if ((v2_10 - 1) > -1) {
+                    v2_0 = v5_0;
+                    v2_11 = v2_10;
+                    v2_10 = v2_10 - 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0073c720 - 0x0073c758 (56 bytes)
 bool sCaplinkManager::isDispErrorDialog() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mListener.::MtArray::mLength != static_cast<u32>(0)) {
-        u32 i = static_cast<u32>(0);
+    if (mListener.mLength != 0) {
+        u32 i = 0;
         do {
-            if (static_cast<sCaplinkManager::cCaplinkListenerQueue*>(this->mListener.::MtArray::getBuffer()[static_cast<int>(i)])->::sCaplinkManager::cCaplinkListenerQueue::isDispError() == false) {
+            if (!static_cast<sCaplinkManager::cCaplinkListenerQueue*>(mListener.getBuffer()[static_cast<int>(i)])->isDispError()) {
                 return true;
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mListener.::MtArray::mLength);
+            i += 1u;
+        } while (i < mListener.mLength);
     }
     return false;
 }
@@ -1068,22 +1162,20 @@ __attribute__((weak)) bool sCaplinkManager::setupWebsocket() {
 // Address: 0x0073caf0 - 0x0073cb60 (112 bytes)
 const sCaplinkManager::cIconUrl* sCaplinkManager::getIconUrlFromIndex(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
-    if (index < this->mIconUrl.::MtArray::mLength) {
-        return static_cast<const sCaplinkManager::cIconUrl*>(this->mIconUrl.::MtArray::getBuffer()[static_cast<int>(index)]);
+    if (index < mIconUrl.mLength) {
+        return static_cast<const cIconUrl*>(mIconUrl.getBuffer()[static_cast<int>(index)]);
     } else {
-        return static_cast<const sCaplinkManager::cIconUrl*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1124,28 +1216,26 @@ bool sCaplinkManager::isLoadingProfIcon(s32 id) {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x120 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
-    if (this->mProfIconLoader.::MtArray::mLength == static_cast<u32>(0)) {
+    if (mProfIconLoader.mLength == 0) {
         return false;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mProfIconLoader.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(288))) == static_cast<unsigned int>(id)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mProfIconLoader.getBuffer()[static_cast<int>(i)]) + 288)) == static_cast<unsigned int>(id)) {
             return true;
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mProfIconLoader.::MtArray::mLength);
+        i += 1u;
+    } while (i < mProfIconLoader.mLength);
     return false;
 }
 
@@ -1434,113 +1524,113 @@ void sCaplinkManager::clearChatList() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2df0 from sCaplinkManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2e1c from sCaplinkManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2e18 from sCaplinkManager*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(11764)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(11760)) = static_cast<unsigned int>(0);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(11804)) = static_cast<unsigned char>(0);
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(11800)) = static_cast<unsigned int>(0);
-    this->mChatList.mIdType = static_cast<s32>(0);
-    this->mChatList.mChatStatus = static_cast<s32>(0);
-    this->mChatList.mLastChatId = static_cast<s32>(0);
-    this->mChatList.mTopId = static_cast<s32>(0);
-    this->mChatList.mBottomId = static_cast<s32>(0);
-    this->mChatList.mIsForward = false;
-    this->mChatList.mIsFirst = false;
-    if (this->mChatList.mUser.::MtArray::mLength != static_cast<u32>(0)) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 11764) = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11760) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 11804) = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11800) = 0;
+    mChatList.mIdType = 0;
+    mChatList.mChatStatus = 0;
+    mChatList.mLastChatId = 0;
+    mChatList.mTopId = 0;
+    mChatList.mBottomId = 0;
+    mChatList.mIsForward = false;
+    mChatList.mIsFirst = false;
+    if (mChatList.mUser.mLength != 0) {
         // inferred: the value the loop at 0x740cd0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mChatList.mUser.::MtArray::mLength;
+        u32 v0_0 = mChatList.mUser.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mChatList.mUser.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mChatList.mUser.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mChatList.mUser.::MtArray::mLength) {
-                    v0_0 = this->mChatList.mUser.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mChatList.mUser.mpArray[i0_3] != nullptr) {
+                delete mChatList.mUser.mpArray[i0_3];
+                if ((i0_3 + 1u) < mChatList.mUser.mLength) {
+                    v0_0 = mChatList.mUser.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mChatList.mUser.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mChatList.mUser.::MtArray::mpArray));
+    if (mChatList.mUser.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mChatList.mUser.mpArray));
     }
-    this->mChatList.mUser.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mChatList.mUser.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mChatList.mUser.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mChatList.mChat.::MtArray::mLength != static_cast<u32>(0)) {
+    mChatList.mUser.mpArray = nullptr;
+    mChatList.mUser.mBufsiz = 0;
+    mChatList.mUser.mLength = 0;
+    if (mChatList.mChat.mLength != 0) {
         // inferred: the value the loop at 0x740d50 carries; no location-less local in scope fits
-        u32 v2_0 = this->mChatList.mChat.::MtArray::mLength;
+        u32 v2_0 = mChatList.mChat.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mChatList.mChat.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mChatList.mChat.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mChatList.mChat.::MtArray::mLength) {
-                    v2_0 = this->mChatList.mChat.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mChatList.mChat.mpArray[i2_3] != nullptr) {
+                delete mChatList.mChat.mpArray[i2_3];
+                if ((i2_3 + 1u) < mChatList.mChat.mLength) {
+                    v2_0 = mChatList.mChat.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mChatList.mChat.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mChatList.mChat.::MtArray::mpArray));
+    if (mChatList.mChat.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mChatList.mChat.mpArray));
     }
-    this->mChatList.mChat.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mChatList.mChat.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mChatList.mChat.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mChatList.mJoin.::MtArray::mLength != static_cast<u32>(0)) {
+    mChatList.mChat.mpArray = nullptr;
+    mChatList.mChat.mBufsiz = 0;
+    mChatList.mChat.mLength = 0;
+    if (mChatList.mJoin.mLength != 0) {
         // inferred: the value the loop at 0x740dd0 carries; no location-less local in scope fits
-        u32 v4_0 = this->mChatList.mJoin.::MtArray::mLength;
+        u32 v4_0 = mChatList.mJoin.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mChatList.mJoin.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mChatList.mJoin.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mChatList.mJoin.::MtArray::mLength) {
-                    v4_0 = this->mChatList.mJoin.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mChatList.mJoin.mpArray[i4_3] != nullptr) {
+                delete mChatList.mJoin.mpArray[i4_3];
+                if ((i4_3 + 1u) < mChatList.mJoin.mLength) {
+                    v4_0 = mChatList.mJoin.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mChatList.mJoin.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mChatList.mJoin.::MtArray::mpArray));
+    if (mChatList.mJoin.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mChatList.mJoin.mpArray));
     }
-    this->mChatList.mJoin.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mChatList.mJoin.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mChatList.mJoin.::MtArray::mLength = static_cast<u32>(0);
+    mChatList.mJoin.mpArray = nullptr;
+    mChatList.mJoin.mBufsiz = 0;
+    mChatList.mJoin.mLength = 0;
 }
 
 // Address: 0x00733a40 - 0x00733b8a (330 bytes)
@@ -1577,22 +1667,20 @@ __attribute__((weak)) sCaplinkManager::cChatInfo* sCaplinkManager::createChatInf
 // Address: 0x00741cd0 - 0x00741d40 (112 bytes)
 nCaplink::cUserBaseInfo* sCaplinkManager::getChatListUser(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
-    if (index < this->mChatList.mUser.::MtArray::mLength) {
-        return static_cast<nCaplink::cUserBaseInfo*>(this->mChatList.mUser.::MtArray::getBuffer()[static_cast<int>(index)]);
+    if (index < mChatList.mUser.mLength) {
+        return static_cast<nCaplink::cUserBaseInfo*>(mChatList.mUser.getBuffer()[static_cast<int>(index)]);
     } else {
-        return static_cast<nCaplink::cUserBaseInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1661,50 +1749,45 @@ __attribute__((weak)) void sCaplinkManager::setReqFlag(u32 flag, bool isDispErro
     // DWARF local not rendered: const bool isReq;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (flag <= static_cast<u32>(10)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::isConnectServer() != false) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+    if (flag <= 10u) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
                 }
-                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                     // inferred: a temporary for the value the load at 0x73e2e1 read, used twice; no DWARF local holds it
-                    u32 t0 = this->mUpdateFlag;
-                    this->mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
-                    if (isDispError != false) {
-                        this->mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(this->mUpdateDispError) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
+                    u32 t0 = mUpdateFlag;
+                    mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
+                    if (isDispError) {
+                        mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(mUpdateDispError) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
                     }
-                    if (t0 != static_cast<u32>(0)) {
-                    } else {
-                        this->::sCaplinkManager::reqNextUpdate();
+                    if (t0 == 0) {
+                        reqNextUpdate();
                     }
                 } else {
                     // inferred: a temporary for the value the load at 0x73e2e1 read, used twice; no DWARF local holds it
-                    u32 t0 = this->mUpdateFlag;
-                    this->mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
-                    if (isDispError != false) {
-                        this->mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(this->mUpdateDispError) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
+                    u32 t0 = mUpdateFlag;
+                    mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
+                    if (isDispError) {
+                        mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(mUpdateDispError) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
                     }
-                    if (t0 != static_cast<u32>(0)) {
-                    } else {
-                        this->::sCaplinkManager::reqNextUpdate();
+                    if (t0 == 0) {
+                        reqNextUpdate();
                     }
                 }
             } else {
                 // inferred: a temporary for the value the load at 0x73e2e1 read, used twice; no DWARF local holds it
-                u32 t0 = this->mUpdateFlag;
-                this->mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
-                if (isDispError != false) {
-                    this->mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(this->mUpdateDispError) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(flag) & static_cast<unsigned char>(31))));
+                u32 t0 = mUpdateFlag;
+                mUpdateFlag = static_cast<unsigned int>(static_cast<unsigned long>(t0) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
+                if (isDispError) {
+                    mUpdateDispError = static_cast<unsigned int>(static_cast<unsigned long>(mUpdateDispError) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(flag) & 31)));
                 }
-                if (t0 != static_cast<u32>(0)) {
-                } else {
-                    this->::sCaplinkManager::reqNextUpdate();
+                if (t0 == 0) {
+                    reqNextUpdate();
                 }
             }
         }
@@ -1756,43 +1839,43 @@ __attribute__((weak)) void sCaplinkManager::reqNextUpdate() {
 // Address: 0x00738c60 - 0x00738c6e (14 bytes)
 void sCaplinkManager::reqFreeTagListUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(2), isDispError);
+    setReqFlag(2u, isDispError);
 }
 
 // Address: 0x00738c70 - 0x00738c7e (14 bytes)
 void sCaplinkManager::reqFriendListUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(3), isDispError);
+    setReqFlag(3u, isDispError);
 }
 
 // Address: 0x0073e340 - 0x0073e34e (14 bytes)
 void sCaplinkManager::reqFriendContentUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(4), isDispError);
+    setReqFlag(4u, isDispError);
 }
 
 // Address: 0x0073e350 - 0x0073e35e (14 bytes)
 void sCaplinkManager::reqFriendFreeTagListUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(5), isDispError);
+    setReqFlag(5u, isDispError);
 }
 
 // Address: 0x00738c80 - 0x00738c8e (14 bytes)
 void sCaplinkManager::reqFriendRecvUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(6), isDispError);
+    setReqFlag(6u, isDispError);
 }
 
 // Address: 0x0073e360 - 0x0073e36e (14 bytes)
 void sCaplinkManager::reqFriendInviteEnableUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(7), isDispError);
+    setReqFlag(7u, isDispError);
 }
 
 // Address: 0x00738c90 - 0x00738c9e (14 bytes)
 void sCaplinkManager::reqGroupChatListUpdate(bool isDispError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCaplinkManager::setReqFlag(static_cast<u32>(8), isDispError);
+    setReqFlag(8u, isDispError);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -2232,6 +2315,11 @@ __attribute__((weak)) bool sCaplinkManager::isEnableMessage(MT_CTSTR pMsg) {
 //   and 323 more (every copy is in <bundle>.inlined.json)
 // sCaplinkManager* sCaplinkManager::getInstance();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::MyDTI sCaplinkManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sCaplinkManager* sCaplinkManager::mpInstance;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x0074676e-0x007467ab (called at sCaplinkManager.cpp:122)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x0074676e-0x007467ab (called at sCaplinkManager.h:677)
@@ -2349,6 +2437,8 @@ __attribute__((weak)) void sCaplinkManager::cCaplinkListenerQueue::setErrorMsg()
 //   in sCaplinkManager::isDispErrorDialog at 0x0073c747-0x0073c74f (called at sCaplinkManager.cpp:1645)
 // bool sCaplinkManager::cCaplinkListenerQueue::isDispError();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cCaplinkListenerQueue::MyDTI sCaplinkManager::cCaplinkListenerQueue::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x0074685d-0x00746896 (called at sCaplinkManager.cpp:126)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x0074685d-0x00746896 (called at sCaplinkManager.h:324)
@@ -2395,7 +2485,7 @@ const MtDTI& sCaplinkManager::cProfile::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15sCaplinkManager8cProfileD0Ev at 0x01ac1490-0x01ac14ba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCaplinkManager::cProfile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cProfile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cProfile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2425,6 +2515,8 @@ inline void sCaplinkManager::cProfile::operator delete(void* p_addr) {
 //   in uGUICaplinkProfileEdit::init at 0x009d39b8-0x009d3a78 (called at sCaplinkManager.h:419)
 //   in uGUICaplinkProfileEdit::eventDecide at 0x009d45ba-0x009d4673 (called at sCaplinkManager.h:419)
 // void sCaplinkManager::cProfile::copy(const sCaplinkManager::cProfile& prof);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cProfile::MyDTI sCaplinkManager::cProfile::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x007468cf-0x00746908 (called at sCaplinkManager.cpp:128)
@@ -2476,7 +2568,7 @@ const MtDTI& sCaplinkManager::cIconUrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15sCaplinkManager8cIconUrlD0Ev at 0x01ac1780-0x01ac17aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCaplinkManager::cIconUrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cIconUrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cIconUrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2515,6 +2607,8 @@ __attribute__((weak)) MT_CTSTR sCaplinkManager::cIconUrl::getUrl() const {
 
 // No out-of-line body: no code in the ELF
 // bool sCaplinkManager::cIconUrl::isEmpty() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cIconUrl::MyDTI sCaplinkManager::cIconUrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x007467ab-0x007467eb (called at sCaplinkManager.cpp:123)
@@ -2565,7 +2659,7 @@ const MtDTI& sCaplinkManager::cProfIconLoader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCaplinkManager::cProfIconLoader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cProfIconLoader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cProfIconLoader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2605,6 +2699,8 @@ __attribute__((weak)) bool sCaplinkManager::cProfIconLoader::update() {
 //   in _ZN15sCaplinkManager15cProfIconLoaderD1Ev at 0x01ac14e7-0x01ac1569 (called at sCaplinkManager.h:378)
 //   in sCaplinkManager::cProfIconLoader::~cProfIconLoader at 0x01ac1587-0x01ac1609 (called at sCaplinkManager.h:378)
 // void sCaplinkManager::cProfIconLoader::release();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cProfIconLoader::MyDTI sCaplinkManager::cProfIconLoader::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x00746896-0x007468cf (called at sCaplinkManager.cpp:127)
@@ -2712,9 +2808,83 @@ __attribute__((weak)) MtObject* sCaplinkManager::cProfIconLoader::MyDTI::newInst
 // void sCaplinkManager::cDate::copy(const sCaplinkManager::cDate& date);
 
 // Address: 0x01ac0120 - 0x01ac0245 (293 bytes)
-__attribute__((weak)) void sCaplinkManager::cDate::copy(MtTime& t) {
-    DDON_STUB("sCaplinkManager::cDate::copy")
-    /* stub */
+void sCaplinkManager::cDate::copy(MtTime& t) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from tm*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from tm*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from tm*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from tm*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x4 from tm*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x0 from tm*
+    if (t.mTime == (MtTime::mTmTime)) {
+        mYear = static_cast<unsigned short>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&MtTime::mTm) + 20)) + 1900u);
+        mMonth = static_cast<unsigned char>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&MtTime::mTm) + 16)) + 1u);
+        mDay = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 12);
+        mHour = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 8);
+        mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+        mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+    } else {
+        t.updateDate(t.mTime);
+        // inferred: a temporary for the value the load at 0x1ac015c read, used once; no DWARF local holds it
+        long int t0 = MtTime::mTmTime;
+        // inferred: a temporary for the value the load at 0x1ac015f read, used twice; no DWARF local holds it
+        t64 t1 = t.mTime;
+        mYear = static_cast<unsigned short>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&MtTime::mTm) + 20)) + 1900u);
+        if (t0 == t1) {
+            mMonth = static_cast<unsigned char>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&MtTime::mTm) + 16)) + 1u);
+            mDay = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 12);
+            mHour = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 8);
+            mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+            mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+        } else {
+            t.updateDate(t1);
+            // inferred: a temporary for the value the load at 0x1ac01ce read, used once; no DWARF local holds it
+            long int t2 = MtTime::mTmTime;
+            // inferred: a temporary for the value the load at 0x1ac01d1 read, used twice; no DWARF local holds it
+            t64 t3 = t.mTime;
+            mMonth = static_cast<unsigned char>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&MtTime::mTm) + 16)) + 1u);
+            if (t2 != t3) {
+                t.updateDate(t3);
+                // inferred: a temporary for the value the load at 0x1ac01eb read, used once; no DWARF local holds it
+                long int t4 = MtTime::mTmTime;
+                // inferred: a temporary for the value the load at 0x1ac01ee read, used twice; no DWARF local holds it
+                t64 t5 = t.mTime;
+                mDay = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 12);
+                if (t4 != t5) {
+                    t.updateDate(t5);
+                    // inferred: a temporary for the value the load at 0x1ac0206 read, used once; no DWARF local holds it
+                    long int t6 = MtTime::mTmTime;
+                    // inferred: a temporary for the value the load at 0x1ac0209 read, used twice; no DWARF local holds it
+                    t64 t7 = t.mTime;
+                    mHour = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 8);
+                    if (t6 != t7) {
+                        t.updateDate(t7);
+                        // inferred: a temporary for the value the load at 0x1ac0221 read, used once; no DWARF local holds it
+                        long int t8 = MtTime::mTmTime;
+                        // inferred: a temporary for the value the load at 0x1ac0224 read, used twice; no DWARF local holds it
+                        t64 t9 = t.mTime;
+                        mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+                        if (t8 != t9) {
+                            t.updateDate(t9);
+                        }
+                        mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+                    } else {
+                        mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+                        mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+                    }
+                } else {
+                    mHour = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 8);
+                    mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+                    mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+                }
+            } else {
+                mDay = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 12);
+                mHour = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 8);
+                mMin = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 4);
+                mSec = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&MtTime::mTm) + 0);
+            }
+        }
+    }
 }
 
 // Address: 0x01abfff0 - 0x01ac0118 (296 bytes)
@@ -2778,7 +2948,7 @@ const MtDTI& sCaplinkManager::cContentData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15sCaplinkManager12cContentDataD0Ev at 0x01ac1450-0x01ac147a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCaplinkManager::cContentData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cContentData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cContentData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2796,6 +2966,8 @@ inline void sCaplinkManager::cContentData::operator delete(void* p_addr) {
 //   in sCaplinkManager::updateContentList at 0x0073938f-0x007393a1, 0x007394b3-0x007394e1 (called at sCaplinkManager.cpp:2271)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sCaplinkManager::cContentData::cContentData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cContentData::MyDTI sCaplinkManager::cContentData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x00746908-0x00746941 (called at sCaplinkManager.cpp:129)
@@ -2845,7 +3017,7 @@ const MtDTI& sCaplinkManager::cGroupChatData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15sCaplinkManager14cGroupChatDataD0Ev at 0x01ac1400-0x01ac142a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCaplinkManager::cGroupChatData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cGroupChatData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cGroupChatData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2876,6 +3048,8 @@ inline void sCaplinkManager::cGroupChatData::operator delete(void* p_addr) {
 //   in uGUICaplinkTalk::updateGroupData at 0x009dade6-0x009daef7 (called at sCaplinkManager.h:598)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void sCaplinkManager::cGroupChatData::copy(const sCaplinkManager::cGroupChatData& data);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cGroupChatData::MyDTI sCaplinkManager::cGroupChatData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x00746941-0x0074697a (called at sCaplinkManager.cpp:130)
@@ -2946,6 +3120,8 @@ const MtDTI& sCaplinkManager::cChatInfo::getDTI() const {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sCaplinkManager::cChatInfo::cChatInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cChatInfo::MyDTI sCaplinkManager::cChatInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x007467eb-0x00746824 (called at sCaplinkManager.cpp:124)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x007467eb-0x00746824 (called at sCaplinkManager.h:194)
@@ -2980,7 +3156,7 @@ const MtDTI& sCaplinkManager::cChatJoin::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cChatJoin::DTI)->memAlloc(sz, align, ::sCaplinkManager::cChatJoin::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCaplinkManager::cChatJoin::DTI)->memAlloc(sz, align, sCaplinkManager::cChatJoin::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2995,7 +3171,7 @@ inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15sCaplinkManager9cChatJoinD0Ev at 0x01abff80-0x01abffaa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cChatJoin::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCaplinkManager::cChatJoin::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3017,6 +3193,8 @@ inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
 //   in sCaplinkManager::addChatJoin at 0x00741bb7-0x00741bcd (called at sCaplinkManager.h:220)
 // sCaplinkManager::cChatJoin::cChatJoin(s32 id, bool join);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCaplinkManager::cChatJoin::MyDTI sCaplinkManager::cChatJoin::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x00746824-0x0074685d (called at sCaplinkManager.cpp:125)
 //   in _GLOBAL__sub_I_sCaplinkManager.cpp at 0x00746824-0x0074685d (called at sCaplinkManager.h:211)
@@ -3025,7 +3203,7 @@ inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
 // Address: 0x007334a0 - 0x007334eb (75 bytes)
 MtObject* sCaplinkManager::cChatJoin::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::sCaplinkManager::cChatJoin;
+    return new (16u) sCaplinkManager::cChatJoin;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (78 bytes)
@@ -3045,10 +3223,10 @@ __attribute__((weak)) void sCaplinkManager::cCaplinkWebsocketListener::onOpen() 
 // Address: 0x00733a20 - 0x00733a35 (21 bytes)
 void sCaplinkManager::cCaplinkWebsocketListener::onNotifyChat(nCaplink::WebsocketNotifyChat* notify) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (notify == static_cast<nCaplink::WebsocketNotifyChat*>(nullptr)) {
+    if (notify == nullptr) {
         return;
     }
-    ::sCaplinkManager::getInstance()->::sCaplinkManager::addChatList(notify);
+    sCaplinkManager::getInstance()->addChatList(notify);
 }
 
 // Address: 0x00733b90 - 0x00733b9b (11 bytes)
@@ -3060,16 +3238,16 @@ __attribute__((weak)) void sCaplinkManager::cCaplinkWebsocketListener::onError(s
 // Address: 0x00733ba0 - 0x00733bc8 (40 bytes)
 void sCaplinkManager::cCaplinkWebsocketListener::onClose() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsConnected = false;
-    this->mIsError = false;
-    this->mIsRegistDevice = false;
-    if (::sCaplinkManager::getInstance()->mpCaplink == static_cast<nCaplink::Object*>(nullptr)) {
+    mIsConnected = false;
+    mIsError = false;
+    mIsRegistDevice = false;
+    if (sCaplinkManager::getInstance()->mpCaplink == nullptr) {
         return;
     }
-    if (::sCaplinkManager::getInstance()->mpCaplink->::nCaplink::Object::getRetry() == false) {
+    if (!sCaplinkManager::getInstance()->mpCaplink->getRetry()) {
         return;
     }
-    this->mIsRegistDevice = true;
+    mIsRegistDevice = true;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (20 bytes)
@@ -3141,11 +3319,11 @@ __attribute__((weak)) void sCaplinkManager::cChatMessageParser::string(MT_CTSTR 
 // Address: 0x00734120 - 0x00734138 (24 bytes)
 void sCaplinkManager::cChatMessageParser::number(s64 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlag == static_cast<u32>(6)) {
-        this->mIsResign = static_cast<unsigned char>(value);
+    if (mFlag == 6) {
+        mIsResign = static_cast<unsigned char>(value);
     } else {
-        if (this->mFlag == static_cast<u32>(1)) {
-            this->mGroupSkinId = static_cast<s32>(static_cast<unsigned int>(value));
+        if (mFlag == 1) {
+            mGroupSkinId = static_cast<s32>(static_cast<unsigned int>(value));
         }
     }
 }
@@ -3156,19 +3334,19 @@ void sCaplinkManager::cChatMessageParser::number(s64 value) {
 // Address: 0x00734140 - 0x0073414b (11 bytes)
 void sCaplinkManager::cChatMessageParser::booleanTrue() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlag != static_cast<u32>(6)) {
+    if (mFlag != 6) {
         return;
     }
-    this->mIsResign = static_cast<u8>(1);
+    mIsResign = 1;
 }
 
 // Address: 0x00734150 - 0x0073415b (11 bytes)
 void sCaplinkManager::cChatMessageParser::booleanFalse() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlag != static_cast<u32>(6)) {
+    if (mFlag != 6) {
         return;
     }
-    this->mIsResign = static_cast<u8>(0);
+    mIsResign = 0;
 }
 
 // Address: 0x00734160 - 0x0073429b (315 bytes)

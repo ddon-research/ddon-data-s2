@@ -332,52 +332,76 @@ inline f32 nJobParam::cHumanBaseInfo::getMaxHP() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nJobParam::cHumanBaseInfo::getFinalMaxHP at 0x616da0-0x616da5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 nJobParam::cHumanBaseInfo::getFinalMaxHPPrivate() const {
+    return this->mFinalMaxHP_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nJobParam::cHumanBaseInfo::setFinalMaxHP at 0x616d80-0x616d85; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void nJobParam::cHumanBaseInfo::setFinalMaxHPPrivate(f32 NewValue) {
+    this->mFinalMaxHP_pri = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nJobParam::cHumanBaseInfo::getFinalMaxHPCheatCheck at 0x616db0-0x616db3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 nJobParam::cHumanBaseInfo::getFinalMaxHPCheatCheckPrivate() const {
+    return this->mFinalMaxHPCheatCheck_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nJobParam::cHumanBaseInfo::setFinalMaxHP at 0x616d8c-0x616d8f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void nJobParam::cHumanBaseInfo::setFinalMaxHPCheatCheckPrivate(u32 NewValue) {
+    this->mFinalMaxHPCheatCheck_pri = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nJobParam::cJobInfo::cJobInfo() {
-    this->mLv_pri = static_cast<u16>(0);
-    this->mItemSealResist_pri = static_cast<u8>(0);
-    this->mDefDownResist_pri = static_cast<u8>(0);
-    this->mMAtkDownResist_pri = static_cast<u8>(0);
-    this->mMDefDownResist_pri = static_cast<u8>(0);
-    this->mErosionResist_pri = static_cast<u8>(0);
-    this->mStoneResist_pri = static_cast<u8>(0);
-    this->mGoldResist_pri = static_cast<u8>(0);
-    this->mFireReduceResist_pri = static_cast<u8>(0);
-    this->mIceReduceResist_pri = static_cast<u8>(0);
-    this->mThunderReduceResist_pri = static_cast<u8>(0);
-    this->mHolyReduceResist_pri = static_cast<u8>(0);
-    this->mDarkReduceResist_pri = static_cast<u8>(0);
-    this->mAtkDownResist_pri = static_cast<u8>(0);
-    this->mSlowResist_pri = static_cast<u8>(0);
-    this->mSleepResist_pri = static_cast<u8>(0);
-    this->mStunResist_pri = static_cast<u8>(0);
-    this->mWetResist_pri = static_cast<u8>(0);
-    this->mOilResist_pri = static_cast<u8>(0);
-    this->mSealResist_pri = static_cast<u8>(0);
-    this->mCurseResist_pri = static_cast<u8>(0);
-    this->mSoftResist_pri = static_cast<u8>(0);
-    this->mDarkResist_pri = static_cast<s16>(0);
-    this->mSpreadResist_pri = static_cast<u8>(0);
-    this->mFreezeResist_pri = static_cast<u8>(0);
-    this->mShockResist_pri = static_cast<u8>(0);
-    this->mAbsorbResist_pri = static_cast<u8>(0);
-    this->mDarkElmResist_pri = static_cast<u8>(0);
-    this->mPoisonResist_pri = static_cast<u8>(0);
-    this->mFireResist_pri = static_cast<s16>(0);
-    this->mIceResist_pri = static_cast<s16>(0);
-    this->mThunderResist_pri = static_cast<s16>(0);
-    this->mHolyResist_pri = static_cast<s16>(0);
-    this->mJobPoint_pri = static_cast<u64>(0);
-    this->mConstitution_pri = static_cast<u32>(0);
-    this->mGuts_pri = static_cast<u32>(0);
-    this->mShakePower_pri = static_cast<u32>(0);
-    this->mStanPower_pri = static_cast<u32>(0);
-    this->mStrength_pri = static_cast<u32>(0);
-    this->mDownPower_pri = static_cast<u32>(0);
-    this->mMAtk_pri = static_cast<u32>(0);
-    this->mMDef_pri = static_cast<u32>(0);
-    this->mAtk_pri = static_cast<u32>(0);
-    this->mDef_pri = static_cast<u32>(0);
-    this->mExp_pri = static_cast<u64>(0);
+    this->mLv_pri = 0;
+    this->mItemSealResist_pri = 0;
+    this->mDefDownResist_pri = 0;
+    this->mMAtkDownResist_pri = 0;
+    this->mMDefDownResist_pri = 0;
+    this->mErosionResist_pri = 0;
+    this->mStoneResist_pri = 0;
+    this->mGoldResist_pri = 0;
+    this->mFireReduceResist_pri = 0;
+    this->mIceReduceResist_pri = 0;
+    this->mThunderReduceResist_pri = 0;
+    this->mHolyReduceResist_pri = 0;
+    this->mDarkReduceResist_pri = 0;
+    this->mAtkDownResist_pri = 0;
+    this->mSlowResist_pri = 0;
+    this->mSleepResist_pri = 0;
+    this->mStunResist_pri = 0;
+    this->mWetResist_pri = 0;
+    this->mOilResist_pri = 0;
+    this->mSealResist_pri = 0;
+    this->mCurseResist_pri = 0;
+    this->mSoftResist_pri = 0;
+    this->mDarkResist_pri = 0;
+    this->mSpreadResist_pri = 0;
+    this->mFreezeResist_pri = 0;
+    this->mShockResist_pri = 0;
+    this->mAbsorbResist_pri = 0;
+    this->mDarkElmResist_pri = 0;
+    this->mPoisonResist_pri = 0;
+    this->mFireResist_pri = 0;
+    this->mIceResist_pri = 0;
+    this->mThunderResist_pri = 0;
+    this->mHolyResist_pri = 0;
+    this->mJobPoint_pri = 0;
+    this->mConstitution_pri = 0;
+    this->mGuts_pri = 0;
+    this->mShakePower_pri = 0;
+    this->mStanPower_pri = 0;
+    this->mStrength_pri = 0;
+    this->mDownPower_pri = 0;
+    this->mMAtk_pri = 0;
+    this->mMDef_pri = 0;
+    this->mAtk_pri = 0;
+    this->mDef_pri = 0;
+    this->mExp_pri = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

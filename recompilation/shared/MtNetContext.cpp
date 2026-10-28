@@ -27,26 +27,26 @@ MtNetContext::~MtNetContext() {
 // Address: 0x00de6510 - 0x00de6579 (105 bytes)
 void MtNetContext::addDependency(MtNetObject* obj) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount + static_cast<s32>(1);
+        mLockCount = mLockCount + 1;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtNetObject* * p0_0 = &this->mpDependObject[0];
+    MtNetObject* * p0_0 = &mpDependObject[0];
     // inferred: DWARF's location-less 'i' (lexical block [0xde653c, 0xde6556)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the value carried to 0xde6556; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
-        if ((*p0_0) != static_cast<MtNetObject*>(nullptr)) {
-            if ((i + static_cast<s32>(1)) <= static_cast<s32>(3)) {
-                p0_0 += static_cast<int>(1);
-                i += static_cast<s32>(1);
+        if ((*p0_0) != nullptr) {
+            if ((i + 1) <= 3) {
+                p0_0 += 1;
+                i += 1;
             } else {
-                v1_1 = i + static_cast<s32>(1);
+                v1_1 = i + 1;
                 break;
             }
         } else {
@@ -55,10 +55,10 @@ void MtNetContext::addDependency(MtNetObject* obj) {
             break;
         }
     }
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount - static_cast<s32>(1);
-        if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -67,38 +67,38 @@ void MtNetContext::addDependency(MtNetObject* obj) {
 // Address: 0x00de6580 - 0x00de65ee (110 bytes)
 void MtNetContext::removeDependency(MtNetObject* obj) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount + static_cast<s32>(1);
+        mLockCount = mLockCount + 1;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtNetObject* * p0_0 = &this->mpDependObject[0];
+    MtNetObject* * p0_0 = &mpDependObject[0];
     // inferred: DWARF's location-less 'i' (lexical block [0xde65ae, 0xde65c9)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the value carried to 0xde65c9; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
         if (obj != (*p0_0)) {
-            if ((i + static_cast<s32>(1)) <= static_cast<s32>(3)) {
-                p0_0 += static_cast<int>(1);
-                i += static_cast<s32>(1);
+            if ((i + 1) <= 3) {
+                p0_0 += 1;
+                i += 1;
             } else {
-                v1_1 = i + static_cast<s32>(1);
+                v1_1 = i + 1;
                 break;
             }
         } else {
-            *p0_0 = static_cast<MtNetObject*>(nullptr);
+            *p0_0 = nullptr;
             v1_1 = i;
             break;
         }
     }
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount - static_cast<s32>(1);
-        if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -199,14 +199,14 @@ __attribute__((weak)) void MtNetContext::cbAnsFinalize(MtNetRequest* req) {
 bool MtNetContext::canMoveRequest(MtNetRequest* req) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xde6d0c, used twice; no DWARF local holds it
-    s32 t0 = req->::MtNetRequest::getId();
-    if (t0 == static_cast<s32>(258)) {
-        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(257)) != false) {
+    s32 t0 = req->getId();
+    if (t0 == 258) {
+        if (mRequestController.isMove(257)) {
             return false;
         }
     } else {
-        if (t0 == static_cast<s32>(257)) {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(258)) != false) {
+        if (t0 == 257) {
+            if (mRequestController.isMove(258)) {
                 return false;
             }
         }
@@ -226,34 +226,34 @@ __attribute__((weak)) s32 MtNetContext::startRequest(MtNetRequest* req) {
 s32 MtNetContext::moveRequest(MtNetRequest* req) {
     // DWARF local not rendered: s32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (req != static_cast<MtNetRequest*>(nullptr)) {
+    if (req != nullptr) {
         // inferred: a temporary for the result of the call at 0xde6f85, used twice; no DWARF local holds it
-        s32 t0 = req->::MtNetRequest::getId();
-        if (t0 == static_cast<s32>(258)) {
-            return this->moveFinalize(req);
+        s32 t0 = req->getId();
+        if (t0 == 258) {
+            return moveFinalize(req);
         } else {
-            if (t0 == static_cast<s32>(257)) {
-                return this->moveStart(req);
+            if (t0 == 257) {
+                return moveStart(req);
             } else {
-                return static_cast<s32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00de7030 - 0x00de7070 (64 bytes)
 void MtNetContext::endRequest(MtNetRequest* req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (req == static_cast<MtNetRequest*>(nullptr)) {
+    if (req == nullptr) {
         return;
     }
-    req->::MtNetRequest::getId();
-    if (req->::MtNetRequest::getId() == static_cast<s32>(258)) {
-        this->mIsNeedFinalize = false;
+    req->getId();
+    if (req->getId() == 258) {
+        mIsNeedFinalize = false;
     } else {
-        this->mIsNeedFinalize = true;
+        mIsNeedFinalize = true;
     }
 }
 
@@ -262,10 +262,10 @@ void MtNetContext::startFailRequest(MtNetRequest* req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtNetError err;
     req->getFatal(&err);
-    if (req->::MtNetRequest::getId() != static_cast<s32>(257)) {
+    if (req->getId() != 257) {
         return;
     }
-    this->::MtNetContext::cbAnsStartFail(req, &err);
+    cbAnsStartFail(req, &err);
 }
 
 // No out-of-line body: no code in the ELF

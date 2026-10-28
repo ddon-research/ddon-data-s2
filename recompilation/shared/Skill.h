@@ -360,9 +360,9 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataAbilityLevelParam::CDataAbilityLevelParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucLv = static_cast<u8>(0);
-    this->m_unRequireJobLevel = static_cast<u32>(0);
-    this->m_unRequireJobPoint = static_cast<u32>(0);
+    this->m_ucLv = 0;
+    this->m_unRequireJobLevel = 0;
+    this->m_unRequireJobPoint = 0;
     this->m_bIsRelease = false;
 }
 
@@ -370,59 +370,59 @@ inline CDataAbilityLevelParam::CDataAbilityLevelParam() {
 // approximate: only approximate callers check this inline body
 inline CDataLearnedAcquirementParam::CDataLearnedAcquirementParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJob = static_cast<u8>(0);
-    this->m_ucType = static_cast<u8>(0);
-    this->m_unAcquirementNo = static_cast<u32>(0);
-    this->m_ucAcquirementLv = static_cast<u8>(0);
-    this->m_unAcquirementParamID = static_cast<u32>(0);
+    this->m_ucJob = 0;
+    this->m_ucType = 0;
+    this->m_unAcquirementNo = 0;
+    this->m_ucAcquirementLv = 0;
+    this->m_unAcquirementParamID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataNormalSkillParam::CDataNormalSkillParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJob = static_cast<u8>(0);
-    this->m_unSkillNo = static_cast<u32>(0);
-    this->m_unIndex = static_cast<u32>(0);
-    this->m_unPreSkillNo = static_cast<u32>(0);
+    this->m_ucJob = 0;
+    this->m_unSkillNo = 0;
+    this->m_unIndex = 0;
+    this->m_unPreSkillNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataPresetAbilityParam::CDataPresetAbilityParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucPresetNo = static_cast<u8>(0);
+    this->m_ucPresetNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataReleaseAcquirementParam::CDataReleaseAcquirementParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJob = static_cast<u8>(0);
-    this->m_ucType = static_cast<u8>(0);
-    this->m_unAcquirementNo = static_cast<u32>(0);
-    this->m_ucAcquirementLv = static_cast<u8>(0);
-    this->m_unAcquirementParamID = static_cast<u32>(0);
+    this->m_ucJob = 0;
+    this->m_ucType = 0;
+    this->m_unAcquirementNo = 0;
+    this->m_ucAcquirementLv = 0;
+    this->m_unAcquirementParamID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataSetAcquirementParam::CDataSetAcquirementParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJob = static_cast<u8>(0);
-    this->m_ucType = static_cast<u8>(0);
-    this->m_ucSlotNo = static_cast<u8>(0);
-    this->m_unAcquirementNo = static_cast<u32>(0);
-    this->m_ucAcquirementLv = static_cast<u8>(0);
+    this->m_ucJob = 0;
+    this->m_ucType = 0;
+    this->m_ucSlotNo = 0;
+    this->m_unAcquirementNo = 0;
+    this->m_ucAcquirementLv = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataSkillLevelParam::CDataSkillLevelParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucLv = static_cast<u8>(0);
-    this->m_unRequireJobLevel = static_cast<u32>(0);
-    this->m_unRequireJobPoint = static_cast<u32>(0);
+    this->m_ucLv = 0;
+    this->m_unRequireJobLevel = 0;
+    this->m_unRequireJobPoint = 0;
     this->m_bIsRelease = false;
 }
 
@@ -430,7 +430,7 @@ inline CDataSkillLevelParam::CDataSkillLevelParam() {
 // approximate: only approximate callers check this inline body
 inline CDataSkillParam::CDataSkillParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unSkillNo = static_cast<u32>(0);
-    this->m_ucJob = static_cast<u8>(0);
-    this->m_ucType = static_cast<u8>(0);
+    this->m_unSkillNo = 0;
+    this->m_ucJob = 0;
+    this->m_ucType = 0;
 }

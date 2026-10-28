@@ -76,20 +76,20 @@ const MtDTI& uNpc::getDTI() const {
 // Address: 0x00ca50f0 - 0x00ca5102 (18 bytes)
 u32 uNpc::getNpcId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::mpNpc != static_cast<cpNpc*>(nullptr)) {
-        return this->::uDDOModel::mpNpc->::cpNpc::getNpcId();
+    if (mpNpc != nullptr) {
+        return mpNpc->getNpcId();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ca5110 - 0x00ca5120 (16 bytes)
 void uNpc::setNpcId(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::mpNpc == static_cast<cpNpc*>(nullptr)) {
+    if (mpNpc == nullptr) {
         return;
     }
-    this->::uDDOModel::mpNpc->mNpcId = id;
+    mpNpc->mNpcId = id;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (64 bytes)
@@ -203,24 +203,24 @@ __attribute__((weak)) void uNpc::setDispGauge(bool disp) {
 // Address: 0x00ca5140 - 0x00ca5155 (21 bytes)
 void uNpc::setHeadCtrlSpeedRate(f32 speedRate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCharacter::mpHeadCtrl == static_cast<cpHeadCtrl*>(nullptr)) {
+    if (mpHeadCtrl == nullptr) {
         return;
     }
-    this->::uCharacter::mpHeadCtrl->mAngleSpeedRate = speedRate;
+    mpHeadCtrl->mAngleSpeedRate = speedRate;
 }
 
 // Address: 0x00ca5160 - 0x00ca51b2 (82 bytes)
 void uNpc::setHeadCtrlEnable(bool isEnable, bool isDisableSeq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCharacter::mpHeadCtrl == static_cast<cpHeadCtrl*>(nullptr)) {
+    if (mpHeadCtrl == nullptr) {
         return;
     }
-    this->::uCharacter::mpHeadCtrl->setActive(isEnable);
-    if (isDisableSeq != false) {
-        this->::uCharacter::mpHeadCtrl->mFlag = this->::uCharacter::mpHeadCtrl->mFlag | static_cast<u32>(1);
-        this->::uCharacter::mpHeadCtrl->::cpComponent::mActive = true;
+    mpHeadCtrl->setActive(isEnable);
+    if (isDisableSeq) {
+        mpHeadCtrl->mFlag = mpHeadCtrl->mFlag | 1u;
+        mpHeadCtrl->mActive = true;
     } else {
-        this->::uCharacter::mpHeadCtrl->mFlag = this->::uCharacter::mpHeadCtrl->mFlag & static_cast<u32>(4294967294);
+        mpHeadCtrl->mFlag = mpHeadCtrl->mFlag & 0xFFFFFFFEu;
     }
 }
 
@@ -237,17 +237,17 @@ __attribute__((weak)) void uNpc::setHeadCtrlParam(bool isDisableSeq, u32 type, c
 // Address: 0x00ca53f0 - 0x00ca5461 (113 bytes)
 void uNpc::setHeadCtrlParam(bool isDisableSeq, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCharacter::mpHeadCtrl == static_cast<cpHeadCtrl*>(nullptr)) {
+    if (mpHeadCtrl == nullptr) {
         return;
     }
-    this->::uCharacter::mpHeadCtrl->setActive(true);
-    if (isDisableSeq != false) {
-        this->::uCharacter::mpHeadCtrl->mFlag = this->::uCharacter::mpHeadCtrl->mFlag | static_cast<u32>(1);
-        this->::uCharacter::mpHeadCtrl->::cpComponent::mActive = true;
+    mpHeadCtrl->setActive(true);
+    if (isDisableSeq) {
+        mpHeadCtrl->mFlag = mpHeadCtrl->mFlag | 1u;
+        mpHeadCtrl->mActive = true;
     } else {
-        this->::uCharacter::mpHeadCtrl->mFlag = this->::uCharacter::mpHeadCtrl->mFlag & static_cast<u32>(4294967294);
+        mpHeadCtrl->mFlag = mpHeadCtrl->mFlag & 0xFFFFFFFEu;
     }
-    this->::uCharacter::mpHeadCtrl->::cpHeadCtrl::setTargetPos(pos);
+    mpHeadCtrl->setTargetPos(pos);
 }
 
 // Address: 0x00ca5470 - 0x00ca556f (255 bytes)
@@ -280,13 +280,12 @@ __attribute__((weak)) void uNpc::setTouch(uDDOModel* pUnit, bool isTouchSave) {
 // Address: 0x00ca5750 - 0x00ca578c (60 bytes)
 void uNpc::requestReleaseTouch(uDDOModel* pRelease, nDDOModel::TOUCH_RELEASE_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::requestReleaseTouch(pRelease, type);
-    if (pRelease == static_cast<uDDOModel*>(nullptr)) {
+    this->uDDOModel::requestReleaseTouch(pRelease, type);
+    if (pRelease == nullptr) {
         return;
     }
-    if (this != ::sTalkManager::getInstance()->::sTalkManager::getTalkTarget()) {
-    } else {
-        ::sTalkManager::getInstance()->::sTalkManager::forceInterrupt();
+    if (this == sTalkManager::getInstance()->getTalkTarget()) {
+        sTalkManager::getInstance()->forceInterrupt();
     }
 }
 
@@ -302,9 +301,9 @@ __attribute__((weak)) void uNpc::loadFSM(MT_CTSTR filePath) {
 bool uNpc::isAttend() {
     // DWARF local not rendered: uControl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-        if (this->::uDDOModel::getCtrl()->mCtrlType == static_cast<u8>(16)) {
-            return static_cast<uControlNpc*>(this->::uDDOModel::getCtrl())->::uControlNpc::isAttend() != false;
+    if (getCtrl() != nullptr) {
+        if (getCtrl()->mCtrlType == 16) {
+            return static_cast<uControlNpc*>(getCtrl())->isAttend();
         }
     }
     return false;
@@ -313,10 +312,10 @@ bool uNpc::isAttend() {
 // Address: 0x00ca8260 - 0x00ca8289 (41 bytes)
 bool uNpc::isDispMiniMap() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    uControlNpc* pCtrl = this->::uDDOModel::getCtrlNpc();
-    if (pCtrl != static_cast<uControlNpc*>(nullptr)) {
-        if (pCtrl->mIsAttend == false) {
-            if (pCtrl->mIsDispMiniMap == false) {
+    uControlNpc* pCtrl = getCtrlNpc();
+    if (pCtrl != nullptr) {
+        if (!pCtrl->mIsAttend) {
+            if (!pCtrl->mIsDispMiniMap) {
                 return false;
             }
         }
@@ -333,14 +332,14 @@ bool uNpc::isDispMiniMap() {
 bool uNpc::isDisableTalkMotCancel() {
     // DWARF local not rendered: cHumanActSetNpcMotion* pAct;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(376)) {
+    if (getActMgrPtr()->getActionNo() == 376) {
         // inferred: a temporary for the result of the call at 0xca82c4, used 4 times; no DWARF local holds it
-        cAction* t0 = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getAction();
-        if (t0 != static_cast<cAction*>(nullptr)) {
-            u32 category = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getCategory();
-            u32 motion = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getMotionNo();
-            s32 motIndex = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getMotIndex();
-            return ::sNpcManager::getInstance()->::sNpcManager::isDisableCancel(static_cast<unsigned char>(category), static_cast<unsigned char>(motion), motIndex);
+        cAction* t0 = getActMgrPtr()->getAction();
+        if (t0 != nullptr) {
+            u32 category = static_cast<cHumanActSetNpcMotion*>(t0)->getCategory();
+            u32 motion = static_cast<cHumanActSetNpcMotion*>(t0)->getMotionNo();
+            s32 motIndex = static_cast<cHumanActSetNpcMotion*>(t0)->getMotIndex();
+            return sNpcManager::getInstance()->isDisableCancel(static_cast<unsigned char>(category), static_cast<unsigned char>(motion), motIndex);
         } else {
             return false;
         }
@@ -355,17 +354,17 @@ bool uNpc::isMotionCancelMyRoom() {
     // DWARF local not rendered: u32 motion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cAction*
-    if (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(386)) {
+    if (getActMgrPtr()->getActionNo() == 386) {
         // inferred: a temporary for the result of the call at 0xca8334, used 4 times; no DWARF local holds it
-        cAction* t0 = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getAction();
-        if (t0 != static_cast<cAction*>(nullptr)) {
+        cAction* t0 = getActMgrPtr()->getAction();
+        if (t0 != nullptr) {
             // inferred: a temporary for the value the load at 0xca833e read, used once; no DWARF local holds it
-            unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(84));
-            s32 motIndex = static_cast<cHumanActSetNpcMotMyRoom*>(t0)->::cHumanActSetNpcMotMyRoom::getMotIndex();
-            if (static_cast<cHumanActSetNpcMotMyRoom*>(t0)->::cHumanActSetNpcMotMyRoom::getEmotion() != static_cast<u32>(0)) {
-                return ::sNpcManager::getInstance()->::sNpcManager::isMotionCancelEmoMyRoom(t1, motIndex);
+            unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 84);
+            s32 motIndex = static_cast<cHumanActSetNpcMotMyRoom*>(t0)->getMotIndex();
+            if (static_cast<cHumanActSetNpcMotMyRoom*>(t0)->getEmotion() != 0) {
+                return sNpcManager::getInstance()->isMotionCancelEmoMyRoom(t1, motIndex);
             } else {
-                return ::sNpcManager::getInstance()->::sNpcManager::isMotionCancelMyRoom(t1, motIndex);
+                return sNpcManager::getInstance()->isMotionCancelMyRoom(t1, motIndex);
             }
         } else {
             return false;
@@ -379,40 +378,37 @@ bool uNpc::isMotionCancelMyRoom() {
 void uNpc::controlLantern(const uControlNpc* pCtrl) {
     // DWARF local not rendered: bool forceOn;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pCtrl->mIsFsmEventNpc != false) {
+    if (pCtrl->mIsFsmEventNpc) {
         return;
     }
-    cEquipData& data = ::cContextInterface::getContextEquip(this->::uDDOModel::mContextInterface.mpContextInstance);
-    if (data.::cEquipData::getEquip(static_cast<u8>(15), static_cast<u8>(0), true) == static_cast<u16>(0)) {
+    cEquipData& data = cContextInterface::getContextEquip(mContextInterface.mpContextInstance);
+    if (data.cEquipData::getEquip(static_cast<u8>(15), static_cast<u8>(0), true) == 0) {
         return;
     }
     // inferred: a temporary for the value the load at 0xca7818 read, used once; no DWARF local holds it
     const u8 t0 = pCtrl->mLantern;
-    u32 hour = ::sWeatherManager::getInstance()->::sWeatherManager::getWeatherTimeHour();
+    u32 hour = sWeatherManager::getInstance()->getWeatherTimeHour();
     // inferred: a temporary for the result of the call at 0xca782f, used once; no DWARF local holds it
-    bool t1 = this->::uDDOModel::isAbnormalConditionActive(static_cast<u32>(12291));
-    if (t0 != static_cast<u8>(3)) {
-        if (hour > static_cast<u32>(4)) {
-            if (hour <= static_cast<u32>(18)) {
-                if (t1 != false) {
-                    this->::uDDOModel::recoverAbnormalCondition(static_cast<u32>(12291));
+    bool t1 = isAbnormalConditionActive(12291u);
+    if (t0 != 3) {
+        if (hour > 4u) {
+            if (hour <= 18u) {
+                if (t1) {
+                    recoverAbnormalCondition(12291u);
                 }
             } else {
-                if (t1 != false) {
-                } else {
-                    this->::uDDOModel::catchAbnormalCondition(static_cast<u32>(12291), static_cast<nObjCondition::OCD_REASON>(0), -1.0f, false);
+                if (!t1) {
+                    catchAbnormalCondition(12291u, nObjCondition::OCD_REASON_NONE, -1.0f, false);
                 }
             }
         } else {
-            if (t1 != false) {
-            } else {
-                this->::uDDOModel::catchAbnormalCondition(static_cast<u32>(12291), static_cast<nObjCondition::OCD_REASON>(0), -1.0f, false);
+            if (!t1) {
+                catchAbnormalCondition(12291u, nObjCondition::OCD_REASON_NONE, -1.0f, false);
             }
         }
     } else {
-        if (t1 != false) {
-        } else {
-            this->::uDDOModel::catchAbnormalCondition(static_cast<u32>(12291), static_cast<nObjCondition::OCD_REASON>(0), -1.0f, false);
+        if (!t1) {
+            catchAbnormalCondition(12291u, nObjCondition::OCD_REASON_NONE, -1.0f, false);
         }
     }
 }
@@ -428,25 +424,25 @@ __attribute__((weak)) u32 uNpc::trace(MtVector3& TargetPos, MtVector3& DestPos, 
 void uNpc::setInvincible(bool IsInvincible) {
     // DWARF local not rendered: uControlNpc* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<uControlNpc*>(this->::uDDOModel::getCtrl())->::uControlNpc::setInvincible(IsInvincible);
+    static_cast<uControlNpc*>(getCtrl())->setInvincible(IsInvincible);
 }
 
 // Address: 0x00ca83f0 - 0x00ca8485 (149 bytes)
 void uNpc::setGripFinger() {
     // DWARF local not rendered: u32 jobIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
-        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea() != false) {
-            if (this->::uHuman::mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
-                this->setMotionEx(static_cast<u32>(3), static_cast<u32>((this->::uHuman::mpContextPlayerInfo->mCurrentJob_pri + static_cast<int>(20)) | static_cast<int>(3072)), -1.0f, 0.0f, 1.0f, static_cast<u32>(0));
+    if (sArea::getInstance() != nullptr) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea()) {
+            if (mpContextPlayerInfo != nullptr) {
+                setMotionEx(3u, static_cast<u32>((mpContextPlayerInfo->mCurrentJob_pri + 20) | 3072), -1.0f, 0.0f, 1.0f, 0u);
             } else {
-                this->setMotionEx(static_cast<u32>(3), static_cast<u32>(3347), -1.0f, 0.0f, 1.0f, static_cast<u32>(0));
+                setMotionEx(3u, 3347u, -1.0f, 0.0f, 1.0f, 0u);
             }
         } else {
-            this->setMotionEx(static_cast<u32>(3), static_cast<u32>(3302), -1.0f, 0.0f, 1.0f, static_cast<u32>(0));
+            setMotionEx(3u, 3302u, -1.0f, 0.0f, 1.0f, 0u);
         }
     } else {
-        this->setMotionEx(static_cast<u32>(3), static_cast<u32>(3302), -1.0f, 0.0f, 1.0f, static_cast<u32>(0));
+        setMotionEx(3u, 3302u, -1.0f, 0.0f, 1.0f, 0u);
     }
 }
 
@@ -464,13 +460,13 @@ uNpc::~uNpc() {
 // Address: 0x00ca5860 - 0x00ca5865 (5 bytes)
 void uNpc::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::createProperty(s);
+    this->uDDOModel::createProperty(s);
 }
 
 // Address: 0x00ca5870 - 0x00ca5875 (5 bytes)
 MtUI* uNpc::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uModel::createUI(prop);
+    return this->uModel::createUI(prop);
 }
 
 // Address: 0x00ca5880 - 0x00ca6fd2 (5970 bytes)
@@ -541,7 +537,7 @@ __attribute__((weak)) void uNpc::createComponent() {
 // Address: 0x00ca7b10 - 0x00ca7b15 (5 bytes)
 void uNpc::setupComponentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uHuman::setupComponentPtr();
+    this->uHuman::setupComponentPtr();
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -582,29 +578,31 @@ __attribute__((weak)) void uNpc::changeThinkToEnemy() {
 // Address: 0x00ca7010 - 0x00ca7075 (101 bytes)
 void uNpc::setCheckedCollisionBtl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    if (getObjCollisionPtr() == nullptr) {
         return;
     }
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(15), static_cast<u32>(1));
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(15), static_cast<u32>(10));
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(15), static_cast<s32>(1), false, static_cast<u32>(4294967295));
+    getObjCollisionPtr()->killNode(15u, 1u);
+    getObjCollisionPtr()->killNode(15u, 10u);
+    getObjCollisionPtr()->createNodeFromIndex(15u, 1, false, 0xFFFFFFFFu);
 }
 
 // Address: 0x00ca7c80 - 0x00ca7ce5 (101 bytes)
 void uNpc::setCheckedCollisionNml() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    if (getObjCollisionPtr() == nullptr) {
         return;
     }
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(15), static_cast<u32>(1));
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(15), static_cast<u32>(10));
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(15), static_cast<s32>(10), false, static_cast<u32>(4294967295));
+    getObjCollisionPtr()->killNode(15u, 1u);
+    getObjCollisionPtr()->killNode(15u, 10u);
+    getObjCollisionPtr()->createNodeFromIndex(15u, 10, false, 0xFFFFFFFFu);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (75 bytes)
 //   in uNpc::changeThinkToPlayer at 0x00ca720c-0x00ca7233 (called at uNpc.cpp:1665)
 //   in uNpc::changeThinkToEnemy at 0x00ca7d7b-0x00ca7d9f (called at uNpc.cpp:1725)
 // rkThinkData* uNpc::getThinkData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uNpc::MyDTI uNpc::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uNpc.cpp at 0x00ca858f-0x00ca85cc (called at uNpc.cpp:128)

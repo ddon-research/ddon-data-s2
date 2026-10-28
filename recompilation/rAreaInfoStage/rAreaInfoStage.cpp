@@ -37,7 +37,7 @@ const MtDTI& rAreaInfoStage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAreaInfoStage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::DTI)->memAlloc(sz, align, ::rAreaInfoStage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaInfoStage::DTI)->memAlloc(sz, align, rAreaInfoStage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rAreaInfoStage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAreaInfoStage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaInfoStage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,41 +78,41 @@ MT_CTSTR rAreaInfoStage::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rAreaInfoStage::rAreaInfoStage() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x00644c90 - 0x00644d41 (177 bytes)
 // Also emitted as: _ZN14rAreaInfoStageD0Ev at 0x00644d50
 rAreaInfoStage::~rAreaInfoStage() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAreaInfoStage.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAreaInfoStage.mLength != 0) {
         // inferred: the value the loop at 0x644cc0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAreaInfoStage.::MtArray::mLength;
+        u32 v0_0 = mAreaInfoStage.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAreaInfoStage.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAreaInfoStage.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaInfoStage.::MtArray::mLength) {
-                    v0_0 = this->mAreaInfoStage.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaInfoStage.mpArray[i0_3] != nullptr) {
+                delete mAreaInfoStage.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaInfoStage.mLength) {
+                    v0_0 = mAreaInfoStage.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAreaInfoStage.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaInfoStage.::MtArray::mpArray));
+    if (mAreaInfoStage.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaInfoStage.mpArray));
     }
-    this->mAreaInfoStage.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAreaInfoStage.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAreaInfoStage.::MtArray::mLength = static_cast<u32>(0);
+    mAreaInfoStage.mpArray = nullptr;
+    mAreaInfoStage.mBufsiz = 0;
+    mAreaInfoStage.mLength = 0;
 }
 
 // Address: 0x00644e20 - 0x00644f03 (227 bytes)
@@ -127,19 +127,19 @@ bool rAreaInfoStage::save(MtStream& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAreaInfoStage*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5460545));
-    (&w)->writeU32(static_cast<u32>(2));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x535241u);
+    (&w)->writeU32(2u);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x644fab read, used twice; no DWARF local holds it
-            MtObject* t3 = this->mAreaInfoStage.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
-            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
-                i0_3 += static_cast<unsigned int>(1);
+            MtObject* t3 = mAreaInfoStage.getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
+            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -153,15 +153,17 @@ bool rAreaInfoStage::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5460545)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mAreaInfoStage);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x535241) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mAreaInfoStage);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaInfoStage::MyDTI rAreaInfoStage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAreaInfoStage.cpp at 0x00645390-0x006453d2 (called at rAreaInfoStage.cpp:28)
@@ -171,7 +173,7 @@ bool rAreaInfoStage::load(MtStream& in) {
 // Address: 0x00644b80 - 0x00644c04 (132 bytes)
 MtObject* rAreaInfoStage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaInfoStage;
+    return new (16u) rAreaInfoStage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -199,7 +201,7 @@ const MtDTI& rAreaInfoStage::cAreaInfoStage::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rAreaInfoStage::cAreaInfoStage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::cAreaInfoStage::DTI)->memAlloc(sz, align, ::rAreaInfoStage::cAreaInfoStage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaInfoStage::cAreaInfoStage::DTI)->memAlloc(sz, align, rAreaInfoStage::cAreaInfoStage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,7 +215,7 @@ void* rAreaInfoStage::cAreaInfoStage::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rAreaInfoStage::cAreaInfoStage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::cAreaInfoStage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaInfoStage::cAreaInfoStage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,6 +252,8 @@ __attribute__((weak)) void rAreaInfoStage::cAreaInfoStage::createProperty(MtProp
 //   in rAreaInfoStage::save at 0x00644faf-0x00644fd1 (called at nDDOIO.h:463)
 // bool rAreaInfoStage::cAreaInfoStage::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaInfoStage::cAreaInfoStage::MyDTI rAreaInfoStage::cAreaInfoStage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAreaInfoStage.cpp at 0x006453d2-0x0064540f (called at rAreaInfoStage.cpp:127)
 //   in _GLOBAL__sub_I_rAreaInfoStage.cpp at 0x006453d2-0x0064540f (called at rAreaInfoStage.h:93)
@@ -258,7 +262,7 @@ __attribute__((weak)) void rAreaInfoStage::cAreaInfoStage::createProperty(MtProp
 // Address: 0x006450c0 - 0x00645108 (72 bytes)
 MtObject* rAreaInfoStage::cAreaInfoStage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaInfoStage::cAreaInfoStage;
+    return new (16u) rAreaInfoStage::cAreaInfoStage;
 }
 
 // Instance at 0x01a74440 - 0x01a74445 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -35,7 +35,7 @@ const MtDTI& cEmWorkRateCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEmWorkRateCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmWorkRateCtrl::DTI)->memAlloc(sz, align, ::cEmWorkRateCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmWorkRateCtrl::DTI)->memAlloc(sz, align, cEmWorkRateCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cEmWorkRateCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEmWorkRateCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmWorkRateCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmWorkRateCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,22 +65,22 @@ inline void cEmWorkRateCtrl::operator delete(void* p_addr) {
 // Address: 0x000b9cb0 - 0x000b9cdf (47 bytes)
 cEmWorkRateCtrl::cEmWorkRateCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpEmWorkRateTableRes = static_cast<rEmWorkRateTable*>(nullptr);
-    this->mpEnemy = static_cast<uEnemy*>(nullptr);
-    this->mStatusNo = static_cast<u32>(4294967295);
-    this->mStatusType = static_cast<nStatusEnemy::WORKRATE_STATUS_TYPE>(0);
-    this->mStatusPriority = static_cast<u32>(1);
+    mpEmWorkRateTableRes = nullptr;
+    mpEnemy = nullptr;
+    mStatusNo = 0xFFFFFFFF;
+    mStatusType = nStatusEnemy::WORKRATE_STATUS_NONE;
+    mStatusPriority = 1;
 }
 
 // Address: 0x000b9ce0 - 0x000b9d14 (52 bytes)
 // Also emitted as: _ZN15cEmWorkRateCtrlD0Ev at 0x000b9d20
 cEmWorkRateCtrl::~cEmWorkRateCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEmWorkRateTableRes == static_cast<rEmWorkRateTable*>(nullptr)) {
+    if (mpEmWorkRateTableRes == nullptr) {
         return;
     }
-    this->mpEmWorkRateTableRes->::cResource::release();
-    this->mpEmWorkRateTableRes = static_cast<rEmWorkRateTable*>(nullptr);
+    mpEmWorkRateTableRes->release();
+    mpEmWorkRateTableRes = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,7 +98,7 @@ __attribute__((weak)) void cEmWorkRateCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x000b9d80 - 0x000b9d85 (5 bytes)
 void cEmWorkRateCtrl::setOwner(uEnemy* pEnemy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpEnemy = pEnemy;
+    mpEnemy = pEnemy;
 }
 
 // Address: 0x000ba060 - 0x000ba151 (241 bytes)
@@ -148,6 +148,10 @@ __attribute__((weak)) void cEmWorkRateCtrl::updateEmWorkRate() {
 //   in cEmWorkRateCtrl::changeWorkRateNo at 0x000ba0a5-0x000ba0c7 (called at cEmWorkRateCtrl.cpp:246)
 // const cEmWorkRateTable* cEmWorkRateCtrl::findEmWorkRateData(u32 statusNo) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmWorkRateCtrl::MyDTI cEmWorkRateCtrl::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cEmWorkRateCtrl::mRegionStatusPrio[5];
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cEmWorkRateCtrl.cpp at 0x000ba2cf-0x000ba30c (called at cEmWorkRateCtrl.cpp:28)
 //   in _GLOBAL__sub_I_cEmWorkRateCtrl.cpp at 0x000ba2cf-0x000ba30c (called at cEmWorkRateCtrl.h:34)
@@ -156,6 +160,6 @@ __attribute__((weak)) void cEmWorkRateCtrl::updateEmWorkRate() {
 // Address: 0x000b9be0 - 0x000b9c40 (96 bytes)
 MtObject* cEmWorkRateCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmWorkRateCtrl;
+    return new (16u) cEmWorkRateCtrl;
 }
 

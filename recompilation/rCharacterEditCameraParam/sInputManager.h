@@ -26,6 +26,7 @@ class MtVector3;
 class cArcLoaderBase;
 class cKeyCustomManager;
 class rKeyCustomParam;
+class sGUIExt;
 
 // Declarations
 class sInputManager;
@@ -44,6 +45,8 @@ using u8 = unsigned char;
 
 class sInputManager : public cSystem
 {
+    // inferred: sGUIExt::cSCM::execSCMPltWithTrgBtn calls sInputManager::getKeyCommon, through its enclosing class sGUIExt
+    friend class sGUIExt;
 public:
     class MyDTI;
     struct header;

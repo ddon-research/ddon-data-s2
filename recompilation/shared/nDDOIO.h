@@ -106,7 +106,7 @@ inline void nDDOIO::readData(MtDataReader& r, s16& data) {
 
 // Inline, no code of its own: checked where it is inlined.
 inline void nDDOIO::readData(MtDataReader& r, bool& data) {
-    data = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    data = r.::MtDataReader::readU8() != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

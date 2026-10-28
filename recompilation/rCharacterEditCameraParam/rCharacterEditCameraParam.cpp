@@ -79,6 +79,8 @@ cCharacterEditCameraParam::~cCharacterEditCameraParam() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditCameraParam::MyDTI cCharacterEditCameraParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditCameraParam.cpp at 0x00652bae-0x00652bee (called at rCharacterEditCameraParam.cpp:18)
 //   in _GLOBAL__sub_I_rCharacterEditCameraParam.cpp at 0x00652bae-0x00652bee (called at rCharacterEditCameraParam.h:45)
@@ -125,7 +127,7 @@ const MtDTI& cCharacterEditCameraParam::cCameraParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25cCharacterEditCameraParam12cCameraParamD0Ev at 0x01a7cda0-0x01a7cdca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCharacterEditCameraParam::cCameraParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditCameraParam::cCameraParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditCameraParam::cCameraParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,6 +159,8 @@ __attribute__((weak)) void cCharacterEditCameraParam::cCameraParam::createProper
 
 // No out-of-line body: no code in the ELF
 // bool cCharacterEditCameraParam::cCameraParam::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditCameraParam::cCameraParam::MyDTI cCharacterEditCameraParam::cCameraParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditCameraParam.cpp at 0x00652bee-0x00652c27 (called at rCharacterEditCameraParam.cpp:19)
@@ -191,7 +195,7 @@ const MtDTI& rCharacterEditCameraParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditCameraParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditCameraParam::DTI)->memAlloc(sz, align, ::rCharacterEditCameraParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditCameraParam::DTI)->memAlloc(sz, align, rCharacterEditCameraParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -230,8 +234,10 @@ MT_CTSTR rCharacterEditCameraParam::getExt() const {
 // Address: 0x01a7c6e0 - 0x01a7c6e6 (6 bytes)
 u32 rCharacterEditCameraParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditCameraParam::MyDTI rCharacterEditCameraParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditCameraParam.cpp at 0x00652c27-0x00652c64 (called at rCharacterEditCameraParam.cpp:20)
@@ -241,7 +247,7 @@ u32 rCharacterEditCameraParam::getDataVersion() const {
 // Address: 0x00652710 - 0x00652774 (100 bytes)
 MtObject* rCharacterEditCameraParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditCameraParam;
+    return new (16u) rCharacterEditCameraParam;
 }
 
 // Instance at 0x01a7c690 - 0x01a7c6a5 (21 bytes) of the generic rTbl2<T>::getData

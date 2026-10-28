@@ -28,7 +28,7 @@ const MtDTI& rCharacterEdit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rCharacterEdit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEdit::DTI);
+    return MtMemoryAllocator::getAllocator(rCharacterEdit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* rCharacterEdit::getAllocator() {
 // Address: 0x00651d30 - 0x00651d70 (64 bytes)
 void* rCharacterEdit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rCharacterEdit::getAllocator()->memAlloc(sz, align, ::rCharacterEdit::DTI.::MtDTI::getID());
+    return rCharacterEdit::getAllocator()->memAlloc(sz, align, rCharacterEdit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* rCharacterEdit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCharacterEdit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEdit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEdit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,19 +67,19 @@ inline void rCharacterEdit::operator delete(void* p_addr) {
 // Address: 0x00651de0 - 0x00651e27 (71 bytes)
 rCharacterEdit::rCharacterEdit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mpEditParam = new (static_cast<u32>(16)) ::cEditParam;
+    mAttr = 16;
+    mpEditParam = new (16u) cEditParam;
 }
 
 // Address: 0x00651e30 - 0x00651e6c (60 bytes)
 // Also emitted as: _ZN14rCharacterEditD0Ev at 0x00651e70
 rCharacterEdit::~rCharacterEdit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEditParam == static_cast<cEditParam*>(nullptr)) {
+    if (mpEditParam == nullptr) {
         return;
     }
-    delete this->mpEditParam;
-    this->mpEditParam = static_cast<cEditParam*>(nullptr);
+    delete mpEditParam;
+    mpEditParam = nullptr;
 }
 
 // Address: 0x01a7c310 - 0x01a7c318 (8 bytes)
@@ -98,15 +98,15 @@ __attribute__((weak)) void rCharacterEdit::createProperty(MtPropertyList& s) {
 bool rCharacterEdit::load(MtStream& in) {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    MtDataReader r(in, static_cast<u32>(4096));
+    MtSerializer sz(65536);
+    MtDataReader r(in, 4096u);
     u32 magic = (&r)->readU32();
     u32 version = (&r)->readU32();
-    if (magic == static_cast<u32>(5522501)) {
-        if (version == static_cast<u32>(23)) {
-            if (this->mpEditParam != static_cast<cEditParam*>(nullptr)) {
+    if (magic == 0x544445) {
+        if (version == 23) {
+            if (mpEditParam != nullptr) {
                 // inferred: a temporary for the result of the call at 0x65204d, used once; no DWARF local holds it
-                bool t2 = this->mpEditParam->::cEditParam::load(r);
+                bool t2 = mpEditParam->load(r);
                 return t2;
             }
         }
@@ -118,11 +118,11 @@ bool rCharacterEdit::load(MtStream& in) {
 bool rCharacterEdit::save(MtStream& out) {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5522501));
-    (&w)->writeU32(static_cast<u32>(23));
-    if (this->mpEditParam != static_cast<cEditParam*>(nullptr)) {
-        return this->mpEditParam->::cEditParam::save(w);
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x544445u);
+    (&w)->writeU32(23u);
+    if (mpEditParam != nullptr) {
+        return mpEditParam->save(w);
     } else {
         return false;
     }
@@ -131,13 +131,13 @@ bool rCharacterEdit::save(MtStream& out) {
 // Address: 0x00652150 - 0x0065216a (26 bytes)
 void rCharacterEdit::copy(const rCharacterEdit* pSrc) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEditParam == static_cast<cEditParam*>(nullptr)) {
+    if (mpEditParam == nullptr) {
         return;
     }
-    if (pSrc == static_cast<const rCharacterEdit*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    this->mpEditParam->::cEditParam::copy(pSrc->mpEditParam, false);
+    mpEditParam->copy(pSrc->mpEditParam, false);
 }
 
 // Address: 0x00652170 - 0x00652190 (32 bytes)
@@ -194,6 +194,8 @@ __attribute__((weak)) f32 rCharacterEdit::fromSliderEx(u32 x, f32 min, f32 max, 
 // No out-of-line body: no code in the ELF
 // f32 rCharacterEdit::getPlace(f32 min, f32 max, u32 div);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEdit::MyDTI rCharacterEdit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEdit.cpp at 0x0065239e-0x006523db (called at rCharacterEdit.cpp:27)
 //   in _GLOBAL__sub_I_rCharacterEdit.cpp at 0x0065239e-0x006523db (called at rCharacterEdit.h:32)
@@ -202,6 +204,6 @@ __attribute__((weak)) f32 rCharacterEdit::fromSliderEx(u32 x, f32 min, f32 max, 
 // Address: 0x00651cb0 - 0x00651d23 (115 bytes)
 MtObject* rCharacterEdit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEdit;
+    return new (16u) rCharacterEdit;
 }
 

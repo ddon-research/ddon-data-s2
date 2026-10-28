@@ -423,3 +423,9 @@ private:
     u32 mGeneratorOptionFlag;  // offset: 0x130
     u32 mGenerator32ec;  // offset: 0x134
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffect2DExt::correctColorIntensity at 0x8e2c32-0x8e2c36; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cParticle2DGenerator::getGeneratorNo() const {
+    return this->mGeneratorNo;
+}

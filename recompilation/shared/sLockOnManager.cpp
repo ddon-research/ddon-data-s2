@@ -27,7 +27,7 @@ const MtDTI& sLockOnManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sLockOnManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sLockOnManager::DTI);
+    return MtMemoryAllocator::getAllocator(sLockOnManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* sLockOnManager::getAllocator() {
 // Address: 0x007e0530 - 0x007e0570 (64 bytes)
 void* sLockOnManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sLockOnManager::getAllocator()->memAlloc(sz, align, ::sLockOnManager::DTI.::MtDTI::getID());
+    return sLockOnManager::getAllocator()->memAlloc(sz, align, sLockOnManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* sLockOnManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sLockOnManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sLockOnManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sLockOnManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,13 +85,13 @@ sLockOnManager::~sLockOnManager() {
 
 // Address: 0x007e07b0 - 0x007e07f0 (64 bytes)
 void sLockOnManager::reset() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sLockOnManager*
-    if (this->mTargetArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTargetArray.::MtArray::mpArray));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mTargetArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTargetArray.mpArray));
     }
-    this->mTargetArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
+    mTargetArray.mpArray = nullptr;
+    mTargetArray.mLength = 0;
+    mTargetArray.mBufsiz = 0;
 }
 
 // Address: 0x007e07f0 - 0x007e088a (154 bytes)
@@ -219,6 +219,11 @@ __attribute__((weak)) f32 sLockOnManager::calcLineLength(const MtVector3& BasePo
     DDON_STUB("sLockOnManager::calcLineLength")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sLockOnManager::MyDTI sLockOnManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sLockOnManager* sLockOnManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sLockOnManager.cpp at 0x007e2380-0x007e23c2 (called at sLockOnManager.cpp:27)

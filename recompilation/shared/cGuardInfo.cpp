@@ -25,7 +25,7 @@ const MtDTI& cGuardInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGuardInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGuardInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cGuardInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cGuardInfo::getAllocator() {
 // Address: 0x001feb40 - 0x001feb80 (64 bytes)
 void* cGuardInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cGuardInfo::getAllocator()->memAlloc(sz, align, ::cGuardInfo::DTI.::MtDTI::getID());
+    return cGuardInfo::getAllocator()->memAlloc(sz, align, cGuardInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cGuardInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGuardInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGuardInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGuardInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,11 +72,11 @@ cGuardInfo::cGuardInfo() {
 // Also emitted as: _ZN10cGuardInfoD0Ev at 0x001fecf0
 cGuardInfo::~cGuardInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBlowShrinkInfo == static_cast<cBlowShrinkDmInfo*>(nullptr)) {
+    if (mpBlowShrinkInfo == nullptr) {
         return;
     }
-    delete this->mpBlowShrinkInfo;
-    this->mpBlowShrinkInfo = static_cast<cBlowShrinkDmInfo*>(nullptr);
+    delete mpBlowShrinkInfo;
+    mpBlowShrinkInfo = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (20 bytes)
@@ -103,6 +103,8 @@ cGuardInfo::~cGuardInfo() {
 //   in uEnemy::makeGuardAttackInfo at 0x008fb975-0x008fb97f (called at uEnemy.cpp:9429)
 //   in uHuman::callbackGuard_make at 0x00c7e47d-0x00c7e487 (called at uHuman.cpp:4617)
 // void cGuardInfo::addSaminaDamageAdj(nObjCollision::STAMINA_DAMAGE_ADJ_TYPE type, f32 Adj);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGuardInfo::MyDTI cGuardInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGuardInfo.cpp at 0x001fee3f-0x001fee7c (called at cGuardInfo.cpp:20)

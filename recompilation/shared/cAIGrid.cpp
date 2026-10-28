@@ -26,7 +26,7 @@ const MtDTI& cAIGrid::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cAIGrid::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI);
+    return MtMemoryAllocator::getAllocator(cAIGrid::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cAIGrid::getAllocator() {
 // Address: 0x0001ebb0 - 0x0001ebf0 (64 bytes)
 void* cAIGrid::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cAIGrid::getAllocator()->memAlloc(sz, align, ::cAIGrid::DTI.::MtDTI::getID());
+    return cAIGrid::getAllocator()->memAlloc(sz, align, cAIGrid::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cAIGrid::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIGrid::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIGrid::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,13 +78,13 @@ cAIGrid::cAIGrid(f32 x, f32 z) {
 // Also emitted as: _ZN7cAIGridD0Ev at 0x0001ef70
 cAIGrid::~cAIGrid() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGridValue == static_cast<s32*>(nullptr)) {
+    if (mpGridValue == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI)->memFree(static_cast<void*>(this->mpGridValue));
-    this->mpGridValue = static_cast<s32*>(nullptr);
-    this->mGridXNum = static_cast<s32>(0);
-    this->mGridZNum = static_cast<s32>(0);
+    MtMemoryAllocator::getAllocator(cAIGrid::DTI)->memFree(static_cast<void*>(mpGridValue));
+    mpGridValue = nullptr;
+    mGridXNum = 0;
+    mGridZNum = 0;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (227 bytes)
@@ -112,60 +112,60 @@ void cAIGrid::initGridLen(f32 x, f32 z) {
     // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee3e, held ahead of the effects the ELF orders after it
     float t0 = 150.0f;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee56, held ahead of the effects the ELF orders after it
-    s32* t1 = this->mpGridValue;
-    if (t1 != static_cast<s32*>(nullptr)) {
+    s32* t1 = mpGridValue;
+    if (t1 != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee65, held ahead of the effects the ELF orders after it
-        MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI);
+        MtAllocator* t2 = MtMemoryAllocator::getAllocator(cAIGrid::DTI);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee6a, held ahead of the effects the ELF orders after it
-        unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + static_cast<long>(0));
+        unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + 0);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee6d, held ahead of the effects the ELF orders after it
-        s32* t5 = this->mpGridValue;
+        s32* t5 = mpGridValue;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1ee75, held ahead of the effects the ELF orders after it
-        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(112));
+        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 112);
         t2->memFree(static_cast<void*>(t5));
-        this->mpGridValue = static_cast<s32*>(nullptr);
-        this->mGridXNum = static_cast<s32>(0);
-        this->mGridZNum = static_cast<s32>(0);
-        if ((static_cast<int>(x / t0) | static_cast<int>(z / t0)) > static_cast<int>(-1)) {
-            if (((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) <= static_cast<int>(1500)) {
+        mpGridValue = nullptr;
+        mGridXNum = 0;
+        mGridZNum = 0;
+        if ((static_cast<int>(x / t0) | static_cast<int>(z / t0)) > -1) {
+            if (((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) <= 1500) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeae, held ahead of the effects the ELF orders after it
-                MtAllocator* t8 = ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI);
+                MtAllocator* t8 = MtMemoryAllocator::getAllocator(cAIGrid::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeb3, held ahead of the effects the ELF orders after it
-                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + static_cast<long>(0));
+                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eec5, held ahead of the effects the ELF orders after it
-                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(64));
+                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 64);
                 // inferred: a temporary for the result of the call at 0x1eec5, used twice; no DWARF local holds it
-                void* t11 = t8->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) * static_cast<int>(4)), static_cast<u32>(16));
-                if ((this->mpGridValue = static_cast<s32*>(t11)) != static_cast<s32*>(nullptr)) {
-                    this->mGridZNum = static_cast<int>(z / t0) + static_cast<int>(1);
-                    this->mGridXNum = static_cast<int>(x / t0) + static_cast<int>(1);
+                void* t11 = t8->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
+                if ((mpGridValue = static_cast<s32*>(t11)) != nullptr) {
+                    mGridZNum = static_cast<int>(z / t0) + 1;
+                    mGridXNum = static_cast<int>(x / t0) + 1;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeef, held ahead of the effects the ELF orders after it
-                    void* t14 = ::memset(t11, static_cast<int>(0), static_cast<size_t>(((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) * static_cast<int>(4)));
+                    void* t14 = memset(t11, 0, static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4));
                 } else {
-                    this->mGridXNum = static_cast<s32>(0);
-                    this->mGridZNum = static_cast<s32>(0);
+                    mGridXNum = 0;
+                    mGridZNum = 0;
                 }
             }
         }
     } else {
-        if ((static_cast<int>(x / t0) | static_cast<int>(z / t0)) > static_cast<int>(-1)) {
-            if (((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) <= static_cast<int>(1500)) {
+        if ((static_cast<int>(x / t0) | static_cast<int>(z / t0)) > -1) {
+            if (((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) <= 1500) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeae, held ahead of the effects the ELF orders after it
-                MtAllocator* t8 = ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI);
+                MtAllocator* t8 = MtMemoryAllocator::getAllocator(cAIGrid::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeb3, held ahead of the effects the ELF orders after it
-                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + static_cast<long>(0));
+                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x1eec5, held ahead of the effects the ELF orders after it
-                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(64));
+                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 64);
                 // inferred: a temporary for the result of the call at 0x1eec5, used twice; no DWARF local holds it
-                void* t11 = t8->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) * static_cast<int>(4)), static_cast<u32>(16));
-                if ((this->mpGridValue = static_cast<s32*>(t11)) != static_cast<s32*>(nullptr)) {
-                    this->mGridZNum = static_cast<int>(z / t0) + static_cast<int>(1);
-                    this->mGridXNum = static_cast<int>(x / t0) + static_cast<int>(1);
+                void* t11 = t8->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
+                if ((mpGridValue = static_cast<s32*>(t11)) != nullptr) {
+                    mGridZNum = static_cast<int>(z / t0) + 1;
+                    mGridXNum = static_cast<int>(x / t0) + 1;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x1eeef, held ahead of the effects the ELF orders after it
-                    void* t14 = ::memset(t11, static_cast<int>(0), static_cast<size_t>(((static_cast<int>(x / t0) + static_cast<int>(1)) * (static_cast<int>(z / t0) + static_cast<int>(1))) * static_cast<int>(4)));
+                    void* t14 = memset(t11, 0, static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4));
                 } else {
-                    this->mGridXNum = static_cast<s32>(0);
-                    this->mGridZNum = static_cast<s32>(0);
+                    mGridXNum = 0;
+                    mGridZNum = 0;
                 }
             }
         }
@@ -183,10 +183,10 @@ void cAIGrid::initGridLen(f32 x, f32 z) {
 void cAIGrid::clearGrid() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as size_t
-    if (this->mpGridValue == static_cast<s32*>(nullptr)) {
+    if (mpGridValue == nullptr) {
         return;
     }
-    ::memset(static_cast<void*>(this->mpGridValue), static_cast<int>(0), static_cast<size_t>((this->mGridXNum * this->mGridZNum) * static_cast<s32>(4)));
+    memset(static_cast<void*>(mpGridValue), 0, static_cast<size_t>((mGridXNum * mGridZNum) * 4));
 }
 
 // No out-of-line body: no code in the ELF
@@ -260,7 +260,7 @@ __attribute__((weak)) void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, con
 // Address: 0x0001f590 - 0x0001f5b2 (34 bytes)
 void cAIGrid::setGridValue(s32 val, f32 decreaseRatio, const cPawnEnableArea& area, f32 angle, const MtVector3& pos, u32 flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAIGrid::setGridValue(val, angle, area.mMaxXZ, area.mMinXZ, area.mRadius, angle, pos, flag);
+    setGridValue(val, angle, area.mMaxXZ, area.mMinXZ, area.mRadius, angle, pos, flag);
 }
 
 // Address: 0x0001f5c0 - 0x0001f8a7 (743 bytes)
@@ -475,12 +475,12 @@ __attribute__((weak)) const s32* cAIGrid::getGridValue(s32 x, s32 z) const {
 const s32* cAIGrid::getGridValue(s32 index) const {
     // DWARF local not rendered: s32 num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index > static_cast<s32>(-1)) {
-        if (index < (this->mGridZNum * this->mGridXNum)) {
-            return &this->mpGridValue[index];
+    if (index > -1) {
+        if (index < (mGridZNum * mGridXNum)) {
+            return &mpGridValue[index];
         }
     }
-    return static_cast<const s32*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (165 bytes)
@@ -583,6 +583,8 @@ bool cAIGrid::isGridNearPosNone(cAIGrid* pGrid, s32 gridIdx, s32 gridVal, const 
 //   in cAIGrid::createWayGrid at 0x000203ca-0x000203d8 (called at cAIGrid.cpp:1687)
 //   and 9 more (every copy is in <bundle>.inlined.json)
 // void cAIGrid::getGridPointDirect(MtPoint* pDst, s32 index) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIGrid::MyDTI cAIGrid::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cAIGrid.cpp at 0x00022480-0x000224c2 (called at cAIGrid.cpp:57)

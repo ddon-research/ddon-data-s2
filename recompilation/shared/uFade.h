@@ -93,11 +93,17 @@ inline bool uFade::isEnd() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGame::isFadeTypeBlack at 0x785c4e-0x785c51; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uFade::getFadeType() {
+    return this->mFadeType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool uFade::isFadeIn() {
-    return this->mFadeType <= static_cast<s32>(1);
+    return this->mFadeType <= 1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uFade::isFadeOut() {
-    return this->mFadeType > static_cast<s32>(1);
+    return this->mFadeType > 1;
 }

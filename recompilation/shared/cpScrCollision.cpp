@@ -55,7 +55,7 @@ const MtDTI& cGroundAttrInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGroundAttrInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGroundAttrInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGroundAttrInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -110,6 +110,8 @@ __attribute__((weak)) void cGroundAttrInfo::update(uDDOModel* pParent) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGroundAttrInfo::MyDTI cGroundAttrInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpScrCollision.cpp at 0x0052e7b2-0x0052e7ef (called at cpScrCollision.cpp:615)
 //   in _GLOBAL__sub_I_cpScrCollision.cpp at 0x0052e7b2-0x0052e7ef (called at cpScrCollision.h:34)
@@ -135,7 +137,7 @@ const MtDTI& cpScrCollision::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpScrCollision::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpScrCollision::DTI);
+    return MtMemoryAllocator::getAllocator(cpScrCollision::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,7 +146,7 @@ inline MtAllocator* cpScrCollision::getAllocator() {
 // Address: 0x0052c6f0 - 0x0052c730 (64 bytes)
 void* cpScrCollision::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpScrCollision::getAllocator()->memAlloc(sz, align, ::cpScrCollision::DTI.::MtDTI::getID());
+    return cpScrCollision::getAllocator()->memAlloc(sz, align, cpScrCollision::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,7 +161,7 @@ void* cpScrCollision::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpScrCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpScrCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpScrCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -187,8 +189,8 @@ cpScrCollision::~cpScrCollision() {
 // Address: 0x0052cd30 - 0x0052cd3c (12 bytes)
 void cpScrCollision::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x0052cd40 - 0x0052cf25 (485 bytes)
@@ -210,14 +212,14 @@ __attribute__((weak)) void cpScrCollision::kill() {
 // Address: 0x0052e150 - 0x0052e189 (57 bytes)
 void cpScrCollision::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0052cf30 - 0x0052e129 (4601 bytes)
@@ -301,68 +303,68 @@ u32 cpScrCollision::callbackAdjustPosition(const sCollision::ScrCollisionInfo& N
     // DWARF local not rendered: u32 attr;
     // Approximate from the ELF: a load named after a store only its type keeps apart; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: an ordered temporary, read before a later effect: the value read at 0x52e19d, held ahead of the effects the ELF orders after it
-    const sCollision::SBC_HANDLE_HF t0 = info.::sCollision::SbcInfoBase::HitHeightFieldHandle;
-    if (t0 != static_cast<sCollision::SBC_HANDLE_HF>(4294967295)) {
+    const sCollision::SBC_HANDLE_HF t0 = info.HitHeightFieldHandle;
+    if (t0 != 0xFFFFFFFFu) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1ac, held ahead of the effects the ELF orders after it
-        sCollision* t1 = ::sCollision::getInstance();
+        sCollision* t1 = sCollision::getInstance();
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1af, held ahead of the effects the ELF orders after it
-        sCollision::cSbcHeightField::cHeightField* t2 = t1->::sCollision::getSbcHeightFieldByHandle(t0);
+        sCollision::cSbcHeightField::cHeightField* t2 = t1->getSbcHeightFieldByHandle(t0);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1b7, held ahead of the effects the ELF orders after it
-        rCollisionHeightField* t4 = t2->::sCollision::cSbcHeightField::cHeightField::getHeightFieldResource();
+        rCollisionHeightField* t4 = t2->getHeightFieldResource();
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1bc, held ahead of the effects the ELF orders after it
-        const s32 t6 = info.::sCollision::SbcInfoBase::HitHeightFieldU;
+        const s32 t6 = info.HitHeightFieldU;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1bf, held ahead of the effects the ELF orders after it
-        const s32 t7 = info.::sCollision::SbcInfoBase::HitHeightFieldV;
+        const s32 t7 = info.HitHeightFieldV;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1c2, held ahead of the effects the ELF orders after it
-        const u32 t8 = info.::sCollision::SbcInfoBase::HitHeightFieldTriID;
+        const u32 t8 = info.HitHeightFieldTriID;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1c8, held ahead of the effects the ELF orders after it
-        nCollision::ScrMaterialInfo& t9 = t4->::rCollisionHeightField::getGridMaterial(static_cast<u32>(t6), static_cast<u32>(t7), t8);
+        nCollision::ScrMaterialInfo& t9 = t4->getGridMaterial(static_cast<u32>(t6), static_cast<u32>(t7), t8);
         // inferred: a temporary for the value the load at 0x52e1cd read, used twice; no DWARF local holds it
         u32 t11 = t9.attribute;
-        if ((t9.attribute & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
-            this->mIsAdjustSlopeHit = true;
+        if ((t9.attribute & 0x180000u) != 0) {
+            mIsAdjustSlopeHit = true;
         }
-        this->mScrAdjustAttribute = t11;
-        return static_cast<u32>(0);
+        mScrAdjustAttribute = t11;
+        return 0;
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1d1, held ahead of the effects the ELF orders after it
         rCollision::PartsInfo* t12 = info.pPartsInfo;
-        if (t12 != static_cast<rCollision::PartsInfo*>(nullptr)) {
+        if (t12 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1d8, held ahead of the effects the ELF orders after it
             rCollision::MaterialInfo* t13 = info.pMaterialInfo;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1dc, held ahead of the effects the ELF orders after it
-            u32 t14 = info.::sCollision::SbcInfo::getSbcAttribute();
-            if ((t13->::nCollision::ScrMaterialInfo::attribute & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
-                this->mIsAdjustSlopeHit = true;
+            u32 t14 = info.getSbcAttribute();
+            if ((t13->attribute & 0x180000u) != 0) {
+                mIsAdjustSlopeHit = true;
             }
-            this->mScrAdjustAttribute = t14;
-            return static_cast<u32>(0);
+            mScrAdjustAttribute = t14;
+            return 0;
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1e0, held ahead of the effects the ELF orders after it
-            uScrollCollisionGeometry* t15 = info.::sCollision::SbcInfoBase::pHitScrGeometry;
-            if (t15 != static_cast<uScrollCollisionGeometry*>(nullptr)) {
+            uScrollCollisionGeometry* t15 = info.pHitScrGeometry;
+            if (t15 != nullptr) {
                 // inferred: a temporary for the result of the call at 0x52e1ea, used twice; no DWARF local holds it
-                u32 t16 = info.::sCollision::SbcInfo::getBasicCollisionAttribute();
-                if ((t16 & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
-                    this->mIsAdjustSlopeHit = true;
+                u32 t16 = info.getBasicCollisionAttribute();
+                if ((t16 & 0x180000u) != 0) {
+                    mIsAdjustSlopeHit = true;
                 }
-                this->mScrAdjustAttribute = t16;
-                return static_cast<u32>(0);
+                mScrAdjustAttribute = t16;
+                return 0;
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1f4, held ahead of the effects the ELF orders after it
-                bool t18 = info.::sCollision::SbcInfo::isHitDynamicSbc();
-                if (t18 != false) {
+                bool t18 = info.isHitDynamicSbc();
+                if (t18) {
                     // inferred: a temporary for the result of the call at 0x52e207, used twice; no DWARF local holds it
-                    u32 t20 = info.::sCollision::SbcInfo::getDynamicSbcAttribute();
-                    if ((t20 & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
-                        this->mIsAdjustSlopeHit = true;
+                    u32 t20 = info.getDynamicSbcAttribute();
+                    if ((t20 & 0x180000u) != 0) {
+                        mIsAdjustSlopeHit = true;
                     }
-                    this->mScrAdjustAttribute = t20;
-                    return static_cast<u32>(0);
+                    mScrAdjustAttribute = t20;
+                    return 0;
                 } else {
-                    this->mIsAdjustSlopeHit = true;
-                    this->mScrAdjustAttribute = static_cast<u32>(1073741823);
-                    return static_cast<u32>(0);
+                    mIsAdjustSlopeHit = true;
+                    mScrAdjustAttribute = 0x3FFFFFFF;
+                    return 0;
                 }
             }
         }
@@ -435,14 +437,14 @@ __attribute__((weak)) void cpScrCollision::applyWorldOffset(const MtVector3& off
 // Address: 0x0052e230 - 0x0052e294 (100 bytes)
 void cpScrCollision::updateGroundInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroundAttrInfoEff.::cGroundAttrInfo::update(this->mpModel);
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        this->mGroundAttrInfoScr.mFilter = this->mpModel->::uDDOModel::getScrFilter();
-        this->mGroundAttrInfoScr.::cGroundAttrInfo::update(this->mpModel);
+    mGroundAttrInfoEff.update(mpModel);
+    if (mpModel != nullptr) {
+        mGroundAttrInfoScr.mFilter = mpModel->getScrFilter();
+        mGroundAttrInfoScr.update(mpModel);
     } else {
-        this->mGroundAttrInfoScr.::cGroundAttrInfo::update(static_cast<uDDOModel*>(nullptr));
+        mGroundAttrInfoScr.update(static_cast<uDDOModel*>(nullptr));
     }
-    this->mGroundAttrInfoWaterDepth.::cGroundAttrInfo::update(this->mpModel);
+    mGroundAttrInfoWaterDepth.update(mpModel);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (49 bytes)
@@ -478,6 +480,8 @@ void cpScrCollision::updateGroundInfo() {
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
 //   in uHuman::checkSlipSlope at 0x00c7d4e0-0x00c7d4ed (called at uHuman.cpp:10219)
 // bool cpScrCollision::isAdjustSlopeHit() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpScrCollision::MyDTI cpScrCollision::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpScrCollision.cpp at 0x0052e770-0x0052e7b2 (called at cpScrCollision.cpp:32)

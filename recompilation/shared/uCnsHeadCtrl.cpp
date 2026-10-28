@@ -24,7 +24,7 @@ const MtDTI& uCnsHeadCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCnsHeadCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCnsHeadCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uCnsHeadCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uCnsHeadCtrl::getAllocator() {
 // Address: 0x008be9b0 - 0x008be9f0 (64 bytes)
 void* uCnsHeadCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCnsHeadCtrl::getAllocator()->memAlloc(sz, align, ::uCnsHeadCtrl::DTI.::MtDTI::getID());
+    return uCnsHeadCtrl::getAllocator()->memAlloc(sz, align, uCnsHeadCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uCnsHeadCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsHeadCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsHeadCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsHeadCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,26 +103,26 @@ __attribute__((weak)) void uCnsHeadCtrl::adjust(uModel::Joint* pJnt, uModel* pMo
 // Address: 0x008bf110 - 0x008bf115 (5 bytes)
 void uCnsHeadCtrl::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008bf0e0 - 0x008bf109 (41 bytes)
 void uCnsHeadCtrl::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008bf120 - 0x008bf178 (88 bytes)
 void uCnsHeadCtrl::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (121 bytes)
@@ -142,7 +142,7 @@ __attribute__((weak)) void uCnsHeadCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x008bf040 - 0x008bf045 (5 bytes)
 MtUI* uCnsHeadCtrl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008bfb10 - 0x008bfb11 (1 bytes)
@@ -153,14 +153,16 @@ __attribute__((weak)) void uCnsHeadCtrl::draw(cDraw* pDraw) {
 // Address: 0x008bf050 - 0x008bf0c5 (117 bytes)
 void uCnsHeadCtrl::set(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsHeadCtrl::MyDTI uCnsHeadCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsHeadCtrl.cpp at 0x008bfb40-0x008bfb82 (called at uCnsHeadCtrl.cpp:36)

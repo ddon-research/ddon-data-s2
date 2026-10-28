@@ -268,6 +268,8 @@ public:
 public:
     class cTabData : public MtObject
     {
+        // inferred: uGUICommunityList::cTabDataFriendList::init names uGUICommunityList::cTabData::mpOwner, through its enclosing class uGUICommunityList
+        friend class uGUICommunityList;
     public:
         class MyDTI;
     public:
@@ -599,34 +601,51 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::reqCloseCommunityList at 0x7ae0dc-0x7ae0e3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUICommunityList::reqCloseUI() {
+    this->mReqClose = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rGUIMessage* uGUICommunityList::getMessageRes() {
     return this->mpGMDComList;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
+// inferred: a single inlined copy's body: the copy inlined in uGUICommunityList::createTabData at 0xa48d36-0xa48d39; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUICommunityList::cTabData::setFlowId(u32 set) {
+    this->mFlowId = set;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICommunityList::createTabData at 0xa48d39-0xa48d3d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUICommunityList::cTabData::setOwner(uGUICommunityList* set) {
+    this->mpOwner = set;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uGUICommunityList* uGUICommunityList::cTabData::getOwner() {
     return this->mpOwner;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUICommunityList::cTabDataInData::cTabDataInData() {
-    this->mOwnerTabId = static_cast<u32>(0);
-    this->mpName[0] = static_cast<char>(0);
-    this->mJob = static_cast<u32>(0);
-    this->mpInstFixIcon = static_cast<cGUIInstance*>(nullptr);
-    this->mpInstMesList00 = static_cast<cGUIInstance*>(nullptr);
-    this->mpInst = static_cast<cGUIInstNull*>(nullptr);
-    this->mpOwner = static_cast<uGUICommunityList*>(nullptr);
-    this->mLv = static_cast<u32>(1);
-    this->mServer = static_cast<u32>(0);
-    this->mLobby = static_cast<u32>(0);
-    this->mpComment[0] = static_cast<char>(0);
-    this->mpUnion[0] = static_cast<char>(0);
+    this->mOwnerTabId = 0;
+    this->mpName[0] = 0;
+    this->mJob = 0;
+    this->mpInstFixIcon = nullptr;
+    this->mpInstMesList00 = nullptr;
+    this->mpInst = nullptr;
+    this->mpOwner = nullptr;
+    this->mLv = 1;
+    this->mServer = 0;
+    this->mLobby = 0;
+    this->mpComment[0] = 0;
+    this->mpUnion[0] = 0;
     this->mIsFavorite = false;
     this->mIsDisable = false;
-    this->mOnlineStatus = static_cast<u32>(0);
-    this->mDispPattern = static_cast<u32>(0);
-    this->mAddInfo = static_cast<s32>(0);
+    this->mOnlineStatus = 0;
+    this->mDispPattern = 0;
+    this->mAddInfo = 0;
 }

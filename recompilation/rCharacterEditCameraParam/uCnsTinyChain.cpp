@@ -41,7 +41,7 @@ const MtDTI& uCnsTinyChain::getDTI() const {
 // Address: 0x0100e130 - 0x0100e170 (64 bytes)
 void* uCnsTinyChain::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::DTI)->memAlloc(sz, align, ::uCnsTinyChain::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uCnsTinyChain::DTI)->memAlloc(sz, align, uCnsTinyChain::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uCnsTinyChain::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uCnsTinyChainD0Ev at 0x0100e5f9-0x0100e61a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsTinyChain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsTinyChain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,51 +87,50 @@ __attribute__((weak)) void uCnsTinyChain::createProperty(MtPropertyList& s) {
 // Address: 0x0100fed0 - 0x0100fed5 (5 bytes)
 MtUI* uCnsTinyChain::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCnsGroup::createUI(prop);
+    return this->uCnsGroup::createUI(prop);
 }
 
 // Address: 0x0100fee0 - 0x0100ffaa (202 bytes)
 void uCnsTinyChain::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mAttr & static_cast<u32>(8388608)) != static_cast<u32>(0)) {
-    } else {
-        this->::uCnsGroup::move();
-        if (this->mpModelCol != static_cast<uModel*>(nullptr)) {
-            if ((this->mpModelCol->::cUnit::mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
-                this->mpModelCol = static_cast<uModel*>(nullptr);
+    if ((mAttr & 0x800000u) == 0) {
+        this->uCnsGroup::move();
+        if (mpModelCol != nullptr) {
+            if ((mpModelCol->mBeFlag - 1u) > 1u) {
+                mpModelCol = nullptr;
             }
         }
-        if (this->mpTransParent != static_cast<uModel*>(nullptr)) {
-            if ((this->mpTransParent->::cUnit::mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
-                this->mpTransParent = static_cast<uModel*>(nullptr);
+        if (mpTransParent != nullptr) {
+            if ((mpTransParent->mBeFlag - 1u) > 1u) {
+                mpTransParent = nullptr;
             }
         }
-        if (this->mRestart == static_cast<u8>(2)) {
-            this->setConstraintEnable(true);
-            this->mRestart = static_cast<u8>(0);
+        if (mRestart == 2) {
+            setConstraintEnable(true);
+            mRestart = 0;
         } else {
-            if (this->mRestart == static_cast<u8>(1)) {
-                this->setConstraintEnable(false);
-                this->mRestart = static_cast<u8>(2);
+            if (mRestart == 1) {
+                setConstraintEnable(false);
+                mRestart = 2;
             }
         }
-        this->mPrevEnable = this->::uConstraint::mEnable;
-        this->registCollider();
+        mPrevEnable = mEnable;
+        registCollider();
     }
 }
 
 // Address: 0x0100ffb0 - 0x0100ffec (60 bytes)
 void uCnsTinyChain::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uConstraint::mpModel == static_cast<uModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if ((this->mAttr & static_cast<u32>(268435456)) == static_cast<u32>(0)) {
+    if ((mAttr & 0x10000000u) == 0) {
         return;
     }
-    this->mAfterEnable = true;
-    this->::uConstraint::mpModel->updateWorldMatrix();
-    this->mAfterEnable = false;
+    mAfterEnable = true;
+    mpModel->updateWorldMatrix();
+    mAfterEnable = false;
 }
 
 // Address: 0x01010000 - 0x01010001 (1 bytes)
@@ -149,18 +148,18 @@ __attribute__((weak)) void uCnsTinyChain::applyWorldOffset(const MtVector3& offs
 // Address: 0x01010b00 - 0x01010b65 (101 bytes)
 void uCnsTinyChain::setResource(cResource* pRes) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pRes != static_cast<cResource*>(nullptr)) {
+    if (pRes != nullptr) {
         // inferred: a temporary for the result of the call at 0x1010b18, used once; no DWARF local holds it
         const MtDTI& t0 = pRes->getDTI();
         // inferred: the value the loop at 0x1010b26 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::rCnsTinyChain::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = rCnsTinyChain::DTI.mName;
         // inferred: the value the loop at 0x1010b26 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
-                this->::uCnsTinyChain::setCnsTinyChainRes(static_cast<rCnsTinyChain*>(pRes));
+                setCnsTinyChainRes(static_cast<rCnsTinyChain*>(pRes));
                 return;
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -168,16 +167,16 @@ void uCnsTinyChain::setResource(cResource* pRes) {
             }
         }
     }
-    if (this->mpResource != static_cast<rCnsTinyChain*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rCnsTinyChain*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
 }
 
 // Address: 0x01010fb0 - 0x01010fb8 (8 bytes)
 cResource* uCnsTinyChain::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // Address: 0x01010b70 - 0x01010faa (1082 bytes)
@@ -202,14 +201,20 @@ __attribute__((weak)) void uCnsTinyChain::setCnsTinyChainRes(rCnsTinyChain* pRes
 // Address: 0x01b68300 - 0x01b68307 (7 bytes)
 u32 uCnsTinyChain::getDependentJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDependJointNum;
+    return mDependJointNum;
 }
 
 // Address: 0x01b68310 - 0x01b68362 (82 bytes)
-__attribute__((weak)) uModel::Joint* uCnsTinyChain::getDependentJoint(u32 idx) {
-    // local: u32 jntIdx;
-    DDON_STUB("uCnsTinyChain::getDependentJoint")
-    return nullptr;
+uModel::Joint* uCnsTinyChain::getDependentJoint(u32 idx) {
+    // DWARF local not rendered: u32 jntIdx;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpDependJoints[idx] != 0xFF) {
+        // inferred: a temporary for the result of the call at 0x1b68339, used once; no DWARF local holds it
+        uModel* t0 = getModel();
+        return &t0->mJoint[mpDependJoints[idx]];
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x01010530 - 0x01010643 (275 bytes)
@@ -318,13 +323,13 @@ __attribute__((weak)) void uCnsTinyChain::warp(const MtMatrix& before, const MtM
 // Address: 0x0100fd20 - 0x0100fd28 (8 bytes)
 void uCnsTinyChain::warpChain() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWarpFlag = true;
+    mWarpFlag = true;
 }
 
 // Address: 0x0100fd10 - 0x0100fd18 (8 bytes)
 void uCnsTinyChain::restart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRestart = static_cast<u8>(1);
+    mRestart = 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -359,25 +364,25 @@ __attribute__((weak)) void uCnsTinyChain::setModelColRes(rChainCol* pres) {
 // Address: 0x01b681e0 - 0x01b681e8 (8 bytes)
 rChainCol* uCnsTinyChain::getModelColRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModelColRes;
+    return mpModelColRes;
 }
 
 // Address: 0x0100fdf0 - 0x0100fe1e (46 bytes)
 void uCnsTinyChain::setModelCol(uModel* pModel) {
     // DWARF local not rendered: const MtVector3& scale;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpModelCol = pModel;
-    if (pModel != static_cast<uModel*>(nullptr)) {
-        this->mModelColScale = pModel->::uCoord::mScale.y;
+    mpModelCol = pModel;
+    if (pModel != nullptr) {
+        mModelColScale = pModel->mScale.y;
     } else {
-        this->mModelColScale = 1.0f;
+        mModelColScale = 1.0f;
     }
 }
 
 // Address: 0x01b681d0 - 0x01b681d8 (8 bytes)
 uModel* uCnsTinyChain::getModelCol() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModelCol;
+    return mpModelCol;
 }
 
 // No out-of-line body: no code in the ELF
@@ -446,7 +451,7 @@ __attribute__((weak)) void uCnsTinyChain::setTransParent(uModel* parent_model_pt
 // Address: 0x01b681f0 - 0x01b681f8 (8 bytes)
 uModel* uCnsTinyChain::getTransParent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTransParent;
+    return mpTransParent;
 }
 
 // Address: 0x01b683d0 - 0x01b68523 (339 bytes)
@@ -521,6 +526,8 @@ __attribute__((weak)) void uCnsTinyChain::callBackObjectCollision(sCollision::CA
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsTinyChain::MyDTI uCnsTinyChain::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsTinyChain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -563,7 +570,7 @@ const MtDTI& uCnsTinyChain::cChainGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uCnsTinyChain11cChainGroupD0Ev at 0x01b685ab-0x01b685cc, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsTinyChain::cChainGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::cChainGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsTinyChain::cChainGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -593,7 +600,7 @@ __attribute__((weak)) void uCnsTinyChain::cChainGroup::createProperty(MtProperty
 // Address: 0x01004f00 - 0x01004f05 (5 bytes)
 MtUI* uCnsTinyChain::cChainGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCnsGroup::cGroup::createUI(prop);
+    return this->uCnsGroup::cGroup::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -620,16 +627,16 @@ __attribute__((weak)) void uCnsTinyChain::cChainGroup::init() {
 // Address: 0x01b68620 - 0x01b6862d (13 bytes)
 void uCnsTinyChain::cChainGroup::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpCnsChain->reset();
+    mpCnsChain->reset();
 }
 
 // Address: 0x01b685e0 - 0x01b685f4 (20 bytes)
 u32 uCnsTinyChain::cChainGroup::getDependentJointNum(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx != static_cast<u32>(0)) {
-        return static_cast<u32>(0);
+    if (idx != 0) {
+        return 0;
     } else {
-        return this->::uCnsGroup::cGroup::mpCnsGroup->getDependentJointNum();
+        return mpCnsGroup->getDependentJointNum();
     }
 }
 
@@ -1023,20 +1030,20 @@ __attribute__((weak)) void uCnsTinyChain::cChainGroup::updateColliderNode() {
 // Address: 0x01b68190 - 0x01b68199 (9 bytes)
 u32 uCnsTinyChain::cChainGroup::getAttrForce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttr & static_cast<u32>(16776960);
+    return mAttr & 0xFFFF00u;
 }
 
 // Address: 0x01b681a0 - 0x01b681b4 (20 bytes)
 void uCnsTinyChain::cChainGroup::setAttrForce(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (attr & static_cast<u32>(16776960)) | (this->mAttr & static_cast<u32>(4278190335));
+    mAttr = (attr & 0xFFFF00u) | (mAttr & 0xFF0000FFu);
 }
 
 // Address: 0x01b68170 - 0x01b68175 (5 bytes)
 u32 uCnsTinyChain::cChainGroup::getAttrCollision() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c from uCnsTinyChain::cChainGroup*
-    return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(44));
+    return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 44);
 }
 
 // Address: 0x01b68180 - 0x01b68185 (5 bytes)
@@ -1071,6 +1078,8 @@ __attribute__((weak)) void uCnsTinyChain::cChainGroup::setAttrCollision(u32 attr
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 uCnsTinyChain::cChainGroup::getScale();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsTinyChain::cChainGroup::MyDTI uCnsTinyChain::cChainGroup::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsTinyChain::cChainGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1114,7 +1123,7 @@ const MtDTI& uCnsTinyChain::cChainNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uCnsTinyChain10cChainNodeD0Ev at 0x0100387e-0x0100389f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsTinyChain::cChainNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::cChainNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsTinyChain::cChainNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1147,7 +1156,7 @@ __attribute__((weak)) void uCnsTinyChain::cChainNode::createProperty(MtPropertyL
 // Address: 0x01004340 - 0x01004345 (5 bytes)
 MtUI* uCnsTinyChain::cChainNode::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1156,13 +1165,13 @@ MtUI* uCnsTinyChain::cChainNode::createUI(MtProperty& prop) {
 // Address: 0x01b680e0 - 0x01b680e5 (5 bytes)
 void uCnsTinyChain::cChainNode::setAttr(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = attr;
+    mAttr = attr;
 }
 
 // Address: 0x01b680d0 - 0x01b680dc (12 bytes)
 u32 uCnsTinyChain::cChainNode::getAttr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttr;
+    return mAttr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1186,7 +1195,7 @@ u32 uCnsTinyChain::cChainNode::getAttr() const {
 // Address: 0x01b68080 - 0x01b68085 (5 bytes)
 void uCnsTinyChain::cChainNode::setAttach(u32 attach) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttach = attach;
+    mAttach = attach;
 }
 
 // Address: 0x01b68070 - 0x01b6807c (12 bytes)
@@ -1198,26 +1207,26 @@ __attribute__((weak)) u32 uCnsTinyChain::cChainNode::getAttach() const {
 // Address: 0x01b680a0 - 0x01b680a5 (5 bytes)
 void uCnsTinyChain::cChainNode::setRotMode(u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRotMode = mode;
+    mRotMode = mode;
 }
 
 // Address: 0x01b68090 - 0x01b68095 (5 bytes)
 u32 uCnsTinyChain::cChainNode::getRotMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRotMode;
+    return mRotMode;
 }
 
 // Address: 0x01b680c0 - 0x01b680c5 (5 bytes)
 void uCnsTinyChain::cChainNode::setRefJointNo(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRefJntNo = no;
+    mRefJntNo = no;
 }
 
 // Address: 0x01b680b0 - 0x01b680bc (12 bytes)
 u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xc from const uCnsTinyChain::cChainNode*
-    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(12))) >> static_cast<unsigned long>(40));
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 12)) >> 40);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1247,13 +1256,13 @@ u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
 // Address: 0x01b68140 - 0x01b68145 (5 bytes)
 void uCnsTinyChain::cChainNode::setAngleMode(u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAngleMode = mode;
+    mAngleMode = mode;
 }
 
 // Address: 0x01b68130 - 0x01b68135 (5 bytes)
 u32 uCnsTinyChain::cChainNode::getAngleMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAngleMode;
+    return mAngleMode;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1297,28 +1306,27 @@ __attribute__((weak)) f32 uCnsTinyChain::cChainNode::getAngleLimit() const {
 
 // Address: 0x01b68100 - 0x01b68110 (16 bytes)
 void uCnsTinyChain::cChainNode::setShapeObject(u32 shape) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1c0 from uCnsTinyChain::cChainGroup*
-    this->mShapeObject = shape;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpChainGroup) + static_cast<long>(448)) = static_cast<unsigned char>(1);
+    // Approximate from the ELF: a wider integer stored into a bitfield; the body oracle reports this body.
+    mShapeObject = shape;
+    mpChainGroup->mResetColliderNode = true;
 }
 
 // Address: 0x01b680f0 - 0x01b680f5 (5 bytes)
 u32 uCnsTinyChain::cChainNode::getShapeObject() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShapeObject;
+    return mShapeObject;
 }
 
 // Address: 0x01b68120 - 0x01b68125 (5 bytes)
 void uCnsTinyChain::cChainNode::setShapeScroll(u32 shape) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShapeScroll = shape;
+    mShapeScroll = shape;
 }
 
 // Address: 0x01b68110 - 0x01b68115 (5 bytes)
 u32 uCnsTinyChain::cChainNode::getShapeScroll() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShapeScroll;
+    return mShapeScroll;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1332,6 +1340,8 @@ u32 uCnsTinyChain::cChainNode::getShapeScroll() const {
 
 // No out-of-line body: no code in the ELF
 // void uCnsTinyChain::cChainNode::resetHitFlg();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsTinyChain::cChainNode::MyDTI uCnsTinyChain::cChainNode::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsTinyChain::cChainNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

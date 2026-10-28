@@ -72,6 +72,8 @@ public:
 public:
     class ForceGaugeInfo : public MtObject
     {
+        // inferred: cpJob05::setGuardChargeMax names cpJob05::mForceGauge.mGaugeMax_Gi
+        friend class cpJob05;
     public:
         class MyDTI;
     public:
@@ -289,8 +291,63 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterActElementChange::updateInter at 0x43ede9-0x43edef; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cpJob05::setTmpElementType(nDDOGame::ELEMENT_TYPE type) {
+    this->mTmpEnchantType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 4 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline nDDOGame::ELEMENT_TYPE cpJob05::getElementType() const {
+    return this->mEnchantType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cStateJob05ElementChange::move at 0x57df1e-0x57df25; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob05::resetTmpElementType() {
+    this->mTmpEnchantType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob05::setGuardChargeMax(f32 max) {
+    this->mForceGauge.mGaugeMax_Gi = max;
+    this->mForceGauge.mStockMax_Gi = static_cast<int>(max / 1000.0f);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cStateJob05Provoke::init at 0x57e584-0x57e58c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob05::setHateAttackMinimumMoveTime(f32 time) {
+    this->mHateAttackMinimumMoveTimer = time;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob05Custom10::init at 0x2ad7dd-0x2ad7e4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob05::clearCanStunShieldCounter() {
+    this->mIsCanStunShieldCounter = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob05LightBase_Loop::init at 0x2a96d8-0x2a96df; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob05::storeLightShl(uShlBase* pShl) {
+    this->mpShlLight = pShl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob05LightBase_Loop::move at 0x2aa022-0x2aa029; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uShlBase* cpJob05::getLightShl() const {
+    return this->mpShlLight;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob05LightBase_Loop::final at 0x2aa45c-0x2aa467; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob05::clearLightShl() {
+    this->mpShlLight = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpJob05::ForceGaugeInfo::ForceGaugeInfo() {
     this->mGaugeMax_Gi = 0.0f;
-    this->mStockMax_Gi = static_cast<s32>(0);
+    this->mStockMax_Gi = 0;
     this->mNowGauge_Gi = 0.0f;
 }

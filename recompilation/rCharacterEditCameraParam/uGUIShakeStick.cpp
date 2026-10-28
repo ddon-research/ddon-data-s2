@@ -26,7 +26,7 @@ const MtDTI& uGUIShakeStick::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIShakeStick::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIShakeStick::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIShakeStick::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* uGUIShakeStick::getAllocator() {
 // Address: 0x00c3a1b0 - 0x00c3a1f0 (64 bytes)
 void* uGUIShakeStick::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIShakeStick::getAllocator()->memAlloc(sz, align, ::uGUIShakeStick::DTI.::MtDTI::getID());
+    return uGUIShakeStick::getAllocator()->memAlloc(sz, align, uGUIShakeStick::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* uGUIShakeStick::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIShakeStick::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIShakeStick::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIShakeStick::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,19 +69,19 @@ inline void uGUIShakeStick::operator delete(void* p_addr) {
 // Also emitted as: _ZN14uGUIShakeStickD0Ev at 0x00c3a360
 uGUIShakeStick::~uGUIShakeStick() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c3a3d0 - 0x00c3a438 (104 bytes)
 bool uGUIShakeStick::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ACTION00_GUI"), static_cast<u32>(129), static_cast<t64>(1460980947)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ACTION00_GUI"), 129u, 1460980947l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -100,12 +100,12 @@ __attribute__((weak)) void uGUIShakeStick::setup() {
 // Address: 0x00c3a5a0 - 0x00c3a5d1 (49 bytes)
 void uGUIShakeStick::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c3a950 - 0x00c3aa3e (238 bytes)
@@ -118,8 +118,8 @@ __attribute__((weak)) void uGUIShakeStick::setCount(s32 count, s32 countMax) {
 // Address: 0x00c3aa50 - 0x00c3aa74 (36 bytes)
 void uGUIShakeStick::setSuccess() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateSuccess);
-    this->::uGUIBase::mRoutine = static_cast<u32>(0);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateSuccess);
+    mRoutine = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +134,7 @@ void uGUIShakeStick::setSuccess() {
 // Address: 0x00c3a580 - 0x00c3a59a (26 bytes)
 void uGUIShakeStick::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateHide);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateHide);
 }
 
 // Address: 0x00c3a5e0 - 0x00c3a68d (173 bytes)
@@ -175,6 +175,8 @@ __attribute__((weak)) void uGUIShakeStick::updateSuccess() {
 // No out-of-line body: 1 inlined copy in 1 function (85 bytes)
 //   in uGUIShakeStick::setCount at 0x00c3a99b-0x00c3a9f0 (called at uGUIShakeStick.cpp:438)
 // void uGUIShakeStick::updateActPltType();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIShakeStick::MyDTI uGUIShakeStick::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIShakeStick.cpp at 0x00c3abbf-0x00c3abfc (called at uGUIShakeStick.cpp:52)

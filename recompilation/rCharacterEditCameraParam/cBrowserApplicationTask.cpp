@@ -23,7 +23,7 @@ const MtDTI& cBrowserApplicationTask::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cBrowserApplicationTask::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cBrowserApplicationTask::DTI);
+    return MtMemoryAllocator::getAllocator(cBrowserApplicationTask::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* cBrowserApplicationTask::getAllocator() {
 // Address: 0x00019040 - 0x00019080 (64 bytes)
 void* cBrowserApplicationTask::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cBrowserApplicationTask::getAllocator()->memAlloc(sz, align, ::cBrowserApplicationTask::DTI.::MtDTI::getID());
+    return cBrowserApplicationTask::getAllocator()->memAlloc(sz, align, cBrowserApplicationTask::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* cBrowserApplicationTask::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cBrowserApplicationTask::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBrowserApplicationTask::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBrowserApplicationTask::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,6 +134,8 @@ __attribute__((weak)) void cBrowserApplicationTask::move() {
 __attribute__((weak)) void cBrowserApplicationTask::draw() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBrowserApplicationTask::MyDTI cBrowserApplicationTask::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cBrowserApplicationTask.cpp at 0x000193e0-0x00019422 (called at cBrowserApplicationTask.cpp:56)

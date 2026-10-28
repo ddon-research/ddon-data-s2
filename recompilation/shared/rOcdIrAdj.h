@@ -185,12 +185,12 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cOcdIrAdj::cOcdIrAdj() {
-    this->mLv = static_cast<u32>(1);
+    this->mLv = 1;
     this->mOcdRank = 1.0f;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cOcdIrAdjPL::cOcdIrAdjPL() {
-    this->mItemLank = static_cast<u32>(1);
+    this->mItemLank = 1;
     this->mOcdRank = 1.0f;
 }

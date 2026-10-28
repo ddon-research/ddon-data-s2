@@ -11,6 +11,7 @@
 #include "cUnit.h"
 #include "nDrawRasterizerState.h"
 #include "nDrawTexture.h"
+#include "sScene.h"
 #include "sShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -51,7 +52,7 @@ const MtDTI& uShadow::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7uShadowD0Ev at 0x00f68f0e-0x00f68f2f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uShadow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShadow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShadow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,14 +82,13 @@ uShadow::~uShadow() {
 // Address: 0x00f68f90 - 0x00f68fce (62 bytes)
 void uShadow::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
-    this->mInitialized = true;
-    if (this->mStandBy != false) {
+    this->cUnit::setup();
+    mInitialized = true;
+    if (mStandBy) {
         return;
     }
-    if (this->mpDepthMap != static_cast<nDraw::Texture*>(nullptr)) {
-    } else {
-        this->createShadowMap();
+    if (mpDepthMap == nullptr) {
+        createShadowMap();
     }
 }
 
@@ -102,15 +102,15 @@ __attribute__((weak)) void uShadow::draw(cDraw* pdraw) {
 void uShadow::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uShadow*
-    if (this->mCacheID != static_cast<uintptr>(0)) {
-        (::sShadow::mpInstance)->::sShadow::freeShadowCacheID(this->mCacheID);
-        this->mCacheID = static_cast<uintptr>(0);
+    if (mCacheID != 0) {
+        (sShadow::mpInstance)->sShadow::freeShadowCacheID(mCacheID);
+        mCacheID = 0;
     }
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
     }
 }
 
@@ -124,7 +124,7 @@ __attribute__((weak)) void uShadow::applyWorldOffset(const MtVector3& offset, co
 // Address: 0x00f6b110 - 0x00f6b116 (6 bytes)
 u64 uShadow::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(2);
+    return 2;
 }
 
 // Address: 0x00f6c340 - 0x00f6cd7f (2623 bytes)
@@ -162,7 +162,7 @@ __attribute__((weak)) void uShadow::setNullShadowReceiveState(cDraw* pdraw, u32 
 // Address: 0x00f6f080 - 0x00f6f089 (9 bytes)
 void uShadow::setShadowDepthBias(f32 b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShadowDepthBias = b;
+    mShadowDepthBias = b;
 }
 
 // No out-of-line body: no code in the ELF
@@ -171,47 +171,47 @@ void uShadow::setShadowDepthBias(f32 b) {
 // Address: 0x00f6ab10 - 0x00f6ab19 (9 bytes)
 f32 uShadow::getShadowDistanceScaledDepthBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowDistanceScaledDepthBias;
+    return mShadowDistanceScaledDepthBias;
 }
 
 // Address: 0x00f6ab20 - 0x00f6ab29 (9 bytes)
 void uShadow::setShadowDistanceScaledDepthBias(f32 b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShadowDistanceScaledDepthBias = b;
+    mShadowDistanceScaledDepthBias = b;
 }
 
 // Address: 0x00f6a9c0 - 0x00f6a9c9 (9 bytes)
 f32 uShadow::getShadowSlopeScaledDepthBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowSlopeScaledDepthBias;
+    return mShadowSlopeScaledDepthBias;
 }
 
 // Address: 0x00f6a9d0 - 0x00f6ab03 (307 bytes)
 void uShadow::setShadowSlopeScaledDepthBias(f32 b) {
     // DWARF local not rendered: u32 c;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mShadowSlopeScaledDepthBias == b) {
+    if (mShadowSlopeScaledDepthBias == b) {
         return;
     }
-    this->mShadowSlopeScaledDepthBias = b;
-    this->mRasterizerDesc[0].dbias_slope = this->mShadowSlopeScaledDepthBias;
-    if (this->mpRasterizerState[0] != static_cast<nDraw::RasterizerState*>(nullptr)) {
-        this->mpRasterizerState[0]->release();
-        this->mpRasterizerState[0] = static_cast<nDraw::RasterizerState*>(nullptr);
+    mShadowSlopeScaledDepthBias = b;
+    mRasterizerDesc[0].dbias_slope = mShadowSlopeScaledDepthBias;
+    if (mpRasterizerState[0] != nullptr) {
+        mpRasterizerState[0]->release();
+        mpRasterizerState[0] = nullptr;
     }
-    this->mpRasterizerState[0] = new (static_cast<u32>(16)) ::nDraw::RasterizerState(&this->mRasterizerDesc[0]);
-    this->mRasterizerDesc[1].dbias_slope = b;
-    if (this->mpRasterizerState[1] != static_cast<nDraw::RasterizerState*>(nullptr)) {
-        this->mpRasterizerState[1]->release();
-        this->mpRasterizerState[1] = static_cast<nDraw::RasterizerState*>(nullptr);
+    mpRasterizerState[0] = new (16u) nDraw::RasterizerState(&mRasterizerDesc[0]);
+    mRasterizerDesc[1].dbias_slope = b;
+    if (mpRasterizerState[1] != nullptr) {
+        mpRasterizerState[1]->release();
+        mpRasterizerState[1] = nullptr;
     }
-    this->mpRasterizerState[1] = new (static_cast<u32>(16)) ::nDraw::RasterizerState(&this->mRasterizerDesc[1]);
-    this->mRasterizerDesc[2].dbias_slope = b;
-    if (this->mpRasterizerState[2] != static_cast<nDraw::RasterizerState*>(nullptr)) {
-        this->mpRasterizerState[2]->release();
-        this->mpRasterizerState[2] = static_cast<nDraw::RasterizerState*>(nullptr);
+    mpRasterizerState[1] = new (16u) nDraw::RasterizerState(&mRasterizerDesc[1]);
+    mRasterizerDesc[2].dbias_slope = b;
+    if (mpRasterizerState[2] != nullptr) {
+        mpRasterizerState[2]->release();
+        mpRasterizerState[2] = nullptr;
     }
-    this->mpRasterizerState[2] = new (static_cast<u32>(16)) ::nDraw::RasterizerState(&this->mRasterizerDesc[2]);
+    mpRasterizerState[2] = new (16u) nDraw::RasterizerState(&mRasterizerDesc[2]);
 }
 
 // No out-of-line body: no code in the ELF
@@ -245,72 +245,65 @@ __attribute__((weak)) void uShadow::setShadowViewDistance(f32 distance) {
 // Address: 0x00f6b930 - 0x00f6b937 (7 bytes)
 u32 uShadow::getShadowType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowType;
+    return mShadowType;
 }
 
 // Address: 0x00f6a780 - 0x00f6a846 (198 bytes)
 void uShadow::setShadowMapType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mShadowMapType == type) {
-    } else {
-        this->mShadowMapType = type;
-        if (this->mpDepthMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMap->release();
-            this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+    if (mShadowMapType != type) {
+        mShadowMapType = type;
+        if (mpDepthMap != nullptr) {
+            mpDepthMap->release();
+            mpDepthMap = nullptr;
         }
-        if (this->mpTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpTempMap->release();
-            this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpTempMap != nullptr) {
+            mpTempMap->release();
+            mpTempMap = nullptr;
         }
-        if (this->mpDepthTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthTempMap->release();
-            this->mpDepthTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthTempMap != nullptr) {
+            mpDepthTempMap->release();
+            mpDepthTempMap = nullptr;
         }
-        if (this->mpDepthStencil == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencil->release();
-            this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencil != nullptr) {
+            mpDepthStencil->release();
+            mpDepthStencil = nullptr;
         }
-        if (this->mpDepthMapCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMapCache->release();
-            this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthMapCache != nullptr) {
+            mpDepthMapCache->release();
+            mpDepthMapCache = nullptr;
         }
-        if (this->mpDepthStencilCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencilCache->release();
-            this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencilCache != nullptr) {
+            mpDepthStencilCache->release();
+            mpDepthStencilCache = nullptr;
         }
-        this->releaseShadowMapSub();
-        this->createShadowMap();
+        releaseShadowMapSub();
+        createShadowMap();
     }
 }
 
 // Address: 0x00f6a770 - 0x00f6a777 (7 bytes)
 u32 uShadow::getShadowMapType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowMapType;
+    return mShadowMapType;
 }
 
 // Address: 0x00f6aec0 - 0x00f6aecf (15 bytes)
 void uShadow::setPCFType(u32 p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPCFType == p) {
+    if (mPCFType == p) {
         return;
     }
-    this->mPCFType = p;
+    mPCFType = p;
 }
 
 // Address: 0x00f6aea0 - 0x00f6aeb2 (18 bytes)
 u32 uShadow::getPCFType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mShadowMapType == static_cast<u32>(0)) {
-        return this->mPCFType;
+    if (mShadowMapType == 0) {
+        return mPCFType;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -324,87 +317,79 @@ __attribute__((weak)) void uShadow::setMapSize(u32 size) {
 // Address: 0x01b642d0 - 0x01b642d7 (7 bytes)
 u32 uShadow::getMapSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMapSizeOriginal;
+    return mMapSizeOriginal;
 }
 
 // Address: 0x01b642e0 - 0x01b642e7 (7 bytes)
 u32 uShadow::getMapSizeTrue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMapSize;
+    return mMapSize;
 }
 
 // Address: 0x00f6ae80 - 0x00f6ae9e (30 bytes)
 void uShadow::setDispersion(f32 d) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDispersion == d) {
+    if (mDispersion == d) {
         return;
     }
-    this->mDispersion = d;
-    this->::uShadow::setBlurParam();
+    mDispersion = d;
+    setBlurParam();
 }
 
 // Address: 0x00f6ae70 - 0x00f6ae79 (9 bytes)
 f32 uShadow::getDispersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDispersion;
+    return mDispersion;
 }
 
 // Address: 0x00f6ae50 - 0x00f6ae64 (20 bytes)
 void uShadow::setVSMBlurType(u32 t) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mVSMBlurType == t) {
-    } else {
-        this->mVSMBlurType = t;
-        this->::uShadow::setBlurParam();
+    if (mVSMBlurType != t) {
+        mVSMBlurType = t;
+        setBlurParam();
     }
 }
 
 // Address: 0x00f6ae40 - 0x00f6ae47 (7 bytes)
 u32 uShadow::getVSMBlurType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVSMBlurType;
+    return mVSMBlurType;
 }
 
 // Address: 0x00f6ab40 - 0x00f6ac1d (221 bytes)
 void uShadow::setStandBy(bool s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStandBy == s) {
-    } else {
-        this->mStandBy = s;
-        if (s != false) {
-            if (this->mpDepthMap == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpDepthMap->release();
-                this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+    if (mStandBy != s) {
+        mStandBy = s;
+        if (s) {
+            if (mpDepthMap != nullptr) {
+                mpDepthMap->release();
+                mpDepthMap = nullptr;
             }
-            if (this->mpTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpTempMap->release();
-                this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+            if (mpTempMap != nullptr) {
+                mpTempMap->release();
+                mpTempMap = nullptr;
             }
-            if (this->mpDepthTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpDepthTempMap->release();
-                this->mpDepthTempMap = static_cast<nDraw::Texture*>(nullptr);
+            if (mpDepthTempMap != nullptr) {
+                mpDepthTempMap->release();
+                mpDepthTempMap = nullptr;
             }
-            if (this->mpDepthStencil == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpDepthStencil->release();
-                this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+            if (mpDepthStencil != nullptr) {
+                mpDepthStencil->release();
+                mpDepthStencil = nullptr;
             }
-            if (this->mpDepthMapCache == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpDepthMapCache->release();
-                this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+            if (mpDepthMapCache != nullptr) {
+                mpDepthMapCache->release();
+                mpDepthMapCache = nullptr;
             }
-            if (this->mpDepthStencilCache == static_cast<nDraw::Texture*>(nullptr)) {
-            } else {
-                this->mpDepthStencilCache->release();
-                this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+            if (mpDepthStencilCache != nullptr) {
+                mpDepthStencilCache->release();
+                mpDepthStencilCache = nullptr;
             }
-            this->releaseShadowMapSub();
+            releaseShadowMapSub();
         } else {
-            this->createShadowMap();
+            createShadowMap();
         }
     }
 }
@@ -412,7 +397,7 @@ void uShadow::setStandBy(bool s) {
 // Address: 0x00f6ab30 - 0x00f6ab37 (7 bytes)
 bool uShadow::getStandBy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStandBy;
+    return mStandBy;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -424,13 +409,13 @@ bool uShadow::getStandBy() const {
 // Address: 0x01b64350 - 0x01b64357 (7 bytes)
 bool uShadow::isLimitRangeEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLimitRangeEnable;
+    return mLimitRangeEnable;
 }
 
 // Address: 0x01b64360 - 0x01b64368 (8 bytes)
 void uShadow::setLimitRangeEnable(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLimitRangeEnable = enable;
+    mLimitRangeEnable = enable;
 }
 
 // Address: 0x01b0a9c0 - 0x01b0a9c3 (3 bytes)
@@ -445,22 +430,22 @@ bool uShadow::getLimitRangeOBB(MtOBB* obb) const {
 // Address: 0x00f6f600 - 0x00f6f624 (36 bytes)
 bool uShadow::isMappedTo(uLight* light) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mMappedToLight != false) && ((light != static_cast<uLight*>(nullptr)) && ((this->mpTargetLight != static_cast<uLight*>(nullptr)) && (light == this->mpTargetLight)));
+    return mMappedToLight && ((light != nullptr) && ((mpTargetLight != nullptr) && (light == mpTargetLight)));
 }
 
 // Address: 0x01b642f0 - 0x01b642f7 (7 bytes)
 bool uShadow::isMappedToLight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMappedToLight;
+    return mMappedToLight;
 }
 
 // Address: 0x00f6ac20 - 0x00f6ac37 (23 bytes)
 void uShadow::setMappedToLight(bool mappedToLight) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMappedToLight == mappedToLight) {
+    if (mMappedToLight == mappedToLight) {
         return;
     }
-    this->mMappedToLight = mappedToLight;
+    mMappedToLight = mappedToLight;
 }
 
 // No out-of-line body: no code in the ELF
@@ -472,71 +457,63 @@ void uShadow::setMappedToLight(bool mappedToLight) {
 // Address: 0x00f6f630 - 0x00f6f638 (8 bytes)
 void uShadow::setTargetLight(uLight* plight) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetLight = plight;
+    mpTargetLight = plight;
 }
 
 // Address: 0x00f6f640 - 0x00f6f648 (8 bytes)
 void uShadow::setTargetLightEnable(bool e) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetLightEnable = e;
+    mTargetLightEnable = e;
 }
 
 // Address: 0x00f6ad10 - 0x00f6ae31 (289 bytes)
 void uShadow::setManagedType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mManagedType == type) {
-    } else {
-        if (this->mpDepthMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMap->release();
-            this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+    if (mManagedType != type) {
+        if (mpDepthMap != nullptr) {
+            mpDepthMap->release();
+            mpDepthMap = nullptr;
         }
-        if (this->mpTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpTempMap->release();
-            this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpTempMap != nullptr) {
+            mpTempMap->release();
+            mpTempMap = nullptr;
         }
-        if (this->mpDepthTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthTempMap->release();
-            this->mpDepthTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthTempMap != nullptr) {
+            mpDepthTempMap->release();
+            mpDepthTempMap = nullptr;
         }
-        if (this->mpDepthStencil == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencil->release();
-            this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencil != nullptr) {
+            mpDepthStencil->release();
+            mpDepthStencil = nullptr;
         }
-        if (this->mpDepthMapCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMapCache->release();
-            this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthMapCache != nullptr) {
+            mpDepthMapCache->release();
+            mpDepthMapCache = nullptr;
         }
-        if (this->mpDepthStencilCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencilCache->release();
-            this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencilCache != nullptr) {
+            mpDepthStencilCache->release();
+            mpDepthStencilCache = nullptr;
         }
-        this->releaseShadowMapSub();
-        this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
-        this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
-        this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
-        this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
-        this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
-        if (type != static_cast<u32>(0)) {
-        } else {
-            this->mDrawEnable = true;
+        releaseShadowMapSub();
+        mpTempMap = nullptr;
+        mpDepthMap = nullptr;
+        mpDepthStencilCache = nullptr;
+        mpDepthMapCache = nullptr;
+        mpDepthStencil = nullptr;
+        if (type == 0) {
+            mDrawEnable = true;
         }
-        this->mManagedType = type;
-        this->mCacheCounter = static_cast<u32>(0);
-        this->mValidShadowMapCache = false;
-        this->createShadowMap();
+        mManagedType = type;
+        mCacheCounter = 0;
+        mValidShadowMapCache = false;
+        createShadowMap();
     }
 }
 
 // Address: 0x01b64310 - 0x01b64317 (7 bytes)
 u32 uShadow::getManagedType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mManagedType;
+    return mManagedType;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -554,41 +531,34 @@ __attribute__((weak)) MtSphere uShadow::getBoundingSphere() const {
 // Address: 0x00f6ac40 - 0x00f6ad0e (206 bytes)
 void uShadow::setShadowMapCacheEnable(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mShadowMapCacheEnable == enable) {
-    } else {
-        if (this->mpDepthMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMap->release();
-            this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+    if (mShadowMapCacheEnable != enable) {
+        if (mpDepthMap != nullptr) {
+            mpDepthMap->release();
+            mpDepthMap = nullptr;
         }
-        if (this->mpTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpTempMap->release();
-            this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpTempMap != nullptr) {
+            mpTempMap->release();
+            mpTempMap = nullptr;
         }
-        if (this->mpDepthTempMap == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthTempMap->release();
-            this->mpDepthTempMap = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthTempMap != nullptr) {
+            mpDepthTempMap->release();
+            mpDepthTempMap = nullptr;
         }
-        if (this->mpDepthStencil == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencil->release();
-            this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencil != nullptr) {
+            mpDepthStencil->release();
+            mpDepthStencil = nullptr;
         }
-        if (this->mpDepthMapCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthMapCache->release();
-            this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthMapCache != nullptr) {
+            mpDepthMapCache->release();
+            mpDepthMapCache = nullptr;
         }
-        if (this->mpDepthStencilCache == static_cast<nDraw::Texture*>(nullptr)) {
-        } else {
-            this->mpDepthStencilCache->release();
-            this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+        if (mpDepthStencilCache != nullptr) {
+            mpDepthStencilCache->release();
+            mpDepthStencilCache = nullptr;
         }
-        this->releaseShadowMapSub();
-        this->mShadowMapCacheEnable = enable;
-        this->createShadowMap();
+        releaseShadowMapSub();
+        mShadowMapCacheEnable = enable;
+        createShadowMap();
     }
 }
 
@@ -598,7 +568,7 @@ void uShadow::setShadowMapCacheEnable(bool enable) {
 // Address: 0x01b64300 - 0x01b64307 (7 bytes)
 bool uShadow::getShadowMapCacheEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowMapCacheEnable;
+    return mShadowMapCacheEnable;
 }
 
 // Address: 0x00f6f9f0 - 0x00f6fa37 (71 bytes)
@@ -613,20 +583,20 @@ __attribute__((weak)) void uShadow::invalidateShadowMapCache(u32 delayFrame) {
 // Address: 0x01b643d0 - 0x01b643d9 (9 bytes)
 void uShadow::setNearClipDistance(f32 distance) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNearClipDistance = distance;
+    mNearClipDistance = distance;
 }
 
 // Address: 0x01b643c0 - 0x01b643c9 (9 bytes)
 f32 uShadow::getNearClipDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNearClipDistance;
+    return mNearClipDistance;
 }
 
 // Address: 0x01b0a950 - 0x01b0a95d (13 bytes)
 void uShadow::getDrawUnitState(u32& type, u32& priority) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    type = static_cast<unsigned int>(4);
-    priority = static_cast<unsigned int>(0);
+    type = 4;
+    priority = 0;
 }
 
 // Address: 0x00f6fa40 - 0x00f6fb59 (281 bytes)
@@ -824,10 +794,10 @@ bool uShadow::getBoundingVolume(cConvexBoundingVolume* * volume) const {
 // Address: 0x00f6b900 - 0x00f6b924 (36 bytes)
 void uShadow::beginBranchCaster(cDraw* pdraw, uShadow::ShadowMap& shadowMap) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mShadowGroup == static_cast<u32>(0)) {
-        pdraw->::cDraw::beginBranch(static_cast<nDraw::DRAW_MODE>(8), "ShadowCast");
+    if (mShadowGroup == 0) {
+        pdraw->beginBranch(nDraw::MODE_SHADOW0_CAST, "ShadowCast");
     } else {
-        pdraw->::cDraw::beginBranch(static_cast<nDraw::DRAW_MODE>(512), "ShadowCast");
+        pdraw->beginBranch(nDraw::MODE_SHADOW1_CAST, "ShadowCast");
     }
 }
 
@@ -886,14 +856,14 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* uShadow::createHardwareDispCtrl(
 void uShadow::setPS3DisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPS3Disable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPS3Disable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(1);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 1u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967294);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFEu;
     }
 }
 
@@ -901,14 +871,14 @@ void uShadow::setPS3DisableMode(bool set) {
 void uShadow::setPS4DisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPS4Disable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPS4Disable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(2);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 2u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967293);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFDu;
     }
 }
 
@@ -916,34 +886,36 @@ void uShadow::setPS4DisableMode(bool set) {
 void uShadow::setPCDisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPCDisable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPCDisable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(4);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 4u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967291);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFBu;
     }
 }
 
 // Address: 0x01b64320 - 0x01b64327 (7 bytes)
 bool uShadow::getPS3DisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPS3Disable;
+    return mIsPS3Disable;
 }
 
 // Address: 0x01b64330 - 0x01b64337 (7 bytes)
 bool uShadow::getPS4DisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPS4Disable;
+    return mIsPS4Disable;
 }
 
 // Address: 0x01b64340 - 0x01b64347 (7 bytes)
 bool uShadow::getPCDisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPCDisable;
+    return mIsPCDisable;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uShadow::MyDTI uShadow::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uShadow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -974,9 +946,8 @@ const MtDTI& uShadow::cHardwareDispCtrlShadow::getDTI() const {
 
 // Address: 0x00f6fe40 - 0x00f6fe80 (64 bytes)
 void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uShadow::cHardwareDispCtrlShadow::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::uShadow::cHardwareDispCtrlShadow::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uShadow::cHardwareDispCtrlShadow::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(uShadow::cHardwareDispCtrlShadow::DTI)->memAlloc(sz, align, uShadow::cHardwareDispCtrlShadow::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -990,7 +961,7 @@ void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uShadow::cHardwareDispCtrlShadow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShadow::cHardwareDispCtrlShadow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShadow::cHardwareDispCtrlShadow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1014,12 +985,25 @@ inline void uShadow::cHardwareDispCtrlShadow::operator delete(void* p_addr) {
 // uShadow::cHardwareDispCtrlShadow::~cHardwareDispCtrlShadow();
 
 // Address: 0x00f6ff60 - 0x00f6ffa1 (65 bytes)
-__attribute__((weak)) void uShadow::cHardwareDispCtrlShadow::update() {
-    // local: bool isPS3Mode;
-    // local: bool isPS4Mode;
-    // local: bool isPCMode;
-    DDON_STUB("uShadow::cHardwareDispCtrlShadow::update")
-    /* stub */
+void uShadow::cHardwareDispCtrlShadow::update() {
+    // DWARF local not rendered: bool isPS3Mode;
+    // DWARF local not rendered: bool isPS4Mode;
+    // DWARF local not rendered: bool isPCMode;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0xf6ff71 read, used once; no DWARF local holds it
+    bool t0 = (sScene::mpInstance)->mLightRestrictPS4;
+    // inferred: a temporary for the value the load at 0xf6ff77 read, used once; no DWARF local holds it
+    bool t1 = (sScene::mpInstance)->mLightRestrictPC;
+    if ((sScene::mpInstance)->mLightRestrictPS3) {
+        mHard = 0;
+    }
+    if (t0) {
+        mHard = 1;
+    }
+    if (t1) {
+        mHard = 2;
+    }
+    this->cUnit::cHardwareDispCtrl::update();
 }
 
 // Address: 0x00f6fef0 - 0x00f6ff58 (104 bytes)
@@ -1030,6 +1014,8 @@ __attribute__((weak)) bool uShadow::cHardwareDispCtrlShadow::isDispOperateHard()
     DDON_STUB("uShadow::cHardwareDispCtrlShadow::isDispOperateHard")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uShadow::cHardwareDispCtrlShadow::MyDTI uShadow::cHardwareDispCtrlShadow::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uShadow::cHardwareDispCtrlShadow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

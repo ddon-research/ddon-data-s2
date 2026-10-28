@@ -35,7 +35,7 @@ const MtDTI& MtGeomAABB::getDTI() const {
 // Address: 0x01942e60 - 0x01942ea0 (64 bytes)
 void* MtGeomAABB::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomAABB::DTI)->memAlloc(sz, align, ::MtGeomAABB::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomAABB::DTI)->memAlloc(sz, align, MtGeomAABB::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomAABB::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomAABB::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomAABB::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomAABB::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,28 +77,28 @@ inline void MtGeomAABB::operator delete(void* p_addr) {
 void MtGeomAABB::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAABB.minpos.x = fin.readF32();
-    this->mAABB.maxpos.x = fin.readF32();
-    this->mAABB.minpos.y = fin.readF32();
-    this->mAABB.maxpos.y = fin.readF32();
-    this->mAABB.minpos.z = fin.readF32();
-    this->mAABB.maxpos.z = fin.readF32();
-    this->mAABB.minpos.pad_ = fin.readF32();
-    this->mAABB.maxpos.pad_ = fin.readF32();
+    mAABB.minpos.x = fin.readF32();
+    mAABB.maxpos.x = fin.readF32();
+    mAABB.minpos.y = fin.readF32();
+    mAABB.maxpos.y = fin.readF32();
+    mAABB.minpos.z = fin.readF32();
+    mAABB.maxpos.z = fin.readF32();
+    mAABB.minpos.pad_ = fin.readF32();
+    mAABB.maxpos.pad_ = fin.readF32();
 }
 
 // Address: 0x01942fa0 - 0x0194302c (140 bytes)
 void MtGeomAABB::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mAABB.minpos.x);
-    fout.writeF32(this->mAABB.maxpos.x);
-    fout.writeF32(this->mAABB.minpos.y);
-    fout.writeF32(this->mAABB.maxpos.y);
-    fout.writeF32(this->mAABB.minpos.z);
-    fout.writeF32(this->mAABB.maxpos.z);
-    fout.writeF32(this->mAABB.minpos.pad_);
-    fout.writeF32(this->mAABB.maxpos.pad_);
+    fout.writeF32(mAABB.minpos.x);
+    fout.writeF32(mAABB.maxpos.x);
+    fout.writeF32(mAABB.minpos.y);
+    fout.writeF32(mAABB.maxpos.y);
+    fout.writeF32(mAABB.minpos.z);
+    fout.writeF32(mAABB.maxpos.z);
+    fout.writeF32(mAABB.minpos.pad_);
+    fout.writeF32(mAABB.maxpos.pad_);
 }
 
 // Address: 0x01943030 - 0x0194329c (620 bytes)
@@ -110,13 +110,13 @@ __attribute__((weak)) void MtGeomAABB::createProperty(MtPropertyList& s) {
 // Address: 0x01be3ee0 - 0x01be3f2a (74 bytes)
 void MtGeomAABB::getBoundingAABB(MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    aabb.minpos.x = this->mAABB.minpos.x;
-    aabb.minpos.y = this->mAABB.minpos.y;
-    aabb.minpos.z = this->mAABB.minpos.z;
+    aabb.minpos.x = mAABB.minpos.x;
+    aabb.minpos.y = mAABB.minpos.y;
+    aabb.minpos.z = mAABB.minpos.z;
     aabb.minpos.pad_ = 0.0f;
-    aabb.maxpos.x = this->mAABB.maxpos.x;
-    aabb.maxpos.y = this->mAABB.maxpos.y;
-    aabb.maxpos.z = this->mAABB.maxpos.z;
+    aabb.maxpos.x = mAABB.maxpos.x;
+    aabb.maxpos.y = mAABB.maxpos.y;
+    aabb.maxpos.z = mAABB.maxpos.z;
     aabb.maxpos.pad_ = 0.0f;
 }
 
@@ -135,31 +135,31 @@ __attribute__((weak)) bool MtGeomAABB::isIntersect(const MtVector3& pos) const {
 // Address: 0x01be4050 - 0x01be4059 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, line);
+    return MtCollision::intersect(mAABB, line);
 }
 
 // Address: 0x01be4060 - 0x01be4069 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, ray);
+    return MtCollision::intersect(mAABB, ray);
 }
 
 // Address: 0x01be4070 - 0x01be4079 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, ls);
+    return MtCollision::intersect(mAABB, ls);
 }
 
 // Address: 0x01be4080 - 0x01be4089 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, sphere);
+    return MtCollision::intersect(mAABB, sphere);
 }
 
 // Address: 0x01be4090 - 0x01be409f (15 bytes)
 bool MtGeomAABB::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(capsule, this->mAABB);
+    return MtCollision::intersect(capsule, mAABB);
 }
 
 // Address: 0x01be40a0 - 0x01be40f8 (88 bytes)
@@ -171,13 +171,13 @@ __attribute__((weak)) bool MtGeomAABB::isIntersect(const MtAABB& aabb) const {
 // Address: 0x01be4100 - 0x01be4109 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, obb);
+    return MtCollision::intersect(mAABB, obb);
 }
 
 // Address: 0x01be4110 - 0x01be4119 (9 bytes)
 bool MtGeomAABB::isIntersect(const MtPlane& plane) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mAABB, plane);
+    return MtCollision::intersect(mAABB, plane);
 }
 
 // Address: 0x01be4120 - 0x01be4123 (3 bytes)
@@ -189,91 +189,91 @@ bool MtGeomAABB::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01be4130 - 0x01be413f (15 bytes)
 bool MtGeomAABB::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(tri, this->mAABB);
+    return MtCollision::intersect(tri, mAABB);
 }
 
 // Address: 0x01be4140 - 0x01be414f (15 bytes)
 bool MtGeomAABB::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(cylinder, this->mAABB);
+    return MtCollision::intersect(cylinder, mAABB);
 }
 
 // Address: 0x01be4150 - 0x01be4159 (9 bytes)
 bool MtGeomAABB::getClosest(const MtVector3& pos, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, pos, pContact);
+    return MtCollision::closest(mAABB, pos, pContact);
 }
 
 // Address: 0x01be4160 - 0x01be416b (11 bytes)
 bool MtGeomAABB::getClosest(const MtLine& line, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, line, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mAABB, line, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4170 - 0x01be417b (11 bytes)
 bool MtGeomAABB::getClosest(const MtRay& ray, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, ray, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mAABB, ray, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4180 - 0x01be418b (11 bytes)
 bool MtGeomAABB::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, ls, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mAABB, ls, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4190 - 0x01be41a7 (23 bytes)
 bool MtGeomAABB::getClosest(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(sphere, this->mAABB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(sphere, mAABB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01be41b0 - 0x01be41bb (11 bytes)
 bool MtGeomAABB::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mAABB, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be41c0 - 0x01be41d7 (23 bytes)
 bool MtGeomAABB::getClosest(const MtAABB& aabb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, aabb, pContact, static_cast<MtContact*>(nullptr), true, true);
+    return MtCollision::closest(mAABB, aabb, pContact, static_cast<MtContact*>(nullptr), true, true);
 }
 
 // Address: 0x01be41e0 - 0x01be41eb (11 bytes)
 bool MtGeomAABB::getClosest(const MtOBB& obb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, obb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mAABB, obb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be41f0 - 0x01be41fe (14 bytes)
 bool MtGeomAABB::getClosest(const MtPlane& plane, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, plane, pContact, static_cast<MtContact*>(nullptr), false);
+    return MtCollision::closest(mAABB, plane, pContact, static_cast<MtContact*>(nullptr), false);
 }
 
 // Address: 0x01be4200 - 0x01be420b (11 bytes)
 bool MtGeomAABB::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mAABB, planeXZ, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mAABB, planeXZ, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4210 - 0x01be4227 (23 bytes)
 bool MtGeomAABB::getClosest(const MtTriangle& tri, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(tri, this->mAABB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(tri, mAABB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01be4230 - 0x01be423b (11 bytes)
 bool MtGeomAABB::getClosestXZ(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mAABB, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mAABB, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4240 - 0x01be4257 (23 bytes)
 bool MtGeomAABB::getClosestXZ(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(capsule, this->mAABB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closestXZ(capsule, mAABB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01be4260 - 0x01be4263 (3 bytes)
@@ -291,43 +291,43 @@ bool MtGeomAABB::getClosestXZ(const MtOBB& obb, MtContact* pContact) const {
 // Address: 0x01be4280 - 0x01be4294 (20 bytes)
 bool MtGeomAABB::isFind(const MtSphere& sphere, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, sphere, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, sphere, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be42a0 - 0x01be42b4 (20 bytes)
 bool MtGeomAABB::isFind(const MtCapsule& capsule, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, capsule, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, capsule, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be42c0 - 0x01be42d4 (20 bytes)
 bool MtGeomAABB::isFind(const MtAABB& aabb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, aabb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, aabb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be42e0 - 0x01be42f4 (20 bytes)
 bool MtGeomAABB::isFind(const MtOBB& obb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, obb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, obb, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4300 - 0x01be4314 (20 bytes)
 bool MtGeomAABB::isFind(const MtPlane& plane, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, plane, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, plane, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4320 - 0x01be4334 (20 bytes)
 bool MtGeomAABB::isFind(const MtPlaneXZ& planeXZ, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, planeXZ, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mAABB, planeXZ, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4340 - 0x01be4367 (39 bytes)
 bool MtGeomAABB::isFind(const MtTriangle& tri, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mAABB, tri, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr), 0.0001f, 0.001f);
+    return MtCollision::find(mAABB, tri, v, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr), 0.0001f, 0.001f);
 }
 
 // Address: 0x01be4370 - 0x01be43dd (109 bytes)
@@ -461,6 +461,8 @@ __attribute__((weak)) void MtGeomAABB::copy(const MtGeometry& input) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool MtGeomAABB::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtGeomAABB::MyDTI MtGeomAABB::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomAABB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

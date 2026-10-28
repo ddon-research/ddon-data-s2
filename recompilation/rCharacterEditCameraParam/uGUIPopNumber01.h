@@ -160,3 +160,21 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUIPopNumber01::setMaxNum(s32 n) {
+    this->mMaxNum = n;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIGiveAndTake::updateWaitPopNumber at 0xaa0751-0xaa0757; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIPopNumber01::setNum(s32 n) {
+    this->mNum = n;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPopNumber01::moveEvent at 0xbb8cb3-0xbb8cb9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline s32 uGUIPopNumber01::getNum() {
+    return this->mRefNumBox.mCurrentNum;
+}

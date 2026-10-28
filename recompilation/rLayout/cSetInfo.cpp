@@ -63,7 +63,7 @@ __attribute__((weak)) void cSetInfo::createProperty(MtPropertyList& s) {
 // Address: 0x0055c450 - 0x0055c457 (7 bytes)
 bool cSetInfo::applyInfo(cUnit* pu) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return pu != static_cast<cUnit*>(nullptr);
+    return pu != nullptr;
 }
 
 // Address: 0x01a60b40 - 0x01a60b41 (1 bytes)
@@ -73,6 +73,8 @@ __attribute__((weak)) void cSetInfo::move() {
 
 // No out-of-line body: no code in the ELF
 // void cSetInfo::copy(cSetInfo* p);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSetInfo::MyDTI cSetInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (138 bytes)
 //   in _GLOBAL__sub_I_cSetInfo.cpp at 0x0055c460-0x0055c4a5 (called at cSetInfo.cpp:31)

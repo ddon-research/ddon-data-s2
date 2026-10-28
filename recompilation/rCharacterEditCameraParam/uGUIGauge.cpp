@@ -32,7 +32,7 @@ const MtDTI& uGUIGauge::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGauge::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGauge::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGauge::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIGauge::getAllocator() {
 // Address: 0x00b57310 - 0x00b57350 (64 bytes)
 void* uGUIGauge::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGauge::getAllocator()->memAlloc(sz, align, ::uGUIGauge::DTI.::MtDTI::getID());
+    return uGUIGauge::getAllocator()->memAlloc(sz, align, uGUIGauge::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIGauge::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGauge::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGauge::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGauge::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,19 +75,19 @@ inline void uGUIGauge::operator delete(void* p_addr) {
 // Also emitted as: _ZN9uGUIGaugeD0Ev at 0x00b575e0
 uGUIGauge::~uGUIGauge() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b57640 - 0x00b576a8 (104 bytes)
 bool uGUIGauge::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LIFE_GAUGE00_GUI"), static_cast<u32>(129), static_cast<t64>(1474003742)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LIFE_GAUGE00_GUI"), 129u, 1474003742l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -124,12 +124,12 @@ __attribute__((weak)) void uGUIGauge::setup() {
 // Address: 0x00b58bd0 - 0x00b58c01 (49 bytes)
 void uGUIGauge::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b58c10 - 0x00b58c56 (70 bytes)
@@ -269,47 +269,47 @@ void uGUIGauge::setupAura() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: Aura& aura;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    cGUIInstAnimation* inst_msg_job04 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(206), false));
-    if (inst_msg_job04 == static_cast<cGUIInstAnimation*>(nullptr)) {
+    cGUIInstAnimation* inst_msg_job04 = static_cast<cGUIInstAnimation*>(getInstance(206u, false));
+    if (inst_msg_job04 == nullptr) {
         return;
     }
-    this->mpINST_msg_job04 = inst_msg_job04;
-    this->mAuraBaseX = inst_msg_job04->::cGUIInstNull::mPosition.x;
-    this->mAuraOffsetX = static_cast<float>(this->::uGUIBase::getVariableInitParamS32FromId(static_cast<u32>(13)));
-    cGUIInstAnimation* inst_msg_job04_copy = static_cast<cGUIInstAnimation*>(this->::uGUIBase::ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->::cGUIInstance::getParent()));
-    if (inst_msg_job04_copy != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mAuras.elems[0].mpINST_msg_job04 = inst_msg_job04_copy;
-        this->mAuras.elems[0].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), static_cast<u32>(5)));
-        this->mAuras.elems[0].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), static_cast<u32>(6)));
-        inst_msg_job04_copy->::cGUIInstance::setVisible(false);
-        inst_msg_job04_copy->::cGUIInstance::setExecute(false);
-        this->mAuras.elems[0].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
+    mpINST_msg_job04 = inst_msg_job04;
+    mAuraBaseX = inst_msg_job04->::cGUIInstNull::mPosition.x;
+    mAuraOffsetX = static_cast<float>(getVariableInitParamS32FromId(13u));
+    cGUIInstAnimation* inst_msg_job04_copy = static_cast<cGUIInstAnimation*>(ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent()));
+    if (inst_msg_job04_copy != nullptr) {
+        mAuras.elems[0].mpINST_msg_job04 = inst_msg_job04_copy;
+        mAuras.elems[0].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), 5u));
+        mAuras.elems[0].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(inst_msg_job04_copy), 6u));
+        inst_msg_job04_copy->cGUIInstance::setVisible(false);
+        inst_msg_job04_copy->cGUIInstance::setExecute(false);
+        mAuras.elems[0].mAuraType = AuraTypeInvalid;
         // inferred: a temporary for the result of the call at 0xb586b2, used 6 times; no DWARF local holds it
-        cGUIInstance* t0 = this->::uGUIBase::ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->::cGUIInstance::getParent());
-        if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-            this->mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
-            this->mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(5)));
-            this->mAuras.elems[1].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(6)));
-            t0->::cGUIInstance::setVisible(false);
-            t0->::cGUIInstance::setExecute(false);
+        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent());
+        if (t0 != nullptr) {
+            mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
+            mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 5u));
+            mAuras.elems[1].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(getObjectFromId(t0, 6u));
+            t0->setVisible(false);
+            t0->setExecute(false);
         }
-        this->mAuras.elems[1].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
-        inst_msg_job04->::cGUIInstance::setVisible(false);
-        inst_msg_job04->::cGUIInstance::setExecute(false);
+        mAuras.elems[1].mAuraType = AuraTypeInvalid;
+        inst_msg_job04->cGUIInstance::setVisible(false);
+        inst_msg_job04->cGUIInstance::setExecute(false);
     } else {
-        this->mAuras.elems[0].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
+        mAuras.elems[0].mAuraType = AuraTypeInvalid;
         // inferred: a temporary for the result of the call at 0xb586b2, used 6 times; no DWARF local holds it
-        cGUIInstance* t0 = this->::uGUIBase::ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->::cGUIInstance::getParent());
-        if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-            this->mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
-            this->mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(5)));
-            this->mAuras.elems[1].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(6)));
-            t0->::cGUIInstance::setVisible(false);
-            t0->::cGUIInstance::setExecute(false);
+        cGUIInstance* t0 = ManageDuplicate(static_cast<cGUIInstance*>(inst_msg_job04), inst_msg_job04->cGUIInstance::getParent());
+        if (t0 != nullptr) {
+            mAuras.elems[1].mpINST_msg_job04 = static_cast<cGUIInstAnimation*>(t0);
+            mAuras.elems[1].mpOBJ_msg_job04_m_txt = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 5u));
+            mAuras.elems[1].mpOBJ_msg_job04_icon = static_cast<cGUIObjTexture*>(getObjectFromId(t0, 6u));
+            t0->setVisible(false);
+            t0->setExecute(false);
         }
-        this->mAuras.elems[1].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
-        inst_msg_job04->::cGUIInstance::setVisible(false);
-        inst_msg_job04->::cGUIInstance::setExecute(false);
+        mAuras.elems[1].mAuraType = AuraTypeInvalid;
+        inst_msg_job04->cGUIInstance::setVisible(false);
+        inst_msg_job04->cGUIInstance::setExecute(false);
     }
 }
 
@@ -318,32 +318,32 @@ void uGUIGauge::initAura() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: Aura& aura;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAuras.elems[0].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
-    if (this->mAuras.elems[0].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mAuras.elems[0].mpINST_msg_job04->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
-        if (this->mAuras.elems[0].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mAuras.elems[0].mpINST_msg_job04->::cGUIInstance::setVisible(false);
-            if (this->mAuras.elems[0].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mAuras.elems[0].mpINST_msg_job04->::cGUIInstance::setExecute(false);
+    mAuras.elems[0].mAuraType = AuraTypeInvalid;
+    if (mAuras.elems[0].mpINST_msg_job04 != nullptr) {
+        mAuras.elems[0].mpINST_msg_job04->setSequenceId(1u);
+        if (mAuras.elems[0].mpINST_msg_job04 != nullptr) {
+            mAuras.elems[0].mpINST_msg_job04->setVisible(false);
+            if (mAuras.elems[0].mpINST_msg_job04 != nullptr) {
+                mAuras.elems[0].mpINST_msg_job04->setExecute(false);
             }
         }
     }
-    this->mAuras.elems[1].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
-    if (this->mAuras.elems[1].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mAuras.elems[1].mpINST_msg_job04->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
-        if (this->mAuras.elems[1].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mAuras.elems[1].mpINST_msg_job04->::cGUIInstance::setVisible(false);
-            if (this->mAuras.elems[1].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mAuras.elems[1].mpINST_msg_job04->::cGUIInstance::setExecute(false);
+    mAuras.elems[1].mAuraType = AuraTypeInvalid;
+    if (mAuras.elems[1].mpINST_msg_job04 != nullptr) {
+        mAuras.elems[1].mpINST_msg_job04->setSequenceId(1u);
+        if (mAuras.elems[1].mpINST_msg_job04 != nullptr) {
+            mAuras.elems[1].mpINST_msg_job04->setVisible(false);
+            if (mAuras.elems[1].mpINST_msg_job04 != nullptr) {
+                mAuras.elems[1].mpINST_msg_job04->setExecute(false);
             }
         }
     }
-    this->mActiveAuras.elems[5] = static_cast<uGUIGauge::Aura*>(nullptr);
-    this->mActiveAuras.elems[4] = static_cast<uGUIGauge::Aura*>(nullptr);
-    this->mActiveAuras.elems[3] = static_cast<uGUIGauge::Aura*>(nullptr);
-    this->mActiveAuras.elems[2] = static_cast<uGUIGauge::Aura*>(nullptr);
-    this->mActiveAuras.elems[1] = static_cast<uGUIGauge::Aura*>(nullptr);
-    this->mActiveAuras.elems[0] = static_cast<uGUIGauge::Aura*>(nullptr);
+    mActiveAuras.elems[5] = nullptr;
+    mActiveAuras.elems[4] = nullptr;
+    mActiveAuras.elems[3] = nullptr;
+    mActiveAuras.elems[2] = nullptr;
+    mActiveAuras.elems[1] = nullptr;
+    mActiveAuras.elems[0] = nullptr;
 }
 
 // Address: 0x00b59c60 - 0x00b59fd1 (881 bytes)
@@ -604,6 +604,10 @@ __attribute__((weak)) void uGUIGauge::updateJob(uGUIGauge::GaugePtr& gaugePtr, u
 //   in uGUIGauge::addGauge at 0x00b5bab5-0x00b5bb08 (called at uGUIGauge.cpp:1218)
 // void uGUIGauge::setMemberGaugePosition(cGUIInstNull* instGauge, f32 moveFrame);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGauge::MyDTI uGUIGauge::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uGUIGauge::AuraParam uGUIGauge::AuraParams[];
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGauge.cpp at 0x00b5c84f-0x00b5c88c (called at uGUIGauge.cpp:300)
 //   in _GLOBAL__sub_I_uGUIGauge.cpp at 0x00b5c84f-0x00b5c88c (called at uGUIGauge.h:59)
@@ -650,7 +654,7 @@ const MtDTI& uGUIGauge::cGaugeInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9uGUIGauge10cGaugeInfoD0Ev at 0x01afb520-0x01afb54a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIGauge::cGaugeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGauge::cGaugeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGauge::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -679,6 +683,8 @@ __attribute__((weak)) void uGUIGauge::cGaugeInfo::createProperty(MtPropertyList&
 //   in uGUIGauge::updateInit at 0x00b58a2f-0x00b58b61 (called at uGUIGauge.cpp:2721)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void uGUIGauge::cGaugeInfo::initGaugeInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGauge::cGaugeInfo::MyDTI uGUIGauge::cGaugeInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGauge.cpp at 0x00b5c88c-0x00b5c8c9 (called at uGUIGauge.cpp:2775)
@@ -718,7 +724,7 @@ __attribute__((weak)) MtObject* uGUIGauge::cGaugeInfo::MyDTI::newInstance() cons
 // Address: 0x00b5c5d0 - 0x00b5c5d6 (6 bytes)
 u32 uGUIGauge::IOcdIcon::getOcdIconParamNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x00b5c5e0 - 0x00b5c5f7 (23 bytes)
@@ -732,7 +738,7 @@ __attribute__((weak)) nGUIExt::OCD_ICON_CATEGORY uGUIGauge::IOcdIcon::getOcdIcon
 // Address: 0x00b5c600 - 0x00b5c610 (16 bytes)
 nGUIExt::OcdIconParam& uGUIGauge::IOcdIcon::refOcdIconParam(u32 paramIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGaugeInfo.mStatusInfos[paramIndex].mParam;
+    return mGaugeInfo.mStatusInfos[paramIndex].mParam;
 }
 
 // Address: 0x00b5c610 - 0x00b5c61f (15 bytes)

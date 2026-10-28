@@ -24,7 +24,7 @@ const MtDTI& cArcLoaderBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cArcLoaderBase::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cArcLoaderBase::DTI);
+    return MtMemoryAllocator::getAllocator(cArcLoaderBase::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cArcLoaderBase::getAllocator() {
 // Address: 0x00024040 - 0x00024080 (64 bytes)
 void* cArcLoaderBase::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cArcLoaderBase::getAllocator()->memAlloc(sz, align, ::cArcLoaderBase::DTI.::MtDTI::getID());
+    return cArcLoaderBase::getAllocator()->memAlloc(sz, align, cArcLoaderBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cArcLoaderBase::operator new(size_t sz, u32 align) {
 // Address: 0x000240b0 - 0x000240da (42 bytes)
 __attribute__((weak)) void cArcLoaderBase::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cArcLoaderBase::getAllocator()->memFree(p_addr);
+    cArcLoaderBase::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,17 +63,17 @@ __attribute__((weak)) void cArcLoaderBase::operator delete(void* p_addr) {
 // Address: 0x00024110 - 0x00024155 (69 bytes)
 cArcLoaderBase::cArcLoaderBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mppArc = static_cast<rArchive* *>(nullptr);
-    this->mMaxNum = static_cast<u8>(0);
-    this->mPickedFlag = static_cast<u8>(0);
-    this->mNum = static_cast<u8>(0);
-    this->mReqNum = static_cast<u8>(0);
-    this->mpTag = static_cast<ARC_TAGID*>(nullptr);
-    this->mPri = static_cast<s16>(1);
-    this->mState = static_cast<u8>(0);
-    this->mRetFlag = static_cast<u8>(0);
-    this->mHandle = static_cast<s16>(-1);
-    this->mTicketEnable = static_cast<u8>(1);
+    mppArc = nullptr;
+    mMaxNum = 0;
+    mPickedFlag = 0;
+    mNum = 0;
+    mReqNum = 0;
+    mpTag = nullptr;
+    mPri = 1;
+    mState = 0;
+    mRetFlag = 0;
+    mHandle = -1;
+    mTicketEnable = 1;
 }
 
 // Address: 0x00024160 - 0x000241db (123 bytes)
@@ -120,30 +120,30 @@ __attribute__((weak)) void cArcLoaderBase::releaseArc() {
 // Address: 0x00024600 - 0x0002461d (29 bytes)
 bool cArcLoaderBase::isArcLoad() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHandle != static_cast<s16>(-1)) {
+    if (mHandle != -1) {
         return true;
     } else {
-        return (this->mState & static_cast<u8>(254)) == static_cast<u8>(2);
+        return (mState & 254) == 2;
     }
 }
 
 // Address: 0x000247e0 - 0x000247f5 (21 bytes)
 rArchive* cArcLoaderBase::getArcPtr(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNum) {
-        return this->mppArc[index];
+    if (index < mNum) {
+        return mppArc[index];
     } else {
-        return static_cast<rArchive*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x00024800 - 0x00024814 (20 bytes)
 ARC_TAGID cArcLoaderBase::getArcTag(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNum) {
-        return this->mpTag[index];
+    if (index < mNum) {
+        return mpTag[index];
     } else {
-        return static_cast<ARC_TAGID>(0);
+        return 0;
     }
 }
 
@@ -167,7 +167,7 @@ __attribute__((weak)) void cArcLoaderBase::addTag(ARC_TAGID t) {
 // Address: 0x00024620 - 0x0002462b (11 bytes)
 bool cArcLoaderBase::isLoadFinish() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mState == static_cast<u8>(3);
+    return mState == 3;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (25 bytes)
@@ -215,60 +215,60 @@ __attribute__((weak)) void cArcLoaderBase::updateLoadFilishRes(ARC_TAGID tag, rA
 // Address: 0x000247b0 - 0x000247c3 (19 bytes)
 void cArcLoaderBase::setArcPtrIndex(rArchive* pArc, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNum) {
-        this->mppArc[index] = pArc;
+    if (index < mNum) {
+        mppArc[index] = pArc;
     }
 }
 
 // Address: 0x000248a0 - 0x000248a5 (5 bytes)
 u8 cArcLoaderBase::getStateArcLoader() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mState;
+    return mState;
 }
 
 // Address: 0x000248b0 - 0x000248b5 (5 bytes)
 void cArcLoaderBase::setStateArcLoader(u8 state) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = state;
+    mState = state;
 }
 
 // Address: 0x000248c0 - 0x000248cd (13 bytes)
 void cArcLoaderBase::setStateArcLoaderClear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = static_cast<u8>(0);
-    this->mReqNum = static_cast<u8>(0);
-    this->mRetFlag = static_cast<u8>(0);
+    mState = 0;
+    mReqNum = 0;
+    mRetFlag = 0;
 }
 
 // Address: 0x000248d0 - 0x000248e1 (17 bytes)
 void cArcLoaderBase::setStateArcLoaderWaitLoad(s16 handle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHandle = handle;
-    this->mState = static_cast<u8>(0);
-    this->mReqNum = static_cast<u8>(0);
-    this->mRetFlag = static_cast<u8>(0);
+    mHandle = handle;
+    mState = 0;
+    mReqNum = 0;
+    mRetFlag = 0;
 }
 
 // Address: 0x000248f0 - 0x000248f5 (5 bytes)
 void cArcLoaderBase::onPickedFlag() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPickedFlag = static_cast<u8>(1);
+    mPickedFlag = 1;
 }
 
 // Address: 0x00024900 - 0x00024905 (5 bytes)
 void cArcLoaderBase::offPickedFlag() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPickedFlag = static_cast<u8>(0);
+    mPickedFlag = 0;
 }
 
 // Address: 0x00024910 - 0x00024923 (19 bytes)
 void cArcLoaderBase::setRetFlagArcLoader(bool isCancel, bool isFailed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (isCancel != false) {
-        this->mRetFlag = this->mRetFlag | static_cast<u8>(1);
+    if (isCancel) {
+        mRetFlag = mRetFlag | 1;
     } else {
-        if (isFailed != false) {
-            this->mRetFlag = this->mRetFlag | static_cast<u8>(2);
+        if (isFailed) {
+            mRetFlag = mRetFlag | 2;
         }
     }
 }
@@ -289,6 +289,8 @@ void cArcLoaderBase::setRetFlagArcLoader(bool isCancel, bool isFailed) {
 // No out-of-line body: no code in the ELF
 // u32 cArcLoaderBase::getState() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cArcLoaderBase::MyDTI cArcLoaderBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cArcLoader.cpp at 0x00024bb0-0x00024bf2 (called at cArcLoader.cpp:25)
 //   in _GLOBAL__sub_I_cArcLoader.cpp at 0x00024bb0-0x00024bf2 (called at cArcLoader.h:39)
@@ -297,7 +299,7 @@ void cArcLoaderBase::setRetFlagArcLoader(bool isCancel, bool isFailed) {
 // Address: 0x00023fc0 - 0x00024036 (118 bytes)
 MtObject* cArcLoaderBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cArcLoaderBase;
+    return new (16u) cArcLoaderBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,10 +314,10 @@ __attribute__((weak)) void cAsyncArc::releaseArc() {
 // Address: 0x000249b0 - 0x000249cb (27 bytes)
 void cAsyncArc::cancelArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sArchiveManager::mpInstance) == static_cast<sArchiveManager*>(nullptr)) {
+    if ((sArchiveManager::mpInstance) == nullptr) {
         return;
     }
-    (::sArchiveManager::mpInstance)->::sArchiveManager::eraseArcLoader(static_cast<cArcLoaderBase*>(this));
+    (sArchiveManager::mpInstance)->sArchiveManager::eraseArcLoader(static_cast<cArcLoaderBase*>(this));
 }
 
 // No out-of-line body: no code in the ELF

@@ -37,7 +37,7 @@ using u8 = unsigned char;
 
 class uControlNpc : public uControl
 {
-    // inferred: cFSMUnit::stateUpdateSetEyeClose names uControlNpc::mIsEyeClose
+    // inferred: cFSMUnit::stateUpdateSetDispWeapon names uControlNpc::mIsDispWepMain
     friend class cFSMUnit;
     // inferred: cpHpDamageCtrl::callbackDamageAfter_calc names uControlNpc::mJobLv
     friend class cpHpDamageCtrl;

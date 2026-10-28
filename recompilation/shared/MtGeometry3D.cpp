@@ -110,13 +110,13 @@ __attribute__((weak)) MtVector3 MtGeomConvex::getInternalPos() const {
 // Address: 0x01b2a2d0 - 0x01b2a2d6 (6 bytes)
 void MtGeomConvex::setMargin(f32 margin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMargin = margin;
+    mMargin = margin;
 }
 
 // Address: 0x01b2a2e0 - 0x01b2a2e6 (6 bytes)
 f32 MtGeomConvex::getMargin() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMargin;
+    return mMargin;
 }
 
 // Address: 0x01b2c1d0 - 0x01b2c1d1 (1 bytes)
@@ -131,6 +131,11 @@ __attribute__((weak)) void MtGeomConvex::addPos(const MtVector3& pos) {
 
 // No out-of-line body: no code in the ELF
 // void MtGeomConvex::assertNonSupportConvex(u32 type);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtGeomConvex::MyDTI MtGeomConvex::DTI;
+
+// From the ELF: its bytes in .data (D-S1).
+f32 MtGeomConvex::DISTANCE_DEFAULT_MARGIN = 0x1.47ae14p-5f;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomConvex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -211,9 +216,9 @@ __attribute__((weak)) void MtGeometry::getBoundingAABB(MtAABB& aabb) const {
 // Address: 0x01b2bf10 - 0x01b2bf3b (43 bytes)
 void MtGeometry::getBoundingSphere(MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    sphere.pos.x = ::MtVector3::Zero.x;
-    sphere.pos.y = ::MtVector3::Zero.y;
-    sphere.pos.z = ::MtVector3::Zero.z;
+    sphere.pos.x = MtVector3::Zero.x;
+    sphere.pos.y = MtVector3::Zero.y;
+    sphere.pos.z = MtVector3::Zero.z;
     sphere.r = 1.0f;
 }
 
@@ -608,6 +613,8 @@ __attribute__((weak)) bool MtGeometry::isContact(const MtGeometry& g, const MtVe
 
 // No out-of-line body: no code in the ELF
 // size_t MtGeometry::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtGeometry::MyDTI MtGeometry::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeometry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

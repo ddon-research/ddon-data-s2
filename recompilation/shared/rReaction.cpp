@@ -48,7 +48,7 @@ const MtDTI& cReaction::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cReaction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cReaction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -72,6 +72,8 @@ inline void cReaction::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cReaction::~cReaction();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cReaction::MyDTI cReaction::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b9780-0x006b97b9 (called at rReaction.cpp:45)
@@ -107,7 +109,7 @@ const MtDTI& cReaction::cCondition::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cReaction::cCondition::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cReaction::cCondition::DTI)->memAlloc(sz, align, ::cReaction::cCondition::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cReaction::cCondition::DTI)->memAlloc(sz, align, cReaction::cCondition::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ inline void* cReaction::cCondition::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cReaction::cCondition::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cReaction::cCondition::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cReaction::cCondition::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,6 +155,8 @@ inline void cReaction::cCondition::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cReaction::cCondition::setCondition(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cReaction::cCondition::MyDTI cReaction::cCondition::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b96ce-0x006b970e (called at rReaction.cpp:42)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b96ce-0x006b970e (called at rReaction.h:45)
@@ -161,7 +165,7 @@ inline void cReaction::cCondition::operator delete(void* p_addr) {
 // Address: 0x006b8d80 - 0x006b8de2 (98 bytes)
 MtObject* cReaction::cCondition::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cReaction::cCondition;
+    return new (16u) cReaction::cCondition;
 }
 
 // No out-of-line body: no code in the ELF
@@ -187,7 +191,7 @@ const MtDTI& cReaction::cTrigger::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cReaction::cTrigger::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cReaction::cTrigger::DTI)->memAlloc(sz, align, ::cReaction::cTrigger::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cReaction::cTrigger::DTI)->memAlloc(sz, align, cReaction::cTrigger::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,7 +205,7 @@ inline void* cReaction::cTrigger::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cReaction::cTrigger::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cReaction::cTrigger::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cReaction::cTrigger::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -227,6 +231,8 @@ inline void cReaction::cTrigger::operator delete(void* p_addr) {
 //   in rReaction::loadData at 0x006b9390-0x006b93d5 (called at rReaction.cpp:431)
 // bool cReaction::cTrigger::loadData(MtDataReader& r, cReaction::cTrigger* pData);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cReaction::cTrigger::MyDTI cReaction::cTrigger::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b970e-0x006b9747 (called at rReaction.cpp:43)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b970e-0x006b9747 (called at rReaction.h:83)
@@ -235,7 +241,7 @@ inline void cReaction::cTrigger::operator delete(void* p_addr) {
 // Address: 0x006b8e60 - 0x006b8eb0 (80 bytes)
 MtObject* cReaction::cTrigger::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cReaction::cTrigger;
+    return new (16u) cReaction::cTrigger;
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,7 +267,7 @@ const MtDTI& cReaction::cAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cReaction::cAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cReaction::cAction::DTI)->memAlloc(sz, align, ::cReaction::cAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cReaction::cAction::DTI)->memAlloc(sz, align, cReaction::cAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -275,7 +281,7 @@ inline void* cReaction::cAction::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cReaction::cAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cReaction::cAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cReaction::cAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -301,6 +307,8 @@ inline void cReaction::cAction::operator delete(void* p_addr) {
 //   in rReaction::loadData at 0x006b949f-0x006b959f (called at rReaction.cpp:441)
 // bool cReaction::cAction::loadData(MtDataReader& r, cReaction::cAction* pData);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cReaction::cAction::MyDTI cReaction::cAction::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b9747-0x006b9780 (called at rReaction.cpp:44)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b9747-0x006b9780 (called at rReaction.h:114)
@@ -309,7 +317,7 @@ inline void cReaction::cAction::operator delete(void* p_addr) {
 // Address: 0x006b8f20 - 0x006b8f76 (86 bytes)
 MtObject* cReaction::cAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cReaction::cAction;
+    return new (16u) cReaction::cAction;
 }
 
 // No out-of-line body: no code in the ELF
@@ -334,7 +342,7 @@ const MtDTI& rReaction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rReaction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rReaction::DTI)->memAlloc(sz, align, ::rReaction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rReaction::DTI)->memAlloc(sz, align, rReaction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -349,7 +357,7 @@ inline void* rReaction::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rReactionD0Ev at 0x01aa3c64-0x01aa3c83, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rReaction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rReaction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rReaction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -380,8 +388,10 @@ MT_CTSTR rReaction::getExt() const {
 // Address: 0x01aa3db0 - 0x01aa3db6 (6 bytes)
 u32 rReaction::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(13);
+    return 13;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rReaction::MyDTI rReaction::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rReaction.cpp at 0x006b97b9-0x006b97f6 (called at rReaction.cpp:46)
@@ -391,7 +401,7 @@ u32 rReaction::getDataVersion() const {
 // Address: 0x006b9270 - 0x006b92d4 (100 bytes)
 MtObject* rReaction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rReaction;
+    return new (16u) rReaction;
 }
 
 // Instance at 0x01aa3d60 - 0x01aa3d75 (21 bytes) of the generic rTbl2<T>::getData

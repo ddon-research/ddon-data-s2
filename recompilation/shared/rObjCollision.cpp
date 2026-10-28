@@ -37,7 +37,7 @@ const MtDTI& rObjCollision::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rObjCollision::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rObjCollision::DTI)->memAlloc(sz, align, ::rObjCollision::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rObjCollision::DTI)->memAlloc(sz, align, rObjCollision::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rObjCollision::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rObjCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rObjCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rObjCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,29 +66,29 @@ inline void rObjCollision::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rObjCollision::rObjCollision() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpAttackParam = static_cast<rAttackParam*>(nullptr);
-    this->mpCollNode = static_cast<rCollNode*>(nullptr);
-    this->mpCollIndex = static_cast<rCollIndex*>(nullptr);
+    setAttribute(16u);
+    mpAttackParam = nullptr;
+    mpCollNode = nullptr;
+    mpCollIndex = nullptr;
 }
 
 // Address: 0x006b0ba0 - 0x006b0c0d (109 bytes)
 // Also emitted as: _ZN13rObjCollisionD0Ev at 0x006b0c10
 rObjCollision::~rObjCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCollIndex != static_cast<rCollIndex*>(nullptr)) {
-        this->mpCollIndex->::cResource::release();
-        this->mpCollIndex = static_cast<rCollIndex*>(nullptr);
+    if (mpCollIndex != nullptr) {
+        mpCollIndex->release();
+        mpCollIndex = nullptr;
     }
-    if (this->mpCollNode != static_cast<rCollNode*>(nullptr)) {
-        this->mpCollNode->::cResource::release();
-        this->mpCollNode = static_cast<rCollNode*>(nullptr);
+    if (mpCollNode != nullptr) {
+        mpCollNode->release();
+        mpCollNode = nullptr;
     }
-    if (this->mpAttackParam == static_cast<rAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    this->mpAttackParam->::cResource::release();
-    this->mpAttackParam = static_cast<rAttackParam*>(nullptr);
+    mpAttackParam->release();
+    mpAttackParam = nullptr;
 }
 
 // Address: 0x01aa0530 - 0x01aa0538 (8 bytes)
@@ -116,12 +116,14 @@ __attribute__((weak)) bool rObjCollision::load(MtStream& in) {
 // Address: 0x006b1230 - 0x006b12bd (141 bytes)
 bool rObjCollision::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5001027));
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x4C4F43u);
     (&w)->writeU16(static_cast<u16>(110));
     (&w)->writeU16(static_cast<u16>(0));
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rObjCollision::MyDTI rObjCollision::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rObjCollision.cpp at 0x006b12c0-0x006b1302 (called at rObjCollision.cpp:39)
@@ -131,6 +133,6 @@ bool rObjCollision::save(MtStream& out) {
 // Address: 0x006b0ab0 - 0x006b0b20 (112 bytes)
 MtObject* rObjCollision::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rObjCollision;
+    return new (16u) rObjCollision;
 }
 

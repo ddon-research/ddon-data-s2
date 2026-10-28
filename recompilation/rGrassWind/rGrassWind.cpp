@@ -72,7 +72,7 @@ __attribute__((weak)) void rGrassWind::createProperty(MtPropertyList& s) {
 // Address: 0x011d15d0 - 0x011d15d5 (5 bytes)
 MtUI* rGrassWind::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x011d15e0 - 0x011d185b (635 bytes)
@@ -120,6 +120,8 @@ MT_CTSTR rGrassWind::getExt() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 rGrassWind::getPriority() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrassWind::MyDTI rGrassWind::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrassWind::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -191,7 +193,7 @@ __attribute__((weak)) void rGrassWind::cParamSet::createProperty(MtPropertyList&
 // Address: 0x011d1f60 - 0x011d1f65 (5 bytes)
 MtUI* rGrassWind::cParamSet::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x011d1f70 - 0x011d205e (238 bytes)
@@ -239,6 +241,8 @@ __attribute__((weak)) f32 rGrassWind::cParamSet::getValue(f32 frame) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 rGrassWind::cParamSet::seekFrame(u32 begin_param_no, u32 frame_no);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrassWind::cParamSet::MyDTI rGrassWind::cParamSet::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrassWind::cParamSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

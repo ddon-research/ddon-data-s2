@@ -50,7 +50,7 @@ const MtDTI& rCollision::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rCollisionD0Ev at 0x012073e4-0x01207405, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,19 +69,19 @@ inline void rCollision::operator delete(void* p_addr) {
 // Also emitted as: _ZN10rCollisionD0Ev at 0x012073c0
 rCollision::~rCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rCollision::clear();
+    this->rCollision::clear();
 }
 
 // Address: 0x01207410 - 0x012074ac (156 bytes)
 bool rCollision::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x1207443 read, used once; no DWARF local holds it
-    u32 t0 = (::sResource::mpInstance)->mRCollisionDataReaderBufferSizeKB;
+    u32 t0 = (sResource::mpInstance)->mRCollisionDataReaderBufferSizeKB;
     // inferred: a temporary for the result of the call at 0x1207452, used once; no DWARF local holds it
     u32 t1 = in.getLength();
-    MtDataReader r(in, (t1 < (t0 * static_cast<u32>(1024))) ? t1 : (t0 * static_cast<u32>(1024)));
+    MtDataReader r(in, (t1 < (t0 * 1024u)) ? t1 : (t0 * 1024u));
     // inferred: a temporary for the result of the call at 0x1207479, used once; no DWARF local holds it
-    bool t2 = this->::rCollision::loadCore(r, false);
+    bool t2 = loadCore(r, false);
     return t2;
 }
 
@@ -449,6 +449,8 @@ __attribute__((weak)) bool rCollision::bulkAllocateMemoryAll(const rCollision::H
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rCollision::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCollision::MyDTI rCollision::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

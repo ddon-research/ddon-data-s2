@@ -5,6 +5,8 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
@@ -35,7 +37,7 @@ const MtDTI& uGUICaplinkProfileEdit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkProfileEdit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +46,7 @@ inline MtAllocator* uGUICaplinkProfileEdit::getAllocator() {
 // Address: 0x009cf2b0 - 0x009cf2f0 (64 bytes)
 void* uGUICaplinkProfileEdit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkProfileEdit::getAllocator()->memAlloc(sz, align, ::uGUICaplinkProfileEdit::DTI.::MtDTI::getID());
+    return uGUICaplinkProfileEdit::getAllocator()->memAlloc(sz, align, uGUICaplinkProfileEdit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +61,7 @@ void* uGUICaplinkProfileEdit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkProfileEdit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,20 +86,20 @@ uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit() {
 // Address: 0x009cffa0 - 0x009cffa5 (5 bytes)
 void uGUICaplinkProfileEdit::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009cffb0 - 0x009d0035 (133 bytes)
 bool uGUICaplinkProfileEdit::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_SETTING_GUI"), static_cast<u32>(129), static_cast<t64>(1430136508)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_SETTING_GUI"), 129u, 1430136508l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -120,38 +122,30 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::kill() {
 // Address: 0x009d01d0 - 0x009d01d5 (5 bytes)
 void uGUICaplinkProfileEdit::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009d01e0 - 0x009d0271 (145 bytes)
 void uGUICaplinkProfileEdit::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSysMsg == static_cast<uGUISystemMsg*>(nullptr)) {
-    } else {
-        if (this->mpSysMsg->::cUnit::isEnable()) {
-        } else {
-            this->mpSysMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpSysMsg != nullptr) {
+        if (!mpSysMsg->isEnable()) {
+            mpSysMsg = nullptr;
         }
     }
-    if (this->mpImgSlct == static_cast<uGUICaplinkImageSelect*>(nullptr)) {
-    } else {
-        if (this->mpImgSlct->::cUnit::isEnable()) {
-        } else {
-            this->mpImgSlct = static_cast<uGUICaplinkImageSelect*>(nullptr);
+    if (mpImgSlct != nullptr) {
+        if (!mpImgSlct->isEnable()) {
+            mpImgSlct = nullptr;
         }
     }
-    if (this->mpTagEdit == static_cast<uGUICaplinkTag*>(nullptr)) {
-    } else {
-        if (this->mpTagEdit->::cUnit::isEnable()) {
-        } else {
-            this->mpTagEdit = static_cast<uGUICaplinkTag*>(nullptr);
+    if (mpTagEdit != nullptr) {
+        if (!mpTagEdit->isEnable()) {
+            mpTagEdit = nullptr;
         }
     }
-    if (this->mpMailNotice == static_cast<uGUICaplinkMailNotice*>(nullptr)) {
-    } else {
-        if (this->mpMailNotice->::cUnit::isEnable()) {
-        } else {
-            this->mpMailNotice = static_cast<uGUICaplinkMailNotice*>(nullptr);
+    if (mpMailNotice != nullptr) {
+        if (!mpMailNotice->isEnable()) {
+            mpMailNotice = nullptr;
         }
     }
 }
@@ -159,7 +153,7 @@ void uGUICaplinkProfileEdit::updatePtr() {
 // Address: 0x009d0280 - 0x009d0285 (5 bytes)
 void uGUICaplinkProfileEdit::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (57 bytes)
@@ -220,12 +214,42 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::setupContentSub(MT_CTSTR pNam
 }
 
 // Address: 0x009d1d10 - 0x009d1dac (156 bytes)
-__attribute__((weak)) void uGUICaplinkProfileEdit::updateScrollListDisp(uGUIBase::cScrollListItemBase* pListItem, uGUIBase::cScrollListInfoBase* pListInfo, u32 index) {
-    // local: cListInfo* pInfo;
-    // local: cPulldownContent* pItem;
-    // local: cContentItemBase* pItem;
-    DDON_STUB("uGUICaplinkProfileEdit::updateScrollListDisp")
-    /* stub */
+void uGUICaplinkProfileEdit::updateScrollListDisp(uGUIBase::cScrollListItemBase* pListItem, uGUIBase::cScrollListInfoBase* pListInfo, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pListInfo == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pInfo, its location optimized out, declared in the lexical block that holds the access
+    cListInfo* pInfo = static_cast<cListInfo*>(pListInfo);
+    if (pInfo->mKind != 2) {
+        if (pInfo->mKind == 1) {
+            if (pListItem != nullptr) {
+                // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+                cPulldownContent* pItem = static_cast<cPulldownContent*>(pListItem);
+                setObjectMessage(static_cast<cGUIObject*>(pItem->::uGUICaplinkProfileEdit::cContentItemBase::mpObjMsg), pInfo->mpName, 0u, false);
+                if (pListItem->mpInstBase != nullptr) {
+                    pListItem->mpInstBase->setPositionY(pListInfo->mBottomPos - static_cast<float>(mDetail.mVarList));
+                }
+            }
+        } else {
+            if (pInfo->mKind == 0) {
+                if (pListItem != nullptr) {
+                    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+                    cContentItemBase* pItem = static_cast<cContentItemBase*>(pListItem);
+                    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsg), pInfo->mpName, 0u, false);
+                }
+            }
+        }
+    } else {
+        if (pListItem != nullptr) {
+            // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+            cPulldownContent* pItem = static_cast<cPulldownContent*>(pListItem);
+            setObjectMessage(static_cast<cGUIObject*>(pItem->::uGUICaplinkProfileEdit::cContentItemBase::mpObjMsg), pInfo->mpName, 0u, false);
+            if (pListItem->mpInstBase != nullptr) {
+                pListItem->mpInstBase->setPositionY(pListInfo->mBottomPos - static_cast<float>(mDetail.mVarList));
+            }
+        }
+    }
 }
 
 // Address: 0x01ae4040 - 0x01ae4041 (1 bytes)
@@ -272,7 +296,7 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::updateMove() {
 // Address: 0x009d3940 - 0x009d3949 (9 bytes)
 void uGUICaplinkProfileEdit::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)
@@ -361,320 +385,320 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::adjustCursor() {
 // Address: 0x009d4150 - 0x009d4268 (280 bytes)
 void uGUICaplinkProfileEdit::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mFlowId - static_cast<u32>(2)) {
-        case static_cast<u32>(0):
+    switch (mFlowId - 2u) {
+        case 0:
         {
-            this->mTop.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-            if (this->mpCancelCtrl == static_cast<cControl*>(nullptr)) {
-                if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
-                    if (this->mpProfileCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+            mTop.mClose.execute();
+            if (mpCancelCtrl == nullptr) {
+                if (mpDecideCtrl == nullptr) {
+                    if (mpProfileCtrl == nullptr) {
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     } else {
-                        this->mpProfileCtrl->execute();
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                        mpProfileCtrl->execute();
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     }
                 } else {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpProfileCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                    mpDecideCtrl->execute();
+                    if (mpProfileCtrl == nullptr) {
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     } else {
-                        this->mpProfileCtrl->execute();
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                        mpProfileCtrl->execute();
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     }
                 }
             } else {
-                this->mpCancelCtrl->execute();
-                if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
-                    if (this->mpProfileCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                mpCancelCtrl->execute();
+                if (mpDecideCtrl == nullptr) {
+                    if (mpProfileCtrl == nullptr) {
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     } else {
-                        this->mpProfileCtrl->execute();
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                        mpProfileCtrl->execute();
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     }
                 } else {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpProfileCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                    mpDecideCtrl->execute();
+                    if (mpProfileCtrl == nullptr) {
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
                     } else {
-                        this->mpProfileCtrl->execute();
-                        if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                        mpProfileCtrl->execute();
+                        if (mpVCtrl == nullptr) {
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         } else {
-                            this->mpVCtrl->execute();
-                            if (this->mpHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                            mpVCtrl->execute();
+                            if (mpHCtrl == nullptr) {
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             } else {
-                                this->mpHCtrl->execute();
-                                if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                mpHCtrl->execute();
+                                if (mpBtnCtrl == nullptr) {
+                                    mDetail.mScrollList.executeCtrl();
                                 } else {
-                                    this->mpBtnCtrl->execute();
-                                    this->mDetail.mScrollList.::uGUIBase::cScrollList::executeCtrl();
+                                    mpBtnCtrl->execute();
+                                    mDetail.mScrollList.executeCtrl();
                                 }
                             }
                         }
@@ -683,20 +707,20 @@ void uGUICaplinkProfileEdit::moveInput() {
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mProfile.mTxtCapname.::uGUIBase::cReferenceUITextBox::execute();
+            mProfile.mTxtCapname.execute();
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mProfile.mTxtComment.::uGUIBase::cReferenceUITextBox::execute();
+            mProfile.mTxtComment.execute();
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            if (this->mDetail.mIdxExePulldown != static_cast<s32>(-1)) {
-                this->mDetail.mContentItem.mPullContent[this->mDetail.mIdxExePulldown].mPullDown.::uGUIBase::cReferenceUIPullDown::execute();
+            if (mDetail.mIdxExePulldown != -1) {
+                mDetail.mContentItem.mPullContent[mDetail.mIdxExePulldown].mPullDown.execute();
             }
             break;
         }
@@ -710,32 +734,32 @@ void uGUICaplinkProfileEdit::moveInput() {
 // Address: 0x009d4270 - 0x009d42e4 (116 bytes)
 void uGUICaplinkProfileEdit::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-        case static_cast<u32>(0):
+    switch (getInputEvent() - 66u) {
+        case 0:
         {
-            this->::uGUICaplinkProfileEdit::eventDecide();
+            eventDecide();
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            if (this->mFlowId == static_cast<u32>(2)) {
-                this->::uGUICaplinkProfileEdit::setFlowId(static_cast<u32>(15));
+            if (mFlowId == 2) {
+                setFlowId(15u);
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUICaplinkProfileEdit::adjustCursor();
+            adjustCursor();
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUICaplinkProfileEdit::setFlowId(static_cast<u32>(15));
+            setFlowId(15u);
             break;
         }
         default:
         {
-            this->mDetail.mContentItem.mPullContent[this->mDetail.mIdxExePulldown].mPullDown.::uGUIBase::cReferenceUIPullDown::moveEvent();
+            mDetail.mContentItem.mPullContent[mDetail.mIdxExePulldown].mPullDown.moveEvent();
             break;
         }
     }
@@ -769,11 +793,11 @@ __attribute__((weak)) u32 uGUICaplinkProfileEdit::evCtrlDecide(cControl::Message
 // Address: 0x009d21f0 - 0x009d220e (30 bytes)
 u32 uGUICaplinkProfileEdit::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x009d2210 - 0x009d2467 (599 bytes)
@@ -790,11 +814,11 @@ __attribute__((weak)) u32 uGUICaplinkProfileEdit::evCtrlAdjustCursor(cControl::M
 // Address: 0x009d0e90 - 0x009d0eae (30 bytes)
 u32 uGUICaplinkProfileEdit::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x009d2470 - 0x009d257e (270 bytes)
@@ -811,6 +835,8 @@ __attribute__((weak)) u32 uGUICaplinkProfileEdit::evCtrlMouseClick(cControl::Mes
 
 // No out-of-line body: no code in the ELF
 // s32 uGUICaplinkProfileEdit::getCtrlLocate(uGUIBase::cVerticalList*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfileEdit::MyDTI uGUICaplinkProfileEdit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfileEdit.cpp at 0x009d4a4e-0x009d4a8b (called at uGUICaplinkProfileEdit.cpp:39)
@@ -887,7 +913,7 @@ const MtDTI& uGUICaplinkProfileEdit::cContentItemBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkProfileEdit::cContentItemBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cContentItemBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cContentItemBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -908,6 +934,8 @@ inline void uGUICaplinkProfileEdit::cContentItemBase::operator delete(void* p_ad
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkProfileEdit::cContentItemBase::~cContentItemBase();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfileEdit::cContentItemBase::MyDTI uGUICaplinkProfileEdit::cContentItemBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfileEdit.cpp at 0x009d4a8b-0x009d4ac8 (called at uGUICaplinkProfileEdit.cpp:40)
@@ -956,7 +984,7 @@ const MtDTI& uGUICaplinkProfileEdit::cPulldownContent::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkProfileEdit::cPulldownContent::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cPulldownContent::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cPulldownContent::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -978,6 +1006,8 @@ inline void uGUICaplinkProfileEdit::cPulldownContent::operator delete(void* p_ad
 uGUICaplinkProfileEdit::cPulldownContent::~cPulldownContent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfileEdit::cPulldownContent::MyDTI uGUICaplinkProfileEdit::cPulldownContent::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfileEdit.cpp at 0x009d4ac8-0x009d4b01 (called at uGUICaplinkProfileEdit.cpp:41)
@@ -1025,7 +1055,7 @@ const MtDTI& uGUICaplinkProfileEdit::cBtnContent::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkProfileEdit::cBtnContent::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cBtnContent::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cBtnContent::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1044,6 +1074,8 @@ inline void uGUICaplinkProfileEdit::cBtnContent::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkProfileEdit::cBtnContent::~cBtnContent();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfileEdit::cBtnContent::MyDTI uGUICaplinkProfileEdit::cBtnContent::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfileEdit.cpp at 0x009d4b01-0x009d4b3a (called at uGUICaplinkProfileEdit.cpp:42)
@@ -1093,7 +1125,7 @@ const MtDTI& uGUICaplinkProfileEdit::cListInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkProfileEdit::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1120,6 +1152,8 @@ __attribute__((weak)) void uGUICaplinkProfileEdit::cListInfo::addMouseTouchList(
     DDON_STUB("uGUICaplinkProfileEdit::cListInfo::addMouseTouchList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfileEdit::cListInfo::MyDTI uGUICaplinkProfileEdit::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfileEdit.cpp at 0x009d4b3a-0x009d4b77 (called at uGUICaplinkProfileEdit.cpp:43)

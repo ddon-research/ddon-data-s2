@@ -28,7 +28,7 @@ const MtDTI& uSoundSequenceSe::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSoundSequenceSe::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundSequenceSe::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundSequenceSe::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uSoundSequenceSe::getAllocator() {
 // Address: 0x00d461b0 - 0x00d461f0 (64 bytes)
 void* uSoundSequenceSe::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSoundSequenceSe::getAllocator()->memAlloc(sz, align, ::uSoundSequenceSe::DTI.::MtDTI::getID());
+    return uSoundSequenceSe::getAllocator()->memAlloc(sz, align, uSoundSequenceSe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uSoundSequenceSe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundSequenceSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundSequenceSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundSequenceSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,7 +92,7 @@ __attribute__((weak)) void uSoundSequenceSe::createProperty(MtPropertyList& s) {
 // Address: 0x00d46fb0 - 0x00d46fb5 (5 bytes)
 MtUI* uSoundSequenceSe::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,10 +120,15 @@ __attribute__((weak)) void uSoundSequenceSe::setSequenceSe(rSoundSequenceSe* pRe
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // void uSoundSequenceSe::setSeqState(s8 state);
 
-// No out-of-line body: 2 inlined copies in 2 functions (83 bytes)
-//   in uSoundGenerator::generate at 0x00d3f6ca-0x00d3f6ee (called at uSoundGenerator.cpp:1855)
-//   in uSoundGenerator::playSequenceSe at 0x00d3fb81-0x00d3fbb0 (called at uSoundGenerator.cpp:1799)
-// void uSoundSequenceSe::setCallPos(const MtVector3& pos);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSoundGenerator::generate at 0xd3f6ca-0xd3f6ee; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void uSoundSequenceSe::setCallPos(const MtVector3& pos) {
+    mCallPos.x = pos.x;
+    mCallPos.y = pos.y;
+    mCallPos.z = pos.z;
+    mCallPos.pad_ = 0.0f;
+}
 
 // No out-of-line body: 3 inlined copies in 3 functions (16 bytes)
 //   in uSoundGenerator::playSequenceSe at 0x00d3fb7b-0x00d3fb81 (called at uSoundGenerator.cpp:1798)
@@ -139,7 +144,7 @@ __attribute__((weak)) void uSoundSequenceSe::setSequenceSe(rSoundSequenceSe* pRe
 // Address: 0x01b257e0 - 0x01b257e5 (5 bytes)
 rSoundSequenceSe* uSoundSequenceSe::getSequenceSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSequenceSe;
+    return mpSequenceSe;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (16 bytes)
@@ -158,7 +163,7 @@ rSoundSequenceSe* uSoundSequenceSe::getSequenceSe() {
 // Address: 0x01b25810 - 0x01b25813 (3 bytes)
 MOVE_LINE uSoundSequenceSe::getSeqSeUnitMoveLine() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(0);
+    return LINE_0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (30 bytes)
@@ -168,37 +173,37 @@ MOVE_LINE uSoundSequenceSe::getSeqSeUnitMoveLine() {
 // Address: 0x00d471f0 - 0x00d47222 (50 bytes)
 void uSoundSequenceSe::requestSe(rSoundRequest* pSrq, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pSrq, reqNo, thisId, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pSrq, reqNo, thisId, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d47230 - 0x00d47268 (56 bytes)
 void uSoundSequenceSe::requestSe(rSoundRequest* pSrq, u32 reqNo, u32 thisId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pSrq, reqNo, thisId, pos, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pSrq, reqNo, thisId, pos, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d47270 - 0x00d472ad (61 bytes)
 void uSoundSequenceSe::requestSe(rSoundRequest* pSrq, u32 reqNo, u32 thisId, uCoord* pCoord, s32 jntNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pSrq, reqNo, thisId, pCoord, jntNo, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pSrq, reqNo, thisId, pCoord, jntNo, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d472b0 - 0x00d472cd (29 bytes)
 void uSoundSequenceSe::keyOffSe(rSoundRequest* pSrq, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::keyOffSe(pSrq, reqNo, thisId, static_cast<sSoundExt::SE_SEARCH_KEY>(3));
+    static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(pSrq, reqNo, thisId, sSoundExt::SE_SEARCH_KEY_ALL);
 }
 
 // Address: 0x00d472d0 - 0x00d4736d (157 bytes)
@@ -211,10 +216,10 @@ __attribute__((weak)) void uSoundSequenceSe::setSeVolumeRatio(rSoundRequest* pSr
 // Address: 0x00d47370 - 0x00d4738a (26 bytes)
 void uSoundSequenceSe::setSePosition(rSoundRequest* pSrq, u32 reqNo, u32 thisId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    ::sSound::getInstance()->::sSound::setSePosition(pSrq, reqNo, thisId, pos, false);
+    sSound::getInstance()->setSePosition(pSrq, reqNo, thisId, pos, false);
 }
 
 // Address: 0x00d47390 - 0x00d47393 (3 bytes)
@@ -261,6 +266,8 @@ __attribute__((weak)) void uSoundSequenceSe::requestSe(rSoundRequest* pSrq, rSou
 // No out-of-line body: 1 inlined copy in 1 function (165 bytes)
 //   in uSoundSequenceSe::setSequenceSe at 0x00d46f01-0x00d46fa6 (called at uSoundSequenceSe.cpp:581)
 // void uSoundSequenceSe::createSequenceSeWork(rSoundSequenceSe* pRes);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundSequenceSe::MyDTI uSoundSequenceSe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundSequenceSe.cpp at 0x00d4743f-0x00d4747c (called at uSoundSequenceSe.cpp:29)

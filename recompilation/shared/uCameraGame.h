@@ -733,6 +733,12 @@ inline void uCameraGame::setNoCtrl() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06ProminentSphereControlSphere::move at 0x2b6b41-0x2b6b49; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 uCameraGame::getPhotoFov() const {
+    return this->mPhotoAddFov;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uCameraGame::resetPhotoParam() {
     this->mPhotoAddHeight = 0.0f;
@@ -741,9 +747,57 @@ inline void uCameraGame::resetPhotoParam() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpBase::adjust at 0x88cd52-0x88cd5c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void uCameraGame::setCamLength(f32 len) {
+    this->mCamLength = len;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 uCameraGame::getPresetNo() const {
+    return this->mPresetNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline const uDDOModel* uCameraGame::getCameraReqOwner() const {
+    return this->mpCameraReqOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 uCameraGame::getRotationSpeed() const {
     return this->mRotSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uCameraGame::setAngX(f32 ang) {
+    this->mAngX = ang;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpTps::ctrlSub at 0x43af0-0x43af8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 uCameraGame::getCtrlXValue() const {
+    return this->mCtrlXValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpTps::ctrlSub at 0x43bb1-0x43bb9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 uCameraGame::getCtrlYValue() const {
+    return this->mCtrlYValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpPhoto::ctrlPhoto at 0x40a56-0x40a5d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCameraGame::setMovCam() {
+    this->mIsMoveCam = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uCameraGame::setRotSpeedSclX(f32 x) {
+    this->mRotSpeedSclX = x;
 }
 
 // Inline, no code of its own: checked where it is inlined.

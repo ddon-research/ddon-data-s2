@@ -36,7 +36,7 @@ const MtDTI& cCraftQualityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftQualityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memAlloc(sz, align, ::cCraftQualityData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftQualityData::DTI)->memAlloc(sz, align, cCraftQualityData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCraftQualityData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftQualityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftQualityData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -92,6 +92,8 @@ __attribute__((weak)) void cCraftQualityData::createProperty(MtPropertyList& s) 
 // No out-of-line body: no code in the ELF
 // u8 cCraftQualityData::getLv();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftQualityData::MyDTI cCraftQualityData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftQuality.cpp at 0x00659bbe-0x00659bfb (called at rCraftQuality.cpp:42)
 //   in _GLOBAL__sub_I_rCraftQuality.cpp at 0x00659bbe-0x00659bfb (called at rCraftQuality.h:34)
@@ -100,7 +102,7 @@ __attribute__((weak)) void cCraftQualityData::createProperty(MtPropertyList& s) 
 // Address: 0x00659590 - 0x006595e8 (88 bytes)
 MtObject* cCraftQualityData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftQualityData;
+    return new (16u) cCraftQualityData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,7 +127,7 @@ const MtDTI& rCraftQuality::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftQuality::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftQuality::DTI)->memAlloc(sz, align, ::rCraftQuality::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftQuality::DTI)->memAlloc(sz, align, rCraftQuality::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,7 +142,7 @@ inline void* rCraftQuality::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rCraftQualityD0Ev at 0x01a81b14-0x01a81b33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftQuality::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftQuality::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftQuality::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,16 +159,16 @@ bool rCraftQuality::loadData(MtDataReader& in, cCraftQualityData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mItemNo);
+    nDDOIO::readData(in, pData->mItemNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBonus);
+    nDDOIO::readData(in, pData->mBonus);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRankLimit);
+    nDDOIO::readData(in, pData->mRankLimit);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLv);
+    nDDOIO::readData(in, pData->mLv);
     return true;
 }
 
@@ -179,8 +181,10 @@ MT_CTSTR rCraftQuality::getExt() const {
 // Address: 0x01a81c60 - 0x01a81c66 (6 bytes)
 u32 rCraftQuality::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftQuality::MyDTI rCraftQuality::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftQuality.cpp at 0x00659bfb-0x00659c38 (called at rCraftQuality.cpp:103)
@@ -190,7 +194,7 @@ u32 rCraftQuality::getDataVersion() const {
 // Address: 0x006599a0 - 0x00659a04 (100 bytes)
 MtObject* rCraftQuality::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftQuality;
+    return new (16u) rCraftQuality;
 }
 
 // Instance at 0x01a81c10 - 0x01a81c26 (22 bytes) of the generic rTbl2<T>::getData

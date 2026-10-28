@@ -26,7 +26,7 @@ const MtDTI& cCamExParamNml::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCamExParamNml::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCamExParamNml::DTI);
+    return MtMemoryAllocator::getAllocator(cCamExParamNml::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cCamExParamNml::getAllocator() {
 // Address: 0x0003cb40 - 0x0003cb80 (64 bytes)
 void* cCamExParamNml::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCamExParamNml::getAllocator()->memAlloc(sz, align, ::cCamExParamNml::DTI.::MtDTI::getID());
+    return cCamExParamNml::getAllocator()->memAlloc(sz, align, cCamExParamNml::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,6 +94,8 @@ __attribute__((weak)) cCamImpBase* cCamExParamNml::createCamImpInstance(uCameraG
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamExParamNml::MyDTI cCamExParamNml::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCameraGameNml.cpp at 0x0003fe0b-0x0003fe48 (called at cCameraGameNml.cpp:51)
 //   in _GLOBAL__sub_I_cCameraGameNml.cpp at 0x0003fe0b-0x0003fe48 (called at cCameraGameNml.h:80)
@@ -120,7 +122,7 @@ const MtDTI& cCamImpNml::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* cCamImpNml::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCamImpNml::DTI);
+    return MtMemoryAllocator::getAllocator(cCamImpNml::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ MtAllocator* cCamImpNml::getAllocator() {
 // Address: 0x0003c680 - 0x0003c6c0 (64 bytes)
 void* cCamImpNml::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCamImpNml::getAllocator()->memAlloc(sz, align, ::cCamImpNml::DTI.::MtDTI::getID());
+    return cCamImpNml::getAllocator()->memAlloc(sz, align, cCamImpNml::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,7 +146,7 @@ void* cCamImpNml::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCamImpNml::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCamImpNml::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCamImpNml::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -274,23 +276,25 @@ __attribute__((weak)) void cCamImpNml::interporateSub(MtVector3& cameraPos, MtVe
 // Address: 0x0003fc60 - 0x0003fc69 (9 bytes)
 void cCamImpNml::adjustSub(MtVector3& cameraPos, MtVector3& targetPos, MtVector3& idealCam, MtVector3& idealTar) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCamImpBase::mpC->::uCameraGame::dodgeScroll();
+    mpC->dodgeScroll();
 }
 
 // Address: 0x0003fc70 - 0x0003fc8e (30 bytes)
 void cCamImpNml::finalSub() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cCamImpBase::mIsKeepAngle != false) {
+    if (mIsKeepAngle) {
         return;
     }
-    this->::cCamImpBase::mpC->mAngX = this->mInitAngX;
+    mpC->mAngX = mInitAngX;
 }
 
 // Address: 0x01959360 - 0x01959363 (3 bytes)
 nCameraGame::CAMERA_TYPE cCamImpNml::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nCameraGame::CAMERA_TYPE>(0);
+    return nCameraGame::TYPE_NML;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamImpNml::MyDTI cCamImpNml::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCameraGameNml.cpp at 0x0003fdce-0x0003fe0b (called at cCameraGameNml.cpp:50)

@@ -334,12 +334,12 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIGiveAndTake::cItemInfoList::cItemInfoList() {
-    this->mItemNo = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemNo = 0;
+    this->mItemNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIGiveAndTake::cItemGiveList::cItemGiveList() {
-    this->mItemUID = static_cast<MT_CTSTR>(nullptr);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemUID = nullptr;
+    this->mItemNum = 0;
 }

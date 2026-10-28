@@ -37,7 +37,7 @@ const MtDTI& rTutorialList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTutorialList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialList::DTI)->memAlloc(sz, align, ::rTutorialList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialList::DTI)->memAlloc(sz, align, rTutorialList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rTutorialList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTutorialList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,41 +78,41 @@ MT_CTSTR rTutorialList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rTutorialList::rTutorialList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x0070e430 - 0x0070e4e1 (177 bytes)
 // Also emitted as: _ZN13rTutorialListD0Ev at 0x0070e4f0
 rTutorialList::~rTutorialList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x70e460 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x0070e5c0 - 0x0070e6a3 (227 bytes)
@@ -130,22 +130,22 @@ bool rTutorialList::save(MtStream& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5524564));
-    (&w)->writeU32(static_cast<u32>(5));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x544C54u);
+    (&w)->writeU32(5u);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x70e74a read, used 5 times; no DWARF local holds it
-            MtObject* t3 = this->mArray.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(16)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(20)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24)));
-            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
-                i0_3 += static_cast<unsigned int>(1);
+            MtObject* t3 = mArray.getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 16));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 20));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 24));
+            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -159,15 +159,17 @@ bool rTutorialList::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5524564)) {
-        if ((&r)->readU32() == static_cast<u32>(5)) {
-            ::nDDOIO::readMtArray(r, this->mArray);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x544C54) {
+        if ((&r)->readU32() == 5) {
+            nDDOIO::readMtArray(r, mArray);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialList::MyDTI rTutorialList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTutorialList.cpp at 0x0070edd0-0x0070ee12 (called at rTutorialList.cpp:28)
@@ -177,7 +179,7 @@ bool rTutorialList::load(MtStream& in) {
 // Address: 0x0070e320 - 0x0070e3a4 (132 bytes)
 MtObject* rTutorialList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTutorialList;
+    return new (16u) rTutorialList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,7 +207,7 @@ const MtDTI& rTutorialList::cTutorialNode::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialList::cTutorialNode::DTI)->memAlloc(sz, align, ::rTutorialList::cTutorialNode::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialList::cTutorialNode::DTI)->memAlloc(sz, align, rTutorialList::cTutorialNode::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,7 +221,7 @@ void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rTutorialList::cTutorialNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialList::cTutorialNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialList::cTutorialNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -256,6 +258,8 @@ __attribute__((weak)) void rTutorialList::cTutorialNode::createProperty(MtProper
 //   in rTutorialList::save at 0x0070e74e-0x0070e7a3 (called at nDDOIO.h:463)
 // bool rTutorialList::cTutorialNode::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialList::cTutorialNode::MyDTI rTutorialList::cTutorialNode::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTutorialList.cpp at 0x0070ee12-0x0070ee4f (called at rTutorialList.cpp:127)
 //   in _GLOBAL__sub_I_rTutorialList.cpp at 0x0070ee12-0x0070ee4f (called at rTutorialList.h:93)
@@ -264,7 +268,7 @@ __attribute__((weak)) void rTutorialList::cTutorialNode::createProperty(MtProper
 // Address: 0x0070e890 - 0x0070e8e7 (87 bytes)
 MtObject* rTutorialList::cTutorialNode::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTutorialList::cTutorialNode;
+    return new (16u) rTutorialList::cTutorialNode;
 }
 
 // Instance at 0x01ab65c0 - 0x01ab65c5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

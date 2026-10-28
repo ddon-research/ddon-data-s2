@@ -38,7 +38,7 @@ const MtDTI& rVibration::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK10rVibration5MyDTI11newInstanceEv at 0x01205930-0x0120595d, code DWARF attributes to no inlined copy; sz is the class's size (136), align the allocation's other whole constant (16)
 inline void* rVibration::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memAlloc(sz, align, ::rVibration::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rVibration::DTI)->memAlloc(sz, align, rVibration::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* rVibration::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rVibrationD0Ev at 0x01205af8-0x01205b19, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rVibration::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rVibration::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,51 +81,51 @@ bool rVibration::load(MtStream& in) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff); pTempBuff's location [0x1205b68, 0x1205c4d) [0x1205c55, 0x1205c66) [0x1205c7d, 0x1205c85) covers its scope [0x1205b89, 0x1205c4d)
     u32 fileSize = in.getLength();
-    if (fileSize != static_cast<u32>(0)) {
-        u8* pTempBuff = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(fileSize, static_cast<u32>(16)));
-        if (pTempBuff != static_cast<u8*>(nullptr)) {
+    if (fileSize != 0) {
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fileSize, 16u));
+        if (pTempBuff != nullptr) {
             u32 readSize = in.read(static_cast<void*>(pTempBuff), fileSize);
             if (fileSize == readSize) {
-                if (reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->Magic == static_cast<u32>(4344150)) {
-                    if (reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->Version == static_cast<u32>(537987108)) {
-                        this->mBaseFps = static_cast<float>(reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->BaseFps);
-                        this->mListNum = reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->ListNum;
+                if (reinterpret_cast<VIB_HEADER*>(pTempBuff)->Magic == 0x424956) {
+                    if (reinterpret_cast<VIB_HEADER*>(pTempBuff)->Version == 0x20110824) {
+                        mBaseFps = static_cast<float>(reinterpret_cast<VIB_HEADER*>(pTempBuff)->BaseFps);
+                        mListNum = reinterpret_cast<VIB_HEADER*>(pTempBuff)->ListNum;
                         // inferred: a temporary for the value the load at 0x1205bc3 read, used 5 times; no DWARF local holds it
-                        u32 t0 = reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->ParamBuffSize;
-                        if (t0 != static_cast<u32>(0)) {
-                            if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-                                ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-                                this->mpParamBuff = static_cast<u8*>(nullptr);
-                                this->mParamBuffSize = static_cast<u32>(0);
+                        u32 t0 = reinterpret_cast<VIB_HEADER*>(pTempBuff)->ParamBuffSize;
+                        if (t0 != 0) {
+                            if (mpParamBuff != nullptr) {
+                                MtMemoryAllocator::getAllocator(rVibration::DTI)->memFree(static_cast<void*>(mpParamBuff));
+                                mpParamBuff = nullptr;
+                                mParamBuffSize = 0;
                                 // inferred: a temporary for the result of the call at 0x1205c1b, used twice; no DWARF local holds it
-                                void* t1 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t1, static_cast<int>(0), t0);
-                                    this->mParamBuffSize = t0;
-                                    ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(16)]), t0);
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                void* t1 = MtMemoryAllocator::getAllocator(rVibration::DTI)->memAlloc(t0, 16u);
+                                if ((mpParamBuff = static_cast<u8*>(t1)) != nullptr) {
+                                    memset(t1, 0, t0);
+                                    mParamBuffSize = t0;
+                                    memcpy(static_cast<void*>(mpParamBuff), static_cast<const void*>(&pTempBuff[16]), t0);
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;
                                 } else {
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return false;
                                 }
                             } else {
-                                this->mParamBuffSize = static_cast<u32>(0);
+                                mParamBuffSize = 0;
                                 // inferred: a temporary for the result of the call at 0x1205c1b, used twice; no DWARF local holds it
-                                void* t1 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t1, static_cast<int>(0), t0);
-                                    this->mParamBuffSize = t0;
-                                    ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(16)]), t0);
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                void* t1 = MtMemoryAllocator::getAllocator(rVibration::DTI)->memAlloc(t0, 16u);
+                                if ((mpParamBuff = static_cast<u8*>(t1)) != nullptr) {
+                                    memset(t1, 0, t0);
+                                    mParamBuffSize = t0;
+                                    memcpy(static_cast<void*>(mpParamBuff), static_cast<const void*>(&pTempBuff[16]), t0);
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;
                                 } else {
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return false;
                                 }
                             }
                         } else {
-                            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                             return false;
                         }
                     } else {
@@ -135,7 +135,7 @@ bool rVibration::load(MtStream& in) {
                     return false;
                 }
             } else {
-                ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                 return false;
             }
         } else {
@@ -152,23 +152,23 @@ bool rVibration::save(MtStream& out) {
     // DWARF local not rendered: VIB_HEADER* pHeader;
     // Approximate from the ELF: a bitfield unit stored one field at a time; a place read twice with no call between; a wider integer stored into a bitfield; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff); declared on line 121 at function scope, its scope starts at the row 0x1205d1f (line 122); pTempBuff's location [0x1205d10, 0x1205d88) covers it from there through its last access
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    if (mpParamBuff != nullptr) {
         // inferred: a temporary for the value the load at 0x1205cec read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mParamBuffSize;
-        u8* pTempBuff = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(t0 + static_cast<u32>(16), static_cast<u32>(16)));
-        if (pTempBuff != static_cast<u8*>(nullptr)) {
-            reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->Magic = static_cast<u32>(4344150);
-            reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->Version = static_cast<u32>(537987108);
-            reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->ParamBuffSize = this->mParamBuffSize;
+        u32 t0 = mParamBuffSize;
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(t0 + 16u, 16u));
+        if (pTempBuff != nullptr) {
+            reinterpret_cast<VIB_HEADER*>(pTempBuff)->Magic = 0x424956;
+            reinterpret_cast<VIB_HEADER*>(pTempBuff)->Version = 0x20110824;
+            reinterpret_cast<VIB_HEADER*>(pTempBuff)->ParamBuffSize = mParamBuffSize;
             // inferred: a temporary for the value the load at 0x1205d2c read, used twice; no DWARF local holds it
-            f32 t1 = this->mBaseFps;
-            reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->BaseFps = static_cast<long>(t1);
-            reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->ListNum = this->mListNum;
-            ::memcpy(static_cast<void*>(&pTempBuff[static_cast<int>(16)]), static_cast<const void*>(this->mpParamBuff), this->mParamBuffSize);
-            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + static_cast<u32>(16));
-            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
-            return writeSize == (t0 + static_cast<u32>(16));
+            f32 t1 = mBaseFps;
+            reinterpret_cast<VIB_HEADER*>(pTempBuff)->BaseFps = static_cast<long>(t1);
+            reinterpret_cast<VIB_HEADER*>(pTempBuff)->ListNum = mListNum;
+            memcpy(static_cast<void*>(&pTempBuff[16]), static_cast<const void*>(mpParamBuff), mParamBuffSize);
+            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + 16u);
+            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
+            return writeSize == (t0 + 16u);
         } else {
             return false;
         }
@@ -180,15 +180,15 @@ bool rVibration::save(MtStream& out) {
 // Address: 0x01205dd0 - 0x01205e27 (87 bytes)
 void rVibration::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-        this->mpParamBuff = static_cast<u8*>(nullptr);
+    if (mpParamBuff != nullptr) {
+        MtMemoryAllocator::getAllocator(rVibration::DTI)->memFree(static_cast<void*>(mpParamBuff));
+        mpParamBuff = nullptr;
     }
-    this->mListNum = static_cast<u32>(0);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mBaseFps = 0.0f;
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    mListNum = 0;
+    mParamBuffSize = 0;
+    mBaseFps = 0.0f;
+    mpParamBuff = nullptr;
+    mAttr = 22;
 }
 
 // Address: 0x01205e30 - 0x01206063 (563 bytes)
@@ -200,13 +200,13 @@ __attribute__((weak)) void rVibration::createProperty(MtPropertyList& s) {
 // Address: 0x01206070 - 0x01206075 (5 bytes)
 MtUI* rVibration::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01b958a0 - 0x01b958a9 (9 bytes)
 u32 rVibration::getResourceSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParamBuffSize + static_cast<u32>(136);
+    return mParamBuffSize + 136u;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -242,12 +242,12 @@ __attribute__((weak)) void rVibration::setDummyU32(u32) {
 // Also emitted as: _ZN10rVibrationD0Ev at 0x01205aa0
 rVibration::~rVibration() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-        this->mpParamBuff = static_cast<u8*>(nullptr);
+    if (mpParamBuff != nullptr) {
+        MtMemoryAllocator::getAllocator(rVibration::DTI)->memFree(static_cast<void*>(mpParamBuff));
+        mpParamBuff = nullptr;
     }
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mListNum = static_cast<u32>(0);
+    mParamBuffSize = 0;
+    mListNum = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -262,12 +262,14 @@ rVibration::~rVibration() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rVibration::freeMemory();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rVibration::MyDTI rVibration::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rVibration::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01205930 - 0x0120599f (111 bytes)
 MtObject* rVibration::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rVibration;
+    return new (16u) rVibration;
 }
 

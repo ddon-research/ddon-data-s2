@@ -26,7 +26,7 @@ const MtDTI& rSoundSubMixer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rSoundSubMixer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::DTI);
+    return MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* rSoundSubMixer::getAllocator() {
 // Address: 0x006fe600 - 0x006fe640 (64 bytes)
 void* rSoundSubMixer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rSoundSubMixer::getAllocator()->memAlloc(sz, align, ::rSoundSubMixer::DTI.::MtDTI::getID());
+    return rSoundSubMixer::getAllocator()->memAlloc(sz, align, rSoundSubMixer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* rSoundSubMixer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSubMixer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,7 +86,7 @@ __attribute__((weak)) void rSoundSubMixer::createProperty(MtPropertyList& s) {
 // Address: 0x006fef20 - 0x006fef25 (5 bytes)
 MtUI* rSoundSubMixer::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x006ff040 - 0x006ff572 (1330 bytes)
@@ -115,7 +115,7 @@ __attribute__((weak)) bool rSoundSubMixer::save(MtStream& out) {
 // Address: 0x01ab3870 - 0x01ab387d (13 bytes)
 bool rSoundSubMixer::convert(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rSoundSubMixer::save(out);
+    this->rSoundSubMixer::save(out);
     return true;
 }
 
@@ -204,34 +204,34 @@ __attribute__((weak)) void rSoundSubMixer::add(rSoundSubMixer::Fader* pFader) {
 // Address: 0x007016e0 - 0x00701768 (136 bytes)
 void rSoundSubMixer::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mFaders.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mFaders.mLength != 0) {
         // inferred: the value the loop at 0x701700 carries; no location-less local in scope fits
-        u32 v0_0 = this->mFaders.::MtArray::mLength;
+        u32 v0_0 = mFaders.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mFaders.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mFaders.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mFaders.::MtArray::mLength) {
-                    v0_0 = this->mFaders.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mFaders.mpArray[i0_3] != nullptr) {
+                delete mFaders.mpArray[i0_3];
+                if ((i0_3 + 1u) < mFaders.mLength) {
+                    v0_0 = mFaders.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mFaders.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mFaders.::MtArray::mpArray));
+    if (mFaders.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mFaders.mpArray));
     }
-    this->mFaders.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mFaders.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mFaders.::MtArray::mLength = static_cast<u32>(0);
+    mFaders.mpArray = nullptr;
+    mFaders.mBufsiz = 0;
+    mFaders.mLength = 0;
 }
 
 // No out-of-line body: 12 inlined copies in 4 functions (206 bytes)
@@ -496,6 +496,8 @@ __attribute__((weak)) bool rSoundSubMixer::checkSendLoop(u32 step) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rSoundSubMixer::MyDTI rSoundSubMixer::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundSubMixer.cpp at 0x007017fc-0x00701839 (called at rSoundSubMixer.cpp:237)
 //   in _GLOBAL__sub_I_rSoundSubMixer.cpp at 0x007017fc-0x00701839 (called at rSoundSubMixer.h:227)
@@ -532,7 +534,7 @@ const MtDTI& rSoundSubMixer::Fader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundSubMixer::Fader::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::Fader::DTI)->memAlloc(sz, align, ::rSoundSubMixer::Fader::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundSubMixer::Fader::DTI)->memAlloc(sz, align, rSoundSubMixer::Fader::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -546,7 +548,7 @@ inline void* rSoundSubMixer::Fader::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundSubMixer::Fader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::Fader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSubMixer::Fader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -561,17 +563,17 @@ inline void rSoundSubMixer::Fader::operator delete(void* p_addr) {
 // Address: 0x006fda80 - 0x006fdabf (63 bytes)
 rSoundSubMixer::Fader::Fader() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVol = 0.0f;
-    this->mSendID = static_cast<s16>(-1);
-    this->mTransitionTime = static_cast<u16>(0);
-    this->mCurve = static_cast<s16>(-1);
-    this->mSustainTime = static_cast<u16>(0);
-    this->mReleaseTime = static_cast<u16>(0);
-    this->mFaderID = static_cast<u8>(0);
-    this->mEqNo = static_cast<s8>(-2);
-    this->mEffectNo = static_cast<s8>(-2);
-    this->mAbs = false;
-    this->mSetFlag = true;
+    mVol = 0.0f;
+    mSendID = -1;
+    mTransitionTime = 0;
+    mCurve = -1;
+    mSustainTime = 0;
+    mReleaseTime = 0;
+    mFaderID = 0;
+    mEqNo = -2;
+    mEffectNo = -2;
+    mAbs = false;
+    mSetFlag = true;
 }
 
 // Address: 0x006fdac0 - 0x006fdac1 (1 bytes)
@@ -589,7 +591,7 @@ __attribute__((weak)) void rSoundSubMixer::Fader::createProperty(MtPropertyList&
 // Address: 0x006fe3b0 - 0x006fe3b5 (5 bytes)
 MtUI* rSoundSubMixer::Fader::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (18 bytes)
@@ -751,18 +753,18 @@ MtUI* rSoundSubMixer::Fader::createUI(MtProperty& prop) {
 // Address: 0x006fe3c0 - 0x006fe408 (72 bytes)
 void rSoundSubMixer::Fader::copyFaderWoIdStr(rSoundSubMixer::Fader* pPostFader) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pPostFader == static_cast<rSoundSubMixer::Fader*>(nullptr)) {
+    if (pPostFader == nullptr) {
         return;
     }
-    this->mVol = pPostFader->::rSoundSubMixer::Fader::getVol();
-    this->mEqNo = pPostFader->::rSoundSubMixer::Fader::getEqNo();
-    this->mEffectNo = pPostFader->::rSoundSubMixer::Fader::getEffectNo();
-    this->mAbs = pPostFader->::rSoundSubMixer::Fader::getAbs();
-    this->mTransitionTime = pPostFader->::rSoundSubMixer::Fader::getTransitionTime();
-    this->mCurve = pPostFader->::rSoundSubMixer::Fader::getCurve();
-    this->mSustainTime = pPostFader->::rSoundSubMixer::Fader::getSustainTime();
-    this->mReleaseTime = pPostFader->::rSoundSubMixer::Fader::getReleaseTime();
-    this->mSetFlag = pPostFader->::rSoundSubMixer::Fader::getSetFlag();
+    mVol = pPostFader->getVol();
+    mEqNo = pPostFader->getEqNo();
+    mEffectNo = pPostFader->getEffectNo();
+    mAbs = pPostFader->getAbs();
+    mTransitionTime = pPostFader->getTransitionTime();
+    mCurve = pPostFader->getCurve();
+    mSustainTime = pPostFader->getSustainTime();
+    mReleaseTime = pPostFader->getReleaseTime();
+    mSetFlag = pPostFader->getSetFlag();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (262 bytes)
@@ -774,21 +776,25 @@ void rSoundSubMixer::Fader::copyFaderWoIdStr(rSoundSubMixer::Fader* pPostFader) 
 // Address: 0x006fe420 - 0x006fe476 (86 bytes)
 void rSoundSubMixer::Fader::copyFader(rSoundSubMixer::Fader* pPostFader) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pPostFader == static_cast<rSoundSubMixer::Fader*>(nullptr)) {
+    if (pPostFader == nullptr) {
         return;
     }
-    this->mVol = pPostFader->::rSoundSubMixer::Fader::getVol();
-    this->mEqNo = pPostFader->::rSoundSubMixer::Fader::getEqNo();
-    this->mEffectNo = pPostFader->::rSoundSubMixer::Fader::getEffectNo();
-    this->mAbs = pPostFader->::rSoundSubMixer::Fader::getAbs();
-    this->mTransitionTime = pPostFader->::rSoundSubMixer::Fader::getTransitionTime();
-    this->mCurve = pPostFader->::rSoundSubMixer::Fader::getCurve();
-    this->mSustainTime = pPostFader->::rSoundSubMixer::Fader::getSustainTime();
-    this->mReleaseTime = pPostFader->::rSoundSubMixer::Fader::getReleaseTime();
-    this->mSetFlag = pPostFader->::rSoundSubMixer::Fader::getSetFlag();
-    this->mFaderID = pPostFader->::rSoundSubMixer::Fader::getFaderID();
-    this->mSendID = pPostFader->::rSoundSubMixer::Fader::getSendID();
+    mVol = pPostFader->getVol();
+    mEqNo = pPostFader->getEqNo();
+    mEffectNo = pPostFader->getEffectNo();
+    mAbs = pPostFader->getAbs();
+    mTransitionTime = pPostFader->getTransitionTime();
+    mCurve = pPostFader->getCurve();
+    mSustainTime = pPostFader->getSustainTime();
+    mReleaseTime = pPostFader->getReleaseTime();
+    mSetFlag = pPostFader->getSetFlag();
+    mFaderID = pPostFader->getFaderID();
+    mSendID = pPostFader->getSendID();
 }
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 rSoundSubMixer::Fader::DEFAULT_VOL;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rSoundSubMixer::Fader::MyDTI rSoundSubMixer::Fader::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundSubMixer.cpp at 0x007017bf-0x007017fc (called at rSoundSubMixer.cpp:30)
@@ -798,7 +804,7 @@ void rSoundSubMixer::Fader::copyFader(rSoundSubMixer::Fader* pPostFader) {
 // Address: 0x006fd9a0 - 0x006fda10 (112 bytes)
 MtObject* rSoundSubMixer::Fader::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundSubMixer::Fader;
+    return new (16u) rSoundSubMixer::Fader;
 }
 
 // Instance at 0x01ab3820 - 0x01ab3825 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

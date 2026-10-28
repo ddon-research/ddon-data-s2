@@ -41,7 +41,7 @@ const MtDTI& MtDtiSelecter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtDtiSelecter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtDtiSelecter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtDtiSelecter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ MtDtiSelecter::~MtDtiSelecter() {
 // Address: 0x01945870 - 0x01945875 (5 bytes)
 MtUI* MtDtiSelecter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01945880 - 0x01945a39 (441 bytes)
@@ -86,8 +86,8 @@ __attribute__((weak)) void MtDtiSelecter::createProperty(MtPropertyList& s) {
 // Address: 0x01945a80 - 0x01945a96 (22 bytes)
 MT_CTSTR MtDtiSelecter::getSelectDtiName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpUseDTI != static_cast<const MtDTI*>(nullptr)) {
-        return this->mpUseDTI->mName;
+    if (mpUseDTI != nullptr) {
+        return mpUseDTI->mName;
     } else {
         return "-";
     }
@@ -102,10 +102,10 @@ __attribute__((weak)) void MtDtiSelecter::setSelectDtiName(const MtString& NewDt
 // Address: 0x01945a40 - 0x01945a4f (15 bytes)
 u32 MtDtiSelecter::getSelectDtiID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpUseDTI != static_cast<const MtDTI*>(nullptr)) {
-        return this->mpUseDTI->mID;
+    if (mpUseDTI != nullptr) {
+        return mpUseDTI->mID;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -126,6 +126,8 @@ __attribute__((weak)) void MtDtiSelecter::setSelectDti(const MtDTI* pNewDti) {
 
 // No out-of-line body: no code in the ELF
 // MtObject* MtDtiSelecter::newInstanceBySetDti();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtDtiSelecter::MyDTI MtDtiSelecter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtDtiSelecter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

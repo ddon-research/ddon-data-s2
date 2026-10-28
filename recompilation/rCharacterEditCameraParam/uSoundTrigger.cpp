@@ -50,7 +50,7 @@ const MtDTI& cSoundTriggerLayoutInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundTriggerLayoutInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundTriggerLayoutInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,21 +71,21 @@ inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
 cSoundTriggerLayoutInfo::~cSoundTriggerLayoutInfo() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpUSequenceSe[0] != static_cast<uSoundSequenceSe*>(nullptr)) {
-        this->mpUSequenceSe[0]->kill();
-        this->mpUSequenceSe[0] = static_cast<uSoundSequenceSe*>(nullptr);
+    if (mpUSequenceSe[0] != nullptr) {
+        mpUSequenceSe[0]->kill();
+        mpUSequenceSe[0] = nullptr;
     }
-    if (this->mpUSequenceSe[1] == static_cast<uSoundSequenceSe*>(nullptr)) {
+    if (mpUSequenceSe[1] == nullptr) {
         return;
     }
-    this->mpUSequenceSe[1]->kill();
-    this->mpUSequenceSe[1] = static_cast<uSoundSequenceSe*>(nullptr);
+    mpUSequenceSe[1]->kill();
+    mpUSequenceSe[1] = nullptr;
 }
 
 // Address: 0x00d4e550 - 0x00d4e555 (5 bytes)
 MtUI* cSoundTriggerLayoutInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSoundLayoutInfo::createUI(prop);
+    return this->cSoundLayoutInfo::createUI(prop);
 }
 
 // Address: 0x00d4e560 - 0x00d4e88f (815 bytes)
@@ -103,10 +103,10 @@ __attribute__((weak)) void cSoundTriggerLayoutInfo::setContentsIndex(nZone::cLay
 // Address: 0x00d4e9a0 - 0x00d4e9b1 (17 bytes)
 s32 cSoundTriggerLayoutInfo::getContentsIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(10)) {
-        return this->mContentsIndex[index];
+    if (index <= 10u) {
+        return mContentsIndex[index];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -173,6 +173,8 @@ __attribute__((weak)) void cSoundTriggerLayoutInfo::checkSetPanelType(nZone::cLa
 //   in uSoundTrigger::sync at 0x00d4cf3f-0x00d4cf7b (called at uSoundTrigger.cpp:1427)
 // void cSoundTriggerLayoutInfo::updateSequenceSeUnit();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundTriggerLayoutInfo::MyDTI cSoundTriggerLayoutInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4ef6b-0x00d4efa8 (called at uSoundTrigger.cpp:2303)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4ef6b-0x00d4efa8 (called at uSoundTrigger.h:1074)
@@ -207,7 +209,7 @@ const MtDTI& cSoundTriggerListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSoundTriggerListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundTriggerListener::DTI)->memAlloc(sz, align, ::cSoundTriggerListener::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundTriggerListener::DTI)->memAlloc(sz, align, cSoundTriggerListener::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -222,7 +224,7 @@ inline void* cSoundTriggerListener::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundTriggerListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundTriggerListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundTriggerListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -255,6 +257,8 @@ __attribute__((weak)) void cSoundTriggerListener::notified(const nZone::cLayoutE
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundTriggerListener::MyDTI cSoundTriggerListener::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4efa8-0x00d4efe5 (called at uSoundTrigger.cpp:2721)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4efa8-0x00d4efe5 (called at uSoundTrigger.h:1218)
@@ -263,7 +267,7 @@ __attribute__((weak)) void cSoundTriggerListener::notified(const nZone::cLayoutE
 // Address: 0x00d4e9c0 - 0x00d4ea0e (78 bytes)
 MtObject* cSoundTriggerListener::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSoundTriggerListener;
+    return new (16u) cSoundTriggerListener;
 }
 
 // No out-of-line body: no code in the ELF
@@ -280,7 +284,7 @@ const MtDTI& uSoundTrigger::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSoundTrigger::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundTrigger::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundTrigger::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -289,7 +293,7 @@ inline MtAllocator* uSoundTrigger::getAllocator() {
 // Address: 0x00d4c120 - 0x00d4c160 (64 bytes)
 void* uSoundTrigger::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSoundTrigger::getAllocator()->memAlloc(sz, align, ::uSoundTrigger::DTI.::MtDTI::getID());
+    return uSoundTrigger::getAllocator()->memAlloc(sz, align, uSoundTrigger::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -304,7 +308,7 @@ void* uSoundTrigger::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundTrigger::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundTrigger::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundTrigger::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -333,7 +337,7 @@ uSoundTrigger::~uSoundTrigger() {
 // Address: 0x00d4c480 - 0x00d4c485 (5 bytes)
 MtUI* uSoundTrigger::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::createUI(prop);
+    return this->uSoundZoneBase::createUI(prop);
 }
 
 // Address: 0x00d4c390 - 0x00d4c47b (235 bytes)
@@ -345,8 +349,8 @@ __attribute__((weak)) void uSoundTrigger::createProperty(MtPropertyList& s) {
 // Address: 0x00d4c490 - 0x00d4c4ac (28 bytes)
 void uSoundTrigger::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setup();
-    this->::uSoundTrigger::initPanel();
+    this->uSoundZoneBase::setup();
+    initPanel();
 }
 
 // Address: 0x00d4c560 - 0x00d4c789 (553 bytes)
@@ -368,25 +372,25 @@ __attribute__((weak)) void uSoundTrigger::sync() {
 // Address: 0x00d4cfb0 - 0x00d4cfb5 (5 bytes)
 void uSoundTrigger::setupFromResource(rZone* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setupFromResource(pRes);
+    this->uSoundZoneBase::setupFromResource(pRes);
 }
 
 // Address: 0x00d4cfc0 - 0x00d4cfc5 (5 bytes)
 void uSoundTrigger::setupFromResource(rZone* pRes, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setupFromResource(pRes, pos);
+    this->uSoundZoneBase::setupFromResource(pRes, pos);
 }
 
 // Address: 0x01b25b10 - 0x01b25b18 (8 bytes)
 const MtDTI* uSoundTrigger::getGroupManagerDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &::uSoundTrigger::cTriggerGroupManager::DTI;
+    return &uSoundTrigger::cTriggerGroupManager::DTI;
 }
 
 // Address: 0x01b25b20 - 0x01b25b28 (8 bytes)
 cSoundZoneListener* uSoundTrigger::getZoneListener() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mZoneListener;
+    return &mZoneListener;
 }
 
 // Address: 0x01b25b30 - 0x01b25b54 (36 bytes)
@@ -398,7 +402,7 @@ __attribute__((weak)) MtVector3 uSoundTrigger::getZoneListenerPos() {
 // Address: 0x01b25b60 - 0x01b25b74 (20 bytes)
 void uSoundTrigger::setZoneListenerPos(const MtVector3& NewListenerPos) {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    (&this->mZoneListener)->setMyPos(NewListenerPos);
+    (&mZoneListener)->setMyPos(NewListenerPos);
 }
 
 // Address: 0x00d4d5d0 - 0x00d4d64a (122 bytes)
@@ -408,33 +412,33 @@ void uSoundTrigger::clearZoneHit() {
     // DWARF local not rendered: cTriggerGroupManager* pManager;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a uSoundTrigger::cTriggerGroupManager member read past the end of cZoneLayout::cInGameGroupManager, which DWARF gives no other deriving class a member at 0x38
-    this->::uSoundZoneBase::clearZoneHit();
+    this->uSoundZoneBase::clearZoneHit();
     // inferred: a temporary for the result of the call at 0xd4d5e5, used twice; no DWARF local holds it
-    cZoneLayout* t0 = this->::uSoundZoneBase::getZoneLayout();
-    if (t0 != static_cast<cZoneLayout*>(nullptr)) {
-        const u32 GroupManagerNum = t0->::cZoneLayout::getGroupManagerNum();
-        if (GroupManagerNum != static_cast<u32>(0)) {
-            if (this->::uSoundZoneBase::getZoneLayout() != static_cast<cZoneLayout*>(nullptr)) {
+    cZoneLayout* t0 = getZoneLayout();
+    if (t0 != nullptr) {
+        const u32 GroupManagerNum = t0->getGroupManagerNum();
+        if (GroupManagerNum != 0) {
+            if (getZoneLayout() != nullptr) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i0_3 = 0;;) {
                     // inferred: a temporary for the result of the call at 0xd4d613, used twice; no DWARF local holds it
-                    cZoneLayout* t1 = this->::uSoundZoneBase::getZoneLayout();
-                    if (t1 != static_cast<cZoneLayout*>(nullptr)) {
+                    cZoneLayout* t1 = getZoneLayout();
+                    if (t1 != nullptr) {
                         // inferred: a temporary for the result of the call at 0xd4d622, used 3 times; no DWARF local holds it
-                        cZoneLayout::cInGameGroupManager* t2 = t1->::cZoneLayout::getGroupManagerFromIndex(static_cast<s32>(i0_3));
-                        if (t2 != static_cast<cZoneLayout::cInGameGroupManager*>(nullptr)) {
-                            if (t2->::cZoneLayout::cInGameGroupManager::isEnable() != false) {
-                                static_cast<uSoundTrigger::cTriggerGroupManager*>(t2)->mHitCount = static_cast<u16>(0);
+                        cZoneLayout::cInGameGroupManager* t2 = t1->getGroupManagerFromIndex(static_cast<s32>(i0_3));
+                        if (t2 != nullptr) {
+                            if (t2->isEnable()) {
+                                static_cast<uSoundTrigger::cTriggerGroupManager*>(t2)->mHitCount = 0;
                             }
                         }
-                        if (GroupManagerNum != (i0_3 + static_cast<unsigned int>(1))) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if (GroupManagerNum != (i0_3 + 1u)) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     } else {
-                        if (GroupManagerNum != (i0_3 + static_cast<unsigned int>(1))) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if (GroupManagerNum != (i0_3 + 1u)) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
@@ -513,47 +517,47 @@ __attribute__((weak)) void uSoundTrigger::initPanel() {
     // DWARF local not rendered: ShapeInfoBase* pShape;
     // DWARF local not rendered: cSoundTriggerLayoutInfo* pLayoutInfo;
     // Approximate from the ELF: a frame slot a join carries read as the values its stores carried; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    cZoneLayout* pZone = this->::uSoundZoneBase::getZoneLayout();
-    if (pZone != static_cast<cZoneLayout*>(nullptr)) {
-        const u32 layoutNum = pZone->::cZoneLayout::getLayoutElementNum();
-        if (layoutNum != static_cast<u32>(0)) {
+    cZoneLayout* pZone = getZoneLayout();
+    if (pZone != nullptr) {
+        const u32 layoutNum = pZone->cZoneLayout::getLayoutElementNum();
+        if (layoutNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0xd4c4e6, used 4 times; no DWARF local holds it
-                nZone::cLayoutElement* t0 = pZone->::cZoneLayout::getLayoutElement(i0_3);
-                if (t0 != static_cast<nZone::cLayoutElement*>(nullptr)) {
+                nZone::cLayoutElement* t0 = pZone->cZoneLayout::getLayoutElement(i0_3);
+                if (t0 != nullptr) {
                     // inferred: a temporary for the value the load at 0xd4c4f3 read, used 3 times; no DWARF local holds it
                     nZone::ShapeInfoBase* t2 = t0->mpShapeInfo;
-                    if (t2 != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-                        if (t2->getShapeType() == static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(9)) {
+                    if (t2 != nullptr) {
+                        if (t2->getShapeType() == nZone::ShapeInfoBase::SHAPE_TYPE_PANEL) {
                             // inferred: a temporary for the value the load at 0xd4c50c read, used 3 times; no DWARF local holds it
-                            MtObject* t3 = t0->::nZone::cLayoutElement::getExtendObj();
-                            if (t3 != static_cast<MtObject*>(nullptr)) {
-                                static_cast<cSoundTriggerLayoutInfo*>(t3)->::cSoundTriggerLayoutInfo::calcPanelNormal(static_cast<nZone::ShapeInfoPanel*>(t2));
-                                static_cast<cSoundTriggerLayoutInfo*>(t3)->::cSoundTriggerLayoutInfo::checkSetPanelType(t0);
+                            MtObject* t3 = t0->getExtendObj();
+                            if (t3 != nullptr) {
+                                static_cast<cSoundTriggerLayoutInfo*>(t3)->calcPanelNormal(static_cast<nZone::ShapeInfoPanel*>(t2));
+                                static_cast<cSoundTriggerLayoutInfo*>(t3)->checkSetPanelType(t0);
                             }
-                            if (layoutNum != (i0_3 + static_cast<unsigned int>(1))) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if (layoutNum != (i0_3 + 1u)) {
+                                i0_3 += 1u;
                             } else {
                                 break;
                             }
                         } else {
-                            if (layoutNum != (i0_3 + static_cast<unsigned int>(1))) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if (layoutNum != (i0_3 + 1u)) {
+                                i0_3 += 1u;
                             } else {
                                 break;
                             }
                         }
                     } else {
-                        if (layoutNum != (i0_3 + static_cast<unsigned int>(1))) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if (layoutNum != (i0_3 + 1u)) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     }
                 } else {
-                    if (layoutNum != (i0_3 + static_cast<unsigned int>(1))) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if (layoutNum != (i0_3 + 1u)) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -702,6 +706,8 @@ __attribute__((weak)) void uSoundTrigger::requestStream(rSoundStreamRequest* pRe
 //   in uSoundTrigger::move at 0x00d4c582-0x00d4c5b4 (called at uSoundTrigger.cpp:1387)
 // void uSoundTrigger::setZoneListener();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundTrigger::MyDTI uSoundTrigger::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4ef2e-0x00d4ef6b (called at uSoundTrigger.cpp:1299)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4ef2e-0x00d4ef6b (called at uSoundTrigger.h:1248)
@@ -736,7 +742,7 @@ const MtDTI& uSoundTrigger::cTriggerGroupManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundTrigger::cTriggerGroupManager::DTI)->memAlloc(sz, align, ::uSoundTrigger::cTriggerGroupManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundTrigger::cTriggerGroupManager::DTI)->memAlloc(sz, align, uSoundTrigger::cTriggerGroupManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -751,7 +757,7 @@ inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, u32 al
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundTrigger::cTriggerGroupManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundTrigger::cTriggerGroupManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundTrigger::cTriggerGroupManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -776,7 +782,7 @@ uSoundTrigger::cTriggerGroupManager::~cTriggerGroupManager() {
 // Address: 0x00d4c020 - 0x00d4c025 (5 bytes)
 MtUI* uSoundTrigger::cTriggerGroupManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::cGroupManager::createUI(prop);
+    return this->uSoundZoneBase::cGroupManager::createUI(prop);
 }
 
 // Address: 0x00d4bf30 - 0x00d4c018 (232 bytes)
@@ -784,6 +790,8 @@ __attribute__((weak)) void uSoundTrigger::cTriggerGroupManager::createProperty(M
     DDON_STUB("uSoundTrigger::cTriggerGroupManager::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundTrigger::cTriggerGroupManager::MyDTI uSoundTrigger::cTriggerGroupManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundTrigger.cpp at 0x00d4eef1-0x00d4ef2e (called at uSoundTrigger.cpp:1252)
@@ -793,6 +801,6 @@ __attribute__((weak)) void uSoundTrigger::cTriggerGroupManager::createProperty(M
 // Address: 0x00d4be10 - 0x00d4be64 (84 bytes)
 MtObject* uSoundTrigger::cTriggerGroupManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundTrigger::cTriggerGroupManager;
+    return new (16u) uSoundTrigger::cTriggerGroupManager;
 }
 

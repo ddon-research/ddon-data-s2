@@ -101,7 +101,7 @@ __attribute__((weak)) void cSetInfoCoord::createToolProperty(MtPropertyList& s) 
 // Address: 0x0055d570 - 0x0055d575 (5 bytes)
 MtUI* cSetInfoCoord::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0055d580 - 0x0055d70e (398 bytes)
@@ -135,29 +135,29 @@ __attribute__((weak)) void cSetInfoCoord::setcSetName(const MtString& name) {
 // Address: 0x01a60bf0 - 0x01a60bf4 (4 bytes)
 s32 cSetInfoCoord::getUnitID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnitID;
+    return mUnitID;
 }
 
 // Address: 0x0055cb50 - 0x0055cb54 (4 bytes)
 void cSetInfoCoord::setUnitID(s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUnitID = id;
+    mUnitID = id;
 }
 
 // Address: 0x01a60b80 - 0x01a60b9e (30 bytes)
 void cSetInfoCoord::setPosition(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPosition.x = pos.x;
-    this->mPosition.y = pos.y;
-    this->mPosition.z = pos.z;
+    mPosition.x = pos.x;
+    mPosition.y = pos.y;
+    mPosition.z = pos.z;
 }
 
 // Address: 0x01a60ba0 - 0x01a60bbe (30 bytes)
 void cSetInfoCoord::setAngle(const MtVector3& ang) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAngle.x = ang.x;
-    this->mAngle.y = ang.y;
-    this->mAngle.z = ang.z;
+    mAngle.x = ang.x;
+    mAngle.y = ang.y;
+    mAngle.z = ang.z;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (12 bytes)
@@ -203,9 +203,9 @@ __attribute__((weak)) MtVector3 cSetInfoCoord::getPositionForProperty() const {
 // Address: 0x01a60c30 - 0x01a60c4e (30 bytes)
 void cSetInfoCoord::setPositionForProperty(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPosition.x = pos.x;
-    this->mPosition.y = pos.y;
-    this->mPosition.z = pos.z;
+    mPosition.x = pos.x;
+    mPosition.y = pos.y;
+    mPosition.z = pos.z;
 }
 
 // Address: 0x01a60c50 - 0x01a60c78 (40 bytes)
@@ -217,9 +217,9 @@ __attribute__((weak)) MtVector3 cSetInfoCoord::getAngleForProperty() const {
 // Address: 0x01a60c80 - 0x01a60c9e (30 bytes)
 void cSetInfoCoord::setAngleForProperty(const MtVector3& angle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAngle.x = angle.x;
-    this->mAngle.y = angle.y;
-    this->mAngle.z = angle.z;
+    mAngle.x = angle.x;
+    mAngle.y = angle.y;
+    mAngle.z = angle.z;
 }
 
 // Address: 0x01a60ca0 - 0x01a60cc8 (40 bytes)
@@ -231,10 +231,12 @@ __attribute__((weak)) MtVector3 cSetInfoCoord::getScaleForProperty() const {
 // Address: 0x01a60cd0 - 0x01a60cee (30 bytes)
 void cSetInfoCoord::setScaleForProperty(const MtVector3& scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScale.x = scale.x;
-    this->mScale.y = scale.y;
-    this->mScale.z = scale.z;
+    mScale.x = scale.x;
+    mScale.y = scale.y;
+    mScale.z = scale.z;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSetInfoCoord::MyDTI cSetInfoCoord::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSetInfoCoord.cpp at 0x0055d92f-0x0055d96c (called at cSetInfoCoord.cpp:33)

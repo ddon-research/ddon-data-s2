@@ -33,7 +33,7 @@ const MtDTI& sUserManager::getDTI() const {
 // Address: 0x00e5fae0 - 0x00e5fb20 (64 bytes)
 void* sUserManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sUserManager::DTI)->memAlloc(sz, align, ::sUserManager::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sUserManager::DTI)->memAlloc(sz, align, sUserManager::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* sUserManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12sUserManagerD0Ev at 0x00e6015e-0x00e6017f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sUserManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sUserManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sUserManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,19 +98,19 @@ __attribute__((weak)) void sUserManager::initializeInfo() {
 // Address: 0x00e60470 - 0x00e6047c (12 bytes)
 s32 sUserManager::getUserId(s32 UserNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUser[UserNo].mId;
+    return mUser[UserNo].mId;
 }
 
 // Address: 0x00e60460 - 0x00e60464 (4 bytes)
 s32 sUserManager::getInitialUserId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mInitialUserId;
+    return mInitialUserId;
 }
 
 // Address: 0x00e60480 - 0x00e6048c (12 bytes)
 bool sUserManager::isPadConnected(s32 padno) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUser[padno].mPad.mIsConnected;
+    return mUser[padno].mPad.mIsConnected;
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,12 +140,12 @@ __attribute__((weak)) void sUserManager::removeListener(cUserManagerListener* li
 // Address: 0x00e604a0 - 0x00e604bc (28 bytes)
 s32 sUserManager::getPadHandler(s32 userId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (userId > static_cast<s32>(-1)) {
-        if (this->mUser[userId].mPad.mIsConnected != false) {
-            return this->mUser[userId].mPad.mHandler;
+    if (userId > -1) {
+        if (mUser[userId].mPad.mIsConnected) {
+            return mUser[userId].mPad.mHandler;
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,19 +157,19 @@ s32 sUserManager::getPadHandler(s32 userId) {
 // Address: 0x00e604e0 - 0x00e604e4 (4 bytes)
 s32 sUserManager::getPadRemoteHandler() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPadTVRemote.mHandler;
+    return mPadTVRemote.mHandler;
 }
 
 // Address: 0x00e604f0 - 0x00e604f4 (4 bytes)
 bool sUserManager::isPadRemoteConnected() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPadTVRemote.mIsConnected;
+    return mPadTVRemote.mIsConnected;
 }
 
 // Address: 0x00e60500 - 0x00e6050f (15 bytes)
 bool sUserManager::isPadSpecConnected(s32 userId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUser[userId].mPadSpec.mIsConnected;
+    return mUser[userId].mPadSpec.mIsConnected;
 }
 
 // No out-of-line body: no code in the ELF
@@ -210,6 +210,11 @@ __attribute__((weak)) void sUserManager::checkPadConnection() {
     DDON_STUB("sUserManager::checkPadConnection")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sUserManager::MyDTI sUserManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sUserManager* sUserManager::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sUserManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

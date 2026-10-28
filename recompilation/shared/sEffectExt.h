@@ -975,3 +975,15 @@ inline cVfxLightInfluence::cVfxLightInfluence() {
     this->mEnv1 = 1.0f;
     this->mEnv2 = 1.0f;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sEffectExt::setCommonEffect at 0x77395a-0x773965; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rEffectProvider* sEffectExt::getCommonEPV(u32 Type) const {
+    return this->mpCommonEPV[Type];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sEffectExt::setOthersTransparencyPercentage at 0x777c1f-0x777c27; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sEffectExt::setOthersTransparencyPercentage(f32 set) {
+    this->mOthersTransparencyPercentage = set;
+}

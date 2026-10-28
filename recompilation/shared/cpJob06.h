@@ -186,7 +186,67 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHmMagicChantNormalBegin::init at 0x2150ff-0x215102; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cpJob06::getAirChantCount() {
+    return this->mAirChantCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06FireBreathLv2::preInit at 0x2b41e7-0x2b41ec; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpJob06::getCS01LastShotRate() {
+    return this->mCS01LastShotRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06FireBreath::preInit at 0x2b405f-0x2b4065; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob06::setCS01LastShotRate(f32 val) {
+    this->mCS01LastShotRate = val;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 cpJob06::getCS13LastShotRate() {
     return this->mCS13LastShotRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06IceSpearShot::preInit at 0x2b7a6f-0x2b7a78; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob06::setCS13LastShotRate(f32 val) {
+    this->mCS13LastShotRate = val;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06IceSpearMode::init at 0x2b8ecd-0x2b8ed4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob06::clearReqKillCS13LandEffect() {
+    this->mReqKillCS13LandEffect = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06AnchorDischarge::preInit at 0x2ba5e7-0x2ba5ef; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpJob06::getCS14LastShotRate() {
+    return this->mCS14LastShotRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob06LightningAnchorShot::preInit at 0x2ba1ef-0x2ba1f8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob06::setCS14LastShotRate(f32 val) {
+    this->mCS14LastShotRate = val;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline s32 cpJob06::getPrminentSphereSize() {
+    return this->mShotPrminentSphereSize;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob06::setPrminentSphereSize(s32 valu) {
+    this->mShotPrminentSphereSize = valu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterActBindAnchor::updateContinueIceSpear at 0x43a5fe-0x43a604; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 cpJob06::getIceRemainingBullets() {
+    return this->mIceRemainingBullets;
 }

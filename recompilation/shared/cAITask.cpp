@@ -136,17 +136,17 @@ __attribute__((weak)) bool cAITask::moveTask() {
 // Address: 0x0105f9f0 - 0x0105f9f5 (5 bytes)
 void cAITask::doneTask() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuitTaskLoop = true;
+    mQuitTaskLoop = true;
 }
 
 // Address: 0x0105fa00 - 0x0105fa16 (22 bytes)
 void cAITask::nextJob() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpCurrentJobPrimitive = this->mpCurrentJobPrimitive->mpNext;
-    if (this->mpCurrentJobPrimitive != static_cast<cAITaskJobPrim*>(nullptr)) {
+    mpCurrentJobPrimitive = mpCurrentJobPrimitive->mpNext;
+    if (mpCurrentJobPrimitive != nullptr) {
         return;
     }
-    this->mQuitTaskLoop = true;
+    mQuitTaskLoop = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,6 +182,8 @@ __attribute__((weak)) void cAITask::moveJobOnDelayJob(u32 param) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAITask::setTaskDone();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAITask::MyDTI cAITask::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -212,7 +214,7 @@ const MtDTI& cAITaskJobPrim::getDTI() const {
 // Address: 0x0105fab0 - 0x0105faf0 (64 bytes)
 void* cAITaskJobPrim::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cAITaskJobPrim::DTI)->memAlloc(sz, align, ::cAITaskJobPrim::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAITaskJobPrim::DTI)->memAlloc(sz, align, cAITaskJobPrim::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -227,7 +229,7 @@ void* cAITaskJobPrim::operator new(size_t sz, u32 align) {
 // Address: 0x0105fb20 - 0x0105fb4a (42 bytes)
 __attribute__((weak)) void cAITaskJobPrim::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::cAITaskJobPrim::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAITaskJobPrim::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -253,6 +255,8 @@ cAITaskJobPrim::~cAITaskJobPrim() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITaskJobPrim* cAITaskJobPrim::getNext();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAITaskJobPrim::MyDTI cAITaskJobPrim::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITaskJobPrim::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -284,7 +288,7 @@ const MtDTI& cAITaskJobPrimList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK18cAITaskJobPrimList5MyDTI11newInstanceEv at 0x0105fb80-0x0105fbad, code DWARF attributes to no inlined copy; sz is the class's size (24), align the allocation's other whole constant (16)
 inline void* cAITaskJobPrimList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAITaskJobPrimList::DTI)->memAlloc(sz, align, ::cAITaskJobPrimList::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAITaskJobPrimList::DTI)->memAlloc(sz, align, cAITaskJobPrimList::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -315,20 +319,20 @@ inline void* cAITaskJobPrimList::operator new(size_t sz, u32 align) {
 // Also emitted as: _ZN18cAITaskJobPrimListD0Ev at 0x01b6c250
 cAITaskJobPrimList::~cAITaskJobPrimList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpList != static_cast<cAITaskJobPrim*>(nullptr)) {
+    if (mpList != nullptr) {
         // inferred: the value the loop at 0x1b6c1c0 carries; no location-less local in scope fits
-        for (cAITaskJobPrim* v0_5 = this->mpList;;) {
+        for (cAITaskJobPrim* v0_5 = mpList;;) {
             // inferred: a temporary for the value the load at 0x1b6c1c3 read, used once; no DWARF local holds it
             cAITaskJobPrim* t0 = v0_5->mpNext;
             delete v0_5;
-            if (t0 != static_cast<cAITaskJobPrim*>(nullptr)) {
+            if (t0 != nullptr) {
                 v0_5 = t0;
             } else {
                 break;
             }
         }
     }
-    this->mpList = static_cast<cAITaskJobPrim*>(nullptr);
+    mpList = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -337,19 +341,19 @@ cAITaskJobPrimList::~cAITaskJobPrimList() {
 // Address: 0x0105fc60 - 0x0105fc95 (53 bytes)
 void cAITaskJobPrimList::add(cAITaskJobPrim* pPrim) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pPrim == static_cast<cAITaskJobPrim*>(nullptr)) {
+    if (pPrim == nullptr) {
         return;
     }
-    if (pPrim->mpNext != static_cast<cAITaskJobPrim*>(nullptr)) {
+    if (pPrim->mpNext != nullptr) {
         return;
     }
-    if (this->mpList != static_cast<cAITaskJobPrim*>(nullptr)) {
-        this->mpListBottom->mpNext = pPrim;
+    if (mpList != nullptr) {
+        mpListBottom->mpNext = pPrim;
     } else {
-        this->mpList = pPrim;
+        mpList = pPrim;
     }
-    pPrim->mpNext = static_cast<cAITaskJobPrim*>(nullptr);
-    this->mpListBottom = pPrim;
+    pPrim->mpNext = nullptr;
+    mpListBottom = pPrim;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -367,12 +371,14 @@ void cAITaskJobPrimList::add(cAITaskJobPrim* pPrim) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITaskJobPrim* cAITaskJobPrimList::searchByType(u32 type);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAITaskJobPrimList::MyDTI cAITaskJobPrimList::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAITaskJobPrimList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0105fb80 - 0x0105fbde (94 bytes)
 MtObject* cAITaskJobPrimList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAITaskJobPrimList;
+    return new (16u) cAITaskJobPrimList;
 }
 

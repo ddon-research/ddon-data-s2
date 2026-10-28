@@ -32,7 +32,7 @@ const MtDTI& rSoundStreamSourcePackage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK25rSoundStreamSourcePackage5MyDTI11newInstanceEv at 0x012f7f40-0x012f7f6d, code DWARF attributes to no inlined copy; sz is the class's size (320), align the allocation's other whole constant (16)
 inline void* rSoundStreamSourcePackage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::DTI)->memAlloc(sz, align, ::rSoundStreamSourcePackage::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::DTI)->memAlloc(sz, align, rSoundStreamSourcePackage::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* rSoundStreamSourcePackage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25rSoundStreamSourcePackageD0Ev at 0x012f80bd-0x012f80de, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundStreamSourcePackage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,13 +66,13 @@ inline void rSoundStreamSourcePackage::operator delete(void* p_addr) {
 // Also emitted as: _ZN25rSoundStreamSourcePackageD0Ev at 0x012f8070
 rSoundStreamSourcePackage::~rSoundStreamSourcePackage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::rSoundSource::mOpenCtr == static_cast<s32>(1)) {
-        this->::rSoundSource::close();
+    if (mOpenCtr == 1) {
+        close();
     }
-    if (this->::rSoundSource::mpFile != static_cast<rSoundSource::SoundFile*>(nullptr)) {
-        delete this->::rSoundSource::mpFile;
+    if (mpFile != nullptr) {
+        delete mpFile;
     }
-    this->::rSoundSource::mpFile = static_cast<rSoundSource::SoundFile*>(nullptr);
+    mpFile = nullptr;
 }
 
 // Address: 0x012f80e0 - 0x012f81e7 (263 bytes)
@@ -90,8 +90,8 @@ u32 rSoundStreamSourcePackage::read(void* pdest, u32 size, u32* pid, u32 sourceO
     // DWARF local not rendered: const u32 readSize;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x12f820d, used once; no DWARF local holds it
-    u32 t0 = this->::rSoundSource::read(pdest, size, pid);
-    this->::rSoundSource::mFilePosition = sourceOffset + this->::rSoundSource::mFilePosition;
+    u32 t0 = this->rSoundSource::read(pdest, size, pid);
+    mFilePosition = sourceOffset + mFilePosition;
     return t0;
 }
 
@@ -113,13 +113,15 @@ MT_CTSTR rSoundStreamSourcePackage::getExt() const {
     return "sspr";
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundStreamSourcePackage::MyDTI rSoundStreamSourcePackage::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundStreamSourcePackage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x012f7f40 - 0x012f7f8e (78 bytes)
 MtObject* rSoundStreamSourcePackage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundStreamSourcePackage;
+    return new (16u) rSoundStreamSourcePackage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ const MtDTI& rSoundStreamSourcePackage::PackageFile::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25rSoundStreamSourcePackage11PackageFileD0Ev at 0x01bbc3f8-0x01bbc419, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundStreamSourcePackage::PackageFile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::PackageFile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::PackageFile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,17 +182,17 @@ rSoundStreamSourcePackage::PackageFile::~PackageFile() {
 // Address: 0x012f7f00 - 0x012f7f10 (16 bytes)
 u32 rSoundStreamSourcePackage::PackageFile::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mLength != static_cast<u32>(0)) {
-        return this->mLength;
+    if (mLength != 0) {
+        return mLength;
     } else {
-        return this->::MtFileStream::getLength();
+        return this->MtFileStream::getLength();
     }
 }
 
 // Address: 0x012f7f10 - 0x012f7f1b (11 bytes)
 u32 rSoundStreamSourcePackage::PackageFile::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtFileStream::seek(static_cast<s32>(offset + this->mOffset), origin);
+    return this->MtFileStream::seek(static_cast<s32>(offset + mOffset), origin);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -198,6 +200,8 @@ u32 rSoundStreamSourcePackage::PackageFile::seek(s32 offset, MtStream::SEEK_ORIG
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundStreamSourcePackage::PackageFile::clearSourceInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundStreamSourcePackage::PackageFile::MyDTI rSoundStreamSourcePackage::PackageFile::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundStreamSourcePackage::PackageFile::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -36,7 +36,7 @@ const MtDTI& cStaminaDecList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cStaminaDecList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStaminaDecList::DTI)->memAlloc(sz, align, ::cStaminaDecList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStaminaDecList::DTI)->memAlloc(sz, align, cStaminaDecList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* cStaminaDecList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cStaminaDecList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStaminaDecList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStaminaDecList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,38 +72,38 @@ inline void cStaminaDecList::operator delete(void* p_addr) {
 // Also emitted as: _ZN15cStaminaDecListD0Ev at 0x00706af0
 cStaminaDecList::~cStaminaDecList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mStaminaDecList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mStaminaDecList.mLength != 0) {
         // inferred: the value the loop at 0x706a70 carries; no location-less local in scope fits
-        u32 v0_0 = this->mStaminaDecList.::MtArray::mLength;
+        u32 v0_0 = mStaminaDecList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mStaminaDecList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mStaminaDecList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mStaminaDecList.::MtArray::mLength) {
-                    v0_0 = this->mStaminaDecList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mStaminaDecList.mpArray[i0_3] != nullptr) {
+                delete mStaminaDecList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mStaminaDecList.mLength) {
+                    v0_0 = mStaminaDecList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mStaminaDecList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mStaminaDecList.::MtArray::mpArray));
+    if (mStaminaDecList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStaminaDecList.mpArray));
     }
-    this->mStaminaDecList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mStaminaDecList.::MtArray::mLength = static_cast<u32>(0);
-    this->mCType = static_cast<nStamina::CONTINUATION_TYPE>(0);
-    this->mExecuteType = static_cast<nStamina::UPDATE_TYPE>(0);
-    this->mStaminaType = static_cast<u32>(0);
-    this->mValueType = static_cast<nStamina::VALUE_TYPE>(0);
-    this->mStaminaDecList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    mStaminaDecList.mBufsiz = 0;
+    mStaminaDecList.mLength = 0;
+    mCType = nStamina::TYPE_ALWAYS;
+    mExecuteType = nStamina::TYPE_DECREASE;
+    mStaminaType = 0;
+    mValueType = nStamina::TYPE_REAL;
+    mStaminaDecList.mpArray = nullptr;
 }
 
 // Address: 0x00706bc0 - 0x00706bc1 (1 bytes)
@@ -158,6 +158,8 @@ __attribute__((weak)) bool cStaminaDecList::importBinary(MtDataReader& reader) {
 //   in rStaminaDecTbl::save at 0x00707619-0x007076a7 (called at rStaminaDecTbl.cpp:331)
 // bool cStaminaDecList::exportBinary(MtDataWriter& writer);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStaminaDecList::MyDTI cStaminaDecList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStaminaDecTbl.cpp at 0x00707754-0x0070778d (called at rStaminaDecTbl.cpp:82)
 //   in _GLOBAL__sub_I_rStaminaDecTbl.cpp at 0x00707754-0x0070778d (called at rStaminaDecTbl.h:58)
@@ -166,7 +168,7 @@ __attribute__((weak)) bool cStaminaDecList::importBinary(MtDataReader& reader) {
 // Address: 0x00706940 - 0x007069b9 (121 bytes)
 MtObject* cStaminaDecList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStaminaDecList;
+    return new (16u) cStaminaDecList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,7 +195,7 @@ const MtDTI& cStaminaDecParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cStaminaDecParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStaminaDecParam::DTI)->memAlloc(sz, align, ::cStaminaDecParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStaminaDecParam::DTI)->memAlloc(sz, align, cStaminaDecParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -207,7 +209,7 @@ inline void* cStaminaDecParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStaminaDecParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStaminaDecParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStaminaDecParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -236,7 +238,7 @@ __attribute__((weak)) void cStaminaDecParam::createProperty(MtPropertyList& prop
 // Address: 0x00706920 - 0x00706925 (5 bytes)
 MtUI* cStaminaDecParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (10 bytes)
@@ -252,6 +254,8 @@ MtUI* cStaminaDecParam::createUI(MtProperty& prop) {
 //   in rStaminaDecTbl::save at 0x0070768d-0x0070769f (called at rStaminaDecTbl.cpp:242)
 // bool cStaminaDecParam::exportBinary(MtDataWriter& writer);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStaminaDecParam::MyDTI cStaminaDecParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rStaminaDecTbl.cpp at 0x00707710-0x00707754 (called at rStaminaDecTbl.cpp:24)
 //   in _GLOBAL__sub_I_rStaminaDecTbl.cpp at 0x00707710-0x00707754 (called at rStaminaDecTbl.h:23)
@@ -260,7 +264,7 @@ MtUI* cStaminaDecParam::createUI(MtProperty& prop) {
 // Address: 0x00706760 - 0x007067a7 (71 bytes)
 MtObject* cStaminaDecParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStaminaDecParam;
+    return new (16u) cStaminaDecParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,7 +290,7 @@ const MtDTI& rStaminaDecTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStaminaDecTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStaminaDecTbl::DTI)->memAlloc(sz, align, ::rStaminaDecTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStaminaDecTbl::DTI)->memAlloc(sz, align, rStaminaDecTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -301,7 +305,7 @@ inline void* rStaminaDecTbl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStaminaDecTbl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStaminaDecTbl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStaminaDecTbl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -324,42 +328,42 @@ MT_CTSTR rStaminaDecTbl::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStaminaDecTbl::rStaminaDecTbl() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mDecTbl.::MtArray::mAutoDelete = true;
+    setAttribute(18u);
+    mDecTbl.mAutoDelete = true;
 }
 
 // Address: 0x00706f80 - 0x00707031 (177 bytes)
 // Also emitted as: _ZN14rStaminaDecTblD0Ev at 0x00707040
 rStaminaDecTbl::~rStaminaDecTbl() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mDecTbl.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mDecTbl.mLength != 0) {
         // inferred: the value the loop at 0x706fb0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mDecTbl.::MtArray::mLength;
+        u32 v0_0 = mDecTbl.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mDecTbl.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mDecTbl.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mDecTbl.::MtArray::mLength) {
-                    v0_0 = this->mDecTbl.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mDecTbl.mpArray[i0_3] != nullptr) {
+                delete mDecTbl.mpArray[i0_3];
+                if ((i0_3 + 1u) < mDecTbl.mLength) {
+                    v0_0 = mDecTbl.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mDecTbl.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDecTbl.::MtArray::mpArray));
+    if (mDecTbl.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDecTbl.mpArray));
     }
-    this->mDecTbl.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mDecTbl.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mDecTbl.::MtArray::mLength = static_cast<u32>(0);
+    mDecTbl.mpArray = nullptr;
+    mDecTbl.mBufsiz = 0;
+    mDecTbl.mLength = 0;
 }
 
 // Address: 0x00707110 - 0x007071f8 (232 bytes)
@@ -371,7 +375,7 @@ __attribute__((weak)) void rStaminaDecTbl::createProperty(MtPropertyList& propli
 // Address: 0x00707200 - 0x00707205 (5 bytes)
 MtUI* rStaminaDecTbl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x00707210 - 0x0070755c (844 bytes)
@@ -398,34 +402,34 @@ __attribute__((weak)) bool rStaminaDecTbl::save(MtStream& out) {
 // Address: 0x01ab3c80 - 0x01ab3d08 (136 bytes)
 void rStaminaDecTbl::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mDecTbl.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mDecTbl.mLength != 0) {
         // inferred: the value the loop at 0x1ab3ca0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mDecTbl.::MtArray::mLength;
+        u32 v0_0 = mDecTbl.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mDecTbl.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mDecTbl.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mDecTbl.::MtArray::mLength) {
-                    v0_0 = this->mDecTbl.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mDecTbl.mpArray[i0_3] != nullptr) {
+                delete mDecTbl.mpArray[i0_3];
+                if ((i0_3 + 1u) < mDecTbl.mLength) {
+                    v0_0 = mDecTbl.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mDecTbl.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDecTbl.::MtArray::mpArray));
+    if (mDecTbl.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDecTbl.mpArray));
     }
-    this->mDecTbl.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mDecTbl.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mDecTbl.::MtArray::mLength = static_cast<u32>(0);
+    mDecTbl.mpArray = nullptr;
+    mDecTbl.mBufsiz = 0;
+    mDecTbl.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -434,12 +438,14 @@ void rStaminaDecTbl::clear() {
 // Address: 0x007076f0 - 0x00707705 (21 bytes)
 cStaminaDecList* rStaminaDecTbl::getStaminaDecList(u32 tblIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tblIndex < this->mDecTbl.::MtArray::mLength) {
-        return static_cast<cStaminaDecList*>(this->mDecTbl.::MtArray::mpArray[tblIndex]);
+    if (tblIndex < mDecTbl.mLength) {
+        return static_cast<cStaminaDecList*>(mDecTbl.mpArray[tblIndex]);
     } else {
-        return static_cast<cStaminaDecList*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStaminaDecTbl::MyDTI rStaminaDecTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStaminaDecTbl.cpp at 0x0070778d-0x007077ca (called at rStaminaDecTbl.cpp:254)
@@ -449,7 +455,7 @@ cStaminaDecList* rStaminaDecTbl::getStaminaDecList(u32 tblIndex) const {
 // Address: 0x00706e70 - 0x00706ef4 (132 bytes)
 MtObject* rStaminaDecTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStaminaDecTbl;
+    return new (16u) rStaminaDecTbl;
 }
 
 // Instance at 0x01ab3bc0 - 0x01ab3bc5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

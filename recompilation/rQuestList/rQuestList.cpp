@@ -37,7 +37,7 @@ const MtDTI& cQuestGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestGroup::DTI)->memAlloc(sz, align, ::cQuestGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestGroup::DTI)->memAlloc(sz, align, cQuestGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* cQuestGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,7 +84,7 @@ __attribute__((weak)) void cQuestGroup::createProperty(MtPropertyList& s) {
 // Address: 0x006b7480 - 0x006b7484 (4 bytes)
 s32 cQuestGroup::getCondition() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCondition;
+    return mCondition;
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,7 +93,7 @@ s32 cQuestGroup::getCondition() const {
 // Address: 0x006b74c0 - 0x006b74c4 (4 bytes)
 s32 cQuestGroup::getEraseCondition() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEraseCondition;
+    return mEraseCondition;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -101,6 +101,8 @@ s32 cQuestGroup::getEraseCondition() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cQuestGroup::setEraseCondition(bool b);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestGroup::MyDTI cQuestGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7f00-0x006b7f39 (called at rQuestList.cpp:220)
@@ -110,7 +112,7 @@ s32 cQuestGroup::getEraseCondition() const {
 // Address: 0x006b6e50 - 0x006b6ed0 (128 bytes)
 MtObject* cQuestGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestGroup;
+    return new (16u) cQuestGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,7 +138,7 @@ const MtDTI& cQuestSet::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestSet::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestSet::DTI)->memAlloc(sz, align, ::cQuestSet::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestSet::DTI)->memAlloc(sz, align, cQuestSet::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,6 +195,8 @@ __attribute__((weak)) void cQuestSet::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // void cQuestSet::setSetID(s32 id);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSet::MyDTI cQuestSet::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7ec0-0x006b7f00 (called at rQuestList.cpp:35)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7ec0-0x006b7f00 (called at rQuestList.h:38)
@@ -201,7 +205,7 @@ __attribute__((weak)) void cQuestSet::createProperty(MtPropertyList& s) {
 // Address: 0x006b67a0 - 0x006b6826 (134 bytes)
 MtObject* cQuestSet::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestSet;
+    return new (16u) cQuestSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -227,7 +231,7 @@ const MtDTI& cQuestStage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestStage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestStage::DTI)->memAlloc(sz, align, ::cQuestStage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestStage::DTI)->memAlloc(sz, align, cQuestStage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -242,7 +246,7 @@ inline void* cQuestStage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestStage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestStage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestStage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -262,34 +266,34 @@ inline void cQuestStage::operator delete(void* p_addr) {
 // Also emitted as: _ZN11cQuestStageD0Ev at 0x006b7660
 cQuestStage::~cQuestStage() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mQuestGrp.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mQuestGrp.mLength != 0) {
         // inferred: the value the loop at 0x6b75f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mQuestGrp.::MtArray::mLength;
+        u32 v0_0 = mQuestGrp.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mQuestGrp.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mQuestGrp.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestGrp.::MtArray::mLength) {
-                    v0_0 = this->mQuestGrp.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestGrp.mpArray[i0_3] != nullptr) {
+                delete mQuestGrp.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuestGrp.mLength) {
+                    v0_0 = mQuestGrp.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mQuestGrp.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestGrp.::MtArray::mpArray));
+    if (mQuestGrp.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestGrp.mpArray));
     }
-    this->mQuestGrp.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mQuestGrp.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mQuestGrp.::MtArray::mLength = static_cast<u32>(0);
+    mQuestGrp.mpArray = nullptr;
+    mQuestGrp.mBufsiz = 0;
+    mQuestGrp.mLength = 0;
 }
 
 // Address: 0x006b7720 - 0x006b78b2 (402 bytes)
@@ -297,6 +301,8 @@ __attribute__((weak)) void cQuestStage::createProperty(MtPropertyList& s) {
     DDON_STUB("cQuestStage::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestStage::MyDTI cQuestStage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7f39-0x006b7f72 (called at rQuestList.cpp:286)
@@ -306,7 +312,7 @@ __attribute__((weak)) void cQuestStage::createProperty(MtPropertyList& s) {
 // Address: 0x006b74d0 - 0x006b7540 (112 bytes)
 MtObject* cQuestStage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestStage;
+    return new (16u) cQuestStage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -332,7 +338,7 @@ const MtDTI& rQuestList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rQuestList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestList::DTI)->memAlloc(sz, align, ::rQuestList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestList::DTI)->memAlloc(sz, align, rQuestList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -347,7 +353,7 @@ inline void* rQuestList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rQuestList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -361,43 +367,43 @@ inline void rQuestList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rQuestList::rQuestList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mbNoDelete = false;
+    setAttribute(22u);
+    mbNoDelete = false;
 }
 
 // Address: 0x006b79d0 - 0x006b7a81 (177 bytes)
 // Also emitted as: _ZN10rQuestListD0Ev at 0x006b7a90
 rQuestList::~rQuestList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mbNoDelete == false) {
-        if (this->mQuestStage.::MtArray::mLength != static_cast<u32>(0)) {
+    if (!mbNoDelete) {
+        if (mQuestStage.mLength != 0) {
             // inferred: the value the loop at 0x6b7a00 carries; no location-less local in scope fits
-            u32 v0_0 = this->mQuestStage.::MtArray::mLength;
+            u32 v0_0 = mQuestStage.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (this->mQuestStage.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mQuestStage.::MtArray::mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestStage.::MtArray::mLength) {
-                        v0_0 = this->mQuestStage.::MtArray::mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                if (mQuestStage.mpArray[i0_3] != nullptr) {
+                    delete mQuestStage.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mQuestStage.mLength) {
+                        v0_0 = mQuestStage.mLength;
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
         }
-        if (this->mQuestStage.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestStage.::MtArray::mpArray));
+        if (mQuestStage.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestStage.mpArray));
         }
-        this->mQuestStage.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mQuestStage.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mQuestStage.::MtArray::mLength = static_cast<u32>(0);
+        mQuestStage.mpArray = nullptr;
+        mQuestStage.mBufsiz = 0;
+        mQuestStage.mLength = 0;
     }
 }
 
@@ -410,7 +416,7 @@ __attribute__((weak)) void rQuestList::createProperty(MtPropertyList& s) {
 // Address: 0x006b7c50 - 0x006b7c55 (5 bytes)
 MtUI* rQuestList::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01aa33e0 - 0x01aa33e8 (8 bytes)
@@ -422,15 +428,15 @@ MT_CTSTR rQuestList::getExt() const {
 // Address: 0x006b7c60 - 0x006b7ce6 (134 bytes)
 bool rQuestList::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<unsigned short>(::rQuestList::DATA_VERSION), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x006b7cf0 - 0x006b7d77 (135 bytes)
 bool rQuestList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<unsigned short>(::rQuestList::DATA_VERSION), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<unsigned short>(rQuestList::DATA_VERSION), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -442,6 +448,10 @@ bool rQuestList::save(MtStream& out) {
 // No out-of-line body: no code in the ELF
 // cQuestSet* rQuestList::getQuestSet(u32 stageNo, u32 grpNo, u32 setNo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestList::MyDTI rQuestList::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const u32 rQuestList::DATA_VERSION;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7f72-0x006b7faf (called at rQuestList.cpp:314)
 //   in _GLOBAL__sub_I_rQuestList.cpp at 0x006b7f72-0x006b7faf (called at rQuestList.h:165)
@@ -450,7 +460,7 @@ bool rQuestList::save(MtStream& out) {
 // Address: 0x006b78c0 - 0x006b794e (142 bytes)
 MtObject* rQuestList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rQuestList;
+    return new (16u) rQuestList;
 }
 
 // Instance at 0x01aa3330 - 0x01aa3335 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

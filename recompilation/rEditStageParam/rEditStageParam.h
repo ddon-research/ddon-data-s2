@@ -263,7 +263,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEditStageParam::Info::WeatherData::WeatherData() {
-    this->mWeatherID = static_cast<u32>(1);
-    this->mHour = static_cast<u32>(12);
-    this->mMinite = static_cast<u32>(0);
+    this->mWeatherID = 1;
+    this->mHour = 12;
+    this->mMinite = 0;
 }

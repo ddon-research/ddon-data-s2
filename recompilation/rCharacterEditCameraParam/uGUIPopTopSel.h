@@ -504,3 +504,39 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIContentsExecutor::update at 0xd43da-0xd43e9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIPopTopSel::clearResult() {
+    this->mSelectResult = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUISkill::eventDecide at 0xc4c7a3-0xc4c7a9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uGUIPopTopSel::getPawnId() {
+    return this->mPawnId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUIPopTopSel::setCmnDenominatorNum(u32 num) {
+    this->mCmnDenominatorNum = num;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUIPopTopSel::setCmnNumeratorNum(u32 num) {
+    this->mCmnNumeratorNum = num;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPopTopSel::moveEvent at 0xbd1f3a-0xbd1f49; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIPopTopSel::eventChkout() {
+    this->mSelectResult = 3;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPopTopSel::moveEvent at 0xbd1f49-0xbd1f55; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIPopTopSel::eventTopbtn() {
+    this->mSelectResult = 4;
+}

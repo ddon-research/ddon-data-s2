@@ -36,7 +36,7 @@ const MtDTI& cEmBaseInfoSv::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cEmBaseInfoSv::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memAlloc(sz, align, ::cEmBaseInfoSv::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmBaseInfoSv::DTI)->memAlloc(sz, align, cEmBaseInfoSv::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEmBaseInfoSv::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmBaseInfoSv::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmBaseInfoSv::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cEmBaseInfoSv::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEmBaseInfoSv::~cEmBaseInfoSv();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmBaseInfoSv::MyDTI cEmBaseInfoSv::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmBaseInfoSv.cpp at 0x0065ca0f-0x0065ca4c (called at rEmBaseInfoSv.cpp:37)
 //   in _GLOBAL__sub_I_rEmBaseInfoSv.cpp at 0x0065ca0f-0x0065ca4c (called at rEmBaseInfoSv.h:30)
@@ -84,7 +86,7 @@ inline void cEmBaseInfoSv::operator delete(void* p_addr) {
 // Address: 0x0065c740 - 0x0065c788 (72 bytes)
 MtObject* cEmBaseInfoSv::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmBaseInfoSv;
+    return new (16u) cEmBaseInfoSv;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rEmBaseInfoSv::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmBaseInfoSv::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmBaseInfoSv::DTI)->memAlloc(sz, align, ::rEmBaseInfoSv::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmBaseInfoSv::DTI)->memAlloc(sz, align, rEmBaseInfoSv::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rEmBaseInfoSv::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rEmBaseInfoSvD0Ev at 0x01a83554-0x01a83573, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmBaseInfoSv::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmBaseInfoSv::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmBaseInfoSv::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,10 +143,10 @@ bool rEmBaseInfoSv::loadData(MtDataReader& r, cEmBaseInfoSv* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mEnemyID);
+    nDDOIO::readData(r, pData->mEnemyID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mEmCategory);
+    nDDOIO::readData(r, pData->mEmCategory);
     return true;
 }
 
@@ -157,8 +159,10 @@ MT_CTSTR rEmBaseInfoSv::getExt() const {
 // Address: 0x01a836a0 - 0x01a836a6 (6 bytes)
 u32 rEmBaseInfoSv::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(8);
+    return 8;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmBaseInfoSv::MyDTI rEmBaseInfoSv::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmBaseInfoSv.cpp at 0x0065ca4c-0x0065ca89 (called at rEmBaseInfoSv.cpp:38)
@@ -168,7 +172,7 @@ u32 rEmBaseInfoSv::getDataVersion() const {
 // Address: 0x0065c800 - 0x0065c864 (100 bytes)
 MtObject* rEmBaseInfoSv::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmBaseInfoSv;
+    return new (16u) rEmBaseInfoSv;
 }
 
 // Instance at 0x01a83650 - 0x01a83662 (18 bytes) of the generic rTbl2<T>::getData

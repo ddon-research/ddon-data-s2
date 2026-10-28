@@ -43,7 +43,7 @@ const MtDTI& cPawnAIActInter::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* cPawnAIActInter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnAIActInter::DTI)->memAlloc(sz, align, ::cPawnAIActInter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnAIActInter::DTI)->memAlloc(sz, align, cPawnAIActInter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* cPawnAIActInter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPawnAIActInter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnAIActInter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnAIActInter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,6 +98,8 @@ cPawnAIActInter::~cPawnAIActInter() {
 // No out-of-line body: no code in the ELF
 // u32 cPawnAIActInter::convNameID(MT_CTSTR name);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnAIActInter::MyDTI cPawnAIActInter::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rPawnAI.cpp at 0x006cb08e-0x006cb0ce (called at rPawnAI.cpp:119)
 //   in _GLOBAL__sub_I_rPawnAI.cpp at 0x006cb08e-0x006cb0ce (called at rPawnAI.h:43)
@@ -106,7 +108,7 @@ cPawnAIActInter::~cPawnAIActInter() {
 // Address: 0x006c97e0 - 0x006c983d (93 bytes)
 MtObject* cPawnAIActInter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnAIActInter;
+    return new (16u) cPawnAIActInter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,7 +150,7 @@ const MtDTI& cPawnAIAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPawnAIAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnAIAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (124 bytes)
@@ -179,22 +181,22 @@ cPawnAIAction::~cPawnAIAction() {
 // Address: 0x006c9bd0 - 0x006c9bd4 (4 bytes)
 u32 cPawnAIAction::getPawnActID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPawnActID;
+    return mPawnActID;
 }
 
 // Address: 0x006c9be0 - 0x006c9be4 (4 bytes)
 u32 cPawnAIAction::getPawnAIActInterNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpActInters.::MtArray::mLength;
+    return mpActInters.mLength;
 }
 
 // Address: 0x006c9bf0 - 0x006c9c03 (19 bytes)
 cPawnAIActInter* cPawnAIAction::getPawnAIActInter(u32 idx) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (idx < this->mpActInters.::MtArray::mLength) {
-        return static_cast<cPawnAIActInter*>(this->mpActInters.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    if (idx < mpActInters.mLength) {
+        return static_cast<cPawnAIActInter*>(mpActInters.getBuffer()[static_cast<int>(idx)]);
     } else {
-        return static_cast<cPawnAIActInter*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -205,7 +207,7 @@ cPawnAIActInter* cPawnAIAction::getPawnAIActInter(u32 idx) {
 // Address: 0x006c9c10 - 0x006c9c1a (10 bytes)
 u32 cPawnAIAction::convPawnActID(MT_CTSTR name) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    return MtCRC::getCRC(name, 0xFFFFFFFFu);
 }
 
 // Address: 0x006c9c20 - 0x006c9d8c (364 bytes)
@@ -299,7 +301,7 @@ __attribute__((weak)) void cPawnAIAction::getActInterOcd(uCharacter& owner, cAIP
 s32 cPawnAIAction::getJustRangeActNo() const {
     // DWARF local not rendered: s32 act_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJustRangeActNo;
+    return mJustRangeActNo;
 }
 
 // Address: 0x006ca620 - 0x006ca79b (379 bytes)
@@ -343,83 +345,84 @@ cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtTypedArray<cPawnAIAction>*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + 8)) != 0) {
+        u32 i = 0;
         do {
-            if (src.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(src.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != id) {
-                } else {
-                    return static_cast<cPawnAIAction*>(src.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if (src.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(src.getBuffer()[static_cast<int>(i)]) + 8)) == id) {
+                    return static_cast<cPawnAIAction*>(src.getBuffer()[static_cast<int>(i)]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + static_cast<long>(8))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + 8)));
     }
-    return static_cast<cPawnAIAction*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x006ca9d0 - 0x006cac1f (591 bytes)
 __attribute__((weak)) void cPawnAIAction::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPawnActID = r.readU32();
+    mPawnActID = r.readU32();
     // inferred: a temporary for the result of the call at 0x6ca9f7, used once; no DWARF local holds it
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&this->mGroup), t0 * static_cast<u32>(4));
-    this->mLifeFrame = r.readF32();
-    this->mStandOffFrame = r.readF32();
+    r.read(static_cast<void*>(&mGroup), t0 * 4u);
+    mLifeFrame = r.readF32();
+    mStandOffFrame = r.readF32();
     // inferred: a temporary for the result of the call at 0x6caa35, used once; no DWARF local holds it
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&this->mPawnAIActComCtrlFlag), t1 * static_cast<u32>(4));
-    this->mPawnAIActComCtrlOrderID = r.readU32();
+    r.read(static_cast<void*>(&mPawnAIActComCtrlFlag), t1 * 4u);
+    mPawnAIActComCtrlOrderID = r.readU32();
     // inferred: a temporary for the result of the call at 0x6caa62, used once; no DWARF local holds it
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&this->mPawnAIActCancelFlag), t2 * static_cast<u32>(4));
-    ::nDDOIO::readMtArray(r, this->mpActInters);
+    r.read(static_cast<void*>(&mPawnAIActCancelFlag), t2 * 4u);
+    nDDOIO::readMtArray(r, mpActInters);
     // inferred: a temporary for the result of the call at 0x6caa8e, used once; no DWARF local holds it
     u32 t3 = r.readU32();
-    r.read(static_cast<void*>(&this->mPawnAIActComEnableFlag), t3 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mPawnAIActComEnableFlag), t3 * 4u);
     // inferred: a temporary for the result of the call at 0x6caaae, used once; no DWARF local holds it
     u32 t4 = r.readU32();
-    r.read(static_cast<void*>(&this->mPawnAIActComDisableFlag), t4 * static_cast<u32>(4));
-    this->mProperTargetType = r.readU32();
-    this->mStaminaRateMin = r.readF32();
-    this->mStaminaRateMax = r.readF32();
-    this->mUseRateFromStaminaVeryLow = r.readF32();
-    this->mUseRateFromStaminaLow = r.readF32();
-    this->mUseRateFromStaminaMiddleLow = r.readF32();
-    this->mUseRateFromStaminaMiddleHigh = r.readF32();
-    this->mUseRateFromStaminaHigh = r.readF32();
-    this->mUseRateFromStaminaVeryHigh = r.readF32();
-    this->mSupportHpRateMin = r.readF32();
-    this->mSupportHpRateMax = r.readF32();
+    r.read(static_cast<void*>(&mPawnAIActComDisableFlag), t4 * 4u);
+    mProperTargetType = r.readU32();
+    mStaminaRateMin = r.readF32();
+    mStaminaRateMax = r.readF32();
+    mUseRateFromStaminaVeryLow = r.readF32();
+    mUseRateFromStaminaLow = r.readF32();
+    mUseRateFromStaminaMiddleLow = r.readF32();
+    mUseRateFromStaminaMiddleHigh = r.readF32();
+    mUseRateFromStaminaHigh = r.readF32();
+    mUseRateFromStaminaVeryHigh = r.readF32();
+    mSupportHpRateMin = r.readF32();
+    mSupportHpRateMax = r.readF32();
     // inferred: a temporary for the result of the call at 0x6cab89, used once; no DWARF local holds it
     u32 t5 = r.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    r.read(static_cast<void*>(&this->mSupportPawnActFlag), t5 * static_cast<u32>(4));
-    ::nDDOIO::readData(r, this->mEnableJobFlag);
+    r.read(static_cast<void*>(&mSupportPawnActFlag), t5 * 4u);
+    nDDOIO::readData(r, mEnableJobFlag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUseRate);
+    nDDOIO::readData(r, mUseRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUseRangeMin);
+    nDDOIO::readData(r, mUseRangeMin);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUseRangeMax);
+    nDDOIO::readData(r, mUseRangeMax);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mEnableJobCharge);
+    nDDOIO::readData(r, mEnableJobCharge);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mJustRangeActNo);
+    nDDOIO::readData(r, mJustRangeActNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mJustRangeJob);
+    nDDOIO::readData(r, mJustRangeJob);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAIPawnGroupThinkID);
+    nDDOIO::readData(r, mAIPawnGroupThinkID);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnAIAction::MyDTI cPawnAIAction::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rPawnAI.cpp at 0x006cb0ce-0x006cb107 (called at rPawnAI.cpp:343)
@@ -455,7 +458,7 @@ const MtDTI& rPawnAIAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPawnAIAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPawnAIAction::DTI)->memAlloc(sz, align, ::rPawnAIAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPawnAIAction::DTI)->memAlloc(sz, align, rPawnAIAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -470,7 +473,7 @@ inline void* rPawnAIAction::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPawnAIAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPawnAIAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPawnAIAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -484,7 +487,7 @@ inline void rPawnAIAction::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rPawnAIAction::rPawnAIAction() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    setAttribute(16u);
 }
 
 // Address: 0x006cad10 - 0x006cadd0 (192 bytes)
@@ -497,7 +500,7 @@ rPawnAIAction::~rPawnAIAction() {
 // Address: 0x006caeb0 - 0x006caec0 (16 bytes)
 bool rPawnAIAction::loadData(MtDataReader& r, cPawnAIAction* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->::cPawnAIAction::load(r);
+    pData->load(r);
     return true;
 }
 
@@ -510,7 +513,7 @@ MT_CTSTR rPawnAIAction::getExt() const {
 // Address: 0x01aab8f0 - 0x01aab8f6 (6 bytes)
 u32 rPawnAIAction::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(68);
+    return 68;
 }
 
 // Address: 0x006caec0 - 0x006caf87 (199 bytes)
@@ -521,6 +524,8 @@ __attribute__((weak)) bool rPawnAIAction::loadCore(MtDataReader& r) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPawnAIAction::MyDTI rPawnAIAction::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPawnAI.cpp at 0x006cb107-0x006cb144 (called at rPawnAI.cpp:1662)
 //   in _GLOBAL__sub_I_rPawnAI.cpp at 0x006cb107-0x006cb144 (called at rPawnAI.h:265)
@@ -529,7 +534,7 @@ __attribute__((weak)) bool rPawnAIAction::loadCore(MtDataReader& r) {
 // Address: 0x006cac20 - 0x006cac84 (100 bytes)
 MtObject* rPawnAIAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPawnAIAction;
+    return new (16u) rPawnAIAction;
 }
 
 // Instance at 0x01aab3e0 - 0x01aab3e5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

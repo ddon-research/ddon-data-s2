@@ -59,7 +59,7 @@ const MtDTI& cCatchInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCatchInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCatchInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCatchInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,11 +75,11 @@ inline void cCatchInfo::operator delete(void* p_addr) {
 // a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
 inline cCatchInfo::cCatchInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mCatchType = static_cast<u8>(0);
-    this->mReleaseType = static_cast<u8>(0);
-    this->mCatchUid = static_cast<u32>(0);
-    this->mJointNo = static_cast<u8>(255);
-    this->mHitPos = ::MtVector3::Zero;
+    mCatchType = 0;
+    mReleaseType = 0;
+    mCatchUid = 0;
+    mJointNo = 0xFF;
+    mHitPos = MtVector3::Zero;
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,6 +140,8 @@ cCatchInfo::~cCatchInfo() {
 //   in cpCatchCtrl::setupContextCatchCtrl at 0x0045403b-0x00454076 (called at cpCatchCtrl.cpp:468)
 // void cCatchInfo::setCatchHitPos(const MtVector3& vec);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCatchInfo::MyDTI cCatchInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpCatchCtrl.cpp at 0x0045706e-0x004570ae (called at cpCatchCtrl.cpp:132)
 //   in _GLOBAL__sub_I_cpCatchCtrl.cpp at 0x0045706e-0x004570ae (called at cpCatchCtrl.h:130)
@@ -186,7 +188,7 @@ const MtDTI& cCaughtInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCaughtInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCaughtInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCaughtInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,6 +265,8 @@ cCaughtInfo::~cCaughtInfo() {
 // No out-of-line body: no code in the ELF
 // void cCaughtInfo::setCatchHitPos(const MtVector3&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCaughtInfo::MyDTI cCaughtInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpCatchCtrl.cpp at 0x004570ae-0x004570e7 (called at cpCatchCtrl.cpp:244)
 //   in _GLOBAL__sub_I_cpCatchCtrl.cpp at 0x004570ae-0x004570e7 (called at cpCatchCtrl.h:176)
@@ -288,7 +292,7 @@ const MtDTI& cpCatchCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpCatchCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpCatchCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpCatchCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -297,7 +301,7 @@ inline MtAllocator* cpCatchCtrl::getAllocator() {
 // Address: 0x00453940 - 0x00453980 (64 bytes)
 void* cpCatchCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpCatchCtrl::getAllocator()->memAlloc(sz, align, ::cpCatchCtrl::DTI.::MtDTI::getID());
+    return cpCatchCtrl::getAllocator()->memAlloc(sz, align, cpCatchCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +316,7 @@ void* cpCatchCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpCatchCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpCatchCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpCatchCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -340,8 +344,8 @@ cpCatchCtrl::~cpCatchCtrl() {
 // Address: 0x01a58230 - 0x01a5823c (12 bytes)
 void cpCatchCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00453cc0 - 0x00453d06 (70 bytes)
@@ -365,14 +369,14 @@ __attribute__((weak)) void cpCatchCtrl::setup() {
 // Address: 0x004540d0 - 0x00454109 (57 bytes)
 void cpCatchCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00453f80 - 0x004540d0 (336 bytes)
@@ -414,18 +418,18 @@ nCatch::BEARDOWN_EFFECTIVE cpCatchCtrl::getBeardownEffective() {
     // DWARF local not rendered: cCharParamEnemy* pEnemyParam;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as nCatch::BEARDOWN_EFFECTIVE
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable()) {
-            if ((this->mpModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-                if (static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy() != static_cast<rCharParamEnemy*>(nullptr)) {
-                    if (static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy()->::rCharParamEnemy::getCharParamEnemy() != static_cast<cCharParamEnemy*>(nullptr)) {
-                        return static_cast<nCatch::BEARDOWN_EFFECTIVE>(static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy()->::rCharParamEnemy::getCharParamEnemy()->mBeardownEffective);
+    if (mpModel != nullptr) {
+        if (mpModel->isEnable()) {
+            if ((mpModel->mUnitId & 2u) != 0) {
+                if (static_cast<uEnemy*>(mpModel)->getCharaParamEnemy() != nullptr) {
+                    if (static_cast<uEnemy*>(mpModel)->getCharaParamEnemy()->getCharParamEnemy() != nullptr) {
+                        return static_cast<nCatch::BEARDOWN_EFFECTIVE>(static_cast<uEnemy*>(mpModel)->getCharaParamEnemy()->getCharParamEnemy()->mBeardownEffective);
                     }
                 }
             }
         }
     }
-    return static_cast<nCatch::BEARDOWN_EFFECTIVE>(3);
+    return nCatch::BEARDOWN_EFFECTIVE_NOTHING;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (123 bytes)
@@ -452,12 +456,12 @@ __attribute__((weak)) void cpCatchCtrl::setBeardownEffectiveTimer() {
 // Address: 0x00454ef0 - 0x00454f30 (64 bytes)
 void cpCatchCtrl::updateBeardownEffectiveTimer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCaughtInfo.mCatchType != static_cast<u8>(1)) {
+    if (mCaughtInfo.mCatchType != 1) {
         return;
     }
-    this->mBeardownEffectiveTimer = this->mBeardownEffectiveTimer - ::sMain::getInstance()->mDeltaTime;
-    if (0.0f > this->mBeardownEffectiveTimer) {
-        this->mBeardownEffectiveTimer = 0.0f;
+    mBeardownEffectiveTimer = mBeardownEffectiveTimer - sMain::getInstance()->mDeltaTime;
+    if (0.0f > mBeardownEffectiveTimer) {
+        mBeardownEffectiveTimer = 0.0f;
     }
 }
 
@@ -487,7 +491,7 @@ __attribute__((weak)) void cpCatchCtrl::updateLeverGacha() {
 bool cpCatchCtrl::checkCatch(u8 catchType, u32 uniqId) {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCaughtInfo.mCatchUid == uniqId;
+    return mCaughtInfo.mCatchUid == uniqId;
 }
 
 // Address: 0x004553c0 - 0x004555a1 (481 bytes)
@@ -504,21 +508,21 @@ __attribute__((weak)) void cpCatchCtrl::setCatch(u8 catchType, u32 uniqId) {
 void cpCatchCtrl::setFailed() {
     // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCatchType = static_cast<u8>(0);
-    this->mCatchInfo.mCatchType = static_cast<u8>(0);
-    this->mCatchInfo.mReleaseType = static_cast<u8>(0);
-    this->mCatchInfo.mCatchUid = static_cast<u32>(0);
-    this->mCatchInfo.mJointNo = static_cast<u8>(255);
-    this->mCatchInfo.mHitPos.x = ::MtVector3::Zero.x;
-    this->mCatchInfo.mHitPos.y = ::MtVector3::Zero.y;
-    this->mCatchInfo.mHitPos.z = ::MtVector3::Zero.z;
-    this->mCatchInfo.mHitPos.pad_ = 0.0f;
+    mCatchType = 0;
+    mCatchInfo.mCatchType = 0;
+    mCatchInfo.mReleaseType = 0;
+    mCatchInfo.mCatchUid = 0;
+    mCatchInfo.mJointNo = 0xFF;
+    mCatchInfo.mHitPos.x = MtVector3::Zero.x;
+    mCatchInfo.mHitPos.y = MtVector3::Zero.y;
+    mCatchInfo.mHitPos.z = MtVector3::Zero.z;
+    mCatchInfo.mHitPos.pad_ = 0.0f;
     // inferred: a temporary for the value the load at 0x455617 read, used 4 times; no DWARF local holds it
-    uDDOModel* t0 = this->mpModel;
-    ::cContextInterface::setIsCatchHit(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
-    ::cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCatchInfo.mCatchType);
-    ::cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCatchInfo.::cCatchInfo::getCatchUid());
-    ::cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCatchInfo.mJointNo);
+    uDDOModel* t0 = mpModel;
+    cContextInterface::setIsCatchHit(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCatchInfo.mCatchType);
+    cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCatchInfo.getCatchUid());
+    cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCatchInfo.mJointNo);
 }
 
 // Address: 0x00455690 - 0x00455721 (145 bytes)
@@ -552,24 +556,24 @@ __attribute__((weak)) void cpCatchCtrl::setCancel() {
 void cpCatchCtrl::forceCancel() {
     // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCatchInfo.mCatchType == static_cast<u8>(0)) {
+    if (mCatchInfo.mCatchType == 0) {
         return;
     }
-    this->mpModel->::uDDOModel::setTarget(static_cast<uDDOModel*>(nullptr));
-    this->mCatchType = static_cast<u8>(0);
-    this->mCatchInfo.mCatchType = static_cast<u8>(0);
-    this->mCatchInfo.mReleaseType = static_cast<u8>(0);
-    this->mCatchInfo.mCatchUid = static_cast<u32>(0);
-    this->mCatchInfo.mJointNo = static_cast<u8>(255);
-    this->mCatchInfo.mHitPos.x = ::MtVector3::Zero.x;
-    this->mCatchInfo.mHitPos.y = ::MtVector3::Zero.y;
-    this->mCatchInfo.mHitPos.z = ::MtVector3::Zero.z;
-    this->mCatchInfo.mHitPos.pad_ = 0.0f;
+    mpModel->setTarget(static_cast<uDDOModel*>(nullptr));
+    mCatchType = 0;
+    mCatchInfo.mCatchType = 0;
+    mCatchInfo.mReleaseType = 0;
+    mCatchInfo.mCatchUid = 0;
+    mCatchInfo.mJointNo = 0xFF;
+    mCatchInfo.mHitPos.x = MtVector3::Zero.x;
+    mCatchInfo.mHitPos.y = MtVector3::Zero.y;
+    mCatchInfo.mHitPos.z = MtVector3::Zero.z;
+    mCatchInfo.mHitPos.pad_ = 0.0f;
     // inferred: a temporary for the value the load at 0x455132 read, used 3 times; no DWARF local holds it
-    uDDOModel* t0 = this->mpModel;
-    ::cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, static_cast<u8>(0));
-    ::cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCatchInfo.::cCatchInfo::getCatchUid());
-    ::cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCatchInfo.mJointNo);
+    uDDOModel* t0 = mpModel;
+    cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, static_cast<u8>(0));
+    cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCatchInfo.getCatchUid());
+    cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCatchInfo.mJointNo);
 }
 
 // Address: 0x00454850 - 0x004549f0 (416 bytes)
@@ -599,20 +603,20 @@ __attribute__((weak)) void cpCatchCtrl::setClutched(u8 catchType, u32 uniqId, u8
 bool cpCatchCtrl::checkCaught() {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    uDDOModel* pCatch = static_cast<uDDOModel*>(::sSetManager::getInstance()->::sSetManager::getLayoutUnit(this->mCaughtInfo.::cCaughtInfo::getCatchUid()));
-    if (pCatch != static_cast<uDDOModel*>(nullptr)) {
-        if (pCatch->::cUnit::isEnable()) {
-            if (pCatch->::uDDOModel::getStateActionPtr() != static_cast<cpStateManager*>(nullptr)) {
-                s32 state = pCatch->::uDDOModel::getStateActionPtr()->::cpStateManager::getStateNo();
-                if (state != static_cast<s32>(262)) {
-                    if (state == static_cast<s32>(264)) {
-                        if (pCatch->::uDDOModel::getCatchCtrlPtr() != static_cast<cpCatchCtrl*>(nullptr)) {
-                            return pCatch->::uDDOModel::getCatchCtrlPtr()->mCatchInfo.::cCatchInfo::getCatchUid() == this->mpModel->::cUnit::mUnitParam;
+    uDDOModel* pCatch = static_cast<uDDOModel*>(sSetManager::getInstance()->getLayoutUnit(mCaughtInfo.getCatchUid()));
+    if (pCatch != nullptr) {
+        if (pCatch->cUnit::isEnable()) {
+            if (pCatch->uDDOModel::getStateActionPtr() != nullptr) {
+                s32 state = pCatch->uDDOModel::getStateActionPtr()->getStateNo();
+                if (state != 262) {
+                    if (state == 264) {
+                        if (pCatch->uDDOModel::getCatchCtrlPtr() != nullptr) {
+                            return pCatch->uDDOModel::getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
                         }
                     }
                 } else {
-                    if (pCatch->::uDDOModel::getCatchCtrlPtr() != static_cast<cpCatchCtrl*>(nullptr)) {
-                        return pCatch->::uDDOModel::getCatchCtrlPtr()->mCatchInfo.::cCatchInfo::getCatchUid() == this->mpModel->::cUnit::mUnitParam;
+                    if (pCatch->uDDOModel::getCatchCtrlPtr() != nullptr) {
+                        return pCatch->uDDOModel::getCatchCtrlPtr()->mCatchInfo.getCatchUid() == mpModel->mUnitParam;
                     }
                 }
                 return false;
@@ -658,60 +662,60 @@ __attribute__((weak)) void cpCatchCtrl::setEscape() {
 void cpCatchCtrl::forceEscape() {
     // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCaughtInfo.mCatchType == static_cast<u8>(0)) {
+    if (mCaughtInfo.mCatchType == 0) {
         return;
     }
-    this->mCaughtInfo.mCatchType = static_cast<u8>(0);
-    this->mCaughtInfo.mEscapeType = static_cast<u8>(0);
-    this->mCaughtInfo.mCatchUid = static_cast<u32>(0);
-    this->mCaughtInfo.mJointNo = static_cast<u8>(255);
-    this->mCaughtInfo.mHitPos.x = ::MtVector3::Zero.x;
-    this->mCaughtInfo.mHitPos.y = ::MtVector3::Zero.y;
-    this->mCaughtInfo.mHitPos.z = ::MtVector3::Zero.z;
-    this->mCaughtInfo.mHitPos.pad_ = 0.0f;
-    this->mCatchType = static_cast<u8>(0);
+    mCaughtInfo.mCatchType = 0;
+    mCaughtInfo.mEscapeType = 0;
+    mCaughtInfo.mCatchUid = 0;
+    mCaughtInfo.mJointNo = 0xFF;
+    mCaughtInfo.mHitPos.x = MtVector3::Zero.x;
+    mCaughtInfo.mHitPos.y = MtVector3::Zero.y;
+    mCaughtInfo.mHitPos.z = MtVector3::Zero.z;
+    mCaughtInfo.mHitPos.pad_ = 0.0f;
+    mCatchType = 0;
     // inferred: a temporary for the value the load at 0x4561c4 read, used 3 times; no DWARF local holds it
-    uDDOModel* t0 = this->mpModel;
-    ::cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, static_cast<u8>(0));
-    ::cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCaughtInfo.::cCaughtInfo::getCatchUid());
-    ::cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCaughtInfo.mJointNo);
+    uDDOModel* t0 = mpModel;
+    cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, static_cast<u8>(0));
+    cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCaughtInfo.getCatchUid());
+    cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCaughtInfo.mJointNo);
 }
 
 // Address: 0x00456220 - 0x00456304 (228 bytes)
 void cpCatchCtrl::disconnectEscape() {
     // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCaughtInfo.mCatchType == static_cast<u8>(0)) {
+    if (mCaughtInfo.mCatchType == 0) {
         return;
     }
-    this->mCaughtInfo.mCatchType = static_cast<u8>(0);
-    this->mCaughtInfo.mEscapeType = static_cast<u8>(0);
-    this->mCaughtInfo.mCatchUid = static_cast<u32>(0);
-    this->mCaughtInfo.mJointNo = static_cast<u8>(255);
-    this->mCaughtInfo.mHitPos.x = ::MtVector3::Zero.x;
-    this->mCaughtInfo.mHitPos.y = ::MtVector3::Zero.y;
-    this->mCaughtInfo.mHitPos.z = ::MtVector3::Zero.z;
-    this->mCaughtInfo.mHitPos.pad_ = 0.0f;
-    this->mCatchType = static_cast<u8>(0);
+    mCaughtInfo.mCatchType = 0;
+    mCaughtInfo.mEscapeType = 0;
+    mCaughtInfo.mCatchUid = 0;
+    mCaughtInfo.mJointNo = 0xFF;
+    mCaughtInfo.mHitPos.x = MtVector3::Zero.x;
+    mCaughtInfo.mHitPos.y = MtVector3::Zero.y;
+    mCaughtInfo.mHitPos.z = MtVector3::Zero.z;
+    mCaughtInfo.mHitPos.pad_ = 0.0f;
+    mCatchType = 0;
     // inferred: a temporary for the value the load at 0x456294 read, used 4 times; no DWARF local holds it
-    uDDOModel* t0 = this->mpModel;
-    ::cContextInterface::setIsCaughtResult(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
-    ::cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCaughtInfo.mCatchType);
-    ::cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCaughtInfo.::cCaughtInfo::getCatchUid());
-    ::cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, this->mCaughtInfo.mJointNo);
+    uDDOModel* t0 = mpModel;
+    cContextInterface::setIsCaughtResult(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter);
+    cContextInterface::setCatchType(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCaughtInfo.mCatchType);
+    cContextInterface::setCatchTargetUID(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCaughtInfo.getCatchUid());
+    cContextInterface::setCatchJointNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, mCaughtInfo.mJointNo);
 }
 
 // Address: 0x00456670 - 0x004566b8 (72 bytes)
 void cpCatchCtrl::setDispCheck() {
     // DWARF local not rendered: cContextInstance* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel->::uDDOModel::isMaster() != false) {
+    if (mpModel->isMaster()) {
         return;
     }
-    if (::sContextManager::getInstance()->::sContextManager::getContextInstFromUniqueId(this->mCatchInfo.::cCatchInfo::getCatchUid()) != static_cast<cContextInstance*>(nullptr)) {
+    if (sContextManager::getInstance()->getContextInstFromUniqueId(mCatchInfo.getCatchUid()) != nullptr) {
         return;
     }
-    this->mpModel->mDDOModelFlag = this->mpModel->mDDOModelFlag & static_cast<u32>(4294967294);
+    mpModel->mDDOModelFlag = mpModel->mDDOModelFlag & 0xFFFFFFFEu;
 }
 
 // Address: 0x00456310 - 0x0045666d (861 bytes)
@@ -860,13 +864,15 @@ __attribute__((weak)) bool cpCatchCtrl::catchHitGroupOther(cHitInfo* pHitInfo, u
 bool cpCatchCtrl::isOwnerBeaDown() const {
     // DWARF local not rendered: u32 stateNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mCatchType == static_cast<u8>(1)) {
-            return this->mpModel->::uDDOModel::getActionStateNo() == static_cast<s32>(265);
+    if (mpModel != nullptr) {
+        if (mCatchType == 1) {
+            return mpModel->getActionStateNo() == 265;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpCatchCtrl::MyDTI cpCatchCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpCatchCtrl.cpp at 0x004570e7-0x00457124 (called at cpCatchCtrl.cpp:354)

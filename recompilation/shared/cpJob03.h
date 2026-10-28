@@ -280,14 +280,56 @@ inline u32 cpJob03::getArrowNum() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::dispAimSight at 0x22133a-0x221341; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob03::requestMoveSpline() {
+    this->mIsMoveSpline = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::init at 0x21e56a-0x21e572; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpJob03::getBlurreAcc() const {
+    return this->mBlurreAcc;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rSoundRequest* cpJob03::getShlCommonSe() {
     return this->mpShlCommonSe;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterBase::setResultBowNetAimPos at 0x431308-0x431311; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpJob03::getPawnRange() const {
+    return this->mRangePawn;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 cpJob03::getRangeSpeed() {
     return this->mRangeSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::setShl at 0x228779-0x228781; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpJob03::getRangeMax() const {
+    return this->mRangeMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::init at 0x21dd85-0x21dd8c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob03::setAimCheckUnit(uAimCheck* pAim) {
+    this->mpAimCheck = pAim;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterActArrow::updateInter at 0x43bf3d-0x43bf44; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uAimCheck* cpJob03::getAimCheckUnit() {
+    return this->mpAimCheck;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::initUp_ShotSub at 0x2273f8-0x227400; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline f32 cpJob03::getTargetLength() const {
+    return this->mTargetLength;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -300,4 +342,10 @@ inline u32 cpJob03::getCS14RendaCount() const {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 cpJob03::getCS14RendaRemainTime() const {
     return this->mCS14RendaRemainTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob03::setCS14BeforeChargeLv(u32 lv) {
+    this->mCS14BeforeChargeLv = lv;
 }

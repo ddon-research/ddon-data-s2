@@ -36,7 +36,7 @@ const MtDTI& cEmStatusAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEmStatusAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memAlloc(sz, align, ::cEmStatusAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmStatusAdj::DTI)->memAlloc(sz, align, cEmStatusAdj::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEmStatusAdj::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmStatusAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmStatusAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cEmStatusAdj::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEmStatusAdj::~cEmStatusAdj();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmStatusAdj::MyDTI cEmStatusAdj::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmStatusAdj.cpp at 0x0066a190-0x0066a1d2 (called at rEmStatusAdj.cpp:37)
 //   in _GLOBAL__sub_I_rEmStatusAdj.cpp at 0x0066a190-0x0066a1d2 (called at rEmStatusAdj.h:28)
@@ -84,7 +86,7 @@ inline void cEmStatusAdj::operator delete(void* p_addr) {
 // Address: 0x00669f80 - 0x00669fd7 (87 bytes)
 MtObject* cEmStatusAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmStatusAdj;
+    return new (16u) cEmStatusAdj;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rEmStatusAdj::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmStatusAdj::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmStatusAdj::DTI)->memAlloc(sz, align, ::rEmStatusAdj::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmStatusAdj::DTI)->memAlloc(sz, align, rEmStatusAdj::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rEmStatusAdj::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rEmStatusAdjD0Ev at 0x01a88e14-0x01a88e33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmStatusAdj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmStatusAdj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmStatusAdj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,19 +143,19 @@ bool rEmStatusAdj::loadData(MtDataReader& r, cEmStatusAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mDamageAtkAdj);
+    nDDOIO::readData(r, pData->mDamageAtkAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShrinkAtkAdj);
+    nDDOIO::readData(r, pData->mShrinkAtkAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBlowAtkAdj);
+    nDDOIO::readData(r, pData->mBlowAtkAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mStaminaDamageAtkAdj);
+    nDDOIO::readData(r, pData->mStaminaDamageAtkAdj);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mOcdAtkAdj);
+    nDDOIO::readData(r, pData->mOcdAtkAdj);
     return true;
 }
 
@@ -166,8 +168,10 @@ MT_CTSTR rEmStatusAdj::getExt() const {
 // Address: 0x01a88f60 - 0x01a88f66 (6 bytes)
 u32 rEmStatusAdj::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmStatusAdj::MyDTI rEmStatusAdj::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmStatusAdj.cpp at 0x0066a1d2-0x0066a20f (called at rEmStatusAdj.cpp:38)
@@ -177,7 +181,7 @@ u32 rEmStatusAdj::getDataVersion() const {
 // Address: 0x0066a050 - 0x0066a0b4 (100 bytes)
 MtObject* rEmStatusAdj::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmStatusAdj;
+    return new (16u) rEmStatusAdj;
 }
 
 // Instance at 0x01a88f10 - 0x01a88f22 (18 bytes) of the generic rTbl2<T>::getData

@@ -1404,9 +1404,21 @@ inline f32 cFSMUnit::getStopBorder() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpFsmCtrl::move at 0x47faf5-0x47fafc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cFSMUnit::setChangeMaster() {
+    this->mIsChangeMaster = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cFSMUnit::setStopBorder(f32 stopBorder) {
+    this->mStopBorder = stopBorder;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline const MtVector3& cFSMUnit::uEvHeadTarget::getTargetPos() {
-    if (this->mType != static_cast<u32>(0)) {
+    if (this->mType != 0) {
         return this->mTargetPos;
     } else {
         return this->mTargetOfsPos;
@@ -1415,14 +1427,14 @@ inline const MtVector3& cFSMUnit::uEvHeadTarget::getTargetPos() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetAction::cParamSetAction() {
-    this->mActionType = static_cast<u32>(0);
+    this->mActionType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetGotoTarget::cParamSetGotoTarget() {
-    this->mTargetType = static_cast<u8>(0);
-    this->mRunType = static_cast<u8>(0);
-    this->mTargetId = static_cast<s32>(-1);
+    this->mTargetType = 0;
+    this->mRunType = 0;
+    this->mTargetId = -1;
     this->mIsSetBorder = false;
     this->mIsPathFinding = false;
     this->mStopBorder = 100.0f;
@@ -1434,28 +1446,28 @@ inline cFSMUnit::cParamSetGotoTarget::cParamSetGotoTarget() {
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetEffect::cParamSetEffect() {
     this->mHaveItem = false;
-    this->mIndex = static_cast<u16>(0);
-    this->mElement = static_cast<u16>(0);
-    this->mOmId = static_cast<u32>(0);
-    this->mEfcId = static_cast<u32>(0);
-    this->mAct = static_cast<u16>(0);
-    this->mType = static_cast<u16>(0);
+    this->mIndex = 0;
+    this->mElement = 0;
+    this->mOmId = 0;
+    this->mEfcId = 0;
+    this->mAct = 0;
+    this->mType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetEmDie::cParamSetEmDie() {
-    this->mAct = static_cast<u32>(0);
+    this->mAct = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetWaypoint::cParamSetWaypoint() {
-    this->mType = static_cast<u32>(0);
-    this->mGotoPointNo = static_cast<s32>(-1);
+    this->mType = 0;
+    this->mGotoPointNo = -1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetChangeThink::cParamSetChangeThink() {
-    this->mThink = static_cast<u32>(0);
+    this->mThink = 0;
     this->mIsInvincible = true;
 }
 
@@ -1487,42 +1499,42 @@ inline cFSMUnit::cParamSetShadowCast::cParamSetShadowCast() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetHaveThing::cParamSetHaveThing() {
-    this->mHaveThing = static_cast<u32>(0);
+    this->mHaveThing = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetCallSe::cParamSetCallSe() {
-    this->mSeId = static_cast<u32>(0);
-    this->mJointNo = static_cast<s32>(-1);
-    this->mDelayFrame = static_cast<u32>(0);
+    this->mSeId = 0;
+    this->mJointNo = -1;
+    this->mDelayFrame = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetHakuryuStoneLevel::cParamSetHakuryuStoneLevel() {
-    this->mStoneLevel = static_cast<u32>(0);
+    this->mStoneLevel = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetParts::cParamSetParts() {
-    this->mType = static_cast<u32>(0);
-    this->mParts = static_cast<u32>(0);
+    this->mType = 0;
+    this->mParts = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetVibUnit::cParamSetVibUnit() {
-    this->mVib = static_cast<u32>(0);
+    this->mVib = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetEmMontage::cParamSetEmMontage() {
-    this->mType = static_cast<u32>(0);
-    this->mMontage = static_cast<u32>(0);
+    this->mType = 0;
+    this->mMontage = 0;
     this->mDisableMotSeq = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetHeadCtrl::cParamSetHeadCtrl() {
-    this->mHeadCtrl = static_cast<s16>(0);
+    this->mHeadCtrl = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

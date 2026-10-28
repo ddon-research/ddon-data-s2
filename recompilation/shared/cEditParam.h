@@ -261,8 +261,8 @@ inline cEditValue::cEditValue() {
     this->mValue = 0.0f;
     this->mMin = -3.4028235e38f;
     this->mMax = 3.4028235e38f;
-    this->mFlag = static_cast<u32>(0);
-    this->mDiv = static_cast<s16>(200);
+    this->mFlag = 0;
+    this->mDiv = 200;
 }
 
 // Inline, no code of its own: checked where it is inlined.

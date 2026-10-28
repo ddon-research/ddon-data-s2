@@ -25,7 +25,7 @@ const MtDTI& cNetStorage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cNetStorage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cNetStorage::DTI);
+    return MtMemoryAllocator::getAllocator(cNetStorage::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cNetStorage::getAllocator() {
 // Address: 0x00392b60 - 0x00392ba0 (64 bytes)
 void* cNetStorage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cNetStorage::getAllocator()->memAlloc(sz, align, ::cNetStorage::DTI.::MtDTI::getID());
+    return cNetStorage::getAllocator()->memAlloc(sz, align, cNetStorage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cNetStorage::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNetStorage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNetStorage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNetStorage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,7 +94,7 @@ __attribute__((weak)) void cNetStorage::move() {
 // Address: 0x003930e0 - 0x003930e8 (8 bytes)
 bool cNetStorage::isSaveComplete() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mState == static_cast<u32>(0);
+    return mState == 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,17 +140,17 @@ bool cNetStorage::isSaveComplete() {
 bool cNetStorage::saveNativeCharStorage(void* pBuf, s32 charId, bool errDialog) {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStorageType = static_cast<s32>(1);
-    this->mComId = static_cast<u32>(16);
-    this->mErrorDialogFlag = errDialog;
-    this->mpBuf = pBuf;
-    this->mSize = static_cast<u32>(0);
-    this->mCharId = charId;
-    if (this->mState != static_cast<u32>(0)) {
+    mStorageType = 1;
+    mComId = 16;
+    mErrorDialogFlag = errDialog;
+    mpBuf = pBuf;
+    mSize = 0;
+    mCharId = charId;
+    if (mState != 0) {
         return false;
     } else {
-        this->mState = static_cast<u32>(5);
-        this->move();
+        mState = 5;
+        move();
         return true;
     }
 }
@@ -218,6 +218,8 @@ __attribute__((weak)) sNetworkExt::NET_STAT cNetStorage::getStatus(u32 comId) {
 //   in cNetStorage::move at 0x00392d80-0x00392d9b, 0x00392de3-0x00392df4, 0x00392e82-0x00392e8c (called at cNetStorage.cpp:115)
 //   in cNetStorage::move at 0x00392dca-0x00392de3, 0x00392ebc-0x00392ec6 (called at cNetStorage.cpp:206)
 // bool cNetStorage::checkReqError();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetStorage::MyDTI cNetStorage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cNetStorage.cpp at 0x0039325e-0x0039329b (called at cNetStorage.cpp:29)

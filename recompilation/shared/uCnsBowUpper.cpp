@@ -48,7 +48,7 @@ const MtDTI& uCnsBowUpper::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsBowUpper::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsBowUpper::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsBowUpper::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,26 +100,26 @@ __attribute__((weak)) void uCnsBowUpper::adjust(uModel::Joint* pJnt, uModel* pMo
 // Address: 0x008ae8e0 - 0x008ae8e5 (5 bytes)
 void uCnsBowUpper::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008ae8b0 - 0x008ae8d9 (41 bytes)
 void uCnsBowUpper::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008ae8f0 - 0x008ae948 (88 bytes)
 void uCnsBowUpper::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (121 bytes)
@@ -139,7 +139,7 @@ __attribute__((weak)) void uCnsBowUpper::createProperty(MtPropertyList& s) {
 // Address: 0x008ae810 - 0x008ae815 (5 bytes)
 MtUI* uCnsBowUpper::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008afea0 - 0x008afea1 (1 bytes)
@@ -150,14 +150,16 @@ __attribute__((weak)) void uCnsBowUpper::draw(cDraw* pDraw) {
 // Address: 0x008ae820 - 0x008ae895 (117 bytes)
 void uCnsBowUpper::set(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsBowUpper::MyDTI uCnsBowUpper::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsBowUpper.cpp at 0x008afeb0-0x008afef2 (called at uCnsBowUpper.cpp:25)

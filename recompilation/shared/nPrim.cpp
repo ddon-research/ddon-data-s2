@@ -53,6 +53,12 @@
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nPrim::Material::disableAttribute(u32 attr);
 
+// Not defined (a .ctors initializer touches it: a store of no constant): nPrim::Material nPrim::Material::Default;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): nPrim::Material nPrim::Material::NoZTest;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): nPrim::Material nPrim::Material::AddAlpha;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nPrim::MetaDataHeader::MetaDataHeader();
 
@@ -150,6 +156,8 @@ MtUI* nPrim::PrimVertex::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nPrim::PrimVertex::MyDTI nPrim::PrimVertex::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nPrim::PrimVertex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

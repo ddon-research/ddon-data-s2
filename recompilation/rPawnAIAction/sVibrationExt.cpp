@@ -26,7 +26,7 @@ const MtDTI& sVibrationExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sVibrationExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sVibrationExt::DTI);
+    return MtMemoryAllocator::getAllocator(sVibrationExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* sVibrationExt::getAllocator() {
 // Address: 0x00869f80 - 0x00869fc0 (64 bytes)
 void* sVibrationExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sVibrationExt::getAllocator()->memAlloc(sz, align, ::sVibrationExt::DTI.::MtDTI::getID());
+    return sVibrationExt::getAllocator()->memAlloc(sz, align, sVibrationExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* sVibrationExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sVibrationExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sVibrationExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sVibrationExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,13 +66,13 @@ inline void sVibrationExt::operator delete(void* p_addr) {
 sVibrationExt::sVibrationExt() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mprVibration[3] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[2] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[1] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[0] = static_cast<rVibration*>(nullptr);
-    this->mPriority = static_cast<u32>(255);
-    this->::sVibration::mPadVibrationEnable = true;
-    this->::sVibration::mCameraVibrationEnable = false;
+    mprVibration[3] = nullptr;
+    mprVibration[2] = nullptr;
+    mprVibration[1] = nullptr;
+    mprVibration[0] = nullptr;
+    mPriority = 255;
+    mPadVibrationEnable = true;
+    mCameraVibrationEnable = false;
 }
 
 // Address: 0x0086a090 - 0x0086a125 (149 bytes)
@@ -80,29 +80,29 @@ sVibrationExt::sVibrationExt() {
 sVibrationExt::~sVibrationExt() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprVibration[0] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[0]->::cResource::release();
-        this->mprVibration[0] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[0] != nullptr) {
+        mprVibration[0]->cResource::release();
+        mprVibration[0] = nullptr;
     }
-    if (this->mprVibration[1] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[1]->::cResource::release();
-        this->mprVibration[1] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[1] != nullptr) {
+        mprVibration[1]->cResource::release();
+        mprVibration[1] = nullptr;
     }
-    if (this->mprVibration[2] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[2]->::cResource::release();
-        this->mprVibration[2] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[2] != nullptr) {
+        mprVibration[2]->cResource::release();
+        mprVibration[2] = nullptr;
     }
-    if (this->mprVibration[3] == static_cast<rVibration*>(nullptr)) {
+    if (mprVibration[3] == nullptr) {
         return;
     }
-    this->mprVibration[3]->::cResource::release();
-    this->mprVibration[3] = static_cast<rVibration*>(nullptr);
+    mprVibration[3]->cResource::release();
+    mprVibration[3] = nullptr;
 }
 
 // Address: 0x0086a1e0 - 0x0086a1e5 (5 bytes)
 void sVibrationExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sVibration::createProperty(s);
+    this->sVibration::createProperty(s);
 }
 
 // Address: 0x0086a1f0 - 0x0086a22d (61 bytes)
@@ -154,6 +154,8 @@ __attribute__((weak)) sVibration::VibFlag sVibrationExt::getGamePadVibFlag() {
 // No out-of-line body: no code in the ELF
 // void sVibrationExt::setVibrationEnable(const bool isEnable);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sVibrationExt::MyDTI sVibrationExt::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sVibrationExt.cpp at 0x0086a4cf-0x0086a50c (called at sVibrationExt.cpp:31)
 //   in _GLOBAL__sub_I_sVibrationExt.cpp at 0x0086a4cf-0x0086a50c (called at sVibrationExt.h:29)
@@ -162,6 +164,6 @@ __attribute__((weak)) sVibration::VibFlag sVibrationExt::getGamePadVibFlag() {
 // Address: 0x00869ef0 - 0x00869f7a (138 bytes)
 MtObject* sVibrationExt::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sVibrationExt;
+    return new (16u) sVibrationExt;
 }
 

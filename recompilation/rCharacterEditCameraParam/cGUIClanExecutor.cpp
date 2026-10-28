@@ -31,7 +31,7 @@ const MtDTI& cGUIClanExecutor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGUIClanExecutor::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGUIClanExecutor::DTI);
+    return MtMemoryAllocator::getAllocator(cGUIClanExecutor::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cGUIClanExecutor::getAllocator() {
 // Address: 0x000cfd10 - 0x000cfd50 (64 bytes)
 void* cGUIClanExecutor::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cGUIClanExecutor::getAllocator()->memAlloc(sz, align, ::cGUIClanExecutor::DTI.::MtDTI::getID());
+    return cGUIClanExecutor::getAllocator()->memAlloc(sz, align, cGUIClanExecutor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cGUIClanExecutor::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIClanExecutor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIClanExecutor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIClanExecutor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,45 +71,45 @@ inline void cGUIClanExecutor::operator delete(void* p_addr) {
 cGUIClanExecutor::cGUIClanExecutor() {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mArc = static_cast<TICKET>(::sArchiveManager::INVALID_TICKET);
-    this->mProc = static_cast<cGUIClanExecutor::PR>(0);
-    this->mOldProc = static_cast<cGUIClanExecutor::PR>(0);
-    this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
-    this->mFlags = static_cast<u32>(0);
-    this->mIsEnd = true;
-    this->mIsInit = true;
-    this->mIsScoutEntryCancel = false;
+    mArc = static_cast<TICKET>(sArchiveManager::INVALID_TICKET);
+    mProc = PR_NONE;
+    mOldProc = PR_NONE;
+    mpUnitTopSel = nullptr;
+    mFlags = 0;
+    mIsEnd = true;
+    mIsInit = true;
+    mIsScoutEntryCancel = false;
 }
 
 // Address: 0x000cfe10 - 0x000cfe93 (131 bytes)
 // Also emitted as: _ZN16cGUIClanExecutorD0Ev at 0x000cfeb0
 cGUIClanExecutor::~cGUIClanExecutor() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if ((::sUnit::mpInstance) != static_cast<sUnit*>(nullptr)) {
-        if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-            this->mpUnitTopSel->kill();
-            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if ((sUnit::mpInstance) != nullptr) {
+        if (mpUnitTopSel != nullptr) {
+            mpUnitTopSel->kill();
+            mpUnitTopSel = nullptr;
         }
     }
-    if (::sGUI::getInstance() != static_cast<sGUI*>(nullptr)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (sGUI::getInstance() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    if (::sArchiveManager::getInstance() == static_cast<sArchiveManager*>(nullptr)) {
+    if (sArchiveManager::getInstance() == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0xcfe7d read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mArc == t0) {
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArc == t0) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArc);
-    this->mArc = static_cast<TICKET>(t0);
+    sArchiveManager::getInstance()->returnTicket(mArc);
+    mArc = static_cast<TICKET>(t0);
 }
 
 // Address: 0x000cff50 - 0x000cff55 (5 bytes)
 void cGUIClanExecutor::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUIObject::createProperty(s);
+    this->cUIObject::createProperty(s);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (408 bytes)
@@ -132,41 +132,41 @@ __attribute__((weak)) void cGUIClanExecutor::update() {
 // Address: 0x000d0010 - 0x000d002f (31 bytes)
 void cGUIClanExecutor::updateUnitPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpUnitTopSel == static_cast<uGUIPopTopSel*>(nullptr)) {
+    if (mpUnitTopSel == nullptr) {
         return;
     }
-    if (this->mpUnitTopSel->::cUnit::isEnable() != false) {
+    if (mpUnitTopSel->cUnit::isEnable()) {
         return;
     }
-    this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    mpUnitTopSel = nullptr;
 }
 
 // Address: 0x000cff60 - 0x000cffe9 (137 bytes)
 void cGUIClanExecutor::start(u32 flags) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mFlags = flags;
-    this->mOldProc = this->mProc;
-    this->mProc = static_cast<cGUIClanExecutor::PR>(1);
-    this->mIsInit = true;
-    if ((::sUnit::mpInstance) != static_cast<sUnit*>(nullptr)) {
-        if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-            this->mpUnitTopSel->kill();
-            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    mFlags = flags;
+    mOldProc = mProc;
+    mProc = PR_INIT;
+    mIsInit = true;
+    if ((sUnit::mpInstance) != nullptr) {
+        if (mpUnitTopSel != nullptr) {
+            mpUnitTopSel->kill();
+            mpUnitTopSel = nullptr;
         }
     }
-    if (::sGUI::getInstance() != static_cast<sGUI*>(nullptr)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (sGUI::getInstance() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    if (::sArchiveManager::getInstance() == static_cast<sArchiveManager*>(nullptr)) {
+    if (sArchiveManager::getInstance() == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0xcffd3 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mArc == t0) {
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArc == t0) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArc);
-    this->mArc = static_cast<TICKET>(t0);
+    sArchiveManager::getInstance()->returnTicket(mArc);
+    mArc = static_cast<TICKET>(t0);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
@@ -193,6 +193,8 @@ void cGUIClanExecutor::start(u32 flags) {
 //   in cGUIClanExecutor::update at 0x000d025f-0x000d026d (called at cGUIClanExecutor.cpp:216)
 // bool cGUIClanExecutor::isInit();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cGUIClanExecutor::MyDTI cGUIClanExecutor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGUIClanExecutor.cpp at 0x000d07ef-0x000d082c (called at cGUIClanExecutor.cpp:29)
 //   in _GLOBAL__sub_I_cGUIClanExecutor.cpp at 0x000d07ef-0x000d082c (called at cGUIClanExecutor.h:28)
@@ -201,6 +203,6 @@ void cGUIClanExecutor::start(u32 flags) {
 // Address: 0x000cfc90 - 0x000cfd05 (117 bytes)
 MtObject* cGUIClanExecutor::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cGUIClanExecutor;
+    return new (16u) cGUIClanExecutor;
 }
 

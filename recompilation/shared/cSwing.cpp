@@ -45,7 +45,7 @@ const MtDTI& cSwing::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSwing::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSwing::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSwing::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,10 +60,10 @@ inline void cSwing::operator delete(void* p_addr) {
 // Address: 0x01026cd0 - 0x01026cfb (43 bytes)
 cSwing::cSwing() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWindMask = static_cast<u32>(4294967295);
-    this->mWindGroup = static_cast<u32>(1);
-    this->mFrequencyFactor = 1.0f;
-    this->mWeight = 1.0f;
+    mWindMask = 0xFFFFFFFF;
+    mWindGroup = 1;
+    mFrequencyFactor = 1.0f;
+    mWeight = 1.0f;
 }
 
 // Address: 0x01026d00 - 0x01026d01 (1 bytes)
@@ -81,7 +81,7 @@ __attribute__((weak)) void cSwing::createProperty(MtPropertyList& s) {
 // Address: 0x01027040 - 0x01027045 (5 bytes)
 MtUI* cSwing::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01027030 - 0x01027033 (3 bytes)
@@ -94,28 +94,28 @@ MtUI* cSwing::getUI(MtProperty& prop) {
 void cSwing::applyWind(cDraw* p_draw, MtAABB& boundary, u32 max_wind) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x1027075 read, used once; no DWARF local holds it
-    sScene* t0 = ::sScene::mpInstance;
+    sScene* t0 = sScene::mpInstance;
     // inferred: a temporary for the value the load at 0x1027078 read, used once; no DWARF local holds it
-    u32 t1 = this->mWindMask;
+    u32 t1 = mWindMask;
     // inferred: a temporary for the value the load at 0x102707c read, used once; no DWARF local holds it
-    u32 t2 = this->mWindGroup;
+    u32 t2 = mWindGroup;
     // inferred: a temporary for the result of the call at 0x1027083, used once; no DWARF local holds it
-    f32 t3 = this->getFrequencyFactor();
+    f32 t3 = getFrequencyFactor();
     // inferred: a temporary for the result of the call at 0x1027091, used once; no DWARF local holds it
-    f32 t4 = this->getWeight();
-    t0->::sScene::setWindState(p_draw, max_wind, boundary, t1, t2, t3, t4, this->getWeight());
+    f32 t4 = getWeight();
+    t0->setWindState(p_draw, max_wind, boundary, t1, t2, t3, t4, getWeight());
 }
 
 // Address: 0x01027000 - 0x01027004 (4 bytes)
 void cSwing::setWindMask(u32 mask) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWindMask = mask;
+    mWindMask = mask;
 }
 
 // Address: 0x01027020 - 0x01027024 (4 bytes)
 void cSwing::setWindGroup(u32 group) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWindGroup = group;
+    mWindGroup = group;
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,26 +127,28 @@ void cSwing::setWindGroup(u32 group) {
 // Address: 0x01026ff0 - 0x01026ff4 (4 bytes)
 u32 cSwing::getWindMask() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWindMask;
+    return mWindMask;
 }
 
 // Address: 0x01027010 - 0x01027014 (4 bytes)
 u32 cSwing::getWindGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWindGroup;
+    return mWindGroup;
 }
 
 // Address: 0x010270e0 - 0x010270e6 (6 bytes)
 f32 cSwing::getFrequencyFactor() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFrequencyFactor;
+    return mFrequencyFactor;
 }
 
 // Address: 0x01027100 - 0x01027106 (6 bytes)
 f32 cSwing::getWeight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeight;
+    return mWeight;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSwing::MyDTI cSwing::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cSwing::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -209,19 +211,19 @@ cSwingModel::cSwingModel() {
 // Also emitted as: _ZN11cSwingModelD0Ev at 0x010272c0
 cSwingModel::~cSwingModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSwing != static_cast<rSwingModel*>(nullptr)) {
-        this->mpSwing->::cResource::release();
-        this->mpSwing = static_cast<rSwingModel*>(nullptr);
+    if (mpSwing != nullptr) {
+        mpSwing->release();
+        mpSwing = nullptr;
     }
-    if (this->mpAfterSwing != static_cast<rSwingModel*>(nullptr)) {
-        this->mpAfterSwing->::cResource::release();
-        this->mpAfterSwing = static_cast<rSwingModel*>(nullptr);
+    if (mpAfterSwing != nullptr) {
+        mpAfterSwing->release();
+        mpAfterSwing = nullptr;
     }
-    if (this->mpDepthBiasTexture == static_cast<rTexture*>(nullptr)) {
+    if (mpDepthBiasTexture == nullptr) {
         return;
     }
-    this->mpDepthBiasTexture->::cResource::release();
-    this->mpDepthBiasTexture = static_cast<rTexture*>(nullptr);
+    mpDepthBiasTexture->release();
+    mpDepthBiasTexture = nullptr;
 }
 
 // Address: 0x01027340 - 0x0102765f (799 bytes)
@@ -233,7 +235,7 @@ __attribute__((weak)) void cSwingModel::createProperty(MtPropertyList& s) {
 // Address: 0x01027710 - 0x01027715 (5 bytes)
 MtUI* cSwingModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01027700 - 0x01027703 (3 bytes)
@@ -248,7 +250,7 @@ MtUI* cSwingModel::getUI(MtProperty& prop) {
 // Address: 0x010290b0 - 0x010290b6 (6 bytes)
 void cSwingModel::setDepthBias(f32 depth_bias) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShadowDepthBias = depth_bias;
+    mShadowDepthBias = depth_bias;
 }
 
 // No out-of-line body: no code in the ELF
@@ -272,7 +274,7 @@ __attribute__((weak)) void cSwingModel::setSwing(rSwingModel* p_resource) {
 // Address: 0x01027660 - 0x01027665 (5 bytes)
 rSwingModel* cSwingModel::getSwing() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSwing;
+    return mpSwing;
 }
 
 // Address: 0x010276c0 - 0x010276f9 (57 bytes)
@@ -284,7 +286,7 @@ __attribute__((weak)) void cSwingModel::setAfterSwing(rSwingModel* p_resource) {
 // Address: 0x010276b0 - 0x010276b5 (5 bytes)
 rSwingModel* cSwingModel::getAfterSwing() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAfterSwing;
+    return mpAfterSwing;
 }
 
 // Address: 0x010287d0 - 0x01028b19 (841 bytes)
@@ -354,7 +356,7 @@ __attribute__((weak)) f32 cSwingModel::getFrequencyFactor() const {
 // Address: 0x01029140 - 0x01029146 (6 bytes)
 f32 cSwingModel::getWeight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSwing::mWeight;
+    return mWeight;
 }
 
 // Address: 0x01027cc0 - 0x01028332 (1650 bytes)
@@ -382,6 +384,8 @@ __attribute__((weak)) void cSwingModel::setupBillboard(cDraw* pdraw) {
     DDON_STUB("cSwingModel::setupBillboard")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSwingModel::MyDTI cSwingModel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cSwingModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

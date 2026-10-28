@@ -238,3 +238,9 @@ public:
 private:
     static const u32 mAnotherMapNameMaxLength = 16;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::getStartPosAng at 0xc11d-0xc125; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 rStageInfo::getAng() const {
+    return this->mAng;
+}

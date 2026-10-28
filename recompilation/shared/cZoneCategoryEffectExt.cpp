@@ -47,7 +47,7 @@ const MtDTI& cZCEFLControl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZCEFLControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZCEFLControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZCEFLControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,34 +68,34 @@ inline void cZCEFLControl::operator delete(void* p_addr) {
 cZCEFLControl::~cZCEFLControl() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: cZCEffectControl declares no destructor; its implicit one is _ZN16cZCEffectControlD1Ev at 0x1a65ed0, one jmp to _ZN13cZoneContentsD2Ev
-    if (this->mSetList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSetList.mLength != 0) {
         // inferred: the value the loop at 0x591ea0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSetList.::MtArray::mLength;
+        u32 v0_0 = mSetList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSetList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSetList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSetList.::MtArray::mLength) {
-                    v0_0 = this->mSetList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSetList.mpArray[i0_3] != nullptr) {
+                delete mSetList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSetList.mLength) {
+                    v0_0 = mSetList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSetList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSetList.::MtArray::mpArray));
+    if (mSetList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSetList.mpArray));
     }
-    this->mSetList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSetList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSetList.::MtArray::mLength = static_cast<u32>(0);
+    mSetList.mpArray = nullptr;
+    mSetList.mBufsiz = 0;
+    mSetList.mLength = 0;
 }
 
 // Address: 0x00591fe0 - 0x0059208c (172 bytes)
@@ -107,29 +107,29 @@ __attribute__((weak)) void cZCEFLControl::createProperty(MtPropertyList& s) {
 // Address: 0x00592090 - 0x00592095 (5 bytes)
 MtUI* cZCEFLControl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01a65c30 - 0x01a65c43 (19 bytes)
 cZCEFLControl::cResourceSet* cZCEFLControl::getResourceSet(u32 Index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (Index < this->mSetList.::MtArray::mLength) {
-        return static_cast<cZCEFLControl::cResourceSet*>(this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)]);
+    if (Index < mSetList.mLength) {
+        return static_cast<cResourceSet*>(mSetList.getBuffer()[static_cast<int>(Index)]);
     } else {
-        return static_cast<cZCEFLControl::cResourceSet*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01a65c50 - 0x01a65c9f (79 bytes)
 void cZCEFLControl::setResourceSet(cZCEFLControl::cResourceSet* pResourceSet, u32 Index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (Index < this->mSetList.::MtArray::mLength) {
-        if (pResourceSet != this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)]) {
-            if (this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)];
-                this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] = static_cast<MtObject*>(nullptr);
+    if (Index < mSetList.mLength) {
+        if (pResourceSet != mSetList.getBuffer()[static_cast<int>(Index)]) {
+            if (mSetList.getBuffer()[static_cast<int>(Index)] != nullptr) {
+                delete mSetList.getBuffer()[static_cast<int>(Index)];
+                mSetList.getBuffer()[static_cast<int>(Index)] = nullptr;
             }
-            this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] = static_cast<MtObject*>(pResourceSet);
+            mSetList.getBuffer()[static_cast<int>(Index)] = static_cast<MtObject*>(pResourceSet);
         }
     }
 }
@@ -137,7 +137,7 @@ void cZCEFLControl::setResourceSet(cZCEFLControl::cResourceSet* pResourceSet, u3
 // Address: 0x01a65ca0 - 0x01a65ca4 (4 bytes)
 u32 cZCEFLControl::getResourceSetNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSetList.::MtArray::mLength;
+    return mSetList.mLength;
 }
 
 // Address: 0x01a65cb0 - 0x01a65d44 (148 bytes)
@@ -151,6 +151,8 @@ __attribute__((weak)) void cZCEFLControl::setResourceSetNum(u32 Num) {
 
 // No out-of-line body: no code in the ELF
 // MtTypedArray<cZCEFLControl::cResourceSet>* cZCEFLControl::getResourceSetList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZCEFLControl::MyDTI cZCEFLControl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneCategoryEffectExt.cpp at 0x005923af-0x005923e8 (called at cZoneCategoryEffectExt.cpp:304)
@@ -177,7 +179,7 @@ const MtDTI& cZCEFLControl::cResourceSet::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cZCEFLControl::cResourceSet::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cZCEFLControl::cResourceSet::DTI);
+    return MtMemoryAllocator::getAllocator(cZCEFLControl::cResourceSet::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -186,7 +188,7 @@ inline MtAllocator* cZCEFLControl::cResourceSet::getAllocator() {
 // Address: 0x00591960 - 0x005919a0 (64 bytes)
 void* cZCEFLControl::cResourceSet::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cZCEFLControl::cResourceSet::getAllocator()->memAlloc(sz, align, ::cZCEFLControl::cResourceSet::DTI.::MtDTI::getID());
+    return cZCEFLControl::cResourceSet::getAllocator()->memAlloc(sz, align, cZCEFLControl::cResourceSet::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +202,7 @@ void* cZCEFLControl::cResourceSet::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cZCEFLControl::cResourceSet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZCEFLControl::cResourceSet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZCEFLControl::cResourceSet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,9 +217,9 @@ inline void cZCEFLControl::cResourceSet::operator delete(void* p_addr) {
 // Address: 0x00591a10 - 0x00591a2e (30 bytes)
 cZCEFLControl::cResourceSet::cResourceSet() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResourceType = static_cast<u32>(0);
-    this->mIndexNo = static_cast<u32>(0);
-    this->mElementNo = static_cast<u32>(0);
+    mResourceType = 0;
+    mIndexNo = 0;
+    mElementNo = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -232,7 +234,7 @@ __attribute__((weak)) void cZCEFLControl::cResourceSet::createProperty(MtPropert
 // Address: 0x00591ca0 - 0x00591ca5 (5 bytes)
 MtUI* cZCEFLControl::cResourceSet::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (9 bytes)
@@ -262,6 +264,8 @@ MtUI* cZCEFLControl::cResourceSet::createUI(MtProperty& prop) {
 //   in cZoneListenerEffectEFL::notified at 0x0059533c-0x00595340 (called at cZoneListenerEffect.cpp:241)
 // void cZCEFLControl::cResourceSet::setElementNo(u32 element);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZCEFLControl::cResourceSet::MyDTI cZCEFLControl::cResourceSet::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cZoneCategoryEffectExt.cpp at 0x00592339-0x00592376 (called at cZoneCategoryEffectExt.cpp:252)
 //   in _GLOBAL__sub_I_cZoneCategoryEffectExt.cpp at 0x00592339-0x00592376 (called at cZoneCategoryEffectExt.h:248)
@@ -270,7 +274,7 @@ MtUI* cZCEFLControl::cResourceSet::createUI(MtProperty& prop) {
 // Address: 0x00591910 - 0x0059195f (79 bytes)
 MtObject* cZCEFLControl::cResourceSet::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cZCEFLControl::cResourceSet;
+    return new (16u) cZCEFLControl::cResourceSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -295,7 +299,7 @@ const MtDTI& cZCEffectControl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cZCEffectControl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cZCEffectControl::DTI)->memAlloc(sz, align, ::cZCEffectControl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cZCEffectControl::DTI)->memAlloc(sz, align, cZCEffectControl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,7 +314,7 @@ inline void* cZCEffectControl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cZCEffectControlD0Ev at 0x01a65eee-0x01a65f0f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cZCEffectControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZCEffectControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZCEffectControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -328,6 +332,8 @@ inline void cZCEffectControl::operator delete(void* p_addr) {
 //   in cZCEFLControl::MyDTI::newInstance at 0x00591da0-0x00591da8 (called at cZoneCategoryEffectExt.cpp:310)
 // cZCEffectControl::cZCEffectControl();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZCEffectControl::MyDTI cZCEffectControl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneCategoryEffectExt.cpp at 0x00592376-0x005923af (called at cZoneCategoryEffectExt.cpp:303)
 //   in _GLOBAL__sub_I_cZoneCategoryEffectExt.cpp at 0x00592376-0x005923af (called at cZoneCategoryEffectExt.h:202)
@@ -336,7 +342,7 @@ inline void cZCEffectControl::operator delete(void* p_addr) {
 // Address: 0x00591cb0 - 0x00591cfe (78 bytes)
 MtObject* cZCEffectControl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cZCEffectControl;
+    return new (16u) cZCEffectControl;
 }
 
 // Instance at 0x01a65c20 - 0x01a65c25 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

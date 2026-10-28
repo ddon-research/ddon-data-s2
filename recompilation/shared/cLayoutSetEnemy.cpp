@@ -33,7 +33,7 @@ const MtDTI& cLayoutSetEnemy::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cLayoutSetEnemy::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cLayoutSetEnemy::DTI);
+    return MtMemoryAllocator::getAllocator(cLayoutSetEnemy::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* cLayoutSetEnemy::getAllocator() {
 // Address: 0x002d39c0 - 0x002d3a00 (64 bytes)
 void* cLayoutSetEnemy::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cLayoutSetEnemy::getAllocator()->memAlloc(sz, align, ::cLayoutSetEnemy::DTI.::MtDTI::getID());
+    return cLayoutSetEnemy::getAllocator()->memAlloc(sz, align, cLayoutSetEnemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* cLayoutSetEnemy::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cLayoutSetEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLayoutSetEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLayoutSetEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ cLayoutSetEnemy::cLayoutSetEnemy() {
 // Also emitted as: _ZN15cLayoutSetEnemyD0Ev at 0x002d3ad0
 cLayoutSetEnemy::~cLayoutSetEnemy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::kill();
+    kill();
 }
 
 // Address: 0x002d3b30 - 0x002d3cff (463 bytes)
@@ -93,7 +93,7 @@ __attribute__((weak)) void cLayoutSetEnemy::setup() {
 // Address: 0x002d3da0 - 0x002d3da5 (5 bytes)
 void cLayoutSetEnemy::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::move();
+    this->cLayoutSet::move();
 }
 
 // Address: 0x002d3db0 - 0x002d3e3f (143 bytes)
@@ -111,14 +111,14 @@ __attribute__((weak)) void cLayoutSetEnemy::createProperty(MtPropertyList& s) {
 // Address: 0x002d4b20 - 0x002d4b49 (41 bytes)
 MtObject* cLayoutSetEnemy::setLayoutUnit(rLayout* pLayout, u32 no, bool isForceSet, u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pLayout != static_cast<rLayout*>(nullptr)) {
-        if (this->::cLayoutSet::getGroupParam() != static_cast<cGroupParam*>(nullptr)) {
-            if (this->::cLayoutSet::getGroupParam()->mKillAreaType == static_cast<cGroupParam::KILL_AREA_TYPE>(1)) {
-                return this->setLayoutUnitSever(pLayout, no, isForceSet, mode);
+    if (pLayout != nullptr) {
+        if (getGroupParam() != nullptr) {
+            if (getGroupParam()->mKillAreaType == cGroupParam::KILL_AREA_SHAPE) {
+                return setLayoutUnitSever(pLayout, no, isForceSet, mode);
             }
         }
     }
-    return static_cast<MtObject*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x002d4b50 - 0x002d5064 (1300 bytes)
@@ -159,14 +159,14 @@ void cLayoutSetEnemy::deleteUnit(MtObject* pObj) {
     // inferred: a temporary for the result of the call at 0x2d582f, used once; no DWARF local holds it
     const MtDTI& t0 = pObj->getDTI();
     // inferred: the value the loop at 0x2d583d carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uControl::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uControl::DTI.mName;
     // inferred: the value the loop at 0x2d583d carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
-            ::sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(pObj));
+            sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(pObj));
             return;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -192,24 +192,24 @@ s32 cLayoutSetEnemy::getEnemySetTblIndex(s32 uinitID) {
     // DWARF local not rendered: cLayoutPreset* p;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    rLayoutPreset* pPri = ::sSetManager::getInstance()->::sSetManager::getLotPreset();
+    rLayoutPreset* pPri = sSetManager::getInstance()->getLotPreset();
     // inferred: the value carried to 0x2d3d88; no location-less local in scope fits
     unsigned int v2_9;
-    if (pPri == static_cast<rLayoutPreset*>(nullptr)) {
-        v2_9 = static_cast<unsigned int>(4294967295);
+    if (pPri == nullptr) {
+        v2_9 = 0xFFFFFFFF;
     } else {
-        if (pPri->getDataNum() == static_cast<u32>(0)) {
-            v2_9 = static_cast<unsigned int>(4294967295);
+        if (pPri->getDataNum() == 0) {
+            v2_9 = 0xFFFFFFFF;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x2d3d59, used 3 times; no DWARF local holds it
                 cLayoutPreset* t0 = pPri->getData(i0_3);
-                if (t0 != static_cast<cLayoutPreset*>(nullptr)) {
-                    if (t0->mCtrlType == static_cast<u32>(32)) {
+                if (t0 != nullptr) {
+                    if (t0->mCtrlType == 32) {
                         if (t0->mID != static_cast<unsigned int>(uinitID)) {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < pPri->getDataNum()) {
+                                i0_3 += 1u;
                             } else {
                                 break;
                             }
@@ -218,21 +218,21 @@ s32 cLayoutSetEnemy::getEnemySetTblIndex(s32 uinitID) {
                             return static_cast<s32>(v2_9);
                         }
                     } else {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < pPri->getDataNum()) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < pPri->getDataNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v2_9 = static_cast<unsigned int>(4294967295);
+            v2_9 = 0xFFFFFFFF;
         }
     }
     return static_cast<s32>(v2_9);
@@ -246,20 +246,19 @@ MtObject* cLayoutSetEnemy::getUnit(u32 id) {
     // DWARF local not rendered: uControlEnemy* pCB;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1dc from MtObject*
-    if (this->::cLayoutSet::mUnitArray.mLength != static_cast<u32>(0)) {
+    if (mUnitArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x2d58a0, 0x2d58cd)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->::cLayoutSet::mUnitArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cLayoutSet::mUnitArray.mpArray[i]) + static_cast<long>(476))) != id) {
-                } else {
-                    return this->::cLayoutSet::mUnitArray.mpArray[i];
+            if (mUnitArray.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitArray.mpArray[i]) + 476)) == id) {
+                    return mUnitArray.mpArray[i];
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->::cLayoutSet::mUnitArray.mLength);
+            i += 1u;
+        } while (i < mUnitArray.mLength);
     }
-    return static_cast<MtObject*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x002d5070 - 0x002d55c0 (1360 bytes)
@@ -326,21 +325,21 @@ __attribute__((weak)) bool cLayoutSetEnemy::canSetUnit() const {
 // Address: 0x002d3e40 - 0x002d3eaa (106 bytes)
 void cLayoutSetEnemy::moveSetUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cLayoutSet::mpRsrc == static_cast<rLayout*>(nullptr)) {
+    if (mpRsrc == nullptr) {
         return;
     }
-    if (this->::cLayoutSet::mpRsrc->::cResource::isUsage()) {
-        if (this->canSetUnit() != false) {
-            if (this->::cLayoutSet::mpGroupParam != static_cast<cGroupParam*>(nullptr)) {
-                if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isField() != false) {
-                    if (this->::cLayoutSet::getGroupParam()->::cGroupParam::getIsLoadLotRes() != false) {
-                        if (this->::cLayoutSet::getGroupParam()->mKillAreaType == static_cast<cGroupParam::KILL_AREA_TYPE>(1)) {
-                            this->::cLayoutSetEnemy::moveSetUnitSever();
+    if (mpRsrc->isUsage()) {
+        if (canSetUnit()) {
+            if (mpGroupParam != nullptr) {
+                if (static_cast<sAreaExt*>(sArea::getInstance())->isField()) {
+                    if (getGroupParam()->getIsLoadLotRes()) {
+                        if (getGroupParam()->mKillAreaType == cGroupParam::KILL_AREA_SHAPE) {
+                            moveSetUnitSever();
                         }
                     }
                 } else {
-                    if (this->::cLayoutSet::getGroupParam()->mKillAreaType == static_cast<cGroupParam::KILL_AREA_TYPE>(1)) {
-                        this->::cLayoutSetEnemy::moveSetUnitSever();
+                    if (getGroupParam()->mKillAreaType == cGroupParam::KILL_AREA_SHAPE) {
+                        moveSetUnitSever();
                     }
                 }
             }
@@ -371,6 +370,8 @@ __attribute__((weak)) void cLayoutSetEnemy::moveSetUnitSubGroupSever(u32 flagNo,
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLayoutSetEnemy::MyDTI cLayoutSetEnemy::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cLayoutSetEnemy.cpp at 0x002d59cf-0x002d5a0c (called at cLayoutSetEnemy.cpp:47)
 //   in _GLOBAL__sub_I_cLayoutSetEnemy.cpp at 0x002d59cf-0x002d5a0c (called at cLayoutSetEnemy.h:28)
@@ -379,6 +380,6 @@ __attribute__((weak)) void cLayoutSetEnemy::moveSetUnitSubGroupSever(u32 flagNo,
 // Address: 0x002d3970 - 0x002d39be (78 bytes)
 MtObject* cLayoutSetEnemy::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLayoutSetEnemy;
+    return new (16u) cLayoutSetEnemy;
 }
 

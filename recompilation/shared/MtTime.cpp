@@ -128,3 +128,8 @@ __attribute__((weak)) void MtTime::updateDate(t64 utc_time) {
     /* stub */
 }
 
+// Not defined (no member-wise spelling: a class outside the bundle): tm MtTime::mTm;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+t64 MtTime::mTmTime;
+

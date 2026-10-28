@@ -29,7 +29,7 @@ const MtDTI& CDataGameSetting::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGameSetting::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGameSetting::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGameSetting::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline MtAllocator* CDataGameSetting::getAllocator() {
 // Address: 0x003dc2b0 - 0x003dc2da (42 bytes)
 __attribute__((weak)) void CDataGameSetting::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGameSetting::getAllocator()->memFree(p_addr);
+    CDataGameSetting::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataGameSetting::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataGameSetting::CDataGameSetting(u32, u32, u32, u32, u32, u32, u32, u32, u32, u8, const MtTypedArray<CDataCharacterItemSlotInfo>&, u32, u8, b8, u8, u32, u32, u32, u32, u32, u32, u32, const MtTypedArray<CDataURLInfo>&, const MtTypedArray<CDataPartyMemberMaxNum>&, u32, u32, u32, const char*, const char*, u32, u8, const MtTypedArray<CDataJewelryEquipLimit>&, u32, u32, u32, u32, u32, u32, const MtTypedArray<CDataCommonU32>&, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGameSetting::MyDTI CDataGameSetting::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f37c-0x0041f3b5 (called at ServerSettingImplement.inc:7)
@@ -98,7 +100,7 @@ const MtDTI& CDataLoginSetting::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLoginSetting::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLoginSetting::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLoginSetting::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ inline MtAllocator* CDataLoginSetting::getAllocator() {
 // Address: 0x003dc3d0 - 0x003dc3fa (42 bytes)
 __attribute__((weak)) void CDataLoginSetting::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLoginSetting::getAllocator()->memFree(p_addr);
+    CDataLoginSetting::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,6 +143,8 @@ __attribute__((weak)) void CDataLoginSetting::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataLoginSetting::CDataLoginSetting(u32, u32, u8, b8, u32, const MtTypedArray<CDataURLInfo>&, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLoginSetting::MyDTI CDataLoginSetting::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f3b5-0x0041f3ee (called at ServerSettingImplement.inc:8)

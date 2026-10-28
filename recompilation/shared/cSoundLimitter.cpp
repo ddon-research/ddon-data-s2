@@ -39,26 +39,24 @@ __attribute__((weak)) void cSoundLimitter::execute(f32* pBuffer, const u32 sampl
 // Address: 0x012eb630 - 0x012eb6e8 (184 bytes)
 void cSoundLimitter::setEnable(const bool enable) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
-    this->mEnable = enable;
-    if (::scePthreadMutexLock(&this->mParamSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mEnable = enable;
+    if (scePthreadMutexLock(&mParamSection.mCSection) != 0) {
+        abort();
     }
     // inferred: a temporary for the value the load at 0x12eb656 read, used 4 times; no DWARF local holds it
-    f32 t1 = this->mThreshold;
+    f32 t1 = mThreshold;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb65f, held ahead of the effects the ELF orders after it
     float t2 = -96.0f;
     if (t2 >= t1) {
-        this->mThresholdRatio = 0.0f;
+        mThresholdRatio = 0.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6a1, held ahead of the effects the ELF orders after it
-        f32 t7 = this->mOutCeiling;
+        f32 t7 = mOutCeiling;
         if (t2 >= (t7 - t1)) {
-            this->mOutCeilingRatio = 0.0f;
+            mOutCeilingRatio = 0.0f;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6d1, held ahead of the effects the ELF orders after it
-            int t11 = ::scePthreadMutexUnlock(&this->mParamSection.mCSection);
-            if (t11 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
+            if (t11 != 0) {
+                abort();
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6b0, held ahead of the effects the ELF orders after it
@@ -66,13 +64,12 @@ void cSoundLimitter::setEnable(const bool enable) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6b8, held ahead of the effects the ELF orders after it
             float t9 = 10.0f;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6c0, held ahead of the effects the ELF orders after it
-            float t10 = ::powf(t9, (t7 - t1) / t8);
-            this->mOutCeilingRatio = t10;
+            float t10 = powf(t9, (t7 - t1) / t8);
+            mOutCeilingRatio = t10;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6d1, held ahead of the effects the ELF orders after it
-            int t11 = ::scePthreadMutexUnlock(&this->mParamSection.mCSection);
-            if (t11 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
+            if (t11 != 0) {
+                abort();
             }
         }
     } else {
@@ -81,19 +78,18 @@ void cSoundLimitter::setEnable(const bool enable) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb679, held ahead of the effects the ELF orders after it
         float t4 = 10.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb686, held ahead of the effects the ELF orders after it
-        float t5 = ::powf(t4, t1 / t3);
+        float t5 = powf(t4, t1 / t3);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb68b, held ahead of the effects the ELF orders after it
         float t6 = -96.0f;
-        this->mThresholdRatio = t5;
+        mThresholdRatio = t5;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6a1, held ahead of the effects the ELF orders after it
-        f32 t7 = this->mOutCeiling;
+        f32 t7 = mOutCeiling;
         if (t6 >= (t7 - t1)) {
-            this->mOutCeilingRatio = 0.0f;
+            mOutCeilingRatio = 0.0f;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6d1, held ahead of the effects the ELF orders after it
-            int t11 = ::scePthreadMutexUnlock(&this->mParamSection.mCSection);
-            if (t11 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
+            if (t11 != 0) {
+                abort();
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6b0, held ahead of the effects the ELF orders after it
@@ -101,13 +97,12 @@ void cSoundLimitter::setEnable(const bool enable) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6b8, held ahead of the effects the ELF orders after it
             float t9 = 10.0f;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6c0, held ahead of the effects the ELF orders after it
-            float t10 = ::powf(t9, (t7 - t1) / t8);
-            this->mOutCeilingRatio = t10;
+            float t10 = powf(t9, (t7 - t1) / t8);
+            mOutCeilingRatio = t10;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x12eb6d1, held ahead of the effects the ELF orders after it
-            int t11 = ::scePthreadMutexUnlock(&this->mParamSection.mCSection);
-            if (t11 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t11 = scePthreadMutexUnlock(&mParamSection.mCSection);
+            if (t11 != 0) {
+                abort();
             }
         }
     }

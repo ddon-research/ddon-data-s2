@@ -31,7 +31,7 @@ const MtDTI& cpReaction::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpReaction::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpReaction::DTI);
+    return MtMemoryAllocator::getAllocator(cpReaction::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpReaction::getAllocator() {
 // Address: 0x0019dc30 - 0x0019dc70 (64 bytes)
 void* cpReaction::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpReaction::getAllocator()->memAlloc(sz, align, ::cpReaction::DTI.::MtDTI::getID());
+    return cpReaction::getAllocator()->memAlloc(sz, align, cpReaction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpReaction::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpReaction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpReaction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpReaction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,43 +77,43 @@ cpReaction::cpReaction() {
 // Also emitted as: _ZN10cpReactionD0Ev at 0x0019ddb0
 cpReaction::~cpReaction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprReaction == static_cast<rReaction*>(nullptr)) {
+    if (mprReaction == nullptr) {
         return;
     }
-    this->mprReaction->::cResource::release();
-    this->mprReaction = static_cast<rReaction*>(nullptr);
+    mprReaction->release();
+    mprReaction = nullptr;
 }
 
 // Address: 0x01981cb0 - 0x01981cb9 (9 bytes)
 void cpReaction::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x0019de10 - 0x0019de6b (91 bytes)
 void cpReaction::setResource(rReaction* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprReaction != static_cast<rReaction*>(nullptr)) {
-        this->mprReaction->::cResource::release();
-        this->mprReaction = static_cast<rReaction*>(nullptr);
+    if (mprReaction != nullptr) {
+        mprReaction->release();
+        mprReaction = nullptr;
     }
-    this->mTriggerFlag = static_cast<u64>(0);
-    this->mChoiceActNo = static_cast<u32>(4294967295);
-    this->mChoiceOptionFlg = static_cast<u32>(0);
-    this->mprReaction = pRes;
-    if (pRes == static_cast<rReaction*>(nullptr)) {
+    mTriggerFlag = 0;
+    mChoiceActNo = 0xFFFFFFFF;
+    mChoiceOptionFlg = 0;
+    mprReaction = pRes;
+    if (pRes == nullptr) {
         return;
     }
-    pRes->::cResource::addRef();
-    this->::cpReaction::setTriggerFlag();
+    pRes->addRef();
+    setTriggerFlag();
 }
 
 // Address: 0x0019e070 - 0x0019e08d (29 bytes)
 void cpReaction::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
-    this->mpModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
+    this->cpComponent::setup();
+    mpModel = static_cast<uDDOModel*>(getOwner());
 }
 
 // Address: 0x0019e090 - 0x0019e14c (188 bytes)
@@ -128,22 +128,22 @@ __attribute__((weak)) void cpReaction::move() {
 // Address: 0x0019e150 - 0x0019e183 (51 bytes)
 void cpReaction::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0019e190 - 0x0019e1b6 (38 bytes)
 bool cpReaction::isChoiceActNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x19e1a4, used once; no DWARF local holds it
-    u32 t0 = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
-    return this->mChoiceActNo == t0;
+    u32 t0 = mpModel->getActMgrPtr()->getActionNo();
+    return mChoiceActNo == t0;
 }
 
 // No out-of-line body: 11 inlined copies in 11 functions (77 bytes)
@@ -173,323 +173,323 @@ bool cpReaction::isChoiceActNo() {
 // Address: 0x0019e880 - 0x0019e90b (139 bytes)
 u32 cpReaction::callbackShrink(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(2)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(1));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(8), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 2ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_SHRINK);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_SHRINK, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019eb70 - 0x0019ebfb (139 bytes)
 u32 cpReaction::callbackBlow(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(4)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(2));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(13), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 4ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_BLOW);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_BLOW, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019ec90 - 0x0019ed1b (139 bytes)
 u32 cpReaction::callbackDown(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(8)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(3));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(18), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 8ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_DOWN);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_DOWN, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019ec00 - 0x0019ec8b (139 bytes)
 u32 cpReaction::callbackShake(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(16)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(4));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(17), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 16ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_TIRED);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_SHAKE, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019ed20 - 0x0019ee19 (249 bytes)
 u32 cpReaction::callbackRegionBreak(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: u32 actNo;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(131072)) != static_cast<u64>(0)) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 0x20000ul) != 0) {
                 // inferred: a temporary for the result of the call at 0x19ed6a, used twice; no DWARF local holds it
-                u32 t0 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(17));
-                if (t0 == static_cast<u32>(4294967295)) {
-                    if (((this->mTriggerFlag >> static_cast<u64>(8)) & static_cast<u64>(2)) != static_cast<u64>(0)) {
+                u32 t0 = selectReaction(*pHitInfo, nAction::REACT_TRG_ALL_EROSION_BREAK);
+                if (t0 == 0xFFFFFFFFu) {
+                    if (((mTriggerFlag >> 8) & 2ul) != 0) {
                         // inferred: a temporary for the result of the call at 0x19ed8c, used twice; no DWARF local holds it
-                        u32 t1 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(9));
-                        if (t1 == static_cast<u32>(4294967295)) {
-                            if ((this->mTriggerFlag & static_cast<u64>(65536)) != static_cast<u64>(0)) {
+                        u32 t1 = selectReaction(*pHitInfo, nAction::REACT_TRG_ALL_REGION_BREAK);
+                        if (t1 == 0xFFFFFFFFu) {
+                            if ((mTriggerFlag & 0x10000ul) != 0) {
                                 // inferred: a temporary for the result of the call at 0x19edb0, used twice; no DWARF local holds it
-                                u32 t2 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(16));
-                                if (t2 == static_cast<u32>(4294967295)) {
-                                    if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                                u32 t2 = selectReaction(*pHitInfo, nAction::REACT_TRG_EROSION_BREAK);
+                                if (t2 == 0xFFFFFFFFu) {
+                                    if ((mTriggerFlag & 256ul) != 0) {
                                         // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                        u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                        if (t3 != static_cast<u32>(4294967295)) {
-                                            if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                        u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                        if (t3 != 0xFFFFFFFFu) {
+                                            if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                                 return t3;
                                             }
                                         }
-                                        return static_cast<u32>(4294967295);
+                                        return 0xFFFFFFFF;
                                     }
                                 } else {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                         return t2;
                                     }
                                 }
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             } else {
-                                if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                                if ((mTriggerFlag & 256ul) != 0) {
                                     // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                    u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                    if (t3 != static_cast<u32>(4294967295)) {
-                                        if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                    u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                    if (t3 != 0xFFFFFFFFu) {
+                                        if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                             return t3;
                                         }
                                     }
-                                    return static_cast<u32>(4294967295);
+                                    return 0xFFFFFFFF;
                                 } else {
-                                    return static_cast<u32>(4294967295);
+                                    return 0xFFFFFFFF;
                                 }
                             }
                         } else {
-                            if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                            if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                 return t1;
                             } else {
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             }
                         }
                     } else {
-                        if ((this->mTriggerFlag & static_cast<u64>(65536)) != static_cast<u64>(0)) {
+                        if ((mTriggerFlag & 0x10000ul) != 0) {
                             // inferred: a temporary for the result of the call at 0x19edb0, used twice; no DWARF local holds it
-                            u32 t2 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(16));
-                            if (t2 == static_cast<u32>(4294967295)) {
-                                if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                            u32 t2 = selectReaction(*pHitInfo, nAction::REACT_TRG_EROSION_BREAK);
+                            if (t2 == 0xFFFFFFFFu) {
+                                if ((mTriggerFlag & 256ul) != 0) {
                                     // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                    u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                    if (t3 != static_cast<u32>(4294967295)) {
-                                        if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                    u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                    if (t3 != 0xFFFFFFFFu) {
+                                        if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                             return t3;
                                         }
                                     }
-                                    return static_cast<u32>(4294967295);
+                                    return 0xFFFFFFFF;
                                 }
                             } else {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                     return t2;
                                 }
                             }
-                            return static_cast<u32>(4294967295);
+                            return 0xFFFFFFFF;
                         } else {
-                            if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                            if ((mTriggerFlag & 256ul) != 0) {
                                 // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                if (t3 != static_cast<u32>(4294967295)) {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                if (t3 != 0xFFFFFFFFu) {
+                                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                         return t3;
                                     }
                                 }
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             } else {
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             }
                         }
                     }
                 } else {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                         return t0;
                     } else {
-                        return static_cast<u32>(4294967295);
+                        return 0xFFFFFFFF;
                     }
                 }
             } else {
-                if (((this->mTriggerFlag >> static_cast<u64>(8)) & static_cast<u64>(2)) != static_cast<u64>(0)) {
+                if (((mTriggerFlag >> 8) & 2ul) != 0) {
                     // inferred: a temporary for the result of the call at 0x19ed8c, used twice; no DWARF local holds it
-                    u32 t1 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(9));
-                    if (t1 == static_cast<u32>(4294967295)) {
-                        if ((this->mTriggerFlag & static_cast<u64>(65536)) != static_cast<u64>(0)) {
+                    u32 t1 = selectReaction(*pHitInfo, nAction::REACT_TRG_ALL_REGION_BREAK);
+                    if (t1 == 0xFFFFFFFFu) {
+                        if ((mTriggerFlag & 0x10000ul) != 0) {
                             // inferred: a temporary for the result of the call at 0x19edb0, used twice; no DWARF local holds it
-                            u32 t2 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(16));
-                            if (t2 == static_cast<u32>(4294967295)) {
-                                if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                            u32 t2 = selectReaction(*pHitInfo, nAction::REACT_TRG_EROSION_BREAK);
+                            if (t2 == 0xFFFFFFFFu) {
+                                if ((mTriggerFlag & 256ul) != 0) {
                                     // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                    u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                    if (t3 != static_cast<u32>(4294967295)) {
-                                        if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                    u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                    if (t3 != 0xFFFFFFFFu) {
+                                        if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                             return t3;
                                         }
                                     }
-                                    return static_cast<u32>(4294967295);
+                                    return 0xFFFFFFFF;
                                 }
                             } else {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                     return t2;
                                 }
                             }
-                            return static_cast<u32>(4294967295);
+                            return 0xFFFFFFFF;
                         } else {
-                            if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                            if ((mTriggerFlag & 256ul) != 0) {
                                 // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                if (t3 != static_cast<u32>(4294967295)) {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                if (t3 != 0xFFFFFFFFu) {
+                                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                         return t3;
                                     }
                                 }
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             } else {
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             }
                         }
                     } else {
-                        if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                        if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                             return t1;
                         } else {
-                            return static_cast<u32>(4294967295);
+                            return 0xFFFFFFFF;
                         }
                     }
                 } else {
-                    if ((this->mTriggerFlag & static_cast<u64>(65536)) != static_cast<u64>(0)) {
+                    if ((mTriggerFlag & 0x10000ul) != 0) {
                         // inferred: a temporary for the result of the call at 0x19edb0, used twice; no DWARF local holds it
-                        u32 t2 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(16));
-                        if (t2 == static_cast<u32>(4294967295)) {
-                            if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                        u32 t2 = selectReaction(*pHitInfo, nAction::REACT_TRG_EROSION_BREAK);
+                        if (t2 == 0xFFFFFFFFu) {
+                            if ((mTriggerFlag & 256ul) != 0) {
                                 // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                                u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                                if (t3 != static_cast<u32>(4294967295)) {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                                u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                                if (t3 != 0xFFFFFFFFu) {
+                                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                         return t3;
                                     }
                                 }
-                                return static_cast<u32>(4294967295);
+                                return 0xFFFFFFFF;
                             }
                         } else {
-                            if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                            if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                 return t2;
                             }
                         }
-                        return static_cast<u32>(4294967295);
+                        return 0xFFFFFFFF;
                     } else {
-                        if ((this->mTriggerFlag & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                        if ((mTriggerFlag & 256ul) != 0) {
                             // inferred: a temporary for the result of the call at 0x19edd5, used twice; no DWARF local holds it
-                            u32 t3 = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(8));
-                            if (t3 != static_cast<u32>(4294967295)) {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(10), pHitInfo, false) != false) {
+                            u32 t3 = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_BREAK);
+                            if (t3 != 0xFFFFFFFFu) {
+                                if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_REGION_BREAK, pHitInfo, false)) {
                                     return t3;
                                 }
                             }
-                            return static_cast<u32>(4294967295);
+                            return 0xFFFFFFFF;
                         } else {
-                            return static_cast<u32>(4294967295);
+                            return 0xFFFFFFFF;
                         }
                     }
                 }
             }
         } else {
-            return static_cast<u32>(4294967295);
+            return 0xFFFFFFFF;
         }
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x0019efd0 - 0x0019f05b (139 bytes)
 u32 cpReaction::callbackRegionHit(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(1024)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(10));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(4), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 1024ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_REGION_HIT);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_LOWEST, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019ee20 - 0x0019eeab (139 bytes)
 u32 cpReaction::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(17179869184)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(34));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(4), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 0x400000000ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_CONTINUE_DAMAGE);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_LOWEST, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019f060 - 0x0019f0eb (139 bytes)
 u32 cpReaction::callbackYoroyoro(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isMaster() != false) {
-            if ((this->mTriggerFlag & static_cast<u64>(8589934592)) != static_cast<u64>(0)) {
-                u32 actNo = this->::cpReaction::selectReaction(*pHitInfo, static_cast<nAction::REACT_TRG>(33));
-                if (actNo != static_cast<u32>(4294967295)) {
-                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::checkPriority(static_cast<nAction::ACT_PRIO>(16), pHitInfo, false) != false) {
+    if (pHitInfo != nullptr) {
+        if (mpModel->isMaster()) {
+            if ((mTriggerFlag & 0x200000000ul) != 0) {
+                u32 actNo = selectReaction(*pHitInfo, nAction::REACT_TRG_YOROYORO);
+                if (actNo != 0xFFFFFFFFu) {
+                    if (mpModel->getActMgrPtr()->checkPriority(nAction::PRIO_DMG_YOROYORO, pHitInfo, false)) {
                         return actNo;
                     }
                 }
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0019eeb0 - 0x0019efcd (285 bytes)
@@ -611,6 +611,8 @@ __attribute__((weak)) bool cpReaction::checkCondDamageAng(cReaction::cCondition&
 //   in cpReaction::checkCondition at 0x0019e1f4-0x0019e210, 0x0019e3c6-0x0019e4d1 (called at cpReaction.cpp:327)
 // bool cpReaction::checkCondDistAttacker(cReaction::cCondition& cond, cHitInfoAfter& hitInfo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpReaction::MyDTI cpReaction::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpReaction.cpp at 0x0019f5bc-0x0019f5f9 (called at cpReaction.cpp:104)
 //   in _GLOBAL__sub_I_cpReaction.cpp at 0x0019f5bc-0x0019f5f9 (called at cpReaction.h:44)
@@ -646,7 +648,7 @@ const MtDTI& cpReaction::cTriggerFree::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cpReaction::cTriggerFree::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpReaction::cTriggerFree::DTI)->memAlloc(sz, align, ::cpReaction::cTriggerFree::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpReaction::cTriggerFree::DTI)->memAlloc(sz, align, cpReaction::cTriggerFree::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -660,7 +662,7 @@ inline void* cpReaction::cTriggerFree::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cpReaction::cTriggerFree::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpReaction::cTriggerFree::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpReaction::cTriggerFree::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -682,6 +684,8 @@ inline void cpReaction::cTriggerFree::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cpReaction::cTriggerFree::~cTriggerFree();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpReaction::cTriggerFree::MyDTI cpReaction::cTriggerFree::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpReaction.cpp at 0x0019f57f-0x0019f5bc (called at cpReaction.cpp:49)
 //   in _GLOBAL__sub_I_cpReaction.cpp at 0x0019f57f-0x0019f5bc (called at cpReaction.h:48)
@@ -690,7 +694,7 @@ inline void cpReaction::cTriggerFree::operator delete(void* p_addr) {
 // Address: 0x0019dac0 - 0x0019db08 (72 bytes)
 MtObject* cpReaction::cTriggerFree::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpReaction::cTriggerFree;
+    return new (16u) cpReaction::cTriggerFree;
 }
 
 // Instance at 0x01981c50 - 0x01981c55 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

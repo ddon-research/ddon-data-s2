@@ -364,12 +364,12 @@ inline uSoundSubMixer::CurrentSubMixer::CurrentSubMixer() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uSoundSubMixer::CurrentSubMixer::CurrentFader::CurrentFader() {
-    this->mpSoundSubMixer = static_cast<uSoundSubMixer*>(nullptr);
-    this->mSubMixerIndex = static_cast<u8>(0);
-    this->mFaderIndex = static_cast<u8>(0);
+    this->mpSoundSubMixer = nullptr;
+    this->mSubMixerIndex = 0;
+    this->mFaderIndex = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uSoundSubMixer::FaderParam::FaderParam() {
-    this->mpSoundSubMixer = static_cast<uSoundSubMixer*>(nullptr);
+    this->mpSoundSubMixer = nullptr;
 }

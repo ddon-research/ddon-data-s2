@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cResource.h"
 #include "nDrawTexture.h"
 #ifndef DDON_STUB
@@ -28,8 +29,11 @@ const MtDTI& rTexture::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rTexture::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* rTexture::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK8rTexture5MyDTI11newInstanceEv at 0x011e1cb0-0x011e1cdd, code DWARF attributes to no inlined copy; sz is the class's size (264), align the allocation's other whole constant (16)
+inline void* rTexture::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rTexture::DTI)->memAlloc(sz, align, rTexture::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* rTexture::operator new[](size_t sz, u32 align);
@@ -43,7 +47,7 @@ const MtDTI& rTexture::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8rTextureD0Ev at 0x011e1e9c-0x011e1ebd, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rTexture::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTexture::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTexture::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,15 +62,15 @@ inline void rTexture::operator delete(void* p_addr) {
 // Address: 0x011e1db0 - 0x011e1e0d (93 bytes)
 rTexture::rTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mbStream = false;
-    this->mOrgDepth = static_cast<u32>(0);
-    this->mDetailBias = static_cast<u32>(0);
-    this->mOrgWidth = static_cast<u32>(0);
-    this->mOrgHeight = static_cast<u32>(0);
-    this->mOrgInvWidth = 0.0f;
-    this->mOrgInvHeight = 0.0f;
-    this->mpTexture = static_cast<nDraw::Texture*>(nullptr);
+    mAttr = 16;
+    mbStream = false;
+    mOrgDepth = 0;
+    mDetailBias = 0;
+    mOrgWidth = 0;
+    mOrgHeight = 0;
+    mOrgInvWidth = 0.0f;
+    mOrgInvHeight = 0.0f;
+    mpTexture = nullptr;
 }
 
 // Address: 0x011e1ee0 - 0x011e2c13 (3379 bytes)
@@ -131,17 +135,17 @@ bool rTexture::compact(MtStream& out) {
 // Address: 0x011e2d90 - 0x011e2dbd (45 bytes)
 void rTexture::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTexture == static_cast<nDraw::Texture*>(nullptr)) {
+    if (mpTexture == nullptr) {
         return;
     }
-    this->mpTexture->release();
-    this->mpTexture = static_cast<nDraw::Texture*>(nullptr);
+    mpTexture->release();
+    mpTexture = nullptr;
 }
 
 // Address: 0x011e2c60 - 0x011e2c65 (5 bytes)
 MtUI* rTexture::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01b5b8a0 - 0x01b5b8a8 (8 bytes)
@@ -204,31 +208,33 @@ __attribute__((weak)) void rTexture::createProperty(MtPropertyList& s) {
 // Also emitted as: _ZN8rTextureD0Ev at 0x011e1e60
 rTexture::~rTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTexture == static_cast<nDraw::Texture*>(nullptr)) {
+    if (mpTexture == nullptr) {
         return;
     }
-    this->mpTexture->release();
-    this->mpTexture = static_cast<nDraw::Texture*>(nullptr);
+    mpTexture->release();
+    mpTexture = nullptr;
 }
 
 // Address: 0x011e2c20 - 0x011e2c4c (44 bytes)
 void rTexture::setHandle(nDraw::Texture* ptex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTexture != static_cast<nDraw::Texture*>(nullptr)) {
-        this->clear();
+    if (mpTexture != nullptr) {
+        clear();
     }
-    this->mpTexture = ptex;
+    mpTexture = ptex;
 }
 
 // No out-of-line body: no code in the ELF
 // bool rTexture::is2N(u32 v);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rTexture::MyDTI rTexture::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rTexture::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011e1cb0 - 0x011e1d38 (136 bytes)
-__attribute__((weak)) MtObject* rTexture::MyDTI::newInstance() const {
-    DDON_STUB("rTexture::MyDTI::newInstance")
-    return nullptr;
+MtObject* rTexture::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) rTexture;
 }
 

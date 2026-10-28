@@ -33,7 +33,7 @@ const MtDTI& uEffectExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uEffectExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI);
+    return MtMemoryAllocator::getAllocator(uEffectExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uEffectExt::getAllocator() {
 // Address: 0x008e3510 - 0x008e3550 (64 bytes)
 void* uEffectExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uEffectExt::getAllocator()->memAlloc(sz, align, ::uEffectExt::DTI.::MtDTI::getID());
+    return uEffectExt::getAllocator()->memAlloc(sz, align, uEffectExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uEffectExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uEffectExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +124,7 @@ __attribute__((weak)) void uEffectExt::move() {
 // Address: 0x008e5130 - 0x008e5135 (5 bytes)
 void uEffectExt::sync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uEffect::sync();
+    this->uEffect::sync();
 }
 
 // Address: 0x008e5140 - 0x008e52a0 (352 bytes)
@@ -145,11 +145,11 @@ __attribute__((weak)) void uEffectExt::draw(cDraw* pDraw) {
 void uEffectExt::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uEffectExt*
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
     }
 }
 
@@ -162,7 +162,7 @@ __attribute__((weak)) void uEffectExt::createProperty(MtPropertyList& s) {
 // Address: 0x008e5a90 - 0x008e5a95 (5 bytes)
 MtUI* uEffectExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uEffect::createUI(prop);
+    return this->uEffect::createUI(prop);
 }
 
 // Address: 0x008e46e0 - 0x008e4744 (100 bytes)
@@ -212,42 +212,42 @@ __attribute__((weak)) void uEffectExt::updateDeltaTimeRate() {
 // Address: 0x008e92a0 - 0x008e92e3 (67 bytes)
 void uEffectExt::updateParentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uCoord::mpParent != static_cast<uCoord*>(nullptr)) {
-        if (this->::uCoord::mpParent->::cUnit::isEnable() == false) {
-            this->::uCoord::mpParent = static_cast<uCoord*>(nullptr);
+    if (mpParent != nullptr) {
+        if (!mpParent->isEnable()) {
+            mpParent = nullptr;
         }
     }
-    if (this->mpParentActor == static_cast<uDDOModel*>(nullptr)) {
+    if (mpParentActor == nullptr) {
         return;
     }
-    if (this->mpParentActor->::cUnit::isEnable() != false) {
+    if (mpParentActor->isEnable()) {
         return;
     }
-    this->mpParentActor = static_cast<uDDOModel*>(nullptr);
+    mpParentActor = nullptr;
 }
 
 // Address: 0x01ad6170 - 0x01ad6186 (22 bytes)
 void uEffectExt::setHitStopMode(bool Flg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHitStopMode = Flg;
+    mHitStopMode = Flg;
 }
 
 // Address: 0x01ad6160 - 0x01ad616a (10 bytes)
 bool uEffectExt::getHitStopMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHitStopMode;
+    return mHitStopMode;
 }
 
 // Address: 0x01ad6190 - 0x01ad61a8 (24 bytes)
 void uEffectExt::setWorkRateMode(bool Flg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorkRateMode = Flg;
+    mWorkRateMode = Flg;
 }
 
 // Address: 0x01ad6130 - 0x01ad613b (11 bytes)
 bool uEffectExt::getWorkRateMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWorkRateMode;
+    return mWorkRateMode;
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,9 +264,13 @@ bool uEffectExt::getWorkRateMode() const {
 // u32 uEffectExt::getCustomWorkRateType() const;
 
 // Address: 0x008e3850 - 0x008e3873 (35 bytes)
-__attribute__((weak)) void uEffectExt::setParentActor(uDDOModel* pParent, bool Flg0, bool Flg1) {
-    DDON_STUB("uEffectExt::setParentActor")
-    /* stub */
+void uEffectExt::setParentActor(uDDOModel* pParent, bool Flg0, bool Flg1) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a bitfield storage unit accessed whole, by byte offset from its base: unsigned int at 0x28c from uEffectExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28c from uEffectExt*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    mpParentActor = pParent;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652) = static_cast<unsigned int>((static_cast<unsigned long>(Flg1 * 2) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652)) & 0xFFFFFFFCu)) | static_cast<unsigned long>(Flg0));
 }
 
 // No out-of-line body: no code in the ELF
@@ -275,25 +279,25 @@ __attribute__((weak)) void uEffectExt::setParentActor(uDDOModel* pParent, bool F
 // Address: 0x01ad6610 - 0x01ad6629 (25 bytes)
 void uEffectExt::setParentBaseModelFlag(bool Flg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParentBaseModelFlag = Flg;
+    mParentBaseModelFlag = Flg;
 }
 
 // Address: 0x01ad6600 - 0x01ad660c (12 bytes)
 bool uEffectExt::getParentBaseModelFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParentBaseModelFlag;
+    return mParentBaseModelFlag;
 }
 
 // Address: 0x01ad6640 - 0x01ad6659 (25 bytes)
 void uEffectExt::setParentTransparency(bool Flg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParentTransparency = Flg;
+    mParentTransparency = Flg;
 }
 
 // Address: 0x01ad6630 - 0x01ad663c (12 bytes)
 bool uEffectExt::getParentTransparency() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParentTransparency;
+    return mParentTransparency;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (16 bytes)
@@ -328,25 +332,25 @@ __attribute__((weak)) void uEffectExt::setGeneralCorrectColor(const MtColor& col
 // Address: 0x01ad61b0 - 0x01ad61b9 (9 bytes)
 f32 uEffectExt::getDeltaTimeCoefEx() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTimeCoefEx;
+    return mDeltaTimeCoefEx;
 }
 
 // Address: 0x01ad61c0 - 0x01ad61c9 (9 bytes)
 void uEffectExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTimeCoefEx = DeltaTimeCoef;
+    mDeltaTimeCoefEx = DeltaTimeCoef;
 }
 
 // Address: 0x01ad61f0 - 0x01ad6204 (20 bytes)
 void uEffectExt::setCCTransparency(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * val));
+    mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * val));
 }
 
 // Address: 0x01ad61d0 - 0x01ad61e4 (20 bytes)
 f32 uEffectExt::getCCTransparency() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return 0.00390625f * static_cast<float>(this->mCorrectColorParam.mTransparency);
+    return 0.00390625f * static_cast<float>(mCorrectColorParam.mTransparency);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -359,7 +363,7 @@ f32 uEffectExt::getCCTransparency() const {
 // Address: 0x008e6a50 - 0x008e6a58 (8 bytes)
 void uEffectExt::setLanternCancel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLanternCancel = false;
+    mLanternCancel = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -417,37 +421,37 @@ void uEffectExt::setLanternCancel() {
 // Address: 0x01ad64a0 - 0x01ad64b9 (25 bytes)
 void uEffectExt::setFollowSunFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFollowSun = flag;
+    mFollowSun = flag;
 }
 
 // Address: 0x01ad6140 - 0x01ad614c (12 bytes)
 bool uEffectExt::getFollowSunFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFollowSun;
+    return mFollowSun;
 }
 
 // Address: 0x01ad64c0 - 0x01ad64db (27 bytes)
 void uEffectExt::setFollowMoon(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFollowMoon = flag;
+    mFollowMoon = flag;
 }
 
 // Address: 0x01ad6150 - 0x01ad615c (12 bytes)
 bool uEffectExt::getFollowMoon() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFollowMoon;
+    return mFollowMoon;
 }
 
 // Address: 0x01ad6580 - 0x01ad659b (27 bytes)
 void uEffectExt::setZoneCheckGeneratorFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mZoneCheckGenerator = flag;
+    mZoneCheckGenerator = flag;
 }
 
 // Address: 0x01ad6570 - 0x01ad657a (10 bytes)
 bool uEffectExt::getZoneCheckGeneratorFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mZoneCheckGenerator;
+    return mZoneCheckGenerator;
 }
 
 // Address: 0x008e69c0 - 0x008e6a4d (141 bytes)
@@ -462,13 +466,13 @@ __attribute__((weak)) void uEffectExt::setZoneUnitColorFlag() {
 // Address: 0x01ad65b0 - 0x01ad65c9 (25 bytes)
 void uEffectExt::setColorUpdateFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColorUpdate = flag;
+    mColorUpdate = flag;
 }
 
 // Address: 0x01ad65a0 - 0x01ad65ac (12 bytes)
 bool uEffectExt::getColorUpdateFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorUpdate;
+    return mColorUpdate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -480,49 +484,49 @@ bool uEffectExt::getColorUpdateFlag() const {
 // Address: 0x01ad65e0 - 0x01ad65fb (27 bytes)
 void uEffectExt::setColorUpdateDistCancelFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColorUpdateDistCancel = flag;
+    mColorUpdateDistCancel = flag;
 }
 
 // Address: 0x01ad65d0 - 0x01ad65db (11 bytes)
 bool uEffectExt::getColorUpdateDistCancelFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorUpdateDistCancel;
+    return mColorUpdateDistCancel;
 }
 
 // Address: 0x01ad64f0 - 0x01ad650b (27 bytes)
 void uEffectExt::setFineWeatherOffFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFineWeatherOff = flag;
+    mFineWeatherOff = flag;
 }
 
 // Address: 0x01ad64e0 - 0x01ad64ec (12 bytes)
 bool uEffectExt::getFineWeatherOffFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFineWeatherOff;
+    return mFineWeatherOff;
 }
 
 // Address: 0x01ad6520 - 0x01ad653b (27 bytes)
 void uEffectExt::setCloudyWeatherOffFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudyWeatherOff = flag;
+    mCloudyWeatherOff = flag;
 }
 
 // Address: 0x01ad6510 - 0x01ad651c (12 bytes)
 bool uEffectExt::getCloudyWeatherOffFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCloudyWeatherOff;
+    return mCloudyWeatherOff;
 }
 
 // Address: 0x01ad6550 - 0x01ad656b (27 bytes)
 void uEffectExt::setRainWeatherOffFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRainWeatherOff = flag;
+    mRainWeatherOff = flag;
 }
 
 // Address: 0x01ad6540 - 0x01ad654c (12 bytes)
 bool uEffectExt::getRainWeatherOffFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRainWeatherOff;
+    return mRainWeatherOff;
 }
 
 // No out-of-line body: no code in the ELF
@@ -643,8 +647,8 @@ __attribute__((weak)) uEffect* uEffectExt::openEffect() {
 // Address: 0x008e9290 - 0x008e929c (12 bytes)
 bool uEffectExt::createGenerator() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mZoneUpdateFlag = static_cast<u32>(1);
-    return this->::uEffect::createGenerator();
+    mZoneUpdateFlag = 1;
+    return this->uEffect::createGenerator();
 }
 
 // Address: 0x008e6a80 - 0x008e6c22 (418 bytes)
@@ -719,13 +723,13 @@ __attribute__((weak)) u32 uEffectExt::checkCollsionSphere(sCollision::TriangleIn
 // Address: 0x008e9650 - 0x008e9653 (3 bytes)
 u32 uEffectExt::setCollBounceReaction(rEffectList::EFL_PARAM_COLL* pCollParam, sCollision::TriangleInfo* pInfo, u32 Attribute) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x008e9660 - 0x008e9663 (3 bytes)
 u32 uEffectExt::setCollFinishReaction(rEffectList::EFL_PARAM_COLL* pCollParam, sCollision::TriangleInfo* pInfo, u32 Attribute) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x008e9670 - 0x008e96b2 (66 bytes)
@@ -747,10 +751,10 @@ f32 uEffectExt::correctModelEnvMapPower(cParticleGenerator* pGenerator, const Mt
     // DWARF local not rendered: u32 no;
     // DWARF local not rendered: ZONE_PARAM* pZoneParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCorrectColorParam.mpZoneParam != static_cast<uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
-        if ((&this->mCorrectColorParam.mpZoneParam[pGenerator->::cParticleManager::mManagerNo]) != static_cast<uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
-            if ((this->mCorrectColorParam.mpZoneParam[pGenerator->::cParticleManager::mManagerNo].mFlag & static_cast<u32>(1)) != static_cast<u32>(0)) {
-                return this->mCorrectColorParam.mpZoneParam[pGenerator->::cParticleManager::mManagerNo].mEnvMapPowerScale * OrgEnvMapPower;
+    if (mCorrectColorParam.mpZoneParam != nullptr) {
+        if ((&mCorrectColorParam.mpZoneParam[pGenerator->mManagerNo]) != nullptr) {
+            if ((mCorrectColorParam.mpZoneParam[pGenerator->mManagerNo].mFlag & 1u) != 0) {
+                return mCorrectColorParam.mpZoneParam[pGenerator->mManagerNo].mEnvMapPowerScale * OrgEnvMapPower;
             }
         }
     }
@@ -977,7 +981,7 @@ __attribute__((weak)) void uEffectExt::setCorrectColorRate(f32 rate) {
 f32 uEffectExt::getCorrectColorRate() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x2c4 from const uEffectExt*
-    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(708)));
+    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 708));
 }
 
 // Address: 0x01ad6300 - 0x01ad6315 (21 bytes)
@@ -990,7 +994,7 @@ __attribute__((weak)) void uEffectExt::setCorrectColorAlpha(f32 alpha) {
 f32 uEffectExt::getCorrectColorAlpha() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x2c2 from const uEffectExt*
-    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(706)));
+    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 706));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1033,7 +1037,7 @@ __attribute__((weak)) void uEffectExt::resetEffectKind() {
 bool uEffectExt::isEffectSt() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    return static_cast<bool>(this->mEffectKind & static_cast<u32>(1));
+    return static_cast<bool>(mEffectKind & 1u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1089,10 +1093,10 @@ bool uEffectExt::isEffectSt() {
 // Address: 0x008e5a20 - 0x008e5a57 (55 bytes)
 void uEffectExt::doFinish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFinishFadeOutFrame > 0.0f) {
-        this->mFinishFadeOutPassage = ::sMain::getInstance()->mDeltaTime + this->mFinishFadeOutPassage;
+    if (mFinishFadeOutFrame > 0.0f) {
+        mFinishFadeOutPassage = sMain::getInstance()->mDeltaTime + mFinishFadeOutPassage;
     } else {
-        this->::uEffect::doFinish();
+        this->uEffect::doFinish();
     }
 }
 
@@ -1141,6 +1145,12 @@ __attribute__((weak)) bool uEffectExt::getWorldOffsetDifference(MtVector3* World
 
 // No out-of-line body: no code in the ELF
 // uEffectExt::cRequestDispCtrlFlagCtrl* uEffectExt::getRDCFC();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uEffectExt::MyDTI uEffectExt::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 uEffectExt::COLOR_UPDATE_DISTANCE;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 uEffectExt::SUN_DISTANCE;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uEffectExt.cpp at 0x008ea29e-0x008ea2db (called at uEffectExt.cpp:68)
@@ -1204,7 +1214,7 @@ __attribute__((weak)) MtObject* uEffectExt::MyDTI::newInstance() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
-    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(padr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1298,7 +1308,7 @@ inline void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void*
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](void* padr) {
-    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(padr);
 }
 
 // No out-of-line body: 10 inlined copies in 5 functions (310 bytes)

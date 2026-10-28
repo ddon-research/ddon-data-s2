@@ -33,7 +33,7 @@ const MtDTI& uGUIEngageInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIEngageInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIEngageInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIEngageInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUIEngageInfo::getAllocator() {
 // Address: 0x00a75bf0 - 0x00a75c30 (64 bytes)
 void* uGUIEngageInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIEngageInfo::getAllocator()->memAlloc(sz, align, ::uGUIEngageInfo::DTI.::MtDTI::getID());
+    return uGUIEngageInfo::getAllocator()->memAlloc(sz, align, uGUIEngageInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUIEngageInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIEngageInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEngageInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEngageInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,19 +76,19 @@ inline void uGUIEngageInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN14uGUIEngageInfoD0Ev at 0x00a75d60
 uGUIEngageInfo::~uGUIEngageInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a75dc0 - 0x00a75e28 (104 bytes)
 bool uGUIEngageInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ENEMY_ENGAGE_GUI"), static_cast<u32>(129), static_cast<t64>(1400142948)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ENEMY_ENGAGE_GUI"), 129u, 1400142948l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -101,64 +101,64 @@ bool uGUIEngageInfo::loadResource() {
 // Address: 0x00a75e30 - 0x00a75ef0 (192 bytes)
 void uGUIEngageInfo::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
-    this->setPlay(true);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(7u), true);
+    setPlay(true);
     // inferred: a temporary for the result of the call at 0xa75e8f, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgHud(), static_cast<u32>(29));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgHud(), 29u);
     // inferred: a temporary for the result of the call at 0xa75ea4, used twice; no DWARF local holds it
-    cGUIObject* t1 = this->::uGUIBase::getObjectFromId(static_cast<u32>(2), static_cast<u32>(3));
-    this->mpOBJ_msg_enemy_m_enemy = static_cast<cGUIObjMessage*>(t1);
-    this->::uGUIBase::setObjectMessage(t1, t0, static_cast<u32>(0), false);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(2), false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateInit);
+    cGUIObject* t1 = getObjectFromId(2u, 3u);
+    mpOBJ_msg_enemy_m_enemy = static_cast<cGUIObjMessage*>(t1);
+    setObjectMessage(t1, t0, 0u, false);
+    setFlowAndInit(2u, false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateInit);
 }
 
 // Address: 0x00a75f10 - 0x00a75f41 (49 bytes)
 void uGUIEngageInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a75ef0 - 0x00a75f0a (26 bytes)
 void uGUIEngageInfo::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateWait);
 }
 
 // Address: 0x00a75f50 - 0x00a75fda (138 bytes)
 void uGUIEngageInfo::updateWait() {
     // DWARF local not rendered: bool isDisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    nGUI::FLOW* pFlow = this->getPlayingFlow();
-    sBattleState::SYS_BATTLE_STATE state = ::sSoundManager::getInstance()->::sSoundManager::getBattleState();
-    if (state == static_cast<sBattleState::SYS_BATTLE_STATE>(1)) {
-        if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsEngageDisp != false) {
-            if (pFlow == static_cast<nGUI::FLOW*>(nullptr)) {
-                this->setPlay(true);
+    nGUI::FLOW* pFlow = getPlayingFlow();
+    sBattleState::SYS_BATTLE_STATE state = sSoundManager::getInstance()->getBattleState();
+    if (state == sBattleState::SYS_STATE_BATTLE) {
+        if (sGame::getInstance()->mCharData.mCharData.mOption.mIsEngageDisp) {
+            if (pFlow == nullptr) {
+                setPlay(true);
             }
         } else {
-            if (pFlow != static_cast<nGUI::FLOW*>(nullptr)) {
-                if (pFlow->id == static_cast<u32>(3)) {
-                    if (this->::uGUI::isEndFlowAnimation(false) != false) {
-                        this->::uGUIBase::setFlowAndInit(static_cast<u32>(5), false);
+            if (pFlow != nullptr) {
+                if (pFlow->id == 3) {
+                    if (isEndFlowAnimation(false)) {
+                        setFlowAndInit(5u, false);
                     }
                 }
             }
         }
     } else {
-        if (pFlow != static_cast<nGUI::FLOW*>(nullptr)) {
-            if (pFlow->id == static_cast<u32>(3)) {
-                if (this->::uGUI::isEndFlowAnimation(false) != false) {
-                    this->::uGUIBase::setFlowAndInit(static_cast<u32>(5), false);
+        if (pFlow != nullptr) {
+            if (pFlow->id == 3) {
+                if (isEndFlowAnimation(false)) {
+                    setFlowAndInit(5u, false);
                 }
             }
         }
@@ -167,6 +167,8 @@ void uGUIEngageInfo::updateWait() {
 
 // No out-of-line body: no code in the ELF
 // void uGUIEngageInfo::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEngageInfo::MyDTI uGUIEngageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEngageInfo.cpp at 0x00a760ef-0x00a7612c (called at uGUIEngageInfo.cpp:58)

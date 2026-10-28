@@ -105,5 +105,5 @@ namespace nNetwork {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK8nNetwork21RpcNetSystem_RouteKey5MyDTI11newInstanceEv at 0x0119cb40-0x0119cb65, code DWARF attributes to no inlined copy
 inline nNetwork::RpcNetSystem_RouteKey::RpcNetSystem_RouteKey() {
-    this->::cRemoteCall::mAttribute = static_cast<u32>(0);
+    this->::cRemoteCall::mAttribute = 0;
 }

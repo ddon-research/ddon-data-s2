@@ -47,7 +47,7 @@ const MtDTI& rGeometry3::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rGeometry3D0Ev at 0x0121da88-0x0121daa7, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGeometry3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGeometry3::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,47 +78,47 @@ __attribute__((weak)) void rGeometry3::createProperty(MtPropertyList& s) {
 // Address: 0x0121dd90 - 0x0121de18 (136 bytes)
 void rGeometry3::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGroupArray.mLength != static_cast<u32>(0)) {
+    if (mGroupArray.mLength != 0) {
         // inferred: the value the loop at 0x121ddb0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGroupArray.mLength;
+        u32 v0_0 = mGroupArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGroupArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGroupArray.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroupArray.mLength) {
-                    v0_0 = this->mGroupArray.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGroupArray.mpArray[i0_3] != nullptr) {
+                delete mGroupArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGroupArray.mLength) {
+                    v0_0 = mGroupArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGroupArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupArray.mpArray));
+    if (mGroupArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupArray.mpArray));
     }
-    this->mGroupArray.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGroupArray.mBufsiz = static_cast<u32>(0);
-    this->mGroupArray.mLength = static_cast<u32>(0);
+    mGroupArray.mpArray = nullptr;
+    mGroupArray.mBufsiz = 0;
+    mGroupArray.mLength = 0;
 }
 
 // Address: 0x0121de20 - 0x0121dee9 (201 bytes)
 bool rGeometry3::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 FileMagic;
-    in.read(static_cast<void*>(&FileMagic), static_cast<u32>(4));
+    in.read(static_cast<void*>(&FileMagic), 4u);
     u32 FileVersion;
-    in.read(static_cast<void*>(&FileVersion), static_cast<u32>(4));
-    if (FileMagic == static_cast<u32>(862938471)) {
-        if (FileVersion == static_cast<u32>(2010111900)) {
-            MtSerializer sz(static_cast<s32>(65536));
-            return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    in.read(static_cast<void*>(&FileVersion), 4u);
+    if (FileMagic == 0x336F6567) {
+        if (FileVersion == 0x77CFDF9C) {
+            MtSerializer sz(65536);
+            return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
         }
     }
     return false;
@@ -142,22 +142,22 @@ MT_CTSTR rGeometry3::getExt() const {
 // Address: 0x0121dfd0 - 0x0121dfe5 (21 bytes)
 nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromIndex(u32 TargetIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetIndex < this->mGroupArray.mLength) {
-        return static_cast<nCollision::cGeometryJointGroup*>(this->mGroupArray.mpArray[TargetIndex]);
+    if (TargetIndex < mGroupArray.mLength) {
+        return static_cast<nCollision::cGeometryJointGroup*>(mGroupArray.mpArray[TargetIndex]);
     } else {
-        return static_cast<nCollision::cGeometryJointGroup*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0121e000 - 0x0121e029 (41 bytes)
 nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromID(u32 TargetID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetID < this->mUniqueIDNum) {
-        if (this->mpUniqueIDTable[TargetID] < this->mGroupArray.mLength) {
-            return static_cast<nCollision::cGeometryJointGroup*>(this->mGroupArray.mpArray[this->mpUniqueIDTable[TargetID]]);
+    if (TargetID < mUniqueIDNum) {
+        if (mpUniqueIDTable[TargetID] < mGroupArray.mLength) {
+            return static_cast<nCollision::cGeometryJointGroup*>(mGroupArray.mpArray[mpUniqueIDTable[TargetID]]);
         }
     }
-    return static_cast<nCollision::cGeometryJointGroup*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -166,7 +166,7 @@ nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromID(u32 TargetID
 // Address: 0x0121dff0 - 0x0121dff4 (4 bytes)
 u32 rGeometry3::getGeometryGroupNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupArray.mLength;
+    return mGroupArray.mLength;
 }
 
 // No out-of-line body: no code in the ELF
@@ -181,33 +181,35 @@ u32 rGeometry3::getGeometryGroupNum() const {
 // Address: 0x0121dce0 - 0x0121dced (13 bytes)
 u32 rGeometry3::getGroupUniqueIDForIO(u32 UniqueIDIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpUniqueIDTable[UniqueIDIndex];
+    return mpUniqueIDTable[UniqueIDIndex];
 }
 
 // Address: 0x0121dcf0 - 0x0121dcfd (13 bytes)
 void rGeometry3::setGroupUniqueIDForIO(u32 UniqueID, u32 UniqueIDIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpUniqueIDTable[UniqueIDIndex] = UniqueID;
+    mpUniqueIDTable[UniqueIDIndex] = UniqueID;
 }
 
 // Address: 0x0121dd00 - 0x0121dd07 (7 bytes)
 u32 rGeometry3::getGroupUniqueIDNumForIO() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUniqueIDNum;
+    return mUniqueIDNum;
 }
 
 // Address: 0x0121dd10 - 0x0121dd8d (125 bytes)
 void rGeometry3::setGroupUniqueIDNumForIO(u32 UniqueIDNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x121dd20 read, used twice; no DWARF local holds it
-    u32* t0 = this->mpUniqueIDTable;
-    if (t0 != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI)->memFree(static_cast<void*>(t0));
-        this->mpUniqueIDTable = static_cast<u32*>(nullptr);
+    u32* t0 = mpUniqueIDTable;
+    if (t0 != nullptr) {
+        MtMemoryAllocator::getAllocator(rGeometry3::DTI)->memFree(static_cast<void*>(t0));
+        mpUniqueIDTable = nullptr;
     }
-    this->mpUniqueIDTable = static_cast<u32*>(::MtMemoryAllocator::getAllocator(::rGeometry3::DTI)->memAlloc(UniqueIDNum * static_cast<u32>(4), static_cast<u32>(16)));
-    this->mUniqueIDNum = UniqueIDNum;
+    mpUniqueIDTable = static_cast<u32*>(MtMemoryAllocator::getAllocator(rGeometry3::DTI)->memAlloc(UniqueIDNum * 4u, 16u));
+    mUniqueIDNum = UniqueIDNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGeometry3::MyDTI rGeometry3::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGeometry3::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

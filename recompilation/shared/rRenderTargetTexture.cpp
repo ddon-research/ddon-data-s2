@@ -32,7 +32,7 @@ const MtDTI& rRenderTargetTexture::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK20rRenderTargetTexture5MyDTI11newInstanceEv at 0x011dd6d0-0x011dd6fd, code DWARF attributes to no inlined copy; sz is the class's size (264), align the allocation's other whole constant (16)
 inline void* rRenderTargetTexture::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rRenderTargetTexture::DTI)->memAlloc(sz, align, ::rRenderTargetTexture::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rRenderTargetTexture::DTI)->memAlloc(sz, align, rRenderTargetTexture::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* rRenderTargetTexture::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rRenderTargetTextureD0Ev at 0x011dd804-0x011dd825, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rRenderTargetTexture::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rRenderTargetTexture::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rRenderTargetTexture::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,7 +65,7 @@ inline void rRenderTargetTexture::operator delete(void* p_addr) {
 // Address: 0x011dd840 - 0x011dd845 (5 bytes)
 void rRenderTargetTexture::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rTexture::clear();
+    this->rTexture::clear();
 }
 
 // Address: 0x011ddb60 - 0x011dde26 (710 bytes)
@@ -99,7 +99,7 @@ MT_CTSTR rRenderTargetTexture::getExt() const {
 // Address: 0x011dd830 - 0x011dd835 (5 bytes)
 void rRenderTargetTexture::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rTexture::createProperty(s);
+    this->rTexture::createProperty(s);
 }
 
 // Address: 0x011dd850 - 0x011ddb5c (780 bytes)
@@ -117,8 +117,10 @@ __attribute__((weak)) bool rRenderTargetTexture::createRenderTarget(u32 type, u3
 // Also emitted as: _ZN20rRenderTargetTextureD0Ev at 0x011dd7e0
 rRenderTargetTexture::~rRenderTargetTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rTexture::clear();
+    this->rTexture::clear();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rRenderTargetTexture::MyDTI rRenderTargetTexture::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rRenderTargetTexture::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -126,6 +128,6 @@ rRenderTargetTexture::~rRenderTargetTexture() {
 // Address: 0x011dd6d0 - 0x011dd725 (85 bytes)
 MtObject* rRenderTargetTexture::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rRenderTargetTexture;
+    return new (16u) rRenderTargetTexture;
 }
 

@@ -34,7 +34,7 @@ const MtDTI& cWebsocketClient::getDTI() const {
 // Address: 0x00e40480 - 0x00e404c0 (64 bytes)
 void* cWebsocketClient::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cWebsocketClient::DTI)->memAlloc(sz, align, ::cWebsocketClient::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cWebsocketClient::DTI)->memAlloc(sz, align, cWebsocketClient::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cWebsocketClient::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cWebsocketClientD0Ev at 0x00e4082e-0x00e4084f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cWebsocketClient::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWebsocketClient::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWebsocketClient::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,11 +80,88 @@ __attribute__((weak)) bool cWebsocketClient::addListener(cWebsocketClient::cList
 }
 
 // Address: 0x00e40970 - 0x00e40a4c (220 bytes)
-__attribute__((weak)) void cWebsocketClient::removeListener(cWebsocketClient::cListener* pListener) {
-    // local: u32 i;
-    // local: cListener* listener;
-    DDON_STUB("cWebsocketClient::removeListener")
-    /* stub */
+void cWebsocketClient::removeListener(cWebsocketClient::cListener* pListener) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cListener* listener;
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; a branching shape written through regions, with goto as its last resort; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (mpListenerArray.mLength != 0) {
+        // inferred: the value the loop at 0xe409a0 carries; no location-less local in scope fits
+        u32 v0_0 = mpListenerArray.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_8 = 0;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_2;
+        // inferred: the value carried to 0xe409fc; no location-less local in scope fits
+        u32 v4_0;
+        // inferred: the value the loop at 0xe40a10 carries; no location-less local in scope fits
+        unsigned int v5_1;
+        // inferred: the value the loop at 0xe40a10 carries; no location-less local in scope fits
+        u32 v5_2;
+        // inferred: the value the loop at 0xe40a10 carries; no location-less local in scope fits
+        unsigned int v5_3;
+        // inferred: the value carried to 0xe40a37; no location-less local in scope fits
+        u32 v7_0;
+        for (;;) {
+            // inferred: the value the loop at 0xe409d0 carries; no location-less local in scope fits
+            MtObject* * v1_0 = mpListenerArray.mpArray;
+            // inferred: the value the loop at 0xe409d0 carries; no location-less local in scope fits
+            MtObject* v1_3 = v1_0[i0_8];
+            if ((pListener != v1_3) && (v1_3 == nullptr)) {
+                v7_0 = v0_0;
+            } else {
+                if (v0_0 == 0) {
+                    v7_0 = v0_0;
+                } else {
+                    i1_2 = 0;
+                    for (;;) {
+                        if (v1_3 == v1_0[i1_2]) {
+                            if (!mpListenerArray.mAutoDelete) {
+                                v4_0 = v0_0;
+                            } else {
+                                if (v1_3 == nullptr) {
+                                    v4_0 = v0_0;
+                                } else {
+                                    delete v1_3;
+                                    v4_0 = mpListenerArray.mLength;
+                                }
+                            }
+                            if ((i1_2 + 1u) < v4_0) {
+                                v5_1 = i1_2 + 1u;
+                                v5_2 = v4_0;
+                                v5_3 = i1_2;
+                                for (;;) {
+                                    mpListenerArray.mpArray[v5_3] = mpListenerArray.mpArray[v5_1];
+                                    if (v5_2 != (v5_1 + 1u)) {
+                                        v5_3 = v5_1;
+                                        v5_1 = v5_1 + 1u;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                            mpListenerArray.mLength = v4_0 - 1u;
+                            v7_0 = v4_0 - 1u;
+                            break;
+                        } else {
+                            if ((i1_2 + 1u) < v0_0) {
+                                i1_2 = i1_2 + 1u;
+                            } else {
+                                v7_0 = v0_0;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if ((i0_8 + 1u) < v7_0) {
+                v0_0 = v7_0;
+                i0_8 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (9 bytes)
@@ -99,7 +176,7 @@ __attribute__((weak)) void cWebsocketClient::removeListener(cWebsocketClient::cL
 // Address: 0x00e40c70 - 0x00e40c78 (8 bytes)
 void cWebsocketClient::close() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWsState = static_cast<cWebsocketClient::wsState>(5);
+    mWsState = WS_STATE_CLOSING;
 }
 
 // Address: 0x00e40c80 - 0x00e4112b (1195 bytes)
@@ -207,6 +284,8 @@ __attribute__((weak)) void cWebsocketClient::message(MT_CTSTR message) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cWebsocketClient::error(s32 err_code);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWebsocketClient::MyDTI cWebsocketClient::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cWebsocketClient::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

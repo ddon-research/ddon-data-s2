@@ -31,7 +31,7 @@ const MtDTI& cpActionManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpActionManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpActionManager::DTI);
+    return MtMemoryAllocator::getAllocator(cpActionManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpActionManager::getAllocator() {
 // Address: 0x003b3260 - 0x003b32a0 (64 bytes)
 void* cpActionManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpActionManager::getAllocator()->memAlloc(sz, align, ::cpActionManager::DTI.::MtDTI::getID());
+    return cpActionManager::getAllocator()->memAlloc(sz, align, cpActionManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpActionManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpActionManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpActionManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpActionManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,15 +84,15 @@ cpActionManager::~cpActionManager() {
 // Address: 0x01a45ee0 - 0x01a45eec (12 bytes)
 void cpActionManager::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x003b3600 - 0x003b360c (12 bytes)
 void cpActionManager::setID(s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(id) <= static_cast<unsigned int>(7)) {
-        this->mID = static_cast<u32>(id);
+    if (static_cast<unsigned int>(id) <= 7) {
+        mID = static_cast<u32>(id);
     }
 }
 
@@ -109,13 +109,13 @@ cpActionManager* cpActionManager::getActionManager(u32 id) {
     // DWARF local not rendered: cpActionManager* pFound;
     // DWARF local not rendered: cpActionManager* pActMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpTop != static_cast<cpActionManager*>(nullptr)) {
+    if (mpTop != nullptr) {
         // inferred: the value the loop at 0x3b3630 carries; no location-less local in scope fits
-        for (cpActionManager* v0_0 = this->mpTop;;) {
+        for (cpActionManager* v0_0 = mpTop;;) {
             if (v0_0->mID == id) {
                 return v0_0;
             } else {
-                if (v0_0->mpNext != static_cast<cpActionManager*>(nullptr)) {
+                if (v0_0->mpNext != nullptr) {
                     v0_0 = v0_0->mpNext;
                 } else {
                     break;
@@ -123,7 +123,7 @@ cpActionManager* cpActionManager::getActionManager(u32 id) {
             }
         }
     }
-    return static_cast<cpActionManager*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x003b3650 - 0x003b37f5 (421 bytes)
@@ -147,55 +147,55 @@ __attribute__((weak)) void cpActionManager::update() {
 // Address: 0x003b3d70 - 0x003b3d83 (19 bytes)
 void cpActionManager::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAction == static_cast<cAction*>(nullptr)) {
+    if (mpAction == nullptr) {
         return;
     }
-    this->mpAction->final();
+    mpAction->final();
 }
 
 // Address: 0x003b3ca0 - 0x003b3cf1 (81 bytes)
 void cpActionManager::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable() == false) {
-            this->mpModel = static_cast<uDDOModel*>(nullptr);
+    this->cpComponent::updatePtr();
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
         }
     }
-    if (this->mpAction == static_cast<cAction*>(nullptr)) {
+    if (mpAction == nullptr) {
         return;
     }
-    this->mpAction->updatePtr();
+    mpAction->updatePtr();
 }
 
 // Address: 0x003b3d00 - 0x003b3d13 (19 bytes)
 void cpActionManager::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAction == static_cast<cAction*>(nullptr)) {
+    if (mpAction == nullptr) {
         return;
     }
-    this->mpAction->updateEfcHandle();
+    mpAction->updateEfcHandle();
 }
 
 // Address: 0x003b3d20 - 0x003b3d36 (22 bytes)
 void cpActionManager::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAction == static_cast<cAction*>(nullptr)) {
+    if (mpAction == nullptr) {
         return;
     }
-    this->mpAction->applyWorldOffset(offset, absolute_offset);
+    mpAction->applyWorldOffset(offset, absolute_offset);
 }
 
 // Address: 0x003b3c60 - 0x003b3c9c (60 bytes)
 void cpActionManager::compMoveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAction == static_cast<cAction*>(nullptr)) {
+    if (mpAction == nullptr) {
         return;
     }
-    if (this->mpAction->checkMoveAfter() == false) {
+    if (!mpAction->checkMoveAfter()) {
         return;
     }
-    this->mpAction->moveAfter();
+    mpAction->moveAfter();
 }
 
 // Address: 0x003b3d90 - 0x003b3da0 (16 bytes)
@@ -239,19 +239,19 @@ __attribute__((weak)) void cpActionManager::setAction(u32 ActNo, bool replace_ac
 // Address: 0x003b4210 - 0x003b4218 (8 bytes)
 cAction* cpActionManager::getAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAction;
+    return mpAction;
 }
 
 // Address: 0x003b4220 - 0x003b4227 (7 bytes)
 u32 cpActionManager::getActionNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActNo;
+    return mActNo;
 }
 
 // Address: 0x003b4230 - 0x003b4237 (7 bytes)
 u32 cpActionManager::getActionNoOld() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActNoOld;
+    return mActNoOld;
 }
 
 // No out-of-line body: 14 inlined copies in 14 functions (109 bytes)
@@ -285,10 +285,10 @@ const cActNetParam* cpActionManager::getActNetParam() {
     // DWARF local not rendered: u32 bank;
     // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mActNo != static_cast<u32>(4294967295)) {
-        return &this->mpActList[(this->mActNo >> static_cast<u32>(12)) & static_cast<u32>(15)][this->mActNo & static_cast<u32>(4294905855)].mNetParam;
+    if (mActNo != 0xFFFFFFFFu) {
+        return &mpActList[(mActNo >> 12) & 15u][mActNo & 0xFFFF0FFFu].mNetParam;
     } else {
-        return static_cast<const cActNetParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -297,18 +297,18 @@ const cActNetParam* cpActionManager::getActNetParam(u32 ActNo) {
     // DWARF local not rendered: u32 bank;
     // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ActNo != static_cast<u32>(4294967295)) {
-        if (this->mpActList[(ActNo >> static_cast<u32>(12)) & static_cast<u32>(15)] != static_cast<const cActList*>(nullptr)) {
-            return &this->mpActList[(ActNo >> static_cast<u32>(12)) & static_cast<u32>(15)][ActNo & static_cast<u32>(4294905855)].mNetParam;
+    if (ActNo != 0xFFFFFFFFu) {
+        if (mpActList[(ActNo >> 12) & 15u] != nullptr) {
+            return &mpActList[(ActNo >> 12) & 15u][ActNo & 0xFFFF0FFFu].mNetParam;
         }
     }
-    return static_cast<const cActNetParam*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x003b4390 - 0x003b4397 (7 bytes)
 u32 cpActionManager::getActionNo_PreInit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActNo_PreInit;
+    return mActNo_PreInit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -408,6 +408,8 @@ __attribute__((weak)) void cpActionManager::endActionNoSend() {
 
 // No out-of-line body: no code in the ELF
 // bool cpActionManager::isPreInit() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpActionManager::MyDTI cpActionManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpActionManager.cpp at 0x003b452f-0x003b456c (called at cpActionManager.cpp:40)

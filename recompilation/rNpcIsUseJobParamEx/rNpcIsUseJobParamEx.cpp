@@ -39,7 +39,7 @@ const MtDTI& cNpcIsUseJobParamEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::cNpcIsUseJobParamEx::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, cNpcIsUseJobParamEx::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -54,7 +54,7 @@ inline void* cNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNpcIsUseJobParamEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -87,6 +87,8 @@ __attribute__((weak)) void cNpcIsUseJobParamEx::createProperty(MtPropertyList& s
 //   in sNpcManager::isNpcUseJobParamEx at 0x007f427d-0x007f428b, 0x007f42a7-0x007f42cd (called at sNpcManager.cpp:2784)
 // bool cNpcIsUseJobParamEx::hasSameAttributes(u16 stageNo, u16 groupNo, u8 unitNo, u32 questId) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNpcIsUseJobParamEx::MyDTI cNpcIsUseJobParamEx::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcIsUseJobParamEx.cpp at 0x006abf10-0x006abf52 (called at rNpcIsUseJobParamEx.cpp:24)
 //   in _GLOBAL__sub_I_rNpcIsUseJobParamEx.cpp at 0x006abf10-0x006abf52 (called at rNpcIsUseJobParamEx.h:32)
@@ -95,7 +97,7 @@ __attribute__((weak)) void cNpcIsUseJobParamEx::createProperty(MtPropertyList& s
 // Address: 0x006ab9a0 - 0x006ab9f7 (87 bytes)
 MtObject* cNpcIsUseJobParamEx::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cNpcIsUseJobParamEx;
+    return new (16u) cNpcIsUseJobParamEx;
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ const MtDTI& rNpcIsUseJobParamEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::rNpcIsUseJobParamEx::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, rNpcIsUseJobParamEx::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* rNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rNpcIsUseJobParamExD0Ev at 0x01a9f414-0x01a9f433, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcIsUseJobParamEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcIsUseJobParamEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcIsUseJobParamEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,10 +155,10 @@ bool rNpcIsUseJobParamEx::loadData(MtDataReader& in, cNpcIsUseJobParamEx* pData)
     // DWARF local not rendered: u8 ReadU8;
     // DWARF local not rendered: u32 ReadU32;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cNpcIsUseJobParamEx*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mStageNo = in.readU16();
         pData->mGroupNo = in.readU16();
-        pData->mUnitNo = in.::MtDataReader::readU8();
+        pData->mUnitNo = in.readU8();
         pData->mQuestId = in.readU32();
         return true;
     } else {
@@ -173,8 +175,10 @@ MT_CTSTR rNpcIsUseJobParamEx::getExt() const {
 // Address: 0x01a9f560 - 0x01a9f566 (6 bytes)
 u32 rNpcIsUseJobParamEx::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcIsUseJobParamEx::MyDTI rNpcIsUseJobParamEx::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNpcIsUseJobParamEx.cpp at 0x006abf52-0x006abf8f (called at rNpcIsUseJobParamEx.cpp:96)
@@ -184,7 +188,7 @@ u32 rNpcIsUseJobParamEx::getDataVersion() const {
 // Address: 0x006abe30 - 0x006abe94 (100 bytes)
 MtObject* rNpcIsUseJobParamEx::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcIsUseJobParamEx;
+    return new (16u) rNpcIsUseJobParamEx;
 }
 
 // Instance at 0x01a9f510 - 0x01a9f526 (22 bytes) of the generic rTbl2<T>::getData

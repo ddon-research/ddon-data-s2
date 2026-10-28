@@ -68,3 +68,9 @@ public:
 inline u32 cpNpc::getNpcId() const {
     return this->mNpcId;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpNpc::setNpcId(u32 npcId) {
+    this->mNpcId = npcId;
+}

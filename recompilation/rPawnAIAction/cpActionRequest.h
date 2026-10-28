@@ -172,12 +172,48 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEnemy::callbackDie at 0x8fb226-0x8fb229; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cpActionRequest::getDamageAction() {
+    return this->mDamageAction;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cpActionRequest::getLandAction() const {
     return this->mLandAction;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cAction::init at 0x1ce2f-0x1ce32; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpActionRequest::setShrinkAction(u32 ActNo) {
+    this->mShrinkAction = ActNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cAction::init at 0x1ce36-0x1ce39; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpActionRequest::setBlowAction(u32 ActNo) {
+    this->mBlowAction = ActNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacter::callbackHitLand at 0x89b716-0x89b71f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpActionRequest::reqLandAction() {
+    this->mLandActionReq = this->mLandAction;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline void cpActionRequest::reqDamageAction() {
-    this->mDamageActionReq = static_cast<u32>(169);
+    this->mDamageActionReq = 169;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::callbackShrink at 0x8db917-0x8db920; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpActionRequest::reqShrinkAction() {
+    this->mShrinkActionReq = this->mShrinkAction;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::callbackBlow at 0x8db963-0x8db96c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpActionRequest::reqBlowAction() {
+    this->mBlowActionReq = this->mBlowAction;
 }

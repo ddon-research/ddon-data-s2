@@ -64,7 +64,7 @@ const MtDTI& cOcdBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOcdBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,30 +97,31 @@ __attribute__((weak)) void cOcdBase::createProperty(MtPropertyList& s) {
 
 // Address: 0x00399bb0 - 0x00399c3c (140 bytes)
 void cOcdBase::setup() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; code after a join copied into the arms; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x114 from cOcdBase*
-    const cOcdPriorityParam* pData = ::sObjCondition::getInstance()->::sObjCondition::getPriorityData(this->mOcdUID);
-    if (pData != static_cast<const cOcdPriorityParam*>(nullptr)) {
-        this->mStatusParam.mIsMultiApply = pData->::cOcdPriorityParam::isMultiApply();
-        this->mStatusParam.mIsMultiNumLimit = pData->::cOcdPriorityParam::isMultiNumLimit();
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    const cOcdPriorityParam* pData = sObjCondition::getInstance()->getPriorityData(mOcdUID);
+    if (pData != nullptr) {
+        mStatusParam.mIsMultiApply = pData->cOcdPriorityParam::isMultiApply();
+        mStatusParam.mIsMultiNumLimit = pData->cOcdPriorityParam::isMultiNumLimit();
         // inferred: a temporary for the value the load at 0x399be5 read, used twice; no DWARF local holds it
-        u32 t0 = pData->::cOcdPriorityParam::getMultiApplyNum();
-        this->mStatusParam.mMultiApplyNum = t0;
-        this->mStatusParam.mMultiApplyNumMax = this->mStatusParam.mMultiApplyNum;
-        this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
-        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(1);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(276)) = static_cast<unsigned long>(30064771072);
+        u32 t0 = pData->cOcdPriorityParam::getMultiApplyNum();
+        mStatusParam.mMultiApplyNum = t0;
+        mStatusParam.mMultiApplyNumMax = mStatusParam.mMultiApplyNum;
+        mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_NORMAL;
+        if ((mpModel->mUnitId & 16u) != 0) {
+            mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_BOOST;
+            mImmuneParam.mImmuneLv = 0;
+            mImmuneParam.mImmuneLvMax = 7;
         } else {
-            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+            mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_NORMAL;
         }
     } else {
-        this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
-        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(1);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(276)) = static_cast<unsigned long>(30064771072);
+        mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_NORMAL;
+        if ((mpModel->mUnitId & 16u) != 0) {
+            mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_BOOST;
+            mImmuneParam.mImmuneLv = 0;
+            mImmuneParam.mImmuneLvMax = 7;
         } else {
-            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+            mImmuneMode = nObjCondition::OCD_IMMUNE_MODE_NORMAL;
         }
     }
 }
@@ -128,13 +129,13 @@ void cOcdBase::setup() {
 // Address: 0x0039ac70 - 0x0039ac95 (37 bytes)
 void cOcdBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0039aca0 - 0x0039add2 (306 bytes)
@@ -154,33 +155,32 @@ __attribute__((weak)) void cOcdBase::init(bool initFlag) {
 // Address: 0x0039a380 - 0x0039a430 (176 bytes)
 void cOcdBase::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::updateActiveTimer();
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::uDDOModel::isDamageAttrActive(static_cast<u32>(524288)) != false) {
-            if (this->mpOcdCtrl != static_cast<cpOcdCtrl*>(nullptr)) {
-                this->mpOcdCtrl->::cpOcdCtrl::reqOcdCure(this->mOcdUID);
+    updateActiveTimer();
+    if (mpModel != nullptr) {
+        if (mpModel->isDamageAttrActive(0x80000u)) {
+            if (mpOcdCtrl != nullptr) {
+                mpOcdCtrl->reqOcdCure(mOcdUID);
             }
         }
-        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-            if ((this->mRequreOST & this->mpModel->mObjStatus) == static_cast<u64>(0)) {
-                if ((this->mRequreOST & this->mpModel->mObjStatusOld) != static_cast<u64>(0)) {
-                    if (this->mpOcdCtrl != static_cast<cpOcdCtrl*>(nullptr)) {
-                        this->mpOcdCtrl->::cpOcdCtrl::reqOcdCure(this->mOcdUID);
+        if (mpModel != nullptr) {
+            if ((mRequreOST & mpModel->mObjStatus) == 0) {
+                if ((mRequreOST & mpModel->mObjStatusOld) != 0) {
+                    if (mpOcdCtrl != nullptr) {
+                        mpOcdCtrl->reqOcdCure(mOcdUID);
                     }
                 }
             } else {
-                if (this->mpOcdCtrl != static_cast<cpOcdCtrl*>(nullptr)) {
-                    this->mpOcdCtrl->::cpOcdCtrl::reqOcdCure(this->mOcdUID);
+                if (mpOcdCtrl != nullptr) {
+                    mpOcdCtrl->reqOcdCure(mOcdUID);
                 }
             }
         }
     }
-    if (this->mpOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
+    if (mpOcdCtrl == nullptr) {
         return;
     }
-    if (this->mpOcdCtrl->::cpOcdCtrl::isOcdSystemFlagActive(static_cast<nObjCondition::OCD_SYSTEM_FLAG>(2)) != false) {
-    } else {
-        this->::cOcdBase::registOcdShader(this->mOcdUID);
+    if (!mpOcdCtrl->isOcdSystemFlagActive(nObjCondition::SYSTEM_FLAG_EFF_OFF)) {
+        registOcdShader(mOcdUID);
     }
 }
 
@@ -206,8 +206,8 @@ __attribute__((weak)) void cOcdBase::resetParam() {
 // Address: 0x0039aad0 - 0x0039ab07 (55 bytes)
 void cOcdBase::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::checkEnduranceCure();
-    this->mOcdActiveCache.::cOcdCache::update(::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3)));
+    checkEnduranceCure();
+    mOcdActiveCache.update(sWorkRate::getInstance()->calc(3u));
 }
 
 // Address: 0x0039aa60 - 0x0039aa9f (63 bytes)
@@ -215,19 +215,19 @@ bool cOcdBase::isEnableInit() const {
     // DWARF local not rendered: const cOcdCache& chach;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (this->mStatusParam.::cOcdStatusParam::isEffective() != false) {
-        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-            if ((static_cast<unsigned long>(this->mNonInitOST) & static_cast<unsigned long>(this->mpModel->mObjStatus)) != static_cast<unsigned long>(0)) {
+    if (mStatusParam.isEffective()) {
+        if (mpModel != nullptr) {
+            if ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatus)) != 0) {
                 return false;
             } else {
-                if ((static_cast<unsigned long>(this->mNonInitOST) & static_cast<unsigned long>(this->mpModel->mObjStatusOld)) != static_cast<unsigned long>(0)) {
+                if ((static_cast<unsigned long>(mNonInitOST) & static_cast<unsigned long>(mpModel->mObjStatusOld)) != 0) {
                     return false;
                 } else {
-                    return this->mOcdActiveCache.mIsActive == false;
+                    return !mOcdActiveCache.mIsActive;
                 }
             }
         } else {
-            return this->mOcdActiveCache.mIsActive == false;
+            return !mOcdActiveCache.mIsActive;
         }
     } else {
         return false;
@@ -255,8 +255,8 @@ bool cOcdBase::isEnableMoveAfter() const {
 // Address: 0x0039aab0 - 0x0039aac7 (23 bytes)
 bool cOcdBase::isEnableMultiInit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStatusParam.::cOcdStatusParam::isMultiApply() != false) {
-        return this->mStatusParam.mMultiApplyNum != static_cast<u32>(0);
+    if (mStatusParam.isMultiApply()) {
+        return mStatusParam.mMultiApplyNum != 0;
     } else {
         return false;
     }
@@ -265,13 +265,13 @@ bool cOcdBase::isEnableMultiInit() const {
 // Address: 0x01a42b00 - 0x01a42b07 (7 bytes)
 bool cOcdBase::isEnableEndAction() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEndReaction;
+    return mIsEndReaction;
 }
 
 // Address: 0x0039aaa0 - 0x0039aaa4 (4 bytes)
 bool cOcdBase::isEffective() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStatusParam.mIsEffective;
+    return mStatusParam.mIsEffective;
 }
 
 // Address: 0x0039b860 - 0x0039b898 (56 bytes)
@@ -283,9 +283,9 @@ __attribute__((weak)) void cOcdBase::setStatusParamRes(const cOcdStatusParamRes&
 // Address: 0x0039b8a0 - 0x0039b8c1 (33 bytes)
 void cOcdBase::setImuuneParamRes(const cOcdImmuneParamRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mImmuneParam.mImmuneRate = data.mImmuneRate;
-    this->mImmuneParam.mImmuneLv = static_cast<u32>(0);
-    this->mImmuneParam.mImmuneLvMax = data.mImmuneNum;
+    mImmuneParam.mImmuneRate = data.mImmuneRate;
+    mImmuneParam.mImmuneLv = 0;
+    mImmuneParam.mImmuneLvMax = data.mImmuneNum;
 }
 
 // Address: 0x0039b1b0 - 0x0039b210 (96 bytes)
@@ -297,10 +297,10 @@ __attribute__((weak)) void cOcdBase::applyImmuneNormal(u32 immuneLv) {
 // Address: 0x0039b130 - 0x0039b13c (12 bytes)
 void cOcdBase::applyImmuneBoost(u32 immuneLv) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (immuneLv == static_cast<u32>(9)) {
+    if (immuneLv == 9) {
         return;
     }
-    this->mImmuneParam.mImmuneLv = immuneLv;
+    mImmuneParam.mImmuneLv = immuneLv;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)
@@ -406,8 +406,8 @@ __attribute__((weak)) void cOcdBase::checkCheatOcd() {
 // Address: 0x0039b640 - 0x0039b65b (27 bytes)
 bool cOcdBase::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner != static_cast<cOcdInfo*>(nullptr)) {
-        return this->mpOwner->::cOcdInfo::isActive();
+    if (mpOwner != nullptr) {
+        return mpOwner->isActive();
     } else {
         return false;
     }
@@ -416,10 +416,10 @@ bool cOcdBase::isActive() const {
 // Address: 0x0039a520 - 0x0039a532 (18 bytes)
 void cOcdBase::requestCure(u32 OcdUID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
+    if (mpOcdCtrl == nullptr) {
         return;
     }
-    this->mpOcdCtrl->::cpOcdCtrl::reqOcdCure(OcdUID);
+    mpOcdCtrl->reqOcdCure(OcdUID);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (135 bytes)
@@ -435,16 +435,16 @@ void cOcdBase::requestCure(u32 OcdUID) {
 void cOcdBase::applyCustomRequest(const cOcdCustomReqInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (info.mActiveTime > 1.1920929e-7f) {
-        this->mStatusParam.mActiveTime = info.mActiveTime;
-        this->mStatusParam.mActiveTimeCheatCheck = this->mStatusParam.mActiveTime;
+        mStatusParam.mActiveTime = info.mActiveTime;
+        mStatusParam.mActiveTimeCheatCheck = mStatusParam.mActiveTime;
     }
-    if (this->mImmuneMode != static_cast<nObjCondition::OCD_IMMUNE_MODE>(1)) {
+    if (mImmuneMode != nObjCondition::OCD_IMMUNE_MODE_BOOST) {
         return;
     }
-    if (info.mImmuneBoostLv == static_cast<nObjCondition::IMMUNE_BOOST_LV>(9)) {
+    if (info.mImmuneBoostLv == nObjCondition::IMMUNE_BOOST_LV_INVALID) {
         return;
     }
-    this->mImmuneParam.mImmuneLv = static_cast<u32>(info.mImmuneBoostLv);
+    mImmuneParam.mImmuneLv = static_cast<u32>(info.mImmuneBoostLv);
 }
 
 // Address: 0x0039b140 - 0x0039b1a5 (101 bytes)
@@ -457,8 +457,8 @@ __attribute__((weak)) void cOcdBase::applyCustomRequestMulti(const cOcdCustomReq
 bool cOcdBase::isCustomRequest() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpOwner != static_cast<cOcdInfo*>(nullptr)) {
-        return this->mpOwner->::cOcdInfo::isCustomRequest();
+    if (mpOwner != nullptr) {
+        return mpOwner->isCustomRequest();
     } else {
         return false;
     }
@@ -531,13 +531,12 @@ __attribute__((weak)) void cOcdBase::callOcdEffectInit() {
 // Address: 0x0039a960 - 0x0039a9cf (111 bytes)
 void cOcdBase::callOcdEffectFinal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlgCallInitFinishlEffect == false) {
+    if (!mFlgCallInitFinishlEffect) {
         return;
     }
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(&this->mEfcHandle, static_cast<u32>(1));
-    if (this->mpOcdCtrl->::cpOcdCtrl::isOcdSystemFlagActive(static_cast<nObjCondition::OCD_SYSTEM_FLAG>(2)) != false) {
-    } else {
-        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::setOcdEffect(this->mpModel, static_cast<s32>(-1), this->mOcdUID, true, static_cast<MtTypedArray<cEfcHandle>*>(nullptr));
+    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(&mEfcHandle, 1u);
+    if (!mpOcdCtrl->isOcdSystemFlagActive(nObjCondition::SYSTEM_FLAG_EFF_OFF)) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->setOcdEffect(mpModel, -1, mOcdUID, true, static_cast<MtTypedArray<cEfcHandle>*>(nullptr));
     }
 }
 
@@ -562,88 +561,88 @@ __attribute__((weak)) void cOcdBase::callOcdDamageOutLineSe(u32 OcdUID) {
 // Address: 0x0039a540 - 0x0039a68c (332 bytes)
 __attribute__((weak)) void cOcdBase::registOcdShader(u32 OcdUID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
+    if (mpOcdCtrl == nullptr) {
         return;
     }
-    switch (OcdUID - static_cast<u32>(4097)) {
-        case static_cast<u32>(0):
+    switch (OcdUID - 4097u) {
+        case 0:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(4), static_cast<u32>(200), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_WET_OIL, 200u, -1);
             break;
         }
-        case static_cast<u32>(5):
+        case 5:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(4), static_cast<u32>(200), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_WET_OIL, 200u, -1);
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
-        case static_cast<u32>(9):
+        case 9:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(5), static_cast<u32>(400), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_STONE, 400u, -1);
             break;
         }
-        case static_cast<u32>(10):
+        case 10:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(6), static_cast<u32>(500), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GOLD, 500u, -1);
             break;
         }
-        case static_cast<u32>(11):
+        case 11:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(1), static_cast<u32>(300), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_FIRE, 300u, -1);
             break;
         }
-        case static_cast<u32>(12):
+        case 12:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(2), static_cast<u32>(300), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_FREEZE, 300u, -1);
             break;
         }
-        case static_cast<u32>(26):
+        case 26:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(7), static_cast<u32>(600), static_cast<s32>(4123));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_EROSION, 600u, 4123);
             break;
         }
-        case static_cast<u32>(27):
+        case 27:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(7), static_cast<u32>(600), static_cast<s32>(4124));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_EROSION, 600u, 4124);
             break;
         }
-        case static_cast<u32>(28):
+        case 28:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(7), static_cast<u32>(600), static_cast<s32>(4125));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_EROSION, 600u, 4125);
             break;
         }
-        case static_cast<u32>(29):
+        case 29:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(7), static_cast<u32>(600), static_cast<s32>(4125));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_EROSION, 600u, 4125);
             break;
         }
-        case static_cast<u32>(30):
+        case 30:
         {
-            this->mpOcdCtrl->::cpOcdCtrl::registOcdShader(static_cast<nDDOShader::SHADER_MODE_ENUM>(3), static_cast<u32>(100), static_cast<s32>(-1));
+            mpOcdCtrl->registOcdShader(nDDOShader::SHADER_MODE_GENERAL, 100u, -1);
             break;
         }
         default:
@@ -713,6 +712,8 @@ __attribute__((weak)) void cOcdBase::addOcdBadNonDamageList(nObjCondition::OCD_B
 //   in cOcdBase::callbackDamage at 0x0039b2bb-0x0039b2f9 (called at cOcdBase.cpp:2259)
 // bool cOcdBase::isOcdBadNonDamageEnable();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cOcdBase::MyDTI cOcdBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039be5e-0x0039be9e (called at cOcdBase.cpp:55)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039be5e-0x0039be9e (called at cOcdBase.h:290)
@@ -747,7 +748,7 @@ const MtDTI& cOcdImmuneParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdImmuneParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParam::DTI)->memAlloc(sz, align, ::cOcdImmuneParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdImmuneParam::DTI)->memAlloc(sz, align, cOcdImmuneParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -761,7 +762,7 @@ inline void* cOcdImmuneParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOcdImmuneParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdImmuneParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdImmuneParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -822,6 +823,8 @@ __attribute__((weak)) void cOcdImmuneParam::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // void cOcdImmuneParam::setImmuneLvMax(u32 lvMax);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdImmuneParam::MyDTI cOcdImmuneParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039bed7-0x0039bf10 (called at cOcdBase.cpp:57)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039bed7-0x0039bf10 (called at cOcdBase.h:58)
@@ -830,7 +833,7 @@ __attribute__((weak)) void cOcdImmuneParam::createProperty(MtPropertyList& s) {
 // Address: 0x003987b0 - 0x003987ff (79 bytes)
 MtObject* cOcdImmuneParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdImmuneParam;
+    return new (16u) cOcdImmuneParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -856,7 +859,7 @@ const MtDTI& cOcdStatusParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdStatusParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParam::DTI)->memAlloc(sz, align, ::cOcdStatusParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdStatusParam::DTI)->memAlloc(sz, align, cOcdStatusParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -870,7 +873,7 @@ inline void* cOcdStatusParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOcdStatusParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdStatusParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdStatusParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -908,8 +911,8 @@ __attribute__((weak)) void cOcdStatusParam::setParamFromRes(const cOcdStatusPara
 // Address: 0x00398cd0 - 0x00398ce0 (16 bytes)
 void cOcdStatusParam::resetActiveTime() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = this->::cOcdStatusParam::getActiveTimeMaxPrivate();
-    this->mActiveTimeCheatCheck = this->mActiveTime;
+    mActiveTime = getActiveTimeMaxPrivate();
+    mActiveTimeCheatCheck = mActiveTime;
 }
 
 // Address: 0x00398ce0 - 0x00399717 (2615 bytes)
@@ -927,13 +930,13 @@ __attribute__((weak)) void cOcdStatusParam::createProperty(MtPropertyList& s) {
 // Address: 0x00398b40 - 0x00398b46 (6 bytes)
 f32 cOcdStatusParam::getEndurance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndurance;
+    return mEndurance;
 }
 
 // Address: 0x00398ca0 - 0x00398ca6 (6 bytes)
 f32 cOcdStatusParam::getEnduranceMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnduranceMax;
+    return mEnduranceMax;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (20 bytes)
@@ -952,13 +955,13 @@ f32 cOcdStatusParam::getEnduranceMax() const {
 // Address: 0x00398c70 - 0x00398c76 (6 bytes)
 f32 cOcdStatusParam::getActiveTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActiveTime;
+    return mActiveTime;
 }
 
 // Address: 0x00398cb0 - 0x00398cb6 (6 bytes)
 f32 cOcdStatusParam::getActiveTimeMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActiveTimeMax;
+    return mActiveTimeMax;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -973,19 +976,19 @@ f32 cOcdStatusParam::getActiveTimeMax() const {
 // Address: 0x00399720 - 0x00399726 (6 bytes)
 f32 cOcdStatusParam::getCureValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCureValue;
+    return mCureValue;
 }
 
 // Address: 0x00399730 - 0x00399736 (6 bytes)
 f32 cOcdStatusParam::getFreeParam0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam0;
+    return mFreeParam0;
 }
 
 // Address: 0x00399740 - 0x00399746 (6 bytes)
 f32 cOcdStatusParam::getFreeParam1() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam1;
+    return mFreeParam1;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (26 bytes)
@@ -1008,15 +1011,15 @@ f32 cOcdStatusParam::getFreeParam1() const {
 // Address: 0x00398b20 - 0x00398b2b (11 bytes)
 void cOcdStatusParam::setEndurance(f32 endurance) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndurance = endurance;
-    this->mEnduranceCheatCheck = endurance;
+    mEndurance = endurance;
+    mEnduranceCheatCheck = endurance;
 }
 
 // Address: 0x00398b30 - 0x00398b3b (11 bytes)
 void cOcdStatusParam::setEnduranceMax(f32 EnduranceMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnduranceMax = EnduranceMax;
-    this->mEnduranceMaxCheatCheck = EnduranceMax;
+    mEnduranceMax = EnduranceMax;
+    mEnduranceMaxCheatCheck = EnduranceMax;
 }
 
 // No out-of-line body: 13 inlined copies in 7 functions (88 bytes)
@@ -1032,15 +1035,15 @@ void cOcdStatusParam::setEnduranceMax(f32 EnduranceMax) {
 // Address: 0x00398b50 - 0x00398b5b (11 bytes)
 void cOcdStatusParam::setActiveTime(f32 ActiveTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = ActiveTime;
-    this->mActiveTimeCheatCheck = ActiveTime;
+    mActiveTime = ActiveTime;
+    mActiveTimeCheatCheck = ActiveTime;
 }
 
 // Address: 0x00398b60 - 0x00398b6b (11 bytes)
 void cOcdStatusParam::setActiveTimeMax(f32 ActiveTimeMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTimeMax = ActiveTimeMax;
-    this->mActiveTimeMaxCheatCheck = ActiveTimeMax;
+    mActiveTimeMax = ActiveTimeMax;
+    mActiveTimeMaxCheatCheck = ActiveTimeMax;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (22 bytes)
@@ -1056,22 +1059,22 @@ void cOcdStatusParam::setActiveTimeMax(f32 ActiveTimeMax) {
 // Address: 0x00398b70 - 0x00398b7b (11 bytes)
 void cOcdStatusParam::setCureValue(f32 CureValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCureValue = CureValue;
-    this->mCureValueCheatCheck = CureValue;
+    mCureValue = CureValue;
+    mCureValueCheatCheck = CureValue;
 }
 
 // Address: 0x00398b80 - 0x00398b8b (11 bytes)
 void cOcdStatusParam::setFreeParam0(f32 FreeParam0) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreeParam0 = FreeParam0;
-    this->mFreeParam0CheatCheck = FreeParam0;
+    mFreeParam0 = FreeParam0;
+    mFreeParam0CheatCheck = FreeParam0;
 }
 
 // Address: 0x00398b90 - 0x00398b9b (11 bytes)
 void cOcdStatusParam::setFreeParam1(f32 FreeParam1) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreeParam1 = FreeParam1;
-    this->mFreeParam1CheatCheck = FreeParam1;
+    mFreeParam1 = FreeParam1;
+    mFreeParam1CheatCheck = FreeParam1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1325,6 +1328,8 @@ void cOcdStatusParam::setFreeParam1(f32 FreeParam1) {
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void cOcdStatusParam::setFreeParam1CheatCheckPrivate(f32 NewValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdStatusParam::MyDTI cOcdStatusParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039be9e-0x0039bed7 (called at cOcdBase.cpp:56)
 //   in _GLOBAL__sub_I_cOcdBase.cpp at 0x0039be9e-0x0039bed7 (called at cOcdBase.h:108)
@@ -1333,6 +1338,6 @@ void cOcdStatusParam::setFreeParam1(f32 FreeParam1) {
 // Address: 0x00398670 - 0x0039873d (205 bytes)
 MtObject* cOcdStatusParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdStatusParam;
+    return new (16u) cOcdStatusParam;
 }
 

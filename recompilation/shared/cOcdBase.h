@@ -50,7 +50,7 @@ using u64 = __uint64_t;
 
 class cOcdImmuneParam : public MtObject
 {
-    // inferred: cOcdBase::applyCustomRequest names cOcdBase::mImmuneParam.mImmuneLv
+    // inferred: cOcdBase::setup names cOcdBase::mImmuneParam.mImmuneLv
     friend class cOcdBase;
 public:
     class MyDTI;
@@ -379,10 +379,28 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpOcdCtrl::getOcdStatusParamResData at 0x4e0157-0x4e015b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const cOcdStatusParamRes* cOcdBase::getOcdStatusParamRes() {
+    return &this->mStatusParamRes;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpOcdCtrl::getImmuneParam at 0x4e01c7-0x4e01ce; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cOcdImmuneParam* cOcdBase::getOcdImmuneParam() {
+    return &this->mImmuneParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdBase::setActiveTimerRateByAbility at 0x39b93b-0x39b943; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdBase::setActiveTimerRate(f32 rate) {
+    this->mActiveTimerRate = rate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cOcdImmuneParam::cOcdImmuneParam() {
     this->mImmuneRate = 1.0f;
-    this->mImmuneLv = static_cast<u32>(0);
-    this->mImmuneLvMax = static_cast<u32>(0);
+    this->mImmuneLv = 0;
+    this->mImmuneLvMax = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -408,8 +426,8 @@ inline cOcdStatusParam::cOcdStatusParam() {
     this->mIsMultiNumLimit = false;
     this->mFreeParam0 = 0.0f;
     this->mFreeParam1 = 0.0f;
-    this->mMultiApplyNum = static_cast<u32>(4);
-    this->mMultiApplyNumMax = static_cast<u32>(4);
+    this->mMultiApplyNum = 4;
+    this->mMultiApplyNumMax = 4;
 }
 
 // Inline, no code of its own: checked where it is inlined.

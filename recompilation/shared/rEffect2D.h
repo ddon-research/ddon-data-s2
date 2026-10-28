@@ -755,17 +755,17 @@ protected:
 // inferred: the constructor from _ZNK9rEffect2D5MyDTI11newInstanceEv at 0x011f1b90-0x011f1c30, code DWARF attributes to no inlined copy
 inline rEffect2D::rEffect2D() {
     this->mBaseFps = 0.0f;
-    this->mResourceInfoNum = static_cast<u32>(0);
-    this->mResourceInfo = static_cast<rEffect2D::ResourceInfo*>(nullptr);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mListNum = static_cast<u32>(0);
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->mRTTextureNum = static_cast<u32>(0);
-    this->mpRTTexture[2] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpRTTexture[1] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpRTTexture[0] = static_cast<rRenderTargetTexture*>(nullptr);
-    this->mpBackTexture[2] = static_cast<rTexture*>(nullptr);
-    this->mpBackTexture[1] = static_cast<rTexture*>(nullptr);
-    this->mpBackTexture[0] = static_cast<rTexture*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    this->mResourceInfoNum = 0;
+    this->mResourceInfo = nullptr;
+    this->mParamBuffSize = 0;
+    this->mListNum = 0;
+    this->mpParamBuff = nullptr;
+    this->mRTTextureNum = 0;
+    this->mpRTTexture[2] = nullptr;
+    this->mpRTTexture[1] = nullptr;
+    this->mpRTTexture[0] = nullptr;
+    this->mpBackTexture[2] = nullptr;
+    this->mpBackTexture[1] = nullptr;
+    this->mpBackTexture[0] = nullptr;
+    this->::cResource::mAttr = 22;
 }

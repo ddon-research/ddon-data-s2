@@ -41,7 +41,7 @@ const MtDTI& cAIObject::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAIObject::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIObject::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIObject::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,6 +74,8 @@ MtUI* cAIObject::createUI(MtProperty& prop) {
 __attribute__((weak)) void cAIObject::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAIObject::MyDTI cAIObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -116,7 +118,7 @@ const MtDTI& cAIResource::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAIResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -149,6 +151,8 @@ MtUI* cAIResource::createUI(MtProperty& prop) {
 __attribute__((weak)) void cAIResource::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAIResource::MyDTI cAIResource::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

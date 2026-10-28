@@ -7,6 +7,8 @@
 #include "MtNetP2p.h"
 #include "MtNetSession.h"
 #include "MtObject.h"
+#include "MtStream.h"
+#include "cRemoteCall.h"
 #include "nNetworkCallback.h"
 #include "nNetworkSession.h"
 #include "nNetworkTransport.h"
@@ -35,7 +37,7 @@ const MtDTI& nNetwork::Connect::getDTI() const {
 // Address: 0x01196530 - 0x01196570 (64 bytes)
 void* nNetwork::Connect::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::Connect::DTI)->memAlloc(sz, align, ::nNetwork::Connect::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Connect::DTI)->memAlloc(sz, align, ::nNetwork::Connect::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ __attribute__((weak)) void nNetwork::Connect::move() {
 // Address: 0x011974f0 - 0x011974fd (13 bytes)
 void nNetwork::Connect::sendPeer(s32 peer_id, const void* data_ptr, s32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpP2p->sendPeer(peer_id, data_ptr, data_size);
+    mpP2p->sendPeer(peer_id, data_ptr, data_size);
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,11 +134,11 @@ void nNetwork::Connect::sendPeer(s32 peer_id, const void* data_ptr, s32 data_siz
 // Address: 0x01197100 - 0x01197127 (39 bytes)
 void nNetwork::Connect::removeDriver() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpP2p == static_cast<MtNetP2p*>(nullptr)) {
+    if (mpP2p == nullptr) {
         return;
     }
-    delete this->mpP2p;
-    this->mpP2p = static_cast<MtNetP2p*>(nullptr);
+    delete mpP2p;
+    mpP2p = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -171,22 +173,22 @@ __attribute__((weak)) void nNetwork::Connect::removeRoute(s32 route_index, MtNet
 void nNetwork::Connect::removeRouteAll() {
     // DWARF local not rendered: s32 route_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(0), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(1), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(2), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(3), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(4), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(5), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(6), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(7), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(8), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(9), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(10), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(11), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(12), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(13), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(14), static_cast<MtNetError*>(nullptr));
-    this->::nNetwork::Connect::removeRoute(static_cast<s32>(15), static_cast<MtNetError*>(nullptr));
+    removeRoute(0, static_cast<MtNetError*>(nullptr));
+    removeRoute(1, static_cast<MtNetError*>(nullptr));
+    removeRoute(2, static_cast<MtNetError*>(nullptr));
+    removeRoute(3, static_cast<MtNetError*>(nullptr));
+    removeRoute(4, static_cast<MtNetError*>(nullptr));
+    removeRoute(5, static_cast<MtNetError*>(nullptr));
+    removeRoute(6, static_cast<MtNetError*>(nullptr));
+    removeRoute(7, static_cast<MtNetError*>(nullptr));
+    removeRoute(8, static_cast<MtNetError*>(nullptr));
+    removeRoute(9, static_cast<MtNetError*>(nullptr));
+    removeRoute(10, static_cast<MtNetError*>(nullptr));
+    removeRoute(11, static_cast<MtNetError*>(nullptr));
+    removeRoute(12, static_cast<MtNetError*>(nullptr));
+    removeRoute(13, static_cast<MtNetError*>(nullptr));
+    removeRoute(14, static_cast<MtNetError*>(nullptr));
+    removeRoute(15, static_cast<MtNetError*>(nullptr));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -225,11 +227,16 @@ __attribute__((weak)) void nNetwork::Connect::sendMessage(s32 index, cRemoteCall
 }
 
 // Address: 0x011976d0 - 0x01197759 (137 bytes)
-__attribute__((weak)) void nNetwork::Connect::recvMessage(s32 index, const void* data_ptr, u32 data_size) {
-    // local: MtMemoryStream stream;
-    // local: cRemoteCall* prpc;
-    DDON_STUB("nNetwork::Connect::recvMessage")
-    /* stub */
+void nNetwork::Connect::recvMessage(s32 index, const void* data_ptr, u32 data_size) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a pointee qualifier cast away: const void* used as void*
+    MtMemoryStream stream(const_cast<void*>(data_ptr), data_size, 1u);
+    cRemoteCall* prpc = ::cRemoteCall::newInstance(stream);
+    if (prpc == nullptr) {
+        return;
+    }
+    process(index, prpc);
+    delete prpc;
 }
 
 // Address: 0x01198260 - 0x01198261 (1 bytes)
@@ -245,10 +252,10 @@ __attribute__((weak)) void nNetwork::Connect::onNtcFinalize() {
 // Address: 0x011982a0 - 0x011982bd (29 bytes)
 void nNetwork::Connect::onNtcDrop(MtNetError* net_err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSession->mDriver.mpDriver == static_cast<MtNetSession*>(nullptr)) {
+    if (mpSession->mDriver.mpDriver == nullptr) {
         return;
     }
-    this->mpSession->mDriver.mpDriver->onNtcDrop(net_err);
+    mpSession->mDriver.mpDriver->onNtcDrop(net_err);
 }
 
 // Address: 0x011982e0 - 0x01198384 (164 bytes)
@@ -262,7 +269,7 @@ __attribute__((weak)) void nNetwork::Connect::onNtcPeerDrop(s32 peer_id, MtNetEr
 // Address: 0x01198440 - 0x0119844d (13 bytes)
 void nNetwork::Connect::onNtcPeerReceive(s32 peer_id, const void* data_ptr, s32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession->mpTransport->::nNetwork::Transport::recvPeer(peer_id, data_ptr, data_size);
+    mpSession->mpTransport->recvPeer(peer_id, data_ptr, data_size);
 }
 
 // Address: 0x01198460 - 0x011984eb (139 bytes)
@@ -350,6 +357,8 @@ __attribute__((weak)) void nNetwork::Connect::procConfig(nNetwork::RpcNetSystem_
     DDON_STUB("nNetwork::Connect::procConfig")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Connect::MyDTI nNetwork::Connect::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Connect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

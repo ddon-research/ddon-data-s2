@@ -24,7 +24,7 @@ const MtDTI& cTexturePNG::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cTexturePNG::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cTexturePNG::DTI);
+    return MtMemoryAllocator::getAllocator(cTexturePNG::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cTexturePNG::getAllocator() {
 // Address: 0x0058e4c0 - 0x0058e500 (64 bytes)
 void* cTexturePNG::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cTexturePNG::getAllocator()->memAlloc(sz, align, ::cTexturePNG::DTI.::MtDTI::getID());
+    return cTexturePNG::getAllocator()->memAlloc(sz, align, cTexturePNG::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cTexturePNG::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cTexturePNG::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cTexturePNG::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cTexturePNG::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,6 +106,8 @@ __attribute__((weak)) void cTexturePNG::set(void* ppng, size_t size) {
 //   in cTexturePNG::~cTexturePNG at 0x0058e5d7-0x0058e5f3 (called at cUIObject.cpp:67)
 // void cTexturePNG::releaseTexture();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cTexturePNG::MyDTI cTexturePNG::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e742-0x0058e77b (called at cUIObject.cpp:60)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e742-0x0058e77b (called at cUIObject.h:45)
@@ -131,7 +133,7 @@ const MtDTI& cUIObject::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cUIObject::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cUIObject::DTI);
+    return MtMemoryAllocator::getAllocator(cUIObject::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,7 +142,7 @@ inline MtAllocator* cUIObject::getAllocator() {
 // Address: 0x0058e2a0 - 0x0058e2e0 (64 bytes)
 void* cUIObject::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cUIObject::getAllocator()->memAlloc(sz, align, ::cUIObject::DTI.::MtDTI::getID());
+    return cUIObject::getAllocator()->memAlloc(sz, align, cUIObject::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ void* cUIObject::operator new(size_t sz, u32 align) {
 // Address: 0x0058e310 - 0x0058e33a (42 bytes)
 __attribute__((weak)) void cUIObject::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cUIObject::getAllocator()->memFree(p_addr);
+    cUIObject::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -186,6 +188,8 @@ __attribute__((weak)) void cUIObject::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cUIObject::MyDTI cUIObject::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e6c0-0x0058e709 (called at cUIObject.cpp:14)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e6c0-0x0058e709 (called at cUIObject.h:16)
@@ -194,7 +198,7 @@ __attribute__((weak)) void cUIObject::createProperty(MtPropertyList& s) {
 // Address: 0x0058e260 - 0x0058e2a0 (64 bytes)
 MtObject* cUIObject::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cUIObject;
+    return new (16u) cUIObject;
 }
 
 // No out-of-line body: no code in the ELF
@@ -220,7 +224,7 @@ const MtDTI& cUIResource::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cUIResource::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cUIResource::DTI)->memAlloc(sz, align, ::cUIResource::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cUIResource::DTI)->memAlloc(sz, align, cUIResource::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -234,7 +238,7 @@ inline void* cUIResource::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cUIResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cUIResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cUIResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,6 +269,8 @@ __attribute__((weak)) void cUIResource::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cUIResource::MyDTI cUIResource::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e709-0x0058e742 (called at cUIObject.cpp:37)
 //   in _GLOBAL__sub_I_cUIObject.cpp at 0x0058e709-0x0058e742 (called at cUIObject.h:31)
@@ -273,6 +279,6 @@ __attribute__((weak)) void cUIResource::createProperty(MtPropertyList& s) {
 // Address: 0x0058e390 - 0x0058e3d0 (64 bytes)
 MtObject* cUIResource::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cUIResource;
+    return new (16u) cUIResource;
 }
 

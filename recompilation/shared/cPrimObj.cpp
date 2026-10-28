@@ -41,7 +41,7 @@ const MtDTI& cPrimObj::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPrimObj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrimObj::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrimObj::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ inline void cPrimObj::operator delete(void* p_addr) {
 // Address: 0x01b6cca0 - 0x01b6cca5 (5 bytes)
 MtUI* cPrimObj::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Defined in the class (its body was written in a header).
@@ -70,6 +70,8 @@ MtUI* cPrimObj::createUI(MtProperty& prop) {
 
 // No out-of-line body: no code in the ELF
 // u32 cPrimObj::getUsedMemory();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cPrimObj::MyDTI cPrimObj::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimObj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

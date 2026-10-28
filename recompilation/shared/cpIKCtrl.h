@@ -223,6 +223,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsIKHandle::adjust at 0x8c0831-0x8c0834; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nIKCtrl::IK_TYPE cIKHandle::getType() {
+    return this->mType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cpIKCtrl::isIKCtrlActive() {
     return this->::cpComponent::mActive;
 }

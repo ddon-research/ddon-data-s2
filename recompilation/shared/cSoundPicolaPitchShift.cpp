@@ -64,19 +64,19 @@ __attribute__((weak)) void cSoundPicolaPitchShift::executeProcess(f32* pData, co
 // Address: 0x012f2b50 - 0x012f2bbb (107 bytes)
 void cSoundPicolaPitchShift::initBuffer() {
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    this->mFundamentalPeriod = static_cast<u32>(0);
-    this->mFundamentalFrequency = 0.0f;
-    this->mLoopCounter = static_cast<u32>(0);
-    ::memset(static_cast<void*>(&this->mInputBuffer[0]), static_cast<int>(0), static_cast<size_t>(24576));
-    this->mStackingResidueSamples = 0.0f;
-    this->mCrossCount = static_cast<u32>(0);
-    this->mResidueSamples = 0.0f;
-    this->mGap = static_cast<s32>(0);
-    this->mCount = static_cast<s32>(0);
-    this->mL_Shift = static_cast<u32>(0);
-    this->mTp_Shift = static_cast<u32>(0);
-    this->mL = static_cast<u32>(0);
-    this->mTp = static_cast<u32>(0);
+    mFundamentalPeriod = 0;
+    mFundamentalFrequency = 0.0f;
+    mLoopCounter = 0;
+    memset(static_cast<void*>(&mInputBuffer[0]), 0, 24576ul);
+    mStackingResidueSamples = 0.0f;
+    mCrossCount = 0;
+    mResidueSamples = 0.0f;
+    mGap = 0;
+    mCount = 0;
+    mL_Shift = 0;
+    mTp_Shift = 0;
+    mL = 0;
+    mTp = 0;
 }
 
 // No out-of-line body: no code in the ELF

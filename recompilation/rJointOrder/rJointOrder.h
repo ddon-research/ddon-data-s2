@@ -101,8 +101,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cJointOrder::cJointOrder() {
-    this->mNum = static_cast<u32>(0);
-    this->mpJointTable = static_cast<u8*>(nullptr);
+    this->mNum = 0;
+    this->mpJointTable = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

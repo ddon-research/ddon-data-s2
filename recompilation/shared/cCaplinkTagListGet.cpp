@@ -20,36 +20,36 @@
 void nCaplink::TagListGetAns::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::nCaplink::ContextListener::init();
-    this->mTagInfoTbl.mAutoDelete = true;
-    if (this->mTagInfoTbl.mLength != static_cast<u32>(0)) {
+    mTagInfoTbl.mAutoDelete = true;
+    if (mTagInfoTbl.mLength != 0) {
         // inferred: the value the loop at 0x1abe6c0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTagInfoTbl.mLength;
+        u32 v0_0 = mTagInfoTbl.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTagInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTagInfoTbl.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTagInfoTbl.mLength) {
-                    v0_0 = this->mTagInfoTbl.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTagInfoTbl.mpArray[i0_3] != nullptr) {
+                delete mTagInfoTbl.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTagInfoTbl.mLength) {
+                    v0_0 = mTagInfoTbl.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTagInfoTbl.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTagInfoTbl.mpArray));
+    if (mTagInfoTbl.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mTagInfoTbl.mpArray));
     }
-    this->mTagInfoTbl.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTagInfoTbl.mBufsiz = static_cast<u32>(0);
-    this->mTagInfoTbl.mLength = static_cast<u32>(0);
-    this->mTotal = static_cast<s32>(0);
+    mTagInfoTbl.mpArray = nullptr;
+    mTagInfoTbl.mBufsiz = 0;
+    mTagInfoTbl.mLength = 0;
+    mTotal = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

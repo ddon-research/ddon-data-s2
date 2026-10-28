@@ -53,7 +53,7 @@ const MtDTI& nNetwork::nRanking::Object::getDTI() const {
 // Address: 0x01365570 - 0x013655b0 (64 bytes)
 void* nNetwork::nRanking::Object::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::DTI)->memAlloc(sz, align, ::nNetwork::nRanking::Object::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::DTI)->memAlloc(sz, align, ::nNetwork::nRanking::Object::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,7 +157,7 @@ void nNetwork::nRanking::Object::setFatal(const MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(err);
     MtNetError e;
-    this->getFatal(&e);
+    getFatal(&e);
 }
 
 // Address: 0x013660c0 - 0x01366106 (70 bytes)
@@ -165,7 +165,7 @@ void nNetwork::nRanking::Object::setFatal(s32 no, s32 cause, s32 native) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(no, cause, native);
     MtNetError e;
-    this->getFatal(&e);
+    getFatal(&e);
 }
 
 // No out-of-line body: no code in the ELF
@@ -207,28 +207,28 @@ void nNetwork::nRanking::Object::setFatal(s32 no, s32 cause, s32 native) {
 // Address: 0x01365fb0 - 0x01366057 (167 bytes)
 void nNetwork::nRanking::Object::createDriver() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDriver != static_cast<MtNetRanking*>(nullptr)) {
+    if (mpDriver != nullptr) {
         return;
     }
-    if ((::sNetwork::mpInstance)->::sNetwork::isServiceStart() == false) {
+    if (!(::sNetwork::mpInstance)->::sNetwork::isServiceStart()) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x1365fe1, used twice; no DWARF local holds it
     u32 t0 = (::sNetwork::mpInstance)->::sNetwork::getServiceUserIndex();
-    if (this->mUserIndex != t0) {
+    if (mUserIndex != t0) {
         return;
     }
-    if ((::sNetwork::mpInstance)->::sNetwork::getContext(t0, static_cast<s32>(0)) == static_cast<MtNetContext*>(nullptr)) {
+    if ((::sNetwork::mpInstance)->::sNetwork::getContext(t0, 0) == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x1366006 read, used once; no DWARF local holds it
     MtNetCore* t1 = ::MtNetCore::mpInstance;
     // inferred: a temporary for the result of the call at 0x136601f, used twice; no DWARF local holds it
-    MtNetRanking* t2 = t1->::MtNetCore::newRanking((::sNetwork::mpInstance)->::sNetwork::getContext(this->mUserIndex, static_cast<s32>(0)));
-    if ((this->mpDriver = t2) == static_cast<MtNetRanking*>(nullptr)) {
+    MtNetRanking* t2 = t1->newRanking((::sNetwork::mpInstance)->::sNetwork::getContext(mUserIndex, 0));
+    if ((mpDriver = t2) == nullptr) {
         return;
     }
-    this->mpDriver->::MtNetRanking::addListener(static_cast<MtNetRanking::Listener*>(&this->mDriveListener));
+    mpDriver->addListener(static_cast<MtNetRanking::Listener*>(&mDriveListener));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -248,6 +248,8 @@ void nNetwork::nRanking::Object::createDriver() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::nRanking::Object::onGetAttachComplete(MtNetRanking::Attach* pattach, MtNetError* err);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nRanking::Object::MyDTI nNetwork::nRanking::Object::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nRanking::Object::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -272,7 +274,7 @@ __attribute__((weak)) void nNetwork::nRanking::Object::DriverListener::onNtcDest
 // Address: 0x013661c0 - 0x013661cc (12 bytes)
 void nNetwork::nRanking::Object::DriverListener::onNtcFinalize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mbFinal = true;
+    mpParent->mbFinal = true;
 }
 
 // Address: 0x013661d0 - 0x0136622a (90 bytes)
@@ -373,6 +375,8 @@ inline void nNetwork::nRanking::Object::StateBase::operator delete(void* p_addr)
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::nRanking::Object::StateBase::setState(u32 state);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nRanking::Object::StateBase::MyDTI nNetwork::nRanking::Object::StateBase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nRanking::Object::StateBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

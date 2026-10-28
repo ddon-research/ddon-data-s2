@@ -107,15 +107,15 @@ inline cQuestPhaseState001::cQuestPhaseState001() {
     this->mHasRequestedWarpPlayer = false;
     this->mIsDispAnnounce = false;
     this->mExistDividePlayer = false;
-    this->mEnemyParamGcd = static_cast<u32>(0);
+    this->mEnemyParamGcd = 0;
     this->mIsDivideSetup = false;
     this->mIsWarpPlayer = false;
     this->mIsDivideSuccess = false;
     this->mIsReturnPlayer = false;
-    this->mReturnPlayerId[1] = static_cast<unsigned int>(0);
-    this->mReturnPlayerId[2] = static_cast<unsigned int>(0);
-    this->mPlayerId = static_cast<u32>(0);
-    this->mReturnPlayerId[0] = static_cast<unsigned int>(0);
-    this->mDivideStageNo = static_cast<u32>(0);
-    this->mDivideStartPosNo = static_cast<u32>(0);
+    this->mReturnPlayerId[1] = 0;
+    this->mReturnPlayerId[2] = 0;
+    this->mPlayerId = 0;
+    this->mReturnPlayerId[0] = 0;
+    this->mDivideStageNo = 0;
+    this->mDivideStartPosNo = 0;
 }

@@ -19,38 +19,70 @@ struct MtHalf2;
 struct MtInt3;
 class MtMatrix33;
 class MtTriangle;
+class cAnimalData;
 class cAreaHit;
 class cBVHCollision;
+class cCharacterEditMuscle;
 class cChildRegionStatus;
 class cCnsBoneScaleCtrl;
 class cContextInterface;
 class cDamageMsg;
+class cDamageSeInfo;
+class cEmEffectTable;
+class cEmScaleTable;
+class cEmSoundTable;
+class cErosionRegionScaleChange;
+class cFurniture;
+class cFurnitureData;
+class cGroupParam;
 class cHitInfoAfter;
 class cJumpParamCtrl;
 class cMenuEntryBoardItemList;
 class cPlActWpnBow;
+class cQuakeParam;
+class cSetInfoOmBadStatus;
+class cSetInfoOmDoor;
+class cSetInfoOmNav;
 class cShlLogNode;
+class cStageMap;
+class cStartPos;
+namespace cThinkMgrName { class cThinkMgrTargetData; }
+class cWeaponOffset;
 class cZoneListenerLight;
 class cpCatchCtrl;
+class cpCheckWallCliff;
 class cpJob02;
 class cpJob06;
 class cpJob09;
 class cpObjCollisionBase;
 class cpShakeCtrl;
 class cpSlave;
+namespace nMarker { class cMarkerInfo; }
+namespace nShlBase { class cShlStickContextInfo; }
 namespace nShlStick { class cStickObjectCtrl; }
 namespace nZone { class ShapeInfoPanel; }
+class rDungeonMarker;
+class rFieldAreaMarkerInfo;
+class rLocationData;
+class rMapSpotData;
 class rNavigationMesh;
+class rPlantTree;
+class rQuestMarkerInfo;
+class rStageConnect;
+class rStageCustomPartsEx;
+class rWaypoint;
 class sCollision;
 class sEffect;
 class sEffectExt;
 class sGUIExt;
 class sGame;
+class sOmManager;
 class sSoundManager;
 class uBaseEffect;
 class uCharacter;
 class uCorePointSearch;
 class uCustomSimSoftBody;
+class uDDOModel;
 class uEffect;
 class uGUIAim;
 class uHuman;
@@ -58,6 +90,7 @@ class uLight;
 class uShlBase;
 class uSimSoftBody;
 class uSky;
+class uSoundSequenceSe;
 
 // Declarations
 struct MtFloat2;
@@ -420,10 +453,14 @@ class alignas(16) MtVector3
     friend class MtGeomTriangle;
     // inferred: MtTriangle::getNearestEdgeFromUVW names MtLineSegment::p0.pad_
     friend class MtTriangle;
+    // inferred: cAnimalData::cAnimalData names cAnimalData::mPos.pad_
+    friend class cAnimalData;
     // inferred: cAreaHit::setup names cAreaHit::mWorld.pad_
     friend class cAreaHit;
     // inferred: cBVHCollision::buildOnlineFast names cBVHCollision::mHeader.aabb.minpos.pad_
     friend class cBVHCollision;
+    // inferred: cCharacterEditMuscle::cCharacterEditMuscle names cCharacterEditMuscle::mMuscle.pad_
+    friend class cCharacterEditMuscle;
     // inferred: cChildRegionStatus::setParamFromRes names cChildRegionStatus::mCoreJointOffset.pad_
     friend class cChildRegionStatus;
     // inferred: cCnsBoneScaleCtrl::update names uCnsBoneScale::mScl.pad_
@@ -432,6 +469,22 @@ class alignas(16) MtVector3
     friend class cContextInterface;
     // inferred: cDamageMsg::makeInfoFromHitNode names cDamageMsg::mData.mDamageDir.pad_
     friend class cDamageMsg;
+    // inferred: cDamageSeInfo::cDamageSeInfo names cDamageSeInfo::mHitPos.pad_
+    friend class cDamageSeInfo;
+    // inferred: cEmEffectTable::cEmEffectTable names cEmEffectTable::mOffsetPos.pad_
+    friend class cEmEffectTable;
+    // inferred: cEmScaleTable::cEmScaleTable names cEmScaleTable::mScale.pad_
+    friend class cEmScaleTable;
+    // inferred: cEmSoundTable::cEmSoundTable names cEmSoundTable::mOffsetPos.pad_
+    friend class cEmSoundTable;
+    // inferred: cErosionRegionScaleChange::cErosionRegionScaleChange names cErosionRegionScaleChange::mInitScale.pad_
+    friend class cErosionRegionScaleChange;
+    // inferred: cFurniture::Info::Info names cFurniture::Info::mPos.pad_, through its enclosing class cFurniture
+    friend class cFurniture;
+    // inferred: cFurnitureData::cFurnitureData names cFurnitureData::mPos.pad_
+    friend class cFurnitureData;
+    // inferred: cGroupParam::DropItemInfo::DropItemInfo names cGroupParam::DropItemInfo::mDropPos.pad_, through its enclosing class cGroupParam
+    friend class cGroupParam;
     // inferred: cHitInfoAfter::makeInfoFromDmMsg names cHitInfoAfter::mLocalInfo.mHitPos.pad_
     friend class cHitInfoAfter;
     // inferred: cJumpParamCtrl::updatePadAdjustPos names uCoord::mPos.pad_
@@ -440,12 +493,30 @@ class alignas(16) MtVector3
     friend class cMenuEntryBoardItemList;
     // inferred: cPlActWpnBow::initLow_Wait names uDDOModel::mVelocity.pad_
     friend class cPlActWpnBow;
+    // inferred: cQuakeParam::cQuakeParam names cQuakeParam::mMagnitude.pad_
+    friend class cQuakeParam;
+    // inferred: cSetInfoOmBadStatus::copy names cSetInfoOmBadStatus::mBadPos.pad_
+    friend class cSetInfoOmBadStatus;
+    // inferred: cSetInfoOmDoor::copy names cSetInfoOmDoor::mPRTPos.pad_
+    friend class cSetInfoOmDoor;
+    // inferred: cSetInfoOmNav::copy names cSetInfoOmNav::mNavOBBExtent.pad_
+    friend class cSetInfoOmNav;
     // inferred: cShlLogNode::keepLog names cShlLogNode::mPos.pad_
     friend class cShlLogNode;
+    // inferred: cStageMap::cParam::cParam names cStageMap::cParam::mConnectPos.pad_, through its enclosing class cStageMap
+    friend class cStageMap;
+    // inferred: cStartPos::setAng names cStartPos::ang.pad_
+    friend class cStartPos;
+    // inferred: cThinkMgrName::cThinkMgrTargetData::init names cThinkMgrName::cThinkMgrTargetData::mTargetPos.pad_
+    friend class cThinkMgrName::cThinkMgrTargetData;
+    // inferred: cWeaponOffset::cWeaponOffset names cWeaponOffset::mRot.pad_
+    friend class cWeaponOffset;
     // inferred: cZoneListenerLight::cZoneListenerLight names cZoneListenerLight::mCheckPos.pad_
     friend class cZoneListenerLight;
     // inferred: cpCatchCtrl::forceCancel names cpCatchCtrl::mCatchInfo.mHitPos.pad_
     friend class cpCatchCtrl;
+    // inferred: cpCheckWallCliff::resetPos names cpCheckWallCliff::mFallPreventionPosList.elems[0].pad_
+    friend class cpCheckWallCliff;
     // inferred: cpJob02::update names uHuman::mCameraExPos.pad_
     friend class cpJob02;
     // inferred: cpJob06::setCS12EffectPos names uCoord::mPos.pad_
@@ -458,13 +529,35 @@ class alignas(16) MtVector3
     friend class cpShakeCtrl;
     // inferred: cpSlave::interpolatePos names uCoord::mPos.pad_
     friend class cpSlave;
+    // inferred: nMarker::cMarkerInfo::cVector3::cVector3 names nMarker::cMarkerInfo::cVector3::mRealPos.pad_, through its enclosing class nMarker::cMarkerInfo
+    friend class nMarker::cMarkerInfo;
+    // inferred: nShlBase::cShlStickContextInfo::cShlStickContextInfo names nShlBase::cShlStickContextInfo::mStickDirection.pad_
+    friend class nShlBase::cShlStickContextInfo;
     // inferred: nShlStick::cStickObjectCtrl::storeStickInfo names nShlStick::cStickObjectCtrl::mCapsule.p0.pad_
     friend class nShlStick::cStickObjectCtrl;
     // inferred: nZone::ShapeInfoPanel::reversePanelDirection names nZone::ShapeInfoPanel::mVertex[1].pad_
     friend class nZone::ShapeInfoPanel;
+    // inferred: rDungeonMarker::cPosition::cPosition names rDungeonMarker::cPosition::mPos.pad_, through its enclosing class rDungeonMarker
+    friend class rDungeonMarker;
+    // inferred: rFieldAreaMarkerInfo::cMarkerInfo::cMarkerInfo names rFieldAreaMarkerInfo::cMarkerInfo::mPos.pad_, through its enclosing class rFieldAreaMarkerInfo
+    friend class rFieldAreaMarkerInfo;
+    // inferred: rLocationData::Data::Data names rLocationData::Data::mPos.pad_, through its enclosing class rLocationData
+    friend class rLocationData;
+    // inferred: rMapSpotData::Data::Data names rMapSpotData::Data::mPos.pad_, through its enclosing class rMapSpotData
+    friend class rMapSpotData;
     // inferred: rNavigationMesh::setNodeInfo names rNavigationMesh::nodeInfo::mAABB.minpos.pad_
     friend class rNavigationMesh;
-    // inferred: sCollision::enumSphereTriBeforeFunc names sCollision::ScrCollisionInfo::workVec[3].pad_
+    // inferred: rPlantTree::Tree::Point::Point names rPlantTree::Tree::Point::mPosition.pad_, through its enclosing class rPlantTree
+    friend class rPlantTree;
+    // inferred: rQuestMarkerInfo::cInfo::cInfo names rQuestMarkerInfo::cInfo::mPos.pad_, through its enclosing class rQuestMarkerInfo
+    friend class rQuestMarkerInfo;
+    // inferred: rStageConnect::Data::Data names rStageConnect::Data::mPos.pad_, through its enclosing class rStageConnect
+    friend class rStageConnect;
+    // inferred: rStageCustomPartsEx::HemiSphLight::HemiSphLight names rStageCustomPartsEx::HemiSphLight::mLightColor.pad_, through its enclosing class rStageCustomPartsEx
+    friend class rStageCustomPartsEx;
+    // inferred: rWaypoint::cPoint::cPoint names rWaypoint::cPoint::mPos.pad_, through its enclosing class rWaypoint
+    friend class rWaypoint;
+    // inferred: sCollision::Sbc::Parts::getRPartsAABB names MtAABB::minpos.pad_, through its enclosing class sCollision
     friend class sCollision;
     // inferred: sEffect::setForcePower names sEffect::mForceVec.pad_
     friend class sEffect;
@@ -474,6 +567,8 @@ class alignas(16) MtVector3
     friend class sGUIExt;
     // inferred: sGame::initPlayerUnit names uCoord::mPos.pad_
     friend class sGame;
+    // inferred: sOmManager::initAQC names sOmManager::mCameraYaw[0].pad_
+    friend class sOmManager;
     // inferred: sSoundManager::startBarReq names sSoundManager::mBarPos.pad_
     friend class sSoundManager;
     // inferred: uBaseEffect::setOfs names uBaseEffect::mOfs.pad_
@@ -484,6 +579,8 @@ class alignas(16) MtVector3
     friend class uCorePointSearch;
     // inferred: uCustomSimSoftBody::getTargetBoundingAABB names MtAABB::minpos.pad_
     friend class uCustomSimSoftBody;
+    // inferred: uDDOModel::setAcceleration names uDDOModel::mAcceleration.pad_
+    friend class uDDOModel;
     // inferred: uEffect::setupUnitGenerator names cEffectJoint::mUpdateConstWorldOfs.pad_
     friend class uEffect;
     // inferred: uGUIAim::setTargetMarkerPos names uGUIAim::cTargetMarker::mTargetPos.pad_
@@ -498,6 +595,8 @@ class alignas(16) MtVector3
     friend class uSimSoftBody;
     // inferred: uSky::setMieScattering names uSky::mMieScattering.pad_
     friend class uSky;
+    // inferred: uSoundSequenceSe::setCallPos names uSoundSequenceSe::mCallPos.pad_
+    friend class uSoundSequenceSe;
 public:
     MtVector3();
     explicit MtVector3(const f32* f);
@@ -784,11 +883,21 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline MtFloat2::MtFloat2() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline MtFloat3::MtFloat3() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline MtFloat3A::MtFloat3A() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline MtFloat4::MtFloat4() {
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -66,7 +66,7 @@ const MtDTI& uGUIItemBase01::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIItemBase01::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIItemBase01::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIItemBase01::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,15 +91,15 @@ uGUIItemBase01::~uGUIItemBase01() {
 // Address: 0x00ac6350 - 0x00ac63fc (172 bytes)
 bool uGUIItemBase01::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ITEM01_GUI"), static_cast<u32>(129), static_cast<t64>(1470964587)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ITEM_STRAGE_BOX_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PARAMETER_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ITEM01_GUI"), 129u, 1470964587l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_ITEM_STRAGE_BOX_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_PARAMETER_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ITEM_STRAGE_BOX_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PARAMETER_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_ITEM_STRAGE_BOX_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_PARAMETER_GMD", 1u);
         }
     }
     return false;
@@ -120,12 +120,12 @@ __attribute__((weak)) void uGUIItemBase01::setup() {
 // Address: 0x00ac7520 - 0x00ac7551 (49 bytes)
 void uGUIItemBase01::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIUseItemBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00ac7560 - 0x00ac7788 (552 bytes)
@@ -172,35 +172,35 @@ __attribute__((weak)) void uGUIItemBase01::setStopAllContol(bool b) {
 void uGUIItemBase01::setTabIdx(s32 idx) {
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if (this->mpCtrlTab != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrlTab->setCurrentPos(idx, false);
-        this->mServerStorageTypeOld = this->mServerStorageType;
+    if (mpCtrlTab != nullptr) {
+        mpCtrlTab->setCurrentPos(idx, false);
+        mServerStorageTypeOld = mServerStorageType;
         // inferred: a temporary for the value the load at 0xac9a47 read, used once; no DWARF local holds it
-        sItemManager* t0 = ::sItemManager::getInstance();
+        sItemManager* t0 = sItemManager::getInstance();
         // inferred: a temporary for the value the load at 0xac9a4a read, used once; no DWARF local holds it
-        nCharacterData::ITEM_BAG_TYPE t1 = this->mStorageType;
-        this->mServerStorageType = t0->::sItemManager::getItemNetStorageType(t1, this->getTab2Category());
+        nCharacterData::ITEM_BAG_TYPE t1 = mStorageType;
+        mServerStorageType = t0->getItemNetStorageType(t1, getTab2Category());
         // inferred: a temporary for the result of the call at 0xac9a76, used once; no DWARF local holds it
-        u32 t2 = this->getItemDrawNum();
-        if (static_cast<unsigned int>(this->mMatrixSelPos) < t2) {
-            this->mpCtrlMatrix->setCurrentPos(this->mMatrixSelPos, false);
+        u32 t2 = getItemDrawNum();
+        if (static_cast<unsigned int>(mMatrixSelPos) < t2) {
+            mpCtrlMatrix->setCurrentPos(mMatrixSelPos, false);
         } else {
-            this->mpCtrlMatrix->setCurrentPos(static_cast<s32>(0), false);
-            this->mMatrixSelPos = static_cast<s32>(0);
+            mpCtrlMatrix->setCurrentPos(0, false);
+            mMatrixSelPos = 0;
         }
-        this->mPageTabNo = static_cast<s32>(0);
-        this->settingItem(true, true);
+        mPageTabNo = 0;
+        settingItem(true, true);
     } else {
         // inferred: a temporary for the result of the call at 0xac9a76, used once; no DWARF local holds it
-        u32 t2 = this->getItemDrawNum();
-        if (static_cast<unsigned int>(this->mMatrixSelPos) < t2) {
-            this->mpCtrlMatrix->setCurrentPos(this->mMatrixSelPos, false);
+        u32 t2 = getItemDrawNum();
+        if (static_cast<unsigned int>(mMatrixSelPos) < t2) {
+            mpCtrlMatrix->setCurrentPos(mMatrixSelPos, false);
         } else {
-            this->mpCtrlMatrix->setCurrentPos(static_cast<s32>(0), false);
-            this->mMatrixSelPos = static_cast<s32>(0);
+            mpCtrlMatrix->setCurrentPos(0, false);
+            mMatrixSelPos = 0;
         }
-        this->mPageTabNo = static_cast<s32>(0);
-        this->settingItem(true, true);
+        mPageTabNo = 0;
+        settingItem(true, true);
     }
 }
 
@@ -218,9 +218,9 @@ __attribute__((weak)) nGUIItem::cItem* uGUIItemBase01::getSelectItem() {
 // Address: 0x00ac9b40 - 0x00ac9b73 (51 bytes)
 void uGUIItemBase01::refresh() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mItemList.::nGUIItem::cItemList::deleteAll();
-    this->loadItem();
-    this->settingItemInit();
+    mItemList.deleteAll();
+    loadItem();
+    settingItemInit();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -256,53 +256,53 @@ __attribute__((weak)) void uGUIItemBase01::setPutItem(nGUIItem::cItem* pCatchIte
 // Address: 0x00aca5e0 - 0x00aca6a4 (196 bytes)
 void uGUIItemBase01::checkAddStackNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg, s32* pSlotNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    *pMsg = static_cast<int>(-1);
-    *pSlotNo = static_cast<int>(-1);
-    sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(type);
-    *pMsg = static_cast<int>(-1);
-    *pSlotNo = static_cast<int>(-1);
-    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+    *pMsg = -1;
+    *pSlotNo = -1;
+    sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(type);
+    *pMsg = -1;
+    *pSlotNo = -1;
+    if (pBag == nullptr) {
         return;
     }
-    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+    if (pItem == nullptr) {
         return;
     }
-    *pAddNum = pBag->::sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->::nGUIItem::cItem::getItemParam()->::cItemParam::getItemNo(), pSlotNo);
-    if ((*pAddNum) != static_cast<unsigned int>(0)) {
+    *pAddNum = pBag->sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
+    if ((*pAddNum) != 0) {
         return;
     }
-    if (pBag->::sItemManager::cItemBag::getEmptySlotNum(pBag->::sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->::nGUIItem::cItem::getItemParam()->::cItemParam::getItemCategory())) != static_cast<u32>(0)) {
-        *pAddNum = pItem->::nGUIItem::cItem::getResourceParam()->::rItemList::rItemParam::getStackMax(type);
-        *pSlotNo = static_cast<int>(0);
+    if (pBag->sItemManager::cItemBag::getEmptySlotNum(pBag->sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
+        *pAddNum = pItem->getResourceParam()->getStackMax(type);
+        *pSlotNo = 0;
     } else {
-        *pMsg = static_cast<int>(272);
+        *pMsg = 272;
     }
 }
 
 // Address: 0x00aca6b0 - 0x00aca785 (213 bytes)
 void uGUIItemBase01::checkAddStackNum(nItem::E_STORAGE_TYPE serverStorage, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg, s32* pSlotNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    *pMsg = static_cast<int>(-1);
-    *pSlotNo = static_cast<int>(-1);
-    sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(serverStorage);
-    nCharacterData::ITEM_BAG_TYPE type = ::sItemManager::getInstance()->::sItemManager::getItemBagTypeToServer(serverStorage);
-    *pMsg = static_cast<int>(-1);
-    *pSlotNo = static_cast<int>(-1);
-    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+    *pMsg = -1;
+    *pSlotNo = -1;
+    sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(serverStorage);
+    nCharacterData::ITEM_BAG_TYPE type = sItemManager::getInstance()->getItemBagTypeToServer(serverStorage);
+    *pMsg = -1;
+    *pSlotNo = -1;
+    if (pBag == nullptr) {
         return;
     }
-    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+    if (pItem == nullptr) {
         return;
     }
-    *pAddNum = pBag->::sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->::nGUIItem::cItem::getItemParam()->::cItemParam::getItemNo(), pSlotNo);
-    if ((*pAddNum) != static_cast<unsigned int>(0)) {
+    *pAddNum = pBag->sItemManager::cItemBag::getItemMaxStackSlotNo(pItem->getItemParam()->getItemNo(), pSlotNo);
+    if ((*pAddNum) != 0) {
         return;
     }
-    if (pBag->::sItemManager::cItemBag::getEmptySlotNum(pBag->::sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->::nGUIItem::cItem::getItemParam()->::cItemParam::getItemCategory())) != static_cast<u32>(0)) {
-        *pAddNum = pItem->::nGUIItem::cItem::getResourceParam()->::rItemList::rItemParam::getStackMax(type);
-        *pSlotNo = static_cast<int>(0);
+    if (pBag->sItemManager::cItemBag::getEmptySlotNum(pBag->sItemManager::cItemBag::getStorageCategotyToItemCategory(pItem->getItemParam()->getItemCategory())) != 0) {
+        *pAddNum = pItem->getResourceParam()->getStackMax(type);
+        *pSlotNo = 0;
     } else {
-        *pMsg = static_cast<int>(272);
+        *pMsg = 272;
     }
 }
 
@@ -318,31 +318,31 @@ void uGUIItemBase01::checkAddMaxNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7ba, held ahead of the effects the ELF orders after it
-    sItemManager* t0 = ::sItemManager::getInstance();
-    sItemManager::cItemBag* pBag = t0->::sItemManager::setLinkItem(type);
-    *pMsg = static_cast<int>(-1);
-    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+    sItemManager* t0 = sItemManager::getInstance();
+    sItemManager::cItemBag* pBag = t0->setLinkItem(type);
+    *pMsg = -1;
+    if (pBag == nullptr) {
         return;
     }
-    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+    if (pItem == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7d3, held ahead of the effects the ELF orders after it
-    cItemParam* t2 = pItem->::nGUIItem::cItem::getItemParam();
+    cItemParam* t2 = pItem->getItemParam();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7d7, held ahead of the effects the ELF orders after it
-    u32 t3 = t2->::cItemParam::getItemNo();
+    u32 t3 = t2->getItemNo();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7dd, held ahead of the effects the ELF orders after it
-    u32 t4 = pBag->::sItemManager::cItemBag::getItemAddMaxNum(t3);
+    u32 t4 = pBag->sItemManager::cItemBag::getItemAddMaxNum(t3);
     *pAddNum = t4;
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7e5, held ahead of the effects the ELF orders after it
-    cItemParam* t6 = pItem->::nGUIItem::cItem::getItemParam();
+    cItemParam* t6 = pItem->getItemParam();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7e9, held ahead of the effects the ELF orders after it
-    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + static_cast<long>(12));
+    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
     if ((*pAddNum) < t7) {
-        if ((*pAddNum) != static_cast<unsigned int>(0)) {
-            *pMsg = static_cast<int>(273);
+        if ((*pAddNum) != 0) {
+            *pMsg = 273;
         } else {
-            *pMsg = static_cast<int>(272);
+            *pMsg = 272;
         }
     }
 }
@@ -352,31 +352,31 @@ void uGUIItemBase01::checkAddMaxNum(nItem::E_STORAGE_TYPE type, nGUIItem::cItem*
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca82a, held ahead of the effects the ELF orders after it
-    sItemManager* t0 = ::sItemManager::getInstance();
-    sItemManager::cItemBag* pBag = t0->::sItemManager::setLinkItem(type);
-    *pMsg = static_cast<int>(-1);
-    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+    sItemManager* t0 = sItemManager::getInstance();
+    sItemManager::cItemBag* pBag = t0->setLinkItem(type);
+    *pMsg = -1;
+    if (pBag == nullptr) {
         return;
     }
-    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+    if (pItem == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca843, held ahead of the effects the ELF orders after it
-    cItemParam* t2 = pItem->::nGUIItem::cItem::getItemParam();
+    cItemParam* t2 = pItem->getItemParam();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca847, held ahead of the effects the ELF orders after it
-    u32 t3 = t2->::cItemParam::getItemNo();
+    u32 t3 = t2->getItemNo();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca84d, held ahead of the effects the ELF orders after it
-    u32 t4 = pBag->::sItemManager::cItemBag::getItemAddMaxNum(t3);
+    u32 t4 = pBag->sItemManager::cItemBag::getItemAddMaxNum(t3);
     *pAddNum = t4;
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca855, held ahead of the effects the ELF orders after it
-    cItemParam* t6 = pItem->::nGUIItem::cItem::getItemParam();
+    cItemParam* t6 = pItem->getItemParam();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xaca859, held ahead of the effects the ELF orders after it
-    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + static_cast<long>(12));
+    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + 12);
     if ((*pAddNum) < t7) {
-        if ((*pAddNum) != static_cast<unsigned int>(0)) {
-            *pMsg = static_cast<int>(273);
+        if ((*pAddNum) != 0) {
+            *pMsg = 273;
         } else {
-            *pMsg = static_cast<int>(272);
+            *pMsg = 272;
         }
     }
 }
@@ -456,72 +456,72 @@ __attribute__((weak)) void uGUIItemBase01::catchCancel(bool isSe) {
 // Address: 0x00acac20 - 0x00acadd0 (432 bytes)
 void uGUIItemBase01::setFlowId(u32 flowId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::setFlowId(flowId);
-    switch (flowId - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    this->uGUIUseItemBase::setFlowId(flowId);
+    switch (flowId - 1u) {
+        case 0:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateInit);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateInit);
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = true;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWait);
+            mIsExeCtrl = true;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWait);
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateOneFrameWait);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateOneFrameWait);
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
             break;
         }
-        case static_cast<u32>(5):
+        case 5:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateShareWaitPopup);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateShareWaitPopup);
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitServer);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitServer);
             break;
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = true;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateMoveItem);
+            mIsExeCtrl = true;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateMoveItem);
             break;
         }
-        case static_cast<u32>(9):
+        case 9:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateExit);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateExit);
             break;
         }
-        case static_cast<u32>(10):
+        case 10:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShop);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShop);
             break;
         }
-        case static_cast<u32>(11):
+        case 11:
         {
-            this->::uGUIUseItemBase::mIsExeCtrl = false;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShopWait);
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShopWait);
             break;
         }
         default:
@@ -594,16 +594,16 @@ __attribute__((weak)) uGUIItemBase01::CHECK_MODE_STATE uGUIItemBase01::isCheckMo
 // Address: 0x01ae0300 - 0x01ae0307 (7 bytes)
 nItem::E_STORAGE_TYPE uGUIItemBase01::getServerStorageType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mServerStorageType;
+    return mServerStorageType;
 }
 
 // Address: 0x00acadd0 - 0x00acae1d (77 bytes)
 u32 uGUIItemBase01::evSortBest(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mItemList.::nGUIItem::cItemList::execSort(this->getTab2Category(), static_cast<sItemManager::cSortParam::SORT_TYPE>(1), static_cast<sItemManager::cSortParam::SORT_DIR>(2));
-    this->::uGUIUseItemBase::mIsForceUpdate = true;
-    this->setFlowId(static_cast<u32>(7));
-    return static_cast<u32>(0);
+    mItemList.execSort(getTab2Category(), sItemManager::cSortParam::SORT_TYPE_ID, sItemManager::cSortParam::SORT_DIR_INC);
+    mIsForceUpdate = true;
+    setFlowId(7u);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -615,28 +615,28 @@ u32 uGUIItemBase01::evSortBest(MtObject* pCaller, MtObject* pData) {
 // Address: 0x00acae40 - 0x00acae8d (77 bytes)
 u32 uGUIItemBase01::evSortSellName(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mItemList.::nGUIItem::cItemList::execSort(this->getTab2Category(), static_cast<sItemManager::cSortParam::SORT_TYPE>(2), static_cast<sItemManager::cSortParam::SORT_DIR>(2));
-    this->::uGUIUseItemBase::mIsForceUpdate = true;
-    this->setFlowId(static_cast<u32>(7));
-    return static_cast<u32>(0);
+    mItemList.execSort(getTab2Category(), sItemManager::cSortParam::SORT_TYPE_NAME, sItemManager::cSortParam::SORT_DIR_INC);
+    mIsForceUpdate = true;
+    setFlowId(7u);
+    return 0;
 }
 
 // Address: 0x00acae90 - 0x00acaedd (77 bytes)
 u32 uGUIItemBase01::evSortMaterialPri(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mItemList.::nGUIItem::cItemList::execSort(this->getTab2Category(), static_cast<sItemManager::cSortParam::SORT_TYPE>(7), static_cast<sItemManager::cSortParam::SORT_DIR>(2));
-    this->::uGUIUseItemBase::mIsForceUpdate = true;
-    this->setFlowId(static_cast<u32>(7));
-    return static_cast<u32>(0);
+    mItemList.execSort(getTab2Category(), sItemManager::cSortParam::SORT_TYPE_MATERIAL_PRI, sItemManager::cSortParam::SORT_DIR_INC);
+    mIsForceUpdate = true;
+    setFlowId(7u);
+    return 0;
 }
 
 // Address: 0x00acaee0 - 0x00acaf2d (77 bytes)
 u32 uGUIItemBase01::evSortWeaponPri(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mItemList.::nGUIItem::cItemList::execSort(this->getTab2Category(), static_cast<sItemManager::cSortParam::SORT_TYPE>(8), static_cast<sItemManager::cSortParam::SORT_DIR>(2));
-    this->::uGUIUseItemBase::mIsForceUpdate = true;
-    this->setFlowId(static_cast<u32>(7));
-    return static_cast<u32>(0);
+    mItemList.execSort(getTab2Category(), sItemManager::cSortParam::SORT_TYPE_WEAPON_PRI, sItemManager::cSortParam::SORT_DIR_INC);
+    mIsForceUpdate = true;
+    setFlowId(7u);
+    return 0;
 }
 
 // Address: 0x00acaf30 - 0x00acb0ec (444 bytes)
@@ -654,22 +654,22 @@ __attribute__((weak)) u32 uGUIItemBase01::evSell(MtObject* pCaller, MtObject* pD
 // Address: 0x00acb0f0 - 0x00acb0ff (15 bytes)
 u32 uGUIItemBase01::evSellsFromBag(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(220);
-    return this->::uGUIItemBase01::evSell(pCaller, pData);
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    return evSell(pCaller, pData);
 }
 
 // Address: 0x00acb100 - 0x00acb10f (15 bytes)
 u32 uGUIItemBase01::evSellsFromBox(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(221);
-    return this->::uGUIItemBase01::evSell(pCaller, pData);
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    return evSell(pCaller, pData);
 }
 
 // Address: 0x00acb110 - 0x00acb11f (15 bytes)
 u32 uGUIItemBase01::evSellsFromExBox(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(17);
-    return this->::uGUIItemBase01::evSell(pCaller, pData);
+    mFromBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    return evSell(pCaller, pData);
 }
 
 // No out-of-line body: no code in the ELF
@@ -681,10 +681,10 @@ u32 uGUIItemBase01::evSellsFromExBox(MtObject* pCaller, MtObject* pData) {
 // Address: 0x00ac8030 - 0x00ac806d (61 bytes)
 u32 uGUIItemBase01::evUse(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->callbackUseItem(static_cast<MtObject*>(this), pData);
-    this->releaseGlobalItem(false);
-    this->setFlowId(static_cast<u32>(8));
-    return static_cast<u32>(0);
+    callbackUseItem(static_cast<MtObject*>(this), pData);
+    releaseGlobalItem(false);
+    setFlowId(8u);
+    return 0;
 }
 
 // Address: 0x00acb140 - 0x00acb23f (255 bytes)
@@ -695,7 +695,7 @@ __attribute__((weak)) u32 uGUIItemBase01::evDiscard(MtObject* pCaller, MtObject*
     // inferred: a temporary for the result of the call at 0xacb153, used once; no DWARF local holds it
     const MtDTI& t0 = pData->getDTI();
     // inferred: the value the loop at 0xacb161 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::nGUIItem::cItem::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = nGUIItem::cItem::DTI.mName;
     // inferred: the value the loop at 0xacb161 carries; no location-less local in scope fits
     const MtDTI* v0_0 = &t0;
     // inferred: the value the loop at 0xacb184 carries; no location-less local in scope fits
@@ -704,76 +704,76 @@ __attribute__((weak)) u32 uGUIItemBase01::evDiscard(MtObject* pCaller, MtObject*
     MT_CTSTR v1_1;
     for (;;) {
         if (v0_1 != v0_0->mName) {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 // inferred: a temporary for the result of the call at 0xacb176, used once; no DWARF local holds it
                 const MtDTI& t1 = pData->getDTI();
-                v1_1 = ::nGUIItem::cItemList::DTI.::MtDTI::mName;
+                v1_1 = nGUIItem::cItemList::DTI.mName;
                 v1_0 = &t1;
                 break;
             }
         } else {
-            this->callbackPopDiscardItemNum(static_cast<MtObject*>(this), pData);
-            if (this->::uGUIUseItemBase::mpUnitPopNumber != static_cast<uGUIPopNumber01*>(nullptr)) {
-                this->releaseGlobalItem(false);
+            callbackPopDiscardItemNum(static_cast<MtObject*>(this), pData);
+            if (mpUnitPopNumber != nullptr) {
+                releaseGlobalItem(false);
             }
-            this->setExchangeCtrl(false);
-            if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-                this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(false);
+            setExchangeCtrl(false);
+            if (mpShareUnit != nullptr) {
+                mpShareUnit->setExchangeCtrl(false);
             }
-            return static_cast<u32>(0);
+            return 0;
         }
     }
     for (;;) {
         if (v1_1 != v1_0->mName) {
-            if (v1_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v1_0->mpParent != nullptr) {
                 v1_0 = v1_0->mpParent;
             } else {
                 break;
             }
         } else {
-            if (this->callbackPopDiscardItemList(static_cast<MtObject*>(this), pData) != static_cast<u32>(0)) {
+            if (callbackPopDiscardItemList(static_cast<MtObject*>(this), pData) != 0) {
                 break;
             } else {
                 // inferred: a temporary for the value the load at 0xacb201 read, used twice; no DWARF local holds it
-                uGUIPopListDialog* t2 = this->::uGUIUseItemBase::getPopListDialog();
-                if (t2 != static_cast<uGUIPopListDialog*>(nullptr)) {
-                    t2->::uGUIPopListDialog::setText(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(40)), static_cast<MT_CTSTR>(nullptr), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<s32>(0));
+                uGUIPopListDialog* t2 = getPopListDialog();
+                if (t2 != nullptr) {
+                    t2->setText(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 40u), static_cast<MT_CTSTR>(nullptr), 0, static_cast<MT_CTSTR>(nullptr), 0);
                 }
                 break;
             }
         }
     }
-    this->setExchangeCtrl(false);
-    if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-        this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(false);
+    setExchangeCtrl(false);
+    if (mpShareUnit != nullptr) {
+        mpShareUnit->setExchangeCtrl(false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00acb240 - 0x00acb257 (23 bytes)
 u32 uGUIItemBase01::evDiscardsFromBag(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(220);
-    this->::uGUIItemBase01::evDiscard(pCaller, pData);
-    return static_cast<u32>(0);
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_BAG;
+    evDiscard(pCaller, pData);
+    return 0;
 }
 
 // Address: 0x00acb260 - 0x00acb277 (23 bytes)
 u32 uGUIItemBase01::evDiscardsFromBox(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(221);
-    this->::uGUIItemBase01::evDiscard(pCaller, pData);
-    return static_cast<u32>(0);
+    mFromBagGroup = nItem::STORAGE_TYPE_GROUP_STORAGE;
+    evDiscard(pCaller, pData);
+    return 0;
 }
 
 // Address: 0x00acb280 - 0x00acb297 (23 bytes)
 u32 uGUIItemBase01::evDiscardsFromExBox(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mFromBagGroup = static_cast<nItem::E_STORAGE_TYPE>(17);
-    this->::uGUIItemBase01::evDiscard(pCaller, pData);
-    return static_cast<u32>(0);
+    mFromBagGroup = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+    evDiscard(pCaller, pData);
+    return 0;
 }
 
 // Address: 0x00acb2a0 - 0x00acb559 (697 bytes)
@@ -791,16 +791,16 @@ u32 uGUIItemBase01::evThrow(MtObject* pCaller, MtObject* pData) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x15e from unsigned long
-    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) != static_cast<unsigned long>(0)) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(350))) == static_cast<unsigned char>(0)) {
-                this->callbackThrowItem(static_cast<MtObject*>(this), pData);
-                this->::uGUIBase::mBaseF = this->::uGUIBase::mBaseF | static_cast<u32>(4);
+    if (!static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) != 0) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 350)) == 0) {
+                callbackThrowItem(static_cast<MtObject*>(this), pData);
+                mBaseF = mBaseF | 4u;
             }
         }
     }
-    this->releaseGlobalItem(false);
-    return static_cast<u32>(0);
+    releaseGlobalItem(false);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (44 bytes)
@@ -978,48 +978,48 @@ __attribute__((weak)) u32 uGUIItemBase01::evSortMenu(MtObject* pCaller, MtObject
 // Address: 0x00acc3b0 - 0x00acc4fa (330 bytes)
 u32 uGUIItemBase01::evOnlineShop(MtObject* pCaller, MtObject* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 retType = this->callbackOnlineShopDialog(pCaller, pData);
-    if (retType != static_cast<u32>(1)) {
-        uGUISystemMsg* pUnit = this->::uGUIUseItemBase::getPopSystemMsg();
-        if (pUnit != static_cast<uGUISystemMsg*>(nullptr)) {
-            pUnit->::uGUISystemMsg::setText(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(49)), static_cast<s32>(-1));
-            pUnit->mMode = static_cast<u32>(2);
-            pUnit->::uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1)), static_cast<u32>(0), static_cast<nHuman::JOB_ENUM>(255), static_cast<s32>(-1), true);
-            pUnit->::uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<u32>(0), static_cast<nHuman::JOB_ENUM>(255), static_cast<s32>(-1), true);
-            pUnit->::uGUISystemMsg::setDefaultChoicePos(static_cast<s32>(1), static_cast<s32>(-1));
-            pUnit->::uGUISystemMsg::setCancelChoicePos(static_cast<s32>(1), static_cast<s32>(-1));
+    u32 retType = callbackOnlineShopDialog(pCaller, pData);
+    if (retType != 1) {
+        uGUISystemMsg* pUnit = getPopSystemMsg();
+        if (pUnit != nullptr) {
+            pUnit->uGUISystemMsg::setText(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 49u), -1);
+            pUnit->mMode = 2;
+            pUnit->uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u), 0u, nHuman::JOB_ID_NONE, -1, true);
+            pUnit->uGUISystemMsg::addChoiceInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), 0u, nHuman::JOB_ID_NONE, -1, true);
+            pUnit->uGUISystemMsg::setDefaultChoicePos(1, -1);
+            pUnit->uGUISystemMsg::setCancelChoicePos(1, -1);
         }
-        if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-            this->setExchangeCtrl(false);
-            this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(false);
-            this->::uGUIUseItemBase::mpShareUnit->setFlowId(static_cast<u32>(6));
+        if (mpShareUnit != nullptr) {
+            setExchangeCtrl(false);
+            mpShareUnit->setExchangeCtrl(false);
+            mpShareUnit->setFlowId(6u);
         }
-        this->setFlowId(static_cast<u32>(11));
-        return static_cast<u32>(0);
+        setFlowId(11u);
+        return 0;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00acd820 - 0x00acd83a (26 bytes)
 void uGUIItemBase01::setExchangeCtrl(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlButton == static_cast<cControl*>(nullptr)) {
+    if (mpCtrlButton == nullptr) {
         return;
     }
-    this->mpCtrlButton->setFocus(b);
+    mpCtrlButton->setFocus(b);
 }
 
 // Address: 0x00acd840 - 0x00acd848 (8 bytes)
 void uGUIItemBase01::setExeCtrl(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::mIsExeCtrl = b;
+    mIsExeCtrl = b;
 }
 
 // Address: 0x01ae0310 - 0x01ae0318 (8 bytes)
 void uGUIItemBase01::setMouseTouchCtrl(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsMouseOverPermit = b;
+    mIsMouseOverPermit = b;
 }
 
 // Address: 0x00acd780 - 0x00acd7c1 (65 bytes)
@@ -1073,15 +1073,15 @@ __attribute__((weak)) void uGUIItemBase01::setRow(s32 idx) {
 // Address: 0x00ac79a0 - 0x00ac7a11 (113 bytes)
 void uGUIItemBase01::setTitleCore(MT_CTSTR title1, MT_CTSTR title2) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mData.mpOBJ_msg_top_m_top00), title1, static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mData.mpOBJ_msg_top_m_top01), title2, static_cast<u32>(0), false);
-    if (this->mData.mpOBJ_msg_top_m_top00 == static_cast<cGUIObjMessage*>(nullptr)) {
+    setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top00), title1, 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top01), title2, 0u, false);
+    if (mData.mpOBJ_msg_top_m_top00 == nullptr) {
         return;
     }
-    if (this->mData.mpOBJ_msg_top_m_top01 == static_cast<cGUIObjMessage*>(nullptr)) {
+    if (mData.mpOBJ_msg_top_m_top01 == nullptr) {
         return;
     }
-    this->mData.mpOBJ_msg_top_m_top01->::cGUIObj2D::setPositionX(this->mData.mpOBJ_msg_top_m_top00->::cGUIObjMessage::getMessageWidth() + 20.0f);
+    mData.mpOBJ_msg_top_m_top01->setPositionX(mData.mpOBJ_msg_top_m_top00->getMessageWidth() + 20.0f);
 }
 
 // Address: 0x00ac7a20 - 0x00ac7fb1 (1425 bytes)
@@ -1121,9 +1121,9 @@ __attribute__((weak)) void uGUIItemBase01::createVlistCtrl() {
 // Address: 0x00acd7d0 - 0x00acd813 (67 bytes)
 void uGUIItemBase01::evCancelFunc(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
-    this->setFlowId(static_cast<u32>(10));
+    setInputEvent(73u);
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
+    setFlowId(10u);
 }
 
 // No out-of-line body: 4 inlined copies in 1 function (104 bytes)
@@ -1136,20 +1136,20 @@ void uGUIItemBase01::evCancelFunc(cControl::Message* msg) {
 // Address: 0x00ac8500 - 0x00ac8542 (66 bytes)
 void uGUIItemBase01::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->settingItem(true, true);
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
-    this->setFlowId(static_cast<u32>(2));
+    settingItem(true, true);
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
+    setFlowId(2u);
 }
 
 // Address: 0x00ac8550 - 0x00ac859b (75 bytes)
 void uGUIItemBase01::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsDetailVisibleFirst == false) {
-        this->mIsDetailVisibleFirst = true;
-        this->::uGUIUseItemBase::mDetailVisible = true;
+    if (!mIsDetailVisibleFirst) {
+        mIsDetailVisibleFirst = true;
+        mDetailVisible = true;
     }
-    this->settingItem(true, true);
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+    settingItem(true, true);
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00ac85a0 - 0x00ac8695 (245 bytes)
@@ -1162,65 +1162,64 @@ __attribute__((weak)) void uGUIItemBase01::updateWaitServer() {
 // Address: 0x00ac8770 - 0x00ac87a1 (49 bytes)
 void uGUIItemBase01::updateMoveItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->settingItem(true, true);
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+    settingItem(true, true);
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00ac86a0 - 0x00ac8765 (197 bytes)
 void uGUIItemBase01::updateWaitSort() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
-    this->settingItem(false, true);
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList != static_cast<sItemManager::cEquipList*>(nullptr)) {
-    } else {
-        this->::uGUIUseItemBase::mItemList.mWaitFlag = static_cast<u32>(0);
-        this->::uGUIUseItemBase::mIsForceUpdate = true;
-        if (this->::uGUIUseItemBase::mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-            this->::uGUIUseItemBase::mpDetail->::uGUIPopDetail01::reqRefresh();
+    settingItem(false, true);
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mpEquipList == nullptr) {
+        mItemList.mWaitFlag = 0;
+        mIsForceUpdate = true;
+        if (mpDetail != nullptr) {
+            mpDetail->reqRefresh();
         }
-        this->setFlowId(static_cast<u32>(2));
-        this->setExchangeCtrl(true);
-        if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-            this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(true);
-            this->::uGUIUseItemBase::mpShareUnit->execOneFrameWait();
+        setFlowId(2u);
+        setExchangeCtrl(true);
+        if (mpShareUnit != nullptr) {
+            mpShareUnit->setExchangeCtrl(true);
+            mpShareUnit->execOneFrameWait();
         }
-        this->releaseGlobalItem(false);
-        this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+        releaseGlobalItem(false);
+        mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
     }
 }
 
 // Address: 0x00ac87b0 - 0x00ac888d (221 bytes)
 void uGUIItemBase01::updateWaitPopup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIUseItemBase::updateWaitPopup();
-    if (this->::uGUIUseItemBase::isEndPopup() != false) {
-        if (this->isUpdateItemCBF() != false) {
-            this->releaseGlobalItem(false);
+    this->uGUIUseItemBase::updateWaitPopup();
+    if (isEndPopup()) {
+        if (isUpdateItemCBF()) {
+            releaseGlobalItem(false);
         } else {
-            this->settingItem(false, true);
-            this->setFlowId(static_cast<u32>(2));
-            if (this->::uGUIUseItemBase::mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-                this->::uGUIUseItemBase::mpDetail->::uGUIPopDetail01::reqRefresh();
+            settingItem(false, true);
+            setFlowId(2u);
+            if (mpDetail != nullptr) {
+                mpDetail->reqRefresh();
             } else {
-                if (this->::uGUIUseItemBase::mpShareUnit->::uGUIUseItemBase::getPopDetail() != static_cast<uGUIPopDetail01*>(nullptr)) {
-                    this->::uGUIUseItemBase::mpShareUnit->::uGUIUseItemBase::getPopDetail()->::uGUIPopDetail01::reqRefresh();
+                if (mpShareUnit->getPopDetail() != nullptr) {
+                    mpShareUnit->getPopDetail()->reqRefresh();
                 }
             }
         }
-        this->setExchangeCtrl(true);
-        if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-            this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(true);
-            this->::uGUIUseItemBase::mpShareUnit->execOneFrameWait();
+        setExchangeCtrl(true);
+        if (mpShareUnit != nullptr) {
+            mpShareUnit->setExchangeCtrl(true);
+            mpShareUnit->execOneFrameWait();
         }
     }
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00ac8890 - 0x00ac88c1 (49 bytes)
 void uGUIItemBase01::updateShareWaitPopup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->settingItem(true, true);
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+    settingItem(true, true);
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00ac88d0 - 0x00ac8984 (180 bytes)
@@ -1234,21 +1233,21 @@ __attribute__((weak)) void uGUIItemBase01::updateOnlineShop() {
 void uGUIItemBase01::updateOnlineShopWait() {
     // DWARF local not rendered: bool isExit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIUseItemBase::mpWaitPopBase != static_cast<uGUIBase*>(nullptr)) {
-        if (this->::uGUIUseItemBase::mpWaitPopBase->mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            this->setFlowId(static_cast<u32>(2));
-            this->setExchangeCtrl(true);
-            if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-                this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(true);
-                this->::uGUIUseItemBase::mpShareUnit->execOneFrameWait();
+    if (mpWaitPopBase != nullptr) {
+        if (mpWaitPopBase->mResult == RESULT_EXIT) {
+            setFlowId(2u);
+            setExchangeCtrl(true);
+            if (mpShareUnit != nullptr) {
+                mpShareUnit->setExchangeCtrl(true);
+                mpShareUnit->execOneFrameWait();
             }
         }
     } else {
-        this->setFlowId(static_cast<u32>(2));
-        this->setExchangeCtrl(true);
-        if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
-            this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(true);
-            this->::uGUIUseItemBase::mpShareUnit->execOneFrameWait();
+        setFlowId(2u);
+        setExchangeCtrl(true);
+        if (mpShareUnit != nullptr) {
+            mpShareUnit->setExchangeCtrl(true);
+            mpShareUnit->execOneFrameWait();
         }
     }
 }
@@ -1472,13 +1471,13 @@ __attribute__((weak)) u32 uGUIItemBase01::getItemDrawNum() {
 // Address: 0x01ae0370 - 0x01ae0382 (18 bytes)
 u32 uGUIItemBase01::getItemMaxDrawNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getRowNum() * static_cast<u32>(5);
+    return getRowNum() * 5u;
 }
 
 // Address: 0x00ac9cd0 - 0x00ac9cd7 (7 bytes)
 u32 uGUIItemBase01::getRowNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(this->mRow);
+    return static_cast<u32>(mRow);
 }
 
 // Defined in the class (its body was written in a header).
@@ -1499,37 +1498,37 @@ bool uGUIItemBase01::getVListChange() {
 // Address: 0x00acc500 - 0x00acc592 (146 bytes)
 u32 uGUIItemBase01::evCtrlMove(cControl::Message* msg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->mpCtrlMatrix != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-            if (msg->reason == static_cast<nGUIExt::MSG_REASON>(36)) {
+    if (msg != nullptr) {
+        if (mpCtrlMatrix != nullptr) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+            if (msg->reason == nGUIExt::MOUSE_OVER) {
                 // inferred: a temporary for the value the load at 0xacc538 read, used twice; no DWARF local holds it
                 s32 t0 = msg->mouse_hit_id;
-                this->mMatrixSelPos = t0;
-                this->mpCtrlMatrix->setCurrentPos(t0, false);
-                this->mIsMouseOver = true;
-                this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-                return static_cast<u32>(0);
+                mMatrixSelPos = t0;
+                mpCtrlMatrix->setCurrentPos(t0, false);
+                mIsMouseOver = true;
+                setInputEvent(72u);
+                return 0;
             }
-            this->mMatrixSelPos = this->mpCtrlMatrix->::cControl::getCurrentPos();
-            this->setGuideBtn();
-            this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+            mMatrixSelPos = mpCtrlMatrix->getCurrentPos();
+            setGuideBtn();
+            setInputEvent(72u);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00acc5a0 - 0x00acc5bf (31 bytes)
 u32 uGUIItemBase01::evCtrlMouseOut(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->mpCtrlMatrix != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-            if (msg->reason == static_cast<nGUIExt::MSG_REASON>(35)) {
-                this->mIsMouseOver = false;
+    if (msg != nullptr) {
+        if (mpCtrlMatrix != nullptr) {
+            if (msg->reason == nGUIExt::MOUSE_START) {
+                mIsMouseOver = false;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00acc5c0 - 0x00acc6dd (285 bytes)
@@ -1559,13 +1558,13 @@ __attribute__((weak)) u32 uGUIItemBase01::evCtrlCheckMode(cControl::Message* msg
 u32 uGUIItemBase01::evCtrlCatch(cControl::Message* msg) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<unsigned int>(msg->reason) <= static_cast<unsigned int>(42)) {
-        if (((static_cast<unsigned long>(5772436045824) >> (static_cast<unsigned long>(msg->reason) & static_cast<unsigned long>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            this->mCtrlFocus = static_cast<u32>(0);
-            this->::uGUIUseItemBase::evCtrlChangeBoxCore(msg, msg->reason);
+    if (static_cast<unsigned int>(msg->reason) <= 42) {
+        if (((0x54000000000ul >> (static_cast<unsigned long>(msg->reason) & 63)) & 1ul) != 0) {
+            mCtrlFocus = 0;
+            evCtrlChangeBoxCore(msg, msg->reason);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00acc9e0 - 0x00acca1e (62 bytes)
@@ -1577,65 +1576,65 @@ __attribute__((weak)) u32 uGUIItemBase01::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00acca20 - 0x00acca90 (112 bytes)
 u32 uGUIItemBase01::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIUseItemBase::isFocus() != false) {
-        if (this->::uGUIItemBase01::isCheckMode() != false) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (isFocus()) {
+        if (isCheckMode()) {
+            setInputEvent(70u);
         } else {
-            if (this->::uGUIUseItemBase::isCatchMode() != false) {
-                this->::uGUIItemBase01::catchCancel(true);
-                this->setFlowId(static_cast<u32>(2));
+            if (isCatchMode()) {
+                catchCancel(true);
+                setFlowId(2u);
             } else {
-                this->evCancelFunc(msg);
+                evCancelFunc(msg);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00acca90 - 0x00accb3e (174 bytes)
 u32 uGUIItemBase01::evCtrlChangeBox(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->::uGUIItemBase01::isCheckMode() != false) {
-            if (msg->reason == static_cast<nGUIExt::MSG_REASON>(8)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                return static_cast<u32>(0);
+    if (msg != nullptr) {
+        if (isCheckMode()) {
+            if (msg->reason == nGUIExt::TRG_START) {
+                setInputEvent(71u);
+                return 0;
             } else {
-                if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isGameMenuCreate(static_cast<uGUIBase*>(this)) != false) {
-                    if (this->::uGUIUseItemBase::isFocus() != false) {
-                        if (this->::uGUIUseItemBase::isCatchMode() == false) {
-                            this->setFlowId(static_cast<u32>(10));
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuCreate(static_cast<uGUIBase*>(this))) {
+                    if (isFocus()) {
+                        if (!isCatchMode()) {
+                            setFlowId(10u);
                         }
                     }
-                    return static_cast<u32>(0);
+                    return 0;
                 } else {
-                    u32 result = this->::uGUIUseItemBase::evCtrlChangeBox(msg);
-                    if (this->::uGUIUseItemBase::mFocus == false) {
-                        this->mIsMouseOver = false;
+                    u32 result = this->uGUIUseItemBase::evCtrlChangeBox(msg);
+                    if (!mFocus) {
+                        mIsMouseOver = false;
                     }
                     return result;
                 }
             }
         } else {
-            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isGameMenuCreate(static_cast<uGUIBase*>(this)) != false) {
-                if (this->::uGUIUseItemBase::isFocus() != false) {
-                    if (this->::uGUIUseItemBase::isCatchMode() == false) {
-                        this->setFlowId(static_cast<u32>(10));
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuCreate(static_cast<uGUIBase*>(this))) {
+                if (isFocus()) {
+                    if (!isCatchMode()) {
+                        setFlowId(10u);
                     }
                 }
-                return static_cast<u32>(0);
+                return 0;
             } else {
-                u32 result = this->::uGUIUseItemBase::evCtrlChangeBox(msg);
-                if (this->::uGUIUseItemBase::mFocus == false) {
-                    this->mIsMouseOver = false;
+                u32 result = this->uGUIUseItemBase::evCtrlChangeBox(msg);
+                if (!mFocus) {
+                    mIsMouseOver = false;
                 }
                 return result;
             }
         }
     } else {
-        u32 result = this->::uGUIUseItemBase::evCtrlChangeBox(static_cast<cControl::Message*>(nullptr));
-        if (this->::uGUIUseItemBase::mFocus == false) {
-            this->mIsMouseOver = false;
+        u32 result = this->uGUIUseItemBase::evCtrlChangeBox(static_cast<cControl::Message*>(nullptr));
+        if (!mFocus) {
+            mIsMouseOver = false;
         }
         return result;
     }
@@ -1644,12 +1643,12 @@ u32 uGUIItemBase01::evCtrlChangeBox(cControl::Message* msg) {
 // Address: 0x00accb40 - 0x00accb78 (56 bytes)
 u32 uGUIItemBase01::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIUseItemBase::isFocus() != false) {
-        if (this->::uGUIUseItemBase::isCatchMode() == false) {
-            this->setFlowId(static_cast<u32>(10));
+    if (isFocus()) {
+        if (!isCatchMode()) {
+            setFlowId(10u);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00accb80 - 0x00acced7 (855 bytes)
@@ -1672,10 +1671,10 @@ __attribute__((weak)) u32 uGUIItemBase01::evCtrlMoveFocusCtrl(cControl::Message*
 // Address: 0x00accee0 - 0x00accf08 (40 bytes)
 u32 uGUIItemBase01::evCtrlRelease(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIUseItemBase::isCatchMode() != false) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+    if (isCatchMode()) {
+        setInputEvent(67u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00accf10 - 0x00acd103 (499 bytes)
@@ -1713,49 +1712,51 @@ __attribute__((weak)) u32 uGUIItemBase01::evCheckModeAll(cControl::Message* msg)
 u32 uGUIItemBase01::evCtrlDrag(cControl::Message* msg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xac71dd, used once; no DWARF local holds it
-    bool t0 = this->::uGUIUseItemBase::isCatchMode();
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if ((t0 == false) != false) {
+    bool t0 = isCatchMode();
+    if (msg != nullptr) {
+        if (!t0) {
             // inferred: a temporary for the value the load at 0xac71eb read, used 3 times; no DWARF local holds it
             s32 t1 = msg->mouse_hit_id;
-            if (t1 != static_cast<s32>(-1)) {
-                this->mMatrixSelPos = t1;
-                this->mpCtrlMatrix->setCurrentPos(t1, false);
-                this->mIsMouseOver = true;
-                return this->evCtrlCatch(msg);
+            if (t1 != -1) {
+                mMatrixSelPos = t1;
+                mpCtrlMatrix->setCurrentPos(t1, false);
+                mIsMouseOver = true;
+                return evCtrlCatch(msg);
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00ac7230 - 0x00ac7290 (96 bytes)
 u32 uGUIItemBase01::evCtrlDrop(cControl::Message* msg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->::uGUIUseItemBase::isCatchMode() != false) {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
+    if (isCatchMode()) {
+        if (msg != nullptr) {
             // inferred: a temporary for the value the load at 0xac724b read, used 3 times; no DWARF local holds it
             s32 t0 = msg->mouse_hit_id;
-            if (t0 != static_cast<s32>(-1)) {
-                this->mMatrixSelPos = t0;
-                this->mpCtrlMatrix->setCurrentPos(t0, false);
-                this->mIsMouseOver = true;
-                return this->evCtrlCatch(msg);
+            if (t0 != -1) {
+                mMatrixSelPos = t0;
+                mpCtrlMatrix->setCurrentPos(t0, false);
+                mIsMouseOver = true;
+                return evCtrlCatch(msg);
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIItemBase01::MyDTI uGUIItemBase01::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIItem01.cpp at 0x00ad4113-0x00ad4153 (called at uGUIItem01.cpp:49)
@@ -1805,7 +1806,7 @@ const MtDTI& uGUIItemBase01::cGUIItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uGUIItemBase018cGUIItemD0Ev at 0x01af3500-0x01af3521, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIItemBase01::cGUIItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIItemBase01::cGUIItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIItemBase01::cGUIItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1823,6 +1824,8 @@ inline void uGUIItemBase01::cGUIItem::operator delete(void* p_addr) {
 //   in uGUIItemBase01::setup at 0x00ac6647-0x00ac6665, 0x00ac6699-0x00ac66d5 (called at uGUIItem01.cpp:250)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIItemBase01::cGUIItem::cGUIItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIItemBase01::cGUIItem::MyDTI uGUIItemBase01::cGUIItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIItem01.cpp at 0x00ad4153-0x00ad4190 (called at uGUIItem01.cpp:50)

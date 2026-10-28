@@ -153,13 +153,25 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::resetAtkAdjust at 0x8dc31c-0x8dc323; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpKeepAtkAdjust::resetActive() {
+    this->mActive = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u16 cpKeepAtkAdjust::getNowUniqueId() {
     return this->mNowUniqueId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setNowAtkAdjustUniqueId at 0x8dc43c-0x8dc443; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpKeepAtkAdjust::setNowUniqueId(u16 uniqueId) {
+    this->mNowUniqueId = uniqueId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpKeepAtkAdjust::cAtkAdjust::cAtkAdjust() {
-    this->mUniqueId = static_cast<u16>(0);
+    this->mUniqueId = 0;
     this->mMgcBowMAtkRate = 0.0f;
     this->mMgcBowHealRate = 0.0f;
     this->mShrinkRate = 0.0f;

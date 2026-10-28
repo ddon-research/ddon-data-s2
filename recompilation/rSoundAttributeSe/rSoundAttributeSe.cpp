@@ -37,7 +37,7 @@ const MtDTI& rSoundAttributeSe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundAttributeSe::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::DTI)->memAlloc(sz, align, ::rSoundAttributeSe::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundAttributeSe::DTI)->memAlloc(sz, align, rSoundAttributeSe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rSoundAttributeSe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundAttributeSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundAttributeSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,11 +72,11 @@ inline void rSoundAttributeSe::operator delete(void* p_addr) {
 // Also emitted as: _ZN17rSoundAttributeSeD0Ev at 0x006f88a0
 rSoundAttributeSe::~rSoundAttributeSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttributeSeData == static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
+    if (mpAttributeSeData == nullptr) {
         return;
     }
-    delete[] this->mpAttributeSeData;
-    this->mpAttributeSeData = static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr);
+    delete[] mpAttributeSeData;
+    mpAttributeSeData = nullptr;
 }
 
 // Address: 0x01ab3580 - 0x01ab3588 (8 bytes)
@@ -94,8 +94,8 @@ __attribute__((weak)) void rSoundAttributeSe::createProperty(MtPropertyList& s) 
 // Address: 0x006f8b10 - 0x006f8b91 (129 bytes)
 bool rSoundAttributeSe::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x006f8ba0 - 0x006f8ba3 (3 bytes)
@@ -122,7 +122,7 @@ bool rSoundAttributeSe::save(MtStream& out) {
 // Address: 0x006f8b00 - 0x006f8b04 (4 bytes)
 s32 rSoundAttributeSe::getAttributeSeDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttributeSeDataNum;
+    return mAttributeSeDataNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,14 +131,14 @@ s32 rSoundAttributeSe::getAttributeSeDataNum() {
 // Address: 0x006f8aa0 - 0x006f8ac8 (40 bytes)
 rSoundAttributeSe::cSoundAttributeSeData* rSoundAttributeSe::getAttributeSeData(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttributeSeData != static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
-        if (index > static_cast<s32>(-1)) {
-            if (index < this->mAttributeSeDataNum) {
-                return &this->mpAttributeSeData[index];
+    if (mpAttributeSeData != nullptr) {
+        if (index > -1) {
+            if (index < mAttributeSeDataNum) {
+                return &mpAttributeSeData[index];
             }
         }
     }
-    return static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x006f8bf0 - 0x006f8ed0 (736 bytes)
@@ -153,19 +153,19 @@ __attribute__((weak)) u32 rSoundAttributeSe::getAttributeSeData_reqID(s32 index,
 // Address: 0x006f8ad0 - 0x006f8af3 (35 bytes)
 void rSoundAttributeSe::setAttributeSeDataList(rSoundAttributeSe::cSoundAttributeSeData* pData, s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData == static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
+    if (pData == nullptr) {
         return;
     }
-    this->mpAttributeSeData[index].copy(pData);
+    mpAttributeSeData[index].copy(pData);
 }
 
 // Address: 0x006f8ed0 - 0x006f8efe (46 bytes)
 bool rSoundAttributeSe::getUseFindIntersect(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttributeSeData != static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
-        if (index > static_cast<s32>(-1)) {
-            if (index < this->mAttributeSeDataNum) {
-                return this->mpAttributeSeData[index].::rSoundAttributeSe::cSoundAttributeSeData::getUseFindIntersect() != false;
+    if (mpAttributeSeData != nullptr) {
+        if (index > -1) {
+            if (index < mAttributeSeDataNum) {
+                return mpAttributeSeData[index].getUseFindIntersect();
             }
         }
     }
@@ -184,28 +184,28 @@ bool rSoundAttributeSe::getUseFindIntersect(s32 index) {
 // Address: 0x006faad0 - 0x006fab02 (50 bytes)
 void rSoundAttributeSe::requestSe(rSoundRequest* pRequest, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pRequest, reqNo, thisId, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pRequest, reqNo, thisId, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x006fab10 - 0x006fab48 (56 bytes)
 void rSoundAttributeSe::requestSe(rSoundRequest* pRequest, u32 reqNo, u32 thisId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pRequest, reqNo, thisId, pos, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pRequest, reqNo, thisId, pos, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x006fab50 - 0x006fab8d (61 bytes)
 void rSoundAttributeSe::requestSe(rSoundRequest* pRequest, u32 reqNo, u32 thisId, uCoord* pCoord, s32 jointId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSe(pRequest, reqNo, thisId, pCoord, jointId, static_cast<u32>(0), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(pRequest, reqNo, thisId, pCoord, jointId, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x01ab3460 - 0x01ab354b (235 bytes)
@@ -213,6 +213,8 @@ __attribute__((weak)) void rSoundAttributeSe::createAttributeSeDataForProperty(u
     DDON_STUB("rSoundAttributeSe::createAttributeSeDataForProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundAttributeSe::MyDTI rSoundAttributeSe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundAttributeSe.cpp at 0x006fab9f-0x006fabdc (called at rSoundAttributeSe.cpp:29)
@@ -222,7 +224,7 @@ __attribute__((weak)) void rSoundAttributeSe::createAttributeSeDataForProperty(u
 // Address: 0x006f8680 - 0x006f86e4 (100 bytes)
 MtObject* rSoundAttributeSe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundAttributeSe;
+    return new (16u) rSoundAttributeSe;
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,7 +252,7 @@ const MtDTI& rSoundAttributeSe::cSoundAttributeSeData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memAlloc(sz, align, ::rSoundAttributeSe::cSoundAttributeSeData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memAlloc(sz, align, rSoundAttributeSe::cSoundAttributeSeData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (40 bytes)
@@ -265,12 +267,12 @@ inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, u
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -281,7 +283,7 @@ inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rSoundAttributeSe::cSoundAttributeSeData::cSoundAttributeSeData() {
-    ::memset(static_cast<void*>(&this->mReqType), static_cast<int>(0), static_cast<size_t>(133));
+    memset(static_cast<void*>(&mReqType), 0, 133ul);
 }
 
 // Address: 0x006f8f40 - 0x006f8f41 (1 bytes)
@@ -299,49 +301,49 @@ __attribute__((weak)) void rSoundAttributeSe::cSoundAttributeSeData::createPrope
 // Address: 0x006faa50 - 0x006faa55 (5 bytes)
 MtUI* rSoundAttributeSe::cSoundAttributeSeData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x006faa60 - 0x006faace (110 bytes)
 void rSoundAttributeSe::cSoundAttributeSeData::copy(rSoundAttributeSe::cSoundAttributeSeData* p_src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (p_src == static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
+    if (p_src == nullptr) {
         return;
     }
-    this->mReqType = p_src->mReqType;
-    this->mSeReqID_00 = p_src->mSeReqID_00;
-    this->mSeReqID_01 = p_src->mSeReqID_01;
-    this->mSeReqID_02 = p_src->mSeReqID_02;
-    this->mSeReqID_03 = p_src->mSeReqID_03;
-    this->mSeReqID_04 = p_src->mSeReqID_04;
-    this->mSeReqID_05 = p_src->mSeReqID_05;
-    this->mSeReqID_06 = p_src->mSeReqID_06;
-    this->mSeReqID_07 = p_src->mSeReqID_07;
-    this->mSeReqID_08 = p_src->mSeReqID_08;
-    this->mSeReqID_09 = p_src->mSeReqID_09;
-    this->mSeReqID_10 = p_src->mSeReqID_10;
-    this->mSeReqID_11 = p_src->mSeReqID_11;
-    this->mSeReqID_12 = p_src->mSeReqID_12;
-    this->mSeReqID_13 = p_src->mSeReqID_13;
-    this->mSeReqID_14 = p_src->mSeReqID_14;
-    this->mSeReqID_15 = p_src->mSeReqID_15;
-    this->mSeReqID_16 = p_src->mSeReqID_16;
-    this->mSeReqID_17 = p_src->mSeReqID_17;
-    this->mSeReqID_18 = p_src->mSeReqID_18;
-    this->mSeReqID_19 = p_src->mSeReqID_19;
-    this->mSeReqID_20 = p_src->mSeReqID_20;
-    this->mSeReqID_21 = p_src->mSeReqID_21;
-    this->mSeReqID_22 = p_src->mSeReqID_22;
-    this->mSeReqID_23 = p_src->mSeReqID_23;
-    this->mSeReqID_24 = p_src->mSeReqID_24;
-    this->mSeReqID_25 = p_src->mSeReqID_25;
-    this->mSeReqID_26 = p_src->mSeReqID_26;
-    this->mSeReqID_27 = p_src->mSeReqID_27;
-    this->mSeReqID_28 = p_src->mSeReqID_28;
-    this->mSeReqID_29 = p_src->mSeReqID_29;
-    this->mSeReqID_30 = p_src->mSeReqID_30;
-    this->mSeReqID_31 = p_src->mSeReqID_31;
-    this->mUseFindIntersect = p_src->mUseFindIntersect;
+    mReqType = p_src->mReqType;
+    mSeReqID_00 = p_src->mSeReqID_00;
+    mSeReqID_01 = p_src->mSeReqID_01;
+    mSeReqID_02 = p_src->mSeReqID_02;
+    mSeReqID_03 = p_src->mSeReqID_03;
+    mSeReqID_04 = p_src->mSeReqID_04;
+    mSeReqID_05 = p_src->mSeReqID_05;
+    mSeReqID_06 = p_src->mSeReqID_06;
+    mSeReqID_07 = p_src->mSeReqID_07;
+    mSeReqID_08 = p_src->mSeReqID_08;
+    mSeReqID_09 = p_src->mSeReqID_09;
+    mSeReqID_10 = p_src->mSeReqID_10;
+    mSeReqID_11 = p_src->mSeReqID_11;
+    mSeReqID_12 = p_src->mSeReqID_12;
+    mSeReqID_13 = p_src->mSeReqID_13;
+    mSeReqID_14 = p_src->mSeReqID_14;
+    mSeReqID_15 = p_src->mSeReqID_15;
+    mSeReqID_16 = p_src->mSeReqID_16;
+    mSeReqID_17 = p_src->mSeReqID_17;
+    mSeReqID_18 = p_src->mSeReqID_18;
+    mSeReqID_19 = p_src->mSeReqID_19;
+    mSeReqID_20 = p_src->mSeReqID_20;
+    mSeReqID_21 = p_src->mSeReqID_21;
+    mSeReqID_22 = p_src->mSeReqID_22;
+    mSeReqID_23 = p_src->mSeReqID_23;
+    mSeReqID_24 = p_src->mSeReqID_24;
+    mSeReqID_25 = p_src->mSeReqID_25;
+    mSeReqID_26 = p_src->mSeReqID_26;
+    mSeReqID_27 = p_src->mSeReqID_27;
+    mSeReqID_28 = p_src->mSeReqID_28;
+    mSeReqID_29 = p_src->mSeReqID_29;
+    mSeReqID_30 = p_src->mSeReqID_30;
+    mSeReqID_31 = p_src->mSeReqID_31;
+    mUseFindIntersect = p_src->mUseFindIntersect;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (581 bytes)
@@ -356,6 +358,8 @@ void rSoundAttributeSe::cSoundAttributeSeData::copy(rSoundAttributeSe::cSoundAtt
 //   in uSoundMotionSe::requestAttributeSe at 0x00d2176f-0x00d21779 (called at uSoundMotionSe.cpp:717)
 // u32 rSoundAttributeSe::cSoundAttributeSeData::getReqType();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundAttributeSe::cSoundAttributeSeData::MyDTI rSoundAttributeSe::cSoundAttributeSeData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundAttributeSe.cpp at 0x006fabdc-0x006fac19 (called at rSoundAttributeSe.cpp:30)
 //   in _GLOBAL__sub_I_rSoundAttributeSe.cpp at 0x006fabdc-0x006fac19 (called at rSoundAttributeSe.h:89)
@@ -364,6 +368,6 @@ void rSoundAttributeSe::cSoundAttributeSeData::copy(rSoundAttributeSe::cSoundAtt
 // Address: 0x006f8760 - 0x006f87b6 (86 bytes)
 MtObject* rSoundAttributeSe::cSoundAttributeSeData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundAttributeSe::cSoundAttributeSeData;
+    return new (16u) rSoundAttributeSe::cSoundAttributeSeData;
 }
 

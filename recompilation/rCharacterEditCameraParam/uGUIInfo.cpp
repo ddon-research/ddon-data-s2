@@ -6,6 +6,8 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
@@ -32,7 +34,7 @@ const MtDTI& uGUIInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +43,7 @@ inline MtAllocator* uGUIInfo::getAllocator() {
 // Address: 0x00ac0ec0 - 0x00ac0f00 (64 bytes)
 void* uGUIInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIInfo::getAllocator()->memAlloc(sz, align, ::uGUIInfo::DTI.::MtDTI::getID());
+    return uGUIInfo::getAllocator()->memAlloc(sz, align, uGUIInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +58,7 @@ void* uGUIInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,15 +83,15 @@ uGUIInfo::~uGUIInfo() {
 // Address: 0x00ac15e0 - 0x00ac15e5 (5 bytes)
 void uGUIInfo::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00ac15f0 - 0x00ac1658 (104 bytes)
 bool uGUIInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_INFO_GUI"), static_cast<u32>(129), static_cast<t64>(1425031023)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_INFO_GUI"), 129u, 1425031023l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -112,13 +114,13 @@ __attribute__((weak)) void uGUIInfo::setup() {
 // Address: 0x00ac1660 - 0x00ac1665 (5 bytes)
 void uGUIInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00ac1670 - 0x00ac1675 (5 bytes)
 void uGUIInfo::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (18 bytes)
@@ -186,10 +188,10 @@ __attribute__((weak)) void uGUIInfo::beginAnnounce(u32 flag, MT_CTSTR msg, MT_CT
 bool uGUIInfo::isEnableAnnounce() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mFlowId != static_cast<u32>(0)) {
-        if (this->mFlowId == static_cast<u32>(1)) {
-            if (this->mSubFlowId != static_cast<u32>(0)) {
-                if (this->mSubFlowId != static_cast<u32>(3)) {
+    if (mFlowId != 0) {
+        if (mFlowId == 1) {
+            if (mSubFlowId != 0) {
+                if (mSubFlowId != 3) {
                     return false;
                 }
             }
@@ -234,18 +236,18 @@ __attribute__((weak)) void uGUIInfo::setFlowId(u32 flow_id) {
 // Address: 0x00ac3390 - 0x00ac33e8 (88 bytes)
 void uGUIInfo::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(3)) {
-        this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-        if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpButtonCtrl->execute();
+    if (mFlowId == 3) {
+        mList.mListCtrl.executeCtrl();
+        if (mpButtonCtrl != nullptr) {
+            mpButtonCtrl->execute();
         }
-        if (this->mpMouseCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpMouseCtrl->execute();
+        if (mpMouseCtrl != nullptr) {
+            mpMouseCtrl->execute();
         }
     } else {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            if (this->mpMouseCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpMouseCtrl->execute();
+        if (mFlowId == 2) {
+            if (mpMouseCtrl != nullptr) {
+                mpMouseCtrl->execute();
             }
         }
     }
@@ -254,67 +256,67 @@ void uGUIInfo::moveInput() {
 // Address: 0x00ac33f0 - 0x00ac34f0 (256 bytes)
 void uGUIInfo::moveEvent() {
     // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
-    this->mInfoResult = static_cast<u32>(0);
-    const u32 input_event = this->::uGUIBase::getInputEvent();
+    mInfoResult = 0;
+    const u32 input_event = getInputEvent();
     // inferred: an ordered temporary, read before a later effect: the value read at 0xac3418, held ahead of the effects the ELF orders after it
-    bool t0 = this->mList.mListCtrl.::uGUIBase::cScrollList::moveEvent();
-    if (t0 != false) {
+    bool t0 = mList.mListCtrl.moveEvent();
+    if (t0) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xac3421, held ahead of the effects the ELF orders after it
-        u32 t2 = this->mFlowId;
-        if (t2 == static_cast<u32>(3)) {
-            this->mList.mListCtrl.::uGUIBase::cScrollList::setListPos(false);
+        u32 t2 = mFlowId;
+        if (t2 == 3) {
+            mList.mListCtrl.setListPos(false);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xac3437, held ahead of the effects the ELF orders after it
-            u32 t4 = this->mList.mListCtrl.::uGUIBase::cScrollList::getInputEvent();
-            if (t4 == static_cast<u32>(14)) {
+            u32 t4 = mList.mListCtrl.getInputEvent();
+            if (t4 == 14) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xac3445, held ahead of the effects the ELF orders after it
-                u32 t6 = this->mFlowId;
-                if (t6 == static_cast<u32>(3)) {
-                    this->mInfoResult = static_cast<u32>(1);
+                u32 t6 = mFlowId;
+                if (t6 == 3) {
+                    mInfoResult = 1;
                 }
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xac3437, held ahead of the effects the ELF orders after it
-            u32 t4 = this->mList.mListCtrl.::uGUIBase::cScrollList::getInputEvent();
-            if (t4 == static_cast<u32>(14)) {
+            u32 t4 = mList.mListCtrl.getInputEvent();
+            if (t4 == 14) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xac3445, held ahead of the effects the ELF orders after it
-                u32 t6 = this->mFlowId;
-                if (t6 == static_cast<u32>(3)) {
-                    this->mInfoResult = static_cast<u32>(1);
+                u32 t6 = mFlowId;
+                if (t6 == 3) {
+                    mInfoResult = 1;
                 }
             }
         }
     } else {
-        if (input_event != static_cast<u32>(68)) {
-            if (input_event == static_cast<u32>(67)) {
+        if (input_event != 68) {
+            if (input_event == 67) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xac346d, held ahead of the effects the ELF orders after it
-                u32 t7 = this->mFlowId;
-                if (t7 == static_cast<u32>(3)) {
-                    this->mInfoResult = static_cast<u32>(2);
+                u32 t7 = mFlowId;
+                if (t7 == 3) {
+                    mInfoResult = 2;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xac3487, held ahead of the effects the ELF orders after it
-                    sQuestManagerExt* t8 = ::sQuestManagerExt::getInstance();
-                    t8->::sQuestManagerExt::offEndDistributionQuestCnacel();
+                    sQuestManagerExt* t8 = sQuestManagerExt::getInstance();
+                    t8->offEndDistributionQuestCnacel();
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xac3496, held ahead of the effects the ELF orders after it
-                    sGUI* t10 = ::sGUI::getInstance();
-                    static_cast<sGUIExt*>(t10)->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+                    sGUI* t10 = sGUI::getInstance();
+                    static_cast<sGUIExt*>(t10)->requestSE(0u, 5u);
                 } else {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xac3496, held ahead of the effects the ELF orders after it
-                    sGUI* t10 = ::sGUI::getInstance();
-                    static_cast<sGUIExt*>(t10)->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+                    sGUI* t10 = sGUI::getInstance();
+                    static_cast<sGUIExt*>(t10)->requestSE(0u, 5u);
                 }
             } else {
-                if (input_event == static_cast<u32>(66)) {
+                if (input_event == 66) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xac34d2, held ahead of the effects the ELF orders after it
-                    u32 t12 = this->mFlowId;
-                    if (t12 == static_cast<u32>(3)) {
-                        this->mInfoResult = static_cast<u32>(1);
+                    u32 t12 = mFlowId;
+                    if (t12 == 3) {
+                        mInfoResult = 1;
                     }
                 }
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xac34af, held ahead of the effects the ELF orders after it
-            u32 t11 = this->mFlowId;
-            if (t11 == static_cast<u32>(3)) {
-                this->mList.mListCtrl.::uGUIBase::cScrollList::setListPos(false);
+            u32 t11 = mFlowId;
+            if (t11 == 3) {
+                mList.mListCtrl.setListPos(false);
             }
         }
     }
@@ -392,18 +394,39 @@ __attribute__((weak)) void uGUIInfo::initList() {
 // void uGUIInfo::adjustListCursor();
 
 // Address: 0x00ac2010 - 0x00ac208f (127 bytes)
-__attribute__((weak)) void uGUIInfo::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    // local: cListItem* pItem;
-    // local: cListInfo* pInfo;
-    DDON_STUB("uGUIInfo::setupListItem")
-    /* stub */
+void uGUIInfo::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    if (pInfoBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setInstanceVisible(static_cast<cGUIInstance*>(pItem->mpInstNull), true);
+    if (pItem->mpInstNull != nullptr) {
+        pItem->mpInstNull->cGUIInstNull::setPositionY(mList.mListBasePos + static_cast<float>(index * mList.mListDist));
+        // inferred: a downcast named by the DWARF local the source declared: pInfo, its location optimized out, declared in the lexical block that holds the access
+        cListInfo* pInfo = static_cast<cListInfo*>(pInfoBase);
+        setupListMessage(pItem->mpObjMsg, pInfo->mFlag, pInfo->mID);
+    } else {
+        // inferred: a downcast named by the DWARF local the source declared: pInfo, its location optimized out, declared in the lexical block that holds the access
+        cListInfo* pInfo = static_cast<cListInfo*>(pInfoBase);
+        setupListMessage(pItem->mpObjMsg, pInfo->mFlag, pInfo->mID);
+    }
 }
 
 // Address: 0x00ac2090 - 0x00ac20d1 (65 bytes)
-__attribute__((weak)) void uGUIInfo::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUIInfo::hideListItem")
-    /* stub */
+void uGUIInfo::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setInstanceVisible(static_cast<cGUIInstance*>(pItem->mpInstNull), false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsg), "", 0u, false);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (87 bytes)
@@ -441,15 +464,15 @@ __attribute__((weak)) void uGUIInfo::hideListItem(uGUIBase::cScrollListItemBase*
 // Address: 0x01af26c0 - 0x01af26d2 (18 bytes)
 u32 uGUIInfo::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x01af26e0 - 0x01af26f2 (18 bytes)
 u32 uGUIInfo::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -458,24 +481,24 @@ u32 uGUIInfo::evCtrlCancel(cControl::Message* msg) {
 // Address: 0x00ac20e0 - 0x00ac212a (74 bytes)
 u32 uGUIInfo::evCtrlMouse(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(3)) {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            if (msg->mouse_hit_id == static_cast<s32>(1)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+    if (mFlowId == 3) {
+        if (msg != nullptr) {
+            if (msg->mouse_hit_id == 1) {
+                setInputEvent(67u);
             }
         }
     } else {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                if (msg->mouse_hit_id == static_cast<s32>(0)) {
-                    if (this->mList.mListCtrl.mInfoArray.::MtArray::mLength != static_cast<u32>(0)) {
-                        this->mIsTouchSingle = true;
+        if (mFlowId == 2) {
+            if (msg != nullptr) {
+                if (msg->mouse_hit_id == 0) {
+                    if (mList.mListCtrl.mInfoArray.mLength != 0) {
+                        mIsTouchSingle = true;
                     }
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 32 inlined copies in 1 function (889 bytes)
@@ -484,6 +507,8 @@ u32 uGUIInfo::evCtrlMouse(cControl::Message* msg) {
 //   in uGUIInfo::setupListMessage at 0x00ac3c32-0x00ac3c4d (called at uGUIInfo.cpp:1012)
 //   and 29 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIInfo::getInfoMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIInfo::MyDTI uGUIInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIInfo.cpp at 0x00ac427f-0x00ac42bc (called at uGUIInfo.cpp:41)
@@ -538,7 +563,7 @@ const MtDTI& uGUIInfo::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8uGUIInfo9cListItemD0Ev at 0x01af2ef0-0x01af2f1a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIInfo::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIInfo::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIInfo::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -556,6 +581,8 @@ inline void uGUIInfo::cListItem::operator delete(void* p_addr) {
 //   in uGUIInfo::cListItem::MyDTI::newInstance at 0x00ac0f9d-0x00ac1026 (called at uGUIInfo.cpp:42)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // uGUIInfo::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIInfo::cListItem::MyDTI uGUIInfo::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIInfo.cpp at 0x00ac42bc-0x00ac42f9 (called at uGUIInfo.cpp:42)
@@ -610,7 +637,7 @@ const MtDTI& uGUIInfo::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8uGUIInfo9cListInfoD0Ev at 0x01af2eb0-0x01af2eda, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIInfo::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIInfo::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIInfo::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -628,6 +655,8 @@ inline void uGUIInfo::cListInfo::operator delete(void* p_addr) {
 //   in uGUIInfo::stList::stList at 0x01af2cfc-0x01af2d6a (called at uGUIInfo.h:110)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIInfo::cListInfo::cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIInfo::cListInfo::MyDTI uGUIInfo::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIInfo.cpp at 0x00ac42f9-0x00ac4336 (called at uGUIInfo.cpp:43)

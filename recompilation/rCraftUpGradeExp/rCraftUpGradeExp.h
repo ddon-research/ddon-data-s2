@@ -102,7 +102,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCraftUpGradeExpData::cCraftUpGradeExpData() {
-    this->mExpMax = static_cast<u64>(0);
+    this->mExpMax = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

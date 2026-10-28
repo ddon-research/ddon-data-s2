@@ -36,7 +36,7 @@ const MtDTI& cZoneListenerLight::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cZoneListenerLight::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cZoneListenerLight::DTI)->memAlloc(sz, align, ::cZoneListenerLight::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cZoneListenerLight::DTI)->memAlloc(sz, align, cZoneListenerLight::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* cZoneListenerLight::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneListenerLight::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListenerLight::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListenerLight::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,12 +66,12 @@ inline void cZoneListenerLight::operator delete(void* p_addr) {
 // Address: 0x005956e0 - 0x00595752 (114 bytes)
 cZoneListenerLight::cZoneListenerLight() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCheckPos.x = ::MtVector3::Zero.x;
-    this->mCheckPos.y = ::MtVector3::Zero.y;
-    this->mCheckPos.z = ::MtVector3::Zero.z;
-    this->mCheckPos.pad_ = 0.0f;
-    this->mDayNightLighId = static_cast<s32>(-1);
-    this->mDayNightColorFogId = static_cast<s32>(-1);
+    mCheckPos.x = MtVector3::Zero.x;
+    mCheckPos.y = MtVector3::Zero.y;
+    mCheckPos.z = MtVector3::Zero.z;
+    mCheckPos.pad_ = 0.0f;
+    mDayNightLighId = -1;
+    mDayNightColorFogId = -1;
 }
 
 // Address: 0x00595770 - 0x00595775 (5 bytes)
@@ -97,8 +97,8 @@ __attribute__((weak)) void cZoneListenerLight::notified(const nZone::cLayoutElem
 // Address: 0x005957b0 - 0x005957b9 (9 bytes)
 void cZoneListenerLight::resetHitParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDayNightLighId = static_cast<s32>(-1);
-    this->mDayNightColorFogId = static_cast<s32>(-1);
+    mDayNightLighId = -1;
+    mDayNightColorFogId = -1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,13 +107,13 @@ void cZoneListenerLight::resetHitParam() {
 // Address: 0x00595ac0 - 0x00595ad6 (22 bytes)
 s32 cZoneListenerLight::getHitZoneID(u32 type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type == static_cast<u32>(2)) {
-        return this->mDayNightColorFogId;
+    if (type == 2) {
+        return mDayNightColorFogId;
     } else {
-        if (type == static_cast<u32>(1)) {
-            return this->mDayNightLighId;
+        if (type == 1) {
+            return mDayNightLighId;
         } else {
-            return static_cast<s32>(0);
+            return 0;
         }
     }
 }
@@ -140,6 +140,8 @@ __attribute__((weak)) MtVector3 cZoneListenerLight::myPos() {
 //   in cZoneListenerLight::cZoneListenerLight at 0x00595718-0x0059574b (called at cZoneListenerLight.cpp:42)
 // void cZoneListenerLight::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneListenerLight::MyDTI cZoneListenerLight::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerLight.cpp at 0x00595bef-0x00595c2c (called at cZoneListenerLight.cpp:31)
 //   in _GLOBAL__sub_I_cZoneListenerLight.cpp at 0x00595bef-0x00595c2c (called at cZoneListenerLight.h:31)
@@ -148,6 +150,6 @@ __attribute__((weak)) MtVector3 cZoneListenerLight::myPos() {
 // Address: 0x005955d0 - 0x0059566d (157 bytes)
 MtObject* cZoneListenerLight::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cZoneListenerLight;
+    return new (16u) cZoneListenerLight;
 }
 

@@ -53,7 +53,7 @@ const MtDTI& sResource::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9sResourceD0Ev at 0x0126b2fe-0x0126b31f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,11 +94,11 @@ void sResource::reset() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a counter counted down; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(64);
+    unsigned int i3 = 64;
     do {
-        this->setup();
-        i3 += static_cast<unsigned int>(4294967295);
-    } while (i3 != static_cast<unsigned int>(0));
+        setup();
+        i3 += 0xFFFFFFFFu;
+    } while (i3 != 0);
 }
 
 // Address: 0x0126b550 - 0x0126b551 (1 bytes)
@@ -321,34 +321,31 @@ __attribute__((weak)) void sResource::setRootDirectory(MT_CTSTR root_directory) 
 bool sResource::isLoading() {
     // DWARF local not rendered: bool loading;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
         // inferred: a temporary for the result of the call at 0x126b370, used twice; no DWARF local holds it
-        int t0 = ::scePthreadMutexLock(&this->::cSystem::mCS.mCSection);
-        if (t0 == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        int t0 = scePthreadMutexLock(&mCS.mCSection);
+        if (t0 != 0) {
+            abort();
         }
-        if (this->mLoadingInfo.active == false) {
+        if (!mLoadingInfo.active) {
             // inferred: a temporary for the value the load at 0x126b385 read, used once; no DWARF local holds it
-            u32 t1 = this->mLoadNum;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            u32 t1 = mLoadNum;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x126b39f, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
-                return t1 != static_cast<u32>(0);
+                return t1 != 0;
             } else {
-                return t1 != static_cast<u32>(0);
+                return t1 != 0;
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x126b39f, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
                 return true;
             } else {
@@ -356,27 +353,25 @@ bool sResource::isLoading() {
             }
         }
     } else {
-        if (this->mLoadingInfo.active == false) {
+        if (!mLoadingInfo.active) {
             // inferred: a temporary for the value the load at 0x126b385 read, used once; no DWARF local holds it
-            u32 t1 = this->mLoadNum;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            u32 t1 = mLoadNum;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x126b39f, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
-                return t1 != static_cast<u32>(0);
+                return t1 != 0;
             } else {
-                return t1 != static_cast<u32>(0);
+                return t1 != 0;
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x126b39f, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
                 return true;
             } else {
@@ -473,7 +468,7 @@ bool sResource::isLoading() {
 // Address: 0x0126b540 - 0x0126b545 (5 bytes)
 MtUI* sResource::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0126dfb0 - 0x0126e3f6 (1094 bytes)
@@ -533,19 +528,17 @@ __attribute__((weak)) void* sResource::loaderHandler(void* pArg) {
 // Address: 0x0126b3c0 - 0x0126b41a (90 bytes)
 void sResource::addRef(cResource* pr) {
     // Approximate from the ELF: a load named after a store only its type keeps apart; a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    pr->mRefCount = pr->mRefCount + static_cast<s32>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    pr->mRefCount = pr->mRefCount + 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -672,6 +665,11 @@ __attribute__((weak)) void* sResource::decodeProc(void* context) {
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // void sResource::setForceBackGround(const bool b);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sResource::MyDTI sResource::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sResource* sResource::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -713,7 +711,7 @@ const MtDTI& sResource::TypeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sResource::TypeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sResource::TypeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sResource::TypeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -762,28 +760,28 @@ sResource::TypeInfo::~TypeInfo() {
 // MT_CTSTR sResource::TypeInfo::getExt() const;
 
 // Address: 0x01ba6cf0 - 0x01ba6cf9 (9 bytes)
-__attribute__((weak)) MT_CTSTR sResource::TypeInfo::getName() const {
-    DDON_STUB("sResource::TypeInfo::getName")
-    return {};
+MT_CTSTR sResource::TypeInfo::getName() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mpDTI->mName;
 }
 
 // Address: 0x01ba6d10 - 0x01ba6d1d (13 bytes)
-__attribute__((weak)) MT_CTSTR sResource::TypeInfo::getSuper() const {
-    DDON_STUB("sResource::TypeInfo::getSuper")
-    return {};
+MT_CTSTR sResource::TypeInfo::getSuper() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mpDTI->mpParent->mName;
 }
 
 // Address: 0x01ba6d30 - 0x01ba6d40 (16 bytes)
 u32 sResource::TypeInfo::getSize() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x30 from const MtDTI*
-    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this->mpDTI) + static_cast<long>(48))) * static_cast<unsigned int>(4)) & static_cast<unsigned int>(33554428);
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(mpDTI) + 48)) * 4u) & 0x1FFFFFCu;
 }
 
 // Address: 0x01269a70 - 0x01269a75 (5 bytes)
 MtUI* sResource::TypeInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01269a80 - 0x01269dbf (831 bytes)
@@ -809,6 +807,8 @@ __attribute__((weak)) void sResource::TypeInfo::setName(MT_CTSTR) {
 __attribute__((weak)) void sResource::TypeInfo::setSuper(MT_CTSTR) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sResource::TypeInfo::MyDTI sResource::TypeInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sResource::TypeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -859,8 +859,11 @@ const MtDTI& sResource::RemoteInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sResource::RemoteInfo::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* sResource::RemoteInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: operator new from _ZNK9sResource10RemoteInfo5MyDTI11newInstanceEv at 0x01269130-0x0126915d, code DWARF attributes to no inlined copy; sz is the class's size (216), align the allocation's other whole constant (16); approximate: only approximate callers check this inline body
+inline void* sResource::RemoteInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sResource::RemoteInfo::DTI)->memAlloc(sz, align, sResource::RemoteInfo::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* sResource::RemoteInfo::operator new[](size_t sz, u32 align);
@@ -873,7 +876,7 @@ const MtDTI& sResource::RemoteInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sResource::RemoteInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sResource::RemoteInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sResource::RemoteInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -885,8 +888,27 @@ inline void sResource::RemoteInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void sResource::RemoteInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// sResource::RemoteInfo::RemoteInfo();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK9sResource10RemoteInfo5MyDTI11newInstanceEv at 0x01269160-0x012691c0, code DWARF attributes to no inlined copy; approximate: only approximate callers check this inline body
+inline sResource::RemoteInfo::RemoteInfo() {
+    mEnable = false;
+    mConfigName[0] = 'r';
+    mConfigName[1] = 'e';
+    mConfigName[2] = 'm';
+    mConfigName[3] = 'o';
+    mConfigName[4] = 't';
+    mConfigName[5] = 'e';
+    mConfigName[6] = '.';
+    mConfigName[7] = 'x';
+    mConfigName[10] = '\0';
+    mConfigName[8] = 'm';
+    mConfigName[9] = 'l';
+    mPCName[0] = 0;
+    mFolderName[0] = 0;
+    mConfigNameLen = static_cast<unsigned int>(strlen(&mConfigName[0]));
+    mPCNameLen = 0;
+    mFolderNameLen = 0;
+}
 
 // Defined in the class (its body was written in a header).
 // sResource::RemoteInfo::~RemoteInfo();
@@ -906,29 +928,29 @@ __attribute__((weak)) void sResource::RemoteInfo::createProperty(MtPropertyList&
 // Address: 0x01ba6c20 - 0x01ba6c25 (5 bytes)
 MT_CTSTR sResource::RemoteInfo::getPCName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mPCName[0];
+    return &mPCName[0];
 }
 
 // Address: 0x01ba6c30 - 0x01ba6c71 (65 bytes)
 void sResource::RemoteInfo::setPCName(MT_CTSTR pc_name) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::snprintf(&this->mPCName[0], static_cast<size_t>(64), "%s", pc_name);
-    this->mPCName[63] = static_cast<char>(0);
-    this->mPCNameLen = static_cast<unsigned int>(::strlen(&this->mPCName[0]));
+    snprintf(&mPCName[0], 64ul, "%s", pc_name);
+    mPCName[63] = '\0';
+    mPCNameLen = static_cast<unsigned int>(strlen(&mPCName[0]));
 }
 
 // Address: 0x01ba6c80 - 0x01ba6c88 (8 bytes)
 MT_CTSTR sResource::RemoteInfo::getFolderName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mFolderName[0];
+    return &mFolderName[0];
 }
 
 // Address: 0x01ba6c90 - 0x01ba6cd4 (68 bytes)
 void sResource::RemoteInfo::setFolderName(MT_CTSTR folder_name) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::snprintf(&this->mFolderName[0], static_cast<size_t>(64), "%s", folder_name);
-    this->mFolderName[63] = static_cast<char>(0);
-    this->mFolderNameLen = static_cast<unsigned int>(::strlen(&this->mFolderName[0]));
+    snprintf(&mFolderName[0], 64ul, "%s", folder_name);
+    mFolderName[63] = '\0';
+    mFolderNameLen = static_cast<unsigned int>(strlen(&mFolderName[0]));
 }
 
 // No out-of-line body: no code in the ELF
@@ -946,13 +968,15 @@ void sResource::RemoteInfo::setFolderName(MT_CTSTR folder_name) {
 // No out-of-line body: no code in the ELF
 // u32 sResource::RemoteInfo::getFolderNameLen() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sResource::RemoteInfo::MyDTI sResource::RemoteInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sResource::RemoteInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01269130 - 0x012691c0 (144 bytes)
-__attribute__((weak)) MtObject* sResource::RemoteInfo::MyDTI::newInstance() const {
-    DDON_STUB("sResource::RemoteInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sResource::RemoteInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
+    return new (16u) sResource::RemoteInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1000,7 +1024,7 @@ const MtDTI& sResource::DecompressStream::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9sResource16DecompressStreamD0Ev at 0x012693e0-0x01269401, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sResource::DecompressStream::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sResource::DecompressStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sResource::DecompressStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1044,14 +1068,16 @@ __attribute__((weak)) u32 sResource::DecompressStream::read(void* pbuf, u32 bufs
 // Address: 0x01ba6e50 - 0x01ba6e54 (4 bytes)
 u32 sResource::DecompressStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCurOut;
+    return mCurOut;
 }
 
 // Address: 0x01ba6e60 - 0x01ba6e68 (8 bytes)
 u32 sResource::DecompressStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResourceWork->orgsize;
+    return mpResourceWork->orgsize;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sResource::DecompressStream::MyDTI sResource::DecompressStream::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sResource::DecompressStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -58,7 +58,7 @@ const MtDTI& uControl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,26 +134,26 @@ __attribute__((weak)) uControl* uControl::createControl(u8 ctrlType, u32 gitk, u
 void uControl::sendMasterParam() {
     // DWARF local not rendered: cContextInterface& context;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsCommunicate == false) {
+    if (!mIsCommunicate) {
         return;
     }
-    if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) == false) {
+    if (!cContextInterface::getMasterChangeFlag(mContextInterface.mpContextInstance)) {
         return;
     }
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable()) {
-        if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
+    if (mpModel->isEnable()) {
+        if (cContextInterface::getMasterChangeFlag(mContextInterface.mpContextInstance)) {
             // inferred: a temporary for the value the load at 0x8c7b41 read, used once; no DWARF local holds it
-            sGame* t0 = ::sGame::getInstance();
-            if (t0->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance)) != false) {
-                this->mpNetRpc->sendNetAction(static_cast<nNetMsgData::nCtrl::NET_MSG_ID>(53), static_cast<nNetMsg::MSG_PRIO>(16), static_cast<nNetMsg::MSG_ADR>(2), static_cast<u32>(0));
+            sGame* t0 = sGame::getInstance();
+            if (t0->isMySelfPartyMemberIndex(cContextInterface::getMasterIndex(mContextInterface.mpContextInstance))) {
+                mpNetRpc->sendNetAction(nNetMsgData::nCtrl::NET_MSG_ID_MASTER_PARAM, nNetMsg::MSG_PRIO_MAX, nNetMsg::MSG_ADR_OTHER, 0u);
             }
         } else {
-            if (this->::uControl::getObjModel() != static_cast<uDDOModel*>(nullptr)) {
-                if (this->::uControl::getObjModel()->::uDDOModel::isMaster() != false) {
-                    this->mpNetRpc->sendNetAction(static_cast<nNetMsgData::nCtrl::NET_MSG_ID>(53), static_cast<nNetMsg::MSG_PRIO>(16), static_cast<nNetMsg::MSG_ADR>(2), static_cast<u32>(0));
+            if (getObjModel() != nullptr) {
+                if (getObjModel()->isMaster()) {
+                    mpNetRpc->sendNetAction(nNetMsgData::nCtrl::NET_MSG_ID_MASTER_PARAM, nNetMsg::MSG_PRIO_MAX, nNetMsg::MSG_ADR_OTHER, 0u);
                 }
             }
         }
@@ -178,79 +178,79 @@ __attribute__((weak)) void uControl::setup() {
 void uControl::move() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 2 goto statements as its last resort
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable()) {
-            if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
+    if (mpModel != nullptr) {
+        if (mpModel->isEnable()) {
+            if (cContextInterface::getMasterChangeFlag(mContextInterface.mpContextInstance)) {
                 // inferred: a temporary for the result of the call at 0x8c881b, used once; no DWARF local holds it
-                bool t0 = this->mpModel->::uDDOModel::isMaster();
+                bool t0 = mpModel->isMaster();
                 // inferred: a temporary for the value the load at 0x8c882a read, used once; no DWARF local holds it
-                sGame* t1 = ::sGame::getInstance();
+                sGame* t1 = sGame::getInstance();
                 // inferred: a temporary for the result of the call at 0x8c883e, used once; no DWARF local holds it
-                bool t2 = t1->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance));
-                if (t0 != false) {
-                    if (t2 == false) {
-                        this->mpModel->setMaster(false);
+                bool t2 = t1->isMySelfPartyMemberIndex(cContextInterface::getMasterIndex(mContextInterface.mpContextInstance));
+                if (t0) {
+                    if (!t2) {
+                        mpModel->setMaster(false);
                     }
                 } else {
-                    if (t2 != false) {
-                        this->mpModel->setMaster(true);
-                        this->mIsSaveSendAct = false;
-                        this->mSendActIntervalTimer = 0.0f;
-                        this->mBossCondSendInterval = 0.0f;
+                    if (t2) {
+                        mpModel->setMaster(true);
+                        mIsSaveSendAct = false;
+                        mSendActIntervalTimer = 0.0f;
+                        mBossCondSendInterval = 0.0f;
                     }
                 }
             }
         } else {
-            this->mpModel = static_cast<uDDOModel*>(nullptr);
+            mpModel = nullptr;
             goto region_8c88ee;
         }
     } else {
         goto region_8c88ee;
     }
-    if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isFsmEventPlay() != false) {
+    if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isFsmEventPlay()) {
         // inferred: the value carried to 0x8c88ca; no location-less local in scope fits
-        uDDOModel* v1_0 = this->mpModel;
+        uDDOModel* v1_0 = mpModel;
         // inferred: the value carried to 0x8c88ca; no location-less local in scope fits
         unsigned int v1_1;
-        if (this->mUnitMove != false) {
-            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16))) | static_cast<unsigned int>(1024);
+        if (mUnitMove) {
+            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + 16)) | 1024u;
         } else {
-            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16))) & static_cast<unsigned int>(4294966271);
+            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + 16)) & 0xFFFFFBFFu;
         }
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16)) = v1_1;
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + 16) = v1_1;
         // inferred: the value carried to 0x8c88e8; no location-less local in scope fits
-        uDDOModel* v2_0 = this->mpModel;
+        uDDOModel* v2_0 = mpModel;
         // inferred: the value carried to 0x8c88e8; no location-less local in scope fits
         u32 v2_1;
-        if (this->mUnitDraw != false) {
-            v2_1 = v2_0->mDDOModelFlag | static_cast<u32>(1);
+        if (mUnitDraw) {
+            v2_1 = v2_0->mDDOModelFlag | 1u;
         } else {
-            v2_1 = v2_0->mDDOModelFlag & static_cast<u32>(4294967294);
+            v2_1 = v2_0->mDDOModelFlag & 0xFFFFFFFEu;
         }
         v2_0->mDDOModelFlag = v2_1;
     }
     region_8c88ee:;
-    this->mIsArcLoadEnd = false;
-    if (this->mIsArcLoadRequest != false) {
-        if (this->mArcLoadMgr.::cTagArcLoad::moveArcTag() != false) {
-            this->mIsArcLoadEnd = true;
+    mIsArcLoadEnd = false;
+    if (mIsArcLoadRequest) {
+        if (mArcLoadMgr.moveArcTag()) {
+            mIsArcLoadEnd = true;
         }
     }
-    if (this->mDisableDispTimer > 0.0f) {
-        this->mDisableDispTimer = this->mDisableDispTimer - ::sMain::getInstance()->mDeltaTime;
+    if (mDisableDispTimer > 0.0f) {
+        mDisableDispTimer = mDisableDispTimer - sMain::getInstance()->mDeltaTime;
     }
-    if (this->mForceDispTimer > 0.0f) {
-        this->mForceDispTimer = this->mForceDispTimer - ::sMain::getInstance()->mDeltaTime;
+    if (mForceDispTimer > 0.0f) {
+        mForceDispTimer = mForceDispTimer - sMain::getInstance()->mDeltaTime;
     }
 }
 
 // Address: 0x008c89d0 - 0x008c89dc (12 bytes)
 void uControl::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsCommunicate == false) {
+    if (!mIsCommunicate) {
         return;
     }
-    this->::uControl::sendNetMessage();
+    sendNetMessage();
 }
 
 // Address: 0x008c89c0 - 0x008c89c1 (1 bytes)
@@ -267,43 +267,43 @@ __attribute__((weak)) void uControl::kill() {
 // Address: 0x008c87c0 - 0x008c87df (31 bytes)
 void uControl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x008c7c00 - 0x008c7ca9 (169 bytes)
 void uControl::connectModel(uDDOModel* pModel) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pModel != static_cast<uDDOModel*>(nullptr)) {
+    if (pModel != nullptr) {
         for (;;) {
-            if (pModel->::cUnit::isEnable() == false) {
+            if (!pModel->isEnable()) {
                 break;
             } else {
                 // inferred: a temporary for the value the load at 0x8c7c5f read, used 7 times; no DWARF local holds it
-                uDDOModel* t0 = this->mpModel;
-                if (t0 != static_cast<uDDOModel*>(nullptr)) {
-                    if (t0->::cUnit::isEnable() == false) {
-                        this->mpModel = pModel;
+                uDDOModel* t0 = mpModel;
+                if (t0 != nullptr) {
+                    if (!t0->isEnable()) {
+                        mpModel = pModel;
                         pModel->mpCtrl = this;
-                        pModel->mContextInterface.mpContextInstance = pModel->::uDDOModel::getContextInst();
-                        pModel->mContextInterface.mpContextCharacter = pModel->::uDDOModel::getContext();
+                        pModel->mContextInterface.mpContextInstance = pModel->getContextInst();
+                        pModel->mContextInterface.mpContextCharacter = pModel->getContext();
                         break;
                     } else {
-                        t0->mpCtrl = static_cast<uControl*>(nullptr);
-                        t0->mContextInterface.mpContextInstance = t0->::uDDOModel::getContextInst();
-                        t0->mContextInterface.mpContextCharacter = t0->::uDDOModel::getContext();
-                        this->mpModel = static_cast<uDDOModel*>(nullptr);
+                        t0->mpCtrl = nullptr;
+                        t0->mContextInterface.mpContextInstance = t0->getContextInst();
+                        t0->mContextInterface.mpContextCharacter = t0->getContext();
+                        mpModel = nullptr;
                     }
                 } else {
-                    this->mpModel = pModel;
+                    mpModel = pModel;
                     pModel->mpCtrl = this;
-                    pModel->mContextInterface.mpContextInstance = pModel->::uDDOModel::getContextInst();
-                    pModel->mContextInterface.mpContextCharacter = pModel->::uDDOModel::getContext();
+                    pModel->mContextInterface.mpContextInstance = pModel->getContextInst();
+                    pModel->mContextInterface.mpContextCharacter = pModel->getContext();
                     break;
                 }
             }
@@ -315,28 +315,28 @@ void uControl::connectModel(uDDOModel* pModel) {
 void uControl::disconnectModel(bool IsKillModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x8c786a read, used 7 times; no DWARF local holds it
-    uDDOModel* t0 = this->mpModel;
-    if (t0 != static_cast<uDDOModel*>(nullptr)) {
-        if (t0->::cUnit::isEnable()) {
-            if ((IsKillModel == false) == false) {
+    uDDOModel* t0 = mpModel;
+    if (t0 != nullptr) {
+        if (t0->isEnable()) {
+            if (!!IsKillModel) {
                 t0->kill();
                 // inferred: a temporary for the value the load at 0x8c7892 read, used 5 times; no DWARF local holds it
-                uDDOModel* t1 = this->mpModel;
-                t1->mpCtrl = static_cast<uControl*>(nullptr);
-                t1->mContextInterface.mpContextInstance = t1->::uDDOModel::getContextInst();
-                t1->mContextInterface.mpContextCharacter = t1->::uDDOModel::getContext();
+                uDDOModel* t1 = mpModel;
+                t1->mpCtrl = nullptr;
+                t1->mContextInterface.mpContextInstance = t1->getContextInst();
+                t1->mContextInterface.mpContextCharacter = t1->getContext();
             } else {
-                t0->mpCtrl = static_cast<uControl*>(nullptr);
-                t0->mContextInterface.mpContextInstance = t0->::uDDOModel::getContextInst();
-                t0->mContextInterface.mpContextCharacter = t0->::uDDOModel::getContext();
+                t0->mpCtrl = nullptr;
+                t0->mContextInterface.mpContextInstance = t0->getContextInst();
+                t0->mContextInterface.mpContextCharacter = t0->getContext();
             }
         } else {
-            t0->mpCtrl = static_cast<uControl*>(nullptr);
-            t0->mContextInterface.mpContextInstance = t0->::uDDOModel::getContextInst();
-            t0->mContextInterface.mpContextCharacter = t0->::uDDOModel::getContext();
+            t0->mpCtrl = nullptr;
+            t0->mContextInterface.mpContextInstance = t0->getContextInst();
+            t0->mContextInterface.mpContextCharacter = t0->getContext();
         }
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (55 bytes)
@@ -359,17 +359,17 @@ void uControl::disconnectModel(bool IsKillModel) {
 bool uControl::isMaster() {
     // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
+    if (cContextInterface::getMasterChangeFlag(mContextInterface.mpContextInstance)) {
         // inferred: a temporary for the value the load at 0x8c7bc1 read, used once; no DWARF local holds it
-        sGame* t0 = ::sGame::getInstance();
-        if (t0->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance)) == false) {
+        sGame* t0 = sGame::getInstance();
+        if (!t0->isMySelfPartyMemberIndex(cContextInterface::getMasterIndex(mContextInterface.mpContextInstance))) {
             return false;
         } else {
             return true;
         }
     } else {
-        if (this->::uControl::getObjModel() != static_cast<uDDOModel*>(nullptr)) {
-            return this->::uControl::getObjModel()->::uDDOModel::isMaster();
+        if (getObjModel() != nullptr) {
+            return getObjModel()->isMaster();
         } else {
             return false;
         }
@@ -408,20 +408,20 @@ bool uControl::isMaster() {
 // Address: 0x008c9bb0 - 0x008c9bc7 (23 bytes)
 void uControl::resetContextInterface() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mContextInterface.mpContextCharacter = nullptr;
-    this->mContextInterface.mpContextInstance = nullptr;
+    mContextInterface.mpContextCharacter = nullptr;
+    mContextInterface.mpContextInstance = nullptr;
 }
 
 // Address: 0x008c9bd0 - 0x008c9c05 (53 bytes)
 void uControl::releaseContextInst() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpContextInst = static_cast<cContextInstance*>(nullptr);
-    this->mContextInterface.mpContextInstance = static_cast<cContextInstance*>(nullptr);
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    mpContextInst = nullptr;
+    mContextInterface.mpContextInstance = nullptr;
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable()) {
-        this->mpModel->mContextInterface.mpContextInstance = static_cast<cContextInstance*>(nullptr);
+    if (mpModel->isEnable()) {
+        mpModel->mContextInterface.mpContextInstance = nullptr;
     }
 }
 
@@ -445,7 +445,7 @@ void uControl::releaseContextInst() {
 // Address: 0x008c9910 - 0x008c9918 (8 bytes)
 void uControl::updateBossCondSendInterval() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBossCondSendInterval = 90.0f;
+    mBossCondSendInterval = 90.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
@@ -568,7 +568,7 @@ __attribute__((weak)) void uControl::sendNetMessage() {
 // Address: 0x01ad3c30 - 0x01ad3c37 (7 bytes)
 s32 uControl::getNpcId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNpcId;
+    return mNpcId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -711,19 +711,19 @@ __attribute__((weak)) MtVector3 uControl::getNetPos() {
 // Address: 0x008c9920 - 0x008c993c (28 bytes)
 void uControl::setNetPos(MtVector3& Pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cContextInterface::setNetPos(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter, Pos);
+    cContextInterface::setNetPos(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, Pos);
 }
 
 // Address: 0x008c9940 - 0x008c9956 (22 bytes)
 f32 uControl::getNetDir() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cContextInterface::getNetDir(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter);
+    return cContextInterface::getNetDir(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter);
 }
 
 // Address: 0x008c9960 - 0x008c9976 (22 bytes)
 void uControl::setNetDir(f32 Dir) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cContextInterface::setNetDir(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter, Dir);
+    cContextInterface::setNetDir(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, Dir);
 }
 
 // Address: 0x008c9a30 - 0x008c9a5c (44 bytes)
@@ -776,8 +776,8 @@ __attribute__((weak)) bool uControl::fadeUnit() {
 // Address: 0x008c9b90 - 0x008c9ba2 (18 bytes)
 void uControl::setFadeOut() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFadeTimer = 30.0f;
-    this->mIsFadeOut = true;
+    mFadeTimer = 30.0f;
+    mIsFadeOut = true;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (27 bytes)
@@ -810,50 +810,50 @@ void uControl::setFadeOut() {
 // Address: 0x008c8980 - 0x008c89b7 (55 bytes)
 void uControl::updateArcLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsArcLoadEnd = false;
-    if (this->mIsArcLoadRequest == false) {
+    mIsArcLoadEnd = false;
+    if (!mIsArcLoadRequest) {
         return;
     }
-    if (this->mArcLoadMgr.::cTagArcLoad::moveArcTag() == false) {
+    if (!mArcLoadMgr.moveArcTag()) {
         return;
     }
-    this->mIsArcLoadEnd = true;
+    mIsArcLoadEnd = true;
 }
 
 // Address: 0x008c9980 - 0x008c99c7 (71 bytes)
 bool uControl::startArcLoad(u32 AddTag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoadMgr.::cTagArcLoad::setupArcLoad();
-    this->mArcLoadMgr.::cTagArcLoad::setArcTagEx(AddTag);
-    this->mArcLoadMgr.::cTagArcLoad::startArcLoad();
-    this->mIsArcLoadRequest = true;
+    mArcLoadMgr.setupArcLoad();
+    mArcLoadMgr.setArcTagEx(AddTag);
+    mArcLoadMgr.startArcLoad();
+    mIsArcLoadRequest = true;
     return true;
 }
 
 // Address: 0x008c99d0 - 0x008c99dc (12 bytes)
 void uControl::setupArcLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoadMgr.::cTagArcLoad::setupArcLoad();
+    mArcLoadMgr.setupArcLoad();
 }
 
 // Address: 0x008c99e0 - 0x008c9a05 (37 bytes)
 bool uControl::startArcLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoadMgr.::cTagArcLoad::startArcLoad();
-    this->mIsArcLoadRequest = true;
+    mArcLoadMgr.startArcLoad();
+    mIsArcLoadRequest = true;
     return true;
 }
 
 // Address: 0x008c9a10 - 0x008c9a1c (12 bytes)
 void uControl::addArcTag(u32 AddTag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoadMgr.::cTagArcLoad::setArcTagEx(AddTag);
+    mArcLoadMgr.setArcTagEx(AddTag);
 }
 
 // Address: 0x008c9a20 - 0x008c9a27 (7 bytes)
 bool uControl::isArcLoadFinish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsArcLoadEnd;
+    return mIsArcLoadEnd;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (65 bytes)
@@ -879,13 +879,15 @@ bool uControl::isArcLoadFinish() {
 // Address: 0x008c78d0 - 0x008c78f5 (37 bytes)
 void uControl::releaseArchive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcLoadMgr.::cArcLoaderBase::releaseArc();
-    this->mIsArcLoadEnd = false;
-    this->mIsArcLoadRequest = false;
+    mArcLoadMgr.releaseArc();
+    mIsArcLoadEnd = false;
+    mIsArcLoadRequest = false;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uControl::finishLoadArcPl();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uControl::MyDTI uControl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uControl.cpp at 0x008c9d0f-0x008c9d4c (called at uControl.cpp:70)

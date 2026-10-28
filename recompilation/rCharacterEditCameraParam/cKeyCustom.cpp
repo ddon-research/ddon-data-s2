@@ -55,7 +55,7 @@ const MtDTI& cKeyCustom::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cKeyCustom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cKeyCustom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cKeyCustom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -478,6 +478,8 @@ __attribute__((weak)) void cKeyCustom::setKbmBlank() {
 //   in cMenuKeyConfig::onChangeKey at 0x001378a9-0x001378c7 (called at cMenuBase.cpp:43847)
 // void cKeyCustom::changeBtn(const sMouse::BUTTON btn);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cKeyCustom::MyDTI cKeyCustom::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cKeyCustom.cpp at 0x000ef344-0x000ef37d (called at cKeyCustom.cpp:23)
 //   in _GLOBAL__sub_I_cKeyCustom.cpp at 0x000ef344-0x000ef37d (called at cKeyCustom.h:223)
@@ -503,7 +505,7 @@ const MtDTI& cKeyCustomManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cKeyCustomManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cKeyCustomManager::DTI);
+    return MtMemoryAllocator::getAllocator(cKeyCustomManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -512,7 +514,7 @@ inline MtAllocator* cKeyCustomManager::getAllocator() {
 // Address: 0x000edd50 - 0x000edd90 (64 bytes)
 void* cKeyCustomManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cKeyCustomManager::getAllocator()->memAlloc(sz, align, ::cKeyCustomManager::DTI.::MtDTI::getID());
+    return cKeyCustomManager::getAllocator()->memAlloc(sz, align, cKeyCustomManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -655,15 +657,15 @@ bool cKeyCustomManager::isExistOverlap() {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from unsigned long
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)) != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0xeede3, 0xeee03)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(40))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(40))) != static_cast<unsigned int>(0)) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 40)) + static_cast<unsigned long>(i * 8u)) + 0)) + 40)) != 0) {
                 return true;
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)));
     }
     return false;
 }
@@ -901,6 +903,8 @@ __attribute__((weak)) void cKeyCustomManager::setSoloExcludeModifierKey() {
 //   in nMenuKeyConfig::KeyCustomManagers::setName at 0x00171d48-0x00171e07 (called at nMenuKeyConfig.cpp:341)
 //   in sInputManager::editDefault at 0x007c6703-0x007c67a0 (called at sInputManager.cpp:2682)
 // void cKeyCustomManager::setUserName(MT_CTSTR str);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cKeyCustomManager::MyDTI cKeyCustomManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cKeyCustom.cpp at 0x000ef300-0x000ef344 (called at cKeyCustom.cpp:22)

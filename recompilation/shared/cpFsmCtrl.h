@@ -129,3 +129,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cFSMUnit::stateUpdateSetEyeBall at 0x1f2bb9-0x1f2bc0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpFsmCtrl::notifySetEyeBall() {
+    this->mIsEndEyeBallMove = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpFsmCtrl::updateEyeBallRot at 0x47ff91-0x47ff98; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpFsmCtrl::notifyEndSetEyeBall() {
+    this->mIsEndEyeBallMove = true;
+}

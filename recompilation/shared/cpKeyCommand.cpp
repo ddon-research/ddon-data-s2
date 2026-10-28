@@ -35,7 +35,7 @@ const MtDTI& cpKeyCommand::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpKeyCommand::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpKeyCommand::DTI);
+    return MtMemoryAllocator::getAllocator(cpKeyCommand::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* cpKeyCommand::getAllocator() {
 // Address: 0x004c0850 - 0x004c0890 (64 bytes)
 void* cpKeyCommand::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpKeyCommand::getAllocator()->memAlloc(sz, align, ::cpKeyCommand::DTI.::MtDTI::getID());
+    return cpKeyCommand::getAllocator()->memAlloc(sz, align, cpKeyCommand::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* cpKeyCommand::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpKeyCommand::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpKeyCommand::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpKeyCommand::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,8 +88,8 @@ cpKeyCommand::~cpKeyCommand() {
 // Address: 0x01a5bdf0 - 0x01a5bdfc (12 bytes)
 void cpKeyCommand::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004c0e50 - 0x004c1126 (726 bytes)
@@ -102,20 +102,20 @@ __attribute__((weak)) void cpKeyCommand::setup() {
 // Address: 0x004c1290 - 0x004c12c9 (57 bytes)
 void cpKeyCommand::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x004c12d0 - 0x004c12d8 (8 bytes)
 void cpKeyCommand::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCanceled = false;
+    mIsCanceled = false;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (50 bytes)
@@ -162,7 +162,7 @@ __attribute__((weak)) void cpKeyCommand::callbackClearReserveAct() {
 // Address: 0x004c2190 - 0x004c219c (12 bytes)
 void cpKeyCommand::setCommandTbl(s32 bank, nKeyCommand::stKeyCommand* pTbl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpCommandTbl[bank] = pTbl;
+    mpCommandTbl[bank] = pTbl;
 }
 
 // No out-of-line body: 12 inlined copies in 12 functions (336 bytes)
@@ -237,18 +237,18 @@ __attribute__((weak)) bool cpKeyCommand::checkCustomContinueTrg(s32 CustomSkillI
 s32 cpKeyCommand::getLeftStickRelativeAngleFB() const {
     // DWARF local not rendered: s32 retAngle;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(this->mpInput->::cpInput::getLeftStickRelativeAngleFB());
+    return static_cast<s32>(mpInput->getLeftStickRelativeAngleFB());
 }
 
 // Address: 0x004c8b50 - 0x004c8b76 (38 bytes)
 void cpKeyCommand::setActiveCheckCommand(bool flag, cpKeyCommand::ACT_CHECK_CMD_PRI prio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (prio >= this->mActCheckCmdPriority) {
-        this->mIsActiveCheckCommand = flag;
-        if (flag != false) {
-            this->mActCheckCmdPriority = static_cast<cpKeyCommand::ACT_CHECK_CMD_PRI>(0);
+    if (prio >= mActCheckCmdPriority) {
+        mIsActiveCheckCommand = flag;
+        if (flag) {
+            mActCheckCmdPriority = CHECK_CMD_PRI_NONE;
         } else {
-            this->mActCheckCmdPriority = prio;
+            mActCheckCmdPriority = prio;
         }
     }
 }
@@ -291,36 +291,36 @@ __attribute__((weak)) f32 cpKeyCommand::getAngleYActBegin(u32 actNo) {
 f32 cpKeyCommand::getMoveSpeed() {
     // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
-        if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {
-            return this->::cpKeyCommand::getCpInput()->mMoveInfo.speed;
+    if (getCpInput() != nullptr) {
+        if (getCpInput()->mActive) {
+            return getCpInput()->mMoveInfo.speed;
         }
     }
-    return this->::cpThinkBase::getMoveSpeed();
+    return this->cpThinkBase::getMoveSpeed();
 }
 
 // Address: 0x004c8b00 - 0x004c8b1e (30 bytes)
 u32 cpKeyCommand::getMoveType() {
     // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
-        if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {
-            return static_cast<u32>(this->::cpKeyCommand::getCpInput()->mMoveInfo.type);
+    if (getCpInput() != nullptr) {
+        if (getCpInput()->mActive) {
+            return static_cast<u32>(getCpInput()->mMoveInfo.type);
         }
     }
-    return this->::cpThinkBase::getMoveType();
+    return this->cpThinkBase::getMoveType();
 }
 
 // Address: 0x004c8b20 - 0x004c8b40 (32 bytes)
 f32 cpKeyCommand::getMoveLvLX() {
     // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
-        if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {
-            return this->::cpKeyCommand::getCpInput()->mMoveInfo.lvLX;
+    if (getCpInput() != nullptr) {
+        if (getCpInput()->mActive) {
+            return getCpInput()->mMoveInfo.lvLX;
         }
     }
-    return this->::cpThinkBase::getMoveLvLX();
+    return this->cpThinkBase::getMoveLvLX();
 }
 
 // Address: 0x004c8b80 - 0x004c8fbc (1084 bytes)
@@ -739,6 +739,8 @@ __attribute__((weak)) bool cpKeyCommand::checkKeyCommandFunctionActPallet(nHuman
 // No out-of-line body: 1 inlined copy in 1 function (35 bytes)
 //   in cPlActWpnBow::checkUp_CustomSkill at 0x0022534a-0x0022536d (called at cHumanActBow.cpp:2693)
 // void cpKeyCommand::setCustomSkillBtnInfo(s32 skill_id, nHuman::CUSTOM_SKILL_PALLET pallet, bool is_right, cpInput::unBtnInfo info);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpKeyCommand::MyDTI cpKeyCommand::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpKeyCommand.cpp at 0x004c96df-0x004c971c (called at cpKeyCommand.cpp:62)

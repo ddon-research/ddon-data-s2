@@ -35,7 +35,7 @@ const MtDTI& sAIPawnSys::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sAIPawnSys::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sAIPawnSys::DTI);
+    return MtMemoryAllocator::getAllocator(sAIPawnSys::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* sAIPawnSys::getAllocator() {
 // Address: 0x0071abf0 - 0x0071ac30 (64 bytes)
 void* sAIPawnSys::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sAIPawnSys::getAllocator()->memAlloc(sz, align, ::sAIPawnSys::DTI.::MtDTI::getID());
+    return sAIPawnSys::getAllocator()->memAlloc(sz, align, sAIPawnSys::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* sAIPawnSys::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sAIPawnSys::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sAIPawnSys::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sAIPawnSys::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +117,7 @@ __attribute__((weak)) void sAIPawnSys::initGame() {
 // Address: 0x0071b240 - 0x0071b276 (54 bytes)
 void sAIPawnSys::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sAIPawnSys::clearPawnOrder();
+    clearPawnOrder();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (67 bytes)
@@ -136,9 +136,9 @@ __attribute__((weak)) void sAIPawnSys::getAIPawnRotateNo(u32* pDst) {
 bool sAIPawnSys::isAIPawnRotateEnable(u32 no) const {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((no - static_cast<u32>(1)) <= static_cast<u32>(2)) {
-        if (this->mAIPawnRotateFourceUpdate == false) {
-            return this->mAIPawnRotateNo == no;
+    if ((no - 1u) <= 2u) {
+        if (!mAIPawnRotateFourceUpdate) {
+            return mAIPawnRotateNo == no;
         }
     }
     return true;
@@ -148,28 +148,26 @@ bool sAIPawnSys::isAIPawnRotateEnable(u32 no) const {
 void sAIPawnSys::releaseAIPawnRotateNo(u32* pDst) {
     // DWARF local not rendered: u32 no;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place read twice with no call between; the body oracle reports this body.
-    if (pDst == static_cast<u32*>(nullptr)) {
+    if (pDst == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x71bfe6 read, used 3 times; no DWARF local holds it
     unsigned int t0 = *pDst;
-    if ((t0 - static_cast<unsigned int>(1)) > static_cast<unsigned int>(2)) {
-        *pDst = static_cast<unsigned int>(0);
+    if ((t0 - 1u) > 2u) {
+        *pDst = 0;
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        if (this->mAIPawnRotateTbl.elems[(t0 <= static_cast<unsigned int>(3)) ? t0 : static_cast<unsigned int>(0)] != static_cast<unsigned int>(0)) {
-            this->mAIPawnRotateTbl.elems[(t0 <= static_cast<unsigned int>(3)) ? t0 : static_cast<unsigned int>(0)] = this->mAIPawnRotateTbl.elems[(t0 <= static_cast<unsigned int>(3)) ? t0 : static_cast<unsigned int>(0)] - static_cast<unsigned int>(1);
+        if (mAIPawnRotateTbl.elems[(t0 <= 3u) ? t0 : 0u] != 0) {
+            mAIPawnRotateTbl.elems[(t0 <= 3u) ? t0 : 0u] = mAIPawnRotateTbl.elems[(t0 <= 3u) ? t0 : 0u] - 1u;
         }
-        *pDst = static_cast<unsigned int>(0);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        *pDst = 0;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -188,10 +186,10 @@ __attribute__((weak)) void sAIPawnSys::updatePawnOrder() {
 u32 sAIPawnSys::getPawnOrderNum() const {
     // DWARF local not rendered: const rAIPawnOrder* p_ptr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAIPawnOrderRes.mpPtr != static_cast<rAIPawnOrder*>(nullptr)) {
-        return this->mpAIPawnOrderRes.mpPtr->getDataNum();
+    if (mpAIPawnOrderRes.mpPtr != nullptr) {
+        return mpAIPawnOrderRes.mpPtr->getDataNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -199,27 +197,27 @@ u32 sAIPawnSys::getPawnOrderNum() const {
 cAIPawnOrderParam* sAIPawnSys::getPawnOrderFormId(u32 id) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    rAIPawnOrder* p_ptr = this->mpAIPawnOrderRes.mpPtr;
+    rAIPawnOrder* p_ptr = mpAIPawnOrderRes.mpPtr;
     // inferred: the value carried to 0x71b640; no location-less local in scope fits
     cAIPawnOrderParam* v1_0;
-    if (p_ptr == static_cast<rAIPawnOrder*>(nullptr)) {
-        v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+    if (p_ptr == nullptr) {
+        v1_0 = nullptr;
     } else {
         u32 num = p_ptr->getDataNum();
-        if (num == static_cast<u32>(0)) {
-            v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+        if (num == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 cAIPawnOrderParam* p_prm = p_ptr->getData(i0_2);
                 if (p_prm->mID == id) {
                     v1_0 = p_prm;
                     break;
                 } else {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < num) {
-                        i0_2 += static_cast<unsigned int>(1);
+                    if ((i0_2 + 1u) < num) {
+                        i0_2 += 1u;
                     } else {
-                        v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+                        v1_0 = nullptr;
                         break;
                     }
                 }
@@ -235,7 +233,7 @@ cAIPawnOrderParam* sAIPawnSys::getPawnOrderFormId(u32 id) {
 // Address: 0x0071bd50 - 0x0071bd55 (5 bytes)
 uDDOModel* sAIPawnSys::getPawnOrderTarget() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpPawnOrderTarget;
+    return mpPawnOrderTarget;
 }
 
 // Address: 0x0071b660 - 0x0071b731 (209 bytes)
@@ -312,39 +310,39 @@ __attribute__((weak)) void sAIPawnSys::sendPawnOrder(u32 order) {
 // Address: 0x0071c080 - 0x0071c0d8 (88 bytes)
 void sAIPawnSys::setPawnOwnerTarget(uDDOModel* pOwner, uDDOModel* pTarget) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pOwner == static_cast<uDDOModel*>(nullptr)) {
+    if (pOwner == nullptr) {
         return;
     }
-    if (pOwner->::uDDOModel::isMaster() == false) {
+    if (!pOwner->isMaster()) {
         return;
     }
-    if ((pOwner->mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((pOwner->mUnitId & 8u) == 0) {
         return;
     }
-    if (pTarget == this->mpPawnOwnerTarget) {
+    if (pTarget == mpPawnOwnerTarget) {
         return;
     }
-    if (pTarget != static_cast<uDDOModel*>(nullptr)) {
-        if (pTarget->mGpCategoy == static_cast<u32>(2)) {
-            this->mpPawnOwnerTargetOld = this->mpPawnOwnerTarget;
-            this->mpPawnOwnerTarget = pTarget;
+    if (pTarget != nullptr) {
+        if (pTarget->mGpCategoy == 2) {
+            mpPawnOwnerTargetOld = mpPawnOwnerTarget;
+            mpPawnOwnerTarget = pTarget;
         }
     } else {
-        this->mpPawnOwnerTargetOld = this->mpPawnOwnerTarget;
-        this->mpPawnOwnerTarget = pTarget;
+        mpPawnOwnerTargetOld = mpPawnOwnerTarget;
+        mpPawnOwnerTarget = pTarget;
     }
 }
 
 // Address: 0x0071c0e0 - 0x0071c0e5 (5 bytes)
 uDDOModel* sAIPawnSys::getPawnOwnerTarget() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpPawnOwnerTarget;
+    return mpPawnOwnerTarget;
 }
 
 // Address: 0x0071c0f0 - 0x0071c0f5 (5 bytes)
 uDDOModel* sAIPawnSys::getPawnOwnerTargetOld() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpPawnOwnerTargetOld;
+    return mpPawnOwnerTargetOld;
 }
 
 // No out-of-line body: no code in the ELF
@@ -378,23 +376,23 @@ cAIPawnSkillParamNode* sAIPawnSys::findAIPawnSkillParamNode(s32 job, s32 actNo) 
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cAIPawnSkillParamNode* p_node;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    rAIPawnSkillParamTbl* p_aps_res = this->mpAIPawnSkillParamTbl.mpPtr;
+    rAIPawnSkillParamTbl* p_aps_res = mpAIPawnSkillParamTbl.mpPtr;
     // inferred: the value carried to 0x71b5a1; no location-less local in scope fits
     cAIPawnSkillParamNode* v1_10;
-    if (p_aps_res == static_cast<rAIPawnSkillParamTbl*>(nullptr)) {
-        v1_10 = static_cast<cAIPawnSkillParamNode*>(nullptr);
+    if (p_aps_res == nullptr) {
+        v1_10 = nullptr;
     } else {
         u32 num = p_aps_res->getDataNum();
-        if (num == static_cast<u32>(0)) {
-            v1_10 = static_cast<cAIPawnSkillParamNode*>(nullptr);
+        if (num == 0) {
+            v1_10 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x71b569, used 5 times; no DWARF local holds it
                 cAIPawnSkillParamNode* t0 = p_aps_res->getData(i0_3);
-                if (t0 != static_cast<cAIPawnSkillParamNode*>(nullptr)) {
-                    if (actNo == t0->::cAIPawnSkillParamNode::getActionNo()) {
-                        if (t0->mJob == static_cast<s32>(255)) {
+                if (t0 != nullptr) {
+                    if (actNo == t0->getActionNo()) {
+                        if (t0->mJob == 255) {
                             v1_10 = t0;
                             break;
                         } else {
@@ -402,27 +400,27 @@ cAIPawnSkillParamNode* sAIPawnSys::findAIPawnSkillParamNode(s32 job, s32 actNo) 
                                 v1_10 = t0;
                                 break;
                             } else {
-                                if ((i0_3 + static_cast<unsigned int>(1)) < num) {
-                                    i0_3 += static_cast<unsigned int>(1);
+                                if ((i0_3 + 1u) < num) {
+                                    i0_3 += 1u;
                                 } else {
-                                    v1_10 = static_cast<cAIPawnSkillParamNode*>(nullptr);
+                                    v1_10 = nullptr;
                                     break;
                                 }
                             }
                         }
                     } else {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < num) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < num) {
+                            i0_3 += 1u;
                         } else {
-                            v1_10 = static_cast<cAIPawnSkillParamNode*>(nullptr);
+                            v1_10 = nullptr;
                             break;
                         }
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < num) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < num) {
+                        i0_3 += 1u;
                     } else {
-                        v1_10 = static_cast<cAIPawnSkillParamNode*>(nullptr);
+                        v1_10 = nullptr;
                         break;
                     }
                 }
@@ -435,27 +433,27 @@ cAIPawnSkillParamNode* sAIPawnSys::findAIPawnSkillParamNode(s32 job, s32 actNo) 
 // Address: 0x0071b3e0 - 0x0071b3e8 (8 bytes)
 void sAIPawnSys::reqPartyInDeploy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAIPawnReqPartyInDeployLimit = 900.0f;
+    mAIPawnReqPartyInDeployLimit = 900.0f;
 }
 
 // Address: 0x0071b3f0 - 0x0071b401 (17 bytes)
 bool sAIPawnSys::isPartyInDeploy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAIPawnReqPartyInDeployLimit > 0.0f;
+    return mAIPawnReqPartyInDeployLimit > 0.0f;
 }
 
 // Address: 0x0071b410 - 0x0071b418 (8 bytes)
 void sAIPawnSys::resetPartyInDeploy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAIPawnReqPartyInDeployLimit = 0.0f;
+    mAIPawnReqPartyInDeployLimit = 0.0f;
 }
 
 // Address: 0x0071b420 - 0x0071b460 (64 bytes)
 f32 sAIPawnSys::getPawnPrmF32(MT_CTSTR tag, f32 def) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rFreeF32Tbl* p_pw_info = this->mpAIPawnParam.mpPtr;
-    if (p_pw_info != static_cast<rFreeF32Tbl*>(nullptr)) {
-        return p_pw_info->::rFreeF32Tbl::getTagF32(::MtCRC::getCRC(tag, static_cast<u32>(4294967295)), def);
+    rFreeF32Tbl* p_pw_info = mpAIPawnParam.mpPtr;
+    if (p_pw_info != nullptr) {
+        return p_pw_info->rFreeF32Tbl::getTagF32(MtCRC::getCRC(tag, 0xFFFFFFFFu), def);
     } else {
         return def;
     }
@@ -479,6 +477,11 @@ __attribute__((weak)) MtVector4 sAIPawnSys::getPawnPrmVec4(MT_CTSTR tag, const M
 __attribute__((weak)) void sAIPawnSys::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAIPawnSys::MyDTI sAIPawnSys::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sAIPawnSys* sAIPawnSys::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sAIPawnSys.cpp at 0x0071c32f-0x0071c36c (called at sAIPawnSys.cpp:77)

@@ -32,7 +32,7 @@ const MtDTI& uGUIShopTitle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIShopTitle::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIShopTitle::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIShopTitle::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIShopTitle::getAllocator() {
 // Address: 0x00c41340 - 0x00c41380 (64 bytes)
 void* uGUIShopTitle::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIShopTitle::getAllocator()->memAlloc(sz, align, ::uGUIShopTitle::DTI.::MtDTI::getID());
+    return uGUIShopTitle::getAllocator()->memAlloc(sz, align, uGUIShopTitle::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIShopTitle::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIShopTitle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIShopTitle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIShopTitle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,25 +75,25 @@ inline void uGUIShopTitle::operator delete(void* p_addr) {
 // Also emitted as: _ZN13uGUIShopTitleD0Ev at 0x00c415a0
 uGUIShopTitle::~uGUIShopTitle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c41610 - 0x00c41615 (5 bytes)
 void uGUIShopTitle::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c41620 - 0x00c41688 (104 bytes)
 bool uGUIShopTitle::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TITLE00_GUI"), static_cast<u32>(129), static_cast<t64>(1468481156)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TITLE00_GUI"), 129u, 1468481156l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -106,37 +106,37 @@ bool uGUIShopTitle::loadResource() {
 // Address: 0x00c41690 - 0x00c418a9 (537 bytes)
 void uGUIShopTitle::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(10)), true);
-    this->setPlay(false);
-    this->mpObjMsgTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(4)));
-    this->mpObjMsgTitleSub = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(25)));
-    this->mpInstAnimBase = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(20), false));
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(10u), true);
+    setPlay(false);
+    mpObjMsgTitle = static_cast<cGUIObjMessage*>(getObjectFromId(6u, 4u));
+    mpObjMsgTitleSub = static_cast<cGUIObjMessage*>(getObjectFromId(6u, 25u));
+    mpInstAnimBase = static_cast<cGUIInstAnimation*>(getInstance(20u, false));
     // inferred: a temporary for the result of the call at 0xc41736, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(16), false);
-    this->mpInstAnimMoney = static_cast<cGUIInstAnimation*>(t0);
-    this->mpObjNullMoney = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(13)));
-    this->mpObjNullGacha = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(25)));
-    this->mpObjNullPawnpoint = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(32)));
-    this->mpObjMsgMoney = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(18)));
-    this->mpObjMsgMoneyValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(17)));
-    this->mpObjMsgGpValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(28)));
-    this->mpObjMsgCtValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(31)));
-    this->mpObjTexIcon = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(15)));
-    this->mpObjMsgPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(34)));
-    this->mpObjMsgPointValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(33)));
-    this->mChargesInfo.::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), this->getInstance(static_cast<u32>(22), false), this->mChargesAttr);
-    this->mChargesInfo.mSizeWFix = this->mChargesInfo.mDefaultSize;
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShopTitle::updateInit);
+    cGUIInstance* t0 = getInstance(16u, false);
+    mpInstAnimMoney = static_cast<cGUIInstAnimation*>(t0);
+    mpObjNullMoney = static_cast<cGUIObjNull*>(getObjectFromId(t0, 13u));
+    mpObjNullGacha = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 25u));
+    mpObjNullPawnpoint = static_cast<cGUIObjNull*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 32u));
+    mpObjMsgMoney = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 18u));
+    mpObjMsgMoneyValue = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 17u));
+    mpObjMsgGpValue = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 28u));
+    mpObjMsgCtValue = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 31u));
+    mpObjTexIcon = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 15u));
+    mpObjMsgPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 34u));
+    mpObjMsgPointValue = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpInstAnimMoney), 33u));
+    mChargesInfo.setup(static_cast<uGUIBase*>(this), getInstance(22u, false), mChargesAttr);
+    mChargesInfo.mSizeWFix = mChargesInfo.mDefaultSize;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShopTitle::updateInit);
 }
 
 // Address: 0x00c41990 - 0x00c41995 (5 bytes)
 void uGUIShopTitle::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (221 bytes)
@@ -186,12 +186,14 @@ __attribute__((weak)) void uGUIShopTitle::updateInit() {
 // Address: 0x00c41b40 - 0x00c41b63 (35 bytes)
 void uGUIShopTitle::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIShopTitle::updateMoney();
-    this->mChargesInfo.::uGUIBase::cReferenceUIChargesInfo::update();
+    updateMoney();
+    mChargesInfo.uGUIBase::cReferenceUIChargesInfo::update();
 }
 
 // No out-of-line body: no code in the ELF
 // void uGUIShopTitle::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIShopTitle::MyDTI uGUIShopTitle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIShopTitle.cpp at 0x00c422af-0x00c422ec (called at uGUIShopTitle.cpp:29)

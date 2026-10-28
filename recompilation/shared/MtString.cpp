@@ -300,16 +300,16 @@ __attribute__((weak)) const MtString& MtString::format(MT_CTSTR format, ...) {
 s32 MtString::compare(MtString::STRING* a, MtString::STRING* b) const {
     // DWARF local not rendered: s32 sb;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    size_t i = static_cast<size_t>(0);
-    if (a->length != static_cast<u32>(0)) {
+    size_t i = 0;
+    if (a->length != 0) {
         do {
             if (a->str[i] != b->str[i]) {
                 return a->str[i] - b->str[i];
             }
-            i += static_cast<size_t>(1);
+            i += 1ul;
         } while (i < a->length);
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x00d75a20 - 0x00d75acb (171 bytes)
@@ -321,4 +321,6 @@ __attribute__((weak)) MtString::STRING* MtString::concat(MtString::STRING* a, Mt
     DDON_STUB("MtString::concat")
     return nullptr;
 }
+
+// Not defined (relocated bytes): MtAllocator* MtString::mpAllocator;
 

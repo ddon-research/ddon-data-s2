@@ -108,13 +108,13 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK29uScrollCollisionGeometryModel5MyDTI11newInstanceEv at 0x0130a5e0-0x0130a63c, code DWARF attributes to no inlined copy
 inline uScrollCollisionGeometryModel::uScrollCollisionGeometryModel() {
-    this->::cUnit::mDrawMode = static_cast<u32>(1);
-    this->mpOwnerModel = static_cast<uModel*>(nullptr);
+    this->::cUnit::mDrawMode = 1;
+    this->mpOwnerModel = nullptr;
     this->mFlgOwnerRegist = false;
-    this->mpScrGeometryUnit_Outside = static_cast<uScrollCollisionGeometry*>(nullptr);
-    this->mpGeometryUnit_Inside = static_cast<uGeometry2*>(nullptr);
-    this->mpRGeometry = static_cast<rGeometry2*>(nullptr);
+    this->mpScrGeometryUnit_Outside = nullptr;
+    this->mpGeometryUnit_Inside = nullptr;
+    this->mpRGeometry = nullptr;
     this->mFlgEnableSbcLockTarget = true;
-    this->mpParentGeometryGroup = static_cast<uScrollCollisionGeometryGroupModel*>(nullptr);
+    this->mpParentGeometryGroup = nullptr;
     this->mFlgGroupMode = false;
 }

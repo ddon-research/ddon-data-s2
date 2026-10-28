@@ -154,6 +154,12 @@ inline void cpActionManager::clearActPrio() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline const cActList* cpActionManager::getActList(u32 bank) const {
+    return this->mpActList[bank];
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool cpActionManager::isEndAction() {
     return this->mEndAction;

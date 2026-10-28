@@ -374,18 +374,18 @@ MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: DWARF's location-less 'i' (lexical block [0xd626b6, 0xd626d8)) is the counter this loop steps (DWARF's stale constant 0)
-    for (u32 i = static_cast<u32>(0);;) {
-        if (::strcmp(::MtProperty::mTypeName[i], name) == static_cast<int>(0)) {
-            return static_cast<MtProperty::TYPE>(i);
+    for (u32 i = 0;;) {
+        if (strcmp(MtProperty::mTypeName[i], name) == 0) {
+            return static_cast<TYPE>(i);
         } else {
-            if ((i + static_cast<u32>(1)) <= static_cast<u32>(74)) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) <= 74u) {
+                i = i + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<MtProperty::TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(::strcmp(name, "custom") == static_cast<int>(0)) * static_cast<unsigned long>(128)));
+    return static_cast<TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(strcmp(name, "custom") == 0) * 128));
 }
 
 // No out-of-line body: 17 inlined copies in 7 functions (171 bytes)
@@ -422,8 +422,8 @@ __attribute__((weak)) u32 MtProperty::getBytes() const {
 // Address: 0x00d627a0 - 0x00d627bd (29 bytes)
 MT_CTSTR MtProperty::getTypeName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType <= static_cast<u32>(74)) {
-        return ::MtProperty::mTypeName[this->mType];
+    if (mType <= 74u) {
+        return MtProperty::mTypeName[mType];
     } else {
         return "custom";
     }
@@ -446,11 +446,11 @@ void MtProperty::setCount(u32 count) {
     // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtProperty*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if ((this->mAttr & static_cast<u32>(128)) != static_cast<u32>(0)) {
-        (this->mpOwner->*this->mpSetCount)();
+    if ((mAttr & 128u) != 0) {
+        (mpOwner->*mpSetCount)();
     } else {
-        if (static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) - static_cast<int>(24)) <= static_cast<unsigned int>(50)) {
-            if (((static_cast<unsigned long>(1125899906842641) >> static_cast<unsigned long>(static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) - static_cast<int>(24)) & static_cast<unsigned int>(63))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+        if (static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8)) - 24) <= 50) {
+            if (((0x4000000000011ul >> static_cast<unsigned long>(static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8)) - 24) & 63)) & 1ul) == 0) {
                 if (this->mCount >= count) {
                     this->mCount = count;
                 }
@@ -1560,38 +1560,38 @@ __attribute__((weak)) void MtProperty::callEvent() const {
 void MtProperty::registCustom(MtProperty::Custom* pcustom) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtProperty::Custom* * p0 = ::MtProperty::mpCustom;
-    u32 i = static_cast<u32>(0);
+    Custom* * p0 = MtProperty::mpCustom;
+    u32 i = 0;
     do {
-        if ((*p0) == static_cast<MtProperty::Custom*>(nullptr)) {
+        if ((*p0) == nullptr) {
             *p0 = pcustom;
             return;
         }
         p0 += static_cast<int>(1);
-        i += static_cast<u32>(1);
-    } while (i <= static_cast<u32>(15));
+        i += 1u;
+    } while (i <= 15u);
 }
 
 // Address: 0x00d62620 - 0x00d6267b (91 bytes)
 MtProperty::Custom* MtProperty::getCustom(MT_CTSTR name) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0xd6263a, 0xd6266f)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    for (MtProperty::Custom* * p0_8 = ::MtProperty::mpCustom;;) {
-        if ((*p0_8) != static_cast<MtProperty::Custom*>(nullptr)) {
-            if (::strcmp((*p0_8)->getName(), name) == static_cast<int>(0)) {
+    for (Custom* * p0_8 = MtProperty::mpCustom;;) {
+        if ((*p0_8) != nullptr) {
+            if (strcmp((*p0_8)->getName(), name) == 0) {
                 return *p0_8;
             }
         }
-        if ((i + static_cast<u32>(1)) <= static_cast<u32>(15)) {
-            i += static_cast<u32>(1);
-            p0_8 += static_cast<int>(1);
+        if ((i + 1u) <= 15u) {
+            i += 1u;
+            p0_8 += 1;
         } else {
             break;
         }
     }
-    return static_cast<MtProperty::Custom*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00d62680 - 0x00d6269c (28 bytes)
@@ -1599,6 +1599,13 @@ __attribute__((weak)) MtProperty::Custom* MtProperty::getCustom(MtProperty::TYPE
     DDON_STUB("MtProperty::getCustom")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: a store of no constant): MtProperty MtProperty::Null;
+
+// Not defined (relocated bytes): MT_CTSTR MtProperty::mTypeName[75];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtProperty::Custom* MtProperty::mpCustom[16];
 
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // MtProperty::Custom::~Custom();

@@ -124,9 +124,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rStageList::Info::Info() {
-    this->mStageNo = static_cast<u32>(0);
-    this->mType = static_cast<u32>(0);
-    this->mRecommendLevel = static_cast<u8>(0);
-    this->mMessageId = static_cast<u32>(0);
-    this->mVersion = static_cast<u32>(39321);
+    this->mStageNo = 0;
+    this->mType = 0;
+    this->mRecommendLevel = 0;
+    this->mMessageId = 0;
+    this->mVersion = 39321;
 }

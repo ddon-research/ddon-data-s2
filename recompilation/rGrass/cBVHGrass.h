@@ -127,14 +127,14 @@ private:
 // Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else cBVHGrass.cpp, instantiates it for the body oracle.
 template <typename _NODE_>
 cNodeParam<_NODE_>::~cNodeParam() {
-    if (this->mMode == static_cast<u8>(2)) {
+    if (this->mMode == 2) {
         (::cNodeParam<_NODE_>::mpAllocator)->memFree(static_cast<void*>(this->mpData));
-        this->mpData = static_cast<_NODE_*>(nullptr);
+        this->mpData = nullptr;
     } else {
-        if (this->mMode == static_cast<u8>(1)) {
-            if (this->mpData != static_cast<_NODE_*>(nullptr)) {
+        if (this->mMode == 1) {
+            if (this->mpData != nullptr) {
                 delete this->mpData;
-                this->mpData = static_cast<_NODE_*>(nullptr);
+                this->mpData = nullptr;
             }
         }
     }

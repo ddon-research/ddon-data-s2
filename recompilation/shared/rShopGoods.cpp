@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtDataReader.h"
+#include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
@@ -27,7 +28,7 @@ const MtDTI& cShopGoods::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cShopGoods::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cShopGoods::DTI);
+    return MtMemoryAllocator::getAllocator(cShopGoods::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +37,7 @@ inline MtAllocator* cShopGoods::getAllocator() {
 // Address: 0x006e5b90 - 0x006e5bd0 (64 bytes)
 void* cShopGoods::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cShopGoods::getAllocator()->memAlloc(sz, align, ::cShopGoods::DTI.::MtDTI::getID());
+    return cShopGoods::getAllocator()->memAlloc(sz, align, cShopGoods::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +51,7 @@ void* cShopGoods::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShopGoods::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShopGoods::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShopGoods::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,6 +88,8 @@ __attribute__((weak)) void cShopGoods::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShopGoods::MyDTI cShopGoods::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e7180-0x006e71c4 (called at rShopGoods.cpp:25)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e7180-0x006e71c4 (called at rShopGoods.h:21)
@@ -120,7 +123,7 @@ const MtDTI& cShopGoods::rDate::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cShopGoods::rDate::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cShopGoods::rDate::DTI)->memAlloc(sz, align, ::cShopGoods::rDate::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cShopGoods::rDate::DTI)->memAlloc(sz, align, cShopGoods::rDate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +138,7 @@ inline void* cShopGoods::rDate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10cShopGoods5rDateD0Ev at 0x01ab0e20-0x01ab0e4a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cShopGoods::rDate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShopGoods::rDate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShopGoods::rDate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,18 +173,52 @@ bool cShopGoods::rDate::load(MtDataReader& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mYear);
+    nDDOIO::readData(in, mYear);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mMonth);
-    this->mDay = in.::MtDataReader::readU8();
+    nDDOIO::readData(in, mMonth);
+    mDay = in.readU8();
     return true;
 }
 
 // Address: 0x006e6890 - 0x006e6907 (119 bytes)
-__attribute__((weak)) bool cShopGoods::rDate::save(MtDataWriter& out) {
-    DDON_STUB("cShopGoods::rDate::save")
-    return {};
+bool cShopGoods::rDate::save(MtDataWriter& out) {
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    out.writeU16(mYear);
+    // inferred: a temporary for the value the load at 0x6e68ae read, used once; no DWARF local holds it
+    u8 t0 = mMonth;
+    if (out.mSeekPt >= out.mBufsiz) {
+        out.flush();
+        out.mBuffer[out.mSeekPt] = t0;
+        // inferred: a temporary for the value the load at 0x6e68d0 read, used twice; no DWARF local holds it
+        u32 t1 = out.mSeekPt;
+        out.mSeekPt = t1 + 1u;
+        // inferred: a temporary for the value the load at 0x6e68d8 read, used once; no DWARF local holds it
+        u8 t2 = mDay;
+        if (out.mSeekPt >= out.mBufsiz) {
+            out.flush();
+            out.mBuffer[out.mSeekPt] = t2;
+        } else {
+            out.mBuffer[t1 + 1u] = t2;
+        }
+        out.mSeekPt = out.mSeekPt + 1u;
+        return true;
+    } else {
+        out.mBuffer[out.mSeekPt] = t0;
+        // inferred: a temporary for the value the load at 0x6e68d0 read, used twice; no DWARF local holds it
+        u32 t1 = out.mSeekPt;
+        out.mSeekPt = t1 + 1u;
+        // inferred: a temporary for the value the load at 0x6e68d8 read, used once; no DWARF local holds it
+        u8 t2 = mDay;
+        if (out.mSeekPt >= out.mBufsiz) {
+            out.flush();
+            out.mBuffer[out.mSeekPt] = t2;
+        } else {
+            out.mBuffer[t1 + 1u] = t2;
+        }
+        out.mSeekPt = out.mSeekPt + 1u;
+        return true;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,6 +230,8 @@ __attribute__((weak)) bool cShopGoods::rDate::save(MtDataWriter& out) {
 // No out-of-line body: no code in the ELF
 // u8 cShopGoods::rDate::getDay();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShopGoods::rDate::MyDTI cShopGoods::rDate::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e71c4-0x006e71fd (called at rShopGoods.cpp:26)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e71c4-0x006e71fd (called at rShopGoods.h:74)
@@ -201,7 +240,7 @@ __attribute__((weak)) bool cShopGoods::rDate::save(MtDataWriter& out) {
 // Address: 0x006e5c40 - 0x006e5c8c (76 bytes)
 MtObject* cShopGoods::rDate::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cShopGoods::rDate;
+    return new (16u) cShopGoods::rDate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -226,7 +265,7 @@ const MtDTI& rShopGoods::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShopGoods::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShopGoods::DTI)->memAlloc(sz, align, ::rShopGoods::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShopGoods::DTI)->memAlloc(sz, align, rShopGoods::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +280,7 @@ inline void* rShopGoods::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rShopGoodsD0Ev at 0x01ab0eee-0x01ab0f0f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rShopGoods::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShopGoods::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShopGoods::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -255,7 +294,7 @@ inline void rShopGoods::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rShopGoods::rShopGoods() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    setAttribute(16u);
 }
 
 // Address: 0x01ab10a0 - 0x01ab10a8 (8 bytes)
@@ -273,14 +312,14 @@ MT_CTSTR rShopGoods::getExt() const {
 // Address: 0x01ab10b0 - 0x01ab10b6 (6 bytes)
 u16 rShopGoods::getDataVersion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u16>(259);
+    return 259;
 }
 
 // Address: 0x01ab0f30 - 0x01ab0f99 (105 bytes)
 bool rShopGoods::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    return this->::rShopGoods::loadData(r);
+    MtDataReader r(in, 4096u);
+    return loadData(r);
 }
 
 // Address: 0x01ab10c0 - 0x01ab130f (591 bytes)
@@ -325,6 +364,8 @@ __attribute__((weak)) bool rShopGoods::saveData(MtDataWriter& out, cShopGoods* p
 // No out-of-line body: no code in the ELF
 // void rShopGoods::setData(MtObject*, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShopGoods::MyDTI rShopGoods::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e71fd-0x006e723a (called at rShopGoods.cpp:213)
 //   in _GLOBAL__sub_I_rShopGoods.cpp at 0x006e71fd-0x006e723a (called at rShopGoods.h:160)
@@ -333,6 +374,6 @@ __attribute__((weak)) bool rShopGoods::saveData(MtDataWriter& out, cShopGoods* p
 // Address: 0x006e70b0 - 0x006e7105 (85 bytes)
 MtObject* rShopGoods::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShopGoods;
+    return new (16u) rShopGoods;
 }
 

@@ -119,6 +119,8 @@ __attribute__((weak)) u32 nDraw::MaterialStd::setDeferredLightingState(cDraw* pd
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 nDraw::MaterialStd::setRSMState(cDraw* pdraw, u32 pass);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nDraw::MaterialStd::MyDTI nDraw::MaterialStd::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::MaterialStd::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 

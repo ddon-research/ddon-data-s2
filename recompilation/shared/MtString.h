@@ -5,7 +5,20 @@
 
 // Forward declarations
 class MtAllocator;
+class cGameHttpClient;
+class cNetGameServer;
+class cQuakeParam;
+class cStageMap;
+class cTbl2ChatMacro;
+namespace nQuest { class cCycleContentsRankingInfo; }
+namespace nQuest { class cOrderCondition; }
+class rStageCustomPartsEx;
+class sCraftManager;
+class sItemManager;
 class sMain;
+class uGUIBase;
+class uGUIMissionResult;
+class uGUINewspaper;
 
 // Declarations
 class MtString;
@@ -21,8 +34,34 @@ using u8 = unsigned char;
 
 class MtString
 {
+    // inferred: cGameHttpClient::cServerEnvironmentInfo::cServerEnvironmentInfo names MtString::value, through its enclosing class cGameHttpClient
+    friend class cGameHttpClient;
+    // inferred: cNetGameServer::cChatLog::cChatLog names MtString::value, through its enclosing class cNetGameServer
+    friend class cNetGameServer;
+    // inferred: cQuakeParam::cQuakeParam names MtString::value
+    friend class cQuakeParam;
+    // inferred: cStageMap::cParam::cParam names MtString::value, through its enclosing class cStageMap
+    friend class cStageMap;
+    // inferred: cTbl2ChatMacro::cTbl2ChatMacro names MtString::value
+    friend class cTbl2ChatMacro;
+    // inferred: nQuest::cCycleContentsRankingInfo::cCycleContentsRankingInfo names MtString::value
+    friend class nQuest::cCycleContentsRankingInfo;
+    // inferred: nQuest::cOrderCondition::cOrderCondition names MtString::value
+    friend class nQuest::cOrderCondition;
+    // inferred: rStageCustomPartsEx::HemiSphLight::HemiSphLight names MtString::value, through its enclosing class rStageCustomPartsEx
+    friend class rStageCustomPartsEx;
+    // inferred: sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList names MtString::value, through its enclosing class sCraftManager
+    friend class sCraftManager;
+    // inferred: sItemManager::cItemBag::cCraftColorChange::cCraftColorChange names MtString::value, through its enclosing class sItemManager
+    friend class sItemManager;
     // inferred: sMain::initMemory names MtString::mpAllocator
     friend class sMain;
+    // inferred: uGUIBase::cReferenceUIChargesInfo::cData::cData names MtString::value, through its enclosing class uGUIBase
+    friend class uGUIBase;
+    // inferred: uGUIMissionResult::cPointList::cPointList names MtString::value, through its enclosing class uGUIMissionResult
+    friend class uGUIMissionResult;
+    // inferred: uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo names MtString::value, through its enclosing class uGUINewspaper
+    friend class uGUINewspaper;
 public:
     struct STRING;
 public:
@@ -121,5 +160,5 @@ protected:
 
 // Inline, no code of its own: checked where it is inlined.
 inline MtString::MtString() {
-    this->value = static_cast<MtString::STRING*>(nullptr);
+    this->value = nullptr;
 }

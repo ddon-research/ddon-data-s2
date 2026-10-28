@@ -29,7 +29,7 @@ const MtDTI& cpLegCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpLegCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpLegCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpLegCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cpLegCtrl::getAllocator() {
 // Address: 0x001945a0 - 0x001945e0 (64 bytes)
 void* cpLegCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpLegCtrl::getAllocator()->memAlloc(sz, align, ::cpLegCtrl::DTI.::MtDTI::getID());
+    return cpLegCtrl::getAllocator()->memAlloc(sz, align, cpLegCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cpLegCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpLegCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpLegCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpLegCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,54 +76,54 @@ cpLegCtrl::cpLegCtrl() {
 // Also emitted as: _ZN9cpLegCtrlD0Ev at 0x00194a70
 cpLegCtrl::~cpLegCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsLegCtrlCenter != static_cast<uCnsLegCtrl*>(nullptr)) {
-        this->mpCnsLegCtrlCenter->remove();
-        if (this->mpCnsLegCtrlCenter != static_cast<uCnsLegCtrl*>(nullptr)) {
-            delete this->mpCnsLegCtrlCenter;
-            this->mpCnsLegCtrlCenter = static_cast<uCnsLegCtrl*>(nullptr);
+    if (mpCnsLegCtrlCenter != nullptr) {
+        mpCnsLegCtrlCenter->remove();
+        if (mpCnsLegCtrlCenter != nullptr) {
+            delete mpCnsLegCtrlCenter;
+            mpCnsLegCtrlCenter = nullptr;
         }
     }
-    if (this->mpResource == static_cast<rLegCtrl*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->mpResource->::cResource::release();
-    this->mpResource = static_cast<rLegCtrl*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // Address: 0x00194b00 - 0x00194b0c (12 bytes)
 void cpLegCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uCharacter*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uCharacter*>(pOwner);
 }
 
 // Address: 0x00194ba0 - 0x00194ba5 (5 bytes)
 void cpLegCtrl::setActive(bool active) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mActive = active;
+    mActive = active;
 }
 
 // Address: 0x00194b10 - 0x00194b84 (116 bytes)
 void cpLegCtrl::setResource(rLegCtrl* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rLegCtrl*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rLegCtrl*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes == static_cast<rLegCtrl*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    this->mpResource = pRes;
-    pRes->::cResource::addRef();
-    if (this->mpCnsLegCtrlCenter == static_cast<uCnsLegCtrl*>(nullptr)) {
+    mpResource = pRes;
+    pRes->addRef();
+    if (mpCnsLegCtrlCenter == nullptr) {
         return;
     }
-    this->mpCnsLegCtrlCenter->remove();
-    if (this->mpCnsLegCtrlCenter == static_cast<uCnsLegCtrl*>(nullptr)) {
+    mpCnsLegCtrlCenter->remove();
+    if (mpCnsLegCtrlCenter == nullptr) {
         return;
     }
-    delete this->mpCnsLegCtrlCenter;
-    this->mpCnsLegCtrlCenter = static_cast<uCnsLegCtrl*>(nullptr);
+    delete mpCnsLegCtrlCenter;
+    mpCnsLegCtrlCenter = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -167,22 +167,21 @@ __attribute__((weak)) bool cpLegCtrl::updateLegCtrl() {
 // Address: 0x00194bb0 - 0x00194bf5 (69 bytes)
 void cpLegCtrl::enableConstraint(bool enable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsLand != false) {
-        if (this->mpCnsLegCtrlCenter != static_cast<uCnsLegCtrl*>(nullptr)) {
-            if (this->::cpComponent::mActive != false) {
-                this->mpCnsLegCtrlCenter->::uConstraint::mEnable = enable;
+    if (mIsLand) {
+        if (mpCnsLegCtrlCenter != nullptr) {
+            if (mActive) {
+                mpCnsLegCtrlCenter->mEnable = enable;
             } else {
-                if (0.0f > this->mDiff) {
-                    this->mpCnsLegCtrlCenter->::uConstraint::mEnable = enable;
+                if (0.0f > mDiff) {
+                    mpCnsLegCtrlCenter->mEnable = enable;
                 } else {
-                    this->mpCnsLegCtrlCenter->::uConstraint::mEnable = false;
+                    mpCnsLegCtrlCenter->mEnable = false;
                 }
             }
         }
     } else {
-        if (this->mpCnsLegCtrlCenter == static_cast<uCnsLegCtrl*>(nullptr)) {
-        } else {
-            this->mpCnsLegCtrlCenter->::uConstraint::mEnable = false;
+        if (mpCnsLegCtrlCenter != nullptr) {
+            mpCnsLegCtrlCenter->mEnable = false;
         }
     }
 }
@@ -277,6 +276,8 @@ __attribute__((weak)) cpLegCtrl::LEG_IK_QUALITY cpLegCtrl::calcLegIkQuality() co
     DDON_STUB("cpLegCtrl::calcLegIkQuality")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpLegCtrl::MyDTI cpLegCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpLegCtrl.cpp at 0x0019741f-0x0019745c (called at cpLegCtrl.cpp:36)

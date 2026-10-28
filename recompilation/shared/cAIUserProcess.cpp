@@ -44,7 +44,7 @@ const MtDTI& cAICopiableParameter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20cAICopiableParameterD0Ev at 0x01b6cb2e-0x01b6cb4f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAICopiableParameter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAICopiableParameter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAICopiableParameter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,6 +74,8 @@ __attribute__((weak)) void cAICopiableParameter::copy(cAICopiableParameter* pPar
     DDON_STUB("cAICopiableParameter::copy")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAICopiableParameter::MyDTI cAICopiableParameter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAICopiableParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -158,14 +160,14 @@ __attribute__((weak)) void cAIUserProcess::createProperty(MtPropertyList& s) {
 s32 cAIUserProcess::callProcessWithExamine(MtObject* pOwner, MtObject* pParam, MtObject* pCaller, bool permitsCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x106031e, used twice; no DWARF local holds it
-    cAIUserProcess::EXAMINE_RESULT t0 = this->examine(pOwner, pParam, pCaller, permitsCaller);
-    if (t0 == static_cast<cAIUserProcess::EXAMINE_RESULT>(0)) {
-        return static_cast<s32>(0);
+    EXAMINE_RESULT t0 = examine(pOwner, pParam, pCaller, permitsCaller);
+    if (t0 == EXR_FAIL) {
+        return 0;
     } else {
-        if (t0 == static_cast<cAIUserProcess::EXAMINE_RESULT>(2)) {
-            return this->process(pCaller, pParam, pCaller);
+        if (t0 == EXR_PASS_CALLER) {
+            return process(pCaller, pParam, pCaller);
         } else {
-            return this->process(pOwner, pParam, pCaller);
+            return process(pOwner, pParam, pCaller);
         }
     }
 }
@@ -179,95 +181,97 @@ s32 cAIUserProcess::callProcessWithExamine(MtObject* pOwner, MtObject* pParam, M
 // Address: 0x01b6c640 - 0x01b6c643 (3 bytes)
 s32 cAIUserProcess::process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x01060370 - 0x010603de (110 bytes)
 cAIUserProcess::EXAMINE_RESULT cAIUserProcess::examine(MtObject* pOwner, MtObject* pParam, MtObject* pCaller, bool permitsCaller) {
     // DWARF local not rendered: EXAMINE_RESULT result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pOwner != static_cast<MtObject*>(nullptr)) {
-        if (pCaller != static_cast<MtObject*>(nullptr)) {
-            if (permitsCaller != false) {
-                if (pCaller->getDTI().mID != this->mpOwnerDTI->mID) {
-                    if (pParam != static_cast<MtObject*>(nullptr)) {
-                        if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+    if (pOwner != nullptr) {
+        if (pCaller != nullptr) {
+            if (permitsCaller) {
+                if (pCaller->getDTI().mID != mpOwnerDTI->mID) {
+                    if (pParam != nullptr) {
+                        if (mpParamDTI == nullptr) {
+                            return EXR_FAIL;
                         } else {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                            return EXR_PASS;
                         }
                     } else {
-                        if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                        if (mpParamDTI == nullptr) {
+                            return EXR_PASS;
                         } else {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                            return EXR_FAIL;
                         }
                     }
                 } else {
-                    if (pParam != static_cast<MtObject*>(nullptr)) {
-                        if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                    if (pParam != nullptr) {
+                        if (mpParamDTI == nullptr) {
+                            return EXR_FAIL;
                         } else {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(2);
+                            return EXR_PASS_CALLER;
                         }
                     } else {
-                        if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(2);
+                        if (mpParamDTI == nullptr) {
+                            return EXR_PASS_CALLER;
                         } else {
-                            return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                            return EXR_FAIL;
                         }
                     }
                 }
             } else {
-                if (pParam != static_cast<MtObject*>(nullptr)) {
-                    if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                        return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                if (pParam != nullptr) {
+                    if (mpParamDTI == nullptr) {
+                        return EXR_FAIL;
                     } else {
-                        return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                        return EXR_PASS;
                     }
                 } else {
-                    if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                        return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                    if (mpParamDTI == nullptr) {
+                        return EXR_PASS;
                     } else {
-                        return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                        return EXR_FAIL;
                     }
                 }
             }
         } else {
-            if (pParam != static_cast<MtObject*>(nullptr)) {
-                if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+            if (pParam != nullptr) {
+                if (mpParamDTI == nullptr) {
+                    return EXR_FAIL;
                 } else {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                    return EXR_PASS;
                 }
             } else {
-                if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                if (mpParamDTI == nullptr) {
+                    return EXR_PASS;
                 } else {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                    return EXR_FAIL;
                 }
             }
         }
     } else {
-        if (this->mpOwnerDTI == static_cast<const MtDTI*>(nullptr)) {
-            if (pParam != static_cast<MtObject*>(nullptr)) {
-                if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+        if (mpOwnerDTI == nullptr) {
+            if (pParam != nullptr) {
+                if (mpParamDTI == nullptr) {
+                    return EXR_FAIL;
                 } else {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                    return EXR_PASS;
                 }
             } else {
-                if (this->mpParamDTI == static_cast<const MtDTI*>(nullptr)) {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(1);
+                if (mpParamDTI == nullptr) {
+                    return EXR_PASS;
                 } else {
-                    return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+                    return EXR_FAIL;
                 }
             }
         } else {
-            return static_cast<cAIUserProcess::EXAMINE_RESULT>(0);
+            return EXR_FAIL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIUserProcess::MyDTI cAIUserProcess::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIUserProcess::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -299,7 +303,7 @@ const MtDTI& cAIUserProcessCallback::getDTI() const {
 // Address: 0x01060480 - 0x010604c0 (64 bytes)
 void* cAIUserProcessCallback::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cAIUserProcessCallback::DTI)->memAlloc(sz, align, ::cAIUserProcessCallback::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAIUserProcessCallback::DTI)->memAlloc(sz, align, cAIUserProcessCallback::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -342,12 +346,14 @@ __attribute__((weak)) void cAIUserProcessCallback::createProperty(MtPropertyList
 // Address: 0x01060620 - 0x01060647 (39 bytes)
 s32 cAIUserProcessCallback::process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFunc != static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(0)) {
-        return static_cast<s32>((pOwner->*this->mpFunc)(pParam, pCaller));
+    if (mpFunc != static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(0)) {
+        return static_cast<s32>((pOwner->*mpFunc)(pParam, pCaller));
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIUserProcessCallback::MyDTI cAIUserProcessCallback::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIUserProcessCallback::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

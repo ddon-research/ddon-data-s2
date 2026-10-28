@@ -38,7 +38,7 @@ const MtDTI& nDraw::Scene::getDTI() const {
 // Address: 0x0115e180 - 0x0115e1c0 (64 bytes)
 void* nDraw::Scene::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::Scene::DTI)->memAlloc(sz, align, ::nDraw::Scene::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::Scene::DTI)->memAlloc(sz, align, ::nDraw::Scene::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -194,6 +194,8 @@ __attribute__((weak)) void nDraw::Scene::getLightAccumulationFormat(nDraw::FORMA
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 nDraw::Scene::setupAntiAliasType(nDraw::ANTIALIAS_TYPE type, nDraw::FORMAT_TYPE format);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::Scene::MyDTI nDraw::Scene::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Scene::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

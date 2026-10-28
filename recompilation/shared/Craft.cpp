@@ -26,7 +26,7 @@ const MtDTI& CDataCraftColorant::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftColorant::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftColorant::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftColorant::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataCraftColorant::getAllocator() {
 // Address: 0x003d1250 - 0x003d1290 (64 bytes)
 void* CDataCraftColorant::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftColorant::getAllocator()->memAlloc(sz, align, ::CDataCraftColorant::DTI.::MtDTI::getID());
+    return CDataCraftColorant::getAllocator()->memAlloc(sz, align, CDataCraftColorant::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ void* CDataCraftColorant::operator new(size_t sz, u32 align) {
 //   in sCraftManager::cCraftPawnCtrl::createCraftColorList at 0x0075a2da-0x0075a2f1, 0x0075a41d-0x0075a490 (called at Craft.h:556)
 // CDataCraftColorant::CDataCraftColorant(const char* in_strItemUID, u8 in_ItemNum);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftColorant::MyDTI CDataCraftColorant::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d216-0x0041d24f (called at CraftImplement.inc:15)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d216-0x0041d24f (called at Craft.h:543)
@@ -77,7 +79,7 @@ void* CDataCraftColorant::operator new(size_t sz, u32 align) {
 // Address: 0x003d1200 - 0x003d124c (76 bytes)
 MtObject* CDataCraftColorant::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftColorant;
+    return new (16u) CDataCraftColorant;
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,7 +96,7 @@ const MtDTI& CDataCraftElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,7 +105,7 @@ inline MtAllocator* CDataCraftElement::getAllocator() {
 // Address: 0x003d1150 - 0x003d1190 (64 bytes)
 void* CDataCraftElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftElement::getAllocator()->memAlloc(sz, align, ::CDataCraftElement::DTI.::MtDTI::getID());
+    return CDataCraftElement::getAllocator()->memAlloc(sz, align, CDataCraftElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,6 +141,8 @@ void* CDataCraftElement::operator new(size_t sz, u32 align) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // CDataCraftElement::CDataCraftElement(const char* in_strItemUID, u8 in_SlotNo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftElement::MyDTI CDataCraftElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d1dd-0x0041d216 (called at CraftImplement.inc:14)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d1dd-0x0041d216 (called at Craft.h:490)
@@ -147,7 +151,7 @@ void* CDataCraftElement::operator new(size_t sz, u32 align) {
 // Address: 0x003d1100 - 0x003d114c (76 bytes)
 MtObject* CDataCraftElement::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftElement;
+    return new (16u) CDataCraftElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,7 +168,7 @@ const MtDTI& CDataCraftMaterial::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftMaterial::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftMaterial::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftMaterial::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,7 +177,7 @@ inline MtAllocator* CDataCraftMaterial::getAllocator() {
 // Address: 0x003d09a0 - 0x003d09e0 (64 bytes)
 void* CDataCraftMaterial::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftMaterial::getAllocator()->memAlloc(sz, align, ::CDataCraftMaterial::DTI.::MtDTI::getID());
+    return CDataCraftMaterial::getAllocator()->memAlloc(sz, align, CDataCraftMaterial::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -207,6 +211,8 @@ void* CDataCraftMaterial::operator new(size_t sz, u32 align) {
 //   in sCraftManager::cCraftPawnCtrl::isCreateMaterialSub at 0x00758f49-0x00758f5e, 0x007590bb-0x00759143 (called at Craft.h:34)
 // CDataCraftMaterial::CDataCraftMaterial(const char* in_strItemUID, u32 in_ItemNum);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftMaterial::MyDTI CDataCraftMaterial::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d04e-0x0041d087 (called at CraftImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d04e-0x0041d087 (called at Craft.h:21)
@@ -215,7 +221,7 @@ void* CDataCraftMaterial::operator new(size_t sz, u32 align) {
 // Address: 0x003d0950 - 0x003d099f (79 bytes)
 MtObject* CDataCraftMaterial::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftMaterial;
+    return new (16u) CDataCraftMaterial;
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,7 +238,7 @@ const MtDTI& CDataCraftPawnInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftPawnInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftPawnInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftPawnInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +247,7 @@ inline MtAllocator* CDataCraftPawnInfo::getAllocator() {
 // Address: 0x003d0aa0 - 0x003d0ae0 (64 bytes)
 void* CDataCraftPawnInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftPawnInfo::getAllocator()->memAlloc(sz, align, ::CDataCraftPawnInfo::DTI.::MtDTI::getID());
+    return CDataCraftPawnInfo::getAllocator()->memAlloc(sz, align, CDataCraftPawnInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -256,7 +262,7 @@ void* CDataCraftPawnInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d0b10 - 0x003d0b3a (42 bytes)
 __attribute__((weak)) void CDataCraftPawnInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftPawnInfo::getAllocator()->memFree(p_addr);
+    CDataCraftPawnInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -278,6 +284,8 @@ __attribute__((weak)) void CDataCraftPawnInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataCraftPawnInfo::CDataCraftPawnInfo(u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftPawnInfo::MyDTI CDataCraftPawnInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d087-0x0041d0c0 (called at CraftImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d087-0x0041d0c0 (called at Craft.h:74)
@@ -286,7 +294,7 @@ __attribute__((weak)) void CDataCraftPawnInfo::operator delete(void* p_addr) {
 // Address: 0x003d0a50 - 0x003d0a9f (79 bytes)
 MtObject* CDataCraftPawnInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftPawnInfo;
+    return new (16u) CDataCraftPawnInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -303,7 +311,7 @@ const MtDTI& CDataCraftPawnList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftPawnList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftPawnList::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftPawnList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +320,7 @@ inline MtAllocator* CDataCraftPawnList::getAllocator() {
 // Address: 0x003d0cc0 - 0x003d0d00 (64 bytes)
 void* CDataCraftPawnList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftPawnList::getAllocator()->memAlloc(sz, align, ::CDataCraftPawnList::DTI.::MtDTI::getID());
+    return CDataCraftPawnList::getAllocator()->memAlloc(sz, align, CDataCraftPawnList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -327,7 +335,7 @@ void* CDataCraftPawnList::operator new(size_t sz, u32 align) {
 // Address: 0x003d0d30 - 0x003d0d5a (42 bytes)
 __attribute__((weak)) void CDataCraftPawnList::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftPawnList::getAllocator()->memFree(p_addr);
+    CDataCraftPawnList::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -349,6 +357,8 @@ __attribute__((weak)) void CDataCraftPawnList::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataCraftPawnList::CDataCraftPawnList(u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftPawnList::MyDTI CDataCraftPawnList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d0f9-0x0041d132 (called at CraftImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d0f9-0x0041d132 (called at Craft.h:173)
@@ -357,7 +367,7 @@ __attribute__((weak)) void CDataCraftPawnList::operator delete(void* p_addr) {
 // Address: 0x003d0c70 - 0x003d0cc0 (80 bytes)
 MtObject* CDataCraftPawnList::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftPawnList;
+    return new (16u) CDataCraftPawnList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -374,7 +384,7 @@ const MtDTI& CDataCraftProduct::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftProduct::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftProduct::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftProduct::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -383,7 +393,7 @@ inline MtAllocator* CDataCraftProduct::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataCraftProduct::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftProduct::DTI)->memAlloc(sz, align, ::CDataCraftProduct::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataCraftProduct::DTI)->memAlloc(sz, align, CDataCraftProduct::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -398,7 +408,7 @@ inline void* CDataCraftProduct::operator new(size_t sz, u32 align) {
 // Address: 0x003d10a0 - 0x003d10ca (42 bytes)
 __attribute__((weak)) void CDataCraftProduct::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftProduct::getAllocator()->memFree(p_addr);
+    CDataCraftProduct::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -420,6 +430,8 @@ __attribute__((weak)) void CDataCraftProduct::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataCraftProduct::CDataCraftProduct(u32, u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftProduct::MyDTI CDataCraftProduct::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d1a4-0x0041d1dd (called at CraftImplement.inc:13)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d1a4-0x0041d1dd (called at Craft.h:430)
@@ -428,7 +440,7 @@ __attribute__((weak)) void CDataCraftProduct::operator delete(void* p_addr) {
 // Address: 0x003d1010 - 0x003d1062 (82 bytes)
 MtObject* CDataCraftProduct::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftProduct;
+    return new (16u) CDataCraftProduct;
 }
 
 // No out-of-line body: no code in the ELF
@@ -445,7 +457,7 @@ const MtDTI& CDataCraftProductInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftProductInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftProductInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftProductInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -454,7 +466,7 @@ inline MtAllocator* CDataCraftProductInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataCraftProductInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftProductInfo::DTI)->memAlloc(sz, align, ::CDataCraftProductInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataCraftProductInfo::DTI)->memAlloc(sz, align, CDataCraftProductInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -469,7 +481,7 @@ inline void* CDataCraftProductInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d0fb0 - 0x003d0fda (42 bytes)
 __attribute__((weak)) void CDataCraftProductInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftProductInfo::getAllocator()->memFree(p_addr);
+    CDataCraftProductInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -491,6 +503,8 @@ __attribute__((weak)) void CDataCraftProductInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataCraftProductInfo::CDataCraftProductInfo(u32, u32, u8, u32, u32, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftProductInfo::MyDTI CDataCraftProductInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d16b-0x0041d1a4 (called at CraftImplement.inc:12)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d16b-0x0041d1a4 (called at Craft.h:349)
@@ -499,7 +513,7 @@ __attribute__((weak)) void CDataCraftProductInfo::operator delete(void* p_addr) 
 // Address: 0x003d0f10 - 0x003d0f74 (100 bytes)
 MtObject* CDataCraftProductInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftProductInfo;
+    return new (16u) CDataCraftProductInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -516,7 +530,7 @@ const MtDTI& CDataCraftProgress::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftProgress::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftProgress::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftProgress::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -525,7 +539,7 @@ inline MtAllocator* CDataCraftProgress::getAllocator() {
 // Address: 0x003d0e40 - 0x003d0e80 (64 bytes)
 void* CDataCraftProgress::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftProgress::getAllocator()->memAlloc(sz, align, ::CDataCraftProgress::DTI.::MtDTI::getID());
+    return CDataCraftProgress::getAllocator()->memAlloc(sz, align, CDataCraftProgress::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -540,7 +554,7 @@ void* CDataCraftProgress::operator new(size_t sz, u32 align) {
 // Address: 0x003d0eb0 - 0x003d0eda (42 bytes)
 __attribute__((weak)) void CDataCraftProgress::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftProgress::getAllocator()->memFree(p_addr);
+    CDataCraftProgress::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -562,6 +576,8 @@ __attribute__((weak)) void CDataCraftProgress::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataCraftProgress::CDataCraftProgress(const CCraftPawnInfo&, const MtTypedArray<CDataCraftPawnInfo>&, u32, u32, s32, u32, u32, u32, b8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftProgress::MyDTI CDataCraftProgress::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d132-0x0041d16b (called at CraftImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d132-0x0041d16b (called at Craft.h:240)
@@ -570,7 +586,7 @@ __attribute__((weak)) void CDataCraftProgress::operator delete(void* p_addr) {
 // Address: 0x003d0d90 - 0x003d0e3a (170 bytes)
 MtObject* CDataCraftProgress::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftProgress;
+    return new (16u) CDataCraftProgress;
 }
 
 // No out-of-line body: no code in the ELF
@@ -587,7 +603,7 @@ const MtDTI& CDataCraftSkillAnalyzeResult::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftSkillAnalyzeResult::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftSkillAnalyzeResult::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftSkillAnalyzeResult::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -596,7 +612,7 @@ inline MtAllocator* CDataCraftSkillAnalyzeResult::getAllocator() {
 // Address: 0x003d1a20 - 0x003d1a60 (64 bytes)
 void* CDataCraftSkillAnalyzeResult::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftSkillAnalyzeResult::getAllocator()->memAlloc(sz, align, ::CDataCraftSkillAnalyzeResult::DTI.::MtDTI::getID());
+    return CDataCraftSkillAnalyzeResult::getAllocator()->memAlloc(sz, align, CDataCraftSkillAnalyzeResult::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -611,7 +627,7 @@ void* CDataCraftSkillAnalyzeResult::operator new(size_t sz, u32 align) {
 // Address: 0x003d1a90 - 0x003d1aba (42 bytes)
 __attribute__((weak)) void CDataCraftSkillAnalyzeResult::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftSkillAnalyzeResult::getAllocator()->memFree(p_addr);
+    CDataCraftSkillAnalyzeResult::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -633,6 +649,8 @@ __attribute__((weak)) void CDataCraftSkillAnalyzeResult::operator delete(void* p
 // No out-of-line body: no code in the ELF
 // CDataCraftSkillAnalyzeResult::CDataCraftSkillAnalyzeResult(u8, u8, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftSkillAnalyzeResult::MyDTI CDataCraftSkillAnalyzeResult::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d3a5-0x0041d3de (called at CraftImplement.inc:22)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d3a5-0x0041d3de (called at Craft.h:1033)
@@ -641,7 +659,7 @@ __attribute__((weak)) void CDataCraftSkillAnalyzeResult::operator delete(void* p
 // Address: 0x003d19d0 - 0x003d1a20 (80 bytes)
 MtObject* CDataCraftSkillAnalyzeResult::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftSkillAnalyzeResult;
+    return new (16u) CDataCraftSkillAnalyzeResult;
 }
 
 // No out-of-line body: no code in the ELF
@@ -658,7 +676,7 @@ const MtDTI& CDataCraftSupportPawnID::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftSupportPawnID::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftSupportPawnID::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftSupportPawnID::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -667,7 +685,7 @@ inline MtAllocator* CDataCraftSupportPawnID::getAllocator() {
 // Address: 0x003d0bc0 - 0x003d0c00 (64 bytes)
 void* CDataCraftSupportPawnID::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftSupportPawnID::getAllocator()->memAlloc(sz, align, ::CDataCraftSupportPawnID::DTI.::MtDTI::getID());
+    return CDataCraftSupportPawnID::getAllocator()->memAlloc(sz, align, CDataCraftSupportPawnID::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -682,7 +700,7 @@ void* CDataCraftSupportPawnID::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN23CDataCraftSupportPawnIDD0Ev at 0x01a53690-0x01a536ba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void CDataCraftSupportPawnID::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::CDataCraftSupportPawnID::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(CDataCraftSupportPawnID::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -704,6 +722,8 @@ inline void CDataCraftSupportPawnID::operator delete(void* p_addr) {
 //   in sCraftManager::cCraftPawnCtrl::createSupportPawnList at 0x007594d4-0x007594e3, 0x007595ca-0x007595d6 (called at Craft.h:137)
 // CDataCraftSupportPawnID::CDataCraftSupportPawnID(u32 in_PawnID);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftSupportPawnID::MyDTI CDataCraftSupportPawnID::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d0c0-0x0041d0f9 (called at CraftImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d0c0-0x0041d0f9 (called at Craft.h:127)
@@ -712,7 +732,7 @@ inline void CDataCraftSupportPawnID::operator delete(void* p_addr) {
 // Address: 0x003d0b70 - 0x003d0bb7 (71 bytes)
 MtObject* CDataCraftSupportPawnID::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftSupportPawnID;
+    return new (16u) CDataCraftSupportPawnID;
 }
 
 // No out-of-line body: no code in the ELF
@@ -729,7 +749,7 @@ const MtDTI& CDataCraftTimeSaveCost::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCraftTimeSaveCost::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCraftTimeSaveCost::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCraftTimeSaveCost::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -738,7 +758,7 @@ inline MtAllocator* CDataCraftTimeSaveCost::getAllocator() {
 // Address: 0x003d1900 - 0x003d1940 (64 bytes)
 void* CDataCraftTimeSaveCost::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCraftTimeSaveCost::getAllocator()->memAlloc(sz, align, ::CDataCraftTimeSaveCost::DTI.::MtDTI::getID());
+    return CDataCraftTimeSaveCost::getAllocator()->memAlloc(sz, align, CDataCraftTimeSaveCost::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -753,7 +773,7 @@ void* CDataCraftTimeSaveCost::operator new(size_t sz, u32 align) {
 // Address: 0x003d1970 - 0x003d199a (42 bytes)
 __attribute__((weak)) void CDataCraftTimeSaveCost::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCraftTimeSaveCost::getAllocator()->memFree(p_addr);
+    CDataCraftTimeSaveCost::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -775,6 +795,8 @@ __attribute__((weak)) void CDataCraftTimeSaveCost::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataCraftTimeSaveCost::CDataCraftTimeSaveCost(u8, u8, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCraftTimeSaveCost::MyDTI CDataCraftTimeSaveCost::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d36c-0x0041d3a5 (called at CraftImplement.inc:21)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d36c-0x0041d3a5 (called at Craft.h:966)
@@ -783,6 +805,6 @@ __attribute__((weak)) void CDataCraftTimeSaveCost::operator delete(void* p_addr)
 // Address: 0x003d18b0 - 0x003d1900 (80 bytes)
 MtObject* CDataCraftTimeSaveCost::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCraftTimeSaveCost;
+    return new (16u) CDataCraftTimeSaveCost;
 }
 

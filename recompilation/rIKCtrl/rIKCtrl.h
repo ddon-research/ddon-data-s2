@@ -119,13 +119,13 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cIKCtrl::cIKCtrl() {
-    this->mDummy = static_cast<u32>(0);
+    this->mDummy = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rIKCtrl::rIKCtrl() {
-    this->mRArmType = static_cast<u32>(0);
-    this->mLArmType = static_cast<u32>(0);
-    this->mRLegType = static_cast<u32>(1);
-    this->mLLegType = static_cast<u32>(1);
+    this->mRArmType = 0;
+    this->mLArmType = 0;
+    this->mRLegType = 1;
+    this->mLLegType = 1;
 }

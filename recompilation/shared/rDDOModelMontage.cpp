@@ -25,7 +25,7 @@ const MtDTI& rDDOModelMontage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rDDOModelMontage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI);
+    return MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* rDDOModelMontage::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDDOModelMontage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI)->memAlloc(sz, align, ::rDDOModelMontage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI)->memAlloc(sz, align, rDDOModelMontage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rDDOModelMontage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rDDOModelMontage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,23 +63,23 @@ inline void rDDOModelMontage::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rDDOModelMontage::rDDOModelMontage() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpHeader = static_cast<rDDOModelMontage::HEADER*>(nullptr);
+    setAttribute(16u);
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065e020 - 0x0065e066 (70 bytes)
 // Also emitted as: _ZN16rDDOModelMontageD0Ev at 0x0065e070
 rDDOModelMontage::~rDDOModelMontage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rDDOModelMontage::HEADER*>(nullptr);
+    MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065e0d0 - 0x0065e101 (49 bytes)
 void rDDOModelMontage::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::rDDOModelMontage::getAllocator()->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rDDOModelMontage::HEADER*>(nullptr);
+    rDDOModelMontage::getAllocator()->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065edb0 - 0x0065ee80 (208 bytes)
@@ -172,9 +172,9 @@ bool rDDOModelMontage::isBodyShakeBust(u32 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: u8 used as bool
-    if (this->::rDDOModelMontage::getModelType() <= static_cast<u32>(9)) {
-        if (((static_cast<unsigned long>(658) >> static_cast<unsigned long>(this->::rDDOModelMontage::getModelType() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            return static_cast<bool>(this->mpHeader->body[no].shakeBust);
+    if (getModelType() <= 9u) {
+        if (((658ul >> static_cast<unsigned long>(getModelType() & 31u)) & 1ul) != 0) {
+            return static_cast<bool>(mpHeader->body[no].shakeBust);
         }
     }
     return true;
@@ -261,9 +261,9 @@ bool rDDOModelMontage::isPlayExpression(u32 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: u8 used as bool
-    if (this->::rDDOModelMontage::getModelType() <= static_cast<u32>(9)) {
-        if (((static_cast<unsigned long>(641) >> static_cast<unsigned long>(this->::rDDOModelMontage::getModelType() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            return static_cast<bool>(this->mpHeader->expression[no].playExpression);
+    if (getModelType() <= 9u) {
+        if (((641ul >> static_cast<unsigned long>(getModelType() & 31u)) & 1ul) != 0) {
+            return static_cast<bool>(mpHeader->expression[no].playExpression);
         }
     }
     return true;
@@ -273,7 +273,7 @@ bool rDDOModelMontage::isPlayExpression(u32 no) {
 u8 rDDOModelMontage::getSeType(u32 no) {
     // DWARF local not rendered: SE_INFO* ps;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpHeader->se[no].soundType;
+    return mpHeader->se[no].soundType;
 }
 
 // Address: 0x0065e200 - 0x0065e57f (895 bytes)
@@ -317,6 +317,8 @@ __attribute__((weak)) void rDDOModelMontage::applyCoreColorBJ(cBakeModel* pBakeM
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDDOModelMontage::MyDTI rDDOModelMontage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rDDOModelMontage.cpp at 0x0065ef7f-0x0065efbc (called at rDDOModelMontage.cpp:32)
 //   in _GLOBAL__sub_I_rDDOModelMontage.cpp at 0x0065ef7f-0x0065efbc (called at rDDOModelMontage.h:33)
@@ -325,6 +327,6 @@ __attribute__((weak)) void rDDOModelMontage::applyCoreColorBJ(cBakeModel* pBakeM
 // Address: 0x0065df40 - 0x0065df9d (93 bytes)
 MtObject* rDDOModelMontage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDDOModelMontage;
+    return new (16u) rDDOModelMontage;
 }
 

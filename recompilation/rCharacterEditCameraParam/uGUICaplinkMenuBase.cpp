@@ -60,7 +60,7 @@ const MtDTI& uGUICaplinkMenuBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,71 +91,65 @@ __attribute__((weak)) void uGUICaplinkMenuBase::createProperty(MtPropertyList& s
 // Address: 0x009c3c90 - 0x009c3d67 (215 bytes)
 void uGUICaplinkMenuBase::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUITextBox != static_cast<uGUIDialogTextBox*>(nullptr)) {
-        this->mpGUITextBox->kill();
-        this->mpGUITextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+    if (mpGUITextBox != nullptr) {
+        mpGUITextBox->kill();
+        mpGUITextBox = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
-        this->mpGUIPopCmd->kill();
-        this->mpGUIPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+    if (mpGUIPopCmd != nullptr) {
+        mpGUIPopCmd->kill();
+        mpGUIPopCmd = nullptr;
     }
-    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
-        this->mpGUICaplinkProfile->kill();
-        this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
+    if (mpGUICaplinkProfile != nullptr) {
+        mpGUICaplinkProfile->kill();
+        mpGUICaplinkProfile = nullptr;
     }
-    if (this->mpGUICaplinkMessage != static_cast<uGUICaplinkMessage*>(nullptr)) {
-        this->mpGUICaplinkMessage->kill();
-        this->mpGUICaplinkMessage = static_cast<uGUICaplinkMessage*>(nullptr);
+    if (mpGUICaplinkMessage != nullptr) {
+        mpGUICaplinkMessage->kill();
+        mpGUICaplinkMessage = nullptr;
     }
-    if (this->mpGUICaplinkFilter != static_cast<uGUICaplinkFilter*>(nullptr)) {
-        this->mpGUICaplinkFilter->kill();
-        this->mpGUICaplinkFilter = static_cast<uGUICaplinkFilter*>(nullptr);
+    if (mpGUICaplinkFilter != nullptr) {
+        mpGUICaplinkFilter->kill();
+        mpGUICaplinkFilter = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009c3d70 - 0x009c3e49 (217 bytes)
 void uGUICaplinkMenuBase::updatePtr() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpGUITextBox != static_cast<uGUIDialogTextBox*>(nullptr)) {
-        if (this->mpGUITextBox->::cUnit::isEnable()) {
-        } else {
-            this->mpGUITextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+    if (mpGUITextBox != nullptr) {
+        if (!mpGUITextBox->isEnable()) {
+            mpGUITextBox = nullptr;
         }
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
-        } else {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUIPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
-        if (this->mpGUIPopCmd->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+    if (mpGUIPopCmd != nullptr) {
+        if (!mpGUIPopCmd->isEnable()) {
+            mpGUIPopCmd = nullptr;
         }
     }
-    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
-        if (this->mpGUICaplinkProfile->::cUnit::isEnable()) {
-        } else {
-            this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
+    if (mpGUICaplinkProfile != nullptr) {
+        if (!mpGUICaplinkProfile->isEnable()) {
+            mpGUICaplinkProfile = nullptr;
         }
     }
-    if (this->mpGUICaplinkMessage != static_cast<uGUICaplinkMessage*>(nullptr)) {
-        if (this->mpGUICaplinkMessage->::cUnit::isEnable()) {
-        } else {
-            this->mpGUICaplinkMessage = static_cast<uGUICaplinkMessage*>(nullptr);
+    if (mpGUICaplinkMessage != nullptr) {
+        if (!mpGUICaplinkMessage->isEnable()) {
+            mpGUICaplinkMessage = nullptr;
         }
     }
-    if (this->mpGUICaplinkFilter != static_cast<uGUICaplinkFilter*>(nullptr)) {
-        if (this->mpGUICaplinkFilter->::cUnit::isEnable()) {
-        } else {
-            this->mpGUICaplinkFilter = static_cast<uGUICaplinkFilter*>(nullptr);
+    if (mpGUICaplinkFilter != nullptr) {
+        if (!mpGUICaplinkFilter->isEnable()) {
+            mpGUICaplinkFilter = nullptr;
         }
     }
 }
@@ -163,7 +157,7 @@ void uGUICaplinkMenuBase::updatePtr() {
 // Address: 0x009c3e50 - 0x009c3e55 (5 bytes)
 void uGUICaplinkMenuBase::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::update();
+    this->uGUIBase::update();
 }
 
 // No out-of-line body: 7 inlined copies in 7 functions (49 bytes)
@@ -194,18 +188,18 @@ __attribute__((weak)) void uGUICaplinkMenuBase::initProf(MT_CTSTR unique_id) {
 // Address: 0x009c4030 - 0x009c4097 (103 bytes)
 void uGUICaplinkMenuBase::updateProf() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
-        if (this->mpGUICaplinkProfile->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            this->mpGUICaplinkProfile->::uGUIBase::mEndType = static_cast<u32>(0);
-            this->mpGUICaplinkProfile->end();
-            this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
-            this->returnFlow();
+    if (mpGUICaplinkProfile != nullptr) {
+        if (mpGUICaplinkProfile->mResult == RESULT_EXIT) {
+            mpGUICaplinkProfile->mEndType = 0;
+            mpGUICaplinkProfile->end();
+            mpGUICaplinkProfile = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            returnFlow();
         }
     } else {
-        this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
-        this->returnFlow();
+        mpGUICaplinkProfile = nullptr;
+        static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+        returnFlow();
     }
 }
 
@@ -280,7 +274,7 @@ __attribute__((weak)) void uGUICaplinkMenuBase::updateReport() {
 // Address: 0x009c6390 - 0x009c639b (11 bytes)
 void uGUICaplinkMenuBase::initBeginTalk() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRnoSubMenu = static_cast<u32>(0);
+    mRnoSubMenu = 0;
 }
 
 // Address: 0x009c63a0 - 0x009c701c (3196 bytes)
@@ -398,21 +392,21 @@ __attribute__((weak)) void uGUICaplinkMenuBase::reqDialog(MT_CTSTR msg, MT_CTSTR
 // Address: 0x009c8570 - 0x009c85e8 (120 bytes)
 s32 uGUICaplinkMenuBase::updateDialog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            const s32 select = this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1));
-            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                this->mpGUISystemMsg->::uGUIBase::mEndType = static_cast<u32>(0);
-                this->mpGUISystemMsg->end();
+    if (mpGUISystemMsg != nullptr) {
+        if (mpGUISystemMsg->mResult == RESULT_EXIT) {
+            const s32 select = mpGUISystemMsg->getChoicePos(-1);
+            if (mpGUISystemMsg != nullptr) {
+                mpGUISystemMsg->mEndType = 0;
+                mpGUISystemMsg->end();
             }
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
+            mpGUISystemMsg = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
             return select;
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
 
@@ -456,26 +450,26 @@ u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uGUICaplinkMenuBase::cCmdVal::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pVal != static_cast<MtObject*>(nullptr)) {
+    if (pVal != nullptr) {
         // inferred: a temporary for the result of the call at 0x9ca498, used once; no DWARF local holds it
         const MtDTI& t0 = pVal->getDTI();
         // inferred: the value the loop at 0x9ca4a6 carries; no location-less local in scope fits
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uGUICaplinkMenuBase::cCmdVal::DTI) + static_cast<long>(8));
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uGUICaplinkMenuBase::cCmdVal::DTI) + 8);
         // inferred: the value the loop at 0x9ca4a6 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
                 } else {
                     break;
                 }
             } else {
-                this->mCmdSelect = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVal) + static_cast<long>(8));
-                return static_cast<u32>(0);
+                mCmdSelect = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVal) + 8);
+                return 0;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 9 inlined copies in 3 functions (66 bytes)
@@ -501,10 +495,10 @@ u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {
 // Address: 0x009c7020 - 0x009c7032 (18 bytes)
 void uGUICaplinkMenuBase::setOwnerChatInfo(s32 id_type, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner == static_cast<uGUICaplinkTopMenu*>(nullptr)) {
+    if (mpOwner == nullptr) {
         return;
     }
-    this->mpOwner->::uGUICaplinkTopMenu::setChatInfo(id_type, id);
+    mpOwner->setChatInfo(id_type, id);
 }
 
 // Address: 0x01ae5200 - 0x01ae52f9 (249 bytes)
@@ -512,6 +506,8 @@ __attribute__((weak)) void uGUICaplinkMenuBase::callPointer() {
     DDON_STUB("uGUICaplinkMenuBase::callPointer")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUICaplinkMenuBase::MyDTI uGUICaplinkMenuBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkMenuBase.cpp at 0x009ca67f-0x009ca6bc (called at uGUICaplinkMenuBase.cpp:35)
@@ -544,7 +540,7 @@ const MtDTI& uGUICaplinkMenuBase::cCmdVal::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19uGUICaplinkMenuBase7cCmdValD0Ev at 0x01ae3d20-0x01ae3d4a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::cCmdVal::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::cCmdVal::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -553,7 +549,7 @@ inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::cCmdVal::DTI)->memAlloc(sz, align, ::uGUICaplinkMenuBase::cCmdVal::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::cCmdVal::DTI)->memAlloc(sz, align, uGUICaplinkMenuBase::cCmdVal::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -584,6 +580,8 @@ inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
 //   in uGUICaplinkMenuBase::addSubMenu at 0x009ca36b-0x009ca37d (called at uGUICaplinkMenuBase.h:50)
 // uGUICaplinkMenuBase::cCmdVal::cCmdVal(u32 val);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkMenuBase::cCmdVal::MyDTI uGUICaplinkMenuBase::cCmdVal::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkMenuBase.cpp at 0x009ca6bc-0x009ca6f9 (called at uGUICaplinkMenuBase.cpp:36)
 //   in _GLOBAL__sub_I_uGUICaplinkMenuBase.cpp at 0x009ca6bc-0x009ca6f9 (called at uGUICaplinkMenuBase.h:47)
@@ -592,7 +590,7 @@ inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
 // Address: 0x009c3840 - 0x009c3887 (71 bytes)
 MtObject* uGUICaplinkMenuBase::cCmdVal::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::uGUICaplinkMenuBase::cCmdVal;
+    return new (16u) uGUICaplinkMenuBase::cCmdVal;
 }
 
 // Instance at 0x01ae3cb0 - 0x01ae3cb5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

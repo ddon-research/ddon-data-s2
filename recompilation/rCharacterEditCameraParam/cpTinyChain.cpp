@@ -29,7 +29,7 @@ const MtDTI& cpTinyChain::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpTinyChain::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpTinyChain::DTI);
+    return MtMemoryAllocator::getAllocator(cpTinyChain::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cpTinyChain::getAllocator() {
 // Address: 0x0053e270 - 0x0053e2b0 (64 bytes)
 void* cpTinyChain::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpTinyChain::getAllocator()->memAlloc(sz, align, ::cpTinyChain::DTI.::MtDTI::getID());
+    return cpTinyChain::getAllocator()->memAlloc(sz, align, cpTinyChain::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cpTinyChain::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpTinyChain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpTinyChain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpTinyChain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,13 +68,13 @@ inline void cpTinyChain::operator delete(void* p_addr) {
 // Address: 0x0053e320 - 0x0053e36e (78 bytes)
 cpTinyChain::cpTinyChain() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActiveSequence = false;
-    this->mpSequenceCtrl = static_cast<cpSequenceCtrl*>(nullptr);
-    this->mpCnsTinyChain = static_cast<uCnsTinyChain*>(nullptr);
-    this->mprCnsTinyChain = static_cast<rCnsTinyChain*>(nullptr);
-    this->mBlendSpeedChain = 0.1f;
-    this->mCheckSeqPageNo = static_cast<s32>(0);
-    this->mCheckSeqIndex = static_cast<s32>(0);
+    mIsActiveSequence = false;
+    mpSequenceCtrl = nullptr;
+    mpCnsTinyChain = nullptr;
+    mprCnsTinyChain = nullptr;
+    mBlendSpeedChain = 0.1f;
+    mCheckSeqPageNo = 0;
+    mCheckSeqIndex = 0;
 }
 
 // Address: 0x0053e370 - 0x0053e375 (5 bytes)
@@ -86,7 +86,7 @@ cpTinyChain::~cpTinyChain() {
 // Address: 0x0053e3b0 - 0x0053e3de (46 bytes)
 void cpTinyChain::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSequenceCtrl = static_cast<cpSequenceCtrl*>(this->::cpComponent::getRootComponent()->::cpComponent::find(::cpSequenceCtrl::DTI, true, true));
+    mpSequenceCtrl = static_cast<cpSequenceCtrl*>(getRootComponent()->find(cpSequenceCtrl::DTI, true, true));
 }
 
 // Address: 0x0053e3e0 - 0x0053e3e1 (1 bytes)
@@ -97,28 +97,28 @@ __attribute__((weak)) void cpTinyChain::move() {
 // Address: 0x0053e430 - 0x0053e463 (51 bytes)
 void cpTinyChain::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    if (this->mpCnsTinyChain->::cUnit::isEnable() != false) {
+    if (mpCnsTinyChain->isEnable()) {
         return;
     }
-    this->mpCnsTinyChain = static_cast<uCnsTinyChain*>(nullptr);
+    mpCnsTinyChain = nullptr;
 }
 
 // Address: 0x0053e3f0 - 0x0053e430 (64 bytes)
 void cpTinyChain::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCnsTinyChain != static_cast<rCnsTinyChain*>(nullptr)) {
-        this->mprCnsTinyChain->::cResource::release();
-        this->mprCnsTinyChain = static_cast<rCnsTinyChain*>(nullptr);
+    if (mprCnsTinyChain != nullptr) {
+        mprCnsTinyChain->release();
+        mprCnsTinyChain = nullptr;
     }
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    this->mpCnsTinyChain->kill();
-    this->mpCnsTinyChain = static_cast<uCnsTinyChain*>(nullptr);
+    mpCnsTinyChain->kill();
+    mpCnsTinyChain = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,43 +141,43 @@ __attribute__((weak)) void cpTinyChain::setCnsTinyChain(uModel* pModel, rCnsTiny
 // Address: 0x0053e480 - 0x0053e4ce (78 bytes)
 void cpTinyChain::setActive(bool isActive) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    if (isActive != false) {
-        this->mpCnsTinyChain->update();
-        this->mpCnsTinyChain->setPri(static_cast<u32>(800));
+    if (isActive) {
+        mpCnsTinyChain->update();
+        mpCnsTinyChain->setPri(800u);
     } else {
-        this->mpCnsTinyChain->remove();
+        mpCnsTinyChain->remove();
     }
 }
 
 // Address: 0x0053e620 - 0x0053e634 (20 bytes)
 void cpTinyChain::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    this->mpCnsTinyChain->mStabilizeNum = static_cast<u32>(200);
+    mpCnsTinyChain->mStabilizeNum = 200;
 }
 
 // Address: 0x0053e640 - 0x0053e66b (43 bytes)
 void cpTinyChain::resetForEvent(u32 stabilizeNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    this->mpCnsTinyChain->::uCnsTinyChain::restart();
-    this->mpCnsTinyChain->mStabilizeNum = stabilizeNum;
+    mpCnsTinyChain->restart();
+    mpCnsTinyChain->mStabilizeNum = stabilizeNum;
 }
 
 // Address: 0x0053e670 - 0x0053e680 (16 bytes)
 void cpTinyChain::initActiveSequence(s32 pageNo, s32 indexNo, f32 blendSpeed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCheckSeqPageNo = pageNo;
-    this->mCheckSeqIndex = indexNo;
-    this->mBlendSpeedChain = blendSpeed;
-    this->mIsActiveSequence = true;
+    mCheckSeqPageNo = pageNo;
+    mCheckSeqIndex = indexNo;
+    mBlendSpeedChain = blendSpeed;
+    mIsActiveSequence = true;
 }
 
 // Address: 0x0053e690 - 0x0053e6ed (93 bytes)
@@ -186,24 +186,24 @@ void cpTinyChain::updateActiveSequence() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; a value a join carries, assigned on each way in; the body oracle reports this body.
     // inferred: a temporary for the value a join carries at 0x53e6cd, assigned on each way in; no DWARF local holds it
     float j0;
-    if (this->::cpComponent::isActive() == false) {
+    if (!isActive()) {
         return;
     }
-    if (this->mIsActiveSequence == false) {
+    if (!mIsActiveSequence) {
         return;
     }
-    if (this->mpCnsTinyChain == static_cast<uCnsTinyChain*>(nullptr)) {
+    if (mpCnsTinyChain == nullptr) {
         return;
     }
-    if (this->mpSequenceCtrl->::cpSequenceCtrl::checkSequence(static_cast<u32>(this->mCheckSeqIndex), static_cast<u32>(this->mCheckSeqPageNo), static_cast<MOT_TYPE>(0)) == false) {
+    if (!mpSequenceCtrl->checkSequence(static_cast<u32>(mCheckSeqIndex), static_cast<u32>(mCheckSeqPageNo), MOT_BASE)) {
         j0 = 1.0f;
     } else {
         j0 = 0.0f;
     }
     // inferred: a temporary for the value the load at 0x53e6d1 read, used once; no DWARF local holds it
-    f32 t0 = this->mBlendSpeedChain;
-    this->mpCnsTinyChain->::uConstraint::mBlend = j0;
-    this->mpCnsTinyChain->::uConstraint::mBlendSpeed = t0;
+    f32 t0 = mBlendSpeedChain;
+    mpCnsTinyChain->mBlend = j0;
+    mpCnsTinyChain->mBlendSpeed = t0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,6 +213,8 @@ void cpTinyChain::updateActiveSequence() {
 //   in cpTinyChain::initActiveSequence at 0x0053e676-0x0053e67b (called at cpTinyChain.cpp:344)
 // void cpTinyChain::setBlendSpeedCain(f32 blendSpeed);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpTinyChain::MyDTI cpTinyChain::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpTinyChain.cpp at 0x0053e70f-0x0053e74c (called at cpTinyChain.cpp:41)
 //   in _GLOBAL__sub_I_cpTinyChain.cpp at 0x0053e70f-0x0053e74c (called at cpTinyChain.h:36)
@@ -221,6 +223,6 @@ void cpTinyChain::updateActiveSequence() {
 // Address: 0x0053e1f0 - 0x0053e269 (121 bytes)
 MtObject* cpTinyChain::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpTinyChain;
+    return new (16u) cpTinyChain;
 }
 

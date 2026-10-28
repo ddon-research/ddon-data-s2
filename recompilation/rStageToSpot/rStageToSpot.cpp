@@ -37,7 +37,7 @@ const MtDTI& cStageToSpot::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cStageToSpot::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memAlloc(sz, align, ::cStageToSpot::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStageToSpot::DTI)->memAlloc(sz, align, cStageToSpot::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cStageToSpot::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStageToSpot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStageToSpot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cStageToSpot::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageToSpot::MyDTI cStageToSpot::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStageToSpot.cpp at 0x006c48c0-0x006c4902 (called at rStageToSpot.cpp:25)
 //   in _GLOBAL__sub_I_rStageToSpot.cpp at 0x006c48c0-0x006c4902 (called at rStageToSpot.h:23)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cStageToSpot::createProperty(MtPropertyList& s) {
 // Address: 0x006c4430 - 0x006c4482 (82 bytes)
 MtObject* cStageToSpot::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStageToSpot;
+    return new (16u) cStageToSpot;
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,7 +118,7 @@ const MtDTI& rStageToSpot::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageToSpot::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageToSpot::DTI)->memAlloc(sz, align, ::rStageToSpot::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageToSpot::DTI)->memAlloc(sz, align, rStageToSpot::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,7 +133,7 @@ inline void* rStageToSpot::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rStageToSpotD0Ev at 0x01aa8de4-0x01aa8e03, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStageToSpot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageToSpot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageToSpot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,14 +148,14 @@ inline void rStageToSpot::operator delete(void* p_addr) {
 // Address: 0x006c4770 - 0x006c47d4 (100 bytes)
 bool rStageToSpot::loadData(MtDataReader& in, cStageToSpot* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cStageToSpot*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mStageNo = in.readU32();
         // inferred: reference argument from the copy's one access
         // inferred: argument from a callee-saved register at the copy's entry
-        ::nDDOIO::readData(in, pData->mSpotId);
+        nDDOIO::readData(in, pData->mSpotId);
         // inferred: reference argument from the copy's one access
         // inferred: argument from a callee-saved register at the copy's entry
-        ::nDDOIO::readData(in, pData->mRecommendLevel);
+        nDDOIO::readData(in, pData->mRecommendLevel);
         return true;
     } else {
         return false;
@@ -169,8 +171,10 @@ MT_CTSTR rStageToSpot::getExt() const {
 // Address: 0x01aa8f30 - 0x01aa8f33 (3 bytes)
 u32 rStageToSpot::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageToSpot::MyDTI rStageToSpot::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageToSpot.cpp at 0x006c4902-0x006c493f (called at rStageToSpot.cpp:71)
@@ -180,7 +184,7 @@ u32 rStageToSpot::getDataVersion() const {
 // Address: 0x006c47e0 - 0x006c4844 (100 bytes)
 MtObject* rStageToSpot::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageToSpot;
+    return new (16u) rStageToSpot;
 }
 
 // Instance at 0x01aa8ee0 - 0x01aa8ef6 (22 bytes) of the generic rTbl2<T>::getData

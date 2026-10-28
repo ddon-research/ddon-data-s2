@@ -25,7 +25,7 @@ const MtDTI& cShlConditionInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cShlConditionInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cShlConditionInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cShlConditionInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cShlConditionInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cShlConditionInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cShlConditionInfo::DTI)->memAlloc(sz, align, ::cShlConditionInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cShlConditionInfo::DTI)->memAlloc(sz, align, cShlConditionInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* cShlConditionInfo::operator new(size_t sz, u32 align) {
 // Address: 0x00cd1670 - 0x00cd169a (42 bytes)
 __attribute__((weak)) void cShlConditionInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cShlConditionInfo::getAllocator()->memFree(p_addr);
+    cShlConditionInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,6 +78,8 @@ __attribute__((weak)) void cShlConditionInfo::operator delete(void* p_addr) {
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // void cShlConditionInfo::copy(const cShlConditionInfo& src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShlConditionInfo::MyDTI cShlConditionInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlCondition.cpp at 0x00cd200f-0x00cd204c (called at uShlCondition.cpp:20)
 //   in _GLOBAL__sub_I_uShlCondition.cpp at 0x00cd200f-0x00cd204c (called at uShlCondition.h:30)
@@ -86,6 +88,6 @@ __attribute__((weak)) void cShlConditionInfo::operator delete(void* p_addr) {
 // Address: 0x00cd15d0 - 0x00cd1637 (103 bytes)
 MtObject* cShlConditionInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cShlConditionInfo;
+    return new (16u) cShlConditionInfo;
 }
 

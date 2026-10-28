@@ -712,6 +712,18 @@ inline sSetManager* sSetManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nNetMsg::cNetMsgGameNormal::sendMsgGameSetEmDie at 0x389fab-0x389fb1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sSetManager::getEnemyDieNum() {
+    return this->mEnemyDie.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGroupParam::update at 0x6991f5-0x6991fb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sSetManager::getGroupPrioUpdateCnt() const {
+    return this->mGroupPrioUpdateCnt;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sSetManager::requestSetWaitOff() {
     this->mIsSetWaitOffRequest = true;
@@ -725,13 +737,19 @@ inline rLayoutPreset* sSetManager::getLotPreset() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sSetManager::cOmGroupData::cOmGroupData() {
-    this->mGroupData = static_cast<u32>(511);
+    this->mGroupData = 511;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSetManager::addEnemyDie at 0x8427f2-0x8427f6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSetManager::cEnemyDie::setEnemyId(u32 NewValue) {
+    this->mEnemyId = NewValue;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sSetManager::CreateContextParam::CreateContextParam() {
-    this->StageNo = static_cast<s32>(0);
-    this->EncountArea = static_cast<s32>(0);
-    this->Id = static_cast<u32>(0);
-    this->UniqueId = static_cast<u32>(0);
+    this->StageNo = 0;
+    this->EncountArea = 0;
+    this->Id = 0;
+    this->UniqueId = 0;
 }

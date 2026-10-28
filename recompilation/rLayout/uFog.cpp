@@ -45,7 +45,7 @@ const MtDTI& uFog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4uFogD0Ev at 0x00ec89ce-0x00ec89ef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uFog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uFog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uFog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,13 +106,13 @@ __attribute__((weak)) void uFog::createProperty(MtPropertyList& s) {
 // Address: 0x00ec9680 - 0x00ec9685 (5 bytes)
 MtUI* uFog::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00ec9690 - 0x00ec9696 (6 bytes)
 u64 uFog::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(8);
+    return 8;
 }
 
 // Defined in the class (its body was written in a header).
@@ -189,8 +189,8 @@ bool uFog::isValidDrawBySystem() const {
 // Address: 0x01ad7300 - 0x01ad730d (13 bytes)
 void uFog::getDrawUnitState(u32& type, u32& priority) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    type = static_cast<unsigned int>(5);
-    priority = static_cast<unsigned int>(0);
+    type = 5;
+    priority = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -253,6 +253,8 @@ __attribute__((weak)) void uFog::drawImplicitSurface(cDraw* pdraw) {
     DDON_STUB("uFog::drawImplicitSurface")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uFog::MyDTI uFog::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uFog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

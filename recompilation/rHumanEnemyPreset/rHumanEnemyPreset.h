@@ -106,8 +106,8 @@ inline cHumanEnemyPreset::cHumanEnemyPreset() {
     this->mIsOriginalCustomSkillArc = false;
     this->mIsDisableMontageRandam = false;
     this->mIsDisableBeginBattleVoice = false;
-    this->mEquipListId = static_cast<u32>(0);
-    this->mEditType = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
-    this->mCustomSkillListId = static_cast<u32>(0);
+    this->mEquipListId = 0;
+    this->mEditType = 0;
+    this->mId = 0;
+    this->mCustomSkillListId = 0;
 }

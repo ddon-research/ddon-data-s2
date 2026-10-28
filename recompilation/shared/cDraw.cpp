@@ -11,6 +11,7 @@
 #include "MtPrimitive2D.h"
 #include "nDraw.h"
 #include "nDrawMaterial.h"
+#include "sRender.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -48,7 +49,7 @@ const MtDTI& cDraw::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5cDrawD0Ev at 0x01b5ba10-0x01b5ba3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDraw::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDraw::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDraw::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,7 +76,7 @@ __attribute__((weak)) void cDraw::createProperty(MtPropertyList& s) {
 // Address: 0x00e51020 - 0x00e51025 (5 bytes)
 MtUI* cDraw::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00e528c0 - 0x00e52b52 (658 bytes)
@@ -133,7 +134,7 @@ __attribute__((weak)) void cDraw::beginScene(nDraw::Scene* pscene, nDraw::DRAW_M
 // Address: 0x00e58640 - 0x00e58645 (5 bytes)
 void cDraw::endScene() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cDraw::endBranch();
+    endBranch();
 }
 
 // Address: 0x00e56780 - 0x00e5680c (140 bytes)
@@ -157,20 +158,20 @@ __attribute__((weak)) void cDraw::endBranch() {
 void cDraw::beginMaterial(nDraw::Material* pm) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x244 from cDraw*
-    u32 count = pm->setDrawState(this, static_cast<nDraw::PASS_TYPE>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(580))) & static_cast<unsigned int>(31)));
-    if (count != static_cast<u32>(0)) {
-        if (count > static_cast<u32>(1)) {
-            this->mES = this->mES | static_cast<u32>(128);
+    u32 count = pm->setDrawState(this, static_cast<nDraw::PASS_TYPE>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 580)) & 31u));
+    if (count != 0) {
+        if (count > 1u) {
+            mES = mES | 128u;
         } else {
-            this->mES = this->mES | static_cast<u32>(32);
+            mES = mES | 32u;
         }
     } else {
-        this->mES = this->mES | static_cast<u32>(64);
+        mES = mES | 64u;
     }
-    this->mMaterialTagPt = this->mTagNum;
-    this->mpMaterial = pm;
-    this->mMaterialPass = count;
-    this->mStateCuePt = static_cast<u32>(0);
+    mMaterialTagPt = mTagNum;
+    mpMaterial = pm;
+    mMaterialPass = count;
+    mStateCuePt = 0;
 }
 
 // Address: 0x00e510c0 - 0x00e51778 (1720 bytes)
@@ -199,10 +200,10 @@ __attribute__((weak)) void cDraw::endMaterial() {
 // Address: 0x00e525c0 - 0x00e525e2 (34 bytes)
 void cDraw::beginCommandCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mES = this->mES | static_cast<u32>(256);
-    this->mCacheTag = this->mTagNum;
-    this->mCachePt = static_cast<u32>(0);
-    this->mContext.mstate.shader_faild = static_cast<u32>(0);
+    mES = mES | 256u;
+    mCacheTag = mTagNum;
+    mCachePt = 0;
+    mContext.mstate.shader_faild = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1116,9 +1117,16 @@ __attribute__((weak)) cDraw::TAG* cDraw::sortCommand(cDraw::TAG* tag, s32 n, cDr
 // u16* cDraw::allocIBuf(u32 size);
 
 // Address: 0x00e591a0 - 0x00e591e6 (70 bytes)
-__attribute__((weak)) void cDraw::nextBuffer(size_t size) {
-    DDON_STUB("cDraw::nextBuffer")
-    /* stub */
+void cDraw::nextBuffer(size_t size) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: size_t used as u32
+    // inferred: a temporary for the result of the call at 0xe591c7, used twice; no DWARF local holds it
+    void* t0 = (sRender::mpInstance)->sRender::allocDrawBuffer(static_cast<u32>((size + 4095ul) & 0xFFFFF000ul));
+    if ((mpBuffer = static_cast<u8*>(t0)) != nullptr) {
+        mpBufferEnd = static_cast<u8*>(t0) + ((size + 4095ul) & 0xFFFFFFFFFFFFF000ul);
+    } else {
+        mpBufferEnd = nullptr;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1134,13 +1142,12 @@ __attribute__((weak)) void cDraw::nextBuffer(size_t size) {
 
 // Address: 0x00e58c60 - 0x00e58c97 (55 bytes)
 void cDraw::sortJob(cDraw::SORT_WORK* pwk) {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    cDraw::TAG* pres = this->::cDraw::sortCommand(pwk->tags, static_cast<s32>(pwk->tag_num), pwk->dtags);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    TAG* pres = sortCommand(pwk->tags, static_cast<s32>(pwk->tag_num), pwk->dtags);
     if (pwk->dtags == pres) {
         return;
     }
-    ::memcpy(static_cast<void*>(pwk->dtags), static_cast<const void*>(pres), static_cast<size_t>(pwk->tag_num * static_cast<u32>(16)));
+    memcpy(static_cast<void*>(pwk->dtags), static_cast<const void*>(pres), static_cast<size_t>(pwk->tag_num) * 16);
 }
 
 // Address: 0x00e58ca0 - 0x00e58ed1 (561 bytes)
@@ -1163,6 +1170,8 @@ __attribute__((weak)) void cDraw::margeJob(cDraw::MARGE_WORK* pwk) {
 
 // No out-of-line body: no code in the ELF
 // void cDraw::notifyEndDrawToSystem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDraw::MyDTI cDraw::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cDraw::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

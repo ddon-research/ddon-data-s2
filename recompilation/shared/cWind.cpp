@@ -44,7 +44,7 @@ const MtDTI& cWind::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWind::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWind::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWind::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,7 +77,7 @@ __attribute__((weak)) void cWind::createProperty(MtPropertyList& s) {
 // Address: 0x013218f0 - 0x013218f5 (5 bytes)
 MtUI* cWind::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01321900 - 0x01321c65 (869 bytes)
@@ -118,25 +118,25 @@ __attribute__((weak)) void cWind::setDummyVec(const MtVector3&) {
 // Address: 0x01bc6bf0 - 0x01bc6bf6 (6 bytes)
 f32 cWind::getDirPitchCycle() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirPitch.mCycle;
+    return mDirPitch.mCycle;
 }
 
 // Address: 0x01bc6c10 - 0x01bc6c16 (6 bytes)
 f32 cWind::getDirPitchCycleAdd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirPitch.mCycleAdd;
+    return mDirPitch.mCycleAdd;
 }
 
 // Address: 0x01bc6c30 - 0x01bc6c36 (6 bytes)
 f32 cWind::getDirPitchAmpValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirPitch.::MtLogisticMap::mAmpValue;
+    return mDirPitch.mAmpValue;
 }
 
 // Address: 0x01bc6c70 - 0x01bc6c76 (6 bytes)
 f32 cWind::getDirPitchAmpRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirPitch.::MtLogisticMap::mAmpRate;
+    return mDirPitch.mAmpRate;
 }
 
 // Address: 0x01bc6cb0 - 0x01bc6ce7 (55 bytes)
@@ -149,25 +149,25 @@ __attribute__((weak)) MtRangeF cWind::getDirPitchParam() const {
 // Address: 0x01bc6c00 - 0x01bc6c06 (6 bytes)
 void cWind::setDirPitchCycle(f32 Cycle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDirPitch.mCycle = Cycle;
+    mDirPitch.mCycle = Cycle;
 }
 
 // Address: 0x01bc6c20 - 0x01bc6c26 (6 bytes)
 void cWind::setDirPitchCycleAdd(f32 CycleAdd) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDirPitch.mCycleAdd = CycleAdd;
+    mDirPitch.mCycleAdd = CycleAdd;
 }
 
 // Address: 0x01bc6c40 - 0x01bc6c6e (46 bytes)
 void cWind::setDirPitchAmpValue(f32 AmpValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.01f > AmpValue) {
-        this->mDirPitch.::MtLogisticMap::mAmpValue = 0.01f;
+        mDirPitch.mAmpValue = 0.01f;
     } else {
         if (AmpValue > 0.99f) {
-            this->mDirPitch.::MtLogisticMap::mAmpValue = 0.99f;
+            mDirPitch.mAmpValue = 0.99f;
         } else {
-            this->mDirPitch.::MtLogisticMap::mAmpValue = AmpValue;
+            mDirPitch.mAmpValue = AmpValue;
         }
     }
 }
@@ -176,12 +176,12 @@ void cWind::setDirPitchAmpValue(f32 AmpValue) {
 void cWind::setDirPitchAmpRate(f32 AmpRate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (3.57f > AmpRate) {
-        this->mDirPitch.::MtLogisticMap::mAmpRate = 3.57f;
+        mDirPitch.mAmpRate = 3.57f;
     } else {
         if (AmpRate > 4.0f) {
-            this->mDirPitch.::MtLogisticMap::mAmpRate = 4.0f;
+            mDirPitch.mAmpRate = 4.0f;
         } else {
-            this->mDirPitch.::MtLogisticMap::mAmpRate = AmpRate;
+            mDirPitch.mAmpRate = AmpRate;
         }
     }
 }
@@ -199,25 +199,25 @@ __attribute__((weak)) void cWind::setDirPitchParam(const MtRangeF& Param) {
 // Address: 0x01bc6d10 - 0x01bc6d16 (6 bytes)
 f32 cWind::getDirYawCycle() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirYaw.mCycle;
+    return mDirYaw.mCycle;
 }
 
 // Address: 0x01bc6d30 - 0x01bc6d36 (6 bytes)
 f32 cWind::getDirYawCycleAdd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirYaw.mCycleAdd;
+    return mDirYaw.mCycleAdd;
 }
 
 // Address: 0x01bc6d50 - 0x01bc6d56 (6 bytes)
 f32 cWind::getDirYawAmpValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirYaw.::MtLogisticMap::mAmpValue;
+    return mDirYaw.mAmpValue;
 }
 
 // Address: 0x01bc6d90 - 0x01bc6d96 (6 bytes)
 f32 cWind::getDirYawAmpRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDirYaw.::MtLogisticMap::mAmpRate;
+    return mDirYaw.mAmpRate;
 }
 
 // Address: 0x01bc6dd0 - 0x01bc6e07 (55 bytes)
@@ -230,25 +230,25 @@ __attribute__((weak)) MtRangeF cWind::getDirYawParam() const {
 // Address: 0x01bc6d20 - 0x01bc6d26 (6 bytes)
 void cWind::setDirYawCycle(f32 Cycle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDirYaw.mCycle = Cycle;
+    mDirYaw.mCycle = Cycle;
 }
 
 // Address: 0x01bc6d40 - 0x01bc6d46 (6 bytes)
 void cWind::setDirYawCycleAdd(f32 CycleAdd) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDirYaw.mCycleAdd = CycleAdd;
+    mDirYaw.mCycleAdd = CycleAdd;
 }
 
 // Address: 0x01bc6d60 - 0x01bc6d8e (46 bytes)
 void cWind::setDirYawAmpValue(f32 AmpValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.01f > AmpValue) {
-        this->mDirYaw.::MtLogisticMap::mAmpValue = 0.01f;
+        mDirYaw.mAmpValue = 0.01f;
     } else {
         if (AmpValue > 0.99f) {
-            this->mDirYaw.::MtLogisticMap::mAmpValue = 0.99f;
+            mDirYaw.mAmpValue = 0.99f;
         } else {
-            this->mDirYaw.::MtLogisticMap::mAmpValue = AmpValue;
+            mDirYaw.mAmpValue = AmpValue;
         }
     }
 }
@@ -257,12 +257,12 @@ void cWind::setDirYawAmpValue(f32 AmpValue) {
 void cWind::setDirYawAmpRate(f32 AmpRate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (3.57f > AmpRate) {
-        this->mDirYaw.::MtLogisticMap::mAmpRate = 3.57f;
+        mDirYaw.mAmpRate = 3.57f;
     } else {
         if (AmpRate > 4.0f) {
-            this->mDirYaw.::MtLogisticMap::mAmpRate = 4.0f;
+            mDirYaw.mAmpRate = 4.0f;
         } else {
-            this->mDirYaw.::MtLogisticMap::mAmpRate = AmpRate;
+            mDirYaw.mAmpRate = AmpRate;
         }
     }
 }
@@ -280,25 +280,25 @@ __attribute__((weak)) void cWind::setDirYawParam(const MtRangeF& Param) {
 // Address: 0x01bc6e30 - 0x01bc6e36 (6 bytes)
 f32 cWind::getSpeedCycle() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed.mCycle;
+    return mSpeed.mCycle;
 }
 
 // Address: 0x01bc6e50 - 0x01bc6e56 (6 bytes)
 f32 cWind::getSpeedCycleAdd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed.mCycleAdd;
+    return mSpeed.mCycleAdd;
 }
 
 // Address: 0x01bc6e70 - 0x01bc6e76 (6 bytes)
 f32 cWind::getSpeedAmpValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed.::MtLogisticMap::mAmpValue;
+    return mSpeed.mAmpValue;
 }
 
 // Address: 0x01bc6eb0 - 0x01bc6eb6 (6 bytes)
 f32 cWind::getSpeedAmpRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed.::MtLogisticMap::mAmpRate;
+    return mSpeed.mAmpRate;
 }
 
 // Address: 0x01bc6ef0 - 0x01bc6f27 (55 bytes)
@@ -311,25 +311,25 @@ __attribute__((weak)) MtRangeF cWind::getSpeedParam() const {
 // Address: 0x01bc6e40 - 0x01bc6e46 (6 bytes)
 void cWind::setSpeedCycle(f32 Cycle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpeed.mCycle = Cycle;
+    mSpeed.mCycle = Cycle;
 }
 
 // Address: 0x01bc6e60 - 0x01bc6e66 (6 bytes)
 void cWind::setSpeedCycleAdd(f32 CycleAdd) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpeed.mCycleAdd = CycleAdd;
+    mSpeed.mCycleAdd = CycleAdd;
 }
 
 // Address: 0x01bc6e80 - 0x01bc6eae (46 bytes)
 void cWind::setSpeedAmpValue(f32 AmpValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.01f > AmpValue) {
-        this->mSpeed.::MtLogisticMap::mAmpValue = 0.01f;
+        mSpeed.mAmpValue = 0.01f;
     } else {
         if (AmpValue > 0.99f) {
-            this->mSpeed.::MtLogisticMap::mAmpValue = 0.99f;
+            mSpeed.mAmpValue = 0.99f;
         } else {
-            this->mSpeed.::MtLogisticMap::mAmpValue = AmpValue;
+            mSpeed.mAmpValue = AmpValue;
         }
     }
 }
@@ -338,12 +338,12 @@ void cWind::setSpeedAmpValue(f32 AmpValue) {
 void cWind::setSpeedAmpRate(f32 AmpRate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (3.57f > AmpRate) {
-        this->mSpeed.::MtLogisticMap::mAmpRate = 3.57f;
+        mSpeed.mAmpRate = 3.57f;
     } else {
         if (AmpRate > 4.0f) {
-            this->mSpeed.::MtLogisticMap::mAmpRate = 4.0f;
+            mSpeed.mAmpRate = 4.0f;
         } else {
-            this->mSpeed.::MtLogisticMap::mAmpRate = AmpRate;
+            mSpeed.mAmpRate = AmpRate;
         }
     }
 }
@@ -357,6 +357,8 @@ __attribute__((weak)) void cWind::setSpeedParam(const MtRangeF& Param) {
 // No out-of-line body: 1 inlined copy in 1 function (56 bytes)
 //   in sEffectExt::sEffectExt at 0x00769bbe-0x00769bf6 (called at sEffectExt.cpp:395)
 // void cWind::setSpeed(const MtRangeF& Param, f32 Cycle, f32 CycleAdd, f32 AmpValue, f32 AmpRate);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWind::MyDTI cWind::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cWind::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

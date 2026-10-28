@@ -192,7 +192,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cShopGoods::rDate::rDate() {
-    this->mYear = static_cast<u16>(2000);
-    this->mMonth = static_cast<u8>(1);
-    this->mDay = static_cast<u8>(1);
+    this->mYear = 2000;
+    this->mMonth = 1;
+    this->mDay = 1;
 }

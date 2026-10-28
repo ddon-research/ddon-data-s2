@@ -2557,8 +2557,8 @@ namespace nQuest {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cDeliverCharacterInfo() {
-    this->mCharacterId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u16>(0);
+    this->mCharacterId = 0;
+    this->mItemNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2584,9 +2584,15 @@ inline u32 nQuest::cGUINewspaperSetQuestMonsterInfo::getEnemyLv() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyName at 0x62f2d5-0x62f2d8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 nQuest::cGUINewspaperSetQuestMonsterInfo::getEnemyGroupId() const {
+    return this->mEnemyGroupId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nQuest::cGUINewspaperSetQuestMonsterInfo::cGUINewspaperSetQuestMonsterInfo() {
-    this->mEnemyLv = static_cast<u32>(0);
-    this->mEnemyGroupId = static_cast<u32>(0);
+    this->mEnemyLv = 0;
+    this->mEnemyGroupId = 0;
     this->mIsPartyRecommanded = false;
 }
 
@@ -2602,46 +2608,46 @@ inline u32 nQuest::cGUINewspaperSetQuestItemInfo::getItemNum() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cGUINewspaperSetQuestItemInfo::cGUINewspaperSetQuestItemInfo() {
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemId = 0;
+    this->mItemNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cCycleContentsResultPointInfo::cCycleContentsResultPointInfo() {
-    this->mType = static_cast<u8>(0);
-    this->mParam01 = static_cast<u32>(0);
-    this->mParam02 = static_cast<u32>(0);
-    this->mPoint = static_cast<u32>(0);
+    this->mType = 0;
+    this->mParam01 = 0;
+    this->mParam02 = 0;
+    this->mPoint = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cCycleContentsResultRewardInfo::cCycleContentsResultRewardInfo() {
-    this->mType = static_cast<u8>(0);
-    this->mParam01 = static_cast<u32>(0);
-    this->mParam02 = static_cast<u32>(0);
+    this->mType = 0;
+    this->mParam01 = 0;
+    this->mParam02 = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nQuest::cCycleContentsRankingRewardInfo::cCycleContentsRankingRewardInfo() {
-    this->mUnderRank = static_cast<u32>(0);
-    this->mOverRank = static_cast<u32>(0);
+    this->mUnderRank = 0;
+    this->mOverRank = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nQuest::cCycleContentsBorderRewardInfo::cCycleContentsBorderRewardInfo() {
-    this->mUnderPoint = static_cast<s32>(0);
-    this->mOverPoint = static_cast<s32>(0);
+    this->mUnderPoint = 0;
+    this->mOverPoint = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cDeliverTargetInfo::cDeliverTargetInfo() {
-    this->mNpcId = static_cast<u32>(0);
-    this->mSetNo = static_cast<u32>(0);
-    this->mMsgGroupSerial = static_cast<u32>(0);
-    this->mStageNo = static_cast<u32>(0);
-    this->mGroupNo = static_cast<u32>(0);
+    this->mNpcId = 0;
+    this->mSetNo = 0;
+    this->mMsgGroupSerial = 0;
+    this->mStageNo = 0;
+    this->mGroupNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2650,7 +2656,7 @@ inline nQuest::cGUIBoardData::cGUIBoardData() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cGUIDeliveryData::cGUIDeliveryData() {
-    this->mBlockNo = static_cast<s32>(-1);
+    this->mBlockNo = -1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2664,19 +2670,19 @@ inline nQuest::cGUIActiveData::cGUIActiveData() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nQuest::cCycleContentsSituationInfo::cCycleContentsSituationInfo() {
-    this->mBaseLevel = static_cast<u32>(0);
-    this->mCycleContentsSubCategory = static_cast<u32>(0);
-    this->mMaxClearTimeBonusRatio = static_cast<u32>(100);
-    this->mSituationNo = static_cast<u8>(0);
-    this->mCycleContentsCategory = static_cast<u8>(0);
+    this->mBaseLevel = 0;
+    this->mCycleContentsSubCategory = 0;
+    this->mMaxClearTimeBonusRatio = 100;
+    this->mSituationNo = 0;
+    this->mCycleContentsCategory = 0;
     this->mIsDistribution = false;
-    this->mRewardItem[6] = static_cast<unsigned int>(0);
-    this->mRewardItem[4] = static_cast<unsigned int>(0);
-    this->mRewardItem[5] = static_cast<unsigned int>(0);
-    this->mRewardItem[2] = static_cast<unsigned int>(0);
-    this->mRewardItem[3] = static_cast<unsigned int>(0);
-    this->mRewardItem[0] = static_cast<unsigned int>(0);
-    this->mRewardItem[1] = static_cast<unsigned int>(0);
+    this->mRewardItem[6] = 0;
+    this->mRewardItem[4] = 0;
+    this->mRewardItem[5] = 0;
+    this->mRewardItem[2] = 0;
+    this->mRewardItem[3] = 0;
+    this->mRewardItem[0] = 0;
+    this->mRewardItem[1] = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2685,8 +2691,8 @@ inline nQuest::cEndContentsGroupQuestInfo::cEndContentsGroupQuestInfo() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nQuest::cTargetEnemyInfo::cTargetEnemyInfo() {
-    this->mStageNo = static_cast<u32>(0);
-    this->mGroupNo = static_cast<u32>(0);
+    this->mStageNo = 0;
+    this->mGroupNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2716,5 +2722,5 @@ inline u32 nQuest::cPartyBonusInfo::getAreaPointRatio() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline bool nQuest::cPartyBonusInfo::hasReceived() const {
-    return this->mHasReceived != false;
+    return this->mHasReceived;
 }

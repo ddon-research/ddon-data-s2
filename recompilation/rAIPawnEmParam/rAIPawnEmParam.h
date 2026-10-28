@@ -129,5 +129,5 @@ public:
 inline rAIPawnEmParam::rAIPawnEmParam() {
     this->mDistance = 300.0f;
     this->mRangeSize = 50.0f;
-    this->mRootPoint = static_cast<u32>(0);
+    this->mRootPoint = 0;
 }

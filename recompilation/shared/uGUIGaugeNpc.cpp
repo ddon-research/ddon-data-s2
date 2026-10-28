@@ -39,7 +39,7 @@ const MtDTI& uGUIGaugeNpc::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeNpc::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpc::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeNpc::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline MtAllocator* uGUIGaugeNpc::getAllocator() {
 // Address: 0x00b621f0 - 0x00b62230 (64 bytes)
 void* uGUIGaugeNpc::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeNpc::getAllocator()->memAlloc(sz, align, ::uGUIGaugeNpc::DTI.::MtDTI::getID());
+    return uGUIGaugeNpc::getAllocator()->memAlloc(sz, align, uGUIGaugeNpc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ void* uGUIGaugeNpc::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeNpc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeNpc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,13 +104,12 @@ __attribute__((weak)) void uGUIGaugeNpc::setup() {
 void uGUIGaugeNpc::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a0
-    if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mEventBusy != false) {
-        } else {
-            this->::uGUIBase::draw(pDraw);
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mEventBusy) {
+            this->uGUIBase::draw(pDraw);
         }
     } else {
-        this->::uGUIBase::draw(pDraw);
+        this->uGUIBase::draw(pDraw);
     }
 }
 
@@ -123,8 +122,8 @@ __attribute__((weak)) void uGUIGaugeNpc::setMode(uGUIGaugeNpcBase::MODE mode) {
 // Address: 0x00b62c50 - 0x00b62c61 (17 bytes)
 void uGUIGaugeNpc::resetMode(uGUIGaugeNpcBase::MODE mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mModeOld = static_cast<uGUIGaugeNpcBase::MODE>(0);
-    this->mMode = mode;
+    mModeOld = MODE_INVALID;
+    mMode = mode;
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,9 +157,9 @@ __attribute__((weak)) void uGUIGaugeNpc::setTitleName(MT_CTSTR name) {
 // Address: 0x00b62be0 - 0x00b62c16 (54 bytes)
 void uGUIGaugeNpc::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIGaugeNpc::updateMode();
-    this->::uGUIGaugeNpc::updateDisp();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeNpc::updateWait);
+    updateMode();
+    updateDisp();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeNpc::updateWait);
 }
 
 // Address: 0x00b63c20 - 0x00b64120 (1280 bytes)
@@ -365,6 +364,8 @@ __attribute__((weak)) bool uGUIGaugeNpc::checkFloorGroup() const {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeNpc::MyDTI uGUIGaugeNpc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeNpc.cpp at 0x00b65f23-0x00b65f5c (called at uGUIGaugeNpc.cpp:599)
 //   in _GLOBAL__sub_I_uGUIGaugeNpc.cpp at 0x00b65f23-0x00b65f5c (called at uGUIGaugeNpc.h:153)
@@ -398,7 +399,7 @@ __attribute__((weak)) MtObject* uGUIGaugeNpc::MyDTI::newInstance() const {
 // Address: 0x00b651c0 - 0x00b651c6 (6 bytes)
 u32 uGUIGaugeNpc::IOcdIcon::getOcdIconParamNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x00b651d0 - 0x00b651e7 (23 bytes)
@@ -418,7 +419,7 @@ __attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeNpc::IOcdIcon::refOcdIconP
 // Address: 0x00b65210 - 0x00b65219 (9 bytes)
 bool uGUIGaugeNpc::IOcdIcon::isOcdActive(u32 ocdId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHuman.::uDDOModel::isAbnormalConditionActive(ocdId);
+    return mHuman.isAbnormalConditionActive(ocdId);
 }
 
 // Address: 0x00b65220 - 0x00b65223 (3 bytes)
@@ -470,7 +471,7 @@ const MtDTI& uGUIGaugeNpcBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeNpcBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpcBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeNpcBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -520,19 +521,19 @@ __attribute__((weak)) uGUIGaugeNpcBase::MODE uGUIGaugeNpcBase::GetMode(uDDOModel
 // Also emitted as: _ZN16uGUIGaugeNpcBaseD0Ev at 0x00b61af0
 uGUIGaugeNpcBase::~uGUIGaugeNpcBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b61b50 - 0x00b61bb8 (104 bytes)
 bool uGUIGaugeNpcBase::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAUGE_NPC_GUI"), static_cast<u32>(129), static_cast<t64>(1456742344)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAUGE_NPC_GUI"), 129u, 1456742344l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -545,19 +546,19 @@ bool uGUIGaugeNpcBase::loadResource() {
 // Address: 0x00b61bc0 - 0x00b61bf1 (49 bytes)
 void uGUIGaugeNpcBase::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b61c00 - 0x00b61c4c (76 bytes)
 void uGUIGaugeNpcBase::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
-    this->mWorldOffset = ::MtVector3::Zero;
+    this->uGUIBase::move();
+    mWorldOffset = MtVector3::Zero;
 }
 
 // Address: 0x00b61c50 - 0x00b61c8d (61 bytes)
@@ -570,47 +571,46 @@ __attribute__((weak)) void uGUIGaugeNpcBase::moveAfter() {
 void uGUIGaugeNpcBase::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a0
-    if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mEventBusy != false) {
-        } else {
-            this->::uGUIBase::draw(pDraw);
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mEventBusy) {
+            this->uGUIBase::draw(pDraw);
         }
     } else {
-        this->::uGUIBase::draw(pDraw);
+        this->uGUIBase::draw(pDraw);
     }
 }
 
 // Address: 0x00b61cc0 - 0x00b61cf0 (48 bytes)
 void uGUIGaugeNpcBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpUnit != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpUnit->::cUnit::isEnable() == false) {
-            this->mpUnit = static_cast<uDDOModel*>(nullptr);
-            this->mpHuman = static_cast<uHuman*>(nullptr);
+    if (mpUnit != nullptr) {
+        if (!mpUnit->isEnable()) {
+            mpUnit = nullptr;
+            mpHuman = nullptr;
         }
     } else {
-        this->mpHuman = static_cast<uHuman*>(nullptr);
+        mpHuman = nullptr;
     }
 }
 
 // Address: 0x00b61cf0 - 0x00b61d21 (49 bytes)
 void uGUIGaugeNpcBase::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset = offset;
+    mWorldOffset = offset;
 }
 
 // Address: 0x00b61d30 - 0x00b61d59 (41 bytes)
 void uGUIGaugeNpcBase::setUnit(uDDOModel* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpUnit = pUnit;
-    if (pUnit != static_cast<uDDOModel*>(nullptr)) {
-        if ((pUnit->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mpHuman = static_cast<uHuman*>(pUnit);
+    mpUnit = pUnit;
+    if (pUnit != nullptr) {
+        if ((pUnit->mUnitId & 16u) != 0) {
+            mpHuman = static_cast<uHuman*>(pUnit);
         } else {
-            this->mpHuman = static_cast<uHuman*>(nullptr);
+            mpHuman = nullptr;
         }
     } else {
-        this->mpHuman = static_cast<uHuman*>(nullptr);
+        mpHuman = nullptr;
     }
 }
 
@@ -619,28 +619,28 @@ __attribute__((weak)) void uGUIGaugeNpcBase::setupInstances() {
     // DWARF local not rendered: const u32 INST_fix_jyoutai_ids[2];
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpINST_Null = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(467), false));
-    this->mpINST_Null_all = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(370), false));
-    this->mpINST_target = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(508), false));
-    this->mpINST_msg_name = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(356), false));
-    this->mpINST_msg_npcname = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(492), false));
-    this->mpINST_fix_gaugepc = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(476), false));
-    this->mpINST_fix_icon00 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(445), false));
-    this->mpINST_fix_icon_quest = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(509), false));
-    this->mpINST_autorun_icon = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(510), false));
-    this->mpINST_fix_classicon = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(485), false));
-    this->mpINST_areamaster_icon = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(514), false));
-    this->mpINST_sos_icon = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(516), false));
+    mpINST_Null = static_cast<cGUIInstNull*>(getInstance(467u, false));
+    mpINST_Null_all = static_cast<cGUIInstNull*>(getInstance(370u, false));
+    mpINST_target = static_cast<cGUIInstAnimation*>(getInstance(508u, false));
+    mpINST_msg_name = static_cast<cGUIInstAnimation*>(getInstance(356u, false));
+    mpINST_msg_npcname = static_cast<cGUIInstAnimation*>(getInstance(492u, false));
+    mpINST_fix_gaugepc = static_cast<cGUIInstAnimation*>(getInstance(476u, false));
+    mpINST_fix_icon00 = static_cast<cGUIInstAnimation*>(getInstance(445u, false));
+    mpINST_fix_icon_quest = static_cast<cGUIInstAnimation*>(getInstance(509u, false));
+    mpINST_autorun_icon = static_cast<cGUIInstAnimation*>(getInstance(0x1FEu, false));
+    mpINST_fix_classicon = static_cast<cGUIInstAnimation*>(getInstance(485u, false));
+    mpINST_areamaster_icon = static_cast<cGUIInstAnimation*>(getInstance(514u, false));
+    mpINST_sos_icon = static_cast<cGUIInstAnimation*>(getInstance(516u, false));
     // inferred: a temporary for the result of the call at 0xb61eab, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(511), false);
-    if ((this->mpINST_Null_charges = static_cast<cGUIInstNull*>(t0)) != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstance::setVisible(false);
-        if (this->mpINST_Null_charges != static_cast<cGUIInstNull*>(nullptr)) {
-            this->mpINST_Null_charges->::cGUIInstance::setExecute(false);
+    cGUIInstance* t0 = getInstance(511u, false);
+    if ((mpINST_Null_charges = static_cast<cGUIInstNull*>(t0)) != nullptr) {
+        t0->setVisible(false);
+        if (mpINST_Null_charges != nullptr) {
+            mpINST_Null_charges->setExecute(false);
         }
     }
-    this->mpINST_fix_jyoutais.elems[0] = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(506), false));
-    this->mpINST_fix_jyoutais.elems[1] = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(507), false));
+    mpINST_fix_jyoutais.elems[0] = static_cast<cGUIInstAnimation*>(getInstance(506u, false));
+    mpINST_fix_jyoutais.elems[1] = static_cast<cGUIInstAnimation*>(getInstance(507u, false));
 }
 
 // No out-of-line body: no code in the ELF
@@ -670,6 +670,8 @@ __attribute__((weak)) bool uGUIGaugeNpcBase::updatePos(const uDDOModel* unit) {
 //   in uGUITouchTargetSelector::updateWait at 0x00b65bb9-0x00b65bde (called at uGUIGaugeNpc.cpp:2521)
 // void uGUIGaugeNpcBase::setPriorityByMode(uGUIGaugeNpcBase::MODE mode);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeNpcBase::MyDTI uGUIGaugeNpcBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeNpc.cpp at 0x00b65ee6-0x00b65f23 (called at uGUIGaugeNpc.cpp:88)
 //   in _GLOBAL__sub_I_uGUIGaugeNpc.cpp at 0x00b65ee6-0x00b65f23 (called at uGUIGaugeNpc.h:28)
@@ -695,7 +697,7 @@ const MtDTI& uGUITouchTargetSelector::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUITouchTargetSelector::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUITouchTargetSelector::DTI);
+    return MtMemoryAllocator::getAllocator(uGUITouchTargetSelector::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -704,7 +706,7 @@ inline MtAllocator* uGUITouchTargetSelector::getAllocator() {
 // Address: 0x00b65460 - 0x00b654a0 (64 bytes)
 void* uGUITouchTargetSelector::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUITouchTargetSelector::getAllocator()->memAlloc(sz, align, ::uGUITouchTargetSelector::DTI.::MtDTI::getID());
+    return uGUITouchTargetSelector::getAllocator()->memAlloc(sz, align, uGUITouchTargetSelector::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -746,30 +748,30 @@ uGUITouchTargetSelector::~uGUITouchTargetSelector() {
 // Address: 0x00b656a0 - 0x00b65795 (245 bytes)
 void uGUITouchTargetSelector::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->setPlay(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(16), false);
-    this->::uGUIGaugeNpcBase::setupInstances();
-    this->mpOBJ_target_m_key = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(3)));
-    this->mpOBJ_target_left = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(4)));
-    this->mpOBJ_target_right = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(5)));
-    this->mpOBJ_target_center = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(6)));
-    if (this->::uGUIGaugeNpcBase::mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
-        this->::uGUIGaugeNpcBase::mpINST_Null_all->::cGUIInstance::setVisible(false);
-        if (this->::uGUIGaugeNpcBase::mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
-            this->::uGUIGaugeNpcBase::mpINST_Null_all->::cGUIInstance::setExecute(false);
+    setPlay(true);
+    setFlowAndInit(16u, false);
+    setupInstances();
+    mpOBJ_target_m_key = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_target), 3u));
+    mpOBJ_target_left = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_target), 4u));
+    mpOBJ_target_right = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_target), 5u));
+    mpOBJ_target_center = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(mpINST_target), 6u));
+    if (mpINST_Null_all != nullptr) {
+        mpINST_Null_all->setVisible(false);
+        if (mpINST_Null_all != nullptr) {
+            mpINST_Null_all->setExecute(false);
         }
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateInit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateInit);
 }
 
 // Address: 0x00b657a0 - 0x00b657ba (26 bytes)
 void uGUITouchTargetSelector::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateWait);
 }
 
 // Address: 0x00b657c0 - 0x00b65dac (1516 bytes)
@@ -793,6 +795,8 @@ __attribute__((weak)) void uGUITouchTargetSelector::updateWait() {
 // No out-of-line body: 1 inlined copy in 1 function (179 bytes)
 //   in uGUITouchTargetSelector::updateWait at 0x00b65cd1-0x00b65d84 (called at uGUIGaugeNpc.cpp:2554)
 // void uGUITouchTargetSelector::updateButtonGuideSize();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUITouchTargetSelector::MyDTI uGUITouchTargetSelector::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeNpc.cpp at 0x00b65f5c-0x00b65f95 (called at uGUIGaugeNpc.cpp:2409)

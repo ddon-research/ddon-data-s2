@@ -35,7 +35,7 @@ const MtDTI& cGeomIterator::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cGeomIterator::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cGeomIterator::DTI)->memAlloc(sz, align, ::cGeomIterator::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cGeomIterator::DTI)->memAlloc(sz, align, cGeomIterator::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cGeomIterator::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cGeomIteratorD0Ev at 0x0196f950-0x0196f97a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cGeomIterator::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGeomIterator::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGeomIterator::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,19 +84,21 @@ __attribute__((weak)) void cGeomIterator::next() {
 // Address: 0x000dd870 - 0x000dd874 (4 bytes)
 bool cGeomIterator::isEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnd;
+    return mIsEnd;
 }
 
 // Address: 0x000dd880 - 0x000dd885 (5 bytes)
 cHitGeom* cGeomIterator::getGeom() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeom;
+    return mpGeom;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (113 bytes)
 //   in cGeomIterator::begin at 0x000dd782-0x000dd78c, 0x000dd792-0x000dd7b0 (called at cHitGeom.cpp:1377)
 //   in cGeomIterator::next at 0x000dd810-0x000dd84d, 0x000dd857-0x000dd863 (called at cHitGeom.cpp:1400)
 // void cGeomIterator::nextNode();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGeomIterator::MyDTI cGeomIterator::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHitGeom.cpp at 0x000ddb2e-0x000ddb67 (called at cHitGeom.cpp:1353)
@@ -106,7 +108,7 @@ cHitGeom* cGeomIterator::getGeom() {
 // Address: 0x000dd650 - 0x000dd6b4 (100 bytes)
 MtObject* cGeomIterator::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cGeomIterator;
+    return new (16u) cGeomIterator;
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ const MtDTI& cHitGeom::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cHitGeom::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cHitGeom::DTI);
+    return MtMemoryAllocator::getAllocator(cHitGeom::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline MtAllocator* cHitGeom::getAllocator() {
 // Address: 0x000db5d0 - 0x000db610 (64 bytes)
 void* cHitGeom::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cHitGeom::getAllocator()->memAlloc(sz, align, ::cHitGeom::DTI.::MtDTI::getID());
+    return cHitGeom::getAllocator()->memAlloc(sz, align, cHitGeom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,7 +149,7 @@ void* cHitGeom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cHitGeom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHitGeom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHitGeom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,15 +172,15 @@ inline void cHitGeom::operator delete(void* p_addr) {
 // Also emitted as: _ZN8cHitGeomD0Ev at 0x0196f850
 cHitGeom::~cHitGeom() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeom != static_cast<MtGeomConvex*>(nullptr)) {
-        delete this->mpGeom;
-        this->mpGeom = static_cast<MtGeomConvex*>(nullptr);
+    if (mpGeom != nullptr) {
+        delete mpGeom;
+        mpGeom = nullptr;
     }
-    if (this->mpGeomInter == static_cast<MtGeomConvex*>(nullptr)) {
+    if (mpGeomInter == nullptr) {
         return;
     }
-    delete this->mpGeomInter;
-    this->mpGeomInter = static_cast<MtGeomConvex*>(nullptr);
+    delete mpGeomInter;
+    mpGeomInter = nullptr;
 }
 
 // Address: 0x000db680 - 0x000db812 (402 bytes)
@@ -227,10 +229,10 @@ __attribute__((weak)) void cHitGeom::setCapsule(const MtCapsule& capsule) {
 const MtOBB* cHitGeom::getOBB() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a MtGeomOBB member read past the end of MtGeomConvex, which DWARF gives no other deriving class a member at 0x10
-    if (this->mpSrcGeom->mShape == static_cast<u8>(2)) {
-        return &static_cast<MtGeomOBB*>(this->mpGeom)->mOBB;
+    if (mpSrcGeom->mShape == 2) {
+        return &static_cast<MtGeomOBB*>(mpGeom)->mOBB;
     } else {
-        return static_cast<const MtOBB*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -315,6 +317,8 @@ __attribute__((weak)) void cHitGeom::applyWorldOffset(const MtVector3& offset, c
 //   in cHitGeom::getInterpolateCapsule at 0x000dd01e-0x000dd024 (called at cHitGeom.cpp:424)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // bool cHitGeom::isInterpolate() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitGeom::MyDTI cHitGeom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cHitGeom.cpp at 0x000ddaee-0x000ddb2e (called at cHitGeom.cpp:22)

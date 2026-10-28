@@ -34,7 +34,7 @@ const MtDTI& cPlDeadFlow::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPlDeadFlow::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPlDeadFlow::DTI)->memAlloc(sz, align, ::cPlDeadFlow::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPlDeadFlow::DTI)->memAlloc(sz, align, cPlDeadFlow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* cPlDeadFlow::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPlDeadFlow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlDeadFlow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlDeadFlow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,11 +63,11 @@ inline void cPlDeadFlow::operator delete(void* p_addr) {
 // Address: 0x004cc380 - 0x004cc3b0 (48 bytes)
 cPlDeadFlow::cPlDeadFlow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<u32>(0);
-    this->mState = static_cast<cPlDeadFlow::FlowState>(0);
-    this->mpTouchPawn = static_cast<uDDOModel*>(nullptr);
-    this->mItemResult = static_cast<s32>(1);
-    this->mReviveMenuWait = false;
+    mRno = 0;
+    mState = STATE_ALIVE;
+    mpTouchPawn = nullptr;
+    mItemResult = 1;
+    mReviveMenuWait = false;
 }
 
 // Address: 0x004cc3b0 - 0x004cc3b1 (1 bytes)
@@ -80,28 +80,28 @@ cPlDeadFlow::~cPlDeadFlow() {
 bool cPlDeadFlow::move() {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTouchPawn != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpTouchPawn->::cUnit::isEnable() == false) {
-            this->mpTouchPawn = static_cast<uDDOModel*>(nullptr);
+    if (mpTouchPawn != nullptr) {
+        if (!mpTouchPawn->isEnable()) {
+            mpTouchPawn = nullptr;
         }
     }
-    switch (this->mState) {
-        case static_cast<cPlDeadFlow::FlowState>(0):
+    switch (mState) {
+        case STATE_ALIVE:
         {
-            this->::cPlDeadFlow::moveAlive();
+            moveAlive();
             return true;
         }
-        case static_cast<cPlDeadFlow::FlowState>(1):
+        case STATE_INJURED:
         {
-            this->::cPlDeadFlow::moveInjured();
+            moveInjured();
             return true;
         }
-        case static_cast<cPlDeadFlow::FlowState>(2):
+        case STATE_LOST:
         {
-            this->::cPlDeadFlow::moveLost();
+            moveLost();
             return true;
         }
-        case static_cast<cPlDeadFlow::FlowState>(3):
+        case STATE_GAMEOVER:
         {
             return false;
         }
@@ -134,13 +134,13 @@ __attribute__((weak)) void cPlDeadFlow::moveWait() {
 // Address: 0x004cce80 - 0x004cce91 (17 bytes)
 bool cPlDeadFlow::isMovePwanReviveMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mState == static_cast<cPlDeadFlow::FlowState>(0)) && (this->mRno == static_cast<u32>(1));
+    return (mState == STATE_ALIVE) && (mRno == 1);
 }
 
 // Address: 0x004ccea0 - 0x004ccea8 (8 bytes)
 bool cPlDeadFlow::isMovePlDeadFlow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mState != static_cast<cPlDeadFlow::FlowState>(0);
+    return mState != STATE_ALIVE;
 }
 
 // Address: 0x004cc460 - 0x004cc8c9 (1129 bytes)
@@ -206,6 +206,8 @@ __attribute__((weak)) void cPlDeadFlow::moveLost() {
 //   in cHumanActLost::move at 0x00237d06-0x00237d0d (called at cHumanAction.cpp:4701)
 // void cPlDeadFlow::setReviveMenuWait();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPlDeadFlow::MyDTI cPlDeadFlow::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPlDeadFlow.cpp at 0x004ccfaf-0x004ccfec (called at cPlDeadFlow.cpp:52)
 //   in _GLOBAL__sub_I_cPlDeadFlow.cpp at 0x004ccfaf-0x004ccfec (called at cPlDeadFlow.h:33)
@@ -214,6 +216,6 @@ __attribute__((weak)) void cPlDeadFlow::moveLost() {
 // Address: 0x004cc2a0 - 0x004cc301 (97 bytes)
 MtObject* cPlDeadFlow::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPlDeadFlow;
+    return new (16u) cPlDeadFlow;
 }
 

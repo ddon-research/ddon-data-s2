@@ -33,7 +33,7 @@ const MtDTI& uGUIInputText::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIInputText::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIInputText::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIInputText::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUIInputText::getAllocator() {
 // Address: 0x00ac44c0 - 0x00ac4500 (64 bytes)
 void* uGUIInputText::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIInputText::getAllocator()->memAlloc(sz, align, ::uGUIInputText::DTI.::MtDTI::getID());
+    return uGUIInputText::getAllocator()->memAlloc(sz, align, uGUIInputText::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUIInputText::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIInputText::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIInputText::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIInputText::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,9 +82,9 @@ uGUIInputText::~uGUIInputText() {
 // Address: 0x00ac47d0 - 0x00ac4838 (104 bytes)
 bool uGUIInputText::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_INPUT_TEXT_GUI"), static_cast<u32>(129), static_cast<t64>(1430112267)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_INPUT_TEXT_GUI"), 129u, 1430112267l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -105,34 +105,34 @@ __attribute__((weak)) void uGUIInputText::setup() {
 // Address: 0x00ac4a30 - 0x00ac4a61 (49 bytes)
 void uGUIInputText::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00ac4a70 - 0x00ac4ae0 (112 bytes)
 void uGUIInputText::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::moveAfter();
-    if (this->mpINST_Null_all == static_cast<cGUIInstNull*>(nullptr)) {
+    this->uGUIBase::moveAfter();
+    if (mpINST_Null_all == nullptr) {
         return;
     }
-    this->mpINST_Null_all->::cGUIInstNull::setScaleX(this->mScale);
-    this->mpINST_Null_all->::cGUIInstNull::setScaleY(this->mScale);
-    this->mpINST_Null_all->::cGUIInstNull::setPositionX(this->mPos.x);
-    this->mpINST_Null_all->::cGUIInstNull::setPositionY(this->mPos.y);
+    mpINST_Null_all->setScaleX(mScale);
+    mpINST_Null_all->setScaleY(mScale);
+    mpINST_Null_all->setPositionX(mPos.x);
+    mpINST_Null_all->setPositionY(mPos.y);
 }
 
 // Address: 0x00ac4ae0 - 0x00ac4b03 (35 bytes)
 f32 uGUIInputText::getCaretWidth() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOBJ_msg_text_caret != static_cast<cGUIObjPolygon*>(nullptr)) {
-        return this->mpOBJ_msg_text_caret->mSize.x;
+    if (mpOBJ_msg_text_caret != nullptr) {
+        return mpOBJ_msg_text_caret->mSize.x;
     } else {
-        return ::MtFloat2::Zero.x;
+        return MtFloat2::Zero.x;
     }
 }
 
@@ -207,9 +207,9 @@ bool uGUIInputText::isTextVisible() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstNull*
     // inferred: a value cast to the type its use takes: unsigned char used as bool
-    if (this->mIsVisible == false) {
-        if (this->mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
-            return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpINST_Null_all) + static_cast<long>(88))) & static_cast<unsigned char>(1));
+    if (!mIsVisible) {
+        if (mpINST_Null_all != nullptr) {
+            return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpINST_Null_all) + 88)) & 1);
         } else {
             return false;
         }
@@ -227,7 +227,7 @@ bool uGUIInputText::isTextVisible() const {
 // Address: 0x00ac4a10 - 0x00ac4a2a (26 bytes)
 void uGUIInputText::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateIdle);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateIdle);
 }
 
 // Address: 0x00ac56c0 - 0x00ac5c31 (1393 bytes)
@@ -291,6 +291,8 @@ __attribute__((weak)) MtPointF uGUIInputText::updateTextPosition() {
     DDON_STUB("uGUIInputText::updateTextPosition")
     __builtin_unreachable();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIInputText::MyDTI uGUIInputText::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIInputText.cpp at 0x00ac5d3f-0x00ac5d7c (called at uGUIInputText.cpp:77)

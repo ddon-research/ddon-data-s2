@@ -37,7 +37,7 @@ const MtDTI& cPlayerExpTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cPlayerExpTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memAlloc(sz, align, ::cPlayerExpTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPlayerExpTable::DTI)->memAlloc(sz, align, cPlayerExpTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cPlayerExpTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPlayerExpTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlayerExpTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -86,6 +86,8 @@ __attribute__((weak)) void cPlayerExpTable::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPlayerExpTable::MyDTI cPlayerExpTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPlayerExpTable.cpp at 0x006b5f30-0x006b5f72 (called at rPlayerExpTable.cpp:25)
 //   in _GLOBAL__sub_I_rPlayerExpTable.cpp at 0x006b5f30-0x006b5f72 (called at rPlayerExpTable.h:27)
@@ -94,7 +96,7 @@ __attribute__((weak)) void cPlayerExpTable::createProperty(MtPropertyList& s) {
 // Address: 0x006b5bb0 - 0x006b5bf8 (72 bytes)
 MtObject* cPlayerExpTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPlayerExpTable;
+    return new (16u) cPlayerExpTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ const MtDTI& rPlayerExpTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPlayerExpTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPlayerExpTable::DTI)->memAlloc(sz, align, ::rPlayerExpTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPlayerExpTable::DTI)->memAlloc(sz, align, rPlayerExpTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +136,7 @@ inline void* rPlayerExpTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rPlayerExpTableD0Ev at 0x01aa25d4-0x01aa25f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPlayerExpTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPlayerExpTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPlayerExpTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,10 +153,10 @@ bool rPlayerExpTable::loadData(MtDataReader& in, cPlayerExpTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedExp);
+    nDDOIO::readData(in, pData->mNeedExp);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGainJobPoint);
+    nDDOIO::readData(in, pData->mGainJobPoint);
     return true;
 }
 
@@ -167,14 +169,16 @@ MT_CTSTR rPlayerExpTable::getExt() const {
 // Address: 0x01aa2720 - 0x01aa2726 (6 bytes)
 u32 rPlayerExpTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x006b5f20 - 0x006b5f25 (5 bytes)
 void rPlayerExpTable::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPlayerExpTable::MyDTI rPlayerExpTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPlayerExpTable.cpp at 0x006b5f72-0x006b5faf (called at rPlayerExpTable.cpp:26)
@@ -184,7 +188,7 @@ void rPlayerExpTable::createProperty(MtPropertyList& s) {
 // Address: 0x006b5c70 - 0x006b5cd4 (100 bytes)
 MtObject* rPlayerExpTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPlayerExpTable;
+    return new (16u) rPlayerExpTable;
 }
 
 // Instance at 0x01aa26d0 - 0x01aa26e2 (18 bytes) of the generic rTbl2<T>::getData

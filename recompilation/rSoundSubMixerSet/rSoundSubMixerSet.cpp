@@ -37,7 +37,7 @@ const MtDTI& rSoundSubMixerSet::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundSubMixerSet::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::DTI)->memAlloc(sz, align, ::rSoundSubMixerSet::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundSubMixerSet::DTI)->memAlloc(sz, align, rSoundSubMixerSet::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rSoundSubMixerSet::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSubMixerSet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSubMixerSet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,8 +66,8 @@ inline void rSoundSubMixerSet::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rSoundSubMixerSet::rSoundSubMixerSet() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mSubMixerLists.mAutoDelete = true;
+    setAttribute(18u);
+    mSubMixerLists.mAutoDelete = true;
 }
 
 // Address: 0x006f0350 - 0x006f037e (46 bytes)
@@ -80,9 +80,9 @@ rSoundSubMixerSet::~rSoundSubMixerSet() {
 // Address: 0x006f03d0 - 0x006f0466 (150 bytes)
 bool rSoundSubMixerSet::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
-        this->mSubMixerLists.mAutoDelete = true;
+    MtSerializer sz(65536);
+    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+        mSubMixerLists.mAutoDelete = true;
         return true;
     } else {
         return false;
@@ -92,8 +92,8 @@ bool rSoundSubMixerSet::load(MtStream& in) {
 // Address: 0x006f0470 - 0x006f04f6 (134 bytes)
 bool rSoundSubMixerSet::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rSoundSubMixerSet::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSubMixerSet::DTI));
 }
 
 // Address: 0x01ab21b0 - 0x01ab21b8 (8 bytes)
@@ -111,10 +111,10 @@ __attribute__((weak)) void rSoundSubMixerSet::createProperty(MtPropertyList& s) 
 // Address: 0x006f1090 - 0x006f10a5 (21 bytes)
 rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getBasicSubMixers(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSubMixerLists.mLength >= index) {
-        return static_cast<rSoundSubMixerSet::BasicSubMixers*>(this->mSubMixerLists.mpArray[index]);
+    if (mSubMixerLists.mLength >= index) {
+        return static_cast<BasicSubMixers*>(mSubMixerLists.mpArray[index]);
     } else {
-        return static_cast<rSoundSubMixerSet::BasicSubMixers*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -141,13 +141,13 @@ rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getBasicSubMixers(u32 inde
 
 // Address: 0x006f1120 - 0x006f1169 (73 bytes)
 void rSoundSubMixerSet::clear() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from rSoundSubMixerSet*
-    if (this->mSubMixerLists.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSubMixerLists.mpArray));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mSubMixerLists.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSubMixerLists.mpArray));
     }
-    this->mSubMixerLists.mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(120)) = static_cast<unsigned long>(0);
+    mSubMixerLists.mpArray = nullptr;
+    mSubMixerLists.mLength = 0;
+    mSubMixerLists.mBufsiz = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,6 +155,8 @@ void rSoundSubMixerSet::clear() {
 
 // No out-of-line body: no code in the ELF
 // void rSoundSubMixerSet::memFree(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSubMixerSet::MyDTI rSoundSubMixerSet::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundSubMixerSet.cpp at 0x006f117f-0x006f11bc (called at rSoundSubMixerSet.cpp:32)
@@ -164,7 +166,7 @@ void rSoundSubMixerSet::clear() {
 // Address: 0x006f0240 - 0x006f02c4 (132 bytes)
 MtObject* rSoundSubMixerSet::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundSubMixerSet;
+    return new (16u) rSoundSubMixerSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -190,7 +192,7 @@ const MtDTI& rSoundSubMixerSet::BasicSubMixers::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundSubMixerSet::BasicSubMixers::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::BasicSubMixers::DTI)->memAlloc(sz, align, ::rSoundSubMixerSet::BasicSubMixers::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundSubMixerSet::BasicSubMixers::DTI)->memAlloc(sz, align, rSoundSubMixerSet::BasicSubMixers::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,7 +207,7 @@ inline void* rSoundSubMixerSet::BasicSubMixers::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSubMixerSet::BasicSubMixers::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::BasicSubMixers::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSubMixerSet::BasicSubMixers::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -231,7 +233,7 @@ rSoundSubMixerSet::BasicSubMixers::~BasicSubMixers() {
 // Address: 0x006f0800 - 0x006f0805 (5 bytes)
 MtUI* rSoundSubMixerSet::BasicSubMixers::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x006f0810 - 0x006f1007 (2039 bytes)
@@ -243,186 +245,188 @@ __attribute__((weak)) void rSoundSubMixerSet::BasicSubMixers::createProperty(MtP
 // Address: 0x006f1010 - 0x006f1015 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource0;
+    return mpResource0;
 }
 
 // Address: 0x01ab1f00 - 0x01ab1f4b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource0(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource0) {
+    if (res == mpResource0) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource0 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource0 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource0 = res;
-        res->::cResource::addRef();
+        mpResource0 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1020 - 0x006f1025 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource1() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource1;
+    return mpResource1;
 }
 
 // Address: 0x01ab1f50 - 0x01ab1f9b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource1(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource1) {
+    if (res == mpResource1) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource1 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource1 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource1 = res;
-        res->::cResource::addRef();
+        mpResource1 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1030 - 0x006f1035 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource2() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource2;
+    return mpResource2;
 }
 
 // Address: 0x01ab1fa0 - 0x01ab1feb (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource2(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource2) {
+    if (res == mpResource2) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource2 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource2 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource2 = res;
-        res->::cResource::addRef();
+        mpResource2 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1040 - 0x006f1045 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource3() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource3;
+    return mpResource3;
 }
 
 // Address: 0x01ab1ff0 - 0x01ab203b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource3(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource3) {
+    if (res == mpResource3) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource3 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource3 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource3 = res;
-        res->::cResource::addRef();
+        mpResource3 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1050 - 0x006f1055 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource4() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource4;
+    return mpResource4;
 }
 
 // Address: 0x01ab2040 - 0x01ab208b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource4(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource4) {
+    if (res == mpResource4) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource4 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource4 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource4 = res;
-        res->::cResource::addRef();
+        mpResource4 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1060 - 0x006f1065 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource5() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource5;
+    return mpResource5;
 }
 
 // Address: 0x01ab2090 - 0x01ab20db (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource5(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource5) {
+    if (res == mpResource5) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource5 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource5 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource5 = res;
-        res->::cResource::addRef();
+        mpResource5 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1070 - 0x006f1075 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource6() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource6;
+    return mpResource6;
 }
 
 // Address: 0x01ab20e0 - 0x01ab212b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource6(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource6) {
+    if (res == mpResource6) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource6 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource6 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource6 = res;
-        res->::cResource::addRef();
+        mpResource6 = res;
+        res->addRef();
     }
 }
 
 // Address: 0x006f1080 - 0x006f1085 (5 bytes)
 rSoundSubMixer* rSoundSubMixerSet::BasicSubMixers::getResource7() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource7;
+    return mpResource7;
 }
 
 // Address: 0x01ab2130 - 0x01ab217b (75 bytes)
 void rSoundSubMixerSet::BasicSubMixers::setResource7(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (res == this->mpResource7) {
+    if (res == mpResource7) {
         return;
     }
-    if (res == static_cast<rSoundSubMixer*>(nullptr)) {
+    if (res == nullptr) {
         return;
     }
-    if (res->::cResource::isIntermediate()) {
-        this->mpResource7 = static_cast<rSoundSubMixer*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(res), static_cast<u32>(1)));
+    if (res->isIntermediate()) {
+        mpResource7 = static_cast<rSoundSubMixer*>(sResource::getInstance()->createNative(static_cast<cResource*>(res), 1u));
     } else {
-        this->mpResource7 = res;
-        res->::cResource::addRef();
+        mpResource7 = res;
+        res->addRef();
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSubMixerSet::BasicSubMixers::MyDTI rSoundSubMixerSet::BasicSubMixers::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundSubMixerSet.cpp at 0x006f11bc-0x006f11f9 (called at rSoundSubMixerSet.cpp:96)
@@ -432,6 +436,6 @@ void rSoundSubMixerSet::BasicSubMixers::setResource7(rSoundSubMixer* res) {
 // Address: 0x006f05f0 - 0x006f0677 (135 bytes)
 MtObject* rSoundSubMixerSet::BasicSubMixers::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundSubMixerSet::BasicSubMixers;
+    return new (16u) rSoundSubMixerSet::BasicSubMixers;
 }
 

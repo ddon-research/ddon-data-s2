@@ -48,7 +48,7 @@ const MtDTI& sNpcManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sNpcManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sNpcManager::DTI);
+    return MtMemoryAllocator::getAllocator(sNpcManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ inline MtAllocator* sNpcManager::getAllocator() {
 // Address: 0x007efc00 - 0x007efc40 (64 bytes)
 void* sNpcManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sNpcManager::getAllocator()->memAlloc(sz, align, ::sNpcManager::DTI.::MtDTI::getID());
+    return sNpcManager::getAllocator()->memAlloc(sz, align, sNpcManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,7 +72,7 @@ void* sNpcManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sNpcManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sNpcManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sNpcManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,13 +101,13 @@ sNpcManager::~sNpcManager() {
 // Address: 0x007f0310 - 0x007f0315 (5 bytes)
 void sNpcManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::createProperty(s);
+    this->sUnitManager::createProperty(s);
 }
 
 // Address: 0x007f0320 - 0x007f0325 (5 bytes)
 MtUI* sNpcManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sUnitManager::createUI(prop);
+    return this->sUnitManager::createUI(prop);
 }
 
 // Address: 0x007f0330 - 0x007f03e9 (185 bytes)
@@ -149,17 +149,17 @@ __attribute__((weak)) MT_CTSTR sNpcManager::getNpcName(u32 NpcId) {
 MT_CTSTR sNpcManager::getNpcClassName(u32 NpcId) {
     // DWARF local not rendered: MtString Name;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
-        const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
-        if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
-            if (this->mpNpcClassNameMsg != static_cast<rGUIMessage*>(nullptr)) {
-                if (pNpcInfo->::rNpcLedgerList::cItem::getClassNameId() != static_cast<u32>(0)) {
+    if (mpLedgerList != nullptr) {
+        const rNpcLedgerList::cItem* pNpcInfo = mpLedgerList->searchNpcInfo(NpcId);
+        if (pNpcInfo != nullptr) {
+            if (mpNpcClassNameMsg != nullptr) {
+                if (pNpcInfo->rNpcLedgerList::cItem::getClassNameId() != 0) {
                     // inferred: a temporary for the result of the call at 0x7f126c, used once; no DWARF local holds it
-                    u32 t0 = pNpcInfo->::rNpcLedgerList::cItem::getClassNameId();
+                    u32 t0 = pNpcInfo->rNpcLedgerList::cItem::getClassNameId();
                     // inferred: a temporary for the value the load at 0x7f1271 read, used twice; no DWARF local holds it
-                    rGUIMessage* t1 = this->mpNpcClassNameMsg;
+                    rGUIMessage* t1 = mpNpcClassNameMsg;
                     if (t0 < t1->mMessageNum) {
-                        return t1->::rGUIMessage::getMessage(pNpcInfo->::rNpcLedgerList::cItem::getClassNameId());
+                        return t1->getMessage(pNpcInfo->rNpcLedgerList::cItem::getClassNameId());
                     } else {
                         return "";
                     }
@@ -180,30 +180,30 @@ MT_CTSTR sNpcManager::getNpcClassName(u32 NpcId) {
 // Address: 0x007f11f0 - 0x007f1222 (50 bytes)
 u32 sNpcManager::getNpcVoiceType(u32 NpcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
-        const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
-        if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
-            return pNpcInfo->::rNpcLedgerList::cItem::getVoiceType();
+    if (mpLedgerList != nullptr) {
+        const rNpcLedgerList::cItem* pNpcInfo = mpLedgerList->searchNpcInfo(NpcId);
+        if (pNpcInfo != nullptr) {
+            return pNpcInfo->rNpcLedgerList::cItem::getVoiceType();
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007f11a0 - 0x007f11d2 (50 bytes)
 u32 sNpcManager::getNpcUnitType(u32 NpcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
-        const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
-        if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
-            return pNpcInfo->::rNpcLedgerList::cItem::getUnitType();
+    if (mpLedgerList != nullptr) {
+        const rNpcLedgerList::cItem* pNpcInfo = mpLedgerList->searchNpcInfo(NpcId);
+        if (pNpcInfo != nullptr) {
+            return pNpcInfo->rNpcLedgerList::cItem::getUnitType();
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -264,27 +264,27 @@ __attribute__((weak)) void sNpcManager::releaseResource() {
 // Address: 0x007f1910 - 0x007f1999 (137 bytes)
 void sNpcManager::createNpcLedgerList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpLedgerList = static_cast<rNpcLedgerList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("npc_common", "RES_ID_NPC_NLL", static_cast<u32>(1), false));
-    this->mpNpcNameMsg = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("npc_common", "RES_ID_NPC_NAME_GMD", static_cast<u32>(1), false));
-    this->mpNpcClassNameMsg = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("npc_common", "RES_ID_NPC_CLASS_NAME_GMD", static_cast<u32>(1), false));
+    mpLedgerList = static_cast<rNpcLedgerList*>(sArchiveManager::getInstance()->createRes("npc_common", "RES_ID_NPC_NLL", 1u, false));
+    mpNpcNameMsg = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("npc_common", "RES_ID_NPC_NAME_GMD", 1u, false));
+    mpNpcClassNameMsg = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("npc_common", "RES_ID_NPC_CLASS_NAME_GMD", 1u, false));
 }
 
 // Address: 0x007f19a0 - 0x007f1a04 (100 bytes)
 void sNpcManager::releaseNpcLedgerList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNpcNameMsg != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpNpcNameMsg->::cResource::release();
-        this->mpNpcNameMsg = static_cast<rGUIMessage*>(nullptr);
+    if (mpNpcNameMsg != nullptr) {
+        mpNpcNameMsg->release();
+        mpNpcNameMsg = nullptr;
     }
-    if (this->mpNpcClassNameMsg != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpNpcClassNameMsg->::cResource::release();
-        this->mpNpcClassNameMsg = static_cast<rGUIMessage*>(nullptr);
+    if (mpNpcClassNameMsg != nullptr) {
+        mpNpcClassNameMsg->release();
+        mpNpcClassNameMsg = nullptr;
     }
-    if (this->mpLedgerList == static_cast<rNpcLedgerList*>(nullptr)) {
+    if (mpLedgerList == nullptr) {
         return;
     }
-    this->mpLedgerList->::cResource::release();
-    this->mpLedgerList = static_cast<rNpcLedgerList*>(nullptr);
+    mpLedgerList->release();
+    mpLedgerList = nullptr;
 }
 
 // Address: 0x007f2d80 - 0x007f2e00 (128 bytes)
@@ -318,9 +318,9 @@ bool sNpcManager::isTransOff(u8 category, u8 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s32
     // inferred: a value cast to the type its use takes: u8 used as u32
-    rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-        return pInfo->::rNPCMotionSet::InfoBinary::isTransOff() != false;
+    rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
+    if (pInfo != nullptr) {
+        return pInfo->rNPCMotionSet::InfoBinary::isTransOff();
     } else {
         return false;
     }
@@ -331,9 +331,9 @@ bool sNpcManager::isRandomOn(u8 category, u8 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s32
     // inferred: a value cast to the type its use takes: u8 used as u32
-    rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-        return pInfo->::rNPCMotionSet::InfoBinary::isRandomOn() != false;
+    rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
+    if (pInfo != nullptr) {
+        return pInfo->rNPCMotionSet::InfoBinary::isRandomOn();
     } else {
         return false;
     }
@@ -342,15 +342,15 @@ bool sNpcManager::isRandomOn(u8 category, u8 no) {
 // Address: 0x007f1c20 - 0x007f1c59 (57 bytes)
 s16 sNpcManager::getTalkMot(u8 category, u8 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (category <= static_cast<u8>(8)) {
-        rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(category, no);
-        if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-            return pInfo->::rNPCMotionSet::InfoBinary::getTalkMot();
+    if (category <= 8) {
+        rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(category, no);
+        if (pInfo != nullptr) {
+            return pInfo->rNPCMotionSet::InfoBinary::getTalkMot();
         } else {
-            return static_cast<s16>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s16>(-1);
+        return -1;
     }
 }
 
@@ -359,11 +359,11 @@ s16 sNpcManager::getHeadCtrl(u8 category, u8 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s32
     // inferred: a value cast to the type its use takes: u8 used as u32
-    rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-        return pInfo->::rNPCMotionSet::InfoBinary::getHeadCtrl();
+    rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
+    if (pInfo != nullptr) {
+        return pInfo->rNPCMotionSet::InfoBinary::getHeadCtrl();
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
@@ -372,11 +372,11 @@ u8 sNpcManager::getTurnType(u8 category, u8 no) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s32
     // inferred: a value cast to the type its use takes: u8 used as u32
-    rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-        return pInfo->::rNPCMotionSet::InfoBinary::getTurnType();
+    rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
+    if (pInfo != nullptr) {
+        return pInfo->rNPCMotionSet::InfoBinary::getTurnType();
     } else {
-        return static_cast<u8>(0);
+        return 0;
     }
 }
 
@@ -388,9 +388,9 @@ bool sNpcManager::isDisableCancel(u8 category, u8 no, s32 index) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s32
     // inferred: a value cast to the type its use takes: u8 used as u32
-    rNPCMotionSet::InfoBinary* pInfo = this->mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
-        return pInfo->::rNPCMotionSet::InfoBinary::getDisableCancel(static_cast<u32>(index));
+    rNPCMotionSet::InfoBinary* pInfo = mpNPCMotionSet->getInfo(static_cast<s32>(category), static_cast<u32>(no));
+    if (pInfo != nullptr) {
+        return pInfo->rNPCMotionSet::InfoBinary::getDisableCancel(static_cast<u32>(index));
     } else {
         return false;
     }
@@ -406,50 +406,50 @@ u32 sNpcManager::getMotionListNum(u8 category, u8 no) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from rNPCMotionSet::InfoBinary*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x38 from unsigned long
     // inferred: an ordered temporary, read before a later effect: the value read at 0x7f1d44, held ahead of the effects the ELF orders after it
-    rNPCMotionSet* t0 = this->mpNPCMotionSet;
+    rNPCMotionSet* t0 = mpNPCMotionSet;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x7f1d4b, held ahead of the effects the ELF orders after it
-    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x7f1d4e, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(136));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 136);
     rNPCMotionSet::InfoBinary* pInfo = t0->getInfo(static_cast<s32>(category), static_cast<u32>(no));
-    if (pInfo != static_cast<rNPCMotionSet::InfoBinary*>(nullptr)) {
+    if (pInfo != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f1d59, held ahead of the effects the ELF orders after it
-        unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pInfo) + static_cast<long>(0));
+        unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pInfo) + 0);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f1d60, held ahead of the effects the ELF orders after it
-        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(56));
+        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 56);
         return pInfo->getMotListNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007f1d70 - 0x007f1dc8 (88 bytes)
 void sNpcManager::setNPCMotMyRoomRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
-        this->mpNPCMotMyRoom->::cResource::release();
-        this->mpNPCMotMyRoom = static_cast<rNPCMotMyRoom*>(nullptr);
+    if (mpNPCMotMyRoom != nullptr) {
+        mpNPCMotMyRoom->release();
+        mpNPCMotMyRoom = nullptr;
     }
-    this->mpNPCMotMyRoom = static_cast<rNPCMotMyRoom*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("MyRoom", "RES_ID_NPCMOTMYROOM", static_cast<u32>(1), false));
+    mpNPCMotMyRoom = static_cast<rNPCMotMyRoom*>(sArchiveManager::getInstance()->createRes("MyRoom", "RES_ID_NPCMOTMYROOM", 1u, false));
 }
 
 // Address: 0x007f1dd0 - 0x007f1dfc (44 bytes)
 void sNpcManager::releaseNPCMotMyRoomRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCMotMyRoom == static_cast<rNPCMotMyRoom*>(nullptr)) {
+    if (mpNPCMotMyRoom == nullptr) {
         return;
     }
-    this->mpNPCMotMyRoom->::cResource::release();
-    this->mpNPCMotMyRoom = static_cast<rNPCMotMyRoom*>(nullptr);
+    mpNPCMotMyRoom->release();
+    mpNPCMotMyRoom = nullptr;
 }
 
 // Address: 0x007f1e00 - 0x007f1e33 (51 bytes)
 bool sNpcManager::isTransOffMyRoom(u8 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
-        rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr)) {
-            return pInfo->::rNPCMotMyRoom::InfoBinary::isTransOff() != false;
+    if (mpNPCMotMyRoom != nullptr) {
+        rNPCMotMyRoom::InfoBinary* pInfo = mpNPCMotMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
+            return pInfo->rNPCMotMyRoom::InfoBinary::isTransOff();
         } else {
             return false;
         }
@@ -461,12 +461,12 @@ bool sNpcManager::isTransOffMyRoom(u8 no) {
 // Address: 0x007f1e40 - 0x007f1e84 (68 bytes)
 bool sNpcManager::isMotionCancelMyRoom(u8 no, s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
-        rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr)) {
+    if (mpNPCMotMyRoom != nullptr) {
+        rNPCMotMyRoom::InfoBinary* pInfo = mpNPCMotMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0x7f1e6b, used once; no DWARF local holds it
-            s8 t0 = pInfo->::rNPCMotMyRoom::InfoBinary::getCancel(static_cast<u32>(index));
-            return t0 != static_cast<s8>(0);
+            s8 t0 = pInfo->rNPCMotMyRoom::InfoBinary::getCancel(static_cast<u32>(index));
+            return t0 != 0;
         } else {
             return false;
         }
@@ -478,9 +478,9 @@ bool sNpcManager::isMotionCancelMyRoom(u8 no, s32 index) {
 // Address: 0x007f1e90 - 0x007f1ed3 (67 bytes)
 bool sNpcManager::isMotionFinishMyRoom(u8 no, s32 index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
-        rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr)) {
+    if (mpNPCMotMyRoom != nullptr) {
+        rNPCMotMyRoom::InfoBinary* pInfo = mpNPCMotMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0x7f1ebc, used once; no DWARF local holds it
             u32 t1 = pInfo->getMotListNum();
             return static_cast<unsigned int>(index) >= t1;
@@ -510,30 +510,30 @@ __attribute__((weak)) u32 sNpcManager::getNPCMotMyRoom(u8 no, s32& index, s32& c
 // Address: 0x007f2160 - 0x007f21b8 (88 bytes)
 void sNpcManager::setNPCEmoMyRoomRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
-        this->mpNPCEmoMyRoom->::cResource::release();
-        this->mpNPCEmoMyRoom = static_cast<rNPCEmoMyRoom*>(nullptr);
+    if (mpNPCEmoMyRoom != nullptr) {
+        mpNPCEmoMyRoom->release();
+        mpNPCEmoMyRoom = nullptr;
     }
-    this->mpNPCEmoMyRoom = static_cast<rNPCEmoMyRoom*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("MyRoom", "RES_ID_NPCEMOMYROOM", static_cast<u32>(1), false));
+    mpNPCEmoMyRoom = static_cast<rNPCEmoMyRoom*>(sArchiveManager::getInstance()->createRes("MyRoom", "RES_ID_NPCEMOMYROOM", 1u, false));
 }
 
 // Address: 0x007f21c0 - 0x007f21ec (44 bytes)
 void sNpcManager::releaseNPCEmoMyRoomRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCEmoMyRoom == static_cast<rNPCEmoMyRoom*>(nullptr)) {
+    if (mpNPCEmoMyRoom == nullptr) {
         return;
     }
-    this->mpNPCEmoMyRoom->::cResource::release();
-    this->mpNPCEmoMyRoom = static_cast<rNPCEmoMyRoom*>(nullptr);
+    mpNPCEmoMyRoom->release();
+    mpNPCEmoMyRoom = nullptr;
 }
 
 // Address: 0x007f21f0 - 0x007f2223 (51 bytes)
 bool sNpcManager::isTransOffEmoMyRoom(u8 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
-        rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
-            return pInfo->::rNPCEmoMyRoom::InfoBinary::isTransOff() != false;
+    if (mpNPCEmoMyRoom != nullptr) {
+        rNPCEmoMyRoom::InfoBinary* pInfo = mpNPCEmoMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
+            return pInfo->rNPCEmoMyRoom::InfoBinary::isTransOff();
         } else {
             return false;
         }
@@ -549,26 +549,26 @@ u32 sNpcManager::getIndexFromUIDEmoMyRoom(u32 uid) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f228a; no location-less local in scope fits
     unsigned int v2_8;
-    if (this->mpNPCEmoMyRoom == static_cast<rNPCEmoMyRoom*>(nullptr)) {
-        v2_8 = static_cast<unsigned int>(0);
+    if (mpNPCEmoMyRoom == nullptr) {
+        v2_8 = 0;
     } else {
-        if (this->mpNPCEmoMyRoom->mArrayNum == static_cast<u32>(0)) {
-            v2_8 = static_cast<unsigned int>(0);
+        if (mpNPCEmoMyRoom->mArrayNum == 0) {
+            v2_8 = 0;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value the loop at 0x7f2260 carries; no location-less local in scope fits
-            for (rNPCEmoMyRoom* v0_5 = this->mpNPCEmoMyRoom;;) {
+            for (rNPCEmoMyRoom* v0_5 = mpNPCEmoMyRoom;;) {
                 // inferred: a temporary for the result of the call at 0x7f2265, used twice; no DWARF local holds it
                 rNPCEmoMyRoom::InfoBinary* t0 = v0_5->getInfo(i0_3);
-                if (t0 == static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
-                    v2_8 = static_cast<unsigned int>(0);
+                if (t0 == nullptr) {
+                    v2_8 = 0;
                     return v2_8;
                 } else {
                     if (t0->mUID != uid) {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mpNPCEmoMyRoom->mArrayNum) {
-                            i0_3 += static_cast<unsigned int>(1);
-                            v0_5 = this->mpNPCEmoMyRoom;
+                        if ((i0_3 + 1u) < mpNPCEmoMyRoom->mArrayNum) {
+                            i0_3 += 1u;
+                            v0_5 = mpNPCEmoMyRoom;
                         } else {
                             break;
                         }
@@ -578,7 +578,7 @@ u32 sNpcManager::getIndexFromUIDEmoMyRoom(u32 uid) {
                     }
                 }
             }
-            v2_8 = static_cast<unsigned int>(0);
+            v2_8 = 0;
         }
     }
     return v2_8;
@@ -587,12 +587,12 @@ u32 sNpcManager::getIndexFromUIDEmoMyRoom(u32 uid) {
 // Address: 0x007f22a0 - 0x007f22e5 (69 bytes)
 bool sNpcManager::isMotionCancelEmoMyRoom(u8 no, s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
-        rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
+    if (mpNPCEmoMyRoom != nullptr) {
+        rNPCEmoMyRoom::InfoBinary* pInfo = mpNPCEmoMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0x7f22cb, used once; no DWARF local holds it
-            s16 t0 = pInfo->::rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(index));
-            return t0 != static_cast<s16>(0);
+            s16 t0 = pInfo->rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(index));
+            return t0 != 0;
         } else {
             return false;
         }
@@ -604,9 +604,9 @@ bool sNpcManager::isMotionCancelEmoMyRoom(u8 no, s32 index) {
 // Address: 0x007f22f0 - 0x007f2333 (67 bytes)
 bool sNpcManager::isMotionFinishEmoMyRoom(u8 no, s32 index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
-        rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
-        if (pInfo != static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
+    if (mpNPCEmoMyRoom != nullptr) {
+        rNPCEmoMyRoom::InfoBinary* pInfo = mpNPCEmoMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0x7f231c, used once; no DWARF local holds it
             u32 t1 = pInfo->getMotListNum();
             return static_cast<unsigned int>(index) >= t1;
@@ -619,13 +619,35 @@ bool sNpcManager::isMotionFinishEmoMyRoom(u8 no, s32 index) {
 }
 
 // Address: 0x007f2340 - 0x007f240a (202 bytes)
-__attribute__((weak)) u32 sNpcManager::getNPCEmoMyRoom(u8 no, s32& index, s32& cancel, s16& fingerMotNo, s16& loop, u8 sex) {
-    // local: InfoBinary* pInfo;
-    // local: u32 motionNo;
-    // local: s32 newCancel;
-    // local: s32 newIndex;
-    DDON_STUB("sNpcManager::getNPCEmoMyRoom")
-    return {};
+u32 sNpcManager::getNPCEmoMyRoom(u8 no, s32& index, s32& cancel, s16& fingerMotNo, s16& loop, u8 sex) {
+    // DWARF local not rendered: u32 motionNo;
+    // DWARF local not rendered: s32 newCancel;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (mpNPCEmoMyRoom != nullptr) {
+        rNPCEmoMyRoom::InfoBinary* pInfo = mpNPCEmoMyRoom->getInfo(no);
+        if (pInfo != nullptr) {
+            // inferred: a temporary for the value the load at 0x7f2383 read, used once; no DWARF local holds it
+            int t1 = index;
+            if (t1 < static_cast<int>(pInfo->getMotListNum())) {
+                s32 newIndex = index;
+                // inferred: a temporary for the result of the call at 0x7f23a3, used once; no DWARF local holds it
+                u32 t2 = pInfo->rNPCEmoMyRoom::InfoBinary::getMotionNo(static_cast<u32>(newIndex), sex);
+                fingerMotNo = pInfo->rNPCEmoMyRoom::InfoBinary::getFinger(static_cast<u32>(newIndex));
+                loop = pInfo->rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(newIndex));
+                // inferred: a temporary for the result of the call at 0x7f23d0, used once; no DWARF local holds it
+                s16 t3 = pInfo->rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(newIndex));
+                index = static_cast<int>(((newIndex + 1) <= -1) ? 0u : static_cast<unsigned int>(newIndex + 1));
+                cancel = static_cast<int>((t3 == 0) ? 0u : static_cast<unsigned int>(newIndex + 1));
+                return t2;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 // Address: 0x007f0550 - 0x007f0834 (740 bytes)
@@ -661,7 +683,7 @@ __attribute__((weak)) void sNpcManager::npcSyncLoad() {
 rkThinkData* sNpcManager::getThinkData(u32 job) const {
     // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpThinkData[job - static_cast<u32>(1)];
+    return mpThinkData[job - 1u];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (51 bytes)
@@ -722,27 +744,27 @@ cNpcCustomSkill* sNpcManager::getNpcCustomSkill(u16 thinkIndex) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f2d49; no location-less local in scope fits
     cNpcCustomSkill* v1_0;
-    if (this->mpNpcCustomSkill == static_cast<rNpcCustomSkill*>(nullptr)) {
-        v1_0 = static_cast<cNpcCustomSkill*>(nullptr);
+    if (mpNpcCustomSkill == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 num = this->mpNpcCustomSkill->getDataNum();
-        if (num == static_cast<u32>(0)) {
-            v1_0 = static_cast<cNpcCustomSkill*>(nullptr);
+        u32 num = mpNpcCustomSkill->getDataNum();
+        if (num == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f2d2c, used 3 times; no DWARF local holds it
-                cNpcCustomSkill* t0 = this->mpNpcCustomSkill->getData(i0_2);
-                if (t0 != static_cast<cNpcCustomSkill*>(nullptr)) {
+                cNpcCustomSkill* t0 = mpNpcCustomSkill->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mThinkId == thinkIndex) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < num) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < num) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cNpcCustomSkill*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -759,10 +781,10 @@ cNpcCustomSkill* sNpcManager::getNpcCustomSkill(u16 thinkIndex) const {
 cNpcConstItem* sNpcManager::getNpcConstItem(u32 index) const {
     // DWARF local not rendered: cNpcConstItem* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNpcConstItem != static_cast<rNpcConstItem*>(nullptr)) {
-        return this->mpNpcConstItem->getData(index);
+    if (mpNpcConstItem != nullptr) {
+        return mpNpcConstItem->getData(index);
     } else {
-        return static_cast<cNpcConstItem*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -773,33 +795,33 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x18 from const MtTypedArray<rNpcLedgerList::cItem::cInstitution>*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from unsigned long
     // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2ed1, held ahead of the effects the ELF orders after it
-    rNpcLedgerList* t0 = this->mpLedgerList;
+    rNpcLedgerList* t0 = mpLedgerList;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_3;
     const rNpcLedgerList::cItem* pNpcInfo;
-    if (t0 != static_cast<rNpcLedgerList*>(nullptr)) {
-        pNpcInfo = t0->::rNpcLedgerList::searchNpcInfo(NpcId);
-        if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
-            if (FunctionId <= static_cast<u32>(60)) {
-                if ((NpcId - static_cast<u32>(9000)) <= static_cast<u32>(9)) {
-                    if (FunctionId == static_cast<u32>(37)) {
+    if (t0 != nullptr) {
+        pNpcInfo = t0->searchNpcInfo(NpcId);
+        if (pNpcInfo != nullptr) {
+            if (FunctionId <= 60u) {
+                if ((NpcId - 9000u) <= 9u) {
+                    if (FunctionId == 37) {
                         return true;
                     } else {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f0f, held ahead of the effects the ELF orders after it
-                        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
-                        if (t2.::MtArray::mLength == static_cast<u32>(0)) {
+                        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
+                        if (t2.mLength == 0) {
                             return false;
                         } else {
-                            i0_3 = static_cast<unsigned int>(0);
+                            i0_3 = 0;
                         }
                     }
                 } else {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f0f, held ahead of the effects the ELF orders after it
-                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
-                    if (t2.::MtArray::mLength == static_cast<u32>(0)) {
+                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t2 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
+                    if (t2.mLength == 0) {
                         return false;
                     } else {
-                        i0_3 = static_cast<unsigned int>(0);
+                        i0_3 = 0;
                     }
                 }
             } else {
@@ -813,36 +835,36 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
     }
     for (;;) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f23, held ahead of the effects the ELF orders after it
-        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t4 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
+        const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t4 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f2a, held ahead of the effects the ELF orders after it
-        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t4) + static_cast<long>(24));
+        const unsigned long t6 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t4) + 24);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f2e, held ahead of the effects the ELF orders after it
-        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t6 + static_cast<unsigned long>(i0_3 * static_cast<unsigned int>(8))) + static_cast<long>(0));
-        if (t7 != static_cast<unsigned long>(0)) {
+        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t6 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
+        if (t7 != 0) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f38, held ahead of the effects the ELF orders after it
-            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t8 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
+            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t8 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f3d, held ahead of the effects the ELF orders after it
-            const unsigned long t10 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t8) + static_cast<long>(24));
+            const unsigned long t10 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t8) + 24);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f41, held ahead of the effects the ELF orders after it
-            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10 + static_cast<unsigned long>(i0_3 * static_cast<unsigned int>(8))) + static_cast<long>(0));
+            unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10 + static_cast<unsigned long>(i0_3 * 8u)) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f45, held ahead of the effects the ELF orders after it
-            unsigned int t12 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t11) + static_cast<long>(40));
+            unsigned int t12 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t11) + 40);
             if (t12 == FunctionId) {
                 return true;
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f50, held ahead of the effects the ELF orders after it
-                const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
-                if ((i0_3 + static_cast<unsigned int>(1)) < t13.::MtArray::mLength) {
-                    i0_3 += static_cast<unsigned int>(1);
+                const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
+                if ((i0_3 + 1u) < t13.mLength) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7f2f50, held ahead of the effects the ELF orders after it
-            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
-            if ((i0_3 + static_cast<unsigned int>(1)) < t13.::MtArray::mLength) {
-                i0_3 += static_cast<unsigned int>(1);
+            const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t13 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
+            if ((i0_3 + 1u) < t13.mLength) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -854,14 +876,14 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
 // Address: 0x007f2f70 - 0x007f2fc6 (86 bytes)
 bool sNpcManager::isHaveFunction(u32 NpcId) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
-        const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
-        if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
-            if (NpcId != static_cast<u32>(4702)) {
-                if ((NpcId - static_cast<u32>(9000)) > static_cast<u32>(9)) {
+    if (mpLedgerList != nullptr) {
+        const rNpcLedgerList::cItem* pNpcInfo = mpLedgerList->searchNpcInfo(NpcId);
+        if (pNpcInfo != nullptr) {
+            if (NpcId != 4702) {
+                if ((NpcId - 9000u) > 9u) {
                     // inferred: a temporary for the result of the call at 0x7f2fab, used once; no DWARF local holds it
-                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t0 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
-                    return t0.::MtArray::mLength != static_cast<u32>(0);
+                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t0 = pNpcInfo->rNpcLedgerList::cItem::getInstitutionList();
+                    return t0.mLength != 0;
                 }
             }
             return true;
@@ -876,8 +898,8 @@ bool sNpcManager::isHaveFunction(u32 NpcId) {
 // Address: 0x007f2fd0 - 0x007f3009 (57 bytes)
 bool sNpcManager::isHaveEnableFunction(u32 NpcId, u32 FunctionId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sNpcManager::isHaveFunction(NpcId, FunctionId) != false) {
-        return this->::sNpcManager::isEnableFunction(NpcId, FunctionId);
+    if (isHaveFunction(NpcId, FunctionId)) {
+        return isEnableFunction(NpcId, FunctionId);
     } else {
         return false;
     }
@@ -966,9 +988,9 @@ __attribute__((weak)) u32 sNpcManager::getNoraPawnId(u32 Idx) {
 // Address: 0x007f02a0 - 0x007f02de (62 bytes)
 void sNpcManager::clearNoraPawnList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sNpcManager::getAllocator()->memFree(static_cast<void*>(this->mpNoraPawnIdList));
-    this->mpNoraPawnIdList = static_cast<u32*>(nullptr);
-    this->mIsRegisterdNoraPawnList = false;
+    sNpcManager::getAllocator()->memFree(static_cast<void*>(mpNoraPawnIdList));
+    mpNoraPawnIdList = nullptr;
+    mIsRegisterdNoraPawnList = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (19 bytes)
@@ -1000,23 +1022,22 @@ __attribute__((weak)) void sNpcManager::initPawnTalkMsgDataCore(cTalkMsgData* pT
 // Address: 0x007f3a80 - 0x007f3af9 (121 bytes)
 void sNpcManager::startExMotArcLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mExMotTicket != (::sArchiveManager::INVALID_TICKET)) {
-    } else {
+    if (mExMotTicket == (sArchiveManager::INVALID_TICKET)) {
         // inferred: a temporary for the result of the call at 0x7f3ab5, used twice; no DWARF local holds it
-        TICKET t0 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-        this->mExMotTicket = t0;
+        TICKET t0 = sArchiveManager::getInstance()->IssueTicket();
+        mExMotTicket = t0;
         // inferred: a temporary for the value the load at 0x7f3ac4 read, used once; no DWARF local holds it
-        sArchiveManager* t1 = ::sArchiveManager::getInstance();
-        t1->::sArchiveManager::addTagEx(t0, ::rArchiveListArray::convTagId("npc_ex_mot"));
-        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mExMotTicket);
+        sArchiveManager* t1 = sArchiveManager::getInstance();
+        t1->addTagEx(t0, rArchiveListArray::convTagId("npc_ex_mot"));
+        sArchiveManager::getInstance()->attestationTicket(mExMotTicket);
     }
 }
 
 // Address: 0x007f3b00 - 0x007f3b2c (44 bytes)
 bool sNpcManager::isFinishExMotArcLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mExMotTicket != (::sArchiveManager::INVALID_TICKET)) {
-        return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mExMotTicket);
+    if (mExMotTicket != (sArchiveManager::INVALID_TICKET)) {
+        return sArchiveManager::getInstance()->isTicketLoadFinish(mExMotTicket);
     } else {
         return false;
     }
@@ -1026,27 +1047,27 @@ bool sNpcManager::isFinishExMotArcLoad() {
 void sNpcManager::releaseExMotArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7f1858 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mExMotTicket == t0) {
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mExMotTicket == t0) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mExMotTicket);
-    this->mExMotTicket = static_cast<TICKET>(t0);
+    sArchiveManager::getInstance()->returnTicket(mExMotTicket);
+    mExMotTicket = static_cast<TICKET>(t0);
 }
 
 // Address: 0x007f3b30 - 0x007f3bb3 (131 bytes)
 cNpcMeetingPlace* sNpcManager::getMeetingPlace(u32 NpcId) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpNpcMeetingPlace != static_cast<rNpcMeetingPlace*>(nullptr)) {
-        if (this->mpNpcMeetingPlace->getDataNum() != static_cast<u32>(0)) {
+    if (mpNpcMeetingPlace != nullptr) {
+        if (mpNpcMeetingPlace->getDataNum() != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (this->mpNpcMeetingPlace->getData(i0_3)->mNpcId == NpcId) {
-                    return this->mpNpcMeetingPlace->getData(i0_3);
+            for (unsigned int i0_3 = 0;;) {
+                if (mpNpcMeetingPlace->getData(i0_3)->mNpcId == NpcId) {
+                    return mpNpcMeetingPlace->getData(i0_3);
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mpNpcMeetingPlace->getDataNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < mpNpcMeetingPlace->getDataNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -1054,7 +1075,7 @@ cNpcMeetingPlace* sNpcManager::getMeetingPlace(u32 NpcId) {
             }
         }
     }
-    return static_cast<cNpcMeetingPlace*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007f3bc0 - 0x007f3bfc (60 bytes)
@@ -1062,12 +1083,11 @@ void sNpcManager::initStage() {
     // DWARF local not rendered: u32 state;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x164 from cNetGameServer*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(356))) <= static_cast<unsigned int>(4)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(356))) != static_cast<unsigned int>(1)) {
-            if (this->mIsRegisterdNoraPawnList == false) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mRegisterdPawnList.::MtArray::mLength != static_cast<u32>(0)) {
-                } else {
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getNoraPawnList();
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 356)) <= 4u) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 356)) != 1) {
+            if (!mIsRegisterdNoraPawnList) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRegisterdPawnList.mLength == 0) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getNoraPawnList();
                 }
             }
         }
@@ -1079,304 +1099,300 @@ void sNpcManager::loadCoMotionArc() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x15e from cArea*
     // inferred: a temporary for the value the load at 0x7f3d08 read, used once; no DWARF local holds it
-    s32 t0 = ::sGame::getInstance()->::sGame::getStageNo();
-    if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isPartyLargeStage() == false) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(::sArea::getInstance()->mpArea[2]) + static_cast<long>(350))) == static_cast<unsigned char>(0)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isRevivalPawnStage() == false) {
-                if (::sGame::getInstance()->::sGame::isPlayPrologue() == false) {
-                    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea(t0) != false) {
+    s32 t0 = sGame::getInstance()->getStageNo();
+    if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isPartyLargeStage()) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 350)) == 0) {
+            if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isRevivalPawnStage()) {
+                if (!sGame::getInstance()->isPlayPrologue()) {
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea(t0)) {
                         // inferred: a temporary for the value the load at 0x7f3d6d read, used 4 times; no DWARF local holds it
-                        TICKET t1 = this->mLiteTicket;
-                        if (t1 == (::sArchiveManager::INVALID_TICKET)) {
-                            if (t1 != this->mFullTicket) {
-                                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-                                this->mFullTicket = t1;
-                                if (this->mFullTicket != this->mFsmTicket) {
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                    this->mFsmTicket = t1;
+                        TICKET t1 = mLiteTicket;
+                        if (t1 == (sArchiveManager::INVALID_TICKET)) {
+                            if (t1 != mFullTicket) {
+                                sArchiveManager::getInstance()->returnTicket(mFullTicket);
+                                mFullTicket = t1;
+                                if (mFullTicket != mFsmTicket) {
+                                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                    mFsmTicket = t1;
                                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mLiteTicket = t2;
+                                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                                    mLiteTicket = t2;
                                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mLiteTicket = t2;
+                                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                                    mLiteTicket = t2;
                                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                                 }
                             } else {
-                                if (t1 != this->mFsmTicket) {
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                    this->mFsmTicket = t1;
+                                if (t1 != mFsmTicket) {
+                                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                    mFsmTicket = t1;
                                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mLiteTicket = t2;
+                                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                                    mLiteTicket = t2;
                                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mLiteTicket = t2;
+                                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                                    mLiteTicket = t2;
                                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                                 }
                             }
                         }
                     } else {
                         // inferred: a temporary for the value the load at 0x7f3e13 read, used 4 times; no DWARF local holds it
-                        TICKET t4 = this->mFullTicket;
-                        if (t4 != (::sArchiveManager::INVALID_TICKET)) {
-                        } else {
-                            if (t4 != this->mLiteTicket) {
-                                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mLiteTicket);
-                                this->mLiteTicket = t4;
-                                if (this->mLiteTicket != this->mFsmTicket) {
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                    this->mFsmTicket = t4;
+                        TICKET t4 = mFullTicket;
+                        if (t4 == (sArchiveManager::INVALID_TICKET)) {
+                            if (t4 != mLiteTicket) {
+                                sArchiveManager::getInstance()->returnTicket(mLiteTicket);
+                                mLiteTicket = t4;
+                                if (mLiteTicket != mFsmTicket) {
+                                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                    mFsmTicket = t4;
                                     // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                    TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mFullTicket = t5;
+                                    TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                    mFullTicket = t5;
                                     // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                    sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                    t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                    sArchiveManager* t6 = sArchiveManager::getInstance();
+                                    t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                    sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                    TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mFullTicket = t5;
+                                    TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                    mFullTicket = t5;
                                     // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                    sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                    t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                    sArchiveManager* t6 = sArchiveManager::getInstance();
+                                    t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                    sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                                 }
                             } else {
-                                if (t4 != this->mFsmTicket) {
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                    this->mFsmTicket = t4;
+                                if (t4 != mFsmTicket) {
+                                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                    mFsmTicket = t4;
                                     // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                    TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mFullTicket = t5;
+                                    TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                    mFullTicket = t5;
                                     // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                    sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                    t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                    sArchiveManager* t6 = sArchiveManager::getInstance();
+                                    t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                    sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                    TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                    this->mFullTicket = t5;
+                                    TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                    mFullTicket = t5;
                                     // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                    sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                    t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                    sArchiveManager* t6 = sArchiveManager::getInstance();
+                                    t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                    sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                                 }
                             }
                         }
                     }
                 } else {
                     // inferred: a temporary for the value the load at 0x7f3e13 read, used 4 times; no DWARF local holds it
-                    TICKET t4 = this->mFullTicket;
-                    if (t4 != (::sArchiveManager::INVALID_TICKET)) {
-                    } else {
-                        if (t4 != this->mLiteTicket) {
-                            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mLiteTicket);
-                            this->mLiteTicket = t4;
-                            if (this->mLiteTicket != this->mFsmTicket) {
-                                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                this->mFsmTicket = t4;
+                    TICKET t4 = mFullTicket;
+                    if (t4 == (sArchiveManager::INVALID_TICKET)) {
+                        if (t4 != mLiteTicket) {
+                            sArchiveManager::getInstance()->returnTicket(mLiteTicket);
+                            mLiteTicket = t4;
+                            if (mLiteTicket != mFsmTicket) {
+                                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                mFsmTicket = t4;
                                 // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                this->mFullTicket = t5;
+                                TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                mFullTicket = t5;
                                 // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                sArchiveManager* t6 = sArchiveManager::getInstance();
+                                t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                             } else {
                                 // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                this->mFullTicket = t5;
+                                TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                mFullTicket = t5;
                                 // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                sArchiveManager* t6 = sArchiveManager::getInstance();
+                                t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                             }
                         } else {
-                            if (t4 != this->mFsmTicket) {
-                                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                                this->mFsmTicket = t4;
+                            if (t4 != mFsmTicket) {
+                                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                                mFsmTicket = t4;
                                 // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                this->mFullTicket = t5;
+                                TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                mFullTicket = t5;
                                 // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                sArchiveManager* t6 = sArchiveManager::getInstance();
+                                t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                             } else {
                                 // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                                TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                                this->mFullTicket = t5;
+                                TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                                mFullTicket = t5;
                                 // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                                sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                                t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                                ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                                sArchiveManager* t6 = sArchiveManager::getInstance();
+                                t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                                sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                             }
                         }
                     }
                 }
             } else {
                 // inferred: a temporary for the value the load at 0x7f3e13 read, used 4 times; no DWARF local holds it
-                TICKET t4 = this->mFullTicket;
-                if (t4 != (::sArchiveManager::INVALID_TICKET)) {
-                } else {
-                    if (t4 != this->mLiteTicket) {
-                        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mLiteTicket);
-                        this->mLiteTicket = t4;
-                        if (this->mLiteTicket != this->mFsmTicket) {
-                            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                            this->mFsmTicket = t4;
+                TICKET t4 = mFullTicket;
+                if (t4 == (sArchiveManager::INVALID_TICKET)) {
+                    if (t4 != mLiteTicket) {
+                        sArchiveManager::getInstance()->returnTicket(mLiteTicket);
+                        mLiteTicket = t4;
+                        if (mLiteTicket != mFsmTicket) {
+                            sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                            mFsmTicket = t4;
                             // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                            TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                            this->mFullTicket = t5;
+                            TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                            mFullTicket = t5;
                             // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                            sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                            t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                            sArchiveManager* t6 = sArchiveManager::getInstance();
+                            t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                            sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                         } else {
                             // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                            TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                            this->mFullTicket = t5;
+                            TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                            mFullTicket = t5;
                             // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                            sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                            t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                            sArchiveManager* t6 = sArchiveManager::getInstance();
+                            t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                            sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                         }
                     } else {
-                        if (t4 != this->mFsmTicket) {
-                            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                            this->mFsmTicket = t4;
+                        if (t4 != mFsmTicket) {
+                            sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                            mFsmTicket = t4;
                             // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                            TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                            this->mFullTicket = t5;
+                            TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                            mFullTicket = t5;
                             // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                            sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                            t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                            sArchiveManager* t6 = sArchiveManager::getInstance();
+                            t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                            sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                         } else {
                             // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                            TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                            this->mFullTicket = t5;
+                            TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                            mFullTicket = t5;
                             // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                            sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                            t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                            sArchiveManager* t6 = sArchiveManager::getInstance();
+                            t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                            sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                         }
                     }
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0x7f3e13 read, used 4 times; no DWARF local holds it
-            TICKET t4 = this->mFullTicket;
-            if (t4 != (::sArchiveManager::INVALID_TICKET)) {
-            } else {
-                if (t4 != this->mLiteTicket) {
-                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mLiteTicket);
-                    this->mLiteTicket = t4;
-                    if (this->mLiteTicket != this->mFsmTicket) {
-                        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                        this->mFsmTicket = t4;
+            TICKET t4 = mFullTicket;
+            if (t4 == (sArchiveManager::INVALID_TICKET)) {
+                if (t4 != mLiteTicket) {
+                    sArchiveManager::getInstance()->returnTicket(mLiteTicket);
+                    mLiteTicket = t4;
+                    if (mLiteTicket != mFsmTicket) {
+                        sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                        mFsmTicket = t4;
                         // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                        TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                        this->mFullTicket = t5;
+                        TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                        mFullTicket = t5;
                         // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                        sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                        t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                        sArchiveManager* t6 = sArchiveManager::getInstance();
+                        t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                        sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                     } else {
                         // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                        TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                        this->mFullTicket = t5;
+                        TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                        mFullTicket = t5;
                         // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                        sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                        t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                        sArchiveManager* t6 = sArchiveManager::getInstance();
+                        t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                        sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                     }
                 } else {
-                    if (t4 != this->mFsmTicket) {
-                        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                        this->mFsmTicket = t4;
+                    if (t4 != mFsmTicket) {
+                        sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                        mFsmTicket = t4;
                         // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                        TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                        this->mFullTicket = t5;
+                        TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                        mFullTicket = t5;
                         // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                        sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                        t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                        sArchiveManager* t6 = sArchiveManager::getInstance();
+                        t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                        sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                     } else {
                         // inferred: a temporary for the result of the call at 0x7f3e82, used twice; no DWARF local holds it
-                        TICKET t5 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                        this->mFullTicket = t5;
+                        TICKET t5 = sArchiveManager::getInstance()->IssueTicket();
+                        mFullTicket = t5;
                         // inferred: a temporary for the value the load at 0x7f3e92 read, used once; no DWARF local holds it
-                        sArchiveManager* t6 = ::sArchiveManager::getInstance();
-                        t6->::sArchiveManager::addTagEx(t5, ::rArchiveListArray::convTagId("npc_co_full"));
-                        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+                        sArchiveManager* t6 = sArchiveManager::getInstance();
+                        t6->addTagEx(t5, rArchiveListArray::convTagId("npc_co_full"));
+                        sArchiveManager::getInstance()->attestationTicket(mFullTicket);
                     }
                 }
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x7f3d6d read, used 4 times; no DWARF local holds it
-        TICKET t1 = this->mLiteTicket;
-        if (t1 == (::sArchiveManager::INVALID_TICKET)) {
-            if (t1 != this->mFullTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-                this->mFullTicket = t1;
-                if (this->mFullTicket != this->mFsmTicket) {
-                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                    this->mFsmTicket = t1;
+        TICKET t1 = mLiteTicket;
+        if (t1 == (sArchiveManager::INVALID_TICKET)) {
+            if (t1 != mFullTicket) {
+                sArchiveManager::getInstance()->returnTicket(mFullTicket);
+                mFullTicket = t1;
+                if (mFullTicket != mFsmTicket) {
+                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                    mFsmTicket = t1;
                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                    this->mLiteTicket = t2;
+                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                    mLiteTicket = t2;
                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                 } else {
                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                    this->mLiteTicket = t2;
+                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                    mLiteTicket = t2;
                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                 }
             } else {
-                if (t1 != this->mFsmTicket) {
-                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                    this->mFsmTicket = t1;
+                if (t1 != mFsmTicket) {
+                    sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                    mFsmTicket = t1;
                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                    this->mLiteTicket = t2;
+                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                    mLiteTicket = t2;
                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                 } else {
                     // inferred: a temporary for the result of the call at 0x7f3dd7, used twice; no DWARF local holds it
-                    TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-                    this->mLiteTicket = t2;
+                    TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+                    mLiteTicket = t2;
                     // inferred: a temporary for the value the load at 0x7f3de7 read, used once; no DWARF local holds it
-                    sArchiveManager* t3 = ::sArchiveManager::getInstance();
-                    t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_lite"));
-                    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mLiteTicket);
+                    sArchiveManager* t3 = sArchiveManager::getInstance();
+                    t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_lite"));
+                    sArchiveManager::getInstance()->attestationTicket(mLiteTicket);
                 }
             }
         }
@@ -1386,23 +1402,22 @@ void sNpcManager::loadCoMotionArc() {
 // Address: 0x007f3c00 - 0x007f3c79 (121 bytes)
 void sNpcManager::loadCoFullMotionArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-    } else {
+    if (mFullTicket == (sArchiveManager::INVALID_TICKET)) {
         // inferred: a temporary for the result of the call at 0x7f3c35, used twice; no DWARF local holds it
-        TICKET t0 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-        this->mFullTicket = t0;
+        TICKET t0 = sArchiveManager::getInstance()->IssueTicket();
+        mFullTicket = t0;
         // inferred: a temporary for the value the load at 0x7f3c44 read, used once; no DWARF local holds it
-        sArchiveManager* t1 = ::sArchiveManager::getInstance();
-        t1->::sArchiveManager::addTagEx(t0, ::rArchiveListArray::convTagId("npc_co_full"));
-        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFullTicket);
+        sArchiveManager* t1 = sArchiveManager::getInstance();
+        t1->addTagEx(t0, rArchiveListArray::convTagId("npc_co_full"));
+        sArchiveManager::getInstance()->attestationTicket(mFullTicket);
     }
 }
 
 // Address: 0x007f3c80 - 0x007f3cac (44 bytes)
 bool sNpcManager::isFinishLoadCoFullMotionArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-        return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFullTicket);
+    if (mFullTicket != (sArchiveManager::INVALID_TICKET)) {
+        return sArchiveManager::getInstance()->isTicketLoadFinish(mFullTicket);
     } else {
         return false;
     }
@@ -1412,12 +1427,12 @@ bool sNpcManager::isFinishLoadCoFullMotionArc() {
 void sNpcManager::releaseCoFullMotionArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7f3cc8 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mFullTicket == t0) {
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mFullTicket == t0) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-    this->mFullTicket = static_cast<TICKET>(t0);
+    sArchiveManager::getInstance()->returnTicket(mFullTicket);
+    mFullTicket = static_cast<TICKET>(t0);
 }
 
 // Address: 0x007f3f60 - 0x007f4015 (181 bytes)
@@ -1425,50 +1440,50 @@ bool sNpcManager::isFinishLoadCoMotionArc() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x15e from cArea*
     // inferred: a temporary for the value the load at 0x7f3f79 read, used once; no DWARF local holds it
-    s32 t0 = ::sGame::getInstance()->::sGame::getStageNo();
-    if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isPartyLargeStage() == false) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(::sArea::getInstance()->mpArea[2]) + static_cast<long>(350))) == static_cast<unsigned char>(0)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isRevivalPawnStage() == false) {
-                if (::sGame::getInstance()->::sGame::isPlayPrologue() == false) {
-                    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea(t0) != false) {
-                        if (this->mLiteTicket == (::sArchiveManager::INVALID_TICKET)) {
+    s32 t0 = sGame::getInstance()->getStageNo();
+    if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isPartyLargeStage()) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 350)) == 0) {
+            if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isRevivalPawnStage()) {
+                if (!sGame::getInstance()->isPlayPrologue()) {
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->isJobActArea(t0)) {
+                        if (mLiteTicket == (sArchiveManager::INVALID_TICKET)) {
                             return false;
                         } else {
-                            return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mLiteTicket);
+                            return sArchiveManager::getInstance()->isTicketLoadFinish(mLiteTicket);
                         }
                     } else {
-                        if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-                            return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFullTicket);
+                        if (mFullTicket != (sArchiveManager::INVALID_TICKET)) {
+                            return sArchiveManager::getInstance()->isTicketLoadFinish(mFullTicket);
                         } else {
                             return false;
                         }
                     }
                 } else {
-                    if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-                        return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFullTicket);
+                    if (mFullTicket != (sArchiveManager::INVALID_TICKET)) {
+                        return sArchiveManager::getInstance()->isTicketLoadFinish(mFullTicket);
                     } else {
                         return false;
                     }
                 }
             } else {
-                if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-                    return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFullTicket);
+                if (mFullTicket != (sArchiveManager::INVALID_TICKET)) {
+                    return sArchiveManager::getInstance()->isTicketLoadFinish(mFullTicket);
                 } else {
                     return false;
                 }
             }
         } else {
-            if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-                return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFullTicket);
+            if (mFullTicket != (sArchiveManager::INVALID_TICKET)) {
+                return sArchiveManager::getInstance()->isTicketLoadFinish(mFullTicket);
             } else {
                 return false;
             }
         }
     } else {
-        if (this->mLiteTicket == (::sArchiveManager::INVALID_TICKET)) {
+        if (mLiteTicket == (sArchiveManager::INVALID_TICKET)) {
             return false;
         } else {
-            return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mLiteTicket);
+            return sArchiveManager::getInstance()->isTicketLoadFinish(mLiteTicket);
         }
     }
 }
@@ -1483,12 +1498,10 @@ __attribute__((weak)) bool sNpcManager::isUseLiteMotionStage(u32 StageNo) {
 // Address: 0x007f4020 - 0x007f4069 (73 bytes)
 bool sNpcManager::isUseLiteMotion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFullTicket != (::sArchiveManager::INVALID_TICKET)) {
-    } else {
-        if (this->mFullTicket != this->mFsmTicket) {
-        } else {
-            if (this->mFullTicket != this->mLiteTicket) {
-                return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mLiteTicket);
+    if (mFullTicket == (sArchiveManager::INVALID_TICKET)) {
+        if (mFullTicket == mFsmTicket) {
+            if (mFullTicket != mLiteTicket) {
+                return sArchiveManager::getInstance()->isTicketLoadFinish(mLiteTicket);
             }
         }
     }
@@ -1499,50 +1512,50 @@ bool sNpcManager::isUseLiteMotion() {
 void sNpcManager::loadFsmMotionArc() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x7f407e read, used 3 times; no DWARF local holds it
-    TICKET t0 = this->mLiteTicket;
+    TICKET t0 = mLiteTicket;
     // inferred: a temporary for the value the load at 0x7f408c read, used 3 times; no DWARF local holds it
-    cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+    cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
-        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(t0);
-        this->mLiteTicket = static_cast<TICKET>(t1);
-        if (this->mLiteTicket != this->mFullTicket) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-            this->mFullTicket = static_cast<TICKET>(t1);
+        sArchiveManager::getInstance()->returnTicket(t0);
+        mLiteTicket = static_cast<TICKET>(t1);
+        if (mLiteTicket != mFullTicket) {
+            sArchiveManager::getInstance()->returnTicket(mFullTicket);
+            mFullTicket = static_cast<TICKET>(t1);
             // inferred: a temporary for the result of the call at 0x7f40dc, used twice; no DWARF local holds it
-            TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-            this->mFsmTicket = t2;
+            TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+            mFsmTicket = t2;
             // inferred: a temporary for the value the load at 0x7f40eb read, used once; no DWARF local holds it
-            sArchiveManager* t3 = ::sArchiveManager::getInstance();
-            t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_fsm"));
-            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFsmTicket);
+            sArchiveManager* t3 = sArchiveManager::getInstance();
+            t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_fsm"));
+            sArchiveManager::getInstance()->attestationTicket(mFsmTicket);
         } else {
             // inferred: a temporary for the result of the call at 0x7f40dc, used twice; no DWARF local holds it
-            TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-            this->mFsmTicket = t2;
+            TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+            mFsmTicket = t2;
             // inferred: a temporary for the value the load at 0x7f40eb read, used once; no DWARF local holds it
-            sArchiveManager* t3 = ::sArchiveManager::getInstance();
-            t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_fsm"));
-            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFsmTicket);
+            sArchiveManager* t3 = sArchiveManager::getInstance();
+            t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_fsm"));
+            sArchiveManager::getInstance()->attestationTicket(mFsmTicket);
         }
     } else {
-        if (t0 != this->mFullTicket) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-            this->mFullTicket = t0;
+        if (t0 != mFullTicket) {
+            sArchiveManager::getInstance()->returnTicket(mFullTicket);
+            mFullTicket = t0;
             // inferred: a temporary for the result of the call at 0x7f40dc, used twice; no DWARF local holds it
-            TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-            this->mFsmTicket = t2;
+            TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+            mFsmTicket = t2;
             // inferred: a temporary for the value the load at 0x7f40eb read, used once; no DWARF local holds it
-            sArchiveManager* t3 = ::sArchiveManager::getInstance();
-            t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_fsm"));
-            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFsmTicket);
+            sArchiveManager* t3 = sArchiveManager::getInstance();
+            t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_fsm"));
+            sArchiveManager::getInstance()->attestationTicket(mFsmTicket);
         } else {
             // inferred: a temporary for the result of the call at 0x7f40dc, used twice; no DWARF local holds it
-            TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-            this->mFsmTicket = t2;
+            TICKET t2 = sArchiveManager::getInstance()->IssueTicket();
+            mFsmTicket = t2;
             // inferred: a temporary for the value the load at 0x7f40eb read, used once; no DWARF local holds it
-            sArchiveManager* t3 = ::sArchiveManager::getInstance();
-            t3->::sArchiveManager::addTagEx(t2, ::rArchiveListArray::convTagId("npc_co_fsm"));
-            ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mFsmTicket);
+            sArchiveManager* t3 = sArchiveManager::getInstance();
+            t3->addTagEx(t2, rArchiveListArray::convTagId("npc_co_fsm"));
+            sArchiveManager::getInstance()->attestationTicket(mFsmTicket);
         }
     }
 }
@@ -1553,44 +1566,44 @@ void sNpcManager::loadFsmMotionArc() {
 // Address: 0x007f4130 - 0x007f4149 (25 bytes)
 bool sNpcManager::isFinishLoadFsmMotionArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mFsmTicket);
+    return sArchiveManager::getInstance()->isTicketLoadFinish(mFsmTicket);
 }
 
 // Address: 0x007f1880 - 0x007f1904 (132 bytes)
 void sNpcManager::releaseCoMotionArc() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x7f188a read, used 4 times; no DWARF local holds it
-    TICKET t0 = this->mLiteTicket;
+    TICKET t0 = mLiteTicket;
     // inferred: a temporary for the value the load at 0x7f1898 read, used 4 times; no DWARF local holds it
-    cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+    cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
-        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(t0);
-        this->mLiteTicket = static_cast<TICKET>(t1);
-        if (this->mLiteTicket != this->mFullTicket) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-            this->mFullTicket = static_cast<TICKET>(t1);
-            if (this->mFullTicket != this->mFsmTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                this->mFsmTicket = static_cast<TICKET>(t1);
+        sArchiveManager::getInstance()->returnTicket(t0);
+        mLiteTicket = static_cast<TICKET>(t1);
+        if (mLiteTicket != mFullTicket) {
+            sArchiveManager::getInstance()->returnTicket(mFullTicket);
+            mFullTicket = static_cast<TICKET>(t1);
+            if (mFullTicket != mFsmTicket) {
+                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                mFsmTicket = static_cast<TICKET>(t1);
             }
         } else {
-            if (this->mLiteTicket != this->mFsmTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                this->mFsmTicket = static_cast<TICKET>(t1);
+            if (mLiteTicket != mFsmTicket) {
+                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                mFsmTicket = static_cast<TICKET>(t1);
             }
         }
     } else {
-        if (t0 != this->mFullTicket) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFullTicket);
-            this->mFullTicket = t0;
-            if (this->mFullTicket != this->mFsmTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                this->mFsmTicket = t0;
+        if (t0 != mFullTicket) {
+            sArchiveManager::getInstance()->returnTicket(mFullTicket);
+            mFullTicket = t0;
+            if (mFullTicket != mFsmTicket) {
+                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                mFsmTicket = t0;
             }
         } else {
-            if (t0 != this->mFsmTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mFsmTicket);
-                this->mFsmTicket = t0;
+            if (t0 != mFsmTicket) {
+                sArchiveManager::getInstance()->returnTicket(mFsmTicket);
+                mFsmTicket = t0;
             }
         }
     }
@@ -1599,8 +1612,8 @@ void sNpcManager::releaseCoMotionArc() {
 // Address: 0x007f4150 - 0x007f4171 (33 bytes)
 bool sNpcManager::isExistNpc(u32 NpcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
-        return this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId) != static_cast<const rNpcLedgerList::cItem*>(nullptr);
+    if (mpLedgerList != nullptr) {
+        return mpLedgerList->searchNpcInfo(NpcId) != nullptr;
     } else {
         return false;
     }
@@ -1618,8 +1631,8 @@ __attribute__((weak)) void sNpcManager::checkCheckCollision() {
 // Address: 0x007f4210 - 0x007f421e (14 bytes)
 void sNpcManager::reqChangeEquipMyRoom(uNpc* pNpc, s32 req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpChangeEquipNpc = pNpc;
-    this->mReqChangeEquipMyRoom = req;
+    mpChangeEquipNpc = pNpc;
+    mReqChangeEquipMyRoom = req;
 }
 
 // Address: 0x007f0850 - 0x007f0cac (1116 bytes)
@@ -1639,14 +1652,14 @@ __attribute__((weak)) void sNpcManager::setChangeEquipMyRoom() {
 // Address: 0x007f0cb0 - 0x007f0cc6 (22 bytes)
 void sNpcManager::clearChangeEquipMyRoom() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpChangeEquipNpc = nullptr;
-    this->mReqChangeEquipMyRoom = static_cast<s32>(-1);
+    mpChangeEquipNpc = nullptr;
+    mReqChangeEquipMyRoom = -1;
 }
 
 // Address: 0x007f4220 - 0x007f422b (11 bytes)
 bool sNpcManager::isReqChangeEquipMyRoom() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReqChangeEquipMyRoom > static_cast<s32>(-1);
+    return mReqChangeEquipMyRoom > -1;
 }
 
 // Address: 0x007f4230 - 0x007f42eb (187 bytes)
@@ -1664,14 +1677,14 @@ bool sNpcManager::isNpcNoSetPS3(u16 stageNo, u16 groupNo, u8 unitNo, u32 questId
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: const cNpcIsNoSetPS3* pNpcData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpNpcIsNoSetPS3 != static_cast<rNpcIsNoSetPS3*>(nullptr)) {
-        const u32 noOfNpcs = this->mpNpcIsNoSetPS3->getDataNum();
-        if (noOfNpcs != static_cast<u32>(0)) {
+    if (mpNpcIsNoSetPS3 != nullptr) {
+        const u32 noOfNpcs = mpNpcIsNoSetPS3->getDataNum();
+        if (noOfNpcs != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                this->mpNpcIsNoSetPS3->getData(i0_3);
-                if (noOfNpcs != (i0_3 + static_cast<unsigned int>(1))) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                mpNpcIsNoSetPS3->getData(i0_3);
+                if (noOfNpcs != (i0_3 + 1u)) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
@@ -1705,8 +1718,8 @@ __attribute__((weak)) MT_CTSTR sNpcManager::getCommonVoiceArcName(u32 voiceCateg
 // Address: 0x007f4410 - 0x007f442f (31 bytes)
 bool sNpcManager::isInvalidCommonVoiceArc(u32 voiceCategory) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (voiceCategory <= static_cast<u32>(11)) {
-        return this->mCommonVoiceTicket[voiceCategory] == (::sArchiveManager::INVALID_TICKET);
+    if (voiceCategory <= 11u) {
+        return mCommonVoiceTicket[voiceCategory] == (sArchiveManager::INVALID_TICKET);
     } else {
         return true;
     }
@@ -1742,6 +1755,11 @@ __attribute__((weak)) bool sNpcManager::isUseCommonVoiceArc(u32 voiceCategory) {
     DDON_STUB("sNpcManager::isUseCommonVoiceArc")
     return {};
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sNpcManager* sNpcManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sNpcManager::MyDTI sNpcManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sNpcManager.cpp at 0x007f498f-0x007f49cc (called at sNpcManager.cpp:66)

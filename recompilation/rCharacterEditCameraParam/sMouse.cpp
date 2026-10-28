@@ -44,7 +44,7 @@ const MtDTI& sMouse::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6sMouseD0Ev at 0x01249762-0x01249783, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sMouse::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMouse::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMouse::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,7 +101,7 @@ __attribute__((weak)) void sMouse::createProperty(MtPropertyList& s) {
 // Address: 0x01249cb0 - 0x01249cb5 (5 bytes)
 MtUI* sMouse::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,12 +163,12 @@ MtUI* sMouse::createUI(MtProperty& prop) {
 //   in uCharacterEditCameraBase::moveKey at 0x008ab1d8-0x008ab1de (called at uCharacterEdit.cpp:6614)
 // s32 sMouse::getAxisY(sMouse::TYPE type) const;
 
-// No out-of-line body: 5 inlined copies in 5 functions (30 bytes)
-//   in cBrowserPS4::move at 0x000182eb-0x000182ee (called at cBrowserPS4_cpp.inl:657)
-//   in sGUIExt::cMousePointer::move at 0x007908dc-0x007908e3 (called at sGUIExt.cpp:20421)
-//   in sGUIExt::cMousePointer::getAxisZ at 0x007af338-0x007af342 (called at sGUIExt.cpp:20822)
-//   and 2 more (every copy is in <bundle>.inlined.json)
-// s32 sMouse::getAxisZ(sMouse::TYPE type) const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::cMousePointer::getAxisZ at 0x7af338-0x7af342; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+s32 sMouse::getAxisZ(sMouse::TYPE type) const {
+    return mState[type].az;
+}
 
 // No out-of-line body: 10 inlined copies in 8 functions (166 bytes)
 //   in cBrowserPS4::move at 0x0001821c-0x0001822e (called at cBrowserPS4_cpp.inl:628)
@@ -180,14 +180,14 @@ MtUI* sMouse::createUI(MtProperty& prop) {
 // Address: 0x01249790 - 0x012497a4 (20 bytes)
 void sMouse::setPosition(const MtPoint& pos, sMouse::TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState[type].pos.x = pos.x;
-    this->mState[type].pos.y = pos.y;
+    mState[type].pos.x = pos.x;
+    mState[type].pos.y = pos.y;
 }
 
 // Address: 0x01249cc0 - 0x01249cc3 (3 bytes)
 sMouse::TYPE sMouse::getCurrentType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sMouse::TYPE>(0);
+    return TYPE_DEFAULT;
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,10 +217,10 @@ sMouse::TYPE sMouse::getCurrentType() {
 // Address: 0x01249cd0 - 0x01249ce6 (22 bytes)
 bool sMouse::isMouseConnected(s32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no > static_cast<s32>(0)) {
+    if (no > 0) {
         return false;
     } else {
-        return this->mIsConnected[no] != false;
+        return mIsConnected[no];
     }
 }
 
@@ -237,6 +237,11 @@ __attribute__((weak)) void sMouse::updateState(sMouse::STATE* pstate) {
     DDON_STUB("sMouse::updateState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sMouse::MyDTI sMouse::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sMouse* sMouse::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sMouse::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

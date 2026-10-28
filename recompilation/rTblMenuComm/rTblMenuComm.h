@@ -157,7 +157,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rTblMenuComm::cData::cData() {
-    this->mId = static_cast<u32>(0);
-    this->mId2 = static_cast<u32>(4294967295);
-    this->mVoiceId = static_cast<u32>(4294967295);
+    this->mId = 0;
+    this->mId2 = 0xFFFFFFFF;
+    this->mVoiceId = 0xFFFFFFFF;
 }

@@ -54,7 +54,7 @@ const MtDTI& cAISensorNodeRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cAISensorNodeResD0Ev at 0x01a737ae-0x01a737cf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAISensorNodeRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAISensorNodeRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAISensorNodeRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,6 +77,8 @@ inline void cAISensorNodeRes::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cAISensorNodeRes::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAISensorNodeRes::MyDTI cAISensorNodeRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAISensor.cpp at 0x00641530-0x00641572 (called at rAISensor.cpp:264)
@@ -112,7 +114,7 @@ const MtDTI& rAISensor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAISensor::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAISensor::DTI)->memAlloc(sz, align, ::rAISensor::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAISensor::DTI)->memAlloc(sz, align, rAISensor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rAISensor::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAISensor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAISensor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAISensor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,10 +143,10 @@ inline void rAISensor::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rAISensor::rAISensor() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mMagic = static_cast<u32>(844254803);
-    this->mVersion = static_cast<u32>(1);
-    this->mNodes.::MtArray::mAutoDelete = true;
+    setAttribute(16u);
+    mMagic = 0x32524E53;
+    mVersion = 1;
+    mNodes.mAutoDelete = true;
 }
 
 // Address: 0x00640fb0 - 0x00640fde (46 bytes)
@@ -156,16 +158,16 @@ rAISensor::~rAISensor() {
 // Address: 0x00641030 - 0x00641037 (7 bytes)
 u32 rAISensor::getNodeNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNodes.::MtArray::mLength;
+    return mNodes.mLength;
 }
 
 // Address: 0x00641040 - 0x00641058 (24 bytes)
 const cAISensorNodeRes* rAISensor::getNode(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mNodes.::MtArray::mLength) {
-        return static_cast<const cAISensorNodeRes*>(this->mNodes.::MtArray::mpArray[idx]);
+    if (idx < mNodes.mLength) {
+        return static_cast<const cAISensorNodeRes*>(mNodes.mpArray[idx]);
     } else {
-        return static_cast<const cAISensorNodeRes*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -191,17 +193,19 @@ MT_CTSTR rAISensor::getExt() const {
 // Address: 0x00641060 - 0x00641108 (168 bytes)
 bool rAISensor::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    this->mMagic = (&r)->readU32();
-    this->mVersion = (&r)->readU32();
-    if (this->mMagic == static_cast<u32>(844254803)) {
-        if (this->mVersion == static_cast<u32>(1)) {
-            ::nDDOIO::readMtArray(r, this->mNodes);
+    MtDataReader r(in, 4096u);
+    mMagic = (&r)->readU32();
+    mVersion = (&r)->readU32();
+    if (mMagic == 0x32524E53) {
+        if (mVersion == 1) {
+            nDDOIO::readMtArray(r, mNodes);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAISensor::MyDTI rAISensor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAISensor.cpp at 0x00641572-0x006415af (called at rAISensor.cpp:530)
@@ -211,7 +215,7 @@ bool rAISensor::load(MtStream& in) {
 // Address: 0x00640e90 - 0x00640f28 (152 bytes)
 MtObject* rAISensor::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAISensor;
+    return new (16u) rAISensor;
 }
 
 // Instance at 0x01a733c0 - 0x01a733c5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

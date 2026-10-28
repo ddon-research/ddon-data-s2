@@ -118,12 +118,12 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCollNode::cCollNode() {
-    this->mHitCollisionFlag = static_cast<u32>(0);
-    this->mAttr = static_cast<u32>(0);
-    this->mNodeID = static_cast<u16>(0);
-    this->mIndex = static_cast<u16>(0);
-    this->mColNodeFlag = static_cast<u32>(0);
-    this->mpCollGeom = static_cast<rCollGeom*>(nullptr);
+    this->mHitCollisionFlag = 0;
+    this->mAttr = 0;
+    this->mNodeID = 0;
+    this->mIndex = 0;
+    this->mColNodeFlag = 0;
+    this->mpCollGeom = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -135,10 +135,10 @@ inline u32 cCollNode::getAttr() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rCollNode::rCollNode() {
-    this->mUParam32[2] = static_cast<unsigned int>(0);
-    this->mUParam32[3] = static_cast<unsigned int>(0);
-    this->mUParam32[0] = static_cast<unsigned int>(0);
-    this->mUParam32[1] = static_cast<unsigned int>(0);
-    this->mUParam64[1] = static_cast<long unsigned int>(0);
-    this->mUParam64[0] = static_cast<long unsigned int>(0);
+    this->mUParam32[2] = 0;
+    this->mUParam32[3] = 0;
+    this->mUParam32[0] = 0;
+    this->mUParam32[1] = 0;
+    this->mUParam64[1] = 0;
+    this->mUParam64[0] = 0;
 }

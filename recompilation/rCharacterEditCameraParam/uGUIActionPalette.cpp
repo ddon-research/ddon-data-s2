@@ -33,7 +33,7 @@ const MtDTI& uGUIActionPalette::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIActionPalette::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIActionPalette::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIActionPalette::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUIActionPalette::getAllocator() {
 // Address: 0x0091ba10 - 0x0091ba50 (64 bytes)
 void* uGUIActionPalette::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIActionPalette::getAllocator()->memAlloc(sz, align, ::uGUIActionPalette::DTI.::MtDTI::getID());
+    return uGUIActionPalette::getAllocator()->memAlloc(sz, align, uGUIActionPalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUIActionPalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIActionPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIActionPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIActionPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,15 +82,15 @@ uGUIActionPalette::~uGUIActionPalette() {
 // Address: 0x0091c160 - 0x0091c20c (172 bytes)
 bool uGUIActionPalette::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ACTIONPALETTE_GUI"), static_cast<u32>(129), static_cast<t64>(1471586799)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_BUTTON_GUIDE_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SHORTCUT_SETTING_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ACTIONPALETTE_GUI"), 129u, 1471586799l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_BUTTON_GUIDE_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_SHORTCUT_SETTING_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_BUTTON_GUIDE_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SHORTCUT_SETTING_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_BUTTON_GUIDE_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_SHORTCUT_SETTING_GMD", 1u);
         }
     }
     return false;
@@ -148,7 +148,7 @@ __attribute__((weak)) void uGUIActionPalette::setup() {
 // Address: 0x0091d2f0 - 0x0091d2f5 (5 bytes)
 void uGUIActionPalette::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x0091d300 - 0x0091d4e3 (483 bytes)
@@ -163,68 +163,67 @@ __attribute__((weak)) void uGUIActionPalette::move() {
 // Address: 0x0091d880 - 0x0091d8c2 (66 bytes)
 void uGUIActionPalette::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsVisible == false) {
+    if (!mIsVisible) {
         return;
     }
-    if (static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType == static_cast<u8>(1)) {
-    } else {
-        this->::uGUIBase::draw(pDraw);
+    if (static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mActPltType != 1) {
+        this->uGUIBase::draw(pDraw);
     }
 }
 
 // Address: 0x0091d8d0 - 0x0091d9ad (221 bytes)
 void uGUIActionPalette::adjustScale() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    const f32 scale = this->getScaleForDefaultResolution(1.0f);
+    const f32 scale = getScaleForDefaultResolution(1.0f);
     // inferred: a temporary for the value the load at 0x91d8ef read, used 4 times; no DWARF local holds it
-    cGUIInstNull* t0 = this->mpInstNullGuideRoot;
-    if (t0 != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstNull::setScaleX(scale);
-        t0->::cGUIInstNull::setScaleY(scale);
-        t0->::cGUIInstNull::setScaleZ(scale);
+    cGUIInstNull* t0 = mpInstNullGuideRoot;
+    if (t0 != nullptr) {
+        t0->setScaleX(scale);
+        t0->setScaleY(scale);
+        t0->setScaleZ(scale);
         // inferred: a temporary for the value the load at 0x91d92c read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullSCMRoot;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
-            t1->::cGUIInstNull::setScaleZ(scale);
+        cGUIInstNull* t1 = mpInstNullSCMRoot;
+        if (t1 != nullptr) {
+            t1->setScaleX(scale);
+            t1->setScaleY(scale);
+            t1->setScaleZ(scale);
             // inferred: a temporary for the value the load at 0x91d969 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0x91d969 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x91d92c read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullSCMRoot;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
-            t1->::cGUIInstNull::setScaleZ(scale);
+        cGUIInstNull* t1 = mpInstNullSCMRoot;
+        if (t1 != nullptr) {
+            t1->setScaleX(scale);
+            t1->setScaleY(scale);
+            t1->setScaleZ(scale);
             // inferred: a temporary for the value the load at 0x91d969 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0x91d969 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         }
     }
@@ -234,9 +233,9 @@ void uGUIActionPalette::adjustScale() {
 bool uGUIActionPalette::isForceSamplerLinear(cGUIObject* pObj) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
-        if (this->mpInstNullGuideRoot != static_cast<cGUIInstNull*>(nullptr)) {
-            if (this->mpInstNullGuideRoot->mScale.x > 1.0f) {
+    if (!this->uGUIBase::isForceSamplerLinear(pObj)) {
+        if (mpInstNullGuideRoot != nullptr) {
+            if (mpInstNullGuideRoot->mScale.x > 1.0f) {
                 return true;
             }
         }
@@ -566,6 +565,8 @@ __attribute__((weak)) void uGUIActionPalette::setupKeyIcon() {
 //   in uGUIActionPalette::setup at 0x0091c775-0x0091c77f, 0x0091c78a-0x0091c7c8 (called at uGUIActionPalette.cpp:2702)
 //   in uGUIActionPalette::updateDispGuide at 0x0091e8c7-0x0091e921 (called at uGUIActionPalette.cpp:2702)
 // void uGUIActionPalette::setBtnVisible(uGUIActionPalette::stGuideBtn& guideBtn, bool isVisible);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIActionPalette::MyDTI uGUIActionPalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIActionPalette.cpp at 0x00921b8f-0x00921bcc (called at uGUIActionPalette.cpp:132)

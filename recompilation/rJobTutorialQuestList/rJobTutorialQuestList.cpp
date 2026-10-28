@@ -38,7 +38,7 @@ const MtDTI& rJobTutorialQuestList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJobTutorialQuestList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::DTI)->memAlloc(sz, align, ::rJobTutorialQuestList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJobTutorialQuestList::DTI)->memAlloc(sz, align, rJobTutorialQuestList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* rJobTutorialQuestList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rJobTutorialQuestList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJobTutorialQuestList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void rJobTutorialQuestList::operator delete(void* p_addr) {
 // Address: 0x0068e8c0 - 0x0068e8c4 (4 bytes)
 u32 rJobTutorialQuestList::getJobTutorialQuestNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJobTutorialList.::MtArray::mLength;
+    return mJobTutorialList.mLength;
 }
 
 // Address: 0x0068e8d0 - 0x0068e91d (77 bytes)
@@ -91,41 +91,41 @@ MT_CTSTR rJobTutorialQuestList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rJobTutorialQuestList::rJobTutorialQuestList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x0068e960 - 0x0068ea11 (177 bytes)
 // Also emitted as: _ZN21rJobTutorialQuestListD0Ev at 0x0068ea20
 rJobTutorialQuestList::~rJobTutorialQuestList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mJobTutorialList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mJobTutorialList.mLength != 0) {
         // inferred: the value the loop at 0x68e990 carries; no location-less local in scope fits
-        u32 v0_0 = this->mJobTutorialList.::MtArray::mLength;
+        u32 v0_0 = mJobTutorialList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mJobTutorialList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mJobTutorialList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mJobTutorialList.::MtArray::mLength) {
-                    v0_0 = this->mJobTutorialList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mJobTutorialList.mpArray[i0_3] != nullptr) {
+                delete mJobTutorialList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mJobTutorialList.mLength) {
+                    v0_0 = mJobTutorialList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mJobTutorialList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mJobTutorialList.::MtArray::mpArray));
+    if (mJobTutorialList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mJobTutorialList.mpArray));
     }
-    this->mJobTutorialList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mJobTutorialList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mJobTutorialList.::MtArray::mLength = static_cast<u32>(0);
+    mJobTutorialList.mpArray = nullptr;
+    mJobTutorialList.mBufsiz = 0;
+    mJobTutorialList.mLength = 0;
 }
 
 // Address: 0x0068eaf0 - 0x0068ebd3 (227 bytes)
@@ -139,19 +139,19 @@ bool rJobTutorialQuestList::save(MtStream& out) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; code after the loop copied into an arm that skips it; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rJobTutorialQuestList*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5329994));
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x51544Au);
     (&w)->writeU16(static_cast<u16>(1));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) == static_cast<unsigned int>(0)) {
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) == 0) {
         return true;
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
+    unsigned int i3 = 0;
     do {
-        (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJobTutorialList.::MtArray::getBuffer()[static_cast<int>(i3)]) + static_cast<long>(8)));
-        i3 += static_cast<unsigned int>(1);
-    } while (i3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))));
+        (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJobTutorialList.getBuffer()[static_cast<int>(i3)]) + 8));
+        i3 += 1u;
+    } while (i3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)));
     return true;
 }
 
@@ -160,15 +160,17 @@ bool rJobTutorialQuestList::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u16 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5329994)) {
-        if ((&r)->readU16() == static_cast<u16>(1)) {
-            ::nDDOIO::readMtArray(r, this->mJobTutorialList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x51544A) {
+        if ((&r)->readU16() == 1) {
+            nDDOIO::readMtArray(r, mJobTutorialList);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJobTutorialQuestList::MyDTI rJobTutorialQuestList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJobTutorialQuestList.cpp at 0x0068efc0-0x0068f002 (called at rJobTutorialQuestList.cpp:56)
@@ -178,7 +180,7 @@ bool rJobTutorialQuestList::load(MtStream& in) {
 // Address: 0x0068e7c0 - 0x0068e844 (132 bytes)
 MtObject* rJobTutorialQuestList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJobTutorialQuestList;
+    return new (16u) rJobTutorialQuestList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -218,7 +220,7 @@ const MtDTI& rJobTutorialQuestList::cQuestId::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rJobTutorialQuestList::cQuestId::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::cQuestId::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJobTutorialQuestList::cQuestId::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,6 +263,8 @@ __attribute__((weak)) void rJobTutorialQuestList::cQuestId::createProperty(MtPro
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
 //   in _ZN6nDDOIO11readMtArrayIN21rJobTutorialQuestList8cQuestIdEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a96478-0x01a96482 (called at nDDOIO.h:451)
 // void rJobTutorialQuestList::cQuestId::load(MtDataReader& r);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJobTutorialQuestList::cQuestId::MyDTI rJobTutorialQuestList::cQuestId::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJobTutorialQuestList.cpp at 0x0068f002-0x0068f03f (called at rJobTutorialQuestList.cpp:207)

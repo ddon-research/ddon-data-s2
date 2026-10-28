@@ -53,7 +53,7 @@ const MtDTI& cAIPawnOrderParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnOrderParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnOrderParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnOrderParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -98,6 +98,8 @@ __attribute__((weak)) void cAIPawnOrderParam::createProperty(MtPropertyList& s) 
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnOrderParam::MyDTI cAIPawnOrderParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAIPawnOrder.cpp at 0x00640410-0x00640452 (called at rAIPawnOrder.cpp:61)
 //   in _GLOBAL__sub_I_rAIPawnOrder.cpp at 0x00640410-0x00640452 (called at rAIPawnOrder.h:60)
@@ -131,7 +133,7 @@ const MtDTI& rAIPawnOrder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnOrder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnOrder::DTI)->memAlloc(sz, align, ::rAIPawnOrder::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnOrder::DTI)->memAlloc(sz, align, rAIPawnOrder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -176,8 +178,8 @@ bool rAIPawnOrder::loadData(MtDataReader& in, cAIPawnOrderParam* pData) {
     u32 t0 = in.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    in.read(static_cast<void*>(&pData->mOrderAttrActGroup), t0 * static_cast<u32>(4));
-    ::nDDOIO::readData(in, pData->mActionCancelFlag);
+    in.read(static_cast<void*>(&pData->mOrderAttrActGroup), t0 * 4u);
+    nDDOIO::readData(in, pData->mActionCancelFlag);
     return true;
 }
 
@@ -190,8 +192,10 @@ MT_CTSTR rAIPawnOrder::getExt() const {
 // Address: 0x01a72bd0 - 0x01a72bd6 (6 bytes)
 u32 rAIPawnOrder::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnOrder::MyDTI rAIPawnOrder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnOrder.cpp at 0x00640452-0x0064048f (called at rAIPawnOrder.cpp:288)
@@ -201,7 +205,7 @@ u32 rAIPawnOrder::getDataVersion() const {
 // Address: 0x006401c0 - 0x00640224 (100 bytes)
 MtObject* rAIPawnOrder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnOrder;
+    return new (16u) rAIPawnOrder;
 }
 
 // Instance at 0x01a72b80 - 0x01a72b92 (18 bytes) of the generic rTbl2<T>::getData

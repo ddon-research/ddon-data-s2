@@ -29,7 +29,7 @@ const MtDTI& uGUITelop::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUITelop::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUITelop::DTI);
+    return MtMemoryAllocator::getAllocator(uGUITelop::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUITelop::getAllocator() {
 // Address: 0x00c5fc00 - 0x00c5fc40 (64 bytes)
 void* uGUITelop::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUITelop::getAllocator()->memAlloc(sz, align, ::uGUITelop::DTI.::MtDTI::getID());
+    return uGUITelop::getAllocator()->memAlloc(sz, align, uGUITelop::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUITelop::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUITelop::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUITelop::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUITelop::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,9 +84,9 @@ __attribute__((weak)) void uGUITelop::createProperty(MtPropertyList& s) {
 // Address: 0x00c601b0 - 0x00c60218 (104 bytes)
 bool uGUITelop::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TELOP_GUI"), static_cast<u32>(129), static_cast<t64>(1401260344)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TELOP_GUI"), 129u, 1401260344l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -105,23 +105,23 @@ __attribute__((weak)) void uGUITelop::setup() {
 // Address: 0x00c60500 - 0x00c6055a (90 bytes)
 void uGUITelop::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mReserve != false) {
-        if (this->::uGUIBase::mIsEndLoadResource != false) {
-            if (this->mpMessageResource != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpMessageResource->::cResource::isUsage()) {
-                    this->mReserve = false;
-                    this->::uGUITelop::setMessage(this->mpMessageResource->::rGUIMessage::getMessage(this->mMessageIndex), static_cast<u32>(0));
+    if (mReserve) {
+        if (mIsEndLoadResource) {
+            if (mpMessageResource != nullptr) {
+                if (mpMessageResource->isUsage()) {
+                    mReserve = false;
+                    setMessage(mpMessageResource->getMessage(mMessageIndex), 0u);
                 }
             }
         }
     }
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x01b07ce0 - 0x01b07ce8 (8 bytes)
 rGUIMessage* uGUITelop::getMessageResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMessageResource;
+    return mpMessageResource;
 }
 
 // Address: 0x00c60120 - 0x00c6016d (77 bytes)
@@ -149,23 +149,23 @@ __attribute__((weak)) void uGUITelop::setMessage(MT_CTSTR msg, u32 uPage) {
 // Address: 0x00c60a20 - 0x00c60a3d (29 bytes)
 void uGUITelop::setCntSkipChk(f32 fCnt, u32 uPage) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (uPage <= static_cast<u32>(63)) {
-        this->mPage[uPage].mEnable = true;
-        this->mPage[uPage].mCntSkipChk = fCnt;
+    if (uPage <= 63u) {
+        mPage[uPage].mEnable = true;
+        mPage[uPage].mCntSkipChk = fCnt;
     }
 }
 
 // Address: 0x01b07cf0 - 0x01b07cf7 (7 bytes)
 u32 uGUITelop::getMessageIndex() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMessageIndex;
+    return mMessageIndex;
 }
 
 // Address: 0x00c60170 - 0x00c6017e (14 bytes)
 void uGUITelop::setMessageIndex(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMessageIndex = n;
-    this->mReserve = true;
+    mMessageIndex = n;
+    mReserve = true;
 }
 
 // Address: 0x00c60180 - 0x00c601aa (42 bytes)
@@ -173,21 +173,21 @@ u32 uGUITelop::getPageNum() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     // inferred: the value the loop at 0xc60190 carries; no location-less local in scope fits
-    for (bool* v0_2 = &this->mPage[0].mEnable;;) {
-        if ((*v0_2) == false) {
+    for (bool* v0_2 = &mPage[0].mEnable;;) {
+        if (!(*v0_2)) {
             return i0_1;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(63)) {
-                i0_1 += static_cast<unsigned int>(1);
-                v0_2 += static_cast<int>(32);
+            if ((i0_1 + 1u) <= 63u) {
+                i0_1 += 1u;
+                v0_2 += 32;
             } else {
                 break;
             }
         }
     }
-    return static_cast<u32>(64);
+    return 64;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -199,21 +199,21 @@ u32 uGUITelop::getFinalPageIdx() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     // inferred: the value the loop at 0xc60cc0 carries; no location-less local in scope fits
-    for (bool* v0_2 = &this->mPage[0].mEnable;;) {
-        if ((*v0_2) == false) {
+    for (bool* v0_2 = &mPage[0].mEnable;;) {
+        if (!(*v0_2)) {
             return i0_1;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(63)) {
-                i0_1 += static_cast<unsigned int>(1);
-                v0_2 += static_cast<int>(32);
+            if ((i0_1 + 1u) <= 63u) {
+                i0_1 += 1u;
+                v0_2 += 32;
             } else {
                 break;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00c60ad0 - 0x00c60ca8 (472 bytes)
@@ -225,37 +225,37 @@ __attribute__((weak)) void uGUITelop::ejectPage() {
 // Address: 0x00c604e0 - 0x00c604fa (26 bytes)
 void uGUITelop::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateWait);
 }
 
 // Address: 0x00c60a40 - 0x00c60ac0 (128 bytes)
 void uGUITelop::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType != static_cast<u32>(1)) {
+    if (mType != 1) {
         return;
     }
-    if (this->mCurrentPage <= static_cast<u32>(63)) {
-        if (this->mPage[this->mCurrentPage].mEnable != false) {
+    if (mCurrentPage <= 63u) {
+        if (mPage[mCurrentPage].mEnable) {
             // inferred: a temporary for the value the load at 0xc60a63 read, used twice; no DWARF local holds it
-            f32 t0 = this->mPage[this->mCurrentPage].mCntSkipChk;
+            f32 t0 = mPage[mCurrentPage].mCntSkipChk;
             if (t0 >= 0.0f) {
-                this->mCntSkip = this->mCntSkip + (::sMain::getInstance()->mDeltaTime / ::sMain::getInstance()->mFps);
-                if (this->mCntSkip >= t0) {
-                    this->::uGUITelop::ejectPage();
+                mCntSkip = mCntSkip + (sMain::getInstance()->mDeltaTime / sMain::getInstance()->mFps);
+                if (mCntSkip >= t0) {
+                    ejectPage();
                 }
             }
         } else {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
         }
     } else {
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
     }
 }
 
 // Address: 0x00c60ac0 - 0x00c60ac9 (9 bytes)
 void uGUITelop::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (1019 bytes)
@@ -264,6 +264,8 @@ void uGUITelop::updateExit() {
 //   in uGUITelop::setNameNpc at 0x00c607c9-0x00c607d8, 0x00c60902-0x00c6099a, 0x00c609a0-0x00c609f4 (called at uGUITelop.cpp:242)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void uGUITelop::adjustPositionName();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUITelop::MyDTI uGUITelop::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUITelop.cpp at 0x00c60ddf-0x00c60e1c (called at uGUITelop.cpp:18)

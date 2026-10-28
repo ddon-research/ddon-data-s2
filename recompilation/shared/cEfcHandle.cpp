@@ -23,7 +23,7 @@ const MtDTI& cEfcHandle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cEfcHandle::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cEfcHandle::DTI);
+    return MtMemoryAllocator::getAllocator(cEfcHandle::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* cEfcHandle::getAllocator() {
 // Address: 0x0009f110 - 0x0009f150 (64 bytes)
 void* cEfcHandle::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cEfcHandle::getAllocator()->memAlloc(sz, align, ::cEfcHandle::DTI.::MtDTI::getID());
+    return cEfcHandle::getAllocator()->memAlloc(sz, align, cEfcHandle::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ void* cEfcHandle::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEfcHandle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEfcHandle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEfcHandle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -152,6 +152,8 @@ inline void cEfcHandle::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // s32 cEfcHandle::getArrowJointNo() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEfcHandle::MyDTI cEfcHandle::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cEfcHandle.cpp at 0x0009f1c0-0x0009f202 (called at cEfcHandle.cpp:22)
 //   in _GLOBAL__sub_I_cEfcHandle.cpp at 0x0009f1c0-0x0009f202 (called at cEfcHandle.h:30)
@@ -160,6 +162,6 @@ inline void cEfcHandle::operator delete(void* p_addr) {
 // Address: 0x0009f040 - 0x0009f108 (200 bytes)
 MtObject* cEfcHandle::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEfcHandle;
+    return new (16u) cEfcHandle;
 }
 

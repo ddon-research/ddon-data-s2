@@ -66,7 +66,7 @@ const MtDTI& cVfxLightInfluence::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cVfxLightInfluence::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memAlloc(sz, align, ::cVfxLightInfluence::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cVfxLightInfluence::DTI)->memAlloc(sz, align, cVfxLightInfluence::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -82,7 +82,7 @@ inline void* cVfxLightInfluence::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18cVfxLightInfluenceD0Ev at 0x01ac3620-0x01ac364a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cVfxLightInfluence::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cVfxLightInfluence::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -110,6 +110,8 @@ __attribute__((weak)) void cVfxLightInfluence::createProperty(MtPropertyList& s)
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cVfxLightInfluence::MyDTI cVfxLightInfluence::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778e66-0x00778e9f (called at sEffectExt.cpp:7943)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778e66-0x00778e9f (called at sEffectExt.h:2134)
@@ -118,7 +120,7 @@ __attribute__((weak)) void cVfxLightInfluence::createProperty(MtPropertyList& s)
 // Address: 0x007782f0 - 0x00778356 (102 bytes)
 MtObject* cVfxLightInfluence::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cVfxLightInfluence;
+    return new (16u) cVfxLightInfluence;
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,7 +145,7 @@ const MtDTI& rVfxLightInfluence::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rVfxLightInfluence::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rVfxLightInfluence::DTI)->memAlloc(sz, align, ::rVfxLightInfluence::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rVfxLightInfluence::DTI)->memAlloc(sz, align, rVfxLightInfluence::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +160,7 @@ inline void* rVfxLightInfluence::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rVfxLightInfluenceD0Ev at 0x01ac3884-0x01ac38a3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rVfxLightInfluence::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rVfxLightInfluence::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rVfxLightInfluence::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,28 +177,28 @@ bool rVfxLightInfluence::loadData(MtDataReader& in, cVfxLightInfluence* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLightIntensity);
+    nDDOIO::readData(in, pData->mLightIntensity);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustom1);
+    nDDOIO::readData(in, pData->mCustom1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustom2);
+    nDDOIO::readData(in, pData->mCustom2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustom3);
+    nDDOIO::readData(in, pData->mCustom3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustom4);
+    nDDOIO::readData(in, pData->mCustom4);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustom6);
+    nDDOIO::readData(in, pData->mCustom6);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEnv1);
+    nDDOIO::readData(in, pData->mEnv1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEnv2);
+    nDDOIO::readData(in, pData->mEnv2);
     return true;
 }
 
@@ -209,8 +211,10 @@ MT_CTSTR rVfxLightInfluence::getExt() const {
 // Address: 0x01ac39d0 - 0x01ac39d6 (6 bytes)
 u32 rVfxLightInfluence::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rVfxLightInfluence::MyDTI rVfxLightInfluence::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778e9f-0x00778edc (called at sEffectExt.cpp:7957)
@@ -220,7 +224,7 @@ u32 rVfxLightInfluence::getDataVersion() const {
 // Address: 0x00778a20 - 0x00778a84 (100 bytes)
 MtObject* rVfxLightInfluence::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rVfxLightInfluence;
+    return new (16u) rVfxLightInfluence;
 }
 
 // No out-of-line body: no code in the ELF
@@ -237,7 +241,7 @@ const MtDTI& sEffectExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sEffectExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sEffectExt::DTI);
+    return MtMemoryAllocator::getAllocator(sEffectExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -246,7 +250,7 @@ inline MtAllocator* sEffectExt::getAllocator() {
 // Address: 0x00768fc0 - 0x00769000 (64 bytes)
 void* sEffectExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEffectExt::getAllocator()->memAlloc(sz, align, ::sEffectExt::DTI.::MtDTI::getID());
+    return sEffectExt::getAllocator()->memAlloc(sz, align, sEffectExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,7 +265,7 @@ void* sEffectExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEffectExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,111 +316,111 @@ __attribute__((weak)) void sEffectExt::move() {
 // Address: 0x01ac3680 - 0x01ac3686 (6 bytes)
 MOVE_LINE sEffectExt::getEffectMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(24);
+    return LINE_24;
 }
 
 // Address: 0x01ac3690 - 0x01ac3696 (6 bytes)
 MOVE_LINE sEffectExt::getEffectEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(21);
+    return LINE_21;
 }
 
 // Address: 0x01ac36a0 - 0x01ac36a6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectToolUnitMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(28);
+    return LINE_28;
 }
 
 // Address: 0x01ac36b0 - 0x01ac36b6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectToolUnitEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(28);
+    return LINE_28;
 }
 
 // Address: 0x01ac36c0 - 0x01ac36c6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectModelMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(22);
+    return LINE_22;
 }
 
 // Address: 0x01ac36d0 - 0x01ac36d6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectModelEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(22);
+    return LINE_22;
 }
 
 // Address: 0x01ac36e0 - 0x01ac36e6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectMultiFilterMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(27);
+    return LINE_27;
 }
 
 // Address: 0x01ac36f0 - 0x01ac36f6 (6 bytes)
 MOVE_LINE sEffectExt::getEffectFilterMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(27);
+    return LINE_27;
 }
 
 // Address: 0x01ac3700 - 0x01ac3706 (6 bytes)
 MOVE_LINE sEffectExt::getEffectFilterEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(27);
+    return LINE_27;
 }
 
 // Address: 0x01ac3710 - 0x01ac371b (11 bytes)
 u64 sEffectExt::getEffectFilterUnitGroupBit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(432346113983905792);
+    return 0x600008000080000;
 }
 
 // Address: 0x01ac3720 - 0x01ac3726 (6 bytes)
 MOVE_LINE sEffectExt::getEffectLightMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x01ac3730 - 0x01ac3736 (6 bytes)
 MOVE_LINE sEffectExt::getEffectLightEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x01ac3740 - 0x01ac3746 (6 bytes)
 MOVE_LINE sEffectExt::getEffectAdhesionMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x01ac3750 - 0x01ac3756 (6 bytes)
 MOVE_LINE sEffectExt::getEffectAdhesionEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x01ac3760 - 0x01ac3766 (6 bytes)
 MOVE_LINE sEffectExt::getEffectForceMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x01ac3770 - 0x01ac3776 (6 bytes)
 MOVE_LINE sEffectExt::getEffectForceEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(23);
+    return LINE_23;
 }
 
 // Address: 0x0076d5c0 - 0x0076d5ea (42 bytes)
 uEffect* sEffectExt::newEffect() {
     // DWARF local not rendered: uEffectExt* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uEffectExt;
+    return new (16u) uEffectExt;
 }
 
 // Address: 0x0076d5f0 - 0x0076d61a (42 bytes)
 uEffect2D* sEffectExt::newEffect2D() {
     // DWARF local not rendered: uEffect2DExt* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uEffect2DExt;
+    return new (16u) uEffect2DExt;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
@@ -735,13 +739,13 @@ __attribute__((weak)) void sEffectExt::setErosionPartsEffect(uDDOModel* pParent,
 // Address: 0x00775870 - 0x00775880 (16 bytes)
 void sEffectExt::setErosionPartsBreakEffect(uDDOModel* pParent, u32 PartsNo, MtTypedArray<cEfcHandle>* pEffects) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sEffectExt::setErosionPartsEffect(pParent, PartsNo, true, pEffects);
+    setErosionPartsEffect(pParent, PartsNo, true, pEffects);
 }
 
 // Address: 0x00775880 - 0x0077588d (13 bytes)
 void sEffectExt::setErosionPartsRegenerateEffect(uDDOModel* pParent, u32 PartsNo, MtTypedArray<cEfcHandle>* pEffects) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sEffectExt::setErosionPartsEffect(pParent, PartsNo, false, pEffects);
+    setErosionPartsEffect(pParent, PartsNo, false, pEffects);
 }
 
 // Address: 0x00775890 - 0x0077591d (141 bytes)
@@ -777,10 +781,10 @@ cEfcHandle* sEffectExt::setCommonEffect(s32 IndexNo, s32 ElementNo, const sEffec
     // DWARF local not rendered: rEffectProvider* pResource;
     // DWARF local not rendered: cEfcHandle* pHandle;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCommonEPV[comType] != static_cast<rEffectProvider*>(nullptr)) {
-        return this->::sEffectExt::setEffect(this->mpCommonEPV[comType], IndexNo, ElementNo, param, pOrigin);
+    if (mpCommonEPV[comType] != nullptr) {
+        return setEffect(mpCommonEPV[comType], IndexNo, ElementNo, param, pOrigin);
     } else {
-        return static_cast<cEfcHandle*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -827,26 +831,26 @@ __attribute__((weak)) void sEffectExt::setOcdEffect(uDDOModel* pParent, s32 join
 void sEffectExt::setPartsbreakEffect(uDDOModel* pTarget, u32 PartsNo, sEffectExt::EfcParam& pEfcParam, MtTypedArray<cEfcHandle>* pEffects) {
     // DWARF local not rendered: u32 SetEffectType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (PartsNo == static_cast<u32>(0)) {
+    if (PartsNo == 0) {
         return;
     }
-    this->::sEffectExt::setInheritanceTypeEffect(pTarget, (PartsNo <= static_cast<u32>(9)) ? (PartsNo + static_cast<u32>(74)) : static_cast<u32>(75), pEfcParam, pEffects);
+    setInheritanceTypeEffect(pTarget, (PartsNo <= 9u) ? (PartsNo + 74u) : 75u, pEfcParam, pEffects);
 }
 
 // Address: 0x00776200 - 0x00776218 (24 bytes)
 void sEffectExt::setPartsrevivalEffect(uDDOModel* pTarget, u32 PartsNo, sEffectExt::EfcParam& pEfcParam, MtTypedArray<cEfcHandle>* pEffects) {
     // DWARF local not rendered: u32 SetEffectType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (PartsNo == static_cast<u32>(0)) {
+    if (PartsNo == 0) {
         return;
     }
-    this->::sEffectExt::setInheritanceTypeEffect(pTarget, (PartsNo <= static_cast<u32>(9)) ? (PartsNo + static_cast<u32>(83)) : static_cast<u32>(84), pEfcParam, pEffects);
+    setInheritanceTypeEffect(pTarget, (PartsNo <= 9u) ? (PartsNo + 83u) : 84u, pEfcParam, pEffects);
 }
 
 // Address: 0x00776220 - 0x00776233 (19 bytes)
 void sEffectExt::setAlwaysEffect(uDDOModel* pParent, sEffectExt::EfcParam& pEfcParam, MtTypedArray<cEfcHandle>* pEffects) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sEffectExt::setInheritanceTypeEffect(pParent, static_cast<u32>(16), pEfcParam, pEffects);
+    setInheritanceTypeEffect(pParent, 16u, pEfcParam, pEffects);
 }
 
 // Address: 0x00776050 - 0x007761f2 (418 bytes)
@@ -922,33 +926,33 @@ __attribute__((weak)) void sEffectExt::getCameraEffect(cEfcHandle* pHandle, MtTy
 // Address: 0x0076d2e0 - 0x0076d371 (145 bytes)
 void sEffectExt::endEffect(cEfcHandle* pHandle, u32 endType) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pHandle != static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle != nullptr) {
         // inferred: a temporary for the result of the call at 0x76d2fe, used once; no DWARF local holds it
         const MtDTI& t0 = pHandle->getDTI();
         // inferred: the value the loop at 0x76d30c carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::cEfcHandle::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = cEfcHandle::DTI.mName;
         // inferred: the value the loop at 0x76d30c carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 != v0_0->mName) {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                if (pHandle->::cEfcHandle::getUnitType() != static_cast<u32>(3)) {
-                    if (pHandle->::cEfcHandle::getUnitType() == static_cast<u32>(1)) {
-                        this->::sEffectExt::removeEffect2D(pHandle, static_cast<u32>(0), endType);
-                        pHandle->mpOwner = static_cast<cUnit*>(nullptr);
+                if (pHandle->getUnitType() != 3) {
+                    if (pHandle->getUnitType() == 1) {
+                        removeEffect2D(pHandle, 0u, endType);
+                        pHandle->mpOwner = nullptr;
                     } else {
-                        if (pHandle->::cEfcHandle::getUnitType() == static_cast<u32>(0)) {
-                            this->::sEffectExt::removeEffect(pHandle, endType);
-                            pHandle->mpOwner = static_cast<cUnit*>(nullptr);
+                        if (pHandle->getUnitType() == 0) {
+                            removeEffect(pHandle, endType);
+                            pHandle->mpOwner = nullptr;
                         }
                     }
                 } else {
-                    this->::sEffectExt::removeCameraEffect(pHandle, endType);
-                    pHandle->mpOwner = static_cast<cUnit*>(nullptr);
+                    removeCameraEffect(pHandle, endType);
+                    pHandle->mpOwner = nullptr;
                 }
                 return;
             }
@@ -1009,7 +1013,7 @@ __attribute__((weak)) bool sEffectExt::isInvalidHandle(cEfcHandle* pHandle) {
 // Address: 0x0076d4f0 - 0x0076d4fa (10 bytes)
 void sEffectExt::setHandleOwner(cEfcHandle* pHandle, cUnit* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHandle == static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle == nullptr) {
         return;
     }
     pHandle->mpOwner = pOwner;
@@ -1207,32 +1211,32 @@ __attribute__((weak)) void sEffectExt::releaseEfcZone(u32 handle, u32 type) {
 void sEffectExt::releaseEfcZoneAll() {
     // DWARF local not rendered: u32 type;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mZoneStack[0].::cZoneMultiStack::releaseZoneAll();
-    this->mZoneStack[1].::cZoneMultiStack::releaseZoneAll();
-    this->mZoneStack[2].::cZoneMultiStack::releaseZoneAll();
-    if (this->mZoneEffectUnitLayoutArray.::MtArray::mAutoDelete != false) {
+    mZoneStack[0].releaseZoneAll();
+    mZoneStack[1].releaseZoneAll();
+    mZoneStack[2].releaseZoneAll();
+    if (mZoneEffectUnitLayoutArray.mAutoDelete) {
         // inferred: the value carried to 0x776689; no location-less local in scope fits
         u32 v2_0;
-        if (this->mZoneEffectUnitLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mZoneEffectUnitLayoutArray.mLength != 0) {
             // inferred: the value the loop at 0x776660 carries; no location-less local in scope fits
-            u32 v0_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
+            u32 v0_0 = mZoneEffectUnitLayoutArray.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value carried to 0x776685; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                if (this->mZoneEffectUnitLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mZoneEffectUnitLayoutArray.::MtArray::mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mZoneEffectUnitLayoutArray.::MtArray::mLength) {
-                        v0_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+                if (mZoneEffectUnitLayoutArray.mpArray[i0_3] != nullptr) {
+                    delete mZoneEffectUnitLayoutArray.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mZoneEffectUnitLayoutArray.mLength) {
+                        v0_0 = mZoneEffectUnitLayoutArray.mLength;
+                        i0_3 += 1u;
                     } else {
-                        v1_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
+                        v1_0 = mZoneEffectUnitLayoutArray.mLength;
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         v1_0 = v0_0;
                         break;
@@ -1241,20 +1245,20 @@ void sEffectExt::releaseEfcZoneAll() {
             }
             v2_0 = v1_0;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mZoneEffectUnitLayoutArray.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mZoneEffectUnitLayoutArray.mpArray), 0, static_cast<size_t>(v2_0) * 8);
     }
-    this->mZoneEffectUnitLayoutArray.::MtArray::mLength = static_cast<u32>(0);
+    mZoneEffectUnitLayoutArray.mLength = 0;
 }
 
 // Address: 0x007766b0 - 0x007766ca (26 bytes)
 cZoneMultiStack* sEffectExt::getEfcZoneStack(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<u32>(2)) {
-        return &this->mZoneStack[type];
+    if (type <= 2u) {
+        return &mZoneStack[type];
     } else {
-        return static_cast<cZoneMultiStack*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1311,18 +1315,18 @@ __attribute__((weak)) void sEffectExt::updateZoneEffectUnit() {
 bool sEffectExt::getZoneCheckPos(MtVector3& ckPos) {
     // DWARF local not rendered: uPlayer* pPlayer;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mUseZoneCheckPos != false) {
-        ckPos.x = this->mZoneCheckPos.x;
-        ckPos.y = this->mZoneCheckPos.y;
-        ckPos.z = this->mZoneCheckPos.z;
+    if (mUseZoneCheckPos) {
+        ckPos.x = mZoneCheckPos.x;
+        ckPos.y = mZoneCheckPos.y;
+        ckPos.z = mZoneCheckPos.z;
         ckPos.pad_ = 0.0f;
         return true;
     } else {
-        if (::sPlayerManager::getInstance() != static_cast<sPlayerManager*>(nullptr)) {
-            if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-                ckPos.x = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uCoord::mPos.x;
-                ckPos.y = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uCoord::mPos.y;
-                ckPos.z = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uCoord::mPos.z;
+        if (sPlayerManager::getInstance() != nullptr) {
+            if (sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+                ckPos.x = sPlayerManager::getInstance()->getMyPlayer()->mPos.x;
+                ckPos.y = sPlayerManager::getInstance()->getMyPlayer()->mPos.y;
+                ckPos.z = sPlayerManager::getInstance()->getMyPlayer()->mPos.z;
                 ckPos.pad_ = 0.0f;
                 return true;
             }
@@ -1334,25 +1338,23 @@ bool sEffectExt::getZoneCheckPos(MtVector3& ckPos) {
 // Address: 0x00777200 - 0x00777281 (129 bytes)
 bool sEffectExt::updateColorUpdateCount() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mColorUpdateCount <= static_cast<u32>(7)) {
-        this->mColorUpdateCount = this->mColorUpdateCount + static_cast<u32>(1);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+    if (mColorUpdateCount <= 7u) {
+        mColorUpdateCount = mColorUpdateCount + 1u;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return true;
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return false;
@@ -1390,10 +1392,10 @@ __attribute__((weak)) u32 sEffectExt::getEnchantAttributeBit(uDDOModel* pParent)
 const cOutlineParam* sEffectExt::getOutlineParam(sEffectExt::OUTLINE no) {
     // DWARF local not rendered: const cOutlineParam* op;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprOutlineParamList != static_cast<rOutlineParamList*>(nullptr)) {
-        return this->mprOutlineParamList->::rOutlineParamList::getParam(no);
+    if (mprOutlineParamList != nullptr) {
+        return mprOutlineParamList->getParam(no);
     } else {
-        return static_cast<const cOutlineParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1403,54 +1405,54 @@ void sEffectExt::epvSetTimer(cEfcHandle* pHandle, u32 timer) {
     // DWARF local not rendered: uEffectExt* pEfct;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (pHandle != static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle != nullptr) {
         // inferred: a temporary for the result of the call at 0x19814c4, used 3 times; no DWARF local holds it
-        uEffectExt* t0 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(0));
-        if (t0 != static_cast<uEffectExt*>(nullptr)) {
-            t0->::uBaseEffect::mStatus = t0->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t0->::uBaseEffect::mTimer = timer;
+        uEffectExt* t0 = getEffect(pHandle, 0u);
+        if (t0 != nullptr) {
+            t0->mStatus = t0->mStatus | 64u;
+            t0->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x19814e7, used 3 times; no DWARF local holds it
-        uEffectExt* t1 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(1));
-        if (t1 != static_cast<uEffectExt*>(nullptr)) {
-            t1->::uBaseEffect::mStatus = t1->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t1->::uBaseEffect::mTimer = timer;
+        uEffectExt* t1 = getEffect(pHandle, 1u);
+        if (t1 != nullptr) {
+            t1->mStatus = t1->mStatus | 64u;
+            t1->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x198150a, used 3 times; no DWARF local holds it
-        uEffectExt* t2 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(2));
-        if (t2 != static_cast<uEffectExt*>(nullptr)) {
-            t2->::uBaseEffect::mStatus = t2->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t2->::uBaseEffect::mTimer = timer;
+        uEffectExt* t2 = getEffect(pHandle, 2u);
+        if (t2 != nullptr) {
+            t2->mStatus = t2->mStatus | 64u;
+            t2->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x198152d, used 3 times; no DWARF local holds it
-        uEffectExt* t3 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(3));
-        if (t3 != static_cast<uEffectExt*>(nullptr)) {
-            t3->::uBaseEffect::mStatus = t3->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t3->::uBaseEffect::mTimer = timer;
+        uEffectExt* t3 = getEffect(pHandle, 3u);
+        if (t3 != nullptr) {
+            t3->mStatus = t3->mStatus | 64u;
+            t3->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x1981550, used 3 times; no DWARF local holds it
-        uEffectExt* t4 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(4));
-        if (t4 != static_cast<uEffectExt*>(nullptr)) {
-            t4->::uBaseEffect::mStatus = t4->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t4->::uBaseEffect::mTimer = timer;
+        uEffectExt* t4 = getEffect(pHandle, 4u);
+        if (t4 != nullptr) {
+            t4->mStatus = t4->mStatus | 64u;
+            t4->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x1981573, used 3 times; no DWARF local holds it
-        uEffectExt* t5 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(5));
-        if (t5 != static_cast<uEffectExt*>(nullptr)) {
-            t5->::uBaseEffect::mStatus = t5->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t5->::uBaseEffect::mTimer = timer;
+        uEffectExt* t5 = getEffect(pHandle, 5u);
+        if (t5 != nullptr) {
+            t5->mStatus = t5->mStatus | 64u;
+            t5->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x1981596, used 3 times; no DWARF local holds it
-        uEffectExt* t6 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(6));
-        if (t6 != static_cast<uEffectExt*>(nullptr)) {
-            t6->::uBaseEffect::mStatus = t6->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t6->::uBaseEffect::mTimer = timer;
+        uEffectExt* t6 = getEffect(pHandle, 6u);
+        if (t6 != nullptr) {
+            t6->mStatus = t6->mStatus | 64u;
+            t6->mTimer = timer;
         }
         // inferred: a temporary for the result of the call at 0x19815b9, used 3 times; no DWARF local holds it
-        uEffectExt* t7 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(7));
-        if (t7 != static_cast<uEffectExt*>(nullptr)) {
-            t7->::uBaseEffect::mStatus = t7->::uBaseEffect::mStatus | static_cast<u32>(64);
-            t7->::uBaseEffect::mTimer = timer;
+        uEffectExt* t7 = getEffect(pHandle, 7u);
+        if (t7 != nullptr) {
+            t7->mStatus = t7->mStatus | 64u;
+            t7->mTimer = timer;
         }
     }
 }
@@ -1472,70 +1474,70 @@ void sEffectExt::epvSetPos(cEfcHandle* pHandle, const MtVector3& pos) {
     // DWARF local not rendered: uEffectExt* pEfct;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (pHandle != static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle != nullptr) {
         // inferred: a temporary for the result of the call at 0x1a59ff4, used 5 times; no DWARF local holds it
-        uEffectExt* t0 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(0));
-        if (t0 != static_cast<uEffectExt*>(nullptr)) {
-            t0->::uCoord::mPos.x = pos.x;
-            t0->::uCoord::mPos.y = pos.y;
-            t0->::uCoord::mPos.z = pos.z;
-            t0->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t0 = getEffect(pHandle, 0u);
+        if (t0 != nullptr) {
+            t0->mPos.x = pos.x;
+            t0->mPos.y = pos.y;
+            t0->mPos.z = pos.z;
+            t0->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a02d, used 5 times; no DWARF local holds it
-        uEffectExt* t1 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(1));
-        if (t1 != static_cast<uEffectExt*>(nullptr)) {
-            t1->::uCoord::mPos.x = pos.x;
-            t1->::uCoord::mPos.y = pos.y;
-            t1->::uCoord::mPos.z = pos.z;
-            t1->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t1 = getEffect(pHandle, 1u);
+        if (t1 != nullptr) {
+            t1->mPos.x = pos.x;
+            t1->mPos.y = pos.y;
+            t1->mPos.z = pos.z;
+            t1->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a066, used 5 times; no DWARF local holds it
-        uEffectExt* t2 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(2));
-        if (t2 != static_cast<uEffectExt*>(nullptr)) {
-            t2->::uCoord::mPos.x = pos.x;
-            t2->::uCoord::mPos.y = pos.y;
-            t2->::uCoord::mPos.z = pos.z;
-            t2->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t2 = getEffect(pHandle, 2u);
+        if (t2 != nullptr) {
+            t2->mPos.x = pos.x;
+            t2->mPos.y = pos.y;
+            t2->mPos.z = pos.z;
+            t2->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a09f, used 5 times; no DWARF local holds it
-        uEffectExt* t3 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(3));
-        if (t3 != static_cast<uEffectExt*>(nullptr)) {
-            t3->::uCoord::mPos.x = pos.x;
-            t3->::uCoord::mPos.y = pos.y;
-            t3->::uCoord::mPos.z = pos.z;
-            t3->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t3 = getEffect(pHandle, 3u);
+        if (t3 != nullptr) {
+            t3->mPos.x = pos.x;
+            t3->mPos.y = pos.y;
+            t3->mPos.z = pos.z;
+            t3->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a0d8, used 5 times; no DWARF local holds it
-        uEffectExt* t4 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(4));
-        if (t4 != static_cast<uEffectExt*>(nullptr)) {
-            t4->::uCoord::mPos.x = pos.x;
-            t4->::uCoord::mPos.y = pos.y;
-            t4->::uCoord::mPos.z = pos.z;
-            t4->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t4 = getEffect(pHandle, 4u);
+        if (t4 != nullptr) {
+            t4->mPos.x = pos.x;
+            t4->mPos.y = pos.y;
+            t4->mPos.z = pos.z;
+            t4->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a111, used 5 times; no DWARF local holds it
-        uEffectExt* t5 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(5));
-        if (t5 != static_cast<uEffectExt*>(nullptr)) {
-            t5->::uCoord::mPos.x = pos.x;
-            t5->::uCoord::mPos.y = pos.y;
-            t5->::uCoord::mPos.z = pos.z;
-            t5->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t5 = getEffect(pHandle, 5u);
+        if (t5 != nullptr) {
+            t5->mPos.x = pos.x;
+            t5->mPos.y = pos.y;
+            t5->mPos.z = pos.z;
+            t5->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a14a, used 5 times; no DWARF local holds it
-        uEffectExt* t6 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(6));
-        if (t6 != static_cast<uEffectExt*>(nullptr)) {
-            t6->::uCoord::mPos.x = pos.x;
-            t6->::uCoord::mPos.y = pos.y;
-            t6->::uCoord::mPos.z = pos.z;
-            t6->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t6 = getEffect(pHandle, 6u);
+        if (t6 != nullptr) {
+            t6->mPos.x = pos.x;
+            t6->mPos.y = pos.y;
+            t6->mPos.z = pos.z;
+            t6->mPos.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5a183, used 5 times; no DWARF local holds it
-        uEffectExt* t7 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(7));
-        if (t7 != static_cast<uEffectExt*>(nullptr)) {
-            t7->::uCoord::mPos.x = pos.x;
-            t7->::uCoord::mPos.y = pos.y;
-            t7->::uCoord::mPos.z = pos.z;
-            t7->::uCoord::mPos.pad_ = 0.0f;
+        uEffectExt* t7 = getEffect(pHandle, 7u);
+        if (t7 != nullptr) {
+            t7->mPos.x = pos.x;
+            t7->mPos.y = pos.y;
+            t7->mPos.z = pos.z;
+            t7->mPos.pad_ = 0.0f;
         }
     }
 }
@@ -1549,70 +1551,70 @@ void sEffectExt::epvSetScale(cEfcHandle* pHandle, const MtVector3& scale) {
     // DWARF local not rendered: uEffectExt* pEfct;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (pHandle != static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle != nullptr) {
         // inferred: a temporary for the result of the call at 0x1a5b3e4, used 5 times; no DWARF local holds it
-        uEffectExt* t0 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(0));
-        if (t0 != static_cast<uEffectExt*>(nullptr)) {
-            t0->::uCoord::mScale.x = scale.x;
-            t0->::uCoord::mScale.y = scale.y;
-            t0->::uCoord::mScale.z = scale.z;
-            t0->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t0 = getEffect(pHandle, 0u);
+        if (t0 != nullptr) {
+            t0->mScale.x = scale.x;
+            t0->mScale.y = scale.y;
+            t0->mScale.z = scale.z;
+            t0->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b429, used 5 times; no DWARF local holds it
-        uEffectExt* t1 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(1));
-        if (t1 != static_cast<uEffectExt*>(nullptr)) {
-            t1->::uCoord::mScale.x = scale.x;
-            t1->::uCoord::mScale.y = scale.y;
-            t1->::uCoord::mScale.z = scale.z;
-            t1->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t1 = getEffect(pHandle, 1u);
+        if (t1 != nullptr) {
+            t1->mScale.x = scale.x;
+            t1->mScale.y = scale.y;
+            t1->mScale.z = scale.z;
+            t1->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b46e, used 5 times; no DWARF local holds it
-        uEffectExt* t2 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(2));
-        if (t2 != static_cast<uEffectExt*>(nullptr)) {
-            t2->::uCoord::mScale.x = scale.x;
-            t2->::uCoord::mScale.y = scale.y;
-            t2->::uCoord::mScale.z = scale.z;
-            t2->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t2 = getEffect(pHandle, 2u);
+        if (t2 != nullptr) {
+            t2->mScale.x = scale.x;
+            t2->mScale.y = scale.y;
+            t2->mScale.z = scale.z;
+            t2->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b4b3, used 5 times; no DWARF local holds it
-        uEffectExt* t3 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(3));
-        if (t3 != static_cast<uEffectExt*>(nullptr)) {
-            t3->::uCoord::mScale.x = scale.x;
-            t3->::uCoord::mScale.y = scale.y;
-            t3->::uCoord::mScale.z = scale.z;
-            t3->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t3 = getEffect(pHandle, 3u);
+        if (t3 != nullptr) {
+            t3->mScale.x = scale.x;
+            t3->mScale.y = scale.y;
+            t3->mScale.z = scale.z;
+            t3->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b4f8, used 5 times; no DWARF local holds it
-        uEffectExt* t4 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(4));
-        if (t4 != static_cast<uEffectExt*>(nullptr)) {
-            t4->::uCoord::mScale.x = scale.x;
-            t4->::uCoord::mScale.y = scale.y;
-            t4->::uCoord::mScale.z = scale.z;
-            t4->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t4 = getEffect(pHandle, 4u);
+        if (t4 != nullptr) {
+            t4->mScale.x = scale.x;
+            t4->mScale.y = scale.y;
+            t4->mScale.z = scale.z;
+            t4->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b53d, used 5 times; no DWARF local holds it
-        uEffectExt* t5 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(5));
-        if (t5 != static_cast<uEffectExt*>(nullptr)) {
-            t5->::uCoord::mScale.x = scale.x;
-            t5->::uCoord::mScale.y = scale.y;
-            t5->::uCoord::mScale.z = scale.z;
-            t5->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t5 = getEffect(pHandle, 5u);
+        if (t5 != nullptr) {
+            t5->mScale.x = scale.x;
+            t5->mScale.y = scale.y;
+            t5->mScale.z = scale.z;
+            t5->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b582, used 5 times; no DWARF local holds it
-        uEffectExt* t6 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(6));
-        if (t6 != static_cast<uEffectExt*>(nullptr)) {
-            t6->::uCoord::mScale.x = scale.x;
-            t6->::uCoord::mScale.y = scale.y;
-            t6->::uCoord::mScale.z = scale.z;
-            t6->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t6 = getEffect(pHandle, 6u);
+        if (t6 != nullptr) {
+            t6->mScale.x = scale.x;
+            t6->mScale.y = scale.y;
+            t6->mScale.z = scale.z;
+            t6->mScale.pad_ = 0.0f;
         }
         // inferred: a temporary for the result of the call at 0x1a5b5c7, used 5 times; no DWARF local holds it
-        uEffectExt* t7 = this->::sEffectExt::getEffect(pHandle, static_cast<u32>(7));
-        if (t7 != static_cast<uEffectExt*>(nullptr)) {
-            t7->::uCoord::mScale.x = scale.x;
-            t7->::uCoord::mScale.y = scale.y;
-            t7->::uCoord::mScale.z = scale.z;
-            t7->::uCoord::mScale.pad_ = 0.0f;
+        uEffectExt* t7 = getEffect(pHandle, 7u);
+        if (t7 != nullptr) {
+            t7->mScale.x = scale.x;
+            t7->mScale.y = scale.y;
+            t7->mScale.z = scale.z;
+            t7->mScale.pad_ = 0.0f;
         }
     }
 }
@@ -1682,16 +1684,16 @@ __attribute__((weak)) void sEffectExt::epvSetTransparencyAll(cEfcHandle* pHandle
 rEffectProvider* sEffectExt::getEpvResourceFromWeaponCategory(u32 wepCategory) {
     // DWARF local not rendered: rEffectProvider* prResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cWepCateResTbl* pRes = ::sGame::getInstance()->::sGame::getWepCateResData(wepCategory);
-    if (pRes != static_cast<cWepCateResTbl*>(nullptr)) {
-        u64 resId = pRes->::cWepCateResTbl::getEffcResId();
-        if (resId != static_cast<u64>(0)) {
-            return static_cast<rEffectProvider*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(resId, static_cast<u32>(1), false));
+    cWepCateResTbl* pRes = sGame::getInstance()->getWepCateResData(wepCategory);
+    if (pRes != nullptr) {
+        u64 resId = pRes->cWepCateResTbl::getEffcResId();
+        if (resId != 0) {
+            return static_cast<rEffectProvider*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
-            return static_cast<rEffectProvider*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<rEffectProvider*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1817,17 +1819,17 @@ __attribute__((weak)) void sEffectExt::removeCameraEffect(cEfcHandle* pHandle, u
 __attribute__((weak)) void sEffectExt::removeEffect(cEfcHandle* pHandle, u32 endType) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHandle == static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle == nullptr) {
         return;
     }
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(0), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(1), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(2), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(3), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(4), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(5), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(6), endType);
-    this->::sEffectExt::removeEffect(pHandle, static_cast<u32>(7), endType);
+    removeEffect(pHandle, 0u, endType);
+    removeEffect(pHandle, 1u, endType);
+    removeEffect(pHandle, 2u, endType);
+    removeEffect(pHandle, 3u, endType);
+    removeEffect(pHandle, 4u, endType);
+    removeEffect(pHandle, 5u, endType);
+    removeEffect(pHandle, 6u, endType);
+    removeEffect(pHandle, 7u, endType);
 }
 
 // No out-of-line body: 7 inlined copies in 6 functions (101 bytes)
@@ -1841,17 +1843,17 @@ __attribute__((weak)) void sEffectExt::removeEffect(cEfcHandle* pHandle, u32 end
 __attribute__((weak)) void sEffectExt::removeCameraEffect(cEfcHandle* pHandle, u32 endType) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHandle == static_cast<cEfcHandle*>(nullptr)) {
+    if (pHandle == nullptr) {
         return;
     }
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(0), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(1), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(2), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(3), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(4), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(5), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(6), endType);
-    this->::sEffectExt::removeCameraEffect(pHandle, static_cast<u32>(7), endType);
+    removeCameraEffect(pHandle, 0u, endType);
+    removeCameraEffect(pHandle, 1u, endType);
+    removeCameraEffect(pHandle, 2u, endType);
+    removeCameraEffect(pHandle, 3u, endType);
+    removeCameraEffect(pHandle, 4u, endType);
+    removeCameraEffect(pHandle, 5u, endType);
+    removeCameraEffect(pHandle, 6u, endType);
+    removeCameraEffect(pHandle, 7u, endType);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (177 bytes)
@@ -1893,39 +1895,39 @@ void sEffectExt::addInvalidHandle(cEfcHandle* pHandle) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x76d280 carries; the location-less local in scope that fits is declared on no line of the value's writes
     cEfcHandle* v0_0;
-    if (pHandle != static_cast<cEfcHandle*>(nullptr)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+    if (pHandle != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
-        if (this->mpInvalidHandle == static_cast<cEfcHandle*>(nullptr)) {
-            this->mpInvalidHandle = pHandle;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+        if (mpInvalidHandle == nullptr) {
+            mpInvalidHandle = pHandle;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                     return;
                 }
             }
             return;
         } else {
-            v0_0 = this->mpInvalidHandle;
+            v0_0 = mpInvalidHandle;
         }
     } else {
         return;
     }
     for (;;) {
-        if (v0_0->mpNext != static_cast<cEfcHandle*>(nullptr)) {
+        if (v0_0->mpNext != nullptr) {
             v0_0 = v0_0->mpNext;
         } else {
             break;
         }
     }
     v0_0->mpNext = pHandle;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -1986,11 +1988,11 @@ __attribute__((weak)) void sEffectExt::updateInvalidHandle() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sEffectExt::releaseCommonELI() {
-    if (this->mpCommonELI == static_cast<rVfxLightInfluence*>(nullptr)) {
+    if (mpCommonELI == nullptr) {
         return;
     }
-    this->mpCommonELI->::cResource::release();
-    this->mpCommonELI = static_cast<rVfxLightInfluence*>(nullptr);
+    mpCommonELI->release();
+    mpCommonELI = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1999,7 +2001,7 @@ inline void sEffectExt::releaseCommonELI() {
 // Address: 0x0076d680 - 0x0076d688 (8 bytes)
 rVfxLightInfluence* sEffectExt::getCommonELI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCommonELI;
+    return mpCommonELI;
 }
 
 // Address: 0x007706d0 - 0x00770844 (372 bytes)
@@ -2482,12 +2484,24 @@ __attribute__((weak)) void sEffectExt::relOnceRequestEffectTypeSuperErosionCamDa
 // Address: 0x007782d0 - 0x007782eb (27 bytes)
 bool sEffectExt::isDrawOnceRequestEffectTypeSuperErosionCamData(uEffectExt* pEffect) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pEffect != static_cast<uEffectExt*>(nullptr)) {
-        return this->mCRETSEC.::cOnceRequestEffectTypeSuperErosionCam::isDraw(pEffect);
+    if (pEffect != nullptr) {
+        return mCRETSEC.isDraw(pEffect);
     } else {
         return false;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::MyDTI sEffectExt::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sEffectExt::DEFAULT_CUSTOM_INTENSITY_SCALE;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sEffectExt::EPV_TYPE_OVERRIDE_TBL[4];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sEffectExt::PS3_EFFECT_LIMIT_COST;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sEffectExt::PS4_EFFECT_LIMIT_COST;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sEffectExt::PC_EFFECT_LIMIT_COST;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778c93-0x00778cd0 (called at sEffectExt.cpp:310)
@@ -2606,7 +2620,7 @@ const MtDTI& sEffectExt::cZoneEpvStack::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEffectExt::cZoneEpvStack::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEpvStack::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEpvStack::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2629,6 +2643,8 @@ sEffectExt::cZoneEpvStack::~cZoneEpvStack() {
     DDON_STUB("sEffectExt::cZoneEpvStack::~cZoneEpvStack")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cZoneEpvStack::MyDTI sEffectExt::cZoneEpvStack::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778dbb-0x00778df4 (called at sEffectExt.cpp:6773)
@@ -2665,7 +2681,7 @@ const MtDTI& sEffectExt::cZoneEffectUnitLayout::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sEffectExt::cZoneEffectUnitLayout::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnitLayout::DTI)->memAlloc(sz, align, ::sEffectExt::cZoneEffectUnitLayout::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnitLayout::DTI)->memAlloc(sz, align, sEffectExt::cZoneEffectUnitLayout::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2680,7 +2696,7 @@ inline void* sEffectExt::cZoneEffectUnitLayout::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEffectExt::cZoneEffectUnitLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnitLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnitLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2694,8 +2710,8 @@ inline void sEffectExt::cZoneEffectUnitLayout::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline sEffectExt::cZoneEffectUnitLayout::cZoneEffectUnitLayout() {
-    ::memset(static_cast<void*>(&this->mZoneLayoutNum), static_cast<int>(0), static_cast<size_t>(2052));
-    this->mHandle = ::cZoneLayout::INVALID_HANDLE;
+    memset(static_cast<void*>(&mZoneLayoutNum), 0, 2052ul);
+    mHandle = cZoneLayout::INVALID_HANDLE;
 }
 
 // Address: 0x00777110 - 0x0077716f (95 bytes)
@@ -2730,6 +2746,8 @@ __attribute__((weak)) void sEffectExt::cZoneEffectUnitLayout::updateZoneEffectUn
 //   in sEffectExt::cZoneEffectUnitLayout::~cZoneEffectUnitLayout at 0x0077719a-0x007771da (called at sEffectExt.cpp:6863)
 // void sEffectExt::cZoneEffectUnitLayout::eraseZoneEffectUnitLayout();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cZoneEffectUnitLayout::MyDTI sEffectExt::cZoneEffectUnitLayout::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778e2d-0x00778e66 (called at sEffectExt.cpp:6836)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778e2d-0x00778e66 (called at sEffectExt.h:339)
@@ -2738,7 +2756,7 @@ __attribute__((weak)) void sEffectExt::cZoneEffectUnitLayout::updateZoneEffectUn
 // Address: 0x00777020 - 0x00777082 (98 bytes)
 MtObject* sEffectExt::cZoneEffectUnitLayout::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sEffectExt::cZoneEffectUnitLayout;
+    return new (16u) sEffectExt::cZoneEffectUnitLayout;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2779,7 +2797,7 @@ const MtDTI& sEffectExt::cZoneEffectUnit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEffectExt::cZoneEffectUnit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2803,6 +2821,8 @@ sEffectExt::cZoneEffectUnit::~cZoneEffectUnit() {
     DDON_STUB("sEffectExt::cZoneEffectUnit::~cZoneEffectUnit")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cZoneEffectUnit::MyDTI sEffectExt::cZoneEffectUnit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778df4-0x00778e2d (called at sEffectExt.cpp:6801)
@@ -2850,7 +2870,7 @@ const MtDTI& sEffectExt::cEfcCameraQuakeData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sEffectExt::cEfcCameraQuakeData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2871,6 +2891,8 @@ inline void sEffectExt::cEfcCameraQuakeData::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // sEffectExt::cEfcCameraQuakeData::~cEfcCameraQuakeData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cEfcCameraQuakeData::MyDTI sEffectExt::cEfcCameraQuakeData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778cd0-0x00778d10 (called at sEffectExt.cpp:311)
@@ -2918,7 +2940,7 @@ const MtDTI& sEffectExt::cEfcCameraQuakeDataLarge::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sEffectExt24cEfcCameraQuakeDataLargeD0Ev at 0x01ac3e40-0x01ac3e6a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sEffectExt::cEfcCameraQuakeDataLarge::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2936,6 +2958,8 @@ inline void sEffectExt::cEfcCameraQuakeDataLarge::operator delete(void* p_addr) 
 //   in sEffectExt::sEffectExt at 0x00769708-0x007697b9 (called at sEffectExt.cpp:336)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sEffectExt::cEfcCameraQuakeDataLarge::cEfcCameraQuakeDataLarge();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cEfcCameraQuakeDataLarge::MyDTI sEffectExt::cEfcCameraQuakeDataLarge::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778d10-0x00778d49 (called at sEffectExt.cpp:312)
@@ -2983,7 +3007,7 @@ const MtDTI& sEffectExt::cEfcCameraQuakeDataMiddle::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sEffectExt25cEfcCameraQuakeDataMiddleD0Ev at 0x01ac3e00-0x01ac3e2a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sEffectExt::cEfcCameraQuakeDataMiddle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3001,6 +3025,8 @@ inline void sEffectExt::cEfcCameraQuakeDataMiddle::operator delete(void* p_addr)
 //   in sEffectExt::sEffectExt at 0x007697b9-0x0076986a (called at sEffectExt.cpp:336)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sEffectExt::cEfcCameraQuakeDataMiddle::cEfcCameraQuakeDataMiddle();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI sEffectExt::cEfcCameraQuakeDataMiddle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778d49-0x00778d82 (called at sEffectExt.cpp:313)
@@ -3048,7 +3074,7 @@ const MtDTI& sEffectExt::cEfcCameraQuakeDataSmall::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sEffectExt24cEfcCameraQuakeDataSmallD0Ev at 0x01ac3dc0-0x01ac3dea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sEffectExt::cEfcCameraQuakeDataSmall::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3066,6 +3092,8 @@ inline void sEffectExt::cEfcCameraQuakeDataSmall::operator delete(void* p_addr) 
 //   in sEffectExt::sEffectExt at 0x0076986a-0x0076991b (called at sEffectExt.cpp:336)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // sEffectExt::cEfcCameraQuakeDataSmall::cEfcCameraQuakeDataSmall();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEffectExt::cEfcCameraQuakeDataSmall::MyDTI sEffectExt::cEfcCameraQuakeDataSmall::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEffectExt.cpp at 0x00778d82-0x00778dbb (called at sEffectExt.cpp:314)

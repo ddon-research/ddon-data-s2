@@ -52,7 +52,7 @@ const MtDTI& uGUINewspaper::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUINewspaper::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::DTI);
+    return MtMemoryAllocator::getAllocator(uGUINewspaper::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ inline MtAllocator* uGUINewspaper::getAllocator() {
 // Address: 0x00b793d0 - 0x00b79410 (64 bytes)
 void* uGUINewspaper::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUINewspaper::getAllocator()->memAlloc(sz, align, ::uGUINewspaper::DTI.::MtDTI::getID());
+    return uGUINewspaper::getAllocator()->memAlloc(sz, align, uGUINewspaper::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,7 +76,7 @@ void* uGUINewspaper::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUINewspaper::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,13 +101,13 @@ uGUINewspaper::~uGUINewspaper() {
 // Address: 0x00b7bab0 - 0x00b7bbaa (250 bytes)
 bool uGUINewspaper::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NEWS03_GUI"), static_cast<u32>(129), static_cast<t64>(1460428396)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpGMDQuestRes == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGMDQuestRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGMDQuestRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWS03_GUI"), 129u, 1460428396l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpGMDQuestRes == nullptr) {
+                        if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                            mpGMDQuestRes;
                             return true;
                         } else {
                             return false;
@@ -119,9 +119,9 @@ bool uGUINewspaper::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpGMDQuestRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGMDQuestRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGMDQuestRes;
+                if (mpGMDQuestRes == nullptr) {
+                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                        mpGMDQuestRes;
                         return true;
                     } else {
                         return false;
@@ -134,11 +134,11 @@ bool uGUINewspaper::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpGMDQuestRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGMDQuestRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGMDQuestRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NEWSPAPER_RES_GMD"), 129u, 0l))) != nullptr) {
+                if (mpGMDQuestRes == nullptr) {
+                    if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                        mpGMDQuestRes;
                         return true;
                     } else {
                         return false;
@@ -150,9 +150,9 @@ bool uGUINewspaper::loadResource() {
                 return false;
             }
         } else {
-            if (this->mpGMDQuestRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDQuestRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDQuestRes;
+            if (mpGMDQuestRes == nullptr) {
+                if ((mpGMDQuestRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDQuestRes;
                     return true;
                 } else {
                     return false;
@@ -173,53 +173,53 @@ __attribute__((weak)) void uGUINewspaper::setup() {
 // Address: 0x00b7f600 - 0x00b7f68c (140 bytes)
 void uGUINewspaper::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpGUIPopDetail->kill();
-        this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        mpGUIPopDetail->kill();
+        mpGUIPopDetail = nullptr;
     }
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpGMDQuestRes == static_cast<rGUIMessage*>(nullptr)) {
+    if (mpGMDQuestRes == nullptr) {
         return;
     }
-    this->mpGMDQuestRes->::cResource::release();
-    this->mpGMDQuestRes = static_cast<rGUIMessage*>(nullptr);
+    mpGMDQuestRes->release();
+    mpGMDQuestRes = nullptr;
 }
 
 // Address: 0x00b7ba10 - 0x00b7ba7d (109 bytes)
 void uGUINewspaper::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIDialog != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUIDialog->::cUnit::isEnable() == false) {
-            this->mpGUIDialog = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUIDialog != nullptr) {
+        if (!mpGUIDialog->isEnable()) {
+            mpGUIDialog = nullptr;
         }
     }
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        if (this->mpGUIPopDetail->::cUnit::isEnable() == false) {
-            this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        if (!mpGUIPopDetail->isEnable()) {
+            mpGUIPopDetail = nullptr;
         }
     }
-    if (this->mpSubMenu == static_cast<uGUIPopCmd01*>(nullptr)) {
+    if (mpSubMenu == nullptr) {
         return;
     }
-    if (this->mpSubMenu->::cUnit::isEnable() != false) {
+    if (mpSubMenu->isEnable()) {
         return;
     }
-    this->mpSubMenu = static_cast<uGUIPopCmd01*>(nullptr);
+    mpSubMenu = nullptr;
 }
 
 // Address: 0x00b7ba80 - 0x00b7baa8 (40 bytes)
 void uGUINewspaper::end() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::setIsOpenNewspaper(false);
-    this->::uGUIBase::end();
+    sQuestManagerExt::getInstance()->setIsOpenNewspaper(false);
+    this->uGUIBase::end();
 }
 
 // Address: 0x00b7f690 - 0x00b7f7d2 (322 bytes)
@@ -244,46 +244,46 @@ __attribute__((weak)) void uGUINewspaper::moveEvent() {
 // Address: 0x00b7bd70 - 0x00b7bd85 (21 bytes)
 u32 uGUINewspaper::evCtrlClose(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(16));
-    return static_cast<u32>(1);
+    setInputEvent(16u);
+    return 1;
 }
 
 // Address: 0x00b83cc0 - 0x00b83cf0 (48 bytes)
 u32 uGUINewspaper::evCtrlNewsCmnCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (this->mMode != static_cast<s32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (mType == 0) {
+        if (mMode != 0) {
+            setInputEvent(70u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(16));
+            setInputEvent(16u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b83d10 - 0x00b83d4d (61 bytes)
 u32 uGUINewspaper::evCtrlNewsCmnLR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (this->mMode == static_cast<s32>(2)) {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(12)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(83));
-                return static_cast<u32>(1);
+    if (mType == 0) {
+        if (mMode == 2) {
+            if (pMsg->reason == nGUIExt::TRG_LB) {
+                setInputEvent(83u);
+                return 1;
             } else {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(13)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(82));
-                    return static_cast<u32>(1);
+                if (pMsg->reason == nGUIExt::TRG_RB) {
+                    setInputEvent(82u);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -291,150 +291,150 @@ u32 uGUINewspaper::evCtrlNewsCmnLR(cControl::Message* pMsg) {
 u32 uGUINewspaper::evCtrlNewsCmnClick(cControl::Message* pMsg) {
     // DWARF local not rendered: u32 changeSE;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->click_vol != static_cast<s32>(3)) {
-            if (pMsg->click_vol == static_cast<s32>(2)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isEnableQuickParty() != false) {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(95));
+    if (pMsg != nullptr) {
+        if (pMsg->click_vol != 3) {
+            if (pMsg->click_vol == 2) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mQuickMatchRno != 0) {
+                        setInputEvent(95u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(94));
+                        setInputEvent(94u);
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(93));
+                    setInputEvent(93u);
                 }
-                pMsg->changeSE = static_cast<u32>(4);
+                pMsg->changeSE = 4;
             } else {
-                if (pMsg->click_vol == static_cast<s32>(1)) {
-                    if (this->mIsEnableQuestWarp != false) {
-                        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableMenu_RimWarp() != false) {
-                            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarp(false) != false) {
-                                if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarpDecide(false) != false) {
-                                    if (this->::uGUINewspaper::getWarpInfo() != static_cast<const CDataAreaWarpPoint*>(nullptr)) {
-                                        this->::uGUIBase::setInputEvent(static_cast<u32>(89));
+                if (pMsg->click_vol == 1) {
+                    if (mIsEnableQuestWarp) {
+                        if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                            if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                                if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                                    if (getWarpInfo() != nullptr) {
+                                        setInputEvent(89u);
                                     } else {
-                                        this->mNoWarpType = static_cast<u32>(2);
-                                        this->::uGUIBase::setInputEvent(static_cast<u32>(90));
+                                        mNoWarpType = 2;
+                                        setInputEvent(90u);
                                     }
                                 } else {
-                                    this->mNoWarpType = static_cast<u32>(0);
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(90));
+                                    mNoWarpType = 0;
+                                    setInputEvent(90u);
                                 }
                             } else {
-                                this->mNoWarpType = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isBattle();
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(90));
+                                mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                                setInputEvent(90u);
                             }
                         } else {
-                            this->mNoWarpType = static_cast<u32>(0);
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(90));
+                            mNoWarpType = 0;
+                            setInputEvent(90u);
                         }
                     } else {
-                        this->mNoWarpType = static_cast<u32>(0);
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(90));
+                        mNoWarpType = 0;
+                        setInputEvent(90u);
                     }
-                    pMsg->changeSE = static_cast<u32>(4);
+                    pMsg->changeSE = 4;
                 } else {
-                    pMsg->changeSE = static_cast<u32>(0);
+                    pMsg->changeSE = 0;
                 }
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-            pMsg->changeSE = static_cast<u32>(71);
+            setInputEvent(67u);
+            pMsg->changeSE = 71;
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b83cf0 - 0x00b83d10 (32 bytes)
 u32 uGUINewspaper::evCtrlNewsChangeEvent(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mEventNum > static_cast<s32>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-        return static_cast<u32>(1);
+    if (mEventNum > 0) {
+        setInputEvent(67u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b88c00 - 0x00b88c4c (76 bytes)
 u32 uGUINewspaper::evCtrlSelectListDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode == static_cast<s32>(3)) {
-        if (static_cast<unsigned int>(this->mType - static_cast<s32>(1)) <= static_cast<unsigned int>(2)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(98));
-            return static_cast<u32>(1);
+    if (mMode == 3) {
+        if (static_cast<unsigned int>(mType - 1) <= 2) {
+            setInputEvent(98u);
+            return 1;
         }
     } else {
-        if (this->mMode == static_cast<s32>(0)) {
-            if (this->mType == static_cast<s32>(0)) {
-                if (this->mSelectAreaQuestNum > static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                    return static_cast<u32>(1);
+        if (mMode == 0) {
+            if (mType == 0) {
+                if (mSelectAreaQuestNum > 0) {
+                    setInputEvent(71u);
+                    return 1;
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b88c50 - 0x00b88cb3 (99 bytes)
 u32 uGUINewspaper::evCtrlSelectListClick(cControl::Message* pMsg) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-        if (static_cast<unsigned int>(this->mType - static_cast<s32>(1)) <= static_cast<unsigned int>(2)) {
-            if (pMsg->pSender->::cControl::getOldPos() == pMsg->pSender->mCurrentPos) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(100));
+    if (pMsg->pSender != nullptr) {
+        if (static_cast<unsigned int>(mType - 1) <= 2) {
+            if (pMsg->pSender->getOldPos() == pMsg->pSender->mCurrentPos) {
+                setInputEvent(100u);
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(99));
+                setInputEvent(99u);
             }
-            return static_cast<u32>(1);
+            return 1;
         } else {
-            if (this->mType == static_cast<s32>(0)) {
-                if (pMsg->pSender->::cControl::getOldPos() == pMsg->pSender->mCurrentPos) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+            if (mType == 0) {
+                if (pMsg->pSender->getOldPos() == pMsg->pSender->mCurrentPos) {
+                    setInputEvent(74u);
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
+                    setInputEvent(73u);
                 }
-                return static_cast<u32>(1);
+                return 1;
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b88ce0 - 0x00b88d14 (52 bytes)
 u32 uGUINewspaper::evCtrlSelectListCursorLR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(75));
-            return static_cast<u32>(1);
+    if (mType == 0) {
+        if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+            setInputEvent(75u);
+            return 1;
         } else {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(76));
-                return static_cast<u32>(1);
+            if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                setInputEvent(76u);
+                return 1;
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b88cc0 - 0x00b88ce0 (32 bytes)
 u32 uGUINewspaper::evCtrlSelectListCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-        return static_cast<u32>(1);
+    if (mType == 0) {
+        setInputEvent(72u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -447,82 +447,82 @@ __attribute__((weak)) u32 uGUINewspaper::evCtrlDialogChangeEvent(cControl::Messa
 // Address: 0x00b896c0 - 0x00b896e9 (41 bytes)
 u32 uGUINewspaper::evCtrlAreaQuestDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (this->mMode == static_cast<s32>(1)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(79));
-            return static_cast<u32>(1);
+    if (mType == 0) {
+        if (mMode == 1) {
+            setInputEvent(79u);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b896f0 - 0x00b89737 (71 bytes)
 u32 uGUINewspaper::evCtrlAreaQuestClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-            if (pMsg->pSender->::cControl::getOldPos() == pMsg->pSender->mCurrentPos) {
-                if (this->mMode == static_cast<s32>(1)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(81));
+    if (mType == 0) {
+        if (pMsg->pSender != nullptr) {
+            if (pMsg->pSender->getOldPos() == pMsg->pSender->mCurrentPos) {
+                if (mMode == 1) {
+                    setInputEvent(81u);
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(80));
+                    setInputEvent(80u);
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(80));
+                setInputEvent(80u);
             }
-            return static_cast<u32>(1);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b83ea0 - 0x00b83fcd (301 bytes)
 u32 uGUINewspaper::evCtrlQuestButtonDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xb83eb6, used twice; no DWARF local holds it
-    s32 t0 = this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1));
-    if (t0 == static_cast<s32>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isEnableQuickParty() != false) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(92));
+    s32 t0 = mControls.getCurrentPos(1u);
+    if (t0 == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mQuickMatchRno != 0) {
+                setInputEvent(92u);
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(91));
+                setInputEvent(91u);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(93));
+            setInputEvent(93u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        if (t0 == static_cast<s32>(0)) {
-            if (this->mIsEnableQuestWarp != false) {
-                if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableMenu_RimWarp() != false) {
-                    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarp(false) != false) {
-                        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarpDecide(false) != false) {
-                            if (this->::uGUINewspaper::getWarpInfo() != static_cast<const CDataAreaWarpPoint*>(nullptr)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(87));
+        if (t0 == 0) {
+            if (mIsEnableQuestWarp) {
+                if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                            if (getWarpInfo() != nullptr) {
+                                setInputEvent(87u);
                             } else {
-                                this->mNoWarpType = static_cast<u32>(2);
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+                                mNoWarpType = 2;
+                                setInputEvent(88u);
                             }
                         } else {
-                            this->mNoWarpType = static_cast<u32>(0);
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+                            mNoWarpType = 0;
+                            setInputEvent(88u);
                         }
                     } else {
-                        this->mNoWarpType = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isBattle();
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+                        mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                        setInputEvent(88u);
                     }
                 } else {
-                    this->mNoWarpType = static_cast<u32>(0);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+                    mNoWarpType = 0;
+                    setInputEvent(88u);
                 }
             } else {
-                this->mNoWarpType = static_cast<u32>(0);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(88));
+                mNoWarpType = 0;
+                setInputEvent(88u);
             }
-            return static_cast<u32>(1);
+            return 1;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -530,41 +530,41 @@ u32 uGUINewspaper::evCtrlQuestButtonDecide(cControl::Message* pMsg) {
 // Address: 0x00b83fd0 - 0x00b84036 (102 bytes)
 u32 uGUINewspaper::evCtrlQuestButtonCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mControls.::cGUIControlMgr::getOldPos(static_cast<u32>(1)) == static_cast<s32>(0)) {
-        if (pMsg->reason != static_cast<nGUIExt::MSG_REASON>(0)) {
-            this->mQuestSelectButton = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
-            this->::uGUIBase::setInputEvent(static_cast<u32>(86));
+    if (mControls.getOldPos(1u) == 0) {
+        if (pMsg->reason != nGUIExt::BTN_START) {
+            mQuestSelectButton = static_cast<u32>(mControls.getCurrentPos(1u));
+            setInputEvent(86u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(84));
+            setInputEvent(84u);
         }
     } else {
-        this->mQuestSelectButton = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
-        this->::uGUIBase::setInputEvent(static_cast<u32>(86));
+        mQuestSelectButton = static_cast<u32>(mControls.getCurrentPos(1u));
+        setInputEvent(86u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00b84040 - 0x00b84069 (41 bytes)
 u32 uGUINewspaper::evCtrlRewardIconCursorLR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (this->mMode == static_cast<s32>(2)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(96));
-            return static_cast<u32>(0);
+    if (mType == 0) {
+        if (mMode == 2) {
+            setInputEvent(96u);
+            return 0;
         }
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00b84070 - 0x00b8409e (46 bytes)
 u32 uGUINewspaper::evCtrlRewardIconCursorUR(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(85));
-        pMsg->changeSE = static_cast<u32>(2);
-        return static_cast<u32>(1);
+    if (pMsg->reason == nGUIExt::TRG_DOWN) {
+        setInputEvent(85u);
+        pMsg->changeSE = 2;
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -577,59 +577,59 @@ __attribute__((weak)) u32 uGUINewspaper::evCtrlRewardIconCursorMouseOver(cContro
 // Address: 0x00b840d0 - 0x00b840fd (45 bytes)
 u32 uGUINewspaper::evCtrlRewardIconCursorMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<s32>(0)) {
-        if (static_cast<unsigned int>(this->mMode - static_cast<s32>(1)) <= static_cast<unsigned int>(1)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(84));
-            return static_cast<u32>(1);
+    if (mType == 0) {
+        if (static_cast<unsigned int>(mMode - 1) <= 1) {
+            setInputEvent(84u);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b84800 - 0x00b8483b (59 bytes)
 u32 uGUINewspaper::evCtrlEventCmnCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(this->mType - static_cast<s32>(1)) <= static_cast<unsigned int>(2)) {
-        if (this->mMode == static_cast<s32>(4)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(101));
-            return static_cast<u32>(1);
+    if (static_cast<unsigned int>(mType - 1) <= 2) {
+        if (mMode == 4) {
+            setInputEvent(101u);
+            return 1;
         } else {
-            if (this->mMode == static_cast<s32>(3)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-                return static_cast<u32>(1);
+            if (mMode == 3) {
+                setInputEvent(68u);
+                return 1;
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b84860 - 0x00b84875 (21 bytes)
 u32 uGUINewspaper::evCtrlEventCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(102));
-    return static_cast<u32>(1);
+    setInputEvent(102u);
+    return 1;
 }
 
 // Address: 0x00b84880 - 0x00b848a9 (41 bytes)
 u32 uGUINewspaper::evCtrlEventCursorDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-        if (pMsg->pSender->mCurrentPos == static_cast<s32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(103));
-            return static_cast<u32>(1);
+    if (pMsg->pSender != nullptr) {
+        if (pMsg->pSender->mCurrentPos == 0) {
+            setInputEvent(103u);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b84840 - 0x00b84855 (21 bytes)
 u32 uGUINewspaper::evCtrlEventChangeNews(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x00b84bf0 - 0x00b84cd7 (231 bytes)
@@ -655,73 +655,73 @@ __attribute__((weak)) u32 uGUINewspaper::evCtrlRewardSummaryCursorUD(cControl::M
 // Address: 0x00b8d7b0 - 0x00b8d7d7 (39 bytes)
 u32 uGUINewspaper::evCtrlRewardSummaryCursorDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-        if (this->mRewardDetailListNum != static_cast<u32>(0)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(109));
-            return static_cast<u32>(1);
+    if (pMsg->pSender != nullptr) {
+        if (mRewardDetailListNum != 0) {
+            setInputEvent(109u);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b8d7e0 - 0x00b8d7fe (30 bytes)
 u32 uGUINewspaper::evCtrlRewardSummaryClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(110));
-        return static_cast<u32>(1);
+    if (pMsg->pSender != nullptr) {
+        setInputEvent(110u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01afba60 - 0x01afba75 (21 bytes)
 u32 uGUINewspaper::evCtrlRewardDetailCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(111));
-    return static_cast<u32>(1);
+    setInputEvent(111u);
+    return 1;
 }
 
 // Address: 0x00b8df20 - 0x00b8df3e (30 bytes)
 u32 uGUINewspaper::evCtrlRewardDetailClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(112));
-        return static_cast<u32>(1);
+    if (pMsg->pSender != nullptr) {
+        setInputEvent(112u);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00b84bb0 - 0x00b84bd6 (38 bytes)
 u32 uGUINewspaper::evCtrlRankingCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
-            pMsg->pSender->setCurrentPos(static_cast<s32>(1), false);
+    if (pMsg != nullptr) {
+        if (pMsg->pSender != nullptr) {
+            pMsg->pSender->setCurrentPos(1, false);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b84be0 - 0x00b84be3 (3 bytes)
 u32 uGUINewspaper::evCtrlRankingCursorDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b8d4e0 - 0x00b8d4f5 (21 bytes)
 u32 uGUINewspaper::evCtrlRankingListCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(117));
-    return static_cast<u32>(1);
+    setInputEvent(117u);
+    return 1;
 }
 
 // Address: 0x00b8d500 - 0x00b8d515 (21 bytes)
 u32 uGUINewspaper::evCtrlRankingListClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(118));
-    return static_cast<u32>(1);
+    setInputEvent(118u);
+    return 1;
 }
 
 // Address: 0x00b7f480 - 0x00b7f5fb (379 bytes)
@@ -741,55 +741,55 @@ __attribute__((weak)) void uGUINewspaper::initCallback(u32 ErrorCode) {
 // Address: 0x00b89e60 - 0x00b89ee7 (135 bytes)
 void uGUINewspaper::areaChangeCallBack(u32 ErrorCode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus & static_cast<u32>(4294967294);
-    if (this->mpLoadIconQuestImage != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpLoadIconQuestImage->::cGUIInstance::setVisible(false);
+    mStatus = mStatus & 0xFFFFFFFEu;
+    if (mpLoadIconQuestImage != nullptr) {
+        mpLoadIconQuestImage->setVisible(false);
     }
-    if (this->mpLoadIconRewardIcon != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpLoadIconRewardIcon->::cGUIInstance::setVisible(false);
+    if (mpLoadIconRewardIcon != nullptr) {
+        mpLoadIconRewardIcon->setVisible(false);
     }
-    if (this->mpLoadIconQuest != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpLoadIconQuest->::cGUIInstance::setVisible(false);
+    if (mpLoadIconQuest != nullptr) {
+        mpLoadIconQuest->setVisible(false);
     }
-    this->mIsFirstLoad = false;
-    if (ErrorCode != static_cast<u32>(0)) {
-        this->end();
+    mIsFirstLoad = false;
+    if (ErrorCode != 0) {
+        end();
     } else {
-        this->::uGUINewspaper::setupMode(static_cast<s32>(0));
-        this->::uGUINewspaper::updateQuestPage();
-        this->::uGUINewspaper::updateAreaInfo();
+        setupMode(0);
+        updateQuestPage();
+        updateAreaInfo();
     }
 }
 
 // Address: 0x00b89df0 - 0x00b89e5a (106 bytes)
 void uGUINewspaper::discoveredCallBack(u32 ErrorCode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus & static_cast<u32>(4294967294);
-    if (this->mpLoadIconQuestImage != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpLoadIconQuestImage->::cGUIInstance::setVisible(false);
+    mStatus = mStatus & 0xFFFFFFFEu;
+    if (mpLoadIconQuestImage != nullptr) {
+        mpLoadIconQuestImage->setVisible(false);
     }
-    if (this->mpLoadIconRewardIcon != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpLoadIconRewardIcon->::cGUIInstance::setVisible(false);
+    if (mpLoadIconRewardIcon != nullptr) {
+        mpLoadIconRewardIcon->setVisible(false);
     }
-    this->mIsFirstLoad = false;
-    if (ErrorCode != static_cast<u32>(0)) {
-        this->end();
+    mIsFirstLoad = false;
+    if (ErrorCode != 0) {
+        end();
     } else {
-        this->::uGUINewspaper::updateQuestPage();
-        this->::uGUINewspaper::updateDiscoverInfo();
+        updateQuestPage();
+        updateDiscoverInfo();
     }
 }
 
 // Address: 0x00b83560 - 0x00b83576 (22 bytes)
 bool uGUINewspaper::questwarplistRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAreaWarpPointList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAreaWarpPointList();
 }
 
 // Address: 0x00b83580 - 0x00b83588 (8 bytes)
 void uGUINewspaper::questwarplistCallBack() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableQuestWarp = true;
+    mIsEnableQuestWarp = true;
 }
 
 // Address: 0x00b86040 - 0x00b8620d (461 bytes)
@@ -803,8 +803,8 @@ __attribute__((weak)) void uGUINewspaper::requestRanking() {
 // Address: 0x00b8ce30 - 0x00b8ce3c (12 bytes)
 void uGUINewspaper::rankingCallback(u32 ErrorCode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus & static_cast<u32>(4294967294);
-    this->::uGUINewspaper::showRankingTab();
+    mStatus = mStatus & 0xFFFFFFFEu;
+    showRankingTab();
 }
 
 // Address: 0x00b86210 - 0x00b86430 (544 bytes)
@@ -821,8 +821,8 @@ __attribute__((weak)) void uGUINewspaper::requestReward() {
 // Address: 0x00b8d540 - 0x00b8d54c (12 bytes)
 void uGUINewspaper::rewardCallback(u32 ErrorCode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus & static_cast<u32>(4294967294);
-    this->::uGUINewspaper::showRewardTab();
+    mStatus = mStatus & 0xFFFFFFFEu;
+    showRewardTab();
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (41 bytes)
@@ -874,388 +874,388 @@ void uGUINewspaper::initEventPop() {
     // DWARF local not rendered: cGUIObjMessage* pmsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xb7dbb4, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(229), false);
-    if ((this->mpEventPop = static_cast<cGUIInstNull*>(t0)) != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstance::setVisible(false);
+    cGUIInstance* t0 = getInstance(229u, false);
+    if ((mpEventPop = static_cast<cGUIInstNull*>(t0)) != nullptr) {
+        t0->setVisible(false);
         // inferred: a temporary for the result of the call at 0xb7dbdd, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->getInstance(static_cast<u32>(228), false);
-        this->mpEventPopBase = static_cast<cGUIInstAnimation*>(t1);
-        cGUIObject* pObj = this->::uGUIBase::getObjectFromId(t1, static_cast<u32>(47));
-        if (pObj != static_cast<cGUIObject*>(nullptr)) {
-            if (this->mpEventPopBase != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mControls.::cGUIControlMgr::addMouseTouchListLight(static_cast<u32>(0), static_cast<cGUIInstance*>(this->mpEventPopBase), pObj, static_cast<s32>(0), static_cast<s32>(3));
+        cGUIInstance* t1 = getInstance(228u, false);
+        mpEventPopBase = static_cast<cGUIInstAnimation*>(t1);
+        cGUIObject* pObj = getObjectFromId(t1, 47u);
+        if (pObj != nullptr) {
+            if (mpEventPopBase != nullptr) {
+                mControls.addMouseTouchListLight(0u, static_cast<cGUIInstance*>(mpEventPopBase), pObj, 0, 3);
                 // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-                cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-                this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-                this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+                cGUIInstance* t2 = getInstance(270u, false);
+                mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+                mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
                 // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-                cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-                this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-                this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+                cGUIInstance* t3 = getInstance(230u, false);
+                mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+                mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
                 // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-                cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-                this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-                this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+                cGUIInstance* t4 = getInstance(231u, false);
+                mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+                mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
                 // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-                cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-                if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+                if (t5 != nullptr) {
+                    setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 } else {
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 }
             } else {
                 // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-                cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-                this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-                this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+                cGUIInstance* t2 = getInstance(270u, false);
+                mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+                mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
                 // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-                cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-                this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-                this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+                cGUIInstance* t3 = getInstance(230u, false);
+                mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+                mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
                 // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-                cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-                this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-                this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+                cGUIInstance* t4 = getInstance(231u, false);
+                mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+                mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
                 // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-                cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-                if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+                if (t5 != nullptr) {
+                    setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 } else {
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 }
             }
         } else {
             // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-            this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-            this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+            cGUIInstance* t2 = getInstance(270u, false);
+            mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+            mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
             // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-            cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-            this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-            this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+            cGUIInstance* t3 = getInstance(230u, false);
+            mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+            mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
             // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-            cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-            this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-            this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+            cGUIInstance* t4 = getInstance(231u, false);
+            mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+            mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
             // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-            cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-            if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+            cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+            if (t5 != nullptr) {
+                setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                 // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                if (t6 != nullptr) {
+                    setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 } else {
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 }
             } else {
-                this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                 // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                if (t6 != nullptr) {
+                    setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 } else {
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 }
             }
         }
     } else {
         // inferred: a temporary for the result of the call at 0xb7dbdd, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->getInstance(static_cast<u32>(228), false);
-        this->mpEventPopBase = static_cast<cGUIInstAnimation*>(t1);
-        cGUIObject* pObj = this->::uGUIBase::getObjectFromId(t1, static_cast<u32>(47));
-        if (pObj != static_cast<cGUIObject*>(nullptr)) {
-            if (this->mpEventPopBase != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mControls.::cGUIControlMgr::addMouseTouchListLight(static_cast<u32>(0), static_cast<cGUIInstance*>(this->mpEventPopBase), pObj, static_cast<s32>(0), static_cast<s32>(3));
+        cGUIInstance* t1 = getInstance(228u, false);
+        mpEventPopBase = static_cast<cGUIInstAnimation*>(t1);
+        cGUIObject* pObj = getObjectFromId(t1, 47u);
+        if (pObj != nullptr) {
+            if (mpEventPopBase != nullptr) {
+                mControls.addMouseTouchListLight(0u, static_cast<cGUIInstance*>(mpEventPopBase), pObj, 0, 3);
                 // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-                cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-                this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-                this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+                cGUIInstance* t2 = getInstance(270u, false);
+                mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+                mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
                 // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-                cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-                this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-                this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+                cGUIInstance* t3 = getInstance(230u, false);
+                mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+                mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
                 // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-                cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-                this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-                this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+                cGUIInstance* t4 = getInstance(231u, false);
+                mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+                mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
                 // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-                cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-                if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+                if (t5 != nullptr) {
+                    setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 } else {
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 }
             } else {
                 // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-                cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-                this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-                this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+                cGUIInstance* t2 = getInstance(270u, false);
+                mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+                mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
                 // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-                cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-                this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-                this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+                cGUIInstance* t3 = getInstance(230u, false);
+                mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+                mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
                 // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-                cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-                this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-                this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+                cGUIInstance* t4 = getInstance(231u, false);
+                mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+                mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
                 // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-                cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-                if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+                if (t5 != nullptr) {
+                    setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 } else {
-                    this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                    this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                    this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                    mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                    mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                    mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                     // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                    cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                    if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                    if (t6 != nullptr) {
+                        setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     } else {
-                        this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                        mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                         // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                        cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                        if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                            this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                        cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                        if (t7 != nullptr) {
+                            setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                         }
                     }
                 }
             }
         } else {
             // inferred: a temporary for the result of the call at 0xb7dc32, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(270), false);
-            this->mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
-            this->mContentsMiniImage.::uGUIBase::cTexArcLoader::setup(static_cast<uGUIBase*>(this), this->::uGUIBase::getObjectFromId(t2, static_cast<u32>(2)), static_cast<u32>(70));
+            cGUIInstance* t2 = getInstance(270u, false);
+            mpEventPopImage = static_cast<cGUIInstAnimation*>(t2);
+            mContentsMiniImage.setup(static_cast<uGUIBase*>(this), getObjectFromId(t2, 2u), 70u);
             // inferred: a temporary for the result of the call at 0xb7dc76, used twice; no DWARF local holds it
-            cGUIInstance* t3 = this->getInstance(static_cast<u32>(230), false);
-            this->mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
-            this->mpEventPopJoinText = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t3, static_cast<u32>(8)));
+            cGUIInstance* t3 = getInstance(230u, false);
+            mpEventPopJoin = static_cast<cGUIInstAnimation*>(t3);
+            mpEventPopJoinText = static_cast<cGUIObjMessage*>(getObjectFromId(t3, 8u));
             // inferred: a temporary for the result of the call at 0xb7dca7, used twice; no DWARF local holds it
-            cGUIInstance* t4 = this->getInstance(static_cast<u32>(231), false);
-            this->mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
-            this->mpEventPopTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t4, static_cast<u32>(7)));
+            cGUIInstance* t4 = getInstance(231u, false);
+            mpEventPopInst = static_cast<cGUIInstAnimation*>(t4);
+            mpEventPopTitle = static_cast<cGUIObjMessage*>(getObjectFromId(t4, 7u));
             // inferred: a temporary for the result of the call at 0xb7dcda, used twice; no DWARF local holds it
-            cGUIObject* t5 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(93));
-            if (t5 != static_cast<cGUIObject*>(nullptr)) {
-                this->::uGUIBase::setObjectMessage(t5, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(47)), static_cast<u32>(0), false);
-                this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+            cGUIObject* t5 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 93u);
+            if (t5 != nullptr) {
+                setObjectMessage(t5, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 47u), 0u, false);
+                mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                 // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                if (t6 != nullptr) {
+                    setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 } else {
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 }
             } else {
-                this->mpEventPopTimeS = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(9)));
-                this->mpEventPopTimeE = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(91)));
-                this->mpEventPopRank = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(27)));
+                mpEventPopTimeS = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 9u));
+                mpEventPopTimeE = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 91u));
+                mpEventPopRank = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 27u));
                 // inferred: a temporary for the result of the call at 0xb7dd75, used twice; no DWARF local holds it
-                cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(105));
-                if (t6 != static_cast<cGUIObject*>(nullptr)) {
-                    this->::uGUIBase::setObjectMessage(t6, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(50)), static_cast<u32>(0), false);
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                cGUIObject* t6 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 105u);
+                if (t6 != nullptr) {
+                    setObjectMessage(t6, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 50u), 0u, false);
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 } else {
-                    this->mpEventPopPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(54)));
+                    mpEventPopPoint = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 54u));
                     // inferred: a temporary for the result of the call at 0xb7ddda, used twice; no DWARF local holds it
-                    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpEventPopInst), static_cast<u32>(29));
-                    if (t7 != static_cast<cGUIObject*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(t7, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(28)), static_cast<u32>(0), false);
+                    cGUIObject* t7 = getObjectFromId(static_cast<cGUIInstance*>(mpEventPopInst), 29u);
+                    if (t7 != nullptr) {
+                        setObjectMessage(t7, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 28u), 0u, false);
                     }
                 }
             }
@@ -1364,26 +1364,26 @@ __attribute__((weak)) void uGUINewspaper::setType(s32 Type) {
 // Address: 0x00b84570 - 0x00b8471a (426 bytes)
 void uGUINewspaper::setButtonGuide(s32 guideType) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::clearGuide();
-    if (guideType != static_cast<s32>(3)) {
-        if (guideType != static_cast<s32>(2)) {
-            if (static_cast<unsigned int>(guideType) <= static_cast<unsigned int>(1)) {
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(7));
-                if (this->mEventNum > static_cast<s32>(0)) {
-                    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(20)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+    mGuide.clearGuide();
+    if (guideType != 3) {
+        if (guideType != 2) {
+            if (static_cast<unsigned int>(guideType) <= 1) {
+                mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_DECIDE);
+                if (mEventNum > 0) {
+                    mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_X, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 20u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
                 }
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(63), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(61)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+                mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_Y, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 61u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
             }
         } else {
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(7));
-            if (this->mEventNum > static_cast<s32>(0)) {
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(20)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+            mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_DECIDE);
+            if (mEventNum > 0) {
+                mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_X, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 20u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
             }
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(64), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(55)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addBtnIcon(this->mGuide.::uGUIBase::cReferenceUIBtnGuide::getGuideNum() - static_cast<u32>(1), static_cast<nKeyCustom::KB_CUSTOM>(65));
+            mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_LB, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 55u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
+            mGuide.addBtnIcon(mGuide.getGuideNum() - 1u, nKeyCustom::KEY_CUSTOM_UI_RB);
         }
     } else {
-        this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(21)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+        mGuide.addGuide(nKeyCustom::KEY_CUSTOM_UI_X, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 21u), nGUIExt::ICONTAGKB_2WAY, static_cast<MT_CTSTR>(nullptr), false);
     }
 }
 
@@ -1404,10 +1404,22 @@ __attribute__((weak)) void uGUINewspaper::updateAreaListDisp(uGUIBase::cScrollLi
 }
 
 // Address: 0x00b836e0 - 0x00b8371e (62 bytes)
-__attribute__((weak)) void uGUINewspaper::updateAreaListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollAreaDispList* pdisp;
-    DDON_STUB("uGUINewspaper::updateAreaListHide")
-    /* stub */
+void uGUINewspaper::updateAreaListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollAreaDispList* pdisp = static_cast<cScrollAreaDispList*>(pDispItem);
+    if (pdisp->mpInstAnimArea == nullptr) {
+        return;
+    }
+    if (pdisp->mpInstAnimLand == nullptr) {
+        return;
+    }
+    pdisp->mpInstAnimArea->cGUIInstance::setVisible(false);
+    pdisp->mpInstAnimLand->cGUIInstance::setVisible(false);
+    pdisp->mIndex = -1;
 }
 
 // Address: 0x00b83720 - 0x00b8396a (586 bytes)
@@ -1423,13 +1435,13 @@ __attribute__((weak)) void uGUINewspaper::updateAreaQuestListDisp(uGUIBase::cScr
 void uGUINewspaper::updateAreaQuestListHide(uGUIBase::cScrollListItemBase* pDispItem) {
     // DWARF local not rendered: cScrollQuestDispList* pdisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pDispItem == nullptr) {
         return;
     }
-    if (pDispItem->mpInstBase == static_cast<cGUIInstNull*>(nullptr)) {
+    if (pDispItem->mpInstBase == nullptr) {
         return;
     }
-    pDispItem->mpInstBase->::cGUIInstance::setVisible(false);
+    pDispItem->mpInstBase->setVisible(false);
 }
 
 // Address: 0x00b867f0 - 0x00b869ac (444 bytes)
@@ -1450,27 +1462,27 @@ __attribute__((weak)) void uGUINewspaper::updateNews() {
 // Address: 0x00b86b50 - 0x00b86bf4 (164 bytes)
 void uGUINewspaper::updateRanking() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
-    if (this->mMode == static_cast<s32>(4)) {
-        if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    mClose.uGUIBase::cReferenceUICloseBtn::update();
+    if (mMode == 4) {
+        if (mAreaListCursor.mpInstance != nullptr) {
+            mAreaListCursor.mpInstance->setVisible(false);
         }
-        this->::uGUINewspaper::updateRewardRankingCommandButtonCursor();
+        updateRewardRankingCommandButtonCursor();
     } else {
-        if (this->mMode == static_cast<s32>(3)) {
-            if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+        if (mMode == 3) {
+            if (mAreaListCursor.mpInstance != nullptr) {
+                mAreaListCursor.mpInstance->setVisible(true);
             }
         } else {
-            if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+            if (mAreaListCursor.mpInstance != nullptr) {
+                mAreaListCursor.mpInstance->setVisible(false);
             }
         }
     }
-    this->mAreaListCursor.::uGUIBase::cReferenceUIVlCursor::update();
-    this->mAreaScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    this->mRankingScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    this->::uGUINewspaper::updateRewardRankingCommandButton();
+    mAreaListCursor.uGUIBase::cReferenceUIVlCursor::update();
+    mAreaScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
+    mRankingScrollbar.uGUIBase::cScrollList::update(getDeltaTime());
+    updateRewardRankingCommandButton();
 }
 
 // Address: 0x00b86e10 - 0x00b86f86 (374 bytes)
@@ -1777,54 +1789,54 @@ __attribute__((weak)) void uGUINewspaper::updateEventJoinButton() {
 bool uGUINewspaper::isEnableJoinContents() {
     // DWARF local not rendered: bool isEnable;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableCycleQuest() != false) {
-        if (this->mIsEnableJoinContentsButton != false) {
-            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow() != false) {
-                this->mNoEntryType = static_cast<u32>(2);
+    if (sQuestManagerExt::getInstance()->isEnableCycleQuest()) {
+        if (mIsEnableJoinContentsButton) {
+            if (sQuestManagerExt::getInstance()->isCycleContentsPlayNow()) {
+                mNoEntryType = 2;
                 return false;
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isEntryBoardItem() != false) {
-                    this->mNoEntryType = static_cast<u32>(0);
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isEntryBoardItem()) {
+                    mNoEntryType = 0;
                     return false;
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                        this->mNoEntryType = static_cast<u32>(1);
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                        mNoEntryType = 1;
                         return false;
                     } else {
                         // inferred: a temporary for the result of the call at 0xb82f5e, used twice; no DWARF local holds it
-                        const nQuest::cCycleContentsInfo* t0 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getHoldingCycleContentsInfo(static_cast<u32>(this->mNowEventNo));
-                        if (t0 != static_cast<const nQuest::cCycleContentsInfo*>(nullptr)) {
-                            if (t0->::nQuest::cCycleContentsInfo::getCycleContentsPeriod() == static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(2)) {
+                        const nQuest::cCycleContentsInfo* t0 = sQuestManagerExt::getInstance()->getHoldingCycleContentsInfo(static_cast<u32>(mNowEventNo));
+                        if (t0 != nullptr) {
+                            if (t0->getCycleContentsPeriod() == nQuest::CYCLE_CONTENTS_PERIOD_HOLDING) {
                                 // inferred: a temporary for the result of the call at 0xb82f7e, used twice; no DWARF local holds it
-                                const nQuest::cCycleContentsInfo* t1 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getHoldingCycleContentsInfo(static_cast<u32>(this->mNowEventNo));
-                                if (t1 != static_cast<const nQuest::cCycleContentsInfo*>(nullptr)) {
-                                    if (t1->::nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() != static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(2)) {
-                                        this->mNoEntryType = static_cast<u32>(5);
+                                const nQuest::cCycleContentsInfo* t1 = sQuestManagerExt::getInstance()->getHoldingCycleContentsInfo(static_cast<u32>(mNowEventNo));
+                                if (t1 != nullptr) {
+                                    if (t1->getCycleContentsPeriodRealTime() != nQuest::CYCLE_CONTENTS_PERIOD_HOLDING) {
+                                        mNoEntryType = 5;
                                         return false;
                                     } else {
                                         return true;
                                     }
                                 } else {
-                                    this->mNoEntryType = static_cast<u32>(5);
+                                    mNoEntryType = 5;
                                     return false;
                                 }
                             } else {
-                                this->mNoEntryType = static_cast<u32>(5);
+                                mNoEntryType = 5;
                                 return false;
                             }
                         } else {
-                            this->mNoEntryType = static_cast<u32>(5);
+                            mNoEntryType = 5;
                             return false;
                         }
                     }
                 }
             }
         } else {
-            this->mNoEntryType = static_cast<u32>(3);
+            mNoEntryType = 3;
             return false;
         }
     } else {
-        this->mNoEntryType = static_cast<u32>(4);
+        mNoEntryType = 4;
         return false;
     }
 }
@@ -1838,22 +1850,22 @@ __attribute__((weak)) void uGUINewspaper::updateEntryBoard() {
 // Address: 0x00b82fb0 - 0x00b8304c (156 bytes)
 void uGUINewspaper::setNoEntryAnnounce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNoEntryType != static_cast<u32>(1)) {
-        if (this->mNoEntryType != static_cast<u32>(0)) {
-            if ((this->mNoEntryType - static_cast<u32>(2)) <= static_cast<u32>(3)) {
+    if (mNoEntryType != 1) {
+        if (mNoEntryType != 0) {
+            if ((mNoEntryType - 2u) <= 3u) {
                 // inferred: a temporary for the value the load at 0xb82fd7 read, used twice; no DWARF local holds it
-                sGUI* t0 = ::sGUI::getInstance();
-                static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                sGUI* t0 = sGUI::getInstance();
+                static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb83007 read, used twice; no DWARF local holds it
-            sGUI* t2 = ::sGUI::getInstance();
-            static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(279)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            sGUI* t2 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 279u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         }
     } else {
         // inferred: a temporary for the value the load at 0xb82fef read, used twice; no DWARF local holds it
-        sGUI* t1 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(280)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+        sGUI* t1 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 280u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
     }
 }
 
@@ -1884,37 +1896,37 @@ void uGUINewspaper::clearRankingDisp() {
     // DWARF local not rendered: u32 idx;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->mRankingScrollbar.::uGUIBase::cScrollList::clearInfo();
-    this->mRankingListNum = static_cast<u32>(0);
-    if (this->mRankingList[0].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[0].mpInst->::cGUIInstance::setVisible(false);
+    mRankingScrollbar.clearInfo();
+    mRankingListNum = 0;
+    if (mRankingList[0].mpInst != nullptr) {
+        mRankingList[0].mpInst->setVisible(false);
     }
-    if (this->mRankingList[1].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[1].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[1].mpInst != nullptr) {
+        mRankingList[1].mpInst->setVisible(false);
     }
-    if (this->mRankingList[2].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[2].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[2].mpInst != nullptr) {
+        mRankingList[2].mpInst->setVisible(false);
     }
-    if (this->mRankingList[3].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[3].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[3].mpInst != nullptr) {
+        mRankingList[3].mpInst->setVisible(false);
     }
-    if (this->mRankingList[4].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[4].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[4].mpInst != nullptr) {
+        mRankingList[4].mpInst->setVisible(false);
     }
-    if (this->mRankingList[5].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[5].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[5].mpInst != nullptr) {
+        mRankingList[5].mpInst->setVisible(false);
     }
-    if (this->mRankingList[6].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[6].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[6].mpInst != nullptr) {
+        mRankingList[6].mpInst->setVisible(false);
     }
-    if (this->mRankingList[7].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[7].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[7].mpInst != nullptr) {
+        mRankingList[7].mpInst->setVisible(false);
     }
-    if (this->mRankingList[8].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[8].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[8].mpInst != nullptr) {
+        mRankingList[8].mpInst->setVisible(false);
     }
-    if (this->mRankingList[9].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingList[9].mpInst->::cGUIInstance::setVisible(false);
+    if (mRankingList[9].mpInst != nullptr) {
+        mRankingList[9].mpInst->setVisible(false);
         return;
     }
 }
@@ -1969,25 +1981,25 @@ __attribute__((weak)) void uGUINewspaper::setRankingList() {
 // Address: 0x00b879a0 - 0x00b87a74 (212 bytes)
 void uGUINewspaper::initRankingActiveControl() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; a statement both arms of a test start with; the body oracle reports this body.
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(2), true);
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(4), true);
-    this->mRankingMode = static_cast<s32>(9);
-    this->mControls.::cGUIControlMgr::disablePadControl(static_cast<u32>(6));
-    this->mControls.::cGUIControlMgr::setCurrentPos(static_cast<u32>(6), static_cast<s32>(1));
-    this->mRankingScrollbar.::uGUIBase::cScrollList::setEnableKey(true);
-    if (this->mRankingScrollbar.mpOwner != static_cast<uGUIBase*>(nullptr)) {
-        this->mRankingScrollbar.mIsAutoDispPointer = this->mRankingListNum != static_cast<u32>(0);
-        this->mRankingScrollbar.mPointerPrio = this->mRankingScrollbar.mpOwner->::uGUIBase::getBasePointerPriority();
+    mControls.setCategoryFocus(2u, true);
+    mControls.setCategoryFocus(4u, true);
+    mRankingMode = 9;
+    mControls.disablePadControl(6u);
+    mControls.setCurrentPos(6u, 1);
+    mRankingScrollbar.setEnableKey(true);
+    if (mRankingScrollbar.mpOwner != nullptr) {
+        mRankingScrollbar.mIsAutoDispPointer = mRankingListNum != 0;
+        mRankingScrollbar.mPointerPrio = mRankingScrollbar.mpOwner->getBasePointerPriority();
     } else {
-        this->mRankingScrollbar.mIsAutoDispPointer = this->mRankingListNum != static_cast<u32>(0);
-        this->mRankingScrollbar.mPointerPrio = static_cast<u32>(10);
+        mRankingScrollbar.mIsAutoDispPointer = mRankingListNum != 0;
+        mRankingScrollbar.mPointerPrio = 10;
     }
-    if (this->mRankingScrollbar.mCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mRankingScrollbar.mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+    if (mRankingScrollbar.mCursor.mpInstance != nullptr) {
+        mRankingScrollbar.mCursor.mpInstance->setVisible(true);
     }
-    this->mRankingScrollbar.::uGUIBase::cScrollList::setFocus(true);
-    this->mRankingScrollbar.mCursor.::uGUIBase::cSupportInstAnim::mIsPosPointerReqAuto = false;
-    this->::uGUINewspaper::updateRankingCursor();
+    mRankingScrollbar.setFocus(true);
+    mRankingScrollbar.mCursor.mIsPosPointerReqAuto = false;
+    updateRankingCursor();
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (618 bytes)
@@ -2014,10 +2026,18 @@ __attribute__((weak)) void uGUINewspaper::updateRankingListDisp(uGUIBase::cScrol
 }
 
 // Address: 0x00b84b80 - 0x00b84bac (44 bytes)
-__attribute__((weak)) void uGUINewspaper::updateRankingListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollRankingDispList* pdisp;
-    DDON_STUB("uGUINewspaper::updateRankingListHide")
-    /* stub */
+void uGUINewspaper::updateRankingListHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollRankingDispList* pdisp = static_cast<cScrollRankingDispList*>(pDispItem);
+    if (pdisp->mpInst == nullptr) {
+        return;
+    }
+    pdisp->mpInst->cGUIInstance::setVisible(false);
+    pdisp->mIndex = -1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -2159,10 +2179,18 @@ __attribute__((weak)) void uGUINewspaper::updateRewardListSummaryDisp(uGUIBase::
 }
 
 // Address: 0x00b85020 - 0x00b8504c (44 bytes)
-__attribute__((weak)) void uGUINewspaper::updateRewardListSummaryHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollRewardSummaryItemList* pdisp;
-    DDON_STUB("uGUINewspaper::updateRewardListSummaryHide")
-    /* stub */
+void uGUINewspaper::updateRewardListSummaryHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollRewardSummaryItemList* pdisp = static_cast<cScrollRewardSummaryItemList*>(pDispItem);
+    if (pdisp->mpNull == nullptr) {
+        return;
+    }
+    pdisp->mpNull->cGUIInstance::setVisible(false);
+    pdisp->mIndex = -1;
 }
 
 // Address: 0x00b85050 - 0x00b85170 (288 bytes)
@@ -2176,10 +2204,18 @@ __attribute__((weak)) void uGUINewspaper::updateRewardListDetailDisp(uGUIBase::c
 }
 
 // Address: 0x00b85170 - 0x00b8519c (44 bytes)
-__attribute__((weak)) void uGUINewspaper::updateRewardListDetailHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollRewardDetailItemList* pdisp;
-    DDON_STUB("uGUINewspaper::updateRewardListDetailHide")
-    /* stub */
+void uGUINewspaper::updateRewardListDetailHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDispItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pdisp, its location optimized out, declared in the lexical block that holds the access
+    cScrollRewardDetailItemList* pdisp = static_cast<cScrollRewardDetailItemList*>(pDispItem);
+    if (pdisp->mpNull == nullptr) {
+        return;
+    }
+    pdisp->mpNull->cGUIInstance::setVisible(false);
+    pdisp->mIndex = -1;
 }
 
 // Address: 0x00b8df50 - 0x00b8e25c (780 bytes)
@@ -2194,17 +2230,17 @@ __attribute__((weak)) void uGUINewspaper::createRewardItemLabel(const nQuest::cC
 // Address: 0x00b8ad60 - 0x00b8ad77 (23 bytes)
 u32 uGUINewspaper::submenuReqBorderReward(MtObject* pDummy, MtObject* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRewardType = static_cast<s32>(0);
-    this->::uGUINewspaper::setRewardList();
-    return static_cast<u32>(0);
+    mRewardType = 0;
+    setRewardList();
+    return 0;
 }
 
 // Address: 0x00b8ad80 - 0x00b8ad97 (23 bytes)
 u32 uGUINewspaper::submenuReqRankingReward(MtObject* pDummy, MtObject* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRewardType = static_cast<s32>(1);
-    this->::uGUINewspaper::setRewardList();
-    return static_cast<u32>(0);
+    mRewardType = 1;
+    setRewardList();
+    return 0;
 }
 
 // Address: 0x00b89c00 - 0x00b89d39 (313 bytes)
@@ -2574,9 +2610,9 @@ __attribute__((weak)) bool uGUINewspaper::moveWarpDialog() {
 // Address: 0x00b8a640 - 0x00b8a670 (48 bytes)
 bool uGUINewspaper::questwarpRequestServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const CDataAreaWarpPoint* pwarp = this->::uGUINewspaper::getWarpInfo();
-    if (pwarp != static_cast<const CDataAreaWarpPoint*>(nullptr)) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::areaWarp(pwarp->m_unWarpPointID, pwarp->m_unPrice);
+    const CDataAreaWarpPoint* pwarp = getWarpInfo();
+    if (pwarp != nullptr) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->areaWarp(pwarp->m_unWarpPointID, pwarp->m_unPrice);
     } else {
         return false;
     }
@@ -2588,30 +2624,30 @@ void uGUINewspaper::questwarpCallBack() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x98d0
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x98d4
-    const CDataAreaWarpPoint* pwarp = this->::uGUINewspaper::getWarpInfo();
-    if (pwarp != static_cast<const CDataAreaWarpPoint*>(nullptr)) {
-        u32 num = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfoNum();
-        if (num != static_cast<u32>(0)) {
+    const CDataAreaWarpPoint* pwarp = getWarpInfo();
+    if (pwarp != nullptr) {
+        u32 num = static_cast<sGUIExt*>(sGUI::getInstance())->getWarpInfoNum();
+        if (num != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0xb8a6b6, used once; no DWARF local holds it
-                const cWarpLocation* t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfo(i0_3);
+                const cWarpLocation* t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getWarpInfo(i0_3);
                 if (t0->mId == pwarp->m_unWarpPointID) {
                     // inferred: a temporary for the value the load at 0xb8a6da read, used 3 times; no DWARF local holds it
-                    sGUI* t1 = ::sGUI::getInstance();
+                    sGUI* t1 = sGUI::getInstance();
                     // inferred: a temporary for the value the load at 0xb8a6e8 read, used once; no DWARF local holds it
-                    const s32 t2 = static_cast<sGUIExt*>(t1)->::sGUIExt::getWarpInfo(i0_3)->mStageNo;
+                    const s32 t2 = static_cast<sGUIExt*>(t1)->getWarpInfo(i0_3)->mStageNo;
                     // inferred: a temporary for the value the load at 0xb8a6f7 read, used once; no DWARF local holds it
-                    const u32 t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfo(i0_3)->mPosNo;
+                    const u32 t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getWarpInfo(i0_3)->mPosNo;
                     static_cast<sGUIExt*>(t1)->mJumpStageNo = t2;
                     static_cast<sGUIExt*>(t1)->mJumpPosNo = static_cast<s32>(t3);
-                    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::requestMenuJump();
-                    this->::uGUIBase::mBaseF = this->::uGUIBase::mBaseF | static_cast<u32>(8);
-                    this->end();
+                    static_cast<aStage*>(sArea::getInstance()->mpArea[2])->requestMenuJump();
+                    mBaseF = mBaseF | 8u;
+                    end();
                     return;
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < num) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < num) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -2624,22 +2660,22 @@ void uGUINewspaper::questwarpCallBack() {
 // Address: 0x00b82a60 - 0x00b82af9 (153 bytes)
 void uGUINewspaper::setNoWarpAnnounce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNoWarpType != static_cast<u32>(2)) {
-        if (this->mNoWarpType == static_cast<u32>(1)) {
+    if (mNoWarpType != 2) {
+        if (mNoWarpType == 1) {
             // inferred: a temporary for the value the load at 0xb82a80 read, used twice; no DWARF local holds it
-            sGUI* t0 = ::sGUI::getInstance();
-            static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(142)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            sGUI* t0 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 142u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         } else {
-            if (this->mNoWarpType == static_cast<u32>(0)) {
+            if (mNoWarpType == 0) {
                 // inferred: a temporary for the value the load at 0xb82ab4 read, used twice; no DWARF local holds it
-                sGUI* t2 = ::sGUI::getInstance();
-                static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                sGUI* t2 = sGUI::getInstance();
+                static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xb82a98 read, used twice; no DWARF local holds it
-        sGUI* t1 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(299)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+        sGUI* t1 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 299u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
     }
 }
 
@@ -2723,6 +2759,8 @@ __attribute__((weak)) void uGUINewspaper::setCycleContentsPeriodPlate(nQuest::CY
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // bool uGUINewspaper::isBonusQuest(const nQuest::cGUINewspaperSetQuestInfo* pQuest);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUINewspaper::MyDTI uGUINewspaper::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e363-0x00b8e3a0 (called at uGUINewspaper.cpp:49)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e363-0x00b8e3a0 (called at uGUINewspaper.h:51)
@@ -2793,12 +2831,14 @@ const MtDTI& uGUINewspaper::cCycleContentsNewsInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void uGUINewspaper::cCycleContentsNewsInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (192 bytes)
-//   in uGUINewspaper::cCycleContentsNewsInfo::MyDTI::newInstance at 0x00b79fed-0x00b7a012 (called at uGUINewspaper.cpp:60)
-//   in uGUINewspaper::cCycleContentsNewsInfo::MyDTI::newInstance at 0x00b79fed-0x00b7a012 (called at uGUINewspaper.h:850)
-//   in uGUINewspaper::setupCycleContentsInfo at 0x00b8424d-0x00b8425c, 0x00b842a7-0x00b842c7, 0x00b842fe-0x00b8430a (called at uGUINewspaper.cpp:2088)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline uGUINewspaper::cCycleContentsNewsInfo::cCycleContentsNewsInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mIndex = -1;
+    mPhaseInfo.value = nullptr;
+    mPhaseName.value = nullptr;
+}
 
 // Address: 0x01afbec0 - 0x01afbf74 (180 bytes)
 // Also emitted as: _ZN13uGUINewspaper22cCycleContentsNewsInfoD0Ev at 0x01afbf80
@@ -2806,6 +2846,8 @@ uGUINewspaper::cCycleContentsNewsInfo::~cCycleContentsNewsInfo() {
     DDON_STUB("uGUINewspaper::cCycleContentsNewsInfo::~cCycleContentsNewsInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cCycleContentsNewsInfo::MyDTI uGUINewspaper::cCycleContentsNewsInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e5e8-0x00b8e625 (called at uGUINewspaper.cpp:60)
@@ -2856,7 +2898,7 @@ const MtDTI& uGUINewspaper::cScrollAreaDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollAreaDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollAreaDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollAreaDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2877,6 +2919,8 @@ inline void uGUINewspaper::cScrollAreaDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollAreaDispList::~cScrollAreaDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollAreaDispList::MyDTI uGUINewspaper::cScrollAreaDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e3e0-0x00b8e420 (called at uGUINewspaper.cpp:51)
@@ -2924,7 +2968,7 @@ const MtDTI& uGUINewspaper::cScrollQuestDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollQuestDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollQuestDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollQuestDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2945,6 +2989,8 @@ inline void uGUINewspaper::cScrollQuestDispList::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollQuestDispList::~cScrollQuestDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollQuestDispList::MyDTI uGUINewspaper::cScrollQuestDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e459-0x00b8e492 (called at uGUINewspaper.cpp:53)
@@ -3000,7 +3046,7 @@ const MtDTI& uGUINewspaper::cScrollRankingDispList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRankingDispList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRankingDispList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingDispList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3021,6 +3067,8 @@ inline void uGUINewspaper::cScrollRankingDispList::operator delete(void* p_addr)
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRankingDispList::~cScrollRankingDispList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRankingDispList::MyDTI uGUINewspaper::cScrollRankingDispList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e4cb-0x00b8e504 (called at uGUINewspaper.cpp:55)
@@ -3068,7 +3116,7 @@ const MtDTI& uGUINewspaper::cScrollRewardSummaryItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRewardSummaryItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3089,6 +3137,8 @@ inline void uGUINewspaper::cScrollRewardSummaryItemList::operator delete(void* p
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRewardSummaryItemList::~cScrollRewardSummaryItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRewardSummaryItemList::MyDTI uGUINewspaper::cScrollRewardSummaryItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e576-0x00b8e5af (called at uGUINewspaper.cpp:58)
@@ -3136,7 +3186,7 @@ const MtDTI& uGUINewspaper::cScrollRewardDetailItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRewardDetailItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardDetailItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3157,6 +3207,8 @@ inline void uGUINewspaper::cScrollRewardDetailItemList::operator delete(void* p_
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRewardDetailItemList::~cScrollRewardDetailItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRewardDetailItemList::MyDTI uGUINewspaper::cScrollRewardDetailItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e504-0x00b8e53d (called at uGUINewspaper.cpp:56)
@@ -3239,6 +3291,8 @@ uGUINewspaper::cScrollAreaItemList::~cScrollAreaItemList() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollAreaItemList::MyDTI uGUINewspaper::cScrollAreaItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e3a0-0x00b8e3e0 (called at uGUINewspaper.cpp:50)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e3a0-0x00b8e3e0 (called at uGUINewspaper.h:553)
@@ -3319,6 +3373,8 @@ uGUINewspaper::cScrollQuestItemList::~cScrollQuestItemList() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollQuestItemList::MyDTI uGUINewspaper::cScrollQuestItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e420-0x00b8e459 (called at uGUINewspaper.cpp:52)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e420-0x00b8e459 (called at uGUINewspaper.h:608)
@@ -3367,7 +3423,7 @@ const MtDTI& uGUINewspaper::cScrollRankingItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRankingItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRankingItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3391,6 +3447,8 @@ inline void uGUINewspaper::cScrollRankingItemList::operator delete(void* p_addr)
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRankingItemList::~cScrollRankingItemList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRankingItemList::MyDTI uGUINewspaper::cScrollRankingItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e492-0x00b8e4cb (called at uGUINewspaper.cpp:54)
@@ -3442,7 +3500,7 @@ const MtDTI& uGUINewspaper::cScrollRewardDetailInfoList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRewardDetailInfoList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardDetailInfoList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailInfoList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3468,6 +3526,8 @@ inline void uGUINewspaper::cScrollRewardDetailInfoList::operator delete(void* p_
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRewardDetailInfoList::~cScrollRewardDetailInfoList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRewardDetailInfoList::MyDTI uGUINewspaper::cScrollRewardDetailInfoList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e53d-0x00b8e576 (called at uGUINewspaper.cpp:57)
@@ -3517,7 +3577,7 @@ const MtDTI& uGUINewspaper::cScrollRewardSummaryInfoList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUINewspaper::cScrollRewardSummaryInfoList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardSummaryInfoList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryInfoList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3541,6 +3601,8 @@ inline void uGUINewspaper::cScrollRewardSummaryInfoList::operator delete(void* p
 
 // Defined in the class (its body was written in a header).
 // uGUINewspaper::cScrollRewardSummaryInfoList::~cScrollRewardSummaryInfoList();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINewspaper::cScrollRewardSummaryInfoList::MyDTI uGUINewspaper::cScrollRewardSummaryInfoList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUINewspaper.cpp at 0x00b8e5af-0x00b8e5e8 (called at uGUINewspaper.cpp:59)

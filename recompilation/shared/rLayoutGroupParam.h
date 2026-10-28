@@ -756,6 +756,30 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGroupParam::load at 0x698190-0x698194; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGroupParam::setDataCommon(u32 data) {
+    this->mDataCommon = data;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGroupParam::load at 0x6983f7-0x6983fb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGroupParam::setDataLotFlag(u32 data) {
+    this->mDataLotFlag = data;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cGroupParam::setQuestNoPrivate(u32 NewValue) {
+    this->mGuardData.mQuestNo = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cGroupParam::setLayoutFlagNoPrivate(u32 NewValue) {
+    this->mGuardData.mLayoutFlagNo = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cGroupParam::getIsLoadLotRes() const {
     return this->mIsLoadLotRes;
 }
@@ -773,27 +797,38 @@ inline bool cGroupParam::isDieStageBoss() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSetManager::setIsDieStageBossFlag at 0x845e0f-0x845e16; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGroupParam::setIsDieStageBossFlag() {
+    this->mIsDieStageBoss = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool cGroupParam::isResetList() const {
     return this->mIsResetList;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline cGroupParam::cLifeArea::cLifeArea() {
+    this->mShapeList.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cGroupParam::EmSetInfo::EmSetInfo() {
-    this->mID = static_cast<u32>(0);
-    this->mLayerNo = static_cast<u32>(0);
+    this->mID = 0;
+    this->mLayerNo = 0;
     this->mRepopTimer = 0.0f;
-    this->mSubGroupId = static_cast<u32>(0);
-    this->mHmRandom = static_cast<u32>(0);
-    this->mMontageRandom = static_cast<u32>(0);
-    this->mTblIndex = static_cast<s32>(-1);
+    this->mSubGroupId = 0;
+    this->mHmRandom = 0;
+    this->mMontageRandom = 0;
+    this->mTblIndex = -1;
     this->mIsWaitGather = false;
-    this->mOmUID = static_cast<u32>(0);
+    this->mOmUID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cGroupParam::OmSetInfo::OmSetInfo() {
-    this->mID = static_cast<u32>(0);
-    this->mStatus = static_cast<u32>(0);
+    this->mID = 0;
+    this->mStatus = 0;
 }

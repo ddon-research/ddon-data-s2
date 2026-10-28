@@ -47,7 +47,7 @@ __attribute__((weak)) u32 nNetMsgData::createIncludePacketCtrl(u32 msgId) {
 // Address: 0x00172520 - 0x00172526 (6 bytes)
 bool nNetMsgData::isIncludePacket(u32 bit, u32 includePacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (bit & includePacket) != static_cast<u32>(0);
+    return (bit & includePacket) != 0;
 }
 
 // Address: 0x00175780 - 0x0017579f (31 bytes)
@@ -59,12 +59,12 @@ void nNetMsgData::decomposeOcdActiveMsg(nObjCondition::stOcdActiveInfo& dstInfo,
     // inferred: a value cast to the type its use takes: unsigned long used as u8
     // inferred: a temporary for the value the load at 0x175780 read, used twice; no DWARF local holds it
     const u8 t0 = srcMsg.mOcdUIDMsg;
-    dstInfo.mBank = static_cast<u8>(static_cast<unsigned long>(t0) >> static_cast<unsigned long>(5));
-    dstInfo.mIndex = t0 & static_cast<u8>(31);
+    dstInfo.mBank = static_cast<u8>(static_cast<unsigned long>(t0) >> 5);
+    dstInfo.mIndex = t0 & 31;
     // inferred: a temporary for the value the load at 0x17578e read, used twice; no DWARF local holds it
     const u8 t1 = srcMsg.mOcdActiveLvMsg;
-    dstInfo.mActiveLv = static_cast<u8>(static_cast<unsigned long>(t1) >> static_cast<unsigned long>(4));
-    dstInfo.mImmuneLv = t1 & static_cast<u8>(15);
+    dstInfo.mActiveLv = static_cast<u8>(static_cast<unsigned long>(t1) >> 4);
+    dstInfo.mImmuneLv = t1 & 15;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)
@@ -82,8 +82,8 @@ void nNetMsgData::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, con
     const u8 t0 = srcInfo.mActiveLv;
     // inferred: a temporary for the value the load at 0x17846e read, used once; no DWARF local holds it
     const u8 t1 = srcInfo.mImmuneLv;
-    dstMsg.mOcdUIDMsg = static_cast<unsigned char>(static_cast<unsigned long>(srcInfo.mIndex) | static_cast<unsigned long>(srcInfo.mBank * static_cast<int>(32)));
-    dstMsg.mOcdActiveLvMsg = static_cast<unsigned char>(static_cast<unsigned long>(t1) | static_cast<unsigned long>(t0 * static_cast<int>(16)));
+    dstMsg.mOcdUIDMsg = static_cast<unsigned char>(static_cast<unsigned long>(srcInfo.mIndex) | static_cast<unsigned long>(srcInfo.mBank * 32));
+    dstMsg.mOcdActiveLvMsg = static_cast<unsigned char>(static_cast<unsigned long>(t1) | static_cast<unsigned long>(t0 * 16));
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,42 +96,42 @@ void nNetMsgData::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, con
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE/prog/nNetMsgData.cpp:441
 void nNetMsgData::Head::serialize(nNetMsgData::Head::stMsgHead* pHead, nNetwork::Coder& cod) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cod.::nNetwork::Coder::writeU32(static_cast<u32>(pHead->mSessionId));
-    cod.::nNetwork::Coder::writeU32(pHead->mRpcId);
-    cod.::nNetwork::Coder::writeU32(pHead->mMsgIdFull);
-    cod.::nNetwork::Coder::writeU32(pHead->mSearchId);
+    cod.writeU32(static_cast<u32>(pHead->mSessionId));
+    cod.writeU32(pHead->mRpcId);
+    cod.writeU32(pHead->mMsgIdFull);
+    cod.writeU32(pHead->mSearchId);
 }
 
 // Address: 0x001728d0 - 0x0017291c (76 bytes)
 void nNetMsgData::Head::deserializeCore(nNetMsgData::Head::stMsgHead* pHead, nNetwork::Decoder& dec) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pHead->mMsgIdFull = static_cast<u32>(0);
-    pHead->mSearchId = static_cast<u32>(0);
-    pHead->mSessionId = static_cast<s32>(0);
-    pHead->mRpcId = static_cast<u32>(0);
-    pHead->mSessionId = static_cast<s32>(dec.::nNetwork::Decoder::readU32());
-    pHead->mRpcId = dec.::nNetwork::Decoder::readU32();
-    pHead->mMsgIdFull = dec.::nNetwork::Decoder::readU32();
-    pHead->mSearchId = dec.::nNetwork::Decoder::readU32();
+    pHead->mMsgIdFull = 0;
+    pHead->mSearchId = 0;
+    pHead->mSessionId = 0;
+    pHead->mRpcId = 0;
+    pHead->mSessionId = static_cast<s32>(dec.readU32());
+    pHead->mRpcId = dec.readU32();
+    pHead->mMsgIdFull = dec.readU32();
+    pHead->mSearchId = dec.readU32();
 }
 
 // Address: 0x00172920 - 0x00172991 (113 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE/prog/nNetMsgData.cpp:471
 nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    nNetMsgData::Head::stMsgHead* pData = static_cast<nNetMsgData::Head::stMsgHead*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(static_cast<size_t>(16), static_cast<u32>(16)));
-    if (pData != static_cast<nNetMsgData::Head::stMsgHead*>(nullptr)) {
-        pData->mMsgIdFull = static_cast<u32>(0);
-        pData->mSearchId = static_cast<u32>(0);
-        pData->mSessionId = static_cast<s32>(0);
-        pData->mRpcId = static_cast<u32>(0);
-        pData->mSessionId = static_cast<s32>(dec.::nNetwork::Decoder::readU32());
-        pData->mRpcId = dec.::nNetwork::Decoder::readU32();
-        pData->mMsgIdFull = dec.::nNetwork::Decoder::readU32();
-        pData->mSearchId = dec.::nNetwork::Decoder::readU32();
+    nNetMsgData::Head::stMsgHead* pData = static_cast<nNetMsgData::Head::stMsgHead*>(::MtMemory::mpAllocatorType[7]->memAlloc(16ul, 16u));
+    if (pData != nullptr) {
+        pData->mMsgIdFull = 0;
+        pData->mSearchId = 0;
+        pData->mSessionId = 0;
+        pData->mRpcId = 0;
+        pData->mSessionId = static_cast<s32>(dec.readU32());
+        pData->mRpcId = dec.readU32();
+        pData->mMsgIdFull = dec.readU32();
+        pData->mSearchId = dec.readU32();
         return pData;
     } else {
-        return static_cast<nNetMsgData::Head::stMsgHead*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -139,10 +139,10 @@ nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& 
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE/prog/nNetMsgData.cpp:487
 void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData == static_cast<nNetMsgData::Head::stMsgHead*>(nullptr)) {
+    if (pData == nullptr) {
         return;
     }
-    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pData));
+    ::MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pData));
 }
 
 // No out-of-line body: no code in the ELF
@@ -152,6 +152,6 @@ void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData) {
 u8 nNetMsgData::Head::stMsgHead::getMsgId() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x8 from const nNetMsgData::Head::stMsgHead*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(8));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 8);
 }
 

@@ -626,11 +626,17 @@ namespace cThinkMgrName {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cThinkMgrName::cTargetLink::cTargetLink() {
-    this->mIdx = static_cast<u32>(0);
-    this->mLinkID = static_cast<u32>(0);
-    this->mIdxMax = static_cast<u32>(0);
+    this->mIdx = 0;
+    this->mLinkID = 0;
+    this->mIdxMax = 0;
     this->mIsDown = true;
     this->mMoveMode = static_cast<cThinkMgrName::cTargetLink::TARGETLINK_MODE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgr::startMainThinkTbl at 0x585f22-0x585f29; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::setResetThinkTbl(u8* thinktbl) {
+    this->mpThinkTblReset = thinktbl;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -677,13 +683,55 @@ inline bool cThinkMgrName::cThinkMgr::isActTrue() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 1 DWARF copies materializes its result
 inline bool cThinkMgrName::cThinkMgr::isStartTbl() {
-    return this->mbStartTableMode != static_cast<u8>(0);
+    return this->mbStartTableMode != 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgr::Init at 0x5856c7-0x5857b7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::InitPassCount() {
+    this->mkPassCount[0].no = -1;
+    this->mkPassCount[0].count = 0;
+    this->mkPassCount[0].group = -1;
+    this->mkPassCount[1].no = -1;
+    this->mkPassCount[1].count = 0;
+    this->mkPassCount[1].group = -1;
+    this->mkPassCount[2].no = -1;
+    this->mkPassCount[2].count = 0;
+    this->mkPassCount[2].group = -1;
+    this->mkPassCount[3].no = -1;
+    this->mkPassCount[3].count = 0;
+    this->mkPassCount[3].group = -1;
+    this->mkPassCount[4].no = -1;
+    this->mkPassCount[4].count = 0;
+    this->mkPassCount[4].group = -1;
+    this->mkPassCount[5].no = -1;
+    this->mkPassCount[5].count = 0;
+    this->mkPassCount[5].group = -1;
+    this->mkPassCount[6].no = -1;
+    this->mkPassCount[6].count = 0;
+    this->mkPassCount[6].group = -1;
+    this->mkPassCount[7].no = -1;
+    this->mkPassCount[7].count = 0;
+    this->mkPassCount[7].group = -1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgr::Init at 0x585950-0x585954, 0x585984-0x58598b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::initTableScale() {
+    this->mbTableScaleEnable = false;
+    this->mTableScale = 1.0f;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cThinkMgrName::cThinkMgr::clrNextFlg() {
     this->mbNextFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgr::Init at 0x585931-0x58593b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::clrBit() {
+    this->mTblBitCtrl = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -697,8 +745,21 @@ inline void cThinkMgrName::cThinkMgr::getbackNextFlgTbl() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgrTargetMgr::initAllTargetData at 0x584e64-0x584e6e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgrTargetMgr::clrSelectNewTargetIdx() {
+    this->mSelectNewTargetIdx = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cThinkMgrName::cThinkMgrTargetMgr::initAllTargetData at 0x585011-0x58501c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cThinkMgrName::cThinkMgrTargetMgr::clrLinkID() {
+    this->mLinkID = 0;
+    this->mLinkIDIdx = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cThinkMgrName::cThinkTblList::cThinkTblList() {
-    this->mtblListNum = static_cast<u32>(0);
-    this->mpThinkTblRes = static_cast<rkThinkData*>(nullptr);
-    this->mpThinkTblList = static_cast<kTHINKDATA* *>(nullptr);
+    this->mtblListNum = 0;
+    this->mpThinkTblRes = nullptr;
+    this->mpThinkTblList = nullptr;
 }

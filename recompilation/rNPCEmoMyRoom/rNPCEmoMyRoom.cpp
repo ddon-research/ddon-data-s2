@@ -35,7 +35,7 @@ const MtDTI& rNPCEmoMyRoom::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCEmoMyRoom::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::DTI)->memAlloc(sz, align, rNPCEmoMyRoom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rNPCEmoMyRoom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCEmoMyRoom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,9 +64,9 @@ inline void rNPCEmoMyRoom::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rNPCEmoMyRoom::rNPCEmoMyRoom() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArray = static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(18u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x006aac20 - 0x006aaca1 (129 bytes)
@@ -135,18 +135,20 @@ MT_CTSTR rNPCEmoMyRoom::getExt() const {
 // Address: 0x01a9ed20 - 0x01a9ed24 (4 bytes)
 u32 rNPCEmoMyRoom::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x006ab2a0 - 0x006ab2cf (47 bytes)
 rNPCEmoMyRoom::InfoBinary* rNPCEmoMyRoom::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfoNum()) {
-        return &this->mpArray[index];
+    if (index < getInfoNum()) {
+        return &mpArray[index];
     } else {
-        return static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCEmoMyRoom::MyDTI rNPCEmoMyRoom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNPCEmoMyRoom.cpp at 0x006ab34d-0x006ab38a (called at rNPCEmoMyRoom.cpp:297)
@@ -156,7 +158,7 @@ rNPCEmoMyRoom::InfoBinary* rNPCEmoMyRoom::getInfo(u32 index) const {
 // Address: 0x006aab30 - 0x006aab94 (100 bytes)
 MtObject* rNPCEmoMyRoom::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCEmoMyRoom;
+    return new (16u) rNPCEmoMyRoom;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rNPCEmoMyRoom::InfoBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCEmoMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::InfoBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::InfoBinary::DTI)->memAlloc(sz, align, rNPCEmoMyRoom::InfoBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ inline void* rNPCEmoMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCEmoMyRoom::InfoBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::InfoBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,43 +234,43 @@ __attribute__((weak)) u32 rNPCEmoMyRoom::InfoBinary::getMotionNo(u32 idx, u8 sex
 // Address: 0x006aaab0 - 0x006aaaeb (59 bytes)
 s16 rNPCEmoMyRoom::InfoBinary::getFinger(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCEmoMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCEmoMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mFinger;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006aaaf0 - 0x006aab2b (59 bytes)
 s16 rNPCEmoMyRoom::InfoBinary::getLoop(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCEmoMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCEmoMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mLoop;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x01a9ed70 - 0x01a9ed7b (11 bytes)
 rNPCEmoMyRoom::InfoBinary::MotDataBinary* rNPCEmoMyRoom::InfoBinary::getMotList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpMotList[index];
+    return &mpMotList[index];
 }
 
 // Address: 0x01a9ed80 - 0x01a9ed84 (4 bytes)
 u32 rNPCEmoMyRoom::InfoBinary::getMotListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotListNum;
+    return mMotListNum;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -278,6 +280,8 @@ u32 rNPCEmoMyRoom::InfoBinary::getMotListNum() {
 // No out-of-line body: no code in the ELF
 // u32 rNPCEmoMyRoom::InfoBinary::getUID();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCEmoMyRoom::InfoBinary::MyDTI rNPCEmoMyRoom::InfoBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rNPCEmoMyRoom.cpp at 0x006ab314-0x006ab34d (called at rNPCEmoMyRoom.cpp:96)
 //   in _GLOBAL__sub_I_rNPCEmoMyRoom.cpp at 0x006ab314-0x006ab34d (called at rNPCEmoMyRoom.h:87)
@@ -286,7 +290,7 @@ u32 rNPCEmoMyRoom::InfoBinary::getMotListNum() {
 // Address: 0x006aa870 - 0x006aa8ca (90 bytes)
 MtObject* rNPCEmoMyRoom::InfoBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCEmoMyRoom::InfoBinary;
+    return new (16u) rNPCEmoMyRoom::InfoBinary;
 }
 
 // No out-of-line body: no code in the ELF
@@ -311,7 +315,7 @@ const MtDTI& rNPCEmoMyRoom::InfoBinary::MotDataBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,7 +330,7 @@ inline void* rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rNPCEmoMyRoom10InfoBinary13MotDataBinaryD0Ev at 0x01a9edc0-0x01a9edea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -348,6 +352,8 @@ inline void rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // void rNPCEmoMyRoom::InfoBinary::MotDataBinary::copy(rNPCEmoMyRoom::InfoBinary::MotDataBinary* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCEmoMyRoom::InfoBinary::MotDataBinary::MyDTI rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rNPCEmoMyRoom.cpp at 0x006ab2d0-0x006ab314 (called at rNPCEmoMyRoom.cpp:28)
 //   in _GLOBAL__sub_I_rNPCEmoMyRoom.cpp at 0x006ab2d0-0x006ab314 (called at rNPCEmoMyRoom.h:73)
@@ -356,6 +362,6 @@ inline void rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // Address: 0x006aa7a0 - 0x006aa7ee (78 bytes)
 MtObject* rNPCEmoMyRoom::InfoBinary::MotDataBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCEmoMyRoom::InfoBinary::MotDataBinary;
+    return new (16u) rNPCEmoMyRoom::InfoBinary::MotDataBinary;
 }
 

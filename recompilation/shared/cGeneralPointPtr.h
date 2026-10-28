@@ -6,6 +6,7 @@
 // Forward declarations
 class cGeneralPoint;
 class cpJob06;
+class cpKeyCommand;
 
 // Declarations
 class cGeneralPointPtr;
@@ -19,6 +20,8 @@ class cGeneralPointPtr
 {
     // inferred: cpJob06::kill names cpJob06::mBeforeMagicTarget.mRefIdx
     friend class cpJob06;
+    // inferred: cpKeyCommand::clearAttackLockOnTarget names cpKeyCommand::mAttackLockOnTarget.mRefIdx
+    friend class cpKeyCommand;
 public:
     cGeneralPointPtr();
     cGeneralPointPtr(const cGeneralPointPtr& src);

@@ -46,7 +46,7 @@ const MtDTI& rSoundEQ::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8rSoundEQD0Ev at 0x0137126e-0x0137128f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundEQ::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundEQ::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,7 +77,7 @@ MT_CTSTR rSoundEQ::getExt() const {
 // Address: 0x01371290 - 0x01371295 (5 bytes)
 void rSoundEQ::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
 
 // Address: 0x013712a0 - 0x0137171c (1148 bytes)
@@ -111,32 +111,31 @@ rSoundEQ::cEQData* rSoundEQ::getEQDataFromId(s32 id) {
     // inferred: a value cast to the type its use takes: u16 used as int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if (this->mpIdToIndexTbl != static_cast<u16*>(nullptr)) {
-        if (id < static_cast<int>(this->mIdToIndexTblNum)) {
-            if (this->mpIdToIndexTbl[id] != static_cast<unsigned short>(65535)) {
-                if (this->mpIdToIndexTbl[id] < this->mSoundEQ.::MtArray::mLength) {
-                    return static_cast<rSoundEQ::cEQData*>(this->mSoundEQ.::MtArray::mpArray[this->mpIdToIndexTbl[id]]);
+    if (mpIdToIndexTbl != nullptr) {
+        if (id < static_cast<int>(mIdToIndexTblNum)) {
+            if (mpIdToIndexTbl[id] != 0xFFFF) {
+                if (mpIdToIndexTbl[id] < mSoundEQ.mLength) {
+                    return static_cast<cEQData*>(mSoundEQ.mpArray[mpIdToIndexTbl[id]]);
                 }
             }
         }
-        return static_cast<rSoundEQ::cEQData*>(nullptr);
+        return nullptr;
     }
-    if (this->mSoundEQ.::MtArray::mLength == static_cast<u32>(0)) {
-        return static_cast<rSoundEQ::cEQData*>(nullptr);
+    if (mSoundEQ.mLength == 0) {
+        return nullptr;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (i < this->mSoundEQ.::MtArray::mLength) {
-            if (this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)]) + static_cast<long>(8))) != static_cast<unsigned int>(id)) {
-                } else {
-                    return static_cast<rSoundEQ::cEQData*>(this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)]);
+        if (i < mSoundEQ.mLength) {
+            if (mSoundEQ.mpArray[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSoundEQ.mpArray[static_cast<int>(i)]) + 8)) == static_cast<unsigned int>(id)) {
+                    return static_cast<cEQData*>(mSoundEQ.mpArray[static_cast<int>(i)]);
                 }
             }
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mSoundEQ.::MtArray::mLength);
-    return static_cast<rSoundEQ::cEQData*>(nullptr);
+        i += 1u;
+    } while (i < mSoundEQ.mLength);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,6 +162,8 @@ __attribute__((weak)) void rSoundEQ::createIdToIndexTbl() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundEQ::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundEQ::MyDTI rSoundEQ::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundEQ::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -205,7 +206,7 @@ const MtDTI& rSoundEQ::cEQData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundEQ::cEQData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundEQ::cEQData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundEQ::cEQData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -235,7 +236,7 @@ __attribute__((weak)) void rSoundEQ::cEQData::createProperty(MtPropertyList& s) 
 // Address: 0x013726c0 - 0x013726c5 (5 bytes)
 MtUI* rSoundEQ::cEQData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x013726d0 - 0x01372719 (73 bytes)
@@ -261,6 +262,8 @@ __attribute__((weak)) void rSoundEQ::cEQData::copy(sSound::EQParameter* p_src, u
 
 // No out-of-line body: no code in the ELF
 // bool rSoundEQ::cEQData::convert(MtStream& out);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundEQ::cEQData::MyDTI rSoundEQ::cEQData::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundEQ::cEQData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

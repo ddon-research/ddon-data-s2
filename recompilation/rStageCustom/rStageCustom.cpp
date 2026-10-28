@@ -36,7 +36,7 @@ const MtDTI& rStageCustom::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageCustom::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageCustom::DTI)->memAlloc(sz, align, ::rStageCustom::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageCustom::DTI)->memAlloc(sz, align, rStageCustom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rStageCustom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageCustom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageCustom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageCustom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,11 +65,11 @@ inline void rStageCustom::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStageCustom::rStageCustom() {
-    this->mprParts = static_cast<rStageCustomParts*>(nullptr);
-    this->mPartsDataNo = static_cast<s32>(-1);
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArrayArea = static_cast<rStageCustom::Area*>(nullptr);
-    this->mArrayAreaNum = static_cast<u32>(0);
+    mprParts = nullptr;
+    mPartsDataNo = -1;
+    setAttribute(18u);
+    mpArrayArea = nullptr;
+    mArrayAreaNum = 0;
 }
 
 // Address: 0x006f2800 - 0x006f2897 (151 bytes)
@@ -120,17 +120,17 @@ __attribute__((weak)) bool rStageCustom::save(MtStream& out) {
 // Address: 0x01ab2c30 - 0x01ab2c5f (47 bytes)
 rStageCustom::Area* rStageCustom::getArea(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getAreaNum()) {
-        return &this->mpArrayArea[index];
+    if (index < getAreaNum()) {
+        return &mpArrayArea[index];
     } else {
-        return static_cast<rStageCustom::Area*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01ab2c60 - 0x01ab2c67 (7 bytes)
 u32 rStageCustom::getAreaNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayAreaNum;
+    return mArrayAreaNum;
 }
 
 // No out-of-line body: 11 inlined copies in 9 functions (48 bytes)
@@ -146,10 +146,10 @@ u32 rStageCustom::getAreaNum() const {
 // Address: 0x006f2dd0 - 0x006f2de8 (24 bytes)
 rStageCustomParts::Info* rStageCustom::getAreaInfo(s32 areaNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprParts != static_cast<rStageCustomParts*>(nullptr)) {
-        return this->mprParts->searchInfo(static_cast<u32>(areaNo));
+    if (mprParts != nullptr) {
+        return mprParts->searchInfo(static_cast<u32>(areaNo));
     } else {
-        return static_cast<rStageCustomParts::Info*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -162,11 +162,11 @@ rStageCustomParts::Info* rStageCustom::getAreaInfo(s32 areaNo) const {
 // Address: 0x006f2e00 - 0x006f2e20 (32 bytes)
 s32 rStageCustom::getAreaNo(s32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rStageCustom::Area* area = this->getArea(static_cast<u32>(index));
-    if (area != static_cast<rStageCustom::Area*>(nullptr)) {
+    Area* area = getArea(static_cast<u32>(index));
+    if (area != nullptr) {
         return area->mAreaNo;
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -188,6 +188,8 @@ __attribute__((weak)) void rStageCustom::getPartsName(MtString& fname) const {
 //   in rStageCustom::load at 0x006f2b6d-0x006f2bb0 (called at rStageCustom.cpp:297)
 // void rStageCustom::setPartsResNumber();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustom::MyDTI rStageCustom::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageCustom.cpp at 0x006f2f92-0x006f2fcf (called at rStageCustom.cpp:230)
 //   in _GLOBAL__sub_I_rStageCustom.cpp at 0x006f2f92-0x006f2fcf (called at rStageCustom.h:26)
@@ -196,7 +198,7 @@ __attribute__((weak)) void rStageCustom::getPartsName(MtString& fname) const {
 // Address: 0x006f2700 - 0x006f2779 (121 bytes)
 MtObject* rStageCustom::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageCustom;
+    return new (16u) rStageCustom;
 }
 
 // No out-of-line body: no code in the ELF
@@ -222,7 +224,7 @@ const MtDTI& rStageCustom::Area::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rStageCustom::Area::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageCustom::Area::DTI)->memAlloc(sz, align, ::rStageCustom::Area::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageCustom::Area::DTI)->memAlloc(sz, align, rStageCustom::Area::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -236,7 +238,7 @@ inline void* rStageCustom::Area::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rStageCustom::Area::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageCustom::Area::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageCustom::Area::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -278,6 +280,8 @@ __attribute__((weak)) void rStageCustom::Area::createProperty(MtPropertyList& s)
 //   in rStageCustom::load at 0x006f2aa4-0x006f2ab5 (called at rStageCustom.cpp:37)
 // void rStageCustom::Area::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustom::Area::MyDTI rStageCustom::Area::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStageCustom.cpp at 0x006f2f50-0x006f2f92 (called at rStageCustom.cpp:30)
 //   in _GLOBAL__sub_I_rStageCustom.cpp at 0x006f2f50-0x006f2f92 (called at rStageCustom.h:57)
@@ -286,6 +290,6 @@ __attribute__((weak)) void rStageCustom::Area::createProperty(MtPropertyList& s)
 // Address: 0x006f2390 - 0x006f23df (79 bytes)
 MtObject* rStageCustom::Area::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageCustom::Area;
+    return new (16u) rStageCustom::Area;
 }
 

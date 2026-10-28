@@ -86,6 +86,6 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK11rMotionList5MyDTI11newInstanceEv at 0x011d8930-0x011d895d, code DWARF attributes to no inlined copy
 inline rMotionList::rMotionList() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mpHdr = static_cast<rMotionList::MOTION_LIST_HDR*>(nullptr);
+    this->::cResource::mAttr = 16;
+    this->mpHdr = nullptr;
 }

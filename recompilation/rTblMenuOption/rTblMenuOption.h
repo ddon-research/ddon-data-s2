@@ -269,7 +269,22 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+inline rTblMenuOption::cTab::cTab() {
+    this->mSortId = 0;
+    this->mTabId = 0;
+    this->mCaption.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline rTblMenuOption::cData::cData() {
+    this->mSortId = 0;
+    this->mDataId = 0;
+    this->mCtrlType = 0;
+    this->mPulldown.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rTblMenuOption::cPulldown::cPulldown() {
-    this->mSortId = static_cast<u32>(0);
-    this->mPulldownId = static_cast<u32>(0);
+    this->mSortId = 0;
+    this->mPulldownId = 0;
 }

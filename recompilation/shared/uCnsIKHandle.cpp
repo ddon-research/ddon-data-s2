@@ -24,7 +24,7 @@ const MtDTI& uCnsIKHandle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCnsIKHandle::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCnsIKHandle::DTI);
+    return MtMemoryAllocator::getAllocator(uCnsIKHandle::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uCnsIKHandle::getAllocator() {
 // Address: 0x008bfc30 - 0x008bfc70 (64 bytes)
 void* uCnsIKHandle::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uCnsIKHandle::getAllocator()->memAlloc(sz, align, ::uCnsIKHandle::DTI.::MtDTI::getID());
+    return uCnsIKHandle::getAllocator()->memAlloc(sz, align, uCnsIKHandle::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uCnsIKHandle::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsIKHandle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsIKHandle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsIKHandle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -105,26 +105,26 @@ __attribute__((weak)) void uCnsIKHandle::adjust(uModel::Joint* pJnt, uModel* pMo
 // Address: 0x008bfe80 - 0x008bfe85 (5 bytes)
 void uCnsIKHandle::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008bfe50 - 0x008bfe79 (41 bytes)
 void uCnsIKHandle::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008bfe90 - 0x008bfee8 (88 bytes)
 void uCnsIKHandle::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (121 bytes)
@@ -138,13 +138,13 @@ void uCnsIKHandle::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
 // Address: 0x008bfda0 - 0x008bfda5 (5 bytes)
 void uCnsIKHandle::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::createProperty(s);
+    this->uConstraint::createProperty(s);
 }
 
 // Address: 0x008bfdb0 - 0x008bfdb5 (5 bytes)
 MtUI* uCnsIKHandle::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008c08e0 - 0x008c08e1 (1 bytes)
@@ -155,14 +155,16 @@ __attribute__((weak)) void uCnsIKHandle::draw(cDraw* pDraw) {
 // Address: 0x008bfdc0 - 0x008bfe35 (117 bytes)
 void uCnsIKHandle::set(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsIKHandle::MyDTI uCnsIKHandle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsIKHandle.cpp at 0x008c0910-0x008c0952 (called at uCnsIKHandle.cpp:32)

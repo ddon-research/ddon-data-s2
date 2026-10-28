@@ -29,7 +29,7 @@ const MtDTI& sAreaHit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sAreaHit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sAreaHit::DTI);
+    return MtMemoryAllocator::getAllocator(sAreaHit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* sAreaHit::getAllocator() {
 // Address: 0x00723790 - 0x007237d0 (64 bytes)
 void* sAreaHit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sAreaHit::getAllocator()->memAlloc(sz, align, ::sAreaHit::DTI.::MtDTI::getID());
+    return sAreaHit::getAllocator()->memAlloc(sz, align, sAreaHit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* sAreaHit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sAreaHit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sAreaHit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sAreaHit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,18 +67,18 @@ inline void sAreaHit::operator delete(void* p_addr) {
 
 // Address: 0x00723840 - 0x007238e5 (165 bytes)
 sAreaHit::sAreaHit() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sAreaHit*
-    ::sAreaHit::mpInstance = this;
-    this->mUID = static_cast<u16>(0);
-    this->mbPause = false;
-    this->mbParallel = false;
-    if (this->mArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.mpArray));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    sAreaHit::mpInstance = this;
+    mUID = 0;
+    mbPause = false;
+    mbParallel = false;
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
-    ::memset(static_cast<void*>(&this->mAHPointer[0]), static_cast<int>(0), static_cast<size_t>(8288));
+    mArray.mpArray = nullptr;
+    mArray.mLength = 0;
+    mArray.mBufsiz = 0;
+    memset(static_cast<void*>(&mAHPointer[0]), 0, 8288ul);
 }
 
 // Address: 0x007238f0 - 0x0072399a (170 bytes)
@@ -91,13 +91,13 @@ sAreaHit::~sAreaHit() {
 // Address: 0x00723a80 - 0x00723a85 (5 bytes)
 void sAreaHit::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x00723a90 - 0x00723a95 (5 bytes)
 MtUI* sAreaHit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (145 bytes)
@@ -106,54 +106,53 @@ MtUI* sAreaHit::createUI(MtProperty& prop) {
 
 // Address: 0x00723ab0 - 0x00723bad (253 bytes)
 void sAreaHit::reset() {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    if (this->mArray.mLength != static_cast<u32>(0)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x723ad0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.mLength) {
-                    v0_0 = this->mArray.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.mpArray));
-        this->mArray.mpArray = static_cast<MtObject* *>(nullptr);
-        this->mArray.mBufsiz = static_cast<u32>(0);
-        this->mArray.mLength = static_cast<u32>(0);
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+        mArray.mpArray = nullptr;
+        mArray.mBufsiz = 0;
+        mArray.mLength = 0;
         // inferred: a temporary for the result of the call at 0x723b4d, used 3 times; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(16384), static_cast<u32>(16));
-        ::memset(t0, static_cast<int>(0), static_cast<size_t>(16384));
-        ::memcpy(t0, static_cast<const void*>(this->mArray.mpArray), static_cast<size_t>(this->mArray.mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.mpArray));
-        this->mArray.mpArray = static_cast<MtObject* *>(t0);
+        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(16384ul, 16u);
+        memset(t0, 0, 16384ul);
+        memcpy(t0, static_cast<const void*>(mArray.mpArray), static_cast<size_t>(mArray.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+        mArray.mpArray = static_cast<MtObject* *>(t0);
     } else {
-        this->mArray.mpArray = static_cast<MtObject* *>(nullptr);
-        this->mArray.mBufsiz = static_cast<u32>(0);
-        this->mArray.mLength = static_cast<u32>(0);
+        mArray.mpArray = nullptr;
+        mArray.mBufsiz = 0;
+        mArray.mLength = 0;
         // inferred: a temporary for the result of the call at 0x723b4d, used 3 times; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(16384), static_cast<u32>(16));
-        ::memset(t0, static_cast<int>(0), static_cast<size_t>(16384));
-        ::memcpy(t0, static_cast<const void*>(this->mArray.mpArray), static_cast<size_t>(this->mArray.mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.mpArray));
-        this->mArray.mpArray = static_cast<MtObject* *>(t0);
+        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(16384ul, 16u);
+        memset(t0, 0, 16384ul);
+        memcpy(t0, static_cast<const void*>(mArray.mpArray), static_cast<size_t>(mArray.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
+        mArray.mpArray = static_cast<MtObject* *>(t0);
     }
-    this->mArray.mBufsiz = static_cast<u32>(2048);
-    this->mUID = static_cast<u16>(0);
+    mArray.mBufsiz = 2048;
+    mUID = 0;
 }
 
 // Address: 0x00723cc0 - 0x00723e29 (361 bytes)
@@ -214,16 +213,16 @@ __attribute__((weak)) void sAreaHit::moveJob(uintptr move) {
 void sAreaHit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // DWARF local not rendered: cAreaHit* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if (this->mArray.mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mArray.mLength != 0) {
         do {
-            if (this->mArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<cAreaHit*>(this->mArray.mpArray[i])->::cAreaHit::isEnable() != false) {
-                    static_cast<cAreaHit*>(this->mArray.mpArray[i])->::cAreaHit::applyWorldOffset(offset, absolute_offset);
+            if (mArray.mpArray[i] != nullptr) {
+                if (static_cast<cAreaHit*>(mArray.mpArray[i])->isEnable()) {
+                    static_cast<cAreaHit*>(mArray.mpArray[i])->applyWorldOffset(offset, absolute_offset);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mArray.mLength);
+            i += 1u;
+        } while (i < mArray.mLength);
     }
 }
 
@@ -253,8 +252,13 @@ __attribute__((weak)) void sAreaHit::release(cAreaHit* p) {
 // Address: 0x00724150 - 0x0072415e (14 bytes)
 f32 sAreaHit::yaw(const MtVector3& vec) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::atan2f(vec.x, vec.z);
+    return atan2f(vec.x, vec.z);
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sAreaHit* sAreaHit::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAreaHit::MyDTI sAreaHit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sAreaHit.cpp at 0x00724160-0x007241a2 (called at sAreaHit.cpp:36)

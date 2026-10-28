@@ -38,7 +38,7 @@ const MtDTI& rFieldMapData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFieldMapData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFieldMapData::DTI)->memAlloc(sz, align, ::rFieldMapData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memAlloc(sz, align, rFieldMapData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* rFieldMapData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldMapData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldMapData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,10 +67,10 @@ inline void rFieldMapData::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rFieldMapData::rFieldMapData() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->::cResource::clear();
-    this->mpArrayData = static_cast<rFieldMapData::Data*>(nullptr);
-    this->mArrayDataNum = static_cast<u32>(0);
+    setAttribute(18u);
+    this->cResource::clear();
+    mpArrayData = nullptr;
+    mArrayDataNum = 0;
 }
 
 // Address: 0x00678e80 - 0x00678f05 (133 bytes)
@@ -112,17 +112,17 @@ __attribute__((weak)) bool rFieldMapData::load(MtStream& in) {
 // Address: 0x01a90cc0 - 0x01a90cf3 (51 bytes)
 rFieldMapData::Data* rFieldMapData::getData(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getDataNum()) {
-        return &this->mpArrayData[index];
+    if (index < getDataNum()) {
+        return &mpArrayData[index];
     } else {
-        return static_cast<rFieldMapData::Data*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01a90d00 - 0x01a90d04 (4 bytes)
 u32 rFieldMapData::getDataNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayDataNum;
+    return mArrayDataNum;
 }
 
 // Address: 0x00679190 - 0x00679272 (226 bytes)
@@ -136,6 +136,8 @@ __attribute__((weak)) void rFieldMapData::setupSpotMsgId() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldMapData::MyDTI rFieldMapData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFieldMapData.cpp at 0x006793bc-0x006793f9 (called at rFieldMapData.cpp:223)
 //   in _GLOBAL__sub_I_rFieldMapData.cpp at 0x006793bc-0x006793f9 (called at rFieldMapData.h:52)
@@ -144,7 +146,7 @@ __attribute__((weak)) void rFieldMapData::setupSpotMsgId() {
 // Address: 0x00678d90 - 0x00678dfc (108 bytes)
 MtObject* rFieldMapData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFieldMapData;
+    return new (16u) rFieldMapData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rFieldMapData::Data::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rFieldMapData::Data::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldMapData::Data::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldMapData::Data::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,19 +216,19 @@ __attribute__((weak)) void rFieldMapData::Data::createProperty(MtPropertyList& s
 // Address: 0x00678cc0 - 0x00678d88 (200 bytes)
 bool rFieldMapData::Data::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = r.readU32();
-    this->mMessId = r.readS32();
-    this->mID = r.readU32();
-    this->mStageNo = r.readS32();
-    this->mPoint.x = r.readF32();
-    this->mPoint.y = r.readF32();
+    mType = r.readU32();
+    mMessId = r.readS32();
+    mID = r.readU32();
+    mStageNo = r.readS32();
+    mPoint.x = r.readF32();
+    mPoint.y = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mWorldPos = r.readV3();
-    ::nDDOIO::readData(r, this->mDispWideMap);
+    mWorldPos = r.readV3();
+    nDDOIO::readData(r, mDispWideMap);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mQuestId);
+    nDDOIO::readData(r, mQuestId);
     return true;
 }
 
@@ -234,6 +236,8 @@ bool rFieldMapData::Data::load(MtDataReader& r) {
 //   in rFieldMapData::Data::MyDTI::newInstance at 0x006783ec-0x00678444 (called at rFieldMapData.cpp:39)
 //   in rFieldMapData::load at 0x00679097-0x006790ab, 0x006790c4-0x00679118 (called at rFieldMapData.cpp:39)
 // void rFieldMapData::Data::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldMapData::Data::MyDTI rFieldMapData::Data::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFieldMapData.cpp at 0x0067937f-0x006793bc (called at rFieldMapData.cpp:32)

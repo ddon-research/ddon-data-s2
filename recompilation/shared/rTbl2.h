@@ -91,14 +91,14 @@ T* rTbl2<T>::getData(u32 idx) {
     if (idx < this->mDataNum) {
         return &this->mpData[idx];
     } else {
-        return static_cast<T*>(nullptr);
+        return nullptr;
     }
 }
 
 // Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else rTbl2.cpp, instantiates it for the body oracle.
 template <typename T>
 bool rTbl2<T>::load(MtStream& in) {
-    MtDataReader r(in, static_cast<u32>(4096));
+    MtDataReader r(in, 4096u);
     return this->::rTbl2<T>::loadRoot(r);
 }
 
@@ -109,14 +109,14 @@ bool rTbl2<T>::loadCore(MtDataReader& r) {
     u32 dat_num;
     this->::rTbl2Base::readDataValue(r, dat_num);
     this->::rTbl2<T>::allocData(dat_num);
-    if (dat_num != static_cast<u32>(0)) {
-        u32 i = static_cast<u32>(0);
+    if (dat_num != 0) {
+        u32 i = 0;
         T* p_dat = this->mpData;
         do {
-            if (this->loadData(r, &p_dat[i]) == false) {
+            if (!this->loadData(r, &p_dat[i])) {
                 return false;
             }
-            i += static_cast<u32>(1);
+            i += 1u;
         } while (i < dat_num);
     }
     return true;
@@ -128,7 +128,7 @@ const T* rTbl2<T>::getData(u32 idx) const {
     if (idx < this->mDataNum) {
         return &this->mpData[idx];
     } else {
-        return static_cast<const T*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -163,7 +163,7 @@ inline bool rTbl2<T>::loadRoot(MtDataReader& r) {
 // Generic (024 T863c): every instance's inlined copies give this body; no code of its own, checked where it is inlined (rendered.json inline_proofs).
 template <typename T>
 inline rTbl2<T>::rTbl2() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpData = static_cast<T*>(nullptr);
-    this->mDataNum = static_cast<u32>(0);
+    this->::cResource::setAttribute(16u);
+    this->mpData = nullptr;
+    this->mDataNum = 0;
 }

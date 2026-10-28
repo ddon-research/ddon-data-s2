@@ -114,7 +114,25 @@ inline rSoundRequest* cpJob08::getShlCommonSe() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnMagicBow::initUp_ShotSub at 0x22c1dd-0x22c1e3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nHumanBow::MGC_BOW_CHARGE_LV cpJob08::getSlaveLockOnStep() const {
+    return this->mSlaveLockOnStep;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnMagicBow::updateLockOn at 0x22be54-0x22be5a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob08::setLockOnStep(nHumanBow::MGC_BOW_CHARGE_LV lv) {
+    this->mLockOnStep = lv;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpJob08::setLockOnCharge2Max(f32 time) {
     this->mLockOnCharge2Max = time;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnMagicBow::updateLockOn at 0x22be4c-0x22be54; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob08::setLockOnChrgeTime(f32 time) {
+    this->mLockOnChargeTime = time;
 }

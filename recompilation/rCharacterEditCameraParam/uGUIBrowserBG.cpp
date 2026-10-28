@@ -37,7 +37,7 @@ const MtDTI& uGUIBrowserBG::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIBrowserBG::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIBrowserBG::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIBrowserBG::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* uGUIBrowserBG::getAllocator() {
 // Address: 0x009ab930 - 0x009ab970 (64 bytes)
 void* uGUIBrowserBG::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIBrowserBG::getAllocator()->memAlloc(sz, align, ::uGUIBrowserBG::DTI.::MtDTI::getID());
+    return uGUIBrowserBG::getAllocator()->memAlloc(sz, align, uGUIBrowserBG::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* uGUIBrowserBG::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIBrowserBG::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIBrowserBG::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIBrowserBG::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,7 +99,7 @@ __attribute__((weak)) void uGUIBrowserBG::setWebSize(f32 WebSizeW, f32 WebSizeH)
 // Address: 0x009ad5e0 - 0x009ad5f1 (17 bytes)
 void uGUIBrowserBG::restart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBrowserBG::restart(this->mIsMenu, true);
+    restart(mIsMenu, true);
 }
 
 // Address: 0x009ad250 - 0x009ad3fe (430 bytes)
@@ -111,29 +111,29 @@ __attribute__((weak)) void uGUIBrowserBG::restart(bool isMenu, bool isShareNG) {
 // Address: 0x009ac9c0 - 0x009aca05 (69 bytes)
 void uGUIBrowserBG::reactive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setWindowActive(true);
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(true);
-    ::sBrowser::getInstance()->mIsInputEnable = true;
-    this->mIsBGDispOff = false;
-    this->mIsKeyOff = false;
+    setWindowActive(true);
+    mGuide.setVisible(true);
+    sBrowser::getInstance()->mIsInputEnable = true;
+    mIsBGDispOff = false;
+    mIsKeyOff = false;
 }
 
 // Address: 0x009ad600 - 0x009ad658 (88 bytes)
 void uGUIBrowserBG::setCancelNoActive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCancelMode = static_cast<u32>(1);
-    this->::uGUIBase::setWindowActive(false);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::eraseHistoryWindowActive(this->::uGUIBase::mWindowActive);
-    if (this->mpCloseButton != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpCloseButton->::cGUIInstance::setVisible(false);
+    mCancelMode = 1;
+    setWindowActive(false);
+    static_cast<sGUIExt*>(sGUI::getInstance())->eraseHistoryWindowActive(mWindowActive);
+    if (mpCloseButton != nullptr) {
+        mpCloseButton->setVisible(false);
     }
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::clearGuide();
+    mGuide.clearGuide();
 }
 
 // Address: 0x009ad240 - 0x009ad24c (12 bytes)
 void uGUIBrowserBG::clearGuide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::clearGuide();
+    mGuide.clearGuide();
 }
 
 // Address: 0x009ad400 - 0x009ad5d5 (469 bytes)
@@ -146,42 +146,42 @@ __attribute__((weak)) void uGUIBrowserBG::addGuide(sGUIExt::BROWSER_GUIDE Type) 
 // Address: 0x009ac890 - 0x009ac97f (239 bytes)
 __attribute__((weak)) void uGUIBrowserBG::sleep() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrl->setFocus(false);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(false);
     }
-    if (this->mpHeader != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpHeader->::cGUIInstance::setVisible(true);
+    if (mpHeader != nullptr) {
+        mpHeader->setVisible(true);
     }
-    if (this->mClose.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mClose.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+    if (mClose.mpInstance != nullptr) {
+        mClose.mpInstance->setVisible(true);
     }
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(true);
-    this->::uGUIBase::mIsActiveBarForceDispOff = false;
-    if (this->mpPanelBase != static_cast<cGUIObjNull*>(nullptr)) {
-        this->mpPanelBase->::cGUIObject::setVisible(true);
+    mGuide.setVisible(true);
+    mIsActiveBarForceDispOff = false;
+    if (mpPanelBase != nullptr) {
+        mpPanelBase->setVisible(true);
     }
-    this->mIsBGDispOff = true;
-    this->mCancelMode = static_cast<u32>(1);
-    this->::uGUIBase::setPS4ShareNG(false);
-    this->::uGUIBase::setWindowActive(false);
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(false);
-    this->::uGUIBase::setGUIMove(false);
-    if (this->mpOrgTex != static_cast<rTexture*>(nullptr)) {
-        this->mBrowserArea.::uGUIBase::cTexArcLoader::replaceTex(this->mpOrgTex, false);
+    mIsBGDispOff = true;
+    mCancelMode = 1;
+    setPS4ShareNG(false);
+    setWindowActive(false);
+    mGuide.setVisible(false);
+    setGUIMove(false);
+    if (mpOrgTex != nullptr) {
+        mBrowserArea.replaceTex(mpOrgTex, false);
     }
-    if (this->mBrowserArea.mpObjTex != static_cast<cGUIObjTexture*>(nullptr)) {
-        this->mBrowserArea.mpObjTex->::cGUIObject::setVisible(false);
+    if (mBrowserArea.mpObjTex != nullptr) {
+        mBrowserArea.mpObjTex->setVisible(false);
     }
-    this->mIsBGDispOff = false;
-    this->mIsKeyOff = false;
+    mIsBGDispOff = false;
+    mIsKeyOff = false;
 }
 
 // Address: 0x009ac980 - 0x009ac9b9 (57 bytes)
 void uGUIBrowserBG::setNoActive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setWindowActive(false);
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(false);
-    ::sBrowser::getInstance()->mIsInputEnable = false;
+    setWindowActive(false);
+    mGuide.setVisible(false);
+    sBrowser::getInstance()->mIsInputEnable = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -201,19 +201,19 @@ void uGUIBrowserBG::setNoActive() {
 void uGUIBrowserBG::setBGDispOffMode(bool IsOn) {
     // DWARF local not rendered: bool isdisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpHeader->::cGUIInstance::setVisible(IsOn == false);
+    if (mpHeader != nullptr) {
+        mpHeader->setVisible(!IsOn);
     }
-    if (this->mClose.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mClose.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(IsOn == false);
+    if (mClose.mpInstance != nullptr) {
+        mClose.mpInstance->setVisible(!IsOn);
     }
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(IsOn == false);
-    this->::uGUIBase::mIsActiveBarForceDispOff = IsOn;
-    if (this->mpPanelBase != static_cast<cGUIObjNull*>(nullptr)) {
-        this->mpPanelBase->::cGUIObject::setVisible(IsOn == false);
+    mGuide.setVisible(!IsOn);
+    mIsActiveBarForceDispOff = IsOn;
+    if (mpPanelBase != nullptr) {
+        mpPanelBase->setVisible(!IsOn);
     }
-    this->mIsBGDispOff = true;
-    this->mCancelMode = static_cast<u32>(1);
+    mIsBGDispOff = true;
+    mCancelMode = 1;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (38 bytes)
@@ -236,13 +236,13 @@ uGUIBrowserBG::~uGUIBrowserBG() {
 // Address: 0x009abc40 - 0x009abc45 (5 bytes)
 void uGUIBrowserBG::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009abc50 - 0x009abc55 (5 bytes)
 MtUI* uGUIBrowserBG::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUI::createUI(prop);
+    return this->uGUI::createUI(prop);
 }
 
 // Address: 0x009abd20 - 0x009abfc1 (673 bytes)
@@ -254,22 +254,22 @@ __attribute__((weak)) void uGUIBrowserBG::setup() {
 // Address: 0x009ac5a0 - 0x009ac620 (128 bytes)
 void uGUIBrowserBG::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpOrgTex != static_cast<rTexture*>(nullptr)) {
-        this->mBrowserArea.::uGUIBase::cTexArcLoader::replaceTex(this->mpOrgTex, false);
+    if (mpOrgTex != nullptr) {
+        mBrowserArea.replaceTex(mpOrgTex, false);
     }
-    if (this->mBrowserArea.mpObjTex == static_cast<cGUIObjTexture*>(nullptr)) {
+    if (mBrowserArea.mpObjTex == nullptr) {
         return;
     }
-    this->mBrowserArea.mpObjTex->::cGUIObject::setVisible(false);
+    mBrowserArea.mpObjTex->setVisible(false);
 }
 
 // Address: 0x009ac630 - 0x009ac68f (95 bytes)
@@ -277,21 +277,21 @@ void uGUIBrowserBG::adjustScale() {
     // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x1fa0
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x1fa4
-    this->::uGUIBase::adjustScale();
+    this->uGUIBase::adjustScale();
     // inferred: a temporary for the value the load at 0x9ac646 read, used twice; no DWARF local holds it
-    sGUI* t0 = ::sGUI::getInstance();
+    sGUI* t0 = sGUI::getInstance();
     // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac649, held ahead of the effects the ELF orders after it
     float t1 = 1.0f;
     // inferred: a temporary for the result of the call at 0x9ac651, used twice; no DWARF local holds it
-    f32 t2 = ::cGUIUtility::getScaleForDefaultResolution(t1);
+    f32 t2 = cGUIUtility::getScaleForDefaultResolution(t1);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac656, held ahead of the effects the ELF orders after it
-    f32 t3 = this->::uCoord::mPos.x;
+    f32 t3 = mPos.x;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac65b, held ahead of the effects the ELF orders after it
-    f32 t4 = this->mWebSizeW;
+    f32 t4 = mWebSizeW;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac66b, held ahead of the effects the ELF orders after it
     float t5 = 32.0f;
     // inferred: a temporary for the value the load at 0x9ac673 read, used once; no DWARF local holds it
-    f32 t6 = this->::uCoord::mPos.y;
+    f32 t6 = mPos.y;
     static_cast<sGUIExt*>(t0)->mBrowserDispPos.x = static_cast<int>(t3 - (t4 * t2));
     static_cast<sGUIExt*>(t0)->mBrowserDispPos.y = static_cast<int>(t6 + (t5 * t2));
 }
@@ -299,11 +299,11 @@ void uGUIBrowserBG::adjustScale() {
 // Address: 0x009abc60 - 0x009abd0f (175 bytes)
 bool uGUIBrowserBG::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_WEB_GUI"), static_cast<u32>(129), static_cast<t64>(1440476842)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_BROWSERBG_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_WEB_GUI"), 129u, 1440476842l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_BROWSERBG_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -315,9 +315,9 @@ bool uGUIBrowserBG::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_BROWSERBG_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_BROWSERBG_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -342,34 +342,34 @@ __attribute__((weak)) void uGUIBrowserBG::moveInput() {
 // Address: 0x009ac790 - 0x009ac888 (248 bytes)
 void uGUIBrowserBG::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-        case static_cast<u32>(0):
+    switch (getInputEvent() - 66u) {
+        case 0:
         {
-            ::sBrowser::getInstance()->::sBrowser::close();
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
-            this->::uGUIBrowserBG::sleep();
+            sBrowser::getInstance()->close();
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 10u);
+            sleep();
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIBase::setWindowActive(false);
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(false);
-            ::sBrowser::getInstance()->mIsInputEnable = false;
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+            setWindowActive(false);
+            mGuide.setVisible(false);
+            sBrowser::getInstance()->mIsInputEnable = false;
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUIBrowserBG::sleep();
+            sleep();
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUIBase::setWindowActive(true);
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(true);
-            ::sBrowser::getInstance()->mIsInputEnable = true;
-            this->mIsBGDispOff = false;
-            this->mIsKeyOff = false;
+            setWindowActive(true);
+            mGuide.setVisible(true);
+            sBrowser::getInstance()->mIsInputEnable = true;
+            mIsBGDispOff = false;
+            mIsKeyOff = false;
             break;
         }
         default:
@@ -388,36 +388,36 @@ __attribute__((weak)) void uGUIBrowserBG::updateWait() {
 // Address: 0x009ac4c0 - 0x009ac4ef (47 bytes)
 u32 uGUIBrowserBG::evCtrlCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBrowserResult = static_cast<nGUIExt::BROWSER_RESULT>(1);
-    if (this->mCancelMode == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+    mBrowserResult = nGUIExt::BROWSER_RESULT_CANCEL;
+    if (mCancelMode == 1) {
+        setInputEvent(67u);
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        setInputEvent(66u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x009acae0 - 0x009acb26 (70 bytes)
 u32 uGUIBrowserBG::evCtrlExit(cControl::Message* pMsg) {
     // DWARF local not rendered: u32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBrowserResult = static_cast<nGUIExt::BROWSER_RESULT>(1);
-    if (this->mCancelMode == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+    mBrowserResult = nGUIExt::BROWSER_RESULT_CANCEL;
+    if (mCancelMode == 1) {
+        setInputEvent(67u);
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        setInputEvent(66u);
     }
-    this->mBrowserResult = static_cast<nGUIExt::BROWSER_RESULT>(2);
-    return static_cast<u32>(1);
+    mBrowserResult = nGUIExt::BROWSER_RESULT_EXIT;
+    return 1;
 }
 
 // Address: 0x009acb30 - 0x009acb65 (53 bytes)
 u32 uGUIBrowserBG::evCtrlMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() == false) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+        setInputEvent(69u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x009abfd0 - 0x009ac4b1 (1249 bytes)
@@ -456,6 +456,8 @@ __attribute__((weak)) void uGUIBrowserBG::manageBrowserTex() {
 //   in uGUIBrowserBG::sleep at 0x009ac944-0x009ac971 (called at uGUIBrowserBG.cpp:1010)
 //   in uGUIBrowserBG::restart at 0x009ad2de-0x009ad30b (called at uGUIBrowserBG.cpp:782)
 // void uGUIBrowserBG::reInitBrowserTex();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIBrowserBG::MyDTI uGUIBrowserBG::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIBrowserBG.cpp at 0x009ad7ef-0x009ad82c (called at uGUIBrowserBG.cpp:27)

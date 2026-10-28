@@ -122,6 +122,8 @@ nCollision::cAllocaterIntermediate::~cAllocaterIntermediate() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nCollision::cAllocaterIntermediate::MyDTI nCollision::cAllocaterIntermediate::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cAllocaterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -185,55 +187,55 @@ nCollision::cScrCollisionMoveMatrix::cScrCollisionMoveMatrix() {
 nCollision::cScrCollisionMoveMatrix::~cScrCollisionMoveMatrix() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->maFlgAllocateMatrix[0] != false) {
+    if (maFlgAllocateMatrix[0]) {
         // inferred: a temporary for the value the load at 0x118573e read, used once; no DWARF local holds it
-        MtMatrix* t0 = this->mpaMatrix[0];
+        MtMatrix* t0 = mpaMatrix[0];
         ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
-        this->mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        if (this->maFlgAllocateMatrix[1] != false) {
+        mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        if (maFlgAllocateMatrix[1]) {
             // inferred: a temporary for the value the load at 0x118576f read, used once; no DWARF local holds it
-            MtMatrix* t1 = this->mpaMatrix[1];
+            MtMatrix* t1 = mpaMatrix[1];
             ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
-            if (this->maFlgAllocateMatrix[2] != false) {
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         }
     } else {
-        if (this->maFlgAllocateMatrix[1] != false) {
+        if (maFlgAllocateMatrix[1]) {
             // inferred: a temporary for the value the load at 0x118576f read, used once; no DWARF local holds it
-            MtMatrix* t1 = this->mpaMatrix[1];
+            MtMatrix* t1 = mpaMatrix[1];
             ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
-            if (this->maFlgAllocateMatrix[2] != false) {
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         }
     }
@@ -327,16 +329,16 @@ __attribute__((weak)) void nCollision::cScrCollisionMoveMatrix::setMatrixByID(co
 // Address: 0x01185fb0 - 0x01186006 (86 bytes)
 void nCollision::cScrCollisionMoveMatrix::freeMatrixByID(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->maFlgAllocateMatrix[id] != false) {
+    if (maFlgAllocateMatrix[id]) {
         // inferred: a temporary for the value the load at 0x1185fc7 read, used once; no DWARF local holds it
-        MtMatrix* t0 = this->mpaMatrix[id];
+        MtMatrix* t0 = mpaMatrix[id];
         ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
-        this->maFlgAllocateMatrix[id] = false;
-        this->mpaMatrix[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        this->mpaMatrixInverse[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        maFlgAllocateMatrix[id] = false;
+        mpaMatrix[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrixInverse[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
     } else {
-        this->mpaMatrix[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        this->mpaMatrixInverse[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrix[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrixInverse[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
     }
 }
 
@@ -353,82 +355,82 @@ void nCollision::cScrCollisionMoveMatrix::freeMatrixByID(u32 id) {
 void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->mFlgMoveEnable = false;
-    this->mFlgMatResetSet = true;
-    if (this->maFlgAllocateMatrix[0] != false) {
+    mFlgMoveEnable = false;
+    mFlgMatResetSet = true;
+    if (maFlgAllocateMatrix[0]) {
         // inferred: a temporary for the value the load at 0x1185cd9 read, used once; no DWARF local holds it
-        MtMatrix* t0 = this->mpaMatrix[0];
+        MtMatrix* t0 = mpaMatrix[0];
         ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
-        this->maFlgAllocateMatrix[0] = false;
-        this->mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        if (this->maFlgAllocateMatrix[1] != false) {
+        maFlgAllocateMatrix[0] = false;
+        mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        if (maFlgAllocateMatrix[1]) {
             // inferred: a temporary for the value the load at 0x1185d0e read, used once; no DWARF local holds it
-            MtMatrix* t1 = this->mpaMatrix[1];
+            MtMatrix* t1 = mpaMatrix[1];
             ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
-            this->maFlgAllocateMatrix[1] = false;
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            maFlgAllocateMatrix[1] = false;
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->maFlgAllocateMatrix[2] = false;
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                maFlgAllocateMatrix[2] = false;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             } else {
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->maFlgAllocateMatrix[2] = false;
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                maFlgAllocateMatrix[2] = false;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             } else {
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         }
     } else {
-        this->mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-        if (this->maFlgAllocateMatrix[1] != false) {
+        mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+        if (maFlgAllocateMatrix[1]) {
             // inferred: a temporary for the value the load at 0x1185d0e read, used once; no DWARF local holds it
-            MtMatrix* t1 = this->mpaMatrix[1];
+            MtMatrix* t1 = mpaMatrix[1];
             ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
-            this->maFlgAllocateMatrix[1] = false;
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            maFlgAllocateMatrix[1] = false;
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->maFlgAllocateMatrix[2] = false;
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                maFlgAllocateMatrix[2] = false;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             } else {
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
-            this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-            if (this->maFlgAllocateMatrix[2] != false) {
+            mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+            if (maFlgAllocateMatrix[2]) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t2 = this->mpaMatrix[2];
+                MtMatrix* t2 = mpaMatrix[2];
                 ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
-                this->maFlgAllocateMatrix[2] = false;
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                maFlgAllocateMatrix[2] = false;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             } else {
-                this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
-                this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
+                mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         }
     }
@@ -448,6 +450,10 @@ void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
 
 // No out-of-line body: no code in the ELF
 // void nCollision::cScrCollisionMoveMatrix::setDummyMatrix(MtMatrix&);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nCollision::cScrCollisionMoveMatrix::MyDTI nCollision::cScrCollisionMoveMatrix::DTI;
+
+// Not defined (a .ctors initializer touches it: its address is held across a call): MtMatrix nCollision::cScrCollisionMoveMatrix::msMatIdentity;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cScrCollisionMoveMatrix::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -505,9 +511,9 @@ inline void nCollision::cScrCommonFilter::operator delete(void* p_addr) {
 // Address: 0x011850e0 - 0x01185101 (33 bytes)
 nCollision::cScrCommonFilter::cScrCommonFilter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrType = static_cast<u32>(4294967295);
-    this->mScrGroup = static_cast<u32>(1);
-    this->mScrGroupIndex = static_cast<u8>(0);
+    mScrType = 0xFFFFFFFF;
+    mScrGroup = 1;
+    mScrGroupIndex = 0;
 }
 
 // Address: 0x01185130 - 0x01185131 (1 bytes)
@@ -537,25 +543,25 @@ __attribute__((weak)) void nCollision::cScrCommonFilter::createPropertySupport(M
 // Address: 0x01b85450 - 0x01b85454 (4 bytes)
 u32 nCollision::cScrCommonFilter::getScrGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrGroup;
+    return mScrGroup;
 }
 
 // Address: 0x01b85460 - 0x01b85465 (5 bytes)
 u8 nCollision::cScrCommonFilter::getScrGroupIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrGroupIndex;
+    return mScrGroupIndex;
 }
 
 // Address: 0x01185110 - 0x0118512d (29 bytes)
 void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (NewGroupIndex <= static_cast<u8>(32)) {
-        this->mScrGroup = static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(NewGroupIndex & static_cast<u8>(63)));
+    if (NewGroupIndex <= 32) {
+        mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(NewGroupIndex & 63));
     } else {
-        this->mScrGroup = static_cast<u32>(1);
+        mScrGroup = 1;
     }
-    this->mScrGroupIndex = NewGroupIndex;
+    mScrGroupIndex = NewGroupIndex;
 }
 
 // Address: 0x01185380 - 0x011853ba (58 bytes)
@@ -563,27 +569,27 @@ void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
     // DWARF local not rendered: u8 i;
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the value carried to 0x11853a1; no location-less local in scope fits
     unsigned int v1_0;
     for (;;) {
-        if (((static_cast<unsigned long>(GroupBit) >> static_cast<unsigned long>(i0_0 & static_cast<unsigned int>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+        if (((static_cast<unsigned long>(GroupBit) >> static_cast<unsigned long>(i0_0 & 63u)) & 1ul) != 0) {
             v1_0 = i0_0;
             break;
         } else {
-            if (static_cast<unsigned char>(i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned char>(31)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
+            if (static_cast<unsigned char>(i0_0 + 1u) <= 31) {
+                i0_0 = i0_0 + 1u;
             } else {
-                v1_0 = i0_0 + static_cast<unsigned int>(1);
+                v1_0 = i0_0 + 1u;
                 break;
             }
         }
     }
-    this->mScrGroup = static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(v1_0) & static_cast<unsigned char>(63)));
-    if (static_cast<unsigned char>(v1_0) == static_cast<unsigned char>(32)) {
-        this->mScrGroupIndex = static_cast<u8>(0);
+    mScrGroup = static_cast<unsigned int>(1ul << static_cast<unsigned long>(static_cast<unsigned char>(v1_0) & 63));
+    if (static_cast<unsigned char>(v1_0) == 32) {
+        mScrGroupIndex = 0;
     } else {
-        this->mScrGroupIndex = static_cast<unsigned char>(v1_0);
+        mScrGroupIndex = static_cast<unsigned char>(v1_0);
     }
 }
 
@@ -605,10 +611,12 @@ void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
 // Address: 0x011855d0 - 0x011855e0 (16 bytes)
 nCollision::cScrCommonFilter& nCollision::cScrCommonFilter::operator=(const nCollision::cScrCommonFilter& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrType = src.mScrType;
-    this->mScrGroup = src.mScrGroup;
+    mScrType = src.mScrType;
+    mScrGroup = src.mScrGroup;
     return *this;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCollision::cScrCommonFilter::MyDTI nCollision::cScrCommonFilter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollision::cScrCommonFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -675,9 +683,9 @@ inline void nCollisionUtil::cOwnerSystem::operator delete(void* p_addr) {
 // Address: 0x01186bd0 - 0x01186bed (29 bytes)
 nCollisionUtil::cOwnerSystem::cOwnerSystem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = static_cast<MtObject*>(nullptr);
-    this->mFlgRegistedOwner = false;
-    this->mFlgOwnerIsUnit = false;
+    mpOwner = nullptr;
+    mFlgRegistedOwner = false;
+    mFlgOwnerIsUnit = false;
 }
 
 // Address: 0x01186bf0 - 0x01186bf1 (1 bytes)
@@ -708,14 +716,16 @@ __attribute__((weak)) void nCollisionUtil::cOwnerSystem::registOwner(MtObject* p
 // Address: 0x01186dc0 - 0x01186dc9 (9 bytes)
 void nCollisionUtil::cOwnerSystem::unregistOwner() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = nullptr;
+    mpOwner = nullptr;
 }
 
 // Address: 0x01186dd0 - 0x01186dd5 (5 bytes)
 MtObject* nCollisionUtil::cOwnerSystem::getRegistOwner() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOwner;
+    return mpOwner;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCollisionUtil::cOwnerSystem::MyDTI nCollisionUtil::cOwnerSystem::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCollisionUtil::cOwnerSystem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

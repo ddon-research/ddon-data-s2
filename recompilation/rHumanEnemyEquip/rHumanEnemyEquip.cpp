@@ -36,7 +36,7 @@ const MtDTI& cHumanEnemyEquip::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cHumanEnemyEquip::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyEquip::DTI)->memAlloc(sz, align, ::cHumanEnemyEquip::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cHumanEnemyEquip::DTI)->memAlloc(sz, align, cHumanEnemyEquip::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cHumanEnemyEquip::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cHumanEnemyEquip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanEnemyEquip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanEnemyEquip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cHumanEnemyEquip::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cHumanEnemyEquip::~cHumanEnemyEquip();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHumanEnemyEquip::MyDTI cHumanEnemyEquip::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyEquip.cpp at 0x0067e940-0x0067e982 (called at rHumanEnemyEquip.cpp:39)
 //   in _GLOBAL__sub_I_rHumanEnemyEquip.cpp at 0x0067e940-0x0067e982 (called at rHumanEnemyEquip.h:31)
@@ -84,7 +86,7 @@ inline void cHumanEnemyEquip::operator delete(void* p_addr) {
 // Address: 0x0067e6d0 - 0x0067e73f (111 bytes)
 MtObject* cHumanEnemyEquip::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cHumanEnemyEquip;
+    return new (16u) cHumanEnemyEquip;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rHumanEnemyEquip::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rHumanEnemyEquip::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rHumanEnemyEquip::DTI)->memAlloc(sz, align, ::rHumanEnemyEquip::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rHumanEnemyEquip::DTI)->memAlloc(sz, align, rHumanEnemyEquip::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rHumanEnemyEquip::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rHumanEnemyEquipD0Ev at 0x01a942b4-0x01a942d3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rHumanEnemyEquip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rHumanEnemyEquip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rHumanEnemyEquip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,37 +143,37 @@ bool rHumanEnemyEquip::loadData(MtDataReader& r, cHumanEnemyEquip* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mId);
+    nDDOIO::readData(r, pData->mId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mMainWeaponId);
+    nDDOIO::readData(r, pData->mMainWeaponId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSubWeaponId);
+    nDDOIO::readData(r, pData->mSubWeaponId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mWearTopId);
+    nDDOIO::readData(r, pData->mWearTopId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mWearBottomId);
+    nDDOIO::readData(r, pData->mWearBottomId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHeadId);
+    nDDOIO::readData(r, pData->mHeadId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mArmorId);
+    nDDOIO::readData(r, pData->mArmorId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mHandId);
+    nDDOIO::readData(r, pData->mHandId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLegId);
+    nDDOIO::readData(r, pData->mLegId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mAccessoryId);
+    nDDOIO::readData(r, pData->mAccessoryId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJewelry);
+    nDDOIO::readData(r, pData->mJewelry);
     return true;
 }
 
@@ -184,8 +186,10 @@ MT_CTSTR rHumanEnemyEquip::getExt() const {
 // Address: 0x01a94400 - 0x01a94406 (6 bytes)
 u32 rHumanEnemyEquip::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rHumanEnemyEquip::MyDTI rHumanEnemyEquip::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyEquip.cpp at 0x0067e982-0x0067e9bf (called at rHumanEnemyEquip.cpp:40)
@@ -195,7 +199,7 @@ u32 rHumanEnemyEquip::getDataVersion() const {
 // Address: 0x0067e7b0 - 0x0067e814 (100 bytes)
 MtObject* rHumanEnemyEquip::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rHumanEnemyEquip;
+    return new (16u) rHumanEnemyEquip;
 }
 
 // Instance at 0x01a943b0 - 0x01a943c2 (18 bytes) of the generic rTbl2<T>::getData

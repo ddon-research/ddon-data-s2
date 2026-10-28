@@ -35,7 +35,7 @@ const MtDTI& nCaplink::Object::getDTI() const {
 // Address: 0x00de8290 - 0x00de82d0 (64 bytes)
 void* nCaplink::Object::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::Object::DTI)->memAlloc(sz, align, ::nCaplink::Object::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::Object::DTI)->memAlloc(sz, align, ::nCaplink::Object::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,17 +99,17 @@ __attribute__((weak)) void nCaplink::Object::update() {
 // Address: 0x00debb40 - 0x00debb90 (80 bytes)
 void nCaplink::Object::wsInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWsClient != static_cast<cWebsocketClient*>(nullptr)) {
-        this->mpWsClient->::cWebsocketClient::removeListener(static_cast<cWebsocketClient::cListener*>(&this->mWscListener));
-        if (this->mpWsClient != static_cast<cWebsocketClient*>(nullptr)) {
-            delete this->mpWsClient;
-            this->mpWsClient = static_cast<cWebsocketClient*>(nullptr);
+    if (mpWsClient != nullptr) {
+        mpWsClient->removeListener(static_cast<cWebsocketClient::cListener*>(&mWscListener));
+        if (mpWsClient != nullptr) {
+            delete mpWsClient;
+            mpWsClient = nullptr;
         }
     }
-    this->mpWebsocketListener = static_cast<nCaplink::WebsocketListener*>(nullptr);
-    this->mRetry = false;
-    this->mRetryTime = static_cast<u8>(0);
-    this->mElapsedTime = 5.0f;
+    mpWebsocketListener = nullptr;
+    mRetry = false;
+    mRetryTime = 0;
+    mElapsedTime = 5.0f;
 }
 
 // Address: 0x00debb90 - 0x00debd19 (393 bytes)
@@ -135,10 +135,10 @@ __attribute__((weak)) bool nCaplink::Object::wsRegistDevice() {
 // Address: 0x00debe60 - 0x00debe6f (15 bytes)
 void nCaplink::Object::wsClose() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWsClient == static_cast<cWebsocketClient*>(nullptr)) {
+    if (mpWsClient == nullptr) {
         return;
     }
-    this->mpWsClient->::cWebsocketClient::close();
+    mpWsClient->close();
 }
 
 // Address: 0x00deba10 - 0x00debb2f (287 bytes)
@@ -707,6 +707,38 @@ __attribute__((weak)) void nCaplink::Object::setCogKey(MT_CTSTR NewValue) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nCaplink::Object::setupRetry();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::Object::MyDTI nCaplink::Object::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+nCaplink::HttpRequestContext* nCaplink::Object::sReqCtxList[16];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 nCaplink::Object::sPlatformId;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sContentId;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sServerVersion;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sClientVersion;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sCaplinkUrls;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sCaplinkUrl;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sCaplinkPath;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sDeviceId;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sTempKey;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sCommonKey;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sAccessKey;
+
+// Not defined (a .ctors initializer touches it: its address is passed to a call): MtString nCaplink::Object::sCogKey;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection nCaplink::Object::mCs;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::Object::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -751,24 +783,24 @@ __attribute__((weak)) void nCaplink::Object::cWebsocketClientListener::onMessage
 void nCaplink::Object::cWebsocketClientListener::onError(s32 code) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xdedd30 read, used 6 times; no DWARF local holds it
-    nCaplink::Object* t0 = this->mpParent;
-    if (t0->mRetry != false) {
-        if (t0->mRetryTime > static_cast<u8>(10)) {
+    nCaplink::Object* t0 = mpParent;
+    if (t0->mRetry) {
+        if (t0->mRetryTime > 10) {
             t0->mRetry = false;
-            if (t0->mpWebsocketListener != static_cast<nCaplink::WebsocketListener*>(nullptr)) {
+            if (t0->mpWebsocketListener != nullptr) {
                 t0->mpWebsocketListener->onError(code);
             }
         } else {
-            if (t0->mpWsClient != static_cast<cWebsocketClient*>(nullptr)) {
-                t0->mpWsClient->::cWebsocketClient::close();
+            if (t0->mpWsClient != nullptr) {
+                t0->mpWsClient->close();
             }
         }
     } else {
         t0->mRetry = true;
-        t0->mRetryTime = static_cast<u8>(0);
+        t0->mRetryTime = 0;
         t0->mElapsedTime = 5.0f;
-        if (t0->mpWsClient != static_cast<cWebsocketClient*>(nullptr)) {
-            t0->mpWsClient->::cWebsocketClient::close();
+        if (t0->mpWsClient != nullptr) {
+            t0->mpWsClient->close();
         }
     }
 }
@@ -776,10 +808,10 @@ void nCaplink::Object::cWebsocketClientListener::onError(s32 code) {
 // Address: 0x00dedd80 - 0x00dedd94 (20 bytes)
 void nCaplink::Object::cWebsocketClientListener::onClose() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent->mpWebsocketListener == static_cast<nCaplink::WebsocketListener*>(nullptr)) {
+    if (mpParent->mpWebsocketListener == nullptr) {
         return;
     }
-    this->mpParent->mpWebsocketListener->onClose();
+    mpParent->mpWebsocketListener->onClose();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -791,28 +823,28 @@ void nCaplink::Object::cWebsocketClientListener::onClose() {
 // Address: 0x00dece70 - 0x00dece75 (5 bytes)
 void nCaplink::Object::cWebsocketClientListener::JsonParser::beginArray() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbArray = true;
+    mbArray = true;
 }
 
 // Address: 0x00dece80 - 0x00dece85 (5 bytes)
 void nCaplink::Object::cWebsocketClientListener::JsonParser::endArray() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbArray = false;
+    mbArray = false;
 }
 
 // Address: 0x00dece90 - 0x00decedf (79 bytes)
 void nCaplink::Object::cWebsocketClientListener::JsonParser::endObject() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mbArray == false) {
+    if (!mbArray) {
         return;
     }
-    if (this->mbNotifyChat == false) {
+    if (!mbNotifyChat) {
         return;
     }
-    if (this->mpParent->mpParent->mpWebsocketListener != static_cast<nCaplink::WebsocketListener*>(nullptr)) {
-        this->mpParent->mpParent->mpWebsocketListener->onNotifyChat(&this->mNotify);
+    if (mpParent->mpParent->mpWebsocketListener != nullptr) {
+        mpParent->mpParent->mpWebsocketListener->onNotifyChat(&mNotify);
     }
-    ::memset(static_cast<void*>(&this->mNotify), static_cast<int>(0), static_cast<size_t>(4328));
+    ::memset(static_cast<void*>(&mNotify), 0, 4328ul);
 }
 
 // Address: 0x00decee0 - 0x00ded3db (1275 bytes)
@@ -836,23 +868,23 @@ __attribute__((weak)) void nCaplink::Object::cWebsocketClientListener::JsonParse
 void nCaplink::Object::cWebsocketClientListener::JsonParser::number(s64 value) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned char used as s8
-    if (this->mbCode != false) {
-        this->mpParent->mCode = static_cast<s32>(static_cast<unsigned int>(value));
+    if (mbCode) {
+        mpParent->mCode = static_cast<s32>(static_cast<unsigned int>(value));
     } else {
-        if (this->mbChatId != false) {
-            this->mNotify.mChatId = static_cast<s32>(static_cast<unsigned int>(value));
+        if (mbChatId) {
+            mNotify.mChatId = static_cast<s32>(static_cast<unsigned int>(value));
         } else {
-            if (this->mbIdType != false) {
-                this->mNotify.mIdType = static_cast<s8>(static_cast<unsigned char>(value));
+            if (mbIdType) {
+                mNotify.mIdType = static_cast<s8>(static_cast<unsigned char>(value));
             } else {
-                if (this->mbChatType != false) {
-                    this->mNotify.mChatType = static_cast<s32>(static_cast<unsigned int>(value));
+                if (mbChatType) {
+                    mNotify.mChatType = static_cast<s32>(static_cast<unsigned int>(value));
                 } else {
-                    if (this->mbStampId != false) {
-                        this->mNotify.mStampId = static_cast<s32>(static_cast<unsigned int>(value));
+                    if (mbStampId) {
+                        mNotify.mStampId = static_cast<s32>(static_cast<unsigned int>(value));
                     } else {
-                        if (this->mbPlatformId != false) {
-                            this->mNotify.mPlatformId = static_cast<s32>(static_cast<unsigned int>(value));
+                        if (mbPlatformId) {
+                            mNotify.mPlatformId = static_cast<s32>(static_cast<unsigned int>(value));
                         }
                     }
                 }

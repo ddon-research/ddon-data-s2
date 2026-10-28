@@ -159,6 +159,22 @@
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // const MtColor MtColor::lerp(const MtColor a, const MtColor b, const f32* t);
 
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Red;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Green;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Yellow;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Pink;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::White;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Black;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Gray;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColor MtColor::Orange;
+
 // No out-of-line body: no code in the ELF
 // MtColorF::MtColorF();
 
@@ -209,6 +225,24 @@
 
 // No out-of-line body: no code in the ELF
 // bool MtColorF::operator!=(const MtColorF&) const;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Zero;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::One;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Red;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Green;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Blue;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Yellow;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::White;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Black;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtColorF MtColorF::Gray;
 
 // No out-of-line body: no code in the ELF
 // MtColorHLS::MtColorHLS();

@@ -37,7 +37,7 @@ const MtDTI& cHumanEnemyPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cHumanEnemyPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyPreset::DTI)->memAlloc(sz, align, ::cHumanEnemyPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cHumanEnemyPreset::DTI)->memAlloc(sz, align, cHumanEnemyPreset::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cHumanEnemyPreset::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cHumanEnemyPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanEnemyPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanEnemyPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -77,6 +77,8 @@ inline void cHumanEnemyPreset::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cHumanEnemyPreset::~cHumanEnemyPreset();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHumanEnemyPreset::MyDTI cHumanEnemyPreset::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyPreset.cpp at 0x0067f570-0x0067f5b2 (called at rHumanEnemyPreset.cpp:39)
 //   in _GLOBAL__sub_I_rHumanEnemyPreset.cpp at 0x0067f570-0x0067f5b2 (called at rHumanEnemyPreset.h:30)
@@ -85,7 +87,7 @@ inline void cHumanEnemyPreset::operator delete(void* p_addr) {
 // Address: 0x0067f2e0 - 0x0067f33a (90 bytes)
 MtObject* cHumanEnemyPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cHumanEnemyPreset;
+    return new (16u) cHumanEnemyPreset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -110,7 +112,7 @@ const MtDTI& rHumanEnemyPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rHumanEnemyPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rHumanEnemyPreset::DTI)->memAlloc(sz, align, ::rHumanEnemyPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rHumanEnemyPreset::DTI)->memAlloc(sz, align, rHumanEnemyPreset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,7 +127,7 @@ inline void* rHumanEnemyPreset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rHumanEnemyPresetD0Ev at 0x01a94cf4-0x01a94d13, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rHumanEnemyPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rHumanEnemyPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rHumanEnemyPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,23 +144,23 @@ bool rHumanEnemyPreset::loadData(MtDataReader& r, cHumanEnemyPreset* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mId);
+    nDDOIO::readData(r, pData->mId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCustomSkillListId);
+    nDDOIO::readData(r, pData->mCustomSkillListId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mEquipListId);
+    nDDOIO::readData(r, pData->mEquipListId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mEditType);
+    nDDOIO::readData(r, pData->mEditType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIsDisableMontageRandam);
+    nDDOIO::readData(r, pData->mIsDisableMontageRandam);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mIsDisableBeginBattleVoice = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mIsDisableBeginBattleVoice = r.readU8() != 0;
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mIsOriginalCustomSkillArc = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mIsOriginalCustomSkillArc = r.readU8() != 0;
     return true;
 }
 
@@ -171,8 +173,10 @@ MT_CTSTR rHumanEnemyPreset::getExt() const {
 // Address: 0x01a94e40 - 0x01a94e46 (6 bytes)
 u32 rHumanEnemyPreset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rHumanEnemyPreset::MyDTI rHumanEnemyPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rHumanEnemyPreset.cpp at 0x0067f5b2-0x0067f5ef (called at rHumanEnemyPreset.cpp:40)
@@ -182,7 +186,7 @@ u32 rHumanEnemyPreset::getDataVersion() const {
 // Address: 0x0067f3b0 - 0x0067f414 (100 bytes)
 MtObject* rHumanEnemyPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rHumanEnemyPreset;
+    return new (16u) rHumanEnemyPreset;
 }
 
 // Instance at 0x01a94df0 - 0x01a94e02 (18 bytes) of the generic rTbl2<T>::getData

@@ -36,7 +36,7 @@ const MtDTI& cLargeCameraParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cLargeCameraParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memAlloc(sz, align, ::cLargeCameraParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cLargeCameraParam::DTI)->memAlloc(sz, align, cLargeCameraParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cLargeCameraParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cLargeCameraParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLargeCameraParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -95,6 +95,8 @@ __attribute__((weak)) void cLargeCameraParam::createProperty(MtPropertyList& s) 
 // No out-of-line body: no code in the ELF
 // bool cLargeCameraParam::getGroup();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLargeCameraParam::MyDTI cLargeCameraParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rLargeCameraParam.cpp at 0x006931a0-0x006931e2 (called at rLargeCameraParam.cpp:39)
 //   in _GLOBAL__sub_I_rLargeCameraParam.cpp at 0x006931a0-0x006931e2 (called at rLargeCameraParam.h:34)
@@ -103,7 +105,7 @@ __attribute__((weak)) void cLargeCameraParam::createProperty(MtPropertyList& s) 
 // Address: 0x00692b60 - 0x00692bc0 (96 bytes)
 MtObject* cLargeCameraParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLargeCameraParam;
+    return new (16u) cLargeCameraParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +130,7 @@ const MtDTI& rLargeCameraParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLargeCameraParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLargeCameraParam::DTI)->memAlloc(sz, align, ::rLargeCameraParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLargeCameraParam::DTI)->memAlloc(sz, align, rLargeCameraParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,7 +145,7 @@ inline void* rLargeCameraParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rLargeCameraParamD0Ev at 0x01a99584-0x01a995a3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rLargeCameraParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLargeCameraParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLargeCameraParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,19 +162,19 @@ bool rLargeCameraParam::loadData(MtDataReader& in, cLargeCameraParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEmId);
+    nDDOIO::readData(in, pData->mEmId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRange1);
+    nDDOIO::readData(in, pData->mRange1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRange2);
+    nDDOIO::readData(in, pData->mRange2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCamera);
+    nDDOIO::readData(in, pData->mCamera);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGroup);
+    nDDOIO::readData(in, pData->mGroup);
     return true;
 }
 
@@ -185,8 +187,10 @@ MT_CTSTR rLargeCameraParam::getExt() const {
 // Address: 0x01a996d0 - 0x01a996d6 (6 bytes)
 u32 rLargeCameraParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLargeCameraParam::MyDTI rLargeCameraParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLargeCameraParam.cpp at 0x006931e2-0x0069321f (called at rLargeCameraParam.cpp:118)
@@ -196,7 +200,7 @@ u32 rLargeCameraParam::getDataVersion() const {
 // Address: 0x00693040 - 0x006930a4 (100 bytes)
 MtObject* rLargeCameraParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLargeCameraParam;
+    return new (16u) rLargeCameraParam;
 }
 
 // Instance at 0x01a99680 - 0x01a99692 (18 bytes) of the generic rTbl2<T>::getData

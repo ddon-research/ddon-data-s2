@@ -35,7 +35,7 @@ const MtDTI& rOcdImmuneParamRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOcdImmuneParamRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOcdImmuneParamRes::DTI)->memAlloc(sz, align, ::rOcdImmuneParamRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOcdImmuneParamRes::DTI)->memAlloc(sz, align, rOcdImmuneParamRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rOcdImmuneParamRes::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rOcdImmuneParamResD0Ev at 0x01aa9f60-0x01aa9f81, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOcdImmuneParamRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOcdImmuneParamRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOcdImmuneParamRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,13 +67,13 @@ bool rOcdImmuneParamRes::loadData(MtDataReader& in, cOcdImmuneParamRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mOcdUID);
+    nDDOIO::readData(in, pData->mOcdUID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mImmuneRate);
+    nDDOIO::readData(in, pData->mImmuneRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mImmuneNum);
+    nDDOIO::readData(in, pData->mImmuneNum);
     return true;
 }
 
@@ -86,8 +86,10 @@ MT_CTSTR rOcdImmuneParamRes::getExt() const {
 // Address: 0x01aaa0b0 - 0x01aaa0b6 (6 bytes)
 u32 rOcdImmuneParamRes::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(23);
+    return 23;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOcdImmuneParamRes::MyDTI rOcdImmuneParamRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rOcdParam.cpp at 0x006c5da4-0x006c5ddd (called at rOcdParam.cpp:136)
@@ -97,7 +99,7 @@ u32 rOcdImmuneParamRes::getDataVersion() const {
 // Address: 0x006c5c40 - 0x006c5ca4 (100 bytes)
 MtObject* rOcdImmuneParamRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOcdImmuneParamRes;
+    return new (16u) rOcdImmuneParamRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ const MtDTI& rOcdStatusParamRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOcdStatusParamRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOcdStatusParamRes::DTI)->memAlloc(sz, align, ::rOcdStatusParamRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOcdStatusParamRes::DTI)->memAlloc(sz, align, rOcdStatusParamRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -137,7 +139,7 @@ inline void* rOcdStatusParamRes::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rOcdStatusParamResD0Ev at 0x01aa9c50-0x01aa9c71, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOcdStatusParamRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOcdStatusParamRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOcdStatusParamRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -162,14 +164,14 @@ bool rOcdStatusParamRes::loadData(MtDataReader& in, cOcdStatusParamRes* pData) {
     // DWARF local not rendered: bool isTimeRecover;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mOcdUID = in.readU32();
-    pData->mIsEffective = in.::MtDataReader::readU8() != static_cast<u8>(0);
-    pData->::cOcdStatusParamRes::setEndurance(in.readF32());
-    pData->mIsTimeRecover = in.::MtDataReader::readU8() != static_cast<u8>(0);
-    pData->::cOcdStatusParamRes::setActiveTime(in.readF32());
+    pData->mIsEffective = in.readU8() != 0;
+    pData->setEndurance(in.readF32());
+    pData->mIsTimeRecover = in.readU8() != 0;
+    pData->setActiveTime(in.readF32());
     pData->mCureWaitTime = in.readF32();
-    pData->::cOcdStatusParamRes::setCureValue(in.readF32());
-    pData->::cOcdStatusParamRes::setFreeParam0(in.readF32());
-    pData->::cOcdStatusParamRes::setFreeParam1(in.readF32());
+    pData->setCureValue(in.readF32());
+    pData->setFreeParam0(in.readF32());
+    pData->setFreeParam1(in.readF32());
     return true;
 }
 
@@ -182,8 +184,10 @@ MT_CTSTR rOcdStatusParamRes::getExt() const {
 // Address: 0x01aa9da0 - 0x01aa9da6 (6 bytes)
 u32 rOcdStatusParamRes::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(23);
+    return 23;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOcdStatusParamRes::MyDTI rOcdStatusParamRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rOcdParam.cpp at 0x006c5d60-0x006c5da4 (called at rOcdParam.cpp:23)
@@ -193,7 +197,7 @@ u32 rOcdStatusParamRes::getDataVersion() const {
 // Address: 0x006c5a70 - 0x006c5ad4 (100 bytes)
 MtObject* rOcdStatusParamRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOcdStatusParamRes;
+    return new (16u) rOcdStatusParamRes;
 }
 
 // Instance at 0x01aaa060 - 0x01aaa076 (22 bytes) of the generic rTbl2<T>::getData

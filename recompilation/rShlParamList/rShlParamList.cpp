@@ -50,7 +50,7 @@ const MtDTI& cShlGroupParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cShlGroupParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShlGroupParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,10 +92,10 @@ __attribute__((weak)) void cShlGroupParam::createProperty(MtPropertyList& s) {
 // Address: 0x006e5260 - 0x006e5272 (18 bytes)
 const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mShlList.mLength) {
-        return static_cast<const cShlParamBase*>(this->mShlList.mpArray[index]);
+    if (index < mShlList.mLength) {
+        return static_cast<const cShlParamBase*>(mShlList.mpArray[index]);
     } else {
-        return static_cast<const cShlParamBase*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -141,8 +141,10 @@ const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
 // Address: 0x01ab0d60 - 0x01ab0d64 (4 bytes)
 u32 cShlGroupParam::getParamNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShlList.mLength;
+    return mShlList.mLength;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShlGroupParam::MyDTI cShlGroupParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShlParamList.cpp at 0x006e5a4f-0x006e5a8c (called at rShlParamList.cpp:40)
@@ -191,7 +193,7 @@ const MtDTI& rShlParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rShlParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShlParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -238,8 +240,8 @@ __attribute__((weak)) bool rShlParamList::load(MtStream& in) {
 // Address: 0x006e5880 - 0x006e5906 (134 bytes)
 bool rShlParamList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(31), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rShlParamList::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(31), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rShlParamList::DTI));
 }
 
 // Address: 0x01ab0db0 - 0x01ab0db8 (8 bytes)
@@ -294,6 +296,8 @@ __attribute__((weak)) const cShlParamBase* rShlParamList::getParam(u32 group, u3
 //   in uDDOModel::setShlParamList at 0x008dbcbb-0x008dbcbe (called at uDDOModel.cpp:3110)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // u32 rShlParamList::getGroupNum() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShlParamList::MyDTI rShlParamList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShlParamList.cpp at 0x006e5a8c-0x006e5ac9 (called at rShlParamList.cpp:186)

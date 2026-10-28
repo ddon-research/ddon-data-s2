@@ -166,13 +166,13 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rStageConnect::Connect::Connect() {
-    this->mStart = static_cast<s16>(-1);
-    this->mGoal = static_cast<s16>(-1);
-    this->mIndexNum = static_cast<u32>(0);
-    this->mIndex[4] = static_cast<short>(-1);
-    this->mIndex[5] = static_cast<short>(-1);
-    this->mIndex[0] = static_cast<short>(-1);
-    this->mIndex[1] = static_cast<short>(-1);
-    this->mIndex[2] = static_cast<short>(-1);
-    this->mIndex[3] = static_cast<short>(-1);
+    this->mStart = -1;
+    this->mGoal = -1;
+    this->mIndexNum = 0;
+    this->mIndex[4] = -1;
+    this->mIndex[5] = -1;
+    this->mIndex[0] = -1;
+    this->mIndex[1] = -1;
+    this->mIndex[2] = -1;
+    this->mIndex[3] = -1;
 }

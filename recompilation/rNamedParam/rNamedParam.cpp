@@ -26,7 +26,7 @@ const MtDTI& cNamedParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* cNamedParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI);
+    return MtMemoryAllocator::getAllocator(cNamedParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ MtAllocator* cNamedParam::getAllocator() {
 // Address: 0x006a8210 - 0x006a8250 (64 bytes)
 void* cNamedParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cNamedParam::getAllocator()->memAlloc(sz, align, ::cNamedParam::DTI.::MtDTI::getID());
+    return cNamedParam::getAllocator()->memAlloc(sz, align, cNamedParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (52 bytes)
@@ -50,7 +50,7 @@ void* cNamedParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNamedParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNamedParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,290 +83,292 @@ __attribute__((weak)) void cNamedParam::createProperty(MtPropertyList& s) {
 // Address: 0x01a9dca0 - 0x01a9dca4 (4 bytes)
 u32 cNamedParam::getID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mID;
+    return mID;
 }
 
 // Address: 0x01a9db20 - 0x01a9db24 (4 bytes)
 void cNamedParam::setID(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mID = NewValue;
+    mID = NewValue;
 }
 
 // Address: 0x01a9dcb0 - 0x01a9dcb4 (4 bytes)
 u32 cNamedParam::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mType;
+    return mType;
 }
 
 // Address: 0x01a9db30 - 0x01a9db34 (4 bytes)
 void cNamedParam::setType(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = NewValue;
+    mType = NewValue;
 }
 
 // Address: 0x01a9dcc0 - 0x01a9dcc4 (4 bytes)
 u32 cNamedParam::getHpRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHpRate;
+    return mHpRate;
 }
 
 // Address: 0x01a9db40 - 0x01a9db44 (4 bytes)
 void cNamedParam::setHpRate(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHpRate = NewValue;
+    mHpRate = NewValue;
 }
 
 // Address: 0x01a9dcd0 - 0x01a9dcd5 (5 bytes)
 u16 cNamedParam::getExperience() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mExperience;
+    return mExperience;
 }
 
 // Address: 0x01a9db50 - 0x01a9db55 (5 bytes)
 void cNamedParam::setExperience(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExperience = NewValue;
+    mExperience = NewValue;
 }
 
 // Address: 0x01a9dce0 - 0x01a9dce5 (5 bytes)
 u16 cNamedParam::getAttackBasePhys() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttackBasePhys;
+    return mAttackBasePhys;
 }
 
 // Address: 0x01a9db60 - 0x01a9db65 (5 bytes)
 void cNamedParam::setAttackBasePhys(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttackBasePhys = NewValue;
+    mAttackBasePhys = NewValue;
 }
 
 // Address: 0x01a9dcf0 - 0x01a9dcf5 (5 bytes)
 u16 cNamedParam::getAttackWepPhys() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttackWepPhys;
+    return mAttackWepPhys;
 }
 
 // Address: 0x01a9db70 - 0x01a9db75 (5 bytes)
 void cNamedParam::setAttackWepPhys(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttackWepPhys = NewValue;
+    mAttackWepPhys = NewValue;
 }
 
 // Address: 0x01a9dd00 - 0x01a9dd05 (5 bytes)
 u16 cNamedParam::getDefenceBasePhys() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDefenceBasePhys;
+    return mDefenceBasePhys;
 }
 
 // Address: 0x01a9db80 - 0x01a9db85 (5 bytes)
 void cNamedParam::setDefenceBasePhys(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDefenceBasePhys = NewValue;
+    mDefenceBasePhys = NewValue;
 }
 
 // Address: 0x01a9dd10 - 0x01a9dd15 (5 bytes)
 u16 cNamedParam::getDefenceWepPhys() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDefenceWepPhys;
+    return mDefenceWepPhys;
 }
 
 // Address: 0x01a9db90 - 0x01a9db95 (5 bytes)
 void cNamedParam::setDefenceWepPhys(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDefenceWepPhys = NewValue;
+    mDefenceWepPhys = NewValue;
 }
 
 // Address: 0x01a9dd20 - 0x01a9dd25 (5 bytes)
 u16 cNamedParam::getAttackBaseMagic() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttackBaseMagic;
+    return mAttackBaseMagic;
 }
 
 // Address: 0x01a9dba0 - 0x01a9dba5 (5 bytes)
 void cNamedParam::setAttackBaseMagic(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttackBaseMagic = NewValue;
+    mAttackBaseMagic = NewValue;
 }
 
 // Address: 0x01a9dd30 - 0x01a9dd35 (5 bytes)
 u16 cNamedParam::getAttackWepMagic() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttackWepMagic;
+    return mAttackWepMagic;
 }
 
 // Address: 0x01a9dbb0 - 0x01a9dbb5 (5 bytes)
 void cNamedParam::setAttackWepMagic(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttackWepMagic = NewValue;
+    mAttackWepMagic = NewValue;
 }
 
 // Address: 0x01a9dd40 - 0x01a9dd45 (5 bytes)
 u16 cNamedParam::getDefenceBaseMagic() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDefenceBaseMagic;
+    return mDefenceBaseMagic;
 }
 
 // Address: 0x01a9dbc0 - 0x01a9dbc5 (5 bytes)
 void cNamedParam::setDefenceBaseMagic(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDefenceBaseMagic = NewValue;
+    mDefenceBaseMagic = NewValue;
 }
 
 // Address: 0x01a9dd50 - 0x01a9dd55 (5 bytes)
 u16 cNamedParam::getDefenceWepMagic() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDefenceWepMagic;
+    return mDefenceWepMagic;
 }
 
 // Address: 0x01a9dbd0 - 0x01a9dbd5 (5 bytes)
 void cNamedParam::setDefenceWepMagic(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDefenceWepMagic = NewValue;
+    mDefenceWepMagic = NewValue;
 }
 
 // Address: 0x01a9dd60 - 0x01a9dd65 (5 bytes)
 u16 cNamedParam::getPower() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPower;
+    return mPower;
 }
 
 // Address: 0x01a9dbe0 - 0x01a9dbe5 (5 bytes)
 void cNamedParam::setPower(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPower = NewValue;
+    mPower = NewValue;
 }
 
 // Address: 0x01a9dd70 - 0x01a9dd75 (5 bytes)
 u16 cNamedParam::getGuardDefenceBase() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardDefenceBase;
+    return mGuardDefenceBase;
 }
 
 // Address: 0x01a9dbf0 - 0x01a9dbf5 (5 bytes)
 void cNamedParam::setGuardDefenceBase(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardDefenceBase = NewValue;
+    mGuardDefenceBase = NewValue;
 }
 
 // Address: 0x01a9dd80 - 0x01a9dd85 (5 bytes)
 u16 cNamedParam::getGuardDefenceWep() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardDefenceWep;
+    return mGuardDefenceWep;
 }
 
 // Address: 0x01a9dc00 - 0x01a9dc05 (5 bytes)
 void cNamedParam::setGuardDefenceWep(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardDefenceWep = NewValue;
+    mGuardDefenceWep = NewValue;
 }
 
 // Address: 0x01a9dd90 - 0x01a9dd95 (5 bytes)
 u16 cNamedParam::getShrinkEnduranceMain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShrinkEnduranceMain;
+    return mShrinkEnduranceMain;
 }
 
 // Address: 0x01a9dc10 - 0x01a9dc15 (5 bytes)
 void cNamedParam::setShrinkEnduranceMain(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShrinkEnduranceMain = NewValue;
+    mShrinkEnduranceMain = NewValue;
 }
 
 // Address: 0x01a9dda0 - 0x01a9dda5 (5 bytes)
 u16 cNamedParam::getBlowEnduranceMain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBlowEnduranceMain;
+    return mBlowEnduranceMain;
 }
 
 // Address: 0x01a9dc20 - 0x01a9dc25 (5 bytes)
 void cNamedParam::setBlowEnduranceMain(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBlowEnduranceMain = NewValue;
+    mBlowEnduranceMain = NewValue;
 }
 
 // Address: 0x01a9ddb0 - 0x01a9ddb5 (5 bytes)
 u16 cNamedParam::getDownEnduranceMain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDownEnduranceMain;
+    return mDownEnduranceMain;
 }
 
 // Address: 0x01a9dc30 - 0x01a9dc35 (5 bytes)
 void cNamedParam::setDownEnduranceMain(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDownEnduranceMain = NewValue;
+    mDownEnduranceMain = NewValue;
 }
 
 // Address: 0x01a9ddc0 - 0x01a9ddc5 (5 bytes)
 u16 cNamedParam::getShakeEnduranceMain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShakeEnduranceMain;
+    return mShakeEnduranceMain;
 }
 
 // Address: 0x01a9dc70 - 0x01a9dc75 (5 bytes)
 void cNamedParam::setShakeEnduranceMain(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShakeEnduranceMain = NewValue;
+    mShakeEnduranceMain = NewValue;
 }
 
 // Address: 0x01a9ddd0 - 0x01a9ddd5 (5 bytes)
 u16 cNamedParam::getHpSub() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHpSub;
+    return mHpSub;
 }
 
 // Address: 0x01a9dc40 - 0x01a9dc45 (5 bytes)
 void cNamedParam::setHpSub(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHpSub = NewValue;
+    mHpSub = NewValue;
 }
 
 // Address: 0x01a9dde0 - 0x01a9dde5 (5 bytes)
 u16 cNamedParam::getShrinkEnduranceSub() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShrinkEnduranceSub;
+    return mShrinkEnduranceSub;
 }
 
 // Address: 0x01a9dc50 - 0x01a9dc55 (5 bytes)
 void cNamedParam::setShrinkEnduranceSub(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShrinkEnduranceSub = NewValue;
+    mShrinkEnduranceSub = NewValue;
 }
 
 // Address: 0x01a9ddf0 - 0x01a9ddf5 (5 bytes)
 u16 cNamedParam::getBlowEnduranceSub() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBlowEnduranceSub;
+    return mBlowEnduranceSub;
 }
 
 // Address: 0x01a9dc60 - 0x01a9dc65 (5 bytes)
 void cNamedParam::setBlowEnduranceSub(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBlowEnduranceSub = NewValue;
+    mBlowEnduranceSub = NewValue;
 }
 
 // Address: 0x01a9de00 - 0x01a9de05 (5 bytes)
 u16 cNamedParam::getOcdEndurance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdEndurance;
+    return mOcdEndurance;
 }
 
 // Address: 0x01a9dc80 - 0x01a9dc85 (5 bytes)
 void cNamedParam::setOcdEndurance(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdEndurance = NewValue;
+    mOcdEndurance = NewValue;
 }
 
 // Address: 0x01a9de10 - 0x01a9de15 (5 bytes)
 u16 cNamedParam::getAilmentDamage() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAilmentDamage;
+    return mAilmentDamage;
 }
 
 // Address: 0x01a9dc90 - 0x01a9dc95 (5 bytes)
 void cNamedParam::setAilmentDamage(u16 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAilmentDamage = NewValue;
+    mAilmentDamage = NewValue;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNamedParam::MyDTI cNamedParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNamedParam.cpp at 0x006a9300-0x006a9342 (called at rNamedParam.cpp:24)
@@ -401,7 +403,7 @@ const MtDTI& rNamedParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNamedParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNamedParam::DTI)->memAlloc(sz, align, ::rNamedParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNamedParam::DTI)->memAlloc(sz, align, rNamedParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -416,7 +418,7 @@ inline void* rNamedParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rNamedParamD0Ev at 0x01a9df54-0x01a9df73, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNamedParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNamedParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNamedParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -433,7 +435,7 @@ bool rNamedParam::loadData(MtDataReader& in, cNamedParam* pData) {
     // DWARF local not rendered: u32 ReadU32;
     // DWARF local not rendered: u16 ReadU16;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cNamedParam*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mID = in.readU32();
         pData->mType = in.readU32();
         pData->mHpRate = in.readU32();
@@ -458,8 +460,8 @@ bool rNamedParam::loadData(MtDataReader& in, cNamedParam* pData) {
         pData->mBlowEnduranceSub = in.readU16();
         pData->mOcdEndurance = in.readU16();
         pData->mAilmentDamage = in.readU16();
-        if (pData->mHpRate == static_cast<u32>(0)) {
-            pData->mHpRate = static_cast<u32>(1);
+        if (pData->mHpRate == 0) {
+            pData->mHpRate = 1;
         }
         return true;
     } else {
@@ -476,8 +478,10 @@ MT_CTSTR rNamedParam::getExt() const {
 // Address: 0x01a9e0a0 - 0x01a9e0a6 (6 bytes)
 u32 rNamedParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNamedParam::MyDTI rNamedParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNamedParam.cpp at 0x006a9342-0x006a937f (called at rNamedParam.cpp:219)
@@ -487,7 +491,7 @@ u32 rNamedParam::getDataVersion() const {
 // Address: 0x006a9220 - 0x006a9284 (100 bytes)
 MtObject* rNamedParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNamedParam;
+    return new (16u) rNamedParam;
 }
 
 // Instance at 0x01a9e050 - 0x01a9e062 (18 bytes) of the generic rTbl2<T>::getData

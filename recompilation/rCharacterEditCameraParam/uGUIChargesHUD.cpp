@@ -30,7 +30,7 @@ const MtDTI& uGUIChargesHUD::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIChargesHUD::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIChargesHUD::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIChargesHUD::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUIChargesHUD::getAllocator() {
 // Address: 0x00a1f680 - 0x00a1f6c0 (64 bytes)
 void* uGUIChargesHUD::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIChargesHUD::getAllocator()->memAlloc(sz, align, ::uGUIChargesHUD::DTI.::MtDTI::getID());
+    return uGUIChargesHUD::getAllocator()->memAlloc(sz, align, uGUIChargesHUD::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUIChargesHUD::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIChargesHUD::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIChargesHUD::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIChargesHUD::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,9 +79,9 @@ uGUIChargesHUD::~uGUIChargesHUD() {
 // Address: 0x00a1f890 - 0x00a1f8f8 (104 bytes)
 bool uGUIChargesHUD::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CHARGES_GUI"), static_cast<u32>(129), static_cast<t64>(1413424957)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CHARGES_GUI"), 129u, 1413424957l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -97,39 +97,39 @@ void uGUIChargesHUD::setup() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cGUIInstance* pInstCopy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->setPlay(true);
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
+    setPlay(true);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(7u), true);
     // inferred: a temporary for the result of the call at 0xa1f960, used 3 times; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(2), false);
-    if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), t0, static_cast<u32>(0));
+    cGUIInstance* t0 = getInstance(2u, false);
+    if (t0 != nullptr) {
+        mRefCharges[0].setup(static_cast<uGUIBase*>(this), t0, 0u);
         // inferred: a temporary for the result of the call at 0xa1f98f, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->::uGUIBase::ManageDuplicate(t0, t0->::cGUIInstance::getParent());
-        this->::uGUIBase::setInstanceExecuteTree(t1, true);
-        this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), t1, static_cast<u32>(0));
-        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::addData(static_cast<u32>(0), static_cast<u32>(128), static_cast<MT_CTSTR>(nullptr));
+        cGUIInstance* t1 = ManageDuplicate(t0, t0->getParent());
+        setInstanceExecuteTree(t1, true);
+        mRefCharges[1].setup(static_cast<uGUIBase*>(this), t1, 0u);
+        mRefCharges[0].addData(0u, 128u, static_cast<MT_CTSTR>(nullptr));
     } else {
-        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), static_cast<u32>(0));
-        this->::uGUIBase::setInstanceExecuteTree(static_cast<cGUIInstance*>(nullptr), true);
-        this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), static_cast<u32>(0));
-        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::addData(static_cast<u32>(0), static_cast<u32>(128), static_cast<MT_CTSTR>(nullptr));
+        mRefCharges[0].setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), 0u);
+        setInstanceExecuteTree(static_cast<cGUIInstance*>(nullptr), true);
+        mRefCharges[1].setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), 0u);
+        mRefCharges[0].addData(0u, 128u, static_cast<MT_CTSTR>(nullptr));
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateInit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateInit);
 }
 
 // Address: 0x00a1fa40 - 0x00a1fa71 (49 bytes)
 void uGUIChargesHUD::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a1fa80 - 0x00a1fa99 (25 bytes)
@@ -148,38 +148,38 @@ __attribute__((weak)) void uGUIChargesHUD::sync() {
 // Address: 0x00a1fb30 - 0x00a1fb8c (92 bytes)
 void uGUIChargesHUD::addData(u32 charges, u32 disp_flag, MT_CTSTR edit) {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::addData(charges, disp_flag, edit);
-    this->mRefCharges[1].mSizeWFix = this->mRefCharges[1].mDefaultSize;
-    (&this->mRefCharges[1])->update();
-    if (this->mIsUseEffect == false) {
-        this->replacePriority(static_cast<u32>(11));
+    mRefCharges[1].addData(charges, disp_flag, edit);
+    mRefCharges[1].mSizeWFix = mRefCharges[1].mDefaultSize;
+    (&mRefCharges[1])->update();
+    if (!mIsUseEffect) {
+        replacePriority(11u);
     }
-    this->mIsUseEffect = true;
+    mIsUseEffect = true;
 }
 
 // Address: 0x00a1fba0 - 0x00a1fbfc (92 bytes)
 void uGUIChargesHUD::addAttribute(u32 attr, u32 disp_flag) {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::addAttribute(attr, disp_flag);
-    this->mRefCharges[1].mSizeWFix = this->mRefCharges[1].mDefaultSize;
-    (&this->mRefCharges[1])->update();
-    if (this->mIsUseEffect == false) {
-        this->replacePriority(static_cast<u32>(11));
+    mRefCharges[1].addAttribute(attr, disp_flag);
+    mRefCharges[1].mSizeWFix = mRefCharges[1].mDefaultSize;
+    (&mRefCharges[1])->update();
+    if (!mIsUseEffect) {
+        replacePriority(11u);
     }
-    this->mIsUseEffect = true;
+    mIsUseEffect = true;
 }
 
 // Address: 0x00a1fc00 - 0x00a1fc53 (83 bytes)
 void uGUIChargesHUD::deleteData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::deleteData();
-    if (this->mIsUseEffect != false) {
-        this->replacePriority(static_cast<u32>(7));
-        if (this->mRefCharges[0].mpObjNull != static_cast<cGUIObjNull*>(nullptr)) {
-            this->mRefCharges[0].mpObjNull->::cGUIObject::setVisible(true);
+    mRefCharges[1].deleteData();
+    if (mIsUseEffect) {
+        replacePriority(7u);
+        if (mRefCharges[0].mpObjNull != nullptr) {
+            mRefCharges[0].mpObjNull->setVisible(true);
         }
     }
-    this->mIsUseEffect = false;
+    mIsUseEffect = false;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (121 bytes)
@@ -191,17 +191,19 @@ void uGUIChargesHUD::deleteData() {
 // Address: 0x00a1fa20 - 0x00a1fa3a (26 bytes)
 void uGUIChargesHUD::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateWait);
 }
 
 // Address: 0x00a1faa0 - 0x00a1fab1 (17 bytes)
 void uGUIChargesHUD::updateWait() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    (&this->mRefCharges[0])->update();
+    (&mRefCharges[0])->update();
 }
 
 // No out-of-line body: no code in the ELF
 // void uGUIChargesHUD::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIChargesHUD::MyDTI uGUIChargesHUD::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIChargesHUD.cpp at 0x00a1fd5f-0x00a1fd9c (called at uGUIChargesHUD.cpp:29)

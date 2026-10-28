@@ -33,100 +33,100 @@
 // Also emitted as: _ZN22cCaplinkProfIconLoaderD0Ev at 0x01ae1a50
 cCaplinkProfIconLoader::~cCaplinkProfIconLoader() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCaplinkProfIconLoader::clear();
+    clear();
 }
 
 // Address: 0x009cc7b0 - 0x009cc7c7 (23 bytes)
 void cCaplinkProfIconLoader::setup(cGUIObject* pObjTex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pObjTex == static_cast<cGUIObject*>(nullptr)) {
+    if (pObjTex == nullptr) {
         return;
     }
-    this->mpObjTex = static_cast<cGUIObjTextureRef*>(pObjTex);
-    pObjTex->::cGUIObject::setVisible(false);
+    mpObjTex = static_cast<cGUIObjTextureRef*>(pObjTex);
+    pObjTex->setVisible(false);
 }
 
 // Address: 0x009cc7d0 - 0x009cc873 (163 bytes)
 __attribute__((weak)) void cCaplinkProfIconLoader::request(u32 icon_index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        this->mpObjTex->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
-        if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-            this->mpObjTex->::cGUIObject::setVisible(false);
-            this->mIconIndex = static_cast<u32>(255);
-            this->mIsUpdate = false;
-            if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-                if (icon_index != static_cast<u32>(255)) {
-                    this->mIconIndex = icon_index;
-                    this->mIsUpdate = true;
-                    const sCaplinkManager::cIconUrl* pUrl = ::sCaplinkManager::getInstance()->::sCaplinkManager::getIconUrlFromIndex(icon_index);
-                    if (pUrl != static_cast<const sCaplinkManager::cIconUrl*>(nullptr)) {
-                        this->mId = pUrl->mId;
+    if (mpObjTex != nullptr) {
+        mpObjTex->setReferenceTexture(static_cast<rTexture*>(nullptr));
+        if (mpObjTex != nullptr) {
+            mpObjTex->setVisible(false);
+            mIconIndex = 255;
+            mIsUpdate = false;
+            if (mpObjTex != nullptr) {
+                if (icon_index != 255) {
+                    mIconIndex = icon_index;
+                    mIsUpdate = true;
+                    const sCaplinkManager::cIconUrl* pUrl = sCaplinkManager::getInstance()->getIconUrlFromIndex(icon_index);
+                    if (pUrl != nullptr) {
+                        mId = pUrl->mId;
                     }
-                    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getCaplinkIcon(this->mIconIndex) != static_cast<rTexture*>(nullptr)) {
-                        this->::cCaplinkProfIconLoader::update();
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->getCaplinkIcon(mIconIndex) != nullptr) {
+                        update();
                     }
                 }
             }
         } else {
-            this->mIconIndex = static_cast<u32>(255);
-            this->mIsUpdate = false;
+            mIconIndex = 255;
+            mIsUpdate = false;
         }
     } else {
-        this->mIconIndex = static_cast<u32>(255);
-        this->mIsUpdate = false;
+        mIconIndex = 255;
+        mIsUpdate = false;
     }
 }
 
 // Address: 0x009cc940 - 0x009cc979 (57 bytes)
 void cCaplinkProfIconLoader::request(MT_CTSTR url) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (url == static_cast<MT_CTSTR>(nullptr)) {
+    if (url == nullptr) {
         return;
     }
-    if ((*url) == static_cast<char>(0)) {
+    if ((*url) == 0) {
         return;
     }
-    this->::cCaplinkProfIconLoader::request(::sCaplinkManager::getInstance()->::sCaplinkManager::getIconIndex(url));
+    request(sCaplinkManager::getInstance()->getIconIndex(url));
 }
 
 // Address: 0x009cc8c0 - 0x009cc93d (125 bytes)
 __attribute__((weak)) void cCaplinkProfIconLoader::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsUpdate == false) {
+    if (!mIsUpdate) {
         return;
     }
-    if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        this->mpObjTex->::cGUIObject::setVisible(false);
+    if (mpObjTex != nullptr) {
+        mpObjTex->setVisible(false);
     }
-    if (::sCaplinkManager::getInstance()->::sCaplinkManager::isLoadingProfIcon(this->mId) != false) {
+    if (sCaplinkManager::getInstance()->isLoadingProfIcon(mId)) {
         return;
     }
-    if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        rTexture* pTex = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getCaplinkIcon(this->mIconIndex);
-        if (pTex != static_cast<rTexture*>(nullptr)) {
-            this->mpObjTex->::cGUIObjTextureRef::setReferenceTexture(pTex);
-            if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-                this->mpObjTex->::cGUIObject::setVisible(true);
+    if (mpObjTex != nullptr) {
+        rTexture* pTex = static_cast<sGUIExt*>(sGUI::getInstance())->getCaplinkIcon(mIconIndex);
+        if (pTex != nullptr) {
+            mpObjTex->setReferenceTexture(pTex);
+            if (mpObjTex != nullptr) {
+                mpObjTex->setVisible(true);
             }
         }
-        this->mIsUpdate = false;
+        mIsUpdate = false;
     } else {
-        this->mIsUpdate = false;
+        mIsUpdate = false;
     }
 }
 
 // Address: 0x009cc880 - 0x009cc8bb (59 bytes)
 __attribute__((weak)) void cCaplinkProfIconLoader::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-        this->mpObjTex->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
-        if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
-            this->mpObjTex->::cGUIObject::setVisible(false);
+    if (mpObjTex != nullptr) {
+        mpObjTex->setReferenceTexture(static_cast<rTexture*>(nullptr));
+        if (mpObjTex != nullptr) {
+            mpObjTex->setVisible(false);
         }
     }
-    this->mIconIndex = static_cast<u32>(255);
-    this->mIsUpdate = false;
+    mIconIndex = 255;
+    mIsUpdate = false;
 }
 
 // No out-of-line body: 11 inlined copies in 9 functions (198 bytes)
@@ -154,7 +154,7 @@ const MtDTI& uGUICaplinkProfile::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkProfile::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkProfile::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,7 +163,7 @@ inline MtAllocator* uGUICaplinkProfile::getAllocator() {
 // Address: 0x009cc4b0 - 0x009cc4f0 (64 bytes)
 void* uGUICaplinkProfile::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkProfile::getAllocator()->memAlloc(sz, align, ::uGUICaplinkProfile::DTI.::MtDTI::getID());
+    return uGUICaplinkProfile::getAllocator()->memAlloc(sz, align, uGUICaplinkProfile::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,7 +178,7 @@ void* uGUICaplinkProfile::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkProfile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,20 +203,20 @@ uGUICaplinkProfile::~uGUICaplinkProfile() {
 // Address: 0x009ccfe0 - 0x009ccfe5 (5 bytes)
 void uGUICaplinkProfile::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009ccff0 - 0x009cd075 (133 bytes)
 bool uGUICaplinkProfile::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_PROFILE_GUI"), static_cast<u32>(129), static_cast<t64>(1429754302)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_PROFILE_GUI"), 129u, 1429754302l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -233,13 +233,13 @@ __attribute__((weak)) void uGUICaplinkProfile::setup() {
 // Address: 0x009cd080 - 0x009cd085 (5 bytes)
 void uGUICaplinkProfile::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009cd090 - 0x009cd095 (5 bytes)
 void uGUICaplinkProfile::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009cd0a0 - 0x009cd0a1 (1 bytes)
@@ -250,7 +250,7 @@ __attribute__((weak)) void uGUICaplinkProfile::updatePtr() {
 // Address: 0x009cd0b0 - 0x009cd0b5 (5 bytes)
 void uGUICaplinkProfile::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x009cd0c0 - 0x009cd142 (130 bytes)
@@ -269,21 +269,21 @@ __attribute__((weak)) void uGUICaplinkProfile::setFlowId(u32 flow_id) {
 // Address: 0x009cef20 - 0x009cefa0 (128 bytes)
 void uGUICaplinkProfile::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(5)) {
-        if ((this->mFlowId - static_cast<u32>(3)) <= static_cast<u32>(1)) {
-            if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpPageCtrl->execute();
+    if (mFlowId != 5) {
+        if ((mFlowId - 3u) <= 1u) {
+            if (mpPageCtrl != nullptr) {
+                mpPageCtrl->execute();
             }
         }
     } else {
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-        if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpDecideCtrl->execute();
+        mGame.mListCtrl.executeCtrl();
+        if (mpDecideCtrl != nullptr) {
+            mpDecideCtrl->execute();
         }
-        if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpCancelCtrl->execute();
+        if (mpCancelCtrl != nullptr) {
+            mpCancelCtrl->execute();
         }
-        this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
+        mMain.mClose.execute();
     }
 }
 
@@ -304,7 +304,7 @@ __attribute__((weak)) void uGUICaplinkProfile::updateMove() {
 // Address: 0x009ce0c0 - 0x009ce0c9 (9 bytes)
 void uGUICaplinkProfile::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009ce0d0 - 0x009cec48 (2936 bytes)
@@ -341,31 +341,31 @@ __attribute__((weak)) void uGUICaplinkProfile::setupInfo() {
 void uGUICaplinkProfile::setupGame() {
     // DWARF local not rendered: const s32 pos;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(20)), false);
-    this->::uGUI::play(0.0f);
-    if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
+    setPlayingFlow(getFlow(20u), false);
+    play(0.0f);
+    if (mpPageCtrl != nullptr) {
         // inferred: a temporary for the value the load at 0x9cee9a read, used once; no DWARF local holds it
-        s32 t0 = this->mpPageCtrl->::cControl::getCurrentPos();
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::clear();
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(t0 - static_cast<s32>(1)), true);
-        if (this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+        s32 t0 = mpPageCtrl->getCurrentPos();
+        mGame.mListCtrl.clear();
+        mGame.mListCtrl.setListPos(static_cast<u32>(t0 - 1), true);
+        if (mGame.mListCtrl.mBar.mpInstance != nullptr) {
+            mGame.mListCtrl.mBar.mpInstance->setVisible(false);
         }
-        if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
-            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(this->mpPageCtrl->::cControl::getCurrentPos()));
+        if (mpPageCtrl != nullptr) {
+            mInfo.mDot.setCurrentPos(static_cast<u32>(mpPageCtrl->getCurrentPos()));
         } else {
-            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(0));
+            mInfo.mDot.setCurrentPos(0u);
         }
     } else {
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::clear();
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(4294967295), true);
-        if (this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+        mGame.mListCtrl.clear();
+        mGame.mListCtrl.setListPos(0xFFFFFFFFu, true);
+        if (mGame.mListCtrl.mBar.mpInstance != nullptr) {
+            mGame.mListCtrl.mBar.mpInstance->setVisible(false);
         }
-        if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
-            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(this->mpPageCtrl->::cControl::getCurrentPos()));
+        if (mpPageCtrl != nullptr) {
+            mInfo.mDot.setCurrentPos(static_cast<u32>(mpPageCtrl->getCurrentPos()));
         } else {
-            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(0));
+            mInfo.mDot.setCurrentPos(0u);
         }
     }
 }
@@ -384,10 +384,15 @@ __attribute__((weak)) void uGUICaplinkProfile::setupListItem(uGUIBase::cScrollLi
 }
 
 // Address: 0x009cdb40 - 0x009cdb99 (89 bytes)
-__attribute__((weak)) void uGUICaplinkProfile::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUICaplinkProfile::hideListItem")
-    /* stub */
+void uGUICaplinkProfile::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgTitle), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgCharacter), "", 0u, false);
 }
 
 // No out-of-line body: no code in the ELF
@@ -401,50 +406,58 @@ __attribute__((weak)) void uGUICaplinkProfile::hideListItem(uGUIBase::cScrollLis
 //   in uGUICaplinkProfile::moveEvent at 0x009cf014-0x009cf045, 0x009cf056-0x009cf062 (called at uGUICaplinkProfile.cpp:576)
 // void uGUICaplinkProfile::eventPage();
 
-// No out-of-line body: 1 inlined copy in 1 function (36 bytes)
-//   in uGUICaplinkProfile::moveEvent at 0x009cefc4-0x009cefe8 (called at uGUICaplinkProfile.cpp:571)
-// void uGUICaplinkProfile::eventAdjustCursor();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICaplinkProfile::moveEvent at 0x9cefc4-0x9cefe8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUICaplinkProfile::eventAdjustCursor() {
+    if (mGame.mListCtrl.mpVCtrl != nullptr) {
+        mGame.mListCtrl.setListPos(static_cast<u32>(mGame.mListCtrl.mpVCtrl->mCurrentPos), false);
+    } else {
+        mGame.mListCtrl.setListPos(0u, false);
+    }
+}
 
 // Address: 0x009cdba0 - 0x009cdbc1 (33 bytes)
 u32 uGUICaplinkProfile::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x009cdc00 - 0x009cdc15 (21 bytes)
 u32 uGUICaplinkProfile::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009cda70 - 0x009cda85 (21 bytes)
 u32 uGUICaplinkProfile::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009cdc20 - 0x009cdc35 (21 bytes)
 u32 uGUICaplinkProfile::evCtrlPage(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(76));
-    return static_cast<u32>(1);
+    setInputEvent(76u);
+    return 1;
 }
 
 // Address: 0x009cdbd0 - 0x009cdbf1 (33 bytes)
 u32 uGUICaplinkProfile::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfile::MyDTI uGUICaplinkProfile::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfile.cpp at 0x009cf1af-0x009cf1ec (called at uGUICaplinkProfile.cpp:31)
@@ -510,7 +523,7 @@ const MtDTI& uGUICaplinkProfile::cListItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkProfile::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -531,6 +544,8 @@ inline void uGUICaplinkProfile::cListItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkProfile::cListItem::~cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfile::cListItem::MyDTI uGUICaplinkProfile::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfile.cpp at 0x009cf1ec-0x009cf229 (called at uGUICaplinkProfile.cpp:32)
@@ -580,7 +595,7 @@ const MtDTI& uGUICaplinkProfile::cListInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkProfile::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -601,6 +616,8 @@ inline void uGUICaplinkProfile::cListInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkProfile::cListInfo::~cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkProfile::cListInfo::MyDTI uGUICaplinkProfile::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkProfile.cpp at 0x009cf229-0x009cf266 (called at uGUICaplinkProfile.cpp:33)

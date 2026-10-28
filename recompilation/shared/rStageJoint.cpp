@@ -54,7 +54,7 @@ const MtDTI& rStageJoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageJoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageJoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageJoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,17 +119,17 @@ __attribute__((weak)) bool rStageJoint::load(MtStream& in) {
 // Address: 0x01ab32b0 - 0x01ab32e5 (53 bytes)
 rStageJoint::Info* rStageJoint::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfoNum()) {
-        return &this->mpArrayInfo[index];
+    if (index < getInfoNum()) {
+        return &mpArrayInfo[index];
     } else {
-        return static_cast<rStageJoint::Info*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01ab32f0 - 0x01ab32f7 (7 bytes)
 u32 rStageJoint::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayInfoNum;
+    return mArrayInfoNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,6 +146,10 @@ u32 rStageJoint::getInfoNum() const {
 
 // No out-of-line body: no code in the ELF
 // MtStlVector<MtVector3, MtStlAllocator<MtVector3> > rStageJoint::getVerticesOfTile(s32 z, s32 x) const;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 rStageJoint::PERSISTENT_MDL_AREA_NO;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageJoint::MyDTI rStageJoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageJoint.cpp at 0x006f7b4d-0x006f7b8a (called at rStageJoint.cpp:904)
@@ -196,7 +200,7 @@ const MtDTI& rStageJoint::Param::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageJoint::Param::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageJoint::Param::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageJoint::Param::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -230,7 +234,7 @@ __attribute__((weak)) void rStageJoint::Param::createProperty(MtPropertyList& s)
 // Address: 0x006f7140 - 0x006f7145 (5 bytes)
 MtUI* rStageJoint::Param::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,7 +275,7 @@ __attribute__((weak)) void rStageJoint::Param::setAreaNumX(u32 numX) {
 // Address: 0x01ab3180 - 0x01ab3184 (4 bytes)
 u32 rStageJoint::Param::getAreaNumX() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaNumX;
+    return mAreaNumX;
 }
 
 // Address: 0x006f6f40 - 0x006f70b5 (373 bytes)
@@ -288,7 +292,7 @@ __attribute__((weak)) void rStageJoint::Param::setAreaNumZ(u32 numZ) {
 // Address: 0x01ab3190 - 0x01ab3194 (4 bytes)
 u32 rStageJoint::Param::getAreaNumZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaNumZ;
+    return mAreaNumZ;
 }
 
 // Address: 0x006f7100 - 0x006f7135 (53 bytes)
@@ -309,14 +313,14 @@ __attribute__((weak)) s8 rStageJoint::Param::getAreaData(u32 idx) const {
 // Address: 0x006f7150 - 0x006f7174 (36 bytes)
 s8 rStageJoint::Param::getAreaData(u32 z, u32 x) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpArea != static_cast<s8* *>(nullptr)) {
-        if (z < this->mAreaNumZ) {
-            if (x < this->mAreaNumX) {
-                return this->mpArea[z][x];
+    if (mpArea != nullptr) {
+        if (z < mAreaNumZ) {
+            if (x < mAreaNumX) {
+                return mpArea[z][x];
             }
         }
     }
-    return static_cast<s8>(-1);
+    return -1;
 }
 
 // Address: 0x01ab31b0 - 0x01ab31b1 (1 bytes)
@@ -327,11 +331,13 @@ __attribute__((weak)) void rStageJoint::Param::setAreaNum(u32) {
 // Address: 0x01ab31a0 - 0x01ab31a8 (8 bytes)
 u32 rStageJoint::Param::getAreaNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaNumZ * this->mAreaNumX;
+    return mAreaNumZ * mAreaNumX;
 }
 
 // No out-of-line body: no code in the ELF
 // bool rStageJoint::Param::getXZFromAreaIdx(u32 idx, u32& outX, u32& outZ);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageJoint::Param::MyDTI rStageJoint::Param::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageJoint.cpp at 0x006f7b14-0x006f7b4d (called at rStageJoint.cpp:542)
@@ -412,7 +418,7 @@ __attribute__((weak)) void rStageJoint::Info::createProperty(MtPropertyList& s) 
 // Address: 0x006f6200 - 0x006f6205 (5 bytes)
 MtUI* rStageJoint::Info::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -442,7 +448,7 @@ __attribute__((weak)) void rStageJoint::Info::setModelName(const MtString& name)
 // Address: 0x01ab30f0 - 0x01ab30f5 (5 bytes)
 MT_CTSTR rStageJoint::Info::getModelName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mModel[0];
+    return &mModel[0];
 }
 
 // Address: 0x006f6090 - 0x006f60c3 (51 bytes)
@@ -465,7 +471,7 @@ __attribute__((weak)) void rStageJoint::Info::setScrSbcNameNum(u32) {
 // Address: 0x01ab30b0 - 0x01ab30b6 (6 bytes)
 u32 rStageJoint::Info::getScrSbcNameNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x006f60d0 - 0x006f6106 (54 bytes)
@@ -488,7 +494,7 @@ __attribute__((weak)) void rStageJoint::Info::setEffSbcNameNum(u32) {
 // Address: 0x01ab30d0 - 0x01ab30d6 (6 bytes)
 u32 rStageJoint::Info::getEffSbcNameNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x006f6110 - 0x006f613f (47 bytes)
@@ -500,7 +506,7 @@ __attribute__((weak)) void rStageJoint::Info::setLightName(const MtString& name)
 // Address: 0x01ab3100 - 0x01ab3108 (8 bytes)
 MT_CTSTR rStageJoint::Info::getLightName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mLight[0];
+    return &mLight[0];
 }
 
 // Address: 0x006f6140 - 0x006f616f (47 bytes)
@@ -512,7 +518,7 @@ __attribute__((weak)) void rStageJoint::Info::setNaviMeshName(const MtString& na
 // Address: 0x01ab3110 - 0x01ab3118 (8 bytes)
 MT_CTSTR rStageJoint::Info::getNaviMeshName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mNaviMesh[0];
+    return &mNaviMesh[0];
 }
 
 // Address: 0x006f6170 - 0x006f619f (47 bytes)
@@ -524,7 +530,7 @@ __attribute__((weak)) void rStageJoint::Info::setPlantTreeName(const MtString& n
 // Address: 0x01ab3120 - 0x01ab3128 (8 bytes)
 MT_CTSTR rStageJoint::Info::getPlantTreeName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mPlantTree[0];
+    return &mPlantTree[0];
 }
 
 // Address: 0x006f61a0 - 0x006f61cf (47 bytes)
@@ -536,7 +542,7 @@ __attribute__((weak)) void rStageJoint::Info::setEpvName(const MtString& name) {
 // Address: 0x01ab3130 - 0x01ab3138 (8 bytes)
 MT_CTSTR rStageJoint::Info::getEpvName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mEpv[0];
+    return &mEpv[0];
 }
 
 // Address: 0x006f61d0 - 0x006f61ff (47 bytes)
@@ -548,16 +554,22 @@ __attribute__((weak)) void rStageJoint::Info::setSndInfoName(const MtString& nam
 // Address: 0x01ab3140 - 0x01ab3148 (8 bytes)
 MT_CTSTR rStageJoint::Info::getSndInfoName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mSndInfo[0];
+    return &mSndInfo[0];
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in uStageJointMdl::move at 0x00d2ee02-0x00d2ee09 (called at uStageJoint.cpp:462)
-// u64 rStageJoint::Info::getEfcColorZone() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointMdl::move at 0xd2ee02-0xd2ee09; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+u64 rStageJoint::Info::getEfcColorZone() const {
+    return mEfcColorZone.mId;
+}
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in uStageJointMdl::move at 0x00d2ee51-0x00d2ee58 (called at uStageJoint.cpp:468)
-// u64 rStageJoint::Info::getEfcCtrlZone() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointMdl::move at 0xd2ee51-0xd2ee58; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+u64 rStageJoint::Info::getEfcCtrlZone() const {
+    return mEfcCtrlZone.mId;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
 //   in uStageJointMdl::move at 0x00d2eed6-0x00d2eee0 (called at uStageJoint.cpp:490)
@@ -567,9 +579,12 @@ MT_CTSTR rStageJoint::Info::getSndInfoName() const {
 //   in uStageJointMdl::move at 0x00d2ef05-0x00d2ef0e (called at uStageJoint.cpp:496)
 // u64 rStageJoint::Info::getIndoorZoneEfc() const;
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in uStageJointMdl::move at 0x00d2ef9f-0x00d2efa6 (called at uStageJoint.cpp:512)
-// u64 rStageJoint::Info::getLightAndFogZone() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointMdl::move at 0xd2ef9f-0xd2efa6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+u64 rStageJoint::Info::getLightAndFogZone() const {
+    return mLightAndFogZone.mId;
+}
 
 // Address: 0x006f5520 - 0x006f5532 (18 bytes)
 __attribute__((weak)) u64 rStageJoint::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) const {
@@ -577,9 +592,12 @@ __attribute__((weak)) u64 rStageJoint::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE
     return {};
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in uStageJointMdl::move at 0x00d2effd-0x00d2f004 (called at uStageJoint.cpp:525)
-// u64 rStageJoint::Info::getZoneStatus() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointMdl::move at 0xd2effd-0xd2f004; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+u64 rStageJoint::Info::getZoneStatus() const {
+    return mZoneStatus.mId;
+}
 
 // No out-of-line body: no code in the ELF
 // bool rStageJoint::Info::addJointArea(s8 newJoinedAreaIdx);
@@ -595,6 +613,8 @@ __attribute__((weak)) bool rStageJoint::Info::hasInfo() const {
     DDON_STUB("rStageJoint::Info::hasInfo")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageJoint::Info::MyDTI rStageJoint::Info::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rStageJoint.cpp at 0x006f7ad0-0x006f7b14 (called at rStageJoint.cpp:35)

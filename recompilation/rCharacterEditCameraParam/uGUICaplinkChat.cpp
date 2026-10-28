@@ -34,7 +34,7 @@ const MtDTI& uGUICaplinkChat::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkChat::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* uGUICaplinkChat::getAllocator() {
 // Address: 0x009ad990 - 0x009ad9d0 (64 bytes)
 void* uGUICaplinkChat::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkChat::getAllocator()->memAlloc(sz, align, ::uGUICaplinkChat::DTI.::MtDTI::getID());
+    return uGUICaplinkChat::getAllocator()->memAlloc(sz, align, uGUICaplinkChat::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,14 +87,14 @@ __attribute__((weak)) void uGUICaplinkChat::createProperty(MtPropertyList& s) {
 // Address: 0x009ae510 - 0x009ae595 (133 bytes)
 bool uGUICaplinkChat::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_CHAT_GUI"), static_cast<u32>(129), static_cast<t64>(1435920503)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_CHAT_GUI"), 129u, 1435920503l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -123,26 +123,26 @@ __attribute__((weak)) void uGUICaplinkChat::kill() {
 // Address: 0x009ae660 - 0x009ae665 (5 bytes)
 void uGUICaplinkChat::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009ae670 - 0x009ae6a9 (57 bytes)
 void uGUICaplinkChat::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkMenuBase::updatePtr();
-    if (this->mpGUICaplinkTalk == static_cast<uGUICaplinkTalk*>(nullptr)) {
+    this->uGUICaplinkMenuBase::updatePtr();
+    if (mpGUICaplinkTalk == nullptr) {
         return;
     }
-    if (this->mpGUICaplinkTalk->::cUnit::isEnable() != false) {
+    if (mpGUICaplinkTalk->isEnable()) {
         return;
     }
-    this->mpGUICaplinkTalk = static_cast<uGUICaplinkTalk*>(nullptr);
+    mpGUICaplinkTalk = nullptr;
 }
 
 // Address: 0x009ae6b0 - 0x009ae6b5 (5 bytes)
 void uGUICaplinkChat::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x009ae6c0 - 0x009ae741 (129 bytes)
@@ -185,7 +185,7 @@ __attribute__((weak)) void uGUICaplinkChat::updateMove() {
 // Address: 0x009b0ba0 - 0x009b0ba9 (9 bytes)
 void uGUICaplinkChat::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009b0ec0 - 0x009b1f6f (4271 bytes)
@@ -357,29 +357,29 @@ __attribute__((weak)) void uGUICaplinkChat::updateMemberList() {
 // Address: 0x009b25b0 - 0x009b267d (205 bytes)
 void uGUICaplinkChat::eventMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpMenuCtrl->setCurrentPos(static_cast<s32>(1), false);
-        if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(1), true);
-                this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(4), true);
-                this->mMain.mpObjNullPointer = this->mMain.mpObjNullMenuPointer;
+    if (mpMenuCtrl != nullptr) {
+        mpMenuCtrl->setCurrentPos(1, false);
+        if (mpMenuCtrl != nullptr) {
+            if (mpMenuCtrl->mCurrentPos != 0) {
+                setSequenceId(mMain.mpInstAnimForm, 1u, true);
+                setSequenceId(mMain.mpInstAnimMenu, 4u, true);
+                mMain.mpObjNullPointer = mMain.mpObjNullMenuPointer;
             } else {
-                this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-                this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-                this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+                setSequenceId(mMain.mpInstAnimForm, 4u, true);
+                setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+                mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
             }
         } else {
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-            this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+            setSequenceId(mMain.mpInstAnimForm, 4u, true);
+            setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+            mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
         }
     } else {
-        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-        this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+        setSequenceId(mMain.mpInstAnimForm, 4u, true);
+        setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+        mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
     }
-    this->::uGUICaplinkChat::setFlowId(static_cast<u32>(6), true);
+    setFlowId(6u, true);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (26 bytes)
@@ -394,108 +394,108 @@ void uGUICaplinkChat::eventMenu() {
 // Address: 0x009b2690 - 0x009b273d (173 bytes)
 void uGUICaplinkChat::eventAdjustCursor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(4)) {
+    if (mFlowId != 4) {
         return;
     }
-    if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(1), true);
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(4), true);
-            this->mMain.mpObjNullPointer = this->mMain.mpObjNullMenuPointer;
+    if (mpMenuCtrl != nullptr) {
+        if (mpMenuCtrl->mCurrentPos != 0) {
+            setSequenceId(mMain.mpInstAnimForm, 1u, true);
+            setSequenceId(mMain.mpInstAnimMenu, 4u, true);
+            mMain.mpObjNullPointer = mMain.mpObjNullMenuPointer;
         } else {
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-            this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-            this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+            setSequenceId(mMain.mpInstAnimForm, 4u, true);
+            setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+            mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
         }
     } else {
-        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-        this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+        setSequenceId(mMain.mpInstAnimForm, 4u, true);
+        setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+        mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
     }
 }
 
 // Address: 0x009afb00 - 0x009afb90 (144 bytes)
 u32 uGUICaplinkChat::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(4)) {
-        if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                if (msg != static_cast<cControl::Message*>(nullptr)) {
-                    msg->changeSE = static_cast<u32>(4);
+    if (mFlowId == 4) {
+        if (mpMenuCtrl != nullptr) {
+            if (mpMenuCtrl->mCurrentPos != 0) {
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
                 }
-                this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                return static_cast<u32>(1);
+                setInputEvent(71u);
+                return 1;
             }
         }
-        if (this->mIsInputEnable != false) {
-            if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() != false) {
-                if (msg != static_cast<cControl::Message*>(nullptr)) {
-                    msg->changeSE = static_cast<u32>(0);
+        if (mIsInputEnable) {
+            if (sKeyboardInterface::getInstance()->isBusy()) {
+                if (msg != nullptr) {
+                    msg->changeSE = 0;
                 }
-                return static_cast<u32>(0);
+                return 0;
             } else {
-                if (msg != static_cast<cControl::Message*>(nullptr)) {
-                    msg->changeSE = static_cast<u32>(4);
+                if (msg != nullptr) {
+                    msg->changeSE = 4;
                 }
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-                return static_cast<u32>(1);
+                setInputEvent(66u);
+                return 1;
             }
         } else {
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                msg->changeSE = static_cast<u32>(0);
+            if (msg != nullptr) {
+                msg->changeSE = 0;
             }
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(0);
+        if (msg != nullptr) {
+            msg->changeSE = 0;
         }
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x009afb90 - 0x009afba5 (21 bytes)
 u32 uGUICaplinkChat::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009afbb0 - 0x009afbd1 (33 bytes)
 u32 uGUICaplinkChat::evCtrlFormDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x009afbe0 - 0x009afc01 (33 bytes)
 u32 uGUICaplinkChat::evCtrlFormCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(1);
+    setInputEvent(69u);
+    return 1;
 }
 
 // Address: 0x009af740 - 0x009af755 (21 bytes)
 u32 uGUICaplinkChat::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(1);
+    setInputEvent(70u);
+    return 1;
 }
 
 // Address: 0x009afc30 - 0x009afc51 (33 bytes)
 u32 uGUICaplinkChat::evCtrlMenu(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(1);
+    setInputEvent(71u);
+    return 1;
 }
 
 // Address: 0x009afda0 - 0x009afe3d (157 bytes)
@@ -508,71 +508,73 @@ __attribute__((weak)) u32 uGUICaplinkChat::evCtrlRequest(cControl::Message* msg)
 // Address: 0x009afc10 - 0x009afc22 (18 bytes)
 u32 uGUICaplinkChat::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
-    return static_cast<u32>(0);
+    setInputEvent(74u);
+    return 0;
 }
 
 // Address: 0x009afc60 - 0x009afda0 (320 bytes)
 u32 uGUICaplinkChat::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender != this->mpMenuCtrl) {
-                msg->changeSE = static_cast<u32>(0);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-                return static_cast<u32>(0);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender != mpMenuCtrl) {
+                msg->changeSE = 0;
+                setInputEvent(0u);
+                return 0;
             } else {
-                if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(1), true);
-                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(4), true);
-                        this->mMain.mpObjNullPointer = this->mMain.mpObjNullMenuPointer;
+                if (mpMenuCtrl != nullptr) {
+                    if (mpMenuCtrl->mCurrentPos != 0) {
+                        setSequenceId(mMain.mpInstAnimForm, 1u, true);
+                        setSequenceId(mMain.mpInstAnimMenu, 4u, true);
+                        mMain.mpObjNullPointer = mMain.mpObjNullMenuPointer;
                     } else {
-                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-                        this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+                        setSequenceId(mMain.mpInstAnimForm, 4u, true);
+                        setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+                        mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
                     }
                 } else {
-                    this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
-                    this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
-                    this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+                    setSequenceId(mMain.mpInstAnimForm, 4u, true);
+                    setSequenceId(mMain.mpInstAnimMenu, 1u, true);
+                    mMain.mpObjNullPointer = mMain.mpObjNullInputPointer;
                 }
-                if (this->mFlowId == static_cast<u32>(4)) {
-                    if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                        if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                            msg->changeSE = static_cast<u32>(4);
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                            return static_cast<u32>(1);
+                if (mFlowId == 4) {
+                    if (mpMenuCtrl != nullptr) {
+                        if (mpMenuCtrl->mCurrentPos != 0) {
+                            msg->changeSE = 4;
+                            setInputEvent(71u);
+                            return 1;
                         }
                     }
-                    if (this->mIsInputEnable != false) {
-                        if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() != false) {
-                            msg->changeSE = static_cast<u32>(0);
-                            return static_cast<u32>(0);
+                    if (mIsInputEnable) {
+                        if (sKeyboardInterface::getInstance()->isBusy()) {
+                            msg->changeSE = 0;
+                            return 0;
                         } else {
-                            msg->changeSE = static_cast<u32>(4);
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-                            return static_cast<u32>(1);
+                            msg->changeSE = 4;
+                            setInputEvent(66u);
+                            return 1;
                         }
                     } else {
-                        msg->changeSE = static_cast<u32>(0);
-                        return static_cast<u32>(0);
+                        msg->changeSE = 0;
+                        return 0;
                     }
                 } else {
-                    msg->changeSE = static_cast<u32>(0);
-                    return static_cast<u32>(0);
+                    msg->changeSE = 0;
+                    return 0;
                 }
             }
         } else {
-            msg->changeSE = static_cast<u32>(0);
-            this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-            return static_cast<u32>(0);
+            msg->changeSE = 0;
+            setInputEvent(0u);
+            return 0;
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-        return static_cast<u32>(0);
+        setInputEvent(0u);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::MyDTI uGUICaplinkChat::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b285e-0x009b289b (called at uGUICaplinkChat.cpp:34)
@@ -640,7 +642,7 @@ const MtDTI& uGUICaplinkChat::cDateItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUICaplinkChat9cDateItemD0Ev at 0x01ae2b90-0x01ae2bba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkChat::cDateItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cDateItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -658,6 +660,8 @@ inline void uGUICaplinkChat::cDateItem::operator delete(void* p_addr) {
 //   in uGUICaplinkChat::stList::stList at 0x01ae1ce3-0x01ae221e (called at uGUICaplinkChat.h:237)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cDateItem::cDateItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cDateItem::MyDTI uGUICaplinkChat::cDateItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b294d-0x009b298d (called at uGUICaplinkChat.cpp:38)
@@ -705,7 +709,7 @@ const MtDTI& uGUICaplinkChat::cSystemItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUICaplinkChat11cSystemItemD0Ev at 0x01ae2b50-0x01ae2b7a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkChat::cSystemItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cSystemItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cSystemItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -723,6 +727,8 @@ inline void uGUICaplinkChat::cSystemItem::operator delete(void* p_addr) {
 //   in uGUICaplinkChat::stList::stList at 0x01ae221e-0x01ae29f1 (called at uGUICaplinkChat.h:237)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cSystemItem::cSystemItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cSystemItem::MyDTI uGUICaplinkChat::cSystemItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b298d-0x009b29c6 (called at uGUICaplinkChat.cpp:39)
@@ -770,7 +776,7 @@ const MtDTI& uGUICaplinkChat::cMessageItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUICaplinkChat12cMessageItemD0Ev at 0x01ae1a1f-0x01ae1a40, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkChat::cMessageItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cMessageItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cMessageItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -788,6 +794,8 @@ inline void uGUICaplinkChat::cMessageItem::operator delete(void* p_addr) {
 //   in uGUICaplinkChat::stList::stList at 0x01ae29f1-0x01ae2b29 (called at uGUICaplinkChat.h:237)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cMessageItem::cMessageItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cMessageItem::MyDTI uGUICaplinkChat::cMessageItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b29c6-0x009b29ff (called at uGUICaplinkChat.cpp:40)
@@ -837,7 +845,7 @@ const MtDTI& uGUICaplinkChat::cDateInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUICaplinkChat9cDateInfoD0Ev at 0x01ae2e40-0x01ae2e6a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkChat::cDateInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cDateInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -855,6 +863,8 @@ inline void uGUICaplinkChat::cDateInfo::operator delete(void* p_addr) {
 //   in uGUICaplinkChat::setupList at 0x009b10a0-0x009b10c5, 0x009b10e3-0x009b10ee, 0x009b124c-0x009b1295 (called at uGUICaplinkChat.cpp:1100)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cDateInfo::cDateInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cDateInfo::MyDTI uGUICaplinkChat::cDateInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b289b-0x009b28db (called at uGUICaplinkChat.cpp:35)
@@ -920,6 +930,8 @@ const MtDTI& uGUICaplinkChat::cSystemInfo::getDTI() const {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cSystemInfo::cSystemInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cSystemInfo::MyDTI uGUICaplinkChat::cSystemInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b28db-0x009b2914 (called at uGUICaplinkChat.cpp:36)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b28db-0x009b2914 (called at uGUICaplinkChat.h:56)
@@ -983,6 +995,8 @@ const MtDTI& uGUICaplinkChat::cMessageInfo::getDTI() const {
 //   in uGUICaplinkChat::setupList at 0x009b1092-0x009b1099, 0x009b10c5-0x009b10d8, 0x009b1764-0x009b17dc, 0x009b181a-0x009b181f (called at uGUICaplinkChat.cpp:1139)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkChat::cMessageInfo::cMessageInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkChat::cMessageInfo::MyDTI uGUICaplinkChat::cMessageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkChat.cpp at 0x009b2914-0x009b294d (called at uGUICaplinkChat.cpp:37)

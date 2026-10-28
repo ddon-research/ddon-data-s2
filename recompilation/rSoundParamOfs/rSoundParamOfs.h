@@ -133,20 +133,20 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cSoundParamOfs::cSoundParamOfs() {
     this->mVolume = 0.0f;
-    this->mPitchShift = static_cast<s16>(0);
-    this->mCenterVol = static_cast<s8>(0);
-    this->mID3 = static_cast<s8>(0);
-    this->mLimit = static_cast<s8>(0);
-    this->mProgramNo = static_cast<s32>(0);
-    this->mPriority = static_cast<s8>(0);
-    this->mGlobal = static_cast<s8>(0);
-    this->mID1 = static_cast<s8>(0);
-    this->mID2 = static_cast<s8>(0);
-    this->mSubmixer = static_cast<s8>(0);
-    this->mVolCurveId = static_cast<s16>(0);
-    this->mEffectCurveId = static_cast<s16>(0);
-    this->mLfeCurveId = static_cast<s16>(0);
-    this->mDirectionalCurveId = static_cast<s16>(0);
+    this->mPitchShift = 0;
+    this->mCenterVol = 0;
+    this->mID3 = 0;
+    this->mLimit = 0;
+    this->mProgramNo = 0;
+    this->mPriority = 0;
+    this->mGlobal = 0;
+    this->mID1 = 0;
+    this->mID2 = 0;
+    this->mSubmixer = 0;
+    this->mVolCurveId = 0;
+    this->mEffectCurveId = 0;
+    this->mLfeCurveId = 0;
+    this->mDirectionalCurveId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

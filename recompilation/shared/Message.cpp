@@ -24,7 +24,7 @@ const MtDTI& CDataErrorMessage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataErrorMessage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataErrorMessage::DTI);
+    return MtMemoryAllocator::getAllocator(CDataErrorMessage::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataErrorMessage::getAllocator() {
 // Address: 0x003da4b0 - 0x003da4f0 (64 bytes)
 void* CDataErrorMessage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataErrorMessage::getAllocator()->memAlloc(sz, align, ::CDataErrorMessage::DTI.::MtDTI::getID());
+    return CDataErrorMessage::getAllocator()->memAlloc(sz, align, CDataErrorMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataErrorMessage::operator new(size_t sz, u32 align) {
 // Address: 0x003da520 - 0x003da54a (42 bytes)
 __attribute__((weak)) void CDataErrorMessage::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataErrorMessage::getAllocator()->memFree(p_addr);
+    CDataErrorMessage::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ __attribute__((weak)) void CDataErrorMessage::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataErrorMessage::CDataErrorMessage(u32, u32, const char*, const char*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataErrorMessage::MyDTI CDataErrorMessage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ed79-0x0041edb2 (called at MessageImplement.inc:7)

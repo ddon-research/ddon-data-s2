@@ -48,7 +48,7 @@ const MtDTI& nGUIItem::cItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nGUIItem::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nGUIItem::cItem::DTI)->memAlloc(sz, align, ::nGUIItem::cItem::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nGUIItem::cItem::DTI)->memAlloc(sz, align, ::nGUIItem::cItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,25 +90,25 @@ nGUIItem::cItem::~cItem() {
 // Address: 0x005dad70 - 0x005dadde (110 bytes)
 void nGUIItem::cItem::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelect = false;
-    this->mpParent = static_cast<nGUIItem::cItemList*>(nullptr);
-    this->mprItemParam = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mpParam = static_cast<cItemParam*>(nullptr);
-    this->mUseEnable = true;
-    this->mIsPut = true;
-    this->mCheckMode = false;
-    this->mFirstSelect = false;
-    this->mItemNo = static_cast<u32>(0);
-    this->mSlotNo = static_cast<s32>(0);
-    this->mLimitNum2 = static_cast<u32>(0);
-    this->mLimitNum3 = static_cast<u32>(0);
-    this->mNum = static_cast<s32>(0);
-    this->mLimitNum = static_cast<u32>(0);
-    this->mToSlotNo = static_cast<s32>(-1);
-    this->mOmId = static_cast<u32>(0);
-    this->mLoadFrom = static_cast<nGUIItem::LOAD_FROM>(0);
-    this->mBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
-    this->mToBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
+    mSelect = false;
+    mpParent = nullptr;
+    mprItemParam = nullptr;
+    mpParam = nullptr;
+    mUseEnable = true;
+    mIsPut = true;
+    mCheckMode = false;
+    mFirstSelect = false;
+    mItemNo = 0;
+    mSlotNo = 0;
+    mLimitNum2 = 0;
+    mLimitNum3 = 0;
+    mNum = 0;
+    mLimitNum = 0;
+    mToSlotNo = -1;
+    mOmId = 0;
+    mLoadFrom = ::nGUIItem::LOAD_FROM_NONE;
+    mBagType = ::nItem::STORAGE_TYPE_INVALID;
+    mToBagType = ::nItem::STORAGE_TYPE_INVALID;
 }
 
 // Address: 0x005dac60 - 0x005dacc2 (98 bytes)
@@ -165,13 +165,13 @@ __attribute__((weak)) nGUIItem::cItem& nGUIItem::cItem::copy(const nGUIItem::cIt
 // Address: 0x005dae00 - 0x005dae15 (21 bytes)
 void nGUIItem::cItem::setGlobalItem(uGUIBase* pBase) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setSendItemParameter(static_cast<cUnit*>(pBase), *this);
+    static_cast<sGUIExt*>(::sGUI::getInstance())->setSendItemParameter(static_cast<cUnit*>(pBase), *this);
 }
 
 // Address: 0x005dae20 - 0x005dae25 (5 bytes)
 void nGUIItem::cItem::setItemParam(cItemParam* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParam = p;
+    mpParam = p;
 }
 
 // No out-of-line body: 52 inlined copies in 35 functions (267 bytes)
@@ -184,7 +184,7 @@ void nGUIItem::cItem::setItemParam(cItemParam* p) {
 // Address: 0x005dae30 - 0x005dae35 (5 bytes)
 void nGUIItem::cItem::setResourceParam(rItemList::rItemParam* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mprItemParam = p;
+    mprItemParam = p;
 }
 
 // No out-of-line body: 41 inlined copies in 23 functions (389 bytes)
@@ -202,10 +202,10 @@ rItemList::ITEM_CATEGORY nGUIItem::cItem::getCategory() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5e from rItemList::rItemParam*
     // inferred: a value cast to the type its use takes: unsigned char used as rItemList::ITEM_CATEGORY
-    if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-        return static_cast<rItemList::ITEM_CATEGORY>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mprItemParam) + static_cast<long>(94)));
+    if (mprItemParam != nullptr) {
+        return static_cast<rItemList::ITEM_CATEGORY>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mprItemParam) + 94));
     } else {
-        return static_cast<rItemList::ITEM_CATEGORY>(0);
+        return ::rItemList::CATEGORY_NONE;
     }
 }
 
@@ -219,7 +219,7 @@ rItemList::ITEM_CATEGORY nGUIItem::cItem::getCategory() {
 // Address: 0x005dae60 - 0x005dae88 (40 bytes)
 bool nGUIItem::cItem::isThrowItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) && ((this->mprItemParam->mCategory == static_cast<u8>(1)) && (this->mprItemParam->::rItemList::rItemParam::getUseType() == static_cast<rItemList::USE_CATEGORY>(2)));
+    return (mprItemParam != nullptr) && ((mprItemParam->mCategory == 1) && (mprItemParam->getUseType() == ::rItemList::USE_CATEGORY_THROW));
 }
 
 // Address: 0x005dae90 - 0x005daee0 (80 bytes)
@@ -233,60 +233,60 @@ u32 nGUIItem::cItem::getNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
+    if (mpParam != nullptr) {
         // inferred: a temporary for the value the load at 0x5dacf7 read, used once; no DWARF local holds it
-        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
-        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-            if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
-                if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                    if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1)) < t0) {
-                        if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
-                            if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
+        if (mprItemParam != nullptr) {
+            if (static_cast<unsigned int>(mBagType) <= 31) {
+                if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
+                    if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL) < t0) {
+                        if (static_cast<unsigned int>(mBagType) <= 31) {
+                            if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
+                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                             } else {
-                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                             }
                         } else {
-                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                         }
                     } else {
-                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
                     }
                 } else {
-                    if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0)) < t0) {
-                        if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
-                            if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                    if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE) < t0) {
+                        if (static_cast<unsigned int>(mBagType) <= 31) {
+                            if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
+                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                             } else {
-                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                                return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                             }
                         } else {
-                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                         }
                     } else {
-                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
                     }
                 }
             } else {
-                if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1)) < t0) {
-                    if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
-                        if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                if (mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL) < t0) {
+                    if (static_cast<unsigned int>(mBagType) <= 31) {
+                        if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                         } else {
-                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                            return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_STORAGE);
                         }
                     } else {
-                        return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                        return mprItemParam->getStackMax(::nCharacterData::ITEM_BAG_TYPE_PL);
                     }
                 } else {
-                    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mpParam) + 12);
                 }
             }
         } else {
             return t0;
         }
     } else {
-        return static_cast<u32>(this->mNum);
+        return static_cast<u32>(mNum);
     }
 }
 
@@ -359,30 +359,30 @@ __attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::discard(u32 num) {
 nGUIItem::RET_TYPE nGUIItem::cItem::equip(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
-    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
-        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
-                if (equipSlot == static_cast<u32>(4294967295)) {
-                    nCharacterData::EQUIP_CATEGORY cate = static_cast<nCharacterData::EQUIP_CATEGORY>(this->mprItemParam->::rItemList::rItemParam::getEquipCategory());
+    if (mpParam != nullptr) {
+        if (mprItemParam != nullptr) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == nullptr) {
+                static_cast<sGUIExt*>(::sGUI::getInstance())->requestSE(0u, 10u);
+                if (equipSlot == 0xFFFFFFFFu) {
+                    nCharacterData::EQUIP_CATEGORY cate = static_cast<nCharacterData::EQUIP_CATEGORY>(mprItemParam->getEquipCategory());
                     // inferred: a temporary for the result of the call at 0x5db5b2, used once; no DWARF local holds it
                     nCharacterData::EQUIP_SLOT_TYPE t0 = ::cEquipData::convEquipCateToSlotType(cate);
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(static_cast<u32>(t0), this->mpParam);
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
-                    return static_cast<nGUIItem::RET_TYPE>(0);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->setChangeEquipParam(static_cast<u32>(t0), mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->requestChangeEquip(bagType, type, 0u);
+                    return ::nGUIItem::RET_TYPE_NONE;
                 } else {
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, this->mpParam);
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
-                    return static_cast<nGUIItem::RET_TYPE>(0);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->setChangeEquipParam(equipSlot, mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->requestChangeEquip(bagType, type, 0u);
+                    return ::nGUIItem::RET_TYPE_NONE;
                 }
             } else {
-                return static_cast<nGUIItem::RET_TYPE>(1);
+                return ::nGUIItem::RET_TYPE_ERROR;
             }
         } else {
-            return static_cast<nGUIItem::RET_TYPE>(1);
+            return ::nGUIItem::RET_TYPE_ERROR;
         }
     } else {
-        return static_cast<nGUIItem::RET_TYPE>(1);
+        return ::nGUIItem::RET_TYPE_ERROR;
     }
 }
 
@@ -390,12 +390,12 @@ nGUIItem::RET_TYPE nGUIItem::cItem::equip(u32 bagType, u32 equipSlot, nCharacter
 nGUIItem::RET_TYPE nGUIItem::cItem::equipOff(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
-        return static_cast<nGUIItem::RET_TYPE>(0);
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == nullptr) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
+        static_cast<sGUIExt*>(::sGUI::getInstance())->requestChangeEquip(bagType, type, 0u);
+        return ::nGUIItem::RET_TYPE_NONE;
     } else {
-        return static_cast<nGUIItem::RET_TYPE>(1);
+        return ::nGUIItem::RET_TYPE_ERROR;
     }
 }
 
@@ -403,33 +403,33 @@ nGUIItem::RET_TYPE nGUIItem::cItem::equipOff(u32 bagType, u32 equipSlot, nCharac
 nGUIItem::RET_TYPE nGUIItem::cItem::equipPawn(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
-    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
-        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
-                if (pawnId != static_cast<u32>(0)) {
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, this->mpParam);
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, pawnId);
-                    return static_cast<nGUIItem::RET_TYPE>(0);
+    if (mpParam != nullptr) {
+        if (mprItemParam != nullptr) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == nullptr) {
+                if (pawnId != 0) {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->requestSE(0u, 10u);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->setChangeEquipParam(equipSlot, mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->requestChangeEquip(bagType, type, pawnId);
+                    return ::nGUIItem::RET_TYPE_NONE;
                 }
             }
         }
     }
-    return static_cast<nGUIItem::RET_TYPE>(1);
+    return ::nGUIItem::RET_TYPE_ERROR;
 }
 
 // Address: 0x005db700 - 0x005db764 (100 bytes)
 nGUIItem::RET_TYPE nGUIItem::cItem::equipPawnOff(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
-        if (pawnId != static_cast<u32>(0)) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, pawnId);
-            return static_cast<nGUIItem::RET_TYPE>(0);
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == nullptr) {
+        if (pawnId != 0) {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
+            static_cast<sGUIExt*>(::sGUI::getInstance())->requestChangeEquip(bagType, type, pawnId);
+            return ::nGUIItem::RET_TYPE_NONE;
         }
     }
-    return static_cast<nGUIItem::RET_TYPE>(1);
+    return ::nGUIItem::RET_TYPE_ERROR;
 }
 
 // No out-of-line body: no code in the ELF
@@ -461,29 +461,29 @@ rItemList::rParam* nGUIItem::cItem::getParam(rItemList::rParam::PARAM_KIND kind)
     // inferred: a value cast to the type its use takes: short used as unsigned int
     // inferred: the value carried to 0x5dbae5; no location-less local in scope fits
     rItemList::rParam* v1_0;
-    if (this->mprItemParam == static_cast<rItemList::rItemParam*>(nullptr)) {
-        v1_0 = static_cast<rItemList::rParam*>(nullptr);
+    if (mprItemParam == nullptr) {
+        v1_0 = nullptr;
     } else {
-        if (this->mprItemParam->mParamNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<rItemList::rParam*>(nullptr);
+        if (mprItemParam->mParamNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_2 = static_cast<unsigned int>(0);
+            unsigned int i0_2 = 0;
             // inferred: the value the loop at 0x5dbac0 carries; no location-less local in scope fits
-            for (rItemList::rItemParam* v0_4 = this->mprItemParam;;) {
+            for (rItemList::rItemParam* v0_4 = mprItemParam;;) {
                 // inferred: a temporary for the result of the call at 0x5dbac2, used 3 times; no DWARF local holds it
-                rItemList::rParam* t0 = v0_4->::rItemList::rItemParam::getItemParam(i0_2);
-                if (t0 != static_cast<rItemList::rParam*>(nullptr)) {
-                    if (static_cast<unsigned int>(kind) == static_cast<unsigned int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(8))))) {
+                rItemList::rParam* t0 = v0_4->getItemParam(i0_2);
+                if (t0 != nullptr) {
+                    if (static_cast<unsigned int>(kind) == static_cast<unsigned int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + 8)))) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < this->mprItemParam->mParamNum) {
-                    i0_2 += static_cast<unsigned int>(1);
-                    v0_4 = this->mprItemParam;
+                if ((i0_2 + 1u) < mprItemParam->mParamNum) {
+                    i0_2 += 1u;
+                    v0_4 = mprItemParam;
                 } else {
-                    v1_0 = static_cast<rItemList::rParam*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -521,8 +521,8 @@ rItemList::rParam* nGUIItem::cItem::getParam(rItemList::rParam::PARAM_KIND kind)
 // Address: 0x005dade0 - 0x005dadf3 (19 bytes)
 bool nGUIItem::cItem::isEnableData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
-        return this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr);
+    if (mpParam != nullptr) {
+        return mprItemParam != nullptr;
     } else {
         return false;
     }
@@ -574,8 +574,8 @@ __attribute__((weak)) bool nGUIItem::cItem::isUse() {
 bool nGUIItem::cItem::isKeyItem() {
     // DWARF local not rendered: bool is;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-        return this->mprItemParam->mCategory == static_cast<u8>(4);
+    if (mprItemParam != nullptr) {
+        return mprItemParam->mCategory == 4;
     } else {
         return false;
     }
@@ -587,7 +587,7 @@ bool nGUIItem::cItem::isKeyItem() {
 // Address: 0x005db8b0 - 0x005db8b4 (4 bytes)
 bool nGUIItem::cItem::isPut() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPut;
+    return mIsPut;
 }
 
 // No out-of-line body: 12 inlined copies in 2 functions (56 bytes)
@@ -600,7 +600,7 @@ bool nGUIItem::cItem::isPut() {
 // Address: 0x005db8c0 - 0x005db8c4 (4 bytes)
 bool nGUIItem::cItem::isCheckMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCheckMode;
+    return mCheckMode;
 }
 
 // No out-of-line body: 5 inlined copies in 3 functions (26 bytes)
@@ -614,14 +614,14 @@ bool nGUIItem::cItem::isCheckMode() {
 nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
-        if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-            return static_cast<nCharacterData::ITEM_BAG_TYPE>(1);
+    if (static_cast<unsigned int>(mBagType) <= 31) {
+        if (((0xE0038000ul >> (static_cast<unsigned long>(mBagType) & 31)) & 1ul) == 0) {
+            return ::nCharacterData::ITEM_BAG_TYPE_PL;
         } else {
-            return static_cast<nCharacterData::ITEM_BAG_TYPE>(0);
+            return ::nCharacterData::ITEM_BAG_TYPE_STORAGE;
         }
     } else {
-        return static_cast<nCharacterData::ITEM_BAG_TYPE>(1);
+        return ::nCharacterData::ITEM_BAG_TYPE_PL;
     }
 }
 
@@ -633,6 +633,8 @@ nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagType() const {
 //   in nGUIItem::cItem::isSameData at 0x005dbc66-0x005dbcf2 (called at nGUIItem.cpp:958)
 // bool nGUIItem::cItem::isSameDataCore(cItemParam* pBaseItemParam, cItemParam* pItemParam);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nGUIItem::cItem::MyDTI nGUIItem::cItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_nGUIItem.cpp at 0x005dda6e-0x005ddaae (called at nGUIItem.cpp:58)
 //   in _GLOBAL__sub_I_nGUIItem.cpp at 0x005dda6e-0x005ddaae (called at nGUIItem.h:149)
@@ -641,7 +643,7 @@ nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagType() const {
 // Address: 0x005dab30 - 0x005dabe5 (181 bytes)
 MtObject* nGUIItem::cItem::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nGUIItem::cItem;
+    return new (16u) ::nGUIItem::cItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -740,24 +742,24 @@ bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sI
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x5dc7f1 read, used twice; no DWARF local holds it
     sItemManager* t0 = ::sItemManager::getInstance();
-    if (this->mTargetStorage != this->mChangeStorage) {
+    if (mTargetStorage != mChangeStorage) {
         // inferred: a temporary for the result of the call at 0x5dc80b, used once; no DWARF local holds it
-        nCharacterData::ITEM_BAG_TYPE t1 = t0->::sItemManager::getItemBagType(this->mBagType);
+        nCharacterData::ITEM_BAG_TYPE t1 = t0->getItemBagType(mBagType);
         // inferred: a temporary for the result of the call at 0x5dc818, used once; no DWARF local holds it
-        nItem::E_STORAGE_TYPE t2 = ::sItemManager::getInstance()->::sItemManager::getItemNetStorageType(t1, cat);
-        if (this->mTargetStorage == t2) {
-            nCharacterData::ITEM_BAG_TYPE bagType = t0->::sItemManager::getItemBagType(::sItemManager::getInstance()->::sItemManager::getItemBagGroupeType(this->mChangeStorage));
-            sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(bagType);
-            if (pItemBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
+        nItem::E_STORAGE_TYPE t2 = ::sItemManager::getInstance()->getItemNetStorageType(t1, cat);
+        if (mTargetStorage == t2) {
+            nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(::sItemManager::getInstance()->getItemBagGroupeType(mChangeStorage));
+            sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
+            if (pItemBag != nullptr) {
                 pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
                 return true;
             } else {
                 return false;
             }
         } else {
-            nCharacterData::ITEM_BAG_TYPE bagType = t0->::sItemManager::getItemBagType(this->mBagType);
-            sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(bagType);
-            if (pItemBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
+            nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(mBagType);
+            sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
+            if (pItemBag != nullptr) {
                 pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
                 return true;
             } else {
@@ -765,9 +767,9 @@ bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sI
             }
         }
     } else {
-        nCharacterData::ITEM_BAG_TYPE bagType = t0->::sItemManager::getItemBagType(this->mBagType);
-        sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(bagType);
-        if (pItemBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
+        nCharacterData::ITEM_BAG_TYPE bagType = t0->getItemBagType(mBagType);
+        sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(bagType);
+        if (pItemBag != nullptr) {
             pItemBag->::sItemManager::cItemBag::sortStrageItem(cat, sortType, sortDir);
             return true;
         } else {
@@ -812,7 +814,7 @@ u32 nGUIItem::cItemList::sizeAll() {
     // DWARF local not rendered: u32 ret;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (((((this->mItemArrays.elems[1].::MtArray::size() + this->mItemArrays.elems[0].::MtArray::mLength) + this->mItemArrays.elems[2].::MtArray::mLength) + this->mItemArrays.elems[3].::MtArray::mLength) + this->mItemArrays.elems[4].::MtArray::mLength) + this->mItemArrays.elems[5].::MtArray::mLength) + this->mItemArrays.elems[6].::MtArray::mLength;
+    return (((((mItemArrays.elems[1].size() + mItemArrays.elems[0].mLength) + mItemArrays.elems[2].mLength) + mItemArrays.elems[3].mLength) + mItemArrays.elems[4].mLength) + mItemArrays.elems[5].mLength) + mItemArrays.elems[6].mLength;
 }
 
 // Address: 0x005dc890 - 0x005dc972 (226 bytes)
@@ -881,17 +883,17 @@ __attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItemList::sell(nItem::E_STOR
 // Address: 0x005dd580 - 0x005dd5fd (125 bytes)
 nGUIItem::RET_TYPE nGUIItem::cItemList::exchange(nItem::E_STORAGE_TYPE from, MoveItemUIDFromToVec& itemArray) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (itemArray.::MtArray::mLength != static_cast<u32>(0)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
-        sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(from);
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqExchangeItemFromUI(pItemBag, itemArray) != static_cast<sItemManager::stRequest*>(nullptr)) {
-            this->mWaitFlag = this->mWaitFlag | static_cast<u32>(2048);
-            return static_cast<nGUIItem::RET_TYPE>(0);
+    if (itemArray.mLength != 0) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->requestSE(0u, 10u);
+        sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->setLinkItem(from);
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->reqExchangeItemFromUI(pItemBag, itemArray) != nullptr) {
+            mWaitFlag = mWaitFlag | 2048u;
+            return ::nGUIItem::RET_TYPE_NONE;
         } else {
-            return static_cast<nGUIItem::RET_TYPE>(1);
+            return ::nGUIItem::RET_TYPE_ERROR;
         }
     } else {
-        return static_cast<nGUIItem::RET_TYPE>(1);
+        return ::nGUIItem::RET_TYPE_ERROR;
     }
 }
 
@@ -928,44 +930,44 @@ __attribute__((weak)) s32 nGUIItem::cItemList::getNum(rItemList::rItemParam* pPa
 // Address: 0x005dc4b0 - 0x005dc524 (116 bytes)
 nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(sItemManager::cItemBag::ITEM_CATEGORY cat) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTargetStorage != this->mChangeStorage) {
-        nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->::sItemManager::getItemBagType(this->mBagType);
-        nItem::E_STORAGE_TYPE eStorage = ::sItemManager::getInstance()->::sItemManager::getItemNetStorageType(Type, cat);
-        if (this->mTargetStorage == eStorage) {
-            return ::sItemManager::getInstance()->::sItemManager::getItemBagGroupeType(this->mChangeStorage);
+    if (mTargetStorage != mChangeStorage) {
+        nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->getItemBagType(mBagType);
+        nItem::E_STORAGE_TYPE eStorage = ::sItemManager::getInstance()->getItemNetStorageType(Type, cat);
+        if (mTargetStorage == eStorage) {
+            return ::sItemManager::getInstance()->getItemBagGroupeType(mChangeStorage);
         } else {
-            return this->mBagType;
+            return mBagType;
         }
     } else {
-        return this->mBagType;
+        return mBagType;
     }
 }
 
 // Address: 0x005dd750 - 0x005dd80f (191 bytes)
 nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(rItemList::ITEM_CATEGORY cat) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTargetStorage == this->mChangeStorage) {
-        return this->mBagType;
+    if (mTargetStorage == mChangeStorage) {
+        return mBagType;
     } else {
-        nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->::sItemManager::getItemBagType(this->mBagType);
-        sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(Type);
-        if (pBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
+        nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->getItemBagType(mBagType);
+        sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->setLinkItem(Type);
+        if (pBag != nullptr) {
             sItemManager::cItemBag::ITEM_CATEGORY category = pBag->::sItemManager::cItemBag::getStorageCategotyToItemCategory(cat);
-            if (this->mTargetStorage != this->mChangeStorage) {
+            if (mTargetStorage != mChangeStorage) {
                 // inferred: a temporary for the result of the call at 0x5dd7d1, used once; no DWARF local holds it
-                nCharacterData::ITEM_BAG_TYPE t0 = ::sItemManager::getInstance()->::sItemManager::getItemBagType(this->mBagType);
+                nCharacterData::ITEM_BAG_TYPE t0 = ::sItemManager::getInstance()->getItemBagType(mBagType);
                 // inferred: a temporary for the result of the call at 0x5dd7df, used once; no DWARF local holds it
-                nItem::E_STORAGE_TYPE t1 = ::sItemManager::getInstance()->::sItemManager::getItemNetStorageType(t0, category);
-                if (this->mTargetStorage == t1) {
-                    return ::sItemManager::getInstance()->::sItemManager::getItemBagGroupeType(this->mChangeStorage);
+                nItem::E_STORAGE_TYPE t1 = ::sItemManager::getInstance()->getItemNetStorageType(t0, category);
+                if (mTargetStorage == t1) {
+                    return ::sItemManager::getInstance()->getItemBagGroupeType(mChangeStorage);
                 } else {
-                    return this->mBagType;
+                    return mBagType;
                 }
             } else {
-                return this->mBagType;
+                return mBagType;
             }
         } else {
-            return this->mBagType;
+            return mBagType;
         }
     }
 }
@@ -979,6 +981,8 @@ u32 nGUIItem::cItemList::convertIdx(sItemManager::cItemBag::ITEM_CATEGORY cat) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::sItemManager::cItemBag::getStorageCategoryIndex(cat);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nGUIItem::cItemList::MyDTI nGUIItem::cItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nGUIItem.cpp at 0x005ddaae-0x005ddae7 (called at nGUIItem.cpp:969)
@@ -1016,7 +1020,7 @@ __attribute__((weak)) MtObject* nGUIItem::cItemList::MyDTI::newInstance() const 
 void nGUIItem::cLoadCategory::setEnableCategory(sItemManager::cItemBag::ITEM_CATEGORY cat, bool b) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     s32 idx = ::sItemManager::cItemBag::getStorageCategoryIndex(cat);
-    this->mEnableCategory.elems[(static_cast<unsigned int>(idx) <= static_cast<unsigned int>(6)) ? static_cast<unsigned int>(idx) : static_cast<unsigned int>(0)] = b;
+    mEnableCategory.elems[(static_cast<unsigned int>(idx) <= 6) ? static_cast<unsigned int>(idx) : 0u] = b;
 }
 
 // Instance at 0x01a6c3a0 - 0x01a6c3a5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

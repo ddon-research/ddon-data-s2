@@ -32,7 +32,7 @@ const MtDTI& cOcdCustomReqInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdCustomReqInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdCustomReqInfo::DTI)->memAlloc(sz, align, ::cOcdCustomReqInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdCustomReqInfo::DTI)->memAlloc(sz, align, cOcdCustomReqInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* cOcdCustomReqInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cOcdCustomReqInfoD0Ev at 0x01980bd0-0x01980bfa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOcdCustomReqInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdCustomReqInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdCustomReqInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,27 +62,29 @@ inline void cOcdCustomReqInfo::operator delete(void* p_addr) {
 // Address: 0x00179250 - 0x00179278 (40 bytes)
 cOcdCustomReqInfo::cOcdCustomReqInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = -1.0f;
-    this->mImmuneBoostLv = static_cast<nObjCondition::IMMUNE_BOOST_LV>(9);
-    this->mPriority = static_cast<s32>(-20000);
-    this->mIsRequest = false;
+    mActiveTime = -1.0f;
+    mImmuneBoostLv = nObjCondition::IMMUNE_BOOST_LV_INVALID;
+    mPriority = -20000;
+    mIsRequest = false;
 }
 
 // Address: 0x001792a0 - 0x001792b1 (17 bytes)
 void cOcdCustomReqInfo::copy(const cOcdCustomReqInfo& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = src.mActiveTime;
-    this->mImmuneBoostLv = src.mImmuneBoostLv;
+    mActiveTime = src.mActiveTime;
+    mImmuneBoostLv = src.mImmuneBoostLv;
 }
 
 // Address: 0x00179280 - 0x0017929a (26 bytes)
 void cOcdCustomReqInfo::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = -1.0f;
-    this->mImmuneBoostLv = static_cast<nObjCondition::IMMUNE_BOOST_LV>(9);
-    this->mPriority = static_cast<s32>(-20000);
-    this->mIsRequest = false;
+    mActiveTime = -1.0f;
+    mImmuneBoostLv = nObjCondition::IMMUNE_BOOST_LV_INVALID;
+    mPriority = -20000;
+    mIsRequest = false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdCustomReqInfo::MyDTI cOcdCustomReqInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cOcdCustomReqInfo.cpp at 0x001792c0-0x00179302 (called at cOcdCustomReqInfo.cpp:20)
@@ -92,6 +94,6 @@ void cOcdCustomReqInfo::clear() {
 // Address: 0x00179180 - 0x001791d9 (89 bytes)
 MtObject* cOcdCustomReqInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdCustomReqInfo;
+    return new (16u) cOcdCustomReqInfo;
 }
 

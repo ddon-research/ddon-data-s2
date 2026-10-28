@@ -51,8 +51,10 @@ namespace nNet { struct stClanEmblem; }
 namespace nNet { struct stEntryBoardItemInfo; }
 namespace nSessionManager { class cNetSessionManager; }
 class sGame;
+class sQuestManagerExt;
 class sSavedataExt;
 class uGUIAnnounce;
+class uGUICommunityList;
 
 // Declarations
 class sNetworkExt;
@@ -98,10 +100,14 @@ class sNetworkExt : public sNetwork
     friend class nSessionManager::cNetSessionManager;
     // inferred: sGame::initDecideCharacter names sNetworkExt::mReserveJob
     friend class sGame;
+    // inferred: sQuestManagerExt::cTimer::stopTimer names sNetworkExt::mWorldServerTime, through its enclosing class sQuestManagerExt
+    friend class sQuestManagerExt;
     // inferred: sSavedataExt::beginHddSpaceCheck names sNetworkExt::mAchievementBootup
     friend class sSavedataExt;
     // inferred: uGUIAnnounce::updateEntryBoardReady names sNetworkExt::mEntryBoardReady
     friend class uGUIAnnounce;
+    // inferred: uGUICommunityList::cTabDataActiveList::getMakeArrayDataNum names sNetworkExt::mFriendListMax, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     enum LOGIN_RNO
     {
@@ -595,6 +601,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sNetworkExt::cAchievementListener::onInitComplete at 0x7ede40-0x7ede47; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sNetworkExt::setTrophySize(u64 size) {
+    this->mTrophySize = size;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nSessionManager::cNetSessionManager* sNetworkExt::getSessionManager() {
     return this->mpSessionManager;
 }
@@ -610,7 +622,12 @@ inline cNetGameServer* sNetworkExt::getGameServer() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
+// inferred: a single inlined copy's body: the copy inlined in _ZN11sNetworkExt24getCharacterIdFromSlotNoEi at 0x7ee334-0x7ee33a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sNetworkExt::getSlot() {
+    return this->mSlotNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 sNetworkExt::getClanMemberMax() {
     return this->mClanMemberMax;
 }
@@ -624,6 +641,12 @@ inline u32 sNetworkExt::getFriendListMax() {
 // approximate: only approximate callers check this inline body
 inline u32 sNetworkExt::getGroupChatMemberMax() {
     return this->mGroupChatMemberMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x5881-0x5887; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sNetworkExt::setRecentListMax(u32 num) {
+    this->mRecentListMax = num;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -642,7 +665,19 @@ inline bool sNetworkExt::isEntryBoardReadyWait() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::load at 0x899b-0x89a1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sNetworkExt::getReserveJob() {
+    return this->mReserveJob;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool sNetworkExt::isLeaveOnTheWayBusy() {
     return this->mLeaveOnTheWayBusy;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE at 0x2f0214-0x2f021c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sNetworkExt::setLeaveOnTheWayTimer(f32 timer) {
+    this->mLeaveOnTheWayTimer = timer;
 }

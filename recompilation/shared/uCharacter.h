@@ -403,6 +403,24 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacter::checkWarpCheat at 0x89a053-0x89a05b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCharacter::setMoveVelAverage(f32 NewValue) {
+    this->mMoveVelAverage = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacter::checkWarpCheat at 0x899fcc-0x899fd8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCharacter::setMoveVelAveInter(f32 NewValue) {
+    this->mMoveVelAveInter = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::getEnemyName at 0x7a3830-0x7a3836; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 uCharacter::getNamedNo() {
+    return this->mNamedNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline const cAttackParam* uCharacter::stDmActColParam::getAttackParam() const {
     return this->mpAttackParam;

@@ -35,7 +35,7 @@ const MtDTI& cSoundParamOfs::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSoundParamOfs::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memAlloc(sz, align, ::cSoundParamOfs::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundParamOfs::DTI)->memAlloc(sz, align, cSoundParamOfs::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -50,7 +50,7 @@ inline void* cSoundParamOfs::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSoundParamOfs::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundParamOfs::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -125,6 +125,8 @@ __attribute__((weak)) void cSoundParamOfs::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // s8 cSoundParamOfs::getSubmixer();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundParamOfs::MyDTI cSoundParamOfs::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rSoundParamOfs.cpp at 0x006ef6a0-0x006ef6e2 (called at rSoundParamOfs.cpp:39)
 //   in _GLOBAL__sub_I_rSoundParamOfs.cpp at 0x006ef6a0-0x006ef6e2 (called at rSoundParamOfs.h:32)
@@ -133,7 +135,7 @@ __attribute__((weak)) void cSoundParamOfs::createProperty(MtPropertyList& s) {
 // Address: 0x006ee720 - 0x006ee78b (107 bytes)
 MtObject* cSoundParamOfs::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSoundParamOfs;
+    return new (16u) cSoundParamOfs;
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +160,7 @@ const MtDTI& rSoundParamOfs::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundParamOfs::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundParamOfs::DTI)->memAlloc(sz, align, ::rSoundParamOfs::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundParamOfs::DTI)->memAlloc(sz, align, rSoundParamOfs::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,7 +175,7 @@ inline void* rSoundParamOfs::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rSoundParamOfsD0Ev at 0x01ab1ad4-0x01ab1af3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundParamOfs::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundParamOfs::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundParamOfs::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,8 +202,10 @@ MT_CTSTR rSoundParamOfs::getExt() const {
 // Address: 0x01ab1c20 - 0x01ab1c26 (6 bytes)
 u32 rSoundParamOfs::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundParamOfs::MyDTI rSoundParamOfs::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundParamOfs.cpp at 0x006ef6e2-0x006ef71f (called at rSoundParamOfs.cpp:120)
@@ -211,7 +215,7 @@ u32 rSoundParamOfs::getDataVersion() const {
 // Address: 0x006ef3e0 - 0x006ef444 (100 bytes)
 MtObject* rSoundParamOfs::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundParamOfs;
+    return new (16u) rSoundParamOfs;
 }
 
 // Instance at 0x01ab1bd0 - 0x01ab1be6 (22 bytes) of the generic rTbl2<T>::getData

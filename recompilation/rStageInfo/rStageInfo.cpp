@@ -63,7 +63,7 @@ const MtDTI& rStageInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +107,7 @@ __attribute__((weak)) void rStageInfo::createProperty(MtPropertyList& s) {
 // Address: 0x00704580 - 0x00704585 (5 bytes)
 MtUI* rStageInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x00704590 - 0x007055e5 (4181 bytes)
@@ -149,72 +149,72 @@ __attribute__((weak)) void rStageInfo::clear() {
 // Address: 0x01ab38c0 - 0x01ab38c5 (5 bytes)
 rScheduler* rStageInfo::getScrScheduler() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprModel;
+    return mprModel;
 }
 
 // Address: 0x00704080 - 0x007040de (94 bytes)
 void rStageInfo::setScrScheduler(rScheduler* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprModel != static_cast<rScheduler*>(nullptr)) {
-        this->mprModel->::cResource::release();
-        this->mprModel = static_cast<rScheduler*>(nullptr);
+    if (mprModel != nullptr) {
+        mprModel->release();
+        mprModel = nullptr;
     }
-    if (pRes == static_cast<rScheduler*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprModel = static_cast<rScheduler*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprModel = static_cast<rScheduler*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprModel = pRes;
-        pRes->::cResource::addRef();
+        mprModel = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab38d0 - 0x01ab38d8 (8 bytes)
 rScheduler* rStageInfo::getFltScheduler() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprFilter;
+    return mprFilter;
 }
 
 // Address: 0x007040e0 - 0x0070414a (106 bytes)
 void rStageInfo::setFltScheduler(rScheduler* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprFilter != static_cast<rScheduler*>(nullptr)) {
-        this->mprFilter->::cResource::release();
-        this->mprFilter = static_cast<rScheduler*>(nullptr);
+    if (mprFilter != nullptr) {
+        mprFilter->release();
+        mprFilter = nullptr;
     }
-    if (pRes == static_cast<rScheduler*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprFilter = static_cast<rScheduler*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprFilter = static_cast<rScheduler*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprFilter = pRes;
-        pRes->::cResource::addRef();
+        mprFilter = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab38e0 - 0x01ab38eb (11 bytes)
 rCollision* rStageInfo::getScrSbc(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprScrSbc[idx];
+    return mprScrSbc[idx];
 }
 
 // Address: 0x00704150 - 0x007041d0 (128 bytes)
 void rStageInfo::setScrSbc(rCollision* pRes, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprScrSbc[idx] != static_cast<rCollision*>(nullptr)) {
-        this->mprScrSbc[idx]->::cResource::release();
-        this->mprScrSbc[idx] = static_cast<rCollision*>(nullptr);
+    if (mprScrSbc[idx] != nullptr) {
+        mprScrSbc[idx]->cResource::release();
+        mprScrSbc[idx] = nullptr;
     }
-    if (pRes == static_cast<rCollision*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprScrSbc[idx] = static_cast<rCollision*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprScrSbc[idx] = static_cast<rCollision*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprScrSbc[idx] = pRes;
-        pRes->::cResource::addRef();
+        mprScrSbc[idx] = pRes;
+        pRes->addRef();
     }
 }
 
@@ -226,30 +226,30 @@ __attribute__((weak)) void rStageInfo::setScrSbcNum(u32) {
 // Address: 0x01ab38f0 - 0x01ab38f6 (6 bytes)
 u32 rStageInfo::getScrSbcNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x01ab3910 - 0x01ab391b (11 bytes)
 rCollision* rStageInfo::getEffSbc(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprEffSbc[idx];
+    return mprEffSbc[idx];
 }
 
 // Address: 0x007041d0 - 0x00704250 (128 bytes)
 void rStageInfo::setEffSbc(rCollision* pRes, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprEffSbc[idx] != static_cast<rCollision*>(nullptr)) {
-        this->mprEffSbc[idx]->::cResource::release();
-        this->mprEffSbc[idx] = static_cast<rCollision*>(nullptr);
+    if (mprEffSbc[idx] != nullptr) {
+        mprEffSbc[idx]->cResource::release();
+        mprEffSbc[idx] = nullptr;
     }
-    if (pRes == static_cast<rCollision*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprEffSbc[idx] = static_cast<rCollision*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprEffSbc[idx] = static_cast<rCollision*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprEffSbc[idx] = pRes;
-        pRes->::cResource::addRef();
+        mprEffSbc[idx] = pRes;
+        pRes->addRef();
     }
 }
 
@@ -261,130 +261,130 @@ __attribute__((weak)) void rStageInfo::setEffSbcNum(u32) {
 // Address: 0x01ab3920 - 0x01ab3926 (6 bytes)
 u32 rStageInfo::getEffSbcNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x01ab3940 - 0x01ab3948 (8 bytes)
 rNavigationMesh* rStageInfo::getNaviMesh() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprNaviMesh;
+    return mprNaviMesh;
 }
 
 // Address: 0x00704250 - 0x007042ba (106 bytes)
 void rStageInfo::setNaviMesh(rNavigationMesh* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprNaviMesh != static_cast<rNavigationMesh*>(nullptr)) {
-        this->mprNaviMesh->::cResource::release();
-        this->mprNaviMesh = static_cast<rNavigationMesh*>(nullptr);
+    if (mprNaviMesh != nullptr) {
+        mprNaviMesh->release();
+        mprNaviMesh = nullptr;
     }
-    if (pRes == static_cast<rNavigationMesh*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprNaviMesh = static_cast<rNavigationMesh*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprNaviMesh = static_cast<rNavigationMesh*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprNaviMesh = pRes;
-        pRes->::cResource::addRef();
+        mprNaviMesh = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab3950 - 0x01ab3958 (8 bytes)
 rAIPathConsecutive* rStageInfo::getWayPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprWayPoint;
+    return mprWayPoint;
 }
 
 // Address: 0x007042c0 - 0x0070432a (106 bytes)
 void rStageInfo::setWayPoint(rAIPathConsecutive* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprWayPoint != static_cast<rAIPathConsecutive*>(nullptr)) {
-        this->mprWayPoint->::cResource::release();
-        this->mprWayPoint = static_cast<rAIPathConsecutive*>(nullptr);
+    if (mprWayPoint != nullptr) {
+        mprWayPoint->release();
+        mprWayPoint = nullptr;
     }
-    if (pRes == static_cast<rAIPathConsecutive*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprWayPoint = static_cast<rAIPathConsecutive*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprWayPoint = static_cast<rAIPathConsecutive*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprWayPoint = pRes;
-        pRes->::cResource::addRef();
+        mprWayPoint = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab3960 - 0x01ab3968 (8 bytes)
 rOccluderEx* rStageInfo::getOCC() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprOCC;
+    return mprOCC;
 }
 
 // Address: 0x00704330 - 0x0070439a (106 bytes)
 void rStageInfo::setOCC(rOccluderEx* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprOCC != static_cast<rOccluderEx*>(nullptr)) {
-        this->mprOCC->::cResource::release();
-        this->mprOCC = static_cast<rOccluderEx*>(nullptr);
+    if (mprOCC != nullptr) {
+        mprOCC->release();
+        mprOCC = nullptr;
     }
-    if (pRes == static_cast<rOccluderEx*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprOCC = static_cast<rOccluderEx*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprOCC = static_cast<rOccluderEx*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprOCC = pRes;
-        pRes->::cResource::addRef();
+        mprOCC = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab3970 - 0x01ab3978 (8 bytes)
 rStartPos* rStageInfo::getStartPos() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprStartPos;
+    return mprStartPos;
 }
 
 // Address: 0x007043a0 - 0x0070440a (106 bytes)
 void rStageInfo::setStartPos(rStartPos* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprStartPos != static_cast<rStartPos*>(nullptr)) {
-        this->mprStartPos->::cResource::release();
-        this->mprStartPos = static_cast<rStartPos*>(nullptr);
+    if (mprStartPos != nullptr) {
+        mprStartPos->release();
+        mprStartPos = nullptr;
     }
-    if (pRes == static_cast<rStartPos*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        this->mprStartPos = static_cast<rStartPos*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)));
+    if (pRes->isIntermediate()) {
+        mprStartPos = static_cast<rStartPos*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u));
     } else {
-        this->mprStartPos = pRes;
-        pRes->::cResource::addRef();
+        mprStartPos = pRes;
+        pRes->addRef();
     }
 }
 
 // Address: 0x01ab3980 - 0x01ab3988 (8 bytes)
 rCameraParamList* rStageInfo::getCmrPrmLstFld() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprCmrPrmLstFld;
+    return mprCmrPrmLstFld;
 }
 
 // Address: 0x00704410 - 0x00704495 (133 bytes)
 void rStageInfo::setCmrPrmLstFld(rCameraParamList* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCmrPrmLstFld != static_cast<rCameraParamList*>(nullptr)) {
-        this->mprCmrPrmLstFld->::cResource::release();
-        this->mprCmrPrmLstFld = static_cast<rCameraParamList*>(nullptr);
+    if (mprCmrPrmLstFld != nullptr) {
+        mprCmrPrmLstFld->release();
+        mprCmrPrmLstFld = nullptr;
     }
-    if (pRes == static_cast<rCameraParamList*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        if ((this->mprCmrPrmLstFld = static_cast<rCameraParamList*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)))) != static_cast<rCameraParamList*>(nullptr)) {
-            this->mprCmrPrmLstFld->::rCameraParamList::addPriority(static_cast<u32>(1000));
+    if (pRes->isIntermediate()) {
+        if ((mprCmrPrmLstFld = static_cast<rCameraParamList*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u))) != nullptr) {
+            mprCmrPrmLstFld->addPriority(1000u);
         }
     } else {
-        this->mprCmrPrmLstFld = pRes;
-        pRes->::cResource::addRef();
-        if (this->mprCmrPrmLstFld != static_cast<rCameraParamList*>(nullptr)) {
-            this->mprCmrPrmLstFld->::rCameraParamList::addPriority(static_cast<u32>(1000));
+        mprCmrPrmLstFld = pRes;
+        pRes->addRef();
+        if (mprCmrPrmLstFld != nullptr) {
+            mprCmrPrmLstFld->addPriority(1000u);
         }
     }
 }
@@ -392,28 +392,28 @@ void rStageInfo::setCmrPrmLstFld(rCameraParamList* pRes) {
 // Address: 0x01ab3990 - 0x01ab3998 (8 bytes)
 rCameraParamList* rStageInfo::getCmrPrmLstEvt() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprCmrPrmLstEvt;
+    return mprCmrPrmLstEvt;
 }
 
 // Address: 0x007044a0 - 0x00704525 (133 bytes)
 void rStageInfo::setCmrPrmLstEvt(rCameraParamList* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCmrPrmLstEvt != static_cast<rCameraParamList*>(nullptr)) {
-        this->mprCmrPrmLstEvt->::cResource::release();
-        this->mprCmrPrmLstEvt = static_cast<rCameraParamList*>(nullptr);
+    if (mprCmrPrmLstEvt != nullptr) {
+        mprCmrPrmLstEvt->release();
+        mprCmrPrmLstEvt = nullptr;
     }
-    if (pRes == static_cast<rCameraParamList*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isIntermediate()) {
-        if ((this->mprCmrPrmLstEvt = static_cast<rCameraParamList*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pRes), static_cast<u32>(1)))) != static_cast<rCameraParamList*>(nullptr)) {
-            this->mprCmrPrmLstEvt->::rCameraParamList::addPriority(static_cast<u32>(1000));
+    if (pRes->isIntermediate()) {
+        if ((mprCmrPrmLstEvt = static_cast<rCameraParamList*>(sResource::getInstance()->createNative(static_cast<cResource*>(pRes), 1u))) != nullptr) {
+            mprCmrPrmLstEvt->addPriority(1000u);
         }
     } else {
-        this->mprCmrPrmLstEvt = pRes;
-        pRes->::cResource::addRef();
-        if (this->mprCmrPrmLstEvt != static_cast<rCameraParamList*>(nullptr)) {
-            this->mprCmrPrmLstEvt->::rCameraParamList::addPriority(static_cast<u32>(1000));
+        mprCmrPrmLstEvt = pRes;
+        pRes->addRef();
+        if (mprCmrPrmLstEvt != nullptr) {
+            mprCmrPrmLstEvt->addPriority(1000u);
         }
     }
 }
@@ -535,73 +535,73 @@ void rStageInfo::setCmrPrmLstEvt(rCameraParamList* pRes) {
 // Address: 0x01ab39e0 - 0x01ab3a4a (106 bytes)
 void rStageInfo::setSndZoneOcclusion(rZone* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprSoundZone[0] != static_cast<rZone*>(nullptr)) {
-        this->mprSoundZone[0]->::cResource::release();
-        this->mprSoundZone[0] = static_cast<rZone*>(nullptr);
+    if (mprSoundZone[0] != nullptr) {
+        mprSoundZone[0]->cResource::release();
+        mprSoundZone[0] = nullptr;
     }
-    if (p == static_cast<rZone*>(nullptr)) {
+    if (p == nullptr) {
         return;
     }
-    if (p->::cResource::isIntermediate()) {
-        this->mprSoundZone[0] = static_cast<rZone*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(p), static_cast<u32>(1)));
+    if (p->isIntermediate()) {
+        mprSoundZone[0] = static_cast<rZone*>(sResource::getInstance()->createNative(static_cast<cResource*>(p), 1u));
     } else {
-        this->mprSoundZone[0] = p;
-        p->::cResource::addRef();
+        mprSoundZone[0] = p;
+        p->addRef();
     }
 }
 
 // Address: 0x01ab3a60 - 0x01ab3aca (106 bytes)
 void rStageInfo::setSndZoneGenerator(rZone* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprSoundZone[1] != static_cast<rZone*>(nullptr)) {
-        this->mprSoundZone[1]->::cResource::release();
-        this->mprSoundZone[1] = static_cast<rZone*>(nullptr);
+    if (mprSoundZone[1] != nullptr) {
+        mprSoundZone[1]->cResource::release();
+        mprSoundZone[1] = nullptr;
     }
-    if (p == static_cast<rZone*>(nullptr)) {
+    if (p == nullptr) {
         return;
     }
-    if (p->::cResource::isIntermediate()) {
-        this->mprSoundZone[1] = static_cast<rZone*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(p), static_cast<u32>(1)));
+    if (p->isIntermediate()) {
+        mprSoundZone[1] = static_cast<rZone*>(sResource::getInstance()->createNative(static_cast<cResource*>(p), 1u));
     } else {
-        this->mprSoundZone[1] = p;
-        p->::cResource::addRef();
+        mprSoundZone[1] = p;
+        p->addRef();
     }
 }
 
 // Address: 0x01ab3ae0 - 0x01ab3b4a (106 bytes)
 void rStageInfo::setSndZoneTrigger(rZone* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprSoundZone[2] != static_cast<rZone*>(nullptr)) {
-        this->mprSoundZone[2]->::cResource::release();
-        this->mprSoundZone[2] = static_cast<rZone*>(nullptr);
+    if (mprSoundZone[2] != nullptr) {
+        mprSoundZone[2]->cResource::release();
+        mprSoundZone[2] = nullptr;
     }
-    if (p == static_cast<rZone*>(nullptr)) {
+    if (p == nullptr) {
         return;
     }
-    if (p->::cResource::isIntermediate()) {
-        this->mprSoundZone[2] = static_cast<rZone*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(p), static_cast<u32>(1)));
+    if (p->isIntermediate()) {
+        mprSoundZone[2] = static_cast<rZone*>(sResource::getInstance()->createNative(static_cast<cResource*>(p), 1u));
     } else {
-        this->mprSoundZone[2] = p;
-        p->::cResource::addRef();
+        mprSoundZone[2] = p;
+        p->addRef();
     }
 }
 
 // Address: 0x01ab39d0 - 0x01ab39d8 (8 bytes)
 rZone* rStageInfo::getSndZoneOcclusion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprSoundZone[0];
+    return mprSoundZone[0];
 }
 
 // Address: 0x01ab3a50 - 0x01ab3a58 (8 bytes)
 rZone* rStageInfo::getSndZoneGenerator() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprSoundZone[1];
+    return mprSoundZone[1];
 }
 
 // Address: 0x01ab3ad0 - 0x01ab3ad8 (8 bytes)
 rZone* rStageInfo::getSndZoneTrigger() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprSoundZone[2];
+    return mprSoundZone[2];
 }
 
 // No out-of-line body: no code in the ELF
@@ -617,13 +617,19 @@ rZone* rStageInfo::getSndZoneTrigger() {
 //   and 8 more (every copy is in <bundle>.inlined.json)
 // rSoundAreaInfo* rStageInfo::getSoundAreaInfo();
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in aStage::loadResStageEffect at 0x00013eee-0x00013ef5 (called at aStage.cpp:7664)
-// rScheduler* rStageInfo::getEffectSchdl();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageEffect at 0x13eee-0x13ef5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rScheduler* rStageInfo::getEffectSchdl() {
+    return mprEffectSchdl.mpPtr;
+}
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in aStage::loadResStageEffect at 0x00013f86-0x00013f8d (called at aStage.cpp:7680)
-// rScheduler* rStageInfo::getLanternSchdl();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageEffect at 0x13f86-0x13f8d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rScheduler* rStageInfo::getLanternSchdl() {
+    return mprLanternSchdl.mpPtr;
+}
 
 // No out-of-line body: 2 inlined copies in 2 functions (18 bytes)
 //   in aStage::load at 0x00009cfe-0x00009d07 (called at aStage.cpp:2015)
@@ -655,7 +661,7 @@ __attribute__((weak)) void rStageInfo::setAnotherMapName(const MtString& inputNa
 // Address: 0x00704530 - 0x00704538 (8 bytes)
 MT_CTSTR rStageInfo::getAnotherMapName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mAnotherMapName[0];
+    return &mAnotherMapName[0];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -681,17 +687,17 @@ MT_CTSTR rStageInfo::getAnotherMapName() const {
 // Address: 0x007066c0 - 0x007066d2 (18 bytes)
 rZone* rStageInfo::getZone(nStage::STG_ZONE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<int>(3)) {
-        return this->mpZoneList[type].mpPtr;
+    if (type <= 3) {
+        return mpZoneList[type].mpPtr;
     } else {
-        return static_cast<rZone*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01ab39a0 - 0x01ab39a8 (8 bytes)
 rZone* rStageInfo::getZoneIndoorScr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpZoneIndoorScr.mpPtr;
+    return mpZoneIndoorScr.mpPtr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -701,10 +707,10 @@ rZone* rStageInfo::getZoneIndoorScr() {
 // Address: 0x007066e0 - 0x007066f2 (18 bytes)
 rZone* rStageInfo::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<int>(2)) {
-        return this->mpZoneUnitCtrl[type].mpPtr;
+    if (type <= 2) {
+        return mpZoneUnitCtrl[type].mpPtr;
     } else {
-        return static_cast<rZone*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -754,6 +760,8 @@ rZone* rStageInfo::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) {
 
 // No out-of-line body: no code in the ELF
 // rZone* rStageInfo::getZoneLight();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageInfo::MyDTI rStageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageInfo.cpp at 0x0070670f-0x0070674c (called at rStageInfo.cpp:46)

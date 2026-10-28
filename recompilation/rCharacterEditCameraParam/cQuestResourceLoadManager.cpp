@@ -26,7 +26,7 @@ const MtDTI& cQuestResourceLoadManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestResourceLoadManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cQuestResourceLoadManager::getAllocator() {
 // Address: 0x001b6e00 - 0x001b6e40 (64 bytes)
 void* cQuestResourceLoadManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestResourceLoadManager::getAllocator()->memAlloc(sz, align, ::cQuestResourceLoadManager::DTI.::MtDTI::getID());
+    return cQuestResourceLoadManager::getAllocator()->memAlloc(sz, align, cQuestResourceLoadManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cQuestResourceLoadManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestResourceLoadManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ __attribute__((weak)) void cQuestResourceLoadManager::addQuestId(cQuestResourceL
 // Address: 0x001b70b0 - 0x001b70ba (10 bytes)
 void cQuestResourceLoadManager::setClass(cQuestResourceLoadManager::cLoadTask* pTask, MtObject* pClass) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pTask == static_cast<cQuestResourceLoadManager::cLoadTask*>(nullptr)) {
+    if (pTask == nullptr) {
         return;
     }
     pTask->mpClass = pClass;
@@ -130,40 +130,42 @@ cQuestResourceLoadManager::cQuestResourceLoadManager() {
 // Also emitted as: _ZN25cQuestResourceLoadManagerD0Ev at 0x001b76b0
 cQuestResourceLoadManager::~cQuestResourceLoadManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mLoadTasks.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mLoadTasks.mLength != 0) {
         // inferred: the value the loop at 0x1b7630 carries; no location-less local in scope fits
-        u32 v0_0 = this->mLoadTasks.::MtArray::mLength;
+        u32 v0_0 = mLoadTasks.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mLoadTasks.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mLoadTasks.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mLoadTasks.::MtArray::mLength) {
-                    v0_0 = this->mLoadTasks.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mLoadTasks.mpArray[i0_3] != nullptr) {
+                delete mLoadTasks.mpArray[i0_3];
+                if ((i0_3 + 1u) < mLoadTasks.mLength) {
+                    v0_0 = mLoadTasks.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mLoadTasks.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mLoadTasks.::MtArray::mpArray));
+    if (mLoadTasks.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLoadTasks.mpArray));
     }
-    this->mLoadTasks.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mLoadTasks.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mLoadTasks.::MtArray::mLength = static_cast<u32>(0);
+    mLoadTasks.mpArray = nullptr;
+    mLoadTasks.mBufsiz = 0;
+    mLoadTasks.mLength = 0;
 }
 
 // Address: 0x001b7770 - 0x001b7771 (1 bytes)
 __attribute__((weak)) void cQuestResourceLoadManager::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestResourceLoadManager::MyDTI cQuestResourceLoadManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cQuestResourceLoadManager.cpp at 0x001b7ade-0x001b7b1b (called at cQuestResourceLoadManager.cpp:89)
@@ -200,7 +202,7 @@ const MtDTI& cQuestResourceLoadManager::cLoadTask::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestResourceLoadManager::cLoadTask::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::cLoadTask::DTI)->memAlloc(sz, align, ::cQuestResourceLoadManager::cLoadTask::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::cLoadTask::DTI)->memAlloc(sz, align, cQuestResourceLoadManager::cLoadTask::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,7 +217,7 @@ inline void* cQuestResourceLoadManager::cLoadTask::operator new(size_t sz, u32 a
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestResourceLoadManager::cLoadTask::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::cLoadTask::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::cLoadTask::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -277,14 +279,43 @@ __attribute__((weak)) void cQuestResourceLoadManager::cLoadTask::addQuestId(nQue
 // Address: 0x001b78a0 - 0x001b793d (157 bytes)
 // Also emitted as: _ZN25cQuestResourceLoadManager9cLoadTaskD0Ev at 0x001b7940
 cQuestResourceLoadManager::cLoadTask::~cLoadTask() {
-    DDON_STUB("cQuestResourceLoadManager::cLoadTask::~cLoadTask")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mQuestIds.mLength != 0) {
+        // inferred: the value the loop at 0x1b78d0 carries; no location-less local in scope fits
+        u32 v0_0 = mQuestIds.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestIds.mpArray[i0_3] != nullptr) {
+                delete mQuestIds.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuestIds.mLength) {
+                    v0_0 = mQuestIds.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mQuestIds.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestIds.mpArray));
+    }
+    mQuestIds.mpArray = nullptr;
+    mQuestIds.mBufsiz = 0;
+    mQuestIds.mLength = 0;
 }
 
 // Address: 0x001b7a00 - 0x001b7a01 (1 bytes)
 __attribute__((weak)) void cQuestResourceLoadManager::cLoadTask::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestResourceLoadManager::cLoadTask::MyDTI cQuestResourceLoadManager::cLoadTask::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cQuestResourceLoadManager.cpp at 0x001b7b1b-0x001b7b58 (called at cQuestResourceLoadManager.cpp:287)
@@ -294,7 +325,7 @@ __attribute__((weak)) void cQuestResourceLoadManager::cLoadTask::createProperty(
 // Address: 0x001b7780 - 0x001b7815 (149 bytes)
 MtObject* cQuestResourceLoadManager::cLoadTask::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestResourceLoadManager::cLoadTask;
+    return new (16u) cQuestResourceLoadManager::cLoadTask;
 }
 
 // Instance at 0x01982990 - 0x01982995 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

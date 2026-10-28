@@ -51,7 +51,7 @@ const MtDTI& cEmSoundTable::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmSoundTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmSoundTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -81,6 +81,8 @@ __attribute__((weak)) void cEmSoundTable::createProperty(MtPropertyList& s) {
     DDON_STUB("cEmSoundTable::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmSoundTable::MyDTI cEmSoundTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmSoundTable.cpp at 0x00669ef0-0x00669f32 (called at rEmSoundTable.cpp:23)
@@ -115,7 +117,7 @@ const MtDTI& rEmSoundTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmSoundTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmSoundTable::DTI)->memAlloc(sz, align, ::rEmSoundTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmSoundTable::DTI)->memAlloc(sz, align, rEmSoundTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rEmSoundTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rEmSoundTableD0Ev at 0x01a88974-0x01a88993, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmSoundTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmSoundTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmSoundTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,22 +149,22 @@ bool rEmSoundTable::loadData(MtDataReader& in, cEmSoundTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIdx);
+    nDDOIO::readData(in, pData->mIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSoundResNo);
+    nDDOIO::readData(in, pData->mSoundResNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSoundNo);
+    nDDOIO::readData(in, pData->mSoundNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAttachFlag);
+    nDDOIO::readData(in, pData->mAttachFlag);
     pData->mRequestType = in.readU32();
     pData->mBoneNo = in.readS32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetPos = in.readV3();
-    ::nDDOIO::readData(in, pData->mDieIsNoCall);
+    nDDOIO::readData(in, pData->mDieIsNoCall);
     return true;
 }
 
@@ -175,8 +177,10 @@ MT_CTSTR rEmSoundTable::getExt() const {
 // Address: 0x01a88ac0 - 0x01a88ac6 (6 bytes)
 u32 rEmSoundTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(261);
+    return 261;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmSoundTable::MyDTI rEmSoundTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmSoundTable.cpp at 0x00669f32-0x00669f6f (called at rEmSoundTable.cpp:111)
@@ -186,7 +190,7 @@ u32 rEmSoundTable::getDataVersion() const {
 // Address: 0x00669e10 - 0x00669e74 (100 bytes)
 MtObject* rEmSoundTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmSoundTable;
+    return new (16u) rEmSoundTable;
 }
 
 // Instance at 0x01a88a70 - 0x01a88a82 (18 bytes) of the generic rTbl2<T>::getData

@@ -115,6 +115,8 @@ __attribute__((weak)) void cSetInfoNpc::copy(cSetInfo* p) {
 // No out-of-line body: no code in the ELF
 // void cSetInfoNpc::setNpcId(s32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoNpc::MyDTI cSetInfoNpc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSetInfoNpc.cpp at 0x0055ff7f-0x0055ffbc (called at cSetInfoNpc.cpp:35)
 //   in _GLOBAL__sub_I_cSetInfoNpc.cpp at 0x0055ff7f-0x0055ffbc (called at cSetInfoNpc.h:26)

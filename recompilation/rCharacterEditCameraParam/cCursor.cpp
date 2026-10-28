@@ -32,7 +32,7 @@ const MtDTI& cCursor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCursor::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCursor::DTI)->memAlloc(sz, align, ::cCursor::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCursor::DTI)->memAlloc(sz, align, cCursor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cCursor::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCursor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCursor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCursor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,15 +61,15 @@ inline void cCursor::operator delete(void* p_addr) {
 // Address: 0x00071d20 - 0x00071d4a (42 bytes)
 cCursor::cCursor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsClamp = false;
-    this->mIsStop = false;
-    this->mIsLoop = false;
-    this->mIsTrg = false;
-    this->mIsArrowOnly = false;
-    this->mMaxY = static_cast<s32>(0);
-    this->mMinY = static_cast<s32>(0);
-    this->mMaxX = static_cast<s32>(0);
-    this->mMinX = static_cast<s32>(0);
+    mIsClamp = false;
+    mIsStop = false;
+    mIsLoop = false;
+    mIsTrg = false;
+    mIsArrowOnly = false;
+    mMaxY = 0;
+    mMinY = 0;
+    mMaxX = 0;
+    mMinX = 0;
 }
 
 // Address: 0x00071d50 - 0x00071d51 (1 bytes)
@@ -85,15 +85,25 @@ __attribute__((weak)) void cCursor::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x000723e0 - 0x000723f9 (25 bytes)
-__attribute__((weak)) void cCursor::setupX(s32 min, s32 max, bool loop, bool trg, bool arrowOnly, bool clamp) {
-    DDON_STUB("cCursor::setupX")
-    /* stub */
+void cCursor::setupX(s32 min, s32 max, bool loop, bool trg, bool arrowOnly, bool clamp) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mMinX = min;
+    mMaxX = max;
+    mIsLoop = loop;
+    mIsTrg = trg;
+    mIsArrowOnly = arrowOnly;
+    mIsClamp = clamp;
 }
 
 // Address: 0x00072400 - 0x00072419 (25 bytes)
-__attribute__((weak)) void cCursor::setupY(s32 min, s32 max, bool loop, bool trg, bool arrowOnly, bool clamp) {
-    DDON_STUB("cCursor::setupY")
-    /* stub */
+void cCursor::setupY(s32 min, s32 max, bool loop, bool trg, bool arrowOnly, bool clamp) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mMinY = min;
+    mMaxY = max;
+    mIsLoop = loop;
+    mIsTrg = trg;
+    mIsArrowOnly = arrowOnly;
+    mIsClamp = clamp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,6 +137,8 @@ __attribute__((weak)) s32 cCursor::updateY(s32& cursor) {
 // No out-of-line body: no code in the ELF
 // bool cCursor::isStop();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCursor::MyDTI cCursor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCursor.cpp at 0x0007285f-0x0007289c (called at cCursor.cpp:31)
 //   in _GLOBAL__sub_I_cCursor.cpp at 0x0007285f-0x0007289c (called at cCursor.h:24)
@@ -135,6 +147,6 @@ __attribute__((weak)) s32 cCursor::updateY(s32& cursor) {
 // Address: 0x00071c50 - 0x00071cab (91 bytes)
 MtObject* cCursor::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCursor;
+    return new (16u) cCursor;
 }
 

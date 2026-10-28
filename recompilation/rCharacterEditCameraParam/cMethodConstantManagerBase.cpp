@@ -105,8 +105,8 @@ cMethodConstantTimeName::cMethodConstantBase::cMethodConstantBase() {
 bool cMethodConstantTimeName::cMethodConstantBase::checkTimer() {
     // DWARF local not rendered: f32 t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (0.0f >= (this->mTimerMax - this->mTimer)) {
-        this->mTimer = this->mTimer - this->mTimerMax;
+    if (0.0f >= (mTimerMax - mTimer)) {
+        mTimer = mTimer - mTimerMax;
         return true;
     } else {
         return false;
@@ -118,6 +118,8 @@ __attribute__((weak)) bool cMethodConstantTimeName::cMethodConstantBase::update(
     DDON_STUB("cMethodConstantTimeName::cMethodConstantBase::update")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMethodConstantTimeName::cMethodConstantBase::MyDTI cMethodConstantTimeName::cMethodConstantBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cMethodConstantManagerBase.cpp at 0x002dbb40-0x002dbb84 (called at cMethodConstantManagerBase.cpp:27)
@@ -221,6 +223,8 @@ __attribute__((weak)) cMethodConstantTimeName::cMethodConstantBase* cMethodConst
     DDON_STUB("cMethodConstantTimeName::cMethodConstantManagerBase::setRepeatMethd")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMethodConstantTimeName::cMethodConstantManagerBase::MyDTI cMethodConstantTimeName::cMethodConstantManagerBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMethodConstantManagerBase.cpp at 0x002dbb84-0x002dbbbd (called at cMethodConstantManagerBase.cpp:28)

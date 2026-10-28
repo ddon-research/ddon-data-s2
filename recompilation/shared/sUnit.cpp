@@ -119,7 +119,7 @@ __attribute__((weak)) void sUnit::sync() {
 // Address: 0x012ab850 - 0x012ab855 (5 bytes)
 MtUI* sUnit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x012ab860 - 0x012abadf (639 bytes)
@@ -131,12 +131,12 @@ __attribute__((weak)) void sUnit::createProperty(MtPropertyList& s) {
 // Address: 0x012abae0 - 0x012abb42 (98 bytes)
 void sUnit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if ((::sUnit::mpInstance)->mLineNum != static_cast<u32>(0)) {
+    u32 i = 0;
+    if ((sUnit::mpInstance)->mLineNum != 0) {
         do {
-            this->applyWorldOffset(offset, static_cast<MOVE_LINE>(i), absolute_offset);
-            i += static_cast<u32>(1);
-        } while (i < (::sUnit::mpInstance)->mLineNum);
+            applyWorldOffset(offset, static_cast<MOVE_LINE>(i), absolute_offset);
+            i += 1u;
+        } while (i < (sUnit::mpInstance)->mLineNum);
     }
 }
 
@@ -252,18 +252,16 @@ __attribute__((weak)) void sUnit::applyWorldOffset(const MtVector3& offset, MOVE
 // Address: 0x012ab4c0 - 0x012ab5e3 (291 bytes)
 bool sUnit::remove(cUnit* punit) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (punit != static_cast<cUnit*>(nullptr)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (punit != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        if (punit->mMoveLine == static_cast<u32>(127)) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+        if (punit->mMoveLine == 127) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return false;
@@ -272,30 +270,29 @@ bool sUnit::remove(cUnit* punit) {
             cUnit* t0 = punit->mpNextUnit;
             // inferred: a temporary for the value the load at 0x12ab535 read, used 3 times; no DWARF local holds it
             cUnit* t1 = punit->mpPrevUnit;
-            if (t1 != static_cast<cUnit*>(nullptr)) {
+            if (t1 != nullptr) {
                 t1->mpNextUnit = t0;
-                if (punit->mpNextUnit != static_cast<cUnit*>(nullptr)) {
+                if (punit->mpNextUnit != nullptr) {
                     punit->mpNextUnit->mpPrevUnit = t1;
                 } else {
-                    this->mMoveLine[punit->mMoveLine].mpBottom = t1;
+                    mMoveLine[punit->mMoveLine].mpBottom = t1;
                 }
             } else {
-                this->mMoveLine[punit->mMoveLine].mpTop = t0;
-                if (t0 != static_cast<cUnit*>(nullptr)) {
+                mMoveLine[punit->mMoveLine].mpTop = t0;
+                if (t0 != nullptr) {
                     t0->mpPrevUnit = t1;
                 } else {
-                    this->mMoveLine[punit->mMoveLine].mpBottom = t1;
+                    mMoveLine[punit->mMoveLine].mpBottom = t1;
                 }
             }
-            punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
-            punit->mpNextUnit = static_cast<cUnit*>(nullptr);
-            punit->mMoveLine = static_cast<u32>(127);
-            this->::sUnit::removeUnitGroupAll(punit);
-            this->evRemoveUnit(*punit);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            punit->mpPrevUnit = nullptr;
+            punit->mpNextUnit = nullptr;
+            punit->mMoveLine = 127;
+            removeUnitGroupAll(punit);
+            evRemoveUnit(*punit);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
@@ -309,52 +306,51 @@ bool sUnit::remove(cUnit* punit) {
 bool sUnit::addTop(MOVE_LINE n, cUnit* punit, u64 groupbit) {
     // DWARF local not rendered: MoveLine* pl;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (punit != static_cast<cUnit*>(nullptr)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (punit != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
             // inferred: a temporary for the value the load at 0x12abbb5 read, used 3 times; no DWARF local holds it
-            cUnit* t0 = this->mMoveLine[n].mpTop;
-            if (t0 != static_cast<cUnit*>(nullptr)) {
+            cUnit* t0 = mMoveLine[n].mpTop;
+            if (t0 != nullptr) {
                 t0->mpPrevUnit = punit;
             }
             punit->mpNextUnit = t0;
-            punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
-            this->mMoveLine[n].mpTop = punit;
-            if (this->mMoveLine[n].mpBottom == static_cast<cUnit*>(nullptr)) {
-                this->mMoveLine[n].mpBottom = punit;
-                punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpPrevUnit = nullptr;
+            mMoveLine[n].mpTop = punit;
+            if (mMoveLine[n].mpBottom == nullptr) {
+                mMoveLine[n].mpBottom = punit;
+                punit->mpNextUnit = nullptr;
             }
             punit->mMoveLine = n;
-            this->::sUnit::setUnitGroupBit(punit, groupbit);
-            this->evAddUnit(*punit);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            setUnitGroupBit(punit, groupbit);
+            evAddUnit(*punit);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
         } else {
             // inferred: a temporary for the value the load at 0x12abbb5 read, used 3 times; no DWARF local holds it
-            cUnit* t0 = this->mMoveLine[n].mpTop;
-            if (t0 != static_cast<cUnit*>(nullptr)) {
+            cUnit* t0 = mMoveLine[n].mpTop;
+            if (t0 != nullptr) {
                 t0->mpPrevUnit = punit;
             }
             punit->mpNextUnit = t0;
-            punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
-            this->mMoveLine[n].mpTop = punit;
-            if (this->mMoveLine[n].mpBottom == static_cast<cUnit*>(nullptr)) {
-                this->mMoveLine[n].mpBottom = punit;
-                punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpPrevUnit = nullptr;
+            mMoveLine[n].mpTop = punit;
+            if (mMoveLine[n].mpBottom == nullptr) {
+                mMoveLine[n].mpBottom = punit;
+                punit->mpNextUnit = nullptr;
             }
             punit->mMoveLine = n;
-            this->::sUnit::setUnitGroupBit(punit, groupbit);
-            this->evAddUnit(*punit);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            setUnitGroupBit(punit, groupbit);
+            evAddUnit(*punit);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
@@ -371,52 +367,51 @@ bool sUnit::addTop(MOVE_LINE n, cUnit* punit, u64 groupbit) {
 __attribute__((weak)) bool sUnit::addBottom(MOVE_LINE n, cUnit* punit, u64 groupbit) {
     // DWARF local not rendered: MoveLine* pl;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (punit != static_cast<cUnit*>(nullptr)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (punit != nullptr) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
             // inferred: a temporary for the value the load at 0x12aa585 read, used 3 times; no DWARF local holds it
-            cUnit* t0 = this->mMoveLine[n].mpBottom;
-            if (t0 != static_cast<cUnit*>(nullptr)) {
+            cUnit* t0 = mMoveLine[n].mpBottom;
+            if (t0 != nullptr) {
                 t0->mpNextUnit = punit;
             }
-            punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpNextUnit = nullptr;
             punit->mpPrevUnit = t0;
-            this->mMoveLine[n].mpBottom = punit;
-            if (this->mMoveLine[n].mpTop == static_cast<cUnit*>(nullptr)) {
-                this->mMoveLine[n].mpTop = punit;
-                punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            mMoveLine[n].mpBottom = punit;
+            if (mMoveLine[n].mpTop == nullptr) {
+                mMoveLine[n].mpTop = punit;
+                punit->mpPrevUnit = nullptr;
             }
             punit->mMoveLine = n;
-            this->::sUnit::setUnitGroupBit(punit, groupbit);
-            this->evAddUnit(*punit);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            setUnitGroupBit(punit, groupbit);
+            evAddUnit(*punit);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
         } else {
             // inferred: a temporary for the value the load at 0x12aa585 read, used 3 times; no DWARF local holds it
-            cUnit* t0 = this->mMoveLine[n].mpBottom;
-            if (t0 != static_cast<cUnit*>(nullptr)) {
+            cUnit* t0 = mMoveLine[n].mpBottom;
+            if (t0 != nullptr) {
                 t0->mpNextUnit = punit;
             }
-            punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpNextUnit = nullptr;
             punit->mpPrevUnit = t0;
-            this->mMoveLine[n].mpBottom = punit;
-            if (this->mMoveLine[n].mpTop == static_cast<cUnit*>(nullptr)) {
-                this->mMoveLine[n].mpTop = punit;
-                punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            mMoveLine[n].mpBottom = punit;
+            if (mMoveLine[n].mpTop == nullptr) {
+                mMoveLine[n].mpTop = punit;
+                punit->mpPrevUnit = nullptr;
             }
             punit->mMoveLine = n;
-            this->::sUnit::setUnitGroupBit(punit, groupbit);
-            this->evAddUnit(*punit);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            setUnitGroupBit(punit, groupbit);
+            evAddUnit(*punit);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
@@ -429,10 +424,10 @@ __attribute__((weak)) bool sUnit::addBottom(MOVE_LINE n, cUnit* punit, u64 group
 // Address: 0x012abe60 - 0x012abe78 (24 bytes)
 bool sUnit::addBottom(MOVE_LINE n, cUnit* punit, const cUnit* pSrcUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSrcUnit != static_cast<const cUnit*>(nullptr)) {
-        return this->::sUnit::addBottom(n, punit, pSrcUnit->mUnitGroup);
+    if (pSrcUnit != nullptr) {
+        return addBottom(n, punit, pSrcUnit->mUnitGroup);
     } else {
-        return this->::sUnit::addBottom(n, punit, static_cast<u64>(0));
+        return addBottom(n, punit, 0ul);
     }
 }
 
@@ -446,26 +441,26 @@ bool sUnit::addBottom(MOVE_LINE n, cUnit* punit, const cUnit* pSrcUnit) {
 s32 sUnit::getUnitNum(MOVE_LINE n) {
     // DWARF local not rendered: s32 count;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12ac036 carries
-    cUnit* punit = this->mMoveLine[n].mpTop;
+    cUnit* punit = mMoveLine[n].mpTop;
     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int i0_3 = static_cast<unsigned int>(0);
+    unsigned int i0_3 = 0;
     for (;;) {
-        if (punit == static_cast<cUnit*>(nullptr)) {
+        if (punit == nullptr) {
             break;
         } else {
             punit = punit->mpNextUnit;
-            i0_3 += static_cast<unsigned int>(1);
+            i0_3 += 1u;
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     return static_cast<s32>(i0_3);
@@ -477,26 +472,26 @@ s32 sUnit::getUnitNum(MOVE_LINE n) {
 // Address: 0x012ac080 - 0x012ac10e (142 bytes)
 void sUnit::killAll(MOVE_LINE n) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
     // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12ac0c4 carries
-    for (cUnit* punit = this->mMoveLine[n].mpTop;;) {
-        if (punit == static_cast<cUnit*>(nullptr)) {
+    for (cUnit* punit = mMoveLine[n].mpTop;;) {
+        if (punit == nullptr) {
             break;
         } else {
-            if ((punit->mBeFlag - static_cast<u32>(3)) > static_cast<u32>(1)) {
+            if ((punit->mBeFlag - 3u) > 1u) {
                 punit->kill();
             }
             punit = punit->mpNextUnit;
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -506,39 +501,39 @@ void sUnit::killAll(MOVE_LINE n) {
 void sUnit::killAll() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
-    if ((::sUnit::mpInstance)->mLineNum != static_cast<u32>(0)) {
+    if ((sUnit::mpInstance)->mLineNum != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_8 = static_cast<unsigned int>(0);
+        unsigned int i0_8 = 0;
         // inferred: DWARF's location-less 'punit' (lexical block [0x12ac159, 0x12ac1a5)) is the value the loop at 0x12ac184 carries
         cUnit* punit;
         for (;;) {
-            punit = this->mMoveLine[i0_8].mpTop;
+            punit = mMoveLine[i0_8].mpTop;
             for (;;) {
-                if (punit == static_cast<cUnit*>(nullptr)) {
+                if (punit == nullptr) {
                     break;
                 } else {
-                    if ((punit->mBeFlag - static_cast<u32>(3)) > static_cast<u32>(1)) {
+                    if ((punit->mBeFlag - 3u) > 1u) {
                         punit->kill();
                     }
                     punit = punit->mpNextUnit;
                 }
             }
-            if ((i0_8 + static_cast<unsigned int>(1)) < (::sUnit::mpInstance)->mLineNum) {
-                i0_8 += static_cast<unsigned int>(1);
+            if ((i0_8 + 1u) < (sUnit::mpInstance)->mLineNum) {
+                i0_8 += 1u;
             } else {
                 break;
             }
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -593,10 +588,9 @@ __attribute__((weak)) void sUnit::forceFlushDrawCommandCache() {
 void sUnit::updateDrawCommandCache() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mbDrawCommandCacheEnableUpdate == this->mbDrawCommandCacheEnable) {
-    } else {
-        this->mbDrawCommandCacheEnable = this->mbDrawCommandCacheEnableUpdate;
-        this->forceFlushDrawCommandCache();
+    if (mbDrawCommandCacheEnableUpdate != mbDrawCommandCacheEnable) {
+        mbDrawCommandCacheEnable = mbDrawCommandCacheEnableUpdate;
+        forceFlushDrawCommandCache();
     }
 }
 
@@ -636,7 +630,7 @@ __attribute__((weak)) void sUnit::setUnitGroupBit(cUnit* punit, u64 groupbit) {
 // Address: 0x012ac360 - 0x012ac382 (34 bytes)
 void sUnit::setDefaultUnitGroup(cUnit* punit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (punit == static_cast<cUnit*>(nullptr)) {
+    if (punit == nullptr) {
         return;
     }
     punit->mUnitGroup = punit->getDefaultUnitGroup();
@@ -679,8 +673,8 @@ __attribute__((weak)) bool sUnit::isGroupMove(const cUnit* punit) const {
 bool sUnit::isGroupMove(u32 group) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (group < this->mGroupCount) {
-        return ((static_cast<unsigned long>(this->mGroupMoveFlag) >> static_cast<unsigned long>(group & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    if (group < mGroupCount) {
+        return ((static_cast<unsigned long>(mGroupMoveFlag) >> static_cast<unsigned long>(group & 63u)) & 1ul) != 0;
     } else {
         return false;
     }
@@ -695,10 +689,10 @@ bool sUnit::isGroupMove(u32 group) const {
 // Address: 0x012ac690 - 0x012ac6ad (29 bytes)
 const MtArray* sUnit::getGroupArray(u32 group) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (group < this->mGroupCount) {
-        return &this->mUnitGroup[group].mUnits;
+    if (group < mGroupCount) {
+        return &mUnitGroup[group].mUnits;
     } else {
-        return static_cast<const MtArray*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -805,19 +799,19 @@ u32 sUnit::getMoveLineId(u32 i) {
 // Address: 0x01ba94d0 - 0x01ba94d4 (4 bytes)
 u32 sUnit::getNextMoveLineId(u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return i + static_cast<u32>(1);
+    return i + 1u;
 }
 
 // Address: 0x01ba94e0 - 0x01ba94e4 (4 bytes)
 u32 sUnit::getPrevMoveLineId(u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return i - static_cast<u32>(1);
+    return i - 1u;
 }
 
 // Address: 0x01ba94f0 - 0x01ba94f9 (9 bytes)
 u32 sUnit::getLastMoveLineId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLineNum - static_cast<u32>(1);
+    return mLineNum - 1u;
 }
 
 // Address: 0x01ba9500 - 0x01ba9503 (3 bytes)
@@ -830,32 +824,37 @@ u32 sUnit::getMoveLineOrder(u32 i) {
 void sUnit::updateHardwareDispCtrl() {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    u32 LineNum = this->mLineNum;
-    if (LineNum != static_cast<u32>(0)) {
+    u32 LineNum = mLineNum;
+    if (LineNum != 0) {
         // inferred: DWARF's location-less 'LineIdx' (lexical block [0x12acae8, 0x12acb28)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 LineIdx = static_cast<u32>(0);
+        u32 LineIdx = 0;
         // inferred: DWARF's location-less 'pUnit' (lexical block [0x12acaed, 0x12acb1a)) is the value the loop at 0x12acb04 carries
         cUnit* pUnit;
         for (;;) {
-            pUnit = this->mMoveLine[LineIdx].mpTop;
+            pUnit = mMoveLine[LineIdx].mpTop;
             for (;;) {
-                if (pUnit == static_cast<cUnit*>(nullptr)) {
+                if (pUnit == nullptr) {
                     break;
                 } else {
-                    if (pUnit->mpHardwareDispCtrl != static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+                    if (pUnit->mpHardwareDispCtrl != nullptr) {
                         pUnit->mpHardwareDispCtrl->update();
                     }
                     pUnit = pUnit->mpNextUnit;
                 }
             }
-            if (LineNum != (LineIdx + static_cast<u32>(1))) {
-                LineIdx = LineIdx + static_cast<u32>(1);
+            if (LineNum != (LineIdx + 1u)) {
+                LineIdx = LineIdx + 1u;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sUnit::MyDTI sUnit::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sUnit* sUnit::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sUnit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -899,7 +898,7 @@ const MtDTI& sUnit::MoveLine::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5sUnit8MoveLineD0Ev at 0x01ba9440-0x01ba946a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sUnit::MoveLine::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sUnit::MoveLine::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sUnit::MoveLine::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -923,55 +922,55 @@ __attribute__((weak)) void sUnit::MoveLine::createProperty(MtPropertyList& s) {
 // Address: 0x012aa520 - 0x012aa525 (5 bytes)
 MtUI* sUnit::MoveLine::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x012aa4c0 - 0x012aa4e2 (34 bytes)
 cUnit* sUnit::MoveLine::getUnit(u32 index) {
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpTop != static_cast<cUnit*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpTop != nullptr) {
         // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12aa4d0 carries
-        cUnit* punit = this->mpTop;
+        cUnit* punit = mpTop;
         // inferred: the value the loop at 0x12aa4d0 carries; no location-less local in scope fits
-        for (u32 v0_1 = index + static_cast<u32>(1);;) {
-            if ((v0_1 - static_cast<u32>(1)) == static_cast<u32>(0)) {
+        for (u32 v0_1 = index + 1u;;) {
+            if ((v0_1 - 1u) == 0) {
                 return punit;
             } else {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
-                    punit = reinterpret_cast<cUnit*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24)));
-                    v0_1 += static_cast<u32>(4294967295);
+                if (punit->mpNextUnit != nullptr) {
+                    punit = punit->mpNextUnit;
+                    v0_1 += 0xFFFFFFFFu;
                 } else {
                     break;
                 }
             }
         }
     }
-    return static_cast<cUnit*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x012aa4f0 - 0x012aa51b (43 bytes)
 void sUnit::MoveLine::setUnit(cUnit* punit, u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (punit == static_cast<cUnit*>(nullptr)) {
+    if (punit == nullptr) {
         return;
     }
-    (::sUnit::mpInstance)->::sUnit::addBottom(static_cast<MOVE_LINE>(this->mLineType), punit, static_cast<u64>(0));
+    (sUnit::mpInstance)->sUnit::addBottom(static_cast<MOVE_LINE>(mLineType), punit, 0ul);
 }
 
 // Address: 0x012aa4a0 - 0x012aa4bc (28 bytes)
 u32 sUnit::MoveLine::getCount() {
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12aa4b6 carries
-    for (cUnit* punit = this->mpTop;;) {
-        if (punit == static_cast<cUnit*>(nullptr)) {
+    for (cUnit* punit = mpTop;;) {
+        if (punit == nullptr) {
             break;
         } else {
-            i0_0 += static_cast<unsigned int>(1);
-            punit = reinterpret_cast<cUnit*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24)));
+            i0_0 += 1u;
+            punit = punit->mpNextUnit;
         }
     }
     return i0_0;
@@ -985,73 +984,73 @@ __attribute__((weak)) void sUnit::MoveLine::setCount(u32) {
 // Address: 0x01ba9270 - 0x01ba9277 (7 bytes)
 bool sUnit::MoveLine::isParallel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParallel;
+    return mParallel;
 }
 
 // Address: 0x01ba9280 - 0x01ba9290 (16 bytes)
 void sUnit::MoveLine::setParallel(bool p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParallel = p;
+    mParallel = p;
 }
 
 // Address: 0x01ba9290 - 0x01ba9298 (8 bytes)
 bool sUnit::MoveLine::isPause() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPause;
+    return mPause;
 }
 
 // Address: 0x01ba92a0 - 0x01ba92b2 (18 bytes)
 void sUnit::MoveLine::setPause(bool pause) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPause = pause;
+    mPause = pause;
 }
 
 // Address: 0x01ba92c0 - 0x01ba92c9 (9 bytes)
 bool sUnit::MoveLine::isDraw() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDraw;
+    return mDraw;
 }
 
 // Address: 0x01ba92d0 - 0x01ba92e3 (19 bytes)
 void sUnit::MoveLine::setDraw(bool t) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDraw = t;
+    mDraw = t;
 }
 
 // Address: 0x01ba92f0 - 0x01ba92f6 (6 bytes)
 f32 sUnit::MoveLine::getDeltaTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTime;
+    return mDeltaTime;
 }
 
 // Address: 0x01ba9260 - 0x01ba9266 (6 bytes)
 void sUnit::MoveLine::setDeltaTime(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTime = NewValue;
+    mDeltaTime = NewValue;
 }
 
 // Address: 0x01ba9320 - 0x01ba9335 (21 bytes)
 void sUnit::MoveLine::setCastDraw(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCastDraw = b;
+    mCastDraw = b;
 }
 
 // Address: 0x01ba9310 - 0x01ba9317 (7 bytes)
 bool sUnit::MoveLine::getCastDraw() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCastDraw;
+    return mCastDraw;
 }
 
 // Address: 0x01ba9350 - 0x01ba9365 (21 bytes)
 void sUnit::MoveLine::setRecvDraw(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRecvDraw = b;
+    mRecvDraw = b;
 }
 
 // Address: 0x01ba9340 - 0x01ba9346 (6 bytes)
 bool sUnit::MoveLine::getRecvDraw() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRecvDraw;
+    return mRecvDraw;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1059,6 +1058,8 @@ bool sUnit::MoveLine::getRecvDraw() const {
 
 // No out-of-line body: no code in the ELF
 // bool sUnit::MoveLine::isInParallel() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sUnit::MoveLine::MyDTI sUnit::MoveLine::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sUnit::MoveLine::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1102,7 +1103,7 @@ const MtDTI& sUnit::UnitGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5sUnit9UnitGroupD0Ev at 0x01ba9400-0x01ba9421, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sUnit::UnitGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sUnit::UnitGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sUnit::UnitGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1125,8 +1126,10 @@ __attribute__((weak)) void sUnit::UnitGroup::createProperty(MtPropertyList& s) {
 // Address: 0x012a9e40 - 0x012a9e45 (5 bytes)
 MtUI* sUnit::UnitGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sUnit::UnitGroup::MyDTI sUnit::UnitGroup::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sUnit::UnitGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

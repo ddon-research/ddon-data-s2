@@ -33,7 +33,7 @@ const MtDTI& uSoundSubMixer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSoundSubMixer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundSubMixer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uSoundSubMixer::getAllocator() {
 // Address: 0x00d26da0 - 0x00d26de0 (64 bytes)
 void* uSoundSubMixer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSoundSubMixer::getAllocator()->memAlloc(sz, align, ::uSoundSubMixer::DTI.::MtDTI::getID());
+    return uSoundSubMixer::getAllocator()->memAlloc(sz, align, uSoundSubMixer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uSoundSubMixer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundSubMixer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundSubMixer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,7 +86,7 @@ uSoundSubMixer::~uSoundSubMixer() {
 // Address: 0x00d275a0 - 0x00d275a5 (5 bytes)
 MtUI* uSoundSubMixer::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00d275b0 - 0x00d27777 (455 bytes)
@@ -139,8 +139,8 @@ __attribute__((weak)) bool uSoundSubMixer::initSubMixer(u8 subMixerNum, rSoundSu
 // Address: 0x00d2a7a0 - 0x00d2a7d0 (48 bytes)
 void uSoundSubMixer::mergeSubMixer(u8 subMixerIndex, rSoundSubMixer* pSubMixer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(subMixerIndex, pSubMixer);
-    this->::uSoundSubMixer::executeMergeSubMixer(subMixerIndex, pSubMixer);
+    setResourceSubMixer(subMixerIndex, pSubMixer);
+    executeMergeSubMixer(subMixerIndex, pSubMixer);
 }
 
 // No out-of-line body: no code in the ELF
@@ -149,8 +149,8 @@ void uSoundSubMixer::mergeSubMixer(u8 subMixerIndex, rSoundSubMixer* pSubMixer) 
 // Address: 0x00d29e70 - 0x00d29e7d (13 bytes)
 void uSoundSubMixer::setUseFreeAreaNo(s8 freeAreaNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (freeAreaNo <= static_cast<s8>(15)) {
-        this->mUseFreeAreaNo = freeAreaNo;
+    if (freeAreaNo <= 15) {
+        mUseFreeAreaNo = freeAreaNo;
     }
 }
 
@@ -160,68 +160,68 @@ void uSoundSubMixer::setUseFreeAreaNo(s8 freeAreaNo) {
 // Address: 0x01b23a90 - 0x01b23ad0 (64 bytes)
 f32 uSoundSubMixer::getSeMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mSeMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mSeMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mSeMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mSeMasterVolume, 1);
     }
 }
 
 // Address: 0x01b23ad0 - 0x01b23b10 (64 bytes)
 f32 uSoundSubMixer::getBgmMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mBgmMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mBgmMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mBgmMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mBgmMasterVolume, 1);
     }
 }
 
 // Address: 0x01b23b50 - 0x01b23b90 (64 bytes)
 f32 uSoundSubMixer::getEnvMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mEnvMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mEnvMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mEnvMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mEnvMasterVolume, 1);
     }
 }
 
 // Address: 0x01b23b10 - 0x01b23b50 (64 bytes)
 f32 uSoundSubMixer::getVoiceMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mVoiceMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mVoiceMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mVoiceMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mVoiceMasterVolume, 1);
     }
 }
 
 // Address: 0x01b23b90 - 0x01b23bd0 (64 bytes)
 f32 uSoundSubMixer::getSystemMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mSystemMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mSystemMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mSystemMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mSystemMasterVolume, 1);
     }
 }
 
 // Address: 0x01b23bd0 - 0x01b23c10 (64 bytes)
 f32 uSoundSubMixer::getEventMasterVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance()->mEventMasterVolume == 0.0f) {
+    if (sSound::getInstance()->mEventMasterVolume == 0.0f) {
         return -96.0f;
     } else {
-        return 20.0f * ::_FLog(::sSound::getInstance()->mEventMasterVolume, static_cast<int>(1));
+        return 20.0f * _FLog(sSound::getInstance()->mEventMasterVolume, 1);
     }
 }
 
 // Address: 0x01b24090 - 0x01b240b1 (33 bytes)
 b8 uSoundSubMixer::getIsActiveSubMixer0() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum != static_cast<u8>(0)) {
-        return static_cast<rSoundSubMixer*>(*this->mCurrentSubMixers.::MtArray::getBuffer())->::rSoundSubMixer::getActive() != false;
+    if (mCurrentSubMixerNum != 0) {
+        return static_cast<rSoundSubMixer*>(*mCurrentSubMixers.getBuffer())->getActive();
     } else {
         return false;
     }
@@ -327,118 +327,114 @@ __attribute__((weak)) void uSoundSubMixer::setIsActiveSubMixer7(b8 isActiveSubMi
 // Address: 0x01b24050 - 0x01b24063 (19 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer0() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum != static_cast<u8>(0)) {
-        return this->mpSubMixerResource[0];
+    if (mCurrentSubMixerNum != 0) {
+        return mpSubMixerResource[0];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b24150 - 0x01b24166 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer1() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(1)) {
-        return this->mpSubMixerResource[1];
+    if (mCurrentSubMixerNum > 1) {
+        return mpSubMixerResource[1];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b24270 - 0x01b24286 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(2)) {
-        return this->mpSubMixerResource[2];
+    if (mCurrentSubMixerNum > 2) {
+        return mpSubMixerResource[2];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b24390 - 0x01b243a6 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer3() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(3)) {
-        return this->mpSubMixerResource[3];
+    if (mCurrentSubMixerNum > 3) {
+        return mpSubMixerResource[3];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b244b0 - 0x01b244c6 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer4() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(4)) {
-        return this->mpSubMixerResource[4];
+    if (mCurrentSubMixerNum > 4) {
+        return mpSubMixerResource[4];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b245d0 - 0x01b245e6 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer5() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(5)) {
-        return this->mpSubMixerResource[5];
+    if (mCurrentSubMixerNum > 5) {
+        return mpSubMixerResource[5];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b246f0 - 0x01b24706 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer6() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(6)) {
-        return this->mpSubMixerResource[6];
+    if (mCurrentSubMixerNum > 6) {
+        return mpSubMixerResource[6];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b24810 - 0x01b24826 (22 bytes)
 rSoundSubMixer* uSoundSubMixer::getResourceSubMixer7() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentSubMixerNum > static_cast<u8>(7)) {
-        return this->mpSubMixerResource[7];
+    if (mCurrentSubMixerNum > 7) {
+        return mpSubMixerResource[7];
     } else {
-        return static_cast<rSoundSubMixer*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x00d2a7d0 - 0x00d2a86a (154 bytes)
 __attribute__((weak)) void uSoundSubMixer::setResourceSubMixer(u8 index, rSoundSubMixer* res) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; code after a join copied into the arms; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mSoundSubMixerSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mSoundSubMixerSection.mCSection) != 0) {
+        abort();
     }
-    if (index < this->mCurrentSubMixerNum) {
-        if (this->mpSubMixerResource[index] != static_cast<rSoundSubMixer*>(nullptr)) {
-            this->mpSubMixerResource[index]->::cResource::release();
-            this->mpSubMixerResource[index] = static_cast<rSoundSubMixer*>(nullptr);
+    if (index < mCurrentSubMixerNum) {
+        if (mpSubMixerResource[index] != nullptr) {
+            mpSubMixerResource[index]->cResource::release();
+            mpSubMixerResource[index] = nullptr;
         }
-        if (res != static_cast<rSoundSubMixer*>(nullptr)) {
-            this->mpSubMixerResource[index] = res;
-            res->::cResource::addRef();
-            if (::scePthreadMutexUnlock(&this->mSoundSubMixerSection.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (res != nullptr) {
+            mpSubMixerResource[index] = res;
+            res->addRef();
+            if (scePthreadMutexUnlock(&mSoundSubMixerSection.mCSection) != 0) {
+                abort();
             }
         } else {
             // inferred: a temporary for the value the load at 0xd2a834 read, used twice; no DWARF local holds it
-            rSoundSubMixer* t0 = this->mpInitSubMixerResource;
-            this->mpSubMixerResource[index] = t0;
-            if (this->mpSubMixerResource[index] != static_cast<rSoundSubMixer*>(nullptr)) {
-                t0->::cResource::addRef();
+            rSoundSubMixer* t0 = mpInitSubMixerResource;
+            mpSubMixerResource[index] = t0;
+            if (mpSubMixerResource[index] != nullptr) {
+                t0->addRef();
             }
-            if (::scePthreadMutexUnlock(&this->mSoundSubMixerSection.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            if (scePthreadMutexUnlock(&mSoundSubMixerSection.mCSection) != 0) {
+                abort();
             }
         }
     } else {
-        if (::scePthreadMutexUnlock(&this->mSoundSubMixerSection.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        if (scePthreadMutexUnlock(&mSoundSubMixerSection.mCSection) != 0) {
+            abort();
         }
     }
 }
@@ -446,108 +442,108 @@ __attribute__((weak)) void uSoundSubMixer::setResourceSubMixer(u8 index, rSoundS
 // Address: 0x01b24070 - 0x01b2407d (13 bytes)
 void uSoundSubMixer::setResourceSubMixer0(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(0), res);
+    setResourceSubMixer(static_cast<u8>(0), res);
 }
 
 // Address: 0x01b24170 - 0x01b24180 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer1(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(1), res);
+    setResourceSubMixer(static_cast<u8>(1), res);
 }
 
 // Address: 0x01b24290 - 0x01b242a0 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer2(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(2), res);
+    setResourceSubMixer(static_cast<u8>(2), res);
 }
 
 // Address: 0x01b243b0 - 0x01b243c0 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer3(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(3), res);
+    setResourceSubMixer(static_cast<u8>(3), res);
 }
 
 // Address: 0x01b244d0 - 0x01b244e0 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer4(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(4), res);
+    setResourceSubMixer(static_cast<u8>(4), res);
 }
 
 // Address: 0x01b245f0 - 0x01b24600 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer5(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(5), res);
+    setResourceSubMixer(static_cast<u8>(5), res);
 }
 
 // Address: 0x01b24710 - 0x01b24720 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer6(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(6), res);
+    setResourceSubMixer(static_cast<u8>(6), res);
 }
 
 // Address: 0x01b24830 - 0x01b24840 (16 bytes)
 void uSoundSubMixer::setResourceSubMixer7(rSoundSubMixer* res) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::setResourceSubMixer(static_cast<u8>(7), res);
+    setResourceSubMixer(static_cast<u8>(7), res);
 }
 
 // Address: 0x01b24080 - 0x01b2408e (14 bytes)
 void uSoundSubMixer::mergeSubMixer0() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(0), this->mpSubMixerResource[0]);
+    executeMergeSubMixer(static_cast<u8>(0), mpSubMixerResource[0]);
 }
 
 // Address: 0x01b24180 - 0x01b24191 (17 bytes)
 void uSoundSubMixer::mergeSubMixer1() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(1), this->mpSubMixerResource[1]);
+    executeMergeSubMixer(static_cast<u8>(1), mpSubMixerResource[1]);
 }
 
 // Address: 0x01b242a0 - 0x01b242b1 (17 bytes)
 void uSoundSubMixer::mergeSubMixer2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(2), this->mpSubMixerResource[2]);
+    executeMergeSubMixer(static_cast<u8>(2), mpSubMixerResource[2]);
 }
 
 // Address: 0x01b243c0 - 0x01b243d1 (17 bytes)
 void uSoundSubMixer::mergeSubMixer3() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(3), this->mpSubMixerResource[3]);
+    executeMergeSubMixer(static_cast<u8>(3), mpSubMixerResource[3]);
 }
 
 // Address: 0x01b244e0 - 0x01b244f1 (17 bytes)
 void uSoundSubMixer::mergeSubMixer4() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(4), this->mpSubMixerResource[4]);
+    executeMergeSubMixer(static_cast<u8>(4), mpSubMixerResource[4]);
 }
 
 // Address: 0x01b24600 - 0x01b24611 (17 bytes)
 void uSoundSubMixer::mergeSubMixer5() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(5), this->mpSubMixerResource[5]);
+    executeMergeSubMixer(static_cast<u8>(5), mpSubMixerResource[5]);
 }
 
 // Address: 0x01b24720 - 0x01b24731 (17 bytes)
 void uSoundSubMixer::mergeSubMixer6() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(6), this->mpSubMixerResource[6]);
+    executeMergeSubMixer(static_cast<u8>(6), mpSubMixerResource[6]);
 }
 
 // Address: 0x01b24840 - 0x01b24851 (17 bytes)
 void uSoundSubMixer::mergeSubMixer7() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundSubMixer::executeMergeSubMixer(static_cast<u8>(7), this->mpSubMixerResource[7]);
+    executeMergeSubMixer(static_cast<u8>(7), mpSubMixerResource[7]);
 }
 
 // Address: 0x00d29c30 - 0x00d29c78 (72 bytes)
 void uSoundSubMixer::mergeSubMixerAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if (this->mCurrentSubMixerNum != static_cast<u8>(0)) {
+    u32 i = 0;
+    if (mCurrentSubMixerNum != 0) {
         do {
-            this->::uSoundSubMixer::executeMergeSubMixer(static_cast<unsigned char>(i), this->mpSubMixerResource[i]);
-            i += static_cast<u32>(1);
-        } while (i < this->mCurrentSubMixerNum);
+            executeMergeSubMixer(static_cast<unsigned char>(i), mpSubMixerResource[i]);
+            i += 1u;
+        } while (i < mCurrentSubMixerNum);
     }
 }
 
@@ -561,84 +557,76 @@ void uSoundSubMixer::mergeSubMixerAll() {
 // Address: 0x01b23c20 - 0x01b23c8f (111 bytes)
 void uSoundSubMixer::setResourceSimpleCurve0(rSoundSimpleCurve* res) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
-    if (this->mpSimpleCurveResource[0] != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[0]->::cResource::release();
-        this->mpSimpleCurveResource[0] = static_cast<rSoundSimpleCurve*>(nullptr);
+    if (mpSimpleCurveResource[0] != nullptr) {
+        mpSimpleCurveResource[0]->cResource::release();
+        mpSimpleCurveResource[0] = nullptr;
     }
-    if (res != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[0] = res;
-        res->::cResource::addRef();
+    if (res != nullptr) {
+        mpSimpleCurveResource[0] = res;
+        res->addRef();
     }
-    if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b23d30 - 0x01b23d9f (111 bytes)
 void uSoundSubMixer::setResourceSimpleCurve1(rSoundSimpleCurve* res) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
-    if (this->mpSimpleCurveResource[1] != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[1]->::cResource::release();
-        this->mpSimpleCurveResource[1] = static_cast<rSoundSimpleCurve*>(nullptr);
+    if (mpSimpleCurveResource[1] != nullptr) {
+        mpSimpleCurveResource[1]->cResource::release();
+        mpSimpleCurveResource[1] = nullptr;
     }
-    if (res != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[1] = res;
-        res->::cResource::addRef();
+    if (res != nullptr) {
+        mpSimpleCurveResource[1] = res;
+        res->addRef();
     }
-    if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b23e40 - 0x01b23eaf (111 bytes)
 void uSoundSubMixer::setResourceSimpleCurve2(rSoundSimpleCurve* res) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
-    if (this->mpSimpleCurveResource[2] != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[2]->::cResource::release();
-        this->mpSimpleCurveResource[2] = static_cast<rSoundSimpleCurve*>(nullptr);
+    if (mpSimpleCurveResource[2] != nullptr) {
+        mpSimpleCurveResource[2]->cResource::release();
+        mpSimpleCurveResource[2] = nullptr;
     }
-    if (res != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[2] = res;
-        res->::cResource::addRef();
+    if (res != nullptr) {
+        mpSimpleCurveResource[2] = res;
+        res->addRef();
     }
-    if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b23f50 - 0x01b23fbf (111 bytes)
 void uSoundSubMixer::setResourceSimpleCurve3(rSoundSimpleCurve* res) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
-    if (this->mpSimpleCurveResource[3] != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[3]->::cResource::release();
-        this->mpSimpleCurveResource[3] = static_cast<rSoundSimpleCurve*>(nullptr);
+    if (mpSimpleCurveResource[3] != nullptr) {
+        mpSimpleCurveResource[3]->cResource::release();
+        mpSimpleCurveResource[3] = nullptr;
     }
-    if (res != static_cast<rSoundSimpleCurve*>(nullptr)) {
-        this->mpSimpleCurveResource[3] = res;
-        res->::cResource::addRef();
+    if (res != nullptr) {
+        mpSimpleCurveResource[3] = res;
+        res->addRef();
     }
-    if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -652,121 +640,121 @@ void uSoundSubMixer::setResourceSimpleCurve3(rSoundSimpleCurve* res) {
 // Address: 0x01b23c10 - 0x01b23c18 (8 bytes)
 rSoundSimpleCurve* uSoundSubMixer::getResourceSimpleCurve0() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSimpleCurveResource[0];
+    return mpSimpleCurveResource[0];
 }
 
 // Address: 0x01b23d20 - 0x01b23d28 (8 bytes)
 rSoundSimpleCurve* uSoundSubMixer::getResourceSimpleCurve1() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSimpleCurveResource[1];
+    return mpSimpleCurveResource[1];
 }
 
 // Address: 0x01b23e30 - 0x01b23e38 (8 bytes)
 rSoundSimpleCurve* uSoundSubMixer::getResourceSimpleCurve2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSimpleCurveResource[2];
+    return mpSimpleCurveResource[2];
 }
 
 // Address: 0x01b23f40 - 0x01b23f48 (8 bytes)
 rSoundSimpleCurve* uSoundSubMixer::getResourceSimpleCurve3() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSimpleCurveResource[3];
+    return mpSimpleCurveResource[3];
 }
 
 // Address: 0x01b23c90 - 0x01b23d12 (130 bytes)
 void uSoundSubMixer::mergeSimpleCurve0() {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1b23cd0 carries; no location-less local in scope fits
-    rSoundSimpleCurve* v0_10 = this->mpSimpleCurveResource[0];
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-        if (this->mCalcFaderSubMixerNum != static_cast<u8>(0)) {
+    rSoundSimpleCurve* v0_10 = mpSimpleCurveResource[0];
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) == 0) {
+        if (mCalcFaderSubMixerNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                static_cast<rSoundSubMixer*>(this->mCalcFaderSubMixers.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::rSoundSubMixer::setResourceSimpleCurve(static_cast<u8>(0), v0_10);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCalcFaderSubMixerNum) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<rSoundSubMixer*>(mCalcFaderSubMixers.getBuffer()[static_cast<int>(i0_3)])->setResourceSimpleCurve(static_cast<u8>(0), v0_10);
+                if ((i0_3 + 1u) < mCalcFaderSubMixerNum) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
+        if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) == 0) {
             return;
         }
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x01b23da0 - 0x01b23e25 (133 bytes)
 void uSoundSubMixer::mergeSimpleCurve1() {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1b23de0 carries; no location-less local in scope fits
-    rSoundSimpleCurve* v0_10 = this->mpSimpleCurveResource[1];
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-        if (this->mCalcFaderSubMixerNum != static_cast<u8>(0)) {
+    rSoundSimpleCurve* v0_10 = mpSimpleCurveResource[1];
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) == 0) {
+        if (mCalcFaderSubMixerNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                static_cast<rSoundSubMixer*>(this->mCalcFaderSubMixers.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::rSoundSubMixer::setResourceSimpleCurve(static_cast<u8>(1), v0_10);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCalcFaderSubMixerNum) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<rSoundSubMixer*>(mCalcFaderSubMixers.getBuffer()[static_cast<int>(i0_3)])->setResourceSimpleCurve(static_cast<u8>(1), v0_10);
+                if ((i0_3 + 1u) < mCalcFaderSubMixerNum) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
+        if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) == 0) {
             return;
         }
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x01b23eb0 - 0x01b23f35 (133 bytes)
 void uSoundSubMixer::mergeSimpleCurve2() {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1b23ef0 carries; no location-less local in scope fits
-    rSoundSimpleCurve* v0_10 = this->mpSimpleCurveResource[2];
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-        if (this->mCalcFaderSubMixerNum != static_cast<u8>(0)) {
+    rSoundSimpleCurve* v0_10 = mpSimpleCurveResource[2];
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) == 0) {
+        if (mCalcFaderSubMixerNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                static_cast<rSoundSubMixer*>(this->mCalcFaderSubMixers.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::rSoundSubMixer::setResourceSimpleCurve(static_cast<u8>(2), v0_10);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCalcFaderSubMixerNum) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<rSoundSubMixer*>(mCalcFaderSubMixers.getBuffer()[static_cast<int>(i0_3)])->setResourceSimpleCurve(static_cast<u8>(2), v0_10);
+                if ((i0_3 + 1u) < mCalcFaderSubMixerNum) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
+        if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) == 0) {
             return;
         }
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x01b23fc0 - 0x01b24045 (133 bytes)
 void uSoundSubMixer::mergeSimpleCurve3() {
     // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1b24000 carries; no location-less local in scope fits
-    rSoundSimpleCurve* v0_10 = this->mpSimpleCurveResource[3];
-    if (::scePthreadMutexLock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
-        if (this->mCalcFaderSubMixerNum != static_cast<u8>(0)) {
+    rSoundSimpleCurve* v0_10 = mpSimpleCurveResource[3];
+    if (scePthreadMutexLock(&mSoundSimpleCurveSection.mCSection) == 0) {
+        if (mCalcFaderSubMixerNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                static_cast<rSoundSubMixer*>(this->mCalcFaderSubMixers.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::rSoundSubMixer::setResourceSimpleCurve(static_cast<u8>(3), v0_10);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCalcFaderSubMixerNum) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<rSoundSubMixer*>(mCalcFaderSubMixers.getBuffer()[static_cast<int>(i0_3)])->setResourceSimpleCurve(static_cast<u8>(3), v0_10);
+                if ((i0_3 + 1u) < mCalcFaderSubMixerNum) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (::scePthreadMutexUnlock(&this->mSoundSimpleCurveSection.mCSection) == static_cast<int>(0)) {
+        if (scePthreadMutexUnlock(&mSoundSimpleCurveSection.mCSection) == 0) {
             return;
         }
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x00d2a870 - 0x00d2abc4 (852 bytes)
@@ -813,56 +801,44 @@ void uSoundSubMixer::setPreset() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mEQPreset[0] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[0]), static_cast<u32>(0));
+    if (mEQPreset[0] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[0]), 0u);
     }
-    if (this->mEQPreset[1] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[1]), static_cast<u32>(0));
+    if (mEQPreset[1] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[1]), 0u);
     }
-    if (this->mEQPreset[2] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[2]), static_cast<u32>(0));
+    if (mEQPreset[2] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[2]), 0u);
     }
-    if (this->mEQPreset[3] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[3]), static_cast<u32>(0));
+    if (mEQPreset[3] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[3]), 0u);
     }
-    if (this->mEQPreset[4] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[4]), static_cast<u32>(0));
+    if (mEQPreset[4] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[4]), 0u);
     }
-    if (this->mEQPreset[5] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[5]), static_cast<u32>(0));
+    if (mEQPreset[5] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[5]), 0u);
     }
-    if (this->mEQPreset[6] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[6]), static_cast<u32>(0));
+    if (mEQPreset[6] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[6]), 0u);
     }
-    if (this->mEQPreset[7] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[7]), static_cast<u32>(0));
+    if (mEQPreset[7] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[7]), 0u);
     }
-    if (this->mEQPreset[8] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setEQId(static_cast<u32>(this->mEQPreset[8]), static_cast<u32>(0));
+    if (mEQPreset[8] > -1) {
+        sSound::getInstance()->setEQId(static_cast<u32>(mEQPreset[8]), 0u);
     }
-    if (this->mReverbPreset[0] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setReverbId(static_cast<u32>(this->mReverbPreset[0]), static_cast<u32>(0), static_cast<u32>(0));
+    if (mReverbPreset[0] > -1) {
+        sSound::getInstance()->setReverbId(static_cast<u32>(mReverbPreset[0]), 0u, 0u);
     }
-    if (this->mReverbPreset[1] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setReverbId(static_cast<u32>(this->mReverbPreset[1]), static_cast<u32>(1), static_cast<u32>(0));
+    if (mReverbPreset[1] > -1) {
+        sSound::getInstance()->setReverbId(static_cast<u32>(mReverbPreset[1]), 1u, 0u);
     }
-    if (this->mReverbPreset[2] <= static_cast<int>(-1)) {
-    } else {
-        ::sSound::getInstance()->::sSound::setReverbId(static_cast<u32>(this->mReverbPreset[2]), static_cast<u32>(2), static_cast<u32>(0));
+    if (mReverbPreset[2] > -1) {
+        sSound::getInstance()->setReverbId(static_cast<u32>(mReverbPreset[2]), 2u, 0u);
     }
-    if (this->mReverbPreset[3] > static_cast<int>(-1)) {
-        ::sSound::getInstance()->::sSound::setReverbId(static_cast<u32>(this->mReverbPreset[3]), static_cast<u32>(3), static_cast<u32>(0));
+    if (mReverbPreset[3] > -1) {
+        sSound::getInstance()->setReverbId(static_cast<u32>(mReverbPreset[3]), 3u, 0u);
         return;
     }
 }
@@ -1008,14 +984,16 @@ __attribute__((weak)) s32 uSoundSubMixer::getFaderID(sSound::VoiceAccessor& va) 
 // Address: 0x00d2ae40 - 0x00d2ae50 (16 bytes)
 void uSoundSubMixer::applyVol(sSound::VoiceAccessor& va, f32 volume) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    va.::sSound::VoiceAccessor::setExternalVolume(volume, static_cast<u32>(1));
+    va.setExternalVolume(volume, 1u);
 }
 
 // Address: 0x00d2ae50 - 0x00d2ae60 (16 bytes)
 void uSoundSubMixer::applyEfcSend(sSound::VoiceAccessor& va, f32 efcSend) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    va.::sSound::VoiceAccessor::setExternalEffectVolume(efcSend, static_cast<u32>(1));
+    va.setExternalEffectVolume(efcSend, 1u);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundSubMixer::MyDTI uSoundSubMixer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2af24-0x00d2af61 (called at uSoundSubMixer.cpp:537)
@@ -1051,7 +1029,7 @@ const MtDTI& uSoundSubMixer::CurrentSubMixer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundSubMixer::CurrentSubMixer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::DTI)->memAlloc(sz, align, ::uSoundSubMixer::CurrentSubMixer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundSubMixer::CurrentSubMixer::DTI)->memAlloc(sz, align, uSoundSubMixer::CurrentSubMixer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1066,7 +1044,7 @@ inline void* uSoundSubMixer::CurrentSubMixer::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uSoundSubMixer15CurrentSubMixerD0Ev at 0x01b24a3e-0x01b24a5f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSoundSubMixer::CurrentSubMixer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundSubMixer::CurrentSubMixer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1094,6 +1072,8 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::add(rSoundSubMixer::
 //   in uSoundSubMixer::executeMergeSubMixer at 0x00d2a99f-0x00d2a9bb, 0x00d2a9bf-0x00d2a9c8 (called at uSoundSubMixer.cpp:1526)
 // s16 uSoundSubMixer::CurrentSubMixer::getIndexByID(u8 id);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundSubMixer::CurrentSubMixer::MyDTI uSoundSubMixer::CurrentSubMixer::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2aeae-0x00d2aeeb (called at uSoundSubMixer.cpp:155)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2aeae-0x00d2aeeb (called at uSoundSubMixer.h:128)
@@ -1102,7 +1082,7 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::add(rSoundSubMixer::
 // Address: 0x00d26400 - 0x00d2644e (78 bytes)
 MtObject* uSoundSubMixer::CurrentSubMixer::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundSubMixer::CurrentSubMixer;
+    return new (16u) uSoundSubMixer::CurrentSubMixer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1128,7 +1108,7 @@ const MtDTI& uSoundSubMixer::CurrentSubMixer::CurrentFader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundSubMixer::CurrentSubMixer::CurrentFader::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memAlloc(sz, align, ::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memAlloc(sz, align, uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1143,7 +1123,7 @@ inline void* uSoundSubMixer::CurrentSubMixer::CurrentFader::operator new(size_t 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uSoundSubMixer15CurrentSubMixer12CurrentFaderD0Ev at 0x01b2498e-0x01b249af, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSoundSubMixer::CurrentSubMixer::CurrentFader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1169,7 +1149,7 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::create
 // Address: 0x00d263f0 - 0x00d263f5 (5 bytes)
 MtUI* uSoundSubMixer::CurrentSubMixer::CurrentFader::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rSoundSubMixer::Fader::createUI(prop);
+    return this->rSoundSubMixer::Fader::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -1276,6 +1256,8 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setEff
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundSubMixer::CurrentSubMixer::CurrentFader::MyDTI uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2ae6e-0x00d2aeae (called at uSoundSubMixer.cpp:25)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2ae6e-0x00d2aeae (called at uSoundSubMixer.h:48)
@@ -1284,7 +1266,7 @@ __attribute__((weak)) void uSoundSubMixer::CurrentSubMixer::CurrentFader::setEff
 // Address: 0x00d25d00 - 0x00d25d5c (92 bytes)
 MtObject* uSoundSubMixer::CurrentSubMixer::CurrentFader::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundSubMixer::CurrentSubMixer::CurrentFader;
+    return new (16u) uSoundSubMixer::CurrentSubMixer::CurrentFader;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1311,7 +1293,7 @@ const MtDTI& uSoundSubMixer::FaderParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundSubMixer::FaderParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::FaderParam::DTI)->memAlloc(sz, align, ::uSoundSubMixer::FaderParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundSubMixer::FaderParam::DTI)->memAlloc(sz, align, uSoundSubMixer::FaderParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1326,7 +1308,7 @@ inline void* uSoundSubMixer::FaderParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundSubMixer::FaderParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::FaderParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundSubMixer::FaderParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1358,7 +1340,7 @@ __attribute__((weak)) void uSoundSubMixer::FaderParam::createProperty(MtProperty
 // Address: 0x00d26af0 - 0x00d26af5 (5 bytes)
 MtUI* uSoundSubMixer::FaderParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rSoundSubMixer::Fader::createUI(prop);
+    return this->rSoundSubMixer::Fader::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (94 bytes)
@@ -1369,6 +1351,8 @@ MtUI* uSoundSubMixer::FaderParam::createUI(MtProperty& prop) {
 //   in uSoundSubMixer::initSubMixer at 0x00d2a4b3-0x00d2a4b8 (called at uSoundSubMixer.cpp:1370)
 // void uSoundSubMixer::FaderParam::setSubMixer(uSoundSubMixer* pSubMxer);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundSubMixer::FaderParam::MyDTI uSoundSubMixer::FaderParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2aeeb-0x00d2af24 (called at uSoundSubMixer.cpp:195)
 //   in _GLOBAL__sub_I_uSoundSubMixer.cpp at 0x00d2aeeb-0x00d2af24 (called at uSoundSubMixer.h:153)
@@ -1377,7 +1361,7 @@ MtUI* uSoundSubMixer::FaderParam::createUI(MtProperty& prop) {
 // Address: 0x00d26610 - 0x00d26666 (86 bytes)
 MtObject* uSoundSubMixer::FaderParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundSubMixer::FaderParam;
+    return new (16u) uSoundSubMixer::FaderParam;
 }
 
 // Instance at 0x01b23a70 - 0x01b23a75 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -5,6 +5,9 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
@@ -30,7 +33,7 @@ const MtDTI& uGUICaplinkTrophyList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkTrophyList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyList::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +42,7 @@ inline MtAllocator* uGUICaplinkTrophyList::getAllocator() {
 // Address: 0x009e1000 - 0x009e1040 (64 bytes)
 void* uGUICaplinkTrophyList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkTrophyList::getAllocator()->memAlloc(sz, align, ::uGUICaplinkTrophyList::DTI.::MtDTI::getID());
+    return uGUICaplinkTrophyList::getAllocator()->memAlloc(sz, align, uGUICaplinkTrophyList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +57,7 @@ void* uGUICaplinkTrophyList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkTrophyList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,20 +82,20 @@ uGUICaplinkTrophyList::~uGUICaplinkTrophyList() {
 // Address: 0x009e17e0 - 0x009e17e5 (5 bytes)
 void uGUICaplinkTrophyList::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009e17f0 - 0x009e1875 (133 bytes)
 bool uGUICaplinkTrophyList::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_TROPHY_DDON_GUI"), static_cast<u32>(129), static_cast<t64>(1456988760)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TROPHY_DDON_GUI"), 129u, 1456988760l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -113,13 +116,13 @@ __attribute__((weak)) void uGUICaplinkTrophyList::setup() {
 // Address: 0x009e1880 - 0x009e1885 (5 bytes)
 void uGUICaplinkTrophyList::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009e1890 - 0x009e1895 (5 bytes)
 void uGUICaplinkTrophyList::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -135,24 +138,24 @@ __attribute__((weak)) void uGUICaplinkTrophyList::setFlowId(u32 flow_id) {
 // Address: 0x009e29a0 - 0x009e29ec (76 bytes)
 void uGUICaplinkTrophyList::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(1)) {
+    if (mFlowId != 1) {
         return;
     }
-    this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCancelCtrl->execute();
+    mMain.mClose.execute();
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->execute();
     }
-    this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
+    mList.mListCtrl.executeCtrl();
 }
 
 // Address: 0x009e29f0 - 0x009e2a3a (74 bytes)
 void uGUICaplinkTrophyList::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mList.mListCtrl.::uGUIBase::cScrollList::moveEvent() != false) {
-        this->::uGUICaplinkTrophyList::setupDetail();
+    if (mList.mListCtrl.moveEvent()) {
+        setupDetail();
     } else {
-        if (this->::uGUIBase::mInputEventId == static_cast<u32>(66)) {
-            this->::uGUICaplinkTrophyList::setFlowId(static_cast<u32>(2));
+        if (mInputEventId == 66) {
+            setFlowId(2u);
         }
     }
 }
@@ -160,18 +163,18 @@ void uGUICaplinkTrophyList::moveEvent() {
 // Address: 0x009e24d0 - 0x009e251b (75 bytes)
 void uGUICaplinkTrophyList::updateMove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(1)) {
+    if (mFlowId != 1) {
         return;
     }
-    this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    this->mMain.mIcon.::cCaplinkProfIconLoader::update();
-    this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+    mList.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+    mMain.mIcon.update();
+    mMain.mClose.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x009e2520 - 0x009e2529 (9 bytes)
 void uGUICaplinkTrophyList::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009e2530 - 0x009e277e (590 bytes)
@@ -197,10 +200,16 @@ __attribute__((weak)) void uGUICaplinkTrophyList::setupListItem(uGUIBase::cScrol
 }
 
 // Address: 0x009e23a0 - 0x009e2404 (100 bytes)
-__attribute__((weak)) void uGUICaplinkTrophyList::hideListItem(uGUIBase::cScrollListItemBase* pListItem) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUICaplinkTrophyList::hideListItem")
-    /* stub */
+void uGUICaplinkTrophyList::hideListItem(uGUIBase::cScrollListItemBase* pListItem) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pListItem == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pListItem);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgTrophyName), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgStatus), "", 0u, false);
+    cGUIUtility::setExecuteTree(static_cast<cGUIInstance*>(pListItem->mpInstBase), false);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (31 bytes)
@@ -231,11 +240,13 @@ __attribute__((weak)) void uGUICaplinkTrophyList::setupDetail() {
 // Address: 0x009e2270 - 0x009e228b (27 bytes)
 u32 uGUICaplinkTrophyList::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mFlowId == 1) {
+        setInputEvent(66u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTrophyList::MyDTI uGUICaplinkTrophyList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTrophyList.cpp at 0x009e2b4f-0x009e2b8c (called at uGUICaplinkTrophyList.cpp:32)
@@ -296,7 +307,7 @@ const MtDTI& uGUICaplinkTrophyList::cListItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkTrophyList::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyList::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -317,6 +328,8 @@ inline void uGUICaplinkTrophyList::cListItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkTrophyList::cListItem::~cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTrophyList::cListItem::MyDTI uGUICaplinkTrophyList::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTrophyList.cpp at 0x009e2bc9-0x009e2c06 (called at uGUICaplinkTrophyList.cpp:34)
@@ -369,7 +382,7 @@ const MtDTI& uGUICaplinkTrophyList::cListInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkTrophyList::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyList::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -390,6 +403,8 @@ inline void uGUICaplinkTrophyList::cListInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkTrophyList::cListInfo::~cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTrophyList::cListInfo::MyDTI uGUICaplinkTrophyList::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTrophyList.cpp at 0x009e2b8c-0x009e2bc9 (called at uGUICaplinkTrophyList.cpp:33)

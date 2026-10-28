@@ -23,7 +23,7 @@ const MtDTI& cCorePointMsg::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCorePointMsg::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCorePointMsg::DTI);
+    return MtMemoryAllocator::getAllocator(cCorePointMsg::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* cCorePointMsg::getAllocator() {
 // Address: 0x0006f220 - 0x0006f260 (64 bytes)
 void* cCorePointMsg::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCorePointMsg::getAllocator()->memAlloc(sz, align, ::cCorePointMsg::DTI.::MtDTI::getID());
+    return cCorePointMsg::getAllocator()->memAlloc(sz, align, cCorePointMsg::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* cCorePointMsg::operator new(size_t sz, u32 align) {
 // Address: 0x0006f290 - 0x0006f2ba (42 bytes)
 __attribute__((weak)) void cCorePointMsg::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCorePointMsg::getAllocator()->memFree(p_addr);
+    cCorePointMsg::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,6 +120,8 @@ __attribute__((weak)) void cCorePointMsg::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // bool cCorePointMsg::isStandby() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCorePointMsg::MyDTI cCorePointMsg::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cCorePointMsg.cpp at 0x0006f2f0-0x0006f332 (called at cCorePointMsg.cpp:13)
 //   in _GLOBAL__sub_I_cCorePointMsg.cpp at 0x0006f2f0-0x0006f332 (called at cCorePointMsg.h:19)
@@ -128,6 +130,6 @@ __attribute__((weak)) void cCorePointMsg::operator delete(void* p_addr) {
 // Address: 0x0006f1c0 - 0x0006f21a (90 bytes)
 MtObject* cCorePointMsg::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCorePointMsg;
+    return new (16u) cCorePointMsg;
 }
 

@@ -9,6 +9,7 @@
 
 // Forward declarations
 class MtCriticalSection;
+class sSound;
 
 // Declarations
 class cSoundPicolaPitchShift;
@@ -20,6 +21,8 @@ using u32 = unsigned int;
 
 class cSoundPicolaPitchShift
 {
+    // inferred: sSound::NativeSystem::preparePICOLAPitchShift names cSoundPicolaPitchShift::mPeriodNum, through its enclosing class sSound
+    friend class sSound;
 public:
     class Resample;
 public:

@@ -50,7 +50,7 @@ const MtDTI& cEmWeakSafe::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmWeakSafe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmWeakSafe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -70,14 +70,16 @@ inline void cEmWeakSafe::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cEmWeakSafe::cEmWeakSafe() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mParentJntNo = static_cast<s32>(-1);
-    this->mKeepSphereRad = 5.0f;
-    this->mSafeJntNo = static_cast<s32>(0);
-    this->mOffset = ::MtVector3::Zero;
+    mParentJntNo = -1;
+    mKeepSphereRad = 5.0f;
+    mSafeJntNo = 0;
+    mOffset = MtVector3::Zero;
 }
 
 // Defined in the class (its body was written in a header).
 // cEmWeakSafe::~cEmWeakSafe();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmWeakSafe::MyDTI cEmWeakSafe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmWeakSafe.cpp at 0x0066a7c0-0x0066a802 (called at rEmWeakSafe.cpp:45)
@@ -112,7 +114,7 @@ const MtDTI& rEmWeakSafe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmWeakSafe::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmWeakSafe::DTI)->memAlloc(sz, align, ::rEmWeakSafe::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmWeakSafe::DTI)->memAlloc(sz, align, rEmWeakSafe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rEmWeakSafe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rEmWeakSafeD0Ev at 0x01a897b4-0x01a897d3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmWeakSafe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmWeakSafe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmWeakSafe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,8 +162,10 @@ MT_CTSTR rEmWeakSafe::getExt() const {
 // Address: 0x01a89900 - 0x01a89906 (6 bytes)
 u32 rEmWeakSafe::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmWeakSafe::MyDTI rEmWeakSafe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmWeakSafe.cpp at 0x0066a802-0x0066a83f (called at rEmWeakSafe.cpp:46)
@@ -171,7 +175,7 @@ u32 rEmWeakSafe::getDataVersion() const {
 // Address: 0x0066a5e0 - 0x0066a644 (100 bytes)
 MtObject* rEmWeakSafe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmWeakSafe;
+    return new (16u) rEmWeakSafe;
 }
 
 // Instance at 0x01a898b0 - 0x01a898c6 (22 bytes) of the generic rTbl2<T>::getData

@@ -30,7 +30,7 @@ const MtDTI& cEquipData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cEquipData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cEquipData::DTI);
+    return MtMemoryAllocator::getAllocator(cEquipData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* cEquipData::getAllocator() {
 // Address: 0x000c3260 - 0x000c32a0 (64 bytes)
 void* cEquipData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cEquipData::getAllocator()->memAlloc(sz, align, ::cEquipData::DTI.::MtDTI::getID());
+    return cEquipData::getAllocator()->memAlloc(sz, align, cEquipData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,20 +142,20 @@ __attribute__((weak)) void cEquipData::retEquipToCharacterData(nCharacterData::s
 // Address: 0x000c9190 - 0x000c9272 (226 bytes)
 void cEquipData::setHumanEnemyEquip(u32 presetId, u32 seed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const cHumanEnemyEquip* pData = ::sEnemyManager::getInstance()->::sEnemyManager::getHumanEnemyEquipData(presetId);
-    if (pData == static_cast<const cHumanEnemyEquip*>(nullptr)) {
+    const cHumanEnemyEquip* pData = sEnemyManager::getInstance()->getHumanEnemyEquipData(presetId);
+    if (pData == nullptr) {
         return;
     }
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(1), static_cast<u8>(0), pData->mMainWeaponId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(2), static_cast<u8>(0), pData->mSubWeaponId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(5), static_cast<u8>(0), pData->mWearTopId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(8), static_cast<u8>(0), pData->mWearBottomId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(3), static_cast<u8>(0), pData->mHeadId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(4), static_cast<u8>(0), pData->mArmorId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(6), static_cast<u8>(0), pData->mHandId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(7), static_cast<u8>(0), pData->mLegId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(9), static_cast<u8>(0), pData->mAccessoryId);
-    this->::cEquipData::setEquipNoItemParam(static_cast<u8>(10), static_cast<u8>(0), pData->mJewelry);
+    setEquipNoItemParam(static_cast<u8>(1), static_cast<u8>(0), pData->mMainWeaponId);
+    setEquipNoItemParam(static_cast<u8>(2), static_cast<u8>(0), pData->mSubWeaponId);
+    setEquipNoItemParam(static_cast<u8>(5), static_cast<u8>(0), pData->mWearTopId);
+    setEquipNoItemParam(static_cast<u8>(8), static_cast<u8>(0), pData->mWearBottomId);
+    setEquipNoItemParam(static_cast<u8>(3), static_cast<u8>(0), pData->mHeadId);
+    setEquipNoItemParam(static_cast<u8>(4), static_cast<u8>(0), pData->mArmorId);
+    setEquipNoItemParam(static_cast<u8>(6), static_cast<u8>(0), pData->mHandId);
+    setEquipNoItemParam(static_cast<u8>(7), static_cast<u8>(0), pData->mLegId);
+    setEquipNoItemParam(static_cast<u8>(9), static_cast<u8>(0), pData->mAccessoryId);
+    setEquipNoItemParam(static_cast<u8>(10), static_cast<u8>(0), pData->mJewelry);
 }
 
 // Address: 0x000c9280 - 0x000c9472 (498 bytes)
@@ -179,33 +179,33 @@ __attribute__((weak)) cEquipData& cEquipData::operator=(const cEquipData& source
 // Address: 0x000c66b0 - 0x000c66d6 (38 bytes)
 u32 cEquipData::convEquipCateToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipTbl;
+    const nCharacterData::EQUIP_SLOT_TYPE* p2 = cEquipData::mEquipTbl;
     do {
         if ((*p2) == category) {
             return index;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(14));
-    return static_cast<u32>(0);
+    } while (index <= 14u);
+    return 0;
 }
 
 // Address: 0x000c66f0 - 0x000c6716 (38 bytes)
 u32 cEquipData::convEquipCateWepToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipWepTbl;
+    const nCharacterData::EQUIP_SLOT_TYPE* p2 = cEquipData::mEquipWepTbl;
     do {
         if ((*p2) == category) {
             return index;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(1));
-    return static_cast<u32>(0);
+    } while (index <= 1u);
+    return 0;
 }
 
 // Address: 0x000c6720 - 0x000c6738 (24 bytes)
@@ -223,65 +223,65 @@ __attribute__((weak)) nCharacterData::EQUIP_CATEGORY cEquipData::convSlotTypeToE
 // Address: 0x000c6760 - 0x000c6784 (36 bytes)
 bool cEquipData::isWepCategory(nCharacterData::EQUIP_SLOT_TYPE category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipWepTbl;
+    const nCharacterData::EQUIP_SLOT_TYPE* p2 = cEquipData::mEquipWepTbl;
     do {
         if ((*p2) == category) {
             return true;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(1));
+    } while (index <= 1u);
     return false;
 }
 
 // Address: 0x000c6790 - 0x000c67b6 (38 bytes)
 u32 cEquipData::convEquipCateArmorToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipArmorTbl;
+    const nCharacterData::EQUIP_SLOT_TYPE* p2 = cEquipData::mEquipArmorTbl;
     do {
         if ((*p2) == category) {
             return index;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(12));
-    return static_cast<u32>(0);
+    } while (index <= 12u);
+    return 0;
 }
 
 // Address: 0x000c67c0 - 0x000c67e4 (36 bytes)
 bool cEquipData::isArmorCategory(nCharacterData::EQUIP_SLOT_TYPE category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipArmorTbl;
+    const nCharacterData::EQUIP_SLOT_TYPE* p2 = cEquipData::mEquipArmorTbl;
     do {
         if ((*p2) == category) {
             return true;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(12));
+    } while (index <= 12u);
     return false;
 }
 
 // Address: 0x000c67f0 - 0x000c6807 (23 bytes)
 nCharacterData::EQUIP_SLOT_TYPE cEquipData::convIndexToEquipCate(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(14)) {
-        return ::cEquipData::mEquipTbl[index];
+    if (index <= 14u) {
+        return cEquipData::mEquipTbl[index];
     } else {
-        return static_cast<nCharacterData::EQUIP_SLOT_TYPE>(1);
+        return nCharacterData::EQUIP_SLOT_WEAPON_TOP;
     }
 }
 
 // Address: 0x000c66e0 - 0x000c66e6 (6 bytes)
 u32 cEquipData::getEquipCategoryNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (36 bytes)
@@ -316,10 +316,10 @@ __attribute__((weak)) void cEquipData::init() {
 // Address: 0x000c70d0 - 0x000c70ed (29 bytes)
 void cEquipData::setEquipVisual(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (flag == false) {
-        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(254);
+    if (!flag) {
+        mEquipOpt = mEquipOpt & 254;
     } else {
-        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(1);
+        mEquipOpt = mEquipOpt | 1;
     }
 }
 
@@ -327,16 +327,16 @@ void cEquipData::setEquipVisual(bool flag) {
 bool cEquipData::checkEquipVisual() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as bool
-    return static_cast<bool>(this->mEquipOpt & static_cast<u8>(1));
+    return static_cast<bool>(mEquipOpt & 1);
 }
 
 // Address: 0x000c70f0 - 0x000c710d (29 bytes)
 void cEquipData::setHelmVisualOff(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (flag == false) {
-        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(253);
+    if (!flag) {
+        mEquipOpt = mEquipOpt & 253;
     } else {
-        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(2);
+        mEquipOpt = mEquipOpt | 2;
     }
 }
 
@@ -345,21 +345,21 @@ bool cEquipData::checkHelmVisualOff() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>(this->mEquipOpt & static_cast<u8>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>(mEquipOpt & 2) >> 1);
 }
 
 // Address: 0x000c9490 - 0x000c94b3 (35 bytes)
 bool cEquipData::checkHelmVisualChange() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((this->mEquipOptOld & static_cast<u8>(2)) != static_cast<u8>(0)) {
-        if ((this->mEquipOpt & static_cast<u8>(2)) == static_cast<u8>(0)) {
+    if ((mEquipOptOld & 2) != 0) {
+        if ((mEquipOpt & 2) == 0) {
             return true;
         } else {
             return false;
         }
     } else {
-        if ((this->mEquipOpt & static_cast<u8>(2)) == static_cast<u8>(0)) {
+        if ((mEquipOpt & 2) == 0) {
             return false;
         } else {
             return true;
@@ -370,10 +370,10 @@ bool cEquipData::checkHelmVisualChange() {
 // Address: 0x000c7110 - 0x000c712d (29 bytes)
 void cEquipData::setLanternVisualOff(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (flag == false) {
-        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(251);
+    if (!flag) {
+        mEquipOpt = mEquipOpt & 251;
     } else {
-        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(4);
+        mEquipOpt = mEquipOpt | 4;
     }
 }
 
@@ -382,21 +382,21 @@ bool cEquipData::checkLanternVisualOff() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>(this->mEquipOpt & static_cast<u8>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>(mEquipOpt & 4) >> 2);
 }
 
 // Address: 0x000c94d0 - 0x000c94f3 (35 bytes)
 bool cEquipData::checkLanternVisualChange() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((this->mEquipOptOld & static_cast<u8>(4)) != static_cast<u8>(0)) {
-        if ((this->mEquipOpt & static_cast<u8>(4)) == static_cast<u8>(0)) {
+    if ((mEquipOptOld & 4) != 0) {
+        if ((mEquipOpt & 4) == 0) {
             return true;
         } else {
             return false;
         }
     } else {
-        if ((this->mEquipOpt & static_cast<u8>(4)) == static_cast<u8>(0)) {
+        if ((mEquipOpt & 4) == 0) {
             return false;
         } else {
             return true;
@@ -954,11 +954,11 @@ u32 cEquipData::getMainWeaponItemRank() const {
     // DWARF local not rendered: const EQUIP_TYPE equip_type;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x10 from const cEquipData*
-    const rItemList::rItemParam* pMainWepParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(16)));
-    if (pMainWepParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
+    const rItemList::rItemParam* pMainWepParam = sItemManager::getInstance()->getItemParam(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 16));
+    if (pMainWepParam != nullptr) {
         return pMainWepParam->mRank;
     } else {
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
@@ -1034,210 +1034,210 @@ __attribute__((weak)) void cEquipData::calcWeightDownElement(rItemList::rParam* 
 void cEquipData::calcSpredSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[10];
+    mKindParamU16[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[10];
 }
 
 // Address: 0x000c8a00 - 0x000c8a0b (11 bytes)
 void cEquipData::calcFreezeSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[11];
+    mKindParamU16[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[11];
 }
 
 // Address: 0x000c8a10 - 0x000c8a1b (11 bytes)
 void cEquipData::calcShockSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[12];
+    mKindParamU16[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[12];
 }
 
 // Address: 0x000c8a20 - 0x000c8a2b (11 bytes)
 void cEquipData::calcCrossSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[13];
+    mKindParamU16[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[13];
 }
 
 // Address: 0x000c8a30 - 0x000c8a3b (11 bytes)
 void cEquipData::calcBlindSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[3];
+    mKindParamU16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[3];
 }
 
 // Address: 0x000c8a40 - 0x000c8a4b (11 bytes)
 void cEquipData::calcAttackUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStAttack;
+    mStAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStAttack;
 }
 
 // Address: 0x000c8a50 - 0x000c8a5b (11 bytes)
 void cEquipData::calcMagicAttackUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStMagicAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStMagicAttack;
+    mStMagicAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStMagicAttack;
 }
 
 // Address: 0x000c8a60 - 0x000c8a6b (11 bytes)
 void cEquipData::calcPowerRevUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStPowerRev = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStPowerRev;
+    mStPowerRev = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStPowerRev;
 }
 
 // Address: 0x000c8a70 - 0x000c8a7b (11 bytes)
 void cEquipData::calcStanSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[23] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[23];
+    mKindParamU16[23] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[23];
 }
 
 // Address: 0x000c8a80 - 0x000c8a8b (11 bytes)
 void cEquipData::calcPoisonSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[0];
+    mKindParamU16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[0];
 }
 
 // Address: 0x000c8a90 - 0x000c8a9b (11 bytes)
 void cEquipData::calcSlowSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[1];
+    mKindParamU16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[1];
 }
 
 // Address: 0x000c8aa0 - 0x000c8aab (11 bytes)
 void cEquipData::calcSleepSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[4];
+    mKindParamU16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[4];
 }
 
 // Address: 0x000c8ab0 - 0x000c8abb (11 bytes)
 void cEquipData::calcWaterSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[5];
+    mKindParamU16[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[5];
 }
 
 // Address: 0x000c8ac0 - 0x000c8acb (11 bytes)
 void cEquipData::calcOilSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[2];
+    mKindParamU16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[2];
 }
 
 // Address: 0x000c8ad0 - 0x000c8adb (11 bytes)
 void cEquipData::calcSealSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[6];
+    mKindParamU16[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[6];
 }
 
 // Address: 0x000c8ae0 - 0x000c8aeb (11 bytes)
 void cEquipData::calcSoftBodySavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[7];
+    mKindParamU16[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[7];
 }
 
 // Address: 0x000c8af0 - 0x000c8afb (11 bytes)
 void cEquipData::calcStoneSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[8];
+    mKindParamU16[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[8];
 }
 
 // Address: 0x000c8b00 - 0x000c8b0b (11 bytes)
 void cEquipData::calcGoldSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[9];
+    mKindParamU16[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[9];
 }
 
 // Address: 0x000c8b10 - 0x000c8b1b (11 bytes)
 void cEquipData::calcFallFireSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[14];
+    mKindParamU16[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[14];
 }
 
 // Address: 0x000c8b20 - 0x000c8b2b (11 bytes)
 void cEquipData::calcFallIceSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[15];
+    mKindParamU16[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[15];
 }
 
 // Address: 0x000c8b30 - 0x000c8b3b (11 bytes)
 void cEquipData::calcFallThunderSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[16];
+    mKindParamU16[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[16];
 }
 
 // Address: 0x000c8b40 - 0x000c8b4b (11 bytes)
 void cEquipData::calcFallSaintSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[17] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[17];
+    mKindParamU16[17] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[17];
 }
 
 // Address: 0x000c8b50 - 0x000c8b5b (11 bytes)
 void cEquipData::calcFallBlindSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[18] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[18];
+    mKindParamU16[18] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[18];
 }
 
 // Address: 0x000c8b60 - 0x000c8b6b (11 bytes)
 void cEquipData::calcFallAttackSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[19] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[19];
+    mKindParamU16[19] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[19];
 }
 
 // Address: 0x000c8b70 - 0x000c8b7b (11 bytes)
 void cEquipData::calcFallDefSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[20] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[20];
+    mKindParamU16[20] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[20];
 }
 
 // Address: 0x000c8b80 - 0x000c8b8b (11 bytes)
 void cEquipData::calcFallMagicSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[21] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[21];
+    mKindParamU16[21] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[21];
 }
 
 // Address: 0x000c8b90 - 0x000c8b9b (11 bytes)
 void cEquipData::calcFallMagicDefSavUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamU16[22] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[22];
+    mKindParamU16[22] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamU16[22];
 }
 
 // Address: 0x000c8ba0 - 0x000c8bab (11 bytes)
 void cEquipData::calcDefenceUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStDefense;
+    mStDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStDefense;
 }
 
 // Address: 0x000c8bb0 - 0x000c8bbb (11 bytes)
 void cEquipData::calcMagicDefenseUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStMagicDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStMagicDefense;
+    mStMagicDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStMagicDefense;
 }
 
 // Address: 0x000c8bc0 - 0x000c8bcb (11 bytes)
 void cEquipData::calcDurabilityUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStDurability = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStDurability;
+    mStDurability = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStDurability;
 }
 
 // Address: 0x000c8bd0 - 0x000c8bdc (12 bytes)
@@ -1267,35 +1267,35 @@ __attribute__((weak)) void cEquipData::calcShinRyokuRevUpElement(rItemList::rPar
 void cEquipData::calcFireEleDefUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamS16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[0];
+    mKindParamS16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamS16[0];
 }
 
 // Address: 0x000c8c20 - 0x000c8c2b (11 bytes)
 void cEquipData::calcIceEleDefUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamS16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[1];
+    mKindParamS16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamS16[1];
 }
 
 // Address: 0x000c8c30 - 0x000c8c3b (11 bytes)
 void cEquipData::calcThunderEleDefUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamS16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[2];
+    mKindParamS16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamS16[2];
 }
 
 // Address: 0x000c8c40 - 0x000c8c4b (11 bytes)
 void cEquipData::calcSaintEleDefUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamS16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[3];
+    mKindParamS16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamS16[3];
 }
 
 // Address: 0x000c8c50 - 0x000c8c5b (11 bytes)
 void cEquipData::calcDarkEleDefUpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mKindParamS16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[4];
+    mKindParamS16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mKindParamS16[4];
 }
 
 // Address: 0x000c8c60 - 0x000c8c6c (12 bytes)
@@ -1452,112 +1452,112 @@ __attribute__((weak)) void cEquipData::calcFallMagicDefenceDefUpElement(rItemLis
 void cEquipData::calcVsEm00UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[1];
+    mStVsEm[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[1];
 }
 
 // Address: 0x000c8e00 - 0x000c8e0b (11 bytes)
 void cEquipData::calcVsEm01UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[2];
+    mStVsEm[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[2];
 }
 
 // Address: 0x000c8e10 - 0x000c8e1b (11 bytes)
 void cEquipData::calcVsEm02UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[3];
+    mStVsEm[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[3];
 }
 
 // Address: 0x000c8e20 - 0x000c8e2b (11 bytes)
 void cEquipData::calcVsEm03UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[4];
+    mStVsEm[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[4];
 }
 
 // Address: 0x000c8e30 - 0x000c8e3b (11 bytes)
 void cEquipData::calcVsEm04UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[5];
+    mStVsEm[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[5];
 }
 
 // Address: 0x000c8e40 - 0x000c8e4b (11 bytes)
 void cEquipData::calcVsEm05UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[6];
+    mStVsEm[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[6];
 }
 
 // Address: 0x000c8e50 - 0x000c8e5b (11 bytes)
 void cEquipData::calcVsEm06UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[7];
+    mStVsEm[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[7];
 }
 
 // Address: 0x000c8e60 - 0x000c8e6b (11 bytes)
 void cEquipData::calcVsEm07UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[8];
+    mStVsEm[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[8];
 }
 
 // Address: 0x000c8e70 - 0x000c8e7b (11 bytes)
 void cEquipData::calcVsEm08UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[9];
+    mStVsEm[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[9];
 }
 
 // Address: 0x000c8e80 - 0x000c8e8b (11 bytes)
 void cEquipData::calcVsEm09UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[10];
+    mStVsEm[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[10];
 }
 
 // Address: 0x000c8e90 - 0x000c8e9b (11 bytes)
 void cEquipData::calcVsEm10UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[11];
+    mStVsEm[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[11];
 }
 
 // Address: 0x000c8ea0 - 0x000c8eab (11 bytes)
 void cEquipData::calcVsEm11UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[12];
+    mStVsEm[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[12];
 }
 
 // Address: 0x000c8eb0 - 0x000c8ebb (11 bytes)
 void cEquipData::calcVsEm12UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[13];
+    mStVsEm[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[13];
 }
 
 // Address: 0x000c8ec0 - 0x000c8ecb (11 bytes)
 void cEquipData::calcVsEm13UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[14];
+    mStVsEm[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[14];
 }
 
 // Address: 0x000c8ed0 - 0x000c8edb (11 bytes)
 void cEquipData::calcVsEm14UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[15];
+    mStVsEm[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[15];
 }
 
 // Address: 0x000c8fd0 - 0x000c8fdb (11 bytes)
 void cEquipData::calcVsEm15UpElement(rItemList::rParam* pElementParam) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
-    this->mStVsEm[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[16];
+    mStVsEm[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + 10)) + mStVsEm[16];
 }
 
 // Address: 0x000c8ee0 - 0x000c8ee1 (1 bytes)
@@ -1568,25 +1568,25 @@ __attribute__((weak)) void cEquipData::calcColorElement(rItemList::rParam* pElem
 // Address: 0x000c8ef0 - 0x000c8ef8 (8 bytes)
 void cEquipData::calcDashStUpElement(rItemList::rParam* pElementParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(1);
+    mAwakeParam = mAwakeParam | 1;
 }
 
 // Address: 0x000c8f00 - 0x000c8f08 (8 bytes)
 void cEquipData::calcJumpUpElement(rItemList::rParam* pElementParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(2);
+    mAwakeParam = mAwakeParam | 2;
 }
 
 // Address: 0x000c8f10 - 0x000c8f18 (8 bytes)
 void cEquipData::calcClimeSpdUpElement(rItemList::rParam* pElementParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(4);
+    mAwakeParam = mAwakeParam | 4;
 }
 
 // Address: 0x000c8f20 - 0x000c8f28 (8 bytes)
 void cEquipData::calcAwakeningWeightLightryElement(rItemList::rParam* pElementParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(8);
+    mAwakeParam = mAwakeParam | 8;
 }
 
 // Address: 0x000c8f30 - 0x000c8f31 (1 bytes)
@@ -1643,6 +1643,16 @@ __attribute__((weak)) void cEquipData::calcAbilityElement(rItemList::rParam* pEl
 //   and 21 more (every copy is in <bundle>.inlined.json)
 // void cEquipData::calcEleParamU16(rItemList::KIND_TYPE type, u16 value);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEquipData::MyDTI cEquipData::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const nCharacterData::EQUIP_SLOT_TYPE cEquipData::mEquipTbl[];
+
+// Not defined (no member-wise spelling: an array of no extent): const bool cEquipData::mCostumeDisableSlotTbl[];
+
+// Not defined (no member-wise spelling: an array of no extent): const nCharacterData::EQUIP_SLOT_TYPE cEquipData::mEquipWepTbl[];
+
+// Not defined (no member-wise spelling: an array of no extent): const nCharacterData::EQUIP_SLOT_TYPE cEquipData::mEquipArmorTbl[];
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEquipData.cpp at 0x000c9c27-0x000c9c60 (called at cEquipData.cpp:123)
 //   in _GLOBAL__sub_I_cEquipData.cpp at 0x000c9c27-0x000c9c60 (called at cEquipData.h:108)
@@ -1677,7 +1687,7 @@ const MtDTI& nEquipAbilityInfo::cEquipAbilityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nEquipAbilityInfo::cEquipAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memAlloc(sz, align, ::nEquipAbilityInfo::cEquipAbilityData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memAlloc(sz, align, ::nEquipAbilityInfo::cEquipAbilityData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1741,6 +1751,8 @@ inline void nEquipAbilityInfo::cEquipAbilityData::operator delete(void* p_addr) 
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void nEquipAbilityInfo::cEquipAbilityData::setLv(s32 Lv);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nEquipAbilityInfo::cEquipAbilityData::MyDTI nEquipAbilityInfo::cEquipAbilityData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEquipData.cpp at 0x000c9bee-0x000c9c27 (called at cEquipData.cpp:117)
 //   in _GLOBAL__sub_I_cEquipData.cpp at 0x000c9bee-0x000c9c27 (called at cEquipData.h:66)
@@ -1749,7 +1761,7 @@ inline void nEquipAbilityInfo::cEquipAbilityData::operator delete(void* p_addr) 
 // Address: 0x000c3160 - 0x000c31a8 (72 bytes)
 MtObject* nEquipAbilityInfo::cEquipAbilityData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nEquipAbilityInfo::cEquipAbilityData;
+    return new (16u) ::nEquipAbilityInfo::cEquipAbilityData;
 }
 
 // Instance at 0x0196dd00 - 0x0196dd05 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

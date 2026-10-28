@@ -36,7 +36,7 @@ const MtDTI& cPartsCtrlTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cPartsCtrlTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memAlloc(sz, align, ::cPartsCtrlTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPartsCtrlTable::DTI)->memAlloc(sz, align, cPartsCtrlTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
@@ -51,7 +51,7 @@ inline void* cPartsCtrlTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPartsCtrlTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPartsCtrlTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -86,7 +86,7 @@ __attribute__((weak)) void cPartsCtrlTable::createProperty(MtPropertyList& s) {
 bool cPartsCtrlTable::isPartsDisp(u32 no) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mPartsDisp[no >> static_cast<u32>(5)]) >> static_cast<unsigned long>(no & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mPartsDisp[no >> 5]) >> static_cast<unsigned long>(no & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x01aaae80 - 0x01aaaea5 (37 bytes)
@@ -100,13 +100,15 @@ __attribute__((weak)) void cPartsCtrlTable::setPartsDisp(bool disp, u32 no) {
 // Address: 0x01aaaeb0 - 0x01aaaeb6 (6 bytes)
 u32 cPartsCtrlTable::getPartsNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(128);
+    return 128;
 }
 
 // Address: 0x01aaaec0 - 0x01aaaec1 (1 bytes)
 __attribute__((weak)) void cPartsCtrlTable::setPartsNum(u32) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPartsCtrlTable::MyDTI cPartsCtrlTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPartsCtrlTable.cpp at 0x006c9750-0x006c9792 (called at rPartsCtrlTable.cpp:23)
@@ -116,7 +118,7 @@ __attribute__((weak)) void cPartsCtrlTable::setPartsNum(u32) {
 // Address: 0x006c92f0 - 0x006c9377 (135 bytes)
 MtObject* cPartsCtrlTable::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cPartsCtrlTable;
+    return new (16u) cPartsCtrlTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +143,7 @@ const MtDTI& rPartsCtrlTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPartsCtrlTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPartsCtrlTable::DTI)->memAlloc(sz, align, ::rPartsCtrlTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPartsCtrlTable::DTI)->memAlloc(sz, align, rPartsCtrlTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,7 +158,7 @@ inline void* rPartsCtrlTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rPartsCtrlTableD0Ev at 0x01aab004-0x01aab023, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPartsCtrlTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPartsCtrlTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPartsCtrlTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,8 +203,10 @@ MT_CTSTR rPartsCtrlTable::getExt() const {
 // Address: 0x01aab150 - 0x01aab156 (6 bytes)
 u32 rPartsCtrlTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPartsCtrlTable::MyDTI rPartsCtrlTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPartsCtrlTable.cpp at 0x006c9792-0x006c97cf (called at rPartsCtrlTable.cpp:71)
@@ -212,7 +216,7 @@ u32 rPartsCtrlTable::getDataVersion() const {
 // Address: 0x006c9670 - 0x006c96d4 (100 bytes)
 MtObject* rPartsCtrlTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPartsCtrlTable;
+    return new (16u) rPartsCtrlTable;
 }
 
 // Instance at 0x01aab100 - 0x01aab116 (22 bytes) of the generic rTbl2<T>::getData

@@ -154,6 +154,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::cCycleContentsTaskInfo() {
-    this->mpTask = static_cast<cQuestTask*>(nullptr);
+    this->mpTask = nullptr;
     this->mNoticeType = static_cast<nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(0);
 }

@@ -107,7 +107,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rAreaInfo::cAreaInfo::cAreaInfo() {
-    this->mAreaId = static_cast<u32>(0);
-    this->mPosX = static_cast<s32>(0);
-    this->mPosY = static_cast<s32>(0);
+    this->mAreaId = 0;
+    this->mPosX = 0;
+    this->mPosY = 0;
 }

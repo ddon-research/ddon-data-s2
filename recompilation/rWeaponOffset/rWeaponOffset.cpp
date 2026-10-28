@@ -51,7 +51,7 @@ const MtDTI& cWeaponOffset::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWeaponOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeaponOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeaponOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -66,15 +66,58 @@ inline void cWeaponOffset::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cWeaponOffset::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (1534 bytes)
-//   in cWeaponOffset::MyDTI::newInstance at 0x00711eed-0x00712064 (called at rWeaponOffset.cpp:38)
-//   in cWeaponOffset::MyDTI::newInstance at 0x00711eed-0x00712064 (called at rWeaponOffset.h:114)
-//   in rTbl2<cWeaponOffset>::loadCore at 0x01ab8827-0x01ab8843, 0x01ab8846-0x01ab89b2 (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cWeaponOffset::cWeaponOffset();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cWeaponOffset::cWeaponOffset() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mConstType = 0;
+    mJntNo = 0;
+    mRot.x = MtVector3::Zero.x;
+    mRot.y = MtVector3::Zero.y;
+    mRot.z = MtVector3::Zero.z;
+    mRot.pad_ = 0.0f;
+    mOfs.x = MtVector3::Zero.x;
+    mOfs.y = MtVector3::Zero.y;
+    mOfs.z = MtVector3::Zero.z;
+    mOfs.pad_ = 0.0f;
+    mFat = 1.0f;
+    mJntNoHold = 0;
+    mRotHold.x = MtVector3::Zero.x;
+    mRotHold.y = MtVector3::Zero.y;
+    mRotHold.z = MtVector3::Zero.z;
+    mRotHold.pad_ = 0.0f;
+    mOfsHold.x = MtVector3::Zero.x;
+    mOfsHold.y = MtVector3::Zero.y;
+    mOfsHold.z = MtVector3::Zero.z;
+    mOfsHold.pad_ = 0.0f;
+    mFatHold = 1.0f;
+    mJntNoDamage = 0;
+    mRotDamage.x = MtVector3::Zero.x;
+    mRotDamage.y = MtVector3::Zero.y;
+    mRotDamage.z = MtVector3::Zero.z;
+    mRotDamage.pad_ = 0.0f;
+    mOfsDamage.x = MtVector3::Zero.x;
+    mOfsDamage.y = MtVector3::Zero.y;
+    mOfsDamage.z = MtVector3::Zero.z;
+    mOfsDamage.pad_ = 0.0f;
+    mFatDamage = 1.0f;
+    mJntNoSpecial = 0;
+    mRotSpecial.x = MtVector3::Zero.x;
+    mRotSpecial.y = MtVector3::Zero.y;
+    mRotSpecial.z = MtVector3::Zero.z;
+    mRotSpecial.pad_ = 0.0f;
+    mOfsSpecial.x = MtVector3::Zero.x;
+    mOfsSpecial.y = MtVector3::Zero.y;
+    mOfsSpecial.z = MtVector3::Zero.z;
+    mOfsSpecial.pad_ = 0.0f;
+    mFatSpecial = 1.0f;
+}
 
 // Defined in the class (its body was written in a header).
 // cWeaponOffset::~cWeaponOffset();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeaponOffset::MyDTI cWeaponOffset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rWeaponOffset.cpp at 0x00712380-0x007123c2 (called at rWeaponOffset.cpp:38)
@@ -109,7 +152,7 @@ const MtDTI& rWeaponOffset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeaponOffset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeaponOffset::DTI)->memAlloc(sz, align, ::rWeaponOffset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeaponOffset::DTI)->memAlloc(sz, align, rWeaponOffset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +167,7 @@ inline void* rWeaponOffset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rWeaponOffsetD0Ev at 0x01ab8614-0x01ab8633, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rWeaponOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWeaponOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWeaponOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,7 +200,7 @@ bool rWeaponOffset::loadData(MtDataReader& r, cWeaponOffset* pData) {
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mOfsSpecial = r.readV3();
-    ::nDDOIO::readData(r, pData->mFatSpecial);
+    nDDOIO::readData(r, pData->mFatSpecial);
     return true;
 }
 
@@ -170,8 +213,10 @@ MT_CTSTR rWeaponOffset::getExt() const {
 // Address: 0x01ab8760 - 0x01ab8766 (6 bytes)
 u32 rWeaponOffset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeaponOffset::MyDTI rWeaponOffset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWeaponOffset.cpp at 0x007123c2-0x007123ff (called at rWeaponOffset.cpp:39)
@@ -181,7 +226,7 @@ u32 rWeaponOffset::getDataVersion() const {
 // Address: 0x007120e0 - 0x00712144 (100 bytes)
 MtObject* rWeaponOffset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeaponOffset;
+    return new (16u) rWeaponOffset;
 }
 
 // Instance at 0x01ab8710 - 0x01ab8725 (21 bytes) of the generic rTbl2<T>::getData

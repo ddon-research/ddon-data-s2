@@ -46,7 +46,7 @@ const MtDTI& sSavedata::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9sSavedataD0Ev at 0x00e4ac1e-0x00e4ac3f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sSavedata::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSavedata::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSavedata::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,13 +86,13 @@ __attribute__((weak)) void sSavedata::move() {
 // Address: 0x00e4ac50 - 0x00e4ac55 (5 bytes)
 void sSavedata::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x00e4ac60 - 0x00e4ac65 (5 bytes)
 MtUI* sSavedata::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,10 +101,10 @@ MtUI* sSavedata::createUI(MtProperty& prop) {
 // Address: 0x00e4ac90 - 0x00e4aca6 (22 bytes)
 sSavedata::RESULT sSavedata::beginSave() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mState != static_cast<sSavedata::STATE>(0)) {
-        return static_cast<sSavedata::RESULT>(8);
+    if (mState != 0) {
+        return 8;
     } else {
-        return this->::sSavedata::beginSaveMain(static_cast<sSavedata::cStorageThread::PROCESS_TASK>(2));
+        return beginSaveMain(sSavedata::cStorageThread::T_SAVE);
     }
 }
 
@@ -172,7 +172,7 @@ __attribute__((weak)) sSavedata::RESULT sSavedata::setUserHeader(void* data, siz
 // Address: 0x00e4b350 - 0x00e4b35b (11 bytes)
 void sSavedata::clearData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mKeyTableNum = static_cast<s32>(0);
+    mKeyTableNum = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -377,37 +377,37 @@ void sSavedata::initUserId() {
     // DWARF local not rendered: u32 loginUser;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if (this->mUserId != static_cast<SceUserServiceUserId>(0)) {
-        if ((::sUserManager::mpInstance)->mUserNum != static_cast<s32>(0)) {
-            if ((::sUserManager::mpInstance)->mUserNum == static_cast<s32>(1)) {
-                this->mUserId = (::sUserManager::mpInstance)->::sUserManager::getInitialUserId();
+    if (mUserId != 0) {
+        if ((sUserManager::mpInstance)->mUserNum != 0) {
+            if ((sUserManager::mpInstance)->mUserNum == 1) {
+                mUserId = (sUserManager::mpInstance)->sUserManager::getInitialUserId();
                 return;
             } else {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                unsigned int i0_3 = static_cast<unsigned int>(0);
+                unsigned int i0_3 = 0;
                 // inferred: the value the loop at 0xe4bb67 carries; no location-less local in scope fits
-                sUserManager* v0_5 = ::sUserManager::mpInstance;
+                sUserManager* v0_5 = sUserManager::mpInstance;
                 // inferred: the value the loop at 0xe4bb67 carries; no location-less local in scope fits
-                for (SceUserServiceUserId v0_8 = this->mUserId;;) {
-                    if (v0_8 == v0_5->::sUserManager::getUserId(static_cast<s32>(i0_3))) {
+                for (SceUserServiceUserId v0_8 = mUserId;;) {
+                    if (v0_8 == v0_5->getUserId(static_cast<s32>(i0_3))) {
                         return;
                     } else {
-                        if ((i0_3 + static_cast<unsigned int>(1)) >= static_cast<unsigned int>((::sUserManager::mpInstance)->mUserNum)) {
+                        if ((i0_3 + 1u) >= static_cast<unsigned int>((sUserManager::mpInstance)->mUserNum)) {
                             break;
                         } else {
-                            i0_3 += static_cast<unsigned int>(1);
-                            v0_5 = ::sUserManager::mpInstance;
-                            v0_8 = this->mUserId;
+                            i0_3 += 1u;
+                            v0_5 = sUserManager::mpInstance;
+                            v0_8 = mUserId;
                         }
                     }
                 }
             }
         }
     } else {
-        this->mUserId = (::sUserManager::mpInstance)->::sUserManager::getInitialUserId();
+        mUserId = (sUserManager::mpInstance)->sUserManager::getInitialUserId();
         return;
     }
-    this->mUserId = static_cast<SceUserServiceUserId>(0);
+    mUserId = 0;
 }
 
 // Address: 0x00e4bd40 - 0x00e4be44 (260 bytes)
@@ -616,6 +616,11 @@ __attribute__((weak)) sSavedata::RESULT sSavedata::beginSaveMain(sSavedata::cSto
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sSavedata::RESULT sSavedata::beginDeleteMain(sSavedata::cStorageThread::PROCESS_TASK task);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sSavedata::MyDTI sSavedata::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sSavedata* sSavedata::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sSavedata::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

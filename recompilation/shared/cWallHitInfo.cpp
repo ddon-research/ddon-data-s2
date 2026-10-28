@@ -32,7 +32,7 @@ const MtDTI& cWallHitInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cWallHitInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cWallHitInfo::DTI)->memAlloc(sz, align, ::cWallHitInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cWallHitInfo::DTI)->memAlloc(sz, align, cWallHitInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cWallHitInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWallHitInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWallHitInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWallHitInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,8 +61,8 @@ inline void cWallHitInfo::operator delete(void* p_addr) {
 // Address: 0x0058e980 - 0x0058e997 (23 bytes)
 cWallHitInfo::cWallHitInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResult = static_cast<u32>(0);
-    this->mScrAdjustAttribute = static_cast<u32>(0);
+    mResult = 0;
+    mScrAdjustAttribute = 0;
 }
 
 // Address: 0x0058e9a0 - 0x0058e9a1 (1 bytes)
@@ -89,6 +89,8 @@ cWallHitInfo::~cWallHitInfo() {
 // No out-of-line body: no code in the ELF
 // u32 cWallHitInfo::getScrAdjustAttribute() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWallHitInfo::MyDTI cWallHitInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cWallHitInfo.cpp at 0x0058e9e0-0x0058ea22 (called at cWallHitInfo.cpp:17)
 //   in _GLOBAL__sub_I_cWallHitInfo.cpp at 0x0058e9e0-0x0058ea22 (called at cWallHitInfo.h:25)
@@ -97,6 +99,6 @@ cWallHitInfo::~cWallHitInfo() {
 // Address: 0x0058e8c0 - 0x0058e908 (72 bytes)
 MtObject* cWallHitInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cWallHitInfo;
+    return new (16u) cWallHitInfo;
 }
 

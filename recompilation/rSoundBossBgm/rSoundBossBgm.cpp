@@ -36,7 +36,7 @@ const MtDTI& rSoundBossBgm::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundBossBgm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::DTI)->memAlloc(sz, align, ::rSoundBossBgm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memAlloc(sz, align, rSoundBossBgm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rSoundBossBgm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundBossBgm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,10 +65,10 @@ inline void rSoundBossBgm::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rSoundBossBgm::rSoundBossBgm() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->::cResource::clear();
-    this->mpArrayData = static_cast<rSoundBossBgm::cSoundBossBgm*>(nullptr);
-    this->mArrayDataNum = static_cast<u32>(0);
+    setAttribute(22u);
+    this->cResource::clear();
+    mpArrayData = nullptr;
+    mArrayDataNum = 0;
 }
 
 // Address: 0x006ec9a0 - 0x006eca21 (129 bytes)
@@ -101,20 +101,20 @@ bool rSoundBossBgm::save(MtStream& out) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cSoundBossBgm* pData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeS32(static_cast<s32>(4342355));
-    (&w)->writeS32(static_cast<s32>(1));
-    (&w)->writeU32(this->mArrayDataNum);
-    if (this->mArrayDataNum != static_cast<u32>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeS32(4342355);
+    (&w)->writeS32(1);
+    (&w)->writeU32(mArrayDataNum);
+    if (mArrayDataNum != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x6ecd62 read, used 3 times; no DWARF local holds it
-            rSoundBossBgm::cSoundBossBgm* t3 = this->mpArrayData;
+            cSoundBossBgm* t3 = mpArrayData;
             (&w)->writeU32(t3[i0_3].mEnemyId);
             (&w)->writeU32(t3[i0_3].mBgmNo);
             (&w)->writeU64(t3[i0_3].mSrqrId);
-            if ((i0_3 + static_cast<unsigned int>(1)) < this->mArrayDataNum) {
-                i0_3 += static_cast<unsigned int>(1);
+            if ((i0_3 + 1u) < mArrayDataNum) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -137,22 +137,22 @@ MT_CTSTR rSoundBossBgm::getExt() const {
 rSoundBossBgm::cSoundBossBgm* rSoundBossBgm::getBossBgmInfo(u32 enemyId) {
     // DWARF local not rendered: cSoundBossBgm* pData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    u32 listNum = this->::rSoundBossBgm::getListNum();
+    u32 listNum = getListNum();
     // inferred: the value carried to 0x6ecb29; no location-less local in scope fits
-    rSoundBossBgm::cSoundBossBgm* v2_0;
-    if (listNum == static_cast<u32>(0)) {
-        v2_0 = static_cast<rSoundBossBgm::cSoundBossBgm*>(nullptr);
+    cSoundBossBgm* v2_0;
+    if (listNum == 0) {
+        v2_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x6ecb10 carries; no location-less local in scope fits
-        rSoundBossBgm::cSoundBossBgm* v0_3 = this->mpArrayData;
+        cSoundBossBgm* v0_3 = mpArrayData;
         // inferred: DWARF's location-less 'i' (lexical block [0x6ecaf5, 0x6ecb29)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         // inferred: the value the loop at 0x6ecb10 carries; no location-less local in scope fits
         for (u32* v0_2 = &v0_3->mEnemyId;;) {
             if ((*v0_2) != enemyId) {
-                if ((i + static_cast<u32>(1)) < listNum) {
-                    i = i + static_cast<u32>(1);
-                    v0_2 += static_cast<int>(6);
+                if ((i + 1u) < listNum) {
+                    i = i + 1u;
+                    v0_2 += 6;
                 } else {
                     break;
                 }
@@ -161,10 +161,12 @@ rSoundBossBgm::cSoundBossBgm* rSoundBossBgm::getBossBgmInfo(u32 enemyId) {
                 return v2_0;
             }
         }
-        v2_0 = static_cast<rSoundBossBgm::cSoundBossBgm*>(nullptr);
+        v2_0 = nullptr;
     }
     return v2_0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundBossBgm::MyDTI rSoundBossBgm::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundBossBgm.cpp at 0x006ecf1c-0x006ecf59 (called at rSoundBossBgm.cpp:176)
@@ -174,7 +176,7 @@ rSoundBossBgm::cSoundBossBgm* rSoundBossBgm::getBossBgmInfo(u32 enemyId) {
 // Address: 0x006ec8b0 - 0x006ec91c (108 bytes)
 MtObject* rSoundBossBgm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundBossBgm;
+    return new (16u) rSoundBossBgm;
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +202,7 @@ const MtDTI& rSoundBossBgm::cSoundBossBgm::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundBossBgm::cSoundBossBgm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::cSoundBossBgm::DTI)->memAlloc(sz, align, ::rSoundBossBgm::cSoundBossBgm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundBossBgm::cSoundBossBgm::DTI)->memAlloc(sz, align, rSoundBossBgm::cSoundBossBgm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,7 +216,7 @@ inline void* rSoundBossBgm::cSoundBossBgm::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundBossBgm::cSoundBossBgm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::cSoundBossBgm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundBossBgm::cSoundBossBgm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,6 +263,8 @@ __attribute__((weak)) void rSoundBossBgm::cSoundBossBgm::createProperty(MtProper
 // No out-of-line body: no code in the ELF
 // u64 rSoundBossBgm::cSoundBossBgm::getResId() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundBossBgm::cSoundBossBgm::MyDTI rSoundBossBgm::cSoundBossBgm::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundBossBgm.cpp at 0x006ecedf-0x006ecf1c (called at rSoundBossBgm.cpp:41)
 //   in _GLOBAL__sub_I_rSoundBossBgm.cpp at 0x006ecedf-0x006ecf1c (called at rSoundBossBgm.h:37)
@@ -269,6 +273,6 @@ __attribute__((weak)) void rSoundBossBgm::cSoundBossBgm::createProperty(MtProper
 // Address: 0x006ec5c0 - 0x006ec616 (86 bytes)
 MtObject* rSoundBossBgm::cSoundBossBgm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundBossBgm::cSoundBossBgm;
+    return new (16u) rSoundBossBgm::cSoundBossBgm;
 }
 

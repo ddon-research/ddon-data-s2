@@ -28,7 +28,7 @@ MtNetAchievement::~MtNetAchievement() {
 // Address: 0x00de3a60 - 0x00de3a65 (5 bytes)
 void MtNetAchievement::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::createProperty(s);
+    this->MtNetObject::createProperty(s);
 }
 
 // Address: 0x00de3a80 - 0x00de3adc (92 bytes)
@@ -46,8 +46,8 @@ __attribute__((weak)) void MtNetAchievement::removeListener(MtNetAchievement::Li
 // Address: 0x00de39e0 - 0x00de3a00 (32 bytes)
 void MtNetAchievement::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestController.::MtNetRequestController::move();
-    this->::MtNetAchievement::nativeMove();
+    mRequestController.move();
+    nativeMove();
 }
 
 // Address: 0x00de3ce0 - 0x00de3cf8 (24 bytes)
@@ -122,40 +122,40 @@ __attribute__((weak)) void MtNetAchievement::reqAward(u32* req_seq, s32 user_ind
 // Address: 0x00de3d90 - 0x00de4000 (624 bytes)
 bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(1025))) {
-        case static_cast<unsigned int>(0):
+    switch (static_cast<unsigned int>(req->getId() - 1025)) {
+        case 0:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
+            if (mRequestController.isMove(1026)) {
                 return false;
             } else {
                 return true;
             }
             break;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
+            if (mRequestController.isMove(1025)) {
                 return false;
             } else {
                 return true;
             }
             break;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
+            if (mRequestController.isMove(1025)) {
                 return false;
             } else {
-                if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
+                if (mRequestController.isMove(1026)) {
                     return false;
                 } else {
-                    if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1028)) != false) {
+                    if (mRequestController.isMove(1028)) {
                         return false;
                     } else {
-                        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
+                        if (mRequestController.isMove(1029)) {
                             return false;
                         } else {
-                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
+                            if (mRequestController.isMove(1030)) {
                                 return false;
                             } else {
                                 return true;
@@ -166,21 +166,21 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
             }
             break;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
+            if (mRequestController.isMove(1025)) {
                 return false;
             } else {
-                if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
+                if (mRequestController.isMove(1026)) {
                     return false;
                 } else {
-                    if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1027)) != false) {
+                    if (mRequestController.isMove(1027)) {
                         return false;
                     } else {
-                        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
+                        if (mRequestController.isMove(1029)) {
                             return false;
                         } else {
-                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
+                            if (mRequestController.isMove(1030)) {
                                 return false;
                             } else {
                                 return true;
@@ -191,21 +191,21 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
             }
             break;
         }
-        case static_cast<unsigned int>(4):
+        case 4:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
+            if (mRequestController.isMove(1025)) {
                 return false;
             } else {
-                if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
+                if (mRequestController.isMove(1026)) {
                     return false;
                 } else {
-                    if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1027)) != false) {
+                    if (mRequestController.isMove(1027)) {
                         return false;
                     } else {
-                        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1028)) != false) {
+                        if (mRequestController.isMove(1028)) {
                             return false;
                         } else {
-                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
+                            if (mRequestController.isMove(1030)) {
                                 return false;
                             } else {
                                 return true;
@@ -216,21 +216,21 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
             }
             break;
         }
-        case static_cast<unsigned int>(5):
+        case 5:
         {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
+            if (mRequestController.isMove(1025)) {
                 return false;
             } else {
-                if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
+                if (mRequestController.isMove(1026)) {
                     return false;
                 } else {
-                    if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1027)) != false) {
+                    if (mRequestController.isMove(1027)) {
                         return false;
                     } else {
-                        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1028)) != false) {
+                        if (mRequestController.isMove(1028)) {
                             return false;
                         } else {
-                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
+                            if (mRequestController.isMove(1029)) {
                                 return false;
                             } else {
                                 return true;
@@ -260,51 +260,51 @@ __attribute__((weak)) s32 MtNetAchievement::startRequest(MtNetRequest* req) {
 s32 MtNetAchievement::moveRequest(MtNetRequest* req) {
     // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (req != static_cast<MtNetRequest*>(nullptr)) {
-        switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(1025))) {
-            case static_cast<unsigned int>(0):
+    if (req != nullptr) {
+        switch (static_cast<unsigned int>(req->getId() - 1025)) {
+            case 0:
             {
-                this->::MtNetAchievement::moveInit(req);
-                return static_cast<s32>(1);
+                moveInit(req);
+                return 1;
             }
-            case static_cast<unsigned int>(1):
+            case 1:
             {
-                this->::MtNetAchievement::moveStart(req);
-                return static_cast<s32>(1);
+                moveStart(req);
+                return 1;
             }
-            case static_cast<unsigned int>(2):
+            case 2:
             {
-                return this->::MtNetAchievement::moveGetInfo(req);
+                return moveGetInfo(req);
             }
-            case static_cast<unsigned int>(3):
+            case 3:
             {
-                return this->::MtNetAchievement::moveAward(req);
+                return moveAward(req);
             }
-            case static_cast<unsigned int>(4):
+            case 4:
             {
-                return this->::MtNetAchievement::moveGetInfoList(req);
+                return moveGetInfoList(req);
             }
-            case static_cast<unsigned int>(5):
+            case 5:
             {
-                return this->::MtNetAchievement::moveAwardList(req);
+                return moveAwardList(req);
             }
             default:
             {
-                return static_cast<s32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00de59f0 - 0x00de59fe (14 bytes)
 void MtNetAchievement::endRequest(MtNetRequest* req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (req == static_cast<MtNetRequest*>(nullptr)) {
+    if (req == nullptr) {
         return;
     }
-    req->::MtNetRequest::getId();
+    req->getId();
 }
 
 // Address: 0x00de5a20 - 0x00de5f54 (1332 bytes)
@@ -419,6 +419,9 @@ __attribute__((weak)) void MtNetAchievement::updateUser(MtNetAchievement::Trophy
     DDON_STUB("MtNetAchievement::updateUser")
     /* stub */
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtNetAchievement* MtNetAchievement::mpInstance;
 
 // No out-of-line body: no code in the ELF
 // MtNetAchievement::Listener::Listener();

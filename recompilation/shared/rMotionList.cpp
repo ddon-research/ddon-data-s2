@@ -33,7 +33,7 @@ const MtDTI& rMotionList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK11rMotionList5MyDTI11newInstanceEv at 0x011d8900-0x011d892d, code DWARF attributes to no inlined copy; sz is the class's size (120), align the allocation's other whole constant (16)
 inline void* rMotionList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memAlloc(sz, align, ::rMotionList::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rMotionList::DTI)->memAlloc(sz, align, rMotionList::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rMotionList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rMotionListD0Ev at 0x011d8a62-0x011d8a83, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMotionList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMotionList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,12 +75,12 @@ MT_CTSTR rMotionList::getExt() const {
 // Address: 0x011d8ad0 - 0x011d8aed (29 bytes)
 nMotion::MOTION_INFO* rMotionList::getMotionInfo(u32 no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHdr != static_cast<rMotionList::MOTION_LIST_HDR*>(nullptr)) {
-        if (no < this->mpHdr->motion_num) {
-            return this->mpHdr->pmotion[no];
+    if (mpHdr != nullptr) {
+        if (no < mpHdr->motion_num) {
+            return mpHdr->pmotion[no];
         }
     }
-    return static_cast<nMotion::MOTION_INFO*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x011d8af0 - 0x011d8cd4 (484 bytes)
@@ -105,9 +105,9 @@ bool rMotionList::save(MtStream& out) {
 void rMotionList::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11d8a9a read, used once; no DWARF local holds it
-    rMotionList::MOTION_LIST_HDR* t0 = this->mpHdr;
-    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(static_cast<void*>(t0));
-    this->mpHdr = static_cast<rMotionList::MOTION_LIST_HDR*>(nullptr);
+    MOTION_LIST_HDR* t0 = mpHdr;
+    MtMemoryAllocator::getAllocator(rMotionList::DTI)->memFree(static_cast<void*>(t0));
+    mpHdr = nullptr;
 }
 
 // Address: 0x011d89e0 - 0x011d8a20 (64 bytes)
@@ -115,8 +115,8 @@ void rMotionList::clear() {
 rMotionList::~rMotionList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11d89f8 read, used once; no DWARF local holds it
-    rMotionList::MOTION_LIST_HDR* t0 = this->mpHdr;
-    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(static_cast<void*>(t0));
+    MOTION_LIST_HDR* t0 = mpHdr;
+    MtMemoryAllocator::getAllocator(rMotionList::DTI)->memFree(static_cast<void*>(t0));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -125,12 +125,14 @@ rMotionList::~rMotionList() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rMotionList::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMotionList::MyDTI rMotionList::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rMotionList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011d8900 - 0x011d895d (93 bytes)
 MtObject* rMotionList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMotionList;
+    return new (16u) rMotionList;
 }
 

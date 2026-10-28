@@ -35,7 +35,7 @@ const MtDTI& rNPCMotionSet::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rNPCMotionSet::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::DTI)->memAlloc(sz, align, ::rNPCMotionSet::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotionSet::DTI)->memAlloc(sz, align, rNPCMotionSet::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rNPCMotionSet::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCMotionSet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotionSet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,23 +65,23 @@ inline void rNPCMotionSet::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rNPCMotionSet::rNPCMotionSet() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mArrayNum[6] = static_cast<unsigned int>(0);
-    this->mArrayNum[7] = static_cast<unsigned int>(0);
-    this->mArrayNum[4] = static_cast<unsigned int>(0);
-    this->mArrayNum[5] = static_cast<unsigned int>(0);
-    this->mArrayNum[2] = static_cast<unsigned int>(0);
-    this->mArrayNum[3] = static_cast<unsigned int>(0);
-    this->mArrayNum[0] = static_cast<unsigned int>(0);
-    this->mArrayNum[1] = static_cast<unsigned int>(0);
-    this->mpArray[7] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[6] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[5] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[4] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[3] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[2] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[1] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
-    this->mpArray[0] = static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
+    setAttribute(18u);
+    mArrayNum[6] = 0;
+    mArrayNum[7] = 0;
+    mArrayNum[4] = 0;
+    mArrayNum[5] = 0;
+    mArrayNum[2] = 0;
+    mArrayNum[3] = 0;
+    mArrayNum[0] = 0;
+    mArrayNum[1] = 0;
+    mpArray[7] = nullptr;
+    mpArray[6] = nullptr;
+    mpArray[5] = nullptr;
+    mpArray[4] = nullptr;
+    mpArray[3] = nullptr;
+    mpArray[2] = nullptr;
+    mpArray[1] = nullptr;
+    mpArray[0] = nullptr;
 }
 
 // Address: 0x006aeb80 - 0x006aec25 (165 bytes)
@@ -152,23 +152,25 @@ MT_CTSTR rNPCMotionSet::getExt() const {
 // Address: 0x01aa0300 - 0x01aa0312 (18 bytes)
 u32 rNPCMotionSet::getInfoNum(s32 type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(type) <= static_cast<unsigned int>(7)) {
-        return this->mArrayNum[type];
+    if (static_cast<unsigned int>(type) <= 7) {
+        return mArrayNum[type];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x006af850 - 0x006af89a (74 bytes)
 rNPCMotionSet::InfoBinary* rNPCMotionSet::getInfo(s32 type, u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(type) <= static_cast<unsigned int>(7)) {
-        if (index < this->getInfoNum(type)) {
-            return &this->mpArray[type][index];
+    if (static_cast<unsigned int>(type) <= 7) {
+        if (index < getInfoNum(type)) {
+            return &mpArray[type][index];
         }
     }
-    return static_cast<rNPCMotionSet::InfoBinary*>(nullptr);
+    return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotionSet::MyDTI rNPCMotionSet::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNPCMotionSet.cpp at 0x006af91d-0x006af95a (called at rNPCMotionSet.cpp:474)
@@ -178,7 +180,7 @@ rNPCMotionSet::InfoBinary* rNPCMotionSet::getInfo(s32 type, u32 index) const {
 // Address: 0x006aea20 - 0x006aeaf3 (211 bytes)
 MtObject* rNPCMotionSet::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rNPCMotionSet;
+    return new (16u) rNPCMotionSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -204,7 +206,7 @@ const MtDTI& rNPCMotionSet::InfoBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCMotionSet::InfoBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCMotionSet::InfoBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::DTI)->memAlloc(sz, align, rNPCMotionSet::InfoBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,7 +221,7 @@ inline void* rNPCMotionSet::InfoBinary::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCMotionSet::InfoBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -254,40 +256,40 @@ __attribute__((weak)) u32 rNPCMotionSet::InfoBinary::getMotionNo(u32 idx) {
 // Address: 0x006ae800 - 0x006ae842 (66 bytes)
 u8 rNPCMotionSet::InfoBinary::getProbability(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mProbability;
         } else {
-            return static_cast<u8>(100);
+            return 100;
         }
     } else {
-        return static_cast<u8>(100);
+        return 100;
     }
 }
 
 // Address: 0x006ae850 - 0x006ae88c (60 bytes)
 s8 rNPCMotionSet::InfoBinary::getNext(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mNext;
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     } else {
-        return static_cast<s8>(0);
+        return 0;
     }
 }
 
 // Address: 0x006ae990 - 0x006ae9cd (61 bytes)
 bool rNPCMotionSet::InfoBinary::getDispItem(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
-            return data->mDispItem != false;
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
+            return data->mDispItem;
         } else {
             return false;
         }
@@ -302,10 +304,10 @@ bool rNPCMotionSet::InfoBinary::getDispItem(u32 idx) {
 // Address: 0x006ae9e0 - 0x006aea1d (61 bytes)
 bool rNPCMotionSet::InfoBinary::getDisableCancel(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
-            return data->mDisableCancel != false;
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
+            return data->mDisableCancel;
         } else {
             return false;
         }
@@ -317,73 +319,73 @@ bool rNPCMotionSet::InfoBinary::getDisableCancel(u32 idx) {
 // Address: 0x006ae890 - 0x006ae8cb (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getWait(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mWait;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006ae950 - 0x006ae98b (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getStartFrame(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mStartFrame;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006ae8d0 - 0x006ae90b (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getRandomWait(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mRandWait;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006ae910 - 0x006ae94c (60 bytes)
 s8 rNPCMotionSet::InfoBinary::getFrame(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mFrame;
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     } else {
-        return static_cast<s8>(0);
+        return 0;
     }
 }
 
 // Address: 0x01aa0360 - 0x01aa036f (15 bytes)
 rNPCMotionSet::InfoBinary::MotDataBinary* rNPCMotionSet::InfoBinary::getMotList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpMotList[index];
+    return &mpMotList[index];
 }
 
 // Address: 0x01aa0370 - 0x01aa0374 (4 bytes)
 u32 rNPCMotionSet::InfoBinary::getMotListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotListNum;
+    return mMotListNum;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -406,6 +408,8 @@ u32 rNPCMotionSet::InfoBinary::getMotListNum() {
 //   in sNpcManager::getTurnType at 0x007f1ca9-0x007f1cae (called at sNpcManager.cpp:941)
 // u8 rNPCMotionSet::InfoBinary::getTurnType();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotionSet::InfoBinary::MyDTI rNPCMotionSet::InfoBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rNPCMotionSet.cpp at 0x006af8e4-0x006af91d (called at rNPCMotionSet.cpp:136)
 //   in _GLOBAL__sub_I_rNPCMotionSet.cpp at 0x006af8e4-0x006af91d (called at rNPCMotionSet.h:95)
@@ -414,7 +418,7 @@ u32 rNPCMotionSet::InfoBinary::getMotListNum() {
 // Address: 0x006ae5c0 - 0x006ae627 (103 bytes)
 MtObject* rNPCMotionSet::InfoBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCMotionSet::InfoBinary;
+    return new (16u) rNPCMotionSet::InfoBinary;
 }
 
 // No out-of-line body: no code in the ELF
@@ -439,7 +443,7 @@ const MtDTI& rNPCMotionSet::InfoBinary::MotDataBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCMotionSet::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCMotionSet::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rNPCMotionSet::InfoBinary::MotDataBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -454,7 +458,7 @@ inline void* rNPCMotionSet::InfoBinary::MotDataBinary::operator new(size_t sz, u
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rNPCMotionSet10InfoBinary13MotDataBinaryD0Ev at 0x01aa03b0-0x01aa03da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNPCMotionSet::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -476,6 +480,8 @@ inline void rNPCMotionSet::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // void rNPCMotionSet::InfoBinary::MotDataBinary::copy(rNPCMotionSet::InfoBinary::MotDataBinary* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotionSet::InfoBinary::MotDataBinary::MyDTI rNPCMotionSet::InfoBinary::MotDataBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rNPCMotionSet.cpp at 0x006af8a0-0x006af8e4 (called at rNPCMotionSet.cpp:25)
 //   in _GLOBAL__sub_I_rNPCMotionSet.cpp at 0x006af8a0-0x006af8e4 (called at rNPCMotionSet.h:74)
@@ -484,6 +490,6 @@ inline void rNPCMotionSet::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // Address: 0x006ae4e0 - 0x006ae549 (105 bytes)
 MtObject* rNPCMotionSet::InfoBinary::MotDataBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCMotionSet::InfoBinary::MotDataBinary;
+    return new (16u) rNPCMotionSet::InfoBinary::MotDataBinary;
 }
 

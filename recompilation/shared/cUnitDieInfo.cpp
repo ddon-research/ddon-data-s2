@@ -32,7 +32,7 @@ const MtDTI& cUnitDieInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cUnitDieInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cUnitDieInfo::DTI)->memAlloc(sz, align, ::cUnitDieInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cUnitDieInfo::DTI)->memAlloc(sz, align, cUnitDieInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cUnitDieInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cUnitDieInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cUnitDieInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cUnitDieInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ inline void cUnitDieInfo::operator delete(void* p_addr) {
 // Address: 0x0058e850 - 0x0058e867 (23 bytes)
 cUnitDieInfo::cUnitDieInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpHitInfo = static_cast<cHitInfoAfter*>(nullptr);
+    mpHitInfo = nullptr;
 }
 
 // Defined in the class (its body was written in a header).
@@ -76,6 +76,8 @@ cUnitDieInfo::cUnitDieInfo() {
 //   in uHuman::callbackDie at 0x00c82c15-0x00c82c19 (called at uHuman.cpp:7076)
 // const cHitInfoAfter* cUnitDieInfo::getHitInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cUnitDieInfo::MyDTI cUnitDieInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cUnitDieInfo.cpp at 0x0058e870-0x0058e8b2 (called at cUnitDieInfo.cpp:20)
 //   in _GLOBAL__sub_I_cUnitDieInfo.cpp at 0x0058e870-0x0058e8b2 (called at cUnitDieInfo.h:26)
@@ -84,6 +86,6 @@ cUnitDieInfo::cUnitDieInfo() {
 // Address: 0x0058e790 - 0x0058e7d8 (72 bytes)
 MtObject* cUnitDieInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cUnitDieInfo;
+    return new (16u) cUnitDieInfo;
 }
 

@@ -43,7 +43,7 @@ const MtDTI& uCamera::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7uCameraD0Ev at 0x01b5d7fe-0x01b5d81f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCamera::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCamera::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCamera::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,7 +93,7 @@ __attribute__((weak)) void uCamera::createProperty(MtPropertyList& s) {
 // Address: 0x00e6e520 - 0x00e6e525 (5 bytes)
 MtUI* uCamera::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // No out-of-line body: 7 inlined copies in 6 functions (225 bytes)
@@ -191,6 +191,8 @@ __attribute__((weak)) MtVector3 uCamera::getWorldTargetPos() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uCamera::setAspect(f32 a);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCamera::MyDTI uCamera::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

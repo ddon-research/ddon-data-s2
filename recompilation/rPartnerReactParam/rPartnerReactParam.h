@@ -111,9 +111,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cPartnerReactParam::cPartnerReactParam() {
     this->mIsNmlAct = false;
-    this->mActNo = static_cast<u32>(0);
-    this->mNpcMotNo = static_cast<s16>(-1);
-    this->mNpcMotNo2 = static_cast<s16>(-1);
-    this->mNpcMotNo3 = static_cast<s16>(-1);
-    this->mNpcMotNo4 = static_cast<s16>(-1);
+    this->mActNo = 0;
+    this->mNpcMotNo = -1;
+    this->mNpcMotNo2 = -1;
+    this->mNpcMotNo3 = -1;
+    this->mNpcMotNo4 = -1;
 }

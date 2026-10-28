@@ -11,7 +11,7 @@
 // Address: 0x00642b00 - 0x00642b04 (4 bytes)
 u32 cArchiveListNode::getTagId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTagId;
+    return mTagId;
 }
 
 // No out-of-line body: no code in the ELF

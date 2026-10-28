@@ -259,6 +259,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestTaskParam::cQuestPoint::cQuestPoint() {
-    this->mIdx = static_cast<u32>(0);
-    this->mValue = static_cast<s32>(0);
+    this->mIdx = 0;
+    this->mValue = 0;
 }

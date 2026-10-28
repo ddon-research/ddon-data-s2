@@ -36,7 +36,7 @@ const MtDTI& cStatusGain::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cStatusGain::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStatusGain::DTI)->memAlloc(sz, align, ::cStatusGain::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStatusGain::DTI)->memAlloc(sz, align, cStatusGain::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cStatusGain::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStatusGain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStatusGain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStatusGain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -86,6 +86,8 @@ __attribute__((weak)) void cStatusGain::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStatusGain::MyDTI cStatusGain::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStatusGainTable.cpp at 0x00708830-0x00708872 (called at rStatusGainTable.cpp:24)
 //   in _GLOBAL__sub_I_rStatusGainTable.cpp at 0x00708830-0x00708872 (called at rStatusGainTable.h:21)
@@ -94,7 +96,7 @@ __attribute__((weak)) void cStatusGain::createProperty(MtPropertyList& s) {
 // Address: 0x007084b0 - 0x007084f8 (72 bytes)
 MtObject* cStatusGain::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStatusGain;
+    return new (16u) cStatusGain;
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ const MtDTI& rStatusGainTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStatusGainTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStatusGainTable::DTI)->memAlloc(sz, align, ::rStatusGainTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStatusGainTable::DTI)->memAlloc(sz, align, rStatusGainTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +136,7 @@ inline void* rStatusGainTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rStatusGainTableD0Ev at 0x01ab3fe4-0x01ab4003, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStatusGainTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStatusGainTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStatusGainTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,10 +153,10 @@ bool rStatusGainTable::loadData(MtDataReader& in, cStatusGain* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mRequiedDogma);
+    nDDOIO::readData(in, pData->mRequiedDogma);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mUpStatusValue);
+    nDDOIO::readData(in, pData->mUpStatusValue);
     return true;
 }
 
@@ -167,8 +169,10 @@ MT_CTSTR rStatusGainTable::getExt() const {
 // Address: 0x01ab4130 - 0x01ab4136 (6 bytes)
 u32 rStatusGainTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(257);
+    return 257;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStatusGainTable::MyDTI rStatusGainTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStatusGainTable.cpp at 0x00708872-0x007088af (called at rStatusGainTable.cpp:82)
@@ -178,7 +182,7 @@ u32 rStatusGainTable::getDataVersion() const {
 // Address: 0x00708750 - 0x007087b4 (100 bytes)
 MtObject* rStatusGainTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStatusGainTable;
+    return new (16u) rStatusGainTable;
 }
 
 // Instance at 0x01ab40e0 - 0x01ab40f2 (18 bytes) of the generic rTbl2<T>::getData

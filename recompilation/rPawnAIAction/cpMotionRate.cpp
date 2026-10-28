@@ -25,7 +25,7 @@ const MtDTI& cpMotionRate::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpMotionRate::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpMotionRate::DTI);
+    return MtMemoryAllocator::getAllocator(cpMotionRate::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cpMotionRate::getAllocator() {
 // Address: 0x004d2720 - 0x004d2760 (64 bytes)
 void* cpMotionRate::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpMotionRate::getAllocator()->memAlloc(sz, align, ::cpMotionRate::DTI.::MtDTI::getID());
+    return cpMotionRate::getAllocator()->memAlloc(sz, align, cpMotionRate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cpMotionRate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpMotionRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpMotionRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpMotionRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,14 +79,14 @@ void cpMotionRate::saveMotionSpeed(uDDOModel* pModel) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: Motion* pMot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSaveMotSpeed[0] = pModel->::uModel::mMotion[0].mSpeed;
-    this->mSaveMotSpeed[1] = pModel->::uModel::mMotion[1].mSpeed;
-    this->mSaveMotSpeed[2] = pModel->::uModel::mMotion[2].mSpeed;
-    this->mSaveMotSpeed[3] = pModel->::uModel::mMotion[3].mSpeed;
-    this->mSaveMotSpeed[4] = pModel->::uModel::mMotion[4].mSpeed;
-    this->mSaveMotSpeed[5] = pModel->::uModel::mMotion[5].mSpeed;
-    this->mSaveMotSpeed[6] = pModel->::uModel::mMotion[6].mSpeed;
-    this->mSaveMotSpeed[7] = pModel->::uModel::mMotion[7].mSpeed;
+    mSaveMotSpeed[0] = pModel->mMotion[0].mSpeed;
+    mSaveMotSpeed[1] = pModel->mMotion[1].mSpeed;
+    mSaveMotSpeed[2] = pModel->mMotion[2].mSpeed;
+    mSaveMotSpeed[3] = pModel->mMotion[3].mSpeed;
+    mSaveMotSpeed[4] = pModel->mMotion[4].mSpeed;
+    mSaveMotSpeed[5] = pModel->mMotion[5].mSpeed;
+    mSaveMotSpeed[6] = pModel->mMotion[6].mSpeed;
+    mSaveMotSpeed[7] = pModel->mMotion[7].mSpeed;
 }
 
 // Address: 0x004d2920 - 0x004d299e (126 bytes)
@@ -94,14 +94,14 @@ void cpMotionRate::loadMotionSpeed(uDDOModel* pModel) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: Motion* pMot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pModel->::uModel::mMotion[0].mSpeed = this->mSaveMotSpeed[0];
-    pModel->::uModel::mMotion[1].mSpeed = this->mSaveMotSpeed[1];
-    pModel->::uModel::mMotion[2].mSpeed = this->mSaveMotSpeed[2];
-    pModel->::uModel::mMotion[3].mSpeed = this->mSaveMotSpeed[3];
-    pModel->::uModel::mMotion[4].mSpeed = this->mSaveMotSpeed[4];
-    pModel->::uModel::mMotion[5].mSpeed = this->mSaveMotSpeed[5];
-    pModel->::uModel::mMotion[6].mSpeed = this->mSaveMotSpeed[6];
-    pModel->::uModel::mMotion[7].mSpeed = this->mSaveMotSpeed[7];
+    pModel->mMotion[0].mSpeed = mSaveMotSpeed[0];
+    pModel->mMotion[1].mSpeed = mSaveMotSpeed[1];
+    pModel->mMotion[2].mSpeed = mSaveMotSpeed[2];
+    pModel->mMotion[3].mSpeed = mSaveMotSpeed[3];
+    pModel->mMotion[4].mSpeed = mSaveMotSpeed[4];
+    pModel->mMotion[5].mSpeed = mSaveMotSpeed[5];
+    pModel->mMotion[6].mSpeed = mSaveMotSpeed[6];
+    pModel->mMotion[7].mSpeed = mSaveMotSpeed[7];
 }
 
 // Address: 0x004d29a0 - 0x004d2ac4 (292 bytes)
@@ -119,6 +119,8 @@ __attribute__((weak)) void cpMotionRate::setMotionSpeed(uDDOModel* pModel) {
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
 //   in uCharacter::createComponent at 0x0089780e-0x00897824 (called at uCharacter.cpp:573)
 // void cpMotionRate::setSeqCheckCallback(cpMotionRate::SEQ_CHECK_CALLBACK Func);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpMotionRate::MyDTI cpMotionRate::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpMotionRate.cpp at 0x004d2ad0-0x004d2b12 (called at cpMotionRate.cpp:26)

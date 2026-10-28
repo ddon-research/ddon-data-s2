@@ -259,5 +259,17 @@ inline sScreenShot* sScreenShot::getInstance() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline bool sScreenShot::isRequest() {
-    return this->mIsSShotReq != false;
+    return this->mIsSShotReq;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPhotoUpload::setup at 0xb42a56-0xb42a59; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sScreenShot::getShotStageNo() {
+    return this->mShotStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPhotoUpload::upload at 0xb44443-0xb44446; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sScreenShot::setShotCategory(u32 cate) {
+    this->mShotCategory = cate;
 }

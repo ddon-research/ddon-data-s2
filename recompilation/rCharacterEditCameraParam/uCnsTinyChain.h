@@ -114,6 +114,8 @@ public:
 public:
     class cChainGroup : public uCnsGroup::cGroup
     {
+        // inferred: uCnsTinyChain::cChainNode::setShapeObject names uCnsTinyChain::cChainGroup::mResetColliderNode, through its enclosing class uCnsTinyChain
+        friend class uCnsTinyChain;
     public:
         enum ATTR
         {

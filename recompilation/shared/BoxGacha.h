@@ -159,26 +159,26 @@ public:
 inline CDataBoxGachaItemInfo::CDataBoxGachaItemInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_dProbability = 0.0;
-    this->m_usDrawNum = static_cast<u16>(0);
-    this->m_unEffect = static_cast<u32>(0);
-    this->m_unItemStock = static_cast<u32>(0);
-    this->m_unRank = static_cast<u32>(0);
-    this->m_unItemId = static_cast<u32>(0);
-    this->m_unItemNum = static_cast<u32>(0);
+    this->m_usDrawNum = 0;
+    this->m_unEffect = 0;
+    this->m_unItemStock = 0;
+    this->m_unRank = 0;
+    this->m_unItemId = 0;
+    this->m_unItemNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataBoxGachaSettlementInfo::CDataBoxGachaSettlementInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucDrawNum = static_cast<u8>(0);
-    this->m_ucBonusNum = static_cast<u8>(0);
-    this->m_unPrice = static_cast<u32>(0);
-    this->m_unBasePrice = static_cast<u32>(0);
-    this->m_unDrawId = static_cast<u32>(0);
-    this->m_unId = static_cast<u32>(0);
-    this->m_unSpecialPriceNum = static_cast<u32>(0);
-    this->m_unSpecialPriceMaxNum = static_cast<u32>(0);
-    this->m_unPurchaseNum = static_cast<u32>(0);
-    this->m_unPurchaseMaxNum = static_cast<u32>(0);
+    this->m_ucDrawNum = 0;
+    this->m_ucBonusNum = 0;
+    this->m_unPrice = 0;
+    this->m_unBasePrice = 0;
+    this->m_unDrawId = 0;
+    this->m_unId = 0;
+    this->m_unSpecialPriceNum = 0;
+    this->m_unSpecialPriceMaxNum = 0;
+    this->m_unPurchaseNum = 0;
+    this->m_unPurchaseMaxNum = 0;
 }

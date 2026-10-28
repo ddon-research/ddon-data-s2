@@ -53,3 +53,43 @@ __attribute__((weak)) nHuman::GROW_NORMAL_SKILL_ENUM cHumanActId::getNormalSkill
 //   in cHumanActId::getNormalSkillId at 0x0022c93f-0x0022c959 (called at cHumanActId.cpp:630)
 // const cHumanActId::ACT_ID_TBL* cHumanActId::getNormalActIdJobTbl(nHuman::JOB_ENUM job);
 
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job01Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job02Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job03Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job04Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job05Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job06Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job07Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job08Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job09Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job10Cs_Tbl[20];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job01_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job02_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job03_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job04_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job05_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job06_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job07_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job08_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job09_NomalGlow_Tbl[10];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cHumanActId::ACT_ID_TBL cHumanActId::mActId_Job10_NomalGlow_Tbl[10];
+

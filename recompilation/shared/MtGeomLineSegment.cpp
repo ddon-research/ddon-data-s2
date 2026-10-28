@@ -35,7 +35,7 @@ const MtDTI& MtGeomLineSegment::getDTI() const {
 // Address: 0x01943700 - 0x01943740 (64 bytes)
 void* MtGeomLineSegment::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomLineSegment::DTI)->memAlloc(sz, align, ::MtGeomLineSegment::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomLineSegment::DTI)->memAlloc(sz, align, MtGeomLineSegment::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomLineSegment::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomLineSegment::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomLineSegment::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomLineSegment::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,28 +77,28 @@ inline void MtGeomLineSegment::operator delete(void* p_addr) {
 void MtGeomLineSegment::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLineSegment.p0.x = fin.readF32();
-    this->mLineSegment.p1.x = fin.readF32();
-    this->mLineSegment.p0.y = fin.readF32();
-    this->mLineSegment.p1.y = fin.readF32();
-    this->mLineSegment.p0.z = fin.readF32();
-    this->mLineSegment.p1.z = fin.readF32();
-    this->mLineSegment.p0.pad_ = fin.readF32();
-    this->mLineSegment.p1.pad_ = fin.readF32();
+    mLineSegment.p0.x = fin.readF32();
+    mLineSegment.p1.x = fin.readF32();
+    mLineSegment.p0.y = fin.readF32();
+    mLineSegment.p1.y = fin.readF32();
+    mLineSegment.p0.z = fin.readF32();
+    mLineSegment.p1.z = fin.readF32();
+    mLineSegment.p0.pad_ = fin.readF32();
+    mLineSegment.p1.pad_ = fin.readF32();
 }
 
 // Address: 0x01943840 - 0x019438cc (140 bytes)
 void MtGeomLineSegment::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mLineSegment.p0.x);
-    fout.writeF32(this->mLineSegment.p1.x);
-    fout.writeF32(this->mLineSegment.p0.y);
-    fout.writeF32(this->mLineSegment.p1.y);
-    fout.writeF32(this->mLineSegment.p0.z);
-    fout.writeF32(this->mLineSegment.p1.z);
-    fout.writeF32(this->mLineSegment.p0.pad_);
-    fout.writeF32(this->mLineSegment.p1.pad_);
+    fout.writeF32(mLineSegment.p0.x);
+    fout.writeF32(mLineSegment.p1.x);
+    fout.writeF32(mLineSegment.p0.y);
+    fout.writeF32(mLineSegment.p1.y);
+    fout.writeF32(mLineSegment.p0.z);
+    fout.writeF32(mLineSegment.p1.z);
+    fout.writeF32(mLineSegment.p0.pad_);
+    fout.writeF32(mLineSegment.p1.pad_);
 }
 
 // Address: 0x019438d0 - 0x01943b3c (620 bytes)
@@ -122,7 +122,7 @@ __attribute__((weak)) void MtGeomLineSegment::getBoundingSphere(MtSphere& sphere
 // Address: 0x01be4dc0 - 0x01be4e02 (66 bytes)
 bool MtGeomLineSegment::isDegeneracy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return 1.1920929e-7f > ((((this->mLineSegment.p1.x - this->mLineSegment.p0.x) * (this->mLineSegment.p1.x - this->mLineSegment.p0.x)) + ((this->mLineSegment.p1.y - this->mLineSegment.p0.y) * (this->mLineSegment.p1.y - this->mLineSegment.p0.y))) + ((this->mLineSegment.p1.z - this->mLineSegment.p0.z) * (this->mLineSegment.p1.z - this->mLineSegment.p0.z)));
+    return 1.1920929e-7f > ((((mLineSegment.p1.x - mLineSegment.p0.x) * (mLineSegment.p1.x - mLineSegment.p0.x)) + ((mLineSegment.p1.y - mLineSegment.p0.y) * (mLineSegment.p1.y - mLineSegment.p0.y))) + ((mLineSegment.p1.z - mLineSegment.p0.z) * (mLineSegment.p1.z - mLineSegment.p0.z)));
 }
 
 // Address: 0x01be4e10 - 0x01be4f33 (291 bytes)
@@ -140,55 +140,55 @@ __attribute__((weak)) void MtGeomLineSegment::copy(const MtGeometry& input) {
 // Address: 0x01be4f90 - 0x01be4fa1 (17 bytes)
 bool MtGeomLineSegment::isIntersect(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mLineSegment, pos, 1.1920929e-7f);
+    return MtCollision::intersect(mLineSegment, pos, 1.1920929e-7f);
 }
 
 // Address: 0x01be4fb0 - 0x01be4fc1 (17 bytes)
 bool MtGeomLineSegment::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mLineSegment, line, 1.1920929e-7f);
+    return MtCollision::intersect(mLineSegment, line, 1.1920929e-7f);
 }
 
 // Address: 0x01be4fd0 - 0x01be4fe1 (17 bytes)
 bool MtGeomLineSegment::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mLineSegment, ray, 1.1920929e-7f);
+    return MtCollision::intersect(mLineSegment, ray, 1.1920929e-7f);
 }
 
 // Address: 0x01be4ff0 - 0x01be5001 (17 bytes)
 bool MtGeomLineSegment::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mLineSegment, ls, 1.1920929e-7f);
+    return MtCollision::intersect(mLineSegment, ls, 1.1920929e-7f);
 }
 
 // Address: 0x01be5010 - 0x01be501f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(sphere, this->mLineSegment);
+    return MtCollision::intersect(sphere, mLineSegment);
 }
 
 // Address: 0x01be5020 - 0x01be502f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(capsule, this->mLineSegment);
+    return MtCollision::intersect(capsule, mLineSegment);
 }
 
 // Address: 0x01be5030 - 0x01be503f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(aabb, this->mLineSegment);
+    return MtCollision::intersect(aabb, mLineSegment);
 }
 
 // Address: 0x01be5040 - 0x01be504f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(obb, this->mLineSegment);
+    return MtCollision::intersect(obb, mLineSegment);
 }
 
 // Address: 0x01be5050 - 0x01be5059 (9 bytes)
 bool MtGeomLineSegment::isIntersect(const MtPlane& plane) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mLineSegment, plane);
+    return MtCollision::intersect(mLineSegment, plane);
 }
 
 // Address: 0x01be5060 - 0x01be5063 (3 bytes)
@@ -200,13 +200,13 @@ bool MtGeomLineSegment::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01be5070 - 0x01be507f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(tri, this->mLineSegment);
+    return MtCollision::intersect(tri, mLineSegment);
 }
 
 // Address: 0x01be5080 - 0x01be508f (15 bytes)
 bool MtGeomLineSegment::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(cylinder, this->mLineSegment);
+    return MtCollision::intersect(cylinder, mLineSegment);
 }
 
 // Address: 0x01be5090 - 0x01be5154 (196 bytes)
@@ -215,30 +215,30 @@ bool MtGeomLineSegment::getClosest(const MtVector3& pos, MtContact* pContact) co
     // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     f32 t;
     // inferred: a temporary for the result of the call at 0x1be50b4, used twice; no DWARF local holds it
-    f32 t1 = ::MtCollision::sqrDistance(this->mLineSegment, pos, &t);
-    if (pContact != static_cast<MtContact*>(nullptr)) {
+    f32 t1 = MtCollision::sqrDistance(mLineSegment, pos, &t);
+    if (pContact != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50be, held ahead of the effects the ELF orders after it
         float t2 = 1.1920929e-7f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50ca, held ahead of the effects the ELF orders after it
         f32 t3 = t;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50d6, held ahead of the effects the ELF orders after it
-        const f32 t4 = ::MtVector3::Zero.x;
+        const f32 t4 = MtVector3::Zero.x;
         pContact->pos.x = t4;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50de, held ahead of the effects the ELF orders after it
-        const f32 t5 = ::MtVector3::Zero.y;
+        const f32 t5 = MtVector3::Zero.y;
         pContact->pos.y = t5;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50e8, held ahead of the effects the ELF orders after it
-        const f32 t6 = ::MtVector3::Zero.z;
+        const f32 t6 = MtVector3::Zero.z;
         pContact->pos.z = t6;
         pContact->pos.pad_ = 0.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50f9, held ahead of the effects the ELF orders after it
-        const f32 t7 = ::MtVector3::Zero.x;
+        const f32 t7 = MtVector3::Zero.x;
         pContact->normal.x = t7;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5102, held ahead of the effects the ELF orders after it
-        const f32 t8 = ::MtVector3::Zero.y;
+        const f32 t8 = MtVector3::Zero.y;
         pContact->normal.y = t8;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be510c, held ahead of the effects the ELF orders after it
-        const f32 t9 = ::MtVector3::Zero.z;
+        const f32 t9 = MtVector3::Zero.z;
         pContact->normal.z = t9;
         pContact->normal.pad_ = 0.0f;
         pContact->distance = 0.0f;
@@ -258,30 +258,30 @@ bool MtGeomLineSegment::getClosest(const MtLine& line, MtContact* pContact) cons
     float t0 = 0.001f;
     f32 t;
     // inferred: a temporary for the result of the call at 0x1be518e, used twice; no DWARF local holds it
-    f32 t2 = ::MtCollision::sqrDistance(this->mLineSegment, line, &t, static_cast<f32*>(nullptr), t0);
-    if (pContact != static_cast<MtContact*>(nullptr)) {
+    f32 t2 = MtCollision::sqrDistance(mLineSegment, line, &t, static_cast<f32*>(nullptr), t0);
+    if (pContact != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5198, held ahead of the effects the ELF orders after it
         float t3 = 1.1920929e-7f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51a4, held ahead of the effects the ELF orders after it
         f32 t4 = t;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51b0, held ahead of the effects the ELF orders after it
-        const f32 t5 = ::MtVector3::Zero.x;
+        const f32 t5 = MtVector3::Zero.x;
         pContact->pos.x = t5;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51b8, held ahead of the effects the ELF orders after it
-        const f32 t6 = ::MtVector3::Zero.y;
+        const f32 t6 = MtVector3::Zero.y;
         pContact->pos.y = t6;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51c2, held ahead of the effects the ELF orders after it
-        const f32 t7 = ::MtVector3::Zero.z;
+        const f32 t7 = MtVector3::Zero.z;
         pContact->pos.z = t7;
         pContact->pos.pad_ = 0.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51d3, held ahead of the effects the ELF orders after it
-        const f32 t8 = ::MtVector3::Zero.x;
+        const f32 t8 = MtVector3::Zero.x;
         pContact->normal.x = t8;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51dc, held ahead of the effects the ELF orders after it
-        const f32 t9 = ::MtVector3::Zero.y;
+        const f32 t9 = MtVector3::Zero.y;
         pContact->normal.y = t9;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51e6, held ahead of the effects the ELF orders after it
-        const f32 t10 = ::MtVector3::Zero.z;
+        const f32 t10 = MtVector3::Zero.z;
         pContact->normal.z = t10;
         pContact->normal.pad_ = 0.0f;
         pContact->distance = 0.0f;
@@ -309,30 +309,30 @@ bool MtGeomLineSegment::getClosest(const MtLineSegment& ls, MtContact* pContact)
     float t0 = 0.001f;
     f32 t;
     // inferred: a temporary for the result of the call at 0x1be533e, used twice; no DWARF local holds it
-    f32 t2 = ::MtCollision::sqrDistance(this->mLineSegment, ls, &t, static_cast<f32*>(nullptr), t0);
-    if (pContact != static_cast<MtContact*>(nullptr)) {
+    f32 t2 = MtCollision::sqrDistance(mLineSegment, ls, &t, static_cast<f32*>(nullptr), t0);
+    if (pContact != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5348, held ahead of the effects the ELF orders after it
         float t3 = 1.1920929e-7f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5354, held ahead of the effects the ELF orders after it
         f32 t4 = t;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5360, held ahead of the effects the ELF orders after it
-        const f32 t5 = ::MtVector3::Zero.x;
+        const f32 t5 = MtVector3::Zero.x;
         pContact->pos.x = t5;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5368, held ahead of the effects the ELF orders after it
-        const f32 t6 = ::MtVector3::Zero.y;
+        const f32 t6 = MtVector3::Zero.y;
         pContact->pos.y = t6;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5372, held ahead of the effects the ELF orders after it
-        const f32 t7 = ::MtVector3::Zero.z;
+        const f32 t7 = MtVector3::Zero.z;
         pContact->pos.z = t7;
         pContact->pos.pad_ = 0.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5383, held ahead of the effects the ELF orders after it
-        const f32 t8 = ::MtVector3::Zero.x;
+        const f32 t8 = MtVector3::Zero.x;
         pContact->normal.x = t8;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be538c, held ahead of the effects the ELF orders after it
-        const f32 t9 = ::MtVector3::Zero.y;
+        const f32 t9 = MtVector3::Zero.y;
         pContact->normal.y = t9;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5396, held ahead of the effects the ELF orders after it
-        const f32 t10 = ::MtVector3::Zero.z;
+        const f32 t10 = MtVector3::Zero.z;
         pContact->normal.z = t10;
         pContact->normal.pad_ = 0.0f;
         pContact->distance = 0.0f;
@@ -390,28 +390,28 @@ bool MtGeomLineSegment::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact
     // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     f32 t;
     // inferred: a temporary for the result of the call at 0x1be5786, used twice; no DWARF local holds it
-    bool t0 = ::MtCollision::closest(this->mLineSegment, planeXZ, &t, static_cast<MtContact*>(nullptr));
-    if (pContact != static_cast<MtContact*>(nullptr)) {
+    bool t0 = MtCollision::closest(mLineSegment, planeXZ, &t, static_cast<MtContact*>(nullptr));
+    if (pContact != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5790, held ahead of the effects the ELF orders after it
         f32 t2 = t;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be579c, held ahead of the effects the ELF orders after it
-        const f32 t3 = ::MtVector3::Zero.x;
+        const f32 t3 = MtVector3::Zero.x;
         pContact->pos.x = t3;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57a4, held ahead of the effects the ELF orders after it
-        const f32 t4 = ::MtVector3::Zero.y;
+        const f32 t4 = MtVector3::Zero.y;
         pContact->pos.y = t4;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57ae, held ahead of the effects the ELF orders after it
-        const f32 t5 = ::MtVector3::Zero.z;
+        const f32 t5 = MtVector3::Zero.z;
         pContact->pos.z = t5;
         pContact->pos.pad_ = 0.0f;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57bf, held ahead of the effects the ELF orders after it
-        const f32 t6 = ::MtVector3::Zero.x;
+        const f32 t6 = MtVector3::Zero.x;
         pContact->normal.x = t6;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57c8, held ahead of the effects the ELF orders after it
-        const f32 t7 = ::MtVector3::Zero.y;
+        const f32 t7 = MtVector3::Zero.y;
         pContact->normal.y = t7;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57d2, held ahead of the effects the ELF orders after it
-        const f32 t8 = ::MtVector3::Zero.z;
+        const f32 t8 = MtVector3::Zero.z;
         pContact->normal.z = t8;
         pContact->normal.pad_ = 0.0f;
         pContact->distance = 0.0f;
@@ -434,25 +434,25 @@ __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtTriangle& tri, 
 // Address: 0x01be58c0 - 0x01be58ce (14 bytes)
 bool MtGeomLineSegment::isFind(const MtSphere& sphere, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, sphere, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, sphere, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be58d0 - 0x01be58de (14 bytes)
 bool MtGeomLineSegment::isFind(const MtCapsule& capsule, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, capsule, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, capsule, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be58e0 - 0x01be58ee (14 bytes)
 bool MtGeomLineSegment::isFind(const MtAABB& aabb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, aabb, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, aabb, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be58f0 - 0x01be58fe (14 bytes)
 bool MtGeomLineSegment::isFind(const MtOBB& obb, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, obb, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, obb, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be5900 - 0x01be5a5b (347 bytes)
@@ -464,13 +464,13 @@ __attribute__((weak)) bool MtGeomLineSegment::isFind(const MtPlane& plane, const
 // Address: 0x01be5a60 - 0x01be5a6e (14 bytes)
 bool MtGeomLineSegment::isFind(const MtPlaneXZ& planeXZ, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, planeXZ, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, planeXZ, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be5a70 - 0x01be5a7e (14 bytes)
 bool MtGeomLineSegment::isFind(const MtTriangle& tri, const MtVector3& v, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(this->mLineSegment, tri, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::find(mLineSegment, tri, static_cast<f32*>(nullptr), pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be5a80 - 0x01be5b06 (134 bytes)
@@ -517,6 +517,8 @@ __attribute__((weak)) void MtGeomLineSegment::addPos(const MtVector3& pos) {
 
 // No out-of-line body: no code in the ELF
 // f32 MtGeomLineSegment::getLineRatio(const MtLineSegment&, const MtVector3&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtGeomLineSegment::MyDTI MtGeomLineSegment::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomLineSegment::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

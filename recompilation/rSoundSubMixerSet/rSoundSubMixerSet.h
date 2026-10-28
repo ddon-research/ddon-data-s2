@@ -145,13 +145,13 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rSoundSubMixerSet::BasicSubMixers::BasicSubMixers() {
-    this->mID = static_cast<u32>(0);
-    this->mpResource7 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource6 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource5 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource4 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource3 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource2 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource1 = static_cast<rSoundSubMixer*>(nullptr);
-    this->mpResource0 = static_cast<rSoundSubMixer*>(nullptr);
+    this->mID = 0;
+    this->mpResource7 = nullptr;
+    this->mpResource6 = nullptr;
+    this->mpResource5 = nullptr;
+    this->mpResource4 = nullptr;
+    this->mpResource3 = nullptr;
+    this->mpResource2 = nullptr;
+    this->mpResource1 = nullptr;
+    this->mpResource0 = nullptr;
 }

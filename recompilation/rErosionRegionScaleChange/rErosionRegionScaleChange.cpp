@@ -49,7 +49,7 @@ const MtDTI& cErosionRegionScaleChange::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionRegionScaleChange::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionRegionScaleChange::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -74,13 +74,22 @@ inline void cErosionRegionScaleChange::operator delete(void* p_addr) {
 //   in cErosionRegion::regenerateErosion at 0x000ca6e2-0x000ca6e8 (called at cErosionRegion.cpp:408)
 // f32 cErosionRegionScaleChange::getChangeFrame() const;
 
-// No out-of-line body: 2 inlined copies in 2 functions (134 bytes)
-//   in cErosionRegionScaleChange::MyDTI::newInstance at 0x0067234d-0x00672387 (called at rErosionRegionScaleChange.cpp:42)
-//   in rTbl2<cErosionRegionScaleChange>::loadCore at 0x01a8ea6d-0x01a8ea7f, 0x01a8ea82-0x01a8eabc (called at rTbl2.h:215)
-// cErosionRegionScaleChange::cErosionRegionScaleChange();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cErosionRegionScaleChange::cErosionRegionScaleChange() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mInitScale.x = MtVector3::Zero.x;
+    mInitScale.y = MtVector3::Zero.y;
+    mInitScale.z = MtVector3::Zero.z;
+    mInitScale.pad_ = 0.0f;
+    mChangeFrame = 0.0f;
+}
 
 // Defined in the class (its body was written in a header).
 // cErosionRegionScaleChange::~cErosionRegionScaleChange();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionRegionScaleChange::MyDTI cErosionRegionScaleChange::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rErosionRegionScaleChange.cpp at 0x00672540-0x00672582 (called at rErosionRegionScaleChange.cpp:42)
@@ -115,7 +124,7 @@ const MtDTI& rErosionRegionScaleChange::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionRegionScaleChange::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionRegionScaleChange::DTI)->memAlloc(sz, align, ::rErosionRegionScaleChange::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionRegionScaleChange::DTI)->memAlloc(sz, align, rErosionRegionScaleChange::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +139,7 @@ inline void* rErosionRegionScaleChange::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25rErosionRegionScaleChangeD0Ev at 0x01a8e854-0x01a8e873, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionRegionScaleChange::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionRegionScaleChange::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionRegionScaleChange::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,8 +166,10 @@ MT_CTSTR rErosionRegionScaleChange::getExt() const {
 // Address: 0x01a8e9a0 - 0x01a8e9a6 (6 bytes)
 u32 rErosionRegionScaleChange::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionRegionScaleChange::MyDTI rErosionRegionScaleChange::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rErosionRegionScaleChange.cpp at 0x00672582-0x006725bf (called at rErosionRegionScaleChange.cpp:43)
@@ -168,7 +179,7 @@ u32 rErosionRegionScaleChange::getDataVersion() const {
 // Address: 0x00672400 - 0x00672464 (100 bytes)
 MtObject* rErosionRegionScaleChange::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionRegionScaleChange;
+    return new (16u) rErosionRegionScaleChange;
 }
 
 // Instance at 0x01a8e950 - 0x01a8e966 (22 bytes) of the generic rTbl2<T>::getData

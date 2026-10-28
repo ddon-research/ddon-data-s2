@@ -374,3 +374,15 @@ public:
     static const u32 HTTP_CLIENT_MAX_NUM = 9;
     static sHttpClient* mpInstance;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGameHttpClient::MyListener::onReceiveHeader at 0x7bfa43-0x7bfa49; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGameHttpClient::setStatusCode(u32 value) {
+    this->mStatusCode = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGameHttpClient::MyListener::onReceiveHeader at 0x7bfa4c-0x7bfa52; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGameHttpClient::setContentLength(s32 value) {
+    this->mContentLength = value;
+}

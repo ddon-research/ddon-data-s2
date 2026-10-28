@@ -23,10 +23,13 @@ class rArchive;
 class rCameraList;
 class rCharacterEdit;
 class rCollisionHeightField;
+class rDynamicSbc;
 class rEffect2D;
+class rEffectAnim;
 class rEffectList;
 class rEffectStrip;
 class rGUIIconInfo;
+class rGUIMessage;
 class rGeometry2;
 class rMotionList;
 class rOccluder;
@@ -76,14 +79,20 @@ class cResource : public MtObject
     friend class rCharacterEdit;
     // inferred: rCollisionHeightField::rCollisionHeightField names cResource::mAttr
     friend class rCollisionHeightField;
+    // inferred: rDynamicSbc::rDynamicSbc names cResource::mAttr
+    friend class rDynamicSbc;
     // inferred: rEffect2D::rEffect2D names cResource::mAttr
     friend class rEffect2D;
+    // inferred: rEffectAnim::rEffectAnim names cResource::mAttr
+    friend class rEffectAnim;
     // inferred: rEffectList::rEffectList names cResource::mAttr
     friend class rEffectList;
     // inferred: rEffectStrip::rEffectStrip names cResource::mAttr
     friend class rEffectStrip;
     // inferred: rGUIIconInfo::rGUIIconInfo names cResource::mAttr
     friend class rGUIIconInfo;
+    // inferred: rGUIMessage::rGUIMessage names cResource::mAttr
+    friend class rGUIMessage;
     // inferred: rGeometry2::rGeometry2 names cResource::mAttr
     friend class rGeometry2;
     // inferred: rMotionList::rMotionList names cResource::mAttr
@@ -292,13 +301,13 @@ inline u64 cResource::getID() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 25 DWARF copies materializes its result
 inline bool cResource::isIntermediate() const {
-    return (this->mAttr & static_cast<u32>(8)) != static_cast<u32>(0);
+    return (this->mAttr & 8u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 76 DWARF copies materializes its result
 inline bool cResource::isUsage() const {
-    return (this->mState & static_cast<u32>(1)) != static_cast<u32>(0);
+    return (this->mState & 1u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

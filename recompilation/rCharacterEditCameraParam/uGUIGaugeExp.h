@@ -141,8 +141,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIGaugeExp::cGaugeInfo::cGaugeInfo() {
-    this->mExpLatest = static_cast<u64>(-1);
-    this->mLvLatest = static_cast<u16>(65535);
-    this->mJobIdLatest = static_cast<u8>(255);
-    this->mPlayPointLatest = static_cast<u32>(4294967295);
+    this->mExpLatest = 0xFFFFFFFFFFFFFFFFul;
+    this->mLvLatest = 0xFFFF;
+    this->mJobIdLatest = 0xFF;
+    this->mPlayPointLatest = 0xFFFFFFFF;
 }

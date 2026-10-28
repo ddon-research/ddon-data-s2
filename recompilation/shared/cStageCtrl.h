@@ -128,7 +128,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cStageCtrl::Area::Area() {
-    this->mAreaNo = static_cast<s32>(-1);
-    this->mDepth = static_cast<s32>(-1);
-    this->mGroupNo = static_cast<s32>(-1);
+    this->mAreaNo = -1;
+    this->mDepth = -1;
+    this->mGroupNo = -1;
 }

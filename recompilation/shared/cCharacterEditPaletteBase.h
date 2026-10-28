@@ -70,7 +70,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCharacterEditPaletteBase::cCharacterEditPaletteBase() {
-    this->mIconNo = static_cast<u32>(0);
-    this->mReleaseVersion = static_cast<u32>(0);
-    this->mFlag = static_cast<u32>(0);
+    this->mIconNo = 0;
+    this->mReleaseVersion = 0;
+    this->mFlag = 0;
 }

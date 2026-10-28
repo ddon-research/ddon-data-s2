@@ -42,22 +42,22 @@
 // Address: 0x007898e0 - 0x007898eb (11 bytes)
 void cGeneralPointIterator::toBegin() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurIdx = static_cast<s32>(0);
-    this->::cGeneralPointIterator::findCurrent();
+    mCurIdx = 0;
+    findCurrent();
 }
 
 // Address: 0x00789940 - 0x00789947 (7 bytes)
 void cGeneralPointIterator::toNext() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurIdx = this->mCurIdx + static_cast<s32>(1);
-    this->::cGeneralPointIterator::findCurrent();
+    mCurIdx = mCurIdx + 1;
+    findCurrent();
 }
 
 // Address: 0x007898f0 - 0x00789906 (22 bytes)
 bool cGeneralPointIterator::isEnd() const {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCurIdx >= ::sGeneralPoint::getInstance()->mPointRefNum;
+    return mCurIdx >= sGeneralPoint::getInstance()->mPointRefNum;
 }
 
 // Address: 0x00789910 - 0x00789938 (40 bytes)
@@ -95,7 +95,7 @@ const MtDTI& sGeneralPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sGeneralPoint::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sGeneralPoint::DTI);
+    return MtMemoryAllocator::getAllocator(sGeneralPoint::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +104,7 @@ inline MtAllocator* sGeneralPoint::getAllocator() {
 // Address: 0x00788cf0 - 0x00788d30 (64 bytes)
 void* sGeneralPoint::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sGeneralPoint::getAllocator()->memAlloc(sz, align, ::sGeneralPoint::DTI.::MtDTI::getID());
+    return sGeneralPoint::getAllocator()->memAlloc(sz, align, sGeneralPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +119,7 @@ void* sGeneralPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sGeneralPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sGeneralPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sGeneralPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -228,14 +228,14 @@ int sGeneralPoint::sortDataFunc(const void* a, const void* b) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x0 from const void*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4c from const unsigned long
-    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-            return static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + static_cast<long>(0))) + static_cast<long>(76))) - (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + static_cast<long>(0))) + static_cast<long>(76))));
+    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + 0)) != 0) {
+        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + 0)) != 0) {
+            return static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + 0)) + 76)) - (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + 0)) + 76)));
         } else {
-            return static_cast<int>(-1);
+            return -1;
         }
     } else {
-        return static_cast<int>(1);
+        return 1;
     }
 }
 
@@ -250,7 +250,7 @@ __attribute__((weak)) cGeneralPoint* sGeneralPoint::createPoint(const MtDTI& dti
 // Address: 0x00789a30 - 0x00789a3a (10 bytes)
 void sGeneralPoint::releasePoint(cGeneralPoint* pGeneral) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pGeneral == static_cast<cGeneralPoint*>(nullptr)) {
+    if (pGeneral == nullptr) {
         return;
     }
     pGeneral->mKillReq = true;
@@ -284,9 +284,9 @@ void sGeneralPoint::erasePtr(cGeneralPointPtr* pPtr) {
     // DWARF local not rendered: s32 ptr_idx;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cGeneralPointPtr*
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) > static_cast<int>(-1)) {
-        this->mPointPtrArray.elems[((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) <= static_cast<unsigned int>(6143)) ? (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) : static_cast<unsigned int>(0)] = static_cast<cGeneralPointPtr*>(nullptr);
-        this->mPointPtrEraseReq = true;
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + 8)) > -1) {
+        mPointPtrArray.elems[((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + 8)) <= 6143u) ? (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + 8)) : 0u] = nullptr;
+        mPointPtrEraseReq = true;
     }
 }
 
@@ -296,6 +296,11 @@ void sGeneralPoint::erasePtr(cGeneralPointPtr* pPtr) {
 //   in cGeneralPointPtr::cGeneralPointPtr at 0x001fe9a0-0x001fe9aa (called at cGeneralPointPtr.cpp:70)
 //   and 19 more (every copy is in <bundle>.inlined.json)
 // sGeneralPoint* sGeneralPoint::getInstance();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sGeneralPoint::MyDTI sGeneralPoint::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sGeneralPoint* sGeneralPoint::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sGeneralPoint.cpp at 0x00789d20-0x00789d62 (called at sGeneralPoint.cpp:50)

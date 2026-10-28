@@ -49,7 +49,7 @@ const MtDTI& cResource::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9cResourceD0Ev at 0x00e5e27e-0x00e5e29f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,13 +77,13 @@ inline void cResource::operator delete(void* p_addr) {
 // Address: 0x01b5bad0 - 0x01b5badc (12 bytes)
 u32 cResource::getQuality() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuality;
+    return mQuality;
 }
 
 // Address: 0x01b5ba80 - 0x01b5ba87 (7 bytes)
 u32 cResource::getTag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTag;
+    return mTag;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -126,19 +126,19 @@ u32 cResource::getTag() const {
 // Address: 0x01b5ba60 - 0x01b5ba65 (5 bytes)
 MT_CTSTR cResource::getPath() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mPath[0];
+    return &mPath[0];
 }
 
 // Address: 0x00e5e8d0 - 0x00e5e8e9 (25 bytes)
 void cResource::addRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sResource::mpInstance)->addRef(this);
+    (sResource::mpInstance)->addRef(this);
 }
 
 // Address: 0x00e5e8f0 - 0x00e5e90c (28 bytes)
 void cResource::release() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sResource::mpInstance)->release(this);
+    (sResource::mpInstance)->release(this);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,7 +147,7 @@ void cResource::release() {
 // Address: 0x00e5e350 - 0x00e5e355 (5 bytes)
 MtUI* cResource::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00e5e360 - 0x00e5e8c6 (1382 bytes)
@@ -198,24 +198,24 @@ bool cResource::compact(MtStream& out) {
 // Address: 0x00e5e200 - 0x00e5e23e (62 bytes)
 cResource::cResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMagicID = static_cast<u32>(21075);
-    this->mMagicTag = static_cast<u32>(0);
-    this->mRefCount = static_cast<s32>(1);
-    this->mAttr = static_cast<u32>(0);
-    this->mSize = static_cast<u32>(0);
-    this->mID = static_cast<u64>(0);
-    this->mPath[0] = static_cast<char>(0);
-    this->mState = static_cast<u32>(0);
-    this->mQuality = static_cast<u32>(2);
-    this->mTag = static_cast<u32>(0);
+    mMagicID = 21075;
+    mMagicTag = 0;
+    mRefCount = 1;
+    mAttr = 0;
+    mSize = 0;
+    mID = 0;
+    mPath[0] = 0;
+    mState = 0;
+    mQuality = 2;
+    mTag = 0;
 }
 
 // Address: 0x00e5e240 - 0x00e5e256 (22 bytes)
 // Also emitted as: _ZN9cResourceD0Ev at 0x00e5e260
 cResource::~cResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMagicID = static_cast<u32>(0);
-    this->mMagicTag = static_cast<u32>(0);
+    mMagicID = 0;
+    mMagicTag = 0;
 }
 
 // Address: 0x01962cc0 - 0x01962cc3 (3 bytes)
@@ -245,7 +245,7 @@ bool cResource::save(MtStream&) {
 // Address: 0x01962da0 - 0x01962dab (11 bytes)
 bool cResource::convert(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->convertEx(out, static_cast<cResource::CONVERT_TYPE>(0));
+    return convertEx(out, CONVERT_DEFAULT);
 }
 
 // Address: 0x01962db0 - 0x01962db3 (3 bytes)
@@ -269,7 +269,7 @@ __attribute__((weak)) void cResource::clear() {
 // Address: 0x01b5bab0 - 0x01b5bab5 (5 bytes)
 u32 cResource::getState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mState;
+    return mState;
 }
 
 // No out-of-line body: no code in the ELF
@@ -293,25 +293,29 @@ u32 cResource::getState() {
 // Address: 0x01b5bac0 - 0x01b5bac5 (5 bytes)
 void cResource::setState(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = v;
+    mState = v;
 }
 
 // Address: 0x01b5bae0 - 0x01b5baf4 (20 bytes)
 void cResource::setQuality(u32 q) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuality = q;
+    mQuality = q;
 }
 
 // Address: 0x01b5ba90 - 0x01b5baa1 (17 bytes)
 void cResource::setTag(u32 tag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTag = tag;
+    mTag = tag;
 }
 
 // Address: 0x01b5ba70 - 0x01b5ba71 (1 bytes)
 __attribute__((weak)) void cResource::setPath(const MtString& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cResource::MyDTI cResource::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): MtAllocator* cResource::mpAllocator;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

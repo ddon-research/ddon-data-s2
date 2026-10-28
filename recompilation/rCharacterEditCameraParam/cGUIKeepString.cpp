@@ -24,7 +24,7 @@ const MtDTI& cGUIKeepString::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGUIKeepString::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGUIKeepString::DTI);
+    return MtMemoryAllocator::getAllocator(cGUIKeepString::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cGUIKeepString::getAllocator() {
 // Address: 0x000d9270 - 0x000d92b0 (64 bytes)
 void* cGUIKeepString::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cGUIKeepString::getAllocator()->memAlloc(sz, align, ::cGUIKeepString::DTI.::MtDTI::getID());
+    return cGUIKeepString::getAllocator()->memAlloc(sz, align, cGUIKeepString::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,6 +90,8 @@ __attribute__((weak)) void cGUIKeepString::saveString(u32 Type, MT_CTSTR pString
 
 // No out-of-line body: no code in the ELF
 // bool cGUIKeepString::isSameStringType(u32 Type);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIKeepString::MyDTI cGUIKeepString::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cGUIKeepString.cpp at 0x000d9490-0x000d94d2 (called at cGUIKeepString.cpp:20)

@@ -246,3 +246,15 @@ public:
 protected:
     static const u8 DATA_VERSION = 19;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 3 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline rStageJoint::Param* rStageJoint::getParam() {
+    return &this->mParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointCtrl::setup at 0xd30e18-0xd30e1f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rStageJoint::Info* rStageJoint::getPersistentInfo() {
+    return &this->mPersistentInfo;
+}

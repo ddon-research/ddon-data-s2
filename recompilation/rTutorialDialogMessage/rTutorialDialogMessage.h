@@ -107,6 +107,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rTutorialDialogMessage::cDialogPage::cDialogPage() {
-    this->mTextGmdIdx = static_cast<u32>(0);
-    this->mImageId = static_cast<u32>(0);
+    this->mTextGmdIdx = 0;
+    this->mImageId = 0;
 }

@@ -453,6 +453,18 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cpHpDamageCtrl::getParentRegionNum() const {
+    return this->mParentRegionStatusArray.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::calcShakeDamage at 0x485db1-0x485db7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline cBlowShrinkInfo* cpHpDamageCtrl::getDownInfo() {
+    return &this->mDownInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline rParentRegionStatusParam* cpHpDamageCtrl::getResParentRegion() const {
     return this->mpParentRegionRes;
 }
@@ -460,4 +472,90 @@ inline rParentRegionStatusParam* cpHpDamageCtrl::getResParentRegion() const {
 // Inline, no code of its own: checked where it is inlined.
 inline bool cpHpDamageCtrl::isRequestDie() const {
     return this->mIsRequestDie;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::adjustAbilityUpdate at 0xc7a3e3-0xc7a3eb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cpHpDamageCtrl::getLastDamageTime() const {
+    return this->mLastDamageTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::checkHolyAbsorpReq at 0x482c2c-0x482d6c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpHpDamageCtrl::clearAbsorpReqArray() {
+    this->mAbsorpReqArray.elems[0].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[0].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[0].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[0].mIsSeted = false;
+    this->mAbsorpReqArray.elems[1].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[1].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[1].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[1].mIsSeted = false;
+    this->mAbsorpReqArray.elems[2].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[2].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[2].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[2].mIsSeted = false;
+    this->mAbsorpReqArray.elems[3].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[3].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[3].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[3].mIsSeted = false;
+    this->mAbsorpReqArray.elems[4].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[4].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[4].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[4].mIsSeted = false;
+    this->mAbsorpReqArray.elems[5].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[5].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[5].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[5].mIsSeted = false;
+    this->mAbsorpReqArray.elems[6].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[6].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[6].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[6].mIsSeted = false;
+    this->mAbsorpReqArray.elems[7].mReqMsg.mAtkUID = 0;
+    this->mAbsorpReqArray.elems[7].mReqMsg.mDfdUID = 0;
+    this->mAbsorpReqArray.elems[7].mReqMsg.mHealVal = 0;
+    this->mAbsorpReqArray.elems[7].mIsSeted = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::checkSoulAbsorpReq at 0x482e0a-0x482f4a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpHpDamageCtrl::clearSoulAbsorpReqArray() {
+    this->mSoulAbsorpReqArray.elems[0].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[0].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[0].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[0].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[1].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[1].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[1].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[1].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[2].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[2].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[2].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[2].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[3].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[3].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[3].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[3].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[4].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[4].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[4].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[4].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[5].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[5].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[5].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[5].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[6].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[6].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[6].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[6].mIsSeted = false;
+    this->mSoulAbsorpReqArray.elems[7].mReqMsg.mAtkUID = 0;
+    this->mSoulAbsorpReqArray.elems[7].mReqMsg.mDfdUID = 0;
+    this->mSoulAbsorpReqArray.elems[7].mReqMsg.mHealVal = 0;
+    this->mSoulAbsorpReqArray.elems[7].mIsSeted = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::before at 0x482298-0x48229f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline HP_DATATYPE cpHpDamageCtrl::getDamageCheatCheckSum() const {
+    return this->mDamageCheatCheckSum;
 }

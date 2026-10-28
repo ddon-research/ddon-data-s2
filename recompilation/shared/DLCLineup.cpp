@@ -24,7 +24,7 @@ const MtDTI& CDataDLCLineupBought::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDLCLineupBought::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDLCLineupBought::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDLCLineupBought::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataDLCLineupBought::getAllocator() {
 // Address: 0x003dcd40 - 0x003dcd80 (64 bytes)
 void* CDataDLCLineupBought::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDLCLineupBought::getAllocator()->memAlloc(sz, align, ::CDataDLCLineupBought::DTI.::MtDTI::getID());
+    return CDataDLCLineupBought::getAllocator()->memAlloc(sz, align, CDataDLCLineupBought::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataDLCLineupBought::operator new(size_t sz, u32 align) {
 // Address: 0x003dcdb0 - 0x003dcdda (42 bytes)
 __attribute__((weak)) void CDataDLCLineupBought::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDLCLineupBought::getAllocator()->memFree(p_addr);
+    CDataDLCLineupBought::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ __attribute__((weak)) void CDataDLCLineupBought::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataDLCLineupBought::CDataDLCLineupBought(const char*, u32, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDLCLineupBought::MyDTI CDataDLCLineupBought::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f5ef-0x0041f628 (called at DLCLineupImplement.inc:7)
@@ -95,7 +97,7 @@ const MtDTI& CDataDLCLineupHistory::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataDLCLineupHistory::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataDLCLineupHistory::DTI);
+    return MtMemoryAllocator::getAllocator(CDataDLCLineupHistory::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +106,7 @@ inline MtAllocator* CDataDLCLineupHistory::getAllocator() {
 // Address: 0x003dce70 - 0x003dceb0 (64 bytes)
 void* CDataDLCLineupHistory::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataDLCLineupHistory::getAllocator()->memAlloc(sz, align, ::CDataDLCLineupHistory::DTI.::MtDTI::getID());
+    return CDataDLCLineupHistory::getAllocator()->memAlloc(sz, align, CDataDLCLineupHistory::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ void* CDataDLCLineupHistory::operator new(size_t sz, u32 align) {
 // Address: 0x003dcee0 - 0x003dcf0a (42 bytes)
 __attribute__((weak)) void CDataDLCLineupHistory::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataDLCLineupHistory::getAllocator()->memFree(p_addr);
+    CDataDLCLineupHistory::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,6 +142,8 @@ __attribute__((weak)) void CDataDLCLineupHistory::operator delete(void* p_addr) 
 
 // No out-of-line body: no code in the ELF
 // CDataDLCLineupHistory::CDataDLCLineupHistory(s64, const char*, const char*, const char*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataDLCLineupHistory::MyDTI CDataDLCLineupHistory::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f628-0x0041f661 (called at DLCLineupImplement.inc:8)

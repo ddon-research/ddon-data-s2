@@ -49,7 +49,7 @@ const MtDTI& nNetwork::Transport::getDTI() const {
 // Address: 0x011a33d0 - 0x011a3410 (64 bytes)
 void* nNetwork::Transport::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memAlloc(sz, align, ::nNetwork::Transport::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memAlloc(sz, align, ::nNetwork::Transport::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,20 +92,20 @@ MtUI* nNetwork::Transport::createUI(MtProperty& prop) {
 void nNetwork::Transport::setup(nNetwork::Session* ps) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession = ps;
-    if (this->mpProtocol[0] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[0]->setup(ps);
+    mpSession = ps;
+    if (mpProtocol[0] != nullptr) {
+        mpProtocol[0]->setup(ps);
     }
-    if (this->mpProtocol[1] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[1]->setup(ps);
+    if (mpProtocol[1] != nullptr) {
+        mpProtocol[1]->setup(ps);
     }
-    if (this->mpProtocol[2] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[2]->setup(ps);
+    if (mpProtocol[2] != nullptr) {
+        mpProtocol[2]->setup(ps);
     }
-    if (this->mpProtocol[3] == static_cast<nNetwork::Protocol*>(nullptr)) {
+    if (mpProtocol[3] == nullptr) {
         return;
     }
-    this->mpProtocol[3]->setup(ps);
+    mpProtocol[3]->setup(ps);
 }
 
 // Address: 0x011a4490 - 0x011a45a1 (273 bytes)
@@ -122,10 +122,10 @@ __attribute__((weak)) void nNetwork::Transport::move() {
 // Address: 0x011a42f0 - 0x011a4328 (56 bytes)
 void nNetwork::Transport::setProtocol(u32 protocol_index, nNetwork::Protocol* pp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSession != static_cast<nNetwork::Session*>(nullptr)) {
-        pp->setup(this->mpSession);
+    if (mpSession != nullptr) {
+        pp->setup(mpSession);
     }
-    this->mpProtocol[protocol_index] = pp;
+    mpProtocol[protocol_index] = pp;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -176,9 +176,9 @@ void nNetwork::Transport::setProtocol(u32 protocol_index, nNetwork::Protocol* pp
 // Address: 0x011a6dc0 - 0x011a6de3 (35 bytes)
 void nNetwork::Transport::getForwardInfo(u32 forward, s32& route_index, u32& route_key, u32& interval) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    route_index = this->mForwardQueue[forward].mRouteIndex;
-    route_key = this->mForwardQueue[forward].mRouteKey;
-    interval = this->mForwardQueue[forward].mInterval;
+    route_index = mForwardQueue[forward].mRouteIndex;
+    route_key = mForwardQueue[forward].mRouteKey;
+    interval = mForwardQueue[forward].mInterval;
 }
 
 // Address: 0x011a4340 - 0x011a4485 (325 bytes)
@@ -227,19 +227,19 @@ __attribute__((weak)) void nNetwork::Transport::updateBandwidth(nNetwork::Route&
 void nNetwork::Transport::createRoute(s32 route_index) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpProtocol[0] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[0]->create(route_index);
+    if (mpProtocol[0] != nullptr) {
+        mpProtocol[0]->create(route_index);
     }
-    if (this->mpProtocol[1] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[1]->create(route_index);
+    if (mpProtocol[1] != nullptr) {
+        mpProtocol[1]->create(route_index);
     }
-    if (this->mpProtocol[2] != static_cast<nNetwork::Protocol*>(nullptr)) {
-        this->mpProtocol[2]->create(route_index);
+    if (mpProtocol[2] != nullptr) {
+        mpProtocol[2]->create(route_index);
     }
-    if (this->mpProtocol[3] == static_cast<nNetwork::Protocol*>(nullptr)) {
+    if (mpProtocol[3] == nullptr) {
         return;
     }
-    this->mpProtocol[3]->create(route_index);
+    mpProtocol[3]->create(route_index);
 }
 
 // Address: 0x011a3970 - 0x011a3a38 (200 bytes)
@@ -256,7 +256,7 @@ __attribute__((weak)) void nNetwork::Transport::removeRoute(s32 route_index) {
 // Address: 0x011a54e0 - 0x011a54f4 (20 bytes)
 void nNetwork::Transport::recvPeer(s32 peer_id, const void* data_ptr, s32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->receive(data_ptr, data_size, peer_id);
+    receive(data_ptr, data_size, peer_id);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -353,6 +353,8 @@ __attribute__((weak)) bool nNetwork::Transport::getForward(s32 forward, nNetwork
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Transport::MyDTI nNetwork::Transport::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Transport::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -421,6 +423,8 @@ __attribute__((weak)) void nNetwork::Transport::ForwardQueue::createProperty(MtP
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Transport::ForwardQueue::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Transport::ForwardQueue::MyDTI nNetwork::Transport::ForwardQueue::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Transport::ForwardQueue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

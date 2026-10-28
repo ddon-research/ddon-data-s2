@@ -23,7 +23,7 @@ const MtDTI& sWorkRate::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sWorkRate::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sWorkRate::DTI);
+    return MtMemoryAllocator::getAllocator(sWorkRate::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* sWorkRate::getAllocator() {
 // Address: 0x008736c0 - 0x00873700 (64 bytes)
 void* sWorkRate::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sWorkRate::getAllocator()->memAlloc(sz, align, ::sWorkRate::DTI.::MtDTI::getID());
+    return sWorkRate::getAllocator()->memAlloc(sz, align, sWorkRate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* sWorkRate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sWorkRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sWorkRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sWorkRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,6 +127,11 @@ __attribute__((weak)) f32 sWorkRate::calcRaw(u32 bit) {
 
 // No out-of-line body: no code in the ELF
 // f32 sWorkRate::getGlobalDeltaTime();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sWorkRate::MyDTI sWorkRate::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sWorkRate* sWorkRate::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sWorkRate.cpp at 0x00873c00-0x00873c42 (called at sWorkRate.cpp:30)

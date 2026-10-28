@@ -37,7 +37,7 @@ const MtDTI& rOmKey::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOmKey::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOmKey::DTI)->memAlloc(sz, align, ::rOmKey::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOmKey::DTI)->memAlloc(sz, align, rOmKey::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rOmKey::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rOmKey::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOmKey::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOmKey::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,38 +66,38 @@ inline void rOmKey::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rOmKey::rOmKey() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mOmKey.::MtArray::mAutoDelete = true;
-    this->mItem.::MtArray::mAutoDelete = true;
+    setAttribute(22u);
+    mOmKey.mAutoDelete = true;
+    mItem.mAutoDelete = true;
 }
 
 // Address: 0x006b2c70 - 0x006b2d69 (249 bytes)
 // Also emitted as: _ZN6rOmKeyD0Ev at 0x006b2d70
 rOmKey::~rOmKey() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mOmKey.::MtArray::mAutoDelete != false) {
+    if (mOmKey.mAutoDelete) {
         // inferred: the value carried to 0x6b2cc6; no location-less local in scope fits
         u32 v2_0;
-        if (this->mOmKey.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mOmKey.mLength != 0) {
             // inferred: the value the loop at 0x6b2ca0 carries; no location-less local in scope fits
-            u32 v0_0 = this->mOmKey.::MtArray::mLength;
+            u32 v0_0 = mOmKey.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value carried to 0x6b2cc2; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                if (this->mOmKey.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mOmKey.::MtArray::mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mOmKey.::MtArray::mLength) {
-                        v0_0 = this->mOmKey.::MtArray::mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+                if (mOmKey.mpArray[i0_3] != nullptr) {
+                    delete mOmKey.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mOmKey.mLength) {
+                        v0_0 = mOmKey.mLength;
+                        i0_3 += 1u;
                     } else {
-                        v1_0 = this->mOmKey.::MtArray::mLength;
+                        v1_0 = mOmKey.mLength;
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         v1_0 = v0_0;
                         break;
@@ -106,34 +106,34 @@ rOmKey::~rOmKey() {
             }
             v2_0 = v1_0;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mOmKey.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mOmKey.mpArray), 0, static_cast<size_t>(v2_0) * 8);
     }
-    this->mOmKey.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mItem.::MtArray::mAutoDelete != false) {
+    mOmKey.mLength = 0;
+    if (mItem.mAutoDelete) {
         // inferred: the value carried to 0x6b2d29; no location-less local in scope fits
         u32 v6_0;
-        if (this->mItem.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mItem.mLength != 0) {
             // inferred: the value the loop at 0x6b2d00 carries; no location-less local in scope fits
-            u32 v4_0 = this->mItem.::MtArray::mLength;
+            u32 v4_0 = mItem.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i4_3 = static_cast<unsigned int>(0);
+            unsigned int i4_3 = 0;
             // inferred: the value carried to 0x6b2d25; no location-less local in scope fits
             u32 v5_0;
             for (;;) {
-                if (this->mItem.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mItem.::MtArray::mpArray[i4_3];
-                    if ((i4_3 + static_cast<unsigned int>(1)) < this->mItem.::MtArray::mLength) {
-                        v4_0 = this->mItem.::MtArray::mLength;
-                        i4_3 += static_cast<unsigned int>(1);
+                if (mItem.mpArray[i4_3] != nullptr) {
+                    delete mItem.mpArray[i4_3];
+                    if ((i4_3 + 1u) < mItem.mLength) {
+                        v4_0 = mItem.mLength;
+                        i4_3 += 1u;
                     } else {
-                        v5_0 = this->mItem.::MtArray::mLength;
+                        v5_0 = mItem.mLength;
                         break;
                     }
                 } else {
-                    if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                        i4_3 += static_cast<unsigned int>(1);
+                    if ((i4_3 + 1u) < v4_0) {
+                        i4_3 += 1u;
                     } else {
                         v5_0 = v4_0;
                         break;
@@ -142,11 +142,11 @@ rOmKey::~rOmKey() {
             }
             v6_0 = v5_0;
         } else {
-            v6_0 = static_cast<u32>(0);
+            v6_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mItem.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v6_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mItem.mpArray), 0, static_cast<size_t>(v6_0) * 8);
     }
-    this->mItem.::MtArray::mLength = static_cast<u32>(0);
+    mItem.mLength = 0;
 }
 
 // Address: 0x006b2da0 - 0x006b2f3a (410 bytes)
@@ -158,7 +158,7 @@ __attribute__((weak)) void rOmKey::createProperty(MtPropertyList& s) {
 // Address: 0x006b2f40 - 0x006b2f45 (5 bytes)
 MtUI* rOmKey::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01aa1610 - 0x01aa1618 (8 bytes)
@@ -170,10 +170,10 @@ MT_CTSTR rOmKey::getExt() const {
 // Address: 0x006b2f50 - 0x006b2fea (154 bytes)
 bool rOmKey::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
-        this->mOmKey.::MtArray::mAutoDelete = true;
-        this->mItem.::MtArray::mAutoDelete = true;
+    MtSerializer sz(65536);
+    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+        mOmKey.mAutoDelete = true;
+        mItem.mAutoDelete = true;
         return true;
     } else {
         return false;
@@ -183,9 +183,11 @@ bool rOmKey::load(MtStream& in) {
 // Address: 0x006b2ff0 - 0x006b306f (127 bytes)
 bool rOmKey::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOmKey::MyDTI rOmKey::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOmKey.cpp at 0x006b30ed-0x006b312a (called at rOmKey.cpp:156)
@@ -195,7 +197,7 @@ bool rOmKey::save(MtStream& out) {
 // Address: 0x006b2b30 - 0x006b2bec (188 bytes)
 MtObject* rOmKey::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOmKey;
+    return new (16u) rOmKey;
 }
 
 // No out-of-line body: no code in the ELF
@@ -233,7 +235,7 @@ const MtDTI& rOmKey::cOmKey::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rOmKey::cOmKey::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOmKey::cOmKey::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOmKey::cOmKey::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,10 +251,10 @@ inline void rOmKey::cOmKey::operator delete(void* p_addr) {
 // a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
 inline rOmKey::cOmKey::cOmKey() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mOmID = static_cast<s32>(-1);
-    this->mKeyType = static_cast<u32>(0);
-    this->mPos = ::MtVector3::Zero;
-    this->mbHorizontal = false;
+    mOmID = -1;
+    mKeyType = 0;
+    mPos = MtVector3::Zero;
+    mbHorizontal = false;
 }
 
 // Address: 0x006b2510 - 0x006b2511 (1 bytes)
@@ -266,6 +268,8 @@ __attribute__((weak)) void rOmKey::cOmKey::createProperty(MtPropertyList& s) {
     DDON_STUB("rOmKey::cOmKey::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOmKey::cOmKey::MyDTI rOmKey::cOmKey::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rOmKey.cpp at 0x006b3070-0x006b30b4 (called at rOmKey.cpp:25)
@@ -301,7 +305,7 @@ const MtDTI& rOmKey::cItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rOmKey::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOmKey::cItem::DTI)->memAlloc(sz, align, ::rOmKey::cItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOmKey::cItem::DTI)->memAlloc(sz, align, rOmKey::cItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -315,7 +319,7 @@ inline void* rOmKey::cItem::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rOmKey::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOmKey::cItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOmKey::cItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -343,6 +347,8 @@ __attribute__((weak)) void rOmKey::cItem::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOmKey::cItem::MyDTI rOmKey::cItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rOmKey.cpp at 0x006b30b4-0x006b30ed (called at rOmKey.cpp:93)
 //   in _GLOBAL__sub_I_rOmKey.cpp at 0x006b30b4-0x006b30ed (called at rOmKey.h:94)
@@ -351,7 +357,7 @@ __attribute__((weak)) void rOmKey::cItem::createProperty(MtPropertyList& s) {
 // Address: 0x006b2880 - 0x006b28c9 (73 bytes)
 MtObject* rOmKey::cItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOmKey::cItem;
+    return new (16u) rOmKey::cItem;
 }
 
 // Instance at 0x01aa1590 - 0x01aa1595 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

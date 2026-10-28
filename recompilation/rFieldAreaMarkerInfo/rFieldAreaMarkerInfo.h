@@ -123,3 +123,13 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rFieldAreaMarkerInfo::cMarkerInfo::cMarkerInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mGroupNo = 0;
+    this->mUniqueId = 0;
+    this->mPos.pad_ = 0.0f;
+    this->mStageNo = 0;
+}

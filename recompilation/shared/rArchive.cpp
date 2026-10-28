@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtCipher.h"
 #include "MtDTI.h"
+#include "MtMemory.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "MtStream.h"
@@ -36,7 +37,7 @@ const MtDTI& rArchive::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK8rArchive5MyDTI11newInstanceEv at 0x011c0cf0-0x011c0d1d, code DWARF attributes to no inlined copy; sz is the class's size (152), align the allocation's other whole constant (16)
 inline void* rArchive::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memAlloc(sz, align, ::rArchive::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rArchive::DTI)->memAlloc(sz, align, rArchive::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,29 +105,29 @@ __attribute__((weak)) bool rArchive::load(MtStream& in) {
 // Address: 0x011c0f70 - 0x011c1004 (148 bytes)
 void rArchive::clear() {
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mResourceNum == static_cast<u32>(0)) {
-        ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
-        this->mpResource = static_cast<cResource* *>(nullptr);
-        this->mResourceNum = static_cast<u32>(0);
-        this->mTotalSize = static_cast<u32>(0);
-        this->mCurrentSize = static_cast<u32>(0);
-        this->mbCrypted = static_cast<u32>(0);
+    if (mResourceNum == 0) {
+        MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
+        mpResource = nullptr;
+        mResourceNum = 0;
+        mTotalSize = 0;
+        mCurrentSize = 0;
+        mbCrypted = 0;
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (this->mpResource[i] != static_cast<cResource*>(nullptr)) {
-            this->mpResource[i]->::cResource::release();
-            this->mpResource[i] = static_cast<cResource*>(nullptr);
+        if (mpResource[i] != nullptr) {
+            mpResource[i]->cResource::release();
+            mpResource[i] = nullptr;
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mResourceNum);
-    ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
-    this->mpResource = static_cast<cResource* *>(nullptr);
-    this->mResourceNum = static_cast<u32>(0);
-    this->mTotalSize = static_cast<u32>(0);
-    this->mCurrentSize = static_cast<u32>(0);
-    this->mbCrypted = static_cast<u32>(0);
+        i += 1u;
+    } while (i < mResourceNum);
+    MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
+    mpResource = nullptr;
+    mResourceNum = 0;
+    mTotalSize = 0;
+    mCurrentSize = 0;
+    mbCrypted = 0;
 }
 
 // Address: 0x01b916f0 - 0x01b916f8 (8 bytes)
@@ -144,19 +145,19 @@ __attribute__((weak)) void rArchive::createProperty(MtPropertyList& s) {
 // Address: 0x011c1010 - 0x011c1015 (5 bytes)
 MtUI* rArchive::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01b91630 - 0x01b91637 (7 bytes)
 u32 rArchive::getResourceNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceNum;
+    return mResourceNum;
 }
 
 // Address: 0x01b91660 - 0x01b9166b (11 bytes)
 cResource* rArchive::getResource(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource[index];
+    return mpResource[index];
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -190,29 +191,29 @@ cResource* rArchive::getResource(u32 index) {
 // Also emitted as: _ZN8rArchiveD0Ev at 0x011c0ea0
 rArchive::~rArchive() {
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mResourceNum == static_cast<u32>(0)) {
-        ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
-        this->mpResource = static_cast<cResource* *>(nullptr);
-        this->mResourceNum = static_cast<u32>(0);
-        this->mTotalSize = static_cast<u32>(0);
-        this->mCurrentSize = static_cast<u32>(0);
-        this->mbCrypted = static_cast<u32>(0);
+    if (mResourceNum == 0) {
+        MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
+        mpResource = nullptr;
+        mResourceNum = 0;
+        mTotalSize = 0;
+        mCurrentSize = 0;
+        mbCrypted = 0;
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
+    unsigned int i3 = 0;
     do {
-        if (this->mpResource[i3] != static_cast<cResource*>(nullptr)) {
-            this->mpResource[i3]->::cResource::release();
-            this->mpResource[i3] = static_cast<cResource*>(nullptr);
+        if (mpResource[i3] != nullptr) {
+            mpResource[i3]->cResource::release();
+            mpResource[i3] = nullptr;
         }
-        i3 += static_cast<unsigned int>(1);
-    } while (i3 < this->mResourceNum);
-    ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
-    this->mpResource = static_cast<cResource* *>(nullptr);
-    this->mResourceNum = static_cast<u32>(0);
-    this->mTotalSize = static_cast<u32>(0);
-    this->mCurrentSize = static_cast<u32>(0);
-    this->mbCrypted = static_cast<u32>(0);
+        i3 += 1u;
+    } while (i3 < mResourceNum);
+    MtMemoryAllocator::getAllocator(rArchive::DTI)->memFree(static_cast<void*>(mpResource));
+    mpResource = nullptr;
+    mResourceNum = 0;
+    mTotalSize = 0;
+    mCurrentSize = 0;
+    mbCrypted = 0;
 }
 
 // Address: 0x01b91670 - 0x01b91671 (1 bytes)
@@ -247,13 +248,24 @@ __attribute__((weak)) u32 rArchive::getResourceTotalSize() {
 // No out-of-line body: no code in the ELF
 // bool rArchive::isCrypted();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rArchive::MyDTI rArchive::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtObject* rArchive::mpPathFilterOwner;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+rArchive::PATH_FILTER rArchive::mpPathFilter;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+rArchive::cipher_cb rArchive::mpGetCipherKey;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rArchive::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011c0cf0 - 0x011c0d6d (125 bytes)
 MtObject* rArchive::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rArchive;
+    return new (16u) rArchive;
 }
 
 // No out-of-line body: no code in the ELF
@@ -304,8 +316,10 @@ const MtDTI& rArchive::DecompressStream::getDTI() const {
 // Address: 0x011c06a0 - 0x011c06ec (76 bytes)
 // Also emitted as: _ZN8rArchive16DecompressStreamD0Ev at 0x011c06f0
 rArchive::DecompressStream::~DecompressStream() {
-    DDON_STUB("rArchive::DecompressStream::~DecompressStream")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpIn->readWait();
+    MtMemory::mpAllocatorType[7]->memFree(mpInBuf[0]);
+    MtMemory::mpAllocatorType[7]->memFree(mpInBuf[1]);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -339,13 +353,13 @@ __attribute__((weak)) u32 rArchive::DecompressStream::read(void* pbuf, u32 bufsi
 // Address: 0x01b916c0 - 0x01b916c4 (4 bytes)
 u32 rArchive::DecompressStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCurOut;
+    return mCurOut;
 }
 
 // Address: 0x01b916d0 - 0x01b916d4 (4 bytes)
 u32 rArchive::DecompressStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrgSize;
+    return mOrgSize;
 }
 
 // Address: 0x011c0770 - 0x011c0792 (34 bytes)
@@ -353,6 +367,8 @@ __attribute__((weak)) void rArchive::DecompressStream::close() {
     DDON_STUB("rArchive::DecompressStream::close")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rArchive::DecompressStream::MyDTI rArchive::DecompressStream::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rArchive::DecompressStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -375,8 +391,8 @@ rArchive::CipherStream::~CipherStream() {
 // Address: 0x011c0af0 - 0x011c0b0c (28 bytes)
 bool rArchive::CipherStream::isReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        return this->mpSt->isReadable();
+    if (mpSt != nullptr) {
+        return mpSt->isReadable();
     } else {
         return false;
     }
@@ -385,8 +401,8 @@ bool rArchive::CipherStream::isReadable() {
 // Address: 0x011c0b10 - 0x011c0b2c (28 bytes)
 bool rArchive::CipherStream::isWritable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        return this->mpSt->isWritable();
+    if (mpSt != nullptr) {
+        return mpSt->isWritable();
     } else {
         return false;
     }
@@ -407,29 +423,29 @@ bool rArchive::CipherStream::isAsyncReadable() {
 // Address: 0x011c0b50 - 0x011c0b65 (21 bytes)
 u32 rArchive::CipherStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        return this->mpSt->getPosition();
+    if (mpSt != nullptr) {
+        return mpSt->getPosition();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x011c0b70 - 0x011c0b83 (19 bytes)
 void rArchive::CipherStream::close() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt == static_cast<MtStream*>(nullptr)) {
+    if (mpSt == nullptr) {
         return;
     }
-    this->mpSt->close();
+    mpSt->close();
 }
 
 // Address: 0x011c0b90 - 0x011c0bbd (45 bytes)
 void rArchive::CipherStream::flush() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        this->mpSt->flush();
+    if (mpSt != nullptr) {
+        mpSt->flush();
     }
-    this->mCi.::MtCipher::initializeBF();
+    mCi.initializeBF();
 }
 
 // Address: 0x011c0bc0 - 0x011c0c24 (100 bytes)
@@ -442,7 +458,7 @@ __attribute__((weak)) u32 rArchive::CipherStream::read(void* buf, u32 bufsiz) {
 // Address: 0x011c0c30 - 0x011c0c39 (9 bytes)
 u32 rArchive::CipherStream::readAsync(void* buf, u32 bufsize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->read(buf, bufsize);
+    return read(buf, bufsize);
 }
 
 // Address: 0x011c0c40 - 0x011c0c41 (1 bytes)
@@ -453,44 +469,44 @@ __attribute__((weak)) void rArchive::CipherStream::readWait() {
 // Address: 0x011c0c50 - 0x011c0c53 (3 bytes)
 u32 rArchive::CipherStream::write(const void* buf, u32 bufsiz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x011c0c60 - 0x011c0c79 (25 bytes)
 void rArchive::CipherStream::setLength(u32 len) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt == static_cast<MtStream*>(nullptr)) {
+    if (mpSt == nullptr) {
         return;
     }
-    this->mpSt->setLength(len);
+    mpSt->setLength(len);
 }
 
 // Address: 0x011c0c80 - 0x011c0c98 (24 bytes)
 u32 rArchive::CipherStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        return this->mpSt->getLength();
+    if (mpSt != nullptr) {
+        return mpSt->getLength();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x011c0ca0 - 0x011c0cbb (27 bytes)
 u32 rArchive::CipherStream::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt != static_cast<MtStream*>(nullptr)) {
-        return this->mpSt->seek(offset, origin);
+    if (mpSt != nullptr) {
+        return mpSt->seek(offset, origin);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x011c0cc0 - 0x011c0cd9 (25 bytes)
 void rArchive::CipherStream::skip(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSt == static_cast<MtStream*>(nullptr)) {
+    if (mpSt == nullptr) {
         return;
     }
-    this->mpSt->skip(size);
+    mpSt->skip(size);
 }
 

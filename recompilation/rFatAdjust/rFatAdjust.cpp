@@ -50,7 +50,7 @@ const MtDTI& cFatAdjust::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFatAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFatAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFatAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -70,13 +70,15 @@ inline void cFatAdjust::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cFatAdjust::cFatAdjust() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mThreshold = 0.5f;
-    this->mRot = ::MtVector3::Zero;
-    this->mTrans = ::MtVector3::Zero;
+    mThreshold = 0.5f;
+    mRot = MtVector3::Zero;
+    mTrans = MtVector3::Zero;
 }
 
 // Defined in the class (its body was written in a header).
 // cFatAdjust::~cFatAdjust();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFatAdjust::MyDTI cFatAdjust::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rFatAdjust.cpp at 0x00674fb0-0x00674ff2 (called at rFatAdjust.cpp:38)
@@ -111,7 +113,7 @@ const MtDTI& rFatAdjust::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFatAdjust::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFatAdjust::DTI)->memAlloc(sz, align, ::rFatAdjust::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFatAdjust::DTI)->memAlloc(sz, align, rFatAdjust::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ inline void* rFatAdjust::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rFatAdjustD0Ev at 0x01a8fe44-0x01a8fe63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFatAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFatAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFatAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,8 +158,10 @@ MT_CTSTR rFatAdjust::getExt() const {
 // Address: 0x01a8ff90 - 0x01a8ff96 (6 bytes)
 u32 rFatAdjust::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFatAdjust::MyDTI rFatAdjust::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFatAdjust.cpp at 0x00674ff2-0x0067502f (called at rFatAdjust.cpp:39)
@@ -167,7 +171,7 @@ u32 rFatAdjust::getDataVersion() const {
 // Address: 0x00674e60 - 0x00674ec4 (100 bytes)
 MtObject* rFatAdjust::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFatAdjust;
+    return new (16u) rFatAdjust;
 }
 
 // Instance at 0x01a8ff40 - 0x01a8ff56 (22 bytes) of the generic rTbl2<T>::getData

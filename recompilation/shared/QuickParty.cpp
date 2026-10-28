@@ -24,7 +24,7 @@ const MtDTI& CDataQuickPartyMatching::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataQuickPartyMatching::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataQuickPartyMatching::DTI);
+    return MtMemoryAllocator::getAllocator(CDataQuickPartyMatching::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataQuickPartyMatching::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataQuickPartyMatching::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataQuickPartyMatching::DTI)->memAlloc(sz, align, ::CDataQuickPartyMatching::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataQuickPartyMatching::DTI)->memAlloc(sz, align, CDataQuickPartyMatching::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* CDataQuickPartyMatching::operator new(size_t sz, u32 align) {
 // Address: 0x003dc7e0 - 0x003dc80a (42 bytes)
 __attribute__((weak)) void CDataQuickPartyMatching::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataQuickPartyMatching::getAllocator()->memFree(p_addr);
+    CDataQuickPartyMatching::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataQuickPartyMatching::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataQuickPartyMatching::CDataQuickPartyMatching(u32, u32, b8, b8, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataQuickPartyMatching::MyDTI CDataQuickPartyMatching::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f499-0x0041f4d2 (called at QuickPartyImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f499-0x0041f4d2 (called at QuickParty.h:22)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataQuickPartyMatching::operator delete(void* p_addr
 // Address: 0x003dc750 - 0x003dc7a2 (82 bytes)
 MtObject* CDataQuickPartyMatching::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataQuickPartyMatching;
+    return new (16u) CDataQuickPartyMatching;
 }
 

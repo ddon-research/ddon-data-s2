@@ -35,7 +35,7 @@ const MtDTI& cAbilityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAbilityData::DTI)->memAlloc(sz, align, ::cAbilityData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAbilityData::DTI)->memAlloc(sz, align, cAbilityData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cAbilityData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAbilityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAbilityData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAbilityData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,34 +91,34 @@ bool cAbilityData::save(MtDataWriter& w) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from cAbilityData*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
-    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)));
-    if (this->mParamArray.::MtArray::mLength != static_cast<u32>(0)) {
+    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16));
+    if (mParamArray.mLength != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_11 = static_cast<unsigned int>(0);
+        unsigned int i0_11 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_3;
         for (;;) {
             // inferred: the value the loop at 0x63c2b0 carries; no location-less local in scope fits
-            unsigned long v1_10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(i0_11 * static_cast<unsigned int>(8))) + static_cast<long>(0));
-            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(8))));
-            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(12))));
-            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24)));
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24))) != static_cast<unsigned int>(0)) {
-                i1_3 = static_cast<unsigned int>(0);
+            unsigned long v1_10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 32)) + static_cast<unsigned long>(i0_11 * 8u)) + 0);
+            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 8)));
+            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 12)));
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 24));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 24)) != 0) {
+                i1_3 = 0;
                 for (;;) {
                     // inferred: a temporary for the value the load at 0x63c2b7 read, used twice; no DWARF local holds it
-                    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(40))) + static_cast<unsigned long>(i1_3 * static_cast<unsigned int>(8))) + static_cast<long>(0));
-                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8))));
-                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(12))));
-                    if ((i1_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24)))) {
-                        i1_3 += static_cast<unsigned int>(1);
+                    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_10) + 40)) + static_cast<unsigned long>(i1_3 * 8u)) + 0);
+                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8)));
+                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)));
+                    if ((i1_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + 24))) {
+                        i1_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            if ((i0_11 + static_cast<unsigned int>(1)) < this->mParamArray.::MtArray::mLength) {
-                i0_11 += static_cast<unsigned int>(1);
+            if ((i0_11 + 1u) < mParamArray.mLength) {
+                i0_11 += 1u;
             } else {
                 break;
             }
@@ -143,10 +143,10 @@ __attribute__((weak)) bool cAbilityData::load(MtDataReader& r, nCollisionUtil::L
 // Address: 0x0063c200 - 0x0063c212 (18 bytes)
 const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (static_cast<unsigned int>(index) < this->mParamArray.::MtArray::mLength) {
-        return static_cast<const cAbilityParam*>(this->mParamArray.::MtArray::mpArray[static_cast<unsigned int>(index)]);
+    if (static_cast<unsigned int>(index) < mParamArray.mLength) {
+        return static_cast<const cAbilityParam*>(mParamArray.mpArray[static_cast<unsigned int>(index)]);
     } else {
-        return static_cast<const cAbilityParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -159,6 +159,8 @@ const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
 // No out-of-line body: no code in the ELF
 // cAbilityData& cAbilityData::operator=(const cAbilityData& source);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAbilityData::MyDTI cAbilityData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063d06d-0x0063d0a6 (called at rAbilityList.cpp:460)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063d06d-0x0063d0a6 (called at rAbilityList.h:220)
@@ -167,7 +169,7 @@ const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
 // Address: 0x0063bf10 - 0x0063bf79 (105 bytes)
 MtObject* cAbilityData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAbilityData;
+    return new (16u) cAbilityData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,7 +195,7 @@ const MtDTI& cAbilityParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cAbilityParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAbilityParam::DTI)->memAlloc(sz, align, ::cAbilityParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAbilityParam::DTI)->memAlloc(sz, align, cAbilityParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -208,7 +210,7 @@ inline void* cAbilityParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAbilityParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAbilityParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAbilityParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -270,24 +272,24 @@ bool cAbilityParam::getParam(s32 Lv, s32& param) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0x63bc40 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParamDataArray.::MtArray::mLength;
+    u32 v0_0 = mParamDataArray.mLength;
     // inferred: DWARF's location-less 'i' (lexical block [0x63bc30, 0x63bc50), [0x63bc56, 0x63bc5d)) is the counter this loop steps (DWARF's stale constant 0)
     u32 i;
     // inferred: the value the loop at 0x63bc40 carries; no location-less local in scope fits
     MtObject* * v0_3;
-    if (v0_0 == static_cast<u32>(0)) {
+    if (v0_0 == 0) {
         return false;
     } else {
-        v0_3 = this->mParamDataArray.::MtArray::mpArray;
-        i = static_cast<u32>(0);
+        v0_3 = mParamDataArray.mpArray;
+        i = 0;
     }
     for (;;) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + static_cast<long>(8))) == static_cast<unsigned int>(Lv)) {
-            param = static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + static_cast<long>(12)));
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + 8)) == static_cast<unsigned int>(Lv)) {
+            param = static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + 12));
             return true;
         } else {
-            if ((i + static_cast<u32>(1)) < v0_0) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < v0_0) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -302,6 +304,8 @@ bool cAbilityParam::getParam(s32 Lv, s32& param) const {
 // No out-of-line body: no code in the ELF
 // cAbilityParam& cAbilityParam::operator=(const cAbilityParam& source);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAbilityParam::MyDTI cAbilityParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063cff0-0x0063d034 (called at rAbilityList.cpp:66)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063cff0-0x0063d034 (called at rAbilityList.h:30)
@@ -310,7 +314,7 @@ bool cAbilityParam::getParam(s32 Lv, s32& param) const {
 // Address: 0x0063b4c0 - 0x0063b537 (119 bytes)
 MtObject* cAbilityParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAbilityParam;
+    return new (16u) cAbilityParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,7 +340,7 @@ const MtDTI& cAbilityParam::cParamData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cAbilityParam::cParamData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAbilityParam::cParamData::DTI)->memAlloc(sz, align, ::cAbilityParam::cParamData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAbilityParam::cParamData::DTI)->memAlloc(sz, align, cAbilityParam::cParamData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -350,7 +354,7 @@ inline void* cAbilityParam::cParamData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAbilityParam::cParamData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAbilityParam::cParamData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAbilityParam::cParamData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -387,6 +391,8 @@ __attribute__((weak)) void cAbilityParam::cParamData::createProperty(MtPropertyL
 //   in cAbilityParam::load at 0x0063bb18-0x0063bb35 (called at rAbilityList.cpp:221)
 // bool cAbilityParam::cParamData::load(MtDataReader& r);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAbilityParam::cParamData::MyDTI cAbilityParam::cParamData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063d034-0x0063d06d (called at rAbilityList.cpp:305)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063d034-0x0063d06d (called at rAbilityList.h:122)
@@ -395,7 +401,7 @@ __attribute__((weak)) void cAbilityParam::cParamData::createProperty(MtPropertyL
 // Address: 0x0063bc60 - 0x0063bca8 (72 bytes)
 MtObject* cAbilityParam::cParamData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAbilityParam::cParamData;
+    return new (16u) cAbilityParam::cParamData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -423,7 +429,7 @@ const MtDTI& rAbilityList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAbilityList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAbilityList::DTI)->memAlloc(sz, align, ::rAbilityList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAbilityList::DTI)->memAlloc(sz, align, rAbilityList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -438,7 +444,7 @@ inline void* rAbilityList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAbilityList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAbilityList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAbilityList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -452,8 +458,8 @@ inline void rAbilityList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rAbilityList::rAbilityList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mDataList.::MtArray::mAutoDelete = true;
+    setAttribute(18u);
+    mDataList.mAutoDelete = true;
 }
 
 // Address: 0x0063c710 - 0x0063c869 (345 bytes)
@@ -514,12 +520,14 @@ MT_CTSTR rAbilityList::getExt() const {
 // Address: 0x0063cfd0 - 0x0063cfe6 (22 bytes)
 const cAbilityData* rAbilityList::getData(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(index) < this->mDataList.::MtArray::mLength) {
-        return static_cast<const cAbilityData*>(this->mDataList.::MtArray::getBuffer()[index]);
+    if (static_cast<unsigned int>(index) < mDataList.mLength) {
+        return static_cast<const cAbilityData*>(mDataList.getBuffer()[index]);
     } else {
-        return static_cast<const cAbilityData*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAbilityList::MyDTI rAbilityList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAbilityList.cpp at 0x0063d0a6-0x0063d0e3 (called at rAbilityList.cpp:657)
@@ -529,7 +537,7 @@ const cAbilityData* rAbilityList::getData(s32 index) {
 // Address: 0x0063c600 - 0x0063c684 (132 bytes)
 MtObject* rAbilityList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAbilityList;
+    return new (16u) rAbilityList;
 }
 
 // Instance at 0x01a6e5d0 - 0x01a6e5d5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

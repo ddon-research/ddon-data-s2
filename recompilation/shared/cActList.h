@@ -113,3 +113,9 @@ public:
 inline u32 cActParam::getDmDetailType() const {
     return static_cast<unsigned int>(static_cast<long>(this->mParam4));
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpKeyCommand::callbackUpdate at 0x4c11ed-0x4c11f1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cActParam::getTurnType() const {
+    return this->mTurnType;
+}

@@ -50,7 +50,7 @@ const MtDTI& cChildRegionStatusParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cChildRegionStatusParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cChildRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -72,6 +72,8 @@ inline void cChildRegionStatusParam::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cChildRegionStatusParam::~cChildRegionStatusParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cChildRegionStatusParam::MyDTI cChildRegionStatusParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e46e3-0x006e471c (called at rRegionStatusParam.cpp:436)
@@ -123,7 +125,7 @@ const MtDTI& cChildRegionStatusParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cChildRegionStatusParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cChildRegionStatusParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -147,12 +149,14 @@ inline void cChildRegionStatusParamList::operator delete(void* p_addr) {
 // Also emitted as: _ZN27cChildRegionStatusParamListD0Ev at 0x006e4370
 cChildRegionStatusParamList::~cChildRegionStatusParamList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpChildRegion == static_cast<rChildRegionStatusParam*>(nullptr)) {
+    if (mpChildRegion == nullptr) {
         return;
     }
-    this->mpChildRegion->::cResource::release();
-    this->mpChildRegion = static_cast<rChildRegionStatusParam*>(nullptr);
+    mpChildRegion->release();
+    mpChildRegion = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cChildRegionStatusParamList::MyDTI cChildRegionStatusParamList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e4755-0x006e478e (called at rRegionStatusParam.cpp:1296)
@@ -204,7 +208,7 @@ const MtDTI& cParentRegionStatusParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cParentRegionStatusParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cParentRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -234,6 +238,8 @@ cParentRegionStatusParam::~cParentRegionStatusParam() {
 // No out-of-line body: 1 inlined copy in 1 function (72 bytes)
 //   in rParentRegionStatusParam::loadData at 0x006e35ec-0x006e3634 (called at rRegionStatusParam.cpp:296)
 // u64 cParentRegionStatusParam::getHpMaxFromHpEdit() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cParentRegionStatusParam::MyDTI cParentRegionStatusParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e4663-0x006e46a3 (called at rRegionStatusParam.cpp:50)
@@ -271,7 +277,7 @@ const MtDTI& rChildRegionStatusParam::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParam::DTI)->memAlloc(sz, align, ::rChildRegionStatusParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rChildRegionStatusParam::DTI)->memAlloc(sz, align, rChildRegionStatusParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,7 +292,7 @@ void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN23rChildRegionStatusParamD0Ev at 0x01aafd44-0x01aafd63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rChildRegionStatusParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rChildRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,8 +332,10 @@ MT_CTSTR rChildRegionStatusParam::getExt() const {
 // Address: 0x01aafe90 - 0x01aafe96 (6 bytes)
 u32 rChildRegionStatusParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(65);
+    return 65;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rChildRegionStatusParam::MyDTI rChildRegionStatusParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e471c-0x006e4755 (called at rRegionStatusParam.cpp:1006)
@@ -337,7 +345,7 @@ u32 rChildRegionStatusParam::getDataVersion() const {
 // Address: 0x006e39d0 - 0x006e3a34 (100 bytes)
 MtObject* rChildRegionStatusParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rChildRegionStatusParam;
+    return new (16u) rChildRegionStatusParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -362,7 +370,7 @@ const MtDTI& rChildRegionStatusParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rChildRegionStatusParamList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParamList::DTI)->memAlloc(sz, align, ::rChildRegionStatusParamList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rChildRegionStatusParamList::DTI)->memAlloc(sz, align, rChildRegionStatusParamList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -402,8 +410,10 @@ MT_CTSTR rChildRegionStatusParamList::getExt() const {
 // Address: 0x01ab01e0 - 0x01ab01e6 (6 bytes)
 u32 rChildRegionStatusParamList::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(65);
+    return 65;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rChildRegionStatusParamList::MyDTI rChildRegionStatusParamList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e478e-0x006e47c7 (called at rRegionStatusParam.cpp:1385)
@@ -413,7 +423,7 @@ u32 rChildRegionStatusParamList::getDataVersion() const {
 // Address: 0x006e43c0 - 0x006e4424 (100 bytes)
 MtObject* rChildRegionStatusParamList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rChildRegionStatusParamList;
+    return new (16u) rChildRegionStatusParamList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -438,7 +448,7 @@ const MtDTI& rParentRegionStatusParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rParentRegionStatusParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rParentRegionStatusParam::DTI)->memAlloc(sz, align, ::rParentRegionStatusParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rParentRegionStatusParam::DTI)->memAlloc(sz, align, rParentRegionStatusParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -478,8 +488,10 @@ MT_CTSTR rParentRegionStatusParam::getExt() const {
 // Address: 0x01aafbd0 - 0x01aafbd6 (6 bytes)
 u32 rParentRegionStatusParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(65);
+    return 65;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rParentRegionStatusParam::MyDTI rParentRegionStatusParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rRegionStatusParam.cpp at 0x006e46a3-0x006e46e3 (called at rRegionStatusParam.cpp:268)
@@ -489,7 +501,7 @@ u32 rParentRegionStatusParam::getDataVersion() const {
 // Address: 0x006e3450 - 0x006e34b4 (100 bytes)
 MtObject* rParentRegionStatusParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rParentRegionStatusParam;
+    return new (16u) rParentRegionStatusParam;
 }
 
 // Instance at 0x01aafe40 - 0x01aafe55 (21 bytes) of the generic rTbl2<T>::getData

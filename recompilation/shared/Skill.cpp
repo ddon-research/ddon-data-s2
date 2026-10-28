@@ -26,7 +26,7 @@ const MtDTI& CDataAbilityLevelParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAbilityLevelParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAbilityLevelParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAbilityLevelParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataAbilityLevelParam::getAllocator() {
 // Address: 0x003bc5c0 - 0x003bc600 (64 bytes)
 void* CDataAbilityLevelParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAbilityLevelParam::getAllocator()->memAlloc(sz, align, ::CDataAbilityLevelParam::DTI.::MtDTI::getID());
+    return CDataAbilityLevelParam::getAllocator()->memAlloc(sz, align, CDataAbilityLevelParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataAbilityLevelParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bc630 - 0x003bc65a (42 bytes)
 __attribute__((weak)) void CDataAbilityLevelParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAbilityLevelParam::getAllocator()->memFree(p_addr);
+    CDataAbilityLevelParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataAbilityLevelParam::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataAbilityLevelParam::CDataAbilityLevelParam(u8, u32, u32, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAbilityLevelParam::MyDTI CDataAbilityLevelParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419ca6-0x00419cdf (called at SkillImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419ca6-0x00419cdf (called at Skill.h:88)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataAbilityLevelParam::operator delete(void* p_addr)
 // Address: 0x003bc560 - 0x003bc5b6 (86 bytes)
 MtObject* CDataAbilityLevelParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAbilityLevelParam;
+    return new (16u) CDataAbilityLevelParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataAbilityParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAbilityParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAbilityParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAbilityParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataAbilityParam::getAllocator() {
 // Address: 0x003bc990 - 0x003bc9d0 (64 bytes)
 void* CDataAbilityParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAbilityParam::getAllocator()->memAlloc(sz, align, ::CDataAbilityParam::DTI.::MtDTI::getID());
+    return CDataAbilityParam::getAllocator()->memAlloc(sz, align, CDataAbilityParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataAbilityParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bca00 - 0x003bca2a (42 bytes)
 __attribute__((weak)) void CDataAbilityParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAbilityParam::getAllocator()->memFree(p_addr);
+    CDataAbilityParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataAbilityParam::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataAbilityParam::CDataAbilityParam(u32, u8, u8, u8, u8, u32, const MtTypedArray<CDataAbilityLevelParam>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAbilityParam::MyDTI CDataAbilityParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419d51-0x00419d8a (called at SkillImplement.inc:11)
@@ -168,7 +172,7 @@ const MtDTI& CDataLearnedAcquirementParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLearnedAcquirementParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLearnedAcquirementParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLearnedAcquirementParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataLearnedAcquirementParam::getAllocator() {
 // Address: 0x003bcac0 - 0x003bcb00 (64 bytes)
 void* CDataLearnedAcquirementParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataLearnedAcquirementParam::getAllocator()->memAlloc(sz, align, ::CDataLearnedAcquirementParam::DTI.::MtDTI::getID());
+    return CDataLearnedAcquirementParam::getAllocator()->memAlloc(sz, align, CDataLearnedAcquirementParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataLearnedAcquirementParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bcb30 - 0x003bcb5a (42 bytes)
 __attribute__((weak)) void CDataLearnedAcquirementParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLearnedAcquirementParam::getAllocator()->memFree(p_addr);
+    CDataLearnedAcquirementParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataLearnedAcquirementParam::operator delete(void* p
 // No out-of-line body: no code in the ELF
 // CDataLearnedAcquirementParam::CDataLearnedAcquirementParam(u8, u8, u32, u8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLearnedAcquirementParam::MyDTI CDataLearnedAcquirementParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419d8a-0x00419dc3 (called at SkillImplement.inc:12)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419d8a-0x00419dc3 (called at Skill.h:377)
@@ -222,7 +228,7 @@ __attribute__((weak)) void CDataLearnedAcquirementParam::operator delete(void* p
 // Address: 0x003bca60 - 0x003bcaba (90 bytes)
 MtObject* CDataLearnedAcquirementParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataLearnedAcquirementParam;
+    return new (16u) CDataLearnedAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,7 +245,7 @@ const MtDTI& CDataNormalSkillParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataNormalSkillParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataNormalSkillParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataNormalSkillParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,7 +254,7 @@ inline MtAllocator* CDataNormalSkillParam::getAllocator() {
 // Address: 0x003bc6f0 - 0x003bc730 (64 bytes)
 void* CDataNormalSkillParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataNormalSkillParam::getAllocator()->memAlloc(sz, align, ::CDataNormalSkillParam::DTI.::MtDTI::getID());
+    return CDataNormalSkillParam::getAllocator()->memAlloc(sz, align, CDataNormalSkillParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,7 +269,7 @@ void* CDataNormalSkillParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bc760 - 0x003bc78a (42 bytes)
 __attribute__((weak)) void CDataNormalSkillParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataNormalSkillParam::getAllocator()->memFree(p_addr);
+    CDataNormalSkillParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,6 +291,8 @@ __attribute__((weak)) void CDataNormalSkillParam::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataNormalSkillParam::CDataNormalSkillParam(u8, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataNormalSkillParam::MyDTI CDataNormalSkillParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419cdf-0x00419d18 (called at SkillImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419cdf-0x00419d18 (called at Skill.h:155)
@@ -293,7 +301,7 @@ __attribute__((weak)) void CDataNormalSkillParam::operator delete(void* p_addr) 
 // Address: 0x003bc690 - 0x003bc6e3 (83 bytes)
 MtObject* CDataNormalSkillParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataNormalSkillParam;
+    return new (16u) CDataNormalSkillParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,7 +318,7 @@ const MtDTI& CDataPresetAbilityParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPresetAbilityParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPresetAbilityParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPresetAbilityParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,7 +327,7 @@ inline MtAllocator* CDataPresetAbilityParam::getAllocator() {
 // Address: 0x003bce70 - 0x003bceb0 (64 bytes)
 void* CDataPresetAbilityParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPresetAbilityParam::getAllocator()->memAlloc(sz, align, ::CDataPresetAbilityParam::DTI.::MtDTI::getID());
+    return CDataPresetAbilityParam::getAllocator()->memAlloc(sz, align, CDataPresetAbilityParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -334,7 +342,7 @@ void* CDataPresetAbilityParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bcee0 - 0x003bcf0a (42 bytes)
 __attribute__((weak)) void CDataPresetAbilityParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPresetAbilityParam::getAllocator()->memFree(p_addr);
+    CDataPresetAbilityParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,6 +364,8 @@ __attribute__((weak)) void CDataPresetAbilityParam::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataPresetAbilityParam::CDataPresetAbilityParam(u8, const char*, const SetAcquirementParamVec&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPresetAbilityParam::MyDTI CDataPresetAbilityParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419e35-0x00419e6e (called at SkillImplement.inc:15)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419e35-0x00419e6e (called at Skill.h:599)
@@ -364,7 +374,7 @@ __attribute__((weak)) void CDataPresetAbilityParam::operator delete(void* p_addr
 // Address: 0x003bcdf0 - 0x003bce65 (117 bytes)
 MtObject* CDataPresetAbilityParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataPresetAbilityParam;
+    return new (16u) CDataPresetAbilityParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -381,7 +391,7 @@ const MtDTI& CDataReleaseAcquirementParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataReleaseAcquirementParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataReleaseAcquirementParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataReleaseAcquirementParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -390,7 +400,7 @@ inline MtAllocator* CDataReleaseAcquirementParam::getAllocator() {
 // Address: 0x003bcbf0 - 0x003bcc30 (64 bytes)
 void* CDataReleaseAcquirementParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataReleaseAcquirementParam::getAllocator()->memAlloc(sz, align, ::CDataReleaseAcquirementParam::DTI.::MtDTI::getID());
+    return CDataReleaseAcquirementParam::getAllocator()->memAlloc(sz, align, CDataReleaseAcquirementParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -405,7 +415,7 @@ void* CDataReleaseAcquirementParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bcc60 - 0x003bcc8a (42 bytes)
 __attribute__((weak)) void CDataReleaseAcquirementParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataReleaseAcquirementParam::getAllocator()->memFree(p_addr);
+    CDataReleaseAcquirementParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -427,6 +437,8 @@ __attribute__((weak)) void CDataReleaseAcquirementParam::operator delete(void* p
 // No out-of-line body: no code in the ELF
 // CDataReleaseAcquirementParam::CDataReleaseAcquirementParam(u8, u8, u32, u8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataReleaseAcquirementParam::MyDTI CDataReleaseAcquirementParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419dc3-0x00419dfc (called at SkillImplement.inc:13)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419dc3-0x00419dfc (called at Skill.h:451)
@@ -435,7 +447,7 @@ __attribute__((weak)) void CDataReleaseAcquirementParam::operator delete(void* p
 // Address: 0x003bcb90 - 0x003bcbea (90 bytes)
 MtObject* CDataReleaseAcquirementParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataReleaseAcquirementParam;
+    return new (16u) CDataReleaseAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -452,7 +464,7 @@ const MtDTI& CDataSetAcquirementParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataSetAcquirementParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataSetAcquirementParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataSetAcquirementParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -461,7 +473,7 @@ inline MtAllocator* CDataSetAcquirementParam::getAllocator() {
 // Address: 0x003bcd20 - 0x003bcd60 (64 bytes)
 void* CDataSetAcquirementParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataSetAcquirementParam::getAllocator()->memAlloc(sz, align, ::CDataSetAcquirementParam::DTI.::MtDTI::getID());
+    return CDataSetAcquirementParam::getAllocator()->memAlloc(sz, align, CDataSetAcquirementParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -476,7 +488,7 @@ void* CDataSetAcquirementParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bcd90 - 0x003bcdba (42 bytes)
 __attribute__((weak)) void CDataSetAcquirementParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataSetAcquirementParam::getAllocator()->memFree(p_addr);
+    CDataSetAcquirementParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -498,6 +510,8 @@ __attribute__((weak)) void CDataSetAcquirementParam::operator delete(void* p_add
 // No out-of-line body: no code in the ELF
 // CDataSetAcquirementParam::CDataSetAcquirementParam(u8, u8, u8, u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataSetAcquirementParam::MyDTI CDataSetAcquirementParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419dfc-0x00419e35 (called at SkillImplement.inc:14)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419dfc-0x00419e35 (called at Skill.h:525)
@@ -506,7 +520,7 @@ __attribute__((weak)) void CDataSetAcquirementParam::operator delete(void* p_add
 // Address: 0x003bccc0 - 0x003bcd17 (87 bytes)
 MtObject* CDataSetAcquirementParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataSetAcquirementParam;
+    return new (16u) CDataSetAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -523,7 +537,7 @@ const MtDTI& CDataSkillLevelParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataSkillLevelParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataSkillLevelParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataSkillLevelParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -532,7 +546,7 @@ inline MtAllocator* CDataSkillLevelParam::getAllocator() {
 // Address: 0x003bc490 - 0x003bc4d0 (64 bytes)
 void* CDataSkillLevelParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataSkillLevelParam::getAllocator()->memAlloc(sz, align, ::CDataSkillLevelParam::DTI.::MtDTI::getID());
+    return CDataSkillLevelParam::getAllocator()->memAlloc(sz, align, CDataSkillLevelParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -547,7 +561,7 @@ void* CDataSkillLevelParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bc500 - 0x003bc52a (42 bytes)
 __attribute__((weak)) void CDataSkillLevelParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataSkillLevelParam::getAllocator()->memFree(p_addr);
+    CDataSkillLevelParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -569,6 +583,8 @@ __attribute__((weak)) void CDataSkillLevelParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataSkillLevelParam::CDataSkillLevelParam(u8, u32, u32, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataSkillLevelParam::MyDTI CDataSkillLevelParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419c6d-0x00419ca6 (called at SkillImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419c6d-0x00419ca6 (called at Skill.h:21)
@@ -577,7 +593,7 @@ __attribute__((weak)) void CDataSkillLevelParam::operator delete(void* p_addr) {
 // Address: 0x003bc430 - 0x003bc486 (86 bytes)
 MtObject* CDataSkillLevelParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataSkillLevelParam;
+    return new (16u) CDataSkillLevelParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -594,7 +610,7 @@ const MtDTI& CDataSkillParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataSkillParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataSkillParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataSkillParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -603,7 +619,7 @@ inline MtAllocator* CDataSkillParam::getAllocator() {
 // Address: 0x003bc840 - 0x003bc880 (64 bytes)
 void* CDataSkillParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataSkillParam::getAllocator()->memAlloc(sz, align, ::CDataSkillParam::DTI.::MtDTI::getID());
+    return CDataSkillParam::getAllocator()->memAlloc(sz, align, CDataSkillParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -618,7 +634,7 @@ void* CDataSkillParam::operator new(size_t sz, u32 align) {
 // Address: 0x003bc8b0 - 0x003bc8da (42 bytes)
 __attribute__((weak)) void CDataSkillParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataSkillParam::getAllocator()->memFree(p_addr);
+    CDataSkillParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -640,6 +656,8 @@ __attribute__((weak)) void CDataSkillParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataSkillParam::CDataSkillParam(u32, u8, u8, const MtTypedArray<CDataSkillLevelParam>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataSkillParam::MyDTI CDataSkillParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419d18-0x00419d51 (called at SkillImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419d18-0x00419d51 (called at Skill.h:222)
@@ -648,6 +666,6 @@ __attribute__((weak)) void CDataSkillParam::operator delete(void* p_addr) {
 // Address: 0x003bc7c0 - 0x003bc838 (120 bytes)
 MtObject* CDataSkillParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataSkillParam;
+    return new (16u) CDataSkillParam;
 }
 

@@ -273,12 +273,12 @@ namespace nNetMsg {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nNetMsg::cCoder::cCoder() {
-    this->mpCod = static_cast<nNetwork::Coder*>(nullptr);
+    this->mpCod = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline nNetMsg::cDecoder::cDecoder() {
-    this->mpDec = static_cast<nNetwork::Decoder*>(nullptr);
+    this->mpDec = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

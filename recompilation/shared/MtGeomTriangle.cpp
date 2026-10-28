@@ -35,7 +35,7 @@ const MtDTI& MtGeomTriangle::getDTI() const {
 // Address: 0x01945090 - 0x019450d0 (64 bytes)
 void* MtGeomTriangle::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomTriangle::DTI)->memAlloc(sz, align, ::MtGeomTriangle::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomTriangle::DTI)->memAlloc(sz, align, MtGeomTriangle::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomTriangle::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomTriangle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomTriangle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomTriangle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,36 +77,36 @@ inline void MtGeomTriangle::operator delete(void* p_addr) {
 void MtGeomTriangle::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTriangle.p0.x = fin.readF32();
-    this->mTriangle.p1.x = fin.readF32();
-    this->mTriangle.p2.x = fin.readF32();
-    this->mTriangle.p0.y = fin.readF32();
-    this->mTriangle.p1.y = fin.readF32();
-    this->mTriangle.p2.y = fin.readF32();
-    this->mTriangle.p0.z = fin.readF32();
-    this->mTriangle.p1.z = fin.readF32();
-    this->mTriangle.p2.z = fin.readF32();
-    this->mTriangle.p0.pad_ = fin.readF32();
-    this->mTriangle.p1.pad_ = fin.readF32();
-    this->mTriangle.p2.pad_ = fin.readF32();
+    mTriangle.p0.x = fin.readF32();
+    mTriangle.p1.x = fin.readF32();
+    mTriangle.p2.x = fin.readF32();
+    mTriangle.p0.y = fin.readF32();
+    mTriangle.p1.y = fin.readF32();
+    mTriangle.p2.y = fin.readF32();
+    mTriangle.p0.z = fin.readF32();
+    mTriangle.p1.z = fin.readF32();
+    mTriangle.p2.z = fin.readF32();
+    mTriangle.p0.pad_ = fin.readF32();
+    mTriangle.p1.pad_ = fin.readF32();
+    mTriangle.p2.pad_ = fin.readF32();
 }
 
 // Address: 0x01945210 - 0x019452d8 (200 bytes)
 void MtGeomTriangle::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mTriangle.p0.x);
-    fout.writeF32(this->mTriangle.p1.x);
-    fout.writeF32(this->mTriangle.p2.x);
-    fout.writeF32(this->mTriangle.p0.y);
-    fout.writeF32(this->mTriangle.p1.y);
-    fout.writeF32(this->mTriangle.p2.y);
-    fout.writeF32(this->mTriangle.p0.z);
-    fout.writeF32(this->mTriangle.p1.z);
-    fout.writeF32(this->mTriangle.p2.z);
-    fout.writeF32(this->mTriangle.p0.pad_);
-    fout.writeF32(this->mTriangle.p1.pad_);
-    fout.writeF32(this->mTriangle.p2.pad_);
+    fout.writeF32(mTriangle.p0.x);
+    fout.writeF32(mTriangle.p1.x);
+    fout.writeF32(mTriangle.p2.x);
+    fout.writeF32(mTriangle.p0.y);
+    fout.writeF32(mTriangle.p1.y);
+    fout.writeF32(mTriangle.p2.y);
+    fout.writeF32(mTriangle.p0.z);
+    fout.writeF32(mTriangle.p1.z);
+    fout.writeF32(mTriangle.p2.z);
+    fout.writeF32(mTriangle.p0.pad_);
+    fout.writeF32(mTriangle.p1.pad_);
+    fout.writeF32(mTriangle.p2.pad_);
 }
 
 // Address: 0x019452e0 - 0x01945615 (821 bytes)
@@ -124,13 +124,13 @@ __attribute__((weak)) void MtGeomTriangle::getBoundingAABB(MtAABB& aabb) const {
 // Address: 0x01be6c30 - 0x01be6c39 (9 bytes)
 void MtGeomTriangle::getBoundingSphere(MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<const ::MtTriangle&>(this->mTriangle).::MtTriangle::getBoundingSphere(sphere);
+    static_cast<const MtTriangle&>(mTriangle).getBoundingSphere(sphere);
 }
 
 // Address: 0x01be6c40 - 0x01be6c49 (9 bytes)
 bool MtGeomTriangle::isDegeneracy() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::MtTriangle&>(this->mTriangle).::MtTriangle::isDegeneracy();
+    return static_cast<const MtTriangle&>(mTriangle).isDegeneracy();
 }
 
 // Address: 0x01945620 - 0x01945700 (224 bytes)
@@ -149,49 +149,49 @@ __attribute__((weak)) void MtGeomTriangle::copy(const MtGeometry& input) {
 // Address: 0x01be6cc0 - 0x01be6cd6 (22 bytes)
 bool MtGeomTriangle::isIntersect(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, pos, true, 0.001f);
+    return MtCollision::intersect(mTriangle, pos, true, 0.001f);
 }
 
 // Address: 0x01be6ce0 - 0x01be6ce9 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, line);
+    return MtCollision::intersect(mTriangle, line);
 }
 
 // Address: 0x01be6cf0 - 0x01be6cf9 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, ray);
+    return MtCollision::intersect(mTriangle, ray);
 }
 
 // Address: 0x01be6d00 - 0x01be6d09 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, ls);
+    return MtCollision::intersect(mTriangle, ls);
 }
 
 // Address: 0x01be6d10 - 0x01be6d19 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, sphere);
+    return MtCollision::intersect(mTriangle, sphere);
 }
 
 // Address: 0x01be6d20 - 0x01be6d29 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, capsule);
+    return MtCollision::intersect(mTriangle, capsule);
 }
 
 // Address: 0x01be6d30 - 0x01be6d39 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, aabb);
+    return MtCollision::intersect(mTriangle, aabb);
 }
 
 // Address: 0x01be6d40 - 0x01be6d49 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, obb);
+    return MtCollision::intersect(mTriangle, obb);
 }
 
 // Address: 0x01be6d50 - 0x01be6d53 (3 bytes)
@@ -209,61 +209,61 @@ bool MtGeomTriangle::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01be6d70 - 0x01be6d79 (9 bytes)
 bool MtGeomTriangle::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mTriangle, tri);
+    return MtCollision::intersect(mTriangle, tri);
 }
 
 // Address: 0x01be6d80 - 0x01be6d8f (15 bytes)
 bool MtGeomTriangle::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(cylinder, this->mTriangle);
+    return MtCollision::intersect(cylinder, mTriangle);
 }
 
 // Address: 0x01be6d90 - 0x01be6d99 (9 bytes)
 bool MtGeomTriangle::getClosest(const MtVector3& pos, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, pos, pContact);
+    return MtCollision::closest(mTriangle, pos, pContact);
 }
 
 // Address: 0x01be6da0 - 0x01be6dab (11 bytes)
 bool MtGeomTriangle::getClosest(const MtLine& line, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, line, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mTriangle, line, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be6db0 - 0x01be6dbb (11 bytes)
 bool MtGeomTriangle::getClosest(const MtRay& ray, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, ray, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mTriangle, ray, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be6dc0 - 0x01be6dcb (11 bytes)
 bool MtGeomTriangle::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, ls, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mTriangle, ls, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be6dd0 - 0x01be6ddb (11 bytes)
 bool MtGeomTriangle::getClosest(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mTriangle, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be6de0 - 0x01be6deb (11 bytes)
 bool MtGeomTriangle::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mTriangle, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be6df0 - 0x01be6dfb (11 bytes)
 bool MtGeomTriangle::getClosest(const MtAABB& aabb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, aabb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mTriangle, aabb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be6e00 - 0x01be6e0b (11 bytes)
 bool MtGeomTriangle::getClosest(const MtOBB& obb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mTriangle, obb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mTriangle, obb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be6e10 - 0x01be6e13 (3 bytes)
@@ -299,15 +299,15 @@ __attribute__((weak)) MtVector3 MtGeomTriangle::getInternalPos() const {
 // Address: 0x01be6f90 - 0x01be6feb (91 bytes)
 void MtGeomTriangle::setScale(f32 scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTriangle.p0.x = this->mTriangle.p0.x * scale;
-    this->mTriangle.p0.y = this->mTriangle.p0.y * scale;
-    this->mTriangle.p0.z = this->mTriangle.p0.z * scale;
-    this->mTriangle.p1.x = this->mTriangle.p1.x * scale;
-    this->mTriangle.p1.y = this->mTriangle.p1.y * scale;
-    this->mTriangle.p1.z = this->mTriangle.p1.z * scale;
-    this->mTriangle.p2.x = this->mTriangle.p2.x * scale;
-    this->mTriangle.p2.y = this->mTriangle.p2.y * scale;
-    this->mTriangle.p2.z = this->mTriangle.p2.z * scale;
+    mTriangle.p0.x = mTriangle.p0.x * scale;
+    mTriangle.p0.y = mTriangle.p0.y * scale;
+    mTriangle.p0.z = mTriangle.p0.z * scale;
+    mTriangle.p1.x = mTriangle.p1.x * scale;
+    mTriangle.p1.y = mTriangle.p1.y * scale;
+    mTriangle.p1.z = mTriangle.p1.z * scale;
+    mTriangle.p2.x = mTriangle.p2.x * scale;
+    mTriangle.p2.y = mTriangle.p2.y * scale;
+    mTriangle.p2.z = mTriangle.p2.z * scale;
 }
 
 // Address: 0x01be6ff0 - 0x01be7075 (133 bytes)
@@ -393,6 +393,8 @@ __attribute__((weak)) void MtGeomTriangle::addPos(const MtVector3& pos) {
 
 // No out-of-line body: no code in the ELF
 // bool MtGeomTriangle::closest(const MtTriangle&, const MtOBB&, MtContact*, MtContact*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtGeomTriangle::MyDTI MtGeomTriangle::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomTriangle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

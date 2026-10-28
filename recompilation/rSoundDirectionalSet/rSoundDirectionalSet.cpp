@@ -33,7 +33,7 @@ const MtDTI& rSoundDirectionalSet::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK20rSoundDirectionalSet5MyDTI11newInstanceEv at 0x011fa780-0x011fa7ad, code DWARF attributes to no inlined copy; sz is the class's size (160), align the allocation's other whole constant (16)
 inline void* rSoundDirectionalSet::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memAlloc(sz, align, ::rSoundDirectionalSet::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memAlloc(sz, align, rSoundDirectionalSet::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rSoundDirectionalSet::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rSoundDirectionalSetD0Ev at 0x011fa960-0x011fa981, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundDirectionalSet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,11 +68,11 @@ inline void rSoundDirectionalSet::operator delete(void* p_addr) {
 rSoundDirectionalSet::~rSoundDirectionalSet() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11fa8ab read, used once; no DWARF local holds it
-    u16* t0 = this->mpIdToIndexTbl;
-    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(static_cast<void*>(t0));
+    u16* t0 = mpIdToIndexTbl;
+    MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memFree(static_cast<void*>(t0));
     // inferred: a temporary for the value the load at 0x11fa8cd read, used once; no DWARF local holds it
-    void* t1 = this->mpRawData;
-    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(t1);
+    void* t1 = mpRawData;
+    MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memFree(t1);
 }
 
 // Address: 0x011fa990 - 0x011facec (860 bytes)
@@ -141,12 +141,14 @@ __attribute__((weak)) bool rSoundDirectionalSet::createIdToIndexTbl() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundDirectionalSet::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundDirectionalSet::MyDTI rSoundDirectionalSet::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundDirectionalSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011fa780 - 0x011fa80f (143 bytes)
 MtObject* rSoundDirectionalSet::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundDirectionalSet;
+    return new (16u) rSoundDirectionalSet;
 }
 

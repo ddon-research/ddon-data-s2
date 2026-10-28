@@ -101,6 +101,18 @@ inline MT_CTSTR cpItemThrow::getThrowItemUId() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::onItemMode at 0xc7bdec-0xc7bdf0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpItemThrow::onItemMode() {
+    this->mIsItemMode = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::setThrowItemId at 0xc7bddc-0xc7bddf; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpItemThrow::setThrowItemId(u32 id) {
+    this->mThrowItemId = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cpItemThrow::getThrowItemId() const {
     return this->mThrowItemId;
 }

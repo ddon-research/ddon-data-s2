@@ -78,7 +78,7 @@ bool MtNet::PS4Psn::Context::isPhysicalLink() const {
 // Address: 0x00dd99e0 - 0x00dd99e6 (6 bytes)
 s32 MtNet::PS4Psn::Context::getIpAddressSelfNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(1);
+    return 1;
 }
 
 // Address: 0x00dd99f0 - 0x00dd9a05 (21 bytes)
@@ -90,7 +90,7 @@ __attribute__((weak)) void MtNet::PS4Psn::Context::getIpAddressSelf(s32 index, M
 // Address: 0x00dd9a10 - 0x00dd9a16 (6 bytes)
 s32 MtNet::PS4Psn::Context::getPhysicalAddressSelfNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(1);
+    return 1;
 }
 
 // Address: 0x00dd9a20 - 0x00dd9a37 (23 bytes)
@@ -107,19 +107,19 @@ __attribute__((weak)) void MtNet::PS4Psn::Context::setAddressIndex(s32 index) {
 // Address: 0x00dd9a50 - 0x00dd9a53 (3 bytes)
 s32 MtNet::PS4Psn::Context::getAddressIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x00dd9a60 - 0x00dd9a67 (7 bytes)
 s32 MtNet::PS4Psn::Context::getCountry() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCountry;
+    return mCountry;
 }
 
 // Address: 0x00dd9a70 - 0x00dd9a78 (8 bytes)
 MtNetFriendList* MtNet::PS4Psn::Context::getFriendList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mFriendList;
+    return &mFriendList;
 }
 
 // Address: 0x00dd9a80 - 0x00dd9afe (126 bytes)
@@ -197,29 +197,29 @@ __attribute__((weak)) s32 MtNet::PS4Psn::Context::moveStart(MtNetRequest* req) {
 s32 MtNet::PS4Psn::Context::moveFinalize(MtNetRequest* req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xddbb83, used 3 times; no DWARF local holds it
-    s32 t0 = req->::MtNetRequest::getPhase();
-    if (t0 != static_cast<s32>(2)) {
-        if (t0 == static_cast<s32>(1)) {
-            if ((::MtNetMediator::mpInstance)->::MtNetMediator::isPsnUsrTask(this->mStartSceUserId) == false) {
-                this->::MtNet::PS4Psn::Context::releaseNp();
-                req->::MtNetRequest::setPhase(static_cast<s32>(2));
+    s32 t0 = req->getPhase();
+    if (t0 != 2) {
+        if (t0 == 1) {
+            if (!(::MtNetMediator::mpInstance)->::MtNetMediator::isPsnUsrTask(mStartSceUserId)) {
+                releaseNp();
+                req->setPhase(2);
             }
         } else {
-            if (t0 == static_cast<s32>(0)) {
-                if ((::MtNetMediator::mpInstance)->mInitParam.mIsPsnMatchingDisuse == false) {
-                    s32 ret = (::MtNetMediator::mpInstance)->::MtNetMediator::termNpMatchContext(this->mStartSceUserId, *this);
-                    if (ret != static_cast<s32>(0)) {
-                        req->::MtNetRequest::setPhase(static_cast<s32>(1));
+            if (t0 == 0) {
+                if (!(::MtNetMediator::mpInstance)->mInitParam.mIsPsnMatchingDisuse) {
+                    s32 ret = (::MtNetMediator::mpInstance)->::MtNetMediator::termNpMatchContext(mStartSceUserId, *this);
+                    if (ret != 0) {
+                        req->setPhase(1);
                     }
-                    return static_cast<s32>(0);
+                    return 0;
                 }
-                req->::MtNetRequest::setPhase(static_cast<s32>(1));
+                req->setPhase(1);
             }
         }
-        return static_cast<s32>(0);
+        return 0;
     } else {
-        this->::MtNetContext::cbAnsFinalize(req);
-        return static_cast<s32>(1);
+        cbAnsFinalize(req);
+        return 1;
     }
 }
 

@@ -104,11 +104,11 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cStatusCheck::cStatusCheck() {
-    this->mGroup = static_cast<s32>(-1);
+    this->mGroup = -1;
     this->mResultOver = false;
     this->mResultAdd = false;
-    this->mResult = static_cast<s32>(-1);
-    this->mType = static_cast<u32>(12);
+    this->mResult = -1;
+    this->mType = 12;
     this->mSystemParam[0] = 0.0f;
     this->mSystemParam[1] = 0.0f;
     this->mSystemParam[2] = 0.0f;

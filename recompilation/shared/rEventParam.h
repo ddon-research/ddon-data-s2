@@ -204,10 +204,16 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::stopMoveUnitLight at 0x11b30-0x11b33; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cEventParam::getLightCtrl() const {
+    return this->mLightCtrl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cEventParam::cOmList::cOmList() {
-    this->mOmId = static_cast<u32>(0);
-    this->mCtrlType = static_cast<u16>(0);
-    this->mLotType = static_cast<u16>(0);
-    this->mGroupNo = static_cast<s16>(-1);
-    this->mSetId = static_cast<s16>(-1);
+    this->mOmId = 0;
+    this->mCtrlType = 0;
+    this->mLotType = 0;
+    this->mGroupNo = -1;
+    this->mSetId = -1;
 }

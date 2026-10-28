@@ -161,6 +161,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestPhaseCpDivide::cPlayerState::cPlayerState() {
-    this->mCharacterId = static_cast<u32>(0);
+    this->mCharacterId = 0;
     this->mHasChanged = false;
 }

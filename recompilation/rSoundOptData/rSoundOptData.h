@@ -107,12 +107,12 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cSoundOptData::cSoundOptData() {
-    this->mCategory = static_cast<u32>(0);
-    this->mItem = static_cast<u32>(0);
-    this->mChannel[4] = static_cast<int>(-1);
-    this->mChannel[5] = static_cast<int>(-1);
-    this->mChannel[2] = static_cast<int>(-1);
-    this->mChannel[3] = static_cast<int>(-1);
-    this->mChannel[0] = static_cast<int>(-1);
-    this->mChannel[1] = static_cast<int>(-1);
+    this->mCategory = 0;
+    this->mItem = 0;
+    this->mChannel[4] = -1;
+    this->mChannel[5] = -1;
+    this->mChannel[2] = -1;
+    this->mChannel[3] = -1;
+    this->mChannel[0] = -1;
+    this->mChannel[1] = -1;
 }

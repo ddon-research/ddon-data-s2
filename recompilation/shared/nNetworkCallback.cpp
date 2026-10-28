@@ -87,7 +87,7 @@ MtUI* nNetwork::Callback::createUI(MtProperty& prop) {
 // Address: 0x01194b00 - 0x01194b05 (5 bytes)
 void nNetwork::Callback::setup(nNetwork::Session* ps) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession = ps;
+    mpSession = ps;
 }
 
 // Address: 0x01194ba0 - 0x01194dec (588 bytes)
@@ -116,7 +116,7 @@ __attribute__((weak)) void nNetwork::Callback::clear(s32 index) {
 // Address: 0x01194b20 - 0x01194b37 (23 bytes)
 void nNetwork::Callback::removeRoute(s32 route_index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQueue[route_index].::nNetwork::BlockQueue::clear();
+    mQueue[route_index].clear();
 }
 
 // Address: 0x01194ef0 - 0x01195147 (599 bytes)
@@ -182,6 +182,8 @@ __attribute__((weak)) bool nNetwork::Callback::shift(nNetwork::Callback::Queue& 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Callback::flush(s32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Callback::MyDTI nNetwork::Callback::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Callback::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -250,15 +252,21 @@ __attribute__((weak)) void nNetwork::Callback::Entry::createProperty(MtPropertyL
 // void nNetwork::Callback::Entry::clear();
 
 // Address: 0x01195500 - 0x01195510 (16 bytes)
-__attribute__((weak)) MtObject* nNetwork::Callback::Entry::getClass() {
-    DDON_STUB("nNetwork::Callback::Entry::getClass")
-    return nullptr;
+MtObject* nNetwork::Callback::Entry::getClass() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpReceiver != nullptr) {
+        return mpReceiver->mpObject;
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x01195510 - 0x01195511 (1 bytes)
 __attribute__((weak)) void nNetwork::Callback::Entry::setClass(MtObject* pobj) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Callback::Entry::MyDTI nNetwork::Callback::Entry::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Callback::Entry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -332,6 +340,8 @@ __attribute__((weak)) void nNetwork::Callback::Queue::createProperty(MtPropertyL
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Callback::Queue::move();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Callback::Queue::MyDTI nNetwork::Callback::Queue::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Callback::Queue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

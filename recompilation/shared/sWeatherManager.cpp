@@ -23,6 +23,8 @@
 #include "rZone.h"
 #include "res_ptr.h"
 #include "sEnvMapManager.h"
+#include "sSound.h"
+#include "sSoundExt.h"
 #include "../rLayout/uSky.h"
 #include "uSkyCloud.h"
 #include "../rLayout/uSkyExt.h"
@@ -66,7 +68,7 @@ const MtDTI& cCustomWeatherParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cCustomWeatherParamD0Ev at 0x01ad01b0-0x01ad01da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCustomWeatherParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCustomWeatherParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCustomWeatherParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,13 +90,13 @@ inline void cCustomWeatherParam::operator delete(void* p_addr) {
 // Address: 0x0086a820 - 0x0086a824 (4 bytes)
 void cCustomWeatherParam::setCustomWeatherID(u32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomWeatherID = val;
+    mCustomWeatherID = val;
 }
 
 // Address: 0x0086a830 - 0x0086a834 (4 bytes)
 void cCustomWeatherParam::setCustomTime(u32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomWeatherTime = val;
+    mCustomWeatherTime = val;
 }
 
 // Address: 0x0086a840 - 0x0086a897 (87 bytes)
@@ -112,103 +114,103 @@ __attribute__((weak)) void cCustomWeatherParam::setCustomTimeMinite(u32 val) {
 // Address: 0x0086a980 - 0x0086a986 (6 bytes)
 void cCustomWeatherParam::setCustomShadowViewDistance(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowViewDistance = val;
+    mCustomShadowViewDistance = val;
 }
 
 // Address: 0x0086a990 - 0x0086a996 (6 bytes)
 void cCustomWeatherParam::setCustomShadowDepthBias(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowDepthBias = val;
+    mCustomShadowDepthBias = val;
 }
 
 // Address: 0x0086a9a0 - 0x0086a9a6 (6 bytes)
 void cCustomWeatherParam::setCustomShadowSlopeScaledDepthBias(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowSlopeScaledDepthBias = val;
+    mCustomShadowSlopeScaledDepthBias = val;
 }
 
 // Address: 0x0086a9b0 - 0x0086a9b6 (6 bytes)
 void cCustomWeatherParam::setCustomShadowDistanceScaledDepthBias(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowDistanceScaledDepthBias = val;
+    mCustomShadowDistanceScaledDepthBias = val;
 }
 
 // Address: 0x0086a9c0 - 0x0086a9c6 (6 bytes)
 void cCustomWeatherParam::setCustomShadowGroup0(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowAtten.x = val;
+    mCustomShadowAtten.x = val;
 }
 
 // Address: 0x0086a9d0 - 0x0086a9d6 (6 bytes)
 void cCustomWeatherParam::setCustomShadowGroup1(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowAtten.y = val;
+    mCustomShadowAtten.y = val;
 }
 
 // Address: 0x0086a9e0 - 0x0086aa05 (37 bytes)
 void cCustomWeatherParam::setCustomShadowDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowDir = val;
+    mCustomShadowDir = val;
 }
 
 // Address: 0x0086aa10 - 0x0086aa35 (37 bytes)
 void cCustomWeatherParam::setCustomSunDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomSunDir = val;
+    mCustomSunDir = val;
 }
 
 // Address: 0x0086aa40 - 0x0086aa65 (37 bytes)
 void cCustomWeatherParam::setCustomHemiLightColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomHemiLightColor = val;
+    mCustomHemiLightColor = val;
 }
 
 // Address: 0x0086aa70 - 0x0086aa95 (37 bytes)
 void cCustomWeatherParam::setCustomHemiLightRevColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomHemiLightRevColor = val;
+    mCustomHemiLightRevColor = val;
 }
 
 // Address: 0x0086aaa0 - 0x0086aad1 (49 bytes)
 void cCustomWeatherParam::setCustomGrassWindDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomGrassWindDir = val;
+    mCustomGrassWindDir = val;
 }
 
 // Address: 0x0086ab00 - 0x0086ab06 (6 bytes)
 void cCustomWeatherParam::setCustomFogStart(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomFogStart = val;
+    mCustomFogStart = val;
 }
 
 // Address: 0x0086ab10 - 0x0086ab16 (6 bytes)
 void cCustomWeatherParam::setCustomFogEnd(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomFogEnd = val;
+    mCustomFogEnd = val;
 }
 
 // Address: 0x0086ab20 - 0x0086ab26 (6 bytes)
 void cCustomWeatherParam::setCustomFogExponentDensity(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomFogExponentDensity = val;
+    mCustomFogExponentDensity = val;
 }
 
 // Address: 0x0086ab30 - 0x0086ab61 (49 bytes)
 void cCustomWeatherParam::setCustomFogColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomFogColor = val;
+    mCustomFogColor = val;
 }
 
 // Address: 0x0086aae0 - 0x0086aae6 (6 bytes)
 void cCustomWeatherParam::setCustomGrassFadeBeginDistance(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomGrassFadeBeginDistance = val;
+    mCustomGrassFadeBeginDistance = val;
 }
 
 // Address: 0x0086aaf0 - 0x0086aaf6 (6 bytes)
 void cCustomWeatherParam::setCustomGrassFadeEndDistance(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomGrassFadeEndDistance = val;
+    mCustomGrassFadeEndDistance = val;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (2395 bytes)
@@ -224,13 +226,13 @@ void cCustomWeatherParam::setCustomGrassFadeEndDistance(f32 val) {
 // Address: 0x01acff60 - 0x01acff64 (4 bytes)
 u32 cCustomWeatherParam::getCustomWeatherID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomWeatherID;
+    return mCustomWeatherID;
 }
 
 // Address: 0x01acff70 - 0x01acff74 (4 bytes)
 u32 cCustomWeatherParam::getCustomTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomWeatherTime;
+    return mCustomWeatherTime;
 }
 
 // Address: 0x0086a940 - 0x0086a971 (49 bytes)
@@ -254,37 +256,37 @@ __attribute__((weak)) u32 cCustomWeatherParam::getCustomTimeMinite() const {
 // Address: 0x01acff80 - 0x01acff86 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowViewDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowViewDistance;
+    return mCustomShadowViewDistance;
 }
 
 // Address: 0x01acff90 - 0x01acff96 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowDepthBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowDepthBias;
+    return mCustomShadowDepthBias;
 }
 
 // Address: 0x01acffa0 - 0x01acffa6 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowSlopeScaledDepthBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowSlopeScaledDepthBias;
+    return mCustomShadowSlopeScaledDepthBias;
 }
 
 // Address: 0x01acffb0 - 0x01acffb6 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowDistanceScaledDepthBias() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowDistanceScaledDepthBias;
+    return mCustomShadowDistanceScaledDepthBias;
 }
 
 // Address: 0x01acffc0 - 0x01acffc6 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowGroup0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowAtten.x;
+    return mCustomShadowAtten.x;
 }
 
 // Address: 0x01acffd0 - 0x01acffd6 (6 bytes)
 f32 cCustomWeatherParam::getCustomShadowGroup1() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomShadowAtten.y;
+    return mCustomShadowAtten.y;
 }
 
 // Address: 0x01acffe0 - 0x01ad0008 (40 bytes)
@@ -320,31 +322,31 @@ __attribute__((weak)) MtVector3 cCustomWeatherParam::getCustomGrassWindDir() con
 // Address: 0x01ad00e0 - 0x01ad00e6 (6 bytes)
 f32 cCustomWeatherParam::getCustomGrassFadeBeginDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomGrassFadeBeginDistance;
+    return mCustomGrassFadeBeginDistance;
 }
 
 // Address: 0x01ad00f0 - 0x01ad00f6 (6 bytes)
 f32 cCustomWeatherParam::getCustomGrassFadeEndDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomGrassFadeEndDistance;
+    return mCustomGrassFadeEndDistance;
 }
 
 // Address: 0x01ad0100 - 0x01ad0106 (6 bytes)
 f32 cCustomWeatherParam::getCustomFogStart() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomFogStart;
+    return mCustomFogStart;
 }
 
 // Address: 0x01ad0110 - 0x01ad0116 (6 bytes)
 f32 cCustomWeatherParam::getCustomFogEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomFogEnd;
+    return mCustomFogEnd;
 }
 
 // Address: 0x01ad0120 - 0x01ad0126 (6 bytes)
 f32 cCustomWeatherParam::getCustomFogExponentDensity() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCustomFogExponentDensity;
+    return mCustomFogExponentDensity;
 }
 
 // Address: 0x01ad0130 - 0x01ad0161 (49 bytes)
@@ -358,6 +360,8 @@ __attribute__((weak)) void cCustomWeatherParam::createProperty(MtPropertyList& s
     DDON_STUB("cCustomWeatherParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCustomWeatherParam::MyDTI cCustomWeatherParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sWeatherManager.cpp at 0x0087313e-0x0087317b (called at sWeatherManager.cpp:70)
@@ -384,7 +388,7 @@ const MtDTI& sWeatherManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sWeatherManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sWeatherManager::DTI);
+    return MtMemoryAllocator::getAllocator(sWeatherManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -393,7 +397,7 @@ inline MtAllocator* sWeatherManager::getAllocator() {
 // Address: 0x0086a770 - 0x0086a7b0 (64 bytes)
 void* sWeatherManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sWeatherManager::getAllocator()->memAlloc(sz, align, ::sWeatherManager::DTI.::MtDTI::getID());
+    return sWeatherManager::getAllocator()->memAlloc(sz, align, sWeatherManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -408,7 +412,7 @@ void* sWeatherManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sWeatherManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sWeatherManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sWeatherManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -449,11 +453,11 @@ __attribute__((weak)) void sWeatherManager::createProperty(MtPropertyList& s) {
 // Address: 0x0086d010 - 0x0086d037 (39 bytes)
 void sWeatherManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWeatherTime = static_cast<u32>(0);
-    this->mOnEvent = false;
-    this->mEventWeatherTime = static_cast<u32>(0);
-    this->mOnQuestWeather = false;
-    this->::sWeatherManager::clearWeatherStageUnit();
+    mWeatherTime = 0;
+    mOnEvent = false;
+    mEventWeatherTime = 0;
+    mOnQuestWeather = false;
+    clearWeatherStageUnit();
 }
 
 // Address: 0x0086d040 - 0x0086d135 (245 bytes)
@@ -473,9 +477,9 @@ __attribute__((weak)) void sWeatherManager::move() {
 // Address: 0x0086fd00 - 0x0086fd16 (22 bytes)
 void sWeatherManager::setSyncGame(bool sync) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbSyncGameTime = sync;
-    this->mbSyncGameWeather = sync;
-    this->mbSyncGameMoonAge = sync;
+    mbSyncGameTime = sync;
+    mbSyncGameWeather = sync;
+    mbSyncGameMoonAge = sync;
 }
 
 // Address: 0x0086d140 - 0x0086d3d4 (660 bytes)
@@ -504,7 +508,7 @@ __attribute__((weak)) void sWeatherManager::releaseEnvMapTexture() {
 // Address: 0x00870080 - 0x00870088 (8 bytes)
 void sWeatherManager::setEnvMapSkyForce(bool on) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnvMapSkyForce = on;
+    mEnvMapSkyForce = on;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (32 bytes)
@@ -535,7 +539,7 @@ void sWeatherManager::setEnvMapSkyForce(bool on) {
 // Address: 0x0086f280 - 0x0086f287 (7 bytes)
 u32 sWeatherManager::getWeatherTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherTime;
+    return mWeatherTime;
 }
 
 // Address: 0x008703f0 - 0x00870424 (52 bytes)
@@ -557,8 +561,8 @@ __attribute__((weak)) u32 sWeatherManager::getWeatherTimeHour() const {
 void sWeatherManager::setWeatherTimefromHMS(u32 hour, u32 min, u32 sec) {
     // DWARF local not rendered: u32 time;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReqWeatherTime = true;
-    this->mReqWeatherTime = ((hour * static_cast<u32>(3600000)) + (min * static_cast<u32>(60000))) + (sec * static_cast<u32>(1000));
+    mIsReqWeatherTime = true;
+    mReqWeatherTime = ((hour * 0x36EE80u) + (min * 60000u)) + (sec * 1000u);
 }
 
 // Address: 0x0086dbf0 - 0x0086dd1b (299 bytes)
@@ -626,8 +630,8 @@ __attribute__((weak)) void sWeatherManager::updateSkyParamNextWeather() {
 bool sWeatherManager::isEnableSky() const {
     // DWARF local not rendered: uSkyExt* p_sky;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeatherSky != static_cast<uSkyExt*>(nullptr)) {
-        return this->mpWeatherSky->::uSky::mpResource != static_cast<rSky*>(nullptr);
+    if (mpWeatherSky != nullptr) {
+        return mpWeatherSky->mpResource != nullptr;
     } else {
         return false;
     }
@@ -685,12 +689,12 @@ __attribute__((weak)) sWeatherManager::WEATHER_PHASE sWeatherManager::getWeather
 // Address: 0x00870240 - 0x00870287 (71 bytes)
 void sWeatherManager::reqWeatherIDFix(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeatherParamInfoTbl.mpPtr != static_cast<rWeatherParamInfoTbl*>(nullptr)) {
-        this->mReqWeatherID = static_cast<s32>((this->mpWeatherParamInfoTbl.mpPtr->getDataNum() == static_cast<u32>(0)) ? static_cast<u32>(1) : id);
+    if (mpWeatherParamInfoTbl.mpPtr != nullptr) {
+        mReqWeatherID = static_cast<s32>((mpWeatherParamInfoTbl.mpPtr->getDataNum() == 0) ? 1u : id);
     } else {
-        this->mReqWeatherID = static_cast<s32>(1);
+        mReqWeatherID = 1;
     }
-    this->mReqWeatherRate = 1.0f;
+    mReqWeatherRate = 1.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (53 bytes)
@@ -711,7 +715,7 @@ void sWeatherManager::reqWeatherIDFix(u32 id) {
 // Address: 0x0086fca0 - 0x0086fca7 (7 bytes)
 s32 sWeatherManager::getWeatherMoonAge() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherMoonAge;
+    return mWeatherMoonAge;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (28 bytes)
@@ -731,17 +735,17 @@ s32 sWeatherManager::getWeatherMoonAge() const {
 // Address: 0x0086fcb0 - 0x0086fcb9 (9 bytes)
 f32 sWeatherManager::getWeatherMoonColorRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherParamResult.mMoonLRate;
+    return mWeatherParamResult.mMoonLRate;
 }
 
 // Address: 0x0086fcc0 - 0x0086fcd4 (20 bytes)
 void sWeatherManager::setWeatherMoonEnable(bool b) {
     // DWARF local not rendered: uSkyExt* p_sky;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeatherSky == static_cast<uSkyExt*>(nullptr)) {
+    if (mpWeatherSky == nullptr) {
         return;
     }
-    this->mpWeatherSky->::uSky::mMoonEnable = b;
+    mpWeatherSky->mMoonEnable = b;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -760,17 +764,17 @@ void sWeatherManager::setWeatherMoonEnable(bool b) {
 // Address: 0x00870200 - 0x00870218 (24 bytes)
 void sWeatherManager::setGrassFadeDistanceStage(f32 begin, f32 end) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGrassReqFadeDistanceStage = true;
-    this->mGrassFadeBeginDistanceStage = begin;
-    this->mGrassFadeEndDistancStage = end;
+    mGrassReqFadeDistanceStage = true;
+    mGrassFadeBeginDistanceStage = begin;
+    mGrassFadeEndDistancStage = end;
 }
 
 // Address: 0x0086c5c0 - 0x0086c5d9 (25 bytes)
 void sWeatherManager::resetGrassFadeDistanceStage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGrassReqFadeDistanceStage = false;
-    this->mGrassFadeBeginDistanceStage = 3000.0f;
-    this->mGrassFadeEndDistancStage = 5000.0f;
+    mGrassReqFadeDistanceStage = false;
+    mGrassFadeBeginDistanceStage = 3000.0f;
+    mGrassFadeEndDistancStage = 5000.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -793,7 +797,7 @@ void sWeatherManager::resetGrassFadeDistanceStage() {
 // Address: 0x00870440 - 0x00870448 (8 bytes)
 void sWeatherManager::setGrassWindOff(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGrassWindOff = b;
+    mGrassWindOff = b;
 }
 
 // Address: 0x00870450 - 0x008704bf (111 bytes)
@@ -824,7 +828,7 @@ __attribute__((weak)) f32 sWeatherManager::getGrassWindPhase() const {
 // Address: 0x00870540 - 0x0087055c (28 bytes)
 const MtColor& sWeatherManager::getEffectColor(u32 correctType) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEffectColorParam[(correctType <= static_cast<u32>(6)) ? correctType : static_cast<u32>(0)].mEfcColorParam.Color;
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].mEfcColorParam.Color;
 }
 
 // Address: 0x00870560 - 0x0087057d (29 bytes)
@@ -854,7 +858,7 @@ __attribute__((weak)) f32 sWeatherManager::getEffectEnvMapPowerScale(u32 correct
 // Address: 0x008705e0 - 0x008705fc (28 bytes)
 const MtColor& sWeatherManager::getEffectShadowColor(u32 correctType) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEffectColorParam[(correctType <= static_cast<u32>(6)) ? correctType : static_cast<u32>(0)].mEfcColorParam.ShadowColor;
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].mEfcColorParam.ShadowColor;
 }
 
 // Address: 0x00870600 - 0x0087061d (29 bytes)
@@ -878,19 +882,19 @@ __attribute__((weak)) f32 sWeatherManager::getEffectShadowIntensityBlend(u32 cor
 // Address: 0x00870520 - 0x00870529 (9 bytes)
 f32 sWeatherManager::getEffectColorUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEffectColorUpdateTime;
+    return mEffectColorUpdateTime;
 }
 
 // Address: 0x00870530 - 0x00870539 (9 bytes)
 void sWeatherManager::setEffectColorUpdateTime(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEffectColorUpdateTime = val;
+    mEffectColorUpdateTime = val;
 }
 
 // Address: 0x0086c920 - 0x0086c92b (11 bytes)
 void sWeatherManager::resetEffectColorUpdateTime() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEffectColorUpdateTime = 30.0f;
+    mEffectColorUpdateTime = 30.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (108 bytes)
@@ -919,7 +923,7 @@ void sWeatherManager::resetEffectColorUpdateTime() {
 // Address: 0x00870670 - 0x0087067b (11 bytes)
 void sWeatherManager::resetWeather() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWeatherID = static_cast<s32>(-1);
+    mWeatherID = -1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -977,60 +981,60 @@ void sWeatherManager::setWeatherID(s32 weatherID, f32 blend) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x86fc22; no location-less local in scope fits
     unsigned int v2_9;
-    if (this->mpWeatherParamInfoTbl.mpPtr == static_cast<rWeatherParamInfoTbl*>(nullptr)) {
-        v2_9 = static_cast<unsigned int>(1);
+    if (mpWeatherParamInfoTbl.mpPtr == nullptr) {
+        v2_9 = 1;
     } else {
-        if (this->mpWeatherParamInfoTbl.mpPtr->getDataNum() == static_cast<u32>(0)) {
-            v2_9 = static_cast<unsigned int>(1);
+        if (mpWeatherParamInfoTbl.mpPtr->getDataNum() == 0) {
+            v2_9 = 1;
         } else {
             // inferred: the value the loop at 0x86fbf0 carries; no location-less local in scope fits
-            rWeatherParamInfoTbl* v0_10 = this->mpWeatherParamInfoTbl.mpPtr;
-            if (v0_10 == static_cast<rWeatherParamInfoTbl*>(nullptr)) {
-                v2_9 = static_cast<unsigned int>(1);
+            rWeatherParamInfoTbl* v0_10 = mpWeatherParamInfoTbl.mpPtr;
+            if (v0_10 == nullptr) {
+                v2_9 = 1;
             } else {
-                if (v0_10->getDataNum() == static_cast<u32>(0)) {
-                    v2_9 = static_cast<unsigned int>(1);
+                if (v0_10->getDataNum() == 0) {
+                    v2_9 = 1;
                 } else {
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                    for (unsigned int i0_3 = 0;;) {
                         // inferred: a temporary for the result of the call at 0x86fbf9, used twice; no DWARF local holds it
                         cWeatherParamInfo* t0 = v0_10->getData(i0_3);
-                        if (t0 != static_cast<cWeatherParamInfo*>(nullptr)) {
+                        if (t0 != nullptr) {
                             if (t0->mWeatherID != weatherID) {
-                                if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->getDataNum()) {
-                                    i0_3 += static_cast<unsigned int>(1);
+                                if ((i0_3 + 1u) < v0_10->getDataNum()) {
+                                    i0_3 += 1u;
                                 } else {
                                     break;
                                 }
                             } else {
                                 v2_9 = weatherID;
-                                this->mWeatherIDOld = this->mWeatherID;
-                                this->mWeatherID = static_cast<s32>(v2_9);
-                                this->mWeatherBlend = blend;
-                                this->::sWeatherManager::updateWeatherParamNowOld();
-                                this->mWeatherChangeFrame = this->mpWeatherInfoNow->mToFrame;
-                                this->::sWeatherManager::changeWeatherScript(blend > 0.5f);
+                                mWeatherIDOld = mWeatherID;
+                                mWeatherID = static_cast<s32>(v2_9);
+                                mWeatherBlend = blend;
+                                updateWeatherParamNowOld();
+                                mWeatherChangeFrame = mpWeatherInfoNow->mToFrame;
+                                changeWeatherScript(blend > 0.5f);
                                 return;
                             }
                         } else {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->getDataNum()) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < v0_10->getDataNum()) {
+                                i0_3 += 1u;
                             } else {
                                 break;
                             }
                         }
                     }
-                    v2_9 = static_cast<unsigned int>(1);
+                    v2_9 = 1;
                 }
             }
         }
     }
-    this->mWeatherIDOld = this->mWeatherID;
-    this->mWeatherID = static_cast<s32>(v2_9);
-    this->mWeatherBlend = blend;
-    this->::sWeatherManager::updateWeatherParamNowOld();
-    this->mWeatherChangeFrame = this->mpWeatherInfoNow->mToFrame;
-    this->::sWeatherManager::changeWeatherScript(blend > 0.5f);
+    mWeatherIDOld = mWeatherID;
+    mWeatherID = static_cast<s32>(v2_9);
+    mWeatherBlend = blend;
+    updateWeatherParamNowOld();
+    mWeatherChangeFrame = mpWeatherInfoNow->mToFrame;
+    changeWeatherScript(blend > 0.5f);
 }
 
 // Address: 0x008713b0 - 0x00871583 (467 bytes)
@@ -1040,333 +1044,333 @@ __attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
     // DWARF local not rendered: u32 step_idx;
     // DWARF local not rendered: cWeatherScriptCmdArray& res_array;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cWeatherScript* p_efc_now = this->mpWeatherScriptEfcOld;
-    if (p_efc_now != static_cast<cWeatherScript*>(nullptr)) {
-        cWeatherScript* p_efc_old = this->mpWeatherScriptEfcNow;
-        if (p_efc_old == static_cast<cWeatherScript*>(nullptr)) {
-            cWeatherScript* p_snd_now = this->mpWeatherScriptSndOld;
-            if (p_snd_now != static_cast<cWeatherScript*>(nullptr)) {
-                cWeatherScript* p_snd_old = this->mpWeatherScriptSndNow;
-                if (p_snd_old == static_cast<cWeatherScript*>(nullptr)) {
-                    this->mWeatherScript[0].::cWeatherScript::releaseScript();
-                    this->mWeatherScript[0].::cWeatherScript::initScript();
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                    this->mWeatherScript[2].::cWeatherScript::releaseScript();
-                    this->mWeatherScript[2].::cWeatherScript::initScript();
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                    if (flash != false) {
-                        this->mWeatherScript[1].::cWeatherScript::endScript();
-                        this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                        this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                        this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            this->mWeatherScript[3].::cWeatherScript::endScript();
-                            this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+    cWeatherScript* p_efc_now = mpWeatherScriptEfcOld;
+    if (p_efc_now != nullptr) {
+        cWeatherScript* p_efc_old = mpWeatherScriptEfcNow;
+        if (p_efc_old == nullptr) {
+            cWeatherScript* p_snd_now = mpWeatherScriptSndOld;
+            if (p_snd_now != nullptr) {
+                cWeatherScript* p_snd_old = mpWeatherScriptSndNow;
+                if (p_snd_old == nullptr) {
+                    mWeatherScript[0].releaseScript();
+                    mWeatherScript[0].initScript();
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    mWeatherScript[2].releaseScript();
+                    mWeatherScript[2].initScript();
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    if (flash) {
+                        mWeatherScript[1].endScript();
+                        mWeatherScript[0].reqStepScript(2u);
+                        mpWeatherScriptEfcNow = &mWeatherScript[0];
+                        mpWeatherScriptEfcOld = &mWeatherScript[1];
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            mWeatherScript[3].endScript();
+                            mWeatherScript[2].reqStepScript(2u);
                         }
                     } else {
-                        this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                        this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                        this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                            this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                        mWeatherScript[1].reqStepScript(3u);
+                        mWeatherScript[0].reqStepScript(1u);
+                        mpWeatherScriptEfcNow = &mWeatherScript[0];
+                        mpWeatherScriptEfcOld = &mWeatherScript[1];
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            mWeatherScript[3].reqStepScript(3u);
+                            mWeatherScript[2].reqStepScript(1u);
                         }
                     }
-                    this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-                    this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+                    mpWeatherScriptSndNow = &mWeatherScript[2];
+                    mpWeatherScriptSndOld = &mWeatherScript[3];
                 } else {
-                    this->mWeatherScript[0].::cWeatherScript::releaseScript();
-                    this->mWeatherScript[0].::cWeatherScript::initScript();
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                    this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                    p_snd_now->::cWeatherScript::releaseScript();
-                    p_snd_now->::cWeatherScript::initScript();
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                    if (flash != false) {
-                        this->mWeatherScript[1].::cWeatherScript::endScript();
-                        this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                        this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                        this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            p_snd_old->::cWeatherScript::endScript();
-                            p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
+                    mWeatherScript[0].releaseScript();
+                    mWeatherScript[0].initScript();
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    p_snd_now->cWeatherScript::releaseScript();
+                    p_snd_now->cWeatherScript::initScript();
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    if (flash) {
+                        mWeatherScript[1].endScript();
+                        mWeatherScript[0].reqStepScript(2u);
+                        mpWeatherScriptEfcNow = &mWeatherScript[0];
+                        mpWeatherScriptEfcOld = &mWeatherScript[1];
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            p_snd_old->cWeatherScript::endScript();
+                            p_snd_now->cWeatherScript::reqStepScript(2u);
                         }
                     } else {
-                        this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                        this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                        this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            p_snd_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                            p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                        mWeatherScript[1].reqStepScript(3u);
+                        mWeatherScript[0].reqStepScript(1u);
+                        mpWeatherScriptEfcNow = &mWeatherScript[0];
+                        mpWeatherScriptEfcOld = &mWeatherScript[1];
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            p_snd_old->cWeatherScript::reqStepScript(3u);
+                            p_snd_now->cWeatherScript::reqStepScript(1u);
                         }
                     }
-                    this->mpWeatherScriptSndNow = p_snd_now;
-                    this->mpWeatherScriptSndOld = p_snd_old;
+                    mpWeatherScriptSndNow = p_snd_now;
+                    mpWeatherScriptSndOld = p_snd_old;
                 }
             } else {
-                this->mWeatherScript[0].::cWeatherScript::releaseScript();
-                this->mWeatherScript[0].::cWeatherScript::initScript();
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                this->mWeatherScript[2].::cWeatherScript::releaseScript();
-                this->mWeatherScript[2].::cWeatherScript::initScript();
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                if (flash != false) {
-                    this->mWeatherScript[1].::cWeatherScript::endScript();
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::endScript();
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+                mWeatherScript[0].releaseScript();
+                mWeatherScript[0].initScript();
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                mWeatherScript[2].releaseScript();
+                mWeatherScript[2].initScript();
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                if (flash) {
+                    mWeatherScript[1].endScript();
+                    mWeatherScript[0].reqStepScript(2u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].endScript();
+                        mWeatherScript[2].reqStepScript(2u);
                     }
                 } else {
-                    this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                    mWeatherScript[1].reqStepScript(3u);
+                    mWeatherScript[0].reqStepScript(1u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].reqStepScript(3u);
+                        mWeatherScript[2].reqStepScript(1u);
                     }
                 }
-                this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-                this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+                mpWeatherScriptSndNow = &mWeatherScript[2];
+                mpWeatherScriptSndOld = &mWeatherScript[3];
             }
         } else {
-            cWeatherScript* p_snd_now = this->mpWeatherScriptSndOld;
-            if (p_snd_now != static_cast<cWeatherScript*>(nullptr)) {
-                cWeatherScript* p_snd_old = this->mpWeatherScriptSndNow;
-                if (p_snd_old == static_cast<cWeatherScript*>(nullptr)) {
-                    p_efc_now->::cWeatherScript::releaseScript();
-                    p_efc_now->::cWeatherScript::initScript();
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                    this->mWeatherScript[2].::cWeatherScript::releaseScript();
-                    this->mWeatherScript[2].::cWeatherScript::initScript();
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                    this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                    if (flash != false) {
-                        p_efc_old->::cWeatherScript::endScript();
-                        p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                        this->mpWeatherScriptEfcNow = p_efc_now;
-                        this->mpWeatherScriptEfcOld = p_efc_old;
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            this->mWeatherScript[3].::cWeatherScript::endScript();
-                            this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+            cWeatherScript* p_snd_now = mpWeatherScriptSndOld;
+            if (p_snd_now != nullptr) {
+                cWeatherScript* p_snd_old = mpWeatherScriptSndNow;
+                if (p_snd_old == nullptr) {
+                    p_efc_now->cWeatherScript::releaseScript();
+                    p_efc_now->cWeatherScript::initScript();
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    mWeatherScript[2].releaseScript();
+                    mWeatherScript[2].initScript();
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    if (flash) {
+                        p_efc_old->cWeatherScript::endScript();
+                        p_efc_now->cWeatherScript::reqStepScript(2u);
+                        mpWeatherScriptEfcNow = p_efc_now;
+                        mpWeatherScriptEfcOld = p_efc_old;
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            mWeatherScript[3].endScript();
+                            mWeatherScript[2].reqStepScript(2u);
                         }
                     } else {
-                        p_efc_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                        this->mpWeatherScriptEfcNow = p_efc_now;
-                        this->mpWeatherScriptEfcOld = p_efc_old;
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                            this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                        p_efc_old->cWeatherScript::reqStepScript(3u);
+                        p_efc_now->cWeatherScript::reqStepScript(1u);
+                        mpWeatherScriptEfcNow = p_efc_now;
+                        mpWeatherScriptEfcOld = p_efc_old;
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            mWeatherScript[3].reqStepScript(3u);
+                            mWeatherScript[2].reqStepScript(1u);
                         }
                     }
-                    this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-                    this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+                    mpWeatherScriptSndNow = &mWeatherScript[2];
+                    mpWeatherScriptSndOld = &mWeatherScript[3];
                 } else {
-                    p_efc_now->::cWeatherScript::releaseScript();
-                    p_efc_now->::cWeatherScript::initScript();
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                    p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                    p_snd_now->::cWeatherScript::releaseScript();
-                    p_snd_now->::cWeatherScript::initScript();
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                    p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                    if (flash != false) {
-                        p_efc_old->::cWeatherScript::endScript();
-                        p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                        this->mpWeatherScriptEfcNow = p_efc_now;
-                        this->mpWeatherScriptEfcOld = p_efc_old;
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            p_snd_old->::cWeatherScript::endScript();
-                            p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
+                    p_efc_now->cWeatherScript::releaseScript();
+                    p_efc_now->cWeatherScript::initScript();
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                    p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                    p_snd_now->cWeatherScript::releaseScript();
+                    p_snd_now->cWeatherScript::initScript();
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                    p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                    if (flash) {
+                        p_efc_old->cWeatherScript::endScript();
+                        p_efc_now->cWeatherScript::reqStepScript(2u);
+                        mpWeatherScriptEfcNow = p_efc_now;
+                        mpWeatherScriptEfcOld = p_efc_old;
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            p_snd_old->cWeatherScript::endScript();
+                            p_snd_now->cWeatherScript::reqStepScript(2u);
                         }
                     } else {
-                        p_efc_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                        this->mpWeatherScriptEfcNow = p_efc_now;
-                        this->mpWeatherScriptEfcOld = p_efc_old;
-                        if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                            p_snd_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                            p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                        p_efc_old->cWeatherScript::reqStepScript(3u);
+                        p_efc_now->cWeatherScript::reqStepScript(1u);
+                        mpWeatherScriptEfcNow = p_efc_now;
+                        mpWeatherScriptEfcOld = p_efc_old;
+                        if (mZoneIndoorSoundReqNo == 0) {
+                            p_snd_old->cWeatherScript::reqStepScript(3u);
+                            p_snd_now->cWeatherScript::reqStepScript(1u);
                         }
                     }
-                    this->mpWeatherScriptSndNow = p_snd_now;
-                    this->mpWeatherScriptSndOld = p_snd_old;
+                    mpWeatherScriptSndNow = p_snd_now;
+                    mpWeatherScriptSndOld = p_snd_old;
                 }
             } else {
-                p_efc_now->::cWeatherScript::releaseScript();
-                p_efc_now->::cWeatherScript::initScript();
-                p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                p_efc_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                this->mWeatherScript[2].::cWeatherScript::releaseScript();
-                this->mWeatherScript[2].::cWeatherScript::initScript();
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                if (flash != false) {
-                    p_efc_old->::cWeatherScript::endScript();
-                    p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                    this->mpWeatherScriptEfcNow = p_efc_now;
-                    this->mpWeatherScriptEfcOld = p_efc_old;
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::endScript();
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+                p_efc_now->cWeatherScript::releaseScript();
+                p_efc_now->cWeatherScript::initScript();
+                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                p_efc_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                mWeatherScript[2].releaseScript();
+                mWeatherScript[2].initScript();
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                if (flash) {
+                    p_efc_old->cWeatherScript::endScript();
+                    p_efc_now->cWeatherScript::reqStepScript(2u);
+                    mpWeatherScriptEfcNow = p_efc_now;
+                    mpWeatherScriptEfcOld = p_efc_old;
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].endScript();
+                        mWeatherScript[2].reqStepScript(2u);
                     }
                 } else {
-                    p_efc_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                    p_efc_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                    this->mpWeatherScriptEfcNow = p_efc_now;
-                    this->mpWeatherScriptEfcOld = p_efc_old;
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                    p_efc_old->cWeatherScript::reqStepScript(3u);
+                    p_efc_now->cWeatherScript::reqStepScript(1u);
+                    mpWeatherScriptEfcNow = p_efc_now;
+                    mpWeatherScriptEfcOld = p_efc_old;
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].reqStepScript(3u);
+                        mWeatherScript[2].reqStepScript(1u);
                     }
                 }
-                this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-                this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+                mpWeatherScriptSndNow = &mWeatherScript[2];
+                mpWeatherScriptSndOld = &mWeatherScript[3];
             }
         }
     } else {
-        cWeatherScript* p_snd_now = this->mpWeatherScriptSndOld;
-        if (p_snd_now != static_cast<cWeatherScript*>(nullptr)) {
-            cWeatherScript* p_snd_old = this->mpWeatherScriptSndNow;
-            if (p_snd_old == static_cast<cWeatherScript*>(nullptr)) {
-                this->mWeatherScript[0].::cWeatherScript::releaseScript();
-                this->mWeatherScript[0].::cWeatherScript::initScript();
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                this->mWeatherScript[2].::cWeatherScript::releaseScript();
-                this->mWeatherScript[2].::cWeatherScript::initScript();
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                if (flash != false) {
-                    this->mWeatherScript[1].::cWeatherScript::endScript();
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::endScript();
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+        cWeatherScript* p_snd_now = mpWeatherScriptSndOld;
+        if (p_snd_now != nullptr) {
+            cWeatherScript* p_snd_old = mpWeatherScriptSndNow;
+            if (p_snd_old == nullptr) {
+                mWeatherScript[0].releaseScript();
+                mWeatherScript[0].initScript();
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                mWeatherScript[2].releaseScript();
+                mWeatherScript[2].initScript();
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                if (flash) {
+                    mWeatherScript[1].endScript();
+                    mWeatherScript[0].reqStepScript(2u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].endScript();
+                        mWeatherScript[2].reqStepScript(2u);
                     }
                 } else {
-                    this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                    mWeatherScript[1].reqStepScript(3u);
+                    mWeatherScript[0].reqStepScript(1u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        mWeatherScript[3].reqStepScript(3u);
+                        mWeatherScript[2].reqStepScript(1u);
                     }
                 }
-                this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-                this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+                mpWeatherScriptSndNow = &mWeatherScript[2];
+                mpWeatherScriptSndOld = &mWeatherScript[3];
             } else {
-                this->mWeatherScript[0].::cWeatherScript::releaseScript();
-                this->mWeatherScript[0].::cWeatherScript::initScript();
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-                this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-                p_snd_now->::cWeatherScript::releaseScript();
-                p_snd_now->::cWeatherScript::initScript();
-                p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-                p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-                p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-                p_snd_now->::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-                if (flash != false) {
-                    this->mWeatherScript[1].::cWeatherScript::endScript();
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        p_snd_old->::cWeatherScript::endScript();
-                        p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(2));
+                mWeatherScript[0].releaseScript();
+                mWeatherScript[0].initScript();
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+                mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+                p_snd_now->cWeatherScript::releaseScript();
+                p_snd_now->cWeatherScript::initScript();
+                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+                p_snd_now->cWeatherScript::setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+                if (flash) {
+                    mWeatherScript[1].endScript();
+                    mWeatherScript[0].reqStepScript(2u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        p_snd_old->cWeatherScript::endScript();
+                        p_snd_now->cWeatherScript::reqStepScript(2u);
                     }
                 } else {
-                    this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                    this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                    this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                    this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                    if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                        p_snd_old->::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                        p_snd_now->::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                    mWeatherScript[1].reqStepScript(3u);
+                    mWeatherScript[0].reqStepScript(1u);
+                    mpWeatherScriptEfcNow = &mWeatherScript[0];
+                    mpWeatherScriptEfcOld = &mWeatherScript[1];
+                    if (mZoneIndoorSoundReqNo == 0) {
+                        p_snd_old->cWeatherScript::reqStepScript(3u);
+                        p_snd_now->cWeatherScript::reqStepScript(1u);
                     }
                 }
-                this->mpWeatherScriptSndNow = p_snd_now;
-                this->mpWeatherScriptSndOld = p_snd_old;
+                mpWeatherScriptSndNow = p_snd_now;
+                mpWeatherScriptSndOld = p_snd_old;
             }
         } else {
-            this->mWeatherScript[0].::cWeatherScript::releaseScript();
-            this->mWeatherScript[0].::cWeatherScript::initScript();
-            this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], static_cast<u32>(0));
-            this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], static_cast<u32>(1));
-            this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], static_cast<u32>(2));
-            this->mWeatherScript[0].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], static_cast<u32>(3));
-            this->mWeatherScript[2].::cWeatherScript::releaseScript();
-            this->mWeatherScript[2].::cWeatherScript::initScript();
-            this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], static_cast<u32>(0));
-            this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], static_cast<u32>(1));
-            this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], static_cast<u32>(2));
-            this->mWeatherScript[2].::cWeatherScript::setupScript(this->mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], static_cast<u32>(3));
-            if (flash != false) {
-                this->mWeatherScript[1].::cWeatherScript::endScript();
-                this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(2));
-                this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                    this->mWeatherScript[3].::cWeatherScript::endScript();
-                    this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(2));
+            mWeatherScript[0].releaseScript();
+            mWeatherScript[0].initScript();
+            mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[0], 0u);
+            mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[1], 1u);
+            mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[2], 2u);
+            mWeatherScript[0].setupScript(mpWeatherInfoNow->mScriptsEfc.mScripts.elems[3], 3u);
+            mWeatherScript[2].releaseScript();
+            mWeatherScript[2].initScript();
+            mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[0], 0u);
+            mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[1], 1u);
+            mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[2], 2u);
+            mWeatherScript[2].setupScript(mpWeatherInfoNow->mScriptsSound.mScripts.elems[3], 3u);
+            if (flash) {
+                mWeatherScript[1].endScript();
+                mWeatherScript[0].reqStepScript(2u);
+                mpWeatherScriptEfcNow = &mWeatherScript[0];
+                mpWeatherScriptEfcOld = &mWeatherScript[1];
+                if (mZoneIndoorSoundReqNo == 0) {
+                    mWeatherScript[3].endScript();
+                    mWeatherScript[2].reqStepScript(2u);
                 }
             } else {
-                this->mWeatherScript[1].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                this->mWeatherScript[0].::cWeatherScript::reqStepScript(static_cast<u32>(1));
-                this->mpWeatherScriptEfcNow = &this->mWeatherScript[0];
-                this->mpWeatherScriptEfcOld = &this->mWeatherScript[1];
-                if (this->mZoneIndoorSoundReqNo == static_cast<s32>(0)) {
-                    this->mWeatherScript[3].::cWeatherScript::reqStepScript(static_cast<u32>(3));
-                    this->mWeatherScript[2].::cWeatherScript::reqStepScript(static_cast<u32>(1));
+                mWeatherScript[1].reqStepScript(3u);
+                mWeatherScript[0].reqStepScript(1u);
+                mpWeatherScriptEfcNow = &mWeatherScript[0];
+                mpWeatherScriptEfcOld = &mWeatherScript[1];
+                if (mZoneIndoorSoundReqNo == 0) {
+                    mWeatherScript[3].reqStepScript(3u);
+                    mWeatherScript[2].reqStepScript(1u);
                 }
             }
-            this->mpWeatherScriptSndNow = &this->mWeatherScript[2];
-            this->mpWeatherScriptSndOld = &this->mWeatherScript[3];
+            mpWeatherScriptSndNow = &mWeatherScript[2];
+            mpWeatherScriptSndOld = &mWeatherScript[3];
         }
     }
 }
@@ -1414,7 +1418,7 @@ __attribute__((weak)) void sWeatherManager::updateWeatherScript() {
 // Address: 0x00870660 - 0x00870669 (9 bytes)
 f32 sWeatherManager::getWeatherSoundVolume() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherSoundVolumeSub;
+    return mWeatherSoundVolumeSub;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -1484,7 +1488,7 @@ __attribute__((weak)) f32 sWeatherManager::getTransparencyLensFlare() const {
 // Address: 0x00871b50 - 0x00871b59 (9 bytes)
 f32 sWeatherManager::getTransparencyMoonEffect() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFollowMoonTransparency;
+    return mFollowMoonTransparency;
 }
 
 // Address: 0x0086d3e0 - 0x0086dbef (2063 bytes)
@@ -1496,8 +1500,8 @@ __attribute__((weak)) void sWeatherManager::updateCustomWeather() {
 // Address: 0x0086c590 - 0x0086c5a2 (18 bytes)
 void sWeatherManager::clearEventParams() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOnEvent = false;
-    this->mEventWeatherTime = static_cast<u32>(0);
+    mOnEvent = false;
+    mEventWeatherTime = 0;
 }
 
 // Address: 0x00871b60 - 0x00871d1d (445 bytes)
@@ -1509,13 +1513,13 @@ __attribute__((weak)) void sWeatherManager::beginEventWeather() {
 // Address: 0x00871d20 - 0x00871d28 (8 bytes)
 void sWeatherManager::endEventWeather() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOnEvent = false;
+    mOnEvent = false;
 }
 
 // Address: 0x0086c5b0 - 0x0086c5b8 (8 bytes)
 void sWeatherManager::clearQuestWeatherParams() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOnQuestWeather = false;
+    mOnQuestWeather = false;
 }
 
 // Address: 0x00871d30 - 0x00871ee1 (433 bytes)
@@ -1527,7 +1531,7 @@ __attribute__((weak)) void sWeatherManager::beginQuestWeather() {
 // Address: 0x00871ef0 - 0x00871ef8 (8 bytes)
 void sWeatherManager::endQuestWeather() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOnQuestWeather = false;
+    mOnQuestWeather = false;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -1568,33 +1572,33 @@ void sWeatherManager::endQuestWeather() {
 // Address: 0x00870ef0 - 0x00870f9f (175 bytes)
 void sWeatherManager::loadResStageWeatherSkyStar(rWeatherStageInfo* pStInfo, uSkyExt* pSky) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pStInfo == static_cast<rWeatherStageInfo*>(nullptr)) {
+    if (pStInfo == nullptr) {
         return;
     }
-    if (pSky == static_cast<uSkyExt*>(nullptr)) {
+    if (pSky == nullptr) {
         return;
     }
     rTexture* p_tex = pStInfo->mpStarTex.mpPtr;
-    if (p_tex == static_cast<rTexture*>(nullptr)) {
+    if (p_tex == nullptr) {
         return;
     }
     rStarCatalog* p_catalog = pStInfo->mpStarCatalog.mpPtr;
-    if (p_catalog == static_cast<rStarCatalog*>(nullptr)) {
+    if (p_catalog == nullptr) {
         return;
     }
-    pSky->::uSkyExt::setStarTexture(p_tex);
-    pSky->::uSkyExt::setStarIntensity(30.0f);
-    pSky->::uSkyExt::setStarSize(pStInfo->mStarSize);
-    pSky->::uSkyExt::setStarCount(static_cast<u32>(3000));
-    pSky->::uSkyExt::setStarrySkyIntensity(pStInfo->mStarrySkyIntensity);
-    pSky->::uSkyExt::setStarTwinkleAmplitude(pStInfo->mStarTwinkleAmplitude);
-    pSky->::uSky::setStarCatalog(p_catalog);
+    pSky->setStarTexture(p_tex);
+    pSky->setStarIntensity(30.0f);
+    pSky->setStarSize(pStInfo->mStarSize);
+    pSky->setStarCount(3000u);
+    pSky->setStarrySkyIntensity(pStInfo->mStarrySkyIntensity);
+    pSky->setStarTwinkleAmplitude(pStInfo->mStarTwinkleAmplitude);
+    pSky->setStarCatalog(p_catalog);
 }
 
 // Address: 0x00870690 - 0x0087069b (11 bytes)
 bool sWeatherManager::isEnableWeather() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherSetupRno > static_cast<u32>(2);
+    return mWeatherSetupRno > 2u;
 }
 
 // Address: 0x008706a0 - 0x00870778 (216 bytes)
@@ -1912,25 +1916,25 @@ __attribute__((weak)) void sWeatherManager::updateLightParam() {
 // Address: 0x00870310 - 0x00870321 (17 bytes)
 s32 sWeatherManager::getCustomDayNightLightID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cZoneListenerLight&>(this->mLightAndFogZoneListener).::cZoneListenerLight::getHitZoneID(static_cast<u32>(1));
+    return static_cast<const cZoneListenerLight&>(mLightAndFogZoneListener).getHitZoneID(1u);
 }
 
 // Address: 0x00870330 - 0x00870341 (17 bytes)
 s32 sWeatherManager::getCustomDayNightColorFogID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cZoneListenerLight&>(this->mLightAndFogZoneListener).::cZoneListenerLight::getHitZoneID(static_cast<u32>(2));
+    return static_cast<const cZoneListenerLight&>(mLightAndFogZoneListener).getHitZoneID(2u);
 }
 
 // Address: 0x00870350 - 0x00870358 (8 bytes)
 const cDayNightLightParam& sWeatherManager::getCustomDayNightLight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLightAndFogZoneListener.mDayNightLightParam;
+    return mLightAndFogZoneListener.mDayNightLightParam;
 }
 
 // Address: 0x00870360 - 0x00870368 (8 bytes)
 const cDayNightColorFogParam& sWeatherManager::getCustomDayNightColorFog() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLightAndFogZoneListener.mDayNightColorFogParam;
+    return mLightAndFogZoneListener.mDayNightColorFogParam;
 }
 
 // Address: 0x0086f960 - 0x0086fb79 (537 bytes)
@@ -2103,14 +2107,41 @@ __attribute__((weak)) void sWeatherManager::updateZoneIndoor() {
 }
 
 // Address: 0x00872d50 - 0x00872e3c (236 bytes)
-__attribute__((weak)) void sWeatherManager::updateZoneIndoorSoundChange() {
-    // local: s32 req_no;
-    // local: s32 req_no_old;
-    // local: rSoundRequest* p_snd_req;
-    // local: cWeatherScript* p_snd_now;
-    // local: cWeatherScript* p_snd_now;
-    DDON_STUB("sWeatherManager::updateZoneIndoorSoundChange")
-    /* stub */
+void sWeatherManager::updateZoneIndoorSoundChange() {
+    // DWARF local not rendered: cWeatherScript* p_snd_now;
+    // DWARF local not rendered: cWeatherScript* p_snd_now;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sWeatherManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    // inferred: an integer and a pointer of one 8-byte word converted: sWeatherManager* used as uintptr, which no DWARF type of the place gives; read with caution
+    s32 req_no = mZoneIndoorSoundReqNo;
+    s32 req_no_old = mZoneIndoorSoundReqNoOld;
+    if (req_no != req_no_old) {
+        rSoundRequest* p_snd_req = mpZoneIndoorSoundAmbientRes.mpPtr;
+        if (req_no > 0) {
+            if (p_snd_req != nullptr) {
+                if (req_no_old > 0) {
+                    sSound::getInstance()->stopSe(p_snd_req, static_cast<const u32>(req_no_old), reinterpret_cast<const uintptr>(this), false);
+                }
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSe(p_snd_req, static_cast<u32>(req_no), reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+            }
+            if (mpWeatherScriptSndNow != nullptr) {
+                mpWeatherScriptSndNow->reqStepScript(3u);
+            }
+        } else {
+            if (p_snd_req != nullptr) {
+                if (req_no_old > 0) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(p_snd_req, 315u, reinterpret_cast<uintptr>(this), 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+                }
+            }
+            if (mpWeatherScriptSndNow != nullptr) {
+                mpWeatherScriptSndNow->reqStepScript(2u);
+            }
+        }
+        mZoneIndoorSoundReqNoOld = req_no;
+        mZoneIndoorSoundReqNo = 0;
+    } else {
+        mZoneIndoorSoundReqNo = 0;
+    }
 }
 
 // Address: 0x00872fc0 - 0x00872fd5 (21 bytes)
@@ -2130,19 +2161,19 @@ void sWeatherManager::callbackZoneIndoorNotifiedScr(const nZone::cLayoutElement&
     // DWARF local not rendered: u32 j;
     // DWARF local not rendered: cZoneContents* p_contents;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    u32 hit_contents_num = e.::nZone::cLayoutElement::getContentsNum();
-    if (hit_contents_num != static_cast<u32>(0)) {
+    u32 hit_contents_num = e.getContentsNum();
+    if (hit_contents_num != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the result of the call at 0x872945, used 3 times; no DWARF local holds it
-            cZoneContents* t0 = e.::nZone::cLayoutElement::getContents(i0_3);
-            if (t0 != static_cast<cZoneContents*>(nullptr)) {
-                if (t0->::cZoneContents::isUse() != false) {
-                    this->::sWeatherManager::callbackZoneIndoorAnalyzeScr(*t0);
+            cZoneContents* t0 = e.getContents(i0_3);
+            if (t0 != nullptr) {
+                if (t0->isUse()) {
+                    callbackZoneIndoorAnalyzeScr(*t0);
                 }
             }
-            if (hit_contents_num != (i0_3 + static_cast<unsigned int>(1))) {
-                i0_3 += static_cast<unsigned int>(1);
+            if (hit_contents_num != (i0_3 + 1u)) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -2252,7 +2283,7 @@ __attribute__((weak)) void sWeatherManager::setWeatherSkyStableShadowCascadeSmoo
 // Address: 0x008721c0 - 0x008721c7 (7 bytes)
 void sWeatherManager::setWeatherSkyStableShadowCascade(s32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOptShadowCascade = val;
+    mOptShadowCascade = val;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2276,26 +2307,31 @@ bool sWeatherManager::isWeatherSkyStableShadowCascadeSmoothOff() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xa78 from const sWeatherManager*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(2680))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 2680)) & 32) >> 5);
 }
 
 // Address: 0x00872230 - 0x00872237 (7 bytes)
 s32 sWeatherManager::getWeatherSkyStableShadowCascade() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOptShadowCascade;
+    return mOptShadowCascade;
 }
 
 // Address: 0x00872240 - 0x00872249 (9 bytes)
 void sWeatherManager::setWeatherSkyStableShadowBackforwardViewDistance(f32 val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOptShadowBackforwardViewDistance = val;
+    mOptShadowBackforwardViewDistance = val;
 }
 
 // Address: 0x00872250 - 0x00872259 (9 bytes)
 f32 sWeatherManager::getWeatherSkyStableShadowBackforwardViewDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOptShadowBackforwardViewDistance;
+    return mOptShadowBackforwardViewDistance;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sWeatherManager::MyDTI sWeatherManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sWeatherManager* sWeatherManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sWeatherManager.cpp at 0x0087317b-0x008731b8 (called at sWeatherManager.cpp:71)

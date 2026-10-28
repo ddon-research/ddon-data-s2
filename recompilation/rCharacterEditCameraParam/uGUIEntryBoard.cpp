@@ -53,7 +53,7 @@ const MtDTI& uGUIEntryBoard::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIEntryBoard::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoard::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEntryBoard::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,14 +78,14 @@ uGUIEntryBoard::~uGUIEntryBoard() {
 // Address: 0x00a76710 - 0x00a76795 (133 bytes)
 bool uGUIEntryBoard::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_GUI"), static_cast<u32>(129), static_cast<t64>(1431672609)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ENTRYBOARD_GUI"), 129u, 1431672609l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_ENTRY_BOARD_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_ENTRY_BOARD_GMD", 0u);
     }
 }
 
@@ -110,20 +110,20 @@ __attribute__((weak)) void uGUIEntryBoard::setup() {
 // Address: 0x00a77c90 - 0x00a77cc1 (49 bytes)
 void uGUIEntryBoard::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a78b90 - 0x00a78bb4 (36 bytes)
 bool uGUIEntryBoard::isItemEnable(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xb8 from MtObject*
-    if (index < this->mDataArray.::MtArray::mLength) {
-        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(184))) != static_cast<unsigned char>(0);
+    if (index < mDataArray.mLength) {
+        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(index)]) + 184)) != 0;
     } else {
         return false;
     }
@@ -136,8 +136,8 @@ bool uGUIEntryBoard::isItemEnable(u32 index) {
 // Address: 0x00a77cd0 - 0x00a77cfe (46 bytes)
 void uGUIEntryBoard::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIEntryBoard::updateWait();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEntryBoard::updateWait);
+    updateWait();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEntryBoard::updateWait);
 }
 
 // Address: 0x00a77d00 - 0x00a786a4 (2468 bytes)
@@ -231,30 +231,30 @@ __attribute__((weak)) bool uGUIEntryBoard::isValidIRItem(const CEntryItem& item)
 // Address: 0x01af1280 - 0x01af1292 (18 bytes)
 u32 uGUIEntryBoard::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(4));
-    return static_cast<u32>(0);
+    setInputEvent(4u);
+    return 0;
 }
 
 // Address: 0x01af1260 - 0x01af1272 (18 bytes)
 u32 uGUIEntryBoard::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(5));
-    return static_cast<u32>(0);
+    setInputEvent(5u);
+    return 0;
 }
 
 // Address: 0x01af12a0 - 0x01af12b2 (18 bytes)
 u32 uGUIEntryBoard::evCtrlCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00a77af0 - 0x00a77b09 (25 bytes)
 u32 uGUIEntryBoard::evCtrlTopBtn(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsTopBtn = true;
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    mIsTopBtn = true;
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00a77b60 - 0x00a77bab (75 bytes)
@@ -272,8 +272,8 @@ __attribute__((weak)) u32 uGUIEntryBoard::evCtrlClickSelect(cControl::Message* m
 // Address: 0x00a77bb0 - 0x00a77bc2 (18 bytes)
 u32 uGUIEntryBoard::evCtrlPageMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00a77bd0 - 0x00a77c50 (128 bytes)
@@ -294,6 +294,8 @@ __attribute__((weak)) u32 uGUIEntryBoard::evCtrlWindowClick(cControl::Message* m
 //   in uGUIEntryBoard::evCtrlBtnClick at 0x00a77bfc-0x00a77c29 (called at uGUIEntryBoard.cpp:748)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // bool uGUIEntryBoard::eventCheckWindow();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEntryBoard::MyDTI uGUIEntryBoard::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEntryBoard.cpp at 0x00a78cbf-0x00a78cfc (called at uGUIEntryBoard.cpp:23)
@@ -343,7 +345,7 @@ const MtDTI& uGUIEntryBoard::cData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uGUIEntryBoard5cDataD0Ev at 0x01af1320-0x01af134a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIEntryBoard::cData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoard::cData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIEntryBoard::cData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -361,6 +363,8 @@ inline void uGUIEntryBoard::cData::operator delete(void* p_addr) {
 //   in uGUIEntryBoard::setup at 0x00a76b6b-0x00a76b91, 0x00a76c10-0x00a76ca5 (called at uGUIEntryBoard.cpp:190)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIEntryBoard::cData::cData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIEntryBoard::cData::MyDTI uGUIEntryBoard::cData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIEntryBoard.cpp at 0x00a78cfc-0x00a78d39 (called at uGUIEntryBoard.cpp:24)

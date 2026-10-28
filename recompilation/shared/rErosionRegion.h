@@ -380,6 +380,18 @@ inline s32 cErosionRegionRes::getRegionCategory() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemySmall::setErosionSmallInfoRes at 0x154dbf-0x154dc4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cErosionSmallInfoRes::getCancelTimer() const {
+    return this->mCancelTimer;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemySmall::setErosionSmallInfoRes at 0x154da8-0x154dad; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cErosionSmallInfoRes::getCancelWaitTimer() const {
+    return this->mCancelWaitTimer;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline f32 cErosionSmallInfoRes::getScaleActiveRate() const {
     return this->mScaleActiveRate;

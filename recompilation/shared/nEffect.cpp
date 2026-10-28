@@ -69,3 +69,9 @@ __attribute__((weak)) f32 nEffect::SimpleCurve::getValue(f32 x) const {
 // No out-of-line body: no code in the ELF
 // void nEffect::SimpleCurve::setLoopFlag(bool);
 
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const nEffect::SimpleCurve nEffect::SimpleCurve::Zero;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const nEffect::SimpleCurve nEffect::SimpleCurve::One;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const nEffect::SimpleCurve nEffect::SimpleCurve::Linear;
+

@@ -79,16 +79,16 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline u8 MtDataReader::readU8() {
     if (this->mSeekPt >= this->mBufsiz) {
-        if (this->::MtDataReader::refill() != false) {
+        if (this->::MtDataReader::refill()) {
             u8 n = this->mBuffer[this->mSeekPt];
-            this->mSeekPt = this->mSeekPt + static_cast<u32>(1);
+            this->mSeekPt = this->mSeekPt + 1u;
             return n;
         } else {
-            return static_cast<u8>(0);
+            return 0;
         }
     } else {
         u8 n = this->mBuffer[this->mSeekPt];
-        this->mSeekPt = this->mSeekPt + static_cast<u32>(1);
+        this->mSeekPt = this->mSeekPt + 1u;
         return n;
     }
 }

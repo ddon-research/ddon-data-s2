@@ -36,7 +36,7 @@ const MtDTI& cCraftSkillCostData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftSkillCostData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memAlloc(sz, align, ::cCraftSkillCostData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftSkillCostData::DTI)->memAlloc(sz, align, cCraftSkillCostData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCraftSkillCostData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftSkillCostData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftSkillCostData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,22 +83,22 @@ __attribute__((weak)) void cCraftSkillCostData::createProperty(MtPropertyList& s
 // Address: 0x0065d8f0 - 0x0065d934 (68 bytes)
 f32 cCraftSkillCostData::getRate(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (num - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (num - 1u) {
+        case 0:
         {
-            return this->mCostRate1;
+            return mCostRate1;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return this->mCostRate2;
+            return mCostRate2;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return this->mCostRate3;
+            return mCostRate3;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return this->mCostRate4;
+            return mCostRate4;
         }
         default:
         {
@@ -110,6 +110,8 @@ f32 cCraftSkillCostData::getRate(u32 num) {
 // No out-of-line body: no code in the ELF
 // u32 cCraftSkillCostData::getTotal();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftSkillCostData::MyDTI cCraftSkillCostData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCraftSkillCost.cpp at 0x0065da80-0x0065dac2 (called at rCraftSkillCost.cpp:41)
 //   in _GLOBAL__sub_I_rCraftSkillCost.cpp at 0x0065da80-0x0065dac2 (called at rCraftSkillCost.h:34)
@@ -118,7 +120,7 @@ f32 cCraftSkillCostData::getRate(u32 num) {
 // Address: 0x0065d410 - 0x0065d467 (87 bytes)
 MtObject* cCraftSkillCostData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftSkillCostData;
+    return new (16u) cCraftSkillCostData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,7 +145,7 @@ const MtDTI& rCraftSkillCost::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftSkillCost::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftSkillCost::DTI)->memAlloc(sz, align, ::rCraftSkillCost::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftSkillCost::DTI)->memAlloc(sz, align, rCraftSkillCost::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +160,7 @@ inline void* rCraftSkillCost::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rCraftSkillCostD0Ev at 0x01a84044-0x01a84063, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftSkillCost::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftSkillCost::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftSkillCost::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,19 +177,19 @@ bool rCraftSkillCost::loadData(MtDataReader& in, cCraftSkillCostData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mTotal);
+    nDDOIO::readData(in, pData->mTotal);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCostRate1);
+    nDDOIO::readData(in, pData->mCostRate1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCostRate2);
+    nDDOIO::readData(in, pData->mCostRate2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCostRate3);
+    nDDOIO::readData(in, pData->mCostRate3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCostRate4);
+    nDDOIO::readData(in, pData->mCostRate4);
     return true;
 }
 
@@ -200,8 +202,10 @@ MT_CTSTR rCraftSkillCost::getExt() const {
 // Address: 0x01a84190 - 0x01a84196 (6 bytes)
 u32 rCraftSkillCost::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftSkillCost::MyDTI rCraftSkillCost::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftSkillCost.cpp at 0x0065dac2-0x0065daff (called at rCraftSkillCost.cpp:134)
@@ -211,7 +215,7 @@ u32 rCraftSkillCost::getDataVersion() const {
 // Address: 0x0065d940 - 0x0065d9a4 (100 bytes)
 MtObject* rCraftSkillCost::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftSkillCost;
+    return new (16u) rCraftSkillCost;
 }
 
 // Instance at 0x01a84140 - 0x01a84152 (18 bytes) of the generic rTbl2<T>::getData

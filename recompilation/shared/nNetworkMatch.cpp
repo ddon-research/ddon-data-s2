@@ -13,10 +13,10 @@
 // Address: 0x012f2ee0 - 0x012f2f01 (33 bytes)
 nNetwork::Match::Match() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTerminate = false;
-    this->mEntry = false;
-    this->mMatch = false;
-    this->mpSession = static_cast<nNetwork::Session*>(nullptr);
+    mTerminate = false;
+    mEntry = false;
+    mMatch = false;
+    mpSession = nullptr;
 }
 
 // Defined in the class (its body was written in a header).
@@ -43,7 +43,7 @@ const MtDTI& nNetwork::Match::getDTI() const {
 // Address: 0x012f2e30 - 0x012f2e70 (64 bytes)
 void* nNetwork::Match::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::Match::DTI)->memAlloc(sz, align, ::nNetwork::Match::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Match::DTI)->memAlloc(sz, align, ::nNetwork::Match::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ __attribute__((weak)) void nNetwork::Match::move() {
 // Address: 0x012f2f20 - 0x012f2f25 (5 bytes)
 void nNetwork::Match::setup(nNetwork::Session* ps) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession = ps;
+    mpSession = ps;
 }
 
 // Address: 0x012f3310 - 0x012f33f3 (227 bytes)
@@ -95,9 +95,9 @@ __attribute__((weak)) void nNetwork::Match::process(s32 src, cRemoteCall* prpc) 
 // Address: 0x012f2f10 - 0x012f2f1b (11 bytes)
 void nNetwork::Match::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEntry = false;
-    this->mMatch = false;
-    this->mTerminate = false;
+    mEntry = false;
+    mMatch = false;
+    mTerminate = false;
 }
 
 // Address: 0x012f3680 - 0x012f37bd (317 bytes)
@@ -169,6 +169,8 @@ __attribute__((weak)) void nNetwork::Match::procTerminate(nNetwork::RpcNetSystem
     DDON_STUB("nNetwork::Match::procTerminate")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Match::MyDTI nNetwork::Match::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Match::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

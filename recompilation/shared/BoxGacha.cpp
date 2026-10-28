@@ -26,7 +26,7 @@ const MtDTI& CDataBoxGachaInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataBoxGachaInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataBoxGachaInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataBoxGachaInfo::getAllocator() {
 // Address: 0x003def90 - 0x003defd0 (64 bytes)
 void* CDataBoxGachaInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataBoxGachaInfo::getAllocator()->memAlloc(sz, align, ::CDataBoxGachaInfo::DTI.::MtDTI::getID());
+    return CDataBoxGachaInfo::getAllocator()->memAlloc(sz, align, CDataBoxGachaInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataBoxGachaInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003df000 - 0x003df02a (42 bytes)
 __attribute__((weak)) void CDataBoxGachaInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataBoxGachaInfo::getAllocator()->memFree(p_addr);
+    CDataBoxGachaInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataBoxGachaInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataBoxGachaInfo::CDataBoxGachaInfo(u32, s64, s64, const char*, const char*, const char*, u8, const char*, const char*, const char*, const MtTypedArray<CDataBoxGachaSettlementInfo>&, const MtTypedArray<CDataBoxGachaItemInfo>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataBoxGachaInfo::MyDTI CDataBoxGachaInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fc2b-0x0041fc64 (called at BoxGachaImplement.inc:9)
@@ -97,7 +99,7 @@ const MtDTI& CDataBoxGachaItemInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataBoxGachaItemInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaItemInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataBoxGachaItemInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataBoxGachaItemInfo::getAllocator() {
 // Address: 0x003dedd0 - 0x003dee10 (64 bytes)
 void* CDataBoxGachaItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataBoxGachaItemInfo::getAllocator()->memAlloc(sz, align, ::CDataBoxGachaItemInfo::DTI.::MtDTI::getID());
+    return CDataBoxGachaItemInfo::getAllocator()->memAlloc(sz, align, CDataBoxGachaItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataBoxGachaItemInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003dee40 - 0x003dee6a (42 bytes)
 __attribute__((weak)) void CDataBoxGachaItemInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataBoxGachaItemInfo::getAllocator()->memFree(p_addr);
+    CDataBoxGachaItemInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,6 +145,8 @@ __attribute__((weak)) void CDataBoxGachaItemInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataBoxGachaItemInfo::CDataBoxGachaItemInfo(u32, u32, u32, u32, u32, f64, u16);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataBoxGachaItemInfo::MyDTI CDataBoxGachaItemInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fbf2-0x0041fc2b (called at BoxGachaImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fbf2-0x0041fc2b (called at BoxGacha.h:130)
@@ -151,7 +155,7 @@ __attribute__((weak)) void CDataBoxGachaItemInfo::operator delete(void* p_addr) 
 // Address: 0x003ded60 - 0x003dedc5 (101 bytes)
 MtObject* CDataBoxGachaItemInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataBoxGachaItemInfo;
+    return new (16u) CDataBoxGachaItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -168,7 +172,7 @@ const MtDTI& CDataBoxGachaSettlementInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataBoxGachaSettlementInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaSettlementInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataBoxGachaSettlementInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataBoxGachaSettlementInfo::getAllocator() {
 // Address: 0x003dec90 - 0x003decd0 (64 bytes)
 void* CDataBoxGachaSettlementInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataBoxGachaSettlementInfo::getAllocator()->memAlloc(sz, align, ::CDataBoxGachaSettlementInfo::DTI.::MtDTI::getID());
+    return CDataBoxGachaSettlementInfo::getAllocator()->memAlloc(sz, align, CDataBoxGachaSettlementInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataBoxGachaSettlementInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ded00 - 0x003ded2a (42 bytes)
 __attribute__((weak)) void CDataBoxGachaSettlementInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataBoxGachaSettlementInfo::getAllocator()->memFree(p_addr);
+    CDataBoxGachaSettlementInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataBoxGachaSettlementInfo::operator delete(void* p_
 // No out-of-line body: no code in the ELF
 // CDataBoxGachaSettlementInfo::CDataBoxGachaSettlementInfo(u32, u32, u32, u32, u8, u8, u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataBoxGachaSettlementInfo::MyDTI CDataBoxGachaSettlementInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fbb9-0x0041fbf2 (called at BoxGachaImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fbb9-0x0041fbf2 (called at BoxGacha.h:21)
@@ -222,6 +228,6 @@ __attribute__((weak)) void CDataBoxGachaSettlementInfo::operator delete(void* p_
 // Address: 0x003dec20 - 0x003dec86 (102 bytes)
 MtObject* CDataBoxGachaSettlementInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataBoxGachaSettlementInfo;
+    return new (16u) CDataBoxGachaSettlementInfo;
 }
 

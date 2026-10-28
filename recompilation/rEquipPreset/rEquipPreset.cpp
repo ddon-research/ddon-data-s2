@@ -36,7 +36,7 @@ const MtDTI& cEquipPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cEquipPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEquipPreset::DTI)->memAlloc(sz, align, ::cEquipPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEquipPreset::DTI)->memAlloc(sz, align, cEquipPreset::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
@@ -52,7 +52,7 @@ inline void* cEquipPreset::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEquipPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEquipPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEquipPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -78,6 +78,8 @@ inline void cEquipPreset::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cEquipPreset::~cEquipPreset();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEquipPreset::MyDTI cEquipPreset::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEquipPreset.cpp at 0x006713cf-0x0067140c (called at rEquipPreset.cpp:44)
 //   in _GLOBAL__sub_I_rEquipPreset.cpp at 0x006713cf-0x0067140c (called at rEquipPreset.h:49)
@@ -86,7 +88,7 @@ inline void cEquipPreset::operator delete(void* p_addr) {
 // Address: 0x00670f30 - 0x00670f77 (71 bytes)
 MtObject* cEquipPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEquipPreset;
+    return new (16u) cEquipPreset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& rEquipPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEquipPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEquipPreset::DTI)->memAlloc(sz, align, ::rEquipPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEquipPreset::DTI)->memAlloc(sz, align, rEquipPreset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rEquipPreset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEquipPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEquipPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEquipPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ rEquipPreset::~rEquipPreset() {
 bool rEquipPreset::loadData(MtDataReader& r, cEquipPreset* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, pData->mItemId);
+    nDDOIO::readData(r, pData->mItemId);
     return true;
 }
 
@@ -168,7 +170,7 @@ MT_CTSTR rEquipPreset::getExt() const {
 // Address: 0x01a8cc30 - 0x01a8cc36 (6 bytes)
 u32 rEquipPreset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
 
 // Address: 0x006710f0 - 0x006712c1 (465 bytes)
@@ -176,6 +178,8 @@ __attribute__((weak)) bool rEquipPreset::loadCore(MtDataReader& r) {
     DDON_STUB("rEquipPreset::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEquipPreset::MyDTI rEquipPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEquipPreset.cpp at 0x0067140c-0x00671449 (called at rEquipPreset.cpp:45)
@@ -185,7 +189,7 @@ __attribute__((weak)) bool rEquipPreset::loadCore(MtDataReader& r) {
 // Address: 0x00670ff0 - 0x00671054 (100 bytes)
 MtObject* rEquipPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEquipPreset;
+    return new (16u) rEquipPreset;
 }
 
 // Instance at 0x01a8cbe0 - 0x01a8cbf2 (18 bytes) of the generic rTbl2<T>::getData

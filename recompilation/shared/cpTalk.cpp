@@ -9,6 +9,8 @@
 #include "cTalkMsgData.h"
 #include "cpComponent.h"
 #include "sNpcManager.h"
+#include "sSound.h"
+#include "sSoundExt.h"
 #include "uControlNpc.h"
 #include "uDDOModel.h"
 #include "uNpc.h"
@@ -30,7 +32,7 @@ const MtDTI& cpTalk::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpTalk::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpTalk::DTI);
+    return MtMemoryAllocator::getAllocator(cpTalk::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +41,7 @@ inline MtAllocator* cpTalk::getAllocator() {
 // Address: 0x0053c4b0 - 0x0053c4f0 (64 bytes)
 void* cpTalk::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpTalk::getAllocator()->memAlloc(sz, align, ::cpTalk::DTI.::MtDTI::getID());
+    return cpTalk::getAllocator()->memAlloc(sz, align, cpTalk::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ void* cpTalk::operator new(size_t sz, u32 align) {
 // Address: 0x01a5fe00 - 0x01a5fe08 (8 bytes)
 cTalkMsgData& cpTalk::getTalkMsgData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTalkMsgData;
+    return mTalkMsgData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,9 +141,9 @@ bool cpTalk::isDisableCancel() {
     // DWARF local not rendered: uNpc* pNpc;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::cpComponent::getOwner() != static_cast<MtObject*>(nullptr)) {
-        if (static_cast<uDDOModel*>(this->::cpComponent::getOwner())->::uDDOModel::isNpc()) {
-            if (static_cast<uNpc*>(this->::cpComponent::getOwner())->::uNpc::isDisableTalkMotCancel() == false) {
+    if (getOwner() != nullptr) {
+        if (static_cast<uDDOModel*>(getOwner())->isNpc()) {
+            if (!static_cast<uNpc*>(getOwner())->isDisableTalkMotCancel()) {
                 return false;
             } else {
                 return true;
@@ -190,9 +192,13 @@ __attribute__((weak)) void cpTalk::callGreetingVoice() {
 }
 
 // Address: 0x0053d830 - 0x0053d873 (67 bytes)
-__attribute__((weak)) void cpTalk::callVoice(u32 reqNo) {
-    DDON_STUB("cpTalk::callVoice")
-    /* stub */
+void cpTalk::callVoice(u32 reqNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: uDDOModel* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (mpVoice == nullptr) {
+        return;
+    }
+    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(mpVoice, reqNo, reinterpret_cast<const uintptr>(mpTalkUnit), mpTalkUnit->mPos, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x0053d210 - 0x0053d2c9 (185 bytes)
@@ -201,25 +207,25 @@ void cpTalk::startFaceMot(u32 MotType, f32 SetFrame, u32 handle) {
     // DWARF local not rendered: uDDOModel* pOwner;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x53d22d read, used 5 times; no DWARF local holds it
-    MtObject* t0 = this->::cpComponent::getOwner();
-    if (t0 == static_cast<MtObject*>(nullptr)) {
+    MtObject* t0 = getOwner();
+    if (t0 == nullptr) {
         return;
     }
-    if (static_cast<uDDOModel*>(t0)->::uDDOModel::isNpc()) {
-        if (static_cast<uDDOModel*>(t0)->::uDDOModel::getCtrlNpc() != static_cast<uControlNpc*>(nullptr)) {
-            if (static_cast<uDDOModel*>(t0)->::uDDOModel::getCtrlNpc()->mIsEyeClose == false) {
-                static_cast<uDDOModel*>(t0)->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(2), (MotType + static_cast<u32>(10)) | static_cast<u32>(2816), false, static_cast<u32>(1), -1.0f, 0.0f, 1.0f);
-                this->mFaceMotFrame = SetFrame;
-                this->mVoiceHandle = handle;
-                this->mRno0 = static_cast<u32>(1);
-                this->mRno1 = static_cast<u32>(0);
+    if (static_cast<uDDOModel*>(t0)->isNpc()) {
+        if (static_cast<uDDOModel*>(t0)->getCtrlNpc() != nullptr) {
+            if (!static_cast<uDDOModel*>(t0)->getCtrlNpc()->mIsEyeClose) {
+                static_cast<uDDOModel*>(t0)->setDDOMotion(MOT_BLEND2, (MotType + 10u) | 2816u, false, 1u, -1.0f, 0.0f, 1.0f);
+                mFaceMotFrame = SetFrame;
+                mVoiceHandle = handle;
+                mRno0 = 1;
+                mRno1 = 0;
             }
         } else {
-            static_cast<uDDOModel*>(t0)->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(2), (MotType + static_cast<u32>(10)) | static_cast<u32>(2816), false, static_cast<u32>(1), -1.0f, 0.0f, 1.0f);
-            this->mFaceMotFrame = SetFrame;
-            this->mVoiceHandle = handle;
-            this->mRno0 = static_cast<u32>(1);
-            this->mRno1 = static_cast<u32>(0);
+            static_cast<uDDOModel*>(t0)->setDDOMotion(MOT_BLEND2, (MotType + 10u) | 2816u, false, 1u, -1.0f, 0.0f, 1.0f);
+            mFaceMotFrame = SetFrame;
+            mVoiceHandle = handle;
+            mRno0 = 1;
+            mRno1 = 0;
         }
     }
 }
@@ -229,16 +235,16 @@ s16 cpTalk::getTalkMotNo() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: s8 used as u8
-    uDDOModel* pModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
-    if (pModel != static_cast<uDDOModel*>(nullptr)) {
-        uControlNpc* pCtrlNpc = pModel->::uDDOModel::getCtrlNpc();
-        if (pCtrlNpc != static_cast<uControlNpc*>(nullptr)) {
-            return ::sNpcManager::getInstance()->::sNpcManager::getTalkMot(static_cast<unsigned char>(static_cast<unsigned long>(pCtrlNpc->::uControlNpc::getDefNPCMotCategory()) + static_cast<unsigned long>(255)), static_cast<u8>(pCtrlNpc->mDefNPCMotNo));
+    uDDOModel* pModel = static_cast<uDDOModel*>(getOwner());
+    if (pModel != nullptr) {
+        uControlNpc* pCtrlNpc = pModel->uDDOModel::getCtrlNpc();
+        if (pCtrlNpc != nullptr) {
+            return sNpcManager::getInstance()->getTalkMot(static_cast<unsigned char>(static_cast<unsigned long>(pCtrlNpc->uControlNpc::getDefNPCMotCategory()) + 255), static_cast<u8>(pCtrlNpc->mDefNPCMotNo));
         } else {
-            return static_cast<s16>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s16>(-1);
+        return -1;
     }
 }
 
@@ -392,6 +398,8 @@ __attribute__((weak)) void cpTalk::setTouch(uDDOModel* pUnit) {
 //   in cTalkStateClanBaseManage::routineCreate at 0x00160d2b-0x00160d33 (called at cTalkStateClanBaseManage.cpp:191)
 //   in cTalkStateBase::routineCreate at 0x001cd37c-0x001cd384 (called at cTalkStateBase.cpp:137)
 // void cpTalk::onTalkedSituationTalk();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpTalk::MyDTI cpTalk::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpTalk.cpp at 0x0053df8f-0x0053dfcc (called at cpTalk.cpp:63)

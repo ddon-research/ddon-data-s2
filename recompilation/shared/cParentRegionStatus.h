@@ -117,6 +117,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::initParentRegion at 0x488d95-0x488d9c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cParentRegionStatus::setModel(uDDOModel* pOwnerModel) {
+    this->mpOwnerModel = pOwnerModel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::initParentRegion at 0x488d9c-0x488da3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cParentRegionStatus::setOwnerClass(cpHpDamageCtrl* pOwnerClass) {
+    this->mpOwnerHpDmageCtrl = pOwnerClass;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nRegionStatus::P_REGION_CATEGORY cParentRegionStatus::getRegionCategory() const {
     return this->mRegionCategory;
 }

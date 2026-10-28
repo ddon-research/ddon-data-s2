@@ -540,3 +540,41 @@ protected:
 inline void uSimSoftBody::enableResetRestart() {
     this->mResetRestart = true;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x53723c-0x537244; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::setWorldCoeffTrans(f32 WorldCoeffTrans) {
+    this->mWorldCoeffTrans = WorldCoeffTrans;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x53724c-0x537254; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::setWorldCoeffRot(f32 WorldCoeffRot) {
+    this->mWorldCoeffRot = WorldCoeffRot;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x53725a-0x537260; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::setBaseJointNo(s32 baseJointNo) {
+    this->mBaseJointNo = baseJointNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x53722c-0x537234; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::setNCGlobalWeight(f32 globalWeight) {
+    this->mNCGlobalWeight = globalWeight;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x537274-0x53728c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::disableApproxScrCollision() {
+    this->mApproxScrCollision = false;
+    this->mColTerrainListSize = 0;
+    this->mCallCreateApproxScrCollisionGPU = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSoftBody::update at 0x5371ab-0x5371b1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSimSoftBody::setColliderType(u32 type) {
+    this->mColliderType = type;
+}

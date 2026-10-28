@@ -29,7 +29,7 @@ const MtDTI& sAreaExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sAreaExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sAreaExt::DTI);
+    return MtMemoryAllocator::getAllocator(sAreaExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* sAreaExt::getAllocator() {
 // Address: 0x00721ac0 - 0x00721b00 (64 bytes)
 void* sAreaExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sAreaExt::getAllocator()->memAlloc(sz, align, ::sAreaExt::DTI.::MtDTI::getID());
+    return sAreaExt::getAllocator()->memAlloc(sz, align, sAreaExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* sAreaExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sAreaExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sAreaExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sAreaExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,10 +82,10 @@ sAreaExt::~sAreaExt() {
 // Address: 0x00721d90 - 0x00721db3 (35 bytes)
 cArea* sAreaExt::getCurrentArea() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sArea::mAreaPt != static_cast<u32>(0)) {
-        return this->::sArea::mpArea[this->::sArea::mAreaPt - static_cast<u32>(1)];
+    if (mAreaPt != 0) {
+        return mpArea[mAreaPt - 1u];
     } else {
-        return this->::sArea::mpArea[0];
+        return mpArea[0];
     }
 }
 
@@ -109,11 +109,11 @@ __attribute__((weak)) void sAreaExt::createMenu(MtPropertyList& s) {
 // Address: 0x007226f0 - 0x00722748 (88 bytes)
 void sAreaExt::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageList != static_cast<rStageList*>(nullptr)) {
-        this->mpStageList->::cResource::release();
-        this->mpStageList = static_cast<rStageList*>(nullptr);
+    if (mpStageList != nullptr) {
+        mpStageList->release();
+        mpStageList = nullptr;
     }
-    this->mpStageList = static_cast<rStageList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(::rStageList::DTI, "scr\\stage_list", static_cast<u32>(1), false));
+    mpStageList = static_cast<rStageList*>(sArchiveManager::getInstance()->createRes(rStageList::DTI, "scr\\stage_list", 1u, false));
 }
 
 // No out-of-line body: no code in the ELF
@@ -152,13 +152,13 @@ __attribute__((weak)) void sAreaExt::jump(const MtDTI& dti) {
 // Address: 0x00722ab0 - 0x00722ab5 (5 bytes)
 void sAreaExt::jumpViaMenu(const MtDTI& dti) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sArea::jump(dti);
+    this->sArea::jump(dti);
 }
 
 // Address: 0x00722aa0 - 0x00722aa7 (7 bytes)
 void sAreaExt::jumpStage(s32 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sAreaExt::jumpStage(stageNo, static_cast<s32>(0));
+    jumpStage(stageNo, 0);
 }
 
 // Address: 0x00722ac0 - 0x00722c7e (446 bytes)
@@ -172,21 +172,21 @@ void sAreaExt::jumpStage(const MtDTI& dti, s32 stageNo, s32 posNo) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0x722cc0 carries; no location-less local in scope fits
-    rStageList* v0_3 = this->::sAreaExt::getStageList();
-    if (v0_3 != static_cast<rStageList*>(nullptr)) {
-        if (v0_3->getNum() != static_cast<u32>(0)) {
+    rStageList* v0_3 = getStageList();
+    if (v0_3 != nullptr) {
+        if (v0_3->getNum() != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_10 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_10 = 0;;) {
                 if (v0_3->getInfo(i0_10)->mStageNo == static_cast<unsigned int>(stageNo)) {
-                    if (::sGame::getInstance() != static_cast<sGame*>(nullptr)) {
-                        ::sGame::getInstance()->mGuardData.mReqStageNo = stageNo;
-                        ::sGame::getInstance()->mGuardData.mReqStartPosNo = posNo;
+                    if (sGame::getInstance() != nullptr) {
+                        sGame::getInstance()->mGuardData.mReqStageNo = stageNo;
+                        sGame::getInstance()->mGuardData.mReqStartPosNo = posNo;
                     }
-                    this->::sArea::jump(dti);
+                    this->sArea::jump(dti);
                     return;
                 } else {
-                    if ((i0_10 + static_cast<unsigned int>(1)) < v0_3->getNum()) {
-                        i0_10 += static_cast<unsigned int>(1);
+                    if ((i0_10 + 1u) < v0_3->getNum()) {
+                        i0_10 += 1u;
                     } else {
                         break;
                     }
@@ -208,7 +208,7 @@ __attribute__((weak)) s32 sAreaExt::getLobbyJumpPosNo() {
 bool sAreaExt::isAreaLoading() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mLoadingInfo.data & static_cast<u32>(1));
+    return static_cast<bool>(mLoadingInfo.data & 1u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,8 +239,8 @@ __attribute__((weak)) bool sAreaExt::isLobby() const {
 bool sAreaExt::isLobby(s32 stgNo) const {
     // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
-        return this->::sAreaExt::getStageList()->::rStageList::isLobby(stgNo);
+    if (getStageList() != nullptr) {
+        return getStageList()->isLobby(stgNo);
     } else {
         return false;
     }
@@ -258,8 +258,8 @@ __attribute__((weak)) bool sAreaExt::isField() const {
 bool sAreaExt::isField(s32 stgNo) const {
     // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
-        return this->::sAreaExt::getStageList()->::rStageList::isField(stgNo);
+    if (getStageList() != nullptr) {
+        return getStageList()->isField(stgNo);
     } else {
         return false;
     }
@@ -275,7 +275,7 @@ __attribute__((weak)) bool sAreaExt::isLestaniaStage() const {
 // Address: 0x007222e0 - 0x007222ea (10 bytes)
 bool sAreaExt::isLestaniaStage(s32 stageNo) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    return static_cast<unsigned int>(stageNo - static_cast<s32>(100)) <= static_cast<unsigned int>(2);
+    return static_cast<unsigned int>(stageNo - 100) <= 2;
 }
 
 // No out-of-line body: no code in the ELF
@@ -300,8 +300,8 @@ bool sAreaExt::isJobActArea(s32 stgNo) const {
     // DWARF local not rendered: u32 type;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
-        if ((this->::sAreaExt::getStageList()->::rStageList::getStageType(stgNo) | static_cast<u32>(2)) == static_cast<u32>(3)) {
+    if (getStageList() != nullptr) {
+        if ((getStageList()->getStageType(stgNo) | 2u) == 3) {
             return false;
         }
     }
@@ -350,10 +350,10 @@ __attribute__((weak)) bool sAreaExt::isClanBaseArea(s32 stgNo) {
 u32 sAreaExt::getStageType(s32 stgNo) const {
     // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
-        return this->::sAreaExt::getStageList()->::rStageList::getStageType(stgNo);
+    if (getStageList() != nullptr) {
+        return getStageList()->getStageType(stgNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -361,10 +361,10 @@ u32 sAreaExt::getStageType(s32 stgNo) const {
 u32 sAreaExt::getStageMsgId(s32 stgNo) const {
     // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
-        return this->::sAreaExt::getStageList()->::rStageList::getStageMsgId(stgNo);
+    if (getStageList() != nullptr) {
+        return getStageList()->getStageMsgId(stgNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -383,21 +383,21 @@ s32 sAreaExt::convertStageIndex(s32 stgNo) const {
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value carried to 0x722ebd; no location-less local in scope fits
     unsigned int v2_9;
-    if (stgNo <= static_cast<s32>(99)) {
-        v2_9 = static_cast<unsigned int>(4294967295);
+    if (stgNo <= 99) {
+        v2_9 = 0xFFFFFFFF;
     } else {
-        rStageList* list = this->::sAreaExt::getStageList();
-        if (list == static_cast<rStageList*>(nullptr)) {
-            v2_9 = static_cast<unsigned int>(4294967295);
+        rStageList* list = getStageList();
+        if (list == nullptr) {
+            v2_9 = 0xFFFFFFFF;
         } else {
-            if (list->getNum() == static_cast<u32>(0)) {
-                v2_9 = static_cast<unsigned int>(4294967295);
+            if (list->getNum() == 0) {
+                v2_9 = 0xFFFFFFFF;
             } else {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i0_3 = 0;;) {
                     if (list->getInfo(i0_3)->mStageNo != static_cast<unsigned int>(stgNo)) {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < list->getNum()) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < list->getNum()) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
@@ -406,7 +406,7 @@ s32 sAreaExt::convertStageIndex(s32 stgNo) const {
                         return static_cast<s32>(v2_9);
                     }
                 }
-                v2_9 = static_cast<unsigned int>(4294967295);
+                v2_9 = 0xFFFFFFFF;
             }
         }
     }
@@ -517,7 +517,7 @@ bool sAreaExt::isRandomStage() {
 // Address: 0x007234b0 - 0x007234bb (11 bytes)
 bool sAreaExt::isMatchJumpArea(const MtDTI* dti) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return dti == this->::sArea::mpJumpArea;
+    return dti == mpJumpArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -536,8 +536,8 @@ bool sAreaExt::isDisableCreateCharacter(s32 stgNo) const {
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (static_cast<unsigned int>(stgNo - static_cast<s32>(150)) <= static_cast<unsigned int>(10)) {
-        return static_cast<bool>((static_cast<unsigned long>(1027) >> static_cast<unsigned long>(static_cast<unsigned char>(stgNo + static_cast<s32>(106)) & static_cast<unsigned char>(31))) & static_cast<unsigned long>(1));
+    if (static_cast<unsigned int>(stgNo - 150) <= 10) {
+        return static_cast<bool>((1027ul >> static_cast<unsigned long>(static_cast<unsigned char>(stgNo + 106) & 31)) & 1ul);
     } else {
         return false;
     }
@@ -550,13 +550,13 @@ bool sAreaExt::isDisableCreateCharacter(s32 stgNo) const {
 // Address: 0x00723530 - 0x0072354d (29 bytes)
 void sAreaExt::setReadyBit(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::setNotifySync(this->mReadyBit, static_cast<s32>(index));
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->setNotifySync(mReadyBit, static_cast<s32>(index));
 }
 
 // Address: 0x00723550 - 0x0072356d (29 bytes)
 bool sAreaExt::checkReadyBit(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isNotifySync(this->mReadyBit, static_cast<s32>(index));
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->isNotifySync(mReadyBit, static_cast<s32>(index));
 }
 
 // No out-of-line body: 10 inlined copies in 9 functions (72 bytes)
@@ -573,7 +573,7 @@ bool sAreaExt::checkReadyBit(u32 index) {
 // Address: 0x00721d80 - 0x00721d85 (5 bytes)
 void sAreaExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sArea::createProperty(s);
+    this->sArea::createProperty(s);
 }
 
 // Address: 0x00721f30 - 0x00722079 (329 bytes)
@@ -611,6 +611,8 @@ __attribute__((weak)) void sAreaExt::updateLoadingInfo() {
 //   in aGame::init at 0x0000218a-0x00002191 (called at aGame.cpp:269)
 //   in aStage::final at 0x0001365f-0x00013665 (called at aStage.cpp:7038)
 // void sAreaExt::setIsBaseOld(bool isBase);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAreaExt::MyDTI sAreaExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sAreaExt.cpp at 0x0072366f-0x007236ac (called at sAreaExt.cpp:55)

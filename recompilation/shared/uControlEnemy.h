@@ -139,3 +139,9 @@ inline u32 uControlEnemy::getRaidBossID() const {
 inline u32 uControlEnemy::getErosionMode() const {
     return this->mErosionMode;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cFSMOrder::stateUpdateSetEnemy at 0x1e50ea-0x1e50f0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 5 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void uControlEnemy::setErosionMode(u32 lv) {
+    this->mErosionMode = lv;
+}

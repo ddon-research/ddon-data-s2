@@ -36,7 +36,7 @@ const MtDTI& cCraftUpGradeExpData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCraftUpGradeExpData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memAlloc(sz, align, ::cCraftUpGradeExpData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftUpGradeExpData::DTI)->memAlloc(sz, align, cCraftUpGradeExpData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -51,7 +51,7 @@ inline void* cCraftUpGradeExpData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftUpGradeExpData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftUpGradeExpData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -84,6 +84,8 @@ __attribute__((weak)) void cCraftUpGradeExpData::createProperty(MtPropertyList& 
 //   in sCraftManager::getCraftUpGradeExpMax at 0x007642da-0x007642de (called at sCraftManager.cpp:8134)
 // u64 cCraftUpGradeExpData::getExpMax();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftUpGradeExpData::MyDTI cCraftUpGradeExpData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCraftUpGradeExp.cpp at 0x00659f00-0x00659f42 (called at rCraftUpGradeExp.cpp:39)
 //   in _GLOBAL__sub_I_rCraftUpGradeExp.cpp at 0x00659f00-0x00659f42 (called at rCraftUpGradeExp.h:33)
@@ -92,7 +94,7 @@ __attribute__((weak)) void cCraftUpGradeExpData::createProperty(MtPropertyList& 
 // Address: 0x00659c40 - 0x00659c88 (72 bytes)
 MtObject* cCraftUpGradeExpData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftUpGradeExpData;
+    return new (16u) cCraftUpGradeExpData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ const MtDTI& rCraftUpGradeExp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftUpGradeExp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftUpGradeExp::DTI)->memAlloc(sz, align, ::rCraftUpGradeExp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftUpGradeExp::DTI)->memAlloc(sz, align, rCraftUpGradeExp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline void* rCraftUpGradeExp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rCraftUpGradeExpD0Ev at 0x01a81fe4-0x01a82003, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCraftUpGradeExp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftUpGradeExp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftUpGradeExp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,7 +150,7 @@ inline void rCraftUpGradeExp::operator delete(void* p_addr) {
 bool rCraftUpGradeExp::loadData(MtDataReader& in, cCraftUpGradeExpData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(in, pData->mExpMax);
+    nDDOIO::readData(in, pData->mExpMax);
     return true;
 }
 
@@ -161,8 +163,10 @@ MT_CTSTR rCraftUpGradeExp::getExt() const {
 // Address: 0x01a82130 - 0x01a82136 (6 bytes)
 u32 rCraftUpGradeExp::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftUpGradeExp::MyDTI rCraftUpGradeExp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftUpGradeExp.cpp at 0x00659f42-0x00659f7f (called at rCraftUpGradeExp.cpp:74)
@@ -172,7 +176,7 @@ u32 rCraftUpGradeExp::getDataVersion() const {
 // Address: 0x00659e00 - 0x00659e64 (100 bytes)
 MtObject* rCraftUpGradeExp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftUpGradeExp;
+    return new (16u) rCraftUpGradeExp;
 }
 
 // Instance at 0x01a820e0 - 0x01a820f2 (18 bytes) of the generic rTbl2<T>::getData

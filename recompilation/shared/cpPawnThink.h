@@ -563,7 +563,46 @@ inline bool cpPawnThink::isNowEscapeThink() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob01::callbackGuard at 0x499668-0x499672; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpPawnThink::resetGuardCnt() {
+    this->mGuardCnt = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHumanEnemy::after at 0xc96ab6-0xc96abd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uDDOModel* cpPawnThink::getThinkMgrTarget() const {
+    return this->mpThinkMgrTarget;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterHold::isEnableActInterTarget at 0x44379a-0x4437a1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const cAIGrid* cpPawnThink::getDangerGrid() const {
+    return this->mpDangerGrid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHumanEnemy::getEvaluation at 0xc98d97-0xc98d9e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cEvaluationName::cEvaluation* cpPawnThink::getEvaluation() {
+    return &this->mcEvaluation;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cpPawnThink::getNowPrioThinkID() {
     return this->mPrioThinkIO.mResultNowThinkID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpPawnThink::cpPawnThink at 0x510ac6-0x510ad8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpPawnThink::initEscapeThinkInfo() {
+    this->mFlgEscapeThink = false;
+    this->mSheatheTimer = 0.0f;
+    this->mEnemyInRangeTimer = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpPawnThink::moveEscapeThink at 0x519524-0x51952f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpPawnThink::resetEscapeInfo() {
+    this->mSheatheTimer = 0.0f;
+    this->mEnemyInRangeTimer = 0.0f;
 }

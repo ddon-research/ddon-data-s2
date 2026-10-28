@@ -26,7 +26,7 @@ const MtDTI& CDataPartyListInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPartyListInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPartyListInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPartyListInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataPartyListInfo::getAllocator() {
 // Address: 0x003b8fa0 - 0x003b8fe0 (64 bytes)
 void* CDataPartyListInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPartyListInfo::getAllocator()->memAlloc(sz, align, ::CDataPartyListInfo::DTI.::MtDTI::getID());
+    return CDataPartyListInfo::getAllocator()->memAlloc(sz, align, CDataPartyListInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataPartyListInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9010 - 0x003b903a (42 bytes)
 __attribute__((weak)) void CDataPartyListInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPartyListInfo::getAllocator()->memFree(p_addr);
+    CDataPartyListInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataPartyListInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataPartyListInfo::CDataPartyListInfo(u32, u32, const MtTypedArray<CDataPartyMember>&, u32, u64);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): CDataPartyListInfo::MyDTI CDataPartyListInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004192da-0x00419313 (called at PartyImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004192da-0x00419313 (called at Party.h:128)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataPartyListInfo::operator delete(void* p_addr) {
 // Address: 0x003b8f10 - 0x003b8f96 (134 bytes)
 MtObject* CDataPartyListInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataPartyListInfo;
+    return new (16u) CDataPartyListInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataPartyMember::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPartyMember::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPartyMember::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPartyMember::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataPartyMember::getAllocator() {
 // Address: 0x003b8e40 - 0x003b8e80 (64 bytes)
 void* CDataPartyMember::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPartyMember::getAllocator()->memAlloc(sz, align, ::CDataPartyMember::DTI.::MtDTI::getID());
+    return CDataPartyMember::getAllocator()->memAlloc(sz, align, CDataPartyMember::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataPartyMember::operator new(size_t sz, u32 align) {
 // Address: 0x003b8eb0 - 0x003b8eda (42 bytes)
 __attribute__((weak)) void CDataPartyMember::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPartyMember::getAllocator()->memFree(p_addr);
+    CDataPartyMember::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataPartyMember::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataPartyMember::CDataPartyMember(const CCharacterListElement&, u8, s32, u32, b8, b8, b8, u8, u8);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPartyMember::MyDTI CDataPartyMember::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004192a1-0x004192da (called at PartyImplement.inc:7)
@@ -168,7 +172,7 @@ const MtDTI& CDataPartyMemberMaxNum::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPartyMemberMaxNum::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPartyMemberMaxNum::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPartyMemberMaxNum::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataPartyMemberMaxNum::getAllocator() {
 // Address: 0x003b9220 - 0x003b9260 (64 bytes)
 void* CDataPartyMemberMaxNum::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPartyMemberMaxNum::getAllocator()->memAlloc(sz, align, ::CDataPartyMemberMaxNum::DTI.::MtDTI::getID());
+    return CDataPartyMemberMaxNum::getAllocator()->memAlloc(sz, align, CDataPartyMemberMaxNum::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataPartyMemberMaxNum::operator new(size_t sz, u32 align) {
 // Address: 0x003b9290 - 0x003b92ba (42 bytes)
 __attribute__((weak)) void CDataPartyMemberMaxNum::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPartyMemberMaxNum::getAllocator()->memFree(p_addr);
+    CDataPartyMemberMaxNum::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataPartyMemberMaxNum::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataPartyMemberMaxNum::CDataPartyMemberMaxNum(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPartyMemberMaxNum::MyDTI CDataPartyMemberMaxNum::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041934c-0x00419385 (called at PartyImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041934c-0x00419385 (called at Party.h:283)
@@ -222,7 +228,7 @@ __attribute__((weak)) void CDataPartyMemberMaxNum::operator delete(void* p_addr)
 // Address: 0x003b91d0 - 0x003b9218 (72 bytes)
 MtObject* CDataPartyMemberMaxNum::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataPartyMemberMaxNum;
+    return new (16u) CDataPartyMemberMaxNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,7 +245,7 @@ const MtDTI& CDataPartyMemberMinimum::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPartyMemberMinimum::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPartyMemberMinimum::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPartyMemberMinimum::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,7 +254,7 @@ inline MtAllocator* CDataPartyMemberMinimum::getAllocator() {
 // Address: 0x003b9100 - 0x003b9140 (64 bytes)
 void* CDataPartyMemberMinimum::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPartyMemberMinimum::getAllocator()->memAlloc(sz, align, ::CDataPartyMemberMinimum::DTI.::MtDTI::getID());
+    return CDataPartyMemberMinimum::getAllocator()->memAlloc(sz, align, CDataPartyMemberMinimum::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,7 +269,7 @@ void* CDataPartyMemberMinimum::operator new(size_t sz, u32 align) {
 // Address: 0x003b9170 - 0x003b919a (42 bytes)
 __attribute__((weak)) void CDataPartyMemberMinimum::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPartyMemberMinimum::getAllocator()->memFree(p_addr);
+    CDataPartyMemberMinimum::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,6 +292,8 @@ __attribute__((weak)) void CDataPartyMemberMinimum::operator delete(void* p_addr
 //   in cSeedGameSvConnection::OnPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC at 0x002e0cd9-0x002e0d06, 0x002e0d77-0x002e0e0f (called at cNetGameServer.cpp:24069)
 //   in cSeedGameSvConnection::OnPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC at 0x002e0cd9-0x002e0d06, 0x002e0d77-0x002e0e0f (called at Party.h:227)
 // CDataPartyMemberMinimum::CDataPartyMemberMinimum(const CCommunityCharacterBaseInfo& in_CommunityCharacterBaseInfo, u8 in_MemberType, s32 in_MemberIndex, u32 in_PawnId, b8 in_IsLeader, b8 in_IsPawn);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPartyMemberMinimum::MyDTI CDataPartyMemberMinimum::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419313-0x0041934c (called at PartyImplement.inc:9)

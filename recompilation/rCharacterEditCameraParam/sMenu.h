@@ -204,6 +204,7 @@ class cMenuTreasuresLotAnnounce;
 class cMenuUILargeSetting;
 class cMenuUpdateCommunityList;
 namespace nMenu { struct MENU_PARTS; }
+class uGUICommunityList;
 
 // Declarations
 class sMenu;
@@ -217,6 +218,8 @@ using u32 = unsigned int;
 
 class sMenu : public cSystem
 {
+    // inferred: uGUICommunityList::cTabDataFriendList::isMenuListCompListup names sMenu::mMenuFriendList.::cMenuBase::mMenuRno[0], through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
 public:
     class MyDTI;
 public:
@@ -641,6 +644,12 @@ inline sMenu* sMenu::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuPartyList::movePartyList at 0xf49b0-0xf49b7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuSimplePartyReq* sMenu::getMenuSimplePartyReq() {
+    return &this->mSimplePartyReq;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuQuickMatchRetry* sMenu::getMenuQuickMatchRetry() {
     return &this->mQuickMatchRetry;
@@ -671,9 +680,39 @@ inline cMenuPawnManageMenu* sMenu::getMenuPawnManageMenu() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf61b5-0xf61bc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuPawnDelete* sMenu::getMenuPawnDelete() {
+    return &this->mPawnDelete;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuPawnFeedback* sMenu::getMenuPawnFeedback() {
     return &this->mPawnFeedback;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf59d1-0xf59d8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuEditFavoritePawn* sMenu::getMenuEditFavoritePawn() {
+    return &this->mMenuEditFavoritePawn;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf6131-0xf6138; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuPawnRental* sMenu::getMenuPawnRental() {
+    return &this->mPawnRental;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf5e67-0xf5e6e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuJoinPartyFlow* sMenu::getMenuJoinPartyFlow() {
+    return &this->mJoinPartyFlow;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf635e-0xf6365; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuBreakupParty* sMenu::getMenuBreakupParty() {
+    return &this->mBreakupParty;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -689,9 +728,87 @@ inline cMenuCraftMyPawnList* sMenu::getMenuCraftMyPawnList() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a4d4-0x10a4db; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftRecipeList* sMenu::getMenuCraftRecipeList() {
+    return &this->mMenuCraftRecipeList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a5e8-0x10a5ef; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftUpGradeList* sMenu::getMenuCraftUpGradeList() {
+    return &this->mMenuCraftUpGradeList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a86c-0x10a873; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftSupportFrame* sMenu::getMenuCraftSupportFrame() {
+    return &this->mMenuCraftSupportFrame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a50e-0x10a515; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftCreateItem* sMenu::getMenuCraftCreateItem() {
+    return &this->mMenuCraftCreateItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a622-0x10a629; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftUpGradeItem* sMenu::getMenuCraftUpGradeItem() {
+    return &this->mMenuCraftUpGradeItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10ab0f-0x10ab16; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftElementFrame* sMenu::getMenuCraftElementList() {
+    return &this->mMenuCraftElementList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x109d79-0x109d80; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftElementItem* sMenu::getMenuCraftElementItem() {
+    return &this->mMenuCraftElementItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10acbd-0x10acc4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftColorFrame* sMenu::getMenuCraftColorList() {
+    return &this->mMenuCraftColorList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10ad98-0x10ad9f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftColorItem* sMenu::getMenuCraftColorItem() {
+    return &this->mMenuCraftColorItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10ae4f-0x10ae56; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftPoint* sMenu::getMenuCraftPoint() {
+    return &this->mMenuCraftPoint;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10af22-0x10af29; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftTask* sMenu::getMenuCraftTask() {
+    return &this->mMenuCraftTask;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10af75-0x10af7c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftItemSelect* sMenu::getMenuCraftItemSelect() {
+    return &this->mMenuCraftItemSelect;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuCreateClan* sMenu::getMenuCreateClan() {
     return &this->mMenuCreateClan;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuEditClan::moveEditClan at 0x13ed32-0x13ed39; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuEditClanEmblem* sMenu::getMenuEditClanEmblem() {
+    return &this->mMenuEditClanEmblem;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -743,6 +860,12 @@ inline cMenuGetMyScoutEntry* sMenu::getMenuGetMyScoutEntry() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf6080-0xf6087; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCancelFriend* sMenu::getMenuCancelFriend() {
+    return &this->mMenuCancelFriend;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuJoinEntryBoardItem* sMenu::getMenuJoinEntryBoardItem() {
     return &this->mMenuJoinEntryBoardItem;
@@ -791,6 +914,12 @@ inline cMenuEditCommentEntryBoardItem* sMenu::getMenuEditCommentEntryBoardItem()
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuEntryBoardItem::moveEntryBoardItem at 0x1489f7-0x1489fe; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuEntryBoardMember* sMenu::getMenuEntryBoardMember() {
+    return &this->mMenuEntryBoardMember;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuInviteEntryBoardItem* sMenu::getMenuInviteEntryBoardItem() {
     return &this->mMenuInviteEntryBoardItem;
@@ -800,6 +929,18 @@ inline cMenuInviteEntryBoardItem* sMenu::getMenuInviteEntryBoardItem() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuAreaMaster* sMenu::getMenuAreaMaster() {
     return &this->mMenuAreaMaster;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline cMenuServerList* sMenu::getMenuServerList() {
+    return &this->mMenuServerList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuServerList::moveServerList at 0x124557-0x12455e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuChangeServer* sMenu::getMenuChangeServer() {
+    return &this->mMenuChangeServer;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -815,6 +956,24 @@ inline cMenuMailDelete* sMenu::getMenuMailDelete() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuMail::moveMail at 0x126ec9-0x126ed0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuMailDeleteMulti* sMenu::getMenuMailDeleteMulti() {
+    return &this->mMenuMailDeleteMulti;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuMailDetail::moveMailDetail at 0x12824a-0x128251; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuMailGetItem* sMenu::getMenuMailGetItem() {
+    return &this->mMenuMailGetItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuMail::moveMail at 0x126e49-0x126e50; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuMailGetItemAll* sMenu::getMenuMailGetItemAll() {
+    return &this->mMenuMailGetItemAll;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuGetItemListToServer* sMenu::getMenuGetItemListToServer() {
     return &this->mMenuGetItemListToServer;
@@ -824,6 +983,18 @@ inline cMenuGetItemListToServer* sMenu::getMenuGetItemListToServer() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuGetOrbGainExtendParam* sMenu::getMenuGetOrbGainExtendParam() {
     return &this->mMenuGetOrbGainExtendParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf5994-0xf599b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuEditBlackList* sMenu::getMenuEditBlackList() {
+    return &this->mMenuEditBlackList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuGroupChatMemberList::moveGroupChatMemberList at 0x13083e-0x130845; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuLeaveGroupChat* sMenu::getMenuLeaveGroupChat() {
+    return &this->mMenuLeaveGroupChat;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -839,15 +1010,39 @@ inline cMenuBazaarMenu* sMenu::getMenuBazaarMenu() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuFirstOption::moveFirstOption at 0x13302d-0x133034; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuUILargeSetting* sMenu::getMenuUILargeSetting() {
+    return &this->mMenuUILargeSetting;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuFirstOption* sMenu::getMenuFirstOption() {
     return &this->mMenuFirstOption;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf64a0-0xf64a7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuResetCraftPoint* sMenu::getMenuResetCraftPoint() {
+    return &this->mMenuResetCraftPoint;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuSubMenu::moveSubMenu at 0xf64cf-0xf64d6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuPawnSetPartner* sMenu::getMenuPawnSetPartner() {
+    return &this->mMenuPawnSetPartner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline cMenuBaggageMenu* sMenu::getMenuBaggageMenu() {
     return &this->mMenuBaggageMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftCreateItem::moveCraftCreateItem at 0x10f3df-0x10f3e6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cMenuCraftGoldStoneDialog* sMenu::getMenuCraftGoldStoneDialog() {
+    return &this->mMenuCraftGoldStonetDialog;
 }
 
 // Inline, no code of its own: checked where it is inlined.

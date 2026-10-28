@@ -37,7 +37,7 @@ const MtDTI& uGUIPhoto::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPhoto::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPhoto::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPhoto::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* uGUIPhoto::getAllocator() {
 // Address: 0x00b3d4b0 - 0x00b3d4f0 (64 bytes)
 void* uGUIPhoto::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPhoto::getAllocator()->memAlloc(sz, align, ::uGUIPhoto::DTI.::MtDTI::getID());
+    return uGUIPhoto::getAllocator()->memAlloc(sz, align, uGUIPhoto::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* uGUIPhoto::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPhoto::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPhoto::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPhoto::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,13 +97,13 @@ uGUIPhoto::~uGUIPhoto() {
 // Address: 0x00b3d8d0 - 0x00b3d9ca (250 bytes)
 bool uGUIPhoto::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_GUI"), static_cast<u32>(129), static_cast<t64>(1421229316)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpFrameGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpFrameGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpFrameGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GUI"), 129u, 1421229316l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpFrameGMDRes == nullptr) {
+                        if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
+                            mpFrameGMDRes;
                             return true;
                         } else {
                             return false;
@@ -115,9 +115,9 @@ bool uGUIPhoto::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpFrameGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpFrameGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpFrameGMDRes;
+                if (mpFrameGMDRes == nullptr) {
+                    if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
+                        mpFrameGMDRes;
                         return true;
                     } else {
                         return false;
@@ -130,11 +130,11 @@ bool uGUIPhoto::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpFrameGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpFrameGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpFrameGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_GMD"), 129u, 0l))) != nullptr) {
+                if (mpFrameGMDRes == nullptr) {
+                    if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
+                        mpFrameGMDRes;
                         return true;
                     } else {
                         return false;
@@ -146,9 +146,9 @@ bool uGUIPhoto::loadResource() {
                 return false;
             }
         } else {
-            if (this->mpFrameGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpFrameGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpFrameGMDRes;
+            if (mpFrameGMDRes == nullptr) {
+                if ((mpFrameGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_FRAME_GMD"), 129u, 0l))) != nullptr) {
+                    mpFrameGMDRes;
                     return true;
                 } else {
                     return false;
@@ -169,20 +169,20 @@ __attribute__((weak)) void uGUIPhoto::updatePtr() {
 void uGUIPhoto::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5dc
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
-    this->mControls.::cGUIControlMgr::setup(static_cast<uGUIBase*>(this));
-    this->setPlay(true);
-    this->::uGUIPhoto::initCommon();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mIsPhotoMode = true;
-    static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::setPhotoMode();
-    ::sGame::getInstance()->mDisableActionPlayer = true;
-    this->::uGUIPhoto::initPhoto();
-    this->mIsRenderDetailControl = ::sRender::getInstance()->::sRender::getRenderDetailControl();
-    ::sRender::getInstance()->::sRender::setRenderDetailControl(false);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    mControls.setup(static_cast<uGUIBase*>(this));
+    setPlay(true);
+    initCommon();
+    static_cast<sGUIExt*>(sGUI::getInstance())->mIsPhotoMode = true;
+    static_cast<sCameraExt*>(sCamera::getInstance())->setPhotoMode();
+    sGame::getInstance()->mDisableActionPlayer = true;
+    initPhoto();
+    mIsRenderDetailControl = sRender::getInstance()->getRenderDetailControl();
+    sRender::getInstance()->setRenderDetailControl(false);
 }
 
 // Address: 0x00b3e550 - 0x00b3e617 (199 bytes)
@@ -218,31 +218,31 @@ __attribute__((weak)) void uGUIPhoto::updateShot() {
 // Address: 0x00b3f060 - 0x00b3f075 (21 bytes)
 u32 uGUIPhoto::evCtrlCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00b3f080 - 0x00b3f095 (21 bytes)
 u32 uGUIPhoto::evCtrlDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x00b3f0a0 - 0x00b3f0b5 (21 bytes)
 u32 uGUIPhoto::evCtrlStart(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00b3f1c0 - 0x00b3f1de (30 bytes)
 u32 uGUIPhoto::evCtrlStartBGChange(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode == static_cast<u32>(0)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (mMode == 0) {
+        setInputEvent(69u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -254,32 +254,32 @@ u32 uGUIPhoto::evCtrlStartBGChange(cControl::Message* pMsg) {
 // Address: 0x00b3f020 - 0x00b3f059 (57 bytes)
 u32 uGUIPhoto::evCtrlCancelFrame(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mControls.::cGUIControlMgr::setCurrentPos(static_cast<u32>(1), static_cast<s32>(this->mOldFrame));
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return static_cast<u32>(1);
+    mControls.setCurrentPos(1u, static_cast<s32>(mOldFrame));
+    setInputEvent(72u);
+    return 1;
 }
 
 // Address: 0x00b3f0c0 - 0x00b3f0f6 (54 bytes)
 u32 uGUIPhoto::evCtrlDecideFrame(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    this->mSelectFrame = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
-    return static_cast<u32>(1);
+    setInputEvent(73u);
+    mSelectFrame = static_cast<u32>(mControls.getCurrentPos(1u));
+    return 1;
 }
 
 // Address: 0x00b3f1a0 - 0x00b3f1b5 (21 bytes)
 u32 uGUIPhoto::evCtrlMoveUDFrame(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(1);
+    setInputEvent(71u);
+    return 1;
 }
 
 // Address: 0x00b3f100 - 0x00b3f139 (57 bytes)
 u32 uGUIPhoto::evCtrlMouseDecideFrame(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelectFrame = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(1);
+    mSelectFrame = static_cast<u32>(mControls.getCurrentPos(1u));
+    setInputEvent(73u);
+    return 1;
 }
 
 // Address: 0x00b3f140 - 0x00b3f19c (92 bytes)
@@ -301,20 +301,20 @@ __attribute__((weak)) void uGUIPhoto::initCommon() {
 // Address: 0x00b3e480 - 0x00b3e549 (201 bytes)
 __attribute__((weak)) void uGUIPhoto::initPhoto() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = static_cast<u32>(0);
-    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(7)), true);
-    this->::uGUI::play(0.0f);
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), true);
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(1), false);
-    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    mMode = 0;
+    setPlayingFlow(getFlow(7u), true);
+    play(0.0f);
+    mControls.setCategoryFocus(0u, true);
+    mControls.setCategoryFocus(1u, false);
+    if (mCursor.mpInstance != nullptr) {
+        mCursor.mpInstance->setVisible(false);
     }
-    this->mClose.mEnable = false;
-    this->mCounter = 0.0f;
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), true);
-    this->mIsStopCameraOperation = false;
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhoto::updateWait);
-    this->::uGUIBase::mRoutine = static_cast<u32>(0);
+    mClose.mEnable = false;
+    mCounter = 0.0f;
+    mControls.setCategoryFocus(0u, true);
+    mIsStopCameraOperation = false;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhoto::updateWait);
+    mRoutine = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (166 bytes)
@@ -324,20 +324,20 @@ __attribute__((weak)) void uGUIPhoto::initPhoto() {
 // Address: 0x00b3ea40 - 0x00b3eb03 (195 bytes)
 void uGUIPhoto::initFrame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = static_cast<u32>(2);
-    this->mOldFrame = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
-    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(3)), true);
-    this->::uGUI::play(0.0f);
-    if (this->mpScrbar != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpScrbar->::cGUIInstance::setVisible(false);
+    mMode = 2;
+    mOldFrame = static_cast<u32>(mControls.getCurrentPos(1u));
+    setPlayingFlow(getFlow(3u), true);
+    play(0.0f);
+    if (mpScrbar != nullptr) {
+        mpScrbar->setVisible(false);
     }
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), false);
-    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(1), true);
-    this->::uGUIPhoto::updateCursor();
-    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+    mControls.setCategoryFocus(0u, false);
+    mControls.setCategoryFocus(1u, true);
+    updateCursor();
+    if (mCursor.mpInstance != nullptr) {
+        mCursor.mpInstance->setVisible(true);
     }
-    this->mClose.mEnable = true;
+    mClose.mEnable = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (135 bytes)
@@ -358,27 +358,27 @@ void uGUIPhoto::initList(u32 Index, cGUIInstAnimation* pInst) {
     // DWARF local not rendered: f32 ofsy;
     // DWARF local not rendered: cGUIObjMessage* pmsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (pInst == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (pInst == nullptr) {
         return;
     }
-    if (this->mpList[0] == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpList[0] == nullptr) {
         return;
     }
-    pInst->::cGUIInstance::setExecute(true);
-    pInst->::cGUIInstance::setVisible(true);
+    pInst->setExecute(true);
+    pInst->setVisible(true);
     // inferred: a temporary for the result of the call at 0xb3f254, used twice; no DWARF local holds it
-    cGUIObject* t0 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(2));
-    if (t0 != static_cast<cGUIObject*>(nullptr)) {
-        this->::uGUIBase::setObjectMessage(t0, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpFrameGMDRes, Index), static_cast<u32>(0), false);
+    cGUIObject* t0 = getObjectFromId(static_cast<cGUIInstance*>(pInst), 2u);
+    if (t0 != nullptr) {
+        setObjectMessage(t0, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpFrameGMDRes, Index), 0u, false);
         // inferred: a temporary for the value the load at 0xb3f294 read, used once; no DWARF local holds it
-        f32 t1 = this->mpList[0]->::cGUIInstNull::mPosition.y;
-        pInst->::cGUIInstNull::setPositionY(t1 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
-        this->mControls.::cGUIControlMgr::addMouseTouchList(static_cast<u32>(1), static_cast<cGUIInstance*>(pInst), this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(3)), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), static_cast<s32>(-1));
+        f32 t1 = mpList[0]->::cGUIInstNull::mPosition.y;
+        pInst->setPositionY(t1 + (static_cast<float>(getVariableParamS32FromId(4u)) * static_cast<float>(Index)));
+        mControls.addMouseTouchList(1u, static_cast<cGUIInstance*>(pInst), getObjectFromId(static_cast<cGUIInstance*>(pInst), 3u), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), 1u, 1u, -1);
     } else {
         // inferred: a temporary for the value the load at 0xb3f294 read, used once; no DWARF local holds it
-        f32 t1 = this->mpList[0]->::cGUIInstNull::mPosition.y;
-        pInst->::cGUIInstNull::setPositionY(t1 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
-        this->mControls.::cGUIControlMgr::addMouseTouchList(static_cast<u32>(1), static_cast<cGUIInstance*>(pInst), this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(3)), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), static_cast<s32>(-1));
+        f32 t1 = mpList[0]->::cGUIInstNull::mPosition.y;
+        pInst->setPositionY(t1 + (static_cast<float>(getVariableParamS32FromId(4u)) * static_cast<float>(Index)));
+        mControls.addMouseTouchList(1u, static_cast<cGUIInstance*>(pInst), getObjectFromId(static_cast<cGUIInstance*>(pInst), 3u), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), 1u, 1u, -1);
     }
 }
 
@@ -429,9 +429,9 @@ __attribute__((weak)) void uGUIPhoto::adjustScale() {
 bool uGUIPhoto::isForceSamplerLinear(cGUIObject* pObj) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
-        if (this->mpFinder != static_cast<cGUIInstAnimation*>(nullptr)) {
-            if (this->mpFinder->::cGUIInstNull::mScale.x > 1.0f) {
+    if (!this->uGUIBase::isForceSamplerLinear(pObj)) {
+        if (mpFinder != nullptr) {
+            if (mpFinder->mScale.x > 1.0f) {
                 return true;
             }
         }
@@ -440,6 +440,8 @@ bool uGUIPhoto::isForceSamplerLinear(cGUIObject* pObj) const {
         return true;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIPhoto::MyDTI uGUIPhoto::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPhoto.cpp at 0x00b3f67f-0x00b3f6bc (called at uGUIPhoto.cpp:38)

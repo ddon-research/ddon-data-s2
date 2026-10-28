@@ -35,7 +35,7 @@ const MtDTI& MtGeomCylinder::getDTI() const {
 // Address: 0x01943360 - 0x019433a0 (64 bytes)
 void* MtGeomCylinder::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomCylinder::DTI)->memAlloc(sz, align, ::MtGeomCylinder::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomCylinder::DTI)->memAlloc(sz, align, MtGeomCylinder::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomCylinder::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomCylinder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomCylinder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomCylinder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,30 +80,30 @@ inline void MtGeomCylinder::operator delete(void* p_addr) {
 void MtGeomCylinder::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCylinder.p0.x = fin.readF32();
-    this->mCylinder.p1.x = fin.readF32();
-    this->mCylinder.p0.y = fin.readF32();
-    this->mCylinder.p1.y = fin.readF32();
-    this->mCylinder.p0.z = fin.readF32();
-    this->mCylinder.p1.z = fin.readF32();
-    this->mCylinder.p0.pad_ = fin.readF32();
-    this->mCylinder.p1.pad_ = fin.readF32();
-    this->mCylinder.r = fin.readF32();
+    mCylinder.p0.x = fin.readF32();
+    mCylinder.p1.x = fin.readF32();
+    mCylinder.p0.y = fin.readF32();
+    mCylinder.p1.y = fin.readF32();
+    mCylinder.p0.z = fin.readF32();
+    mCylinder.p1.z = fin.readF32();
+    mCylinder.p0.pad_ = fin.readF32();
+    mCylinder.p1.pad_ = fin.readF32();
+    mCylinder.r = fin.readF32();
 }
 
 // Address: 0x019434b0 - 0x0194354b (155 bytes)
 void MtGeomCylinder::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mCylinder.p0.x);
-    fout.writeF32(this->mCylinder.p1.x);
-    fout.writeF32(this->mCylinder.p0.y);
-    fout.writeF32(this->mCylinder.p1.y);
-    fout.writeF32(this->mCylinder.p0.z);
-    fout.writeF32(this->mCylinder.p1.z);
-    fout.writeF32(this->mCylinder.p0.pad_);
-    fout.writeF32(this->mCylinder.p1.pad_);
-    fout.writeF32(this->mCylinder.r);
+    fout.writeF32(mCylinder.p0.x);
+    fout.writeF32(mCylinder.p1.x);
+    fout.writeF32(mCylinder.p0.y);
+    fout.writeF32(mCylinder.p1.y);
+    fout.writeF32(mCylinder.p0.z);
+    fout.writeF32(mCylinder.p1.z);
+    fout.writeF32(mCylinder.p0.pad_);
+    fout.writeF32(mCylinder.p1.pad_);
+    fout.writeF32(mCylinder.r);
 }
 
 // Address: 0x01943550 - 0x01943638 (232 bytes)
@@ -115,55 +115,55 @@ __attribute__((weak)) void MtGeomCylinder::createProperty(MtPropertyList& s) {
 // Address: 0x01be4790 - 0x01be4799 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, pos);
+    return MtCollision::intersect(mCylinder, pos);
 }
 
 // Address: 0x01be47a0 - 0x01be47a9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, line);
+    return MtCollision::intersect(mCylinder, line);
 }
 
 // Address: 0x01be47b0 - 0x01be47b9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, ray);
+    return MtCollision::intersect(mCylinder, ray);
 }
 
 // Address: 0x01be47c0 - 0x01be47c9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, ls);
+    return MtCollision::intersect(mCylinder, ls);
 }
 
 // Address: 0x01be47d0 - 0x01be47d9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, sphere);
+    return MtCollision::intersect(mCylinder, sphere);
 }
 
 // Address: 0x01be47e0 - 0x01be47e9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, capsule);
+    return MtCollision::intersect(mCylinder, capsule);
 }
 
 // Address: 0x01be47f0 - 0x01be47f9 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, aabb);
+    return MtCollision::intersect(mCylinder, aabb);
 }
 
 // Address: 0x01be4800 - 0x01be4809 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, obb);
+    return MtCollision::intersect(mCylinder, obb);
 }
 
 // Address: 0x01be4810 - 0x01be4819 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtPlane& plane) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, plane);
+    return MtCollision::intersect(mCylinder, plane);
 }
 
 // Address: 0x01be4820 - 0x01be4823 (3 bytes)
@@ -175,13 +175,13 @@ bool MtGeomCylinder::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01be4830 - 0x01be4839 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, tri);
+    return MtCollision::intersect(mCylinder, tri);
 }
 
 // Address: 0x01be4840 - 0x01be4849 (9 bytes)
 bool MtGeomCylinder::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mCylinder, cylinder);
+    return MtCollision::intersect(mCylinder, cylinder);
 }
 
 // Address: 0x01be4850 - 0x01be4910 (192 bytes)
@@ -193,31 +193,31 @@ __attribute__((weak)) bool MtGeomCylinder::getClosest(const MtVector3& pos, MtCo
 // Address: 0x01be4910 - 0x01be491b (11 bytes)
 bool MtGeomCylinder::getClosest(const MtLine& line, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCylinder, line, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCylinder, line, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4920 - 0x01be492b (11 bytes)
 bool MtGeomCylinder::getClosest(const MtRay& ray, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCylinder, ray, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCylinder, ray, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4930 - 0x01be493b (11 bytes)
 bool MtGeomCylinder::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCylinder, ls, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mCylinder, ls, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01be4940 - 0x01be494b (11 bytes)
 bool MtGeomCylinder::getClosest(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCylinder, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mCylinder, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4950 - 0x01be495b (11 bytes)
 bool MtGeomCylinder::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mCylinder, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mCylinder, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01be4960 - 0x01be4963 (3 bytes)
@@ -253,7 +253,7 @@ bool MtGeomCylinder::getClosest(const MtTriangle& tri, MtContact* pContact) cons
 // Address: 0x01be4500 - 0x01be4509 (9 bytes)
 void MtGeomCylinder::getBoundingAABB(MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<const ::MtCylinder&>(this->mCylinder).::MtCylinder::getBoundingAABB(aabb);
+    static_cast<const MtCylinder&>(mCylinder).getBoundingAABB(aabb);
 }
 
 // Address: 0x01be4510 - 0x01be4588 (120 bytes)
@@ -289,13 +289,13 @@ __attribute__((weak)) MtVector3 MtGeomCylinder::getInternalPos() const {
 // Address: 0x01be4ba0 - 0x01be4be7 (71 bytes)
 void MtGeomCylinder::setScale(f32 scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCylinder.p0.x = this->mCylinder.p0.x * scale;
-    this->mCylinder.p0.y = this->mCylinder.p0.y * scale;
-    this->mCylinder.p0.z = this->mCylinder.p0.z * scale;
-    this->mCylinder.p1.x = this->mCylinder.p1.x * scale;
-    this->mCylinder.p1.y = this->mCylinder.p1.y * scale;
-    this->mCylinder.p1.z = this->mCylinder.p1.z * scale;
-    this->mCylinder.r = this->mCylinder.r * scale;
+    mCylinder.p0.x = mCylinder.p0.x * scale;
+    mCylinder.p0.y = mCylinder.p0.y * scale;
+    mCylinder.p0.z = mCylinder.p0.z * scale;
+    mCylinder.p1.x = mCylinder.p1.x * scale;
+    mCylinder.p1.y = mCylinder.p1.y * scale;
+    mCylinder.p1.z = mCylinder.p1.z * scale;
+    mCylinder.r = mCylinder.r * scale;
 }
 
 // Address: 0x01be4bf0 - 0x01be4c57 (103 bytes)
@@ -339,6 +339,8 @@ __attribute__((weak)) void MtGeomCylinder::addPos(const MtVector3& pos) {
 
 // No out-of-line body: no code in the ELF
 // bool MtGeomCylinder::closest(const MtCylinder&, const MtCylinder&, MtContact*, MtContact*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtGeomCylinder::MyDTI MtGeomCylinder::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomCylinder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

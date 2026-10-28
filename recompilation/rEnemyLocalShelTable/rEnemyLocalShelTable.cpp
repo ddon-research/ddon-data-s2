@@ -36,7 +36,7 @@ const MtDTI& cEnemyLocalShelTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEnemyLocalShelTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::cEnemyLocalShelTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyLocalShelTable::DTI)->memAlloc(sz, align, cEnemyLocalShelTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEnemyLocalShelTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyLocalShelTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyLocalShelTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cEnemyLocalShelTable::createProperty(MtPropertyList& 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyLocalShelTable::MyDTI cEnemyLocalShelTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyLocalShelTable.cpp at 0x0066cbcf-0x0066cc0c (called at rEnemyLocalShelTable.cpp:24)
 //   in _GLOBAL__sub_I_rEnemyLocalShelTable.cpp at 0x0066cbcf-0x0066cc0c (called at rEnemyLocalShelTable.h:31)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cEnemyLocalShelTable::createProperty(MtPropertyList& 
 // Address: 0x0066c580 - 0x0066c5d9 (89 bytes)
 MtObject* cEnemyLocalShelTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyLocalShelTable;
+    return new (16u) cEnemyLocalShelTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rEnemyLocalShelTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyLocalShelTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::rEnemyLocalShelTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyLocalShelTable::DTI)->memAlloc(sz, align, rEnemyLocalShelTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rEnemyLocalShelTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rEnemyLocalShelTableD0Ev at 0x01a8b1d4-0x01a8b1f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyLocalShelTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyLocalShelTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyLocalShelTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,16 +149,16 @@ bool rEnemyLocalShelTable::loadData(MtDataReader& in, cEnemyLocalShelTable* pDat
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIdx);
+    nDDOIO::readData(in, pData->mIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mShellNo);
+    nDDOIO::readData(in, pData->mShellNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDieIsNoCall);
+    nDDOIO::readData(in, pData->mDieIsNoCall);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSyncFlagMax32);
+    nDDOIO::readData(in, pData->mSyncFlagMax32);
     return true;
 }
 
@@ -169,8 +171,10 @@ MT_CTSTR rEnemyLocalShelTable::getExt() const {
 // Address: 0x01a8b320 - 0x01a8b326 (6 bytes)
 u32 rEnemyLocalShelTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(260);
+    return 260;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyLocalShelTable::MyDTI rEnemyLocalShelTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyLocalShelTable.cpp at 0x0066cc0c-0x0066cc49 (called at rEnemyLocalShelTable.cpp:95)
@@ -180,7 +184,7 @@ u32 rEnemyLocalShelTable::getDataVersion() const {
 // Address: 0x0066c9f0 - 0x0066ca54 (100 bytes)
 MtObject* rEnemyLocalShelTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyLocalShelTable;
+    return new (16u) rEnemyLocalShelTable;
 }
 
 // Instance at 0x01a8b2d0 - 0x01a8b2e6 (22 bytes) of the generic rTbl2<T>::getData

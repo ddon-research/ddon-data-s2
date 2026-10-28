@@ -32,7 +32,7 @@ const MtDTI& cQuestSvRequestManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestSvRequestManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestSvRequestManager::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestSvRequestManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* cQuestSvRequestManager::getAllocator() {
 // Address: 0x001c34e0 - 0x001c3520 (64 bytes)
 void* cQuestSvRequestManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestSvRequestManager::getAllocator()->memAlloc(sz, align, ::cQuestSvRequestManager::DTI.::MtDTI::getID());
+    return cQuestSvRequestManager::getAllocator()->memAlloc(sz, align, cQuestSvRequestManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* cQuestSvRequestManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestSvRequestManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestSvRequestManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestSvRequestManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,20 +71,20 @@ inline void cQuestSvRequestManager::operator delete(void* p_addr) {
 // Address: 0x001c3590 - 0x001c35d8 (72 bytes)
 cQuestSvRequest* cQuestSvRequestManager::pushRequest(const MtDTI& requestClassDti) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csLock();
+    sQuestManagerExt::getInstance()->csLock();
     cQuestSvRequest* pRequestClass = static_cast<cQuestSvRequest*>(requestClassDti.newInstance());
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestSvRequestMgr()->::cQuestSvRequestManager::pushRequest(pRequestClass);
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csUnlock();
+    sQuestManagerExt::getInstance()->getQuestSvRequestMgr()->pushRequest(pRequestClass);
+    sQuestManagerExt::getInstance()->csUnlock();
     return pRequestClass;
 }
 
 // Address: 0x001c3700 - 0x001c374b (75 bytes)
 void cQuestSvRequestManager::popRequest(const MtObject* pFromClass) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csLock();
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestSvRequestMgr()->::cQuestSvRequestManager::removeRequest(pFromClass);
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestResourceLoadMgr()->::cQuestResourceLoadManager::removeTask(pFromClass);
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csUnlock();
+    sQuestManagerExt::getInstance()->csLock();
+    sQuestManagerExt::getInstance()->getQuestSvRequestMgr()->removeRequest(pFromClass);
+    sQuestManagerExt::getInstance()->getQuestResourceLoadMgr()->removeTask(pFromClass);
+    sQuestManagerExt::getInstance()->csUnlock();
 }
 
 // Address: 0x001c3870 - 0x001c38f3 (131 bytes)
@@ -105,7 +105,7 @@ __attribute__((weak)) bool cQuestSvRequestManager::canRequest(bool isDispAnnounc
 // Address: 0x001c3a00 - 0x001c3a08 (8 bytes)
 bool cQuestSvRequestManager::isEmpty() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestSvRequestQueue.::MtArray::mLength == static_cast<u32>(0);
+    return mQuestSvRequestQueue.mLength == 0;
 }
 
 // Address: 0x001c3a10 - 0x001c3a36 (38 bytes)
@@ -113,7 +113,7 @@ bool cQuestSvRequestManager::canReqQuestProgres() const {
     // DWARF local not rendered: const bool isProgress;
     // DWARF local not rendered: const bool isReqChangeLeader;
     // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
-    return (this->mpQuestProgressReq == static_cast<cQuestSvReqQuestProgress*>(nullptr)) && (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[43] != static_cast<sNetworkExt::NET_STAT>(1));
+    return (mpQuestProgressReq == nullptr) && (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[43] != sNetworkExt::NET_STAT_REQ);
 }
 
 // Address: 0x001c35e0 - 0x001c36f7 (279 bytes)
@@ -162,35 +162,35 @@ __attribute__((weak)) void cQuestSvRequestManager::deleteRequestQueue(nQuest::SC
 // Address: 0x001c3d20 - 0x001c3d9c (124 bytes)
 void cQuestSvRequestManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mpQuestProgressReq = static_cast<cQuestSvReqQuestProgress*>(nullptr);
-    if (this->mQuestSvRequestQueue.::MtArray::mLength != static_cast<u32>(0)) {
+    mpQuestProgressReq = nullptr;
+    if (mQuestSvRequestQueue.mLength != 0) {
         // inferred: the value the loop at 0x1c3d40 carries; no location-less local in scope fits
-        u32 v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
+        u32 v0_0 = mQuestSvRequestQueue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestSvRequestQueue.::MtArray::mLength) {
-                    v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestSvRequestQueue.mpArray[i0_3] != nullptr) {
+                delete mQuestSvRequestQueue.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuestSvRequestQueue.mLength) {
+                    v0_0 = mQuestSvRequestQueue.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mQuestSvRequestQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestSvRequestQueue.::MtArray::mpArray));
+    if (mQuestSvRequestQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestSvRequestQueue.mpArray));
     }
-    this->mQuestSvRequestQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mQuestSvRequestQueue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mQuestSvRequestQueue.::MtArray::mLength = static_cast<u32>(0);
+    mQuestSvRequestQueue.mpArray = nullptr;
+    mQuestSvRequestQueue.mBufsiz = 0;
+    mQuestSvRequestQueue.mLength = 0;
 }
 
 // Address: 0x001c3da0 - 0x001c3e3e (158 bytes)
@@ -209,35 +209,35 @@ cQuestSvRequestManager::cQuestSvRequestManager() {
 // Also emitted as: _ZN22cQuestSvRequestManagerD0Ev at 0x001c3f50
 cQuestSvRequestManager::~cQuestSvRequestManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mpQuestProgressReq = static_cast<cQuestSvReqQuestProgress*>(nullptr);
-    if (this->mQuestSvRequestQueue.::MtArray::mLength != static_cast<u32>(0)) {
+    mpQuestProgressReq = nullptr;
+    if (mQuestSvRequestQueue.mLength != 0) {
         // inferred: the value the loop at 0x1c3ed0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
+        u32 v0_0 = mQuestSvRequestQueue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestSvRequestQueue.::MtArray::mLength) {
-                    v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestSvRequestQueue.mpArray[i0_3] != nullptr) {
+                delete mQuestSvRequestQueue.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuestSvRequestQueue.mLength) {
+                    v0_0 = mQuestSvRequestQueue.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mQuestSvRequestQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestSvRequestQueue.::MtArray::mpArray));
+    if (mQuestSvRequestQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestSvRequestQueue.mpArray));
     }
-    this->mQuestSvRequestQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mQuestSvRequestQueue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mQuestSvRequestQueue.::MtArray::mLength = static_cast<u32>(0);
+    mQuestSvRequestQueue.mpArray = nullptr;
+    mQuestSvRequestQueue.mBufsiz = 0;
+    mQuestSvRequestQueue.mLength = 0;
 }
 
 // Address: 0x001c4010 - 0x001c4011 (1 bytes)
@@ -248,8 +248,10 @@ __attribute__((weak)) void cQuestSvRequestManager::createProperty(MtPropertyList
 // Address: 0x001c4020 - 0x001c4025 (5 bytes)
 MtUI* cQuestSvRequestManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSvRequestManager::MyDTI cQuestSvRequestManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cQuestSvRequestManager.cpp at 0x001c412f-0x001c416c (called at cQuestSvRequestManager.cpp:42)

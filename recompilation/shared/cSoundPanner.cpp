@@ -165,3 +165,9 @@ __attribute__((weak)) void cSoundPanner::pan71ch(const MtVector3& local_position
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool cSoundPanner::getGainsUsingTwoDimensionalVBAP(const MtVector3& ch1, const MtVector3& ch2, const MtVector3& virtual_source, f32& g1, f32& g2) const;
 
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cSoundPanner::DefaultSpeakerAngleL;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cSoundPanner::DefaultSpeakerAngleLs;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cSoundPanner::DefaultSpeakerAngleLe;
+

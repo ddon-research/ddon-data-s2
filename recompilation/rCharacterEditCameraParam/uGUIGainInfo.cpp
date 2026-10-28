@@ -34,7 +34,7 @@ const MtDTI& uGUIGainInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGainInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGainInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGainInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* uGUIGainInfo::getAllocator() {
 // Address: 0x00a92ce0 - 0x00a92d20 (64 bytes)
 void* uGUIGainInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGainInfo::getAllocator()->memAlloc(sz, align, ::uGUIGainInfo::DTI.::MtDTI::getID());
+    return uGUIGainInfo::getAllocator()->memAlloc(sz, align, uGUIGainInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* uGUIGainInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGainInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGainInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGainInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,19 +77,19 @@ inline void uGUIGainInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN12uGUIGainInfoD0Ev at 0x00a92eb0
 uGUIGainInfo::~uGUIGainInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a92f10 - 0x00a92f78 (104 bytes)
 bool uGUIGainInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NUMBER00_GUI"), static_cast<u32>(129), static_cast<t64>(1414745402)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NUMBER00_GUI"), 129u, 1414745402l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -102,38 +102,38 @@ bool uGUIGainInfo::loadResource() {
 // Address: 0x00a92f80 - 0x00a93086 (262 bytes)
 void uGUIGainInfo::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(12)), true);
-    this->setPlay(false);
-    this->mpInstNullAll = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(16), false));
-    this->mpInstNullBonus = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(13), false));
-    this->mpInstAnimText0 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(8), false));
-    this->mpInstAnimText1 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(11), false));
-    this->mpObjMsgText0 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(8), static_cast<u32>(21)));
-    this->mpObjMsgText1 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(11), static_cast<u32>(21)));
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateSleep);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(12u), true);
+    setPlay(false);
+    mpInstNullAll = static_cast<cGUIInstNull*>(getInstance(16u, false));
+    mpInstNullBonus = static_cast<cGUIInstNull*>(getInstance(13u, false));
+    mpInstAnimText0 = static_cast<cGUIInstAnimation*>(getInstance(8u, false));
+    mpInstAnimText1 = static_cast<cGUIInstAnimation*>(getInstance(11u, false));
+    mpObjMsgText0 = static_cast<cGUIObjMessage*>(getObjectFromId(8u, 21u));
+    mpObjMsgText1 = static_cast<cGUIObjMessage*>(getObjectFromId(11u, 21u));
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateSleep);
 }
 
 // Address: 0x00a930a0 - 0x00a930d1 (49 bytes)
 void uGUIGainInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a930e0 - 0x00a930fe (30 bytes)
 bool uGUIGainInfo::isEndAnimation() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    nGUI::FLOW* pFlow = this->getPlayingFlow();
-    if (pFlow != static_cast<nGUI::FLOW*>(nullptr)) {
-        return pFlow->id == static_cast<u32>(2);
+    nGUI::FLOW* pFlow = getPlayingFlow();
+    if (pFlow != nullptr) {
+        return pFlow->id == 2;
     } else {
         return false;
     }
@@ -197,20 +197,20 @@ __attribute__((weak)) void uGUIGainInfo::updateInit() {
 void uGUIGainInfo::updateIn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xa93a3d, used once; no DWARF local holds it
-    nGUI::FLOW* t0 = this->getPlayingFlow();
-    if (t0 != this->::uGUI::getFlow(static_cast<u32>(3))) {
+    nGUI::FLOW* t0 = getPlayingFlow();
+    if (t0 != getFlow(3u)) {
         return;
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateWait);
 }
 
 // Address: 0x00a93a80 - 0x00a93aea (106 bytes)
 void uGUIGainInfo::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWait = this->::cUnit::getDeltaTime() + this->mWait;
-    if (this->mWait > (::sMain::getInstance()->::sMain::getFps() * this->mWaitMax)) {
-        this->::uGUIBase::setFlowAndInit(static_cast<u32>(5), false);
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateOut);
+    mWait = getDeltaTime() + mWait;
+    if (mWait > (sMain::getInstance()->getFps() * mWaitMax)) {
+        setFlowAndInit(5u, false);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateOut);
     }
 }
 
@@ -231,6 +231,8 @@ __attribute__((weak)) void uGUIGainInfo::updateOut() {
 
 // No out-of-line body: no code in the ELF
 // void uGUIGainInfo::setTextFrame(cGUIObject* pObjText, u32 frame);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGainInfo::MyDTI uGUIGainInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGainInfo.cpp at 0x00a93c1f-0x00a93c5c (called at uGUIGainInfo.cpp:49)

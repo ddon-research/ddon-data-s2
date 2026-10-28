@@ -66,7 +66,7 @@ const MtDTI& nNetwork::nAchievement::Object::getDTI() const {
 // Address: 0x01193570 - 0x011935b0 (64 bytes)
 void* nNetwork::nAchievement::Object::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::nAchievement::Object::DTI)->memAlloc(sz, align, ::nNetwork::nAchievement::Object::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nAchievement::Object::DTI)->memAlloc(sz, align, ::nNetwork::nAchievement::Object::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,8 +128,8 @@ void nNetwork::nAchievement::Object::start() {
 // Address: 0x01193810 - 0x01193848 (56 bytes)
 bool nNetwork::nAchievement::Object::award(s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mState == static_cast<s32>(1)) {
-        this->mState = static_cast<s32>(0);
+    if (mState == 1) {
+        mState = 0;
         (::MtNetAchievement::mpInstance)->::MtNetAchievement::reqAward(static_cast<u32*>(nullptr), user_index, id);
         return true;
     } else {
@@ -158,17 +158,17 @@ bool nNetwork::nAchievement::Object::setVolume(f32 level) {
 bool nNetwork::nAchievement::Object::addListener(nNetwork::nAchievement::Listener* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: DWARF's location-less 'i' (lexical block [0x1193890, 0x11938a2), [0x11938a5, 0x11938ba)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
-    if (this->mListenerNum <= static_cast<s32>(15)) {
+    s32 i = 0;
+    if (mListenerNum <= 15) {
         do {
-            if (this->mListenerUse[i] == false) {
-                this->mpListener[i] = p;
-                this->mListenerUse[i] = true;
-                this->mListenerNum = this->mListenerNum + static_cast<s32>(1);
+            if (!mListenerUse[i]) {
+                mpListener[i] = p;
+                mListenerUse[i] = true;
+                mListenerNum = mListenerNum + 1;
                 return true;
             }
-            i += static_cast<s32>(1);
-        } while (i <= static_cast<s32>(15));
+            i += 1;
+        } while (i <= 15);
     }
     return false;
 }
@@ -177,20 +177,20 @@ bool nNetwork::nAchievement::Object::addListener(nNetwork::nAchievement::Listene
 void nNetwork::nAchievement::Object::removeListener(nNetwork::nAchievement::Listener* p) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    nNetwork::nAchievement::Listener* * p0 = &this->mpListener[0];
+    nNetwork::nAchievement::Listener* * p0 = &mpListener[0];
     // inferred: DWARF's location-less 'i' (lexical block [0x11938d0, 0x11938f8)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
-    if (this->mListenerNum > static_cast<s32>(0)) {
+    s32 i = 0;
+    if (mListenerNum > 0) {
         do {
             if (p == (*p0)) {
-                *p0 = static_cast<nNetwork::nAchievement::Listener*>(nullptr);
-                this->mListenerUse[i] = false;
-                this->mListenerNum = this->mListenerNum - static_cast<s32>(1);
+                *p0 = nullptr;
+                mListenerUse[i] = false;
+                mListenerNum = mListenerNum - 1;
                 return;
             }
             p0 += static_cast<int>(1);
-            i += static_cast<s32>(1);
-        } while (i <= static_cast<s32>(15));
+            i += 1;
+        } while (i <= 15);
     }
 }
 
@@ -250,6 +250,8 @@ __attribute__((weak)) void nNetwork::nAchievement::Object::onAwardListComplete(s
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nAchievement::Object::MyDTI nNetwork::nAchievement::Object::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nAchievement::Object::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -267,96 +269,96 @@ __attribute__((weak)) void nNetwork::nAchievement::Object::DriverListener::onNtc
 // Address: 0x01193910 - 0x01193925 (21 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsInitSucceed(u32 req_seq, u64 option) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onInitComplete(option, static_cast<MtNetError*>(nullptr));
+    mpParent->onInitComplete(option, static_cast<MtNetError*>(nullptr));
 }
 
 // Address: 0x01193930 - 0x0119393f (15 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsInitFail(u32 req_seq, MtNetError* net_err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onInitComplete(static_cast<u64>(0), net_err);
+    mpParent->onInitComplete(0ul, net_err);
 }
 
 // Address: 0x01193940 - 0x0119396a (42 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsStartSucceed(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onStartComplete(static_cast<MtNetError*>(nullptr));
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onStartComplete(static_cast<MtNetError*>(nullptr));
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193970 - 0x01193980 (16 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsStartFail(u32 req_seq, MtNetError* net_err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onStartComplete(net_err);
+    mpParent->onStartComplete(net_err);
 }
 
 // Address: 0x01193980 - 0x011939b6 (54 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsGetInfoSucceed(u32 req_seq, s32 user_index, s32 id, bool is_award) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onGetInfoComplete(user_index, id, is_award, static_cast<MtNetError*>(nullptr));
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onGetInfoComplete(user_index, id, is_award, static_cast<MtNetError*>(nullptr));
+    mpParent->mState = 1;
 }
 
 // Address: 0x011939c0 - 0x011939f5 (53 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsGetInfoFail(u32 req_seq, MtNetError* net_err, s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onGetInfoComplete(user_index, id, false, net_err);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onGetInfoComplete(user_index, id, false, net_err);
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193aa0 - 0x01193ad2 (50 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsAwardSucceed(u32 req_seq, s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onAwardComplete(user_index, id, static_cast<MtNetError*>(nullptr));
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onAwardComplete(user_index, id, static_cast<MtNetError*>(nullptr));
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193ae0 - 0x01193b13 (51 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsAwardFail(u32 req_seq, MtNetError* net_err, s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onAwardComplete(user_index, id, net_err);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onAwardComplete(user_index, id, net_err);
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193a00 - 0x01193a2e (46 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onNtcGetInfoListSucceed(s32 user_index, s32 id, bool is_award) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onGetInfoListResult(user_index, id, is_award, static_cast<MtNetError*>(nullptr));
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onGetInfoListResult(user_index, id, is_award, static_cast<MtNetError*>(nullptr));
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193a30 - 0x01193a68 (56 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onNtcGetInfoListFail(MtNetError* net_err, s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onGetInfoListResult(user_index, id, false, net_err);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onGetInfoListResult(user_index, id, false, net_err);
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193a70 - 0x01193a9a (42 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsGetInfoList(u32 req_seq, s32 user_index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onGetInfoListComplete(user_index);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onGetInfoListComplete(user_index);
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193b20 - 0x01193b4a (42 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onNtcAwardListSucceed(s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onAwardListResult(user_index, id, static_cast<MtNetError*>(nullptr));
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onAwardListResult(user_index, id, static_cast<MtNetError*>(nullptr));
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193b50 - 0x01193b82 (50 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onNtcAwardListFail(MtNetError* net_err, s32 user_index, s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onAwardListResult(user_index, id, net_err);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onAwardListResult(user_index, id, net_err);
+    mpParent->mState = 1;
 }
 
 // Address: 0x01193b90 - 0x01193bba (42 bytes)
 void nNetwork::nAchievement::Object::DriverListener::onAnsAwardList(u32 req_seq, s32 user_index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->onAwardListComplete(user_index);
-    this->mpParent->mState = static_cast<s32>(1);
+    mpParent->onAwardListComplete(user_index);
+    mpParent->mState = 1;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

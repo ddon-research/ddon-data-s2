@@ -64,6 +64,8 @@ __attribute__((weak)) void cQuestSvNotice::move() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSvNotice::MyDTI cQuestSvNotice::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (152 bytes)
 //   in _GLOBAL__sub_I_cQuestSvNotice.cpp at 0x001bd8a0-0x001bd8ec (called at cQuestSvNotice.cpp:27)
 //   in _GLOBAL__sub_I_cQuestSvNotice.cpp at 0x001bd8a0-0x001bd8ec (called at cQuestSvNotice.h:33)
@@ -98,7 +100,7 @@ const MtDTI& cQuestSvNoticeCallback::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestSvNoticeCallback::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestSvNoticeCallback::DTI)->memAlloc(sz, align, ::cQuestSvNoticeCallback::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestSvNoticeCallback::DTI)->memAlloc(sz, align, cQuestSvNoticeCallback::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ inline void* cQuestSvNoticeCallback::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestSvNoticeCallback::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestSvNoticeCallback::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestSvNoticeCallback::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void cQuestSvNoticeCallback::operator delete(void* p_addr) {
 // Address: 0x001bbf80 - 0x001bbf85 (5 bytes)
 const MtDTI& cQuestSvNoticeCallback::getNoticeClassDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNoticeClassDti;
+    return mNoticeClassDti;
 }
 
 // Address: 0x001bbf90 - 0x001bbfc4 (52 bytes)
@@ -139,7 +141,7 @@ __attribute__((weak)) cQuestSvNoticeCallback& cQuestSvNoticeCallback::setNoticeD
 // Address: 0x001bbfd0 - 0x001bbfd8 (8 bytes)
 cQuestSvNoticeCallback& cQuestSvNoticeCallback::setFromClass(MtObject* pFrom) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpFromClass = pFrom;
+    mpFromClass = pFrom;
     return *this;
 }
 
@@ -178,6 +180,8 @@ __attribute__((weak)) void cQuestSvNoticeCallback::createProperty(MtPropertyList
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSvNoticeCallback::MyDTI cQuestSvNoticeCallback::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestSvNotice.cpp at 0x001bd8ec-0x001bd925 (called at cQuestSvNotice.cpp:84)
 //   in _GLOBAL__sub_I_cQuestSvNotice.cpp at 0x001bd8ec-0x001bd925 (called at cQuestSvNotice.h:79)
@@ -186,6 +190,6 @@ __attribute__((weak)) void cQuestSvNoticeCallback::createProperty(MtPropertyList
 // Address: 0x001bbea0 - 0x001bbf07 (103 bytes)
 MtObject* cQuestSvNoticeCallback::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestSvNoticeCallback;
+    return new (16u) cQuestSvNoticeCallback;
 }
 

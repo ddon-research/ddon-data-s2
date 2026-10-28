@@ -156,9 +156,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline rNPCEmoMyRoom::InfoBinary::InfoBinary() {
     this->mTransOff = false;
-    this->mUID = static_cast<u32>(0);
-    this->mpMotList = static_cast<rNPCEmoMyRoom::InfoBinary::MotDataBinary*>(nullptr);
-    this->mMotListNum = static_cast<u32>(0);
+    this->mUID = 0;
+    this->mpMotList = nullptr;
+    this->mMotListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -168,8 +168,8 @@ inline bool rNPCEmoMyRoom::InfoBinary::isTransOff() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rNPCEmoMyRoom::InfoBinary::MotDataBinary::MotDataBinary() {
-    this->mMotNoM = static_cast<s16>(-1);
-    this->mMotNoW = static_cast<s16>(-1);
-    this->mFinger = static_cast<s16>(-1);
-    this->mLoop = static_cast<s16>(0);
+    this->mMotNoM = -1;
+    this->mMotNoW = -1;
+    this->mFinger = -1;
+    this->mLoop = 0;
 }

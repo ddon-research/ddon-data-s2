@@ -44,7 +44,7 @@ const MtDTI& cQuestPhaseComponent::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20cQuestPhaseComponentD0Ev at 0x0197fe70-0x0197fe9a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cQuestPhaseComponent::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseComponent::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseComponent::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,6 +55,8 @@ inline void cQuestPhaseComponent::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cQuestPhaseComponent::operator delete[](void* p_addr, u32 align);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseComponent::MyDTI cQuestPhaseComponent::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseComponent.cpp at 0x0015cb70-0x0015cbb9 (called at cQuestPhaseComponent.cpp:27)
@@ -102,7 +104,7 @@ const MtDTI& cQuestPhaseCpDivide::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cQuestPhaseCpDivideD0Ev at 0x0197fe10-0x0197fe3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cQuestPhaseCpDivide::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,8 +119,8 @@ inline void cQuestPhaseCpDivide::operator delete(void* p_addr) {
 // Address: 0x0015c4c0 - 0x0015c4d1 (17 bytes)
 void cQuestPhaseCpDivide::getDivideStage(u32& stageNo, u32& startPosNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    stageNo = this->mStageNo;
-    startPosNo = this->mStartPosNo;
+    stageNo = mStageNo;
+    startPosNo = mStartPosNo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,37 +129,37 @@ void cQuestPhaseCpDivide::getDivideStage(u32& stageNo, u32& startPosNo) const {
 // Address: 0x0015c4f0 - 0x0015c4fd (13 bytes)
 void cQuestPhaseCpDivide::setDivideStage(u32 stageNo, u32 startPosNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = stageNo;
-    this->mStartPosNo = startPosNo;
+    mStageNo = stageNo;
+    mStartPosNo = startPosNo;
 }
 
 // Address: 0x0015c500 - 0x0015c507 (7 bytes)
 bool cQuestPhaseCpDivide::isDivideSetup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsSetup;
+    return mIsSetup;
 }
 
 // Address: 0x0015c510 - 0x0015c576 (102 bytes)
 void cQuestPhaseCpDivide::setDivideSetup(bool isSetup) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsSetup = isSetup;
-    this->mDividePlayer[0].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[0].mHasChanged = false;
-    this->mDividePlayer[1].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[1].mHasChanged = false;
-    this->mDividePlayer[2].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[2].mHasChanged = false;
-    this->mDividePlayer[3].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[3].mHasChanged = false;
-    this->mDividePlayer[4].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[4].mHasChanged = false;
-    this->mDividePlayer[5].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[5].mHasChanged = false;
-    this->mDividePlayer[6].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[6].mHasChanged = false;
-    this->mDividePlayer[7].mCharacterId = static_cast<u32>(0);
-    this->mDividePlayer[7].mHasChanged = false;
+    mIsSetup = isSetup;
+    mDividePlayer[0].mCharacterId = 0;
+    mDividePlayer[0].mHasChanged = false;
+    mDividePlayer[1].mCharacterId = 0;
+    mDividePlayer[1].mHasChanged = false;
+    mDividePlayer[2].mCharacterId = 0;
+    mDividePlayer[2].mHasChanged = false;
+    mDividePlayer[3].mCharacterId = 0;
+    mDividePlayer[3].mHasChanged = false;
+    mDividePlayer[4].mCharacterId = 0;
+    mDividePlayer[4].mHasChanged = false;
+    mDividePlayer[5].mCharacterId = 0;
+    mDividePlayer[5].mHasChanged = false;
+    mDividePlayer[6].mCharacterId = 0;
+    mDividePlayer[6].mHasChanged = false;
+    mDividePlayer[7].mCharacterId = 0;
+    mDividePlayer[7].mHasChanged = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -168,15 +170,15 @@ bool cQuestPhaseCpDivide::isDividePlayer(u32 characterId) const {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the value the loop at 0x15c5a0 carries; no location-less local in scope fits
-    for (const u32* v0_1 = &this->mDividePlayer[0].mCharacterId;;) {
+    for (const u32* v0_1 = &mDividePlayer[0].mCharacterId;;) {
         if ((*v0_1) == characterId) {
-            return this->mDividePlayer[i0_0].mHasChanged == false;
+            return !mDividePlayer[i0_0].mHasChanged;
         } else {
-            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
-                v0_1 += static_cast<int>(4);
+            if ((i0_0 + 1u) <= 7u) {
+                i0_0 = i0_0 + 1u;
+                v0_1 += 4;
             } else {
                 break;
             }
@@ -188,10 +190,10 @@ bool cQuestPhaseCpDivide::isDividePlayer(u32 characterId) const {
 // Address: 0x0015c5c0 - 0x0015c5dc (28 bytes)
 void cQuestPhaseCpDivide::setDivideCharacterId(u32 characterId, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(7)) {
-        this->mDividePlayer[index].mCharacterId = characterId;
-        this->mDividePlayer[index].mHasChanged = false;
-        this->mIsFinishedEnemyAction = false;
+    if (index <= 7u) {
+        mDividePlayer[index].mCharacterId = characterId;
+        mDividePlayer[index].mHasChanged = false;
+        mIsFinishedEnemyAction = false;
     }
 }
 
@@ -207,15 +209,15 @@ bool cQuestPhaseCpDivide::isReturnPlayer(u32 characterId) const {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the value the loop at 0x15c620 carries; no location-less local in scope fits
-    for (const u32* v0_1 = &this->mReturnPlayer[0].mCharacterId;;) {
+    for (const u32* v0_1 = &mReturnPlayer[0].mCharacterId;;) {
         if ((*v0_1) == characterId) {
-            return this->mReturnPlayer[i0_0].mHasChanged == false;
+            return !mReturnPlayer[i0_0].mHasChanged;
         } else {
-            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
-                v0_1 += static_cast<int>(4);
+            if ((i0_0 + 1u) <= 7u) {
+                i0_0 = i0_0 + 1u;
+                v0_1 += 4;
             } else {
                 break;
             }
@@ -230,9 +232,9 @@ bool cQuestPhaseCpDivide::isReturnPlayer(u32 characterId) const {
 // Address: 0x0015c660 - 0x0015c67b (27 bytes)
 void cQuestPhaseCpDivide::setReturnCharacterId(u32 characterId, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(7)) {
-        this->mReturnPlayer[index].mCharacterId = characterId;
-        this->mReturnPlayer[index].mHasChanged = false;
+    if (index <= 7u) {
+        mReturnPlayer[index].mCharacterId = characterId;
+        mReturnPlayer[index].mHasChanged = false;
     }
 }
 
@@ -248,16 +250,16 @@ void cQuestPhaseCpDivide::returnPlayer(u32 characterId) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the value the loop at 0x15c6c0 carries; no location-less local in scope fits
-    for (u32* v0_1 = &this->mReturnPlayer[0].mCharacterId;;) {
+    for (u32* v0_1 = &mReturnPlayer[0].mCharacterId;;) {
         if ((*v0_1) == characterId) {
-            this->mReturnPlayer[i0_0].mHasChanged = true;
+            mReturnPlayer[i0_0].mHasChanged = true;
             return;
         } else {
-            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
-                v0_1 += static_cast<int>(4);
+            if ((i0_0 + 1u) <= 7u) {
+                i0_0 = i0_0 + 1u;
+                v0_1 += 4;
             } else {
                 break;
             }
@@ -279,55 +281,55 @@ void cQuestPhaseCpDivide::dividePlayer(u32 characterId) {
     // DWARF local not rendered: u32 j;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: the value the loop at 0x15c720 carries; no location-less local in scope fits
-    for (u32* v0_1 = &this->mDividePlayer[0].mCharacterId;;) {
+    for (u32* v0_1 = &mDividePlayer[0].mCharacterId;;) {
         if ((*v0_1) != characterId) {
-            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
-                v0_1 += static_cast<int>(4);
+            if ((i0_0 + 1u) <= 7u) {
+                i0_0 = i0_0 + 1u;
+                v0_1 += 4;
             } else {
                 break;
             }
         } else {
-            this->mDividePlayer[i0_0].mHasChanged = true;
+            mDividePlayer[i0_0].mHasChanged = true;
             break;
         }
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i2_0 = static_cast<unsigned int>(0);
+    unsigned int i2_0 = 0;
     // inferred: the value the loop at 0x15c760 carries; several values fit
     unsigned int v4_0;
     // inferred: the value the loop at 0x15c760 carries; several values fit
     unsigned int v4_1;
     for (;;) {
-        if (this->mHasRequestedCharacterId[i2_0] != characterId) {
-            if ((i2_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                i2_0 = i2_0 + static_cast<unsigned int>(1);
+        if (mHasRequestedCharacterId[i2_0] != characterId) {
+            if ((i2_0 + 1u) <= 7u) {
+                i2_0 = i2_0 + 1u;
             } else {
                 return;
             }
         } else {
-            if (i2_0 > static_cast<unsigned int>(6)) {
-                this->mHasRequestedCharacterId[7] = static_cast<unsigned int>(0);
+            if (i2_0 > 6u) {
+                mHasRequestedCharacterId[7] = 0;
                 return;
             } else {
                 v4_0 = i2_0;
-                v4_1 = i2_0 + static_cast<unsigned int>(1);
+                v4_1 = i2_0 + 1u;
                 break;
             }
         }
     }
     for (;;) {
-        this->mHasRequestedCharacterId[v4_0] = this->mHasRequestedCharacterId[v4_1];
-        if ((v4_0 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(7)) {
-            v4_0 = v4_0 + static_cast<unsigned int>(1);
-            v4_1 += static_cast<unsigned int>(1);
+        mHasRequestedCharacterId[v4_0] = mHasRequestedCharacterId[v4_1];
+        if ((v4_0 + 1u) != 7) {
+            v4_0 = v4_0 + 1u;
+            v4_1 += 1u;
         } else {
             break;
         }
     }
-    this->mHasRequestedCharacterId[7] = static_cast<unsigned int>(0);
+    mHasRequestedCharacterId[7] = 0;
 }
 
 // Address: 0x0015c790 - 0x0015c7bb (43 bytes)
@@ -343,28 +345,28 @@ __attribute__((weak)) bool cQuestPhaseCpDivide::hasSucceededDivide() const {
 // Address: 0x0015c7c0 - 0x0015c7c7 (7 bytes)
 bool cQuestPhaseCpDivide::existsDividePlayer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mExistDividePlayer;
+    return mExistDividePlayer;
 }
 
 // Address: 0x0015c7d0 - 0x0015c7d8 (8 bytes)
 void cQuestPhaseCpDivide::setExistDividePlayer(bool exists) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExistDividePlayer = exists;
+    mExistDividePlayer = exists;
 }
 
 // Address: 0x0015c7e0 - 0x0015c804 (36 bytes)
 bool cQuestPhaseCpDivide::hasRequestedWarpPlayer(u32 characterId) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    unsigned int* p2 = &this->mHasRequestedCharacterId[0];
+    unsigned int* p2 = &mHasRequestedCharacterId[0];
     do {
         if ((*p2) == characterId) {
             return true;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(7));
+    } while (i <= 7u);
     return false;
 }
 
@@ -373,34 +375,33 @@ void cQuestPhaseCpDivide::requestWarpPlayer(u32 characterId) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0 = static_cast<unsigned int>(1);
+    unsigned int i0 = 1;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    unsigned int* p2 = &this->mHasRequestedCharacterId[0];
+    unsigned int* p2 = &mHasRequestedCharacterId[0];
     do {
-        if ((*p2) != static_cast<unsigned int>(0)) {
-            if ((*p2) != characterId) {
-            } else {
+        if ((*p2) != 0) {
+            if ((*p2) == characterId) {
                 return;
             }
         } else {
             *p2 = characterId;
             return;
         }
-        i0 += static_cast<unsigned int>(1);
+        i0 += 1u;
         p2 += static_cast<int>(1);
-    } while ((i0 - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7));
+    } while ((i0 - 1u) <= 7u);
 }
 
 // Address: 0x0015c840 - 0x0015c847 (7 bytes)
 bool cQuestPhaseCpDivide::isFinishedEnemyAction() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsFinishedEnemyAction;
+    return mIsFinishedEnemyAction;
 }
 
 // Address: 0x0015c850 - 0x0015c858 (8 bytes)
 void cQuestPhaseCpDivide::finishEnemyAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsFinishedEnemyAction = true;
+    mIsFinishedEnemyAction = true;
 }
 
 // Address: 0x0015c860 - 0x0015c9b2 (338 bytes)
@@ -409,69 +410,69 @@ void cQuestPhaseCpDivide::callbackLeaveParty(u32 characterId) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mDividePlayer[0].mCharacterId == characterId) {
-        this->mDividePlayer[0].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[0].mHasChanged = false;
+    if (mDividePlayer[0].mCharacterId == characterId) {
+        mDividePlayer[0].mCharacterId = 0;
+        mDividePlayer[0].mHasChanged = false;
     }
-    if (this->mDividePlayer[1].mCharacterId == characterId) {
-        this->mDividePlayer[1].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[1].mHasChanged = false;
+    if (mDividePlayer[1].mCharacterId == characterId) {
+        mDividePlayer[1].mCharacterId = 0;
+        mDividePlayer[1].mHasChanged = false;
     }
-    if (this->mDividePlayer[2].mCharacterId == characterId) {
-        this->mDividePlayer[2].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[2].mHasChanged = false;
+    if (mDividePlayer[2].mCharacterId == characterId) {
+        mDividePlayer[2].mCharacterId = 0;
+        mDividePlayer[2].mHasChanged = false;
     }
-    if (this->mDividePlayer[3].mCharacterId == characterId) {
-        this->mDividePlayer[3].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[3].mHasChanged = false;
+    if (mDividePlayer[3].mCharacterId == characterId) {
+        mDividePlayer[3].mCharacterId = 0;
+        mDividePlayer[3].mHasChanged = false;
     }
-    if (this->mDividePlayer[4].mCharacterId == characterId) {
-        this->mDividePlayer[4].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[4].mHasChanged = false;
+    if (mDividePlayer[4].mCharacterId == characterId) {
+        mDividePlayer[4].mCharacterId = 0;
+        mDividePlayer[4].mHasChanged = false;
     }
-    if (this->mDividePlayer[5].mCharacterId == characterId) {
-        this->mDividePlayer[5].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[5].mHasChanged = false;
+    if (mDividePlayer[5].mCharacterId == characterId) {
+        mDividePlayer[5].mCharacterId = 0;
+        mDividePlayer[5].mHasChanged = false;
     }
-    if (this->mDividePlayer[6].mCharacterId == characterId) {
-        this->mDividePlayer[6].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[6].mHasChanged = false;
+    if (mDividePlayer[6].mCharacterId == characterId) {
+        mDividePlayer[6].mCharacterId = 0;
+        mDividePlayer[6].mHasChanged = false;
     }
-    if (this->mDividePlayer[7].mCharacterId == characterId) {
-        this->mDividePlayer[7].mCharacterId = static_cast<u32>(0);
-        this->mDividePlayer[7].mHasChanged = false;
+    if (mDividePlayer[7].mCharacterId == characterId) {
+        mDividePlayer[7].mCharacterId = 0;
+        mDividePlayer[7].mHasChanged = false;
     }
-    if (this->mReturnPlayer[0].mCharacterId == characterId) {
-        this->mReturnPlayer[0].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[0].mHasChanged = false;
+    if (mReturnPlayer[0].mCharacterId == characterId) {
+        mReturnPlayer[0].mCharacterId = 0;
+        mReturnPlayer[0].mHasChanged = false;
     }
-    if (this->mReturnPlayer[1].mCharacterId == characterId) {
-        this->mReturnPlayer[1].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[1].mHasChanged = false;
+    if (mReturnPlayer[1].mCharacterId == characterId) {
+        mReturnPlayer[1].mCharacterId = 0;
+        mReturnPlayer[1].mHasChanged = false;
     }
-    if (this->mReturnPlayer[2].mCharacterId == characterId) {
-        this->mReturnPlayer[2].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[2].mHasChanged = false;
+    if (mReturnPlayer[2].mCharacterId == characterId) {
+        mReturnPlayer[2].mCharacterId = 0;
+        mReturnPlayer[2].mHasChanged = false;
     }
-    if (this->mReturnPlayer[3].mCharacterId == characterId) {
-        this->mReturnPlayer[3].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[3].mHasChanged = false;
+    if (mReturnPlayer[3].mCharacterId == characterId) {
+        mReturnPlayer[3].mCharacterId = 0;
+        mReturnPlayer[3].mHasChanged = false;
     }
-    if (this->mReturnPlayer[4].mCharacterId == characterId) {
-        this->mReturnPlayer[4].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[4].mHasChanged = false;
+    if (mReturnPlayer[4].mCharacterId == characterId) {
+        mReturnPlayer[4].mCharacterId = 0;
+        mReturnPlayer[4].mHasChanged = false;
     }
-    if (this->mReturnPlayer[5].mCharacterId == characterId) {
-        this->mReturnPlayer[5].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[5].mHasChanged = false;
+    if (mReturnPlayer[5].mCharacterId == characterId) {
+        mReturnPlayer[5].mCharacterId = 0;
+        mReturnPlayer[5].mHasChanged = false;
     }
-    if (this->mReturnPlayer[6].mCharacterId == characterId) {
-        this->mReturnPlayer[6].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[6].mHasChanged = false;
+    if (mReturnPlayer[6].mCharacterId == characterId) {
+        mReturnPlayer[6].mCharacterId = 0;
+        mReturnPlayer[6].mHasChanged = false;
     }
-    if (this->mReturnPlayer[7].mCharacterId == characterId) {
-        this->mReturnPlayer[7].mCharacterId = static_cast<u32>(0);
-        this->mReturnPlayer[7].mHasChanged = false;
+    if (mReturnPlayer[7].mCharacterId == characterId) {
+        mReturnPlayer[7].mCharacterId = 0;
+        mReturnPlayer[7].mHasChanged = false;
     }
 }
 
@@ -486,6 +487,8 @@ cQuestPhaseCpDivide::cQuestPhaseCpDivide() {
 __attribute__((weak)) void cQuestPhaseCpDivide::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseCpDivide::MyDTI cQuestPhaseCpDivide::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseComponent.cpp at 0x0015cbb9-0x0015cbf2 (called at cQuestPhaseComponent.cpp:40)
@@ -520,7 +523,7 @@ const MtDTI& cQuestPhaseCpDivide::cPlayerState::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cQuestPhaseCpDivide::cPlayerState::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::cPlayerState::DTI)->memAlloc(sz, align, ::cQuestPhaseCpDivide::cPlayerState::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::cPlayerState::DTI)->memAlloc(sz, align, cQuestPhaseCpDivide::cPlayerState::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -535,7 +538,7 @@ inline void* cQuestPhaseCpDivide::cPlayerState::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cQuestPhaseCpDivide12cPlayerStateD0Ev at 0x0197feb0-0x0197feda, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cQuestPhaseCpDivide::cPlayerState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::cPlayerState::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::cPlayerState::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -563,6 +566,8 @@ inline void cQuestPhaseCpDivide::cPlayerState::operator delete(void* p_addr) {
 //   in cQuestPhaseCpDivide::callbackLeaveParty at 0x0015c8f1-0x0015c902, 0x0015c90a-0x0015c91b, 0x0015c923-0x0015c934, 0x0015c93c-0x0015c94d, 0x0015c955-0x0015c966, 0x0015c96e-0x0015c97f, 0x0015c987-0x0015c998, 0x0015c9a0-0x0015c9b1 (called at cQuestPhaseComponent.cpp:510)
 // void cQuestPhaseCpDivide::cPlayerState::reset();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseCpDivide::cPlayerState::MyDTI cQuestPhaseCpDivide::cPlayerState::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseComponent.cpp at 0x0015cbf2-0x0015cc2b (called at cQuestPhaseComponent.cpp:41)
 //   in _GLOBAL__sub_I_cQuestPhaseComponent.cpp at 0x0015cbf2-0x0015cc2b (called at cQuestPhaseComponent.h:67)
@@ -571,6 +576,6 @@ inline void cQuestPhaseCpDivide::cPlayerState::operator delete(void* p_addr) {
 // Address: 0x0015c400 - 0x0015c44b (75 bytes)
 MtObject* cQuestPhaseCpDivide::cPlayerState::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestPhaseCpDivide::cPlayerState;
+    return new (16u) cQuestPhaseCpDivide::cPlayerState;
 }
 

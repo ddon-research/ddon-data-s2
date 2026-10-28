@@ -56,7 +56,7 @@ const MtDTI& cGUIExtNetMgr::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIExtNetMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIExtNetMgr::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIExtNetMgr::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,23 +104,23 @@ __attribute__((weak)) void cGUIExtNetMgr::clearReceiveFlags() {
 const SkillParamVec& cGUIExtNetMgr::getCustomSkillParam(u32 JobId) {
     // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mData.CustomSkillParam[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
+    return mData.CustomSkillParam[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
 // Address: 0x000d8170 - 0x000d8190 (32 bytes)
 bool cGUIExtNetMgr::isReceiveCustomSkillParam(u32 JobId) {
     // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mData.ReceiveCustomSkillParam[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
+    return mData.ReceiveCustomSkillParam[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
 // Address: 0x000d8190 - 0x000d81b5 (37 bytes)
 const cGUIExtNetMgr::BasicAbilityInfo& cGUIExtNetMgr::getAbilityParam(u32 abilityId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (abilityId <= static_cast<u32>(499)) {
-        return this->mData.AbilityParam[abilityId];
+    if (abilityId <= 499u) {
+        return mData.AbilityParam[abilityId];
     } else {
-        return this->mData.AbilityParam[0];
+        return mData.AbilityParam[0];
     }
 }
 
@@ -149,7 +149,7 @@ __attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearne
 const SetAcquirementParamVec& cGUIExtNetMgr::getSetCustomSkill(u32 JobId) {
     // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mData.SetCustomSkill[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
+    return mData.SetCustomSkill[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
 // Address: 0x000d8420 - 0x000d8458 (56 bytes)
@@ -169,11 +169,11 @@ __attribute__((weak)) const PresetAbilityParamVec& cGUIExtNetMgr::getPresetAbili
 // Address: 0x000d84a0 - 0x000d84cc (44 bytes)
 u32 cGUIExtNetMgr::getAbilityCost() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const nUserSession::CPacket_S2C_GET_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAbilityCostPacket();
-    if (pData != static_cast<const nUserSession::CPacket_S2C_GET_ABILITY_COST_RES*>(nullptr)) {
-        return pData->::nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::CostMax();
+    const nUserSession::CPacket_S2C_GET_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAbilityCostPacket();
+    if (pData != nullptr) {
+        return pData->nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::CostMax();
     } else {
-        return static_cast<u32>(9999);
+        return 9999;
     }
 }
 
@@ -214,7 +214,7 @@ __attribute__((weak)) const PawnJobChangeInfoVec& cGUIExtNetMgr::getPawnJobChang
 // Address: 0x000d85b0 - 0x000d85c3 (19 bytes)
 u32 cGUIExtNetMgr::getDogmaOrbPageParcent(u32 Page) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cGUIExtNetMgr::calcDogmaOrbPageParcent(&this->mData.DogmaOrb[Page]);
+    return calcDogmaOrbPageParcent(&mData.DogmaOrb[Page]);
 }
 
 // No out-of-line body: no code in the ELF
@@ -226,7 +226,7 @@ u32 cGUIExtNetMgr::getDogmaOrbPageParcent(u32 Page) const {
 // Address: 0x000d87b0 - 0x000d87c3 (19 bytes)
 u32 cGUIExtNetMgr::getPawnDogmaOrbPageParcent(u32 Page) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cGUIExtNetMgr::calcDogmaOrbPageParcent(&this->mData.PawnDogmaOrb[Page]);
+    return calcDogmaOrbPageParcent(&mData.PawnDogmaOrb[Page]);
 }
 
 // Address: 0x000d81c0 - 0x000d832a (362 bytes)
@@ -277,7 +277,7 @@ __attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLe
 const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetCustomSkill(u32 JobId) {
     // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mData.PawnSetCustomSkill[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
+    return mData.PawnSetCustomSkill[nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
 // Address: 0x000d88c0 - 0x000d88f8 (56 bytes)
@@ -290,11 +290,11 @@ __attribute__((weak)) const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetAbi
 // Address: 0x000d8900 - 0x000d892c (44 bytes)
 u32 cGUIExtNetMgr::getPawnAbilityCost() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getPawnAbilityCostPacket();
-    if (pData != static_cast<const nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES*>(nullptr)) {
-        return pData->::nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::CostMax();
+    const nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPawnAbilityCostPacket();
+    if (pData != nullptr) {
+        return pData->nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::CostMax();
     } else {
-        return static_cast<u32>(9999);
+        return 9999;
     }
 }
 
@@ -335,12 +335,12 @@ __attribute__((weak)) void cGUIExtNetMgr::setPresetEquipName(s32 PresetNo, MT_CT
 // Address: 0x000d8e90 - 0x000d8eba (42 bytes)
 const cGUIExtNetMgr::PresetEquipInfo& cGUIExtNetMgr::getPresetEquipInfo(u32 PresetNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (PresetNo != static_cast<u32>(0)) {
-        if (PresetNo <= static_cast<u32>(10)) {
-            return this->mData.PresetEquipList[PresetNo - static_cast<u32>(1)];
+    if (PresetNo != 0) {
+        if (PresetNo <= 10u) {
+            return mData.PresetEquipList[PresetNo - 1u];
         }
     }
-    return this->mData.PresetEquipList[0];
+    return mData.PresetEquipList[0];
 }
 
 // Address: 0x000d8ec0 - 0x000d8f70 (176 bytes)
@@ -356,36 +356,35 @@ __attribute__((weak)) void cGUIExtNetMgr::setupWarpPointList(const CommonU32Vec&
 void cGUIExtNetMgr::addWarpPointList(u32 Id) {
     // DWARF local not rendered: WarpPoint& warp_point;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mData.WarpPointList.Num <= static_cast<u32>(79)) {
-        if (this->mData.WarpPointList.Num == static_cast<u32>(0)) {
-            this->mData.WarpPointList.Id[0] = Id;
-            this->mData.WarpPointList.Num = this->mData.WarpPointList.Num + static_cast<u32>(1);
+    if (mData.WarpPointList.Num <= 79u) {
+        if (mData.WarpPointList.Num == 0) {
+            mData.WarpPointList.Id[0] = Id;
+            mData.WarpPointList.Num = mData.WarpPointList.Num + 1u;
             return;
         }
     } else {
         return;
     }
     // inferred: DWARF's location-less 'i' (lexical block [0xd8f70, 0xd8f76), [0xd8f7e, 0xd8fa0)) is the counter this loop steps
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (this->mData.WarpPointList.Id[i] != Id) {
-        } else {
+        if (mData.WarpPointList.Id[i] == Id) {
             return;
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mData.WarpPointList.Num);
-    this->mData.WarpPointList.Id[this->mData.WarpPointList.Num] = Id;
-    this->mData.WarpPointList.Num = this->mData.WarpPointList.Num + static_cast<u32>(1);
+        i += 1u;
+    } while (i < mData.WarpPointList.Num);
+    mData.WarpPointList.Id[mData.WarpPointList.Num] = Id;
+    mData.WarpPointList.Num = mData.WarpPointList.Num + 1u;
 }
 
 // Address: 0x000d8fc0 - 0x000d8ff0 (48 bytes)
 void cGUIExtNetMgr::setArisenCardProfile(const CDataArisenProfile& Profile) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArisenCardData.m_ucBackgroundID = Profile.m_ucBackgroundID;
-    this->mArisenCardData.m_Title.m_unIndex = Profile.m_Title.m_unIndex;
-    this->mArisenCardData.m_Title.m_unUid = Profile.m_Title.m_unUid;
-    this->mArisenCardData.m_usMotionID = Profile.m_usMotionID;
-    this->mArisenCardData.m_unMotionFrameNo = Profile.m_unMotionFrameNo;
+    mArisenCardData.m_ucBackgroundID = Profile.m_ucBackgroundID;
+    mArisenCardData.m_Title.m_unIndex = Profile.m_Title.m_unIndex;
+    mArisenCardData.m_Title.m_unUid = Profile.m_Title.m_unUid;
+    mArisenCardData.m_usMotionID = Profile.m_usMotionID;
+    mArisenCardData.m_unMotionFrameNo = Profile.m_unMotionFrameNo;
 }
 
 // Address: 0x000d8ff0 - 0x000d9093 (163 bytes)
@@ -636,20 +635,19 @@ cGUIExtNetMgr::~cGUIExtNetMgr() {
 // Address: 0x000d68e0 - 0x000d6934 (84 bytes)
 void cGUIExtNetMgr::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsComplete != false) {
+    if (mIsComplete) {
         return;
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
         return;
     }
-    if (this->mServerCommandId != static_cast<u32>(0)) {
-        this->::cGUIExtNetMgr::moveWaitServer();
-        if (this->mServerCommandId != static_cast<u32>(0)) {
-        } else {
-            this->::cGUIExtNetMgr::moveNextRequest();
+    if (mServerCommandId != 0) {
+        moveWaitServer();
+        if (mServerCommandId == 0) {
+            moveNextRequest();
         }
     } else {
-        this->::cGUIExtNetMgr::moveNextRequest();
+        moveNextRequest();
     }
 }
 
@@ -733,6 +731,8 @@ __attribute__((weak)) u32 cGUIExtNetMgr::calcDogmaOrbPageParcent(const cGUIExtNe
     DDON_STUB("cGUIExtNetMgr::calcDogmaOrbPageParcent")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIExtNetMgr::MyDTI cGUIExtNetMgr::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGUIExtNetMgr.cpp at 0x000d91cf-0x000d920c (called at cGUIExtNetMgr.cpp:26)

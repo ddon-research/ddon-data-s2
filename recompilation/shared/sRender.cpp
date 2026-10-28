@@ -59,7 +59,7 @@ const MtDTI& sRender::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sRenderD0Ev at 0x0126043e-0x0126045f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sRender::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sRender::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sRender::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,8 +182,8 @@ __attribute__((weak)) void sRender::move() {
 // Address: 0x01263030 - 0x01263053 (35 bytes)
 void sRender::beforeMove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sUnit::mpInstance)->::sUnit::resetDrawCommandCacheCount();
-    (::sUnit::mpInstance)->::sUnit::updateDrawCommandCache();
+    (sUnit::mpInstance)->sUnit::resetDrawCommandCacheCount();
+    (sUnit::mpInstance)->sUnit::updateDrawCommandCache();
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,7 +205,7 @@ void sRender::beforeMove() {
 // Address: 0x01263ad0 - 0x01263ad5 (5 bytes)
 MtUI* sRender::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01263ba0 - 0x01266e21 (12929 bytes)
@@ -247,41 +247,41 @@ __attribute__((weak)) void sRender::createMenu(MtPropertyList& s) {
 // Address: 0x0125fc50 - 0x0125fc5f (15 bytes)
 void sRender::setAspectType(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mAspectType == v) {
+    if (mAspectType == v) {
         return;
     }
-    this->mAspectType = v;
+    mAspectType = v;
 }
 
 // Address: 0x01ba6a80 - 0x01ba6a87 (7 bytes)
 u32 sRender::getAspectType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAspectType;
+    return mAspectType;
 }
 
 // Address: 0x01263ae0 - 0x01263ae7 (7 bytes)
 void sRender::setScaleMode(u32 scaleMode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScaleMode = scaleMode;
+    mScaleMode = scaleMode;
 }
 
 // Address: 0x01ba6ac0 - 0x01ba6ac7 (7 bytes)
 u32 sRender::getScaleMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScaleMode;
+    return mScaleMode;
 }
 
 // Address: 0x01ac9230 - 0x01ac9239 (9 bytes)
 f32 sRender::getDACGamma() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDACGamma;
+    return mDACGamma;
 }
 
 // Address: 0x01ac9240 - 0x01ac9250 (16 bytes)
 void sRender::setDACGamma(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDACGamma = v;
-    this->mUpdateGamma = true;
+    mDACGamma = v;
+    mUpdateGamma = true;
 }
 
 // Address: 0x01263af0 - 0x01263af1 (1 bytes)
@@ -297,13 +297,13 @@ __attribute__((weak)) void sRender::setPresentThreshold(u32 t) {
 // Address: 0x01263b10 - 0x01263b17 (7 bytes)
 u32 sRender::getPresentInterval() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPresentInterval;
+    return mPresentInterval;
 }
 
 // Address: 0x01263b20 - 0x01263b27 (7 bytes)
 u32 sRender::getPresentThreshold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPresentThreshold;
+    return mPresentThreshold;
 }
 
 // No out-of-line body: no code in the ELF
@@ -353,33 +353,33 @@ __attribute__((weak)) void sRender::setFullScreenMode(bool fullscreen, const MtS
 // Address: 0x01ba6a50 - 0x01ba6a57 (7 bytes)
 nDraw::HDR_TYPE sRender::getHDRType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHDRType;
+    return mHDRType;
 }
 
 // Address: 0x0125fa70 - 0x0125fa86 (22 bytes)
 void sRender::setHDRType(nDraw::HDR_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHDRType == type) {
+    if (mHDRType == type) {
         return;
     }
-    this->mHDRType = type;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(64);
+    mHDRType = type;
+    mDeviceReset = mDeviceReset | 64u;
 }
 
 // Address: 0x0125fa90 - 0x0125fa97 (7 bytes)
 nDraw::ANTIALIAS_TYPE sRender::getAntiAliasType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAntiAliasType;
+    return mAntiAliasType;
 }
 
 // Address: 0x0125faa0 - 0x0125fab6 (22 bytes)
 void sRender::setAntiAliasType(nDraw::ANTIALIAS_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mAntiAliasType == type) {
+    if (mAntiAliasType == type) {
         return;
     }
-    this->mAntiAliasType = type;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(128);
+    mAntiAliasType = type;
+    mDeviceReset = mDeviceReset | 128u;
 }
 
 // No out-of-line body: no code in the ELF
@@ -388,41 +388,41 @@ void sRender::setAntiAliasType(nDraw::ANTIALIAS_TYPE type) {
 // Address: 0x01ba6a60 - 0x01ba6a67 (7 bytes)
 nDraw::ANTIALIAS_ALT_TYPE sRender::getAntiAliasAltType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAntiAliasAltType;
+    return mAntiAliasAltType;
 }
 
 // Address: 0x01ba6a70 - 0x01ba6a77 (7 bytes)
 void sRender::setAntiAliasAltType(nDraw::ANTIALIAS_ALT_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAntiAliasAltType = type;
+    mAntiAliasAltType = type;
 }
 
 // Address: 0x01ba6b10 - 0x01ba6b17 (7 bytes)
 u32 sRender::getSceneAttribute() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSceneAttribute;
+    return mSceneAttribute;
 }
 
 // Address: 0x01262ff0 - 0x01263006 (22 bytes)
 void sRender::setSceneAttribute(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSceneAttribute == v) {
+    if (mSceneAttribute == v) {
         return;
     }
-    this->mSceneAttribute = v;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(64);
+    mSceneAttribute = v;
+    mDeviceReset = mDeviceReset | 64u;
 }
 
 // Address: 0x01ba6ad0 - 0x01ba6add (13 bytes)
 f32 sRender::getHDREmphasis() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpPrimaryScene->mHDREmphasis;
+    return mpPrimaryScene->mHDREmphasis;
 }
 
 // Address: 0x01ba6ae0 - 0x01ba6aed (13 bytes)
 void sRender::setHDREmphasis(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpPrimaryScene->mHDREmphasis = v;
+    mpPrimaryScene->mHDREmphasis = v;
 }
 
 // No out-of-line body: 16 inlined copies in 15 functions (223 bytes)
@@ -441,61 +441,61 @@ f32 sRender::getAdjustAspectRate() {
 // Address: 0x01ba6a90 - 0x01ba6a97 (7 bytes)
 nDraw::DEFERRED_LIGHTING_LIGHT_TYPE sRender::getDeferredLightingLightType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeferredLightingLightType;
+    return mDeferredLightingLightType;
 }
 
 // Address: 0x0125fc60 - 0x0125fc76 (22 bytes)
 void sRender::setDeferredLightingLightType(nDraw::DEFERRED_LIGHTING_LIGHT_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDeferredLightingLightType == type) {
+    if (mDeferredLightingLightType == type) {
         return;
     }
-    this->mDeferredLightingLightType = type;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(64);
+    mDeferredLightingLightType = type;
+    mDeviceReset = mDeviceReset | 64u;
 }
 
 // Address: 0x01ba6aa0 - 0x01ba6aa7 (7 bytes)
 nDraw::DEFERRED_LIGHTING_HDR_TYPE sRender::getDeferredLightingHDRType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeferredLightingHDRType;
+    return mDeferredLightingHDRType;
 }
 
 // Address: 0x0125fc80 - 0x0125fc96 (22 bytes)
 void sRender::setDeferredLightingHDRType(nDraw::DEFERRED_LIGHTING_HDR_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDeferredLightingHDRType == type) {
+    if (mDeferredLightingHDRType == type) {
         return;
     }
-    this->mDeferredLightingHDRType = type;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(64);
+    mDeferredLightingHDRType = type;
+    mDeviceReset = mDeviceReset | 64u;
 }
 
 // Address: 0x01ba6b20 - 0x01ba6b27 (7 bytes)
 nDraw::DEFERRED_LIGHTING_NORMAL_TYPE sRender::getDeferredLightingNormalEncodeType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeferredLightingNormalType;
+    return mDeferredLightingNormalType;
 }
 
 // Address: 0x01ba6b30 - 0x01ba6b37 (7 bytes)
 void sRender::setDeferredLightingNormalEncodeType(nDraw::DEFERRED_LIGHTING_NORMAL_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeferredLightingNormalType = type;
+    mDeferredLightingNormalType = type;
 }
 
 // Address: 0x01ba6b40 - 0x01ba6b47 (7 bytes)
 nDraw::DEFERRED_LIGHTING_TRANSPARENT_TYPE sRender::getDeferredLightingTransparentType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeferredLightingTransparentType;
+    return mDeferredLightingTransparentType;
 }
 
 // Address: 0x01263010 - 0x01263026 (22 bytes)
 void sRender::setDeferredLightingTransparentType(nDraw::DEFERRED_LIGHTING_TRANSPARENT_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDeferredLightingTransparentType == type) {
+    if (mDeferredLightingTransparentType == type) {
         return;
     }
-    this->mDeferredLightingTransparentType = type;
-    this->mDeviceReset = this->mDeviceReset | static_cast<u32>(64);
+    mDeferredLightingTransparentType = type;
+    mDeviceReset = mDeviceReset | 64u;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -525,7 +525,7 @@ void sRender::setDeferredLightingTransparentType(nDraw::DEFERRED_LIGHTING_TRANSP
 // Address: 0x01ba6b50 - 0x01ba6b59 (9 bytes)
 f32 sRender::getDeferredLightingFadeOutLightingDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeferredLightingFadeOutLightingDistance;
+    return mDeferredLightingFadeOutLightingDistance;
 }
 
 // Address: 0x01ba6b60 - 0x01ba6b7b (27 bytes)
@@ -558,13 +558,13 @@ __attribute__((weak)) void sRender::setDeferredLightingFadeOutLightingDistance(f
 // Address: 0x01ba6af0 - 0x01ba6af9 (9 bytes)
 f32 sRender::getHalfLambertBlendCoeff() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHalfLambertBlendCoeff;
+    return mHalfLambertBlendCoeff;
 }
 
 // Address: 0x01ba6b00 - 0x01ba6b09 (9 bytes)
 void sRender::setHalfLambertBlendCoeff(f32 coeff) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHalfLambertBlendCoeff = coeff;
+    mHalfLambertBlendCoeff = coeff;
 }
 
 // Address: 0x01261cf0 - 0x01261d23 (51 bytes)
@@ -572,8 +572,8 @@ f32 sRender::getRenderFps() {
     // DWARF local not rendered: f64 spt;
     // DWARF local not rendered: f64 rt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRenderTime != static_cast<s64>(0)) {
-        return static_cast<float>(1.0 / (1.25e-9 * static_cast<double>(this->mRenderTime)));
+    if (mRenderTime != 0) {
+        return static_cast<float>(1.0 / (1.25e-9 * static_cast<double>(mRenderTime)));
     } else {
         return 0.01f;
     }
@@ -654,13 +654,13 @@ __attribute__((weak)) void* sRender::allocIndexBuffer(u32 size) {
 // Address: 0x01266e30 - 0x01266e3b (11 bytes)
 void sRender::beginFrameCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFrameCacheState = static_cast<sRender::FRAME_CACHE_STATE>(1);
+    mFrameCacheState = FRAME_CACHE_SETUP;
 }
 
 // Address: 0x01266e40 - 0x01266e4b (11 bytes)
 void sRender::endFrameCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFrameCacheState = static_cast<sRender::FRAME_CACHE_STATE>(0);
+    mFrameCacheState = FRAME_CACHE_NONE;
 }
 
 // Address: 0x01266e50 - 0x012670e5 (661 bytes)
@@ -838,30 +838,27 @@ __attribute__((weak)) void sRender::endRendering() {
 // Address: 0x01262d40 - 0x01262dab (107 bytes)
 void sRender::addProtectResource(nDraw::Resource* pres) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the value the load at 0x1262d6c read, used twice; no DWARF local holds it
-        u32 t0 = this->mProtectResourceNum;
-        this->mProtectResourceNum = t0 + static_cast<u32>(1);
-        this->mpProtectResources[t0] = pres;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t0 = mProtectResourceNum;
+        mProtectResourceNum = t0 + 1u;
+        mpProtectResources[t0] = pres;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x1262d6c read, used twice; no DWARF local holds it
-        u32 t0 = this->mProtectResourceNum;
-        this->mProtectResourceNum = t0 + static_cast<u32>(1);
-        this->mpProtectResources[t0] = pres;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t0 = mProtectResourceNum;
+        mProtectResourceNum = t0 + 1u;
+        mpProtectResources[t0] = pres;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -873,46 +870,43 @@ nDraw::Texture* sRender::addScratchTexture(MT_CTSTR pool, MT_CTSTR name, nDraw::
     // DWARF local not rendered: Texture* pscratch;
     // DWARF local not rendered: SCRATCH_INFO* pninfo;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the value the load at 0x1262dee read, used 4 times; no DWARF local holds it
-        u32 t0 = this->mScratchTextureNum;
-        this->mScratchTextureNum = t0 + static_cast<u32>(1);
-        this->mpScratchTextures[t0].ptex = ptex;
-        ptex->::nDraw::Texture::registerScratchTexture();
-        this->mpScratchTextures[t0].pool = pool;
-        this->mpScratchTextures[t0].name = name;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t0 = mScratchTextureNum;
+        mScratchTextureNum = t0 + 1u;
+        mpScratchTextures[t0].ptex = ptex;
+        ptex->registerScratchTexture();
+        mpScratchTextures[t0].pool = pool;
+        mpScratchTextures[t0].name = name;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        if (poffset != static_cast<u32*>(nullptr)) {
-            *poffset = static_cast<unsigned int>(0);
+        if (poffset != nullptr) {
+            *poffset = 0;
         }
-        return static_cast<nDraw::Texture*>(nullptr);
+        return nullptr;
     } else {
         // inferred: a temporary for the value the load at 0x1262dee read, used 4 times; no DWARF local holds it
-        u32 t0 = this->mScratchTextureNum;
-        this->mScratchTextureNum = t0 + static_cast<u32>(1);
-        this->mpScratchTextures[t0].ptex = ptex;
-        ptex->::nDraw::Texture::registerScratchTexture();
-        this->mpScratchTextures[t0].pool = pool;
-        this->mpScratchTextures[t0].name = name;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t0 = mScratchTextureNum;
+        mScratchTextureNum = t0 + 1u;
+        mpScratchTextures[t0].ptex = ptex;
+        ptex->registerScratchTexture();
+        mpScratchTextures[t0].pool = pool;
+        mpScratchTextures[t0].name = name;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        if (poffset != static_cast<u32*>(nullptr)) {
-            *poffset = static_cast<unsigned int>(0);
+        if (poffset != nullptr) {
+            *poffset = 0;
         }
-        return static_cast<nDraw::Texture*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1043,16 +1037,16 @@ __attribute__((weak)) void sRender::setViewports(sRender::RENDER_STATE& rs, u32 
 bool sRender::findWaitAddr(sRender::RENDER_STATE& rs, u32 addr) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     unsigned int* p2 = &rs.wait_addr[0];
     do {
         if ((*p2) == addr) {
             return true;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(3));
+    } while (i <= 3u);
     return false;
 }
 
@@ -1060,7 +1054,7 @@ bool sRender::findWaitAddr(sRender::RENDER_STATE& rs, u32 addr) {
 void sRender::addWaitAddr(sRender::RENDER_STATE& rs, u32 addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rs.wait_addr[rs.wait_addr_pt] = addr;
-    rs.wait_addr_pt = (rs.wait_addr_pt + static_cast<u32>(1)) & static_cast<u32>(3);
+    rs.wait_addr_pt = (rs.wait_addr_pt + 1u) & 3u;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1241,13 +1235,13 @@ __attribute__((weak)) void* sRender::renderingSub(void* pArg) {
 // Address: 0x01267d80 - 0x01267dbc (60 bytes)
 bool sRender::beginScreenShot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sRender::mSSTrigger) != static_cast<int>(0)) {
+    if ((sRender::mSSTrigger) != 0) {
         return false;
     } else {
-        this->mpScreenShotTexture = static_cast<nDraw::Texture*>(nullptr);
-        this->mJpgBuffer = static_cast<void*>(nullptr);
-        this->mJpgBufferSize = static_cast<u32>(0);
-        this->mSSState = static_cast<sRender::SS_STATE>(0);
+        mpScreenShotTexture = nullptr;
+        mJpgBuffer = nullptr;
+        mJpgBufferSize = 0;
+        mSSState = SS_NONE;
         return true;
     }
 }
@@ -1264,39 +1258,39 @@ __attribute__((weak)) bool sRender::setScreenShotTrigger() {
 // Address: 0x01267ee0 - 0x01267ee7 (7 bytes)
 sRender::SCREENSHOT_RESULT sRender::screenShotResult() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSSResult;
+    return mSSResult;
 }
 
 // Address: 0x01267ef0 - 0x01267f02 (18 bytes)
 u32 sRender::getJpgSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSSState == static_cast<sRender::SS_STATE>(6)) {
-        return this->mJpgBufferSize;
+    if (mSSState == SS_SUCCESS) {
+        return mJpgBufferSize;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01267f10 - 0x01267f49 (57 bytes)
 u32 sRender::outputJpg(void* pout) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSSState == static_cast<sRender::SS_STATE>(6)) {
-        ::memcpy(pout, this->mJpgBuffer, this->mJpgBufferSize);
-        return this->mJpgBufferSize;
+    if (mSSState == SS_SUCCESS) {
+        memcpy(pout, mJpgBuffer, mJpgBufferSize);
+        return mJpgBufferSize;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01267f50 - 0x01267f9e (78 bytes)
 bool sRender::endScreenShot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mJpgBuffer != static_cast<void*>(nullptr)) {
-        ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(this->mJpgBuffer);
-        this->mJpgBuffer = static_cast<void*>(nullptr);
-        this->mJpgBufferSize = static_cast<u32>(0);
+    if (mJpgBuffer != nullptr) {
+        MtMemory::mpAllocatorType[7]->memFree(mJpgBuffer);
+        mJpgBuffer = nullptr;
+        mJpgBufferSize = 0;
     }
-    this->mSSState = static_cast<sRender::SS_STATE>(0);
+    mSSState = SS_NONE;
     return true;
 }
 
@@ -1321,24 +1315,24 @@ __attribute__((weak)) void sRender::setPhotoExportTriggerFromMemory(void* pdata,
 // Address: 0x01267cc0 - 0x01267cf3 (51 bytes)
 sRender::EXPORT_RESULT sRender::photoExportResult() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExportThread != static_cast<sRender::PhotoExportThread*>(nullptr)) {
-        if (this->mpExportThread->::MtThread::getStatus() == static_cast<MtThread::STATUS>(2)) {
-            return static_cast<sRender::EXPORT_RESULT>(this->mExportParam.success);
+    if (mpExportThread != nullptr) {
+        if (mpExportThread->getStatus() == MtThread::TERMINATED) {
+            return static_cast<EXPORT_RESULT>(mExportParam.success);
         } else {
-            return static_cast<sRender::EXPORT_RESULT>(2);
+            return EXPORT_PROCESSED;
         }
     } else {
-        return static_cast<sRender::EXPORT_RESULT>(this->mExportParam.success);
+        return static_cast<EXPORT_RESULT>(mExportParam.success);
     }
 }
 
 // Address: 0x01267d00 - 0x01267d7c (124 bytes)
 void sRender::setPhotoExportParam(MT_CTSTR photo_title, MT_CTSTR game_title, MT_CTSTR comment) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mPhotoExportPhotoTitle[0]), static_cast<int>(0), static_cast<size_t>(3072));
-    ::memcpy(static_cast<void*>(&this->mPhotoExportPhotoTitle[0]), static_cast<const void*>(photo_title), static_cast<size_t>(1023));
-    ::memcpy(static_cast<void*>(&this->mPhotoExportGameTitle[0]), static_cast<const void*>(game_title), static_cast<size_t>(1023));
-    ::memcpy(static_cast<void*>(&this->mPhotoExportComment[0]), static_cast<const void*>(comment), static_cast<size_t>(1023));
+    memset(static_cast<void*>(&mPhotoExportPhotoTitle[0]), 0, 3072ul);
+    memcpy(static_cast<void*>(&mPhotoExportPhotoTitle[0]), static_cast<const void*>(photo_title), 1023ul);
+    memcpy(static_cast<void*>(&mPhotoExportGameTitle[0]), static_cast<const void*>(game_title), 1023ul);
+    memcpy(static_cast<void*>(&mPhotoExportComment[0]), static_cast<const void*>(comment), 1023ul);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1373,10 +1367,10 @@ __attribute__((weak)) void sRender::finishScreenShot() {
 // Address: 0x01267fb0 - 0x01267fc7 (23 bytes)
 void sRender::setRenderDetailControl(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (b == false) {
-        this->mRenderDetail = static_cast<u32>(0);
+    if (!b) {
+        mRenderDetail = 0;
     }
-    this->mRenderDetailControlEnable = b;
+    mRenderDetailControlEnable = b;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -1491,6 +1485,14 @@ __attribute__((weak)) void sRender::setShaderStateOptimizeZero(sRender::RENDER_S
 
 // Defined in the class (its body was written in a header).
 // void sRender::rsxSyncBackEnd(cDraw* pDraw);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sRender::MyDTI sRender::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sRender* sRender::mpInstance;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 sRender::mSSTrigger;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sRender::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

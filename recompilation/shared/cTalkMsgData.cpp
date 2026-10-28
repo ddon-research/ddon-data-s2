@@ -33,7 +33,7 @@ const MtDTI& cTalkMsgData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cTalkMsgData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI);
+    return MtMemoryAllocator::getAllocator(cTalkMsgData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* cTalkMsgData::getAllocator() {
 // Address: 0x00582de0 - 0x00582e20 (64 bytes)
 void* cTalkMsgData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cTalkMsgData::getAllocator()->memAlloc(sz, align, ::cTalkMsgData::DTI.::MtDTI::getID());
+    return cTalkMsgData::getAllocator()->memAlloc(sz, align, cTalkMsgData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* cTalkMsgData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cTalkMsgData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cTalkMsgData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,7 +79,7 @@ cTalkMsgData::cTalkMsgData() {
 // Also emitted as: _ZN12cTalkMsgDataD0Ev at 0x00583060
 cTalkMsgData::~cTalkMsgData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cTalkMsgData::reset();
+    reset();
 }
 
 // Address: 0x005830b0 - 0x005830b1 (1 bytes)
@@ -90,7 +90,7 @@ __attribute__((weak)) void cTalkMsgData::createProperty(MtPropertyList& s) {
 // Address: 0x005830c0 - 0x005830c5 (5 bytes)
 MtUI* cTalkMsgData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00582f00 - 0x00583026 (294 bytes)
@@ -110,34 +110,33 @@ __attribute__((weak)) void cTalkMsgData::reset() {
 // Address: 0x005830d0 - 0x005830e2 (18 bytes)
 void cTalkMsgData::setMsgData(rGUIMessage* pMsgData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpMsgData = pMsgData;
-    if (pMsgData == static_cast<rGUIMessage*>(nullptr)) {
+    mpMsgData = pMsgData;
+    if (pMsgData == nullptr) {
         return;
     }
-    pMsgData->::cResource::addRef();
+    pMsgData->addRef();
 }
 
 // Address: 0x005830f0 - 0x00583162 (114 bytes)
 void cTalkMsgData::setMsgSetData(rMsgSet* pMsgSetData) {
-    // Approximate from the ELF: a call declared from its ELF symbol, its return type from the caller's use; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    if (pMsgSetData == static_cast<rMsgSet*>(nullptr)) {
+    // Approximate from the ELF: a call declared from its ELF symbol, its return type from the caller's use; a temporary declared in several branches; the body oracle reports this body.
+    if (pMsgSetData == nullptr) {
         return;
     }
-    this->mpMsgSetData = pMsgSetData;
-    pMsgSetData->::cResource::addRef();
-    if (this->mpDispedMsgNo != static_cast<s32*>(nullptr)) {
-        ::elf_v_ZdlPv(static_cast<void*>(this->mpDispedMsgNo));
-        this->mpDispedMsgNo = static_cast<s32*>(nullptr);
+    mpMsgSetData = pMsgSetData;
+    pMsgSetData->addRef();
+    if (mpDispedMsgNo != nullptr) {
+        elf_v_ZdlPv(static_cast<void*>(mpDispedMsgNo));
+        mpDispedMsgNo = nullptr;
         // inferred: a temporary for the result of the call at 0x583142, used twice; no DWARF local holds it
-        void* t1 = ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI)->memAlloc(static_cast<size_t>(pMsgSetData->mArray.::MtArray::mLength * static_cast<u32>(4)), static_cast<u32>(16));
-        this->mpDispedMsgNo = static_cast<s32*>(t1);
-        ::memset(t1, static_cast<int>(255), static_cast<size_t>(pMsgSetData->mArray.::MtArray::mLength * static_cast<u32>(4)));
+        void* t1 = MtMemoryAllocator::getAllocator(cTalkMsgData::DTI)->memAlloc(static_cast<size_t>(pMsgSetData->mArray.mLength) * 4, 16u);
+        mpDispedMsgNo = static_cast<s32*>(t1);
+        memset(t1, 255, static_cast<size_t>(pMsgSetData->mArray.mLength) * 4);
     } else {
         // inferred: a temporary for the result of the call at 0x583142, used twice; no DWARF local holds it
-        void* t1 = ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI)->memAlloc(static_cast<size_t>(pMsgSetData->mArray.::MtArray::mLength * static_cast<u32>(4)), static_cast<u32>(16));
-        this->mpDispedMsgNo = static_cast<s32*>(t1);
-        ::memset(t1, static_cast<int>(255), static_cast<size_t>(pMsgSetData->mArray.::MtArray::mLength * static_cast<u32>(4)));
+        void* t1 = MtMemoryAllocator::getAllocator(cTalkMsgData::DTI)->memAlloc(static_cast<size_t>(pMsgSetData->mArray.mLength) * 4, 16u);
+        mpDispedMsgNo = static_cast<s32*>(t1);
+        memset(t1, 255, static_cast<size_t>(pMsgSetData->mArray.mLength) * 4);
     }
 }
 
@@ -184,8 +183,8 @@ __attribute__((weak)) void cTalkMsgData::setVoiceReqTblCore(MtString Path) {
 // Address: 0x00583a10 - 0x00583a1b (11 bytes)
 void cTalkMsgData::setDispGrpNo(u32 GrpNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDispGrpNo = GrpNo;
-    this->mDispPageNo = static_cast<u32>(0);
+    mDispGrpNo = GrpNo;
+    mDispPageNo = 0;
 }
 
 // Address: 0x00583a30 - 0x00583a98 (104 bytes)
@@ -193,31 +192,31 @@ void cTalkMsgData::setDispGrpSerialNo(u32 SerialNo) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cMsgGroup* pGrpData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mDispPageNo = static_cast<u32>(0);
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgSetData->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    mDispPageNo = 0;
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgSetData->mArray.mLength != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value the loop at 0x583a60 carries; no location-less local in scope fits
-            for (rMsgSet* v0_5 = this->mpMsgSetData;;) {
+            for (rMsgSet* v0_5 = mpMsgSetData;;) {
                 // inferred: a temporary for the result of the call at 0x583a62, used twice; no DWARF local holds it
-                rMsgSet::cMsgGroup* t0 = v0_5->::rMsgSet::getGroupData(i0_3);
-                if (t0 != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
+                rMsgSet::cMsgGroup* t0 = v0_5->getGroupData(i0_3);
+                if (t0 != nullptr) {
                     if (t0->mGroupSerial != SerialNo) {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mpMsgSetData->mArray.::MtArray::mLength) {
-                            i0_3 += static_cast<unsigned int>(1);
-                            v0_5 = this->mpMsgSetData;
+                        if ((i0_3 + 1u) < mpMsgSetData->mArray.mLength) {
+                            i0_3 += 1u;
+                            v0_5 = mpMsgSetData;
                         } else {
                             break;
                         }
                     } else {
-                        this->mDispGrpNo = i0_3;
+                        mDispGrpNo = i0_3;
                         return;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mpMsgSetData->mArray.::MtArray::mLength) {
-                        i0_3 += static_cast<unsigned int>(1);
-                        v0_5 = this->mpMsgSetData;
+                    if ((i0_3 + 1u) < mpMsgSetData->mArray.mLength) {
+                        i0_3 += 1u;
+                        v0_5 = mpMsgSetData;
                     } else {
                         break;
                     }
@@ -225,7 +224,7 @@ void cTalkMsgData::setDispGrpSerialNo(u32 SerialNo) {
             }
         }
     } else {
-        this->mDispGrpNo = static_cast<u32>(0);
+        mDispGrpNo = 0;
     }
 }
 
@@ -263,17 +262,17 @@ __attribute__((weak)) u32 cTalkMsgData::getDispTime() {
 // Address: 0x00583b80 - 0x00583bd9 (89 bytes)
 MT_CTSTR cTalkMsgData::getMessage(u32 GrpNo, u32 PageNo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mDispGrpNo = GrpNo;
-    this->mDispPageNo = PageNo;
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
+    mDispGrpNo = GrpNo;
+    mDispPageNo = PageNo;
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
             // inferred: a temporary for the result of the call at 0x583b9f, used twice; no DWARF local holds it
-            rMsgSet::cMsgGroup* t0 = this->mpMsgSetData->::rMsgSet::getGroupData(GrpNo);
-            if (t0 != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
+            rMsgSet::cMsgGroup* t0 = mpMsgSetData->getGroupData(GrpNo);
+            if (t0 != nullptr) {
                 // inferred: a temporary for the result of the call at 0x583baf, used twice; no DWARF local holds it
-                rMsgSet::cMsgData* t1 = t0->::rMsgSet::cMsgGroup::getMsgData(this->mDispPageNo);
-                if (t1 != static_cast<rMsgSet::cMsgData*>(nullptr)) {
-                    return this->mpMsgData->::rGUIMessage::getMessage(t1->::rMsgSet::cMsgData::getGmdIndex());
+                rMsgSet::cMsgData* t1 = t0->getMsgData(mDispPageNo);
+                if (t1 != nullptr) {
+                    return mpMsgData->getMessage(t1->getGmdIndex());
                 } else {
                     return "";
                 }
@@ -291,13 +290,13 @@ MT_CTSTR cTalkMsgData::getMessage(u32 GrpNo, u32 PageNo) {
 // Address: 0x00583be0 - 0x00583c36 (86 bytes)
 MT_CTSTR cTalkMsgData::getMessage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
-            rMsgSet::cMsgGroup* pGrpData = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-            if (pGrpData != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-                rMsgSet::cMsgData* pMsgData = pGrpData->::rMsgSet::cMsgGroup::getMsgData(this->mDispPageNo);
-                if (pMsgData != static_cast<rMsgSet::cMsgData*>(nullptr)) {
-                    return this->mpMsgData->::rGUIMessage::getMessage(pMsgData->::rMsgSet::cMsgData::getGmdIndex());
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
+            rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+            if (pGrpData != nullptr) {
+                rMsgSet::cMsgData* pMsgData = pGrpData->rMsgSet::cMsgGroup::getMsgData(mDispPageNo);
+                if (pMsgData != nullptr) {
+                    return mpMsgData->getMessage(pMsgData->rMsgSet::cMsgData::getGmdIndex());
                 } else {
                     return "";
                 }
@@ -356,19 +355,19 @@ __attribute__((weak)) bool cTalkMsgData::isExistGrpType(u32 GrpType, bool IsChkH
 // Address: 0x00583fa0 - 0x00583fd4 (52 bytes)
 u32 cTalkMsgData::getTalkNpcId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
-            rMsgSet::cMsgGroup* pGrpData = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-            if (pGrpData != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-                return pGrpData->::rMsgSet::cMsgGroup::getNpcId();
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
+            rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+            if (pGrpData != nullptr) {
+                return pGrpData->rMsgSet::cMsgGroup::getNpcId();
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -380,11 +379,11 @@ u32 cTalkMsgData::getTalkNpcId() {
 // Address: 0x00583fe0 - 0x00584019 (57 bytes)
 bool cTalkMsgData::isDispNpcName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
-            rMsgSet::cMsgGroup* pGrpData = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-            if (pGrpData != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-                return pGrpData->mNameDispOff == false;
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
+            rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+            if (pGrpData != nullptr) {
+                return !pGrpData->mNameDispOff;
             } else {
                 return false;
             }
@@ -399,67 +398,67 @@ bool cTalkMsgData::isDispNpcName() {
 // Address: 0x00584020 - 0x00584054 (52 bytes)
 u32 cTalkMsgData::getDispGrpType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
-            rMsgSet::cMsgGroup* pGrpData = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-            if (pGrpData != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-                return pGrpData->::rMsgSet::cMsgGroup::getGroupType();
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
+            rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+            if (pGrpData != nullptr) {
+                return pGrpData->rMsgSet::cMsgGroup::getGroupType();
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00584060 - 0x005840ab (75 bytes)
 u32 cTalkMsgData::getDispMsgType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
-            rMsgSet::cMsgGroup* pGrpData = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-            if (pGrpData != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-                if (this->::cTalkMsgData::getDispPageNo() < pGrpData->mMsgData.::MtArray::mLength) {
-                    rMsgSet::cMsgData* pMsgData = pGrpData->::rMsgSet::cMsgGroup::getMsgData(this->::cTalkMsgData::getDispPageNo());
-                    if (pMsgData != static_cast<rMsgSet::cMsgData*>(nullptr)) {
-                        return pMsgData->::rMsgSet::cMsgData::getMsgType();
+    if (mpMsgSetData != nullptr) {
+        if (mpMsgData != nullptr) {
+            rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+            if (pGrpData != nullptr) {
+                if (getDispPageNo() < pGrpData->mMsgData.::MtArray::mLength) {
+                    rMsgSet::cMsgData* pMsgData = pGrpData->rMsgSet::cMsgGroup::getMsgData(getDispPageNo());
+                    if (pMsgData != nullptr) {
+                        return pMsgData->rMsgSet::cMsgData::getMsgType();
                     } else {
-                        return static_cast<u32>(0);
+                        return 0;
                     }
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x005840b0 - 0x005840f4 (68 bytes)
 s32 cTalkMsgData::getVoiceReqNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        rMsgSet::cMsgGroup* pGrp = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-        if (pGrp != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-            rMsgSet::cMsgData* pMsgData = pGrp->::rMsgSet::cMsgGroup::getMsgData(this->mDispPageNo - static_cast<u32>(1));
-            if (pMsgData != static_cast<rMsgSet::cMsgData*>(nullptr)) {
-                return pMsgData->::rMsgSet::cMsgData::getVoiceReqNo();
+    if (mpMsgSetData != nullptr) {
+        rMsgSet::cMsgGroup* pGrp = mpMsgSetData->getGroupData(mDispGrpNo);
+        if (pGrp != nullptr) {
+            rMsgSet::cMsgData* pMsgData = pGrp->rMsgSet::cMsgGroup::getMsgData(mDispPageNo - 1u);
+            if (pMsgData != nullptr) {
+                return pMsgData->rMsgSet::cMsgData::getVoiceReqNo();
             } else {
-                return static_cast<s32>(-1);
+                return -1;
             }
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -473,22 +472,24 @@ __attribute__((weak)) rSoundStreamRequest* cTalkMsgData::getVoiceReqResource(u32
 // Address: 0x00584100 - 0x00584141 (65 bytes)
 u32 cTalkMsgData::getSetMotionNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-        rMsgSet::cMsgGroup* pGrp = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
-        if (pGrp != static_cast<rMsgSet::cMsgGroup*>(nullptr)) {
-            rMsgSet::cMsgData* pMsgData = pGrp->::rMsgSet::cMsgGroup::getMsgData(this->mDispPageNo - static_cast<u32>(1));
-            if (pMsgData != static_cast<rMsgSet::cMsgData*>(nullptr)) {
-                return pMsgData->::rMsgSet::cMsgData::getSetMotionNo();
+    if (mpMsgSetData != nullptr) {
+        rMsgSet::cMsgGroup* pGrp = mpMsgSetData->getGroupData(mDispGrpNo);
+        if (pGrp != nullptr) {
+            rMsgSet::cMsgData* pMsgData = pGrp->rMsgSet::cMsgGroup::getMsgData(mDispPageNo - 1u);
+            if (pMsgData != nullptr) {
+                return pMsgData->rMsgSet::cMsgData::getSetMotionNo();
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cTalkMsgData::MyDTI cTalkMsgData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cTalkMsgData.cpp at 0x00584190-0x005841d2 (called at cTalkMsgData.cpp:35)
@@ -512,11 +513,11 @@ __attribute__((weak)) MtObject* cTalkMsgData::MyDTI::newInstance() const {
 // Also emitted as: _ZN12cVoiceReqTblD0Ev at 0x01a652b0
 cVoiceReqTbl::~cVoiceReqTbl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (mpRequest == nullptr) {
         return;
     }
-    this->mpRequest->::cResource::release();
-    this->mpRequest = static_cast<rSoundStreamRequest*>(nullptr);
+    mpRequest->release();
+    mpRequest = nullptr;
 }
 
 // Instance at 0x01a65220 - 0x01a65225 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

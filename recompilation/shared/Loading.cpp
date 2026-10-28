@@ -26,7 +26,7 @@ const MtDTI& CDataLoadingInfoSchedule::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLoadingInfoSchedule::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedule::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedule::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataLoadingInfoSchedule::getAllocator() {
 // Address: 0x003cdeb0 - 0x003cdef0 (64 bytes)
 void* CDataLoadingInfoSchedule::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataLoadingInfoSchedule::getAllocator()->memAlloc(sz, align, ::CDataLoadingInfoSchedule::DTI.::MtDTI::getID());
+    return CDataLoadingInfoSchedule::getAllocator()->memAlloc(sz, align, CDataLoadingInfoSchedule::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataLoadingInfoSchedule::operator new(size_t sz, u32 align) {
 // Address: 0x003cdf20 - 0x003cdf4a (42 bytes)
 __attribute__((weak)) void CDataLoadingInfoSchedule::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLoadingInfoSchedule::getAllocator()->memFree(p_addr);
+    CDataLoadingInfoSchedule::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataLoadingInfoSchedule::operator delete(void* p_add
 
 // No out-of-line body: no code in the ELF
 // CDataLoadingInfoSchedule::CDataLoadingInfoSchedule(const char*, u32, u32, s64, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLoadingInfoSchedule::MyDTI CDataLoadingInfoSchedule::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041c84a-0x0041c883 (called at LoadingImplement.inc:7)
@@ -97,7 +99,7 @@ const MtDTI& CDataLoadingInfoSchedules::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLoadingInfoSchedules::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedules::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedules::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataLoadingInfoSchedules::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedules::DTI)->memAlloc(sz, align, ::CDataLoadingInfoSchedules::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedules::DTI)->memAlloc(sz, align, CDataLoadingInfoSchedules::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ inline void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align) {
 // Address: 0x003ce020 - 0x003ce04a (42 bytes)
 __attribute__((weak)) void CDataLoadingInfoSchedules::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLoadingInfoSchedules::getAllocator()->memFree(p_addr);
+    CDataLoadingInfoSchedules::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,6 +145,8 @@ __attribute__((weak)) void CDataLoadingInfoSchedules::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // CDataLoadingInfoSchedules::CDataLoadingInfoSchedules(const MtTypedArray<CDataLoadingInfoSchedule>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLoadingInfoSchedules::MyDTI CDataLoadingInfoSchedules::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041c883-0x0041c8bc (called at LoadingImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041c883-0x0041c8bc (called at Loading.h:93)
@@ -151,6 +155,6 @@ __attribute__((weak)) void CDataLoadingInfoSchedules::operator delete(void* p_ad
 // Address: 0x003cdf80 - 0x003cdfe9 (105 bytes)
 MtObject* CDataLoadingInfoSchedules::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataLoadingInfoSchedules;
+    return new (16u) CDataLoadingInfoSchedules;
 }
 

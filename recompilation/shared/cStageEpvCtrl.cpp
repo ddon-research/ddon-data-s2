@@ -50,7 +50,7 @@ const MtDTI& cStageEpvCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cStageEpvCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStageEpvCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStageEpvCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,15 +113,15 @@ __attribute__((weak)) void cStageEpvCtrl::setEffectProvider(rEffectProvider* pRe
 // Address: 0x0056f640 - 0x0056f653 (19 bytes)
 void cStageEpvCtrl::setEffectProviderIndex(s32 always, s32 day, s32 night) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIndexAlways = always;
-    this->mIndexDay = day;
-    this->mIndexNight = night;
+    mIndexAlways = always;
+    mIndexDay = day;
+    mIndexNight = night;
 }
 
 // Address: 0x0056f660 - 0x0056f691 (49 bytes)
 void cStageEpvCtrl::setOfsPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfsPos = pos;
+    mOfsPos = pos;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -140,6 +140,8 @@ void cStageEpvCtrl::setOfsPos(const MtVector3& pos) {
 //   in cStageEpvCtrl::move at 0x0056f263-0x0056f280 (called at cStageEpvCtrl.cpp:235)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // void cStageEpvCtrl::endStageEffect(u32 type, u32 endType);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageEpvCtrl::MyDTI cStageEpvCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cStageEpvCtrl.cpp at 0x0056f79f-0x0056f7dc (called at cStageEpvCtrl.cpp:40)

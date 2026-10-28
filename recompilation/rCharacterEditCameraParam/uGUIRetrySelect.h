@@ -170,3 +170,24 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIRetry::initRevive at 0xc2099d-0xc209a4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIRetrySelect::begin() {
+    this->mIsBegin = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIRetry::updateList at 0xc1f6eb-0xc1f6f1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline bool uGUIRetrySelect::isDecide() {
+    return this->mIsDecide;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIRetrySelect::moveEvent at 0xc226e5-0xc226f5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIRetrySelect::eventDecide() {
+    if (this->mFlowId != 2) {
+        return;
+    }
+    this->mIsDecide = true;
+}

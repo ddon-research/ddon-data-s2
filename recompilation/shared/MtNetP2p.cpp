@@ -29,7 +29,7 @@ __attribute__((weak)) void MtNetP2p::reqPeerConnect(u32* req_seq, const MtNetP2p
 // Address: 0x00de7230 - 0x00de7239 (9 bytes)
 void MtNetP2p::abortRequest(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestController.::MtNetRequestController::abort(req_seq);
+    mRequestController.abort(req_seq);
 }
 
 // No out-of-line body: no code in the ELF

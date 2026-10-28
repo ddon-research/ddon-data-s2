@@ -1261,20 +1261,50 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 sCaplinkManager::getFreeTagNum() {
+    return this->mFreeTagNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICaplinkTalk::initTalkList at 0x9db150-0x9db156; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sCaplinkManager::getGroupChatNum() {
+    return this->mGroupChatData.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICaplinkTopMenu::setFlowId at 0x9df221-0x9df23b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sCaplinkManager::setConfirmInformation() {
+    this->mIsInfoMessage = false;
+    this->mIsInfoInvite = false;
+    this->mIsInfoNewChat = false;
+    this->mIsInfoFriendOnline = false;
+    this->mIsInfoFriendRequest = false;
+    this->mIsInfoFriendConsent = false;
+    this->mIsInfoFriendModify = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sCaplinkManager* sCaplinkManager::getInstance() {
     return ::sCaplinkManager::mpInstance;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a comparison accessor's polarity, the comparison the code makes (`==` over `!=`, `<` over `>=`, `<=` over `>`): none of its 2 DWARF copies materializes its result; approximate: only approximate callers check this inline body
+inline bool sCaplinkManager::cCaplinkListenerQueue::isEnd() {
+    return this->mRno == 2;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: a comparison accessor's polarity, the comparison the code makes (`==` over `!=`, `<` over `>=`, `<=` over `>`): none of its 6 DWARF copies materializes its result; approximate: only approximate callers check this inline body
 inline bool sCaplinkManager::cCaplinkListenerQueue::isDispError() {
-    return this->mErrorDialogHandle == static_cast<u32>(4294967295);
+    return this->mErrorDialogHandle == 0xFFFFFFFFu;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline sCaplinkManager::cChatJoin::cChatJoin() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cCaplinkObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mChatId = static_cast<s32>(0);
+    this->mChatId = 0;
     this->mIsJoin = false;
 }

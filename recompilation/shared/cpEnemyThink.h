@@ -195,11 +195,11 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cRage::cRage() {
     this->mMindStatusFrame = 0.0f;
-    this->mNowMindStatus = static_cast<u32>(0);
+    this->mNowMindStatus = 0;
     this->mMindStatusForced = false;
-    this->mMindStatus = static_cast<u32>(0);
+    this->mMindStatus = 0;
     this->mMindStatusFrameMax = 0.0f;
-    this->mStatusStartHpPer = static_cast<u32>(0);
-    this->mStatusEndHpPer = static_cast<u32>(0);
+    this->mStatusStartHpPer = 0;
+    this->mStatusEndHpPer = 0;
     this->mEnable = true;
 }

@@ -26,7 +26,7 @@ const MtDTI& CDataGachaDrawGroupInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGachaDrawGroupInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGachaDrawGroupInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGachaDrawGroupInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataGachaDrawGroupInfo::getAllocator() {
 // Address: 0x003ba3a0 - 0x003ba3e0 (64 bytes)
 void* CDataGachaDrawGroupInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGachaDrawGroupInfo::getAllocator()->memAlloc(sz, align, ::CDataGachaDrawGroupInfo::DTI.::MtDTI::getID());
+    return CDataGachaDrawGroupInfo::getAllocator()->memAlloc(sz, align, CDataGachaDrawGroupInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataGachaDrawGroupInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ba410 - 0x003ba43a (42 bytes)
 __attribute__((weak)) void CDataGachaDrawGroupInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGachaDrawGroupInfo::getAllocator()->memFree(p_addr);
+    CDataGachaDrawGroupInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataGachaDrawGroupInfo::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataGachaDrawGroupInfo::CDataGachaDrawGroupInfo(const MtTypedArray<CDataGachaSettlementInfo>&, const MtTypedArray<CDataGachaDrawInfo>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGachaDrawGroupInfo::MyDTI CDataGachaDrawGroupInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419631-0x0041966a (called at GachaImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419631-0x0041966a (called at Gacha.h:250)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataGachaDrawGroupInfo::operator delete(void* p_addr
 // Address: 0x003ba300 - 0x003ba392 (146 bytes)
 MtObject* CDataGachaDrawGroupInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGachaDrawGroupInfo;
+    return new (16u) CDataGachaDrawGroupInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataGachaDrawInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGachaDrawInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGachaDrawInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGachaDrawInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataGachaDrawInfo::getAllocator() {
 // Address: 0x003ba230 - 0x003ba270 (64 bytes)
 void* CDataGachaDrawInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGachaDrawInfo::getAllocator()->memAlloc(sz, align, ::CDataGachaDrawInfo::DTI.::MtDTI::getID());
+    return CDataGachaDrawInfo::getAllocator()->memAlloc(sz, align, CDataGachaDrawInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataGachaDrawInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ba2a0 - 0x003ba2ca (42 bytes)
 __attribute__((weak)) void CDataGachaDrawInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGachaDrawInfo::getAllocator()->memFree(p_addr);
+    CDataGachaDrawInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,6 +145,8 @@ __attribute__((weak)) void CDataGachaDrawInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataGachaDrawInfo::CDataGachaDrawInfo(u32, b8, const MtTypedArray<CDataGachaItemInfo>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGachaDrawInfo::MyDTI CDataGachaDrawInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004195f8-0x00419631 (called at GachaImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004195f8-0x00419631 (called at Gacha.h:190)
@@ -151,7 +155,7 @@ __attribute__((weak)) void CDataGachaDrawInfo::operator delete(void* p_addr) {
 // Address: 0x003ba1b0 - 0x003ba224 (116 bytes)
 MtObject* CDataGachaDrawInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGachaDrawInfo;
+    return new (16u) CDataGachaDrawInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -168,7 +172,7 @@ const MtDTI& CDataGachaInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGachaInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGachaInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGachaInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataGachaInfo::getAllocator() {
 // Address: 0x003ba530 - 0x003ba570 (64 bytes)
 void* CDataGachaInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGachaInfo::getAllocator()->memAlloc(sz, align, ::CDataGachaInfo::DTI.::MtDTI::getID());
+    return CDataGachaInfo::getAllocator()->memAlloc(sz, align, CDataGachaInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataGachaInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ba5a0 - 0x003ba5ca (42 bytes)
 __attribute__((weak)) void CDataGachaInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGachaInfo::getAllocator()->memFree(p_addr);
+    CDataGachaInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,6 +217,8 @@ __attribute__((weak)) void CDataGachaInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataGachaInfo::CDataGachaInfo(u32, s64, s64, const char*, const char*, const char*, u8, const char*, const char*, const char*, const char*, const MtTypedArray<CDataGachaDrawGroupInfo>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGachaInfo::MyDTI CDataGachaInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041966a-0x004196a3 (called at GachaImplement.inc:11)
@@ -239,7 +245,7 @@ const MtDTI& CDataGachaItemInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGachaItemInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGachaItemInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGachaItemInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,7 +254,7 @@ inline MtAllocator* CDataGachaItemInfo::getAllocator() {
 // Address: 0x003ba0e0 - 0x003ba120 (64 bytes)
 void* CDataGachaItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGachaItemInfo::getAllocator()->memAlloc(sz, align, ::CDataGachaItemInfo::DTI.::MtDTI::getID());
+    return CDataGachaItemInfo::getAllocator()->memAlloc(sz, align, CDataGachaItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,7 +269,7 @@ void* CDataGachaItemInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ba150 - 0x003ba17a (42 bytes)
 __attribute__((weak)) void CDataGachaItemInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGachaItemInfo::getAllocator()->memFree(p_addr);
+    CDataGachaItemInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,6 +291,8 @@ __attribute__((weak)) void CDataGachaItemInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataGachaItemInfo::CDataGachaItemInfo(u32, u32, u32, u32, f64);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGachaItemInfo::MyDTI CDataGachaItemInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004195bf-0x004195f8 (called at GachaImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004195bf-0x004195f8 (called at Gacha.h:116)
@@ -293,7 +301,7 @@ __attribute__((weak)) void CDataGachaItemInfo::operator delete(void* p_addr) {
 // Address: 0x003ba080 - 0x003ba0d8 (88 bytes)
 MtObject* CDataGachaItemInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGachaItemInfo;
+    return new (16u) CDataGachaItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,7 +318,7 @@ const MtDTI& CDataGachaSettlementInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGachaSettlementInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGachaSettlementInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGachaSettlementInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,7 +327,7 @@ inline MtAllocator* CDataGachaSettlementInfo::getAllocator() {
 // Address: 0x003b9fb0 - 0x003b9ff0 (64 bytes)
 void* CDataGachaSettlementInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGachaSettlementInfo::getAllocator()->memAlloc(sz, align, ::CDataGachaSettlementInfo::DTI.::MtDTI::getID());
+    return CDataGachaSettlementInfo::getAllocator()->memAlloc(sz, align, CDataGachaSettlementInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -334,7 +342,7 @@ void* CDataGachaSettlementInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003ba020 - 0x003ba04a (42 bytes)
 __attribute__((weak)) void CDataGachaSettlementInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGachaSettlementInfo::getAllocator()->memFree(p_addr);
+    CDataGachaSettlementInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,6 +364,8 @@ __attribute__((weak)) void CDataGachaSettlementInfo::operator delete(void* p_add
 // No out-of-line body: no code in the ELF
 // CDataGachaSettlementInfo::CDataGachaSettlementInfo(u32, u32, u32, u32, u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGachaSettlementInfo::MyDTI CDataGachaSettlementInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419586-0x004195bf (called at GachaImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419586-0x004195bf (called at Gacha.h:21)
@@ -364,6 +374,6 @@ __attribute__((weak)) void CDataGachaSettlementInfo::operator delete(void* p_add
 // Address: 0x003b9f50 - 0x003b9fb0 (96 bytes)
 MtObject* CDataGachaSettlementInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGachaSettlementInfo;
+    return new (16u) CDataGachaSettlementInfo;
 }
 

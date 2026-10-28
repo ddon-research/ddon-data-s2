@@ -109,6 +109,8 @@ __attribute__((weak)) void nNetwork::SessionListener::operator delete(void* p_ad
 // Defined in the class (its body was written in a header).
 // void nNetwork::SessionListener::onInviteComplete();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nNetwork::SessionListener::MyDTI nNetwork::SessionListener::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SessionListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 

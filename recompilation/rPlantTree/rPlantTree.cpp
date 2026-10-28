@@ -36,7 +36,7 @@ const MtDTI& rPlantTree::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPlantTree::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPlantTree::DTI)->memAlloc(sz, align, ::rPlantTree::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPlantTree::DTI)->memAlloc(sz, align, rPlantTree::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rPlantTree::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPlantTree::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPlantTree::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPlantTree::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,9 +65,9 @@ inline void rPlantTree::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rPlantTree::rPlantTree() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArray = static_cast<rPlantTree::Tree*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(18u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x006cb7b0 - 0x006cb831 (129 bytes)
@@ -126,13 +126,13 @@ MT_CTSTR rPlantTree::getExt() const {
 // Address: 0x01aabd30 - 0x01aabd34 (4 bytes)
 u32 rPlantTree::getTreeNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x01aabd40 - 0x01aabd4b (11 bytes)
 rPlantTree::Tree* rPlantTree::getTree(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpArray[idx];
+    return &mpArray[idx];
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,6 +146,8 @@ rPlantTree::Tree* rPlantTree::getTree(u32 idx) {
 //   in rPlantTree::~rPlantTree at 0x006cb86b-0x006cb8c8 (called at rPlantTree.cpp:565)
 // void rPlantTree::destruct();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPlantTree::MyDTI rPlantTree::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPlantTree.cpp at 0x006cc067-0x006cc0a4 (called at rPlantTree.cpp:543)
 //   in _GLOBAL__sub_I_rPlantTree.cpp at 0x006cc067-0x006cc0a4 (called at rPlantTree.h:27)
@@ -154,7 +156,7 @@ rPlantTree::Tree* rPlantTree::getTree(u32 idx) {
 // Address: 0x006cb6c0 - 0x006cb724 (100 bytes)
 MtObject* rPlantTree::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPlantTree;
+    return new (16u) rPlantTree;
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,7 +182,7 @@ const MtDTI& rPlantTree::Tree::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPlantTree::Tree::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::DTI)->memAlloc(sz, align, ::rPlantTree::Tree::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPlantTree::Tree::DTI)->memAlloc(sz, align, rPlantTree::Tree::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -195,7 +197,7 @@ inline void* rPlantTree::Tree::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPlantTree::Tree::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPlantTree::Tree::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -228,14 +230,16 @@ rPlantTree::Tree::~Tree() {
 // Address: 0x01aabde0 - 0x01aabdeb (11 bytes)
 rPlantTree::Tree::Point* rPlantTree::Tree::getPointList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpPointList[index];
+    return &mpPointList[index];
 }
 
 // Address: 0x01aabdf0 - 0x01aabdf4 (4 bytes)
 u32 rPlantTree::Tree::getPointListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPointListNum;
+    return mPointListNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPlantTree::Tree::MyDTI rPlantTree::Tree::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rPlantTree.cpp at 0x006cc02e-0x006cc067 (called at rPlantTree.cpp:110)
@@ -245,7 +249,7 @@ u32 rPlantTree::Tree::getPointListNum() {
 // Address: 0x006cb4f0 - 0x006cb546 (86 bytes)
 MtObject* rPlantTree::Tree::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPlantTree::Tree;
+    return new (16u) rPlantTree::Tree;
 }
 
 // No out-of-line body: no code in the ELF
@@ -283,7 +287,7 @@ const MtDTI& rPlantTree::Tree::Point::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rPlantTree4Tree5PointD0Ev at 0x01aabd80-0x01aabdaa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPlantTree::Tree::Point::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::Point::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPlantTree::Tree::Point::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -295,18 +299,31 @@ inline void rPlantTree::Tree::Point::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rPlantTree::Tree::Point::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (622 bytes)
-//   in rPlantTree::Tree::Point::MyDTI::newInstance at 0x006cb17d-0x006cb205 (called at rPlantTree.cpp:37)
-//   in rPlantTree::Tree::Point::MyDTI::newInstance at 0x006cb17d-0x006cb205 (called at rPlantTree.h:57)
-//   in rPlantTree::load at 0x006cb9fc-0x006cba1c, 0x006cbaaa-0x006cbb2b, 0x006cbb8e-0x006cbb9c (called at rPlantTree.cpp:623)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// rPlantTree::Tree::Point::Point();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rPlantTree::Tree::Point::Point() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPosition.x = MtVector3::Zero.x;
+    mPosition.y = MtVector3::Zero.y;
+    mPosition.z = MtVector3::Zero.z;
+    mPosition.pad_ = 0.0f;
+    mAngle.x = MtVector3::Zero.x;
+    mAngle.y = MtVector3::Zero.y;
+    mAngle.z = MtVector3::Zero.z;
+    mAngle.pad_ = 0.0f;
+    mScale.x = MtVector3::One.x;
+    mScale.y = MtVector3::One.y;
+    mScale.z = MtVector3::One.z;
+    mScale.pad_ = 0.0f;
+}
 
 // Address: 0x006cb280 - 0x006cb4e1 (609 bytes)
 __attribute__((weak)) void rPlantTree::Tree::Point::createProperty(MtPropertyList& s) {
     DDON_STUB("rPlantTree::Tree::Point::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPlantTree::Tree::Point::MyDTI rPlantTree::Tree::Point::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rPlantTree.cpp at 0x006cbfee-0x006cc02e (called at rPlantTree.cpp:37)

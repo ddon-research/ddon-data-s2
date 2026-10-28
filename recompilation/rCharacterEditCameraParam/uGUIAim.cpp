@@ -32,7 +32,7 @@ const MtDTI& uGUIAim::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIAim::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIAim::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIAim::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIAim::getAllocator() {
 // Address: 0x00921c20 - 0x00921c60 (64 bytes)
 void* uGUIAim::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIAim::getAllocator()->memAlloc(sz, align, ::uGUIAim::DTI.::MtDTI::getID());
+    return uGUIAim::getAllocator()->memAlloc(sz, align, uGUIAim::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIAim::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIAim::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAim::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAim::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,19 +80,19 @@ inline void uGUIAim::operator delete(void* p_addr) {
 // Also emitted as: _ZN7uGUIAimD0Ev at 0x009222e0
 uGUIAim::~uGUIAim() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00922340 - 0x009223a8 (104 bytes)
 bool uGUIAim::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_AIM_GUI"), static_cast<u32>(129), static_cast<t64>(1458892618)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_AIM_GUI"), 129u, 1458892618l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -112,19 +112,19 @@ __attribute__((weak)) void uGUIAim::setup() {
 // Address: 0x00922850 - 0x00922855 (5 bytes)
 void uGUIAim::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00922860 - 0x00922865 (5 bytes)
 void uGUIAim::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00923790 - 0x00923798 (8 bytes)
 void uGUIAim::onMagicBowShot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsMagicBowShot = true;
+    mIsMagicBowShot = true;
 }
 
 // Address: 0x009237a0 - 0x0092380d (109 bytes)
@@ -147,12 +147,12 @@ __attribute__((weak)) void uGUIAim::endTargetMarker(u32 targetMarkerId) {
 // Address: 0x00923c00 - 0x00923c4b (75 bytes)
 void uGUIAim::setTargetMarkerPos(u32 targetMarkerId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (targetMarkerId <= static_cast<u32>(15)) {
-        if (this->mTargetMarkers.elems[targetMarkerId].mpINST_current != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mTargetMarkers.elems[targetMarkerId].mTargetPos.x = pos.x;
-            this->mTargetMarkers.elems[targetMarkerId].mTargetPos.y = pos.y;
-            this->mTargetMarkers.elems[targetMarkerId].mTargetPos.z = pos.z;
-            this->mTargetMarkers.elems[targetMarkerId].mTargetPos.pad_ = 0.0f;
+    if (targetMarkerId <= 15u) {
+        if (mTargetMarkers.elems[targetMarkerId].mpINST_current != nullptr) {
+            mTargetMarkers.elems[targetMarkerId].mTargetPos.x = pos.x;
+            mTargetMarkers.elems[targetMarkerId].mTargetPos.y = pos.y;
+            mTargetMarkers.elems[targetMarkerId].mTargetPos.z = pos.z;
+            mTargetMarkers.elems[targetMarkerId].mTargetPos.pad_ = 0.0f;
         }
     }
 }
@@ -161,9 +161,9 @@ void uGUIAim::setTargetMarkerPos(u32 targetMarkerId, const MtVector3& pos) {
 bool uGUIAim::isValidTargetMarkerId(u32 targetMarkerId) const {
     // DWARF local not rendered: bool is_valid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (targetMarkerId <= static_cast<u32>(15)) {
-        if (this->mTargetMarkers.elems[targetMarkerId].mpINST_current != static_cast<cGUIInstAnimation*>(nullptr)) {
-            return this->mTargetMarkers.elems[targetMarkerId].mState != static_cast<uGUIAim::cTargetMarker::STATE>(3);
+    if (targetMarkerId <= 15u) {
+        if (mTargetMarkers.elems[targetMarkerId].mpINST_current != nullptr) {
+            return mTargetMarkers.elems[targetMarkerId].mState != uGUIAim::cTargetMarker::STATE_NUM;
         }
     }
     return false;
@@ -197,7 +197,7 @@ __attribute__((weak)) void uGUIAim::adjustScale() {
 // Address: 0x00922830 - 0x0092284a (26 bytes)
 void uGUIAim::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
 }
 
 // Address: 0x00923350 - 0x00923500 (432 bytes)
@@ -229,19 +229,19 @@ __attribute__((weak)) void uGUIAim::updateLoop() {
 // Address: 0x00923710 - 0x0092377a (106 bytes)
 void uGUIAim::updateEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUI::isEndFlowAnimation(false) == false) {
+    if (!isEndFlowAnimation(false)) {
         return;
     }
-    this->mMode = static_cast<uGUIAim::MODE>(0);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
-    if (this->mData.mpINST_Null_all == static_cast<cGUIInstNull*>(nullptr)) {
+    mMode = MODE_NONE;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
+    if (mData.mpINST_Null_all == nullptr) {
         return;
     }
-    this->mData.mpINST_Null_all->::cGUIInstance::setVisible(false);
-    if (this->mData.mpINST_Null_all == static_cast<cGUIInstNull*>(nullptr)) {
+    mData.mpINST_Null_all->setVisible(false);
+    if (mData.mpINST_Null_all == nullptr) {
         return;
     }
-    this->mData.mpINST_Null_all->::cGUIInstance::setExecute(false);
+    mData.mpINST_Null_all->setExecute(false);
 }
 
 // No out-of-line body: no code in the ELF
@@ -280,6 +280,14 @@ __attribute__((weak)) void uGUIAim::drawInfo(uPlayer* player) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAim::MyDTI uGUIAim::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 uGUIAim::DEFAULT_TARGET_MARKER_SCALE_MAGIC;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 uGUIAim::DEFAULT_TARGET_MARKER_SCALE_MAGIC_BOW;
+
+// Not defined (a .ctors initializer touches it: its address is held across a call): const f32 uGUIAim::DEFAULT_TARGET_MARKER_SCALE_WIRE;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIAim.cpp at 0x00923e16-0x00923e53 (called at uGUIAim.cpp:187)
 //   in _GLOBAL__sub_I_uGUIAim.cpp at 0x00923e16-0x00923e53 (called at uGUIAim.h:27)
@@ -303,9 +311,99 @@ __attribute__((weak)) MtObject* uGUIAim::MyDTI::newInstance() const {
 // bool uGUIAim::cTargetMarker::isUsed() const;
 
 // Address: 0x00922730 - 0x00922829 (249 bytes)
-__attribute__((weak)) void uGUIAim::cTargetMarker::setup(uGUIBase* guiBase, cGUIInstAnimation* pINST_maker, cGUIInstAnimation* pINST_seaker_maker, cGUIInstAnimation* pINST_earcher_maker) {
-    DDON_STUB("uGUIAim::cTargetMarker::setup")
-    /* stub */
+void uGUIAim::cTargetMarker::setup(uGUIBase* guiBase, cGUIInstAnimation* pINST_maker, cGUIInstAnimation* pINST_seaker_maker, cGUIInstAnimation* pINST_earcher_maker) {
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    if (guiBase != nullptr) {
+        if (pINST_maker != nullptr) {
+            // inferred: a temporary for the result of the call at 0x922762, used twice; no DWARF local holds it
+            cGUIInstance* t0 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_maker), pINST_maker->getParent());
+            if ((mpINST_maker = static_cast<cGUIInstAnimation*>(t0)) != nullptr) {
+                t0->setExecuteTree(true);
+                mpINST_maker->setVisible(false);
+                mpINST_maker->setExecute(false);
+            }
+            if (pINST_seaker_maker != nullptr) {
+                // inferred: a temporary for the result of the call at 0x9227a0, used twice; no DWARF local holds it
+                cGUIInstance* t1 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_seaker_maker), pINST_seaker_maker->getParent());
+                if ((mpINST_seaker_maker = static_cast<cGUIInstAnimation*>(t1)) != nullptr) {
+                    t1->setExecuteTree(true);
+                    mpINST_seaker_maker->setVisible(false);
+                    mpINST_seaker_maker->setExecute(false);
+                }
+                if (pINST_earcher_maker != nullptr) {
+                    // inferred: a temporary for the result of the call at 0x9227e0, used twice; no DWARF local holds it
+                    cGUIInstance* t2 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_earcher_maker), pINST_earcher_maker->getParent());
+                    if ((mpINST_earcher_maker = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                        t2->setExecuteTree(true);
+                        mpINST_earcher_maker->setVisible(false);
+                        mpINST_earcher_maker->setExecute(false);
+                    }
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                } else {
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                }
+            } else {
+                if (pINST_earcher_maker != nullptr) {
+                    // inferred: a temporary for the result of the call at 0x9227e0, used twice; no DWARF local holds it
+                    cGUIInstance* t2 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_earcher_maker), pINST_earcher_maker->getParent());
+                    if ((mpINST_earcher_maker = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                        t2->setExecuteTree(true);
+                        mpINST_earcher_maker->setVisible(false);
+                        mpINST_earcher_maker->setExecute(false);
+                    }
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                } else {
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                }
+            }
+        } else {
+            if (pINST_seaker_maker != nullptr) {
+                // inferred: a temporary for the result of the call at 0x9227a0, used twice; no DWARF local holds it
+                cGUIInstance* t1 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_seaker_maker), pINST_seaker_maker->getParent());
+                if ((mpINST_seaker_maker = static_cast<cGUIInstAnimation*>(t1)) != nullptr) {
+                    t1->setExecuteTree(true);
+                    mpINST_seaker_maker->setVisible(false);
+                    mpINST_seaker_maker->setExecute(false);
+                }
+                if (pINST_earcher_maker != nullptr) {
+                    // inferred: a temporary for the result of the call at 0x9227e0, used twice; no DWARF local holds it
+                    cGUIInstance* t2 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_earcher_maker), pINST_earcher_maker->getParent());
+                    if ((mpINST_earcher_maker = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                        t2->setExecuteTree(true);
+                        mpINST_earcher_maker->setVisible(false);
+                        mpINST_earcher_maker->setExecute(false);
+                    }
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                } else {
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                }
+            } else {
+                if (pINST_earcher_maker != nullptr) {
+                    // inferred: a temporary for the result of the call at 0x9227e0, used twice; no DWARF local holds it
+                    cGUIInstance* t2 = guiBase->ManageDuplicate(static_cast<cGUIInstance*>(pINST_earcher_maker), pINST_earcher_maker->getParent());
+                    if ((mpINST_earcher_maker = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                        t2->setExecuteTree(true);
+                        mpINST_earcher_maker->setVisible(false);
+                        mpINST_earcher_maker->setExecute(false);
+                    }
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                } else {
+                    mpINST_current = nullptr;
+                    mState = STATE_NUM;
+                }
+            }
+        }
+    } else {
+        mpINST_current = nullptr;
+        mState = STATE_NUM;
+    }
 }
 
 // Address: 0x00923820 - 0x00923a03 (483 bytes)

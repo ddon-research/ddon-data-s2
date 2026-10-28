@@ -55,14 +55,14 @@
 // Address: 0x012fdc50 - 0x012fdc72 (34 bytes)
 void uMultiFilter::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mClearFlag != false) {
-        if (this->mEntry != static_cast<u32>(0)) {
-            this->mEntry = static_cast<u32>(0);
+    if (mClearFlag) {
+        if (mEntry != 0) {
+            mEntry = 0;
         } else {
-            this->kill();
+            kill();
         }
     } else {
-        this->mClearFlag = true;
+        mClearFlag = true;
     }
 }
 
@@ -90,12 +90,12 @@ __attribute__((weak)) void uMultiFilter::createProperty(MtPropertyList& s) {
 // Address: 0x012fe1b0 - 0x012fe1ed (61 bytes)
 void uMultiFilter::setDrawNum(u32 DrawNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDrawNum == DrawNum) {
+    if (mDrawNum == DrawNum) {
         return;
     }
-    this->freeFilterParam();
-    this->mDrawNum = this->allocFilterParam(DrawNum);
-    this->mEntry = static_cast<u32>(0);
+    freeFilterParam();
+    mDrawNum = allocFilterParam(DrawNum);
+    mEntry = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,14 +104,14 @@ void uMultiFilter::setDrawNum(u32 DrawNum) {
 // Address: 0x012fe1f0 - 0x012fe20e (30 bytes)
 void uMultiFilter::setDrawMax(u32 DrawMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (DrawMax != static_cast<u32>(0)) {
-        if (this->mDrawMax > static_cast<u32>(4)) {
-            this->mDrawMax = static_cast<u32>(4);
+    if (DrawMax != 0) {
+        if (mDrawMax > 4u) {
+            mDrawMax = 4;
         } else {
-            this->mDrawMax = DrawMax;
+            mDrawMax = DrawMax;
         }
     } else {
-        this->mDrawMax = static_cast<u32>(1);
+        mDrawMax = 1;
     }
 }
 
@@ -126,6 +126,8 @@ void uMultiFilter::setDrawMax(u32 DrawMax) {
 
 // No out-of-line body: no code in the ELF
 // void uMultiFilter::freeFilterParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uMultiFilter::MyDTI uMultiFilter::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uMultiFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -109,9 +109,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: specialized to the arguments every copy passes (DW_AT_const_value; 023 T608, 2.7.0 specialized-constant constructors); approximate: no recompile checks its other arguments
 inline rSituationMsgCtrl::cSituationData::cSituationData(u32 GroupSerial, u32 StartQuestId, bool IsStartQuestIdStart, u32 EndQuestId, bool IsEndQuestIdStart) {
-    this->mGroupSerial = static_cast<u32>(0);
-    this->mStartQuestId = static_cast<u32>(0);
+    this->mGroupSerial = 0;
+    this->mStartQuestId = 0;
     this->mIsStartQuestIdStart = false;
-    this->mEndQuestId = static_cast<u32>(0);
+    this->mEndQuestId = 0;
     this->mIsEndQuestIdStart = false;
 }

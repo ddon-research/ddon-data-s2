@@ -33,7 +33,7 @@ const MtDTI& uSoundMotionSe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline MtAllocator* uSoundMotionSe::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundMotionSe::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundMotionSe::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline MtAllocator* uSoundMotionSe::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundMotionSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundMotionSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundMotionSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,76 +71,76 @@ inline void uSoundMotionSe::operator delete(void* p_addr) {
 uSoundMotionSe::uSoundMotionSe() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mpMotionSe = static_cast<rSoundMotionSe*>(nullptr);
-    this->mpTarModel = static_cast<uModel*>(nullptr);
-    this->mpAttributeSe = static_cast<rSoundAttributeSe*>(nullptr);
-    this->mpStreamRequest = static_cast<rSoundStreamRequest*>(nullptr);
-    this->mMotType = static_cast<u8>(1);
-    this->mpRequest[15] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[14] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[13] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[12] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[11] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[10] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[9] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[8] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[7] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[6] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[5] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[4] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[3] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[2] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[1] = static_cast<rSoundRequest*>(nullptr);
-    this->mpRequest[0] = static_cast<rSoundRequest*>(nullptr);
-    this->mMotSeqTri[6] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[7] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[4] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[5] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[2] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[3] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[0] = static_cast<unsigned int>(0);
-    this->mMotSeqTri[1] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[6] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[7] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[4] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[5] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[2] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[3] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[0] = static_cast<unsigned int>(0);
-    this->mMotSeqOld[1] = static_cast<unsigned int>(0);
-    this->mMotSeq[6] = static_cast<unsigned int>(0);
-    this->mMotSeq[7] = static_cast<unsigned int>(0);
-    this->mMotSeq[4] = static_cast<unsigned int>(0);
-    this->mMotSeq[5] = static_cast<unsigned int>(0);
-    this->mMotSeq[2] = static_cast<unsigned int>(0);
-    this->mMotSeq[3] = static_cast<unsigned int>(0);
-    this->mMotSeq[0] = static_cast<unsigned int>(0);
-    this->mMotSeq[1] = static_cast<unsigned int>(0);
+    mpMotionSe = nullptr;
+    mpTarModel = nullptr;
+    mpAttributeSe = nullptr;
+    mpStreamRequest = nullptr;
+    mMotType = 1;
+    mpRequest[15] = nullptr;
+    mpRequest[14] = nullptr;
+    mpRequest[13] = nullptr;
+    mpRequest[12] = nullptr;
+    mpRequest[11] = nullptr;
+    mpRequest[10] = nullptr;
+    mpRequest[9] = nullptr;
+    mpRequest[8] = nullptr;
+    mpRequest[7] = nullptr;
+    mpRequest[6] = nullptr;
+    mpRequest[5] = nullptr;
+    mpRequest[4] = nullptr;
+    mpRequest[3] = nullptr;
+    mpRequest[2] = nullptr;
+    mpRequest[1] = nullptr;
+    mpRequest[0] = nullptr;
+    mMotSeqTri[6] = 0;
+    mMotSeqTri[7] = 0;
+    mMotSeqTri[4] = 0;
+    mMotSeqTri[5] = 0;
+    mMotSeqTri[2] = 0;
+    mMotSeqTri[3] = 0;
+    mMotSeqTri[0] = 0;
+    mMotSeqTri[1] = 0;
+    mMotSeqOld[6] = 0;
+    mMotSeqOld[7] = 0;
+    mMotSeqOld[4] = 0;
+    mMotSeqOld[5] = 0;
+    mMotSeqOld[2] = 0;
+    mMotSeqOld[3] = 0;
+    mMotSeqOld[0] = 0;
+    mMotSeqOld[1] = 0;
+    mMotSeq[6] = 0;
+    mMotSeq[7] = 0;
+    mMotSeq[4] = 0;
+    mMotSeq[5] = 0;
+    mMotSeq[2] = 0;
+    mMotSeq[3] = 0;
+    mMotSeq[0] = 0;
+    mMotSeq[1] = 0;
     // inferred: a temporary for the result of the call at 0xd2021d, used twice; no DWARF local holds it
-    void* t0 = ::uSoundMotionSe::getAllocator()->memAlloc(static_cast<size_t>(208), static_cast<u32>(16));
-    this->mpAttributeRequest = static_cast<rSoundRequest* *>(t0);
-    ::memset(t0, static_cast<int>(0), static_cast<size_t>(208));
-    this->setMotSeSeqPageNo(static_cast<u8>(3));
-    this->setMotSeSeqStartIndex(static_cast<u8>(0));
-    this->setMotSeSeqNum(static_cast<u8>(32));
-    this->mReqIdType = static_cast<u32>(0);
-    this->mRequestAllow[8] = false;
-    this->mRequestAllow[9] = false;
-    this->mRequestAllow[10] = false;
-    this->mRequestAllow[11] = false;
-    this->mRequestAllow[12] = false;
-    this->mRequestAllow[13] = false;
-    this->mRequestAllow[14] = false;
-    this->mRequestAllow[15] = false;
-    this->mRequestAllow[0] = false;
-    this->mRequestAllow[1] = false;
-    this->mRequestAllow[2] = false;
-    this->mRequestAllow[3] = false;
-    this->mRequestAllow[4] = false;
-    this->mRequestAllow[5] = false;
-    this->mRequestAllow[6] = false;
-    this->mRequestAllow[7] = false;
-    this->mFilterSeq = static_cast<u32>(0);
+    void* t0 = uSoundMotionSe::getAllocator()->memAlloc(208ul, 16u);
+    mpAttributeRequest = static_cast<rSoundRequest* *>(t0);
+    memset(t0, 0, 208ul);
+    setMotSeSeqPageNo(static_cast<u8>(3));
+    setMotSeSeqStartIndex(static_cast<u8>(0));
+    setMotSeSeqNum(static_cast<u8>(32));
+    mReqIdType = 0;
+    mRequestAllow[8] = false;
+    mRequestAllow[9] = false;
+    mRequestAllow[10] = false;
+    mRequestAllow[11] = false;
+    mRequestAllow[12] = false;
+    mRequestAllow[13] = false;
+    mRequestAllow[14] = false;
+    mRequestAllow[15] = false;
+    mRequestAllow[0] = false;
+    mRequestAllow[1] = false;
+    mRequestAllow[2] = false;
+    mRequestAllow[3] = false;
+    mRequestAllow[4] = false;
+    mRequestAllow[5] = false;
+    mRequestAllow[6] = false;
+    mRequestAllow[7] = false;
+    mFilterSeq = 0;
 }
 
 // Address: 0x00d202a0 - 0x00d20395 (245 bytes)
@@ -160,14 +160,14 @@ __attribute__((weak)) void uSoundMotionSe::createProperty(MtPropertyList& s) {
 // Address: 0x00d20d30 - 0x00d20d35 (5 bytes)
 MtUI* uSoundMotionSe::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00d20d40 - 0x00d20d5c (28 bytes)
 void uSoundMotionSe::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundMotionSe::updateMotSeq();
-    this->::uSoundMotionSe::moveMotionSe();
+    updateMotSeq();
+    moveMotionSe();
 }
 
 // No out-of-line body: no code in the ELF
@@ -184,72 +184,72 @@ void uSoundMotionSe::move() {
 // Address: 0x01b23370 - 0x01b23375 (5 bytes)
 rSoundMotionSe* uSoundMotionSe::getMotionSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMotionSe;
+    return mpMotionSe;
 }
 
 // Address: 0x00d203d0 - 0x00d2040d (61 bytes)
 void uSoundMotionSe::setMotionSe(rSoundMotionSe* pMotionSe) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMotionSe != static_cast<rSoundMotionSe*>(nullptr)) {
-        this->mpMotionSe->::cResource::release();
-        this->mpMotionSe = static_cast<rSoundMotionSe*>(nullptr);
+    if (mpMotionSe != nullptr) {
+        mpMotionSe->release();
+        mpMotionSe = nullptr;
     }
-    if (pMotionSe == static_cast<rSoundMotionSe*>(nullptr)) {
+    if (pMotionSe == nullptr) {
         return;
     }
-    this->mpMotionSe = pMotionSe;
-    pMotionSe->::cResource::addRef();
+    mpMotionSe = pMotionSe;
+    pMotionSe->addRef();
 }
 
 // Address: 0x01b233a0 - 0x01b233a8 (8 bytes)
 rSoundAttributeSe* uSoundMotionSe::getAttributeSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAttributeSe;
+    return mpAttributeSe;
 }
 
 // Address: 0x00d20410 - 0x00d2045b (75 bytes)
 void uSoundMotionSe::setAttributeSe(rSoundAttributeSe* pAttributeSe) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pAttributeSe == this->mpAttributeSe) {
+    if (pAttributeSe == mpAttributeSe) {
         return;
     }
-    if (this->mpAttributeSe != static_cast<rSoundAttributeSe*>(nullptr)) {
-        this->mpAttributeSe->::cResource::release();
-        this->mpAttributeSe = static_cast<rSoundAttributeSe*>(nullptr);
+    if (mpAttributeSe != nullptr) {
+        mpAttributeSe->release();
+        mpAttributeSe = nullptr;
     }
-    if (pAttributeSe == static_cast<rSoundAttributeSe*>(nullptr)) {
+    if (pAttributeSe == nullptr) {
         return;
     }
-    this->mpAttributeSe = pAttributeSe;
-    pAttributeSe->::cResource::addRef();
+    mpAttributeSe = pAttributeSe;
+    pAttributeSe->addRef();
 }
 
 // Address: 0x01b233b0 - 0x01b233be (14 bytes)
 rSoundRequest* uSoundMotionSe::getAttributeRequest(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAttributeRequest[index];
+    return mpAttributeRequest[index];
 }
 
 // Address: 0x00d20460 - 0x00d2050a (170 bytes)
 void uSoundMotionSe::setAttributeRequest(rSoundRequest* pReq, u32 index, bool isClear) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(25)) {
-        if (pReq != this->mpAttributeRequest[index]) {
-            if (this->mpAttributeRequest[index] != static_cast<rSoundRequest*>(nullptr)) {
-                if ((isClear == false) == false) {
-                    this->mpAttributeRequest[index]->::cResource::release();
-                    this->mpAttributeRequest[index] = static_cast<rSoundRequest*>(nullptr);
+    if (index <= 25u) {
+        if (pReq != mpAttributeRequest[index]) {
+            if (mpAttributeRequest[index] != nullptr) {
+                if (!!isClear) {
+                    mpAttributeRequest[index]->cResource::release();
+                    mpAttributeRequest[index] = nullptr;
                 }
             }
-            if (pReq != static_cast<rSoundRequest*>(nullptr)) {
-                if (isClear == false) {
-                    if (this->mpAttributeRequest[index] != static_cast<rSoundRequest*>(nullptr)) {
-                        this->mpAttributeRequest[index]->::cResource::release();
-                        this->mpAttributeRequest[index] = static_cast<rSoundRequest*>(nullptr);
+            if (pReq != nullptr) {
+                if (!isClear) {
+                    if (mpAttributeRequest[index] != nullptr) {
+                        mpAttributeRequest[index]->cResource::release();
+                        mpAttributeRequest[index] = nullptr;
                     }
                 }
-                this->mpAttributeRequest[index] = pReq;
-                this->mpAttributeRequest[index]->::cResource::addRef();
+                mpAttributeRequest[index] = pReq;
+                mpAttributeRequest[index]->cResource::addRef();
             }
         }
     }
@@ -277,40 +277,40 @@ __attribute__((weak)) void uSoundMotionSe::setRequest(rSoundRequest* pReq, u32 t
 // Address: 0x00d20570 - 0x00d2057f (15 bytes)
 rSoundRequest* uSoundMotionSe::getRequest(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<u32>(15)) {
-        return this->mpRequest[type];
+    if (type <= 15u) {
+        return mpRequest[type];
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b23380 - 0x01b23386 (6 bytes)
 u32 uSoundMotionSe::getRequestNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(16);
+    return 16;
 }
 
 // Address: 0x00d20580 - 0x00d205cb (75 bytes)
 void uSoundMotionSe::setStreamRequest(rSoundStreamRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pReq == this->mpStreamRequest) {
+    if (pReq == mpStreamRequest) {
         return;
     }
-    if (this->mpStreamRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mpStreamRequest->::cResource::release();
-        this->mpStreamRequest = static_cast<rSoundStreamRequest*>(nullptr);
+    if (mpStreamRequest != nullptr) {
+        mpStreamRequest->release();
+        mpStreamRequest = nullptr;
     }
-    if (pReq == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pReq == nullptr) {
         return;
     }
-    this->mpStreamRequest = pReq;
-    pReq->::cResource::addRef();
+    mpStreamRequest = pReq;
+    pReq->addRef();
 }
 
 // Address: 0x00d205d0 - 0x00d205d8 (8 bytes)
 rSoundStreamRequest* uSoundMotionSe::getStreamRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpStreamRequest;
+    return mpStreamRequest;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (59 bytes)
@@ -324,8 +324,8 @@ rSoundStreamRequest* uSoundMotionSe::getStreamRequest() {
 // Address: 0x00d22640 - 0x00d2264f (15 bytes)
 void uSoundMotionSe::setMotionSeCallFlag(u32 index, bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(15)) {
-        this->mRequestAllow[index] = flag;
+    if (index <= 15u) {
+        mRequestAllow[index] = flag;
     }
 }
 
@@ -345,7 +345,7 @@ __attribute__((weak)) void uSoundMotionSe::requestMotionSebyWork(u16 work, u8 mo
 // Address: 0x01b23360 - 0x01b23366 (6 bytes)
 u32 uSoundMotionSe::getAttributeRequestNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(26);
+    return 26;
 }
 
 // No out-of-line body: no code in the ELF
@@ -386,73 +386,73 @@ __attribute__((weak)) u32 uSoundMotionSe::checkDeepWater(sCollision::TriangleInf
 // Address: 0x00d22110 - 0x00d22125 (21 bytes)
 void uSoundMotionSe::requestSe(rSoundRequest* pRequest, u32 reqNo, MtObject* thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(pRequest, reqNo, thisId);
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(pRequest, reqNo, thisId);
 }
 
 // Address: 0x00d22130 - 0x00d22145 (21 bytes)
 void uSoundMotionSe::requestSe(rSoundRequest* pRequest, u32 reqNo, MtObject* thisId, MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(pRequest, reqNo, thisId, pos);
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(pRequest, reqNo, thisId, pos);
 }
 
 // Address: 0x00d22150 - 0x00d22165 (21 bytes)
 void uSoundMotionSe::requestSe(rSoundRequest* pRequest, u32 reqNo, MtObject* thisId, MtVector3& pos, MtQuaternion& quaternion) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(pRequest, reqNo, thisId, pos, quaternion);
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(pRequest, reqNo, thisId, pos, quaternion);
 }
 
 // Address: 0x00d22170 - 0x00d22185 (21 bytes)
 void uSoundMotionSe::requestSe(rSoundRequest* pRequest, u32 reqNo, MtObject* thisId, uCoord* pCoord, s32 jointId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(pRequest, reqNo, thisId, pCoord, jointId);
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(pRequest, reqNo, thisId, pCoord, jointId);
 }
 
 // Address: 0x00d22190 - 0x00d221ad (29 bytes)
 void uSoundMotionSe::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestStream(pRequest, reqNo, thisId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, thisId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d221b0 - 0x00d221df (47 bytes)
 void uSoundMotionSe::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId, MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestStream(pRequest, reqNo, thisId, pos, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, thisId, pos, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d221e0 - 0x00d22215 (53 bytes)
 void uSoundMotionSe::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId, MtVector3& pos, MtQuaternion& quaternion) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestStream(pRequest, reqNo, thisId, pos, quaternion, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, thisId, pos, quaternion, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d22220 - 0x00d22255 (53 bytes)
 void uSoundMotionSe::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId, uCoord* pCoord, s32 jointId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sSound::getInstance() == static_cast<sSound*>(nullptr)) {
+    if (sSound::getInstance() == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestStream(pRequest, reqNo, thisId, pCoord, jointId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, thisId, pCoord, jointId, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x00d22260 - 0x00d22324 (196 bytes)
@@ -482,49 +482,49 @@ __attribute__((weak)) void uSoundMotionSe::requestSe(cResource* pRequest, u32 re
 // Address: 0x00d22610 - 0x00d2261e (14 bytes)
 void uSoundMotionSe::setMotSeSeqPageNo(u8 pageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pageNo <= static_cast<u8>(31)) {
-        this->mMotSeSeqPageNo = pageNo;
+    if (pageNo <= 31) {
+        mMotSeSeqPageNo = pageNo;
     } else {
-        this->mMotSeSeqPageNo = static_cast<u8>(31);
+        mMotSeSeqPageNo = 31;
     }
 }
 
 // Address: 0x01b233e0 - 0x01b233e5 (5 bytes)
 u8 uSoundMotionSe::getMotSeSeqPageNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotSeSeqPageNo;
+    return mMotSeSeqPageNo;
 }
 
 // Address: 0x00d22620 - 0x00d2262e (14 bytes)
 void uSoundMotionSe::setMotSeSeqStartIndex(u8 startIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (startIndex <= static_cast<u8>(32)) {
-        this->mMotSeSeqStartIndex = startIndex;
+    if (startIndex <= 32) {
+        mMotSeSeqStartIndex = startIndex;
     } else {
-        this->mMotSeSeqStartIndex = static_cast<u8>(32);
+        mMotSeSeqStartIndex = 32;
     }
 }
 
 // Address: 0x01b233f0 - 0x01b233f5 (5 bytes)
 u8 uSoundMotionSe::getMotSeSeqStartIndex() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotSeSeqStartIndex;
+    return mMotSeSeqStartIndex;
 }
 
 // Address: 0x00d22630 - 0x00d2263e (14 bytes)
 void uSoundMotionSe::setMotSeSeqNum(u8 seqNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (seqNum <= static_cast<u8>(32)) {
-        this->mMotSeSeqNum = seqNum;
+    if (seqNum <= 32) {
+        mMotSeSeqNum = seqNum;
     } else {
-        this->mMotSeSeqNum = static_cast<u8>(32);
+        mMotSeSeqNum = 32;
     }
 }
 
 // Address: 0x01b23400 - 0x01b23405 (5 bytes)
 u8 uSoundMotionSe::getMotSeSeqNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotSeSeqNum;
+    return mMotSeSeqNum;
 }
 
 // Address: 0x00d22660 - 0x00d22675 (21 bytes)
@@ -532,10 +532,10 @@ s16 uSoundMotionSe::getReqNo(rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA*
     // DWARF local not rendered: s16 reqNo;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned short used as s16
-    if (pMotionSeData != static_cast<rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA*>(nullptr)) {
-        return static_cast<s16>(static_cast<unsigned short>(this->::uSoundMotionSe::getReqId(pMotionSeData)));
+    if (pMotionSeData != nullptr) {
+        return static_cast<s16>(static_cast<unsigned short>(getReqId(pMotionSeData)));
     } else {
-        return static_cast<s16>(-1);
+        return -1;
     }
 }
 
@@ -550,19 +550,19 @@ __attribute__((weak)) u32 uSoundMotionSe::findIntersection(MtLineSegment& lineSe
 // Address: 0x00d22770 - 0x00d22773 (3 bytes)
 u32 uSoundMotionSe::getAttributeID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00d22780 - 0x00d22783 (3 bytes)
 u32 uSoundMotionSe::getAttributeIDNoUseFindIntersect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00d22790 - 0x00d22793 (3 bytes)
 u32 uSoundMotionSe::getAttributeResourceIndex(u32 attributeID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -571,13 +571,13 @@ u32 uSoundMotionSe::getAttributeResourceIndex(u32 attributeID) {
 // Address: 0x00d227a0 - 0x00d227b5 (21 bytes)
 void uSoundMotionSe::setSePositionOffset(rSoundRequest* pRequest, const u32 reqNo, const u32 thisId, const MtVector3& offset, bool isLink) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sSound::getInstance()->::sSound::setSePositionOffset(pRequest, reqNo, thisId, offset, isLink);
+    sSound::getInstance()->setSePositionOffset(pRequest, reqNo, thisId, offset, isLink);
 }
 
 // Address: 0x00d227c0 - 0x00d227d5 (21 bytes)
 void uSoundMotionSe::setStreamPositionOffset(rSoundStreamRequest* pRequest, const u32 reqNo, const u32 thisId, const MtVector3& offset, bool isLink) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sSound::getInstance()->::sSound::setStreamPositionOffset(pRequest, reqNo, thisId, offset, isLink);
+    sSound::getInstance()->setStreamPositionOffset(pRequest, reqNo, thisId, offset, isLink);
 }
 
 // Address: 0x00d20ea0 - 0x00d20fae (270 bytes)
@@ -650,6 +650,10 @@ __attribute__((weak)) u32 uSoundMotionSe::getReqId(rSoundMotionSe::cSoundMotionS
     DDON_STUB("uSoundMotionSe::getReqId")
     return {};
 }
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uSoundMotionSe::MotSpdData uSoundMotionSe::mMotSpdTbl[];
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundMotionSe::MyDTI uSoundMotionSe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundMotionSe.cpp at 0x00d228ff-0x00d2293c (called at uSoundMotionSe.cpp:44)

@@ -146,6 +146,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rLoadingParam::cData::cData() {
-    this->mMsgIdx = static_cast<u32>(0);
-    this->mImgId = static_cast<u32>(0);
+    this->mMsgIdx = 0;
+    this->mImgId = 0;
 }

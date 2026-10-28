@@ -35,6 +35,7 @@ class MtVector3;
 class MtVector4;
 class aStage;
 class cCommonSkyFogData;
+class cDDMaterialCtrl;
 class cDayNightColorFogParam;
 class cDayNightLightParam;
 class cEffectCorrectParam;
@@ -204,6 +205,8 @@ class sWeatherManager : public cSystem
 {
     // inferred: aStage::releaseStageWeather names sWeatherManager::mpInstance
     friend class aStage;
+    // inferred: cDDMaterialCtrl::cShaderDataStatusAilments::update names sWeatherManager::mpInstance, through its enclosing class cDDMaterialCtrl
+    friend class cDDMaterialCtrl;
 public:
     enum WEATHER_PHASE
     {
@@ -668,12 +671,91 @@ inline sWeatherManager* sWeatherManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in _ZN15sWeatherManager21setWeatherTimefromHMSEjjj at 0x870396-0x8703a3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sWeatherManager::reqWeatherTime(u32 time) {
+    this->mIsReqWeatherTime = true;
+    this->mReqWeatherTime = time;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 sWeatherManager::getDayNightBlendRate() const {
     return this->mDayNightBlendRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffectExt::move at 0x8e4bb6-0x8e4bbe; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline f32 sWeatherManager::getWeatherBlend() const {
+    return this->mWeatherBlend;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSkyGrass::move at 0xd15c02-0xd15c0a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sWeatherManager::getGrassAmbientOcclusionScale() const {
+    return this->mGrassAmbientOcclusion.x;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSkyGrass::move at 0xd15c3c-0xd15c44; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sWeatherManager::getGrassFadeEndDistance() const {
+    return this->mGrassFadeEndDistance;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline s32 sWeatherManager::getWeatherID() const {
     return this->mWeatherID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffectExt::move at 0x8e4bb0-0x8e4bb6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sWeatherManager::getWeatherIDOld() const {
+    return this->mWeatherIDOld;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageWeather at 0x14115-0x1411b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sWeatherManager::setSkyInfiniteLightGroupType(s32 type) {
+    this->mSkyInfiniteLightGroupType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSkyInfiniteLight::moveMain at 0xd16eb8-0xd16ebe; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 sWeatherManager::getSkyInfiniteLightGroupType() const {
+    return this->mSkyInfiniteLightGroupType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDayNightColorFog::move at 0xd14757-0xd1475f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sWeatherManager::getDayNightFogChgFrame() const {
+    return this->mDayNightFogChgFrame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageWeather at 0x140f3-0x140fb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sWeatherManager::setDayNightLightChgFrame(f32 frame) {
+    this->mDayNightLightChgFrame = frame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageWeather at 0x14105-0x1410d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sWeatherManager::setDayNightFogChgFrame(f32 frame) {
+    this->mDayNightFogChgFrame = frame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::getColorFogPD at 0x152fc-0x15304; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sWeatherManager::getLightFogZoneChgFrame() const {
+    return this->mLightFogZoneChgFrame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStagePartsCtrl::uStageCustomCtrlSetup at 0xd39113-0xd3911b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sWeatherManager::setLightFogZoneChgFrame(f32 frame) {
+    this->mLightFogZoneChgFrame = frame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSkyCloudModel::move at 0xd0f219-0xd0f221; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sWeatherManager::getCloudHeightOffset() const {
+    return this->mCloudHeightOffset;
 }

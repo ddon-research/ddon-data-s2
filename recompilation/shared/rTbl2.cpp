@@ -158,7 +158,7 @@ const MtDTI& rTbl2Base::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rTbl2Base::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rTbl2Base::DTI);
+    return MtMemoryAllocator::getAllocator(rTbl2Base::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -167,7 +167,7 @@ inline MtAllocator* rTbl2Base::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTbl2Base::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTbl2Base::DTI)->memAlloc(sz, align, ::rTbl2Base::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTbl2Base::DTI)->memAlloc(sz, align, rTbl2Base::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +182,7 @@ inline void* rTbl2Base::operator new(size_t sz, u32 align) {
 // Address: 0x006c5960 - 0x006c598a (42 bytes)
 __attribute__((weak)) void rTbl2Base::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::rTbl2Base::getAllocator()->memFree(p_addr);
+    rTbl2Base::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,11 +203,13 @@ rTbl2Base::rTbl2Base() {
 __attribute__((weak)) void rTbl2Base::readDataValue(MtDataReader& r, u32& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, data);
+    nDDOIO::readData(r, data);
 }
 
 // No out-of-line body: no code in the ELF
 // void rTbl2Base::writeDataValue(MtDataWriter& w, u32 data);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rTbl2Base::MyDTI rTbl2Base::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTbl2.cpp at 0x006c5a20-0x006c5a62 (called at rTbl2.cpp:39)
@@ -217,7 +219,7 @@ __attribute__((weak)) void rTbl2Base::readDataValue(MtDataReader& r, u32& data) 
 // Address: 0x006c58e0 - 0x006c592e (78 bytes)
 MtObject* rTbl2Base::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTbl2Base;
+    return new (16u) rTbl2Base;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2220,15 +2222,15 @@ inline void* rAcquirement::cNormalSkillData::operator new[](size_t sz, u32 align
 // placed: defined in its family's unit only: 43 proven bodies call or inline its instances (43 call an unproven one out of line), and none of them is compiled in rTbl2.cpp (024 D4, constitution 2.6.0)
 template <typename T>
 void rTbl2<T>::allocData(u32 num) {
-    if (this->mpData != static_cast<T*>(nullptr)) {
+    if (this->mpData != nullptr) {
         delete[] this->mpData;
-        this->mpData = static_cast<T*>(nullptr);
+        this->mpData = nullptr;
     }
-    this->mDataNum = static_cast<u32>(0);
-    if (num == static_cast<u32>(0)) {
+    this->mDataNum = 0;
+    if (num == 0) {
         return;
     }
-    this->mpData = new (static_cast<u32>(16)) T[num];
+    this->mpData = new (16u) T[num];
     this->mDataNum = num;
 }
 
@@ -2237,11 +2239,11 @@ void rTbl2<T>::allocData(u32 num) {
 // placed: defined in its family's unit only: 4 proven bodies call or inline its instances (4 call an unproven one out of line), and none of them is compiled in rTbl2.cpp (024 D4, constitution 2.6.0)
 template <typename T>
 void rTbl2<T>::deleteData() {
-    if (this->mpData != static_cast<T*>(nullptr)) {
+    if (this->mpData != nullptr) {
         delete[] this->mpData;
-        this->mpData = static_cast<T*>(nullptr);
+        this->mpData = nullptr;
     }
-    this->mDataNum = static_cast<u32>(0);
+    this->mDataNum = 0;
 }
 
 // Instance at 0x01962dc0 - 0x01962dd2 (18 bytes) of the generic rTbl2<T>::getData

@@ -29,25 +29,25 @@ MtUI* MtObject::createUI(MtProperty& prop) {
 // Address: 0x00d62190 - 0x00d621af (31 bytes)
 void* MtObject::operator new(size_t s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memAlloc(s, static_cast<u32>(16));
+    return MtMemory::mpAllocatorType[1]->memAlloc(s, 16u);
 }
 
 // Address: 0x00d621b0 - 0x00d621ca (26 bytes)
 __attribute__((weak)) void MtObject::operator delete(void* padr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memFree(padr);
+    MtMemory::mpAllocatorType[1]->memFree(padr);
 }
 
 // Address: 0x00d621d0 - 0x00d621ef (31 bytes)
 void* MtObject::operator new[](size_t s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memAlloc(s, static_cast<u32>(16));
+    return MtMemory::mpAllocatorType[1]->memAlloc(s, 16u);
 }
 
 // Address: 0x00d621f0 - 0x00d6220a (26 bytes)
 void MtObject::operator delete[](void* padr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memFree(padr);
+    MtMemory::mpAllocatorType[1]->memFree(padr);
 }
 
 // Address: 0x0194d960 - 0x0194d963 (3 bytes)
@@ -88,6 +88,8 @@ const MtDTI& MtObject::getDTI() const {
 //   in cpJob10::spritBarrierAttackNotice at 0x0018d59a-0x0018d5a1, 0x0018d5e7-0x0018d606 (called at cpJob10.cpp:2574)
 //   and 22 more (every copy is in <bundle>.inlined.json)
 // const MtObject* MtObject::cast(const MtDTI& target_type) const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtObject::MyDTI MtObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps);

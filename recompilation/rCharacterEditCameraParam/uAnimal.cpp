@@ -53,7 +53,7 @@ const MtDTI& uAnimal::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,12 +95,12 @@ __attribute__((weak)) void uAnimal::move() {
 void uAnimal::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x8799a8 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mArcTicket != t0) {
-        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArcTicket);
-        this->mArcTicket = static_cast<TICKET>(t0);
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArcTicket != t0) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicket);
+        mArcTicket = static_cast<TICKET>(t0);
     }
-    this->::uDDOModel::kill();
+    this->uDDOModel::kill();
 }
 
 // Address: 0x00878960 - 0x00878d93 (1075 bytes)
@@ -118,14 +118,14 @@ __attribute__((weak)) void uAnimal::checkAction() {
 // Address: 0x00878da0 - 0x00878da5 (5 bytes)
 void uAnimal::updateMotion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uModel::moveMotion();
+    moveMotion();
 }
 
 // Address: 0x00879960 - 0x00879984 (36 bytes)
 void uAnimal::updateMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
 
 // Address: 0x008799e0 - 0x00879c32 (594 bytes)
@@ -141,8 +141,8 @@ __attribute__((weak)) void uAnimal::createComponent() {
 // Address: 0x00879c40 - 0x00879c4c (12 bytes)
 void uAnimal::setModelType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<u32>(9)) {
-        this->mModelType = type;
+    if (type <= 9u) {
+        mModelType = type;
     }
 }
 
@@ -206,6 +206,10 @@ __attribute__((weak)) void uAnimal::updateObjStatus() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::MyDTI uAnimal::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uAnimal::MODEL_TBL uAnimal::mModelTbl[10];
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087cfd1-0x0087d00e (called at uAnimal.cpp:73)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087cfd1-0x0087d00e (called at uAnimal.h:72)
@@ -240,7 +244,7 @@ const MtDTI& uAnimal::ActBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uAnimal::ActBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uAnimal::ActBase::DTI)->memAlloc(sz, align, ::uAnimal::ActBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uAnimal::ActBase::DTI)->memAlloc(sz, align, uAnimal::ActBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -255,7 +259,7 @@ inline void* uAnimal::ActBase::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -283,8 +287,8 @@ uAnimal::ActBase::~ActBase() {
 // Address: 0x0087a040 - 0x0087a05d (29 bytes)
 void uAnimal::ActBase::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAction::init();
-    this->mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
+    this->cAction::init();
+    mpAnimal = static_cast<uAnimal*>(mpModel);
 }
 
 // Defined in the class (its body was written in a header).
@@ -293,13 +297,13 @@ void uAnimal::ActBase::init() {
 // Address: 0x0087a060 - 0x0087a07f (31 bytes)
 void uAnimal::ActBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAnimal == static_cast<uAnimal*>(nullptr)) {
+    if (mpAnimal == nullptr) {
         return;
     }
-    if (this->mpAnimal->::cUnit::isEnable() != false) {
+    if (mpAnimal->isEnable()) {
         return;
     }
-    this->mpAnimal = static_cast<uAnimal*>(nullptr);
+    mpAnimal = nullptr;
 }
 
 // No out-of-line body: 27 inlined copies in 14 functions (1866 bytes)
@@ -323,6 +327,8 @@ void uAnimal::ActBase::updatePtr() {
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void uAnimal::ActBase::randomAction();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActBase::MyDTI uAnimal::ActBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (124 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d00e-0x0087d04c (called at uAnimal.cpp:698)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d00e-0x0087d04c (called at uAnimal.h:156)
@@ -331,7 +337,7 @@ void uAnimal::ActBase::updatePtr() {
 // Address: 0x00879f70 - 0x00879fc6 (86 bytes)
 MtObject* uAnimal::ActBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uAnimal::ActBase;
+    return new (16u) uAnimal::ActBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -370,7 +376,7 @@ const MtDTI& uAnimal::ActFootwork::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActFootwork::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActFootwork::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -410,6 +416,8 @@ __attribute__((weak)) void uAnimal::ActFootwork::move() {
     DDON_STUB("uAnimal::ActFootwork::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActFootwork::MyDTI uAnimal::ActFootwork::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d04c-0x0087d065, 0x0087d06c-0x0087d085 (called at uAnimal.cpp:780)
@@ -458,7 +466,7 @@ const MtDTI& uAnimal::ActWalk::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActWalk::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActWalk::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActWalk::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -494,6 +502,8 @@ __attribute__((weak)) void uAnimal::ActWalk::move() {
     DDON_STUB("uAnimal::ActWalk::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActWalk::MyDTI uAnimal::ActWalk::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d085-0x0087d09e, 0x0087d0a5-0x0087d0be (called at uAnimal.cpp:853)
@@ -542,7 +552,7 @@ const MtDTI& uAnimal::ActRun::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActRun::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActRun::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActRun::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -578,6 +588,8 @@ __attribute__((weak)) void uAnimal::ActRun::move() {
     DDON_STUB("uAnimal::ActRun::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActRun::MyDTI uAnimal::ActRun::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d0be-0x0087d0d7, 0x0087d0de-0x0087d0f7 (called at uAnimal.cpp:938)
@@ -626,7 +638,7 @@ const MtDTI& uAnimal::ActTurn::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActTurn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActTurn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActTurn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -663,6 +675,8 @@ __attribute__((weak)) void uAnimal::ActTurn::move() {
     DDON_STUB("uAnimal::ActTurn::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActTurn::MyDTI uAnimal::ActTurn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d0f7-0x0087d110, 0x0087d117-0x0087d130 (called at uAnimal.cpp:1030)
@@ -711,7 +725,7 @@ const MtDTI& uAnimal::ActCollapse::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActCollapse::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActCollapse::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -738,16 +752,16 @@ uAnimal::ActCollapse::~ActCollapse() {
 // Address: 0x0087b390 - 0x0087b427 (151 bytes)
 void uAnimal::ActCollapse::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAction::init();
-    this->::uAnimal::ActBase::mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
-    if (this->::uAnimal::ActBase::mpAnimal != static_cast<uAnimal*>(nullptr)) {
-        if (this->::cAction::mpModel->::uDDOModel::isExistMotionNo(static_cast<u32>(569)) != false) {
-            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(569), true, static_cast<u32>(0), 15.0f, 0.0f, 1.0f);
+    this->cAction::init();
+    mpAnimal = static_cast<uAnimal*>(mpModel);
+    if (mpAnimal != nullptr) {
+        if (mpModel->isExistMotionNo(569u)) {
+            mpAnimal->setDDOMotion(MOT_BASE, 569u, true, 0u, 15.0f, 0.0f, 1.0f);
         } else {
-            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(0), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
+            mpAnimal->setDDOMotion(MOT_BASE, 0u, true, 0u, -1.0f, 0.0f, 1.0f);
         }
     }
-    this->mTimer = ::sMain::getInstance()->::sMain::getFps() * 3.0f;
+    mTimer = sMain::getInstance()->getFps() * 3.0f;
 }
 
 // Address: 0x0087b430 - 0x0087b4cf (159 bytes)
@@ -755,6 +769,8 @@ __attribute__((weak)) void uAnimal::ActCollapse::move() {
     DDON_STUB("uAnimal::ActCollapse::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActCollapse::MyDTI uAnimal::ActCollapse::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d130-0x0087d149, 0x0087d150-0x0087d169 (called at uAnimal.cpp:1081)
@@ -803,7 +819,7 @@ const MtDTI& uAnimal::ActEscape::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActEscape::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActEscape::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActEscape::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -845,6 +861,8 @@ __attribute__((weak)) void uAnimal::ActEscape::move() {
     DDON_STUB("uAnimal::ActEscape::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActEscape::MyDTI uAnimal::ActEscape::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (102 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d169-0x0087d19c (called at uAnimal.cpp:1123)
@@ -893,7 +911,7 @@ const MtDTI& uAnimal::ActApproach::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActApproach::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActApproach::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -936,6 +954,8 @@ __attribute__((weak)) void uAnimal::ActApproach::move() {
     DDON_STUB("uAnimal::ActApproach::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActApproach::MyDTI uAnimal::ActApproach::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (102 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d19c-0x0087d1cf (called at uAnimal.cpp:1230)
@@ -984,7 +1004,7 @@ const MtDTI& uAnimal::ActFlap::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActFlap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActFlap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1011,15 +1031,15 @@ uAnimal::ActFlap::~ActFlap() {
 // Address: 0x0087c3e0 - 0x0087c461 (129 bytes)
 void uAnimal::ActFlap::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAction::init();
-    this->::uAnimal::ActBase::mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
-    if (this->::uAnimal::ActBase::mpAnimal == static_cast<uAnimal*>(nullptr)) {
+    this->cAction::init();
+    mpAnimal = static_cast<uAnimal*>(mpModel);
+    if (mpAnimal == nullptr) {
         return;
     }
-    if (this->::cAction::mpModel->::uDDOModel::isExistMotionNo(static_cast<u32>(367)) != false) {
-        this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(367), true, static_cast<u32>(0), 15.0f, 0.0f, 1.0f);
+    if (mpModel->isExistMotionNo(367u)) {
+        mpAnimal->setDDOMotion(MOT_BASE, 367u, true, 0u, 15.0f, 0.0f, 1.0f);
     } else {
-        this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(0), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
+        mpAnimal->setDDOMotion(MOT_BASE, 0u, true, 0u, -1.0f, 0.0f, 1.0f);
     }
 }
 
@@ -1028,6 +1048,8 @@ __attribute__((weak)) void uAnimal::ActFlap::move() {
     DDON_STUB("uAnimal::ActFlap::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActFlap::MyDTI uAnimal::ActFlap::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d1cf-0x0087d201 (called at uAnimal.cpp:1327)
@@ -1076,7 +1098,7 @@ const MtDTI& uAnimal::ActSleep::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAnimal::ActSleep::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAnimal::ActSleep::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAnimal::ActSleep::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1103,16 +1125,16 @@ uAnimal::ActSleep::~ActSleep() {
 // Address: 0x0087c650 - 0x0087c6e7 (151 bytes)
 void uAnimal::ActSleep::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAction::init();
-    this->::uAnimal::ActBase::mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
-    if (this->::uAnimal::ActBase::mpAnimal != static_cast<uAnimal*>(nullptr)) {
-        if (this->::cAction::mpModel->::uDDOModel::isExistMotionNo(static_cast<u32>(610)) != false) {
-            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(610), true, static_cast<u32>(0), 15.0f, 0.0f, 1.0f);
+    this->cAction::init();
+    mpAnimal = static_cast<uAnimal*>(mpModel);
+    if (mpAnimal != nullptr) {
+        if (mpModel->isExistMotionNo(610u)) {
+            mpAnimal->setDDOMotion(MOT_BASE, 610u, true, 0u, 15.0f, 0.0f, 1.0f);
         } else {
-            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(0), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
+            mpAnimal->setDDOMotion(MOT_BASE, 0u, true, 0u, -1.0f, 0.0f, 1.0f);
         }
     }
-    this->mTimer = ::sMain::getInstance()->::sMain::getFps() * 5.0f;
+    mTimer = sMain::getInstance()->getFps() * 5.0f;
 }
 
 // Address: 0x0087c6f0 - 0x0087c9e0 (752 bytes)
@@ -1122,6 +1144,8 @@ __attribute__((weak)) void uAnimal::ActSleep::move() {
     DDON_STUB("uAnimal::ActSleep::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAnimal::ActSleep::MyDTI uAnimal::ActSleep::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (100 bytes)
 //   in _GLOBAL__sub_I_uAnimal.cpp at 0x0087d201-0x0087d233 (called at uAnimal.cpp:1367)

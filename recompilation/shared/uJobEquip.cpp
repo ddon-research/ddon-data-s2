@@ -34,7 +34,7 @@ const MtDTI& uJobEquip::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uJobEquip::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uJobEquip::DTI)->memAlloc(sz, align, ::uJobEquip::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uJobEquip::DTI)->memAlloc(sz, align, uJobEquip::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* uJobEquip::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uJobEquip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uJobEquip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uJobEquip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,15 +76,17 @@ uJobEquip::~uJobEquip() {
 // Address: 0x00c99070 - 0x00c99094 (36 bytes)
 void uJobEquip::updateMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
 
 // Address: 0x00c990a0 - 0x00c990a5 (5 bytes)
 void uJobEquip::updateBoundaryOnry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uModel::updateBoundary();
+    updateBoundary();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uJobEquip::MyDTI uJobEquip::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uJobEquip.cpp at 0x00c990b0-0x00c990f2 (called at uJobEquip.cpp:17)
@@ -94,6 +96,6 @@ void uJobEquip::updateBoundaryOnry() {
 // Address: 0x00c98fb0 - 0x00c98ffe (78 bytes)
 MtObject* uJobEquip::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uJobEquip;
+    return new (16u) uJobEquip;
 }
 

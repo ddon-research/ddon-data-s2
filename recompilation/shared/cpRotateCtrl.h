@@ -110,6 +110,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setDefaultRotateFrame at 0x8dc1dc-0x8dc1e4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpRotateCtrl::setDefaultInterFrame(f32 InterFrame) {
+    this->mDefaultInterFrame = InterFrame;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setDefaultRotateSpeed at 0x8dc1ac-0x8dc1b4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpRotateCtrl::setDefaultInterSpeed(f32 InterSpeed) {
+    this->mDefaultInterSpeed = InterSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 cpRotateCtrl::getInterSpeed() const {
     return this->mInterSpeed;

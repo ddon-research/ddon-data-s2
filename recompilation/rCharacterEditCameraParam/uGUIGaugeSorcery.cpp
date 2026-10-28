@@ -30,7 +30,7 @@ const MtDTI& uGUIGaugeSorcery::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeSorcery::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeSorcery::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeSorcery::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUIGaugeSorcery::getAllocator() {
 // Address: 0x00a99f30 - 0x00a99f70 (64 bytes)
 void* uGUIGaugeSorcery::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeSorcery::getAllocator()->memAlloc(sz, align, ::uGUIGaugeSorcery::DTI.::MtDTI::getID());
+    return uGUIGaugeSorcery::getAllocator()->memAlloc(sz, align, uGUIGaugeSorcery::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUIGaugeSorcery::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeSorcery::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeSorcery::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeSorcery::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,19 +73,19 @@ inline void uGUIGaugeSorcery::operator delete(void* p_addr) {
 // Also emitted as: _ZN16uGUIGaugeSorceryD0Ev at 0x00a9a0f0
 uGUIGaugeSorcery::~uGUIGaugeSorcery() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a9a150 - 0x00a9a1b8 (104 bytes)
 bool uGUIGaugeSorcery::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAUGE_MAGIC_GUI"), static_cast<u32>(129), static_cast<t64>(1453949766)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAUGE_MAGIC_GUI"), 129u, 1453949766l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -108,18 +108,18 @@ __attribute__((weak)) void uGUIGaugeSorcery::setup() {
 // Address: 0x00a9a630 - 0x00a9a661 (49 bytes)
 void uGUIGaugeSorcery::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a9a670 - 0x00a9a675 (5 bytes)
 void uGUIGaugeSorcery::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00a9a680 - 0x00a9a681 (1 bytes)
@@ -235,28 +235,28 @@ void uGUIGaugeSorcery::updateDisp(cpChantCommand& chantCommand) {
     // DWARF local not rendered: const s32 word_num;
     // DWARF local not rendered: const s32 point_num;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    this->::uGUIGaugeSorcery::updateBonusRate(chantCommand);
-    const s32 now_word_no = chantCommand.::cpChantCommand::getNowWordNo();
+    updateBonusRate(chantCommand);
+    const s32 now_word_no = chantCommand.getNowWordNo();
     // inferred: a temporary for the result of the call at 0xa9c4b4, used 4 times; no DWARF local holds it
-    s32 t0 = chantCommand.::cpChantCommand::getNowWord();
-    if (t0 > static_cast<s32>(0)) {
-        if (this->mFontTexObjs.elems[0] != static_cast<cGUIObjTexture*>(nullptr)) {
-            this->mFontTexObjs.elems[0]->::cGUIObject::setCurrentFrame(static_cast<float>(t0 - static_cast<s32>(1)), true);
+    s32 t0 = chantCommand.getNowWord();
+    if (t0 > 0) {
+        if (mFontTexObjs.elems[0] != nullptr) {
+            mFontTexObjs.elems[0]->cGUIObject::setCurrentFrame(static_cast<float>(t0 - 1), true);
         }
-        if (this->mFontTexObjs.elems[1] != static_cast<cGUIObjTexture*>(nullptr)) {
-            this->mFontTexObjs.elems[1]->::cGUIObject::setCurrentFrame(static_cast<float>(t0 - static_cast<s32>(1)), true);
+        if (mFontTexObjs.elems[1] != nullptr) {
+            mFontTexObjs.elems[1]->cGUIObject::setCurrentFrame(static_cast<float>(t0 - 1), true);
         }
-        if (this->mFontTexObjs.elems[2] != static_cast<cGUIObjTexture*>(nullptr)) {
-            this->mFontTexObjs.elems[2]->::cGUIObject::setCurrentFrame(static_cast<float>(t0 - static_cast<s32>(1)), true);
-            const s32 now_point_no = chantCommand.::cpChantCommand::getNowPointNo();
-            ::uGUIGaugeSorcery::UpdatePoints(this->mPoints, chantCommand.::cpChantCommand::getPointNum(), now_point_no, now_word_no, chantCommand);
+        if (mFontTexObjs.elems[2] != nullptr) {
+            mFontTexObjs.elems[2]->cGUIObject::setCurrentFrame(static_cast<float>(t0 - 1), true);
+            const s32 now_point_no = chantCommand.getNowPointNo();
+            uGUIGaugeSorcery::UpdatePoints(mPoints, chantCommand.getPointNum(), now_point_no, now_word_no, chantCommand);
         } else {
-            const s32 now_point_no = chantCommand.::cpChantCommand::getNowPointNo();
-            ::uGUIGaugeSorcery::UpdatePoints(this->mPoints, chantCommand.::cpChantCommand::getPointNum(), now_point_no, now_word_no, chantCommand);
+            const s32 now_point_no = chantCommand.getNowPointNo();
+            uGUIGaugeSorcery::UpdatePoints(mPoints, chantCommand.getPointNum(), now_point_no, now_word_no, chantCommand);
         }
     } else {
-        const s32 now_point_no = chantCommand.::cpChantCommand::getNowPointNo();
-        ::uGUIGaugeSorcery::UpdatePoints(this->mPoints, chantCommand.::cpChantCommand::getPointNum(), now_point_no, now_word_no, chantCommand);
+        const s32 now_point_no = chantCommand.getNowPointNo();
+        uGUIGaugeSorcery::UpdatePoints(mPoints, chantCommand.getPointNum(), now_point_no, now_word_no, chantCommand);
     }
 }
 
@@ -324,6 +324,8 @@ __attribute__((weak)) void uGUIGaugeSorcery::setState(uGUIGaugeSorcery::STATE st
 //   in uGUIGaugeSorcery::updateWait at 0x00a9af03-0x00a9af8e (called at uGUIGaugeSorcery.cpp:534)
 //   in uGUIGaugeSorcery::updateWait at 0x00a9bc77-0x00a9bcc8 (called at uGUIGaugeSorcery.cpp:940)
 // void uGUIGaugeSorcery::setActPltType();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeSorcery::MyDTI uGUIGaugeSorcery::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeSorcery.cpp at 0x00a9cbbf-0x00a9cbfc (called at uGUIGaugeSorcery.cpp:200)

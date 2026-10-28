@@ -29,8 +29,11 @@ const MtDTI& nNetwork::RpcNetSystem_Match::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nNetwork::RpcNetSystem_Match::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* nNetwork::RpcNetSystem_Match::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK8nNetwork18RpcNetSystem_Match5MyDTI11newInstanceEv at 0x0119d980-0x0119d9ad, code DWARF attributes to no inlined copy; sz is the class's size (24), align the allocation's other whole constant (16)
+inline void* nNetwork::RpcNetSystem_Match::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_Match::DTI)->memAlloc(sz, align, ::nNetwork::RpcNetSystem_Match::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* nNetwork::RpcNetSystem_Match::operator new[](size_t sz, u32 align);
@@ -59,25 +62,25 @@ inline void nNetwork::RpcNetSystem_Match::operator delete(void* p_addr) {
 // Address: 0x0119da60 - 0x0119da96 (54 bytes)
 nNetwork::RpcNetSystem_Match::RpcNetSystem_Match() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMatch = false;
-    this->mList = static_cast<u64>(0);
-    this->::cRemoteCall::mAttribute = static_cast<u32>(0);
+    mMatch = false;
+    mList = 0;
+    mAttribute = 0;
 }
 
 // Address: 0x0119db30 - 0x0119db9e (110 bytes)
 void nNetwork::RpcNetSystem_Match::serialize(MtStream& stream) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Coder cod(stream);
-    cod.::nNetwork::Coder::writeBit32(this->mMatch, static_cast<u32>(1));
-    cod.::nNetwork::Coder::writeBit64(this->mList, static_cast<u32>(16));
+    cod.::nNetwork::Coder::writeBit32(mMatch, 1u);
+    cod.::nNetwork::Coder::writeBit64(mList, 16u);
 }
 
 // Address: 0x0119dba0 - 0x0119dc11 (113 bytes)
 void nNetwork::RpcNetSystem_Match::deserialize(MtStream& stream) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Decoder dec(stream);
-    this->mMatch = dec.::nNetwork::Decoder::readBit32(static_cast<u32>(1)) == static_cast<u32>(1);
-    this->mList = dec.::nNetwork::Decoder::readBit64(static_cast<u32>(16));
+    mMatch = dec.::nNetwork::Decoder::readBit32(1u) == 1;
+    mList = dec.::nNetwork::Decoder::readBit64(16u);
 }
 
 // Address: 0x0119daa0 - 0x0119db25 (133 bytes)
@@ -87,13 +90,15 @@ __attribute__((weak)) void nNetwork::RpcNetSystem_Match::init(const nNetwork::Se
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::RpcNetSystem_Match::MyDTI nNetwork::RpcNetSystem_Match::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::RpcNetSystem_Match::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0119d980 - 0x0119d9e1 (97 bytes)
-__attribute__((weak)) MtObject* nNetwork::RpcNetSystem_Match::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::RpcNetSystem_Match::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::RpcNetSystem_Match::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) ::nNetwork::RpcNetSystem_Match;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +122,7 @@ const MtDTI& nNetwork::RpcNetSystem_RouteKey::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK8nNetwork21RpcNetSystem_RouteKey5MyDTI11newInstanceEv at 0x0119cb10-0x0119cb3d, code DWARF attributes to no inlined copy; sz is the class's size (80), align the allocation's other whole constant (16)
 inline void* nNetwork::RpcNetSystem_RouteKey::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_RouteKey::DTI)->memAlloc(sz, align, ::nNetwork::RpcNetSystem_RouteKey::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_RouteKey::DTI)->memAlloc(sz, align, ::nNetwork::RpcNetSystem_RouteKey::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -168,12 +173,14 @@ __attribute__((weak)) void nNetwork::RpcNetSystem_RouteKey::deserialize(MtStream
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::RpcNetSystem_RouteKey::MyDTI nNetwork::RpcNetSystem_RouteKey::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::RpcNetSystem_RouteKey::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0119cb10 - 0x0119cb65 (85 bytes)
 MtObject* nNetwork::RpcNetSystem_RouteKey::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nNetwork::RpcNetSystem_RouteKey;
+    return new (16u) ::nNetwork::RpcNetSystem_RouteKey;
 }
 

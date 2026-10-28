@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "nDrawMaterial.h"
 #include "nDrawMaterialStd.h"
 #ifndef DDON_STUB
@@ -30,8 +31,11 @@ const MtDTI& nDraw::MaterialStdEst::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nDraw::MaterialStdEst::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* nDraw::MaterialStdEst::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK5nDraw14MaterialStdEst5MyDTI11newInstanceEv at 0x0116cb30-0x0116cb5d, code DWARF attributes to no inlined copy; sz is the class's size (208), align the allocation's other whole constant (16)
+inline void* nDraw::MaterialStdEst::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nDraw::MaterialStdEst::DTI)->memAlloc(sz, align, ::nDraw::MaterialStdEst::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* nDraw::MaterialStdEst::operator new[](size_t sz, u32 align);
@@ -60,7 +64,7 @@ inline void nDraw::MaterialStdEst::operator delete(void* p_addr) {
 // Address: 0x0116cc00 - 0x0116cc2a (42 bytes)
 nDraw::MaterialStdEst::MaterialStdEst() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Material::mTechnique = static_cast<SO_HANDLE>(3239177001);
+    mTechnique = 0xC111EB29;
 }
 
 // Address: 0x0116cc70 - 0x0116cc75 (5 bytes)
@@ -81,12 +85,14 @@ nDraw::MaterialStdEst::~MaterialStdEst() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nDraw::MaterialStdEst::MyDTI nDraw::MaterialStdEst::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::MaterialStdEst::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0116cb30 - 0x0116cb85 (85 bytes)
-__attribute__((weak)) MtObject* nDraw::MaterialStdEst::MyDTI::newInstance() const {
-    DDON_STUB("nDraw::MaterialStdEst::MyDTI::newInstance")
-    return nullptr;
+MtObject* nDraw::MaterialStdEst::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) ::nDraw::MaterialStdEst;
 }
 

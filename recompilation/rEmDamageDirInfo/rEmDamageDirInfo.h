@@ -106,10 +106,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEmDamageDirInfo::cEmDamageDirInfo() {
-    this->mEmCategory = static_cast<u32>(0);
-    this->mDmReactionType = static_cast<u32>(263);
+    this->mEmCategory = 0;
+    this->mDmReactionType = 263;
     this->mIsWeightAccY = false;
-    this->mDirJudgeType = static_cast<u32>(0);
+    this->mDirJudgeType = 0;
     this->mIsAdjustDir = false;
     this->mIsWeightSpeedXZ = false;
     this->mIsWeightSpeedY = false;

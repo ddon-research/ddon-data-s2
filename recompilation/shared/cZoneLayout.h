@@ -28,6 +28,7 @@ namespace nZone { class cContentsPool; }
 namespace nZone { class cLayoutElement; }
 class rZone;
 class sZone;
+class uSoundGenerator;
 class uSoundZoneBase;
 
 // Declarations
@@ -69,6 +70,8 @@ public:
         friend class cZoneLayout;
         // inferred: nZone::cLayoutElement::isEnable names cZoneLayout::cInGameGroupManager::mFlgEnable
         friend class nZone::cLayoutElement;
+        // inferred: uSoundGenerator::cGeneratorGroupManager::getPlayInfomation names cZoneLayout::cInGameGroupManager::mpResourceGroupManager, through its enclosing class uSoundGenerator
+        friend class uSoundGenerator;
     public:
         class MyDTI;
     public:

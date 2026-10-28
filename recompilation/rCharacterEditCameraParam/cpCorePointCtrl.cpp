@@ -12,6 +12,8 @@
 #include "../shared/cpComponent.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nRegionStatus.h"
+#include "../shared/sEffect.h"
+#include "../shared/sEffectExt.h"
 #include "../shared/sWorkRate.h"
 #include "../shared/uDDOModel.h"
 #include "uEnemy.h"
@@ -42,7 +44,7 @@ const MtDTI& cCorePointInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCorePointInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCorePointInfo::DTI)->memAlloc(sz, align, ::cCorePointInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCorePointInfo::DTI)->memAlloc(sz, align, cCorePointInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +59,7 @@ inline void* cCorePointInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cCorePointInfoD0Ev at 0x01980de0-0x01980e0a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCorePointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCorePointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCorePointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,6 +132,8 @@ __attribute__((weak)) void cCorePointInfo::eraseMyMsgFromContext() {
 //   in cCorePointInfo::eraseMyMsgFromContext at 0x0017d006-0x0017d079 (called at cpCorePointCtrl.cpp:248)
 // s32 cCorePointInfo::findMyIndexFromContext();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCorePointInfo::MyDTI cCorePointInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpCorePointCtrl.cpp at 0x0017fa3e-0x0017fa77 (called at cpCorePointCtrl.cpp:93)
 //   in _GLOBAL__sub_I_cpCorePointCtrl.cpp at 0x0017fa3e-0x0017fa77 (called at cpCorePointCtrl.h:119)
@@ -138,7 +142,7 @@ __attribute__((weak)) void cCorePointInfo::eraseMyMsgFromContext() {
 // Address: 0x0017cb50 - 0x0017cbde (142 bytes)
 MtObject* cCorePointInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCorePointInfo;
+    return new (16u) cCorePointInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,7 +167,7 @@ const MtDTI& cCorePointReqestInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCorePointReqestInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCorePointReqestInfo::DTI)->memAlloc(sz, align, ::cCorePointReqestInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCorePointReqestInfo::DTI)->memAlloc(sz, align, cCorePointReqestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,7 +182,7 @@ inline void* cCorePointReqestInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20cCorePointReqestInfoD0Ev at 0x01980e40-0x01980e6a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCorePointReqestInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCorePointReqestInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCorePointReqestInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -211,6 +215,8 @@ inline void cCorePointReqestInfo::operator delete(void* p_addr) {
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // void cCorePointReqestInfo::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCorePointReqestInfo::MyDTI cCorePointReqestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpCorePointCtrl.cpp at 0x0017f9fe-0x0017fa3e (called at cpCorePointCtrl.cpp:58)
 //   in _GLOBAL__sub_I_cpCorePointCtrl.cpp at 0x0017f9fe-0x0017fa3e (called at cpCorePointCtrl.h:48)
@@ -219,7 +225,7 @@ inline void cCorePointReqestInfo::operator delete(void* p_addr) {
 // Address: 0x0017ca70 - 0x0017cad1 (97 bytes)
 MtObject* cCorePointReqestInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCorePointReqestInfo;
+    return new (16u) cCorePointReqestInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -236,7 +242,7 @@ const MtDTI& cpCorePointCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpCorePointCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpCorePointCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpCorePointCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -245,7 +251,7 @@ inline MtAllocator* cpCorePointCtrl::getAllocator() {
 // Address: 0x0017d120 - 0x0017d160 (64 bytes)
 void* cpCorePointCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpCorePointCtrl::getAllocator()->memAlloc(sz, align, ::cpCorePointCtrl::DTI.::MtDTI::getID());
+    return cpCorePointCtrl::getAllocator()->memAlloc(sz, align, cpCorePointCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -260,7 +266,7 @@ void* cpCorePointCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpCorePointCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpCorePointCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpCorePointCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -293,64 +299,108 @@ __attribute__((weak)) void cpCorePointCtrl::setup() {
 }
 
 // Address: 0x0017de70 - 0x0017df08 (152 bytes)
-__attribute__((weak)) void cpCorePointCtrl::kill() {
-    // local: s32 i;
-    // local: cContextInterface& context;
-    DDON_STUB("cpCorePointCtrl::kill")
-    /* stub */
+void cpCorePointCtrl::kill() {
+    // DWARF local not rendered: cContextInterface& context;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cpCorePointCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cEfcHandle*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1fa8 from uEnemy*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cContextInstance*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1fb0 from uEnemy*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cContextCharacter*, which no DWARF type of the place gives; read with caution
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96)) > 0) {
+        // inferred: the value the loop at 0x17de90 carries; no location-less local in scope fits
+        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+        // inferred: DWARF's location-less 'i' (lexical block [0x17de7e, 0x17dec8)) is the counter this loop steps (DWARF's stale constant 0)
+        for (s32 i = 0;;) {
+            // inferred: a temporary for the value the load at 0x17de94 read, used 4 times; no DWARF local holds it
+            MtObject* t0 = mActiveCorePointArray.getBuffer()[i];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)) != 0) {
+                    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)), 1u);
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8) = 0;
+                    if ((i + 1) < static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96))) {
+                        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+                        i = i + 1;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i + 1) < static_cast<int>(v0_0)) {
+                        i = i + 1;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i + 1) < static_cast<int>(v0_0)) {
+                    i = i + 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    // inferred: a temporary for the value the load at 0x17dec8 read, used 3 times; no DWARF local holds it
+    uEnemy* t1 = mpEnemy;
+    if (t1 != nullptr) {
+        cContextInterface::clearCorePointSlaveMsgAll(reinterpret_cast<cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8104)), reinterpret_cast<cContextCharacter*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8112)));
+        cContextInterface::sendCorePointSlaveFlag_Off(reinterpret_cast<cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8104)), reinterpret_cast<cContextCharacter*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8112)));
+    }
 }
 
 // Address: 0x0017df10 - 0x0017df19 (9 bytes)
 void cpCorePointCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpEnemy = static_cast<uEnemy*>(pOwner);
+    mpOwner = pOwner;
+    mpEnemy = static_cast<uEnemy*>(pOwner);
 }
 
 // Address: 0x0017df20 - 0x0017df9e (126 bytes)
 void cpCorePointCtrl::updatePtr() {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cpCorePointCtrl*
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
     // inferred: the value the loop at 0x17df60 carries; no location-less local in scope fits
     unsigned int v0_0;
     // inferred: DWARF's location-less 'i' (lexical block [0x17df4c, 0x17df97)) is the counter this loop steps
     s32 i;
-    if (this->mpEnemy != static_cast<uEnemy*>(nullptr)) {
-        if (this->mpEnemy->::cUnit::isEnable() == false) {
-            this->mpEnemy = static_cast<uEnemy*>(nullptr);
-            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
-            if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+    if (mpEnemy != nullptr) {
+        if (!mpEnemy->isEnable()) {
+            mpEnemy = nullptr;
+            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+            if (static_cast<int>(v0_0) <= 0) {
                 return;
             } else {
-                i = static_cast<s32>(0);
+                i = 0;
             }
         } else {
-            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
-            if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+            if (static_cast<int>(v0_0) <= 0) {
                 return;
             } else {
-                i = static_cast<s32>(0);
+                i = 0;
             }
         }
     } else {
-        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
-        if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 96);
+        if (static_cast<int>(v0_0) <= 0) {
             return;
         } else {
-            i = static_cast<s32>(0);
+            i = 0;
         }
     }
     for (;;) {
-        if (this->mActiveCorePointArray.::MtArray::getBuffer()[i] != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
-                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24))) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
-                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24)) = static_cast<unsigned long>(0);
+        if (mActiveCorePointArray.getBuffer()[i] != nullptr) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24)) != 0) {
+                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24)) + 16)) & 7u) - 1u) > 1u) {
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24) = 0;
                 }
             }
         }
-        if ((i + static_cast<s32>(1)) < static_cast<int>(v0_0)) {
-            i = i + static_cast<s32>(1);
+        if ((i + 1) < static_cast<int>(v0_0)) {
+            i = i + 1;
         } else {
             break;
         }
@@ -358,10 +408,31 @@ void cpCorePointCtrl::updatePtr() {
 }
 
 // Address: 0x0017dfa0 - 0x0017e012 (114 bytes)
-__attribute__((weak)) void cpCorePointCtrl::updateEfcHandle() {
-    // local: s32 i;
-    DDON_STUB("cpCorePointCtrl::updateEfcHandle")
-    /* stub */
+void cpCorePointCtrl::updateEfcHandle() {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cEfcHandle*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from unsigned long
+    if (static_cast<int>(mActiveCorePointArray.mLength) > 0) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x17dfae, 0x17e009)) is the counter this loop steps (DWARF's stale constant 0)
+        for (s32 i = 0;;) {
+            // inferred: a temporary for the value the load at 0x17dfc4 read, used 5 times; no DWARF local holds it
+            MtObject* t0 = mActiveCorePointArray.getBuffer()[i];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)) != 0) {
+                    if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)))) {
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8)) + 96) = 0;
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8) = 0;
+                    }
+                }
+            }
+            if ((i + 1) < static_cast<int>(mActiveCorePointArray.mLength)) {
+                i = i + 1;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x0017daa0 - 0x0017daa1 (1 bytes)
@@ -378,8 +449,8 @@ __attribute__((weak)) void cpCorePointCtrl::update() {
 // Address: 0x0017de50 - 0x0017de64 (20 bytes)
 void cpCorePointCtrl::compMoveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableCorePointReqOld = this->mIsEnableCorePointReq;
-    this->mIsEnableCorePointReq = true;
+    mIsEnableCorePointReqOld = mIsEnableCorePointReq;
+    mIsEnableCorePointReq = true;
 }
 
 // Address: 0x0017e400 - 0x0017e493 (147 bytes)
@@ -437,17 +508,17 @@ __attribute__((weak)) u32 cpCorePointCtrl::getCorePointActiveNum(nRegionStatus::
 // Address: 0x0017e620 - 0x0017e632 (18 bytes)
 const cCorePointInfo* cpCorePointCtrl::getActiveCorePointFromIndex(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mActiveCorePointArray.::MtArray::mLength) {
-        return static_cast<const cCorePointInfo*>(this->mActiveCorePointArray.::MtArray::mpArray[index]);
+    if (index < mActiveCorePointArray.mLength) {
+        return static_cast<const cCorePointInfo*>(mActiveCorePointArray.mpArray[index]);
     } else {
-        return static_cast<const cCorePointInfo*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0017e640 - 0x0017e644 (4 bytes)
 u32 cpCorePointCtrl::getActiveCorePointArrayNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActiveCorePointArray.::MtArray::mLength;
+    return mActiveCorePointArray.mLength;
 }
 
 // Address: 0x0017e650 - 0x0017e6ef (159 bytes)
@@ -602,40 +673,40 @@ void cpCorePointCtrl::checkSlaveMsg() {
     // DWARF local not rendered: bool isSend;
     // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mIsWaitTimerActive != false) {
+    if (mIsWaitTimerActive) {
         // inferred: a temporary for the result of the call at 0x17e111, used once; no DWARF local holds it
-        f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimer - t0;
-        if (0.0f > this->mSlaveMsgWaitTimer) {
-            this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimeMax;
-            this->mIsWaitTimerActive = false;
+        f32 t0 = sWorkRate::getInstance()->calc(3u);
+        mSlaveMsgWaitTimer = mSlaveMsgWaitTimer - t0;
+        if (0.0f > mSlaveMsgWaitTimer) {
+            mSlaveMsgWaitTimer = mSlaveMsgWaitTimeMax;
+            mIsWaitTimerActive = false;
         }
-        if (this->mpEnemy->::uDDOModel::isMaster() != false) {
-            ::cContextInterface::clearCorePointSlaveMsgAll(this->mpEnemy->::uDDOModel::mContextInterface.mpContextInstance, this->mpEnemy->::uDDOModel::mContextInterface.mpContextCharacter);
-            this->mSlaveMsgMode = static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(1);
-            this->mIsWaitTimerActive = false;
-            this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimeMax;
+        if (mpEnemy->isMaster()) {
+            cContextInterface::clearCorePointSlaveMsgAll(mpEnemy->mContextInterface.mpContextInstance, mpEnemy->mContextInterface.mpContextCharacter);
+            mSlaveMsgMode = MODE_NONE;
+            mIsWaitTimerActive = false;
+            mSlaveMsgWaitTimer = mSlaveMsgWaitTimeMax;
         } else {
-            if (this->mSlaveMsgMode == static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(2)) {
-                if (this->mIsWaitTimerActive == false) {
-                    ::cContextInterface::sendCorePointSlaveFlag_On(this->mpEnemy->::uDDOModel::mContextInterface.mpContextInstance, this->mpEnemy->::uDDOModel::mContextInterface.mpContextCharacter);
-                    this->mSlaveMsgMode = static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(1);
-                    this->mIsWaitTimerActive = true;
+            if (mSlaveMsgMode == MODE_REQUEST) {
+                if (!mIsWaitTimerActive) {
+                    cContextInterface::sendCorePointSlaveFlag_On(mpEnemy->mContextInterface.mpContextInstance, mpEnemy->mContextInterface.mpContextCharacter);
+                    mSlaveMsgMode = MODE_NONE;
+                    mIsWaitTimerActive = true;
                 }
             }
         }
     } else {
-        if (this->mpEnemy->::uDDOModel::isMaster() != false) {
-            ::cContextInterface::clearCorePointSlaveMsgAll(this->mpEnemy->::uDDOModel::mContextInterface.mpContextInstance, this->mpEnemy->::uDDOModel::mContextInterface.mpContextCharacter);
-            this->mSlaveMsgMode = static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(1);
-            this->mIsWaitTimerActive = false;
-            this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimeMax;
+        if (mpEnemy->isMaster()) {
+            cContextInterface::clearCorePointSlaveMsgAll(mpEnemy->mContextInterface.mpContextInstance, mpEnemy->mContextInterface.mpContextCharacter);
+            mSlaveMsgMode = MODE_NONE;
+            mIsWaitTimerActive = false;
+            mSlaveMsgWaitTimer = mSlaveMsgWaitTimeMax;
         } else {
-            if (this->mSlaveMsgMode == static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(2)) {
-                if (this->mIsWaitTimerActive == false) {
-                    ::cContextInterface::sendCorePointSlaveFlag_On(this->mpEnemy->::uDDOModel::mContextInterface.mpContextInstance, this->mpEnemy->::uDDOModel::mContextInterface.mpContextCharacter);
-                    this->mSlaveMsgMode = static_cast<cpCorePointCtrl::SLAVE_MSG_MODE>(1);
-                    this->mIsWaitTimerActive = true;
+            if (mSlaveMsgMode == MODE_REQUEST) {
+                if (!mIsWaitTimerActive) {
+                    cContextInterface::sendCorePointSlaveFlag_On(mpEnemy->mContextInterface.mpContextInstance, mpEnemy->mContextInterface.mpContextCharacter);
+                    mSlaveMsgMode = MODE_NONE;
+                    mIsWaitTimerActive = true;
                 }
             }
         }
@@ -729,6 +800,8 @@ __attribute__((weak)) void cpCorePointCtrl::receiveCorePointSlaveMsg(const nRegi
 // No out-of-line body: 1 inlined copy in 1 function (41 bytes)
 //   in cpCorePointCtrl::receiveCorePointSlaveMsg at 0x0017f759-0x0017f782 (called at cpCorePointCtrl.cpp:2263)
 // void cpCorePointCtrl::decomposeSlaveMsgToReq(const nRegionStatus::stCorePointSlaveMsg& msg, cCorePointReqestInfo& info);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpCorePointCtrl::MyDTI cpCorePointCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpCorePointCtrl.cpp at 0x0017fa77-0x0017fab4 (called at cpCorePointCtrl.cpp:385)

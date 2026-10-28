@@ -34,7 +34,7 @@ const MtDTI& uGUIMapMini::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMapMini::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMapMini::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMapMini::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* uGUIMapMini::getAllocator() {
 // Address: 0x00b77690 - 0x00b776d0 (64 bytes)
 void* uGUIMapMini::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMapMini::getAllocator()->memAlloc(sz, align, ::uGUIMapMini::DTI.::MtDTI::getID());
+    return uGUIMapMini::getAllocator()->memAlloc(sz, align, uGUIMapMini::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* uGUIMapMini::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMapMini::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMapMini::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMapMini::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,9 +87,9 @@ uGUIMapMini::~uGUIMapMini() {
 // Address: 0x00b778f0 - 0x00b77958 (104 bytes)
 bool uGUIMapMini::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIMap::mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->::uGUIMap::mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MINIMAP_GUI"), static_cast<u32>(129), static_cast<t64>(1458870644)))) != static_cast<rGUI*>(nullptr)) {
-            this->::uGUIMap::mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MINIMAP_GUI"), 129u, 1458870644l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -114,7 +114,7 @@ __attribute__((weak)) void uGUIMapMini::setup() {
 // Address: 0x00b784d0 - 0x00b784d5 (5 bytes)
 void uGUIMapMini::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMap::kill();
+    this->uGUIMap::kill();
 }
 
 // Address: 0x00b784e0 - 0x00b7851c (60 bytes)
@@ -126,22 +126,22 @@ __attribute__((weak)) void uGUIMapMini::draw(cDraw* pDraw) {
 // Address: 0x00b78430 - 0x00b784cc (156 bytes)
 void uGUIMapMini::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlSize != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlSize->setFocus(true);
+    if (mpCtrlSize != nullptr) {
+        mpCtrlSize->setFocus(true);
     }
-    if (this->::uGUIMap::mpCtrlZoom != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->::uGUIMap::mpCtrlZoom->setFocus(true);
+    if (mpCtrlZoom != nullptr) {
+        mpCtrlZoom->setFocus(true);
     }
-    if (this->::uGUIMap::mpCtrlMarkerIdx != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->::uGUIMap::mpCtrlMarkerIdx->setFocus(true);
+    if (mpCtrlMarkerIdx != nullptr) {
+        mpCtrlMarkerIdx->setFocus(true);
     }
-    if (this->::uGUIMap::mpCtrlMarker != static_cast<cControl*>(nullptr)) {
-        this->::uGUIMap::mpCtrlMarker->setFocus(true);
+    if (mpCtrlMarker != nullptr) {
+        mpCtrlMarker->setFocus(true);
     }
-    if (this->mpCtrlStart != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlStart->setFocus(true);
+    if (mpCtrlStart != nullptr) {
+        mpCtrlStart->setFocus(true);
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMapMini::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMapMini::updateWait);
 }
 
 // Address: 0x00b78520 - 0x00b78576 (86 bytes)
@@ -173,39 +173,39 @@ __attribute__((weak)) void uGUIMapMini::moveEvent() {
 // Address: 0x00b78380 - 0x00b78392 (18 bytes)
 u32 uGUIMapMini::evCtrlSizeMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00b783a0 - 0x00b78425 (133 bytes)
 u32 uGUIMapMini::evCtrlStart(cControl::Message* msg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xb783bf read, used once; no DWARF local holds it
-    u8 t0 = static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType;
-    u32 free = this->::uGUIMap::evCtrlDirectLink(msg);
-    if (t0 != static_cast<u8>(1)) {
-        if (free == static_cast<u32>(2)) {
-            if (this->::uGUIMap::mPointerCursor.mFocusMarkerId != static_cast<u32>(4294967295)) {
-                if (this->::uGUIMap::mPointerCursor.mFocusMarkerId < this->::uGUIMap::mMarker.::MtArray::mLength) {
-                    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMapModeMini() != static_cast<u32>(1)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                        return static_cast<u32>(0);
+    u8 t0 = static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mActPltType;
+    u32 free = evCtrlDirectLink(msg);
+    if (t0 != 1) {
+        if (free == 2) {
+            if (mPointerCursor.mFocusMarkerId != 0xFFFFFFFFu) {
+                if (mPointerCursor.mFocusMarkerId < mMarker.mLength) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->getMapModeMini() != 1) {
+                        setInputEvent(71u);
+                        return 0;
                     } else {
-                        return static_cast<u32>(1);
+                        return 1;
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                    return static_cast<u32>(0);
+                    setInputEvent(71u);
+                    return 0;
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-                return static_cast<u32>(0);
+                setInputEvent(71u);
+                return 0;
             }
         } else {
-            return static_cast<u32>(1);
+            return 1;
         }
     } else {
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
@@ -253,14 +253,14 @@ __attribute__((weak)) void uGUIMapMini::updateDisp() {
 // Address: 0x00b78f80 - 0x00b78fc8 (72 bytes)
 void uGUIMapMini::execPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMap::execPosition();
-    if (this->::uGUIMap::mpInstMask == static_cast<cGUIInstScissorMask*>(nullptr)) {
+    this->uGUIMap::execPosition();
+    if (mpInstMask == nullptr) {
         return;
     }
-    if (this->::uGUIMap::mpInstPosition == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpInstPosition == nullptr) {
         return;
     }
-    this->::uGUIMap::mpInstPosition->::cGUIInstNull::setPositionY((-6.0f) + static_cast<float>(this->::uGUIMap::mpInstMask->mSize.h));
+    mpInstPosition->setPositionY(-6.0f + static_cast<float>(mpInstMask->mSize.h));
 }
 
 // Address: 0x00b78fd0 - 0x00b7923f (623 bytes)
@@ -274,6 +274,8 @@ __attribute__((weak)) void uGUIMapMini::execFooter() {
 
 // Defined in the class (its body was written in a header).
 // void uGUIMapMini::execBtnGuaid();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMapMini::MyDTI uGUIMapMini::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMapMini.cpp at 0x00b7933f-0x00b7937c (called at uGUIMapMini.cpp:61)

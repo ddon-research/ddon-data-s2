@@ -37,7 +37,7 @@ const MtDTI& cKeyCustomParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cKeyCustomParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memAlloc(sz, align, ::cKeyCustomParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cKeyCustomParam::DTI)->memAlloc(sz, align, cKeyCustomParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cKeyCustomParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cKeyCustomParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cKeyCustomParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -222,6 +222,8 @@ inline void cKeyCustomParam::operator delete(void* p_addr) {
 //   in cKeyCustom::cKeyCustom at 0x000ee174-0x000ee178 (called at cKeyCustom.cpp:302)
 // nKeyCustom::OVERLAP_GROUP cKeyCustomParam::getOverlapGroup() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cKeyCustomParam::MyDTI cKeyCustomParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rKeyCustomParam.cpp at 0x006914e0-0x00691522 (called at rKeyCustomParam.cpp:25)
 //   in _GLOBAL__sub_I_rKeyCustomParam.cpp at 0x006914e0-0x00691522 (called at rKeyCustomParam.h:28)
@@ -230,7 +232,7 @@ inline void cKeyCustomParam::operator delete(void* p_addr) {
 // Address: 0x00691290 - 0x006912ee (94 bytes)
 MtObject* cKeyCustomParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cKeyCustomParam;
+    return new (16u) cKeyCustomParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -255,7 +257,7 @@ const MtDTI& rKeyCustomParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rKeyCustomParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rKeyCustomParam::DTI)->memAlloc(sz, align, ::rKeyCustomParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rKeyCustomParam::DTI)->memAlloc(sz, align, rKeyCustomParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -270,7 +272,7 @@ inline void* rKeyCustomParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rKeyCustomParamD0Ev at 0x01a98614-0x01a98633, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rKeyCustomParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rKeyCustomParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rKeyCustomParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,34 +289,34 @@ bool rKeyCustomParam::loadData(MtDataReader& in, cKeyCustomParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKbc);
+    nDDOIO::readData(in, pData->mKbc);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mOverlapGroup);
+    nDDOIO::readData(in, pData->mOverlapGroup);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGmdId);
+    nDDOIO::readData(in, pData->mGmdId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKbmFlags);
+    nDDOIO::readData(in, pData->mKbmFlags);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKey);
+    nDDOIO::readData(in, pData->mKey);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBtn);
+    nDDOIO::readData(in, pData->mBtn);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPadFlags);
+    nDDOIO::readData(in, pData->mPadFlags);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPad);
+    nDDOIO::readData(in, pData->mPad);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPadFlags2);
+    nDDOIO::readData(in, pData->mPadFlags2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPad2);
+    nDDOIO::readData(in, pData->mPad2);
     return true;
 }
 
@@ -327,8 +329,10 @@ MT_CTSTR rKeyCustomParam::getExt() const {
 // Address: 0x01a98760 - 0x01a98766 (6 bytes)
 u32 rKeyCustomParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(21);
+    return 21;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rKeyCustomParam::MyDTI rKeyCustomParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rKeyCustomParam.cpp at 0x00691522-0x0069155f (called at rKeyCustomParam.cpp:26)
@@ -338,7 +342,7 @@ u32 rKeyCustomParam::getDataVersion() const {
 // Address: 0x00691360 - 0x006913c4 (100 bytes)
 MtObject* rKeyCustomParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rKeyCustomParam;
+    return new (16u) rKeyCustomParam;
 }
 
 // Instance at 0x01a98710 - 0x01a98726 (22 bytes) of the generic rTbl2<T>::getData

@@ -35,7 +35,7 @@ const MtDTI& uCnsJointOffset::getDTI() const {
 // Address: 0x00ff97a0 - 0x00ff97e0 (64 bytes)
 void* uCnsJointOffset::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uCnsJointOffset::DTI)->memAlloc(sz, align, ::uCnsJointOffset::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uCnsJointOffset::DTI)->memAlloc(sz, align, uCnsJointOffset::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* uCnsJointOffset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uCnsJointOffsetD0Ev at 0x00ff99cb-0x00ff99ec, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsJointOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsJointOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsJointOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,26 +106,26 @@ __attribute__((weak)) void uCnsJointOffset::adjust(uModel::Joint* pJnt, uModel* 
 // Address: 0x00ff9f80 - 0x00ff9f85 (5 bytes)
 void uCnsJointOffset::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x00ff9f50 - 0x00ff9f79 (41 bytes)
 void uCnsJointOffset::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x00ff9f90 - 0x00ff9fe8 (88 bytes)
 void uCnsJointOffset::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -134,7 +134,7 @@ void uCnsJointOffset::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
 // Address: 0x01b67450 - 0x01b67457 (7 bytes)
 u32 uCnsJointOffset::getJoint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJoint;
+    return mJoint;
 }
 
 // Address: 0x00ff99f0 - 0x00ff9e99 (1193 bytes)
@@ -146,7 +146,7 @@ __attribute__((weak)) void uCnsJointOffset::createProperty(MtPropertyList& s) {
 // Address: 0x00ff9ea0 - 0x00ff9ea5 (5 bytes)
 MtUI* uCnsJointOffset::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x00ffb050 - 0x00ffb051 (1 bytes)
@@ -157,13 +157,13 @@ __attribute__((weak)) void uCnsJointOffset::draw(cDraw* pDraw) {
 // Address: 0x00ff9eb0 - 0x00ff9f25 (117 bytes)
 void uCnsJointOffset::set(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    this->setPri(Pri);
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    setModel(pModel);
+    setPri(Pri);
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: no code in the ELF
@@ -172,12 +172,14 @@ void uCnsJointOffset::set(uModel* pModel, u32 JntNo, u32 Pri) {
 // Address: 0x01b67460 - 0x01b674a7 (71 bytes)
 void uCnsJointOffset::setJointForProperty(u32 JntNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mJoint = JntNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = JntNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsJointOffset::MyDTI uCnsJointOffset::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsJointOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

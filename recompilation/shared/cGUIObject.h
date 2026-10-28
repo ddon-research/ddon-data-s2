@@ -33,6 +33,7 @@ class MtVector3;
 class MtVector4;
 class cGUIFontFilter;
 class cGUIInstAnimation;
+class cGUIUtility;
 namespace nGUI { struct ANIMATION; }
 namespace nGUI { struct BufferObject; }
 namespace nGUI { struct DRAW_LIST; }
@@ -50,6 +51,7 @@ class rGUIMessage;
 class uGUI;
 class uGUIBase;
 class uGUIInputText;
+class uGUIKeyConfig;
 class uGUIMyRoomPopup;
 class uGUIQuestActive;
 
@@ -243,6 +245,8 @@ private:
 
 class cGUIObj2D : public cGUIObject
 {
+    // inferred: cGUIUtility::getPosY names cGUIObj2D::mPosition.y
+    friend class cGUIUtility;
     // inferred: uGUIBase::setWindowTitle names cGUIObj2D::mPosition.x
     friend class uGUIBase;
 public:
@@ -382,6 +386,8 @@ public:
 
 class cGUIObjMessage : public cGUIObj2D
 {
+    // inferred: uGUIKeyConfig::cKeySettingItem::hide calls cGUIObjMessage::clearMessage, through its enclosing class uGUIKeyConfig
+    friend class uGUIKeyConfig;
     // inferred: uGUIMyRoomPopup::setTitle calls cGUIObjMessage::clearMessage
     friend class uGUIMyRoomPopup;
     // inferred: uGUIQuestActive::clearAllMessages calls cGUIObjMessage::clearMessage

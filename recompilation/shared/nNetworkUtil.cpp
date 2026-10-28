@@ -91,6 +91,8 @@ __attribute__((weak)) void nNetwork::SearchFilterListPtr::trace() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SearchFilterListPtr::MyDTI nNetwork::SearchFilterListPtr::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SearchFilterListPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -164,6 +166,8 @@ __attribute__((weak)) void nNetwork::SearchFilterPtr::createProperty(MtPropertyL
 
 // No out-of-line body: no code in the ELF
 // void nNetwork::SearchFilterPtr::trace();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SearchFilterPtr::MyDTI nNetwork::SearchFilterPtr::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SearchFilterPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -254,6 +258,8 @@ __attribute__((weak)) void nNetwork::SearchKeyListPtr::trace() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SearchKeyListPtr::MyDTI nNetwork::SearchKeyListPtr::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SearchKeyListPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -328,6 +334,8 @@ __attribute__((weak)) void nNetwork::SearchKeyPtr::createProperty(MtPropertyList
 // No out-of-line body: no code in the ELF
 // void nNetwork::SearchKeyPtr::trace();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SearchKeyPtr::MyDTI nNetwork::SearchKeyPtr::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SearchKeyPtr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -371,7 +379,7 @@ __attribute__((weak)) void nNetwork::SearchResultListPtr::setNum(u32 num) {
 // Address: 0x01b87320 - 0x01b8732f (15 bytes)
 nNetwork::SearchResultPtr* nNetwork::SearchResultListPtr::getSearchResultPtr(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mResult[index];
+    return &mResult[index];
 }
 
 // No out-of-line body: no code in the ELF
@@ -380,22 +388,22 @@ nNetwork::SearchResultPtr* nNetwork::SearchResultListPtr::getSearchResultPtr(u32
 // Address: 0x01b87330 - 0x01b873df (175 bytes)
 void nNetwork::SearchResultListPtr::setSearchResultPtr(nNetwork::SearchResultPtr* pptr, u32 index) {
     // Approximate from the ELF: adjacent members copied one by one; the body oracle reports this body.
-    this->mResult[index].mpSearchResult = pptr->mpSearchResult;
-    this->mResult[index].mInfo.mpSessionInfo = pptr->mInfo.mpSessionInfo;
-    this->mResult[index].mInfo.mList.mpSearchKeyList = pptr->mInfo.mList.mpSearchKeyList;
-    this->mResult[index].mInfo.mList.mList[0].mpKey = pptr->mInfo.mList.mList[0].mpKey;
-    this->mResult[index].mInfo.mList.mList[1].mpKey = pptr->mInfo.mList.mList[1].mpKey;
-    this->mResult[index].mInfo.mList.mList[2].mpKey = pptr->mInfo.mList.mList[2].mpKey;
-    this->mResult[index].mInfo.mList.mList[3].mpKey = pptr->mInfo.mList.mList[3].mpKey;
-    this->mResult[index].mInfo.mList.mList[4].mpKey = pptr->mInfo.mList.mList[4].mpKey;
-    this->mResult[index].mInfo.mList.mList[5].mpKey = pptr->mInfo.mList.mList[5].mpKey;
-    this->mResult[index].mInfo.mList.mList[6].mpKey = pptr->mInfo.mList.mList[6].mpKey;
-    this->mResult[index].mInfo.mList.mList[7].mpKey = pptr->mInfo.mList.mList[7].mpKey;
-    this->mResult[index].mInfo.mBinary.mpBinary = pptr->mInfo.mBinary.mpBinary;
+    mResult[index].mpSearchResult = pptr->mpSearchResult;
+    mResult[index].mInfo.mpSessionInfo = pptr->mInfo.mpSessionInfo;
+    mResult[index].mInfo.mList.mpSearchKeyList = pptr->mInfo.mList.mpSearchKeyList;
+    mResult[index].mInfo.mList.mList[0].mpKey = pptr->mInfo.mList.mList[0].mpKey;
+    mResult[index].mInfo.mList.mList[1].mpKey = pptr->mInfo.mList.mList[1].mpKey;
+    mResult[index].mInfo.mList.mList[2].mpKey = pptr->mInfo.mList.mList[2].mpKey;
+    mResult[index].mInfo.mList.mList[3].mpKey = pptr->mInfo.mList.mList[3].mpKey;
+    mResult[index].mInfo.mList.mList[4].mpKey = pptr->mInfo.mList.mList[4].mpKey;
+    mResult[index].mInfo.mList.mList[5].mpKey = pptr->mInfo.mList.mList[5].mpKey;
+    mResult[index].mInfo.mList.mList[6].mpKey = pptr->mInfo.mList.mList[6].mpKey;
+    mResult[index].mInfo.mList.mList[7].mpKey = pptr->mInfo.mList.mList[7].mpKey;
+    mResult[index].mInfo.mBinary.mpBinary = pptr->mInfo.mBinary.mpBinary;
     // inferred: a temporary for the value the load at 0x1b873c0 read, used once; no DWARF local holds it
     MT_CTSTR t0 = pptr->mName;
-    this->mResult[index].mPing.mRtt = pptr->mPing.mRtt;
-    this->mResult[index].mName = t0;
+    mResult[index].mPing.mRtt = pptr->mPing.mRtt;
+    mResult[index].mName = t0;
 }
 
 // Address: 0x011a93b0 - 0x011a9453 (163 bytes)
@@ -420,12 +428,12 @@ __attribute__((weak)) void nNetwork::SearchResultListPtr::init(MtNetSession::Sea
 // Address: 0x011a9290 - 0x011a92de (78 bytes)
 void nNetwork::SearchResultPtr::setBinary(MtNetSessionInfo::Binary* binary) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mpSearchResult->mSessionInfo.mBinary.mBuffer[0]), static_cast<int>(0), static_cast<size_t>(260));
-    if (binary == static_cast<MtNetSessionInfo::Binary*>(nullptr)) {
+    ::memset(static_cast<void*>(&mpSearchResult->mSessionInfo.mBinary.mBuffer[0]), 0, 260ul);
+    if (binary == nullptr) {
         return;
     }
-    this->mpSearchResult->mSessionInfo.mBinary.mDataLength = binary->mDataLength;
-    ::memcpy(static_cast<void*>(&this->mpSearchResult->mSessionInfo.mBinary.mBuffer[0]), static_cast<const void*>(binary), binary->mDataLength);
+    mpSearchResult->mSessionInfo.mBinary.mDataLength = binary->mDataLength;
+    ::memcpy(static_cast<void*>(&mpSearchResult->mSessionInfo.mBinary.mBuffer[0]), static_cast<const void*>(binary), binary->mDataLength);
 }
 
 // Address: 0x011a90a0 - 0x011a9267 (455 bytes)

@@ -50,7 +50,7 @@ const MtDTI& cAnimalData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAnimalData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAnimalData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAnimalData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -65,10 +65,20 @@ inline void cAnimalData::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cAnimalData::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (193 bytes)
-//   in cAnimalData::MyDTI::newInstance at 0x006415ed-0x0064164a (called at rAnimalData.cpp:25)
-//   in rTbl2<cAnimalData>::allocData at 0x01a73ba8-0x01a73bba, 0x01a73bbd-0x01a73c0f (called at rTbl2.h:215)
-// cAnimalData::cAnimalData();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cAnimalData::cAnimalData() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mAngle.x = MtVector3::Zero.x;
+    mAngle.y = MtVector3::Zero.y;
+    mAngle.z = MtVector3::Zero.z;
+    mAngle.pad_ = 0.0f;
+}
 
 // Address: 0x006416d0 - 0x006416d1 (1 bytes)
 // Also emitted as: _ZN11cAnimalDataD0Ev at 0x006416e0
@@ -81,6 +91,8 @@ __attribute__((weak)) void cAnimalData::createProperty(MtPropertyList& s) {
     DDON_STUB("cAnimalData::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAnimalData::MyDTI cAnimalData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAnimalData.cpp at 0x006419f0-0x00641a32 (called at rAnimalData.cpp:25)
@@ -115,7 +127,7 @@ const MtDTI& rAnimalData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAnimalData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAnimalData::DTI)->memAlloc(sz, align, ::rAnimalData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAnimalData::DTI)->memAlloc(sz, align, rAnimalData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +142,7 @@ inline void* rAnimalData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rAnimalDataD0Ev at 0x01a73904-0x01a73923, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAnimalData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAnimalData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAnimalData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +157,7 @@ inline void rAnimalData::operator delete(void* p_addr) {
 // Address: 0x006418b0 - 0x0064190f (95 bytes)
 bool rAnimalData::loadData(MtDataReader& in, cAnimalData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cAnimalData*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mPos = in.readV3();
         pData->mAngle = in.readV3();
         return true;
@@ -163,8 +175,10 @@ MT_CTSTR rAnimalData::getExt() const {
 // Address: 0x01a73a50 - 0x01a73a53 (3 bytes)
 u32 rAnimalData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAnimalData::MyDTI rAnimalData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAnimalData.cpp at 0x00641a32-0x00641a6f (called at rAnimalData.cpp:133)
@@ -174,7 +188,7 @@ u32 rAnimalData::getDataVersion() const {
 // Address: 0x00641910 - 0x00641974 (100 bytes)
 MtObject* rAnimalData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAnimalData;
+    return new (16u) rAnimalData;
 }
 
 // Instance at 0x01a73a00 - 0x01a73a16 (22 bytes) of the generic rTbl2<T>::getData

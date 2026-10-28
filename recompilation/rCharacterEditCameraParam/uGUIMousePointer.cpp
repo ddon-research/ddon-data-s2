@@ -29,7 +29,7 @@ const MtDTI& uGUIMousePointer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMousePointer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMousePointer::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMousePointer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIMousePointer::getAllocator() {
 // Address: 0x00b28fa0 - 0x00b28fe0 (64 bytes)
 void* uGUIMousePointer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMousePointer::getAllocator()->memAlloc(sz, align, ::uGUIMousePointer::DTI.::MtDTI::getID());
+    return uGUIMousePointer::getAllocator()->memAlloc(sz, align, uGUIMousePointer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIMousePointer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMousePointer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMousePointer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMousePointer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,19 +72,19 @@ inline void uGUIMousePointer::operator delete(void* p_addr) {
 // Also emitted as: _ZN16uGUIMousePointerD0Ev at 0x00b29120
 uGUIMousePointer::~uGUIMousePointer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b29180 - 0x00b291e8 (104 bytes)
 bool uGUIMousePointer::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MOUSE_GUI"), static_cast<u32>(129), static_cast<t64>(1417150317)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MOUSE_GUI"), 129u, 1417150317l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -97,32 +97,32 @@ bool uGUIMousePointer::loadResource() {
 // Address: 0x00b291f0 - 0x00b2929c (172 bytes)
 void uGUIMousePointer::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(19)), true);
-    this->setPlay(true);
-    this->::uGUIBase::setInstNull(static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(3), false)), true);
-    this->mpInstAnim = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(2), false));
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateInit);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(19u), true);
+    setPlay(true);
+    setInstNull(static_cast<cGUIInstNull*>(getInstance(3u, false)), true);
+    mpInstAnim = static_cast<cGUIInstAnimation*>(getInstance(2u, false));
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateInit);
 }
 
 // Address: 0x00b292c0 - 0x00b292f1 (49 bytes)
 void uGUIMousePointer::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b29300 - 0x00b29305 (5 bytes)
 void uGUIMousePointer::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00b29310 - 0x00b2935d (77 bytes)
@@ -143,7 +143,7 @@ __attribute__((weak)) void uGUIMousePointer::setAnmType(u32 uAnmType) {
 // Address: 0x00b292a0 - 0x00b292ba (26 bytes)
 void uGUIMousePointer::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateWait);
 }
 
 // Address: 0x00b29470 - 0x00b29643 (467 bytes)
@@ -160,6 +160,8 @@ __attribute__((weak)) void uGUIMousePointer::updateWait() {
 // No out-of-line body: 1 inlined copy in 1 function (183 bytes)
 //   in uGUIMousePointer::updateWait at 0x00b2952f-0x00b295e6 (called at uGUIMousePointer.cpp:271)
 // bool uGUIMousePointer::checkDraw();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMousePointer::MyDTI uGUIMousePointer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMousePointer.cpp at 0x00b2976f-0x00b297ac (called at uGUIMousePointer.cpp:52)

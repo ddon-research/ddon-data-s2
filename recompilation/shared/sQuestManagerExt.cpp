@@ -59,7 +59,7 @@ const MtDTI& sQuestManagerExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sQuestManagerExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::DTI);
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline MtAllocator* sQuestManagerExt::getAllocator() {
 // Address: 0x0080b6e0 - 0x0080b720 (64 bytes)
 void* sQuestManagerExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sQuestManagerExt::getAllocator()->memAlloc(sz, align, ::sQuestManagerExt::DTI.::MtDTI::getID());
+    return sQuestManagerExt::getAllocator()->memAlloc(sz, align, sQuestManagerExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,7 +83,7 @@ void* sQuestManagerExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,7 +170,7 @@ bool sQuestManagerExt::isDogmaOrb() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x749 from const sQuestManagerExt*
     // inferred: a value cast to the type its use takes: const unsigned char used as bool
-    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(1865))) & static_cast<unsigned char>(1));
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 1865)) & 1);
 }
 
 // Address: 0x0080bee0 - 0x0080bf14 (52 bytes)
@@ -182,10 +182,10 @@ bool sQuestManagerExt::isEndTextOm(u32 stageNo, u32 groupNo, s32 setNo) const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x74a from const sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (this->mpTouchOmInfo != static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
-        if (this->mpTouchOmInfo->mLayoutId.mLayoutID == ((groupNo * static_cast<u32>(1024)) | (stageNo & static_cast<u32>(1023)))) {
-            if (this->mpTouchOmInfo->mSetNo == static_cast<unsigned int>(setNo)) {
-                return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(1866))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    if (mpTouchOmInfo != nullptr) {
+        if (mpTouchOmInfo->mLayoutId.mLayoutID == ((groupNo * 1024u) | (stageNo & 1023u))) {
+            if (mpTouchOmInfo->mSetNo == static_cast<unsigned int>(setNo)) {
+                return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 1866)) & 4) >> 2);
             }
         }
     }
@@ -202,11 +202,11 @@ bool sQuestManagerExt::isEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 ques
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x74a from const sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (this->mpTouchOmInfo != static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTouchOmInfo) + static_cast<long>(16))) != static_cast<unsigned int>(0)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTouchOmInfo) + static_cast<long>(8))) == ((groupNo * static_cast<u32>(1024)) | (stageNo & static_cast<u32>(1023)))) {
-                if (this->mpTouchOmInfo->mSetNo == static_cast<unsigned int>(setNo)) {
-                    return static_cast<bool>((static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(1866))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2)) & static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTouchOmInfo) + static_cast<long>(16))) == questSeq));
+    if (mpTouchOmInfo != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 16)) != 0) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 8)) == ((groupNo * 1024u) | (stageNo & 1023u))) {
+                if (mpTouchOmInfo->mSetNo == static_cast<unsigned int>(setNo)) {
+                    return static_cast<bool>((static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 1866)) & 4) >> 2) & static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTouchOmInfo) + 16)) == questSeq));
                 }
             }
         }
@@ -217,7 +217,7 @@ bool sQuestManagerExt::isEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 ques
 // Address: 0x0080bf70 - 0x0080bf77 (7 bytes)
 u32 sQuestManagerExt::getTalkEndNpcId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTalkEndNpcId;
+    return mTalkEndNpcId;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (19 bytes)
@@ -242,13 +242,13 @@ __attribute__((weak)) void sQuestManagerExt::notifyTalkEnd(u32 npcId) {
 void sQuestManagerExt::notifyReloadMasterData() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x748 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864))) | static_cast<unsigned char>(2);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864)) | 2;
     // inferred: the value the loop at 0x80c090 carries; no location-less local in scope fits
     u32 v0_0;
     // inferred: the value the loop at 0x80c090 carries; no location-less local in scope fits
@@ -257,257 +257,257 @@ void sQuestManagerExt::notifyReloadMasterData() {
     unsigned int i0_2;
     // inferred: the value carried to 0x80c0ac; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-        if (v0_0 == static_cast<u32>(0)) {
-            v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+        v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+        if (v0_0 == 0) {
+            v1_4 = nullptr;
             goto region_80c0ac;
         } else {
-            v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
-            i0_2 = static_cast<unsigned int>(0);
+            v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+            i0_2 = 0;
         }
     } else {
-        v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-        if (v0_0 == static_cast<u32>(0)) {
-            v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+        v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+        if (v0_0 == 0) {
+            v1_4 = nullptr;
             goto region_80c0ac;
         } else {
-            v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
-            i0_2 = static_cast<unsigned int>(0);
+            v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+            i0_2 = 0;
         }
     }
     for (;;) {
-        if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+        if (v0_1[i0_2] != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 0) {
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             } else {
-                v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                 break;
             }
         } else {
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
-                v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                v1_4 = nullptr;
                 break;
             }
         }
     }
     region_80c0ac:;
-    v1_4->::cQuestManagerBase::callbackReloadMasterData();
+    v1_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c0d0 carries; no location-less local in scope fits
-    u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c0ec; no location-less local in scope fits
     cQuestManagerBase* v3_4;
-    if (v2_0 == static_cast<u32>(0)) {
-        v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v2_0 == 0) {
+        v3_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c0d0 carries; no location-less local in scope fits
-        MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-            if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(1)) {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+        for (unsigned int i2_2 = 0;;) {
+            if (v2_1[i2_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 1) {
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v3_4 = nullptr;
                         break;
                     }
                 } else {
-                    v3_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v3_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_2 = i2_2 + static_cast<unsigned int>(1);
+                if ((i2_2 + 1u) < v2_0) {
+                    i2_2 = i2_2 + 1u;
                 } else {
-                    v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v3_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    v3_4->::cQuestManagerBase::callbackReloadMasterData();
+    v3_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c110 carries; no location-less local in scope fits
-    u32 v4_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v4_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c12c; no location-less local in scope fits
     cQuestManagerBase* v5_4;
-    if (v4_0 == static_cast<u32>(0)) {
-        v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v4_0 == 0) {
+        v5_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c110 carries; no location-less local in scope fits
-        MtObject* * v4_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v4_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_2 = static_cast<unsigned int>(0);;) {
-            if (v4_1[i4_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1[i4_2]) + static_cast<long>(8))) != static_cast<unsigned int>(2)) {
-                    if ((i4_2 + static_cast<unsigned int>(1)) < v4_0) {
-                        i4_2 = i4_2 + static_cast<unsigned int>(1);
+        for (unsigned int i4_2 = 0;;) {
+            if (v4_1[i4_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1[i4_2]) + 8)) != 2) {
+                    if ((i4_2 + 1u) < v4_0) {
+                        i4_2 = i4_2 + 1u;
                     } else {
-                        v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v5_4 = nullptr;
                         break;
                     }
                 } else {
-                    v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1[i4_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1[i4_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i4_2 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_2 = i4_2 + static_cast<unsigned int>(1);
+                if ((i4_2 + 1u) < v4_0) {
+                    i4_2 = i4_2 + 1u;
                 } else {
-                    v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v5_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    v5_4->::cQuestManagerBase::callbackReloadMasterData();
+    v5_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c150 carries; no location-less local in scope fits
-    u32 v6_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v6_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c16c; no location-less local in scope fits
     cQuestManagerBase* v7_4;
-    if (v6_0 == static_cast<u32>(0)) {
-        v7_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v6_0 == 0) {
+        v7_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c150 carries; no location-less local in scope fits
-        MtObject* * v6_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i6_2 = static_cast<unsigned int>(0);;) {
-            if (v6_1[i6_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + static_cast<long>(8))) != static_cast<unsigned int>(3)) {
-                    if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                        i6_2 = i6_2 + static_cast<unsigned int>(1);
+        for (unsigned int i6_2 = 0;;) {
+            if (v6_1[i6_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 3) {
+                    if ((i6_2 + 1u) < v6_0) {
+                        i6_2 = i6_2 + 1u;
                     } else {
-                        v7_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v7_4 = nullptr;
                         break;
                     }
                 } else {
-                    v7_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v7_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                    i6_2 = i6_2 + static_cast<unsigned int>(1);
+                if ((i6_2 + 1u) < v6_0) {
+                    i6_2 = i6_2 + 1u;
                 } else {
-                    v7_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v7_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    v7_4->::cQuestManagerBase::callbackReloadMasterData();
+    v7_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c190 carries; no location-less local in scope fits
-    u32 v8_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v8_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c1ac; no location-less local in scope fits
     cQuestManagerBase* v9_4;
-    if (v8_0 == static_cast<u32>(0)) {
-        v9_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v8_0 == 0) {
+        v9_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c190 carries; no location-less local in scope fits
-        MtObject* * v8_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v8_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i8_2 = static_cast<unsigned int>(0);;) {
-            if (v8_1[i8_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v8_1[i8_2]) + static_cast<long>(8))) != static_cast<unsigned int>(5)) {
-                    if ((i8_2 + static_cast<unsigned int>(1)) < v8_0) {
-                        i8_2 = i8_2 + static_cast<unsigned int>(1);
+        for (unsigned int i8_2 = 0;;) {
+            if (v8_1[i8_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v8_1[i8_2]) + 8)) != 5) {
+                    if ((i8_2 + 1u) < v8_0) {
+                        i8_2 = i8_2 + 1u;
                     } else {
-                        v9_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v9_4 = nullptr;
                         break;
                     }
                 } else {
-                    v9_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v8_1[i8_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v9_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v8_1[i8_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i8_2 + static_cast<unsigned int>(1)) < v8_0) {
-                    i8_2 = i8_2 + static_cast<unsigned int>(1);
+                if ((i8_2 + 1u) < v8_0) {
+                    i8_2 = i8_2 + 1u;
                 } else {
-                    v9_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v9_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    v9_4->::cQuestManagerBase::callbackReloadMasterData();
+    v9_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c1d0 carries; no location-less local in scope fits
-    u32 v10_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v10_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c1ec; no location-less local in scope fits
     cQuestManagerBase* v11_4;
-    if (v10_0 == static_cast<u32>(0)) {
-        v11_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v10_0 == 0) {
+        v11_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c1d0 carries; no location-less local in scope fits
-        MtObject* * v10_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v10_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i10_2 = static_cast<unsigned int>(0);;) {
-            if (v10_1[i10_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v10_1[i10_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                    if ((i10_2 + static_cast<unsigned int>(1)) < v10_0) {
-                        i10_2 = i10_2 + static_cast<unsigned int>(1);
+        for (unsigned int i10_2 = 0;;) {
+            if (v10_1[i10_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v10_1[i10_2]) + 8)) != 6) {
+                    if ((i10_2 + 1u) < v10_0) {
+                        i10_2 = i10_2 + 1u;
                     } else {
-                        v11_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v11_4 = nullptr;
                         break;
                     }
                 } else {
-                    v11_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v10_1[i10_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v11_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v10_1[i10_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i10_2 + static_cast<unsigned int>(1)) < v10_0) {
-                    i10_2 = i10_2 + static_cast<unsigned int>(1);
+                if ((i10_2 + 1u) < v10_0) {
+                    i10_2 = i10_2 + 1u;
                 } else {
-                    v11_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v11_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    v11_4->::cQuestManagerBase::callbackReloadMasterData();
+    v11_4->callbackReloadMasterData();
     // inferred: the value the loop at 0x80c210 carries; no location-less local in scope fits
-    u32 v12_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v12_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x80c22c; no location-less local in scope fits
     cQuestManagerBase* v14_4;
-    if (v12_0 == static_cast<u32>(0)) {
-        v14_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v12_0 == 0) {
+        v14_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x80c210 carries; no location-less local in scope fits
-        MtObject* * v12_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v12_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i12_2 = static_cast<unsigned int>(0);;) {
-            if (v12_1[i12_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v12_1[i12_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                    if ((i12_2 + static_cast<unsigned int>(1)) < v12_0) {
-                        i12_2 = i12_2 + static_cast<unsigned int>(1);
+        for (unsigned int i12_2 = 0;;) {
+            if (v12_1[i12_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v12_1[i12_2]) + 8)) != 7) {
+                    if ((i12_2 + 1u) < v12_0) {
+                        i12_2 = i12_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v14_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v12_1[i12_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
-                    v14_4->::cQuestManagerBase::callbackReloadMasterData();
+                    v14_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v12_1[i12_2])->getQuestManager();
+                    v14_4->callbackReloadMasterData();
                     return;
                 }
             } else {
-                if ((i12_2 + static_cast<unsigned int>(1)) < v12_0) {
-                    i12_2 = i12_2 + static_cast<unsigned int>(1);
+                if ((i12_2 + 1u) < v12_0) {
+                    i12_2 = i12_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v14_4 = static_cast<cQuestManagerBase*>(nullptr);
+        v14_4 = nullptr;
     }
-    v14_4->::cQuestManagerBase::callbackReloadMasterData();
+    v14_4->callbackReloadMasterData();
 }
 
 // Address: 0x0080c280 - 0x0080c30d (141 bytes)
@@ -515,31 +515,28 @@ void sQuestManagerExt::notifyAddItem(u8 itemType) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x748 from sQuestManagerExt*
-    if (itemType == static_cast<u8>(29)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (itemType == 29) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(16);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 16;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864))) | static_cast<unsigned char>(4);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864)) | 4;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -558,31 +555,29 @@ void sQuestManagerExt::notifyReleaseTouchOm(u32 stageNo, u32 groupNo, s32 setNo,
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x748 from sQuestManagerExt*
-    if (this->mpTouchOmInfo == static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
+    if (mpTouchOmInfo == nullptr) {
         return;
     }
-    if (this->mpTouchOmInfo->mLayoutId.mLayoutID != ((groupNo * static_cast<u32>(1024)) | (stageNo & static_cast<u32>(1023)))) {
+    if (mpTouchOmInfo->mLayoutId.mLayoutID != ((groupNo * 1024u) | (stageNo & 1023u))) {
         return;
     }
-    if (this->mpTouchOmInfo->mSetNo != static_cast<unsigned int>(setNo)) {
+    if (mpTouchOmInfo->mSetNo != static_cast<unsigned int>(setNo)) {
         return;
     }
-    if (this->mpTouchOmInfo->mQuestSeq != questSeq) {
+    if (mpTouchOmInfo->mQuestSeq != questSeq) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864))) | static_cast<unsigned char>(16);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864)) | 16;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -592,18 +587,18 @@ void sQuestManagerExt::notifyClearSetQuest(u32 areaId) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x748 from sQuestManagerExt*
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    unsigned int* p0_0 = &this->mClearSetQuestAreaId[0];
+    unsigned int* p0_0 = &mClearSetQuestAreaId[0];
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     // inferred: the value carried to 0x80c674; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
-        if ((*p0_0) != static_cast<unsigned int>(0)) {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(3)) {
-                p0_0 += static_cast<int>(1);
-                i0_1 += static_cast<unsigned int>(1);
+        if ((*p0_0) != 0) {
+            if ((i0_1 + 1u) <= 3u) {
+                p0_0 += 1;
+                i0_1 += 1u;
             } else {
-                v1_1 = i0_1 + static_cast<unsigned int>(1);
+                v1_1 = i0_1 + 1u;
                 break;
             }
         } else {
@@ -612,16 +607,16 @@ void sQuestManagerExt::notifyClearSetQuest(u32 areaId) {
             break;
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1864))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1864)) | 32;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -646,19 +641,17 @@ __attribute__((weak)) void sQuestManagerExt::notifyLeaveParty() {
 void sQuestManagerExt::notifyDogmaOrb() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x749 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -669,19 +662,17 @@ void sQuestManagerExt::notifyDogmaOrb() {
 void sQuestManagerExt::notifyTouchEventBoard() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x749 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865))) | static_cast<unsigned char>(4);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865)) | 4;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -695,19 +686,17 @@ void sQuestManagerExt::notifyTouchEventBoard() {
 void sQuestManagerExt::notifyOpenJobMaster() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x749 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865)) | 32;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -715,19 +704,17 @@ void sQuestManagerExt::notifyOpenJobMaster() {
 void sQuestManagerExt::notifyTouchRimStone() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x749 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865))) | static_cast<unsigned char>(64);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865)) | 64;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -735,19 +722,17 @@ void sQuestManagerExt::notifyTouchRimStone() {
 void sQuestManagerExt::notifyGetAchievement() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x749 from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1865))) | static_cast<unsigned char>(128);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1865)) | 128;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -755,19 +740,17 @@ void sQuestManagerExt::notifyGetAchievement() {
 void sQuestManagerExt::notifyEndTalkSpecial() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -790,31 +773,29 @@ void sQuestManagerExt::notifyEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if (this->mpTouchOmInfo == static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
+    if (mpTouchOmInfo == nullptr) {
         return;
     }
-    if (this->mpTouchOmInfo->mLayoutId.mLayoutID != ((groupNo * static_cast<u32>(1024)) | (stageNo & static_cast<u32>(1023)))) {
+    if (mpTouchOmInfo->mLayoutId.mLayoutID != ((groupNo * 1024u) | (stageNo & 1023u))) {
         return;
     }
-    if (this->mpTouchOmInfo->mSetNo != static_cast<unsigned int>(setNo)) {
+    if (mpTouchOmInfo->mSetNo != static_cast<unsigned int>(setNo)) {
         return;
     }
-    if (this->mpTouchOmInfo->mQuestSeq != questSeq) {
+    if (mpTouchOmInfo->mQuestSeq != questSeq) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(4);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 4;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -822,19 +803,17 @@ void sQuestManagerExt::notifyEndTextOm(u32 stageNo, u32 groupNo, s32 setNo, u32 
 void sQuestManagerExt::notifySetSkill() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(8);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 8;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -842,19 +821,17 @@ void sQuestManagerExt::notifySetSkill() {
 void sQuestManagerExt::notifyOpenAreaMaster() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(16);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 16;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -862,19 +839,17 @@ void sQuestManagerExt::notifyOpenAreaMaster() {
 void sQuestManagerExt::notifyOpenNewspaper() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 32;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -882,19 +857,17 @@ void sQuestManagerExt::notifyOpenNewspaper() {
 void sQuestManagerExt::notifyOpenQuestBoard() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(64);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 64;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -902,19 +875,17 @@ void sQuestManagerExt::notifyOpenQuestBoard() {
 void sQuestManagerExt::notifyOrderLightQuest() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74a from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1866))) | static_cast<unsigned char>(128);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1866)) | 128;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -922,19 +893,17 @@ void sQuestManagerExt::notifyOrderLightQuest() {
 void sQuestManagerExt::notifyOrderWorldQuest() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -942,19 +911,17 @@ void sQuestManagerExt::notifyOrderWorldQuest() {
 void sQuestManagerExt::notifyLostMainPawn() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(2);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 2;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -962,19 +929,17 @@ void sQuestManagerExt::notifyLostMainPawn() {
 void sQuestManagerExt::notifyHugeble() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(4);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 4;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -982,19 +947,17 @@ void sQuestManagerExt::notifyHugeble() {
 void sQuestManagerExt::notifyOpenAreaMasterSupplies() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(8);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 8;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1002,19 +965,17 @@ void sQuestManagerExt::notifyOpenAreaMasterSupplies() {
 void sQuestManagerExt::notifyOpenEntryBoard() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(16);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 16;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1022,19 +983,17 @@ void sQuestManagerExt::notifyOpenEntryBoard() {
 void sQuestManagerExt::notifyNoticeInterruptContents() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 32;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1042,19 +1001,17 @@ void sQuestManagerExt::notifyNoticeInterruptContents() {
 void sQuestManagerExt::notifyOpenRetrySelect() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(64);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 64;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1062,19 +1019,17 @@ void sQuestManagerExt::notifyOpenRetrySelect() {
 void sQuestManagerExt::notifyNoticePartyInvite() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74b from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1867))) | static_cast<unsigned char>(128);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1867)) | 128;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1082,19 +1037,17 @@ void sQuestManagerExt::notifyNoticePartyInvite() {
 void sQuestManagerExt::notifyPartyReward() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(2);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 2;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1102,19 +1055,17 @@ void sQuestManagerExt::notifyPartyReward() {
 void sQuestManagerExt::notifyOpenCraftExam() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(4);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 4;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1122,19 +1073,17 @@ void sQuestManagerExt::notifyOpenCraftExam() {
 void sQuestManagerExt::notifyLevelUpCraft() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(8);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 8;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1142,19 +1091,17 @@ void sQuestManagerExt::notifyLevelUpCraft() {
 void sQuestManagerExt::notifyClearLightQuest() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(16);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 16;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1162,19 +1109,17 @@ void sQuestManagerExt::notifyClearLightQuest() {
 void sQuestManagerExt::notifyOpenJobMasterReward() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 32;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1182,19 +1127,17 @@ void sQuestManagerExt::notifyOpenJobMasterReward() {
 void sQuestManagerExt::notifyKilledAreaBoss() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1202,19 +1145,17 @@ void sQuestManagerExt::notifyKilledAreaBoss() {
 void sQuestManagerExt::notifyOpenWarehouse() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(64);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 64;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1222,19 +1163,17 @@ void sQuestManagerExt::notifyOpenWarehouse() {
 void sQuestManagerExt::notifyOpneRewardBox() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74c from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1868))) | static_cast<unsigned char>(128);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1868)) | 128;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1242,19 +1181,17 @@ void sQuestManagerExt::notifyOpneRewardBox() {
 void sQuestManagerExt::notifySearchClan() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1262,19 +1199,17 @@ void sQuestManagerExt::notifySearchClan() {
 void sQuestManagerExt::notifyOpenAreaList() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(2);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 2;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1282,19 +1217,17 @@ void sQuestManagerExt::notifyOpenAreaList() {
 void sQuestManagerExt::notifyPresentPartnerPawn() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(4);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 4;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1302,19 +1235,17 @@ void sQuestManagerExt::notifyPresentPartnerPawn() {
 void sQuestManagerExt::notifyReleasePortal() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(8);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 8;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1335,19 +1266,17 @@ __attribute__((weak)) void sQuestManagerExt::notifyDivideWarpPlayer(bool isSucce
 void sQuestManagerExt::notifyOrderPawnQuest() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(32);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 32;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1355,19 +1284,17 @@ void sQuestManagerExt::notifyOrderPawnQuest() {
 void sQuestManagerExt::notifyOpenPPShop() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(64);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 64;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1375,19 +1302,17 @@ void sQuestManagerExt::notifyOpenPPShop() {
 void sQuestManagerExt::notifyTouchClanBoard() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74d from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1869))) | static_cast<unsigned char>(128);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1869)) | 128;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1395,19 +1320,17 @@ void sQuestManagerExt::notifyTouchClanBoard() {
 void sQuestManagerExt::notifyOneOffGather() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x74e from sQuestManagerExt*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1870)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(1870))) | static_cast<unsigned char>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1870) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 1870)) | 1;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1436,14 +1359,14 @@ void sQuestManagerExt::checkSayMessage(MT_CTSTR message) {
     // DWARF local not rendered: cSayInfo* pInfo;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x80e7a0 carries; no location-less local in scope fits
-    u32 v0_8 = this->mSayInfoList.::MtArray::mLength;
-    if (v0_8 != static_cast<u32>(0)) {
-        if ((*message) != static_cast<char>(0)) {
+    u32 v0_8 = mSayInfoList.mLength;
+    if (v0_8 != 0) {
+        if ((*message) != 0) {
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                this->::sQuestManagerExt::matchMessage(message, static_cast<sQuestManagerExt::cSayInfo*>(this->mSayInfoList.::MtArray::getBuffer()[static_cast<int>(i0_3)]));
-                if (v0_8 != (i0_3 + static_cast<unsigned int>(1))) {
-                    i0_3 += static_cast<unsigned int>(1);
+            for (unsigned int i0_3 = 0;;) {
+                matchMessage(message, static_cast<cSayInfo*>(mSayInfoList.getBuffer()[static_cast<int>(i0_3)]));
+                if (v0_8 != (i0_3 + 1u)) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
@@ -1495,24 +1418,23 @@ u32 sQuestManagerExt::getKilledEnemyNum(u32 stageNo, u32 enemyId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x120 from sQuestManagerExt*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(288))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 288)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0 = static_cast<unsigned int>(0);
+        unsigned int i0 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mKilledEnemy.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(8))) == stageNo) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mKilledEnemy.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(12))) != enemyId) {
-                } else {
-                    if (this->mKilledEnemy.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
-                        return static_cast<sQuestManagerExt::cKilledEnemy*>(this->mKilledEnemy.::MtArray::getBuffer()[static_cast<int>(i0)])->::sQuestManagerExt::cKilledEnemy::getKilledNum();
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mKilledEnemy.getBuffer()[static_cast<int>(i0)]) + 8)) == stageNo) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mKilledEnemy.getBuffer()[static_cast<int>(i0)]) + 12)) == enemyId) {
+                    if (mKilledEnemy.getBuffer()[static_cast<int>(i0)] != nullptr) {
+                        return static_cast<sQuestManagerExt::cKilledEnemy*>(mKilledEnemy.getBuffer()[static_cast<int>(i0)])->getKilledNum();
                     } else {
-                        return static_cast<u32>(0);
+                        return 0;
                     }
                 }
             }
-            i0 += static_cast<unsigned int>(1);
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(288))));
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 288)));
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (115 bytes)
@@ -1544,50 +1466,46 @@ __attribute__((weak)) void sQuestManagerExt::callFailedQuestAnnounce(nQuest::QUE
 // Address: 0x0080fc30 - 0x0080fccc (156 bytes)
 void sQuestManagerExt::requestOverWriteBgm(s32 bgmType, s32 bgmId, s32 callType) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (bgmType == static_cast<s32>(1)) {
-        ::sSoundManager::getInstance()->::sSoundManager::startQuestReq(bgmId, static_cast<u32>(2), static_cast<u32>(callType));
+    if (bgmType == 1) {
+        sSoundManager::getInstance()->startQuestReq(bgmId, 2u, static_cast<u32>(callType));
     } else {
-        if (bgmType == static_cast<s32>(0)) {
-            ::sSoundManager::getInstance()->::sSoundManager::startQuestReq(bgmId, static_cast<u32>(0), static_cast<u32>(0));
+        if (bgmType == 0) {
+            sSoundManager::getInstance()->startQuestReq(bgmId, 0u, 0u);
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x0080fcd0 - 0x0080fd5a (138 bytes)
 void sQuestManagerExt::requestOverWriteBgmFix(s32 bgmType, s32 bgmId) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (bgmType == static_cast<s32>(1)) {
-        ::sSoundManager::getInstance()->::sSoundManager::startQuestReq(bgmId, static_cast<u32>(2), static_cast<u32>(0));
+    if (bgmType == 1) {
+        sSoundManager::getInstance()->startQuestReq(bgmId, 2u, 0u);
     } else {
-        if (bgmType == static_cast<s32>(0)) {
-            ::sSoundManager::getInstance()->::sSoundManager::startQuestReq(bgmId, static_cast<u32>(0), static_cast<u32>(0));
+        if (bgmType == 0) {
+            sSoundManager::getInstance()->startQuestReq(bgmId, 0u, 0u);
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1597,29 +1515,97 @@ void sQuestManagerExt::requestOverWriteBgmFix(s32 bgmType, s32 bgmId) {
 // Address: 0x0080fd70 - 0x0080fdd7 (103 bytes)
 void sQuestManagerExt::requestRestoreBgm(bool IsRequestEvent) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    ::sSoundManager::getInstance()->::sSoundManager::endQuestReq(IsRequestEvent);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    sSoundManager::getInstance()->endQuestReq(IsRequestEvent);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x0080fde0 - 0x0080fede (254 bytes)
-__attribute__((weak)) void sQuestManagerExt::updateQuestAnnounce() {
-    // local: u32 nodeNum;
-    // local: u32 i;
-    // local: cCallQuestAnnounce* pLog;
-    DDON_STUB("sQuestManagerExt::updateQuestAnnounce")
-    /* stub */
+void sQuestManagerExt::updateQuestAnnounce() {
+    // DWARF local not rendered: u32 nodeNum;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    // inferred: the value the loop at 0x80fe10 carries; no location-less local in scope fits
+    u32 v0_10 = mCallQuestAnnounce.mLength;
+    cCallQuestAnnounce* pLog;
+    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int i3_10;
+    // inferred: the value carried to 0x80fe8f; no location-less local in scope fits
+    u32 v6_0;
+    // inferred: the value carried to 0x80fe8f; no location-less local in scope fits
+    unsigned int v6_11;
+    // inferred: the value the loop at 0x80fea0 carries; no location-less local in scope fits
+    unsigned int v7_1;
+    // inferred: the value the loop at 0x80fea0 carries; no location-less local in scope fits
+    u32 v7_6;
+    // inferred: the value the loop at 0x80fea0 carries; no location-less local in scope fits
+    unsigned int v7_10;
+    for (;;) {
+        if (v0_10 == 0) {
+            break;
+        } else {
+            pLog = static_cast<cCallQuestAnnounce*>(*mCallQuestAnnounce.getBuffer());
+            if (pLog == nullptr) {
+                continue;
+            }
+        }
+        pLog->sQuestManagerExt::cCallQuestAnnounce::update();
+        if (!pLog->sQuestManagerExt::cCallQuestAnnounce::isDelete()) {
+            break;
+        }
+        // inferred: the value the loop at 0x80fe60 carries; no location-less local in scope fits
+        u32 v3_0 = mCallQuestAnnounce.mLength;
+        if (v3_0 != 0) {
+            // inferred: the value the loop at 0x80fe60 carries; no location-less local in scope fits
+            MtObject* * v3_1 = mCallQuestAnnounce.mpArray;
+            i3_10 = 0;
+            for (;;) {
+                if (pLog == v3_1[i3_10]) {
+                    if (!mCallQuestAnnounce.mAutoDelete) {
+                        v6_0 = v3_0;
+                    } else {
+                        delete pLog;
+                        v6_0 = mCallQuestAnnounce.mLength;
+                    }
+                    v6_11 = i3_10 + 1u;
+                    if (v6_11 < v6_0) {
+                        v7_1 = v6_11;
+                        v7_6 = v6_0;
+                        v7_10 = i3_10;
+                        for (;;) {
+                            mCallQuestAnnounce.mpArray[v7_10] = mCallQuestAnnounce.mpArray[v7_1];
+                            if (v7_6 != (v7_1 + 1u)) {
+                                v7_10 = v7_1;
+                                v7_1 = v7_1 + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    mCallQuestAnnounce.mLength = v6_0 - 1u;
+                    break;
+                } else {
+                    if ((i3_10 + 1u) < v3_0) {
+                        i3_10 = i3_10 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        delete pLog;
+        v0_10 += 0xFFFFFFFFu;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1674,7 +1660,7 @@ __attribute__((weak)) void sQuestManagerExt::finalGame() {
 // Address: 0x008110f0 - 0x008110f7 (7 bytes)
 bool sQuestManagerExt::isResetInstanceArea() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsResetInstanceArea;
+    return mIsResetInstanceArea;
 }
 
 // Address: 0x00811100 - 0x008112a2 (418 bytes)
@@ -1727,7 +1713,7 @@ __attribute__((weak)) bool sQuestManagerExt::isCycleContentsHolding() const {
 // Address: 0x008115b0 - 0x008115b7 (7 bytes)
 u32 sQuestManagerExt::getHoldingCycleContentsNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsInfoList.::MtArray::mLength;
+    return mCycleContentsInfoList.mLength;
 }
 
 // Address: 0x008115c0 - 0x00811701 (321 bytes)
@@ -1741,10 +1727,10 @@ __attribute__((weak)) nQuest::CYCLE_CONTENTS_PERIOD sQuestManagerExt::getHolding
 // Address: 0x00811710 - 0x00811728 (24 bytes)
 const nQuest::cCycleContentsInfo* sQuestManagerExt::getHoldingCycleContentsInfo(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mCycleContentsInfoList.::MtArray::mLength) {
-        return static_cast<const nQuest::cCycleContentsInfo*>(this->mCycleContentsInfoList.::MtArray::mpArray[idx]);
+    if (idx < mCycleContentsInfoList.mLength) {
+        return static_cast<const nQuest::cCycleContentsInfo*>(mCycleContentsInfoList.mpArray[idx]);
     } else {
-        return static_cast<const nQuest::cCycleContentsInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1767,19 +1753,19 @@ __attribute__((weak)) nQuest::QUEST_ID sQuestManagerExt::getCycleContentsPlayNow
 // Address: 0x008119a0 - 0x008119b1 (17 bytes)
 bool sQuestManagerExt::isCycleContentsDemoNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sQuestManagerExt::getCycleContentsMgrDemoNow() != static_cast<cCycleQuestManagerBase*>(nullptr);
+    return getCycleContentsMgrDemoNow() != nullptr;
 }
 
 // Address: 0x00811af0 - 0x00811b01 (17 bytes)
 bool sQuestManagerExt::isCycleContentsPlayNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sQuestManagerExt::getCycleContentsMgrPlayNow() != static_cast<cCycleQuestManagerBase*>(nullptr);
+    return getCycleContentsMgrPlayNow() != nullptr;
 }
 
 // Address: 0x00811b10 - 0x00811b21 (17 bytes)
 bool sQuestManagerExt::isCycleContentsPlayNowAll() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sQuestManagerExt::getCycleContentsMgrPlayNowAll() != static_cast<cCycleQuestManagerBase*>(nullptr);
+    return getCycleContentsMgrPlayNowAll() != nullptr;
 }
 
 // Address: 0x00811c60 - 0x00811c8a (42 bytes)
@@ -1792,69 +1778,69 @@ __attribute__((weak)) bool sQuestManagerExt::isCycleContentsPlayNowResult() cons
 bool sQuestManagerExt::isCycleContentsEndFlowNow() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x813570 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x81358c; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x813570 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 6) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
     // inferred: a temporary for the result of the call at 0x81358c, used once; no DWARF local holds it
-    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->::cCycleQuestManagerBase::isPlayNow();
+    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->isPlayNow();
     // inferred: the value the loop at 0x8135c0 carries; no location-less local in scope fits
-    u32 v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x813660; no location-less local in scope fits
     cQuestManagerBase* v6_4;
-    if (t0 != false) {
-        if (v2_1 == static_cast<u32>(0)) {
-            v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (t0) {
+        if (v2_1 == 0) {
+            v6_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x8135c0 carries; no location-less local in scope fits
-            MtObject* * v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_0[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_0[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_1) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_0[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_0[i2_2]) + 8)) != 6) {
+                        if ((i2_2 + 1u) < v2_1) {
+                            i2_2 = i2_2 + 1u;
                         } else {
-                            v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v6_4 = nullptr;
                             break;
                         }
                     } else {
-                        v6_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_0[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v6_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_0[i2_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_1) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_1) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v6_4 = nullptr;
                         break;
                     }
                 }
@@ -1863,64 +1849,64 @@ bool sQuestManagerExt::isCycleContentsEndFlowNow() {
     } else {
         // inferred: the value carried to 0x813612; no location-less local in scope fits
         cQuestManagerBase* v4_4;
-        if (v2_1 == static_cast<u32>(0)) {
-            v4_4 = static_cast<cQuestManagerBase*>(nullptr);
+        if (v2_1 == 0) {
+            v4_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x8135f0 carries; no location-less local in scope fits
-            MtObject* * v3_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v3_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i3_2 = static_cast<unsigned int>(0);;) {
-                if (v3_0[i3_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_0[i3_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                        if ((i3_2 + static_cast<unsigned int>(1)) < v2_1) {
-                            i3_2 = i3_2 + static_cast<unsigned int>(1);
+            for (unsigned int i3_2 = 0;;) {
+                if (v3_0[i3_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_0[i3_2]) + 8)) != 7) {
+                        if ((i3_2 + 1u) < v2_1) {
+                            i3_2 = i3_2 + 1u;
                         } else {
-                            v4_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v4_4 = nullptr;
                             break;
                         }
                     } else {
-                        v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v3_0[i3_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v3_0[i3_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i3_2 + static_cast<unsigned int>(1)) < v2_1) {
-                        i3_2 = i3_2 + static_cast<unsigned int>(1);
+                    if ((i3_2 + 1u) < v2_1) {
+                        i3_2 = i3_2 + 1u;
                     } else {
-                        v4_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v4_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (static_cast<cCycleQuestManagerBase*>(v4_4)->::cCycleQuestManagerBase::isPlayNow() == false) {
+        if (!static_cast<cCycleQuestManagerBase*>(v4_4)->isPlayNow()) {
             return false;
         } else {
             // inferred: the value the loop at 0x813640 carries; no location-less local in scope fits
-            u32 v5_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-            if (v5_0 == static_cast<u32>(0)) {
-                v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+            u32 v5_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v5_0 == 0) {
+                v6_4 = nullptr;
             } else {
                 // inferred: the value the loop at 0x813640 carries; no location-less local in scope fits
-                MtObject* * v5_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v5_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i5_2 = static_cast<unsigned int>(0);;) {
-                    if (v5_1[i5_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v5_1[i5_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                            if ((i5_2 + static_cast<unsigned int>(1)) < v5_0) {
-                                i5_2 = i5_2 + static_cast<unsigned int>(1);
+                for (unsigned int i5_2 = 0;;) {
+                    if (v5_1[i5_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v5_1[i5_2]) + 8)) != 7) {
+                            if ((i5_2 + 1u) < v5_0) {
+                                i5_2 = i5_2 + 1u;
                             } else {
-                                v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+                                v6_4 = nullptr;
                                 break;
                             }
                         } else {
-                            v6_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v5_1[i5_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                            v6_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v5_1[i5_2])->getQuestManager();
                             break;
                         }
                     } else {
-                        if ((i5_2 + static_cast<unsigned int>(1)) < v5_0) {
-                            i5_2 = i5_2 + static_cast<unsigned int>(1);
+                        if ((i5_2 + 1u) < v5_0) {
+                            i5_2 = i5_2 + 1u;
                         } else {
-                            v6_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v6_4 = nullptr;
                             break;
                         }
                     }
@@ -1928,17 +1914,17 @@ bool sQuestManagerExt::isCycleContentsEndFlowNow() {
             }
         }
     }
-    return static_cast<cCycleQuestManagerBase*>(v6_4)->::cCycleQuestManagerBase::isEndFlowNow();
+    return static_cast<cCycleQuestManagerBase*>(v6_4)->isEndFlowNow();
 }
 
 // Address: 0x00811c90 - 0x00811cab (27 bytes)
 u32 sQuestManagerExt::getCycleContentsPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
-    if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
-        return pMgr->::cCycleQuestManagerBase::getCycleContentsPoint();
+    cCycleQuestManagerBase* pMgr = getCycleContentsMgrPlayNow();
+    if (pMgr != nullptr) {
+        return pMgr->cCycleQuestManagerBase::getCycleContentsPoint();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1954,119 +1940,119 @@ __attribute__((weak)) f32 sQuestManagerExt::getCycleContentsTimer() const {
     // DWARF local not rendered: const bool isPlayNow;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x811eb0 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x811ecc; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x811eb0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 7) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    if (static_cast<cCycleQuestManagerBase*>(v1_4)->::cCycleQuestManagerBase::isPlayNow() == false) {
+    if (!static_cast<cCycleQuestManagerBase*>(v1_4)->isPlayNow()) {
         // inferred: the value the loop at 0x811f00 carries; no location-less local in scope fits
-        u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+        u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
         // inferred: the value carried to 0x811f1c; no location-less local in scope fits
         cQuestManagerBase* v3_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v3_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x811f00 carries; no location-less local in scope fits
-            MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
-                            v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v3_4 = nullptr;
                             break;
                         }
                     } else {
-                        v3_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v3_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v3_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (static_cast<cCycleQuestManagerBase*>(v3_4)->::cCycleQuestManagerBase::isPlayNow() == false) {
+        if (!static_cast<cCycleQuestManagerBase*>(v3_4)->isPlayNow()) {
             // inferred: the value the loop at 0x811f40 carries; no location-less local in scope fits
-            u32 v4_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+            u32 v4_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
             // inferred: the value carried to 0x811f5c; no location-less local in scope fits
             cQuestManagerBase* v5_4;
-            if (v4_0 == static_cast<u32>(0)) {
-                v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+            if (v4_0 == 0) {
+                v5_4 = nullptr;
             } else {
                 // inferred: the value the loop at 0x811f40 carries; no location-less local in scope fits
-                MtObject* * v4_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v4_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i4_2 = static_cast<unsigned int>(0);;) {
-                    if (v4_1[i4_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1[i4_2]) + static_cast<long>(8))) != static_cast<unsigned int>(8)) {
-                            if ((i4_2 + static_cast<unsigned int>(1)) < v4_0) {
-                                i4_2 = i4_2 + static_cast<unsigned int>(1);
+                for (unsigned int i4_2 = 0;;) {
+                    if (v4_1[i4_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1[i4_2]) + 8)) != 8) {
+                            if ((i4_2 + 1u) < v4_0) {
+                                i4_2 = i4_2 + 1u;
                             } else {
-                                v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                                v5_4 = nullptr;
                                 break;
                             }
                         } else {
-                            v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1[i4_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                            v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1[i4_2])->getQuestManager();
                             break;
                         }
                     } else {
-                        if ((i4_2 + static_cast<unsigned int>(1)) < v4_0) {
-                            i4_2 = i4_2 + static_cast<unsigned int>(1);
+                        if ((i4_2 + 1u) < v4_0) {
+                            i4_2 = i4_2 + 1u;
                         } else {
-                            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v5_4 = nullptr;
                             break;
                         }
                     }
                 }
             }
-            if (static_cast<cEndContentsManager*>(v5_4)->::cEndContentsManager::isPlayNow() == false) {
+            if (!static_cast<cEndContentsManager*>(v5_4)->isPlayNow()) {
                 return 0.0f;
             }
         }
     }
-    return this->mpCycleContentsTimer->::sQuestManagerExt::cTimer::getRemainingTime();
+    return mpCycleContentsTimer->getRemainingTime();
 }
 
 // Address: 0x00811f90 - 0x00811faa (26 bytes)
 void sQuestManagerExt::finishCycleContentsTimer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpCycleContentsTimer->::sQuestManagerExt::cTimer::finish();
-    this->mIsDispContentsTimer = false;
+    mpCycleContentsTimer->finish();
+    mIsDispContentsTimer = false;
 }
 
 // Address: 0x00811fb0 - 0x00811fcd (29 bytes)
@@ -2084,11 +2070,11 @@ __attribute__((weak)) bool sQuestManagerExt::hasStartedCycleContentsTimer() cons
 // Address: 0x00811ff0 - 0x0081200b (27 bytes)
 u32 sQuestManagerExt::getCycleContentsPurposeNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
-    if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
-        return pMgr->::cCycleQuestManagerBase::getCyclePurposeNum();
+    cCycleQuestManagerBase* pMgr = getCycleContentsMgrPlayNow();
+    if (pMgr != nullptr) {
+        return pMgr->cCycleQuestManagerBase::getCyclePurposeNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2110,7 +2096,7 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getCycleContentsNamePlayNow() c
 // Address: 0x00812340 - 0x00812348 (8 bytes)
 const nQuest::cCycleContentsResultInfo& sQuestManagerExt::getCycleContentsResultInfo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsResultInfo;
+    return mCycleContentsResultInfo;
 }
 
 // Address: 0x00812350 - 0x00812358 (8 bytes)
@@ -2122,25 +2108,25 @@ MT_CTSTR sQuestManagerExt::getCycleContentsExtraBonusMsg(u32 extraBonusNo) const
 // Address: 0x00812360 - 0x00812368 (8 bytes)
 const nQuest::CycleContentsRankingList& sQuestManagerExt::getCycleContentsRankingList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsRankingList;
+    return mCycleContentsRankingList;
 }
 
 // Address: 0x00812370 - 0x00812378 (8 bytes)
 const nQuest::CycleContentsRankingRewardList& sQuestManagerExt::getCycleContentsRankingRewardList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsRankingRewardList;
+    return mCycleContentsRankingRewardList;
 }
 
 // Address: 0x00812380 - 0x00812388 (8 bytes)
 const nQuest::CycleContentsBorderRewardList& sQuestManagerExt::getCycleContentsBorderRewardList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsBorderRewardList;
+    return mCycleContentsBorderRewardList;
 }
 
 // Address: 0x00812390 - 0x00812397 (7 bytes)
 bool sQuestManagerExt::isCycleContentsTimerZero() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsContentsTimerTimeup;
+    return mIsContentsTimerTimeup;
 }
 
 // Address: 0x008123a0 - 0x0081242a (138 bytes)
@@ -2209,21 +2195,21 @@ __attribute__((weak)) f32 sQuestManagerExt::getCycleContentsPlayTime() const {
 // Address: 0x00812450 - 0x00812473 (35 bytes)
 void sQuestManagerExt::clearRequestEntryInfoSave() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::resetEntryBoardInfo(this->mRequestEntryInfoSave);
-    this->mIsSaveRequestEntryInfoSave = false;
+    nNet::resetEntryBoardInfo(mRequestEntryInfoSave);
+    mIsSaveRequestEntryInfoSave = false;
 }
 
 // Address: 0x00812480 - 0x00812493 (19 bytes)
 void sQuestManagerExt::saveRequestEntryInfo(const nNet::stEntryBoardItemInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsSaveRequestEntryInfoSave = true;
-    ::nNet::copyEntryBoardItemInfo(this->mRequestEntryInfoSave, info);
+    mIsSaveRequestEntryInfoSave = true;
+    nNet::copyEntryBoardItemInfo(mRequestEntryInfoSave, info);
 }
 
 // Address: 0x008124a0 - 0x008124b2 (18 bytes)
 void sQuestManagerExt::loadRequestEntryInfo(nNet::stEntryBoardItemInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::copyEntryBoardItemInfo(info, this->mRequestEntryInfoSave);
+    nNet::copyEntryBoardItemInfo(info, mRequestEntryInfoSave);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -2233,9 +2219,9 @@ void sQuestManagerExt::loadRequestEntryInfo(nNet::stEntryBoardItemInfo& info) {
 // Address: 0x008124c0 - 0x008124f2 (50 bytes)
 void sQuestManagerExt::clearEntrySearchFilterSave() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsSaveEntrySearchFilterSave = false;
-    this->mEntrySearchFilterSave.::cCharacterData::stSearchFilterSetting::setDefaultData();
-    this->mEntrySearchFilterSave.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(5));
+    mIsSaveEntrySearchFilterSave = false;
+    mEntrySearchFilterSave.setDefaultData();
+    mEntrySearchFilterSave.initSearchFilter(5);
 }
 
 // Address: 0x00812500 - 0x008125b5 (181 bytes)
@@ -2305,9 +2291,9 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getCycleContentsSituationName(n
 // Address: 0x00812a20 - 0x00812a40 (32 bytes)
 MT_CTSTR sQuestManagerExt::getCycleContentsSituationNamePlayNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
-    if (pMgr != static_cast<const cCycleQuestManagerBase*>(nullptr)) {
-        return pMgr->::cCycleQuestManagerBase::getPlaySituationName();
+    const cCycleQuestManagerBase* pMgr = getCycleContentsMgrPlayNow();
+    if (pMgr != nullptr) {
+        return pMgr->cCycleQuestManagerBase::getPlaySituationName();
     } else {
         return "";
     }
@@ -2400,8 +2386,8 @@ __attribute__((weak)) void sQuestManagerExt::setEntryCycleContentCategory(u32 Np
 // Address: 0x00813170 - 0x0081317c (12 bytes)
 void sQuestManagerExt::clearEntryCycleContentCategory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEntryContentCategory = static_cast<u32>(0);
-    this->mEntryContentSubCategory = static_cast<u32>(0);
+    mEntryContentCategory = 0;
+    mEntryContentSubCategory = 0;
 }
 
 // Address: 0x00813180 - 0x0081322a (170 bytes)
@@ -2443,42 +2429,42 @@ __attribute__((weak)) void sQuestManagerExt::setCycleContentEntryNpcId(nQuest::C
 // Address: 0x00812980 - 0x00812a11 (145 bytes)
 cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgr(nQuest::CYCLE_CONTENTS_CATEGORY category, nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (category == static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(3)) {
+    if (category == nQuest::CYCLE_CONTENTS_CATEGORY_RAID_BOSS) {
         // inferred: the value the loop at 0x8129b0 carries; no location-less local in scope fits
-        u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-        if (v0_0 != static_cast<u32>(0)) {
+        u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+        if (v0_0 != 0) {
             // inferred: the value the loop at 0x8129b0 carries; no location-less local in scope fits
-            MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-                if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == static_cast<unsigned int>(7)) {
-                        return static_cast<cCycleQuestManagerBase*>(static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager());
+            for (unsigned int i0_2 = 0;;) {
+                if (v0_1[i0_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 7) {
+                        return static_cast<cCycleQuestManagerBase*>(static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager());
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
     } else {
-        if (category == static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(1)) {
+        if (category == nQuest::CYCLE_CONTENTS_CATEGORY_FORT_DEFENSE) {
             // inferred: the value the loop at 0x8129f0 carries; no location-less local in scope fits
-            u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-            if (v2_0 != static_cast<u32>(0)) {
+            u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v2_0 != 0) {
                 // inferred: the value the loop at 0x8129f0 carries; no location-less local in scope fits
-                MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                    if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) == static_cast<unsigned int>(6)) {
-                            return static_cast<cCycleQuestManagerBase*>(static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager());
+                for (unsigned int i2_2 = 0;;) {
+                    if (v2_1[i2_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) == 6) {
+                            return static_cast<cCycleQuestManagerBase*>(static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager());
                         }
                     }
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
                         break;
                     }
@@ -2486,7 +2472,7 @@ cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgr(nQuest::CYCLE_CONT
             }
         }
     }
-    return static_cast<cCycleQuestManagerBase*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00813670 - 0x0081385c (492 bytes)
@@ -2542,9 +2528,9 @@ __attribute__((weak)) void sQuestManagerExt::releaseEntryBoardChangePhase(nQuest
 // Address: 0x00813de0 - 0x00813dfd (29 bytes)
 bool sQuestManagerExt::isDistEnableEntryBoard(u32 npcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cCycleQuestSubCategoryManager* pMgr = this->::sQuestManagerExt::getCycleContentsSubCategoryMgr(npcId);
-    if (pMgr != static_cast<cCycleQuestSubCategoryManager*>(nullptr)) {
-        return pMgr->::cCycleQuestSubCategoryManager::isDistEnable();
+    cCycleQuestSubCategoryManager* pMgr = getCycleContentsSubCategoryMgr(npcId);
+    if (pMgr != nullptr) {
+        return pMgr->cCycleQuestSubCategoryManager::isDistEnable();
     } else {
         return true;
     }
@@ -2597,137 +2583,137 @@ __attribute__((weak)) bool sQuestManagerExt::isHoldingAnyCycleContents() const {
 __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgrDemoNow() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x8119f0 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x811a0c; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x8119f0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 6) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
     // inferred: a temporary for the result of the call at 0x811a0c, used once; no DWARF local holds it
-    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->::cCycleQuestManagerBase::isDemoNow();
+    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->isDemoNow();
     // inferred: the value the loop at 0x811a40 carries; no location-less local in scope fits
-    u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x811adc; no location-less local in scope fits
     cQuestManagerBase* v8_0;
-    if (t0 != false) {
-        if (v2_0 == static_cast<u32>(0)) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+    if (t0) {
+        if (v2_0 == 0) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x811a40 carries; no location-less local in scope fits
-            MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
                             break;
                         }
                     } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
                         return static_cast<cCycleQuestManagerBase*>(v8_0);
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            v8_0 = nullptr;
         }
     } else {
         // inferred: the value carried to 0x811a92; no location-less local in scope fits
         cQuestManagerBase* v5_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v5_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x811a70 carries; no location-less local in scope fits
-            MtObject* * v4_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v4_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i4_2 = static_cast<unsigned int>(0);;) {
-                if (v4_0[i4_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                        if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i4_2 = i4_2 + static_cast<unsigned int>(1);
+            for (unsigned int i4_2 = 0;;) {
+                if (v4_0[i4_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + 8)) != 7) {
+                        if ((i4_2 + 1u) < v2_0) {
+                            i4_2 = i4_2 + 1u;
                         } else {
-                            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v5_4 = nullptr;
                             break;
                         }
                     } else {
-                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i4_2 = i4_2 + static_cast<unsigned int>(1);
+                    if ((i4_2 + 1u) < v2_0) {
+                        i4_2 = i4_2 + 1u;
                     } else {
-                        v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v5_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (static_cast<cCycleQuestManagerBase*>(v5_4)->::cCycleQuestManagerBase::isDemoNow() == false) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+        if (!static_cast<cCycleQuestManagerBase*>(v5_4)->isDemoNow()) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x811ac0 carries; no location-less local in scope fits
-            u32 v6_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-            if (v6_0 == static_cast<u32>(0)) {
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            u32 v6_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v6_0 == 0) {
+                v8_0 = nullptr;
             } else {
                 // inferred: the value the loop at 0x811ac0 carries; no location-less local in scope fits
-                MtObject* * v6_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i6_2 = static_cast<unsigned int>(0);;) {
-                    if (v6_1[i6_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                            if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                                i6_2 = i6_2 + static_cast<unsigned int>(1);
+                for (unsigned int i6_2 = 0;;) {
+                    if (v6_1[i6_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
+                            if ((i6_2 + 1u) < v6_0) {
+                                i6_2 = i6_2 + 1u;
                             } else {
                                 break;
                             }
                         } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
                             return static_cast<cCycleQuestManagerBase*>(v8_0);
                         }
                     } else {
-                        if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                            i6_2 = i6_2 + static_cast<unsigned int>(1);
+                        if ((i6_2 + 1u) < v6_0) {
+                            i6_2 = i6_2 + 1u;
                         } else {
                             break;
                         }
                     }
                 }
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+                v8_0 = nullptr;
             }
         }
     }
@@ -2738,137 +2724,137 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
 __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgrPlayNow() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x8118a0 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x8118bc; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x8118a0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 6) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
     // inferred: a temporary for the result of the call at 0x8118bc, used once; no DWARF local holds it
-    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->::cCycleQuestManagerBase::isPlayNow();
+    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->isPlayNow();
     // inferred: the value the loop at 0x8118f0 carries; no location-less local in scope fits
-    u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x81198c; no location-less local in scope fits
     cQuestManagerBase* v8_0;
-    if (t0 != false) {
-        if (v2_0 == static_cast<u32>(0)) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+    if (t0) {
+        if (v2_0 == 0) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x8118f0 carries; no location-less local in scope fits
-            MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
                             break;
                         }
                     } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
                         return static_cast<cCycleQuestManagerBase*>(v8_0);
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            v8_0 = nullptr;
         }
     } else {
         // inferred: the value carried to 0x811942; no location-less local in scope fits
         cQuestManagerBase* v5_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v5_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x811920 carries; no location-less local in scope fits
-            MtObject* * v4_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v4_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i4_2 = static_cast<unsigned int>(0);;) {
-                if (v4_0[i4_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                        if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i4_2 = i4_2 + static_cast<unsigned int>(1);
+            for (unsigned int i4_2 = 0;;) {
+                if (v4_0[i4_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + 8)) != 7) {
+                        if ((i4_2 + 1u) < v2_0) {
+                            i4_2 = i4_2 + 1u;
                         } else {
-                            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v5_4 = nullptr;
                             break;
                         }
                     } else {
-                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i4_2 = i4_2 + static_cast<unsigned int>(1);
+                    if ((i4_2 + 1u) < v2_0) {
+                        i4_2 = i4_2 + 1u;
                     } else {
-                        v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v5_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (static_cast<cCycleQuestManagerBase*>(v5_4)->::cCycleQuestManagerBase::isPlayNow() == false) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+        if (!static_cast<cCycleQuestManagerBase*>(v5_4)->isPlayNow()) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x811970 carries; no location-less local in scope fits
-            u32 v6_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-            if (v6_0 == static_cast<u32>(0)) {
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            u32 v6_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v6_0 == 0) {
+                v8_0 = nullptr;
             } else {
                 // inferred: the value the loop at 0x811970 carries; no location-less local in scope fits
-                MtObject* * v6_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i6_2 = static_cast<unsigned int>(0);;) {
-                    if (v6_1[i6_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                            if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                                i6_2 = i6_2 + static_cast<unsigned int>(1);
+                for (unsigned int i6_2 = 0;;) {
+                    if (v6_1[i6_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
+                            if ((i6_2 + 1u) < v6_0) {
+                                i6_2 = i6_2 + 1u;
                             } else {
                                 break;
                             }
                         } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
                             return static_cast<cCycleQuestManagerBase*>(v8_0);
                         }
                     } else {
-                        if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                            i6_2 = i6_2 + static_cast<unsigned int>(1);
+                        if ((i6_2 + 1u) < v6_0) {
+                            i6_2 = i6_2 + 1u;
                         } else {
                             break;
                         }
                     }
                 }
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+                v8_0 = nullptr;
             }
         }
     }
@@ -2879,137 +2865,137 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
 __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgrPlayNowAll() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x811b60 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x811b7c; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x811b60 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 6) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
     // inferred: a temporary for the result of the call at 0x811b7c, used once; no DWARF local holds it
-    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->::cCycleQuestManagerBase::isPlayNowAll();
+    bool t0 = static_cast<cCycleQuestManagerBase*>(v1_4)->isPlayNowAll();
     // inferred: the value the loop at 0x811bb0 carries; no location-less local in scope fits
-    u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x811c4c; no location-less local in scope fits
     cQuestManagerBase* v8_0;
-    if (t0 != false) {
-        if (v2_0 == static_cast<u32>(0)) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+    if (t0) {
+        if (v2_0 == 0) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x811bb0 carries; no location-less local in scope fits
-            MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(6)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 6) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
                             break;
                         }
                     } else {
-                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
                         return static_cast<cCycleQuestManagerBase*>(v8_0);
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            v8_0 = nullptr;
         }
     } else {
         // inferred: the value carried to 0x811c02; no location-less local in scope fits
         cQuestManagerBase* v5_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v5_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x811be0 carries; no location-less local in scope fits
-            MtObject* * v4_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v4_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i4_2 = static_cast<unsigned int>(0);;) {
-                if (v4_0[i4_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                        if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i4_2 = i4_2 + static_cast<unsigned int>(1);
+            for (unsigned int i4_2 = 0;;) {
+                if (v4_0[i4_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_0[i4_2]) + 8)) != 7) {
+                        if ((i4_2 + 1u) < v2_0) {
+                            i4_2 = i4_2 + 1u;
                         } else {
-                            v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                            v5_4 = nullptr;
                             break;
                         }
                     } else {
-                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                        v5_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v4_0[i4_2])->getQuestManager();
                         break;
                     }
                 } else {
-                    if ((i4_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i4_2 = i4_2 + static_cast<unsigned int>(1);
+                    if ((i4_2 + 1u) < v2_0) {
+                        i4_2 = i4_2 + 1u;
                     } else {
-                        v5_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v5_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (static_cast<cCycleQuestManagerBase*>(v5_4)->::cCycleQuestManagerBase::isPlayNowAll() == false) {
-            v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+        if (!static_cast<cCycleQuestManagerBase*>(v5_4)->isPlayNowAll()) {
+            v8_0 = nullptr;
         } else {
             // inferred: the value the loop at 0x811c30 carries; no location-less local in scope fits
-            u32 v6_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-            if (v6_0 == static_cast<u32>(0)) {
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+            u32 v6_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+            if (v6_0 == 0) {
+                v8_0 = nullptr;
             } else {
                 // inferred: the value the loop at 0x811c30 carries; no location-less local in scope fits
-                MtObject* * v6_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+                MtObject* * v6_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i6_2 = static_cast<unsigned int>(0);;) {
-                    if (v6_1[i6_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + static_cast<long>(8))) != static_cast<unsigned int>(7)) {
-                            if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                                i6_2 = i6_2 + static_cast<unsigned int>(1);
+                for (unsigned int i6_2 = 0;;) {
+                    if (v6_1[i6_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) != 7) {
+                            if ((i6_2 + 1u) < v6_0) {
+                                i6_2 = i6_2 + 1u;
                             } else {
                                 break;
                             }
                         } else {
-                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                            v8_0 = static_cast<sQuestManagerExt::cManagerInfo*>(v6_1[i6_2])->getQuestManager();
                             return static_cast<cCycleQuestManagerBase*>(v8_0);
                         }
                     } else {
-                        if ((i6_2 + static_cast<unsigned int>(1)) < v6_0) {
-                            i6_2 = i6_2 + static_cast<unsigned int>(1);
+                        if ((i6_2 + 1u) < v6_0) {
+                            i6_2 = i6_2 + 1u;
                         } else {
                             break;
                         }
                     }
                 }
-                v8_0 = static_cast<cQuestManagerBase*>(nullptr);
+                v8_0 = nullptr;
             }
         }
     }
@@ -3111,33 +3097,33 @@ __attribute__((weak)) void sQuestManagerExt::cancelActiveQuest(nQuest::SCHEDULE_
 u32 sQuestManagerExt::getEndContentsPurposeNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x814850 carries; no location-less local in scope fits
-    u32 v0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
     // inferred: the value carried to 0x81486c; no location-less local in scope fits
     cQuestManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x814850 carries; no location-less local in scope fits
-        MtObject* * v0_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(8)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 8) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+                    v1_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
@@ -3145,41 +3131,41 @@ u32 sQuestManagerExt::getEndContentsPurposeNum() const {
     }
     // inferred: the value carried to 0x8148b5; no location-less local in scope fits
     cQuestManagerBase* v4_4;
-    if (static_cast<cEndContentsManager*>(v1_4)->::cEndContentsManager::isPlayNow() == false) {
-        return static_cast<u32>(0);
+    if (!static_cast<cEndContentsManager*>(v1_4)->isPlayNow()) {
+        return 0;
     } else {
         // inferred: the value the loop at 0x814890 carries; no location-less local in scope fits
-        u32 v2_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mLength;
-        if (v2_0 == static_cast<u32>(0)) {
-            v4_4 = static_cast<cQuestManagerBase*>(nullptr);
+        u32 v2_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+        if (v2_0 == 0) {
+            v4_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x814890 carries; no location-less local in scope fits
-            MtObject* * v2_1 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(8)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 8) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
                             break;
                         }
                     } else {
-                        v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->::sQuestManagerExt::cManagerInfo::getQuestManager();
-                        return static_cast<cEndContentsManager*>(v4_4)->::cEndContentsManager::getEndContentsPurposeNum();
+                        v4_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v2_1[i2_2])->getQuestManager();
+                        return static_cast<cEndContentsManager*>(v4_4)->getEndContentsPurposeNum();
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v4_4 = static_cast<cQuestManagerBase*>(nullptr);
+            v4_4 = nullptr;
         }
     }
-    return static_cast<cEndContentsManager*>(v4_4)->::cEndContentsManager::getEndContentsPurposeNum();
+    return static_cast<cEndContentsManager*>(v4_4)->getEndContentsPurposeNum();
 }
 
 // Address: 0x008148c0 - 0x00814a13 (339 bytes)
@@ -3206,17 +3192,17 @@ bool sQuestManagerExt::isLeftCycleTimer(f32 sec) const {
     // DWARF local not rendered: f32 timer;
     // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x814c97, used once; no DWARF local holds it
-    f32 t0 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsTimer();
+    f32 t0 = sQuestManagerExt::getInstance()->getCycleContentsTimer();
     return (sec >= t0) && (t0 > 0.0f);
 }
 
 // Address: 0x00814cc0 - 0x00814cd8 (24 bytes)
 void sQuestManagerExt::setEndContentsEntry(u32 npcId, bool solo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEntryNpcId = npcId;
-    this->mEntrySolo = solo;
-    this->mEntryContentCategory = static_cast<u32>(0);
-    this->mEntryContentSubCategory = static_cast<u32>(0);
+    mEntryNpcId = npcId;
+    mEntrySolo = solo;
+    mEntryContentCategory = 0;
+    mEntryContentSubCategory = 0;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (46 bytes)
@@ -3241,22 +3227,22 @@ void sQuestManagerExt::setEndContentsEntry(u32 npcId, bool solo) {
 // Address: 0x00814ce0 - 0x00814d0b (43 bytes)
 u32 sQuestManagerExt::getEndContentEntryStage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cNpcMeetingPlace* pPlace = ::sNpcManager::getInstance()->::sNpcManager::getMeetingPlace(this->mEntryNpcId);
-    if (pPlace != static_cast<cNpcMeetingPlace*>(nullptr)) {
+    cNpcMeetingPlace* pPlace = sNpcManager::getInstance()->getMeetingPlace(mEntryNpcId);
+    if (pPlace != nullptr) {
         return static_cast<u32>(pPlace->mStageNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00814d10 - 0x00814d3b (43 bytes)
 u32 sQuestManagerExt::getEndContentEntryStartPos() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cNpcMeetingPlace* pPlace = ::sNpcManager::getInstance()->::sNpcManager::getMeetingPlace(this->mEntryNpcId);
-    if (pPlace != static_cast<cNpcMeetingPlace*>(nullptr)) {
+    cNpcMeetingPlace* pPlace = sNpcManager::getInstance()->getMeetingPlace(mEntryNpcId);
+    if (pPlace != nullptr) {
         return pPlace->mStartPosNo;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -3308,20 +3294,19 @@ cQuestManagerBase* sQuestManagerExt::getQuestManager(nQuest::QUEST_TYPE type) co
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a value cast to the type its use takes: nQuest::QUEST_TYPE used as unsigned int
-    if (this->mManagerInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mManagerInfo.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x80c249, 0x80c276), [0x80c277, 0x80c27b)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mManagerInfo.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mManagerInfo.::MtArray::mpArray[i]) + static_cast<long>(8))) != static_cast<unsigned int>(type)) {
-                } else {
-                    return static_cast<sQuestManagerExt::cManagerInfo*>(this->mManagerInfo.::MtArray::mpArray[i])->::sQuestManagerExt::cManagerInfo::getQuestManager();
+            if (mManagerInfo.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mManagerInfo.mpArray[i]) + 8)) == static_cast<unsigned int>(type)) {
+                    return static_cast<sQuestManagerExt::cManagerInfo*>(mManagerInfo.mpArray[i])->getQuestManager();
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mManagerInfo.::MtArray::mLength);
+            i += 1u;
+        } while (i < mManagerInfo.mLength);
     }
-    return static_cast<cQuestManagerBase*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x008151e0 - 0x00815353 (371 bytes)
@@ -3518,7 +3503,7 @@ __attribute__((weak)) bool sQuestManagerExt::isClearedQuest(nQuest::SCHEDULE_ID 
 // Address: 0x00816f50 - 0x00816f55 (5 bytes)
 const nQuest::QuestIdArray& sQuestManagerExt::getClearedMainQuesetList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClearedMainQuestList;
+    return mClearedMainQuestList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3539,7 +3524,7 @@ bool sQuestManagerExt::isOrderedSoloMainQuest() {
     // DWARF local not rendered: const ORDER_CONDITION_TYPE condition;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_8 = static_cast<unsigned int>(0);
+    unsigned int i0_8 = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     MtObject* * p1_0;
     // inferred: the value carried to 0x817092; no location-less local in scope fits
@@ -3551,45 +3536,45 @@ bool sQuestManagerExt::isOrderedSoloMainQuest() {
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i5_10;
     for (;;) {
-        p1_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+        p1_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         for (;;) {
             v2_1 = *p1_0;
-            if (v2_1 != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1) + static_cast<long>(8))) == static_cast<unsigned int>(0)) {
+            if (v2_1 != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1) + 8)) == 0) {
                     break;
                 }
             }
-            p1_0 += static_cast<int>(1);
+            p1_0 += 1;
         }
-        if (i0_8 >= static_cast<sQuestManagerExt::cManagerInfo*>(v2_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()->getQuestNum()) {
+        if (i0_8 >= static_cast<sQuestManagerExt::cManagerInfo*>(v2_1)->getQuestManager()->getQuestNum()) {
             break;
         } else {
-            p3_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+            p3_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
         }
         for (;;) {
             v4_1 = *p3_0;
-            if (v4_1 != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1) + static_cast<long>(8))) == static_cast<unsigned int>(0)) {
+            if (v4_1 != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v4_1) + 8)) == 0) {
                     break;
                 }
             }
-            p3_0 += static_cast<int>(1);
+            p3_0 += 1;
         }
-        cQuestTask* pTask = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()->getQuestTask(i0_8);
-        if (pTask != static_cast<cQuestTask*>(nullptr)) {
-            if (pTask->::cQuestTask::isMyMainQuest() != false) {
-                if (pTask->::cQuestTask::isOrder() != false) {
-                    if (pTask->::cQuestTask::getOrderConditionNum() != static_cast<u32>(0)) {
-                        i5_10 = static_cast<unsigned int>(0);
+        cQuestTask* pTask = static_cast<sQuestManagerExt::cManagerInfo*>(v4_1)->getQuestManager()->getQuestTask(i0_8);
+        if (pTask != nullptr) {
+            if (pTask->cQuestTask::isMyMainQuest()) {
+                if (pTask->cQuestTask::isOrder()) {
+                    if (pTask->cQuestTask::getOrderConditionNum() != 0) {
+                        i5_10 = 0;
                         for (;;) {
                             // inferred: a temporary for the result of the call at 0x817120, used twice; no DWARF local holds it
-                            u32 t0 = pTask->::cQuestTask::getOrderConditionType(i5_10);
-                            if (t0 != static_cast<u32>(3)) {
-                                if (t0 == static_cast<u32>(10)) {
+                            u32 t0 = pTask->cQuestTask::getOrderConditionType(i5_10);
+                            if (t0 != 3) {
+                                if (t0 == 10) {
                                     return true;
                                 } else {
-                                    if ((i5_10 + static_cast<unsigned int>(1)) < pTask->::cQuestTask::getOrderConditionNum()) {
-                                        i5_10 += static_cast<unsigned int>(1);
+                                    if ((i5_10 + 1u) < pTask->cQuestTask::getOrderConditionNum()) {
+                                        i5_10 += 1u;
                                     } else {
                                         break;
                                     }
@@ -3602,7 +3587,7 @@ bool sQuestManagerExt::isOrderedSoloMainQuest() {
                 }
             }
         }
-        i0_8 += static_cast<unsigned int>(1);
+        i0_8 += 1u;
     }
     return false;
 }
@@ -3653,8 +3638,8 @@ __attribute__((weak)) const nQuest::QuestMarkerArray& sQuestManagerExt::getQuest
 // Address: 0x00817440 - 0x0081745d (29 bytes)
 void sQuestManagerExt::requestGetRewardBoxList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCompleteGetRewardList = false;
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getRewardBoxList();
+    mIsCompleteGetRewardList = false;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRewardBoxList();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -3677,8 +3662,8 @@ __attribute__((weak)) void sQuestManagerExt::completeRewardBoxList() {
 // Address: 0x00817590 - 0x008175ad (29 bytes)
 void sQuestManagerExt::requestGetCycleContentsRewardList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCompleteGetCycleContentsRewardList = false;
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCycleContentsRewardList();
+    mIsCompleteGetCycleContentsRewardList = false;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCycleContentsRewardList();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -3926,7 +3911,7 @@ bool sQuestManagerExt::isEnableParty_Invite() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x30 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 48)) & 2) >> 1);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3938,7 +3923,7 @@ bool sQuestManagerExt::isEnableSetQuest() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 48)) & 8) >> 3);
 }
 
 // Address: 0x00820ca0 - 0x00820ca9 (9 bytes)
@@ -3947,7 +3932,7 @@ bool sQuestManagerExt::isEnableCycleQuest() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x30 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 48)) & 16) >> 4);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3963,7 +3948,7 @@ bool sQuestManagerExt::isEnableClan() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x33 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(51))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 51)) & 8) >> 3);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -3979,7 +3964,7 @@ bool sQuestManagerExt::isEnableRimStone() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x31 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(49))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 49)) & 16) >> 4);
 }
 
 // Address: 0x0082b1b0 - 0x0082b1b9 (9 bytes)
@@ -3988,7 +3973,7 @@ bool sQuestManagerExt::isEnableLightQuest() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x31 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(49))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 49)) & 32) >> 5);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4000,7 +3985,7 @@ bool sQuestManagerExt::isEnableQuickParty() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x34 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(52))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 52)) & 4) >> 2);
 }
 
 // Address: 0x0082b1e0 - 0x0082b1e7 (7 bytes)
@@ -4009,7 +3994,7 @@ bool sQuestManagerExt::isEnableAreaMaster() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x31 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(49))) >> static_cast<unsigned long>(7));
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 49)) >> 7);
 }
 
 // Address: 0x0082b230 - 0x0082b239 (9 bytes)
@@ -4018,7 +4003,7 @@ bool sQuestManagerExt::isEnableMenu_Option() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x33 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(51))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 51)) & 16) >> 4);
 }
 
 // Address: 0x0082b240 - 0x0082b249 (9 bytes)
@@ -4027,7 +4012,7 @@ bool sQuestManagerExt::isEnableMenu_VisualEquip() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x30 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 48)) & 64) >> 6);
 }
 
 // Address: 0x0082b250 - 0x0082b259 (9 bytes)
@@ -4036,7 +4021,7 @@ bool sQuestManagerExt::isEnableMenu_Pawn() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x30 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 48)) & 4) >> 2);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4074,7 +4059,7 @@ bool sQuestManagerExt::isEnableMenu_Clan() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x33 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(51))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 51)) & 8) >> 3);
 }
 
 // Address: 0x0082b330 - 0x0082b338 (8 bytes)
@@ -4092,7 +4077,7 @@ bool sQuestManagerExt::isEnableMyRoom() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x36 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(54))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 54)) & 2) >> 1);
 }
 
 // Address: 0x0082b220 - 0x0082b226 (6 bytes)
@@ -4100,7 +4085,7 @@ bool sQuestManagerExt::isChangeBgmIsland() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x36 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: unsigned char used as bool
-    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(54))) & static_cast<unsigned char>(1));
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 54)) & 1);
 }
 
 // Address: 0x0082b210 - 0x0082b218 (8 bytes)
@@ -4109,7 +4094,7 @@ bool sQuestManagerExt::isEnablePlayPoint() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x37 from sQuestManagerExt*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(55))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 55)) & 2) >> 1);
 }
 
 // Address: 0x0080ba50 - 0x0080bb4a (250 bytes)
@@ -4445,95 +4430,95 @@ __attribute__((weak)) void sQuestManagerExt::requestGpCompleteLightQuest() {
 bool sQuestManagerExt::isFinishedGpCompleteLightQuest() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x81d632; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 2) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()) + static_cast<long>(93))) == static_cast<unsigned char>(0);
+    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 93)) == 0;
 }
 
 // Address: 0x0081d640 - 0x0081d67a (58 bytes)
 u32 sQuestManagerExt::getGpCompleteLightQuestErrorCode() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x81d672; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 2) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()) + static_cast<long>(100));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 100);
 }
 
 // Address: 0x0081d680 - 0x0081d6ba (58 bytes)
 bool sQuestManagerExt::isGpCompleteLightQuest() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x81d6b2; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 2) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()) + static_cast<long>(92)));
+    return static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 92));
 }
 
 // Address: 0x0081d6c0 - 0x0081d6fa (58 bytes)
 u32 sQuestManagerExt::getNotCompleteLightQuestNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x81d6f2; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 2) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()) + static_cast<long>(96));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 96);
 }
 
 // Address: 0x0081d700 - 0x0081d73a (58 bytes)
 u32 sQuestManagerExt::getGpCompleteLightQuestGp() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x81d732; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 2) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()) + static_cast<long>(88));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()) + 88);
 }
 
 // Address: 0x0081d740 - 0x0081d856 (278 bytes)
@@ -4578,7 +4563,7 @@ __attribute__((weak)) u32 sQuestManagerExt::getQuestOrderNowNum() const {
 // Address: 0x0081d900 - 0x0081d93b (59 bytes)
 u32 sQuestManagerExt::getQuestOrderMaxNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((::sGame::getInstance()->::sGame::isChargeEffect(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(7)) == false) ? (&this->mOrderMaxNum) : (&this->mGPOrderMaxNum));
+    return *(!sGame::getInstance()->isChargeEffect(nGpCourse::GP_COURSE_EFFECT_QUEST_ORDER_LIST_EXTEND) ? (&mOrderMaxNum) : (&mGPOrderMaxNum));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -4592,19 +4577,19 @@ u32 sQuestManagerExt::getQuestOrderMaxNum() const {
 // Address: 0x0081d950 - 0x0081d958 (8 bytes)
 u32 sQuestManagerExt::getQuestRewardBoxMaxNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRewardBoxMaxNum;
+    return mRewardBoxMaxNum;
 }
 
 // Address: 0x0081d960 - 0x0081d967 (7 bytes)
 bool sQuestManagerExt::isEndDistributionQuestCancel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEndDistQuestCancel;
+    return mIsEndDistQuestCancel;
 }
 
 // Address: 0x0081d970 - 0x0081d978 (8 bytes)
 void sQuestManagerExt::offEndDistributionQuestCnacel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEndDistQuestCancel = false;
+    mIsEndDistQuestCancel = false;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -4629,8 +4614,8 @@ __attribute__((weak)) bool sQuestManagerExt::isClearedTutorialQuestGroup(u32 gro
 // Address: 0x0081db70 - 0x0081db97 (39 bytes)
 void sQuestManagerExt::interruptBarricade() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsInterruptBarricade = true;
-    this->mInterruptBarricadeTimer = ::sMain::getInstance()->::sMain::getFps() * 5.0f;
+    mIsInterruptBarricade = true;
+    mInterruptBarricadeTimer = sMain::getInstance()->getFps() * 5.0f;
 }
 
 // Address: 0x0081dba0 - 0x0081dc16 (118 bytes)
@@ -4743,23 +4728,23 @@ bool sQuestManagerExt::isOrderPawnQuest() const {
     // DWARF local not rendered: cQuestTask* pTask;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = ::sQuestManagerExt::getInstance()->mManagerInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
     // inferred: the value carried to 0x820272; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(10)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 10) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
     // inferred: a temporary for the result of the call at 0x82027d, used twice; no DWARF local holds it
-    cQuestTask* t0 = static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->::sQuestManagerExt::cManagerInfo::getQuestManager()->getQuestTask(static_cast<u32>(0));
-    if (t0 != static_cast<cQuestTask*>(nullptr)) {
+    cQuestTask* t0 = static_cast<sQuestManagerExt::cManagerInfo*>(v1_1)->getQuestManager()->getQuestTask(0u);
+    if (t0 != nullptr) {
         // inferred: a temporary for the result of the call at 0x820288, used once; no DWARF local holds it
-        bool t1 = t0->::cQuestTask::isOrder();
+        bool t1 = t0->isOrder();
         return t1;
     } else {
         return false;
@@ -4918,14 +4903,14 @@ __attribute__((weak)) nQuest::QUEST_TYPE sQuestManagerExt::getQuestType(nQuest::
 // Address: 0x00820fc0 - 0x00820ff5 (53 bytes)
 void sQuestManagerExt::getWaypointGoto(u32 npcId, s32& waypoint0, s32& waypoint1, s32& waypoint2) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mWaypointNpc != npcId) {
-        waypoint0 = static_cast<int>(-1);
-        waypoint1 = static_cast<int>(-1);
-        waypoint2 = static_cast<int>(-1);
+    if (mWaypointNpc != npcId) {
+        waypoint0 = -1;
+        waypoint1 = -1;
+        waypoint2 = -1;
     }
-    waypoint0 = this->mWaypointGotoPointNo0;
-    waypoint1 = this->mWaypointGotoPointNo1;
-    waypoint2 = this->mWaypointGotoPointNo2;
+    waypoint0 = mWaypointGotoPointNo0;
+    waypoint1 = mWaypointGotoPointNo1;
+    waypoint2 = mWaypointGotoPointNo2;
 }
 
 // Address: 0x00821000 - 0x008210a7 (167 bytes)
@@ -4937,7 +4922,7 @@ __attribute__((weak)) void sQuestManagerExt::setWaypointGoto(u32 npcId, s32 goto
 // Address: 0x008210b0 - 0x008210b7 (7 bytes)
 bool sQuestManagerExt::isUpdateWaypoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsUpdateWaypoint;
+    return mIsUpdateWaypoint;
 }
 
 // Address: 0x00815a90 - 0x00815bce (318 bytes)
@@ -4962,13 +4947,13 @@ __attribute__((weak)) void sQuestManagerExt::forceGetSetQuestList() {
 // Address: 0x00821240 - 0x00821248 (8 bytes)
 const nQuest::cGUINewspaperSetQuestInfoList& sQuestManagerExt::getSetQuestInfoListRef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSetQuestInfoList;
+    return mSetQuestInfoList;
 }
 
 // Address: 0x00821250 - 0x00821258 (8 bytes)
 const nQuest::GUINewspaperRecommededQuestInfoArray& sQuestManagerExt::getRecommededQuestInfoListRef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRecommendedQuestInfoList;
+    return mRecommendedQuestInfoList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5106,7 +5091,7 @@ __attribute__((weak)) void sQuestManagerExt::callbackInstanceAreaReset() {
 // Address: 0x00822000 - 0x00822008 (8 bytes)
 void sQuestManagerExt::reqSendLeaderQuestOrderConditionInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqSendLeaderQuestOrderConditionInfo = true;
+    mReqSendLeaderQuestOrderConditionInfo = true;
 }
 
 // Address: 0x008163c0 - 0x00816624 (612 bytes)
@@ -5151,13 +5136,13 @@ __attribute__((weak)) void sQuestManagerExt::sendLeaderWaitOrderQuestList() {
 // Address: 0x00822230 - 0x00822238 (8 bytes)
 void sQuestManagerExt::callbackCycleContentsPlayStart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsContentsTimerTimeup = false;
+    mIsContentsTimerTimeup = false;
 }
 
 // Address: 0x00822240 - 0x00822247 (7 bytes)
 bool sQuestManagerExt::hasCycleContentsPlayEndNotice() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHasCycleContentsPlayEndNotice;
+    return mHasCycleContentsPlayEndNotice;
 }
 
 // Address: 0x00822250 - 0x008222a1 (81 bytes)
@@ -5170,26 +5155,26 @@ __attribute__((weak)) void sQuestManagerExt::reqCycleContentsPlayEnd() {
 // Address: 0x008222b0 - 0x008222b8 (8 bytes)
 void sQuestManagerExt::resetHasCycleContentsPlayEndNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHasCycleContentsPlayEndNotice = false;
+    mHasCycleContentsPlayEndNotice = false;
 }
 
 // Address: 0x008222c0 - 0x00822301 (65 bytes)
 bool sQuestManagerExt::isEnableOrderMainQuest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowPartyReq() != false) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowPartyReq()) {
         return false;
     } else {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getPartyInviteJoinMemberPacket()->m_MemberMinimum.::MtArray::mLength == static_cast<u32>(0);
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPartyInviteJoinMemberPacket()->m_MemberMinimum.mLength == 0;
     }
 }
 
 // Address: 0x00822310 - 0x00822351 (65 bytes)
 bool sQuestManagerExt::isEnableProgressSoloQuest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowPartyReq() != false) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowPartyReq()) {
         return false;
     } else {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getPartyInviteJoinMemberPacket()->m_MemberMinimum.::MtArray::mLength == static_cast<u32>(0);
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPartyInviteJoinMemberPacket()->m_MemberMinimum.mLength == 0;
     }
 }
 
@@ -5503,14 +5488,13 @@ void sQuestManagerExt::callbackEntryParty(cQuestEventArg* pArg) {
     // DWARF local not rendered: cQuestEventArgEntryParty* pEntryParty;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x826431 read, used once; no DWARF local holds it
-    u32 t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCharacterId();
-    if (t0 == static_cast<cQuestEventArgEntryParty*>(pArg)->::cQuestEventArgEntryParty::getCharacterId()) {
+    u32 t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCharacterId();
+    if (t0 == static_cast<cQuestEventArgEntryParty*>(pArg)->getCharacterId()) {
         return;
     }
-    if (static_cast<cQuestEventArgEntryParty*>(pArg)->::cQuestEventArgEntryParty::isPawn() != false) {
-    } else {
-        this->::sQuestManagerExt::sendLeaderQuestOrderConditionInfo();
-        this->::sQuestManagerExt::sendLeaderWaitOrderQuestList();
+    if (!static_cast<cQuestEventArgEntryParty*>(pArg)->isPawn()) {
+        sendLeaderQuestOrderConditionInfo();
+        sendLeaderWaitOrderQuestList();
     }
 }
 
@@ -5627,23 +5611,23 @@ __attribute__((weak)) bool sQuestManagerExt::setOrderUI(nQuest::SCHEDULE_ID sche
 sQuestManagerExt::QUEST_UI_RESULT sQuestManagerExt::moveOrderUI() {
     // DWARF local not rendered: QUEST_UI_RESULT returnVal;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 result = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getQuestInfoResult();
-    if (result != static_cast<u32>(0)) {
-        if (result == static_cast<u32>(2)) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteQuestInfo();
-            return static_cast<sQuestManagerExt::QUEST_UI_RESULT>(2);
+    u32 result = static_cast<sGUIExt*>(sGUI::getInstance())->getQuestInfoResult();
+    if (result != 0) {
+        if (result == 2) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->deleteQuestInfo();
+            return RESULT_NO;
         } else {
-            if (result == static_cast<u32>(1)) {
-                this->mIsOrderUIDecide = true;
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteQuestInfo();
-                return static_cast<sQuestManagerExt::QUEST_UI_RESULT>(1);
+            if (result == 1) {
+                mIsOrderUIDecide = true;
+                static_cast<sGUIExt*>(sGUI::getInstance())->deleteQuestInfo();
+                return RESULT_YES;
             } else {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteQuestInfo();
-                return static_cast<sQuestManagerExt::QUEST_UI_RESULT>(0);
+                static_cast<sGUIExt*>(sGUI::getInstance())->deleteQuestInfo();
+                return RESULT_NONE;
             }
         }
     } else {
-        return static_cast<sQuestManagerExt::QUEST_UI_RESULT>(0);
+        return RESULT_NONE;
     }
 }
 
@@ -5861,19 +5845,19 @@ __attribute__((weak)) void sQuestManagerExt::setAreaReleaseByRankUp(u32 data) {
 u32 sQuestManagerExt::getAreaReleaseNumByRankUp() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = this->mFunctionInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = mFunctionInfo.mpArray;
     // inferred: the value carried to 0x82adf2; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(9)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 9) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->::sQuestManagerExt::cFunctionInfo::getFunctionManager()) + static_cast<long>(56));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->getFunctionManager()) + 56);
 }
 
 // Address: 0x0082ae00 - 0x0082ae4b (75 bytes)
@@ -5886,38 +5870,38 @@ __attribute__((weak)) void sQuestManagerExt::setAreaRelease(u16 id) {
 void sQuestManagerExt::setAreaId(u32 areaId) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = this->mFunctionInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = mFunctionInfo.mpArray;
     // inferred: the value carried to 0x82aef2; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(9)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 9) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->::sQuestManagerExt::cFunctionInfo::getFunctionManager()) + static_cast<long>(8)) = areaId;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->getFunctionManager()) + 8) = areaId;
 }
 
 // Address: 0x0082aea0 - 0x0082aeca (42 bytes)
 u32 sQuestManagerExt::getAreaId() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtObject* * p0_0 = this->mFunctionInfo.::MtArray::mpArray;
+    MtObject* * p0_0 = mFunctionInfo.mpArray;
     // inferred: the value carried to 0x82aec2; no location-less local in scope fits
     MtObject* v1_1;
     for (;;) {
         v1_1 = *p0_0;
-        if (v1_1 != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(8))) == static_cast<unsigned int>(9)) {
+        if (v1_1 != nullptr) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 9) {
                 break;
             }
         }
-        p0_0 += static_cast<int>(1);
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->::sQuestManagerExt::cFunctionInfo::getFunctionManager()) + static_cast<long>(8));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->getFunctionManager()) + 8);
 }
 
 // Address: 0x0082af00 - 0x0082af4b (75 bytes)
@@ -5929,18 +5913,18 @@ __attribute__((weak)) bool sQuestManagerExt::isAreaRelease(u16 id) {
 // Address: 0x0082af50 - 0x0082af67 (23 bytes)
 u32 sQuestManagerExt::getAreaMasterRank(u32 areaNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((areaNo - static_cast<u32>(1)) <= static_cast<u32>(16)) {
-        return this->mAreaMasterRank[areaNo - static_cast<u32>(1)];
+    if ((areaNo - 1u) <= 16u) {
+        return mAreaMasterRank[areaNo - 1u];
     } else {
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
 // Address: 0x008262b0 - 0x008262c1 (17 bytes)
 void sQuestManagerExt::setAreaMasterRank(u32 areaNo, u32 rank) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((areaNo - static_cast<u32>(1)) <= static_cast<u32>(16)) {
-        this->mAreaMasterRank[areaNo - static_cast<u32>(1)] = static_cast<unsigned char>(rank);
+    if ((areaNo - 1u) <= 16u) {
+        mAreaMasterRank[areaNo - 1u] = static_cast<unsigned char>(rank);
     }
 }
 
@@ -5989,24 +5973,22 @@ __attribute__((weak)) bool sQuestManagerExt::isEnableReleaseInfoSendMsg() {
 // Address: 0x0080f320 - 0x0080f346 (38 bytes)
 void sQuestManagerExt::csLock() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x0080f390 - 0x0080f3b6 (38 bytes)
 void sQuestManagerExt::csUnlock() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -6077,19 +6059,19 @@ __attribute__((weak)) void sQuestManagerExt::recievePartyBonus(nQuest::SCHEDULE_
 bool sQuestManagerExt::isFavoriteWarpPoint(u32 warpPointId) const {
     // DWARF local not rendered: CFavoriteWarpPoint* pFav;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    const u32 num = this->mFavoriteWarpPointList.::MtArray::mLength;
-    if (num != static_cast<u32>(0)) {
+    const u32 num = mFavoriteWarpPointList.mLength;
+    if (num != 0) {
         // inferred: the value the loop at 0x82b7c0 carries; no location-less local in scope fits
-        MtObject* * v0_4 = this->mFavoriteWarpPointList.::MtArray::mpArray;
+        MtObject* * v0_4 = mFavoriteWarpPointList.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x82b7b3, 0x82b7d7)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if (v0_4[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(12))) == warpPointId) {
+        for (u32 i = 0;;) {
+            if (v0_4[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 12)) == warpPointId) {
                     return true;
                 }
             }
-            if ((i + static_cast<u32>(1)) < num) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < num) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -6155,14 +6137,14 @@ __attribute__((weak)) void sQuestManagerExt::dispHelperSystemLog() {
 bool sQuestManagerExt::isAreaBonus(u32 areaId) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x82bb02, 0x82bb2d)) is the counter this loop steps (DWARF's stale constant 0)
-    for (u32 i = static_cast<u32>(0);;) {
-        if (this->mAreaBonusList[i].mAreaId == areaId) {
-            if (this->mAreaBonusList[i].mMaxRate != static_cast<u32>(100)) {
+    for (u32 i = 0;;) {
+        if (mAreaBonusList[i].mAreaId == areaId) {
+            if (mAreaBonusList[i].mMaxRate != 100) {
                 return true;
             }
         }
-        if ((i + static_cast<u32>(1)) <= static_cast<u32>(16)) {
-            i = i + static_cast<u32>(1);
+        if ((i + 1u) <= 16u) {
+            i = i + 1u;
         } else {
             break;
         }
@@ -6173,14 +6155,14 @@ bool sQuestManagerExt::isAreaBonus(u32 areaId) const {
 // Address: 0x0082bb30 - 0x0082bb60 (48 bytes)
 u32 sQuestManagerExt::getAreaBonusRate(u32 areaId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (this->mAreaBonusList[i].mAreaId == areaId) {
-            return this->mAreaBonusList[i].mMaxRate;
+        if (mAreaBonusList[i].mAreaId == areaId) {
+            return mAreaBonusList[i].mMaxRate;
         }
-        i += static_cast<u32>(1);
-    } while (i <= static_cast<u32>(16));
-    return static_cast<u32>(100);
+        i += 1u;
+    } while (i <= 16u);
+    return 100;
 }
 
 // Address: 0x0082bb60 - 0x0082bcb4 (340 bytes)
@@ -6283,15 +6265,15 @@ bool sQuestManagerExt::isWQUnreleasedArea(u32 areaId) const {
     // DWARF local not rendered: const u32 unreleasedAreaId;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mWQUnreleasedAreaList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mWQUnreleasedAreaList.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x819be6, 0x819c12)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWQUnreleasedAreaList.::MtArray::mpArray[i]) + static_cast<long>(8))) == areaId) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWQUnreleasedAreaList.mpArray[i]) + 8)) == areaId) {
                 return true;
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mWQUnreleasedAreaList.::MtArray::mLength);
+            i += 1u;
+        } while (i < mWQUnreleasedAreaList.mLength);
     }
     return false;
 }
@@ -6300,270 +6282,270 @@ bool sQuestManagerExt::isWQUnreleasedArea(u32 areaId) const {
 bool sQuestManagerExt::isWaitDivide() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x81fee0 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x81fefc; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x81fee0 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    return cQuestPhaseState::isDivideProcess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // Address: 0x0082c180 - 0x0082c1ca (74 bytes)
 bool sQuestManagerExt::isDivideSetup() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c1a0 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c1bc; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c1a0 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    return cQuestPhaseState::isDivideSetup(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // Address: 0x0082c1d0 - 0x0082c1d7 (7 bytes)
 bool sQuestManagerExt::isFinishDivide() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsFinishDivide;
+    return mIsFinishDivide;
 }
 
 // Address: 0x0082c1e0 - 0x0082c22a (74 bytes)
 bool sQuestManagerExt::isSucceededDevide() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c200 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c21c; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c200 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    return cQuestPhaseState::isDivideSuccess(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // Address: 0x0082c230 - 0x0082c2f4 (196 bytes)
 bool sQuestManagerExt::isWarpCharacter(u32 characterId) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c260 carries; no location-less local in scope fits
-    u32 v0_0 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_0 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c27c; no location-less local in scope fits
     cQuestFunctionManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c260 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    if (::cQuestPhaseState::isWarpPlayer(static_cast<cQuestPhaseManager*>(v1_4)->::cQuestPhaseManager::getQuestPhaseState()) != false) {
+    if (cQuestPhaseState::isWarpPlayer(static_cast<cQuestPhaseManager*>(v1_4)->getQuestPhaseState())) {
         // inferred: the value the loop at 0x82c2b0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mFunctionInfo.::MtArray::mLength;
+        u32 v2_0 = mFunctionInfo.mLength;
         // inferred: the value carried to 0x82c2cc; no location-less local in scope fits
         cQuestFunctionManagerBase* v3_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v3_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x82c2b0 carries; no location-less local in scope fits
-            MtObject* * v2_1 = this->mFunctionInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = mFunctionInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 12) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
-                            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                            v3_4 = nullptr;
                             break;
                         }
                     } else {
-                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->getFunctionManager();
                         break;
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v3_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (::cQuestPhaseState::isDividePlayer(static_cast<cQuestPhaseManager*>(v3_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId) != false) {
+        if (cQuestPhaseState::isDividePlayer(static_cast<cQuestPhaseManager*>(v3_4)->getQuestPhaseState(), characterId)) {
             return true;
         }
     }
-    return this->::sQuestManagerExt::isReturnCharacter(characterId);
+    return isReturnCharacter(characterId);
 }
 
 // Address: 0x0082c300 - 0x0082c3bb (187 bytes)
 __attribute__((weak)) bool sQuestManagerExt::isReturnCharacter(u32 characterId) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c330 carries; no location-less local in scope fits
-    u32 v0_0 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_0 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c34c; no location-less local in scope fits
     cQuestFunctionManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c330 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    if (::cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v1_4)->::cQuestPhaseManager::getQuestPhaseState()) != false) {
+    if (cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v1_4)->getQuestPhaseState())) {
         // inferred: the value the loop at 0x82c380 carries; no location-less local in scope fits
-        u32 v2_0 = this->mFunctionInfo.::MtArray::mLength;
+        u32 v2_0 = mFunctionInfo.mLength;
         // inferred: the value carried to 0x82c39c; no location-less local in scope fits
         cQuestFunctionManagerBase* v3_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v3_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x82c380 carries; no location-less local in scope fits
-            MtObject* * v2_1 = this->mFunctionInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = mFunctionInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 12) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
-                            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                            v3_4 = nullptr;
                             break;
                         }
                     } else {
-                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->getFunctionManager();
                         break;
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v3_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        if (::cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v3_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId) != false) {
+        if (cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v3_4)->getQuestPhaseState(), characterId)) {
             return true;
         }
     }
@@ -6573,113 +6555,113 @@ __attribute__((weak)) bool sQuestManagerExt::isReturnCharacter(u32 characterId) 
 // Address: 0x0082c3c0 - 0x0082c4ea (298 bytes)
 void sQuestManagerExt::getWarpPlayerStageNoStartPos(u32& stageNo, u32& startPos) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    stageNo = static_cast<unsigned int>(0);
-    startPos = static_cast<unsigned int>(0);
+    stageNo = 0;
+    startPos = 0;
     // inferred: the value the loop at 0x82c400 carries; no location-less local in scope fits
-    u32 v0_0 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_0 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c41c; no location-less local in scope fits
     cQuestFunctionManagerBase* v1_4;
-    if (v0_0 == static_cast<u32>(0)) {
-        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_0 == 0) {
+        v1_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c400 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
-                        v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v1_4 = nullptr;
                         break;
                     }
                 } else {
-                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                    v1_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
                     break;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
-                    v1_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                    v1_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    if (::cQuestPhaseState::isWarpPlayer(static_cast<cQuestPhaseManager*>(v1_4)->::cQuestPhaseManager::getQuestPhaseState()) != false) {
+    if (cQuestPhaseState::isWarpPlayer(static_cast<cQuestPhaseManager*>(v1_4)->getQuestPhaseState())) {
         // inferred: the value the loop at 0x82c450 carries; no location-less local in scope fits
-        u32 v2_0 = this->mFunctionInfo.::MtArray::mLength;
+        u32 v2_0 = mFunctionInfo.mLength;
         // inferred: the value carried to 0x82c46c; no location-less local in scope fits
         cQuestFunctionManagerBase* v3_4;
-        if (v2_0 == static_cast<u32>(0)) {
-            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        if (v2_0 == 0) {
+            v3_4 = nullptr;
         } else {
             // inferred: the value the loop at 0x82c450 carries; no location-less local in scope fits
-            MtObject* * v2_1 = this->mFunctionInfo.::MtArray::mpArray;
+            MtObject* * v2_1 = mFunctionInfo.mpArray;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
-                if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                        if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_2 = i2_2 + static_cast<unsigned int>(1);
+            for (unsigned int i2_2 = 0;;) {
+                if (v2_1[i2_2] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_1[i2_2]) + 8)) != 12) {
+                        if ((i2_2 + 1u) < v2_0) {
+                            i2_2 = i2_2 + 1u;
                         } else {
-                            v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                            v3_4 = nullptr;
                             break;
                         }
                     } else {
-                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                        v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v2_1[i2_2])->getFunctionManager();
                         break;
                     }
                 } else {
-                    if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_2 = i2_2 + static_cast<unsigned int>(1);
+                    if ((i2_2 + 1u) < v2_0) {
+                        i2_2 = i2_2 + 1u;
                     } else {
-                        v3_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v3_4 = nullptr;
                         break;
                     }
                 }
             }
         }
-        ::cQuestPhaseState::getWarpPlayerStageNoStartPos(static_cast<cQuestPhaseManager*>(v3_4)->::cQuestPhaseManager::getQuestPhaseState(), stageNo, startPos);
+        cQuestPhaseState::getWarpPlayerStageNoStartPos(static_cast<cQuestPhaseManager*>(v3_4)->getQuestPhaseState(), stageNo, startPos);
     }
     // inferred: the value the loop at 0x82c4a0 carries; no location-less local in scope fits
-    u32 v5_0 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v5_0 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c4bc; no location-less local in scope fits
     cQuestFunctionManagerBase* v6_4;
-    if (v5_0 == static_cast<u32>(0)) {
-        v6_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v5_0 == 0) {
+        v6_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c4a0 carries; no location-less local in scope fits
-        MtObject* * v5_1 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v5_1 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i5_2 = static_cast<unsigned int>(0);;) {
-            if (v5_1[i5_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v5_1[i5_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i5_2 + static_cast<unsigned int>(1)) < v5_0) {
-                        i5_2 = i5_2 + static_cast<unsigned int>(1);
+        for (unsigned int i5_2 = 0;;) {
+            if (v5_1[i5_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v5_1[i5_2]) + 8)) != 12) {
+                    if ((i5_2 + 1u) < v5_0) {
+                        i5_2 = i5_2 + 1u;
                     } else {
-                        v6_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                        v6_4 = nullptr;
                         break;
                     }
                 } else {
-                    v6_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v5_1[i5_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
+                    v6_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v5_1[i5_2])->getFunctionManager();
                     break;
                 }
             } else {
-                if ((i5_2 + static_cast<unsigned int>(1)) < v5_0) {
-                    i5_2 = i5_2 + static_cast<unsigned int>(1);
+                if ((i5_2 + 1u) < v5_0) {
+                    i5_2 = i5_2 + 1u;
                 } else {
-                    v6_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+                    v6_4 = nullptr;
                     break;
                 }
             }
         }
     }
-    if (::cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v6_4)->::cQuestPhaseManager::getQuestPhaseState()) != false) {
-        stageNo = static_cast<unsigned int>(this->mBarricadeStageNo);
-        startPos = static_cast<unsigned int>(this->mBarricadeStartPos);
+    if (cQuestPhaseState::isReturnPlayer(static_cast<cQuestPhaseManager*>(v6_4)->getQuestPhaseState())) {
+        stageNo = static_cast<unsigned int>(mBarricadeStageNo);
+        startPos = static_cast<unsigned int>(mBarricadeStartPos);
     }
 }
 
@@ -6690,192 +6672,192 @@ void sQuestManagerExt::getWarpPlayerStageNoStartPos(u32& stageNo, u32& startPos)
 bool sQuestManagerExt::hasRequestedWarpPlayer(u32 characterId) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c530 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c54c; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c530 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId);
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId);
+    return cQuestPhaseState::hasRequestedWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
 }
 
 // Address: 0x0082c570 - 0x0082c5d1 (97 bytes)
 void sQuestManagerExt::requestWarpPlayer(u32 characterId) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c5a0 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c5bc; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c5a0 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    ::cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId);
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
                     return;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    ::cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState(), characterId);
+    cQuestPhaseState::requestWarpPlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState(), characterId);
 }
 
 // Address: 0x0082c5e0 - 0x0082c62a (74 bytes)
 bool sQuestManagerExt::isExistDividePlayer() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c600 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c61c; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c600 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    return cQuestPhaseState::isExistDividePlayer(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // Address: 0x0082c630 - 0x0082c67a (74 bytes)
 bool sQuestManagerExt::isFinishedEnemyDivideAction() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c650 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c66c; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c650 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    return ::cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    return cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    return ::cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    return cQuestPhaseState::isFinishedEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // Address: 0x0082c680 - 0x0082c6ca (74 bytes)
 void sQuestManagerExt::finishEnemyDivideAction() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x82c6a0 carries; no location-less local in scope fits
-    u32 v0_1 = this->mFunctionInfo.::MtArray::mLength;
+    u32 v0_1 = mFunctionInfo.mLength;
     // inferred: the value carried to 0x82c6bc; no location-less local in scope fits
     cQuestFunctionManagerBase* v2_4;
-    if (v0_1 == static_cast<u32>(0)) {
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
     } else {
         // inferred: the value the loop at 0x82c6a0 carries; no location-less local in scope fits
-        MtObject* * v0_0 = this->mFunctionInfo.::MtArray::mpArray;
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_0[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(12)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) != 12) {
+                    if ((i0_2 + 1u) < v0_1) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->::sQuestManagerExt::cFunctionInfo::getFunctionManager();
-                    ::cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
                     return;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
             }
         }
-        v2_4 = static_cast<cQuestFunctionManagerBase*>(nullptr);
+        v2_4 = nullptr;
     }
-    ::cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->::cQuestPhaseManager::getQuestPhaseState());
+    cQuestPhaseState::finishEnemyDivideAction(static_cast<cQuestPhaseManager*>(v2_4)->getQuestPhaseState());
 }
 
 // No out-of-line body: 2029 inlined copies in 982 functions (19290 bytes)
@@ -6932,6 +6914,11 @@ sQuestManagerExt::~sQuestManagerExt() {
 // No out-of-line body: no code in the ELF
 // void sQuestManagerExt::createPropertyForDebug(MtPropertyList& s);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::MyDTI sQuestManagerExt::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sQuestManagerExt* sQuestManagerExt::mpInstance;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x0083016e-0x008301ab (called at sQuestManagerExt.cpp:597)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x0083016e-0x008301ab (called at sQuestManagerExt.h:84)
@@ -6976,7 +6963,7 @@ const MtDTI& sQuestManagerExt::cKilledEnemy::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sQuestManagerExt::cKilledEnemy::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cKilledEnemy::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cKilledEnemy::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cKilledEnemy::DTI)->memAlloc(sz, align, sQuestManagerExt::cKilledEnemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6990,7 +6977,7 @@ inline void* sQuestManagerExt::cKilledEnemy::operator new(size_t sz, u32 align) 
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sQuestManagerExt::cKilledEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cKilledEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cKilledEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7030,6 +7017,8 @@ sQuestManagerExt::cKilledEnemy::~cKilledEnemy() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cKilledEnemy::MyDTI sQuestManagerExt::cKilledEnemy::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008301eb-0x00830224 (called at sQuestManagerExt.cpp:14689)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008301eb-0x00830224 (called at sQuestManagerExt.cpp:229)
@@ -7038,7 +7027,7 @@ sQuestManagerExt::cKilledEnemy::~cKilledEnemy() {
 // Address: 0x0082ebf0 - 0x0082ec3f (79 bytes)
 MtObject* sQuestManagerExt::cKilledEnemy::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sQuestManagerExt::cKilledEnemy;
+    return new (16u) sQuestManagerExt::cKilledEnemy;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7065,7 +7054,7 @@ const MtDTI& sQuestManagerExt::cManagerInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sQuestManagerExt::cManagerInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cManagerInfo::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cManagerInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cManagerInfo::DTI)->memAlloc(sz, align, sQuestManagerExt::cManagerInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7080,7 +7069,7 @@ inline void* sQuestManagerExt::cManagerInfo::operator new(size_t sz, u32 align) 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cManagerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cManagerInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cManagerInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7124,17 +7113,19 @@ inline void sQuestManagerExt::cManagerInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN16sQuestManagerExt12cManagerInfoD0Ev at 0x0082ef70
 sQuestManagerExt::cManagerInfo::~cManagerInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMgr == static_cast<cQuestManagerBase*>(nullptr)) {
+    if (mpMgr == nullptr) {
         return;
     }
-    delete this->mpMgr;
-    this->mpMgr = static_cast<cQuestManagerBase*>(nullptr);
+    delete mpMgr;
+    mpMgr = nullptr;
 }
 
 // Address: 0x0082efc0 - 0x0082efc1 (1 bytes)
 __attribute__((weak)) void sQuestManagerExt::cManagerInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cManagerInfo::MyDTI sQuestManagerExt::cManagerInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x0083025d-0x00830296 (called at sQuestManagerExt.cpp:14905)
@@ -7144,7 +7135,7 @@ __attribute__((weak)) void sQuestManagerExt::cManagerInfo::createProperty(MtProp
 // Address: 0x0082ee30 - 0x0082ee7f (79 bytes)
 MtObject* sQuestManagerExt::cManagerInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sQuestManagerExt::cManagerInfo;
+    return new (16u) sQuestManagerExt::cManagerInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7161,7 +7152,7 @@ const MtDTI& sQuestManagerExt::cTouchOmInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sQuestManagerExt::cTouchOmInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTouchOmInfo::DTI);
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cTouchOmInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7170,7 +7161,7 @@ inline MtAllocator* sQuestManagerExt::cTouchOmInfo::getAllocator() {
 // Address: 0x0080c580 - 0x0080c5c0 (64 bytes)
 void* sQuestManagerExt::cTouchOmInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sQuestManagerExt::cTouchOmInfo::getAllocator()->memAlloc(sz, align, ::sQuestManagerExt::cTouchOmInfo::DTI.::MtDTI::getID());
+    return sQuestManagerExt::cTouchOmInfo::getAllocator()->memAlloc(sz, align, sQuestManagerExt::cTouchOmInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7184,7 +7175,7 @@ void* sQuestManagerExt::cTouchOmInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sQuestManagerExt::cTouchOmInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTouchOmInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cTouchOmInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7199,19 +7190,19 @@ inline void sQuestManagerExt::cTouchOmInfo::operator delete(void* p_addr) {
 // Address: 0x0080bdf0 - 0x0080bdf5 (5 bytes)
 const nLayout::stLayoutID& sQuestManagerExt::cTouchOmInfo::getLayoutId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLayoutId;
+    return mLayoutId;
 }
 
 // Address: 0x0080be00 - 0x0080be04 (4 bytes)
 u32 sQuestManagerExt::cTouchOmInfo::getSetNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSetNo;
+    return mSetNo;
 }
 
 // Address: 0x0080be30 - 0x0080be34 (4 bytes)
 u32 sQuestManagerExt::cTouchOmInfo::getQuestSequence() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestSeq;
+    return mQuestSeq;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -7238,6 +7229,8 @@ __attribute__((weak)) u32 sQuestManagerExt::cTouchOmInfo::getUniqueId() const {
 sQuestManagerExt::cTouchOmInfo::~cTouchOmInfo() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cTouchOmInfo::MyDTI sQuestManagerExt::cTouchOmInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x00830224-0x0083025d (called at sQuestManagerExt.cpp:14789)
@@ -7274,7 +7267,7 @@ const MtDTI& sQuestManagerExt::cFunctionInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cFunctionInfo::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cFunctionInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cFunctionInfo::DTI)->memAlloc(sz, align, sQuestManagerExt::cFunctionInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7289,7 +7282,7 @@ inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cFunctionInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cFunctionInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cFunctionInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7333,17 +7326,19 @@ inline void sQuestManagerExt::cFunctionInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN16sQuestManagerExt13cFunctionInfoD0Ev at 0x0082f110
 sQuestManagerExt::cFunctionInfo::~cFunctionInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFuncMgr == static_cast<cQuestFunctionManagerBase*>(nullptr)) {
+    if (mpFuncMgr == nullptr) {
         return;
     }
-    delete this->mpFuncMgr;
-    this->mpFuncMgr = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    delete mpFuncMgr;
+    mpFuncMgr = nullptr;
 }
 
 // Address: 0x0082f160 - 0x0082f161 (1 bytes)
 __attribute__((weak)) void sQuestManagerExt::cFunctionInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cFunctionInfo::MyDTI sQuestManagerExt::cFunctionInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x00830296-0x008302cf (called at sQuestManagerExt.cpp:15015)
@@ -7353,7 +7348,7 @@ __attribute__((weak)) void sQuestManagerExt::cFunctionInfo::createProperty(MtPro
 // Address: 0x0082efd0 - 0x0082f01f (79 bytes)
 MtObject* sQuestManagerExt::cFunctionInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sQuestManagerExt::cFunctionInfo;
+    return new (16u) sQuestManagerExt::cFunctionInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7394,7 +7389,7 @@ const MtDTI& sQuestManagerExt::cSystemLogNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cSystemLogNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cSystemLogNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cSystemLogNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7435,6 +7430,8 @@ sQuestManagerExt::cSystemLogNode::~cSystemLogNode() {
     DDON_STUB("sQuestManagerExt::cSystemLogNode::~cSystemLogNode")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cSystemLogNode::MyDTI sQuestManagerExt::cSystemLogNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x00830308-0x00830341 (called at sQuestManagerExt.cpp:15547)
@@ -7485,7 +7482,7 @@ const MtDTI& sQuestManagerExt::cClearedQuestInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cClearedQuestInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cClearedQuestInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cClearedQuestInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7528,6 +7525,8 @@ __attribute__((weak)) void sQuestManagerExt::cClearedQuestInfo::createProperty(M
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cClearedQuestInfo::MyDTI sQuestManagerExt::cClearedQuestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x00830341-0x0083037a (called at sQuestManagerExt.cpp:15670)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x00830341-0x0083037a (called at sQuestManagerExt.cpp:461)
@@ -7563,7 +7562,7 @@ const MtDTI& sQuestManagerExt::cTimer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sQuestManagerExt::cTimer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTimer::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cTimer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cTimer::DTI)->memAlloc(sz, align, sQuestManagerExt::cTimer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7578,7 +7577,7 @@ inline void* sQuestManagerExt::cTimer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cTimer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTimer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cTimer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7688,10 +7687,11 @@ __attribute__((weak)) void sQuestManagerExt::cTimer::addCallbackElapsedTime(u32 
 // No out-of-line body: no code in the ELF
 // void sQuestManagerExt::cTimer::deleteAllCallbackElapsedTime();
 
-// No out-of-line body: 2 inlined copies in 2 functions (42 bytes)
-//   in sQuestManagerExt::stopCycleContentsTimer at 0x00811fb7-0x00811fcc (called at sQuestManagerExt.cpp:2951)
-//   in sQuestManagerExt::callbackStopTimer at 0x00824cfc-0x00824d11 (called at sQuestManagerExt.cpp:10782)
-// void sQuestManagerExt::cTimer::stopTimer();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sQuestManagerExt::cTimer::stopTimer() {
+    mStopTime = static_cast<sNetworkExt*>(sNetwork::mpInstance)->mWorldServerTime.mTime;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (81 bytes)
 //   in sQuestManagerExt::callbackRestartTimer at 0x00824880-0x008248d1 (called at sQuestManagerExt.cpp:10658)
@@ -7713,14 +7713,43 @@ __attribute__((weak)) void sQuestManagerExt::cTimer::addCallbackElapsedTime(u32 
 // Address: 0x0082f340 - 0x0082f3dd (157 bytes)
 // Also emitted as: _ZN16sQuestManagerExt6cTimerD0Ev at 0x0082f3e0
 sQuestManagerExt::cTimer::~cTimer() {
-    DDON_STUB("sQuestManagerExt::cTimer::~cTimer")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mElapsedTimeArray.mLength != 0) {
+        // inferred: the value the loop at 0x82f370 carries; no location-less local in scope fits
+        u32 v0_0 = mElapsedTimeArray.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mElapsedTimeArray.mpArray[i0_3] != nullptr) {
+                delete mElapsedTimeArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mElapsedTimeArray.mLength) {
+                    v0_0 = mElapsedTimeArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mElapsedTimeArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mElapsedTimeArray.mpArray));
+    }
+    mElapsedTimeArray.mpArray = nullptr;
+    mElapsedTimeArray.mBufsiz = 0;
+    mElapsedTimeArray.mLength = 0;
 }
 
 // Address: 0x0082f4a0 - 0x0082f4a1 (1 bytes)
 __attribute__((weak)) void sQuestManagerExt::cTimer::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cTimer::MyDTI sQuestManagerExt::cTimer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008302cf-0x00830308 (called at sQuestManagerExt.cpp:15125)
@@ -7730,7 +7759,7 @@ __attribute__((weak)) void sQuestManagerExt::cTimer::createProperty(MtPropertyLi
 // Address: 0x0082f170 - 0x0082f215 (165 bytes)
 MtObject* sQuestManagerExt::cTimer::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sQuestManagerExt::cTimer;
+    return new (16u) sQuestManagerExt::cTimer;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (60 bytes)
@@ -7847,6 +7876,8 @@ __attribute__((weak)) void sQuestManagerExt::cCallQuestAnnounce::createProperty(
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cCallQuestAnnounce::MyDTI sQuestManagerExt::cCallQuestAnnounce::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x0083037a-0x008303b3 (called at sQuestManagerExt.cpp:15764)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x0083037a-0x008303b3 (called at sQuestManagerExt.cpp:504)
@@ -7882,7 +7913,7 @@ const MtDTI& sQuestManagerExt::cUnreleasedArea::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sQuestManagerExt::cUnreleasedArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cUnreleasedArea::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cUnreleasedArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cUnreleasedArea::DTI)->memAlloc(sz, align, sQuestManagerExt::cUnreleasedArea::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7896,7 +7927,7 @@ inline void* sQuestManagerExt::cUnreleasedArea::operator new(size_t sz, u32 alig
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sQuestManagerExt::cUnreleasedArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cUnreleasedArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cUnreleasedArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7930,6 +7961,8 @@ __attribute__((weak)) void sQuestManagerExt::cUnreleasedArea::createProperty(MtP
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cUnreleasedArea::MyDTI sQuestManagerExt::cUnreleasedArea::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008303b3-0x008303ec (called at sQuestManagerExt.cpp:15975)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008303b3-0x008303ec (called at sQuestManagerExt.cpp:554)
@@ -7938,7 +7971,7 @@ __attribute__((weak)) void sQuestManagerExt::cUnreleasedArea::createProperty(MtP
 // Address: 0x0082ff40 - 0x0082ff87 (71 bytes)
 MtObject* sQuestManagerExt::cUnreleasedArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sQuestManagerExt::cUnreleasedArea;
+    return new (16u) sQuestManagerExt::cUnreleasedArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7979,7 +8012,7 @@ const MtDTI& sQuestManagerExt::cSayInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sQuestManagerExt::cSayInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cSayInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sQuestManagerExt::cSayInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8015,6 +8048,8 @@ inline void sQuestManagerExt::cSayInfo::operator delete(void* p_addr) {
 sQuestManagerExt::cSayInfo::~cSayInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sQuestManagerExt::cSayInfo::MyDTI sQuestManagerExt::cSayInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sQuestManagerExt.cpp at 0x008301ab-0x008301eb (called at sQuestManagerExt.cpp:14615)

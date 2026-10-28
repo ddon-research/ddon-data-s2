@@ -320,14 +320,36 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
-inline cMenuSupport::cMenuSupport() {
-    this->mpParentMenu = static_cast<cMenuBase*>(nullptr);
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline s32 cMenuDialogFlow::getChoicePos() {
+    return this->mChoice;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+// inferred: a single inlined copy's body: the copy inlined in cMenuDialogFlow::retryFlow at 0x14f08d-0x14f090; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cMenuDialogFlow::setDialogId(s32 id) {
+    this->mDialogId = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuGetCharacterName::moveGetCharacterName at 0xfbfc1-0xfbfc4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cMenuDialogFlow::getNextBasePointerPriority() {
+    return this->mNextPointerPriority;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline cMenuSupport::cMenuSupport() {
+    this->mpParentMenu = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cMenuSupportList::getSortListCount() {
     return this->mSortListCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool cMenuSupportList::getRemakeListFlag() {
+    return this->mIsRemakeList;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -350,5 +372,5 @@ inline s32 cMenuSupportMenu::getCursor() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cMenuSupportMenu::clearMenuList() {
-    this->mMenuNum = static_cast<u32>(0);
+    this->mMenuNum = 0;
 }

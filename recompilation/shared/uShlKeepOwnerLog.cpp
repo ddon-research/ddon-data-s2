@@ -49,7 +49,7 @@ const MtDTI& cShlLogNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShlLogNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShlLogNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShlLogNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,18 +81,18 @@ __attribute__((weak)) void cShlLogNode::createProperty(MtPropertyList& s) {
 // Address: 0x00cee730 - 0x00cee76d (61 bytes)
 void cShlLogNode::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable() == false) {
-            this->mpModel = static_cast<uDDOModel*>(nullptr);
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
         }
     }
-    if (this->mpOwnerShl == static_cast<uShlKeepOwnerLog*>(nullptr)) {
+    if (mpOwnerShl == nullptr) {
         return;
     }
-    if (this->mpOwnerShl->::cUnit::isEnable() != false) {
+    if (mpOwnerShl->isEnable()) {
         return;
     }
-    this->mpOwnerShl = static_cast<uShlKeepOwnerLog*>(nullptr);
+    mpOwnerShl = nullptr;
 }
 
 // Defined in the class (its body was written in a header).
@@ -117,7 +117,7 @@ __attribute__((weak)) void cShlLogNode::applyWorldOffset(const MtVector3& offset
 // Address: 0x00cee770 - 0x00cee776 (6 bytes)
 void cShlLogNode::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->keepLog();
+    keepLog();
 }
 
 // Address: 0x00cee800 - 0x00cee801 (1 bytes)
@@ -128,19 +128,19 @@ __attribute__((weak)) void cShlLogNode::final() {
 // Address: 0x00cee780 - 0x00cee7f1 (113 bytes)
 void cShlLogNode::keepLog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    this->mPos.x = this->mpModel->::uCoord::mPos.x;
-    this->mPos.y = this->mpModel->::uCoord::mPos.y;
-    this->mPos.z = this->mpModel->::uCoord::mPos.z;
-    this->mPos.pad_ = 0.0f;
+    mPos.x = mpModel->mPos.x;
+    mPos.y = mpModel->mPos.y;
+    mPos.z = mpModel->mPos.z;
+    mPos.pad_ = 0.0f;
     // inferred: a temporary for the result of the call at 0xcee7bf, used 3 times; no DWARF local holds it
-    const MtMatrix& t0 = this->mpModel->getWorldMatrix(static_cast<s32>(-1));
-    this->mDir.x = t0.m[2].x;
-    this->mDir.y = t0.m[2].y;
-    this->mDir.z = t0.m[2].z;
-    this->mDir.pad_ = 0.0f;
+    const MtMatrix& t0 = mpModel->getWorldMatrix(-1);
+    mDir.x = t0.m[2].x;
+    mDir.y = t0.m[2].y;
+    mDir.z = t0.m[2].z;
+    mDir.pad_ = 0.0f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,6 +148,8 @@ void cShlLogNode::keepLog() {
 
 // No out-of-line body: no code in the ELF
 // const MtVector3& cShlLogNode::getDir() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cShlLogNode::MyDTI cShlLogNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlKeepOwnerLog.cpp at 0x00cefa7f-0x00cefabc (called at uShlKeepOwnerLog.cpp:22)
@@ -194,7 +196,7 @@ const MtDTI& uShlKeepOwnerLog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uShlKeepOwnerLog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlKeepOwnerLog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlKeepOwnerLog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -228,7 +230,7 @@ uShlKeepOwnerLog::~uShlKeepOwnerLog() {
 // Address: 0x00ceea20 - 0x00ceea25 (5 bytes)
 void uShlKeepOwnerLog::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::setup();
+    this->uShlBase::setup();
 }
 
 // Address: 0x00ceebd0 - 0x00ceec1b (75 bytes)
@@ -264,7 +266,7 @@ __attribute__((weak)) void uShlKeepOwnerLog::createProperty(MtPropertyList& s) {
 // Address: 0x00ceecc0 - 0x00ceecc5 (5 bytes)
 void uShlKeepOwnerLog::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::draw(pDraw);
+    this->uDDOModel::draw(pDraw);
 }
 
 // Address: 0x00ceecd0 - 0x00ceed85 (181 bytes)
@@ -314,10 +316,10 @@ __attribute__((weak)) void uShlKeepOwnerLog::addLogNode() {
 cShlLogNode* uShlKeepOwnerLog::findLastNode() {
     // DWARF local not rendered: s32 index;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (static_cast<int>(this->mLogNodeArray.::MtArray::mLength - static_cast<u32>(1)) > static_cast<int>(-1)) {
-        return static_cast<cShlLogNode*>(this->mLogNodeArray.::MtArray::getBuffer()[static_cast<int>(this->mLogNodeArray.::MtArray::mLength - static_cast<u32>(1))]);
+    if (static_cast<int>(mLogNodeArray.mLength - 1u) > -1) {
+        return static_cast<cShlLogNode*>(mLogNodeArray.getBuffer()[static_cast<int>(mLogNodeArray.mLength - 1u)]);
     } else {
-        return static_cast<cShlLogNode*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -326,9 +328,8 @@ void uShlKeepOwnerLog::eraseLastNode() {
     // DWARF local not rendered: s32 index;
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xcef1fa read, used 4 times; no DWARF local holds it
-    u32 t0 = this->mLogNodeArray.::MtArray::mLength;
-    if (static_cast<int>(t0 - static_cast<u32>(1)) <= static_cast<int>(-1)) {
-    } else {
+    u32 t0 = mLogNodeArray.mLength;
+    if (static_cast<int>(t0 - 1u) > -1) {
         // inferred: the value the loop at 0xcef250 carries; the location-less local in scope that fits is declared on no line of the value's writes
         int v0_1;
         // inferred: the value the loop at 0xcef250 carries; no location-less local in scope fits
@@ -337,16 +338,16 @@ void uShlKeepOwnerLog::eraseLastNode() {
         u32 v0_5;
         // inferred: the value carried to 0xcef26b; no location-less local in scope fits
         u32 v1_5;
-        if (this->mLogNodeArray.::MtArray::mAutoDelete != false) {
-            if (this->mLogNodeArray.::MtArray::mpArray[static_cast<int>(t0 - static_cast<u32>(1))] != static_cast<MtObject*>(nullptr)) {
-                delete this->mLogNodeArray.::MtArray::mpArray[static_cast<int>(t0 - static_cast<u32>(1))];
-                if (static_cast<int>(t0) >= static_cast<int>(this->mLogNodeArray.::MtArray::mLength)) {
-                    v1_5 = this->mLogNodeArray.::MtArray::mLength;
+        if (mLogNodeArray.mAutoDelete) {
+            if (mLogNodeArray.mpArray[static_cast<int>(t0 - 1u)] != nullptr) {
+                delete mLogNodeArray.mpArray[static_cast<int>(t0 - 1u)];
+                if (static_cast<int>(t0) >= static_cast<int>(mLogNodeArray.mLength)) {
+                    v1_5 = mLogNodeArray.mLength;
                     goto region_cef26b;
                 } else {
                     v0_1 = static_cast<int>(t0);
-                    v0_2 = this->mLogNodeArray.::MtArray::mLength;
-                    v0_5 = this->mLogNodeArray.::MtArray::mLength;
+                    v0_2 = mLogNodeArray.mLength;
+                    v0_5 = mLogNodeArray.mLength;
                 }
             } else {
                 if (static_cast<int>(t0) >= static_cast<int>(t0)) {
@@ -369,16 +370,16 @@ void uShlKeepOwnerLog::eraseLastNode() {
             }
         }
         for (;;) {
-            this->mLogNodeArray.::MtArray::mpArray[v0_1 - static_cast<int>(1)] = this->mLogNodeArray.::MtArray::mpArray[v0_1];
-            if (v0_2 != static_cast<unsigned int>(v0_1 + static_cast<int>(1))) {
-                v0_1 = v0_1 + static_cast<int>(1);
+            mLogNodeArray.mpArray[v0_1 - 1] = mLogNodeArray.mpArray[v0_1];
+            if (v0_2 != static_cast<unsigned int>(v0_1 + 1)) {
+                v0_1 = v0_1 + 1;
             } else {
                 v1_5 = v0_5;
                 break;
             }
         }
         region_cef26b:;
-        this->mLogNodeArray.::MtArray::mLength = v1_5 - static_cast<u32>(1);
+        mLogNodeArray.mLength = v1_5 - 1u;
     }
 }
 
@@ -424,6 +425,8 @@ void uShlKeepOwnerLog::eraseLastNode() {
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
 //   in uShlKeepOwnerLog::updateSub at 0x00ceef09-0x00ceef12 (called at uShlKeepOwnerLog.cpp:640)
 // bool uShlKeepOwnerLog::isWaitAttrOn(u32 attr);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uShlKeepOwnerLog::MyDTI uShlKeepOwnerLog::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uShlKeepOwnerLog.cpp at 0x00cefabc-0x00cefafc (called at uShlKeepOwnerLog.cpp:152)

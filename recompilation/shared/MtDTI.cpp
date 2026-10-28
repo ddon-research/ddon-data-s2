@@ -34,13 +34,13 @@ const MtDTI* MtDTI::from(u32 id) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0xd61863; no location-less local in scope fits
     MtDTI* v2_0;
-    if (::MtDTI::mpHashTable[static_cast<unsigned char>(id)] == static_cast<MtDTI*>(nullptr)) {
-        v2_0 = static_cast<MtDTI*>(nullptr);
+    if (MtDTI::mpHashTable[static_cast<unsigned char>(id)] == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: the value the loop at 0xd61850 carries; no location-less local in scope fits
-        for (MtDTI* v0_0 = ::MtDTI::mpHashTable[static_cast<unsigned char>(id)];;) {
+        for (MtDTI* v0_0 = MtDTI::mpHashTable[static_cast<unsigned char>(id)];;) {
             if (v0_0->mID != id) {
-                if (v0_0->mpLink != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpLink != nullptr) {
                     v0_0 = v0_0->mpLink;
                 } else {
                     break;
@@ -50,7 +50,7 @@ const MtDTI* MtDTI::from(u32 id) {
                 return v2_0;
             }
         }
-        v2_0 = static_cast<MtDTI*>(nullptr);
+        v2_0 = nullptr;
     }
     return v2_0;
 }
@@ -67,7 +67,7 @@ __attribute__((weak)) void MtDTI::trace() {
 // Address: 0x00d61a10 - 0x00d61a1c (12 bytes)
 void MtDTI::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtDTI::mDTI.::MtDTI::sort();
+    MtDTI::mDTI.sort();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -171,17 +171,17 @@ __attribute__((weak)) void MtDTI::sort() {
 MtDTI* MtDTI::getType(MT_CTSTR name) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: DWARF's location-less 'pt' (function scope) is the value the loop at 0xd617f9 carries
-    MtDTI* pt = this->mpChild;
+    MtDTI* pt = mpChild;
     // inferred: the value carried to 0xd61823; the location-less local in scope that fits is declared on no line of the value's writes
     MtDTI* v1_0;
     for (;;) {
-        if (pt == static_cast<MtDTI*>(nullptr)) {
-            v1_0 = static_cast<MtDTI*>(nullptr);
+        if (pt == nullptr) {
+            v1_0 = nullptr;
             break;
         } else {
-            if (::strcmp(pt->mName, name) != static_cast<int>(0)) {
-                MtDTI* ppt = pt->::MtDTI::getType(name);
-                if (ppt != static_cast<MtDTI*>(nullptr)) {
+            if (strcmp(pt->mName, name) != 0) {
+                MtDTI* ppt = pt->MtDTI::getType(name);
+                if (ppt != nullptr) {
                     v1_0 = ppt;
                     break;
                 } else {
@@ -208,14 +208,13 @@ MtDTI* MtDTI::getType(MT_CTSTR name) const {
 
 // Address: 0x00d61a20 - 0x00d61a7c (92 bytes)
 void MtDTI::updateChildAlloc() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from MtDTI*
-    if (this->mpChild != static_cast<MtDTI*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpChild != nullptr) {
         // inferred: DWARF's location-less 'p_child' (function scope) is the value the loop at 0xd61a50 carries
-        for (MtDTI* p_child = this->mpChild;;) {
-            p_child->mAllocatorIndex = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
-            p_child->::MtDTI::updateChildAlloc();
-            if (p_child->mpNext != static_cast<MtDTI*>(nullptr)) {
+        for (MtDTI* p_child = mpChild;;) {
+            p_child->mAllocatorIndex = mAllocatorIndex;
+            p_child->MtDTI::updateChildAlloc();
+            if (p_child->mpNext != nullptr) {
                 p_child = p_child->mpNext;
             } else {
                 break;
@@ -223,4 +222,9 @@ void MtDTI::updateChildAlloc() {
         }
     }
 }
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtDTI MtDTI::mDTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtDTI* MtDTI::mpHashTable[256];
 

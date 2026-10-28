@@ -149,6 +149,8 @@ class uHuman : public uCharacter
     friend class cPlActWpnBow;
     // inferred: cPlActWpnBowBase::final names uHuman::mIsBowAim
     friend class cPlActWpnBowBase;
+    // inferred: cpItemThrow::releaseItemModel names uHuman::mSpecialEquipArray.::MtArray::mLength
+    friend class cpItemThrow;
     // inferred: cpJob02::update names uHuman::mCameraExPos.x
     friend class cpJob02;
     // inferred: cpJob05::callbackCatch_Shl names uHuman::mpClimbEnemy
@@ -1538,6 +1540,18 @@ inline void uHuman::onCanShlConst() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::move at 0x21f42c-0x21f432; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uHuman::setBowCustomId(u32 id) {
+    this->mBowCustomId = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActHomingAutoRun::move at 0x23074f-0x230756; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const uDDOModel* uHuman::getAutoRunTarget() const {
+    return this->mAutoRunInfo.mpTarget;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool uHuman::isCancellableAction() {
     return this->mIsCancellableAction;
@@ -1561,8 +1575,62 @@ inline s32 uHuman::getClimbJointNo() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::setClimbJointNo(const s32 no) {
+    this->mClimbJointNo = no;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::setClimbEnemyUId(const u32 id) {
+    this->mClimbEnemyUId = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::setClimbNodeIndex(u16 NodeIndex) {
+    this->mClimbNodeIndex = NodeIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::setClimbGeomIndex(u16 GeomIndex) {
+    this->mClimbGeomIndex = GeomIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void uHuman::setClimbEnemy(uDDOModel* pmod) {
+    this->mpClimbEnemy = pmod;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEnemy::update at 0x8f5469-0x8f5470; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uHuman::setTankerTargetedByEnemy() {
+    this->mTankerTargetedByEnemy = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cContextPlayerInfo* uHuman::getContextPlayerInfo() const {
     return this->mpContextPlayerInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 5 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void uHuman::onLandActJudge() {
+    this->mIsLandActJudge = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActTouchAct::init at 0x2475b8-0x2475bf; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rModel* uHuman::getRPickel() {
+    return this->mprModPickel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActTouchAct::init at 0x247583-0x24758c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rModel* uHuman::getRAxa() {
+    return this->mprModAxa;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1583,9 +1651,21 @@ inline f32 uHuman::getInvincibleTime() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActJob09FrightBoardJump::init at 0x2547fe-0x254804; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nHuman::HM_SKILL_LV uHuman::getFrightBoardLv() const {
+    return this->mFrightBoardLv;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uHuman::countupJob09FrightBoardAir() {
-    this->mJob09AirFrightBoardCount = this->mJob09AirFrightBoardCount + static_cast<u32>(1);
+    this->mJob09AirFrightBoardCount = this->mJob09AirFrightBoardCount + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::healStaminaItem at 0xc805c0-0xc805c7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uHuman::requestUseStaminaItem() {
+    this->mIsRequestUseStaminaItem = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1597,7 +1677,7 @@ inline f32 uHuman::getCheckCheatChageNow_Gi() const {
 // Inline, no code of its own: checked where it is inlined.
 inline uHuman::cHealSeCaller::cHealSeCaller() {
     this->mTimer = 0.0f;
-    this->mSeNo = static_cast<u32>(4294967295);
+    this->mSeNo = 0xFFFFFFFF;
     this->mIsHp = false;
     this->mIsStamina = false;
 }

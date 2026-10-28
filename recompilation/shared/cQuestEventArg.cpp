@@ -32,7 +32,7 @@ const MtDTI& cQuestEventArg::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestEventArg::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestEventArg::DTI)->memAlloc(sz, align, ::cQuestEventArg::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestEventArg::DTI)->memAlloc(sz, align, cQuestEventArg::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cQuestEventArg::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestEventArg::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestEventArg::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestEventArg::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ cQuestEventArg::~cQuestEventArg() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestEventArg::MyDTI cQuestEventArg::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_cQuestEventArg.cpp at 0x001a5790-0x001a57d1 (called at cQuestEventArg.cpp:27)
 //   in _GLOBAL__sub_I_cQuestEventArg.cpp at 0x001a5790-0x001a57d1 (called at cQuestEventArg.h:59)
@@ -77,7 +79,7 @@ cQuestEventArg::~cQuestEventArg() {
 // Address: 0x001a53f0 - 0x001a5430 (64 bytes)
 MtObject* cQuestEventArg::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestEventArg;
+    return new (16u) cQuestEventArg;
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ const MtDTI& cQuestEventArgEntryParty::getDTI() const {
 // Address: 0x001a55b0 - 0x001a55b4 (4 bytes)
 u32 cQuestEventArgEntryParty::getCharacterId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCharacterId;
+    return mCharacterId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,7 +140,7 @@ u32 cQuestEventArgEntryParty::getCharacterId() const {
 // Address: 0x001a55d0 - 0x001a55d4 (4 bytes)
 bool cQuestEventArgEntryParty::isPawn() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPawn;
+    return mIsPawn;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)
@@ -158,6 +160,8 @@ cQuestEventArgEntryParty::~cQuestEventArgEntryParty() {
     DDON_STUB("cQuestEventArgEntryParty::~cQuestEventArgEntryParty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestEventArgEntryParty::MyDTI cQuestEventArgEntryParty::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestEventArg.cpp at 0x001a57d1-0x001a580a (called at cQuestEventArg.cpp:62)

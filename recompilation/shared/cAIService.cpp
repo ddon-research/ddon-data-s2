@@ -124,13 +124,15 @@ __attribute__((weak)) void cAIService::unlock() {
 // Address: 0x01bc7ac0 - 0x01bc7ad0 (16 bytes)
 MT_CTSTR cAIService::getDTIName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI().mName;
+    return getDTI().mName;
 }
 
 // Address: 0x01bc7ad0 - 0x01bc7ad1 (1 bytes)
 __attribute__((weak)) void cAIService::setDTIName(MT_CTSTR) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAIService::MyDTI cAIService::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIService::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

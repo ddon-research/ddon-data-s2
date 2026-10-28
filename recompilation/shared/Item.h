@@ -647,65 +647,65 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataC2SChangeCharacterEquipInfo::CDataC2SChangeCharacterEquipInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucEquipCategory = static_cast<u8>(0);
-    this->m_ucEquipType = static_cast<u8>(0);
+    this->m_ucEquipCategory = 0;
+    this->m_ucEquipType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataChangeEquipJobItem::CDataChangeEquipJobItem() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucEquipSlotNo = static_cast<u8>(0);
+    this->m_ucEquipSlotNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataCharacterItemSlotInfo::CDataCharacterItemSlotInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucStorageType = static_cast<u8>(0);
-    this->m_usSlotMax = static_cast<u16>(0);
+    this->m_ucStorageType = 0;
+    this->m_usSlotMax = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataEquipElementParam::CDataEquipElementParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucSlotNo = static_cast<u8>(0);
-    this->m_unItemID = static_cast<u32>(0);
+    this->m_ucSlotNo = 0;
+    this->m_unItemID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataEquipItemInfo::CDataEquipItemInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucEquipType = static_cast<u8>(0);
-    this->m_ucEquipSlot = static_cast<u8>(0);
-    this->m_unItemID = static_cast<u32>(0);
-    this->m_ucColor = static_cast<u8>(0);
-    this->m_ucPlusValue = static_cast<u8>(0);
+    this->m_ucEquipType = 0;
+    this->m_ucEquipSlot = 0;
+    this->m_unItemID = 0;
+    this->m_ucColor = 0;
+    this->m_ucPlusValue = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataEquipJobItem::CDataEquipJobItem() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unJobItemID = static_cast<u32>(0);
-    this->m_ucEquipSlotNo = static_cast<u8>(0);
+    this->m_unJobItemID = 0;
+    this->m_ucEquipSlotNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGameItemStorage::CDataGameItemStorage() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucStorageType = static_cast<u8>(0);
+    this->m_ucStorageType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGameItemStorageInfo::CDataGameItemStorageInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usUsedSlotNum = static_cast<u16>(0);
-    this->m_usMaxSlotNum = static_cast<u16>(0);
+    this->m_usUsedSlotNum = 0;
+    this->m_usMaxSlotNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -718,30 +718,30 @@ inline CDataItemEquipElement::CDataItemEquipElement() {
 // approximate: only approximate callers check this inline body
 inline CDataItemUIDList::CDataItemUIDList() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unNum = static_cast<u32>(0);
+    this->m_unNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataJewelryEquipLimit::CDataJewelryEquipLimit() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJewelryType = static_cast<u8>(0);
-    this->m_ucEquipNumMax = static_cast<u8>(0);
+    this->m_ucJewelryType = 0;
+    this->m_ucEquipNumMax = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataS2CCharacterEquipInfo::CDataS2CCharacterEquipInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucEquipCategory = static_cast<u8>(0);
-    this->m_ucEquipType = static_cast<u8>(0);
+    this->m_ucEquipCategory = 0;
+    this->m_ucEquipType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataStorageItemUIDList::CDataStorageItemUIDList() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unNum = static_cast<u32>(0);
-    this->m_ucStorageType = static_cast<u8>(0);
-    this->m_usSlotNo = static_cast<u16>(0);
+    this->m_unNum = 0;
+    this->m_ucStorageType = 0;
+    this->m_usSlotNo = 0;
 }

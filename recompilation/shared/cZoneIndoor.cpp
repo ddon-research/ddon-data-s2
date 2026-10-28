@@ -33,7 +33,7 @@ const MtDTI& cIndoorSkyFogParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cIndoorSkyFogParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cIndoorSkyFogParam::DTI)->memAlloc(sz, align, ::cIndoorSkyFogParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cIndoorSkyFogParam::DTI)->memAlloc(sz, align, cIndoorSkyFogParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* cIndoorSkyFogParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cIndoorSkyFogParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cIndoorSkyFogParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cIndoorSkyFogParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,12 +62,12 @@ inline void cIndoorSkyFogParam::operator delete(void* p_addr) {
 // Address: 0x00594610 - 0x00594643 (51 bytes)
 cIndoorSkyFogParam::cIndoorSkyFogParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWeatherId = static_cast<s32>(0);
-    this->mIntensity = 1.0f;
-    this->mDensity = 1.0f;
-    this->mStart = 1000.0f;
-    this->mEnd = 3000.0f;
-    this->mId = static_cast<u32>(0);
+    mWeatherId = 0;
+    mIntensity = 1.0f;
+    mDensity = 1.0f;
+    mStart = 1000.0f;
+    mEnd = 3000.0f;
+    mId = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -135,11 +135,11 @@ __attribute__((weak)) void cIndoorSkyFogParam::setupFromCopy(const cIndoorSkyFog
 // Address: 0x00594150 - 0x005941e5 (149 bytes)
 void cIndoorSkyFogParam::setupFromLerp(cIndoorSkyFogParam* pStart, cIndoorSkyFogParam* pEnd, f32 rate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIntensity = ::nDDOMath::lerp(pStart->mIntensity, pEnd->mIntensity, rate);
-    this->mDensity = ::nDDOMath::lerp(pStart->mDensity, pEnd->mDensity, rate);
-    this->mStart = ::nDDOMath::lerp(pStart->mStart, pEnd->mStart, rate);
-    this->mEnd = ::nDDOMath::lerp(pStart->mEnd, pEnd->mEnd, rate);
-    this->mId = pStart->mId;
+    mIntensity = nDDOMath::lerp(pStart->mIntensity, pEnd->mIntensity, rate);
+    mDensity = nDDOMath::lerp(pStart->mDensity, pEnd->mDensity, rate);
+    mStart = nDDOMath::lerp(pStart->mStart, pEnd->mStart, rate);
+    mEnd = nDDOMath::lerp(pStart->mEnd, pEnd->mEnd, rate);
+    mId = pStart->mId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,6 +147,8 @@ void cIndoorSkyFogParam::setupFromLerp(cIndoorSkyFogParam* pStart, cIndoorSkyFog
 
 // No out-of-line body: no code in the ELF
 // bool cIndoorSkyFogParam::isSameData(cIndoorSkyFogParam* pData);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cIndoorSkyFogParam::MyDTI cIndoorSkyFogParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cZoneIndoor.cpp at 0x005947de-0x0059481b (called at cZoneIndoor.cpp:53)
@@ -156,6 +158,6 @@ void cIndoorSkyFogParam::setupFromLerp(cIndoorSkyFogParam* pStart, cIndoorSkyFog
 // Address: 0x005932b0 - 0x00593314 (100 bytes)
 MtObject* cIndoorSkyFogParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cIndoorSkyFogParam;
+    return new (16u) cIndoorSkyFogParam;
 }
 

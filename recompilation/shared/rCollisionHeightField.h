@@ -181,14 +181,14 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK21rCollisionHeightField5MyDTI11newInstanceEv at 0x01207fc0-0x01208034, code DWARF attributes to no inlined copy
 inline rCollisionHeightField::rCollisionHeightField() {
-    this->::cResource::mAttr = static_cast<u32>(18);
-    this->mpMaterialArray = static_cast<nCollision::ScrMaterialInfo*>(nullptr);
-    this->mpVertexHeightArray = static_cast<f32*>(nullptr);
-    this->mMaterialNum = static_cast<u32>(0);
-    this->mVertexNum = static_cast<u32>(0);
-    this->mCellGroupNum = static_cast<u32>(0);
-    this->mpCellGroupArray = static_cast<rCollisionHeightField::cCellGroup*>(nullptr);
-    this->mpGridCollision = static_cast<cGridCollision*>(nullptr);
-    this->mMagic = static_cast<u32>(0);
-    this->mVersion = static_cast<u32>(0);
+    this->::cResource::mAttr = 18;
+    this->mpMaterialArray = nullptr;
+    this->mpVertexHeightArray = nullptr;
+    this->mMaterialNum = 0;
+    this->mVertexNum = 0;
+    this->mCellGroupNum = 0;
+    this->mpCellGroupArray = nullptr;
+    this->mpGridCollision = nullptr;
+    this->mMagic = 0;
+    this->mVersion = 0;
 }

@@ -26,7 +26,7 @@ const MtDTI& cDelegateBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cDelegateBase::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::DTI);
+    return MtMemoryAllocator::getAllocator(cDelegateBase::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cDelegateBase::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDelegateBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::DTI)->memAlloc(sz, align, ::cDelegateBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDelegateBase::DTI)->memAlloc(sz, align, cDelegateBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cDelegateBase::operator new(size_t sz, u32 align) {
 // Address: 0x00092a20 - 0x00092a4a (42 bytes)
 __attribute__((weak)) void cDelegateBase::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cDelegateBase::getAllocator()->memFree(p_addr);
+    cDelegateBase::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void cDelegateBase::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // void cDelegateBase::createProperty(MtPropertyList& s);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDelegateBase::MyDTI cDelegateBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cDelegate.cpp at 0x00092bd0-0x00092c14 (called at cDelegate.cpp:16)
 //   in _GLOBAL__sub_I_cDelegate.cpp at 0x00092bd0-0x00092c14 (called at cDelegate.h:199)
@@ -78,7 +80,7 @@ __attribute__((weak)) void cDelegateBase::operator delete(void* p_addr) {
 // Address: 0x000929b0 - 0x000929f0 (64 bytes)
 MtObject* cDelegateBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDelegateBase;
+    return new (16u) cDelegateBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,7 +97,7 @@ const MtDTI& cDelegateBase::cNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cDelegateBase::cNode::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::cNode::DTI);
+    return MtMemoryAllocator::getAllocator(cDelegateBase::cNode::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,13 +106,13 @@ inline MtAllocator* cDelegateBase::cNode::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDelegateBase::cNode::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::cNode::DTI)->memAlloc(sz, align, ::cDelegateBase::cNode::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDelegateBase::cNode::DTI)->memAlloc(sz, align, cDelegateBase::cNode::DTI.getID());
 }
 
 // Address: 0x00092af0 - 0x00092b30 (64 bytes)
 void* cDelegateBase::cNode::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cDelegateBase::cNode::getAllocator()->memAlloc(sz, align, ::cDelegateBase::cNode::DTI.::MtDTI::getID());
+    return cDelegateBase::cNode::getAllocator()->memAlloc(sz, align, cDelegateBase::cNode::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,13 +124,13 @@ void* cDelegateBase::cNode::operator new[](size_t sz, u32 align) {
 // Address: 0x00092b50 - 0x00092b7a (42 bytes)
 __attribute__((weak)) void cDelegateBase::cNode::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cDelegateBase::cNode::getAllocator()->memFree(p_addr);
+    cDelegateBase::cNode::getAllocator()->memFree(p_addr);
 }
 
 // Address: 0x00092b80 - 0x00092baa (42 bytes)
 void cDelegateBase::cNode::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cDelegateBase::cNode::getAllocator()->memFree(p_addr);
+    cDelegateBase::cNode::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ void cDelegateBase::cNode::operator delete[](void* p_addr) {
 //   in cDelegateBase::cNode::MyDTI::newInstance at 0x00092aad-0x00092ace (called at cDelegate.h:217)
 // cDelegateBase::cNode::cNode();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDelegateBase::cNode::MyDTI cDelegateBase::cNode::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cDelegate.cpp at 0x00092c14-0x00092c4d (called at cDelegate.cpp:17)
 //   in _GLOBAL__sub_I_cDelegate.cpp at 0x00092c14-0x00092c4d (called at cDelegate.h:215)
@@ -150,6 +154,6 @@ void cDelegateBase::cNode::operator delete[](void* p_addr) {
 // Address: 0x00092a80 - 0x00092ad3 (83 bytes)
 MtObject* cDelegateBase::cNode::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDelegateBase::cNode;
+    return new (16u) cDelegateBase::cNode;
 }
 

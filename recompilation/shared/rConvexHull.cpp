@@ -33,7 +33,7 @@ const MtDTI& cGeomConvexHull::getDTI() const {
 // Address: 0x011c2f90 - 0x011c2fd0 (64 bytes)
 void* cGeomConvexHull::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cGeomConvexHull::DTI)->memAlloc(sz, align, ::cGeomConvexHull::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cGeomConvexHull::DTI)->memAlloc(sz, align, cGeomConvexHull::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +145,7 @@ __attribute__((weak)) MtMatrix cGeomConvexHull::getMatrixCopy() {
 // Address: 0x011c3ca0 - 0x011c3ca5 (5 bytes)
 MtUI* cGeomConvexHull::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x011c3cb0 - 0x011c3e67 (439 bytes)
@@ -157,7 +157,7 @@ __attribute__((weak)) void cGeomConvexHull::createProperty(MtPropertyList& s) {
 // Address: 0x01b91790 - 0x01b91798 (8 bytes)
 rConvexHull* cGeomConvexHull::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCH;
+    return mpCH;
 }
 
 // Address: 0x011c3e70 - 0x011c3eb6 (70 bytes)
@@ -165,6 +165,8 @@ __attribute__((weak)) void cGeomConvexHull::setResource(rConvexHull* resource) {
     DDON_STUB("cGeomConvexHull::setResource")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGeomConvexHull::MyDTI cGeomConvexHull::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGeomConvexHull::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

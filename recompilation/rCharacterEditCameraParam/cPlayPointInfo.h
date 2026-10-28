@@ -105,8 +105,26 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x4a2a-0x4a2d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cPlayPointInfo::setPlayPointLimit(u32 limit) {
+    this->mPlayPointLimit = limit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aMenu::move at 0x4a21-0x4a24; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cPlayPointInfo::setPlayPointJobLevel(u32 jobLevel) {
+    this->mPlayPointJobLevel = jobLevel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPPShop::initPPShop at 0xbd9e23-0xbd9e26; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cPlayPointInfo::getPlayPointJobLevel() {
+    return this->mPlayPointJobLevel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cPlayPointInfo::cPlayPoint::cPlayPoint() {
-    this->mJobId = static_cast<u8>(0);
-    this->mExpMode = static_cast<u8>(0);
-    this->mPlayPoint = static_cast<u32>(0);
+    this->mJobId = 0;
+    this->mExpMode = 0;
+    this->mPlayPoint = 0;
 }

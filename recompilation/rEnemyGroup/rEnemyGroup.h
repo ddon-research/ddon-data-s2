@@ -138,5 +138,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyGroup::cEmList::cEmList() {
-    this->mEmId = static_cast<u32>(0);
+    this->mEmId = 0;
 }

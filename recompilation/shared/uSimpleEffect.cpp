@@ -35,7 +35,7 @@ const MtDTI& uSimpleEffect::getDTI() const {
 // Address: 0x013008b0 - 0x013008f0 (64 bytes)
 void* uSimpleEffect::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uSimpleEffect::DTI)->memAlloc(sz, align, ::uSimpleEffect::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memAlloc(sz, align, uSimpleEffect::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,22 +62,22 @@ void* uSimpleEffect::operator new(size_t sz, u32 align) {
 // Address: 0x01300960 - 0x01300a08 (168 bytes)
 uSimpleEffect::uSimpleEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpVertices = static_cast<rVertices*>(nullptr);
-    this->mParticleNum = static_cast<u32>(0);
-    this->mParticleCreateNum = static_cast<u32>(0);
-    this->mpParticle = static_cast<uSimpleEffect::Particle*>(nullptr);
-    this->mParticleDeltaTime = 1.0f;
-    this->mParticleBuffSize = static_cast<u32>(0);
-    this->::uBaseEffect::mCreateFlag = static_cast<u32>(0);
-    this->mpParticleParam = static_cast<rEffectList::EFL_PARTICLE_PRIM_COMMON*>(nullptr);
-    this->mpGeneratorParam = static_cast<rEffectList::EFL_GENERATOR*>(nullptr);
-    this->mpResourceInfo = static_cast<rEffectList::ResourceInfo*>(nullptr);
-    this->mListNo = static_cast<u32>(0);
-    this->mStartRandCtr = static_cast<u32>(0);
-    this->mParticleType = static_cast<u32>(27);
-    this->mDrawPass = static_cast<u32>(17);
-    this->mInitFlag = static_cast<u32>(0);
-    this->mOfsInvalidMode = static_cast<u32>(0);
+    mpVertices = nullptr;
+    mParticleNum = 0;
+    mParticleCreateNum = 0;
+    mpParticle = nullptr;
+    mParticleDeltaTime = 1.0f;
+    mParticleBuffSize = 0;
+    mCreateFlag = 0;
+    mpParticleParam = nullptr;
+    mpGeneratorParam = nullptr;
+    mpResourceInfo = nullptr;
+    mListNo = 0;
+    mStartRandCtr = 0;
+    mParticleType = 27;
+    mDrawPass = 17;
+    mInitFlag = 0;
+    mOfsInvalidMode = 0;
 }
 
 // Address: 0x01300a10 - 0x01300a9b (139 bytes)
@@ -111,7 +111,7 @@ __attribute__((weak)) void uSimpleEffect::createProperty(MtPropertyList& s) {
 // Address: 0x01305b00 - 0x01305b05 (5 bytes)
 MtUI* uSimpleEffect::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uBaseEffect::createUI(prop);
+    return this->uBaseEffect::createUI(prop);
 }
 
 // Address: 0x01305b10 - 0x01305b7a (106 bytes)
@@ -124,21 +124,21 @@ __attribute__((weak)) void uSimpleEffect::applyWorldOffset(const MtVector3& offs
 // Address: 0x01305b80 - 0x01305c04 (132 bytes)
 void uSimpleEffect::setEffectList(rEffectList* pEffectList) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uBaseEffect::mCreateFlag = static_cast<u32>(0);
-    this->mpParticleParam = static_cast<rEffectList::EFL_PARTICLE_PRIM_COMMON*>(nullptr);
-    this->mpGeneratorParam = static_cast<rEffectList::EFL_GENERATOR*>(nullptr);
-    this->mpResourceInfo = static_cast<rEffectList::ResourceInfo*>(nullptr);
-    this->mStartRandCtr = static_cast<u32>(0);
-    this->mParticleType = static_cast<u32>(27);
-    this->mDrawPass = static_cast<u32>(17);
-    this->::uBaseEffect::setEffectList(pEffectList);
-    if (this->::uBaseEffect::mpEffectList != static_cast<rEffectList*>(nullptr)) {
-        this->::uSimpleEffect::initEFLParam();
+    mCreateFlag = 0;
+    mpParticleParam = nullptr;
+    mpGeneratorParam = nullptr;
+    mpResourceInfo = nullptr;
+    mStartRandCtr = 0;
+    mParticleType = 27;
+    mDrawPass = 17;
+    this->uBaseEffect::setEffectList(pEffectList);
+    if (mpEffectList != nullptr) {
+        initEFLParam();
     }
-    if (this->mParticleNum == static_cast<u32>(0)) {
+    if (mParticleNum == 0) {
         return;
     }
-    this->mInitFlag = static_cast<u32>(1);
+    mInitFlag = 1;
 }
 
 // Defined in the class (its body was written in a header).
@@ -156,7 +156,7 @@ void uSimpleEffect::setEffectList(rEffectList* pEffectList) {
 // Address: 0x01bbd090 - 0x01bbd098 (8 bytes)
 u32 uSimpleEffect::getListNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mListNo;
+    return mListNo;
 }
 
 // Address: 0x01305920 - 0x013059a6 (134 bytes)
@@ -169,7 +169,7 @@ __attribute__((weak)) void uSimpleEffect::setListNo(u32 No) {
 // Address: 0x01bbd0a0 - 0x01bbd0a8 (8 bytes)
 rVertices* uSimpleEffect::getVertices() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpVertices;
+    return mpVertices;
 }
 
 // Address: 0x013059b0 - 0x01305b00 (336 bytes)
@@ -234,13 +234,13 @@ __attribute__((weak)) void uSimpleEffect::setVertices(rVertices* pVertices) {
 // Address: 0x01bbd050 - 0x01bbd05c (12 bytes)
 bool uSimpleEffect::getOfsInvalidMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOfsInvalidMode;
+    return mOfsInvalidMode;
 }
 
 // Address: 0x01bbd060 - 0x01bbd084 (36 bytes)
 void uSimpleEffect::setOfsInvalidMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfsInvalidMode = Mode;
+    mOfsInvalidMode = Mode;
 }
 
 // No out-of-line body: no code in the ELF
@@ -526,6 +526,8 @@ __attribute__((weak)) uSimpleEffect::Particle* uSimpleEffect::allocateParticle()
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 uSimpleEffect::getRandF();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSimpleEffect::MyDTI uSimpleEffect::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uSimpleEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -552,7 +554,7 @@ uSimpleEffect::Particle::~Particle() {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uSimpleEffect::Particle::operator delete(void* pObj) {
-    ::MtMemoryAllocator::getAllocator(::uSimpleEffect::DTI)->memFree(pObj);
+    MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memFree(pObj);
 }
 
 // No out-of-line body: no code in the ELF

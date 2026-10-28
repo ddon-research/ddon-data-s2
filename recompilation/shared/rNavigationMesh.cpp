@@ -49,7 +49,7 @@ const MtDTI& rNavigationMesh::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rNavigationMeshD0Ev at 0x011da65e-0x011da67f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNavigationMesh::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,17 +90,17 @@ __attribute__((weak)) bool rNavigationMesh::save(MtStream& out) {
 bool rNavigationMesh::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11da6b3 read, used once; no DWARF local holds it
-    u32 t0 = (::sResource::mpInstance)->mRNavigationMeshDataReaderBufferSizeKB;
+    u32 t0 = (sResource::mpInstance)->mRNavigationMeshDataReaderBufferSizeKB;
     // inferred: a temporary for the result of the call at 0x11da6c2, used once; no DWARF local holds it
     u32 t1 = in.getLength();
-    MtDataReader r(in, (t1 < (t0 * static_cast<u32>(1024))) ? t1 : (t0 * static_cast<u32>(1024)));
-    this->mCoreHeader.magic = r.::MtDataReader::readU32();
-    this->mCoreHeader.version = r.::MtDataReader::readU32();
-    this->mCoreHeader.type = r.::MtDataReader::readU32();
-    this->mCoreHeader.attributeBuffer = r.::MtDataReader::readU32();
-    if (this->mCoreHeader.magic == static_cast<u32>(5652814)) {
-        if (this->mCoreHeader.version == static_cast<u32>(33)) {
-            this->::rNavigationMesh::loadNavigation(r);
+    MtDataReader r(in, (t1 < (t0 * 1024u)) ? t1 : (t0 * 1024u));
+    mCoreHeader.magic = r.MtDataReader::readU32();
+    mCoreHeader.version = r.MtDataReader::readU32();
+    mCoreHeader.type = r.MtDataReader::readU32();
+    mCoreHeader.attributeBuffer = r.MtDataReader::readU32();
+    if (mCoreHeader.magic == 0x56414E) {
+        if (mCoreHeader.version == 33) {
+            loadNavigation(r);
             return true;
         }
     }
@@ -174,13 +174,13 @@ __attribute__((weak)) void rNavigationMesh::loadNavigation(MtDataReader& r) {
 // Address: 0x01b92f70 - 0x01b92f7e (14 bytes)
 rNavigationMesh::nodeData* rNavigationMesh::getNode(u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpNode[i];
+    return &mpNode[i];
 }
 
 // Address: 0x01b92f80 - 0x01b92f87 (7 bytes)
 u32 rNavigationMesh::getNumberOfNode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfNode;
+    return mNumberOfNode;
 }
 
 // Address: 0x011dc690 - 0x011dc740 (176 bytes)
@@ -195,13 +195,13 @@ __attribute__((weak)) MtVector3 rNavigationMesh::getNodePos(u32 index) {
 // Address: 0x01b92f90 - 0x01b92fa2 (18 bytes)
 rNavigationMesh::nodeInfo* rNavigationMesh::getNodeInfo(u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpNodeInfo[i];
+    return &mpNodeInfo[i];
 }
 
 // Address: 0x01b92fb0 - 0x01b92fb7 (7 bytes)
 u32 rNavigationMesh::getNumberOfNodeInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfNodeInfo;
+    return mNumberOfNodeInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -246,16 +246,16 @@ __attribute__((weak)) void rNavigationMesh::setNumberOfNode(u32 size) {
 // Address: 0x011dc5f0 - 0x011dc663 (115 bytes)
 void rNavigationMesh::setNodeInfo(rNavigationMesh::nodeInfo& info, u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (i < this->mNumberOfNodeInfo) {
-        this->mpNodeInfo[i].mNodeOffset = info.mNodeOffset;
-        this->mpNodeInfo[i].mAABB.minpos.x = info.mAABB.minpos.x;
-        this->mpNodeInfo[i].mAABB.minpos.y = info.mAABB.minpos.y;
-        this->mpNodeInfo[i].mAABB.minpos.z = info.mAABB.minpos.z;
-        this->mpNodeInfo[i].mAABB.minpos.pad_ = 0.0f;
-        this->mpNodeInfo[i].mAABB.maxpos.x = info.mAABB.maxpos.x;
-        this->mpNodeInfo[i].mAABB.maxpos.y = info.mAABB.maxpos.y;
-        this->mpNodeInfo[i].mAABB.maxpos.z = info.mAABB.maxpos.z;
-        this->mpNodeInfo[i].mAABB.maxpos.pad_ = 0.0f;
+    if (i < mNumberOfNodeInfo) {
+        mpNodeInfo[i].mNodeOffset = info.mNodeOffset;
+        mpNodeInfo[i].mAABB.minpos.x = info.mAABB.minpos.x;
+        mpNodeInfo[i].mAABB.minpos.y = info.mAABB.minpos.y;
+        mpNodeInfo[i].mAABB.minpos.z = info.mAABB.minpos.z;
+        mpNodeInfo[i].mAABB.minpos.pad_ = 0.0f;
+        mpNodeInfo[i].mAABB.maxpos.x = info.mAABB.maxpos.x;
+        mpNodeInfo[i].mAABB.maxpos.y = info.mAABB.maxpos.y;
+        mpNodeInfo[i].mAABB.maxpos.z = info.mAABB.maxpos.z;
+        mpNodeInfo[i].mAABB.maxpos.pad_ = 0.0f;
     }
 }
 
@@ -283,6 +283,8 @@ __attribute__((weak)) void rNavigationMesh::setNumberOfNodeInfo(u32 size) {
 
 // No out-of-line body: no code in the ELF
 // void rNavigationMesh::createTreeNode(const MtAABB& r, bool use);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNavigationMesh::MyDTI rNavigationMesh::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rNavigationMesh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -326,7 +328,7 @@ const MtDTI& rNavigationMesh::nodeData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rNavigationMesh8nodeDataD0Ev at 0x011d9ade-0x011d9aff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNavigationMesh::nodeData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -345,22 +347,22 @@ inline void rNavigationMesh::nodeData::operator delete(void* p_addr) {
 // Also emitted as: _ZN15rNavigationMesh8nodeDataD0Ev at 0x011d9ad0
 rNavigationMesh::nodeData::~nodeData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNoMemFree != false) {
+    if (mNoMemFree) {
         return;
     }
-    if (this->mpAttribute != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(this->mpAttribute));
+    if (mpAttribute != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(mpAttribute));
     }
-    if (this->mpCAttribute != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(this->mpCAttribute));
+    if (mpCAttribute != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(mpCAttribute));
     }
-    if (this->mPolygonArea.mpVertexIndex != static_cast<s32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(this->mPolygonArea.mpVertexIndex));
+    if (mPolygonArea.mpVertexIndex != nullptr) {
+        MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(mPolygonArea.mpVertexIndex));
     }
-    if (this->mpLinkInformation == static_cast<rNavigationMesh::nodeData::LinkInfo*>(nullptr)) {
+    if (mpLinkInformation == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(this->mpLinkInformation));
+    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(static_cast<void*>(mpLinkInformation));
 }
 
 // Address: 0x011d9b00 - 0x011d9d27 (551 bytes)
@@ -372,7 +374,7 @@ __attribute__((weak)) void rNavigationMesh::nodeData::createProperty(MtPropertyL
 // Address: 0x011da070 - 0x011da075 (5 bytes)
 MtUI* rNavigationMesh::nodeData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -381,10 +383,10 @@ MtUI* rNavigationMesh::nodeData::createUI(MtProperty& prop) {
 // Address: 0x011da0a0 - 0x011da0b4 (20 bytes)
 s32 rNavigationMesh::nodeData::getNodeArea(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mPolygonArea.mNumberOfIndex) {
-        return this->mPolygonArea.mpVertexIndex[index];
+    if (index < mPolygonArea.mNumberOfIndex) {
+        return mPolygonArea.mpVertexIndex[index];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -394,13 +396,13 @@ s32 rNavigationMesh::nodeData::getNodeArea(u32 index) {
 // Address: 0x01b92f20 - 0x01b92f2a (10 bytes)
 u32 rNavigationMesh::nodeData::getNodeAttribute(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAttribute[index];
+    return mpAttribute[index];
 }
 
 // Address: 0x01b92f30 - 0x01b92f34 (4 bytes)
 u32 rNavigationMesh::nodeData::getNumberOfAttribute() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfAttribute;
+    return mNumberOfAttribute;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -439,8 +441,8 @@ u32 rNavigationMesh::nodeData::getNumberOfAttribute() {
 // Address: 0x011d9d30 - 0x011d9d3f (15 bytes)
 void rNavigationMesh::nodeData::setNodeAttribute(u32 attr, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfAttribute) {
-        this->mpAttribute[index] = attr;
+    if (index < mNumberOfAttribute) {
+        mpAttribute[index] = attr;
     }
 }
 
@@ -468,6 +470,8 @@ __attribute__((weak)) void rNavigationMesh::nodeData::setNumberOfAttribute(u32 n
 
 // No out-of-line body: no code in the ELF
 // u32 rNavigationMesh::nodeData::getCAttribute(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNavigationMesh::nodeData::MyDTI rNavigationMesh::nodeData::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rNavigationMesh::nodeData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -510,7 +514,7 @@ const MtDTI& rNavigationMesh::nodeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rNavigationMesh::nodeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -537,8 +541,10 @@ __attribute__((weak)) void rNavigationMesh::nodeInfo::createProperty(MtPropertyL
 // Address: 0x011da330 - 0x011da335 (5 bytes)
 MtUI* rNavigationMesh::nodeInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNavigationMesh::nodeInfo::MyDTI rNavigationMesh::nodeInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rNavigationMesh::nodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

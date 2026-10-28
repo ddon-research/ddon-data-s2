@@ -188,7 +188,7 @@ inline sContextManager* sContextManager::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sContextManager::List::List() {
-    this->mNum = static_cast<u32>(0);
-    this->mpEnd = static_cast<cContext*>(nullptr);
-    this->mpTop = static_cast<cContext*>(nullptr);
+    this->mNum = 0;
+    this->mpEnd = nullptr;
+    this->mpTop = nullptr;
 }

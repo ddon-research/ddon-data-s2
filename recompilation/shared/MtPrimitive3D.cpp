@@ -56,132 +56,132 @@
 // Address: 0x01b32710 - 0x01b32a4c (828 bytes)
 bool MtAABB::getSurfaceVertex(MtVector3& p0, MtVector3& p1, MtVector3& p2, MtVector3& p3, u32 VoronoiID) const {
     // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
-    if (static_cast<int>(VoronoiID) <= static_cast<int>(31)) {
-        if (static_cast<int>(VoronoiID) <= static_cast<int>(15)) {
-            switch (VoronoiID - static_cast<u32>(1)) {
-                case static_cast<u32>(0):
+    if (static_cast<int>(VoronoiID) <= 31) {
+        if (static_cast<int>(VoronoiID) <= 15) {
+            switch (VoronoiID - 1u) {
+                case 0:
                 {
-                    p0.x = this->minpos.x;
-                    p0.y = this->minpos.y;
-                    p0.z = this->minpos.z;
+                    p0.x = minpos.x;
+                    p0.y = minpos.y;
+                    p0.z = minpos.z;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3276b read, used once; no DWARF local holds it
-                    const f32 t0 = this->minpos.y;
+                    const f32 t0 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b32770 read, used once; no DWARF local holds it
-                    const f32 t1 = this->maxpos.z;
-                    p1.x = this->minpos.x;
+                    const f32 t1 = maxpos.z;
+                    p1.x = minpos.x;
                     p1.y = t0;
                     p1.z = t1;
                     p1.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3278e read, used once; no DWARF local holds it
-                    const f32 t2 = this->maxpos.y;
+                    const f32 t2 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b32793 read, used once; no DWARF local holds it
-                    const f32 t3 = this->maxpos.z;
-                    p2.x = this->minpos.x;
+                    const f32 t3 = maxpos.z;
+                    p2.x = minpos.x;
                     p2.y = t2;
                     p2.z = t3;
                     p2.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b328b3 read, used once; no DWARF local holds it
-                    const f32 t14 = this->maxpos.y;
+                    const f32 t14 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b328bc read, used once; no DWARF local holds it
-                    const f32 t15 = this->minpos.z;
-                    p3.x = this->minpos.x;
+                    const f32 t15 = minpos.z;
+                    p3.x = minpos.x;
                     p3.y = t14;
                     p3.z = t15;
                     p3.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(1):
+                case 1:
                 {
                     // inferred: a temporary for the value the load at 0x1b328e2 read, used once; no DWARF local holds it
-                    const f32 t16 = this->minpos.y;
+                    const f32 t16 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b328e7 read, used once; no DWARF local holds it
-                    const f32 t17 = this->minpos.z;
-                    p0.x = this->maxpos.x;
+                    const f32 t17 = minpos.z;
+                    p0.x = maxpos.x;
                     p0.y = t16;
                     p0.z = t17;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b32901 read, used once; no DWARF local holds it
-                    const f32 t18 = this->minpos.y;
+                    const f32 t18 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b3290b read, used once; no DWARF local holds it
-                    const f32 t19 = this->maxpos.z;
-                    p1.x = this->maxpos.x;
+                    const f32 t19 = maxpos.z;
+                    p1.x = maxpos.x;
                     p1.y = t18;
                     p1.z = t19;
                     p1.pad_ = 0.0f;
-                    p2.x = this->maxpos.x;
-                    p2.y = this->maxpos.y;
-                    p2.z = this->maxpos.z;
+                    p2.x = maxpos.x;
+                    p2.y = maxpos.y;
+                    p2.z = maxpos.z;
                     p2.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b32a06 read, used once; no DWARF local holds it
-                    const f32 t30 = this->minpos.z;
+                    const f32 t30 = minpos.z;
                     // inferred: a temporary for the value the load at 0x1b32a10 read, used once; no DWARF local holds it
-                    const f32 t31 = this->maxpos.y;
-                    p3.x = this->maxpos.x;
+                    const f32 t31 = maxpos.y;
+                    p3.x = maxpos.x;
                     p3.y = t31;
                     p3.z = t30;
                     p3.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(3):
+                case 3:
                 {
-                    p0.x = this->minpos.x;
-                    p0.y = this->minpos.y;
-                    p0.z = this->minpos.z;
+                    p0.x = minpos.x;
+                    p0.y = minpos.y;
+                    p0.z = minpos.z;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b32945 read, used once; no DWARF local holds it
-                    const f32 t20 = this->minpos.y;
+                    const f32 t20 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b3294a read, used once; no DWARF local holds it
-                    const f32 t21 = this->maxpos.z;
-                    p1.x = this->minpos.x;
+                    const f32 t21 = maxpos.z;
+                    p1.x = minpos.x;
                     p1.y = t20;
                     p1.z = t21;
                     p1.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b32964 read, used once; no DWARF local holds it
-                    const f32 t22 = this->minpos.y;
+                    const f32 t22 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b3296e read, used once; no DWARF local holds it
-                    const f32 t23 = this->maxpos.z;
-                    p2.x = this->maxpos.x;
+                    const f32 t23 = maxpos.z;
+                    p2.x = maxpos.x;
                     p2.y = t22;
                     p2.z = t23;
                     p2.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3298d read, used once; no DWARF local holds it
-                    const f32 t24 = this->minpos.y;
+                    const f32 t24 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b32992 read, used once; no DWARF local holds it
-                    const f32 t25 = this->minpos.z;
-                    p3.x = this->maxpos.x;
+                    const f32 t25 = minpos.z;
+                    p3.x = maxpos.x;
                     p3.y = t24;
                     p3.z = t25;
                     p3.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(7):
+                case 7:
                 {
                     // inferred: a temporary for the value the load at 0x1b3299c read, used once; no DWARF local holds it
-                    const f32 t26 = this->maxpos.y;
+                    const f32 t26 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b329a5 read, used once; no DWARF local holds it
-                    const f32 t27 = this->minpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t27 = minpos.z;
+                    p0.x = minpos.x;
                     p0.y = t26;
                     p0.z = t27;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b329c3 read, used once; no DWARF local holds it
-                    const f32 t28 = this->maxpos.y;
+                    const f32 t28 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b329c8 read, used once; no DWARF local holds it
-                    const f32 t29 = this->maxpos.z;
-                    p1.x = this->minpos.x;
+                    const f32 t29 = maxpos.z;
+                    p1.x = minpos.x;
                     p1.y = t28;
                     p1.z = t29;
                     p1.pad_ = 0.0f;
-                    p2.x = this->maxpos.x;
-                    p2.y = this->maxpos.y;
-                    p2.z = this->maxpos.z;
+                    p2.x = maxpos.x;
+                    p2.y = maxpos.y;
+                    p2.z = maxpos.z;
                     p2.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b32a06 read, used once; no DWARF local holds it
-                    const f32 t30 = this->minpos.z;
+                    const f32 t30 = minpos.z;
                     // inferred: a temporary for the value the load at 0x1b32a10 read, used once; no DWARF local holds it
-                    const f32 t31 = this->maxpos.y;
-                    p3.x = this->maxpos.x;
+                    const f32 t31 = maxpos.y;
+                    p3.x = maxpos.x;
                     p3.y = t31;
                     p3.z = t30;
                     p3.pad_ = 0.0f;
@@ -193,32 +193,32 @@ bool MtAABB::getSurfaceVertex(MtVector3& p0, MtVector3& p1, MtVector3& p2, MtVec
                 }
             }
         } else {
-            if (VoronoiID == static_cast<u32>(16)) {
-                p0.x = this->minpos.x;
-                p0.y = this->minpos.y;
-                p0.z = this->minpos.z;
+            if (VoronoiID == 16) {
+                p0.x = minpos.x;
+                p0.y = minpos.y;
+                p0.z = minpos.z;
                 p0.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b32870 read, used once; no DWARF local holds it
-                const f32 t10 = this->minpos.y;
+                const f32 t10 = minpos.y;
                 // inferred: a temporary for the value the load at 0x1b32875 read, used once; no DWARF local holds it
-                const f32 t11 = this->minpos.z;
-                p1.x = this->maxpos.x;
+                const f32 t11 = minpos.z;
+                p1.x = maxpos.x;
                 p1.y = t10;
                 p1.z = t11;
                 p1.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b3288f read, used once; no DWARF local holds it
-                const f32 t12 = this->minpos.z;
+                const f32 t12 = minpos.z;
                 // inferred: a temporary for the value the load at 0x1b32899 read, used once; no DWARF local holds it
-                const f32 t13 = this->maxpos.y;
-                p2.x = this->maxpos.x;
+                const f32 t13 = maxpos.y;
+                p2.x = maxpos.x;
                 p2.y = t13;
                 p2.z = t12;
                 p2.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b328b3 read, used once; no DWARF local holds it
-                const f32 t14 = this->maxpos.y;
+                const f32 t14 = maxpos.y;
                 // inferred: a temporary for the value the load at 0x1b328bc read, used once; no DWARF local holds it
-                const f32 t15 = this->minpos.z;
-                p3.x = this->minpos.x;
+                const f32 t15 = minpos.z;
+                p3.x = minpos.x;
                 p3.y = t14;
                 p3.z = t15;
                 p3.pad_ = 0.0f;
@@ -228,32 +228,32 @@ bool MtAABB::getSurfaceVertex(MtVector3& p0, MtVector3& p1, MtVector3& p2, MtVec
             }
         }
     } else {
-        if (VoronoiID == static_cast<u32>(32)) {
+        if (VoronoiID == 32) {
             // inferred: a temporary for the value the load at 0x1b327b9 read, used once; no DWARF local holds it
-            const f32 t4 = this->maxpos.y;
+            const f32 t4 = maxpos.y;
             // inferred: a temporary for the value the load at 0x1b327be read, used once; no DWARF local holds it
-            const f32 t5 = this->maxpos.z;
-            p0.x = this->minpos.x;
+            const f32 t5 = maxpos.z;
+            p0.x = minpos.x;
             p0.y = t4;
             p0.z = t5;
             p0.pad_ = 0.0f;
-            p1.x = this->maxpos.x;
-            p1.y = this->maxpos.y;
-            p1.z = this->maxpos.z;
+            p1.x = maxpos.x;
+            p1.y = maxpos.y;
+            p1.z = maxpos.z;
             p1.pad_ = 0.0f;
             // inferred: a temporary for the value the load at 0x1b327fc read, used once; no DWARF local holds it
-            const f32 t6 = this->minpos.y;
+            const f32 t6 = minpos.y;
             // inferred: a temporary for the value the load at 0x1b32806 read, used once; no DWARF local holds it
-            const f32 t7 = this->maxpos.z;
-            p2.x = this->maxpos.x;
+            const f32 t7 = maxpos.z;
+            p2.x = maxpos.x;
             p2.y = t6;
             p2.z = t7;
             p2.pad_ = 0.0f;
             // inferred: a temporary for the value the load at 0x1b32824 read, used once; no DWARF local holds it
-            const f32 t8 = this->minpos.y;
+            const f32 t8 = minpos.y;
             // inferred: a temporary for the value the load at 0x1b32829 read, used once; no DWARF local holds it
-            const f32 t9 = this->maxpos.z;
-            p3.x = this->minpos.x;
+            const f32 t9 = maxpos.z;
+            p3.x = minpos.x;
             p3.y = t8;
             p3.z = t9;
             p3.pad_ = 0.0f;
@@ -276,83 +276,83 @@ bool MtAABB::getSurfaceVertex(MtVector3& p0, MtVector3& p1, MtVector3& p2, MtVec
 // Address: 0x01b38040 - 0x01b38318 (728 bytes)
 bool MtAABB::getEdge(MtVector3& p0, MtVector3& p1, u32 VoronoiID) const {
     // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
-    if (static_cast<int>(VoronoiID) <= static_cast<int>(16)) {
-        switch (VoronoiID - static_cast<u32>(5)) {
-            case static_cast<u32>(0):
+    if (static_cast<int>(VoronoiID) <= 16) {
+        switch (VoronoiID - 5u) {
+            case 0:
             {
                 // inferred: a temporary for the value the load at 0x1b38067 read, used once; no DWARF local holds it
-                const f32 t0 = this->minpos.y;
+                const f32 t0 = minpos.y;
                 // inferred: a temporary for the value the load at 0x1b3806c read, used once; no DWARF local holds it
-                const f32 t1 = this->minpos.z;
-                p0.x = this->minpos.x;
+                const f32 t1 = minpos.z;
+                p0.x = minpos.x;
                 p0.y = t0;
                 p0.z = t1;
                 p0.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b3808a read, used once; no DWARF local holds it
-                const f32 t2 = this->minpos.y;
+                const f32 t2 = minpos.y;
                 // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                const f32 t34 = this->maxpos.z;
-                p1.x = this->minpos.x;
+                const f32 t34 = maxpos.z;
+                p1.x = minpos.x;
                 p1.y = t2;
                 p1.z = t34;
                 p1.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
                 // inferred: a temporary for the value the load at 0x1b38125 read, used once; no DWARF local holds it
-                const f32 t9 = this->minpos.y;
+                const f32 t9 = minpos.y;
                 // inferred: a temporary for the value the load at 0x1b3812a read, used once; no DWARF local holds it
-                const f32 t10 = this->minpos.z;
-                p0.x = this->maxpos.x;
+                const f32 t10 = minpos.z;
+                p0.x = maxpos.x;
                 p0.y = t9;
                 p0.z = t10;
                 p0.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b3825a read, used once; no DWARF local holds it
-                const f32 t29 = this->minpos.y;
+                const f32 t29 = minpos.y;
                 // inferred: a temporary for the value the load at 0x1b38264 read, used once; no DWARF local holds it
-                const f32 t30 = this->maxpos.z;
-                p1.x = this->maxpos.x;
+                const f32 t30 = maxpos.z;
+                p1.x = maxpos.x;
                 p1.y = t29;
                 p1.z = t30;
                 p1.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
                 // inferred: a temporary for the value the load at 0x1b38134 read, used once; no DWARF local holds it
-                const f32 t11 = this->maxpos.y;
+                const f32 t11 = maxpos.y;
                 // inferred: a temporary for the value the load at 0x1b3813d read, used once; no DWARF local holds it
-                const f32 t12 = this->minpos.z;
-                p0.x = this->minpos.x;
+                const f32 t12 = minpos.z;
+                p0.x = minpos.x;
                 p0.y = t11;
                 p0.z = t12;
                 p0.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b3829c read, used once; no DWARF local holds it
-                const f32 t33 = this->maxpos.y;
+                const f32 t33 = maxpos.y;
                 // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                const f32 t34 = this->maxpos.z;
-                p1.x = this->minpos.x;
+                const f32 t34 = maxpos.z;
+                p1.x = minpos.x;
                 p1.y = t33;
                 p1.z = t34;
                 p1.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(5):
+            case 5:
             {
                 // inferred: a temporary for the value the load at 0x1b38160 read, used once; no DWARF local holds it
-                const f32 t13 = this->minpos.z;
+                const f32 t13 = minpos.z;
                 // inferred: a temporary for the value the load at 0x1b3816a read, used once; no DWARF local holds it
-                const f32 t14 = this->maxpos.y;
-                p0.x = this->maxpos.x;
+                const f32 t14 = maxpos.y;
+                p0.x = maxpos.x;
                 p0.y = t14;
                 p0.z = t13;
                 p0.pad_ = 0.0f;
                 // inferred: a temporary for the value the load at 0x1b3829c read, used once; no DWARF local holds it
-                const f32 t33 = this->maxpos.y;
+                const f32 t33 = maxpos.y;
                 // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                const f32 t34 = this->maxpos.z;
-                p1.x = this->maxpos.x;
+                const f32 t34 = maxpos.z;
+                p1.x = maxpos.x;
                 p1.y = t33;
                 p1.z = t34;
                 p1.pad_ = 0.0f;
@@ -364,83 +364,83 @@ bool MtAABB::getEdge(MtVector3& p0, MtVector3& p1, u32 VoronoiID) const {
             }
         }
     } else {
-        if (static_cast<int>(VoronoiID) <= static_cast<int>(32)) {
-            switch (VoronoiID - static_cast<u32>(17)) {
-                case static_cast<u32>(0):
+        if (static_cast<int>(VoronoiID) <= 32) {
+            switch (VoronoiID - 17u) {
+                case 0:
                 {
                     // inferred: a temporary for the value the load at 0x1b380b9 read, used once; no DWARF local holds it
-                    const f32 t3 = this->minpos.y;
+                    const f32 t3 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b380be read, used once; no DWARF local holds it
-                    const f32 t4 = this->minpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t4 = minpos.z;
+                    p0.x = minpos.x;
                     p0.y = t3;
                     p0.z = t4;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b380d8 read, used once; no DWARF local holds it
-                    const f32 t5 = this->maxpos.y;
+                    const f32 t5 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b380e1 read, used once; no DWARF local holds it
-                    const f32 t6 = this->minpos.z;
-                    p1.x = this->minpos.x;
+                    const f32 t6 = minpos.z;
+                    p1.x = minpos.x;
                     p1.y = t5;
                     p1.z = t6;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(1):
+                case 1:
                 {
                     // inferred: a temporary for the value the load at 0x1b38187 read, used once; no DWARF local holds it
-                    const f32 t15 = this->minpos.y;
+                    const f32 t15 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b3818c read, used once; no DWARF local holds it
-                    const f32 t16 = this->minpos.z;
-                    p0.x = this->maxpos.x;
+                    const f32 t16 = minpos.z;
+                    p0.x = maxpos.x;
                     p0.y = t15;
                     p0.z = t16;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b381f6 read, used once; no DWARF local holds it
-                    const f32 t23 = this->minpos.z;
+                    const f32 t23 = minpos.z;
                     // inferred: a temporary for the value the load at 0x1b38200 read, used once; no DWARF local holds it
-                    const f32 t24 = this->maxpos.y;
-                    p1.x = this->maxpos.x;
+                    const f32 t24 = maxpos.y;
+                    p1.x = maxpos.x;
                     p1.y = t24;
                     p1.z = t23;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(3):
+                case 3:
                 {
                     // inferred: a temporary for the value the load at 0x1b381a0 read, used once; no DWARF local holds it
-                    const f32 t17 = this->minpos.y;
+                    const f32 t17 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b381a5 read, used once; no DWARF local holds it
-                    const f32 t18 = this->minpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t18 = minpos.z;
+                    p0.x = minpos.x;
                     p0.y = t17;
                     p0.z = t18;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b381c4 read, used once; no DWARF local holds it
-                    const f32 t19 = this->minpos.y;
+                    const f32 t19 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b381c9 read, used once; no DWARF local holds it
-                    const f32 t20 = this->minpos.z;
-                    p1.x = this->maxpos.x;
+                    const f32 t20 = minpos.z;
+                    p1.x = maxpos.x;
                     p1.y = t19;
                     p1.z = t20;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(7):
+                case 7:
                 {
                     // inferred: a temporary for the value the load at 0x1b381d3 read, used once; no DWARF local holds it
-                    const f32 t21 = this->maxpos.y;
+                    const f32 t21 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b381dc read, used once; no DWARF local holds it
-                    const f32 t22 = this->minpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t22 = minpos.z;
+                    p0.x = minpos.x;
                     p0.y = t21;
                     p0.z = t22;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b381f6 read, used once; no DWARF local holds it
-                    const f32 t23 = this->minpos.z;
+                    const f32 t23 = minpos.z;
                     // inferred: a temporary for the value the load at 0x1b38200 read, used once; no DWARF local holds it
-                    const f32 t24 = this->maxpos.y;
-                    p1.x = this->maxpos.x;
+                    const f32 t24 = maxpos.y;
+                    p1.x = maxpos.x;
                     p1.y = t24;
                     p1.z = t23;
                     p1.pad_ = 0.0f;
@@ -452,82 +452,82 @@ bool MtAABB::getEdge(MtVector3& p0, MtVector3& p1, u32 VoronoiID) const {
                 }
             }
         } else {
-            switch (VoronoiID - static_cast<u32>(33)) {
-                case static_cast<u32>(0):
+            switch (VoronoiID - 33u) {
+                case 0:
                 {
                     // inferred: a temporary for the value the load at 0x1b3810b read, used once; no DWARF local holds it
-                    const f32 t7 = this->minpos.y;
+                    const f32 t7 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b38110 read, used once; no DWARF local holds it
-                    const f32 t8 = this->maxpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t8 = maxpos.z;
+                    p0.x = minpos.x;
                     p0.y = t7;
                     p0.z = t8;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3829c read, used once; no DWARF local holds it
-                    const f32 t33 = this->maxpos.y;
+                    const f32 t33 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                    const f32 t34 = this->maxpos.z;
-                    p1.x = this->minpos.x;
+                    const f32 t34 = maxpos.z;
+                    p1.x = minpos.x;
                     p1.y = t33;
                     p1.z = t34;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(1):
+                case 1:
                 {
                     // inferred: a temporary for the value the load at 0x1b38218 read, used once; no DWARF local holds it
-                    const f32 t25 = this->minpos.y;
+                    const f32 t25 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b38222 read, used once; no DWARF local holds it
-                    const f32 t26 = this->maxpos.z;
-                    p0.x = this->maxpos.x;
+                    const f32 t26 = maxpos.z;
+                    p0.x = maxpos.x;
                     p0.y = t25;
                     p0.z = t26;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3829c read, used once; no DWARF local holds it
-                    const f32 t33 = this->maxpos.y;
+                    const f32 t33 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                    const f32 t34 = this->maxpos.z;
-                    p1.x = this->maxpos.x;
+                    const f32 t34 = maxpos.z;
+                    p1.x = maxpos.x;
                     p1.y = t33;
                     p1.z = t34;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(3):
+                case 3:
                 {
                     // inferred: a temporary for the value the load at 0x1b3823b read, used once; no DWARF local holds it
-                    const f32 t27 = this->minpos.y;
+                    const f32 t27 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b38240 read, used once; no DWARF local holds it
-                    const f32 t28 = this->maxpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t28 = maxpos.z;
+                    p0.x = minpos.x;
                     p0.y = t27;
                     p0.z = t28;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3825a read, used once; no DWARF local holds it
-                    const f32 t29 = this->minpos.y;
+                    const f32 t29 = minpos.y;
                     // inferred: a temporary for the value the load at 0x1b38264 read, used once; no DWARF local holds it
-                    const f32 t30 = this->maxpos.z;
-                    p1.x = this->maxpos.x;
+                    const f32 t30 = maxpos.z;
+                    p1.x = maxpos.x;
                     p1.y = t29;
                     p1.z = t30;
                     p1.pad_ = 0.0f;
                     return true;
                 }
-                case static_cast<u32>(7):
+                case 7:
                 {
                     // inferred: a temporary for the value the load at 0x1b38278 read, used once; no DWARF local holds it
-                    const f32 t31 = this->maxpos.y;
+                    const f32 t31 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b3827d read, used once; no DWARF local holds it
-                    const f32 t32 = this->maxpos.z;
-                    p0.x = this->minpos.x;
+                    const f32 t32 = maxpos.z;
+                    p0.x = minpos.x;
                     p0.y = t31;
                     p0.z = t32;
                     p0.pad_ = 0.0f;
                     // inferred: a temporary for the value the load at 0x1b3829c read, used once; no DWARF local holds it
-                    const f32 t33 = this->maxpos.y;
+                    const f32 t33 = maxpos.y;
                     // inferred: a temporary for the value the load at 0x1b382a1 read, used once; no DWARF local holds it
-                    const f32 t34 = this->maxpos.z;
-                    p1.x = this->maxpos.x;
+                    const f32 t34 = maxpos.z;
+                    p1.x = maxpos.x;
                     p1.y = t33;
                     p1.z = t34;
                     p1.pad_ = 0.0f;
@@ -684,6 +684,10 @@ bool MtAABB::getEdge(MtVector3& p0, MtVector3& p1, u32 VoronoiID) const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtAllocator* MtAABB::getAllocator();
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const MtAABB MtAABB::Empty;
+
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const MtAABB MtAABB::Zero;
 
 // No out-of-line body: no code in the ELF
 // MtAABB4::MtAABB4();
@@ -1057,15 +1061,15 @@ __attribute__((weak)) void MtCylinder::getBoundingAABB(MtAABB& aabb) const {
 // Address: 0x00d75040 - 0x00d75049 (9 bytes)
 MtFrustum::MtFrustum(f32 fov, f32 aspect_ratio, f32 nearz, f32 farz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->infinite = false;
-    this->::MtFrustum::init(fov, aspect_ratio, nearz, farz);
+    infinite = false;
+    init(fov, aspect_ratio, nearz, farz);
 }
 
 // Address: 0x00d75210 - 0x00d7521d (13 bytes)
 MtFrustum::MtFrustum(f32 fov, f32 aspect_ratio, f32 nearz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->infinite = true;
-    this->::MtFrustum::init(fov, aspect_ratio, nearz, nearz);
+    infinite = true;
+    init(fov, aspect_ratio, nearz, nearz);
 }
 
 // Address: 0x00d75220 - 0x00d752b3 (147 bytes)
@@ -2407,52 +2411,52 @@ __attribute__((weak)) void MtTriangle::getBoundingSphere(MtSphere& sphere) const
 // Address: 0x01b32a50 - 0x01b32b97 (327 bytes)
 bool MtTriangle::getNearestEdgeFromUVW(MtLineSegment& edge_out, MtVector3& NoEdgeVtxOut, u32 vid, f32 u, f32 v, f32 w) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (vid != static_cast<u32>(0)) {
+    if (vid != 0) {
         return false;
     } else {
         if (u > v) {
-            edge_out.p0.x = this->p0.x;
-            edge_out.p0.y = this->p0.y;
-            edge_out.p0.z = this->p0.z;
+            edge_out.p0.x = p0.x;
+            edge_out.p0.y = p0.y;
+            edge_out.p0.z = p0.z;
             edge_out.p0.pad_ = 0.0f;
             if (v > w) {
-                edge_out.p1.x = this->p1.x;
-                edge_out.p1.y = this->p1.y;
-                edge_out.p1.z = this->p1.z;
+                edge_out.p1.x = p1.x;
+                edge_out.p1.y = p1.y;
+                edge_out.p1.z = p1.z;
                 edge_out.p1.pad_ = 0.0f;
-                NoEdgeVtxOut.x = this->p2.x;
-                NoEdgeVtxOut.y = this->p2.y;
-                NoEdgeVtxOut.z = this->p2.z;
+                NoEdgeVtxOut.x = p2.x;
+                NoEdgeVtxOut.y = p2.y;
+                NoEdgeVtxOut.z = p2.z;
             } else {
-                edge_out.p1.x = this->p2.x;
-                edge_out.p1.y = this->p2.y;
-                edge_out.p1.z = this->p2.z;
+                edge_out.p1.x = p2.x;
+                edge_out.p1.y = p2.y;
+                edge_out.p1.z = p2.z;
                 edge_out.p1.pad_ = 0.0f;
-                NoEdgeVtxOut.x = this->p1.x;
-                NoEdgeVtxOut.y = this->p1.y;
-                NoEdgeVtxOut.z = this->p1.z;
+                NoEdgeVtxOut.x = p1.x;
+                NoEdgeVtxOut.y = p1.y;
+                NoEdgeVtxOut.z = p1.z;
             }
         } else {
-            edge_out.p0.x = this->p1.x;
-            edge_out.p0.y = this->p1.y;
-            edge_out.p0.z = this->p1.z;
+            edge_out.p0.x = p1.x;
+            edge_out.p0.y = p1.y;
+            edge_out.p0.z = p1.z;
             edge_out.p0.pad_ = 0.0f;
             if (u > w) {
-                edge_out.p1.x = this->p0.x;
-                edge_out.p1.y = this->p0.y;
-                edge_out.p1.z = this->p0.z;
+                edge_out.p1.x = p0.x;
+                edge_out.p1.y = p0.y;
+                edge_out.p1.z = p0.z;
                 edge_out.p1.pad_ = 0.0f;
-                NoEdgeVtxOut.x = this->p2.x;
-                NoEdgeVtxOut.y = this->p2.y;
-                NoEdgeVtxOut.z = this->p2.z;
+                NoEdgeVtxOut.x = p2.x;
+                NoEdgeVtxOut.y = p2.y;
+                NoEdgeVtxOut.z = p2.z;
             } else {
-                edge_out.p1.x = this->p2.x;
-                edge_out.p1.y = this->p2.y;
-                edge_out.p1.z = this->p2.z;
+                edge_out.p1.x = p2.x;
+                edge_out.p1.y = p2.y;
+                edge_out.p1.z = p2.z;
                 edge_out.p1.pad_ = 0.0f;
-                NoEdgeVtxOut.x = this->p0.x;
-                NoEdgeVtxOut.y = this->p0.y;
-                NoEdgeVtxOut.z = this->p0.z;
+                NoEdgeVtxOut.x = p0.x;
+                NoEdgeVtxOut.y = p0.y;
+                NoEdgeVtxOut.z = p0.z;
             }
         }
         NoEdgeVtxOut.pad_ = 0.0f;
@@ -2616,4 +2620,6 @@ __attribute__((weak)) MtVector3 MtTriangle::getInternalPos() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtAllocator* MtTriangle::getAllocator();
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 MtTriangle::MAX_EDGE_LENGTH;
 

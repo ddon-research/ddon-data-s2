@@ -35,7 +35,7 @@ const MtDTI& cEmDamageDirInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEmDamageDirInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memAlloc(sz, align, ::cEmDamageDirInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmDamageDirInfo::DTI)->memAlloc(sz, align, cEmDamageDirInfo::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -50,7 +50,7 @@ inline void* cEmDamageDirInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmDamageDirInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmDamageDirInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -79,6 +79,8 @@ __attribute__((weak)) void cEmDamageDirInfo::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmDamageDirInfo::MyDTI cEmDamageDirInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmDamageDirInfo.cpp at 0x006661cf-0x0066620c (called at rEmDamageDirInfo.cpp:23)
 //   in _GLOBAL__sub_I_rEmDamageDirInfo.cpp at 0x006661cf-0x0066620c (called at rEmDamageDirInfo.h:31)
@@ -87,7 +89,7 @@ __attribute__((weak)) void cEmDamageDirInfo::createProperty(MtPropertyList& s) {
 // Address: 0x00665790 - 0x006657ea (90 bytes)
 MtObject* cEmDamageDirInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmDamageDirInfo;
+    return new (16u) cEmDamageDirInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& rEmDamageDirInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmDamageDirInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmDamageDirInfo::DTI)->memAlloc(sz, align, ::rEmDamageDirInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmDamageDirInfo::DTI)->memAlloc(sz, align, rEmDamageDirInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rEmDamageDirInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rEmDamageDirInfoD0Ev at 0x01a86114-0x01a86133, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmDamageDirInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmDamageDirInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmDamageDirInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,8 +156,10 @@ MT_CTSTR rEmDamageDirInfo::getExt() const {
 // Address: 0x01a86260 - 0x01a86266 (6 bytes)
 u32 rEmDamageDirInfo::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmDamageDirInfo::MyDTI rEmDamageDirInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmDamageDirInfo.cpp at 0x0066620c-0x00666249 (called at rEmDamageDirInfo.cpp:117)
@@ -165,7 +169,7 @@ u32 rEmDamageDirInfo::getDataVersion() const {
 // Address: 0x00665ec0 - 0x00665f24 (100 bytes)
 MtObject* rEmDamageDirInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmDamageDirInfo;
+    return new (16u) rEmDamageDirInfo;
 }
 
 // Instance at 0x01a86210 - 0x01a86222 (18 bytes) of the generic rTbl2<T>::getData

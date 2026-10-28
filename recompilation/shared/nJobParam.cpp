@@ -85,13 +85,13 @@ __attribute__((weak)) void nJobParam::cHumanBaseInfo::createProperty(MtPropertyL
 // Address: 0x01962960 - 0x01962966 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getHP() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHP_pri;
+    return mHP_pri;
 }
 
 // Address: 0x01962920 - 0x01962926 (6 bytes)
 void nJobParam::cHumanBaseInfo::setHP(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHP_pri = NewValue;
+    mHP_pri = NewValue;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (22 bytes)
@@ -117,7 +117,7 @@ __attribute__((weak)) void nJobParam::cHumanBaseInfo::setFinalMaxHP(f32 hp) {
 // Address: 0x00616da0 - 0x00616da6 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getFinalMaxHP() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFinalMaxHP_pri;
+    return mFinalMaxHP_pri;
 }
 
 // Address: 0x00616db0 - 0x00616dbb (11 bytes)
@@ -158,13 +158,13 @@ __attribute__((weak)) f32 nJobParam::cHumanBaseInfo::getFinalMaxHPCheatCheck() c
 // Address: 0x019629f0 - 0x019629f6 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getStamina() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStamina_pri;
+    return mStamina_pri;
 }
 
 // Address: 0x01962930 - 0x01962936 (6 bytes)
 void nJobParam::cHumanBaseInfo::setStamina(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStamina_pri = NewValue;
+    mStamina_pri = NewValue;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (12 bytes)
@@ -182,7 +182,7 @@ void nJobParam::cHumanBaseInfo::setStamina(f32 NewValue) {
 // Address: 0x019629e0 - 0x019629e6 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getFinalMaxStamina() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFinalMaxStamina_pri;
+    return mFinalMaxStamina_pri;
 }
 
 // No out-of-line body: 10 inlined copies in 7 functions (71 bytes)
@@ -195,7 +195,7 @@ f32 nJobParam::cHumanBaseInfo::getFinalMaxStamina() const {
 // Address: 0x01962a00 - 0x01962a04 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getLostPower() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLostPower_pri;
+    return mLostPower_pri;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (21 bytes)
@@ -214,7 +214,7 @@ u32 nJobParam::cHumanBaseInfo::getLostPower() const {
 // Address: 0x01962a10 - 0x01962a14 (4 bytes)
 s32 nJobParam::cHumanBaseInfo::getAbilityCapacity() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAbilityCapacity_pri;
+    return mAbilityCapacity_pri;
 }
 
 // No out-of-line body: 15 inlined copies in 14 functions (135 bytes)
@@ -237,97 +237,97 @@ s32 nJobParam::cHumanBaseInfo::getAbilityCapacity() const {
 // Address: 0x01962a20 - 0x01962a24 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getLostNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLostNum_pri;
+    return mLostNum_pri;
 }
 
 // Address: 0x01962940 - 0x01962944 (4 bytes)
 void nJobParam::cHumanBaseInfo::setLostNum(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLostNum_pri = NewValue;
+    mLostNum_pri = NewValue;
 }
 
 // Address: 0x01962a30 - 0x01962a34 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getMaxLostNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxLostNum_pri;
+    return mMaxLostNum_pri;
 }
 
 // Address: 0x01962950 - 0x01962954 (4 bytes)
 void nJobParam::cHumanBaseInfo::setMaxLostNum(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxLostNum_pri = NewValue;
+    mMaxLostNum_pri = NewValue;
 }
 
 // Address: 0x019629c0 - 0x019629c6 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getGainHp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainHp_pri;
+    return mGainHp_pri;
 }
 
 // Address: 0x01962a40 - 0x01962a46 (6 bytes)
 void nJobParam::cHumanBaseInfo::setGainHp(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainHp_pri = NewValue;
+    mGainHp_pri = NewValue;
 }
 
 // Address: 0x019629d0 - 0x019629d6 (6 bytes)
 f32 nJobParam::cHumanBaseInfo::getGainStamina() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainStamina_pri;
+    return mGainStamina_pri;
 }
 
 // Address: 0x01962a50 - 0x01962a56 (6 bytes)
 void nJobParam::cHumanBaseInfo::setGainStamina(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainStamina_pri = NewValue;
+    mGainStamina_pri = NewValue;
 }
 
 // Address: 0x01962980 - 0x01962984 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getGainAtk() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainAtk_pri;
+    return mGainAtk_pri;
 }
 
 // Address: 0x01962a60 - 0x01962a64 (4 bytes)
 void nJobParam::cHumanBaseInfo::setGainAtk(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainAtk_pri = NewValue;
+    mGainAtk_pri = NewValue;
 }
 
 // Address: 0x01962990 - 0x01962994 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getGainDef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainDef_pri;
+    return mGainDef_pri;
 }
 
 // Address: 0x01962a70 - 0x01962a74 (4 bytes)
 void nJobParam::cHumanBaseInfo::setGainDef(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainDef_pri = NewValue;
+    mGainDef_pri = NewValue;
 }
 
 // Address: 0x019629a0 - 0x019629a4 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getGainMAtk() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainMAtk_pri;
+    return mGainMAtk_pri;
 }
 
 // Address: 0x01962a80 - 0x01962a84 (4 bytes)
 void nJobParam::cHumanBaseInfo::setGainMAtk(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainMAtk_pri = NewValue;
+    mGainMAtk_pri = NewValue;
 }
 
 // Address: 0x019629b0 - 0x019629b4 (4 bytes)
 u32 nJobParam::cHumanBaseInfo::getGainMDef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGainMDef_pri;
+    return mGainMDef_pri;
 }
 
 // Address: 0x01962a90 - 0x01962a94 (4 bytes)
 void nJobParam::cHumanBaseInfo::setGainMDef(u32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGainMDef_pri = NewValue;
+    mGainMDef_pri = NewValue;
 }
 
 // No out-of-line body: no code in the ELF
@@ -345,23 +345,23 @@ __attribute__((weak)) void nJobParam::cHumanBaseInfo::copyData(const nJobParam::
 // Address: 0x0006b8d0 - 0x0006b964 (148 bytes)
 void nJobParam::cHumanBaseInfo::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+    if ((::sGame::mpInstance) == nullptr) {
         return;
     }
-    this->mMaxHP_pri = (::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(0));
-    this->mHP_pri = ::sGame::getInstance()->::sGame::getBaseParam(static_cast<u32>(0));
-    this->::nJobParam::cHumanBaseInfo::setFinalMaxHP(this->::nJobParam::cHumanBaseInfo::getMaxHP());
-    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+    mMaxHP_pri = (::sGame::mpInstance)->::sGame::getBaseParam(0u);
+    mHP_pri = ::sGame::getInstance()->getBaseParam(0u);
+    setFinalMaxHP(getMaxHP());
+    if ((::sGame::mpInstance) == nullptr) {
         return;
     }
-    this->mStamina_pri = (::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(2));
-    this->mMaxStamina_pri = ::sGame::getInstance()->::sGame::getBaseParam(static_cast<u32>(2));
-    this->mFinalMaxStamina_pri = this->mMaxStamina_pri;
-    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+    mStamina_pri = (::sGame::mpInstance)->::sGame::getBaseParam(2u);
+    mMaxStamina_pri = ::sGame::getInstance()->getBaseParam(2u);
+    mFinalMaxStamina_pri = mMaxStamina_pri;
+    if ((::sGame::mpInstance) == nullptr) {
         return;
     }
-    this->mLostPower_pri = static_cast<unsigned int>(static_cast<long>((::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(4))));
-    this->mLostLv_pri = static_cast<u16>(1);
+    mLostPower_pri = static_cast<unsigned int>(static_cast<long>((::sGame::mpInstance)->::sGame::getBaseParam(4u)));
+    mLostLv_pri = 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (55 bytes)
@@ -379,6 +379,8 @@ void nJobParam::cHumanBaseInfo::init() {
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
 //   in nJobParam::cHumanBaseInfo::setFinalMaxHP at 0x00616d85-0x00616d8f (called at nJobParam.cpp:31)
 // void nJobParam::cHumanBaseInfo::setFinalMaxHPCheatCheck(f32 hp);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nJobParam::cHumanBaseInfo::MyDTI nJobParam::cHumanBaseInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cContextPlayerInfo.cpp at 0x0006c3ce-0x0006c407 (called at cContextPlayerInfo.cpp:52)
@@ -415,7 +417,7 @@ MtAllocator* nJobParam::cJobInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nJobParam::cJobInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -1083,68 +1085,68 @@ __attribute__((weak)) nJobParam::cJobInfo nJobParam::cJobInfo::operator+(const n
 // Address: 0x0006b1d0 - 0x0006b1e8 (24 bytes)
 void nJobParam::cJobInfo::copyData(const nJobParam::cJobInfo& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memcpy(static_cast<void*>(&this->mLv_pri), static_cast<const void*>(&src.mLv_pri), static_cast<size_t>(101));
+    ::memcpy(static_cast<void*>(&mLv_pri), static_cast<const void*>(&src.mLv_pri), 101ul);
 }
 
 // Address: 0x0006b1f0 - 0x0006b34c (348 bytes)
 void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sGame::getInstance() == static_cast<sGame*>(nullptr)) {
+    if (::sGame::getInstance() == nullptr) {
         return;
     }
-    rJobBaseParam* pPar = ::sGame::getInstance()->::sGame::getJobBaseParam();
-    if (pPar == static_cast<rJobBaseParam*>(nullptr)) {
+    rJobBaseParam* pPar = ::sGame::getInstance()->getJobBaseParam();
+    if (pPar == nullptr) {
         return;
     }
     nJobParam::cJobInfo* info = pPar->getData(::nHuman::getJobArrayIndex(job));
-    if (info == static_cast<nJobParam::cJobInfo*>(nullptr)) {
+    if (info == nullptr) {
         return;
     }
-    this->mLv_pri = info->::nJobParam::cJobInfo::getLv();
-    this->mExp_pri = info->::nJobParam::cJobInfo::getExp();
-    this->mAtk_pri = info->mAtk_pri;
-    this->mDef_pri = info->mDef_pri;
-    this->mMAtk_pri = info->mMAtk_pri;
-    this->mMDef_pri = info->mMDef_pri;
-    this->mStrength_pri = info->mStrength_pri;
-    this->mDownPower_pri = info->mDownPower_pri;
-    this->mShakePower_pri = info->mShakePower_pri;
-    this->mStanPower_pri = info->mStanPower_pri;
-    this->mConstitution_pri = info->::nJobParam::cJobInfo::getConstitution();
-    this->mGuts_pri = info->::nJobParam::cJobInfo::getGuts();
-    this->mJobPoint_pri = info->::nJobParam::cJobInfo::getJobPoint();
-    this->mFireResist_pri = info->::nJobParam::cJobInfo::getFireResist();
-    this->mIceResist_pri = info->::nJobParam::cJobInfo::getIceResist();
-    this->mThunderResist_pri = info->::nJobParam::cJobInfo::getThunderResist();
-    this->mHolyResist_pri = info->::nJobParam::cJobInfo::getHolyResist();
-    this->mDarkResist_pri = info->::nJobParam::cJobInfo::getDarkResist();
-    this->mSpreadResist_pri = info->::nJobParam::cJobInfo::getSpreadResist();
-    this->mFreezeResist_pri = info->::nJobParam::cJobInfo::getFreezeResist();
-    this->mShockResist_pri = info->::nJobParam::cJobInfo::getShockResist();
-    this->mAbsorbResist_pri = info->::nJobParam::cJobInfo::getAbsorbResist();
-    this->mDarkElmResist_pri = info->::nJobParam::cJobInfo::getDarkElmResist();
-    this->mPoisonResist_pri = info->::nJobParam::cJobInfo::getPoisonResist();
-    this->mSlowResist_pri = info->::nJobParam::cJobInfo::getSlowResist();
-    this->mSleepResist_pri = info->::nJobParam::cJobInfo::getSleepResist();
-    this->mStunResist_pri = info->::nJobParam::cJobInfo::getStunResist();
-    this->mWetResist_pri = info->::nJobParam::cJobInfo::getWetResist();
-    this->mOilResist_pri = info->::nJobParam::cJobInfo::getOilResist();
-    this->mSealResist_pri = info->::nJobParam::cJobInfo::getSealResist();
-    this->mCurseResist_pri = info->::nJobParam::cJobInfo::getCurseResist();
-    this->mSoftResist_pri = info->::nJobParam::cJobInfo::getSoftResist();
-    this->mStoneResist_pri = info->::nJobParam::cJobInfo::getStoneResist();
-    this->mGoldResist_pri = info->::nJobParam::cJobInfo::getGoldResist();
-    this->mFireReduceResist_pri = info->::nJobParam::cJobInfo::getFireReduceResist();
-    this->mIceReduceResist_pri = info->::nJobParam::cJobInfo::getIceReduceResist();
-    this->mThunderReduceResist_pri = info->::nJobParam::cJobInfo::getThunderReduceResist();
-    this->mHolyReduceResist_pri = info->::nJobParam::cJobInfo::getHolyReduceResist();
-    this->mDarkReduceResist_pri = info->::nJobParam::cJobInfo::getDarkReduceResist();
-    this->mAtkDownResist_pri = info->::nJobParam::cJobInfo::getAtkDownResist();
-    this->mDefDownResist_pri = info->::nJobParam::cJobInfo::getDefDownResist();
-    this->mMAtkDownResist_pri = info->::nJobParam::cJobInfo::getMAtkDownResist();
-    this->mMDefDownResist_pri = info->::nJobParam::cJobInfo::getMDefDownResist();
-    this->mErosionResist_pri = info->::nJobParam::cJobInfo::getErosionResist();
-    this->mItemSealResist_pri = info->::nJobParam::cJobInfo::getItemSealResist();
+    mLv_pri = info->::nJobParam::cJobInfo::getLv();
+    mExp_pri = info->::nJobParam::cJobInfo::getExp();
+    mAtk_pri = info->mAtk_pri;
+    mDef_pri = info->mDef_pri;
+    mMAtk_pri = info->mMAtk_pri;
+    mMDef_pri = info->mMDef_pri;
+    mStrength_pri = info->mStrength_pri;
+    mDownPower_pri = info->mDownPower_pri;
+    mShakePower_pri = info->mShakePower_pri;
+    mStanPower_pri = info->mStanPower_pri;
+    mConstitution_pri = info->::nJobParam::cJobInfo::getConstitution();
+    mGuts_pri = info->::nJobParam::cJobInfo::getGuts();
+    mJobPoint_pri = info->::nJobParam::cJobInfo::getJobPoint();
+    mFireResist_pri = info->::nJobParam::cJobInfo::getFireResist();
+    mIceResist_pri = info->::nJobParam::cJobInfo::getIceResist();
+    mThunderResist_pri = info->::nJobParam::cJobInfo::getThunderResist();
+    mHolyResist_pri = info->::nJobParam::cJobInfo::getHolyResist();
+    mDarkResist_pri = info->::nJobParam::cJobInfo::getDarkResist();
+    mSpreadResist_pri = info->::nJobParam::cJobInfo::getSpreadResist();
+    mFreezeResist_pri = info->::nJobParam::cJobInfo::getFreezeResist();
+    mShockResist_pri = info->::nJobParam::cJobInfo::getShockResist();
+    mAbsorbResist_pri = info->::nJobParam::cJobInfo::getAbsorbResist();
+    mDarkElmResist_pri = info->::nJobParam::cJobInfo::getDarkElmResist();
+    mPoisonResist_pri = info->::nJobParam::cJobInfo::getPoisonResist();
+    mSlowResist_pri = info->::nJobParam::cJobInfo::getSlowResist();
+    mSleepResist_pri = info->::nJobParam::cJobInfo::getSleepResist();
+    mStunResist_pri = info->::nJobParam::cJobInfo::getStunResist();
+    mWetResist_pri = info->::nJobParam::cJobInfo::getWetResist();
+    mOilResist_pri = info->::nJobParam::cJobInfo::getOilResist();
+    mSealResist_pri = info->::nJobParam::cJobInfo::getSealResist();
+    mCurseResist_pri = info->::nJobParam::cJobInfo::getCurseResist();
+    mSoftResist_pri = info->::nJobParam::cJobInfo::getSoftResist();
+    mStoneResist_pri = info->::nJobParam::cJobInfo::getStoneResist();
+    mGoldResist_pri = info->::nJobParam::cJobInfo::getGoldResist();
+    mFireReduceResist_pri = info->::nJobParam::cJobInfo::getFireReduceResist();
+    mIceReduceResist_pri = info->::nJobParam::cJobInfo::getIceReduceResist();
+    mThunderReduceResist_pri = info->::nJobParam::cJobInfo::getThunderReduceResist();
+    mHolyReduceResist_pri = info->::nJobParam::cJobInfo::getHolyReduceResist();
+    mDarkReduceResist_pri = info->::nJobParam::cJobInfo::getDarkReduceResist();
+    mAtkDownResist_pri = info->::nJobParam::cJobInfo::getAtkDownResist();
+    mDefDownResist_pri = info->::nJobParam::cJobInfo::getDefDownResist();
+    mMAtkDownResist_pri = info->::nJobParam::cJobInfo::getMAtkDownResist();
+    mMDefDownResist_pri = info->::nJobParam::cJobInfo::getMDefDownResist();
+    mErosionResist_pri = info->::nJobParam::cJobInfo::getErosionResist();
+    mItemSealResist_pri = info->::nJobParam::cJobInfo::getItemSealResist();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (62 bytes)
@@ -1152,6 +1154,8 @@ void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
 //   in uGUICharacter::setupJob at 0x009f4133-0x009f4152 (called at uGUICharacter.cpp:3554)
 //   in uGUICharacter::getJobLv at 0x009f8ff6-0x009f8ffa, 0x009f9003-0x009f9007 (called at uGUICharacter.cpp:2360)
 // bool nJobParam::cJobInfo::isSetParam() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nJobParam::cJobInfo::MyDTI nJobParam::cJobInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cContextPlayerInfo.cpp at 0x0006c38e-0x0006c3ce (called at cContextPlayerInfo.cpp:51)
@@ -1161,6 +1165,6 @@ void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
 // Address: 0x00062210 - 0x000622b9 (169 bytes)
 MtObject* nJobParam::cJobInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nJobParam::cJobInfo;
+    return new (16u) ::nJobParam::cJobInfo;
 }
 

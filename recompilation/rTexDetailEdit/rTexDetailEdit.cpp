@@ -36,7 +36,7 @@ const MtDTI& rTexDetailEdit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTexDetailEdit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DTI)->memAlloc(sz, align, ::rTexDetailEdit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTexDetailEdit::DTI)->memAlloc(sz, align, rTexDetailEdit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rTexDetailEdit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTexDetailEdit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTexDetailEdit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,7 +65,7 @@ inline void rTexDetailEdit::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rTexDetailEdit::rTexDetailEdit() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
+    setAttribute(18u);
 }
 
 // Address: 0x0070d3a0 - 0x0070d451 (177 bytes)
@@ -84,61 +84,61 @@ __attribute__((weak)) void rTexDetailEdit::createProperty(MtPropertyList& s) {
 // Address: 0x0070d7e0 - 0x0070d7e5 (5 bytes)
 MtUI* rTexDetailEdit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x0070d530 - 0x0070d53e (14 bytes)
 bool rTexDetailEdit::create() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->clear();
+    clear();
     return true;
 }
 
 // Address: 0x0070d540 - 0x0070d5c8 (136 bytes)
 void rTexDetailEdit::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mEditList.mLength != static_cast<u32>(0)) {
+    if (mEditList.mLength != 0) {
         // inferred: the value the loop at 0x70d560 carries; no location-less local in scope fits
-        u32 v0_0 = this->mEditList.mLength;
+        u32 v0_0 = mEditList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mEditList.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mEditList.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mEditList.mLength) {
-                    v0_0 = this->mEditList.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mEditList.mpArray[i0_3] != nullptr) {
+                delete mEditList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEditList.mLength) {
+                    v0_0 = mEditList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mEditList.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mEditList.mpArray));
+    if (mEditList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEditList.mpArray));
     }
-    this->mEditList.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mEditList.mBufsiz = static_cast<u32>(0);
-    this->mEditList.mLength = static_cast<u32>(0);
+    mEditList.mpArray = nullptr;
+    mEditList.mBufsiz = 0;
+    mEditList.mLength = 0;
 }
 
 // Address: 0x0070d660 - 0x0070d6e1 (129 bytes)
 bool rTexDetailEdit::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x0070d5d0 - 0x0070d656 (134 bytes)
 bool rTexDetailEdit::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rTexDetailEdit::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rTexDetailEdit::DTI));
 }
 
 // Address: 0x01ab62c0 - 0x01ab62c8 (8 bytes)
@@ -157,12 +157,14 @@ MT_CTSTR rTexDetailEdit::getExt() const {
 // Address: 0x0070d7f0 - 0x0070d805 (21 bytes)
 rTexDetailEdit::DetailParam* rTexDetailEdit::getEditWork(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mEditList.mLength) {
-        return static_cast<rTexDetailEdit::DetailParam*>(this->mEditList.mpArray[idx]);
+    if (idx < mEditList.mLength) {
+        return static_cast<DetailParam*>(mEditList.mpArray[idx]);
     } else {
-        return static_cast<rTexDetailEdit::DetailParam*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTexDetailEdit::MyDTI rTexDetailEdit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTexDetailEdit.cpp at 0x0070d852-0x0070d88f (called at rTexDetailEdit.cpp:36)
@@ -172,7 +174,7 @@ rTexDetailEdit::DetailParam* rTexDetailEdit::getEditWork(u32 idx) {
 // Address: 0x0070d0b0 - 0x0070d134 (132 bytes)
 MtObject* rTexDetailEdit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTexDetailEdit;
+    return new (16u) rTexDetailEdit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ const MtDTI& rTexDetailEdit::DetailParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTexDetailEdit::DetailParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DetailParam::DTI)->memAlloc(sz, align, ::rTexDetailEdit::DetailParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTexDetailEdit::DetailParam::DTI)->memAlloc(sz, align, rTexDetailEdit::DetailParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -234,7 +236,7 @@ __attribute__((weak)) void rTexDetailEdit::DetailParam::createProperty(MtPropert
 // Address: 0x0070d380 - 0x0070d385 (5 bytes)
 MtUI* rTexDetailEdit::DetailParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01ab6060 - 0x01ab6077 (23 bytes)
@@ -252,25 +254,25 @@ __attribute__((weak)) void rTexDetailEdit::DetailParam::setPath(const MtString& 
 // Address: 0x01ab6120 - 0x01ab6124 (4 bytes)
 u32 rTexDetailEdit::DetailParam::getForm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mForm;
+    return mForm;
 }
 
 // Address: 0x01ab6130 - 0x01ab6134 (4 bytes)
 void rTexDetailEdit::DetailParam::setForm(const u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mForm = n;
+    mForm = n;
 }
 
 // Address: 0x01ab6140 - 0x01ab6144 (4 bytes)
 u32 rTexDetailEdit::DetailParam::getType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mType;
+    return mType;
 }
 
 // Address: 0x01ab6150 - 0x01ab6154 (4 bytes)
 void rTexDetailEdit::DetailParam::setType(u32 n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = n;
+    mType = n;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -280,6 +282,8 @@ void rTexDetailEdit::DetailParam::setType(u32 n) {
 // No out-of-line body: no code in the ELF
 // void rTexDetailEdit::DetailParam::setIgnoreLimit(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTexDetailEdit::DetailParam::MyDTI rTexDetailEdit::DetailParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTexDetailEdit.cpp at 0x0070d810-0x0070d852 (called at rTexDetailEdit.cpp:32)
 //   in _GLOBAL__sub_I_rTexDetailEdit.cpp at 0x0070d810-0x0070d852 (called at rTexDetailEdit.h:123)
@@ -288,6 +292,6 @@ void rTexDetailEdit::DetailParam::setType(u32 n) {
 // Address: 0x0070cfe0 - 0x0070d038 (88 bytes)
 MtObject* rTexDetailEdit::DetailParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTexDetailEdit::DetailParam;
+    return new (16u) rTexDetailEdit::DetailParam;
 }
 

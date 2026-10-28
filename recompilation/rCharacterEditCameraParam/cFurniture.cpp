@@ -26,7 +26,7 @@ const MtDTI& cFurniture::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cFurniture::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cFurniture::DTI);
+    return MtMemoryAllocator::getAllocator(cFurniture::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cFurniture::getAllocator() {
 // Address: 0x000cc890 - 0x000cc8d0 (64 bytes)
 void* cFurniture::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cFurniture::getAllocator()->memAlloc(sz, align, ::cFurniture::DTI.::MtDTI::getID());
+    return cFurniture::getAllocator()->memAlloc(sz, align, cFurniture::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cFurniture::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFurniture::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurniture::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurniture::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,17 +179,16 @@ bool cFurniture::isSetOm(u32 om_id) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x50 from cFurniture*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(80))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 80)) != 0) {
+        u32 i = 0;
         do {
-            if (this->mInfoDisp.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mInfoDisp.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(16))) != om_id) {
-                } else {
-                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mInfoDisp.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(9))) != static_cast<unsigned char>(0);
+            if (mInfoDisp.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mInfoDisp.getBuffer()[static_cast<int>(i)]) + 16)) == om_id) {
+                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mInfoDisp.getBuffer()[static_cast<int>(i)]) + 9)) != 0;
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(80))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 80)));
     }
     return false;
 }
@@ -252,12 +251,104 @@ __attribute__((weak)) void cFurniture::change(u32 item_id, bool onoff) {
 // void cFurniture::update();
 
 // Address: 0x000cca40 - 0x000ccb70 (304 bytes)
-__attribute__((weak)) void cFurniture::release() {
-    // local: u32 i;
-    // local: Info* p_info;
-    DDON_STUB("cFurniture::release")
-    /* stub */
+void cFurniture::release() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Info* p_info;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cOmControl*, which no DWARF type of the place gives; read with caution
+    if (mInfoDisp.mLength != 0) {
+        // inferred: the value the loop at 0xcca60 carries; no location-less local in scope fits
+        u32 v0_0 = mInfoDisp.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            // inferred: a temporary for the value the load at 0xcca67 read, used 4 times; no DWARF local holds it
+            MtObject* t0 = mInfoDisp.getBuffer()[static_cast<int>(i0_3)];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 24)) != 0) {
+                    sOmManager::getInstance()->releaseOmCtrl(reinterpret_cast<cOmControl*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 24)));
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 24) = 0;
+                    if ((i0_3 + 1u) < mInfoDisp.mLength) {
+                        v0_0 = mInfoDisp.mLength;
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mInfoMaster.mLength != 0) {
+        // inferred: the value the loop at 0xccaa0 carries; no location-less local in scope fits
+        u32 v2_0 = mInfoMaster.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = 0;;) {
+            if (mInfoMaster.mpArray[i2_3] != nullptr) {
+                delete mInfoMaster.mpArray[i2_3];
+                if ((i2_3 + 1u) < mInfoMaster.mLength) {
+                    v2_0 = mInfoMaster.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mInfoMaster.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mInfoMaster.mpArray));
+    }
+    mInfoMaster.mpArray = nullptr;
+    mInfoMaster.mBufsiz = 0;
+    mInfoMaster.mLength = 0;
+    if (mInfoDisp.mLength != 0) {
+        // inferred: the value the loop at 0xccb10 carries; no location-less local in scope fits
+        u32 v4_0 = mInfoDisp.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i4_3 = 0;;) {
+            if (mInfoDisp.mpArray[i4_3] != nullptr) {
+                delete mInfoDisp.mpArray[i4_3];
+                if ((i4_3 + 1u) < mInfoDisp.mLength) {
+                    v4_0 = mInfoDisp.mLength;
+                    i4_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mInfoDisp.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mInfoDisp.mpArray));
+    }
+    mInfoDisp.mpArray = nullptr;
+    mInfoDisp.mBufsiz = 0;
+    mInfoDisp.mLength = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurniture::MyDTI cFurniture::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cFurniture.cpp at 0x000ce84e-0x000ce88e (called at cFurniture.cpp:198)
@@ -310,7 +401,7 @@ const MtDTI& cFurniture::Info::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFurniture::Info::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurniture::Info::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurniture::Info::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -322,21 +413,34 @@ inline void cFurniture::Info::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cFurniture::Info::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 3 inlined copies in 3 functions (385 bytes)
-//   in cFurniture::setFurnitureLayout at 0x000ccd54-0x000ccd63, 0x000ccdb9-0x000cce2d (called at cFurniture.cpp:336)
-//   in cFurniture::copyInfo at 0x000cddb2-0x000cddc1, 0x000cde0c-0x000cde80 (called at cFurniture.cpp:762)
-//   in cFurniture::Info::MyDTI::newInstance at 0x000ce5ad-0x000ce628 (called at cFurniture.cpp:910)
-// cFurniture::Info::Info();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cFurniture::Info::Info() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mLayoutId = 0;
+    mOnOff = false;
+    mItemId = 0;
+    mOmId = 0;
+    mpOmCtrl = nullptr;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mAngle.x = MtVector3::Zero.x;
+    mAngle.y = MtVector3::Zero.y;
+    mAngle.z = MtVector3::Zero.z;
+    mAngle.pad_ = 0.0f;
+}
 
 // Address: 0x000ce6b0 - 0x000ce6ee (62 bytes)
 // Also emitted as: _ZN10cFurniture4InfoD0Ev at 0x000ce6f0
 cFurniture::Info::~Info() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOmCtrl == static_cast<cOmControl*>(nullptr)) {
+    if (mpOmCtrl == nullptr) {
         return;
     }
-    ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mpOmCtrl);
-    this->mpOmCtrl = static_cast<cOmControl*>(nullptr);
+    sOmManager::getInstance()->releaseOmCtrl(mpOmCtrl);
+    mpOmCtrl = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (205 bytes)
@@ -360,6 +464,8 @@ __attribute__((weak)) void cFurniture::Info::createUnit() {
 //   in cFurniture::updateFurniture at 0x000cdbe4-0x000cdbeb, 0x000cdc25-0x000cdc36 (called at cFurniture.cpp:660)
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // void cFurniture::Info::deleteUnit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurniture::Info::MyDTI cFurniture::Info::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFurniture.cpp at 0x000ce88e-0x000ce8c7 (called at cFurniture.cpp:910)

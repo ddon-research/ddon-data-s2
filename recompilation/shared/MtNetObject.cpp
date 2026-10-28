@@ -30,7 +30,7 @@ const MtDTI& MtNetObject::getDTI() const {
 // Address: 0x00dba750 - 0x00dba77a (42 bytes)
 __attribute__((weak)) void MtNetObject::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtNetObject::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtNetObject::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ __attribute__((weak)) void MtNetObject::operator delete(void* p_addr) {
 // Address: 0x00dba6e0 - 0x00dba720 (64 bytes)
 void* MtNetObject::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtNetObject::DTI)->memAlloc(sz, align, ::MtNetObject::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtNetObject::DTI)->memAlloc(sz, align, MtNetObject::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ __attribute__((weak)) void MtNetObject::createProperty(MtPropertyList& s) {
 // Address: 0x01a41040 - 0x01a41048 (8 bytes)
 bool MtNetObject::isFatal() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFatal.mNo != static_cast<s32>(0);
+    return mFatal.mNo != 0;
 }
 
 // Address: 0x00dbac70 - 0x00dbacc9 (89 bytes)
@@ -115,27 +115,27 @@ __attribute__((weak)) void MtNetObject::setFatal(const MtNetError* err) {
 // Address: 0x00dbada0 - 0x00dbae0d (109 bytes)
 void MtNetObject::setFatal(s32 no, s32 cause, s32 native) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mIsThreadSafe != false) {
-        if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        this->mLockCount = this->mLockCount + static_cast<s32>(1);
+        mLockCount = mLockCount + 1;
     }
-    if (this->isFatal() == false) {
-        this->mFatal.mNo = no;
-        this->mFatal.mCause = cause;
-        this->mFatal.mNative = native;
+    if (!isFatal()) {
+        mFatal.mNo = no;
+        mFatal.mCause = cause;
+        mFatal.mNative = native;
     }
-    if (this->mIsThreadSafe == false) {
+    if (!mIsThreadSafe) {
         return;
     }
-    this->mLockCount = this->mLockCount - static_cast<s32>(1);
-    if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mLockCount = mLockCount - 1;
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtNetObject::MyDTI MtNetObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtNetObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

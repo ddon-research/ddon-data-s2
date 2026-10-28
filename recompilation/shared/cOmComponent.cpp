@@ -5,6 +5,8 @@
 #include "cOmControl.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
+#include "sSound.h"
+#include "sSoundExt.h"
 #include "uOmModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -14,18 +16,18 @@
 cOmComponent::cOmComponent() {
     // DWARF local not rendered: u32 fcnt;
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    this->mIsCallSe = false;
-    this->mpSoundRequest = static_cast<rSoundRequest*>(nullptr);
-    this->mpuCatchOld = static_cast<uDDOModel*>(nullptr);
-    this->mbSlave = false;
-    this->mSyncValue = static_cast<u8>(0);
-    this->mbReqKill = false;
-    this->mRno = static_cast<u32>(0);
-    this->mOmType = static_cast<u32>(0);
-    this->mUseComponent = static_cast<u32>(0);
-    this->mpOmModel = static_cast<uOmModel*>(nullptr);
-    this->mpOmControl = static_cast<cOmControl*>(nullptr);
-    ::memset(static_cast<void*>(&this->mphEfc[0]), static_cast<int>(0), static_cast<size_t>(130));
+    mIsCallSe = false;
+    mpSoundRequest = nullptr;
+    mpuCatchOld = nullptr;
+    mbSlave = false;
+    mSyncValue = 0;
+    mbReqKill = false;
+    mRno = 0;
+    mOmType = 0;
+    mUseComponent = 0;
+    mpOmModel = nullptr;
+    mpOmControl = nullptr;
+    memset(static_cast<void*>(&mphEfc[0]), 0, 130ul);
 }
 
 // Address: 0x003aa970 - 0x003aa9d4 (100 bytes)
@@ -153,18 +155,18 @@ __attribute__((weak)) void cOmComponent::createComponent(cpComponent* pRootCP, M
 // Address: 0x003ab3f0 - 0x003ab415 (37 bytes)
 bool cOmComponent::isOnFlag(u32 flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (((flag >> static_cast<u32>(8)) & static_cast<u32>(4)) != static_cast<u32>(0)) {
-        if (this->mpOmControl != static_cast<cOmControl*>(nullptr)) {
-            if (this->mpOmControl->mOmID != static_cast<s32>(522157)) {
-                return (flag & this->mUseComponent) != static_cast<u32>(0);
+    if (((flag >> 8) & 4u) != 0) {
+        if (mpOmControl != nullptr) {
+            if (mpOmControl->mOmID != 522157) {
+                return (flag & mUseComponent) != 0;
             } else {
                 return true;
             }
         } else {
-            return (flag & this->mUseComponent) != static_cast<u32>(0);
+            return (flag & mUseComponent) != 0;
         }
     } else {
-        return (flag & this->mUseComponent) != static_cast<u32>(0);
+        return (flag & mUseComponent) != 0;
     }
 }
 
@@ -208,9 +210,13 @@ __attribute__((weak)) void cOmComponent::killNodeAll(uOmModel* puom) {
 // void cOmComponent::eraseSoundReq();
 
 // Address: 0x003ab5c0 - 0x003ab5eb (43 bytes)
-__attribute__((weak)) void cOmComponent::keyOffSe() {
-    DDON_STUB("cOmComponent::keyOffSe")
-    /* stub */
+void cOmComponent::keyOffSe() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: uOmModel* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (mpOmModel == nullptr) {
+        return;
+    }
+    static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(mpSoundRequest, 1u, reinterpret_cast<const uintptr>(mpOmModel), sSoundExt::SE_SEARCH_KEY_ALL);
 }
 
 // Address: 0x003ab480 - 0x003ab53a (186 bytes)
@@ -266,14 +272,14 @@ __attribute__((weak)) void cOmComponent::setEffect(s32 index, uOmModel* puom) {
 // Address: 0x003aaa50 - 0x003aaa9d (77 bytes)
 void cOmComponent::finishFx(s32 index, uOmModel* puom) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (puom == static_cast<uOmModel*>(nullptr)) {
+    if (puom == nullptr) {
         return;
     }
-    if (index > static_cast<s32>(-1)) {
-        if (static_cast<unsigned int>(index) <= static_cast<unsigned int>(15)) {
-            if (puom->mOmComp.mphEfc[index] != static_cast<cEfcHandle*>(nullptr)) {
-                static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(puom->mOmComp.mphEfc[index], static_cast<u32>(1));
-                puom->mOmComp.mphEfc[index] = static_cast<cEfcHandle*>(nullptr);
+    if (index > -1) {
+        if (static_cast<unsigned int>(index) <= 15) {
+            if (puom->mOmComp.mphEfc[index] != nullptr) {
+                static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(puom->mOmComp.mphEfc[index], 1u);
+                puom->mOmComp.mphEfc[index] = nullptr;
             }
         }
     }

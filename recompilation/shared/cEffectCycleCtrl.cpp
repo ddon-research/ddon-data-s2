@@ -38,7 +38,7 @@ const MtDTI& cCyclePartInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCyclePartInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCyclePartInfo::DTI)->memAlloc(sz, align, ::cCyclePartInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCyclePartInfo::DTI)->memAlloc(sz, align, cCyclePartInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* cCyclePartInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCyclePartInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCyclePartInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCyclePartInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,11 +74,11 @@ inline void cCyclePartInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN14cCyclePartInfoD0Ev at 0x000a0110
 cCyclePartInfo::~cCyclePartInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    if (mpEfcHandle == nullptr) {
         return;
     }
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpEfcHandle, static_cast<u32>(1));
-    this->mpEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcHandle, 1u);
+    mpEfcHandle = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (30 bytes)
@@ -99,9 +99,21 @@ __attribute__((weak)) void cCyclePartInfo::createProperty(MtPropertyList& s) {
 //   in cEffectCycleCtrl::requestInsertCyclePart at 0x000a0a11-0x000a0a7e (called at cEffectCycleCtrl.cpp:69)
 // void cCyclePartInfo::reset();
 
-// No out-of-line body: 1 inlined copy in 1 function (79 bytes)
-//   in cEffectCycleCtrl::requestInsertCyclePart at 0x000a0a83-0x000a0ad2 (called at cEffectCycleCtrl.cpp:581)
-// void cCyclePartInfo::getInfoFromReq(cCyclePartReqInfo& reqInfo);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cEffectCycleCtrl::requestInsertCyclePart at 0xa0a83-0xa0ad2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cCyclePartInfo::getInfoFromReq(cCyclePartReqInfo& reqInfo) {
+    mEffLoopTimer = reqInfo.mEffLoopTime;
+    mEffLoopTimerMax = mEffLoopTimer;
+    mEpvIndex = reqInfo.mEpvIndex;
+    mEpvElement = reqInfo.mEpvElement;
+    mIsEffect = reqInfo.mIsEffect;
+    mEpvFinishIndex = reqInfo.mEpvFinishIndex;
+    mEpvFinishElement = reqInfo.mEpvFinishElement;
+    mIsEndEffect = reqInfo.mIsEndEffect;
+    mOutLineIndex = reqInfo.mOutLineIndex;
+    mIsOutLine = reqInfo.mIsOutLine;
+    mPartType = reqInfo.mPartType;
+}
 
 // Address: 0x000a01a0 - 0x000a0317 (375 bytes)
 __attribute__((weak)) void cCyclePartInfo::partInit() {
@@ -132,9 +144,11 @@ __attribute__((weak)) void cCyclePartInfo::partEnd() {
 //   in cCyclePartInfo::partEnd at 0x000a0383-0x000a0485 (called at cEffectCycleCtrl.cpp:282)
 // cEfcHandle* cCyclePartInfo::setPartEndEffect();
 
-// No out-of-line body: 1 inlined copy in 1 function (12 bytes)
-//   in cCyclePartInfo::partInit at 0x000a02e9-0x000a02f5 (called at cEffectCycleCtrl.cpp:231)
-// void cCyclePartInfo::callOutLine();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCyclePartInfo::partInit at 0xa02e9-0xa02f5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cCyclePartInfo::callOutLine() {
+    mpModel->requestOutline(static_cast<u32>(mOutLineIndex));
+}
 
 // No out-of-line body: 2 inlined copies in 2 functions (28 bytes)
 //   in cCyclePartInfo::partInit at 0x000a02f5-0x000a0305 (called at cEffectCycleCtrl.cpp:243)
@@ -158,6 +172,8 @@ __attribute__((weak)) void cCyclePartInfo::partEnd() {
 //   in cEffectCycleCtrl::reqestForceKillCyclePart at 0x000a0dc7-0x000a0dce (called at cEffectCycleCtrl.cpp:652)
 // void cCyclePartInfo::reqestKill();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCyclePartInfo::MyDTI cCyclePartInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEffectCycleCtrl.cpp at 0x000a10be-0x000a10f7 (called at cEffectCycleCtrl.cpp:59)
 //   in _GLOBAL__sub_I_cEffectCycleCtrl.cpp at 0x000a10be-0x000a10f7 (called at cEffectCycleCtrl.h:141)
@@ -166,7 +182,7 @@ __attribute__((weak)) void cCyclePartInfo::partEnd() {
 // Address: 0x0009ff80 - 0x000a002d (173 bytes)
 MtObject* cCyclePartInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCyclePartInfo;
+    return new (16u) cCyclePartInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -191,7 +207,7 @@ const MtDTI& cCyclePartReqInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCyclePartReqInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCyclePartReqInfo::DTI)->memAlloc(sz, align, ::cCyclePartReqInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCyclePartReqInfo::DTI)->memAlloc(sz, align, cCyclePartReqInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -206,7 +222,7 @@ inline void* cCyclePartReqInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cCyclePartReqInfoD0Ev at 0x01968210-0x0196823a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCyclePartReqInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCyclePartReqInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCyclePartReqInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -225,6 +241,8 @@ inline void cCyclePartReqInfo::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cCyclePartReqInfo::cCyclePartReqInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCyclePartReqInfo::MyDTI cCyclePartReqInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cEffectCycleCtrl.cpp at 0x000a107e-0x000a10be (called at cEffectCycleCtrl.cpp:39)
 //   in _GLOBAL__sub_I_cEffectCycleCtrl.cpp at 0x000a107e-0x000a10be (called at cEffectCycleCtrl.h:91)
@@ -233,7 +251,7 @@ inline void cCyclePartReqInfo::operator delete(void* p_addr) {
 // Address: 0x0009fe90 - 0x0009ff0d (125 bytes)
 MtObject* cCyclePartReqInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCyclePartReqInfo;
+    return new (16u) cCyclePartReqInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -272,7 +290,7 @@ const MtDTI& cEffectCycleCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEffectCycleCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEffectCycleCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEffectCycleCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -309,41 +327,41 @@ void cEffectCycleCtrl::updatePtr() {
     u32 v0_0;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1;
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable() == false) {
-            this->mpModel = static_cast<uDDOModel*>(nullptr);
-            v0_0 = this->mEffectPartArray.::MtArray::size();
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
+            v0_0 = mEffectPartArray.size();
+            if (v0_0 != 0) {
+                i0_1 = 0;
             } else {
                 return;
             }
         } else {
-            v0_0 = this->mEffectPartArray.::MtArray::size();
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
+            v0_0 = mEffectPartArray.size();
+            if (v0_0 != 0) {
+                i0_1 = 0;
             } else {
                 return;
             }
         }
     } else {
-        v0_0 = this->mEffectPartArray.::MtArray::size();
-        if (v0_0 != static_cast<u32>(0)) {
-            i0_1 = static_cast<unsigned int>(0);
+        v0_0 = mEffectPartArray.size();
+        if (v0_0 != 0) {
+            i0_1 = 0;
         } else {
             return;
         }
     }
     for (;;) {
-        if (this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64))) != static_cast<unsigned long>(0)) {
-                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64))) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
-                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+        if (mEffectPartArray.getBuffer()[static_cast<int>(i0_1)] != nullptr) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64)) != 0) {
+                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64)) + 16)) & 7u) - 1u) > 1u) {
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64) = 0;
                 }
             }
         }
-        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-            i0_1 += static_cast<unsigned int>(1);
+        if ((i0_1 + 1u) < v0_0) {
+            i0_1 += 1u;
         } else {
             break;
         }
@@ -351,10 +369,32 @@ void cEffectCycleCtrl::updatePtr() {
 }
 
 // Address: 0x000a0740 - 0x000a07b1 (113 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::updateEfcHandle() {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::updateEfcHandle")
-    /* stub */
+void cEffectCycleCtrl::updateEfcHandle() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x30 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cEfcHandle*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from unsigned long
+    if (mEffectPartArray.mLength != 0) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            // inferred: a temporary for the value the load at 0xa0767 read, used 5 times; no DWARF local holds it
+            MtObject* t0 = mEffectPartArray.getBuffer()[static_cast<int>(i0_3)];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)) != 0) {
+                    if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)))) {
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)) + 96) = 0;
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48) = 0;
+                    }
+                }
+            }
+            if ((i0_3 + 1u) < mEffectPartArray.mLength) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x000a07c0 - 0x000a081b (91 bytes)
@@ -364,17 +404,51 @@ __attribute__((weak)) void cEffectCycleCtrl::update() {
 }
 
 // Address: 0x000a0900 - 0x000a0961 (97 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::kill() {
-    // local: s32 length;
-    // local: s32 i;
-    DDON_STUB("cEffectCycleCtrl::kill")
-    /* stub */
+void cEffectCycleCtrl::kill() {
+    // DWARF local not rendered: s32 length;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x30 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cEfcHandle*, which no DWARF type of the place gives; read with caution
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24)) > 0) {
+        // inferred: the value the loop at 0xa0920 carries; no location-less local in scope fits
+        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+        // inferred: DWARF's location-less 'i' (lexical block [0xa090e, 0xa0958)) is the counter this loop steps (DWARF's stale constant 0)
+        for (s32 i = 0;;) {
+            // inferred: a temporary for the value the load at 0xa0924 read, used 4 times; no DWARF local holds it
+            MtObject* t0 = mEffectPartArray.getBuffer()[i];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)) != 0) {
+                    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48)), 1u);
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 48) = 0;
+                    if ((i + 1) < static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24))) {
+                        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+                        i = i + 1;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i + 1) < static_cast<int>(v0_0)) {
+                        i = i + 1;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if ((i + 1) < static_cast<int>(v0_0)) {
+                    i = i + 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x000a0970 - 0x000a0975 (5 bytes)
 void cEffectCycleCtrl::setOwner(uDDOModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpModel = pModel;
+    mpModel = pModel;
 }
 
 // Address: 0x000a0980 - 0x000a0b08 (392 bytes)
@@ -406,19 +480,19 @@ bool cEffectCycleCtrl::isOrderExist(s32 Order) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0xa0de0 carries; no location-less local in scope fits
-    u32 v0_1 = this->mEffectPartArray.::MtArray::mLength;
-    if (v0_1 != static_cast<u32>(0)) {
+    u32 v0_1 = mEffectPartArray.mLength;
+    if (v0_1 != 0) {
         // inferred: the value the loop at 0xa0de0 carries; no location-less local in scope fits
-        MtObject* * v0_4 = this->mEffectPartArray.::MtArray::mpArray;
+        MtObject* * v0_4 = mEffectPartArray.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0xa0dd0, 0xa0df7)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if (v0_4[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(84))) == static_cast<unsigned int>(Order)) {
+        for (u32 i = 0;;) {
+            if (v0_4[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 84)) == static_cast<unsigned int>(Order)) {
                     return true;
                 }
             }
-            if ((i + static_cast<u32>(1)) < v0_1) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < v0_1) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -434,17 +508,17 @@ void cEffectCycleCtrl::setEffectFlag(bool flag) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: the value the loop at 0xa0f00 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0xa0f00 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        MtObject* * v0_1 = mEffectPartArray.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(24)) = static_cast<unsigned char>(flag);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 24) = static_cast<unsigned char>(flag);
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -459,17 +533,17 @@ void cEffectCycleCtrl::setEndEffectFlag(bool flag) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: the value the loop at 0xa0f30 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0xa0f30 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        MtObject* * v0_1 = mEffectPartArray.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(36)) = static_cast<unsigned char>(flag);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 36) = static_cast<unsigned char>(flag);
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -484,17 +558,17 @@ void cEffectCycleCtrl::setOutLineFlag(bool flag) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: the value the loop at 0xa0f60 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 24);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0xa0f60 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        MtObject* * v0_1 = mEffectPartArray.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(44)) = static_cast<unsigned char>(flag);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 44) = static_cast<unsigned char>(flag);
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -537,6 +611,8 @@ __attribute__((weak)) bool cEffectCycleCtrl::erasetCyclePartFromIndex(s32 index)
 //   in cEffectCycleCtrl::reqestKillCyclePart at 0x000a0d30-0x000a0d57 (called at cEffectCycleCtrl.cpp:605)
 //   in cEffectCycleCtrl::reqestForceKillCyclePart at 0x000a0d90-0x000a0db7 (called at cEffectCycleCtrl.cpp:639)
 // s32 cEffectCycleCtrl::findCyclePartIndex(s32 Order) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEffectCycleCtrl::MyDTI cEffectCycleCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEffectCycleCtrl.cpp at 0x000a10f7-0x000a1130 (called at cEffectCycleCtrl.cpp:397)

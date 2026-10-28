@@ -52,7 +52,7 @@ const MtDTI& uCharacterEditCameraBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCharacterEditCameraBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,11 +74,11 @@ uCharacterEditCameraBase::uCharacterEditCameraBase() {
 // Also emitted as: _ZN24uCharacterEditCameraBaseD0Ev at 0x008a9310
 uCharacterEditCameraBase::~uCharacterEditCameraBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCameraParam == static_cast<rCharacterEditCameraParam*>(nullptr)) {
+    if (mpCameraParam == nullptr) {
         return;
     }
-    this->mpCameraParam->::cResource::release();
-    this->mpCameraParam = static_cast<rCharacterEditCameraParam*>(nullptr);
+    mpCameraParam->release();
+    mpCameraParam = nullptr;
 }
 
 // Address: 0x008a9370 - 0x008a997d (1549 bytes)
@@ -90,7 +90,7 @@ __attribute__((weak)) void uCharacterEditCameraBase::createProperty(MtPropertyLi
 // Address: 0x008a9980 - 0x008a9985 (5 bytes)
 MtUI* uCharacterEditCameraBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uFreeCamera::createUI(prop);
+    return this->uFreeCamera::createUI(prop);
 }
 
 // Address: 0x008a9990 - 0x008a9b57 (455 bytes)
@@ -108,11 +108,11 @@ __attribute__((weak)) void uCharacterEditCameraBase::move() {
 // Address: 0x008ab500 - 0x008ab53f (63 bytes)
 void uCharacterEditCameraBase::setResetMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = static_cast<uCharacterEditCameraBase::MODE>(1);
-    this->mResetAngle.x = this->mRotateRS.x;
-    this->mResetAngle.y = this->mRotateRS.y;
-    this->mResetAngle.z = 0.0f;
-    this->mCameraMode = static_cast<uCharacterEditCameraBase::CAMERA_MOVE>(2);
+    mMode = MODE_RESET;
+    mResetAngle.x = mRotateRS.x;
+    mResetAngle.y = mRotateRS.y;
+    mResetAngle.z = 0.0f;
+    mCameraMode = CAMERA_MOVE_R;
 }
 
 // Address: 0x008a9b60 - 0x008a9c65 (261 bytes)
@@ -238,6 +238,8 @@ __attribute__((weak)) void uCharacterEditCameraBase::initCameraParam() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCharacterEditCameraBase::MyDTI uCharacterEditCameraBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCharacterEdit.cpp at 0x008abf95-0x008abfd2 (called at uCharacterEdit.cpp:6141)
 //   in _GLOBAL__sub_I_uCharacterEdit.cpp at 0x008abf95-0x008abfd2 (called at uCharacterEdit.h:111)
@@ -263,7 +265,7 @@ const MtDTI& uCharacterEditCameraBase::cLimit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCharacterEditCameraBase::cLimit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::cLimit::DTI);
+    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::cLimit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -272,7 +274,7 @@ inline MtAllocator* uCharacterEditCameraBase::cLimit::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* uCharacterEditCameraBase::cLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::cLimit::DTI)->memAlloc(sz, align, ::uCharacterEditCameraBase::cLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::cLimit::DTI)->memAlloc(sz, align, uCharacterEditCameraBase::cLimit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,7 +289,7 @@ inline void* uCharacterEditCameraBase::cLimit::operator new(size_t sz, u32 align
 // Address: 0x008a9080 - 0x008a90aa (42 bytes)
 __attribute__((weak)) void uCharacterEditCameraBase::cLimit::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::uCharacterEditCameraBase::cLimit::getAllocator()->memFree(p_addr);
+    uCharacterEditCameraBase::cLimit::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -321,10 +323,10 @@ bool uCharacterEditCameraBase::cLimit::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->min);
+    nDDOIO::readData(r, min);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->max);
+    nDDOIO::readData(r, max);
     return true;
 }
 
@@ -338,6 +340,8 @@ bool uCharacterEditCameraBase::cLimit::load(MtDataReader& r) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void uCharacterEditCameraBase::cLimit::set(f32 _max, f32 _min);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCharacterEditCameraBase::cLimit::MyDTI uCharacterEditCameraBase::cLimit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uCharacterEdit.cpp at 0x008abfd2-0x008ac00b (called at uCharacterEdit.cpp:6142)
 //   in _GLOBAL__sub_I_uCharacterEdit.cpp at 0x008abfd2-0x008ac00b (called at uCharacterEdit.h:215)
@@ -346,7 +350,7 @@ bool uCharacterEditCameraBase::cLimit::load(MtDataReader& r) {
 // Address: 0x008a9000 - 0x008a9048 (72 bytes)
 MtObject* uCharacterEditCameraBase::cLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uCharacterEditCameraBase::cLimit;
+    return new (16u) uCharacterEditCameraBase::cLimit;
 }
 
 // No out-of-line body: 4 inlined copies in 1 function (291 bytes)

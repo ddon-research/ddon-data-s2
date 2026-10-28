@@ -35,7 +35,7 @@ const MtDTI& rEmoteGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmoteGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::DTI)->memAlloc(sz, align, ::rEmoteGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmoteGroup::DTI)->memAlloc(sz, align, rEmoteGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rEmoteGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEmoteGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmoteGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,9 +64,9 @@ inline void rEmoteGroup::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rEmoteGroup::rEmoteGroup() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArray = static_cast<rEmoteGroup::InfoBinary*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(18u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x00668130 - 0x006681b1 (129 bytes)
@@ -135,18 +135,20 @@ MT_CTSTR rEmoteGroup::getExt() const {
 // Address: 0x01a878b0 - 0x01a878b4 (4 bytes)
 u32 rEmoteGroup::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x00668680 - 0x006686b3 (51 bytes)
 rEmoteGroup::InfoBinary* rEmoteGroup::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfoNum()) {
-        return &this->mpArray[index];
+    if (index < getInfoNum()) {
+        return &mpArray[index];
     } else {
-        return static_cast<rEmoteGroup::InfoBinary*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmoteGroup::MyDTI rEmoteGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmoteGroup.cpp at 0x0066873d-0x0066877a (called at rEmoteGroup.cpp:270)
@@ -156,7 +158,7 @@ rEmoteGroup::InfoBinary* rEmoteGroup::getInfo(u32 index) const {
 // Address: 0x00668040 - 0x006680a4 (100 bytes)
 MtObject* rEmoteGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmoteGroup;
+    return new (16u) rEmoteGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rEmoteGroup::InfoBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmoteGroup::InfoBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::DTI)->memAlloc(sz, align, ::rEmoteGroup::InfoBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::DTI)->memAlloc(sz, align, rEmoteGroup::InfoBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ inline void* rEmoteGroup::InfoBinary::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEmoteGroup::InfoBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -225,29 +227,31 @@ rEmoteGroup::InfoBinary::~InfoBinary() {
 // Address: 0x00667ff0 - 0x00668035 (69 bytes)
 s16 rEmoteGroup::InfoBinary::getEmotionNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rEmoteGroup::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rEmoteGroup::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mEmo;
         } else {
-            return static_cast<s16>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s16>(-1);
+        return -1;
     }
 }
 
 // Address: 0x01a87900 - 0x01a8790b (11 bytes)
 rEmoteGroup::InfoBinary::MotDataBinary* rEmoteGroup::InfoBinary::getMotList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpMotList[index];
+    return &mpMotList[index];
 }
 
 // Address: 0x01a87910 - 0x01a87914 (4 bytes)
 u32 rEmoteGroup::InfoBinary::getMotListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotListNum;
+    return mMotListNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmoteGroup::InfoBinary::MyDTI rEmoteGroup::InfoBinary::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEmoteGroup.cpp at 0x00668704-0x0066873d (called at rEmoteGroup.cpp:119)
@@ -257,7 +261,7 @@ u32 rEmoteGroup::InfoBinary::getMotListNum() {
 // Address: 0x00667e30 - 0x00667e7f (79 bytes)
 MtObject* rEmoteGroup::InfoBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmoteGroup::InfoBinary;
+    return new (16u) rEmoteGroup::InfoBinary;
 }
 
 // No out-of-line body: no code in the ELF
@@ -282,7 +286,7 @@ const MtDTI& rEmoteGroup::InfoBinary::MotDataBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rEmoteGroup::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rEmoteGroup::InfoBinary::MotDataBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -297,7 +301,7 @@ inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, u32
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rEmoteGroup10InfoBinary13MotDataBinaryD0Ev at 0x01a87950-0x01a8797a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmoteGroup::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,6 +323,8 @@ inline void rEmoteGroup::InfoBinary::MotDataBinary::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // void rEmoteGroup::InfoBinary::MotDataBinary::copy(rEmoteGroup::InfoBinary::MotDataBinary* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmoteGroup::InfoBinary::MotDataBinary::MyDTI rEmoteGroup::InfoBinary::MotDataBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rEmoteGroup.cpp at 0x006686c0-0x00668704 (called at rEmoteGroup.cpp:33)
 //   in _GLOBAL__sub_I_rEmoteGroup.cpp at 0x006686c0-0x00668704 (called at rEmoteGroup.h:67)
@@ -327,6 +333,6 @@ inline void rEmoteGroup::InfoBinary::MotDataBinary::operator delete(void* p_addr
 // Address: 0x00667d60 - 0x00667da6 (70 bytes)
 MtObject* rEmoteGroup::InfoBinary::MotDataBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmoteGroup::InfoBinary::MotDataBinary;
+    return new (16u) rEmoteGroup::InfoBinary::MotDataBinary;
 }
 

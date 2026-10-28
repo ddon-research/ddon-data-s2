@@ -27,7 +27,7 @@ const MtDTI& cQuestSvNoticeManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestSvNoticeManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestSvNoticeManager::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestSvNoticeManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cQuestSvNoticeManager::getAllocator() {
 // Address: 0x001be0f0 - 0x001be130 (64 bytes)
 void* cQuestSvNoticeManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestSvNoticeManager::getAllocator()->memAlloc(sz, align, ::cQuestSvNoticeManager::DTI.::MtDTI::getID());
+    return cQuestSvNoticeManager::getAllocator()->memAlloc(sz, align, cQuestSvNoticeManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cQuestSvNoticeManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestSvNoticeManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestSvNoticeManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestSvNoticeManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,15 +67,15 @@ inline void cQuestSvNoticeManager::operator delete(void* p_addr) {
 cQuestSvNoticeCallback* cQuestSvNoticeManager::addCallbackFunc(const MtDTI& callbackClassDti, const MtDTI& noticeClassDti) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cQuestSvNoticeCallback* pCallback = static_cast<cQuestSvNoticeCallback*>(callbackClassDti.newInstance());
-    pCallback->::cQuestSvNoticeCallback::setNoticeDTI(noticeClassDti);
-    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestSvNoticeMgr()->::cQuestSvNoticeManager::addCallbackFunc(pCallback);
+    pCallback->cQuestSvNoticeCallback::setNoticeDTI(noticeClassDti);
+    sQuestManagerExt::getInstance()->getQuestSvNoticeMgr()->addCallbackFunc(pCallback);
     return pCallback;
 }
 
 // Address: 0x001be300 - 0x001be308 (8 bytes)
 bool cQuestSvNoticeManager::isEmpty() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNoticeList.::MtArray::mLength == static_cast<u32>(0);
+    return mNoticeList.mLength == 0;
 }
 
 // Address: 0x001be1e0 - 0x001be2fa (282 bytes)
@@ -103,34 +103,34 @@ __attribute__((weak)) void cQuestSvNoticeManager::updateNotice() {
 // Address: 0x001be520 - 0x001be59c (124 bytes)
 void cQuestSvNoticeManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mNoticeList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mNoticeList.mLength != 0) {
         // inferred: the value the loop at 0x1be540 carries; no location-less local in scope fits
-        u32 v0_0 = this->mNoticeList.::MtArray::mLength;
+        u32 v0_0 = mNoticeList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mNoticeList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mNoticeList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mNoticeList.::MtArray::mLength) {
-                    v0_0 = this->mNoticeList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mNoticeList.mpArray[i0_3] != nullptr) {
+                delete mNoticeList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNoticeList.mLength) {
+                    v0_0 = mNoticeList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mNoticeList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNoticeList.::MtArray::mpArray));
+    if (mNoticeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNoticeList.mpArray));
     }
-    this->mNoticeList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mNoticeList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mNoticeList.::MtArray::mLength = static_cast<u32>(0);
+    mNoticeList.mpArray = nullptr;
+    mNoticeList.mBufsiz = 0;
+    mNoticeList.mLength = 0;
 }
 
 // Address: 0x001be5a0 - 0x001be6ac (268 bytes)
@@ -156,68 +156,70 @@ cQuestSvNoticeManager::cQuestSvNoticeManager() {
 // Also emitted as: _ZN21cQuestSvNoticeManagerD0Ev at 0x001be860
 cQuestSvNoticeManager::~cQuestSvNoticeManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mCallbackList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mCallbackList.mLength != 0) {
         // inferred: the value the loop at 0x1be760 carries; no location-less local in scope fits
-        u32 v0_0 = this->mCallbackList.::MtArray::mLength;
+        u32 v0_0 = mCallbackList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mCallbackList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mCallbackList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCallbackList.::MtArray::mLength) {
-                    v0_0 = this->mCallbackList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mCallbackList.mpArray[i0_3] != nullptr) {
+                delete mCallbackList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mCallbackList.mLength) {
+                    v0_0 = mCallbackList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mCallbackList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCallbackList.::MtArray::mpArray));
+    if (mCallbackList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCallbackList.mpArray));
     }
-    this->mCallbackList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mCallbackList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mCallbackList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mNoticeList.::MtArray::mLength != static_cast<u32>(0)) {
+    mCallbackList.mpArray = nullptr;
+    mCallbackList.mBufsiz = 0;
+    mCallbackList.mLength = 0;
+    if (mNoticeList.mLength != 0) {
         // inferred: the value the loop at 0x1be7d0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mNoticeList.::MtArray::mLength;
+        u32 v2_0 = mNoticeList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mNoticeList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mNoticeList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mNoticeList.::MtArray::mLength) {
-                    v2_0 = this->mNoticeList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mNoticeList.mpArray[i2_3] != nullptr) {
+                delete mNoticeList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mNoticeList.mLength) {
+                    v2_0 = mNoticeList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mNoticeList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNoticeList.::MtArray::mpArray));
+    if (mNoticeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNoticeList.mpArray));
     }
-    this->mNoticeList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mNoticeList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mNoticeList.::MtArray::mLength = static_cast<u32>(0);
+    mNoticeList.mpArray = nullptr;
+    mNoticeList.mBufsiz = 0;
+    mNoticeList.mLength = 0;
 }
 
 // Address: 0x001be890 - 0x001be891 (1 bytes)
 __attribute__((weak)) void cQuestSvNoticeManager::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSvNoticeManager::MyDTI cQuestSvNoticeManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cQuestSvNoticeManager.cpp at 0x001be96e-0x001be9ab (called at cQuestSvNoticeManager.cpp:27)

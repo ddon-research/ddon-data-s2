@@ -31,7 +31,7 @@ const MtDTI& cParentRegionStatus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cParentRegionStatus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cParentRegionStatus::DTI);
+    return MtMemoryAllocator::getAllocator(cParentRegionStatus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cParentRegionStatus::getAllocator() {
 // Address: 0x00150540 - 0x00150580 (64 bytes)
 void* cParentRegionStatus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cParentRegionStatus::getAllocator()->memAlloc(sz, align, ::cParentRegionStatus::DTI.::MtDTI::getID());
+    return cParentRegionStatus::getAllocator()->memAlloc(sz, align, cParentRegionStatus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cParentRegionStatus::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cParentRegionStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cParentRegionStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cParentRegionStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,15 +70,15 @@ inline void cParentRegionStatus::operator delete(void* p_addr) {
 // Address: 0x001505f0 - 0x00150668 (120 bytes)
 cParentRegionStatus::cParentRegionStatus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNo = static_cast<u32>(0);
-    this->mRegionCategory = static_cast<nRegionStatus::P_REGION_CATEGORY>(0);
-    this->mRegenerateProprirty = static_cast<nRegionStatus::REGION_REGENERATE_PRIORITY>(25);
-    this->mIsDamageToMain = false;
-    this->mpRegionBreakInfo = static_cast<rRegionBreakInfo*>(nullptr);
-    this->mIsReGenerate = false;
-    this->mBreakReactionNo = static_cast<u32>(0);
-    this->mpOwnerHpDmageCtrl = static_cast<cpHpDamageCtrl*>(nullptr);
-    this->mpOwnerModel = static_cast<uDDOModel*>(nullptr);
+    mNo = 0;
+    mRegionCategory = nRegionStatus::P_REGION_CATEGORY_NORMAL;
+    mRegenerateProprirty = nRegionStatus::REGION_REGENERATE_PRIORITY_LOW;
+    mIsDamageToMain = false;
+    mpRegionBreakInfo = nullptr;
+    mIsReGenerate = false;
+    mBreakReactionNo = 0;
+    mpOwnerHpDmageCtrl = nullptr;
+    mpOwnerModel = nullptr;
 }
 
 // Address: 0x00150670 - 0x001506aa (58 bytes)
@@ -91,15 +91,15 @@ cParentRegionStatus::~cParentRegionStatus() {
 // Address: 0x00150710 - 0x00150760 (80 bytes)
 void cParentRegionStatus::update(f32 deltaTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mShrinkInfo.::cBlowShrinkInfo::update(deltaTime);
-    this->mBlowInfo.::cBlowShrinkInfo::update(deltaTime);
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    mShrinkInfo.update(deltaTime);
+    mBlowInfo.update(deltaTime);
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    if (this->mpOwnerModel->::cUnit::isEnable() != false) {
+    if (mpOwnerModel->isEnable()) {
         return;
     }
-    this->mpOwnerModel = static_cast<uDDOModel*>(nullptr);
+    mpOwnerModel = nullptr;
 }
 
 // Address: 0x00150890 - 0x00150991 (257 bytes)
@@ -131,29 +131,29 @@ __attribute__((weak)) void cParentRegionStatus::setParamFromRes(cParentRegionSta
 // Address: 0x00150760 - 0x00150789 (41 bytes)
 void cParentRegionStatus::setHp(HP_DATATYPE hp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, hp, this->mNo);
+    cContextInterface::setHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, hp, mNo);
 }
 
 // Address: 0x00150790 - 0x001507b9 (41 bytes)
 void cParentRegionStatus::setHpMax(HP_DATATYPE hpMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    ::cContextInterface::setHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, hpMax, this->mNo);
+    cContextInterface::setHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, hpMax, mNo);
 }
 
 // Address: 0x00150860 - 0x0015088a (42 bytes)
 void cParentRegionStatus::setIsDead(bool flag) {
     // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    ::cContextInterface::setIsDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, flag, this->mNo);
+    cContextInterface::setIsDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, flag, mNo);
 }
 
 // No out-of-line body: 9 inlined copies in 8 functions (93 bytes)
@@ -170,20 +170,20 @@ void cParentRegionStatus::setIsDead(bool flag) {
 // Address: 0x001507c0 - 0x001507e5 (37 bytes)
 HP_DATATYPE cParentRegionStatus::getHp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-        return ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+    if (mpOwnerModel != nullptr) {
+        return cContextInterface::getHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
     } else {
-        return static_cast<HP_DATATYPE>(0);
+        return 0;
     }
 }
 
 // Address: 0x001507f0 - 0x00150815 (37 bytes)
 HP_DATATYPE cParentRegionStatus::getHpMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-        return ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+    if (mpOwnerModel != nullptr) {
+        return cContextInterface::getHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
     } else {
-        return static_cast<HP_DATATYPE>(0);
+        return 0;
     }
 }
 
@@ -191,8 +191,8 @@ HP_DATATYPE cParentRegionStatus::getHpMax() const {
 bool cParentRegionStatus::isDead() const {
     // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-        return ::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+    if (mpOwnerModel != nullptr) {
+        return cContextInterface::isDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
     } else {
         return true;
     }
@@ -201,7 +201,7 @@ bool cParentRegionStatus::isDead() const {
 // Address: 0x00150850 - 0x00150858 (8 bytes)
 bool cParentRegionStatus::isMainRegion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNo == static_cast<u32>(0);
+    return mNo == 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -213,24 +213,24 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
     // DWARF local not rendered: HP_DATATYPE hp;
     // DWARF local not rendered: HP_DATATYPE hpMax;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (isForce == false) {
-        if (this->mpOwnerHpDmageCtrl != static_cast<cpHpDamageCtrl*>(nullptr)) {
-            if (this->mpOwnerHpDmageCtrl->::cpHpDamageCtrl::isDeadDying() != false) {
+    if (!isForce) {
+        if (mpOwnerHpDmageCtrl != nullptr) {
+            if (mpOwnerHpDmageCtrl->isDeadDying()) {
                 return false;
             } else {
-                if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                    if (::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo) != false) {
+                if (mpOwnerModel != nullptr) {
+                    if (cContextInterface::isDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo)) {
                         return false;
                     } else {
-                        if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+                        if (mpOwnerModel != nullptr) {
                             // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-                            HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+                            HP_DATATYPE t0 = cContextInterface::getHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
+                            if (mpOwnerModel != nullptr) {
                                 // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                                HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                                HP_DATATYPE t1 = cContextInterface::getHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
                                 if (t0 < t1) {
-                                    if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
+                                    if (mpOwnerModel != nullptr) {
+                                        cContextInterface::setHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), mNo);
                                     }
                                     return true;
                                 } else {
@@ -248,15 +248,15 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
                 }
             }
         } else {
-            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+            if (mpOwnerModel != nullptr) {
                 // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-                HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+                HP_DATATYPE t0 = cContextInterface::getHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
+                if (mpOwnerModel != nullptr) {
                     // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                    HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                    HP_DATATYPE t1 = cContextInterface::getHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
                     if (t0 < t1) {
-                        if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                            ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
+                        if (mpOwnerModel != nullptr) {
+                            cContextInterface::setHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), mNo);
                         }
                         return true;
                     } else {
@@ -270,15 +270,15 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
             }
         }
     } else {
-        if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+        if (mpOwnerModel != nullptr) {
             // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-            HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+            HP_DATATYPE t0 = cContextInterface::getHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
+            if (mpOwnerModel != nullptr) {
                 // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                HP_DATATYPE t1 = cContextInterface::getHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
                 if (t0 < t1) {
-                    if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
+                    if (mpOwnerModel != nullptr) {
+                        cContextInterface::setHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), mNo);
                     }
                     return true;
                 } else {
@@ -310,21 +310,21 @@ void cParentRegionStatus::regenerateMaster(HP_DATATYPE addHp) {
     // DWARF local not rendered: HP_DATATYPE hp;
     // DWARF local not rendered: HP_DATATYPE hpMax;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x150eb1, used twice; no DWARF local holds it
-    HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    HP_DATATYPE t0 = cContextInterface::getHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
+    if (mpOwnerModel == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x150ed6, used twice; no DWARF local holds it
-    HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+    HP_DATATYPE t1 = cContextInterface::getHpMax(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo);
     if (t0 < t1) {
-        if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-            ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
-            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                ::cContextInterface::setIsDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, false, this->mNo);
+        if (mpOwnerModel != nullptr) {
+            cContextInterface::setHp(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), mNo);
+            if (mpOwnerModel != nullptr) {
+                cContextInterface::setIsDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, false, mNo);
             }
         }
     }
@@ -334,28 +334,28 @@ void cParentRegionStatus::regenerateMaster(HP_DATATYPE addHp) {
 void cParentRegionStatus::regenerateMasterSlave() {
     // DWARF local not rendered: uEnemy* pEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    if ((this->mpOwnerModel->mUnitId & static_cast<u32>(2)) == static_cast<u32>(0)) {
+    if ((mpOwnerModel->mUnitId & 2u) == 0) {
         return;
     }
-    static_cast<uEnemy*>(this->mpOwnerModel)->::uEnemy::callbackRegionRegenerateMasterSlave(this->mNo, this->mRegionCategory);
+    static_cast<uEnemy*>(mpOwnerModel)->callbackRegionRegenerateMasterSlave(mNo, mRegionCategory);
 }
 
 // Address: 0x00150e10 - 0x00150e74 (100 bytes)
 bool cParentRegionStatus::isEnableRegenerate(bool isMaster) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mNo != static_cast<u32>(0)) {
-        if (isMaster != false) {
-            if (this->mpOwnerHpDmageCtrl != static_cast<cpHpDamageCtrl*>(nullptr)) {
-                if (this->mpOwnerHpDmageCtrl->::cpHpDamageCtrl::isDeadDying() != false) {
+    if (mNo != 0) {
+        if (isMaster) {
+            if (mpOwnerHpDmageCtrl != nullptr) {
+                if (mpOwnerHpDmageCtrl->isDeadDying()) {
                     return false;
                 }
             }
-            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                if (::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo) != false) {
+            if (mpOwnerModel != nullptr) {
+                if (cContextInterface::isDead(mpOwnerModel->mContextInterface.mpContextInstance, mpOwnerModel->mContextInterface.mpContextCharacter, mNo)) {
                     return true;
                 } else {
                     return false;
@@ -400,13 +400,13 @@ bool cParentRegionStatus::isEnableRegenerate(bool isMaster) const {
 // Address: 0x00151000 - 0x00151025 (37 bytes)
 void cParentRegionStatus::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    if (this->mpOwnerModel->::cUnit::isEnable() != false) {
+    if (mpOwnerModel->isEnable()) {
         return;
     }
-    this->mpOwnerModel = static_cast<uDDOModel*>(nullptr);
+    mpOwnerModel = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -440,6 +440,8 @@ __attribute__((weak)) void cParentRegionStatus::applyRegionBreakInfo() {
 //   in cParentRegionStatus::setParamFromRes at 0x00150c9a-0x00150cd3 (called at cParentRegionStatus.cpp:559)
 // void cParentRegionStatus::setRegionBreakInfo(rRegionBreakInfo* pRes);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cParentRegionStatus::MyDTI cParentRegionStatus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cParentRegionStatus.cpp at 0x001512cf-0x0015130c (called at cParentRegionStatus.cpp:23)
 //   in _GLOBAL__sub_I_cParentRegionStatus.cpp at 0x001512cf-0x0015130c (called at cParentRegionStatus.h:33)
@@ -448,6 +450,6 @@ __attribute__((weak)) void cParentRegionStatus::applyRegionBreakInfo() {
 // Address: 0x001504a0 - 0x00150540 (160 bytes)
 MtObject* cParentRegionStatus::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cParentRegionStatus;
+    return new (16u) cParentRegionStatus;
 }
 

@@ -49,7 +49,7 @@ const MtDTI& cZoneListenerEffect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneListenerEffect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListenerEffect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,6 +90,8 @@ __attribute__((weak)) MtVector3 cZoneListenerEffect::myPos() {
 
 // No out-of-line body: no code in the ELF
 // void cZoneListenerEffect::resetParam();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneListenerEffect::MyDTI cZoneListenerEffect::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerEffect.cpp at 0x00595513-0x00595553 (called at cZoneListenerEffect.cpp:22)
@@ -138,7 +140,7 @@ const MtDTI& cZoneListenerEffectColor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneListenerEffectColor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffectColor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListenerEffectColor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -174,55 +176,55 @@ __attribute__((weak)) void cZoneListenerEffectColor::notified(const nZone::cLayo
 // Address: 0x00594f70 - 0x00594f75 (5 bytes)
 const MtColor& cZoneListenerEffectColor::getColor() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColor;
+    return mColor;
 }
 
 // Address: 0x00594f80 - 0x00594f86 (6 bytes)
 f32 cZoneListenerEffectColor::getColorBlend() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorBlend;
+    return mColorBlend;
 }
 
 // Address: 0x00594f90 - 0x00594f96 (6 bytes)
 f32 cZoneListenerEffectColor::getIntensity() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIntensity;
+    return mIntensity;
 }
 
 // Address: 0x00594fa0 - 0x00594fa6 (6 bytes)
 f32 cZoneListenerEffectColor::getIntensityBlend() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIntensityBlend;
+    return mIntensityBlend;
 }
 
 // Address: 0x00594fb0 - 0x00594fb5 (5 bytes)
 const MtColor& cZoneListenerEffectColor::getShadowColor() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowColor;
+    return mShadowColor;
 }
 
 // Address: 0x00594fc0 - 0x00594fc6 (6 bytes)
 f32 cZoneListenerEffectColor::getShadowColorBlend() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowColorBlend;
+    return mShadowColorBlend;
 }
 
 // Address: 0x00594fd0 - 0x00594fd6 (6 bytes)
 f32 cZoneListenerEffectColor::getShadowIntensity() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowIntensity;
+    return mShadowIntensity;
 }
 
 // Address: 0x00594fe0 - 0x00594fe6 (6 bytes)
 f32 cZoneListenerEffectColor::getShadowIntensityBlend() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mShadowIntensityBlend;
+    return mShadowIntensityBlend;
 }
 
 // Address: 0x00594ff0 - 0x00594ff6 (6 bytes)
 f32 cZoneListenerEffectColor::getEnvMapPowerScale() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnvMapPowerScale;
+    return mEnvMapPowerScale;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (5 bytes)
@@ -247,6 +249,8 @@ f32 cZoneListenerEffectColor::getEnvMapPowerScale() const {
 
 // No out-of-line body: no code in the ELF
 // bool cZoneListenerEffectColor::getUsePointLightSupplement();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneListenerEffectColor::MyDTI cZoneListenerEffectColor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerEffect.cpp at 0x00595553-0x0059558c (called at cZoneListenerEffect.cpp:27)
@@ -295,7 +299,7 @@ const MtDTI& cZoneListenerEffectEFL::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cZoneListenerEffectEFL::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffectEFL::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneListenerEffectEFL::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -354,17 +358,17 @@ __attribute__((weak)) void cZoneListenerEffectEFL::resetParam() {
 // Address: 0x005953e0 - 0x005953f2 (18 bytes)
 s32 cZoneListenerEffectEFL::getLayoutIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpElement != static_cast<const nZone::cLayoutElement*>(nullptr)) {
-        return static_cast<s32>(this->mpElement->::nZone::cLayoutElement::getIndex());
+    if (mpElement != nullptr) {
+        return static_cast<s32>(mpElement->getIndex());
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x00595400 - 0x00595405 (5 bytes)
 const nZone::cLayoutElement* cZoneListenerEffectEFL::getLayoutElement() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpElement;
+    return mpElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -373,6 +377,8 @@ const nZone::cLayoutElement* cZoneListenerEffectEFL::getLayoutElement() const {
 // No out-of-line body: 1 inlined copy in 1 function (15 bytes)
 //   in sEffectExt::updateZoneEffectUnit at 0x0076ade9-0x0076adf8 (called at sEffectExt.cpp:6654)
 // cZCEFLControl::cResourceSet* cZoneListenerEffectEFL::getResourceSet(u32 no);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneListenerEffectEFL::MyDTI cZoneListenerEffectEFL::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cZoneListenerEffect.cpp at 0x0059558c-0x005955c5 (called at cZoneListenerEffect.cpp:191)

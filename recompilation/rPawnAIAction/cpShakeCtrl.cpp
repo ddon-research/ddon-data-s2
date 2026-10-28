@@ -35,7 +35,7 @@ const MtDTI& cpShakeCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpShakeCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpShakeCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpShakeCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* cpShakeCtrl::getAllocator() {
 // Address: 0x0052ff10 - 0x0052ff50 (64 bytes)
 void* cpShakeCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpShakeCtrl::getAllocator()->memAlloc(sz, align, ::cpShakeCtrl::DTI.::MtDTI::getID());
+    return cpShakeCtrl::getAllocator()->memAlloc(sz, align, cpShakeCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* cpShakeCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpShakeCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpShakeCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpShakeCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,7 +88,7 @@ cpShakeCtrl::~cpShakeCtrl() {
 // Address: 0x00530270 - 0x00530275 (5 bytes)
 void cpShakeCtrl::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00530280 - 0x00530281 (1 bytes)
@@ -104,8 +104,8 @@ __attribute__((weak)) void cpShakeCtrl::applyWorldOffset(const MtVector3& offset
 // Address: 0x005302e0 - 0x005302e9 (9 bytes)
 void cpShakeCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00530260 - 0x00530261 (1 bytes)
@@ -158,102 +158,101 @@ __attribute__((weak)) void cpShakeCtrl::updateShakeCtrl() {
 void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
     // DWARF local not rendered: u32 flag;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if ((this->mpModel->::uDDOModel::getObjStatus() & this->mIgnorOST) != static_cast<u64>(0)) {
+    if ((mpModel->getObjStatus() & mIgnorOST) != 0) {
         return;
     }
-    if (this->mpModel->::uDDOModel::getOcdCtrlPtr() != static_cast<cpOcdCtrl*>(nullptr)) {
-        if ((this->mIgnorBadOCD & this->mpModel->::uDDOModel::getOcdCtrlPtr()->mOcdActiveBit[1]) == static_cast<u32>(0)) {
-            if ((this->mpModel->mObjStatus & static_cast<u64>(32)) != static_cast<u64>(0)) {
-            } else {
-                if (this->mCurrentResNo != ResourceNo) {
+    if (mpModel->getOcdCtrlPtr() != nullptr) {
+        if ((mIgnorBadOCD & mpModel->getOcdCtrlPtr()->mOcdActiveBit[1]) == 0) {
+            if ((mpModel->mObjStatus & 32ul) == 0) {
+                if (mCurrentResNo != ResourceNo) {
                     // inferred: a temporary for the value the load at 0x5308f8 read, used 3 times; no DWARF local holds it
-                    rShakeCtrl* t0 = this->mpBank[ResourceNo];
-                    if (this->mpResource != static_cast<rShakeCtrl*>(nullptr)) {
-                        this->mpResource->::cResource::release();
-                        this->mpResource = static_cast<rShakeCtrl*>(nullptr);
+                    rShakeCtrl* t0 = mpBank[ResourceNo];
+                    if (mpResource != nullptr) {
+                        mpResource->release();
+                        mpResource = nullptr;
                     }
-                    if (t0 != static_cast<rShakeCtrl*>(nullptr)) {
-                        this->mpResource = t0;
-                        t0->::cResource::addRef();
-                        this->::cpShakeCtrl::initShakeCtrl();
-                        this->mCurrentResNo = ResourceNo;
-                        this->mDir.x = shakeDir.x;
-                        this->mDir.y = shakeDir.y;
-                        this->mDir.z = shakeDir.z;
-                        this->mDir.pad_ = 0.0f;
-                        uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                        if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                            pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                    if (t0 != nullptr) {
+                        mpResource = t0;
+                        t0->addRef();
+                        initShakeCtrl();
+                        mCurrentResNo = ResourceNo;
+                        mDir.x = shakeDir.x;
+                        mDir.y = shakeDir.y;
+                        mDir.z = shakeDir.z;
+                        mDir.pad_ = 0.0f;
+                        uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                        if (pShakeCtrl != nullptr) {
+                            pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                         }
                     } else {
-                        this->::cpShakeCtrl::initShakeCtrl();
-                        this->mCurrentResNo = ResourceNo;
-                        this->mDir.x = shakeDir.x;
-                        this->mDir.y = shakeDir.y;
-                        this->mDir.z = shakeDir.z;
-                        this->mDir.pad_ = 0.0f;
-                        uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                        if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                            pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                        initShakeCtrl();
+                        mCurrentResNo = ResourceNo;
+                        mDir.x = shakeDir.x;
+                        mDir.y = shakeDir.y;
+                        mDir.z = shakeDir.z;
+                        mDir.pad_ = 0.0f;
+                        uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                        if (pShakeCtrl != nullptr) {
+                            pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                         }
                     }
                 } else {
-                    this->mDir.x = shakeDir.x;
-                    this->mDir.y = shakeDir.y;
-                    this->mDir.z = shakeDir.z;
-                    this->mDir.pad_ = 0.0f;
-                    uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                    if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                        pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                    mDir.x = shakeDir.x;
+                    mDir.y = shakeDir.y;
+                    mDir.z = shakeDir.z;
+                    mDir.pad_ = 0.0f;
+                    uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                    if (pShakeCtrl != nullptr) {
+                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                     }
                 }
             }
         }
     } else {
-        if ((this->mpModel->mObjStatus & static_cast<u64>(32)) == static_cast<u64>(0)) {
-            if (this->mCurrentResNo != ResourceNo) {
+        if ((mpModel->mObjStatus & 32ul) == 0) {
+            if (mCurrentResNo != ResourceNo) {
                 // inferred: a temporary for the value the load at 0x5308f8 read, used 3 times; no DWARF local holds it
-                rShakeCtrl* t0 = this->mpBank[ResourceNo];
-                if (this->mpResource != static_cast<rShakeCtrl*>(nullptr)) {
-                    this->mpResource->::cResource::release();
-                    this->mpResource = static_cast<rShakeCtrl*>(nullptr);
+                rShakeCtrl* t0 = mpBank[ResourceNo];
+                if (mpResource != nullptr) {
+                    mpResource->release();
+                    mpResource = nullptr;
                 }
-                if (t0 != static_cast<rShakeCtrl*>(nullptr)) {
-                    this->mpResource = t0;
-                    t0->::cResource::addRef();
-                    this->::cpShakeCtrl::initShakeCtrl();
-                    this->mCurrentResNo = ResourceNo;
-                    this->mDir.x = shakeDir.x;
-                    this->mDir.y = shakeDir.y;
-                    this->mDir.z = shakeDir.z;
-                    this->mDir.pad_ = 0.0f;
-                    uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                    if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                        pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                if (t0 != nullptr) {
+                    mpResource = t0;
+                    t0->addRef();
+                    initShakeCtrl();
+                    mCurrentResNo = ResourceNo;
+                    mDir.x = shakeDir.x;
+                    mDir.y = shakeDir.y;
+                    mDir.z = shakeDir.z;
+                    mDir.pad_ = 0.0f;
+                    uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                    if (pShakeCtrl != nullptr) {
+                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                     }
                 } else {
-                    this->::cpShakeCtrl::initShakeCtrl();
-                    this->mCurrentResNo = ResourceNo;
-                    this->mDir.x = shakeDir.x;
-                    this->mDir.y = shakeDir.y;
-                    this->mDir.z = shakeDir.z;
-                    this->mDir.pad_ = 0.0f;
-                    uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                    if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                        pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                    initShakeCtrl();
+                    mCurrentResNo = ResourceNo;
+                    mDir.x = shakeDir.x;
+                    mDir.y = shakeDir.y;
+                    mDir.z = shakeDir.z;
+                    mDir.pad_ = 0.0f;
+                    uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                    if (pShakeCtrl != nullptr) {
+                        pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                     }
                 }
             } else {
-                this->mDir.x = shakeDir.x;
-                this->mDir.y = shakeDir.y;
-                this->mDir.z = shakeDir.z;
-                this->mDir.pad_ = 0.0f;
-                uCnsShakeCtrl* pShakeCtrl = this->::cpShakeCtrl::findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
-                if (pShakeCtrl != static_cast<uCnsShakeCtrl*>(nullptr)) {
-                    pShakeCtrl->::uCnsShakeCtrl::shake(this->mDir);
+                mDir.x = shakeDir.x;
+                mDir.y = shakeDir.y;
+                mDir.z = shakeDir.z;
+                mDir.pad_ = 0.0f;
+                uCnsShakeCtrl* pShakeCtrl = findNearestCnsShakeCtrl(static_cast<s32>(JntNo));
+                if (pShakeCtrl != nullptr) {
+                    pShakeCtrl->uCnsShakeCtrl::shake(mDir);
                 }
             }
         }
@@ -263,23 +262,23 @@ void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
 // Address: 0x005309d0 - 0x00530a0f (63 bytes)
 void cpShakeCtrl::shake(cHitInfo* pHitInfo, bool force_shake, s32 ResourceNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo == static_cast<cHitInfo*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    this->::cpShakeCtrl::shake(pHitInfo->::cHitInfo::getAttackParam(), pHitInfo->mpDfdGeom->mpSrcGeom, pHitInfo->mpAtkModel, pHitInfo->mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
+    shake(pHitInfo->getAttackParam(), pHitInfo->mpDfdGeom->mpSrcGeom, pHitInfo->mpAtkModel, pHitInfo->mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
 }
 
 // Address: 0x00530d50 - 0x00530d94 (68 bytes)
 void cpShakeCtrl::shake(cHitInfoAfter* pHitInfo, bool force_shake, s32 ResourceNo) {
     // DWARF local not rendered: uDDOModel* pAtkModel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    if (pHitInfo->mCommonInfo.mpAtkModel == static_cast<uDDOModel*>(nullptr)) {
-        this->::cpShakeCtrl::shake(pHitInfo->mCommonInfo.mpAttackParam, pHitInfo->mCommonInfo.mpDfdCollGeom, pHitInfo->mCommonInfo.mpShlOwnerModel, pHitInfo->mCommonInfo.mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
+    if (pHitInfo->mCommonInfo.mpAtkModel == nullptr) {
+        shake(pHitInfo->mCommonInfo.mpAttackParam, pHitInfo->mCommonInfo.mpDfdCollGeom, pHitInfo->mCommonInfo.mpShlOwnerModel, pHitInfo->mCommonInfo.mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
     } else {
-        this->::cpShakeCtrl::shake(pHitInfo->mCommonInfo.mpAttackParam, pHitInfo->mCommonInfo.mpDfdCollGeom, pHitInfo->mCommonInfo.mpAtkModel, pHitInfo->mCommonInfo.mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
+        shake(pHitInfo->mCommonInfo.mpAttackParam, pHitInfo->mCommonInfo.mpDfdCollGeom, pHitInfo->mCommonInfo.mpAtkModel, pHitInfo->mCommonInfo.mpDfdModel, force_shake, static_cast<u32>(ResourceNo));
     }
 }
 
@@ -299,35 +298,35 @@ __attribute__((weak)) uCnsShakeCtrl* cpShakeCtrl::findNearestCnsShakeCtrl(s32 Jn
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x5306ed; no location-less local in scope fits
     MtObject* v4_9;
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
-        v4_9 = static_cast<MtObject*>(nullptr);
+    if (mpModel == nullptr) {
+        v4_9 = nullptr;
     } else {
-        if (this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)] == static_cast<unsigned char>(255)) {
-            v4_9 = static_cast<MtObject*>(nullptr);
+        if (mpModel->mJointTable[static_cast<unsigned char>(JntNo)] == 0xFF) {
+            v4_9 = nullptr;
         } else {
-            if ((&this->mpModel->::uModel::mJoint[this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)]]) == static_cast<uModel::Joint*>(nullptr)) {
-                v4_9 = static_cast<MtObject*>(nullptr);
+            if ((&mpModel->mJoint[mpModel->mJointTable[static_cast<unsigned char>(JntNo)]]) == nullptr) {
+                v4_9 = nullptr;
             } else {
                 // inferred: the value the loop at 0x530650 carries; no location-less local in scope fits
-                uModel::Joint* v0_9 = &this->mpModel->::uModel::mJoint[this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)]];
+                uModel::Joint* v0_9 = &mpModel->mJoint[mpModel->mJointTable[static_cast<unsigned char>(JntNo)]];
                 // inferred: the counter this loop steps; no location-less local in scope fits
                 unsigned int i1_3;
                 for (;;) {
-                    if (this->mpResource != static_cast<rShakeCtrl*>(nullptr)) {
+                    if (mpResource != nullptr) {
                         // inferred: the value the loop at 0x530680 carries; no location-less local in scope fits
                         u32 v1_10 = v0_9->mNo;
-                        if (this->mpResource->getDataNum() != static_cast<u32>(0)) {
-                            i1_3 = static_cast<unsigned int>(0);
+                        if (mpResource->getDataNum() != 0) {
+                            i1_3 = 0;
                             for (;;) {
-                                if (i1_3 < this->mCnsShakeCtrlArray.::MtArray::mLength) {
+                                if (i1_3 < mCnsShakeCtrlArray.mLength) {
                                     // inferred: a temporary for the result of the call at 0x530691, used twice; no DWARF local holds it
-                                    cShakeCtrl* t0 = this->mpResource->getData(i1_3);
-                                    if (t0 != static_cast<cShakeCtrl*>(nullptr)) {
+                                    cShakeCtrl* t0 = mpResource->getData(i1_3);
+                                    if (t0 != nullptr) {
                                         if (t0->mJntNo == static_cast<int>(v1_10)) {
-                                            uCnsShakeCtrl* pCnsShakeCtrl = static_cast<uCnsShakeCtrl*>(this->mCnsShakeCtrlArray.::MtArray::mpArray[i1_3]);
-                                            if (pCnsShakeCtrl == static_cast<uCnsShakeCtrl*>(nullptr)) {
-                                                if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
-                                                    i1_3 += static_cast<unsigned int>(1);
+                                            uCnsShakeCtrl* pCnsShakeCtrl = static_cast<uCnsShakeCtrl*>(mCnsShakeCtrlArray.mpArray[i1_3]);
+                                            if (pCnsShakeCtrl == nullptr) {
+                                                if ((i1_3 + 1u) < mpResource->getDataNum()) {
+                                                    i1_3 += 1u;
                                                 } else {
                                                     break;
                                                 }
@@ -336,22 +335,22 @@ __attribute__((weak)) uCnsShakeCtrl* cpShakeCtrl::findNearestCnsShakeCtrl(s32 Jn
                                                 return static_cast<uCnsShakeCtrl*>(v4_9);
                                             }
                                         } else {
-                                            if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
-                                                i1_3 += static_cast<unsigned int>(1);
+                                            if ((i1_3 + 1u) < mpResource->getDataNum()) {
+                                                i1_3 += 1u;
                                             } else {
                                                 break;
                                             }
                                         }
                                     } else {
-                                        if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
-                                            i1_3 += static_cast<unsigned int>(1);
+                                        if ((i1_3 + 1u) < mpResource->getDataNum()) {
+                                            i1_3 += 1u;
                                         } else {
                                             break;
                                         }
                                     }
                                 } else {
-                                    if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
-                                        i1_3 += static_cast<unsigned int>(1);
+                                    if ((i1_3 + 1u) < mpResource->getDataNum()) {
+                                        i1_3 += 1u;
                                     } else {
                                         break;
                                     }
@@ -359,14 +358,14 @@ __attribute__((weak)) uCnsShakeCtrl* cpShakeCtrl::findNearestCnsShakeCtrl(s32 Jn
                             }
                         }
                     }
-                    uModel::Joint* pJnt = v0_9->::uModel::Joint::getParentJoint();
-                    if (pJnt != static_cast<uModel::Joint*>(nullptr)) {
+                    uModel::Joint* pJnt = v0_9->getParentJoint();
+                    if (pJnt != nullptr) {
                         v0_9 = pJnt;
                     } else {
                         break;
                     }
                 }
-                v4_9 = static_cast<MtObject*>(nullptr);
+                v4_9 = nullptr;
             }
         }
     }
@@ -426,6 +425,8 @@ __attribute__((weak)) void cpShakeCtrl::shake(const cAttackParam* pAttackParam, 
     DDON_STUB("cpShakeCtrl::shake")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpShakeCtrl::MyDTI cpShakeCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpShakeCtrl.cpp at 0x00530e9f-0x00530edc (called at cpShakeCtrl.cpp:32)

@@ -126,7 +126,7 @@ inline u32 cQuestPhaseEvent::getEventId() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestPhaseEvent::cQuestPhaseEvent() {
-    this->mEventId = static_cast<u32>(0);
+    this->mEventId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -137,7 +137,7 @@ inline u32 cQuestPhaseEvent::cParam::getValue() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestPhaseEvent::cParam::cParam() {
-    this->mType = static_cast<u32>(0);
-    this->mIdx = static_cast<u32>(0);
-    this->mValue = static_cast<u32>(0);
+    this->mType = 0;
+    this->mIdx = 0;
+    this->mValue = 0;
 }

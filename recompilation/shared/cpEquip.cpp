@@ -34,7 +34,7 @@ const MtDTI& cpEquip::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpEquip::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpEquip::DTI);
+    return MtMemoryAllocator::getAllocator(cpEquip::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* cpEquip::getAllocator() {
 // Address: 0x00478530 - 0x00478570 (64 bytes)
 void* cpEquip::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpEquip::getAllocator()->memAlloc(sz, align, ::cpEquip::DTI.::MtDTI::getID());
+    return cpEquip::getAllocator()->memAlloc(sz, align, cpEquip::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* cpEquip::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEquip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEquip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEquip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,8 +89,8 @@ cpEquip::~cpEquip() {
 // Address: 0x01a59ab0 - 0x01a59abc (12 bytes)
 void cpEquip::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uModel*>(pOwner);
 }
 
 // Address: 0x00479b30 - 0x00479d08 (472 bytes)
@@ -106,58 +106,58 @@ void cpEquip::move() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     } else {
-        if (this->::cpComponent::mpOwner != static_cast<MtObject*>(nullptr)) {
+        if (mpOwner != nullptr) {
             // inferred: a temporary for the result of the call at 0x479edb, used once; no DWARF local holds it
-            const MtDTI& t0 = this->::cpComponent::mpOwner->getDTI();
+            const MtDTI& t0 = mpOwner->getDTI();
             // inferred: the value the loop at 0x479ee9 carries; no location-less local in scope fits
-            MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             // inferred: the value the loop at 0x479ee9 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
                 if (v0_1 != v0_0->mName) {
-                    if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    if (v0_0->mpParent != nullptr) {
                         v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    this->::cpEquip::updateWeaponCtrl();
+                    updateWeaponCtrl();
                     break;
                 }
             }
         }
     }
-    if (this->mUpdateEquipPresetReq != false) {
-        this->mUpdateEquipPresetReq = false;
-        this->::cpEquip::updateEquipPreset();
-        this->mPresetOption = static_cast<u32>(0);
+    if (mUpdateEquipPresetReq) {
+        mUpdateEquipPresetReq = false;
+        updateEquipPreset();
+        mPresetOption = 0;
     }
-    this->mWeapon[0].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mWeapon[1].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mWeapon[2].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mWeapon[3].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[0].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[1].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[2].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[3].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[4].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[5].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mArmor[6].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mHair.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mMakeup.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mBeard.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mUnderwear.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mUnderwear2.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mLantern.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
-    this->mNpcItem.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    mWeapon[0].move(static_cast<cpEquip* const>(this));
+    mWeapon[1].move(static_cast<cpEquip* const>(this));
+    mWeapon[2].move(static_cast<cpEquip* const>(this));
+    mWeapon[3].move(static_cast<cpEquip* const>(this));
+    mArmor[0].move(static_cast<cpEquip* const>(this));
+    mArmor[1].move(static_cast<cpEquip* const>(this));
+    mArmor[2].move(static_cast<cpEquip* const>(this));
+    mArmor[3].move(static_cast<cpEquip* const>(this));
+    mArmor[4].move(static_cast<cpEquip* const>(this));
+    mArmor[5].move(static_cast<cpEquip* const>(this));
+    mArmor[6].move(static_cast<cpEquip* const>(this));
+    mHair.move(static_cast<cpEquip* const>(this));
+    mMakeup.move(static_cast<cpEquip* const>(this));
+    mBeard.move(static_cast<cpEquip* const>(this));
+    mUnderwear.move(static_cast<cpEquip* const>(this));
+    mUnderwear2.move(static_cast<cpEquip* const>(this));
+    mLantern.move(static_cast<cpEquip* const>(this));
+    mNpcItem.move(static_cast<cpEquip* const>(this));
 }
 
 // Address: 0x0047aa10 - 0x0047aa15 (5 bytes)
 void cpEquip::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpEquip::killAllEquip();
+    killAllEquip();
 }
 
 // Address: 0x0047aa20 - 0x0047add7 (951 bytes)
@@ -188,46 +188,46 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uWeapon::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x246c from uModel*
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     } else {
-        if (this->::cpComponent::mpOwner == static_cast<MtObject*>(nullptr)) {
+        if (mpOwner == nullptr) {
             return;
         } else {
             // inferred: a temporary for the result of the call at 0x479d2b, used once; no DWARF local holds it
-            const MtDTI& t0 = this->::cpComponent::mpOwner->getDTI();
+            const MtDTI& t0 = mpOwner->getDTI();
             // inferred: the value the loop at 0x479d39 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
             // inferred: the value the loop at 0x479d39 carries; no location-less local in scope fits
             const MtDTI* v0_0 = &t0;
             // inferred: the value the loop at 0x479d6c carries; no location-less local in scope fits
             const MtDTI* v1_0;
             for (;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
                     } else {
                         return;
                     }
                 } else {
-                    if (this->mWeapon[0].mpModel == static_cast<uModel*>(nullptr)) {
+                    if (mWeapon[0].mpModel == nullptr) {
                         break;
                     } else {
                         // inferred: a temporary for the result of the call at 0x479d5e, used once; no DWARF local holds it
-                        const MtDTI& t1 = this->mWeapon[0].mpModel->getDTI();
+                        const MtDTI& t1 = mWeapon[0].mpModel->getDTI();
                         // inferred: the value the loop at 0x479d6c carries; no location-less local in scope fits
-                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
                         v1_0 = &t1;
                         for (;;) {
-                            if (v1_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(8)))) {
-                                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                                    v1_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(32)));
+                            if (v1_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 8))) {
+                                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 32)) != 0) {
+                                    v1_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + 32));
                                 } else {
                                     goto loop_479d39_end;
                                 }
                             } else {
-                                if (this->mWeapon[0].mpModel != static_cast<uModel*>(nullptr)) {
-                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[0].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                                if (mWeapon[0].mpModel != nullptr) {
+                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWeapon[0].mpModel) + 9324) = 0;
                                 }
                                 goto loop_479d39_end;
                             }
@@ -237,71 +237,71 @@ void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 s
                 }
             }
             loop_479d39_end:;
-            if (this->mWeapon[1].mpModel != static_cast<uModel*>(nullptr)) {
+            if (mWeapon[1].mpModel != nullptr) {
                 // inferred: a temporary for the result of the call at 0x479da2, used once; no DWARF local holds it
-                const MtDTI& t2 = this->mWeapon[1].mpModel->getDTI();
+                const MtDTI& t2 = mWeapon[1].mpModel->getDTI();
                 // inferred: the value the loop at 0x479db0 carries; no location-less local in scope fits
-                unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
                 // inferred: the value the loop at 0x479db0 carries; no location-less local in scope fits
                 for (const MtDTI* v3_0 = &t2;;) {
-                    if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(8)))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                            v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32)));
+                    if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 8))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 32)) != 0) {
+                            v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + 32));
                         } else {
                             break;
                         }
                     } else {
-                        if (this->mWeapon[1].mpModel != static_cast<uModel*>(nullptr)) {
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[1].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        if (mWeapon[1].mpModel != nullptr) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWeapon[1].mpModel) + 9324) = 0;
                         }
                         break;
                     }
                 }
             }
-            if (this->mWeapon[2].mpModel != static_cast<uModel*>(nullptr)) {
+            if (mWeapon[2].mpModel != nullptr) {
                 // inferred: a temporary for the result of the call at 0x479de6, used once; no DWARF local holds it
-                const MtDTI& t3 = this->mWeapon[2].mpModel->getDTI();
+                const MtDTI& t3 = mWeapon[2].mpModel->getDTI();
                 // inferred: the value the loop at 0x479df4 carries; no location-less local in scope fits
-                unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
                 // inferred: the value the loop at 0x479df4 carries; no location-less local in scope fits
                 for (const MtDTI* v5_0 = &t3;;) {
-                    if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(8)))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                            v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32)));
+                    if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 8))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 32)) != 0) {
+                            v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + 32));
                         } else {
                             break;
                         }
                     } else {
-                        if (this->mWeapon[2].mpModel != static_cast<uModel*>(nullptr)) {
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[2].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        if (mWeapon[2].mpModel != nullptr) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWeapon[2].mpModel) + 9324) = 0;
                         }
                         break;
                     }
                 }
             }
-            if (this->mWeapon[3].mpModel != static_cast<uModel*>(nullptr)) {
+            if (mWeapon[3].mpModel != nullptr) {
                 // inferred: a temporary for the result of the call at 0x479e2a, used once; no DWARF local holds it
-                const MtDTI& t4 = this->mWeapon[3].mpModel->getDTI();
+                const MtDTI& t4 = mWeapon[3].mpModel->getDTI();
                 // inferred: the value the loop at 0x479e38 carries; no location-less local in scope fits
-                unsigned long v7_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                unsigned long v7_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uWeapon::DTI) + 8);
                 // inferred: the value the loop at 0x479e38 carries; no location-less local in scope fits
                 for (const MtDTI* v7_0 = &t4;;) {
-                    if (v7_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(8)))) {
-                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                            v7_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(32)));
+                    if (v7_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 8))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 32)) != 0) {
+                            v7_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + 32));
                         } else {
                             break;
                         }
                     } else {
-                        if (this->mWeapon[3].mpModel != static_cast<uModel*>(nullptr)) {
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[3].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        if (mWeapon[3].mpModel != nullptr) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWeapon[3].mpModel) + 9324) = 0;
                         }
-                        this->::cpEquip::updateWeaponCtrl();
+                        updateWeaponCtrl();
                         return;
                     }
                 }
             }
-            this->::cpEquip::updateWeaponCtrl();
+            updateWeaponCtrl();
             return;
         }
     }
@@ -322,21 +322,21 @@ uWeapon* cpEquip::getWeapon(u32 index) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47bafa; no location-less local in scope fits
     uModel* v2_0;
-    if (index > static_cast<u32>(3)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (index > 3u) {
+        v2_0 = nullptr;
     } else {
-        if (this->mWeapon[index].mpModel == static_cast<uModel*>(nullptr)) {
-            v2_0 = static_cast<uModel*>(nullptr);
+        if (mWeapon[index].mpModel == nullptr) {
+            v2_0 = nullptr;
         } else {
             // inferred: a temporary for the result of the call at 0x47babd, used twice; no DWARF local holds it
-            const MtDTI& t0 = this->mWeapon[index].mpModel->getDTI();
+            const MtDTI& t0 = mWeapon[index].mpModel->getDTI();
             // inferred: the value the loop at 0x47bae0 carries; no location-less local in scope fits
-            MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+            MT_CTSTR v0_1 = uWeapon::DTI.mName;
             if (v0_1 != t0.mName) {
                 // inferred: the value the loop at 0x47bae0 carries; no location-less local in scope fits
                 for (const MtDTI* v0_0 = &t0;;) {
-                    if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                        v2_0 = static_cast<uModel*>(nullptr);
+                    if (v0_0->mpParent == nullptr) {
+                        v2_0 = nullptr;
                         return static_cast<uWeapon*>(v2_0);
                     } else {
                         if (v0_1 != v0_0->mpParent->mName) {
@@ -347,7 +347,7 @@ uWeapon* cpEquip::getWeapon(u32 index) {
                     }
                 }
             }
-            v2_0 = this->mWeapon[index].mpModel;
+            v2_0 = mWeapon[index].mpModel;
         }
     }
     return static_cast<uWeapon*>(v2_0);
@@ -372,21 +372,21 @@ uArmor* cpEquip::getArmor(u32 index) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47bd1a; no location-less local in scope fits
     uModel* v2_0;
-    if (index > static_cast<u32>(6)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (index > 6u) {
+        v2_0 = nullptr;
     } else {
-        if (this->mArmor[index].mpModel == static_cast<uModel*>(nullptr)) {
-            v2_0 = static_cast<uModel*>(nullptr);
+        if (mArmor[index].mpModel == nullptr) {
+            v2_0 = nullptr;
         } else {
             // inferred: a temporary for the result of the call at 0x47bcdd, used twice; no DWARF local holds it
-            const MtDTI& t0 = this->mArmor[index].mpModel->getDTI();
+            const MtDTI& t0 = mArmor[index].mpModel->getDTI();
             // inferred: the value the loop at 0x47bd00 carries; no location-less local in scope fits
-            MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+            MT_CTSTR v0_1 = uArmor::DTI.mName;
             if (v0_1 != t0.mName) {
                 // inferred: the value the loop at 0x47bd00 carries; no location-less local in scope fits
                 for (const MtDTI* v0_0 = &t0;;) {
-                    if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                        v2_0 = static_cast<uModel*>(nullptr);
+                    if (v0_0->mpParent == nullptr) {
+                        v2_0 = nullptr;
                         return static_cast<uArmor*>(v2_0);
                     } else {
                         if (v0_1 != v0_0->mpParent->mName) {
@@ -397,7 +397,7 @@ uArmor* cpEquip::getArmor(u32 index) {
                     }
                 }
             }
-            v2_0 = this->mArmor[index].mpModel;
+            v2_0 = mArmor[index].mpModel;
         }
     }
     return static_cast<uArmor*>(v2_0);
@@ -410,24 +410,24 @@ uArmor* cpEquip::getArmor(u32 index) {
 // Address: 0x0047bd20 - 0x0047bdb1 (145 bytes)
 void cpEquip::setHair(uArmor* pHair) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mHair.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mHair.mpModel->kill();
-        this->mHair.mpModel = static_cast<uModel*>(nullptr);
+    if (mHair.mpModel != nullptr) {
+        mHair.mpModel->kill();
+        mHair.mpModel = nullptr;
     }
-    this->mHair.::cpEquip::cEquipInfo::clear();
-    if (pHair != static_cast<uArmor*>(nullptr)) {
-        this->mHair.mpWepResData = pHair->::uArmor::getArchiveInfo();
-        this->mHair.mpModel = static_cast<uModel*>(pHair);
-        this->mHair.mpOwner = pHair->::uArmor::getOwner();
+    mHair.clear();
+    if (pHair != nullptr) {
+        mHair.mpWepResData = pHair->getArchiveInfo();
+        mHair.mpModel = static_cast<uModel*>(pHair);
+        mHair.mpOwner = pHair->getOwner();
         // inferred: a temporary for the value the load at 0x47bd87 read, used twice; no DWARF local holds it
-        rModel* t0 = pHair->::uArmor::getModelRes();
-        this->mHair.mpModelRes = t0;
-        if (this->mHair.mpModelRes != static_cast<rModel*>(nullptr)) {
-            t0->::cResource::addRef();
+        rModel* t0 = pHair->getModelRes();
+        mHair.mpModelRes = t0;
+        if (mHair.mpModelRes != nullptr) {
+            t0->addRef();
         }
-        this->mUpdate = true;
+        mUpdate = true;
     } else {
-        this->mUpdate = true;
+        mUpdate = true;
     }
 }
 
@@ -437,18 +437,18 @@ uArmor* cpEquip::getHair() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47be26; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mHair.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mHair.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47bdea, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mHair.mpModel->getDTI();
+        const MtDTI& t0 = mHair.mpModel->getDTI();
         // inferred: the value the loop at 0x47be10 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uArmor::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47be10 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uArmor*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -459,7 +459,7 @@ uArmor* cpEquip::getHair() {
                 }
             }
         }
-        v2_0 = this->mHair.mpModel;
+        v2_0 = mHair.mpModel;
     }
     return static_cast<uArmor*>(v2_0);
 }
@@ -473,24 +473,24 @@ uArmor* cpEquip::getHair() {
 // Address: 0x0047be30 - 0x0047bec1 (145 bytes)
 void cpEquip::setBeard(uArmor* pBeard) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mBeard.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mBeard.mpModel->kill();
-        this->mBeard.mpModel = static_cast<uModel*>(nullptr);
+    if (mBeard.mpModel != nullptr) {
+        mBeard.mpModel->kill();
+        mBeard.mpModel = nullptr;
     }
-    this->mBeard.::cpEquip::cEquipInfo::clear();
-    if (pBeard != static_cast<uArmor*>(nullptr)) {
-        this->mBeard.mpWepResData = pBeard->::uArmor::getArchiveInfo();
-        this->mBeard.mpModel = static_cast<uModel*>(pBeard);
-        this->mBeard.mpOwner = pBeard->::uArmor::getOwner();
+    mBeard.clear();
+    if (pBeard != nullptr) {
+        mBeard.mpWepResData = pBeard->getArchiveInfo();
+        mBeard.mpModel = static_cast<uModel*>(pBeard);
+        mBeard.mpOwner = pBeard->getOwner();
         // inferred: a temporary for the value the load at 0x47be97 read, used twice; no DWARF local holds it
-        rModel* t0 = pBeard->::uArmor::getModelRes();
-        this->mBeard.mpModelRes = t0;
-        if (this->mBeard.mpModelRes != static_cast<rModel*>(nullptr)) {
-            t0->::cResource::addRef();
+        rModel* t0 = pBeard->getModelRes();
+        mBeard.mpModelRes = t0;
+        if (mBeard.mpModelRes != nullptr) {
+            t0->addRef();
         }
-        this->mUpdate = true;
+        mUpdate = true;
     } else {
-        this->mUpdate = true;
+        mUpdate = true;
     }
 }
 
@@ -500,18 +500,18 @@ uArmor* cpEquip::getBeard() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47bf36; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mBeard.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mBeard.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47befa, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mBeard.mpModel->getDTI();
+        const MtDTI& t0 = mBeard.mpModel->getDTI();
         // inferred: the value the loop at 0x47bf20 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uArmor::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47bf20 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uArmor*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -522,7 +522,7 @@ uArmor* cpEquip::getBeard() {
                 }
             }
         }
-        v2_0 = this->mBeard.mpModel;
+        v2_0 = mBeard.mpModel;
     }
     return static_cast<uArmor*>(v2_0);
 }
@@ -535,24 +535,24 @@ uArmor* cpEquip::getBeard() {
 // Address: 0x0047bf40 - 0x0047bfd1 (145 bytes)
 void cpEquip::setMakeup(uArmor* pMakeup) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mMakeup.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mMakeup.mpModel->kill();
-        this->mMakeup.mpModel = static_cast<uModel*>(nullptr);
+    if (mMakeup.mpModel != nullptr) {
+        mMakeup.mpModel->kill();
+        mMakeup.mpModel = nullptr;
     }
-    this->mMakeup.::cpEquip::cEquipInfo::clear();
-    if (pMakeup != static_cast<uArmor*>(nullptr)) {
-        this->mMakeup.mpWepResData = pMakeup->::uArmor::getArchiveInfo();
-        this->mMakeup.mpModel = static_cast<uModel*>(pMakeup);
-        this->mMakeup.mpOwner = pMakeup->::uArmor::getOwner();
+    mMakeup.clear();
+    if (pMakeup != nullptr) {
+        mMakeup.mpWepResData = pMakeup->getArchiveInfo();
+        mMakeup.mpModel = static_cast<uModel*>(pMakeup);
+        mMakeup.mpOwner = pMakeup->getOwner();
         // inferred: a temporary for the value the load at 0x47bfa7 read, used twice; no DWARF local holds it
-        rModel* t0 = pMakeup->::uArmor::getModelRes();
-        this->mMakeup.mpModelRes = t0;
-        if (this->mMakeup.mpModelRes != static_cast<rModel*>(nullptr)) {
-            t0->::cResource::addRef();
+        rModel* t0 = pMakeup->getModelRes();
+        mMakeup.mpModelRes = t0;
+        if (mMakeup.mpModelRes != nullptr) {
+            t0->addRef();
         }
-        this->mUpdate = true;
+        mUpdate = true;
     } else {
-        this->mUpdate = true;
+        mUpdate = true;
     }
 }
 
@@ -562,18 +562,18 @@ uArmor* cpEquip::getMakeup() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47c046; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mMakeup.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mMakeup.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47c00a, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mMakeup.mpModel->getDTI();
+        const MtDTI& t0 = mMakeup.mpModel->getDTI();
         // inferred: the value the loop at 0x47c030 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uArmor::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47c030 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uArmor*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -584,7 +584,7 @@ uArmor* cpEquip::getMakeup() {
                 }
             }
         }
-        v2_0 = this->mMakeup.mpModel;
+        v2_0 = mMakeup.mpModel;
     }
     return static_cast<uArmor*>(v2_0);
 }
@@ -597,24 +597,24 @@ uArmor* cpEquip::getMakeup() {
 // Address: 0x0047c050 - 0x0047c0e1 (145 bytes)
 void cpEquip::setUnderwear(uArmor* pUnderwear) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mUnderwear.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mUnderwear.mpModel->kill();
-        this->mUnderwear.mpModel = static_cast<uModel*>(nullptr);
+    if (mUnderwear.mpModel != nullptr) {
+        mUnderwear.mpModel->kill();
+        mUnderwear.mpModel = nullptr;
     }
-    this->mUnderwear.::cpEquip::cEquipInfo::clear();
-    if (pUnderwear != static_cast<uArmor*>(nullptr)) {
-        this->mUnderwear.mpWepResData = pUnderwear->::uArmor::getArchiveInfo();
-        this->mUnderwear.mpModel = static_cast<uModel*>(pUnderwear);
-        this->mUnderwear.mpOwner = pUnderwear->::uArmor::getOwner();
+    mUnderwear.clear();
+    if (pUnderwear != nullptr) {
+        mUnderwear.mpWepResData = pUnderwear->getArchiveInfo();
+        mUnderwear.mpModel = static_cast<uModel*>(pUnderwear);
+        mUnderwear.mpOwner = pUnderwear->getOwner();
         // inferred: a temporary for the value the load at 0x47c0b7 read, used twice; no DWARF local holds it
-        rModel* t0 = pUnderwear->::uArmor::getModelRes();
-        this->mUnderwear.mpModelRes = t0;
-        if (this->mUnderwear.mpModelRes != static_cast<rModel*>(nullptr)) {
-            t0->::cResource::addRef();
+        rModel* t0 = pUnderwear->getModelRes();
+        mUnderwear.mpModelRes = t0;
+        if (mUnderwear.mpModelRes != nullptr) {
+            t0->addRef();
         }
-        this->mUpdate = true;
+        mUpdate = true;
     } else {
-        this->mUpdate = true;
+        mUpdate = true;
     }
 }
 
@@ -624,18 +624,18 @@ uArmor* cpEquip::getUnderwear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47c156; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mUnderwear.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mUnderwear.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47c11a, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mUnderwear.mpModel->getDTI();
+        const MtDTI& t0 = mUnderwear.mpModel->getDTI();
         // inferred: the value the loop at 0x47c140 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uArmor::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47c140 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uArmor*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -646,7 +646,7 @@ uArmor* cpEquip::getUnderwear() {
                 }
             }
         }
-        v2_0 = this->mUnderwear.mpModel;
+        v2_0 = mUnderwear.mpModel;
     }
     return static_cast<uArmor*>(v2_0);
 }
@@ -657,24 +657,24 @@ uArmor* cpEquip::getUnderwear() {
 // Address: 0x0047c160 - 0x0047c1f1 (145 bytes)
 void cpEquip::setUnderwear2(uArmor* pUnderwear2) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mUnderwear2.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mUnderwear2.mpModel->kill();
-        this->mUnderwear2.mpModel = static_cast<uModel*>(nullptr);
+    if (mUnderwear2.mpModel != nullptr) {
+        mUnderwear2.mpModel->kill();
+        mUnderwear2.mpModel = nullptr;
     }
-    this->mUnderwear2.::cpEquip::cEquipInfo::clear();
-    if (pUnderwear2 != static_cast<uArmor*>(nullptr)) {
-        this->mUnderwear2.mpWepResData = pUnderwear2->::uArmor::getArchiveInfo();
-        this->mUnderwear2.mpModel = static_cast<uModel*>(pUnderwear2);
-        this->mUnderwear2.mpOwner = pUnderwear2->::uArmor::getOwner();
+    mUnderwear2.clear();
+    if (pUnderwear2 != nullptr) {
+        mUnderwear2.mpWepResData = pUnderwear2->getArchiveInfo();
+        mUnderwear2.mpModel = static_cast<uModel*>(pUnderwear2);
+        mUnderwear2.mpOwner = pUnderwear2->getOwner();
         // inferred: a temporary for the value the load at 0x47c1c7 read, used twice; no DWARF local holds it
-        rModel* t0 = pUnderwear2->::uArmor::getModelRes();
-        this->mUnderwear2.mpModelRes = t0;
-        if (this->mUnderwear2.mpModelRes != static_cast<rModel*>(nullptr)) {
-            t0->::cResource::addRef();
+        rModel* t0 = pUnderwear2->getModelRes();
+        mUnderwear2.mpModelRes = t0;
+        if (mUnderwear2.mpModelRes != nullptr) {
+            t0->addRef();
         }
-        this->mUpdate = true;
+        mUpdate = true;
     } else {
-        this->mUpdate = true;
+        mUpdate = true;
     }
 }
 
@@ -684,18 +684,18 @@ uArmor* cpEquip::getUnderwear2() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47c266; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mUnderwear2.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mUnderwear2.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47c22a, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mUnderwear2.mpModel->getDTI();
+        const MtDTI& t0 = mUnderwear2.mpModel->getDTI();
         // inferred: the value the loop at 0x47c250 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uArmor::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47c250 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uArmor*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -706,7 +706,7 @@ uArmor* cpEquip::getUnderwear2() {
                 }
             }
         }
-        v2_0 = this->mUnderwear2.mpModel;
+        v2_0 = mUnderwear2.mpModel;
     }
     return static_cast<uArmor*>(v2_0);
 }
@@ -717,17 +717,17 @@ uArmor* cpEquip::getUnderwear2() {
 // Address: 0x0047c270 - 0x0047c2e9 (121 bytes)
 void cpEquip::setLantern(uWeapon* pLantern) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mLantern.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mLantern.mpModel->kill();
-        this->mLantern.mpModel = static_cast<uModel*>(nullptr);
+    if (mLantern.mpModel != nullptr) {
+        mLantern.mpModel->kill();
+        mLantern.mpModel = nullptr;
     }
-    this->mLantern.::cpEquip::cEquipInfo::clear();
-    if (pLantern != static_cast<uWeapon*>(nullptr)) {
-        this->mLantern.mpWepResData = pLantern->::uWeapon::getArchiveInfo();
-        this->mLantern.mpModel = static_cast<uModel*>(pLantern);
-        this->mLantern.mpOwner = pLantern->::uWeapon::getOwner();
+    mLantern.clear();
+    if (pLantern != nullptr) {
+        mLantern.mpWepResData = pLantern->getArchiveInfo();
+        mLantern.mpModel = static_cast<uModel*>(pLantern);
+        mLantern.mpOwner = pLantern->getOwner();
     }
-    this->mUpdate = true;
+    mUpdate = true;
 }
 
 // Address: 0x0047c300 - 0x0047c35d (93 bytes)
@@ -736,18 +736,18 @@ uWeapon* cpEquip::getLantern() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47c356; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mLantern.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mLantern.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47c31a, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mLantern.mpModel->getDTI();
+        const MtDTI& t0 = mLantern.mpModel->getDTI();
         // inferred: the value the loop at 0x47c340 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uWeapon::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47c340 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uWeapon*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -758,7 +758,7 @@ uWeapon* cpEquip::getLantern() {
                 }
             }
         }
-        v2_0 = this->mLantern.mpModel;
+        v2_0 = mLantern.mpModel;
     }
     return static_cast<uWeapon*>(v2_0);
 }
@@ -769,16 +769,16 @@ uWeapon* cpEquip::getLantern() {
 // Address: 0x0047c360 - 0x0047c3cb (107 bytes)
 void cpEquip::setNpcItem(uWeapon* pNpcItem) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mNpcItem.mpModel != static_cast<uModel*>(nullptr)) {
-        this->mNpcItem.mpModel->kill();
-        this->mNpcItem.mpModel = static_cast<uModel*>(nullptr);
+    if (mNpcItem.mpModel != nullptr) {
+        mNpcItem.mpModel->kill();
+        mNpcItem.mpModel = nullptr;
     }
-    this->mNpcItem.::cpEquip::cEquipInfo::clear();
-    if (pNpcItem != static_cast<uWeapon*>(nullptr)) {
-        this->mNpcItem.mpModel = static_cast<uModel*>(pNpcItem);
-        this->mNpcItem.mpOwner = pNpcItem->::uWeapon::getOwner();
+    mNpcItem.clear();
+    if (pNpcItem != nullptr) {
+        mNpcItem.mpModel = static_cast<uModel*>(pNpcItem);
+        mNpcItem.mpOwner = pNpcItem->getOwner();
     }
-    this->mUpdate = true;
+    mUpdate = true;
 }
 
 // Address: 0x0047c3e0 - 0x0047c43d (93 bytes)
@@ -787,18 +787,18 @@ uWeapon* cpEquip::getNpcItem() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x47c436; no location-less local in scope fits
     uModel* v2_0;
-    if (this->mNpcItem.mpModel == static_cast<uModel*>(nullptr)) {
-        v2_0 = static_cast<uModel*>(nullptr);
+    if (mNpcItem.mpModel == nullptr) {
+        v2_0 = nullptr;
     } else {
         // inferred: a temporary for the result of the call at 0x47c3fa, used twice; no DWARF local holds it
-        const MtDTI& t0 = this->mNpcItem.mpModel->getDTI();
+        const MtDTI& t0 = mNpcItem.mpModel->getDTI();
         // inferred: the value the loop at 0x47c420 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uWeapon::DTI.mName;
         if (v0_1 != t0.mName) {
             // inferred: the value the loop at 0x47c420 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                    v2_0 = static_cast<uModel*>(nullptr);
+                if (v0_0->mpParent == nullptr) {
+                    v2_0 = nullptr;
                     return static_cast<uWeapon*>(v2_0);
                 } else {
                     if (v0_1 != v0_0->mpParent->mName) {
@@ -809,7 +809,7 @@ uWeapon* cpEquip::getNpcItem() {
                 }
             }
         }
-        v2_0 = this->mNpcItem.mpModel;
+        v2_0 = mNpcItem.mpModel;
     }
     return static_cast<uWeapon*>(v2_0);
 }
@@ -821,127 +821,113 @@ uWeapon* cpEquip::getNpcItem() {
 __attribute__((weak)) void cpEquip::killAllWeapon() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mWeapon[0].mpModel != static_cast<uModel*>(nullptr)) {
-        this->mWeapon[0].mpModel->kill();
-        this->mWeapon[0].mpModel = static_cast<uModel*>(nullptr);
+    if (mWeapon[0].mpModel != nullptr) {
+        mWeapon[0].mpModel->kill();
+        mWeapon[0].mpModel = nullptr;
     }
-    this->mWeapon[0].mpWepResData = static_cast<cWeaponResTable*>(nullptr);
-    this->mWeapon[0].::cpEquip::cEquipInfo::clear();
-    if (this->mWeapon[1].mpModel != static_cast<uModel*>(nullptr)) {
-        this->mWeapon[1].mpModel->kill();
-        this->mWeapon[1].mpModel = static_cast<uModel*>(nullptr);
+    mWeapon[0].mpWepResData = nullptr;
+    mWeapon[0].clear();
+    if (mWeapon[1].mpModel != nullptr) {
+        mWeapon[1].mpModel->kill();
+        mWeapon[1].mpModel = nullptr;
     }
-    this->mWeapon[1].mpWepResData = static_cast<cWeaponResTable*>(nullptr);
-    this->mWeapon[1].::cpEquip::cEquipInfo::clear();
-    if (this->mWeapon[2].mpModel != static_cast<uModel*>(nullptr)) {
-        this->mWeapon[2].mpModel->kill();
-        this->mWeapon[2].mpModel = static_cast<uModel*>(nullptr);
+    mWeapon[1].mpWepResData = nullptr;
+    mWeapon[1].clear();
+    if (mWeapon[2].mpModel != nullptr) {
+        mWeapon[2].mpModel->kill();
+        mWeapon[2].mpModel = nullptr;
     }
-    this->mWeapon[2].mpWepResData = static_cast<cWeaponResTable*>(nullptr);
-    this->mWeapon[2].::cpEquip::cEquipInfo::clear();
-    if (this->mWeapon[3].mpModel != static_cast<uModel*>(nullptr)) {
-        this->mWeapon[3].mpModel->kill();
-        this->mWeapon[3].mpModel = static_cast<uModel*>(nullptr);
+    mWeapon[2].mpWepResData = nullptr;
+    mWeapon[2].clear();
+    if (mWeapon[3].mpModel != nullptr) {
+        mWeapon[3].mpModel->kill();
+        mWeapon[3].mpModel = nullptr;
     }
-    this->mWeapon[3].mpWepResData = static_cast<cWeaponResTable*>(nullptr);
-    this->mWeapon[3].::cpEquip::cEquipInfo::clear();
+    mWeapon[3].mpWepResData = nullptr;
+    mWeapon[3].clear();
 }
 
 // Address: 0x0047c590 - 0x0047c6e7 (343 bytes)
 __attribute__((weak)) void cpEquip::killAllArmor() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mArmor[0].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[0].mpModel->kill();
-        this->mArmor[0].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[0].mpModel != nullptr) {
+        mArmor[0].mpModel->kill();
+        mArmor[0].mpModel = nullptr;
     }
-    this->mArmor[0].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[1].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[1].mpModel->kill();
-        this->mArmor[1].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[0].clear();
+    if (mArmor[1].mpModel != nullptr) {
+        mArmor[1].mpModel->kill();
+        mArmor[1].mpModel = nullptr;
     }
-    this->mArmor[1].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[2].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[2].mpModel->kill();
-        this->mArmor[2].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[1].clear();
+    if (mArmor[2].mpModel != nullptr) {
+        mArmor[2].mpModel->kill();
+        mArmor[2].mpModel = nullptr;
     }
-    this->mArmor[2].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[3].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[3].mpModel->kill();
-        this->mArmor[3].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[2].clear();
+    if (mArmor[3].mpModel != nullptr) {
+        mArmor[3].mpModel->kill();
+        mArmor[3].mpModel = nullptr;
     }
-    this->mArmor[3].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[4].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[4].mpModel->kill();
-        this->mArmor[4].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[3].clear();
+    if (mArmor[4].mpModel != nullptr) {
+        mArmor[4].mpModel->kill();
+        mArmor[4].mpModel = nullptr;
     }
-    this->mArmor[4].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[5].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[5].mpModel->kill();
-        this->mArmor[5].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[4].clear();
+    if (mArmor[5].mpModel != nullptr) {
+        mArmor[5].mpModel->kill();
+        mArmor[5].mpModel = nullptr;
     }
-    this->mArmor[5].::cpEquip::cEquipInfo::clear();
-    if (this->mArmor[6].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[6].mpModel->kill();
-        this->mArmor[6].mpModel = static_cast<uModel*>(nullptr);
+    mArmor[5].clear();
+    if (mArmor[6].mpModel != nullptr) {
+        mArmor[6].mpModel->kill();
+        mArmor[6].mpModel = nullptr;
     }
-    this->mArmor[6].::cpEquip::cEquipInfo::clear();
+    mArmor[6].clear();
 }
 
 // Address: 0x00479990 - 0x00479af4 (356 bytes)
 __attribute__((weak)) void cpEquip::killAllEquip() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpEquip::killAllWeapon();
-    this->::cpEquip::killAllArmor();
-    if (this->mHair.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mHair.mpModel->kill();
-        this->mHair.mpModel = static_cast<uModel*>(nullptr);
+    killAllWeapon();
+    killAllArmor();
+    if (mHair.mpModel != nullptr) {
+        mHair.mpModel->kill();
+        mHair.mpModel = nullptr;
     }
-    this->mHair.::cpEquip::cEquipInfo::clear();
-    if (this->mBeard.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mBeard.mpModel->kill();
-        this->mBeard.mpModel = static_cast<uModel*>(nullptr);
+    mHair.clear();
+    if (mBeard.mpModel != nullptr) {
+        mBeard.mpModel->kill();
+        mBeard.mpModel = nullptr;
     }
-    this->mBeard.::cpEquip::cEquipInfo::clear();
-    if (this->mMakeup.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mMakeup.mpModel->kill();
-        this->mMakeup.mpModel = static_cast<uModel*>(nullptr);
+    mBeard.clear();
+    if (mMakeup.mpModel != nullptr) {
+        mMakeup.mpModel->kill();
+        mMakeup.mpModel = nullptr;
     }
-    this->mMakeup.::cpEquip::cEquipInfo::clear();
-    if (this->mUnderwear.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mUnderwear.mpModel->kill();
-        this->mUnderwear.mpModel = static_cast<uModel*>(nullptr);
+    mMakeup.clear();
+    if (mUnderwear.mpModel != nullptr) {
+        mUnderwear.mpModel->kill();
+        mUnderwear.mpModel = nullptr;
     }
-    this->mUnderwear.::cpEquip::cEquipInfo::clear();
-    if (this->mUnderwear2.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mUnderwear2.mpModel->kill();
-        this->mUnderwear2.mpModel = static_cast<uModel*>(nullptr);
+    mUnderwear.clear();
+    if (mUnderwear2.mpModel != nullptr) {
+        mUnderwear2.mpModel->kill();
+        mUnderwear2.mpModel = nullptr;
     }
-    this->mUnderwear2.::cpEquip::cEquipInfo::clear();
-    if (this->mLantern.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mLantern.mpModel->kill();
-        this->mLantern.mpModel = static_cast<uModel*>(nullptr);
+    mUnderwear2.clear();
+    if (mLantern.mpModel != nullptr) {
+        mLantern.mpModel->kill();
+        mLantern.mpModel = nullptr;
     }
-    this->mLantern.::cpEquip::cEquipInfo::clear();
-    if (this->mNpcItem.mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mNpcItem.mpModel->kill();
-        this->mNpcItem.mpModel = static_cast<uModel*>(nullptr);
+    mLantern.clear();
+    if (mNpcItem.mpModel != nullptr) {
+        mNpcItem.mpModel->kill();
+        mNpcItem.mpModel = nullptr;
     }
-    this->mNpcItem.::cpEquip::cEquipInfo::clear();
+    mNpcItem.clear();
 }
 
 // No out-of-line body: no code in the ELF
@@ -1030,16 +1016,16 @@ __attribute__((weak)) bool cpEquip::checkUpdateArmor() {
 // Address: 0x0047b870 - 0x0047b8cc (92 bytes)
 void cpEquip::setEquipPreset(rEquipPreset* pEquipPreset, u32 option) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEquipPresetRes != static_cast<rEquipPreset*>(nullptr)) {
-        this->mpEquipPresetRes->::cResource::release();
-        this->mpEquipPresetRes = static_cast<rEquipPreset*>(nullptr);
+    if (mpEquipPresetRes != nullptr) {
+        mpEquipPresetRes->release();
+        mpEquipPresetRes = nullptr;
     }
-    if (pEquipPreset != static_cast<rEquipPreset*>(nullptr)) {
-        this->mpEquipPresetRes = pEquipPreset;
-        pEquipPreset->::cResource::addRef();
+    if (pEquipPreset != nullptr) {
+        mpEquipPresetRes = pEquipPreset;
+        pEquipPreset->addRef();
     }
-    this->mUpdateEquipPresetReq = true;
-    this->mPresetOption = option;
+    mUpdateEquipPresetReq = true;
+    mPresetOption = option;
 }
 
 // Address: 0x0047a220 - 0x0047a888 (1640 bytes)
@@ -1108,7 +1094,7 @@ __attribute__((weak)) bool cpEquip::setEquip(u32 itemID, u32 colorNo, u32 sex, c
 // Address: 0x01a59a60 - 0x01a59a68 (8 bytes)
 rEquipPreset* cpEquip::getEquipPreset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpEquipPresetRes;
+    return mpEquipPresetRes;
 }
 
 // Address: 0x0047cf10 - 0x0047d086 (374 bytes)
@@ -1183,91 +1169,84 @@ __attribute__((weak)) void cpEquip::setGrassWind(bool isGrassWind) {
 void cpEquip::killAllArmorBJ() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mArmor[0].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[0].mpModel->kill();
-        this->mArmor[0].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[0].mpModel != nullptr) {
+        mArmor[0].mpModel->kill();
+        mArmor[0].mpModel = nullptr;
     }
-    if (this->mArmor[1].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[1].mpModel->kill();
-        this->mArmor[1].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[1].mpModel != nullptr) {
+        mArmor[1].mpModel->kill();
+        mArmor[1].mpModel = nullptr;
     }
-    if (this->mArmor[2].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[2].mpModel->kill();
-        this->mArmor[2].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[2].mpModel != nullptr) {
+        mArmor[2].mpModel->kill();
+        mArmor[2].mpModel = nullptr;
     }
-    if (this->mArmor[3].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[3].mpModel->kill();
-        this->mArmor[3].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[3].mpModel != nullptr) {
+        mArmor[3].mpModel->kill();
+        mArmor[3].mpModel = nullptr;
     }
-    if (this->mArmor[4].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[4].mpModel->kill();
-        this->mArmor[4].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[4].mpModel != nullptr) {
+        mArmor[4].mpModel->kill();
+        mArmor[4].mpModel = nullptr;
     }
-    if (this->mArmor[5].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[5].mpModel->kill();
-        this->mArmor[5].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[5].mpModel != nullptr) {
+        mArmor[5].mpModel->kill();
+        mArmor[5].mpModel = nullptr;
     }
-    if (this->mArmor[6].mpModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        this->mArmor[6].mpModel->kill();
-        this->mArmor[6].mpModel = static_cast<uModel*>(nullptr);
+    if (mArmor[6].mpModel != nullptr) {
+        mArmor[6].mpModel->kill();
+        mArmor[6].mpModel = nullptr;
     }
 }
 
 // Address: 0x0047c7e0 - 0x0047c810 (48 bytes)
 void cpEquip::killHairBJ() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHair.mpModel == static_cast<uModel*>(nullptr)) {
+    if (mHair.mpModel == nullptr) {
         return;
     }
-    this->mHair.mpModel->kill();
-    this->mHair.mpModel = static_cast<uModel*>(nullptr);
+    mHair.mpModel->kill();
+    mHair.mpModel = nullptr;
 }
 
 // Address: 0x0047c810 - 0x0047c840 (48 bytes)
 void cpEquip::killBeardBJ() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBeard.mpModel == static_cast<uModel*>(nullptr)) {
+    if (mBeard.mpModel == nullptr) {
         return;
     }
-    this->mBeard.mpModel->kill();
-    this->mBeard.mpModel = static_cast<uModel*>(nullptr);
+    mBeard.mpModel->kill();
+    mBeard.mpModel = nullptr;
 }
 
 // Address: 0x0047c840 - 0x0047c870 (48 bytes)
 void cpEquip::killMakeupBJ() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMakeup.mpModel == static_cast<uModel*>(nullptr)) {
+    if (mMakeup.mpModel == nullptr) {
         return;
     }
-    this->mMakeup.mpModel->kill();
-    this->mMakeup.mpModel = static_cast<uModel*>(nullptr);
+    mMakeup.mpModel->kill();
+    mMakeup.mpModel = nullptr;
 }
 
 // Address: 0x0047c870 - 0x0047c8a0 (48 bytes)
 void cpEquip::killUnderwearBJ() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mUnderwear.mpModel == static_cast<uModel*>(nullptr)) {
+    if (mUnderwear.mpModel == nullptr) {
         return;
     }
-    this->mUnderwear.mpModel->kill();
-    this->mUnderwear.mpModel = static_cast<uModel*>(nullptr);
+    mUnderwear.mpModel->kill();
+    mUnderwear.mpModel = nullptr;
 }
 
 // Address: 0x0047c8a0 - 0x0047c8d0 (48 bytes)
 void cpEquip::killUnderwear2BJ() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mUnderwear2.mpModel == static_cast<uModel*>(nullptr)) {
+    if (mUnderwear2.mpModel == nullptr) {
         return;
     }
-    this->mUnderwear2.mpModel->kill();
-    this->mUnderwear2.mpModel = static_cast<uModel*>(nullptr);
+    mUnderwear2.mpModel->kill();
+    mUnderwear2.mpModel = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1276,11 +1255,11 @@ void cpEquip::killUnderwear2BJ() {
 // Address: 0x0047c550 - 0x0047c58f (63 bytes)
 void cpEquip::killWeaponBJ(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mWeapon[index].mpModel == static_cast<uModel*>(nullptr)) {
+    if (mWeapon[index].mpModel == nullptr) {
         return;
     }
-    this->mWeapon[index].mpModel->kill();
-    this->mWeapon[index].mpModel = static_cast<uModel*>(nullptr);
+    mWeapon[index].mpModel->kill();
+    mWeapon[index].mpModel = nullptr;
 }
 
 // Address: 0x0047e060 - 0x0047e261 (513 bytes)
@@ -1401,6 +1380,8 @@ __attribute__((weak)) void cpEquip::applyPrimeFieldPartsBJ(MtObject* pObj) {
 //   in cpEquip::setEquip at 0x0047e5c8-0x0047e5e3 (called at cpEquip.cpp:2365)
 // u32 cpEquip::convEquipCatgoryToArmorIndex(u32 equip_category);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEquip::MyDTI cpEquip::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEquip.cpp at 0x0047e76f-0x0047e7ac (called at cpEquip.cpp:37)
 //   in _GLOBAL__sub_I_cpEquip.cpp at 0x0047e76f-0x0047e7ac (called at cpEquip.h:53)
@@ -1456,7 +1437,7 @@ const MtDTI& cpEquip::cEquipInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEquip::cEquipInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEquip::cEquipInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEquip::cEquipInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1546,6 +1527,8 @@ __attribute__((weak)) void cpEquip::cEquipInfo::move(cpEquip* const pCpEquip) {
     DDON_STUB("cpEquip::cEquipInfo::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEquip::cEquipInfo::MyDTI cpEquip::cEquipInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEquip.cpp at 0x0047e7ac-0x0047e7e9 (called at cpEquip.cpp:38)

@@ -50,7 +50,7 @@ const MtDTI& uCorePointSearch::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCorePointSearch::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCorePointSearch::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCorePointSearch::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,14 +75,14 @@ uCorePointSearch::~uCorePointSearch() {
 // Address: 0x008ce880 - 0x008ce8b9 (57 bytes)
 void uCorePointSearch::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::updatePtr();
-    if (this->mpOwnerHm == static_cast<uHuman*>(nullptr)) {
+    this->uDDOModel::updatePtr();
+    if (mpOwnerHm == nullptr) {
         return;
     }
-    if (this->mpOwnerHm->::cUnit::isEnable() != false) {
+    if (mpOwnerHm->isEnable()) {
         return;
     }
-    this->mpOwnerHm = static_cast<uHuman*>(nullptr);
+    mpOwnerHm = nullptr;
 }
 
 // Address: 0x008ce710 - 0x008ce871 (353 bytes)
@@ -95,21 +95,21 @@ __attribute__((weak)) void uCorePointSearch::createComponent() {
 // Address: 0x008cf0a0 - 0x008cf0cf (47 bytes)
 void uCorePointSearch::callbackAttack(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::callbackAttack(pHitInfo);
-    if (this->mpOwnerHm == static_cast<uHuman*>(nullptr)) {
+    this->uDDOModel::callbackAttack(pHitInfo);
+    if (mpOwnerHm == nullptr) {
         return;
     }
-    this->mpOwnerHm->::uHuman::searchCorepoint(pHitInfo);
+    mpOwnerHm->searchCorepoint(pHitInfo);
 }
 
 // Address: 0x008cf0d0 - 0x008cf0ff (47 bytes)
 void uCorePointSearch::callbackAttackTest(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::callbackAttackTest(pHitInfo);
-    if (this->mpOwnerHm == static_cast<uHuman*>(nullptr)) {
+    this->uDDOModel::callbackAttackTest(pHitInfo);
+    if (mpOwnerHm == nullptr) {
         return;
     }
-    this->mpOwnerHm->::uHuman::searchCorepoint(pHitInfo);
+    mpOwnerHm->searchCorepoint(pHitInfo);
 }
 
 // Address: 0x008ce8c0 - 0x008ce99c (220 bytes)
@@ -135,14 +135,14 @@ __attribute__((weak)) void uCorePointSearch::update() {
 // Address: 0x008ce9a0 - 0x008ce9d8 (56 bytes)
 void uCorePointSearch::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::kill();
-    if (this->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    this->uDDOModel::kill();
+    if (getObjCollisionPtr() == nullptr) {
         return;
     }
-    if (this->mpNode == static_cast<cHitNode*>(nullptr)) {
+    if (mpNode == nullptr) {
         return;
     }
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpNode);
+    getObjCollisionPtr()->killNode(mpNode);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -152,23 +152,25 @@ void uCorePointSearch::kill() {
 // Address: 0x008cf100 - 0x008cf1c9 (201 bytes)
 void uCorePointSearch::initCoreSearch(const uCorePointSearch::cCoreSearchInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (info.mprColRes == static_cast<rObjCollision*>(nullptr)) {
+    if (info.mprColRes == nullptr) {
         return;
     }
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::setResource(info.mprColRes, static_cast<u32>(0));
-    if ((this->mpNode = this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(0), static_cast<s32>(info.mIndex), false, static_cast<u32>(4294967295))) == static_cast<cHitNode*>(nullptr)) {
+    getObjCollisionPtr()->setResource(info.mprColRes, 0u);
+    if ((mpNode = getObjCollisionPtr()->createNodeFromIndex(0u, static_cast<s32>(info.mIndex), false, 0xFFFFFFFFu)) == nullptr) {
         return;
     }
-    this->mRadius = info.mRadius;
-    this->mOffset0.x = info.mOffset0.x;
-    this->mOffset0.y = info.mOffset0.y;
-    this->mOffset0.z = info.mOffset0.z;
-    this->mOffset0.pad_ = 0.0f;
-    this->mOffset1.x = info.mOffset1.x;
-    this->mOffset1.y = info.mOffset1.y;
-    this->mOffset1.z = info.mOffset1.z;
-    this->mOffset1.pad_ = 0.0f;
+    mRadius = info.mRadius;
+    mOffset0.x = info.mOffset0.x;
+    mOffset0.y = info.mOffset0.y;
+    mOffset0.z = info.mOffset0.z;
+    mOffset0.pad_ = 0.0f;
+    mOffset1.x = info.mOffset1.x;
+    mOffset1.y = info.mOffset1.y;
+    mOffset1.z = info.mOffset1.z;
+    mOffset1.pad_ = 0.0f;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCorePointSearch::MyDTI uCorePointSearch::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCorePointSearch.cpp at 0x008cf2cf-0x008cf30c (called at uCorePointSearch.cpp:32)
@@ -195,7 +197,7 @@ const MtDTI& uCorePointSearch::cCoreSearchInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uCorePointSearch::cCoreSearchInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uCorePointSearch::cCoreSearchInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uCorePointSearch::cCoreSearchInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,7 +219,7 @@ inline MtAllocator* uCorePointSearch::cCoreSearchInfo::getAllocator() {
 // Address: 0x008ce660 - 0x008ce68a (42 bytes)
 __attribute__((weak)) void uCorePointSearch::cCoreSearchInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::uCorePointSearch::cCoreSearchInfo::getAllocator()->memFree(p_addr);
+    uCorePointSearch::cCoreSearchInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -229,12 +231,23 @@ __attribute__((weak)) void uCorePointSearch::cCoreSearchInfo::operator delete(vo
 // No out-of-line body: no code in the ELF
 // void uCorePointSearch::cCoreSearchInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (264 bytes)
-//   in cPlActWpnBow::initUp_Wait at 0x0022398b-0x002239a2 (called at cHumanActBow.cpp:3617)
-//   in cPlActWpnBow::initUp_Wait at 0x0022398b-0x002239a2 (called at uCorePointSearch.h:55)
-//   in uCorePointSearch::cCoreSearchInfo::MyDTI::newInstance at 0x008ce5bd-0x008ce62a (called at uCorePointSearch.cpp:33)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// uCorePointSearch::cCoreSearchInfo::cCoreSearchInfo();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+uCorePointSearch::cCoreSearchInfo::cCoreSearchInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mprColRes = nullptr;
+    mIndex = 1;
+    mRadius = 0.0f;
+    mOffset0.x = MtVector3::Zero.x;
+    mOffset0.y = MtVector3::Zero.y;
+    mOffset0.z = MtVector3::Zero.z;
+    mOffset0.pad_ = 0.0f;
+    mOffset1.x = MtVector3::Zero.x;
+    mOffset1.y = MtVector3::Zero.y;
+    mOffset1.z = MtVector3::Zero.z;
+    mOffset1.pad_ = 0.0f;
+}
 
 // Address: 0x01993b40 - 0x01993b4f (15 bytes)
 // Also emitted as: _ZN16uCorePointSearch15cCoreSearchInfoD0Ev at 0x01993cf0
@@ -242,6 +255,8 @@ uCorePointSearch::cCoreSearchInfo::~cCoreSearchInfo() {
     DDON_STUB("uCorePointSearch::cCoreSearchInfo::~cCoreSearchInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCorePointSearch::cCoreSearchInfo::MyDTI uCorePointSearch::cCoreSearchInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCorePointSearch.cpp at 0x008cf30c-0x008cf349 (called at uCorePointSearch.cpp:33)

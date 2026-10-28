@@ -36,7 +36,7 @@ const MtDTI& rLanguageResIDConverter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLanguageResIDConverter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memAlloc(sz, align, ::rLanguageResIDConverter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memAlloc(sz, align, rLanguageResIDConverter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rLanguageResIDConverter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLanguageResIDConverter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,19 +65,19 @@ inline void rLanguageResIDConverter::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rLanguageResIDConverter::rLanguageResIDConverter() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpHeader = static_cast<rLanguageResIDConverter::stHeader*>(nullptr);
+    setAttribute(16u);
+    mpHeader = nullptr;
 }
 
 // Address: 0x00643140 - 0x0064318d (77 bytes)
 // Also emitted as: _ZN23rLanguageResIDConverterD0Ev at 0x006431a0
 rLanguageResIDConverter::~rLanguageResIDConverter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader == static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
+    if (mpHeader == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rLanguageResIDConverter::stHeader*>(nullptr);
+    MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,42 +104,44 @@ MT_CTSTR rLanguageResIDConverter::getExt() const {
 bool rLanguageResIDConverter::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 len = in.getLength();
-    if (this->mpHeader != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(this->mpHeader));
-        this->mpHeader = static_cast<rLanguageResIDConverter::stHeader*>(nullptr);
-        rLanguageResIDConverter::stHeader* p_header = static_cast<rLanguageResIDConverter::stHeader*>(::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memAlloc(len, static_cast<u32>(16)));
-        if ((this->mpHeader = p_header) != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
-            if (len > static_cast<u32>(1031)) {
-                in.read(static_cast<void*>(p_header), static_cast<u32>(1032));
-                if (p_header->version == static_cast<u32>(1)) {
-                    in.read(static_cast<void*>(&p_header->dat[0]), len - static_cast<u32>(1032));
+    if (mpHeader != nullptr) {
+        MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(mpHeader));
+        mpHeader = nullptr;
+        stHeader* p_header = static_cast<stHeader*>(MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memAlloc(len, 16u));
+        if ((mpHeader = p_header) != nullptr) {
+            if (len > 1031u) {
+                in.read(static_cast<void*>(p_header), 1032u);
+                if (p_header->version == 1) {
+                    in.read(static_cast<void*>(&p_header->dat[0]), len - 1032u);
                     return true;
                 }
-                if (this->mpHeader != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
-                    ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(this->mpHeader));
-                    this->mpHeader = static_cast<rLanguageResIDConverter::stHeader*>(nullptr);
+                if (mpHeader != nullptr) {
+                    MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(mpHeader));
+                    mpHeader = nullptr;
                 }
             }
         }
         return false;
     } else {
-        rLanguageResIDConverter::stHeader* p_header = static_cast<rLanguageResIDConverter::stHeader*>(::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memAlloc(len, static_cast<u32>(16)));
-        if ((this->mpHeader = p_header) != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
-            if (len > static_cast<u32>(1031)) {
-                in.read(static_cast<void*>(p_header), static_cast<u32>(1032));
-                if (p_header->version == static_cast<u32>(1)) {
-                    in.read(static_cast<void*>(&p_header->dat[0]), len - static_cast<u32>(1032));
+        stHeader* p_header = static_cast<stHeader*>(MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memAlloc(len, 16u));
+        if ((mpHeader = p_header) != nullptr) {
+            if (len > 1031u) {
+                in.read(static_cast<void*>(p_header), 1032u);
+                if (p_header->version == 1) {
+                    in.read(static_cast<void*>(&p_header->dat[0]), len - 1032u);
                     return true;
                 }
-                if (this->mpHeader != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {
-                    ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(this->mpHeader));
-                    this->mpHeader = static_cast<rLanguageResIDConverter::stHeader*>(nullptr);
+                if (mpHeader != nullptr) {
+                    MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(static_cast<void*>(mpHeader));
+                    mpHeader = nullptr;
                 }
             }
         }
         return false;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLanguageResIDConverter::MyDTI rLanguageResIDConverter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rArchiveListArray.cpp at 0x00643364-0x0064339d (called at rArchiveListArray.cpp:4807)
@@ -149,6 +151,6 @@ bool rLanguageResIDConverter::load(MtStream& in) {
 // Address: 0x00643060 - 0x006430bd (93 bytes)
 MtObject* rLanguageResIDConverter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLanguageResIDConverter;
+    return new (16u) rLanguageResIDConverter;
 }
 

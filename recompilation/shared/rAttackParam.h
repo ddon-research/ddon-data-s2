@@ -207,10 +207,10 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rAttackParam::rAttackParam() {
-    this->mUParam32[2] = static_cast<unsigned int>(0);
-    this->mUParam32[3] = static_cast<unsigned int>(0);
-    this->mUParam32[0] = static_cast<unsigned int>(0);
-    this->mUParam32[1] = static_cast<unsigned int>(0);
-    this->mUParam64[1] = static_cast<long unsigned int>(0);
-    this->mUParam64[0] = static_cast<long unsigned int>(0);
+    this->mUParam32[2] = 0;
+    this->mUParam32[3] = 0;
+    this->mUParam32[0] = 0;
+    this->mUParam32[1] = 0;
+    this->mUParam64[1] = 0;
+    this->mUParam64[0] = 0;
 }

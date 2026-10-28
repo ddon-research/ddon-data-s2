@@ -106,13 +106,13 @@ public:
 // approximate: only approximate callers check this inline body
 inline cWarpLocation::cWarpLocation() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mIconType = static_cast<u8>(0);
-    this->mMapPosX = static_cast<u16>(0);
-    this->mMapPosY = static_cast<u16>(0);
-    this->mStageNo = static_cast<s32>(0);
-    this->mPosNo = static_cast<u32>(0);
-    this->mAreaId = static_cast<u32>(0);
-    this->mSpotId = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
-    this->mSortNo = static_cast<u32>(0);
+    this->mIconType = 0;
+    this->mMapPosX = 0;
+    this->mMapPosY = 0;
+    this->mStageNo = 0;
+    this->mPosNo = 0;
+    this->mAreaId = 0;
+    this->mSpotId = 0;
+    this->mId = 0;
+    this->mSortNo = 0;
 }

@@ -88,7 +88,7 @@ const MtDTI& MtCollisionUtil::MtArrayEx::getDTI() const {
 // Address: 0x019499b0 - 0x019499f0 (64 bytes)
 void* MtCollisionUtil::MtArrayEx::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtArrayEx::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtArrayEx::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtArrayEx::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtArrayEx::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,8 +160,8 @@ __attribute__((weak)) void MtCollisionUtil::MtArrayEx::resize(u32 siz) {
 void MtCollisionUtil::MtArrayEx::setClass(MtObject* pObj, u32 index) {
     // DWARF local not rendered: MtObject* * pArray;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->::MtArray::mBufsiz) {
-        this->::MtArray::mpArray[index] = pObj;
+    if (index < mBufsiz) {
+        mpArray[index] = pObj;
     }
 }
 
@@ -169,10 +169,10 @@ void MtCollisionUtil::MtArrayEx::setClass(MtObject* pObj, u32 index) {
 MtObject* MtCollisionUtil::MtArrayEx::getClass(u32 index) {
     // DWARF local not rendered: MtObject* * pArray;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->::MtArray::mBufsiz) {
-        return this->::MtArray::mpArray[index];
+    if (index < mBufsiz) {
+        return mpArray[index];
     } else {
-        return static_cast<MtObject*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -186,9 +186,9 @@ MtObject* MtCollisionUtil::MtArrayEx::getClass(u32 index) {
 MT_CTSTR MtCollisionUtil::MtArrayEx::getElementDtiName() {
     // DWARF local not rendered: MtObject* pObj;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::MtArray::mLength != static_cast<u32>(0)) {
-        if ((*this->::MtArray::mpArray) != static_cast<MtObject*>(nullptr)) {
-            return (*this->::MtArray::mpArray)->getDTI().mName;
+    if (mLength != 0) {
+        if ((*mpArray) != nullptr) {
+            return (*mpArray)->getDTI().mName;
         }
     }
     return "";
@@ -198,6 +198,8 @@ MT_CTSTR MtCollisionUtil::MtArrayEx::getElementDtiName() {
 __attribute__((weak)) void MtCollisionUtil::MtArrayEx::setDummyString(MtString) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtCollisionUtil::MtArrayEx::MyDTI MtCollisionUtil::MtArrayEx::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtCollisionUtil::MtArrayEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -282,20 +284,20 @@ __attribute__((weak)) void MtCollisionUtil::MtDtiObject::createProperty(MtProper
 // Address: 0x01949600 - 0x01949605 (5 bytes)
 const MtDTI* MtCollisionUtil::MtDtiObject::getRegistDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRegistDTI;
+    return mpRegistDTI;
 }
 
 // Address: 0x01949610 - 0x01949615 (5 bytes)
 void MtCollisionUtil::MtDtiObject::registDTI(const MtDTI* pRegistDTI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpRegistDTI = pRegistDTI;
+    mpRegistDTI = pRegistDTI;
 }
 
 // Address: 0x01949560 - 0x01949576 (22 bytes)
 MT_CTSTR MtCollisionUtil::MtDtiObject::getRegistDTIName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRegistDTI != static_cast<const MtDTI*>(nullptr)) {
-        return this->mpRegistDTI->mName;
+    if (mpRegistDTI != nullptr) {
+        return mpRegistDTI->mName;
     } else {
         return "";
     }
@@ -311,10 +313,10 @@ __attribute__((weak)) void MtCollisionUtil::MtDtiObject::registDTIName(MtString&
 // Address: 0x019495c0 - 0x019495cf (15 bytes)
 u32 MtCollisionUtil::MtDtiObject::getRegistDTI_ID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRegistDTI != static_cast<const MtDTI*>(nullptr)) {
-        return this->mpRegistDTI->mID;
+    if (mpRegistDTI != nullptr) {
+        return mpRegistDTI->mID;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -327,6 +329,8 @@ __attribute__((weak)) void MtCollisionUtil::MtDtiObject::registDTI_ID(u32 NewDTI
 
 // No out-of-line body: no code in the ELF
 // void MtCollisionUtil::MtDtiObject::copy(MtCollisionUtil::MtDtiObject& src);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCollisionUtil::MtDtiObject::MyDTI MtCollisionUtil::MtDtiObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtCollisionUtil::MtDtiObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -392,6 +396,8 @@ MtCollisionUtil::MtDtiSelecter::~MtDtiSelecter() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCollisionUtil::MtDtiSelecter::MyDTI MtCollisionUtil::MtDtiSelecter::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtCollisionUtil::MtDtiSelecter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -454,6 +460,8 @@ inline void MtCollisionUtil::MtDtiSelecterIntermediate::operator delete(void* p_
 MtCollisionUtil::MtDtiSelecterIntermediate::~MtDtiSelecterIntermediate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI MtCollisionUtil::MtDtiSelecterIntermediate::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

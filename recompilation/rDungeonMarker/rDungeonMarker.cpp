@@ -37,7 +37,7 @@ const MtDTI& rDungeonMarker::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDungeonMarker::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::DTI)->memAlloc(sz, align, ::rDungeonMarker::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDungeonMarker::DTI)->memAlloc(sz, align, rDungeonMarker::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rDungeonMarker::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rDungeonMarker::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDungeonMarker::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,22 +77,21 @@ u32 rDungeonMarker::getWarpPosNum(s32 groupNo, u32 targetStageNo, s32 targetGrou
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x2a from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x2c from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
-    if (this->mWarpInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mWarpInfoList.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x65b5c6, 0x65b609), [0x65b60a, 0x65b60e)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (groupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(40))))) {
-                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(42))) == targetStageNo) {
-                    if (targetGroupNo != static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(44))))) {
-                    } else {
-                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(16));
+            if (groupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mWarpInfoList.mpArray[i]) + 40)))) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mWarpInfoList.mpArray[i]) + 42)) == targetStageNo) {
+                    if (targetGroupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mWarpInfoList.mpArray[i]) + 44)))) {
+                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWarpInfoList.mpArray[i]) + 16);
                     }
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mWarpInfoList.::MtArray::mLength);
+            i += 1u;
+        } while (i < mWarpInfoList.mLength);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0065b610 - 0x0065b67f (111 bytes)
@@ -119,70 +118,70 @@ MT_CTSTR rDungeonMarker::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rDungeonMarker::rDungeonMarker() {
-    this->mWarpStageNo = static_cast<u16>(0);
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    mWarpStageNo = 0;
+    setAttribute(22u);
 }
 
 // Address: 0x0065b690 - 0x0065b7e0 (336 bytes)
 // Also emitted as: _ZN14rDungeonMarkerD0Ev at 0x0065b7e0
 rDungeonMarker::~rDungeonMarker() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mWarpInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mWarpInfoList.mLength != 0) {
         // inferred: the value the loop at 0x65b6c0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mWarpInfoList.::MtArray::mLength;
+        u32 v0_0 = mWarpInfoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mWarpInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mWarpInfoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mWarpInfoList.::MtArray::mLength) {
-                    v0_0 = this->mWarpInfoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mWarpInfoList.mpArray[i0_3] != nullptr) {
+                delete mWarpInfoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mWarpInfoList.mLength) {
+                    v0_0 = mWarpInfoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mWarpInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mWarpInfoList.::MtArray::mpArray));
+    if (mWarpInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mWarpInfoList.mpArray));
     }
-    this->mWarpInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mWarpInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mWarpInfoList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mPositionList.::MtArray::mLength != static_cast<u32>(0)) {
+    mWarpInfoList.mpArray = nullptr;
+    mWarpInfoList.mBufsiz = 0;
+    mWarpInfoList.mLength = 0;
+    if (mPositionList.mLength != 0) {
         // inferred: the value the loop at 0x65b740 carries; no location-less local in scope fits
-        u32 v2_0 = this->mPositionList.::MtArray::mLength;
+        u32 v2_0 = mPositionList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPositionList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPositionList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mPositionList.::MtArray::mLength) {
-                    v2_0 = this->mPositionList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mPositionList.mpArray[i2_3] != nullptr) {
+                delete mPositionList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mPositionList.mLength) {
+                    v2_0 = mPositionList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPositionList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPositionList.::MtArray::mpArray));
+    if (mPositionList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPositionList.mpArray));
     }
-    this->mPositionList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPositionList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPositionList.::MtArray::mLength = static_cast<u32>(0);
+    mPositionList.mpArray = nullptr;
+    mPositionList.mBufsiz = 0;
+    mPositionList.mLength = 0;
 }
 
 // Address: 0x0065b810 - 0x0065ba77 (615 bytes)
@@ -196,12 +195,12 @@ bool rDungeonMarker::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 version;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4803908)) {
-        if ((&r)->readU32() == static_cast<u32>(1)) {
-            this->mWarpStageNo = (&r)->readU16();
-            ::nDDOIO::readMtArray(r, this->mWarpInfoList);
-            ::nDDOIO::readMtArray(r, this->mPositionList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x494D44) {
+        if ((&r)->readU32() == 1) {
+            mWarpStageNo = (&r)->readU16();
+            nDDOIO::readMtArray(r, mWarpInfoList);
+            nDDOIO::readMtArray(r, mPositionList);
             return true;
         }
     }
@@ -215,6 +214,8 @@ __attribute__((weak)) bool rDungeonMarker::save(MtStream& out) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDungeonMarker::MyDTI rDungeonMarker::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rDungeonMarker.cpp at 0x0065c640-0x0065c681 (called at rDungeonMarker.cpp:27)
 //   in _GLOBAL__sub_I_rDungeonMarker.cpp at 0x0065c640-0x0065c681 (called at rDungeonMarker.h:30)
@@ -223,7 +224,7 @@ __attribute__((weak)) bool rDungeonMarker::save(MtStream& out) {
 // Address: 0x0065b470 - 0x0065b535 (197 bytes)
 MtObject* rDungeonMarker::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDungeonMarker;
+    return new (16u) rDungeonMarker;
 }
 
 // No out-of-line body: no code in the ELF
@@ -251,7 +252,7 @@ const MtDTI& rDungeonMarker::cWarpInfo::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::DTI)->memAlloc(sz, align, ::rDungeonMarker::cWarpInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::DTI)->memAlloc(sz, align, rDungeonMarker::cWarpInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -266,7 +267,7 @@ void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rDungeonMarker::cWarpInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -294,8 +295,35 @@ inline void rDungeonMarker::cWarpInfo::operator delete(void* p_addr) {
 // Address: 0x0065bf70 - 0x0065c00d (157 bytes)
 // Also emitted as: _ZN14rDungeonMarker9cWarpInfoD0Ev at 0x0065c010
 rDungeonMarker::cWarpInfo::~cWarpInfo() {
-    DDON_STUB("rDungeonMarker::cWarpInfo::~cWarpInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mPosIndex.mLength != 0) {
+        // inferred: the value the loop at 0x65bfa0 carries; no location-less local in scope fits
+        u32 v0_0 = mPosIndex.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mPosIndex.mpArray[i0_3] != nullptr) {
+                delete mPosIndex.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPosIndex.mLength) {
+                    v0_0 = mPosIndex.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mPosIndex.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPosIndex.mpArray));
+    }
+    mPosIndex.mpArray = nullptr;
+    mPosIndex.mBufsiz = 0;
+    mPosIndex.mLength = 0;
 }
 
 // Address: 0x0065c0d0 - 0x0065c3fa (810 bytes)
@@ -303,6 +331,8 @@ __attribute__((weak)) void rDungeonMarker::cWarpInfo::createProperty(MtPropertyL
     DDON_STUB("rDungeonMarker::cWarpInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDungeonMarker::cWarpInfo::MyDTI rDungeonMarker::cWarpInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rDungeonMarker.cpp at 0x0065c681-0x0065c6c1 (called at rDungeonMarker.cpp:209)
@@ -312,7 +342,7 @@ __attribute__((weak)) void rDungeonMarker::cWarpInfo::createProperty(MtPropertyL
 // Address: 0x0065bc90 - 0x0065bd06 (118 bytes)
 MtObject* rDungeonMarker::cWarpInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDungeonMarker::cWarpInfo;
+    return new (16u) rDungeonMarker::cWarpInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -352,7 +382,7 @@ const MtDTI& rDungeonMarker::cWarpInfo::cIndex::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rDungeonMarker9cWarpInfo6cIndexD0Ev at 0x01a833a0-0x01a833ca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDungeonMarker::cWarpInfo::cIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::cIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::cIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -377,6 +407,8 @@ __attribute__((weak)) void rDungeonMarker::cWarpInfo::cIndex::createProperty(MtP
     DDON_STUB("rDungeonMarker::cWarpInfo::cIndex::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDungeonMarker::cWarpInfo::cIndex::MyDTI rDungeonMarker::cWarpInfo::cIndex::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rDungeonMarker.cpp at 0x0065c6c1-0x0065c6fa (called at rDungeonMarker.cpp:210)
@@ -426,7 +458,7 @@ const MtDTI& rDungeonMarker::cPosition::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rDungeonMarker::cPosition::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cPosition::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDungeonMarker::cPosition::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -446,10 +478,16 @@ inline void rDungeonMarker::cPosition::operator delete(void* p_addr) {
 //   in rDungeonMarker::save at 0x0065bc1e-0x0065bc50 (called at nDDOIO.h:463)
 // void rDungeonMarker::cPosition::save(MtDataWriter& w);
 
-// No out-of-line body: 2 inlined copies in 2 functions (131 bytes)
-//   in rDungeonMarker::cPosition::MyDTI::newInstance at 0x0065c42d-0x0065c466 (called at rDungeonMarker.cpp:329)
-//   in _ZN6nDDOIO11readMtArrayIN14rDungeonMarker9cPositionEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a82e28-0x01a82e37, 0x01a82e6c-0x01a82ea7 (called at rDungeonMarker.cpp:329)
-// rDungeonMarker::cPosition::cPosition();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rDungeonMarker::cPosition::cPosition() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+}
 
 // Address: 0x0065c510 - 0x0065c511 (1 bytes)
 // Also emitted as: _ZN14rDungeonMarker9cPositionD0Ev at 0x0065c520
@@ -462,6 +500,8 @@ __attribute__((weak)) void rDungeonMarker::cPosition::createProperty(MtPropertyL
     DDON_STUB("rDungeonMarker::cPosition::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDungeonMarker::cPosition::MyDTI rDungeonMarker::cPosition::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rDungeonMarker.cpp at 0x0065c6fa-0x0065c733 (called at rDungeonMarker.cpp:329)

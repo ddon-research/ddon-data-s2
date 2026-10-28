@@ -806,8 +806,20 @@ inline bool uGUIChat::isMenuUISubMenu() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::setupChatTell at 0x7a4e1e-0x7a4e25; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIChat::reqTellState() {
+    this->mIsReqTellState = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool uGUIChat::isForbid() {
     return this->mIsForbid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::setChatAlpha at 0x7a4eec-0x7a4ef4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIChat::setAlpha(f32 fAlpha) {
+    this->mAlpha = fAlpha;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -820,54 +832,60 @@ inline uGUIChat::cWindow::cWindow() {
     this->mDefaultMaskHeightTop = 0.0f;
     this->mDefaultWindowHeightCenter = 0.0f;
     this->mDefaultWindowHeightTop = 0.0f;
-    this->mpObjMaskC = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjMaskT = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpInstMask = static_cast<cGUIInstance*>(nullptr);
-    this->mpOBJ_window00_mouseover = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjWndwRT = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpObjWndwCT = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpObjWndwLT = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpObjWndwR = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpObjWndwC = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpObjWndwL = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpInstWndw = static_cast<cGUIInstance*>(nullptr);
-    this->mpParentGUI = static_cast<uGUIChat*>(nullptr);
-    this->mMouseTouchListIndex = static_cast<u32>(4294967295);
+    this->mpObjMaskC = nullptr;
+    this->mpObjMaskT = nullptr;
+    this->mpInstMask = nullptr;
+    this->mpOBJ_window00_mouseover = nullptr;
+    this->mpObjWndwRT = nullptr;
+    this->mpObjWndwCT = nullptr;
+    this->mpObjWndwLT = nullptr;
+    this->mpObjWndwR = nullptr;
+    this->mpObjWndwC = nullptr;
+    this->mpObjWndwL = nullptr;
+    this->mpInstWndw = nullptr;
+    this->mpParentGUI = nullptr;
+    this->mMouseTouchListIndex = 0xFFFFFFFF;
     this->mIsLarge = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIChat::cPopWndwChSubCmd::cPopWndwChSubCmd() {
-    this->mListCount = static_cast<u32>(0);
+    this->mListCount = 0;
     this->mCursorWidth = 0.0f;
-    this->mpObjMouseOver[3] = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjMouseOver[2] = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjMouseOver[1] = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjMouseOver[0] = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpObjMsg[3] = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpObjMsg[2] = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpObjMsg[1] = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpObjMsg[0] = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpInstMsg[3] = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpInstMsg[2] = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpInstMsg[1] = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpInstMsg[0] = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpInstNull = static_cast<cGUIInstNull*>(nullptr);
-    this->mpParentGUI = static_cast<uGUIChat*>(nullptr);
+    this->mpObjMouseOver[3] = nullptr;
+    this->mpObjMouseOver[2] = nullptr;
+    this->mpObjMouseOver[1] = nullptr;
+    this->mpObjMouseOver[0] = nullptr;
+    this->mpObjMsg[3] = nullptr;
+    this->mpObjMsg[2] = nullptr;
+    this->mpObjMsg[1] = nullptr;
+    this->mpObjMsg[0] = nullptr;
+    this->mpInstMsg[3] = nullptr;
+    this->mpInstMsg[2] = nullptr;
+    this->mpInstMsg[1] = nullptr;
+    this->mpInstMsg[0] = nullptr;
+    this->mpInstNull = nullptr;
+    this->mpParentGUI = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIChat::cPopWndwYoN::cPopWndwYoN() {
-    this->mpObjMsg = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpInstNull = static_cast<cGUIInstNull*>(nullptr);
+    this->mpObjMsg = nullptr;
+    this->mpInstNull = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIChat::cPopWndwAddCh::cPopWndwAddCh() {
-    this->mpObjMsg = static_cast<cGUIObjMessage*>(nullptr);
-    this->mpInstNull = static_cast<cGUIInstNull*>(nullptr);
+    this->mpObjMsg = nullptr;
+    this->mpInstNull = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIChat::cCheckList::cCheckList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIChat::updateDisp at 0xa25e77-0xa25e7c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uGUIChat::cLogInfo::getLogId() const {
+    return this->mLogId;
 }

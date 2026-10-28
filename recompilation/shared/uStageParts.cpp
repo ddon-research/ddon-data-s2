@@ -43,7 +43,7 @@ const MtDTI& uStagePartsCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStagePartsCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStagePartsCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uStagePartsCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline MtAllocator* uStagePartsCtrl::getAllocator() {
 // Address: 0x00d38570 - 0x00d385b0 (64 bytes)
 void* uStagePartsCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStagePartsCtrl::getAllocator()->memAlloc(sz, align, ::uStagePartsCtrl::DTI.::MtDTI::getID());
+    return uStagePartsCtrl::getAllocator()->memAlloc(sz, align, uStagePartsCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,7 +67,7 @@ void* uStagePartsCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStagePartsCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStagePartsCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStagePartsCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,25 +102,25 @@ __attribute__((weak)) void uStagePartsCtrl::setup() {
 void uStagePartsCtrl::move() {
     // DWARF local not rendered: bool update;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uStagePartsCtrl::updateXZ();
-    if (this->mOldX == this->mNowX) {
+    updateXZ();
+    if (mOldX == mNowX) {
         // inferred: a temporary for the value the load at 0xd39169 read, used twice; no DWARF local holds it
-        s32 t0 = this->mOldZ;
+        s32 t0 = mOldZ;
         // inferred: a temporary for the value the load at 0xd3916c read, used twice; no DWARF local holds it
-        s32 t1 = this->mNowZ;
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateArc(false, t0 != t1);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateStageMdl(true, t0 != t1);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateLot(true, false);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateLightFog(false, true);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateOccluder(false, true);
+        s32 t1 = mNowZ;
+        uStageCustomCtrlUpdateArc(false, t0 != t1);
+        uStageCustomCtrlUpdateStageMdl(true, t0 != t1);
+        uStageCustomCtrlUpdateLot(true, false);
+        uStageCustomCtrlUpdateLightFog(false, true);
+        uStageCustomCtrlUpdateOccluder(false, true);
     } else {
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateArc(false, true);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateStageMdl(true, true);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateLot(true, false);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateLightFog(false, true);
-        this->::uStagePartsCtrl::uStageCustomCtrlUpdateOccluder(false, true);
+        uStageCustomCtrlUpdateArc(false, true);
+        uStageCustomCtrlUpdateStageMdl(true, true);
+        uStageCustomCtrlUpdateLot(true, false);
+        uStageCustomCtrlUpdateLightFog(false, true);
+        uStageCustomCtrlUpdateOccluder(false, true);
     }
-    this->mIsSetup = true;
+    mIsSetup = true;
 }
 
 // Address: 0x00d39340 - 0x00d39341 (1 bytes)
@@ -148,60 +148,60 @@ void uStagePartsCtrl::updatePtr() {
     u32 v0_0;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1;
-    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpFltrSchdl->::cUnit::isEnable() == false) {
-            this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
-            v0_0 = this->mPartsDataAry.::MtArray::mLength;
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
+    if (mpFltrSchdl != nullptr) {
+        if (!mpFltrSchdl->isEnable()) {
+            mpFltrSchdl = nullptr;
+            v0_0 = mPartsDataAry.mLength;
+            if (v0_0 != 0) {
+                i0_1 = 0;
             } else {
                 goto region_d3978e;
             }
         } else {
-            v0_0 = this->mPartsDataAry.::MtArray::mLength;
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
+            v0_0 = mPartsDataAry.mLength;
+            if (v0_0 != 0) {
+                i0_1 = 0;
             } else {
                 goto region_d3978e;
             }
         }
     } else {
-        v0_0 = this->mPartsDataAry.::MtArray::mLength;
-        if (v0_0 != static_cast<u32>(0)) {
-            i0_1 = static_cast<unsigned int>(0);
+        v0_0 = mPartsDataAry.mLength;
+        if (v0_0 != 0) {
+            i0_1 = 0;
         } else {
             goto region_d3978e;
         }
     }
     for (;;) {
-        if (this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-            if (static_cast<cUnit*>(this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)])->::cUnit::isEnable() == false) {
-                this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] = static_cast<MtObject*>(nullptr);
+        if (mPartsDataAry.getBuffer()[static_cast<int>(i0_1)] != nullptr) {
+            if (!static_cast<cUnit*>(mPartsDataAry.getBuffer()[static_cast<int>(i0_1)])->isEnable()) {
+                mPartsDataAry.getBuffer()[static_cast<int>(i0_1)] = nullptr;
             }
         }
-        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-            i0_1 += static_cast<unsigned int>(1);
+        if ((i0_1 + 1u) < v0_0) {
+            i0_1 += 1u;
         } else {
             break;
         }
     }
     region_d3978e:;
-    if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSplitLotAry.mLength != 0) {
         // inferred: the value the loop at 0xd397a0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mSplitLotAry.::MtArray::mLength;
+        u32 v2_0 = mSplitLotAry.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cSplitLot*>(this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cSplitLot::updatePtr();
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mSplitLotAry.::MtArray::mLength) {
-                    v2_0 = this->mSplitLotAry.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mSplitLotAry.getBuffer()[static_cast<int>(i2_3)] != nullptr) {
+                static_cast<cSplitLot*>(mSplitLotAry.getBuffer()[static_cast<int>(i2_3)])->updatePtr();
+                if ((i2_3 + 1u) < mSplitLotAry.mLength) {
+                    v2_0 = mSplitLotAry.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
@@ -223,7 +223,7 @@ __attribute__((weak)) void uStagePartsCtrl::setResource(s32 stageNo) {
 // Address: 0x00d3b910 - 0x00d3b915 (5 bytes)
 void uStagePartsCtrl::setBlockArcLoad(s32 stageNo, const MtVector3& plPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uStagePartsCtrl::uStageCustomCtrlSetBlockArcLoad(stageNo, plPos);
+    uStageCustomCtrlSetBlockArcLoad(stageNo, plPos);
 }
 
 // Address: 0x00d39890 - 0x00d3991f (143 bytes)
@@ -249,22 +249,21 @@ bool uStagePartsCtrl::isSetup() {
     // DWARF local not rendered: bool ans;
     // DWARF local not rendered: uStagePartsMdl* pModel;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mIsSetup == false) {
+    if (!mIsSetup) {
         return false;
     }
-    if (this->mPartsDataAry.::MtArray::mLength == static_cast<u32>(0)) {
+    if (mPartsDataAry.mLength == 0) {
         return false;
     }
-    u32 idx = static_cast<u32>(0);
+    u32 idx = 0;
     do {
-        if (this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(idx)] != static_cast<MtObject*>(nullptr)) {
-            if (static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(idx)])->::uStagePartsMdl::isSetResource() != false) {
-            } else {
+        if (mPartsDataAry.getBuffer()[static_cast<int>(idx)] != nullptr) {
+            if (!static_cast<uStagePartsMdl*>(mPartsDataAry.getBuffer()[static_cast<int>(idx)])->isSetResource()) {
                 return false;
             }
         }
-        idx += static_cast<u32>(1);
-    } while (idx < this->mPartsDataAry.::MtArray::mLength);
+        idx += 1u;
+    } while (idx < mPartsDataAry.mLength);
     return true;
 }
 
@@ -276,12 +275,12 @@ bool uStagePartsCtrl::isSetup() {
 // Address: 0x00d3a280 - 0x00d3a2c4 (68 bytes)
 s32 uStagePartsCtrl::getAreaNo(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageResource != static_cast<rStageCustom*>(nullptr)) {
-        if (idx < this->mpStageResource->getAreaNum()) {
-            return this->mpStageResource->::rStageCustom::getAreaNo(static_cast<s32>(idx));
+    if (mpStageResource != nullptr) {
+        if (idx < mpStageResource->getAreaNum()) {
+            return mpStageResource->getAreaNo(static_cast<s32>(idx));
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (122 bytes)
@@ -326,15 +325,15 @@ __attribute__((weak)) bool uStagePartsCtrl::isSbc(const s32 x, const s32 z) cons
 // Address: 0x00d3b110 - 0x00d3b13d (45 bytes)
 u32 uStagePartsCtrl::getAreaSize(u32 areaNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageResource != static_cast<rStageCustom*>(nullptr)) {
-        rStageCustomParts::Info* pinfo = this->mpStageResource->::rStageCustom::getAreaInfo(static_cast<s32>(areaNo));
-        if (pinfo != static_cast<rStageCustomParts::Info*>(nullptr)) {
+    if (mpStageResource != nullptr) {
+        rStageCustomParts::Info* pinfo = mpStageResource->getAreaInfo(static_cast<s32>(areaNo));
+        if (pinfo != nullptr) {
             return pinfo->mSize;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -386,17 +385,17 @@ __attribute__((weak)) s32 uStagePartsCtrl::getPartsIndexNo(const MtVector3& pos)
 // Address: 0x00d3b380 - 0x00d3b3fc (124 bytes)
 s32 uStagePartsCtrl::getPartsGroupNo(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    s32 x = static_cast<s32>(0);
-    s32 z = static_cast<s32>(0);
-    if (this->::uStagePartsCtrl::calcPartsArea(pos, x, z) != false) {
-        rStageCustom::Area* pArea = this->mpStageResource->getArea(static_cast<u32>(z));
-        if (pArea != static_cast<rStageCustom::Area*>(nullptr)) {
+    s32 x = 0;
+    s32 z = 0;
+    if (calcPartsArea(pos, x, z)) {
+        rStageCustom::Area* pArea = mpStageResource->getArea(static_cast<u32>(z));
+        if (pArea != nullptr) {
             return pArea->mGroupNo;
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -418,10 +417,10 @@ __attribute__((weak)) MtVector3 uStagePartsCtrl::getStartPos(u32 areaIdx) const 
 // Address: 0x00d3b410 - 0x00d3b428 (24 bytes)
 u32 uStagePartsCtrl::getPartsNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageResource != static_cast<rStageCustom*>(nullptr)) {
-        return this->mpStageResource->getAreaNum();
+    if (mpStageResource != nullptr) {
+        return mpStageResource->getAreaNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -511,26 +510,25 @@ __attribute__((weak)) cSplitBgm* uStagePartsCtrl::getSplitBgmInfo(const MtVector
 uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
     // DWARF local not rendered: uStagePartsMdl* pMdl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageResource == static_cast<rStageCustom*>(nullptr)) {
-        return static_cast<uSoundOcclusion*>(nullptr);
+    if (mpStageResource == nullptr) {
+        return nullptr;
     }
-    if (this->mPartsDataAry.::MtArray::mLength == static_cast<u32>(0)) {
-        return static_cast<uSoundOcclusion*>(nullptr);
+    if (mPartsDataAry.mLength == 0) {
+        return nullptr;
     }
     // inferred: DWARF's location-less 'j' (lexical block [0xd3b70c, 0xd3b759), [0xd3b75a, 0xd3b761)) is the counter this loop steps
-    u32 j = static_cast<u32>(0);
+    u32 j = 0;
     do {
-        if (this->mPartsDataAry.::MtArray::mpArray[j] != static_cast<MtObject*>(nullptr)) {
-            if (static_cast<cUnit*>(this->mPartsDataAry.::MtArray::mpArray[j])->::cUnit::isEnable()) {
-                if (static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[j])->::uStagePartsMdl::getAreaIdx() != this->mNowZ) {
-                } else {
-                    return static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[j])->::uStagePartsMdl::getSoundOcclusion();
+        if (mPartsDataAry.mpArray[j] != nullptr) {
+            if (static_cast<cUnit*>(mPartsDataAry.mpArray[j])->isEnable()) {
+                if (static_cast<uStagePartsMdl*>(mPartsDataAry.mpArray[j])->getAreaIdx() == mNowZ) {
+                    return static_cast<uStagePartsMdl*>(mPartsDataAry.mpArray[j])->getSoundOcclusion();
                 }
             }
         }
-        j += static_cast<u32>(1);
-    } while (j < this->mPartsDataAry.::MtArray::mLength);
-    return static_cast<uSoundOcclusion*>(nullptr);
+        j += 1u;
+    } while (j < mPartsDataAry.mLength);
+    return nullptr;
 }
 
 // Address: 0x00d3b880 - 0x00d3b90c (140 bytes)
@@ -551,70 +549,68 @@ void uStagePartsCtrl::stopMoveUnitLight(bool sleep) {
     // DWARF local not rendered: uStagePartsMdl* pMdl;
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cUnit* pUnit;
-    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from uStagePartsCtrl*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cUnit*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136))) != static_cast<unsigned int>(0)) {
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mPartsDataAry.mLength != 0) {
         // inferred: the value the loop at 0xd3b7a0 carries; no location-less local in scope fits
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136));
+        u32 v0_0 = mPartsDataAry.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_9 = static_cast<unsigned int>(0);
+        unsigned int i0_9 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_3;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i3_3;
         // inferred: the value carried to 0xd3b861; no location-less local in scope fits
-        unsigned int v5_0;
+        u32 v5_0;
         for (;;) {
-            if (this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_9)] == static_cast<MtObject*>(nullptr)) {
+            if (mPartsDataAry.getBuffer()[static_cast<int>(i0_9)] == nullptr) {
                 v5_0 = v0_0;
             } else {
                 // inferred: the value the loop at 0xd3b7e0 carries; no location-less local in scope fits
-                uScheduler* v1_10 = static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_9)])->::uStagePartsMdl::getLightSdl();
-                if (v1_10 == static_cast<uScheduler*>(nullptr)) {
+                uScheduler* v1_10 = static_cast<uStagePartsMdl*>(mPartsDataAry.getBuffer()[static_cast<int>(i0_9)])->getLightSdl();
+                if (v1_10 == nullptr) {
                     v5_0 = v0_0;
                 } else {
-                    if (v1_10->::uScheduler::getUnitNum() != static_cast<u32>(0)) {
-                        if (sleep == false) {
-                            i3_3 = static_cast<unsigned int>(0);
+                    if (v1_10->getUnitNum() != 0) {
+                        if (!sleep) {
+                            i3_3 = 0;
                             for (;;) {
                                 // inferred: a temporary for the result of the call at 0xd3b825, used 3 times; no DWARF local holds it
-                                cUnit* t1 = v1_10->::uScheduler::getUnit(i3_3);
-                                if (t1 != static_cast<cUnit*>(nullptr)) {
-                                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-                                        ::sUnit::getInstance()->::sUnit::removeUnitGroup(t1, static_cast<u32>(55));
+                                cUnit* t1 = v1_10->getUnit(i3_3);
+                                if (t1 != nullptr) {
+                                    if ((t1->mBeFlag - 1u) <= 1u) {
+                                        sUnit::getInstance()->removeUnitGroup(t1, 55u);
                                     }
                                 }
-                                if ((i3_3 + static_cast<unsigned int>(1)) < v1_10->::uScheduler::getUnitNum()) {
-                                    i3_3 += static_cast<unsigned int>(1);
+                                if ((i3_3 + 1u) < v1_10->getUnitNum()) {
+                                    i3_3 += 1u;
                                 } else {
                                     break;
                                 }
                             }
                         } else {
-                            i1_3 = static_cast<unsigned int>(0);
+                            i1_3 = 0;
                             for (;;) {
                                 // inferred: a temporary for the result of the call at 0xd3b7e5, used 3 times; no DWARF local holds it
-                                cUnit* t0 = v1_10->::uScheduler::getUnit(i1_3);
-                                if (t0 != static_cast<cUnit*>(nullptr)) {
-                                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-                                        ::sUnit::getInstance()->::sUnit::setUnitGroup(t0, static_cast<u32>(55));
+                                cUnit* t0 = v1_10->getUnit(i1_3);
+                                if (t0 != nullptr) {
+                                    if ((t0->mBeFlag - 1u) <= 1u) {
+                                        sUnit::getInstance()->setUnitGroup(t0, 55u);
                                     }
                                 }
-                                if ((i1_3 + static_cast<unsigned int>(1)) < v1_10->::uScheduler::getUnitNum()) {
-                                    i1_3 += static_cast<unsigned int>(1);
+                                if ((i1_3 + 1u) < v1_10->getUnitNum()) {
+                                    i1_3 += 1u;
                                 } else {
                                     break;
                                 }
                             }
                         }
                     }
-                    v5_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136));
+                    v5_0 = mPartsDataAry.mLength;
                 }
             }
-            if ((i0_9 + static_cast<unsigned int>(1)) < v5_0) {
+            if ((i0_9 + 1u) < v5_0) {
                 v0_0 = v5_0;
-                i0_9 += static_cast<unsigned int>(1);
+                i0_9 += 1u;
             } else {
                 break;
             }
@@ -819,6 +815,8 @@ __attribute__((weak)) void uStagePartsCtrl::uStageCustomCtrlUpdateOccluder(bool 
 // No out-of-line body: no code in the ELF
 // void uStagePartsCtrl::uStageCustomCtrlSetLotResource();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStagePartsCtrl::MyDTI uStagePartsCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageParts.cpp at 0x00d3bc3c-0x00d3bc79 (called at uStageParts.cpp:1098)
 //   in _GLOBAL__sub_I_uStageParts.cpp at 0x00d3bc3c-0x00d3bc79 (called at uStageParts.h:208)
@@ -868,7 +866,7 @@ const MtDTI& uStagePartsMdl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStagePartsMdl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStagePartsMdl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStagePartsMdl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -942,40 +940,30 @@ __attribute__((weak)) void uStagePartsMdl::kill() {
 // Address: 0x00d383d0 - 0x00d384a0 (208 bytes)
 void uStagePartsMdl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScrSchdl == static_cast<uScheduler*>(nullptr)) {
-    } else {
-        if (this->mpScrSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpScrSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpScrSchdl != nullptr) {
+        if (!mpScrSchdl->isEnable()) {
+            mpScrSchdl = nullptr;
         }
     }
-    if (this->mpLightSchdl == static_cast<uScheduler*>(nullptr)) {
-    } else {
-        if (this->mpLightSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpLightSchdl != nullptr) {
+        if (!mpLightSchdl->isEnable()) {
+            mpLightSchdl = nullptr;
         }
     }
-    this->mStageEpvCtrl.::cStageEpvCtrl::updatePtr();
-    if (this->mpSoundTrigger == static_cast<uSoundTrigger*>(nullptr)) {
-    } else {
-        if (this->mpSoundTrigger->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+    mStageEpvCtrl.updatePtr();
+    if (mpSoundTrigger != nullptr) {
+        if (!mpSoundTrigger->isEnable()) {
+            mpSoundTrigger = nullptr;
         }
     }
-    if (this->mpSoundGenerator == static_cast<uSoundGenerator*>(nullptr)) {
-    } else {
-        if (this->mpSoundGenerator->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+    if (mpSoundGenerator != nullptr) {
+        if (!mpSoundGenerator->isEnable()) {
+            mpSoundGenerator = nullptr;
         }
     }
-    if (this->mpSoundOcclusion == static_cast<uSoundOcclusion*>(nullptr)) {
-    } else {
-        if (this->mpSoundOcclusion->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+    if (mpSoundOcclusion != nullptr) {
+        if (!mpSoundOcclusion->isEnable()) {
+            mpSoundOcclusion = nullptr;
         }
     }
 }
@@ -1060,36 +1048,29 @@ void uStagePartsMdl::setCollisionType() {
     // DWARF local not rendered: MtMatrix wmat;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mScrSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mScrSbcHandle[0], static_cast<u32>(1));
+    if (mScrSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mScrSbcHandle[0], 1u);
     }
-    if (this->mEffSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mEffSbcHandle[0], static_cast<u32>(2));
+    if (mEffSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mEffSbcHandle[0], 2u);
     }
-    if (this->mScrSbcHandle[1] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mScrSbcHandle[1], static_cast<u32>(1));
+    if (mScrSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mScrSbcHandle[1], 1u);
     }
-    if (this->mEffSbcHandle[1] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mEffSbcHandle[1], static_cast<u32>(2));
+    if (mEffSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mEffSbcHandle[1], 2u);
     }
-    if (this->mScrSbcHandle[2] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mScrSbcHandle[2], static_cast<u32>(1));
+    if (mScrSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mScrSbcHandle[2], 1u);
     }
-    if (this->mEffSbcHandle[2] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setType(this->mEffSbcHandle[2], static_cast<u32>(2));
+    if (mEffSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setType(mEffSbcHandle[2], 2u);
     }
-    if (this->mpSbcGeometry == static_cast<uScrollCollisionGeometry*>(nullptr)) {
-    } else {
-        this->mpSbcGeometry->kill();
-        this->mpSbcGeometry = static_cast<uScrollCollisionGeometry*>(nullptr);
+    if (mpSbcGeometry != nullptr) {
+        mpSbcGeometry->kill();
+        mpSbcGeometry = nullptr;
     }
-    this->mIsSetResource = true;
+    mIsSetResource = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (156 bytes)
@@ -1099,6 +1080,8 @@ void uStagePartsMdl::setCollisionType() {
 // No out-of-line body: 1 inlined copy in 1 function (62 bytes)
 //   in uStagePartsMdl::kill at 0x00d380f2-0x00d38130 (called at uStageParts.cpp:602)
 // void uStagePartsMdl::releaseNavigationMesh();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStagePartsMdl::MyDTI uStagePartsMdl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageParts.cpp at 0x00d3bbff-0x00d3bc3c (called at uStageParts.cpp:66)

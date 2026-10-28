@@ -351,7 +351,26 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cKeyCustomManager::setSoloExcludeModifierKey at 0xeeb54-0xeeb5d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cKeyCustom::clrSoloExcludeModifierKey() {
+    this->mSoloExcludeModifierKey = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline nKeyCustom::OVERLAP_GROUP cKeyCustom::getOverlapGroup() {
     return this->mOverlapGroup;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cKeyCustom::setKbmBlank at 0xee216-0xee21d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cKeyCustom::clearKey() {
+    this->mSt.mKey = 0;
+    this->mSt.mBtn = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sInputManager::getCustomPadSetting at 0x7c3d2d-0x7c3d30; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cKeyCustom::getPad() const {
+    return this->mSt.mPad;
 }

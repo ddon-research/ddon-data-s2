@@ -99,6 +99,8 @@ __attribute__((weak)) void nNetwork::nSharedMemory2::CConsistentHash::clear() {
 // No out-of-line body: no code in the ELF
 // size_t nNetwork::nSharedMemory2::CConsistentHash::size();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nSharedMemory2::CConsistentHash::MyDTI nNetwork::nSharedMemory2::CConsistentHash::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nSharedMemory2::CConsistentHash::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -171,14 +173,16 @@ inline void nNetwork::nSharedMemory2::CProtocol::operator delete(void* p_addr) {
 // Address: 0x012f6060 - 0x012f6075 (21 bytes)
 void nNetwork::nSharedMemory2::CProtocol::get(s32 src_index, const void* data, u32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mInit == false) {
+    if (!mInit) {
         return;
     }
-    if (this->mpParent == static_cast<nNetwork::nSharedMemory2::Object*>(nullptr)) {
+    if (mpParent == nullptr) {
         return;
     }
-    this->mpParent->::nNetwork::nSharedMemory2::Object::receive(src_index, data, data_size);
+    mpParent->receive(src_index, data, data_size);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nSharedMemory2::CProtocol::MyDTI nNetwork::nSharedMemory2::CProtocol::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nSharedMemory2::CProtocol::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -229,7 +233,7 @@ const MtDTI& nNetwork::nSharedMemory2::Object::getDTI() const {
 // Address: 0x012f3b60 - 0x012f3ba0 (64 bytes)
 void* nNetwork::nSharedMemory2::Object::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::Object::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::Object::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::Object::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::Object::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -401,6 +405,10 @@ __attribute__((weak)) void nNetwork::nSharedMemory2::Object::checkReqLockList() 
     DDON_STUB("nNetwork::nSharedMemory2::Object::checkReqLockList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::nSharedMemory2::Object::MyDTI nNetwork::nSharedMemory2::Object::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): nNetwork::nSharedMemory2::CNode nNetwork::nSharedMemory2::Object::sNode;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::nSharedMemory2::Object::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

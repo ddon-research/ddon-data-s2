@@ -50,7 +50,7 @@ const MtDTI& cCharacterEditMuscle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharacterEditMuscle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditMuscle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -80,6 +80,8 @@ __attribute__((weak)) void cCharacterEditMuscle::createProperty(MtPropertyList& 
     DDON_STUB("cCharacterEditMuscle::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditMuscle::MyDTI cCharacterEditMuscle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditMuscle.cpp at 0x006539b0-0x006539f2 (called at rCharacterEditMuscle.cpp:23)
@@ -114,7 +116,7 @@ const MtDTI& rCharacterEditMuscle::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditMuscle::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditMuscle::DTI)->memAlloc(sz, align, ::rCharacterEditMuscle::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditMuscle::DTI)->memAlloc(sz, align, rCharacterEditMuscle::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ inline void* rCharacterEditMuscle::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rCharacterEditMuscleD0Ev at 0x01a7de14-0x01a7de33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCharacterEditMuscle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEditMuscle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEditMuscle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,8 +161,10 @@ MT_CTSTR rCharacterEditMuscle::getExt() const {
 // Address: 0x01a7df60 - 0x01a7df66 (6 bytes)
 u32 rCharacterEditMuscle::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditMuscle::MyDTI rCharacterEditMuscle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditMuscle.cpp at 0x006539f2-0x00653a2f (called at rCharacterEditMuscle.cpp:66)
@@ -170,7 +174,7 @@ u32 rCharacterEditMuscle::getDataVersion() const {
 // Address: 0x006538d0 - 0x00653934 (100 bytes)
 MtObject* rCharacterEditMuscle::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditMuscle;
+    return new (16u) rCharacterEditMuscle;
 }
 
 // Instance at 0x01a7df10 - 0x01a7df22 (18 bytes) of the generic rTbl2<T>::getData

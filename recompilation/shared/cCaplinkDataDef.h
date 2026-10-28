@@ -442,3 +442,33 @@ namespace nCaplink {
         static MyDTI DTI;
     };
 }  // namespace nCaplink
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sCaplinkManager::setupWebsocket at 0x738730-0x738734; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MT_CTSTR nCaplink::cWebsocketServerInfo::getHostname() const {
+    return &this->mHostname[0];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sCaplinkManager::setupWebsocket at 0x738729-0x738730; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nCaplink::cWebsocketServerInfo::getPort() const {
+    return this->mPort;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sCaplinkManager::setupWebsocket at 0x738734-0x73873b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MT_CTSTR nCaplink::cWebsocketServerInfo::getPath() const {
+    return &this->mPath[0];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in stServerSort::sort at 0x746210-0x746216; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nCaplink::cWebsocketServerInfo::getLoadaverage() const {
+    return this->mLoadaverage;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in stServerSort::sort at 0x74621e-0x746224; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nCaplink::cWebsocketServerInfo::getConnections() const {
+    return this->mConnections;
+}

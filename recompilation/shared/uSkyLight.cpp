@@ -45,7 +45,7 @@ const MtDTI& cDayNightLightParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDayNightLightParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDayNightLightParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDayNightLightParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,6 +77,8 @@ __attribute__((weak)) void cDayNightLightParam::createProperty(MtPropertyList& s
     DDON_STUB("cDayNightLightParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDayNightLightParam::MyDTI cDayNightLightParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSkyLight.cpp at 0x00d1dea8-0x00d1dee5 (called at uSkyLight.cpp:876)

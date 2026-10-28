@@ -29,7 +29,7 @@ const MtDTI& uGUIHudCustomSkillPallet::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIHudCustomSkillPallet::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIHudCustomSkillPallet::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIHudCustomSkillPallet::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIHudCustomSkillPallet::getAllocator() {
 // Address: 0x00abfb20 - 0x00abfb60 (64 bytes)
 void* uGUIHudCustomSkillPallet::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIHudCustomSkillPallet::getAllocator()->memAlloc(sz, align, ::uGUIHudCustomSkillPallet::DTI.::MtDTI::getID());
+    return uGUIHudCustomSkillPallet::getAllocator()->memAlloc(sz, align, uGUIHudCustomSkillPallet::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIHudCustomSkillPallet::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIHudCustomSkillPallet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIHudCustomSkillPallet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIHudCustomSkillPallet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,14 +80,14 @@ uGUIHudCustomSkillPallet::~uGUIHudCustomSkillPallet() {
 // Address: 0x00abfc80 - 0x00abfc91 (17 bytes)
 void uGUIHudCustomSkillPallet::initCustomSkillGroup(nHuman::CUSTOM_SKILL_GROUP customSkillGroup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomSkillGroup = static_cast<nHuman::CUSTOM_SKILL_GROUP>(-1);
-    this->mCustomSkillGroupSwitchRequest = customSkillGroup;
+    mCustomSkillGroup = nHuman::CUSTOM_SKILL_GROUP_NONE;
+    mCustomSkillGroupSwitchRequest = customSkillGroup;
 }
 
 // Address: 0x00abfca0 - 0x00abfca7 (7 bytes)
 void uGUIHudCustomSkillPallet::switchCustomSkillGroup(nHuman::CUSTOM_SKILL_GROUP customSkillGroup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomSkillGroupSwitchRequest = customSkillGroup;
+    mCustomSkillGroupSwitchRequest = customSkillGroup;
 }
 
 // Address: 0x00abfcb0 - 0x00abfcc0 (16 bytes)
@@ -106,21 +106,21 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIHudCustomSkillPallet::getG
 // Address: 0x00abfcd0 - 0x00abfcd6 (6 bytes)
 t64 uGUIHudCustomSkillPallet::getGuiResUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<t64>(1456979929);
+    return 1456979929;
 }
 
 // Address: 0x00abfce0 - 0x00abfd03 (35 bytes)
 void uGUIHudCustomSkillPallet::onSetupAfterLoad() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
-    this->::uGUIHudCustomSkillPallet::setupInstances();
+    setFlowAndInit(3u, false);
+    setupInstances();
 }
 
 // Address: 0x00abfe30 - 0x00abfe50 (32 bytes)
 void uGUIHudCustomSkillPallet::onShow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->onUpdateShow();
-    this->::uGUIBaseExtHud::onShow();
+    onUpdateShow();
+    this->uGUIBaseExtHud::onShow();
 }
 
 // Address: 0x00abfe50 - 0x00abff4e (254 bytes)
@@ -148,73 +148,75 @@ __attribute__((weak)) void uGUIHudCustomSkillPallet::setupInstances() {
     // DWARF local not rendered: const u32 skillset_text_msg_index;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xabfd27, used 3 times; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(41), false);
-    if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-        t0->::cGUIInstance::setVisible(false);
-        t0->::cGUIInstance::setExecute(false);
+    cGUIInstance* t0 = getInstance(41u, false);
+    if (t0 != nullptr) {
+        t0->setVisible(false);
+        t0->setExecute(false);
         // inferred: a temporary for the result of the call at 0xabfd56, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->getInstance(static_cast<u32>(26), false);
-        if ((this->mINST_msg_skillsets.elems[0] = static_cast<cGUIInstAnimation*>(t1)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-            static_cast<cGUIInstAnimation*>(t1)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(26), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(112)), static_cast<u32>(0), false);
+        cGUIInstance* t1 = getInstance(26u, false);
+        if ((mINST_msg_skillsets.elems[0] = static_cast<cGUIInstAnimation*>(t1)) != nullptr) {
+            static_cast<cGUIInstAnimation*>(t1)->setSequenceId(7u);
+            setObjectMessageFromId(26u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 112u), 0u, false);
             // inferred: a temporary for the result of the call at 0xabfdbb, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(29), false);
-            if ((this->mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-                static_cast<cGUIInstAnimation*>(t2)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            cGUIInstance* t2 = getInstance(29u, false);
+            if ((mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                static_cast<cGUIInstAnimation*>(t2)->setSequenceId(7u);
             }
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(29), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(111)), static_cast<u32>(0), false);
-            if (this->mINST_msg_skillsets.elems[0] != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mDefaultPriority = this->mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
+            setObjectMessageFromId(29u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 111u), 0u, false);
+            if (mINST_msg_skillsets.elems[0] != nullptr) {
+                mDefaultPriority = mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
             } else {
-                this->mDefaultPriority = static_cast<u32>(0);
+                mDefaultPriority = 0;
             }
         } else {
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(26), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(112)), static_cast<u32>(0), false);
+            setObjectMessageFromId(26u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 112u), 0u, false);
             // inferred: a temporary for the result of the call at 0xabfdbb, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(29), false);
-            if ((this->mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-                static_cast<cGUIInstAnimation*>(t2)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            cGUIInstance* t2 = getInstance(29u, false);
+            if ((mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                static_cast<cGUIInstAnimation*>(t2)->setSequenceId(7u);
             }
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(29), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(111)), static_cast<u32>(0), false);
-            if (this->mINST_msg_skillsets.elems[0] != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mDefaultPriority = this->mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
+            setObjectMessageFromId(29u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 111u), 0u, false);
+            if (mINST_msg_skillsets.elems[0] != nullptr) {
+                mDefaultPriority = mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
             } else {
-                this->mDefaultPriority = static_cast<u32>(0);
+                mDefaultPriority = 0;
             }
         }
     } else {
         // inferred: a temporary for the result of the call at 0xabfd56, used twice; no DWARF local holds it
-        cGUIInstance* t1 = this->getInstance(static_cast<u32>(26), false);
-        if ((this->mINST_msg_skillsets.elems[0] = static_cast<cGUIInstAnimation*>(t1)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-            static_cast<cGUIInstAnimation*>(t1)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(26), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(112)), static_cast<u32>(0), false);
+        cGUIInstance* t1 = getInstance(26u, false);
+        if ((mINST_msg_skillsets.elems[0] = static_cast<cGUIInstAnimation*>(t1)) != nullptr) {
+            static_cast<cGUIInstAnimation*>(t1)->setSequenceId(7u);
+            setObjectMessageFromId(26u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 112u), 0u, false);
             // inferred: a temporary for the result of the call at 0xabfdbb, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(29), false);
-            if ((this->mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-                static_cast<cGUIInstAnimation*>(t2)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            cGUIInstance* t2 = getInstance(29u, false);
+            if ((mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                static_cast<cGUIInstAnimation*>(t2)->setSequenceId(7u);
             }
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(29), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(111)), static_cast<u32>(0), false);
-            if (this->mINST_msg_skillsets.elems[0] != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mDefaultPriority = this->mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
+            setObjectMessageFromId(29u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 111u), 0u, false);
+            if (mINST_msg_skillsets.elems[0] != nullptr) {
+                mDefaultPriority = mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
             } else {
-                this->mDefaultPriority = static_cast<u32>(0);
+                mDefaultPriority = 0;
             }
         } else {
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(26), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(112)), static_cast<u32>(0), false);
+            setObjectMessageFromId(26u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 112u), 0u, false);
             // inferred: a temporary for the result of the call at 0xabfdbb, used twice; no DWARF local holds it
-            cGUIInstance* t2 = this->getInstance(static_cast<u32>(29), false);
-            if ((this->mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != static_cast<cGUIInstAnimation*>(nullptr)) {
-                static_cast<cGUIInstAnimation*>(t2)->::cGUIInstAnimation::setSequenceId(static_cast<u32>(7));
+            cGUIInstance* t2 = getInstance(29u, false);
+            if ((mINST_msg_skillsets.elems[1] = static_cast<cGUIInstAnimation*>(t2)) != nullptr) {
+                static_cast<cGUIInstAnimation*>(t2)->setSequenceId(7u);
             }
-            this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(29), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(111)), static_cast<u32>(0), false);
-            if (this->mINST_msg_skillsets.elems[0] != static_cast<cGUIInstAnimation*>(nullptr)) {
-                this->mDefaultPriority = this->mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
+            setObjectMessageFromId(29u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 111u), 0u, false);
+            if (mINST_msg_skillsets.elems[0] != nullptr) {
+                mDefaultPriority = mINST_msg_skillsets.elems[0]->::cGUIInstance::mPriority;
             } else {
-                this->mDefaultPriority = static_cast<u32>(0);
+                mDefaultPriority = 0;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIHudCustomSkillPallet::MyDTI uGUIHudCustomSkillPallet::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIHudCustomSkillPallet.cpp at 0x00ac004f-0x00ac008c (called at uGUIHudCustomSkillPallet.cpp:47)

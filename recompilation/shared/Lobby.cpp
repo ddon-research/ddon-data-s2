@@ -25,7 +25,7 @@ const MtDTI& CDataLobbyInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLobbyInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLobbyInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLobbyInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* CDataLobbyInfo::getAllocator() {
 // Address: 0x003dc4c0 - 0x003dc4ea (42 bytes)
 __attribute__((weak)) void CDataLobbyInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLobbyInfo::getAllocator()->memFree(p_addr);
+    CDataLobbyInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,6 +68,8 @@ __attribute__((weak)) void CDataLobbyInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataLobbyInfo::CDataLobbyInfo(const char*, u32, u32, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLobbyInfo::MyDTI CDataLobbyInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f3ee-0x0041f427 (called at LobbyImplement.inc:7)
@@ -94,7 +96,7 @@ const MtDTI& CDataLobbyMemberInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataLobbyMemberInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataLobbyMemberInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataLobbyMemberInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,7 +105,7 @@ inline MtAllocator* CDataLobbyMemberInfo::getAllocator() {
 // Address: 0x003dc5b0 - 0x003dc5f0 (64 bytes)
 void* CDataLobbyMemberInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataLobbyMemberInfo::getAllocator()->memAlloc(sz, align, ::CDataLobbyMemberInfo::DTI.::MtDTI::getID());
+    return CDataLobbyMemberInfo::getAllocator()->memAlloc(sz, align, CDataLobbyMemberInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,7 +120,7 @@ void* CDataLobbyMemberInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003dc620 - 0x003dc64a (42 bytes)
 __attribute__((weak)) void CDataLobbyMemberInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataLobbyMemberInfo::getAllocator()->memFree(p_addr);
+    CDataLobbyMemberInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,6 +141,8 @@ __attribute__((weak)) void CDataLobbyMemberInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataLobbyMemberInfo::CDataLobbyMemberInfo(const CCommunityCharacterBaseInfo&, u32, u8, u8, u8, u8);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataLobbyMemberInfo::MyDTI CDataLobbyMemberInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f427-0x0041f460 (called at LobbyImplement.inc:8)

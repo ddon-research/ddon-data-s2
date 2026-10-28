@@ -216,3 +216,9 @@ private:
 inline sRemoteProcedure* sRemoteProcedure::getInstance() {
     return ::sRemoteProcedure::mpInstance;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK16sRemoteProcedure20cTemporaryRemoteCall5MyDTI11newInstanceEv at 0x0125da80-0x0125daa6, code DWARF attributes to no inlined copy
+inline sRemoteProcedure::cTemporaryRemoteCall::cTemporaryRemoteCall() {
+    this->mpObject = nullptr;
+}

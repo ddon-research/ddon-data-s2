@@ -34,7 +34,7 @@ const MtDTI& cSetInfoCharacter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSetInfoCharacter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSetInfoCharacter::DTI)->memAlloc(sz, align, ::cSetInfoCharacter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSetInfoCharacter::DTI)->memAlloc(sz, align, cSetInfoCharacter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* cSetInfoCharacter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSetInfoCharacter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSetInfoCharacter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSetInfoCharacter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,7 +75,7 @@ cSetInfoCharacter::~cSetInfoCharacter() {
 // Address: 0x0055c5e0 - 0x0055c5e5 (5 bytes)
 void cSetInfoCharacter::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoCoord::createProperty(s);
+    this->cSetInfoCoord::createProperty(s);
 }
 
 // Address: 0x0055c5f0 - 0x0055c5f1 (1 bytes)
@@ -86,19 +86,19 @@ __attribute__((weak)) void cSetInfoCharacter::createToolProperty(MtPropertyList&
 // Address: 0x0055c600 - 0x0055c605 (5 bytes)
 bool cSetInfoCharacter::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::load(r);
+    return this->cSetInfoCoord::load(r);
 }
 
 // Address: 0x0055c610 - 0x0055c615 (5 bytes)
 bool cSetInfoCharacter::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::save(w);
+    return this->cSetInfoCoord::save(w);
 }
 
 // Address: 0x0055c620 - 0x0055c625 (5 bytes)
 MtUI* cSetInfoCharacter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x0055c630 - 0x0055c697 (103 bytes)
@@ -111,17 +111,17 @@ __attribute__((weak)) bool cSetInfoCharacter::applyInfo(cUnit* pu) const {
 // Address: 0x0055c6a0 - 0x0055c6d8 (56 bytes)
 void cSetInfoCharacter::copy(cSetInfo* p) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cSetInfoCoord::copy(p);
+    this->cSetInfoCoord::copy(p);
     // inferred: a temporary for the result of the call at 0x55c6b4, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x55c6c2 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::cSetInfoCharacter::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = cSetInfoCharacter::DTI.mName;
     // inferred: the value the loop at 0x55c6c2 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
             break;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -129,6 +129,8 @@ void cSetInfoCharacter::copy(cSetInfo* p) {
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSetInfoCharacter::MyDTI cSetInfoCharacter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSetInfoCharacter.cpp at 0x0055c7df-0x0055c81c (called at cSetInfoCharacter.cpp:32)
@@ -138,6 +140,6 @@ void cSetInfoCharacter::copy(cSetInfo* p) {
 // Address: 0x0055c4b0 - 0x0055c4fe (78 bytes)
 MtObject* cSetInfoCharacter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSetInfoCharacter;
+    return new (16u) cSetInfoCharacter;
 }
 

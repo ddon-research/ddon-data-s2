@@ -29,7 +29,7 @@ const MtDTI& cpHugeble::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpHugeble::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpHugeble::DTI);
+    return MtMemoryAllocator::getAllocator(cpHugeble::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cpHugeble::getAllocator() {
 // Address: 0x00489830 - 0x00489870 (64 bytes)
 void* cpHugeble::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpHugeble::getAllocator()->memAlloc(sz, align, ::cpHugeble::DTI.::MtDTI::getID());
+    return cpHugeble::getAllocator()->memAlloc(sz, align, cpHugeble::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cpHugeble::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpHugeble::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpHugeble::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpHugeble::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,11 +75,11 @@ cpHugeble::cpHugeble() {
 // Also emitted as: _ZN9cpHugebleD0Ev at 0x00489a80
 cpHugeble::~cpHugeble() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getGameBuffResource(), static_cast<u32>(101), static_cast<MtObject*>(this->mpModel));
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getGameBuffResource(), static_cast<u32>(103), static_cast<MtObject*>(this->mpModel));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getGameBuffResource(), 101u, static_cast<MtObject*>(mpModel));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getGameBuffResource(), 103u, static_cast<MtObject*>(mpModel));
 }
 
 // Address: 0x00489b00 - 0x00489b53 (83 bytes)
@@ -97,25 +97,25 @@ __attribute__((weak)) void cpHugeble::applyWorldOffset(const MtVector3& offset, 
 // Address: 0x00489b60 - 0x00489b69 (9 bytes)
 void cpHugeble::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004899a0 - 0x00489a17 (119 bytes)
 void cpHugeble::initHugeble() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWaterDepth = 0.0f;
-    this->mIsHugebleNoCheck = false;
-    this->mIsHugebleDeath = false;
-    this->mHugebleRno = static_cast<u32>(0);
-    this->mHugebleTimer = 0.0f;
-    this->mHugebleTime = 150.0f;
-    this->mIsInstantDeath = false;
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    mWaterDepth = 0.0f;
+    mIsHugebleNoCheck = false;
+    mIsHugebleDeath = false;
+    mHugebleRno = 0;
+    mHugebleTimer = 0.0f;
+    mHugebleTime = 150.0f;
+    mIsInstantDeath = false;
+    if (mpModel == nullptr) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getGameBuffResource(), static_cast<u32>(101), static_cast<MtObject*>(this->mpModel));
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getGameBuffResource(), static_cast<u32>(103), static_cast<MtObject*>(this->mpModel));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getGameBuffResource(), 101u, static_cast<MtObject*>(mpModel));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getGameBuffResource(), 103u, static_cast<MtObject*>(mpModel));
 }
 
 // No out-of-line body: no code in the ELF
@@ -199,40 +199,40 @@ __attribute__((weak)) void cpHugeble::setHugebleDeathEff(const MtVector3& pos) {
 // Address: 0x0048b960 - 0x0048b975 (21 bytes)
 void cpHugeble::syncHugebleDeathEff() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel->mpEffectStatusManager == static_cast<cpEffectStatusManager*>(nullptr)) {
+    if (mpModel->mpEffectStatusManager == nullptr) {
         return;
     }
-    this->mpModel->mpEffectStatusManager->mSyncFlag = this->mpModel->mpEffectStatusManager->mSyncFlag | static_cast<u64>(2);
+    mpModel->mpEffectStatusManager->mSyncFlag = mpModel->mpEffectStatusManager->mSyncFlag | 2ul;
 }
 
 // Address: 0x0048b980 - 0x0048b9a2 (34 bytes)
 void cpHugeble::endHugebleDeathEff() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getGameBuffResource(), static_cast<u32>(103), static_cast<MtObject*>(this->mpModel));
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getGameBuffResource(), 103u, static_cast<MtObject*>(mpModel));
 }
 
 // Address: 0x0048af80 - 0x0048af84 (4 bytes)
 bool cpHugeble::isInstantDeath() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsInstantDeath;
+    return mIsInstantDeath;
 }
 
 // Address: 0x0048b9b0 - 0x0048b9b4 (4 bytes)
 bool cpHugeble::isSafePos() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsSafePos;
+    return mIsSafePos;
 }
 
 // Address: 0x0048b9c0 - 0x0048b9c8 (8 bytes)
 bool cpHugeble::isHugeble() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHugebleRno != static_cast<u32>(0);
+    return mHugebleRno != 0;
 }
 
 // Address: 0x0048b9d0 - 0x0048b9d8 (8 bytes)
 bool cpHugeble::isHugebleFixed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHugebleRno > static_cast<u32>(2);
+    return mHugebleRno > 2u;
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (49 bytes)
@@ -255,7 +255,7 @@ bool cpHugeble::isHugebleFixed() const {
 // Address: 0x0048b9e0 - 0x0048ba11 (49 bytes)
 void cpHugeble::resetHugebleOldPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHugebleOldPos = pos;
+    mHugebleOldPos = pos;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (24 bytes)
@@ -270,6 +270,8 @@ void cpHugeble::resetHugebleOldPos(const MtVector3& pos) {
 //   in cpHugeble::moveHugeble at 0x0048a514-0x0048a51e, 0x0048a52b-0x0048a537 (called at cpHugeble.cpp:345)
 //   in cpHugeble::moveHugeble at 0x0048a89a-0x0048a8a4, 0x0048a8af-0x0048a8bb (called at cpHugeble.cpp:442)
 // void cpHugeble::hitInstantDeath(bool isFall, bool isWall);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpHugeble::MyDTI cpHugeble::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpHugeble.cpp at 0x0048bb1f-0x0048bb5c (called at cpHugeble.cpp:38)

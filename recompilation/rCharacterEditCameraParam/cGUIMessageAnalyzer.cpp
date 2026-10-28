@@ -46,7 +46,7 @@ const MtDTI& cGUIMessageAnalyzer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cGUIMessageAnalyzerD0Ev at 0x0107a3b6-0x0107a3d5, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cGUIMessageAnalyzer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIMessageAnalyzer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIMessageAnalyzer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,12 +74,12 @@ cGUIMessageAnalyzer::cGUIMessageAnalyzer(cGUIObjMessage* pObject, s32 pageIndex)
 // Also emitted as: _ZN19cGUIMessageAnalyzerD0Ev at 0x0107a340
 cGUIMessageAnalyzer::~cGUIMessageAnalyzer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpFontStack);
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpSizeStack);
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpColorStack);
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpRGBStack);
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpSpeedStack);
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpMTagTemp);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpFontStack);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpSizeStack);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpColorStack);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpRGBStack);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpSpeedStack);
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpMTagTemp);
 }
 
 // Address: 0x0107a3e0 - 0x0107a431 (81 bytes)
@@ -91,9 +91,9 @@ __attribute__((weak)) nGUI::MTAG* cGUIMessageAnalyzer::analyze(MT_CTSTR pMessage
 // Address: 0x0107ad30 - 0x0107ad60 (48 bytes)
 void cGUIMessageAnalyzer::recalcFontSize(nGUI::MTAG* pMTagTop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sGUI::mpInstance)->::sGUI::freeMTAGList(this->mpMTagTop);
-    this->mpMTagTop = pMTagTop;
-    this->::cGUIMessageAnalyzer::calculate();
+    (sGUI::mpInstance)->sGUI::freeMTAGList(mpMTagTop);
+    mpMTagTop = pMTagTop;
+    calculate();
 }
 
 // Address: 0x0107a440 - 0x0107ac44 (2052 bytes)
@@ -330,7 +330,7 @@ __attribute__((weak)) MtSizeF cGUIMessageAnalyzer::getCharSize(nGUI::MTAG* pMTag
 // Address: 0x01b72560 - 0x01b7258d (45 bytes)
 void* cGUIMessageAnalyzer::memAlloc(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cGUIMessageAnalyzer::DTI)->memAlloc(size, static_cast<u32>(16));
+    return MtMemoryAllocator::getAllocator(cGUIMessageAnalyzer::DTI)->memAlloc(size, 16u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -686,6 +686,8 @@ __attribute__((weak)) void cGUIMessageAnalyzer::analyzeTagGender(MT_CTSTR pParam
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 cGUIMessageAnalyzer::getSpeed();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIMessageAnalyzer::MyDTI cGUIMessageAnalyzer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIMessageAnalyzer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

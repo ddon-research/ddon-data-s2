@@ -17,12 +17,15 @@ class cSetInfoOmGather;
 class cSetInfoOmLever;
 class cSetInfoOmRange;
 class cSetInfoOmTreasureBox;
+class cShopGoods;
 class cStorageDataEdit;
 namespace nCollision { class cObjectBase; }
 namespace nZone { class ShapeInfoBase; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cLayoutElement; }
+class rItemList;
+class rMsgSet;
 class sInputManager;
 
 // Declarations
@@ -64,6 +67,8 @@ class MtDataWriter
     friend class cSetInfoOmRange;
     // inferred: cSetInfoOmTreasureBox::save names MtDataWriter::mSeekPt
     friend class cSetInfoOmTreasureBox;
+    // inferred: cShopGoods::rDate::save names MtDataWriter::mSeekPt, through its enclosing class cShopGoods
+    friend class cShopGoods;
     // inferred: cStorageDataEdit::save names MtDataWriter::mSeekPt
     friend class cStorageDataEdit;
     // inferred: nCollision::cObjectBase::save names MtDataWriter::mSeekPt
@@ -76,6 +81,10 @@ class MtDataWriter
     friend class nZone::ShapeInfoPanel;
     // inferred: nZone::cLayoutElement::saveBinary names MtDataWriter::mSeekPt
     friend class nZone::cLayoutElement;
+    // inferred: rItemList::rProtectorParam::save names MtDataWriter::mSeekPt, through its enclosing class rItemList
+    friend class rItemList;
+    // inferred: rMsgSet::cMsgData::save names MtDataWriter::mSeekPt, through its enclosing class rMsgSet
+    friend class rMsgSet;
     // inferred: sInputManager::writeData names MtDataWriter::mSeekPt
     friend class sInputManager;
 public:

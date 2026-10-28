@@ -81,6 +81,8 @@ public:
 public:
     class Resource : public MtObject
     {
+        // inferred: sShadow::Parameter::getShadowMapSize names sShadow::Resource::mShadowMapSize, through its enclosing class sShadow
+        friend class sShadow;
     public:
         class MyDTI;
     public:
@@ -130,6 +132,8 @@ public:
 public:
     class ViewConsistentResource : public MtObject
     {
+        // inferred: sShadow::Parameter::getDepthMapCache names sShadow::ViewConsistentResource::mDepthMapCache, through its enclosing class sShadow
+        friend class sShadow;
     public:
         class MyDTI;
     public:
@@ -207,6 +211,8 @@ public:
 public:
     class Node : public MtObject
     {
+        // inferred: sShadow::Parameter::getDepthMapCache names sShadow::Node::mpVCResource, through its enclosing class sShadow
+        friend class sShadow;
     public:
         class MyDTI;
     public:

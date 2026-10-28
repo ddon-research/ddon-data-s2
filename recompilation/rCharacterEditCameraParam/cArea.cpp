@@ -102,11 +102,11 @@ __attribute__((weak)) bool cArea::load() {
 // Address: 0x00e4ff40 - 0x00e4ff66 (38 bytes)
 void cArea::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShaderArchive == static_cast<rArchive*>(nullptr)) {
+    if (mpShaderArchive == nullptr) {
         return;
     }
-    this->mpShaderArchive->::cResource::release();
-    this->mpShaderArchive = static_cast<rArchive*>(nullptr);
+    mpShaderArchive->release();
+    mpShaderArchive = nullptr;
 }
 
 // Address: 0x0194fcf0 - 0x0194fcf8 (8 bytes)
@@ -118,7 +118,7 @@ const MtDTI& cArea::getParentType() {
 // Address: 0x0194d990 - 0x0194d9a0 (16 bytes)
 MT_CTSTR cArea::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI().::MtDTI::getName();
+    return getDTI().getName();
 }
 
 // Address: 0x00e4ff70 - 0x00e50111 (417 bytes)
@@ -154,8 +154,12 @@ __attribute__((weak)) void cArea::createProperty(MtPropertyList& s) {
 // Address: 0x00e50230 - 0x00e50235 (5 bytes)
 MtUI* cArea::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cArea::MyDTI cArea::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): MtAllocator* cArea::mpAllocator;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

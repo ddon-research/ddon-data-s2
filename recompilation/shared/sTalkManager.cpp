@@ -46,7 +46,7 @@ const MtDTI& sTalkManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sTalkManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sTalkManager::DTI);
+    return MtMemoryAllocator::getAllocator(sTalkManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline MtAllocator* sTalkManager::getAllocator() {
 // Address: 0x0085abd0 - 0x0085ac10 (64 bytes)
 void* sTalkManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sTalkManager::getAllocator()->memAlloc(sz, align, ::sTalkManager::DTI.::MtDTI::getID());
+    return sTalkManager::getAllocator()->memAlloc(sz, align, sTalkManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,7 +70,7 @@ void* sTalkManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sTalkManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sTalkManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sTalkManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,49 +86,49 @@ inline void sTalkManager::operator delete(void* p_addr) {
 void sTalkManager::setNpcWindowText(cTalkMsgData& MsgData) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (MsgData.::cTalkMsgData::getDispPageNum() != static_cast<u32>(0)) {
+    if (MsgData.getDispPageNum() != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (MsgData.::cTalkMsgData::getMessage() != static_cast<MT_CTSTR>(nullptr)) {
+        for (unsigned int i0_3 = 0;;) {
+            if (MsgData.getMessage() != nullptr) {
                 // inferred: a temporary for the value the load at 0x85acbd read, used once; no DWARF local holds it
-                sGUI* t0 = ::sGUI::getInstance();
-                static_cast<sGUIExt*>(t0)->::sGUIExt::addNpcWindowText(MsgData.::cTalkMsgData::getMessage());
-                if (MsgData.::cTalkMsgData::getDispMsgType() != static_cast<u32>(0)) {
-                    if (MsgData.::cTalkMsgData::getDispMsgType() == static_cast<u32>(1)) {
+                sGUI* t0 = sGUI::getInstance();
+                static_cast<sGUIExt*>(t0)->addNpcWindowText(MsgData.getMessage());
+                if (MsgData.getDispMsgType() != 0) {
+                    if (MsgData.getDispMsgType() == 1) {
                         break;
                     }
                 }
-                MsgData.::cTalkMsgData::addDispPageNo();
-                if ((i0_3 + static_cast<unsigned int>(1)) < MsgData.::cTalkMsgData::getDispPageNum()) {
-                    i0_3 += static_cast<unsigned int>(1);
+                MsgData.addDispPageNo();
+                if ((i0_3 + 1u) < MsgData.getDispPageNum()) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if (MsgData.::cTalkMsgData::getDispMsgType() != static_cast<u32>(0)) {
-                    if (MsgData.::cTalkMsgData::getDispMsgType() == static_cast<u32>(1)) {
+                if (MsgData.getDispMsgType() != 0) {
+                    if (MsgData.getDispMsgType() == 1) {
                         break;
                     }
                 }
-                MsgData.::cTalkMsgData::addDispPageNo();
-                if ((i0_3 + static_cast<unsigned int>(1)) < MsgData.::cTalkMsgData::getDispPageNum()) {
-                    i0_3 += static_cast<unsigned int>(1);
+                MsgData.addDispPageNo();
+                if ((i0_3 + 1u) < MsgData.getDispPageNum()) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    this->mDispPageIdx = static_cast<s32>(-1);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setNpcWindowTimer(-1.0f);
+    mDispPageIdx = -1;
+    static_cast<sGUIExt*>(sGUI::getInstance())->setNpcWindowTimer(-1.0f);
 }
 
 // Address: 0x0085ad50 - 0x0085ad71 (33 bytes)
 MT_CTSTR sTalkManager::getTalkItemName(u32 Type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkSelectItemName != static_cast<rGUIMessage*>(nullptr)) {
-        if (Type < this->mpTalkSelectItemName->mMessageNum) {
-            return this->mpTalkSelectItemName->::rGUIMessage::getMessage(Type);
+    if (mpTalkSelectItemName != nullptr) {
+        if (Type < mpTalkSelectItemName->mMessageNum) {
+            return mpTalkSelectItemName->getMessage(Type);
         }
     }
     return "";
@@ -137,8 +137,8 @@ MT_CTSTR sTalkManager::getTalkItemName(u32 Type) {
 // Address: 0x0085ad80 - 0x0085ad8f (15 bytes)
 void sTalkManager::notifyTalkStart(uDDOModel* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTalkTarget = pUnit;
-    this->mRno0 = static_cast<u8>(1);
+    mpTalkTarget = pUnit;
+    mRno0 = 1;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (52 bytes)
@@ -175,15 +175,15 @@ __attribute__((weak)) void sTalkManager::updateDispPage() {
 // Address: 0x0085b520 - 0x0085b546 (38 bytes)
 uGUIBase* sTalkManager::createGUISingleton(const MtDTI* pDTI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpGUISingletonMenu = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::newSingletonMenu(pDTI);
-    return this->mpGUISingletonMenu;
+    mpGUISingletonMenu = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(pDTI);
+    return mpGUISingletonMenu;
 }
 
 // Address: 0x0085b550 - 0x0085b57b (43 bytes)
 uGUIBase* sTalkManager::setGUISingleton(uGUIBase* pGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setSingletonMenu(pGUI);
-    this->mpGUISingletonMenu = pGUI;
+    static_cast<sGUIExt*>(sGUI::getInstance())->setSingletonMenu(pGUI);
+    mpGUISingletonMenu = pGUI;
     return pGUI;
 }
 
@@ -191,19 +191,19 @@ uGUIBase* sTalkManager::setGUISingleton(uGUIBase* pGUI) {
 void sTalkManager::deleteGUISingleton() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
-    if (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpGUISingletonMenu == static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
+    if (mpGUISingletonMenu != nullptr) {
+        if (mpGUISingletonMenu == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
         }
     }
-    this->mpGUISingletonMenu = static_cast<uGUIBase*>(nullptr);
+    mpGUISingletonMenu = nullptr;
 }
 
 // Address: 0x0085b5c0 - 0x0085b5e4 (36 bytes)
 bool sTalkManager::isMoveGUISingleton() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
-    return (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) && (this->mpGUISingletonMenu == static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu);
+    return (mpGUISingletonMenu != nullptr) && (mpGUISingletonMenu == static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,11 +213,11 @@ bool sTalkManager::isMoveGUISingleton() {
 bool sTalkManager::isEndGUISingleton() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
-    if (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpGUISingletonMenu != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
+    if (mpGUISingletonMenu != nullptr) {
+        if (mpGUISingletonMenu != static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
             return true;
         } else {
-            return this->mpGUISingletonMenu->mResult == static_cast<uGUIBase::GUI_RESULT>(1);
+            return mpGUISingletonMenu->mResult == uGUIBase::RESULT_EXIT;
         }
     } else {
         return true;
@@ -244,18 +244,18 @@ uControl* sTalkManager::getNpcCtrl() const {
     // DWARF local not rendered: const uDDOModel* pModel;
     // DWARF local not rendered: uControl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkTarget != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpTalkTarget->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-            if (this->mpTalkTarget->::uDDOModel::getCtrl()->::uControl::isNpc() == false) {
-                return static_cast<uControl*>(nullptr);
+    if (mpTalkTarget != nullptr) {
+        if (mpTalkTarget->getCtrl() != nullptr) {
+            if (!mpTalkTarget->getCtrl()->isNpc()) {
+                return nullptr;
             } else {
-                return this->mpTalkTarget->::uDDOModel::getCtrl();
+                return mpTalkTarget->getCtrl();
             }
         } else {
-            return static_cast<uControl*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<uControl*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -263,27 +263,27 @@ uControl* sTalkManager::getNpcCtrl() const {
 s32 sTalkManager::getNpcId() const {
     // DWARF local not rendered: cpTalk* pTalkCp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkTarget != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpTalkTarget->mpTalk != static_cast<cpTalk*>(nullptr)) {
-            return this->mpTalkTarget->mpTalk->::cpTalk::getNpcId();
+    if (mpTalkTarget != nullptr) {
+        if (mpTalkTarget->mpTalk != nullptr) {
+            return mpTalkTarget->mpTalk->getNpcId();
         }
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x0085b720 - 0x0085b728 (8 bytes)
 uDDOModel* sTalkManager::getTalkTarget() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpTalkTarget;
+    return mpTalkTarget;
 }
 
 // Address: 0x0085b290 - 0x0085b2a6 (22 bytes)
 cpTalk* sTalkManager::getTalkComponent() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkTarget != static_cast<uDDOModel*>(nullptr)) {
-        return this->mpTalkTarget->mpTalk;
+    if (mpTalkTarget != nullptr) {
+        return mpTalkTarget->mpTalk;
     } else {
-        return static_cast<cpTalk*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -293,30 +293,30 @@ u32 sTalkManager::getNpcSex() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uNpc::MyDTI*
     // inferred: the value the loop at 0x85b77a carries; no location-less local in scope fits
-    uDDOModel* v0_3 = this->mpTalkTarget;
+    uDDOModel* v0_3 = mpTalkTarget;
     // inferred: the value carried to 0x85b792; no location-less local in scope fits
     u32 v2_8;
-    if (v0_3 == static_cast<uDDOModel*>(nullptr)) {
-        v2_8 = static_cast<u32>(0);
+    if (v0_3 == nullptr) {
+        v2_8 = 0;
     } else {
         // inferred: a temporary for the result of the call at 0x85b76c, used once; no DWARF local holds it
         const MtDTI& t0 = v0_3->getDTI();
         // inferred: the value the loop at 0x85b77a carries; no location-less local in scope fits
-        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uNpc::DTI) + static_cast<long>(8));
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uNpc::DTI) + 8);
         // inferred: the value the loop at 0x85b77a carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
                 } else {
                     break;
                 }
             } else {
-                v2_8 = static_cast<uHuman*>(v0_3)->::uHuman::getSex();
+                v2_8 = static_cast<uHuman*>(v0_3)->getSex();
                 return v2_8;
             }
         }
-        v2_8 = static_cast<u32>(0);
+        v2_8 = 0;
     }
     return v2_8;
 }
@@ -330,10 +330,10 @@ __attribute__((weak)) u32 sTalkManager::getStatus() const {
 // Address: 0x0085b7e0 - 0x0085b7fe (30 bytes)
 bool sTalkManager::isWait() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTalkType != static_cast<u32>(0)) {
+    if (mTalkType != 0) {
         return true;
     } else {
-        return static_cast<unsigned char>(this->::sTalkManager::getRno() + static_cast<int>(255)) > static_cast<unsigned char>(3);
+        return static_cast<unsigned char>(getRno() + 255) > 3;
     }
 }
 
@@ -358,8 +358,8 @@ __attribute__((weak)) bool sTalkManager::isQuestTalkExited(nQuest::SCHEDULE_ID s
 // Address: 0x0085b900 - 0x0085b92e (46 bytes)
 bool sTalkManager::isFuncTalkNow(u32 funcId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkState != static_cast<cTalkState*>(nullptr)) {
-        return funcId == ::nTalk::talkState2FuncId(this->mpTalkState->getState());
+    if (mpTalkState != nullptr) {
+        return funcId == nTalk::talkState2FuncId(mpTalkState->getState());
     } else {
         return false;
     }
@@ -375,10 +375,10 @@ bool sTalkManager::isFuncTalkNow(u32 funcId) const {
 // Address: 0x0085b930 - 0x0085b94b (27 bytes)
 u8 sTalkManager::getInnRno0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkState != static_cast<cTalkState*>(nullptr)) {
-        return this->mpTalkState->::cTalkState::getRno0();
+    if (mpTalkState != nullptr) {
+        return mpTalkState->getRno0();
     } else {
-        return static_cast<u8>(0);
+        return 0;
     }
 }
 
@@ -404,13 +404,13 @@ __attribute__((weak)) void sTalkManager::forceInterrupt() {
 // Address: 0x0085b980 - 0x0085b9dc (92 bytes)
 void sTalkManager::killAllNpcMessage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::finishNpcWindow();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteTelop();
-    if (this->mpTalkTarget == static_cast<uDDOModel*>(nullptr)) {
+    static_cast<sGUIExt*>(sGUI::getInstance())->finishNpcWindow();
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteTelop();
+    if (mpTalkTarget == nullptr) {
         return;
     }
-    this->mpTalkTarget->requestReleaseTouch(static_cast<uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(1));
-    this->mpTalkTarget = static_cast<uDDOModel*>(nullptr);
+    mpTalkTarget->requestReleaseTouch(static_cast<uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), nDDOModel::TOUCH_RELEASE_FINISH);
+    mpTalkTarget = nullptr;
 }
 
 // Address: 0x0085b9e0 - 0x0085bacc (236 bytes)
@@ -429,34 +429,34 @@ __attribute__((weak)) void sTalkManager::callQuestEventMsg(u32 msgType, u32 ques
 // Address: 0x0085bcb0 - 0x0085bd2c (124 bytes)
 void sTalkManager::stopQuestEventMsg() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mTellQueue.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mTellQueue.mLength != 0) {
         // inferred: the value the loop at 0x85bcd0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTellQueue.::MtArray::mLength;
+        u32 v0_0 = mTellQueue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTellQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTellQueue.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTellQueue.::MtArray::mLength) {
-                    v0_0 = this->mTellQueue.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTellQueue.mpArray[i0_3] != nullptr) {
+                delete mTellQueue.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTellQueue.mLength) {
+                    v0_0 = mTellQueue.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTellQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTellQueue.::MtArray::mpArray));
+    if (mTellQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTellQueue.mpArray));
     }
-    this->mTellQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTellQueue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTellQueue.::MtArray::mLength = static_cast<u32>(0);
+    mTellQueue.mpArray = nullptr;
+    mTellQueue.mBufsiz = 0;
+    mTellQueue.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -465,8 +465,8 @@ void sTalkManager::stopQuestEventMsg() {
 // Address: 0x0085bd40 - 0x0085bd5f (31 bytes)
 bool sTalkManager::isNormalTalk() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkState != static_cast<cTalkState*>(nullptr)) {
-        return this->mpTalkState->getState() == static_cast<nTalk::TALK_STATE>(3);
+    if (mpTalkState != nullptr) {
+        return mpTalkState->getState() == nTalk::TALK_STATE_BASE;
     } else {
         return false;
     }
@@ -475,7 +475,7 @@ bool sTalkManager::isNormalTalk() const {
 // Address: 0x0085bd60 - 0x0085bd68 (8 bytes)
 void sTalkManager::setSendEventMsg(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSendEventMsg = flag;
+    mSendEventMsg = flag;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -621,54 +621,54 @@ __attribute__((weak)) void sTalkManager::requestMessageFromGroupType(u32 group_t
 // Address: 0x0085cb00 - 0x0085cb33 (51 bytes)
 void sTalkManager::stopVoice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mVoiceStreamHandle == static_cast<u32>(0)) {
+    if (mVoiceStreamHandle == 0) {
         return;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::releaseRequestVoice(this->mVoiceStreamHandle);
-    this->mVoiceStreamHandle = static_cast<u32>(0);
+    static_cast<sSoundExt*>(sSound::getInstance())->releaseRequestVoice(mVoiceStreamHandle);
+    mVoiceStreamHandle = 0;
 }
 
 // Address: 0x0085cb40 - 0x0085cbd8 (152 bytes)
 void sTalkManager::loadCommonResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkSelectItemName != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpTalkSelectItemName->::cResource::release();
-        this->mpTalkSelectItemName = static_cast<rGUIMessage*>(nullptr);
+    if (mpTalkSelectItemName != nullptr) {
+        mpTalkSelectItemName->release();
+        mpTalkSelectItemName = nullptr;
     }
-    this->mpTalkSelectItemName = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_TALK_SELECT_NAME", static_cast<u32>(1), false));
-    if (this->mpFuncSelectItemName != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpFuncSelectItemName->::cResource::release();
-        this->mpFuncSelectItemName = static_cast<rGUIMessage*>(nullptr);
+    mpTalkSelectItemName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_TALK_SELECT_NAME", 1u, false));
+    if (mpFuncSelectItemName != nullptr) {
+        mpFuncSelectItemName->release();
+        mpFuncSelectItemName = nullptr;
     }
-    this->mpFuncSelectItemName = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_FUNC_SELECT_NAME", static_cast<u32>(1), false));
+    mpFuncSelectItemName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_FUNC_SELECT_NAME", 1u, false));
 }
 
 // Address: 0x0085cbe0 - 0x0085cc28 (72 bytes)
 void sTalkManager::releaseCommonResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFuncSelectItemName != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpFuncSelectItemName->::cResource::release();
-        this->mpFuncSelectItemName = static_cast<rGUIMessage*>(nullptr);
+    if (mpFuncSelectItemName != nullptr) {
+        mpFuncSelectItemName->release();
+        mpFuncSelectItemName = nullptr;
     }
-    if (this->mpTalkSelectItemName == static_cast<rGUIMessage*>(nullptr)) {
+    if (mpTalkSelectItemName == nullptr) {
         return;
     }
-    this->mpTalkSelectItemName->::cResource::release();
-    this->mpTalkSelectItemName = static_cast<rGUIMessage*>(nullptr);
+    mpTalkSelectItemName->release();
+    mpTalkSelectItemName = nullptr;
 }
 
 // Address: 0x0085cc30 - 0x0085cc66 (54 bytes)
 void sTalkManager::releaseTalkState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTalkState == static_cast<cTalkState*>(nullptr)) {
+    if (mpTalkState == nullptr) {
         return;
     }
-    this->mpTalkState->finalize();
-    if (this->mpTalkState == static_cast<cTalkState*>(nullptr)) {
+    mpTalkState->finalize();
+    if (mpTalkState == nullptr) {
         return;
     }
-    delete this->mpTalkState;
-    this->mpTalkState = static_cast<cTalkState*>(nullptr);
+    delete mpTalkState;
+    mpTalkState = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (87 bytes)
@@ -679,8 +679,8 @@ void sTalkManager::releaseTalkState() {
 bool sTalkManager::isEndTellMsg() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mTellRno != static_cast<u8>(0)) {
-        if (this->mTellRno != static_cast<u8>(3)) {
+    if (mTellRno != 0) {
+        if (mTellRno != 3) {
             return false;
         }
     }
@@ -722,37 +722,37 @@ __attribute__((weak)) void sTalkManager::moveTellMsg_End() {
 // Address: 0x0085d310 - 0x0085d326 (22 bytes)
 const nTalk::cSelectData* sTalkManager::getSelectData(s32 index) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (index < static_cast<int>(this->mSelectData.::MtArray::mLength)) {
-        if (index > static_cast<s32>(-1)) {
-            return static_cast<const nTalk::cSelectData*>(this->mSelectData.::MtArray::mpArray[static_cast<unsigned int>(index)]);
+    if (index < static_cast<int>(mSelectData.mLength)) {
+        if (index > -1) {
+            return static_cast<const nTalk::cSelectData*>(mSelectData.mpArray[static_cast<unsigned int>(index)]);
         }
     }
-    return static_cast<const nTalk::cSelectData*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x0085d330 - 0x0085d346 (22 bytes)
 const nTalk::cSelectMember* sTalkManager::getSelectMember(s32 index) const {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (index < static_cast<int>(this->mSelectMember.::MtArray::mLength)) {
-        if (index > static_cast<s32>(-1)) {
-            return static_cast<const nTalk::cSelectMember*>(this->mSelectMember.::MtArray::mpArray[static_cast<unsigned int>(index)]);
+    if (index < static_cast<int>(mSelectMember.mLength)) {
+        if (index > -1) {
+            return static_cast<const nTalk::cSelectMember*>(mSelectMember.mpArray[static_cast<unsigned int>(index)]);
         }
     }
-    return static_cast<const nTalk::cSelectMember*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x0085d350 - 0x0085d354 (4 bytes)
 u32 sTalkManager::getSelectMemberNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSelectMember.::MtArray::mLength;
+    return mSelectMember.mLength;
 }
 
 // Address: 0x0085d360 - 0x0085d385 (37 bytes)
 MT_CTSTR sTalkManager::getFuncName(MT_CTSTR indexName) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x85d366 read, used twice; no DWARF local holds it
-    rGUIMessage* t0 = this->mpFuncSelectItemName;
-    return t0->::rGUIMessage::getMessage(t0->::rGUIMessage::getIndexFromName(indexName));
+    rGUIMessage* t0 = mpFuncSelectItemName;
+    return t0->getMessage(t0->getIndexFromName(indexName));
 }
 
 // Address: 0x0085b330 - 0x0085b41e (238 bytes)
@@ -772,67 +772,67 @@ __attribute__((weak)) void sTalkManager::addSelectMember(u32 slot, CHAR_NAME nam
 // Address: 0x0085b2b0 - 0x0085b32c (124 bytes)
 void sTalkManager::clearSelectData() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mSelectData.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSelectData.mLength != 0) {
         // inferred: the value the loop at 0x85b2d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSelectData.::MtArray::mLength;
+        u32 v0_0 = mSelectData.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSelectData.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSelectData.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSelectData.::MtArray::mLength) {
-                    v0_0 = this->mSelectData.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSelectData.mpArray[i0_3] != nullptr) {
+                delete mSelectData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSelectData.mLength) {
+                    v0_0 = mSelectData.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSelectData.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSelectData.::MtArray::mpArray));
+    if (mSelectData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectData.mpArray));
     }
-    this->mSelectData.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSelectData.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSelectData.::MtArray::mLength = static_cast<u32>(0);
+    mSelectData.mpArray = nullptr;
+    mSelectData.mBufsiz = 0;
+    mSelectData.mLength = 0;
 }
 
 // Address: 0x0085c880 - 0x0085c8fc (124 bytes)
 void sTalkManager::clearSelectMember() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mSelectMember.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSelectMember.mLength != 0) {
         // inferred: the value the loop at 0x85c8a0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSelectMember.::MtArray::mLength;
+        u32 v0_0 = mSelectMember.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSelectMember.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSelectMember.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSelectMember.::MtArray::mLength) {
-                    v0_0 = this->mSelectMember.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSelectMember.mpArray[i0_3] != nullptr) {
+                delete mSelectMember.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSelectMember.mLength) {
+                    v0_0 = mSelectMember.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSelectMember.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSelectMember.::MtArray::mpArray));
+    if (mSelectMember.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectMember.mpArray));
     }
-    this->mSelectMember.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSelectMember.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSelectMember.::MtArray::mLength = static_cast<u32>(0);
+    mSelectMember.mpArray = nullptr;
+    mSelectMember.mBufsiz = 0;
+    mSelectMember.mLength = 0;
 }
 
 // Address: 0x0085d970 - 0x0085da9f (303 bytes)
@@ -859,183 +859,183 @@ sTalkManager::sTalkManager() {
 // Also emitted as: _ZN12sTalkManagerD0Ev at 0x0085d7d0
 sTalkManager::~sTalkManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    ::sTalkManager::mpInstance = static_cast<sTalkManager*>(nullptr);
-    if (this->mpTalkState != static_cast<cTalkState*>(nullptr)) {
-        delete this->mpTalkState;
-        this->mpTalkState = static_cast<cTalkState*>(nullptr);
+    sTalkManager::mpInstance = nullptr;
+    if (mpTalkState != nullptr) {
+        delete mpTalkState;
+        mpTalkState = nullptr;
     }
-    if (this->mSelectData.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSelectData.mLength != 0) {
         // inferred: the value the loop at 0x85d650 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSelectData.::MtArray::mLength;
+        u32 v0_0 = mSelectData.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSelectData.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSelectData.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSelectData.::MtArray::mLength) {
-                    v0_0 = this->mSelectData.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSelectData.mpArray[i0_3] != nullptr) {
+                delete mSelectData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSelectData.mLength) {
+                    v0_0 = mSelectData.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSelectData.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSelectData.::MtArray::mpArray));
+    if (mSelectData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectData.mpArray));
     }
-    this->mSelectData.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSelectData.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSelectData.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mSelectMember.::MtArray::mLength != static_cast<u32>(0)) {
+    mSelectData.mpArray = nullptr;
+    mSelectData.mBufsiz = 0;
+    mSelectData.mLength = 0;
+    if (mSelectMember.mLength != 0) {
         // inferred: the value the loop at 0x85d6c0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mSelectMember.::MtArray::mLength;
+        u32 v2_0 = mSelectMember.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSelectMember.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSelectMember.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mSelectMember.::MtArray::mLength) {
-                    v2_0 = this->mSelectMember.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mSelectMember.mpArray[i2_3] != nullptr) {
+                delete mSelectMember.mpArray[i2_3];
+                if ((i2_3 + 1u) < mSelectMember.mLength) {
+                    v2_0 = mSelectMember.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSelectMember.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSelectMember.::MtArray::mpArray));
+    if (mSelectMember.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSelectMember.mpArray));
     }
-    this->mSelectMember.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSelectMember.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSelectMember.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mTellQueue.::MtArray::mLength != static_cast<u32>(0)) {
+    mSelectMember.mpArray = nullptr;
+    mSelectMember.mBufsiz = 0;
+    mSelectMember.mLength = 0;
+    if (mTellQueue.mLength != 0) {
         // inferred: the value the loop at 0x85d730 carries; no location-less local in scope fits
-        u32 v4_0 = this->mTellQueue.::MtArray::mLength;
+        u32 v4_0 = mTellQueue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTellQueue.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTellQueue.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mTellQueue.::MtArray::mLength) {
-                    v4_0 = this->mTellQueue.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mTellQueue.mpArray[i4_3] != nullptr) {
+                delete mTellQueue.mpArray[i4_3];
+                if ((i4_3 + 1u) < mTellQueue.mLength) {
+                    v4_0 = mTellQueue.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTellQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTellQueue.::MtArray::mpArray));
+    if (mTellQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTellQueue.mpArray));
     }
-    this->mTellQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTellQueue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTellQueue.::MtArray::mLength = static_cast<u32>(0);
+    mTellQueue.mpArray = nullptr;
+    mTellQueue.mBufsiz = 0;
+    mTellQueue.mLength = 0;
 }
 
 // Address: 0x0085d800 - 0x0085d805 (5 bytes)
 void sTalkManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x0085d810 - 0x0085d815 (5 bytes)
 MtUI* sTalkManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0085d820 - 0x0085d8d7 (183 bytes)
 void sTalkManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISingletonMenu == static_cast<uGUIBase*>(nullptr)) {
-    } else {
-        if (this->mpGUISingletonMenu->::cUnit::isEnable()) {
-        } else {
-            this->mpGUISingletonMenu = static_cast<uGUIBase*>(nullptr);
+    if (mpGUISingletonMenu != nullptr) {
+        if (!mpGUISingletonMenu->isEnable()) {
+            mpGUISingletonMenu = nullptr;
         }
     }
-    if (this->mpTalkTarget == static_cast<uDDOModel*>(nullptr)) {
-    } else {
-        if (this->mpTalkTarget->::cUnit::isEnable()) {
-        } else {
-            this->mpTalkTarget = static_cast<uDDOModel*>(nullptr);
+    if (mpTalkTarget != nullptr) {
+        if (!mpTalkTarget->isEnable()) {
+            mpTalkTarget = nullptr;
         }
     }
-    if (this->mpTalkState == static_cast<cTalkState*>(nullptr)) {
-    } else {
-        this->mpTalkState->updateUnitPtr();
+    if (mpTalkState != nullptr) {
+        mpTalkState->updateUnitPtr();
     }
-    if (this->mTalkType == static_cast<u32>(1)) {
-        this->::sTalkManager::moveFSMEventMsg();
+    if (mTalkType == 1) {
+        moveFSMEventMsg();
     } else {
-        if (this->mTellRno != static_cast<u8>(3)) {
-            if (this->mTellRno == static_cast<u8>(2)) {
-                this->::sTalkManager::moveTellMsg_Move();
+        if (mTellRno != 3) {
+            if (mTellRno == 2) {
+                moveTellMsg_Move();
             } else {
-                if (this->mTellRno == static_cast<u8>(1)) {
-                    this->::sTalkManager::moveTellMsg_Init();
+                if (mTellRno == 1) {
+                    moveTellMsg_Init();
                 }
             }
         } else {
-            this->::sTalkManager::moveTellMsg_End();
+            moveTellMsg_End();
         }
-        this->::sTalkManager::moveNormalMsg();
+        moveNormalMsg();
     }
 }
 
 // Address: 0x0085d8e0 - 0x0085d96c (140 bytes)
 void sTalkManager::finalGame() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mIsChangeClanManager = false;
-    this->mTellRno = static_cast<u8>(0);
-    this->mTalkType = static_cast<u32>(0);
-    if (this->mTellQueue.::MtArray::mLength != static_cast<u32>(0)) {
+    mIsChangeClanManager = false;
+    mTellRno = 0;
+    mTalkType = 0;
+    if (mTellQueue.mLength != 0) {
         // inferred: the value the loop at 0x85d910 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTellQueue.::MtArray::mLength;
+        u32 v0_0 = mTellQueue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTellQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTellQueue.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTellQueue.::MtArray::mLength) {
-                    v0_0 = this->mTellQueue.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTellQueue.mpArray[i0_3] != nullptr) {
+                delete mTellQueue.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTellQueue.mLength) {
+                    v0_0 = mTellQueue.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTellQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTellQueue.::MtArray::mpArray));
+    if (mTellQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTellQueue.mpArray));
     }
-    this->mTellQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTellQueue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTellQueue.::MtArray::mLength = static_cast<u32>(0);
+    mTellQueue.mpArray = nullptr;
+    mTellQueue.mBufsiz = 0;
+    mTellQueue.mLength = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sTalkManager::MyDTI sTalkManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sTalkManager* sTalkManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sTalkManager.cpp at 0x0085dd0f-0x0085dd4c (called at sTalkManager.cpp:117)
@@ -1072,7 +1072,7 @@ const MtDTI& sTalkManager::cTellQueueNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sTalkManager::cTellQueueNode::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sTalkManager::cTellQueueNode::DTI)->memAlloc(sz, align, ::sTalkManager::cTellQueueNode::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sTalkManager::cTellQueueNode::DTI)->memAlloc(sz, align, sTalkManager::cTellQueueNode::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1087,7 +1087,7 @@ inline void* sTalkManager::cTellQueueNode::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sTalkManager::cTellQueueNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sTalkManager::cTellQueueNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sTalkManager::cTellQueueNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1138,6 +1138,8 @@ __attribute__((weak)) void sTalkManager::cTellQueueNode::createProperty(MtProper
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sTalkManager::cTellQueueNode::MyDTI sTalkManager::cTellQueueNode::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sTalkManager.cpp at 0x0085dd4c-0x0085dd89 (called at sTalkManager.cpp:2444)
 //   in _GLOBAL__sub_I_sTalkManager.cpp at 0x0085dd4c-0x0085dd89 (called at sTalkManager.cpp:66)
@@ -1146,7 +1148,7 @@ __attribute__((weak)) void sTalkManager::cTellQueueNode::createProperty(MtProper
 // Address: 0x0085daa0 - 0x0085daff (95 bytes)
 MtObject* sTalkManager::cTellQueueNode::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sTalkManager::cTellQueueNode;
+    return new (16u) sTalkManager::cTellQueueNode;
 }
 
 // Instance at 0x01acf8d0 - 0x01acf8d5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

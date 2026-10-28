@@ -6,6 +6,7 @@
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/rZone.h"
 #include "uSoundSequenceSe.h"
 #include "uSoundZoneBase.h"
 #ifndef DDON_STUB
@@ -35,7 +36,7 @@ const MtDTI& cSoundGeneratorListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSoundGeneratorListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundGeneratorListener::DTI)->memAlloc(sz, align, ::cSoundGeneratorListener::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundGeneratorListener::DTI)->memAlloc(sz, align, cSoundGeneratorListener::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +51,7 @@ inline void* cSoundGeneratorListener::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundGeneratorListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundGeneratorListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundGeneratorListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,6 +84,8 @@ __attribute__((weak)) void cSoundGeneratorListener::notified(const nZone::cLayou
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundGeneratorListener::MyDTI cSoundGeneratorListener::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d4035f-0x00d4039c (called at uSoundGenerator.cpp:2074)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d4035f-0x00d4039c (called at uSoundGenerator.h:458)
@@ -91,7 +94,7 @@ __attribute__((weak)) void cSoundGeneratorListener::notified(const nZone::cLayou
 // Address: 0x00d3fe90 - 0x00d3fede (78 bytes)
 MtObject* cSoundGeneratorListener::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSoundGeneratorListener;
+    return new (16u) cSoundGeneratorListener;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +111,7 @@ const MtDTI& uSoundGenerator::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSoundGenerator::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundGenerator::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundGenerator::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +120,7 @@ inline MtAllocator* uSoundGenerator::getAllocator() {
 // Address: 0x00d3dda0 - 0x00d3dde0 (64 bytes)
 void* uSoundGenerator::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSoundGenerator::getAllocator()->memAlloc(sz, align, ::uSoundGenerator::DTI.::MtDTI::getID());
+    return uSoundGenerator::getAllocator()->memAlloc(sz, align, uSoundGenerator::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +135,7 @@ void* uSoundGenerator::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundGenerator::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundGenerator::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,7 +164,7 @@ uSoundGenerator::~uSoundGenerator() {
 // Address: 0x00d3e2f0 - 0x00d3e2f5 (5 bytes)
 MtUI* uSoundGenerator::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::createUI(prop);
+    return this->uSoundZoneBase::createUI(prop);
 }
 
 // Address: 0x00d3df50 - 0x00d3e1c7 (631 bytes)
@@ -188,13 +191,13 @@ __attribute__((weak)) void uSoundGenerator::sync() {
 // Address: 0x01b254f0 - 0x01b254f8 (8 bytes)
 const MtDTI* uSoundGenerator::getGroupManagerDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &::uSoundGenerator::cGeneratorGroupManager::DTI;
+    return &uSoundGenerator::cGeneratorGroupManager::DTI;
 }
 
 // Address: 0x01b25500 - 0x01b25508 (8 bytes)
 cSoundZoneListener* uSoundGenerator::getZoneListener() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mZoneListener;
+    return &mZoneListener;
 }
 
 // Address: 0x01b25510 - 0x01b25534 (36 bytes)
@@ -206,7 +209,7 @@ __attribute__((weak)) MtVector3 uSoundGenerator::getZoneListenerPos() {
 // Address: 0x01b25540 - 0x01b25554 (20 bytes)
 void uSoundGenerator::setZoneListenerPos(const MtVector3& NewListenerPos) {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    (&this->mZoneListener)->setMyPos(NewListenerPos);
+    (&mZoneListener)->setMyPos(NewListenerPos);
 }
 
 // Address: 0x00d3e1d0 - 0x00d3e2ec (284 bytes)
@@ -401,6 +404,8 @@ __attribute__((weak)) void uSoundGenerator::calcLayoutPosDistMain(const nZone::c
 //   in uSoundGenerator::move at 0x00d3e319-0x00d3e34a (called at uSoundGenerator.cpp:1124)
 // void uSoundGenerator::setZoneListener();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundGenerator::MyDTI uSoundGenerator::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d402e5-0x00d40322 (called at uSoundGenerator.cpp:1052)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d402e5-0x00d40322 (called at uSoundGenerator.h:488)
@@ -435,7 +440,7 @@ const MtDTI& uSoundGenerator::cGeneratorGroupManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundGenerator::cGeneratorGroupManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::DTI)->memAlloc(sz, align, ::uSoundGenerator::cGeneratorGroupManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::DTI)->memAlloc(sz, align, uSoundGenerator::cGeneratorGroupManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -450,7 +455,7 @@ inline void* uSoundGenerator::cGeneratorGroupManager::operator new(size_t sz, u3
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundGenerator::cGeneratorGroupManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -476,7 +481,7 @@ uSoundGenerator::cGeneratorGroupManager::~cGeneratorGroupManager() {
 // Address: 0x00d3d7d0 - 0x00d3d7d5 (5 bytes)
 MtUI* uSoundGenerator::cGeneratorGroupManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::cGroupManager::createUI(prop);
+    return this->uSoundZoneBase::cGroupManager::createUI(prop);
 }
 
 // Address: 0x00d3d7e0 - 0x00d3d886 (166 bytes)
@@ -594,16 +599,33 @@ __attribute__((weak)) void uSoundGenerator::cGeneratorGroupManager::evRegisterRe
 }
 
 // Address: 0x00d3d890 - 0x00d3d8d7 (71 bytes)
-__attribute__((weak)) uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation* uSoundGenerator::cGeneratorGroupManager::getPlayInfomation(u32 index) {
-    DDON_STUB("uSoundGenerator::cGeneratorGroupManager::getPlayInfomation")
+uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation* uSoundGenerator::cGeneratorGroupManager::getPlayInfomation(u32 index) {
+    // Approximate from the ELF: an unsigned test against 0 the recompile folds to an equality test; the body oracle reports this body.
+    if (mpPlayInfomation != nullptr) {
+        if (mpResourceGroupManager->mGroupID == -1) {
+            if (index < mpResourceGroupManager->getGroupLayoutIndexNum()) {
+                return &mpPlayInfomation[index];
+            }
+        } else {
+            if (index <= 0u) {
+                return &mpPlayInfomation[index];
+            }
+        }
+    }
     return nullptr;
 }
 
 // Address: 0x00d3d8e0 - 0x00d3d8f5 (21 bytes)
-__attribute__((weak)) u32 uSoundGenerator::cGeneratorGroupManager::getPlayInfomationNum() const {
-    DDON_STUB("uSoundGenerator::cGeneratorGroupManager::getPlayInfomationNum")
-    return {};
+u32 uSoundGenerator::cGeneratorGroupManager::getPlayInfomationNum() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpResourceGroupManager->mGroupID != -1) {
+        return 1;
+    } else {
+        return mpResourceGroupManager->getGroupLayoutIndexNum();
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundGenerator::cGeneratorGroupManager::MyDTI uSoundGenerator::cGeneratorGroupManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d402a8-0x00d402e5 (called at uSoundGenerator.cpp:597)
@@ -613,7 +635,7 @@ __attribute__((weak)) u32 uSoundGenerator::cGeneratorGroupManager::getPlayInfoma
 // Address: 0x00d3d570 - 0x00d3d5c6 (86 bytes)
 MtObject* uSoundGenerator::cGeneratorGroupManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundGenerator::cGeneratorGroupManager;
+    return new (16u) uSoundGenerator::cGeneratorGroupManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -656,7 +678,7 @@ const MtDTI& uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::getD
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -680,21 +702,19 @@ inline void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::opera
 // Address: 0x00d3d1e0 - 0x00d3d20f (47 bytes)
 // Also emitted as: _ZN15uSoundGenerator22cGeneratorGroupManager20cSoundPlayInfomationD0Ev at 0x00d3d210
 uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::~cSoundPlayInfomation() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uSoundSequenceSe*
-    if (this->mpUSequenceSe == static_cast<uSoundSequenceSe*>(nullptr)) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpUSequenceSe == nullptr) {
         return;
     }
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpUSequenceSe) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(3)) <= static_cast<unsigned int>(1)) {
-    } else {
-        this->mpUSequenceSe->kill();
+    if ((mpUSequenceSe->mBeFlag - 3u) > 1u) {
+        mpUSequenceSe->kill();
     }
 }
 
 // Address: 0x00d3d270 - 0x00d3d275 (5 bytes)
 MtUI* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d3d280 - 0x00d3d4e1 (609 bytes)
@@ -746,6 +766,8 @@ __attribute__((weak)) void uSoundGenerator::cGeneratorGroupManager::cSoundPlayIn
 //   in uSoundGenerator::sync at 0x00d3e9bc-0x00d3e9e3 (called at uSoundGenerator.cpp:533)
 //   in uSoundGenerator::sync at 0x00d3e9f5-0x00d3ea23 (called at uSoundGenerator.cpp:533)
 // void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::updateSequenceSeUnit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::MyDTI uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundGenerator.cpp at 0x00d4026b-0x00d402a8 (called at uSoundGenerator.cpp:487)

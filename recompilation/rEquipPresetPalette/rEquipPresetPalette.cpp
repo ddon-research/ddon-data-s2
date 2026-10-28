@@ -51,7 +51,7 @@ const MtDTI& cEquipPresetPalette::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEquipPresetPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEquipPresetPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEquipPresetPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -81,6 +81,8 @@ __attribute__((weak)) bool cEquipPresetPalette::isActive(nCharacterEdit::EQUIP_P
     DDON_STUB("cEquipPresetPalette::isActive")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEquipPresetPalette::MyDTI cEquipPresetPalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEquipPresetPalette.cpp at 0x0067169e-0x006716db (called at rEquipPresetPalette.cpp:39)
@@ -115,7 +117,7 @@ const MtDTI& rEquipPresetPalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEquipPresetPalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEquipPresetPalette::DTI)->memAlloc(sz, align, ::rEquipPresetPalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEquipPresetPalette::DTI)->memAlloc(sz, align, rEquipPresetPalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rEquipPresetPalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rEquipPresetPaletteD0Ev at 0x01a8cfc4-0x01a8cfe3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEquipPresetPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEquipPresetPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEquipPresetPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,14 +149,14 @@ bool rEquipPresetPalette::loadData(MtDataReader& r, cEquipPresetPalette* pData) 
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    pData->::cCharacterEditPaletteBase::loadData(r);
-    ::nDDOIO::readData(r, pData->mPresetTagID);
+    pData->loadData(r);
+    nDDOIO::readData(r, pData->mPresetTagID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mPresetOption);
+    nDDOIO::readData(r, pData->mPresetOption);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIconID);
+    nDDOIO::readData(r, pData->mIconID);
     return true;
 }
 
@@ -167,8 +169,10 @@ MT_CTSTR rEquipPresetPalette::getExt() const {
 // Address: 0x01a8d110 - 0x01a8d116 (6 bytes)
 u32 rEquipPresetPalette::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(34);
+    return 34;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEquipPresetPalette::MyDTI rEquipPresetPalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEquipPresetPalette.cpp at 0x006716db-0x00671718 (called at rEquipPresetPalette.cpp:40)
@@ -178,7 +182,7 @@ u32 rEquipPresetPalette::getDataVersion() const {
 // Address: 0x00671520 - 0x00671584 (100 bytes)
 MtObject* rEquipPresetPalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEquipPresetPalette;
+    return new (16u) rEquipPresetPalette;
 }
 
 // Instance at 0x01a8d0c0 - 0x01a8d0d2 (18 bytes) of the generic rTbl2<T>::getData

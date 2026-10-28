@@ -551,20 +551,41 @@ inline f32 sOmManager::getDiffuseTime() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cDDMaterialCtrl::cShaderDataMaterialOmBlink::update at 0x8e36c-0x8e374; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sOmManager::getDiffuseIntensityMin() const {
+    return this->mDiffuseIntensityMin;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageMyRoom::kill at 0xd35536-0xd35540; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sOmManager::resetOmCtrlFreq() {
+    this->mOmCtrlFreq = 30;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sOmManager::sOmManager at 0x800ede-0x800f02; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sOmManager::initWarpList() {
+    this->mWarpList.::MtArray::mAutoDelete = true;
+    this->mWarpArcLoader.::MtArray::mAutoDelete = true;
+    this->mpWarpNearest = nullptr;
+    this->mpOmLoadList = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sOmManager* sOmManager::getInstance() {
     return ::sOmManager::mpInstance;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sOmManager::cWarpData::cWarpData() {
-    this->mType = static_cast<u16>(0);
-    this->mNextStageNo = static_cast<s16>(-1);
-    this->mNextStartPos = static_cast<s16>(0);
-    this->mpOwner = static_cast<MtObject*>(nullptr);
+    this->mType = 0;
+    this->mNextStageNo = -1;
+    this->mNextStartPos = 0;
+    this->mpOwner = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sOmManager::cClanEmblemTextureCtrl::cClanEmblemTextureCtrl() {
-    this->mpScreenSpace = static_cast<uScreenSpace*>(nullptr);
-    this->mpRenderTargetTexture = static_cast<rRenderTargetTexture*>(nullptr);
+    this->mpScreenSpace = nullptr;
+    this->mpRenderTargetTexture = nullptr;
 }

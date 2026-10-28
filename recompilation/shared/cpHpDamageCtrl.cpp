@@ -24,6 +24,7 @@
 #include "nOcdMsg.h"
 #include "nRegionStatus.h"
 #include "rAttackParam.h"
+#include "rRegionStatusParam.h"
 #include "uControl.h"
 #include "uControlNpc.h"
 #include "uDDOModel.h"
@@ -67,7 +68,7 @@ const MtDTI& cDamageEffInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cDamageEffInfoD0Ev at 0x01a59e50-0x01a59e7a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDamageEffInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDamageEffInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDamageEffInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,26 +81,28 @@ inline void cDamageEffInfo::operator delete(void* p_addr) {
 // void cDamageEffInfo::operator delete[](void* p_addr, u32 align);
 
 // Inline, no code of its own: checked where it is inlined.
-// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
 inline cDamageEffInfo::cDamageEffInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mpReceiver = static_cast<uDDOModel*>(nullptr);
-    this->mpAttacker = static_cast<uDDOModel*>(nullptr);
-    this->mPhysTypeEff = static_cast<u32>(2);
-    this->mJointNo = static_cast<s32>(0);
-    this->mHitPos = ::MtVector3::Zero;
-    this->mHitNormal = ::MtVector3::Zero;
-    this->mOffsetFromJoint = ::MtVector3::Zero;
-    this->mSurfaceType = static_cast<u32>(0);
-    this->mElemntType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
-    this->mEffectAngle = static_cast<u32>(1);
-    this->mEffectFlag = static_cast<u32>(0);
-    this->mEpvType = static_cast<u32>(0);
-    this->mIsDownWeakRegion = false;
-    this->mIsArrow = false;
-    this->mDamageRatePhys = 0.0f;
-    this->mDamageRatemagic = 0.0f;
+    mpReceiver = nullptr;
+    mpAttacker = nullptr;
+    mPhysTypeEff = 2;
+    mJointNo = 0;
+    mHitPos = MtVector3::Zero;
+    mHitNormal = MtVector3::Zero;
+    mOffsetFromJoint = MtVector3::Zero;
+    mSurfaceType = 0;
+    mElemntType = nDDOGame::ELEMENT_TYPE_INIT;
+    mEffectAngle = 1;
+    mEffectFlag = 0;
+    mEpvType = 0;
+    mIsDownWeakRegion = false;
+    mIsArrow = false;
+    mDamageRatePhys = 0.0f;
+    mDamageRatemagic = 0.0f;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDamageEffInfo::MyDTI cDamageEffInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpHpDamageCtrl.cpp at 0x004896fb-0x00489734 (called at cpHpDamageCtrl.cpp:85)
@@ -147,7 +150,7 @@ const MtDTI& cDamageSeInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cDamageSeInfoD0Ev at 0x01a59f80-0x01a59faa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDamageSeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDamageSeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDamageSeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,12 +162,37 @@ inline void cDamageSeInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cDamageSeInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (826 bytes)
-//   in cDamageSeInfo::MyDTI::newInstance at 0x0048164d-0x0048170b (called at cpHpDamageCtrl.cpp:84)
-//   in cDamageSeInfo::MyDTI::newInstance at 0x0048164d-0x0048170b (called at cpHpDamageCtrl.h:883)
-//   in cpHpDamageCtrl::playDamageSe at 0x0048361e-0x004836fd (called at cpHpDamageCtrl.cpp:1244)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cDamageSeInfo::cDamageSeInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cDamageSeInfo::cDamageSeInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mIsDownWeakRegion = false;
+    mIsThrust = false;
+    mAttackType = 0;
+    mSurfaceType = 0;
+    mpDefenderOwner = nullptr;
+    mpAttackerOwner = nullptr;
+    mpDefender = nullptr;
+    mpAttacker = nullptr;
+    mAttackReactionType = 1;
+    mAttackLevel = 0;
+    mIsNoDamage = false;
+    mWeaponCategory = 0;
+    mAttackerType = 7;
+    mDefenderType = 7;
+    mAttackerBodySize = 1;
+    mElementType = nDDOGame::ELEMENT_TYPE_INIT;
+    mEnemyWeaponType = 0xFFFFFFFF;
+    mWeaponType = 0;
+    mSeType = 0;
+    mIsNonePhysSe = false;
+    mIsNoneElementSe = false;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mHitPos.pad_ = 0.0f;
+    mJointNo = -1;
+}
 
 // No out-of-line body: 2 inlined copies in 1 function (167 bytes)
 //   in cpHpDamageCtrl::playDamageSe at 0x00483836-0x0048387b (called at cpHpDamageCtrl.cpp:1337)
@@ -176,6 +204,8 @@ inline void cDamageSeInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cDamageSeInfo::copy(const cDamageSeInfo*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDamageSeInfo::MyDTI cDamageSeInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpHpDamageCtrl.cpp at 0x004896bb-0x004896fb (called at cpHpDamageCtrl.cpp:84)
@@ -202,7 +232,7 @@ const MtDTI& cpHpDamageCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpHpDamageCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpHpDamageCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpHpDamageCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -211,7 +241,7 @@ inline MtAllocator* cpHpDamageCtrl::getAllocator() {
 // Address: 0x00481570 - 0x004815b0 (64 bytes)
 void* cpHpDamageCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpHpDamageCtrl::getAllocator()->memAlloc(sz, align, ::cpHpDamageCtrl::DTI.::MtDTI::getID());
+    return cpHpDamageCtrl::getAllocator()->memAlloc(sz, align, cpHpDamageCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -226,7 +256,7 @@ void* cpHpDamageCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpHpDamageCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpHpDamageCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpHpDamageCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -254,8 +284,8 @@ cpHpDamageCtrl::~cpHpDamageCtrl() {
 // Address: 0x00482720 - 0x0048272c (12 bytes)
 void cpHpDamageCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00481ed0 - 0x00482210 (832 bytes)
@@ -300,89 +330,89 @@ void cpHpDamageCtrl::update() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a frame slot a join carries read as the values its stores carried; a statement both arms of a test start with; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: an ordered temporary, read before a later effect: the value read at 0x48256e, held ahead of the effects the ELF orders after it
-    uDDOModel* t0 = this->mpModel;
+    uDDOModel* t0 = mpModel;
     // inferred: the value the loop at 0x4825d0 carries; no location-less local in scope fits
     u32 v0_0;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_3;
     // inferred: the value carried to 0x4825f3 in a frame slot; DWARF names no local for it
     f32 f0;
-    if (t0 != static_cast<uDDOModel*>(nullptr)) {
-        f32 deltaTime = t0->::cUnit::getDeltaTime();
-        this->mShakeInfo.::cBlowShrinkInfo::update(deltaTime);
-        this->mDownInfo.::cBlowShrinkInfo::update(deltaTime);
-        this->mRageShrinkInfo.::cBlowShrinkInfo::update(deltaTime);
+    if (t0 != nullptr) {
+        f32 deltaTime = t0->getDeltaTime();
+        mShakeInfo.update(deltaTime);
+        mDownInfo.update(deltaTime);
+        mRageShrinkInfo.update(deltaTime);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x4825bc, held ahead of the effects the ELF orders after it
-        u32 t2 = this->mParentRegionStatusArray.::MtArray::mLength;
-        if (t2 == static_cast<u32>(0)) {
+        u32 t2 = mParentRegionStatusArray.mLength;
+        if (t2 == 0) {
             f0 = deltaTime;
             goto region_4825f3;
         } else {
             f0 = deltaTime;
             v0_0 = t2;
-            i0_3 = static_cast<unsigned int>(0);
+            i0_3 = 0;
         }
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x482581, held ahead of the effects the ELF orders after it
         float t1 = 1.0f;
-        this->mShakeInfo.::cBlowShrinkInfo::update(t1);
-        this->mDownInfo.::cBlowShrinkInfo::update(t1);
-        this->mRageShrinkInfo.::cBlowShrinkInfo::update(t1);
+        mShakeInfo.update(t1);
+        mDownInfo.update(t1);
+        mRageShrinkInfo.update(t1);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x4825bc, held ahead of the effects the ELF orders after it
-        u32 t2 = this->mParentRegionStatusArray.::MtArray::mLength;
-        if (t2 == static_cast<u32>(0)) {
+        u32 t2 = mParentRegionStatusArray.mLength;
+        if (t2 == 0) {
             f0 = t1;
             goto region_4825f3;
         } else {
             f0 = t1;
             v0_0 = t2;
-            i0_3 = static_cast<unsigned int>(0);
+            i0_3 = 0;
         }
     }
     for (;;) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x4825d2, held ahead of the effects the ELF orders after it
-        MtObject* * t3 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * t3 = mParentRegionStatusArray.mpArray;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x4825d6, held ahead of the effects the ELF orders after it
         MtObject* t4 = t3[i0_3];
-        if (t4 != static_cast<MtObject*>(nullptr)) {
+        if (t4 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x4825df, held ahead of the effects the ELF orders after it
             f32 t5 = f0;
-            static_cast<cParentRegionStatus*>(t4)->::cParentRegionStatus::update(t5);
-            if ((i0_3 + static_cast<unsigned int>(1)) < this->mParentRegionStatusArray.::MtArray::mLength) {
-                v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-                i0_3 += static_cast<unsigned int>(1);
+            static_cast<cParentRegionStatus*>(t4)->update(t5);
+            if ((i0_3 + 1u) < mParentRegionStatusArray.mLength) {
+                v0_0 = mParentRegionStatusArray.mLength;
+                i0_3 += 1u;
             } else {
                 break;
             }
         } else {
-            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_3 += static_cast<unsigned int>(1);
+            if ((i0_3 + 1u) < v0_0) {
+                i0_3 += 1u;
             } else {
                 break;
             }
         }
     }
     region_4825f3:;
-    if (this->mChildRegionStatusArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mChildRegionStatusArray.mLength != 0) {
         // inferred: the value the loop at 0x482600 carries; no location-less local in scope fits
-        u32 v2_0 = this->mChildRegionStatusArray.::MtArray::mLength;
+        u32 v2_0 = mChildRegionStatusArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i2_3 = 0;;) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x482602, held ahead of the effects the ELF orders after it
-            MtObject* * t6 = this->mChildRegionStatusArray.::MtArray::mpArray;
+            MtObject* * t6 = mChildRegionStatusArray.mpArray;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x482609, held ahead of the effects the ELF orders after it
             MtObject* t7 = t6[i2_3];
-            if (t7 != static_cast<MtObject*>(nullptr)) {
-                static_cast<cChildRegionStatus*>(t7)->::cChildRegionStatus::update();
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mChildRegionStatusArray.::MtArray::mLength) {
-                    v2_0 = this->mChildRegionStatusArray.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+            if (t7 != nullptr) {
+                static_cast<cChildRegionStatus*>(t7)->update();
+                if ((i2_3 + 1u) < mChildRegionStatusArray.mLength) {
+                    v2_0 = mChildRegionStatusArray.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
@@ -394,8 +424,8 @@ void cpHpDamageCtrl::update() {
 // Address: 0x00482700 - 0x0048271c (28 bytes)
 void cpHpDamageCtrl::compSync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpHpDamageCtrl::checkHolyAbsorpReq();
-    this->::cpHpDamageCtrl::checkSoulAbsorpReq();
+    checkHolyAbsorpReq();
+    checkSoulAbsorpReq();
 }
 
 // Address: 0x00482630 - 0x004826fd (205 bytes)
@@ -408,34 +438,34 @@ __attribute__((weak)) void cpHpDamageCtrl::compMoveAfter() {
 // Address: 0x00482f60 - 0x00482fa3 (67 bytes)
 void cpHpDamageCtrl::checkCalcDamage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpHpDamageCtrl::executeCalcDamage();
-    if (this->mpModel->::uDDOModel::isMaster() != false) {
-        if (this->::cpHpDamageCtrl::isRequestDie() != false) {
-            this->::cpHpDamageCtrl::requestCallBackDie(static_cast<cHitInfoAfter*>(nullptr));
+    executeCalcDamage();
+    if (mpModel->isMaster()) {
+        if (isRequestDie()) {
+            requestCallBackDie(static_cast<cHitInfoAfter*>(nullptr));
         }
     }
-    this->mpModel->::uDDOModel::clearDamageMsg();
+    mpModel->clearDamageMsg();
 }
 
 // Address: 0x00482760 - 0x004827c3 (99 bytes)
 void cpHpDamageCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable() == false) {
-            this->mpModel = static_cast<uDDOModel*>(nullptr);
+    this->cpComponent::updatePtr();
+    if (mpModel != nullptr) {
+        if (!mpModel->isEnable()) {
+            mpModel = nullptr;
         }
     }
-    if (this->mParentRegionStatusArray.::MtArray::mLength == static_cast<u32>(0)) {
+    if (mParentRegionStatusArray.mLength == 0) {
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (this->mParentRegionStatusArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-            static_cast<cParentRegionStatus*>(this->mParentRegionStatusArray.::MtArray::mpArray[i])->::cParentRegionStatus::updatePtr();
+        if (mParentRegionStatusArray.mpArray[i] != nullptr) {
+            static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[i])->updatePtr();
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mParentRegionStatusArray.::MtArray::mLength);
+        i += 1u;
+    } while (i < mParentRegionStatusArray.mLength);
 }
 
 // No out-of-line body: no code in the ELF
@@ -446,28 +476,28 @@ bool cpHpDamageCtrl::isDead() {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4880e0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
+    u32 v0_0 = mParentRegionStatusArray.mLength;
     // inferred: the value carried to 0x488103; no location-less local in scope fits
     bool v2_0;
-    if (v0_0 != static_cast<u32>(0)) {
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4880e0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 0) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::isDead();
+                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
                     return v2_0;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
@@ -485,28 +515,28 @@ bool cpHpDamageCtrl::isDead(u32 index) const {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4889a0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
+    u32 v0_0 = mParentRegionStatusArray.mLength;
     // inferred: the value carried to 0x4889c2; no location-less local in scope fits
     bool v2_0;
-    if (v0_0 != static_cast<u32>(0)) {
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4889a0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != index) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != index) {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::isDead();
+                    v2_0 = static_cast<cParentRegionStatus*>(v0_1[i0_2])->isDead();
                     return v2_0;
                 }
             } else {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 = i0_2 + static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 = i0_2 + 1u;
                 } else {
                     break;
                 }
@@ -530,25 +560,25 @@ HP_DATATYPE cpHpDamageCtrl::getHpRoot() const {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4889e0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4889e0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == static_cast<unsigned int>(0)) {
-                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::getHp();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 0) {
+                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->getHp();
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<HP_DATATYPE>(0);
+    return 0;
 }
 
 // Address: 0x00488a00 - 0x00488a2e (46 bytes)
@@ -556,25 +586,25 @@ HP_DATATYPE cpHpDamageCtrl::getHpMaxRoot() const {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488a10 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x488a10 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == static_cast<unsigned int>(0)) {
-                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::getHpMax();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 0) {
+                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->getHpMax();
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<HP_DATATYPE>(0);
+    return 0;
 }
 
 // Address: 0x00488a30 - 0x00488a5d (45 bytes)
@@ -582,25 +612,25 @@ HP_DATATYPE cpHpDamageCtrl::getHp(const u32 index) const {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488a40 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x488a40 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == index) {
-                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::getHp();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == index) {
+                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->getHp();
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<HP_DATATYPE>(0);
+    return 0;
 }
 
 // Address: 0x00488a60 - 0x00488a8d (45 bytes)
@@ -608,25 +638,25 @@ HP_DATATYPE cpHpDamageCtrl::getHpMax(const u32 index) const {
     // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488a70 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x488a70 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == index) {
-                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::getHpMax();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == index) {
+                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->getHpMax();
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<HP_DATATYPE>(0);
+    return 0;
 }
 
 // Address: 0x00488a90 - 0x00488abf (47 bytes)
@@ -635,20 +665,20 @@ void cpHpDamageCtrl::healHp(const HP_DATATYPE hp, const u32 index, bool isForce)
     // DWARF local not rendered: HP_DATATYPE hpData;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488aa0 carries; no location-less local in scope fits
-    u32 v0_2 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_2 != static_cast<u32>(0)) {
+    u32 v0_2 = mParentRegionStatusArray.mLength;
+    if (v0_2 != 0) {
         // inferred: the value the loop at 0x488aa0 carries; no location-less local in scope fits
-        MtObject* * v0_3 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_3 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
-            if (v0_3[i0_0] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i0_0]) + static_cast<long>(8))) == index) {
-                    static_cast<cParentRegionStatus*>(v0_3[i0_0])->::cParentRegionStatus::healHp(hp, isForce);
+        for (unsigned int i0_0 = 0;;) {
+            if (v0_3[i0_0] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i0_0]) + 8)) == index) {
+                    static_cast<cParentRegionStatus*>(v0_3[i0_0])->healHp(hp, isForce);
                     return;
                 }
             }
-            if ((i0_0 + static_cast<unsigned int>(1)) < v0_2) {
-                i0_0 = i0_0 + static_cast<unsigned int>(1);
+            if ((i0_0 + 1u) < v0_2) {
+                i0_0 = i0_0 + 1u;
             } else {
                 break;
             }
@@ -667,27 +697,27 @@ void cpHpDamageCtrl::addDamage(HP_DATATYPE damage, bool isNoDeath, u32 index) {
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488af0 carries; no location-less local in scope fits
-    u32 v0_3 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_3 != static_cast<u32>(0)) {
+    u32 v0_3 = mParentRegionStatusArray.mLength;
+    if (v0_3 != 0) {
         // inferred: the value the loop at 0x488af0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_0] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_0]) + static_cast<long>(8))) != index) {
-                    if ((i0_0 + static_cast<unsigned int>(1)) < v0_3) {
-                        i0_0 = i0_0 + static_cast<unsigned int>(1);
+        for (unsigned int i0_0 = 0;;) {
+            if (v0_1[i0_0] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_0]) + 8)) != index) {
+                    if ((i0_0 + 1u) < v0_3) {
+                        i0_0 = i0_0 + 1u;
                     } else {
                         break;
                     }
                 } else {
-                    static_cast<cParentRegionStatus*>(v0_1[i0_0])->::cParentRegionStatus::addDamage(damage, isNoDeath, static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(0));
-                    this->mLastDamageTime = 0.0f;
+                    static_cast<cParentRegionStatus*>(v0_1[i0_0])->addDamage(damage, isNoDeath, nObjCollision::INV_THROUGH_TYPE_NONE);
+                    mLastDamageTime = 0.0f;
                     return;
                 }
             } else {
-                if ((i0_0 + static_cast<unsigned int>(1)) < v0_3) {
-                    i0_0 = i0_0 + static_cast<unsigned int>(1);
+                if ((i0_0 + 1u) < v0_3) {
+                    i0_0 = i0_0 + 1u;
                 } else {
                     break;
                 }
@@ -701,19 +731,19 @@ f32 cpHpDamageCtrl::getHpRate(u32 index) const {
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488b60 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x488b60 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) == index) {
-                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->::cParentRegionStatus::getHpRate();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == index) {
+                    return static_cast<cParentRegionStatus*>(v0_1[i0_2])->getHpRate();
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
@@ -725,7 +755,7 @@ f32 cpHpDamageCtrl::getHpRate(u32 index) const {
 // Address: 0x00488b30 - 0x00488b38 (8 bytes)
 void cpHpDamageCtrl::requestDie() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsRequestDie = true;
+    mIsRequestDie = true;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (12 bytes)
@@ -756,20 +786,20 @@ void cpHpDamageCtrl::requestDie() {
 // Address: 0x00488b80 - 0x00488b92 (18 bytes)
 cParentRegionStatus* cpHpDamageCtrl::getParentRegion(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mParentRegionStatusArray.::MtArray::mLength) {
-        return static_cast<cParentRegionStatus*>(this->mParentRegionStatusArray.::MtArray::mpArray[index]);
+    if (index < mParentRegionStatusArray.mLength) {
+        return static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[index]);
     } else {
-        return static_cast<cParentRegionStatus*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x00488ba0 - 0x00488bb5 (21 bytes)
 cChildRegionStatus* cpHpDamageCtrl::getChildRegion(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mChildRegionStatusArray.::MtArray::mLength) {
-        return static_cast<cChildRegionStatus*>(this->mChildRegionStatusArray.::MtArray::mpArray[index]);
+    if (index < mChildRegionStatusArray.mLength) {
+        return static_cast<cChildRegionStatus*>(mChildRegionStatusArray.mpArray[index]);
     } else {
-        return static_cast<cChildRegionStatus*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -779,20 +809,19 @@ cParentRegionStatus* cpHpDamageCtrl::findParentRegionFromNo(u32 no) const {
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mParentRegionStatusArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mParentRegionStatusArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x482876, 0x4828a8)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mParentRegionStatusArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mParentRegionStatusArray.::MtArray::mpArray[i]) + static_cast<long>(8))) != no) {
-                } else {
-                    return static_cast<cParentRegionStatus*>(this->mParentRegionStatusArray.::MtArray::mpArray[i]);
+            if (mParentRegionStatusArray.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mParentRegionStatusArray.mpArray[i]) + 8)) == no) {
+                    return static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mParentRegionStatusArray.::MtArray::mLength);
+            i += 1u;
+        } while (i < mParentRegionStatusArray.mLength);
     }
-    return static_cast<cParentRegionStatus*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -804,20 +833,19 @@ cChildRegionStatus* cpHpDamageCtrl::findChildRegionFromNo(u32 no) const {
     // DWARF local not rendered: cChildRegionStatus* pRegion;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mChildRegionStatusArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mChildRegionStatusArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x488bd6, 0x488c08)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mChildRegionStatusArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChildRegionStatusArray.::MtArray::mpArray[i]) + static_cast<long>(8))) != no) {
-                } else {
-                    return static_cast<cChildRegionStatus*>(this->mChildRegionStatusArray.::MtArray::mpArray[i]);
+            if (mChildRegionStatusArray.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChildRegionStatusArray.mpArray[i]) + 8)) == no) {
+                    return static_cast<cChildRegionStatus*>(mChildRegionStatusArray.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mChildRegionStatusArray.::MtArray::mLength);
+            i += 1u;
+        } while (i < mChildRegionStatusArray.mLength);
     }
-    return static_cast<cChildRegionStatus*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x004890d0 - 0x004891d4 (260 bytes)
@@ -833,26 +861,26 @@ void cpHpDamageCtrl::regionRegenerateAll() {
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488450 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    u32 v0_9 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_9 != static_cast<u32>(0)) {
+    u32 v0_9 = mParentRegionStatusArray.mLength;
+    if (v0_9 != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x488449, 0x4884be)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
+        for (u32 i = 0;;) {
             // inferred: a temporary for the value the load at 0x488454 read, used 5 times; no DWARF local holds it
-            MtObject* t0 = this->mParentRegionStatusArray.::MtArray::mpArray[i];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if (this->mpModel->::uDDOModel::isMaster() != false) {
-                    if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
-                        static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getHpMax());
-                        static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+            MtObject* t0 = mParentRegionStatusArray.mpArray[i];
+            if (t0 != nullptr) {
+                if (mpModel->isMaster()) {
+                    if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(true)) {
+                        static_cast<cParentRegionStatus*>(t0)->regenerateMaster(static_cast<cParentRegionStatus*>(t0)->getHpMax());
+                        static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                     }
                 } else {
-                    if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
-                        static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+                    if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(false)) {
+                        static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                     }
                 }
             }
-            if (v0_9 != (i + static_cast<u32>(1))) {
-                i = i + static_cast<u32>(1);
+            if (v0_9 != (i + 1u)) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -866,31 +894,31 @@ __attribute__((weak)) void cpHpDamageCtrl::regionRegenerate(nRegionStatus::P_REG
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a value cast to the type its use takes: nRegionStatus::P_REGION_TYPE used as unsigned int
-    u32 num = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (num != static_cast<u32>(0)) {
+    u32 num = mParentRegionStatusArray.mLength;
+    if (num != 0) {
         // inferred: the value the loop at 0x488500 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x4884e9, 0x488569)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
+        for (u32 i = 0;;) {
             // inferred: a temporary for the value the load at 0x488500 read, used 6 times; no DWARF local holds it
             MtObject* t0 = v0_1[i];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8))) == static_cast<unsigned int>(regionNo)) {
-                    if (this->mpModel->::uDDOModel::isMaster() != false) {
-                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getHpMax());
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8)) == static_cast<unsigned int>(regionNo)) {
+                    if (mpModel->isMaster()) {
+                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(true)) {
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMaster(static_cast<cParentRegionStatus*>(t0)->getHpMax());
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                         }
                     } else {
-                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(false)) {
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                         }
                     }
                     return;
                 }
             }
-            if ((i + static_cast<u32>(1)) < num) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < num) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -907,28 +935,28 @@ void cpHpDamageCtrl::regionErosionRegenerateCateAll() {
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x488590 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    u32 v0_9 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_9 != static_cast<u32>(0)) {
+    u32 v0_9 = mParentRegionStatusArray.mLength;
+    if (v0_9 != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x48858d, 0x488608)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
+        for (u32 i = 0;;) {
             // inferred: a temporary for the value the load at 0x488594 read, used 6 times; no DWARF local holds it
-            MtObject* t0 = this->mParentRegionStatusArray.::MtArray::mpArray[i];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if (::nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getRegionCategory()) != false) {
-                    if (this->mpModel->::uDDOModel::isMaster() != false) {
-                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getHpMax());
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+            MtObject* t0 = mParentRegionStatusArray.mpArray[i];
+            if (t0 != nullptr) {
+                if (nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
+                    if (mpModel->isMaster()) {
+                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(true)) {
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMaster(static_cast<cParentRegionStatus*>(t0)->getHpMax());
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                         }
                     } else {
-                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
-                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(false)) {
+                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                         }
                     }
                 }
             }
-            if (v0_9 != (i + static_cast<u32>(1))) {
-                i = i + static_cast<u32>(1);
+            if (v0_9 != (i + 1u)) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -943,42 +971,42 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
     // DWARF local not rendered: P_REGION_TYPE regionNo;
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->mpModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-        cpErosionEnemy* pCpErosionEnemy = static_cast<uEnemy*>(this->mpModel)->::uEnemy::getErosionEnemy();
-        if (pCpErosionEnemy != static_cast<cpErosionEnemy*>(nullptr)) {
-            if (pCpErosionEnemy->mErosionProgression == static_cast<nErosionEnemy::EROSION_PROGRESSION>(0)) {
+    if ((mpModel->mUnitId & 2u) != 0) {
+        cpErosionEnemy* pCpErosionEnemy = static_cast<uEnemy*>(mpModel)->getErosionEnemy();
+        if (pCpErosionEnemy != nullptr) {
+            if (pCpErosionEnemy->mErosionProgression == nErosionEnemy::EROSION_PROGRESSION_NONE) {
                 // inferred: a temporary for the result of the call at 0x488711, used twice; no DWARF local holds it
-                nRegionStatus::P_REGION_TYPE t1 = pCpErosionEnemy->::cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
-                if (t1 != static_cast<nRegionStatus::P_REGION_TYPE>(11)) {
-                    this->::cpHpDamageCtrl::regionRegenerate(t1);
+                nRegionStatus::P_REGION_TYPE t1 = pCpErosionEnemy->cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
+                if (t1 != nRegionStatus::P_REGION_INVALID) {
+                    regionRegenerate(t1);
                     return;
                 }
             } else {
                 // inferred: the value the loop at 0x488680 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v0_10 = this->mParentRegionStatusArray.::MtArray::mLength;
-                if (v0_10 != static_cast<u32>(0)) {
+                u32 v0_10 = mParentRegionStatusArray.mLength;
+                if (v0_10 != 0) {
                     // inferred: DWARF's location-less 'i' (lexical block [0x488673, 0x48870e)) is the counter this loop steps (DWARF's stale constant 0)
-                    for (u32 i = static_cast<u32>(0);;) {
+                    for (u32 i = 0;;) {
                         // inferred: a temporary for the value the load at 0x488684 read, used 7 times; no DWARF local holds it
-                        MtObject* t0 = this->mParentRegionStatusArray.::MtArray::mpArray[i];
-                        if (t0 != static_cast<MtObject*>(nullptr)) {
-                            if (::nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getRegionCategory()) != false) {
-                                if (pCpErosionEnemy->::cpErosionEnemy::isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getRegionCategory()) != false) {
-                                    if (this->mpModel->::uDDOModel::isMaster() != false) {
-                                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
-                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getHpMax());
-                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+                        MtObject* t0 = mParentRegionStatusArray.mpArray[i];
+                        if (t0 != nullptr) {
+                            if (nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
+                                if (pCpErosionEnemy->cpErosionEnemy::isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t0)->getRegionCategory())) {
+                                    if (mpModel->isMaster()) {
+                                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(true)) {
+                                            static_cast<cParentRegionStatus*>(t0)->regenerateMaster(static_cast<cParentRegionStatus*>(t0)->getHpMax());
+                                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                                         }
                                     } else {
-                                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
-                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
+                                        if (static_cast<cParentRegionStatus*>(t0)->isEnableRegenerate(false)) {
+                                            static_cast<cParentRegionStatus*>(t0)->regenerateMasterSlave();
                                         }
                                     }
                                 }
                             }
                         }
-                        if (v0_10 != (i + static_cast<u32>(1))) {
-                            i = i + static_cast<u32>(1);
+                        if (v0_10 != (i + 1u)) {
+                            i = i + 1u;
                         } else {
                             break;
                         }
@@ -992,21 +1020,20 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
 // Address: 0x00488750 - 0x004887b3 (99 bytes)
 void cpHpDamageCtrl::regionErosionRegeneratePriority() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    uEnemy* pEnemy = static_cast<uEnemy*>(this->mpModel);
-    if ((pEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) == static_cast<u32>(0)) {
+    uEnemy* pEnemy = static_cast<uEnemy*>(mpModel);
+    if ((pEnemy->::uDDOModel::mUnitId & 2u) == 0) {
         return;
     }
-    cpErosionEnemy* pCpErosionEnemy = pEnemy->::uEnemy::getErosionEnemy();
-    if (pCpErosionEnemy == static_cast<cpErosionEnemy*>(nullptr)) {
+    cpErosionEnemy* pCpErosionEnemy = pEnemy->uEnemy::getErosionEnemy();
+    if (pCpErosionEnemy == nullptr) {
         return;
     }
-    if (pCpErosionEnemy->isErosionRegionActiveNone() != false) {
-        this->::cpHpDamageCtrl::regionErosionRegenerateCateInit();
+    if (pCpErosionEnemy->isErosionRegionActiveNone()) {
+        regionErosionRegenerateCateInit();
     } else {
-        nRegionStatus::P_REGION_TYPE regionNo = pCpErosionEnemy->::cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
-        if (regionNo == static_cast<nRegionStatus::P_REGION_TYPE>(11)) {
-        } else {
-            this->::cpHpDamageCtrl::regionRegenerate(regionNo);
+        nRegionStatus::P_REGION_TYPE regionNo = pCpErosionEnemy->cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
+        if (regionNo != nRegionStatus::P_REGION_INVALID) {
+            regionRegenerate(regionNo);
         }
     }
 }
@@ -1018,23 +1045,23 @@ void cpHpDamageCtrl::setupRegionDie(nRegionStatus::P_REGION_CATEGORY category) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a value cast to the type its use takes: nRegionStatus::P_REGION_CATEGORY used as unsigned int
     // inferred: the value the loop at 0x4887e0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mParentRegionStatusArray.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4887e0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+        MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_2 = 0;;) {
             // inferred: a temporary for the value the load at 0x4887e0 read, used 4 times; no DWARF local holds it
             MtObject* t0 = v0_1[i0_2];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(12))) == static_cast<unsigned int>(category)) {
-                    static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::setHp(static_cast<HP_DATATYPE>(0));
-                    static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::setIsDead(true);
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)) == static_cast<unsigned int>(category)) {
+                    static_cast<cParentRegionStatus*>(t0)->setHp(0ul);
+                    static_cast<cParentRegionStatus*>(t0)->setIsDead(true);
                     return;
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
             } else {
                 break;
             }
@@ -1052,20 +1079,19 @@ cParentRegionStatus* cpHpDamageCtrl::findRegionFromCategory(nRegionStatus::P_REG
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a value cast to the type its use takes: nRegionStatus::P_REGION_CATEGORY used as unsigned int
-    if (this->mParentRegionStatusArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mParentRegionStatusArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x488825, 0x48884a)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mParentRegionStatusArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mParentRegionStatusArray.::MtArray::mpArray[i]) + static_cast<long>(12))) != static_cast<unsigned int>(category)) {
-                } else {
-                    return static_cast<cParentRegionStatus*>(this->mParentRegionStatusArray.::MtArray::mpArray[i]);
+            if (mParentRegionStatusArray.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mParentRegionStatusArray.mpArray[i]) + 12)) == static_cast<unsigned int>(category)) {
+                    return static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mParentRegionStatusArray.::MtArray::mLength);
+            i += 1u;
+        } while (i < mParentRegionStatusArray.mLength);
     }
-    return static_cast<cParentRegionStatus*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00488860 - 0x0048889c (60 bytes)
@@ -1074,20 +1100,19 @@ nRegionStatus::REGION_REGENERATE_PRIORITY cpHpDamageCtrl::getRegenerateProprity(
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a value cast to the type its use takes: nRegionStatus::P_REGION_TYPE used as unsigned int
-    if (this->mParentRegionStatusArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mParentRegionStatusArray.mLength != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i2 = static_cast<unsigned int>(0);
+        unsigned int i2 = 0;
         do {
-            if (this->mParentRegionStatusArray.::MtArray::mpArray[i2] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mParentRegionStatusArray.::MtArray::mpArray[i2]) + static_cast<long>(8))) != static_cast<unsigned int>(type)) {
-                } else {
-                    return static_cast<cParentRegionStatus*>(this->mParentRegionStatusArray.::MtArray::mpArray[i2])->::cParentRegionStatus::getRegenerateProprity();
+            if (mParentRegionStatusArray.mpArray[i2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mParentRegionStatusArray.mpArray[i2]) + 8)) == static_cast<unsigned int>(type)) {
+                    return static_cast<cParentRegionStatus*>(mParentRegionStatusArray.mpArray[i2])->getRegenerateProprity();
                 }
             }
-            i2 += static_cast<unsigned int>(1);
-        } while (i2 < this->mParentRegionStatusArray.::MtArray::mLength);
+            i2 += 1u;
+        } while (i2 < mParentRegionStatusArray.mLength);
     }
-    return static_cast<nRegionStatus::REGION_REGENERATE_PRIORITY>(10);
+    return nRegionStatus::REGION_REGENERATE_PRIORITY_LOW_LOW;
 }
 
 // Address: 0x004891e0 - 0x0048920d (45 bytes)
@@ -1207,11 +1232,68 @@ __attribute__((weak)) void cpHpDamageCtrl::initParentRegion(rParentRegionStatusP
 }
 
 // Address: 0x00488fe0 - 0x004890ce (238 bytes)
-__attribute__((weak)) void cpHpDamageCtrl::initChildRegion(rChildRegionStatusParam* pChildParamRes) {
-    // local: u32 dataNum;
-    // local: u32 i;
-    DDON_STUB("cpHpDamageCtrl::initChildRegion")
-    /* stub */
+void cpHpDamageCtrl::initChildRegion(rChildRegionStatusParam* pChildParamRes) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pChildParamRes != nullptr) {
+        if (mChildRegionStatusArray.mLength != 0) {
+            // inferred: the value the loop at 0x489010 carries; no location-less local in scope fits
+            u32 v0_0 = mChildRegionStatusArray.mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = 0;;) {
+                if (mChildRegionStatusArray.mpArray[i0_3] != nullptr) {
+                    delete mChildRegionStatusArray.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mChildRegionStatusArray.mLength) {
+                        v0_0 = mChildRegionStatusArray.mLength;
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i2_3;
+        u32 dataNum;
+        if (mChildRegionStatusArray.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mChildRegionStatusArray.mpArray));
+            mChildRegionStatusArray.mpArray = nullptr;
+            mChildRegionStatusArray.mBufsiz = 0;
+            mChildRegionStatusArray.mLength = 0;
+            dataNum = pChildParamRes->getDataNum();
+            if (dataNum != 0) {
+                i2_3 = 0;
+            } else {
+                return;
+            }
+        } else {
+            mChildRegionStatusArray.mpArray = nullptr;
+            mChildRegionStatusArray.mBufsiz = 0;
+            mChildRegionStatusArray.mLength = 0;
+            dataNum = pChildParamRes->getDataNum();
+            if (dataNum != 0) {
+                i2_3 = 0;
+            } else {
+                return;
+            }
+        }
+        for (;;) {
+            if (pChildParamRes->getData(i2_3) != nullptr) {
+                addChildRegion(pChildParamRes->getData(i2_3));
+            }
+            if (dataNum != (i2_3 + 1u)) {
+                i2_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (114 bytes)
@@ -1264,27 +1346,27 @@ __attribute__((weak)) const cRegionBreakInfo* cpHpDamageCtrl::getRegionBreakInfo
 void cpHpDamageCtrl::callbackHealedAfter_make(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: const cContextInterface& contextAT;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    uDDOModel* pAttacker = pHitInfo->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
-    if (pAttacker == static_cast<uDDOModel*>(nullptr)) {
+    uDDOModel* pAttacker = pHitInfo->mCommonInfo.getAttckerPtr();
+    if (pAttacker == nullptr) {
         return;
     }
     uDDOModel* pDefender = pHitInfo->mCommonInfo.mpDfdModel;
-    if (pDefender == static_cast<uDDOModel*>(nullptr)) {
+    if (pDefender == nullptr) {
         return;
     }
-    pHitInfo->mHealedInfo.mMagicBase = ::cContextInterface::getAttackBaseMagic(pAttacker->mContextInterface.mpContextInstance, pAttacker->mContextInterface.mpContextCharacter);
-    pHitInfo->mHealedInfo.mMagicWep = ::cContextInterface::getAttackWepMagic(pAttacker->mContextInterface.mpContextInstance, pAttacker->mContextInterface.mpContextCharacter);
+    pHitInfo->mHealedInfo.mMagicBase = cContextInterface::getAttackBaseMagic(pAttacker->mContextInterface.mpContextInstance, pAttacker->mContextInterface.mpContextCharacter);
+    pHitInfo->mHealedInfo.mMagicWep = cContextInterface::getAttackWepMagic(pAttacker->mContextInterface.mpContextInstance, pAttacker->mContextInterface.mpContextCharacter);
     pAttacker->makeHealedAttackInfo(pHitInfo);
     pDefender->makeHealedDefenceInfo(pHitInfo);
-    if (pHitInfo->mCommonInfo.mIsAttackerShl != false) {
+    if (pHitInfo->mCommonInfo.mIsAttackerShl) {
         pAttacker->makeBlowShrinkAttackInfoShl(&pHitInfo->mBlowShrinkDmInfo, pAttacker, pDefender, pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
     } else {
         pAttacker->makeBlowShrinkAttackInfo(&pHitInfo->mBlowShrinkDmInfo, pAttacker, pDefender, pHitInfo->mCommonInfo.mAtkAdjustUniqueId);
     }
-    this->::cpHpDamageCtrl::makePawnHealAdj(pHitInfo);
+    makePawnHealAdj(pHitInfo);
 }
 
 // Address: 0x004845e0 - 0x0048475e (382 bytes)
@@ -1313,19 +1395,19 @@ void cpHpDamageCtrl::checkReplaceInfo(cHitInfoAfter& HitInfo) {
     // DWARF local not rendered: const cAttackParam* pAttackParam;
     // DWARF local not rendered: cParentRegionStatus* pRegionP;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (HitInfo.mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
-        if (HitInfo.mCommonInfo.mpAttackParam->mAttackID == static_cast<u16>(19)) {
+    if (HitInfo.mCommonInfo.mpAttackParam != nullptr) {
+        if (HitInfo.mCommonInfo.mpAttackParam->mAttackID == 19) {
             // inferred: the value the loop at 0x484d90 carries; no location-less local in scope fits
-            u32 v0_0 = this->mParentRegionStatusArray.::MtArray::mLength;
-            if (v0_0 != static_cast<u32>(0)) {
+            u32 v0_0 = mParentRegionStatusArray.mLength;
+            if (v0_0 != 0) {
                 // inferred: the value the loop at 0x484d90 carries; no location-less local in scope fits
-                MtObject* * v0_1 = this->mParentRegionStatusArray.::MtArray::mpArray;
+                MtObject* * v0_1 = mParentRegionStatusArray.mpArray;
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-                    if (v0_1[i0_2] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
-                            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                                i0_2 = i0_2 + static_cast<unsigned int>(1);
+                for (unsigned int i0_2 = 0;;) {
+                    if (v0_1[i0_2] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) != 0) {
+                            if ((i0_2 + 1u) < v0_0) {
+                                i0_2 = i0_2 + 1u;
                             } else {
                                 break;
                             }
@@ -1334,8 +1416,8 @@ void cpHpDamageCtrl::checkReplaceInfo(cHitInfoAfter& HitInfo) {
                             return;
                         }
                     } else {
-                        if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                            i0_2 = i0_2 + static_cast<unsigned int>(1);
+                        if ((i0_2 + 1u) < v0_0) {
+                            i0_2 = i0_2 + 1u;
                         } else {
                             break;
                         }
@@ -1359,48 +1441,48 @@ void cpHpDamageCtrl::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: uControlNpc* pCtrlNpc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a uControlNpc member read past the end of uControl, which DWARF gives no other deriving class a member at 0x2b0
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfoAfter::isCalcHpDamage() != false) {
-        this->::cpHpDamageCtrl::calcDamage(pHitInfo);
+    if (pHitInfo->isCalcHpDamage()) {
+        calcDamage(pHitInfo);
     }
-    if (pHitInfo->mCommonInfo.mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((pHitInfo->mCommonInfo.mpAtkModel->mUnitId & static_cast<u32>(128)) != static_cast<u32>(0)) {
-            if (pHitInfo->mCommonInfo.mpAtkModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-                if (static_cast<uControlNpc*>(pHitInfo->mCommonInfo.mpAtkModel->::uDDOModel::getCtrl())->mJobLv == static_cast<u16>(0)) {
+    if (pHitInfo->mCommonInfo.mpAtkModel != nullptr) {
+        if ((pHitInfo->mCommonInfo.mpAtkModel->mUnitId & 128u) != 0) {
+            if (pHitInfo->mCommonInfo.mpAtkModel->getCtrl() != nullptr) {
+                if (static_cast<uControlNpc*>(pHitInfo->mCommonInfo.mpAtkModel->getCtrl())->mJobLv == 0) {
                     pHitInfo->mHpDamageInfo.mDamage = 0.0f;
                     pHitInfo->mHpDamageInfo.mDamageGui = 0.0f;
                 }
             }
         }
     }
-    if (pHitInfo->::cHitInfoAfter::isCalcShrinkBlow() != false) {
-        this->::cpHpDamageCtrl::calcBlowShrink(pHitInfo);
+    if (pHitInfo->isCalcShrinkBlow()) {
+        calcBlowShrink(pHitInfo);
     }
-    if (pHitInfo->::cHitInfoAfter::isCalcShake() == false) {
+    if (!pHitInfo->isCalcShake()) {
         return;
     }
-    this->::cpHpDamageCtrl::calcShakeDamage(pHitInfo);
+    calcShakeDamage(pHitInfo);
 }
 
 // Address: 0x00487330 - 0x0048737a (74 bytes)
 void cpHpDamageCtrl::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo->::cHitInfoAfter::isCalcHpDamage() != false) {
-        this->::cpHpDamageCtrl::applyDamageToHp(pHitInfo);
+    if (pHitInfo->isCalcHpDamage()) {
+        applyDamageToHp(pHitInfo);
     }
-    this->::cpHpDamageCtrl::checkShrinkBlow(pHitInfo);
-    if (this->::cpHpDamageCtrl::isRequestDie() == false) {
+    checkShrinkBlow(pHitInfo);
+    if (!isRequestDie()) {
         return;
     }
-    this->::cpHpDamageCtrl::requestCallBackDie(pHitInfo);
+    requestCallBackDie(pHitInfo);
 }
 
 // Address: 0x004880b0 - 0x004880b5 (5 bytes)
 void cpHpDamageCtrl::callbackGuard_make(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpHpDamageCtrl::makePawnGuardAdj(pHitInfo);
+    makePawnGuardAdj(pHitInfo);
 }
 
 // Address: 0x00483150 - 0x004832fc (428 bytes)
@@ -1510,15 +1592,15 @@ __attribute__((weak)) void cpHpDamageCtrl::resetEndurance_ActShake() {
 // Address: 0x004883d0 - 0x00488424 (84 bytes)
 void cpHpDamageCtrl::resetEndurance_RageStart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->mpModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            if (static_cast<uEnemy*>(this->mpModel)->::uEnemy::isSwitchShakeToDown() != false) {
-                this->mDownInfo.::cBlowShrinkInfo::reset();
+    if (mpModel != nullptr) {
+        if ((mpModel->mUnitId & 2u) != 0) {
+            if (static_cast<uEnemy*>(mpModel)->isSwitchShakeToDown()) {
+                mDownInfo.reset();
             }
         }
     }
-    this->mShakeInfo.::cBlowShrinkInfo::reset();
-    this->mRageShrinkInfo.::cBlowShrinkInfo::reset();
+    mShakeInfo.reset();
+    mRageShrinkInfo.reset();
 }
 
 // Address: 0x00484e90 - 0x00484fb0 (288 bytes)
@@ -1795,39 +1877,39 @@ void cpHpDamageCtrl::applyShrinkBlowDamage_Down(cHitInfoAfter* pHitInfo, cParent
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as nObjCollision::UNIT_INV_THROUGH_TYPE
     // inferred: a temporary for the result of the call at 0x487eb2, used once; no DWARF local holds it
-    bool t0 = pHitInfo->::cHitInfoAfter::checkAttackParamGuard(static_cast<nObjCollision::GUARD_ANGLE_TYPE>(2));
-    if (pHitInfo->mBlowShrinkDmInfo.::cBlowShrinkDmInfo::getForceDownType() != static_cast<nObjCollision::FORCE_REACTION_TYPE>(1)) {
-        if (pHitInfo->mBlowShrinkDmInfo.::cBlowShrinkDmInfo::getForceDownType() == static_cast<nObjCollision::FORCE_REACTION_TYPE>(2)) {
-            this->mDownInfo.::cBlowShrinkInfo::updateEnduranceForceActive();
-            if (pDefender->::uDDOModel::isDamageAttrActive_Through(static_cast<nObjCollision::DAMAGE_ATTR_ENUM>(11), static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(2)) != false) {
-                this->mDownInfo.::cBlowShrinkInfo::holdOneEndurance();
+    bool t0 = pHitInfo->checkAttackParamGuard(nObjCollision::GUARD_ANGLE_NO_GUARD);
+    if (pHitInfo->mBlowShrinkDmInfo.getForceDownType() != nObjCollision::FORCE_REACTION_ATTACK_PARAM) {
+        if (pHitInfo->mBlowShrinkDmInfo.getForceDownType() == nObjCollision::FORCE_REACTION_COMPONENT) {
+            mDownInfo.updateEnduranceForceActive();
+            if (pDefender->isDamageAttrActive_Through(nObjCollision::DAMAGE_NO_DOWN_REACT, nObjCollision::INV_THROUGH_TYPE_REACT_COMP)) {
+                mDownInfo.holdOneEndurance();
             }
         } else {
-            if (isCalc != false) {
-                this->mDownInfo.::cBlowShrinkInfo::updateEndurance(pHitInfo->mBlowShrinkDmInfo.mDownValue);
-                if (pHitInfo->mHitInfoType == static_cast<nObjCollision::HIT_INFO_TYPE>(1)) {
-                    if (pHitInfo->mCommonInfo.mpDfdModel != static_cast<uDDOModel*>(nullptr)) {
-                        if ((pHitInfo->mCommonInfo.mpDfdModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-                            if (static_cast<uEnemy*>(pHitInfo->mCommonInfo.mpDfdModel)->::uEnemy::isSwitchShakeToDown() != false) {
-                                this->mRageShrinkInfo.::cBlowShrinkInfo::reset();
+            if (isCalc) {
+                mDownInfo.updateEndurance(pHitInfo->mBlowShrinkDmInfo.mDownValue);
+                if (pHitInfo->mHitInfoType == nObjCollision::HIT_INFO_TYPE_SHRINK_BOUNUS) {
+                    if (pHitInfo->mCommonInfo.mpDfdModel != nullptr) {
+                        if ((pHitInfo->mCommonInfo.mpDfdModel->mUnitId & 2u) != 0) {
+                            if (static_cast<uEnemy*>(pHitInfo->mCommonInfo.mpDfdModel)->isSwitchShakeToDown()) {
+                                mRageShrinkInfo.reset();
                             }
                         }
                     }
                 }
                 if (1.1920929e-7f >= pHitInfo->mBlowShrinkDmInfo.mDownCutRate) {
-                    this->mDownInfo.::cBlowShrinkInfo::holdOneEndurance();
+                    mDownInfo.holdOneEndurance();
                 }
             } else {
                 pHitInfo->mBlowShrinkDmInfo.mDownValue = 0.0f;
             }
-            if (pDefender->::uDDOModel::isDamageAttrActive_Through(static_cast<nObjCollision::DAMAGE_ATTR_ENUM>(11), static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(t0)) != false) {
-                this->mDownInfo.::cBlowShrinkInfo::holdOneEndurance();
+            if (pDefender->isDamageAttrActive_Through(nObjCollision::DAMAGE_NO_DOWN_REACT, static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(t0))) {
+                mDownInfo.holdOneEndurance();
             }
         }
     } else {
-        this->mDownInfo.::cBlowShrinkInfo::updateEnduranceForceActive();
-        if (pDefender->::uDDOModel::isDamageAttrActive_Through(static_cast<nObjCollision::DAMAGE_ATTR_ENUM>(11), static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(t0)) != false) {
-            this->mDownInfo.::cBlowShrinkInfo::holdOneEndurance();
+        mDownInfo.updateEnduranceForceActive();
+        if (pDefender->isDamageAttrActive_Through(nObjCollision::DAMAGE_NO_DOWN_REACT, static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(t0))) {
+            mDownInfo.holdOneEndurance();
         }
     }
 }
@@ -2172,19 +2254,19 @@ void cpHpDamageCtrl::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg&
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x483430 carries; no location-less local in scope fits
-    bool* v0_0 = &this->mAbsorpReqArray.elems[0].mIsSeted;
+    bool* v0_0 = &mAbsorpReqArray.elems[0].mIsSeted;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-        if ((*v0_0) == false) {
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+    for (unsigned int i0_1 = 0;;) {
+        if (!(*v0_0)) {
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
             *v0_0 = true;
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_0 += static_cast<int>(16);
-                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                v0_0 += 16;
+                i0_1 = i0_1 + 1u;
             } else {
                 break;
             }
@@ -2196,19 +2278,19 @@ void cpHpDamageCtrl::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg&
 void cpHpDamageCtrl::receiveAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x483480 carries; no location-less local in scope fits
-    bool* v0_0 = &this->mAbsorpReqArray.elems[0].mIsSeted;
+    bool* v0_0 = &mAbsorpReqArray.elems[0].mIsSeted;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-        if ((*v0_0) == false) {
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
-            this->mAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+    for (unsigned int i0_1 = 0;;) {
+        if (!(*v0_0)) {
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            mAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
             *v0_0 = true;
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_0 += static_cast<int>(16);
-                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                v0_0 += 16;
+                i0_1 = i0_1 + 1u;
             } else {
                 break;
             }
@@ -2237,19 +2319,19 @@ void cpHpDamageCtrl::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReq
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4834e0 carries; no location-less local in scope fits
-    bool* v0_0 = &this->mSoulAbsorpReqArray.elems[0].mIsSeted;
+    bool* v0_0 = &mSoulAbsorpReqArray.elems[0].mIsSeted;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-        if ((*v0_0) == false) {
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+    for (unsigned int i0_1 = 0;;) {
+        if (!(*v0_0)) {
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
             *v0_0 = true;
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_0 += static_cast<int>(16);
-                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                v0_0 += 16;
+                i0_1 = i0_1 + 1u;
             } else {
                 break;
             }
@@ -2261,19 +2343,19 @@ void cpHpDamageCtrl::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReq
 void cpHpDamageCtrl::receiveSoulAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x483530 carries; no location-less local in scope fits
-    bool* v0_0 = &this->mSoulAbsorpReqArray.elems[0].mIsSeted;
+    bool* v0_0 = &mSoulAbsorpReqArray.elems[0].mIsSeted;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-        if ((*v0_0) == false) {
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
-            this->mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+    for (unsigned int i0_1 = 0;;) {
+        if (!(*v0_0)) {
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            mSoulAbsorpReqArray.elems[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
             *v0_0 = true;
             return;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                v0_0 += static_cast<int>(16);
-                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                v0_0 += 16;
+                i0_1 = i0_1 + 1u;
             } else {
                 break;
             }
@@ -2299,9 +2381,9 @@ __attribute__((weak)) void cpHpDamageCtrl::checkSoulAbsorpReq() {
 // Address: 0x00489500 - 0x00489521 (33 bytes)
 void cpHpDamageCtrl::startReactionRestraint(cpHpDamageCtrl::RESTRAINT_TYPE type, f32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReactionRestraint[type].mIsReactionRestraint = true;
-    this->mReactionRestraint[type].mReactionRestraintFrame = frame;
-    this->mReactionRestraint[type].mReactionRestraintFrameMax = this->mReactionRestraint[type].mReactionRestraintFrame;
+    mReactionRestraint[type].mIsReactionRestraint = true;
+    mReactionRestraint[type].mReactionRestraintFrame = frame;
+    mReactionRestraint[type].mReactionRestraintFrameMax = mReactionRestraint[type].mReactionRestraintFrame;
 }
 
 // Address: 0x00489470 - 0x004894f5 (133 bytes)
@@ -2315,15 +2397,15 @@ __attribute__((weak)) void cpHpDamageCtrl::addDamageCheatCheck(HP_DATATYPE damag
 // Address: 0x00489530 - 0x0048954a (26 bytes)
 void cpHpDamageCtrl::setShrinkBounusInfo(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResultBounusPriority = static_cast<nObjCollision::RESULT_BONOUS_PRIORITY>(100);
-    pHitInfo->::cHitInfoAfter::setResultBounusType(static_cast<nObjCollision::RESULT_BONOUS_TYPE>(1));
+    mResultBounusPriority = nObjCollision::RESULT_BONOUS_PRIORITY_SHRINK;
+    pHitInfo->setResultBounusType(nObjCollision::RESULT_BONOUS_RAGE_SHRINK_BOUNUS);
 }
 
 // Address: 0x00489550 - 0x00489563 (19 bytes)
 void cpHpDamageCtrl::cancelShrinkBounusInfo(cHitInfoAfter* pHitInfo, nObjCollision::RESULT_BONOUS_PRIORITY priority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mResultBounusPriority = priority;
-    pHitInfo->::cHitInfoAfter::setResultBounusType(static_cast<nObjCollision::RESULT_BONOUS_TYPE>(0));
+    mResultBounusPriority = priority;
+    pHitInfo->setResultBounusType(nObjCollision::RESULT_BONOUS_NONE);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (61 bytes)
@@ -2380,6 +2462,8 @@ __attribute__((weak)) void cpHpDamageCtrl::cheatCheckHpDeadFlag() {
 //   in cpHpDamageCtrl::before at 0x004822b8-0x004822c3 (called at cpHpDamageCtrl.cpp:8531)
 //   in cpHpDamageCtrl::addDamageCheatCheck at 0x004894e3-0x004894ea (called at cpHpDamageCtrl.cpp:8519)
 // void cpHpDamageCtrl::setDamageCheatCheckSum(HP_DATATYPE NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpHpDamageCtrl::MyDTI cpHpDamageCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpHpDamageCtrl.cpp at 0x0048967e-0x004896bb (called at cpHpDamageCtrl.cpp:81)

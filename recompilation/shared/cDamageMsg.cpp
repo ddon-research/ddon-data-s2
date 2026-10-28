@@ -35,7 +35,7 @@ const MtDTI& cDamageMsg::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cDamageMsg::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cDamageMsg::DTI);
+    return MtMemoryAllocator::getAllocator(cDamageMsg::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* cDamageMsg::getAllocator() {
 // Address: 0x0007a8f0 - 0x0007a930 (64 bytes)
 void* cDamageMsg::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cDamageMsg::getAllocator()->memAlloc(sz, align, ::cDamageMsg::DTI.::MtDTI::getID());
+    return cDamageMsg::getAllocator()->memAlloc(sz, align, cDamageMsg::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* cDamageMsg::operator new(size_t sz, u32 align) {
 // Address: 0x0007a960 - 0x0007a98a (42 bytes)
 __attribute__((weak)) void cDamageMsg::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cDamageMsg::getAllocator()->memFree(p_addr);
+    cDamageMsg::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,66 +102,61 @@ void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from rCollNode*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from rAttackParam*
-    if (pHitInfo == static_cast<const cHitInfo*>(nullptr)) {
-    } else {
-        if (pHitInfo->mpAtkModel == static_cast<uDDOModel*>(nullptr)) {
-        } else {
-            if (pHitInfo->mpAtkModel->::cUnit::isEnable() == false) {
-            } else {
-                this->mData.mAttackerUID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + static_cast<long>(12));
-                if (pHitInfo->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
-                    this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+    if (pHitInfo != nullptr) {
+        if (pHitInfo->mpAtkModel != nullptr) {
+            if (pHitInfo->mpAtkModel->isEnable()) {
+                mData.mAttackerUID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + 12);
+                if (pHitInfo->mpAtkNode == nullptr) {
+                    mData.mAttackParamUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                 } else {
-                    if (pHitInfo->mpAtkNode->::cHitNode::getAttackParam() == static_cast<const cAttackParam*>(nullptr)) {
-                        this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                    if (pHitInfo->mpAtkNode->getAttackParam() == nullptr) {
+                        mData.mAttackParamUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                     } else {
-                        if (pHitInfo->mpAtkNode->::cHitNode::getAttackParamRes() == static_cast<rAttackParam*>(nullptr)) {
-                            this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                        if (pHitInfo->mpAtkNode->getAttackParamRes() == nullptr) {
+                            mData.mAttackParamUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                         } else {
-                            this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkNode->::cHitNode::getAttackParamRes()) + static_cast<long>(144)), pHitInfo->mpAtkNode->::cHitNode::getAttackParam()->mIndex);
+                            mData.mAttackParamUID = sObjCollision::getInstance()->makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkNode->getAttackParamRes()) + 144), pHitInfo->mpAtkNode->getAttackParam()->mIndex);
                         }
                     }
                 }
-                if (pHitInfo->mpDfdNode != static_cast<cHitNode*>(nullptr)) {
-                    if (pHitInfo->mpDfdNode->::cHitNode::getCollNode() != static_cast<const cCollNode*>(nullptr)) {
-                        if (pHitInfo->mpDfdNode->::cHitNode::getCollNodeRes() == static_cast<rCollNode*>(nullptr)) {
-                            this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                if (pHitInfo->mpDfdNode != nullptr) {
+                    if (pHitInfo->mpDfdNode->getCollNode() != nullptr) {
+                        if (pHitInfo->mpDfdNode->getCollNodeRes() == nullptr) {
+                            mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                         } else {
-                            this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpDfdNode->::cHitNode::getCollNodeRes()) + static_cast<long>(144)), static_cast<unsigned int>(static_cast<unsigned long>(pHitInfo->mpDfdGeom->mpSrcGeom->mIndex) | static_cast<unsigned long>(pHitInfo->mpDfdNode->::cHitNode::getCollNode()->mIndex * static_cast<int>(65536))));
+                            mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpDfdNode->getCollNodeRes()) + 144), static_cast<unsigned int>(static_cast<unsigned long>(pHitInfo->mpDfdGeom->mpSrcGeom->mIndex) | static_cast<unsigned long>(pHitInfo->mpDfdNode->getCollNode()->mIndex * 65536)));
                         }
                     } else {
-                        this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                        mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                     }
                 } else {
-                    this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                    mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                 }
-                this->mData.mDamageDir.x = pHitInfo->mHitNormal.x;
-                this->mData.mDamageDir.y = pHitInfo->mHitNormal.y;
-                this->mData.mDamageDir.z = pHitInfo->mHitNormal.z;
-                this->mData.mDamageDir.pad_ = 0.0f;
-                if (pHitInfo->mpAtkNode != static_cast<cHitNode*>(nullptr)) {
-                    if (pHitInfo->mpAtkNode->::cHitNode::getCollNode() != static_cast<const cCollNode*>(nullptr)) {
-                        this->mData.mAttackAttr = pHitInfo->mpAtkModel->replaceCollisionAttr(pHitInfo->mpAtkNode->::cHitNode::getCollNode()->::cCollNode::getAttr(), pHitInfo->mpAtkNode->::cHitNode::getCollNode());
+                mData.mDamageDir.x = pHitInfo->mHitNormal.x;
+                mData.mDamageDir.y = pHitInfo->mHitNormal.y;
+                mData.mDamageDir.z = pHitInfo->mHitNormal.z;
+                mData.mDamageDir.pad_ = 0.0f;
+                if (pHitInfo->mpAtkNode != nullptr) {
+                    if (pHitInfo->mpAtkNode->getCollNode() != nullptr) {
+                        mData.mAttackAttr = pHitInfo->mpAtkModel->replaceCollisionAttr(pHitInfo->mpAtkNode->getCollNode()->getAttr(), pHitInfo->mpAtkNode->getCollNode());
                     } else {
-                        this->mData.mAttackAttr = static_cast<u32>(0);
+                        mData.mAttackAttr = 0;
                     }
                 } else {
-                    this->mData.mAttackAttr = static_cast<u32>(0);
+                    mData.mAttackAttr = 0;
                 }
-                if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) == static_cast<u32>(0)) {
-                } else {
-                    this->mData.mIsAttackerShl = true;
-                    if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner() == static_cast<uDDOModel*>(nullptr)) {
-                    } else {
-                        this->mData.mShlOwnerID = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner()->::cUnit::getUnitParam();
+                if ((pHitInfo->mpAtkModel->mUnitId & 32u) != 0) {
+                    mData.mIsAttackerShl = true;
+                    if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->getOwner() != nullptr) {
+                        mData.mShlOwnerID = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->getOwner()->getUnitParam();
                     }
-                    this->mLocalInfo.mpShlAtkPtr = static_cast<uShlBase*>(pHitInfo->mpAtkModel);
+                    mLocalInfo.mpShlAtkPtr = static_cast<uShlBase*>(pHitInfo->mpAtkModel);
                 }
-                this->mData.mAtkAdjustUniqueId = pHitInfo->mAtkAdjustUniqueId;
-                this->mLocalInfo.mHitPos.x = pHitInfo->mHitPos.x;
-                this->mLocalInfo.mHitPos.y = pHitInfo->mHitPos.y;
-                this->mLocalInfo.mHitPos.z = pHitInfo->mHitPos.z;
-                this->mLocalInfo.mHitPos.pad_ = 0.0f;
+                mData.mAtkAdjustUniqueId = pHitInfo->mAtkAdjustUniqueId;
+                mLocalInfo.mHitPos.x = pHitInfo->mHitPos.x;
+                mLocalInfo.mHitPos.y = pHitInfo->mHitPos.y;
+                mLocalInfo.mHitPos.z = pHitInfo->mHitPos.z;
+                mLocalInfo.mHitPos.pad_ = 0.0f;
             }
         }
     }
@@ -364,6 +359,8 @@ void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
 //   in cContextCharacter::addDamageMsg at 0x00052aae-0x00052ab5 (called at cDamageMsg.h:38)
 //   and 8 more (every copy is in <bundle>.inlined.json)
 // void cDamageMsg::setAttackAttrPrivate(u32 NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDamageMsg::MyDTI cDamageMsg::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cDamageMsg.cpp at 0x0007ac7f-0x0007acbc (called at cDamageMsg.cpp:19)

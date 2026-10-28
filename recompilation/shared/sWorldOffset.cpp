@@ -25,7 +25,7 @@ const MtDTI& sWorldOffset::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sWorldOffset::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sWorldOffset::DTI);
+    return MtMemoryAllocator::getAllocator(sWorldOffset::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* sWorldOffset::getAllocator() {
 // Address: 0x00873d20 - 0x00873d60 (64 bytes)
 void* sWorldOffset::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sWorldOffset::getAllocator()->memAlloc(sz, align, ::sWorldOffset::DTI.::MtDTI::getID());
+    return sWorldOffset::getAllocator()->memAlloc(sz, align, sWorldOffset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* sWorldOffset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sWorldOffset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sWorldOffset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sWorldOffset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ sWorldOffset::sWorldOffset() {
 // Also emitted as: _ZN12sWorldOffsetD0Ev at 0x00873f20
 sWorldOffset::~sWorldOffset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sWorldOffset::mpInstance = static_cast<sWorldOffset*>(nullptr);
+    sWorldOffset::mpInstance = nullptr;
 }
 
 // Address: 0x00873f70 - 0x00873f71 (1 bytes)
@@ -93,23 +93,23 @@ __attribute__((weak)) void sWorldOffset::move() {
 // Address: 0x00874710 - 0x00874768 (88 bytes)
 void sWorldOffset::Init(const MtVector3& targetPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIdX = static_cast<s32>(-1);
-    this->mIdZ = static_cast<s32>(-1);
-    this->mWorldOffset = ::MtVector3::Zero;
-    this->mWorldAbsoluteOffset = ::MtVector3::Zero;
+    mIdX = -1;
+    mIdZ = -1;
+    mWorldOffset = MtVector3::Zero;
+    mWorldAbsoluteOffset = MtVector3::Zero;
 }
 
 // Address: 0x00873e70 - 0x00873ee4 (116 bytes)
 void sWorldOffset::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<u32>(0);
-    this->mIdZ = static_cast<s32>(-1);
-    this->mIdX = static_cast<s32>(-1);
-    this->mEnabelWorldOffset = false;
-    this->mStatus = static_cast<u32>(1);
-    this->mWorldOffset = ::MtVector3::Zero;
-    this->mWorldAbsoluteOffset = ::MtVector3::Zero;
-    this->mUpdate = false;
+    mRno = 0;
+    mIdZ = -1;
+    mIdX = -1;
+    mEnabelWorldOffset = false;
+    mStatus = 1;
+    mWorldOffset = MtVector3::Zero;
+    mWorldAbsoluteOffset = MtVector3::Zero;
+    mUpdate = false;
 }
 
 // Address: 0x008749b0 - 0x00874ab9 (265 bytes)
@@ -280,6 +280,11 @@ __attribute__((weak)) bool sWorldOffset::calcOffsetEx(const MtVector3& targetPos
 //   in sWorldOffset::calcOffsetEx at 0x00874652-0x0087467a (called at sWorldOffset.cpp:410)
 //   in sWorldOffset::clearEdit at 0x00874b06-0x00874b21 (called at sWorldOffset.cpp:704)
 // void sWorldOffset::addWorldAbsoluteOffset(const MtVector3& ofs);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sWorldOffset::MyDTI sWorldOffset::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sWorldOffset* sWorldOffset::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sWorldOffset.cpp at 0x00874c3f-0x00874c7c (called at sWorldOffset.cpp:37)

@@ -603,6 +603,8 @@ public:
 public:
     class cSbcRegistReserveInfo : public MtObject
     {
+        // inferred: sCollision::cSbcArrayBP::runReserveInfoRegistRCollisionResource names sCollision::cSbcRegistReserveInfo::mpRSbc, through its enclosing class sCollision
+        friend class sCollision;
     public:
         class MyDTI;
     public:
@@ -3924,9 +3926,21 @@ inline sCollision* sCollision::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK10sCollision11cSbcArrayBP11cDBVTMaster5MyDTI11newInstanceEv at 0x012c08f0-0x012c0948, code DWARF attributes to no inlined copy
+inline sCollision::cSbcArrayBP::cDBVTMaster::cDBVTMaster() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline u32 sCollision::Sbc::getPartsNum() const {
     return this->mPartsArrayNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK10sCollision15cSbcHeightField12cHeightField5MyDTI11newInstanceEv at 0x012bea50-0x012bea7b, code DWARF attributes to no inlined copy
+inline sCollision::cSbcHeightField::cHeightField::cHeightField() {
+    this->mFlgActive = true;
+    this->mpHeightField = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

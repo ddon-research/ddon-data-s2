@@ -30,7 +30,7 @@ const MtDTI& uGUICaplinkFilter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkFilter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkFilter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUICaplinkFilter::getAllocator() {
 // Address: 0x009b2a50 - 0x009b2a90 (64 bytes)
 void* uGUICaplinkFilter::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkFilter::getAllocator()->memAlloc(sz, align, ::uGUICaplinkFilter::DTI.::MtDTI::getID());
+    return uGUICaplinkFilter::getAllocator()->memAlloc(sz, align, uGUICaplinkFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUICaplinkFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,20 +79,20 @@ uGUICaplinkFilter::~uGUICaplinkFilter() {
 // Address: 0x009b33c0 - 0x009b33c5 (5 bytes)
 void uGUICaplinkFilter::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009b33d0 - 0x009b3455 (133 bytes)
 bool uGUICaplinkFilter::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_FILTER_GUI"), static_cast<u32>(129), static_cast<t64>(1433827923)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_FILTER_GUI"), 129u, 1433827923l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -111,13 +111,13 @@ __attribute__((weak)) void uGUICaplinkFilter::setup() {
 // Address: 0x009b3460 - 0x009b3465 (5 bytes)
 void uGUICaplinkFilter::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009b3470 - 0x009b3475 (5 bytes)
 void uGUICaplinkFilter::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009b3480 - 0x009b3481 (1 bytes)
@@ -128,7 +128,7 @@ __attribute__((weak)) void uGUICaplinkFilter::updatePtr() {
 // Address: 0x009b3490 - 0x009b3495 (5 bytes)
 void uGUICaplinkFilter::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (190 bytes)
@@ -147,44 +147,44 @@ __attribute__((weak)) void uGUICaplinkFilter::setFlowId(u32 flow_id, bool isInit
 // Address: 0x009b5290 - 0x009b5308 (120 bytes)
 void uGUICaplinkFilter::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mFlowId | static_cast<u32>(2)) != static_cast<u32>(3)) {
+    if ((mFlowId | 2u) != 3) {
         return;
     }
-    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCancelCtrl->execute();
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->execute();
     }
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->execute();
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->execute();
     }
-    if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpButtonCtrl->execute();
+    if (mpButtonCtrl != nullptr) {
+        mpButtonCtrl->execute();
     }
-    this->mMain.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-    if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
+    mMain.mListCtrl.executeCtrl();
+    if (mpDecideCtrl == nullptr) {
         return;
     }
-    this->mpDecideCtrl->execute();
+    mpDecideCtrl->execute();
 }
 
 // Address: 0x009b5310 - 0x009b538a (122 bytes)
 void uGUICaplinkFilter::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMain.mListCtrl.::uGUIBase::cScrollList::moveEvent() != false) {
-        this->::uGUICaplinkFilter::eventAdjustCursor();
-        if (this->mMain.mListCtrl.::uGUIBase::cScrollList::getInputEvent() == static_cast<u32>(14)) {
-            this->::uGUICaplinkFilter::eventDecide();
+    if (mMain.mListCtrl.moveEvent()) {
+        eventAdjustCursor();
+        if (mMain.mListCtrl.getInputEvent() == 14) {
+            eventDecide();
         }
     } else {
-        if (this->::uGUIBase::getInputEvent() != static_cast<u32>(68)) {
-            if (this->::uGUIBase::getInputEvent() == static_cast<u32>(67)) {
-                this->::uGUICaplinkFilter::setFlowId(static_cast<u32>(4), false);
+        if (getInputEvent() != 68) {
+            if (getInputEvent() == 67) {
+                setFlowId(4u, false);
             } else {
-                if (this->::uGUIBase::getInputEvent() == static_cast<u32>(66)) {
-                    this->::uGUICaplinkFilter::eventDecide();
+                if (getInputEvent() == 66) {
+                    eventDecide();
                 }
             }
         } else {
-            this->::uGUICaplinkFilter::eventAdjustCursor();
+            eventAdjustCursor();
         }
     }
 }
@@ -193,69 +193,69 @@ void uGUICaplinkFilter::moveEvent() {
 void uGUICaplinkFilter::updateMove() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    if (this->mFlowId != static_cast<u32>(1)) {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            this->::uGUICaplinkFilter::updateReq();
+    if (mFlowId != 1) {
+        if (mFlowId == 2) {
+            updateReq();
         } else {
-            if (this->mFlowId == static_cast<u32>(3)) {
-                this->mMain.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-                (&this->mMain.mButton[0])->update();
-                (&this->mMain.mButton[1])->update();
-                this->mMain.mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-                this->mMain.mList[0].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[1].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[2].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[3].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[4].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[5].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[6].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[7].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[8].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[9].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[10].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[11].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[12].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[13].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[14].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[15].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[16].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[17].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[18].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-                this->mMain.mList[19].mCheck.::uGUIBase::cReferenceUICheckbox::update();
+            if (mFlowId == 3) {
+                mMain.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+                (&mMain.mButton[0])->update();
+                (&mMain.mButton[1])->update();
+                mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+                mMain.mList[0].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[1].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[2].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[3].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[4].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[5].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[6].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[7].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[8].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[9].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[10].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[11].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[12].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[13].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[14].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[15].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[16].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[17].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[18].mCheck.uGUIBase::cReferenceUICheckbox::update();
+                mMain.mList[19].mCheck.uGUIBase::cReferenceUICheckbox::update();
             }
         }
     } else {
-        this->mMain.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-        (&this->mMain.mButton[0])->update();
-        (&this->mMain.mButton[1])->update();
-        this->mMain.mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-        this->mMain.mList[0].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[1].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[2].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[3].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[4].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[5].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[6].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[7].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[8].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[9].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[10].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[11].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[12].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[13].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[14].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[15].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[16].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[17].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[18].mCheck.::uGUIBase::cReferenceUICheckbox::update();
-        this->mMain.mList[19].mCheck.::uGUIBase::cReferenceUICheckbox::update();
+        mMain.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+        (&mMain.mButton[0])->update();
+        (&mMain.mButton[1])->update();
+        mMain.mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+        mMain.mList[0].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[1].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[2].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[3].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[4].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[5].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[6].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[7].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[8].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[9].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[10].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[11].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[12].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[13].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[14].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[15].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[16].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[17].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[18].mCheck.uGUIBase::cReferenceUICheckbox::update();
+        mMain.mList[19].mCheck.uGUIBase::cReferenceUICheckbox::update();
     }
 }
 
 // Address: 0x009b4710 - 0x009b4719 (9 bytes)
 void uGUICaplinkFilter::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009b48e0 - 0x009b4e10 (1328 bytes)
@@ -370,34 +370,34 @@ __attribute__((weak)) void uGUICaplinkFilter::eventAdjustCursor() {
 // Address: 0x009b4210 - 0x009b4231 (33 bytes)
 u32 uGUICaplinkFilter::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x009b42b0 - 0x009b42c5 (21 bytes)
 u32 uGUICaplinkFilter::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009b4240 - 0x009b42a6 (102 bytes)
 u32 uGUICaplinkFilter::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->setCurrentPos(static_cast<s32>(1), false);
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->setCurrentPos(1, false);
     }
-    if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpButtonCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpButtonCtrl != nullptr) {
+        mpButtonCtrl->setCurrentPos(0, false);
     }
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(4);
+    if (msg != nullptr) {
+        msg->changeSE = 4;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x009b42d0 - 0x009b437d (173 bytes)
@@ -410,21 +410,23 @@ __attribute__((weak)) u32 uGUICaplinkFilter::evCtrlAdjustCursor(cControl::Messag
 // Address: 0x009b4380 - 0x009b43e8 (104 bytes)
 u32 uGUICaplinkFilter::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender == this->mpButtonCtrl) {
-                if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                    this->mpListCtrl->setCurrentPos(static_cast<s32>(1), false);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender == mpButtonCtrl) {
+                if (mpListCtrl != nullptr) {
+                    mpListCtrl->setCurrentPos(1, false);
                 }
-                this->::uGUICaplinkFilter::eventAdjustCursor();
-                msg->changeSE = static_cast<u32>(4);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-                return static_cast<u32>(1);
+                eventAdjustCursor();
+                msg->changeSE = 4;
+                setInputEvent(66u);
+                return 1;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkFilter::MyDTI uGUICaplinkFilter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkFilter.cpp at 0x009b587f-0x009b58bc (called at uGUICaplinkFilter.cpp:33)
@@ -482,7 +484,7 @@ const MtDTI& uGUICaplinkFilter::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17uGUICaplinkFilter9cListItemD0Ev at 0x01ae2fb0-0x01ae2fda, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkFilter::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -500,6 +502,8 @@ inline void uGUICaplinkFilter::cListItem::operator delete(void* p_addr) {
 //   in uGUICaplinkFilter::uGUICaplinkFilter at 0x009b3064-0x009b313c (called at uGUICaplinkFilter.h:135)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUICaplinkFilter::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkFilter::cListItem::MyDTI uGUICaplinkFilter::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkFilter.cpp at 0x009b58bc-0x009b58f9 (called at uGUICaplinkFilter.cpp:34)
@@ -554,7 +558,7 @@ const MtDTI& uGUICaplinkFilter::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17uGUICaplinkFilter9cListInfoD0Ev at 0x01ae2f00-0x01ae2f2a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUICaplinkFilter::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -579,6 +583,8 @@ __attribute__((weak)) void uGUICaplinkFilter::cListInfo::addMouseTouchList(cCont
     DDON_STUB("uGUICaplinkFilter::cListInfo::addMouseTouchList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkFilter::cListInfo::MyDTI uGUICaplinkFilter::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkFilter.cpp at 0x009b58f9-0x009b5936 (called at uGUICaplinkFilter.cpp:35)

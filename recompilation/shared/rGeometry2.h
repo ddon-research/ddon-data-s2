@@ -135,6 +135,8 @@ public:
 public:
     class cGeometry : public nCollision::cGeometry
     {
+        // inferred: rGeometry2::cGeometryArray::getAttachGeometry names rGeometry2::cGeometry::mpAttachGeometry, through its enclosing class rGeometry2
+        friend class rGeometry2;
     public:
         enum ATTACH_TYPE
         {
@@ -268,7 +270,7 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK10rGeometry25MyDTI11newInstanceEv at 0x0121d150-0x0121d188, code DWARF attributes to no inlined copy
 inline rGeometry2::rGeometry2() {
-    this->::cResource::mAttr = static_cast<u32>(22);
-    this->mpParentResource = static_cast<rGeometry2Group*>(nullptr);
-    this->mpGeometry = static_cast<rGeometry2::cGeometryArray*>(nullptr);
+    this->::cResource::mAttr = 22;
+    this->mpParentResource = nullptr;
+    this->mpGeometry = nullptr;
 }

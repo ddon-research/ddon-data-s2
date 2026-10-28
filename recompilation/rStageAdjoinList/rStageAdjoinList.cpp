@@ -37,7 +37,7 @@ const MtDTI& rStageAdjoinList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageAdjoinList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::DTI)->memAlloc(sz, align, ::rStageAdjoinList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageAdjoinList::DTI)->memAlloc(sz, align, rStageAdjoinList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rStageAdjoinList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageAdjoinList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageAdjoinList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,20 +74,19 @@ rStageAdjoinList::cAdjoinInfo* rStageAdjoinList::getNextStageAdjoinInfo(s32 dest
     // inferred: a value cast to the type its use takes: unsigned short used as unsigned int
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c from MtObject*
-    if (this->mAdjoinInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAdjoinInfo.mLength != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i2 = static_cast<unsigned int>(0);
+        unsigned int i2 = 0;
         do {
-            if (static_cast<unsigned int>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mAdjoinInfo.::MtArray::mpArray[i2]) + static_cast<long>(40))) == static_cast<unsigned int>(destinationStageNo)) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mAdjoinInfo.::MtArray::mpArray[i2]) + static_cast<long>(44))) != static_cast<unsigned char>(0)) {
-                } else {
-                    return static_cast<rStageAdjoinList::cAdjoinInfo*>(this->mAdjoinInfo.::MtArray::mpArray[i2]);
+            if (static_cast<unsigned int>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mAdjoinInfo.mpArray[i2]) + 40)) == static_cast<unsigned int>(destinationStageNo)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mAdjoinInfo.mpArray[i2]) + 44)) == 0) {
+                    return static_cast<cAdjoinInfo*>(mAdjoinInfo.mpArray[i2]);
                 }
             }
-            i2 += static_cast<unsigned int>(1);
-        } while (i2 < this->mAdjoinInfo.::MtArray::mLength);
+            i2 += 1u;
+        } while (i2 < mAdjoinInfo.mLength);
     }
-    return static_cast<rStageAdjoinList::cAdjoinInfo*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (63 bytes)
@@ -97,10 +96,10 @@ rStageAdjoinList::cAdjoinInfo* rStageAdjoinList::getNextStageAdjoinInfo(s32 dest
 // Address: 0x006f13a0 - 0x006f13b8 (24 bytes)
 rStageAdjoinList::cJumpPosition* rStageAdjoinList::getJumpPosition(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mJumpPosition.::MtArray::mLength) {
-        return static_cast<rStageAdjoinList::cJumpPosition*>(this->mJumpPosition.::MtArray::mpArray[index]);
+    if (index < mJumpPosition.mLength) {
+        return static_cast<cJumpPosition*>(mJumpPosition.mpArray[index]);
     } else {
-        return static_cast<rStageAdjoinList::cJumpPosition*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -118,70 +117,70 @@ MT_CTSTR rStageAdjoinList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStageAdjoinList::rStageAdjoinList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mStageNo = static_cast<u16>(0);
+    setAttribute(22u);
+    mStageNo = 0;
 }
 
 // Address: 0x006f13d0 - 0x006f1520 (336 bytes)
 // Also emitted as: _ZN16rStageAdjoinListD0Ev at 0x006f1520
 rStageAdjoinList::~rStageAdjoinList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAdjoinInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAdjoinInfo.mLength != 0) {
         // inferred: the value the loop at 0x6f1400 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAdjoinInfo.::MtArray::mLength;
+        u32 v0_0 = mAdjoinInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAdjoinInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAdjoinInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAdjoinInfo.::MtArray::mLength) {
-                    v0_0 = this->mAdjoinInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAdjoinInfo.mpArray[i0_3] != nullptr) {
+                delete mAdjoinInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAdjoinInfo.mLength) {
+                    v0_0 = mAdjoinInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAdjoinInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAdjoinInfo.::MtArray::mpArray));
+    if (mAdjoinInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAdjoinInfo.mpArray));
     }
-    this->mAdjoinInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAdjoinInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAdjoinInfo.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mJumpPosition.::MtArray::mLength != static_cast<u32>(0)) {
+    mAdjoinInfo.mpArray = nullptr;
+    mAdjoinInfo.mBufsiz = 0;
+    mAdjoinInfo.mLength = 0;
+    if (mJumpPosition.mLength != 0) {
         // inferred: the value the loop at 0x6f1480 carries; no location-less local in scope fits
-        u32 v2_0 = this->mJumpPosition.::MtArray::mLength;
+        u32 v2_0 = mJumpPosition.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mJumpPosition.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mJumpPosition.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mJumpPosition.::MtArray::mLength) {
-                    v2_0 = this->mJumpPosition.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mJumpPosition.mpArray[i2_3] != nullptr) {
+                delete mJumpPosition.mpArray[i2_3];
+                if ((i2_3 + 1u) < mJumpPosition.mLength) {
+                    v2_0 = mJumpPosition.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mJumpPosition.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mJumpPosition.::MtArray::mpArray));
+    if (mJumpPosition.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mJumpPosition.mpArray));
     }
-    this->mJumpPosition.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mJumpPosition.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mJumpPosition.::MtArray::mLength = static_cast<u32>(0);
+    mJumpPosition.mpArray = nullptr;
+    mJumpPosition.mBufsiz = 0;
+    mJumpPosition.mLength = 0;
 }
 
 // Address: 0x006f1550 - 0x006f161e (206 bytes)
@@ -189,12 +188,12 @@ bool rStageAdjoinList::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4997459)) {
-        if ((&r)->readU32() == static_cast<u32>(4)) {
-            this->mStageNo = (&r)->readU16();
-            ::nDDOIO::readMtArray(r, this->mAdjoinInfo);
-            ::nDDOIO::readMtArray(r, this->mJumpPosition);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x4C4153) {
+        if ((&r)->readU32() == 4) {
+            mStageNo = (&r)->readU16();
+            nDDOIO::readMtArray(r, mAdjoinInfo);
+            nDDOIO::readMtArray(r, mJumpPosition);
             return true;
         }
     }
@@ -208,6 +207,8 @@ __attribute__((weak)) bool rStageAdjoinList::save(MtStream& out) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageAdjoinList::MyDTI rStageAdjoinList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f2290-0x006f22d1 (called at rStageAdjoinList.cpp:29)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f2290-0x006f22d1 (called at rStageAdjoinList.h:30)
@@ -216,7 +217,7 @@ __attribute__((weak)) bool rStageAdjoinList::save(MtStream& out) {
 // Address: 0x006f1200 - 0x006f12c5 (197 bytes)
 MtObject* rStageAdjoinList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageAdjoinList;
+    return new (16u) rStageAdjoinList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -244,7 +245,7 @@ const MtDTI& rStageAdjoinList::cAdjoinInfo::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rStageAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, ::rStageAdjoinList::cAdjoinInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, rStageAdjoinList::cAdjoinInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -259,7 +260,7 @@ void* rStageAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,8 +288,35 @@ inline void rStageAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
 // Address: 0x006f1a70 - 0x006f1b0d (157 bytes)
 // Also emitted as: _ZN16rStageAdjoinList11cAdjoinInfoD0Ev at 0x006f1b10
 rStageAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
-    DDON_STUB("rStageAdjoinList::cAdjoinInfo::~cAdjoinInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mIndex.mLength != 0) {
+        // inferred: the value the loop at 0x6f1aa0 carries; no location-less local in scope fits
+        u32 v0_0 = mIndex.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mIndex.mpArray[i0_3] != nullptr) {
+                delete mIndex.mpArray[i0_3];
+                if ((i0_3 + 1u) < mIndex.mLength) {
+                    v0_0 = mIndex.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mIndex.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mIndex.mpArray));
+    }
+    mIndex.mpArray = nullptr;
+    mIndex.mBufsiz = 0;
+    mIndex.mLength = 0;
 }
 
 // Address: 0x006f1bd0 - 0x006f1efa (810 bytes)
@@ -296,6 +324,8 @@ __attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::createProperty(MtPrope
     DDON_STUB("rStageAdjoinList::cAdjoinInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageAdjoinList::cAdjoinInfo::MyDTI rStageAdjoinList::cAdjoinInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f22d1-0x006f2311 (called at rStageAdjoinList.cpp:193)
@@ -305,7 +335,7 @@ __attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::createProperty(MtPrope
 // Address: 0x006f1790 - 0x006f1809 (121 bytes)
 MtObject* rStageAdjoinList::cAdjoinInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageAdjoinList::cAdjoinInfo;
+    return new (16u) rStageAdjoinList::cAdjoinInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -345,7 +375,7 @@ const MtDTI& rStageAdjoinList::cAdjoinInfo::cIndex::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rStageAdjoinList11cAdjoinInfo6cIndexD0Ev at 0x01ab2b10-0x01ab2b3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStageAdjoinList::cAdjoinInfo::cIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -370,6 +400,8 @@ __attribute__((weak)) void rStageAdjoinList::cAdjoinInfo::cIndex::createProperty
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
 //   in _ZN6nDDOIO12writeMtArrayIN16rStageAdjoinList11cAdjoinInfoEEEvR12MtDataWriterR12MtTypedArrayIT_E at 0x01ab27ab-0x01ab27b9 (called at nDDOIO.h:463)
 // void rStageAdjoinList::cAdjoinInfo::cIndex::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI rStageAdjoinList::cAdjoinInfo::cIndex::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f2311-0x006f234a (called at rStageAdjoinList.cpp:194)
@@ -407,7 +439,7 @@ const MtDTI& rStageAdjoinList::cJumpPosition::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rStageAdjoinList::cJumpPosition::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cJumpPosition::DTI)->memAlloc(sz, align, ::rStageAdjoinList::cJumpPosition::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageAdjoinList::cJumpPosition::DTI)->memAlloc(sz, align, rStageAdjoinList::cJumpPosition::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -421,7 +453,7 @@ void* rStageAdjoinList::cJumpPosition::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rStageAdjoinList::cJumpPosition::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cJumpPosition::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageAdjoinList::cJumpPosition::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -458,6 +490,8 @@ __attribute__((weak)) void rStageAdjoinList::cJumpPosition::createProperty(MtPro
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageAdjoinList::cJumpPosition::MyDTI rStageAdjoinList::cJumpPosition::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f234a-0x006f2383 (called at rStageAdjoinList.cpp:315)
 //   in _GLOBAL__sub_I_rStageAdjoinList.cpp at 0x006f234a-0x006f2383 (called at rStageAdjoinList.h:172)
@@ -466,7 +500,7 @@ __attribute__((weak)) void rStageAdjoinList::cJumpPosition::createProperty(MtPro
 // Address: 0x006f1f00 - 0x006f1f4f (79 bytes)
 MtObject* rStageAdjoinList::cJumpPosition::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageAdjoinList::cJumpPosition;
+    return new (16u) rStageAdjoinList::cJumpPosition;
 }
 
 // Instance at 0x01ab2a80 - 0x01ab2a85 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

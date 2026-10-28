@@ -49,7 +49,7 @@ const MtDTI& rSoundAreaInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundAreaInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundAreaInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundAreaInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,17 +130,19 @@ __attribute__((weak)) void rSoundAreaInfo::clear() {
 // No out-of-line body: no code in the ELF
 // void rSoundAreaInfo::setSndZoneTrigger(rZone*);
 
-// No out-of-line body: 3 inlined copies in 3 functions (21 bytes)
-//   in aStage::loadResStageSound at 0x0001450b-0x00014512 (called at aStage.cpp:8723)
-//   in uStageJointMdl::move at 0x00d2ecd7-0x00d2ecde (called at uStageJoint.cpp:448)
-//   in uStagePartsMdl::move at 0x00d36add-0x00d36ae4 (called at uStageParts.cpp:400)
-// rZone* rSoundAreaInfo::getSndZoneOcclusion();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rZone* rSoundAreaInfo::getSndZoneOcclusion() {
+    return mpSndZoneRes[0].mpPtr;
+}
 
-// No out-of-line body: 3 inlined copies in 3 functions (21 bytes)
-//   in aStage::loadResStageSound at 0x00014577-0x0001457e (called at aStage.cpp:8733)
-//   in uStageJointMdl::move at 0x00d2ed68-0x00d2ed6f (called at uStageJoint.cpp:453)
-//   in uStagePartsMdl::move at 0x00d36b6e-0x00d36b75 (called at uStageParts.cpp:405)
-// rZone* rSoundAreaInfo::getSndZoneGenerator();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rZone* rSoundAreaInfo::getSndZoneGenerator() {
+    return mpSndZoneRes[1].mpPtr;
+}
 
 // No out-of-line body: 6 inlined copies in 4 functions (42 bytes)
 //   in aStage::loadResStageWeather at 0x0001416e-0x00014175 (called at aStage.cpp:7780)
@@ -158,10 +160,10 @@ __attribute__((weak)) void rSoundAreaInfo::clear() {
 // Address: 0x006ec290 - 0x006ec2a2 (18 bytes)
 rSoundRequest* rSoundAreaInfo::getAttributeRes(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(31)) {
-        return this->mpAttributeSTQRes[index].mpPtr;
+    if (index <= 31u) {
+        return mpAttributeSTQRes[index].mpPtr;
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -213,9 +215,12 @@ __attribute__((weak)) rSoundRequest* rSoundAreaInfo::getAttributeResToScrAttr(u3
 //   in sSoundManager::getEmState at 0x0085790c-0x00857912 (called at sSoundManager.cpp:4175)
 // u32 rSoundAreaInfo::getBtlBgmOutroNo();
 
-// No out-of-line body: 1 inlined copy in 1 function (7 bytes)
-//   in aStage::loadResStageWeather at 0x000140bd-0x000140c4 (called at aStage.cpp:7765)
-// rSoundRequest* rSoundAreaInfo::getSndAmbientRes();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::loadResStageWeather at 0x140bd-0x140c4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rSoundRequest* rSoundAreaInfo::getSndAmbientRes() {
+    return mpAmbientRes.mpPtr;
+}
 
 // No out-of-line body: 6 inlined copies in 4 functions (54 bytes)
 //   in sSoundExt::loadBgmResource at 0x0084d89f-0x0084d8a6 (called at sSoundExt.cpp:1794)
@@ -228,7 +233,7 @@ __attribute__((weak)) rSoundRequest* rSoundAreaInfo::getAttributeResToScrAttr(u3
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
-    return this->mpCycleBgmSTQRes.mpPtr;
+    return mpCycleBgmSTQRes.mpPtr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,6 +244,8 @@ rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
 
 // No out-of-line body: no code in the ELF
 // void rSoundAreaInfo::setSndBtlBgmOutroNo(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundAreaInfo::MyDTI rSoundAreaInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundAreaInfo.cpp at 0x006ec56f-0x006ec5ac (called at rSoundAreaInfo.cpp:48)

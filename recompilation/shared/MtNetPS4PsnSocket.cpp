@@ -13,10 +13,10 @@
 // Also emitted as: _ZN5MtNet6PS4Psn6SocketD0Ev at 0x00ddc340
 MtNet::PS4Psn::Socket::~Socket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSocket > static_cast<SceNetId>(-1)) {
-        ::sceNetSocketClose(this->mSocket);
-        this->mSocket = static_cast<SceNetId>(-1);
-        this->mIsEnable = false;
+    if (mSocket > -1) {
+        ::sceNetSocketClose(mSocket);
+        mSocket = -1;
+        mIsEnable = false;
     }
 }
 
@@ -57,7 +57,7 @@ __attribute__((weak)) bool MtNet::PS4Psn::Socket::isIpAddressBroadcast(const MtN
 // Address: 0x00ddc460 - 0x00ddc467 (7 bytes)
 bool MtNet::PS4Psn::Socket::isEable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnable;
+    return mIsEnable;
 }
 
 // Address: 0x00ddc470 - 0x00ddc483 (19 bytes)
@@ -75,7 +75,7 @@ __attribute__((weak)) void MtNet::PS4Psn::Socket::getInfoPeer(MtNetAddress* peer
 // Address: 0x00ddc4b0 - 0x00ddc4b4 (4 bytes)
 s32 MtNet::PS4Psn::Socket::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mType;
+    return mType;
 }
 
 // Address: 0x00ddc4c0 - 0x00ddc662 (418 bytes)

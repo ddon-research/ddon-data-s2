@@ -30,6 +30,7 @@ class cEffectCycleCtrl;
 class cEndContentsManager;
 class cEnemyGroup;
 class cFSMUnit;
+class cFurniture;
 class cGUIFloorManager;
 class cGroupParam;
 class cHitNode;
@@ -83,6 +84,7 @@ class cStaminaDecList;
 class cTalkMsgData;
 class cWeatherScript;
 class cWeatherScriptIO;
+class cWebsocketClient;
 class cZCEFLControl;
 class cZoneContactInfoList;
 class cZoneLayout;
@@ -90,6 +92,7 @@ class cZoneMultiStack;
 class cpCorePointCtrl;
 class cpEffectStatusManager;
 class cpHpDamageCtrl;
+class cpItemThrow;
 class cpJob09;
 class cpLockOn;
 class cpObjCollisionBase;
@@ -124,6 +127,7 @@ namespace nFurnitureMenuFlow { class cFurnitureListItems; }
 namespace nGUIItem { class cItemList; }
 namespace nHumanBow { class cBowActParam; }
 namespace nMarker { class cMarkerInfo; }
+namespace nMarker { class cWarpMarkerInfoStage; }
 namespace nMenuKeyConfig { class KeyListItems; }
 namespace nQuest { class cCycleContentsBorderRewardInfo; }
 namespace nQuest { class cCycleContentsInfo; }
@@ -136,6 +140,7 @@ namespace nQuest { class cGUIEventBoardData; }
 namespace nQuest { class cGUINewspaperSetQuestInfo; }
 namespace nQuest { class cQuestMarker; }
 namespace nSessionManager { class cNetSessionManager; }
+namespace nZone { class cContentsPool; }
 namespace nZone { class cLayoutElement; }
 class rAIPawnAutoMotionTbl;
 class rAISensor;
@@ -148,12 +153,15 @@ class rAreaInfoStage;
 class rBowActParamList;
 class rCameraParamList;
 class rCameraQuakeList;
+class rCraftRecipe;
 class rCycleQuestInfo;
 class rDungeonMarker;
+class rFieldAreaAdjoinList;
 class rFieldAreaMarkerInfo;
 class rGUIMapSetting;
 class rGeometry2;
 class rGeometry3;
+class rItemList;
 class rJobTutorialQuestList;
 class rKeyConfigTextTable;
 class rLandInfo;
@@ -179,6 +187,7 @@ class rSoundSimpleCurve;
 class rSoundSubMixer;
 class rSoundSubMixerSet;
 class rStageAdjoinList;
+class rStageCustomPartsEx;
 class rStaminaDecTbl;
 class rTable;
 class rTblMenuComm;
@@ -207,6 +216,7 @@ class sLockOnManager;
 class sMenu;
 class sNetworkExt;
 class sNpcManager;
+class sOccluderEx;
 class sOmManager;
 class sQuestManagerExt;
 class sScenario;
@@ -220,8 +230,10 @@ class sUnitManager;
 class sZone;
 class uDDOModel;
 class uGUI;
+class uGUIBase;
 class uGUIBaseExt;
 class uGUICaplinkTopMenu;
+class uGUICommunityList;
 class uGUIContentsBoard;
 class uGUIEntryBoard;
 class uGUIGiveAndTake;
@@ -229,6 +241,7 @@ class uGUIInfo;
 class uGUIMap;
 class uGUIMapMini;
 class uGUIMissionResult;
+class uGUIMouseOverCursor;
 class uGUINpcWindow;
 class uGUIPopCmd01;
 class uGUIPopFilter;
@@ -290,7 +303,7 @@ class MtArray : public MtObject
     friend class cDDMaterialCtrl;
     // inferred: cDynamicBVHCollision::removeAll names cDynamicBVHCollision::mNoUseNodeArray.::MtArray::mLength
     friend class cDynamicBVHCollision;
-    // inferred: cEffectCycleCtrl::isOrderExist names cEffectCycleCtrl::mEffectPartArray.::MtArray::mLength
+    // inferred: cEffectCycleCtrl::updateEfcHandle names cEffectCycleCtrl::mEffectPartArray.::MtArray::mLength
     friend class cEffectCycleCtrl;
     // inferred: cEndContentsManager::resetDistEndContentsList names cEndContentsManager::mDistEndContentsList.::MtArray::mLength
     friend class cEndContentsManager;
@@ -298,9 +311,11 @@ class MtArray : public MtObject
     friend class cEnemyGroup;
     // inferred: cFSMUnit::isExistEnemyUnit names sUnitManager::mRefArray.::MtArray::mLength
     friend class cFSMUnit;
+    // inferred: cFurniture::release names cFurniture::mInfoDisp.::MtArray::mLength
+    friend class cFurniture;
     // inferred: cGUIFloorManager::setFloorBaseIdOfs names cGUIFloorManager::mParamArray.::MtArray::mLength
     friend class cGUIFloorManager;
-    // inferred: cGroupParam::isKillAreaInside names cGroupParam::mKillAreaList.::MtArray::mLength
+    // inferred: cGroupParam::clearDropItem names cGroupParam::mDropItemList.mLength
     friend class cGroupParam;
     // inferred: cHitNode::updateNode names cHitNode::mGeomArray.mLength
     friend class cHitNode;
@@ -380,7 +395,7 @@ class MtArray : public MtObject
     friend class cQuestSvNoticeManager;
     // inferred: cQuestSvRequestManager::isEmpty names cQuestSvRequestManager::mQuestSvRequestQueue.::MtArray::mLength
     friend class cQuestSvRequestManager;
-    // inferred: cQuestTask::getEnemyDieNumForLight names cQuestPersonalData::mProcessList.::MtArray::mLength
+    // inferred: cQuestTask::cQuestProcess::checkHasMypawn names cNetGameServer::mMyPawnList.::MtArray::mLength, through its enclosing class cQuestTask
     friend class cQuestTask;
     // inferred: cQuestTaskParam::resetOrderCondition names cQuestTaskParam::mOrderConditions.::MtArray::mLength
     friend class cQuestTaskParam;
@@ -404,6 +419,8 @@ class MtArray : public MtObject
     friend class cWeatherScript;
     // inferred: cWeatherScriptIO::cWeatherScriptIO names cWeatherScriptIO::mWSCParams.::MtArray::mAutoDelete
     friend class cWeatherScriptIO;
+    // inferred: cWebsocketClient::removeListener names cWebsocketClient::mpListenerArray.mLength
+    friend class cWebsocketClient;
     // inferred: cZCEFLControl::~cZCEFLControl names cZCEFLControl::mSetList.::MtArray::mLength
     friend class cZCEFLControl;
     // inferred: cZoneContactInfoList::initList names cZoneContactInfoList::mContactPairListStart.::MtArray::mLength
@@ -412,12 +429,14 @@ class MtArray : public MtObject
     friend class cZoneLayout;
     // inferred: cZoneMultiStack::releaseZoneAll names cZoneMultiStack::mNotifiedStack.::MtArray::mAutoDelete
     friend class cZoneMultiStack;
-    // inferred: cpCorePointCtrl::getActiveCorePointFromIndex names cpCorePointCtrl::mActiveCorePointArray.::MtArray::mLength
+    // inferred: cpCorePointCtrl::updateEfcHandle names cpCorePointCtrl::mActiveCorePointArray.::MtArray::mLength
     friend class cpCorePointCtrl;
     // inferred: cpEffectStatusManager::cpEffectStatusManager names cpEffectStatusManager::mEffectArray.mAutoDelete
     friend class cpEffectStatusManager;
     // inferred: cpHpDamageCtrl::update names cpHpDamageCtrl::mParentRegionStatusArray.::MtArray::mLength
     friend class cpHpDamageCtrl;
+    // inferred: cpItemThrow::releaseItemModel names uHuman::mSpecialEquipArray.::MtArray::mLength
+    friend class cpItemThrow;
     // inferred: cpJob09::checkShlAlchemyValue names cpJob09::mShlArray.::MtArray::mLength
     friend class cpJob09;
     // inferred: cpLockOn::after names cpLockOn::mArray.::MtArray::mLength
@@ -486,6 +505,8 @@ class MtArray : public MtObject
     friend class nHumanBow::cBowActParam;
     // inferred: nMarker::cMarkerInfo::~cMarkerInfo names nMarker::cMarkerInfo::mPosList.::MtArray::mLength
     friend class nMarker::cMarkerInfo;
+    // inferred: nMarker::cWarpMarkerInfoStage::cTargetInfo::~cTargetInfo names nMarker::cWarpMarkerInfoStage::cTargetInfo::mTargetPosList.::MtArray::mLength, through its enclosing class nMarker::cWarpMarkerInfoStage
+    friend class nMarker::cWarpMarkerInfoStage;
     // inferred: nMenuKeyConfig::KeyListItems::getItemNum names rKeyConfigTextTable::mSortedArray.::MtArray::mLength
     friend class nMenuKeyConfig::KeyListItems;
     // inferred: nQuest::cCycleContentsBorderRewardInfo::~cCycleContentsBorderRewardInfo names nQuest::cCycleContentsBorderRewardInfo::mRewardList.::MtArray::mLength
@@ -506,8 +527,10 @@ class MtArray : public MtObject
     friend class nQuest::cGUINewspaperSetQuestInfo;
     // inferred: nQuest::cQuestMarker::setPosition names MtArray::mLength
     friend class nQuest::cQuestMarker;
-    // inferred: nSessionManager::cNetSessionManager::finalLobbyFlow names cNetGameServer::mLobbyMembers.::MtArray::mLength
+    // inferred: nSessionManager::cNetSessionManager::clearPartyReqInfo names CDataPartyListInfo::m_MemberList.::MtArray::mLength
     friend class nSessionManager::cNetSessionManager;
+    // inferred: nZone::cContentsPool::cContentsList::getZoneContentsNum names nZone::cContentsPool::cContentsList::mZoneContentsArray.mLength, through its enclosing class nZone::cContentsPool
+    friend class nZone::cContentsPool;
     // inferred: nZone::cLayoutElement::setContentsPoolID names nZone::cContentsPool::mContentsListArray.::MtArray::mLength
     friend class nZone::cLayoutElement;
     // inferred: rAIPawnAutoMotionTbl::rAIPawnAutoMotionTbl names rAIPawnAutoMotionTbl::mArray.::MtArray::mAutoDelete
@@ -532,18 +555,24 @@ class MtArray : public MtObject
     friend class rCameraParamList;
     // inferred: rCameraQuakeList::rCameraQuakeList names rCameraQuakeList::mQuakeList.mAutoDelete
     friend class rCameraQuakeList;
+    // inferred: rCraftRecipe::cCraftRecipe::getMaterialData names rCraftRecipe::cCraftRecipe::mMaterialDataList.::MtArray::mLength, through its enclosing class rCraftRecipe
+    friend class rCraftRecipe;
     // inferred: rCycleQuestInfo::~rCycleQuestInfo names rCycleQuestInfo::mCycleQuestInfo.::MtArray::mLength
     friend class rCycleQuestInfo;
     // inferred: rDungeonMarker::getWarpPosNum names rDungeonMarker::mWarpInfoList.::MtArray::mLength
     friend class rDungeonMarker;
+    // inferred: rFieldAreaAdjoinList::cAdjoinInfo::cAdjoinInfo names rFieldAreaAdjoinList::cAdjoinInfo::mPositions.::MtArray::mAutoDelete, through its enclosing class rFieldAreaAdjoinList
+    friend class rFieldAreaAdjoinList;
     // inferred: rFieldAreaMarkerInfo::~rFieldAreaMarkerInfo names rFieldAreaMarkerInfo::mMarkerInfoList.::MtArray::mLength
     friend class rFieldAreaMarkerInfo;
     // inferred: rGUIMapSetting::~rGUIMapSetting names rGUIMapSetting::mArray.::MtArray::mLength
     friend class rGUIMapSetting;
-    // inferred: rGeometry2::getGeometryNum names nCollision::cCollisionNode::mGeometryArray.::MtArray::mLength
+    // inferred: rGeometry2::cGeometryArray::setActive names nCollision::cCollisionNode::mGeometryArray.::MtArray::mLength, through its enclosing class rGeometry2
     friend class rGeometry2;
     // inferred: rGeometry3::clear names rGeometry3::mGroupArray.mLength
     friend class rGeometry3;
+    // inferred: rItemList::rItemParamXml::rItemParamXml names rItemList::rItemParamXml::mItemParamList.::MtArray::mAutoDelete, through its enclosing class rItemList
+    friend class rItemList;
     // inferred: rJobTutorialQuestList::getJobTutorialQuestNum names rJobTutorialQuestList::mJobTutorialList.::MtArray::mLength
     friend class rJobTutorialQuestList;
     // inferred: rKeyConfigTextTable::getSortedData names rKeyConfigTextTable::mSortedArray.::MtArray::mLength
@@ -594,6 +623,8 @@ class MtArray : public MtObject
     friend class rSoundSubMixerSet;
     // inferred: rStageAdjoinList::getNextStageAdjoinInfo names rStageAdjoinList::mAdjoinInfo.::MtArray::mpArray
     friend class rStageAdjoinList;
+    // inferred: rStageCustomPartsEx::AreaParam::AreaParam names rStageCustomPartsEx::AreaParam::mAreaHitShapeList.::MtArray::mAutoDelete, through its enclosing class rStageCustomPartsEx
+    friend class rStageCustomPartsEx;
     // inferred: rStaminaDecTbl::rStaminaDecTbl names rStaminaDecTbl::mDecTbl.::MtArray::mAutoDelete
     friend class rStaminaDecTbl;
     // inferred: rTable::getDataBase names rTable::mArray.mLength
@@ -624,23 +655,23 @@ class MtArray : public MtObject
     friend class sCameraExt;
     // inferred: sCaplinkManager::end names sCaplinkManager::mListener.::MtArray::mLength
     friend class sCaplinkManager;
-    // inferred: sCollision::setActive names sCollision::mSbcArray.::MtArray::mLength
+    // inferred: sCollision::Collider::initialize names sCollision::Collider::mNodeListArray.mLength, through its enclosing class sCollision
     friend class sCollision;
     // inferred: sControlManager::init names sControlManager::mRefArray.::MtArray::mpArray
     friend class sControlManager;
-    // inferred: sCraftManager::reset names sCraftManager::mRequest.::MtArray::mLength
+    // inferred: sCraftManager::cCraftPawnCtrl::getCraftTaskNum names nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::m_CraftProgressList.::MtArray::mLength, through its enclosing class sCraftManager
     friend class sCraftManager;
     // inferred: sEffectExt::releaseEfcZoneAll names sEffectExt::mZoneEffectUnitLayoutArray.::MtArray::mAutoDelete
     friend class sEffectExt;
     // inferred: sEnemyManager::getEnemyGroupId names cEnemyGroup::mEmList.::MtArray::mLength
     friend class sEnemyManager;
-    // inferred: sGUIExt::requestGetJobChangeList names MtArray::mLength
+    // inferred: sGUIExt::setSameWordMap names sGUIExt::mSameWardInfoArray.::MtArray::mLength
     friend class sGUIExt;
     // inferred: sGame::clearChargeCourse names sGame::mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength
     friend class sGame;
     // inferred: sInputManager::editCancel names cKeyCustomManager::mCustomArray.::MtArray::mpArray
     friend class sInputManager;
-    // inferred: sItemManager::setLinkItem names sItemManager::mBag.::MtArray::mLength
+    // inferred: sItemManager::cEquipList::~cEquipList names sItemManager::cEquipList::mEquipList.::MtArray::mLength, through its enclosing class sItemManager
     friend class sItemManager;
     // inferred: sLockOnManager::reset names sLockOnManager::mTargetArray.::MtArray::mpArray
     friend class sLockOnManager;
@@ -650,7 +681,9 @@ class MtArray : public MtObject
     friend class sNetworkExt;
     // inferred: sNpcManager::isHaveFunction names MtArray::mLength
     friend class sNpcManager;
-    // inferred: sOmManager::getOmCtrlFromIndex names sOmManager::mRefOmCtrlArray.::MtArray::mLength
+    // inferred: sOccluderEx::Area::getShape names sOccluderEx::Area::mShapeList.mLength, through its enclosing class sOccluderEx
+    friend class sOccluderEx;
+    // inferred: sOmManager::releaseTreeInsCtrl names sOmManager::mTreeIns.::MtArray::mLength
     friend class sOmManager;
     // inferred: sQuestManagerExt::notifyReloadMasterData names sQuestManagerExt::mManagerInfo.::MtArray::mLength
     friend class sQuestManagerExt;
@@ -676,10 +709,14 @@ class MtArray : public MtObject
     friend class uDDOModel;
     // inferred: uGUI::getVariable names uGUI::mVariableArray.mpArray
     friend class uGUI;
+    // inferred: uGUIBase::cReferenceUIChargesInfo::deleteData names uGUIBase::cReferenceUIChargesInfo::mList.::MtArray::mLength, through its enclosing class uGUIBase
+    friend class uGUIBase;
     // inferred: uGUIBaseExt::releaseResources names uGUIBaseExt::mResources.::MtArray::mpArray
     friend class uGUIBaseExt;
     // inferred: uGUICaplinkTopMenu::getCaptrophyCompleteNum names uGUICaplinkTopMenu::mCaptrophyData.::MtArray::mLength
     friend class uGUICaplinkTopMenu;
+    // inferred: uGUICommunityList::cTabData::move names uGUICommunityList::cTabData::mScrollList.mInfoArray.::MtArray::mLength, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
     // inferred: uGUIContentsBoard::moveEvent names uGUIQuestBoardBase::mList.mListCtrl.mInfoArray.::MtArray::mLength
     friend class uGUIContentsBoard;
     // inferred: uGUIEntryBoard::isItemEnable names uGUIEntryBoard::mDataArray.::MtArray::mLength
@@ -694,9 +731,11 @@ class MtArray : public MtObject
     friend class uGUIMapMini;
     // inferred: uGUIMissionResult::kill names uGUIMissionResult::mResultData.mResPointList.::MtArray::mLength
     friend class uGUIMissionResult;
+    // inferred: uGUIMouseOverCursor::~uGUIMouseOverCursor names uGUIMouseOverCursor::mMOC.::MtArray::mLength
+    friend class uGUIMouseOverCursor;
     // inferred: uGUINpcWindow::updateInit names uGUISystemMsg::mArrayPageInfo.::MtArray::mLength
     friend class uGUINpcWindow;
-    // inferred: uGUIPopCmd01::deleteDuplicateAll names uGUIPopCmd01::mItems.::MtArray::mLength
+    // inferred: uGUIPopCmd01::updateWait names uGUIPopCmd01::mItems.::MtArray::mLength
     friend class uGUIPopCmd01;
     // inferred: uGUIPopFilter::kill names uGUIPopFilter::mData.::MtArray::mpArray
     friend class uGUIPopFilter;
@@ -895,10 +934,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline MtArray::MtArray() {
-    this->mLength = static_cast<u32>(0);
-    this->mBufsiz = static_cast<u32>(0);
+    this->mLength = 0;
+    this->mBufsiz = 0;
     this->mAutoDelete = false;
-    this->mpArray = static_cast<MtObject* *>(nullptr);
+    this->mpArray = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

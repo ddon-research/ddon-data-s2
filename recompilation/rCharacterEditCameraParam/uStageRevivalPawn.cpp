@@ -23,7 +23,7 @@ const MtDTI& uStageRevivalPawn::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStageRevivalPawn::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStageRevivalPawn::DTI);
+    return MtMemoryAllocator::getAllocator(uStageRevivalPawn::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* uStageRevivalPawn::getAllocator() {
 // Address: 0x00d507a0 - 0x00d507e0 (64 bytes)
 void* uStageRevivalPawn::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStageRevivalPawn::getAllocator()->memAlloc(sz, align, ::uStageRevivalPawn::DTI.::MtDTI::getID());
+    return uStageRevivalPawn::getAllocator()->memAlloc(sz, align, uStageRevivalPawn::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* uStageRevivalPawn::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageRevivalPawn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageRevivalPawn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageRevivalPawn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,21 +109,23 @@ __attribute__((weak)) void uStageRevivalPawn::createProperty(MtPropertyList& s) 
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 u32 uStageRevivalPawn::getRevivalNpcId() const {
-    return this->mRevivalNpcId.NpcId;
+    return mRevivalNpcId.NpcId;
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (21 bytes)
-//   in cTalkStatePawnRevive::routineDisp at 0x001d8771-0x001d877e (called at cTalkStatePawnRevive.cpp:141)
-//   in cTalkStatePawnRevive::routinePay at 0x001d8864-0x001d886c (called at cTalkStatePawnRevive.cpp:172)
-// void uStageRevivalPawn::reqRevivalNpcId(u32 id);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cTalkStatePawnRevive::routinePay at 0x1d8864-0x1d886c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void uStageRevivalPawn::reqRevivalNpcId(u32 id) {
+    mReqRevivalNpcId.NpcId = id;
+}
 
 // Address: 0x00d520f0 - 0x00d5210e (30 bytes)
 bool uStageRevivalPawn::isReviveFinish() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mRno1 == static_cast<u8>(0)) {
-        if (this->mKillNpc[this->mIndex] != static_cast<unsigned char>(0)) {
-            if (this->mKillNpc[this->mIndex] != static_cast<unsigned char>(7)) {
+    if (mRno1 == 0) {
+        if (mKillNpc[mIndex] != 0) {
+            if (mKillNpc[mIndex] != 7) {
                 return false;
             }
         }
@@ -203,30 +205,33 @@ __attribute__((weak)) void uStageRevivalPawn::moveRevivalLostPawn() {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void uStageRevivalPawn::setDispNpc(s32 npcid, bool flag);
 
-// No out-of-line body: 1 inlined copy in 1 function (6 bytes)
-//   in uStageRevivalPawn::moveRevivalLostPawn at 0x00d51d97-0x00d51d9d (called at uStageRevivalPawn.cpp:538)
-// u32 uStageRevivalPawn::getReqRevivalNpcIdPrivate() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageRevivalPawn::moveRevivalLostPawn at 0xd51d97-0xd51d9d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 uStageRevivalPawn::getReqRevivalNpcIdPrivate() const {
+    return mReqRevivalNpcId.NpcId;
+}
 
-// No out-of-line body: 6 inlined copies in 6 functions (64 bytes)
-//   in cTalkStatePawnRevive::routineDisp at 0x001d8771-0x001d877e (called at uStageRevivalPawn.h:86)
-//   in cTalkStatePawnRevive::routinePay at 0x001d8864-0x001d886c (called at uStageRevivalPawn.h:86)
-//   in uStageRevivalPawn::MyDTI::newInstance at 0x00d506c6-0x00d506d1 (called at uStageRevivalPawn.cpp:63)
-//   and 3 more (every copy is in <bundle>.inlined.json)
-// void uStageRevivalPawn::setReqRevivalNpcIdPrivate(u32 NewValue);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cTalkStatePawnRevive::routinePay at 0x1d8864-0x1d886c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void uStageRevivalPawn::setReqRevivalNpcIdPrivate(u32 NewValue) {
+    mReqRevivalNpcId.NpcId = NewValue;
+}
 
 // No out-of-line body: no code in the ELF
 // u32 uStageRevivalPawn::getRevivingNpcIdPrivate() const;
 
-// No out-of-line body: 2 inlined copies in 1 function (16 bytes)
-//   in uStageRevivalPawn::moveRevivalLostPawn at 0x00d51da6-0x00d51dac (called at uStageRevivalPawn.cpp:540)
-//   in uStageRevivalPawn::moveRevivalLostPawn at 0x00d51e68-0x00d51e72 (called at uStageRevivalPawn.cpp:567)
-// void uStageRevivalPawn::setRevivingNpcIdPrivate(u32 NewValue);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageRevivalPawn::moveRevivalLostPawn at 0xd51da6-0xd51dac; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uStageRevivalPawn::setRevivingNpcIdPrivate(u32 NewValue) {
+    mRevivingNpcId.NpcId = NewValue;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 u32 uStageRevivalPawn::getRevivalNpcIdPrivate() const {
-    return this->mRevivalNpcId.NpcId;
+    return mRevivalNpcId.NpcId;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (41 bytes)
@@ -235,6 +240,8 @@ u32 uStageRevivalPawn::getRevivalNpcIdPrivate() const {
 //   in uStageRevivalPawn::setup at 0x00d50a51-0x00d50a5b (called at uStageRevivalPawn.cpp:126)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void uStageRevivalPawn::setRevivalNpcIdPrivate(u32 NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageRevivalPawn::MyDTI uStageRevivalPawn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageRevivalPawn.cpp at 0x00d5220f-0x00d5224c (called at uStageRevivalPawn.cpp:48)

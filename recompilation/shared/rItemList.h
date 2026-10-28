@@ -25,6 +25,7 @@ class MtUI;
 class cEquipData;
 namespace nGUIItem { class cItem; }
 class sItemManager;
+class uGUIBase;
 class uHuman;
 
 // Declarations
@@ -993,6 +994,8 @@ public:
         friend class nGUIItem::cItem;
         // inferred: sItemManager::reqKeyItemGetAnnounce names rItemList::rItemParam::mCategory
         friend class sItemManager;
+        // inferred: uGUIBase::cReferenceUIIconItem::setUnknown names rItemList::rItemParam::mRank, through its enclosing class uGUIBase
+        friend class uGUIBase;
         // inferred: uHuman::makeOcdAttackInfoCore names rItemList::rItemParam::mRank
         friend class uHuman;
     public:
@@ -1231,54 +1234,202 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActItemThrow::init at 0x245326-0x245329; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 rItemList::rItemParam::getAttackStatus() const {
+    return this->mAttackStatus;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPopDetail01::createPartsPoint at 0xba5134-0xba5138; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 6 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 rItemList::rItemParam::getItemParamNum() {
+    return this->mParamNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: specialized to the arguments every copy passes (DW_AT_const_value; 023 T608, 2.7.0 specialized-constant constructors); approximate: no recompile checks its other arguments
 inline rItemList::rVsEnemyParam::rVsEnemyParam(rItemList::rVsEnemyParam::EM_PHYLOGENY_KIND kind, u16 num) {
-    this->mKindType = static_cast<u8>(0);
-    this->mParam = static_cast<u16>(0);
+    this->mKindType = 0;
+    this->mParam = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rItemList::rWeaponParam::rWeaponParam() {
-    this->mWeight = static_cast<u16>(0);
-    this->mMaxHpRev = static_cast<u16>(0);
-    this->mMaxStRev = static_cast<u16>(0);
-    this->mColorNo = static_cast<u8>(0);
-    this->mAttack = static_cast<u32>(0);
-    this->mMagicAttack = static_cast<u32>(0);
-    this->mMagicDefense = static_cast<u32>(0);
-    this->mDurability = static_cast<u32>(0);
-    this->mChance = static_cast<u32>(0);
-    this->mDefense = static_cast<u32>(0);
-    this->mModelTagId = static_cast<u32>(0);
-    this->mPowerRev = static_cast<u32>(0);
-    this->mSex = static_cast<u8>(1);
-    this->mWepCategory = static_cast<u8>(0);
-    this->mShieldStagger = static_cast<u32>(0);
-    this->mpEquipParamS8List = static_cast<rItemList::rEquipParamS8*>(nullptr);
-    this->mEquipParamS8Num = static_cast<u8>(0);
-    this->mModelParts = static_cast<u8>(0);
-    this->mEleSlot = static_cast<u8>(0);
-    this->mPhysicalType = static_cast<u8>(0);
-    this->mElementType = static_cast<u8>(0);
+    this->mWeight = 0;
+    this->mMaxHpRev = 0;
+    this->mMaxStRev = 0;
+    this->mColorNo = 0;
+    this->mAttack = 0;
+    this->mMagicAttack = 0;
+    this->mMagicDefense = 0;
+    this->mDurability = 0;
+    this->mChance = 0;
+    this->mDefense = 0;
+    this->mModelTagId = 0;
+    this->mPowerRev = 0;
+    this->mSex = 1;
+    this->mWepCategory = 0;
+    this->mShieldStagger = 0;
+    this->mpEquipParamS8List = nullptr;
+    this->mEquipParamS8Num = 0;
+    this->mModelParts = 0;
+    this->mEleSlot = 0;
+    this->mPhysicalType = 0;
+    this->mElementType = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline rItemList::rItemParamXml::rItemParamXml() {
+    this->mItemId = 0;
+    this->mNameId = 0;
+    this->mpItemParamList = nullptr;
+    this->mItemParamList.::MtArray::mAutoDelete = true;
+    this->mParamNum = 0;
+    this->mpVsEmList = nullptr;
+    this->mVsEmList.::MtArray::mAutoDelete = true;
+    this->mVsEmNum = 0;
+    this->mStackMax = 1;
+    this->mIconNo = 0;
+    this->mIconColNo = 0;
+    this->mCategory = static_cast<rItemList::ITEM_CATEGORY>(0);
+    this->mPrice = 0;
+    this->mIsSell = false;
+    this->mIsBazaar = false;
+    this->mSortNo = 0;
+    this->mNameSortNo = 0;
+    this->mUseType = static_cast<rItemList::USE_CATEGORY>(1);
+    this->mAttackStatus = 0;
+    this->mMaterialCategory = static_cast<rItemList::MATERIAL_CATEGORY>(0);
+    this->mIsUnUseLobby = false;
+    this->mRank = 1;
+    this->mWepCategory = static_cast<nWeapon::WEAPON_CATEGORY>(0);
+    this->mEquip = 0;
+    this->mIsJob09 = false;
+    this->mIsJob10 = false;
+    this->mIsJob01 = false;
+    this->mIsJob02 = false;
+    this->mIsJob03 = false;
+    this->mIsJob04 = false;
+    this->mIsJob05 = false;
+    this->mIsJob06 = false;
+    this->mIsJob07 = false;
+    this->mIsJob08 = false;
+    this->mIsUseLv = 1;
+    this->mSex = 1;
+    this->mWeight = 0;
+    this->mIsUseNpc = false;
+    this->mEleSlot = 0;
+    this->mColorNo = 0;
+    this->mModelParts = 0;
+    this->mGrade = 0;
+    this->mPhysicalType = 0;
+    this->mElementType = 0;
+    this->mShieldStamina = 0;
+    this->mTShieldStorage = 0;
+    this->mArrowNum = 0;
+    this->mSpirit = 0;
+    this->mVsEm0e = 0;
+    this->mVsEm0f = 0;
+    this->mVsEm0a = 0;
+    this->mVsEm0b = 0;
+    this->mVsEm0c = 0;
+    this->mVsEm0d = 0;
+    this->mVsEm06 = 0;
+    this->mVsEm07 = 0;
+    this->mVsEm08 = 0;
+    this->mVsEm09 = 0;
+    this->mVsEm02 = 0;
+    this->mVsEm03 = 0;
+    this->mVsEm04 = 0;
+    this->mVsEm05 = 0;
+    this->mShieldStagger = 0;
+    this->mVsEm00 = 0;
+    this->mVsEm01 = 0;
+    this->mMagicAttack = 0;
+    this->mPowerRev = 0;
+    this->mModelTagId = 0;
+    this->mAttack = 0;
+    this->mFallAttackSav = 0;
+    this->mFallDefSav = 0;
+    this->mFallMagicSav = 0;
+    this->mFallMagicDefSav = 0;
+    this->mFallIceSav = 0;
+    this->mFallThunderSav = 0;
+    this->mFallSaintSav = 0;
+    this->mFallBlindSav = 0;
+    this->mShockSav = 0;
+    this->mCrossSav = 0;
+    this->mStanSav = 0;
+    this->mFallFireSav = 0;
+    this->mStoneSav = 0;
+    this->mGoldSav = 0;
+    this->mSpredSav = 0;
+    this->mFreezeSav = 0;
+    this->mSleepSav = 0;
+    this->mWaterSav = 0;
+    this->mSealSav = 0;
+    this->mSoftBodySav = 0;
+    this->mPoisonSav = 0;
+    this->mSlowSav = 0;
+    this->mOilSav = 0;
+    this->mBlindSav = 0;
+    this->mItemSealDef = 0;
+    this->mEquipSubCategory = 0;
+    this->mFallThunderDef = 0;
+    this->mFallSaintDef = 0;
+    this->mFallBlindDef = 0;
+    this->mFallAttackDef = 0;
+    this->mFallDefenceDef = 0;
+    this->mFallMagicAttackDef = 0;
+    this->mFallMagicDefenceDef = 0;
+    this->mErosionDef = 0;
+    this->mSpredDef = 0;
+    this->mFreezeDef = 0;
+    this->mShockDef = 0;
+    this->mCrossDef = 0;
+    this->mStanDef = 0;
+    this->mCurseDef = 0;
+    this->mFallFireDef = 0;
+    this->mFallIceDef = 0;
+    this->mOilDef = 0;
+    this->mBlindDef = 0;
+    this->mSleepDef = 0;
+    this->mWaterDef = 0;
+    this->mSealDef = 0;
+    this->mSoftBodyDef = 0;
+    this->mStoneDef = 0;
+    this->mGoldDef = 0;
+    this->mThunderEleDef = 0;
+    this->mSaintEleDef = 0;
+    this->mDarkEleDef = 0;
+    this->mPoisonDef = 0;
+    this->mSlowDef = 0;
+    this->mMaxHpRev = 0;
+    this->mMaxStRev = 0;
+    this->mFireEleDef = 0;
+    this->mIceEleDef = 0;
+    this->mMagicDefense = 0;
+    this->mDurability = 0;
+    this->mChance = 0;
+    this->mDefense = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rItemList::rProtectorParam::rProtectorParam() {
-    this->mAttack = static_cast<u32>(0);
-    this->mMagicAttack = static_cast<u32>(0);
-    this->mMagicDefense = static_cast<u32>(0);
-    this->mDurability = static_cast<u32>(0);
-    this->mChance = static_cast<u32>(0);
-    this->mDefense = static_cast<u32>(0);
-    this->mModelTagId = static_cast<u32>(0);
-    this->mPowerRev = static_cast<u32>(0);
-    this->mColorNo = static_cast<u8>(0);
-    this->mMaxStRev = static_cast<u16>(0);
-    this->mWeight = static_cast<u16>(0);
-    this->mMaxHpRev = static_cast<u16>(0);
-    this->mSex = static_cast<u8>(1);
-    this->mModelParts = static_cast<u8>(0);
-    this->mEleSlot = static_cast<u8>(0);
-    this->mpEquipParamS8List = static_cast<rItemList::rEquipParamS8*>(nullptr);
-    this->mEquipParamS8Num = static_cast<u8>(0);
+    this->mAttack = 0;
+    this->mMagicAttack = 0;
+    this->mMagicDefense = 0;
+    this->mDurability = 0;
+    this->mChance = 0;
+    this->mDefense = 0;
+    this->mModelTagId = 0;
+    this->mPowerRev = 0;
+    this->mColorNo = 0;
+    this->mMaxStRev = 0;
+    this->mWeight = 0;
+    this->mMaxHpRev = 0;
+    this->mSex = 1;
+    this->mModelParts = 0;
+    this->mEleSlot = 0;
+    this->mpEquipParamS8List = nullptr;
+    this->mEquipParamS8Num = 0;
 }

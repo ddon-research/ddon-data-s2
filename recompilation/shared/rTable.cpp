@@ -34,7 +34,7 @@ const MtDTI& rTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTable::DTI)->memAlloc(sz, align, ::rTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTable::DTI)->memAlloc(sz, align, rTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,13 +64,13 @@ inline void rTable::operator delete(void* p_addr) {
 // Address: 0x007089f0 - 0x00708a78 (136 bytes)
 rTable::rTable() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mUParam64[1] = static_cast<long unsigned int>(0);
-    this->mUParam64[0] = static_cast<long unsigned int>(0);
-    this->mUParam32[2] = static_cast<unsigned int>(0);
-    this->mUParam32[3] = static_cast<unsigned int>(0);
-    this->mUParam32[0] = static_cast<unsigned int>(0);
-    this->mUParam32[1] = static_cast<unsigned int>(0);
+    mAttr = 16;
+    mUParam64[1] = 0;
+    mUParam64[0] = 0;
+    mUParam32[2] = 0;
+    mUParam32[3] = 0;
+    mUParam32[0] = 0;
+    mUParam32[1] = 0;
 }
 
 // Address: 0x00708a80 - 0x00708b3d (189 bytes)
@@ -83,35 +83,35 @@ rTable::~rTable() {
 // Address: 0x01ab4390 - 0x01ab4396 (6 bytes)
 const MtDTI& rTable::getDataDTI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI();
+    return getDTI();
 }
 
 // Address: 0x01a86c60 - 0x01a86c66 (6 bytes)
 const MtDTI& rTable::getNativeDTI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI();
+    return getDTI();
 }
 
 // Address: 0x01ab43a0 - 0x01ab43a3 (3 bytes)
 u16 rTable::getDataVersion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u16>(0);
+    return 0;
 }
 
 // Address: 0x00708c20 - 0x00708c25 (5 bytes)
 void rTable::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
 
 // Address: 0x00708c30 - 0x00708c48 (24 bytes)
 MtObject* rTable::getDataBase(u32 Idx) {
     // DWARF local not rendered: MtObject* pObj;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Idx < this->mArray.mLength) {
-        return this->mArray.mpArray[Idx];
+    if (Idx < mArray.mLength) {
+        return mArray.mpArray[Idx];
     } else {
-        return static_cast<MtObject*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -121,11 +121,13 @@ MtObject* rTable::getDataBase(u32 Idx) {
 // Address: 0x00708c60 - 0x00708c67 (7 bytes)
 u32 rTable::getDataNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArray.mLength;
+    return mArray.mLength;
 }
 
 // No out-of-line body: no code in the ELF
 // void rTable::setDataNum(u32 Num);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rTable::MyDTI rTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTable.cpp at 0x00708c80-0x00708cc2 (called at rTable.cpp:23)
@@ -135,6 +137,6 @@ u32 rTable::getDataNum() const {
 // Address: 0x007088c0 - 0x00708973 (179 bytes)
 MtObject* rTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTable;
+    return new (16u) rTable;
 }
 

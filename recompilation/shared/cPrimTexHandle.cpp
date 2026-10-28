@@ -42,7 +42,7 @@ const MtDTI& cPrimTexHandle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPrimTexHandle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrimTexHandle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrimTexHandle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,10 +57,10 @@ inline void cPrimTexHandle::operator delete(void* p_addr) {
 // Address: 0x01060e20 - 0x01060e46 (38 bytes)
 cPrimTexHandle::cPrimTexHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurrentIdx = static_cast<u32>(0);
-    this->mTextureNum = static_cast<u32>(0);
-    this->mTextureSize = static_cast<u32>(0);
-    this->mpTexture = static_cast<nPrim::Texture*>(nullptr);
+    mCurrentIdx = 0;
+    mTextureNum = 0;
+    mTextureSize = 0;
+    mpTexture = nullptr;
 }
 
 // Address: 0x01060e50 - 0x01060e51 (1 bytes)
@@ -91,9 +91,11 @@ __attribute__((weak)) u32 cPrimTexHandle::registerTexHandle(const nPrim::Texture
 // Address: 0x01060e90 - 0x01060ec6 (54 bytes)
 void cPrimTexHandle::reserveTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTextureSize = (::sPrimitive::mpInstance)->::sPrimitive::reserveTex(&this->mpTexture, &this->mCurrentIdx, static_cast<u32>(64));
-    this->mTextureNum = static_cast<u32>(0);
+    mTextureSize = (sPrimitive::mpInstance)->sPrimitive::reserveTex(&mpTexture, &mCurrentIdx, 64u);
+    mTextureNum = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrimTexHandle::MyDTI cPrimTexHandle::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimTexHandle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

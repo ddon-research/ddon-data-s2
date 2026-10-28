@@ -326,6 +326,12 @@ inline cHealedInfo::cHealedInfo() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::calcShakeDamage at 0x485cee-0x485cf4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nObjCollision::HIT_INFO_TYPE cHitInfoAfter::getHitInfoType() {
+    return this->mHitInfoType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cHitInfoAfter::isCalcHpDamage() const {
     return this->mIsHpDamage;
 }

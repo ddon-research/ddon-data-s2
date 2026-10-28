@@ -50,7 +50,7 @@ const MtDTI& cFurnitureData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFurnitureData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurnitureData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurnitureData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -65,10 +65,21 @@ inline void cFurnitureData::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cFurnitureData::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (207 bytes)
-//   in cFurnitureData::MyDTI::newInstance at 0x00679f0d-0x00679f71 (called at rFurnitureData.cpp:33)
-//   in rTbl2<cFurnitureData>::allocData at 0x01a91328-0x01a9133a, 0x01a9133d-0x01a91396 (called at rTbl2.h:215)
-// cFurnitureData::cFurnitureData();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cFurnitureData::cFurnitureData() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mOmId = 0;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mAngle.x = MtVector3::Zero.x;
+    mAngle.y = MtVector3::Zero.y;
+    mAngle.z = MtVector3::Zero.z;
+    mAngle.pad_ = 0.0f;
+}
 
 // Address: 0x0067a000 - 0x0067a001 (1 bytes)
 // Also emitted as: _ZN14cFurnitureDataD0Ev at 0x0067a010
@@ -81,6 +92,8 @@ __attribute__((weak)) void cFurnitureData::createProperty(MtPropertyList& s) {
     DDON_STUB("cFurnitureData::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurnitureData::MyDTI cFurnitureData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rFurnitureData.cpp at 0x0067a620-0x0067a662 (called at rFurnitureData.cpp:33)
@@ -115,7 +128,7 @@ const MtDTI& rFurnitureData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFurnitureData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFurnitureData::DTI)->memAlloc(sz, align, ::rFurnitureData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFurnitureData::DTI)->memAlloc(sz, align, rFurnitureData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +143,7 @@ inline void* rFurnitureData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rFurnitureDataD0Ev at 0x01a914a4-0x01a914c3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFurnitureData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFurnitureData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFurnitureData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +158,7 @@ inline void rFurnitureData::operator delete(void* p_addr) {
 // Address: 0x0067a390 - 0x0067a3fb (107 bytes)
 bool rFurnitureData::loadData(MtDataReader& in, cFurnitureData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cFurnitureData*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mOmId = in.readU32();
         pData->mPos = in.readV3();
         pData->mAngle = in.readV3();
@@ -164,7 +177,7 @@ MT_CTSTR rFurnitureData::getExt() const {
 // Address: 0x01a91540 - 0x01a91546 (6 bytes)
 u32 rFurnitureData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x0067a400 - 0x0067a509 (265 bytes)
@@ -189,29 +202,31 @@ cFurnitureData* rFurnitureData::searchOmId(u32 omId) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x67a582; no location-less local in scope fits
     cFurnitureData* v1_0;
-    if (this->getDataNum() == static_cast<u32>(0)) {
-        v1_0 = static_cast<cFurnitureData*>(nullptr);
+    if (getDataNum() == 0) {
+        v1_0 = nullptr;
     } else {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_2 = 0;;) {
             // inferred: a temporary for the result of the call at 0x67a558, used 3 times; no DWARF local holds it
-            cFurnitureData* t0 = this->getData(i0_2);
-            if (t0 != static_cast<cFurnitureData*>(nullptr)) {
+            cFurnitureData* t0 = getData(i0_2);
+            if (t0 != nullptr) {
                 if (t0->mOmId == omId) {
                     v1_0 = t0;
                     break;
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < this->getDataNum()) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < getDataNum()) {
+                i0_2 += 1u;
             } else {
-                v1_0 = static_cast<cFurnitureData*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
     }
     return v1_0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFurnitureData::MyDTI rFurnitureData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFurnitureData.cpp at 0x0067a662-0x0067a69f (called at rFurnitureData.cpp:163)
@@ -221,7 +236,7 @@ cFurnitureData* rFurnitureData::searchOmId(u32 omId) {
 // Address: 0x0067a2b0 - 0x0067a314 (100 bytes)
 MtObject* rFurnitureData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFurnitureData;
+    return new (16u) rFurnitureData;
 }
 
 // Instance at 0x01a914f0 - 0x01a91506 (22 bytes) of the generic rTbl2<T>::getData

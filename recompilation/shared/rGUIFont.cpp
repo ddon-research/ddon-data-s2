@@ -47,7 +47,7 @@ const MtDTI& rGUIFont::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8rGUIFontD0Ev at 0x01215de4-0x01215e05, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGUIFont::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGUIFont::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ inline void rGUIFont::operator delete(void* p_addr) {
 // Also emitted as: _ZN8rGUIFontD0Ev at 0x01215dc0
 rGUIFont::~rGUIFont() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rGUIFont::clear();
+    this->rGUIFont::clear();
 }
 
 // Address: 0x01215e10 - 0x012165f8 (2024 bytes)
@@ -91,28 +91,28 @@ __attribute__((weak)) bool rGUIFont::load(MtStream& in) {
 bool rGUIFont::save(MtStream& out) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from rGUIFont*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    w.::MtDataWriter::writeU32(static_cast<u32>(4474439));
-    w.::MtDataWriter::writeU32(this->mVersion);
-    w.::MtDataWriter::writeU32(this->mAttr);
-    w.::MtDataWriter::writeU32(this->mSuffix);
-    w.::MtDataWriter::writeU32(this->mFontType);
-    w.::MtDataWriter::writeU32(this->mFontSize);
-    w.::MtDataWriter::writeU32(this->mTextureNum);
-    w.::MtDataWriter::writeU32(this->mCharNum);
-    w.::MtDataWriter::writeU32(this->mDescentNum);
-    w.::MtDataWriter::writeF32(this->mMaxAscent);
-    w.::MtDataWriter::writeF32(this->mMaxDescent);
-    w.::MtDataWriter::write(static_cast<const void*>(this->mpDescent), this->mDescentNum * static_cast<u32>(4));
-    w.::MtDataWriter::writeU32(static_cast<unsigned int>(::strlen(this->mpTexturePath)));
-    w.::MtDataWriter::writeString(this->mpTexturePath);
-    w.::MtDataWriter::write(static_cast<const void*>(this->mpChar), this->mCharNum * static_cast<u32>(16));
-    if ((this->mAttr & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        w.::MtDataWriter::writeU32(this->mDynamicTextureNum);
-        w.::MtDataWriter::writeU32((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(112))) >> static_cast<unsigned int>(28));
-        w.::MtDataWriter::writeU32(static_cast<u32>(this->mDynamicTextureFormat));
-        w.::MtDataWriter::writeU32(this->mDynamicTextureMisc);
-        w.::MtDataWriter::write(static_cast<const void*>(this->mpSourceChar), this->mCharNum * static_cast<u32>(12));
+    MtDataWriter w(out, 4096u, 4096u);
+    w.MtDataWriter::writeU32(0x444647u);
+    w.MtDataWriter::writeU32(mVersion);
+    w.MtDataWriter::writeU32(mAttr);
+    w.MtDataWriter::writeU32(mSuffix);
+    w.MtDataWriter::writeU32(mFontType);
+    w.MtDataWriter::writeU32(mFontSize);
+    w.MtDataWriter::writeU32(mTextureNum);
+    w.MtDataWriter::writeU32(mCharNum);
+    w.MtDataWriter::writeU32(mDescentNum);
+    w.MtDataWriter::writeF32(mMaxAscent);
+    w.MtDataWriter::writeF32(mMaxDescent);
+    w.MtDataWriter::write(static_cast<const void*>(mpDescent), mDescentNum * 4u);
+    w.MtDataWriter::writeU32(static_cast<unsigned int>(strlen(mpTexturePath)));
+    w.MtDataWriter::writeString(mpTexturePath);
+    w.MtDataWriter::write(static_cast<const void*>(mpChar), mCharNum * 16u);
+    if ((mAttr & 1u) != 0) {
+        w.MtDataWriter::writeU32(mDynamicTextureNum);
+        w.MtDataWriter::writeU32((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 112)) >> 28);
+        w.MtDataWriter::writeU32(static_cast<u32>(mDynamicTextureFormat));
+        w.MtDataWriter::writeU32(mDynamicTextureMisc);
+        w.MtDataWriter::write(static_cast<const void*>(mpSourceChar), mCharNum * 12u);
     }
     return true;
 }
@@ -128,7 +128,7 @@ __attribute__((weak)) void rGUIFont::clear() {
 // Address: 0x012169d0 - 0x012169d5 (5 bytes)
 MtUI* rGUIFont::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x012169e0 - 0x01216f8d (1453 bytes)
@@ -146,14 +146,14 @@ MT_CTSTR rGUIFont::getExt() const {
 // Address: 0x01b9e1f0 - 0x01b9e1f8 (8 bytes)
 u32 rGUIFont::getSuffix() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSuffix;
+    return mSuffix;
 }
 
 // Address: 0x01b9e1c0 - 0x01b9e1ca (10 bytes)
 bool rGUIFont::isDynamic() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
+    return static_cast<bool>(mAttr & 1u);
 }
 
 // Address: 0x01b9e220 - 0x01b9e22b (11 bytes)
@@ -162,40 +162,40 @@ bool rGUIFont::isLayoutEvenIntervals() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xf4 from const rGUIFont*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(244))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 244)) & 2) >> 1);
 }
 
 // Address: 0x01b9e260 - 0x01b9e268 (8 bytes)
 u32 rGUIFont::getFontType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFontType;
+    return mFontType;
 }
 
 // Address: 0x01b9e280 - 0x01b9e28f (15 bytes)
 u32 rGUIFont::getFontSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFontSize;
+    return mFontSize;
 }
 
 // Address: 0x01b9e2b0 - 0x01b9e2b7 (7 bytes)
 u32 rGUIFont::getTextureNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTextureNum;
+    return mTextureNum;
 }
 
 // Address: 0x01b9e380 - 0x01b9e3c3 (67 bytes)
 nDraw::Texture* rGUIFont::getTexture(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mAttr & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        if (index < this->mDynamicTextureNum) {
-            return this->mpDynamicTexture[index];
+    if ((mAttr & 1u) != 0) {
+        if (index < mDynamicTextureNum) {
+            return mpDynamicTexture[index];
         }
     } else {
-        if (index < this->mTextureNum) {
-            return this->mpTexture[index]->mpTexture;
+        if (index < mTextureNum) {
+            return mpTexture[index]->mpTexture;
         }
     }
-    return static_cast<nDraw::Texture*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,13 +214,13 @@ nDraw::Texture* rGUIFont::getTexture(u32 index) const {
 // Address: 0x01b9e1d0 - 0x01b9e1d9 (9 bytes)
 f32 rGUIFont::getMaxAscent() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxAscent;
+    return mMaxAscent;
 }
 
 // Address: 0x01b9e1e0 - 0x01b9e1e9 (9 bytes)
 f32 rGUIFont::getMaxDescent() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxDescent;
+    return mMaxDescent;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -244,61 +244,61 @@ __attribute__((weak)) const rGUIFont::CHAR* rGUIFont::searchChar(u32 code) const
 // Address: 0x01b9e3d0 - 0x01b9e3fd (45 bytes)
 void* rGUIFont::memAlloc(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::rGUIFont::DTI)->memAlloc(size, static_cast<u32>(16));
+    return MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memAlloc(size, 16u);
 }
 
 // Address: 0x01b9e400 - 0x01b9e42a (42 bytes)
 void rGUIFont::memFree(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::rGUIFont::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memFree(p_addr);
 }
 
 // Address: 0x01b9e250 - 0x01b9e258 (8 bytes)
 void rGUIFont::setSuffix(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSuffix = type;
+    mSuffix = type;
 }
 
 // Address: 0x01b9e200 - 0x01b9e21b (27 bytes)
 void rGUIFont::setDynamic(bool e) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (e == false) ? (this->mAttr & static_cast<u32>(4294967294)) : (this->mAttr | static_cast<u32>(1));
+    mAttr = !e ? (mAttr & 0xFFFFFFFEu) : (mAttr | 1u);
 }
 
 // Address: 0x01b9e230 - 0x01b9e24b (27 bytes)
 void rGUIFont::setLayoutEvenIntervals(bool e) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (e == false) ? (this->mAttr & static_cast<u32>(4294967293)) : (this->mAttr | static_cast<u32>(2));
+    mAttr = !e ? (mAttr & 0xFFFFFFFDu) : (mAttr | 2u);
 }
 
 // Address: 0x01b9e270 - 0x01b9e278 (8 bytes)
 void rGUIFont::setFontType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFontType = type;
+    mFontType = type;
 }
 
 // Address: 0x01b9e290 - 0x01b9e2ad (29 bytes)
 void rGUIFont::setFontSize(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFontSize = size;
+    mFontSize = size;
 }
 
 // Address: 0x01b9e2c0 - 0x01b9e2c7 (7 bytes)
 void rGUIFont::setTextureNum(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTextureNum = size;
+    mTextureNum = size;
 }
 
 // Address: 0x01b9e2d0 - 0x01b9e2d9 (9 bytes)
 void rGUIFont::setMaxAscent(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxAscent = v;
+    mMaxAscent = v;
 }
 
 // Address: 0x01b9e2e0 - 0x01b9e2e9 (9 bytes)
 void rGUIFont::setMaxDescent(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxDescent = v;
+    mMaxDescent = v;
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,13 +319,13 @@ void rGUIFont::setMaxDescent(f32 v) {
 // Address: 0x01b9e2f0 - 0x01b9e2fc (12 bytes)
 u32 rGUIFont::getDynamicTextureNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDynamicTextureNum;
+    return mDynamicTextureNum;
 }
 
 // Address: 0x01b9e320 - 0x01b9e327 (7 bytes)
 u32 rGUIFont::getDynamicTextureSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDynamicTextureSize;
+    return mDynamicTextureSize;
 }
 
 // Address: 0x01217050 - 0x012176b0 (1632 bytes)
@@ -362,13 +362,13 @@ __attribute__((weak)) bool rGUIFont::executeLayoutChar() {
 // Address: 0x01b9e300 - 0x01b9e31d (29 bytes)
 void rGUIFont::setDynamicTextureNum(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDynamicTextureNum = num;
+    mDynamicTextureNum = num;
 }
 
 // Address: 0x01b9e330 - 0x01b9e349 (25 bytes)
 void rGUIFont::setDynamicTextureSize(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDynamicTextureSize = type;
+    mDynamicTextureSize = type;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -382,6 +382,10 @@ void rGUIFont::setDynamicTextureSize(u32 type) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGUIFont* rGUIFont::getLayoutNext() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGUIFont::MyDTI rGUIFont::DTI;
+
+// Not defined (no member-wise spelling: a class with constructors or bases): const MtSize rGUIFont::TEXTURE_SIZE[14];
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGUIFont::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

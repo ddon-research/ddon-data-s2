@@ -40,7 +40,7 @@ const MtDTI& uGUIShopBuy::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIShopBuy::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIShopBuy::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIShopBuy::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline MtAllocator* uGUIShopBuy::getAllocator() {
 // Address: 0x00c3e710 - 0x00c3e750 (64 bytes)
 void* uGUIShopBuy::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIShopBuy::getAllocator()->memAlloc(sz, align, ::uGUIShopBuy::DTI.::MtDTI::getID());
+    return uGUIShopBuy::getAllocator()->memAlloc(sz, align, uGUIShopBuy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ void* uGUIShopBuy::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIShopBuy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIShopBuy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIShopBuy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,23 +89,23 @@ uGUIShopBuy::~uGUIShopBuy() {
 // Address: 0x00c3eab0 - 0x00c3eab5 (5 bytes)
 void uGUIShopBuy::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c3eac0 - 0x00c3eac5 (5 bytes)
 MtUI* uGUIShopBuy::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUI::createUI(prop);
+    return this->uGUI::createUI(prop);
 }
 
 // Address: 0x00c3ead0 - 0x00c3eb7f (175 bytes)
 bool uGUIShopBuy::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SHOP_BUY_GUI"), static_cast<u32>(129), static_cast<t64>(1469516269)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SHOP_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SHOP_BUY_GUI"), 129u, 1469516269l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SHOP_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -117,9 +117,9 @@ bool uGUIShopBuy::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SHOP_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SHOP_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -133,18 +133,18 @@ bool uGUIShopBuy::loadResource() {
 // Address: 0x00c3eb80 - 0x00c3ebc9 (73 bytes)
 void uGUIShopBuy::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDialog != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpDialog->::cUnit::isEnable() == false) {
-            this->mpDialog = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpDialog != nullptr) {
+        if (!mpDialog->isEnable()) {
+            mpDialog = nullptr;
         }
     }
-    if (this->mpCallUnit == static_cast<cUnit*>(nullptr)) {
+    if (mpCallUnit == nullptr) {
         return;
     }
-    if (this->mpCallUnit->::cUnit::isEnable() != false) {
+    if (mpCallUnit->isEnable()) {
         return;
     }
-    this->mpCallUnit = static_cast<cUnit*>(nullptr);
+    mpCallUnit = nullptr;
 }
 
 // Address: 0x00c3ebd0 - 0x00c3f0eb (1307 bytes)
@@ -156,35 +156,35 @@ __attribute__((weak)) void uGUIShopBuy::setup() {
 // Address: 0x00c3fa70 - 0x00c3fadd (109 bytes)
 void uGUIShopBuy::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpDialog == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpDialog == nullptr) {
         return;
     }
-    this->mpDialog->kill();
-    this->mpDialog = static_cast<uGUISystemMsg*>(nullptr);
+    mpDialog->kill();
+    mpDialog = nullptr;
 }
 
 // Address: 0x00c3fa30 - 0x00c3fa4b (27 bytes)
 void uGUIShopBuy::setupBuy(sItemManager::cShop::ShopType Type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = Type;
-    this->mVerticalNum = static_cast<s32>(3);
-    this->mMode = static_cast<u32>(1);
+    mType = Type;
+    mVerticalNum = 3;
+    mMode = 1;
 }
 
 // Address: 0x00c3fa50 - 0x00c3fa65 (21 bytes)
 void uGUIShopBuy::setupSell() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVerticalNum = static_cast<s32>(2);
-    this->mMode = static_cast<u32>(2);
+    mVerticalNum = 2;
+    mMode = 2;
 }
 
 // Address: 0x00c40bd0 - 0x00c40e49 (633 bytes)
@@ -215,8 +215,8 @@ __attribute__((weak)) void uGUIShopBuy::setInfoSell(const nGUIItem::cItem* pItem
 bool uGUIShopBuy::isActive() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((this->::uGUIBase::mBaseF & static_cast<u32>(128)) != static_cast<u32>(0)) {
-        if (this->::uGUIBase::isNoRegistSystemCallBack() != false) {
+    if ((mBaseF & 128u) != 0) {
+        if (isNoRegistSystemCallBack()) {
             return false;
         }
     }
@@ -230,273 +230,272 @@ bool uGUIShopBuy::isActive() {
 // Address: 0x00c3fae0 - 0x00c3fb4f (111 bytes)
 void uGUIShopBuy::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIShopBuy::isMoveDialog() != false) {
+    if (isMoveDialog()) {
         return;
     }
-    const uGUIBase::cReferenceUINumBox::MODE numbox0_mode = this->mNumBox0.::uGUIBase::cReferenceUINumBox::getMode();
-    const uGUIBase::cReferenceUINumBox::MODE numbox1_mode = this->mNumBox1.::uGUIBase::cReferenceUINumBox::getMode();
-    this->mNumBox0.::uGUIBase::cReferenceUINumBox::moveInput();
-    this->mNumBox1.::uGUIBase::cReferenceUINumBox::moveInput();
-    if (numbox0_mode == static_cast<uGUIBase::cReferenceUINumBox::MODE>(1)) {
+    const cReferenceUINumBox::MODE numbox0_mode = mNumBox0.getMode();
+    const cReferenceUINumBox::MODE numbox1_mode = mNumBox1.getMode();
+    mNumBox0.moveInput();
+    mNumBox1.moveInput();
+    if (numbox0_mode == uGUIBase::cReferenceUINumBox::MODE_EDIT) {
         return;
     }
-    if (numbox1_mode == static_cast<uGUIBase::cReferenceUINumBox::MODE>(1)) {
+    if (numbox1_mode == uGUIBase::cReferenceUINumBox::MODE_EDIT) {
         return;
     }
-    if (this->mpCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    if (mpCtrl == nullptr) {
         return;
     }
-    this->mpCtrl->execute();
+    mpCtrl->execute();
 }
 
 // Address: 0x00c3fc00 - 0x00c3fe18 (536 bytes)
 void uGUIShopBuy::moveEvent() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (static_cast<int>(this->::uGUIBase::getInputEvent()) <= static_cast<int>(65)) {
-        if (this->::uGUIBase::getInputEvent() == static_cast<u32>(0)) {
-        } else {
-            this->mNumBox0.::uGUIBase::cReferenceUINumBox::moveEvent();
-            this->mNumBox1.::uGUIBase::cReferenceUINumBox::moveEvent();
-            this->::uGUIShopBuy::updateMoney();
-            if (this->mMode == static_cast<u32>(2)) {
-                if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+    if (static_cast<int>(getInputEvent()) <= 65) {
+        if (getInputEvent() != 0) {
+            mNumBox0.moveEvent();
+            mNumBox1.moveEvent();
+            updateMoney();
+            if (mMode == 2) {
+                if (mNumBox0.mCurrentNum == 0) {
+                    mButton0.setEnable(false);
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    mButton0.setEnable(true);
                 }
             } else {
-                if (this->mMode == static_cast<u32>(1)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                if (mMode == 1) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        if (mNumBox1.mCurrentNum != 0) {
+                            mButton0.setEnable(true);
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                            mButton0.setEnable(false);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                    mButton0.setEnable(false);
                 }
             }
-            this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+            mButton0.setBtnSize(mButtonSizeX, true);
         }
     } else {
-        switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-            case static_cast<u32>(0):
+        switch (getInputEvent() - 66u) {
+            case 0:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->::uGUIBase::setGUIMove(false);
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+                updateCursor();
+                setGUIMove(false);
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
                 break;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::pushLArrow(static_cast<s32>(-1));
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                updateCursor();
+                mNumBox0.pushLArrow(-1);
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::pushRArrow(static_cast<s32>(1));
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                updateCursor();
+                mNumBox0.pushRArrow(1);
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::pushLArrow(static_cast<s32>(-1));
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                updateCursor();
+                mNumBox1.pushLArrow(-1);
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::pushRArrow(static_cast<s32>(1));
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                updateCursor();
+                mNumBox1.pushRArrow(1);
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
-            case static_cast<u32>(5):
+            case 5:
             {
-                this->::uGUIShopBuy::updateCursor();
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+                updateCursor();
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
                 break;
             }
-            case static_cast<u32>(6):
+            case 6:
             {
-                this->::uGUIShopBuy::updateCursor();
-                this->::uGUIShopBuy::setDecide();
+                updateCursor();
+                setDecide();
                 break;
             }
-            case static_cast<u32>(7):
+            case 7:
             {
-                this->::uGUIShopBuy::setBuy();
+                setBuy();
                 break;
             }
-            case static_cast<u32>(8):
+            case 8:
             {
-                this->::uGUIShopBuy::setSell();
+                setSell();
                 break;
             }
-            case static_cast<u32>(9):
+            case 9:
             {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(20));
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 20u);
                 break;
             }
-            case static_cast<u32>(10):
+            case 10:
             {
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
-            case static_cast<u32>(11):
+            case 11:
             {
-                this->::uGUIShopBuy::updateCursor();
-                if (this->mpCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                    this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(1));
+                updateCursor();
+                if (mpCtrl->mCurrentPos != 0) {
+                    mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_EDIT);
                 } else {
-                    this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(1));
+                    mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_EDIT);
                 }
                 break;
             }
             default:
             {
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::moveEvent();
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::moveEvent();
-                this->::uGUIShopBuy::updateMoney();
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                mNumBox0.moveEvent();
+                mNumBox1.moveEvent();
+                updateMoney();
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        mButton0.setEnable(false);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                        mButton0.setEnable(true);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                mButton0.setEnable(true);
                             } else {
-                                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                                mButton0.setEnable(false);
                             }
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                            mButton0.setEnable(true);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                        mButton0.setEnable(false);
                     }
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
+                mButton0.setBtnSize(mButtonSizeX, true);
                 break;
             }
         }
@@ -515,184 +514,184 @@ __attribute__((weak)) void uGUIShopBuy::updateWait() {
 // Address: 0x00c3f630 - 0x00c3f645 (21 bytes)
 u32 uGUIShopBuy::evCtrlCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00c3f650 - 0x00c3f6f2 (162 bytes)
 u32 uGUIShopBuy::evCtrlDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (::uGUIShopBuy::mCTButtonIdTable[this->mMode] == this->mpCtrl->::cControl::mCurrentPos) {
-            if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mpCtrl != nullptr) {
+        if (uGUIShopBuy::mCTButtonIdTable[mMode] == mpCtrl->mCurrentPos) {
+            if (mButtonCursorPos != 0) {
+                setInputEvent(66u);
             } else {
-                if (this->mMode == static_cast<u32>(2)) {
-                    if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                if (mMode == 2) {
+                    if (mNumBox0.mCurrentNum == 0) {
+                        setInputEvent(75u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                        setInputEvent(72u);
                     }
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                    if (mMode == 1) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            if (mNumBox1.mCurrentNum != 0) {
+                                setInputEvent(72u);
                             } else {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                                setInputEvent(75u);
                             }
                         } else {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                            setInputEvent(72u);
                         }
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                        setInputEvent(75u);
                     }
                 }
             }
         } else {
-            this->mpCtrl->setCurrentPos(::uGUIShopBuy::mCTButtonIdTable[this->mMode], false);
-            this->mButtonCursorPos = static_cast<u32>(0);
-            this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+            mpCtrl->setCurrentPos(uGUIShopBuy::mCTButtonIdTable[mMode], false);
+            mButtonCursorPos = 0;
+            setInputEvent(71u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00c3f790 - 0x00c3f7cb (59 bytes)
 u32 uGUIShopBuy::evCtrlStartNumEdit(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (this->mpCtrl->::cControl::getCurrentPos() != ::uGUIShopBuy::mCTButtonIdTable[this->mMode]) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(77));
-            return static_cast<u32>(1);
+    if (mpCtrl != nullptr) {
+        if (mpCtrl->getCurrentPos() != uGUIShopBuy::mCTButtonIdTable[mMode]) {
+            setInputEvent(77u);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00c3f7d0 - 0x00c3f8a0 (208 bytes)
 u32 uGUIShopBuy::evCtrlMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-            if (this->mpCtrl->::cControl::getCurrentPos() == ::uGUIShopBuy::mCTButtonIdTable[this->mMode]) {
-                if (pMsg->click_vol != static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    if (mpCtrl != nullptr) {
+        if (pMsg != nullptr) {
+            if (mpCtrl->getCurrentPos() == uGUIShopBuy::mCTButtonIdTable[mMode]) {
+                if (pMsg->click_vol != 0) {
+                    setInputEvent(66u);
                 } else {
-                    if (this->mMode == static_cast<u32>(2)) {
-                        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                    if (mMode == 2) {
+                        if (mNumBox0.mCurrentNum == 0) {
+                            setInputEvent(75u);
                         } else {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                            setInputEvent(72u);
                         }
                     } else {
-                        if (this->mMode == static_cast<u32>(1)) {
-                            if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                                if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                        if (mMode == 1) {
+                            if (mNumBox0.mCurrentNum == 0) {
+                                if (mNumBox1.mCurrentNum != 0) {
+                                    setInputEvent(72u);
                                 } else {
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                                    setInputEvent(75u);
                                 }
                             } else {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                                setInputEvent(72u);
                             }
                         } else {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                            setInputEvent(75u);
                         }
                     }
                 }
             } else {
-                if (pMsg->click_vol != static_cast<s32>(2)) {
-                    if (pMsg->click_vol == static_cast<s32>(1)) {
-                        if (this->mpCtrl->::cControl::getCurrentPos() != static_cast<s32>(0)) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                if (pMsg->click_vol != 2) {
+                    if (pMsg->click_vol == 1) {
+                        if (mpCtrl->getCurrentPos() != 0) {
+                            setInputEvent(70u);
                         } else {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+                            setInputEvent(68u);
                         }
                     } else {
-                        if (pMsg->click_vol == static_cast<s32>(0)) {
-                            if (this->mpCtrl->::cControl::getCurrentPos() != static_cast<s32>(0)) {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+                        if (pMsg->click_vol == 0) {
+                            if (mpCtrl->getCurrentPos() != 0) {
+                                setInputEvent(69u);
                             } else {
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                                setInputEvent(67u);
                             }
                         }
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+                    setInputEvent(77u);
                 }
             }
-            return static_cast<u32>(1);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00c3f700 - 0x00c3f715 (21 bytes)
 u32 uGUIShopBuy::evCtrlCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(1);
+    setInputEvent(71u);
+    return 1;
 }
 
 // Address: 0x00c3f720 - 0x00c3f790 (112 bytes)
 u32 uGUIShopBuy::evCtrlCursorLR(cControl::Message* pMsg) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as u32
-    if (this->mMode == static_cast<u32>(2)) {
-        if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(1)) {
-            this->mButtonCursorPos = static_cast<u32>(this->mButtonCursorPos == static_cast<u32>(0));
-            this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+    if (mMode == 2) {
+        if (mpCtrl->getCurrentPos() == 1) {
+            mButtonCursorPos = static_cast<u32>(mButtonCursorPos == 0);
+            setInputEvent(71u);
         } else {
-            if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+            if (mpCtrl->getCurrentPos() == 0) {
+                if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+                    setInputEvent(68u);
                 } else {
-                    if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                    if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                        setInputEvent(67u);
                     }
                 }
             }
         }
     } else {
-        if (this->mMode == static_cast<u32>(1)) {
-            this->::uGUIShopBuy::evCtrlCursorLRBuy(pMsg);
+        if (mMode == 1) {
+            evCtrlCursorLRBuy(pMsg);
         }
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00c40840 - 0x00c408b9 (121 bytes)
 __attribute__((weak)) u32 uGUIShopBuy::evCtrlCursorLRBuy(cControl::Message* pMsg) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as u32
-    if (this->mpCtrl->::cControl::getCurrentPos() != static_cast<s32>(2)) {
-        if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(1)) {
-            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (mpCtrl->getCurrentPos() != 2) {
+        if (mpCtrl->getCurrentPos() == 1) {
+            if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+                setInputEvent(70u);
             } else {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+                if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                    setInputEvent(69u);
                 }
             }
         } else {
-            if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(3)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+            if (mpCtrl->getCurrentPos() == 0) {
+                if (pMsg->reason == nGUIExt::TRG_RIGHT) {
+                    setInputEvent(68u);
                 } else {
-                    if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                    if (pMsg->reason == nGUIExt::TRG_LEFT) {
+                        setInputEvent(67u);
                     }
                 }
             }
         }
     } else {
-        this->mButtonCursorPos = static_cast<u32>(this->mButtonCursorPos == static_cast<u32>(0));
-        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+        mButtonCursorPos = static_cast<u32>(mButtonCursorPos == 0);
+        setInputEvent(71u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (74 bytes)
@@ -705,30 +704,30 @@ void uGUIShopBuy::initCommon() {
     // DWARF local not rendered: const stGuideBtnData tblSHOPBGuide[1];
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpMessage = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(4), static_cast<u32>(3)));
-    this->mpNumBox0 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(253), false));
-    this->mpNumBox1 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(255), false));
+    mpMessage = static_cast<cGUIObjMessage*>(getObjectFromId(4u, 3u));
+    mpNumBox0 = static_cast<cGUIInstAnimation*>(getInstance(253u, false));
+    mpNumBox1 = static_cast<cGUIInstAnimation*>(getInstance(255u, false));
     // inferred: a temporary for the result of the call at 0xc3f151, used 3 times; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(238), false);
+    cGUIInstance* t0 = getInstance(238u, false);
     // inferred: a temporary for the result of the call at 0xc3f165, used twice; no DWARF local holds it
-    cGUIObject* t1 = this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(8));
-    if ((this->mpMoney = static_cast<cGUIObjMessage*>(t1)) != static_cast<cGUIObjMessage*>(nullptr)) {
-        this->::uGUIBase::setObjectMessage(t1, "0", static_cast<u32>(0), false);
+    cGUIObject* t1 = getObjectFromId(t0, 8u);
+    if ((mpMoney = static_cast<cGUIObjMessage*>(t1)) != nullptr) {
+        setObjectMessage(t1, "0", 0u, false);
     }
-    this->mpMoneyMark = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(22)));
-    this->mpMonetaryUnit = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(12)));
-    this->mpButton0 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(248), false));
-    this->mpButton1 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(249), false));
-    this->mpRoot = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(3), false));
-    this->mButtonSizeX = static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(6)));
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setup(static_cast<uGUIBase*>(this), this->getInstance(static_cast<u32>(273), false), 0.0f);
-    this->mTblGuide[0].mType = static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(14);
-    this->mTblGuide[0].mKeyCustom = static_cast<nKeyCustom::KB_CUSTOM>(0);
-    this->mTblGuide[0].mWayType = static_cast<nGUIExt::ICONTAGKB>(0);
-    this->mTblGuide[0].mIsIgnoreModifier = false;
-    this->mTblGuide[0].mpKbdMsg = static_cast<MT_CTSTR>(nullptr);
-    this->mTblGuide[0].mpMsg = static_cast<MT_CTSTR>(nullptr);
-    this->mGuide.mpGuideDataPtr = &this->mTblGuide[0];
+    mpMoneyMark = static_cast<cGUIObjTexture*>(getObjectFromId(t0, 22u));
+    mpMonetaryUnit = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 12u));
+    mpButton0 = static_cast<cGUIInstAnimation*>(getInstance(248u, false));
+    mpButton1 = static_cast<cGUIInstAnimation*>(getInstance(249u, false));
+    mpRoot = static_cast<cGUIInstNull*>(getInstance(3u, false));
+    mButtonSizeX = static_cast<float>(getVariableParamS32FromId(6u));
+    mGuide.setup(static_cast<uGUIBase*>(this), getInstance(273u, false), 0.0f);
+    mTblGuide[0].mType = uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_INPUT_NUM;
+    mTblGuide[0].mKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
+    mTblGuide[0].mWayType = nGUIExt::ICONTAGKB_NONE;
+    mTblGuide[0].mIsIgnoreModifier = false;
+    mTblGuide[0].mpKbdMsg = nullptr;
+    mTblGuide[0].mpMsg = nullptr;
+    mGuide.mpGuideDataPtr = &mTblGuide[0];
 }
 
 // Address: 0x00c3f2a0 - 0x00c3f4cd (557 bytes)
@@ -740,197 +739,197 @@ __attribute__((weak)) void uGUIShopBuy::initBuy() {
 // Address: 0x00c3f4d0 - 0x00c3f62f (351 bytes)
 void uGUIShopBuy::initSell() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::uGUIBase::changeFlow(static_cast<u32>(3), static_cast<u32>(0), static_cast<u32>(4));
+    changeFlow(3u, 0u, 4u);
     // inferred: a temporary for the value the load at 0xc3f4ee read, used twice; no DWARF local holds it
-    cGUIObjMessage* t0 = this->mpMessage;
-    if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(10)), static_cast<u32>(0), false);
+    cGUIObjMessage* t0 = mpMessage;
+    if (t0 != nullptr) {
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 10u), 0u, false);
         // inferred: a temporary for the value the load at 0xc3f528 read, used twice; no DWARF local holds it
-        cGUIObjMessage* t1 = this->mpMonetaryUnit;
-        if (t1 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(10)), static_cast<u32>(0), false);
+        cGUIObjMessage* t1 = mpMonetaryUnit;
+        if (t1 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 10u), 0u, false);
             // inferred: a temporary for the value the load at 0xc3f562 read, used twice; no DWARF local holds it
-            cGUIInstAnimation* t2 = this->mpButton0;
-            if (t2 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            cGUIInstAnimation* t2 = mpButton0;
+            if (t2 != nullptr) {
                 // inferred: a temporary for the result of the call at 0xc3f58b, used once; no DWARF local holds it
-                MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(7));
-                this->mButton0.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, this->mButtonSizeX);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 7u);
+                mButton0.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, mButtonSizeX);
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             } else {
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0xc3f562 read, used twice; no DWARF local holds it
-            cGUIInstAnimation* t2 = this->mpButton0;
-            if (t2 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            cGUIInstAnimation* t2 = mpButton0;
+            if (t2 != nullptr) {
                 // inferred: a temporary for the result of the call at 0xc3f58b, used once; no DWARF local holds it
-                MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(7));
-                this->mButton0.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, this->mButtonSizeX);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 7u);
+                mButton0.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, mButtonSizeX);
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             } else {
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xc3f528 read, used twice; no DWARF local holds it
-        cGUIObjMessage* t1 = this->mpMonetaryUnit;
-        if (t1 != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(10)), static_cast<u32>(0), false);
+        cGUIObjMessage* t1 = mpMonetaryUnit;
+        if (t1 != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 10u), 0u, false);
             // inferred: a temporary for the value the load at 0xc3f562 read, used twice; no DWARF local holds it
-            cGUIInstAnimation* t2 = this->mpButton0;
-            if (t2 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            cGUIInstAnimation* t2 = mpButton0;
+            if (t2 != nullptr) {
                 // inferred: a temporary for the result of the call at 0xc3f58b, used once; no DWARF local holds it
-                MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(7));
-                this->mButton0.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, this->mButtonSizeX);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 7u);
+                mButton0.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, mButtonSizeX);
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             } else {
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0xc3f562 read, used twice; no DWARF local holds it
-            cGUIInstAnimation* t2 = this->mpButton0;
-            if (t2 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            cGUIInstAnimation* t2 = mpButton0;
+            if (t2 != nullptr) {
                 // inferred: a temporary for the result of the call at 0xc3f58b, used once; no DWARF local holds it
-                MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(7));
-                this->mButton0.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, this->mButtonSizeX);
+                MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 7u);
+                mButton0.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t2), t3, mButtonSizeX);
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             } else {
                 // inferred: a temporary for the value the load at 0xc3f5a9 read, used twice; no DWARF local holds it
-                cGUIInstAnimation* t4 = this->mpButton1;
-                if (t4 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                cGUIInstAnimation* t4 = mpButton1;
+                if (t4 != nullptr) {
                     // inferred: a temporary for the result of the call at 0xc3f5d2, used once; no DWARF local holds it
-                    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(8));
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, this->mButtonSizeX);
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 8u);
+                    mButton1.uGUIBase::cReferenceUIButton::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t4), t5, mButtonSizeX);
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 } else {
-                    if (this->mpNumBox0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setup(static_cast<uGUIBase*>(this), this->mpNumBox0, static_cast<s32>(0), static_cast<s32>(99), static_cast<s32>(0));
-                        this->mNumBox0.mIsUseComma = true;
+                    if (mpNumBox0 != nullptr) {
+                        mNumBox0.setup(static_cast<uGUIBase*>(this), mpNumBox0, 0, 99, 0);
+                        mNumBox0.mIsUseComma = true;
                     }
-                    this->::uGUIShopBuy::updateMoney();
+                    updateMoney();
                 }
             }
         }
@@ -949,128 +948,128 @@ __attribute__((weak)) void uGUIShopBuy::updateCursor() {
     // DWARF local not rendered: u32 dispBit;
     // DWARF local not rendered: s32 button_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    if (mpCtrl == nullptr) {
         return;
     }
-    if (this->mMode == static_cast<u32>(2)) {
-        this->mNumBox0.::uGUIBase::cReferenceUINumBox::setFocus(this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(0));
-        if (this->mNumBox0.::uGUIBase::cReferenceUINumBox::isFocus() == false) {
-            if (this->mNumBox1.::uGUIBase::cReferenceUINumBox::isFocus() != false) {
-                if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(1)) {
-                    if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+    if (mMode == 2) {
+        mNumBox0.uGUIBase::cReferenceUINumBox::setFocus(mpCtrl->mCurrentPos == 0);
+        if (!mNumBox0.uGUIBase::cReferenceUINumBox::isFocus()) {
+            if (mNumBox1.uGUIBase::cReferenceUINumBox::isFocus()) {
+                if (mpCtrl->mCurrentPos == 1) {
+                    if (mButtonCursorPos != 0) {
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                     }
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(1));
+                mButton0.setBtnSize(mButtonSizeX, true);
+                mButton1.setBtnSize(mButtonSizeX, true);
+                mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mGuide.setDispBit(1u);
             } else {
-                if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(1)) {
-                    if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+                if (mpCtrl->mCurrentPos == 1) {
+                    if (mButtonCursorPos != 0) {
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                     }
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(0));
+                mButton0.setBtnSize(mButtonSizeX, true);
+                mButton1.setBtnSize(mButtonSizeX, true);
+                mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mGuide.setDispBit(0u);
             }
         } else {
-            if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(1)) {
-                if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+            if (mpCtrl->mCurrentPos == 1) {
+                if (mButtonCursorPos != 0) {
+                    mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                    mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                 }
             } else {
-                this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
             }
-            this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-            this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-            this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-            this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(1));
+            mButton0.setBtnSize(mButtonSizeX, true);
+            mButton1.setBtnSize(mButtonSizeX, true);
+            mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+            mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+            mGuide.setDispBit(1u);
         }
     } else {
-        if (this->mMode == static_cast<u32>(1)) {
-            this->mNumBox0.::uGUIBase::cReferenceUINumBox::setFocus(this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(0));
-            this->mNumBox1.::uGUIBase::cReferenceUINumBox::setFocus(this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(1));
-            if (this->mNumBox0.::uGUIBase::cReferenceUINumBox::isFocus() == false) {
-                if (this->mNumBox1.::uGUIBase::cReferenceUINumBox::isFocus() != false) {
-                    if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(2)) {
-                        if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                            this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+        if (mMode == 1) {
+            mNumBox0.uGUIBase::cReferenceUINumBox::setFocus(mpCtrl->mCurrentPos == 0);
+            mNumBox1.uGUIBase::cReferenceUINumBox::setFocus(mpCtrl->mCurrentPos == 1);
+            if (!mNumBox0.uGUIBase::cReferenceUINumBox::isFocus()) {
+                if (mNumBox1.uGUIBase::cReferenceUINumBox::isFocus()) {
+                    if (mpCtrl->mCurrentPos == 2) {
+                        if (mButtonCursorPos != 0) {
+                            mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                            mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                            this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                            mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                            mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                     }
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                    this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                    this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(1));
+                    mButton0.setBtnSize(mButtonSizeX, true);
+                    mButton1.setBtnSize(mButtonSizeX, true);
+                    mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                    mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                    mGuide.setDispBit(1u);
                 } else {
-                    if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(2)) {
-                        if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                            this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+                    if (mpCtrl->mCurrentPos == 2) {
+                        if (mButtonCursorPos != 0) {
+                            mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                            mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                         } else {
-                            this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                            this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                            mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                            mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                         }
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                     }
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                    this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                    this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(0));
+                    mButton0.setBtnSize(mButtonSizeX, true);
+                    mButton1.setBtnSize(mButtonSizeX, true);
+                    mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                    mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                    mGuide.setDispBit(0u);
                 }
             } else {
-                if (this->mpCtrl->::cControl::mCurrentPos == static_cast<s32>(2)) {
-                    if (this->mButtonCursorPos != static_cast<u32>(0)) {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(true);
+                if (mpCtrl->mCurrentPos == 2) {
+                    if (mButtonCursorPos != 0) {
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(true);
                     } else {
-                        this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(true);
-                        this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                        mButton0.uGUIBase::cReferenceUIButton::setFocus(true);
+                        mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                     }
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setFocus(false);
-                    this->mButton1.::uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton0.uGUIBase::cReferenceUIButton::setFocus(false);
+                    mButton1.uGUIBase::cReferenceUIButton::setFocus(false);
                 }
-                this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mButton1.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-                this->mNumBox0.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mNumBox1.::uGUIBase::cReferenceUINumBox::setMode(static_cast<uGUIBase::cReferenceUINumBox::MODE>(0));
-                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(1));
+                mButton0.setBtnSize(mButtonSizeX, true);
+                mButton1.setBtnSize(mButtonSizeX, true);
+                mNumBox0.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mNumBox1.setMode(uGUIBase::cReferenceUINumBox::MODE_DEFAULT);
+                mGuide.setDispBit(1u);
             }
         }
     }
@@ -1115,17 +1114,17 @@ void uGUIShopBuy::announceCallBack(void* pParam) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2258
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2258 from sGUI*
-    if (pParam == static_cast<void*>(nullptr)) {
+    if (pParam == nullptr) {
         return;
     }
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(136))) > static_cast<int>(-1)) {
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 136)) > -1) {
         // inferred: a temporary for the value the load at 0xc409d5 read, used 3 times; no DWARF local holds it
-        sGUI* t0 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t0)->mItemCBF = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8792))) & static_cast<unsigned int>(4294959103);
-        if (this->mpBuyItemInfo != static_cast<const rItemList::rItemParam*>(nullptr)) {
+        sGUI* t0 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t0)->mItemCBF = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8792)) & 0xFFFFDFFFu;
+        if (mpBuyItemInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0xc409fc, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(5));
-            static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(t1, static_cast<u32>(0), this->mpBuyItemInfo->::rItemList::rItemParam::getItemName(), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGMDRes, 5u);
+            static_cast<sGUIExt*>(t0)->requestAnnounce(t1, 0u, mpBuyItemInfo->getItemName(), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         }
     }
 }
@@ -1136,17 +1135,17 @@ void uGUIShopBuy::announceCallBack1(void* pParam) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2258
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2258 from sGUI*
-    if (pParam == static_cast<void*>(nullptr)) {
+    if (pParam == nullptr) {
         return;
     }
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(136))) > static_cast<int>(-1)) {
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 136)) > -1) {
         // inferred: a temporary for the value the load at 0xc40a85 read, used 3 times; no DWARF local holds it
-        sGUI* t0 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t0)->mItemCBF = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8792))) & static_cast<unsigned int>(4294959103);
-        if (this->mpBuyItemInfo != static_cast<const rItemList::rItemParam*>(nullptr)) {
+        sGUI* t0 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t0)->mItemCBF = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 8792)) & 0xFFFFDFFFu;
+        if (mpBuyItemInfo != nullptr) {
             // inferred: a temporary for the result of the call at 0xc40aac, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(5));
-            static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(t1, static_cast<u32>(0), this->mpBuyItemInfo->::rItemList::rItemParam::getItemName(), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGMDRes, 5u);
+            static_cast<sGUIExt*>(t0)->requestAnnounce(t1, 0u, mpBuyItemInfo->getItemName(), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         }
     }
 }
@@ -1155,101 +1154,101 @@ void uGUIShopBuy::announceCallBack1(void* pParam) {
 void uGUIShopBuy::dummyCallBack(void*) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2258
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(::sGUI::getInstance())->mItemCBF & static_cast<u32>(4294959103);
+    static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF & 0xFFFFDFFFu;
 }
 
 // Address: 0x00c40af0 - 0x00c40b91 (161 bytes)
 void uGUIShopBuy::sellCallBack(void*) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2258
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(::sGUI::getInstance())->mItemCBF & static_cast<u32>(4294963199);
-    if (this->mItemList.::MtArray::mLength != static_cast<u32>(0)) {
+    static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF = static_cast<sGUIExt*>(sGUI::getInstance())->mItemCBF & 0xFFFFEFFFu;
+    if (mItemList.mLength != 0) {
         // inferred: the value the loop at 0xc40b20 carries; no location-less local in scope fits
-        u32 v0_0 = this->mItemList.::MtArray::mLength;
+        u32 v0_0 = mItemList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mItemList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mItemList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mItemList.::MtArray::mLength) {
-                    v0_0 = this->mItemList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mItemList.mpArray[i0_3] != nullptr) {
+                delete mItemList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mItemList.mLength) {
+                    v0_0 = mItemList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mItemList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mItemList.::MtArray::mpArray));
+    if (mItemList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mItemList.mpArray));
     }
-    this->mItemList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mItemList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mItemList.::MtArray::mLength = static_cast<u32>(0);
+    mItemList.mpArray = nullptr;
+    mItemList.mBufsiz = 0;
+    mItemList.mLength = 0;
 }
 
 // Address: 0x00c40e50 - 0x00c40f19 (201 bytes)
 void uGUIShopBuy::initParams() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNowSelectNum = static_cast<u32>(0);
-    this->mNowMoney = static_cast<u64>(0);
-    this->mNumBox0.::uGUIBase::cReferenceUINumBox::setNum(static_cast<s32>(0));
-    this->mNumBox1.::uGUIBase::cReferenceUINumBox::setNum(static_cast<s32>(0));
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrl->setCurrentPos(static_cast<s32>(0), false);
+    mNowSelectNum = 0;
+    mNowMoney = 0;
+    mNumBox0.setNum(0);
+    mNumBox1.setNum(0);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setCurrentPos(0, false);
     }
-    if (this->mMode == static_cast<u32>(2)) {
-        if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+    if (mMode == 2) {
+        if (mNumBox0.mCurrentNum == 0) {
+            mButton0.setEnable(false);
         } else {
-            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+            mButton0.setEnable(true);
         }
     } else {
-        if (this->mMode == static_cast<u32>(1)) {
-            if (this->mNumBox0.mCurrentNum == static_cast<s32>(0)) {
-                if (this->mNumBox1.mCurrentNum != static_cast<s32>(0)) {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+        if (mMode == 1) {
+            if (mNumBox0.mCurrentNum == 0) {
+                if (mNumBox1.mCurrentNum != 0) {
+                    mButton0.setEnable(true);
                 } else {
-                    this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+                    mButton0.setEnable(false);
                 }
             } else {
-                this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(true);
+                mButton0.setEnable(true);
             }
         } else {
-            this->mButton0.::uGUIBase::cReferenceUIButton::setEnable(false);
+            mButton0.setEnable(false);
         }
     }
-    this->mButton0.::uGUIBase::cReferenceUIButton::setBtnSize(this->mButtonSizeX, true);
-    this->::uGUIShopBuy::updateMoney();
-    this->::uGUIShopBuy::updateCursor();
+    mButton0.setBtnSize(mButtonSizeX, true);
+    updateMoney();
+    updateCursor();
 }
 
 // Address: 0x00c3fb50 - 0x00c3fbfe (174 bytes)
 __attribute__((weak)) bool uGUIShopBuy::isMoveDialog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDialog != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpDialog->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            if (this->mpDialog->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) == static_cast<s32>(0)) {
-                if (this->mMode == static_cast<u32>(2)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+    if (mpDialog != nullptr) {
+        if (mpDialog->mResult == RESULT_EXIT) {
+            if (mpDialog->getChoicePos(-1) == 0) {
+                if (mMode == 2) {
+                    setInputEvent(74u);
                 } else {
-                    if (this->mMode == static_cast<u32>(1)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(73));
+                    if (mMode == 1) {
+                        setInputEvent(73u);
                     }
                 }
             }
-            if (this->mpDialog != static_cast<uGUISystemMsg*>(nullptr)) {
-                this->mpDialog->::uGUIBase::mEndType = static_cast<u32>(0);
-                this->mpDialog->end();
+            if (mpDialog != nullptr) {
+                mpDialog->mEndType = 0;
+                mpDialog->end();
             }
-            this->mpDialog = static_cast<uGUISystemMsg*>(nullptr);
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
-            this->::uGUIBase::setWindowActive(true);
+            mpDialog = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            setWindowActive(true);
         }
         return true;
     } else {
@@ -1294,15 +1293,19 @@ __attribute__((weak)) bool uGUIShopBuy::checkEnableUse() {
 void uGUIShopBuy::initIcon() {
     // DWARF local not rendered: f32 frame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMoneyMark == static_cast<cGUIObjTexture*>(nullptr)) {
+    if (mpMoneyMark == nullptr) {
         return;
     }
-    if (this->mIsGoldType == false) {
-        this->mpMoneyMark->::cGUIObject::setCurrentFrame(1.0f, true);
+    if (!mIsGoldType) {
+        mpMoneyMark->setCurrentFrame(1.0f, true);
     } else {
-        this->mpMoneyMark->::cGUIObject::setCurrentFrame(0.0f, true);
+        mpMoneyMark->setCurrentFrame(0.0f, true);
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIShopBuy::MyDTI uGUIShopBuy::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const s32 uGUIShopBuy::mCTButtonIdTable[3];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIShopBuy.cpp at 0x00c4115f-0x00c4119c (called at uGUIShopBuy.cpp:35)

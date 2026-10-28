@@ -114,3 +114,15 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::init at 0x21dc78-0x21dc7f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uAimCheck::setOwner(uHuman* pOwner) {
+    this->mpOwner = pOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::calcTargetPos at 0x21f640-0x21f646; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uAimCheck::AIM_TYPE uAimCheck::getAimType() const {
+    return this->mAimType;
+}

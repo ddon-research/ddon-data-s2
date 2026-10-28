@@ -38,7 +38,7 @@ const MtDTI& uGUICaplinkFriendList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkFriendList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* uGUICaplinkFriendList::getAllocator() {
 // Address: 0x009b5b00 - 0x009b5b40 (64 bytes)
 void* uGUICaplinkFriendList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkFriendList::getAllocator()->memAlloc(sz, align, ::uGUICaplinkFriendList::DTI.::MtDTI::getID());
+    return uGUICaplinkFriendList::getAllocator()->memAlloc(sz, align, uGUICaplinkFriendList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* uGUICaplinkFriendList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkFriendList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,20 +87,20 @@ uGUICaplinkFriendList::~uGUICaplinkFriendList() {
 // Address: 0x009b5f90 - 0x009b5f95 (5 bytes)
 void uGUICaplinkFriendList::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkMenuBase::createProperty(s);
+    this->uGUICaplinkMenuBase::createProperty(s);
 }
 
 // Address: 0x009b5fa0 - 0x009b6025 (133 bytes)
 bool uGUICaplinkFriendList::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_LIST_GUI"), static_cast<u32>(129), static_cast<t64>(1448864191)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_LIST_GUI"), 129u, 1448864191l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -131,40 +131,40 @@ __attribute__((weak)) void uGUICaplinkFriendList::kill() {
 // Address: 0x009b6150 - 0x009b6155 (5 bytes)
 void uGUICaplinkFriendList::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009b6160 - 0x009b6199 (57 bytes)
 void uGUICaplinkFriendList::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkMenuBase::updatePtr();
-    if (this->mpGUICaplinkFilter == static_cast<uGUICaplinkFilter*>(nullptr)) {
+    this->uGUICaplinkMenuBase::updatePtr();
+    if (mpGUICaplinkFilter == nullptr) {
         return;
     }
-    if (this->mpGUICaplinkFilter->::cUnit::isEnable() != false) {
+    if (mpGUICaplinkFilter->isEnable()) {
         return;
     }
-    this->mpGUICaplinkFilter = static_cast<uGUICaplinkFilter*>(nullptr);
+    mpGUICaplinkFilter = nullptr;
 }
 
 // Address: 0x009b61a0 - 0x009b61ab (11 bytes)
 void uGUICaplinkFriendList::beginSearch() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlowId = static_cast<u32>(44);
+    mRequestFlowId = 44;
 }
 
 // Address: 0x009b61b0 - 0x009b61c5 (21 bytes)
 void uGUICaplinkFriendList::beginNewTalkFriend() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = static_cast<u32>(1);
-    this->mRequestFlowId = static_cast<u32>(2);
+    mMode = 1;
+    mRequestFlowId = 2;
 }
 
 // Address: 0x009b61d0 - 0x009b61e5 (21 bytes)
 void uGUICaplinkFriendList::beginNewTalkSearch() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = static_cast<u32>(1);
-    this->mRequestFlowId = static_cast<u32>(44);
+    mMode = 1;
+    mRequestFlowId = 44;
 }
 
 // Address: 0x009b61f0 - 0x009b6293 (163 bytes)
@@ -201,34 +201,28 @@ __attribute__((weak)) void uGUICaplinkFriendList::setFlowProcess(u32 flow_id) {
 void uGUICaplinkFriendList::moveInput() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (this->mFlowId <= static_cast<u32>(43)) {
-        if (((static_cast<unsigned long>(8865351483396) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-            if (this->mpCancelCtrl == static_cast<cControl*>(nullptr)) {
-            } else {
-                this->mpCancelCtrl->execute();
+    if (mFlowId <= 43u) {
+        if (((0x81020204004ul >> static_cast<unsigned long>(mFlowId & 63u)) & 1ul) != 0) {
+            mMain.mClose.execute();
+            if (mpCancelCtrl != nullptr) {
+                mpCancelCtrl->execute();
             }
-            if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
-            } else {
-                this->mpDecideCtrl->execute();
+            if (mpDecideCtrl != nullptr) {
+                mpDecideCtrl->execute();
             }
-            if (this->mpTabCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            } else {
-                this->mpTabCtrl->execute();
+            if (mpTabCtrl != nullptr) {
+                mpTabCtrl->execute();
             }
-            if (this->mpPageCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            } else {
-                this->mpPageCtrl->execute();
+            if (mpPageCtrl != nullptr) {
+                mpPageCtrl->execute();
             }
-            if (this->mpButtonCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            } else {
-                this->mpButtonCtrl->execute();
+            if (mpButtonCtrl != nullptr) {
+                mpButtonCtrl->execute();
             }
-            if (this->mpListCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            } else {
-                this->mpListCtrl->execute();
+            if (mpListCtrl != nullptr) {
+                mpListCtrl->execute();
             }
-            this->mMain.mPage.::uGUIBase::cReferenceUINumPager::execute();
+            mMain.mPage.execute();
         }
     }
 }
@@ -237,40 +231,39 @@ void uGUICaplinkFriendList::moveInput() {
 void uGUICaplinkFriendList::moveEvent() {
     // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<int>(this->::uGUIBase::getInputEvent()) <= static_cast<int>(65)) {
-        if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
-        } else {
-            this->::uGUICaplinkFriendList::eventAdjustPage();
+    if (static_cast<int>(getInputEvent()) <= 65) {
+        if ((getInputEvent() - 52u) <= 1u) {
+            eventAdjustPage();
         }
     } else {
-        switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-            case static_cast<u32>(0):
+        switch (getInputEvent() - 66u) {
+            case 0:
             {
-                this->::uGUICaplinkFriendList::eventDecide();
+                eventDecide();
                 break;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
-                if (this->mFlowId <= static_cast<u32>(43)) {
-                    if (((static_cast<unsigned long>(8865351483396) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                        this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(53), true);
+                if (mFlowId <= 43u) {
+                    if (((0x81020204004ul >> static_cast<unsigned long>(mFlowId & 63u)) & 1ul) != 0) {
+                        setFlowId(53u, true);
                     }
                 }
                 break;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                this->::uGUICaplinkFriendList::adjustListCursor();
+                adjustListCursor();
                 break;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                this->::uGUICaplinkFriendList::eventAdjustPage();
+                eventAdjustPage();
                 break;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
-                this->::uGUICaplinkFriendList::eventAdjustTab();
+                eventAdjustTab();
                 break;
             }
             default:
@@ -292,7 +285,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::updateMove() {
 // Address: 0x009b8be0 - 0x009b8be9 (9 bytes)
 void uGUICaplinkFriendList::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009ba470 - 0x009ba527 (183 bytes)
@@ -494,18 +487,18 @@ void uGUICaplinkFriendList::initRequestSubMenu() {
     // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bbca8, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 15u);
     // inferred: a temporary for the result of the call at 0x9bbcc0, used once; no DWARF local holds it
-    MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(14));
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 14u);
     // inferred: a temporary for the result of the call at 0x9bbcd8, used once; no DWARF local holds it
-    MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(158));
+    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 158u);
     // inferred: a temporary for the result of the call at 0x9bbcf0, used once; no DWARF local holds it
-    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(73));
-    this->::uGUICaplinkMenuBase::createSubMenu();
-    this->::uGUICaplinkMenuBase::addSubMenu(t0, true, static_cast<u32>(17));
-    this->::uGUICaplinkMenuBase::addSubMenu(t1, true, static_cast<u32>(18));
-    this->::uGUICaplinkMenuBase::addSubMenu(t2, true, static_cast<u32>(19));
-    this->::uGUICaplinkMenuBase::addSubMenu(t3, true, static_cast<u32>(20));
+    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 73u);
+    createSubMenu();
+    addSubMenu(t0, true, 17u);
+    addSubMenu(t1, true, 18u);
+    addSubMenu(t2, true, 19u);
+    addSubMenu(t3, true, 20u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (36 bytes)
@@ -544,24 +537,24 @@ void uGUICaplinkFriendList::initReceiveSubMenu() {
     // DWARF local not rendered: stSubMenuInfo info_list[6];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc0ba, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 15u);
     // inferred: a temporary for the result of the call at 0x9bc0d2, used once; no DWARF local holds it
-    MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(14));
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 14u);
     // inferred: a temporary for the result of the call at 0x9bc0ea, used once; no DWARF local holds it
-    MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(95));
+    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 95u);
     // inferred: a temporary for the result of the call at 0x9bc101, used once; no DWARF local holds it
-    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(96));
+    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 96u);
     // inferred: a temporary for the result of the call at 0x9bc118, used once; no DWARF local holds it
-    MT_CTSTR t4 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(159));
+    MT_CTSTR t4 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 159u);
     // inferred: a temporary for the result of the call at 0x9bc12f, used once; no DWARF local holds it
-    MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(73));
-    this->::uGUICaplinkMenuBase::createSubMenu();
-    this->::uGUICaplinkMenuBase::addSubMenu(t0, true, static_cast<u32>(23));
-    this->::uGUICaplinkMenuBase::addSubMenu(t1, true, static_cast<u32>(24));
-    this->::uGUICaplinkMenuBase::addSubMenu(t2, true, static_cast<u32>(25));
-    this->::uGUICaplinkMenuBase::addSubMenu(t3, true, static_cast<u32>(26));
-    this->::uGUICaplinkMenuBase::addSubMenu(t4, true, static_cast<u32>(27));
-    this->::uGUICaplinkMenuBase::addSubMenu(t5, true, static_cast<u32>(28));
+    MT_CTSTR t5 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 73u);
+    createSubMenu();
+    addSubMenu(t0, true, 23u);
+    addSubMenu(t1, true, 24u);
+    addSubMenu(t2, true, 25u);
+    addSubMenu(t3, true, 26u);
+    addSubMenu(t4, true, 27u);
+    addSubMenu(t5, true, 28u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (36 bytes)
@@ -607,18 +600,18 @@ void uGUICaplinkFriendList::initIgnoreSubMenu() {
     // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc518, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 15u);
     // inferred: a temporary for the result of the call at 0x9bc530, used once; no DWARF local holds it
-    MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(160));
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 160u);
     // inferred: a temporary for the result of the call at 0x9bc548, used once; no DWARF local holds it
-    MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(14));
+    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 14u);
     // inferred: a temporary for the result of the call at 0x9bc560, used once; no DWARF local holds it
-    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(73));
-    this->::uGUICaplinkMenuBase::createSubMenu();
-    this->::uGUICaplinkMenuBase::addSubMenu(t0, true, static_cast<u32>(32));
-    this->::uGUICaplinkMenuBase::addSubMenu(t1, true, static_cast<u32>(33));
-    this->::uGUICaplinkMenuBase::addSubMenu(t2, true, static_cast<u32>(34));
-    this->::uGUICaplinkMenuBase::addSubMenu(t3, true, static_cast<u32>(35));
+    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 73u);
+    createSubMenu();
+    addSubMenu(t0, true, 32u);
+    addSubMenu(t1, true, 33u);
+    addSubMenu(t2, true, 34u);
+    addSubMenu(t3, true, 35u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -667,18 +660,18 @@ void uGUICaplinkFriendList::initInvitedSubMenu() {
     // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc958, used once; no DWARF local holds it
-    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
+    MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 15u);
     // inferred: a temporary for the result of the call at 0x9bc970, used once; no DWARF local holds it
-    MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(216));
+    MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 216u);
     // inferred: a temporary for the result of the call at 0x9bc988, used once; no DWARF local holds it
-    MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(14));
+    MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 14u);
     // inferred: a temporary for the result of the call at 0x9bc9a0, used once; no DWARF local holds it
-    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(73));
-    this->::uGUICaplinkMenuBase::createSubMenu();
-    this->::uGUICaplinkMenuBase::addSubMenu(t0, true, static_cast<u32>(39));
-    this->::uGUICaplinkMenuBase::addSubMenu(t1, true, static_cast<u32>(40));
-    this->::uGUICaplinkMenuBase::addSubMenu(t2, true, static_cast<u32>(41));
-    this->::uGUICaplinkMenuBase::addSubMenu(t3, true, static_cast<u32>(42));
+    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 73u);
+    createSubMenu();
+    addSubMenu(t0, true, 39u);
+    addSubMenu(t1, true, 40u);
+    addSubMenu(t2, true, 41u);
+    addSubMenu(t3, true, 42u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (36 bytes)
@@ -703,29 +696,29 @@ __attribute__((weak)) void uGUICaplinkFriendList::updateInvitedDelete() {
 // Address: 0x009bca20 - 0x009bcb55 (309 bytes)
 void uGUICaplinkFriendList::initSearch() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mMode != static_cast<u32>(0)) {
-        this->::uGUICaplinkFriendList::setFlowProcess(static_cast<u32>(20));
+    if (mMode != 0) {
+        setFlowProcess(20u);
         // inferred: a temporary for the value the load at 0x9bca47 read, used once; no DWARF local holds it
-        cGUIObjMessage* t0 = this->mMain.mpObjMsgTitle;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(7)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = mMain.mpObjMsgTitle;
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 7u), 0u, false);
         // inferred: a temporary for the value the load at 0x9bca7c read, used once; no DWARF local holds it
-        cGUIObjMessage* t1 = this->mMain.mpObjMsgTitleSub;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(26)), static_cast<u32>(0), false);
-        this->::uGUIBase::setMessageHorizontalInterval(static_cast<cGUIObj2D*>(this->mMain.mpObjMsgTitle), static_cast<cGUIObj2D*>(this->mMain.mpObjMsgTitleSub), 8.0f, true);
-        this->::uGUICaplinkFriendList::clearList();
-        this->mMain.mButton[0].::uGUIBase::cReferenceUIButton::setMessage(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(115)));
-        if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpTabCtrl->setCurrentPos(static_cast<s32>(5), false);
+        cGUIObjMessage* t1 = mMain.mpObjMsgTitleSub;
+        setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 26u), 0u, false);
+        setMessageHorizontalInterval(static_cast<cGUIObj2D*>(mMain.mpObjMsgTitle), static_cast<cGUIObj2D*>(mMain.mpObjMsgTitleSub), 8.0f, true);
+        clearList();
+        mMain.mButton[0].setMessage(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 115u));
+        if (mpTabCtrl != nullptr) {
+            mpTabCtrl->setCurrentPos(5, false);
         }
-        this->mMain.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(5), true, true);
+        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(5u, true, true);
     } else {
-        this->::uGUICaplinkFriendList::setFlowProcess(static_cast<u32>(10));
-        this->::uGUICaplinkFriendList::clearList();
-        this->mMain.mButton[0].::uGUIBase::cReferenceUIButton::setMessage(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(115)));
-        if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpTabCtrl->setCurrentPos(static_cast<s32>(5), false);
+        setFlowProcess(10u);
+        clearList();
+        mMain.mButton[0].setMessage(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 115u));
+        if (mpTabCtrl != nullptr) {
+            mpTabCtrl->setCurrentPos(5, false);
         }
-        this->mMain.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(5), true, true);
+        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(5u, true, true);
     }
 }
 
@@ -913,7 +906,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::returnFlow() {
 // Address: 0x01ae30a0 - 0x01ae30af (15 bytes)
 void uGUICaplinkFriendList::returnEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(53), true);
+    setFlowId(53u, true);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (410 bytes)
@@ -957,41 +950,40 @@ __attribute__((weak)) void uGUICaplinkFriendList::eventDecide() {
 // Address: 0x009bee80 - 0x009bef29 (169 bytes)
 __attribute__((weak)) void uGUICaplinkFriendList::eventAdjustPage() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mpPageCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mMain.mPage.mNum = this->mpPageCtrl->::cControl::getCurrentPos();
+    if (mpPageCtrl != nullptr) {
+        mMain.mPage.mNum = mpPageCtrl->getCurrentPos();
     } else {
-        this->mMain.mPage.mNum = static_cast<s32>(0);
+        mMain.mPage.mNum = 0;
     }
-    this->mMain.mPage.::uGUIBase::cReferenceUINumPager::changeString();
-    if (static_cast<int>(this->mFlowId) <= static_cast<int>(13)) {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            this->::uGUICaplinkFriendList::setupList();
-            this->::uGUICaplinkFriendList::adjustListCursor();
+    mMain.mPage.changeString();
+    if (static_cast<int>(mFlowId) <= 13) {
+        if (mFlowId == 2) {
+            setupList();
+            adjustListCursor();
         }
     } else {
-        if (static_cast<int>(this->mFlowId) <= static_cast<int>(20)) {
-            if (this->mFlowId == static_cast<u32>(14)) {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(15), true);
+        if (static_cast<int>(mFlowId) <= 20) {
+            if (mFlowId == 14) {
+                setFlowId(15u, true);
             }
         } else {
-            if (static_cast<int>(this->mFlowId) <= static_cast<int>(28)) {
-                if (this->mFlowId != static_cast<u32>(21)) {
-                } else {
-                    this->::uGUICaplinkFriendList::setupList();
-                    this->::uGUICaplinkFriendList::adjustListCursor();
+            if (static_cast<int>(mFlowId) <= 28) {
+                if (mFlowId == 21) {
+                    setupList();
+                    adjustListCursor();
                 }
             } else {
-                if (this->mFlowId != static_cast<u32>(29)) {
-                    if (this->mFlowId == static_cast<u32>(36)) {
-                        this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(37), true);
+                if (mFlowId != 29) {
+                    if (mFlowId == 36) {
+                        setFlowId(37u, true);
                     } else {
-                        if (this->mFlowId == static_cast<u32>(43)) {
-                            this->::uGUICaplinkFriendList::setupList();
-                            this->::uGUICaplinkFriendList::adjustListCursor();
+                        if (mFlowId == 43) {
+                            setupList();
+                            adjustListCursor();
                         }
                     }
                 } else {
-                    this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(30), true);
+                    setFlowId(30u, true);
                 }
             }
         }
@@ -1001,44 +993,44 @@ __attribute__((weak)) void uGUICaplinkFriendList::eventAdjustPage() {
 // Address: 0x009bef30 - 0x009bf000 (208 bytes)
 __attribute__((weak)) void uGUICaplinkFriendList::eventAdjustTab() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->setCurrentPos(0, false);
     }
-    if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpButtonCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpButtonCtrl != nullptr) {
+        mpButtonCtrl->setCurrentPos(0, false);
     }
-    this->mButtonNum = static_cast<u32>(0);
-    this->mIsSelectButton = false;
-    if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        switch (this->mpTabCtrl->::cControl::mCurrentPos) {
-            case static_cast<s32>(0):
+    mButtonNum = 0;
+    mIsSelectButton = false;
+    if (mpTabCtrl != nullptr) {
+        switch (mpTabCtrl->mCurrentPos) {
+            case 0:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(2), true);
+                setFlowId(2u, true);
                 break;
             }
-            case static_cast<s32>(1):
+            case 1:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(14), true);
+                setFlowId(14u, true);
                 break;
             }
-            case static_cast<s32>(2):
+            case 2:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(21), true);
+                setFlowId(21u, true);
                 break;
             }
-            case static_cast<s32>(3):
+            case 3:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(29), true);
+                setFlowId(29u, true);
                 break;
             }
-            case static_cast<s32>(4):
+            case 4:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(36), true);
+                setFlowId(36u, true);
                 break;
             }
-            case static_cast<s32>(5):
+            case 5:
             {
-                this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(43), true);
+                setFlowId(43u, true);
                 break;
             }
             default:
@@ -1047,7 +1039,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::eventAdjustTab() {
             }
         }
     } else {
-        this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(2), true);
+        setFlowId(2u, true);
     }
 }
 
@@ -1060,57 +1052,59 @@ __attribute__((weak)) u32 uGUICaplinkFriendList::evCtrlDecide(cControl::Message*
 // Address: 0x009b7650 - 0x009b7665 (21 bytes)
 u32 uGUICaplinkFriendList::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009b7420 - 0x009b7435 (21 bytes)
 u32 uGUICaplinkFriendList::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009b7670 - 0x009b7682 (18 bytes)
 u32 uGUICaplinkFriendList::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x009b7700 - 0x009b7715 (21 bytes)
 u32 uGUICaplinkFriendList::evCtrlAdjustPage(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(1);
+    setInputEvent(69u);
+    return 1;
 }
 
 // Address: 0x009b7720 - 0x009b7735 (21 bytes)
 u32 uGUICaplinkFriendList::evCtrlAdjustTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(1);
+    setInputEvent(70u);
+    return 1;
 }
 
 // Address: 0x009b7690 - 0x009b76f6 (102 bytes)
 u32 uGUICaplinkFriendList::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender != this->mpListCtrl) {
-                if (msg->pSender != this->mpButtonCtrl) {
-                    return static_cast<u32>(0);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender != mpListCtrl) {
+                if (msg->pSender != mpButtonCtrl) {
+                    return 0;
                 }
-                if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                    this->mpListCtrl->setCurrentPos(this->mpListCtrl->::cControl::getItemNum() - static_cast<s32>(1), false);
+                if (mpListCtrl != nullptr) {
+                    mpListCtrl->setCurrentPos(mpListCtrl->getItemNum() - 1, false);
                 }
             }
-            this->::uGUICaplinkFriendList::adjustListCursor();
-            return this->::uGUICaplinkFriendList::evCtrlDecide(msg);
+            adjustListCursor();
+            return evCtrlDecide(msg);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkFriendList::MyDTI uGUICaplinkFriendList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkFriendList.cpp at 0x009bfa5f-0x009bfa9c (called at uGUICaplinkFriendList.cpp:36)
@@ -1181,7 +1175,7 @@ const MtDTI& uGUICaplinkFriendList::cIndex::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUICaplinkFriendList::cIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::cIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::cIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1202,6 +1196,8 @@ inline void uGUICaplinkFriendList::cIndex::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUICaplinkFriendList::cIndex::~cIndex();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkFriendList::cIndex::MyDTI uGUICaplinkFriendList::cIndex::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkFriendList.cpp at 0x009bfa9c-0x009bfad9 (called at uGUICaplinkFriendList.cpp:37)

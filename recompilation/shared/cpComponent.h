@@ -139,3 +139,25 @@ inline cpComponent* cpComponent::getRootComponent() const {
 inline MtObject* cpComponent::getOwner() const {
     return this->mpOwner;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpComponent::setParent at 0x46b74f-0x46b784; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpComponent::addChild(cpComponent* pNewComp) {
+    pNewComp->mpParent = this;
+    pNewComp->mpRootComponent = this->mpRootComponent;
+    if (this->mpChildTop != nullptr) {
+        if (this->mpChildBottom != nullptr) {
+            this->mpChildBottom->mpNext = pNewComp;
+            pNewComp->mpPrev = this->mpChildBottom;
+            this->mpChildBottom = pNewComp;
+        }
+    } else {
+        if (this->mpChildBottom != nullptr) {
+            this->mpChildBottom->mpNext = pNewComp;
+            pNewComp->mpPrev = this->mpChildBottom;
+        } else {
+            this->mpChildTop = pNewComp;
+        }
+        this->mpChildBottom = pNewComp;
+    }
+}

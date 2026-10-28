@@ -29,7 +29,7 @@ const MtDTI& uGUICaplinkMessage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkMessage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMessage::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkMessage::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUICaplinkMessage::getAllocator() {
 // Address: 0x009ca860 - 0x009ca8a0 (64 bytes)
 void* uGUICaplinkMessage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkMessage::getAllocator()->memAlloc(sz, align, ::uGUICaplinkMessage::DTI.::MtDTI::getID());
+    return uGUICaplinkMessage::getAllocator()->memAlloc(sz, align, uGUICaplinkMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUICaplinkMessage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkMessage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMessage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkMessage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,20 +78,20 @@ uGUICaplinkMessage::~uGUICaplinkMessage() {
 // Address: 0x009cab30 - 0x009cab35 (5 bytes)
 void uGUICaplinkMessage::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009cab40 - 0x009cabc5 (133 bytes)
 bool uGUICaplinkMessage::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_REQUEST_GUI"), static_cast<u32>(129), static_cast<t64>(1429100366)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_REQUEST_GUI"), 129u, 1429100366l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -105,13 +105,13 @@ __attribute__((weak)) void uGUICaplinkMessage::setup() {
 // Address: 0x009cabd0 - 0x009cabd5 (5 bytes)
 void uGUICaplinkMessage::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009cabe0 - 0x009cabe5 (5 bytes)
 void uGUICaplinkMessage::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009cabf0 - 0x009cabf1 (1 bytes)
@@ -122,7 +122,7 @@ __attribute__((weak)) void uGUICaplinkMessage::updatePtr() {
 // Address: 0x009cac00 - 0x009cac05 (5 bytes)
 void uGUICaplinkMessage::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x009cac10 - 0x009cb037 (1063 bytes)
@@ -148,21 +148,21 @@ __attribute__((weak)) void uGUICaplinkMessage::setFlowId(u32 flow_id) {
 // Address: 0x009cc020 - 0x009cc0a3 (131 bytes)
 void uGUICaplinkMessage::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(2)) {
-        this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::execute();
+    if (mFlowId == 2) {
+        mMain.mTextBox.execute();
     } else {
-        if (this->mFlowId == static_cast<u32>(1)) {
-            if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpDecideCtrl->execute();
+        if (mFlowId == 1) {
+            if (mpDecideCtrl != nullptr) {
+                mpDecideCtrl->execute();
             }
-            if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpCancelCtrl->execute();
+            if (mpCancelCtrl != nullptr) {
+                mpCancelCtrl->execute();
             }
-            if (this->mpUDCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mpUDCtrl->execute();
+            if (mpUDCtrl != nullptr) {
+                mpUDCtrl->execute();
             }
-            if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mpButtonCtrl->execute();
+            if (mpButtonCtrl != nullptr) {
+                mpButtonCtrl->execute();
             }
         }
     }
@@ -177,22 +177,22 @@ __attribute__((weak)) void uGUICaplinkMessage::moveEvent() {
 // Address: 0x009cbf70 - 0x009cbfd6 (102 bytes)
 void uGUICaplinkMessage::updateMove() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::update();
-    (&this->mMain.mButton[0])->update();
-    (&this->mMain.mButton[1])->update();
-    if (this->mFlowId != static_cast<u32>(2)) {
+    mMain.mTextBox.uGUIBase::cReferenceUITextBox::update();
+    (&mMain.mButton[0])->update();
+    (&mMain.mButton[1])->update();
+    if (mFlowId != 2) {
         return;
     }
-    if (this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::isEndKeyboard() == false) {
+    if (!mMain.mTextBox.isEndKeyboard()) {
         return;
     }
-    this->::uGUICaplinkMessage::setFlowId(static_cast<u32>(1));
+    setFlowId(1u);
 }
 
 // Address: 0x009cbfe0 - 0x009cbfe9 (9 bytes)
 void uGUICaplinkMessage::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,62 +217,62 @@ void uGUICaplinkMessage::updateExit() {
 void uGUICaplinkMessage::eventDecide() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x9cc210 read, used 3 times; no DWARF local holds it
-    uGUIBase::cVerticalList* t0 = this->mpUDCtrl;
-    if (t0 != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (t0->::cControl::mCurrentPos != static_cast<s32>(0)) {
+    cVerticalList* t0 = mpUDCtrl;
+    if (t0 != nullptr) {
+        if (t0->mCurrentPos != 0) {
             // inferred: a temporary for the value the load at 0x9cc229 read, used 3 times; no DWARF local holds it
-            uGUIBase::cHorizontalList* t1 = this->mpButtonCtrl;
-            if (t1 != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                if (t1->::cControl::mCurrentPos == static_cast<s32>(0)) {
-                    this->mIsDecide = true;
+            cHorizontalList* t1 = mpButtonCtrl;
+            if (t1 != nullptr) {
+                if (t1->mCurrentPos == 0) {
+                    mIsDecide = true;
                 }
-                this->mFlowId = static_cast<u32>(3);
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+                mFlowId = 3;
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
                 }
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
                 }
-                t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
-                t1->::cControl::mCtrlF = t1->::cControl::mCtrlF | static_cast<u32>(8);
+                t0->mCtrlF = t0->mCtrlF | 8u;
+                t1->mCtrlF = t1->mCtrlF | 8u;
             } else {
-                this->mIsDecide = true;
-                this->mFlowId = static_cast<u32>(3);
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+                mIsDecide = true;
+                mFlowId = 3;
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
                 }
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
                 }
-                t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
+                t0->mCtrlF = t0->mCtrlF | 8u;
             }
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
         } else {
-            this->mFlowId = static_cast<u32>(2);
-            if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+            mFlowId = 2;
+            if (mpDecideCtrl != nullptr) {
+                mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
             }
-            if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+            if (mpCancelCtrl != nullptr) {
+                mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
             }
-            t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
-            if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mpButtonCtrl->::cControl::mCtrlF = this->mpButtonCtrl->::cControl::mCtrlF | static_cast<u32>(8);
+            t0->mCtrlF = t0->mCtrlF | 8u;
+            if (mpButtonCtrl != nullptr) {
+                mpButtonCtrl->mCtrlF = mpButtonCtrl->mCtrlF | 8u;
             }
-            this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::wakeupKeyboard(static_cast<s32>(2));
+            mMain.mTextBox.wakeupKeyboard(2);
         }
     } else {
-        this->mFlowId = static_cast<u32>(2);
-        if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+        mFlowId = 2;
+        if (mpDecideCtrl != nullptr) {
+            mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
         }
-        if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-            this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+        if (mpCancelCtrl != nullptr) {
+            mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
         }
-        if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpButtonCtrl->::cControl::mCtrlF = this->mpButtonCtrl->::cControl::mCtrlF | static_cast<u32>(8);
+        if (mpButtonCtrl != nullptr) {
+            mpButtonCtrl->mCtrlF = mpButtonCtrl->mCtrlF | 8u;
         }
-        this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::wakeupKeyboard(static_cast<s32>(2));
+        mMain.mTextBox.wakeupKeyboard(2);
     }
 }
 
@@ -294,15 +294,15 @@ __attribute__((weak)) u32 uGUICaplinkMessage::evCtrlDecide(cControl::Message* ms
 // Address: 0x009cbc80 - 0x009cbc95 (21 bytes)
 u32 uGUICaplinkMessage::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x009cbca0 - 0x009cbcb2 (18 bytes)
 u32 uGUICaplinkMessage::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x009cbcc0 - 0x009cbdda (282 bytes)
@@ -310,6 +310,8 @@ __attribute__((weak)) u32 uGUICaplinkMessage::evCtrlMouseClick(cControl::Message
     DDON_STUB("uGUICaplinkMessage::evCtrlMouseClick")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkMessage::MyDTI uGUICaplinkMessage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkMessage.cpp at 0x009cc40f-0x009cc44c (called at uGUICaplinkMessage.cpp:34)

@@ -27,7 +27,7 @@ const MtDTI& cEndContentsManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cEndContentsManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cEndContentsManager::DTI);
+    return MtMemoryAllocator::getAllocator(cEndContentsManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cEndContentsManager::getAllocator() {
 // Address: 0x000ba490 - 0x000ba4d0 (64 bytes)
 void* cEndContentsManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cEndContentsManager::getAllocator()->memAlloc(sz, align, ::cEndContentsManager::DTI.::MtDTI::getID());
+    return cEndContentsManager::getAllocator()->memAlloc(sz, align, cEndContentsManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cEndContentsManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEndContentsManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEndContentsManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEndContentsManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,13 +76,13 @@ inline void cEndContentsManager::operator delete(void* p_addr) {
 // Address: 0x000baee0 - 0x000baeeb (11 bytes)
 bool cEndContentsManager::isPlayNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno0 != static_cast<u8>(0);
+    return mRno0 != 0;
 }
 
 // Address: 0x000baef0 - 0x000baefe (14 bytes)
 bool cEndContentsManager::isPlayEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno0 > static_cast<u8>(4);
+    return mRno0 > 4;
 }
 
 // Address: 0x000baf00 - 0x000baf1d (29 bytes)
@@ -90,8 +90,8 @@ bool cEndContentsManager::isDispPurpose() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (this->mRno0 <= static_cast<u8>(8)) {
-        return static_cast<bool>((static_cast<unsigned long>(248) >> static_cast<unsigned long>(this->mRno0 & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    if (mRno0 <= 8) {
+        return static_cast<bool>((248ul >> static_cast<unsigned long>(mRno0 & 31)) & 1ul);
     } else {
         return true;
     }
@@ -102,8 +102,8 @@ bool cEndContentsManager::isDispTimer() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (this->mRno0 <= static_cast<u8>(8)) {
-        return static_cast<bool>((static_cast<unsigned long>(248) >> static_cast<unsigned long>(this->mRno0 & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    if (mRno0 <= 8) {
+        return static_cast<bool>((248ul >> static_cast<unsigned long>(mRno0 & 31)) & 1ul);
     } else {
         return true;
     }
@@ -160,7 +160,7 @@ u32 cEndContentsManager::getEndContentsPurposeNum() const {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return static_cast<unsigned int>((static_cast<unsigned long>(this->mEndContentsPurpose[0] != static_cast<int>(-1)) + static_cast<unsigned long>(this->mEndContentsPurpose[1] != static_cast<int>(-1))) + static_cast<unsigned long>(this->mEndContentsPurpose[2] != static_cast<int>(-1)));
+    return static_cast<unsigned int>((static_cast<unsigned long>(mEndContentsPurpose[0] != -1) + static_cast<unsigned long>(mEndContentsPurpose[1] != -1)) + static_cast<unsigned long>(mEndContentsPurpose[2] != -1));
 }
 
 // Address: 0x000bae50 - 0x000bae80 (48 bytes)
@@ -174,34 +174,34 @@ __attribute__((weak)) s32 cEndContentsManager::getEndContentsPurposeNo(u32 idx) 
 // Address: 0x000bae80 - 0x000baea5 (37 bytes)
 void cEndContentsManager::addEndContentsPurposeNo(u32 purposeNo) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    int* p1 = &this->mEndContentsPurpose[0];
+    int* p1 = &mEndContentsPurpose[0];
     do {
-        if ((*p1) == static_cast<int>(-1)) {
+        if ((*p1) == -1) {
             *p1 = static_cast<int>(purposeNo);
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(2));
+    } while (i <= 2u);
 }
 
 // Address: 0x000baeb0 - 0x000baed8 (40 bytes)
 void cEndContentsManager::removeEndContentsPurposeNo(u32 purposeNo) {
     // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as int
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    int* p1 = &this->mEndContentsPurpose[0];
+    int* p1 = &mEndContentsPurpose[0];
     do {
         if ((*p1) == static_cast<int>(purposeNo)) {
-            *p1 = static_cast<int>(-1);
+            *p1 = -1;
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(2));
+    } while (i <= 2u);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (152 bytes)
@@ -254,10 +254,10 @@ __attribute__((weak)) void cEndContentsManager::exitEndContents() {
 // Address: 0x000bb190 - 0x000bb19b (11 bytes)
 void cEndContentsManager::reqPlayStartDemoAfterJump() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno0 = static_cast<u8>(1);
-    this->mRno1 = static_cast<u8>(0);
-    this->mNextR0 = static_cast<u8>(2);
-    this->mNextR1 = static_cast<u8>(2);
+    mRno0 = 1;
+    mRno1 = 0;
+    mNextR0 = 2;
+    mNextR1 = 2;
 }
 
 // No out-of-line body: no code in the ELF
@@ -267,12 +267,12 @@ void cEndContentsManager::reqPlayStartDemoAfterJump() {
 void cEndContentsManager::reset() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mEndContentsPurpose[2] = static_cast<int>(-1);
-    this->mEndContentsPurpose[0] = static_cast<int>(-1);
-    this->mEndContentsPurpose[1] = static_cast<int>(-1);
-    this->mRno0 = static_cast<u8>(0);
-    this->mRno1 = static_cast<u8>(0);
-    this->mStartWaitTimer = 0.0f;
+    mEndContentsPurpose[2] = -1;
+    mEndContentsPurpose[0] = -1;
+    mEndContentsPurpose[1] = -1;
+    mRno0 = 0;
+    mRno1 = 0;
+    mStartWaitTimer = 0.0f;
 }
 
 // Address: 0x000bb1a0 - 0x000bb420 (640 bytes)
@@ -297,13 +297,13 @@ __attribute__((weak)) bool cEndContentsManager::registMainTask(nQuest::QUEST_ID 
 // Address: 0x000bc940 - 0x000bc975 (53 bytes)
 void cEndContentsManager::notifyLeaveParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMainTask == static_cast<cQuestTask*>(nullptr)) {
+    if (mpMainTask == nullptr) {
         return;
     }
-    this->mpMainTask->::cQuestTask::forceDelete();
-    this->mpMainTask = static_cast<cQuestTask*>(nullptr);
-    this->mRno0 = static_cast<u8>(0);
-    this->mRno1 = static_cast<u8>(0);
+    mpMainTask->forceDelete();
+    mpMainTask = nullptr;
+    mRno0 = 0;
+    mRno1 = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (98 bytes)
@@ -347,17 +347,27 @@ __attribute__((weak)) void cEndContentsManager::moveEndContentsEnd() {
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (40 bytes)
-//   in cEndContentsManager::move at 0x000bb388-0x000bb3b0 (called at cEndContentsManager.cpp:1051)
-// void cEndContentsManager::moveEndContentsExit();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cEndContentsManager::move at 0xbb388-0xbb3b0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cEndContentsManager::moveEndContentsExit() {
+    if (mpMainTask != nullptr) {
+        mpMainTask->forceDelete();
+    }
+    mIsClear = false;
+    mIsInterrupt = false;
+    mIsFailed = false;
+    mIsExit = false;
+    mRno0 = 0;
+    mRno1 = 0;
+}
 
 // Address: 0x000bc990 - 0x000bc9a9 (25 bytes)
 void cEndContentsManager::deleteQuestTask(cQuestTask* pTask) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pTask == this->mpMainTask) {
-        this->mpMainTask = static_cast<cQuestTask*>(nullptr);
+    if (pTask == mpMainTask) {
+        mpMainTask = nullptr;
     }
-    this->::cQuestManagerBase::deleteQuestTask(pTask);
+    this->cQuestManagerBase::deleteQuestTask(pTask);
 }
 
 // Address: 0x000bc9b0 - 0x000bcafe (334 bytes)
@@ -380,7 +390,7 @@ __attribute__((weak)) void cEndContentsManager::callbackClear(nQuest::SCHEDULE_I
 // Address: 0x0196d270 - 0x0196d276 (6 bytes)
 u32 cEndContentsManager::getQuestManagerType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(8);
+    return 8;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (22 bytes)
@@ -448,34 +458,34 @@ __attribute__((weak)) void cEndContentsManager::addDistEndContents(const CTimeGa
 // Address: 0x000ba920 - 0x000ba99c (124 bytes)
 void cEndContentsManager::resetDistEndContentsList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mDistEndContentsList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mDistEndContentsList.mLength != 0) {
         // inferred: the value the loop at 0xba940 carries; no location-less local in scope fits
-        u32 v0_0 = this->mDistEndContentsList.::MtArray::mLength;
+        u32 v0_0 = mDistEndContentsList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mDistEndContentsList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mDistEndContentsList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mDistEndContentsList.::MtArray::mLength) {
-                    v0_0 = this->mDistEndContentsList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mDistEndContentsList.mpArray[i0_3] != nullptr) {
+                delete mDistEndContentsList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mDistEndContentsList.mLength) {
+                    v0_0 = mDistEndContentsList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mDistEndContentsList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDistEndContentsList.::MtArray::mpArray));
+    if (mDistEndContentsList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDistEndContentsList.mpArray));
     }
-    this->mDistEndContentsList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mDistEndContentsList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mDistEndContentsList.::MtArray::mLength = static_cast<u32>(0);
+    mDistEndContentsList.mpArray = nullptr;
+    mDistEndContentsList.mBufsiz = 0;
+    mDistEndContentsList.mLength = 0;
 }
 
 // Address: 0x000ba810 - 0x000ba912 (258 bytes)
@@ -506,7 +516,7 @@ __attribute__((weak)) nQuest::cEndContentsGroupQuestInfo* cEndContentsManager::g
 // Address: 0x000bab10 - 0x000bab21 (17 bytes)
 bool cEndContentsManager::isEndFlowNow() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    return static_cast<unsigned int>(this->mRno0 - static_cast<int>(5)) <= static_cast<unsigned int>(4);
+    return static_cast<unsigned int>(mRno0 - 5) <= 4;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (39 bytes)
@@ -522,7 +532,7 @@ bool cEndContentsManager::isEndFlowNow() {
 // Address: 0x000bab50 - 0x000bab55 (5 bytes)
 void cEndContentsManager::getQuestList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cQuestManagerBase::getQuestList();
+    this->cQuestManagerBase::getQuestList();
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (357 bytes)
@@ -542,6 +552,8 @@ cEndContentsManager::~cEndContentsManager() {
     DDON_STUB("cEndContentsManager::~cEndContentsManager")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEndContentsManager::MyDTI cEndContentsManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cEndContentsManager.cpp at 0x000bcbff-0x000bcc3c (called at cEndContentsManager.cpp:57)

@@ -35,7 +35,7 @@ const MtDTI& cPrologueHmStatus::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPrologueHmStatus::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPrologueHmStatus::DTI)->memAlloc(sz, align, ::cPrologueHmStatus::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPrologueHmStatus::DTI)->memAlloc(sz, align, cPrologueHmStatus::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -50,7 +50,7 @@ inline void* cPrologueHmStatus::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPrologueHmStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrologueHmStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrologueHmStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -75,6 +75,8 @@ inline void cPrologueHmStatus::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cPrologueHmStatus::~cPrologueHmStatus();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrologueHmStatus::MyDTI cPrologueHmStatus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPrologueHmStatus.cpp at 0x006b64a0-0x006b64e2 (called at rPrologueHmStatus.cpp:39)
 //   in _GLOBAL__sub_I_rPrologueHmStatus.cpp at 0x006b64a0-0x006b64e2 (called at rPrologueHmStatus.h:44)
@@ -83,7 +85,7 @@ inline void cPrologueHmStatus::operator delete(void* p_addr) {
 // Address: 0x006b5fc0 - 0x006b6020 (96 bytes)
 MtObject* cPrologueHmStatus::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPrologueHmStatus;
+    return new (16u) cPrologueHmStatus;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +110,7 @@ const MtDTI& rPrologueHmStatus::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPrologueHmStatus::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPrologueHmStatus::DTI)->memAlloc(sz, align, ::rPrologueHmStatus::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPrologueHmStatus::DTI)->memAlloc(sz, align, rPrologueHmStatus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ inline void* rPrologueHmStatus::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rPrologueHmStatusD0Ev at 0x01aa2a44-0x01aa2a63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPrologueHmStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPrologueHmStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPrologueHmStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,8 +152,10 @@ MT_CTSTR rPrologueHmStatus::getExt() const {
 // Address: 0x01aa2b90 - 0x01aa2b93 (3 bytes)
 u32 rPrologueHmStatus::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPrologueHmStatus::MyDTI rPrologueHmStatus::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPrologueHmStatus.cpp at 0x006b64e2-0x006b651f (called at rPrologueHmStatus.cpp:40)
@@ -161,7 +165,7 @@ u32 rPrologueHmStatus::getDataVersion() const {
 // Address: 0x006b6090 - 0x006b60f4 (100 bytes)
 MtObject* rPrologueHmStatus::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPrologueHmStatus;
+    return new (16u) rPrologueHmStatus;
 }
 
 // Instance at 0x01aa2b40 - 0x01aa2b52 (18 bytes) of the generic rTbl2<T>::getData

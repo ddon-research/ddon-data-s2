@@ -99,5 +99,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCaughtDamageRateReference::cCaughtDamageRateReference() {
-    this->mReferenceIndex = static_cast<u32>(1);
+    this->mReferenceIndex = 1;
 }

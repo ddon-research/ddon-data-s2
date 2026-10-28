@@ -37,7 +37,7 @@ const MtDTI& rAreaInfoJointArea::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAreaInfoJointArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::DTI)->memAlloc(sz, align, ::rAreaInfoJointArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaInfoJointArea::DTI)->memAlloc(sz, align, rAreaInfoJointArea::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rAreaInfoJointArea::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAreaInfoJointArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaInfoJointArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,41 +78,41 @@ MT_CTSTR rAreaInfoJointArea::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rAreaInfoJointArea::rAreaInfoJointArea() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x006443f0 - 0x006444a1 (177 bytes)
 // Also emitted as: _ZN18rAreaInfoJointAreaD0Ev at 0x006444b0
 rAreaInfoJointArea::~rAreaInfoJointArea() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAreaInfoJointArea.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAreaInfoJointArea.mLength != 0) {
         // inferred: the value the loop at 0x644420 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAreaInfoJointArea.::MtArray::mLength;
+        u32 v0_0 = mAreaInfoJointArea.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAreaInfoJointArea.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAreaInfoJointArea.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaInfoJointArea.::MtArray::mLength) {
-                    v0_0 = this->mAreaInfoJointArea.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaInfoJointArea.mpArray[i0_3] != nullptr) {
+                delete mAreaInfoJointArea.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaInfoJointArea.mLength) {
+                    v0_0 = mAreaInfoJointArea.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAreaInfoJointArea.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaInfoJointArea.::MtArray::mpArray));
+    if (mAreaInfoJointArea.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaInfoJointArea.mpArray));
     }
-    this->mAreaInfoJointArea.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAreaInfoJointArea.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAreaInfoJointArea.::MtArray::mLength = static_cast<u32>(0);
+    mAreaInfoJointArea.mpArray = nullptr;
+    mAreaInfoJointArea.mBufsiz = 0;
+    mAreaInfoJointArea.mLength = 0;
 }
 
 // Address: 0x00644580 - 0x00644663 (227 bytes)
@@ -127,19 +127,19 @@ bool rAreaInfoJointArea::save(MtStream& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAreaInfoJointArea*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(4870721));
-    (&w)->writeU32(static_cast<u32>(2));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x4A5241u);
+    (&w)->writeU32(2u);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x64470b read, used twice; no DWARF local holds it
-            MtObject* t3 = this->mAreaInfoJointArea.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
-            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
-                i0_3 += static_cast<unsigned int>(1);
+            MtObject* t3 = mAreaInfoJointArea.getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
+            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -153,15 +153,17 @@ bool rAreaInfoJointArea::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4870721)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mAreaInfoJointArea);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x4A5241) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mAreaInfoJointArea);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaInfoJointArea::MyDTI rAreaInfoJointArea::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAreaInfoJointArea.cpp at 0x00644af0-0x00644b32 (called at rAreaInfoJointArea.cpp:28)
@@ -171,7 +173,7 @@ bool rAreaInfoJointArea::load(MtStream& in) {
 // Address: 0x006442e0 - 0x00644364 (132 bytes)
 MtObject* rAreaInfoJointArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaInfoJointArea;
+    return new (16u) rAreaInfoJointArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -199,7 +201,7 @@ const MtDTI& rAreaInfoJointArea::cAreaInfoJointArea::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memAlloc(sz, align, ::rAreaInfoJointArea::cAreaInfoJointArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memAlloc(sz, align, rAreaInfoJointArea::cAreaInfoJointArea::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,7 +215,7 @@ void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align)
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rAreaInfoJointArea::cAreaInfoJointArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,6 +252,8 @@ __attribute__((weak)) void rAreaInfoJointArea::cAreaInfoJointArea::createPropert
 //   in rAreaInfoJointArea::save at 0x0064470f-0x00644731 (called at nDDOIO.h:463)
 // bool rAreaInfoJointArea::cAreaInfoJointArea::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaInfoJointArea::cAreaInfoJointArea::MyDTI rAreaInfoJointArea::cAreaInfoJointArea::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAreaInfoJointArea.cpp at 0x00644b32-0x00644b6f (called at rAreaInfoJointArea.cpp:127)
 //   in _GLOBAL__sub_I_rAreaInfoJointArea.cpp at 0x00644b32-0x00644b6f (called at rAreaInfoJointArea.h:93)
@@ -258,7 +262,7 @@ __attribute__((weak)) void rAreaInfoJointArea::cAreaInfoJointArea::createPropert
 // Address: 0x00644820 - 0x00644868 (72 bytes)
 MtObject* rAreaInfoJointArea::cAreaInfoJointArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaInfoJointArea::cAreaInfoJointArea;
+    return new (16u) rAreaInfoJointArea::cAreaInfoJointArea;
 }
 
 // Instance at 0x01a74160 - 0x01a74165 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

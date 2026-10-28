@@ -105,8 +105,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCharacterEditTexturePalette::cCharacterEditTexturePalette() {
-    this->mUID = static_cast<u32>(9999);
-    this->mRandom = static_cast<u32>(0);
+    this->mUID = 9999;
+    this->mRandom = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

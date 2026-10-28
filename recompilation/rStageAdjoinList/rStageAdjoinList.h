@@ -195,13 +195,13 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rStageAdjoinList::cAdjoinInfo::cAdjoinInfo() {
-    this->mDestinationStageNo = static_cast<u16>(0);
-    this->mNextStageNo = static_cast<u16>(0);
-    this->mPriority = static_cast<u8>(0);
+    this->mDestinationStageNo = 0;
+    this->mNextStageNo = 0;
+    this->mPriority = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rStageAdjoinList::cJumpPosition::cJumpPosition() {
-    this->mQuestId = static_cast<u32>(0);
-    this->mFlagId = static_cast<u32>(0);
+    this->mQuestId = 0;
+    this->mFlagId = 0;
 }

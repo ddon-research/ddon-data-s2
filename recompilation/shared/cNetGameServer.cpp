@@ -89,7 +89,7 @@ const MtDTI& cCompleteQuest::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCompleteQuest::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCompleteQuest::DTI)->memAlloc(sz, align, ::cCompleteQuest::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCompleteQuest::DTI)->memAlloc(sz, align, cCompleteQuest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +104,7 @@ inline void* cCompleteQuest::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cCompleteQuestD0Ev at 0x01a3bd10-0x01a3bd3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCompleteQuest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCompleteQuest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCompleteQuest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,6 +121,8 @@ inline void cCompleteQuest::operator delete(void* p_addr) {
 //   in cCompleteQuest::MyDTI::newInstance at 0x0033b15d-0x0033b172 (called at cNetGameServer.h:283)
 // cCompleteQuest::cCompleteQuest();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCompleteQuest::MyDTI cCompleteQuest::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c5fc-0x0037c635 (called at cNetGameServer.cpp:203)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c5fc-0x0037c635 (called at cNetGameServer.h:279)
@@ -129,7 +131,7 @@ inline void cCompleteQuest::operator delete(void* p_addr) {
 // Address: 0x0033b130 - 0x0033b177 (71 bytes)
 MtObject* cCompleteQuest::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCompleteQuest;
+    return new (16u) cCompleteQuest;
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,7 +156,7 @@ const MtDTI& cEditSalonInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cEditSalonInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEditSalonInfo::DTI)->memAlloc(sz, align, ::cEditSalonInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEditSalonInfo::DTI)->memAlloc(sz, align, cEditSalonInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,7 +171,7 @@ inline void* cEditSalonInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cEditSalonInfoD0Ev at 0x01a3bc70-0x01a3bc9a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cEditSalonInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEditSalonInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEditSalonInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,6 +203,8 @@ inline void cEditSalonInfo::operator delete(void* p_addr) {
 //   in sGUIExt::analyzeTagExtend at 0x00795732-0x00795741 (called at sGUIExt.cpp:2564)
 // s32 cEditSalonInfo::getEditPrice() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEditSalonInfo::MyDTI cEditSalonInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c66e-0x0037c6a7 (called at cNetGameServer.cpp:206)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c66e-0x0037c6a7 (called at cNetGameServer.h:338)
@@ -209,7 +213,7 @@ inline void cEditSalonInfo::operator delete(void* p_addr) {
 // Address: 0x0033b2c0 - 0x0033b307 (71 bytes)
 MtObject* cEditSalonInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEditSalonInfo;
+    return new (16u) cEditSalonInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -226,7 +230,7 @@ const MtDTI& cNetGameServer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cNetGameServer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cNetGameServer::DTI);
+    return MtMemoryAllocator::getAllocator(cNetGameServer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -235,7 +239,7 @@ inline MtAllocator* cNetGameServer::getAllocator() {
 // Address: 0x0033aaa0 - 0x0033aae0 (64 bytes)
 void* cNetGameServer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cNetGameServer::getAllocator()->memAlloc(sz, align, ::cNetGameServer::DTI.::MtDTI::getID());
+    return cNetGameServer::getAllocator()->memAlloc(sz, align, cNetGameServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,7 +254,7 @@ void* cNetGameServer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cNetGameServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNetGameServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNetGameServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -299,37 +303,37 @@ __attribute__((weak)) void cNetGameServer::clearAll() {
 // Address: 0x0033f8e0 - 0x0033f984 (164 bytes)
 void cNetGameServer::move() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        this->mpConnection->move();
+    if (mpConnection != nullptr) {
+        mpConnection->move();
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mpConnection != nullptr) {
+        if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mpConnection->isLoginSuccess()) {
                 // inferred: a temporary for the result of the call at 0x33f92e, used once; no DWARF local holds it
-                MtNetTime::Total t0 = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
-                if ((this->mLastSendPingTime + static_cast<MtNetTime::Total>(10000)) < t0) {
-                    this->::cNetGameServer::ping();
+                MtNetTime::Total t0 = MtNetTime::mInstance.getTotalTime();
+                if ((mLastSendPingTime + 10000ul) < t0) {
+                    ping();
                 }
-                this->::cNetGameServer::updateComTimer();
-                if (this->mEnableUpdateSysMailTimer > 0.0f) {
-                    this->mEnableUpdateSysMailTimer = this->mEnableUpdateSysMailTimer - ::sMain::getInstance()->mDeltaTime;
+                updateComTimer();
+                if (mEnableUpdateSysMailTimer > 0.0f) {
+                    mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - sMain::getInstance()->mDeltaTime;
                 }
             } else {
-                this->::cNetGameServer::updateComTimer();
-                if (this->mEnableUpdateSysMailTimer > 0.0f) {
-                    this->mEnableUpdateSysMailTimer = this->mEnableUpdateSysMailTimer - ::sMain::getInstance()->mDeltaTime;
+                updateComTimer();
+                if (mEnableUpdateSysMailTimer > 0.0f) {
+                    mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - sMain::getInstance()->mDeltaTime;
                 }
             }
         } else {
-            this->::cNetGameServer::updateComTimer();
-            if (this->mEnableUpdateSysMailTimer > 0.0f) {
-                this->mEnableUpdateSysMailTimer = this->mEnableUpdateSysMailTimer - ::sMain::getInstance()->mDeltaTime;
+            updateComTimer();
+            if (mEnableUpdateSysMailTimer > 0.0f) {
+                mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - sMain::getInstance()->mDeltaTime;
             }
         }
     } else {
-        this->::cNetGameServer::updateComTimer();
-        if (this->mEnableUpdateSysMailTimer > 0.0f) {
-            this->mEnableUpdateSysMailTimer = this->mEnableUpdateSysMailTimer - ::sMain::getInstance()->mDeltaTime;
+        updateComTimer();
+        if (mEnableUpdateSysMailTimer > 0.0f) {
+            mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - sMain::getInstance()->mDeltaTime;
         }
     }
 }
@@ -383,13 +387,13 @@ void cNetGameServer::move() {
 // Address: 0x0033f3a0 - 0x0033f3d0 (48 bytes)
 void cNetGameServer::reqErrorDialog(u32 comId, s32 errNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsNgErrorDialog[comId] != false) {
+    if (mIsNgErrorDialog[comId]) {
         return;
     }
-    if (this->mIsOnceNgErrorDialog[comId] != false) {
-        this->mIsOnceNgErrorDialog[comId] = false;
+    if (mIsOnceNgErrorDialog[comId]) {
+        mIsOnceNgErrorDialog[comId] = false;
     } else {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::requestNetworkErrorDialog(errNo);
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->requestNetworkErrorDialog(errNo);
     }
 }
 
@@ -402,13 +406,13 @@ void cNetGameServer::reqErrorDialog(u32 comId, s32 errNo) {
 // Address: 0x0033f460 - 0x0033f4a1 (65 bytes)
 bool cNetGameServer::isDispErrorDialog() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (::sDialogBase::getInstance() != static_cast<sDialogBase*>(nullptr)) {
+    if (sDialogBase::getInstance() != nullptr) {
         // inferred: a temporary for the result of the call at 0x33f47c, used 4 times; no DWARF local holds it
-        nDialog::stInfo* t0 = ::sDialogBase::getInstance()->::sDialogBase::getInfo(this->mErrorDialogHandle);
-        if (t0 != static_cast<nDialog::stInfo*>(nullptr)) {
-            if (t0->state != static_cast<nDialog::STATE>(0)) {
-                if (t0->state == static_cast<nDialog::STATE>(6)) {
-                    if (t0->result != static_cast<nDialog::RESULT>(1)) {
+        nDialog::stInfo* t0 = sDialogBase::getInstance()->getInfo(mErrorDialogHandle);
+        if (t0 != nullptr) {
+            if (t0->state != nDialog::STATE_NONE) {
+                if (t0->state == nDialog::STATE_END) {
+                    if (t0->result != nDialog::RLT_CONTINUE) {
                         return false;
                     }
                 }
@@ -512,13 +516,13 @@ __attribute__((weak)) void cNetGameServer::updateComTimer() {
 // Address: 0x0033f9b0 - 0x0033f9db (43 bytes)
 bool cNetGameServer::reqFinalParty(bool isCallback) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlow[1].mError.mCause = static_cast<s32>(0);
-    this->mFlow[1].mError.mNative = static_cast<s32>(0);
-    this->mFlow[1].mCommand = static_cast<s32>(0);
-    this->mFlow[1].mError.mNo = static_cast<s32>(0);
-    this->mFlow[1].mRno0 = static_cast<s32>(0);
-    this->mFlow[1].mRno1 = static_cast<s32>(0);
-    this->mFlow[1].mIsCallback = isCallback;
+    mFlow[1].mError.mCause = 0;
+    mFlow[1].mError.mNative = 0;
+    mFlow[1].mCommand = 0;
+    mFlow[1].mError.mNo = 0;
+    mFlow[1].mRno0 = 0;
+    mFlow[1].mRno1 = 0;
+    mFlow[1].mIsCallback = isCallback;
     return true;
 }
 
@@ -534,14 +538,14 @@ __attribute__((weak)) bool cNetGameServer::finalPartyFlow() {
 // Address: 0x0033fbe0 - 0x0033fc12 (50 bytes)
 bool cNetGameServer::reqCreateParty(bool isInviteAccept) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlow[2].mError.mCause = static_cast<s32>(0);
-    this->mFlow[2].mError.mNative = static_cast<s32>(0);
-    this->mFlow[2].mCommand = static_cast<s32>(0);
-    this->mFlow[2].mError.mNo = static_cast<s32>(0);
-    this->mFlow[2].mRno0 = static_cast<s32>(0);
-    this->mFlow[2].mRno1 = static_cast<s32>(0);
-    this->mFlow[2].mIsCallback = true;
-    this->mIsInviteAccept = isInviteAccept;
+    mFlow[2].mError.mCause = 0;
+    mFlow[2].mError.mNative = 0;
+    mFlow[2].mCommand = 0;
+    mFlow[2].mError.mNo = 0;
+    mFlow[2].mRno0 = 0;
+    mFlow[2].mRno1 = 0;
+    mFlow[2].mIsCallback = true;
+    mIsInviteAccept = isInviteAccept;
     return true;
 }
 
@@ -557,27 +561,27 @@ __attribute__((weak)) bool cNetGameServer::createPartyFlow() {
 // Address: 0x0033fed0 - 0x0033fefb (43 bytes)
 bool cNetGameServer::reqJoinInviteParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlow[3].mError.mCause = static_cast<s32>(0);
-    this->mFlow[3].mError.mNative = static_cast<s32>(0);
-    this->mFlow[3].mCommand = static_cast<s32>(0);
-    this->mFlow[3].mError.mNo = static_cast<s32>(0);
-    this->mFlow[3].mRno0 = static_cast<s32>(0);
-    this->mFlow[3].mRno1 = static_cast<s32>(0);
-    this->mFlow[3].mIsCallback = true;
+    mFlow[3].mError.mCause = 0;
+    mFlow[3].mError.mNative = 0;
+    mFlow[3].mCommand = 0;
+    mFlow[3].mError.mNo = 0;
+    mFlow[3].mRno0 = 0;
+    mFlow[3].mRno1 = 0;
+    mFlow[3].mIsCallback = true;
     return true;
 }
 
 // Address: 0x0033ff00 - 0x0033ff35 (53 bytes)
 bool cNetGameServer::reqJoinParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlow[3].mError.mCause = static_cast<s32>(0);
-    this->mFlow[3].mError.mNative = static_cast<s32>(0);
-    this->mFlow[3].mCommand = static_cast<s32>(0);
-    this->mFlow[3].mError.mNo = static_cast<s32>(0);
-    this->mFlow[3].mRno0 = static_cast<s32>(0);
-    this->mFlow[3].mRno1 = static_cast<s32>(0);
-    this->mFlow[3].mIsCallback = true;
-    this->mFlow[3].mCommand = static_cast<s32>(3);
+    mFlow[3].mError.mCause = 0;
+    mFlow[3].mError.mNative = 0;
+    mFlow[3].mCommand = 0;
+    mFlow[3].mError.mNo = 0;
+    mFlow[3].mRno0 = 0;
+    mFlow[3].mRno1 = 0;
+    mFlow[3].mIsCallback = true;
+    mFlow[3].mCommand = 3;
     return true;
 }
 
@@ -716,15 +720,15 @@ bool cNetGameServer::getLoginAnnouncement() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[4] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(4));
-    this->mErrorCode[4] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LOGIN_ANNOUNCEMENT_REQ() != static_cast<s32>(0)) {
-                this->mStatus[4] = static_cast<sNetworkExt::NET_STAT>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(4));
-                this->mComTimer[4] = 0.0f;
+    mStatus[4] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(4);
+    mErrorCode[4] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->Send_C2S_GET_LOGIN_ANNOUNCEMENT_REQ() != 0) {
+                mStatus[4] = sNetworkExt::NET_STAT_REQ;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(4);
+                mComTimer[4] = 0.0f;
                 return true;
             }
         }
@@ -749,16 +753,16 @@ bool cNetGameServer::getServerList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[7] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(7));
-    this->mErrorCode[7] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SERVER_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[7] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(7));
-                    this->mComTimer[7] = 0.0f;
+    mStatus[7] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(7);
+    mErrorCode[7] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SERVER_LIST_REQ() != 0) {
+                    mStatus[7] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(7);
+                    mComTimer[7] = 0.0f;
                     return true;
                 }
             }
@@ -772,15 +776,15 @@ bool cNetGameServer::getGameSetting() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[8] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(8));
-    this->mErrorCode[8] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_GAME_SETTING_REQ() != static_cast<s32>(0)) {
-                this->mStatus[8] = static_cast<sNetworkExt::NET_STAT>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(8));
-                this->mComTimer[8] = 0.0f;
+    mStatus[8] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(8);
+    mErrorCode[8] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->Send_C2S_GET_GAME_SETTING_REQ() != 0) {
+                mStatus[8] = sNetworkExt::NET_STAT_REQ;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(8);
+                mComTimer[8] = 0.0f;
                 return true;
             }
         }
@@ -791,10 +795,10 @@ bool cNetGameServer::getGameSetting() {
 // Address: 0x003695e0 - 0x00369617 (55 bytes)
 bool cNetGameServer::reqEndReturnPrepare() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_END_RETURN_PREPARE_NOTICE() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_END_RETURN_PREPARE_NOTICE() != 0;
             }
         }
     }
@@ -814,8 +818,8 @@ __attribute__((weak)) sNetworkExt::NET_STAT cNetGameServer::getGameSvConnectStat
 // Address: 0x00341c60 - 0x00341c77 (23 bytes)
 bool cNetGameServer::isConnectServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        return this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4);
+    if (mpConnection != nullptr) {
+        return mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED;
     } else {
         return false;
     }
@@ -824,9 +828,9 @@ bool cNetGameServer::isConnectServer() {
 // Address: 0x0033f200 - 0x0033f223 (35 bytes)
 bool cNetGameServer::isLogin() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            return this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            return mpConnection->isLoginSuccess();
         }
     }
     return false;
@@ -979,13 +983,13 @@ bool cNetGameServer::isLogin() {
 // Address: 0x003796c0 - 0x003796cf (15 bytes)
 nUserSession::CPacket_S2C_GET_SERVER_LIST_RES* cNetGameServer::getGetServerListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetServerListPacket;
+    return mpConnection->mpGetServerListPacket;
 }
 
 // Address: 0x00365890 - 0x0036589f (15 bytes)
 nUserSession::CPacket_S2C_GET_GAME_SETTING_RES* cNetGameServer::getGetGameSettingPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetGameSettingPacket;
+    return mpConnection->mpGetGameSettingPacket;
 }
 
 // Address: 0x00379ed0 - 0x00379f70 (160 bytes)
@@ -1099,16 +1103,16 @@ bool cNetGameServer::sendGetWorldInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[9] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(9));
-    this->mErrorCode[9] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_WORLD_INFO_REQ(this->mWorldId) != static_cast<s32>(0)) {
-                    this->mStatus[9] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(9));
-                    this->mComTimer[9] = 0.0f;
+    mStatus[9] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(9);
+    mErrorCode[9] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_WORLD_INFO_REQ(mWorldId) != 0) {
+                    mStatus[9] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(9);
+                    mComTimer[9] = 0.0f;
                     return true;
                 }
             }
@@ -1122,16 +1126,16 @@ bool cNetGameServer::sendSetWorldInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[10] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(10));
-    this->mErrorCode[10] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_WORLD_INFO_REQ(this->mWorldId, this->mWorldInfo) != static_cast<s32>(0)) {
-                    this->mStatus[10] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(10));
-                    this->mComTimer[10] = 0.0f;
+    mStatus[10] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(10);
+    mErrorCode[10] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_WORLD_INFO_REQ(mWorldId, mWorldInfo) != 0) {
+                    mStatus[10] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(10);
+                    mComTimer[10] = 0.0f;
                     return true;
                 }
             }
@@ -1201,18 +1205,18 @@ bool cNetGameServer::getCharacterProfile(u32 characterId, cCharacterData* pCharD
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[18] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(18));
-    this->mErrorCode[18] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mpCustomCharacterData = pCharData;
-                this->mpCustomContext = pContext;
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CHARACTER_PROFILE_REQ(characterId) != static_cast<s32>(0)) {
-                    this->mStatus[18] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(18));
-                    this->mComTimer[18] = 0.0f;
+    mStatus[18] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(18);
+    mErrorCode[18] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mpCustomCharacterData = pCharData;
+                mpCustomContext = pContext;
+                if (mpConnection->Send_C2S_GET_CHARACTER_PROFILE_REQ(characterId) != 0) {
+                    mStatus[18] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(18);
+                    mComTimer[18] = 0.0f;
                     return true;
                 }
             }
@@ -1267,7 +1271,7 @@ u8 cNetGameServer::convSexForGame(nCharacter::E_EDIT_BODY_TYPE src) const {
     // DWARF local not rendered: u8 dst;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as u8
-    return static_cast<u8>(src == static_cast<nCharacter::E_EDIT_BODY_TYPE>(2));
+    return static_cast<u8>(src == nCharacter::EDIT_BODY_TYPE_FEMALE);
 }
 
 // Address: 0x00342820 - 0x0034282c (12 bytes)
@@ -1275,7 +1279,7 @@ nCharacter::E_EDIT_BODY_TYPE cNetGameServer::convSexForServer(u8 src) const {
     // DWARF local not rendered: E_EDIT_BODY_TYPE dst;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return static_cast<nCharacter::E_EDIT_BODY_TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(src == static_cast<u8>(1)) + static_cast<unsigned long>(1)));
+    return static_cast<nCharacter::E_EDIT_BODY_TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(src == 1) + 1));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1318,16 +1322,16 @@ bool cNetGameServer::setArisenProfile(const CArisenProfile& profile) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[464] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(464));
-    this->mErrorCode[464] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_ARISEN_PROFILE_REQ(profile) != static_cast<s32>(0)) {
-                    this->mStatus[464] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(464));
-                    this->mComTimer[464] = 0.0f;
+    mStatus[464] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(464);
+    mErrorCode[464] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_ARISEN_PROFILE_REQ(profile) != 0) {
+                    mStatus[464] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(464);
+                    mComTimer[464] = 0.0f;
                     return true;
                 }
             }
@@ -1352,16 +1356,16 @@ bool cNetGameServer::updateArisenProfileShareRange(unsigned char arisenProfileSh
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[467] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(467));
-    this->mErrorCode[467] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_ARISEN_PROFILE_SHARE_RANGE_REQ(arisenProfileShareRange, pawnProfileShareRange) != static_cast<s32>(0)) {
-                    this->mStatus[467] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(467));
-                    this->mComTimer[467] = 0.0f;
+    mStatus[467] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(467);
+    mErrorCode[467] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_ARISEN_PROFILE_SHARE_RANGE_REQ(arisenProfileShareRange, pawnProfileShareRange) != 0) {
+                    mStatus[467] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(467);
+                    mComTimer[467] = 0.0f;
                     return true;
                 }
             }
@@ -1375,16 +1379,16 @@ bool cNetGameServer::getAvailableBackgroundList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[468] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(468));
-    this->mErrorCode[468] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AVAILABLE_BACKGROUND_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[468] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(468));
-                    this->mComTimer[468] = 0.0f;
+    mStatus[468] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(468);
+    mErrorCode[468] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AVAILABLE_BACKGROUND_LIST_REQ() != 0) {
+                    mStatus[468] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(468);
+                    mComTimer[468] = 0.0f;
                     return true;
                 }
             }
@@ -1436,16 +1440,16 @@ bool cNetGameServer::sendGetRealTime() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[11] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(11));
-    this->mErrorCode[11] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_REAL_TIME_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[11] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(11));
-                    this->mComTimer[11] = 0.0f;
+    mStatus[11] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(11);
+    mErrorCode[11] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_REAL_TIME_REQ() != 0) {
+                    mStatus[11] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(11);
+                    mComTimer[11] = 0.0f;
                     return true;
                 }
             }
@@ -1463,7 +1467,7 @@ __attribute__((weak)) s64 cNetGameServer::calcGameTimeMSec(s64 realTime, s64 mse
 // Address: 0x00342ef0 - 0x00342efc (12 bytes)
 u32 cNetGameServer::getCalcWeather(s64 realTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->::cSeedGameSvConnection::calcWeather(realTime);
+    return mpConnection->calcWeather(realTime);
 }
 
 // Address: 0x00342ff0 - 0x003430a1 (177 bytes)
@@ -1483,12 +1487,12 @@ __attribute__((weak)) bool cNetGameServer::joinLobbyRequest() {
 // Address: 0x00343280 - 0x003432a6 (38 bytes)
 bool cNetGameServer::joinLobbyRequest(s32 characterId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (characterId <= static_cast<s32>(-1)) {
-        this->mLobbyCharacterId = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->::cNetLoginServer::getDecideCharacterId();
+    if (characterId <= -1) {
+        mLobbyCharacterId = static_cast<sNetworkExt*>(sNetwork::getInstance())->getLoginServer()->getDecideCharacterId();
     } else {
-        this->mLobbyCharacterId = static_cast<u32>(characterId);
+        mLobbyCharacterId = static_cast<u32>(characterId);
     }
-    return this->::cNetGameServer::joinLobbyRequest();
+    return joinLobbyRequest();
 }
 
 // Address: 0x003432b0 - 0x00343338 (136 bytes)
@@ -1496,16 +1500,16 @@ bool cNetGameServer::leaveLobbyRequest() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[21] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(21));
-    this->mErrorCode[21] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LOBBY_LEAVE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[21] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(21));
-                    this->mComTimer[21] = 0.0f;
+    mStatus[21] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(21);
+    mErrorCode[21] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LOBBY_LEAVE_REQ() != 0) {
+                    mStatus[21] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(21);
+                    mComTimer[21] = 0.0f;
                     return true;
                 }
             }
@@ -1656,17 +1660,17 @@ bool cNetGameServer::sendSetActiveQuest(u32 ScheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[140] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(140));
-    this->mErrorCode[140] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->mGuardData.mIsLoginSuccess != false) {
-                if (ScheduleId != static_cast<u32>(0)) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_PRIORITY_QUEST_REQ(ScheduleId) != static_cast<s32>(0)) {
-                        this->mStatus[140] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(140));
-                        this->mComTimer[140] = 0.0f;
+    mStatus[140] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(140);
+    mErrorCode[140] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->mGuardData.mIsLoginSuccess) {
+                if (ScheduleId != 0) {
+                    if (mpConnection->Send_C2S_SET_PRIORITY_QUEST_REQ(ScheduleId) != 0) {
+                        mStatus[140] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(140);
+                        mComTimer[140] = 0.0f;
                         return true;
                     }
                 }
@@ -1681,17 +1685,17 @@ bool cNetGameServer::sendCancelActiveQuest(u32 ScheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[141] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(141));
-    this->mErrorCode[141] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->mGuardData.mIsLoginSuccess != false) {
-                if (ScheduleId != static_cast<u32>(0)) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CANCEL_PRIORITY_QUEST_REQ(ScheduleId) != static_cast<s32>(0)) {
-                        this->mStatus[141] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(141));
-                        this->mComTimer[141] = 0.0f;
+    mStatus[141] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(141);
+    mErrorCode[141] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->mGuardData.mIsLoginSuccess) {
+                if (ScheduleId != 0) {
+                    if (mpConnection->Send_C2S_CANCEL_PRIORITY_QUEST_REQ(ScheduleId) != 0) {
+                        mStatus[141] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(141);
+                        mComTimer[141] = 0.0f;
                         return true;
                     }
                 }
@@ -1706,16 +1710,16 @@ bool cNetGameServer::sendGetActiveQuest() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[139] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(139));
-    this->mErrorCode[139] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PRIORITY_QUEST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[139] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(139));
-                    this->mComTimer[139] = 0.0f;
+    mStatus[139] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(139);
+    mErrorCode[139] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PRIORITY_QUEST_REQ() != 0) {
+                    mStatus[139] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(139);
+                    mComTimer[139] = 0.0f;
                     return true;
                 }
             }
@@ -1730,56 +1734,56 @@ bool cNetGameServer::createParty() {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x33fd48 read, used 8 times; no DWARF local holds it
-    nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager();
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(0));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(1));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(2));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(3));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(4));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(5));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(6));
-    t0->::nSessionManager::cNetSessionManager::clearPartyReqInfo(static_cast<s32>(7));
+    nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager();
+    t0->clearPartyReqInfo(0);
+    t0->clearPartyReqInfo(1);
+    t0->clearPartyReqInfo(2);
+    t0->clearPartyReqInfo(3);
+    t0->clearPartyReqInfo(4);
+    t0->clearPartyReqInfo(5);
+    t0->clearPartyReqInfo(6);
+    t0->clearPartyReqInfo(7);
     // inferred: the value the loop at 0x33fde0 carries; no location-less local in scope fits
-    nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC* v0_10 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mpConnection->mpPartyInviteJoinMemberPacket;
-    if (v0_10->m_MemberMinimum.::MtArray::mLength != static_cast<u32>(0)) {
+    nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC* v0_10 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mpConnection->mpPartyInviteJoinMemberPacket;
+    if (v0_10->m_MemberMinimum.mLength != 0) {
         // inferred: the value the loop at 0x33fde0 carries; no location-less local in scope fits
-        u32 v0_0 = v0_10->m_MemberMinimum.::MtArray::mLength;
+        u32 v0_0 = v0_10->m_MemberMinimum.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_10->m_MemberMinimum.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_10->m_MemberMinimum.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->m_MemberMinimum.::MtArray::mLength) {
-                    v0_0 = v0_10->m_MemberMinimum.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_10->m_MemberMinimum.mpArray[i0_3] != nullptr) {
+                delete v0_10->m_MemberMinimum.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_10->m_MemberMinimum.mLength) {
+                    v0_0 = v0_10->m_MemberMinimum.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_10->m_MemberMinimum.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_10->m_MemberMinimum.::MtArray::mpArray));
+    if (v0_10->m_MemberMinimum.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_10->m_MemberMinimum.mpArray));
     }
-    v0_10->m_MemberMinimum.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_10->m_MemberMinimum.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_10->m_MemberMinimum.::MtArray::mLength = static_cast<u32>(0);
-    v0_10->m_MemberMinimum.::MtArray::mAutoDelete = true;
-    this->mStatus[28] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(28));
-    this->mErrorCode[28] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_CREATE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[28] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(28));
-                    this->mComTimer[28] = 0.0f;
+    v0_10->m_MemberMinimum.mpArray = nullptr;
+    v0_10->m_MemberMinimum.mBufsiz = 0;
+    v0_10->m_MemberMinimum.mLength = 0;
+    v0_10->m_MemberMinimum.mAutoDelete = true;
+    mStatus[28] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(28);
+    mErrorCode[28] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_CREATE_REQ() != 0) {
+                    mStatus[28] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(28);
+                    mComTimer[28] = 0.0f;
                     return true;
                 }
             }
@@ -1802,16 +1806,16 @@ bool cNetGameServer::setMatchingProfile(CMatchingProfile& matchingProfile) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[271] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(271));
-    this->mErrorCode[271] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_MATCHING_PROFILE_REQ(matchingProfile) != static_cast<s32>(0)) {
-                    this->mStatus[271] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(271));
-                    this->mComTimer[271] = 0.0f;
+    mStatus[271] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(271);
+    mErrorCode[271] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_MATCHING_PROFILE_REQ(matchingProfile) != 0) {
+                    mStatus[271] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(271);
+                    mComTimer[271] = 0.0f;
                     return true;
                 }
             }
@@ -1836,16 +1840,16 @@ bool cNetGameServer::searchCharacter() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[273] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(273));
-    this->mErrorCode[273] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_SEARCH_REQ(this->mCharacterFilterParam) != static_cast<s32>(0)) {
-                    this->mStatus[273] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(273));
-                    this->mComTimer[273] = 0.0f;
+    mStatus[273] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(273);
+    mErrorCode[273] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHARACTER_SEARCH_REQ(mCharacterFilterParam) != 0) {
+                    mStatus[273] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(273);
+                    mComTimer[273] = 0.0f;
                     return true;
                 }
             }
@@ -1861,16 +1865,16 @@ bool cNetGameServer::reqPartyMemberSetValue(s32 index, bool flag) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a value cast to the type its use takes: bool used as u8
-    this->mStatus[30] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(30));
-    this->mErrorCode[30] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_SET_VALUE_REQ(static_cast<unsigned char>(index), static_cast<u8>(flag)) != static_cast<s32>(0)) {
-                    this->mStatus[30] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(30));
-                    this->mComTimer[30] = 0.0f;
+    mStatus[30] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(30);
+    mErrorCode[30] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_MEMBER_SET_VALUE_REQ(static_cast<unsigned char>(index), static_cast<u8>(flag)) != 0) {
+                    mStatus[30] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(30);
+                    mComTimer[30] = 0.0f;
                     return true;
                 }
             }
@@ -1890,11 +1894,11 @@ __attribute__((weak)) bool cNetGameServer::inviteParty() {
 // Address: 0x00346210 - 0x0034622e (30 bytes)
 bool cNetGameServer::inviteParty(u32 inviteServerNo, u32 invitePartyId, u32 sequenceId, u32 invitePartyNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInviteServerNo = inviteServerNo;
-    this->mInvitePartyId = invitePartyId;
-    this->mInviteSequenceId = sequenceId;
-    this->mInvitePartyNum = invitePartyNum;
-    return this->::cNetGameServer::inviteParty();
+    mInviteServerNo = inviteServerNo;
+    mInvitePartyId = invitePartyId;
+    mInviteSequenceId = sequenceId;
+    mInvitePartyNum = invitePartyNum;
+    return inviteParty();
 }
 
 // Address: 0x00346160 - 0x003461fd (157 bytes)
@@ -1902,16 +1906,16 @@ bool cNetGameServer::inviteParty(u32 characterId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[32] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(32));
-    this->mErrorCode[32] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CHARACTER_REQ(characterId) != static_cast<s32>(0)) {
-                    this->mStatus[32] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(32));
-                    this->mComTimer[32] = 0.0f;
+    mStatus[32] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(32);
+    mErrorCode[32] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_INVITE_CHARACTER_REQ(characterId) != 0) {
+                    mStatus[32] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(32);
+                    mComTimer[32] = 0.0f;
                     return true;
                 }
             }
@@ -1932,18 +1936,18 @@ bool cNetGameServer::cancelInviteParty(u32 inviteServerNo, u32 invitePartyId) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x54dc from cNetGameServer*
-    this->mInviteServerNo = inviteServerNo;
-    this->mInvitePartyId = invitePartyId;
-    this->mStatus[33] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(33));
-    this->mErrorCode[33] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CANCEL_REQ(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(21724)), this->mInvitePartyId) != static_cast<s32>(0)) {
-                    this->mStatus[33] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(33));
-                    this->mComTimer[33] = 0.0f;
+    mInviteServerNo = inviteServerNo;
+    mInvitePartyId = invitePartyId;
+    mStatus[33] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(33);
+    mErrorCode[33] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_INVITE_CANCEL_REQ(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 21724), mInvitePartyId) != 0) {
+                    mStatus[33] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(33);
+                    mComTimer[33] = 0.0f;
                     return true;
                 }
             }
@@ -1957,16 +1961,16 @@ bool cNetGameServer::refuseInviteParty() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[34] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(34));
-    this->mErrorCode[34] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_REFUSE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[34] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(34));
-                    this->mComTimer[34] = 0.0f;
+    mStatus[34] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(34);
+    mErrorCode[34] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_INVITE_REFUSE_REQ() != 0) {
+                    mStatus[34] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(34);
+                    mComTimer[34] = 0.0f;
                     return true;
                 }
             }
@@ -1980,16 +1984,16 @@ bool cNetGameServer::prepareAcceptInviteParty() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[35] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(35));
-    this->mErrorCode[35] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_PREPARE_ACCEPT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[35] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(35));
-                    this->mComTimer[35] = 0.0f;
+    mStatus[35] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(35);
+    mErrorCode[35] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_INVITE_PREPARE_ACCEPT_REQ() != 0) {
+                    mStatus[35] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(35);
+                    mComTimer[35] = 0.0f;
                     return true;
                 }
             }
@@ -2021,17 +2025,17 @@ bool cNetGameServer::kickParty(s32 memberIndex) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54f8 from cNetGameServer*
-    this->mKickMemberIndex = memberIndex;
-    this->mStatus[41] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(41));
-    this->mErrorCode[41] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_KICK_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(21752))) != static_cast<s32>(0)) {
-                    this->mStatus[41] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(41));
-                    this->mComTimer[41] = 0.0f;
+    mKickMemberIndex = memberIndex;
+    mStatus[41] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(41);
+    mErrorCode[41] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_MEMBER_KICK_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 21752)) != 0) {
+                    mStatus[41] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(41);
+                    mComTimer[41] = 0.0f;
                     return true;
                 }
             }
@@ -2045,16 +2049,16 @@ bool cNetGameServer::breakupParty() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[42] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(42));
-    this->mErrorCode[42] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_BREAKUP_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[42] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(42));
-                    this->mComTimer[42] = 0.0f;
+    mStatus[42] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(42);
+    mErrorCode[42] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_BREAKUP_REQ() != 0) {
+                    mStatus[42] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(42);
+                    mComTimer[42] = 0.0f;
                     return true;
                 }
             }
@@ -2070,17 +2074,17 @@ bool cNetGameServer::breakupParty() {
 // Address: 0x00346580 - 0x00346612 (146 bytes)
 bool cNetGameServer::changePartyLeader(s32 leaderCharacterId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLeaderChangeCharacterId = static_cast<u32>(leaderCharacterId);
-    this->mStatus[43] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(43));
-    this->mErrorCode[43] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_CHANGE_LEADER_REQ(this->mLeaderChangeCharacterId);
-                this->mStatus[43] = static_cast<sNetworkExt::NET_STAT>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(43));
-                this->mComTimer[43] = 0.0f;
+    mLeaderChangeCharacterId = static_cast<u32>(leaderCharacterId);
+    mStatus[43] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(43);
+    mErrorCode[43] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mpConnection->Send_C2S_PARTY_CHANGE_LEADER_REQ(mLeaderChangeCharacterId);
+                mStatus[43] = sNetworkExt::NET_STAT_REQ;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(43);
+                mComTimer[43] = 0.0f;
                 return true;
             }
         }
@@ -2093,16 +2097,16 @@ bool cNetGameServer::entryPlay() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[44] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(44));
-    this->mErrorCode[44] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[44] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(44));
-                    this->mComTimer[44] = 0.0f;
+    mStatus[44] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(44);
+    mErrorCode[44] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_ENTRY_REQ() != 0) {
+                    mStatus[44] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(44);
+                    mComTimer[44] = 0.0f;
                     return true;
                 }
             }
@@ -2116,16 +2120,16 @@ bool cNetGameServer::entryCancelPlay() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[45] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(45));
-    this->mErrorCode[45] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_ENTRY_CANCEL_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[45] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(45));
-                    this->mComTimer[45] = 0.0f;
+    mStatus[45] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(45);
+    mErrorCode[45] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_ENTRY_CANCEL_REQ() != 0) {
+                    mStatus[45] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(45);
+                    mComTimer[45] = 0.0f;
                     return true;
                 }
             }
@@ -2139,16 +2143,16 @@ bool cNetGameServer::startPlay() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[46] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(46));
-    this->mErrorCode[46] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_START_REQ(this->mPlayStartQuestScheduleId);
-                this->mStatus[46] = static_cast<sNetworkExt::NET_STAT>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(46));
-                this->mComTimer[46] = 0.0f;
+    mStatus[46] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(46);
+    mErrorCode[46] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mpConnection->Send_C2S_PLAY_START_REQ(mPlayStartQuestScheduleId);
+                mStatus[46] = sNetworkExt::NET_STAT_REQ;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(46);
+                mComTimer[46] = 0.0f;
                 return true;
             }
         }
@@ -2164,16 +2168,16 @@ bool cNetGameServer::endPlay() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[47] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(47));
-    this->mErrorCode[47] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_END_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[47] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(47));
-                    this->mComTimer[47] = 0.0f;
+    mStatus[47] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(47);
+    mErrorCode[47] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_END_REQ() != 0) {
+                    mStatus[47] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(47);
+                    mComTimer[47] = 0.0f;
                     return true;
                 }
             }
@@ -2187,16 +2191,16 @@ bool cNetGameServer::entryInvite() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[48] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(48));
-    this->mErrorCode[48] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_ENTRY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[48] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(48));
-                    this->mComTimer[48] = 0.0f;
+    mStatus[48] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(48);
+    mErrorCode[48] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_INVITE_ENTRY_REQ() != 0) {
+                    mStatus[48] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(48);
+                    mComTimer[48] = 0.0f;
                     return true;
                 }
             }
@@ -2227,16 +2231,16 @@ bool cNetGameServer::getQuestLogInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[562] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(562));
-    this->mErrorCode[562] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUEST_LOG_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[562] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(562));
-                    this->mComTimer[562] = 0.0f;
+    mStatus[562] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(562);
+    mErrorCode[562] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_QUEST_LOG_INFO_REQ() != 0) {
+                    mStatus[562] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(562);
+                    mComTimer[562] = 0.0f;
                     return true;
                 }
             }
@@ -2381,7 +2385,7 @@ __attribute__((weak)) void cNetGameServer::clearGetMatchingProfilePacket() {
 // Address: 0x00379a70 - 0x00379a7f (15 bytes)
 nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES* cNetGameServer::getCharacterSearchPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpCharacterSearchPacket;
+    return mpConnection->mpCharacterSearchPacket;
 }
 
 // No out-of-line body: 7 inlined copies in 5 functions (35 bytes)
@@ -2418,7 +2422,7 @@ __attribute__((weak)) void cNetGameServer::clearCharacterSearchPacket() {
 // Address: 0x00373be0 - 0x00373bef (15 bytes)
 nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC* cNetGameServer::getPartyInviteJoinMemberPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPartyInviteJoinMemberPacket;
+    return mpConnection->mpPartyInviteJoinMemberPacket;
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (59 bytes)
@@ -2898,10 +2902,10 @@ __attribute__((weak)) bool cNetGameServer::reqQuickPartyRegister(nNet::QUICK_MAT
 // Address: 0x003475c0 - 0x003475f7 (55 bytes)
 bool cNetGameServer::reqQuickPartyCancel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUICK_PARTY_CANCEL_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_QUICK_PARTY_CANCEL_NTC() != 0;
             }
         }
     }
@@ -2913,16 +2917,16 @@ bool cNetGameServer::reqQuickPartyEntry() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[57] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(57));
-    this->mErrorCode[57] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUICK_PARTY_ENTRY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[57] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(57));
-                    this->mComTimer[57] = 0.0f;
+    mStatus[57] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(57);
+    mErrorCode[57] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_QUICK_PARTY_ENTRY_REQ() != 0) {
+                    mStatus[57] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(57);
+                    mComTimer[57] = 0.0f;
                     return true;
                 }
             }
@@ -2934,10 +2938,10 @@ bool cNetGameServer::reqQuickPartyEntry() {
 // Address: 0x00347690 - 0x003476c7 (55 bytes)
 bool cNetGameServer::reqQuickPartyRefuse() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUICK_PARTY_REFUSE_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_QUICK_PARTY_REFUSE_NTC() != 0;
             }
         }
     }
@@ -2990,9 +2994,9 @@ __attribute__((weak)) bool cNetGameServer::createMyPawn() {
 // Address: 0x00347d00 - 0x00347d12 (18 bytes)
 bool cNetGameServer::createMyPawn(s32 slotNo, cCharacterData::stPawnData* pPawnData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMyPawnSlotNo = slotNo;
-    this->mpMyPawnData = pPawnData;
-    return this->::cNetGameServer::createMyPawn();
+    mMyPawnSlotNo = slotNo;
+    mpMyPawnData = pPawnData;
+    return createMyPawn();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (127 bytes)
@@ -3004,18 +3008,18 @@ bool cNetGameServer::deleteMyPawn(s32 slotNo, bool isKeepEquip) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5728 from cNetGameServer*
-    this->mMyPawnSlotNo = slotNo;
-    this->mIsKeepEquip = isKeepEquip;
-    this->mStatus[60] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(60));
-    this->mErrorCode[60] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DELETE_MYPAWN_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(22312)), this->mIsKeepEquip) != static_cast<s32>(0)) {
-                    this->mStatus[60] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(60));
-                    this->mComTimer[60] = 0.0f;
+    mMyPawnSlotNo = slotNo;
+    mIsKeepEquip = isKeepEquip;
+    mStatus[60] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(60);
+    mErrorCode[60] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DELETE_MYPAWN_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 22312), mIsKeepEquip) != 0) {
+                    mStatus[60] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(60);
+                    mComTimer[60] = 0.0f;
                     return true;
                 }
             }
@@ -3029,16 +3033,16 @@ bool cNetGameServer::getMyPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[61] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(61));
-    this->mErrorCode[61] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_MYPAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[61] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(61));
-                    this->mComTimer[61] = 0.0f;
+    mStatus[61] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(61);
+    mErrorCode[61] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_MYPAWN_LIST_REQ() != 0) {
+                    mStatus[61] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(61);
+                    mComTimer[61] = 0.0f;
                     return true;
                 }
             }
@@ -3065,16 +3069,16 @@ bool cNetGameServer::getRegisterdPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[64] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(64));
-    this->mErrorCode[64] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_REGISTERED_PAWN_LIST_REQ(this->mPawnFilterParam) != static_cast<s32>(0)) {
-                    this->mStatus[64] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(64));
-                    this->mComTimer[64] = 0.0f;
+    mStatus[64] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(64);
+    mErrorCode[64] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_REGISTERED_PAWN_LIST_REQ(mPawnFilterParam) != 0) {
+                    mStatus[64] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(64);
+                    mComTimer[64] = 0.0f;
                     return true;
                 }
             }
@@ -3098,16 +3102,16 @@ bool cNetGameServer::getOfficialPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[85] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(85));
-    this->mErrorCode[85] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_OFFICIAL_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[85] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(85));
-                    this->mComTimer[85] = 0.0f;
+    mStatus[85] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(85);
+    mErrorCode[85] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_OFFICIAL_PAWN_LIST_REQ() != 0) {
+                    mStatus[85] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(85);
+                    mComTimer[85] = 0.0f;
                     return true;
                 }
             }
@@ -3121,16 +3125,16 @@ bool cNetGameServer::getLegendPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[86] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(86));
-    this->mErrorCode[86] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LEGEND_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[86] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(86));
-                    this->mComTimer[86] = 0.0f;
+    mStatus[86] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(86);
+    mErrorCode[86] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LEGEND_PAWN_LIST_REQ() != 0) {
+                    mStatus[86] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(86);
+                    mComTimer[86] = 0.0f;
                     return true;
                 }
             }
@@ -3144,16 +3148,16 @@ bool cNetGameServer::getNoraPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[87] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(87));
-    this->mErrorCode[87] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_NORA_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[87] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(87));
-                    this->mComTimer[87] = 0.0f;
+    mStatus[87] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(87);
+    mErrorCode[87] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_NORA_PAWN_LIST_REQ() != 0) {
+                    mStatus[87] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(87);
+                    mComTimer[87] = 0.0f;
                     return true;
                 }
             }
@@ -3167,16 +3171,16 @@ bool cNetGameServer::getFreeRentalPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[88] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(88));
-    this->mErrorCode[88] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_FREE_RENTAL_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[88] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(88));
-                    this->mComTimer[88] = 0.0f;
+    mStatus[88] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(88);
+    mErrorCode[88] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_FREE_RENTAL_PAWN_LIST_REQ() != 0) {
+                    mStatus[88] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(88);
+                    mComTimer[88] = 0.0f;
                     return true;
                 }
             }
@@ -3214,16 +3218,16 @@ bool cNetGameServer::getRentedPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[69] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(69));
-    this->mErrorCode[69] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RENTED_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[69] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(69));
-                    this->mComTimer[69] = 0.0f;
+    mStatus[69] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(69);
+    mErrorCode[69] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RENTED_PAWN_LIST_REQ() != 0) {
+                    mStatus[69] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(69);
+                    mComTimer[69] = 0.0f;
                     return true;
                 }
             }
@@ -3294,16 +3298,16 @@ bool cNetGameServer::pawnLost(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[75] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(75));
-    this->mErrorCode[75] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_LOST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[75] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(75));
-                    this->mComTimer[75] = 0.0f;
+    mStatus[75] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(75);
+    mErrorCode[75] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_LOST_REQ(pawnId) != 0) {
+                    mStatus[75] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(75);
+                    mComTimer[75] = 0.0f;
                     return true;
                 }
             }
@@ -3320,16 +3324,16 @@ bool cNetGameServer::getLostPawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[76] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(76));
-    this->mErrorCode[76] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LOST_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[76] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(76));
-                    this->mComTimer[76] = 0.0f;
+    mStatus[76] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(76);
+    mErrorCode[76] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LOST_PAWN_LIST_REQ() != 0) {
+                    mStatus[76] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(76);
+                    mComTimer[76] = 0.0f;
                     return true;
                 }
             }
@@ -3343,16 +3347,16 @@ bool cNetGameServer::lostPawnRevive(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[77] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(77));
-    this->mErrorCode[77] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LOST_PAWN_REVIVE_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[77] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(77));
-                    this->mComTimer[77] = 0.0f;
+    mStatus[77] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(77);
+    mErrorCode[77] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LOST_PAWN_REVIVE_REQ(pawnId) != 0) {
+                    mStatus[77] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(77);
+                    mComTimer[77] = 0.0f;
                     return true;
                 }
             }
@@ -3369,16 +3373,16 @@ bool cNetGameServer::lostPawnPointRevive(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[78] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(78));
-    this->mErrorCode[78] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LOST_PAWN_POINT_REVIVE_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[78] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(78));
-                    this->mComTimer[78] = 0.0f;
+    mStatus[78] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(78);
+    mErrorCode[78] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LOST_PAWN_POINT_REVIVE_REQ(pawnId) != 0) {
+                    mStatus[78] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(78);
+                    mComTimer[78] = 0.0f;
                     return true;
                 }
             }
@@ -3395,16 +3399,16 @@ bool cNetGameServer::lostPawnGoldenRevive(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[79] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(79));
-    this->mErrorCode[79] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LOST_PAWN_GOLDEN_REVIVE_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[79] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(79));
-                    this->mComTimer[79] = 0.0f;
+    mStatus[79] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(79);
+    mErrorCode[79] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LOST_PAWN_GOLDEN_REVIVE_REQ(pawnId) != 0) {
+                    mStatus[79] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(79);
+                    mComTimer[79] = 0.0f;
                     return true;
                 }
             }
@@ -3429,16 +3433,16 @@ bool cNetGameServer::rentalPawnLost(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[81] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(81));
-    this->mErrorCode[81] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RENTAL_PAWN_LOST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[81] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(81));
-                    this->mComTimer[81] = 0.0f;
+    mStatus[81] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(81);
+    mErrorCode[81] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RENTAL_PAWN_LOST_REQ(pawnId) != 0) {
+                    mStatus[81] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(81);
+                    mComTimer[81] = 0.0f;
                     return true;
                 }
             }
@@ -3455,16 +3459,16 @@ bool cNetGameServer::getFavoritePawnList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[82] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(82));
-    this->mErrorCode[82] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_FAVORITE_PAWN_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[82] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(82));
-                    this->mComTimer[82] = 0.0f;
+    mStatus[82] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(82);
+    mErrorCode[82] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_FAVORITE_PAWN_LIST_REQ() != 0) {
+                    mStatus[82] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(82);
+                    mComTimer[82] = 0.0f;
                     return true;
                 }
             }
@@ -3478,16 +3482,16 @@ bool cNetGameServer::setFavoritePawn(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[83] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(83));
-    this->mErrorCode[83] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_FAVORITE_PAWN_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[83] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(83));
-                    this->mComTimer[83] = 0.0f;
+    mStatus[83] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(83);
+    mErrorCode[83] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_FAVORITE_PAWN_REQ(pawnId) != 0) {
+                    mStatus[83] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(83);
+                    mComTimer[83] = 0.0f;
                     return true;
                 }
             }
@@ -3504,16 +3508,16 @@ bool cNetGameServer::deleteFavoritePawn(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[84] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(84));
-    this->mErrorCode[84] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DELETE_FAVORITE_PAWN_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[84] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(84));
-                    this->mComTimer[84] = 0.0f;
+    mStatus[84] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(84);
+    mErrorCode[84] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DELETE_FAVORITE_PAWN_REQ(pawnId) != 0) {
+                    mStatus[84] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(84);
+                    mComTimer[84] = 0.0f;
                     return true;
                 }
             }
@@ -3541,16 +3545,16 @@ bool cNetGameServer::updatePawnShareRange(u32 pawnId, u8 shareType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[90] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(90));
-    this->mErrorCode[90] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_PAWN_SHARE_RANGE_REQ(pawnId, shareType) != static_cast<s32>(0)) {
-                    this->mStatus[90] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(90));
-                    this->mComTimer[90] = 0.0f;
+    mStatus[90] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(90);
+    mErrorCode[90] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_PAWN_SHARE_RANGE_REQ(pawnId, shareType) != 0) {
+                    mStatus[90] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(90);
+                    mComTimer[90] = 0.0f;
                     return true;
                 }
             }
@@ -3567,16 +3571,16 @@ bool cNetGameServer::getPawnHistoryList(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[91] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(91));
-    this->mErrorCode[91] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_HISTORY_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[91] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(91));
-                    this->mComTimer[91] = 0.0f;
+    mStatus[91] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(91);
+    mErrorCode[91] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_HISTORY_LIST_REQ(pawnId) != 0) {
+                    mStatus[91] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(91);
+                    mComTimer[91] = 0.0f;
                     return true;
                 }
             }
@@ -3593,16 +3597,16 @@ bool cNetGameServer::getPawnTotalScore(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[92] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(92));
-    this->mErrorCode[92] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_TOTAL_SCORE_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[92] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(92));
-                    this->mComTimer[92] = 0.0f;
+    mStatus[92] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(92);
+    mErrorCode[92] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_TOTAL_SCORE_REQ(pawnId) != 0) {
+                    mStatus[92] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(92);
+                    mComTimer[92] = 0.0f;
                     return true;
                 }
             }
@@ -3783,7 +3787,7 @@ __attribute__((weak)) void cNetGameServer::setPawnHistoryList(const PawnHistoryV
 // Address: 0x003796d0 - 0x003796df (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES* cNetGameServer::getGetPawnTotalScorePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnTotalScorePacket;
+    return mpConnection->mpGetPawnTotalScorePacket;
 }
 
 // Address: 0x0037ac60 - 0x0037ad2b (203 bytes)
@@ -3795,7 +3799,7 @@ __attribute__((weak)) void cNetGameServer::clearGetPawnTotalScorePacket() {
 // Address: 0x003796e0 - 0x003796ef (15 bytes)
 nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES* cNetGameServer::getGetFreeRentalPawnListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetFreeRentalPawnListPacket;
+    return mpConnection->mpGetFreeRentalPawnListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3966,79 +3970,79 @@ void cNetGameServer::copySendEditData(CEditInfo* pDstEditData, const cCharacterD
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x64 from const cCharacterData::stCharacterEdit*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x68 from const cCharacterData::stCharacterEdit*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x6c from const cCharacterData::stCharacterEdit*
-    if (pDstEditData == static_cast<CEditInfo*>(nullptr)) {
+    if (pDstEditData == nullptr) {
         return;
     }
     pDstEditData->m_ucBodyType = srcEditData.mBodyType;
-    pDstEditData->m_ucHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(32));
-    pDstEditData->m_ucBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(36));
-    pDstEditData->m_ucMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(40));
-    pDstEditData->m_ucScar = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(44));
-    pDstEditData->m_ucPersonality = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(60));
-    pDstEditData->m_ucSpeechFreq = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(64));
-    pDstEditData->m_ucVoice = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(48));
-    pDstEditData->m_usVoicePitch = ::rCharacterEdit::toU16(static_cast<float>(srcEditData.mVoicePitch), 0.01f);
-    pDstEditData->m_ucEyePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(68));
-    pDstEditData->m_ucNosePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(72));
-    pDstEditData->m_ucMouthPresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(76));
-    pDstEditData->m_ucEyebrowTexNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(80));
-    pDstEditData->m_ucColorSkin = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(84));
-    pDstEditData->m_ucColorHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(88));
-    pDstEditData->m_ucColorBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(92));
-    pDstEditData->m_ucColorEyebrow = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(96));
-    pDstEditData->m_ucColorREye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(100));
-    pDstEditData->m_ucColorLEye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(104));
-    pDstEditData->m_ucColorMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(108));
-    pDstEditData->m_usSokutobu = ::rCharacterEdit::toU16(srcEditData.mSokutoubu, 0.001f);
-    pDstEditData->m_usHitai = ::rCharacterEdit::toU16(srcEditData.mHitai, 0.001f);
-    pDstEditData->m_usMimiJyouge = ::rCharacterEdit::toU16(srcEditData.mMimijyouge, 0.001f);
-    pDstEditData->m_usKannkaku = ::rCharacterEdit::toU16(srcEditData.mKannkaku, 0.001f);
-    pDstEditData->m_usMabisasiJyouge = ::rCharacterEdit::toU16(srcEditData.mMabisasijyouge, 0.001f);
-    pDstEditData->m_usHanakuchiJyouge = ::rCharacterEdit::toU16(srcEditData.mHanakuchijyouge, 0.001f);
-    pDstEditData->m_usAgoSakiHaba = ::rCharacterEdit::toU16(srcEditData.mAgosakihaba, 0.001f);
-    pDstEditData->m_usAgoZengo = ::rCharacterEdit::toU16(srcEditData.mAgozengo, 0.001f);
-    pDstEditData->m_usAgoSakiJyouge = ::rCharacterEdit::toU16(srcEditData.mAgosakijyouge, 0.001f);
-    pDstEditData->m_usHitomiOokisa = ::rCharacterEdit::toU16(srcEditData.mHitomiookisa, 0.001f);
-    pDstEditData->m_usMeOokisa = ::rCharacterEdit::toU16(srcEditData.mMeookisa, 0.001f);
-    pDstEditData->m_usMeKaiten = ::rCharacterEdit::toU16(srcEditData.mMekaiten, 0.001f);
-    pDstEditData->m_usMayuKaiten = ::rCharacterEdit::toU16(srcEditData.mMayukaiten, 0.0001f);
-    pDstEditData->m_usMimiOokisa = ::rCharacterEdit::toU16(srcEditData.mMimiookisa, 0.001f);
-    pDstEditData->m_usMimiMuki = ::rCharacterEdit::toU16(srcEditData.mMimimuki, 0.001f);
-    pDstEditData->m_usElfMimi = ::rCharacterEdit::toU16(srcEditData.mElfmimi, 0.001f);
-    pDstEditData->m_usMikenTakasa = ::rCharacterEdit::toU16(srcEditData.mMikentakasa, 0.001f);
-    pDstEditData->m_usMikenHaba = ::rCharacterEdit::toU16(srcEditData.mMikenhaba, 0.001f);
-    pDstEditData->m_usHohoboneRyou = ::rCharacterEdit::toU16(srcEditData.mHohoboneryou, 0.001f);
-    pDstEditData->m_usHohoboneJyouge = ::rCharacterEdit::toU16(srcEditData.mHohobonejyouge, 0.001f);
-    pDstEditData->m_usHohoniku = ::rCharacterEdit::toU16(srcEditData.mHohoniku, 0.001f);
-    pDstEditData->m_usErahoneJyouge = ::rCharacterEdit::toU16(srcEditData.mErahonejyouge, 0.001f);
-    pDstEditData->m_usErahoneHaba = ::rCharacterEdit::toU16(srcEditData.mErahonehaba, 0.001f);
-    pDstEditData->m_usHanaJyouge = ::rCharacterEdit::toU16(srcEditData.mHanajyouge, 0.001f);
-    pDstEditData->m_usHanaHaba = ::rCharacterEdit::toU16(srcEditData.mHanahaba, 0.001f);
-    pDstEditData->m_usHanaTakasa = ::rCharacterEdit::toU16(srcEditData.mHanatakasa, 0.001f);
-    pDstEditData->m_usHanaKakudo = ::rCharacterEdit::toU16(srcEditData.mHanakakudo, 0.001f);
-    pDstEditData->m_usKuchiHaba = ::rCharacterEdit::toU16(srcEditData.mKuchihaba, 0.001f);
-    pDstEditData->m_usKuchiAtsusa = ::rCharacterEdit::toU16(srcEditData.mKuchiatsusa, 0.001f);
-    pDstEditData->m_usEyebrowUVOffsetX = ::rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetX, 0.0001f);
-    pDstEditData->m_usEyebrowUVOffsetY = ::rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetY, 0.0001f);
-    pDstEditData->m_usWrinkle = ::rCharacterEdit::toU16(srcEditData.mWrinkle, 0.001f);
-    pDstEditData->m_usWrinkleAlbedoBlendRate = ::rCharacterEdit::toU16(srcEditData.mWrinkleAlbedoBlendRate, 0.001f);
-    pDstEditData->m_usWrinkleDetailNormalPower = ::rCharacterEdit::toU16(srcEditData.mWrinkleDetailNormalPower, 0.001f);
-    pDstEditData->m_usMuscleAlbedoBlendRate = ::rCharacterEdit::toU16(srcEditData.mMuscleAlbedoBlendRate, 0.001f);
-    pDstEditData->m_usMuscleDetailNormalPower = ::rCharacterEdit::toU16(srcEditData.mMuscleDetailNormalPower, 0.001f);
-    pDstEditData->m_usHeight = ::rCharacterEdit::toU16(srcEditData.mHeight, 0.01f);
-    pDstEditData->m_usHeadSize = ::rCharacterEdit::toU16(srcEditData.mHeadSize, 0.0001f);
-    pDstEditData->m_usNeckScale = ::rCharacterEdit::toU16(srcEditData.mNeckScale, 0.0001f);
-    pDstEditData->m_usNeckOffset = ::rCharacterEdit::toU16(srcEditData.mNeckOffset, 0.001f);
-    pDstEditData->m_usUpperBodyScaleX = ::rCharacterEdit::toU16(srcEditData.mUpperBodyScaleX, 0.0001f);
-    pDstEditData->m_usBellySize = ::rCharacterEdit::toU16(srcEditData.mBellySize, 0.0001f);
-    pDstEditData->m_usTeatScale = ::rCharacterEdit::toU16(srcEditData.mTeatScale, 0.0001f);
-    pDstEditData->m_usTekubiSize = ::rCharacterEdit::toU16(srcEditData.mTekubiSize, 0.0001f);
-    pDstEditData->m_usKoshiOffset = ::rCharacterEdit::toU16(srcEditData.mKoshiOffset, 0.001f);
-    pDstEditData->m_usKoshiSize = ::rCharacterEdit::toU16(srcEditData.mKoshiSize, 0.0001f);
-    pDstEditData->m_usAnkleOffset = ::rCharacterEdit::toU16(srcEditData.mAnkleOffset, 0.001f);
-    pDstEditData->m_usFat = ::rCharacterEdit::toU16(srcEditData.mFat, 0.0001f);
-    pDstEditData->m_usMuscle = ::rCharacterEdit::toU16(srcEditData.mMuscle, 0.0001f);
-    pDstEditData->m_usMotionFilter = ::rCharacterEdit::toU16(srcEditData.mMotionFilter, 0.0001f);
+    pDstEditData->m_ucHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 32);
+    pDstEditData->m_ucBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 36);
+    pDstEditData->m_ucMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 40);
+    pDstEditData->m_ucScar = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 44);
+    pDstEditData->m_ucPersonality = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 60);
+    pDstEditData->m_ucSpeechFreq = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 64);
+    pDstEditData->m_ucVoice = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 48);
+    pDstEditData->m_usVoicePitch = rCharacterEdit::toU16(static_cast<float>(srcEditData.mVoicePitch), 0.01f);
+    pDstEditData->m_ucEyePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 68);
+    pDstEditData->m_ucNosePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 72);
+    pDstEditData->m_ucMouthPresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 76);
+    pDstEditData->m_ucEyebrowTexNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 80);
+    pDstEditData->m_ucColorSkin = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 84);
+    pDstEditData->m_ucColorHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 88);
+    pDstEditData->m_ucColorBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 92);
+    pDstEditData->m_ucColorEyebrow = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 96);
+    pDstEditData->m_ucColorREye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 100);
+    pDstEditData->m_ucColorLEye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 104);
+    pDstEditData->m_ucColorMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + 108);
+    pDstEditData->m_usSokutobu = rCharacterEdit::toU16(srcEditData.mSokutoubu, 0.001f);
+    pDstEditData->m_usHitai = rCharacterEdit::toU16(srcEditData.mHitai, 0.001f);
+    pDstEditData->m_usMimiJyouge = rCharacterEdit::toU16(srcEditData.mMimijyouge, 0.001f);
+    pDstEditData->m_usKannkaku = rCharacterEdit::toU16(srcEditData.mKannkaku, 0.001f);
+    pDstEditData->m_usMabisasiJyouge = rCharacterEdit::toU16(srcEditData.mMabisasijyouge, 0.001f);
+    pDstEditData->m_usHanakuchiJyouge = rCharacterEdit::toU16(srcEditData.mHanakuchijyouge, 0.001f);
+    pDstEditData->m_usAgoSakiHaba = rCharacterEdit::toU16(srcEditData.mAgosakihaba, 0.001f);
+    pDstEditData->m_usAgoZengo = rCharacterEdit::toU16(srcEditData.mAgozengo, 0.001f);
+    pDstEditData->m_usAgoSakiJyouge = rCharacterEdit::toU16(srcEditData.mAgosakijyouge, 0.001f);
+    pDstEditData->m_usHitomiOokisa = rCharacterEdit::toU16(srcEditData.mHitomiookisa, 0.001f);
+    pDstEditData->m_usMeOokisa = rCharacterEdit::toU16(srcEditData.mMeookisa, 0.001f);
+    pDstEditData->m_usMeKaiten = rCharacterEdit::toU16(srcEditData.mMekaiten, 0.001f);
+    pDstEditData->m_usMayuKaiten = rCharacterEdit::toU16(srcEditData.mMayukaiten, 0.0001f);
+    pDstEditData->m_usMimiOokisa = rCharacterEdit::toU16(srcEditData.mMimiookisa, 0.001f);
+    pDstEditData->m_usMimiMuki = rCharacterEdit::toU16(srcEditData.mMimimuki, 0.001f);
+    pDstEditData->m_usElfMimi = rCharacterEdit::toU16(srcEditData.mElfmimi, 0.001f);
+    pDstEditData->m_usMikenTakasa = rCharacterEdit::toU16(srcEditData.mMikentakasa, 0.001f);
+    pDstEditData->m_usMikenHaba = rCharacterEdit::toU16(srcEditData.mMikenhaba, 0.001f);
+    pDstEditData->m_usHohoboneRyou = rCharacterEdit::toU16(srcEditData.mHohoboneryou, 0.001f);
+    pDstEditData->m_usHohoboneJyouge = rCharacterEdit::toU16(srcEditData.mHohobonejyouge, 0.001f);
+    pDstEditData->m_usHohoniku = rCharacterEdit::toU16(srcEditData.mHohoniku, 0.001f);
+    pDstEditData->m_usErahoneJyouge = rCharacterEdit::toU16(srcEditData.mErahonejyouge, 0.001f);
+    pDstEditData->m_usErahoneHaba = rCharacterEdit::toU16(srcEditData.mErahonehaba, 0.001f);
+    pDstEditData->m_usHanaJyouge = rCharacterEdit::toU16(srcEditData.mHanajyouge, 0.001f);
+    pDstEditData->m_usHanaHaba = rCharacterEdit::toU16(srcEditData.mHanahaba, 0.001f);
+    pDstEditData->m_usHanaTakasa = rCharacterEdit::toU16(srcEditData.mHanatakasa, 0.001f);
+    pDstEditData->m_usHanaKakudo = rCharacterEdit::toU16(srcEditData.mHanakakudo, 0.001f);
+    pDstEditData->m_usKuchiHaba = rCharacterEdit::toU16(srcEditData.mKuchihaba, 0.001f);
+    pDstEditData->m_usKuchiAtsusa = rCharacterEdit::toU16(srcEditData.mKuchiatsusa, 0.001f);
+    pDstEditData->m_usEyebrowUVOffsetX = rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetX, 0.0001f);
+    pDstEditData->m_usEyebrowUVOffsetY = rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetY, 0.0001f);
+    pDstEditData->m_usWrinkle = rCharacterEdit::toU16(srcEditData.mWrinkle, 0.001f);
+    pDstEditData->m_usWrinkleAlbedoBlendRate = rCharacterEdit::toU16(srcEditData.mWrinkleAlbedoBlendRate, 0.001f);
+    pDstEditData->m_usWrinkleDetailNormalPower = rCharacterEdit::toU16(srcEditData.mWrinkleDetailNormalPower, 0.001f);
+    pDstEditData->m_usMuscleAlbedoBlendRate = rCharacterEdit::toU16(srcEditData.mMuscleAlbedoBlendRate, 0.001f);
+    pDstEditData->m_usMuscleDetailNormalPower = rCharacterEdit::toU16(srcEditData.mMuscleDetailNormalPower, 0.001f);
+    pDstEditData->m_usHeight = rCharacterEdit::toU16(srcEditData.mHeight, 0.01f);
+    pDstEditData->m_usHeadSize = rCharacterEdit::toU16(srcEditData.mHeadSize, 0.0001f);
+    pDstEditData->m_usNeckScale = rCharacterEdit::toU16(srcEditData.mNeckScale, 0.0001f);
+    pDstEditData->m_usNeckOffset = rCharacterEdit::toU16(srcEditData.mNeckOffset, 0.001f);
+    pDstEditData->m_usUpperBodyScaleX = rCharacterEdit::toU16(srcEditData.mUpperBodyScaleX, 0.0001f);
+    pDstEditData->m_usBellySize = rCharacterEdit::toU16(srcEditData.mBellySize, 0.0001f);
+    pDstEditData->m_usTeatScale = rCharacterEdit::toU16(srcEditData.mTeatScale, 0.0001f);
+    pDstEditData->m_usTekubiSize = rCharacterEdit::toU16(srcEditData.mTekubiSize, 0.0001f);
+    pDstEditData->m_usKoshiOffset = rCharacterEdit::toU16(srcEditData.mKoshiOffset, 0.001f);
+    pDstEditData->m_usKoshiSize = rCharacterEdit::toU16(srcEditData.mKoshiSize, 0.0001f);
+    pDstEditData->m_usAnkleOffset = rCharacterEdit::toU16(srcEditData.mAnkleOffset, 0.001f);
+    pDstEditData->m_usFat = rCharacterEdit::toU16(srcEditData.mFat, 0.0001f);
+    pDstEditData->m_usMuscle = rCharacterEdit::toU16(srcEditData.mMuscle, 0.0001f);
+    pDstEditData->m_usMotionFilter = rCharacterEdit::toU16(srcEditData.mMotionFilter, 0.0001f);
 }
 
 // Address: 0x0034a7c0 - 0x0034b1e3 (2595 bytes)
@@ -4201,16 +4205,16 @@ bool cNetGameServer::getCharacterEquipList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[234] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(234));
-    this->mErrorCode[234] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CHARACTER_EQUIP_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[234] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(234));
-                    this->mComTimer[234] = 0.0f;
+    mStatus[234] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(234);
+    mErrorCode[234] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CHARACTER_EQUIP_LIST_REQ() != 0) {
+                    mStatus[234] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(234);
+                    mComTimer[234] = 0.0f;
                     return true;
                 }
             }
@@ -4226,17 +4230,17 @@ bool cNetGameServer::getCharacterEquipList() {
 // Address: 0x0034d710 - 0x0034d7aa (154 bytes)
 bool cNetGameServer::getPawnEquipList(unsigned int pawnID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEquipPawnId = pawnID;
-    this->mStatus[235] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(235));
-    this->mErrorCode[235] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_EQUIP_LIST_REQ(this->mEquipPawnId) != static_cast<s32>(0)) {
-                    this->mStatus[235] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(235));
-                    this->mComTimer[235] = 0.0f;
+    mEquipPawnId = pawnID;
+    mStatus[235] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(235);
+    mErrorCode[235] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_EQUIP_LIST_REQ(mEquipPawnId) != 0) {
+                    mStatus[235] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(235);
+                    mComTimer[235] = 0.0f;
                     return true;
                 }
             }
@@ -4250,16 +4254,16 @@ bool cNetGameServer::changeCharacterEquip(C2SChangeCharacterEquipInfoVec& change
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[236] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(236));
-    this->mErrorCode[236] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP_REQ(changeCharacterEquipList) != static_cast<s32>(0)) {
-                    this->mStatus[236] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(236));
-                    this->mComTimer[236] = 0.0f;
+    mStatus[236] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(236);
+    mErrorCode[236] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_CHARACTER_EQUIP_REQ(changeCharacterEquipList) != 0) {
+                    mStatus[236] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(236);
+                    mComTimer[236] = 0.0f;
                     return true;
                 }
             }
@@ -4273,16 +4277,16 @@ bool cNetGameServer::changeCharacterStorageEquip(C2SChangeCharacterEquipInfoVec&
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[237] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(237));
-    this->mErrorCode[237] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_STORAGE_EQUIP_REQ(changeCharacterEquipList) != static_cast<s32>(0)) {
-                    this->mStatus[237] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(237));
-                    this->mComTimer[237] = 0.0f;
+    mStatus[237] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(237);
+    mErrorCode[237] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_CHARACTER_STORAGE_EQUIP_REQ(changeCharacterEquipList) != 0) {
+                    mStatus[237] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(237);
+                    mComTimer[237] = 0.0f;
                     return true;
                 }
             }
@@ -4296,16 +4300,16 @@ bool cNetGameServer::changePawnEquip(unsigned int pawnID, C2SChangeCharacterEqui
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[238] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(238));
-    this->mErrorCode[238] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_EQUIP_REQ(pawnID, changeCharacterEquipList) != static_cast<s32>(0)) {
-                    this->mStatus[238] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(238));
-                    this->mComTimer[238] = 0.0f;
+    mStatus[238] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(238);
+    mErrorCode[238] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_PAWN_EQUIP_REQ(pawnID, changeCharacterEquipList) != 0) {
+                    mStatus[238] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(238);
+                    mComTimer[238] = 0.0f;
                     return true;
                 }
             }
@@ -4319,16 +4323,16 @@ bool cNetGameServer::changePawnStorageEquip(unsigned int pawnID, C2SChangeCharac
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[239] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(239));
-    this->mErrorCode[239] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_STORAGE_EQUIP_REQ(pawnID, changeCharacterEquipList) != static_cast<s32>(0)) {
-                    this->mStatus[239] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(239));
-                    this->mComTimer[239] = 0.0f;
+    mStatus[239] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(239);
+    mErrorCode[239] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_PAWN_STORAGE_EQUIP_REQ(pawnID, changeCharacterEquipList) != 0) {
+                    mStatus[239] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(239);
+                    mComTimer[239] = 0.0f;
                     return true;
                 }
             }
@@ -4342,16 +4346,16 @@ bool cNetGameServer::changeCharacterEquipJobItem(ChangeEquipJobItemVec& equipJob
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[240] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(240));
-    this->mErrorCode[240] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ(equipJobItemList) != static_cast<s32>(0)) {
-                    this->mStatus[240] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(240));
-                    this->mComTimer[240] = 0.0f;
+    mStatus[240] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(240);
+    mErrorCode[240] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ(equipJobItemList) != 0) {
+                    mStatus[240] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(240);
+                    mComTimer[240] = 0.0f;
                     return true;
                 }
             }
@@ -4373,16 +4377,16 @@ bool cNetGameServer::updateHideCharacterHeadArmor(bool isHide) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[242] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(242));
-    this->mErrorCode[242] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ(isHide) != static_cast<s32>(0)) {
-                    this->mStatus[242] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(242));
-                    this->mComTimer[242] = 0.0f;
+    mStatus[242] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(242);
+    mErrorCode[242] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ(isHide) != 0) {
+                    mStatus[242] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(242);
+                    mComTimer[242] = 0.0f;
                     return true;
                 }
             }
@@ -4396,16 +4400,16 @@ bool cNetGameServer::updateHideCharacterLantern(bool isHide) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[243] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(243));
-    this->mErrorCode[243] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_CHARACTER_LANTERN_REQ(isHide) != static_cast<s32>(0)) {
-                    this->mStatus[243] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(243));
-                    this->mComTimer[243] = 0.0f;
+    mStatus[243] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(243);
+    mErrorCode[243] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_HIDE_CHARACTER_LANTERN_REQ(isHide) != 0) {
+                    mStatus[243] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(243);
+                    mComTimer[243] = 0.0f;
                     return true;
                 }
             }
@@ -4419,16 +4423,16 @@ bool cNetGameServer::updateHidePawnHeadArmor(bool isHide) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[244] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(244));
-    this->mErrorCode[244] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ(isHide) != static_cast<s32>(0)) {
-                    this->mStatus[244] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(244));
-                    this->mComTimer[244] = 0.0f;
+    mStatus[244] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(244);
+    mErrorCode[244] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ(isHide) != 0) {
+                    mStatus[244] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(244);
+                    mComTimer[244] = 0.0f;
                     return true;
                 }
             }
@@ -4442,16 +4446,16 @@ bool cNetGameServer::updateHidePawnLantern(bool isHide) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[245] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(245));
-    this->mErrorCode[245] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_HIDE_PAWN_LANTERN_REQ(isHide) != static_cast<s32>(0)) {
-                    this->mStatus[245] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(245));
-                    this->mComTimer[245] = 0.0f;
+    mStatus[245] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(245);
+    mErrorCode[245] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_HIDE_PAWN_LANTERN_REQ(isHide) != 0) {
+                    mStatus[245] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(245);
+                    mComTimer[245] = 0.0f;
                     return true;
                 }
             }
@@ -4465,16 +4469,16 @@ bool cNetGameServer::getEquipPresetList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[246] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(246));
-    this->mErrorCode[246] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_EQUIP_PRESET_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[246] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(246));
-                    this->mComTimer[246] = 0.0f;
+    mStatus[246] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(246);
+    mErrorCode[246] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_EQUIP_PRESET_LIST_REQ() != 0) {
+                    mStatus[246] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(246);
+                    mComTimer[246] = 0.0f;
                     return true;
                 }
             }
@@ -4496,16 +4500,16 @@ bool cNetGameServer::updateEquipPresetName(unsigned int presetNo, MT_CTSTR prese
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[248] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(248));
-    this->mErrorCode[248] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_EQUIP_PRESET_NAME_REQ(presetNo, presetName) != static_cast<s32>(0)) {
-                    this->mStatus[248] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(248));
-                    this->mComTimer[248] = 0.0f;
+    mStatus[248] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(248);
+    mErrorCode[248] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_EQUIP_PRESET_NAME_REQ(presetNo, presetName) != 0) {
+                    mStatus[248] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(248);
+                    mComTimer[248] = 0.0f;
                     return true;
                 }
             }
@@ -4621,17 +4625,17 @@ __attribute__((weak)) bool cNetGameServer::getStorageItemList() {
 // Address: 0x0034e2f0 - 0x0034e38a (154 bytes)
 bool cNetGameServer::getLightQuestList(u32 lightQuestBaseId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLightQuestBaseId = lightQuestBaseId;
-    this->mStatus[118] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(118));
-    this->mErrorCode[118] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LIGHT_QUEST_LIST_REQ(this->mLightQuestBaseId) != static_cast<s32>(0)) {
-                    this->mStatus[118] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(118));
-                    this->mComTimer[118] = 0.0f;
+    mLightQuestBaseId = lightQuestBaseId;
+    mStatus[118] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(118);
+    mErrorCode[118] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LIGHT_QUEST_LIST_REQ(mLightQuestBaseId) != 0) {
+                    mStatus[118] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(118);
+                    mComTimer[118] = 0.0f;
                     return true;
                 }
             }
@@ -4647,17 +4651,17 @@ bool cNetGameServer::getLightQuestList(u32 lightQuestBaseId) {
 // Address: 0x0034e3a0 - 0x0034e43a (154 bytes)
 bool cNetGameServer::getClanQuestList(u32 clanQuestBaseId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClanQuestBaseId = clanQuestBaseId;
-    this->mStatus[118] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(118));
-    this->mErrorCode[118] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LIGHT_QUEST_LIST_REQ(this->mClanQuestBaseId) != static_cast<s32>(0)) {
-                    this->mStatus[118] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(118));
-                    this->mComTimer[118] = 0.0f;
+    mClanQuestBaseId = clanQuestBaseId;
+    mStatus[118] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(118);
+    mErrorCode[118] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LIGHT_QUEST_LIST_REQ(mClanQuestBaseId) != 0) {
+                    mStatus[118] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(118);
+                    mComTimer[118] = 0.0f;
                     return true;
                 }
             }
@@ -4673,17 +4677,17 @@ bool cNetGameServer::getClanQuestList(u32 clanQuestBaseId) {
 // Address: 0x0034e450 - 0x0034e4ea (154 bytes)
 bool cNetGameServer::getSetQuestList(u32 distributeId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSetQuestDistributeId = distributeId;
-    this->mStatus[119] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(119));
-    this->mErrorCode[119] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_LIST_REQ(this->mSetQuestDistributeId) != static_cast<s32>(0)) {
-                    this->mStatus[119] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(119));
-                    this->mComTimer[119] = 0.0f;
+    mSetQuestDistributeId = distributeId;
+    mStatus[119] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(119);
+    mErrorCode[119] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SET_QUEST_LIST_REQ(mSetQuestDistributeId) != 0) {
+                    mStatus[119] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(119);
+                    mComTimer[119] = 0.0f;
                     return true;
                 }
             }
@@ -4697,16 +4701,16 @@ bool cNetGameServer::getMainQuestList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[120] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(120));
-    this->mErrorCode[120] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[120] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(120));
-                    this->mComTimer[120] = 0.0f;
+    mStatus[120] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(120);
+    mErrorCode[120] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_MAIN_QUEST_LIST_REQ() != 0) {
+                    mStatus[120] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(120);
+                    mComTimer[120] = 0.0f;
                     return true;
                 }
             }
@@ -4722,17 +4726,17 @@ bool cNetGameServer::getMainQuestList() {
 // Address: 0x0034e590 - 0x0034e62a (154 bytes)
 bool cNetGameServer::getTutorialQuestList(u32 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTutorialQuestStageNo = stageNo;
-    this->mStatus[121] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(121));
-    this->mErrorCode[121] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_TUTORIAL_QUEST_LIST_REQ(this->mTutorialQuestStageNo) != static_cast<s32>(0)) {
-                    this->mStatus[121] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(121));
-                    this->mComTimer[121] = 0.0f;
+    mTutorialQuestStageNo = stageNo;
+    mStatus[121] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(121);
+    mErrorCode[121] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_TUTORIAL_QUEST_LIST_REQ(mTutorialQuestStageNo) != 0) {
+                    mStatus[121] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(121);
+                    mComTimer[121] = 0.0f;
                     return true;
                 }
             }
@@ -4746,16 +4750,16 @@ bool cNetGameServer::getTimeLimitedQuestList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[122] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(122));
-    this->mErrorCode[122] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_TIME_LIMITED_QUEST_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[122] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(122));
-                    this->mComTimer[122] = 0.0f;
+    mStatus[122] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(122);
+    mErrorCode[122] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_TIME_LIMITED_QUEST_LIST_REQ() != 0) {
+                    mStatus[122] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(122);
+                    mComTimer[122] = 0.0f;
                     return true;
                 }
             }
@@ -4769,16 +4773,16 @@ bool cNetGameServer::getWorldManageQuestList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[123] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(123));
-    this->mErrorCode[123] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_WORLD_MANAGE_QUEST_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[123] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(123));
-                    this->mComTimer[123] = 0.0f;
+    mStatus[123] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(123);
+    mErrorCode[123] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_WORLD_MANAGE_QUEST_LIST_REQ() != 0) {
+                    mStatus[123] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(123);
+                    mComTimer[123] = 0.0f;
                     return true;
                 }
             }
@@ -4792,16 +4796,16 @@ bool cNetGameServer::getLotQuestList(u8 lotType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[125] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(125));
-    this->mErrorCode[125] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LOT_QUEST_LIST_REQ(lotType) != static_cast<s32>(0)) {
-                    this->mStatus[125] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(125));
-                    this->mComTimer[125] = 0.0f;
+    mStatus[125] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(125);
+    mErrorCode[125] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LOT_QUEST_LIST_REQ(lotType) != 0) {
+                    mStatus[125] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(125);
+                    mComTimer[125] = 0.0f;
                     return true;
                 }
             }
@@ -4815,16 +4819,16 @@ bool cNetGameServer::getMainQuestCompleteInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[126] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(126));
-    this->mErrorCode[126] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_MAIN_QUEST_COMPLETE_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[126] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(126));
-                    this->mComTimer[126] = 0.0f;
+    mStatus[126] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(126);
+    mErrorCode[126] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_MAIN_QUEST_COMPLETE_INFO_REQ() != 0) {
+                    mStatus[126] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(126);
+                    mComTimer[126] = 0.0f;
                     return true;
                 }
             }
@@ -4838,16 +4842,16 @@ bool cNetGameServer::getRecommendedQuestInfoList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[129] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(129));
-    this->mErrorCode[129] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RECOMMENDED_QUEST_INFO_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[129] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(129));
-                    this->mComTimer[129] = 0.0f;
+    mStatus[129] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(129);
+    mErrorCode[129] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RECOMMENDED_QUEST_INFO_LIST_REQ() != 0) {
+                    mStatus[129] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(129);
+                    mComTimer[129] = 0.0f;
                     return true;
                 }
             }
@@ -4863,17 +4867,17 @@ bool cNetGameServer::getRecommendedQuestInfoList() {
 // Address: 0x0034e920 - 0x0034e9ba (154 bytes)
 bool cNetGameServer::questOrder(u32 questScheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuestScheduleId = questScheduleId;
-    this->mStatus[130] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(130));
-    this->mErrorCode[130] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUEST_ORDER_REQ(this->mQuestScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[130] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(130));
-                    this->mComTimer[130] = 0.0f;
+    mQuestScheduleId = questScheduleId;
+    mStatus[130] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(130);
+    mErrorCode[130] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_QUEST_ORDER_REQ(mQuestScheduleId) != 0) {
+                    mStatus[130] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(130);
+                    mComTimer[130] = 0.0f;
                     return true;
                 }
             }
@@ -4900,17 +4904,17 @@ __attribute__((weak)) bool cNetGameServer::questProgress(u32 characterId, u32 qu
 // Address: 0x0034ebe0 - 0x0034ec7a (154 bytes)
 bool cNetGameServer::questCancel(u32 questScheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuestScheduleId = questScheduleId;
-    this->mStatus[132] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(132));
-    this->mErrorCode[132] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUEST_CANCEL_REQ(this->mQuestScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[132] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(132));
-                    this->mComTimer[132] = 0.0f;
+    mQuestScheduleId = questScheduleId;
+    mStatus[132] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(132);
+    mErrorCode[132] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_QUEST_CANCEL_REQ(mQuestScheduleId) != 0) {
+                    mStatus[132] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(132);
+                    mComTimer[132] = 0.0f;
                     return true;
                 }
             }
@@ -4924,16 +4928,16 @@ bool cNetGameServer::endDistributionQuestCancel() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[142] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(142));
-    this->mErrorCode[142] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_END_DISTRIBUTION_QUEST_CANCEL_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[142] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(142));
-                    this->mComTimer[142] = 0.0f;
+    mStatus[142] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(142);
+    mErrorCode[142] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_END_DISTRIBUTION_QUEST_CANCEL_REQ() != 0) {
+                    mStatus[142] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(142);
+                    mComTimer[142] = 0.0f;
                     return true;
                 }
             }
@@ -4947,16 +4951,16 @@ bool cNetGameServer::questCompleteFlagClear(u32 questScheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[134] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(134));
-    this->mErrorCode[134] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_QUEST_COMPLETE_FLAG_CLEAR_REQ(questScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[134] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(134));
-                    this->mComTimer[134] = 0.0f;
+    mStatus[134] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(134);
+    mErrorCode[134] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_QUEST_COMPLETE_FLAG_CLEAR_REQ(questScheduleId) != 0) {
+                    mStatus[134] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(134);
+                    mComTimer[134] = 0.0f;
                     return true;
                 }
             }
@@ -4970,16 +4974,16 @@ bool cNetGameServer::getQuestDetailList(u32 questScheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[133] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(133));
-    this->mErrorCode[133] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_DETAIL_LIST_REQ(questScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[133] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(133));
-                    this->mComTimer[133] = 0.0f;
+    mStatus[133] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(133);
+    mErrorCode[133] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_QUEST_DETAIL_LIST_REQ(questScheduleId) != 0) {
+                    mStatus[133] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(133);
+                    mComTimer[133] = 0.0f;
                     return true;
                 }
             }
@@ -4993,16 +4997,16 @@ bool cNetGameServer::getQuestCompleteList(u32 questType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[135] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(135));
-    this->mErrorCode[135] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_COMPLETE_LIST_REQ(static_cast<unsigned char>(questType)) != static_cast<s32>(0)) {
-                    this->mStatus[135] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(135));
-                    this->mComTimer[135] = 0.0f;
+    mStatus[135] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(135);
+    mErrorCode[135] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_QUEST_COMPLETE_LIST_REQ(static_cast<unsigned char>(questType)) != 0) {
+                    mStatus[135] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(135);
+                    mComTimer[135] = 0.0f;
                     return true;
                 }
             }
@@ -5016,16 +5020,16 @@ bool cNetGameServer::getQuestLayoutFlag(u32 flagNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[137] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(137));
-    this->mErrorCode[137] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_LAYOUT_FLAG_REQ(flagNo) != static_cast<s32>(0)) {
-                    this->mStatus[137] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(137));
-                    this->mComTimer[137] = 0.0f;
+    mStatus[137] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(137);
+    mErrorCode[137] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_QUEST_LAYOUT_FLAG_REQ(flagNo) != 0) {
+                    mStatus[137] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(137);
+                    mComTimer[137] = 0.0f;
                     return true;
                 }
             }
@@ -5042,16 +5046,16 @@ bool cNetGameServer::getSetQuestOpenDateList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[136] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(136));
-    this->mErrorCode[136] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_OPEN_DATE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[136] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(136));
-                    this->mComTimer[136] = 0.0f;
+    mStatus[136] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(136);
+    mErrorCode[136] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SET_QUEST_OPEN_DATE_LIST_REQ() != 0) {
+                    mStatus[136] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(136);
+                    mComTimer[136] = 0.0f;
                     return true;
                 }
             }
@@ -5065,16 +5069,16 @@ bool cNetGameServer::reqBoardQuestAllComplete(u32 baseId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[144] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(144));
-    this->mErrorCode[144] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LIGHT_QUEST_GP_COMPLETE_REQ(baseId) != static_cast<s32>(0)) {
-                    this->mStatus[144] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(144));
-                    this->mComTimer[144] = 0.0f;
+    mStatus[144] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(144);
+    mErrorCode[144] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LIGHT_QUEST_GP_COMPLETE_REQ(baseId) != 0) {
+                    mStatus[144] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(144);
+                    mComTimer[144] = 0.0f;
                     return true;
                 }
             }
@@ -5099,16 +5103,16 @@ bool cNetGameServer::debugMainQuestJump(u32 questId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[146] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(146));
-    this->mErrorCode[146] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DEBUG_MAIN_QUEST_JUMP_REQ(questId) != static_cast<s32>(0)) {
-                    this->mStatus[146] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(146));
-                    this->mComTimer[146] = 0.0f;
+    mStatus[146] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(146);
+    mErrorCode[146] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DEBUG_MAIN_QUEST_JUMP_REQ(questId) != 0) {
+                    mStatus[146] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(146);
+                    mComTimer[146] = 0.0f;
                     return true;
                 }
             }
@@ -5125,16 +5129,16 @@ bool cNetGameServer::debugQuestReset(u32 questId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[147] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(147));
-    this->mErrorCode[147] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_REQ(questId) != static_cast<s32>(0)) {
-                    this->mStatus[147] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(147));
-                    this->mComTimer[147] = 0.0f;
+    mStatus[147] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(147);
+    mErrorCode[147] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DEBUG_QUEST_RESET_REQ(questId) != 0) {
+                    mStatus[147] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(147);
+                    mComTimer[147] = 0.0f;
                     return true;
                 }
             }
@@ -5151,16 +5155,16 @@ bool cNetGameServer::debugQuestResetAll(u8 questType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[148] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(148));
-    this->mErrorCode[148] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DEBUG_QUEST_RESET_ALL_REQ(questType) != static_cast<s32>(0)) {
-                    this->mStatus[148] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(148));
-                    this->mComTimer[148] = 0.0f;
+    mStatus[148] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(148);
+    mErrorCode[148] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DEBUG_QUEST_RESET_ALL_REQ(questType) != 0) {
+                    mStatus[148] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(148);
+                    mComTimer[148] = 0.0f;
                     return true;
                 }
             }
@@ -5189,16 +5193,16 @@ bool cNetGameServer::getBoughtBoxList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[462] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(462));
-    this->mErrorCode[462] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_POST_ITEM_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[462] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(462));
-                    this->mComTimer[462] = 0.0f;
+    mStatus[462] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(462);
+    mErrorCode[462] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_POST_ITEM_LIST_REQ() != 0) {
+                    mStatus[462] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(462);
+                    mComTimer[462] = 0.0f;
                     return true;
                 }
             }
@@ -5212,16 +5216,16 @@ bool cNetGameServer::getRewardBoxList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[152] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(152));
-    this->mErrorCode[152] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_REWARD_BOX_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[152] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(152));
-                    this->mComTimer[152] = 0.0f;
+    mStatus[152] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(152);
+    mErrorCode[152] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_REWARD_BOX_LIST_REQ() != 0) {
+                    mStatus[152] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(152);
+                    mComTimer[152] = 0.0f;
                     return true;
                 }
             }
@@ -5246,16 +5250,16 @@ bool cNetGameServer::getCycleContentsRewardList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[155] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(155));
-    this->mErrorCode[155] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[155] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(155));
-                    this->mComTimer[155] = 0.0f;
+    mStatus[155] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(155);
+    mErrorCode[155] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_REQ() != 0) {
+                    mStatus[155] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(155);
+                    mComTimer[155] = 0.0f;
                     return true;
                 }
             }
@@ -5306,16 +5310,16 @@ bool cNetGameServer::decideDeliveryItem(u32 scheduleId, u16 processNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[159] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(159));
-    this->mErrorCode[159] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DECIDE_DELIVERY_ITEM_REQ(scheduleId, processNo) != static_cast<s32>(0)) {
-                    this->mStatus[159] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(159));
-                    this->mComTimer[159] = 0.0f;
+    mStatus[159] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(159);
+    mErrorCode[159] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DECIDE_DELIVERY_ITEM_REQ(scheduleId, processNo) != 0) {
+                    mStatus[159] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(159);
+                    mComTimer[159] = 0.0f;
                     return true;
                 }
             }
@@ -5329,16 +5333,16 @@ bool cNetGameServer::getPartyQuestProgressInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[160] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(160));
-    this->mErrorCode[160] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PARTY_QUEST_PROGRESS_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[160] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(160));
-                    this->mComTimer[160] = 0.0f;
+    mStatus[160] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(160);
+    mErrorCode[160] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PARTY_QUEST_PROGRESS_INFO_REQ() != 0) {
+                    mStatus[160] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(160);
+                    mComTimer[160] = 0.0f;
                     return true;
                 }
             }
@@ -5361,16 +5365,16 @@ bool cNetGameServer::checkQuestDistribution(u32 scheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[161] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(161));
-    this->mErrorCode[161] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHECK_QUEST_DISTRIBUTION_REQ(scheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[161] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(161));
-                    this->mComTimer[161] = 0.0f;
+    mStatus[161] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(161);
+    mErrorCode[161] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHECK_QUEST_DISTRIBUTION_REQ(scheduleId) != 0) {
+                    mStatus[161] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(161);
+                    mComTimer[161] = 0.0f;
                     return true;
                 }
             }
@@ -5386,17 +5390,17 @@ bool cNetGameServer::checkQuestDistribution(u32 scheduleId) {
 // Address: 0x003500b0 - 0x0035014a (154 bytes)
 bool cNetGameServer::getSetQuestInfoList(u32 distributeId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSetQuestDistributeId = distributeId;
-    this->mStatus[127] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(127));
-    this->mErrorCode[127] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SET_QUEST_INFO_LIST_REQ(this->mSetQuestDistributeId) != static_cast<s32>(0)) {
-                    this->mStatus[127] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(127));
-                    this->mComTimer[127] = 0.0f;
+    mSetQuestDistributeId = distributeId;
+    mStatus[127] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(127);
+    mErrorCode[127] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SET_QUEST_INFO_LIST_REQ(mSetQuestDistributeId) != 0) {
+                    mStatus[127] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(127);
+                    mComTimer[127] = 0.0f;
                     return true;
                 }
             }
@@ -5410,16 +5414,16 @@ bool cNetGameServer::getCycleContentsList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[128] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(128));
-    this->mErrorCode[128] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NEWS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[128] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(128));
-                    this->mComTimer[128] = 0.0f;
+    mStatus[128] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(128);
+    mErrorCode[128] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_NEWS_LIST_REQ() != 0) {
+                    mStatus[128] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(128);
+                    mComTimer[128] = 0.0f;
                     return true;
                 }
             }
@@ -5433,16 +5437,16 @@ bool cNetGameServer::getAreaInfoList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[50] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(50));
-    this->mErrorCode[50] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_INFO_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[50] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(50));
-                    this->mComTimer[50] = 0.0f;
+    mStatus[50] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(50);
+    mErrorCode[50] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_INFO_LIST_REQ() != 0) {
+                    mStatus[50] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(50);
+                    mComTimer[50] = 0.0f;
                     return true;
                 }
             }
@@ -5456,16 +5460,16 @@ bool cNetGameServer::getAreaBonusList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[51] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(51));
-    this->mErrorCode[51] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_BONUS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[51] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(51));
-                    this->mComTimer[51] = 0.0f;
+    mStatus[51] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(51);
+    mErrorCode[51] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_BONUS_LIST_REQ() != 0) {
+                    mStatus[51] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(51);
+                    mComTimer[51] = 0.0f;
                     return true;
                 }
             }
@@ -5479,16 +5483,16 @@ bool cNetGameServer::getQuestPartyBonusList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[52] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(52));
-    this->mErrorCode[52] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_PARTY_BONUS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[52] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(52));
-                    this->mComTimer[52] = 0.0f;
+    mStatus[52] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(52);
+    mErrorCode[52] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_QUEST_PARTY_BONUS_LIST_REQ() != 0) {
+                    mStatus[52] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(52);
+                    mComTimer[52] = 0.0f;
                     return true;
                 }
             }
@@ -5502,16 +5506,16 @@ bool cNetGameServer::sendLeaderQuestOrderConditionInfo(const OrderConditionInfoV
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[53] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(53));
-    this->mErrorCode[53] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_REQ(orderConditionList) != static_cast<s32>(0)) {
-                    this->mStatus[53] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(53));
-                    this->mComTimer[53] = 0.0f;
+    mStatus[53] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(53);
+    mErrorCode[53] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_REQ(orderConditionList) != 0) {
+                    mStatus[53] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(53);
+                    mComTimer[53] = 0.0f;
                     return true;
                 }
             }
@@ -5535,11 +5539,11 @@ __attribute__((weak)) bool cNetGameServer::sendLeaderWaitOrderQuestList(const Co
 // Address: 0x00350630 - 0x00350675 (69 bytes)
 bool cNetGameServer::setReturnSessionForPRT(bool isReturnSession) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mReqReturnSession = isReturnSession;
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_PRT_READY_SET_RETURN_SESSION(isReturnSession) != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mReqReturnSession = isReturnSession;
+                return mpConnection->Send_C2S_PRT_READY_SET_RETURN_SESSION(isReturnSession) != 0;
             }
         }
     }
@@ -5553,33 +5557,33 @@ bool cNetGameServer::getGachaList(bool box) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (box != false) {
-        this->mStatus[471] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(471));
-        this->mErrorCode[471] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BOX_GACHA_LIST_REQ() != static_cast<s32>(0)) {
-                        this->mStatus[471] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(471));
-                        this->mComTimer[471] = 0.0f;
+    if (box) {
+        mStatus[471] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(471);
+        mErrorCode[471] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_BOX_GACHA_LIST_REQ() != 0) {
+                        mStatus[471] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(471);
+                        mComTimer[471] = 0.0f;
                         return true;
                     }
                 }
             }
         }
     } else {
-        this->mStatus[469] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(469));
-        this->mErrorCode[469] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GACHA_LIST_REQ() != static_cast<s32>(0)) {
-                        this->mStatus[469] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(469));
-                        this->mComTimer[469] = 0.0f;
+        mStatus[469] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(469);
+        mErrorCode[469] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_GACHA_LIST_REQ() != 0) {
+                        mStatus[469] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(469);
+                        mComTimer[469] = 0.0f;
                         return true;
                     }
                 }
@@ -5618,11 +5622,11 @@ __attribute__((weak)) u32 cNetGameServer::checkGachaBuy() {
 // Address: 0x00368e00 - 0x00368e21 (33 bytes)
 void cNetGameServer::setGachaBuy(const u32 gachaId, const u32 settlementId, const u32 price, const u32 drawNum, s32 drawId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGachaId = gachaId;
-    this->mGachaSettlementId = settlementId;
-    this->mGachaPrice = price;
-    this->mGachaDrawNum = drawNum;
-    this->mGachaDrawId = static_cast<u32>(drawId);
+    mGachaId = gachaId;
+    mGachaSettlementId = settlementId;
+    mGachaPrice = price;
+    mGachaDrawNum = drawNum;
+    mGachaDrawId = static_cast<u32>(drawId);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5639,16 +5643,16 @@ bool cNetGameServer::getBoxGachaItem() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[474] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(474));
-    this->mErrorCode[474] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BOX_GACHA_DRAW_INFO_REQ(this->mGachaId) != static_cast<s32>(0)) {
-                    this->mStatus[474] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(474));
-                    this->mComTimer[474] = 0.0f;
+    mStatus[474] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(474);
+    mErrorCode[474] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BOX_GACHA_DRAW_INFO_REQ(mGachaId) != 0) {
+                    mStatus[474] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(474);
+                    mComTimer[474] = 0.0f;
                     return true;
                 }
             }
@@ -5662,16 +5666,16 @@ bool cNetGameServer::getBoxGachaReset(u32 id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[473] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(473));
-    this->mErrorCode[473] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BOX_GACHA_RESET_REQ(id) != static_cast<s32>(0)) {
-                    this->mStatus[473] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(473));
-                    this->mComTimer[473] = 0.0f;
+    mStatus[473] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(473);
+    mErrorCode[473] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BOX_GACHA_RESET_REQ(id) != 0) {
+                    mStatus[473] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(473);
+                    mComTimer[473] = 0.0f;
                     return true;
                 }
             }
@@ -5695,25 +5699,25 @@ __attribute__((weak)) void cNetGameServer::clearBoxGachaDrawInfoPacket() {
 // Address: 0x00379540 - 0x00379553 (19 bytes)
 LightQuestListVec& cNetGameServer::getLightQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLightQuestListPacket->m_LightQuestList;
+    return mpConnection->mpGetLightQuestListPacket->m_LightQuestList;
 }
 
 // Address: 0x00379570 - 0x00379583 (19 bytes)
 SetQuestListVec& cNetGameServer::getSetQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetQuestListPacket->m_SetQuestList;
+    return mpConnection->mpGetSetQuestListPacket->m_SetQuestList;
 }
 
 // Address: 0x003795a0 - 0x003795b3 (19 bytes)
 MainQuestListVec& cNetGameServer::getMainQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cNetGameServer::getMainQuestListPacket()->m_MainQuestList;
+    return getMainQuestListPacket()->m_MainQuestList;
 }
 
 // Address: 0x003795d0 - 0x003795e3 (19 bytes)
 TutorialQuestListVec& cNetGameServer::getTutorialQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cNetGameServer::getTutorialQuestListPacket()->m_TutorialQuestList;
+    return getTutorialQuestListPacket()->m_TutorialQuestList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5722,31 +5726,31 @@ TutorialQuestListVec& cNetGameServer::getTutorialQuestListRef() {
 // Address: 0x00379620 - 0x00379633 (19 bytes)
 WorldManageQuestListVec& cNetGameServer::getWorldManageQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cNetGameServer::getWorldManageQuestListPacket()->m_WorldManageQuestList;
+    return getWorldManageQuestListPacket()->m_WorldManageQuestList;
 }
 
 // Address: 0x00379650 - 0x00379663 (19 bytes)
 LotQuestListVec& cNetGameServer::getLotQuestListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cNetGameServer::getLotQuestListPacket()->m_LotQuestList;
+    return getLotQuestListPacket()->m_LotQuestList;
 }
 
 // Address: 0x00379560 - 0x0037956f (15 bytes)
 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES* cNetGameServer::getLightQuestListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLightQuestListPacket;
+    return mpConnection->mpGetLightQuestListPacket;
 }
 
 // Address: 0x003796f0 - 0x003796ff (15 bytes)
 nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES* cNetGameServer::getLightQuestGpCompletePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpLightQuestGpCompletePacket;
+    return mpConnection->mpLightQuestGpCompletePacket;
 }
 
 // Address: 0x00379590 - 0x0037959f (15 bytes)
 nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES* cNetGameServer::getSetQuestListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetQuestListPacket;
+    return mpConnection->mpGetSetQuestListPacket;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -5771,49 +5775,49 @@ nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES* cNetGameServer::getSetQuestLis
 // Address: 0x00379700 - 0x0037970f (15 bytes)
 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES* cNetGameServer::getSetQuestInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetQuestInfoListPacket;
+    return mpConnection->mpGetSetQuestInfoListPacket;
 }
 
 // Address: 0x00379710 - 0x0037971f (15 bytes)
 nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES* cNetGameServer::getRecommendedQuestInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetRecommendedQuestInfoListPacket;
+    return mpConnection->mpGetRecommendedQuestInfoListPacket;
 }
 
 // Address: 0x00379720 - 0x0037972f (15 bytes)
 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES* cNetGameServer::getCycleContentsNewsListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCycleContentsNewsListPacket;
+    return mpConnection->mpGetCycleContentsNewsListPacket;
 }
 
 // Address: 0x00379730 - 0x0037973f (15 bytes)
 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES* cNetGameServer::getEndContentsGroupPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetEndContentsGroupPacket;
+    return mpConnection->mpGetEndContentsGroupPacket;
 }
 
 // Address: 0x00379740 - 0x0037974f (15 bytes)
 nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES* cNetGameServer::getQuestScheduleInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetQuestScheduleInfoPacket;
+    return mpConnection->mpGetQuestScheduleInfoPacket;
 }
 
 // Address: 0x00379750 - 0x0037975f (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES* cNetGameServer::getAreaInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaInfoListPacket;
+    return mpConnection->mpGetAreaInfoListPacket;
 }
 
 // Address: 0x00379760 - 0x0037976f (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES* cNetGameServer::getAreaBonusListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaBonusListPacket;
+    return mpConnection->mpGetAreaBonusListPacket;
 }
 
 // Address: 0x00379770 - 0x0037977f (15 bytes)
 nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES* cNetGameServer::getQuestPartyBonusListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetQuestPartyBonusListPacket;
+    return mpConnection->mpGetQuestPartyBonusListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5822,25 +5826,25 @@ nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES* cNetGameServer::getQue
 // Address: 0x00379790 - 0x0037979f (15 bytes)
 nUserSession::CPacket_S2C_GACHA_LIST_RES* cNetGameServer::getGachaListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetGachaListPacket;
+    return mpConnection->mpGetGachaListPacket;
 }
 
 // Address: 0x003797a0 - 0x003797af (15 bytes)
 nUserSession::CPacket_S2C_GACHA_BUY_RES* cNetGameServer::getGachaBuyPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetGachaBuyPacket;
+    return mpConnection->mpGetGachaBuyPacket;
 }
 
 // Address: 0x003797b0 - 0x003797bf (15 bytes)
 nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES* cNetGameServer::getBoxGachaListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetBoxGachaListPacket;
+    return mpConnection->mpGetBoxGachaListPacket;
 }
 
 // Address: 0x003797c0 - 0x003797cf (15 bytes)
 nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES* cNetGameServer::getBoxGachaBuyPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetBoxGachaBuyPacket;
+    return mpConnection->mpGetBoxGachaBuyPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5882,25 +5886,25 @@ __attribute__((weak)) void cNetGameServer::clerLightQuestGpComplete() {
 // Address: 0x00379680 - 0x00379693 (19 bytes)
 CPartyQuestProgressInfo& cNetGameServer::getPartyQuestProgressInfoRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPartyQuestProgressInfoPacket->m_PartyQuestProgressInfo;
+    return mpConnection->mpPartyQuestProgressInfoPacket->m_PartyQuestProgressInfo;
 }
 
 // Address: 0x00379810 - 0x0037981f (15 bytes)
 nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES* cNetGameServer::getGetQuestCompleteListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetQuestCompleteListPacket;
+    return mpConnection->mpGetQuestCompleteListPacket;
 }
 
 // Address: 0x00379820 - 0x0037982f (15 bytes)
 nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES* cNetGameServer::getGetSetQuestOpenDateListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetQuestOpenDateListPacket;
+    return mpConnection->mpGetSetQuestOpenDateListPacket;
 }
 
 // Address: 0x003796a0 - 0x003796b3 (19 bytes)
 RewardBoxRecordVec& cNetGameServer::getRewardBoxRecordListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetRewardBoxListPacket->m_RewardBoxRecordList;
+    return mpConnection->mpGetRewardBoxListPacket->m_RewardBoxRecordList;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -5913,31 +5917,31 @@ RewardBoxRecordVec& cNetGameServer::getRewardBoxRecordListRef() {
 // Address: 0x003797f0 - 0x003797ff (15 bytes)
 nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES* cNetGameServer::getCycleContentsRewardListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCycleContentsRewardListPacket;
+    return mpConnection->mpGetCycleContentsRewardListPacket;
 }
 
 // Address: 0x00379800 - 0x0037980f (15 bytes)
 nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES* cNetGameServer::getCycleContentsRewardItemPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCycleContentsRewardItemPacket;
+    return mpConnection->mpGetCycleContentsRewardItemPacket;
 }
 
 // Address: 0x00379880 - 0x0037988f (15 bytes)
 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES* cNetGameServer::getGetCycleContentsRewardPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpCycleContentsRewardPacket;
+    return mpConnection->mpCycleContentsRewardPacket;
 }
 
 // Address: 0x00379840 - 0x0037984f (15 bytes)
 nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES* cNetGameServer::getEndDistributionQuestCancelPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpEndDistributionQuestCancelPacket;
+    return mpConnection->mpEndDistributionQuestCancelPacket;
 }
 
 // Address: 0x00379850 - 0x0037985f (15 bytes)
 nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES* cNetGameServer::getGetPriorityQuestPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPriorityQuestPacket;
+    return mpConnection->mpGetPriorityQuestPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5946,7 +5950,7 @@ nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES* cNetGameServer::getGetPriority
 // Address: 0x00379870 - 0x0037987f (15 bytes)
 nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES* cNetGameServer::getCancelPriorityQuestPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpCancelPriorityQuestPacket;
+    return mpConnection->mpCancelPriorityQuestPacket;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (12 bytes)
@@ -5969,16 +5973,16 @@ bool cNetGameServer::getCycleContentsStateList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[163] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(163));
-    this->mErrorCode[163] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_STATE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[163] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(163));
-                    this->mComTimer[163] = 0.0f;
+    mStatus[163] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(163);
+    mErrorCode[163] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_STATE_LIST_REQ() != 0) {
+                    mStatus[163] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(163);
+                    mComTimer[163] = 0.0f;
                     return true;
                 }
             }
@@ -5994,18 +5998,18 @@ bool cNetGameServer::getCycleContentsStateList() {
 // Address: 0x00350720 - 0x003507cb (171 bytes)
 bool cNetGameServer::getCycleContentsSituationInfoList(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsScheduleId = scheduleId;
-    this->mStatus[164] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(164));
-    this->mErrorCode[164] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    ::sQuestManagerExt::getInstance()->mIsGetCycleContentsInfoList = false;
-                    this->mStatus[164] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(164));
-                    this->mComTimer[164] = 0.0f;
+    mCycleContentsScheduleId = scheduleId;
+    mStatus[164] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(164);
+    mErrorCode[164] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_REQ(mCycleContentsScheduleId) != 0) {
+                    sQuestManagerExt::getInstance()->mIsGetCycleContentsInfoList = false;
+                    mStatus[164] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(164);
+                    mComTimer[164] = 0.0f;
                     return true;
                 }
             }
@@ -6019,16 +6023,16 @@ bool cNetGameServer::playStartCycleContents() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[165] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(165));
-    this->mErrorCode[165] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_START_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[165] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(165));
-                    this->mComTimer[165] = 0.0f;
+    mStatus[165] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(165);
+    mErrorCode[165] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CYCLE_CONTENTS_PLAY_START_REQ(mCycleContentsScheduleId) != 0) {
+                    mStatus[165] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(165);
+                    mComTimer[165] = 0.0f;
                     return true;
                 }
             }
@@ -6047,17 +6051,17 @@ bool cNetGameServer::playStartCycleContents() {
 // Address: 0x00350890 - 0x0035092a (154 bytes)
 bool cNetGameServer::getCycleContentsBorderRewardList(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsScheduleId = scheduleId;
-    this->mStatus[166] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(166));
-    this->mErrorCode[166] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[166] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(166));
-                    this->mComTimer[166] = 0.0f;
+    mCycleContentsScheduleId = scheduleId;
+    mStatus[166] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(166);
+    mErrorCode[166] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_REQ(mCycleContentsScheduleId) != 0) {
+                    mStatus[166] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(166);
+                    mComTimer[166] = 0.0f;
                     return true;
                 }
             }
@@ -6073,17 +6077,17 @@ bool cNetGameServer::getCycleContentsBorderRewardList(u32 scheduleId) {
 // Address: 0x00350940 - 0x003509da (154 bytes)
 bool cNetGameServer::getCycleContentsRankingRewardList(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsScheduleId = scheduleId;
-    this->mStatus[167] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(167));
-    this->mErrorCode[167] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[167] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(167));
-                    this->mComTimer[167] = 0.0f;
+    mCycleContentsScheduleId = scheduleId;
+    mStatus[167] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(167);
+    mErrorCode[167] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_REQ(mCycleContentsScheduleId) != 0) {
+                    mStatus[167] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(167);
+                    mComTimer[167] = 0.0f;
                     return true;
                 }
             }
@@ -6103,16 +6107,16 @@ bool cNetGameServer::startQuestTime() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[196] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(196));
-    this->mErrorCode[196] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_START_TIMER_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[196] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(196));
-                    this->mComTimer[196] = 0.0f;
+    mStatus[196] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(196);
+    mErrorCode[196] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_START_TIMER_REQ() != 0) {
+                    mStatus[196] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(196);
+                    mComTimer[196] = 0.0f;
                     return true;
                 }
             }
@@ -6126,16 +6130,16 @@ bool cNetGameServer::contentsPlayInterrupt() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[197] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(197));
-    this->mErrorCode[197] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[197] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(197));
-                    this->mComTimer[197] = 0.0f;
+    mStatus[197] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(197);
+    mErrorCode[197] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_INTERRUPT_REQ() != 0) {
+                    mStatus[197] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(197);
+                    mComTimer[197] = 0.0f;
                     return true;
                 }
             }
@@ -6151,17 +6155,17 @@ bool cNetGameServer::contentsPlayInterrupt() {
 // Address: 0x00350b20 - 0x00350bbc (156 bytes)
 bool cNetGameServer::contentsPlayInterruptAnswer(b8 isInterrupt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsContentsInterruptAnswer = isInterrupt;
-    this->mStatus[198] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(198));
-    this->mErrorCode[198] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PLAY_INTERRUPT_ANSWER_REQ(this->mIsContentsInterruptAnswer) != static_cast<s32>(0)) {
-                    this->mStatus[198] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(198));
-                    this->mComTimer[198] = 0.0f;
+    mIsContentsInterruptAnswer = isInterrupt;
+    mStatus[198] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(198);
+    mErrorCode[198] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PLAY_INTERRUPT_ANSWER_REQ(mIsContentsInterruptAnswer) != 0) {
+                    mStatus[198] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(198);
+                    mComTimer[198] = 0.0f;
                     return true;
                 }
             }
@@ -6175,16 +6179,16 @@ bool cNetGameServer::cycleContentsPlayEnd() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[199] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(199));
-    this->mErrorCode[199] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CYCLE_CONTENTS_PLAY_END_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[199] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(199));
-                    this->mComTimer[199] = 0.0f;
+    mStatus[199] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(199);
+    mErrorCode[199] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CYCLE_CONTENTS_PLAY_END_REQ() != 0) {
+                    mStatus[199] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(199);
+                    mComTimer[199] = 0.0f;
                     return true;
                 }
             }
@@ -6200,17 +6204,17 @@ bool cNetGameServer::cycleContentsPlayEnd() {
 // Address: 0x00350c70 - 0x00350d0a (154 bytes)
 bool cNetGameServer::getCycleContentsPointList(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsScheduleId = scheduleId;
-    this->mStatus[200] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(200));
-    this->mErrorCode[200] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_POINT_LIST_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[200] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(200));
-                    this->mComTimer[200] = 0.0f;
+    mCycleContentsScheduleId = scheduleId;
+    mStatus[200] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(200);
+    mErrorCode[200] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_POINT_LIST_REQ(mCycleContentsScheduleId) != 0) {
+                    mStatus[200] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(200);
+                    mComTimer[200] = 0.0f;
                     return true;
                 }
             }
@@ -6226,17 +6230,17 @@ bool cNetGameServer::getCycleContentsPointList(u32 scheduleId) {
 // Address: 0x00350d20 - 0x00350dba (154 bytes)
 bool cNetGameServer::getCycleContentsNowPointList(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsScheduleId = scheduleId;
-    this->mStatus[201] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(201));
-    this->mErrorCode[201] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CYCLE_CONTENTS_NOW_POINT_LIST_REQ(this->mCycleContentsScheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[201] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(201));
-                    this->mComTimer[201] = 0.0f;
+    mCycleContentsScheduleId = scheduleId;
+    mStatus[201] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(201);
+    mErrorCode[201] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CYCLE_CONTENTS_NOW_POINT_LIST_REQ(mCycleContentsScheduleId) != 0) {
+                    mStatus[201] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(201);
+                    mComTimer[201] = 0.0f;
                     return true;
                 }
             }
@@ -6270,7 +6274,7 @@ __attribute__((weak)) void cNetGameServer::setQuestContentsSituationInfo(const Q
 // Address: 0x00379890 - 0x0037989f (15 bytes)
 nUserSession::CPacket_S2C_RAID_BOSS_POINT_NOTICE* cNetGameServer::getGetRaidBossPointPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetRaidBossPointPacket;
+    return mpConnection->mpGetRaidBossPointPacket;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -6280,7 +6284,7 @@ nUserSession::CPacket_S2C_RAID_BOSS_POINT_NOTICE* cNetGameServer::getGetRaidBoss
 // Address: 0x003794d0 - 0x003794e3 (19 bytes)
 BorderRewardRecordVec& cNetGameServer::getBorderRewardListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpBorderRewardListPacket->m_BorderRewardRecordList;
+    return mpConnection->mpBorderRewardListPacket->m_BorderRewardRecordList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6289,7 +6293,7 @@ BorderRewardRecordVec& cNetGameServer::getBorderRewardListRef() {
 // Address: 0x003794f0 - 0x00379503 (19 bytes)
 RankingRewardRecordVec& cNetGameServer::getRankingRewardListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpRankingRewardListPacket->m_RankingRewardRecordList;
+    return mpConnection->mpRankingRewardListPacket->m_RankingRewardRecordList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6304,7 +6308,7 @@ RankingRewardRecordVec& cNetGameServer::getRankingRewardListRef() {
 // Address: 0x00379510 - 0x00379523 (19 bytes)
 CQuestPointDetail& cNetGameServer::getCycleContentsPointListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCycleContentsPointListPacket->m_QuestPointDetail;
+    return mpConnection->mpGetCycleContentsPointListPacket->m_QuestPointDetail;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6321,17 +6325,17 @@ CQuestPointDetail& cNetGameServer::getCycleContentsPointListRef() {
 // Address: 0x00350dd0 - 0x00350e6a (154 bytes)
 bool cNetGameServer::getEndContentsGroup(u32 endContentsGroupId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndContentsGroupId = endContentsGroupId;
-    this->mStatus[202] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(202));
-    this->mErrorCode[202] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_END_CONTENTS_GROUP_REQ(this->mEndContentsGroupId) != static_cast<s32>(0)) {
-                    this->mStatus[202] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(202));
-                    this->mComTimer[202] = 0.0f;
+    mEndContentsGroupId = endContentsGroupId;
+    mStatus[202] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(202);
+    mErrorCode[202] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_END_CONTENTS_GROUP_REQ(mEndContentsGroupId) != 0) {
+                    mStatus[202] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(202);
+                    mComTimer[202] = 0.0f;
                     return true;
                 }
             }
@@ -6345,16 +6349,16 @@ bool cNetGameServer::getQuestIdFromscheduleId(u32 scheduleId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[203] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(203));
-    this->mErrorCode[203] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_SCHEDULE_INFO_REQ(scheduleId) != static_cast<s32>(0)) {
-                    this->mStatus[203] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(203));
-                    this->mComTimer[203] = 0.0f;
+    mStatus[203] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(203);
+    mErrorCode[203] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_QUEST_SCHEDULE_INFO_REQ(scheduleId) != 0) {
+                    mStatus[203] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(203);
+                    mComTimer[203] = 0.0f;
                     return true;
                 }
             }
@@ -6398,16 +6402,16 @@ bool cNetGameServer::getStageList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[174] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(174));
-    this->mErrorCode[174] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_STAGE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[174] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(174));
-                    this->mComTimer[174] = 0.0f;
+    mStatus[174] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(174);
+    mErrorCode[174] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_STAGE_LIST_REQ() != 0) {
+                    mStatus[174] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(174);
+                    mComTimer[174] = 0.0f;
                     return true;
                 }
             }
@@ -6429,8 +6433,8 @@ __attribute__((weak)) bool cNetGameServer::areaChange() {
 // Address: 0x003510d0 - 0x003510db (11 bytes)
 bool cNetGameServer::areaChange(u32 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqAreaChangeStageNo = stageNo;
-    return this->::cNetGameServer::areaChange();
+    mReqAreaChangeStageNo = stageNo;
+    return areaChange();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -6527,16 +6531,16 @@ bool cNetGameServer::getPawnVoiceListReq() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[230] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(230));
-    this->mErrorCode[230] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_VOICE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[230] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(230));
-                    this->mComTimer[230] = 0.0f;
+    mStatus[230] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(230);
+    mErrorCode[230] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_EDIT_GET_VOICE_LIST_REQ() != 0) {
+                    mStatus[230] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(230);
+                    mComTimer[230] = 0.0f;
                     return true;
                 }
             }
@@ -6553,16 +6557,16 @@ bool cNetGameServer::getEditSalonInfoReq() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[231] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(231));
-    this->mErrorCode[231] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_EDIT_GET_GP_PRICE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[231] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(231));
-                    this->mComTimer[231] = 0.0f;
+    mStatus[231] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(231);
+    mErrorCode[231] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_EDIT_GET_GP_PRICE_REQ() != 0) {
+                    mStatus[231] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(231);
+                    mComTimer[231] = 0.0f;
                     return true;
                 }
             }
@@ -6601,16 +6605,16 @@ u32 cNetGameServer::convertIdToStageNo(u32 id) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8610 from cNetGameServer*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == id) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 8)) == id) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 12);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)));
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00351090 - 0x003510ca (58 bytes)
@@ -6619,16 +6623,16 @@ u32 cNetGameServer::convertStageNoToId(u32 stageNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8610 from cNetGameServer*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12))) == stageNo) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 12)) == stageNo) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mStageList.getBuffer()[static_cast<int>(i)]) + 8);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 34320)));
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x019d3e10 - 0x019d407d (621 bytes)
@@ -6688,16 +6692,16 @@ bool cNetGameServer::setOmInstantKeyValue(COmData& value) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[182] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(182));
-    this->mErrorCode[182] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_OM_INSTANT_KEY_VALUE_REQ(value) != static_cast<s32>(0)) {
-                    this->mStatus[182] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(182));
-                    this->mComTimer[182] = 0.0f;
+    mStatus[182] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(182);
+    mErrorCode[182] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_OM_INSTANT_KEY_VALUE_REQ(value) != 0) {
+                    mStatus[182] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(182);
+                    mComTimer[182] = 0.0f;
                     return true;
                 }
             }
@@ -6714,16 +6718,16 @@ bool cNetGameServer::getOmInstantKeyValueAll() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[184] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(184));
-    this->mErrorCode[184] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_OM_INSTANT_KEY_VALUE_ALL_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[184] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(184));
-                    this->mComTimer[184] = 0.0f;
+    mStatus[184] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(184);
+    mErrorCode[184] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_OM_INSTANT_KEY_VALUE_ALL_REQ() != 0) {
+                    mStatus[184] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(184);
+                    mComTimer[184] = 0.0f;
                     return true;
                 }
             }
@@ -6737,16 +6741,16 @@ bool cNetGameServer::exchangeOmInstantKeyValue(COmData& value) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[185] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(185));
-    this->mErrorCode[185] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ(value) != static_cast<s32>(0)) {
-                    this->mStatus[185] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(185));
-                    this->mComTimer[185] = 0.0f;
+    mStatus[185] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(185);
+    mErrorCode[185] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ(value) != 0) {
+                    mStatus[185] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(185);
+                    mComTimer[185] = 0.0f;
                     return true;
                 }
             }
@@ -6807,7 +6811,7 @@ __attribute__((weak)) bool cNetGameServer::getDropItem(CDataStageLayoutID SLID, 
 // Address: 0x00379900 - 0x0037990f (15 bytes)
 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES* cNetGameServer::getDropItemListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetDropItemListPacket;
+    return mpConnection->mpGetDropItemListPacket;
 }
 
 // Address: 0x00352cf0 - 0x00352d7e (142 bytes)
@@ -6815,16 +6819,16 @@ bool cNetGameServer::getFurnitureList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[513] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(513));
-    this->mErrorCode[513] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_FURNITURE_LIST_GET_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[513] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(513));
-                    this->mComTimer[513] = 0.0f;
+    mStatus[513] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(513);
+    mErrorCode[513] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_FURNITURE_LIST_GET_REQ() != 0) {
+                    mStatus[513] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(513);
+                    mComTimer[513] = 0.0f;
                     return true;
                 }
             }
@@ -6838,17 +6842,17 @@ bool cNetGameServer::setFurnitureLayout(FurnitureLayoutDataVec& vec) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[514] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(514));
-    this->mErrorCode[514] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (vec.::MtArray::mLength != static_cast<u32>(0)) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_FURNITURE_LAYOUT_REQ(vec) != static_cast<s32>(0)) {
-                        this->mStatus[514] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(514));
-                        this->mComTimer[514] = 0.0f;
+    mStatus[514] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(514);
+    mErrorCode[514] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (vec.mLength != 0) {
+                    if (mpConnection->Send_C2S_FURNITURE_LAYOUT_REQ(vec) != 0) {
+                        mStatus[514] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(514);
+                        mComTimer[514] = 0.0f;
                         return true;
                     }
                 }
@@ -6863,16 +6867,16 @@ bool cNetGameServer::getTrainingRoomEnemyList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[194] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(194));
-    this->mErrorCode[194] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_TRANING_ROOM_GET_ENEMY_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[194] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(194));
-                    this->mComTimer[194] = 0.0f;
+    mStatus[194] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(194);
+    mErrorCode[194] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_TRANING_ROOM_GET_ENEMY_LIST_REQ() != 0) {
+                    mStatus[194] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(194);
+                    mComTimer[194] = 0.0f;
                     return true;
                 }
             }
@@ -6886,16 +6890,16 @@ bool cNetGameServer::setTrainingRoomEnemy(u32 id, u32 level) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[195] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(195));
-    this->mErrorCode[195] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_TRANING_ROOM_SET_ENEMY_REQ(id, level) != static_cast<s32>(0)) {
-                    this->mStatus[195] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(195));
-                    this->mComTimer[195] = 0.0f;
+    mStatus[195] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(195);
+    mErrorCode[195] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_TRANING_ROOM_SET_ENEMY_REQ(id, level) != 0) {
+                    mStatus[195] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(195);
+                    mComTimer[195] = 0.0f;
                     return true;
                 }
             }
@@ -6907,7 +6911,7 @@ bool cNetGameServer::setTrainingRoomEnemy(u32 id, u32 level) {
 // Address: 0x00379910 - 0x0037991f (15 bytes)
 nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES* cNetGameServer::getTrainingRoomGetEnemyList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpTrainingRoomGetEnemyList;
+    return mpConnection->mpTrainingRoomGetEnemyList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6918,16 +6922,16 @@ bool cNetGameServer::getCogId() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[210] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(210));
-    this->mErrorCode[210] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_COG_GET_ID_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[210] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(210));
-                    this->mComTimer[210] = 0.0f;
+    mStatus[210] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(210);
+    mErrorCode[210] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_COG_GET_ID_REQ() != 0) {
+                    mStatus[210] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(210);
+                    mComTimer[210] = 0.0f;
                     return true;
                 }
             }
@@ -6941,16 +6945,16 @@ bool cNetGameServer::getGP() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[204] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(204));
-    this->mErrorCode[204] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_GP_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[204] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(204));
-                    this->mComTimer[204] = 0.0f;
+    mStatus[204] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(204);
+    mErrorCode[204] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_GP_REQ() != 0) {
+                    mStatus[204] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(204);
+                    mComTimer[204] = 0.0f;
                     return true;
                 }
             }
@@ -6964,16 +6968,16 @@ bool cNetGameServer::getCAP() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[207] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(207));
-    this->mErrorCode[207] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CAP_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[207] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(207));
-                    this->mComTimer[207] = 0.0f;
+    mStatus[207] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(207);
+    mErrorCode[207] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CAP_REQ() != 0) {
+                    mStatus[207] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(207);
+                    mComTimer[207] = 0.0f;
                     return true;
                 }
             }
@@ -6990,16 +6994,16 @@ bool cNetGameServer::changeCAPToGP() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[208] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(208));
-    this->mErrorCode[208] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CAP_TO_GP_CHANGE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[208] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(208));
-                    this->mComTimer[208] = 0.0f;
+    mStatus[208] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(208);
+    mErrorCode[208] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CAP_TO_GP_CHANGE_LIST_REQ() != 0) {
+                    mStatus[208] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(208);
+                    mComTimer[208] = 0.0f;
                     return true;
                 }
             }
@@ -7013,17 +7017,17 @@ bool cNetGameServer::changeCAPToGP(u32 listId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqChangeCAPToGPListId = listId;
-    this->mStatus[209] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(209));
-    this->mErrorCode[209] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_CAP_TO_GP_REQ(this->mReqChangeCAPToGPListId) != static_cast<s32>(0)) {
-                    this->mStatus[209] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(209));
-                    this->mComTimer[209] = 0.0f;
+    mReqChangeCAPToGPListId = listId;
+    mStatus[209] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(209);
+    mErrorCode[209] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_CAP_TO_GP_REQ(mReqChangeCAPToGPListId) != 0) {
+                    mStatus[209] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(209);
+                    mComTimer[209] = 0.0f;
                     return true;
                 }
             }
@@ -7046,16 +7050,16 @@ bool cNetGameServer::getGPAvailableList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[217] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(217));
-    this->mErrorCode[217] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_AVAILABLE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[217] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(217));
-                    this->mComTimer[217] = 0.0f;
+    mStatus[217] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(217);
+    mErrorCode[217] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_COURSE_GET_AVAILABLE_LIST_REQ() != 0) {
+                    mStatus[217] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(217);
+                    mComTimer[217] = 0.0f;
                     return true;
                 }
             }
@@ -7069,16 +7073,16 @@ bool cNetGameServer::getGPUseAvailableItem(const u32 in_AvailableId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[218] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(218));
-    this->mErrorCode[218] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_COURSE_USE_FROM_AVAILABLE_REQ(in_AvailableId) != static_cast<s32>(0)) {
-                    this->mStatus[218] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(218));
-                    this->mComTimer[218] = 0.0f;
+    mStatus[218] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(218);
+    mErrorCode[218] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_COURSE_USE_FROM_AVAILABLE_REQ(in_AvailableId) != 0) {
+                    mStatus[218] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(218);
+                    mComTimer[218] = 0.0f;
                     return true;
                 }
             }
@@ -7092,16 +7096,16 @@ bool cNetGameServer::getGPValidList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[219] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(219));
-    this->mErrorCode[219] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_COURSE_GET_VALID_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[219] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(219));
-                    this->mComTimer[219] = 0.0f;
+    mStatus[219] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(219);
+    mErrorCode[219] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_COURSE_GET_VALID_LIST_REQ() != 0) {
+                    mStatus[219] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(219);
+                    mComTimer[219] = 0.0f;
                     return true;
                 }
             }
@@ -7115,16 +7119,16 @@ bool cNetGameServer::getGPBuyHistory() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[220] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(220));
-    this->mErrorCode[220] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_BUY_HISTORY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[220] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(220));
-                    this->mComTimer[220] = 0.0f;
+    mStatus[220] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(220);
+    mErrorCode[220] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_GET_BUY_HISTORY_REQ() != 0) {
+                    mStatus[220] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(220);
+                    mComTimer[220] = 0.0f;
                     return true;
                 }
             }
@@ -7138,16 +7142,16 @@ bool cNetGameServer::getCAPChargeURL() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[221] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(221));
-    this->mErrorCode[221] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_GET_CAP_CHARGE_URL_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[221] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(221));
-                    this->mComTimer[221] = 0.0f;
+    mStatus[221] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(221);
+    mErrorCode[221] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_GET_CAP_CHARGE_URL_REQ() != 0) {
+                    mStatus[221] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(221);
+                    mComTimer[221] = 0.0f;
                     return true;
                 }
             }
@@ -7164,16 +7168,16 @@ bool cNetGameServer::getGPDetailHistory(bool IsAllHistory) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[205] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(205));
-    this->mErrorCode[205] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_GP_DETAIL_REQ(IsAllHistory) != static_cast<s32>(0)) {
-                    this->mStatus[205] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(205));
-                    this->mComTimer[205] = 0.0f;
+    mStatus[205] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(205);
+    mErrorCode[205] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_GP_DETAIL_REQ(IsAllHistory) != 0) {
+                    mStatus[205] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(205);
+                    mComTimer[205] = 0.0f;
                     return true;
                 }
             }
@@ -7187,16 +7191,16 @@ bool cNetGameServer::getGPPeriod() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[206] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(206));
-    this->mErrorCode[206] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_GP_PERIOD_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[206] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(206));
-                    this->mComTimer[206] = 0.0f;
+    mStatus[206] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(206);
+    mErrorCode[206] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_GP_PERIOD_REQ() != 0) {
+                    mStatus[206] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(206);
+                    mComTimer[206] = 0.0f;
                     return true;
                 }
             }
@@ -7210,16 +7214,16 @@ bool cNetGameServer::getGPShopMenuList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[222] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(222));
-    this->mErrorCode[222] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_TYPE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[222] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(222));
-                    this->mComTimer[222] = 0.0f;
+    mStatus[222] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(222);
+    mErrorCode[222] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_DISPLAY_GET_TYPE_REQ() != 0) {
+                    mStatus[222] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(222);
+                    mComTimer[222] = 0.0f;
                     return true;
                 }
             }
@@ -7233,16 +7237,16 @@ bool cNetGameServer::getGPShopLineup(u32 DisplayID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[223] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(223));
-    this->mErrorCode[223] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_GET_LINEUP_REQ(DisplayID) != static_cast<s32>(0)) {
-                    this->mStatus[223] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(223));
-                    this->mComTimer[223] = 0.0f;
+    mStatus[223] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(223);
+    mErrorCode[223] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_DISPLAY_GET_LINEUP_REQ(DisplayID) != 0) {
+                    mStatus[223] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(223);
+                    mComTimer[223] = 0.0f;
                     return true;
                 }
             }
@@ -7256,16 +7260,16 @@ bool cNetGameServer::reqGPShopBuyItem(u32 DisplayLineupID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[224] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(224));
-    this->mErrorCode[224] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_DISPLAY_BUY_REQ(DisplayLineupID) != static_cast<s32>(0)) {
-                    this->mStatus[224] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(224));
-                    this->mComTimer[224] = 0.0f;
+    mStatus[224] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(224);
+    mErrorCode[224] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_DISPLAY_BUY_REQ(DisplayLineupID) != 0) {
+                    mStatus[224] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(224);
+                    mComTimer[224] = 0.0f;
                     return true;
                 }
             }
@@ -7285,16 +7289,16 @@ bool cNetGameServer::getGPShopCanBuyPawn(u32 LineupId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[232] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(232));
-    this->mErrorCode[232] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_REQ(LineupId) != static_cast<s32>(0)) {
-                    this->mStatus[232] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(232));
-                    this->mComTimer[232] = 0.0f;
+    mStatus[232] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(232);
+    mErrorCode[232] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_CAN_BUY_PAWN_REQ(LineupId) != 0) {
+                    mStatus[232] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(232);
+                    mComTimer[232] = 0.0f;
                     return true;
                 }
             }
@@ -7308,16 +7312,16 @@ bool cNetGameServer::getGPShopCanBuyPawnVoice(u32 LineupId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[233] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(233));
-    this->mErrorCode[233] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GP_SHOP_CAN_BUY_PAWN_VOICE_REQ(LineupId) != static_cast<s32>(0)) {
-                    this->mStatus[233] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(233));
-                    this->mComTimer[233] = 0.0f;
+    mStatus[233] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(233);
+    mErrorCode[233] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GP_SHOP_CAN_BUY_PAWN_VOICE_REQ(LineupId) != 0) {
+                    mStatus[233] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(233);
+                    mComTimer[233] = 0.0f;
                     return true;
                 }
             }
@@ -7350,13 +7354,13 @@ bool cNetGameServer::getGPShopCanBuyPawnVoice(u32 LineupId) {
 // Address: 0x00379920 - 0x0037992f (15 bytes)
 nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES* cNetGameServer::getGetCAPToGPChangeListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCAPToGPChangeListPacket;
+    return mpConnection->mpGetCAPToGPChangeListPacket;
 }
 
 // Address: 0x00379930 - 0x0037993f (15 bytes)
 nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES* cNetGameServer::getChangeCAPToGPPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpChangeCAPToGPPacket;
+    return mpConnection->mpChangeCAPToGPPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7365,59 +7369,59 @@ nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES* cNetGameServer::getChangeCAPToGP
 // Address: 0x00379950 - 0x0037995f (15 bytes)
 nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES* cNetGameServer::getGPShopCourseAvailableListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopCourseAvailableListPacket;
+    return mpConnection->mpGPShopCourseAvailableListPacket;
 }
 
 // Address: 0x00379960 - 0x0037996f (15 bytes)
 nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES* cNetGameServer::getGPShopCourseValidListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopCourseValidListPacket;
+    return mpConnection->mpGPShopCourseValidListPacket;
 }
 
 // Address: 0x00379970 - 0x0037997f (15 bytes)
 nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES* cNetGameServer::getGPShopBuyHistoryPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopBuyHistoryPacket;
+    return mpConnection->mpGPShopBuyHistoryPacket;
 }
 
 // Address: 0x00379980 - 0x0037998f (15 bytes)
 nUserSession::CPacket_S2C_GET_GP_DETAIL_RES* cNetGameServer::getGPDetailHistoryPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPGetDetailHistoryPacket;
+    return mpConnection->mpGPGetDetailHistoryPacket;
 }
 
 // Address: 0x00379990 - 0x0037999f (15 bytes)
 nUserSession::CPacket_S2C_GET_GP_PERIOD_RES* cNetGameServer::getGPPeriodPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPGetPeriodPacket;
+    return mpConnection->mpGPGetPeriodPacket;
 }
 
 // Address: 0x003799a0 - 0x003799db (59 bytes)
 void cNetGameServer::releaseGPPeriodPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection->mpGPGetPeriodPacket == static_cast<nUserSession::CPacket_S2C_GET_GP_PERIOD_RES*>(nullptr)) {
+    if (mpConnection->mpGPGetPeriodPacket == nullptr) {
         return;
     }
-    delete this->mpConnection->mpGPGetPeriodPacket;
-    this->mpConnection->mpGPGetPeriodPacket = static_cast<nUserSession::CPacket_S2C_GET_GP_PERIOD_RES*>(nullptr);
+    delete mpConnection->mpGPGetPeriodPacket;
+    mpConnection->mpGPGetPeriodPacket = nullptr;
 }
 
 // Address: 0x003799e0 - 0x003799ef (15 bytes)
 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES* cNetGameServer::getGPShopMenuListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopMenuList;
+    return mpConnection->mpGPShopMenuList;
 }
 
 // Address: 0x003799f0 - 0x003799ff (15 bytes)
 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES* cNetGameServer::getGPShopLineupPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopLineup;
+    return mpConnection->mpGPShopLineup;
 }
 
 // Address: 0x00379a00 - 0x00379a0f (15 bytes)
 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES* cNetGameServer::getGPShopBuyRecievePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGPShopBuyRecieve;
+    return mpConnection->mpGPShopBuyRecieve;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7431,16 +7435,16 @@ bool cNetGameServer::getCraftProgressList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[249] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(249));
-    this->mErrorCode[249] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CRAFT_PROGRESS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[249] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(249));
-                    this->mComTimer[249] = 0.0f;
+    mStatus[249] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(249);
+    mErrorCode[249] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CRAFT_PROGRESS_LIST_REQ() != 0) {
+                    mStatus[249] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(249);
+                    mComTimer[249] = 0.0f;
                     return true;
                 }
             }
@@ -7450,11 +7454,26 @@ bool cNetGameServer::getCraftProgressList() {
 }
 
 // Address: 0x00353a70 - 0x00353b40 (208 bytes)
-__attribute__((weak)) bool cNetGameServer::startCraft(u32 recipeId, CraftMaterialVec& craftMaterialList, MT_CTSTR toppingUId, u32 craftMainPawnId, CraftSupportPawnIDVec& craftSupportPawnIdList, u8 createCount) {
-    // local: bool ret;
-    // local: bool ret;
-    DDON_STUB("cNetGameServer::startCraft")
-    return {};
+bool cNetGameServer::startCraft(u32 recipeId, CraftMaterialVec& craftMaterialList, MT_CTSTR toppingUId, u32 craftMainPawnId, CraftSupportPawnIDVec& craftSupportPawnIdList, u8 createCount) {
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mStatus[251] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(251);
+    mErrorCode[251] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_START_CRAFT_REQ(recipeId, craftMaterialList, toppingUId, craftMainPawnId, craftSupportPawnIdList, createCount) != 0) {
+                    mStatus[251] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::mpInstance)->cancelReserveNetworkErrorDialog(251);
+                    mComTimer[251] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00353b40 - 0x00353be5 (165 bytes)
@@ -7462,16 +7481,16 @@ bool cNetGameServer::getCraftProductInfo(u32 craftMainPawnId, u8 debugFlag) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[252] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(252));
-    this->mErrorCode[252] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CRAFT_PRODUCT_INFO_REQ(craftMainPawnId, debugFlag) != static_cast<s32>(0)) {
-                    this->mStatus[252] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(252));
-                    this->mComTimer[252] = 0.0f;
+    mStatus[252] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(252);
+    mErrorCode[252] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CRAFT_PRODUCT_INFO_REQ(craftMainPawnId, debugFlag) != 0) {
+                    mStatus[252] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(252);
+                    mComTimer[252] = 0.0f;
                     return true;
                 }
             }
@@ -7493,16 +7512,16 @@ bool cNetGameServer::cancelCraft(u32 craftMainPawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[254] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(254));
-    this->mErrorCode[254] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CANCEL_CRAFT_REQ(craftMainPawnId) != static_cast<s32>(0)) {
-                    this->mStatus[254] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(254));
-                    this->mComTimer[254] = 0.0f;
+    mStatus[254] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(254);
+    mErrorCode[254] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CANCEL_CRAFT_REQ(craftMainPawnId) != 0) {
+                    mStatus[254] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(254);
+                    mComTimer[254] = 0.0f;
                     return true;
                 }
             }
@@ -7516,16 +7535,16 @@ bool cNetGameServer::startEquipGradeUp(MT_CTSTR equipItemUId, CraftMaterialVec& 
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[255] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(255));
-    this->mErrorCode[255] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_START_EQUIP_GRADE_UP_REQ(equipItemUId, craftMaterialList, craftMainPawnId, craftSupportPawnIdList) != static_cast<s32>(0)) {
-                    this->mStatus[255] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(255));
-                    this->mComTimer[255] = 0.0f;
+    mStatus[255] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(255);
+    mErrorCode[255] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_START_EQUIP_GRADE_UP_REQ(equipItemUId, craftMaterialList, craftMainPawnId, craftSupportPawnIdList) != 0) {
+                    mStatus[255] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::mpInstance)->cancelReserveNetworkErrorDialog(255);
+                    mComTimer[255] = 0.0f;
                     return true;
                 }
             }
@@ -7539,16 +7558,16 @@ bool cNetGameServer::startAttachElement(MT_CTSTR equipItemUId, CraftElementVec& 
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[256] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(256));
-    this->mErrorCode[256] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_START_ATTACH_ELEMENT_REQ(equipItemUId, craftElementList, craftMainPawnId, craftSupportPawnIdList) != static_cast<s32>(0)) {
-                    this->mStatus[256] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(256));
-                    this->mComTimer[256] = 0.0f;
+    mStatus[256] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(256);
+    mErrorCode[256] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_START_ATTACH_ELEMENT_REQ(equipItemUId, craftElementList, craftMainPawnId, craftSupportPawnIdList) != 0) {
+                    mStatus[256] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::mpInstance)->cancelReserveNetworkErrorDialog(256);
+                    mComTimer[256] = 0.0f;
                     return true;
                 }
             }
@@ -7562,16 +7581,16 @@ bool cNetGameServer::startDetachElement(MT_CTSTR equipItemUId, CraftElementVec& 
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[257] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(257));
-    this->mErrorCode[257] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_START_DETACH_ELEMENT_REQ(equipItemUId, craftElementList, craftMainPawnId, craftSupportPawnIdList) != static_cast<s32>(0)) {
-                    this->mStatus[257] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(257));
-                    this->mComTimer[257] = 0.0f;
+    mStatus[257] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(257);
+    mErrorCode[257] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_START_DETACH_ELEMENT_REQ(equipItemUId, craftElementList, craftMainPawnId, craftSupportPawnIdList) != 0) {
+                    mStatus[257] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::mpInstance)->cancelReserveNetworkErrorDialog(257);
+                    mComTimer[257] = 0.0f;
                     return true;
                 }
             }
@@ -7585,16 +7604,16 @@ bool cNetGameServer::startEquipColorChange(MT_CTSTR equipItemUId, u8 color, Craf
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[258] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(258));
-    this->mErrorCode[258] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_START_EQUIP_COLOR_CHANGE_REQ(equipItemUId, color, craftColorantList, craftMainPawnId, craftSupportPawnIdList) != static_cast<s32>(0)) {
-                    this->mStatus[258] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(258));
-                    this->mComTimer[258] = 0.0f;
+    mStatus[258] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(258);
+    mErrorCode[258] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_START_EQUIP_COLOR_CHANGE_REQ(equipItemUId, color, craftColorantList, craftMainPawnId, craftSupportPawnIdList) != 0) {
+                    mStatus[258] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::mpInstance)->cancelReserveNetworkErrorDialog(258);
+                    mComTimer[258] = 0.0f;
                     return true;
                 }
             }
@@ -7616,16 +7635,16 @@ bool cNetGameServer::getCraftSetting() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[508] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(508));
-    this->mErrorCode[508] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CRAFT_SETTING_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[508] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(508));
-                    this->mComTimer[508] = 0.0f;
+    mStatus[508] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(508);
+    mErrorCode[508] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CRAFT_SETTING_REQ() != 0) {
+                    mStatus[508] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(508);
+                    mComTimer[508] = 0.0f;
                     return true;
                 }
             }
@@ -7647,16 +7666,16 @@ bool cNetGameServer::getCraftIrReductionDataList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[511] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(511));
-    this->mErrorCode[511] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CRAFT_IR_COLLECTION_VALUE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[511] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(511));
-                    this->mComTimer[511] = 0.0f;
+    mStatus[511] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(511);
+    mErrorCode[511] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CRAFT_IR_COLLECTION_VALUE_LIST_REQ() != 0) {
+                    mStatus[511] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(511);
+                    mComTimer[511] = 0.0f;
                     return true;
                 }
             }
@@ -7694,16 +7713,16 @@ bool cNetGameServer::getLockedEquipElementList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[539] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(539));
-    this->mErrorCode[539] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CRAFT_LOCKED_ELEMENT_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[539] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(539));
-                    this->mComTimer[539] = 0.0f;
+    mStatus[539] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(539);
+    mErrorCode[539] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CRAFT_LOCKED_ELEMENT_LIST_REQ() != 0) {
+                    mStatus[539] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(539);
+                    mComTimer[539] = 0.0f;
                     return true;
                 }
             }
@@ -7723,37 +7742,37 @@ __attribute__((weak)) bool cNetGameServer::reqCraftSkillAnalyze(nCraft::E_CRAFT_
 // Address: 0x003798a0 - 0x003798af (15 bytes)
 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES* cNetGameServer::getGetCraftProgressListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCraftProgressListPacket;
+    return mpConnection->mpGetCraftProgressListPacket;
 }
 
 // Address: 0x003798b0 - 0x003798bf (15 bytes)
 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES* cNetGameServer::getGetCraftProductInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCraftProductInfoPacket;
+    return mpConnection->mpGetCraftProductInfoPacket;
 }
 
 // Address: 0x003798c0 - 0x003798cf (15 bytes)
 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES* cNetGameServer::getGetCraftProductPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCraftProductPacket;
+    return mpConnection->mpGetCraftProductPacket;
 }
 
 // Address: 0x003798d0 - 0x003798df (15 bytes)
 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES* cNetGameServer::getCraftSettingPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCraftSettingPacket;
+    return mpConnection->mpGetCraftSettingPacket;
 }
 
 // Address: 0x003798e0 - 0x003798ef (15 bytes)
 nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES* cNetGameServer::getCraftSkillAnalizePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpCraftSkillAnalizePacket;
+    return mpConnection->mpCraftSkillAnalizePacket;
 }
 
 // Address: 0x003798f0 - 0x003798ff (15 bytes)
 nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES* cNetGameServer::getCraftLockedElementListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetCraftLockedElementListPacket;
+    return mpConnection->mpGetCraftLockedElementListPacket;
 }
 
 // Address: 0x0037b840 - 0x0037b932 (242 bytes)
@@ -7797,16 +7816,16 @@ bool cNetGameServer::releaseWarpPoint(u32 pointId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[260] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(260));
-    this->mErrorCode[260] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RELEASE_WARP_POINT_REQ(pointId) != static_cast<s32>(0)) {
-                    this->mStatus[260] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(260));
-                    this->mComTimer[260] = 0.0f;
+    mStatus[260] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(260);
+    mErrorCode[260] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RELEASE_WARP_POINT_REQ(pointId) != 0) {
+                    mStatus[260] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(260);
+                    mComTimer[260] = 0.0f;
                     return true;
                 }
             }
@@ -7820,16 +7839,16 @@ bool cNetGameServer::getWarpPointList(u32 pointId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[261] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(261));
-    this->mErrorCode[261] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_WARP_POINT_LIST_REQ(pointId) != static_cast<s32>(0)) {
-                    this->mStatus[261] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(261));
-                    this->mComTimer[261] = 0.0f;
+    mStatus[261] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(261);
+    mErrorCode[261] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_WARP_POINT_LIST_REQ(pointId) != 0) {
+                    mStatus[261] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(261);
+                    mComTimer[261] = 0.0f;
                     return true;
                 }
             }
@@ -7843,16 +7862,16 @@ bool cNetGameServer::getReleaseWarpPointList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[262] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(262));
-    this->mErrorCode[262] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RELEASE_WARP_POINT_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[262] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(262));
-                    this->mComTimer[262] = 0.0f;
+    mStatus[262] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(262);
+    mErrorCode[262] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RELEASE_WARP_POINT_LIST_REQ() != 0) {
+                    mStatus[262] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(262);
+                    mComTimer[262] = 0.0f;
                     return true;
                 }
             }
@@ -7874,28 +7893,28 @@ bool cNetGameServer::getFavoriteWarpPointList(u32 areaId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mStatus[264] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(264));
-    this->mErrorCode[264] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (areaId == static_cast<u32>(0)) {
+    mStatus[264] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(264);
+    mErrorCode[264] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (areaId == 0) {
                     // inferred: a temporary for the result of the call at 0x3553c4, used once; no DWARF local holds it
-                    u32 t0 = ::sGame::getInstance()->::sGame::getArea(static_cast<MtVector3*>(nullptr));
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ(t0) != static_cast<s32>(0)) {
-                        this->mStatus[264] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(264));
-                        this->mComTimer[264] = 0.0f;
+                    u32 t0 = sGame::getInstance()->getArea(static_cast<MtVector3*>(nullptr));
+                    if (mpConnection->Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ(t0) != 0) {
+                        mStatus[264] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(264);
+                        mComTimer[264] = 0.0f;
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ(areaId) != static_cast<s32>(0)) {
-                        this->mStatus[264] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(264));
-                        this->mComTimer[264] = 0.0f;
+                    if (mpConnection->Send_C2S_GET_FAVORITE_WARP_POINT_LIST_REQ(areaId) != 0) {
+                        mStatus[264] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(264);
+                        mComTimer[264] = 0.0f;
                         return true;
                     } else {
                         return false;
@@ -7920,16 +7939,16 @@ bool cNetGameServer::registerFavoriteWarp(u32 slotNo, u32 pointId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[266] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(266));
-    this->mErrorCode[266] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_WARP_REQ(slotNo, pointId) != static_cast<s32>(0)) {
-                    this->mStatus[266] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(266));
-                    this->mComTimer[266] = 0.0f;
+    mStatus[266] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(266);
+    mErrorCode[266] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REGISTER_FAVORITE_WARP_REQ(slotNo, pointId) != 0) {
+                    mStatus[266] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(266);
+                    mComTimer[266] = 0.0f;
                     return true;
                 }
             }
@@ -7943,16 +7962,16 @@ bool cNetGameServer::partyWarp() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[267] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(267));
-    this->mErrorCode[267] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_WARP_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[267] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(267));
-                    this->mComTimer[267] = 0.0f;
+    mStatus[267] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(267);
+    mErrorCode[267] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTY_WARP_REQ() != 0) {
+                    mStatus[267] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(267);
+                    mComTimer[267] = 0.0f;
                     return true;
                 }
             }
@@ -7966,17 +7985,17 @@ bool cNetGameServer::getAreaWarpPointList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[268] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(268));
-    this->mErrorCode[268] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                const u32 areaId = ::sGame::getInstance()->::sGame::getArea(static_cast<MtVector3*>(nullptr));
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_WARP_POINT_LIST_REQ(areaId) != static_cast<s32>(0)) {
-                    this->mStatus[268] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(268));
-                    this->mComTimer[268] = 0.0f;
+    mStatus[268] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(268);
+    mErrorCode[268] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                const u32 areaId = sGame::getInstance()->getArea(static_cast<MtVector3*>(nullptr));
+                if (mpConnection->Send_C2S_GET_AREA_WARP_POINT_LIST_REQ(areaId) != 0) {
+                    mStatus[268] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(268);
+                    mComTimer[268] = 0.0f;
                     return true;
                 } else {
                     return false;
@@ -8004,10 +8023,10 @@ __attribute__((weak)) bool cNetGameServer::areaWarp(u32 pointId, u32 price) {
 // Address: 0x00355820 - 0x00355857 (55 bytes)
 bool cNetGameServer::warpEndNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_WARP_END_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_WARP_END_NTC() != 0;
             }
         }
     }
@@ -8017,19 +8036,19 @@ bool cNetGameServer::warpEndNotice() {
 // Address: 0x00379a30 - 0x00379a3f (15 bytes)
 nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES* cNetGameServer::getGetWarpPointListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetWarpPointListPacket;
+    return mpConnection->mpGetWarpPointListPacket;
 }
 
 // Address: 0x00379a40 - 0x00379a4f (15 bytes)
 nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES* cNetGameServer::getGetFavoriteWarpPointListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetFavoriteWarpPointListPacket;
+    return mpConnection->mpGetFavoriteWarpPointListPacket;
 }
 
 // Address: 0x00379a50 - 0x00379a5f (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES* cNetGameServer::getGetAreaWarpPointListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaWarpPointListPacket;
+    return mpConnection->mpGetAreaWarpPointListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8040,16 +8059,16 @@ bool cNetGameServer::getAcquirableSkillList(u8 job) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[318] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(318));
-    this->mErrorCode[318] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_SKILL_LIST_REQ(job) != static_cast<s32>(0)) {
-                    this->mStatus[318] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(318));
-                    this->mComTimer[318] = 0.0f;
+    mStatus[318] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(318);
+    mErrorCode[318] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_ACQUIRABLE_SKILL_LIST_REQ(job) != 0) {
+                    mStatus[318] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(318);
+                    mComTimer[318] = 0.0f;
                     return true;
                 }
             }
@@ -8063,16 +8082,16 @@ bool cNetGameServer::getAcquirableAbilityList(u8 job) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[319] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(319));
-    this->mErrorCode[319] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_ACQUIRABLE_ABILITY_LIST_REQ(job) != static_cast<s32>(0)) {
-                    this->mStatus[319] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(319));
-                    this->mComTimer[319] = 0.0f;
+    mStatus[319] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(319);
+    mErrorCode[319] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_ACQUIRABLE_ABILITY_LIST_REQ(job) != 0) {
+                    mStatus[319] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(319);
+                    mComTimer[319] = 0.0f;
                     return true;
                 }
             }
@@ -8086,16 +8105,16 @@ bool cNetGameServer::learnNormalSkill(u8 job, u8 type, u32 skillID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[320] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(320));
-    this->mErrorCode[320] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LEARN_NORMAL_SKILL_REQ(job, skillID) != static_cast<s32>(0)) {
-                    this->mStatus[320] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(320));
-                    this->mComTimer[320] = 0.0f;
+    mStatus[320] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(320);
+    mErrorCode[320] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LEARN_NORMAL_SKILL_REQ(job, skillID) != 0) {
+                    mStatus[320] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(320);
+                    mComTimer[320] = 0.0f;
                     return true;
                 }
             }
@@ -8149,16 +8168,16 @@ bool cNetGameServer::getLearnedNormalSkillList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[326] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(326));
-    this->mErrorCode[326] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LEARNED_NORMAL_SKILL_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[326] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(326));
-                    this->mComTimer[326] = 0.0f;
+    mStatus[326] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(326);
+    mErrorCode[326] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LEARNED_NORMAL_SKILL_LIST_REQ() != 0) {
+                    mStatus[326] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(326);
+                    mComTimer[326] = 0.0f;
                     return true;
                 }
             }
@@ -8172,16 +8191,16 @@ bool cNetGameServer::getLearnedSkillList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[327] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(327));
-    this->mErrorCode[327] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LEARNED_SKILL_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[327] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(327));
-                    this->mComTimer[327] = 0.0f;
+    mStatus[327] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(327);
+    mErrorCode[327] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LEARNED_SKILL_LIST_REQ() != 0) {
+                    mStatus[327] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(327);
+                    mComTimer[327] = 0.0f;
                     return true;
                 }
             }
@@ -8195,16 +8214,16 @@ bool cNetGameServer::getLearnedAbilityList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[328] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(328));
-    this->mErrorCode[328] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LEARNED_ABILITY_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[328] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(328));
-                    this->mComTimer[328] = 0.0f;
+    mStatus[328] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(328);
+    mErrorCode[328] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LEARNED_ABILITY_LIST_REQ() != 0) {
+                    mStatus[328] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(328);
+                    mComTimer[328] = 0.0f;
                     return true;
                 }
             }
@@ -8218,16 +8237,16 @@ bool cNetGameServer::getPawnLearnedNormalSkillList(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[329] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(329));
-    this->mErrorCode[329] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[329] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(329));
-                    this->mComTimer[329] = 0.0f;
+    mStatus[329] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(329);
+    mErrorCode[329] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_REQ(pawnId) != 0) {
+                    mStatus[329] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(329);
+                    mComTimer[329] = 0.0f;
                     return true;
                 }
             }
@@ -8241,16 +8260,16 @@ bool cNetGameServer::getPawnLearnedSkillList(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[330] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(330));
-    this->mErrorCode[330] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_SKILL_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[330] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(330));
-                    this->mComTimer[330] = 0.0f;
+    mStatus[330] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(330);
+    mErrorCode[330] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_LEARNED_SKILL_LIST_REQ(pawnId) != 0) {
+                    mStatus[330] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(330);
+                    mComTimer[330] = 0.0f;
                     return true;
                 }
             }
@@ -8264,16 +8283,16 @@ bool cNetGameServer::getPawnLearnedAbilityList(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[331] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(331));
-    this->mErrorCode[331] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_LEARNED_ABILITY_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[331] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(331));
-                    this->mComTimer[331] = 0.0f;
+    mStatus[331] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(331);
+    mErrorCode[331] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_LEARNED_ABILITY_LIST_REQ(pawnId) != 0) {
+                    mStatus[331] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(331);
+                    mComTimer[331] = 0.0f;
                     return true;
                 }
             }
@@ -8319,16 +8338,16 @@ bool cNetGameServer::setOffSkill(u8 job, u8 slotNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[336] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(336));
-    this->mErrorCode[336] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_OFF_SKILL_REQ(job, slotNo) != static_cast<s32>(0)) {
-                    this->mStatus[336] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(336));
-                    this->mComTimer[336] = 0.0f;
+    mStatus[336] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(336);
+    mErrorCode[336] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_OFF_SKILL_REQ(job, slotNo) != 0) {
+                    mStatus[336] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(336);
+                    mComTimer[336] = 0.0f;
                     return true;
                 }
             }
@@ -8342,16 +8361,16 @@ bool cNetGameServer::setOffAbility(u8 slotNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[337] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(337));
-    this->mErrorCode[337] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_OFF_ABILITY_REQ(slotNo) != static_cast<s32>(0)) {
-                    this->mStatus[337] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(337));
-                    this->mComTimer[337] = 0.0f;
+    mStatus[337] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(337);
+    mErrorCode[337] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_OFF_ABILITY_REQ(slotNo) != 0) {
+                    mStatus[337] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(337);
+                    mComTimer[337] = 0.0f;
                     return true;
                 }
             }
@@ -8373,16 +8392,16 @@ bool cNetGameServer::setOffPawnAbility(u32 pawnId, u8 slotNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[339] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(339));
-    this->mErrorCode[339] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_OFF_PAWN_ABILITY_REQ(pawnId, slotNo) != static_cast<s32>(0)) {
-                    this->mStatus[339] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(339));
-                    this->mComTimer[339] = 0.0f;
+    mStatus[339] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(339);
+    mErrorCode[339] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_OFF_PAWN_ABILITY_REQ(pawnId, slotNo) != 0) {
+                    mStatus[339] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(339);
+                    mComTimer[339] = 0.0f;
                     return true;
                 }
             }
@@ -8396,16 +8415,16 @@ bool cNetGameServer::getSetSkillList(u8 job) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[340] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(340));
-    this->mErrorCode[340] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SET_SKILL_LIST_REQ(job) != static_cast<s32>(0)) {
-                    this->mStatus[340] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(340));
-                    this->mComTimer[340] = 0.0f;
+    mStatus[340] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(340);
+    mErrorCode[340] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SET_SKILL_LIST_REQ(job) != 0) {
+                    mStatus[340] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(340);
+                    mComTimer[340] = 0.0f;
                     return true;
                 }
             }
@@ -8419,16 +8438,16 @@ bool cNetGameServer::getSetAbilityList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[341] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(341));
-    this->mErrorCode[341] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SET_ABILITY_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[341] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(341));
-                    this->mComTimer[341] = 0.0f;
+    mStatus[341] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(341);
+    mErrorCode[341] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SET_ABILITY_LIST_REQ() != 0) {
+                    mStatus[341] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(341);
+                    mComTimer[341] = 0.0f;
                     return true;
                 }
             }
@@ -8442,16 +8461,16 @@ bool cNetGameServer::getPawnSetSkillList(u32 pawnId, u8 job) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[342] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(342));
-    this->mErrorCode[342] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_SKILL_LIST_REQ(pawnId, job) != static_cast<s32>(0)) {
-                    this->mStatus[342] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(342));
-                    this->mComTimer[342] = 0.0f;
+    mStatus[342] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(342);
+    mErrorCode[342] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_SET_SKILL_LIST_REQ(pawnId, job) != 0) {
+                    mStatus[342] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(342);
+                    mComTimer[342] = 0.0f;
                     return true;
                 }
             }
@@ -8465,16 +8484,16 @@ bool cNetGameServer::getPawnSetAbilityList(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[343] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(343));
-    this->mErrorCode[343] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_SET_ABILITY_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[343] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(343));
-                    this->mComTimer[343] = 0.0f;
+    mStatus[343] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(343);
+    mErrorCode[343] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_SET_ABILITY_LIST_REQ(pawnId) != 0) {
+                    mStatus[343] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(343);
+                    mComTimer[343] = 0.0f;
                     return true;
                 }
             }
@@ -8488,16 +8507,16 @@ bool cNetGameServer::getReleaseSkillList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[346] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(346));
-    this->mErrorCode[346] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RELEASE_SKILL_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[346] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(346));
-                    this->mComTimer[346] = 0.0f;
+    mStatus[346] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(346);
+    mErrorCode[346] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RELEASE_SKILL_LIST_REQ() != 0) {
+                    mStatus[346] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(346);
+                    mComTimer[346] = 0.0f;
                     return true;
                 }
             }
@@ -8511,16 +8530,16 @@ bool cNetGameServer::getReleaseAbilityList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[347] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(347));
-    this->mErrorCode[347] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RELEASE_ABILITY_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[347] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(347));
-                    this->mComTimer[347] = 0.0f;
+    mStatus[347] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(347);
+    mErrorCode[347] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RELEASE_ABILITY_LIST_REQ() != 0) {
+                    mStatus[347] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(347);
+                    mComTimer[347] = 0.0f;
                     return true;
                 }
             }
@@ -8537,16 +8556,16 @@ bool cNetGameServer::registerPawnPresetAbility(u32 pawnId, u8 presetNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[348] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(348));
-    this->mErrorCode[348] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REGISTER_PRESET_ABILITY_REQ(pawnId, presetNo) != static_cast<s32>(0)) {
-                    this->mStatus[348] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(348));
-                    this->mComTimer[348] = 0.0f;
+    mStatus[348] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(348);
+    mErrorCode[348] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REGISTER_PRESET_ABILITY_REQ(pawnId, presetNo) != 0) {
+                    mStatus[348] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(348);
+                    mComTimer[348] = 0.0f;
                     return true;
                 }
             }
@@ -8560,16 +8579,16 @@ bool cNetGameServer::setPresetAbilityName(u8 presetNo, MT_CTSTR presetName) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[356] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(356));
-    this->mErrorCode[356] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_NAME_REQ(presetNo, presetName) != static_cast<s32>(0)) {
-                    this->mStatus[356] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(356));
-                    this->mComTimer[356] = 0.0f;
+    mStatus[356] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(356);
+    mErrorCode[356] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_PRESET_ABILITY_NAME_REQ(presetNo, presetName) != 0) {
+                    mStatus[356] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(356);
+                    mComTimer[356] = 0.0f;
                     return true;
                 }
             }
@@ -8583,16 +8602,16 @@ bool cNetGameServer::getPresetAbilityList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[350] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(350));
-    this->mErrorCode[350] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PRESET_ABILITY_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[350] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(350));
-                    this->mComTimer[350] = 0.0f;
+    mStatus[350] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(350);
+    mErrorCode[350] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PRESET_ABILITY_LIST_REQ() != 0) {
+                    mStatus[350] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(350);
+                    mComTimer[350] = 0.0f;
                     return true;
                 }
             }
@@ -8604,16 +8623,16 @@ bool cNetGameServer::getPresetAbilityList() {
 // Address: 0x00357850 - 0x003578f6 (166 bytes)
 bool cNetGameServer::setPresetAbilityList(u8 presetNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[349] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(349));
-    this->mErrorCode[349] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_LIST_REQ(static_cast<u32>(0), presetNo) != static_cast<s32>(0)) {
-                    this->mStatus[349] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(349));
-                    this->mComTimer[349] = 0.0f;
+    mStatus[349] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(349);
+    mErrorCode[349] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_PRESET_ABILITY_LIST_REQ(0u, presetNo) != 0) {
+                    mStatus[349] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(349);
+                    mComTimer[349] = 0.0f;
                     return true;
                 }
             }
@@ -8627,16 +8646,16 @@ bool cNetGameServer::setPawnPresetAbilityList(u32 pawnId, u8 presetNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[349] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(349));
-    this->mErrorCode[349] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SET_PRESET_ABILITY_LIST_REQ(pawnId, presetNo) != static_cast<s32>(0)) {
-                    this->mStatus[349] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(349));
-                    this->mComTimer[349] = 0.0f;
+    mStatus[349] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(349);
+    mErrorCode[349] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SET_PRESET_ABILITY_LIST_REQ(pawnId, presetNo) != 0) {
+                    mStatus[349] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(349);
+                    mComTimer[349] = 0.0f;
                     return true;
                 }
             }
@@ -8650,16 +8669,16 @@ bool cNetGameServer::getCurrentSetSkillList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[352] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(352));
-    this->mErrorCode[352] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_CURRENT_SET_SKILL_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[352] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(352));
-                    this->mComTimer[352] = 0.0f;
+    mStatus[352] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(352);
+    mErrorCode[352] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_CURRENT_SET_SKILL_LIST_REQ() != 0) {
+                    mStatus[352] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(352);
+                    mComTimer[352] = 0.0f;
                     return true;
                 }
             }
@@ -8676,16 +8695,16 @@ bool cNetGameServer::getAbilitySetCost() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[354] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(354));
-    this->mErrorCode[354] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_ABILITY_COST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[354] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(354));
-                    this->mComTimer[354] = 0.0f;
+    mStatus[354] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(354);
+    mErrorCode[354] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_ABILITY_COST_REQ() != 0) {
+                    mStatus[354] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(354);
+                    mComTimer[354] = 0.0f;
                     return true;
                 }
             }
@@ -8699,16 +8718,16 @@ bool cNetGameServer::getPawnAbilitySetCost(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[355] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(355));
-    this->mErrorCode[355] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_ABILITY_COST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[355] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(355));
-                    this->mComTimer[355] = 0.0f;
+    mStatus[355] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(355);
+    mErrorCode[355] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_ABILITY_COST_REQ(pawnId) != 0) {
+                    mStatus[355] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(355);
+                    mComTimer[355] = 0.0f;
                     return true;
                 }
             }
@@ -8723,73 +8742,73 @@ bool cNetGameServer::getPawnAbilitySetCost(u32 pawnId) {
 // Address: 0x00379b40 - 0x00379b4f (15 bytes)
 nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES* cNetGameServer::getGetAcquirableSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAcquirableSkillListPacket;
+    return mpConnection->mpGetAcquirableSkillListPacket;
 }
 
 // Address: 0x00379b50 - 0x00379b5f (15 bytes)
 nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES* cNetGameServer::getGetAcquirableAbilityList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAcquirableAbilityListPacket;
+    return mpConnection->mpGetAcquirableAbilityListPacket;
 }
 
 // Address: 0x00379b60 - 0x00379b6f (15 bytes)
 nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES* cNetGameServer::getGetLearnedNormalSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLearnedNormalSkillListPacket;
+    return mpConnection->mpGetLearnedNormalSkillListPacket;
 }
 
 // Address: 0x00379b70 - 0x00379b7f (15 bytes)
 nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES* cNetGameServer::getGetLearnedSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLearnedSkillListPacket;
+    return mpConnection->mpGetLearnedSkillListPacket;
 }
 
 // Address: 0x00379b80 - 0x00379b8f (15 bytes)
 nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES* cNetGameServer::getGetLearnedAbilityList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLearnedAbilityListPacket;
+    return mpConnection->mpGetLearnedAbilityListPacket;
 }
 
 // Address: 0x00379b90 - 0x00379b9f (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES* cNetGameServer::getGetPawnLearnedNormalSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnLearnedNormalSkillListPacket;
+    return mpConnection->mpGetPawnLearnedNormalSkillListPacket;
 }
 
 // Address: 0x00379ba0 - 0x00379baf (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES* cNetGameServer::getGetPawnLearnedSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnLearnedSkillListPacket;
+    return mpConnection->mpGetPawnLearnedSkillListPacket;
 }
 
 // Address: 0x00379bb0 - 0x00379bbf (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES* cNetGameServer::getGetPawnLearnedAbilityList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnLearnedAbilityListPacket;
+    return mpConnection->mpGetPawnLearnedAbilityListPacket;
 }
 
 // Address: 0x00379bc0 - 0x00379bcf (15 bytes)
 nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES* cNetGameServer::getGetSetSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetSkillListPacket;
+    return mpConnection->mpGetSetSkillListPacket;
 }
 
 // Address: 0x00379bd0 - 0x00379bdf (15 bytes)
 nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES* cNetGameServer::getGetSetAbilityList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSetAbilityListPacket;
+    return mpConnection->mpGetSetAbilityListPacket;
 }
 
 // Address: 0x00379be0 - 0x00379bef (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES* cNetGameServer::getGetPawnSetSkillListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnSetSkillListPacket;
+    return mpConnection->mpGetPawnSetSkillListPacket;
 }
 
 // Address: 0x00379bf0 - 0x00379bff (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES* cNetGameServer::getGetPawnSetAbilityList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnSetAbilityListPacket;
+    return mpConnection->mpGetPawnSetAbilityListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8801,19 +8820,19 @@ nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES* cNetGameServer::getGetP
 // Address: 0x00379c20 - 0x00379c2f (15 bytes)
 nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES* cNetGameServer::getPresetAbilityListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPresetAbilityListPacket;
+    return mpConnection->mpGetPresetAbilityListPacket;
 }
 
 // Address: 0x00379c30 - 0x00379c3f (15 bytes)
 nUserSession::CPacket_S2C_GET_ABILITY_COST_RES* cNetGameServer::getAbilityCostPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAbilityCostPacket;
+    return mpConnection->mpGetAbilityCostPacket;
 }
 
 // Address: 0x00379c40 - 0x00379c4f (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES* cNetGameServer::getPawnAbilityCostPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPawnAbilityCostPacket;
+    return mpConnection->mpGetPawnAbilityCostPacket;
 }
 
 // Address: 0x00357c30 - 0x00357ccd (157 bytes)
@@ -8821,16 +8840,16 @@ bool cNetGameServer::getShopGoodsList(u32 shopId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[357] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(357));
-    this->mErrorCode[357] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SHOP_GOODS_LIST_REQ(shopId) != static_cast<s32>(0)) {
-                    this->mStatus[357] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(357));
-                    this->mComTimer[357] = 0.0f;
+    mStatus[357] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(357);
+    mErrorCode[357] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SHOP_GOODS_LIST_REQ(shopId) != 0) {
+                    mStatus[357] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(357);
+                    mComTimer[357] = 0.0f;
                     return true;
                 }
             }
@@ -8860,7 +8879,7 @@ __attribute__((weak)) bool cNetGameServer::sellItem(StorageItemUIDListVec& list)
 // Address: 0x00379c50 - 0x00379c5f (15 bytes)
 nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES* cNetGameServer::getGetShopGoodsListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetShopGoodsListPacket;
+    return mpConnection->mpGetShopGoodsListPacket;
 }
 
 // Address: 0x003581c0 - 0x0035825d (157 bytes)
@@ -8868,16 +8887,16 @@ bool cNetGameServer::getStayPrice(u32 inn_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[360] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(360));
-    this->mErrorCode[360] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_STAY_PRICE_REQ(inn_id) != static_cast<s32>(0)) {
-                    this->mStatus[360] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(360));
-                    this->mComTimer[360] = 0.0f;
+    mStatus[360] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(360);
+    mErrorCode[360] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_STAY_PRICE_REQ(inn_id) != 0) {
+                    mStatus[360] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(360);
+                    mComTimer[360] = 0.0f;
                     return true;
                 }
             }
@@ -8900,16 +8919,16 @@ bool cNetGameServer::getPenaltyHealStayPrice() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[362] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(362));
-    this->mErrorCode[362] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PENALTY_HEAL_STAY_PRICE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[362] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(362));
-                    this->mComTimer[362] = 0.0f;
+    mStatus[362] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(362);
+    mErrorCode[362] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PENALTY_HEAL_STAY_PRICE_REQ() != 0) {
+                    mStatus[362] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(362);
+                    mComTimer[362] = 0.0f;
                     return true;
                 }
             }
@@ -8941,13 +8960,13 @@ __attribute__((weak)) bool cNetGameServer::stayPenaltyHealInn(u32 maxHp, const P
 // Address: 0x003584c0 - 0x003584cf (15 bytes)
 nUserSession::CPacket_S2C_GET_STAY_PRICE_RES* cNetGameServer::getGetStayPricePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetStayPricePacket;
+    return mpConnection->mpGetStayPricePacket;
 }
 
 // Address: 0x003587a0 - 0x003587af (15 bytes)
 nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES* cNetGameServer::getGetPenaltyHealStayPricePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetPenaltyHealStayPricePacket;
+    return mpConnection->mpGetPenaltyHealStayPricePacket;
 }
 
 // Address: 0x003587e0 - 0x0035887d (157 bytes)
@@ -8955,16 +8974,16 @@ bool cNetGameServer::getAreaMasterInfo(u32 areaID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[364] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(364));
-    this->mErrorCode[364] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_MASTER_INFO_REQ(areaID) != static_cast<s32>(0)) {
-                    this->mStatus[364] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(364));
-                    this->mComTimer[364] = 0.0f;
+    mStatus[364] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(364);
+    mErrorCode[364] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_MASTER_INFO_REQ(areaID) != 0) {
+                    mStatus[364] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(364);
+                    mComTimer[364] = 0.0f;
                     return true;
                 }
             }
@@ -8981,16 +9000,16 @@ bool cNetGameServer::areaRankUp(u32 areaID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[365] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(365));
-    this->mErrorCode[365] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_AREA_RANK_UP_REQ(areaID) != static_cast<s32>(0)) {
-                    this->mStatus[365] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(365));
-                    this->mComTimer[365] = 0.0f;
+    mStatus[365] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(365);
+    mErrorCode[365] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_AREA_RANK_UP_REQ(areaID) != 0) {
+                    mStatus[365] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(365);
+                    mComTimer[365] = 0.0f;
                     return true;
                 }
             }
@@ -9016,16 +9035,16 @@ bool cNetGameServer::getLeaderAreaReleaseList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[368] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(368));
-    this->mErrorCode[368] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_LEADER_AREA_RELEASE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[368] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(368));
-                    this->mComTimer[368] = 0.0f;
+    mStatus[368] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(368);
+    mErrorCode[368] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_LEADER_AREA_RELEASE_LIST_REQ() != 0) {
+                    mStatus[368] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(368);
+                    mComTimer[368] = 0.0f;
                     return true;
                 }
             }
@@ -9042,16 +9061,16 @@ bool cNetGameServer::getAreaSupplyInfoList(u32 areaID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[369] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(369));
-    this->mErrorCode[369] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_SUPPLY_INFO_REQ(areaID) != static_cast<s32>(0)) {
-                    this->mStatus[369] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(369));
-                    this->mComTimer[369] = 0.0f;
+    mStatus[369] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(369);
+    mErrorCode[369] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_SUPPLY_INFO_REQ(areaID) != 0) {
+                    mStatus[369] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(369);
+                    mComTimer[369] = 0.0f;
                     return true;
                 }
             }
@@ -9084,16 +9103,16 @@ bool cNetGameServer::getAreaQuestInfoList(u32 areaID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[371] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(371));
-    this->mErrorCode[371] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_QUEST_HINT_LIST_REQ(areaID) != static_cast<s32>(0)) {
-                    this->mStatus[371] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(371));
-                    this->mComTimer[371] = 0.0f;
+    mStatus[371] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(371);
+    mErrorCode[371] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_QUEST_HINT_LIST_REQ(areaID) != 0) {
+                    mStatus[371] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(371);
+                    mComTimer[371] = 0.0f;
                     return true;
                 }
             }
@@ -9107,17 +9126,17 @@ bool cNetGameServer::buyAreaQuestInfo(u32 areaID, u32 questScheduleID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[372] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(372));
-    this->mErrorCode[372] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BUY_AREA_QUEST_HINT_REQ(areaID, questScheduleID) != static_cast<s32>(0)) {
-                    this->mBuyQuestScheduleId = questScheduleID;
-                    this->mStatus[372] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(372));
-                    this->mComTimer[372] = 0.0f;
+    mStatus[372] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(372);
+    mErrorCode[372] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BUY_AREA_QUEST_HINT_REQ(areaID, questScheduleID) != 0) {
+                    mBuyQuestScheduleId = questScheduleID;
+                    mStatus[372] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(372);
+                    mComTimer[372] = 0.0f;
                     return true;
                 }
             }
@@ -9131,16 +9150,16 @@ bool cNetGameServer::getAreaPointList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[373] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(373));
-    this->mErrorCode[373] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_AREA_BASE_INFO_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[373] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(373));
-                    this->mComTimer[373] = 0.0f;
+    mStatus[373] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(373);
+    mErrorCode[373] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_AREA_BASE_INFO_LIST_REQ() != 0) {
+                    mStatus[373] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(373);
+                    mComTimer[373] = 0.0f;
                     return true;
                 }
             }
@@ -9154,16 +9173,16 @@ bool cNetGameServer::getSpotInfoList(u32 areaID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[374] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(374));
-    this->mErrorCode[374] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SPOT_INFO_LIST_REQ(areaID) != static_cast<s32>(0)) {
-                    this->mStatus[374] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(374));
-                    this->mComTimer[374] = 0.0f;
+    mStatus[374] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(374);
+    mErrorCode[374] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SPOT_INFO_LIST_REQ(areaID) != 0) {
+                    mStatus[374] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(374);
+                    mComTimer[374] = 0.0f;
                     return true;
                 }
             }
@@ -9175,37 +9194,37 @@ bool cNetGameServer::getSpotInfoList(u32 areaID) {
 // Address: 0x00379c60 - 0x00379c6f (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES* cNetGameServer::getAreaMasterInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaMasterInfoPacket;
+    return mpConnection->mpGetAreaMasterInfoPacket;
 }
 
 // Address: 0x00379c70 - 0x00379c7f (15 bytes)
 nUserSession::CPacket_S2C_AREA_RANK_UP_RES* cNetGameServer::getAreaRankUpResPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAreaRankUpPacket;
+    return mpConnection->mpAreaRankUpPacket;
 }
 
 // Address: 0x00379c80 - 0x00379c8f (15 bytes)
 nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES* cNetGameServer::getLeaderAreaReleaseListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetLeaderAreaReleasePacket;
+    return mpConnection->mpGetLeaderAreaReleasePacket;
 }
 
 // Address: 0x00358fe0 - 0x00358fef (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES* cNetGameServer::getAreaSupplyInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaSupplyInfoListPacket;
+    return mpConnection->mpGetAreaSupplyInfoListPacket;
 }
 
 // Address: 0x00379c90 - 0x00379c9f (15 bytes)
 nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES* cNetGameServer::getAreaQuestInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAreaQuestInfoListPacket;
+    return mpConnection->mpGetAreaQuestInfoListPacket;
 }
 
 // Address: 0x00379ca0 - 0x00379caf (15 bytes)
 nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES* cNetGameServer::getSpotInfoListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetSpotInfoListPacket;
+    return mpConnection->mpGetSpotInfoListPacket;
 }
 
 // Address: 0x00359280 - 0x0035931e (158 bytes)
@@ -9213,16 +9232,16 @@ bool cNetGameServer::getJobMasterOrderProgress(u8 JobID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[375] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(375));
-    this->mErrorCode[375] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_JOB_MASTER_ORDER_PROGRESS_REQ(JobID) != static_cast<s32>(0)) {
-                    this->mStatus[375] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(375));
-                    this->mComTimer[375] = 0.0f;
+    mStatus[375] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(375);
+    mErrorCode[375] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_JOB_MASTER_ORDER_PROGRESS_REQ(JobID) != 0) {
+                    mStatus[375] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(375);
+                    mComTimer[375] = 0.0f;
                     return true;
                 }
             }
@@ -9239,16 +9258,16 @@ bool cNetGameServer::getReportJobOrderProgress(u8 JobID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[376] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(376));
-    this->mErrorCode[376] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REPORT_JOB_ORDER_PROGRESS_REQ(JobID) != static_cast<s32>(0)) {
-                    this->mStatus[376] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(376));
-                    this->mComTimer[376] = 0.0f;
+    mStatus[376] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(376);
+    mErrorCode[376] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REPORT_JOB_ORDER_PROGRESS_REQ(JobID) != 0) {
+                    mStatus[376] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(376);
+                    mComTimer[376] = 0.0f;
                     return true;
                 }
             }
@@ -9280,7 +9299,7 @@ __attribute__((weak)) bool cNetGameServer::getActivateJobOrder(u8 in_JobID8, u8 
 // Address: 0x00379cb0 - 0x00379cbf (15 bytes)
 nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES* cNetGameServer::getReportJobOrderProgressPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpReportJobOrderProgressPacket;
+    return mpConnection->mpReportJobOrderProgressPacket;
 }
 
 // Address: 0x0037ab90 - 0x0037ac5d (205 bytes)
@@ -9300,16 +9319,16 @@ bool cNetGameServer::devoteOrb(u32 elementID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[380] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(380));
-    this->mErrorCode[380] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RELEASE_ORB_ELEMENT_REQ(elementID) != static_cast<s32>(0)) {
-                    this->mStatus[380] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(380));
-                    this->mComTimer[380] = 0.0f;
+    mStatus[380] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(380);
+    mErrorCode[380] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RELEASE_ORB_ELEMENT_REQ(elementID) != 0) {
+                    mStatus[380] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(380);
+                    mComTimer[380] = 0.0f;
                     return true;
                 }
             }
@@ -9326,16 +9345,16 @@ bool cNetGameServer::getReleaseOrbElement() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[381] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(381));
-    this->mErrorCode[381] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RELEASE_ORB_ELEMENT_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[381] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(381));
-                    this->mComTimer[381] = 0.0f;
+    mStatus[381] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(381);
+    mErrorCode[381] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RELEASE_ORB_ELEMENT_LIST_REQ() != 0) {
+                    mStatus[381] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(381);
+                    mComTimer[381] = 0.0f;
                     return true;
                 }
             }
@@ -9349,16 +9368,16 @@ bool cNetGameServer::devotePawnOrb(u32 pawnId, u32 elementID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[382] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(382));
-    this->mErrorCode[382] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RELEASE_PAWN_ORB_ELEMENT_REQ(pawnId, elementID) != static_cast<s32>(0)) {
-                    this->mStatus[382] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(382));
-                    this->mComTimer[382] = 0.0f;
+    mStatus[382] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(382);
+    mErrorCode[382] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RELEASE_PAWN_ORB_ELEMENT_REQ(pawnId, elementID) != 0) {
+                    mStatus[382] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(382);
+                    mComTimer[382] = 0.0f;
                     return true;
                 }
             }
@@ -9375,16 +9394,16 @@ bool cNetGameServer::getReleasePawnOrbElement(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[383] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(383));
-    this->mErrorCode[383] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[383] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(383));
-                    this->mComTimer[383] = 0.0f;
+    mStatus[383] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(383);
+    mErrorCode[383] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_REQ(pawnId) != 0) {
+                    mStatus[383] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(383);
+                    mComTimer[383] = 0.0f;
                     return true;
                 }
             }
@@ -9398,16 +9417,16 @@ bool cNetGameServer::getOrbGainExtendParam() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[384] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(384));
-    this->mErrorCode[384] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_ORB_GAIN_EXTEND_PARAM_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[384] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(384));
-                    this->mComTimer[384] = 0.0f;
+    mStatus[384] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(384);
+    mErrorCode[384] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_ORB_GAIN_EXTEND_PARAM_REQ() != 0) {
+                    mStatus[384] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(384);
+                    mComTimer[384] = 0.0f;
                     return true;
                 }
             }
@@ -9419,13 +9438,13 @@ bool cNetGameServer::getOrbGainExtendParam() {
 // Address: 0x00379cc0 - 0x00379ccf (15 bytes)
 nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES* cNetGameServer::getGetReleaseOrbElementListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetReleaseOrbElementListPacket;
+    return mpConnection->mpGetReleaseOrbElementListPacket;
 }
 
 // Address: 0x00379cd0 - 0x00379cdf (15 bytes)
 nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES* cNetGameServer::getGetReleasePawnOrbElementListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetReleasePawnOrbElementListPacket;
+    return mpConnection->mpGetReleasePawnOrbElementListPacket;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -9441,16 +9460,16 @@ bool cNetGameServer::getJobOrbTreeList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[385] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(385));
-    this->mErrorCode[385] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_JOB_ORB_TREE_STATUS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[385] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(385));
-                    this->mComTimer[385] = 0.0f;
+    mStatus[385] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(385);
+    mErrorCode[385] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_JOB_ORB_TREE_STATUS_LIST_REQ() != 0) {
+                    mStatus[385] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(385);
+                    mComTimer[385] = 0.0f;
                     return true;
                 }
             }
@@ -9464,16 +9483,16 @@ bool cNetGameServer::getJobOrbTreeElementList(u8 job_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[386] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(386));
-    this->mErrorCode[386] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ(job_id) != static_cast<s32>(0)) {
-                    this->mStatus[386] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(386));
-                    this->mComTimer[386] = 0.0f;
+    mStatus[386] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(386);
+    mErrorCode[386] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ(job_id) != 0) {
+                    mStatus[386] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(386);
+                    mComTimer[386] = 0.0f;
                     return true;
                 }
             }
@@ -9487,16 +9506,16 @@ bool cNetGameServer::releaseJobOrbTreeElement(u32 element_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[387] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(387));
-    this->mErrorCode[387] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RELEASE_JOB_ORB_ELEMENT_REQ(element_id) != static_cast<s32>(0)) {
-                    this->mStatus[387] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(387));
-                    this->mComTimer[387] = 0.0f;
+    mStatus[387] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(387);
+    mErrorCode[387] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RELEASE_JOB_ORB_ELEMENT_REQ(element_id) != 0) {
+                    mStatus[387] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(387);
+                    mComTimer[387] = 0.0f;
                     return true;
                 }
             }
@@ -9508,7 +9527,7 @@ bool cNetGameServer::releaseJobOrbTreeElement(u32 element_id) {
 // Address: 0x00379ce0 - 0x00379cef (15 bytes)
 nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES* cNetGameServer::getGetAllJobOrbElementListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetAllJobOrbElementListPacket;
+    return mpConnection->mpGetAllJobOrbElementListPacket;
 }
 
 // Address: 0x0037bef0 - 0x0037bf90 (160 bytes)
@@ -9540,16 +9559,16 @@ bool cNetGameServer::getClanList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[282] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(282));
-    this->mErrorCode[282] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SEARCH_REQ(this->mClanFilterParam) != static_cast<s32>(0)) {
-                    this->mStatus[282] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(282));
-                    this->mComTimer[282] = 0.0f;
+    mStatus[282] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(282);
+    mErrorCode[282] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SEARCH_REQ(mClanFilterParam) != 0) {
+                    mStatus[282] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(282);
+                    mComTimer[282] = 0.0f;
                     return true;
                 }
             }
@@ -9563,16 +9582,16 @@ bool cNetGameServer::reqJoinClan(u32 clanId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[283] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(283));
-    this->mErrorCode[283] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_REGISTER_JOIN_REQ(clanId) != static_cast<s32>(0)) {
-                    this->mStatus[283] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(283));
-                    this->mComTimer[283] = 0.0f;
+    mStatus[283] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(283);
+    mErrorCode[283] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_REGISTER_JOIN_REQ(clanId) != 0) {
+                    mStatus[283] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(283);
+                    mComTimer[283] = 0.0f;
                     return true;
                 }
             }
@@ -9586,16 +9605,16 @@ bool cNetGameServer::getClanApplyList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[284] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(284));
-    this->mErrorCode[284] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[284] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(284));
-                    this->mComTimer[284] = 0.0f;
+    mStatus[284] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(284);
+    mErrorCode[284] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ() != 0) {
+                    mStatus[284] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(284);
+                    mComTimer[284] = 0.0f;
                     return true;
                 }
             }
@@ -9609,16 +9628,16 @@ bool cNetGameServer::cancelJoinClan() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[285] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(285));
-    this->mErrorCode[285] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_CANCEL_JOIN_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[285] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(285));
-                    this->mComTimer[285] = 0.0f;
+    mStatus[285] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(285);
+    mErrorCode[285] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_CANCEL_JOIN_REQ() != 0) {
+                    mStatus[285] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(285);
+                    mComTimer[285] = 0.0f;
                     return true;
                 }
             }
@@ -9632,16 +9651,16 @@ bool cNetGameServer::getClanJoinReqList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[286] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(286));
-    this->mErrorCode[286] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_JOIN_REQUESTED_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[286] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(286));
-                    this->mComTimer[286] = 0.0f;
+    mStatus[286] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(286);
+    mErrorCode[286] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_GET_JOIN_REQUESTED_LIST_REQ() != 0) {
+                    mStatus[286] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(286);
+                    mComTimer[286] = 0.0f;
                     return true;
                 }
             }
@@ -9655,17 +9674,17 @@ bool cNetGameServer::allowClan(u32 reqId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[287] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(287));
-    this->mErrorCode[287] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_APPROVE_JOIN_REQ(reqId, true) != static_cast<s32>(0)) {
-                    this->mClanApproveReqId = reqId;
-                    this->mStatus[287] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(287));
-                    this->mComTimer[287] = 0.0f;
+    mStatus[287] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(287);
+    mErrorCode[287] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_APPROVE_JOIN_REQ(reqId, true) != 0) {
+                    mClanApproveReqId = reqId;
+                    mStatus[287] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(287);
+                    mComTimer[287] = 0.0f;
                     return true;
                 }
             }
@@ -9679,17 +9698,17 @@ bool cNetGameServer::denyClan(u32 reqId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[287] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(287));
-    this->mErrorCode[287] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_APPROVE_JOIN_REQ(reqId, false) != static_cast<s32>(0)) {
-                    this->mClanApproveReqId = reqId;
-                    this->mStatus[287] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(287));
-                    this->mComTimer[287] = 0.0f;
+    mStatus[287] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(287);
+    mErrorCode[287] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_APPROVE_JOIN_REQ(reqId, false) != 0) {
+                    mClanApproveReqId = reqId;
+                    mStatus[287] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(287);
+                    mComTimer[287] = 0.0f;
                     return true;
                 }
             }
@@ -9703,16 +9722,16 @@ bool cNetGameServer::getMyClan() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[288] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(288));
-    this->mErrorCode[288] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[288] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(288));
-                    this->mComTimer[288] = 0.0f;
+    mStatus[288] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(288);
+    mErrorCode[288] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_GET_MY_INFO_REQ() != 0) {
+                    mStatus[288] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(288);
+                    mComTimer[288] = 0.0f;
                     return true;
                 }
             }
@@ -9726,16 +9745,16 @@ bool cNetGameServer::getClanBaseInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[308] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(308));
-    this->mErrorCode[308] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_BASE_GET_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[308] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(308));
-                    this->mComTimer[308] = 0.0f;
+    mStatus[308] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(308);
+    mErrorCode[308] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_BASE_GET_INFO_REQ() != 0) {
+                    mStatus[308] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(308);
+                    mComTimer[308] = 0.0f;
                     return true;
                 }
             }
@@ -9747,35 +9766,35 @@ bool cNetGameServer::getClanBaseInfo() {
 // Address: 0x0035d830 - 0x0035d96b (315 bytes)
 bool cNetGameServer::getClanMemberList(u32 clanId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (clanId != static_cast<u32>(0)) {
-        if (clanId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getMyClanId()) {
-            static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->mClanMemberUpdate = false;
-            this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(4);
-            static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(289));
-            this->mErrorCode[289] = static_cast<nError::ERROR_CODE>(33000);
-            if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-                if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                    if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                        if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ() != static_cast<s32>(0)) {
-                            this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(1);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(289));
-                            this->mComTimer[289] = 0.0f;
+    if (clanId != 0) {
+        if (clanId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getMyClanId()) {
+            static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mClanMemberUpdate = false;
+            mStatus[289] = sNetworkExt::NET_STAT_ERROR;
+            static_cast<sNetworkExt*>(sNetwork::mpInstance)->reserveNetworkErrorDialog(289);
+            mErrorCode[289] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+            if (mpConnection != nullptr) {
+                if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                    if (mpConnection->isLoginSuccess()) {
+                        if (mpConnection->Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ() != 0) {
+                            mStatus[289] = sNetworkExt::NET_STAT_REQ;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(289);
+                            mComTimer[289] = 0.0f;
                             return true;
                         }
                     }
                 }
             }
         } else {
-            this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(4);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(289));
-            this->mErrorCode[289] = static_cast<nError::ERROR_CODE>(33000);
-            if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-                if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                    if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                        if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_MEMBER_LIST_REQ(clanId) != static_cast<s32>(0)) {
-                            this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(1);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(289));
-                            this->mComTimer[289] = 0.0f;
+            mStatus[289] = sNetworkExt::NET_STAT_ERROR;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(289);
+            mErrorCode[289] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+            if (mpConnection != nullptr) {
+                if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                    if (mpConnection->isLoginSuccess()) {
+                        if (mpConnection->Send_C2S_CLAN_GET_MEMBER_LIST_REQ(clanId) != 0) {
+                            mStatus[289] = sNetworkExt::NET_STAT_REQ;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(289);
+                            mComTimer[289] = 0.0f;
                             return true;
                         }
                     }
@@ -9783,17 +9802,17 @@ bool cNetGameServer::getClanMemberList(u32 clanId) {
             }
         }
     } else {
-        static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->mClanMemberUpdate = false;
-        this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(289));
-        this->mErrorCode[289] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ() != static_cast<s32>(0)) {
-                        this->mStatus[289] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(289));
-                        this->mComTimer[289] = 0.0f;
+        static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->mClanMemberUpdate = false;
+        mStatus[289] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::mpInstance)->reserveNetworkErrorDialog(289);
+        mErrorCode[289] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CLAN_GET_MY_MEMBER_LIST_REQ() != 0) {
+                        mStatus[289] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(289);
+                        mComTimer[289] = 0.0f;
                         return true;
                     }
                 }
@@ -9816,16 +9835,16 @@ bool cNetGameServer::quitClan() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[290] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(290));
-    this->mErrorCode[290] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_LEAVE_MEMBER_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[290] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(290));
-                    this->mComTimer[290] = 0.0f;
+    mStatus[290] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(290);
+    mErrorCode[290] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_LEAVE_MEMBER_REQ() != 0) {
+                    mStatus[290] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(290);
+                    mComTimer[290] = 0.0f;
                     return true;
                 }
             }
@@ -9839,16 +9858,16 @@ bool cNetGameServer::expelClanMember(u32 memberId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[291] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(291));
-    this->mErrorCode[291] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_EXPEL_MEMBER_REQ(memberId) != static_cast<s32>(0)) {
-                    this->mStatus[291] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(291));
-                    this->mComTimer[291] = 0.0f;
+    mStatus[291] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(291);
+    mErrorCode[291] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_EXPEL_MEMBER_REQ(memberId) != 0) {
+                    mStatus[291] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(291);
+                    mComTimer[291] = 0.0f;
                     return true;
                 }
             }
@@ -9862,16 +9881,16 @@ bool cNetGameServer::changeClanMaster(u32 memberId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[292] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(292));
-    this->mErrorCode[292] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_NEGOTIATE_MASTER_REQ(memberId) != static_cast<s32>(0)) {
-                    this->mStatus[292] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(292));
-                    this->mComTimer[292] = 0.0f;
+    mStatus[292] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(292);
+    mErrorCode[292] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_NEGOTIATE_MASTER_REQ(memberId) != 0) {
+                    mStatus[292] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(292);
+                    mComTimer[292] = 0.0f;
                     return true;
                 }
             }
@@ -9893,16 +9912,16 @@ bool cNetGameServer::getClanInfo(u32 clanId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[294] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(294));
-    this->mErrorCode[294] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_INFO_REQ(clanId) != static_cast<s32>(0)) {
-                    this->mStatus[294] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(294));
-                    this->mComTimer[294] = 0.0f;
+    mStatus[294] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(294);
+    mErrorCode[294] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_GET_INFO_REQ(clanId) != 0) {
+                    mStatus[294] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(294);
+                    mComTimer[294] = 0.0f;
                     return true;
                 }
             }
@@ -9919,16 +9938,16 @@ bool cNetGameServer::reqClanScoutEntry(CClanScoutEntryParam& param) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[296] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(296));
-    this->mErrorCode[296] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_REGISTER_REQ(param) != static_cast<s32>(0)) {
-                    this->mStatus[296] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(296));
-                    this->mComTimer[296] = 0.0f;
+    mStatus[296] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(296);
+    mErrorCode[296] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_REGISTER_REQ(param) != 0) {
+                    mStatus[296] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(296);
+                    mComTimer[296] = 0.0f;
                     return true;
                 }
             }
@@ -9942,16 +9961,16 @@ bool cNetGameServer::reqClanScoutEntryCancel() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[297] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(297));
-    this->mErrorCode[297] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[297] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(297));
-                    this->mComTimer[297] = 0.0f;
+    mStatus[297] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(297);
+    mErrorCode[297] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_REQ() != 0) {
+                    mStatus[297] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(297);
+                    mComTimer[297] = 0.0f;
                     return true;
                 }
             }
@@ -9965,16 +9984,16 @@ bool cNetGameServer::searchClanScoutEntry() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[298] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(298));
-    this->mErrorCode[298] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_SEARCH_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[298] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(298));
-                    this->mComTimer[298] = 0.0f;
+    mStatus[298] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(298);
+    mErrorCode[298] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_SEARCH_REQ() != 0) {
+                    mStatus[298] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(298);
+                    mComTimer[298] = 0.0f;
                     return true;
                 }
             }
@@ -9988,16 +10007,16 @@ bool cNetGameServer::getMyClanScoutEntry() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[299] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(299));
-    this->mErrorCode[299] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_MY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[299] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(299));
-                    this->mComTimer[299] = 0.0f;
+    mStatus[299] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(299);
+    mErrorCode[299] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_GET_MY_REQ() != 0) {
+                    mStatus[299] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(299);
+                    mComTimer[299] = 0.0f;
                     return true;
                 }
             }
@@ -10011,16 +10030,16 @@ bool cNetGameServer::inviteClan(u32 entryId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[300] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(300));
-    this->mErrorCode[300] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_INVITE_REQ(entryId) != static_cast<s32>(0)) {
-                    this->mStatus[300] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(300));
-                    this->mComTimer[300] = 0.0f;
+    mStatus[300] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(300);
+    mErrorCode[300] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_INVITE_REQ(entryId) != 0) {
+                    mStatus[300] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(300);
+                    mComTimer[300] = 0.0f;
                     return true;
                 }
             }
@@ -10034,16 +10053,16 @@ bool cNetGameServer::getClanInvitedList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[303] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(303));
-    this->mErrorCode[303] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[303] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(303));
-                    this->mComTimer[303] = 0.0f;
+    mStatus[303] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(303);
+    mErrorCode[303] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ() != 0) {
+                    mStatus[303] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(303);
+                    mComTimer[303] = 0.0f;
                     return true;
                 }
             }
@@ -10057,16 +10076,16 @@ bool cNetGameServer::allowInvitedClan(u32 inviteId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[304] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(304));
-    this->mErrorCode[304] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ(inviteId, true) != static_cast<s32>(0)) {
-                    this->mStatus[304] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(304));
-                    this->mComTimer[304] = 0.0f;
+    mStatus[304] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(304);
+    mErrorCode[304] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ(inviteId, true) != 0) {
+                    mStatus[304] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(304);
+                    mComTimer[304] = 0.0f;
                     return true;
                 }
             }
@@ -10080,16 +10099,16 @@ bool cNetGameServer::denyInvitedClan(u32 inviteId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[304] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(304));
-    this->mErrorCode[304] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ(inviteId, false) != static_cast<s32>(0)) {
-                    this->mStatus[304] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(304));
-                    this->mComTimer[304] = 0.0f;
+    mStatus[304] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(304);
+    mErrorCode[304] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ(inviteId, false) != 0) {
+                    mStatus[304] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(304);
+                    mComTimer[304] = 0.0f;
                     return true;
                 }
             }
@@ -10103,16 +10122,16 @@ bool cNetGameServer::getClanInviteList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[301] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(301));
-    this->mErrorCode[301] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[301] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(301));
-                    this->mComTimer[301] = 0.0f;
+    mStatus[301] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(301);
+    mErrorCode[301] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ() != 0) {
+                    mStatus[301] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(301);
+                    mComTimer[301] = 0.0f;
                     return true;
                 }
             }
@@ -10126,16 +10145,16 @@ bool cNetGameServer::cancelInviteClan(u32 inviteId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[302] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(302));
-    this->mErrorCode[302] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ(inviteId) != static_cast<s32>(0)) {
-                    this->mStatus[302] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(302));
-                    this->mComTimer[302] = 0.0f;
+    mStatus[302] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(302);
+    mErrorCode[302] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ(inviteId) != 0) {
+                    mStatus[302] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(302);
+                    mComTimer[302] = 0.0f;
                     return true;
                 }
             }
@@ -10149,16 +10168,16 @@ bool cNetGameServer::inviteClanDirect(u32 characterId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[306] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(306));
-    this->mErrorCode[306] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_INVITE_REQ(characterId) != static_cast<s32>(0)) {
-                    this->mStatus[306] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(306));
-                    this->mComTimer[306] = 0.0f;
+    mStatus[306] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(306);
+    mErrorCode[306] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_INVITE_REQ(characterId) != 0) {
+                    mStatus[306] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(306);
+                    mComTimer[306] = 0.0f;
                     return true;
                 }
             }
@@ -10172,16 +10191,16 @@ bool cNetGameServer::allowInviteClanDirect(u32 clanId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[307] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(307));
-    this->mErrorCode[307] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_INVITE_ACCEPT_REQ(clanId) != static_cast<s32>(0)) {
-                    this->mStatus[307] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(307));
-                    this->mComTimer[307] = 0.0f;
+    mStatus[307] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(307);
+    mErrorCode[307] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_INVITE_ACCEPT_REQ(clanId) != 0) {
+                    mStatus[307] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(307);
+                    mComTimer[307] = 0.0f;
                     return true;
                 }
             }
@@ -10195,16 +10214,16 @@ bool cNetGameServer::getClanHistory() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[309] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(309));
-    this->mErrorCode[309] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_GET_HISTORY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[309] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(309));
-                    this->mComTimer[309] = 0.0f;
+    mStatus[309] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(309);
+    mErrorCode[309] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_GET_HISTORY_REQ() != 0) {
+                    mStatus[309] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(309);
+                    mComTimer[309] = 0.0f;
                     return true;
                 }
             }
@@ -10216,73 +10235,73 @@ bool cNetGameServer::getClanHistory() {
 // Address: 0x00379a80 - 0x00379a8f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES* cNetGameServer::getClanMemberListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanMemberListPacket;
+    return mpConnection->mpClanMemberListPacket;
 }
 
 // Address: 0x00379a90 - 0x00379a9f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SEARCH_RES* cNetGameServer::getClanSearchListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanSearchListPacket;
+    return mpConnection->mpClanSearchListPacket;
 }
 
 // Address: 0x00379aa0 - 0x00379aaf (15 bytes)
 nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES* cNetGameServer::getClanJoinRequestedListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanJoinRequestedListPacket;
+    return mpConnection->mpClanJoinRequestedListPacket;
 }
 
 // Address: 0x00379ab0 - 0x00379abf (15 bytes)
 nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES* cNetGameServer::getClanApplyListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanApplyListPacket;
+    return mpConnection->mpClanApplyListPacket;
 }
 
 // Address: 0x00379ac0 - 0x00379acf (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES* cNetGameServer::getClanScoutEntryListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanScoutEntryListPacket;
+    return mpConnection->mpClanScoutEntryListPacket;
 }
 
 // Address: 0x00379ad0 - 0x00379adf (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES* cNetGameServer::getClanInviteListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanInviteListPacket;
+    return mpConnection->mpClanInviteListPacket;
 }
 
 // Address: 0x00379ae0 - 0x00379aef (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES* cNetGameServer::getClanInvitedListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanInvitedListPacket;
+    return mpConnection->mpClanInvitedListPacket;
 }
 
 // Address: 0x0035fa80 - 0x0035fa8f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES* cNetGameServer::getClanBaseGetInfoResPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanBaseGetInfoResPacket;
+    return mpConnection->mpClanBaseGetInfoResPacket;
 }
 
 // Address: 0x00379af0 - 0x00379aff (15 bytes)
 nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES* cNetGameServer::getClanConciergeGetListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanConciergeGetListPacket;
+    return mpConnection->mpClanConciergeGetListPacket;
 }
 
 // Address: 0x00379b00 - 0x00379b0f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES* cNetGameServer::getClanShopGetFunctionItemListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanShopGetFunctionItemListPacket;
+    return mpConnection->mpClanShopGetFunctionItemListPacket;
 }
 
 // Address: 0x00379b10 - 0x00379b1f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES* cNetGameServer::getClanShopGetBuffItemListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanShopGetBuffItemListPacket;
+    return mpConnection->mpClanShopGetBuffItemListPacket;
 }
 
 // Address: 0x00379b20 - 0x00379b2f (15 bytes)
 nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES* cNetGameServer::getClanGetHistoryPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpClanGetHistoryPacket;
+    return mpConnection->mpClanGetHistoryPacket;
 }
 
 // Address: 0x00379f70 - 0x0037a010 (160 bytes)
@@ -10565,16 +10584,16 @@ bool cNetGameServer::updateClanSetting(bool isNtc) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[305] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(305));
-    this->mErrorCode[305] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SETTING_UPDATE_REQ(isNtc) != static_cast<s32>(0)) {
-                    this->mStatus[305] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(305));
-                    this->mComTimer[305] = 0.0f;
+    mStatus[305] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(305);
+    mErrorCode[305] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SETTING_UPDATE_REQ(isNtc) != 0) {
+                    mStatus[305] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(305);
+                    mComTimer[305] = 0.0f;
                     return true;
                 }
             }
@@ -10622,7 +10641,7 @@ __attribute__((weak)) void cNetGameServer::clearClanDirectInvitedInfo() {
 // Address: 0x0035fa00 - 0x0035fa07 (7 bytes)
 void cNetGameServer::setMyMoneyClanPoint(u32 moneyPoint) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMyClanParam.m_ClanServerParam.m_unMoneyClanPoint = moneyPoint;
+    mMyClanParam.m_ClanServerParam.m_unMoneyClanPoint = moneyPoint;
 }
 
 // Address: 0x0035fa10 - 0x0035fa7e (110 bytes)
@@ -10656,10 +10675,10 @@ __attribute__((weak)) bool cNetGameServer::setOnlineStatus(nCharacter::E_ONLINE_
 // Address: 0x0035fb40 - 0x0035fb77 (55 bytes)
 bool cNetGameServer::eventStartNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_EVENT_START_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_EVENT_START_NTC() != 0;
             }
         }
     }
@@ -10669,10 +10688,10 @@ bool cNetGameServer::eventStartNotice() {
 // Address: 0x0035fb80 - 0x0035fbb7 (55 bytes)
 bool cNetGameServer::eventEndNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_EVENT_END_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_EVENT_END_NTC() != 0;
             }
         }
     }
@@ -10685,97 +10704,97 @@ bool cNetGameServer::getFriendList() {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x35fbf0 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mFriendList.mLength != 0) {
         // inferred: the value the loop at 0x35fbf0 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mFriendList.::MtArray::mLength;
+        u32 v0_0 = v0_8->mFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mFriendList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mFriendList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mFriendList.::MtArray::mLength) {
-                    v0_0 = v0_8->mFriendList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mFriendList.mpArray[i0_3] != nullptr) {
+                delete v0_8->mFriendList.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mFriendList.mLength) {
+                    v0_0 = v0_8->mFriendList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    v0_8->mFriendList.::MtArray::mLength = static_cast<u32>(0);
-    if (v0_8->mApplyingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    v0_8->mFriendList.mLength = 0;
+    if (v0_8->mApplyingFriendList.mLength != 0) {
         // inferred: the value the loop at 0x35fc40 carries; no location-less local in scope fits
-        u32 v2_0 = v0_8->mApplyingFriendList.::MtArray::mLength;
+        u32 v2_0 = v0_8->mApplyingFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < v0_8->mApplyingFriendList.::MtArray::mLength) {
-                    v2_0 = v0_8->mApplyingFriendList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (v0_8->mApplyingFriendList.mpArray[i2_3] != nullptr) {
+                delete v0_8->mApplyingFriendList.mpArray[i2_3];
+                if ((i2_3 + 1u) < v0_8->mApplyingFriendList.mLength) {
+                    v2_0 = v0_8->mApplyingFriendList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mApplyingFriendList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApplyingFriendList.::MtArray::mpArray));
+    if (v0_8->mApplyingFriendList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApplyingFriendList.mpArray));
     }
-    v0_8->mApplyingFriendList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mApplyingFriendList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mApplyingFriendList.::MtArray::mLength = static_cast<u32>(0);
-    if (v0_8->mApprovingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    v0_8->mApplyingFriendList.mpArray = nullptr;
+    v0_8->mApplyingFriendList.mBufsiz = 0;
+    v0_8->mApplyingFriendList.mLength = 0;
+    if (v0_8->mApprovingFriendList.mLength != 0) {
         // inferred: the value the loop at 0x35fcd0 carries; no location-less local in scope fits
-        u32 v4_0 = v0_8->mApprovingFriendList.::MtArray::mLength;
+        u32 v4_0 = v0_8->mApprovingFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < v0_8->mApprovingFriendList.::MtArray::mLength) {
-                    v4_0 = v0_8->mApprovingFriendList.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (v0_8->mApprovingFriendList.mpArray[i4_3] != nullptr) {
+                delete v0_8->mApprovingFriendList.mpArray[i4_3];
+                if ((i4_3 + 1u) < v0_8->mApprovingFriendList.mLength) {
+                    v4_0 = v0_8->mApprovingFriendList.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mApprovingFriendList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApprovingFriendList.::MtArray::mpArray));
+    if (v0_8->mApprovingFriendList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApprovingFriendList.mpArray));
     }
-    v0_8->mApprovingFriendList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mApprovingFriendList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mApprovingFriendList.::MtArray::mLength = static_cast<u32>(0);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mFriendUpdate = false;
-    this->mStatus[311] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(311));
-    this->mErrorCode[311] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_FRIEND_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[311] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(311));
-                    this->mComTimer[311] = 0.0f;
+    v0_8->mApprovingFriendList.mpArray = nullptr;
+    v0_8->mApprovingFriendList.mBufsiz = 0;
+    v0_8->mApprovingFriendList.mLength = 0;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendUpdate = false;
+    mStatus[311] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(311);
+    mErrorCode[311] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_FRIEND_LIST_REQ() != 0) {
+                    mStatus[311] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(311);
+                    mComTimer[311] = 0.0f;
                     return true;
                 }
             }
@@ -10789,16 +10808,16 @@ bool cNetGameServer::applyFriend(u32 charId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[312] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(312));
-    this->mErrorCode[312] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_APPLY_FRIEND_REQ(charId) != static_cast<s32>(0)) {
-                    this->mStatus[312] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(312));
-                    this->mComTimer[312] = 0.0f;
+    mStatus[312] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(312);
+    mErrorCode[312] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_APPLY_FRIEND_REQ(charId) != 0) {
+                    mStatus[312] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(312);
+                    mComTimer[312] = 0.0f;
                     return true;
                 }
             }
@@ -10812,17 +10831,17 @@ bool cNetGameServer::cancelFriend(u32 charId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[313] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(313));
-    this->mErrorCode[313] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mCancelFriendCharacterId = charId;
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CANCEL_FRIEND_APPLICATION_REQ(charId) != static_cast<s32>(0)) {
-                    this->mStatus[313] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(313));
-                    this->mComTimer[313] = 0.0f;
+    mStatus[313] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(313);
+    mErrorCode[313] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mCancelFriendCharacterId = charId;
+                if (mpConnection->Send_C2S_CANCEL_FRIEND_APPLICATION_REQ(charId) != 0) {
+                    mStatus[313] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(313);
+                    mComTimer[313] = 0.0f;
                     return true;
                 }
             }
@@ -10839,17 +10858,17 @@ bool cNetGameServer::approveFriend(u32 charId, bool isApprove) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a value cast to the type its use takes: bool used as u8
-    this->mStatus[314] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(314));
-    this->mErrorCode[314] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mIsFriendApprove = isApprove;
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_APPROVE_FRIEND_REQ(charId, static_cast<u8>(isApprove)) != static_cast<s32>(0)) {
-                    this->mStatus[314] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(314));
-                    this->mComTimer[314] = 0.0f;
+    mStatus[314] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(314);
+    mErrorCode[314] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                mIsFriendApprove = isApprove;
+                if (mpConnection->Send_C2S_APPROVE_FRIEND_REQ(charId, static_cast<u8>(isApprove)) != 0) {
+                    mStatus[314] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(314);
+                    mComTimer[314] = 0.0f;
                     return true;
                 }
             }
@@ -10863,17 +10882,17 @@ bool cNetGameServer::removeFriend(u32 friendNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[315] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(315));
-    this->mErrorCode[315] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                this->mRemoveFriendNo = friendNo;
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REMOVE_FRIEND_REQ(friendNo) != static_cast<s32>(0)) {
-                    this->mStatus[315] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(315));
-                    this->mComTimer[315] = 0.0f;
+    mStatus[315] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(315);
+    mErrorCode[315] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                mRemoveFriendNo = friendNo;
+                if (mpConnection->Send_C2S_REMOVE_FRIEND_REQ(friendNo) != 0) {
+                    mStatus[315] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(315);
+                    mComTimer[315] = 0.0f;
                     return true;
                 }
             }
@@ -10887,16 +10906,16 @@ bool cNetGameServer::setFavoriteFriend(u32 friendNo, bool isFavorite) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[316] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(316));
-    this->mErrorCode[316] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REGISTER_FAVORITE_FRIEND_REQ(friendNo, isFavorite) != static_cast<s32>(0)) {
-                    this->mStatus[316] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(316));
-                    this->mComTimer[316] = 0.0f;
+    mStatus[316] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(316);
+    mErrorCode[316] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REGISTER_FAVORITE_FRIEND_REQ(friendNo, isFavorite) != 0) {
+                    mStatus[316] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(316);
+                    mComTimer[316] = 0.0f;
                     return true;
                 }
             }
@@ -10945,26 +10964,26 @@ CFriendInfo* cNetGameServer::getFriendInfo(u32 friendNo) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x89c8 from cNetGameServer*
     // inferred: the value the loop at 0x360170 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(35272));
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 35272);
     // inferred: the value carried to 0x36018c; no location-less local in scope fits
     MtObject* v1_0;
-    if (v0_0 == static_cast<unsigned int>(0)) {
-        v1_0 = static_cast<MtObject*>(nullptr);
+    if (v0_0 == 0) {
+        v1_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x360170 carries; no location-less local in scope fits
-        MtObject* * v0_2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mFriendList.::MtArray::getBuffer();
+        MtObject* * v0_2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-            if (v0_2[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + static_cast<long>(116))) == friendNo) {
+        for (unsigned int i0_1 = 0;;) {
+            if (v0_2[static_cast<int>(i0_1)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + 116)) == friendNo) {
                     v1_0 = v0_2[static_cast<int>(i0_1)];
                     break;
                 }
             }
-            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 += 1u;
             } else {
-                v1_0 = static_cast<MtObject*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
@@ -10979,26 +10998,26 @@ CFriendInfo* cNetGameServer::getFriendInfoCharId(u32 characterId) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x89c8 from cNetGameServer*
     // inferred: the value the loop at 0x3601c0 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(35272));
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 35272);
     // inferred: the value carried to 0x3601dc; no location-less local in scope fits
     MtObject* v1_0;
-    if (v0_0 == static_cast<unsigned int>(0)) {
-        v1_0 = static_cast<MtObject*>(nullptr);
+    if (v0_0 == 0) {
+        v1_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x3601c0 carries; no location-less local in scope fits
-        MtObject* * v0_2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mFriendList.::MtArray::getBuffer();
+        MtObject* * v0_2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mFriendList.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-            if (v0_2[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + static_cast<long>(24))) == characterId) {
+        for (unsigned int i0_1 = 0;;) {
+            if (v0_2[static_cast<int>(i0_1)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + 24)) == characterId) {
                     v1_0 = v0_2[static_cast<int>(i0_1)];
                     break;
                 }
             }
-            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 += 1u;
             } else {
-                v1_0 = static_cast<MtObject*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
@@ -11059,16 +11078,16 @@ bool cNetGameServer::getEntryBoardItemList(u64 BoardID, u32 Offset, u32 Num) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[396] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(396));
-    this->mErrorCode[396] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_LIST_REQ(BoardID, Offset, Num, this->mEntryBoardFilterParam) != static_cast<s32>(0)) {
-                    this->mStatus[396] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(396));
-                    this->mComTimer[396] = 0.0f;
+    mStatus[396] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(396);
+    mErrorCode[396] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ENTRY_BOARD_ITEM_LIST_REQ(BoardID, Offset, Num, mEntryBoardFilterParam) != 0) {
+                    mStatus[396] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(396);
+                    mComTimer[396] = 0.0f;
                     return true;
                 }
             }
@@ -11091,16 +11110,16 @@ bool cNetGameServer::leaveEntryBoardItem() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[398] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(398));
-    this->mErrorCode[398] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_LEAVE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[398] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(398));
-                    this->mComTimer[398] = 0.0f;
+    mStatus[398] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(398);
+    mErrorCode[398] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ENTRY_BOARD_ITEM_LEAVE_REQ() != 0) {
+                    mStatus[398] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(398);
+                    mComTimer[398] = 0.0f;
                     return true;
                 }
             }
@@ -11114,16 +11133,16 @@ bool cNetGameServer::readyEntryBoardItem() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[400] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(400));
-    this->mErrorCode[400] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_READY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[400] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(400));
-                    this->mComTimer[400] = 0.0f;
+    mStatus[400] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(400);
+    mErrorCode[400] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ENTRY_BOARD_ITEM_READY_REQ() != 0) {
+                    mStatus[400] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(400);
+                    mComTimer[400] = 0.0f;
                     return true;
                 }
             }
@@ -11137,16 +11156,16 @@ bool cNetGameServer::startEntryBoardItem() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[401] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(401));
-    this->mErrorCode[401] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_FORCE_START_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[401] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(401));
-                    this->mComTimer[401] = 0.0f;
+    mStatus[401] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(401);
+    mErrorCode[401] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ENTRY_BOARD_ITEM_FORCE_START_REQ() != 0) {
+                    mStatus[401] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(401);
+                    mComTimer[401] = 0.0f;
                     return true;
                 }
             }
@@ -11160,16 +11179,16 @@ bool cNetGameServer::extendEntryBoardItem() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[402] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(402));
-    this->mErrorCode[402] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[402] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(402));
-                    this->mComTimer[402] = 0.0f;
+    mStatus[402] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(402);
+    mErrorCode[402] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_REQ() != 0) {
+                    mStatus[402] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(402);
+                    mComTimer[402] = 0.0f;
                     return true;
                 }
             }
@@ -11247,7 +11266,7 @@ __attribute__((weak)) void cNetGameServer::copyEntryRecruitJob(EntryRecruitJobVe
 // Address: 0x00379d00 - 0x00379d0f (15 bytes)
 nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES* cNetGameServer::getEntryBoardItemListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpEntryBoardItemListPacket;
+    return mpConnection->mpEntryBoardItemListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11256,7 +11275,7 @@ nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES* cNetGameServer::getEntryBoa
 // Address: 0x00379d20 - 0x00379d2f (15 bytes)
 nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES* cNetGameServer::getEntryBoardItemInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpEntryBoardItemInfoPacket;
+    return mpConnection->mpEntryBoardItemInfoPacket;
 }
 
 // Address: 0x0037a790 - 0x0037a838 (168 bytes)
@@ -11396,16 +11415,16 @@ bool cNetGameServer::reqGetJobchangeList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[391] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(391));
-    this->mErrorCode[391] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_JOB_CHANGE_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[391] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(391));
-                    this->mComTimer[391] = 0.0f;
+    mStatus[391] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(391);
+    mErrorCode[391] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_JOB_CHANGE_LIST_REQ() != 0) {
+                    mStatus[391] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(391);
+                    mComTimer[391] = 0.0f;
                     return true;
                 }
             }
@@ -11424,17 +11443,17 @@ bool cNetGameServer::reqChangeJob(u8 job) {
     // inferred: a value cast to the type its use takes: u8 used as u32
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8a50 from cNetGameServer*
-    this->mChangeJob = static_cast<u32>(job);
-    this->mStatus[392] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(392));
-    this->mErrorCode[392] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_JOB_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(35408))) != static_cast<s32>(0)) {
-                    this->mStatus[392] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(392));
-                    this->mComTimer[392] = 0.0f;
+    mChangeJob = static_cast<u32>(job);
+    mStatus[392] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(392);
+    mErrorCode[392] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_JOB_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35408)) != 0) {
+                    mStatus[392] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(392);
+                    mComTimer[392] = 0.0f;
                     return true;
                 }
             }
@@ -11453,18 +11472,18 @@ bool cNetGameServer::reqChangePawnJob(u32 pawnID, u8 job) {
     // inferred: a value cast to the type its use takes: u8 used as u32
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8a50 from cNetGameServer*
-    this->mChangeJobPawnId = pawnID;
-    this->mChangeJob = static_cast<u32>(job);
-    this->mStatus[393] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(393));
-    this->mErrorCode[393] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_JOB_REQ(this->mChangeJobPawnId, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(35408))) != static_cast<s32>(0)) {
-                    this->mStatus[393] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(393));
-                    this->mComTimer[393] = 0.0f;
+    mChangeJobPawnId = pawnID;
+    mChangeJob = static_cast<u32>(job);
+    mStatus[393] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(393);
+    mErrorCode[393] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpConnection) + 96)) == 4) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHANGE_PAWN_JOB_REQ(mChangeJobPawnId, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35408)) != 0) {
+                    mStatus[393] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(393);
+                    mComTimer[393] = 0.0f;
                     return true;
                 }
             }
@@ -11476,7 +11495,7 @@ bool cNetGameServer::reqChangePawnJob(u32 pawnID, u8 job) {
 // Address: 0x00379cf0 - 0x00379cff (15 bytes)
 nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES* cNetGameServer::getGetJobChangeListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetJobChangeListPacket;
+    return mpConnection->mpGetJobChangeListPacket;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11489,13 +11508,13 @@ nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES* cNetGameServer::getGetJobChan
 bool cNetGameServer::sendBadStatusNotice(u32 condition) {
     // DWARF local not rendered: u32 statusId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if ((condition - static_cast<u32>(4097)) > static_cast<u32>(30)) {
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if ((condition - 4097u) > 30u) {
                     return false;
                 } else {
-                    return this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_START_BAD_STATUS_NOTICE(condition - static_cast<u32>(4097)) != static_cast<s32>(0);
+                    return mpConnection->Send_C2S_CHARACTER_START_BAD_STATUS_NOTICE(condition - 4097u) != 0;
                 }
             } else {
                 return false;
@@ -11516,17 +11535,17 @@ bool cNetGameServer::getMailListHead() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReceiveMail = false;
-    this->mStatus[413] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(413));
-    this->mErrorCode[413] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_HEAD_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[413] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(413));
-                    this->mComTimer[413] = 0.0f;
+    mIsReceiveMail = false;
+    mStatus[413] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(413);
+    mErrorCode[413] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MAIL_GET_LIST_HEAD_REQ() != 0) {
+                    mStatus[413] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(413);
+                    mComTimer[413] = 0.0f;
                     return true;
                 }
             }
@@ -11540,16 +11559,16 @@ bool cNetGameServer::getMailListData(u32 offset, u32 num) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[414] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(414));
-    this->mErrorCode[414] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_DATA_REQ(offset, num) != static_cast<s32>(0)) {
-                    this->mStatus[414] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(414));
-                    this->mComTimer[414] = 0.0f;
+    mStatus[414] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(414);
+    mErrorCode[414] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MAIL_GET_LIST_DATA_REQ(offset, num) != 0) {
+                    mStatus[414] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(414);
+                    mComTimer[414] = 0.0f;
                     return true;
                 }
             }
@@ -11563,16 +11582,16 @@ bool cNetGameServer::getMailListFoot() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[415] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(415));
-    this->mErrorCode[415] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MAIL_GET_LIST_FOOT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[415] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(415));
-                    this->mComTimer[415] = 0.0f;
+    mStatus[415] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(415);
+    mErrorCode[415] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MAIL_GET_LIST_FOOT_REQ() != 0) {
+                    mStatus[415] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(415);
+                    mComTimer[415] = 0.0f;
                     return true;
                 }
             }
@@ -11586,16 +11605,16 @@ bool cNetGameServer::getMailData(u64 mailId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[416] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(416));
-    this->mErrorCode[416] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MAIL_GET_TEXT_REQ(mailId) != static_cast<s32>(0)) {
-                    this->mStatus[416] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(416));
-                    this->mComTimer[416] = 0.0f;
+    mStatus[416] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(416);
+    mErrorCode[416] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MAIL_GET_TEXT_REQ(mailId) != 0) {
+                    mStatus[416] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(416);
+                    mComTimer[416] = 0.0f;
                     return true;
                 }
             }
@@ -11609,16 +11628,16 @@ bool cNetGameServer::deleteMail(u64 mailId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[417] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(417));
-    this->mErrorCode[417] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MAIL_DELETE_REQ(mailId) != static_cast<s32>(0)) {
-                    this->mStatus[417] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(417));
-                    this->mComTimer[417] = 0.0f;
+    mStatus[417] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(417);
+    mErrorCode[417] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MAIL_DELETE_REQ(mailId) != 0) {
+                    mStatus[417] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(417);
+                    mComTimer[417] = 0.0f;
                     return true;
                 }
             }
@@ -11640,17 +11659,17 @@ bool cNetGameServer::getSysMailListHead() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReceiveMail = false;
-    this->mStatus[419] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(419));
-    this->mErrorCode[419] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_HEAD_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[419] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(419));
-                    this->mComTimer[419] = 0.0f;
+    mIsReceiveMail = false;
+    mStatus[419] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(419);
+    mErrorCode[419] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_GET_LIST_HEAD_REQ() != 0) {
+                    mStatus[419] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(419);
+                    mComTimer[419] = 0.0f;
                     return true;
                 }
             }
@@ -11664,16 +11683,16 @@ bool cNetGameServer::getSysMailListData(u32 offset, u32 num) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[420] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(420));
-    this->mErrorCode[420] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_DATA_REQ(offset, num) != static_cast<s32>(0)) {
-                    this->mStatus[420] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(420));
-                    this->mComTimer[420] = 0.0f;
+    mStatus[420] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(420);
+    mErrorCode[420] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_GET_LIST_DATA_REQ(offset, num) != 0) {
+                    mStatus[420] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(420);
+                    mComTimer[420] = 0.0f;
                     return true;
                 }
             }
@@ -11687,16 +11706,16 @@ bool cNetGameServer::getSysMailListFoot() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[421] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(421));
-    this->mErrorCode[421] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_LIST_FOOT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[421] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(421));
-                    this->mComTimer[421] = 0.0f;
+    mStatus[421] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(421);
+    mErrorCode[421] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_GET_LIST_FOOT_REQ() != 0) {
+                    mStatus[421] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(421);
+                    mComTimer[421] = 0.0f;
                     return true;
                 }
             }
@@ -11710,16 +11729,16 @@ bool cNetGameServer::getSysMailData(u64 mailId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[422] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(422));
-    this->mErrorCode[422] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_TEXT_REQ(mailId) != static_cast<s32>(0)) {
-                    this->mStatus[422] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(422));
-                    this->mComTimer[422] = 0.0f;
+    mStatus[422] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(422);
+    mErrorCode[422] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_GET_TEXT_REQ(mailId) != 0) {
+                    mStatus[422] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(422);
+                    mComTimer[422] = 0.0f;
                     return true;
                 }
             }
@@ -11736,16 +11755,16 @@ bool cNetGameServer::getSysMailItemAll(u64 mailId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[424] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(424));
-    this->mErrorCode[424] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_GET_ALL_ITEM_REQ(mailId) != static_cast<s32>(0)) {
-                    this->mStatus[424] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(424));
-                    this->mComTimer[424] = 0.0f;
+    mStatus[424] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(424);
+    mErrorCode[424] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_GET_ALL_ITEM_REQ(mailId) != 0) {
+                    mStatus[424] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(424);
+                    mComTimer[424] = 0.0f;
                     return true;
                 }
             }
@@ -11759,16 +11778,16 @@ bool cNetGameServer::deleteSysMail(u64 mailId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[425] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(425));
-    this->mErrorCode[425] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SYSTEM_MAIL_DELETE_REQ(mailId) != static_cast<s32>(0)) {
-                    this->mStatus[425] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(425));
-                    this->mComTimer[425] = 0.0f;
+    mStatus[425] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(425);
+    mErrorCode[425] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SYSTEM_MAIL_DELETE_REQ(mailId) != 0) {
+                    mStatus[425] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(425);
+                    mComTimer[425] = 0.0f;
                     return true;
                 }
             }
@@ -11889,9 +11908,9 @@ bool cNetGameServer::isUnreadMail(CMailInfo* pInfo) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (pInfo != static_cast<CMailInfo*>(nullptr)) {
-        if (pInfo->m_ucState != static_cast<u8>(2)) {
-            return static_cast<bool>((static_cast<unsigned long>(pInfo->m_ucItemState) & static_cast<unsigned long>((pInfo->m_ucItemState & static_cast<u8>(254)) != static_cast<u8>(0))) & static_cast<unsigned long>(1));
+    if (pInfo != nullptr) {
+        if (pInfo->m_ucState != 2) {
+            return static_cast<bool>((static_cast<unsigned long>(pInfo->m_ucItemState) & static_cast<unsigned long>((pInfo->m_ucItemState & 254) != 0)) & 1ul);
         } else {
             return true;
         }
@@ -11903,7 +11922,7 @@ bool cNetGameServer::isUnreadMail(CMailInfo* pInfo) {
 // Address: 0x00365150 - 0x00365163 (19 bytes)
 bool cNetGameServer::isUnOpenedMail(CMailInfo* pInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (pInfo != static_cast<CMailInfo*>(nullptr)) && (pInfo->m_ucState == static_cast<u8>(2));
+    return (pInfo != nullptr) && (pInfo->m_ucState == 2);
 }
 
 // Address: 0x00365170 - 0x003651be (78 bytes)
@@ -11918,21 +11937,21 @@ __attribute__((weak)) u32 cNetGameServer::getUnGetItemMailNum() {
 // Address: 0x00365130 - 0x0036514b (27 bytes)
 bool cNetGameServer::isUnGetItemMail(CMailInfo* pInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (pInfo != static_cast<CMailInfo*>(nullptr)) && (((pInfo->m_ucItemState & static_cast<u8>(1)) != static_cast<u8>(0)) && ((pInfo->m_ucItemState & static_cast<u8>(254)) != static_cast<u8>(0)));
+    return (pInfo != nullptr) && (((pInfo->m_ucItemState & 1) != 0) && ((pInfo->m_ucItemState & 254) != 0));
 }
 
 // Address: 0x003651c0 - 0x003651d0 (16 bytes)
 bool cNetGameServer::withOptionCourseMail(CMailInfo* pInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (pInfo != static_cast<CMailInfo*>(nullptr)) && ((pInfo->m_ucItemState & static_cast<u8>(8)) != static_cast<u8>(0));
+    return (pInfo != nullptr) && ((pInfo->m_ucItemState & 8) != 0);
 }
 
 // Address: 0x003651d0 - 0x003651ef (31 bytes)
 bool cNetGameServer::isExistNewMail() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mAddMailList.::MtArray::mLength == static_cast<u32>(0)) {
-        if (this->mAddSysMailList.::MtArray::mLength == static_cast<u32>(0)) {
-            return this->mEnableUpdateSysMail != false;
+    if (mAddMailList.mLength == 0) {
+        if (mAddSysMailList.mLength == 0) {
+            return mEnableUpdateSysMail;
         }
     }
     return true;
@@ -11941,14 +11960,14 @@ bool cNetGameServer::isExistNewMail() {
 // Address: 0x003651f0 - 0x003651fb (11 bytes)
 bool cNetGameServer::isExistNewUserMail() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAddMailList.::MtArray::mLength != static_cast<u32>(0);
+    return mAddMailList.mLength != 0;
 }
 
 // Address: 0x00365200 - 0x00365216 (22 bytes)
 bool cNetGameServer::isExistNewSysMail() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mAddSysMailList.::MtArray::mLength == static_cast<u32>(0)) {
-        return this->mEnableUpdateSysMail != false;
+    if (mAddSysMailList.mLength == 0) {
+        return mEnableUpdateSysMail;
     } else {
         return true;
     }
@@ -11963,13 +11982,13 @@ __attribute__((weak)) void cNetGameServer::clearMailDetail() {
 // Address: 0x00379d30 - 0x00379d3f (15 bytes)
 nUserSession::CPacket_S2C_MAIL_GET_TEXT_RES* cNetGameServer::getUserMailPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpMailGetTextPacket;
+    return mpConnection->mpMailGetTextPacket;
 }
 
 // Address: 0x00379d40 - 0x00379d4f (15 bytes)
 nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES* cNetGameServer::getSystemMailPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpSysMailGetTextPacket;
+    return mpConnection->mpSysMailGetTextPacket;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (119 bytes)
@@ -12002,247 +12021,253 @@ nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES* cNetGameServer::getSystemMai
 // Address: 0x00365420 - 0x00365871 (1105 bytes)
 void cNetGameServer::clearGetAttachmentList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mGetAttachmentList.m_ItemList.::MtArray::mAutoDelete = true;
-    this->mGetAttachmentList.m_GPList.::MtArray::mAutoDelete = true;
-    this->mGetAttachmentList.m_OptionCourseList.::MtArray::mAutoDelete = true;
-    this->mGetAttachmentList.m_LegendPawnList.::MtArray::mAutoDelete = true;
-    if (this->mGetAttachmentList.m_ItemList.::MtArray::mLength != static_cast<u32>(0)) {
+    mGetAttachmentList.m_ItemList.mAutoDelete = true;
+    mGetAttachmentList.m_GPList.mAutoDelete = true;
+    mGetAttachmentList.m_OptionCourseList.mAutoDelete = true;
+    mGetAttachmentList.m_LegendPawnList.mAutoDelete = true;
+    if (mGetAttachmentList.m_ItemList.mLength != 0) {
         // inferred: the value the loop at 0x365460 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGetAttachmentList.m_ItemList.::MtArray::mLength;
+        u32 v0_0 = mGetAttachmentList.m_ItemList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGetAttachmentList.m_ItemList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGetAttachmentList.m_ItemList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGetAttachmentList.m_ItemList.::MtArray::mLength) {
-                    v0_0 = this->mGetAttachmentList.m_ItemList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGetAttachmentList.m_ItemList.mpArray[i0_3] != nullptr) {
+                delete mGetAttachmentList.m_ItemList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGetAttachmentList.m_ItemList.mLength) {
+                    v0_0 = mGetAttachmentList.m_ItemList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGetAttachmentList.m_ItemList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGetAttachmentList.m_ItemList.::MtArray::mpArray));
+    if (mGetAttachmentList.m_ItemList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGetAttachmentList.m_ItemList.mpArray));
     }
-    this->mGetAttachmentList.m_ItemList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGetAttachmentList.m_ItemList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGetAttachmentList.m_ItemList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mGetAttachmentList.m_GPList.::MtArray::mLength != static_cast<u32>(0)) {
+    mGetAttachmentList.m_ItemList.mpArray = nullptr;
+    mGetAttachmentList.m_ItemList.mBufsiz = 0;
+    mGetAttachmentList.m_ItemList.mLength = 0;
+    if (mGetAttachmentList.m_GPList.mLength != 0) {
         // inferred: the value the loop at 0x3654e0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mGetAttachmentList.m_GPList.::MtArray::mLength;
+        u32 v2_0 = mGetAttachmentList.m_GPList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGetAttachmentList.m_GPList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGetAttachmentList.m_GPList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mGetAttachmentList.m_GPList.::MtArray::mLength) {
-                    v2_0 = this->mGetAttachmentList.m_GPList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mGetAttachmentList.m_GPList.mpArray[i2_3] != nullptr) {
+                delete mGetAttachmentList.m_GPList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mGetAttachmentList.m_GPList.mLength) {
+                    v2_0 = mGetAttachmentList.m_GPList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGetAttachmentList.m_GPList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGetAttachmentList.m_GPList.::MtArray::mpArray));
+    if (mGetAttachmentList.m_GPList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGetAttachmentList.m_GPList.mpArray));
     }
-    this->mGetAttachmentList.m_GPList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGetAttachmentList.m_GPList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGetAttachmentList.m_GPList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mGetAttachmentList.m_OptionCourseList.::MtArray::mLength != static_cast<u32>(0)) {
+    mGetAttachmentList.m_GPList.mpArray = nullptr;
+    mGetAttachmentList.m_GPList.mBufsiz = 0;
+    mGetAttachmentList.m_GPList.mLength = 0;
+    if (mGetAttachmentList.m_OptionCourseList.mLength != 0) {
         // inferred: the value the loop at 0x365560 carries; no location-less local in scope fits
-        u32 v4_0 = this->mGetAttachmentList.m_OptionCourseList.::MtArray::mLength;
+        u32 v4_0 = mGetAttachmentList.m_OptionCourseList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGetAttachmentList.m_OptionCourseList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGetAttachmentList.m_OptionCourseList.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mGetAttachmentList.m_OptionCourseList.::MtArray::mLength) {
-                    v4_0 = this->mGetAttachmentList.m_OptionCourseList.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mGetAttachmentList.m_OptionCourseList.mpArray[i4_3] != nullptr) {
+                delete mGetAttachmentList.m_OptionCourseList.mpArray[i4_3];
+                if ((i4_3 + 1u) < mGetAttachmentList.m_OptionCourseList.mLength) {
+                    v4_0 = mGetAttachmentList.m_OptionCourseList.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGetAttachmentList.m_OptionCourseList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGetAttachmentList.m_OptionCourseList.::MtArray::mpArray));
+    if (mGetAttachmentList.m_OptionCourseList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGetAttachmentList.m_OptionCourseList.mpArray));
     }
-    this->mGetAttachmentList.m_OptionCourseList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGetAttachmentList.m_OptionCourseList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGetAttachmentList.m_OptionCourseList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mGetAttachmentList.m_LegendPawnList.::MtArray::mLength != static_cast<u32>(0)) {
+    mGetAttachmentList.m_OptionCourseList.mpArray = nullptr;
+    mGetAttachmentList.m_OptionCourseList.mBufsiz = 0;
+    mGetAttachmentList.m_OptionCourseList.mLength = 0;
+    if (mGetAttachmentList.m_LegendPawnList.mLength != 0) {
         // inferred: the value the loop at 0x3655e0 carries; no location-less local in scope fits
-        u32 v6_0 = this->mGetAttachmentList.m_LegendPawnList.::MtArray::mLength;
+        u32 v6_0 = mGetAttachmentList.m_LegendPawnList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i6_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGetAttachmentList.m_LegendPawnList.::MtArray::mpArray[i6_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGetAttachmentList.m_LegendPawnList.::MtArray::mpArray[i6_3];
-                if ((i6_3 + static_cast<unsigned int>(1)) < this->mGetAttachmentList.m_LegendPawnList.::MtArray::mLength) {
-                    v6_0 = this->mGetAttachmentList.m_LegendPawnList.::MtArray::mLength;
-                    i6_3 += static_cast<unsigned int>(1);
+        for (unsigned int i6_3 = 0;;) {
+            if (mGetAttachmentList.m_LegendPawnList.mpArray[i6_3] != nullptr) {
+                delete mGetAttachmentList.m_LegendPawnList.mpArray[i6_3];
+                if ((i6_3 + 1u) < mGetAttachmentList.m_LegendPawnList.mLength) {
+                    v6_0 = mGetAttachmentList.m_LegendPawnList.mLength;
+                    i6_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i6_3 + static_cast<unsigned int>(1)) < v6_0) {
-                    i6_3 += static_cast<unsigned int>(1);
+                if ((i6_3 + 1u) < v6_0) {
+                    i6_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGetAttachmentList.m_LegendPawnList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGetAttachmentList.m_LegendPawnList.::MtArray::mpArray));
+    if (mGetAttachmentList.m_LegendPawnList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGetAttachmentList.m_LegendPawnList.mpArray));
     }
-    this->mGetAttachmentList.m_LegendPawnList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGetAttachmentList.m_LegendPawnList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGetAttachmentList.m_LegendPawnList.::MtArray::mLength = static_cast<u32>(0);
-    this->mUnGetAttachmentList.m_ItemList.::MtArray::mAutoDelete = true;
-    this->mUnGetAttachmentList.m_GPList.::MtArray::mAutoDelete = true;
-    this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mAutoDelete = true;
-    this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mAutoDelete = true;
-    if (this->mUnGetAttachmentList.m_ItemList.::MtArray::mLength != static_cast<u32>(0)) {
+    mGetAttachmentList.m_LegendPawnList.mpArray = nullptr;
+    mGetAttachmentList.m_LegendPawnList.mBufsiz = 0;
+    mGetAttachmentList.m_LegendPawnList.mLength = 0;
+    mUnGetAttachmentList.m_ItemList.mAutoDelete = true;
+    mUnGetAttachmentList.m_GPList.mAutoDelete = true;
+    mUnGetAttachmentList.m_OptionCourseList.mAutoDelete = true;
+    mUnGetAttachmentList.m_LegendPawnList.mAutoDelete = true;
+    if (mUnGetAttachmentList.m_ItemList.mLength != 0) {
         // inferred: the value the loop at 0x365680 carries; no location-less local in scope fits
-        u32 v8_0 = this->mUnGetAttachmentList.m_ItemList.::MtArray::mLength;
+        u32 v8_0 = mUnGetAttachmentList.m_ItemList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i8_3 = static_cast<unsigned int>(0);;) {
-            if (this->mUnGetAttachmentList.m_ItemList.::MtArray::mpArray[i8_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mUnGetAttachmentList.m_ItemList.::MtArray::mpArray[i8_3];
-                if ((i8_3 + static_cast<unsigned int>(1)) < this->mUnGetAttachmentList.m_ItemList.::MtArray::mLength) {
-                    v8_0 = this->mUnGetAttachmentList.m_ItemList.::MtArray::mLength;
-                    i8_3 += static_cast<unsigned int>(1);
+        for (unsigned int i8_3 = 0;;) {
+            if (mUnGetAttachmentList.m_ItemList.mpArray[i8_3] != nullptr) {
+                delete mUnGetAttachmentList.m_ItemList.mpArray[i8_3];
+                if ((i8_3 + 1u) < mUnGetAttachmentList.m_ItemList.mLength) {
+                    v8_0 = mUnGetAttachmentList.m_ItemList.mLength;
+                    i8_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i8_3 + static_cast<unsigned int>(1)) < v8_0) {
-                    i8_3 += static_cast<unsigned int>(1);
+                if ((i8_3 + 1u) < v8_0) {
+                    i8_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mUnGetAttachmentList.m_ItemList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mUnGetAttachmentList.m_ItemList.::MtArray::mpArray));
+    if (mUnGetAttachmentList.m_ItemList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mUnGetAttachmentList.m_ItemList.mpArray));
     }
-    this->mUnGetAttachmentList.m_ItemList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mUnGetAttachmentList.m_ItemList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mUnGetAttachmentList.m_ItemList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mUnGetAttachmentList.m_GPList.::MtArray::mLength != static_cast<u32>(0)) {
+    mUnGetAttachmentList.m_ItemList.mpArray = nullptr;
+    mUnGetAttachmentList.m_ItemList.mBufsiz = 0;
+    mUnGetAttachmentList.m_ItemList.mLength = 0;
+    if (mUnGetAttachmentList.m_GPList.mLength != 0) {
         // inferred: the value the loop at 0x365700 carries; no location-less local in scope fits
-        u32 v10_0 = this->mUnGetAttachmentList.m_GPList.::MtArray::mLength;
+        u32 v10_0 = mUnGetAttachmentList.m_GPList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i10_3 = static_cast<unsigned int>(0);;) {
-            if (this->mUnGetAttachmentList.m_GPList.::MtArray::mpArray[i10_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mUnGetAttachmentList.m_GPList.::MtArray::mpArray[i10_3];
-                if ((i10_3 + static_cast<unsigned int>(1)) < this->mUnGetAttachmentList.m_GPList.::MtArray::mLength) {
-                    v10_0 = this->mUnGetAttachmentList.m_GPList.::MtArray::mLength;
-                    i10_3 += static_cast<unsigned int>(1);
+        for (unsigned int i10_3 = 0;;) {
+            if (mUnGetAttachmentList.m_GPList.mpArray[i10_3] != nullptr) {
+                delete mUnGetAttachmentList.m_GPList.mpArray[i10_3];
+                if ((i10_3 + 1u) < mUnGetAttachmentList.m_GPList.mLength) {
+                    v10_0 = mUnGetAttachmentList.m_GPList.mLength;
+                    i10_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i10_3 + static_cast<unsigned int>(1)) < v10_0) {
-                    i10_3 += static_cast<unsigned int>(1);
+                if ((i10_3 + 1u) < v10_0) {
+                    i10_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mUnGetAttachmentList.m_GPList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mUnGetAttachmentList.m_GPList.::MtArray::mpArray));
+    if (mUnGetAttachmentList.m_GPList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mUnGetAttachmentList.m_GPList.mpArray));
     }
-    this->mUnGetAttachmentList.m_GPList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mUnGetAttachmentList.m_GPList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mUnGetAttachmentList.m_GPList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mLength != static_cast<u32>(0)) {
+    mUnGetAttachmentList.m_GPList.mpArray = nullptr;
+    mUnGetAttachmentList.m_GPList.mBufsiz = 0;
+    mUnGetAttachmentList.m_GPList.mLength = 0;
+    if (mUnGetAttachmentList.m_OptionCourseList.mLength != 0) {
         // inferred: the value the loop at 0x365780 carries; no location-less local in scope fits
-        u32 v12_0 = this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mLength;
+        u32 v12_0 = mUnGetAttachmentList.m_OptionCourseList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i12_3 = static_cast<unsigned int>(0);;) {
-            if (this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mpArray[i12_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mpArray[i12_3];
-                if ((i12_3 + static_cast<unsigned int>(1)) < this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mLength) {
-                    v12_0 = this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mLength;
-                    i12_3 += static_cast<unsigned int>(1);
+        for (unsigned int i12_3 = 0;;) {
+            if (mUnGetAttachmentList.m_OptionCourseList.mpArray[i12_3] != nullptr) {
+                delete mUnGetAttachmentList.m_OptionCourseList.mpArray[i12_3];
+                if ((i12_3 + 1u) < mUnGetAttachmentList.m_OptionCourseList.mLength) {
+                    v12_0 = mUnGetAttachmentList.m_OptionCourseList.mLength;
+                    i12_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i12_3 + static_cast<unsigned int>(1)) < v12_0) {
-                    i12_3 += static_cast<unsigned int>(1);
+                if ((i12_3 + 1u) < v12_0) {
+                    i12_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mpArray));
+    if (mUnGetAttachmentList.m_OptionCourseList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mUnGetAttachmentList.m_OptionCourseList.mpArray));
     }
-    this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mUnGetAttachmentList.m_OptionCourseList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mLength != static_cast<u32>(0)) {
+    mUnGetAttachmentList.m_OptionCourseList.mpArray = nullptr;
+    mUnGetAttachmentList.m_OptionCourseList.mBufsiz = 0;
+    mUnGetAttachmentList.m_OptionCourseList.mLength = 0;
+    if (mUnGetAttachmentList.m_LegendPawnList.mLength != 0) {
         // inferred: the value the loop at 0x365800 carries; no location-less local in scope fits
-        u32 v14_0 = this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mLength;
+        u32 v14_0 = mUnGetAttachmentList.m_LegendPawnList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i14_3 = static_cast<unsigned int>(0);;) {
-            if (this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mpArray[i14_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mpArray[i14_3];
-                if ((i14_3 + static_cast<unsigned int>(1)) < this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mLength) {
-                    v14_0 = this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mLength;
-                    i14_3 += static_cast<unsigned int>(1);
+        for (unsigned int i14_3 = 0;;) {
+            if (mUnGetAttachmentList.m_LegendPawnList.mpArray[i14_3] != nullptr) {
+                delete mUnGetAttachmentList.m_LegendPawnList.mpArray[i14_3];
+                if ((i14_3 + 1u) < mUnGetAttachmentList.m_LegendPawnList.mLength) {
+                    v14_0 = mUnGetAttachmentList.m_LegendPawnList.mLength;
+                    i14_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i14_3 + static_cast<unsigned int>(1)) < v14_0) {
-                    i14_3 += static_cast<unsigned int>(1);
+                if ((i14_3 + 1u) < v14_0) {
+                    i14_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mpArray));
+    if (mUnGetAttachmentList.m_LegendPawnList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mUnGetAttachmentList.m_LegendPawnList.mpArray));
     }
-    this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mUnGetAttachmentList.m_LegendPawnList.::MtArray::mLength = static_cast<u32>(0);
+    mUnGetAttachmentList.m_LegendPawnList.mpArray = nullptr;
+    mUnGetAttachmentList.m_LegendPawnList.mBufsiz = 0;
+    mUnGetAttachmentList.m_LegendPawnList.mLength = 0;
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cNetGameServer::move at 0x0033f954-0x0033f97d (called at cNetGameServer.cpp:1571)
-// void cNetGameServer::countMailUpdateTimer();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetGameServer::move at 0x33f954-0x33f97d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::countMailUpdateTimer() {
+    if (mEnableUpdateSysMailTimer > 0.0f) {
+        mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - (sMain::mpInstance)->mDeltaTime;
+    }
+}
 
-// No out-of-line body: 1 inlined copy in 1 function (66 bytes)
-//   in cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES at 0x00371444-0x00371486 (called at cNetGameServer.cpp:21949)
-// void cNetGameServer::resetMailUpdateTimer();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetGameServer::OnPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES at 0x371444-0x371486; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetGameServer::resetMailUpdateTimer() {
+    mEnableUpdateSysMailTimer = (sMain::mpInstance)->mFps * static_cast<float>(static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mpConnection->mpGetGameSettingPacket->m_GameSetting.m_unMailCacheExpireTime);
+}
 
 // Address: 0x003658a0 - 0x003658c0 (32 bytes)
 __attribute__((weak)) bool cNetGameServer::isEnableMailUpdate() {
@@ -12255,16 +12280,16 @@ bool cNetGameServer::getRankingBoardList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[426] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(426));
-    this->mErrorCode[426] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RANKING_BOARD_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[426] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(426));
-                    this->mComTimer[426] = 0.0f;
+    mStatus[426] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(426);
+    mErrorCode[426] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RANKING_BOARD_LIST_REQ() != 0) {
+                    mStatus[426] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(426);
+                    mComTimer[426] = 0.0f;
                     return true;
                 }
             }
@@ -12300,25 +12325,25 @@ __attribute__((weak)) bool cNetGameServer::getRankingDataCharacterId(const u32 i
 // Address: 0x00379d50 - 0x00379d5f (15 bytes)
 nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES* cNetGameServer::getRankingBoardListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpRankingBoardListPacket;
+    return mpConnection->mpRankingBoardListPacket;
 }
 
 // Address: 0x00379d60 - 0x00379d6f (15 bytes)
 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES* cNetGameServer::getRankingDataRankPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpRankingDataRankPacket;
+    return mpConnection->mpRankingDataRankPacket;
 }
 
 // Address: 0x00379d70 - 0x00379d7f (15 bytes)
 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES* cNetGameServer::getRankingDataRankByQuestScheduleIdPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpRankingDataRankByQuestScheduleIdPacket;
+    return mpConnection->mpRankingDataRankByQuestScheduleIdPacket;
 }
 
 // Address: 0x00379d80 - 0x00379d8f (15 bytes)
 nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES* cNetGameServer::getRankingDataCharacterIdPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpRankingDataCharacterIdPacket;
+    return mpConnection->mpRankingDataCharacterIdPacket;
 }
 
 // Address: 0x0037a980 - 0x0037aa20 (160 bytes)
@@ -12347,16 +12372,16 @@ bool cNetGameServer::getBazaarCharacterInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[430] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(430));
-    this->mErrorCode[430] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_GET_CHARACTER_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[430] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(430));
-                    this->mComTimer[430] = 0.0f;
+    mStatus[430] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(430);
+    mErrorCode[430] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_GET_CHARACTER_LIST_REQ() != 0) {
+                    mStatus[430] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(430);
+                    mComTimer[430] = 0.0f;
                     return true;
                 }
             }
@@ -12378,16 +12403,16 @@ bool cNetGameServer::getBazaarItemInfo(u32 itemId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[432] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(432));
-    this->mErrorCode[432] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_INFO_REQ(itemId) != static_cast<s32>(0)) {
-                    this->mStatus[432] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(432));
-                    this->mComTimer[432] = 0.0f;
+    mStatus[432] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(432);
+    mErrorCode[432] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_GET_ITEM_INFO_REQ(itemId) != 0) {
+                    mStatus[432] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(432);
+                    mComTimer[432] = 0.0f;
                     return true;
                 }
             }
@@ -12401,16 +12426,16 @@ bool cNetGameServer::getBazaarItemHistory(u32 itemId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[433] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(433));
-    this->mErrorCode[433] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_HISTORY_INFO_REQ(itemId) != static_cast<s32>(0)) {
-                    this->mStatus[433] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(433));
-                    this->mComTimer[433] = 0.0f;
+    mStatus[433] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(433);
+    mErrorCode[433] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_GET_ITEM_HISTORY_INFO_REQ(itemId) != 0) {
+                    mStatus[433] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(433);
+                    mComTimer[433] = 0.0f;
                     return true;
                 }
             }
@@ -12435,16 +12460,16 @@ bool cNetGameServer::restartBazaarExhibit(u64 bazaarId, u32 price) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[435] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(435));
-    this->mErrorCode[435] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_RE_EXHIBIT_REQ(bazaarId, price) != static_cast<s32>(0)) {
-                    this->mStatus[435] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(435));
-                    this->mComTimer[435] = 0.0f;
+    mStatus[435] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(435);
+    mErrorCode[435] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_RE_EXHIBIT_REQ(bazaarId, price) != 0) {
+                    mStatus[435] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(435);
+                    mComTimer[435] = 0.0f;
                     return true;
                 }
             }
@@ -12458,16 +12483,16 @@ bool cNetGameServer::cancelBazaarExhibit(u64 bazaarId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[436] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(436));
-    this->mErrorCode[436] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_CANCEL_REQ(bazaarId) != static_cast<s32>(0)) {
-                    this->mStatus[436] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(436));
-                    this->mComTimer[436] = 0.0f;
+    mStatus[436] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(436);
+    mErrorCode[436] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_CANCEL_REQ(bazaarId) != 0) {
+                    mStatus[436] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(436);
+                    mComTimer[436] = 0.0f;
                     return true;
                 }
             }
@@ -12489,16 +12514,16 @@ bool cNetGameServer::getBazaarProceeds() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[438] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(438));
-    this->mErrorCode[438] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_RECEIVE_PROCEEDS_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[438] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(438));
-                    this->mComTimer[438] = 0.0f;
+    mStatus[438] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(438);
+    mErrorCode[438] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_RECEIVE_PROCEEDS_REQ() != 0) {
+                    mStatus[438] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(438);
+                    mComTimer[438] = 0.0f;
                     return true;
                 }
             }
@@ -12512,16 +12537,16 @@ bool cNetGameServer::getBazaarItemPrimLimit(u32 itemId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[439] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(439));
-    this->mErrorCode[439] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ(itemId) != static_cast<s32>(0)) {
-                    this->mStatus[439] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(439));
-                    this->mComTimer[439] = 0.0f;
+    mStatus[439] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(439);
+    mErrorCode[439] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ(itemId) != 0) {
+                    mStatus[439] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(439);
+                    mComTimer[439] = 0.0f;
                     return true;
                 }
             }
@@ -12535,16 +12560,16 @@ bool cNetGameServer::getBazaarExhibitPossibleNum() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[440] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(440));
-    this->mErrorCode[440] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[440] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(440));
-                    this->mComTimer[440] = 0.0f;
+    mStatus[440] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(440);
+    mErrorCode[440] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_REQ() != 0) {
+                    mStatus[440] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(440);
+                    mComTimer[440] = 0.0f;
                     return true;
                 }
             }
@@ -12558,17 +12583,17 @@ bool cNetGameServer::getGroupChatMemberList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mGroupChatUpdate = false;
-    this->mStatus[441] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(441));
-    this->mErrorCode[441] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GROUP_CHAT_GET_MEMBER_LIST_REQ(static_cast<u64>(0)) != static_cast<s32>(0)) {
-                    this->mStatus[441] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(441));
-                    this->mComTimer[441] = 0.0f;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mGroupChatUpdate = false;
+    mStatus[441] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(441);
+    mErrorCode[441] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GROUP_CHAT_GET_MEMBER_LIST_REQ(0ul) != 0) {
+                    mStatus[441] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(441);
+                    mComTimer[441] = 0.0f;
                     return true;
                 }
             }
@@ -12582,16 +12607,16 @@ bool cNetGameServer::inviteGroupChat(u32 characterId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[442] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(442));
-    this->mErrorCode[442] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GROUP_CHAT_INVITE_CHARACTER_REQ(static_cast<u64>(0), characterId) != static_cast<s32>(0)) {
-                    this->mStatus[442] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(442));
-                    this->mComTimer[442] = 0.0f;
+    mStatus[442] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(442);
+    mErrorCode[442] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GROUP_CHAT_INVITE_CHARACTER_REQ(0ul, characterId) != 0) {
+                    mStatus[442] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(442);
+                    mComTimer[442] = 0.0f;
                     return true;
                 }
             }
@@ -12605,16 +12630,16 @@ bool cNetGameServer::leaveGroupChat() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[444] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(444));
-    this->mErrorCode[444] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GROUP_CHAT_LEAVE_CHARACTER_REQ(static_cast<u64>(0)) != static_cast<s32>(0)) {
-                    this->mStatus[444] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(444));
-                    this->mComTimer[444] = 0.0f;
+    mStatus[444] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(444);
+    mErrorCode[444] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GROUP_CHAT_LEAVE_CHARACTER_REQ(0ul) != 0) {
+                    mStatus[444] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(444);
+                    mComTimer[444] = 0.0f;
                     return true;
                 }
             }
@@ -12628,16 +12653,16 @@ bool cNetGameServer::kickGroupChat(u32 characterId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[443] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(443));
-    this->mErrorCode[443] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GROUP_CHAT_KICK_CHARACTER_REQ(static_cast<u64>(0), characterId) != static_cast<s32>(0)) {
-                    this->mStatus[443] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(443));
-                    this->mComTimer[443] = 0.0f;
+    mStatus[443] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(443);
+    mErrorCode[443] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GROUP_CHAT_KICK_CHARACTER_REQ(0ul, characterId) != 0) {
+                    mStatus[443] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(443);
+                    mComTimer[443] = 0.0f;
                     return true;
                 }
             }
@@ -12697,17 +12722,17 @@ bool cNetGameServer::getRecentList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mRecentListStatusUpdate = false;
-    this->mStatus[445] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(445));
-    this->mErrorCode[445] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RECENT_CHARACTER_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[445] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(445));
-                    this->mComTimer[445] = 0.0f;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRecentListStatusUpdate = false;
+    mStatus[445] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(445);
+    mErrorCode[445] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RECENT_CHARACTER_LIST_REQ() != 0) {
+                    mStatus[445] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(445);
+                    mComTimer[445] = 0.0f;
                     return true;
                 }
             }
@@ -12755,16 +12780,16 @@ bool cNetGameServer::getBlackList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[446] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(446));
-    this->mErrorCode[446] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_BLACK_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[446] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(446));
-                    this->mComTimer[446] = 0.0f;
+    mStatus[446] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(446);
+    mErrorCode[446] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_BLACK_LIST_REQ() != 0) {
+                    mStatus[446] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(446);
+                    mComTimer[446] = 0.0f;
                     return true;
                 }
             }
@@ -12778,16 +12803,16 @@ bool cNetGameServer::addBlackList(CCommunityCharacterBaseInfo& info) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[447] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(447));
-    this->mErrorCode[447] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ADD_BLACK_LIST_REQ(info) != static_cast<s32>(0)) {
-                    this->mStatus[447] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(447));
-                    this->mComTimer[447] = 0.0f;
+    mStatus[447] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(447);
+    mErrorCode[447] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ADD_BLACK_LIST_REQ(info) != 0) {
+                    mStatus[447] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(447);
+                    mComTimer[447] = 0.0f;
                     return true;
                 }
             }
@@ -12801,16 +12826,16 @@ bool cNetGameServer::removeBlackList(u32 characterId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[448] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(448));
-    this->mErrorCode[448] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REMOVE_BLACK_LIST_REQ(characterId) != static_cast<s32>(0)) {
-                    this->mStatus[448] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(448));
-                    this->mComTimer[448] = 0.0f;
+    mStatus[448] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(448);
+    mErrorCode[448] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REMOVE_BLACK_LIST_REQ(characterId) != 0) {
+                    mStatus[448] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(448);
+                    mComTimer[448] = 0.0f;
                     return true;
                 }
             }
@@ -12843,17 +12868,17 @@ bool cNetGameServer::reqUpdateCommunityCharacterStatus() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveListUpdate = false;
-    this->mStatus[494] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(494));
-    this->mErrorCode[494] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_COMMUNITY_CHARACTER_STATUS_GET_REQ(static_cast<u32>(1)) != static_cast<s32>(0)) {
-                    this->mStatus[494] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(494));
-                    this->mComTimer[494] = 0.0f;
+    mActiveListUpdate = false;
+    mStatus[494] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(494);
+    mErrorCode[494] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_COMMUNITY_CHARACTER_STATUS_GET_REQ(1u) != 0) {
+                    mStatus[494] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(494);
+                    mComTimer[494] = 0.0f;
                     return true;
                 }
             }
@@ -12873,10 +12898,10 @@ bool cNetGameServer::reqUpdateCommunityCharacterStatus() {
 // Address: 0x00367a10 - 0x00367a47 (55 bytes)
 bool cNetGameServer::updateLastBase(u32 baseId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_LAST_BASE_NTC(baseId) != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_UPDATE_LAST_BASE_NTC(baseId) != 0;
             }
         }
     }
@@ -12888,16 +12913,16 @@ bool cNetGameServer::getReturnLocation() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[449] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(449));
-    this->mErrorCode[449] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_RETURN_LOCATION_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[449] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(449));
-                    this->mComTimer[449] = 0.0f;
+    mStatus[449] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(449);
+    mErrorCode[449] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_RETURN_LOCATION_REQ() != 0) {
+                    mStatus[449] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(449);
+                    mComTimer[449] = 0.0f;
                     return true;
                 }
             }
@@ -12909,7 +12934,7 @@ bool cNetGameServer::getReturnLocation() {
 // Address: 0x00379d90 - 0x00379d9f (15 bytes)
 nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES* cNetGameServer::getArisenCardBGListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpArisenCardBGListPacket;
+    return mpConnection->mpArisenCardBGListPacket;
 }
 
 // Address: 0x0037ade0 - 0x0037ae80 (160 bytes)
@@ -12923,16 +12948,16 @@ bool cNetGameServer::getAchievementProgress() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[450] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(450));
-    this->mErrorCode[450] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_PROGRESS_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[450] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(450));
-                    this->mComTimer[450] = 0.0f;
+    mStatus[450] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(450);
+    mErrorCode[450] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ACHIEVEMENT_GET_PROGRESS_LIST_REQ() != 0) {
+                    mStatus[450] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(450);
+                    mComTimer[450] = 0.0f;
                     return true;
                 }
             }
@@ -12946,16 +12971,16 @@ bool cNetGameServer::getAchievementReward() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[451] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(451));
-    this->mErrorCode[451] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_REWARD_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[451] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(451));
-                    this->mComTimer[451] = 0.0f;
+    mStatus[451] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(451);
+    mErrorCode[451] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ACHIEVEMENT_GET_REWARD_LIST_REQ() != 0) {
+                    mStatus[451] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(451);
+                    mComTimer[451] = 0.0f;
                     return true;
                 }
             }
@@ -12969,16 +12994,16 @@ bool cNetGameServer::getFurnitureReward() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[531] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(531));
-    this->mErrorCode[531] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[531] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(531));
-                    this->mComTimer[531] = 0.0f;
+    mStatus[531] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(531);
+    mErrorCode[531] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_REQ() != 0) {
+                    mStatus[531] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(531);
+                    mComTimer[531] = 0.0f;
                     return true;
                 }
             }
@@ -12992,16 +13017,16 @@ bool cNetGameServer::getAchievementReceivableReward() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[532] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(532));
-    this->mErrorCode[532] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[532] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(532));
-                    this->mComTimer[532] = 0.0f;
+    mStatus[532] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(532);
+    mErrorCode[532] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_REQ() != 0) {
+                    mStatus[532] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(532);
+                    mComTimer[532] = 0.0f;
                     return true;
                 }
             }
@@ -13015,16 +13040,16 @@ bool cNetGameServer::achievementReceiveReward(const AchieveRewardCommonVec& rewa
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[533] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(533));
-    this->mErrorCode[533] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_ACHIEVEMENT_REWARD_RECEIVE_REQ(reward_list) != static_cast<s32>(0)) {
-                    this->mStatus[533] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(533));
-                    this->mComTimer[533] = 0.0f;
+    mStatus[533] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(533);
+    mErrorCode[533] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_ACHIEVEMENT_REWARD_RECEIVE_REQ(reward_list) != 0) {
+                    mStatus[533] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(533);
+                    mComTimer[533] = 0.0f;
                     return true;
                 }
             }
@@ -13036,10 +13061,10 @@ bool cNetGameServer::achievementReceiveReward(const AchieveRewardCommonVec& rewa
 // Address: 0x00367dc0 - 0x00367df7 (55 bytes)
 bool cNetGameServer::sendPhotoTakeNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_PHOTO_TAKE_NTC() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_PHOTO_TAKE_NTC() != 0;
             }
         }
     }
@@ -13060,7 +13085,7 @@ __attribute__((weak)) bool cNetGameServer::reqGetCaplinkAchieveReward(const char
 // Address: 0x00379da0 - 0x00379daf (15 bytes)
 nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES* cNetGameServer::getAchievementGetProgressListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAchievementGetProgressListPacket;
+    return mpConnection->mpAchievementGetProgressListPacket;
 }
 
 // Address: 0x0037ae80 - 0x0037af20 (160 bytes)
@@ -13072,7 +13097,7 @@ __attribute__((weak)) void cNetGameServer::clearAchievementGetProgressListPacket
 // Address: 0x00379db0 - 0x00379dbf (15 bytes)
 nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES* cNetGameServer::getAchievementGetRewardListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAchievementGetRewardListPacket;
+    return mpConnection->mpAchievementGetRewardListPacket;
 }
 
 // Address: 0x0037af20 - 0x0037afc0 (160 bytes)
@@ -13084,7 +13109,7 @@ __attribute__((weak)) void cNetGameServer::clearAchievementGetRewardListPacket()
 // Address: 0x00379dc0 - 0x00379dcf (15 bytes)
 nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES* cNetGameServer::getAchievementGetFurnitureRewardListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAchievementGetFurnitureRewardListPacket;
+    return mpConnection->mpAchievementGetFurnitureRewardListPacket;
 }
 
 // Address: 0x0037afc0 - 0x0037b060 (160 bytes)
@@ -13096,7 +13121,7 @@ __attribute__((weak)) void cNetGameServer::clearAchievementGetFurnitureRewardLis
 // Address: 0x00379dd0 - 0x00379ddf (15 bytes)
 nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES* cNetGameServer::getAchievementGetReceiveableRewardListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAchievementGetReceiveableRewardListPacket;
+    return mpConnection->mpAchievementGetReceiveableRewardListPacket;
 }
 
 // Address: 0x0037b060 - 0x0037b100 (160 bytes)
@@ -13108,7 +13133,7 @@ __attribute__((weak)) void cNetGameServer::clearAchievementGetReceiveableRewardL
 // Address: 0x00379de0 - 0x00379def (15 bytes)
 nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES* cNetGameServer::getAchievementRewardReceivePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpAchievementRewardReceivePacket;
+    return mpConnection->mpAchievementRewardReceivePacket;
 }
 
 // Address: 0x0037b100 - 0x0037b1be (190 bytes)
@@ -13120,10 +13145,10 @@ __attribute__((weak)) void cNetGameServer::clearAchievementRewardReceivePacket()
 // Address: 0x00368040 - 0x00368077 (55 bytes)
 bool cNetGameServer::sendCharacterDownNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_NOTICE() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_CHARACTER_DOWN_NOTICE() != 0;
             }
         }
     }
@@ -13133,10 +13158,10 @@ bool cNetGameServer::sendCharacterDownNotice() {
 // Address: 0x00368080 - 0x003680b7 (55 bytes)
 bool cNetGameServer::sendCharacterDownCancelNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_DOWN_CANCEL_NOTICE() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_CHARACTER_DOWN_CANCEL_NOTICE() != 0;
             }
         }
     }
@@ -13146,10 +13171,10 @@ bool cNetGameServer::sendCharacterDownCancelNotice() {
 // Address: 0x003680c0 - 0x003680f7 (55 bytes)
 bool cNetGameServer::sendCharacterDeadNotice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_DEAD_NOTICE() != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_CHARACTER_DEAD_NOTICE() != 0;
             }
         }
     }
@@ -13161,20 +13186,20 @@ bool cNetGameServer::reqCharacterPointRevive(u32 maxHp) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    cContextPlayerInfo* pPlInfo = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
-    if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+    cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getContextMyPlayer());
+    if (pPlInfo != nullptr) {
         // inferred: a temporary for the result of the call at 0x368133, used once; no DWARF local holds it
-        f32 t0 = pPlInfo->mBaseInfo.::nJobParam::cHumanBaseInfo::getFinalMaxHP();
-        this->mStatus[452] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(452));
-        this->mErrorCode[452] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
-                        this->mStatus[452] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(452));
-                        this->mComTimer[452] = 0.0f;
+        f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+        mStatus[452] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(452);
+        mErrorCode[452] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_POINT_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
+                        mStatus[452] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(452);
+                        mComTimer[452] = 0.0f;
                         return true;
                     }
                 }
@@ -13182,16 +13207,16 @@ bool cNetGameServer::reqCharacterPointRevive(u32 maxHp) {
         }
         return false;
     } else {
-        this->mStatus[452] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(452));
-        this->mErrorCode[452] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ(maxHp) != static_cast<s32>(0)) {
-                        this->mStatus[452] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(452));
-                        this->mComTimer[452] = 0.0f;
+        mStatus[452] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(452);
+        mErrorCode[452] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_POINT_REVIVE_REQ(maxHp) != 0) {
+                        mStatus[452] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(452);
+                        mComTimer[452] = 0.0f;
                         return true;
                     }
                 }
@@ -13206,20 +13231,20 @@ bool cNetGameServer::reqCharacterGoldenRevive(u32 maxHp) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    cContextPlayerInfo* pPlInfo = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
-    if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+    cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getContextMyPlayer());
+    if (pPlInfo != nullptr) {
         // inferred: a temporary for the value the load at 0x3681fc read, used once; no DWARF local holds it
         f32 t0 = pPlInfo->mNoBadHpMax_pri;
-        this->mStatus[453] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(453));
-        this->mErrorCode[453] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
-                        this->mStatus[453] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(453));
-                        this->mComTimer[453] = 0.0f;
+        mStatus[453] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(453);
+        mErrorCode[453] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
+                        mStatus[453] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(453);
+                        mComTimer[453] = 0.0f;
                         return true;
                     }
                 }
@@ -13227,16 +13252,16 @@ bool cNetGameServer::reqCharacterGoldenRevive(u32 maxHp) {
         }
         return false;
     } else {
-        this->mStatus[453] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(453));
-        this->mErrorCode[453] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(maxHp) != static_cast<s32>(0)) {
-                        this->mStatus[453] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(453));
-                        this->mComTimer[453] = 0.0f;
+        mStatus[453] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(453);
+        mErrorCode[453] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(maxHp) != 0) {
+                        mStatus[453] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(453);
+                        mComTimer[453] = 0.0f;
                         return true;
                     }
                 }
@@ -13251,20 +13276,20 @@ bool cNetGameServer::reqCharacterPenaltyRevive(u32 maxHp) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    cContextPlayerInfo* pPlInfo = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
-    if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+    cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getContextMyPlayer());
+    if (pPlInfo != nullptr) {
         // inferred: a temporary for the value the load at 0x3682cc read, used once; no DWARF local holds it
         f32 t0 = pPlInfo->mWeakHpMax_pri;
-        this->mStatus[454] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(454));
-        this->mErrorCode[454] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
-                        this->mStatus[454] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(454));
-                        this->mComTimer[454] = 0.0f;
+        mStatus[454] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(454);
+        mErrorCode[454] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
+                        mStatus[454] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(454);
+                        mComTimer[454] = 0.0f;
                         return true;
                     }
                 }
@@ -13272,16 +13297,16 @@ bool cNetGameServer::reqCharacterPenaltyRevive(u32 maxHp) {
         }
         return false;
     } else {
-        this->mStatus[454] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(454));
-        this->mErrorCode[454] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(maxHp) != static_cast<s32>(0)) {
-                        this->mStatus[454] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(454));
-                        this->mComTimer[454] = 0.0f;
+        mStatus[454] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(454);
+        mErrorCode[454] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(maxHp) != 0) {
+                        mStatus[454] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(454);
+                        mComTimer[454] = 0.0f;
                         return true;
                     }
                 }
@@ -13294,10 +13319,10 @@ bool cNetGameServer::reqCharacterPenaltyRevive(u32 maxHp) {
 // Address: 0x00368370 - 0x003683a7 (55 bytes)
 bool cNetGameServer::sendPawnDownNotice(unsigned int pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_DOWN_NOTICE(pawnId) != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_PAWN_DOWN_NOTICE(pawnId) != 0;
             }
         }
     }
@@ -13307,10 +13332,10 @@ bool cNetGameServer::sendPawnDownNotice(unsigned int pawnId) {
 // Address: 0x003683b0 - 0x003683e7 (55 bytes)
 bool cNetGameServer::sendPawnDownCancelNotice(unsigned int pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_DOWN_CANCEL_NOTICE(pawnId) != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_PAWN_DOWN_CANCEL_NOTICE(pawnId) != 0;
             }
         }
     }
@@ -13320,10 +13345,10 @@ bool cNetGameServer::sendPawnDownCancelNotice(unsigned int pawnId) {
 // Address: 0x003683f0 - 0x00368427 (55 bytes)
 bool cNetGameServer::sendPawnDeadNotice(unsigned int pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                return this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_DEAD_NOTICE(pawnId) != static_cast<s32>(0);
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                return mpConnection->Send_C2S_PAWN_DEAD_NOTICE(pawnId) != 0;
             }
         }
     }
@@ -13335,29 +13360,29 @@ bool cNetGameServer::reqPawnPointRevive(unsigned int pawnId, u32 maxHp) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mStatus[455] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(455));
-    this->mErrorCode[455] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                cContextPlayerInfo* pPlInfo = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getMyPawnContext(pawnId, static_cast<u32>(0)));
-                if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+    mStatus[455] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(455);
+    mErrorCode[455] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getMyPawnContext(pawnId, 0u));
+                if (pPlInfo != nullptr) {
                     // inferred: a temporary for the result of the call at 0x3684b0, used once; no DWARF local holds it
-                    f32 t0 = pPlInfo->mBaseInfo.::nJobParam::cHumanBaseInfo::getFinalMaxHP();
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
-                        this->mStatus[455] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(455));
-                        this->mComTimer[455] = 0.0f;
+                    f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+                    if (mpConnection->Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
+                        mStatus[455] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(455);
+                        mComTimer[455] = 0.0f;
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, maxHp) != static_cast<s32>(0)) {
-                        this->mStatus[455] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(455));
-                        this->mComTimer[455] = 0.0f;
+                    if (mpConnection->Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, maxHp) != 0) {
+                        mStatus[455] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(455);
+                        mComTimer[455] = 0.0f;
                         return true;
                     } else {
                         return false;
@@ -13379,29 +13404,29 @@ bool cNetGameServer::reqPawnGoldenRevive(unsigned int pawnId, u32 maxHp) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mStatus[456] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(456));
-    this->mErrorCode[456] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                cContextPlayerInfo* pPlInfo = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getMyPawnContext(pawnId, static_cast<u32>(0)));
-                if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+    mStatus[456] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(456);
+    mErrorCode[456] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                cContextPlayerInfo* pPlInfo = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getMyPawnContext(pawnId, 0u));
+                if (pPlInfo != nullptr) {
                     // inferred: a temporary for the result of the call at 0x368590, used once; no DWARF local holds it
-                    f32 t0 = pPlInfo->mBaseInfo.::nJobParam::cHumanBaseInfo::getFinalMaxHP();
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
-                        this->mStatus[456] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(456));
-                        this->mComTimer[456] = 0.0f;
+                    f32 t0 = pPlInfo->mBaseInfo.nJobParam::cHumanBaseInfo::getFinalMaxHP();
+                    if (mpConnection->Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != 0) {
+                        mStatus[456] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(456);
+                        mComTimer[456] = 0.0f;
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, maxHp) != static_cast<s32>(0)) {
-                        this->mStatus[456] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(456));
-                        this->mComTimer[456] = 0.0f;
+                    if (mpConnection->Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, maxHp) != 0) {
+                        mStatus[456] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(456);
+                        mComTimer[456] = 0.0f;
                         return true;
                     } else {
                         return false;
@@ -13423,16 +13448,16 @@ bool cNetGameServer::reqGetReviveChargeableTime() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[457] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(457));
-    this->mErrorCode[457] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_REVIVE_CHARGEABLE_TIME_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[457] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(457));
-                    this->mComTimer[457] = 0.0f;
+    mStatus[457] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(457);
+    mErrorCode[457] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_REVIVE_CHARGEABLE_TIME_REQ() != 0) {
+                    mStatus[457] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(457);
+                    mComTimer[457] = 0.0f;
                     return true;
                 }
             }
@@ -13446,16 +13471,16 @@ bool cNetGameServer::reqChargeRevivePoint() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[458] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(458));
-    this->mErrorCode[458] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARGE_REVIVE_POINT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[458] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(458));
-                    this->mComTimer[458] = 0.0f;
+    mStatus[458] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(458);
+    mErrorCode[458] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CHARGE_REVIVE_POINT_REQ() != 0) {
+                    mStatus[458] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(458);
+                    mComTimer[458] = 0.0f;
                     return true;
                 }
             }
@@ -13472,16 +13497,16 @@ bool cNetGameServer::reqLoadingInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[480] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(480));
-    this->mErrorCode[480] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_LOADING_GET_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[480] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(480));
-                    this->mComTimer[480] = 0.0f;
+    mStatus[480] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(480);
+    mErrorCode[480] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_LOADING_GET_INFO_REQ() != 0) {
+                    mStatus[480] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(480);
+                    mComTimer[480] = 0.0f;
                     return true;
                 }
             }
@@ -13506,16 +13531,16 @@ bool cNetGameServer::getStampBonusList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[481] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(481));
-    this->mErrorCode[481] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_STAMP_BONUS_GET_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[481] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(481));
-                    this->mComTimer[481] = 0.0f;
+    mStatus[481] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(481);
+    mErrorCode[481] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_STAMP_BONUS_GET_LIST_REQ() != 0) {
+                    mStatus[481] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(481);
+                    mComTimer[481] = 0.0f;
                     return true;
                 }
             }
@@ -13529,16 +13554,16 @@ bool cNetGameServer::checkStampBonus() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[482] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(482));
-    this->mErrorCode[482] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_STAMP_BONUS_CHECK_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[482] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(482));
-                    this->mComTimer[482] = 0.0f;
+    mStatus[482] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(482);
+    mErrorCode[482] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_STAMP_BONUS_CHECK_REQ() != 0) {
+                    mStatus[482] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(482);
+                    mComTimer[482] = 0.0f;
                     return true;
                 }
             }
@@ -13552,16 +13577,16 @@ bool cNetGameServer::recieveStampBonus(u8 stampBonusType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[483] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(483));
-    this->mErrorCode[483] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_STAMP_BONUS_RECIEVE_REQ(stampBonusType) != static_cast<s32>(0)) {
-                    this->mStatus[483] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(483));
-                    this->mComTimer[483] = 0.0f;
+    mStatus[483] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(483);
+    mErrorCode[483] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_STAMP_BONUS_RECIEVE_REQ(stampBonusType) != 0) {
+                    mStatus[483] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(483);
+                    mComTimer[483] = 0.0f;
                     return true;
                 }
             }
@@ -13575,16 +13600,16 @@ bool cNetGameServer::addStampBonusTotalNum() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[484] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(484));
-    this->mErrorCode[484] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_STAMP_BONUS_ADD_TOTAL_NUM_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[484] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(484));
-                    this->mComTimer[484] = 0.0f;
+    mStatus[484] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(484);
+    mErrorCode[484] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_STAMP_BONUS_ADD_TOTAL_NUM_REQ() != 0) {
+                    mStatus[484] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(484);
+                    mComTimer[484] = 0.0f;
                     return true;
                 }
             }
@@ -13596,13 +13621,13 @@ bool cNetGameServer::addStampBonusTotalNum() {
 // Address: 0x00379df0 - 0x00379dff (15 bytes)
 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES* cNetGameServer::getStampBonusGetListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpStampBonusGetListPacket;
+    return mpConnection->mpStampBonusGetListPacket;
 }
 
 // Address: 0x00379e00 - 0x00379e0f (15 bytes)
 nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES* cNetGameServer::getStampBonusCheckPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpStampBonusCheckPacket;
+    return mpConnection->mpStampBonusCheckPacket;
 }
 
 // Address: 0x0036c290 - 0x0036c380 (240 bytes)
@@ -13622,7 +13647,7 @@ __attribute__((weak)) bool cNetGameServer::getItemStorageInfo(const MtTypedArray
 // Address: 0x00379e30 - 0x00379e3f (15 bytes)
 nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES* cNetGameServer::getItemStorageInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpItemStorageInfo;
+    return mpConnection->mpItemStorageInfo;
 }
 
 // Address: 0x0037b5b0 - 0x0037b650 (160 bytes)
@@ -13636,16 +13661,16 @@ bool cNetGameServer::getEventCodeInput(MT_CTSTR pCode) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[486] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(486));
-    this->mErrorCode[486] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_EVENT_CODE_INPUT_REQ(pCode) != static_cast<s32>(0)) {
-                    this->mStatus[486] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(486));
-                    this->mComTimer[486] = 0.0f;
+    mStatus[486] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(486);
+    mErrorCode[486] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_EVENT_CODE_INPUT_REQ(pCode) != 0) {
+                    mStatus[486] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(486);
+                    mComTimer[486] = 0.0f;
                     return true;
                 }
             }
@@ -13659,16 +13684,16 @@ bool cNetGameServer::getReportSiteAddress() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[485] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(485));
-    this->mErrorCode[485] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_REPORT_SITE_GET_ADDRESS_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[485] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(485));
-                    this->mComTimer[485] = 0.0f;
+    mStatus[485] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(485);
+    mErrorCode[485] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_REPORT_SITE_GET_ADDRESS_REQ() != 0) {
+                    mStatus[485] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(485);
+                    mComTimer[485] = 0.0f;
                     return true;
                 }
             }
@@ -13682,16 +13707,16 @@ bool cNetGameServer::getSupportPointRateList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[495] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(495));
-    this->mErrorCode[495] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_SUPPORT_POINT_GET_RATE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[495] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(495));
-                    this->mComTimer[495] = 0.0f;
+    mStatus[495] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(495);
+    mErrorCode[495] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_SUPPORT_POINT_GET_RATE_REQ() != 0) {
+                    mStatus[495] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(495);
+                    mComTimer[495] = 0.0f;
                     return true;
                 }
             }
@@ -13714,13 +13739,13 @@ __attribute__((weak)) bool cNetGameServer::useSupportPoint(UseSupportPointVec& l
 // Address: 0x00379e10 - 0x00379e1f (15 bytes)
 nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES* cNetGameServer::getSupportPointRatePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpSupportPointRate;
+    return mpConnection->mpSupportPointRate;
 }
 
 // Address: 0x00379e20 - 0x00379e2f (15 bytes)
 nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES* cNetGameServer::getSupportPointUsePacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpSupportPointUse;
+    return mpConnection->mpSupportPointUse;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13759,19 +13784,19 @@ __attribute__((weak)) bool cNetGameServer::setItemSortData(u32 index) {
 // Address: 0x00379e40 - 0x00379e4f (15 bytes)
 nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES* cNetGameServer::getDispelItemSettingPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpDispelItemSetting;
+    return mpConnection->mpDispelItemSetting;
 }
 
 // Address: 0x00379e50 - 0x00379e5f (15 bytes)
 nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES* cNetGameServer::getDispelItemListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpDispelItemList;
+    return mpConnection->mpDispelItemList;
 }
 
 // Address: 0x00379e60 - 0x00379e6f (15 bytes)
 nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES* cNetGameServer::getExchangeDispelItemPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpExchangeDispelItem;
+    return mpConnection->mpExchangeDispelItem;
 }
 
 // Address: 0x0037b650 - 0x0037b6f0 (160 bytes)
@@ -13822,15 +13847,15 @@ bool cNetGameServer::getGameTimeBaseInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[493] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(493));
-    this->mErrorCode[493] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GAME_TIME_GET_BASEINFO_REQ() != static_cast<s32>(0)) {
-                this->mStatus[493] = static_cast<sNetworkExt::NET_STAT>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(493));
-                this->mComTimer[493] = 0.0f;
+    mStatus[493] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(493);
+    mErrorCode[493] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->Send_C2S_GAME_TIME_GET_BASEINFO_REQ() != 0) {
+                mStatus[493] = sNetworkExt::NET_STAT_REQ;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(493);
+                mComTimer[493] = 0.0f;
                 return true;
             }
         }
@@ -13843,17 +13868,17 @@ bool cNetGameServer::getPhotoAuthAddressReq() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[500] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(500));
-    this->mErrorCode[500] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                ::sScreenShot::getInstance()->mIsAuthAddrReqSucces = false;
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PHOTO_GET_AUTH_ADDRESS_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[500] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(500));
-                    this->mComTimer[500] = 0.0f;
+    mStatus[500] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(500);
+    mErrorCode[500] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                sScreenShot::getInstance()->mIsAuthAddrReqSucces = false;
+                if (mpConnection->Send_C2S_PHOTO_GET_AUTH_ADDRESS_REQ() != 0) {
+                    mStatus[500] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(500);
+                    mComTimer[500] = 0.0f;
                     return true;
                 }
             }
@@ -13865,19 +13890,19 @@ bool cNetGameServer::getPhotoAuthAddressReq() {
 // Address: 0x00379e70 - 0x00379e7f (15 bytes)
 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES* cNetGameServer::getPawnExpeditionSallyInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPawnExpeditionSallyInfo;
+    return mpConnection->mpPawnExpeditionSallyInfo;
 }
 
 // Address: 0x00379e80 - 0x00379e8f (15 bytes)
 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES* cNetGameServer::getPawnExpeditionMySallyInfoPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPawnExpeditionMySallyInfo;
+    return mpConnection->mpPawnExpeditionMySallyInfo;
 }
 
 // Address: 0x00379e90 - 0x00379e9f (15 bytes)
 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES* cNetGameServer::getPawnExpeditionSallyRewardPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPawnExpeditionSallyReward;
+    return mpConnection->mpPawnExpeditionSallyReward;
 }
 
 // Address: 0x0037bf90 - 0x0037c0b3 (291 bytes)
@@ -14073,16 +14098,16 @@ bool cNetGameServer::reqDLCLineupBoughts() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[488] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(488));
-    this->mErrorCode[488] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DLC_GET_BOUGHT_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[488] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(488));
-                    this->mComTimer[488] = 0.0f;
+    mStatus[488] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(488);
+    mErrorCode[488] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DLC_GET_BOUGHT_REQ() != 0) {
+                    mStatus[488] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(488);
+                    mComTimer[488] = 0.0f;
                     return true;
                 }
             }
@@ -14094,32 +14119,32 @@ bool cNetGameServer::reqDLCLineupBoughts() {
 // Address: 0x0035c2d0 - 0x0035c341 (113 bytes)
 void cNetGameServer::clearDLCLineupBoughts() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        DLCLineupBoughtVec* p_boughts = this->mpConnection->mpDLCLineupBoughts;
-        if (p_boughts != static_cast<DLCLineupBoughtVec*>(nullptr)) {
-            if (p_boughts->::MtArray::mAutoDelete != false) {
+    if (mpConnection != nullptr) {
+        DLCLineupBoughtVec* p_boughts = mpConnection->mpDLCLineupBoughts;
+        if (p_boughts != nullptr) {
+            if (p_boughts->::MtArray::mAutoDelete) {
                 // inferred: the value carried to 0x35c323; no location-less local in scope fits
                 u32 v2_0;
-                if (p_boughts->::MtArray::mLength != static_cast<u32>(0)) {
+                if (p_boughts->::MtArray::mLength != 0) {
                     // inferred: the value the loop at 0x35c300 carries; no location-less local in scope fits
                     u32 v0_0 = p_boughts->::MtArray::mLength;
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    unsigned int i0_3 = static_cast<unsigned int>(0);
+                    unsigned int i0_3 = 0;
                     // inferred: the value carried to 0x35c31f; no location-less local in scope fits
                     u32 v1_0;
                     for (;;) {
-                        if (p_boughts->::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                        if (p_boughts->::MtArray::mpArray[i0_3] != nullptr) {
                             delete p_boughts->::MtArray::mpArray[i0_3];
-                            if ((i0_3 + static_cast<unsigned int>(1)) < p_boughts->::MtArray::mLength) {
+                            if ((i0_3 + 1u) < p_boughts->::MtArray::mLength) {
                                 v0_0 = p_boughts->::MtArray::mLength;
-                                i0_3 += static_cast<unsigned int>(1);
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = p_boughts->::MtArray::mLength;
                                 break;
                             }
                         } else {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < v0_0) {
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = v0_0;
                                 break;
@@ -14128,11 +14153,11 @@ void cNetGameServer::clearDLCLineupBoughts() {
                     }
                     v2_0 = v1_0;
                 } else {
-                    v2_0 = static_cast<u32>(0);
+                    v2_0 = 0;
                 }
-                ::memset(static_cast<void*>(p_boughts->::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+                memset(static_cast<void*>(p_boughts->::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_boughts->::MtArray::mLength = static_cast<u32>(0);
+            p_boughts->::MtArray::mLength = 0;
         }
     }
 }
@@ -14142,16 +14167,16 @@ bool cNetGameServer::reqDLCLineupUse(u32 dlcId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[489] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(489));
-    this->mErrorCode[489] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DLC_USE_REQ(dlcId) != static_cast<s32>(0)) {
-                    this->mStatus[489] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(489));
-                    this->mComTimer[489] = 0.0f;
+    mStatus[489] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(489);
+    mErrorCode[489] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DLC_USE_REQ(dlcId) != 0) {
+                    mStatus[489] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(489);
+                    mComTimer[489] = 0.0f;
                     return true;
                 }
             }
@@ -14165,16 +14190,16 @@ bool cNetGameServer::reqDLCLineupHistorys() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[490] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(490));
-    this->mErrorCode[490] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DLC_GET_HISTORY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[490] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(490));
-                    this->mComTimer[490] = 0.0f;
+    mStatus[490] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(490);
+    mErrorCode[490] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_DLC_GET_HISTORY_REQ() != 0) {
+                    mStatus[490] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(490);
+                    mComTimer[490] = 0.0f;
                     return true;
                 }
             }
@@ -14186,32 +14211,32 @@ bool cNetGameServer::reqDLCLineupHistorys() {
 // Address: 0x0035c4a0 - 0x0035c511 (113 bytes)
 void cNetGameServer::clearDLCLineupHistorys() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        DLCLineupHistoryVec* p_history = this->mpConnection->mpDLCLineupHistorys;
-        if (p_history != static_cast<DLCLineupHistoryVec*>(nullptr)) {
-            if (p_history->::MtArray::mAutoDelete != false) {
+    if (mpConnection != nullptr) {
+        DLCLineupHistoryVec* p_history = mpConnection->mpDLCLineupHistorys;
+        if (p_history != nullptr) {
+            if (p_history->::MtArray::mAutoDelete) {
                 // inferred: the value carried to 0x35c4f3; no location-less local in scope fits
                 u32 v2_0;
-                if (p_history->::MtArray::mLength != static_cast<u32>(0)) {
+                if (p_history->::MtArray::mLength != 0) {
                     // inferred: the value the loop at 0x35c4d0 carries; no location-less local in scope fits
                     u32 v0_0 = p_history->::MtArray::mLength;
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    unsigned int i0_3 = static_cast<unsigned int>(0);
+                    unsigned int i0_3 = 0;
                     // inferred: the value carried to 0x35c4ef; no location-less local in scope fits
                     u32 v1_0;
                     for (;;) {
-                        if (p_history->::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                        if (p_history->::MtArray::mpArray[i0_3] != nullptr) {
                             delete p_history->::MtArray::mpArray[i0_3];
-                            if ((i0_3 + static_cast<unsigned int>(1)) < p_history->::MtArray::mLength) {
+                            if ((i0_3 + 1u) < p_history->::MtArray::mLength) {
                                 v0_0 = p_history->::MtArray::mLength;
-                                i0_3 += static_cast<unsigned int>(1);
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = p_history->::MtArray::mLength;
                                 break;
                             }
                         } else {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < v0_0) {
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = v0_0;
                                 break;
@@ -14220,11 +14245,11 @@ void cNetGameServer::clearDLCLineupHistorys() {
                     }
                     v2_0 = v1_0;
                 } else {
-                    v2_0 = static_cast<u32>(0);
+                    v2_0 = 0;
                 }
-                ::memset(static_cast<void*>(p_history->::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+                memset(static_cast<void*>(p_history->::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_history->::MtArray::mLength = static_cast<u32>(0);
+            p_history->::MtArray::mLength = 0;
         }
     }
 }
@@ -14234,16 +14259,16 @@ bool cNetGameServer::reqGetSessionKey(bool update) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[491] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(491));
-    this->mErrorCode[491] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_COG_GET_SESSION_KEY_REQ(update) != static_cast<s32>(0)) {
-                    this->mStatus[491] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(491));
-                    this->mComTimer[491] = 0.0f;
+    mStatus[491] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(491);
+    mErrorCode[491] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_COG_GET_SESSION_KEY_REQ(update) != 0) {
+                    mStatus[491] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(491);
+                    mComTimer[491] = 0.0f;
                     return true;
                 }
             }
@@ -14256,10 +14281,10 @@ bool cNetGameServer::reqGetSessionKey(bool update) {
 DLCLineupBoughtVec* cNetGameServer::getDLCLineupBoughts() {
     // DWARF local not rendered: cSeedGameSvConnection* p_connection;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        return this->mpConnection->mpDLCLineupBoughts;
+    if (mpConnection != nullptr) {
+        return mpConnection->mpDLCLineupBoughts;
     } else {
-        return static_cast<DLCLineupBoughtVec*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -14267,10 +14292,10 @@ DLCLineupBoughtVec* cNetGameServer::getDLCLineupBoughts() {
 DLCLineupHistoryVec* cNetGameServer::getDLCLineupHistorys() {
     // DWARF local not rendered: cSeedGameSvConnection* p_connection;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        return this->mpConnection->mpDLCLineupHistorys;
+    if (mpConnection != nullptr) {
+        return mpConnection->mpDLCLineupHistorys;
     } else {
-        return static_cast<DLCLineupHistoryVec*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -14301,16 +14326,16 @@ bool cNetGameServer::reqScreenShotCategory() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[499] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(499));
-    this->mErrorCode[499] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_SCREEN_SHOT_CATEGORY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[499] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(499));
-                    this->mComTimer[499] = 0.0f;
+    mStatus[499] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(499);
+    mErrorCode[499] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_SCREEN_SHOT_CATEGORY_REQ() != 0) {
+                    mStatus[499] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(499);
+                    mComTimer[499] = 0.0f;
                     return true;
                 }
             }
@@ -14323,34 +14348,34 @@ bool cNetGameServer::reqScreenShotCategory() {
 void cNetGameServer::clearScreenShotCategory() {
     // DWARF local not rendered: cSeedGameSvConnection* p_connection;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mStatus[499] = static_cast<sNetworkExt::NET_STAT>(0);
-    this->mErrorCode[499] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES* p_res = this->mpConnection->mpScreenShotCategory;
-        if (p_res != static_cast<nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES*>(nullptr)) {
-            if (p_res->m_CategoryList.::MtArray::mAutoDelete != false) {
+    mStatus[499] = sNetworkExt::NET_STAT_NONE;
+    mErrorCode[499] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES* p_res = mpConnection->mpScreenShotCategory;
+        if (p_res != nullptr) {
+            if (p_res->m_CategoryList.::MtArray::mAutoDelete) {
                 // inferred: the value carried to 0x35cac3; no location-less local in scope fits
                 u32 v2_0;
-                if (p_res->m_CategoryList.::MtArray::mLength != static_cast<u32>(0)) {
+                if (p_res->m_CategoryList.::MtArray::mLength != 0) {
                     // inferred: the value the loop at 0x35caa0 carries; no location-less local in scope fits
                     u32 v0_0 = p_res->m_CategoryList.::MtArray::mLength;
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    unsigned int i0_3 = static_cast<unsigned int>(0);
+                    unsigned int i0_3 = 0;
                     // inferred: the value carried to 0x35cabf; no location-less local in scope fits
                     u32 v1_0;
                     for (;;) {
-                        if (p_res->m_CategoryList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                        if (p_res->m_CategoryList.::MtArray::mpArray[i0_3] != nullptr) {
                             delete p_res->m_CategoryList.::MtArray::mpArray[i0_3];
-                            if ((i0_3 + static_cast<unsigned int>(1)) < p_res->m_CategoryList.::MtArray::mLength) {
+                            if ((i0_3 + 1u) < p_res->m_CategoryList.::MtArray::mLength) {
                                 v0_0 = p_res->m_CategoryList.::MtArray::mLength;
-                                i0_3 += static_cast<unsigned int>(1);
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = p_res->m_CategoryList.::MtArray::mLength;
                                 break;
                             }
                         } else {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < v0_0) {
+                                i0_3 += 1u;
                             } else {
                                 v1_0 = v0_0;
                                 break;
@@ -14359,11 +14384,11 @@ void cNetGameServer::clearScreenShotCategory() {
                     }
                     v2_0 = v1_0;
                 } else {
-                    v2_0 = static_cast<u32>(0);
+                    v2_0 = 0;
                 }
-                ::memset(static_cast<void*>(p_res->m_CategoryList.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+                memset(static_cast<void*>(p_res->m_CategoryList.::MtArray::mpArray), 0, static_cast<size_t>(v2_0) * 8);
             }
-            p_res->m_CategoryList.::MtArray::mLength = static_cast<u32>(0);
+            p_res->m_CategoryList.::MtArray::mLength = 0;
         }
     }
 }
@@ -14389,16 +14414,16 @@ bool cNetGameServer::getDispelSetting() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[503] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(503));
-    this->mErrorCode[503] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_SETTING_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[503] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(503));
-                    this->mComTimer[503] = 0.0f;
+    mStatus[503] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(503);
+    mErrorCode[503] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_DISPEL_ITEM_SETTING_REQ() != 0) {
+                    mStatus[503] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(503);
+                    mComTimer[503] = 0.0f;
                     return true;
                 }
             }
@@ -14415,16 +14440,16 @@ bool cNetGameServer::getDispelItemList(u8 category) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[504] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(504));
-    this->mErrorCode[504] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_DISPEL_ITEM_LIST_REQ(category) != static_cast<s32>(0)) {
-                    this->mStatus[504] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(504));
-                    this->mComTimer[504] = 0.0f;
+    mStatus[504] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(504);
+    mErrorCode[504] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_DISPEL_ITEM_LIST_REQ(category) != 0) {
+                    mStatus[504] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(504);
+                    mComTimer[504] = 0.0f;
                     return true;
                 }
             }
@@ -14438,16 +14463,16 @@ bool cNetGameServer::exchangeDispelItem(const GetDispelItemVec& list) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[505] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(505));
-    this->mErrorCode[505] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_EXCHANGE_DISPEL_ITEM_REQ(list) != static_cast<s32>(0)) {
-                    this->mStatus[505] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(505));
-                    this->mComTimer[505] = 0.0f;
+    mStatus[505] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(505);
+    mErrorCode[505] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_EXCHANGE_DISPEL_ITEM_REQ(list) != 0) {
+                    mStatus[505] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(505);
+                    mComTimer[505] = 0.0f;
                     return true;
                 }
             }
@@ -14464,16 +14489,16 @@ bool cNetGameServer::resetCraftPoint(u32 PawnID) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[507] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(507));
-    this->mErrorCode[507] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_RESET_CRAFTPOINT_REQ(PawnID) != static_cast<s32>(0)) {
-                    this->mStatus[507] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(507));
-                    this->mComTimer[507] = 0.0f;
+    mStatus[507] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(507);
+    mErrorCode[507] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_RESET_CRAFTPOINT_REQ(PawnID) != 0) {
+                    mStatus[507] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(507);
+                    mComTimer[507] = 0.0f;
                     return true;
                 }
             }
@@ -14532,30 +14557,28 @@ __attribute__((weak)) void cNetGameServer::getReportCheatQueueAll(MtTypedArray<C
 bool cNetGameServer::getReportCheatQueue(CCheatInfo& info, u32 index) {
     // DWARF local not rendered: stCheatInfo& src;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCSCheat.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCSCheat.mCSection) != 0) {
+        abort();
     }
-    if (index < this->mReportCheatQueueIndex) {
-        info.m_ucId = this->mReportCheatQueue[index].id;
-        info.m_ucCount = this->mReportCheatQueue[index].count;
-        info.m_unParam1 = this->mReportCheatQueue[index].param1;
-        info.m_unParam2 = this->mReportCheatQueue[index].param2;
-        info.m_unParam3 = this->mReportCheatQueue[index].param3;
-        this->mReportCheatQueue[index].dataType = static_cast<u32>(0);
-        this->mReportCheatQueue[index].count = static_cast<u8>(0);
-        this->mReportCheatQueue[index].id = static_cast<u8>(0);
-        this->mReportCheatQueue[index].param1 = static_cast<u32>(0);
-        this->mReportCheatQueue[index].param2 = static_cast<u32>(0);
-        this->mReportCheatQueue[index].param3 = static_cast<u32>(0);
-        if (::scePthreadMutexUnlock(&this->mCSCheat.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (index < mReportCheatQueueIndex) {
+        info.m_ucId = mReportCheatQueue[index].id;
+        info.m_ucCount = mReportCheatQueue[index].count;
+        info.m_unParam1 = mReportCheatQueue[index].param1;
+        info.m_unParam2 = mReportCheatQueue[index].param2;
+        info.m_unParam3 = mReportCheatQueue[index].param3;
+        mReportCheatQueue[index].dataType = 0;
+        mReportCheatQueue[index].count = 0;
+        mReportCheatQueue[index].id = 0;
+        mReportCheatQueue[index].param1 = 0;
+        mReportCheatQueue[index].param2 = 0;
+        mReportCheatQueue[index].param3 = 0;
+        if (scePthreadMutexUnlock(&mCSCheat.mCSection) != 0) {
+            abort();
         }
         return true;
     } else {
-        if (::scePthreadMutexUnlock(&this->mCSCheat.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        if (scePthreadMutexUnlock(&mCSCheat.mCSection) != 0) {
+            abort();
         }
         return false;
     }
@@ -14578,16 +14601,16 @@ bool cNetGameServer::reqMyRoomRelease() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[512] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(512));
-    this->mErrorCode[512] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MY_ROOM_RELEASE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[512] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(512));
-                    this->mComTimer[512] = 0.0f;
+    mStatus[512] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(512);
+    mErrorCode[512] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MY_ROOM_RELEASE_REQ() != 0) {
+                    mStatus[512] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(512);
+                    mComTimer[512] = 0.0f;
                     return true;
                 }
             }
@@ -14601,16 +14624,16 @@ bool cNetGameServer::getPartnerPawnNextPresentTime() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[525] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(525));
-    this->mErrorCode[525] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[525] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(525));
-                    this->mComTimer[525] = 0.0f;
+    mStatus[525] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(525);
+    mErrorCode[525] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_REQ() != 0) {
+                    mStatus[525] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(525);
+                    mComTimer[525] = 0.0f;
                     return true;
                 }
             }
@@ -14624,16 +14647,16 @@ bool cNetGameServer::reqPresentForPartnerPawn(ItemUIDListVec& itemUIDList) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[526] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(526));
-    this->mErrorCode[526] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PRESENT_FOR_PARTNER_PAWN_REQ(itemUIDList) != static_cast<s32>(0)) {
-                    this->mStatus[526] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(526));
-                    this->mComTimer[526] = 0.0f;
+    mStatus[526] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(526);
+    mErrorCode[526] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PRESENT_FOR_PARTNER_PAWN_REQ(itemUIDList) != 0) {
+                    mStatus[526] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(526);
+                    mComTimer[526] = 0.0f;
                     return true;
                 }
             }
@@ -14647,16 +14670,16 @@ bool cNetGameServer::setPartnerPawn(u32 pawnId) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[518] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(518));
-    this->mErrorCode[518] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTNER_PAWN_SET_REQ(pawnId) != static_cast<s32>(0)) {
-                    this->mStatus[518] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(518));
-                    this->mComTimer[518] = 0.0f;
+    mStatus[518] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(518);
+    mErrorCode[518] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PARTNER_PAWN_SET_REQ(pawnId) != 0) {
+                    mStatus[518] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(518);
+                    mComTimer[518] = 0.0f;
                     return true;
                 }
             }
@@ -14670,16 +14693,16 @@ bool cNetGameServer::getPawnLikabilityRewardList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[522] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(522));
-    this->mErrorCode[522] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_LIST_GET_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[522] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(522));
-                    this->mComTimer[522] = 0.0f;
+    mStatus[522] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(522);
+    mErrorCode[522] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_LIKABILITY_REWARD_LIST_GET_REQ() != 0) {
+                    mStatus[522] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(522);
+                    mComTimer[522] = 0.0f;
                     return true;
                 }
             }
@@ -14693,16 +14716,16 @@ bool cNetGameServer::getPawnLikabilityReward(MtTypedArray<CDataPartnerPawnReward
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[523] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(523));
-    this->mErrorCode[523] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_REWARD_GET_REQ(rewardUidList, updateHairUid) != static_cast<s32>(0)) {
-                    this->mStatus[523] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(523));
-                    this->mComTimer[523] = 0.0f;
+    mStatus[523] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(523);
+    mErrorCode[523] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_LIKABILITY_REWARD_GET_REQ(rewardUidList, updateHairUid) != 0) {
+                    mStatus[523] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(523);
+                    mComTimer[523] = 0.0f;
                     return true;
                 }
             }
@@ -14716,16 +14739,16 @@ bool cNetGameServer::getPawnLikabilityReleasedRewardList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[524] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(524));
-    this->mErrorCode[524] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[524] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(524));
-                    this->mComTimer[524] = 0.0f;
+    mStatus[524] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(524);
+    mErrorCode[524] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_REQ() != 0) {
+                    mStatus[524] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(524);
+                    mComTimer[524] = 0.0f;
                     return true;
                 }
             }
@@ -14740,18 +14763,18 @@ bool cNetGameServer::updateMyRoomBgm(u32 bgmAcquirementNo) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[553] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(553));
-    this->mErrorCode[553] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_MY_ROOM_BGM_UPDATE_REQ(bgmAcquirementNo) != static_cast<s32>(0)) {
-                    this->mStatus[553] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(553));
-                    this->mComTimer[553] = 0.0f;
-                    if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageMyRoom() != static_cast<uStageMyRoom*>(nullptr)) {
-                        static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageMyRoom()->mPlayBgmAcquirementNo = bgmAcquirementNo;
+    mStatus[553] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(553);
+    mErrorCode[553] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_MY_ROOM_BGM_UPDATE_REQ(bgmAcquirementNo) != 0) {
+                    mStatus[553] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(553);
+                    mComTimer[553] = 0.0f;
+                    if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageMyRoom() != nullptr) {
+                        static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageMyRoom()->mPlayBgmAcquirementNo = bgmAcquirementNo;
                     }
                     return true;
                 }
@@ -14766,16 +14789,16 @@ bool cNetGameServer::getWeatherForecast() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[554] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(554));
-    this->mErrorCode[554] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_WEATHER_FORECAST_GET_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[554] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(554));
-                    this->mComTimer[554] = 0.0f;
+    mStatus[554] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(554);
+    mErrorCode[554] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_WEATHER_FORECAST_GET_REQ() != 0) {
+                    mStatus[554] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(554);
+                    mComTimer[554] = 0.0f;
                     return true;
                 }
             }
@@ -14787,7 +14810,7 @@ bool cNetGameServer::getWeatherForecast() {
 // Address: 0x00379ea0 - 0x00379eaf (15 bytes)
 nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES* cNetGameServer::getWeatherForecastGetPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpWeatherForecast;
+    return mpConnection->mpWeatherForecast;
 }
 
 // Address: 0x0037c170 - 0x0037c21e (174 bytes)
@@ -14801,16 +14824,16 @@ bool cNetGameServer::reqPlayPointList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[536] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(536));
-    this->mErrorCode[536] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_PLAY_POINT_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[536] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(536));
-                    this->mComTimer[536] = 0.0f;
+    mStatus[536] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(536);
+    mErrorCode[536] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_GET_PLAY_POINT_LIST_REQ() != 0) {
+                    mStatus[536] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(536);
+                    mComTimer[536] = 0.0f;
                     return true;
                 }
             }
@@ -14824,16 +14847,16 @@ bool cNetGameServer::reqUpdateExpMode(MtTypedArray<CDataJobExpMode>& list) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[535] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(535));
-    this->mErrorCode[535] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_UPDATE_EXP_MODE_REQ(list) != static_cast<s32>(0)) {
-                    this->mStatus[535] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(535));
-                    this->mComTimer[535] = 0.0f;
+    mStatus[535] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(535);
+    mErrorCode[535] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_UPDATE_EXP_MODE_REQ(list) != 0) {
+                    mStatus[535] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(535);
+                    mComTimer[535] = 0.0f;
                     return true;
                 }
             }
@@ -14847,16 +14870,16 @@ bool cNetGameServer::reqPlayPointShopLineup(u8 jobId, u8 jobValueType) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[537] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(537));
-    this->mErrorCode[537] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_JOB_VALUE_SHOP_GET_LINEUP_REQ(jobId, jobValueType) != static_cast<s32>(0)) {
-                    this->mStatus[537] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(537));
-                    this->mComTimer[537] = 0.0f;
+    mStatus[537] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(537);
+    mErrorCode[537] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_JOB_VALUE_SHOP_GET_LINEUP_REQ(jobId, jobValueType) != 0) {
+                    mStatus[537] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(537);
+                    mComTimer[537] = 0.0f;
                     return true;
                 }
             }
@@ -14876,13 +14899,13 @@ __attribute__((weak)) bool cNetGameServer::reqPlayPointShopBuy(u8 jobId, u32 lin
 // Address: 0x00379eb0 - 0x00379ebf (15 bytes)
 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES* cNetGameServer::getPlayPointShopLineup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPlayPointShopLineup;
+    return mpConnection->mpPlayPointShopLineup;
 }
 
 // Address: 0x00379ec0 - 0x00379ecf (15 bytes)
 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES* cNetGameServer::getPlayPointShopBuy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpPlayPointShopBuy;
+    return mpConnection->mpPlayPointShopBuy;
 }
 
 // Address: 0x0037c220 - 0x0037c2c8 (168 bytes)
@@ -14902,16 +14925,16 @@ bool cNetGameServer::reqClanBaseRelease() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[545] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(545));
-    this->mErrorCode[545] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_BASE_RELEASE_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[545] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(545));
-                    this->mComTimer[545] = 0.0f;
+    mStatus[545] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(545);
+    mErrorCode[545] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_BASE_RELEASE_REQ() != 0) {
+                    mStatus[545] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(545);
+                    mComTimer[545] = 0.0f;
                     return true;
                 }
             }
@@ -14925,16 +14948,16 @@ bool cNetGameServer::updateClanConcierge(u32 npcId, u32 price) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[540] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(540));
-    this->mErrorCode[540] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_UPDATE_REQ(npcId, price) != static_cast<s32>(0)) {
-                    this->mStatus[540] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(540));
-                    this->mComTimer[540] = 0.0f;
+    mStatus[540] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(540);
+    mErrorCode[540] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_CONCIERGE_UPDATE_REQ(npcId, price) != 0) {
+                    mStatus[540] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(540);
+                    mComTimer[540] = 0.0f;
                     return true;
                 }
             }
@@ -14948,16 +14971,16 @@ bool cNetGameServer::getClanConciergeList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[541] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(541));
-    this->mErrorCode[541] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_CONCIERGE_GET_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[541] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(541));
-                    this->mComTimer[541] = 0.0f;
+    mStatus[541] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(541);
+    mErrorCode[541] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_CONCIERGE_GET_LIST_REQ() != 0) {
+                    mStatus[541] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(541);
+                    mComTimer[541] = 0.0f;
                     return true;
                 }
             }
@@ -14977,16 +15000,16 @@ bool cNetGameServer::getClanShopFunctionItemList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[546] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(546));
-    this->mErrorCode[546] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[546] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(546));
-                    this->mComTimer[546] = 0.0f;
+    mStatus[546] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(546);
+    mErrorCode[546] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_REQ() != 0) {
+                    mStatus[546] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(546);
+                    mComTimer[546] = 0.0f;
                     return true;
                 }
             }
@@ -15000,16 +15023,16 @@ bool cNetGameServer::getClanShopBuffItemList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[547] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(547));
-    this->mErrorCode[547] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SHOP_GET_BUFF_ITEM_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[547] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(547));
-                    this->mComTimer[547] = 0.0f;
+    mStatus[547] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(547);
+    mErrorCode[547] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SHOP_GET_BUFF_ITEM_LIST_REQ() != 0) {
+                    mStatus[547] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(547);
+                    mComTimer[547] = 0.0f;
                     return true;
                 }
             }
@@ -15023,16 +15046,16 @@ bool cNetGameServer::buyClanShopFunctionItem(u32 lineup_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[548] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(548));
-    this->mErrorCode[548] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_FUNCTION_ITEM_REQ(lineup_id) != static_cast<s32>(0)) {
-                    this->mStatus[548] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(548));
-                    this->mComTimer[548] = 0.0f;
+    mStatus[548] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(548);
+    mErrorCode[548] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SHOP_BUY_FUNCTION_ITEM_REQ(lineup_id) != 0) {
+                    mStatus[548] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(548);
+                    mComTimer[548] = 0.0f;
                     return true;
                 }
             }
@@ -15046,16 +15069,16 @@ bool cNetGameServer::buyClanShopBuffItem(u32 lineup_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[549] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(549));
-    this->mErrorCode[549] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CLAN_SHOP_BUY_BUFF_ITEM_REQ(lineup_id) != static_cast<s32>(0)) {
-                    this->mStatus[549] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(549));
-                    this->mComTimer[549] = 0.0f;
+    mStatus[549] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(549);
+    mErrorCode[549] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_CLAN_SHOP_BUY_BUFF_ITEM_REQ(lineup_id) != 0) {
+                    mStatus[549] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(549);
+                    mComTimer[549] = 0.0f;
                     return true;
                 }
             }
@@ -15069,16 +15092,16 @@ bool cNetGameServer::getPawnExpeditionRewardDrop() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[550] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(550));
-    this->mErrorCode[550] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[550] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(550));
-                    this->mComTimer[550] = 0.0f;
+    mStatus[550] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(550);
+    mErrorCode[550] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_REQ() != 0) {
+                    mStatus[550] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(550);
+                    mComTimer[550] = 0.0f;
                     return true;
                 }
             }
@@ -15092,17 +15115,17 @@ bool cNetGameServer::getPawnExpeditionRewardDropItemList(s32 stageNo, s32 groupI
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[551] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(551));
-    this->mErrorCode[551] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                const u32 pawnRewardBoxId = ::sSetManager::getInstance()->::sSetManager::getPawnExpeditionBoxId(static_cast<const u32>(groupId), static_cast<const u32>(unitId));
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_REQ(pawnRewardBoxId) != static_cast<s32>(0)) {
-                    this->mStatus[551] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(551));
-                    this->mComTimer[551] = 0.0f;
+    mStatus[551] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(551);
+    mErrorCode[551] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                const u32 pawnRewardBoxId = sSetManager::getInstance()->getPawnExpeditionBoxId(static_cast<const u32>(groupId), static_cast<const u32>(unitId));
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_REQ(pawnRewardBoxId) != 0) {
+                    mStatus[551] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(551);
+                    mComTimer[551] = 0.0f;
                     return true;
                 } else {
                     return false;
@@ -15132,16 +15155,16 @@ bool cNetGameServer::getPawnExpeditionGetSallyInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[555] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(555));
-    this->mErrorCode[555] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[555] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(555));
-                    this->mComTimer[555] = 0.0f;
+    mStatus[555] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(555);
+    mErrorCode[555] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_GET_SALLY_INFO_REQ() != 0) {
+                    mStatus[555] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(555);
+                    mComTimer[555] = 0.0f;
                     return true;
                 }
             }
@@ -15155,16 +15178,16 @@ bool cNetGameServer::getPawnExpeditionGetMySallyInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[556] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(556));
-    this->mErrorCode[556] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_MY_SALLY_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[556] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(556));
-                    this->mComTimer[556] = 0.0f;
+    mStatus[556] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(556);
+    mErrorCode[556] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_GET_MY_SALLY_INFO_REQ() != 0) {
+                    mStatus[556] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(556);
+                    mComTimer[556] = 0.0f;
                     return true;
                 }
             }
@@ -15179,18 +15202,18 @@ bool cNetGameServer::reqPawnExpeditionChargeSallyCount() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mStatus[557] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(557));
-    this->mErrorCode[557] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+    mStatus[557] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(557);
+    mErrorCode[557] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
                 // inferred: a temporary for the result of the call at 0x36b8e0, used once; no DWARF local holds it
-                const CPawnExpeditionInformation& t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getPawnExpeditionInfo();
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_REQ(t0.m_ucChargeSallyPrice) != static_cast<s32>(0)) {
-                    this->mStatus[557] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(557));
-                    this->mComTimer[557] = 0.0f;
+                const CPawnExpeditionInformation& t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getPawnExpeditionInfo();
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_REQ(t0.m_ucChargeSallyPrice) != 0) {
+                    mStatus[557] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(557);
+                    mComTimer[557] = 0.0f;
                     return true;
                 } else {
                     return false;
@@ -15211,16 +15234,16 @@ bool cNetGameServer::reqPawnExpeditionSally(u32 area_id, u32 spot_id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[558] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(558));
-    this->mErrorCode[558] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_SALLY_REQ(area_id, spot_id) != static_cast<s32>(0)) {
-                    this->mStatus[558] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(558));
-                    this->mComTimer[558] = 0.0f;
+    mStatus[558] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(558);
+    mErrorCode[558] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_SALLY_REQ(area_id, spot_id) != 0) {
+                    mStatus[558] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(558);
+                    mComTimer[558] = 0.0f;
                     return true;
                 }
             }
@@ -15235,18 +15258,18 @@ bool cNetGameServer::reqPawnExpeditionChargeGoldenSally() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mStatus[559] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(559));
-    this->mErrorCode[559] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+    mStatus[559] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(559);
+    mErrorCode[559] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
                 // inferred: a temporary for the result of the call at 0x36ba40, used once; no DWARF local holds it
-                const CPawnExpeditionInformation& t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getPawnExpeditionInfo();
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_REQ(t0.m_ucGoldenSallyPrice) != static_cast<s32>(0)) {
-                    this->mStatus[559] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(559));
-                    this->mComTimer[559] = 0.0f;
+                const CPawnExpeditionInformation& t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getPawnExpeditionInfo();
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_REQ(t0.m_ucGoldenSallyPrice) != 0) {
+                    mStatus[559] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(559);
+                    mComTimer[559] = 0.0f;
                     return true;
                 } else {
                     return false;
@@ -15267,16 +15290,16 @@ bool cNetGameServer::getPawnExpeditionGetSallyReward() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[560] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(560));
-    this->mErrorCode[560] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_GET_SALLY_REWARD_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[560] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(560));
-                    this->mComTimer[560] = 0.0f;
+    mStatus[560] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(560);
+    mErrorCode[560] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_GET_SALLY_REWARD_REQ() != 0) {
+                    mStatus[560] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(560);
+                    mComTimer[560] = 0.0f;
                     return true;
                 }
             }
@@ -15290,16 +15313,16 @@ bool cNetGameServer::reqPawnExpeditionCancelSally() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[561] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(561));
-    this->mErrorCode[561] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_EXPEDITION_CANCEL_SALLY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[561] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(561));
-                    this->mComTimer[561] = 0.0f;
+    mStatus[561] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(561);
+    mErrorCode[561] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2S_PAWN_EXPEDITION_CANCEL_SALLY_REQ() != 0) {
+                    mStatus[561] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(561);
+                    mComTimer[561] = 0.0f;
                     return true;
                 }
             }
@@ -15516,54 +15539,54 @@ void cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE(nUserSession
     // DWARF local not rendered: cContextPlayerInfo* pPwInfo;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1838
-    ::sGame::getInstance()->::sGame::startEndContents(packet.m_TimeGainQuestPlayStartData.m_Common.m_unQuestId);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsCycleContentsPlayStart = true;
+    sGame::getInstance()->startEndContents(packet.m_TimeGainQuestPlayStartData.m_Common.m_unQuestId);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsCycleContentsPlayStart = true;
     // inferred: a temporary for the result of the call at 0x36e573, used twice; no DWARF local holds it
-    cContextPlayerInfo* t0 = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
+    cContextPlayerInfo* t0 = cContextInterface::getContextPlayerInfo(sContextManager::getInstance()->getContextMyPlayer());
     // inferred: the value the loop at 0x36e5aa carries; no location-less local in scope fits
     cNetGameServer* v0_0;
     // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_3;
     u32 partyNum;
-    if (t0 != static_cast<cContextPlayerInfo*>(nullptr)) {
-        t0->::cContextPlayerInfo::recoverOcdPlayStartContents();
-        partyNum = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mPartyMemberInfoVec.::MtArray::size();
-        if (partyNum != static_cast<u32>(0)) {
-            v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-            i0_3 = static_cast<unsigned int>(0);
+    if (t0 != nullptr) {
+        t0->recoverOcdPlayStartContents();
+        partyNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.size();
+        if (partyNum != 0) {
+            v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+            i0_3 = 0;
         } else {
             return;
         }
     } else {
-        partyNum = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mPartyMemberInfoVec.::MtArray::size();
-        if (partyNum != static_cast<u32>(0)) {
-            v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-            i0_3 = static_cast<unsigned int>(0);
+        partyNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.size();
+        if (partyNum != 0) {
+            v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+            i0_3 = 0;
         } else {
             return;
         }
     }
     for (;;) {
         // inferred: a temporary for the result of the call at 0x36e5be, used twice; no DWARF local holds it
-        cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0->mPartyMemberInfoVec.::MtArray::getBuffer()[static_cast<int>(i0_3)]) + static_cast<long>(116))));
-        if (::cContextInterface::isPawnOwner(t1) != false) {
+        cContextInstHm* t1 = sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0->mPartyMemberInfoVec.getBuffer()[static_cast<int>(i0_3)]) + 116)));
+        if (cContextInterface::isPawnOwner(t1)) {
             // inferred: a temporary for the result of the call at 0x36e5d5, used twice; no DWARF local holds it
-            cContextPlayerInfo* t2 = ::cContextInterface::getContextPlayerInfo(t1);
-            if (t2 != static_cast<cContextPlayerInfo*>(nullptr)) {
-                t2->::cContextPlayerInfo::recoverOcdPlayStartContents();
+            cContextPlayerInfo* t2 = cContextInterface::getContextPlayerInfo(t1);
+            if (t2 != nullptr) {
+                t2->recoverOcdPlayStartContents();
             }
-            if (partyNum == (i0_3 + static_cast<unsigned int>(1))) {
+            if (partyNum == (i0_3 + 1u)) {
                 break;
             } else {
-                v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-                i0_3 += static_cast<unsigned int>(1);
+                v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+                i0_3 += 1u;
             }
         } else {
-            if (partyNum == (i0_3 + static_cast<unsigned int>(1))) {
+            if (partyNum == (i0_3 + 1u)) {
                 break;
             } else {
-                v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-                i0_3 += static_cast<unsigned int>(1);
+                v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+                i0_3 += 1u;
             }
         }
     }
@@ -16156,6 +16179,8 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_GET_ITEM_SORTDATA_BIN_RE
 //   in cSeedGameSvConnection::OnPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES at 0x00335fa1-0x00335fa4, 0x00335fb1-0x00335fc8 (called at cNetGameServer.cpp:38090)
 // void cNetGameServer::OnPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES(nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES& packet);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetGameServer::MyDTI cNetGameServer::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c49b-0x0037c4db (called at cNetGameServer.cpp:196)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c49b-0x0037c4db (called at cNetGameServer.h:368)
@@ -16202,7 +16227,7 @@ const MtDTI& cNetGameServer::cCtrlFlow::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNetGameServer::cCtrlFlow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNetGameServer::cCtrlFlow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNetGameServer::cCtrlFlow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16269,6 +16294,8 @@ inline void cNetGameServer::cCtrlFlow::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // bool cNetGameServer::cCtrlFlow::isCallback();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetGameServer::cCtrlFlow::MyDTI cNetGameServer::cCtrlFlow::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c4db-0x0037c514 (called at cNetGameServer.cpp:197)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c4db-0x0037c514 (called at cNetGameServer.h:1192)
@@ -16324,13 +16351,19 @@ const MtDTI& cNetGameServer::cChatLog::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cNetGameServer::cChatLog::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 1 function (74 bytes)
-//   in cNetGameServer::cChatLog::MyDTI::newInstance at 0x0033ac4d-0x0033ac72 (called at cNetGameServer.cpp:198)
-//   in cNetGameServer::cChatLog::MyDTI::newInstance at 0x0033ac4d-0x0033ac72 (called at cNetGameServer.h:1849)
-// cNetGameServer::cChatLog::cChatLog();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cNetGameServer::cChatLog::cChatLog() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mType = nChatMsgType::CHAT_MSG_TYPE_SAY;
+    mLog.value = nullptr;
+    mName.value = nullptr;
+}
 
 // No out-of-line body: no code in the ELF
 // cNetGameServer::cChatLog::cChatLog(MT_CTSTR, MT_CTSTR, nChatMsgType::E_CHAT_MSG_TYPE);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetGameServer::cChatLog::MyDTI cNetGameServer::cChatLog::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c514-0x0037c54d (called at cNetGameServer.cpp:198)
@@ -16392,7 +16425,7 @@ const MtDTI& cPartyMemberInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cPartyMemberInfoD0Ev at 0x01a3bd90-0x01a3bdb1, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPartyMemberInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPartyMemberInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPartyMemberInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16422,6 +16455,8 @@ inline void cPartyMemberInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cPartyMemberInfo::setIsSync(nNetSv::PARTY_SYNC_FLAG, bool);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPartyMemberInfo::MyDTI cPartyMemberInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c5c3-0x0037c5fc (called at cNetGameServer.cpp:202)
@@ -16515,6 +16550,8 @@ __attribute__((weak)) u8 cPawnListParam::getState() const {
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // void cPawnListParam::setState(u8 State);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnListParam::MyDTI cPawnListParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c58a-0x0037c5c3 (called at cNetGameServer.cpp:201)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c58a-0x0037c5c3 (called at cNetGameServer.h:65)
@@ -16549,7 +16586,7 @@ const MtDTI& cPawnVoiceData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPawnVoiceData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnVoiceData::DTI)->memAlloc(sz, align, ::cPawnVoiceData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnVoiceData::DTI)->memAlloc(sz, align, cPawnVoiceData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16564,7 +16601,7 @@ inline void* cPawnVoiceData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cPawnVoiceDataD0Ev at 0x01a3bcc0-0x01a3bcea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPawnVoiceData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnVoiceData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnVoiceData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16583,6 +16620,8 @@ inline void cPawnVoiceData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cPawnVoiceData::cPawnVoiceData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnVoiceData::MyDTI cPawnVoiceData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c635-0x0037c66e (called at cNetGameServer.cpp:205)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c635-0x0037c66e (called at cNetGameServer.h:318)
@@ -16591,7 +16630,7 @@ inline void cPawnVoiceData::operator delete(void* p_addr) {
 // Address: 0x0033b1f0 - 0x0033b242 (82 bytes)
 MtObject* cPawnVoiceData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnVoiceData;
+    return new (16u) cPawnVoiceData;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (362 bytes)
@@ -16637,7 +16676,7 @@ const MtDTI& cSeedGameSvConnection::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSeedGameSvConnection::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSeedGameSvConnection::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSeedGameSvConnection::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16675,7 +16714,7 @@ cSeedGameSvConnection::~cSeedGameSvConnection() {
 // Address: 0x019e0770 - 0x019e0775 (5 bytes)
 void cSeedGameSvConnection::initialize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSeedServerConnection::initialize();
+    this->cSeedServerConnection::initialize();
 }
 
 // No out-of-line body: 480 inlined copies in 473 functions (4747 bytes)
@@ -16688,72 +16727,72 @@ void cSeedGameSvConnection::initialize() {
 // Address: 0x019e0780 - 0x019e07ea (106 bytes)
 void cSeedGameSvConnection::disconnect(cSeedServerConnection::eConnStatus aNextStatus) {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mGuardData.mIsLoginSuccess = false;
-    this->mGuardData.mSessionKey[0] = static_cast<char>(100);
-    this->mGuardData.mSessionKey[1] = static_cast<char>(117);
-    this->mGuardData.mSessionKey[2] = static_cast<char>(115);
-    this->mGuardData.mSessionKey[3] = static_cast<char>(116);
-    this->mGuardData.mSessionKey[4] = static_cast<char>(32);
-    this->mGuardData.mSessionKey[5] = static_cast<char>(107);
-    this->mGuardData.mSessionKey[6] = static_cast<char>(101);
-    this->mGuardData.mSessionKey[7] = static_cast<char>(121);
-    this->mGuardData.mSessionKey[56] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[57] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[58] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[59] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[60] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[61] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[62] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[63] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[48] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[49] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[50] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[51] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[52] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[53] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[54] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[55] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[40] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[41] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[42] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[43] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[44] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[45] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[46] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[47] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[32] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[33] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[34] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[35] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[36] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[37] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[38] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[39] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[24] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[25] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[26] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[27] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[28] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[29] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[30] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[31] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[16] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[17] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[18] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[19] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[20] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[21] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[22] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[23] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[8] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[9] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[10] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[11] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[12] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[13] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[14] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[15] = static_cast<char>(0);
-    this->::cSeedServerConnection::disconnect(aNextStatus);
+    mGuardData.mIsLoginSuccess = false;
+    mGuardData.mSessionKey[0] = 100;
+    mGuardData.mSessionKey[1] = 117;
+    mGuardData.mSessionKey[2] = 115;
+    mGuardData.mSessionKey[3] = 116;
+    mGuardData.mSessionKey[4] = 32;
+    mGuardData.mSessionKey[5] = 107;
+    mGuardData.mSessionKey[6] = 101;
+    mGuardData.mSessionKey[7] = 121;
+    mGuardData.mSessionKey[56] = 0;
+    mGuardData.mSessionKey[57] = 0;
+    mGuardData.mSessionKey[58] = 0;
+    mGuardData.mSessionKey[59] = 0;
+    mGuardData.mSessionKey[60] = 0;
+    mGuardData.mSessionKey[61] = 0;
+    mGuardData.mSessionKey[62] = 0;
+    mGuardData.mSessionKey[63] = 0;
+    mGuardData.mSessionKey[48] = 0;
+    mGuardData.mSessionKey[49] = 0;
+    mGuardData.mSessionKey[50] = 0;
+    mGuardData.mSessionKey[51] = 0;
+    mGuardData.mSessionKey[52] = 0;
+    mGuardData.mSessionKey[53] = 0;
+    mGuardData.mSessionKey[54] = 0;
+    mGuardData.mSessionKey[55] = 0;
+    mGuardData.mSessionKey[40] = 0;
+    mGuardData.mSessionKey[41] = 0;
+    mGuardData.mSessionKey[42] = 0;
+    mGuardData.mSessionKey[43] = 0;
+    mGuardData.mSessionKey[44] = 0;
+    mGuardData.mSessionKey[45] = 0;
+    mGuardData.mSessionKey[46] = 0;
+    mGuardData.mSessionKey[47] = 0;
+    mGuardData.mSessionKey[32] = 0;
+    mGuardData.mSessionKey[33] = 0;
+    mGuardData.mSessionKey[34] = 0;
+    mGuardData.mSessionKey[35] = 0;
+    mGuardData.mSessionKey[36] = 0;
+    mGuardData.mSessionKey[37] = 0;
+    mGuardData.mSessionKey[38] = 0;
+    mGuardData.mSessionKey[39] = 0;
+    mGuardData.mSessionKey[24] = 0;
+    mGuardData.mSessionKey[25] = 0;
+    mGuardData.mSessionKey[26] = 0;
+    mGuardData.mSessionKey[27] = 0;
+    mGuardData.mSessionKey[28] = 0;
+    mGuardData.mSessionKey[29] = 0;
+    mGuardData.mSessionKey[30] = 0;
+    mGuardData.mSessionKey[31] = 0;
+    mGuardData.mSessionKey[16] = 0;
+    mGuardData.mSessionKey[17] = 0;
+    mGuardData.mSessionKey[18] = 0;
+    mGuardData.mSessionKey[19] = 0;
+    mGuardData.mSessionKey[20] = 0;
+    mGuardData.mSessionKey[21] = 0;
+    mGuardData.mSessionKey[22] = 0;
+    mGuardData.mSessionKey[23] = 0;
+    mGuardData.mSessionKey[8] = 0;
+    mGuardData.mSessionKey[9] = 0;
+    mGuardData.mSessionKey[10] = 0;
+    mGuardData.mSessionKey[11] = 0;
+    mGuardData.mSessionKey[12] = 0;
+    mGuardData.mSessionKey[13] = 0;
+    mGuardData.mSessionKey[14] = 0;
+    mGuardData.mSessionKey[15] = 0;
+    this->cSeedServerConnection::disconnect(aNextStatus);
 }
 
 // No out-of-line body: 674 inlined copies in 572 functions (5620 bytes)
@@ -16773,19 +16812,19 @@ __attribute__((weak)) void cSeedGameSvConnection::onConnected(bool result) {
 // Address: 0x019e08a0 - 0x019e08ae (14 bytes)
 void cSeedGameSvConnection::onDisconnectedByPeer(s32 aMtNetError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpManager->::cNetGameServer::onConnectionClosed(static_cast<s32>(0));
+    mpManager->onConnectionClosed(0);
 }
 
 // Address: 0x019e08b0 - 0x019e08bc (12 bytes)
 void cSeedGameSvConnection::onSocketError(s32 aMtNetError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpManager->::cNetGameServer::onConnectionClosed(aMtNetError);
+    mpManager->onConnectionClosed(aMtNetError);
 }
 
 // Address: 0x019e08c0 - 0x019e08c9 (9 bytes)
 void cSeedGameSvConnection::onHandshakeDone(bool result) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSeedServerConnection::onHandshakeDone(result);
+    this->cSeedServerConnection::onHandshakeDone(result);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (293 bytes)
@@ -16807,26 +16846,26 @@ __attribute__((weak)) void cSeedGameSvConnection::partyPawnContextNoticeCommon(c
 // Address: 0x019e08e0 - 0x019e08e6 (6 bytes)
 u32 cSeedGameSvConnection::getHandShakeSendCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(485);
+    return 485;
 }
 
 // Address: 0x019e08f0 - 0x019e08f6 (6 bytes)
 u32 cSeedGameSvConnection::getHandShakeRecvCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(688);
+    return 688;
 }
 
 // Address: 0x019e0900 - 0x019e0906 (6 bytes)
 u32 cSeedGameSvConnection::getLogoutRecvCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x019e0910 - 0x019e0917 (7 bytes)
 bool cSeedGameSvConnection::isCarryOver(u32 command) {
     // DWARF local not rendered: bool flag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return command == static_cast<u32>(68);
+    return command == 68;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (71 bytes)
@@ -16917,7 +16956,7 @@ __attribute__((weak)) u32 cSeedGameSvConnection::calcWeather(s64 realTime) {
 // Address: 0x002dcc60 - 0x002dcc66 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_NONE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002dcc70 - 0x002dcdd3 (355 bytes)
@@ -17076,7 +17115,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_SEND_TELL_MSG_RES
 // Address: 0x002df010 - 0x002df016 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_SEND_TELL_MSG_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002df020 - 0x002df215 (501 bytes)
@@ -17169,7 +17208,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_PARTY_INVITE_FAIL
 // Address: 0x002e0300 - 0x002e0306 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PARTY_INVITE_SUCCESS_NTC(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002e0310 - 0x002e03c4 (180 bytes)
@@ -18273,7 +18312,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_FORT_DEFENSE_NOTI
 // Address: 0x002edfc0 - 0x002edfc6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002edfd0 - 0x002ee0f0 (288 bytes)
@@ -18497,19 +18536,19 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_FORT_DEFENSE_PLAY
 // Address: 0x002f0fa0 - 0x002f0fa6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_PLAY_START_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f0fb0 - 0x002f0fb6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_BATTLE_SUCCESS_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f0fc0 - 0x002f0fc6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_BATTLE_FAIL_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f0fd0 - 0x002f1876 (2214 bytes)
@@ -18589,13 +18628,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_CYCLE_CONTENT
 // Address: 0x002f25e0 - 0x002f25e6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_REWARD_LIST_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f25f0 - 0x002f25f6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_PAWN_DUNGEON_REWARD_SELECT_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f2600 - 0x002f271d (285 bytes)
@@ -18852,13 +18891,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_RAID_BOSS_INFO_NO
 // Address: 0x002f5dd0 - 0x002f5dd6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_RAID_BOSS_DAMAGE_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f5de0 - 0x002f5de6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_RAID_BOSS_DEAD_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002f5df0 - 0x002f5f5e (366 bytes)
@@ -19187,13 +19226,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_REMOVE_BLACK_LIST
 // Address: 0x002fb0b0 - 0x002fb0b6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GROUP_CHAT_SEND_MSG_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002fb0c0 - 0x002fb0c6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GROUP_CHAT_SEND_MSG_NTC(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002fb0d0 - 0x002fb2d8 (520 bytes)
@@ -19564,13 +19603,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_CURRENT_SET_A
 // Address: 0x002ff960 - 0x002ff966 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GET_PAWN_CURRENT_SET_SKILL_LIST_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002ff970 - 0x002ff976 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GET_PAWN_CURRENT_SET_ABILITY_LIST_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x002ff980 - 0x002ffb2b (427 bytes)
@@ -19854,7 +19893,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_AREA_MASTER_I
 // Address: 0x00302740 - 0x00302746 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GET_AREA_REWARD_INFO_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00302750 - 0x00302ae5 (917 bytes)
@@ -20030,7 +20069,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_JOB_ORDER_COMPLET
 // Address: 0x00304ab0 - 0x00304ab6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_ADD_JOB_ORDER_PROGRESS_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00304ac0 - 0x00304d7a (698 bytes)
@@ -20259,7 +20298,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_SET_ARISEN_PROFIL
 // Address: 0x00308b10 - 0x00308b16 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GET_ARISEN_PROFILE_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00308b20 - 0x00308c2f (271 bytes)
@@ -20363,13 +20402,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_ACHIEVEMENT_REWAR
 // Address: 0x00309d60 - 0x00309d66 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_EVENT_ACHIEVEMENT_LIST_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00309d70 - 0x00309d76 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_EVENT_ACHIEVEMENT_CATEGORY_LIST_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00309d80 - 0x00309e89 (265 bytes)
@@ -20518,13 +20557,13 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GP_SHOP_GET_PAWN_
 // Address: 0x0030b850 - 0x0030b856 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GP_SHOP_GET_PAWN_VOICE_LINEUP_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x0030b860 - 0x0030b866 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GP_SHOP_GET_PICKUP_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x0030b870 - 0x0030b9e7 (375 bytes)
@@ -21093,7 +21132,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_MAIN_QUEST_
 // Address: 0x00313810 - 0x00313816 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_MAIN_QUEST_JUMP_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00313820 - 0x0031392f (271 bytes)
@@ -21123,7 +21162,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_CYCLE_CONTE
 // Address: 0x00313b70 - 0x00313b76 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_SET_QUEST_FLAG_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00313b80 - 0x00313c92 (274 bytes)
@@ -21145,7 +21184,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_GET_QUEST_L
 // Address: 0x00313da0 - 0x00313da6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_DEBUG_QUEST_COMPLETE_NUM_CHANGE_NOTICE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00313db0 - 0x00313ebf (271 bytes)
@@ -21260,7 +21299,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_CRAFT_SKILL_UP_RE
 // Address: 0x00315420 - 0x00315426 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_GET_LIMIT_BREAK_RECIPE_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00315430 - 0x0031549c (108 bytes)
@@ -21378,7 +21417,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_MESSAGE_SET_R
 // Address: 0x003167e0 - 0x003167e6 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_CLAN_CAN_CREATE_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x003167f0 - 0x00316efe (1806 bytes)
@@ -21655,7 +21694,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_CLAN_LEVEL_UP_NTC
 // Address: 0x0031ba20 - 0x0031ba26 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_CLAN_UPDATE_COMMON_NTC(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x0031ba30 - 0x0031bb5b (299 bytes)
@@ -22474,7 +22513,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_BAZAAR_GET_ITEM_P
 // Address: 0x0032bd10 - 0x0032bd16 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_BAZAAR_GET_TAX_PRICE_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x0032bd20 - 0x0032be72 (338 bytes)
@@ -23211,7 +23250,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_RELEASED_CRAFT_RE
 // Address: 0x00335310 - 0x00335316 (6 bytes)
 BOOL cSeedGameSvConnection::OnPacket_S2C_OTHER_ROOM_LAYOUT_GET_RES(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x00335320 - 0x003354a7 (391 bytes)
@@ -23612,7 +23651,7 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::callOnPacketFunc(u32 index, CP
 // Address: 0x019e0820 - 0x019e0826 (6 bytes)
 u32 cSeedGameSvConnection::getOnPacketFuncNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(781);
+    return 781;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27372,6 +27411,12 @@ __attribute__((weak)) s32 cSeedGameSvConnection::Send_C2S_JOB_VALUE_SHOP_GET_LIN
 // No out-of-line body: 1 inlined copy in 1 function (275 bytes)
 //   in cNetGameServer::reqPlayPointShopBuy at 0x0036be3e-0x0036bf51 (called at cNetGameServer.cpp:17439)
 // s32 cSeedGameSvConnection::Send_C2S_JOB_VALUE_SHOP_BUY_ITEM_REQ(u8 in_JobId, u8 in_JobValueType, u32 in_LineupId, u8 in_Num, u8 in_StorageType, u32 in_Price);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSeedGameSvConnection::MyDTI cSeedGameSvConnection::DTI;
+
+// Not defined (relocated bytes): BOOL(cSeedGameSvConnection::THISCLASS::*cSeedGameSvConnection::S2C_OnPacketFuncTbl[])(CPacket*);
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cSeedGameSvConnection::mS2C_OnPacketFuncNum;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c54d-0x0037c58a (called at cNetGameServer.cpp:199)

@@ -33,7 +33,7 @@ const MtDTI& uShlStick::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uShlStick::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uShlStick::DTI)->memAlloc(sz, align, ::uShlStick::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uShlStick::DTI)->memAlloc(sz, align, uShlStick::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* uShlStick::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uShlStick::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlStick::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlStick::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,6 +120,8 @@ __attribute__((weak)) void uShlStick::updateStickAngle() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uShlStick::MyDTI uShlStick::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uShlStick.cpp at 0x00d0d91b-0x00d0d954 (called at uShlStick.cpp:42)
 //   in _GLOBAL__sub_I_uShlStick.cpp at 0x00d0d91b-0x00d0d954 (called at uShlStick.h:105)
@@ -128,6 +130,6 @@ __attribute__((weak)) void uShlStick::updateStickAngle() {
 // Address: 0x00d0aa20 - 0x00d0aa6e (78 bytes)
 MtObject* uShlStick::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uShlStick;
+    return new (16u) uShlStick;
 }
 

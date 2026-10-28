@@ -42,7 +42,7 @@ const MtDTI& cQuestUnitGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestUnitGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestUnitGroup::DTI)->memAlloc(sz, align, ::cQuestUnitGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestUnitGroup::DTI)->memAlloc(sz, align, cQuestUnitGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ inline void* cQuestUnitGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestUnitGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestUnitGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestUnitGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ inline void cQuestUnitGroup::operator delete(void* p_addr) {
 // Also emitted as: _ZN15cQuestUnitGroupD0Ev at 0x001c7560
 cQuestUnitGroup::~cQuestUnitGroup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cQuestUnitGroup::release();
+    release();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -104,72 +104,72 @@ __attribute__((weak)) void cQuestUnitGroup::release() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: uControlNpc* pNpc;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpGroup != static_cast<cQuestGroup*>(nullptr)) {
-        if (this->mCtrlListOm.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mpGroup != nullptr) {
+        if (mCtrlListOm.mLength != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the value the load at 0x1c7457 read, used 3 times; no DWARF local holds it
-                MtObject* t0 = this->mCtrlListOm.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-                if (t0 != static_cast<MtObject*>(nullptr)) {
-                    if (static_cast<cOmControl*>(t0)->::cOmControl::isEnableCtrl() != false) {
-                        ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(static_cast<cOmControl*>(t0));
+                MtObject* t0 = mCtrlListOm.getBuffer()[static_cast<int>(i0_3)];
+                if (t0 != nullptr) {
+                    if (static_cast<cOmControl*>(t0)->isEnableCtrl()) {
+                        sOmManager::getInstance()->releaseOmCtrl(static_cast<cOmControl*>(t0));
                     }
                 }
-                this->mCtrlListOm.::MtArray::getBuffer()[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCtrlListOm.::MtArray::mLength) {
-                    i0_3 += static_cast<unsigned int>(1);
+                mCtrlListOm.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+                if ((i0_3 + 1u) < mCtrlListOm.mLength) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (this->mCtrlListNpc.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mCtrlListNpc.mLength != 0) {
             // inferred: the value the loop at 0x1c74a0 carries; no location-less local in scope fits
-            u32 v2_0 = this->mCtrlListNpc.::MtArray::mLength;
+            u32 v2_0 = mCtrlListNpc.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                if (this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
-                    if (static_cast<cUnit*>(this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cUnit::isEnable()) {
-                        ::sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)]));
+            for (unsigned int i2_3 = 0;;) {
+                if (mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)] != nullptr) {
+                    if (static_cast<cUnit*>(mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)])->isEnable()) {
+                        sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)]));
                         // inferred: a temporary for the value the load at 0x1c74ca read, used once; no DWARF local holds it
-                        u32 t1 = this->mCtrlListNpc.::MtArray::mLength;
-                        this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
-                        if ((i2_3 + static_cast<unsigned int>(1)) < t1) {
+                        u32 t1 = mCtrlListNpc.mLength;
+                        mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)] = nullptr;
+                        if ((i2_3 + 1u) < t1) {
                             v2_0 = t1;
-                            i2_3 += static_cast<unsigned int>(1);
+                            i2_3 += 1u;
                         } else {
                             break;
                         }
                     } else {
-                        this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
-                        if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                            i2_3 += static_cast<unsigned int>(1);
+                        mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)] = nullptr;
+                        if ((i2_3 + 1u) < v2_0) {
+                            i2_3 += 1u;
                         } else {
                             break;
                         }
                     }
                 } else {
-                    this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    mCtrlListNpc.getBuffer()[static_cast<int>(i2_3)] = nullptr;
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
         }
-        if (this->mCtrlListOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlListOm.::MtArray::mpArray));
+        if (mCtrlListOm.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCtrlListOm.mpArray));
         }
-        this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
-        if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
+        mCtrlListOm.mpArray = nullptr;
+        mCtrlListOm.mBufsiz = 0;
+        mCtrlListOm.mLength = 0;
+        if (mCtrlListNpc.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCtrlListNpc.mpArray));
         }
-        this->mCtrlListNpc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mCtrlListNpc.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mCtrlListNpc.::MtArray::mLength = static_cast<u32>(0);
+        mCtrlListNpc.mpArray = nullptr;
+        mCtrlListNpc.mBufsiz = 0;
+        mCtrlListNpc.mLength = 0;
     }
 }
 
@@ -221,6 +221,8 @@ __attribute__((weak)) uControlNpc* cQuestUnitGroup::createNpc(cQuestSet* pSet) {
 // No out-of-line body: no code in the ELF
 // u32 cQuestUnitGroup::getGroupNo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestUnitGroup::MyDTI cQuestUnitGroup::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cQuestUnitManager.cpp at 0x001c8e7e-0x001c8ebe (called at cQuestUnitManager.cpp:37)
 //   in _GLOBAL__sub_I_cQuestUnitManager.cpp at 0x001c8e7e-0x001c8ebe (called at cQuestUnitManager.h:28)
@@ -229,7 +231,7 @@ __attribute__((weak)) uControlNpc* cQuestUnitGroup::createNpc(cQuestSet* pSet) {
 // Address: 0x001c72c0 - 0x001c7361 (161 bytes)
 MtObject* cQuestUnitGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestUnitGroup;
+    return new (16u) cQuestUnitGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -246,7 +248,7 @@ const MtDTI& cQuestUnitManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cQuestUnitManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cQuestUnitManager::DTI);
+    return MtMemoryAllocator::getAllocator(cQuestUnitManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -255,7 +257,7 @@ inline MtAllocator* cQuestUnitManager::getAllocator() {
 // Address: 0x001c8630 - 0x001c8670 (64 bytes)
 void* cQuestUnitManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cQuestUnitManager::getAllocator()->memAlloc(sz, align, ::cQuestUnitManager::DTI.::MtDTI::getID());
+    return cQuestUnitManager::getAllocator()->memAlloc(sz, align, cQuestUnitManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -270,7 +272,7 @@ void* cQuestUnitManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestUnitManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestUnitManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestUnitManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,7 +294,7 @@ cQuestUnitManager::cQuestUnitManager() {
 // Also emitted as: _ZN17cQuestUnitManagerD0Ev at 0x001c8830
 cQuestUnitManager::~cQuestUnitManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cQuestUnitManager::release();
+    release();
 }
 
 // Address: 0x001c8880 - 0x001c8a83 (515 bytes)
@@ -316,14 +318,14 @@ __attribute__((weak)) void cQuestUnitManager::init(u32 questId, s32 stageNo, rQu
 void cQuestUnitManager::move() {
     // DWARF local not rendered: cQuestUnitGroup* group;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
-    if (this->mGroupList.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mGroupList.mLength != 0) {
         do {
-            if (this->mGroupList.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cQuestUnitGroup*>(this->mGroupList.::MtArray::getBuffer()[static_cast<int>(i)])->::cQuestUnitGroup::move();
+            if (mGroupList.getBuffer()[static_cast<int>(i)] != nullptr) {
+                static_cast<cQuestUnitGroup*>(mGroupList.getBuffer()[static_cast<int>(i)])->move();
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mGroupList.::MtArray::mLength);
+            i += 1u;
+        } while (i < mGroupList.mLength);
     }
 }
 
@@ -332,88 +334,88 @@ __attribute__((weak)) void cQuestUnitManager::release() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cQuestUnitGroup* group;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mQuestId = static_cast<u32>(0);
-    this->mStageNo = static_cast<s32>(0);
-    if (this->mGroupList.::MtArray::mLength == static_cast<u32>(0)) {
-        if (this->mGroupList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupList.::MtArray::mpArray));
+    mQuestId = 0;
+    mStageNo = 0;
+    if (mGroupList.mLength == 0) {
+        if (mGroupList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupList.mpArray));
         }
-        this->mGroupList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mGroupList.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mGroupList.::MtArray::mLength = static_cast<u32>(0);
-        if (this->mpQuestList != static_cast<rQuestList*>(nullptr)) {
-            this->mpQuestList->::cResource::release();
-            this->mpQuestList = static_cast<rQuestList*>(nullptr);
+        mGroupList.mpArray = nullptr;
+        mGroupList.mBufsiz = 0;
+        mGroupList.mLength = 0;
+        if (mpQuestList != nullptr) {
+            mpQuestList->release();
+            mpQuestList = nullptr;
         }
         return;
     } else {
         // inferred: the value the loop at 0x1c8780 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGroupList.::MtArray::mLength;
+        u32 v0_0 = mGroupList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the value carried to 0x1c879f; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
-            if (this->mGroupList.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cQuestUnitGroup*>(this->mGroupList.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cQuestUnitGroup::release();
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroupList.::MtArray::mLength) {
-                    v0_0 = this->mGroupList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+            if (mGroupList.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cQuestUnitGroup*>(mGroupList.getBuffer()[static_cast<int>(i0_3)])->release();
+                if ((i0_3 + 1u) < mGroupList.mLength) {
+                    v0_0 = mGroupList.mLength;
+                    i0_3 += 1u;
                 } else {
-                    v1_0 = this->mGroupList.::MtArray::mLength;
+                    v1_0 = mGroupList.mLength;
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     v1_0 = v0_0;
                     break;
                 }
             }
         }
-        if (v1_0 == static_cast<u32>(0)) {
-            if (this->mGroupList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupList.::MtArray::mpArray));
+        if (v1_0 == 0) {
+            if (mGroupList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupList.mpArray));
             }
-            this->mGroupList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mGroupList.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mGroupList.::MtArray::mLength = static_cast<u32>(0);
-            if (this->mpQuestList != static_cast<rQuestList*>(nullptr)) {
-                this->mpQuestList->::cResource::release();
-                this->mpQuestList = static_cast<rQuestList*>(nullptr);
+            mGroupList.mpArray = nullptr;
+            mGroupList.mBufsiz = 0;
+            mGroupList.mLength = 0;
+            if (mpQuestList != nullptr) {
+                mpQuestList->release();
+                mpQuestList = nullptr;
             }
             return;
         } else {
             // inferred: the value the loop at 0x1c87b0 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                if (this->mGroupList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mGroupList.::MtArray::mpArray[i2_3];
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mGroupList.::MtArray::mLength) {
-                        v2_0 = this->mGroupList.::MtArray::mLength;
-                        i2_3 += static_cast<unsigned int>(1);
+            for (unsigned int i2_3 = 0;;) {
+                if (mGroupList.mpArray[i2_3] != nullptr) {
+                    delete mGroupList.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mGroupList.mLength) {
+                        v2_0 = mGroupList.mLength;
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            if (this->mGroupList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupList.::MtArray::mpArray));
+            if (mGroupList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupList.mpArray));
             }
-            this->mGroupList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mGroupList.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mGroupList.::MtArray::mLength = static_cast<u32>(0);
-            if (this->mpQuestList != static_cast<rQuestList*>(nullptr)) {
-                this->mpQuestList->::cResource::release();
-                this->mpQuestList = static_cast<rQuestList*>(nullptr);
+            mGroupList.mpArray = nullptr;
+            mGroupList.mBufsiz = 0;
+            mGroupList.mLength = 0;
+            if (mpQuestList != nullptr) {
+                mpQuestList->release();
+                mpQuestList = nullptr;
             }
             return;
         }
@@ -431,6 +433,8 @@ __attribute__((weak)) void cQuestUnitManager::release() {
 
 // No out-of-line body: no code in the ELF
 // s32 cQuestUnitManager::getStageNo() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestUnitManager::MyDTI cQuestUnitManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestUnitManager.cpp at 0x001c8ebe-0x001c8ef7 (called at cQuestUnitManager.cpp:464)

@@ -153,3 +153,15 @@ inline bool cpErosionEnemyBase::isErosionEnemySuper() const {
 inline nErosionEnemyBase::EROSION_STATUS cpErosionEnemyBase::getErosionStatus() const {
     return this->mErosionStatus;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemyBase::callbackChangeErosionCurrentLevel at 0x1541d0-0x1541d6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemyBase::setErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level) {
+    this->mErosionCurrentLevel = level;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemyBase::callbackChangeErosionRealLevel at 0x1541e0-0x1541e6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemyBase::setErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level) {
+    this->mErosionRealLevel = level;
+}

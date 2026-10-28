@@ -52,7 +52,7 @@ const MtDTI& cStageMap::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cStageMap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStageMap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
@@ -74,34 +74,34 @@ inline void cStageMap::operator delete(void* p_addr) {
 // Also emitted as: _ZN9cStageMapD0Ev at 0x006c3180
 cStageMap::~cStageMap() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mParamList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mParamList.mLength != 0) {
         // inferred: the value the loop at 0x6c3110 carries; no location-less local in scope fits
-        u32 v0_0 = this->mParamList.::MtArray::mLength;
+        u32 v0_0 = mParamList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mParamList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mParamList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mParamList.::MtArray::mLength) {
-                    v0_0 = this->mParamList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mParamList.mpArray[i0_3] != nullptr) {
+                delete mParamList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mParamList.mLength) {
+                    v0_0 = mParamList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mParamList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mParamList.::MtArray::mpArray));
+    if (mParamList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mParamList.mpArray));
     }
-    this->mParamList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mParamList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mParamList.::MtArray::mLength = static_cast<u32>(0);
+    mParamList.mpArray = nullptr;
+    mParamList.mBufsiz = 0;
+    mParamList.mLength = 0;
 }
 
 // Address: 0x006c3240 - 0x006c3633 (1011 bytes)
@@ -128,6 +128,8 @@ __attribute__((weak)) void cStageMap::createProperty(MtPropertyList& s) {
 
 // No out-of-line body: no code in the ELF
 // void cStageMap::copy(cStageMap* pSrc);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageMap::MyDTI cStageMap::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rStageMap.cpp at 0x006c4360-0x006c43a4 (called at rStageMap.cpp:28)
@@ -186,12 +188,18 @@ const MtDTI& cStageMap::cParam::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cStageMap::cParam::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (316 bytes)
-//   in rStageMap::loadData at 0x006c37b7-0x006c37c6, 0x006c37f9-0x006c383f (called at rStageMap.cpp:180)
-//   in rStageMap::loadData at 0x006c37b7-0x006c37c6, 0x006c37f9-0x006c383f (called at rStageMap.h:29)
-//   in cStageMap::cParam::MyDTI::newInstance at 0x006c3f5d-0x006c3fa6 (called at rStageMap.cpp:393)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cStageMap::cParam::cParam();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline cStageMap::cParam::cParam() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString(), MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mModelName.value = nullptr;
+    mAreaNo = 0;
+    mSize = 0.0f;
+    mConnectPos.x = MtVector3::Zero.x;
+    mConnectPos.y = MtVector3::Zero.y;
+    mConnectPos.z = MtVector3::Zero.z;
+    mConnectPos.pad_ = 0.0f;
+}
 
 // Address: 0x006c4020 - 0x006c434a (810 bytes)
 __attribute__((weak)) void cStageMap::cParam::createProperty(MtPropertyList& s) {
@@ -210,6 +218,8 @@ __attribute__((weak)) bool cStageMap::cParam::load(MtDataReader& r) {
 
 // No out-of-line body: no code in the ELF
 // bool cStageMap::cParam::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStageMap::cParam::MyDTI cStageMap::cParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageMap.cpp at 0x006c43e1-0x006c441a (called at rStageMap.cpp:393)
@@ -244,7 +254,7 @@ const MtDTI& rStageMap::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageMap::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageMap::DTI)->memAlloc(sz, align, ::rStageMap::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageMap::DTI)->memAlloc(sz, align, rStageMap::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -259,7 +269,7 @@ inline void* rStageMap::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rStageMapD0Ev at 0x01aa8854-0x01aa8875, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStageMap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageMap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageMap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -289,7 +299,7 @@ MT_CTSTR rStageMap::getExt() const {
 // Address: 0x01aa89a0 - 0x01aa89a6 (6 bytes)
 u32 rStageMap::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: 7 inlined copies in 7 functions (505 bytes)
@@ -309,27 +319,26 @@ bool rStageMap::isField(u32 stageNo) {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3aa1, held ahead of the effects the ELF orders after it
-    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3aa4, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(152));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 152);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3aa4, held ahead of the effects the ELF orders after it
-    u32 t1 = this->getDataNum();
+    u32 t1 = getDataNum();
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
-    if (t1 != static_cast<u32>(0)) {
+    unsigned int i3 = 0;
+    if (t1 != 0) {
         do {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3ac0, held ahead of the effects the ELF orders after it
-            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3ac8, held ahead of the effects the ELF orders after it
-            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(136));
-            cStageMap* data = this->getData(i3);
-            if (data != static_cast<cStageMap*>(nullptr)) {
-                if (data->mStageNo != stageNo) {
-                } else {
-                    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(data) + static_cast<long>(16))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 136);
+            cStageMap* data = getData(i3);
+            if (data != nullptr) {
+                if (data->mStageNo == stageNo) {
+                    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(data) + 16)) & 2) >> 1);
                 }
             }
-            i3 += static_cast<unsigned int>(1);
+            i3 += 1u;
         } while (i3 < t1);
     }
     return false;
@@ -342,27 +351,26 @@ bool rStageMap::isPartsStage(u32 stageNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x98 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x88 from unsigned long
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3b11, held ahead of the effects the ELF orders after it
-    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3b14, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(152));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 152);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3b14, held ahead of the effects the ELF orders after it
-    u32 t1 = this->getDataNum();
+    u32 t1 = getDataNum();
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
-    if (t1 != static_cast<u32>(0)) {
+    unsigned int i3 = 0;
+    if (t1 != 0) {
         do {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3b30, held ahead of the effects the ELF orders after it
-            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c3b38, held ahead of the effects the ELF orders after it
-            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(136));
-            cStageMap* data = this->getData(i3);
-            if (data != static_cast<cStageMap*>(nullptr)) {
-                if (data->mStageNo != stageNo) {
-                } else {
-                    return (data->mStageFlag & static_cast<u32>(12)) != static_cast<u32>(0);
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 136);
+            cStageMap* data = getData(i3);
+            if (data != nullptr) {
+                if (data->mStageNo == stageNo) {
+                    return (data->mStageFlag & 12u) != 0;
                 }
             }
-            i3 += static_cast<unsigned int>(1);
+            i3 += 1u;
         } while (i3 < t1);
     }
     return false;
@@ -409,6 +417,8 @@ __attribute__((weak)) MtVector3 rStageMap::getPartsConnectPos(u32 stageNo, u32 u
     __builtin_unreachable();
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageMap::MyDTI rStageMap::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageMap.cpp at 0x006c43a4-0x006c43e1 (called at rStageMap.cpp:161)
 //   in _GLOBAL__sub_I_rStageMap.cpp at 0x006c43a4-0x006c43e1 (called at rStageMap.h:98)
@@ -417,7 +427,7 @@ __attribute__((weak)) MtVector3 rStageMap::getPartsConnectPos(u32 stageNo, u32 u
 // Address: 0x006c3660 - 0x006c36c4 (100 bytes)
 MtObject* rStageMap::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageMap;
+    return new (16u) rStageMap;
 }
 
 // Instance at 0x01aa8660 - 0x01aa8665 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

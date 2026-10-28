@@ -112,3 +112,9 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsShakeCtrl::shake at 0x8c3580-0x8c3584; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rShakeCtrl* cpShakeCtrl::getCurrentResource() {
+    return this->mpResource;
+}

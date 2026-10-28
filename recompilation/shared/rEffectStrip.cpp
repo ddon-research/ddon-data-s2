@@ -38,7 +38,7 @@ const MtDTI& rEffectStrip::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK12rEffectStrip5MyDTI11newInstanceEv at 0x011f4680-0x011f46ad, code DWARF attributes to no inlined copy; sz is the class's size (144), align the allocation's other whole constant (16)
 inline void* rEffectStrip::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(sz, align, ::rEffectStrip::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memAlloc(sz, align, rEffectStrip::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* rEffectStrip::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rEffectStripD0Ev at 0x011f4837-0x011f4858, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffectStrip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,57 +81,57 @@ bool rEffectStrip::load(MtStream& in) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff); pTempBuff's location [0x11f48a8, 0x11f497d) [0x11f4985, 0x11f4996) [0x11f49ad, 0x11f49b5) covers its scope [0x11f48c9, 0x11f497d)
     u32 fileSize = in.getLength();
-    if (fileSize != static_cast<u32>(0)) {
-        u8* pTempBuff = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(fileSize, static_cast<u32>(16)));
-        if (pTempBuff != static_cast<u8*>(nullptr)) {
+    if (fileSize != 0) {
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(fileSize, 16u));
+        if (pTempBuff != nullptr) {
             u32 readSize = in.read(static_cast<void*>(pTempBuff), fileSize);
             if (fileSize == readSize) {
-                if (reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->Magic == static_cast<u32>(5457477)) {
-                    if (reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->Version == static_cast<u32>(537397522)) {
+                if (reinterpret_cast<EFS_HEADER*>(pTempBuff)->Magic == 0x534645) {
+                    if (reinterpret_cast<EFS_HEADER*>(pTempBuff)->Version == 0x20080912) {
                         // inferred: a temporary for the value the load at 0x11f48e6 read, used 5 times; no DWARF local holds it
-                        u32 t0 = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->ParamBuffSize;
-                        if (t0 != static_cast<u32>(0)) {
-                            if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-                                ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-                                this->mpParamBuff = static_cast<u8*>(nullptr);
-                                this->mParamBuffSize = static_cast<u32>(0);
+                        u32 t0 = reinterpret_cast<EFS_HEADER*>(pTempBuff)->ParamBuffSize;
+                        if (t0 != 0) {
+                            if (mpParamBuff != nullptr) {
+                                MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memFree(static_cast<void*>(mpParamBuff));
+                                mpParamBuff = nullptr;
+                                mParamBuffSize = 0;
                                 // inferred: a temporary for the result of the call at 0x11f493e, used twice; no DWARF local holds it
-                                void* t1 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t1, static_cast<int>(0), t0);
-                                    this->mParamBuffSize = t0;
-                                    this->mPartsNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->PartsNum;
-                                    this->mJointNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->JointNum;
-                                    this->mTotalVertexNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalVertexNum;
-                                    this->mTotalIndexNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalIndexNum;
-                                    ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(32)]), t0);
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                void* t1 = MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memAlloc(t0, 16u);
+                                if ((mpParamBuff = static_cast<u8*>(t1)) != nullptr) {
+                                    memset(t1, 0, t0);
+                                    mParamBuffSize = t0;
+                                    mPartsNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->PartsNum;
+                                    mJointNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->JointNum;
+                                    mTotalVertexNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalVertexNum;
+                                    mTotalIndexNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalIndexNum;
+                                    memcpy(static_cast<void*>(mpParamBuff), static_cast<const void*>(&pTempBuff[32]), t0);
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;
                                 } else {
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return false;
                                 }
                             } else {
-                                this->mParamBuffSize = static_cast<u32>(0);
+                                mParamBuffSize = 0;
                                 // inferred: a temporary for the result of the call at 0x11f493e, used twice; no DWARF local holds it
-                                void* t1 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t1, static_cast<int>(0), t0);
-                                    this->mParamBuffSize = t0;
-                                    this->mPartsNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->PartsNum;
-                                    this->mJointNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->JointNum;
-                                    this->mTotalVertexNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalVertexNum;
-                                    this->mTotalIndexNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalIndexNum;
-                                    ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(32)]), t0);
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                void* t1 = MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memAlloc(t0, 16u);
+                                if ((mpParamBuff = static_cast<u8*>(t1)) != nullptr) {
+                                    memset(t1, 0, t0);
+                                    mParamBuffSize = t0;
+                                    mPartsNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->PartsNum;
+                                    mJointNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->JointNum;
+                                    mTotalVertexNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalVertexNum;
+                                    mTotalIndexNum = reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalIndexNum;
+                                    memcpy(static_cast<void*>(mpParamBuff), static_cast<const void*>(&pTempBuff[32]), t0);
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return true;
                                 } else {
-                                    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                                    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                                     return false;
                                 }
                             }
                         } else {
-                            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                             return false;
                         }
                     } else {
@@ -141,7 +141,7 @@ bool rEffectStrip::load(MtStream& in) {
                     return false;
                 }
             } else {
-                ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
+                MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
                 return false;
             }
         } else {
@@ -158,26 +158,26 @@ bool rEffectStrip::save(MtStream& out) {
     // DWARF local not rendered: EFS_HEADER* pHeader;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff); declared on line 125 at function scope, its scope starts at the row 0x11f4a4e (line 126); pTempBuff's location [0x11f4a3f, 0x11f4aa5) covers it from there through its last access
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    if (mpParamBuff != nullptr) {
         // inferred: a temporary for the value the load at 0x11f4a1a read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mParamBuffSize;
-        u8* pTempBuff = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(t0 + static_cast<u32>(32), static_cast<u32>(16)));
-        if (pTempBuff != static_cast<u8*>(nullptr)) {
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->Magic = static_cast<u32>(5457477);
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->Version = static_cast<u32>(537397522);
+        u32 t0 = mParamBuffSize;
+        u8* pTempBuff = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(t0 + 32u, 16u));
+        if (pTempBuff != nullptr) {
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->Magic = 0x534645;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->Version = 0x20080912;
             // inferred: a temporary for the value the load at 0x11f4a51 read, used twice; no DWARF local holds it
-            u32 t1 = this->mParamBuffSize;
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->ParamBuffSize = t1;
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->EfsHeader320c = static_cast<u32>(0);
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->PartsNum = this->mPartsNum;
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->JointNum = this->mJointNum;
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalVertexNum = this->mTotalVertexNum;
-            reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->TotalIndexNum = this->mTotalIndexNum;
-            ::memcpy(static_cast<void*>(&pTempBuff[static_cast<int>(32)]), static_cast<const void*>(this->mpParamBuff), t1);
-            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + static_cast<u32>(32));
-            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
-            return writeSize == (t0 + static_cast<u32>(32));
+            u32 t1 = mParamBuffSize;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->ParamBuffSize = t1;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->EfsHeader320c = 0;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->PartsNum = mPartsNum;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->JointNum = mJointNum;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalVertexNum = mTotalVertexNum;
+            reinterpret_cast<EFS_HEADER*>(pTempBuff)->TotalIndexNum = mTotalIndexNum;
+            memcpy(static_cast<void*>(&pTempBuff[32]), static_cast<const void*>(mpParamBuff), t1);
+            u32 writeSize = out.write(static_cast<const void*>(pTempBuff), t0 + 32u);
+            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(pTempBuff));
+            return writeSize == (t0 + 32u);
         } else {
             return false;
         }
@@ -189,17 +189,17 @@ bool rEffectStrip::save(MtStream& out) {
 // Address: 0x011f4af0 - 0x011f4b4f (95 bytes)
 void rEffectStrip::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-        this->mpParamBuff = static_cast<u8*>(nullptr);
+    if (mpParamBuff != nullptr) {
+        MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memFree(static_cast<void*>(mpParamBuff));
+        mpParamBuff = nullptr;
     }
-    this->mTotalIndexNum = static_cast<u32>(0);
-    this->mJointNum = static_cast<u32>(0);
-    this->mTotalVertexNum = static_cast<u32>(0);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mPartsNum = static_cast<u32>(0);
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    mTotalIndexNum = 0;
+    mJointNum = 0;
+    mTotalVertexNum = 0;
+    mParamBuffSize = 0;
+    mPartsNum = 0;
+    mpParamBuff = nullptr;
+    mAttr = 22;
 }
 
 // Address: 0x011f4b50 - 0x011f4f5b (1035 bytes)
@@ -211,7 +211,7 @@ __attribute__((weak)) void rEffectStrip::createProperty(MtPropertyList& s) {
 // Address: 0x011f4f60 - 0x011f4f65 (5 bytes)
 MtUI* rEffectStrip::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -480,11 +480,11 @@ __attribute__((weak)) void rEffectStrip::getModelVertex(u32 PartsNo, u32 IndexNo
 // Also emitted as: _ZN12rEffectStripD0Ev at 0x011f47f0
 rEffectStrip::~rEffectStrip() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParamBuff == static_cast<u8*>(nullptr)) {
+    if (mpParamBuff == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
-    this->mpParamBuff = static_cast<u8*>(nullptr);
+    MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memFree(static_cast<void*>(mpParamBuff));
+    mpParamBuff = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -507,12 +507,14 @@ __attribute__((weak)) MtMatrix rEffectStrip::calcBlendVertexWorldMatrix(uModel* 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rEffectStrip::destructParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectStrip::MyDTI rEffectStrip::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rEffectStrip::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011f4680 - 0x011f46fa (122 bytes)
 MtObject* rEffectStrip::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffectStrip;
+    return new (16u) rEffectStrip;
 }
 

@@ -28,7 +28,7 @@ const MtDTI& cpCheckWallCliff::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpCheckWallCliff::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpCheckWallCliff::DTI);
+    return MtMemoryAllocator::getAllocator(cpCheckWallCliff::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpCheckWallCliff::getAllocator() {
 // Address: 0x00468ce0 - 0x00468d20 (64 bytes)
 void* cpCheckWallCliff::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpCheckWallCliff::getAllocator()->memAlloc(sz, align, ::cpCheckWallCliff::DTI.::MtDTI::getID());
+    return cpCheckWallCliff::getAllocator()->memAlloc(sz, align, cpCheckWallCliff::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpCheckWallCliff::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpCheckWallCliff::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpCheckWallCliff::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpCheckWallCliff::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,8 +88,8 @@ __attribute__((weak)) void cpCheckWallCliff::setup() {
 // Address: 0x00469400 - 0x00469409 (9 bytes)
 void cpCheckWallCliff::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsWallStop = false;
-    this->::cpCheckWallCliff::moveCheckWall();
+    mIsWallStop = false;
+    moveCheckWall();
 }
 
 // Address: 0x00469410 - 0x0046951e (270 bytes)
@@ -105,10 +105,31 @@ __attribute__((weak)) void cpCheckWallCliff::applyWorldOffset(const MtVector3& o
     /* stub */
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (465 bytes)
-//   in cpCheckWallCliff::moveCheckCliff2 at 0x00469bd6-0x00469cb7 (called at cpCheckWallCliff.cpp:238)
-//   in uDDOModel::resetPos at 0x008db40d-0x008db4fd (called at uDDOModel.cpp:2091)
-// void cpCheckWallCliff::resetPos(const MtVector3& pos);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::resetPos at 0x8db40d-0x8db4fd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void cpCheckWallCliff::resetPos(const MtVector3& pos) {
+    mFallPreventionPosList.elems[0].x = pos.x;
+    mFallPreventionPosList.elems[0].y = pos.y;
+    mFallPreventionPosList.elems[0].z = pos.z;
+    mFallPreventionPosList.elems[0].pad_ = 0.0f;
+    mFallPreventionPosList.elems[1].x = pos.x;
+    mFallPreventionPosList.elems[1].y = pos.y;
+    mFallPreventionPosList.elems[1].z = pos.z;
+    mFallPreventionPosList.elems[1].pad_ = 0.0f;
+    mFallPreventionPosList.elems[2].x = pos.x;
+    mFallPreventionPosList.elems[2].y = pos.y;
+    mFallPreventionPosList.elems[2].z = pos.z;
+    mFallPreventionPosList.elems[2].pad_ = 0.0f;
+    mFallPreventionPosList.elems[3].x = pos.x;
+    mFallPreventionPosList.elems[3].y = pos.y;
+    mFallPreventionPosList.elems[3].z = pos.z;
+    mFallPreventionPosList.elems[3].pad_ = 0.0f;
+    mFallPreventionCorrectPos.x = pos.x;
+    mFallPreventionCorrectPos.y = pos.y;
+    mFallPreventionCorrectPos.z = pos.z;
+    mFallPreventionCorrectPos.pad_ = 0.0f;
+}
 
 // Address: 0x00469520 - 0x0046999f (1151 bytes)
 __attribute__((weak)) void cpCheckWallCliff::moveCheckWall() {
@@ -200,9 +221,9 @@ __attribute__((weak)) bool cpCheckWallCliff::checkFallPrevention() {
 // Address: 0x0046b2a0 - 0x0046b2ac (12 bytes)
 void cpCheckWallCliff::setWallCheckDate(s32 jnt, f32 range, u32 filter) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWallCheckCnsJnt = jnt;
-    this->mWallCheckRange = range;
-    this->mWallCheckFilter = filter;
+    mWallCheckCnsJnt = jnt;
+    mWallCheckRange = range;
+    mWallCheckFilter = filter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,10 +236,10 @@ void cpCheckWallCliff::setWallCheckDate(s32 jnt, f32 range, u32 filter) {
 // Address: 0x0046b2b0 - 0x0046b2c4 (20 bytes)
 void cpCheckWallCliff::setCliffCheckDate(s32 jnt, f32 forword, f32 height, u32 filter) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCliffCheckCnsJnt = jnt;
-    this->mCliffCheckRangeForward = forword;
-    this->mCliffCheckRangeHeight = height;
-    this->mCliffCheckFilter = filter;
+    mCliffCheckCnsJnt = jnt;
+    mCliffCheckRangeForward = forword;
+    mCliffCheckRangeHeight = height;
+    mCliffCheckFilter = filter;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (40 bytes)
@@ -239,6 +260,8 @@ void cpCheckWallCliff::setCliffCheckDate(s32 jnt, f32 forword, f32 height, u32 f
 
 // No out-of-line body: no code in the ELF
 // bool cpCheckWallCliff::isWallStop() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpCheckWallCliff::MyDTI cpCheckWallCliff::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpCheckWallCliff.cpp at 0x0046b3df-0x0046b41c (called at cpCheckWallCliff.cpp:34)

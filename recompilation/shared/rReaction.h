@@ -222,25 +222,25 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cReaction::cCondition::cCondition() {
-    this->mCondition = static_cast<u32>(0);
+    this->mCondition = 0;
     this->mReverse = false;
-    this->mCkAndOR = static_cast<u32>(0);
-    this->mParam1 = static_cast<u64>(0);
-    this->mParam0 = static_cast<u64>(0);
+    this->mCkAndOR = 0;
+    this->mParam1 = 0;
+    this->mParam0 = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cReaction::cTrigger::cTrigger() {
-    this->mParam1 = static_cast<u32>(0);
-    this->mCount = static_cast<u32>(0);
-    this->mTrigger = static_cast<u32>(0);
-    this->mParam = static_cast<u32>(0);
+    this->mParam1 = 0;
+    this->mCount = 0;
+    this->mTrigger = 0;
+    this->mParam = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cReaction::cAction::cAction() {
-    this->mPercent = static_cast<u32>(0);
-    this->mActNoLand = static_cast<u32>(4294967295);
-    this->mActNoAir = static_cast<u32>(4294967295);
-    this->mActNoDown = static_cast<u32>(4294967295);
+    this->mPercent = 0;
+    this->mActNoLand = 0xFFFFFFFF;
+    this->mActNoAir = 0xFFFFFFFF;
+    this->mActNoDown = 0xFFFFFFFF;
 }

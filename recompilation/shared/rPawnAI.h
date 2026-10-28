@@ -202,5 +202,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cPawnAIActInter::cPawnAIActInter() {
-    this->mNameID = static_cast<u32>(0);
+    this->mNameID = 0;
 }

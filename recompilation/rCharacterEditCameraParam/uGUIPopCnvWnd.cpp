@@ -31,7 +31,7 @@ const MtDTI& uGUIPopCnvWnd::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopCnvWnd::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopCnvWnd::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopCnvWnd::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* uGUIPopCnvWnd::getAllocator() {
 // Address: 0x00b9a490 - 0x00b9a4d0 (64 bytes)
 void* uGUIPopCnvWnd::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopCnvWnd::getAllocator()->memAlloc(sz, align, ::uGUIPopCnvWnd::DTI.::MtDTI::getID());
+    return uGUIPopCnvWnd::getAllocator()->memAlloc(sz, align, uGUIPopCnvWnd::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uGUIPopCnvWnd::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopCnvWnd::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopCnvWnd::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopCnvWnd::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,9 +80,9 @@ uGUIPopCnvWnd::~uGUIPopCnvWnd() {
 // Address: 0x00b9a7f0 - 0x00b9a858 (104 bytes)
 bool uGUIPopCnvWnd::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_TRANSLITERATION_GUI"), static_cast<u32>(129), static_cast<t64>(1425534300)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_TRANSLITERATION_GUI"), 129u, 1425534300l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -106,23 +106,23 @@ __attribute__((weak)) void uGUIPopCnvWnd::setup() {
 // Address: 0x00b9ad10 - 0x00b9ad41 (49 bytes)
 void uGUIPopCnvWnd::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b9ad50 - 0x00b9ad9a (74 bytes)
 void uGUIPopCnvWnd::adjustScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const f32 scale = ::cGUIUtility::getScaleForDefaultResolution(1.0f);
-    if (this->mInst.null_all == static_cast<cGUIInstNull*>(nullptr)) {
+    const f32 scale = cGUIUtility::getScaleForDefaultResolution(1.0f);
+    if (mInst.null_all == nullptr) {
         return;
     }
-    this->mInst.null_all->::cGUIInstNull::setScaleX(scale);
-    this->mInst.null_all->::cGUIInstNull::setScaleY(scale);
+    mInst.null_all->setScaleX(scale);
+    mInst.null_all->setScaleY(scale);
 }
 
 // Address: 0x00b9ada0 - 0x00b9ae12 (114 bytes)
@@ -134,7 +134,7 @@ __attribute__((weak)) void uGUIPopCnvWnd::applyCandidateList(const nInputText::C
 // Address: 0x00b9acf0 - 0x00b9ad0a (26 bytes)
 void uGUIPopCnvWnd::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCnvWnd::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCnvWnd::updateWait);
 }
 
 // Address: 0x00b9ae20 - 0x00b9aefc (220 bytes)
@@ -207,6 +207,8 @@ __attribute__((weak)) void uGUIPopCnvWnd::updateWindowSize(f32 maxTextWidth, f32
 // No out-of-line body: 1 inlined copy in 1 function (168 bytes)
 //   in uGUIPopCnvWnd::updateDisp at 0x00b9b2be-0x00b9b339, 0x00b9b340-0x00b9b358, 0x00b9b39e-0x00b9b3b3 (called at uGUIPopCnvWnd.cpp:356)
 // MtSizeF uGUIPopCnvWnd::calcWindowSize() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopCnvWnd::MyDTI uGUIPopCnvWnd::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopCnvWnd.cpp at 0x00b9b89f-0x00b9b8dc (called at uGUIPopCnvWnd.cpp:43)

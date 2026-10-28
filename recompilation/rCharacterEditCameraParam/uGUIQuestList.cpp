@@ -41,7 +41,7 @@ const MtDTI& uGUIQuestList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIQuestList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIQuestList::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIQuestList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline MtAllocator* uGUIQuestList::getAllocator() {
 // Address: 0x00bfe120 - 0x00bfe160 (64 bytes)
 void* uGUIQuestList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIQuestList::getAllocator()->memAlloc(sz, align, ::uGUIQuestList::DTI.::MtDTI::getID());
+    return uGUIQuestList::getAllocator()->memAlloc(sz, align, uGUIQuestList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,7 +65,7 @@ void* uGUIQuestList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIQuestList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,11 +96,11 @@ __attribute__((weak)) void uGUIQuestList::createProperty(MtPropertyList& s) {
 // Address: 0x00bfeb60 - 0x00bfec0f (175 bytes)
 bool uGUIQuestList::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_LOG_GUI"), static_cast<u32>(129), static_cast<t64>(1466062348)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_LOG_GUI"), 129u, 1466062348l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -112,9 +112,9 @@ bool uGUIQuestList::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -158,42 +158,42 @@ __attribute__((weak)) void uGUIQuestList::setup() {
 // Address: 0x00bfec10 - 0x00bfec96 (134 bytes)
 void uGUIQuestList::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteDataChargesHUD();
-    if (this->mpSystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpSystemMsg->kill();
-        this->mpSystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteDataChargesHUD();
+    if (mpSystemMsg != nullptr) {
+        mpSystemMsg->kill();
+        mpSystemMsg = nullptr;
     }
-    if (this->mpPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpPopDetail->kill();
-        this->mpPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpPopDetail != nullptr) {
+        mpPopDetail->kill();
+        mpPopDetail = nullptr;
     }
-    if (this->mpMap != static_cast<uGUIMap*>(nullptr)) {
-        this->mpMap->kill();
-        this->mpMap = static_cast<uGUIMap*>(nullptr);
+    if (mpMap != nullptr) {
+        mpMap->kill();
+        mpMap = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00bfeca0 - 0x00bfed0d (109 bytes)
 void uGUIQuestList::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpSystemMsg->::cUnit::isEnable() == false) {
-            this->mpSystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpSystemMsg != nullptr) {
+        if (!mpSystemMsg->isEnable()) {
+            mpSystemMsg = nullptr;
         }
     }
-    if (this->mpPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        if (this->mpPopDetail->::cUnit::isEnable() == false) {
-            this->mpPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpPopDetail != nullptr) {
+        if (!mpPopDetail->isEnable()) {
+            mpPopDetail = nullptr;
         }
     }
-    if (this->mpMap == static_cast<uGUIMap*>(nullptr)) {
+    if (mpMap == nullptr) {
         return;
     }
-    if (this->mpMap->::cUnit::isEnable() != false) {
+    if (mpMap->isEnable()) {
         return;
     }
-    this->mpMap = static_cast<uGUIMap*>(nullptr);
+    mpMap = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)
@@ -204,15 +204,15 @@ void uGUIQuestList::updatePtr() {
 void uGUIQuestList::setupMenuItem(uGUIQuestList::stMenuIcon& menu, cGUIInstance* pInst, f32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     menu.mpInstAnim = static_cast<cGUIInstAnimation*>(pInst);
-    menu.mpObjTex = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(pInst, static_cast<u32>(2)));
-    menu.mpObjTexFocus = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(pInst, static_cast<u32>(8)));
-    menu.mpObjPolyMouseCollision = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(pInst, static_cast<u32>(7)));
-    menu.mpObjNullPointer = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(pInst, static_cast<u32>(6)));
-    if (menu.mpInstAnim == static_cast<cGUIInstAnimation*>(nullptr)) {
+    menu.mpObjTex = static_cast<cGUIObjTexture*>(getObjectFromId(pInst, 2u));
+    menu.mpObjTexFocus = static_cast<cGUIObjTexture*>(getObjectFromId(pInst, 8u));
+    menu.mpObjPolyMouseCollision = static_cast<cGUIObjPolygon*>(getObjectFromId(pInst, 7u));
+    menu.mpObjNullPointer = static_cast<cGUIObjNull*>(getObjectFromId(pInst, 6u));
+    if (menu.mpInstAnim == nullptr) {
         return;
     }
-    menu.mpInstAnim->::cGUIInstAnimation::setCurrentFrame(frame, true);
-    menu.mpInstAnim->::cGUIInstNull::setColorControl(static_cast<u32>(0));
+    menu.mpInstAnim->setCurrentFrame(frame, true);
+    menu.mpInstAnim->setColorControl(0u);
 }
 
 // Address: 0x00c01800 - 0x00c018ca (202 bytes)
@@ -263,7 +263,7 @@ __attribute__((weak)) void uGUIQuestList::updateMove() {
 // Address: 0x00c02340 - 0x00c02349 (9 bytes)
 void uGUIQuestList::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00c02350 - 0x00c023e9 (153 bytes)
@@ -346,31 +346,31 @@ __attribute__((weak)) u32 uGUIQuestList::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00c02050 - 0x00c02071 (33 bytes)
 u32 uGUIQuestList::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    this->uGUIBase::setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x00c013e0 - 0x00c01401 (33 bytes)
 u32 uGUIQuestList::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    this->uGUIBase::setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x00c02080 - 0x00c020a1 (33 bytes)
 u32 uGUIQuestList::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(1);
+    this->uGUIBase::setInputEvent(69u);
+    return 1;
 }
 
 // Address: 0x00c01e80 - 0x00c02048 (456 bytes)
@@ -384,15 +384,15 @@ __attribute__((weak)) u32 uGUIQuestList::evCtrlCheck(cControl::Message* msg) {
 // Address: 0x00c01410 - 0x00c01467 (87 bytes)
 u32 uGUIQuestList::evCtrlToggle(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->setCurrentPos(0, false);
     }
-    this->::uGUIQuestList::adjustListCursor();
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return this->::uGUIBase::evCtrlcReferenceUIToggleBtnSwitch(msg);
+    adjustListCursor();
+    this->uGUIBase::setInputEvent(72u);
+    return evCtrlcReferenceUIToggleBtnSwitch(msg);
 }
 
 // Address: 0x00c020b0 - 0x00c021f4 (324 bytes)
@@ -407,11 +407,11 @@ __attribute__((weak)) u32 uGUIQuestList::evCtrlAdjustCursor(cControl::Message* m
 // Address: 0x00c02200 - 0x00c0221e (30 bytes)
 u32 uGUIQuestList::evCtrlAdjustTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(3);
+    if (msg != nullptr) {
+        msg->changeSE = 3;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(74));
-    return static_cast<u32>(0);
+    this->uGUIBase::setInputEvent(74u);
+    return 0;
 }
 
 // Address: 0x00c02220 - 0x00c02332 (274 bytes)
@@ -662,27 +662,27 @@ __attribute__((weak)) void uGUIQuestList::updateInfoWait() {
 // Address: 0x00c05840 - 0x00c0593e (254 bytes)
 void uGUIQuestList::clearInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpTabCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpTabCtrl != nullptr) {
+        mpTabCtrl->setCurrentPos(0, false);
     }
-    this->mInfo.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(0), true, true);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mInfo.mpInstAnimEmblem), false);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mInfo.mRecom.mpInstAnim), false);
-    if (this->mInfo.mScrollCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mInfo.mScrollCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    mInfo.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+    setInstanceVisible(static_cast<cGUIInstance*>(mInfo.mpInstAnimEmblem), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mInfo.mRecom.mpInstAnim), false);
+    if (mInfo.mScrollCtrl.mBar.mpInstance != nullptr) {
+        mInfo.mScrollCtrl.mBar.mpInstance->setVisible(false);
     }
-    if (this->mpPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpPopDetail->::uGUIPopDetail01::setItemParam(static_cast<cItemParam*>(nullptr), static_cast<rItemList::rItemParam*>(nullptr), static_cast<nCharacterData::EQUIP_SLOT_TYPE>(0));
+    if (mpPopDetail != nullptr) {
+        mpPopDetail->setItemParam(static_cast<cItemParam*>(nullptr), static_cast<rItemList::rItemParam*>(nullptr), nCharacterData::EQUIP_SLOT_TYPE_START);
     }
-    this->mDrawItemId = static_cast<u32>(0);
-    this->mSelectItemId = static_cast<u32>(0);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mInfo.mpObjMsgTitle), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mInfo.mpObjMsgPeriod), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mInfo.mpObjMsgId), "", static_cast<u32>(0), false);
-    if (this->mpInfoRewardCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    mDrawItemId = 0;
+    mSelectItemId = 0;
+    setObjectMessage(static_cast<cGUIObject*>(mInfo.mpObjMsgTitle), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mInfo.mpObjMsgPeriod), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mInfo.mpObjMsgId), "", 0u, false);
+    if (mpInfoRewardCtrl == nullptr) {
         return;
     }
-    this->mpInfoRewardCtrl->setFocus(false);
+    mpInfoRewardCtrl->setFocus(false);
 }
 
 // Address: 0x00c06200 - 0x00c068c2 (1730 bytes)
@@ -853,27 +853,27 @@ void uGUIQuestList::setupBonusPos(uGUIQuestList::stBonusItem& bonus, s32& bonus_
     // Approximate from the ELF: a place read twice with no call between; a value a join carries, assigned on each way in; the body oracle reports this body.
     // inferred: a temporary for the value a join carries at 0xc09772, assigned on each way in; no DWARF local holds it
     u32 j0;
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(bonus.mpInstNull), true);
-    if (bonus.mpInstNull != static_cast<cGUIInstNull*>(nullptr)) {
-        bonus.mpInstNull->::cGUIInstNull::setPositionY(static_cast<float>(bonus_pos));
+    setInstanceVisible(static_cast<cGUIInstance*>(bonus.mpInstNull), true);
+    if (bonus.mpInstNull != nullptr) {
+        bonus.mpInstNull->setPositionY(static_cast<float>(bonus_pos));
     }
-    if (bonus.mpObjMsgCaption != static_cast<cGUIObjMessage*>(nullptr)) {
-        const u32 line_num = bonus.mpObjMsgCaption->::cGUIObjMessage::getLineNum(static_cast<u32>(0));
+    if (bonus.mpObjMsgCaption != nullptr) {
+        const u32 line_num = bonus.mpObjMsgCaption->getLineNum(0u);
         j0 = line_num;
     } else {
-        j0 = static_cast<u32>(0);
+        j0 = 0;
     }
     // inferred: a temporary for the value the load at 0xc09772 read, used 3 times; no DWARF local holds it
-    s32 t0 = this->mVar.param_bonus_line_y;
-    const u32 bonus_length = this->mVar.param_bonus_title_y;
+    s32 t0 = mVar.param_bonus_line_y;
+    const u32 bonus_length = mVar.param_bonus_title_y;
     bonus_pos = static_cast<int>((bonus_length + (bonus_pos)) + (j0 * t0));
     list_pos = static_cast<int>((bonus_length + (list_pos)) + (j0 * t0));
-    if (bonus.mpObjPolyLine != static_cast<cGUIObjPolygon*>(nullptr)) {
-        bonus.mpObjPolyLine->::cGUIObj2D::setPositionY(static_cast<float>(bonus_length + (j0 * t0)));
+    if (bonus.mpObjPolyLine != nullptr) {
+        bonus.mpObjPolyLine->setPositionY(static_cast<float>(bonus_length + (j0 * t0)));
     }
-    this->::uGUIQuestList::addInfo(static_cast<cGUIInstance*>(bonus.mpInstNull), static_cast<cGUIObject*>(nullptr), list_pos, length, false);
-    bonus_pos = this->mVar.param_bonus_margin + (bonus_pos);
-    list_pos = this->mVar.param_bonus_margin + (list_pos);
+    addInfo(static_cast<cGUIInstance*>(bonus.mpInstNull), static_cast<cGUIObject*>(nullptr), list_pos, length, false);
+    bonus_pos = mVar.param_bonus_margin + (bonus_pos);
+    list_pos = mVar.param_bonus_margin + (list_pos);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -931,10 +931,18 @@ __attribute__((weak)) void uGUIQuestList::addInfo(cGUIInstance* pInst, cGUIObjec
 }
 
 // Address: 0x00c017e0 - 0x00c017fb (27 bytes)
-__attribute__((weak)) void uGUIQuestList::setupDetailItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    // local: cDetailInfo* pInfo;
-    DDON_STUB("uGUIQuestList::setupDetailItem")
-    /* stub */
+void uGUIQuestList::setupDetailItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    if (pInfoBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pInfo, its location optimized out, declared in the lexical block that holds the access
+    cDetailInfo* pInfo = static_cast<cDetailInfo*>(pInfoBase);
+    pItemBase->mpObjPointerTarget = pInfo->mpObjPointerTarget;
+    pItemBase->mpInstPointerTarget = pInfo->mpInstPointerTarget;
 }
 
 // Address: 0x01b01480 - 0x01b01481 (1 bytes)
@@ -1099,6 +1107,8 @@ __attribute__((weak)) bool uGUIQuestList::questListSort(const nQuest::cGUIListDa
 //   in uGUIQuestList::setupInfo at 0x00c07091-0x00c0709d (called at uGUIQuestList.cpp:2955)
 // bool uGUIQuestList::isClanClear(const nQuest::cGUIListData* listData) const;
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIQuestList::MyDTI uGUIQuestList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestList.cpp at 0x00c098fe-0x00c0993b (called at uGUIQuestList.cpp:45)
 //   in _GLOBAL__sub_I_uGUIQuestList.cpp at 0x00c098fe-0x00c0993b (called at uGUIQuestList.h:27)
@@ -1161,7 +1171,7 @@ const MtDTI& uGUIQuestList::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uGUIQuestList9cListItemD0Ev at 0x01b02820-0x01b0284a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIQuestList::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestList::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1179,6 +1189,8 @@ inline void uGUIQuestList::cListItem::operator delete(void* p_addr) {
 //   in uGUIQuestList::stList::stList at 0x01b0243c-0x01b02543 (called at uGUIQuestList.h:199)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIQuestList::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuestList::cListItem::MyDTI uGUIQuestList::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestList.cpp at 0x00c0997b-0x00c099b8 (called at uGUIQuestList.cpp:47)
@@ -1284,7 +1296,7 @@ const MtDTI& uGUIQuestList::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13uGUIQuestList9cListInfoD0Ev at 0x01b027e0-0x01b0280a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIQuestList::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestList::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1302,6 +1314,8 @@ inline void uGUIQuestList::cListInfo::operator delete(void* p_addr) {
 //   in uGUIQuestList::createMyList at 0x00c04f79-0x00c04f8b, 0x00c05189-0x00c051ea (called at uGUIQuestList.cpp:2073)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // uGUIQuestList::cListInfo::cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuestList::cListInfo::MyDTI uGUIQuestList::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestList.cpp at 0x00c099b8-0x00c099f1 (called at uGUIQuestList.cpp:48)
@@ -1351,7 +1365,7 @@ const MtDTI& uGUIQuestList::cDetailInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIQuestList::cDetailInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cDetailInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestList::cDetailInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1372,6 +1386,8 @@ inline void uGUIQuestList::cDetailInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIQuestList::cDetailInfo::~cDetailInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuestList::cDetailInfo::MyDTI uGUIQuestList::cDetailInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestList.cpp at 0x00c0993b-0x00c0997b (called at uGUIQuestList.cpp:46)

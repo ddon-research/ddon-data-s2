@@ -9,7 +9,7 @@
 // Address: 0x00d75d80 - 0x00d75d92 (18 bytes)
 MtBigInt::MtBigInt() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(this), static_cast<int>(0), static_cast<size_t>(1056));
+    memset(static_cast<void*>(this), 0, 1056ul);
 }
 
 // Address: 0x00d75db0 - 0x00d75ead (253 bytes)
@@ -70,7 +70,7 @@ MtBigInt::MtBigInt(const MtBigInt& bi) {
 MtBigInt::operator unsigned int() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const MtBigInt*
-    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -228,20 +228,20 @@ u32 MtBigInt::getUsedByteSize() const {
     // DWARF local not rendered: word temp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(132);
+    unsigned int i0_1 = 132;
     // inferred: the value carried to 0xd76911; no location-less local in scope fits
     long unsigned int v1_0;
     // inferred: the value carried to 0xd76911; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
-        if (i0_1 == static_cast<unsigned int>(0)) {
-            return static_cast<u32>(0);
+        if (i0_1 == 0) {
+            return 0;
         } else {
-            v1_0 = this->mNumArray[i0_1 - static_cast<unsigned int>(1)];
-            if (v1_0 == static_cast<long unsigned int>(0)) {
-                i0_1 += static_cast<unsigned int>(4294967295);
+            v1_0 = mNumArray[i0_1 - 1u];
+            if (v1_0 == 0) {
+                i0_1 += 0xFFFFFFFFu;
             } else {
-                v1_1 = i0_1 - static_cast<unsigned int>(1);
+                v1_1 = i0_1 - 1u;
                 break;
             }
         }
@@ -249,19 +249,19 @@ u32 MtBigInt::getUsedByteSize() const {
     // inferred: the value the loop at 0xd76920 carries; no location-less local in scope fits
     long unsigned int v2_0 = v1_0;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i2_2 = static_cast<unsigned int>(0);
+    unsigned int i2_2 = 0;
     // inferred: the value carried to 0xd76928; no location-less local in scope fits
     unsigned int v3_2;
     for (;;) {
-        if ((v2_0 >> static_cast<long unsigned int>(8)) != static_cast<long unsigned int>(0)) {
-            v2_0 = v2_0 >> static_cast<long unsigned int>(8);
-            i2_2 += static_cast<unsigned int>(1);
+        if ((v2_0 >> 8) != 0) {
+            v2_0 = v2_0 >> 8;
+            i2_2 += 1u;
         } else {
-            v3_2 = i2_2 + static_cast<unsigned int>(1);
+            v3_2 = i2_2 + 1u;
             break;
         }
     }
-    return (v1_1 * static_cast<unsigned int>(8)) + v3_2;
+    return (v1_1 * 8u) + v3_2;
 }
 
 // Address: 0x00d76930 - 0x00d7696d (61 bytes)
@@ -271,40 +271,40 @@ u32 MtBigInt::getUsedBitSize() const {
     // DWARF local not rendered: word temp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(132);
+    unsigned int i0_1 = 132;
     // inferred: the value carried to 0xd76951; no location-less local in scope fits
     unsigned int v1_0;
     // inferred: the value carried to 0xd76951; no location-less local in scope fits
     long unsigned int v1_1;
     for (;;) {
-        if (i0_1 == static_cast<unsigned int>(0)) {
-            return static_cast<u32>(0);
+        if (i0_1 == 0) {
+            return 0;
         } else {
-            v1_1 = this->mNumArray[i0_1 - static_cast<unsigned int>(1)];
-            if (v1_1 == static_cast<long unsigned int>(0)) {
-                i0_1 += static_cast<unsigned int>(4294967295);
+            v1_1 = mNumArray[i0_1 - 1u];
+            if (v1_1 == 0) {
+                i0_1 += 0xFFFFFFFFu;
             } else {
-                v1_0 = i0_1 - static_cast<unsigned int>(1);
+                v1_0 = i0_1 - 1u;
                 break;
             }
         }
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i2_0 = static_cast<unsigned int>(0);
+    unsigned int i2_0 = 0;
     // inferred: the value the loop at 0xd76960 carries; no location-less local in scope fits
     long unsigned int v2_2 = v1_1;
     // inferred: the value carried to 0xd76967; no location-less local in scope fits
     unsigned int v3_0;
     for (;;) {
-        if ((v2_2 >> static_cast<long unsigned int>(1)) != static_cast<long unsigned int>(0)) {
-            i2_0 += static_cast<unsigned int>(1);
-            v2_2 = v2_2 >> static_cast<long unsigned int>(1);
+        if ((v2_2 >> 1) != 0) {
+            i2_0 += 1u;
+            v2_2 = v2_2 >> 1;
         } else {
-            v3_0 = i2_0 + static_cast<unsigned int>(1);
+            v3_0 = i2_0 + 1u;
             break;
         }
     }
-    return v3_0 + (v1_0 * static_cast<unsigned int>(64));
+    return v3_0 + (v1_0 * 64u);
 }
 
 // No out-of-line body: no code in the ELF

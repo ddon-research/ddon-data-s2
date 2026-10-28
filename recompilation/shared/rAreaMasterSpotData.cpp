@@ -38,7 +38,7 @@ const MtDTI& cAreaMasterRankData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cAreaMasterRankData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memAlloc(sz, align, ::cAreaMasterRankData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAreaMasterRankData::DTI)->memAlloc(sz, align, cAreaMasterRankData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -54,7 +54,7 @@ inline void* cAreaMasterRankData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cAreaMasterRankDataD0Ev at 0x01a75e20-0x01a75e4a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAreaMasterRankData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAreaMasterRankData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cAreaMasterRankData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cAreaMasterRankData::cAreaMasterRankData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAreaMasterRankData::MyDTI cAreaMasterRankData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d54-0x00645d8d (called at rAreaMasterSpotData.cpp:22)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d54-0x00645d8d (called at rAreaMasterSpotData.h:70)
@@ -84,7 +86,7 @@ inline void cAreaMasterRankData::operator delete(void* p_addr) {
 // Address: 0x00645500 - 0x00645552 (82 bytes)
 MtObject* cAreaMasterRankData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAreaMasterRankData;
+    return new (16u) cAreaMasterRankData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& cAreaMasterSpotData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cAreaMasterSpotData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAreaMasterSpotData::DTI)->memAlloc(sz, align, cAreaMasterSpotData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
@@ -128,7 +130,7 @@ inline void* cAreaMasterSpotData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cAreaMasterSpotDataD0Ev at 0x01a75e60-0x01a75e8a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAreaMasterSpotData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAreaMasterSpotData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -150,6 +152,8 @@ inline void cAreaMasterSpotData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cAreaMasterSpotData::cAreaMasterSpotData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAreaMasterSpotData::MyDTI cAreaMasterSpotData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d10-0x00645d54 (called at rAreaMasterSpotData.cpp:21)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d10-0x00645d54 (called at rAreaMasterSpotData.h:22)
@@ -158,7 +162,7 @@ inline void cAreaMasterSpotData::operator delete(void* p_addr) {
 // Address: 0x00645420 - 0x0064548c (108 bytes)
 MtObject* cAreaMasterSpotData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAreaMasterSpotData;
+    return new (16u) cAreaMasterSpotData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -186,7 +190,7 @@ const MtDTI& cAreaMasterSpotDetailData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, cAreaMasterSpotDetailData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -202,7 +206,7 @@ inline void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN25cAreaMasterSpotDetailDataD0Ev at 0x01a759f9-0x01a75a1a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAreaMasterSpotDetailData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -224,6 +228,8 @@ inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cAreaMasterSpotDetailData::cAreaMasterSpotDetailData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAreaMasterSpotDetailData::MyDTI cAreaMasterSpotDetailData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645dff-0x00645e38 (called at rAreaMasterSpotData.cpp:25)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645dff-0x00645e38 (called at rAreaMasterSpotData.h:153)
@@ -232,7 +238,7 @@ inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
 // Address: 0x00645760 - 0x006457f9 (153 bytes)
 MtObject* cAreaMasterSpotDetailData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAreaMasterSpotDetailData;
+    return new (16u) cAreaMasterSpotDetailData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -259,7 +265,7 @@ const MtDTI& cSpotEnemyData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* cSpotEnemyData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memAlloc(sz, align, ::cSpotEnemyData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSpotEnemyData::DTI)->memAlloc(sz, align, cSpotEnemyData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -274,7 +280,7 @@ void* cSpotEnemyData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cSpotEnemyDataD0Ev at 0x01a75d90-0x01a75dba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cSpotEnemyData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSpotEnemyData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -297,6 +303,8 @@ inline void cSpotEnemyData::operator delete(void* p_addr) {
 //   in _ZN6nDDOIO11readMtArrayI14cSpotEnemyDataEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a74bb5-0x01a74c2a (called at nDDOIO.h:451)
 // void cSpotEnemyData::load(MtDataReader& r);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSpotEnemyData::MyDTI cSpotEnemyData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645dc6-0x00645dff (called at rAreaMasterSpotData.cpp:24)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645dc6-0x00645dff (called at rAreaMasterSpotData.h:126)
@@ -305,7 +313,7 @@ inline void cSpotEnemyData::operator delete(void* p_addr) {
 // Address: 0x00645690 - 0x006456e2 (82 bytes)
 MtObject* cSpotEnemyData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cSpotEnemyData;
+    return new (16u) cSpotEnemyData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -332,7 +340,7 @@ const MtDTI& cSpotItemData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* cSpotItemData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memAlloc(sz, align, ::cSpotItemData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSpotItemData::DTI)->memAlloc(sz, align, cSpotItemData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -347,7 +355,7 @@ void* cSpotItemData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cSpotItemDataD0Ev at 0x01a75de0-0x01a75e0a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cSpotItemData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSpotItemData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -370,6 +378,8 @@ inline void cSpotItemData::operator delete(void* p_addr) {
 //   in _ZN6nDDOIO11readMtArrayI13cSpotItemDataEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a748f0-0x01a7498a (called at nDDOIO.h:451)
 // void cSpotItemData::load(MtDataReader& r);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSpotItemData::MyDTI cSpotItemData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d8d-0x00645dc6 (called at rAreaMasterSpotData.cpp:23)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645d8d-0x00645dc6 (called at rAreaMasterSpotData.h:100)
@@ -378,7 +388,7 @@ inline void cSpotItemData::operator delete(void* p_addr) {
 // Address: 0x006455d0 - 0x0064561d (77 bytes)
 MtObject* cSpotItemData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cSpotItemData;
+    return new (16u) cSpotItemData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -403,7 +413,7 @@ const MtDTI& rAreaMasterRankData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAreaMasterRankData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaMasterRankData::DTI)->memAlloc(sz, align, ::rAreaMasterRankData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaMasterRankData::DTI)->memAlloc(sz, align, rAreaMasterRankData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -418,7 +428,7 @@ inline void* rAreaMasterRankData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rAreaMasterRankDataD0Ev at 0x01a751c4-0x01a751e3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAreaMasterRankData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaMasterRankData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaMasterRankData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -435,13 +445,13 @@ bool rAreaMasterRankData::loadData(MtDataReader& r, cAreaMasterRankData* pData) 
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mMsgGroupSerial);
+    nDDOIO::readData(r, pData->mMsgGroupSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mPoint);
+    nDDOIO::readData(r, pData->mPoint);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBonusType);
+    nDDOIO::readData(r, pData->mBonusType);
     return true;
 }
 
@@ -454,8 +464,10 @@ MT_CTSTR rAreaMasterRankData::getExt() const {
 // Address: 0x01a75310 - 0x01a75316 (6 bytes)
 u32 rAreaMasterRankData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaMasterRankData::MyDTI rAreaMasterRankData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645e78-0x00645eb1 (called at rAreaMasterSpotData.cpp:27)
@@ -465,7 +477,7 @@ u32 rAreaMasterRankData::getDataVersion() const {
 // Address: 0x00645950 - 0x006459b4 (100 bytes)
 MtObject* rAreaMasterRankData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaMasterRankData;
+    return new (16u) rAreaMasterRankData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -490,7 +502,7 @@ const MtDTI& rAreaMasterSpotData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAreaMasterSpotData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotData::DTI)->memAlloc(sz, align, ::rAreaMasterSpotData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaMasterSpotData::DTI)->memAlloc(sz, align, rAreaMasterSpotData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -505,7 +517,7 @@ inline void* rAreaMasterSpotData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rAreaMasterSpotDataD0Ev at 0x01a74e24-0x01a74e43, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAreaMasterSpotData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAreaMasterSpotData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -532,8 +544,10 @@ MT_CTSTR rAreaMasterSpotData::getExt() const {
 // Address: 0x01a74f70 - 0x01a74f76 (6 bytes)
 u32 rAreaMasterSpotData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(7);
+    return 7;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaMasterSpotData::MyDTI rAreaMasterSpotData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645e38-0x00645e78 (called at rAreaMasterSpotData.cpp:26)
@@ -543,7 +557,7 @@ u32 rAreaMasterSpotData::getDataVersion() const {
 // Address: 0x00645870 - 0x006458d4 (100 bytes)
 MtObject* rAreaMasterSpotData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaMasterSpotData;
+    return new (16u) rAreaMasterSpotData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -568,7 +582,7 @@ const MtDTI& rAreaMasterSpotDetailData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::rAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, rAreaMasterSpotDetailData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -597,9 +611,9 @@ bool rAreaMasterSpotDetailData::loadData(MtDataReader& r, cAreaMasterSpotDetailD
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSpotId);
-    ::nDDOIO::readMtArray(r, pData->mItemArray);
-    ::nDDOIO::readMtArray(r, pData->mEnemyArray);
+    nDDOIO::readData(r, pData->mSpotId);
+    nDDOIO::readMtArray(r, pData->mItemArray);
+    nDDOIO::readMtArray(r, pData->mEnemyArray);
     return true;
 }
 
@@ -612,8 +626,10 @@ MT_CTSTR rAreaMasterSpotDetailData::getExt() const {
 // Address: 0x01a75730 - 0x01a75736 (6 bytes)
 u32 rAreaMasterSpotDetailData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAreaMasterSpotDetailData::MyDTI rAreaMasterSpotDetailData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAreaMasterSpotData.cpp at 0x00645eb1-0x00645eea (called at rAreaMasterSpotData.cpp:28)
@@ -623,7 +639,7 @@ u32 rAreaMasterSpotDetailData::getDataVersion() const {
 // Address: 0x00645a30 - 0x00645a94 (100 bytes)
 MtObject* rAreaMasterSpotDetailData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAreaMasterSpotDetailData;
+    return new (16u) rAreaMasterSpotDetailData;
 }
 
 // Instance at 0x01a759b0 - 0x01a759b5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -27,7 +27,7 @@ const MtDTI& cpJointEx2::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpJointEx2::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpJointEx2::DTI);
+    return MtMemoryAllocator::getAllocator(cpJointEx2::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpJointEx2::getAllocator() {
 // Address: 0x00192460 - 0x001924a0 (64 bytes)
 void* cpJointEx2::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpJointEx2::getAllocator()->memAlloc(sz, align, ::cpJointEx2::DTI.::MtDTI::getID());
+    return cpJointEx2::getAllocator()->memAlloc(sz, align, cpJointEx2::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpJointEx2::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJointEx2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJointEx2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJointEx2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,32 +66,32 @@ inline void cpJointEx2::operator delete(void* p_addr) {
 // Address: 0x00192510 - 0x00192543 (51 bytes)
 cpJointEx2::cpJointEx2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpResource = static_cast<rJointEx2*>(nullptr);
-    this->mpModel = static_cast<uModel*>(nullptr);
+    mpResource = nullptr;
+    mpModel = nullptr;
 }
 
 // Address: 0x00192550 - 0x0019258b (59 bytes)
 // Also emitted as: _ZN10cpJointEx2D0Ev at 0x00192590
 cpJointEx2::~cpJointEx2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource == static_cast<rJointEx2*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->mpResource->::cResource::release();
-    this->mpResource = static_cast<rJointEx2*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // Address: 0x00192600 - 0x00192605 (5 bytes)
 void cpJointEx2::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00192610 - 0x00192619 (9 bytes)
 void cpJointEx2::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uModel*>(pOwner);
 }
 
 // Address: 0x001925f0 - 0x001925f1 (1 bytes)
@@ -134,19 +134,21 @@ __attribute__((weak)) void cpJointEx2::update() {
 // Address: 0x00192620 - 0x0019265d (61 bytes)
 void cpJointEx2::setResource(rJointEx2* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rJointEx2*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rJointEx2*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes == static_cast<rJointEx2*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    this->mpResource = pRes;
-    pRes->::cResource::addRef();
+    mpResource = pRes;
+    pRes->addRef();
 }
 
 // No out-of-line body: no code in the ELF
 // rJointEx2* cpJointEx2::getResource();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJointEx2::MyDTI cpJointEx2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpJointEx2.cpp at 0x00193ef0-0x00193f32 (called at cpJointEx2.cpp:28)
@@ -156,6 +158,6 @@ void cpJointEx2::setResource(rJointEx2* pRes) {
 // Address: 0x00192400 - 0x0019245e (94 bytes)
 MtObject* cpJointEx2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpJointEx2;
+    return new (16u) cpJointEx2;
 }
 

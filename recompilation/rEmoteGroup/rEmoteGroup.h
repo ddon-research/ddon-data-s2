@@ -141,11 +141,11 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEmoteGroup::InfoBinary::InfoBinary() {
-    this->mpMotList = static_cast<rEmoteGroup::InfoBinary::MotDataBinary*>(nullptr);
-    this->mMotListNum = static_cast<u32>(0);
+    this->mpMotList = nullptr;
+    this->mMotListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rEmoteGroup::InfoBinary::MotDataBinary::MotDataBinary() {
-    this->mEmo = static_cast<s16>(-1);
+    this->mEmo = -1;
 }

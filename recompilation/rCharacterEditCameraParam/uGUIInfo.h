@@ -267,10 +267,16 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIGameMenu::updateInfo at 0xb5585d-0xb55863; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 uGUIInfo::getInfoResult() {
+    return this->mInfoResult;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uGUIInfo::eventDecide() {
-    if (this->mFlowId != static_cast<u32>(3)) {
+    if (this->mFlowId != 3) {
         return;
     }
-    this->mInfoResult = static_cast<u32>(1);
+    this->mInfoResult = 1;
 }

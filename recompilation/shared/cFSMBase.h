@@ -227,9 +227,9 @@ inline MtObject* cFSMBase::getOwner() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cFSMBase::cParamCallMessage::cParamCallMessage() {
-    this->mMsgType = static_cast<u32>(0);
-    this->mQstNo = static_cast<u32>(0);
-    this->mMsgNo = static_cast<u32>(0);
+    this->mMsgType = 0;
+    this->mQstNo = 0;
+    this->mMsgNo = 0;
     this->mMsgDispTime = 5.0f;
     this->mMsgWaitTime = 0.0f;
     this->mIsUseSerial = false;

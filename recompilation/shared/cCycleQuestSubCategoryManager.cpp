@@ -27,7 +27,7 @@ const MtDTI& cCycleQuestSubCategoryManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCycleQuestSubCategoryManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::DTI);
+    return MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cCycleQuestSubCategoryManager::getAllocator() {
 // Address: 0x00078e20 - 0x00078e60 (64 bytes)
 void* cCycleQuestSubCategoryManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCycleQuestSubCategoryManager::getAllocator()->memAlloc(sz, align, ::cCycleQuestSubCategoryManager::DTI.::MtDTI::getID());
+    return cCycleQuestSubCategoryManager::getAllocator()->memAlloc(sz, align, cCycleQuestSubCategoryManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cCycleQuestSubCategoryManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCycleQuestSubCategoryManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,17 +66,17 @@ inline void cCycleQuestSubCategoryManager::operator delete(void* p_addr) {
 // Address: 0x00078ed0 - 0x00078ee5 (21 bytes)
 u32 cCycleQuestSubCategoryManager::getQuestManagerType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent != static_cast<cCycleQuestManagerBase*>(nullptr)) {
-        return this->mpParent->getQuestManagerType();
+    if (mpParent != nullptr) {
+        return mpParent->getQuestManagerType();
     } else {
-        return static_cast<u32>(9);
+        return 9;
     }
 }
 
 // Address: 0x00078ef0 - 0x00078ef5 (5 bytes)
 void cCycleQuestSubCategoryManager::setParent(cCycleQuestManagerBase* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent = pParent;
+    mpParent = pParent;
 }
 
 // Address: 0x00078f00 - 0x00078f6f (111 bytes)
@@ -104,13 +104,13 @@ __attribute__((weak)) nQuest::QUEST_ID cCycleQuestSubCategoryManager::getQuestId
 // Address: 0x00079090 - 0x00079097 (7 bytes)
 void cCycleQuestSubCategoryManager::setSubCategoryType(nQuest::CYCLE_CONTENTS_SUB_CATEGORY type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSubCategoryType = static_cast<s32>(type);
+    mSubCategoryType = static_cast<s32>(type);
 }
 
 // Address: 0x000790a0 - 0x000790a7 (7 bytes)
 nQuest::CYCLE_CONTENTS_SUB_CATEGORY cCycleQuestSubCategoryManager::getSubCategoryType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mSubCategoryType);
+    return static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mSubCategoryType);
 }
 
 // Address: 0x000790b0 - 0x000791b3 (259 bytes)
@@ -125,7 +125,7 @@ __attribute__((weak)) nQuest::CYCLE_CONTENTS_NOTICE_TYPE cCycleQuestSubCategoryM
 // Address: 0x000791c0 - 0x000791c5 (5 bytes)
 const nQuest::CycleContentsSituationInfoArray& cCycleQuestSubCategoryManager::getSituationInfoArray() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSituationInfo;
+    return mSituationInfo;
 }
 
 // Address: 0x000791d0 - 0x000791eb (27 bytes)
@@ -143,25 +143,25 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::setCycleContentsSchedu
 // Address: 0x00079200 - 0x00079207 (7 bytes)
 nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestSubCategoryManager::getCycleContentsPeriod() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCycleContentsPeriod;
+    return mCycleContentsPeriod;
 }
 
 // Address: 0x00079210 - 0x00079217 (7 bytes)
 void cCycleQuestSubCategoryManager::setCycleContentsPeriod(nQuest::CYCLE_CONTENTS_PERIOD period) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCycleContentsPeriod = period;
+    mCycleContentsPeriod = period;
 }
 
 // Address: 0x00079220 - 0x00079227 (7 bytes)
 bool cCycleQuestSubCategoryManager::isDistEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDistEnable;
+    return mIsDistEnable;
 }
 
 // Address: 0x00079230 - 0x00079238 (8 bytes)
 void cCycleQuestSubCategoryManager::callbackCycleContentsEnable(bool isEnable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDistEnable = isEnable;
+    mIsDistEnable = isEnable;
 }
 
 // Address: 0x00079240 - 0x000796b7 (1143 bytes)
@@ -245,7 +245,7 @@ __attribute__((weak)) bool cCycleQuestSubCategoryManager::registMainTask(nQuest:
 // Address: 0x0007a000 - 0x0007a005 (5 bytes)
 cQuestTask* cCycleQuestSubCategoryManager::getMainTask() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMainTask;
+    return mpMainTask;
 }
 
 // Address: 0x000798e0 - 0x000799e9 (265 bytes)
@@ -262,62 +262,62 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::addTaskInfo(cQuestTask
 // Also emitted as: _ZN29cCycleQuestSubCategoryManagerD0Ev at 0x0007a210
 cCycleQuestSubCategoryManager::~cCycleQuestSubCategoryManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mTaskInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mTaskInfo.mLength != 0) {
         // inferred: the value the loop at 0x7a100 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTaskInfo.::MtArray::mLength;
+        u32 v0_0 = mTaskInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTaskInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTaskInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTaskInfo.::MtArray::mLength) {
-                    v0_0 = this->mTaskInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTaskInfo.mpArray[i0_3] != nullptr) {
+                delete mTaskInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTaskInfo.mLength) {
+                    v0_0 = mTaskInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTaskInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTaskInfo.::MtArray::mpArray));
+    if (mTaskInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTaskInfo.mpArray));
     }
-    this->mTaskInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTaskInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTaskInfo.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mSituationInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    mTaskInfo.mpArray = nullptr;
+    mTaskInfo.mBufsiz = 0;
+    mTaskInfo.mLength = 0;
+    if (mSituationInfo.mLength != 0) {
         // inferred: the value the loop at 0x7a170 carries; no location-less local in scope fits
-        u32 v2_0 = this->mSituationInfo.::MtArray::mLength;
+        u32 v2_0 = mSituationInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSituationInfo.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSituationInfo.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mSituationInfo.::MtArray::mLength) {
-                    v2_0 = this->mSituationInfo.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mSituationInfo.mpArray[i2_3] != nullptr) {
+                delete mSituationInfo.mpArray[i2_3];
+                if ((i2_3 + 1u) < mSituationInfo.mLength) {
+                    v2_0 = mSituationInfo.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSituationInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSituationInfo.::MtArray::mpArray));
+    if (mSituationInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSituationInfo.mpArray));
     }
-    this->mSituationInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSituationInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSituationInfo.::MtArray::mLength = static_cast<u32>(0);
+    mSituationInfo.mpArray = nullptr;
+    mSituationInfo.mBufsiz = 0;
+    mSituationInfo.mLength = 0;
 }
 
 // Address: 0x0007a240 - 0x0007a398 (344 bytes)
@@ -334,36 +334,38 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::move() {
 // Address: 0x0007a3c0 - 0x0007a443 (131 bytes)
 void cCycleQuestSubCategoryManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mSituationInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSituationInfo.mLength != 0) {
         // inferred: the value the loop at 0x7a3e0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSituationInfo.::MtArray::mLength;
+        u32 v0_0 = mSituationInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSituationInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSituationInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSituationInfo.::MtArray::mLength) {
-                    v0_0 = this->mSituationInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSituationInfo.mpArray[i0_3] != nullptr) {
+                delete mSituationInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSituationInfo.mLength) {
+                    v0_0 = mSituationInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSituationInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSituationInfo.::MtArray::mpArray));
+    if (mSituationInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSituationInfo.mpArray));
     }
-    this->mSituationInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSituationInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSituationInfo.::MtArray::mLength = static_cast<u32>(0);
-    this->::cQuestManagerBase::release();
+    mSituationInfo.mpArray = nullptr;
+    mSituationInfo.mBufsiz = 0;
+    mSituationInfo.mLength = 0;
+    this->cQuestManagerBase::release();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCycleQuestSubCategoryManager::MyDTI cCycleQuestSubCategoryManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCycleQuestSubCategoryManager.cpp at 0x0007a67f-0x0007a6bc (called at cCycleQuestSubCategoryManager.cpp:83)
@@ -400,7 +402,7 @@ const MtDTI& cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::getDTI() con
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memAlloc(sz, align, ::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memAlloc(sz, align, cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -414,7 +416,7 @@ inline void* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator new
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -465,6 +467,8 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::cCycleContentsTaskInfo
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::MyDTI cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCycleQuestSubCategoryManager.cpp at 0x0007a6bc-0x0007a6f9 (called at cCycleQuestSubCategoryManager.cpp:746)
 //   in _GLOBAL__sub_I_cCycleQuestSubCategoryManager.cpp at 0x0007a6bc-0x0007a6f9 (called at cCycleQuestSubCategoryManager.cpp:37)
@@ -473,7 +477,7 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::cCycleContentsTaskInfo
 // Address: 0x0007a450 - 0x0007a49f (79 bytes)
 MtObject* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo;
+    return new (16u) cCycleQuestSubCategoryManager::cCycleContentsTaskInfo;
 }
 
 // Instance at 0x01963990 - 0x01963995 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

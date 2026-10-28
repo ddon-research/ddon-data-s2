@@ -34,7 +34,7 @@ const MtDTI& rCraftRecipe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCraftRecipe::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::DTI)->memAlloc(sz, align, ::rCraftRecipe::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCraftRecipe::DTI)->memAlloc(sz, align, rCraftRecipe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rCraftRecipe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCraftRecipe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftRecipe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,10 +63,10 @@ inline void rCraftRecipe::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rCraftRecipe::rCraftRecipe() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->::cResource::clear();
-    this->mpArrayData = static_cast<rCraftRecipe::cCraftRecipe*>(nullptr);
-    this->mArrayDataNum = static_cast<u32>(0);
+    setAttribute(22u);
+    this->cResource::clear();
+    mpArrayData = nullptr;
+    mArrayDataNum = 0;
 }
 
 // Address: 0x0065d300 - 0x0065d305 (5 bytes)
@@ -74,6 +74,8 @@ inline rCraftRecipe::rCraftRecipe() {
 rCraftRecipe::~rCraftRecipe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftRecipe::MyDTI rCraftRecipe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCraftRecipe.cpp at 0x0065d3bd-0x0065d3fa (called at rCraftRecipe.cpp:438)
@@ -83,7 +85,7 @@ rCraftRecipe::~rCraftRecipe() {
 // Address: 0x0065d210 - 0x0065d27c (108 bytes)
 MtObject* rCraftRecipe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftRecipe;
+    return new (16u) rCraftRecipe;
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,7 +102,7 @@ const MtDTI& rCraftRecipe::cCraftRecipe::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rCraftRecipe::cCraftRecipe::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cCraftRecipe::DTI);
+    return MtMemoryAllocator::getAllocator(rCraftRecipe::cCraftRecipe::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ inline MtAllocator* rCraftRecipe::cCraftRecipe::getAllocator() {
 // Address: 0x0065cf60 - 0x0065cfa0 (64 bytes)
 void* rCraftRecipe::cCraftRecipe::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rCraftRecipe::cCraftRecipe::getAllocator()->memAlloc(sz, align, ::rCraftRecipe::cCraftRecipe::DTI.::MtDTI::getID());
+    return rCraftRecipe::cCraftRecipe::getAllocator()->memAlloc(sz, align, rCraftRecipe::cCraftRecipe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ void* rCraftRecipe::cCraftRecipe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCraftRecipe::cCraftRecipe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cCraftRecipe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftRecipe::cCraftRecipe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,7 +148,7 @@ rCraftRecipe::cCraftRecipe::cCraftRecipe() {
 // Also emitted as: _ZN12rCraftRecipe12cCraftRecipeD0Ev at 0x0065d1a0
 rCraftRecipe::cCraftRecipe::~cCraftRecipe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rCraftRecipe::cCraftRecipe::releaseWork();
+    releaseWork();
 }
 
 // Address: 0x0065d0c0 - 0x0065d19a (218 bytes)
@@ -196,14 +198,20 @@ __attribute__((weak)) void rCraftRecipe::cCraftRecipe::releaseWork() {
 // u32 rCraftRecipe::cCraftRecipe::getMaterialListNum() const;
 
 // Address: 0x0065d1f0 - 0x0065d202 (18 bytes)
-__attribute__((weak)) rCraftRecipe::cMaterialData* rCraftRecipe::cCraftRecipe::getMaterialData(u32 index) {
-    DDON_STUB("rCraftRecipe::cCraftRecipe::getMaterialData")
-    return nullptr;
+rCraftRecipe::cMaterialData* rCraftRecipe::cCraftRecipe::getMaterialData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < mMaterialDataList.mLength) {
+        return static_cast<cMaterialData*>(mMaterialDataList.mpArray[index]);
+    } else {
+        return nullptr;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)
 //   in uGUIPopCraftDetail::setupInfo at 0x00b9cd0f-0x00b9cd24 (called at uGUIPopCraftDetail.cpp:396)
 // bool rCraftRecipe::cCraftRecipe::isBaggage() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftRecipe::cCraftRecipe::MyDTI rCraftRecipe::cCraftRecipe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rCraftRecipe.cpp at 0x0065d384-0x0065d3bd (called at rCraftRecipe.cpp:148)
@@ -230,7 +238,7 @@ const MtDTI& rCraftRecipe::cMaterialData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rCraftRecipe::cMaterialData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cMaterialData::DTI);
+    return MtMemoryAllocator::getAllocator(rCraftRecipe::cMaterialData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,7 +247,7 @@ inline MtAllocator* rCraftRecipe::cMaterialData::getAllocator() {
 // Address: 0x0065cdd0 - 0x0065ce10 (64 bytes)
 void* rCraftRecipe::cMaterialData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rCraftRecipe::cMaterialData::getAllocator()->memAlloc(sz, align, ::rCraftRecipe::cMaterialData::DTI.::MtDTI::getID());
+    return rCraftRecipe::cMaterialData::getAllocator()->memAlloc(sz, align, rCraftRecipe::cMaterialData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -253,7 +261,7 @@ void* rCraftRecipe::cMaterialData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rCraftRecipe::cMaterialData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cMaterialData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCraftRecipe::cMaterialData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -268,9 +276,9 @@ inline void rCraftRecipe::cMaterialData::operator delete(void* p_addr) {
 // Address: 0x0065ce80 - 0x0065cea1 (33 bytes)
 rCraftRecipe::cMaterialData::cMaterialData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = static_cast<u32>(0);
-    this->mNum = static_cast<u32>(1);
-    this->mIsSp = false;
+    mItemId = 0;
+    mNum = 1;
+    mIsSp = false;
 }
 
 // Defined in the class (its body was written in a header).
@@ -292,6 +300,8 @@ rCraftRecipe::cMaterialData::cMaterialData() {
 //   in cCraftRecipe::isCreate at 0x00071363-0x0007136a (called at cCraftRecipe.cpp:998)
 // bool rCraftRecipe::cMaterialData::isSp() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCraftRecipe::cMaterialData::MyDTI rCraftRecipe::cMaterialData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rCraftRecipe.cpp at 0x0065d340-0x0065d384 (called at rCraftRecipe.cpp:40)
 //   in _GLOBAL__sub_I_rCraftRecipe.cpp at 0x0065d340-0x0065d384 (called at rCraftRecipe.h:46)
@@ -300,7 +310,7 @@ rCraftRecipe::cMaterialData::cMaterialData() {
 // Address: 0x0065cd70 - 0x0065cdc2 (82 bytes)
 MtObject* rCraftRecipe::cMaterialData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCraftRecipe::cMaterialData;
+    return new (16u) rCraftRecipe::cMaterialData;
 }
 
 // Instance at 0x01a83e00 - 0x01a83e05 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

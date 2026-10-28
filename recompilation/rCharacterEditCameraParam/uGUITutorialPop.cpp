@@ -33,7 +33,7 @@ const MtDTI& uGUITutorialPop::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUITutorialPop::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUITutorialPop::DTI);
+    return MtMemoryAllocator::getAllocator(uGUITutorialPop::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUITutorialPop::getAllocator() {
 // Address: 0x00c64ed0 - 0x00c64f10 (64 bytes)
 void* uGUITutorialPop::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUITutorialPop::getAllocator()->memAlloc(sz, align, ::uGUITutorialPop::DTI.::MtDTI::getID());
+    return uGUITutorialPop::getAllocator()->memAlloc(sz, align, uGUITutorialPop::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUITutorialPop::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUITutorialPop::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUITutorialPop::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUITutorialPop::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ uGUITutorialPop::~uGUITutorialPop() {
 // Address: 0x00c65360 - 0x00c65365 (5 bytes)
 void uGUITutorialPop::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c65370 - 0x00c65529 (441 bytes)
@@ -102,48 +102,48 @@ __attribute__((weak)) void uGUITutorialPop::setup() {
 // Address: 0x00c65c00 - 0x00c65cb4 (180 bytes)
 void uGUITutorialPop::kill() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
     // inferred: a temporary for the value the load at 0xc65c16 read, used 3 times; no DWARF local holds it
-    sTutorialGuide* t0 = ::sTutorialGuide::getInstance();
-    if (t0->mpTutorialDetail != static_cast<rGUIMessage*>(nullptr)) {
-        t0->mpTutorialDetail->::cResource::release();
-        t0->mpTutorialDetail = static_cast<rGUIMessage*>(nullptr);
+    sTutorialGuide* t0 = sTutorialGuide::getInstance();
+    if (t0->mpTutorialDetail != nullptr) {
+        t0->mpTutorialDetail->release();
+        t0->mpTutorialDetail = nullptr;
         // inferred: a temporary for the value the load at 0xc65c3d read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mImgArcTicket != t1) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mImgArcTicket);
-            this->mImgArcTicket = static_cast<TICKET>(t1);
+        cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
+        if (mImgArcTicket != t1) {
+            sArchiveManager::getInstance()->returnTicket(mImgArcTicket);
+            mImgArcTicket = static_cast<TICKET>(t1);
         }
-        if (this->mpTexImg != static_cast<rTexture*>(nullptr)) {
-            this->mpTexImg->::cResource::release();
-            this->mpTexImg = static_cast<rTexture*>(nullptr);
+        if (mpTexImg != nullptr) {
+            mpTexImg->release();
+            mpTexImg = nullptr;
         }
-        if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes->::cResource::release();
-            this->mpGUIRes = static_cast<rGUI*>(nullptr);
+        if (mpGUIRes != nullptr) {
+            mpGUIRes->release();
+            mpGUIRes = nullptr;
         }
-        if (this->mpGUIMsg != static_cast<rGUIMessage*>(nullptr)) {
-            this->mpGUIMsg->::cResource::release();
-            this->mpGUIMsg = static_cast<rGUIMessage*>(nullptr);
+        if (mpGUIMsg != nullptr) {
+            mpGUIMsg->release();
+            mpGUIMsg = nullptr;
         }
     } else {
         // inferred: a temporary for the value the load at 0xc65c3d read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mImgArcTicket != t1) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mImgArcTicket);
-            this->mImgArcTicket = static_cast<TICKET>(t1);
+        cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
+        if (mImgArcTicket != t1) {
+            sArchiveManager::getInstance()->returnTicket(mImgArcTicket);
+            mImgArcTicket = static_cast<TICKET>(t1);
         }
-        if (this->mpTexImg != static_cast<rTexture*>(nullptr)) {
-            this->mpTexImg->::cResource::release();
-            this->mpTexImg = static_cast<rTexture*>(nullptr);
+        if (mpTexImg != nullptr) {
+            mpTexImg->release();
+            mpTexImg = nullptr;
         }
-        if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes->::cResource::release();
-            this->mpGUIRes = static_cast<rGUI*>(nullptr);
+        if (mpGUIRes != nullptr) {
+            mpGUIRes->release();
+            mpGUIRes = nullptr;
         }
-        if (this->mpGUIMsg != static_cast<rGUIMessage*>(nullptr)) {
-            this->mpGUIMsg->::cResource::release();
-            this->mpGUIMsg = static_cast<rGUIMessage*>(nullptr);
+        if (mpGUIMsg != nullptr) {
+            mpGUIMsg->release();
+            mpGUIMsg = nullptr;
         }
     }
 }
@@ -167,47 +167,47 @@ __attribute__((weak)) void uGUITutorialPop::move() {
 // Address: 0x00c65be0 - 0x00c65bfa (26 bytes)
 void uGUITutorialPop::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateWait);
 }
 
 // Address: 0x00c65e70 - 0x00c65eab (59 bytes)
 void uGUITutorialPop::updateWait() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    (&this->mButton)->update();
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-    this->mPager.::uGUIBase::cReferenceUINumPager::update();
+    (&mButton)->update();
+    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+    mPager.uGUIBase::cReferenceUINumPager::update();
 }
 
 // Address: 0x00c65eb0 - 0x00c65eb9 (9 bytes)
 void uGUITutorialPop::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00c65ec0 - 0x00c65f00 (64 bytes)
 void uGUITutorialPop::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
-    this->mPager.::uGUIBase::cReferenceUINumPager::execute();
-    if (this->mpHLPage == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    mCloseBtn.execute();
+    mPager.execute();
+    if (mpHLPage == nullptr) {
         return;
     }
-    this->mpHLPage->execute();
+    mpHLPage->execute();
 }
 
 // Address: 0x00c65f00 - 0x00c65f37 (55 bytes)
 void uGUITutorialPop::moveEvent() {
     // Approximate from the ELF: a range test the recompile folds to a mask test; the body oracle reports this body.
-    if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
-        if (this->::uGUIBase::getInputEvent() == static_cast<u32>(67)) {
-            this->::uGUITutorialPop::evPageMove();
+    if ((getInputEvent() - 52u) > 1u) {
+        if (getInputEvent() == 67) {
+            evPageMove();
         } else {
-            if (this->::uGUIBase::getInputEvent() == static_cast<u32>(66)) {
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateExit);
+            if (getInputEvent() == 66) {
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateExit);
             }
         }
     } else {
-        this->::uGUITutorialPop::evPageMove();
+        evPageMove();
     }
 }
 
@@ -227,21 +227,23 @@ __attribute__((weak)) void uGUITutorialPop::evPageMove() {
 // Address: 0x00c65b90 - 0x00c65ba2 (18 bytes)
 u32 uGUITutorialPop::evHLPageExit(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00c65bb0 - 0x00c65bc2 (18 bytes)
 u32 uGUITutorialPop::evHLPageMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (185 bytes)
 //   in uGUITutorialPop::setup at 0x00c65ad7-0x00c65b2e (called at uGUITutorialPop.cpp:259)
 //   in uGUITutorialPop::evPageMove at 0x00c6611b-0x00c6617d (called at uGUITutorialPop.cpp:461)
 // void uGUITutorialPop::updateDisp();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUITutorialPop::MyDTI uGUITutorialPop::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUITutorialPop.cpp at 0x00c6629f-0x00c662dc (called at uGUITutorialPop.cpp:60)

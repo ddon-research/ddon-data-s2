@@ -42,7 +42,7 @@ const MtDTI& MtPerformance::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtPerformance::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtPerformance::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtPerformance::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,6 +114,8 @@ __attribute__((weak)) void MtPerformance::peek() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void MtPerformance::measurePerf(MtPerformance::PerfTime* p_perf);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtPerformance::MyDTI MtPerformance::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtPerformance::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -155,7 +157,7 @@ const MtDTI& MtPerformanceCounter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtPerformanceCounter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtPerformanceCounter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtPerformanceCounter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,20 +211,25 @@ inline void MtPerformanceCounter::operator delete(void* p_addr) {
 // Address: 0x00d7eb60 - 0x00d7eb65 (5 bytes)
 s64 MtPerformanceCounter::getCurrent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s64>(::sceKernelReadTsc());
+    return static_cast<s64>(sceKernelReadTsc());
 }
 
 // Address: 0x00d7eb70 - 0x00d7eb94 (36 bytes)
 s64 MtPerformanceCounter::getFrequency() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::MtPerformanceCounter::mFrequency) == static_cast<long int>(0)) {
-        ::MtPerformanceCounter::mFrequency = static_cast<long int>(::sceKernelGetTscFrequency());
+    if ((MtPerformanceCounter::mFrequency) == 0) {
+        MtPerformanceCounter::mFrequency = static_cast<long int>(sceKernelGetTscFrequency());
     }
-    return ::MtPerformanceCounter::mFrequency;
+    return MtPerformanceCounter::mFrequency;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void MtPerformanceCounter::measurePerf(MtPerformanceCounter::PerfTime* p_perf);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtPerformanceCounter::MyDTI MtPerformanceCounter::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s64 MtPerformanceCounter::mFrequency;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtPerformanceCounter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -266,7 +273,7 @@ const MtDTI& MtPerformanceTimer::getDTI() const {
 // Address: 0x00d7eb00 - 0x00d7eb2a (42 bytes)
 __attribute__((weak)) void MtPerformanceTimer::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtPerformanceTimer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtPerformanceTimer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -333,6 +340,8 @@ __attribute__((weak)) void MtPerformanceTimer::end() {
 //   in via::module::http_patch::HttpPatchManager::setupRequest at 0x005a23e5-0x005a2405 (called at MtPerformance.h:532)
 //   in via::module::http_patch::HttpPatchManager::setupRequest at 0x005a2433-0x005a2449 (called at MtPerformance.h:532)
 // void MtPerformanceTimer::updateTicks();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtPerformanceTimer::MyDTI MtPerformanceTimer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtPerformanceTimer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -30,7 +30,7 @@ const MtDTI& uOmSwingModel::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uOmSwingModel::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uOmSwingModel::DTI);
+    return MtMemoryAllocator::getAllocator(uOmSwingModel::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uOmSwingModel::getAllocator() {
 // Address: 0x00cb1850 - 0x00cb1890 (64 bytes)
 void* uOmSwingModel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uOmSwingModel::getAllocator()->memAlloc(sz, align, ::uOmSwingModel::DTI.::MtDTI::getID());
+    return uOmSwingModel::getAllocator()->memAlloc(sz, align, uOmSwingModel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uOmSwingModel::operator new(size_t sz, u32 align) {
 // Address: 0x00cb18c0 - 0x00cb18ea (42 bytes)
 __attribute__((weak)) void uOmSwingModel::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::uOmSwingModel::getAllocator()->memFree(p_addr);
+    uOmSwingModel::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,9 +95,9 @@ __attribute__((weak)) void uOmSwingModel::setup() {
 // Address: 0x00cb1cc0 - 0x00cb1cef (47 bytes)
 void uOmSwingModel::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uBaseModel::move();
-    this->mOmComp.::cOmComponent::move(static_cast<uBaseModel*>(this));
-    this->updateLodDistance();
+    this->uBaseModel::move();
+    mOmComp.move(static_cast<uBaseModel*>(this));
+    updateLodDistance();
 }
 
 // Address: 0x00cb1cf0 - 0x00cb1d59 (105 bytes)
@@ -105,29 +105,29 @@ void uOmSwingModel::kill() {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uOmSwingModel*
-    if (this->mOmComp.mphEfc[1] != static_cast<cEfcHandle*>(nullptr)) {
-        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mOmComp.mphEfc[1], static_cast<u32>(1));
-        this->mOmComp.mphEfc[1] = static_cast<cEfcHandle*>(nullptr);
+    if (mOmComp.mphEfc[1] != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mOmComp.mphEfc[1], 1u);
+        mOmComp.mphEfc[1] = nullptr;
     }
-    this->mOmComp.::cOmComponent::kill(static_cast<uBaseModel*>(this));
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    mOmComp.kill(static_cast<uBaseModel*>(this));
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
     }
 }
 
 // Address: 0x00cb1d60 - 0x00cb1d6c (12 bytes)
 void uOmSwingModel::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOmComp.::cOmComponent::updateEfcHandle();
+    mOmComp.updateEfcHandle();
 }
 
 // Address: 0x00cb1d70 - 0x00cb1d75 (5 bytes)
 void uOmSwingModel::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCoord::applyWorldOffset(offset, absolute_offset);
+    this->uCoord::applyWorldOffset(offset, absolute_offset);
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,10 +139,10 @@ void uOmSwingModel::applyWorldOffset(const MtVector3& offset, const MtVector3& a
 // Address: 0x00cb1770 - 0x00cb179e (46 bytes)
 void uOmSwingModel::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isPossibleDrawFromDrawBuffer() == false) {
+    if (!isPossibleDrawFromDrawBuffer()) {
         return;
     }
-    this->::uSwingModel::draw(pdraw);
+    this->uSwingModel::draw(pdraw);
 }
 
 // Address: 0x00cb1d80 - 0x00cb1dd8 (88 bytes)
@@ -150,20 +150,20 @@ void uOmSwingModel::updateLodDistance() {
     // DWARF local not rendered: MODEL_INFO ModelInfo;
     // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1d87, held ahead of the effects the ELF orders after it
-    sOmManager* t0 = ::sOmManager::getInstance();
+    sOmManager* t0 = sOmManager::getInstance();
     // inferred: a temporary for the value the load at 0xcb1d8a read, used 3 times; no DWARF local holds it
     f32 t1 = t0->mAQCLODScale;
     if (t1 > 0.0f) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1d9c, held ahead of the effects the ELF orders after it
-        rModel* t2 = this->::uBaseModel::mpModel;
+        rModel* t2 = mpModel;
         // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1da3, held ahead of the effects the ELF orders after it
         s32 t3 = t2->mModelInfo.middist;
         // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1dab, held ahead of the effects the ELF orders after it
         float t4 = 1.0f;
         // inferred: a temporary for the value the load at 0xcb1dbb read, used once; no DWARF local holds it
         s32 t5 = t2->mModelInfo.lowdist;
-        this->::uBaseModel::mLODMidDist = (t4 / t1) * static_cast<float>(t3);
-        this->::uBaseModel::mLODLowDist = (t4 / t1) * static_cast<float>(t5);
+        mLODMidDist = (t4 / t1) * static_cast<float>(t3);
+        mLODLowDist = (t4 / t1) * static_cast<float>(t5);
     }
 }
 
@@ -178,6 +178,8 @@ __attribute__((weak)) f32 uOmSwingModel::getLodDist(f32 vdist, const MtVector3& 
     DDON_STUB("uOmSwingModel::getLodDist")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uOmSwingModel::MyDTI uOmSwingModel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uOmSwingModel.cpp at 0x00cb1f5f-0x00cb1f9c (called at uOmSwingModel.cpp:56)

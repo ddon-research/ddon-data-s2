@@ -50,7 +50,7 @@ const MtDTI& cFacialEditJointPreset::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFacialEditJointPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFacialEditJointPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFacialEditJointPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -70,10 +70,10 @@ inline void cFacialEditJointPreset::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cFacialEditJointPreset::cFacialEditJointPreset() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mJntNo = static_cast<s32>(0);
-    this->mTrans = ::MtVector3::Zero;
-    this->mRot = ::MtVector3::Zero;
-    this->mScale = ::MtVector3::One;
+    mJntNo = 0;
+    mTrans = MtVector3::Zero;
+    mRot = MtVector3::Zero;
+    mScale = MtVector3::One;
 }
 
 // Defined in the class (its body was written in a header).
@@ -84,6 +84,8 @@ __attribute__((weak)) void cFacialEditJointPreset::createProperty(MtPropertyList
     DDON_STUB("cFacialEditJointPreset::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFacialEditJointPreset::MyDTI cFacialEditJointPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rFacialEditJointPreset.cpp at 0x00674cc0-0x00674d02 (called at rFacialEditJointPreset.cpp:23)
@@ -118,7 +120,7 @@ const MtDTI& rFacialEditJointPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFacialEditJointPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFacialEditJointPreset::DTI)->memAlloc(sz, align, ::rFacialEditJointPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFacialEditJointPreset::DTI)->memAlloc(sz, align, rFacialEditJointPreset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,7 +135,7 @@ inline void* rFacialEditJointPreset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22rFacialEditJointPresetD0Ev at 0x01a8f924-0x01a8f943, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFacialEditJointPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFacialEditJointPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFacialEditJointPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,8 +166,10 @@ MT_CTSTR rFacialEditJointPreset::getExt() const {
 // Address: 0x01a8fa70 - 0x01a8fa76 (6 bytes)
 u32 rFacialEditJointPreset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFacialEditJointPreset::MyDTI rFacialEditJointPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFacialEditJointPreset.cpp at 0x00674d02-0x00674d3f (called at rFacialEditJointPreset.cpp:76)
@@ -175,7 +179,7 @@ u32 rFacialEditJointPreset::getDataVersion() const {
 // Address: 0x00674be0 - 0x00674c44 (100 bytes)
 MtObject* rFacialEditJointPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFacialEditJointPreset;
+    return new (16u) rFacialEditJointPreset;
 }
 
 // Instance at 0x01a8fa20 - 0x01a8fa32 (18 bytes) of the generic rTbl2<T>::getData

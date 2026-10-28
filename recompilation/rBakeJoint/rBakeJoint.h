@@ -103,7 +103,7 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cBakeJoint::cBakeJoint() {
     this->mBake = false;
-    this->mRefJnt = static_cast<u8>(255);
+    this->mRefJnt = 0xFF;
 }
 
 // Inline, no code of its own: checked where it is inlined.

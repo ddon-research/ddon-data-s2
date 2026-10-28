@@ -45,7 +45,7 @@ const MtDTI& rMaterial::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rMaterialD0Ev at 0x011d33a4-0x011d33c5, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMaterial::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMaterial::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMaterial::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ inline void rMaterial::operator delete(void* p_addr) {
 // Also emitted as: _ZN9rMaterialD0Ev at 0x011d3380
 rMaterial::~rMaterial() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rMaterial::clear();
+    this->rMaterial::clear();
 }
 
 // Address: 0x01b92b20 - 0x01b92b28 (8 bytes)
@@ -134,19 +134,19 @@ __attribute__((weak)) nDraw::Material* rMaterial::getMaterial(MT_CTSTR name) {
 // Address: 0x01b92b30 - 0x01b92b3b (11 bytes)
 nDraw::Material* rMaterial::getMaterial(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaterials[index];
+    return mpMaterials[index];
 }
 
 // Address: 0x01b92b40 - 0x01b92b48 (8 bytes)
 u32 rMaterial::getMaterialNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpHeader->material_num;
+    return mpHeader->material_num;
 }
 
 // Address: 0x01b92b50 - 0x01b92b58 (8 bytes)
 u32 rMaterial::getTextureNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpHeader->texture_num;
+    return mpHeader->texture_num;
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,22 +161,22 @@ u32 rMaterial::getMaterialIndexFromName(MT_CTSTR name) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x11d44b3; no location-less local in scope fits
     unsigned int v2_8;
-    if (this->mpHeader == static_cast<rMaterial::HEADER*>(nullptr)) {
-        v2_8 = static_cast<unsigned int>(2147483647);
+    if (mpHeader == nullptr) {
+        v2_8 = 0x7FFFFFFF;
     } else {
-        u32 crc = ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
-        u32 n = this->getMaterialNum();
-        if (n == static_cast<u32>(0)) {
-            v2_8 = static_cast<unsigned int>(2147483647);
+        u32 crc = MtCRC::getCRC(name, 0xFFFFFFFFu);
+        u32 n = getMaterialNum();
+        if (n == 0) {
+            v2_8 = 0x7FFFFFFF;
         } else {
             // inferred: the value the loop at 0x11d44a0 carries; no location-less local in scope fits
-            u32* v0_1 = &this->mpHeader->materials->name;
+            u32* v0_1 = &mpHeader->materials->name;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 if ((*v0_1) != crc) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < n) {
-                        v0_1 += static_cast<int>(18);
-                        i0_2 += static_cast<unsigned int>(1);
+                    if ((i0_2 + 1u) < n) {
+                        v0_1 += 18;
+                        i0_2 += 1u;
                     } else {
                         break;
                     }
@@ -185,7 +185,7 @@ u32 rMaterial::getMaterialIndexFromName(MT_CTSTR name) {
                     return v2_8;
                 }
             }
-            v2_8 = static_cast<unsigned int>(2147483647);
+            v2_8 = 0x7FFFFFFF;
         }
     }
     return v2_8;
@@ -209,6 +209,8 @@ __attribute__((weak)) void rMaterial::createLUT(void* pdst, const rMaterial::LUT
     DDON_STUB("rMaterial::createLUT")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMaterial::MyDTI rMaterial::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rMaterial::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -54,7 +54,7 @@ const MtDTI& cRemoteProcedure::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cRemoteProcedureD0Ev at 0x01b6984e-0x01b6986f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cRemoteProcedure::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cRemoteProcedure::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cRemoteProcedure::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,7 +95,7 @@ __attribute__((weak)) void cRemoteProcedure::createProperty(MtPropertyList& s) {
 // Address: 0x01b69870 - 0x01b69875 (5 bytes)
 MtUI* cRemoteProcedure::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,10 +113,10 @@ __attribute__((weak)) void cRemoteProcedure::setup(RPC_ID id, const MtString& gr
 // Address: 0x01026390 - 0x010263ab (27 bytes)
 void cRemoteProcedure::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sRemoteProcedure::mpInstance) == static_cast<sRemoteProcedure*>(nullptr)) {
+    if ((sRemoteProcedure::mpInstance) == nullptr) {
         return;
     }
-    (::sRemoteProcedure::mpInstance)->::sRemoteProcedure::removeObject(this);
+    (sRemoteProcedure::mpInstance)->sRemoteProcedure::removeObject(this);
 }
 
 // No out-of-line body: no code in the ELF
@@ -191,9 +191,9 @@ __attribute__((weak)) void cRemoteProcedure::addGroup(const MtString& group) {
 // Address: 0x01026570 - 0x010265a8 (56 bytes)
 bool cRemoteProcedure::process(cRemoteCall& call, s32 member) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParent != static_cast<MtObject*>(nullptr)) {
-        if (this->mpCallback != static_cast<cRemoteProcedure::PROCESS_CALLBACK>(0)) {
-            (this->mpParent->*this->mpCallback)(call, member);
+    if (mpParent != nullptr) {
+        if (mpCallback != static_cast<cRemoteProcedure::PROCESS_CALLBACK>(0)) {
+            (mpParent->*mpCallback)(call, member);
             return true;
         }
     }
@@ -251,6 +251,8 @@ IStateMachineRpcReceiver* cRemoteProcedure::getRpcReceiveStateMachine() {
 
 // No out-of-line body: no code in the ELF
 // bool cRemoteProcedure::isSendEnable(cRemoteProcedure* object) const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cRemoteProcedure::MyDTI cRemoteProcedure::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cRemoteProcedure::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

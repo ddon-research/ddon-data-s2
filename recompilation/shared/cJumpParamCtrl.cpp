@@ -27,7 +27,7 @@ const MtDTI& cJumpParamCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cJumpParamCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cJumpParamCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cJumpParamCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline MtAllocator* cJumpParamCtrl::getAllocator() {
 // Address: 0x002d1e40 - 0x002d1e6a (42 bytes)
 __attribute__((weak)) void cJumpParamCtrl::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cJumpParamCtrl::getAllocator()->memFree(p_addr);
+    cJumpParamCtrl::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,23 +118,23 @@ void cJumpParamCtrl::updatePadAdjustPos(uHuman* pHuman) {
     // DWARF local not rendered: cJumpParam* pJumpParam;
     // DWARF local not rendered: MtVector3 vel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHuman == static_cast<uHuman*>(nullptr)) {
+    if (pHuman == nullptr) {
         return;
     }
-    if (pHuman->::uDDOModel::getInputPtr() == static_cast<cpInput*>(nullptr)) {
+    if (pHuman->getInputPtr() == nullptr) {
         return;
     }
-    if (pHuman->::uDDOModel::getInputPtr()->mMoveInfo.type == static_cast<s32>(0)) {
+    if (pHuman->getInputPtr()->mMoveInfo.type == 0) {
         return;
     }
     // inferred: a temporary for the value the load at 0x2d245a read, used once; no DWARF local holds it
-    f32 t0 = pHuman->::uDDOModel::getInputPtr()->mMoveInfo.dir.y;
+    f32 t0 = pHuman->getInputPtr()->mMoveInfo.dir.y;
     // inferred: a temporary for the value the load at 0x2d2462 read, used once; no DWARF local holds it
-    f32 t1 = pHuman->::uDDOModel::getInputPtr()->mMoveInfo.dir.z;
-    pHuman->::uCoord::mPos.x = pHuman->::uCoord::mPos.x + (pHuman->::cUnit::getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * pHuman->::uDDOModel::getInputPtr()->mMoveInfo.dir.x));
-    pHuman->::uCoord::mPos.y = pHuman->::uCoord::mPos.y + (pHuman->::cUnit::getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * t0));
-    pHuman->::uCoord::mPos.z = pHuman->::uCoord::mPos.z + (pHuman->::cUnit::getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * t1));
-    pHuman->::uCoord::mPos.pad_ = 0.0f;
+    f32 t1 = pHuman->getInputPtr()->mMoveInfo.dir.z;
+    pHuman->mPos.x = pHuman->mPos.x + (pHuman->getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * pHuman->getInputPtr()->mMoveInfo.dir.x));
+    pHuman->mPos.y = pHuman->mPos.y + (pHuman->getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * t0));
+    pHuman->mPos.z = pHuman->mPos.z + (pHuman->getDeltaTime() * (pHuman->mJumpParam.mAddMoveSpeedXZ * t1));
+    pHuman->mPos.pad_ = 0.0f;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (60 bytes)
@@ -143,6 +143,8 @@ void cJumpParamCtrl::updatePadAdjustPos(uHuman* pHuman) {
 //   in cJumpParamCtrl::initializeMoveRad at 0x002d2092-0x002d209e (called at cJumpParamCtrl.cpp:122)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void cJumpParamCtrl::setupParam(uHuman* pHuman, u32 bank, u32 jpIndex);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cJumpParamCtrl::MyDTI cJumpParamCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cJumpParamCtrl.cpp at 0x002d25af-0x002d25ec (called at cJumpParamCtrl.cpp:26)

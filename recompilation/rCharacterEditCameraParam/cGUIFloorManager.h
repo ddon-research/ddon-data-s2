@@ -154,9 +154,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cGUIFloorManager::cParam::cParam() {
-    this->mpRes = static_cast<rGUIMapSetting*>(nullptr);
-    this->mFloorBaseIdOfs = static_cast<s32>(0);
-    this->mFloorGroupNo = static_cast<s32>(-1);
+    this->mpRes = nullptr;
+    this->mFloorBaseIdOfs = 0;
+    this->mFloorGroupNo = -1;
 }
 
 // Inline, no code of its own: checked where it is inlined.

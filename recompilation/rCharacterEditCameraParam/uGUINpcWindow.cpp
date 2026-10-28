@@ -37,7 +37,7 @@ const MtDTI& uGUINpcWindow::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUINpcWindow::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUINpcWindow::DTI);
+    return MtMemoryAllocator::getAllocator(uGUINpcWindow::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* uGUINpcWindow::getAllocator() {
 // Address: 0x00ca8620 - 0x00ca8660 (64 bytes)
 void* uGUINpcWindow::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUINpcWindow::getAllocator()->memAlloc(sz, align, ::uGUINpcWindow::DTI.::MtDTI::getID());
+    return uGUINpcWindow::getAllocator()->memAlloc(sz, align, uGUINpcWindow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* uGUINpcWindow::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUINpcWindow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUINpcWindow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUINpcWindow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,25 +80,25 @@ inline void uGUINpcWindow::operator delete(void* p_addr) {
 // Also emitted as: _ZN13uGUINpcWindowD0Ev at 0x00ca88e0
 uGUINpcWindow::~uGUINpcWindow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIMsg != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGUIMsg->::cResource::release();
-        this->mpGUIMsg = static_cast<rGUIMessage*>(nullptr);
+    if (mpGUIMsg != nullptr) {
+        mpGUIMsg->release();
+        mpGUIMsg = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00ca8960 - 0x00ca8a0f (175 bytes)
 bool uGUINpcWindow::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NPCWINDOW04_GUI"), static_cast<u32>(129), static_cast<t64>(1432186983)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsg;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW04_GUI"), 129u, 1432186983l))) != nullptr) {
+            if (mpGUIMsg == nullptr) {
+                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsg;
                     return true;
                 } else {
                     return false;
@@ -110,9 +110,9 @@ bool uGUINpcWindow::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsg;
+        if (mpGUIMsg == nullptr) {
+            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_NPCWINDOW_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsg;
                 return true;
             } else {
                 return false;
@@ -139,91 +139,90 @@ __attribute__((weak)) void uGUINpcWindow::setup() {
 // Address: 0x00ca9480 - 0x00ca94b1 (49 bytes)
 void uGUINpcWindow::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUISystemMsg::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUISystemMsg::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00ca9870 - 0x00ca987f (15 bytes)
 void uGUINpcWindow::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsDraw == false) {
+    if (!mIsDraw) {
         return;
     }
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x00caa580 - 0x00caa670 (240 bytes)
 void uGUINpcWindow::restart() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mRequestRestart = true;
-    this->mIsMessageWait = true;
-    this->::uGUISystemMsg::mMode = static_cast<u32>(0);
-    if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    mRequestRestart = true;
+    mIsMessageWait = true;
+    mMode = 0;
+    if (mArrayPageInfo.mLength != 0) {
         // inferred: the value the loop at 0xcaa5c0 carries; no location-less local in scope fits
-        u32 v0_0 = this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength;
+        u32 v0_0 = mArrayPageInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength) {
-                    v0_0 = this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArrayPageInfo.mpArray[i0_3] != nullptr) {
+                delete mArrayPageInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArrayPageInfo.mLength) {
+                    v0_0 = mArrayPageInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray));
+    if (mArrayPageInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArrayPageInfo.mpArray));
     }
-    this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength = static_cast<u32>(0);
-    this->::uGUISystemMsg::mCurrentPage = static_cast<u32>(0);
-    if (this->::uGUISystemMsg::mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->::uGUISystemMsg::mpCtrl->setPresetSE(static_cast<u32>(4), static_cast<u32>(8));
+    mArrayPageInfo.mpArray = nullptr;
+    mArrayPageInfo.mBufsiz = 0;
+    mArrayPageInfo.mLength = 0;
+    mCurrentPage = 0;
+    if (mpCtrl != nullptr) {
+        mpCtrl->setPresetSE(4u, 8u);
     }
-    this->::uGUISystemMsg::mScrollList.::uGUIBase::cScrollList::clearInfo();
-    this->::uGUIBase::setWindowActive(true);
+    mScrollList.clearInfo();
+    setWindowActive(true);
 }
 
 // Address: 0x00caa670 - 0x00caa6a1 (49 bytes)
 void uGUINpcWindow::finish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsFinish != false) {
-    } else {
-        this->mIsFinish = true;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateOutStart);
-        this->::uGUIBase::setWindowActive(false);
+    if (!mIsFinish) {
+        mIsFinish = true;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateOutStart);
+        setWindowActive(false);
     }
 }
 
 // Address: 0x00ca96e0 - 0x00ca9768 (136 bytes)
 void uGUINpcWindow::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsMessageWaitTemp = false;
-    if (this->mRequestRestart != false) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(7));
-        this->mRequestRestart = false;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateInit);
+    mIsMessageWaitTemp = false;
+    if (mRequestRestart) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 7u);
+        mRequestRestart = false;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateInit);
     }
-    this->::uGUISystemMsg::move();
-    if (this->mReqUpdateDisp != false) {
-        this->mReqUpdateDisp = false;
-        this->updateDisp(false);
+    this->uGUISystemMsg::move();
+    if (mReqUpdateDisp) {
+        mReqUpdateDisp = false;
+        updateDisp(false);
     }
-    this->mIsMessageWait = this->mIsMessageWaitTemp;
+    mIsMessageWait = mIsMessageWaitTemp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -259,7 +258,7 @@ __attribute__((weak)) MtVector2 uGUINpcWindow::getChoiceWindowPos() {
 // Address: 0x01b09380 - 0x01b09387 (7 bytes)
 bool uGUINpcWindow::isMessageWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsMessageWait;
+    return mIsMessageWait;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -270,21 +269,21 @@ bool uGUINpcWindow::isMessageWait() {
 // Address: 0x00ca9880 - 0x00ca9885 (5 bytes)
 void uGUINpcWindow::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUISystemMsg::moveInput();
+    this->uGUISystemMsg::moveInput();
 }
 
 // Address: 0x00ca9890 - 0x00ca98e2 (82 bytes)
 void uGUINpcWindow::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUISystemMsg::mScrollList.::uGUIBase::cScrollList::moveEvent() != false) {
-        this->::uGUINpcWindow::updateQuestGuide();
-        this->::uGUISystemMsg::moveEvent();
+    if (mScrollList.moveEvent()) {
+        updateQuestGuide();
+        this->uGUISystemMsg::moveEvent();
     } else {
-        if (this->::uGUIBase::mInputEventId == static_cast<u32>(68)) {
-            this->::uGUISystemMsg::mScrollList.::uGUIBase::cScrollList::setListPos(false);
-            this->::uGUINpcWindow::updateQuestGuide();
+        if (mInputEventId == 68) {
+            mScrollList.setListPos(false);
+            updateQuestGuide();
         } else {
-            this->::uGUISystemMsg::moveEvent();
+            this->uGUISystemMsg::moveEvent();
         }
     }
 }
@@ -321,91 +320,91 @@ void uGUINpcWindow::updateInit() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cPageInfo* pPage;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mIsMessageWaitTemp = true;
-    this->mIsFinish = false;
-    this->mIsDraw = true;
-    this->::uGUISystemMsg::mCurrentPage = static_cast<u32>(0);
-    if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    mIsMessageWaitTemp = true;
+    mIsFinish = false;
+    mIsDraw = true;
+    mCurrentPage = 0;
+    if (mArrayPageInfo.mLength != 0) {
         // inferred: the value the loop at 0xca97b0 carries; no location-less local in scope fits
-        u32 v0_0 = this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength;
+        u32 v0_0 = mArrayPageInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                static_cast<uGUISystemMsg::cPageInfo*>(this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3])->::uGUISystemMsg::cPageInfo::initChoicePos();
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength) {
-                    v0_0 = this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArrayPageInfo.mpArray[i0_3] != nullptr) {
+                static_cast<uGUISystemMsg::cPageInfo*>(mArrayPageInfo.mpArray[i0_3])->initChoicePos();
+                if ((i0_3 + 1u) < mArrayPageInfo.mLength) {
+                    v0_0 = mArrayPageInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mToolTip.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mToolTip.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    if (mToolTip.mpInstance != nullptr) {
+        mToolTip.mpInstance->setVisible(false);
     }
-    if (this->::uGUISystemMsg::mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->::uGUISystemMsg::mpCtrl->setFocus(true);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(true);
     }
-    this->::uGUISystemMsg::mScrollList.::uGUIBase::cScrollList::setFocus(true);
-    if (this->mpInstNull != static_cast<cGUIInstance*>(nullptr)) {
-        this->mpInstNull->::cGUIInstance::setVisible(true);
+    mScrollList.setFocus(true);
+    if (mpInstNull != nullptr) {
+        mpInstNull->setVisible(true);
     }
-    this->updateDisp(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(4), false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateIn);
+    updateDisp(true);
+    setFlowAndInit(4u, false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateIn);
 }
 
 // Address: 0x00caa3b0 - 0x00caa3d7 (39 bytes)
 void uGUINpcWindow::updateIn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsMessageWaitTemp = true;
-    if (this->::uGUIBase::mIsFlowEnd == false) {
+    mIsMessageWaitTemp = true;
+    if (!mIsFlowEnd) {
         return;
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateWait);
 }
 
 // Address: 0x00ca92b0 - 0x00ca946e (446 bytes)
 void uGUINpcWindow::updateOutStart() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
-    this->mIsFinish = true;
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(5), false);
-    if (this->::uGUISystemMsg::mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->::uGUISystemMsg::mpCtrl->setFocus(false);
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 10u);
+    mIsFinish = true;
+    setFlowAndInit(5u, false);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(false);
     }
-    this->::uGUISystemMsg::mScrollList.::uGUIBase::cScrollList::setFocus(false);
-    this->::uGUIBase::setObjectMessage(this->mpObjName, static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjText), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[0]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[1]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[2]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[3]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[4]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[5]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[6]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[7]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[8]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[9]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[10]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->::uGUISystemMsg::mpObjMsgChoiceInfo[11]), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-    this->mToolTip.::uGUIBase::cReferenceUITooltip::setMessage("");
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateOut);
+    mScrollList.setFocus(false);
+    setObjectMessage(mpObjName, static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjText), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[0]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[1]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[2]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[3]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[4]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[5]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[6]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[7]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[8]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[9]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[10]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgChoiceInfo[11]), static_cast<MT_CTSTR>(nullptr), 0u, false);
+    mToolTip.setMessage("");
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUINpcWindow::updateOut);
 }
 
 // Address: 0x00caa560 - 0x00caa56a (10 bytes)
 void uGUINpcWindow::updateOut() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsFinish = true;
-    this->mIsDraw = false;
+    mIsFinish = true;
+    mIsDraw = false;
 }
 
 // Address: 0x00ca9470 - 0x00ca9471 (1 bytes)
@@ -472,6 +471,8 @@ __attribute__((weak)) void uGUINpcWindow::updateScrollListHide(uGUIBase::cScroll
 //   in uGUINpcWindow::updateQuestGuide at 0x00ca9a50-0x00ca9a88, 0x00ca9a94-0x00ca9aa4 (called at uGUINpcWindow.cpp:978)
 //   in uGUINpcWindow::updateWait at 0x00caa4e9-0x00caa531 (called at uGUINpcWindow.cpp:748)
 // f32 uGUINpcWindow::getGuideMsgPosY();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUINpcWindow::MyDTI uGUINpcWindow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUINpcWindow.cpp at 0x00caa92f-0x00caa96c (called at uGUINpcWindow.cpp:24)

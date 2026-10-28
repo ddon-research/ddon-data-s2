@@ -68,8 +68,8 @@
 bool cSynchronization::isRelation() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpParent != static_cast<cUnit*>(nullptr)) {
-        if ((this->mpParent->mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
+    if (mpParent != nullptr) {
+        if ((mpParent->mBeFlag - 1u) > 1u) {
             return false;
         } else {
             return true;

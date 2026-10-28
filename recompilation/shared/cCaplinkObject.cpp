@@ -23,7 +23,7 @@ const MtDTI& cCaplinkObject::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCaplinkObject::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCaplinkObject::DTI);
+    return MtMemoryAllocator::getAllocator(cCaplinkObject::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,13 +32,13 @@ inline MtAllocator* cCaplinkObject::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCaplinkObject::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCaplinkObject::DTI)->memAlloc(sz, align, ::cCaplinkObject::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCaplinkObject::DTI)->memAlloc(sz, align, cCaplinkObject::DTI.getID());
 }
 
 // Address: 0x00045f10 - 0x00045f50 (64 bytes)
 void* cCaplinkObject::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCaplinkObject::getAllocator()->memAlloc(sz, align, ::cCaplinkObject::DTI.::MtDTI::getID());
+    return cCaplinkObject::getAllocator()->memAlloc(sz, align, cCaplinkObject::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,13 +50,13 @@ void* cCaplinkObject::operator new[](size_t sz, u32 align) {
 // Address: 0x00045f70 - 0x00045f9a (42 bytes)
 __attribute__((weak)) void cCaplinkObject::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCaplinkObject::getAllocator()->memFree(p_addr);
+    cCaplinkObject::getAllocator()->memFree(p_addr);
 }
 
 // Address: 0x00045fa0 - 0x00045fca (42 bytes)
 void cCaplinkObject::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCaplinkObject::getAllocator()->memFree(p_addr);
+    cCaplinkObject::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,6 +84,8 @@ __attribute__((weak)) void cCaplinkObject::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCaplinkObject::MyDTI cCaplinkObject::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cCaplinkObject.cpp at 0x00046010-0x00046052 (called at cCaplinkObject.cpp:12)
 //   in _GLOBAL__sub_I_cCaplinkObject.cpp at 0x00046010-0x00046052 (called at cCaplinkObject.h:17)
@@ -92,6 +94,6 @@ __attribute__((weak)) void cCaplinkObject::createProperty(MtPropertyList& s) {
 // Address: 0x00045ec0 - 0x00045f00 (64 bytes)
 MtObject* cCaplinkObject::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCaplinkObject;
+    return new (16u) cCaplinkObject;
 }
 

@@ -51,7 +51,7 @@ const MtDTI& cErosionInfoRes::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -81,6 +81,8 @@ inline void cErosionInfoRes::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cErosionInfoRes::~cErosionInfoRes();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionInfoRes::MyDTI cErosionInfoRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x00672130-0x00672179 (called at rErosionRegion.cpp:39)
@@ -118,7 +120,7 @@ const MtDTI& cErosionRegionRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cErosionRegionRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memAlloc(sz, align, ::cErosionRegionRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cErosionRegionRes::DTI)->memAlloc(sz, align, cErosionRegionRes::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -133,7 +135,7 @@ inline void* cErosionRegionRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionRegionRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionRegionRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -216,42 +218,44 @@ inline void cErosionRegionRes::operator delete(void* p_addr) {
 // Address: 0x00671bb0 - 0x00671bd5 (37 bytes)
 void cErosionRegionRes::copyParam(const cErosionRegionRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRegionCategory = data.mRegionCategory;
-    this->mJointNo = data.mJointNo;
-    this->mBreakShlIndex = data.mBreakShlIndex;
-    this->mGenerateShlIndex = data.mGenerateShlIndex;
-    this->mJointNo2 = data.mJointNo2;
-    this->mBreakShlIndex2 = data.mBreakShlIndex2;
-    this->mGenerateShlIndex2 = data.mGenerateShlIndex2;
-    this->mJointNo3 = data.mJointNo3;
-    this->mBreakShlIndex3 = data.mBreakShlIndex3;
-    this->mGenerateShlIndex3 = data.mGenerateShlIndex3;
-    this->mScaleJointNo = data.mScaleJointNo;
-    this->mScaleJointNo2 = data.mScaleJointNo2;
-    this->mScaleChangeType = data.mScaleChangeType;
+    mRegionCategory = data.mRegionCategory;
+    mJointNo = data.mJointNo;
+    mBreakShlIndex = data.mBreakShlIndex;
+    mGenerateShlIndex = data.mGenerateShlIndex;
+    mJointNo2 = data.mJointNo2;
+    mBreakShlIndex2 = data.mBreakShlIndex2;
+    mGenerateShlIndex2 = data.mGenerateShlIndex2;
+    mJointNo3 = data.mJointNo3;
+    mBreakShlIndex3 = data.mBreakShlIndex3;
+    mGenerateShlIndex3 = data.mGenerateShlIndex3;
+    mScaleJointNo = data.mScaleJointNo;
+    mScaleJointNo2 = data.mScaleJointNo2;
+    mScaleChangeType = data.mScaleChangeType;
 }
 
 // Address: 0x00671b50 - 0x00671ba6 (86 bytes)
 cErosionRegionRes::cErosionRegionRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRegionCategory = static_cast<s32>(1);
-    this->mRegeneratePriority = static_cast<s32>(0);
-    this->mJointNo = static_cast<s32>(0);
-    this->mBreakShlIndex = static_cast<s32>(1);
-    this->mGenerateShlIndex = static_cast<s32>(11);
-    this->mJointNo2 = static_cast<s32>(-1);
-    this->mBreakShlIndex2 = static_cast<s32>(0);
-    this->mGenerateShlIndex2 = static_cast<s32>(0);
-    this->mJointNo3 = static_cast<s32>(-1);
-    this->mBreakShlIndex3 = static_cast<s32>(0);
-    this->mGenerateShlIndex3 = static_cast<s32>(0);
-    this->mScaleJointNo = static_cast<s32>(-1);
-    this->mScaleJointNo2 = static_cast<s32>(-1);
-    this->mScaleChangeType = static_cast<s32>(0);
+    mRegionCategory = 1;
+    mRegeneratePriority = 0;
+    mJointNo = 0;
+    mBreakShlIndex = 1;
+    mGenerateShlIndex = 11;
+    mJointNo2 = -1;
+    mBreakShlIndex2 = 0;
+    mGenerateShlIndex2 = 0;
+    mJointNo3 = -1;
+    mBreakShlIndex3 = 0;
+    mGenerateShlIndex3 = 0;
+    mScaleJointNo = -1;
+    mScaleJointNo2 = -1;
+    mScaleChangeType = 0;
 }
 
 // Defined in the class (its body was written in a header).
 // cErosionRegionRes::~cErosionRegionRes();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionRegionRes::MyDTI cErosionRegionRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x006721b9-0x006721f2 (called at rErosionRegion.cpp:212)
@@ -261,7 +265,7 @@ cErosionRegionRes::cErosionRegionRes() {
 // Address: 0x00671970 - 0x006719f7 (135 bytes)
 MtObject* cErosionRegionRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cErosionRegionRes;
+    return new (16u) cErosionRegionRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -289,7 +293,7 @@ const MtDTI& cErosionSmallInfoRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cErosionSmallInfoRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memAlloc(sz, align, ::cErosionSmallInfoRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cErosionSmallInfoRes::DTI)->memAlloc(sz, align, cErosionSmallInfoRes::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -304,7 +308,7 @@ inline void* cErosionSmallInfoRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionSmallInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionSmallInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -347,6 +351,8 @@ inline void cErosionSmallInfoRes::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cErosionSmallInfoRes::~cErosionSmallInfoRes();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionSmallInfoRes::MyDTI cErosionSmallInfoRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x0067222b-0x00672264 (called at rErosionRegion.cpp:445)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x0067222b-0x00672264 (called at rErosionRegion.h:230)
@@ -355,7 +361,7 @@ inline void cErosionSmallInfoRes::operator delete(void* p_addr) {
 // Address: 0x00671ca0 - 0x00671d03 (99 bytes)
 MtObject* cErosionSmallInfoRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cErosionSmallInfoRes;
+    return new (16u) cErosionSmallInfoRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -383,7 +389,7 @@ const MtDTI& cErosionSuperInfoRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cErosionSuperInfoRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::cErosionSuperInfoRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cErosionSuperInfoRes::DTI)->memAlloc(sz, align, cErosionSuperInfoRes::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -398,7 +404,7 @@ inline void* cErosionSuperInfoRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cErosionSuperInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionSuperInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -435,23 +441,25 @@ inline void cErosionSuperInfoRes::operator delete(void* p_addr) {
 // Address: 0x00672080 - 0x006720a1 (33 bytes)
 void cErosionSuperInfoRes::copyParam(const cErosionSuperInfoRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCorepointType = data.mCorepointType;
-    this->mAdjustDamageRate = data.mAdjustDamageRate;
-    this->mApearTime = data.mApearTime;
-    this->mRegionCategory = data.mRegionCategory;
+    mCorepointType = data.mCorepointType;
+    mAdjustDamageRate = data.mAdjustDamageRate;
+    mApearTime = data.mApearTime;
+    mRegionCategory = data.mRegionCategory;
 }
 
 // Address: 0x006720b0 - 0x006720db (43 bytes)
 cErosionSuperInfoRes::cErosionSuperInfoRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCorepointType = static_cast<s32>(-1);
-    this->mAdjustDamageRate = 0.05f;
-    this->mApearTime = 0.0f;
-    this->mRegionCategory = static_cast<s32>(1);
+    mCorepointType = -1;
+    mAdjustDamageRate = 0.05f;
+    mApearTime = 0.0f;
+    mRegionCategory = 1;
 }
 
 // Defined in the class (its body was written in a header).
 // cErosionSuperInfoRes::~cErosionSuperInfoRes();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionSuperInfoRes::MyDTI cErosionSuperInfoRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x0067229d-0x006722d6 (called at rErosionRegion.cpp:570)
@@ -461,7 +469,7 @@ cErosionSuperInfoRes::cErosionSuperInfoRes() {
 // Address: 0x00671ed0 - 0x00671f2c (92 bytes)
 MtObject* cErosionSuperInfoRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cErosionSuperInfoRes;
+    return new (16u) cErosionSuperInfoRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -486,7 +494,7 @@ const MtDTI& rErosionInfoRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionInfoRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionInfoRes::DTI)->memAlloc(sz, align, ::rErosionInfoRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionInfoRes::DTI)->memAlloc(sz, align, rErosionInfoRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -501,7 +509,7 @@ inline void* rErosionInfoRes::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rErosionInfoResD0Ev at 0x01a8d554-0x01a8d573, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -538,8 +546,10 @@ MT_CTSTR rErosionInfoRes::getExt() const {
 // Address: 0x01a8d6a0 - 0x01a8d6a6 (6 bytes)
 u32 rErosionInfoRes::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionInfoRes::MyDTI rErosionInfoRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x00672179-0x006721b9 (called at rErosionRegion.cpp:40)
@@ -549,7 +559,7 @@ u32 rErosionInfoRes::getDataVersion() const {
 // Address: 0x00671800 - 0x00671864 (100 bytes)
 MtObject* rErosionInfoRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionInfoRes;
+    return new (16u) rErosionInfoRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -574,7 +584,7 @@ const MtDTI& rErosionRegion::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionRegion::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionRegion::DTI)->memAlloc(sz, align, ::rErosionRegion::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionRegion::DTI)->memAlloc(sz, align, rErosionRegion::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -589,7 +599,7 @@ inline void* rErosionRegion::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rErosionRegionD0Ev at 0x01a8d8e4-0x01a8d903, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionRegion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionRegion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionRegion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -606,43 +616,43 @@ bool rErosionRegion::loadData(MtDataReader& r, cErosionRegionRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRegionCategory);
+    nDDOIO::readData(r, pData->mRegionCategory);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJointNo);
+    nDDOIO::readData(r, pData->mJointNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBreakShlIndex);
+    nDDOIO::readData(r, pData->mBreakShlIndex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGenerateShlIndex);
+    nDDOIO::readData(r, pData->mGenerateShlIndex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJointNo2);
+    nDDOIO::readData(r, pData->mJointNo2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBreakShlIndex2);
+    nDDOIO::readData(r, pData->mBreakShlIndex2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGenerateShlIndex2);
+    nDDOIO::readData(r, pData->mGenerateShlIndex2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJointNo3);
+    nDDOIO::readData(r, pData->mJointNo3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBreakShlIndex3);
+    nDDOIO::readData(r, pData->mBreakShlIndex3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGenerateShlIndex3);
+    nDDOIO::readData(r, pData->mGenerateShlIndex3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleJointNo);
+    nDDOIO::readData(r, pData->mScaleJointNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleJointNo2);
+    nDDOIO::readData(r, pData->mScaleJointNo2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleChangeType);
+    nDDOIO::readData(r, pData->mScaleChangeType);
     return true;
 }
 
@@ -655,8 +665,10 @@ MT_CTSTR rErosionRegion::getExt() const {
 // Address: 0x01a8da30 - 0x01a8da36 (6 bytes)
 u32 rErosionRegion::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionRegion::MyDTI rErosionRegion::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x006721f2-0x0067222b (called at rErosionRegion.cpp:213)
@@ -666,7 +678,7 @@ u32 rErosionRegion::getDataVersion() const {
 // Address: 0x00671a70 - 0x00671ad4 (100 bytes)
 MtObject* rErosionRegion::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionRegion;
+    return new (16u) rErosionRegion;
 }
 
 // No out-of-line body: no code in the ELF
@@ -691,7 +703,7 @@ const MtDTI& rErosionSmallInfoRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionSmallInfoRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionSmallInfoRes::DTI)->memAlloc(sz, align, ::rErosionSmallInfoRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionSmallInfoRes::DTI)->memAlloc(sz, align, rErosionSmallInfoRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -706,7 +718,7 @@ inline void* rErosionSmallInfoRes::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rErosionSmallInfoResD0Ev at 0x01a8dba4-0x01a8dbc3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionSmallInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionSmallInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionSmallInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -723,19 +735,19 @@ bool rErosionSmallInfoRes::loadData(MtDataReader& r, cErosionSmallInfoRes* pData
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCancelTimer);
+    nDDOIO::readData(r, pData->mCancelTimer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCancelWaitTimer);
+    nDDOIO::readData(r, pData->mCancelWaitTimer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleActiveRate);
+    nDDOIO::readData(r, pData->mScaleActiveRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleInActiveMax);
+    nDDOIO::readData(r, pData->mScaleInActiveMax);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mScaleInActiveMin);
+    nDDOIO::readData(r, pData->mScaleInActiveMin);
     return true;
 }
 
@@ -748,8 +760,10 @@ MT_CTSTR rErosionSmallInfoRes::getExt() const {
 // Address: 0x01a8dcf0 - 0x01a8dcf6 (6 bytes)
 u32 rErosionSmallInfoRes::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionSmallInfoRes::MyDTI rErosionSmallInfoRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x00672264-0x0067229d (called at rErosionRegion.cpp:446)
@@ -759,7 +773,7 @@ u32 rErosionSmallInfoRes::getDataVersion() const {
 // Address: 0x00671d80 - 0x00671de4 (100 bytes)
 MtObject* rErosionSmallInfoRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionSmallInfoRes;
+    return new (16u) rErosionSmallInfoRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -784,7 +798,7 @@ const MtDTI& rErosionSuperInfoRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rErosionSuperInfoRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::rErosionSuperInfoRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rErosionSuperInfoRes::DTI)->memAlloc(sz, align, rErosionSuperInfoRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -799,7 +813,7 @@ inline void* rErosionSuperInfoRes::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rErosionSuperInfoResD0Ev at 0x01a8df24-0x01a8df43, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rErosionSuperInfoRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rErosionSuperInfoRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rErosionSuperInfoRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -816,16 +830,16 @@ bool rErosionSuperInfoRes::loadData(MtDataReader& r, cErosionSuperInfoRes* pData
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCorepointType);
+    nDDOIO::readData(r, pData->mCorepointType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mAdjustDamageRate);
+    nDDOIO::readData(r, pData->mAdjustDamageRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mApearTime);
+    nDDOIO::readData(r, pData->mApearTime);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mRegionCategory);
+    nDDOIO::readData(r, pData->mRegionCategory);
     return true;
 }
 
@@ -838,8 +852,10 @@ MT_CTSTR rErosionSuperInfoRes::getExt() const {
 // Address: 0x01a8e070 - 0x01a8e076 (6 bytes)
 u32 rErosionSuperInfoRes::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rErosionSuperInfoRes::MyDTI rErosionSuperInfoRes::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rErosionRegion.cpp at 0x006722d6-0x0067230f (called at rErosionRegion.cpp:571)
@@ -849,7 +865,7 @@ u32 rErosionSuperInfoRes::getDataVersion() const {
 // Address: 0x00671fa0 - 0x00672004 (100 bytes)
 MtObject* rErosionSuperInfoRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rErosionSuperInfoRes;
+    return new (16u) rErosionSuperInfoRes;
 }
 
 // Instance at 0x01a8d650 - 0x01a8d666 (22 bytes) of the generic rTbl2<T>::getData

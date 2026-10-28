@@ -59,7 +59,7 @@ const MtDTI& cContextInstChar::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cContextInstChar::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cContextInstChar::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cContextInstChar::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,7 +93,7 @@ __attribute__((weak)) void cContextInstChar::createProperty(MtPropertyList& s) {
 // Address: 0x00056640 - 0x00056645 (5 bytes)
 MtUI* cContextInstChar::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cContext::createUI(prop);
+    return this->cContext::createUI(prop);
 }
 
 // Address: 0x00056650 - 0x00056c65 (1557 bytes)
@@ -400,7 +400,7 @@ __attribute__((weak)) void cContextInstChar::setWallClimbLandPos(const MtVector3
 // Address: 0x00057550 - 0x0005755f (15 bytes)
 const nObjCondition::stOcdActiveMsg& cContextInstChar::getOcdActiveMsg(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdActiveMsgArray[index];
+    return mOcdActiveMsgArray[index];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -508,13 +508,13 @@ __attribute__((weak)) void cContextInstChar::setOcdActiveTimer(u32 bank, u32 ind
 // Address: 0x00057910 - 0x00057918 (8 bytes)
 void cContextInstChar::setOcdAllTimerResetFlag(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdAllTimerResetFlag = flag;
+    mOcdAllTimerResetFlag = flag;
 }
 
 // Address: 0x00057920 - 0x00057927 (7 bytes)
 bool cContextInstChar::isOcdAllTimerReset() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdAllTimerResetFlag;
+    return mOcdAllTimerResetFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -531,7 +531,7 @@ bool cContextInstChar::isOcdTimerReset(u32 OcdUID) const {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mOcdTimerResetBit[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)]) >> static_cast<unsigned long>((OcdUID - static_cast<u32>(1)) & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mOcdTimerResetBit[(OcdUID >> 12) & 15u]) >> static_cast<unsigned long>((OcdUID - 1u) & 31u)) & 1ul) != 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -542,26 +542,26 @@ bool cContextInstChar::isOcdTimerReset(u32 OcdUID) const {
 void cContextInstChar::resetOcdTimerReset() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mOcdTimerResetBit[6] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[4] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[5] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[2] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[3] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[0] = static_cast<unsigned int>(0);
-    this->mOcdTimerResetBit[1] = static_cast<unsigned int>(0);
+    mOcdTimerResetBit[6] = 0;
+    mOcdTimerResetBit[4] = 0;
+    mOcdTimerResetBit[5] = 0;
+    mOcdTimerResetBit[2] = 0;
+    mOcdTimerResetBit[3] = 0;
+    mOcdTimerResetBit[0] = 0;
+    mOcdTimerResetBit[1] = 0;
 }
 
 // Address: 0x01962700 - 0x0196270a (10 bytes)
 bool cContextInstChar::isDead(u32 i) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDead_pri[i];
+    return mIsDead_pri[i];
 }
 
 // Address: 0x00056620 - 0x00056633 (19 bytes)
 void cContextInstChar::setIsDead(bool isDead, u32 i) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDead_pri[i] = isDead;
-    this->mIsDeadCheatCheck_pri[i] = this->mIsDead_pri[i];
+    mIsDead_pri[i] = isDead;
+    mIsDeadCheatCheck_pri[i] = mIsDead_pri[i];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (11 bytes)
@@ -594,7 +594,7 @@ __attribute__((weak)) void cContextInstChar::setHpMax(HP_DATATYPE hpMax, u32 i) 
 // Address: 0x00057990 - 0x0005799a (10 bytes)
 bool cContextInstChar::getIsDeadCheatCheck(u32 i) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDeadCheatCheck_pri[i];
+    return mIsDeadCheatCheck_pri[i];
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (16 bytes)
@@ -659,13 +659,13 @@ __attribute__((weak)) HP_DATATYPE cContextInstChar::getHpMaxCheatCheck(u32 i) co
 // Address: 0x01962730 - 0x01962737 (7 bytes)
 s32 cContextInstChar::getLv() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLv_pri;
+    return mLv_pri;
 }
 
 // Address: 0x01962740 - 0x01962747 (7 bytes)
 void cContextInstChar::setLv(s32 lv) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLv_pri = lv;
+    mLv_pri = lv;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -877,35 +877,34 @@ __attribute__((weak)) u32 cContextInstChar::getUnSendedCorePointMsgNum() const {
 // Address: 0x00057450 - 0x0005748c (60 bytes)
 cCorePointMsg* cContextInstChar::getUnSendedTopCorePointMsg() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCorePointMsgArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mCorePointMsgArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x57450, 0x57488)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mCorePointMsgArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[i])->::cCorePointMsg::isSended() != false) {
-                } else {
-                    return static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[i]);
+            if (mCorePointMsgArray.mpArray[i] != nullptr) {
+                if (!static_cast<cCorePointMsg*>(mCorePointMsgArray.mpArray[i])->isSended()) {
+                    return static_cast<cCorePointMsg*>(mCorePointMsgArray.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mCorePointMsgArray.::MtArray::mLength);
+            i += 1u;
+        } while (i < mCorePointMsgArray.mLength);
     }
-    return static_cast<cCorePointMsg*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00057490 - 0x00057497 (7 bytes)
 u32 cContextInstChar::getCorePointMsgNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCorePointMsgArray.::MtArray::mLength;
+    return mCorePointMsgArray.mLength;
 }
 
 // Address: 0x000574a0 - 0x000574b8 (24 bytes)
 cCorePointMsg* cContextInstChar::getCorePointMsg(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCorePointMsgArray.::MtArray::mLength >= index) {
-        return static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[index]);
+    if (mCorePointMsgArray.mLength >= index) {
+        return static_cast<cCorePointMsg*>(mCorePointMsgArray.mpArray[index]);
     } else {
-        return static_cast<cCorePointMsg*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -934,7 +933,7 @@ __attribute__((weak)) void cContextInstChar::eraseCorePointMsg(u32 index) {
 // Address: 0x01962710 - 0x01962716 (6 bytes)
 u32 cContextInstChar::getPRegionNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(10);
+    return 10;
 }
 
 // Address: 0x01962720 - 0x01962721 (1 bytes)
@@ -1042,6 +1041,8 @@ __attribute__((weak)) void cContextInstChar::setDummyU32(u32) {
 //   in cContextInstChar::reset at 0x000569e4-0x000569ec (called at cContextInstance.cpp:1210)
 // void cContextInstChar::setIsDeadPrivateCheatCheck(bool NewValue, u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cContextInstChar::MyDTI cContextInstChar::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cContextInstance.cpp at 0x0005a042-0x0005a07f (called at cContextInstance.cpp:41)
 //   in _GLOBAL__sub_I_cContextInstance.cpp at 0x0005a042-0x0005a07f (called at cContextInstance.h:193)
@@ -1092,7 +1093,7 @@ void* cContextInstHm::operator new(size_t sz, void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cContextInstHm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cContextInstHm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cContextInstHm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1126,7 +1127,7 @@ __attribute__((weak)) void cContextInstHm::createProperty(MtPropertyList& s) {
 // Address: 0x00059000 - 0x00059005 (5 bytes)
 MtUI* cContextInstHm::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cContext::createUI(prop);
+    return this->cContext::createUI(prop);
 }
 
 // Address: 0x00059010 - 0x00059295 (645 bytes)
@@ -1143,13 +1144,13 @@ __attribute__((weak)) void cContextInstHm::reset() {
 // Address: 0x000592a0 - 0x000592ab (11 bytes)
 void cContextInstHm::entryParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOldGaugeContextType = static_cast<s32>(0);
+    mOldGaugeContextType = 0;
 }
 
 // Address: 0x000592b0 - 0x000592b5 (5 bytes)
 void cContextInstHm::removeParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cContextInstance::mIsValid = this->::cContextInstance::mIsValid & static_cast<u8>(247);
+    mIsValid = mIsValid & 247;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1652,6 +1653,8 @@ __attribute__((weak)) void cContextInstHm::setLastSafePos(const MtVector3& pos) 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cContextInstHm::setSJobWork1(s32 NewValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cContextInstHm::MyDTI cContextInstHm::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_cContextInstance.cpp at 0x0005a07f-0x0005a0bb (called at cContextInstance.cpp:42)
 //   in _GLOBAL__sub_I_cContextInstance.cpp at 0x0005a07f-0x0005a0bb (called at cContextInstance.h:858)
@@ -1699,7 +1702,7 @@ const MtDTI& cContextInstance::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cContextInstance::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cContextInstance::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cContextInstance::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1733,27 +1736,27 @@ __attribute__((weak)) void cContextInstance::createProperty(MtPropertyList& s) {
 // Address: 0x000554e0 - 0x000554e5 (5 bytes)
 MtUI* cContextInstance::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cContext::createUI(prop);
+    return this->cContext::createUI(prop);
 }
 
 // Address: 0x000554f0 - 0x00055544 (84 bytes)
 void cContextInstance::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsValid = static_cast<u8>(0);
-    this->mNetPos.x = 0.0;
-    this->mNetPos.y = 0.0f;
-    this->mNetDir = 0.0f;
-    this->mStageNo = static_cast<s32>(0);
-    this->mNetPos.z = 0.0;
-    this->mMasterIndex = static_cast<s32>(-1);
-    this->mMainEncountArea = static_cast<s32>(-1);
-    this->mMasterChangeFlag = false;
-    this->mSendChangeMaster = false;
-    this->mSetWaitFlag = false;
-    this->mCatchType = static_cast<u8>(0);
-    this->mCatchTargetUid = static_cast<u32>(0);
-    this->mCatchJointNo = static_cast<u8>(255);
-    this->mQuestId = static_cast<u32>(0);
+    mIsValid = 0;
+    mNetPos.x = 0.0;
+    mNetPos.y = 0.0f;
+    mNetDir = 0.0f;
+    mStageNo = 0;
+    mNetPos.z = 0.0;
+    mMasterIndex = -1;
+    mMainEncountArea = -1;
+    mMasterChangeFlag = false;
+    mSendChangeMaster = false;
+    mSetWaitFlag = false;
+    mCatchType = 0;
+    mCatchTargetUid = 0;
+    mCatchJointNo = 0xFF;
+    mQuestId = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1922,6 +1925,8 @@ __attribute__((weak)) void cContextInstance::setNetPos(const MtVector3& pos) {
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
 //   in cContextInterface::setQuestId at 0x0005a4e5-0x0005a4e8 (called at cContextInterface.cpp:293)
 // void cContextInstance::setQuestId(u32 QuestId);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cContextInstance::MyDTI cContextInstance::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cContextInstance.cpp at 0x0005a002-0x0005a042 (called at cContextInstance.cpp:40)

@@ -28,7 +28,7 @@ const MtDTI& uGUIPopEventTop::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopEventTop::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopEventTop::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopEventTop::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIPopEventTop::getAllocator() {
 // Address: 0x00baaa70 - 0x00baaab0 (64 bytes)
 void* uGUIPopEventTop::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopEventTop::getAllocator()->memAlloc(sz, align, ::uGUIPopEventTop::DTI.::MtDTI::getID());
+    return uGUIPopEventTop::getAllocator()->memAlloc(sz, align, uGUIPopEventTop::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uGUIPopEventTop::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopEventTop::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopEventTop::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopEventTop::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,30 +71,30 @@ inline void uGUIPopEventTop::operator delete(void* p_addr) {
 // Also emitted as: _ZN15uGUIPopEventTopD0Ev at 0x00baac00
 uGUIPopEventTop::~uGUIPopEventTop() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00baac60 - 0x00baac65 (5 bytes)
 void uGUIPopEventTop::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIsMenuBase::createProperty(s);
+    this->uGUIsMenuBase::createProperty(s);
 }
 
 // Address: 0x00baac70 - 0x00baacf7 (135 bytes)
 bool uGUIPopEventTop::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_EVENT_TOP_GUI"), static_cast<u32>(129), static_cast<t64>(1440567314)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_EVENT_TOP_GUI"), 129u, 1440567314l))) != nullptr) {
+            return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+        return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
     }
 }
 
@@ -111,18 +111,18 @@ __attribute__((weak)) void uGUIPopEventTop::setup() {
 // Address: 0x00bab670 - 0x00bab6a1 (49 bytes)
 void uGUIPopEventTop::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00bab6b0 - 0x00bab6b5 (5 bytes)
 void uGUIPopEventTop::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIsMenuBase::move();
+    this->uGUIsMenuBase::move();
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,14 +131,14 @@ void uGUIPopEventTop::move() {
 // Address: 0x00bab6d0 - 0x00bab6fe (46 bytes)
 void uGUIPopEventTop::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopEventTop::updateInfo();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopEventTop::updateWait);
+    updateInfo();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopEventTop::updateWait);
 }
 
 // Address: 0x00bab700 - 0x00bab705 (5 bytes)
 void uGUIPopEventTop::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopEventTop::updateInfo();
+    updateInfo();
 }
 
 // No out-of-line body: no code in the ELF
@@ -167,20 +167,22 @@ __attribute__((weak)) bool uGUIPopEventTop::changeSizeWindow() {
 // Address: 0x00bab660 - 0x00bab663 (3 bytes)
 u32 uGUIPopEventTop::evCtrlVMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00bab640 - 0x00bab643 (3 bytes)
 u32 uGUIPopEventTop::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00bab650 - 0x00bab653 (3 bytes)
 u32 uGUIPopEventTop::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopEventTop::MyDTI uGUIPopEventTop::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopEventTop.cpp at 0x00bac35f-0x00bac39c (called at uGUIPopEventTop.cpp:21)

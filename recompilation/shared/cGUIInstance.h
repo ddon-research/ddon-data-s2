@@ -38,6 +38,7 @@ class rGUI;
 class uGUI;
 class uGUIActionPalette;
 class uGUIBase;
+class uGUICommunityList;
 class uGUIFKeyPalette;
 class uGUIGauge;
 class uGUIHudCustomSkillPallet;
@@ -71,6 +72,8 @@ class cGUIInstance : public MtObject
     friend class cGUIUtility;
     // inferred: uGUI::updateInstanceMatrix names cGUIInstance::mAttr
     friend class uGUI;
+    // inferred: uGUICommunityList::cTabDataInData::setInstancePointer names cGUIInstance::mDuplicateId, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
     // inferred: uGUIHudCustomSkillPallet::setupInstances names cGUIInstance::mPriority
     friend class uGUIHudCustomSkillPallet;
 public:
@@ -237,7 +240,7 @@ class cGUIInstNull : public cGUIInstance
     friend class cGUIUtility;
     // inferred: uGUIActionPalette::isForceSamplerLinear names cGUIInstNull::mScale.x
     friend class uGUIActionPalette;
-    // inferred: uGUIBase::isForceSamplerLinear names cGUIInstNull::mScale.x
+    // inferred: uGUIBase::cReferenceUIIconButton::getPositionX names cGUIInstNull::mPosition.x, through its enclosing class uGUIBase
     friend class uGUIBase;
     // inferred: uGUIFKeyPalette::isForceSamplerLinear names cGUIInstNull::mScale.x
     friend class uGUIFKeyPalette;

@@ -88,3 +88,10 @@ public:
 inline bool cOcdMsgCtrl2::isReceiveMsg() const {
     return this->mIsReceiveMsg;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdMsgCtrl2::checkReceiveData at 0x179631-0x17963a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdMsgCtrl2::clearReceiveFlag() {
+    this->mIsReceiveMsg = false;
+    this->mInitFlag = false;
+}

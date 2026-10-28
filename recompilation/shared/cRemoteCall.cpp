@@ -50,7 +50,7 @@ const MtDTI& cRemoteCall::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cRemoteCallD0Ev at 0x01b697a7-0x01b697c8, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cRemoteCall::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cRemoteCall::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cRemoteCall::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,7 +65,7 @@ inline void cRemoteCall::operator delete(void* p_addr) {
 // Address: 0x01025680 - 0x01025696 (22 bytes)
 cRemoteCall::cRemoteCall() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttribute = static_cast<u32>(0);
+    mAttribute = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,21 +87,21 @@ __attribute__((weak)) void cRemoteCall::createProperty(MtPropertyList& s) {
 // Address: 0x010257a0 - 0x010257a5 (5 bytes)
 MtUI* cRemoteCall::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x010257b0 - 0x01025829 (121 bytes)
 void cRemoteCall::serialize(MtStream& queue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sr(static_cast<s32>(65536));
-    sr.::MtSerializer::serializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    MtSerializer sr(65536);
+    sr.MtSerializer::serializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
 }
 
 // Address: 0x01025830 - 0x010258a6 (118 bytes)
 void cRemoteCall::deserialize(MtStream& queue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sr(static_cast<s32>(65536));
-    sr.::MtSerializer::deserializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0));
+    MtSerializer sr(65536);
+    sr.MtSerializer::deserializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -135,6 +135,8 @@ __attribute__((weak)) cRemoteCall* cRemoteCall::newInstance(MtStream& in) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cRemoteCall::deadcopy(cRemoteCall& dst, MtStream& src);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cRemoteCall::MyDTI cRemoteCall::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cRemoteCall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -66,6 +66,6 @@ inline CDataQuickPartyMatching::CDataQuickPartyMatching() {
     this->m_bIsLeader = false;
     this->m_bIsJobBalance = false;
     this->m_bIsLevelBalance = false;
-    this->m_unParam1 = static_cast<u32>(0);
-    this->m_unParam2 = static_cast<u32>(0);
+    this->m_unParam1 = 0;
+    this->m_unParam2 = 0;
 }

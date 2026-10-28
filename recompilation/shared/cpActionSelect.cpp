@@ -31,7 +31,7 @@ const MtDTI& cpActionSelect::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpActionSelect::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpActionSelect::DTI);
+    return MtMemoryAllocator::getAllocator(cpActionSelect::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpActionSelect::getAllocator() {
 // Address: 0x003b5340 - 0x003b5380 (64 bytes)
 void* cpActionSelect::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpActionSelect::getAllocator()->memAlloc(sz, align, ::cpActionSelect::DTI.::MtDTI::getID());
+    return cpActionSelect::getAllocator()->memAlloc(sz, align, cpActionSelect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpActionSelect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpActionSelect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpActionSelect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpActionSelect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,14 +83,14 @@ cpActionSelect::~cpActionSelect() {
 // Address: 0x003b56f0 - 0x003b56fc (12 bytes)
 void cpActionSelect::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x003b5700 - 0x003b5705 (5 bytes)
 void cpActionSelect::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x003b5780 - 0x003b5781 (1 bytes)
@@ -106,22 +106,22 @@ __attribute__((weak)) void cpActionSelect::kill() {
 // Address: 0x003b57a0 - 0x003b57d9 (57 bytes)
 void cpActionSelect::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x003b5710 - 0x003b577d (109 bytes)
 void cpActionSelect::setupComponentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpKeyCommand = static_cast<cpKeyCommand*>(this->::cpComponent::find(::cpKeyCommand::DTI, true, true));
-    this->mpEnemy = static_cast<cpEnemyThink*>(this->::cpComponent::find(::cpEnemyThink::DTI, true, true));
-    this->mpSlave = static_cast<cpSlave*>(this->::cpComponent::find(::cpSlave::DTI, true, true));
+    mpKeyCommand = static_cast<cpKeyCommand*>(find(cpKeyCommand::DTI, true, true));
+    mpEnemy = static_cast<cpEnemyThink*>(find(cpEnemyThink::DTI, true, true));
+    mpSlave = static_cast<cpSlave*>(find(cpSlave::DTI, true, true));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -212,18 +212,18 @@ __attribute__((weak)) u32 cpActionSelect::getAction() {
 void cpActionSelect::clearLocalRequestAction() {
     // DWARF local not rendered: cpActionRequest* pCpLocal;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if (this->callbackGetAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (callbackGetAction.mArrayLength != 0) {
         do {
-            if (i < this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength) {
-                if (this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].::cDelegateBase::cNode::mpThis != static_cast<MtObject*>(nullptr)) {
-                    if (this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].mpFunc != static_cast<unsigned int(MtObject::*)()>(0)) {
-                        static_cast<cpActionRequest*>(this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].::cDelegateBase::cNode::mpThis)->::cpActionRequest::clearReqestActionAll();
+            if (i < callbackGetAutoAction.mArrayLength) {
+                if (callbackGetAutoAction.mpArray[i].mpThis != nullptr) {
+                    if (callbackGetAutoAction.mpArray[i].mpFunc != static_cast<unsigned int(MtObject::*)()>(0)) {
+                        static_cast<cpActionRequest*>(callbackGetAutoAction.mpArray[i].mpThis)->clearReqestActionAll();
                     }
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->callbackGetAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength);
+            i += 1u;
+        } while (i < callbackGetAction.mArrayLength);
     }
 }
 
@@ -239,17 +239,17 @@ __attribute__((weak)) void cpActionSelect::clearReserveAction() {
 // Address: 0x003b5fa0 - 0x003b5fe5 (69 bytes)
 f32 cpActionSelect::getAngleY() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpKeyCommand != static_cast<cpKeyCommand*>(nullptr)) {
-        if (this->mpKeyCommand->::cpComponent::isActive() != false) {
-            return this->mpKeyCommand->getAngleY();
+    if (mpKeyCommand != nullptr) {
+        if (mpKeyCommand->isActive()) {
+            return mpKeyCommand->getAngleY();
         }
     }
-    if (this->mpSlave != static_cast<cpSlave*>(nullptr)) {
-        if (this->mpSlave->::cpComponent::isActive() != false) {
-            return this->mpSlave->getMoveTargetAngle();
+    if (mpSlave != nullptr) {
+        if (mpSlave->isActive()) {
+            return mpSlave->getMoveTargetAngle();
         }
     }
-    return this->mpModel->::uDDOModel::getFinalAngleY();
+    return mpModel->getFinalAngleY();
 }
 
 // Address: 0x003b5ff0 - 0x003b608f (159 bytes)
@@ -261,8 +261,8 @@ __attribute__((weak)) f32 cpActionSelect::getAngleYActBegin(u32 actNo) {
 // Address: 0x003b5f60 - 0x003b5f7e (30 bytes)
 f32 cpActionSelect::getMoveSpeed() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpKeyCommand != static_cast<cpKeyCommand*>(nullptr)) {
-        return this->mpKeyCommand->getMoveSpeed();
+    if (mpKeyCommand != nullptr) {
+        return mpKeyCommand->getMoveSpeed();
     } else {
         return 1.0f;
     }
@@ -271,18 +271,18 @@ f32 cpActionSelect::getMoveSpeed() {
 // Address: 0x003b5f80 - 0x003b5f98 (24 bytes)
 u32 cpActionSelect::getMoveType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpKeyCommand != static_cast<cpKeyCommand*>(nullptr)) {
-        return this->mpKeyCommand->getMoveType();
+    if (mpKeyCommand != nullptr) {
+        return mpKeyCommand->getMoveType();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x003b6090 - 0x003b60aa (26 bytes)
 f32 cpActionSelect::getMoveLvLX() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpKeyCommand != static_cast<cpKeyCommand*>(nullptr)) {
-        return this->mpKeyCommand->getMoveLvLX();
+    if (mpKeyCommand != nullptr) {
+        return mpKeyCommand->getMoveLvLX();
     } else {
         return 0.0f;
     }
@@ -299,6 +299,8 @@ f32 cpActionSelect::getMoveLvLX() {
 
 // No out-of-line body: no code in the ELF
 // void cpActionSelect::setTargetUID(u32 uid);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpActionSelect::MyDTI cpActionSelect::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpActionSelect.cpp at 0x003b60f0-0x003b6132 (called at cpActionSelect.cpp:30)

@@ -37,7 +37,7 @@ const MtDTI& cEmWarpParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cEmWarpParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmWarpParam::DTI)->memAlloc(sz, align, ::cEmWarpParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmWarpParam::DTI)->memAlloc(sz, align, cEmWarpParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cEmWarpParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmWarpParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmWarpParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmWarpParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -89,6 +89,8 @@ inline void cEmWarpParam::operator delete(void* p_addr) {
 //   in cpEmWarpCtrl::searchWarpPoint at 0x00181b3f-0x00181b45 (called at cpEmWarpCtrl.cpp:213)
 // bool cEmWarpParam::isGroundCheckExtend();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmWarpParam::MyDTI cEmWarpParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmWarpParam.cpp at 0x0066a460-0x0066a4a2 (called at rEmWarpParam.cpp:39)
 //   in _GLOBAL__sub_I_rEmWarpParam.cpp at 0x0066a460-0x0066a4a2 (called at rEmWarpParam.h:33)
@@ -97,7 +99,7 @@ inline void cEmWarpParam::operator delete(void* p_addr) {
 // Address: 0x0066a220 - 0x0066a274 (84 bytes)
 MtObject* cEmWarpParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cEmWarpParam;
+    return new (16u) cEmWarpParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ const MtDTI& rEmWarpParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmWarpParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmWarpParam::DTI)->memAlloc(sz, align, ::rEmWarpParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmWarpParam::DTI)->memAlloc(sz, align, rEmWarpParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -137,7 +139,7 @@ inline void* rEmWarpParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rEmWarpParamD0Ev at 0x01a892e4-0x01a89303, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmWarpParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmWarpParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmWarpParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,10 +160,10 @@ bool rEmWarpParam::loadData(MtDataReader& r, cEmWarpParam* pData) {
     pData->mWarpDist[2] = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGroundCheckDist);
+    nDDOIO::readData(r, pData->mGroundCheckDist);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIsGroundCheckExtend);
+    nDDOIO::readData(r, pData->mIsGroundCheckExtend);
     return true;
 }
 
@@ -174,8 +176,10 @@ MT_CTSTR rEmWarpParam::getExt() const {
 // Address: 0x01a89430 - 0x01a89436 (6 bytes)
 u32 rEmWarpParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmWarpParam::MyDTI rEmWarpParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmWarpParam.cpp at 0x0066a4a2-0x0066a4df (called at rEmWarpParam.cpp:40)
@@ -185,7 +189,7 @@ u32 rEmWarpParam::getDataVersion() const {
 // Address: 0x0066a2f0 - 0x0066a354 (100 bytes)
 MtObject* rEmWarpParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmWarpParam;
+    return new (16u) rEmWarpParam;
 }
 
 // Instance at 0x01a893e0 - 0x01a893f2 (18 bytes) of the generic rTbl2<T>::getData

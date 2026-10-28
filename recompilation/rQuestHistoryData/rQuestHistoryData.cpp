@@ -37,7 +37,7 @@ const MtDTI& cQuestHistoryData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* cQuestHistoryData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memAlloc(sz, align, ::cQuestHistoryData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestHistoryData::DTI)->memAlloc(sz, align, cQuestHistoryData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -53,7 +53,7 @@ inline void* cQuestHistoryData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cQuestHistoryDataD0Ev at 0x01aa32b0-0x01aa32da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cQuestHistoryData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestHistoryData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -75,6 +75,8 @@ inline void cQuestHistoryData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cQuestHistoryData::cQuestHistoryData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestHistoryData::MyDTI cQuestHistoryData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rQuestHistoryData.cpp at 0x006b6710-0x006b6752 (called at rQuestHistoryData.cpp:21)
 //   in _GLOBAL__sub_I_rQuestHistoryData.cpp at 0x006b6710-0x006b6752 (called at rQuestHistoryData.h:22)
@@ -83,7 +85,7 @@ inline void cQuestHistoryData::operator delete(void* p_addr) {
 // Address: 0x006b6530 - 0x006b657e (78 bytes)
 MtObject* cQuestHistoryData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cQuestHistoryData;
+    return new (16u) cQuestHistoryData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +110,7 @@ const MtDTI& rQuestHistoryData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rQuestHistoryData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestHistoryData::DTI)->memAlloc(sz, align, ::rQuestHistoryData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestHistoryData::DTI)->memAlloc(sz, align, rQuestHistoryData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ inline void* rQuestHistoryData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rQuestHistoryDataD0Ev at 0x01aa2f24-0x01aa2f43, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rQuestHistoryData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestHistoryData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestHistoryData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,13 +142,13 @@ bool rQuestHistoryData::loadData(MtDataReader& r, cQuestHistoryData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mQuestId);
+    nDDOIO::readData(r, pData->mQuestId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mImageId);
+    nDDOIO::readData(r, pData->mImageId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSortId);
+    nDDOIO::readData(r, pData->mSortId);
     return true;
 }
 
@@ -159,8 +161,10 @@ MT_CTSTR rQuestHistoryData::getExt() const {
 // Address: 0x01aa3070 - 0x01aa3076 (6 bytes)
 u32 rQuestHistoryData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestHistoryData::MyDTI rQuestHistoryData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rQuestHistoryData.cpp at 0x006b6752-0x006b678f (called at rQuestHistoryData.cpp:22)
@@ -170,7 +174,7 @@ u32 rQuestHistoryData::getDataVersion() const {
 // Address: 0x006b65f0 - 0x006b6654 (100 bytes)
 MtObject* rQuestHistoryData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rQuestHistoryData;
+    return new (16u) rQuestHistoryData;
 }
 
 // Instance at 0x01aa3020 - 0x01aa3032 (18 bytes) of the generic rTbl2<T>::getData

@@ -142,10 +142,10 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rLandInfo::cLandInfo::cLandInfo() {
-    this->mLandId = static_cast<u32>(0);
+    this->mLandId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rLandInfo::cLandInfo::cLandAreaInfo::cLandAreaInfo() {
-    this->mAreaId = static_cast<u32>(0);
+    this->mAreaId = 0;
 }

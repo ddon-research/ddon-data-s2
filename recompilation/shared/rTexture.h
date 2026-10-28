@@ -16,6 +16,7 @@ class MtPropertyList;
 class MtStream;
 class MtUI;
 namespace nDraw { class Texture; }
+class rEffectList;
 class rGUIFont;
 
 // Declarations
@@ -32,6 +33,8 @@ using u32 = unsigned int;
 
 class rTexture : public cResource
 {
+    // inferred: rEffectList::ResourceInfo::getTextureInvW names rTexture::mOrgInvWidth, through its enclosing class rEffectList
+    friend class rEffectList;
     // inferred: rGUIFont::getTexture names rTexture::mpTexture
     friend class rGUIFont;
 public:
@@ -128,3 +131,15 @@ protected:
     static const s32 MIN_LOADBIAS = 8;
     static const u32 DATA_VERSION = 157;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIObjTextureRef::setReferenceTexture at 0x200e44-0x200e4d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 rTexture::getInvWidth() const {
+    return this->mOrgInvWidth;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIObjTextureRef::setReferenceTexture at 0x200e55-0x200e5e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 rTexture::getInvHeight() const {
+    return this->mOrgInvHeight;
+}

@@ -185,3 +185,45 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::getOcdMode at 0x3a8a20-0x3a8a26; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nObjCondition::OCD_MODE cOcdInfo::getOcdModePrivate() const {
+    return this->mOcdMode;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::setOcdMode at 0x3a89c0-0x3a89c6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdInfo::setOcdModePrivate(nObjCondition::OCD_MODE NewValue) {
+    this->mOcdMode = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::getOcdModeReq at 0x3a8b00-0x3a8b06; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nObjCondition::OCD_REQ_MODE cOcdInfo::getOcdModeReqPrivate() const {
+    return this->mOcdModeReq;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::getOcdReqResult at 0x3a8b30-0x3a8b36; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nObjCondition::OCD_MODE_REQ_RESULT cOcdInfo::getOcdReqResultPrivate() const {
+    return this->mOcdReqResult;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::setOcdReqResult at 0x3a89e0-0x3a89e6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdInfo::setOcdReqResultPrivate(nObjCondition::OCD_MODE_REQ_RESULT NewValue) {
+    this->mOcdReqResult = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::setOcdMode at 0x3a89c8-0x3a89ce; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdInfo::setOcdModeCheatCheckPrivate(u32 NewValue) {
+    this->mOcdModeCheatCheck = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cOcdInfo::setOcdReqResult at 0x3a89e8-0x3a89ee; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cOcdInfo::setOcdReqResultCheatCheckPrivate(u32 NewValue) {
+    this->mOcdReqResultCheatCheck = NewValue;
+}

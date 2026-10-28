@@ -37,7 +37,7 @@ const MtDTI& cWarpLocation::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cWarpLocation::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memAlloc(sz, align, ::cWarpLocation::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cWarpLocation::DTI)->memAlloc(sz, align, cWarpLocation::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cWarpLocation::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWarpLocation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWarpLocation::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -77,6 +77,8 @@ inline void cWarpLocation::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cWarpLocation::~cWarpLocation();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWarpLocation::MyDTI cWarpLocation::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rWarpLocation.cpp at 0x00710590-0x007105d2 (called at rWarpLocation.cpp:21)
 //   in _GLOBAL__sub_I_rWarpLocation.cpp at 0x00710590-0x007105d2 (called at rWarpLocation.h:20)
@@ -85,7 +87,7 @@ inline void cWarpLocation::operator delete(void* p_addr) {
 // Address: 0x00710320 - 0x00710383 (99 bytes)
 MtObject* cWarpLocation::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cWarpLocation;
+    return new (16u) cWarpLocation;
 }
 
 // No out-of-line body: no code in the ELF
@@ -110,7 +112,7 @@ const MtDTI& rWarpLocation::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWarpLocation::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWarpLocation::DTI)->memAlloc(sz, align, ::rWarpLocation::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWarpLocation::DTI)->memAlloc(sz, align, rWarpLocation::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,7 +127,7 @@ inline void* rWarpLocation::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rWarpLocationD0Ev at 0x01ab7804-0x01ab7823, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rWarpLocation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWarpLocation::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWarpLocation::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,31 +144,31 @@ bool rWarpLocation::loadData(MtDataReader& in, cWarpLocation* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mId);
+    nDDOIO::readData(in, pData->mId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSortNo);
+    nDDOIO::readData(in, pData->mSortNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAreaId);
+    nDDOIO::readData(in, pData->mAreaId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSpotId);
+    nDDOIO::readData(in, pData->mSpotId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStageNo);
+    nDDOIO::readData(in, pData->mStageNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPosNo);
+    nDDOIO::readData(in, pData->mPosNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMapPosX);
+    nDDOIO::readData(in, pData->mMapPosX);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMapPosY);
+    nDDOIO::readData(in, pData->mMapPosY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIconType);
+    nDDOIO::readData(in, pData->mIconType);
     return true;
 }
 
@@ -179,8 +181,10 @@ MT_CTSTR rWarpLocation::getExt() const {
 // Address: 0x01ab7950 - 0x01ab7956 (6 bytes)
 u32 rWarpLocation::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(352);
+    return 352;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWarpLocation::MyDTI rWarpLocation::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWarpLocation.cpp at 0x007105d2-0x0071060f (called at rWarpLocation.cpp:22)
@@ -190,7 +194,7 @@ u32 rWarpLocation::getDataVersion() const {
 // Address: 0x00710400 - 0x00710464 (100 bytes)
 MtObject* rWarpLocation::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWarpLocation;
+    return new (16u) rWarpLocation;
 }
 
 // Instance at 0x01ab7900 - 0x01ab7916 (22 bytes) of the generic rTbl2<T>::getData

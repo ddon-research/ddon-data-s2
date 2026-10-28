@@ -19,10 +19,12 @@ class cFSMBase;
 class cGUIUtility;
 class cLayoutSet;
 class cNetGameServer;
+class cQuestTask;
 namespace nSessionManager { class cNetSessionManager; }
 class sGUIExt;
 class sGame;
 class sNpcManager;
+class sSoundExt;
 class uControl;
 class uControlNpc;
 class uGUIContentsBoard;
@@ -57,6 +59,8 @@ class sArea : public cSystem
     friend class cLayoutSet;
     // inferred: cNetGameServer::updateMyRoomBgm names sArea::mpArea[2]
     friend class cNetGameServer;
+    // inferred: cQuestTask::cQuestProcess::checkStageNo names sArea::mpArea[2], through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sArea::mpArea[2]
     friend class nSessionManager::cNetSessionManager;
     // inferred: sGUIExt::isBlackOut names sArea::mpInstance
@@ -65,6 +69,8 @@ class sArea : public cSystem
     friend class sGame;
     // inferred: sNpcManager::loadCoMotionArc names sArea::mpArea[2]
     friend class sNpcManager;
+    // inferred: sSoundExt::moveArea names sArea::mpInstance
+    friend class sSoundExt;
     // inferred: uControl::move names sArea::mpArea[2]
     friend class uControl;
     // inferred: uControlNpc::isUseMotionListLight names sArea::mpArea[2]

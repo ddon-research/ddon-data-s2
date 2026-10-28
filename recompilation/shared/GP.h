@@ -486,50 +486,50 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataCAPtoGPChangeElement::CDataCAPtoGPChangeElement() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unID = static_cast<u32>(0);
-    this->m_unCAP = static_cast<u32>(0);
-    this->m_unGP = static_cast<u32>(0);
+    this->m_unID = 0;
+    this->m_unCAP = 0;
+    this->m_unGP = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGPCourseAvailable::CDataGPCourseAvailable() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unID = static_cast<u32>(0);
+    this->m_unID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGPCourseEffectParam::CDataGPCourseEffectParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unParam0 = static_cast<u32>(0);
-    this->m_unParam1 = static_cast<u32>(0);
-    this->m_unEffectUID = static_cast<u32>(0);
-    this->m_unEffectID = static_cast<u32>(0);
+    this->m_unParam0 = 0;
+    this->m_unParam1 = 0;
+    this->m_unEffectUID = 0;
+    this->m_unEffectID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGPPeriod::CDataGPPeriod() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unGP = static_cast<u32>(0);
+    this->m_unGP = 0;
     this->m_bIsFreeGP = false;
-    this->m_ullPeriod = static_cast<u64>(0);
+    this->m_ullPeriod = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGPShopBuyHistoryElement::CDataGPShopBuyHistoryElement() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unID = static_cast<u32>(0);
-    this->m_unPrice = static_cast<u32>(0);
-    this->m_ullAcquisitionTime = static_cast<u64>(0);
+    this->m_unID = 0;
+    this->m_unPrice = 0;
+    this->m_ullAcquisitionTime = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGPShopDisplayType::CDataGPShopDisplayType() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unID = static_cast<u32>(0);
-    this->m_unInGameUrlID = static_cast<u32>(0);
+    this->m_unID = 0;
+    this->m_unInGameUrlID = 0;
 }

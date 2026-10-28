@@ -280,10 +280,55 @@ inline const MtVector3& cpJob02::getWireHitPos() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom04WireThrow::init at 0x287850-0x28786f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob02::clearPullUpInfo() {
+    this->mCheckPhase = 0;
+    this->mPullUpInfo.mInfoArray.elems[0].mIsEnable = false;
+    this->mPullUpInfo.mInfoArray.elems[1].mIsEnable = false;
+    this->mPullUpInfo.mInfoArray.elems[2].mIsEnable = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom12::init at 0x28fc27-0x28fc31; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob02::clearCS12Counter() {
+    this->mCS12CounterType = static_cast<cpJob02::eCS12CounterType>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPrioThkCmdIsBakuensen::check at 0x6d7e25-0x6d7e2c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uShlBakuensen* cpJob02::getShlBakuensen() {
+    return this->mpShlBakuensen;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom06::move at 0x28b2ed-0x28b2f3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cpJob02::getAirKamaeNaoshiCnt() const {
+    return this->mAirKamaeNaoshiCnt;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom06::init at 0x28b00d-0x28b015; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob02::addAirKamaeNaoshiCnt() {
+    this->mAirKamaeNaoshiCnt = this->mAirKamaeNaoshiCnt + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom13_Air::init at 0x291942-0x291948; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob02::countupAirCS13() {
+    this->mAirCountCS13 = this->mAirCountCS13 + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob02Custom14_ZentyuBase::move at 0x293a73-0x293a79; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob02::countupAirCS14() {
+    this->mAirCountCS14 = this->mAirCountCS14 + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpJob02::cKaenKoromoInfo::cKaenKoromoInfo() {
     this->mTimer = 0.0f;
     this->mDamageTimer = 0.0f;
     this->mDamageInterval = 0.0f;
-    this->mDamage = static_cast<HP_DATATYPE>(0);
+    this->mDamage = 0;
     this->mExecPhase = static_cast<cpJob02::cKaenKoromoInfo::eExecPhase>(2);
 }

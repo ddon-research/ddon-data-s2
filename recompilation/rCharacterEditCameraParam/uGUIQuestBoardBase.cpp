@@ -7,6 +7,8 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
@@ -53,7 +55,7 @@ const MtDTI& uGUIQuestBoardBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIQuestBoardBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,17 +80,17 @@ uGUIQuestBoardBase::~uGUIQuestBoardBase() {
 // Address: 0x00bf0970 - 0x00bf0975 (5 bytes)
 void uGUIQuestBoardBase::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00bf0980 - 0x00bf0a2f (175 bytes)
 bool uGUIQuestBoardBase::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_BOARD_GUI"), static_cast<u32>(129), static_cast<t64>(1472628100)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDQuest == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDQuest = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDQuest;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_BOARD_GUI"), 129u, 1472628100l))) != nullptr) {
+            if (mpGMDQuest == nullptr) {
+                if ((mpGMDQuest = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDQuest;
                     return true;
                 } else {
                     return false;
@@ -100,9 +102,9 @@ bool uGUIQuestBoardBase::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDQuest == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDQuest = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDQuest;
+        if (mpGMDQuest == nullptr) {
+            if ((mpGMDQuest = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDQuest;
                 return true;
             } else {
                 return false;
@@ -132,7 +134,7 @@ __attribute__((weak)) void uGUIQuestBoardBase::setup() {
 // Address: 0x00bf0a30 - 0x00bf0a35 (5 bytes)
 void uGUIQuestBoardBase::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Defined in the class (its body was written in a header).
@@ -141,7 +143,7 @@ void uGUIQuestBoardBase::kill() {
 // Address: 0x00bf16b0 - 0x00bf16b9 (9 bytes)
 void uGUIQuestBoardBase::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 8 inlined copies in 2 functions (258 bytes)
@@ -160,30 +162,45 @@ __attribute__((weak)) void uGUIQuestBoardBase::clearItem() {
 }
 
 // Address: 0x00bf17b0 - 0x00bf17ff (79 bytes)
-__attribute__((weak)) void uGUIQuestBoardBase::hideHeader(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListHeader* pHeader;
-    DDON_STUB("uGUIQuestBoardBase::hideHeader")
-    /* stub */
+void uGUIQuestBoardBase::hideHeader(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pHeader, its location optimized out, declared in the lexical block that holds the access
+    cListHeader* pHeader = static_cast<cListHeader*>(pItemBase);
+    setInstanceVisible(static_cast<cGUIInstance*>(pHeader->mpInstNull), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(pHeader->mpInstNullBase), false);
+    setObjectMessage(static_cast<cGUIObject*>(pHeader->mpObjMsgTitle), "", 0u, false);
+    pItemBase->mIsVisible = false;
 }
 
 // Address: 0x00bf1800 - 0x00bf187b (123 bytes)
-__attribute__((weak)) void uGUIQuestBoardBase::hideItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUIQuestBoardBase::hideItem")
-    /* stub */
+void uGUIQuestBoardBase::hideItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setInstanceVisible(static_cast<cGUIInstance*>(pItem->mpInstNull), false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgTitle), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgLv), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgLvVal), "", 0u, false);
+    pItemBase->mIsVisible = false;
 }
 
 // Address: 0x00bf1880 - 0x00bf18ab (43 bytes)
 void uGUIQuestBoardBase::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pItemBase == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pItemBase == nullptr) {
         return;
     }
-    if (pItemBase->mItemType == static_cast<u8>(1)) {
-        this->hideItem(pItemBase);
+    if (pItemBase->mItemType == 1) {
+        hideItem(pItemBase);
     } else {
-        if (pItemBase->mItemType == static_cast<u8>(0)) {
-            this->hideHeader(pItemBase);
+        if (pItemBase->mItemType == 0) {
+            hideHeader(pItemBase);
         }
     }
 }
@@ -202,9 +219,11 @@ __attribute__((weak)) void uGUIQuestBoardBase::setupQuestOrderNum() {
 // Address: 0x00bf1690 - 0x00bf16a5 (21 bytes)
 u32 uGUIQuestBoardBase::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(86));
-    return static_cast<u32>(1);
+    setInputEvent(86u);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIQuestBoardBase::MyDTI uGUIQuestBoardBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestBoardBase.cpp at 0x00bf1a9e-0x00bf1adb (called at uGUIQuestBoardBase.cpp:32)
@@ -268,7 +287,7 @@ const MtDTI& uGUIQuestBoardBase::cListHeader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18uGUIQuestBoardBase11cListHeaderD0Ev at 0x01b003f0-0x01b0041a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIQuestBoardBase::cListHeader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListHeader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListHeader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,6 +305,8 @@ inline void uGUIQuestBoardBase::cListHeader::operator delete(void* p_addr) {
 //   in uGUIQuestBoardBase::stList::stList at 0x01affb00-0x01b00265 (called at uGUIQuestBoardBase.h:147)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIQuestBoardBase::cListHeader::cListHeader();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuestBoardBase::cListHeader::MyDTI uGUIQuestBoardBase::cListHeader::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestBoardBase.cpp at 0x00bf1adb-0x00bf1b1b (called at uGUIQuestBoardBase.cpp:33)
@@ -333,7 +354,7 @@ const MtDTI& uGUIQuestBoardBase::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18uGUIQuestBoardBase9cListItemD0Ev at 0x01b003b0-0x01b003da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIQuestBoardBase::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -351,6 +372,8 @@ inline void uGUIQuestBoardBase::cListItem::operator delete(void* p_addr) {
 //   in uGUIQuestBoardBase::stList::stList at 0x01b00265-0x01b00367 (called at uGUIQuestBoardBase.h:147)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIQuestBoardBase::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuestBoardBase::cListItem::MyDTI uGUIQuestBoardBase::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIQuestBoardBase.cpp at 0x00bf1b1b-0x00bf1b54 (called at uGUIQuestBoardBase.cpp:34)

@@ -46,7 +46,7 @@ const MtDTI& cOcdDamageInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cOcdDamageInfoD0Ev at 0x01a447d0-0x01a447fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOcdDamageInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdDamageInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdDamageInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,7 +76,7 @@ __attribute__((weak)) cOcdDamageInfo::stDamageData* cOcdDamageInfo::getOcdDataFr
 // Address: 0x003a2d90 - 0x003a2d9c (12 bytes)
 cOcdDamageInfo::stDamageData* cOcdDamageInfo::getOcdDataFromIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mOcdBadData[index];
+    return &mOcdBadData[index];
 }
 
 // Address: 0x003a2da0 - 0x003a2e00 (96 bytes)
@@ -118,6 +118,8 @@ __attribute__((weak)) void cOcdDamageInfo::getInfoFromCM(const cHitInfoAfterComm
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in uHuman::decideAttacklElemnt at 0x00c8f9df-0x00c8f9e6 (called at uHuman.cpp:16291)
 // cOcdDamageInfo::ELEMENT_FINAL_TYPE cOcdDamageInfo::getElementFinalType() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdDamageInfo::MyDTI cOcdDamageInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cOcdDamageInfo.cpp at 0x003a2f0f-0x003a2f4c (called at cOcdDamageInfo.cpp:30)

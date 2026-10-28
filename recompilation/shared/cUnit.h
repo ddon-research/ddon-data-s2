@@ -22,6 +22,9 @@ class cpCatchCtrl;
 class cpIKCtrl;
 class cpJob02;
 class cpJob06;
+class sCollision;
+class sEffect;
+class sSoundExt;
 class sUnit;
 class uArmor;
 class uBaseEffect;
@@ -40,14 +43,19 @@ class uGUIBase;
 class uGUIRankUp;
 class uHuman;
 class uLight;
+class uModel;
+class uOmShell;
 class uOmSwingModel;
 class uScheduler;
 class uScrollCollisionGeometry;
 class uScrollCollisionGeometryModel;
 class uShadow;
+class uShlBakuensen;
 class uShlBase;
 class uSimSoftBody;
+class uSoundGenerator;
 class uStageMyRoom;
+class uStagePartsCtrl;
 class uWeapon;
 
 // Declarations
@@ -78,7 +86,13 @@ class cUnit : public MtObject
     friend class cpJob02;
     // inferred: cpJob06::decreaseCS14Timer names cUnit::mDeltaTime
     friend class cpJob06;
-    // inferred: sUnit::addBottom names cUnit::mpNextUnit
+    // inferred: sCollision::SbcInfo::isHitDynamicSbc names cUnit::mBeFlag, through its enclosing class sCollision
+    friend class sCollision;
+    // inferred: sEffect::MultiFilterControl::setup names cUnit::mBeFlag, through its enclosing class sEffect
+    friend class sEffect;
+    // inferred: sSoundExt::moveArea names cUnit::mBeFlag
+    friend class sSoundExt;
+    // inferred: sUnit::MoveLine::getCount names cUnit::mpNextUnit, through its enclosing class sUnit
     friend class sUnit;
     // inferred: uArmor::setup names cUnit::mDrawMode
     friend class uArmor;
@@ -114,6 +128,10 @@ class cUnit : public MtObject
     friend class uHuman;
     // inferred: uLight::setPS3DisableMode names cUnit::mpHardwareDispCtrl
     friend class uLight;
+    // inferred: uModel::Joint::setConstraint names cUnit::mBeFlag, through its enclosing class uModel
+    friend class uModel;
+    // inferred: uOmShell::kill names cUnit::mBeFlag
+    friend class uOmShell;
     // inferred: uOmSwingModel::kill names cUnit::mBeFlag
     friend class uOmSwingModel;
     // inferred: uScheduler::kill names cUnit::mBeFlag
@@ -124,12 +142,18 @@ class cUnit : public MtObject
     friend class uScrollCollisionGeometryModel;
     // inferred: uShadow::kill names cUnit::mBeFlag
     friend class uShadow;
+    // inferred: uShlBakuensen::waitShot names cUnit::mDeltaTime
+    friend class uShlBakuensen;
     // inferred: uShlBase::moveAfter names cUnit::mDeltaTime
     friend class uShlBase;
     // inferred: uSimSoftBody::isTargetEnable names cUnit::mBeFlag
     friend class uSimSoftBody;
+    // inferred: uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::~cSoundPlayInfomation names cUnit::mBeFlag, through its enclosing class uSoundGenerator
+    friend class uSoundGenerator;
     // inferred: uStageMyRoom::kill names cUnit::mBeFlag
     friend class uStageMyRoom;
+    // inferred: uStagePartsCtrl::stopMoveUnitLight names cUnit::mBeFlag
+    friend class uStagePartsCtrl;
     // inferred: uWeapon::moveAfter names cUnit::mDrawMode
     friend class uWeapon;
 public:
@@ -360,7 +384,7 @@ inline u64 cUnit::getUnitGroup() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool cUnit::isEnable() const {
-    return (this->mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1);
+    return (this->mBeFlag - 1u) <= 1u;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -371,7 +395,7 @@ inline f32 cUnit::getDeltaTime() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 22 DWARF copies materializes its result
 inline bool cUnit::isVisible() const {
-    return (this->mUnitAttr & static_cast<u32>(16)) != static_cast<u32>(0);
+    return (this->mUnitAttr & 16u) != 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

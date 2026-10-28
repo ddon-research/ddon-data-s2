@@ -36,7 +36,7 @@ const MtDTI& nDraw::Animation::getDTI() const {
 // Address: 0x01163f20 - 0x01163f60 (64 bytes)
 void* nDraw::Animation::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memAlloc(sz, align, ::nDraw::Animation::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memAlloc(sz, align, ::nDraw::Animation::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,21 +86,21 @@ nDraw::Animation::~Animation() {
 // Address: 0x01164570 - 0x011645be (78 bytes)
 s32 nDraw::Animation::getNo(MT_CTSTR name) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    u32 crc = ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    u32 crc = ::MtCRC::getCRC(name, 0xFFFFFFFFu);
     // inferred: the value the loop at 0x11645a0 carries; no location-less local in scope fits
-    nDraw::Animation::ANIMATION_LIST* v0_1 = this->mpList;
+    nDraw::Animation::ANIMATION_LIST* v0_1 = mpList;
     // inferred: the value the loop at 0x11645a0 carries; no location-less local in scope fits
     u32 v0_2 = v0_1->animation_num;
     // inferred: the value carried to 0x11645b6; no location-less local in scope fits
     u32 v2_9;
-    if (v0_2 == static_cast<u32>(0)) {
-        v2_9 = static_cast<u32>(4294967295);
+    if (v0_2 == 0) {
+        v2_9 = 0xFFFFFFFF;
     } else {
         // inferred: DWARF's location-less 'i' (lexical block [0x1164590, 0x11645b3)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
+        for (u32 i = 0;;) {
             if (v0_1->animations[i]->crc != crc) {
-                if ((i + static_cast<u32>(1)) < v0_2) {
-                    i = i + static_cast<u32>(1);
+                if ((i + 1u) < v0_2) {
+                    i = i + 1u;
                 } else {
                     break;
                 }
@@ -109,7 +109,7 @@ s32 nDraw::Animation::getNo(MT_CTSTR name) const {
                 return static_cast<s32>(v2_9);
             }
         }
-        v2_9 = static_cast<u32>(4294967295);
+        v2_9 = 0xFFFFFFFF;
     }
     return static_cast<s32>(v2_9);
 }
@@ -155,18 +155,18 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x1164133; no location-less local in scope fits
     u32 v3_0;
-    if (list == static_cast<const nDraw::Animation::ANIMATION_LIST*>(nullptr)) {
-        v3_0 = static_cast<u32>(0);
+    if (list == nullptr) {
+        v3_0 = 0;
     } else {
         // inferred: the value the loop at 0x1164090 carries; no location-less local in scope fits
         u32 v0_5 = list->animation_num;
-        if (v0_5 == static_cast<u32>(0)) {
-            v3_0 = (v0_5 * static_cast<u32>(8)) + static_cast<u32>(8);
+        if (v0_5 == 0) {
+            v3_0 = (v0_5 * 8u) + 8u;
         } else {
             // inferred: the value the loop at 0x1164090 carries; no location-less local in scope fits
-            u32 v0_0 = (v0_5 * static_cast<u32>(8)) + static_cast<u32>(8);
+            u32 v0_0 = (v0_5 * 8u) + 8u;
             // inferred: DWARF's location-less 'i' (lexical block [0x116406c, 0x1164133)) is the counter this loop steps (DWARF's stale constant 0)
-            u32 i = static_cast<u32>(0);
+            u32 i = 0;
             // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
             unsigned int v1_0;
             // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
@@ -178,106 +178,106 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
             for (;;) {
                 // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
                 nDraw::Animation::ANIMATION* v1_5 = list->animations[i];
-                if ((v1_5->param_num & static_cast<u32>(65535)) == static_cast<u32>(0)) {
-                    v2_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) & static_cast<unsigned int>(262140)) * static_cast<unsigned int>(2))) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) >> static_cast<unsigned int>(18)) * static_cast<unsigned int>(4))) + static_cast<unsigned int>(24);
+                if ((v1_5->param_num & 0xFFFFu) == 0) {
+                    v2_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) >> 18) * 4u)) + 24u;
                 } else {
-                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) & static_cast<unsigned int>(262140)) * static_cast<unsigned int>(2))) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) >> static_cast<unsigned int>(18)) * static_cast<unsigned int>(4))) + static_cast<unsigned int>(24);
+                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) & 0x3FFFCu) * 2u)) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + 4)) >> 18) * 4u)) + 24u;
                     v1_2 = v1_5->param_num;
-                    j = static_cast<u32>(0);
+                    j = 0;
                     for (;;) {
                         switch (v1_5->params[j]->type) {
-                            case static_cast<u32>(0):
+                            case 0:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(1):
+                            case 1:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(20))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 20u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(20))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 20u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(2):
+                            case 2:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(3):
+                            case 3:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(4)) & static_cast<unsigned int>(268435440))) + static_cast<unsigned int>(8);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 4) & 0xFFFFFF0u)) + 8u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(4)) & static_cast<unsigned int>(268435440))) + static_cast<unsigned int>(8);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 4) & 0xFFFFFF0u)) + 8u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(4):
+                            case 4:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(80))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 80u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(80))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 80u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(5):
+                            case 5:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(8);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 8u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(8);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 8u)) + 8u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(6):
+                            case 6:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
-                            case static_cast<u32>(7):
+                            case 7:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
+                                    j = j + 1u;
                                 } else {
-                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + 4)) >> 8) * 24u)) + 12u;
                                     goto loop_11640c0_end;
                                 }
                                 break;
                             }
                             default:
                             {
-                                if ((j + static_cast<u32>(1)) < v1_2) {
-                                    j = j + static_cast<u32>(1);
+                                if ((j + 1u) < v1_2) {
+                                    j = j + 1u;
                                 } else {
                                     v2_0 = v1_0;
                                     goto loop_11640c0_end;
@@ -288,9 +288,9 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
                     }
                     loop_11640c0_end:;
                 }
-                if ((i + static_cast<u32>(1)) < v0_5) {
+                if ((i + 1u) < v0_5) {
                     v0_0 = v2_0;
-                    i = i + static_cast<u32>(1);
+                    i = i + 1u;
                 } else {
                     v3_0 = v2_0;
                     break;
@@ -303,6 +303,8 @@ u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void* nDraw::Animation::allocBuf(nDraw::Animation::BUFSTATE& bs, u32 size);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::Animation::MyDTI nDraw::Animation::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Animation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -366,15 +368,15 @@ inline void nDraw::CBuffer::operator delete(void* p_addr) {
 nDraw::CBuffer::~CBuffer() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHandleCount = static_cast<u32>(0);
-    this->mTempCount = static_cast<u32>(0);
-    if (this->mHandles != static_cast<SO_HANDLE*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::nDraw::CBuffer::DTI)->memFree(static_cast<void*>(this->mHandles));
-        this->mHandles = static_cast<SO_HANDLE*>(nullptr);
+    mHandleCount = 0;
+    mTempCount = 0;
+    if (mHandles != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::nDraw::CBuffer::DTI)->memFree(static_cast<void*>(mHandles));
+        mHandles = nullptr;
     }
-    this->mppCBuffers[2] = static_cast<void* *>(nullptr);
-    this->mppCBuffers[1] = static_cast<void* *>(nullptr);
-    this->mppCBuffers[0] = static_cast<void* *>(nullptr);
+    mppCBuffers[2] = nullptr;
+    mppCBuffers[1] = nullptr;
+    mppCBuffers[0] = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -418,6 +420,8 @@ __attribute__((weak)) void nDraw::CBuffer::setConstantTable(cDraw* pdraw, SO_HAN
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nDraw::CBuffer::duplicateAll(SO_HANDLE handle, const nDraw::ConstantTable* src);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::CBuffer::MyDTI nDraw::CBuffer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::CBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -477,15 +481,15 @@ const MtDTI& nDraw::CBufferSystem::getDTI() const {
 // Also emitted as: _ZN5nDraw13CBufferSystemD0Ev at 0x01165020
 nDraw::CBufferSystem::~CBufferSystem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mVertexDisplacement != static_cast<nDraw::CBuffer*>(nullptr)) {
-        delete this->mVertexDisplacement;
-        this->mVertexDisplacement = static_cast<nDraw::CBuffer*>(nullptr);
+    if (mVertexDisplacement != nullptr) {
+        delete mVertexDisplacement;
+        mVertexDisplacement = nullptr;
     }
-    if (this->mAnimation == static_cast<nDraw::CBuffer*>(nullptr)) {
+    if (mAnimation == nullptr) {
         return;
     }
-    delete this->mAnimation;
-    this->mAnimation = static_cast<nDraw::CBuffer*>(nullptr);
+    delete mAnimation;
+    mAnimation = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -527,6 +531,8 @@ __attribute__((weak)) void nDraw::CBufferSystem::generate(const nDraw::Animation
     DDON_STUB("nDraw::CBufferSystem::generate")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::CBufferSystem::MyDTI nDraw::CBufferSystem::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::CBufferSystem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -609,13 +615,13 @@ __attribute__((weak)) nDraw::Material* nDraw::Material::duplicate() const {
 // Address: 0x01b83090 - 0x01b83095 (5 bytes)
 u32 nDraw::Material::getID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mID;
+    return mID;
 }
 
 // Address: 0x01b830a0 - 0x01b830a5 (5 bytes)
 void nDraw::Material::setID(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mID = static_cast<unsigned short>(id);
+    mID = static_cast<unsigned short>(id);
 }
 
 // No out-of-line body: no code in the ELF
@@ -624,10 +630,10 @@ void nDraw::Material::setID(u32 id) {
 // Address: 0x01168630 - 0x01168640 (16 bytes)
 void nDraw::Material::update(f32 dt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAnimation == static_cast<nDraw::Animation*>(nullptr)) {
+    if (mpAnimation == nullptr) {
         return;
     }
-    this->::nDraw::Material::applyAnimation(dt);
+    applyAnimation(dt);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -646,14 +652,14 @@ __attribute__((weak)) void nDraw::Material::setTechniqueState(cDraw* pdraw, u32 
 // Address: 0x01b83080 - 0x01b83085 (5 bytes)
 void nDraw::Material::setStencilRef(u8 ref) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStencilRef = ref;
+    mStencilRef = ref;
 }
 
 // Address: 0x01b83070 - 0x01b83075 (5 bytes)
 u8 nDraw::Material::getStencilRef() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as u8
-    return static_cast<u8>(this->mStencilRef);
+    return static_cast<u8>(mStencilRef);
 }
 
 // No out-of-line body: no code in the ELF
@@ -804,9 +810,9 @@ __attribute__((weak)) s32 nDraw::Material::getAnimation(nDraw::Material::SLOT_TY
 // Address: 0x0116af30 - 0x0116af51 (33 bytes)
 bool nDraw::Material::isCBuffer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCBuffer != static_cast<nDraw::CBufferSystem*>(nullptr)) {
-        if (this->mpCBuffer->mAnimation == static_cast<nDraw::CBuffer*>(nullptr)) {
-            return this->mpCBuffer->mVertexDisplacement != static_cast<nDraw::CBuffer*>(nullptr);
+    if (mpCBuffer != nullptr) {
+        if (mpCBuffer->mAnimation == nullptr) {
+            return mpCBuffer->mVertexDisplacement != nullptr;
         } else {
             return true;
         }
@@ -884,13 +890,13 @@ __attribute__((weak)) MtVector4 nDraw::Material::getBaseColor() const {
 // Address: 0x01166ad0 - 0x01166ae0 (16 bytes)
 void nDraw::Material::setBaseMap(nDraw::Texture* ptex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Material::setTexture(static_cast<SO_HANDLE>(3439784813), ptex);
+    setTexture(0xCD06F36Du, ptex);
 }
 
 // Address: 0x01166c80 - 0x01166c8a (10 bytes)
 nDraw::Texture* nDraw::Material::getBaseMap() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::nDraw::Material*>(this)->::nDraw::Material::getTexture(static_cast<SO_HANDLE>(3439784813));
+    return static_cast<const ::nDraw::Material*>(this)->getTexture(0xCD06F36Du);
 }
 
 // Address: 0x0116aac0 - 0x0116aaf2 (50 bytes)
@@ -1240,22 +1246,22 @@ __attribute__((weak)) void nDraw::Material::releaseStateBuffer() {
 // Also emitted as: _ZN5nDraw8MaterialD0Ev at 0x01165630
 nDraw::Material::~Material() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Material::releaseStateBuffer();
-    if (this->mpAnimation != static_cast<nDraw::Animation*>(nullptr)) {
-        this->mpAnimation->release();
-        this->mpAnimation = static_cast<nDraw::Animation*>(nullptr);
+    releaseStateBuffer();
+    if (mpAnimation != nullptr) {
+        mpAnimation->release();
+        mpAnimation = nullptr;
     }
-    if (this->mpCBuffer == static_cast<nDraw::CBufferSystem*>(nullptr)) {
+    if (mpCBuffer == nullptr) {
         return;
     }
-    this->mpCBuffer->release();
-    this->mpCBuffer = static_cast<nDraw::CBufferSystem*>(nullptr);
+    mpCBuffer->release();
+    mpCBuffer = nullptr;
 }
 
 // Address: 0x0116adb0 - 0x0116adb5 (5 bytes)
 void nDraw::Material::setSamplerAnimation(SO_HANDLE handle, SO_HANDLE sampler_handle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Material::setSamplerState(handle, sampler_handle);
+    setSamplerState(handle, sampler_handle);
 }
 
 // Address: 0x0116adc0 - 0x0116ade9 (41 bytes)
@@ -1289,7 +1295,7 @@ __attribute__((weak)) void nDraw::Material::setTexcoordAnimation(SO_HANDLE handl
 // Address: 0x0116af10 - 0x0116af15 (5 bytes)
 void nDraw::Material::setTextureAnimation(SO_HANDLE handle, nDraw::Texture* ptex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nDraw::Material::setTexture(handle, ptex);
+    setTexture(handle, ptex);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1317,6 +1323,8 @@ __attribute__((weak)) void nDraw::Material::setState(cDraw* pdraw) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 nDraw::Material::getStateNum(nDraw::Material::STATE_TYPE state) const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nDraw::Material::MyDTI nDraw::Material::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Material::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

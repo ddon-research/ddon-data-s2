@@ -24,6 +24,7 @@ class uGUIBase;
 class uGUICaplinkChat;
 class uGUICaplinkFriendList;
 class uGUICaplinkMessage;
+class uGUICaplinkProfile;
 class uGUICaplinkTalk;
 class uGUICaplinkTopMenu;
 class uGUIChat;
@@ -32,6 +33,7 @@ class uGUIDialogTextBox;
 class uGUIGPConfirm;
 class uGUIGiveAndTake;
 class uGUILoginBonus;
+class uGUIMap;
 class uGUIMissionInfo;
 class uGUINewspaper;
 class uGUIOption;
@@ -59,12 +61,16 @@ class cControl : public MtObject
     friend class cGUIControlMgr;
     // inferred: uGUIAreaMaster::eventAdjustTab names cControl::mCurrentPos
     friend class uGUIAreaMaster;
+    // inferred: uGUIBase::cReferenceUIToggleBtn::update names cControl::mCtrlF, through its enclosing class uGUIBase
+    friend class uGUIBase;
     // inferred: uGUICaplinkChat::evCtrlDecide names cControl::mCurrentPos
     friend class uGUICaplinkChat;
     // inferred: uGUICaplinkFriendList::eventAdjustTab names cControl::mCurrentPos
     friend class uGUICaplinkFriendList;
     // inferred: uGUICaplinkMessage::eventDecide names cControl::mCurrentPos
     friend class uGUICaplinkMessage;
+    // inferred: uGUICaplinkProfile::eventAdjustCursor names cControl::mCurrentPos
+    friend class uGUICaplinkProfile;
     // inferred: uGUICaplinkTalk::eventDecide names cControl::mCurrentPos
     friend class uGUICaplinkTalk;
     // inferred: uGUICaplinkTopMenu::eventDecide names cControl::mCurrentPos
@@ -81,6 +87,8 @@ class cControl : public MtObject
     friend class uGUIGiveAndTake;
     // inferred: uGUILoginBonus::updateWait names cControl::mCurrentPos
     friend class uGUILoginBonus;
+    // inferred: uGUIMap::execZoomSlider names cControl::mCurrentPos
+    friend class uGUIMap;
     // inferred: uGUIMissionInfo::initSystem names cControl::mCtrlF
     friend class uGUIMissionInfo;
     // inferred: uGUINewspaper::evCtrlEventCursorDecide names cControl::mCurrentPos
@@ -486,6 +494,12 @@ inline s32 cControl::getItemNum() const {
 // Inline, no code of its own: checked where it is inlined.
 inline s32 cControl::getCurrentPos() const {
     return this->mCurrentPos;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cControl::cMouseExecution::move at 0x6d53a-0x6d541; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline uGUIBase* cControl::getParent() const {
+    return this->mpParentGUI;
 }
 
 // Inline, no code of its own: checked where it is inlined.

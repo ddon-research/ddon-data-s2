@@ -12,6 +12,8 @@
 #include "nDDOUtility.h"
 #include "nWeather.h"
 #include "res_ptr.h"
+#include "sEffect.h"
+#include "sEffectExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -54,7 +56,7 @@ const MtDTI& cWSCParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWSCParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWSCParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWSCParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,6 +79,8 @@ cWSCParam::~cWSCParam() {
     DDON_STUB("cWSCParam::~cWSCParam")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWSCParam::MyDTI cWSCParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rWeatherScript.cpp at 0x007182c3-0x00718303 (called at rWeatherScript.cpp:57)
@@ -124,7 +128,7 @@ const MtDTI& cWeatherScriptCmd::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWeatherScriptCmd::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmd::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherScriptCmd::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -176,25 +180,27 @@ __attribute__((weak)) bool cWeatherScriptCmd::isUpdateForceEnd() const {
 // Address: 0x00716f80 - 0x00717080 (256 bytes)
 void cWeatherScriptCmd::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBeginFrame = r.readF32();
-    this->mEndFrame = r.readF32();
-    this->mEnableStageNo.elems[0] = r.readU32();
-    this->mEnableStageNo.elems[1] = r.readU32();
-    this->mEnableStageNo.elems[2] = r.readU32();
-    this->mEnableStageNo.elems[3] = r.readU32();
-    this->mEnableStageNo.elems[4] = r.readU32();
-    this->mEnableStageNo.elems[5] = r.readU32();
-    this->mEnableStageNo.elems[6] = r.readU32();
-    this->mEnableStageNo.elems[7] = r.readU32();
-    this->mDisableStageNo.elems[0] = r.readU32();
-    this->mDisableStageNo.elems[1] = r.readU32();
-    this->mDisableStageNo.elems[2] = r.readU32();
-    this->mDisableStageNo.elems[3] = r.readU32();
-    this->mDisableStageNo.elems[4] = r.readU32();
-    this->mDisableStageNo.elems[5] = r.readU32();
-    this->mDisableStageNo.elems[6] = r.readU32();
-    this->mDisableStageNo.elems[7] = r.readU32();
+    mBeginFrame = r.readF32();
+    mEndFrame = r.readF32();
+    mEnableStageNo.elems[0] = r.readU32();
+    mEnableStageNo.elems[1] = r.readU32();
+    mEnableStageNo.elems[2] = r.readU32();
+    mEnableStageNo.elems[3] = r.readU32();
+    mEnableStageNo.elems[4] = r.readU32();
+    mEnableStageNo.elems[5] = r.readU32();
+    mEnableStageNo.elems[6] = r.readU32();
+    mEnableStageNo.elems[7] = r.readU32();
+    mDisableStageNo.elems[0] = r.readU32();
+    mDisableStageNo.elems[1] = r.readU32();
+    mDisableStageNo.elems[2] = r.readU32();
+    mDisableStageNo.elems[3] = r.readU32();
+    mDisableStageNo.elems[4] = r.readU32();
+    mDisableStageNo.elems[5] = r.readU32();
+    mDisableStageNo.elems[6] = r.readU32();
+    mDisableStageNo.elems[7] = r.readU32();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherScriptCmd::MyDTI cWeatherScriptCmd::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rWeatherScript.cpp at 0x0071833c-0x0071837c (called at rWeatherScript.cpp:239)
@@ -243,7 +249,7 @@ const MtDTI& cWeatherScriptCmds::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cWeatherScriptCmds::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmds::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherScriptCmds::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -272,10 +278,12 @@ cWeatherScriptCmds::~cWeatherScriptCmds() {
 // Address: 0x00717310 - 0x00717345 (53 bytes)
 void cWeatherScriptCmds::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nDDOIO::readMtArrayEx(r, this->mScripts.elems[1]);
-    ::nDDOIO::readMtArrayEx(r, this->mScripts.elems[2]);
-    ::nDDOIO::readMtArrayEx(r, this->mScripts.elems[3]);
+    nDDOIO::readMtArrayEx(r, mScripts.elems[1]);
+    nDDOIO::readMtArrayEx(r, mScripts.elems[2]);
+    nDDOIO::readMtArrayEx(r, mScripts.elems[3]);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherScriptCmds::MyDTI cWeatherScriptCmds::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherScript.cpp at 0x0071837c-0x007183b5 (called at rWeatherScript.cpp:405)
@@ -302,7 +310,7 @@ const MtDTI& cWeatherScriptIO::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cWeatherScriptIO::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptIO::DTI);
+    return MtMemoryAllocator::getAllocator(cWeatherScriptIO::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -311,7 +319,7 @@ inline MtAllocator* cWeatherScriptIO::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cWeatherScriptIO::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptIO::DTI)->memAlloc(sz, align, ::cWeatherScriptIO::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cWeatherScriptIO::DTI)->memAlloc(sz, align, cWeatherScriptIO::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,7 +334,7 @@ inline void* cWeatherScriptIO::operator new(size_t sz, u32 align) {
 // Address: 0x00716a30 - 0x00716a5a (42 bytes)
 __attribute__((weak)) void cWeatherScriptIO::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cWeatherScriptIO::getAllocator()->memFree(p_addr);
+    cWeatherScriptIO::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -352,12 +360,35 @@ cWeatherScriptIO::~cWeatherScriptIO() {
 }
 
 // Address: 0x00716a90 - 0x00716b16 (134 bytes)
-__attribute__((weak)) void cWeatherScriptIO::updatePtr() {
-    // local: u32 num;
-    // local: u32 i;
-    // local: cWSCParam* p_param;
-    DDON_STUB("cWeatherScriptIO::updatePtr")
-    /* stub */
+void cWeatherScriptIO::updatePtr() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cWSCParam* p_param;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cWeatherScriptIO*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cEfcHandle*, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from unsigned long
+    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16);
+    if (num != 0) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            // inferred: a temporary for the value the load at 0x716ac7 read, used 5 times; no DWARF local holds it
+            MtObject* t0 = mWSCParams.getBuffer()[static_cast<int>(i0_3)];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 16)) != 0) {
+                    if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(reinterpret_cast<cEfcHandle*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 16)))) {
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 16)) + 96) = 0;
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 16) = 0;
+                    }
+                }
+            }
+            if (num != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00716b20 - 0x00716c94 (372 bytes)
@@ -386,6 +417,8 @@ __attribute__((weak)) void cWeatherScriptIO::releaseWSCParamAll() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeatherScriptIO::MyDTI cWeatherScriptIO::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rWeatherScript.cpp at 0x00718303-0x0071833c (called at rWeatherScript.cpp:112)
 //   in _GLOBAL__sub_I_rWeatherScript.cpp at 0x00718303-0x0071833c (called at rWeatherScript.h:66)
@@ -394,7 +427,7 @@ __attribute__((weak)) void cWeatherScriptIO::releaseWSCParamAll() {
 // Address: 0x00716980 - 0x007169f8 (120 bytes)
 MtObject* cWeatherScriptIO::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cWeatherScriptIO;
+    return new (16u) cWeatherScriptIO;
 }
 
 // Instance at 0x01abbf70 - 0x01abbf75 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -203,3 +203,10 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK18uGeometry2Collider17cNodeGeometryInfo5MyDTI11newInstanceEv at 0x01311f60-0x01311f8e, code DWARF attributes to no inlined copy
+inline uGeometry2Collider::cNodeGeometryInfo::cNodeGeometryInfo() {
+    this->mpRegistGeometryParam = nullptr;
+    this->mpRegistGeometry = nullptr;
+}

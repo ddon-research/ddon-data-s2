@@ -23,7 +23,7 @@ const MtDTI& cOcdImmuneParamRes::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOcdImmuneParamRes::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI);
+    return MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,13 +32,13 @@ inline MtAllocator* cOcdImmuneParamRes::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdImmuneParamRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI)->memAlloc(sz, align, ::cOcdImmuneParamRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI)->memAlloc(sz, align, cOcdImmuneParamRes::DTI.getID());
 }
 
 // Address: 0x003a8fa0 - 0x003a8fe0 (64 bytes)
 void* cOcdImmuneParamRes::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOcdImmuneParamRes::getAllocator()->memAlloc(sz, align, ::cOcdImmuneParamRes::DTI.::MtDTI::getID());
+    return cOcdImmuneParamRes::getAllocator()->memAlloc(sz, align, cOcdImmuneParamRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,13 +50,13 @@ void* cOcdImmuneParamRes::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18cOcdImmuneParamResD0Ev at 0x01a45c70-0x01a45c9a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOcdImmuneParamRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI)->memFree(p_addr);
 }
 
 // Address: 0x003a9010 - 0x003a903a (42 bytes)
 void cOcdImmuneParamRes::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cOcdImmuneParamRes::getAllocator()->memFree(p_addr);
+    cOcdImmuneParamRes::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,9 +68,9 @@ void cOcdImmuneParamRes::operator delete[](void* p_addr) {
 // Address: 0x003a98a0 - 0x003a98c4 (36 bytes)
 cOcdImmuneParamRes::cOcdImmuneParamRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdUID = static_cast<u32>(0);
-    this->mImmuneRate = 1.1f;
-    this->mImmuneNum = static_cast<u32>(5);
+    mOcdUID = 0;
+    mImmuneRate = 1.1f;
+    mImmuneNum = 5;
 }
 
 // Address: 0x003a98d0 - 0x003a9b31 (609 bytes)
@@ -92,6 +92,8 @@ __attribute__((weak)) void cOcdImmuneParamRes::createProperty(MtPropertyList& s)
 // No out-of-line body: no code in the ELF
 // u32 cOcdImmuneParamRes::getImmuneNum() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdImmuneParamRes::MyDTI cOcdImmuneParamRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOcdParamRes.cpp at 0x003a9c24-0x003a9c5d (called at cOcdParamRes.cpp:21)
 //   in _GLOBAL__sub_I_cOcdParamRes.cpp at 0x003a9c24-0x003a9c5d (called at cOcdParamRes.h:173)
@@ -100,7 +102,7 @@ __attribute__((weak)) void cOcdImmuneParamRes::createProperty(MtPropertyList& s)
 // Address: 0x003a8f30 - 0x003a8f85 (85 bytes)
 MtObject* cOcdImmuneParamRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdImmuneParamRes;
+    return new (16u) cOcdImmuneParamRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ const MtDTI& cOcdStatusParamRes::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOcdStatusParamRes::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI);
+    return MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,13 +128,13 @@ inline MtAllocator* cOcdStatusParamRes::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdStatusParamRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI)->memAlloc(sz, align, ::cOcdStatusParamRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI)->memAlloc(sz, align, cOcdStatusParamRes::DTI.getID());
 }
 
 // Address: 0x003a8e70 - 0x003a8eb0 (64 bytes)
 void* cOcdStatusParamRes::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOcdStatusParamRes::getAllocator()->memAlloc(sz, align, ::cOcdStatusParamRes::DTI.::MtDTI::getID());
+    return cOcdStatusParamRes::getAllocator()->memAlloc(sz, align, cOcdStatusParamRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,13 +146,13 @@ void* cOcdStatusParamRes::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18cOcdStatusParamResD0Ev at 0x01a45c20-0x01a45c4a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOcdStatusParamRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI)->memFree(p_addr);
 }
 
 // Address: 0x003a8ee0 - 0x003a8f0a (42 bytes)
 void cOcdStatusParamRes::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cOcdStatusParamRes::getAllocator()->memFree(p_addr);
+    cOcdStatusParamRes::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -162,70 +164,70 @@ void cOcdStatusParamRes::operator delete[](void* p_addr) {
 // Address: 0x003a9060 - 0x003a90c5 (101 bytes)
 cOcdStatusParamRes::cOcdStatusParamRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdUID = static_cast<u32>(0);
-    this->mIsEffective = true;
-    this->mEndurance = 1000.0f;
-    this->mEnduranceCheatCheck = 1000.0f;
-    this->mIsTimeRecover = true;
-    this->mActiveTime = 120.0f;
-    this->mCureWaitTime = 5.0f;
-    this->mActiveTimeCheatCheck = 120.0f;
-    this->mCureValue = 0.5f;
-    this->mFreeParam0 = 0.0f;
-    this->mCureValueCheatCheck = 0.5f;
-    this->mFreeParam0CheatCheck = 0.0f;
-    this->mFreeParam1 = 0.0f;
-    this->mFreeParam1CheatCheck = 0.0f;
+    mOcdUID = 0;
+    mIsEffective = true;
+    mEndurance = 1000.0f;
+    mEnduranceCheatCheck = 1000.0f;
+    mIsTimeRecover = true;
+    mActiveTime = 120.0f;
+    mCureWaitTime = 5.0f;
+    mActiveTimeCheatCheck = 120.0f;
+    mCureValue = 0.5f;
+    mFreeParam0 = 0.0f;
+    mCureValueCheatCheck = 0.5f;
+    mFreeParam0CheatCheck = 0.0f;
+    mFreeParam1 = 0.0f;
+    mFreeParam1CheatCheck = 0.0f;
 }
 
 // Address: 0x003a9770 - 0x003a97d2 (98 bytes)
 void cOcdStatusParamRes::copyParam(const cOcdStatusParamRes& param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEffective = param.mIsEffective;
-    this->mEndurance = param.::cOcdStatusParamRes::getEndurancePrivate();
-    this->mEnduranceCheatCheck = this->mEndurance;
-    this->mIsTimeRecover = param.mIsTimeRecover;
-    this->mActiveTime = param.::cOcdStatusParamRes::getActiveTimePrivate();
-    this->mActiveTimeCheatCheck = this->mActiveTime;
-    this->mCureWaitTime = param.mCureWaitTime;
-    this->mCureValue = param.::cOcdStatusParamRes::getCureValuePrivate();
-    this->mCureValueCheatCheck = this->mCureValue;
-    this->mFreeParam0 = param.::cOcdStatusParamRes::getFreeParam0Private();
-    this->mFreeParam0CheatCheck = this->mFreeParam0;
-    this->mFreeParam1 = param.::cOcdStatusParamRes::getFreeParam1Private();
-    this->mFreeParam1CheatCheck = this->mFreeParam1;
+    mIsEffective = param.mIsEffective;
+    mEndurance = param.getEndurancePrivate();
+    mEnduranceCheatCheck = mEndurance;
+    mIsTimeRecover = param.mIsTimeRecover;
+    mActiveTime = param.getActiveTimePrivate();
+    mActiveTimeCheatCheck = mActiveTime;
+    mCureWaitTime = param.mCureWaitTime;
+    mCureValue = param.getCureValuePrivate();
+    mCureValueCheatCheck = mCureValue;
+    mFreeParam0 = param.getFreeParam0Private();
+    mFreeParam0CheatCheck = mFreeParam0;
+    mFreeParam1 = param.getFreeParam1Private();
+    mFreeParam1CheatCheck = mFreeParam1;
 }
 
 // Address: 0x003a97e0 - 0x003a989a (186 bytes)
 void cOcdStatusParamRes::copyEffectiveParam(const cOcdStatusParamRes& param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEffective = param.mIsEffective;
-    this->mIsTimeRecover = param.mIsTimeRecover;
-    if (param.::cOcdStatusParamRes::getEndurancePrivate() > 1.1920929e-7f) {
-        this->mEndurance = param.::cOcdStatusParamRes::getEndurancePrivate();
-        this->mEnduranceCheatCheck = this->mEndurance;
+    mIsEffective = param.mIsEffective;
+    mIsTimeRecover = param.mIsTimeRecover;
+    if (param.getEndurancePrivate() > 1.1920929e-7f) {
+        mEndurance = param.getEndurancePrivate();
+        mEnduranceCheatCheck = mEndurance;
     }
-    if (param.::cOcdStatusParamRes::getActiveTimePrivate() > 1.1920929e-7f) {
-        this->mActiveTime = param.::cOcdStatusParamRes::getActiveTimePrivate();
-        this->mActiveTimeCheatCheck = this->mActiveTime;
+    if (param.getActiveTimePrivate() > 1.1920929e-7f) {
+        mActiveTime = param.getActiveTimePrivate();
+        mActiveTimeCheatCheck = mActiveTime;
     }
-    if (param.::cOcdStatusParamRes::getCureWaitTime() > 1.1920929e-7f) {
-        this->mCureWaitTime = param.::cOcdStatusParamRes::getCureWaitTime();
+    if (param.getCureWaitTime() > 1.1920929e-7f) {
+        mCureWaitTime = param.getCureWaitTime();
     }
-    if (param.::cOcdStatusParamRes::getCureValuePrivate() > 1.1920929e-7f) {
-        this->mCureValue = param.::cOcdStatusParamRes::getCureValuePrivate();
-        this->mCureValueCheatCheck = this->mCureValue;
+    if (param.getCureValuePrivate() > 1.1920929e-7f) {
+        mCureValue = param.getCureValuePrivate();
+        mCureValueCheatCheck = mCureValue;
     }
-    if (param.::cOcdStatusParamRes::getFreeParam0Private() > (-999.0f)) {
-        if (999.0f > param.::cOcdStatusParamRes::getFreeParam0Private()) {
-            this->mFreeParam0 = param.::cOcdStatusParamRes::getFreeParam0Private();
-            this->mFreeParam0CheatCheck = this->mFreeParam0;
+    if (param.getFreeParam0Private() > -999.0f) {
+        if (999.0f > param.getFreeParam0Private()) {
+            mFreeParam0 = param.getFreeParam0Private();
+            mFreeParam0CheatCheck = mFreeParam0;
         }
     }
-    if (param.::cOcdStatusParamRes::getFreeParam1Private() > (-999.0f)) {
-        if (999.0f > param.::cOcdStatusParamRes::getFreeParam1Private()) {
-            this->mFreeParam1 = param.::cOcdStatusParamRes::getFreeParam1Private();
-            this->mFreeParam1CheatCheck = this->mFreeParam1;
+    if (param.getFreeParam1Private() > -999.0f) {
+        if (999.0f > param.getFreeParam1Private()) {
+            mFreeParam1 = param.getFreeParam1Private();
+            mFreeParam1CheatCheck = mFreeParam1;
         }
     }
 }
@@ -252,7 +254,7 @@ __attribute__((weak)) void cOcdStatusParamRes::createProperty(MtPropertyList& s)
 // Address: 0x003a9720 - 0x003a9726 (6 bytes)
 f32 cOcdStatusParamRes::getEndurance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndurance;
+    return mEndurance;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -262,7 +264,7 @@ f32 cOcdStatusParamRes::getEndurance() const {
 // Address: 0x003a9730 - 0x003a9736 (6 bytes)
 f32 cOcdStatusParamRes::getActiveTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActiveTime;
+    return mActiveTime;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -272,19 +274,19 @@ f32 cOcdStatusParamRes::getActiveTime() const {
 // Address: 0x003a9740 - 0x003a9746 (6 bytes)
 f32 cOcdStatusParamRes::getCureValue() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCureValue;
+    return mCureValue;
 }
 
 // Address: 0x003a9750 - 0x003a9756 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam0;
+    return mFreeParam0;
 }
 
 // Address: 0x003a9760 - 0x003a9766 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam1() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam1;
+    return mFreeParam1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -298,22 +300,22 @@ f32 cOcdStatusParamRes::getFreeParam1() const {
 // Address: 0x003a90d0 - 0x003a90db (11 bytes)
 void cOcdStatusParamRes::setEndurance(f32 endurance) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndurance = endurance;
-    this->mEnduranceCheatCheck = endurance;
+    mEndurance = endurance;
+    mEnduranceCheatCheck = endurance;
 }
 
 // Address: 0x003a90e0 - 0x003a90eb (11 bytes)
 void cOcdStatusParamRes::setActiveTime(f32 ActiveTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActiveTime = ActiveTime;
-    this->mActiveTimeCheatCheck = ActiveTime;
+    mActiveTime = ActiveTime;
+    mActiveTimeCheatCheck = ActiveTime;
 }
 
 // Address: 0x003a90f0 - 0x003a90fb (11 bytes)
 void cOcdStatusParamRes::setCureValue(f32 CureValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCureValue = CureValue;
-    this->mCureValueCheatCheck = CureValue;
+    mCureValue = CureValue;
+    mCureValueCheatCheck = CureValue;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (11 bytes)
@@ -324,50 +326,50 @@ void cOcdStatusParamRes::setCureValue(f32 CureValue) {
 // Address: 0x003a9100 - 0x003a910b (11 bytes)
 void cOcdStatusParamRes::setFreeParam0(f32 FreeParam0) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreeParam0 = FreeParam0;
-    this->mFreeParam0CheatCheck = FreeParam0;
+    mFreeParam0 = FreeParam0;
+    mFreeParam0CheatCheck = FreeParam0;
 }
 
 // Address: 0x003a9110 - 0x003a911b (11 bytes)
 void cOcdStatusParamRes::setFreeParam1(f32 FreeParam1) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreeParam1 = FreeParam1;
-    this->mFreeParam1CheatCheck = FreeParam1;
+    mFreeParam1 = FreeParam1;
+    mFreeParam1CheatCheck = FreeParam1;
 }
 
 // Address: 0x003a9b50 - 0x003a9b56 (6 bytes)
 f32 cOcdStatusParamRes::getEnduranceCheatCheck() const {
     // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnduranceCheatCheck;
+    return mEnduranceCheatCheck;
 }
 
 // Address: 0x003a9b70 - 0x003a9b76 (6 bytes)
 f32 cOcdStatusParamRes::getActiveTimeCheatCheck() const {
     // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mActiveTimeCheatCheck;
+    return mActiveTimeCheatCheck;
 }
 
 // Address: 0x003a9b90 - 0x003a9b96 (6 bytes)
 f32 cOcdStatusParamRes::getCureValueCheatCheck() const {
     // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCureValueCheatCheck;
+    return mCureValueCheatCheck;
 }
 
 // Address: 0x003a9bb0 - 0x003a9bb6 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam0CheatCheck() const {
     // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam0CheatCheck;
+    return mFreeParam0CheatCheck;
 }
 
 // Address: 0x003a9bd0 - 0x003a9bd6 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam1CheatCheck() const {
     // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreeParam1CheatCheck;
+    return mFreeParam1CheatCheck;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (29 bytes)
@@ -524,6 +526,8 @@ f32 cOcdStatusParamRes::getFreeParam1CheatCheck() const {
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void cOcdStatusParamRes::setFreeParam1CheatCheckPrivate(f32 NewValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdStatusParamRes::MyDTI cOcdStatusParamRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cOcdParamRes.cpp at 0x003a9be0-0x003a9c24 (called at cOcdParamRes.cpp:20)
 //   in _GLOBAL__sub_I_cOcdParamRes.cpp at 0x003a9be0-0x003a9c24 (called at cOcdParamRes.h:34)
@@ -532,6 +536,6 @@ f32 cOcdStatusParamRes::getFreeParam1CheatCheck() const {
 // Address: 0x003a8dc0 - 0x003a8e56 (150 bytes)
 MtObject* cOcdStatusParamRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdStatusParamRes;
+    return new (16u) cOcdStatusParamRes;
 }
 

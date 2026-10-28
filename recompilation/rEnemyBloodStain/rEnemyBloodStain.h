@@ -105,11 +105,11 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyBloodStain::cEnemyBloodStain() {
-    this->mBloodStainType = static_cast<s32>(0);
+    this->mBloodStainType = 0;
     this->mHpRateLv1 = 0.7f;
     this->mHpRateLv2 = 0.5f;
     this->mHpRateLv3 = 0.3f;
-    this->mRegionNoLv1 = static_cast<s32>(11);
-    this->mRegionNoLv2 = static_cast<s32>(11);
-    this->mRegionNoLv3 = static_cast<s32>(11);
+    this->mRegionNoLv1 = 11;
+    this->mRegionNoLv2 = 11;
+    this->mRegionNoLv3 = 11;
 }

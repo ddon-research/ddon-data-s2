@@ -24,7 +24,7 @@ const MtDTI& rPlPartsInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rPlPartsInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rPlPartsInfo::DTI);
+    return MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* rPlPartsInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPlPartsInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPlPartsInfo::DTI)->memAlloc(sz, align, ::rPlPartsInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memAlloc(sz, align, rPlPartsInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rPlPartsInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPlPartsInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPlPartsInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,23 +62,23 @@ inline void rPlPartsInfo::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rPlPartsInfo::rPlPartsInfo() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpHeader = static_cast<rPlPartsInfo::HEADER*>(nullptr);
+    setAttribute(16u);
+    mpHeader = nullptr;
 }
 
 // Address: 0x006cc190 - 0x006cc1d6 (70 bytes)
 // Also emitted as: _ZN12rPlPartsInfoD0Ev at 0x006cc1e0
 rPlPartsInfo::~rPlPartsInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::rPlPartsInfo::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rPlPartsInfo::HEADER*>(nullptr);
+    MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x006cc240 - 0x006cc271 (49 bytes)
 void rPlPartsInfo::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::rPlPartsInfo::getAllocator()->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rPlPartsInfo::HEADER*>(nullptr);
+    rPlPartsInfo::getAllocator()->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x006cc280 - 0x006cc2fa (122 bytes)
@@ -123,6 +123,8 @@ __attribute__((weak)) void rPlPartsInfo::setScar(uModel* pModel, s32 parts, bool
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPlPartsInfo::MyDTI rPlPartsInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPlPartsInfo.cpp at 0x006cc65f-0x006cc69c (called at rPlPartsInfo.cpp:23)
 //   in _GLOBAL__sub_I_rPlPartsInfo.cpp at 0x006cc65f-0x006cc69c (called at rPlPartsInfo.h:19)
@@ -131,6 +133,6 @@ __attribute__((weak)) void rPlPartsInfo::setScar(uModel* pModel, s32 parts, bool
 // Address: 0x006cc0b0 - 0x006cc10d (93 bytes)
 MtObject* rPlPartsInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPlPartsInfo;
+    return new (16u) rPlPartsInfo;
 }
 

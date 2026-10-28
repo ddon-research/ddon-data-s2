@@ -50,7 +50,7 @@ const MtDTI& cMagicChantParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMagicChantParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMagicChantParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -116,6 +116,8 @@ __attribute__((weak)) void cMagicChantParam::createProperty(MtPropertyList& s) {
 //   in rTbl2<cMagicChantParam>::loadCore at 0x01a9be08-0x01a9be3b (called at rMagicChantParam.h:50)
 // void cMagicChantParam::setCustomChantTime(f32 NewValue, u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMagicChantParam::MyDTI cMagicChantParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMagicChantParam.cpp at 0x006a0850-0x006a0892 (called at rMagicChantParam.cpp:25)
 //   in _GLOBAL__sub_I_rMagicChantParam.cpp at 0x006a0850-0x006a0892 (called at rMagicChantParam.h:32)
@@ -149,7 +151,7 @@ const MtDTI& rMagicChantParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMagicChantParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMagicChantParam::DTI)->memAlloc(sz, align, ::rMagicChantParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMagicChantParam::DTI)->memAlloc(sz, align, rMagicChantParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,7 +166,7 @@ inline void* rMagicChantParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rMagicChantParamD0Ev at 0x01a9bbb4-0x01a9bbd3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMagicChantParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMagicChantParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMagicChantParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,14 +195,16 @@ MT_CTSTR rMagicChantParam::getExt() const {
 // Address: 0x01a9bd00 - 0x01a9bd06 (6 bytes)
 u32 rMagicChantParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(17);
+    return 17;
 }
 
 // Address: 0x006a0840 - 0x006a0845 (5 bytes)
 void rMagicChantParam::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMagicChantParam::MyDTI rMagicChantParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMagicChantParam.cpp at 0x006a0892-0x006a08cf (called at rMagicChantParam.cpp:26)
@@ -210,7 +214,7 @@ void rMagicChantParam::createProperty(MtPropertyList& s) {
 // Address: 0x006a01a0 - 0x006a0204 (100 bytes)
 MtObject* rMagicChantParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMagicChantParam;
+    return new (16u) rMagicChantParam;
 }
 
 // Instance at 0x01a9bcb0 - 0x01a9bcc5 (21 bytes) of the generic rTbl2<T>::getData

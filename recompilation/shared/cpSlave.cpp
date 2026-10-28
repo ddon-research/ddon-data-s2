@@ -30,7 +30,7 @@ const MtDTI& cpSlave::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpSlave::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpSlave::DTI);
+    return MtMemoryAllocator::getAllocator(cpSlave::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* cpSlave::getAllocator() {
 // Address: 0x00534c60 - 0x00534ca0 (64 bytes)
 void* cpSlave::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpSlave::getAllocator()->memAlloc(sz, align, ::cpSlave::DTI.::MtDTI::getID());
+    return cpSlave::getAllocator()->memAlloc(sz, align, cpSlave::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* cpSlave::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpSlave::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpSlave::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpSlave::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,8 +81,8 @@ cpSlave::~cpSlave() {
 // Address: 0x01a5fab0 - 0x01a5fab9 (9 bytes)
 void cpSlave::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00534eb0 - 0x00535050 (416 bytes)
@@ -95,14 +95,14 @@ __attribute__((weak)) void cpSlave::setup() {
 // Address: 0x00535160 - 0x00535193 (51 bytes)
 void cpSlave::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00536a10 - 0x00536ab9 (169 bytes)
@@ -145,10 +145,10 @@ __attribute__((weak)) void cpSlave::setInterpolateType(u32 interpolate) {
 // Address: 0x005357f0 - 0x005357fc (12 bytes)
 void cpSlave::moveInterpolate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::isActive() == false) {
+    if (!isActive()) {
         return;
     }
-    this->::cpSlave::interpolate();
+    interpolate();
 }
 
 // Address: 0x00535a50 - 0x00535d1a (714 bytes)
@@ -164,30 +164,30 @@ __attribute__((weak)) void cpSlave::updateInterpolatePos(const MtVector3& pos, b
 // Address: 0x00535d30 - 0x00535d8e (94 bytes)
 void cpSlave::updateInterpolateAngle(f32 angle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInterpolateAngle = this->mpModel->::uDDOModel::getFinalAngleY() - angle;
-    this->mInterpolateAngleTimer = this->mDefInterpolateAngleTimer;
-    this->mRotTargetAngle = angle;
-    if (this->mFirstReceiveAngle == false) {
+    mInterpolateAngle = mpModel->getFinalAngleY() - angle;
+    mInterpolateAngleTimer = mDefInterpolateAngleTimer;
+    mRotTargetAngle = angle;
+    if (!mFirstReceiveAngle) {
         return;
     }
-    this->mForceSetAngle = true;
-    this->mFirstReceiveAngle = false;
+    mForceSetAngle = true;
+    mFirstReceiveAngle = false;
 }
 
 // Address: 0x005357c0 - 0x005357eb (43 bytes)
 void cpSlave::setForceSet(u32 interpolate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (interpolate != static_cast<u32>(5)) {
-        if (interpolate == static_cast<u32>(3)) {
-            this->mForceSetPos = true;
+    if (interpolate != 5) {
+        if (interpolate == 3) {
+            mForceSetPos = true;
         } else {
-            if (interpolate == static_cast<u32>(2)) {
-                this->mForceSetAngle = true;
+            if (interpolate == 2) {
+                mForceSetAngle = true;
             }
         }
     } else {
-        this->mForceSetPos = true;
-        this->mForceSetAngle = true;
+        mForceSetPos = true;
+        mForceSetAngle = true;
     }
 }
 
@@ -227,51 +227,51 @@ void cpSlave::interpolatePos() {
     // DWARF local not rendered: MtVector3 pos;
     // DWARF local not rendered: MtVector3 pos;
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    if (this->mForceSetPos != false) {
-        this->mpModel->resetPos(this->mMoveTargetPos);
-        this->mForceSetPos = false;
-        this->mInterpolatePosTimer = 0.0f;
+    if (mForceSetPos) {
+        mpModel->resetPos(mMoveTargetPos);
+        mForceSetPos = false;
+        mInterpolatePosTimer = 0.0f;
     } else {
         // inferred: a temporary for the value the load at 0x535de9 read, used 9 times; no DWARF local holds it
-        f32 t0 = this->mInterpolatePosTimer;
+        f32 t0 = mInterpolatePosTimer;
         if (0.0f >= t0) {
         } else {
-            f32 deltaTime = ::sMain::getInstance()->mDeltaTime;
+            f32 deltaTime = sMain::getInstance()->mDeltaTime;
             if (0.2f >= (t0 - deltaTime)) {
-                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+                if (mpModel != nullptr) {
                     // inferred: a temporary for the value the load at 0x535ee0 read, used once; no DWARF local holds it
-                    f32 t4 = this->mInterpolateVec.y;
+                    f32 t4 = mInterpolateVec.y;
                     // inferred: a temporary for the value the load at 0x535ee8 read, used once; no DWARF local holds it
-                    f32 t5 = this->mInterpolateVec.z;
-                    this->mpModel->::uCoord::mPos.x = this->mpModel->::uCoord::mPos.x + this->mInterpolateVec.x;
-                    this->mpModel->::uCoord::mPos.y = this->mpModel->::uCoord::mPos.y + t4;
-                    this->mpModel->::uCoord::mPos.z = this->mpModel->::uCoord::mPos.z + t5;
-                    this->mpModel->::uCoord::mPos.pad_ = 0.0f;
-                    this->mInterpolatePosTimer = 0.0f;
+                    f32 t5 = mInterpolateVec.z;
+                    mpModel->mPos.x = mpModel->mPos.x + mInterpolateVec.x;
+                    mpModel->mPos.y = mpModel->mPos.y + t4;
+                    mpModel->mPos.z = mpModel->mPos.z + t5;
+                    mpModel->mPos.pad_ = 0.0f;
+                    mInterpolatePosTimer = 0.0f;
                 } else {
-                    this->mInterpolatePosTimer = 0.0f;
+                    mInterpolatePosTimer = 0.0f;
                 }
             } else {
                 // inferred: a temporary for the value the load at 0x535e28 read, used twice; no DWARF local holds it
-                f32 t1 = this->mInterpolateVec.x;
+                f32 t1 = mInterpolateVec.x;
                 // inferred: a temporary for the value the load at 0x535e34 read, used twice; no DWARF local holds it
-                f32 t2 = this->mInterpolateVec.y;
+                f32 t2 = mInterpolateVec.y;
                 // inferred: a temporary for the value the load at 0x535e40 read, used twice; no DWARF local holds it
-                f32 t3 = this->mInterpolateVec.z;
-                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-                    this->mpModel->::uCoord::mPos.x = this->mpModel->::uCoord::mPos.x + (t1 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.y = this->mpModel->::uCoord::mPos.y + (t2 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.z = this->mpModel->::uCoord::mPos.z + (t3 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.pad_ = 0.0f;
-                    this->mInterpolateVec.x = this->mInterpolateVec.x - (t1 * (deltaTime / t0));
-                    this->mInterpolateVec.y = this->mInterpolateVec.y - (t2 * (deltaTime / t0));
-                    this->mInterpolateVec.z = this->mInterpolateVec.z - (t3 * (deltaTime / t0));
+                f32 t3 = mInterpolateVec.z;
+                if (mpModel != nullptr) {
+                    mpModel->mPos.x = mpModel->mPos.x + (t1 * (deltaTime / t0));
+                    mpModel->mPos.y = mpModel->mPos.y + (t2 * (deltaTime / t0));
+                    mpModel->mPos.z = mpModel->mPos.z + (t3 * (deltaTime / t0));
+                    mpModel->mPos.pad_ = 0.0f;
+                    mInterpolateVec.x = mInterpolateVec.x - (t1 * (deltaTime / t0));
+                    mInterpolateVec.y = mInterpolateVec.y - (t2 * (deltaTime / t0));
+                    mInterpolateVec.z = mInterpolateVec.z - (t3 * (deltaTime / t0));
                 } else {
-                    this->mInterpolateVec.x = t1 - (t1 * (deltaTime / t0));
-                    this->mInterpolateVec.y = t2 - (t2 * (deltaTime / t0));
-                    this->mInterpolateVec.z = t3 - (t3 * (deltaTime / t0));
+                    mInterpolateVec.x = t1 - (t1 * (deltaTime / t0));
+                    mInterpolateVec.y = t2 - (t2 * (deltaTime / t0));
+                    mInterpolateVec.z = t3 - (t3 * (deltaTime / t0));
                 }
-                this->mInterpolatePosTimer = t0 - deltaTime;
+                mInterpolatePosTimer = t0 - deltaTime;
             }
         }
     }
@@ -295,9 +295,14 @@ void cpSlave::interpolatePos() {
 //   in cpSlave::interpolate at 0x00535965-0x005359a0 (called at cpSlave.cpp:804)
 // void cpSlave::setAngle();
 
-// No out-of-line body: 1 inlined copy in 1 function (36 bytes)
-//   in cpSlave::updateInterpolatePos at 0x00535ab3-0x00535ad7 (called at cpSlave.cpp:447)
-// void cpSlave::setMoveTragetPos(const MtVector3& pos);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpSlave::updateInterpolatePos at 0x535ab3-0x535ad7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpSlave::setMoveTragetPos(const MtVector3& pos) {
+    mMoveTargetPos.x = pos.x;
+    mMoveTargetPos.y = pos.y;
+    mMoveTargetPos.z = pos.z;
+    mMoveTargetPos.pad_ = 0.0f;
+}
 
 // No out-of-line body: 2 inlined copies in 2 functions (22 bytes)
 //   in cpSlave::getMoveAction at 0x005354de-0x005354ec (called at cpSlave.cpp:743)
@@ -361,13 +366,13 @@ __attribute__((weak)) void cpSlave::interpolatePosForSpecialMove() {
 // Address: 0x005356f0 - 0x005356f9 (9 bytes)
 f32 cpSlave::getMoveTargetAngle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRotTargetAngle;
+    return mRotTargetAngle;
 }
 
 // Address: 0x00536ad0 - 0x00536ad9 (9 bytes)
 f32 cpSlave::getMoveAngle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMoveAngle;
+    return mMoveAngle;
 }
 
 // Address: 0x00536950 - 0x005369e5 (149 bytes)
@@ -383,10 +388,10 @@ u32 cpSlave::getTargetUID() {
     // DWARF local not rendered: const uDDOModel* p_model;
     // DWARF local not rendered: const cContextInterface& p_info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        return ::cContextInterface::getTargetUid(this->mpModel->mContextInterface.mpContextInstance, this->mpModel->mContextInterface.mpContextCharacter);
+    if (mpModel != nullptr) {
+        return cContextInterface::getTargetUid(mpModel->mContextInterface.mpContextInstance, mpModel->mContextInterface.mpContextCharacter);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -427,6 +432,8 @@ u32 cpSlave::getTargetUID() {
 //   in cPlActWpnBowBase::init at 0x0021cf90-0x0021cf9a (called at cHumanActBow.cpp:171)
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // void cpSlave::setMoveMinSpeed(f32 sp);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpSlave::MyDTI cpSlave::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpSlave.cpp at 0x00536bdf-0x00536c1c (called at cpSlave.cpp:60)

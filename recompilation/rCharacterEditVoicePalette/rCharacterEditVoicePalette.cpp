@@ -37,7 +37,7 @@ const MtDTI& cCharacterEditVoicePalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCharacterEditVoicePalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharacterEditVoicePalette::DTI)->memAlloc(sz, align, ::cCharacterEditVoicePalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharacterEditVoicePalette::DTI)->memAlloc(sz, align, cCharacterEditVoicePalette::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (85 bytes)
@@ -53,7 +53,7 @@ inline void* cCharacterEditVoicePalette::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharacterEditVoicePalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditVoicePalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditVoicePalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -79,6 +79,8 @@ inline void cCharacterEditVoicePalette::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cCharacterEditVoicePalette::~cCharacterEditVoicePalette();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditVoicePalette::MyDTI cCharacterEditVoicePalette::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditVoicePalette.cpp at 0x00654da0-0x00654de2 (called at rCharacterEditVoicePalette.cpp:39)
 //   in _GLOBAL__sub_I_rCharacterEditVoicePalette.cpp at 0x00654da0-0x00654de2 (called at rCharacterEditVoicePalette.h:52)
@@ -87,7 +89,7 @@ inline void cCharacterEditVoicePalette::operator delete(void* p_addr) {
 // Address: 0x00654a10 - 0x00654a79 (105 bytes)
 MtObject* cCharacterEditVoicePalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharacterEditVoicePalette;
+    return new (16u) cCharacterEditVoicePalette;
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,7 +115,7 @@ const MtDTI& rCharacterEditVoicePalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditVoicePalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditVoicePalette::DTI)->memAlloc(sz, align, ::rCharacterEditVoicePalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditVoicePalette::DTI)->memAlloc(sz, align, rCharacterEditVoicePalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +130,7 @@ inline void* rCharacterEditVoicePalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCharacterEditVoicePalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEditVoicePalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEditVoicePalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,14 +159,14 @@ bool rCharacterEditVoicePalette::loadData(MtDataReader& r, cCharacterEditVoicePa
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    pData->::cCharacterEditPaletteBase::loadData(r);
-    ::nDDOIO::readData(r, pData->mUID);
+    pData->loadData(r);
+    nDDOIO::readData(r, pData->mUID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mVoiceFlag);
+    nDDOIO::readData(r, pData->mVoiceFlag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mNameIndex);
+    nDDOIO::readData(r, pData->mNameIndex);
     return true;
 }
 
@@ -177,7 +179,7 @@ MT_CTSTR rCharacterEditVoicePalette::getExt() const {
 // Address: 0x01a7f8c0 - 0x01a7f8c6 (6 bytes)
 u32 rCharacterEditVoicePalette::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(34);
+    return 34;
 }
 
 // Address: 0x00654c20 - 0x00654d8b (363 bytes)
@@ -189,6 +191,8 @@ __attribute__((weak)) bool rCharacterEditVoicePalette::loadCore(MtDataReader& r)
 // No out-of-line body: no code in the ELF
 // u32 rCharacterEditVoicePalette::getUIDFromVoiceNo(u32 voiceNo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditVoicePalette::MyDTI rCharacterEditVoicePalette::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditVoicePalette.cpp at 0x00654de2-0x00654e1f (called at rCharacterEditVoicePalette.cpp:40)
 //   in _GLOBAL__sub_I_rCharacterEditVoicePalette.cpp at 0x00654de2-0x00654e1f (called at rCharacterEditVoicePalette.h:134)
@@ -197,7 +201,7 @@ __attribute__((weak)) bool rCharacterEditVoicePalette::loadCore(MtDataReader& r)
 // Address: 0x00654af0 - 0x00654b54 (100 bytes)
 MtObject* rCharacterEditVoicePalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditVoicePalette;
+    return new (16u) rCharacterEditVoicePalette;
 }
 
 // Instance at 0x01a7f870 - 0x01a7f882 (18 bytes) of the generic rTbl2<T>::getData

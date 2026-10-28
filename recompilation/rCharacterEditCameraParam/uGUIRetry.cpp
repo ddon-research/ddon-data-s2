@@ -34,7 +34,7 @@ const MtDTI& uGUIRetry::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIRetry::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIRetry::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIRetry::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* uGUIRetry::getAllocator() {
 // Address: 0x00c1eb30 - 0x00c1eb70 (64 bytes)
 void* uGUIRetry::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIRetry::getAllocator()->memAlloc(sz, align, ::uGUIRetry::DTI.::MtDTI::getID());
+    return uGUIRetry::getAllocator()->memAlloc(sz, align, uGUIRetry::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* uGUIRetry::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIRetry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRetry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRetry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,25 +77,25 @@ inline void uGUIRetry::operator delete(void* p_addr) {
 // Also emitted as: _ZN9uGUIRetryD0Ev at 0x00c1ef30
 uGUIRetry::~uGUIRetry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGMDRes != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGMDRes->::cResource::release();
-        this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    if (mpGMDRes != nullptr) {
+        mpGMDRes->release();
+        mpGMDRes = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c1efc0 - 0x00c1f06f (175 bytes)
 bool uGUIRetry::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_RETRY_GUI"), static_cast<u32>(129), static_cast<t64>(1413870035)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RETRY_GUI"), 129u, 1413870035l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -107,9 +107,9 @@ bool uGUIRetry::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -136,31 +136,31 @@ __attribute__((weak)) void uGUIRetry::setup() {
 // Address: 0x00c1f070 - 0x00c1f103 (147 bytes)
 void uGUIRetry::kill() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpGUIAnnounce != static_cast<uGUIAnnounce*>(nullptr)) {
-        this->mpGUIAnnounce->kill();
-        this->mpGUIAnnounce = static_cast<uGUIAnnounce*>(nullptr);
+    if (mpGUIAnnounce != nullptr) {
+        mpGUIAnnounce->kill();
+        mpGUIAnnounce = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-        this->::uGUIBase::kill();
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+        this->uGUIBase::kill();
         // inferred: a temporary for the value the load at 0xc1f0c1 read, used 4 times; no DWARF local holds it
-        uGUIRetrySelect* t0 = this->mpGUISelect;
-        if (t0 != static_cast<uGUIRetrySelect*>(nullptr)) {
-            if (t0->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                t0->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
+        uGUIRetrySelect* t0 = mpGUISelect;
+        if (t0 != nullptr) {
+            if (t0->mpListCtrl != nullptr) {
+                t0->mpListCtrl->setCurrentPos(2, false);
             }
-            t0->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
+            t0->setFlowId(3u);
         }
     } else {
-        this->::uGUIBase::kill();
+        this->uGUIBase::kill();
         // inferred: a temporary for the value the load at 0xc1f0c1 read, used 4 times; no DWARF local holds it
-        uGUIRetrySelect* t0 = this->mpGUISelect;
-        if (t0 != static_cast<uGUIRetrySelect*>(nullptr)) {
-            if (t0->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                t0->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
+        uGUIRetrySelect* t0 = mpGUISelect;
+        if (t0 != nullptr) {
+            if (t0->mpListCtrl != nullptr) {
+                t0->mpListCtrl->setCurrentPos(2, false);
             }
-            t0->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
+            t0->setFlowId(3u);
         }
     }
 }
@@ -168,29 +168,29 @@ void uGUIRetry::kill() {
 // Address: 0x00c1f110 - 0x00c1f115 (5 bytes)
 void uGUIRetry::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00c1f120 - 0x00c1f18d (109 bytes)
 void uGUIRetry::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIAnnounce != static_cast<uGUIAnnounce*>(nullptr)) {
-        if (this->mpGUIAnnounce->::cUnit::isEnable() == false) {
-            this->mpGUIAnnounce = static_cast<uGUIAnnounce*>(nullptr);
+    if (mpGUIAnnounce != nullptr) {
+        if (!mpGUIAnnounce->isEnable()) {
+            mpGUIAnnounce = nullptr;
         }
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable() == false) {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUISelect == static_cast<uGUIRetrySelect*>(nullptr)) {
+    if (mpGUISelect == nullptr) {
         return;
     }
-    if (this->mpGUISelect->::cUnit::isEnable() != false) {
+    if (mpGUISelect->isEnable()) {
         return;
     }
-    this->mpGUISelect = static_cast<uGUIRetrySelect*>(nullptr);
+    mpGUISelect = nullptr;
 }
 
 // Address: 0x00c1fa30 - 0x00c1fc47 (535 bytes)
@@ -218,9 +218,26 @@ __attribute__((weak)) void uGUIRetry::initDialog(MT_CTSTR text, MT_CTSTR analyze
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (128 bytes)
-//   in uGUIRetry::updateConfirm at 0x00c1f78a-0x00c1f80a (called at uGUIRetry.cpp:327)
-// void uGUIRetry::updateDialog();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIRetry::updateConfirm at 0xc1f78a-0xc1f80a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIRetry::updateDialog() {
+    if (mpGUISystemMsg != nullptr) {
+        if (mpGUISystemMsg->mResult == RESULT_EXIT) {
+            mDialogResult = 1;
+            if (mpGUISystemMsg->getChoicePos(-1) == 0) {
+                mDialogResult = 0;
+            }
+            if (mpGUISystemMsg != nullptr) {
+                mpGUISystemMsg->mEndType = 0;
+                mpGUISystemMsg->end();
+            }
+            mpGUISystemMsg = nullptr;
+            static_cast<sGUIExt*>(sGUI::mpInstance)->reqWindowActive(static_cast<uGUIBase*>(this));
+        }
+    } else {
+        mDialogResult = 1;
+    }
+}
 
 // Address: 0x00c1ff60 - 0x00c20a08 (2728 bytes)
 __attribute__((weak)) void uGUIRetry::initRevive(u32 type) {
@@ -295,31 +312,31 @@ void uGUIRetry::setEnable(u32 index, bool isEnable) {
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as int
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (index <= static_cast<u32>(4)) {
-        this->mItem[index].isEnable = isEnable;
+    if (index <= 4u) {
+        mItem[index].isEnable = isEnable;
         // inferred: an ordered temporary, read before a later effect: the value read at 0xc21222, held ahead of the effects the ELF orders after it
-        uGUIBase::cVerticalList* t0 = this->mpListCtrl;
-        if (t0 != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        cVerticalList* t0 = mpListCtrl;
+        if (t0 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xc21231, held ahead of the effects the ELF orders after it
-            s32 t1 = t0->::cControl::getCurrentPos();
-            if (isEnable != false) {
+            s32 t1 = t0->getCurrentPos();
+            if (isEnable) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
-                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
-                this->::uGUIBase::setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(t1 == static_cast<int>(index)) * static_cast<unsigned long>(3)) + static_cast<unsigned long>(1)), false);
+                cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
+                setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(t1 == static_cast<int>(index)) * 3) + 1ul), false);
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
-                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
-                this->::uGUIBase::setSequenceId(t2, static_cast<u32>(7), false);
+                cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
+                setSequenceId(t2, 7u, false);
             }
         } else {
-            if (isEnable != false) {
+            if (isEnable) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
-                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
-                this->::uGUIBase::setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(index == static_cast<u32>(0)) * static_cast<unsigned long>(3)) + static_cast<unsigned long>(1)), false);
+                cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
+                setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(index == 0) * 3) + 1ul), false);
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
-                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
-                this->::uGUIBase::setSequenceId(t2, static_cast<u32>(7), false);
+                cGUIInstAnimation* t2 = mItem[index].mpInstAnimText;
+                setSequenceId(t2, 7u, false);
             }
         }
     }
@@ -361,11 +378,11 @@ void uGUIRetry::setEnable(u32 index, bool isEnable) {
 // Address: 0x00c20fc0 - 0x00c20ff1 (49 bytes)
 void uGUIRetry::reqDecideAnim() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISelect == static_cast<uGUIRetrySelect*>(nullptr)) {
+    if (mpGUISelect == nullptr) {
         return;
     }
-    this->mpGUISelect->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
-    this->mpGUISelect = static_cast<uGUIRetrySelect*>(nullptr);
+    mpGUISelect->setFlowId(3u);
+    mpGUISelect = nullptr;
 }
 
 // Address: 0x00c1f640 - 0x00c1f641 (1 bytes)
@@ -391,29 +408,29 @@ __attribute__((weak)) void uGUIRetry::updateConfirm() {
 // Address: 0x00c1f870 - 0x00c1f87c (12 bytes)
 void uGUIRetry::updateCountDown() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCharge.::uGUIBase::cReferenceUIChargesInfo::update();
+    mCharge.uGUIBase::cReferenceUIChargesInfo::update();
 }
 
 // Address: 0x00c1f880 - 0x00c1f88c (12 bytes)
 void uGUIRetry::updateHide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCursor.::uGUIBase::cReferenceUIVlCursor::update();
+    mCursor.uGUIBase::cReferenceUIVlCursor::update();
 }
 
 // Address: 0x00c1f8a0 - 0x00c1f8c8 (40 bytes)
 u32 uGUIRetry::evCtrlListDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDecide = true;
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(4));
-    return static_cast<u32>(1);
+    mIsDecide = true;
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 4u);
+    return 1;
 }
 
 // Address: 0x00c1f8d0 - 0x00c1f8f8 (40 bytes)
 u32 uGUIRetry::evCtrlListCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCancel = true;
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
-    return static_cast<u32>(1);
+    mIsCancel = true;
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
+    return 1;
 }
 
 // Address: 0x00c1f900 - 0x00c1f96e (110 bytes)
@@ -497,6 +514,8 @@ __attribute__((weak)) void uGUIRetry::clearItem() {
 // No out-of-line body: 1 inlined copy in 1 function (30 bytes)
 //   in uGUIRetry::initDown at 0x00c1faef-0x00c1fb0d (called at uGUIRetry.cpp:457)
 // MT_CTSTR uGUIRetry::getDlgMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRetry::MyDTI uGUIRetry::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIRetry.cpp at 0x00c2135f-0x00c2139c (called at uGUIRetry.cpp:36)

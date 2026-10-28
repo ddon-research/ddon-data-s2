@@ -36,7 +36,7 @@ const MtDTI& cRoomWearParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cRoomWearParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memAlloc(sz, align, ::cRoomWearParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cRoomWearParam::DTI)->memAlloc(sz, align, cRoomWearParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
@@ -51,7 +51,7 @@ inline void* cRoomWearParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cRoomWearParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cRoomWearParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -93,44 +93,46 @@ __attribute__((weak)) void cRoomWearParam::createProperty(MtPropertyList& s) {
 // Address: 0x006baad0 - 0x006baae2 (18 bytes)
 u16 cRoomWearParam::getAH(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mAH_M) : (&this->mAH_W));
+    return *((sex == 0) ? (&mAH_M) : (&mAH_W));
 }
 
 // Address: 0x006baaf0 - 0x006bab02 (18 bytes)
 u16 cRoomWearParam::getAB(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mAB_M) : (&this->mAB_W));
+    return *((sex == 0) ? (&mAB_M) : (&mAB_W));
 }
 
 // Address: 0x006bab10 - 0x006bab22 (18 bytes)
 u16 cRoomWearParam::getWB(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mWB_M) : (&this->mWB_W));
+    return *((sex == 0) ? (&mWB_M) : (&mWB_W));
 }
 
 // Address: 0x006bab30 - 0x006bab42 (18 bytes)
 u16 cRoomWearParam::getAA(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mAA_M) : (&this->mAA_W));
+    return *((sex == 0) ? (&mAA_M) : (&mAA_W));
 }
 
 // Address: 0x006bab50 - 0x006bab62 (18 bytes)
 u16 cRoomWearParam::getAL(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mAL_M) : (&this->mAL_W));
+    return *((sex == 0) ? (&mAL_M) : (&mAL_W));
 }
 
 // Address: 0x006bab70 - 0x006bab82 (18 bytes)
 u16 cRoomWearParam::getWL(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mWL_M) : (&this->mWL_W));
+    return *((sex == 0) ? (&mWL_M) : (&mWL_W));
 }
 
 // Address: 0x006bab90 - 0x006baba2 (18 bytes)
 u16 cRoomWearParam::getAC(u32 sex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return *((sex == static_cast<u32>(0)) ? (&this->mAC_M) : (&this->mAC_W));
+    return *((sex == 0) ? (&mAC_M) : (&mAC_W));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cRoomWearParam::MyDTI cRoomWearParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rRoomWearParam.cpp at 0x006bae5e-0x006bae9b (called at rRoomWearParam.cpp:44)
@@ -140,7 +142,7 @@ u16 cRoomWearParam::getAC(u32 sex) {
 // Address: 0x006b9d00 - 0x006b9d67 (103 bytes)
 MtObject* cRoomWearParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cRoomWearParam;
+    return new (16u) cRoomWearParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -165,7 +167,7 @@ const MtDTI& rRoomWearParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rRoomWearParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rRoomWearParam::DTI)->memAlloc(sz, align, ::rRoomWearParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rRoomWearParam::DTI)->memAlloc(sz, align, rRoomWearParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,7 +182,7 @@ inline void* rRoomWearParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rRoomWearParamD0Ev at 0x01aa4e14-0x01aa4e33, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rRoomWearParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rRoomWearParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rRoomWearParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,52 +199,52 @@ bool rRoomWearParam::loadData(MtDataReader& in, cRoomWearParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mItem);
+    nDDOIO::readData(in, pData->mItem);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mType);
+    nDDOIO::readData(in, pData->mType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAH_M);
+    nDDOIO::readData(in, pData->mAH_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAB_M);
+    nDDOIO::readData(in, pData->mAB_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWB_M);
+    nDDOIO::readData(in, pData->mWB_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAA_M);
+    nDDOIO::readData(in, pData->mAA_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAL_M);
+    nDDOIO::readData(in, pData->mAL_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWL_M);
+    nDDOIO::readData(in, pData->mWL_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAC_M);
+    nDDOIO::readData(in, pData->mAC_M);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAH_W);
+    nDDOIO::readData(in, pData->mAH_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAB_W);
+    nDDOIO::readData(in, pData->mAB_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWB_W);
+    nDDOIO::readData(in, pData->mWB_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAA_W);
+    nDDOIO::readData(in, pData->mAA_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAL_W);
+    nDDOIO::readData(in, pData->mAL_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWL_W);
+    nDDOIO::readData(in, pData->mWL_W);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAC_W);
+    nDDOIO::readData(in, pData->mAC_W);
     return true;
 }
 
@@ -255,8 +257,10 @@ MT_CTSTR rRoomWearParam::getExt() const {
 // Address: 0x01aa4f60 - 0x01aa4f66 (6 bytes)
 u32 rRoomWearParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rRoomWearParam::MyDTI rRoomWearParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rRoomWearParam.cpp at 0x006bae9b-0x006baed8 (called at rRoomWearParam.cpp:209)
@@ -266,7 +270,7 @@ u32 rRoomWearParam::getDataVersion() const {
 // Address: 0x006babb0 - 0x006bac14 (100 bytes)
 MtObject* rRoomWearParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rRoomWearParam;
+    return new (16u) rRoomWearParam;
 }
 
 // Instance at 0x01aa4f10 - 0x01aa4f26 (22 bytes) of the generic rTbl2<T>::getData

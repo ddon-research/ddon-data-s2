@@ -38,7 +38,7 @@ const MtDTI& sContextManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sContextManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sContextManager::DTI);
+    return MtMemoryAllocator::getAllocator(sContextManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* sContextManager::getAllocator() {
 // Address: 0x0074bc40 - 0x0074bc80 (64 bytes)
 void* sContextManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sContextManager::getAllocator()->memAlloc(sz, align, ::sContextManager::DTI.::MtDTI::getID());
+    return sContextManager::getAllocator()->memAlloc(sz, align, sContextManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* sContextManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sContextManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sContextManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sContextManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,13 +100,13 @@ __attribute__((weak)) void sContextManager::createMenu(MtPropertyList& s) {
 // Address: 0x0074c430 - 0x0074c435 (5 bytes)
 void sContextManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x0074c440 - 0x0074c445 (5 bytes)
 MtUI* sContextManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 559 inlined copies in 388 functions (7297 bytes)
@@ -119,16 +119,16 @@ MtUI* sContextManager::createUI(MtProperty& prop) {
 // Address: 0x0074c450 - 0x0074c4f7 (167 bytes)
 void sContextManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeleteTimer = this->mDeleteTimer - (::sMain::mpInstance)->mDeltaTime;
-    this->::sContextManager::updateContextInstanceCore(this->mList[12]);
-    this->::sContextManager::updateContextInstanceCore(this->mList[9]);
-    this->::sContextManager::updateContextInstanceCore(this->mList[11]);
-    this->::sContextManager::updateContextInstanceCore(this->mList[7]);
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::isResetInstanceArea() != false) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mIsResetInstanceArea = false;
+    mDeleteTimer = mDeleteTimer - (sMain::mpInstance)->mDeltaTime;
+    updateContextInstanceCore(mList[12]);
+    updateContextInstanceCore(mList[9]);
+    updateContextInstanceCore(mList[11]);
+    updateContextInstanceCore(mList[7]);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isResetInstanceArea()) {
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mIsResetInstanceArea = false;
     }
-    if (0.0f > this->mDeleteTimer) {
-        this->mDeleteTimer = this->mDeleteInterval;
+    if (0.0f > mDeleteTimer) {
+        mDeleteTimer = mDeleteInterval;
     }
 }
 
@@ -216,7 +216,7 @@ __attribute__((weak)) cContextInstHm* sContextManager::searchContextFromCharId(u
 // Address: 0x0074c980 - 0x0074c985 (5 bytes)
 cContextInstHm* sContextManager::getContextMyPlayer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpContextPlayer;
+    return mpContextPlayer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -306,22 +306,22 @@ __attribute__((weak)) cContextInstHm* sContextManager::getContextPlayer(u32 char
 // Address: 0x0074cee0 - 0x0074cf14 (52 bytes)
 cContextInstHm* sContextManager::getContextPlayerIndex(u32 index, bool validCheck) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(99)) {
-        if (validCheck != false) {
-            if (this->mpContextPlayer[index].::cContextInstance::isValid() == false) {
-                return static_cast<cContextInstHm*>(nullptr);
+    if (index <= 99u) {
+        if (validCheck) {
+            if (!mpContextPlayer[index].isValid()) {
+                return nullptr;
             }
         }
-        return &this->mpContextPlayer[index];
+        return &mpContextPlayer[index];
     } else {
-        return static_cast<cContextInstHm*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0074cf20 - 0x0074cf30 (16 bytes)
 bool sContextManager::isPlayerRPCID(u32 rpcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (rpcId - static_cast<u32>(2000)) <= static_cast<u32>(999);
+    return (rpcId - 2000u) <= 999u;
 }
 
 // Address: 0x0074cf30 - 0x0074cfa9 (121 bytes)
@@ -347,33 +347,31 @@ __attribute__((weak)) cContextInstHm* sContextManager::entryContextPartyPlayer(s
 // Address: 0x0074d1f0 - 0x0074d2d2 (226 bytes)
 __attribute__((weak)) void sContextManager::removeContextPartyPlayer(s32 memberIndex, bool bRemoveUI) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place read twice with no call between; the body oracle reports this body.
-    if (memberIndex > static_cast<s32>(-1)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (memberIndex > -1) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        if (this->mpContextPartyPlayerList[memberIndex] != static_cast<cContextInstHm*>(nullptr)) {
+        if (mpContextPartyPlayerList[memberIndex] != nullptr) {
             // inferred: a temporary for the value the load at 0x74d241 read, used once; no DWARF local holds it
-            sGame* t0 = ::sGame::getInstance();
-            if (t0->::sGame::isMySelfCharacterId(::cContextInterface::getPlCharacterId(this->mpContextPartyPlayerList[memberIndex])) == false) {
-                if ((bRemoveUI == false) == false) {
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::removeGauge(memberIndex);
+            sGame* t0 = sGame::getInstance();
+            if (!t0->isMySelfCharacterId(cContextInterface::getPlCharacterId(mpContextPartyPlayerList[memberIndex]))) {
+                if (!!bRemoveUI) {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->removeGauge(memberIndex);
                 }
             }
-            this->mpContextPartyPlayerList[memberIndex]->::cContextInstHm::removeParty();
-            this->mpContextPartyPlayerList[memberIndex] = static_cast<cContextInstHm*>(nullptr);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            mpContextPartyPlayerList[memberIndex]->cContextInstHm::removeParty();
+            mpContextPartyPlayerList[memberIndex] = nullptr;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
@@ -384,26 +382,24 @@ __attribute__((weak)) void sContextManager::removeContextPartyPlayer(s32 memberI
 void sContextManager::removeAllContextPartyPlayer(bool bRemoveUI) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(0), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(1), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(2), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(3), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(4), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(5), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(6), bRemoveUI);
-    this->::sContextManager::removeContextPartyPlayer(static_cast<s32>(7), bRemoveUI);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    removeContextPartyPlayer(0, bRemoveUI);
+    removeContextPartyPlayer(1, bRemoveUI);
+    removeContextPartyPlayer(2, bRemoveUI);
+    removeContextPartyPlayer(3, bRemoveUI);
+    removeContextPartyPlayer(4, bRemoveUI);
+    removeContextPartyPlayer(5, bRemoveUI);
+    removeContextPartyPlayer(6, bRemoveUI);
+    removeContextPartyPlayer(7, bRemoveUI);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -411,43 +407,42 @@ void sContextManager::removeAllContextPartyPlayer(bool bRemoveUI) {
 cContextInstHm* sContextManager::getContextPartyPlayer(u32 characterId, u32 pawnId) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x74d300, 0x74d32f)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cContextInstHm* * p8 = &this->mpContextPartyPlayerList[0];
+    cContextInstHm* * p8 = &mpContextPartyPlayerList[0];
     do {
-        if ((*p8) != static_cast<cContextInstHm*>(nullptr)) {
-            if ((*p8)->::cContextInstance::isValid()) {
-                if (::cContextInterface::checkId(*p8, characterId, pawnId) == false) {
-                } else {
+        if ((*p8) != nullptr) {
+            if ((*p8)->cContextInstance::isValid()) {
+                if (cContextInterface::checkId(*p8, characterId, pawnId)) {
                     return *p8;
                 }
             }
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p8 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(7));
-    return static_cast<cContextInstHm*>(nullptr);
+    } while (i <= 7u);
+    return nullptr;
 }
 
 // Address: 0x0074ca90 - 0x0074cab5 (37 bytes)
 cContextInstHm* sContextManager::getContextPartyPlayerIndex(u32 index, bool validCheck) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(7)) {
-        if (this->mpContextPartyPlayerList[index] != static_cast<cContextInstHm*>(nullptr)) {
-            if (validCheck != false) {
-                if (this->mpContextPartyPlayerList[index]->::cContextInstance::isValid()) {
-                    return this->mpContextPartyPlayerList[index];
+    if (index <= 7u) {
+        if (mpContextPartyPlayerList[index] != nullptr) {
+            if (validCheck) {
+                if (mpContextPartyPlayerList[index]->cContextInstance::isValid()) {
+                    return mpContextPartyPlayerList[index];
                 } else {
-                    return static_cast<cContextInstHm*>(nullptr);
+                    return nullptr;
                 }
             } else {
-                return this->mpContextPartyPlayerList[index];
+                return mpContextPartyPlayerList[index];
             }
         } else {
-            return static_cast<cContextInstHm*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<cContextInstHm*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -469,33 +464,33 @@ __attribute__((weak)) const cContextInstHm* sContextManager::getContextPartyLead
 // Address: 0x0074d4e0 - 0x0074d596 (182 bytes)
 bool sContextManager::isPartyMember(u32 characterId, u32 pawnId) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     // inferred: DWARF's location-less 'i' (lexical block [0x74d517, 0x74d53c), [0x74d55a, 0x74d576), [0x74d591, 0x74d596)) is the counter this loop steps
-    for (u32 i = static_cast<u32>(0);;) {
+    for (u32 i = 0;;) {
         // inferred: the value carried to 0x74d53c; no location-less local in scope fits
-        bool v1_0 = ::cContextInterface::checkId(this->mpContextPartyPlayerList[i], characterId, pawnId);
-        if (v1_0 != false) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+        bool v1_0 = cContextInterface::checkId(mpContextPartyPlayerList[i], characterId, pawnId);
+        if (v1_0) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
         } else {
-            if ((i + static_cast<u32>(1)) <= static_cast<u32>(7)) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) <= 7u) {
+                i = i + 1u;
             } else {
                 break;
             }
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     return false;
@@ -505,41 +500,41 @@ bool sContextManager::isPartyMember(u32 characterId, u32 pawnId) {
 bool sContextManager::isPartyMember(const cContextInstHm* pContext) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cContextInstHm* * p0_0 = &this->mpContextPartyPlayerList[0];
+    cContextInstHm* * p0_0 = &mpContextPartyPlayerList[0];
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     // inferred: the value carried to 0x74d5f0; no location-less local in scope fits
     cContextInstHm* * v1_0;
     // inferred: the value carried to 0x74d5f0; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
         if (pContext == (*p0_0)) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
-                p0_0 += static_cast<int>(1);
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 7u) {
+                p0_0 += 1;
+                i0_1 += 1u;
             } else {
-                v1_0 = &p0_0[static_cast<int>(1)];
-                v1_1 = i0_1 + static_cast<unsigned int>(1);
+                v1_0 = &p0_0[1];
+                v1_1 = i0_1 + 1u;
                 break;
             }
         }
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
     return false;
@@ -683,6 +678,11 @@ __attribute__((weak)) cContextInstance* sContextManager::getContextEnemyAlive(nL
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sContextManager::MyDTI sContextManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sContextManager* sContextManager::mpInstance;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sContextManager.cpp at 0x0074f38c-0x0074f3c9 (called at sContextManager.cpp:185)
 //   in _GLOBAL__sub_I_sContextManager.cpp at 0x0074f38c-0x0074f3c9 (called at sContextManager.h:38)
@@ -717,7 +717,7 @@ const MtDTI& sContextManager::List::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sContextManager::List::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sContextManager::List::DTI)->memAlloc(sz, align, ::sContextManager::List::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sContextManager::List::DTI)->memAlloc(sz, align, sContextManager::List::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -731,7 +731,7 @@ inline void* sContextManager::List::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sContextManager::List::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sContextManager::List::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sContextManager::List::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -762,7 +762,7 @@ __attribute__((weak)) void sContextManager::List::createProperty(MtPropertyList&
 // Address: 0x0074bbf0 - 0x0074bbf5 (5 bytes)
 MtUI* sContextManager::List::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (57 bytes)
@@ -793,6 +793,8 @@ MtUI* sContextManager::List::createUI(MtProperty& prop) {
 // No out-of-line body: no code in the ELF
 // cContext* sContextManager::List::getEnd();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sContextManager::List::MyDTI sContextManager::List::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sContextManager.cpp at 0x0074f34f-0x0074f38c (called at sContextManager.cpp:41)
 //   in _GLOBAL__sub_I_sContextManager.cpp at 0x0074f34f-0x0074f38c (called at sContextManager.h:47)
@@ -801,6 +803,6 @@ MtUI* sContextManager::List::createUI(MtProperty& prop) {
 // Address: 0x0074ba90 - 0x0074bae7 (87 bytes)
 MtObject* sContextManager::List::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sContextManager::List;
+    return new (16u) sContextManager::List;
 }
 

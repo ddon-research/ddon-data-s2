@@ -23,7 +23,7 @@ const MtDTI& cEfcMotSync::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cEfcMotSync::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cEfcMotSync::DTI);
+    return MtMemoryAllocator::getAllocator(cEfcMotSync::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,7 +32,7 @@ inline MtAllocator* cEfcMotSync::getAllocator() {
 // Address: 0x0009f3a0 - 0x0009f3e0 (64 bytes)
 void* cEfcMotSync::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cEfcMotSync::getAllocator()->memAlloc(sz, align, ::cEfcMotSync::DTI.::MtDTI::getID());
+    return cEfcMotSync::getAllocator()->memAlloc(sz, align, cEfcMotSync::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* cEfcMotSync::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEfcMotSync::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEfcMotSync::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,19 +62,19 @@ inline void cEfcMotSync::operator delete(void* p_addr) {
 // Address: 0x0009f450 - 0x0009f46e (30 bytes)
 cEfcMotSync::cEfcMotSync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSyncManageList = static_cast<cEfcMotSync::SyncManageFactor*>(nullptr);
-    this->mSyncManageNum = static_cast<u32>(0);
+    mpSyncManageList = nullptr;
+    mSyncManageNum = 0;
 }
 
 // Address: 0x0009f470 - 0x0009f4c2 (82 bytes)
 // Also emitted as: _ZN11cEfcMotSyncD0Ev at 0x0009f4e0
 cEfcMotSync::~cEfcMotSync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSyncManageList != static_cast<cEfcMotSync::SyncManageFactor*>(nullptr)) {
-        delete[] this->mpSyncManageList;
-        this->mpSyncManageList = static_cast<cEfcMotSync::SyncManageFactor*>(nullptr);
+    if (mpSyncManageList != nullptr) {
+        delete[] mpSyncManageList;
+        mpSyncManageList = nullptr;
     }
-    this->mSyncManageNum = static_cast<u32>(0);
+    mSyncManageNum = 0;
 }
 
 // Address: 0x0009f550 - 0x0009f85f (783 bytes)
@@ -120,6 +120,8 @@ __attribute__((weak)) void cEfcMotSync::moveSync(uDDOModel* pChar) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEfcMotSync::MyDTI cEfcMotSync::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEfcMotSync.cpp at 0x0009fe4e-0x0009fe87 (called at cEfcMotSync.cpp:83)
 //   in _GLOBAL__sub_I_cEfcMotSync.cpp at 0x0009fe4e-0x0009fe87 (called at cEfcMotSync.h:45)
@@ -128,7 +130,7 @@ __attribute__((weak)) void cEfcMotSync::moveSync(uDDOModel* pChar) {
 // Address: 0x0009f350 - 0x0009f39f (79 bytes)
 MtObject* cEfcMotSync::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEfcMotSync;
+    return new (16u) cEfcMotSync;
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,12 +172,12 @@ const MtDTI& cEfcMotSync::SyncManageFactor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cEfcMotSync16SyncManageFactorD0Ev at 0x01968100-0x0196812a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cEfcMotSync::SyncManageFactor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEfcMotSync::SyncManageFactor::operator delete[](void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -339,6 +341,8 @@ __attribute__((weak)) void cEfcMotSync::SyncManageFactor::createProperty(MtPrope
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in cEfcMotSync::moveSync at 0x0009faa9-0x0009fab0 (called at cEfcMotSync.cpp:266)
 // f32 cEfcMotSync::SyncManageFactor::getStartFrameEx() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEfcMotSync::SyncManageFactor::MyDTI cEfcMotSync::SyncManageFactor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cEfcMotSync.cpp at 0x0009fe0e-0x0009fe4e (called at cEfcMotSync.cpp:52)

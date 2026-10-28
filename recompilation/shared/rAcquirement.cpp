@@ -37,7 +37,7 @@ const MtDTI& rAcquirement::cSkillLevelData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rAcquirement::cSkillLevelData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cSkillLevelData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cSkillLevelData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,6 +75,8 @@ inline void rAcquirement::cSkillLevelData::operator delete(void* p_addr) {
 //   in _ZN6nDDOIO11readMtArrayIN12rAcquirement15cSkillLevelDataEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a6f2ee-0x01a6f317 (called at nDDOIO.h:451)
 // void rAcquirement::cSkillLevelData::load(MtDataReader& r);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cSkillLevelData::MyDTI rAcquirement::cSkillLevelData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e140-0x0063e184 (called at rAcquirement.cpp:23)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e140-0x0063e184 (called at rAcquirement.h:24)
@@ -83,7 +85,7 @@ inline void rAcquirement::cSkillLevelData::operator delete(void* p_addr) {
 // Address: 0x0063d610 - 0x0063d663 (83 bytes)
 MtObject* rAcquirement::cSkillLevelData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cSkillLevelData;
+    return new (16u) ::rAcquirement::cSkillLevelData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -111,7 +113,7 @@ const MtDTI& rAcquirement::cCustomSkillData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rAcquirement::cCustomSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cCustomSkillData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cCustomSkillData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -149,6 +151,8 @@ inline void rAcquirement::cCustomSkillData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // rAcquirement::cCustomSkillData::cCustomSkillData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cCustomSkillData::MyDTI rAcquirement::cCustomSkillData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e184-0x0063e1bd (called at rAcquirement.cpp:24)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e184-0x0063e1bd (called at rAcquirement.h:51)
@@ -157,7 +161,7 @@ inline void rAcquirement::cCustomSkillData::operator delete(void* p_addr) {
 // Address: 0x0063d6e0 - 0x0063d75b (123 bytes)
 MtObject* rAcquirement::cCustomSkillData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cCustomSkillData;
+    return new (16u) ::rAcquirement::cCustomSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -185,7 +189,7 @@ const MtDTI& rAcquirement::cNormalSkillData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rAcquirement::cNormalSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cNormalSkillData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cNormalSkillData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -223,6 +227,8 @@ inline void rAcquirement::cNormalSkillData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // rAcquirement::cNormalSkillData::cNormalSkillData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cNormalSkillData::MyDTI rAcquirement::cNormalSkillData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e1bd-0x0063e1f6 (called at rAcquirement.cpp:25)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e1bd-0x0063e1f6 (called at rAcquirement.h:85)
@@ -231,7 +237,7 @@ inline void rAcquirement::cNormalSkillData::operator delete(void* p_addr) {
 // Address: 0x0063d7d0 - 0x0063d829 (89 bytes)
 MtObject* rAcquirement::cNormalSkillData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cNormalSkillData;
+    return new (16u) ::rAcquirement::cNormalSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -258,7 +264,7 @@ const MtDTI& rAcquirement::cAbilityLevelData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rAcquirement::cAbilityLevelData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityLevelData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityLevelData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,6 +302,8 @@ inline void rAcquirement::cAbilityLevelData::operator delete(void* p_addr) {
 //   in _ZN6nDDOIO11readMtArrayIN12rAcquirement17cAbilityLevelDataEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a6f547-0x01a6f562 (called at nDDOIO.h:451)
 // void rAcquirement::cAbilityLevelData::load(MtDataReader& r);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cAbilityLevelData::MyDTI rAcquirement::cAbilityLevelData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e1f6-0x0063e22f (called at rAcquirement.cpp:26)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e1f6-0x0063e22f (called at rAcquirement.h:127)
@@ -304,7 +312,7 @@ inline void rAcquirement::cAbilityLevelData::operator delete(void* p_addr) {
 // Address: 0x0063d8a0 - 0x0063d8ed (77 bytes)
 MtObject* rAcquirement::cAbilityLevelData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityLevelData;
+    return new (16u) ::rAcquirement::cAbilityLevelData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -332,7 +340,7 @@ const MtDTI& rAcquirement::cAbilityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rAcquirement::cAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -370,6 +378,8 @@ inline void rAcquirement::cAbilityData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // rAcquirement::cAbilityData::cAbilityData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cAbilityData::MyDTI rAcquirement::cAbilityData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e22f-0x0063e268 (called at rAcquirement.cpp:27)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e22f-0x0063e268 (called at rAcquirement.h:151)
@@ -378,7 +388,7 @@ inline void rAcquirement::cAbilityData::operator delete(void* p_addr) {
 // Address: 0x0063d960 - 0x0063d9b3 (83 bytes)
 MtObject* rAcquirement::cAbilityData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityData;
+    return new (16u) ::rAcquirement::cAbilityData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,7 +416,7 @@ const MtDTI& rAcquirement::cAbilityAddData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rAcquirement::cAbilityAddData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -444,6 +454,8 @@ inline void rAcquirement::cAbilityAddData::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // rAcquirement::cAbilityAddData::cAbilityAddData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::cAbilityAddData::MyDTI rAcquirement::cAbilityAddData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e268-0x0063e2a1 (called at rAcquirement.cpp:28)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e268-0x0063e2a1 (called at rAcquirement.h:190)
@@ -452,7 +464,7 @@ inline void rAcquirement::cAbilityAddData::operator delete(void* p_addr) {
 // Address: 0x0063da30 - 0x0063daa3 (115 bytes)
 MtObject* rAcquirement::cAbilityAddData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityAddData;
+    return new (16u) ::rAcquirement::cAbilityAddData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -477,7 +489,7 @@ const MtDTI& rAcquirement::rCustomSkillData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAcquirement::rCustomSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rCustomSkillData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rCustomSkillData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -526,8 +538,10 @@ MT_CTSTR rAcquirement::rCustomSkillData::getExt() const {
 // Address: 0x01a6f960 - 0x01a6f966 (6 bytes)
 u32 rAcquirement::rCustomSkillData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::rCustomSkillData::MyDTI rAcquirement::rCustomSkillData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e2a1-0x0063e2e1 (called at rAcquirement.cpp:29)
@@ -537,7 +551,7 @@ u32 rAcquirement::rCustomSkillData::getDataVersion() const {
 // Address: 0x0063db20 - 0x0063db84 (100 bytes)
 MtObject* rAcquirement::rCustomSkillData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAcquirement::rCustomSkillData;
+    return new (16u) ::rAcquirement::rCustomSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -562,7 +576,7 @@ const MtDTI& rAcquirement::rNormalSkillData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAcquirement::rNormalSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rNormalSkillData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rNormalSkillData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -604,8 +618,10 @@ MT_CTSTR rAcquirement::rNormalSkillData::getExt() const {
 // Address: 0x01a6fc20 - 0x01a6fc26 (6 bytes)
 u32 rAcquirement::rNormalSkillData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::rNormalSkillData::MyDTI rAcquirement::rNormalSkillData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e2e1-0x0063e31a (called at rAcquirement.cpp:30)
@@ -615,7 +631,7 @@ u32 rAcquirement::rNormalSkillData::getDataVersion() const {
 // Address: 0x0063dc00 - 0x0063dc64 (100 bytes)
 MtObject* rAcquirement::rNormalSkillData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAcquirement::rNormalSkillData;
+    return new (16u) ::rAcquirement::rNormalSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -640,7 +656,7 @@ const MtDTI& rAcquirement::rAbilityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAcquirement::rAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -703,8 +719,10 @@ MT_CTSTR rAcquirement::rAbilityData::getExt() const {
 // Address: 0x01a6ffa0 - 0x01a6ffa6 (6 bytes)
 u32 rAcquirement::rAbilityData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::rAbilityData::MyDTI rAcquirement::rAbilityData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e31a-0x0063e353 (called at rAcquirement.cpp:31)
@@ -714,7 +732,7 @@ u32 rAcquirement::rAbilityData::getDataVersion() const {
 // Address: 0x0063dce0 - 0x0063dd44 (100 bytes)
 MtObject* rAcquirement::rAbilityData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAcquirement::rAbilityData;
+    return new (16u) ::rAcquirement::rAbilityData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -739,7 +757,7 @@ const MtDTI& rAcquirement::rAbilityAddData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityAddData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityAddData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -785,8 +803,10 @@ MT_CTSTR rAcquirement::rAbilityAddData::getExt() const {
 // Address: 0x01a703b0 - 0x01a703b6 (6 bytes)
 u32 rAcquirement::rAbilityAddData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAcquirement::rAbilityAddData::MyDTI rAcquirement::rAbilityAddData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAcquirement.cpp at 0x0063e353-0x0063e38c (called at rAcquirement.cpp:32)
@@ -796,7 +816,7 @@ u32 rAcquirement::rAbilityAddData::getDataVersion() const {
 // Address: 0x0063ddc0 - 0x0063de24 (100 bytes)
 MtObject* rAcquirement::rAbilityAddData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAcquirement::rAbilityAddData;
+    return new (16u) ::rAcquirement::rAbilityAddData;
 }
 
 // Instance at 0x01a705d0 - 0x01a705d5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

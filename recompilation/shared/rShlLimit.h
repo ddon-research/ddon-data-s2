@@ -175,15 +175,15 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCustomShlLimit::cCustomShlLimit() {
-    this->mLimitId = static_cast<s32>(-1);
-    this->mShlMaxNum = static_cast<u32>(0);
-    this->mLimitType = static_cast<u32>(0);
-    this->mKillType = static_cast<u32>(0);
+    this->mLimitId = -1;
+    this->mShlMaxNum = 0;
+    this->mLimitType = 0;
+    this->mKillType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cShlLimit::cShlLimit() {
-    this->mShlMaxNum = static_cast<u32>(0);
-    this->mLimitType = static_cast<u32>(0);
-    this->mCustomShlLimitId = static_cast<s32>(-1);
+    this->mShlMaxNum = 0;
+    this->mLimitType = 0;
+    this->mCustomShlLimitId = -1;
 }

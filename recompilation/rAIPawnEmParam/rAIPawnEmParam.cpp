@@ -53,7 +53,7 @@ const MtDTI& cAIPawnEmNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnEmNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnEmNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnEmNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (120 bytes)
@@ -80,6 +80,8 @@ cAIPawnEmNode::~cAIPawnEmNode() {
     DDON_STUB("cAIPawnEmNode::~cAIPawnEmNode")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnEmNode::MyDTI cAIPawnEmNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAIPawnEmParam.cpp at 0x0063ffa0-0x0063ffe2 (called at rAIPawnEmParam.cpp:60)
@@ -115,7 +117,7 @@ const MtDTI& rAIPawnEmParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnEmParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnEmParam::DTI)->memAlloc(sz, align, ::rAIPawnEmParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnEmParam::DTI)->memAlloc(sz, align, rAIPawnEmParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rAIPawnEmParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAIPawnEmParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAIPawnEmParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAIPawnEmParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,32 +161,32 @@ bool rAIPawnEmParam::loadData(MtDataReader& r, cAIPawnEmNode* pData) {
     pData->mEmStatusNo = r.readU32();
     // inferred: a temporary for the result of the call at 0x63fd97, used once; no DWARF local holds it
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&pData->mWeakAttrFlag), t0 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&pData->mWeakAttrFlag), t0 * 4u);
     // inferred: a temporary for the result of the call at 0x63fdb7, used once; no DWARF local holds it
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&pData->mDisableAttrFlag), t1 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&pData->mDisableAttrFlag), t1 * 4u);
     // inferred: a temporary for the result of the call at 0x63fdd7, used once; no DWARF local holds it
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&pData->mTargetPosFlag), t2 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&pData->mTargetPosFlag), t2 * 4u);
     pData->mActiveCoreRegionNo = r.readS32();
     pData->mAddPrio = r.readS32();
     // inferred: a temporary for the result of the call at 0x63fe11, used once; no DWARF local holds it
     u32 t3 = r.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    r.read(static_cast<void*>(&pData->mAIPawnEmParamFlag), t3 * static_cast<u32>(4));
-    ::nDDOIO::readData(r, pData->mFlgDefaultAttr);
+    r.read(static_cast<void*>(&pData->mAIPawnEmParamFlag), t3 * 4u);
+    nDDOIO::readData(r, pData->mFlgDefaultAttr);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mAttackNoInterval = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mAttackNoInterval = r.readU8() != 0;
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLayer);
+    nDDOIO::readData(r, pData->mLayer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mActiveMaskEffectResionNo);
+    nDDOIO::readData(r, pData->mActiveMaskEffectResionNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mEmSpStatus);
+    nDDOIO::readData(r, pData->mEmSpStatus);
     return true;
 }
 
@@ -197,7 +199,7 @@ MT_CTSTR rAIPawnEmParam::getExt() const {
 // Address: 0x01a72550 - 0x01a72556 (6 bytes)
 u32 rAIPawnEmParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // Address: 0x0063fec0 - 0x0063ff98 (216 bytes)
@@ -209,8 +211,10 @@ __attribute__((weak)) bool rAIPawnEmParam::loadCore(MtDataReader& r) {
 // Address: 0x01a72560 - 0x01a72566 (6 bytes)
 f32 rAIPawnEmParam::getDistance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDistance;
+    return mDistance;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnEmParam::MyDTI rAIPawnEmParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnEmParam.cpp at 0x0063ffe2-0x0064001f (called at rAIPawnEmParam.cpp:61)
@@ -220,7 +224,7 @@ f32 rAIPawnEmParam::getDistance() const {
 // Address: 0x0063fa90 - 0x0063fb0c (124 bytes)
 MtObject* rAIPawnEmParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnEmParam;
+    return new (16u) rAIPawnEmParam;
 }
 
 // Instance at 0x01a72500 - 0x01a72516 (22 bytes) of the generic rTbl2<T>::getData

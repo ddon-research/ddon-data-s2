@@ -130,11 +130,11 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK11rSwingModel5MyDTI11newInstanceEv at 0x011e1250-0x011e12b5, code DWARF attributes to no inlined copy
 inline rSwingModel::rSwingModel() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mSwingMode = static_cast<u32>(0);
+    this->::cResource::mAttr = 16;
+    this->mSwingMode = 0;
     this->mHighPrecisionMode = false;
-    this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
-    this->mpPrimQuantInfo = static_cast<rSwingModel::PRIMITIVE_QUANT_INFO*>(nullptr);
+    this->mpVertexBuffer = nullptr;
+    this->mpPrimQuantInfo = nullptr;
     this->mAdjustPosition = true;
     this->mAdjustNormalTangent = false;
     this->mUseWorldPosition = false;

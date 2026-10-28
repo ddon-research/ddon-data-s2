@@ -41,7 +41,7 @@ const MtDTI& cZoneExtendObject::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cZoneExtendObject::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneExtendObject::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneExtendObject::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline void cZoneExtendObject::operator delete(void* p_addr) {
 // Address: 0x01067860 - 0x01067877 (23 bytes)
 cZoneExtendObject::cZoneExtendObject() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = static_cast<nZone::cLayoutElement*>(nullptr);
+    mpOwner = nullptr;
 }
 
 // Address: 0x01067880 - 0x01067881 (1 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cZoneExtendObject::createProperty(MtPropertyList& s) 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cZoneExtendObject::registerOwner(nZone::cLayoutElement* pOwner);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cZoneExtendObject::MyDTI cZoneExtendObject::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneExtendObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

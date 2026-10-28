@@ -101,8 +101,8 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestSequence::cQuestSequence() {
-    this->mSeqNo = static_cast<u32>(0);
-    this->mQstId = static_cast<u32>(0);
+    this->mSeqNo = 0;
+    this->mQstId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

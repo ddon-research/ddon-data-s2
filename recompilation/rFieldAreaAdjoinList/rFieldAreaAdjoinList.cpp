@@ -37,7 +37,7 @@ const MtDTI& rFieldAreaAdjoinList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFieldAreaAdjoinList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::DTI)->memAlloc(sz, align, ::rFieldAreaAdjoinList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rFieldAreaAdjoinList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldAreaAdjoinList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,7 +67,7 @@ inline void rFieldAreaAdjoinList::operator delete(void* p_addr) {
 // Address: 0x00675120 - 0x00675125 (5 bytes)
 s16 rFieldAreaAdjoinList::getFieldAreaId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFieldAreaId;
+    return mFieldAreaId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,10 +102,10 @@ MT_CTSTR rFieldAreaAdjoinList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rFieldAreaAdjoinList::rFieldAreaAdjoinList() {
-    this->mpArray = static_cast<rFieldAreaAdjoinList::cAdjoinInfo*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
-    this->mFieldAreaId = static_cast<s16>(-1);
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    mpArray = nullptr;
+    mArrayNum = 0;
+    mFieldAreaId = -1;
+    setAttribute(22u);
 }
 
 // Address: 0x006754f0 - 0x00675585 (149 bytes)
@@ -142,6 +142,8 @@ __attribute__((weak)) bool rFieldAreaAdjoinList::save(MtStream& out) {
 //   in rFieldAreaAdjoinList::~rFieldAreaAdjoinList at 0x006755b8-0x00675629 (called at rFieldAreaAdjoinList.cpp:124)
 // void rFieldAreaAdjoinList::destruct();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaAdjoinList::MyDTI rFieldAreaAdjoinList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaAdjoinList.cpp at 0x006763b0-0x006763f1 (called at rFieldAreaAdjoinList.cpp:29)
 //   in _GLOBAL__sub_I_rFieldAreaAdjoinList.cpp at 0x006763b0-0x006763f1 (called at rFieldAreaAdjoinList.h:31)
@@ -150,7 +152,7 @@ __attribute__((weak)) bool rFieldAreaAdjoinList::save(MtStream& out) {
 // Address: 0x00675040 - 0x006750aa (106 bytes)
 MtObject* rFieldAreaAdjoinList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFieldAreaAdjoinList;
+    return new (16u) rFieldAreaAdjoinList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,9 +175,11 @@ const MtDTI& rFieldAreaAdjoinList::cAdjoinInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rFieldAreaAdjoinList::cAdjoinInfo::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::newInstance at 0x00675af4-0x00675b1d (called at rFieldAreaAdjoinList.cpp:243)
-// void* rFieldAreaAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* rFieldAreaAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::cAdjoinInfo::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rFieldAreaAdjoinList::cAdjoinInfo::operator new[](size_t sz, u32 align);
@@ -189,7 +193,7 @@ const MtDTI& rFieldAreaAdjoinList::cAdjoinInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldAreaAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,8 +213,35 @@ inline void rFieldAreaAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
 // Address: 0x00675f20 - 0x00675fbd (157 bytes)
 // Also emitted as: _ZN20rFieldAreaAdjoinList11cAdjoinInfoD0Ev at 0x00675fc0
 rFieldAreaAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
-    DDON_STUB("rFieldAreaAdjoinList::cAdjoinInfo::~cAdjoinInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mPositions.mLength != 0) {
+        // inferred: the value the loop at 0x675f50 carries; no location-less local in scope fits
+        u32 v0_0 = mPositions.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mPositions.mpArray[i0_3] != nullptr) {
+                delete mPositions.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPositions.mLength) {
+                    v0_0 = mPositions.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mPositions.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPositions.mpArray));
+    }
+    mPositions.mpArray = nullptr;
+    mPositions.mBufsiz = 0;
+    mPositions.mLength = 0;
 }
 
 // Address: 0x00676080 - 0x006763aa (810 bytes)
@@ -219,15 +250,17 @@ __attribute__((weak)) void rFieldAreaAdjoinList::cAdjoinInfo::createProperty(MtP
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaAdjoinList::cAdjoinInfo::MyDTI rFieldAreaAdjoinList::cAdjoinInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaAdjoinList.cpp at 0x006763f1-0x00676431 (called at rFieldAreaAdjoinList.cpp:243)
 //   in _GLOBAL__sub_I_rFieldAreaAdjoinList.cpp at 0x006763f1-0x00676431 (called at rFieldAreaAdjoinList.h:108)
 // rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00675af0 - 0x00675b69 (121 bytes)
-__attribute__((weak)) MtObject* rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::newInstance() const {
-    DDON_STUB("rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) rFieldAreaAdjoinList::cAdjoinInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -267,7 +300,7 @@ const MtDTI& rFieldAreaAdjoinList::cAdjoinInfo::cVector3::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20rFieldAreaAdjoinList11cAdjoinInfo8cVector3D0Ev at 0x01a905a0-0x01a905ca, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,6 +325,8 @@ __attribute__((weak)) void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::createPr
 // No out-of-line body: 1 inlined copy in 1 function (87 bytes)
 //   in rFieldAreaAdjoinList::save at 0x006759eb-0x00675a42 (called at nDDOIO.h:463)
 // void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaAdjoinList::cAdjoinInfo::cVector3::MyDTI rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaAdjoinList.cpp at 0x00676431-0x0067646a (called at rFieldAreaAdjoinList.cpp:244)

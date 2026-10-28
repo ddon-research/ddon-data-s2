@@ -34,7 +34,7 @@ const MtDTI& cpLockOn::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpLockOn::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpLockOn::DTI);
+    return MtMemoryAllocator::getAllocator(cpLockOn::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* cpLockOn::getAllocator() {
 // Address: 0x004cd2b0 - 0x004cd2f0 (64 bytes)
 void* cpLockOn::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpLockOn::getAllocator()->memAlloc(sz, align, ::cpLockOn::DTI.::MtDTI::getID());
+    return cpLockOn::getAllocator()->memAlloc(sz, align, cpLockOn::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* cpLockOn::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpLockOn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpLockOn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpLockOn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,22 +80,22 @@ cpLockOn::cpLockOn() {
 // Also emitted as: _ZN8cpLockOnD0Ev at 0x004cd480
 cpLockOn::~cpLockOn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpLockOn::releaseLockOnTarget();
-    if (::sLockOnManager::getInstance() != static_cast<sLockOnManager*>(nullptr)) {
-        ::sLockOnManager::getInstance()->::sLockOnManager::unregisterLockOn(this);
+    releaseLockOnTarget();
+    if (sLockOnManager::getInstance() != nullptr) {
+        sLockOnManager::getInstance()->unregisterLockOn(this);
     }
-    if (this->mpResource == static_cast<rJointInfo*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->mpResource->::cResource::release();
-    this->mpResource = static_cast<rJointInfo*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // Address: 0x01a5c140 - 0x01a5c149 (9 bytes)
 void cpLockOn::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004cd500 - 0x004cd70d (525 bytes)
@@ -118,20 +118,20 @@ __attribute__((weak)) void cpLockOn::sync() {
 // Address: 0x004cdc90 - 0x004cdcc3 (51 bytes)
 void cpLockOn::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x004cd870 - 0x004cd875 (5 bytes)
 void cpLockOn::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpLockOn::releaseLockOnTarget();
+    releaseLockOnTarget();
 }
 
 // Address: 0x004cd710 - 0x004cd824 (276 bytes)
@@ -144,34 +144,34 @@ __attribute__((weak)) void cpLockOn::update() {
 void cpLockOn::after() {
     // DWARF local not rendered: cLockOnTarget* pLockOnTarget;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     }
-    if (this->mArray.::MtArray::mLength == static_cast<u32>(0)) {
+    if (mArray.mLength == 0) {
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->::cpLockOn::updateLockOnTarget(static_cast<cpLockOn::cLockOnTarget*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]));
-        i += static_cast<u32>(1);
-    } while (i < this->mArray.::MtArray::mLength);
+        updateLockOnTarget(static_cast<cLockOnTarget*>(mArray.getBuffer()[static_cast<int>(i)]));
+        i += 1u;
+    } while (i < mArray.mLength);
 }
 
 // Address: 0x004cd950 - 0x004cd97f (47 bytes)
 void cpLockOn::setResource(rJointInfo* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpLockOn::releaseLockOnTarget();
-    this->mpResource = pRes;
-    if (pRes != static_cast<rJointInfo*>(nullptr)) {
-        pRes->::cResource::addRef();
+    releaseLockOnTarget();
+    mpResource = pRes;
+    if (pRes != nullptr) {
+        pRes->addRef();
     }
-    this->::cpLockOn::loadLockOnTarget();
+    loadLockOnTarget();
 }
 
 // Address: 0x01a5c100 - 0x01a5c105 (5 bytes)
 rJointInfo* cpLockOn::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // Address: 0x004cd980 - 0x004cdb8a (522 bytes)
@@ -190,51 +190,51 @@ __attribute__((weak)) void cpLockOn::releaseLockOnTarget() {
     // DWARF local not rendered: u32 num;
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpResource != static_cast<rJointInfo*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rJointInfo*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (::sGeneralPoint::getInstance() != static_cast<sGeneralPoint*>(nullptr)) {
-        if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (sGeneralPoint::getInstance() != nullptr) {
+        if (mArray.mLength != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value the loop at 0x4cd8d5 carries; no location-less local in scope fits
-            sGeneralPoint* v0_5 = ::sGeneralPoint::getInstance();
+            sGeneralPoint* v0_5 = sGeneralPoint::getInstance();
             // inferred: the value the loop at 0x4cd8d5 carries; no location-less local in scope fits
-            for (u32 v0_8 = this->mArray.::MtArray::mLength - static_cast<u32>(1);;) {
-                v0_5->::sGeneralPoint::releasePoint(static_cast<cGeneralPoint*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i0_3)]));
+            for (u32 v0_8 = mArray.mLength - 1u;;) {
+                v0_5->releasePoint(static_cast<cGeneralPoint*>(mArray.getBuffer()[static_cast<int>(i0_3)]));
                 if (i0_3 == v0_8) {
                     break;
                 } else {
-                    i0_3 += static_cast<unsigned int>(1);
-                    v0_5 = ::sGeneralPoint::getInstance();
+                    i0_3 += 1u;
+                    v0_5 = sGeneralPoint::getInstance();
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mAutoDelete != false) {
+    if (mArray.mAutoDelete) {
         // inferred: the value carried to 0x4cd923; no location-less local in scope fits
         u32 v4_0;
-        if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mArray.mLength != 0) {
             // inferred: the value the loop at 0x4cd900 carries; no location-less local in scope fits
-            u32 v2_0 = this->mArray.::MtArray::mLength;
+            u32 v2_0 = mArray.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i2_3 = static_cast<unsigned int>(0);
+            unsigned int i2_3 = 0;
             // inferred: the value carried to 0x4cd91f; no location-less local in scope fits
             u32 v3_0;
             for (;;) {
-                if (this->mArray.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mArray.::MtArray::mpArray[i2_3];
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                        v2_0 = this->mArray.::MtArray::mLength;
-                        i2_3 += static_cast<unsigned int>(1);
+                if (mArray.mpArray[i2_3] != nullptr) {
+                    delete mArray.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mArray.mLength) {
+                        v2_0 = mArray.mLength;
+                        i2_3 += 1u;
                     } else {
-                        v3_0 = this->mArray.::MtArray::mLength;
+                        v3_0 = mArray.mLength;
                         break;
                     }
                 } else {
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         v3_0 = v2_0;
                         break;
@@ -243,20 +243,20 @@ __attribute__((weak)) void cpLockOn::releaseLockOnTarget() {
             }
             v4_0 = v3_0;
         } else {
-            v4_0 = static_cast<u32>(0);
+            v4_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mArray.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v4_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mArray.mpArray), 0, static_cast<size_t>(v4_0) * 8);
     }
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mLength = 0;
 }
 
 // Address: 0x004cdba0 - 0x004cdbb2 (18 bytes)
 cpLockOn::cLockOnTarget* cpLockOn::getLockOnTarget(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mArray.::MtArray::mLength) {
-        return static_cast<cpLockOn::cLockOnTarget*>(this->mArray.::MtArray::mpArray[index]);
+    if (index < mArray.mLength) {
+        return static_cast<cLockOnTarget*>(mArray.mpArray[index]);
     } else {
-        return static_cast<cpLockOn::cLockOnTarget*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -267,17 +267,17 @@ void cpLockOn::setGpCategory(s32 category) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cpLockOn*
     // inferred: the value the loop at 0x4cdbd0 carries; no location-less local in scope fits
-    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88));
-    if (v0_0 != static_cast<unsigned int>(0)) {
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4cdbd0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mArray.::MtArray::getBuffer();
+        MtObject* * v0_1 = mArray.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(72)) = static_cast<unsigned int>(category);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 72) = static_cast<unsigned int>(category);
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -288,11 +288,11 @@ void cpLockOn::setGpCategory(s32 category) {
 // Address: 0x004cd440 - 0x004cd472 (50 bytes)
 void cpLockOn::unregister() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpLockOn::releaseLockOnTarget();
-    if (::sLockOnManager::getInstance() == static_cast<sLockOnManager*>(nullptr)) {
+    releaseLockOnTarget();
+    if (sLockOnManager::getInstance() == nullptr) {
         return;
     }
-    ::sLockOnManager::getInstance()->::sLockOnManager::unregisterLockOn(this);
+    sLockOnManager::getInstance()->unregisterLockOn(this);
 }
 
 // Address: 0x004cde80 - 0x004ce055 (469 bytes)
@@ -304,30 +304,30 @@ __attribute__((weak)) void cpLockOn::createProperty(MtPropertyList& s) {
 // Address: 0x004cdbf0 - 0x004cdc66 (118 bytes)
 void cpLockOn::callbackRegisterLockOnTarget() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     }
-    if (this->mNoEntry != false) {
+    if (mNoEntry) {
         return;
     }
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpModel->::cUnit::isEnable()) {
-            if (this->mArray.::MtArray::mLength == static_cast<u32>(0)) {
+    if (mpModel != nullptr) {
+        if (mpModel->isEnable()) {
+            if (mArray.mLength == 0) {
                 return;
             }
         } else {
             return;
         }
     } else {
-        if (this->mArray.::MtArray::mLength == static_cast<u32>(0)) {
+        if (mArray.mLength == 0) {
             return;
         }
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        ::sLockOnManager::getInstance()->::sLockOnManager::add(static_cast<cpLockOn::cLockOnTarget*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]));
-        i += static_cast<u32>(1);
-    } while (i < this->mArray.::MtArray::mLength);
+        sLockOnManager::getInstance()->add(static_cast<cLockOnTarget*>(mArray.getBuffer()[static_cast<int>(i)]));
+        i += 1u;
+    } while (i < mArray.mLength);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (171 bytes)
@@ -337,7 +337,7 @@ void cpLockOn::callbackRegisterLockOnTarget() {
 // Address: 0x004ce090 - 0x004ce09b (11 bytes)
 void cpLockOn::requestLockOnTargetAllOff() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestLockOffAll = static_cast<nLockOnTarget::LOCKON_ALL_CTRL>(1);
+    mRequestLockOffAll = nLockOnTarget::STATE_ALL_OFF;
 }
 
 // Address: 0x004ce070 - 0x004ce083 (19 bytes)
@@ -345,7 +345,7 @@ void cpLockOn::requestLockOnTargetRefAll(bool flag) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as nLockOnTarget::LOCKON_ALL_CTRL
-    this->mRequestLockOffAll = static_cast<nLockOnTarget::LOCKON_ALL_CTRL>(static_cast<unsigned long>(flag == false) | static_cast<unsigned long>(2));
+    mRequestLockOffAll = static_cast<nLockOnTarget::LOCKON_ALL_CTRL>(static_cast<unsigned long>(!flag) | 2);
 }
 
 // Address: 0x004ce0a0 - 0x004ce0d6 (54 bytes)
@@ -354,20 +354,20 @@ void cpLockOn::setLockOnTargetState(u32 jointInfoID, nLockOnTarget::LOCKON_TARGE
     // DWARF local not rendered: cLockOnTarget* pLockOn;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cpLockOn*
-    u32 length = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88));
-    if (length != static_cast<u32>(0)) {
+    u32 length = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 88);
+    if (length != 0) {
         // inferred: the value the loop at 0x4ce0b0 carries; no location-less local in scope fits
-        MtObject* * v0_4 = this->mArray.::MtArray::getBuffer();
+        MtObject* * v0_4 = mArray.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if (v0_4[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + static_cast<long>(140))) == jointInfoID) {
-                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + static_cast<long>(144)) = static_cast<unsigned int>(state);
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_4[static_cast<int>(i0_2)] != nullptr) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 140)) == jointInfoID) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + 144) = static_cast<unsigned int>(state);
                     return;
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < length) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < length) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -400,6 +400,8 @@ __attribute__((weak)) void cpLockOn::updateLockOnTarget(cpLockOn::cLockOnTarget*
     DDON_STUB("cpLockOn::updateLockOnTarget")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpLockOn::MyDTI cpLockOn::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpLockOn.cpp at 0x004ce122-0x004ce15f (called at cpLockOn.cpp:100)
@@ -447,7 +449,7 @@ const MtDTI& cpLockOn::cLockOnTarget::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cpLockOn::cLockOnTarget::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpLockOn::cLockOnTarget::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpLockOn::cLockOnTarget::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -481,6 +483,8 @@ cpLockOn::cLockOnTarget::cLockOnTarget() {
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
 //   in cpLockOn::setLockOnTargetState at 0x004ce0cf-0x004ce0d5 (called at cpLockOn.cpp:729)
 // void cpLockOn::cLockOnTarget::setLockOnTargetState(nLockOnTarget::LOCKON_TARGET_STATE state);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpLockOn::cLockOnTarget::MyDTI cpLockOn::cLockOnTarget::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpLockOn.cpp at 0x004ce0e0-0x004ce122 (called at cpLockOn.cpp:35)

@@ -35,7 +35,7 @@ const MtDTI& cDynamicBVHCollision::getDTI() const {
 // Address: 0x0132e240 - 0x0132e280 (64 bytes)
 void* cDynamicBVHCollision::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cDynamicBVHCollision::DTI)->memAlloc(sz, align, ::cDynamicBVHCollision::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cDynamicBVHCollision::DTI)->memAlloc(sz, align, cDynamicBVHCollision::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cDynamicBVHCollision::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20cDynamicBVHCollisionD0Ev at 0x0132e4ae-0x0132e4cf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cDynamicBVHCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDynamicBVHCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDynamicBVHCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ cDynamicBVHCollision::~cDynamicBVHCollision() {
 // Address: 0x0132e4d0 - 0x0132e4d5 (5 bytes)
 MtUI* cDynamicBVHCollision::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0132e4e0 - 0x0132e99c (1212 bytes)
@@ -93,7 +93,7 @@ __attribute__((weak)) void cDynamicBVHCollision::createProperty(MtPropertyList& 
 // Address: 0x01330240 - 0x01330249 (9 bytes)
 bool cDynamicBVHCollision::isEnableRoot() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRoot != static_cast<cDynamicBVHCollision::Node*>(nullptr);
+    return mpRoot != nullptr;
 }
 
 // Address: 0x0132e9a0 - 0x0132ea3c (156 bytes)
@@ -122,85 +122,85 @@ __attribute__((weak)) void cDynamicBVHCollision::updateLeaf(const MtAABB& aabb, 
 // Address: 0x0132f230 - 0x0132f23a (10 bytes)
 void cDynamicBVHCollision::removeLeaf(cDynamicBVHCollision::Node* pRemoveNode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cDynamicBVHCollision::removeLeaf(pRemoveNode, true);
+    removeLeaf(pRemoveNode, true);
 }
 
 // Address: 0x0132f240 - 0x0132f2f4 (180 bytes)
 void cDynamicBVHCollision::removeAll() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mReservedNodeNoUseNum == this->mReservedNodeNoUseMax) {
-        if (this->mpRoot != static_cast<cDynamicBVHCollision::Node*>(nullptr)) {
-            delete this->mpRoot;
-            this->mpRoot = static_cast<cDynamicBVHCollision::Node*>(nullptr);
+    if (mReservedNodeNoUseNum == mReservedNodeNoUseMax) {
+        if (mpRoot != nullptr) {
+            delete mpRoot;
+            mpRoot = nullptr;
         }
     } else {
-        if (this->mpRoot != static_cast<cDynamicBVHCollision::Node*>(nullptr)) {
-            this->::cDynamicBVHCollision::deleteTreeAllCore(this->mpRoot);
-            this->mpRoot = static_cast<cDynamicBVHCollision::Node*>(nullptr);
+        if (mpRoot != nullptr) {
+            deleteTreeAllCore(mpRoot);
+            mpRoot = nullptr;
         }
     }
-    if (this->mNoUseNodeArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mNoUseNodeArray.mLength != 0) {
         // inferred: the value the loop at 0x132f290 carries; no location-less local in scope fits
-        u32 v0_0 = this->mNoUseNodeArray.::MtArray::mLength;
+        u32 v0_0 = mNoUseNodeArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mNoUseNodeArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mNoUseNodeArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mNoUseNodeArray.::MtArray::mLength) {
-                    v0_0 = this->mNoUseNodeArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mNoUseNodeArray.mpArray[i0_3] != nullptr) {
+                delete mNoUseNodeArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNoUseNodeArray.mLength) {
+                    v0_0 = mNoUseNodeArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mNoUseNodeArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNoUseNodeArray.::MtArray::mpArray));
+    if (mNoUseNodeArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNoUseNodeArray.mpArray));
     }
-    this->mNoUseNodeArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mNoUseNodeArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mNoUseNodeArray.::MtArray::mLength = static_cast<u32>(0);
-    this->mLeafNum = static_cast<u32>(0);
+    mNoUseNodeArray.mpArray = nullptr;
+    mNoUseNodeArray.mBufsiz = 0;
+    mNoUseNodeArray.mLength = 0;
+    mLeafNum = 0;
 }
 
 // Address: 0x0132f300 - 0x0132f37c (124 bytes)
 void cDynamicBVHCollision::removeWorkBuffer() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mNoUseNodeArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mNoUseNodeArray.mLength != 0) {
         // inferred: the value the loop at 0x132f320 carries; no location-less local in scope fits
-        u32 v0_0 = this->mNoUseNodeArray.::MtArray::mLength;
+        u32 v0_0 = mNoUseNodeArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mNoUseNodeArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mNoUseNodeArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mNoUseNodeArray.::MtArray::mLength) {
-                    v0_0 = this->mNoUseNodeArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mNoUseNodeArray.mpArray[i0_3] != nullptr) {
+                delete mNoUseNodeArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNoUseNodeArray.mLength) {
+                    v0_0 = mNoUseNodeArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mNoUseNodeArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNoUseNodeArray.::MtArray::mpArray));
+    if (mNoUseNodeArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNoUseNodeArray.mpArray));
     }
-    this->mNoUseNodeArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mNoUseNodeArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mNoUseNodeArray.::MtArray::mLength = static_cast<u32>(0);
+    mNoUseNodeArray.mpArray = nullptr;
+    mNoUseNodeArray.mBufsiz = 0;
+    mNoUseNodeArray.mLength = 0;
 }
 
 // Address: 0x0132f380 - 0x0132f514 (404 bytes)
@@ -213,14 +213,14 @@ __attribute__((weak)) bool cDynamicBVHCollision::reserveNode(u32 ReserveNum) {
 // Address: 0x0132f520 - 0x0132f541 (33 bytes)
 void cDynamicBVHCollision::unregistAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cDynamicBVHCollision::unregistAllCore(this->mpRoot);
-    this->mpRoot = static_cast<cDynamicBVHCollision::Node*>(nullptr);
+    unregistAllCore(mpRoot);
+    mpRoot = nullptr;
 }
 
 // Address: 0x0132f5a0 - 0x0132f5a4 (4 bytes)
 u32 cDynamicBVHCollision::getInsertLeafNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLeafNum;
+    return mLeafNum;
 }
 
 // Address: 0x0132f5b0 - 0x0132f97c (972 bytes)
@@ -270,7 +270,7 @@ __attribute__((weak)) u32 cDynamicBVHCollision::traverseConst(const MtGeometry& 
 // Address: 0x01330150 - 0x01330159 (9 bytes)
 void cDynamicBVHCollision::applyWorldOffset(const MtVector3& offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cDynamicBVHCollision::applyWorldOffsetCore(offset, this->mpRoot);
+    applyWorldOffsetCore(offset, mpRoot);
 }
 
 // No out-of-line body: no code in the ELF
@@ -344,8 +344,17 @@ __attribute__((weak)) void cDynamicBVHCollision::splitAndStockNode(cDynamicBVHCo
 
 // Address: 0x0132f550 - 0x0132f595 (69 bytes)
 __attribute__((weak)) void cDynamicBVHCollision::unregistAllCore(cDynamicBVHCollision::Node* pNowNode) {
-    DDON_STUB("cDynamicBVHCollision::unregistAllCore")
-    /* stub */
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from cDynamicBVHCollision::Node*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cDynamicBVHCollision::Node*, which no DWARF type of the place gives; read with caution
+    if (pNowNode == nullptr) {
+        return;
+    }
+    if (pNowNode->mpChild[1] != nullptr) {
+        unregistAllCore(reinterpret_cast<Node*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pNowNode) + 16)));
+        unregistAllCore(pNowNode->mpChild[1]);
+    }
+    splitAndStockNode(pNowNode);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -353,10 +362,39 @@ __attribute__((weak)) void cDynamicBVHCollision::unregistAllCore(cDynamicBVHColl
 
 // Address: 0x013304f0 - 0x01330579 (137 bytes)
 __attribute__((weak)) void cDynamicBVHCollision::deleteTreeAllCore(cDynamicBVHCollision::Node* pNowNode) {
-    // local: const bool FlgLeaf;
-    // local: Node* pChild[2];
-    DDON_STUB("cDynamicBVHCollision::deleteTreeAllCore")
-    /* stub */
+    // DWARF local not rendered: const bool FlgLeaf;
+    // DWARF local not rendered: Node* pChild[2];
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cDynamicBVHCollision::Node*, which no DWARF type of the place gives; read with caution
+    if (pNowNode != nullptr) {
+        // inferred: the value the loop at 0x133051e carries; no location-less local in scope fits
+        for (Node* v0_0 = pNowNode;;) {
+            // inferred: a temporary for the value the load at 0x133051e read, used once; no DWARF local holds it
+            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + 16);
+            // inferred: a temporary for the value the load at 0x1330522 read, used once; no DWARF local holds it
+            Node* t1 = v0_0->mpChild[1];
+            v0_0->mpChild[1] = nullptr;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + 16) = 0;
+            v0_0->mpParent = nullptr;
+            if (mReservedNodeNoUseMax != 0) {
+                if (v0_0 >= mpReservedNodeArray) {
+                    if ((&mpReservedNodeArray[mReservedNodeNoUseMax - 1u]) < v0_0) {
+                        delete v0_0;
+                    }
+                } else {
+                    delete v0_0;
+                }
+            } else {
+                delete v0_0;
+            }
+            if (t1 == nullptr) {
+                break;
+            } else {
+                deleteTreeAllCore(reinterpret_cast<Node*>(t0));
+                v0_0 = t1;
+            }
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -399,6 +437,17 @@ __attribute__((weak)) void cDynamicBVHCollision::releaseDBVTSystemWorkBuffer() {
     DDON_STUB("cDynamicBVHCollision::releaseDBVTSystemWorkBuffer")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDynamicBVHCollision::MyDTI cDynamicBVHCollision::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+u32 cDynamicBVHCollision::mTraverseStackNest[19];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+cDynamicBVHCollision::cNodeStackArray* cDynamicBVHCollision::mpTraverseStackArrayRoot;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+cDynamicBVHCollision::cNodeStackArray* cDynamicBVHCollision::mpTraverseStackArray[3][19];
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cDynamicBVHCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -484,6 +533,8 @@ __attribute__((weak)) void cDynamicBVHCollision::Node::createProperty(MtProperty
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cDynamicBVHCollision::Node::registAABB(const MtAABB& aabb);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDynamicBVHCollision::Node::MyDTI cDynamicBVHCollision::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cDynamicBVHCollision::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

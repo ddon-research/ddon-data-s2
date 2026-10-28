@@ -109,9 +109,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCharacterEditVoicePalette::cCharacterEditVoicePalette() {
-    this->mUID = static_cast<u32>(9999);
-    this->mVoiceFlag = static_cast<u32>(0);
-    this->mNameIndex = static_cast<u16>(0);
+    this->mUID = 9999;
+    this->mVoiceFlag = 0;
+    this->mNameIndex = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

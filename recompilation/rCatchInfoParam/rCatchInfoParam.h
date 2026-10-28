@@ -109,14 +109,14 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCatchInfoParam::cCatchInfoParam() {
-    this->mCatchType = static_cast<u32>(0);
-    this->mCatchActionTblNo = static_cast<u32>(0);
+    this->mCatchType = 0;
+    this->mCatchActionTblNo = 0;
     this->mIsConst = true;
     this->mRevAdjust = false;
     this->mConstScaleOff = false;
-    this->mConstJointNo = static_cast<u32>(255);
+    this->mConstJointNo = 255;
     this->mLoopTimer = 150.0f;
-    this->mLeverGachaPoint = static_cast<s32>(50);
+    this->mLeverGachaPoint = 50;
     this->mIsCheckSlaveDist = false;
     this->mCheckSlaveDist = 200.0f;
 }

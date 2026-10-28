@@ -503,9 +503,27 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundManager::updateBtlBGMTemp at 0x856e9e-0x856ea2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rSoundStreamRequest* sSoundManager::getBattleBgmResource() {
+    return this->mprBattle;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sSoundManager::requestRebirth() {
     this->mbRebirth = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlDeadFlow::moveAlive at 0x4cc826-0x4cc82f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundManager::requestPlDeath() {
+    this->mbDeath = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlDeadFlow::moveInjured at 0x4cc939-0x4cc942; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundManager::requestRebirthToPlayer() {
+    this->mbHelp = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -515,15 +533,15 @@ inline sSoundManager* sSoundManager::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sSoundManager::cEmSetState::cEmSetState() {
-    this->mprEm = static_cast<rSoundStreamRequest*>(nullptr);
-    this->mEmReqNo = static_cast<u32>(4294967295);
-    this->mEmWinReqNo = static_cast<u32>(4294967295);
+    this->mprEm = nullptr;
+    this->mEmReqNo = 0xFFFFFFFF;
+    this->mEmWinReqNo = 0xFFFFFFFF;
     this->mbAdv = false;
     this->mbUseAdv = false;
     this->mbBGMTarget = false;
-    this->mEmRank = static_cast<u32>(0);
+    this->mEmRank = 0;
     this->mbEscape = false;
     this->mbDead = false;
     this->mbWin = false;
-    this->mpuChr = static_cast<uCharacter*>(nullptr);
+    this->mpuChr = nullptr;
 }

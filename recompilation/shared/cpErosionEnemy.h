@@ -325,6 +325,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cErosionRegion::regenerateErosion at 0xca632-0xca639; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rErosionRegionScaleChange* cpErosionEnemy::getErosionScaleChangeRes() const {
+    return this->mpErosionScaleChangeRes;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rSoundRequest* cpErosionSuperEnemy::getErosionSuperSoundRes() const {
     return this->mpErosionSuperSoundRes;
 }

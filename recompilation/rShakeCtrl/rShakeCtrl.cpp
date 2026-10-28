@@ -36,7 +36,7 @@ const MtDTI& cShakeCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cShakeCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memAlloc(sz, align, ::cShakeCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memAlloc(sz, align, cShakeCtrl::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (77 bytes)
@@ -52,7 +52,7 @@ inline void* cShakeCtrl::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShakeCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -78,6 +78,8 @@ inline void cShakeCtrl::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cShakeCtrl::~cShakeCtrl();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShakeCtrl::MyDTI cShakeCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rShakeCtrl.cpp at 0x006bb330-0x006bb372 (called at rShakeCtrl.cpp:39)
 //   in _GLOBAL__sub_I_rShakeCtrl.cpp at 0x006bb330-0x006bb372 (called at rShakeCtrl.h:48)
@@ -86,7 +88,7 @@ inline void cShakeCtrl::operator delete(void* p_addr) {
 // Address: 0x006baee0 - 0x006baf59 (121 bytes)
 MtObject* cShakeCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cShakeCtrl;
+    return new (16u) cShakeCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& rShakeCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShakeCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShakeCtrl::DTI)->memAlloc(sz, align, ::rShakeCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShakeCtrl::DTI)->memAlloc(sz, align, rShakeCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rShakeCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rShakeCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShakeCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShakeCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,31 +158,31 @@ bool rShakeCtrl::loadData(MtDataReader& r, cShakeCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJntNo);
+    nDDOIO::readData(r, pData->mJntNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShakeRot);
+    nDDOIO::readData(r, pData->mShakeRot);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShakeAxis);
+    nDDOIO::readData(r, pData->mShakeAxis);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShakeTrans);
+    nDDOIO::readData(r, pData->mShakeTrans);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJntNoChild);
+    nDDOIO::readData(r, pData->mJntNoChild);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mChildRate);
+    nDDOIO::readData(r, pData->mChildRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mAxis);
+    nDDOIO::readData(r, pData->mAxis);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mFlag);
+    nDDOIO::readData(r, pData->mFlag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIK);
+    nDDOIO::readData(r, pData->mIK);
     return true;
 }
 
@@ -193,7 +195,7 @@ MT_CTSTR rShakeCtrl::getExt() const {
 // Address: 0x01aa54a0 - 0x01aa54a6 (6 bytes)
 u32 rShakeCtrl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(15);
+    return 15;
 }
 
 // Address: 0x006bb160 - 0x006bb325 (453 bytes)
@@ -201,6 +203,8 @@ __attribute__((weak)) bool rShakeCtrl::loadCore(MtDataReader& r) {
     DDON_STUB("rShakeCtrl::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShakeCtrl::MyDTI rShakeCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShakeCtrl.cpp at 0x006bb372-0x006bb3af (called at rShakeCtrl.cpp:40)
@@ -210,7 +214,7 @@ __attribute__((weak)) bool rShakeCtrl::loadCore(MtDataReader& r) {
 // Address: 0x006bafd0 - 0x006bb04c (124 bytes)
 MtObject* rShakeCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShakeCtrl;
+    return new (16u) rShakeCtrl;
 }
 
 // Instance at 0x01aa5450 - 0x01aa5466 (22 bytes) of the generic rTbl2<T>::getData

@@ -30,7 +30,7 @@ const MtDTI& cPrimBufferManager::getDTI() const {
 // Address: 0x0132b680 - 0x0132b6c0 (64 bytes)
 void* cPrimBufferManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cPrimBufferManager::DTI)->memAlloc(sz, align, ::cPrimBufferManager::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cPrimBufferManager::DTI)->memAlloc(sz, align, cPrimBufferManager::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,21 +60,21 @@ void* cPrimBufferManager::operator new(size_t sz, u32 align) {
 // Address: 0x0132b730 - 0x0132b784 (84 bytes)
 cPrimBufferManager::cPrimBufferManager(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTotalSize = size;
-    this->mpBuffer = ::MtMemoryAllocator::getAllocator(::cPrimBufferManager::DTI)->memAlloc(this->mTotalSize, static_cast<u32>(16), ::cPrimBufferManager::DTI.::MtDTI::mID);
-    this->mpCurrentPtr = this->mpBuffer;
-    this->mCurrentSize = static_cast<u32>(0);
+    mTotalSize = size;
+    mpBuffer = MtMemoryAllocator::getAllocator(cPrimBufferManager::DTI)->memAlloc(mTotalSize, 16u, cPrimBufferManager::DTI.mID);
+    mpCurrentPtr = mpBuffer;
+    mCurrentSize = 0;
 }
 
 // Address: 0x0132b790 - 0x0132b7d6 (70 bytes)
 // Also emitted as: _ZN18cPrimBufferManagerD0Ev at 0x0132b7e0
 cPrimBufferManager::~cPrimBufferManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBuffer == static_cast<void*>(nullptr)) {
+    if (mpBuffer == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::cPrimBufferManager::DTI)->memFree(this->mpBuffer);
-    this->mpBuffer = static_cast<void*>(nullptr);
+    MtMemoryAllocator::getAllocator(cPrimBufferManager::DTI)->memFree(mpBuffer);
+    mpBuffer = nullptr;
 }
 
 // Address: 0x0132b840 - 0x0132b843 (3 bytes)
@@ -106,6 +106,8 @@ __attribute__((weak)) void cPrimBufferManager::createProperty(MtPropertyList& pr
 
 // No out-of-line body: no code in the ELF
 // u32 cPrimBufferManager::getCurrentSize() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrimBufferManager::MyDTI cPrimBufferManager::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimBufferManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

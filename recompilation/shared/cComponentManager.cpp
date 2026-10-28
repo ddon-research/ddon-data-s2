@@ -47,7 +47,7 @@ const MtDTI& cComponentManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cComponentManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cComponentManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cComponentManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,7 +69,7 @@ cComponentManager::cComponentManager() {
 // Also emitted as: _ZN17cComponentManagerD0Ev at 0x00051380
 cComponentManager::~cComponentManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cComponentManager::deleteComponent();
+    deleteComponent();
 }
 
 // Address: 0x000514a0 - 0x00051547 (167 bytes)
@@ -81,10 +81,10 @@ __attribute__((weak)) void cComponentManager::createProperty(MtPropertyList& s) 
 // Address: 0x000513c0 - 0x000513e8 (40 bytes)
 void cComponentManager::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRootComponent != static_cast<cpRootComponent*>(nullptr)) {
-        this->mpRootComponent->setOwner(pOwner);
+    if (mpRootComponent != nullptr) {
+        mpRootComponent->setOwner(pOwner);
     }
-    this->mpOwner = pOwner;
+    mpOwner = pOwner;
 }
 
 // Address: 0x000513f0 - 0x0005146b (123 bytes)
@@ -171,10 +171,10 @@ __attribute__((weak)) void cComponentManager::applyWorldOffset(const MtVector3& 
 // Address: 0x00051470 - 0x0005148b (27 bytes)
 cpComponent* cComponentManager::find(const MtDTI& DTI, bool IsKindOf) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRootComponent != static_cast<cpRootComponent*>(nullptr)) {
-        return this->mpRootComponent->::cpComponent::find(DTI, true, true);
+    if (mpRootComponent != nullptr) {
+        return mpRootComponent->find(DTI, true, true);
     } else {
-        return static_cast<cpComponent*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -213,6 +213,8 @@ __attribute__((weak)) void cComponentManager::setComponent(cpComponent* pComp, u
 __attribute__((weak)) void cComponentManager::setComponentNum(u32) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cComponentManager::MyDTI cComponentManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cComponentManager.cpp at 0x00051ac0-0x00051b02 (called at cComponentManager.cpp:24)

@@ -36,7 +36,7 @@ const MtDTI& cLegCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cLegCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memAlloc(sz, align, ::cLegCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memAlloc(sz, align, cLegCtrl::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
@@ -52,7 +52,7 @@ inline void* cLegCtrl::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cLegCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -78,6 +78,8 @@ inline void cLegCtrl::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cLegCtrl::~cLegCtrl();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLegCtrl::MyDTI cLegCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rLegCtrl.cpp at 0x0069d3f0-0x0069d432 (called at rLegCtrl.cpp:39)
 //   in _GLOBAL__sub_I_rLegCtrl.cpp at 0x0069d3f0-0x0069d432 (called at rLegCtrl.h:48)
@@ -86,7 +88,7 @@ inline void cLegCtrl::operator delete(void* p_addr) {
 // Address: 0x0069cdf0 - 0x0069ce37 (71 bytes)
 MtObject* cLegCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLegCtrl;
+    return new (16u) cLegCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& rLegCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLegCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLegCtrl::DTI)->memAlloc(sz, align, ::rLegCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLegCtrl::DTI)->memAlloc(sz, align, rLegCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rLegCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLegCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLegCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLegCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ rLegCtrl::~rLegCtrl() {
 bool rLegCtrl::loadData(MtDataReader& r, cLegCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, pData->mValue);
+    nDDOIO::readData(r, pData->mValue);
     return true;
 }
 
@@ -168,7 +170,7 @@ MT_CTSTR rLegCtrl::getExt() const {
 // Address: 0x01a9b410 - 0x01a9b416 (6 bytes)
 u32 rLegCtrl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(12);
+    return 12;
 }
 
 // Address: 0x0069d070 - 0x0069d3f0 (896 bytes)
@@ -176,6 +178,8 @@ __attribute__((weak)) bool rLegCtrl::loadCore(MtDataReader& r) {
     DDON_STUB("rLegCtrl::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLegCtrl::MyDTI rLegCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLegCtrl.cpp at 0x0069d432-0x0069d46f (called at rLegCtrl.cpp:40)
@@ -185,7 +189,7 @@ __attribute__((weak)) bool rLegCtrl::loadCore(MtDataReader& r) {
 // Address: 0x0069ceb0 - 0x0069cfd7 (295 bytes)
 MtObject* rLegCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLegCtrl;
+    return new (16u) rLegCtrl;
 }
 
 // Instance at 0x01a9b3c0 - 0x01a9b3d2 (18 bytes) of the generic rTbl2<T>::getData

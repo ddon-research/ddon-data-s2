@@ -104,5 +104,5 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cEmWorkRateTable::cEmWorkRateTable() {
     this->mWorkRate = 0.0f;
-    this->mWorkRateStatus = static_cast<u32>(2);
+    this->mWorkRateStatus = 2;
 }

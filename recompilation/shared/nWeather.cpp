@@ -32,7 +32,7 @@ const MtDTI& cWeatherObjectRes::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cWeatherObjectRes::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cWeatherObjectRes::DTI)->memAlloc(sz, align, ::cWeatherObjectRes::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cWeatherObjectRes::DTI)->memAlloc(sz, align, cWeatherObjectRes::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cWeatherObjectRes::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWeatherObjectRes::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherObjectRes::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherObjectRes::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,6 +66,8 @@ inline void cWeatherObjectRes::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cWeatherObjectRes::~cWeatherObjectRes();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cWeatherObjectRes::MyDTI cWeatherObjectRes::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nWeather.cpp at 0x0063b364-0x0063b39d (called at nWeather.cpp:67)
 //   in _GLOBAL__sub_I_nWeather.cpp at 0x0063b364-0x0063b39d (called at nWeather.h:150)
@@ -74,7 +76,7 @@ inline void cWeatherObjectRes::operator delete(void* p_addr) {
 // Address: 0x0063b270 - 0x0063b2b0 (64 bytes)
 MtObject* cWeatherObjectRes::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cWeatherObjectRes;
+    return new (16u) cWeatherObjectRes;
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,7 +102,7 @@ const MtDTI& cWeatherObjectSys::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cWeatherObjectSys::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cWeatherObjectSys::DTI)->memAlloc(sz, align, ::cWeatherObjectSys::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cWeatherObjectSys::DTI)->memAlloc(sz, align, cWeatherObjectSys::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,7 +116,7 @@ inline void* cWeatherObjectSys::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cWeatherObjectSys::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cWeatherObjectSys::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cWeatherObjectSys::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,6 +136,8 @@ inline void cWeatherObjectSys::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cWeatherObjectSys::~cWeatherObjectSys();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cWeatherObjectSys::MyDTI cWeatherObjectSys::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_nWeather.cpp at 0x0063b320-0x0063b364 (called at nWeather.cpp:66)
 //   in _GLOBAL__sub_I_nWeather.cpp at 0x0063b320-0x0063b364 (called at nWeather.h:140)
@@ -142,6 +146,6 @@ inline void cWeatherObjectSys::operator delete(void* p_addr) {
 // Address: 0x0063b1c0 - 0x0063b200 (64 bytes)
 MtObject* cWeatherObjectSys::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cWeatherObjectSys;
+    return new (16u) cWeatherObjectSys;
 }
 

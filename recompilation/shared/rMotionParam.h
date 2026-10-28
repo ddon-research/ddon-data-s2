@@ -110,6 +110,6 @@ public:
 inline cMotionParam::cMotionParam() {
     this->mInterFrame = -1.0f;
     this->mIsContinue = false;
-    this->mIKFlag = static_cast<u32>(4);
-    this->mIKFlagFSM = static_cast<u32>(4);
+    this->mIKFlag = 4;
+    this->mIKFlagFSM = 4;
 }

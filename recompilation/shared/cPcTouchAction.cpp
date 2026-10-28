@@ -35,7 +35,7 @@ const MtDTI& cPcTouchAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPcTouchAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPcTouchAction::DTI)->memAlloc(sz, align, ::cPcTouchAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPcTouchAction::DTI)->memAlloc(sz, align, cPcTouchAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* cPcTouchAction::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPcTouchAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPcTouchAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPcTouchAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,9 +65,9 @@ inline void cPcTouchAction::operator delete(void* p_addr) {
 cPcTouchAction::cPcTouchAction() {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mRno = static_cast<u32>(0);
-    this->mpTarget = static_cast<uDDOModel*>(nullptr);
-    this->mpOwner = static_cast<uDDOModel*>(nullptr);
+    mRno = 0;
+    mpTarget = nullptr;
+    mpOwner = nullptr;
 }
 
 // Address: 0x0017fbc0 - 0x0017fbc1 (1 bytes)
@@ -79,18 +79,18 @@ cPcTouchAction::~cPcTouchAction() {
 // Address: 0x0017fc00 - 0x0017fc3d (61 bytes)
 void cPcTouchAction::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpOwner->::cUnit::isEnable() == false) {
-            this->mpOwner = static_cast<uDDOModel*>(nullptr);
+    if (mpOwner != nullptr) {
+        if (!mpOwner->isEnable()) {
+            mpOwner = nullptr;
         }
     }
-    if (this->mpTarget == static_cast<uDDOModel*>(nullptr)) {
+    if (mpTarget == nullptr) {
         return;
     }
-    if (this->mpTarget->::cUnit::isEnable() != false) {
+    if (mpTarget->isEnable()) {
         return;
     }
-    this->mpTarget = static_cast<uDDOModel*>(nullptr);
+    mpTarget = nullptr;
 }
 
 // Address: 0x0017fc40 - 0x0017fd25 (229 bytes)
@@ -109,6 +109,8 @@ __attribute__((weak)) void cPcTouchAction::move() {
 //   in cPcTouchAction::move at 0x0017fd80-0x0017fd96 (called at cPcTouchAction.cpp:105)
 // void cPcTouchAction::final();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPcTouchAction::MyDTI cPcTouchAction::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPcTouchAction.cpp at 0x0017fe9f-0x0017fedc (called at cPcTouchAction.cpp:19)
 //   in _GLOBAL__sub_I_cPcTouchAction.cpp at 0x0017fe9f-0x0017fedc (called at cPcTouchAction.h:23)
@@ -117,6 +119,6 @@ __attribute__((weak)) void cPcTouchAction::move() {
 // Address: 0x0017fac0 - 0x0017fb17 (87 bytes)
 MtObject* cPcTouchAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPcTouchAction;
+    return new (16u) cPcTouchAction;
 }
 

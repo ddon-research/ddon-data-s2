@@ -48,7 +48,7 @@ const MtDTI& uAimCheck::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uAimCheck::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uAimCheck::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uAimCheck::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,14 +79,14 @@ __attribute__((weak)) void uAimCheck::setup() {
 // Address: 0x00877980 - 0x008779bf (63 bytes)
 void uAimCheck::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::kill();
-    if (this->mpOwner == static_cast<uHuman*>(nullptr)) {
+    this->uDDOModel::kill();
+    if (mpOwner == nullptr) {
         return;
     }
-    if (this->mpOwner->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    if (mpOwner->getObjCollisionPtr() == nullptr) {
         return;
     }
-    this->mpOwner->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpNode);
+    mpOwner->getObjCollisionPtr()->killNode(mpNode);
 }
 
 // Address: 0x00877730 - 0x00877891 (353 bytes)
@@ -189,6 +189,8 @@ __attribute__((weak)) void uAimCheck::setCollision() {
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
 //   in cPlActWpnBow::checkJob03CS05Scale at 0x0022a478-0x0022a480 (called at cHumanActBow.cpp:6621)
 // void uAimCheck::setRadiusRate(f32 rate);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uAimCheck::MyDTI uAimCheck::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uAimCheck.cpp at 0x0087859f-0x008785dc (called at uAimCheck.cpp:48)

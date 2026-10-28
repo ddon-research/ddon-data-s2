@@ -22,7 +22,9 @@ class MtSemaphore;
 class MtStream;
 class MtUI;
 struct _SceKernelEventFlag;
+class cDDMaterialCtrl;
 class cNetGameServer;
+class cSeedServerConnection;
 class cSplitLot;
 class cpCatchCtrl;
 class cpChantCommand;
@@ -31,6 +33,7 @@ class cpJob06;
 class cpSlave;
 struct pthread;
 class sApp;
+class sCollision;
 class sContextManager;
 class sEffect;
 class sGUIExt;
@@ -38,6 +41,7 @@ class sItemManager;
 class sNetwork;
 class sNetworkExt;
 class sObjCollision;
+class sOmManager;
 class sVibration;
 class uCameraBase;
 class uControl;
@@ -78,8 +82,12 @@ using uintptr = __uintptr_t;
 
 class sMain : public cSystem
 {
+    // inferred: cDDMaterialCtrl::cShaderDataStone::update names sMain::mDeltaTime, through its enclosing class cDDMaterialCtrl
+    friend class cDDMaterialCtrl;
     // inferred: cNetGameServer::move names sMain::mDeltaTime
     friend class cNetGameServer;
+    // inferred: cSeedServerConnection::cCalcBps::update names sMain::mDeltaTime, through its enclosing class cSeedServerConnection
+    friend class cSeedServerConnection;
     // inferred: cSplitLot::eraseWait names sMain::mDeltaTime
     friend class cSplitLot;
     // inferred: cpCatchCtrl::updateBeardownEffectiveTimer names sMain::mDeltaTime
@@ -94,6 +102,8 @@ class sMain : public cSystem
     friend class cpSlave;
     // inferred: sApp::execute names sMain::mExit
     friend class sApp;
+    // inferred: sCollision::Collider::initialize names sMain::mpInstance, through its enclosing class sCollision
+    friend class sCollision;
     // inferred: sContextManager::move names sMain::mpInstance
     friend class sContextManager;
     // inferred: sEffect::getFps names sMain::mpInstance
@@ -108,6 +118,8 @@ class sMain : public cSystem
     friend class sNetworkExt;
     // inferred: sObjCollision::cheatCheck names sMain::mDeltaTime
     friend class sObjCollision;
+    // inferred: sOmManager::moveBell names sMain::mpInstance
+    friend class sOmManager;
     // inferred: sVibration::getTimer names sMain::mpInstance
     friend class sVibration;
     // inferred: uCameraBase::getDeltaTime names sMain::mDeltaTime
@@ -376,8 +388,20 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGameHttpClient::init at 0x7bf214-0x7bf21e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MT_CTSTR sMain::getBuildVersion() {
+    return ::sMain::mBuildVersion;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sMain* sMain::getInstance() {
     return ::sMain::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sAreaHit::move at 0x723d71-0x723d77; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sMain::getJobThreadNum() {
+    return this->mJobThreadNum;
 }
 
 // Inline, no code of its own: checked where it is inlined.

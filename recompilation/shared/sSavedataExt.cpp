@@ -10,6 +10,7 @@
 #include "nDDOIO.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
+#include "sRender.h"
 #include "sSavedata.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -50,7 +51,7 @@ const MtDTI& cStorageData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStorageData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStorageData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStorageData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,6 +83,8 @@ __attribute__((weak)) void cStorageData::load(MtDataReader& r, u32 CurrentVersio
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStorageData::MyDTI cStorageData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSavedataExt.cpp at 0x008378b8-0x008378f1 (called at sSavedataExt.cpp:1734)
 //   in _GLOBAL__sub_I_sSavedataExt.cpp at 0x008378b8-0x008378f1 (called at sSavedataExt.h:156)
@@ -96,66 +99,66 @@ __attribute__((weak)) MtObject* cStorageData::MyDTI::newInstance() const {
 // Address: 0x00834500 - 0x00834595 (149 bytes)
 void cStorageData::stOptionDataSystem::setDefault() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mGamma = static_cast<u8>(50);
-    this->mVolChatRcv = static_cast<u8>(100);
-    this->mVolSysSE = static_cast<u8>(100);
-    this->mVolVoiceNpc = static_cast<u8>(100);
-    this->mVolVoicePawn = static_cast<u8>(100);
-    this->mVolVoicePl = static_cast<u8>(100);
-    this->mVolVoicePt = static_cast<u8>(100);
-    this->mVolVoiceEm = static_cast<u8>(100);
-    this->mVolVoiceSCC = static_cast<u8>(100);
-    this->mVolBGMBattle = static_cast<u8>(80);
-    this->mVolBGMOther = static_cast<u8>(80);
-    this->mVolSEOther = static_cast<u8>(100);
-    this->mVolSEEnv = static_cast<u8>(100);
-    this->mVolSEEm = static_cast<u8>(100);
-    this->mVolSEPl = static_cast<u8>(100);
-    this->mVolSEPt = static_cast<u8>(100);
-    this->mPadVibration = true;
-    this->mActPltType = static_cast<u8>(0);
-    this->mIsDirectChat = true;
-    this->mIsCamVRevPad = false;
-    this->mIsCamHRevPad = false;
-    this->mIsCamVRevKeyboard = false;
-    this->mIsCamHRevKeyboard = false;
-    this->mCamSpdPad = static_cast<u8>(50);
-    this->mCamSpdMouse = static_cast<u8>(50);
-    this->mMouseCursorSpd = static_cast<u8>(50);
-    this->mOthersEffTrans = static_cast<u8>(0);
-    this->mLightHardwareMode = static_cast<u8>(1);
-    this->mFrameRate = static_cast<u8>(0);
-    this->mTexResolution = static_cast<u8>(0);
-    this->mAntiAliasing = static_cast<u8>(1);
-    this->mShadowQuality = static_cast<u8>(2);
-    this->mShadowResolution = static_cast<u8>(2);
-    this->mShadowDistance = static_cast<u8>(1);
-    this->mShadow00 = static_cast<u8>(0);
-    this->mShadow01 = static_cast<u8>(0);
-    this->mShadow02 = static_cast<u8>(0);
-    this->mShadowVtxSmoother = static_cast<u8>(0);
-    this->mShadowLantern = static_cast<u8>(1);
-    this->mGrassVolume = static_cast<u8>(100);
-    this->mGrassQuality = static_cast<u8>(0);
-    this->mGrassDistance = static_cast<u8>(0);
-    this->mOmDistance = static_cast<u8>(0);
-    this->mOmLOD = static_cast<u8>(0);
-    this->mChrDispNum = static_cast<u8>(1);
-    this->mChrDispDistance = static_cast<u8>(1);
-    this->mEftBGQuality = static_cast<u8>(2);
-    this->mEftBattleTarget = static_cast<u8>(1);
-    this->mEftResponse = static_cast<u8>(2);
-    this->mKeyJobLinks[9] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[7] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[8] = static_cast<unsigned char>(0);
-    this->mUILarge = false;
-    this->mKeyJobLinks[0] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[1] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[2] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[3] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[4] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[5] = static_cast<unsigned char>(0);
-    this->mKeyJobLinks[6] = static_cast<unsigned char>(0);
+    mGamma = 50;
+    mVolChatRcv = 100;
+    mVolSysSE = 100;
+    mVolVoiceNpc = 100;
+    mVolVoicePawn = 100;
+    mVolVoicePl = 100;
+    mVolVoicePt = 100;
+    mVolVoiceEm = 100;
+    mVolVoiceSCC = 100;
+    mVolBGMBattle = 80;
+    mVolBGMOther = 80;
+    mVolSEOther = 100;
+    mVolSEEnv = 100;
+    mVolSEEm = 100;
+    mVolSEPl = 100;
+    mVolSEPt = 100;
+    mPadVibration = true;
+    mActPltType = 0;
+    mIsDirectChat = true;
+    mIsCamVRevPad = false;
+    mIsCamHRevPad = false;
+    mIsCamVRevKeyboard = false;
+    mIsCamHRevKeyboard = false;
+    mCamSpdPad = 50;
+    mCamSpdMouse = 50;
+    mMouseCursorSpd = 50;
+    mOthersEffTrans = 0;
+    mLightHardwareMode = 1;
+    mFrameRate = 0;
+    mTexResolution = 0;
+    mAntiAliasing = 1;
+    mShadowQuality = 2;
+    mShadowResolution = 2;
+    mShadowDistance = 1;
+    mShadow00 = 0;
+    mShadow01 = 0;
+    mShadow02 = 0;
+    mShadowVtxSmoother = 0;
+    mShadowLantern = 1;
+    mGrassVolume = 100;
+    mGrassQuality = 0;
+    mGrassDistance = 0;
+    mOmDistance = 0;
+    mOmLOD = 0;
+    mChrDispNum = 1;
+    mChrDispDistance = 1;
+    mEftBGQuality = 2;
+    mEftBattleTarget = 1;
+    mEftResponse = 2;
+    mKeyJobLinks[9] = 0;
+    mKeyJobLinks[7] = 0;
+    mKeyJobLinks[8] = 0;
+    mUILarge = false;
+    mKeyJobLinks[0] = 0;
+    mKeyJobLinks[1] = 0;
+    mKeyJobLinks[2] = 0;
+    mKeyJobLinks[3] = 0;
+    mKeyJobLinks[4] = 0;
+    mKeyJobLinks[5] = 0;
+    mKeyJobLinks[6] = 0;
 }
 
 // Address: 0x01ac9430 - 0x01ac9c20 (2032 bytes)
@@ -175,9 +178,11 @@ __attribute__((weak)) void cStorageData::stOptionDataSystem::readData(MtDataRead
 }
 
 // Address: 0x008345a0 - 0x008345de (62 bytes)
-__attribute__((weak)) bool cStorageData::stOptionDataSystem::reflectSavedGraphicOptionToGame() const {
-    DDON_STUB("cStorageData::stOptionDataSystem::reflectSavedGraphicOptionToGame")
-    return {};
+bool cStorageData::stOptionDataSystem::reflectSavedGraphicOptionToGame() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    sRender::getInstance()->mDACGamma = 1.0f + ((0.4f * static_cast<float>(mGamma - 50)) / 100.0f);
+    sRender::getInstance()->mUpdateGamma = true;
+    return true;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (47 bytes)
@@ -209,38 +214,38 @@ void cStorageData::stTutorialGuide::readData(MtDataReader& r, u32 CurrentVersion
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mFinishTutorial[0] = r.readU32();
-    this->mFinishTutorial[1] = r.readU32();
-    this->mFinishTutorial[2] = r.readU32();
-    this->mFinishTutorial[3] = r.readU32();
-    this->mFinishTutorial[4] = r.readU32();
-    this->mFinishTutorial[5] = r.readU32();
-    this->mFinishTutorial[6] = r.readU32();
-    this->mFinishTutorial[7] = r.readU32();
-    if (LoadVersion <= static_cast<u32>(16777224)) {
-        this->mFinishTutorial[14] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[15] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[12] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[13] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[10] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[11] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[8] = static_cast<unsigned int>(0);
-        this->mFinishTutorial[9] = static_cast<unsigned int>(0);
+    mFinishTutorial[0] = r.readU32();
+    mFinishTutorial[1] = r.readU32();
+    mFinishTutorial[2] = r.readU32();
+    mFinishTutorial[3] = r.readU32();
+    mFinishTutorial[4] = r.readU32();
+    mFinishTutorial[5] = r.readU32();
+    mFinishTutorial[6] = r.readU32();
+    mFinishTutorial[7] = r.readU32();
+    if (LoadVersion <= 0x1000008u) {
+        mFinishTutorial[14] = 0;
+        mFinishTutorial[15] = 0;
+        mFinishTutorial[12] = 0;
+        mFinishTutorial[13] = 0;
+        mFinishTutorial[10] = 0;
+        mFinishTutorial[11] = 0;
+        mFinishTutorial[8] = 0;
+        mFinishTutorial[9] = 0;
     } else {
-        this->mFinishTutorial[8] = r.readU32();
-        this->mFinishTutorial[9] = r.readU32();
-        this->mFinishTutorial[10] = r.readU32();
-        this->mFinishTutorial[11] = r.readU32();
-        this->mFinishTutorial[12] = r.readU32();
-        this->mFinishTutorial[13] = r.readU32();
-        this->mFinishTutorial[14] = r.readU32();
-        this->mFinishTutorial[15] = r.readU32();
+        mFinishTutorial[8] = r.readU32();
+        mFinishTutorial[9] = r.readU32();
+        mFinishTutorial[10] = r.readU32();
+        mFinishTutorial[11] = r.readU32();
+        mFinishTutorial[12] = r.readU32();
+        mFinishTutorial[13] = r.readU32();
+        mFinishTutorial[14] = r.readU32();
+        mFinishTutorial[15] = r.readU32();
     }
-    this->mLatestTutorial[0] = r.readU32();
-    this->mLatestTutorial[1] = r.readU32();
-    this->mLatestTutorial[2] = r.readU32();
-    this->mLatestTutorial[3] = r.readU32();
-    this->mLatestTutorial[4] = r.readU32();
+    mLatestTutorial[0] = r.readU32();
+    mLatestTutorial[1] = r.readU32();
+    mLatestTutorial[2] = r.readU32();
+    mLatestTutorial[3] = r.readU32();
+    mLatestTutorial[4] = r.readU32();
 }
 
 // No out-of-line body: no code in the ELF
@@ -284,7 +289,7 @@ const MtDTI& cStorageDataBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cStorageDataBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStorageDataBase::DTI)->memAlloc(sz, align, ::cStorageDataBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStorageDataBase::DTI)->memAlloc(sz, align, cStorageDataBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -298,7 +303,7 @@ inline void* cStorageDataBase::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStorageDataBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStorageDataBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStorageDataBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -345,8 +350,10 @@ bool cStorageDataBase::loadUserHeader(MtDataReader& r) {
 // Address: 0x01aca900 - 0x01aca903 (3 bytes)
 u32 cStorageDataBase::getUserHeaderSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStorageDataBase::MyDTI cStorageDataBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sSavedataExt.cpp at 0x0083787b-0x008378b8 (called at sSavedataExt.cpp:1719)
@@ -356,7 +363,7 @@ u32 cStorageDataBase::getUserHeaderSize() const {
 // Address: 0x008364d0 - 0x00836510 (64 bytes)
 MtObject* cStorageDataBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStorageDataBase;
+    return new (16u) cStorageDataBase;
 }
 
 // Address: 0x00836580 - 0x0083660f (143 bytes)
@@ -400,7 +407,7 @@ const MtDTI& cStorageDataEdit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStorageDataEdit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStorageDataEdit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStorageDataEdit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -426,215 +433,215 @@ cStorageDataEdit::~cStorageDataEdit() {
 // Address: 0x00836d50 - 0x008371ea (1178 bytes)
 void cStorageDataEdit::save(MtDataWriter& w, u32 SaveVersion) {
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    w.::MtDataWriter::writeString(&this->mPlayerName[0]);
-    w.::MtDataWriter::writeString(&this->mComment[0]);
+    w.writeString(&mPlayerName[0]);
+    w.writeString(&mComment[0]);
     // inferred: a temporary for the value the load at 0x836d82 read, used once; no DWARF local holds it
-    u8 t0 = this->mBodyType;
+    u8 t0 = mBodyType;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = t0;
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    w.writeS32(this->mHair);
-    w.writeS32(this->mBeard);
-    w.writeS32(this->mMakeup);
-    w.writeS32(this->mScar);
-    w.writeF32(this->mWrinkleValue);
-    w.writeS32(this->mEyePresetNo);
-    w.writeS32(this->mEyebrowTexNo);
-    w.writeS32(this->mNosePresetNo);
-    w.writeS32(this->mMouthPresetNo);
-    w.writeF32(this->mSokutoubuValue);
-    w.writeF32(this->mHitaiValue);
-    w.writeF32(this->mMimijyougeValue);
-    w.writeF32(this->mMabisasijyougeValue);
-    w.writeF32(this->mHitomiookisaValue);
-    w.writeF32(this->mMeookisaValue);
-    w.writeF32(this->mMekaitenValue);
-    w.writeF32(this->mKannkakuValue);
-    w.writeF32(this->mEyebrowUVOffsetYValue);
-    w.writeF32(this->mEyebrowUVOffsetXValue);
-    w.writeF32(this->mMayukaitenValue);
-    w.writeF32(this->mMikentakasaValue);
-    w.writeF32(this->mMikenhabaValue);
-    w.writeF32(this->mHanajyougeValue);
-    w.writeF32(this->mHanahabaValue);
-    w.writeF32(this->mHanatakasaValue);
-    w.writeF32(this->mHanakakudoValue);
-    w.writeF32(this->mHohobonejyougeValue);
-    w.writeF32(this->mHohoboneryouValue);
-    w.writeF32(this->mMimiookisaValue);
-    w.writeF32(this->mMimimukiValue);
-    if (SaveVersion > static_cast<u32>(16777237)) {
-        w.writeF32(this->mElfmimi);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.writeS32(mHair);
+    w.writeS32(mBeard);
+    w.writeS32(mMakeup);
+    w.writeS32(mScar);
+    w.writeF32(mWrinkleValue);
+    w.writeS32(mEyePresetNo);
+    w.writeS32(mEyebrowTexNo);
+    w.writeS32(mNosePresetNo);
+    w.writeS32(mMouthPresetNo);
+    w.writeF32(mSokutoubuValue);
+    w.writeF32(mHitaiValue);
+    w.writeF32(mMimijyougeValue);
+    w.writeF32(mMabisasijyougeValue);
+    w.writeF32(mHitomiookisaValue);
+    w.writeF32(mMeookisaValue);
+    w.writeF32(mMekaitenValue);
+    w.writeF32(mKannkakuValue);
+    w.writeF32(mEyebrowUVOffsetYValue);
+    w.writeF32(mEyebrowUVOffsetXValue);
+    w.writeF32(mMayukaitenValue);
+    w.writeF32(mMikentakasaValue);
+    w.writeF32(mMikenhabaValue);
+    w.writeF32(mHanajyougeValue);
+    w.writeF32(mHanahabaValue);
+    w.writeF32(mHanatakasaValue);
+    w.writeF32(mHanakakudoValue);
+    w.writeF32(mHohobonejyougeValue);
+    w.writeF32(mHohoboneryouValue);
+    w.writeF32(mMimiookisaValue);
+    w.writeF32(mMimimukiValue);
+    if (SaveVersion > 0x1000015u) {
+        w.writeF32(mElfmimi);
     }
-    w.writeF32(this->mHanakuchijyougeValue);
-    w.writeF32(this->mAgozengoValue);
-    w.writeF32(this->mKuchihabaValue);
-    w.writeF32(this->mKuchiatsusaValue);
-    w.writeF32(this->mHohonikuValue);
-    w.writeF32(this->mAgosakijyougeValue);
-    w.writeF32(this->mAgosakihabaValue);
-    w.writeF32(this->mErahonejyougeValue);
-    w.writeF32(this->mErahonehabaValue);
-    w.writeF32(this->mHeightValue);
-    w.writeF32(this->mHeadSizeValue);
-    w.writeF32(this->mNeckOffsetValue);
-    w.writeF32(this->mNeckScaleValue);
-    w.writeF32(this->mUpperBodyScaleXValue);
-    w.writeF32(this->mBellySizeValue);
-    w.writeF32(this->mTeatScaleValue);
-    w.writeF32(this->mTekubiSizeValue);
-    w.writeF32(this->mKoshiOffsetValue);
-    w.writeF32(this->mKoshiSizeValue);
-    w.writeF32(this->mAnkleOffsetValue);
-    w.writeF32(this->mFatValue);
-    w.writeF32(this->mMuscleValue);
-    w.writeF32(this->mMotionFilterValue);
-    w.writeS32(this->mColorSkin);
-    w.writeS32(this->mColorHair);
-    w.writeS32(this->mColorBeard);
-    w.writeS32(this->mColorEyebrow);
-    w.writeS32(this->mColorREye);
-    w.writeS32(this->mColorLEye);
-    w.writeS32(this->mColorMakeup);
+    w.writeF32(mHanakuchijyougeValue);
+    w.writeF32(mAgozengoValue);
+    w.writeF32(mKuchihabaValue);
+    w.writeF32(mKuchiatsusaValue);
+    w.writeF32(mHohonikuValue);
+    w.writeF32(mAgosakijyougeValue);
+    w.writeF32(mAgosakihabaValue);
+    w.writeF32(mErahonejyougeValue);
+    w.writeF32(mErahonehabaValue);
+    w.writeF32(mHeightValue);
+    w.writeF32(mHeadSizeValue);
+    w.writeF32(mNeckOffsetValue);
+    w.writeF32(mNeckScaleValue);
+    w.writeF32(mUpperBodyScaleXValue);
+    w.writeF32(mBellySizeValue);
+    w.writeF32(mTeatScaleValue);
+    w.writeF32(mTekubiSizeValue);
+    w.writeF32(mKoshiOffsetValue);
+    w.writeF32(mKoshiSizeValue);
+    w.writeF32(mAnkleOffsetValue);
+    w.writeF32(mFatValue);
+    w.writeF32(mMuscleValue);
+    w.writeF32(mMotionFilterValue);
+    w.writeS32(mColorSkin);
+    w.writeS32(mColorHair);
+    w.writeS32(mColorBeard);
+    w.writeS32(mColorEyebrow);
+    w.writeS32(mColorREye);
+    w.writeS32(mColorLEye);
+    w.writeS32(mColorMakeup);
 }
 
 // Address: 0x008371f0 - 0x008376af (1215 bytes)
 void cStorageDataEdit::load(MtDataReader& r, u32 CurrentVersion, u32 LoadVererion) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    r.::MtDataReader::readString(&this->mPlayerName[0], static_cast<u32>(64));
+    r.readString(&mPlayerName[0], 64u);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    r.::MtDataReader::readString(&this->mComment[0], static_cast<u32>(64));
-    ::nDDOIO::readData(r, this->mBodyType);
-    this->mHair = r.readS32();
-    this->mBeard = r.readS32();
-    this->mMakeup = r.readS32();
-    this->mScar = r.readS32();
-    this->mWrinkleValue = r.readF32();
-    this->mEyePresetNo = r.readS32();
-    this->mEyebrowTexNo = r.readS32();
-    this->mNosePresetNo = r.readS32();
-    this->mMouthPresetNo = r.readS32();
-    this->mSokutoubuValue = r.readF32();
-    this->mHitaiValue = r.readF32();
-    this->mMimijyougeValue = r.readF32();
-    this->mMabisasijyougeValue = r.readF32();
-    this->mHitomiookisaValue = r.readF32();
-    this->mMeookisaValue = r.readF32();
-    this->mMekaitenValue = r.readF32();
-    this->mKannkakuValue = r.readF32();
-    this->mEyebrowUVOffsetYValue = r.readF32();
-    this->mEyebrowUVOffsetXValue = r.readF32();
-    this->mMayukaitenValue = r.readF32();
-    this->mMikentakasaValue = r.readF32();
-    this->mMikenhabaValue = r.readF32();
-    this->mHanajyougeValue = r.readF32();
-    this->mHanahabaValue = r.readF32();
-    this->mHanatakasaValue = r.readF32();
-    this->mHanakakudoValue = r.readF32();
-    this->mHohobonejyougeValue = r.readF32();
-    this->mHohoboneryouValue = r.readF32();
-    this->mMimiookisaValue = r.readF32();
-    this->mMimimukiValue = r.readF32();
-    if (LoadVererion > static_cast<u32>(16777237)) {
-        this->mElfmimi = r.readF32();
+    r.readString(&mComment[0], 64u);
+    nDDOIO::readData(r, mBodyType);
+    mHair = r.readS32();
+    mBeard = r.readS32();
+    mMakeup = r.readS32();
+    mScar = r.readS32();
+    mWrinkleValue = r.readF32();
+    mEyePresetNo = r.readS32();
+    mEyebrowTexNo = r.readS32();
+    mNosePresetNo = r.readS32();
+    mMouthPresetNo = r.readS32();
+    mSokutoubuValue = r.readF32();
+    mHitaiValue = r.readF32();
+    mMimijyougeValue = r.readF32();
+    mMabisasijyougeValue = r.readF32();
+    mHitomiookisaValue = r.readF32();
+    mMeookisaValue = r.readF32();
+    mMekaitenValue = r.readF32();
+    mKannkakuValue = r.readF32();
+    mEyebrowUVOffsetYValue = r.readF32();
+    mEyebrowUVOffsetXValue = r.readF32();
+    mMayukaitenValue = r.readF32();
+    mMikentakasaValue = r.readF32();
+    mMikenhabaValue = r.readF32();
+    mHanajyougeValue = r.readF32();
+    mHanahabaValue = r.readF32();
+    mHanatakasaValue = r.readF32();
+    mHanakakudoValue = r.readF32();
+    mHohobonejyougeValue = r.readF32();
+    mHohoboneryouValue = r.readF32();
+    mMimiookisaValue = r.readF32();
+    mMimimukiValue = r.readF32();
+    if (LoadVererion > 0x1000015u) {
+        mElfmimi = r.readF32();
     } else {
-        this->mElfmimi = 0.0f;
+        mElfmimi = 0.0f;
     }
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHanakuchijyougeValue);
+    nDDOIO::readData(r, mHanakuchijyougeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAgozengoValue);
+    nDDOIO::readData(r, mAgozengoValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mKuchihabaValue);
+    nDDOIO::readData(r, mKuchihabaValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mKuchiatsusaValue);
+    nDDOIO::readData(r, mKuchiatsusaValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHohonikuValue);
+    nDDOIO::readData(r, mHohonikuValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAgosakijyougeValue);
+    nDDOIO::readData(r, mAgosakijyougeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAgosakihabaValue);
+    nDDOIO::readData(r, mAgosakihabaValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mErahonejyougeValue);
+    nDDOIO::readData(r, mErahonejyougeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mErahonehabaValue);
+    nDDOIO::readData(r, mErahonehabaValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHeightValue);
+    nDDOIO::readData(r, mHeightValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHeadSizeValue);
+    nDDOIO::readData(r, mHeadSizeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mNeckOffsetValue);
+    nDDOIO::readData(r, mNeckOffsetValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mNeckScaleValue);
+    nDDOIO::readData(r, mNeckScaleValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUpperBodyScaleXValue);
+    nDDOIO::readData(r, mUpperBodyScaleXValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mBellySizeValue);
+    nDDOIO::readData(r, mBellySizeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTeatScaleValue);
+    nDDOIO::readData(r, mTeatScaleValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTekubiSizeValue);
+    nDDOIO::readData(r, mTekubiSizeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mKoshiOffsetValue);
+    nDDOIO::readData(r, mKoshiOffsetValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mKoshiSizeValue);
+    nDDOIO::readData(r, mKoshiSizeValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAnkleOffsetValue);
+    nDDOIO::readData(r, mAnkleOffsetValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mFatValue);
+    nDDOIO::readData(r, mFatValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMuscleValue);
+    nDDOIO::readData(r, mMuscleValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMotionFilterValue);
+    nDDOIO::readData(r, mMotionFilterValue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorSkin);
+    nDDOIO::readData(r, mColorSkin);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorHair);
+    nDDOIO::readData(r, mColorHair);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorBeard);
+    nDDOIO::readData(r, mColorBeard);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorEyebrow);
+    nDDOIO::readData(r, mColorEyebrow);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorREye);
+    nDDOIO::readData(r, mColorREye);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorLEye);
+    nDDOIO::readData(r, mColorLEye);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mColorMakeup);
-    this->mPlayerName[63] = static_cast<char>(0);
-    this->mComment[63] = static_cast<char>(0);
+    nDDOIO::readData(r, mColorMakeup);
+    mPlayerName[63] = 0;
+    mComment[63] = 0;
 }
 
 // Address: 0x01aca920 - 0x01aca923 (3 bytes)
@@ -646,8 +653,8 @@ bool cStorageDataEdit::isWriteUserHeader() const {
 // Address: 0x008376b0 - 0x008376e4 (52 bytes)
 bool cStorageDataEdit::saveUserHeader(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(static_cast<u32>(1));
-    w.write(static_cast<const void*>(&this->mUserHeader.playerName[0]), static_cast<u32>(208));
+    w.writeU32(1u);
+    w.write(static_cast<const void*>(&mUserHeader.playerName[0]), 208u);
     return true;
 }
 
@@ -655,10 +662,10 @@ bool cStorageDataEdit::saveUserHeader(MtDataWriter& w) {
 bool cStorageDataEdit::loadUserHeader(MtDataReader& r) {
     // DWARF local not rendered: const u32 SaveVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (r.readU32() == static_cast<u32>(1)) {
-        r.read(static_cast<void*>(&this->mUserHeader.playerName[0]), static_cast<u32>(208));
-        this->mUserHeader.playerName[63] = static_cast<char>(0);
-        this->mUserHeader.comment[127] = static_cast<char>(0);
+    if (r.readU32() == 1) {
+        r.read(static_cast<void*>(&mUserHeader.playerName[0]), 208u);
+        mUserHeader.playerName[63] = 0;
+        mUserHeader.comment[127] = 0;
         return true;
     } else {
         return false;
@@ -668,7 +675,7 @@ bool cStorageDataEdit::loadUserHeader(MtDataReader& r) {
 // Address: 0x01aca930 - 0x01aca936 (6 bytes)
 u32 cStorageDataEdit::getUserHeaderSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(212);
+    return 212;
 }
 
 // No out-of-line body: no code in the ELF
@@ -684,6 +691,8 @@ u32 cStorageDataEdit::getUserHeaderSize() const {
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
 //   in sSavedataExt::saveEditData at 0x0083598f-0x008359a5 (called at sSavedataExt.cpp:688)
 // void cStorageDataEdit::setComment(MT_CTSTR comment);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStorageDataEdit::MyDTI cStorageDataEdit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSavedataExt.cpp at 0x008378f1-0x0083792a (called at sSavedataExt.cpp:1793)
@@ -710,7 +719,7 @@ const MtDTI& sSavedataExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sSavedataExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sSavedataExt::DTI);
+    return MtMemoryAllocator::getAllocator(sSavedataExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -719,7 +728,7 @@ inline MtAllocator* sSavedataExt::getAllocator() {
 // Address: 0x00834450 - 0x00834490 (64 bytes)
 void* sSavedataExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sSavedataExt::getAllocator()->memAlloc(sz, align, ::sSavedataExt::DTI.::MtDTI::getID());
+    return sSavedataExt::getAllocator()->memAlloc(sz, align, sSavedataExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -734,7 +743,7 @@ void* sSavedataExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSavedataExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSavedataExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSavedataExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -762,32 +771,32 @@ sSavedataExt::~sSavedataExt() {
 // Address: 0x008364c0 - 0x008364c5 (5 bytes)
 void sSavedataExt::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSavedata::move();
+    this->sSavedata::move();
 }
 
 // Address: 0x00835640 - 0x0083569a (90 bytes)
 sSavedata::RESULT sSavedataExt::saveData(SAVEDATA_TYPE Type) {
     // Approximate from the ELF: a cast to the other signedness; an element indexed by a value its test fixes; the body oracle reports this body.
-    this->::sSavedata::mOverWrite = false;
-    this->::sSavedataExt::setSaveInfo(Type);
-    if (static_cast<int>(Type) <= static_cast<int>(1)) {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageDataEdit), false);
+    mOverWrite = false;
+    setSaveInfo(Type);
+    if (static_cast<int>(Type) <= 1) {
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageDataEdit), false);
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageData), false);
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageData), false);
             } else {
-                return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr), false);
+                return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr), false);
             }
         }
     } else {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageDataEdit), false);
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageDataEdit), false);
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageData), false);
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageData), false);
             } else {
-                return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr), false);
+                return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr), false);
             }
         }
     }
@@ -799,26 +808,26 @@ sSavedata::RESULT sSavedataExt::saveData(SAVEDATA_TYPE Type) {
 // Address: 0x008352b0 - 0x0083530d (93 bytes)
 sSavedata::RESULT sSavedataExt::saveDataNewData(SAVEDATA_TYPE Type) {
     // Approximate from the ELF: a cast to the other signedness; an element indexed by a value its test fixes; the body oracle reports this body.
-    this->::sSavedata::mOverWrite = true;
-    this->::sSavedataExt::setSaveInfo(Type);
-    if (static_cast<int>(Type) <= static_cast<int>(1)) {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageDataEdit), true);
+    mOverWrite = true;
+    setSaveInfo(Type);
+    if (static_cast<int>(Type) <= 1) {
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageDataEdit), true);
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageData), true);
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageData), true);
             } else {
-                return this->::sSavedataExt::saveData(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr), true);
+                return saveData(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr), true);
             }
         }
     } else {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageDataEdit), true);
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageDataEdit), true);
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageData), true);
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageData), true);
             } else {
-                return this->::sSavedataExt::saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr), true);
+                return saveData(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr), true);
             }
         }
     }
@@ -845,25 +854,25 @@ __attribute__((weak)) sSavedata::RESULT sSavedataExt::loadData(SAVEDATA_TYPE Typ
 // Address: 0x00835c60 - 0x00835cb0 (80 bytes)
 sSavedata::RESULT sSavedataExt::loadDataList(SAVEDATA_TYPE Type) {
     // Approximate from the ELF: a cast to the other signedness; an element indexed by a value its test fixes; the body oracle reports this body.
-    this->::sSavedata::clearData();
-    if (static_cast<int>(Type) <= static_cast<int>(1)) {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::loadDataList(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageDataEdit));
+    clearData();
+    if (static_cast<int>(Type) <= 1) {
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return loadDataList(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageDataEdit));
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::loadDataList(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&this->mStorageData));
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return loadDataList(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(&mStorageData));
             } else {
-                return this->::sSavedataExt::loadDataList(::sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr));
+                return loadDataList(sSavedataExt::mSaveDataInfo[Type].mDirectoryPostfixName, static_cast<cStorageDataBase*>(nullptr));
             }
         }
     } else {
-        if (Type == static_cast<SAVEDATA_TYPE>(1)) {
-            return this->::sSavedataExt::loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageDataEdit));
+        if (Type == SAVEDATA_TYPE_EDIT) {
+            return loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageDataEdit));
         } else {
-            if (Type == static_cast<SAVEDATA_TYPE>(0)) {
-                return this->::sSavedataExt::loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&this->mStorageData));
+            if (Type == SAVEDATA_TYPE_MAIN) {
+                return loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(&mStorageData));
             } else {
-                return this->::sSavedataExt::loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr));
+                return loadDataList(static_cast<MT_CTSTR>(nullptr), static_cast<cStorageDataBase*>(nullptr));
             }
         }
     }
@@ -872,7 +881,7 @@ sSavedata::RESULT sSavedataExt::loadDataList(SAVEDATA_TYPE Type) {
 // Address: 0x00835ee0 - 0x00835ee5 (5 bytes)
 void sSavedataExt::settingSaveDataConfig() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSavedataExt::setGameTitle();
+    setGameTitle();
 }
 
 // Address: 0x00836120 - 0x008361fd (221 bytes)
@@ -885,7 +894,7 @@ __attribute__((weak)) void sSavedataExt::setLoadData(SAVEDATA_TYPE Type) {
 bool sSavedataExt::isBusy() {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sSavedata::mState != static_cast<sSavedata::STATE>(0);
+    return mState != 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (137 bytes)
@@ -895,14 +904,14 @@ bool sSavedataExt::isBusy() {
 // Address: 0x00836230 - 0x00836240 (16 bytes)
 bool sSavedataExt::beginExistCheck() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sSavedata::beginExistCheck() == static_cast<sSavedata::RESULT>(0);
+    return this->sSavedata::beginExistCheck() == 0;
 }
 
 // Address: 0x00836490 - 0x00836496 (6 bytes)
 u32 sSavedataExt::getSavedataSize() {
     // DWARF local not rendered: u32 size;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(102400);
+    return 0x19000;
 }
 
 // No out-of-line body: no code in the ELF
@@ -922,21 +931,21 @@ __attribute__((weak)) u32 sSavedataExt::getRequireSaveDataHDDSizeKB(MT_CTSTR Dir
 bool sSavedataExt::beginHddSpaceCheck(u32 SaveDataSize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe28
-    this->::sSavedata::mState = static_cast<sSavedata::STATE>(1);
-    this->::sSavedata::mResult = static_cast<sSavedata::RESULT>(0);
-    this->mNeedHddSizeKB = static_cast<u32>(0);
-    if (this->::sSavedataExt::isCheckTrophySize() != false) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->mAchievementBootup == false) {
-            this->::sSavedata::mResult = static_cast<sSavedata::RESULT>(8);
+    mState = 1;
+    mResult = 0;
+    mNeedHddSizeKB = 0;
+    if (isCheckTrophySize()) {
+        if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->mAchievementBootup) {
+            mResult = 8;
         }
     }
-    if (SaveDataSize == static_cast<u32>(0)) {
-        u32 requireHDDSizeKB = this->::sSavedataExt::getRequireSaveDataHDDSizeKB("SAVEDATA");
-        this->mNeedHddSizeKB = this->mNeedHddSizeKB + requireHDDSizeKB;
-        this->::sSavedata::mState = static_cast<sSavedata::STATE>(0);
+    if (SaveDataSize == 0) {
+        u32 requireHDDSizeKB = getRequireSaveDataHDDSizeKB("SAVEDATA");
+        mNeedHddSizeKB = mNeedHddSizeKB + requireHDDSizeKB;
+        mState = 0;
         return true;
     } else {
-        this->::sSavedata::mState = static_cast<sSavedata::STATE>(0);
+        mState = 0;
         return true;
     }
 }
@@ -944,7 +953,7 @@ bool sSavedataExt::beginHddSpaceCheck(u32 SaveDataSize) {
 // Address: 0x00836480 - 0x00836488 (8 bytes)
 bool sSavedataExt::isHddSpaceCheckBusy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sSavedata::mState != static_cast<sSavedata::STATE>(0);
+    return mState != 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -957,19 +966,19 @@ bool sSavedataExt::isHddSpaceCheckBusy() {
 // Address: 0x008364b0 - 0x008364b7 (7 bytes)
 u32 sSavedataExt::getNeedHddSizeKB() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNeedHddSizeKB;
+    return mNeedHddSizeKB;
 }
 
 // Address: 0x00834da0 - 0x00834da8 (8 bytes)
 cStorageData& sSavedataExt::getStorageData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStorageData;
+    return mStorageData;
 }
 
 // Address: 0x00834db0 - 0x00834db8 (8 bytes)
 cStorageDataEdit& sSavedataExt::getStorageDataEdit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStorageDataEdit;
+    return mStorageDataEdit;
 }
 
 // Address: 0x00834de0 - 0x008352ad (1229 bytes)
@@ -1061,6 +1070,10 @@ __attribute__((weak)) void sSavedataExt::setGameTitle() {
     DDON_STUB("sSavedataExt::setGameTitle")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSavedataExt::MyDTI sSavedataExt::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const sSavedataExt::stSaveDataInfo sSavedataExt::mSaveDataInfo[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sSavedataExt.cpp at 0x0083783e-0x0083787b (called at sSavedataExt.cpp:52)

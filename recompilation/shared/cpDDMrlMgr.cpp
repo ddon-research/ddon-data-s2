@@ -29,7 +29,7 @@ const MtDTI& cpDDMrlMgr::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpDDMrlMgr::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpDDMrlMgr::DTI);
+    return MtMemoryAllocator::getAllocator(cpDDMrlMgr::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cpDDMrlMgr::getAllocator() {
 // Address: 0x0046c100 - 0x0046c140 (64 bytes)
 void* cpDDMrlMgr::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpDDMrlMgr::getAllocator()->memAlloc(sz, align, ::cpDDMrlMgr::DTI.::MtDTI::getID());
+    return cpDDMrlMgr::getAllocator()->memAlloc(sz, align, cpDDMrlMgr::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cpDDMrlMgr::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpDDMrlMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpDDMrlMgr::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpDDMrlMgr::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ cpDDMrlMgr::~cpDDMrlMgr() {
 void cpDDMrlMgr::setup() {
     // DWARF local not rendered: u32 ctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpDDMrlCtrl.mControlEnable = static_cast<u32>(4294967295);
+    mpDDMrlCtrl.mControlEnable = 0xFFFFFFFF;
 }
 
 // Address: 0x0046c2a0 - 0x0046c50e (622 bytes)
@@ -99,7 +99,7 @@ __attribute__((weak)) void cpDDMrlMgr::move() {
 // Address: 0x0046ca70 - 0x0046ca75 (5 bytes)
 void cpDDMrlMgr::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x0046ca80 - 0x0046cc33 (435 bytes)
@@ -114,39 +114,39 @@ __attribute__((weak)) void cpDDMrlMgr::setOwner(MtObject* pOwner) {
 // Address: 0x01a58930 - 0x01a58935 (5 bytes)
 cDDMaterialCtrl* cpDDMrlMgr::getDDMrlCtrl(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpDDMrlCtrl;
+    return &mpDDMrlCtrl;
 }
 
 // Address: 0x0046e040 - 0x0046e067 (39 bytes)
 void cpDDMrlMgr::setDDMrlCtrlEquip(cDDMaterialCtrl* set) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cDDMaterialCtrl* * p1 = &this->mpDDMrlCtrlEquip[0];
+    cDDMaterialCtrl* * p1 = &mpDDMrlCtrlEquip[0];
     do {
-        if ((*p1) == static_cast<cDDMaterialCtrl*>(nullptr)) {
+        if ((*p1) == nullptr) {
             *p1 = set;
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(15));
+    } while (i <= 15u);
 }
 
 // Address: 0x0046e010 - 0x0046e03a (42 bytes)
 void cpDDMrlMgr::releaseDDMrlCtrlEquip(cDDMaterialCtrl* set) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cDDMaterialCtrl* * p1 = &this->mpDDMrlCtrlEquip[0];
+    cDDMaterialCtrl* * p1 = &mpDDMrlCtrlEquip[0];
     do {
         if (set == (*p1)) {
-            *p1 = static_cast<cDDMaterialCtrl*>(nullptr);
+            *p1 = nullptr;
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(15));
+    } while (i <= 15u);
 }
 
 // Address: 0x0046cc40 - 0x0046cc90 (80 bytes)
@@ -220,16 +220,16 @@ __attribute__((weak)) void cpDDMrlMgr::setOutlineParam(u32 mode, u32 blendT, u32
 // Address: 0x0046dff0 - 0x0046e001 (17 bytes)
 void cpDDMrlMgr::setOutlineTypeSdl(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSdlOutlineRequestNo = type;
-    if (type <= static_cast<u32>(39)) {
-        this->::cpDDMrlMgr::requestOutline(static_cast<sEffectExt::OUTLINE>(type));
+    mSdlOutlineRequestNo = type;
+    if (type <= 39u) {
+        requestOutline(static_cast<sEffectExt::OUTLINE>(type));
     }
 }
 
 // Address: 0x01a58970 - 0x01a58977 (7 bytes)
 u32 cpDDMrlMgr::getOutlineTypeSdl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSdlOutlineRequestNo;
+    return mSdlOutlineRequestNo;
 }
 
 // Address: 0x0046ce30 - 0x0046cf52 (290 bytes)
@@ -349,7 +349,7 @@ __attribute__((weak)) void cpDDMrlMgr::requestAlchemyShellLevel(u32 level) {
 // Address: 0x0046cd80 - 0x0046cd87 (7 bytes)
 void cpDDMrlMgr::setDefaultMaterialMode(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpDDMrlCtrl.mDefMaterialMode = set;
+    mpDDMrlCtrl.mDefMaterialMode = set;
 }
 
 // Address: 0x0046d590 - 0x0046d5d4 (68 bytes)
@@ -456,7 +456,7 @@ __attribute__((weak)) void cpDDMrlMgr::requestMaterialAnimation(MT_CTSTR name, u
 // Address: 0x0046dba0 - 0x0046dbb4 (20 bytes)
 void cpDDMrlMgr::requestMaterialAnimation(u32 num, u32 MaterialId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpDDMrlMgr::requestMaterialAnimation(::cpDDMrlMgr::ANIM_NAME_TBL[num], MaterialId, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
+    requestMaterialAnimation(cpDDMrlMgr::ANIM_NAME_TBL[num], MaterialId, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
 }
 
 // No out-of-line body: no code in the ELF
@@ -476,16 +476,16 @@ void cpDDMrlMgr::requestMaterialAnimation(u32 num, u32 MaterialId) {
 // Address: 0x0046dbc0 - 0x0046dbf2 (50 bytes)
 void cpDDMrlMgr::requestMaterialAnimationWeakPoint(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (num != static_cast<u32>(3)) {
-        if (num == static_cast<u32>(2)) {
-            this->::cpDDMrlMgr::requestMaterialAnimation("Weakpoint2", static_cast<u32>(0), static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
+    if (num != 3) {
+        if (num == 2) {
+            requestMaterialAnimation("Weakpoint2", 0u, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
         } else {
-            if (num == static_cast<u32>(1)) {
-                this->::cpDDMrlMgr::requestMaterialAnimation("Weakpoint1", static_cast<u32>(0), static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
+            if (num == 1) {
+                requestMaterialAnimation("Weakpoint1", 0u, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
             }
         }
     } else {
-        this->::cpDDMrlMgr::requestMaterialAnimation("Weakpoint3", static_cast<u32>(0), static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
+        requestMaterialAnimation("Weakpoint3", 0u, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
     }
 }
 
@@ -524,10 +524,10 @@ void cpDDMrlMgr::requestMaterialAnimationWeakPoint(u32 num) {
 void cpDDMrlMgr::requestMaterialAnimationPartsbreak(u32 Id) {
     // DWARF local not rendered: u32 AnimKind;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Id == static_cast<u32>(0)) {
+    if (Id == 0) {
         return;
     }
-    this->::cpDDMrlMgr::requestMaterialAnimation(::cpDDMrlMgr::ANIM_NAME_TBL[(Id <= static_cast<u32>(9)) ? (Id + static_cast<u32>(7)) : static_cast<u32>(8)], static_cast<u32>(0), static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
+    requestMaterialAnimation(cpDDMrlMgr::ANIM_NAME_TBL[(Id <= 9u) ? (Id + 7u) : 8u], 0u, static_cast<MtTypedArray<cpDDMrlMgr::cMaterialAnimationRequestData>*>(nullptr));
 }
 
 // Address: 0x0046dc30 - 0x0046dc5d (45 bytes)
@@ -556,13 +556,13 @@ __attribute__((weak)) bool cpDDMrlMgr::isExistSameDataFromOld(MT_CTSTR name, u32
 // Address: 0x0046cca0 - 0x0046ccc8 (40 bytes)
 void cpDDMrlMgr::initDDMaterialCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpDDMrlCtrl.::cDDMaterialCtrl::init();
-    this->mbDirtyMrlMode = true;
-    this->mbDirty = true;
-    this->mbDirtyAnim = true;
-    this->mbDirtyBaseShaderMode = true;
-    this->mbDirtyShaderMode = true;
-    this->mbDirtyOutline = false;
+    mpDDMrlCtrl.init();
+    mbDirtyMrlMode = true;
+    mbDirty = true;
+    mbDirtyAnim = true;
+    mbDirtyBaseShaderMode = true;
+    mbDirtyShaderMode = true;
+    mbDirtyOutline = false;
 }
 
 // Address: 0x0046e330 - 0x0046e942 (1554 bytes)
@@ -579,13 +579,17 @@ __attribute__((weak)) void cpDDMrlMgr::setDDMrlCtrl(cDDMaterialCtrl* ptr, u32 se
 // Address: 0x01a58950 - 0x01a58956 (6 bytes)
 u32 cpDDMrlMgr::getDDMrlCtrlNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x01a58960 - 0x01a58961 (1 bytes)
 __attribute__((weak)) void cpDDMrlMgr::setDDMrlCtrlNum(u32 set) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpDDMrlMgr::MyDTI cpDDMrlMgr::DTI;
+
+// Not defined (relocated bytes): const MT_CTSTR cpDDMrlMgr::ANIM_NAME_TBL[23];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpDDMrlMgr.cpp at 0x0046ee2f-0x0046ee6c (called at cpDDMrlMgr.cpp:19)
@@ -718,6 +722,8 @@ cpDDMrlMgr::cMaterialAnimationRequestData::~cMaterialAnimationRequestData() {
 //   in cpDDMrlMgr::requestMaterialAnimation at 0x0046d7d4-0x0046d7f6 (called at cpDDMrlMgr.cpp:773)
 //   in cpDDMrlMgr::isExistSameDataFromOld at 0x0046db54-0x0046db80 (called at cpDDMrlMgr.cpp:773)
 // bool cpDDMrlMgr::cMaterialAnimationRequestData::isSameData(MT_CTSTR name, u32 MaterialId);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpDDMrlMgr::cMaterialAnimationRequestData::MyDTI cpDDMrlMgr::cMaterialAnimationRequestData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpDDMrlMgr.cpp at 0x0046ee6c-0x0046eea9 (called at cpDDMrlMgr.cpp:20)

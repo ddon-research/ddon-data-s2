@@ -16,49 +16,49 @@ cSoundSilentDetectFilter::cSoundSilentDetectFilter() {
 // Also emitted as: _ZN24cSoundSilentDetectFilterD0Ev at 0x012f2c40
 cSoundSilentDetectFilter::~cSoundSilentDetectFilter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRms300 == static_cast<cSoundMeterRms*>(nullptr)) {
+    if (mpRms300 == nullptr) {
         return;
     }
-    delete this->mpRms300;
+    delete mpRms300;
 }
 
 // Address: 0x012f2c80 - 0x012f2c91 (17 bytes)
 void cSoundSilentDetectFilter::init(const bool enable, const u32 channelNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnable = enable;
-    if (enable == false) {
+    mEnable = enable;
+    if (!enable) {
         return;
     }
-    this->mIsInitialize = true;
-    this->mChannelNum = channelNum;
+    mIsInitialize = true;
+    mChannelNum = channelNum;
 }
 
 // Address: 0x012f2ca0 - 0x012f2cf7 (87 bytes)
 void cSoundSilentDetectFilter::executeProcess(f32* pData, const u32 frames, const u32 channels) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRms300 == static_cast<cSoundMeterRms*>(nullptr)) {
+    if (mpRms300 == nullptr) {
         return;
     }
-    if (this->mIsInitialize != false) {
-        this->mpRms300->::cSoundMeterRms::initialize(static_cast<unsigned char>(channels));
-        this->mIsInitialize = false;
+    if (mIsInitialize) {
+        mpRms300->initialize(static_cast<unsigned char>(channels));
+        mIsInitialize = false;
     }
-    this->mpRms300->::cSoundMeterRms::update(pData, frames, static_cast<unsigned char>(channels));
+    mpRms300->update(pData, frames, static_cast<unsigned char>(channels));
 }
 
 // Address: 0x012f2d00 - 0x012f2d04 (4 bytes)
 bool cSoundSilentDetectFilter::isEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnable;
+    return mEnable;
 }
 
 // Address: 0x012f2d10 - 0x012f2d1f (15 bytes)
 u32 cSoundSilentDetectFilter::getAudioGranularitySamples() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRms300 != static_cast<cSoundMeterRms*>(nullptr)) {
-        return static_cast<u32>(256);
+    if (mpRms300 != nullptr) {
+        return 256;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 

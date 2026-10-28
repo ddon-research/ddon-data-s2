@@ -31,7 +31,7 @@ const MtDTI& rGUIIconInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK12rGUIIconInfo5MyDTI11newInstanceEv at 0x01377820-0x0137784d, code DWARF attributes to no inlined copy; sz is the class's size (136), align the allocation's other whole constant (16)
 inline void* rGUIIconInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memAlloc(sz, align, ::rGUIIconInfo::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memAlloc(sz, align, rGUIIconInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* rGUIIconInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rGUIIconInfoD0Ev at 0x01377a08-0x01377a27, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGUIIconInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,22 +72,22 @@ MT_CTSTR rGUIIconInfo::getExt() const {
 rGUIIconInfo::~rGUIIconInfo() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1377928 read, used twice; no DWARF local holds it
-    MT_CHAR* t0 = this->mpNameBuffer;
-    if (t0 != static_cast<MT_CHAR*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
-        this->mpNameBuffer = static_cast<MT_CHAR*>(nullptr);
+    MT_CHAR* t0 = mpNameBuffer;
+    if (t0 != nullptr) {
+        MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
+        mpNameBuffer = nullptr;
         // inferred: a temporary for the value the load at 0x1377957 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t1 = this->mpIconInfo;
-        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
-            this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+        nGUI::ICON_INFO* t1 = mpIconInfo;
+        if (t1 != nullptr) {
+            MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
+            mpIconInfo = nullptr;
         }
     } else {
         // inferred: a temporary for the value the load at 0x1377957 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t1 = this->mpIconInfo;
-        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
-            this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+        nGUI::ICON_INFO* t1 = mpIconInfo;
+        if (t1 != nullptr) {
+            MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
+            mpIconInfo = nullptr;
         }
     }
 }
@@ -121,22 +121,22 @@ __attribute__((weak)) bool rGUIIconInfo::save(MtStream& out) {
 void rGUIIconInfo::clear() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1377e7a read, used twice; no DWARF local holds it
-    MT_CHAR* t0 = this->mpNameBuffer;
-    if (t0 != static_cast<MT_CHAR*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
-        this->mpNameBuffer = static_cast<MT_CHAR*>(nullptr);
+    MT_CHAR* t0 = mpNameBuffer;
+    if (t0 != nullptr) {
+        MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
+        mpNameBuffer = nullptr;
         // inferred: a temporary for the value the load at 0x1377ea9 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t1 = this->mpIconInfo;
-        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
-            this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+        nGUI::ICON_INFO* t1 = mpIconInfo;
+        if (t1 != nullptr) {
+            MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
+            mpIconInfo = nullptr;
         }
     } else {
         // inferred: a temporary for the value the load at 0x1377ea9 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t1 = this->mpIconInfo;
-        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
-            this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+        nGUI::ICON_INFO* t1 = mpIconInfo;
+        if (t1 != nullptr) {
+            MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
+            mpIconInfo = nullptr;
         }
     }
 }
@@ -163,12 +163,14 @@ __attribute__((weak)) bool rGUIIconInfo::createIconInfo(nGUI::ICON_INFO* * ppIco
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rGUIIconInfo::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGUIIconInfo::MyDTI rGUIIconInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGUIIconInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01377820 - 0x0137788f (111 bytes)
 MtObject* rGUIIconInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rGUIIconInfo;
+    return new (16u) rGUIIconInfo;
 }
 

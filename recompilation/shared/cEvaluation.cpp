@@ -150,24 +150,24 @@ __attribute__((weak)) void cEvaluationName::cEvaluation::deleteCategory(u32 cate
 void cEvaluationName::cEvaluation::deleteCategoryAll(uDDOModel* pObjModel) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(0));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(1));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(2));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(3));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(4));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(5));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(6));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(7));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(8));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(9));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(10));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(11));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(12));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(13));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(14));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(15));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(16));
-    this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(17));
+    deleteCategory(pObjModel, 0u);
+    deleteCategory(pObjModel, 1u);
+    deleteCategory(pObjModel, 2u);
+    deleteCategory(pObjModel, 3u);
+    deleteCategory(pObjModel, 4u);
+    deleteCategory(pObjModel, 5u);
+    deleteCategory(pObjModel, 6u);
+    deleteCategory(pObjModel, 7u);
+    deleteCategory(pObjModel, 8u);
+    deleteCategory(pObjModel, 9u);
+    deleteCategory(pObjModel, 10u);
+    deleteCategory(pObjModel, 11u);
+    deleteCategory(pObjModel, 12u);
+    deleteCategory(pObjModel, 13u);
+    deleteCategory(pObjModel, 14u);
+    deleteCategory(pObjModel, 15u);
+    deleteCategory(pObjModel, 16u);
+    deleteCategory(pObjModel, 17u);
 }
 
 // Address: 0x001df190 - 0x001df977 (2023 bytes)
@@ -273,6 +273,8 @@ __attribute__((weak)) f32 cEvaluationName::cEvaluation::getCategoryMax(rEvaluati
 // No out-of-line body: no code in the ELF
 // f32 cEvaluationName::cEvaluation::getCategoryDec(rEvaluationTable* pRes, u32 categorys);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEvaluationName::cEvaluation::MyDTI cEvaluationName::cEvaluation::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e05ee-0x001e062e (called at cEvaluation.cpp:40)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e05ee-0x001e062e (called at cEvaluation.h:146)
@@ -373,6 +375,8 @@ MtUI* cEvaluationName::cEvaluationData::createUI(MtProperty& prop) {
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // void cEvaluationName::cEvaluationData::clrAllPointDataList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEvaluationName::cEvaluationData::MyDTI cEvaluationName::cEvaluationData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e062e-0x001e0667 (called at cEvaluation.cpp:41)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e062e-0x001e0667 (called at cEvaluation.h:111)
@@ -407,7 +411,7 @@ const MtDTI& cEvaluationName::cEvaluationPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEvaluationName::cEvaluationPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memAlloc(sz, align, ::cEvaluationName::cEvaluationPoint::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memAlloc(sz, align, ::cEvaluationName::cEvaluationPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -469,6 +473,8 @@ MtUI* cEvaluationName::cEvaluationPoint::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEvaluationName::cEvaluationPoint::MyDTI cEvaluationName::cEvaluationPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e0667-0x001e06a0 (called at cEvaluation.cpp:42)
 //   in _GLOBAL__sub_I_cEvaluation.cpp at 0x001e0667-0x001e06a0 (called at cEvaluation.h:39)
@@ -477,6 +483,6 @@ MtUI* cEvaluationName::cEvaluationPoint::createUI(MtProperty& prop) {
 // Address: 0x001de950 - 0x001de9a9 (89 bytes)
 MtObject* cEvaluationName::cEvaluationPoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEvaluationName::cEvaluationPoint;
+    return new (16u) ::cEvaluationName::cEvaluationPoint;
 }
 

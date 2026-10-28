@@ -111,10 +111,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyMaterialTable::cEnemyMaterialTable() {
-    this->mIdx = static_cast<u32>(1);
+    this->mIdx = 1;
     this->mDieIsNoCall = false;
-    this->mMaterialWeakPointNo = static_cast<u32>(0);
-    this->mMaterialAnimationType = static_cast<u32>(0);
-    this->mMaterialType = static_cast<u32>(0);
-    this->mMaterialNo = static_cast<s32>(0);
+    this->mMaterialWeakPointNo = 0;
+    this->mMaterialAnimationType = 0;
+    this->mMaterialType = 0;
+    this->mMaterialNo = 0;
 }

@@ -35,7 +35,7 @@ const MtDTI& rNPCMotMyRoom::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCMotMyRoom::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::DTI)->memAlloc(sz, align, rNPCMotMyRoom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rNPCMotMyRoom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCMotMyRoom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,9 +64,9 @@ inline void rNPCMotMyRoom::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rNPCMotMyRoom::rNPCMotMyRoom() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArray = static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(18u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x006b0000 - 0x006b0081 (129 bytes)
@@ -135,18 +135,20 @@ MT_CTSTR rNPCMotMyRoom::getExt() const {
 // Address: 0x01aa0420 - 0x01aa0424 (4 bytes)
 u32 rNPCMotMyRoom::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x006b09a0 - 0x006b09d3 (51 bytes)
 rNPCMotMyRoom::InfoBinary* rNPCMotMyRoom::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfoNum()) {
-        return &this->mpArray[index];
+    if (index < getInfoNum()) {
+        return &mpArray[index];
     } else {
-        return static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotMyRoom::MyDTI rNPCMotMyRoom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNPCMotMyRoom.cpp at 0x006b0a5d-0x006b0a9a (called at rNPCMotMyRoom.cpp:496)
@@ -156,7 +158,7 @@ rNPCMotMyRoom::InfoBinary* rNPCMotMyRoom::getInfo(u32 index) const {
 // Address: 0x006aff10 - 0x006aff74 (100 bytes)
 MtObject* rNPCMotMyRoom::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCMotMyRoom;
+    return new (16u) rNPCMotMyRoom;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rNPCMotMyRoom::InfoBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCMotMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::InfoBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::DTI)->memAlloc(sz, align, rNPCMotMyRoom::InfoBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ inline void* rNPCMotMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNPCMotMyRoom::InfoBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,153 +234,155 @@ __attribute__((weak)) u32 rNPCMotMyRoom::InfoBinary::getMotionNo(u32 idx, u8 sex
 // Address: 0x006afcc0 - 0x006afd02 (66 bytes)
 u8 rNPCMotMyRoom::InfoBinary::getProbability(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mProbability;
         } else {
-            return static_cast<u8>(100);
+            return 100;
         }
     } else {
-        return static_cast<u8>(100);
+        return 100;
     }
 }
 
 // Address: 0x006afd10 - 0x006afd4c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getNext(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mNext;
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     } else {
-        return static_cast<s8>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afd50 - 0x006afd8c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getCancel(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mCancel;
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     } else {
-        return static_cast<s8>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afe50 - 0x006afe8d (61 bytes)
 u16 rNPCMotMyRoom::InfoBinary::getHaveItem(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mHaveItem;
         } else {
-            return static_cast<u16>(0);
+            return 0;
         }
     } else {
-        return static_cast<u16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afe90 - 0x006afecb (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getItemMotNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mItemMotNo;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afd90 - 0x006afdcb (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getWait(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mWait;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afdd0 - 0x006afe0b (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getRandomWait(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mRandWait;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afe10 - 0x006afe4c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getFrame(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mFrame;
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     } else {
-        return static_cast<s8>(0);
+        return 0;
     }
 }
 
 // Address: 0x006afed0 - 0x006aff0b (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getMessage(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->getMotListNum()) {
-        rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
-        if (data != static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr)) {
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
             return data->mMessage;
         } else {
-            return static_cast<s16>(0);
+            return 0;
         }
     } else {
-        return static_cast<s16>(0);
+        return 0;
     }
 }
 
 // Address: 0x01aa0470 - 0x01aa047b (11 bytes)
 rNPCMotMyRoom::InfoBinary::MotDataBinary* rNPCMotMyRoom::InfoBinary::getMotList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpMotList[index];
+    return &mpMotList[index];
 }
 
 // Address: 0x01aa0480 - 0x01aa0484 (4 bytes)
 u32 rNPCMotMyRoom::InfoBinary::getMotListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMotListNum;
+    return mMotListNum;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
 //   in sNpcManager::isTransOffMyRoom at 0x007f1e22-0x007f1e2b (called at sNpcManager.cpp:1020)
 // bool rNPCMotMyRoom::InfoBinary::isTransOff();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotMyRoom::InfoBinary::MyDTI rNPCMotMyRoom::InfoBinary::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rNPCMotMyRoom.cpp at 0x006b0a24-0x006b0a5d (called at rNPCMotMyRoom.cpp:185)
@@ -388,7 +392,7 @@ u32 rNPCMotMyRoom::InfoBinary::getMotListNum() {
 // Address: 0x006afa70 - 0x006afac3 (83 bytes)
 MtObject* rNPCMotMyRoom::InfoBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCMotMyRoom::InfoBinary;
+    return new (16u) rNPCMotMyRoom::InfoBinary;
 }
 
 // No out-of-line body: no code in the ELF
@@ -413,7 +417,7 @@ const MtDTI& rNPCMotMyRoom::InfoBinary::MotDataBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNPCMotMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -428,7 +432,7 @@ inline void* rNPCMotMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rNPCMotMyRoom10InfoBinary13MotDataBinaryD0Ev at 0x01aa04c0-0x01aa04ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNPCMotMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -450,6 +454,8 @@ inline void rNPCMotMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // void rNPCMotMyRoom::InfoBinary::MotDataBinary::copy(rNPCMotMyRoom::InfoBinary::MotDataBinary* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNPCMotMyRoom::InfoBinary::MotDataBinary::MyDTI rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rNPCMotMyRoom.cpp at 0x006b09e0-0x006b0a24 (called at rNPCMotMyRoom.cpp:32)
 //   in _GLOBAL__sub_I_rNPCMotMyRoom.cpp at 0x006b09e0-0x006b0a24 (called at rNPCMotMyRoom.h:77)
@@ -458,6 +464,6 @@ inline void rNPCMotMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_ad
 // Address: 0x006af970 - 0x006af9e9 (121 bytes)
 MtObject* rNPCMotMyRoom::InfoBinary::MotDataBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNPCMotMyRoom::InfoBinary::MotDataBinary;
+    return new (16u) rNPCMotMyRoom::InfoBinary::MotDataBinary;
 }
 

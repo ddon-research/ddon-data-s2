@@ -293,12 +293,12 @@ inline cAreaHit* cScenario::getArea() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cScenarioParam::cScenarioParam() {
-    this->mTaskType = static_cast<u32>(0);
-    this->mBootType = static_cast<u32>(0);
-    this->mDetectAttr = static_cast<u32>(16);
-    this->mCheckType = static_cast<u32>(0);
-    this->mPriority = static_cast<u32>(4);
-    this->mStatus = static_cast<u32>(0);
+    this->mTaskType = 0;
+    this->mBootType = 0;
+    this->mDetectAttr = 16;
+    this->mCheckType = 0;
+    this->mPriority = 4;
+    this->mStatus = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

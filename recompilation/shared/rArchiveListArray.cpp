@@ -37,7 +37,7 @@ const MtDTI& rArchiveListArray::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rArchiveListArray::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rArchiveListArray::DTI)->memAlloc(sz, align, ::rArchiveListArray::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memAlloc(sz, align, rArchiveListArray::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rArchiveListArray::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rArchiveListArray::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rArchiveListArray::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,20 +66,20 @@ inline void rArchiveListArray::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rArchiveListArray::rArchiveListArray() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpDbgResDat = static_cast<cArchiveListNode::stDbgResData*>(nullptr);
-    this->mpHeader = static_cast<rArchiveListArray::stHeader*>(nullptr);
+    setAttribute(16u);
+    mpDbgResDat = nullptr;
+    mpHeader = nullptr;
 }
 
 // Address: 0x00642c30 - 0x00642c7d (77 bytes)
 // Also emitted as: _ZN17rArchiveListArrayD0Ev at 0x00642c90
 rArchiveListArray::~rArchiveListArray() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader == static_cast<rArchiveListArray::stHeader*>(nullptr)) {
+    if (mpHeader == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rArchiveListArray::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rArchiveListArray::stHeader*>(nullptr);
+    MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x01a73de0 - 0x01a73de8 (8 bytes)
@@ -126,17 +126,17 @@ __attribute__((weak)) cArchiveListNode* rArchiveListArray::searchListNode(u32 ta
 ARC_SEARCHID rArchiveListArray::convSearchId(MT_CTSTR name) {
     // DWARF local not rendered: u32 id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    return MtCRC::getCRC(name, 0xFFFFFFFFu);
 }
 
 // Address: 0x00642ef0 - 0x00642f02 (18 bytes)
 ARC_TAGID rArchiveListArray::convTagId(MT_CTSTR name) {
     // DWARF local not rendered: u32 id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((*name) != static_cast<char>(0)) {
-        return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    if ((*name) != 0) {
+        return MtCRC::getCRC(name, 0xFFFFFFFFu);
     } else {
-        return static_cast<ARC_TAGID>(0);
+        return 0;
     }
 }
 
@@ -147,7 +147,7 @@ ARC_TAGID rArchiveListArray::convTagId(MT_CTSTR name) {
 // Address: 0x00642f10 - 0x00642f16 (6 bytes)
 u32 rArchiveListArray::convTargetTagtNo(u32 tagId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return tagId & static_cast<u32>(127);
+    return tagId & 127u;
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,6 +164,8 @@ u32 rArchiveListArray::convTargetTagtNo(u32 tagId) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void rArchiveListArray::freeMem();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rArchiveListArray::MyDTI rArchiveListArray::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rArchiveListArray.cpp at 0x00643320-0x00643364 (called at rArchiveListArray.cpp:329)
 //   in _GLOBAL__sub_I_rArchiveListArray.cpp at 0x00643320-0x00643364 (called at rArchiveListArray.h:12)
@@ -172,6 +174,6 @@ u32 rArchiveListArray::convTargetTagtNo(u32 tagId) {
 // Address: 0x00642b40 - 0x00642ba5 (101 bytes)
 MtObject* rArchiveListArray::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rArchiveListArray;
+    return new (16u) rArchiveListArray;
 }
 

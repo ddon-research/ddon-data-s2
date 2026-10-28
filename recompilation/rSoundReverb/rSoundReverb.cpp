@@ -46,7 +46,7 @@ const MtDTI& rSoundReverb::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rSoundReverbD0Ev at 0x012018fe-0x0120191f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundReverb::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundReverb::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,10 +102,10 @@ __attribute__((weak)) bool rSoundReverb::load(MtStream& in) {
 // Address: 0x01202110 - 0x01202129 (25 bytes)
 rSoundReverb::cSoundReverbData* rSoundReverb::getReverbData(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(index) < this->mReverb.::MtArray::mLength) {
-        return static_cast<rSoundReverb::cSoundReverbData*>(this->mReverb.::MtArray::mpArray[index]);
+    if (static_cast<unsigned int>(index) < mReverb.mLength) {
+        return static_cast<cSoundReverbData*>(mReverb.mpArray[index]);
     } else {
-        return static_cast<rSoundReverb::cSoundReverbData*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -118,32 +118,31 @@ rSoundReverb::cSoundReverbData* rSoundReverb::getReverbDataFromId(s32 id) {
     // inferred: a value cast to the type its use takes: u16 used as int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if (this->mpIdToIndexTbl != static_cast<u16*>(nullptr)) {
-        if (id < static_cast<int>(this->mIdToIndexTblNum)) {
-            if (this->mpIdToIndexTbl[id] != static_cast<unsigned short>(65535)) {
-                if (this->mpIdToIndexTbl[id] < this->mReverb.::MtArray::mLength) {
-                    return static_cast<rSoundReverb::cSoundReverbData*>(this->mReverb.::MtArray::mpArray[this->mpIdToIndexTbl[id]]);
+    if (mpIdToIndexTbl != nullptr) {
+        if (id < static_cast<int>(mIdToIndexTblNum)) {
+            if (mpIdToIndexTbl[id] != 0xFFFF) {
+                if (mpIdToIndexTbl[id] < mReverb.mLength) {
+                    return static_cast<cSoundReverbData*>(mReverb.mpArray[mpIdToIndexTbl[id]]);
                 }
             }
         }
-        return static_cast<rSoundReverb::cSoundReverbData*>(nullptr);
+        return nullptr;
     }
-    if (this->mReverb.::MtArray::mLength == static_cast<u32>(0)) {
-        return static_cast<rSoundReverb::cSoundReverbData*>(nullptr);
+    if (mReverb.mLength == 0) {
+        return nullptr;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        if (i < this->mReverb.::MtArray::mLength) {
-            if (this->mReverb.::MtArray::mpArray[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mReverb.::MtArray::mpArray[static_cast<int>(i)]) + static_cast<long>(8))) != static_cast<unsigned int>(id)) {
-                } else {
-                    return static_cast<rSoundReverb::cSoundReverbData*>(this->mReverb.::MtArray::mpArray[static_cast<int>(i)]);
+        if (i < mReverb.mLength) {
+            if (mReverb.mpArray[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mReverb.mpArray[static_cast<int>(i)]) + 8)) == static_cast<unsigned int>(id)) {
+                    return static_cast<cSoundReverbData*>(mReverb.mpArray[static_cast<int>(i)]);
                 }
             }
         }
-        i += static_cast<u32>(1);
-    } while (i < this->mReverb.::MtArray::mLength);
-    return static_cast<rSoundReverb::cSoundReverbData*>(nullptr);
+        i += 1u;
+    } while (i < mReverb.mLength);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,6 +169,14 @@ __attribute__((weak)) bool rSoundReverb::createIdToIndexTbl() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundReverb::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundReverb::MyDTI rSoundReverb::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const f32 rSoundReverb::MIN_OUTPUTLEVEL_DB;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const f32 rSoundReverb::MAX_OUTPUTLEVEL_DB;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const f32 rSoundReverb::DEF_OUTPUTLEVEL_DB;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundReverb::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -212,7 +219,7 @@ const MtDTI& rSoundReverb::cSoundReverbData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundReverb::cSoundReverbData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundReverb::cSoundReverbData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundReverb::cSoundReverbData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -242,7 +249,7 @@ __attribute__((weak)) void rSoundReverb::cSoundReverbData::createProperty(MtProp
 // Address: 0x01202eb0 - 0x01202eb5 (5 bytes)
 MtUI* rSoundReverb::cSoundReverbData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01202ec0 - 0x01202f05 (69 bytes)
@@ -272,6 +279,8 @@ __attribute__((weak)) void rSoundReverb::cSoundReverbData::copy(sSound::ReverbPa
 
 // No out-of-line body: no code in the ELF
 // bool rSoundReverb::cSoundReverbData::convert(MtStream& out);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundReverb::cSoundReverbData::MyDTI rSoundReverb::cSoundReverbData::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundReverb::cSoundReverbData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

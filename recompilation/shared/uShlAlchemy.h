@@ -167,10 +167,10 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline uShlAlchemy::uShlAlchemy() {
     this->mAlchemyValue = 0.0f;
-    this->mOldColorLv = static_cast<s32>(-1);
-    this->mOldPartsLv = static_cast<s32>(-1);
+    this->mOldColorLv = -1;
+    this->mOldPartsLv = -1;
     this->mFlgSetInfo = false;
-    this->mpAlchemyMaxEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    this->mpAlchemyMaxEfcHandle = nullptr;
     this->mMaxLvGrow = false;
     this->mFlgMaxGrowLoopSeRequest = false;
     this->mAlchemyReduceTime = -1.0f;

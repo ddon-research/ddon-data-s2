@@ -32,7 +32,7 @@ const MtDTI& nNetwork::Storage::getDTI() const {
 // Address: 0x012f6370 - 0x012f63b0 (64 bytes)
 void* nNetwork::Storage::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::Storage::DTI)->memAlloc(sz, align, ::nNetwork::Storage::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Storage::DTI)->memAlloc(sz, align, ::nNetwork::Storage::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +108,7 @@ __attribute__((weak)) void nNetwork::Storage::move() {
 // Address: 0x012f6cf0 - 0x012f6cf5 (5 bytes)
 void nNetwork::Storage::close() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nNetwork::Storage::removeDriver();
+    removeDriver();
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,13 +120,13 @@ void nNetwork::Storage::close() {
 // Address: 0x012f6d00 - 0x012f6d36 (54 bytes)
 void nNetwork::Storage::abort() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mReqOpen != static_cast<u32>(0)) {
-        this->mpStorage->::MtNetStorage2::abortRequest(this->mReqOpen);
+    if (mReqOpen != 0) {
+        mpStorage->abortRequest(mReqOpen);
     }
-    if (this->mReqSeq == static_cast<u32>(0)) {
+    if (mReqSeq == 0) {
         return;
     }
-    this->mpStorage->::MtNetStorage2::abortRequest(this->mReqSeq);
+    mpStorage->abortRequest(mReqSeq);
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +182,7 @@ __attribute__((weak)) void nNetwork::Storage::onNtcDestruct() {
 // Address: 0x012f6fb0 - 0x012f6fb5 (5 bytes)
 void nNetwork::Storage::onNtcFinalize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrop = false;
+    mDrop = false;
 }
 
 // Address: 0x012f6fd0 - 0x012f6ff1 (33 bytes)
@@ -206,9 +206,9 @@ __attribute__((weak)) void nNetwork::Storage::onAnsGetListFail(u32 req_seq, MtNe
 // Address: 0x012f7170 - 0x012f7183 (19 bytes)
 void nNetwork::Storage::onAnsUnlinkSucceed(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqSeq = static_cast<u32>(0);
-    this->mUnlinkComplete = true;
-    this->mState = static_cast<s32>(0);
+    mReqSeq = 0;
+    mUnlinkComplete = true;
+    mState = 0;
 }
 
 // Address: 0x012f71b0 - 0x012f71d9 (41 bytes)
@@ -220,7 +220,7 @@ __attribute__((weak)) void nNetwork::Storage::onAnsUnlinkFail(u32 req_seq, MtNet
 // Address: 0x012f7210 - 0x012f7218 (8 bytes)
 void nNetwork::Storage::onAnsOpenSucceed(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqOpen = static_cast<u32>(0);
+    mReqOpen = 0;
 }
 
 // Address: 0x012f7230 - 0x012f724e (30 bytes)
@@ -237,9 +237,9 @@ __attribute__((weak)) void nNetwork::Storage::onAnsFinalize(u32 req_seq) {
 // Address: 0x012f7290 - 0x012f72a3 (19 bytes)
 void nNetwork::Storage::onAnsWriteSucceed(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqSeq = static_cast<u32>(0);
-    this->mWriteComplete = true;
-    this->mState = static_cast<s32>(1);
+    mReqSeq = 0;
+    mWriteComplete = true;
+    mState = 1;
 }
 
 // Address: 0x012f72d0 - 0x012f72f6 (38 bytes)
@@ -251,10 +251,10 @@ __attribute__((weak)) void nNetwork::Storage::onAnsWriteFail(u32 req_seq, MtNetE
 // Address: 0x012f7330 - 0x012f7346 (22 bytes)
 void nNetwork::Storage::onAnsReadSucceed(u32 req_seq, s32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqSeq = static_cast<u32>(0);
-    this->mDataLength = static_cast<u32>(data_size);
-    this->mReadComplete = true;
-    this->mState = static_cast<s32>(1);
+    mReqSeq = 0;
+    mDataLength = static_cast<u32>(data_size);
+    mReadComplete = true;
+    mState = 1;
 }
 
 // Address: 0x012f7370 - 0x012f7396 (38 bytes)
@@ -262,6 +262,8 @@ __attribute__((weak)) void nNetwork::Storage::onAnsReadFail(u32 req_seq, MtNetEr
     DDON_STUB("nNetwork::Storage::onAnsReadFail")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Storage::MyDTI nNetwork::Storage::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Storage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -275,18 +277,18 @@ __attribute__((weak)) MtObject* nNetwork::Storage::MyDTI::newInstance() const {
 // Address: 0x01bbc2d0 - 0x01bbc2d5 (5 bytes)
 void nNetwork::Storage::Closer::onAnsFinalize(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFinal = false;
+    mFinal = false;
 }
 
 // Address: 0x01bbc250 - 0x01bbc255 (5 bytes)
 void nNetwork::Storage::Closer::onNtcFinalize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrop = false;
+    mDrop = false;
 }
 
 // Address: 0x01bbc260 - 0x01bbc265 (5 bytes)
 void nNetwork::Storage::Closer::onNtcDrop(MtNetError* net_err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrop = true;
+    mDrop = true;
 }
 

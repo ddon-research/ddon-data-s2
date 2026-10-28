@@ -27,7 +27,7 @@ const MtDTI& CDataMailAttachmentInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailAttachmentInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailAttachmentInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* CDataMailAttachmentInfo::getAllocator() {
 // Address: 0x003b94c0 - 0x003b9500 (64 bytes)
 void* CDataMailAttachmentInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailAttachmentInfo::getAllocator()->memAlloc(sz, align, ::CDataMailAttachmentInfo::DTI.::MtDTI::getID());
+    return CDataMailAttachmentInfo::getAllocator()->memAlloc(sz, align, CDataMailAttachmentInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* CDataMailAttachmentInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9530 - 0x003b955a (42 bytes)
 __attribute__((weak)) void CDataMailAttachmentInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailAttachmentInfo::getAllocator()->memFree(p_addr);
+    CDataMailAttachmentInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,6 +73,8 @@ __attribute__((weak)) void CDataMailAttachmentInfo::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataMailAttachmentInfo::CDataMailAttachmentInfo(u64, b8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailAttachmentInfo::MyDTI CDataMailAttachmentInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004193be-0x004193f7 (called at MailImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004193be-0x004193f7 (called at Mail.h:110)
@@ -81,7 +83,7 @@ __attribute__((weak)) void CDataMailAttachmentInfo::operator delete(void* p_addr
 // Address: 0x003b9470 - 0x003b94bc (76 bytes)
 MtObject* CDataMailAttachmentInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailAttachmentInfo;
+    return new (16u) CDataMailAttachmentInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,7 +100,7 @@ const MtDTI& CDataMailAttachmentList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailAttachmentList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentList::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailAttachmentList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +109,7 @@ inline MtAllocator* CDataMailAttachmentList::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataMailAttachmentList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentList::DTI)->memAlloc(sz, align, ::CDataMailAttachmentList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataMailAttachmentList::DTI)->memAlloc(sz, align, CDataMailAttachmentList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ inline void* CDataMailAttachmentList::operator new(size_t sz, u32 align) {
 // Address: 0x003b9bb0 - 0x003b9bda (42 bytes)
 __attribute__((weak)) void CDataMailAttachmentList::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailAttachmentList::getAllocator()->memFree(p_addr);
+    CDataMailAttachmentList::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,6 +146,8 @@ __attribute__((weak)) void CDataMailAttachmentList::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataMailAttachmentList::CDataMailAttachmentList(const MtTypedArray<CDataMailItemInfo>&, const MtTypedArray<CDataMailGPInfo>&, const MtTypedArray<CDataMailOptionCourseInfo>&, const MtTypedArray<CDataMailLegendPawnInfo>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailAttachmentList::MyDTI CDataMailAttachmentList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004194db-0x00419514 (called at MailImplement.inc:13)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004194db-0x00419514 (called at Mail.h:410)
@@ -152,7 +156,7 @@ __attribute__((weak)) void CDataMailAttachmentList::operator delete(void* p_addr
 // Address: 0x003b9a90 - 0x003b9b77 (231 bytes)
 MtObject* CDataMailAttachmentList::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailAttachmentList;
+    return new (16u) CDataMailAttachmentList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,7 +173,7 @@ const MtDTI& CDataMailGPInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailGPInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailGPInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailGPInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,7 +182,7 @@ inline MtAllocator* CDataMailGPInfo::getAllocator() {
 // Address: 0x003b9740 - 0x003b9780 (64 bytes)
 void* CDataMailGPInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailGPInfo::getAllocator()->memAlloc(sz, align, ::CDataMailGPInfo::DTI.::MtDTI::getID());
+    return CDataMailGPInfo::getAllocator()->memAlloc(sz, align, CDataMailGPInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,7 +197,7 @@ void* CDataMailGPInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b97b0 - 0x003b97da (42 bytes)
 __attribute__((weak)) void CDataMailGPInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailGPInfo::getAllocator()->memFree(p_addr);
+    CDataMailGPInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,6 +219,8 @@ __attribute__((weak)) void CDataMailGPInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataMailGPInfo::CDataMailGPInfo(const CMailAttachmentInfo&, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailGPInfo::MyDTI CDataMailGPInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419430-0x00419469 (called at MailImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419430-0x00419469 (called at Mail.h:223)
@@ -223,7 +229,7 @@ __attribute__((weak)) void CDataMailGPInfo::operator delete(void* p_addr) {
 // Address: 0x003b96d0 - 0x003b9733 (99 bytes)
 MtObject* CDataMailGPInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailGPInfo;
+    return new (16u) CDataMailGPInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -240,7 +246,7 @@ const MtDTI& CDataMailInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,7 +255,7 @@ inline MtAllocator* CDataMailInfo::getAllocator() {
 // Address: 0x003b93a0 - 0x003b93e0 (64 bytes)
 void* CDataMailInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailInfo::getAllocator()->memAlloc(sz, align, ::CDataMailInfo::DTI.::MtDTI::getID());
+    return CDataMailInfo::getAllocator()->memAlloc(sz, align, CDataMailInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,7 +270,7 @@ void* CDataMailInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9410 - 0x003b943a (42 bytes)
 __attribute__((weak)) void CDataMailInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailInfo::getAllocator()->memFree(p_addr);
+    CDataMailInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,6 +291,8 @@ __attribute__((weak)) void CDataMailInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataMailInfo::CDataMailInfo(u64, u8, u8, const CCommunityCharacterBaseInfo&, const char*, const char*, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailInfo::MyDTI CDataMailInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419385-0x004193be (called at MailImplement.inc:7)
@@ -311,7 +319,7 @@ const MtDTI& CDataMailItemInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailItemInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailItemInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailItemInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -320,7 +328,7 @@ inline MtAllocator* CDataMailItemInfo::getAllocator() {
 // Address: 0x003b9600 - 0x003b9640 (64 bytes)
 void* CDataMailItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailItemInfo::getAllocator()->memAlloc(sz, align, ::CDataMailItemInfo::DTI.::MtDTI::getID());
+    return CDataMailItemInfo::getAllocator()->memAlloc(sz, align, CDataMailItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -335,7 +343,7 @@ void* CDataMailItemInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9670 - 0x003b969a (42 bytes)
 __attribute__((weak)) void CDataMailItemInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailItemInfo::getAllocator()->memFree(p_addr);
+    CDataMailItemInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -357,6 +365,8 @@ __attribute__((weak)) void CDataMailItemInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataMailItemInfo::CDataMailItemInfo(const CMailAttachmentInfo&, u32, u16);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailItemInfo::MyDTI CDataMailItemInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004193f7-0x00419430 (called at MailImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004193f7-0x00419430 (called at Mail.h:163)
@@ -365,7 +375,7 @@ __attribute__((weak)) void CDataMailItemInfo::operator delete(void* p_addr) {
 // Address: 0x003b9590 - 0x003b95f8 (104 bytes)
 MtObject* CDataMailItemInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailItemInfo;
+    return new (16u) CDataMailItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -382,7 +392,7 @@ const MtDTI& CDataMailLegendPawnInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailLegendPawnInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailLegendPawnInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailLegendPawnInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,7 +401,7 @@ inline MtAllocator* CDataMailLegendPawnInfo::getAllocator() {
 // Address: 0x003b99c0 - 0x003b9a00 (64 bytes)
 void* CDataMailLegendPawnInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailLegendPawnInfo::getAllocator()->memAlloc(sz, align, ::CDataMailLegendPawnInfo::DTI.::MtDTI::getID());
+    return CDataMailLegendPawnInfo::getAllocator()->memAlloc(sz, align, CDataMailLegendPawnInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,7 +416,7 @@ void* CDataMailLegendPawnInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9a30 - 0x003b9a5a (42 bytes)
 __attribute__((weak)) void CDataMailLegendPawnInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailLegendPawnInfo::getAllocator()->memFree(p_addr);
+    CDataMailLegendPawnInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -428,6 +438,8 @@ __attribute__((weak)) void CDataMailLegendPawnInfo::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataMailLegendPawnInfo::CDataMailLegendPawnInfo(const CMailAttachmentInfo&, u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailLegendPawnInfo::MyDTI CDataMailLegendPawnInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004194a2-0x004194db (called at MailImplement.inc:12)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004194a2-0x004194db (called at Mail.h:350)
@@ -436,7 +448,7 @@ __attribute__((weak)) void CDataMailLegendPawnInfo::operator delete(void* p_addr
 // Address: 0x003b9950 - 0x003b99ba (106 bytes)
 MtObject* CDataMailLegendPawnInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailLegendPawnInfo;
+    return new (16u) CDataMailLegendPawnInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -453,7 +465,7 @@ const MtDTI& CDataMailOptionCourseInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailOptionCourseInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailOptionCourseInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailOptionCourseInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -462,7 +474,7 @@ inline MtAllocator* CDataMailOptionCourseInfo::getAllocator() {
 // Address: 0x003b9880 - 0x003b98c0 (64 bytes)
 void* CDataMailOptionCourseInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataMailOptionCourseInfo::getAllocator()->memAlloc(sz, align, ::CDataMailOptionCourseInfo::DTI.::MtDTI::getID());
+    return CDataMailOptionCourseInfo::getAllocator()->memAlloc(sz, align, CDataMailOptionCourseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -477,7 +489,7 @@ void* CDataMailOptionCourseInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b98f0 - 0x003b991a (42 bytes)
 __attribute__((weak)) void CDataMailOptionCourseInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailOptionCourseInfo::getAllocator()->memFree(p_addr);
+    CDataMailOptionCourseInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -499,6 +511,8 @@ __attribute__((weak)) void CDataMailOptionCourseInfo::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // CDataMailOptionCourseInfo::CDataMailOptionCourseInfo(const CMailAttachmentInfo&, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailOptionCourseInfo::MyDTI CDataMailOptionCourseInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419469-0x004194a2 (called at MailImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419469-0x004194a2 (called at Mail.h:283)
@@ -507,7 +521,7 @@ __attribute__((weak)) void CDataMailOptionCourseInfo::operator delete(void* p_ad
 // Address: 0x003b9810 - 0x003b987a (106 bytes)
 MtObject* CDataMailOptionCourseInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailOptionCourseInfo;
+    return new (16u) CDataMailOptionCourseInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -524,7 +538,7 @@ const MtDTI& CDataMailTextInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataMailTextInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailTextInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataMailTextInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -533,7 +547,7 @@ inline MtAllocator* CDataMailTextInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataMailTextInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataMailTextInfo::DTI)->memAlloc(sz, align, ::CDataMailTextInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataMailTextInfo::DTI)->memAlloc(sz, align, CDataMailTextInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -548,7 +562,7 @@ inline void* CDataMailTextInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003b9d50 - 0x003b9d7a (42 bytes)
 __attribute__((weak)) void CDataMailTextInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataMailTextInfo::getAllocator()->memFree(p_addr);
+    CDataMailTextInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -570,6 +584,8 @@ __attribute__((weak)) void CDataMailTextInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataMailTextInfo::CDataMailTextInfo(const char*, const CMailAttachmentList&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataMailTextInfo::MyDTI CDataMailTextInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419514-0x0041954d (called at MailImplement.inc:14)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419514-0x0041954d (called at Mail.h:477)
@@ -578,6 +594,6 @@ __attribute__((weak)) void CDataMailTextInfo::operator delete(void* p_addr) {
 // Address: 0x003b9c10 - 0x003b9d17 (263 bytes)
 MtObject* CDataMailTextInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataMailTextInfo;
+    return new (16u) CDataMailTextInfo;
 }
 

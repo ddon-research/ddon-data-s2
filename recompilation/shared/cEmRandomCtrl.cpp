@@ -8,10 +8,10 @@
 // Address: 0x000b94d0 - 0x000b94ec (28 bytes)
 cEmRandomCtrl::cEmRandomCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRandomX = static_cast<u32>(3400880726);
-    this->mRandomY = static_cast<u32>(139467079);
-    this->mRandomZ = static_cast<u32>(1548750404);
-    this->mRandomW = static_cast<u32>(3651730850);
+    mRandomX = 0xCAB55256;
+    mRandomY = 0x8501947;
+    mRandomZ = 0x5C500E44;
+    mRandomW = 0xD9A8FDA2;
 }
 
 // Address: 0x000b9510 - 0x000b96a8 (408 bytes)

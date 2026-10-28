@@ -35,7 +35,7 @@ const MtDTI& rPartnerPawnTalk::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPartnerPawnTalk::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memAlloc(sz, align, rPartnerPawnTalk::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rPartnerPawnTalk::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPartnerPawnTalk::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,9 +64,9 @@ inline void rPartnerPawnTalk::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rPartnerPawnTalk::rPartnerPawnTalk() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mpArray = static_cast<rPartnerPawnTalk::InfoBinary*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(18u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x006b4060 - 0x006b40e1 (129 bytes)
@@ -135,18 +135,20 @@ MT_CTSTR rPartnerPawnTalk::getExt() const {
 // Address: 0x01aa1c20 - 0x01aa1c24 (4 bytes)
 u32 rPartnerPawnTalk::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
 
 // Address: 0x006b45e0 - 0x006b4613 (51 bytes)
 rPartnerPawnTalk::InfoBinary* rPartnerPawnTalk::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfoNum()) {
-        return &this->mpArray[index];
+    if (index < getInfoNum()) {
+        return &mpArray[index];
     } else {
-        return static_cast<rPartnerPawnTalk::InfoBinary*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPartnerPawnTalk::MyDTI rPartnerPawnTalk::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPartnerPawnTalk.cpp at 0x006b469d-0x006b46da (called at rPartnerPawnTalk.cpp:282)
@@ -156,7 +158,7 @@ rPartnerPawnTalk::InfoBinary* rPartnerPawnTalk::getInfo(u32 index) const {
 // Address: 0x006b3f70 - 0x006b3fd4 (100 bytes)
 MtObject* rPartnerPawnTalk::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPartnerPawnTalk;
+    return new (16u) rPartnerPawnTalk;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rPartnerPawnTalk::InfoBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPartnerPawnTalk::InfoBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::InfoBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::DTI)->memAlloc(sz, align, rPartnerPawnTalk::InfoBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ inline void* rPartnerPawnTalk::InfoBinary::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPartnerPawnTalk::InfoBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -238,26 +240,28 @@ __attribute__((weak)) u16 rPartnerPawnTalk::InfoBinary::getMessage(u16 type) {
 // Address: 0x006b3f50 - 0x006b3f57 (7 bytes)
 u16 rPartnerPawnTalk::InfoBinary::getGreetingMessage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rPartnerPawnTalk::InfoBinary::getMessage(static_cast<u16>(0));
+    return getMessage(static_cast<u16>(0));
 }
 
 // Address: 0x006b3f60 - 0x006b3f6a (10 bytes)
 u16 rPartnerPawnTalk::InfoBinary::getTalkMessage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rPartnerPawnTalk::InfoBinary::getMessage(static_cast<u16>(1));
+    return getMessage(static_cast<u16>(1));
 }
 
 // Address: 0x01aa1c70 - 0x01aa1c7b (11 bytes)
 rPartnerPawnTalk::InfoBinary::TalkDataBinary* rPartnerPawnTalk::InfoBinary::getTalkList(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpTalkList[index];
+    return &mpTalkList[index];
 }
 
 // Address: 0x01aa1c80 - 0x01aa1c84 (4 bytes)
 u32 rPartnerPawnTalk::InfoBinary::getTalkListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTalkListNum;
+    return mTalkListNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPartnerPawnTalk::InfoBinary::MyDTI rPartnerPawnTalk::InfoBinary::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rPartnerPawnTalk.cpp at 0x006b4664-0x006b469d (called at rPartnerPawnTalk.cpp:91)
@@ -267,7 +271,7 @@ u32 rPartnerPawnTalk::InfoBinary::getTalkListNum() {
 // Address: 0x006b3ca0 - 0x006b3cef (79 bytes)
 MtObject* rPartnerPawnTalk::InfoBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPartnerPawnTalk::InfoBinary;
+    return new (16u) rPartnerPawnTalk::InfoBinary;
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,7 +296,7 @@ const MtDTI& rPartnerPawnTalk::InfoBinary::TalkDataBinary::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memAlloc(sz, align, rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -307,7 +311,7 @@ inline void* rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator new(size_t s
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rPartnerPawnTalk10InfoBinary14TalkDataBinaryD0Ev at 0x01aa1cc0-0x01aa1cea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -329,6 +333,8 @@ inline void rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator delete(void* 
 // No out-of-line body: no code in the ELF
 // void rPartnerPawnTalk::InfoBinary::TalkDataBinary::copy(rPartnerPawnTalk::InfoBinary::TalkDataBinary* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPartnerPawnTalk::InfoBinary::TalkDataBinary::MyDTI rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rPartnerPawnTalk.cpp at 0x006b4620-0x006b4664 (called at rPartnerPawnTalk.cpp:28)
 //   in _GLOBAL__sub_I_rPartnerPawnTalk.cpp at 0x006b4620-0x006b4664 (called at rPartnerPawnTalk.h:72)
@@ -337,6 +343,6 @@ inline void rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator delete(void* 
 // Address: 0x006b3bd0 - 0x006b3c17 (71 bytes)
 MtObject* rPartnerPawnTalk::InfoBinary::TalkDataBinary::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPartnerPawnTalk::InfoBinary::TalkDataBinary;
+    return new (16u) rPartnerPawnTalk::InfoBinary::TalkDataBinary;
 }
 

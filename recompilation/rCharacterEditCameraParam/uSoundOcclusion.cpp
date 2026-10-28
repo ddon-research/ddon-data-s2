@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMath.h"
+#include "../shared/MtMemory.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/MtPrimitive3D.h"
@@ -35,7 +36,7 @@ const MtDTI& cSoundOcclusionListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSoundOcclusionListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundOcclusionListener::DTI)->memAlloc(sz, align, ::cSoundOcclusionListener::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundOcclusionListener::DTI)->memAlloc(sz, align, cSoundOcclusionListener::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +51,7 @@ inline void* cSoundOcclusionListener::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundOcclusionListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundOcclusionListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundOcclusionListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,6 +80,8 @@ __attribute__((weak)) void cSoundOcclusionListener::notified(const nZone::cLayou
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundOcclusionListener::MyDTI cSoundOcclusionListener::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d460b0-0x00d460ed (called at uSoundOcclusion.cpp:2122)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d460b0-0x00d460ed (called at uSoundOcclusion.h:497)
@@ -87,7 +90,7 @@ __attribute__((weak)) void cSoundOcclusionListener::notified(const nZone::cLayou
 // Address: 0x00d45da0 - 0x00d45dee (78 bytes)
 MtObject* cSoundOcclusionListener::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSoundOcclusionListener;
+    return new (16u) cSoundOcclusionListener;
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +107,7 @@ const MtDTI& uSoundOcclusion::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSoundOcclusion::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::DTI);
+    return MtMemoryAllocator::getAllocator(uSoundOcclusion::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,7 +116,7 @@ inline MtAllocator* uSoundOcclusion::getAllocator() {
 // Address: 0x00d424e0 - 0x00d42520 (64 bytes)
 void* uSoundOcclusion::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSoundOcclusion::getAllocator()->memAlloc(sz, align, ::uSoundOcclusion::DTI.::MtDTI::getID());
+    return uSoundOcclusion::getAllocator()->memAlloc(sz, align, uSoundOcclusion::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +131,7 @@ void* uSoundOcclusion::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundOcclusion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundOcclusion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,7 +160,7 @@ uSoundOcclusion::~uSoundOcclusion() {
 // Address: 0x00d42a30 - 0x00d42a35 (5 bytes)
 MtUI* uSoundOcclusion::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::createUI(prop);
+    return this->uSoundZoneBase::createUI(prop);
 }
 
 // Address: 0x00d427a0 - 0x00d42a27 (647 bytes)
@@ -169,7 +172,7 @@ __attribute__((weak)) void uSoundOcclusion::createProperty(MtPropertyList& s) {
 // Address: 0x00d42a40 - 0x00d42a45 (5 bytes)
 void uSoundOcclusion::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setup();
+    this->uSoundZoneBase::setup();
 }
 
 // Address: 0x00d42a60 - 0x00d42bdb (379 bytes)
@@ -187,13 +190,13 @@ __attribute__((weak)) void uSoundOcclusion::draw(cDraw* pDraw) {
 // Address: 0x01b25750 - 0x01b25758 (8 bytes)
 const MtDTI* uSoundOcclusion::getGroupManagerDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &::uSoundOcclusion::cOcclusionGroupManager::DTI;
+    return &uSoundOcclusion::cOcclusionGroupManager::DTI;
 }
 
 // Address: 0x01b25760 - 0x01b25768 (8 bytes)
 cSoundZoneListener* uSoundOcclusion::getZoneListener() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mZoneListener;
+    return &mZoneListener;
 }
 
 // Address: 0x01b25770 - 0x01b25794 (36 bytes)
@@ -205,27 +208,27 @@ __attribute__((weak)) MtVector3 uSoundOcclusion::getZoneListenerPos() {
 // Address: 0x01b257a0 - 0x01b257b4 (20 bytes)
 void uSoundOcclusion::setZoneListenerPos(const MtVector3& NewListenerPos) {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    (&this->mZoneListener)->setMyPos(NewListenerPos);
+    (&mZoneListener)->setMyPos(NewListenerPos);
 }
 
 // Address: 0x00d42ee0 - 0x00d42f37 (87 bytes)
 void uSoundOcclusion::setupFromResource(rZone* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setupFromResource(pRes);
-    this->::uSoundOcclusion::setUseTypeAll();
-    this->mBoundingBox.::uSoundOcclusion::cBoundingBox::createAllBoundingBox(this->::uSoundZoneBase::getZoneLayout());
-    this->::uSoundOcclusion::createHollowManager(pRes);
-    this->::uSoundOcclusion::setMaxVolumeRateToHollowManagerAll(pRes);
+    this->uSoundZoneBase::setupFromResource(pRes);
+    setUseTypeAll();
+    mBoundingBox.createAllBoundingBox(getZoneLayout());
+    createHollowManager(pRes);
+    setMaxVolumeRateToHollowManagerAll(pRes);
 }
 
 // Address: 0x00d438b0 - 0x00d43907 (87 bytes)
 void uSoundOcclusion::setupFromResource(rZone* pRes, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::setupFromResource(pRes, pos);
-    this->::uSoundOcclusion::setUseTypeAll();
-    this->mBoundingBox.::uSoundOcclusion::cBoundingBox::createAllBoundingBox(this->::uSoundZoneBase::getZoneLayout());
-    this->::uSoundOcclusion::createHollowManager(pRes);
-    this->::uSoundOcclusion::setMaxVolumeRateToHollowManagerAll(pRes);
+    this->uSoundZoneBase::setupFromResource(pRes, pos);
+    setUseTypeAll();
+    mBoundingBox.createAllBoundingBox(getZoneLayout());
+    createHollowManager(pRes);
+    setMaxVolumeRateToHollowManagerAll(pRes);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (88 bytes)
@@ -472,6 +475,8 @@ __attribute__((weak)) void uSoundOcclusion::setUseTypeAll() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundOcclusion::MyDTI uSoundOcclusion::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d46036-0x00d46073 (called at uSoundOcclusion.cpp:976)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d46036-0x00d46073 (called at uSoundOcclusion.h:526)
@@ -506,7 +511,7 @@ const MtDTI& uSoundOcclusion::cBoundingBox::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundOcclusion::cBoundingBox::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cBoundingBox::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cBoundingBox::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cBoundingBox::DTI)->memAlloc(sz, align, uSoundOcclusion::cBoundingBox::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -521,7 +526,7 @@ inline void* uSoundOcclusion::cBoundingBox::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundOcclusion::cBoundingBox::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cBoundingBox::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundOcclusion::cBoundingBox::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -545,14 +550,22 @@ inline void uSoundOcclusion::cBoundingBox::operator delete(void* p_addr) {
 // Address: 0x00d413a0 - 0x00d41402 (98 bytes)
 // Also emitted as: _ZN15uSoundOcclusion12cBoundingBoxD0Ev at 0x00d41410
 uSoundOcclusion::cBoundingBox::~cBoundingBox() {
-    DDON_STUB("uSoundOcclusion::cBoundingBox::~cBoundingBox")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpStaticBoundingArray != nullptr) {
+        MtMemory::mpAllocatorType[14]->memFree(static_cast<void*>(mpStaticBoundingArray));
+        mpStaticBoundingArray = nullptr;
+    }
+    if (mpDynamicBoundingArray == nullptr) {
+        return;
+    }
+    MtMemory::mpAllocatorType[14]->memFree(static_cast<void*>(mpDynamicBoundingArray));
+    mpDynamicBoundingArray = nullptr;
 }
 
 // Address: 0x00d414a0 - 0x00d414a5 (5 bytes)
 MtUI* uSoundOcclusion::cBoundingBox::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d41490 - 0x00d41491 (1 bytes)
@@ -664,6 +677,8 @@ __attribute__((weak)) void uSoundOcclusion::cBoundingBox::calcSetAABB(cZoneLayou
 //   in uSoundOcclusion::cBoundingBox::calcSetAABB at 0x00d41f34-0x00d41f57, 0x00d41f5f-0x00d41f63 (called at uSoundOcclusion.cpp:800)
 // MtVector3 uSoundOcclusion::cBoundingBox::checkGetMax(const MtVector3& a, const MtVector3& b, const MtVector3& c, const MtVector3& d) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundOcclusion::cBoundingBox::MyDTI uSoundOcclusion::cBoundingBox::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d45fbd-0x00d45ffd (called at uSoundOcclusion.cpp:428)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d45fbd-0x00d45ffd (called at uSoundOcclusion.h:649)
@@ -672,7 +687,7 @@ __attribute__((weak)) void uSoundOcclusion::cBoundingBox::calcSetAABB(cZoneLayou
 // Address: 0x00d412b0 - 0x00d41307 (87 bytes)
 MtObject* uSoundOcclusion::cBoundingBox::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundOcclusion::cBoundingBox;
+    return new (16u) uSoundOcclusion::cBoundingBox;
 }
 
 // No out-of-line body: 4 inlined copies in 1 function (132 bytes)
@@ -715,11 +730,11 @@ MtObject* uSoundOcclusion::cBoundingBox::MyDTI::newInstance() const {
 // No out-of-line body: no code in the ELF
 // void uSoundOcclusion::cBoundingBox::PairWork::operator delete(void*);
 
-// No out-of-line body: 3 inlined copies in 2 functions (60 bytes)
-//   in uSoundOcclusion::cBoundingBox::createAllBoundingBox at 0x00d4152e-0x00d41542 (called at uSoundOcclusion.cpp:503)
-//   in uSoundOcclusion::cBoundingBox::createAllBoundingBox at 0x00d41596-0x00d415aa (called at uSoundOcclusion.cpp:519)
-//   in uSoundOcclusion::move at 0x00d42b68-0x00d42b7c (called at uSoundOcclusion.cpp:519)
-// void uSoundOcclusion::cBoundingBox::PairWork::operator delete[](void* padr);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uSoundOcclusion::cBoundingBox::PairWork::operator delete[](void* padr) {
+    MtMemory::mpAllocatorType[14]->memFree(padr);
+}
 
 // No out-of-line body: no code in the ELF
 // MtDTI* uSoundOcclusion::cHollowManager::getMyDTIPtr();
@@ -746,7 +761,7 @@ const MtDTI& uSoundOcclusion::cHollowManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundOcclusion::cHollowManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cHollowManager::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cHollowManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cHollowManager::DTI)->memAlloc(sz, align, uSoundOcclusion::cHollowManager::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)
@@ -762,7 +777,7 @@ inline void* uSoundOcclusion::cHollowManager::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundOcclusion::cHollowManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cHollowManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundOcclusion::cHollowManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (48 bytes)
@@ -785,16 +800,16 @@ inline void uSoundOcclusion::cHollowManager::operator delete(void* p_addr) {
 // Also emitted as: _ZN15uSoundOcclusion14cHollowManagerD0Ev at 0x00d42130
 uSoundOcclusion::cHollowManager::~cHollowManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpIndexArray == static_cast<u32*>(nullptr)) {
+    if (mpIndexArray == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cHollowManager::DTI)->memFree(static_cast<void*>(this->mpIndexArray));
+    MtMemoryAllocator::getAllocator(uSoundOcclusion::cHollowManager::DTI)->memFree(static_cast<void*>(mpIndexArray));
 }
 
 // Address: 0x00d42400 - 0x00d42405 (5 bytes)
 MtUI* uSoundOcclusion::cHollowManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d42190 - 0x00d423fc (620 bytes)
@@ -842,6 +857,8 @@ __attribute__((weak)) void uSoundOcclusion::cHollowManager::createProperty(MtPro
 //   in uSoundOcclusion::createHollowManager at 0x00d4364b-0x00d43658, 0x00d436e6-0x00d4370f (called at uSoundOcclusion.cpp:1870)
 // void uSoundOcclusion::cHollowManager::swapZoneLayoutIndex(u32 index0, u32 index1);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundOcclusion::cHollowManager::MyDTI uSoundOcclusion::cHollowManager::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d45ffd-0x00d46036 (called at uSoundOcclusion.cpp:886)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d45ffd-0x00d46036 (called at uSoundOcclusion.h:586)
@@ -850,7 +867,7 @@ __attribute__((weak)) void uSoundOcclusion::cHollowManager::createProperty(MtPro
 // Address: 0x00d42000 - 0x00d4205b (91 bytes)
 MtObject* uSoundOcclusion::cHollowManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundOcclusion::cHollowManager;
+    return new (16u) uSoundOcclusion::cHollowManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -876,7 +893,7 @@ const MtDTI& uSoundOcclusion::cOcclusionGroupManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cOcclusionGroupManager::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cOcclusionGroupManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cOcclusionGroupManager::DTI)->memAlloc(sz, align, uSoundOcclusion::cOcclusionGroupManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -891,7 +908,7 @@ inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, u3
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundOcclusion::cOcclusionGroupManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cOcclusionGroupManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundOcclusion::cOcclusionGroupManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -916,14 +933,16 @@ uSoundOcclusion::cOcclusionGroupManager::~cOcclusionGroupManager() {
 // Address: 0x00d412a0 - 0x00d412a5 (5 bytes)
 MtUI* uSoundOcclusion::cOcclusionGroupManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uSoundZoneBase::cGroupManager::createUI(prop);
+    return this->uSoundZoneBase::cGroupManager::createUI(prop);
 }
 
 // Address: 0x00d41290 - 0x00d41295 (5 bytes)
 void uSoundOcclusion::cOcclusionGroupManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSoundZoneBase::cGroupManager::createProperty(s);
+    this->uSoundZoneBase::cGroupManager::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSoundOcclusion::cOcclusionGroupManager::MyDTI uSoundOcclusion::cOcclusionGroupManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundOcclusion.cpp at 0x00d45f80-0x00d45fbd (called at uSoundOcclusion.cpp:381)
@@ -933,6 +952,6 @@ void uSoundOcclusion::cOcclusionGroupManager::createProperty(MtPropertyList& s) 
 // Address: 0x00d41180 - 0x00d411ce (78 bytes)
 MtObject* uSoundOcclusion::cOcclusionGroupManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundOcclusion::cOcclusionGroupManager;
+    return new (16u) uSoundOcclusion::cOcclusionGroupManager;
 }
 

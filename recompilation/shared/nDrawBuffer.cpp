@@ -57,10 +57,10 @@ inline void nDraw::Buffer::operator delete(void* p_addr) {
 // Address: 0x01159eb0 - 0x01159eec (60 bytes)
 nDraw::Buffer::Buffer(nDraw::USAGE_TYPE usage) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUsageType = usage;
-    this->mBufSize = static_cast<u32>(0);
-    this->mpBuffer = static_cast<void*>(nullptr);
-    this->mDirty = false;
+    mUsageType = usage;
+    mBufSize = 0;
+    mpBuffer = nullptr;
+    mDirty = false;
 }
 
 // Defined in the class (its body was written in a header).
@@ -74,7 +74,7 @@ __attribute__((weak)) void nDraw::Buffer::resume() {
 // Address: 0x01b82c90 - 0x01b82c94 (4 bytes)
 nDraw::USAGE_TYPE nDraw::Buffer::getUsageType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUsageType;
+    return mUsageType;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -116,6 +116,8 @@ nDraw::Buffer::~Buffer() {
 
 // No out-of-line body: no code in the ELF
 // void nDraw::Buffer::setDirty();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nDraw::Buffer::MyDTI nDraw::Buffer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Buffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

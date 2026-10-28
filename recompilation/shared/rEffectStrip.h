@@ -206,11 +206,11 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK12rEffectStrip5MyDTI11newInstanceEv at 0x011f46b0-0x011f46fa, code DWARF attributes to no inlined copy
 inline rEffectStrip::rEffectStrip() {
-    this->mTotalIndexNum = static_cast<u32>(0);
-    this->mJointNum = static_cast<u32>(0);
-    this->mTotalVertexNum = static_cast<u32>(0);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mPartsNum = static_cast<u32>(0);
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    this->mTotalIndexNum = 0;
+    this->mJointNum = 0;
+    this->mTotalVertexNum = 0;
+    this->mParamBuffSize = 0;
+    this->mPartsNum = 0;
+    this->mpParamBuff = nullptr;
+    this->::cResource::mAttr = 22;
 }

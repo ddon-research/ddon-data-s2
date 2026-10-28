@@ -276,9 +276,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK13cAIFSMCluster5MyDTI11newInstanceEv at 0x011e5d90-0x011e5dd2, code DWARF attributes to no inlined copy
 inline cAIFSMCluster::cAIFSMCluster() {
-    this->mId = static_cast<u32>(0);
-    this->mOwnerNodeUniqueId = static_cast<u32>(0);
-    this->mInitialStateId = static_cast<u32>(4294967295);
-    this->mNodeNum = static_cast<u32>(0);
-    this->mpNodeList = static_cast<cAIFSMNode* *>(nullptr);
+    this->mId = 0;
+    this->mOwnerNodeUniqueId = 0;
+    this->mInitialStateId = 0xFFFFFFFF;
+    this->mNodeNum = 0;
+    this->mpNodeList = nullptr;
 }

@@ -13,9 +13,9 @@
 // Address: 0x00db31b0 - 0x00db31e3 (51 bytes)
 MtNetBuffer::MtNetBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBufferSize = static_cast<u32>(0);
-    this->mDataLength = static_cast<u32>(0);
-    this->mpBuffer = static_cast<u8*>(nullptr);
+    mBufferSize = 0;
+    mDataLength = 0;
+    mpBuffer = nullptr;
 }
 
 // Address: 0x00db31f0 - 0x00db31f5 (5 bytes)
@@ -33,73 +33,73 @@ __attribute__((weak)) void MtNetBuffer::createProperty(MtPropertyList& s) {
 // Address: 0x00db33c0 - 0x00db33e3 (35 bytes)
 void MtNetBuffer::create(u8* data_buf, u32 data_buf_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpBuffer = data_buf;
-    this->mBufferSize = data_buf_size;
-    this->mDataLength = static_cast<u32>(0);
-    ::memset(static_cast<void*>(data_buf), static_cast<int>(0), data_buf_size);
+    mpBuffer = data_buf;
+    mBufferSize = data_buf_size;
+    mDataLength = 0;
+    memset(static_cast<void*>(data_buf), 0, data_buf_size);
 }
 
 // Address: 0x00db33f0 - 0x00db340c (28 bytes)
 void MtNetBuffer::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBuffer == static_cast<u8*>(nullptr)) {
+    if (mpBuffer == nullptr) {
         return;
     }
-    ::memset(static_cast<void*>(this->mpBuffer), static_cast<int>(0), this->mBufferSize);
+    memset(static_cast<void*>(mpBuffer), 0, mBufferSize);
 }
 
 // Address: 0x00db3410 - 0x00db341b (11 bytes)
 void MtNetBuffer::cast(u8* data_buf, u32 data_len) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpBuffer = data_buf;
-    this->mBufferSize = data_len;
-    this->mDataLength = data_len;
+    mpBuffer = data_buf;
+    mBufferSize = data_len;
+    mDataLength = data_len;
 }
 
 // Address: 0x00db3420 - 0x00db3462 (66 bytes)
 s32 MtNetBuffer::serialize(u8* data_buf, u32 data_buf_size) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBuffer != static_cast<u8*>(nullptr)) {
-        if (data_buf != static_cast<u8*>(nullptr)) {
-            if (data_buf_size >= this->mDataLength) {
-                if (this->mDataLength != static_cast<u32>(0)) {
-                    ::memcpy(static_cast<void*>(data_buf), static_cast<const void*>(this->mpBuffer), this->mDataLength);
-                    return static_cast<s32>(this->mDataLength);
+    if (mpBuffer != nullptr) {
+        if (data_buf != nullptr) {
+            if (data_buf_size >= mDataLength) {
+                if (mDataLength != 0) {
+                    memcpy(static_cast<void*>(data_buf), static_cast<const void*>(mpBuffer), mDataLength);
+                    return static_cast<s32>(mDataLength);
                 } else {
-                    return static_cast<s32>(0);
+                    return 0;
                 }
             } else {
-                return static_cast<s32>(-1);
+                return -1;
             }
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x00db3470 - 0x00db34ab (59 bytes)
 s32 MtNetBuffer::deserialize(const u8* data_buf, u32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBuffer != static_cast<u8*>(nullptr)) {
-        if (data_buf != static_cast<const u8*>(nullptr)) {
-            if (this->mBufferSize >= data_size) {
-                if (data_size != static_cast<u32>(0)) {
-                    this->mDataLength = data_size;
-                    ::memcpy(static_cast<void*>(this->mpBuffer), static_cast<const void*>(data_buf), data_size);
-                    return static_cast<s32>(this->mDataLength);
+    if (mpBuffer != nullptr) {
+        if (data_buf != nullptr) {
+            if (mBufferSize >= data_size) {
+                if (data_size != 0) {
+                    mDataLength = data_size;
+                    memcpy(static_cast<void*>(mpBuffer), static_cast<const void*>(data_buf), data_size);
+                    return static_cast<s32>(mDataLength);
                 } else {
-                    return static_cast<s32>(0);
+                    return 0;
                 }
             } else {
-                return static_cast<s32>(-1);
+                return -1;
             }
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -168,13 +168,13 @@ MtNetFriendList::~MtNetFriendList() {
 // Address: 0x00db4a10 - 0x00db4a15 (5 bytes)
 void MtNetFriendList::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::createProperty(s);
+    this->MtNetObject::createProperty(s);
 }
 
 // Address: 0x00db4a20 - 0x00db4a25 (5 bytes)
 MtUI* MtNetFriendList::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -300,13 +300,13 @@ __attribute__((weak)) void MtNetUniqueId::createProperty(MtPropertyList& s) {
 // Address: 0x00db3b10 - 0x00db3b15 (5 bytes)
 MtUI* MtNetUniqueId::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00db3b20 - 0x00db3b2f (15 bytes)
 bool MtNetUniqueId::isValid() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned char>(this->mData[0] + static_cast<int>(255)) <= static_cast<unsigned char>(20);
+    return static_cast<unsigned char>(mData[0] + 255) <= 20;
 }
 
 // Address: 0x00db3b30 - 0x00db3c2b (251 bytes)
@@ -331,21 +331,21 @@ void MtNetUniqueId::exportTo(void* data, u32 size) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from void*
     // inferred: a value cast to the type its use takes: u32 used as unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from void*
-    if (data == static_cast<void*>(nullptr)) {
+    if (data == nullptr) {
         return;
     }
-    if (size <= static_cast<u32>(60)) {
-        if (this->mData[0] == static_cast<unsigned char>(5)) {
-            if (size == static_cast<u32>(16)) {
+    if (size <= 60u) {
+        if (mData[0] == 5) {
+            if (size == 16) {
                 // inferred: a temporary for the result of the call at 0xdb3c7d, used once; no DWARF local holds it
-                u64 t0 = ::MtNetByteOrder::netToHost64(static_cast<u64>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(60))));
+                u64 t0 = MtNetByteOrder::netToHost64(static_cast<u64>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 60)));
                 // inferred: a temporary for the result of the call at 0xdb3c89, used once; no DWARF local holds it
-                u32 t1 = ::MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(68)));
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + static_cast<long>(8)) = static_cast<unsigned long>((::MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(72))) * static_cast<u32>(0)) | t1);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + static_cast<long>(0)) = static_cast<unsigned long>(t0);
+                u32 t1 = MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 68));
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + 8) = static_cast<unsigned long>((MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 72)) * 0u) | t1);
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + 0) = static_cast<unsigned long>(t0);
             }
         } else {
-            ::memcpy(data, static_cast<const void*>(&this->mData[4]), size);
+            memcpy(data, static_cast<const void*>(&mData[4]), size);
         }
     }
 }
@@ -391,6 +391,8 @@ __attribute__((weak)) bool MtNetUniqueId::equals(const MtNetBuffer* obj) const {
     DDON_STUB("MtNetUniqueId::equals")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtNetUniqueId::MyDTI MtNetUniqueId::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtNetUniqueId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

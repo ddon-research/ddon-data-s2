@@ -8,6 +8,9 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../shared/cNetGameServer.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
@@ -40,7 +43,7 @@ const MtDTI& uGUIRimWarp::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIRimWarp::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIRimWarp::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +52,7 @@ inline MtAllocator* uGUIRimWarp::getAllocator() {
 // Address: 0x00c273f0 - 0x00c27430 (64 bytes)
 void* uGUIRimWarp::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIRimWarp::getAllocator()->memAlloc(sz, align, ::uGUIRimWarp::DTI.::MtDTI::getID());
+    return uGUIRimWarp::getAllocator()->memAlloc(sz, align, uGUIRimWarp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +67,7 @@ void* uGUIRimWarp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIRimWarp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRimWarp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,15 +98,15 @@ __attribute__((weak)) void uGUIRimWarp::createProperty(MtPropertyList& s) {
 // Address: 0x00c28410 - 0x00c28557 (327 bytes)
 bool uGUIRimWarp::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_WARP_GUI"), static_cast<u32>(129), static_cast<t64>(1467795096)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpLobbyWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                        if ((this->mpLobbyWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                            if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                                if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                                    this->mpWarpLoc;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_WARP_GUI"), 129u, 1467795096l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpLobbyWarpLoc == nullptr) {
+                        if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                            if (mpWarpLoc == nullptr) {
+                                if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                                    mpWarpLoc;
                                     return true;
                                 } else {
                                     return false;
@@ -115,9 +118,9 @@ bool uGUIRimWarp::loadResource() {
                             return false;
                         }
                     } else {
-                        if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                            if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                                this->mpWarpLoc;
+                        if (mpWarpLoc == nullptr) {
+                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                                mpWarpLoc;
                                 return true;
                             } else {
                                 return false;
@@ -130,11 +133,11 @@ bool uGUIRimWarp::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpLobbyWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                    if ((this->mpLobbyWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                        if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                            if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                                this->mpWarpLoc;
+                if (mpLobbyWarpLoc == nullptr) {
+                    if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                        if (mpWarpLoc == nullptr) {
+                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                                mpWarpLoc;
                                 return true;
                             } else {
                                 return false;
@@ -146,9 +149,9 @@ bool uGUIRimWarp::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                        if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                            this->mpWarpLoc;
+                    if (mpWarpLoc == nullptr) {
+                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                            mpWarpLoc;
                             return true;
                         } else {
                             return false;
@@ -162,13 +165,13 @@ bool uGUIRimWarp::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpLobbyWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                    if ((this->mpLobbyWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                        if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                            if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                                this->mpWarpLoc;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                if (mpLobbyWarpLoc == nullptr) {
+                    if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                        if (mpWarpLoc == nullptr) {
+                            if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                                mpWarpLoc;
                                 return true;
                             } else {
                                 return false;
@@ -180,9 +183,9 @@ bool uGUIRimWarp::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                        if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                            this->mpWarpLoc;
+                    if (mpWarpLoc == nullptr) {
+                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                            mpWarpLoc;
                             return true;
                         } else {
                             return false;
@@ -195,11 +198,11 @@ bool uGUIRimWarp::loadResource() {
                 return false;
             }
         } else {
-            if (this->mpLobbyWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                if ((this->mpLobbyWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                    if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                        if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                            this->mpWarpLoc;
+            if (mpLobbyWarpLoc == nullptr) {
+                if ((mpLobbyWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOBBYWARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                    if (mpWarpLoc == nullptr) {
+                        if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                            mpWarpLoc;
                             return true;
                         } else {
                             return false;
@@ -211,9 +214,9 @@ bool uGUIRimWarp::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpWarpLoc == static_cast<rWarpLocation*>(nullptr)) {
-                    if ((this->mpWarpLoc = static_cast<rWarpLocation*>(this->::uGUIBase::uiCreateResource(::rArchiveListArray::convTagId("gui_cmn"), ::rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rWarpLocation*>(nullptr)) {
-                        this->mpWarpLoc;
+                if (mpWarpLoc == nullptr) {
+                    if ((mpWarpLoc = static_cast<rWarpLocation*>(uiCreateResource(rArchiveListArray::convTagId("gui_cmn"), rArchiveListArray::convSearchId("RES_ID_WARPLOCATIONLIST_WAL"), 129u, 0l))) != nullptr) {
+                        mpWarpLoc;
                         return true;
                     } else {
                         return false;
@@ -243,24 +246,24 @@ __attribute__((weak)) void uGUIRimWarp::setup() {
 // Address: 0x00c28560 - 0x00c285a6 (70 bytes)
 void uGUIRimWarp::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteDataChargesHUD();
-    if (this->mpSystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpSystemMsg->kill();
-        this->mpSystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteDataChargesHUD();
+    if (mpSystemMsg != nullptr) {
+        mpSystemMsg->kill();
+        mpSystemMsg = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00c285b0 - 0x00c285d5 (37 bytes)
 void uGUIRimWarp::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpSystemMsg == nullptr) {
         return;
     }
-    if (this->mpSystemMsg->::cUnit::isEnable() != false) {
+    if (mpSystemMsg->isEnable()) {
         return;
     }
-    this->mpSystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpSystemMsg = nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (49 bytes)
@@ -322,126 +325,126 @@ __attribute__((weak)) void uGUIRimWarp::setPlayFlow(u32 flow_id) {
 // Address: 0x00c2d970 - 0x00c2da30 (192 bytes)
 void uGUIRimWarp::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mFlowId - static_cast<u32>(3)) {
-        case static_cast<u32>(0):
+    switch (mFlowId - 3u) {
+        case 0:
         {
-            this->mDialog.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-            if (this->mpDialogCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mpDialogCtrl->execute();
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+            mDialog.mClose.execute();
+            if (mpDialogCtrl != nullptr) {
+                mpDialogCtrl->execute();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             } else {
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mpTabCtrl->execute();
-                this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-                this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+            if (mpTabCtrl != nullptr) {
+                mpTabCtrl->execute();
+                mMain.mClose.execute();
+                mList.mListCtrl.executeCtrl();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             } else {
-                this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-                this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                mMain.mClose.execute();
+                mList.mListCtrl.executeCtrl();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mpTabCtrl->execute();
-                this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-                this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+            if (mpTabCtrl != nullptr) {
+                mpTabCtrl->execute();
+                mMain.mClose.execute();
+                mList.mListCtrl.executeCtrl();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             } else {
-                this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-                this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpDecideCtrl->execute();
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                mMain.mClose.execute();
+                mList.mListCtrl.executeCtrl();
+                if (mpDecideCtrl != nullptr) {
+                    mpDecideCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 } else {
-                    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpCancelCtrl->execute();
+                    if (mpCancelCtrl != nullptr) {
+                        mpCancelCtrl->execute();
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-            this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-            if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpDecideCtrl->execute();
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->execute();
+            mMain.mClose.execute();
+            mList.mListCtrl.executeCtrl();
+            if (mpDecideCtrl != nullptr) {
+                mpDecideCtrl->execute();
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->execute();
                 }
             } else {
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->execute();
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->execute();
                 }
             }
             break;
         }
         default:
         {
-            if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-                this->mpDecideCtrl->execute();
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->execute();
+            if (mpDecideCtrl != nullptr) {
+                mpDecideCtrl->execute();
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->execute();
                 }
             } else {
-                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-                    this->mpCancelCtrl->execute();
+                if (mpCancelCtrl != nullptr) {
+                    mpCancelCtrl->execute();
                 }
             }
             break;
@@ -452,38 +455,38 @@ void uGUIRimWarp::moveInput() {
 // Address: 0x00c2da30 - 0x00c2dafc (204 bytes)
 void uGUIRimWarp::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mList.mListCtrl.::uGUIBase::cScrollList::moveEvent() != false) {
-        this->::uGUIRimWarp::eventAdjustCursor();
-        if (this->mList.mListCtrl.::uGUIBase::cScrollList::getInputEvent() == static_cast<u32>(14)) {
-            this->::uGUIRimWarp::eventDecide();
+    if (mList.mListCtrl.moveEvent()) {
+        eventAdjustCursor();
+        if (mList.mListCtrl.getInputEvent() == 14) {
+            eventDecide();
         }
     } else {
-        switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-            case static_cast<u32>(0):
+        switch (getInputEvent() - 66u) {
+            case 0:
             {
-                this->::uGUIRimWarp::eventAdjustCursor();
-                this->::uGUIRimWarp::eventDecide();
+                eventAdjustCursor();
+                eventDecide();
                 break;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
-                this->::uGUIRimWarp::eventCancel();
+                eventCancel();
                 break;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                this->::uGUIRimWarp::eventAdjustCursor();
+                eventAdjustCursor();
                 break;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                this->::uGUIRimWarp::eventAdjustTab();
+                eventAdjustTab();
                 break;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
-                if ((this->mFlowId - static_cast<u32>(2)) <= static_cast<u32>(2)) {
-                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+                if ((mFlowId - 2u) <= 2u) {
+                    setFlowId(13u, true);
                 }
                 break;
             }
@@ -499,72 +502,72 @@ void uGUIRimWarp::moveEvent() {
 void uGUIRimWarp::updateMove() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarp(true) == false) {
-        if (this->mIsPaid != false) {
-            this->mDialog.mClose.::uGUIBase::cReferenceUICloseBtn::update();
-            this->mDialog.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
-            this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::update();
-            this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-            if (this->mFlowId <= static_cast<u32>(8)) {
-                if (((static_cast<unsigned long>(352) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                    this->::uGUIRimWarp::adjustMapPin(true);
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(true)) {
+        if (mIsPaid) {
+            mDialog.mClose.uGUIBase::cReferenceUICloseBtn::update();
+            mDialog.mCursor.uGUIBase::cReferenceUIVlCursor::update();
+            mMain.mClose.uGUIBase::cReferenceUICloseBtn::update();
+            mList.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+            if (mFlowId <= 8u) {
+                if (((352ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                    adjustMapPin(true);
                 } else {
-                    if (((static_cast<unsigned long>(144) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                        this->::uGUIRimWarp::adjustMapPin(false);
+                    if (((144ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                        adjustMapPin(false);
                     }
                 }
             }
-            if (this->mFlowId <= static_cast<u32>(11)) {
-                if (((static_cast<unsigned long>(3424) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                    this->::uGUIRimWarp::updateSystemMsg();
+            if (mFlowId <= 11u) {
+                if (((3424ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                    updateSystemMsg();
                 } else {
-                    if (this->mFlowId == static_cast<u32>(4)) {
-                        this->::uGUIRimWarp::updateFavoriteList();
+                    if (mFlowId == 4) {
+                        updateFavoriteList();
                     }
                 }
             }
         } else {
             // inferred: a temporary for the result of the call at 0xc2a295, used once; no DWARF local holds it
-            bool t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isPartyLarge();
+            bool t0 = static_cast<sGUIExt*>(sGUI::getInstance())->isPartyLarge();
             // inferred: a temporary for the value the load at 0xc2a29a read, used twice; no DWARF local holds it
-            sGUI* t1 = ::sGUI::getInstance();
-            if (t0 != false) {
-                static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(143)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
-                this->mWarpResult = static_cast<u32>(1);
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+            sGUI* t1 = sGUI::getInstance();
+            if (t0) {
+                static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 143u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                mWarpResult = 1;
+                setFlowId(13u, true);
             } else {
-                if (static_cast<sGUIExt*>(t1)->::sGUIExt::isBattle() != false) {
+                if (static_cast<sGUIExt*>(t1)->isBattle()) {
                     // inferred: a temporary for the value the load at 0xc2a2fe read, used twice; no DWARF local holds it
-                    sGUI* t2 = ::sGUI::getInstance();
-                    static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(142)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
-                    this->mWarpResult = static_cast<u32>(1);
-                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+                    sGUI* t2 = sGUI::getInstance();
+                    static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 142u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                    mWarpResult = 1;
+                    setFlowId(13u, true);
                 } else {
-                    this->mWarpResult = static_cast<u32>(1);
-                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+                    mWarpResult = 1;
+                    setFlowId(13u, true);
                 }
             }
         }
     } else {
-        this->mDialog.mClose.::uGUIBase::cReferenceUICloseBtn::update();
-        this->mDialog.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
-        this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::update();
-        this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-        if (this->mFlowId <= static_cast<u32>(8)) {
-            if (((static_cast<unsigned long>(352) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                this->::uGUIRimWarp::adjustMapPin(true);
+        mDialog.mClose.uGUIBase::cReferenceUICloseBtn::update();
+        mDialog.mCursor.uGUIBase::cReferenceUIVlCursor::update();
+        mMain.mClose.uGUIBase::cReferenceUICloseBtn::update();
+        mList.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+        if (mFlowId <= 8u) {
+            if (((352ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                adjustMapPin(true);
             } else {
-                if (((static_cast<unsigned long>(144) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                    this->::uGUIRimWarp::adjustMapPin(false);
+                if (((144ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                    adjustMapPin(false);
                 }
             }
         }
-        if (this->mFlowId <= static_cast<u32>(11)) {
-            if (((static_cast<unsigned long>(3424) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                this->::uGUIRimWarp::updateSystemMsg();
+        if (mFlowId <= 11u) {
+            if (((3424ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                updateSystemMsg();
             } else {
-                if (this->mFlowId == static_cast<u32>(4)) {
-                    this->::uGUIRimWarp::updateFavoriteList();
+                if (mFlowId == 4) {
+                    updateFavoriteList();
                 }
             }
         }
@@ -574,7 +577,7 @@ void uGUIRimWarp::updateMove() {
 // Address: 0x00c2a6d0 - 0x00c2a6d9 (9 bytes)
 void uGUIRimWarp::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00c2b4f0 - 0x00c2b8ba (970 bytes)
@@ -652,36 +655,34 @@ __attribute__((weak)) void uGUIRimWarp::addPartyWarp(MtTypedArray<uGUIRimWarp::c
 // Address: 0x00c2afe0 - 0x00c2b0e7 (263 bytes)
 __attribute__((weak)) void uGUIRimWarp::updateFavoriteList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
-        if (this->mPartyWarpSec != static_cast<u32>(0)) {
-            this->::uGUIRimWarp::setFlowId(static_cast<u32>(4), true);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        if (mPartyWarpSec != 0) {
+            setFlowId(4u, true);
         }
     } else {
-        const u32 id = ::sGame::getInstance()->::sGame::getPartyWarpId();
-        const u32 sec = ::sGame::getInstance()->::sGame::getPartyWarpLimit();
-        if (this->mPartyWarpSec != static_cast<u32>(0)) {
-            if (sec != static_cast<u32>(0)) {
-                if (id == this->mPartyWarpId) {
-                } else {
-                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(4), true);
+        const u32 id = sGame::getInstance()->getPartyWarpId();
+        const u32 sec = sGame::getInstance()->getPartyWarpLimit();
+        if (mPartyWarpSec != 0) {
+            if (sec != 0) {
+                if (id != mPartyWarpId) {
+                    setFlowId(4u, true);
                 }
-                this->mPartyWarpId = id;
-                this->mPartyWarpSec = sec;
+                mPartyWarpId = id;
+                mPartyWarpSec = sec;
             } else {
                 // inferred: a temporary for the value the load at 0xc2b07c read, used twice; no DWARF local holds it
-                sGUI* t0 = ::sGUI::getInstance();
-                static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(18)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(4), true);
-                this->mPartyWarpId = id;
-                this->mPartyWarpSec = sec;
+                sGUI* t0 = sGUI::getInstance();
+                static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGMDRes, 18u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+                setFlowId(4u, true);
+                mPartyWarpId = id;
+                mPartyWarpSec = sec;
             }
         } else {
-            if (sec == static_cast<u32>(0)) {
-            } else {
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(4), true);
+            if (sec != 0) {
+                setFlowId(4u, true);
             }
-            this->mPartyWarpId = id;
-            this->mPartyWarpSec = sec;
+            mPartyWarpId = id;
+            mPartyWarpSec = sec;
         }
     }
 }
@@ -769,11 +770,29 @@ __attribute__((weak)) void uGUIRimWarp::setupListItem(uGUIBase::cScrollListItemB
 }
 
 // Address: 0x00c29e50 - 0x00c29f08 (184 bytes)
-__attribute__((weak)) void uGUIRimWarp::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    // local: cHeaderItem* pItem;
-    DDON_STUB("uGUIRimWarp::hideListItem")
-    /* stub */
+void uGUIRimWarp::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    if (pItemBase->mItemType == 1) {
+        // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+        cListItem* pItem = static_cast<cListItem*>(pItemBase);
+        if (pItem->mpInstAnimIcon != nullptr) {
+            pItem->mpInstAnimIcon->cGUIInstAnimation::setCurrentFrame(0.0f, true);
+        }
+        setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgPlace), "", 0u, false);
+        setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgRim), "", 0u, false);
+        setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgRimVal), "", 0u, false);
+        cGUIUtility::setExecuteTree(static_cast<cGUIInstance*>(pItemBase->mpInstBase), false);
+    } else {
+        if (pItemBase->mItemType == 0) {
+            // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+            cHeaderItem* pItem = static_cast<cHeaderItem*>(pItemBase);
+            setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsg), "", 0u, false);
+            cGUIUtility::setExecuteTree(static_cast<cGUIInstance*>(pItemBase->mpInstBase), false);
+        }
+    }
 }
 
 // No out-of-line body: 10 inlined copies in 9 functions (239 bytes)
@@ -942,7 +961,7 @@ __attribute__((weak)) void uGUIRimWarp::requestServer(u32 next_flow_id) {
 // Address: 0x00c2ec40 - 0x00c2ec5f (31 bytes)
 bool uGUIRimWarp::requestGetWarpPointList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getWarpPointList(this->mNowPlaceId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getWarpPointList(mNowPlaceId);
 }
 
 // Address: 0x00c2ec60 - 0x00c2ed6e (270 bytes)
@@ -961,21 +980,21 @@ __attribute__((weak)) void uGUIRimWarp::callbackGetWarpPointList() {
 // Address: 0x00c2ed70 - 0x00c2ed88 (24 bytes)
 bool uGUIRimWarp::requestGetFavoriteWarpPointList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getFavoriteWarpPointList(static_cast<u32>(0));
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getFavoriteWarpPointList(0u);
 }
 
 // Address: 0x00c2ed90 - 0x00c2edce (62 bytes)
 void uGUIRimWarp::callbackGetFavoriteWarpPointList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsFavoriteFree = ::sGame::getInstance()->::sGame::isChargeEffect(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(5));
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967293);
-    this->::uGUIRimWarp::requestServer(this->mNextFlowId);
+    mIsFavoriteFree = sGame::getInstance()->isChargeEffect(nGpCourse::GP_COURSE_EFFECT_FREE_MY_WARP_POINT);
+    mRequestFlag = mRequestFlag & 0xFFFFFFFDu;
+    requestServer(mNextFlowId);
 }
 
 // Address: 0x00c2edd0 - 0x00c2edf5 (37 bytes)
 bool uGUIRimWarp::requestRegisterFavoriteWarpList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::registerFavoriteWarp(this->mFavoriteSlot, this->mNowPlaceId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->registerFavoriteWarp(mFavoriteSlot, mNowPlaceId);
 }
 
 // Address: 0x00c2ee00 - 0x00c2eef3 (243 bytes)
@@ -987,9 +1006,9 @@ __attribute__((weak)) void uGUIRimWarp::callbackRegisterFavoriteWarpList() {
 // Address: 0x00c2ef00 - 0x00c2ef43 (67 bytes)
 bool uGUIRimWarp::requestWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::warp(this->mNowPlaceId, this->mWarpPlaceId, this->mWarpPrice);
-    if (ret != false) {
-        this->mIsPaid = true;
+    const bool ret = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->warp(mNowPlaceId, mWarpPlaceId, mWarpPrice);
+    if (ret) {
+        mIsPaid = true;
     }
     return ret;
 }
@@ -997,16 +1016,16 @@ bool uGUIRimWarp::requestWarp() {
 // Address: 0x00c2ef50 - 0x00c2ef62 (18 bytes)
 void uGUIRimWarp::callbackWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967287);
-    this->::uGUIRimWarp::requestServer(this->mNextFlowId);
+    mRequestFlag = mRequestFlag & 0xFFFFFFF7u;
+    requestServer(mNextFlowId);
 }
 
 // Address: 0x00c2ef70 - 0x00c2efad (61 bytes)
 bool uGUIRimWarp::requestAreaWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::areaWarp(this->mWarpPlaceId, this->mWarpPrice);
-    if (ret != false) {
-        this->mIsPaid = true;
+    const bool ret = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->areaWarp(mWarpPlaceId, mWarpPrice);
+    if (ret) {
+        mIsPaid = true;
     }
     return ret;
 }
@@ -1014,17 +1033,17 @@ bool uGUIRimWarp::requestAreaWarp() {
 // Address: 0x00c2efb0 - 0x00c2efc2 (18 bytes)
 void uGUIRimWarp::callbackAreaWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967279);
-    this->::uGUIRimWarp::requestServer(this->mNextFlowId);
+    mRequestFlag = mRequestFlag & 0xFFFFFFEFu;
+    requestServer(mNextFlowId);
 }
 
 // Address: 0x00c2efd0 - 0x00c2f008 (56 bytes)
 bool uGUIRimWarp::requestPartyWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::partyWarp();
-    if (ret != false) {
-        this->mIsPartyWarp = true;
-        this->mIsPaid = true;
+    const bool ret = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->partyWarp();
+    if (ret) {
+        mIsPartyWarp = true;
+        mIsPaid = true;
     }
     return ret;
 }
@@ -1032,8 +1051,8 @@ bool uGUIRimWarp::requestPartyWarp() {
 // Address: 0x00c2f010 - 0x00c2f022 (18 bytes)
 void uGUIRimWarp::callbackPartyWarp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967263);
-    this->::uGUIRimWarp::requestServer(this->mNextFlowId);
+    mRequestFlag = mRequestFlag & 0xFFFFFFDFu;
+    requestServer(mNextFlowId);
 }
 
 // Address: 0x00c2dc30 - 0x00c2dddc (428 bytes)
@@ -1047,24 +1066,23 @@ __attribute__((weak)) void uGUIRimWarp::eventDecide() {
 // Address: 0x00c2dde0 - 0x00c2de2b (75 bytes)
 __attribute__((weak)) void uGUIRimWarp::eventCancel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(9)) {
-        if (this->mFlowId != static_cast<u32>(7)) {
-            if ((this->mFlowId - static_cast<u32>(2)) > static_cast<u32>(2)) {
-            } else {
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+    if (mFlowId != 9) {
+        if (mFlowId != 7) {
+            if ((mFlowId - 2u) <= 2u) {
+                setFlowId(13u, true);
             }
         } else {
-            if (this->mMenuType == static_cast<u32>(2)) {
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+            if (mMenuType == 2) {
+                setFlowId(13u, true);
             } else {
-                this->::uGUIRimWarp::setFlowId(static_cast<u32>(3), true);
+                setFlowId(3u, true);
             }
         }
     } else {
-        if (this->mMenuType != static_cast<u32>(3)) {
-            this->::uGUIRimWarp::setFlowId(static_cast<u32>(3), true);
+        if (mMenuType != 3) {
+            setFlowId(3u, true);
         } else {
-            this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+            setFlowId(13u, true);
         }
     }
 }
@@ -1096,41 +1114,41 @@ __attribute__((weak)) u32 uGUIRimWarp::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00c298c0 - 0x00c298de (30 bytes)
 u32 uGUIRimWarp::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00c2a150 - 0x00c2a16e (30 bytes)
 u32 uGUIRimWarp::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00c2a170 - 0x00c2a18e (30 bytes)
 u32 uGUIRimWarp::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00c2a1f0 - 0x00c2a20e (30 bytes)
 u32 uGUIRimWarp::evCtrlAdjustTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(3);
+    if (msg != nullptr) {
+        msg->changeSE = 3;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00c2a190 - 0x00c2a1e6 (86 bytes)
@@ -1138,28 +1156,28 @@ u32 uGUIRimWarp::evCtrlMouseClick(cControl::Message* msg) {
     // DWARF local not rendered: u32 ret;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->mFlowId <= static_cast<u32>(9)) {
-            if (((static_cast<unsigned long>(664) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                if (msg->reason == static_cast<nGUIExt::MSG_REASON>(38)) {
-                    if (msg->pSender != static_cast<cControl*>(nullptr)) {
-                        if (msg->pSender->::cControl::getCurrentPos() != msg->pSender->mOldPos) {
-                            msg->changeSE = static_cast<u32>(2);
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if (msg != nullptr) {
+        if (mFlowId <= 9u) {
+            if (((664ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                if (msg->reason == nGUIExt::MOUSE_MCLICK) {
+                    if (msg->pSender != nullptr) {
+                        if (msg->pSender->getCurrentPos() != msg->pSender->mOldPos) {
+                            msg->changeSE = 2;
+                            setInputEvent(68u);
                         }
                     }
-                    return static_cast<u32>(0);
+                    return 0;
                 } else {
-                    return this->::uGUIRimWarp::evCtrlDecide(msg);
+                    return evCtrlDecide(msg);
                 }
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1180,6 +1198,8 @@ u32 uGUIRimWarp::evCtrlMouseClick(cControl::Message* msg) {
 //   in uGUIRimWarp::setupSystemMsg at 0x00c2d6b6-0x00c2d6e6 (called at uGUIRimWarp.cpp:1631)
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIRimWarp::getCmnMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIRimWarp::MyDTI uGUIRimWarp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIRimWarp.cpp at 0x00c2f147-0x00c2f184 (called at uGUIRimWarp.cpp:53)
@@ -1245,7 +1265,7 @@ const MtDTI& uGUIRimWarp::cHeaderItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uGUIRimWarp11cHeaderItemD0Ev at 0x01b051f0-0x01b0521a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIRimWarp::cHeaderItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cHeaderItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1263,6 +1283,8 @@ inline void uGUIRimWarp::cHeaderItem::operator delete(void* p_addr) {
 //   in uGUIRimWarp::uGUIRimWarp at 0x00c27a64-0x00c27c53 (called at uGUIRimWarp.h:223)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIRimWarp::cHeaderItem::cHeaderItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRimWarp::cHeaderItem::MyDTI uGUIRimWarp::cHeaderItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIRimWarp.cpp at 0x00c2f184-0x00c2f1c4 (called at uGUIRimWarp.cpp:54)
@@ -1310,7 +1332,7 @@ const MtDTI& uGUIRimWarp::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uGUIRimWarp9cListItemD0Ev at 0x01b05160-0x01b0518a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIRimWarp::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRimWarp::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1328,6 +1350,8 @@ inline void uGUIRimWarp::cListItem::operator delete(void* p_addr) {
 //   in uGUIRimWarp::uGUIRimWarp at 0x00c27c53-0x00c27d4b (called at uGUIRimWarp.h:223)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIRimWarp::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRimWarp::cListItem::MyDTI uGUIRimWarp::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIRimWarp.cpp at 0x00c2f204-0x00c2f23d (called at uGUIRimWarp.cpp:56)
@@ -1394,7 +1418,7 @@ const MtDTI& uGUIRimWarp::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uGUIRimWarp9cListInfoD0Ev at 0x01b05120-0x01b0514a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIRimWarp::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRimWarp::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1412,6 +1436,8 @@ inline void uGUIRimWarp::cListInfo::operator delete(void* p_addr) {
 //   in uGUIRimWarp::setupList at 0x00c2becd-0x00c2bee2, 0x00c2bf19-0x00c2bf74 (called at uGUIRimWarp.cpp:1153)
 //   and 9 more (every copy is in <bundle>.inlined.json)
 // uGUIRimWarp::cListInfo::cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRimWarp::cListInfo::MyDTI uGUIRimWarp::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIRimWarp.cpp at 0x00c2f23d-0x00c2f276 (called at uGUIRimWarp.cpp:57)
@@ -1461,7 +1487,7 @@ const MtDTI& uGUIRimWarp::cHeaderInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uGUIRimWarp11cHeaderInfoD0Ev at 0x01b051b0-0x01b051da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIRimWarp::cHeaderInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cHeaderInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1479,6 +1505,8 @@ inline void uGUIRimWarp::cHeaderInfo::operator delete(void* p_addr) {
 //   in uGUIRimWarp::setupList at 0x00c2ca3f-0x00c2ca5d, 0x00c2cad0-0x00c2cb08 (called at uGUIRimWarp.cpp:1284)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIRimWarp::cHeaderInfo::cHeaderInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRimWarp::cHeaderInfo::MyDTI uGUIRimWarp::cHeaderInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIRimWarp.cpp at 0x00c2f1c4-0x00c2f204 (called at uGUIRimWarp.cpp:55)

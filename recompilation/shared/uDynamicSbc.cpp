@@ -47,7 +47,7 @@ const MtDTI& uDynamicSbc::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uDynamicSbcD0Ev at 0x013081b0-0x013081d1, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uDynamicSbc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uDynamicSbc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uDynamicSbc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,13 +66,13 @@ inline void uDynamicSbc::operator delete(void* p_addr) {
 // Also emitted as: _ZN11uDynamicSbcD0Ev at 0x01308180
 uDynamicSbc::~uDynamicSbc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDynamicSbc::clear();
+    clear();
 }
 
 // Address: 0x013081e0 - 0x013081e5 (5 bytes)
 MtUI* uDynamicSbc::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x013081f0 - 0x01308629 (1081 bytes)
@@ -84,7 +84,7 @@ __attribute__((weak)) void uDynamicSbc::createProperty(MtPropertyList& s) {
 // Address: 0x013086b0 - 0x013086b5 (5 bytes)
 void uDynamicSbc::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x013086c0 - 0x0130871f (95 bytes)
@@ -113,24 +113,24 @@ __attribute__((weak)) void uDynamicSbc::draw(cDraw* pdraw) {
 void uDynamicSbc::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uDynamicSbc*
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
-        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) == 0) {
+        if ((mBeFlag - 1u) <= 1u) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
         }
     }
-    this->::uDynamicSbc::clear();
+    clear();
 }
 
 // Address: 0x01308790 - 0x013087aa (26 bytes)
 void uDynamicSbc::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDynamicSbc::updateCollision(true, true, true, true);
+    updateCollision(true, true, true, true);
 }
 
 // Address: 0x01308b50 - 0x01308b60 (16 bytes)
 MT_CTSTR uDynamicSbc::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI().mName;
+    return getDTI().mName;
 }
 
 // Address: 0x01308b60 - 0x01308c17 (183 bytes)
@@ -143,7 +143,7 @@ __attribute__((weak)) void uDynamicSbc::setOwner(uModel* pmod, rDynamicSbc* pUse
 // Address: 0x01bbd450 - 0x01bbd455 (5 bytes)
 uModel* uDynamicSbc::getOwner() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOwner;
+    return mpOwner;
 }
 
 // Address: 0x013087b0 - 0x01308b4b (923 bytes)
@@ -226,7 +226,7 @@ __attribute__((weak)) bool uDynamicSbc::isUse() {
 // Address: 0x01308630 - 0x01308635 (5 bytes)
 rDynamicSbc* uDynamicSbc::getStaticData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpStaticData;
+    return mpStaticData;
 }
 
 // Address: 0x01308640 - 0x013086aa (106 bytes)
@@ -247,19 +247,19 @@ __attribute__((weak)) void uDynamicSbc::setStaticData(rDynamicSbc* pRDSbc) {
 // Address: 0x01bbd3d0 - 0x01bbd3d7 (7 bytes)
 u32 uDynamicSbc::getSbcType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrFilter.mScrType;
+    return mScrFilter.mScrType;
 }
 
 // Address: 0x01bbd3e0 - 0x01bbd3e7 (7 bytes)
 void uDynamicSbc::setSbcType(u32 set) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrFilter.mScrType = set;
+    mScrFilter.mScrType = set;
 }
 
 // Address: 0x01bbd3f0 - 0x01bbd3f7 (7 bytes)
 u32 uDynamicSbc::getSbcGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrFilter.mScrGroup;
+    return mScrFilter.mScrGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -268,7 +268,7 @@ u32 uDynamicSbc::getSbcGroup() const {
 // Address: 0x01bbd400 - 0x01bbd40c (12 bytes)
 void uDynamicSbc::setSbcGroup(u8 GroupIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrFilter.::nCollision::cScrCommonFilter::setScrGroup(GroupIndex);
+    mScrFilter.setScrGroup(GroupIndex);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -289,13 +289,13 @@ void uDynamicSbc::setSbcGroup(u8 GroupIndex) {
 // Address: 0x01bbd420 - 0x01bbd42e (14 bytes)
 void uDynamicSbc::setOwnerUI(uModel* pmod) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setOwner(pmod, static_cast<rDynamicSbc*>(nullptr));
+    setOwner(pmod, static_cast<rDynamicSbc*>(nullptr));
 }
 
 // Address: 0x01bbd410 - 0x01bbd415 (5 bytes)
 uModel* uDynamicSbc::getOwnerUI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOwner;
+    return mpOwner;
 }
 
 // Address: 0x01309150 - 0x013093f3 (675 bytes)
@@ -399,6 +399,8 @@ __attribute__((weak)) void uDynamicSbc::makeDynamicCollisionWorkData() {
 
 // No out-of-line body: no code in the ELF
 // MtVector4& uDynamicSbc::getStaticVertexPosition(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uDynamicSbc::MyDTI uDynamicSbc::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uDynamicSbc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

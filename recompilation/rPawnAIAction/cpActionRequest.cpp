@@ -26,7 +26,7 @@ const MtDTI& cpActionRequest::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpActionRequest::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpActionRequest::DTI);
+    return MtMemoryAllocator::getAllocator(cpActionRequest::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpActionRequest::getAllocator() {
 // Address: 0x003b4690 - 0x003b46d0 (64 bytes)
 void* cpActionRequest::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpActionRequest::getAllocator()->memAlloc(sz, align, ::cpActionRequest::DTI.::MtDTI::getID());
+    return cpActionRequest::getAllocator()->memAlloc(sz, align, cpActionRequest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpActionRequest::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpActionRequest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpActionRequest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpActionRequest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,41 +65,41 @@ inline void cpActionRequest::operator delete(void* p_addr) {
 // Address: 0x003b4740 - 0x003b4817 (215 bytes)
 cpActionRequest::cpActionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
-    this->mBlowActionReq = static_cast<u32>(4294967295);
-    this->mHighPriorityActionReq = static_cast<u32>(4294967295);
-    this->mTouchActionReq = static_cast<u32>(4294967295);
-    this->mShrinkActionReq = static_cast<u32>(4294967295);
-    this->mLandActionReq = static_cast<u32>(4294967295);
-    this->mDamageActionReq = static_cast<u32>(4294967295);
-    this->mFallActionReq = static_cast<u32>(4294967295);
-    this->mEndActionReq = static_cast<u32>(4294967295);
-    this->mBlowAction = static_cast<u32>(4294967295);
-    this->mRequestActionReq = static_cast<u32>(4294967295);
-    this->mTouchAction = static_cast<u32>(4294967295);
-    this->mShrinkAction = static_cast<u32>(4294967295);
-    this->mLandAction = static_cast<u32>(4294967295);
-    this->mDamageAction = static_cast<u32>(4294967295);
-    this->mFallAction = static_cast<u32>(4294967295);
-    this->mEndAction = static_cast<u32>(4294967295);
-    this->mIsArgument = false;
-    this->mRequestActionNoSend = false;
-    this->mEndActionNoSend = false;
-    this->mFparam2 = 0.0f;
-    this->mFparam3 = 0.0f;
-    this->mFparam0 = 0.0f;
-    this->mFparam1 = 0.0f;
-    this->mUparam2 = static_cast<u32>(0);
-    this->mUparam3 = static_cast<u32>(0);
-    this->mUparam0 = static_cast<u32>(0);
-    this->mUparam1 = static_cast<u32>(0);
-    this->mLandActionNoSend = true;
-    this->mFallActionNoSend = true;
-    this->mDamageActionNoSend = false;
-    this->mTouchActionNoSend = false;
-    this->mShrinkActionNoSend = false;
-    this->mBlowActionNoSend = false;
-    this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(-1);
+    mpModel = nullptr;
+    mBlowActionReq = 0xFFFFFFFF;
+    mHighPriorityActionReq = 0xFFFFFFFF;
+    mTouchActionReq = 0xFFFFFFFF;
+    mShrinkActionReq = 0xFFFFFFFF;
+    mLandActionReq = 0xFFFFFFFF;
+    mDamageActionReq = 0xFFFFFFFF;
+    mFallActionReq = 0xFFFFFFFF;
+    mEndActionReq = 0xFFFFFFFF;
+    mBlowAction = 0xFFFFFFFF;
+    mRequestActionReq = 0xFFFFFFFF;
+    mTouchAction = 0xFFFFFFFF;
+    mShrinkAction = 0xFFFFFFFF;
+    mLandAction = 0xFFFFFFFF;
+    mDamageAction = 0xFFFFFFFF;
+    mFallAction = 0xFFFFFFFF;
+    mEndAction = 0xFFFFFFFF;
+    mIsArgument = false;
+    mRequestActionNoSend = false;
+    mEndActionNoSend = false;
+    mFparam2 = 0.0f;
+    mFparam3 = 0.0f;
+    mFparam0 = 0.0f;
+    mFparam1 = 0.0f;
+    mUparam2 = 0;
+    mUparam3 = 0;
+    mUparam0 = 0;
+    mUparam1 = 0;
+    mLandActionNoSend = true;
+    mFallActionNoSend = true;
+    mDamageActionNoSend = false;
+    mTouchActionNoSend = false;
+    mShrinkActionNoSend = false;
+    mBlowActionNoSend = false;
+    mSetActionType = RESULT_NONE;
 }
 
 // Address: 0x003b4860 - 0x003b4865 (5 bytes)
@@ -111,8 +111,8 @@ cpActionRequest::~cpActionRequest() {
 // Address: 0x003b4ef0 - 0x003b4ef9 (9 bytes)
 void cpActionRequest::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x003b48a0 - 0x003b4d58 (1208 bytes)
@@ -124,14 +124,14 @@ __attribute__((weak)) void cpActionRequest::setup() {
 // Address: 0x003b4f00 - 0x003b4f33 (51 bytes)
 void cpActionRequest::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x003b4d60 - 0x003b4da9 (73 bytes)
@@ -139,24 +139,24 @@ u32 cpActionRequest::callbackGetAutoAction() {
     // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x3b4d60 read, used twice; no DWARF local holds it
-    u32 t0 = this->mLandActionReq;
-    if (t0 != static_cast<u32>(4294967295)) {
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(3);
-        this->mLandActionReq = static_cast<u32>(4294967295);
-        this->mFallActionReq = static_cast<u32>(4294967295);
+    u32 t0 = mLandActionReq;
+    if (t0 != 0xFFFFFFFFu) {
+        mSetActionType = RESULT_LAND;
+        mLandActionReq = 0xFFFFFFFF;
+        mFallActionReq = 0xFFFFFFFF;
         return t0;
     } else {
         // inferred: a temporary for the value the load at 0x3b4d7f read, used twice; no DWARF local holds it
-        u32 t1 = this->mFallActionReq;
-        if (t1 != static_cast<u32>(4294967295)) {
-            this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(1);
-            this->mLandActionReq = static_cast<u32>(4294967295);
-            this->mFallActionReq = static_cast<u32>(4294967295);
+        u32 t1 = mFallActionReq;
+        if (t1 != 0xFFFFFFFFu) {
+            mSetActionType = RESULT_FALL;
+            mLandActionReq = 0xFFFFFFFF;
+            mFallActionReq = 0xFFFFFFFF;
             return t1;
         } else {
-            this->mLandActionReq = static_cast<u32>(4294967295);
-            this->mFallActionReq = static_cast<u32>(4294967295);
-            return static_cast<u32>(4294967295);
+            mLandActionReq = 0xFFFFFFFF;
+            mFallActionReq = 0xFFFFFFFF;
+            return 0xFFFFFFFF;
         }
     }
 }
@@ -166,37 +166,37 @@ u32 cpActionRequest::callbackGetDamageAction() {
     // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x3b4db0 read, used twice; no DWARF local holds it
-    u32 t0 = this->mDamageActionReq;
-    if (t0 != static_cast<u32>(4294967295)) {
-        this->mDamageAction = static_cast<u32>(4294967295);
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(4);
-        this->mDamageActionReq = static_cast<u32>(4294967295);
-        this->mBlowActionReq = static_cast<u32>(4294967295);
-        this->mShrinkActionReq = static_cast<u32>(4294967295);
+    u32 t0 = mDamageActionReq;
+    if (t0 != 0xFFFFFFFFu) {
+        mDamageAction = 0xFFFFFFFF;
+        mSetActionType = RESULT_DAMAGE;
+        mDamageActionReq = 0xFFFFFFFF;
+        mBlowActionReq = 0xFFFFFFFF;
+        mShrinkActionReq = 0xFFFFFFFF;
         return t0;
     } else {
         // inferred: a temporary for the value the load at 0x3b4ddc read, used twice; no DWARF local holds it
-        u32 t1 = this->mBlowActionReq;
-        if (t1 != static_cast<u32>(4294967295)) {
-            this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(7);
-            this->mDamageActionReq = static_cast<u32>(4294967295);
-            this->mBlowActionReq = static_cast<u32>(4294967295);
-            this->mShrinkActionReq = static_cast<u32>(4294967295);
+        u32 t1 = mBlowActionReq;
+        if (t1 != 0xFFFFFFFFu) {
+            mSetActionType = RESULT_BLOW;
+            mDamageActionReq = 0xFFFFFFFF;
+            mBlowActionReq = 0xFFFFFFFF;
+            mShrinkActionReq = 0xFFFFFFFF;
             return t1;
         } else {
             // inferred: a temporary for the value the load at 0x3b4df3 read, used twice; no DWARF local holds it
-            u32 t2 = this->mShrinkActionReq;
-            if (t2 != static_cast<u32>(4294967295)) {
-                this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(6);
-                this->mDamageActionReq = static_cast<u32>(4294967295);
-                this->mBlowActionReq = static_cast<u32>(4294967295);
-                this->mShrinkActionReq = static_cast<u32>(4294967295);
+            u32 t2 = mShrinkActionReq;
+            if (t2 != 0xFFFFFFFFu) {
+                mSetActionType = RESULT_SHRINK;
+                mDamageActionReq = 0xFFFFFFFF;
+                mBlowActionReq = 0xFFFFFFFF;
+                mShrinkActionReq = 0xFFFFFFFF;
                 return t2;
             } else {
-                this->mDamageActionReq = static_cast<u32>(4294967295);
-                this->mBlowActionReq = static_cast<u32>(4294967295);
-                this->mShrinkActionReq = static_cast<u32>(4294967295);
-                return static_cast<u32>(4294967295);
+                mDamageActionReq = 0xFFFFFFFF;
+                mBlowActionReq = 0xFFFFFFFF;
+                mShrinkActionReq = 0xFFFFFFFF;
+                return 0xFFFFFFFF;
             }
         }
     }
@@ -205,56 +205,56 @@ u32 cpActionRequest::callbackGetDamageAction() {
 // Address: 0x003b4e30 - 0x003b4e57 (39 bytes)
 u32 cpActionRequest::callbackGetTouchAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 ActNo = this->mTouchActionReq;
-    if (ActNo != static_cast<u32>(4294967295)) {
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(5);
-        this->mTouchActionReq = static_cast<u32>(4294967295);
+    u32 ActNo = mTouchActionReq;
+    if (ActNo != 0xFFFFFFFFu) {
+        mSetActionType = RESULT_TOUCH;
+        mTouchActionReq = 0xFFFFFFFF;
         return ActNo;
     } else {
-        this->mTouchActionReq = static_cast<u32>(4294967295);
-        return static_cast<u32>(4294967295);
+        mTouchActionReq = 0xFFFFFFFF;
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x003b4e60 - 0x003b4e81 (33 bytes)
 u32 cpActionRequest::callbackGetEndAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 ActNo = this->mEndActionReq;
-    if (ActNo != static_cast<u32>(4294967295)) {
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(2);
-        this->mEndActionReq = static_cast<u32>(4294967295);
+    u32 ActNo = mEndActionReq;
+    if (ActNo != 0xFFFFFFFFu) {
+        mSetActionType = RESULT_END;
+        mEndActionReq = 0xFFFFFFFF;
         return ActNo;
     } else {
-        this->mEndActionReq = static_cast<u32>(4294967295);
-        return static_cast<u32>(4294967295);
+        mEndActionReq = 0xFFFFFFFF;
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x003b4e90 - 0x003b4eb1 (33 bytes)
 u32 cpActionRequest::callbackGetRequestAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 ActNo = this->mRequestActionReq;
-    if (ActNo != static_cast<u32>(4294967295)) {
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(0);
-        this->mRequestActionReq = static_cast<u32>(4294967295);
+    u32 ActNo = mRequestActionReq;
+    if (ActNo != 0xFFFFFFFFu) {
+        mSetActionType = RESULT_ACTION_REQ;
+        mRequestActionReq = 0xFFFFFFFF;
         return ActNo;
     } else {
-        this->mRequestActionReq = static_cast<u32>(4294967295);
-        return static_cast<u32>(4294967295);
+        mRequestActionReq = 0xFFFFFFFF;
+        return 0xFFFFFFFF;
     }
 }
 
 // Address: 0x003b4ec0 - 0x003b4ee7 (39 bytes)
 u32 cpActionRequest::callbackGetHighPriorityAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 ActNo = this->mHighPriorityActionReq;
-    if (ActNo != static_cast<u32>(4294967295)) {
-        this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(9);
-        this->mHighPriorityActionReq = static_cast<u32>(4294967295);
+    u32 ActNo = mHighPriorityActionReq;
+    if (ActNo != 0xFFFFFFFFu) {
+        mSetActionType = RESULT_HIGH;
+        mHighPriorityActionReq = 0xFFFFFFFF;
         return ActNo;
     } else {
-        this->mHighPriorityActionReq = static_cast<u32>(4294967295);
-        return static_cast<u32>(4294967295);
+        mHighPriorityActionReq = 0xFFFFFFFF;
+        return 0xFFFFFFFF;
     }
 }
 
@@ -418,76 +418,76 @@ u32 cpActionRequest::callbackGetHighPriorityAction() {
 // Address: 0x003b4f40 - 0x003b4fa4 (100 bytes)
 void cpActionRequest::clearReqestActionAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHighPriorityActionReq = static_cast<u32>(4294967295);
-    this->mShrinkActionReq = static_cast<u32>(4294967295);
-    this->mBlowActionReq = static_cast<u32>(4294967295);
-    this->mDamageActionReq = static_cast<u32>(4294967295);
-    this->mTouchActionReq = static_cast<u32>(4294967295);
-    this->mEndActionReq = static_cast<u32>(4294967295);
-    this->mLandActionReq = static_cast<u32>(4294967295);
-    this->mRequestActionReq = static_cast<u32>(4294967295);
-    this->mFallActionReq = static_cast<u32>(4294967295);
-    this->mIsArgument = false;
-    this->mFparam2 = 0.0f;
-    this->mFparam3 = 0.0f;
-    this->mFparam0 = 0.0f;
-    this->mFparam1 = 0.0f;
-    this->mUparam2 = static_cast<u32>(0);
-    this->mUparam3 = static_cast<u32>(0);
-    this->mUparam0 = static_cast<u32>(0);
-    this->mUparam1 = static_cast<u32>(0);
+    mHighPriorityActionReq = 0xFFFFFFFF;
+    mShrinkActionReq = 0xFFFFFFFF;
+    mBlowActionReq = 0xFFFFFFFF;
+    mDamageActionReq = 0xFFFFFFFF;
+    mTouchActionReq = 0xFFFFFFFF;
+    mEndActionReq = 0xFFFFFFFF;
+    mLandActionReq = 0xFFFFFFFF;
+    mRequestActionReq = 0xFFFFFFFF;
+    mFallActionReq = 0xFFFFFFFF;
+    mIsArgument = false;
+    mFparam2 = 0.0f;
+    mFparam3 = 0.0f;
+    mFparam0 = 0.0f;
+    mFparam1 = 0.0f;
+    mUparam2 = 0;
+    mUparam3 = 0;
+    mUparam0 = 0;
+    mUparam1 = 0;
 }
 
 // Address: 0x003b4820 - 0x003b4851 (49 bytes)
 void cpActionRequest::resetNoSendFlag() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestActionNoSend = false;
-    this->mEndActionNoSend = false;
-    this->mLandActionNoSend = true;
-    this->mFallActionNoSend = true;
-    this->mDamageActionNoSend = false;
-    this->mTouchActionNoSend = false;
-    this->mShrinkActionNoSend = false;
-    this->mBlowActionNoSend = false;
-    this->mSetActionType = static_cast<cpActionRequest::SET_ACT_TYPE>(-1);
+    mRequestActionNoSend = false;
+    mEndActionNoSend = false;
+    mLandActionNoSend = true;
+    mFallActionNoSend = true;
+    mDamageActionNoSend = false;
+    mTouchActionNoSend = false;
+    mShrinkActionNoSend = false;
+    mBlowActionNoSend = false;
+    mSetActionType = RESULT_NONE;
 }
 
 // Address: 0x003b4fb0 - 0x003b5044 (148 bytes)
 bool cpActionRequest::checkNoSendFlag() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsArgument == false) {
-        switch (this->mSetActionType) {
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(0):
+    if (!mIsArgument) {
+        switch (mSetActionType) {
+            case RESULT_ACTION_REQ:
             {
-                return this->mRequestActionNoSend != false;
+                return mRequestActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(1):
+            case RESULT_FALL:
             {
-                return this->mFallActionNoSend != false;
+                return mFallActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(2):
+            case RESULT_END:
             {
-                return this->mEndActionNoSend != false;
+                return mEndActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(3):
+            case RESULT_LAND:
             {
-                return this->mLandActionNoSend != false;
+                return mLandActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(4):
+            case RESULT_DAMAGE:
             {
-                return this->mDamageActionNoSend != false;
+                return mDamageActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(5):
+            case RESULT_TOUCH:
             {
-                return this->mTouchActionNoSend != false;
+                return mTouchActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(6):
+            case RESULT_SHRINK:
             {
-                return this->mShrinkActionNoSend != false;
+                return mShrinkActionNoSend;
             }
-            case static_cast<cpActionRequest::SET_ACT_TYPE>(7):
+            case RESULT_BLOW:
             {
-                return this->mBlowActionNoSend != false;
+                return mBlowActionNoSend;
             }
             default:
             {
@@ -499,6 +499,8 @@ bool cpActionRequest::checkNoSendFlag() {
     }
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpActionRequest::MyDTI cpActionRequest::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpActionRequest.cpp at 0x003b514f-0x003b518c (called at cpActionRequest.cpp:34)
 //   in _GLOBAL__sub_I_cpActionRequest.cpp at 0x003b514f-0x003b518c (called at cpActionRequest.h:39)
@@ -507,6 +509,6 @@ bool cpActionRequest::checkNoSendFlag() {
 // Address: 0x003b4580 - 0x003b4682 (258 bytes)
 MtObject* cpActionRequest::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpActionRequest;
+    return new (16u) cpActionRequest;
 }
 

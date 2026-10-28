@@ -515,6 +515,12 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uEffectExt::~uEffectExt at 0x8e38d6-0x8e38dd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 uEffectExt::getCreateCost() {
+    return this->mCreateCost;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline f32 uEffectExt::getOthersTransparencyPercentage() {
     return this->mOthersTransparencyPercentage;

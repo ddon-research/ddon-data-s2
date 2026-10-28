@@ -47,7 +47,7 @@ const MtDTI& cpJob03::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpJob03::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpJob03::DTI);
+    return MtMemoryAllocator::getAllocator(cpJob03::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline MtAllocator* cpJob03::getAllocator() {
 // Address: 0x0049dba0 - 0x0049dbe0 (64 bytes)
 void* cpJob03::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpJob03::getAllocator()->memAlloc(sz, align, ::cpJob03::DTI.::MtDTI::getID());
+    return cpJob03::getAllocator()->memAlloc(sz, align, cpJob03::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ void* cpJob03::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJob03::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJob03::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJob03::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,7 +100,7 @@ cpJob03::~cpJob03() {
 // Address: 0x0049e6f0 - 0x0049e6f5 (5 bytes)
 void cpJob03::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::setup();
+    this->cpJobBase::setup();
 }
 
 // Address: 0x0049e580 - 0x0049e6e5 (357 bytes)
@@ -108,47 +108,47 @@ void cpJob03::kill() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpCstmSkillShlSeList.elems[0] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[0]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[0] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[0] != nullptr) {
+        mpCstmSkillShlSeList.elems[0]->cResource::release();
+        mpCstmSkillShlSeList.elems[0] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[1] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[1]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[1] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[1] != nullptr) {
+        mpCstmSkillShlSeList.elems[1]->cResource::release();
+        mpCstmSkillShlSeList.elems[1] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[2] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[2]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[2] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[2] != nullptr) {
+        mpCstmSkillShlSeList.elems[2]->cResource::release();
+        mpCstmSkillShlSeList.elems[2] = nullptr;
     }
-    if (this->mpCstmSkillShlSeList.elems[3] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpCstmSkillShlSeList.elems[3]->::cResource::release();
-        this->mpCstmSkillShlSeList.elems[3] = static_cast<rSoundRequest*>(nullptr);
+    if (mpCstmSkillShlSeList.elems[3] != nullptr) {
+        mpCstmSkillShlSeList.elems[3]->cResource::release();
+        mpCstmSkillShlSeList.elems[3] = nullptr;
     }
-    if (this->mpShlCommonSe != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpShlCommonSe->::cResource::release();
-        this->mpShlCommonSe = static_cast<rSoundRequest*>(nullptr);
+    if (mpShlCommonSe != nullptr) {
+        mpShlCommonSe->release();
+        mpShlCommonSe = nullptr;
     }
-    if (this->mpArrowMod != static_cast<uJobEquip*>(nullptr)) {
-        this->mpArrowMod->kill();
-        this->mpArrowMod = static_cast<uJobEquip*>(nullptr);
+    if (mpArrowMod != nullptr) {
+        mpArrowMod->kill();
+        mpArrowMod = nullptr;
     }
-    if (this->mpLandEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpLandEfcUnit->kill();
+    if (mpLandEfcUnit != nullptr) {
+        mpLandEfcUnit->kill();
     }
-    if (this->mpLandHitEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpLandHitEfcUnit->kill();
+    if (mpLandHitEfcUnit != nullptr) {
+        mpLandHitEfcUnit->kill();
     }
-    if (this->mpCs05EfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpCs05EfcUnit->kill();
+    if (mpCs05EfcUnit != nullptr) {
+        mpCs05EfcUnit->kill();
     }
-    if (this->mpEfcBakuretsu != static_cast<cEfcHandle*>(nullptr)) {
-        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpEfcBakuretsu, static_cast<u32>(4));
-        this->mpEfcBakuretsu = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcBakuretsu != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcBakuretsu, 4u);
+        mpEfcBakuretsu = nullptr;
     }
-    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+    if (mpHuman != nullptr) {
         // inferred: a temporary for the value the load at 0x49e6aa read, used once; no DWARF local holds it
-        sSound* t0 = ::sSound::getInstance();
-        static_cast<sSoundExt*>(t0)->::sSoundExt::requestSeEx(this->::cpJobBase::mpHuman->::uDDOModel::mpMotionSe->::cpMotionSe::getRequest(static_cast<u32>(3)), static_cast<u32>(111), static_cast<MtObject*>(this->::cpJobBase::mpHuman), static_cast<const uCoord*>(this->mpArrowMod), static_cast<s32>(-1));
+        sSound* t0 = sSound::getInstance();
+        static_cast<sSoundExt*>(t0)->requestSeEx(mpHuman->mpMotionSe->getRequest(3u), 111u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpArrowMod), -1);
         return;
     }
 }
@@ -156,14 +156,14 @@ void cpJob03::kill() {
 // Address: 0x0049e7c0 - 0x0049e80f (79 bytes)
 void cpJob03::before() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::before();
-    this->::cpJob03::reloadMove();
-    this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(0);
-    if (::sPlayerManager::getInstance()->::sPlayerManager::isItemSeal(this->::cpJobBase::mpHuman) == false) {
+    this->cpJobBase::before();
+    reloadMove();
+    mChangeReason = REASON_NONE;
+    if (!sPlayerManager::getInstance()->isItemSeal(mpHuman)) {
         return;
     }
-    this->mArrowEquipType = static_cast<u32>(0);
-    this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(2);
+    mArrowEquipType = 0;
+    mChangeReason = REASON_RESET;
 }
 
 // Address: 0x0049ed30 - 0x0049f3dd (1709 bytes)
@@ -204,70 +204,60 @@ __attribute__((weak)) void cpJob03::after() {
 // Address: 0x0049e700 - 0x0049e7c0 (192 bytes)
 void cpJob03::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::reset();
-    if (this->mpArrowMod != static_cast<uJobEquip*>(nullptr)) {
-        ::sUnit::getInstance()->::sUnit::remove(static_cast<cUnit*>(this->mpArrowMod));
-        if (this->mpArrowMod != static_cast<uJobEquip*>(nullptr)) {
-            delete this->mpArrowMod;
-            this->mpArrowMod = static_cast<uJobEquip*>(nullptr);
+    this->cpJobBase::reset();
+    if (mpArrowMod != nullptr) {
+        sUnit::getInstance()->remove(static_cast<cUnit*>(mpArrowMod));
+        if (mpArrowMod != nullptr) {
+            delete mpArrowMod;
+            mpArrowMod = nullptr;
         }
     }
-    if (this->mpLandEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpLandEfcUnit->kill();
-        this->mpLandEfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    if (mpLandEfcUnit != nullptr) {
+        mpLandEfcUnit->kill();
+        mpLandEfcUnit = nullptr;
     }
-    if (this->mpLandHitEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpLandHitEfcUnit->kill();
-        this->mpLandHitEfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    if (mpLandHitEfcUnit != nullptr) {
+        mpLandHitEfcUnit->kill();
+        mpLandHitEfcUnit = nullptr;
     }
-    if (this->mpCs05EfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-        this->mpCs05EfcUnit->kill();
-        this->mpCs05EfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    if (mpCs05EfcUnit != nullptr) {
+        mpCs05EfcUnit->kill();
+        mpCs05EfcUnit = nullptr;
     }
-    if (this->mpShlCommonSe == static_cast<rSoundRequest*>(nullptr)) {
+    if (mpShlCommonSe == nullptr) {
         return;
     }
-    this->mpShlCommonSe->::cResource::release();
-    this->mpShlCommonSe = static_cast<rSoundRequest*>(nullptr);
+    mpShlCommonSe->release();
+    mpShlCommonSe = nullptr;
 }
 
 // Address: 0x0049e390 - 0x0049e453 (195 bytes)
 void cpJob03::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::updatePtr();
-    if (this->mpLandEfcUnit == static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-    } else {
-        if (this->mpLandEfcUnit->::cUnit::isEnable()) {
-        } else {
-            this->mpLandEfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    this->cpJobBase::updatePtr();
+    if (mpLandEfcUnit != nullptr) {
+        if (!mpLandEfcUnit->isEnable()) {
+            mpLandEfcUnit = nullptr;
         }
     }
-    if (this->mpLandHitEfcUnit == static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-    } else {
-        if (this->mpLandHitEfcUnit->::cUnit::isEnable()) {
-        } else {
-            this->mpLandHitEfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    if (mpLandHitEfcUnit != nullptr) {
+        if (!mpLandHitEfcUnit->isEnable()) {
+            mpLandHitEfcUnit = nullptr;
         }
     }
-    if (this->mpCs05EfcUnit == static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
-    } else {
-        if (this->mpCs05EfcUnit->::cUnit::isEnable()) {
-        } else {
-            this->mpCs05EfcUnit = static_cast<cpJob03::uLineCtrlUnit*>(nullptr);
+    if (mpCs05EfcUnit != nullptr) {
+        if (!mpCs05EfcUnit->isEnable()) {
+            mpCs05EfcUnit = nullptr;
         }
     }
-    if (this->mpAimCheck == static_cast<uAimCheck*>(nullptr)) {
-    } else {
-        if (this->mpAimCheck->::cUnit::isEnable()) {
-        } else {
-            this->mpAimCheck = static_cast<uAimCheck*>(nullptr);
+    if (mpAimCheck != nullptr) {
+        if (!mpAimCheck->isEnable()) {
+            mpAimCheck = nullptr;
         }
     }
-    if (this->mpArrowMod == static_cast<uJobEquip*>(nullptr)) {
-    } else {
-        if (this->mpArrowMod->::cUnit::isEnable()) {
-        } else {
-            this->mpArrowMod = static_cast<uJobEquip*>(nullptr);
+    if (mpArrowMod != nullptr) {
+        if (!mpArrowMod->isEnable()) {
+            mpArrowMod = nullptr;
         }
     }
 }
@@ -332,22 +322,22 @@ void cpJob03::callbackAttack(cHitInfo* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x4a0d2a read, used 3 times; no DWARF local holds it
     uDDOModel* t0 = pHitInfo->mpAtkModel;
-    if (t0 == static_cast<uDDOModel*>(nullptr)) {
+    if (t0 == nullptr) {
         return;
     }
-    if (t0->::uDDOModel::isMaster() == false) {
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->mUnitId & 8u) == 0) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam() == static_cast<cAttackParam*>(nullptr)) {
+    if (pHitInfo->getAttackParam() == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam()->mAttackID != static_cast<u16>(11)) {
+    if (pHitInfo->getAttackParam()->mAttackID != 11) {
         return;
     }
-    ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(14));
+    nDDOUtility::requestOnTutorialFlg(14);
 }
 
 // Address: 0x004a0c50 - 0x004a0d11 (193 bytes)
@@ -384,7 +374,7 @@ __attribute__((weak)) void cpJob03::callbackEquipJob(nCharacterData::EQUIP_SLOT_
 // Address: 0x004a23c0 - 0x004a23d5 (21 bytes)
 void cpJob03::callbackOcdSeal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::reqOcdCure(static_cast<u32>(12292));
+    mpHuman->getOcdCtrlPtr()->reqOcdCure(12292u);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -426,11 +416,11 @@ void cpJob03::callbackOcdSeal() {
 void cpJob03::shotArrow(u32 num) {
     // DWARF local not rendered: u32 arrowNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
+    if ((mpHuman->uDDOModel::mUnitId & 1024u) != 0) {
         return;
     }
-    if (this->::cpJob03::getArrowNum() >= num) {
-        this->mArrowNum_Gi = this->::cpJob03::getArrowNum() - num;
+    if (getArrowNum() >= num) {
+        mArrowNum_Gi = getArrowNum() - num;
     }
 }
 
@@ -479,11 +469,11 @@ __attribute__((weak)) void cpJob03::reloadEnd() {
 // Address: 0x004a0ee0 - 0x004a0f08 (40 bytes)
 void cpJob03::setIsJustShot(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsJustShot = flag;
-    if (flag != false) {
-        ::cContextInterface::setSJobWork0(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance, static_cast<s32>(1));
+    mIsJustShot = flag;
+    if (flag) {
+        cContextInterface::setSJobWork0(mpHuman->mContextInterface.mpContextInstance, 1);
     } else {
-        ::cContextInterface::setSJobWork0(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance, static_cast<s32>(0));
+        cContextInterface::setSJobWork0(mpHuman->mContextInterface.mpContextInstance, 0);
     }
 }
 
@@ -492,30 +482,30 @@ void cpJob03::changeArrowType() {
     // DWARF local not rendered: u32 type;
     // DWARF local not rendered: u32 arrowId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sPlayerManager::getInstance()->::sPlayerManager::isItemSeal(this->::cpJobBase::mpHuman) != false) {
-        this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(3);
+    if (sPlayerManager::getInstance()->isItemSeal(mpHuman)) {
+        mChangeReason = REASON_REJECT;
     } else {
         // inferred: a temporary for the value the load at 0x4a1000 read, used twice; no DWARF local holds it
-        uHuman* t0 = this->::cpJobBase::mpHuman;
-        if (t0->::uDDOModel::isMaster() != false) {
-            if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
+        uHuman* t0 = mpHuman;
+        if (t0->isMaster()) {
+            if ((t0->uDDOModel::mUnitId & 8u) != 0) {
                 // inferred: a temporary for the value the load at 0x4a1021 read, used once; no DWARF local holds it
-                sSound* t1 = ::sSound::getInstance();
+                sSound* t1 = sSound::getInstance();
                 // inferred: a temporary for the result of the call at 0x4a1034, used once; no DWARF local holds it
-                rSoundRequest* t2 = this->::cpJobBase::mpHuman->::uDDOModel::mpMotionSe->::cpMotionSe::getRequest(static_cast<u32>(3));
-                static_cast<sSoundExt*>(t1)->::sSoundExt::requestSeEx(t2, static_cast<u32>(103), static_cast<MtObject*>(this->::cpJobBase::mpHuman), static_cast<const uCoord*>(this->::cpJobBase::mpHuman), static_cast<s32>(-1));
-                this->mArrowEquipType = ((this->mArrowEquipType + static_cast<u32>(1)) <= static_cast<u32>(2)) ? (this->mArrowEquipType + static_cast<u32>(1)) : static_cast<u32>(0);
-                this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(1);
-                this->::cpJob03::getArrowType(static_cast<u32>(0));
+                rSoundRequest* t2 = mpHuman->mpMotionSe->getRequest(3u);
+                static_cast<sSoundExt*>(t1)->requestSeEx(t2, 103u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
+                mArrowEquipType = ((mArrowEquipType + 1u) <= 2u) ? (mArrowEquipType + 1u) : 0u;
+                mChangeReason = REASON_NORMAL;
+                getArrowType(0u);
             } else {
-                this->mArrowEquipType = ((this->mArrowEquipType + static_cast<u32>(1)) <= static_cast<u32>(2)) ? (this->mArrowEquipType + static_cast<u32>(1)) : static_cast<u32>(0);
-                this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(1);
-                this->::cpJob03::getArrowType(static_cast<u32>(0));
+                mArrowEquipType = ((mArrowEquipType + 1u) <= 2u) ? (mArrowEquipType + 1u) : 0u;
+                mChangeReason = REASON_NORMAL;
+                getArrowType(0u);
             }
         } else {
-            this->mArrowEquipType = ((this->mArrowEquipType + static_cast<u32>(1)) <= static_cast<u32>(2)) ? (this->mArrowEquipType + static_cast<u32>(1)) : static_cast<u32>(0);
-            this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(1);
-            this->::cpJob03::getArrowType(static_cast<u32>(0));
+            mArrowEquipType = ((mArrowEquipType + 1u) <= 2u) ? (mArrowEquipType + 1u) : 0u;
+            mChangeReason = REASON_NORMAL;
+            getArrowType(0u);
         }
     }
 }
@@ -732,21 +722,21 @@ __attribute__((weak)) void cpJob03::useSpecialArrow(u32 useNum) {
 // Address: 0x0049e1b0 - 0x0049e1d4 (36 bytes)
 void cpJob03::clearCS14RendaInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCS14StartRenda = false;
-    this->mCS14StartTurn = false;
-    this->mCS14RendaLv = static_cast<u32>(0);
-    this->mCS14RendaCount = static_cast<u32>(0);
-    this->mCS14RendaRemainTime = 0.0f;
+    mCS14StartRenda = false;
+    mCS14StartTurn = false;
+    mCS14RendaLv = 0;
+    mCS14RendaCount = 0;
+    mCS14RendaRemainTime = 0.0f;
 }
 
 // Address: 0x004a2770 - 0x004a2793 (35 bytes)
 void cpJob03::updateCS14RendaInfo(bool renda_start, bool turn_start, u32 lv, u32 count, f32 timer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCS14StartRenda = renda_start;
-    this->mCS14StartTurn = turn_start;
-    this->mCS14RendaLv = lv;
-    this->mCS14RendaCount = count;
-    this->mCS14RendaRemainTime = timer;
+    mCS14StartRenda = renda_start;
+    mCS14StartTurn = turn_start;
+    mCS14RendaLv = lv;
+    mCS14RendaCount = count;
+    mCS14RendaRemainTime = timer;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (12 bytes)
@@ -831,8 +821,10 @@ __attribute__((weak)) void cpJob03::calcTargetLine(const MtVector3& base, MtVect
 // Address: 0x004a27a0 - 0x004a27b5 (21 bytes)
 void cpJob03::callbackCSChange() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::reqOcdCure(static_cast<u32>(12292));
+    mpHuman->getOcdCtrlPtr()->reqOcdCure(12292u);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJob03::MyDTI cpJob03::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpJob03.cpp at 0x004a28bf-0x004a28fc (called at cpJob03.cpp:63)
@@ -881,7 +873,7 @@ const MtDTI& cpJob03::uLineCtrlUnit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJob03::uLineCtrlUnit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJob03::uLineCtrlUnit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJob03::uLineCtrlUnit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -908,23 +900,25 @@ cpJob03::uLineCtrlUnit::~uLineCtrlUnit() {
 // Address: 0x004a2250 - 0x004a2290 (64 bytes)
 void cpJob03::uLineCtrlUnit::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::kill();
-    if (this->mpEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    this->uDDOModel::kill();
+    if (mpEfcHandle == nullptr) {
         return;
     }
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpEfcHandle, static_cast<u32>(4));
-    this->mpEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcHandle, 4u);
+    mpEfcHandle = nullptr;
 }
 
 // Address: 0x004a2290 - 0x004a22c7 (55 bytes)
 void cpJob03::uLineCtrlUnit::updateMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsCalcUpdateWorldMatrix == false) {
+    if (!mIsCalcUpdateWorldMatrix) {
         return;
     }
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJob03::uLineCtrlUnit::MyDTI cpJob03::uLineCtrlUnit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpJob03.cpp at 0x004a28fc-0x004a2939 (called at cpJob03.cpp:64)

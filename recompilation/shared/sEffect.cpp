@@ -58,7 +58,7 @@ const MtDTI& sEffect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sEffectD0Ev at 0x0122facd-0x0122faee, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sEffect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEffect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEffect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,13 +77,13 @@ inline void sEffect::operator delete(void* p_addr) {
 // Also emitted as: _ZN7sEffectD0Ev at 0x0122fa50
 sEffect::~sEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sEffect::mpInstance = static_cast<sEffect*>(nullptr);
-    if (this->mpTempBuff == static_cast<u8*>(nullptr)) {
+    sEffect::mpInstance = nullptr;
+    if (mpTempBuff == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::sEffect::DTI)->memFree(static_cast<void*>(this->mpTempBuff));
-    this->mpTempBuff = static_cast<u8*>(nullptr);
-    this->mTempBuffSize = static_cast<u32>(0);
+    MtMemoryAllocator::getAllocator(sEffect::DTI)->memFree(static_cast<void*>(mpTempBuff));
+    mpTempBuff = nullptr;
+    mTempBuffSize = 0;
 }
 
 // No out-of-line body: 736 inlined copies in 430 functions (9857 bytes)
@@ -114,157 +114,154 @@ __attribute__((weak)) void sEffect::createProperty(MtPropertyList& s) {
 // Address: 0x01231fa0 - 0x01231fa5 (5 bytes)
 MtUI* sEffect::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01231fb0 - 0x01231ff2 (66 bytes)
 void sEffect::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiBlurFilterControl.::sEffect::MultiFilterControl::setup();
-    this->mMultiColorCorrectFilterControl.::sEffect::MultiFilterControl::setup();
-    this->mMultiGodRaysFilterControl.::sEffect::MultiFilterControl::setup();
-    this->mMultiBloomFilterControl.::sEffect::MultiFilterControl::setup();
+    mMultiBlurFilterControl.setup();
+    mMultiColorCorrectFilterControl.setup();
+    mMultiGodRaysFilterControl.setup();
+    mMultiBloomFilterControl.setup();
 }
 
 // Address: 0x012320f0 - 0x0123216f (127 bytes)
 u32 sEffect::getRandomU32(u32 EventMode) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (EventMode != static_cast<u32>(0)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (EventMode != 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
-            u32 random = this->mEventRandom.::MtRandom::nrand();
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            u32 random = mEventRandom.nrand();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return random;
         } else {
-            u32 random = this->mEventRandom.::MtRandom::nrand();
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            u32 random = mEventRandom.nrand();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return random;
         }
     } else {
-        return ::MtRandom::instance.::MtRandom::nrand();
+        return MtRandom::instance.nrand();
     }
 }
 
 // Address: 0x01b9ef70 - 0x01b9ef74 (4 bytes)
 u32 sEffect::getEventRandomSeed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEventRandomSeed;
+    return mEventRandomSeed;
 }
 
 // Address: 0x01231f10 - 0x01231f1c (12 bytes)
 void sEffect::setEventRandomSeed(u32 Seed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEventRandomSeed = Seed;
-    this->mEventRandom.::MtRandom::init(Seed);
+    mEventRandomSeed = Seed;
+    mEventRandom.init(Seed);
 }
 
 // Address: 0x01b9f030 - 0x01b9f036 (6 bytes)
 MOVE_LINE sEffect::getEffectMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(8);
+    return LINE_8;
 }
 
 // Address: 0x01b9f040 - 0x01b9f046 (6 bytes)
 MOVE_LINE sEffect::getEffectEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(16);
+    return LINE_16;
 }
 
 // Address: 0x01b9f050 - 0x01b9f056 (6 bytes)
 MOVE_LINE sEffect::getEffectToolUnitMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(7);
+    return LINE_7;
 }
 
 // Address: 0x01b9f060 - 0x01b9f066 (6 bytes)
 MOVE_LINE sEffect::getEffectToolUnitEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(15);
+    return LINE_15;
 }
 
 // Address: 0x01b9f070 - 0x01b9f076 (6 bytes)
 MOVE_LINE sEffect::getEffectModelMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(30);
+    return LINE_30;
 }
 
 // Address: 0x01b9f080 - 0x01b9f086 (6 bytes)
 MOVE_LINE sEffect::getEffectModelEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(31);
+    return LINE_31;
 }
 
 // Address: 0x01b9f090 - 0x01b9f096 (6 bytes)
 MOVE_LINE sEffect::getEffectMultiFilterMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(29);
+    return LINE_29;
 }
 
 // Address: 0x01b9f0a0 - 0x01b9f0a6 (6 bytes)
 MOVE_LINE sEffect::getEffectFilterMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(30);
+    return LINE_30;
 }
 
 // Address: 0x01b9f0b0 - 0x01b9f0b6 (6 bytes)
 MOVE_LINE sEffect::getEffectFilterEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(31);
+    return LINE_31;
 }
 
 // Address: 0x01b9f0c0 - 0x01b9f0c6 (6 bytes)
 u64 sEffect::getEffectFilterUnitGroupBit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(16);
+    return 16;
 }
 
 // Address: 0x01b9f0d0 - 0x01b9f0d6 (6 bytes)
 MOVE_LINE sEffect::getEffectLightMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(30);
+    return LINE_30;
 }
 
 // Address: 0x01b9f0e0 - 0x01b9f0e6 (6 bytes)
 MOVE_LINE sEffect::getEffectLightEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(31);
+    return LINE_31;
 }
 
 // Address: 0x01b9f0f0 - 0x01b9f0f6 (6 bytes)
 MOVE_LINE sEffect::getEffectAdhesionMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(30);
+    return LINE_30;
 }
 
 // Address: 0x01b9f100 - 0x01b9f106 (6 bytes)
 MOVE_LINE sEffect::getEffectAdhesionEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(31);
+    return LINE_31;
 }
 
 // Address: 0x01b9f110 - 0x01b9f116 (6 bytes)
 MOVE_LINE sEffect::getEffectForceMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(30);
+    return LINE_30;
 }
 
 // Address: 0x01b9f120 - 0x01b9f126 (6 bytes)
 MOVE_LINE sEffect::getEffectForceEventMoveLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<MOVE_LINE>(31);
+    return LINE_31;
 }
 
 // Address: 0x01232170 - 0x012321a0 (48 bytes)
@@ -273,13 +270,13 @@ bool sEffect::isValidMaterial(const nDraw::Material* pMaterial) const {
     // inferred: a temporary for the result of the call at 0x123217a, used once; no DWARF local holds it
     const MtDTI& t0 = pMaterial->getDTI();
     // inferred: the value the loop at 0x123218d carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::nDraw::MaterialStd::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = nDraw::MaterialStd::DTI.mName;
     // inferred: the value the loop at 0x123218d carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
             return true;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -316,17 +313,17 @@ __attribute__((weak)) void sEffect::setForceDir(const MtVector3& ForceDir) {
 // Address: 0x01b9f000 - 0x01b9f006 (6 bytes)
 f32 sEffect::getForcePower() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mForcePower;
+    return mForcePower;
 }
 
 // Address: 0x01231f70 - 0x01231f9b (43 bytes)
 void sEffect::setForcePower(f32 ForcePower) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mForceVec.x = this->mForceDir.x * ForcePower;
-    this->mForceVec.y = this->mForceDir.y * ForcePower;
-    this->mForceVec.z = this->mForceDir.z * ForcePower;
-    this->mForceVec.pad_ = 0.0f;
-    this->mForcePower = ForcePower;
+    mForceVec.x = mForceDir.x * ForcePower;
+    mForceVec.y = mForceDir.y * ForcePower;
+    mForceVec.z = mForceDir.z * ForcePower;
+    mForceVec.pad_ = 0.0f;
+    mForcePower = ForcePower;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (443 bytes)
@@ -343,36 +340,36 @@ void sEffect::setForcePower(f32 ForcePower) {
 // Address: 0x01ac3780 - 0x01ac3784 (4 bytes)
 u32 sEffect::getAdhesionCollisionType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCollisionParam.type;
+    return mCollisionParam.type;
 }
 
 // Address: 0x01ac3790 - 0x01ac3797 (7 bytes)
 u32 sEffect::getAdhesionCollisionFilter() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCollisionParam.filter;
+    return mCollisionParam.filter;
 }
 
 // Address: 0x012321a0 - 0x012321ba (26 bytes)
 u8* sEffect::getTempBuff(u32 ThreadIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTempBuffSize != static_cast<u32>(0)) {
-        return &this->mpTempBuff[ThreadIndex * this->mTempBuffSize];
+    if (mTempBuffSize != 0) {
+        return &mpTempBuff[ThreadIndex * mTempBuffSize];
     } else {
-        return static_cast<u8*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x012321c0 - 0x012321e8 (40 bytes)
 u8* sEffect::getTempBuff(u32 ThreadIndex, u32 TempBuffSize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTempBuff != static_cast<u8*>(nullptr)) {
-        if (TempBuffSize != static_cast<u32>(0)) {
-            if (this->mTempBuffSize >= TempBuffSize) {
-                return &this->mpTempBuff[ThreadIndex * this->mTempBuffSize];
+    if (mpTempBuff != nullptr) {
+        if (TempBuffSize != 0) {
+            if (mTempBuffSize >= TempBuffSize) {
+                return &mpTempBuff[ThreadIndex * mTempBuffSize];
             }
         }
     }
-    return static_cast<u8*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -389,10 +386,10 @@ __attribute__((weak)) void sEffect::setDummyU32(u32) {
 // Address: 0x012321f0 - 0x01232212 (34 bytes)
 f32 sEffect::getFps() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mEffectFpsEnable != false) {
-        return this->mEffectFps;
+    if (mEffectFpsEnable) {
+        return mEffectFps;
     } else {
-        return (::sMain::mpInstance)->mFps;
+        return (sMain::mpInstance)->mFps;
     }
 }
 
@@ -428,25 +425,25 @@ f32 sEffect::getFps() {
 // Address: 0x01b9ef80 - 0x01b9ef87 (7 bytes)
 bool sEffect::isOcclusionParticleDraw() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcclusionParticleDraw;
+    return mOcclusionParticleDraw;
 }
 
 // Address: 0x01b9ef90 - 0x01b9ef98 (8 bytes)
 void sEffect::setOcclusionParticleDraw(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcclusionParticleDraw = Mode;
+    mOcclusionParticleDraw = Mode;
 }
 
 // Address: 0x01b9eaa0 - 0x01b9eaa7 (7 bytes)
 void sEffect::setEffectVolume(u32 Volume) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParticleVolume = Volume;
+    mParticleVolume = Volume;
 }
 
 // Address: 0x01b9ea90 - 0x01b9ea97 (7 bytes)
 u32 sEffect::getEffectVolume() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParticleVolume;
+    return mParticleVolume;
 }
 
 // No out-of-line body: no code in the ELF
@@ -479,43 +476,65 @@ u32 sEffect::getEffectVolume() const {
 // Address: 0x01232240 - 0x0123226a (42 bytes)
 uEffect* sEffect::newEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uEffect;
+    return new (16u) uEffect;
 }
 
 // Address: 0x01232270 - 0x0123229a (42 bytes)
 uEffect2D* sEffect::newEffect2D() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uEffect2D;
+    return new (16u) uEffect2D;
 }
 
 // Address: 0x012322a0 - 0x012322ca (42 bytes)
 uSimpleEffect* sEffect::newSimpleEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSimpleEffect;
+    return new (16u) uSimpleEffect;
 }
 
 // Address: 0x01b9eab0 - 0x01b9eab8 (8 bytes)
 u32 sEffect::getKillNoMin() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKillNoMin;
+    return mKillNoMin;
 }
 
 // Address: 0x01b9eac0 - 0x01b9eac8 (8 bytes)
 u32 sEffect::getKillNoMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKillNoMax;
+    return mKillNoMax;
 }
 
 // Address: 0x01231dd0 - 0x01231dfd (45 bytes)
-__attribute__((weak)) void sEffect::setKillNoMin(u32 KillNoMin) {
-    DDON_STUB("sEffect::setKillNoMin")
-    /* stub */
+void sEffect::setKillNoMin(u32 KillNoMin) {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; a wider integer stored into a bitfield; the body oracle reports this body.
+    // inferred: a bitfield storage unit accessed whole, by byte offset from its base: unsigned int at 0x230 from sEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (KillNoMin == 0) {
+        return;
+    }
+    if (KillNoMin <= 0xFFFFu) {
+        mKillNoMin = KillNoMin;
+        if (mKillNoMax < static_cast<unsigned short>(KillNoMin)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 560) = static_cast<unsigned int>(static_cast<unsigned long>(KillNoMin * 0x10000u) | static_cast<unsigned long>(static_cast<unsigned short>(KillNoMin)));
+        }
+    }
 }
 
 // Address: 0x01231e00 - 0x01231e31 (49 bytes)
-__attribute__((weak)) void sEffect::setKillNoMax(u32 KillNoMax) {
-    DDON_STUB("sEffect::setKillNoMax")
-    /* stub */
+void sEffect::setKillNoMax(u32 KillNoMax) {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a bitfield storage unit accessed whole, by byte offset from its base: unsigned int at 0x230 from sEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (KillNoMax == 0) {
+        return;
+    }
+    if (KillNoMax <= 0xFFFFu) {
+        // inferred: a temporary for the value the load at 0x1231e0c read, used twice; no DWARF local holds it
+        u32 t0 = mKillNoMin;
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 560) = (KillNoMax * 0x10000u) + t0;
+        if (static_cast<unsigned short>(KillNoMax) < t0) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 560) = static_cast<unsigned int>(static_cast<unsigned long>(KillNoMax * 0x10000u) | static_cast<unsigned long>(static_cast<unsigned short>(KillNoMax)));
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -566,43 +585,43 @@ __attribute__((weak)) MtRangeF sEffect::getLODMHHDist() const {
 // Address: 0x01b9ed10 - 0x01b9ed2e (30 bytes)
 void sEffect::setLODHMLDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[0][0] = Dist.s;
-    this->mLODDist[0][1] = Dist.s + Dist.r;
+    mLODDist[0][0] = Dist.s;
+    mLODDist[0][1] = Dist.s + Dist.r;
 }
 
 // Address: 0x01b9ed70 - 0x01b9ed8e (30 bytes)
 void sEffect::setLODHMMDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[1][0] = Dist.s;
-    this->mLODDist[1][1] = Dist.s + Dist.r;
+    mLODDist[1][0] = Dist.s;
+    mLODDist[1][1] = Dist.s + Dist.r;
 }
 
 // Address: 0x01b9edd0 - 0x01b9edee (30 bytes)
 void sEffect::setLODHHMDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[2][0] = Dist.s;
-    this->mLODDist[2][1] = Dist.s + Dist.r;
+    mLODDist[2][0] = Dist.s;
+    mLODDist[2][1] = Dist.s + Dist.r;
 }
 
 // Address: 0x01b9ee30 - 0x01b9ee4e (30 bytes)
 void sEffect::setLODLMHDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[3][0] = Dist.s;
-    this->mLODDist[3][1] = Dist.s + Dist.r;
+    mLODDist[3][0] = Dist.s;
+    mLODDist[3][1] = Dist.s + Dist.r;
 }
 
 // Address: 0x01b9ee90 - 0x01b9eeae (30 bytes)
 void sEffect::setLODMMHDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[4][0] = Dist.s;
-    this->mLODDist[4][1] = Dist.s + Dist.r;
+    mLODDist[4][0] = Dist.s;
+    mLODDist[4][1] = Dist.s + Dist.r;
 }
 
 // Address: 0x01b9eef0 - 0x01b9ef0e (30 bytes)
 void sEffect::setLODMHHDist(const MtRangeF& Dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLODDist[5][0] = Dist.s;
-    this->mLODDist[5][1] = Dist.s + Dist.r;
+    mLODDist[5][0] = Dist.s;
+    mLODDist[5][1] = Dist.s + Dist.r;
 }
 
 // No out-of-line body: no code in the ELF
@@ -627,27 +646,24 @@ __attribute__((weak)) u32 sEffect::getLODSkipMask(u32 LODType, f32 Dist) const {
 // Address: 0x01232790 - 0x012327f7 (103 bytes)
 u32 sEffect::getUnitNo() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        u32 no = this->mUnitNo;
-        this->mUnitNo = no + static_cast<u32>(1);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 no = mUnitNo;
+        mUnitNo = no + 1u;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return no;
     } else {
-        u32 no = this->mUnitNo;
-        this->mUnitNo = no + static_cast<u32>(1);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 no = mUnitNo;
+        mUnitNo = no + 1u;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return no;
@@ -691,298 +707,290 @@ __attribute__((weak)) void sEffect::setCullingDist(f32 Dist, u32 No) {
 // Address: 0x01b9ef20 - 0x01b9ef26 (6 bytes)
 u32 sEffect::getCullingDistTblNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(8);
+    return 8;
 }
 
 // Address: 0x01b9eb30 - 0x01b9eb37 (7 bytes)
 u32 sEffect::getMultiBlurFilterDrawPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMultiBlurFilterControl.mDrawPriority;
+    return mMultiBlurFilterControl.mDrawPriority;
 }
 
 // Address: 0x01b9eb40 - 0x01b9eb47 (7 bytes)
 void sEffect::setMultiBlurFilterDrawPriority(u32 DrawPriority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiBlurFilterControl.mDrawPriority = DrawPriority;
+    mMultiBlurFilterControl.mDrawPriority = DrawPriority;
 }
 
 // Address: 0x01b9ead0 - 0x01b9eadf (15 bytes)
 u32 sEffect::getMultiBlurFilterPass() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x2f8 from const sEffect*
-    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(760))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 760)) >> 8) & 255u;
 }
 
 // Address: 0x01b9eae0 - 0x01b9eae8 (8 bytes)
 void sEffect::setMultiBlurFilterPass(u32 FilterPass) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2f9 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(761)) = static_cast<unsigned char>(FilterPass);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 761) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9eaf0 - 0x01b9eaf8 (8 bytes)
 u32 sEffect::getMultiBlurFilterNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2fa from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(762));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 762);
 }
 
 // Address: 0x01b9eb00 - 0x01b9eb08 (8 bytes)
 void sEffect::setMultiBlurFilterNum(u32 FilterNum) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2fa from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(762)) = static_cast<unsigned char>(FilterNum);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 762) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9eb10 - 0x01b9eb18 (8 bytes)
 u32 sEffect::getMultiBlurFilterDrawMax() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2fb from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(763));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 763);
 }
 
 // Address: 0x01b9eb20 - 0x01b9eb28 (8 bytes)
 void sEffect::setMultiBlurFilterDrawMax(u32 FilterDrawMax) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2fb from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(763)) = static_cast<unsigned char>(FilterDrawMax);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 763) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232320 - 0x0123238a (106 bytes)
 void sEffect::setMultiBlurFilter(void* pParam, rTexture* pAlphaMap) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mMultiBlurFilterControl.::sEffect::MultiFilterControl::setFilter(pParam, pAlphaMap);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mMultiBlurFilterControl.setFilter(pParam, pAlphaMap);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b9ebb0 - 0x01b9ebb7 (7 bytes)
 u32 sEffect::getMultiColorCorrectFilterDrawPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMultiColorCorrectFilterControl.mDrawPriority;
+    return mMultiColorCorrectFilterControl.mDrawPriority;
 }
 
 // Address: 0x01b9ebc0 - 0x01b9ebc7 (7 bytes)
 void sEffect::setMultiColorCorrectFilterDrawPriority(u32 DrawPriority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiColorCorrectFilterControl.mDrawPriority = DrawPriority;
+    mMultiColorCorrectFilterControl.mDrawPriority = DrawPriority;
 }
 
 // Address: 0x01b9eb50 - 0x01b9eb5f (15 bytes)
 u32 sEffect::getMultiColorCorrectFilterPass() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x340 from const sEffect*
-    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 832)) >> 8) & 255u;
 }
 
 // Address: 0x01b9eb60 - 0x01b9eb68 (8 bytes)
 void sEffect::setMultiColorCorrectFilterPass(u32 FilterPass) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x341 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(833)) = static_cast<unsigned char>(FilterPass);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 833) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9eb70 - 0x01b9eb78 (8 bytes)
 u32 sEffect::getMultiColorCorrectFilterNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x342 from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(834));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 834);
 }
 
 // Address: 0x01b9eb80 - 0x01b9eb88 (8 bytes)
 void sEffect::setMultiColorCorrectFilterNum(u32 FilterNum) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x342 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(834)) = static_cast<unsigned char>(FilterNum);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 834) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9eb90 - 0x01b9eb98 (8 bytes)
 u32 sEffect::getMultiColorCorrectFilterDrawMax() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x343 from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(835));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 835);
 }
 
 // Address: 0x01b9eba0 - 0x01b9eba8 (8 bytes)
 void sEffect::setMultiColorCorrectFilterDrawMax(u32 FilterDrawMax) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x343 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(835)) = static_cast<unsigned char>(FilterDrawMax);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 835) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232640 - 0x012326a5 (101 bytes)
 void sEffect::setMultiColorCorrectFilter(void* pParam) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mMultiColorCorrectFilterControl.::sEffect::MultiFilterControl::setFilter(pParam, static_cast<rTexture*>(nullptr));
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mMultiColorCorrectFilterControl.setFilter(pParam, static_cast<rTexture*>(nullptr));
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b9ec30 - 0x01b9ec37 (7 bytes)
 u32 sEffect::getMultiGodRaysFilterDrawPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMultiGodRaysFilterControl.mDrawPriority;
+    return mMultiGodRaysFilterControl.mDrawPriority;
 }
 
 // Address: 0x01b9ec40 - 0x01b9ec47 (7 bytes)
 void sEffect::setMultiGodRaysFilterDrawPriority(u32 DrawPriority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiGodRaysFilterControl.mDrawPriority = DrawPriority;
+    mMultiGodRaysFilterControl.mDrawPriority = DrawPriority;
 }
 
 // Address: 0x01b9ebd0 - 0x01b9ebdf (15 bytes)
 u32 sEffect::getMultiGodRaysFilterPass() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x388 from const sEffect*
-    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(904))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 904)) >> 8) & 255u;
 }
 
 // Address: 0x01b9ebe0 - 0x01b9ebe8 (8 bytes)
 void sEffect::setMultiGodRaysFilterPass(u32 FilterPass) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x389 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(905)) = static_cast<unsigned char>(FilterPass);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 905) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9ebf0 - 0x01b9ebf8 (8 bytes)
 u32 sEffect::getMultiGodRaysFilterNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x38a from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(906));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 906);
 }
 
 // Address: 0x01b9ec00 - 0x01b9ec08 (8 bytes)
 void sEffect::setMultiGodRaysFilterNum(u32 FilterNum) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38a from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(906)) = static_cast<unsigned char>(FilterNum);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 906) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9ec10 - 0x01b9ec18 (8 bytes)
 u32 sEffect::getMultiGodRaysFilterDrawMax() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x38b from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(907));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 907);
 }
 
 // Address: 0x01b9ec20 - 0x01b9ec28 (8 bytes)
 void sEffect::setMultiGodRaysFilterDrawMax(u32 FilterDrawMax) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38b from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(907)) = static_cast<unsigned char>(FilterDrawMax);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 907) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x012326b0 - 0x01232715 (101 bytes)
 void sEffect::setMultiGodRaysFilter(void* pParam) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mMultiGodRaysFilterControl.::sEffect::MultiFilterControl::setFilter(pParam, static_cast<rTexture*>(nullptr));
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mMultiGodRaysFilterControl.setFilter(pParam, static_cast<rTexture*>(nullptr));
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01b9ecb0 - 0x01b9ecb7 (7 bytes)
 u32 sEffect::getMultiBloomFilterDrawPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMultiBloomFilterControl.mDrawPriority;
+    return mMultiBloomFilterControl.mDrawPriority;
 }
 
 // Address: 0x01b9ecc0 - 0x01b9ecc7 (7 bytes)
 void sEffect::setMultiBloomFilterDrawPriority(u32 DrawPriority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMultiBloomFilterControl.mDrawPriority = DrawPriority;
+    mMultiBloomFilterControl.mDrawPriority = DrawPriority;
 }
 
 // Address: 0x01b9ec50 - 0x01b9ec5f (15 bytes)
 u32 sEffect::getMultiBloomFilterPass() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x3d0 from const sEffect*
-    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(976))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 976)) >> 8) & 255u;
 }
 
 // Address: 0x01b9ec60 - 0x01b9ec68 (8 bytes)
 void sEffect::setMultiBloomFilterPass(u32 FilterPass) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d1 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(977)) = static_cast<unsigned char>(FilterPass);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 977) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9ec70 - 0x01b9ec78 (8 bytes)
 u32 sEffect::getMultiBloomFilterNum() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x3d2 from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(978));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 978);
 }
 
 // Address: 0x01b9ec80 - 0x01b9ec88 (8 bytes)
 void sEffect::setMultiBloomFilterNum(u32 FilterNum) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d2 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(978)) = static_cast<unsigned char>(FilterNum);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 978) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9ec90 - 0x01b9ec98 (8 bytes)
 u32 sEffect::getMultiBloomFilterDrawMax() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x3d3 from const sEffect*
-    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(979));
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 979);
 }
 
 // Address: 0x01b9eca0 - 0x01b9eca8 (8 bytes)
 void sEffect::setMultiBloomFilterDrawMax(u32 FilterDrawMax) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d3 from sEffect*
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(979)) = static_cast<unsigned char>(FilterDrawMax);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 979) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232720 - 0x01232785 (101 bytes)
 void sEffect::setMultiBloomFilter(void* pParam) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mMultiBloomFilterControl.::sEffect::MultiFilterControl::setFilter(pParam, static_cast<rTexture*>(nullptr));
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mMultiBloomFilterControl.setFilter(pParam, static_cast<rTexture*>(nullptr));
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -998,21 +1006,19 @@ void sEffect::setMultiBloomFilter(void* pParam) {
 // Address: 0x01231e40 - 0x01231e98 (88 bytes)
 u32 sEffect::getAdhesionLimitMax() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
-        u32 max = this->mAdhesionLimitMax;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 max = mAdhesionLimitMax;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return max;
     } else {
-        u32 max = this->mAdhesionLimitMax;
+        u32 max = mAdhesionLimitMax;
         return max;
     }
 }
@@ -1020,18 +1026,16 @@ u32 sEffect::getAdhesionLimitMax() {
 // Address: 0x01231ea0 - 0x01231f06 (102 bytes)
 void sEffect::setAdhesionLimitMax(u32 Max) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (Max <= static_cast<u32>(256)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (Max <= 256u) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        this->mAdhesionLimitMax = Max;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        mAdhesionLimitMax = Max;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -1040,40 +1044,36 @@ void sEffect::setAdhesionLimitMax(u32 Max) {
 // Address: 0x01232800 - 0x01232850 (80 bytes)
 void sEffect::addAdhesionLimitCount() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mAdhesionLimitCount = this->mAdhesionLimitCount + static_cast<u32>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mAdhesionLimitCount = mAdhesionLimitCount + 1u;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x01232850 - 0x012328aa (90 bytes)
 void sEffect::subtractAdhesionLimitCount() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mAdhesionLimitCount != static_cast<u32>(0)) {
-        this->mAdhesionLimitCount = this->mAdhesionLimitCount - static_cast<u32>(1);
+    if (mAdhesionLimitCount != 0) {
+        mAdhesionLimitCount = mAdhesionLimitCount - 1u;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1087,18 +1087,18 @@ __attribute__((weak)) u32 sEffect::isCreateAdhesion() {
 // Address: 0x01b9ef50 - 0x01b9ef64 (20 bytes)
 void sEffect::setAdhesionDivideMax(u32 Max) {
     // Approximate from the ELF: a wider integer stored into a bitfield; the body oracle reports this body.
-    if (Max == static_cast<u32>(0)) {
+    if (Max == 0) {
         return;
     }
-    if (Max <= static_cast<u32>(255)) {
-        this->mAdhesionDivideMax = Max;
+    if (Max <= 255u) {
+        mAdhesionDivideMax = Max;
     }
 }
 
 // Address: 0x01b9ef40 - 0x01b9ef48 (8 bytes)
 u32 sEffect::getAdhesionDivideMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAdhesionDivideMax;
+    return mAdhesionDivideMax;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1121,6 +1121,13 @@ u32 sEffect::getAdhesionDivideMax() const {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sEffect::freeTempBuff();
 
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sEffect::CHILD_UNIT_LEVEL_MAX;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sEffect::MyDTI sEffect::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sEffect* sEffect::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1136,55 +1143,46 @@ __attribute__((weak)) MtObject* sEffect::MyDTI::newInstance() const {
 // Address: 0x01232000 - 0x012320ef (239 bytes)
 __attribute__((weak)) void sEffect::MultiFilterControl::setup() {
     // DWARF local not rendered: u32 ctr;
-    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uMultiFilter*
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpFilter[0] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[0]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[0] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[0] != nullptr) {
+        if ((mpFilter[0]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[0] = nullptr;
         }
     }
-    if (this->mpFilter[1] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[1]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[1] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[1] != nullptr) {
+        if ((mpFilter[1]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[1] = nullptr;
         }
     }
-    if (this->mpFilter[2] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[2]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[2] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[2] != nullptr) {
+        if ((mpFilter[2]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[2] = nullptr;
         }
     }
-    if (this->mpFilter[3] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[3]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[3] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[3] != nullptr) {
+        if ((mpFilter[3]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[3] = nullptr;
         }
     }
-    if (this->mpFilter[4] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[4]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[4] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[4] != nullptr) {
+        if ((mpFilter[4]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[4] = nullptr;
         }
     }
-    if (this->mpFilter[5] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[5]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[5] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[5] != nullptr) {
+        if ((mpFilter[5]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[5] = nullptr;
         }
     }
-    if (this->mpFilter[6] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[6]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[6] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[6] != nullptr) {
+        if ((mpFilter[6]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[6] = nullptr;
         }
     }
-    if (this->mpFilter[7] != static_cast<uMultiFilter*>(nullptr)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[7]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
-        } else {
-            this->mpFilter[7] = static_cast<uMultiFilter*>(nullptr);
+    if (mpFilter[7] != nullptr) {
+        if ((mpFilter[7]->::cUnit::mBeFlag - 1u) > 1u) {
+            mpFilter[7] = nullptr;
         }
     }
 }

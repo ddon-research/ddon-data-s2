@@ -53,7 +53,7 @@ const MtDTI& uGeometry2GroupCollider::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN23uGeometry2GroupColliderD0Ev at 0x013154c4-0x013154e5, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry2GroupCollider::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2GroupCollider::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2GroupCollider::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,13 +86,13 @@ __attribute__((weak)) void uGeometry2GroupCollider::createProperty(MtPropertyLis
 // Address: 0x01315870 - 0x0131587c (12 bytes)
 MT_CTSTR uGeometry2GroupCollider::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGeometry2GroupCollider::DTI.::MtDTI::mName;
+    return uGeometry2GroupCollider::DTI.mName;
 }
 
 // Address: 0x01315880 - 0x01315885 (5 bytes)
 void uGeometry2GroupCollider::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x01315890 - 0x01315a12 (386 bytes)
@@ -141,21 +141,21 @@ __attribute__((weak)) void uGeometry2GroupCollider::draw(cDraw* pdraw) {
 // Address: 0x01315800 - 0x01315869 (105 bytes)
 void uGeometry2GroupCollider::registGeometryGroupUnit(uGeometry2Group* pGeometryGroup) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pGeometryGroup != this->mpGeometryGroupUnit) {
-        this->mpGeometryGroupUnit = pGeometryGroup;
-        this->::uGeometry2GroupCollider::restoreNodeFromGeometry();
+    if (pGeometryGroup != mpGeometryGroupUnit) {
+        mpGeometryGroupUnit = pGeometryGroup;
+        restoreNodeFromGeometry();
         // inferred: the value the loop at 0x1315840 carries; no location-less local in scope fits
-        MtObject* v0_11 = this->mOwnerSystem.::nCollisionUtil::cOwnerSystem::getRegistOwner();
+        MtObject* v0_11 = mOwnerSystem.getRegistOwner();
         // inferred: the value the loop at 0x1315840 carries; no location-less local in scope fits
-        u32 v0_10 = this->mNodeArray.::MtArray::mLength;
-        if (v0_10 != static_cast<u32>(0)) {
+        u32 v0_10 = mNodeArray.mLength;
+        if (v0_10 != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (this->mNodeArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<uGeometry2Collider*>(this->mNodeArray.::MtArray::mpArray[i0_3])->::uGeometry2Collider::registOwner(static_cast<uModel*>(v0_11));
+            for (unsigned int i0_3 = 0;;) {
+                if (mNodeArray.mpArray[i0_3] != nullptr) {
+                    static_cast<uGeometry2Collider*>(mNodeArray.mpArray[i0_3])->registOwner(static_cast<uModel*>(v0_11));
                 }
-                if (v0_10 != (i0_3 + static_cast<unsigned int>(1))) {
-                    i0_3 = i0_3 + static_cast<unsigned int>(1);
+                if (v0_10 != (i0_3 + 1u)) {
+                    i0_3 = i0_3 + 1u;
                 } else {
                     break;
                 }
@@ -167,7 +167,7 @@ void uGeometry2GroupCollider::registGeometryGroupUnit(uGeometry2Group* pGeometry
 // Address: 0x013157f0 - 0x013157f8 (8 bytes)
 uGeometry2Group* uGeometry2GroupCollider::getRegistGeometryGroupUnit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeometryGroupUnit;
+    return mpGeometryGroupUnit;
 }
 
 // Address: 0x01315b20 - 0x01315c13 (243 bytes)
@@ -212,6 +212,8 @@ __attribute__((weak)) void uGeometry2GroupCollider::restoreNodeFromGeometry() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uGeometry2GroupCollider::unregistOwnerChildAll();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry2GroupCollider::MyDTI uGeometry2GroupCollider::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2GroupCollider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

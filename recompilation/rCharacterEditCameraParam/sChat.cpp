@@ -33,7 +33,7 @@ const MtDTI& sChat::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sChat::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sChat::DTI);
+    return MtMemoryAllocator::getAllocator(sChat::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* sChat::getAllocator() {
 // Address: 0x007469d0 - 0x00746a10 (64 bytes)
 void* sChat::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sChat::getAllocator()->memAlloc(sz, align, ::sChat::DTI.::MtDTI::getID());
+    return sChat::getAllocator()->memAlloc(sz, align, sChat::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* sChat::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sChat::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sChat::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sChat::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,7 +85,7 @@ sChat::~sChat() {
 // Address: 0x007474d0 - 0x007474d5 (5 bytes)
 MtUI* sChat::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007474e0 - 0x0074767d (413 bytes)
@@ -117,8 +117,8 @@ __attribute__((weak)) void sChat::reset() {
 // Address: 0x007476e0 - 0x007476f2 (18 bytes)
 void sChat::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsChatEnable = true;
-    this->mShoutWaitTime = 0.0f;
+    mIsChatEnable = true;
+    mShoutWaitTime = 0.0f;
 }
 
 // Address: 0x00747700 - 0x00747a3a (826 bytes)
@@ -142,14 +142,14 @@ __attribute__((weak)) void sChat::clearMsgQueue(sChat::stMsgQueue& MsgQue) {
 // Address: 0x00747680 - 0x00747687 (7 bytes)
 bool sChat::checkChatOk() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsChatEnable;
+    return mIsChatEnable;
 }
 
 // Address: 0x00747690 - 0x007476be (46 bytes)
 void sChat::setKeyboardSetting(MT_CTSTR pMsgDefault) {
     // DWARF local not rendered: s32 char_num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sKeyboardInterface::getInstance()->::sKeyboardInterface::setKeyboardSetting(static_cast<sKeyboardInterface::KEYBOARD_TYPE>(2), "", (pMsgDefault == static_cast<MT_CTSTR>(nullptr)) ? "" : pMsgDefault, static_cast<s32>(32));
+    sKeyboardInterface::getInstance()->setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE_JAPANESE, "", (pMsgDefault == nullptr) ? "" : pMsgDefault, 32);
 }
 
 // No out-of-line body: no code in the ELF
@@ -275,7 +275,7 @@ bool sChat::checkFilter(s32 filterGroup, s32 filterBit) {
     // DWARF local not rendered: u32 checkBit;
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(static_cast<unsigned int>(filterBit)) >> static_cast<unsigned long>(static_cast<unsigned int>(filterGroup) & static_cast<unsigned int>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(static_cast<unsigned int>(filterBit)) >> static_cast<unsigned long>(static_cast<unsigned int>(filterGroup) & 31)) & 1ul) != 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (92 bytes)
@@ -296,28 +296,26 @@ __attribute__((weak)) void sChat::clearTellChat() {
 void sChat::setTellChat(u32 characterId, MT_CTSTR firstName, MT_CTSTR lastName, MT_CTSTR clanName) {
     // DWARF local not rendered: cAutoCriticalSection cs;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->::sChat::addTellCharacterHistory(characterId, firstName, lastName, clanName, false);
-    this->::sChat::setLastTellCharacterHistory(false);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setupChatTell();
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    addTellCharacterHistory(characterId, firstName, lastName, clanName, false);
+    setLastTellCharacterHistory(false);
+    static_cast<sGUIExt*>(sGUI::getInstance())->setupChatTell();
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x00749f20 - 0x00749f27 (7 bytes)
 u32 sChat::getTellCharacterId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTellCharacter.m_unCharacterID;
+    return mTellCharacter.m_unCharacterID;
 }
 
 // Address: 0x00749ca0 - 0x00749cea (74 bytes)
@@ -412,6 +410,13 @@ __attribute__((weak)) bool sChat::setNextTellCharacterHistory(bool isLock) {
 
 // No out-of-line body: no code in the ELF
 // void sChat::setMessageSetKeyboardSetting(MT_CTSTR defStr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sChat::MyDTI sChat::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sChat* sChat::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is held across a call): const MtColor sChat::mFontColor[5];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sChat.cpp at 0x0074a0b8-0x0074a0f5 (called at sChat.cpp:161)

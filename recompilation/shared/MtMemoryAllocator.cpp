@@ -13,7 +13,7 @@
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\capdev200\MT/MtMemoryAllocator.cpp:225
 MtAllocator* MtMemoryAllocator::getAllocator(const MtDTI& dti) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemory::mpAllocatorType[dti.mAllocatorIndex];
+    return MtMemory::mpAllocatorType[dti.mAllocatorIndex];
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,10 +144,10 @@ __attribute__((weak)) void MtMemoryAllocator::allocateDefaultMemory() {
 // Address: 0x00d5c450 - 0x00d5c49f (79 bytes)
 MtMemoryAllocator::Initializer::Initializer(u32 max_entry) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxEntryNum = max_entry;
-    this->mEntryNum = static_cast<u32>(0);
-    this->mAllocIdTable = static_cast<MtMemoryAllocator::Initializer::Entry* *>(nullptr);
-    this->mAllocIdTable = static_cast<MtMemoryAllocator::Initializer::Entry* *>((*::MtMemory::mpAllocatorType)->memAlloc(static_cast<size_t>(max_entry) * static_cast<size_t>(8), static_cast<u32>(16)));
+    mMaxEntryNum = max_entry;
+    mEntryNum = 0;
+    mAllocIdTable = nullptr;
+    mAllocIdTable = static_cast<MtMemoryAllocator::Initializer::Entry* *>((*::MtMemory::mpAllocatorType)->memAlloc(static_cast<size_t>(max_entry) * 8, 16u));
 }
 
 // Address: 0x00d5c4a0 - 0x00d5c522 (130 bytes)
@@ -155,32 +155,32 @@ MtMemoryAllocator::Initializer::Initializer(u32 max_entry) {
 MtMemoryAllocator::Initializer::~Initializer() {
     // DWARF local not rendered: u32 ui;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mEntryNum != static_cast<u32>(0)) {
+    if (mEntryNum != 0) {
         // inferred: the value the loop at 0xd5c4d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mEntryNum;
+        u32 v0_0 = mEntryNum;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0xd5c4d6 read, used 3 times; no DWARF local holds it
-            MtMemoryAllocator::Initializer::Entry* t0 = this->mAllocIdTable[i0_3];
-            if (t0 != static_cast<MtMemoryAllocator::Initializer::Entry*>(nullptr)) {
+            MtMemoryAllocator::Initializer::Entry* t0 = mAllocIdTable[i0_3];
+            if (t0 != nullptr) {
                 (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t0->obj_name));
                 (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t0));
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mEntryNum) {
-                    v0_0 = this->mEntryNum;
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < mEntryNum) {
+                    v0_0 = mEntryNum;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(this->mAllocIdTable));
+    (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(mAllocIdTable));
 }
 
 // Address: 0x00d5c5d0 - 0x00d5c65e (142 bytes)
@@ -203,20 +203,20 @@ __attribute__((weak)) s32 MtMemoryAllocator::Initializer::addAllocatorInfo(MT_CT
 u32 MtMemoryAllocator::Initializer::getAllocatorID(MT_CTSTR obj_name) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xd5c730 carries; no location-less local in scope fits
-    u32 v0_8 = this->mEntryNum;
+    u32 v0_8 = mEntryNum;
     // inferred: the value carried to 0xd5c757; no location-less local in scope fits
     u32 v2_0;
-    if (v0_8 == static_cast<u32>(0)) {
-        v2_0 = static_cast<u32>(2147483647);
+    if (v0_8 == 0) {
+        v2_0 = 0x7FFFFFFF;
     } else {
         // inferred: the value the loop at 0xd5c730 carries; no location-less local in scope fits
-        MtMemoryAllocator::Initializer::Entry* * v0_9 = this->mAllocIdTable;
+        MtMemoryAllocator::Initializer::Entry* * v0_9 = mAllocIdTable;
         // inferred: DWARF's location-less 'ui' (lexical block [0xd5c711, 0xd5c757)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 ui = static_cast<u32>(0);;) {
+        for (u32 ui = 0;;) {
             const MtMemoryAllocator::Initializer::Entry* p_entry = v0_9[ui];
-            if (::strcmp(p_entry->obj_name, obj_name) != static_cast<int>(0)) {
-                if ((ui + static_cast<u32>(1)) < v0_8) {
-                    ui = ui + static_cast<u32>(1);
+            if (::strcmp(p_entry->obj_name, obj_name) != 0) {
+                if ((ui + 1u) < v0_8) {
+                    ui = ui + 1u;
                 } else {
                     break;
                 }
@@ -225,7 +225,7 @@ u32 MtMemoryAllocator::Initializer::getAllocatorID(MT_CTSTR obj_name) const {
                 return v2_0;
             }
         }
-        v2_0 = static_cast<u32>(2147483647);
+        v2_0 = 0x7FFFFFFF;
     }
     return v2_0;
 }

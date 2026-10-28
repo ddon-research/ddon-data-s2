@@ -40,7 +40,7 @@ const MtDTI& uScrollCollisionGeometryModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK29uScrollCollisionGeometryModel5MyDTI11newInstanceEv at 0x0130a5b0-0x0130a5dd, code DWARF attributes to no inlined copy; sz is the class's size (136), align the allocation's other whole constant (16)
 inline void* uScrollCollisionGeometryModel::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometryModel::DTI)->memAlloc(sz, align, ::uScrollCollisionGeometryModel::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uScrollCollisionGeometryModel::DTI)->memAlloc(sz, align, uScrollCollisionGeometryModel::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline void* uScrollCollisionGeometryModel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN29uScrollCollisionGeometryModelD0Ev at 0x0130a7bb-0x0130a7dc, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uScrollCollisionGeometryModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometryModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uScrollCollisionGeometryModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,22 +74,22 @@ inline void uScrollCollisionGeometryModel::operator delete(void* p_addr) {
 // Also emitted as: _ZN29uScrollCollisionGeometryModelD0Ev at 0x0130a750
 uScrollCollisionGeometryModel::~uScrollCollisionGeometryModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScrGeometryUnit_Outside != static_cast<uScrollCollisionGeometry*>(nullptr)) {
-        this->mpScrGeometryUnit_Outside->::uScrollCollisionGeometry::unregistOwner();
-        this->mpScrGeometryUnit_Outside = static_cast<uScrollCollisionGeometry*>(nullptr);
+    if (mpScrGeometryUnit_Outside != nullptr) {
+        mpScrGeometryUnit_Outside->unregistOwner();
+        mpScrGeometryUnit_Outside = nullptr;
     }
-    if (this->mFlgGroupMode != false) {
+    if (mFlgGroupMode) {
         return;
     }
-    if (this->mpRGeometry != static_cast<rGeometry2*>(nullptr)) {
-        this->mpRGeometry->::cResource::release();
-        this->mpRGeometry = static_cast<rGeometry2*>(nullptr);
+    if (mpRGeometry != nullptr) {
+        mpRGeometry->release();
+        mpRGeometry = nullptr;
     }
-    if (this->mpGeometryUnit_Inside == static_cast<uGeometry2*>(nullptr)) {
+    if (mpGeometryUnit_Inside == nullptr) {
         return;
     }
-    delete this->mpGeometryUnit_Inside;
-    this->mpGeometryUnit_Inside = static_cast<uGeometry2*>(nullptr);
+    delete mpGeometryUnit_Inside;
+    mpGeometryUnit_Inside = nullptr;
 }
 
 // Address: 0x0130a7e0 - 0x0130af04 (1828 bytes)
@@ -101,13 +101,13 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::createProperty(MtPrope
 // Address: 0x0130b0e0 - 0x0130b0f0 (16 bytes)
 MT_CTSTR uScrollCollisionGeometryModel::getName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->getDTI().mName;
+    return getDTI().mName;
 }
 
 // Address: 0x0130b0f0 - 0x0130b0f5 (5 bytes)
 void uScrollCollisionGeometryModel::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x0130b100 - 0x0130b1f5 (245 bytes)
@@ -124,10 +124,10 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::move() {
 // Address: 0x0130b200 - 0x0130b210 (16 bytes)
 void uScrollCollisionGeometryModel::sync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometryUnit_Inside == static_cast<uGeometry2*>(nullptr)) {
+    if (mpGeometryUnit_Inside == nullptr) {
         return;
     }
-    this->mpGeometryUnit_Inside->sync();
+    mpGeometryUnit_Inside->sync();
 }
 
 // Address: 0x0130b210 - 0x0130b211 (1 bytes)
@@ -147,7 +147,7 @@ __attribute__((weak)) bool uScrollCollisionGeometryModel::registResource(rGeomet
 // Address: 0x0130afc0 - 0x0130afc5 (5 bytes)
 rGeometry2* uScrollCollisionGeometryModel::getRegistResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRGeometry;
+    return mpRGeometry;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -183,17 +183,17 @@ void uScrollCollisionGeometryModel::registOwner(uModel* pOwner) {
     // DWARF local not rendered: const s32 MyMoveLine;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
-    if (pOwner == static_cast<uModel*>(nullptr)) {
+    if (pOwner == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x130b04e read, used once; no DWARF local holds it
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwner) + static_cast<long>(16));
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwner) + 16);
     // inferred: a temporary for the result of the call at 0x130b068, used once; no DWARF local holds it
-    u32 t1 = (::sUnit::mpInstance)->getMoveLineOrder(this->::cUnit::mMoveLine);
-    if ((::sUnit::mpInstance)->getMoveLineOrder(pOwner->::cUnit::mMoveLine) < t1) {
-        this->mFlgOwnerRegist = true;
-        this->mpOwnerModel = pOwner;
-        this->::uScrollCollisionGeometryModel::registMemberToUnit();
+    u32 t1 = (sUnit::mpInstance)->getMoveLineOrder(mMoveLine);
+    if ((sUnit::mpInstance)->getMoveLineOrder(pOwner->mMoveLine) < t1) {
+        mFlgOwnerRegist = true;
+        mpOwnerModel = pOwner;
+        registMemberToUnit();
     }
 }
 
@@ -203,7 +203,7 @@ void uScrollCollisionGeometryModel::registOwner(uModel* pOwner) {
 // Address: 0x0130b020 - 0x0130b025 (5 bytes)
 uModel* uScrollCollisionGeometryModel::getOwner() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOwnerModel;
+    return mpOwnerModel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -218,8 +218,8 @@ uModel* uScrollCollisionGeometryModel::getOwner() {
 // Address: 0x0130af10 - 0x0130af28 (24 bytes)
 bool uScrollCollisionGeometryModel::isActiveScrGeometryUnit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometryUnit_Inside != static_cast<uGeometry2*>(nullptr)) {
-        return this->mpGeometryUnit_Inside->::uGeometry2::isGeometryActive();
+    if (mpGeometryUnit_Inside != nullptr) {
+        return mpGeometryUnit_Inside->isGeometryActive();
     } else {
         return false;
     }
@@ -228,10 +228,10 @@ bool uScrollCollisionGeometryModel::isActiveScrGeometryUnit() const {
 // Address: 0x0130af30 - 0x0130af43 (19 bytes)
 void uScrollCollisionGeometryModel::setActiveScrGeometryUnit(bool FlgSetActive) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometryUnit_Inside == static_cast<uGeometry2*>(nullptr)) {
+    if (mpGeometryUnit_Inside == nullptr) {
         return;
     }
-    this->mpGeometryUnit_Inside->::uGeometry2::setGeometryActive(FlgSetActive);
+    mpGeometryUnit_Inside->setGeometryActive(FlgSetActive);
 }
 
 // Address: 0x0130af50 - 0x0130af6e (30 bytes)
@@ -249,10 +249,10 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::setDrawScrGeometryUnit
 // Address: 0x0130b0c0 - 0x0130b0d1 (17 bytes)
 u32 uScrollCollisionGeometryModel::getScrGeometryNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScrGeometryUnit_Outside != static_cast<uScrollCollisionGeometry*>(nullptr)) {
-        return this->mpScrGeometryUnit_Outside->::uScrollCollisionGeometry::getGeometryInfoNum();
+    if (mpScrGeometryUnit_Outside != nullptr) {
+        return mpScrGeometryUnit_Outside->getGeometryInfoNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -280,22 +280,24 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::setDummyU32(u32) {
 void uScrollCollisionGeometryModel::setGroupGeometry(uModel* pOwnerModel, uScrollCollisionGeometryGroupModel* pParentUnit, uGeometry2* pGroupGeometry) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
-    this->mFlgGroupMode = true;
-    this->mpParentGeometryGroup = pParentUnit;
-    this->mpGeometryUnit_Inside = pGroupGeometry;
-    if (pOwnerModel == static_cast<uModel*>(nullptr)) {
+    mFlgGroupMode = true;
+    mpParentGeometryGroup = pParentUnit;
+    mpGeometryUnit_Inside = pGroupGeometry;
+    if (pOwnerModel == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x130b53d read, used once; no DWARF local holds it
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwnerModel) + static_cast<long>(16));
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwnerModel) + 16);
     // inferred: a temporary for the result of the call at 0x130b557, used once; no DWARF local holds it
-    u32 t1 = (::sUnit::mpInstance)->getMoveLineOrder(this->::cUnit::mMoveLine);
-    if ((::sUnit::mpInstance)->getMoveLineOrder(pOwnerModel->::cUnit::mMoveLine) < t1) {
-        this->mFlgOwnerRegist = true;
-        this->mpOwnerModel = pOwnerModel;
-        this->::uScrollCollisionGeometryModel::registMemberToUnit();
+    u32 t1 = (sUnit::mpInstance)->getMoveLineOrder(mMoveLine);
+    if ((sUnit::mpInstance)->getMoveLineOrder(pOwnerModel->mMoveLine) < t1) {
+        mFlgOwnerRegist = true;
+        mpOwnerModel = pOwnerModel;
+        registMemberToUnit();
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uScrollCollisionGeometryModel::MyDTI uScrollCollisionGeometryModel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScrollCollisionGeometryModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -303,6 +305,6 @@ void uScrollCollisionGeometryModel::setGroupGeometry(uModel* pOwnerModel, uScrol
 // Address: 0x0130a5b0 - 0x0130a63c (140 bytes)
 MtObject* uScrollCollisionGeometryModel::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uScrollCollisionGeometryModel;
+    return new (16u) uScrollCollisionGeometryModel;
 }
 

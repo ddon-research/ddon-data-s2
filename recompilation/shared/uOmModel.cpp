@@ -9,6 +9,7 @@
 #include "cHitInfoAfter.h"
 #include "cOmComponent.h"
 #include "cOmControl.h"
+#include "cResource.h"
 #include "cUnit.h"
 #include "cpHpDamageCtrl.h"
 #include "cpOmComponent.h"
@@ -16,8 +17,12 @@
 #include "nDDOModel.h"
 #include "rAttackParam.h"
 #include "../rOmParam/rOmParam.h"
+#include "rSoundRequest.h"
 #include "sCollision.h"
 #include "sOmManager.h"
+#include "sResource.h"
+#include "sSound.h"
+#include "sSoundExt.h"
 #include "uBaseModel.h"
 #include "uDDOModel.h"
 #include "uEffect.h"
@@ -63,7 +68,7 @@ const MtDTI& uOmModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uOmModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uOmModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uOmModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,14 +123,14 @@ __attribute__((weak)) void uOmModel::move() {
 // Address: 0x00cb00b0 - 0x00cb00b5 (5 bytes)
 void uOmModel::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::moveAfter();
+    this->uDDOModel::moveAfter();
 }
 
 // Address: 0x00cb00c0 - 0x00cb00e6 (38 bytes)
 void uOmModel::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOmComp.::cOmComponent::kill(static_cast<uBaseModel*>(this));
-    this->::uDDOModel::kill();
+    mOmComp.kill(static_cast<uBaseModel*>(this));
+    this->uDDOModel::kill();
 }
 
 // Address: 0x00cb0120 - 0x00cb0220 (256 bytes)
@@ -137,42 +142,42 @@ __attribute__((weak)) void uOmModel::createProperty(MtPropertyList& s) {
 // Address: 0x00cb0220 - 0x00cb0225 (5 bytes)
 MtUI* uOmModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uModel::createUI(prop);
+    return this->uModel::createUI(prop);
 }
 
 // Address: 0x00cb0240 - 0x00cb0292 (82 bytes)
 void uOmModel::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isPossibleDrawFromDrawBuffer() == false) {
+    if (!isPossibleDrawFromDrawBuffer()) {
         return;
     }
-    if (this->::uOmModel::isAQCDraw() == false) {
+    if (!isAQCDraw()) {
         return;
     }
-    this->::uDDOModel::draw(pDraw);
-    if (this->mpCpOmLadder == static_cast<cpOmLadder*>(nullptr)) {
+    this->uDDOModel::draw(pDraw);
+    if (mpCpOmLadder == nullptr) {
         return;
     }
-    this->mpCpOmLadder->draw(pDraw);
+    mpCpOmLadder->draw(pDraw);
 }
 
 // Address: 0x00cb02a0 - 0x00cb031c (124 bytes)
 void uOmModel::updatePtr() {
     // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::updatePtr();
-    if (this->::cUnit::isEnable()) {
-        this->mOmComp.::cOmComponent::updatePtr();
-        if (this->mOmComp.mpOmControl != static_cast<cOmControl*>(nullptr)) {
-            if (this->mOmComp.mpOmControl->mpuModel != static_cast<uBaseModel*>(nullptr)) {
-                if (this->mOmComp.mpOmControl->mpuModel->::cUnit::isEnable() == false) {
-                    this->mOmComp.mpOmControl->mpuModel = static_cast<uBaseModel*>(nullptr);
+    this->uDDOModel::updatePtr();
+    if (isEnable()) {
+        mOmComp.updatePtr();
+        if (mOmComp.mpOmControl != nullptr) {
+            if (mOmComp.mpOmControl->mpuModel != nullptr) {
+                if (!mOmComp.mpOmControl->mpuModel->isEnable()) {
+                    mOmComp.mpOmControl->mpuModel = nullptr;
                 }
             }
         }
-        if (this->mpuAtkPL != static_cast<uPlayer*>(nullptr)) {
-            if (this->mpuAtkPL->::cUnit::isEnable() == false) {
-                this->mpuAtkPL = static_cast<uPlayer*>(nullptr);
+        if (mpuAtkPL != nullptr) {
+            if (!mpuAtkPL->isEnable()) {
+                mpuAtkPL = nullptr;
             }
         }
     }
@@ -187,41 +192,41 @@ void uOmModel::updatePtr() {
 // Address: 0x00cb0230 - 0x00cb0235 (5 bytes)
 void uOmModel::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::applyWorldOffset(offset, absolute_offset);
+    this->uDDOModel::applyWorldOffset(offset, absolute_offset);
 }
 
 // Address: 0x00caf680 - 0x00caf6d9 (89 bytes)
 u32 uOmModel::getLODLevel(s32 dist) {
     // DWARF local not rendered: MODEL_INFO* pmi;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uBaseModel::mLODType <= static_cast<s32>(-1)) {
-        if (static_cast<float>(static_cast<int>(::sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > this->::uBaseModel::mLODLowDist) {
-            return static_cast<u32>(4);
+    if (mLODType <= -1) {
+        if (static_cast<float>(static_cast<int>(sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > mLODLowDist) {
+            return 4;
         } else {
-            if (static_cast<float>(static_cast<int>(::sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > this->::uBaseModel::mLODMidDist) {
-                return static_cast<u32>(2);
+            if (static_cast<float>(static_cast<int>(sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > mLODMidDist) {
+                return 2;
             } else {
-                return static_cast<u32>(1);
+                return 1;
             }
         }
     } else {
-        return static_cast<u32>(this->::uBaseModel::mLODType);
+        return static_cast<u32>(mLODType);
     }
 }
 
 // Address: 0x00caf990 - 0x00caf998 (8 bytes)
 cOmControl* uOmModel::getOmCtrl() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOmComp.mpOmControl;
+    return mOmComp.mpOmControl;
 }
 
 // Address: 0x00caf9a0 - 0x00caf9b4 (20 bytes)
 const cOmParam* uOmModel::getOmParam() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mOmComp.mpOmControl != static_cast<cOmControl*>(nullptr)) {
-        return this->mOmComp.mpOmControl->::cOmControl::getOmParam();
+    if (mOmComp.mpOmControl != nullptr) {
+        return mOmComp.mpOmControl->getOmParam();
     } else {
-        return static_cast<const cOmParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -238,20 +243,20 @@ const cOmParam* uOmModel::getOmParam() const {
 void uOmModel::setActiveScrSbc(bool f) {
     // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mOmComp.mpOmControl == static_cast<cOmControl*>(nullptr)) {
+    if (mOmComp.mpOmControl == nullptr) {
         return;
     }
-    this->mOmComp.mpOmControl->::cOmControl::setActiveScrSbc(f);
+    mOmComp.mpOmControl->setActiveScrSbc(f);
 }
 
 // Address: 0x00cb0360 - 0x00cb0376 (22 bytes)
 void uOmModel::setActiveEfcSbc(bool f) {
     // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mOmComp.mpOmControl == static_cast<cOmControl*>(nullptr)) {
+    if (mOmComp.mpOmControl == nullptr) {
         return;
     }
-    this->mOmComp.mpOmControl->::cOmControl::setActiveEfcSbc(f);
+    mOmComp.mpOmControl->setActiveEfcSbc(f);
 }
 
 // Address: 0x00cb00f0 - 0x00cb0117 (39 bytes)
@@ -280,13 +285,13 @@ __attribute__((weak)) void uOmModel::callbackDamage(cHitInfo* pHitLocalInfo) {
 void uOmModel::callbackAttack(cHitInfo* pHitInfo) {
     // DWARF local not rendered: const cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOmComp.mbHit = true;
+    mOmComp.mbHit = true;
 }
 
 // Address: 0x00cb0690 - 0x00cb0695 (5 bytes)
 void uOmModel::callbackCheck(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::callbackCheck(pHitInfo);
+    this->uDDOModel::callbackCheck(pHitInfo);
 }
 
 // Address: 0x00cb06a0 - 0x00cb082e (398 bytes)
@@ -304,35 +309,35 @@ __attribute__((weak)) void uOmModel::callbackChecked(cHitInfo* pHitInfo) {
 // Address: 0x00cb0830 - 0x00cb085a (42 bytes)
 void uOmModel::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSeInfo == static_cast<cDamageSeInfo*>(nullptr)) {
+    if (pSeInfo == nullptr) {
         return;
     }
-    pSeInfo->mEnemyWeaponType = static_cast<u32>(this->mOmComp.mpOmControl->::cOmControl::getOmParam()->mWepType);
+    pSeInfo->mEnemyWeaponType = static_cast<u32>(mOmComp.mpOmControl->getOmParam()->mWepType);
 }
 
 // Address: 0x00cb0860 - 0x00cb08b2 (82 bytes)
 void uOmModel::makeOcdAttackInfo(cHitInfoAfter* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as nDDOGame::ELEMENT_TYPE
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    this->::uDDOModel::makeOcdAttackInfo(pHitInfo);
-    if (pHitInfo->mCommonInfo.mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    this->uDDOModel::makeOcdAttackInfo(pHitInfo);
+    if (pHitInfo->mCommonInfo.mpAttackParam == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0xcb087f read, used 3 times; no DWARF local holds it
     u8 t0 = pHitInfo->mCommonInfo.mpAttackParam->mElementType2;
-    if (t0 <= static_cast<u8>(1)) {
-        if (pHitInfo->mOcdDamageInfo.mElementResultType == static_cast<nDDOGame::ELEMENT_TYPE>(1)) {
-            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+    if (t0 <= 1) {
+        if (pHitInfo->mOcdDamageInfo.mElementResultType == nDDOGame::ELEMENT_TYPE_INIT) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly) {
                 pHitInfo->mOcdDamageInfo.mIsElementNone = true;
             }
         }
     } else {
         pHitInfo->mOcdDamageInfo.mElementResultType = static_cast<nDDOGame::ELEMENT_TYPE>(t0);
-        if (t0 == static_cast<u8>(1)) {
-            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+        if (t0 == 1) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly) {
                 pHitInfo->mOcdDamageInfo.mIsElementNone = true;
             }
         }
@@ -343,25 +348,25 @@ void uOmModel::makeOcdAttackInfo(cHitInfoAfter* pHitInfo) {
 void uOmModel::makeOcdAttackInfoShl(cHitInfoAfter* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as nDDOGame::ELEMENT_TYPE
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    this->::uDDOModel::makeOcdAttackInfoShl(pHitInfo);
-    if (pHitInfo->mCommonInfo.mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    this->uDDOModel::makeOcdAttackInfoShl(pHitInfo);
+    if (pHitInfo->mCommonInfo.mpAttackParam == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0xcb08ef read, used 3 times; no DWARF local holds it
     u8 t0 = pHitInfo->mCommonInfo.mpAttackParam->mElementType2;
-    if (t0 <= static_cast<u8>(1)) {
-        if (pHitInfo->mOcdDamageInfo.mElementResultType == static_cast<nDDOGame::ELEMENT_TYPE>(1)) {
-            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+    if (t0 <= 1) {
+        if (pHitInfo->mOcdDamageInfo.mElementResultType == nDDOGame::ELEMENT_TYPE_INIT) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly) {
                 pHitInfo->mOcdDamageInfo.mIsElementNone = true;
             }
         }
     } else {
         pHitInfo->mOcdDamageInfo.mElementResultType = static_cast<nDDOGame::ELEMENT_TYPE>(t0);
-        if (t0 == static_cast<u8>(1)) {
-            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+        if (t0 == 1) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly) {
                 pHitInfo->mOcdDamageInfo.mIsElementNone = true;
             }
         }
@@ -383,14 +388,14 @@ __attribute__((weak)) void uOmModel::setObjCollisionLayerOn(u32 no, bool on) {
 // Address: 0x00cb0930 - 0x00cb0942 (18 bytes)
 void uOmModel::notifyDeleteShell(s32 work) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOmComp.::cOmComponent::eraseObjCollision(this);
+    mOmComp.eraseObjCollision(this);
 }
 
 // Address: 0x00cb0380 - 0x00cb03a3 (35 bytes)
 void uOmModel::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::updateEfcHandle();
-    this->mOmComp.::cOmComponent::updateEfcHandle();
+    this->uDDOModel::updateEfcHandle();
+    mOmComp.updateEfcHandle();
 }
 
 // Address: 0x00cb0950 - 0x00cb0ba9 (601 bytes)
@@ -449,21 +454,21 @@ __attribute__((weak)) cGatherItemList* uOmModel::getGatherItemList() {
 // Address: 0x00cb0ef0 - 0x00cb0f0b (27 bytes)
 u32 uOmModel::getItemGetInfoNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cGatherItemList* pil = this->::uOmModel::getGatherItemList();
-    if (pil != static_cast<cGatherItemList*>(nullptr)) {
-        return pil->::cGatherItemList::getItemGetInfoNum();
+    cGatherItemList* pil = getGatherItemList();
+    if (pil != nullptr) {
+        return pil->cGatherItemList::getItemGetInfoNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00cb0f10 - 0x00cb0f45 (53 bytes)
 ItemGetInfo* uOmModel::getItemGetInfo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uOmModel::getGatherItemList() != static_cast<cGatherItemList*>(nullptr)) {
-        return this->::uOmModel::getGatherItemList()->::cGatherItemList::getItemGetInfo(idx);
+    if (getGatherItemList() != nullptr) {
+        return getGatherItemList()->getItemGetInfo(idx);
     } else {
-        return static_cast<ItemGetInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -489,7 +494,7 @@ __attribute__((weak)) bool uOmModel::isAQCDraw() {
 // Address: 0x01b0a540 - 0x01b0a546 (6 bytes)
 u32 uOmModel::getHitLightToModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x00cafcc0 - 0x00caff15 (597 bytes)
@@ -525,6 +530,8 @@ __attribute__((weak)) void uOmModel::moveHead() {
     DDON_STUB("uOmModel::moveHead")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uOmModel::MyDTI uOmModel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uOmModel.cpp at 0x00cb16ee-0x00cb172e (called at uOmModel.cpp:53)
@@ -575,7 +582,7 @@ const MtDTI& uOmShell::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uOmShell::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uOmShell::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uOmShell::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -631,46 +638,59 @@ __attribute__((weak)) void uOmShell::move() {
 }
 
 // Address: 0x00803190 - 0x00803211 (129 bytes)
-__attribute__((weak)) void uOmShell::kill() {
-    // local: rSoundRequest* prsrq;
-    DDON_STUB("uOmShell::kill")
-    /* stub */
+void uOmShell::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: uOmShell* used as const uintptr, which no DWARF type of the place gives; read with caution
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uOmShell*
+    rSoundRequest* prsrq = static_cast<rSoundRequest*>(sResource::getInstance()->create(rSoundRequest::DTI, "sound\\se\\om\\om603000\\om603000", 1u));
+    static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(prsrq, 65u, reinterpret_cast<const uintptr>(this), sSoundExt::SE_SEARCH_KEY_ALL);
+    if (prsrq != nullptr) {
+        prsrq->cResource::release();
+    }
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
+        return;
+    }
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
+    }
 }
 
 // Address: 0x00803220 - 0x00803225 (5 bytes)
 void uOmShell::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uModel::createProperty(s);
+    this->uModel::createProperty(s);
 }
 
 // Address: 0x00803230 - 0x00803235 (5 bytes)
 MtUI* uOmShell::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uModel::createUI(prop);
+    return this->uModel::createUI(prop);
 }
 
 // Address: 0x00803240 - 0x00803294 (84 bytes)
 void uOmShell::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpuFx != static_cast<uEffect*>(nullptr)) {
-        if (this->mpuFx->::cUnit::isEnable() == false) {
-            this->mpuFx = static_cast<uEffect*>(nullptr);
+    if (mpuFx != nullptr) {
+        if (!mpuFx->isEnable()) {
+            mpuFx = nullptr;
         }
     }
-    if (this->mpCtrl == static_cast<cOmControl*>(nullptr)) {
+    if (mpCtrl == nullptr) {
         return;
     }
-    if (this->mpCtrl->::cOmControl::isEnableCtrl() != false) {
+    if (mpCtrl->isEnableCtrl()) {
         return;
     }
-    this->mpCtrl = static_cast<cOmControl*>(nullptr);
+    mpCtrl = nullptr;
 }
 
 // Address: 0x01ac7e90 - 0x01ac7e96 (6 bytes)
 u32 uOmShell::getHitLightToModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uOmShell::MyDTI uOmShell::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x00804925-0x00804962 (called at sOmManager.cpp:6826)

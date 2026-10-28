@@ -50,7 +50,7 @@ const MtDTI& sUnitManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sUnitManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sUnitManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sUnitManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,43 +84,43 @@ __attribute__((weak)) void sUnitManager::createProperty(MtPropertyList& s) {
 // Address: 0x00868a40 - 0x00868a45 (5 bytes)
 MtUI* sUnitManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x00868a50 - 0x00868af7 (167 bytes)
 void sUnitManager::init() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sUnitManager*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x40 from sUnitManager*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from sUnitManager*
-    if (this->mRefArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRefArray.::MtArray::mpArray));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mRefArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRefArray.mpArray));
     }
-    this->mRefArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
-    if (this->mAddArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAddArray.::MtArray::mpArray));
+    mRefArray.mpArray = nullptr;
+    mRefArray.mLength = 0;
+    mRefArray.mBufsiz = 0;
+    if (mAddArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddArray.mpArray));
     }
-    this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
-    if (this->mDelArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDelArray.::MtArray::mpArray));
+    mAddArray.mpArray = nullptr;
+    mAddArray.mLength = 0;
+    mAddArray.mBufsiz = 0;
+    if (mDelArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelArray.mpArray));
     }
-    this->mDelArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(96)) = static_cast<unsigned long>(0);
-    this->::sUnitManager::createLodDistData();
+    mDelArray.mpArray = nullptr;
+    mDelArray.mLength = 0;
+    mDelArray.mBufsiz = 0;
+    createLodDistData();
 }
 
 // Address: 0x00868d40 - 0x00868d45 (5 bytes)
 void sUnitManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::releaseUnitAll();
+    releaseUnitAll();
 }
 
 // Address: 0x00868e30 - 0x00868e36 (6 bytes)
 void sUnitManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->update();
+    update();
 }
 
 // Address: 0x00868e40 - 0x00868f0b (203 bytes)
@@ -257,8 +257,8 @@ __attribute__((weak)) uBaseModel* sUnitManager::getLayoutUnit(nLayout::stLayoutI
 // Address: 0x00869b50 - 0x00869b67 (23 bytes)
 bool sUnitManager::isEnableUnit(uBaseModel* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pUnit != static_cast<uBaseModel*>(nullptr)) {
-        return pUnit->::cUnit::isEnable();
+    if (pUnit != nullptr) {
+        return pUnit->isEnable();
     } else {
         return false;
     }
@@ -283,13 +283,13 @@ __attribute__((weak)) void sUnitManager::createLodDistData() {
 // Address: 0x01ac6f10 - 0x01ac6f16 (6 bytes)
 u32 sUnitManager::getLodDistDataKindNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x01ac6f20 - 0x01ac6f23 (3 bytes)
 u32 sUnitManager::getLodDistDataKind(uBaseModel* bm) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01ac6f30 - 0x01ac6f41 (17 bytes)
@@ -313,6 +313,8 @@ __attribute__((weak)) MtVector2 sUnitManager::getLosDistDataParam(u32 num) {
 
 // Defined in the class (its body was written in a header).
 // void sUnitManager::setLODDist(uBaseModel* bm);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sUnitManager::MyDTI sUnitManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sUnitManager.cpp at 0x00869e68-0x00869ea8 (called at sUnitManager.cpp:103)
@@ -349,7 +351,7 @@ const MtDTI& sUnitManager::cLODDistData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sUnitManager::cLODDistData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sUnitManager::cLODDistData::DTI)->memAlloc(sz, align, ::sUnitManager::cLODDistData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sUnitManager::cLODDistData::DTI)->memAlloc(sz, align, sUnitManager::cLODDistData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -363,7 +365,7 @@ inline void* sUnitManager::cLODDistData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sUnitManager::cLODDistData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sUnitManager::cLODDistData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sUnitManager::cLODDistData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,7 +393,7 @@ inline void sUnitManager::cLODDistData::operator delete(void* p_addr) {
 // Address: 0x01acfbe0 - 0x01acfbe6 (6 bytes)
 f32 sUnitManager::cLODDistData::getLow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLow;
+    return mLow;
 }
 
 // Address: 0x01acfc00 - 0x01acfca1 (161 bytes)
@@ -403,7 +405,7 @@ __attribute__((weak)) void sUnitManager::cLODDistData::setLow(f32 set) {
 // Address: 0x01acfbf0 - 0x01acfbf6 (6 bytes)
 f32 sUnitManager::cLODDistData::getMed() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMed;
+    return mMed;
 }
 
 // Address: 0x01acfcb0 - 0x01acfd51 (161 bytes)
@@ -418,6 +420,8 @@ __attribute__((weak)) void sUnitManager::cLODDistData::createProperty(MtProperty
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sUnitManager::cLODDistData::MyDTI sUnitManager::cLODDistData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sUnitManager.cpp at 0x00869ea8-0x00869ee1 (called at sUnitManager.cpp:104)
 //   in _GLOBAL__sub_I_sUnitManager.cpp at 0x00869ea8-0x00869ee1 (called at sUnitManager.h:220)
@@ -426,7 +430,7 @@ __attribute__((weak)) void sUnitManager::cLODDistData::createProperty(MtProperty
 // Address: 0x00868520 - 0x00868576 (86 bytes)
 MtObject* sUnitManager::cLODDistData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sUnitManager::cLODDistData;
+    return new (16u) sUnitManager::cLODDistData;
 }
 
 // Instance at 0x01acfbc0 - 0x01acfbc5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

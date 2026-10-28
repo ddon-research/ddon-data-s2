@@ -26,7 +26,7 @@ const MtDTI& cpRotateCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpRotateCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpRotateCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpRotateCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpRotateCtrl::getAllocator() {
 // Address: 0x00528160 - 0x005281a0 (64 bytes)
 void* cpRotateCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpRotateCtrl::getAllocator()->memAlloc(sz, align, ::cpRotateCtrl::DTI.::MtDTI::getID());
+    return cpRotateCtrl::getAllocator()->memAlloc(sz, align, cpRotateCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpRotateCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpRotateCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpRotateCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpRotateCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,20 +77,20 @@ cpRotateCtrl::~cpRotateCtrl() {
 // Address: 0x005282d0 - 0x005282d5 (5 bytes)
 void cpRotateCtrl::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x005282e0 - 0x00528313 (51 bytes)
 void cpRotateCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x01a5f260 - 0x01a5f273 (19 bytes)
@@ -197,7 +197,7 @@ __attribute__((weak)) void cpRotateCtrl::setFinalAimPosByFrame(const MtVector3& 
 // Address: 0x00528e30 - 0x00528e35 (5 bytes)
 const MtQuaternion& cpRotateCtrl::getFinalQuat() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFinalQuat;
+    return mFinalQuat;
 }
 
 // Address: 0x00528e40 - 0x00528eff (191 bytes)
@@ -255,6 +255,8 @@ __attribute__((weak)) f32 cpRotateCtrl::convertFrameToSpeed(const MtQuaternion& 
 
 // No out-of-line body: no code in the ELF
 // f32 cpRotateCtrl::calcDiffAngle(const MtQuaternion& quat, const MtQuaternion& quat2) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpRotateCtrl::MyDTI cpRotateCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpRotateCtrl.cpp at 0x005295af-0x005295ec (called at cpRotateCtrl.cpp:27)

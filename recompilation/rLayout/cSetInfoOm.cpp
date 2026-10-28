@@ -44,7 +44,7 @@ const MtDTI& cSetInfoOm::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSetInfoOm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSetInfoOm::DTI)->memAlloc(sz, align, ::cSetInfoOm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSetInfoOm::DTI)->memAlloc(sz, align, cSetInfoOm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* cSetInfoOm::operator new(size_t sz, void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSetInfoOm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSetInfoOm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSetInfoOm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,26 +77,26 @@ inline void cSetInfoOm::operator delete(void* p_addr) {
 // Address: 0x005600d0 - 0x0056012f (95 bytes)
 cSetInfoOm::cSetInfoOm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDisableEffect = false;
-    this->mDisableOnlyEffect = false;
-    this->mOpenFlag = false;
-    this->mEnableSyncLight = false;
-    this->mEnableZone = true;
-    this->mIsBreakLink = false;
-    this->mIsBreakQuest = false;
-    this->mKeyNo = static_cast<u32>(0);
-    this->mAreaReleaseNo = static_cast<u16>(0);
-    this->mAreaReleaseON = false;
-    this->mAreaReleaseOFF = false;
-    this->mWarpPointId = static_cast<u32>(0);
-    this->mInitMtnNo = static_cast<u32>(0);
-    this->mAreaMasterNo = static_cast<u32>(0);
-    this->mBreakKind = static_cast<u16>(3);
-    this->mIsNoSbc = false;
-    this->mIsMyQuest = false;
-    this->mBreakGroup = static_cast<u16>(0);
-    this->mBreakID = static_cast<u16>(0);
-    this->mQuestFlag = static_cast<u32>(0);
+    mDisableEffect = false;
+    mDisableOnlyEffect = false;
+    mOpenFlag = false;
+    mEnableSyncLight = false;
+    mEnableZone = true;
+    mIsBreakLink = false;
+    mIsBreakQuest = false;
+    mKeyNo = 0;
+    mAreaReleaseNo = 0;
+    mAreaReleaseON = false;
+    mAreaReleaseOFF = false;
+    mWarpPointId = 0;
+    mInitMtnNo = 0;
+    mAreaMasterNo = 0;
+    mBreakKind = 3;
+    mIsNoSbc = false;
+    mIsMyQuest = false;
+    mBreakGroup = 0;
+    mBreakID = 0;
+    mQuestFlag = 0;
 }
 
 // Address: 0x00560130 - 0x00560135 (5 bytes)
@@ -120,7 +120,7 @@ __attribute__((weak)) void cSetInfoOm::createToolProperty(MtPropertyList& s) {
 // Address: 0x00561140 - 0x00561145 (5 bytes)
 MtUI* cSetInfoOm::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00561150 - 0x005613eb (667 bytes)
@@ -138,17 +138,17 @@ __attribute__((weak)) bool cSetInfoOm::save(MtDataWriter& w) {
 // Address: 0x00561640 - 0x00561683 (67 bytes)
 bool cSetInfoOm::applyInfo(cUnit* pu) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cSetInfoCoord::applyInfo(pu) != false) {
+    if (this->cSetInfoCoord::applyInfo(pu)) {
         // inferred: a temporary for the result of the call at 0x561658, used once; no DWARF local holds it
         const MtDTI& t0 = pu->getDTI();
         // inferred: the value the loop at 0x56166b carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
         // inferred: the value the loop at 0x56166b carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
                 return true;
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -170,68 +170,49 @@ __attribute__((weak)) bool cSetInfoOm::applyParam(cOmControl::InputLot& param) c
 
 // Address: 0x005617a0 - 0x00561873 (211 bytes)
 __attribute__((weak)) void cSetInfoOm::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOm* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOm::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x44 from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x45 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x46 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x47 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x48 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x50 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x54 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x56 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x57 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x61 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x62 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x64 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x66 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x68 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x6c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x6d from cSetInfo*
-    this->::cSetInfoCoord::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoCoord::copy(p);
     // inferred: a temporary for the result of the call at 0x5617b8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x5617c6 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOm::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOm::DTI.mName;
     // inferred: the value the loop at 0x5617c6 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mDisableEffect = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(68)));
-            this->mDisableOnlyEffect = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(69)));
-            this->mOpenFlag = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(70)));
-            this->mEnableSyncLight = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(71)));
-            this->mEnableZone = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(72)));
-            this->mInitMtnNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(76));
-            this->mAreaMasterNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(80));
-            this->mAreaReleaseNo = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(84));
-            this->mAreaReleaseON = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(86)));
-            this->mAreaReleaseOFF = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(87)));
-            this->mWarpPointId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(88));
-            this->mKeyNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(92));
-            this->mIsBreakLink = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(96)));
-            this->mIsBreakQuest = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(97)));
-            this->mBreakKind = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(98));
-            this->mBreakGroup = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(100));
-            this->mBreakID = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(102));
-            this->mQuestFlag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(104));
-            this->mIsNoSbc = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(108)));
-            this->mIsMyQuest = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(109)));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOm* pSic = static_cast<cSetInfoOm*>(p);
+            mDisableEffect = pSic->mDisableEffect;
+            mDisableOnlyEffect = pSic->mDisableOnlyEffect;
+            mOpenFlag = pSic->mOpenFlag;
+            mEnableSyncLight = pSic->mEnableSyncLight;
+            mEnableZone = pSic->mEnableZone;
+            mInitMtnNo = pSic->mInitMtnNo;
+            mAreaMasterNo = pSic->mAreaMasterNo;
+            mAreaReleaseNo = pSic->mAreaReleaseNo;
+            mAreaReleaseON = pSic->mAreaReleaseON;
+            mAreaReleaseOFF = pSic->mAreaReleaseOFF;
+            mWarpPointId = pSic->mWarpPointId;
+            mKeyNo = pSic->mKeyNo;
+            mIsBreakLink = pSic->mIsBreakLink;
+            mIsBreakQuest = pSic->mIsBreakQuest;
+            mBreakKind = pSic->mBreakKind;
+            mBreakGroup = pSic->mBreakGroup;
+            mBreakID = pSic->mBreakID;
+            mQuestFlag = pSic->mQuestFlag;
+            mIsNoSbc = pSic->mIsNoSbc;
+            mIsMyQuest = pSic->mIsMyQuest;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOm::MyDTI cSetInfoOm::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (124 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bb82-0x0056bbc0 (called at cSetInfoOm.cpp:44)
@@ -241,7 +222,7 @@ __attribute__((weak)) void cSetInfoOm::copy(cSetInfo* p) {
 // Address: 0x0055ffd0 - 0x0056005a (138 bytes)
 MtObject* cSetInfoOm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSetInfoOm;
+    return new (16u) cSetInfoOm;
 }
 
 // No out-of-line body: no code in the ELF
@@ -316,13 +297,13 @@ __attribute__((weak)) void cSetInfoOmBadStatus::createToolProperty(MtPropertyLis
 // Address: 0x0056a610 - 0x0056a68a (122 bytes)
 bool cSetInfoOmBadStatus::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBadRadius = r.readF32();
-    this->mBadHeight = r.readF32();
+    mBadRadius = r.readF32();
+    mBadHeight = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mBadPos = r.readV3();
-    ::nDDOIO::readData(r, this->mBreakHitNum);
-    return this->::cSetInfoOm::load(r);
+    mBadPos = r.readV3();
+    nDDOIO::readData(r, mBreakHitNum);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x0056a690 - 0x0056a73a (170 bytes)
@@ -340,20 +321,46 @@ __attribute__((weak)) bool cSetInfoOmBadStatus::applyInfo(cUnit* pu) const {
 // Address: 0x0056a7a0 - 0x0056a81f (127 bytes)
 bool cSetInfoOmBadStatus::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mBadRadius = this->mBadRadius;
-    param.mBadHeight = this->mBadHeight;
-    param.mBadPos = this->mBadPos;
-    param.mBreakHitNum = this->mBreakHitNum;
+    this->cSetInfoOm::applyParam(param);
+    param.mBadRadius = mBadRadius;
+    param.mBadHeight = mBadHeight;
+    param.mBadPos = mBadPos;
+    param.mBreakHitNum = mBreakHitNum;
     return true;
 }
 
 // Address: 0x0056a820 - 0x0056a8bd (157 bytes)
-__attribute__((weak)) void cSetInfoOmBadStatus::copy(cSetInfo* p) {
-    // local: cSetInfoOmBadStatus* pSic;
-    DDON_STUB("cSetInfoOmBadStatus::copy")
-    /* stub */
+void cSetInfoOmBadStatus::copy(cSetInfo* p) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
+    // inferred: a temporary for the result of the call at 0x56a838, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x56a846 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = cSetInfoOmBadStatus::DTI.mName;
+    // inferred: the value the loop at 0x56a846 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmBadStatus* pSic = static_cast<cSetInfoOmBadStatus*>(p);
+            mBadRadius = pSic->mBadRadius;
+            mBadHeight = pSic->mBadHeight;
+            mBadPos.x = pSic->mBadPos.x;
+            mBadPos.y = pSic->mBadPos.y;
+            mBadPos.z = pSic->mBadPos.z;
+            mBadPos.pad_ = 0.0f;
+            mBreakHitNum = pSic->mBreakHitNum;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmBadStatus::MyDTI cSetInfoOmBadStatus::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056c038-0x0056c071 (called at cSetInfoOm.cpp:3251)
@@ -443,7 +450,7 @@ __attribute__((weak)) void cSetInfoOmBoard::createToolProperty(MtPropertyList& s
 // Address: 0x00565910 - 0x00565915 (5 bytes)
 MtUI* cSetInfoOmBoard::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00565920 - 0x00565949 (41 bytes)
@@ -451,16 +458,16 @@ bool cSetInfoOmBoard::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mBoardID);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mBoardID);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00565950 - 0x00565979 (41 bytes)
 bool cSetInfoOmBoard::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mBoardID);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mBoardID);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00565980 - 0x005659e0 (96 bytes)
@@ -472,36 +479,37 @@ __attribute__((weak)) bool cSetInfoOmBoard::applyInfo(cUnit* pu) const {
 // Address: 0x005659e0 - 0x00565a03 (35 bytes)
 bool cSetInfoOmBoard::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mBoardID = this->mBoardID;
+    this->cSetInfoOm::applyParam(param);
+    param.mBoardID = mBoardID;
     return true;
 }
 
 // Address: 0x00565a10 - 0x00565a53 (67 bytes)
 void cSetInfoOmBoard::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmBoard* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmBoard::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x565a28, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x565a36 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmBoard::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmBoard::DTI.mName;
     // inferred: the value the loop at 0x565a36 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mBoardID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmBoard* pSic = static_cast<cSetInfoOmBoard*>(p);
+            mBoardID = pSic->mBoardID;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmBoard::MyDTI cSetInfoOmBoard::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bd88-0x0056bdc1 (called at cSetInfoOm.cpp:1788)
@@ -599,220 +607,220 @@ bool cSetInfoOmBowlOfLife::save(MtDataWriter& w) {
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: a temporary for the value the load at 0x568e80 read, used once; no DWARF local holds it
-    bool t0 = this->mbWaitBowlOfLife;
+    bool t0 = mbWaitBowlOfLife;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
         // inferred: a temporary for the value the load at 0x568ea2 read, used twice; no DWARF local holds it
         u32 t1 = w.mSeekPt;
-        w.mSeekPt = t1 + static_cast<u32>(1);
+        w.mSeekPt = t1 + 1u;
         // inferred: a temporary for the value the load at 0x568eaa read, used once; no DWARF local holds it
-        bool t2 = this->mbFullBowlOfLife;
+        bool t2 = mbFullBowlOfLife;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
             w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t2);
             // inferred: a temporary for the value the load at 0x568ec9 read, used twice; no DWARF local holds it
             u32 t3 = w.mSeekPt;
-            w.mSeekPt = t3 + static_cast<u32>(1);
+            w.mSeekPt = t3 + 1u;
             // inferred: a temporary for the value the load at 0x568ed1 read, used once; no DWARF local holds it
-            bool t4 = this->mbSetEM;
+            bool t4 = mbSetEM;
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
                 w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             } else {
-                w.mBuffer[t3 + static_cast<u32>(1)] = static_cast<unsigned char>(t4);
+                w.mBuffer[t3 + 1u] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             }
         } else {
-            w.mBuffer[t1 + static_cast<u32>(1)] = static_cast<unsigned char>(t2);
+            w.mBuffer[t1 + 1u] = static_cast<unsigned char>(t2);
             // inferred: a temporary for the value the load at 0x568ec9 read, used twice; no DWARF local holds it
             u32 t3 = w.mSeekPt;
-            w.mSeekPt = t3 + static_cast<u32>(1);
+            w.mSeekPt = t3 + 1u;
             // inferred: a temporary for the value the load at 0x568ed1 read, used once; no DWARF local holds it
-            bool t4 = this->mbSetEM;
+            bool t4 = mbSetEM;
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
                 w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             } else {
-                w.mBuffer[t3 + static_cast<u32>(1)] = static_cast<unsigned char>(t4);
+                w.mBuffer[t3 + 1u] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             }
         }
@@ -820,214 +828,214 @@ bool cSetInfoOmBowlOfLife::save(MtDataWriter& w) {
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
         // inferred: a temporary for the value the load at 0x568ea2 read, used twice; no DWARF local holds it
         u32 t1 = w.mSeekPt;
-        w.mSeekPt = t1 + static_cast<u32>(1);
+        w.mSeekPt = t1 + 1u;
         // inferred: a temporary for the value the load at 0x568eaa read, used once; no DWARF local holds it
-        bool t2 = this->mbFullBowlOfLife;
+        bool t2 = mbFullBowlOfLife;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
             w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t2);
             // inferred: a temporary for the value the load at 0x568ec9 read, used twice; no DWARF local holds it
             u32 t3 = w.mSeekPt;
-            w.mSeekPt = t3 + static_cast<u32>(1);
+            w.mSeekPt = t3 + 1u;
             // inferred: a temporary for the value the load at 0x568ed1 read, used once; no DWARF local holds it
-            bool t4 = this->mbSetEM;
+            bool t4 = mbSetEM;
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
                 w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             } else {
-                w.mBuffer[t3 + static_cast<u32>(1)] = static_cast<unsigned char>(t4);
+                w.mBuffer[t3 + 1u] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             }
         } else {
-            w.mBuffer[t1 + static_cast<u32>(1)] = static_cast<unsigned char>(t2);
+            w.mBuffer[t1 + 1u] = static_cast<unsigned char>(t2);
             // inferred: a temporary for the value the load at 0x568ec9 read, used twice; no DWARF local holds it
             u32 t3 = w.mSeekPt;
-            w.mSeekPt = t3 + static_cast<u32>(1);
+            w.mSeekPt = t3 + 1u;
             // inferred: a temporary for the value the load at 0x568ed1 read, used once; no DWARF local holds it
-            bool t4 = this->mbSetEM;
+            bool t4 = mbSetEM;
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
                 w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             } else {
-                w.mBuffer[t3 + static_cast<u32>(1)] = static_cast<unsigned char>(t4);
+                w.mBuffer[t3 + 1u] = static_cast<unsigned char>(t4);
                 // inferred: a temporary for the value the load at 0x568ef0 read, used twice; no DWARF local holds it
                 u32 t5 = w.mSeekPt;
-                w.mSeekPt = t5 + static_cast<u32>(1);
+                w.mSeekPt = t5 + 1u;
                 // inferred: a temporary for the value the load at 0x568ef8 read, used once; no DWARF local holds it
-                bool t6 = this->mbInvisible;
+                bool t6 = mbInvisible;
                 if (w.mSeekPt >= w.mBufsiz) {
                     w.flush();
                     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 } else {
-                    w.mBuffer[t5 + static_cast<u32>(1)] = static_cast<unsigned char>(t6);
+                    w.mBuffer[t5 + 1u] = static_cast<unsigned char>(t6);
                     // inferred: a temporary for the value the load at 0x568f17 read, used twice; no DWARF local holds it
                     u32 t7 = w.mSeekPt;
-                    w.mSeekPt = t7 + static_cast<u32>(1);
+                    w.mSeekPt = t7 + 1u;
                     // inferred: a temporary for the value the load at 0x568f1f read, used once; no DWARF local holds it
-                    bool t8 = this->mIsQuest;
+                    bool t8 = mIsQuest;
                     if (w.mSeekPt >= w.mBufsiz) {
                         w.flush();
                         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t8);
                     } else {
-                        w.mBuffer[t7 + static_cast<u32>(1)] = static_cast<unsigned char>(t8);
+                        w.mBuffer[t7 + 1u] = static_cast<unsigned char>(t8);
                     }
-                    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                    w.writeU32(this->mQuestId);
-                    w.writeU16(this->mKind);
-                    w.writeU16(this->mGroup);
-                    w.writeU16(this->mID);
-                    return this->::cSetInfoOm::save(w);
+                    w.mSeekPt = w.mSeekPt + 1u;
+                    w.writeU32(mQuestId);
+                    w.writeU16(mKind);
+                    w.writeU16(mGroup);
+                    w.writeU16(mID);
+                    return this->cSetInfoOm::save(w);
                 }
             }
         }
@@ -1051,46 +1059,38 @@ __attribute__((weak)) bool cSetInfoOmBowlOfLife::applyParam(cOmControl::InputLot
 
 // Address: 0x005690c0 - 0x00569141 (129 bytes)
 void cSetInfoOmBowlOfLife::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmBowlOfLife* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the object read as the method's own class: a cSetInfoOmBowlOfLife member read past the end of the class its pointer is typed with
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmBowlOfLife::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x6e from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x71 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x72 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x78 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x7a from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x7c from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x5690d8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x5690e6 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmBowlOfLife::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmBowlOfLife::DTI.mName;
     // inferred: the value the loop at 0x5690e6 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mbWaitBowlOfLife = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(110)));
-            this->mbFullBowlOfLife = static_cast<cSetInfoOmBowlOfLife*>(p)->mbFullBowlOfLife;
-            this->mbSetEM = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(112)));
-            this->mbInvisible = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(113)));
-            this->mIsQuest = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(114)));
-            this->mQuestId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(116));
-            this->mKind = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(120));
-            this->mGroup = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(122));
-            this->mID = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(124));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmBowlOfLife* pSic = static_cast<cSetInfoOmBowlOfLife*>(p);
+            mbWaitBowlOfLife = pSic->mbWaitBowlOfLife;
+            mbFullBowlOfLife = pSic->mbFullBowlOfLife;
+            mbSetEM = pSic->mbSetEM;
+            mbInvisible = pSic->mbInvisible;
+            mIsQuest = pSic->mIsQuest;
+            mQuestId = pSic->mQuestId;
+            mKind = pSic->mKind;
+            mGroup = pSic->mGroup;
+            mID = pSic->mID;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmBowlOfLife::MyDTI cSetInfoOmBowlOfLife::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bf89-0x0056bfc2 (called at cSetInfoOm.cpp:2829)
@@ -1142,7 +1142,7 @@ void* cSetInfoOmCtrl::operator new(size_t sz, void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSetInfoOmCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1210,77 +1210,63 @@ __attribute__((weak)) bool cSetInfoOmCtrl::applyParam(cOmControl::InputLot& para
 
 // Address: 0x00569f20 - 0x0056a122 (514 bytes)
 void cSetInfoOmCtrl::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmCtrl* pSic;
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the object read as the method's own class: a cSetInfoOmCtrl member read past the end of the class its pointer is typed with
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmCtrl::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x80 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x82 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x84 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x98 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa8 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xaa from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xac from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb4 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb8 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xc0 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x569f38, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x569f46 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmCtrl::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmCtrl::DTI.mName;
     // inferred: the value the loop at 0x569f46 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mKeyItemNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
-            this->mIsQuest = static_cast<cSetInfoOmCtrl*>(p)->mIsQuest;
-            this->mQuestId = static_cast<cSetInfoOmCtrl*>(p)->mQuestId;
-            this->mLinkParam[0].mKind = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(128));
-            this->mLinkParam[0].mGroup = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(130));
-            this->mLinkParam[0].mID = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(132));
-            this->mLinkParam[0].mTransition = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(136));
-            this->mLinkParam[0].mState = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(140));
-            this->mLinkParam[0].mCamEvNo = static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(144)));
-            this->mLinkParam[0].mrFSMCam.::cResPathBase::mId = static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p) + static_cast<long>(152)));
-            this->mLinkParam[1].mKind = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(168));
-            this->mLinkParam[1].mGroup = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(170));
-            this->mLinkParam[1].mID = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(172));
-            this->mLinkParam[1].mTransition = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(176));
-            this->mLinkParam[1].mState = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(180));
-            this->mLinkParam[1].mCamEvNo = static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(184)));
-            this->mLinkParam[1].mrFSMCam.::cResPathBase::mId = static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p) + static_cast<long>(192)));
-            this->mLinkParam[2].mKind = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mKind;
-            this->mLinkParam[2].mGroup = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mGroup;
-            this->mLinkParam[2].mID = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mID;
-            this->mLinkParam[2].mTransition = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mTransition;
-            this->mLinkParam[2].mState = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mState;
-            this->mLinkParam[2].mCamEvNo = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mCamEvNo;
-            this->mLinkParam[2].mrFSMCam.::cResPathBase::mId = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[2].mrFSMCam.::cResPathBase::mId;
-            this->mLinkParam[3].mKind = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mKind;
-            this->mLinkParam[3].mGroup = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mGroup;
-            this->mLinkParam[3].mID = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mID;
-            this->mLinkParam[3].mTransition = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mTransition;
-            this->mLinkParam[3].mState = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mState;
-            this->mLinkParam[3].mCamEvNo = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mCamEvNo;
-            this->mLinkParam[3].mrFSMCam.::cResPathBase::mId = static_cast<cSetInfoOmCtrl*>(p)->mLinkParam[3].mrFSMCam.::cResPathBase::mId;
-            this->mAddGroupNo = static_cast<cSetInfoOmCtrl*>(p)->mAddGroupNo;
-            this->mAddSubGroupNo = static_cast<cSetInfoOmCtrl*>(p)->mAddSubGroupNo;
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmCtrl* pSic = static_cast<cSetInfoOmCtrl*>(p);
+            mKeyItemNo = pSic->mKeyItemNo;
+            mIsQuest = pSic->mIsQuest;
+            mQuestId = pSic->mQuestId;
+            mLinkParam[0].mKind = pSic->mLinkParam[0].mKind;
+            mLinkParam[0].mGroup = pSic->mLinkParam[0].mGroup;
+            mLinkParam[0].mID = pSic->mLinkParam[0].mID;
+            mLinkParam[0].mTransition = pSic->mLinkParam[0].mTransition;
+            mLinkParam[0].mState = pSic->mLinkParam[0].mState;
+            mLinkParam[0].mCamEvNo = pSic->mLinkParam[0].mCamEvNo;
+            mLinkParam[0].mrFSMCam.mId = pSic->mLinkParam[0].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[1].mKind = pSic->mLinkParam[1].mKind;
+            mLinkParam[1].mGroup = pSic->mLinkParam[1].mGroup;
+            mLinkParam[1].mID = pSic->mLinkParam[1].mID;
+            mLinkParam[1].mTransition = pSic->mLinkParam[1].mTransition;
+            mLinkParam[1].mState = pSic->mLinkParam[1].mState;
+            mLinkParam[1].mCamEvNo = pSic->mLinkParam[1].mCamEvNo;
+            mLinkParam[1].mrFSMCam.mId = pSic->mLinkParam[1].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[2].mKind = pSic->mLinkParam[2].mKind;
+            mLinkParam[2].mGroup = pSic->mLinkParam[2].mGroup;
+            mLinkParam[2].mID = pSic->mLinkParam[2].mID;
+            mLinkParam[2].mTransition = pSic->mLinkParam[2].mTransition;
+            mLinkParam[2].mState = pSic->mLinkParam[2].mState;
+            mLinkParam[2].mCamEvNo = pSic->mLinkParam[2].mCamEvNo;
+            mLinkParam[2].mrFSMCam.mId = pSic->mLinkParam[2].mrFSMCam.::cResPathBase::mId;
+            mLinkParam[3].mKind = pSic->mLinkParam[3].mKind;
+            mLinkParam[3].mGroup = pSic->mLinkParam[3].mGroup;
+            mLinkParam[3].mID = pSic->mLinkParam[3].mID;
+            mLinkParam[3].mTransition = pSic->mLinkParam[3].mTransition;
+            mLinkParam[3].mState = pSic->mLinkParam[3].mState;
+            mLinkParam[3].mCamEvNo = pSic->mLinkParam[3].mCamEvNo;
+            mLinkParam[3].mrFSMCam.mId = pSic->mLinkParam[3].mrFSMCam.::cResPathBase::mId;
+            mAddGroupNo = pSic->mAddGroupNo;
+            mAddSubGroupNo = pSic->mAddSubGroupNo;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmCtrl::MyDTI cSetInfoOmCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bfc2-0x0056bffb (called at cSetInfoOm.cpp:3028)
@@ -1315,7 +1301,7 @@ const MtDTI& cSetInfoOmCtrl::cLinkParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSetInfoOmCtrl::cLinkParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::cLinkParam::DTI)->memAlloc(sz, align, ::cSetInfoOmCtrl::cLinkParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::cLinkParam::DTI)->memAlloc(sz, align, cSetInfoOmCtrl::cLinkParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1330,7 +1316,7 @@ inline void* cSetInfoOmCtrl::cLinkParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cSetInfoOmCtrl10cLinkParamD0Ev at 0x01a61310-0x01a6133a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cSetInfoOmCtrl::cLinkParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::cLinkParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSetInfoOmCtrl::cLinkParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1355,6 +1341,8 @@ __attribute__((weak)) void cSetInfoOmCtrl::cLinkParam::createProperty(MtProperty
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmCtrl::cLinkParam::MyDTI cSetInfoOmCtrl::cLinkParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bffb-0x0056c038 (called at cSetInfoOm.cpp:3029)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bffb-0x0056c038 (called at cSetInfoOm.h:911)
@@ -1363,7 +1351,7 @@ __attribute__((weak)) void cSetInfoOmCtrl::cLinkParam::createProperty(MtProperty
 // Address: 0x00569380 - 0x005693e1 (97 bytes)
 MtObject* cSetInfoOmCtrl::cLinkParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSetInfoOmCtrl::cLinkParam;
+    return new (16u) cSetInfoOmCtrl::cLinkParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1443,7 +1431,7 @@ __attribute__((weak)) void cSetInfoOmDoor::createToolProperty(MtPropertyList& s)
 // Address: 0x00563860 - 0x00563865 (5 bytes)
 MtUI* cSetInfoOmDoor::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00563870 - 0x00563940 (208 bytes)
@@ -1451,27 +1439,27 @@ bool cSetInfoOmDoor::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mbPRT);
+    nDDOIO::readData(r, mbPRT);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mPRTPos = r.readV3();
-    ::nDDOIO::readData(r, this->mPRTScale);
+    mPRTPos = r.readV3();
+    nDDOIO::readData(r, mPRTScale);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextType);
+    nDDOIO::readData(r, mTextType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextQuestNo);
+    nDDOIO::readData(r, mTextQuestNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextNo);
+    nDDOIO::readData(r, mTextNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mQuestID);
+    nDDOIO::readData(r, mQuestID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->::cSetInfoOm::mQuestFlag);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mQuestFlag);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00563940 - 0x00563a3b (251 bytes)
@@ -1489,24 +1477,59 @@ __attribute__((weak)) bool cSetInfoOmDoor::applyInfo(cUnit* pu) const {
 // Address: 0x00563aa0 - 0x00563b43 (163 bytes)
 bool cSetInfoOmDoor::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mbPRT = this->mbPRT;
-    param.mPRTPos = this->mPRTPos;
-    param.mPRTScale = this->mPRTScale;
-    param.mTextType = this->mTextType;
-    param.mTextQuestNo = this->mTextQuestNo;
-    param.mTextNo = this->mTextNo;
-    param.mQuestID = this->mQuestID;
-    param.mQuestFlag = this->::cSetInfoOm::mQuestFlag;
+    this->cSetInfoOm::applyParam(param);
+    param.mbPRT = mbPRT;
+    param.mPRTPos = mPRTPos;
+    param.mPRTScale = mPRTScale;
+    param.mTextType = mTextType;
+    param.mTextQuestNo = mTextQuestNo;
+    param.mTextNo = mTextNo;
+    param.mQuestID = mQuestID;
+    param.mQuestFlag = mQuestFlag;
     return true;
 }
 
 // Address: 0x00563b50 - 0x00563be5 (149 bytes)
-__attribute__((weak)) void cSetInfoOmDoor::copy(cSetInfo* p) {
-    // local: cSetInfoOmDoor* pSic;
-    DDON_STUB("cSetInfoOmDoor::copy")
-    /* stub */
+void cSetInfoOmDoor::copy(cSetInfo* p) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a vector copy split into members it may not keep apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmDoor::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x84 from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8c from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cSetInfo*
+    this->cSetInfoOm::copy(p);
+    // inferred: a temporary for the result of the call at 0x563b68, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x563b76 carries; no location-less local in scope fits
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmDoor::DTI) + 8);
+    // inferred: the value the loop at 0x563b76 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmDoor* pSic = static_cast<cSetInfoOmDoor*>(p);
+            mbPRT = pSic->mbPRT;
+            mPRTPos.x = pSic->mPRTPos.x;
+            mPRTPos.y = pSic->mPRTPos.y;
+            mPRTPos.z = pSic->mPRTPos.z;
+            mPRTPos.pad_ = 0.0f;
+            mPRTScale = pSic->mPRTScale;
+            mTextType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 132);
+            mTextQuestNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 136);
+            mTextNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 140);
+            mQuestID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 144);
+            mQuestFlag = pSic->::cSetInfoOm::mQuestFlag;
+            return;
+        } else {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmDoor::MyDTI cSetInfoOmDoor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bcdd-0x0056bd16 (called at cSetInfoOm.cpp:1126)
@@ -1598,16 +1621,16 @@ bool cSetInfoOmElfSW::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mPLCount);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mPLCount);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00566120 - 0x00566149 (41 bytes)
 bool cSetInfoOmElfSW::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mPLCount);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mPLCount);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00566150 - 0x005661b0 (96 bytes)
@@ -1619,36 +1642,37 @@ __attribute__((weak)) bool cSetInfoOmElfSW::applyInfo(cUnit* pu) const {
 // Address: 0x005661b0 - 0x005661d3 (35 bytes)
 bool cSetInfoOmElfSW::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mPLCount = this->mPLCount;
+    this->cSetInfoOm::applyParam(param);
+    param.mPLCount = mPLCount;
     return true;
 }
 
 // Address: 0x005661e0 - 0x00566223 (67 bytes)
 void cSetInfoOmElfSW::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmElfSW* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmElfSW::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x5661f8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x566206 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmElfSW::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmElfSW::DTI.mName;
     // inferred: the value the loop at 0x566206 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mPLCount = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmElfSW* pSic = static_cast<cSetInfoOmElfSW*>(p);
+            mPLCount = pSic->mPLCount;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmElfSW::MyDTI cSetInfoOmElfSW::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bdfa-0x0056be33 (called at cSetInfoOm.cpp:1994)
@@ -1740,16 +1764,16 @@ bool cSetInfoOmFall::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mFallHeight);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mFallHeight);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00566510 - 0x0056653b (43 bytes)
 bool cSetInfoOmFall::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mFallHeight);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mFallHeight);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00566540 - 0x005665a0 (96 bytes)
@@ -1761,17 +1785,37 @@ __attribute__((weak)) bool cSetInfoOmFall::applyInfo(cUnit* pu) const {
 // Address: 0x005665a0 - 0x005665c7 (39 bytes)
 bool cSetInfoOmFall::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mFallHeight = this->mFallHeight;
+    this->cSetInfoOm::applyParam(param);
+    param.mFallHeight = mFallHeight;
     return true;
 }
 
 // Address: 0x005665d0 - 0x00566617 (71 bytes)
-__attribute__((weak)) void cSetInfoOmFall::copy(cSetInfo* p) {
-    // local: cSetInfoOmFall* pSic;
-    DDON_STUB("cSetInfoOmFall::copy")
-    /* stub */
+void cSetInfoOmFall::copy(cSetInfo* p) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
+    // inferred: a temporary for the result of the call at 0x5665e8, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x5665f6 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = cSetInfoOmFall::DTI.mName;
+    // inferred: the value the loop at 0x5665f6 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmFall* pSic = static_cast<cSetInfoOmFall*>(p);
+            mFallHeight = pSic->mFallHeight;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmFall::MyDTI cSetInfoOmFall::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056be33-0x0056be6c (called at cSetInfoOm.cpp:2101)
@@ -1861,7 +1905,7 @@ __attribute__((weak)) void cSetInfoOmGather::createToolProperty(MtPropertyList& 
 // Address: 0x00562130 - 0x00562135 (5 bytes)
 MtUI* cSetInfoOmGather::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00562140 - 0x005621a7 (103 bytes)
@@ -1874,16 +1918,16 @@ __attribute__((weak)) bool cSetInfoOmGather::load(MtDataReader& r) {
 bool cSetInfoOmGather::save(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeU32(this->mItemListID);
-    w.writeU32(this->mGatheringType);
+    w.writeU32(mItemListID);
+    w.writeU32(mGatheringType);
     // inferred: a temporary for the value the load at 0x5621da read, used once; no DWARF local holds it
-    bool t0 = this->mIsGatherEnemy;
+    bool t0 = mIsGatherEnemy;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    return this->::cSetInfoOm::save(w);
+    w.mSeekPt = w.mSeekPt + 1u;
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00562220 - 0x00562280 (96 bytes)
@@ -1895,39 +1939,33 @@ __attribute__((weak)) bool cSetInfoOmGather::applyInfo(cUnit* pu) const {
 // Address: 0x00562280 - 0x005622ad (45 bytes)
 bool cSetInfoOmGather::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mGatheringType = this->mGatheringType;
-    param.mIsGatherEnemy = this->mIsGatherEnemy;
+    this->cSetInfoOm::applyParam(param);
+    param.mGatheringType = mGatheringType;
+    param.mIsGatherEnemy = mIsGatherEnemy;
     return true;
 }
 
 // Address: 0x005622b0 - 0x0056230a (90 bytes)
 void cSetInfoOmGather::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmGather* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmGather::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x78 from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x7a from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned short used as s16
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x5622c8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x5622d6 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmGather::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmGather::DTI.mName;
     // inferred: the value the loop at 0x5622d6 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mItemListID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
-            this->mGatheringType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(116));
-            this->mIsGatherEnemy = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(120)));
-            this->mEnemyGroupNo = static_cast<s16>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(122)));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmGather* pSic = static_cast<cSetInfoOmGather*>(p);
+            mItemListID = pSic->mItemListID;
+            mGatheringType = pSic->mGatheringType;
+            mIsGatherEnemy = pSic->mIsGatherEnemy;
+            mEnemyGroupNo = pSic->mEnemyGroupNo;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -1937,6 +1975,8 @@ void cSetInfoOmGather::copy(cSetInfo* p) {
 
 // No out-of-line body: no code in the ELF
 // void cSetInfoOmGather::setGatheringType(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmGather::MyDTI cSetInfoOmGather::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bbf9-0x0056bc32 (called at cSetInfoOm.cpp:594)
@@ -2028,16 +2068,16 @@ bool cSetInfoOmHakuryuu::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mStoneLevel);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mStoneLevel);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00568320 - 0x00568349 (41 bytes)
 bool cSetInfoOmHakuryuu::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mStoneLevel);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mStoneLevel);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00568350 - 0x005683b0 (96 bytes)
@@ -2049,36 +2089,37 @@ __attribute__((weak)) bool cSetInfoOmHakuryuu::applyInfo(cUnit* pu) const {
 // Address: 0x005683b0 - 0x005683d3 (35 bytes)
 bool cSetInfoOmHakuryuu::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mStoneLevel = this->mStoneLevel;
+    this->cSetInfoOm::applyParam(param);
+    param.mStoneLevel = mStoneLevel;
     return true;
 }
 
 // Address: 0x005683e0 - 0x00568423 (67 bytes)
 void cSetInfoOmHakuryuu::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmHakuryuu* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmHakuryuu::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x5683f8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x568406 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmHakuryuu::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmHakuryuu::DTI.mName;
     // inferred: the value the loop at 0x568406 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mStoneLevel = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmHakuryuu* pSic = static_cast<cSetInfoOmHakuryuu*>(p);
+            mStoneLevel = pSic->mStoneLevel;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmHakuryuu::MyDTI cSetInfoOmHakuryuu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bf50-0x0056bf89 (called at cSetInfoOm.cpp:2722)
@@ -2168,7 +2209,7 @@ __attribute__((weak)) void cSetInfoOmHeal::createToolProperty(MtPropertyList& s)
 // Address: 0x00562a60 - 0x00562a65 (5 bytes)
 MtUI* cSetInfoOmHeal::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00562a70 - 0x00562a99 (41 bytes)
@@ -2176,16 +2217,16 @@ bool cSetInfoOmHeal::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHealType);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mHealType);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00562aa0 - 0x00562ac9 (41 bytes)
 bool cSetInfoOmHeal::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mHealType);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mHealType);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00562ad0 - 0x00562b30 (96 bytes)
@@ -2197,36 +2238,37 @@ __attribute__((weak)) bool cSetInfoOmHeal::applyInfo(cUnit* pu) const {
 // Address: 0x00562b30 - 0x00562b53 (35 bytes)
 bool cSetInfoOmHeal::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mHealType = this->mHealType;
+    this->cSetInfoOm::applyParam(param);
+    param.mHealType = mHealType;
     return true;
 }
 
 // Address: 0x00562b60 - 0x00562ba3 (67 bytes)
 void cSetInfoOmHeal::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmHeal* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmHeal::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x562b78, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x562b86 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmHeal::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmHeal::DTI.mName;
     // inferred: the value the loop at 0x562b86 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mHealType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmHeal* pSic = static_cast<cSetInfoOmHeal*>(p);
+            mHealType = pSic->mHealType;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmHeal::MyDTI cSetInfoOmHeal::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bc6b-0x0056bca4 (called at cSetInfoOm.cpp:892)
@@ -2316,7 +2358,7 @@ __attribute__((weak)) void cSetInfoOmLadder::createToolProperty(MtPropertyList& 
 // Address: 0x00562e60 - 0x00562e65 (5 bytes)
 MtUI* cSetInfoOmLadder::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x00562e70 - 0x00562e99 (41 bytes)
@@ -2324,16 +2366,16 @@ bool cSetInfoOmLadder::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mHeight);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mHeight);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00562ea0 - 0x00562ec9 (41 bytes)
 bool cSetInfoOmLadder::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mHeight);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mHeight);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00562ed0 - 0x00562f30 (96 bytes)
@@ -2345,36 +2387,37 @@ __attribute__((weak)) bool cSetInfoOmLadder::applyInfo(cUnit* pu) const {
 // Address: 0x00562f30 - 0x00562f53 (35 bytes)
 bool cSetInfoOmLadder::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mHeight = this->mHeight;
+    this->cSetInfoOm::applyParam(param);
+    param.mHeight = mHeight;
     return true;
 }
 
 // Address: 0x00562f60 - 0x00562fa3 (67 bytes)
 void cSetInfoOmLadder::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmLadder* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmLadder::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x562f78, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x562f86 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmLadder::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmLadder::DTI.mName;
     // inferred: the value the loop at 0x562f86 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mHeight = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmLadder* pSic = static_cast<cSetInfoOmLadder*>(p);
+            mHeight = pSic->mHeight;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmLadder::MyDTI cSetInfoOmLadder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bca4-0x0056bcdd (called at cSetInfoOm.cpp:1006)
@@ -2466,14 +2509,14 @@ bool cSetInfoOmLever::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mbReqLever);
+    nDDOIO::readData(r, mbReqLever);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mCamEvNo);
+    nDDOIO::readData(r, mCamEvNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mFSMCamEv);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mFSMCamEv);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00567ed0 - 0x00567f34 (100 bytes)
@@ -2481,15 +2524,15 @@ bool cSetInfoOmLever::save(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: a temporary for the value the load at 0x567ee0 read, used once; no DWARF local holds it
-    bool t0 = this->mbReqLever;
+    bool t0 = mbReqLever;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    w.writeS32(this->mCamEvNo);
-    w.writeU64(this->mFSMCamEv.::cResPathBase::mId);
-    return this->::cSetInfoOm::save(w);
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.writeS32(mCamEvNo);
+    w.writeU64(mFSMCamEv.mId);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00567f40 - 0x00567fa0 (96 bytes)
@@ -2501,43 +2544,41 @@ __attribute__((weak)) bool cSetInfoOmLever::applyInfo(cUnit* pu) const {
 // Address: 0x00567fa0 - 0x00567fd8 (56 bytes)
 bool cSetInfoOmLever::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mbReqLever = this->mbReqLever;
-    param.mLeverCamEvNo = this->mCamEvNo;
-    param.mFSMCamEv.::cResPathBase::mId = this->mFSMCamEv.::cResPathBase::mId;
+    this->cSetInfoOm::applyParam(param);
+    param.mbReqLever = mbReqLever;
+    param.mLeverCamEvNo = mCamEvNo;
+    param.mFSMCamEv.mId = mFSMCamEv.mId;
     return true;
 }
 
 // Address: 0x00567fe0 - 0x00568032 (82 bytes)
 void cSetInfoOmLever::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmLever* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmLever::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x6e from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x567ff8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x568006 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmLever::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmLever::DTI.mName;
     // inferred: the value the loop at 0x568006 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mbReqLever = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(110)));
-            this->mCamEvNo = static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112)));
-            this->mFSMCamEv.::cResPathBase::mId = static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(p) + static_cast<long>(120)));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmLever* pSic = static_cast<cSetInfoOmLever*>(p);
+            mbReqLever = pSic->mbReqLever;
+            mCamEvNo = pSic->mCamEvNo;
+            mFSMCamEv.mId = pSic->mFSMCamEv.::cResPathBase::mId;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmLever::MyDTI cSetInfoOmLever::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bf17-0x0056bf50 (called at cSetInfoOm.cpp:2602)
@@ -2627,14 +2668,14 @@ __attribute__((weak)) void cSetInfoOmNav::createToolProperty(MtPropertyList& s) 
 // Address: 0x005625d0 - 0x005625d5 (5 bytes)
 MtUI* cSetInfoOmNav::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x005625e0 - 0x0056261d (61 bytes)
 bool cSetInfoOmNav::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNavOBBExtent = r.readV3();
-    return this->::cSetInfoOm::load(r);
+    mNavOBBExtent = r.readV3();
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x00562620 - 0x00562690 (112 bytes)
@@ -2652,17 +2693,40 @@ __attribute__((weak)) bool cSetInfoOmNav::applyInfo(cUnit* pu) const {
 // Address: 0x005626f0 - 0x0056273d (77 bytes)
 bool cSetInfoOmNav::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mNavOBBExtent = this->mNavOBBExtent;
+    this->cSetInfoOm::applyParam(param);
+    param.mNavOBBExtent = mNavOBBExtent;
     return true;
 }
 
 // Address: 0x00562740 - 0x005627a5 (101 bytes)
-__attribute__((weak)) void cSetInfoOmNav::copy(cSetInfo* p) {
-    // local: cSetInfoOmNav* pSic;
-    DDON_STUB("cSetInfoOmNav::copy")
-    /* stub */
+void cSetInfoOmNav::copy(cSetInfo* p) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
+    // inferred: a temporary for the result of the call at 0x562758, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x562766 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = cSetInfoOmNav::DTI.mName;
+    // inferred: the value the loop at 0x562766 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, its location optimized out, declared in the lexical block that holds the access
+            cSetInfoOmNav* pSic = static_cast<cSetInfoOmNav*>(p);
+            mNavOBBExtent.x = pSic->mNavOBBExtent.x;
+            mNavOBBExtent.y = pSic->mNavOBBExtent.y;
+            mNavOBBExtent.z = pSic->mNavOBBExtent.z;
+            mNavOBBExtent.pad_ = 0.0f;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmNav::MyDTI cSetInfoOmNav::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bc32-0x0056bc6b (called at cSetInfoOm.cpp:776)
@@ -2759,41 +2823,41 @@ __attribute__((weak)) bool cSetInfoOmRange::load(MtDataReader& r) {
 bool cSetInfoOmRange::save(MtDataWriter& w) {
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeF32(this->mRange);
-    w.writeU32(this->mGrp);
+    w.writeF32(mRange);
+    w.writeU32(mGrp);
     // inferred: a temporary for the value the load at 0x566bec read, used once; no DWARF local holds it
-    bool t0 = this->mIsAll;
+    bool t0 = mIsAll;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
         // inferred: a temporary for the value the load at 0x566c0e read, used twice; no DWARF local holds it
         u32 t1 = w.mSeekPt;
-        w.mSeekPt = t1 + static_cast<u32>(1);
+        w.mSeekPt = t1 + 1u;
         // inferred: a temporary for the value the load at 0x566c16 read, used once; no DWARF local holds it
-        bool t2 = this->mIsOneTime;
+        bool t2 = mIsOneTime;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
             w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t2);
         } else {
-            w.mBuffer[t1 + static_cast<u32>(1)] = static_cast<unsigned char>(t2);
+            w.mBuffer[t1 + 1u] = static_cast<unsigned char>(t2);
         }
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        return this->::cSetInfoOm::save(w);
+        w.mSeekPt = w.mSeekPt + 1u;
+        return this->cSetInfoOm::save(w);
     } else {
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
         // inferred: a temporary for the value the load at 0x566c0e read, used twice; no DWARF local holds it
         u32 t1 = w.mSeekPt;
-        w.mSeekPt = t1 + static_cast<u32>(1);
+        w.mSeekPt = t1 + 1u;
         // inferred: a temporary for the value the load at 0x566c16 read, used once; no DWARF local holds it
-        bool t2 = this->mIsOneTime;
+        bool t2 = mIsOneTime;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
             w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t2);
         } else {
-            w.mBuffer[t1 + static_cast<u32>(1)] = static_cast<unsigned char>(t2);
+            w.mBuffer[t1 + 1u] = static_cast<unsigned char>(t2);
         }
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        return this->::cSetInfoOm::save(w);
+        w.mSeekPt = w.mSeekPt + 1u;
+        return this->cSetInfoOm::save(w);
     }
 }
 
@@ -2806,20 +2870,43 @@ __attribute__((weak)) bool cSetInfoOmRange::applyInfo(cUnit* pu) const {
 // Address: 0x00566cb0 - 0x00566cf5 (69 bytes)
 bool cSetInfoOmRange::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mRange = this->mRange;
-    param.mGrp = this->mGrp;
-    param.mIsAll = this->mIsAll;
-    param.mIsOneTime = this->mIsOneTime;
+    this->cSetInfoOm::applyParam(param);
+    param.mRange = mRange;
+    param.mGrp = mGrp;
+    param.mIsAll = mIsAll;
+    param.mIsOneTime = mIsOneTime;
     return true;
 }
 
 // Address: 0x00566d00 - 0x00566d5c (92 bytes)
-__attribute__((weak)) void cSetInfoOmRange::copy(cSetInfo* p) {
-    // local: cSetInfoOmRange* pSic;
-    DDON_STUB("cSetInfoOmRange::copy")
-    /* stub */
+void cSetInfoOmRange::copy(cSetInfo* p) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
+    // inferred: a temporary for the result of the call at 0x566d18, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x566d26 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = cSetInfoOmRange::DTI.mName;
+    // inferred: the value the loop at 0x566d26 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmRange* pSic = static_cast<cSetInfoOmRange*>(p);
+            mRange = pSic->mRange;
+            mGrp = pSic->mGrp;
+            mIsAll = pSic->mIsAll;
+            mIsOneTime = pSic->mIsOneTime;
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmRange::MyDTI cSetInfoOmRange::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056be6c-0x0056bea5 (called at cSetInfoOm.cpp:2208)
@@ -2909,7 +2996,7 @@ __attribute__((weak)) void cSetInfoOmText::createToolProperty(MtPropertyList& s)
 // Address: 0x00567190 - 0x00567195 (5 bytes)
 MtUI* cSetInfoOmText::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x005671a0 - 0x005671e3 (67 bytes)
@@ -2917,26 +3004,26 @@ bool cSetInfoOmText::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextNo);
+    nDDOIO::readData(r, mTextNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextQuestNo);
+    nDDOIO::readData(r, mTextQuestNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextType);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mTextType);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x005671f0 - 0x00567233 (67 bytes)
 bool cSetInfoOmText::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mTextNo);
+    nDDOIO::writeData(w, mTextNo);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mTextQuestNo);
+    nDDOIO::writeData(w, mTextQuestNo);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mTextType);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mTextType);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00567240 - 0x005672a0 (96 bytes)
@@ -2948,42 +3035,41 @@ __attribute__((weak)) bool cSetInfoOmText::applyInfo(cUnit* pu) const {
 // Address: 0x005672a0 - 0x005672d7 (55 bytes)
 bool cSetInfoOmText::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mTextNo = this->mTextNo;
-    param.mTextQuestNo = this->mTextQuestNo;
-    param.mTextType = this->mTextType;
+    this->cSetInfoOm::applyParam(param);
+    param.mTextNo = mTextNo;
+    param.mTextQuestNo = mTextQuestNo;
+    param.mTextType = mTextType;
     return true;
 }
 
 // Address: 0x005672e0 - 0x00567331 (81 bytes)
 void cSetInfoOmText::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmText* pSic;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmText::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x5672f8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x567306 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmText::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmText::DTI.mName;
     // inferred: the value the loop at 0x567306 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mTextNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
-            this->mTextQuestNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(116));
-            this->mTextType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(120));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmText* pSic = static_cast<cSetInfoOmText*>(p);
+            mTextNo = pSic->mTextNo;
+            mTextQuestNo = pSic->mTextQuestNo;
+            mTextType = pSic->mTextType;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmText::MyDTI cSetInfoOmText::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bea5-0x0056bede (called at cSetInfoOm.cpp:2336)
@@ -3062,7 +3148,7 @@ cSetInfoOmTreasureBox::~cSetInfoOmTreasureBox() {
 // Address: 0x00565c30 - 0x00565c35 (5 bytes)
 void cSetInfoOmTreasureBox::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOmGather::createProperty(s);
+    this->cSetInfoOmGather::createProperty(s);
 }
 
 // Address: 0x00565c40 - 0x00565c41 (1 bytes)
@@ -3080,16 +3166,16 @@ __attribute__((weak)) bool cSetInfoOmTreasureBox::load(MtDataReader& r) {
 bool cSetInfoOmTreasureBox::save(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeU32(this->::cSetInfoOmGather::mItemListID);
-    w.writeU32(this->::cSetInfoOmGather::mGatheringType);
+    w.writeU32(mItemListID);
+    w.writeU32(mGatheringType);
     // inferred: a temporary for the value the load at 0x565cea read, used once; no DWARF local holds it
-    bool t0 = this->::cSetInfoOmGather::mIsGatherEnemy;
+    bool t0 = mIsGatherEnemy;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    return this->::cSetInfoOm::save(w);
+    w.mSeekPt = w.mSeekPt + 1u;
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x00565d30 - 0x00565dae (126 bytes)
@@ -3101,9 +3187,9 @@ __attribute__((weak)) bool cSetInfoOmTreasureBox::applyInfo(cUnit* pu) const {
 // Address: 0x00565db0 - 0x00565ddd (45 bytes)
 bool cSetInfoOmTreasureBox::applyParam(cOmControl::InputLot& param) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mGatheringType = this->::cSetInfoOmGather::mGatheringType;
-    param.mIsGatherEnemy = this->::cSetInfoOmGather::mIsGatherEnemy;
+    this->cSetInfoOm::applyParam(param);
+    param.mGatheringType = mGatheringType;
+    param.mIsGatherEnemy = mIsGatherEnemy;
     return true;
 }
 
@@ -3117,28 +3203,30 @@ void cSetInfoOmTreasureBox::copy(cSetInfo* p) {
     // inferred: a value cast to the type its use takes: unsigned char used as bool
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x7a from cSetInfo*
     // inferred: a value cast to the type its use takes: unsigned short used as s16
-    this->::cSetInfoOm::copy(p);
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x565df8, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x565e06 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmGather::DTI) + static_cast<long>(8));
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoOmGather::DTI) + 8);
     // inferred: the value the loop at 0x565e06 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->::cSetInfoOmGather::mItemListID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
-            this->::cSetInfoOmGather::mGatheringType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(116));
-            this->::cSetInfoOmGather::mIsGatherEnemy = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(120)));
-            this->::cSetInfoOmGather::mEnemyGroupNo = static_cast<s16>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + static_cast<long>(122)));
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+            mItemListID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 112);
+            mGatheringType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 116);
+            mIsGatherEnemy = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + 120));
+            mEnemyGroupNo = static_cast<s16>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(p) + 122));
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
             } else {
                 break;
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmTreasureBox::MyDTI cSetInfoOmTreasureBox::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bdc1-0x0056bdfa (called at cSetInfoOm.cpp:1907)
@@ -3257,6 +3345,8 @@ __attribute__((weak)) void cSetInfoOmWall::copy(cSetInfo* p) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmWall::MyDTI cSetInfoOmWall::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bede-0x0056bf17 (called at cSetInfoOm.cpp:2480)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bede-0x0056bf17 (called at cSetInfoOm.h:713)
@@ -3346,7 +3436,7 @@ __attribute__((weak)) void cSetInfoOmWarp::createToolProperty(MtPropertyList& s)
 // Address: 0x005651c0 - 0x005651c5 (5 bytes)
 MtUI* cSetInfoOmWarp::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSetInfoCoord::createUI(prop);
+    return this->cSetInfoCoord::createUI(prop);
 }
 
 // Address: 0x005651d0 - 0x005652ce (254 bytes)
@@ -3354,51 +3444,51 @@ bool cSetInfoOmWarp::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x5651ea, used once; no DWARF local holds it
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&this->mStageNo[0]), t0 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mStageNo[0]), t0 * 4u);
     // inferred: a temporary for the result of the call at 0x56520a, used once; no DWARF local holds it
     u32 t1 = r.readU32();
-    r.read(static_cast<void*>(&this->mStartPosNo[0]), t1 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mStartPosNo[0]), t1 * 4u);
     // inferred: a temporary for the result of the call at 0x56522d, used once; no DWARF local holds it
     u32 t2 = r.readU32();
-    r.read(static_cast<void*>(&this->mQuestNo[0]), t2 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mQuestNo[0]), t2 * 4u);
     // inferred: a temporary for the result of the call at 0x565250, used once; no DWARF local holds it
     u32 t3 = r.readU32();
-    r.read(static_cast<void*>(&this->mFlagNo[0]), t3 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&mFlagNo[0]), t3 * 4u);
     // inferred: a temporary for the result of the call at 0x565273, used once; no DWARF local holds it
     u32 t4 = r.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    r.read(static_cast<void*>(&this->mSpotId[0]), t4 * static_cast<u32>(4));
-    ::nDDOIO::readData(r, this->mTextType);
+    r.read(static_cast<void*>(&mSpotId[0]), t4 * 4u);
+    nDDOIO::readData(r, mTextType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextQuestNo);
+    nDDOIO::readData(r, mTextQuestNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mTextNo);
-    return this->::cSetInfoOm::load(r);
+    nDDOIO::readData(r, mTextNo);
+    return this->cSetInfoOm::load(r);
 }
 
 // Address: 0x005652d0 - 0x005653dd (269 bytes)
 bool cSetInfoOmWarp::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(static_cast<u32>(3));
-    w.write(static_cast<const void*>(&this->mStageNo[0]), static_cast<u32>(12));
-    w.writeU32(static_cast<u32>(3));
-    w.write(static_cast<const void*>(&this->mStartPosNo[0]), static_cast<u32>(12));
-    w.writeU32(static_cast<u32>(3));
-    w.write(static_cast<const void*>(&this->mQuestNo[0]), static_cast<u32>(12));
-    w.writeU32(static_cast<u32>(3));
-    w.write(static_cast<const void*>(&this->mFlagNo[0]), static_cast<u32>(12));
-    w.writeU32(static_cast<u32>(3));
+    w.writeU32(3u);
+    w.write(static_cast<const void*>(&mStageNo[0]), 12u);
+    w.writeU32(3u);
+    w.write(static_cast<const void*>(&mStartPosNo[0]), 12u);
+    w.writeU32(3u);
+    w.write(static_cast<const void*>(&mQuestNo[0]), 12u);
+    w.writeU32(3u);
+    w.write(static_cast<const void*>(&mFlagNo[0]), 12u);
+    w.writeU32(3u);
     // inferred: argument from a callee-saved register at the copy's entry
-    w.write(static_cast<const void*>(&this->mSpotId[0]), static_cast<u32>(12));
-    ::nDDOIO::writeData(w, this->mTextType);
+    w.write(static_cast<const void*>(&mSpotId[0]), 12u);
+    nDDOIO::writeData(w, mTextType);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mTextQuestNo);
+    nDDOIO::writeData(w, mTextQuestNo);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->mTextNo);
-    return this->::cSetInfoOm::save(w);
+    nDDOIO::writeData(w, mTextNo);
+    return this->cSetInfoOm::save(w);
 }
 
 // Address: 0x005653e0 - 0x00565440 (96 bytes)
@@ -3411,82 +3501,64 @@ __attribute__((weak)) bool cSetInfoOmWarp::applyInfo(cUnit* pu) const {
 bool cSetInfoOmWarp::applyParam(cOmControl::InputLot& param) const {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSetInfoOm::applyParam(param);
-    param.mStageNo[0] = this->mStageNo[0];
-    param.mStartPosNo[0] = this->mStartPosNo[0];
-    param.mQuestNo[0] = this->mQuestNo[0];
-    param.mQuestFlagNo[0] = this->mFlagNo[0];
-    param.mSpotId[0] = this->mSpotId[0];
-    param.mStageNo[1] = this->mStageNo[1];
-    param.mStartPosNo[1] = this->mStartPosNo[1];
-    param.mQuestNo[1] = this->mQuestNo[1];
-    param.mQuestFlagNo[1] = this->mFlagNo[1];
-    param.mSpotId[1] = this->mSpotId[1];
-    param.mStageNo[2] = this->mStageNo[2];
-    param.mStartPosNo[2] = this->mStartPosNo[2];
-    param.mQuestNo[2] = this->mQuestNo[2];
-    param.mQuestFlagNo[2] = this->mFlagNo[2];
-    param.mSpotId[2] = this->mSpotId[2];
-    param.mTextType = this->mTextType;
-    param.mTextQuestNo = this->mTextQuestNo;
-    param.mTextNo = this->mTextNo;
+    this->cSetInfoOm::applyParam(param);
+    param.mStageNo[0] = mStageNo[0];
+    param.mStartPosNo[0] = mStartPosNo[0];
+    param.mQuestNo[0] = mQuestNo[0];
+    param.mQuestFlagNo[0] = mFlagNo[0];
+    param.mSpotId[0] = mSpotId[0];
+    param.mStageNo[1] = mStageNo[1];
+    param.mStartPosNo[1] = mStartPosNo[1];
+    param.mQuestNo[1] = mQuestNo[1];
+    param.mQuestFlagNo[1] = mFlagNo[1];
+    param.mSpotId[1] = mSpotId[1];
+    param.mStageNo[2] = mStageNo[2];
+    param.mStartPosNo[2] = mStartPosNo[2];
+    param.mQuestNo[2] = mQuestNo[2];
+    param.mQuestFlagNo[2] = mFlagNo[2];
+    param.mSpotId[2] = mSpotId[2];
+    param.mTextType = mTextType;
+    param.mTextQuestNo = mTextQuestNo;
+    param.mTextNo = mTextNo;
     return true;
 }
 
 // Address: 0x00565540 - 0x00565651 (273 bytes)
 void cSetInfoOmWarp::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoOmWarp* pSic;
     // DWARF local not rendered: u32 i;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoOmWarp::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x7c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x94 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa0 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x98 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa4 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x84 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x9c from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa8 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xac from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb4 from cSetInfo*
-    this->::cSetInfoOm::copy(p);
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->cSetInfoOm::copy(p);
     // inferred: a temporary for the result of the call at 0x565558, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x565566 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoOmWarp::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = cSetInfoOmWarp::DTI.mName;
     // inferred: the value the loop at 0x565566 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mStageNo[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(112));
-            this->mStartPosNo[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(124));
-            this->mQuestNo[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(136));
-            this->mFlagNo[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(148));
-            this->mSpotId[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(160));
-            this->mStageNo[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(116));
-            this->mStartPosNo[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(128));
-            this->mQuestNo[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(140));
-            this->mFlagNo[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(152));
-            this->mSpotId[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(164));
-            this->mStageNo[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(120));
-            this->mStartPosNo[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(132));
-            this->mQuestNo[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(144));
-            this->mFlagNo[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(156));
-            this->mSpotId[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(168));
-            this->mTextType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(172));
-            this->mTextQuestNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(176));
-            this->mTextNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(180));
+        if (v0_1 == v0_0->mName) {
+            // inferred: a downcast named by the DWARF local the source declared: pSic, located in the register the access reads through
+            cSetInfoOmWarp* pSic = static_cast<cSetInfoOmWarp*>(p);
+            mStageNo[0] = pSic->mStageNo[0];
+            mStartPosNo[0] = pSic->mStartPosNo[0];
+            mQuestNo[0] = pSic->mQuestNo[0];
+            mFlagNo[0] = pSic->mFlagNo[0];
+            mSpotId[0] = pSic->mSpotId[0];
+            mStageNo[1] = pSic->mStageNo[1];
+            mStartPosNo[1] = pSic->mStartPosNo[1];
+            mQuestNo[1] = pSic->mQuestNo[1];
+            mFlagNo[1] = pSic->mFlagNo[1];
+            mSpotId[1] = pSic->mSpotId[1];
+            mStageNo[2] = pSic->mStageNo[2];
+            mStartPosNo[2] = pSic->mStartPosNo[2];
+            mQuestNo[2] = pSic->mQuestNo[2];
+            mFlagNo[2] = pSic->mFlagNo[2];
+            mSpotId[2] = pSic->mSpotId[2];
+            mTextType = pSic->mTextType;
+            mTextQuestNo = pSic->mTextQuestNo;
+            mTextNo = pSic->mTextNo;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -3497,73 +3569,75 @@ void cSetInfoOmWarp::copy(cSetInfo* p) {
 // Address: 0x01a60e30 - 0x01a60e37 (7 bytes)
 u32 cSetInfoOmWarp::getStageNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo[idx];
+    return mStageNo[idx];
 }
 
 // Address: 0x01a60e40 - 0x01a60e47 (7 bytes)
 void cSetInfoOmWarp::setStageNo(u32 val, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo[idx] = val;
+    mStageNo[idx] = val;
 }
 
 // Address: 0x01a60e70 - 0x01a60e77 (7 bytes)
 u32 cSetInfoOmWarp::getStartPosNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStartPosNo[idx];
+    return mStartPosNo[idx];
 }
 
 // Address: 0x01a60e80 - 0x01a60e87 (7 bytes)
 void cSetInfoOmWarp::setStartPosNo(u32 val, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStartPosNo[idx] = val;
+    mStartPosNo[idx] = val;
 }
 
 // Address: 0x01a60e90 - 0x01a60e9a (10 bytes)
 u32 cSetInfoOmWarp::getQuestNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestNo[idx];
+    return mQuestNo[idx];
 }
 
 // Address: 0x01a60ea0 - 0x01a60eaa (10 bytes)
 void cSetInfoOmWarp::setQuestNo(u32 val, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuestNo[idx] = val;
+    mQuestNo[idx] = val;
 }
 
 // Address: 0x01a60eb0 - 0x01a60eba (10 bytes)
 u32 cSetInfoOmWarp::getFlagNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlagNo[idx];
+    return mFlagNo[idx];
 }
 
 // Address: 0x01a60ec0 - 0x01a60eca (10 bytes)
 void cSetInfoOmWarp::setFlagNo(u32 val, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlagNo[idx] = val;
+    mFlagNo[idx] = val;
 }
 
 // Address: 0x01a60ed0 - 0x01a60eda (10 bytes)
 u32 cSetInfoOmWarp::getSpotId(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpotId[idx];
+    return mSpotId[idx];
 }
 
 // Address: 0x01a60ee0 - 0x01a60eea (10 bytes)
 void cSetInfoOmWarp::setSpotId(u32 val, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpotId[idx] = val;
+    mSpotId[idx] = val;
 }
 
 // Address: 0x01a60e50 - 0x01a60e56 (6 bytes)
 u32 cSetInfoOmWarp::getDataNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x01a60e60 - 0x01a60e61 (1 bytes)
 __attribute__((weak)) void cSetInfoOmWarp::setDataNum(u32) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoOmWarp::MyDTI cSetInfoOmWarp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSetInfoOm.cpp at 0x0056bd4f-0x0056bd88 (called at cSetInfoOm.cpp:1530)

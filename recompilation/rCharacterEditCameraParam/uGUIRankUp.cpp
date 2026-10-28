@@ -29,7 +29,7 @@ const MtDTI& uGUIRankUp::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIRankUp::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIRankUp::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIRankUp::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIRankUp::getAllocator() {
 // Address: 0x00c1e0b0 - 0x00c1e0f0 (64 bytes)
 void* uGUIRankUp::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIRankUp::getAllocator()->memAlloc(sz, align, ::uGUIRankUp::DTI.::MtDTI::getID());
+    return uGUIRankUp::getAllocator()->memAlloc(sz, align, uGUIRankUp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIRankUp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIRankUp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIRankUp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIRankUp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,31 +72,31 @@ inline void uGUIRankUp::operator delete(void* p_addr) {
 // Also emitted as: _ZN10uGUIRankUpD0Ev at 0x00c1e260
 uGUIRankUp::~uGUIRankUp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpSeRes->::cResource::release();
-        this->mpSeRes = static_cast<rSoundRequest*>(nullptr);
+    if (mpSeRes != nullptr) {
+        mpSeRes->release();
+        mpSeRes = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c1e2e0 - 0x00c1e2e5 (5 bytes)
 void uGUIRankUp::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00c1e2f0 - 0x00c1e39f (175 bytes)
 bool uGUIRankUp::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_RANKUP_GUI"), static_cast<u32>(129), static_cast<t64>(1419490149)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpSeRes == static_cast<rSoundRequest*>(nullptr)) {
-                if ((this->mpSeRes = static_cast<rSoundRequest*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rSoundRequest*>(nullptr)) {
-                    this->mpSeRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_RANKUP_GUI"), 129u, 1419490149l))) != nullptr) {
+            if (mpSeRes == nullptr) {
+                if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), 129u, 0l))) != nullptr) {
+                    mpSeRes;
                     return true;
                 } else {
                     return false;
@@ -108,9 +108,9 @@ bool uGUIRankUp::loadResource() {
             return false;
         }
     } else {
-        if (this->mpSeRes == static_cast<rSoundRequest*>(nullptr)) {
-            if ((this->mpSeRes = static_cast<rSoundRequest*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rSoundRequest*>(nullptr)) {
-                this->mpSeRes;
+        if (mpSeRes == nullptr) {
+            if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_MASTER_SRQR"), 129u, 0l))) != nullptr) {
+                mpSeRes;
                 return true;
             } else {
                 return false;
@@ -131,13 +131,13 @@ __attribute__((weak)) void uGUIRankUp::setup() {
 // Address: 0x00c1e3a0 - 0x00c1e3a5 (5 bytes)
 void uGUIRankUp::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00c1e3b0 - 0x00c1e3b5 (5 bytes)
 void uGUIRankUp::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -154,35 +154,35 @@ void uGUIRankUp::move() {
 // Address: 0x00c1e580 - 0x00c1e657 (215 bytes)
 void uGUIRankUp::updateMove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(3)) {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            this->mDispFrame = this->mDispFrame - this->::cUnit::mDeltaTime;
-            if (0.0f >= this->mDispFrame) {
-                this->mFlowId = static_cast<u32>(3);
-                this->::uGUIBase::setSequenceId(this->mpInstAnim, static_cast<u32>(3), false);
+    if (mFlowId != 3) {
+        if (mFlowId == 2) {
+            mDispFrame = mDispFrame - mDeltaTime;
+            if (0.0f >= mDispFrame) {
+                mFlowId = 3;
+                setSequenceId(mpInstAnim, 3u, false);
             }
         } else {
-            if (this->mFlowId == static_cast<u32>(1)) {
-                if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
-                    if (this->mpInstAnim->isAnimationEnd() != false) {
-                        this->mFlowId = static_cast<u32>(2);
-                        this->mDispFrame = 90.0f;
+            if (mFlowId == 1) {
+                if (mpInstAnim != nullptr) {
+                    if (mpInstAnim->isAnimationEnd()) {
+                        mFlowId = 2;
+                        mDispFrame = 90.0f;
                     }
                 } else {
-                    this->mFlowId = static_cast<u32>(2);
-                    this->mDispFrame = 90.0f;
+                    mFlowId = 2;
+                    mDispFrame = 90.0f;
                 }
             }
         }
     } else {
-        if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
-            if (this->mpInstAnim->isAnimationEnd() != false) {
-                this->mFlowId = static_cast<u32>(4);
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
+        if (mpInstAnim != nullptr) {
+            if (mpInstAnim->isAnimationEnd()) {
+                mFlowId = 4;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
             }
         } else {
-            this->mFlowId = static_cast<u32>(4);
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
+            mFlowId = 4;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
         }
     }
 }
@@ -190,7 +190,7 @@ void uGUIRankUp::updateMove() {
 // Address: 0x00c1e660 - 0x00c1e669 (9 bytes)
 void uGUIRankUp::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (115 bytes)
@@ -216,6 +216,8 @@ void uGUIRankUp::updateExit() {
 // No out-of-line body: 1 inlined copy in 1 function (59 bytes)
 //   in uGUIRankUp::updateMove at 0x00c1e5e6-0x00c1e621 (called at uGUIRankUp.cpp:199)
 // void uGUIRankUp::updateOut();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIRankUp::MyDTI uGUIRankUp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIRankUp.cpp at 0x00c1e7cf-0x00c1e80c (called at uGUIRankUp.cpp:30)

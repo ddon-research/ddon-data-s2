@@ -93,6 +93,8 @@ public:
 
 class cCorePointReqestInfo : public MtObject
 {
+    // inferred: cpCorePointCtrl::clearReqestInfo names cpCorePointCtrl::mReqCashArray.elems[0].mCorePointID
+    friend class cpCorePointCtrl;
 public:
     class MyDTI;
 public:
@@ -242,24 +244,76 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCorePointInfo::cCorePointInfo() {
-    this->mRegionNo = static_cast<s32>(-1);
-    this->mCorePointID = static_cast<s32>(-1);
+    this->mRegionNo = -1;
+    this->mCorePointID = -1;
     this->mCorePointType = static_cast<nRegionStatus::CORE_POINT_TYPE>(1);
     this->mActiveTimer = 0.0f;
     this->mActiveTimerMax = 0.0f;
     this->mEraseFlag = false;
-    this->mCreatedTime = static_cast<t64>(0);
-    this->mpEnemy = static_cast<uEnemy*>(nullptr);
-    this->mpCorePointCtrl = static_cast<cpCorePointCtrl*>(nullptr);
-    this->mpEfcHandle = static_cast<cEfcHandle*>(nullptr);
-    this->mParentRegionNo = static_cast<u32>(11);
+    this->mCreatedTime = 0;
+    this->mpEnemy = nullptr;
+    this->mpCorePointCtrl = nullptr;
+    this->mpEfcHandle = nullptr;
+    this->mParentRegionNo = 11;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCorePointReqestInfo::cCorePointReqestInfo() {
-    this->mRegionNo = static_cast<s32>(-1);
+    this->mRegionNo = -1;
     this->mActiveTime = 0.0f;
-    this->mCorePointID = static_cast<s32>(-1);
+    this->mCorePointID = -1;
     this->mIsReceive = false;
-    this->mCreatedTime = static_cast<t64>(0);
+    this->mCreatedTime = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpCorePointCtrl::checkOwnerStatus at 0x17e0c3-0x17e0cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCorePointCtrl::corePpointActiveReqOff() {
+    this->mIsEnableCorePointReq = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpCorePointCtrl::clearReqestInfo() {
+    this->mCorePointReqestNum = 0;
+    this->mReqCashArray.elems[0].mRegionNo = -1;
+    this->mReqCashArray.elems[0].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[0].mCorePointID = -1;
+    this->mReqCashArray.elems[0].mIsReceive = false;
+    this->mReqCashArray.elems[0].mCreatedTime = 0;
+    this->mReqCashArray.elems[1].mRegionNo = -1;
+    this->mReqCashArray.elems[1].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[1].mCorePointID = -1;
+    this->mReqCashArray.elems[1].mIsReceive = false;
+    this->mReqCashArray.elems[1].mCreatedTime = 0;
+    this->mReqCashArray.elems[2].mRegionNo = -1;
+    this->mReqCashArray.elems[2].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[2].mCorePointID = -1;
+    this->mReqCashArray.elems[2].mIsReceive = false;
+    this->mReqCashArray.elems[2].mCreatedTime = 0;
+    this->mReqCashArray.elems[3].mRegionNo = -1;
+    this->mReqCashArray.elems[3].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[3].mCorePointID = -1;
+    this->mReqCashArray.elems[3].mIsReceive = false;
+    this->mReqCashArray.elems[3].mCreatedTime = 0;
+    this->mReqCashArray.elems[4].mRegionNo = -1;
+    this->mReqCashArray.elems[4].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[4].mCorePointID = -1;
+    this->mReqCashArray.elems[4].mIsReceive = false;
+    this->mReqCashArray.elems[4].mCreatedTime = 0;
+    this->mReqCashArray.elems[5].mRegionNo = -1;
+    this->mReqCashArray.elems[5].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[5].mCorePointID = -1;
+    this->mReqCashArray.elems[5].mIsReceive = false;
+    this->mReqCashArray.elems[5].mCreatedTime = 0;
+    this->mReqCashArray.elems[6].mRegionNo = -1;
+    this->mReqCashArray.elems[6].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[6].mCorePointID = -1;
+    this->mReqCashArray.elems[6].mIsReceive = false;
+    this->mReqCashArray.elems[6].mCreatedTime = 0;
+    this->mReqCashArray.elems[7].mRegionNo = -1;
+    this->mReqCashArray.elems[7].mActiveTime = 0.0f;
+    this->mReqCashArray.elems[7].mCorePointID = -1;
+    this->mReqCashArray.elems[7].mIsReceive = false;
+    this->mReqCashArray.elems[7].mCreatedTime = 0;
 }

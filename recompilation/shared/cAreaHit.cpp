@@ -30,7 +30,7 @@ const MtDTI& AreaHitShape::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* AreaHitShape::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::AreaHitShape::DTI);
+    return MtMemoryAllocator::getAllocator(AreaHitShape::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* AreaHitShape::getAllocator() {
 // Address: 0x00024e20 - 0x00024e60 (64 bytes)
 void* AreaHitShape::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::AreaHitShape::getAllocator()->memAlloc(sz, align, ::AreaHitShape::DTI.::MtDTI::getID());
+    return AreaHitShape::getAllocator()->memAlloc(sz, align, AreaHitShape::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,7 +89,7 @@ __attribute__((weak)) void AreaHitShape::createProperty(MtPropertyList& s) {
 // Address: 0x00027120 - 0x00027125 (5 bytes)
 MtUI* AreaHitShape::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00027130 - 0x000275f0 (1216 bytes)
@@ -249,8 +249,8 @@ __attribute__((weak)) void AreaHitShape::setCenter(const MtVector3& pos) {
 // Address: 0x000262e0 - 0x000262f9 (25 bytes)
 bool AreaHitShape::hitCheck(const MtVector3& tarPos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpZone != static_cast<ZShape*>(nullptr)) {
-        return this->mpZone->isHit(tarPos);
+    if (mpZone != nullptr) {
+        return mpZone->isHit(tarPos);
     } else {
         return false;
     }
@@ -319,7 +319,7 @@ __attribute__((weak)) void AreaHitShape::setZone(ZShape* p) {
 // Address: 0x00026730 - 0x00026735 (5 bytes)
 ZShape* AreaHitShape::getZone() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpZone;
+    return mpZone;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (182 bytes)
@@ -331,6 +331,8 @@ ZShape* AreaHitShape::getZone() const {
 
 // No out-of-line body: no code in the ELF
 // const MtAABB& AreaHitShape::getZoneBoundingBox() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): AreaHitShape::MyDTI AreaHitShape::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cAreaHit.cpp at 0x00027bee-0x00027c2e (called at cAreaHit.cpp:54)
@@ -379,7 +381,7 @@ const MtDTI& cAreaHit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAreaHit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAreaHit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAreaHit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,19 +393,52 @@ inline void cAreaHit::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cAreaHit::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 1 inlined copy in 1 function (263 bytes)
-//   in cAreaHit::MyDTI::newInstance at 0x00024efd-0x00025004 (called at cAreaHit.cpp:55)
-// cAreaHit::cAreaHit();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cAreaHit::cAreaHit() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mRotate.pad_ = 0.0f;
+    mpOwner = nullptr;
+    mOwnerId = 0;
+    mbEnable = true;
+    mbFix = false;
+    mUID = 0;
+    mDetect = 0;
+    mpShape = nullptr;
+    mAttr = 0;
+    mWorld.x = MtVector3::Zero.x;
+    mWorld.y = MtVector3::Zero.y;
+    mWorld.z = MtVector3::Zero.z;
+    mWorld.pad_ = 0.0f;
+    mLocal.x = MtVector3::Zero.x;
+    mLocal.y = MtVector3::Zero.y;
+    mLocal.z = MtVector3::Zero.z;
+    mLocal.pad_ = 0.0f;
+    mRotate.x = MtVector3::Zero.x;
+    mRotate.y = MtVector3::Zero.y;
+    mRotate.z = MtVector3::Zero.z;
+    mpSpTarget = nullptr;
+    mCkRange = 0.0f;
+    mCkToward = 0.0f;
+    mRotate.pad_ = 0.0f;
+    mCkAngle = 0.0f;
+    mRefPos.x = MtVector3::Zero.x;
+    mRefPos.y = MtVector3::Zero.y;
+    mRefPos.z = MtVector3::Zero.z;
+    mRefPos.pad_ = 0.0f;
+    mRefJointNo = 0;
+    mOwnerJointNo = 0;
+}
 
 // Address: 0x00025090 - 0x000250c9 (57 bytes)
 // Also emitted as: _ZN8cAreaHitD0Ev at 0x000250d0
 cAreaHit::~cAreaHit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShape != static_cast<AreaHitShape*>(nullptr)) {
-        delete this->mpShape;
-        this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    if (mpShape != nullptr) {
+        delete mpShape;
+        mpShape = nullptr;
     }
-    this->mbEnable = false;
+    mbEnable = false;
 }
 
 // Address: 0x00025130 - 0x00025131 (1 bytes)
@@ -417,71 +452,71 @@ __attribute__((weak)) void cAreaHit::createProperty(MtPropertyList& s) {
 // Address: 0x00025150 - 0x00025155 (5 bytes)
 MtUI* cAreaHit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00025160 - 0x0002523f (223 bytes)
 void cAreaHit::setup(AREAHIT_SHAPE_TYPE_ENUM type, MtObject* pOwner) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x5c from cAreaHit*
-    this->mpOwner = pOwner;
-    if (pOwner != static_cast<MtObject*>(nullptr)) {
-        this->mOwnerId = pOwner->getDTI().::MtDTI::getID();
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mpOwner = pOwner;
+    if (pOwner != nullptr) {
+        mOwnerId = pOwner->getDTI().getID();
     }
-    this->mbEnable = true;
-    this->mbFix = false;
-    this->mAttr = static_cast<u32>(0);
-    this->mDetect = static_cast<u32>(0);
-    this->mWorld.x = ::MtVector3::Zero.x;
-    this->mWorld.y = ::MtVector3::Zero.y;
-    this->mWorld.z = ::MtVector3::Zero.z;
-    this->mWorld.pad_ = 0.0f;
-    this->mLocal.x = ::MtVector3::Zero.x;
-    this->mLocal.y = ::MtVector3::Zero.y;
-    this->mLocal.z = ::MtVector3::Zero.z;
-    this->mLocal.pad_ = 0.0f;
-    this->mRotate.x = ::MtVector3::Zero.x;
-    this->mRotate.y = ::MtVector3::Zero.y;
-    this->mRotate.z = ::MtVector3::Zero.z;
-    this->mCkRange = 0.0f;
-    this->mCkToward = 0.0f;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(92)) = static_cast<unsigned long>(0);
-    if (this->mpShape != static_cast<AreaHitShape*>(nullptr)) {
-        delete this->mpShape;
-        this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    mbEnable = true;
+    mbFix = false;
+    mAttr = 0;
+    mDetect = 0;
+    mWorld.x = MtVector3::Zero.x;
+    mWorld.y = MtVector3::Zero.y;
+    mWorld.z = MtVector3::Zero.z;
+    mWorld.pad_ = 0.0f;
+    mLocal.x = MtVector3::Zero.x;
+    mLocal.y = MtVector3::Zero.y;
+    mLocal.z = MtVector3::Zero.z;
+    mLocal.pad_ = 0.0f;
+    mRotate.x = MtVector3::Zero.x;
+    mRotate.y = MtVector3::Zero.y;
+    mRotate.z = MtVector3::Zero.z;
+    mCkRange = 0.0f;
+    mCkToward = 0.0f;
+    mRotate.pad_ = 0.0f;
+    mCkAngle = 0.0f;
+    if (mpShape != nullptr) {
+        delete mpShape;
+        mpShape = nullptr;
     }
-    this->mpShape = ::AreaHitShape::createShape(type);
+    mpShape = AreaHitShape::createShape(type);
 }
 
 // Address: 0x000254c0 - 0x000254eb (43 bytes)
 void cAreaHit::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShape != static_cast<AreaHitShape*>(nullptr)) {
-        delete this->mpShape;
-        this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    if (mpShape != nullptr) {
+        delete mpShape;
+        mpShape = nullptr;
     }
-    this->mbEnable = false;
+    mbEnable = false;
 }
 
 // Address: 0x000254f0 - 0x00025552 (98 bytes)
 void cAreaHit::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDetect = static_cast<u32>(0);
-    this->::cAreaHit::update();
-    if ((this->mAttr & static_cast<u32>(31)) != static_cast<u32>(0)) {
-        if ((::sPlayerManager::mpInstance)->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-            if (this->collide(static_cast<uDDOModel*>((::sPlayerManager::mpInstance)->::sPlayerManager::getMyPlayer())) != false) {
-                this->mDetect = this->mDetect | static_cast<u32>(17);
+    mDetect = 0;
+    update();
+    if ((mAttr & 31u) != 0) {
+        if ((sPlayerManager::mpInstance)->sPlayerManager::getMyPlayer() != nullptr) {
+            if (collide(static_cast<uDDOModel*>((sPlayerManager::mpInstance)->sPlayerManager::getMyPlayer()))) {
+                mDetect = mDetect | 17u;
             }
         }
     }
-    if ((this->mAttr & static_cast<u32>(1024)) == static_cast<u32>(0)) {
+    if ((mAttr & 1024u) == 0) {
         return;
     }
-    if (this->collide(static_cast<uDDOModel*>(nullptr)) == false) {
+    if (!collide(static_cast<uDDOModel*>(nullptr))) {
         return;
     }
-    this->mDetect = this->mDetect | static_cast<u32>(1024);
+    mDetect = mDetect | 1024u;
 }
 
 // Address: 0x00025560 - 0x000256e1 (385 bytes)
@@ -693,6 +728,8 @@ __attribute__((weak)) void cAreaHit::getTargetPos(uDDOModel* pObj, MtVector3* pT
 
 // No out-of-line body: no code in the ELF
 // f32 cAreaHit::yaw(const MtVector3& vec);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAreaHit::MyDTI cAreaHit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cAreaHit.cpp at 0x00027c2e-0x00027c67 (called at cAreaHit.cpp:55)

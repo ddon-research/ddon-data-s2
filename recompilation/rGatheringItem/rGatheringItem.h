@@ -103,6 +103,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cGatheringItem::cGatheringItem() {
-    this->mItemNo = static_cast<u32>(0);
-    this->mType = static_cast<u32>(0);
+    this->mItemNo = 0;
+    this->mType = 0;
 }

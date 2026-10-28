@@ -135,7 +135,7 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK9rOccluder5MyDTI11newInstanceEv at 0x011dc870-0x011dc8a4, code DWARF attributes to no inlined copy
 inline rOccluder::rOccluder() {
-    this->::cResource::mAttr = static_cast<u32>(18);
-    this->mOccluderCount = static_cast<u32>(0);
-    this->mpOccluder = static_cast<rOccluder::cQuad*>(nullptr);
+    this->::cResource::mAttr = 18;
+    this->mOccluderCount = 0;
+    this->mpOccluder = nullptr;
 }

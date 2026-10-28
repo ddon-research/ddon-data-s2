@@ -36,7 +36,7 @@ const MtDTI& cEvaluationTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEvaluationTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memAlloc(sz, align, ::cEvaluationTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEvaluationTable::DTI)->memAlloc(sz, align, cEvaluationTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEvaluationTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEvaluationTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEvaluationTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cEvaluationTable::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEvaluationTable::MyDTI cEvaluationTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEvaluationTable.cpp at 0x00672c60-0x00672ca2 (called at rEvaluationTable.cpp:23)
 //   in _GLOBAL__sub_I_rEvaluationTable.cpp at 0x00672c60-0x00672ca2 (called at rEvaluationTable.h:35)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cEvaluationTable::createProperty(MtPropertyList& s) {
 // Address: 0x00672650 - 0x006726ad (93 bytes)
 MtObject* cEvaluationTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEvaluationTable;
+    return new (16u) cEvaluationTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rEvaluationTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEvaluationTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEvaluationTable::DTI)->memAlloc(sz, align, ::rEvaluationTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEvaluationTable::DTI)->memAlloc(sz, align, rEvaluationTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rEvaluationTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rEvaluationTableD0Ev at 0x01a8ed94-0x01a8edb3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEvaluationTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEvaluationTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEvaluationTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,19 +149,19 @@ bool rEvaluationTable::loadData(MtDataReader& in, cEvaluationTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEvalutionCategory);
+    nDDOIO::readData(in, pData->mEvalutionCategory);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEvalutionCategoryMax);
+    nDDOIO::readData(in, pData->mEvalutionCategoryMax);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEvalutionCategoryDecPer);
+    nDDOIO::readData(in, pData->mEvalutionCategoryDecPer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEvalutionCategoryHosei);
+    nDDOIO::readData(in, pData->mEvalutionCategoryHosei);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mEvalutionCategoryEizokuHosei);
+    nDDOIO::readData(in, pData->mEvalutionCategoryEizokuHosei);
     return true;
 }
 
@@ -172,8 +174,10 @@ MT_CTSTR rEvaluationTable::getExt() const {
 // Address: 0x01a8eee0 - 0x01a8eee6 (6 bytes)
 u32 rEvaluationTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEvaluationTable::MyDTI rEvaluationTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEvaluationTable.cpp at 0x00672ca2-0x00672cdf (called at rEvaluationTable.cpp:108)
@@ -183,7 +187,7 @@ u32 rEvaluationTable::getDataVersion() const {
 // Address: 0x00672b80 - 0x00672be4 (100 bytes)
 MtObject* rEvaluationTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEvaluationTable;
+    return new (16u) rEvaluationTable;
 }
 
 // Instance at 0x01a8ee90 - 0x01a8eea2 (18 bytes) of the generic rTbl2<T>::getData

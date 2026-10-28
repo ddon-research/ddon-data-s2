@@ -36,7 +36,7 @@ const MtDTI& uStageMyRoom::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStageMyRoom::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStageMyRoom::DTI);
+    return MtMemoryAllocator::getAllocator(uStageMyRoom::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uStageMyRoom::getAllocator() {
 // Address: 0x00d34120 - 0x00d34160 (64 bytes)
 void* uStageMyRoom::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStageMyRoom::getAllocator()->memAlloc(sz, align, ::uStageMyRoom::DTI.::MtDTI::getID());
+    return uStageMyRoom::getAllocator()->memAlloc(sz, align, uStageMyRoom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uStageMyRoom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageMyRoom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageMyRoom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageMyRoom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,10 +88,10 @@ uStageMyRoom::~uStageMyRoom() {
 // Address: 0x00d345a0 - 0x00d345b2 (18 bytes)
 void uStageMyRoom::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::mRno = this->::cUnit::mRno & static_cast<u32>(4294901760);
-    this->mIsWarpIn = false;
-    this->mIsPawnInParty = false;
-    this->mIsRewardEditOK = false;
+    this->cUnit::mRno = this->cUnit::mRno & 0xFFFF0000u;
+    mIsWarpIn = false;
+    mIsPawnInParty = false;
+    mIsRewardEditOK = false;
 }
 
 // Address: 0x00d345c0 - 0x00d34645 (133 bytes)
@@ -105,44 +105,44 @@ __attribute__((weak)) void uStageMyRoom::move() {
 void uStageMyRoom::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uStageMyRoom*
-    this->::uStageMyRoom::releaseFurniture();
-    if (this->mpAnimalData != static_cast<rAnimalData*>(nullptr)) {
-        this->mpAnimalData->::cResource::release();
-        this->mpAnimalData = static_cast<rAnimalData*>(nullptr);
+    releaseFurniture();
+    if (mpAnimalData != nullptr) {
+        mpAnimalData->release();
+        mpAnimalData = nullptr;
     }
-    this->::uStageMyRoom::clearAnimal();
-    if (this->mBgmAcquirementNoList.::MtArray::mLength != static_cast<u32>(0)) {
+    clearAnimal();
+    if (mBgmAcquirementNoList.mLength != 0) {
         // inferred: the value the loop at 0xd354c0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mBgmAcquirementNoList.::MtArray::mLength;
+        u32 v0_0 = mBgmAcquirementNoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mBgmAcquirementNoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mBgmAcquirementNoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mBgmAcquirementNoList.::MtArray::mLength) {
-                    v0_0 = this->mBgmAcquirementNoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mBgmAcquirementNoList.mpArray[i0_3] != nullptr) {
+                delete mBgmAcquirementNoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mBgmAcquirementNoList.mLength) {
+                    v0_0 = mBgmAcquirementNoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mBgmAcquirementNoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mBgmAcquirementNoList.::MtArray::mpArray));
+    if (mBgmAcquirementNoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mBgmAcquirementNoList.mpArray));
     }
-    this->mBgmAcquirementNoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mBgmAcquirementNoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mBgmAcquirementNoList.::MtArray::mLength = static_cast<u32>(0);
-    ::sOmManager::getInstance()->mOmCtrlFreq = static_cast<u32>(30);
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
-        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    mBgmAcquirementNoList.mpArray = nullptr;
+    mBgmAcquirementNoList.mBufsiz = 0;
+    mBgmAcquirementNoList.mLength = 0;
+    sOmManager::getInstance()->mOmCtrlFreq = 30;
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) == 0) {
+        if ((mBeFlag - 1u) <= 1u) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
         }
     }
 }
@@ -152,19 +152,19 @@ void uStageMyRoom::updatePtr() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: uAnimal* anml;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mFurnitureMenuFlow.::cFurnitureMenuFlow::updatePtr();
+    mFurnitureMenuFlow.updatePtr();
     // inferred: the value the loop at 0xd356a0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mAnimalList.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mAnimalList.mLength;
+    if (v0_0 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-            if (this->mAnimalList.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<cUnit*>(this->mAnimalList.::MtArray::getBuffer()[static_cast<int>(i0_1)])->::cUnit::isEnable() == false) {
-                    this->mAnimalList.::MtArray::getBuffer()[static_cast<int>(i0_1)] = static_cast<MtObject*>(nullptr);
+        for (unsigned int i0_1 = 0;;) {
+            if (mAnimalList.getBuffer()[static_cast<int>(i0_1)] != nullptr) {
+                if (!static_cast<cUnit*>(mAnimalList.getBuffer()[static_cast<int>(i0_1)])->isEnable()) {
+                    mAnimalList.getBuffer()[static_cast<int>(i0_1)] = nullptr;
                 }
             }
-            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 += 1u;
             } else {
                 break;
             }
@@ -259,7 +259,7 @@ __attribute__((weak)) void uStageMyRoom::setItemParam(u32 index, cItemParam* pIt
 // Address: 0x00d360f0 - 0x00d36103 (19 bytes)
 void uStageMyRoom::setItemParamHead(cItemParam* pItemParam, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemParamHead[type].::cItemParam::copyParam(pItemParam);
+    mItemParamHead[type].copyParam(pItemParam);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)
@@ -317,11 +317,11 @@ __attribute__((weak)) void uStageMyRoom::movePartnerPawn() {
 // Address: 0x00d357d0 - 0x00d357f8 (40 bytes)
 void uStageMyRoom::loadFurniture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uStageMyRoom::initFurniture();
-    if (this->mpFurniture == static_cast<cFurniture*>(nullptr)) {
+    initFurniture();
+    if (mpFurniture == nullptr) {
         return;
     }
-    this->mpFurniture->::cFurniture::init();
+    mpFurniture->init();
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,8 +330,8 @@ void uStageMyRoom::loadFurniture() {
 // Address: 0x00d359a0 - 0x00d359bb (27 bytes)
 bool uStageMyRoom::isSetOm(u32 om_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFurniture != static_cast<cFurniture*>(nullptr)) {
-        return this->mpFurniture->::cFurniture::isSetOm(om_id);
+    if (mpFurniture != nullptr) {
+        return mpFurniture->isSetOm(om_id);
     } else {
         return false;
     }
@@ -343,19 +343,19 @@ bool uStageMyRoom::isSetOm(u32 om_id) {
 // Address: 0x00d359d0 - 0x00d359e2 (18 bytes)
 void uStageMyRoom::checkRoomWear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFurniture == static_cast<cFurniture*>(nullptr)) {
+    if (mpFurniture == nullptr) {
         return;
     }
-    this->mpFurniture->::cFurniture::setRoomWear();
+    mpFurniture->setRoomWear();
 }
 
 // Address: 0x00d359f0 - 0x00d35a02 (18 bytes)
 void uStageMyRoom::checkRoomWearTrial() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFurniture == static_cast<cFurniture*>(nullptr)) {
+    if (mpFurniture == nullptr) {
         return;
     }
-    this->mpFurniture->::cFurniture::setRoomWearTrial();
+    mpFurniture->setRoomWearTrial();
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (15 bytes)
@@ -400,13 +400,13 @@ __attribute__((weak)) void uStageMyRoom::bootFurnitureMenu() {
 // Address: 0x00d357b0 - 0x00d357bc (12 bytes)
 bool uStageMyRoom::isBootFurnitureMenu() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cFurnitureMenuFlow&>(this->mFurnitureMenuFlow).::cFurnitureMenuFlow::isMove();
+    return static_cast<const cFurnitureMenuFlow&>(mFurnitureMenuFlow).isMove();
 }
 
 // Address: 0x00d357c0 - 0x00d357cc (12 bytes)
 bool uStageMyRoom::isRoomWearCamera() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cFurnitureMenuFlow&>(this->mFurnitureMenuFlow).::cFurnitureMenuFlow::isRoomWearCamera();
+    return static_cast<const cFurnitureMenuFlow&>(mFurnitureMenuFlow).isRoomWearCamera();
 }
 
 // Address: 0x00d352f0 - 0x00d35472 (386 bytes)
@@ -425,23 +425,23 @@ u32 uStageMyRoom::getMyRoomBgmListByIndex(u32 index) {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
-    if (index < this->mBgmAcquirementNoList.::MtArray::mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(2336))) + static_cast<unsigned long>(index * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+    if (index < mBgmAcquirementNoList.mLength) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2336)) + static_cast<unsigned long>(index * 8u)) + 0)) + 8);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00d352d0 - 0x00d352d7 (7 bytes)
 u32 uStageMyRoom::getMyRoomBgmListCount() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBgmAcquirementNoList.::MtArray::mLength;
+    return mBgmAcquirementNoList.mLength;
 }
 
 // Address: 0x00d352e0 - 0x00d352e7 (7 bytes)
 u32 uStageMyRoom::getMyRoomBgmNowPlayAbilityNumber() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPlayBgmAcquirementNo;
+    return mPlayBgmAcquirementNo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -464,41 +464,34 @@ __attribute__((weak)) void uStageMyRoom::initFurniture() {
 // Address: 0x00d35570 - 0x00d35651 (225 bytes)
 __attribute__((weak)) void uStageMyRoom::releaseFurniture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFurnitureMenuFlow.::cFurnitureMenuFlow::end();
-    if (this->mpFurnitureData == static_cast<rFurnitureData*>(nullptr)) {
-    } else {
-        this->mpFurnitureData->::cResource::release();
-        this->mpFurnitureData = static_cast<rFurnitureData*>(nullptr);
+    mFurnitureMenuFlow.end();
+    if (mpFurnitureData != nullptr) {
+        mpFurnitureData->release();
+        mpFurnitureData = nullptr;
     }
-    if (this->mpFurnitureGroup == static_cast<rFurnitureGroup*>(nullptr)) {
-    } else {
-        this->mpFurnitureGroup->::cResource::release();
-        this->mpFurnitureGroup = static_cast<rFurnitureGroup*>(nullptr);
+    if (mpFurnitureGroup != nullptr) {
+        mpFurnitureGroup->release();
+        mpFurnitureGroup = nullptr;
     }
-    if (this->mpFurnitureLayout == static_cast<rFurnitureLayout*>(nullptr)) {
-    } else {
-        this->mpFurnitureLayout->::cResource::release();
-        this->mpFurnitureLayout = static_cast<rFurnitureLayout*>(nullptr);
+    if (mpFurnitureLayout != nullptr) {
+        mpFurnitureLayout->release();
+        mpFurnitureLayout = nullptr;
     }
-    if (this->mpFurnitureItem == static_cast<rFurnitureItem*>(nullptr)) {
-    } else {
-        this->mpFurnitureItem->::cResource::release();
-        this->mpFurnitureItem = static_cast<rFurnitureItem*>(nullptr);
+    if (mpFurnitureItem != nullptr) {
+        mpFurnitureItem->release();
+        mpFurnitureItem = nullptr;
     }
-    if (this->mpFurnitureGroupName == static_cast<rGUIMessage*>(nullptr)) {
-    } else {
-        this->mpFurnitureGroupName->::cResource::release();
-        this->mpFurnitureGroupName = static_cast<rGUIMessage*>(nullptr);
+    if (mpFurnitureGroupName != nullptr) {
+        mpFurnitureGroupName->release();
+        mpFurnitureGroupName = nullptr;
     }
-    if (this->mpFurnitureLayoutName == static_cast<rGUIMessage*>(nullptr)) {
-    } else {
-        this->mpFurnitureLayoutName->::cResource::release();
-        this->mpFurnitureLayoutName = static_cast<rGUIMessage*>(nullptr);
+    if (mpFurnitureLayoutName != nullptr) {
+        mpFurnitureLayoutName->release();
+        mpFurnitureLayoutName = nullptr;
     }
-    if (this->mpFurniture == static_cast<cFurniture*>(nullptr)) {
-    } else {
-        delete this->mpFurniture;
-        this->mpFurniture = static_cast<cFurniture*>(nullptr);
+    if (mpFurniture != nullptr) {
+        delete mpFurniture;
+        mpFurniture = nullptr;
     }
 }
 
@@ -556,6 +549,10 @@ __attribute__((weak)) void uStageMyRoom::createAnimalPtn(u32 pattern_id) {
 // No out-of-line body: 1 inlined copy in 1 function (94 bytes)
 //   in uStageMyRoom::moveMain at 0x00d346ef-0x00d3474d (called at uStageMyRoom.cpp:182)
 // void uStageMyRoom::controlCamera();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageMyRoom::MyDTI uStageMyRoom::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const uStageMyRoom::ANIMAL_PATTERN uStageMyRoom::mAnimalPatternTbl[6];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageMyRoom.cpp at 0x00d3630f-0x00d3634c (called at uStageMyRoom.cpp:42)

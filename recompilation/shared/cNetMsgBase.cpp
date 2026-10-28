@@ -37,7 +37,7 @@ const MtDTI& nNetMsg::cCoder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nNetMsg::cCoder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memAlloc(sz, align, ::nNetMsg::cCoder::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memAlloc(sz, align, ::nNetMsg::cCoder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,11 +78,11 @@ inline void nNetMsg::cCoder::operator delete(void* p_addr) {
 // Also emitted as: _ZN7nNetMsg6cCoderD0Ev at 0x01a410a0
 nNetMsg::cCoder::~cCoder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCod == static_cast<nNetwork::Coder*>(nullptr)) {
+    if (mpCod == nullptr) {
         return;
     }
-    delete this->mpCod;
-    this->mpCod = static_cast<nNetwork::Coder*>(nullptr);
+    delete mpCod;
+    mpCod = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,6 +160,8 @@ nNetMsg::cCoder::~cCoder() {
 //   in nNetMsg::cNetMsgBase::sendMessageCore at 0x00382f16-0x00382f2f (called at cNetMsgBase.cpp:597)
 // nNetwork::Coder* nNetMsg::cCoder::setCoder(MtStream& stream);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetMsg::cCoder::MyDTI nNetMsg::cCoder::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetMsgBase.cpp at 0x003831eb-0x0038322b (called at cNetMsgBase.cpp:39)
 //   in _GLOBAL__sub_I_cNetMsgBase.cpp at 0x003831eb-0x0038322b (called at cNetMsgBase.h:232)
@@ -168,7 +170,7 @@ nNetMsg::cCoder::~cCoder() {
 // Address: 0x003828a0 - 0x003828e8 (72 bytes)
 MtObject* nNetMsg::cCoder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nNetMsg::cCoder;
+    return new (16u) ::nNetMsg::cCoder;
 }
 
 // No out-of-line body: no code in the ELF
@@ -194,7 +196,7 @@ inline MtAllocator* nNetMsg::cDecoder::getAllocator() {
 // Address: 0x003829b0 - 0x003829f0 (64 bytes)
 void* nNetMsg::cDecoder::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nNetMsg::cDecoder::getAllocator()->memAlloc(sz, align, ::nNetMsg::cDecoder::DTI.::MtDTI::getID());
+    return ::nNetMsg::cDecoder::getAllocator()->memAlloc(sz, align, ::nNetMsg::cDecoder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -318,6 +320,8 @@ nNetMsg::cDecoder::~cDecoder() {
 //   in nNetMsg::cNetMsgBase::receiveMessageCore at 0x00382f5b-0x00382f72 (called at cNetMsgBase.cpp:617)
 // nNetwork::Decoder* nNetMsg::cDecoder::setDecoder(MtStream& stream);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetMsg::cDecoder::MyDTI nNetMsg::cDecoder::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetMsgBase.cpp at 0x0038322b-0x00383264 (called at cNetMsgBase.cpp:40)
 //   in _GLOBAL__sub_I_cNetMsgBase.cpp at 0x0038322b-0x00383264 (called at cNetMsgBase.h:297)
@@ -326,7 +330,7 @@ nNetMsg::cDecoder::~cDecoder() {
 // Address: 0x00382960 - 0x003829a8 (72 bytes)
 MtObject* nNetMsg::cDecoder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nNetMsg::cDecoder;
+    return new (16u) ::nNetMsg::cDecoder;
 }
 
 // No out-of-line body: no code in the ELF
@@ -553,21 +557,21 @@ void nNetMsg::cNetMsgBase::pushUniqueId(u32 uniqueId) {
     // DWARF local not rendered: stUniqueID* pUid;
     // DWARF local not rendered: stUniqueID sendId;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    if ((uniqueId & static_cast<u32>(7)) == static_cast<u32>(1)) {
-        cContextInstHm* pInst = ::sContextManager::getInstance()->::sContextManager::getContextPlayerIndex((uniqueId >> static_cast<u32>(4)) & static_cast<u32>(1048575), true);
-        if (pInst != static_cast<cContextInstHm*>(nullptr)) {
-            if (::sContextManager::getInstance()->::sContextManager::isPartyMember(pInst) != false) {
+    if ((uniqueId & 7u) == 1) {
+        cContextInstHm* pInst = ::sContextManager::getInstance()->getContextPlayerIndex((uniqueId >> 4) & 0xFFFFFu, true);
+        if (pInst != nullptr) {
+            if (::sContextManager::getInstance()->isPartyMember(pInst)) {
                 // inferred: a temporary for the result of the call at 0x382ff9, used once; no DWARF local holds it
                 s32 t0 = ::cContextInterface::getMemberIndex(pInst);
-                this->mCod.mpCod->::nNetwork::Coder::writeU32(static_cast<u32>(((t0 * static_cast<s32>(16)) & static_cast<s32>(16777200)) | static_cast<s32>(-2147483647)));
+                mCod.mpCod->writeU32(static_cast<u32>(((t0 * 16) & 0xFFFFF0) | -2147483647));
             } else {
-                this->mCod.mpCod->::nNetwork::Coder::writeU32(static_cast<u32>(2147487729));
+                mCod.mpCod->writeU32(0x80000FF1u);
             }
         } else {
-            this->mCod.mpCod->::nNetwork::Coder::writeU32(static_cast<u32>(2147487729));
+            mCod.mpCod->writeU32(0x80000FF1u);
         }
     } else {
-        this->mCod.mpCod->::nNetwork::Coder::writeU32(uniqueId);
+        mCod.mpCod->writeU32(uniqueId);
     }
 }
 
@@ -576,8 +580,8 @@ u32 nNetMsg::cNetMsgBase::popUniqueId(u32 uniqueId) {
     // DWARF local not rendered: stUniqueID* pUid;
     // DWARF local not rendered: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((uniqueId & static_cast<u32>(7)) == static_cast<u32>(1)) {
-        return ::cContextInterface::getUniqueId(static_cast<const cContextInstance*>(::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>((uniqueId >> static_cast<u32>(4)) & static_cast<u32>(1048575)))), static_cast<const cContextCharacter*>(nullptr));
+    if ((uniqueId & 7u) == 1) {
+        return ::cContextInterface::getUniqueId(static_cast<const cContextInstance*>(::sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(static_cast<s32>((uniqueId >> 4) & 0xFFFFFu))), static_cast<const cContextCharacter*>(nullptr));
     } else {
         return uniqueId;
     }
@@ -590,6 +594,8 @@ u32 nNetMsg::cNetMsgBase::popUniqueId(u32 uniqueId) {
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
 //   in nNetMsg::cNetMsgBase::createNetMsg at 0x00382e97-0x00382e9b (called at cNetMsgBase.cpp:448)
 // void nNetMsg::cNetMsgBase::setMsgId(u8 id);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nNetMsg::cNetMsgBase::MyDTI nNetMsg::cNetMsgBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetMsgBase.cpp at 0x0038316e-0x003831ae (called at cNetMsgBase.cpp:36)

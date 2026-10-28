@@ -165,5 +165,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpJobBase::cpJobBase() {
-    this->mpHuman = static_cast<uHuman*>(nullptr);
+    this->mpHuman = nullptr;
 }

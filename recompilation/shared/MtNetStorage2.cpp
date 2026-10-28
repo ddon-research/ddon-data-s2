@@ -51,7 +51,7 @@ __attribute__((weak)) void MtNetStorage2::reqFinalize(u32* req_seq) {
 // Address: 0x00de7a90 - 0x00de7a99 (9 bytes)
 void MtNetStorage2::abortRequest(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestController.::MtNetRequestController::abort(req_seq);
+    mRequestController.abort(req_seq);
 }
 
 // No out-of-line body: no code in the ELF

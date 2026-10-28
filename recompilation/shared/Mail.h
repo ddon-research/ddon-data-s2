@@ -324,7 +324,7 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataMailAttachmentInfo::CDataMailAttachmentInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ullAttachmentId = static_cast<u64>(0);
+    this->m_ullAttachmentId = 0;
     this->m_bIsReceived = false;
 }
 
@@ -338,32 +338,32 @@ inline CDataMailAttachmentList::CDataMailAttachmentList() {
 // approximate: only approximate callers check this inline body
 inline CDataMailGPInfo::CDataMailGPInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unNum = static_cast<u32>(0);
-    this->m_unType = static_cast<u32>(0);
+    this->m_unNum = 0;
+    this->m_unType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataMailItemInfo::CDataMailItemInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unItemId = static_cast<u32>(0);
-    this->m_usNum = static_cast<u16>(0);
+    this->m_unItemId = 0;
+    this->m_usNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataMailLegendPawnInfo::CDataMailLegendPawnInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unPawnId = static_cast<u32>(0);
+    this->m_unPawnId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataMailOptionCourseInfo::CDataMailOptionCourseInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unOptionCourseId = static_cast<u32>(0);
-    this->m_unOptionCourseLineupId = static_cast<u32>(0);
-    this->m_unTime = static_cast<u32>(0);
+    this->m_unOptionCourseId = 0;
+    this->m_unOptionCourseLineupId = 0;
+    this->m_unTime = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

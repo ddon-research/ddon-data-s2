@@ -15,7 +15,7 @@
 void nCaplink::ChatLastIdAns::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::nCaplink::ContextListener::init();
-    this->mLastChatId = static_cast<s32>(0);
+    mLastChatId = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

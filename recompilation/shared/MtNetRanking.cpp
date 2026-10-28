@@ -36,7 +36,7 @@ const MtDTI& MtNetRanking::getDTI() const {
 // Address: 0x00dbc420 - 0x00dbc460 (64 bytes)
 void* MtNetRanking::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtNetRanking::DTI)->memAlloc(sz, align, ::MtNetRanking::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtNetRanking::DTI)->memAlloc(sz, align, MtNetRanking::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* MtNetRanking::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12MtNetRankingD0Ev at 0x00dbcf1e-0x00dbcf3f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtNetRanking::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtNetRanking::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtNetRanking::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -190,14 +190,14 @@ __attribute__((weak)) void MtNetRanking::cbAnsGetAttachFail(MtNetRequest* req, M
 bool MtNetRanking::canMoveRequest(MtNetRequest* req) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xdbd26c, used twice; no DWARF local holds it
-    s32 t0 = req->::MtNetRequest::getId();
-    if (t0 == static_cast<s32>(2307)) {
-        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2306)) != false) {
+    s32 t0 = req->getId();
+    if (t0 == 2307) {
+        if (mRequestController.isMove(2306)) {
             return false;
         }
     } else {
-        if (t0 == static_cast<s32>(2306)) {
-            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2307)) != false) {
+        if (t0 == 2306) {
+            if (mRequestController.isMove(2307)) {
                 return false;
             }
         }
@@ -217,41 +217,41 @@ __attribute__((weak)) s32 MtNetRanking::startRequest(MtNetRequest* req) {
 s32 MtNetRanking::moveRequest(MtNetRequest* req) {
     // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (req != static_cast<MtNetRequest*>(nullptr)) {
-        switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(2305))) {
-            case static_cast<unsigned int>(0):
+    if (req != nullptr) {
+        switch (static_cast<unsigned int>(req->getId() - 2305)) {
+            case 0:
             {
-                return this->::MtNetRanking::moveUpdate(req);
+                return moveUpdate(req);
             }
-            case static_cast<unsigned int>(1):
+            case 1:
             {
-                return this->::MtNetRanking::moveGetScoreListByRange(req);
+                return moveGetScoreListByRange(req);
             }
-            case static_cast<unsigned int>(2):
+            case 2:
             {
-                return this->::MtNetRanking::moveGetScoreListByUniqueId(req);
+                return moveGetScoreListByUniqueId(req);
             }
-            case static_cast<unsigned int>(4):
+            case 4:
             {
-                return this->::MtNetRanking::moveGetAttach(req);
+                return moveGetAttach(req);
             }
             default:
             {
-                return static_cast<s32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00dbec90 - 0x00dbec9e (14 bytes)
 void MtNetRanking::endRequest(MtNetRequest* req) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (req == static_cast<MtNetRequest*>(nullptr)) {
+    if (req == nullptr) {
         return;
     }
-    req->::MtNetRequest::getId();
+    req->getId();
 }
 
 // Address: 0x00dbecc0 - 0x00dbed5a (154 bytes)
@@ -260,15 +260,15 @@ void MtNetRanking::startFailRequest(MtNetRequest* req) {
     MtNetError err;
     req->getFatal(&err);
     // inferred: a temporary for the result of the call at 0xdbecf1, used 3 times; no DWARF local holds it
-    s32 t0 = req->::MtNetRequest::getId();
-    if (static_cast<unsigned int>(t0 - static_cast<s32>(2306)) <= static_cast<unsigned int>(1)) {
-        this->::MtNetRanking::cbAnsGetScoreListFail(req, &err);
+    s32 t0 = req->getId();
+    if (static_cast<unsigned int>(t0 - 2306) <= 1) {
+        cbAnsGetScoreListFail(req, &err);
     } else {
-        if (t0 == static_cast<s32>(2309)) {
-            this->::MtNetRanking::cbAnsGetAttachFail(req, &err);
+        if (t0 == 2309) {
+            cbAnsGetAttachFail(req, &err);
         } else {
-            if (t0 == static_cast<s32>(2305)) {
-                this->::MtNetRanking::cbAnsUpdateFail(req, &err);
+            if (t0 == 2305) {
+                cbAnsUpdateFail(req, &err);
             }
         }
     }
@@ -396,6 +396,8 @@ __attribute__((weak)) void MtNetRanking::deserializeScoreOption(MtNetRanking::Sc
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtNetRanking::MyDTI MtNetRanking::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtNetRanking::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -459,7 +461,7 @@ __attribute__((weak)) void MtNetRanking::ScoreList::createProperty(MtPropertyLis
 // Address: 0x00dbc320 - 0x00dbc325 (5 bytes)
 MtUI* MtNetRanking::ScoreList::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -534,7 +536,7 @@ const MtDTI& MtNetRanking::Score::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12MtNetRanking5ScoreD0Ev at 0x00dbb0c8-0x00dbb0e9, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtNetRanking::Score::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtNetRanking::Score::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtNetRanking::Score::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -614,6 +616,8 @@ __attribute__((weak)) void MtNetRanking::Score::createProperty(MtPropertyList& s
 
 // No out-of-line body: no code in the ELF
 // MtNetRanking::ScoreOption* MtNetRanking::Score::getOption(s32 no);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtNetRanking::Score::MyDTI MtNetRanking::Score::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtNetRanking::Score::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

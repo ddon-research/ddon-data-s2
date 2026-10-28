@@ -344,12 +344,36 @@ namespace nSessionManager {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nSessionManager::MyListener::MyListener() {
-    this->mSessionId = static_cast<s32>(0);
+    this->mSessionId = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::MyListener::onJoinComplete at 0x38fb07-0x38fb0a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nSessionManager::MyListener::getSessionId() {
+    return this->mSessionId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline nSessionManager::cLobbyDataMessage::cLobbyDataMessage() {
     this->mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in _ZN15nSessionManager18cNetSessionManager16getPartySpaceNumEv at 0x38f848-0x38f84f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nSessionManager::cNetSessionManager::getNormalPartyMemberMaxNum() {
+    return this->mNormalPartyMemberMaxNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetGameServer::joinLobbyRequest at 0x34321b-0x343221; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nSessionManager::cNetSessionManager::getLobbyMemberMaxNum() {
+    return this->mLobbyMemberMaxNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void nSessionManager::cNetSessionManager::setLobbyMemberMaxNum(s32 num) {
+    this->mLobbyMemberMaxNum = num;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -373,12 +397,24 @@ inline bool nSessionManager::cNetSessionManager::isNowQuickMatchReq() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 18 DWARF copies materializes its result
 inline bool nSessionManager::cNetSessionManager::isNowQuickMatchFlow() {
-    return this->mQuickMatchRno != static_cast<s32>(0);
+    return this->mQuickMatchRno != 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSeedGameSvConnection::OnPacket_S2C_QUICK_PARTY_READY_NTC at 0x2e2d84-0x2e2d92; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void nSessionManager::cNetSessionManager::setQuickMatchTimer(f32 timer) {
+    this->mQuickMatchTimer = timer;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline s32 nSessionManager::cNetSessionManager::getQuickMatchJob() {
     return this->mQuickMatchJob;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::cNetSessionManager::startQuickMatch at 0x38ee3d-0x38ee43; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void nSessionManager::cNetSessionManager::setQuickMatchJob(s32 job) {
+    this->mQuickMatchJob = job;
 }
 
 // Inline, no code of its own: checked where it is inlined.

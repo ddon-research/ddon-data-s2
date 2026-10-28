@@ -276,6 +276,24 @@ inline rStageCustomParts::Param::Param() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStagePartsMdl::loadResource at 0xd37a34-0xd37a3a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 rStageCustomParts::Info::getEpvIndexAlways() const {
+    return this->mEpvIndexAlways;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStagePartsMdl::loadResource at 0xd37a3a-0xd37a40; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 rStageCustomParts::Info::getEpvIndexDay() const {
+    return this->mEpvIndexDay;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStagePartsMdl::loadResource at 0xd37a40-0xd37a46; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 rStageCustomParts::Info::getEpvIndexNight() const {
+    return this->mEpvIndexNight;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline void rStageCustomParts::Filter::clear() {
-    this->mFilter[0] = static_cast<char>(0);
+    this->mFilter[0] = 0;
 }

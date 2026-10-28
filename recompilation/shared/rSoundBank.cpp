@@ -34,7 +34,7 @@ const MtDTI& rSoundBank::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK10rSoundBank5MyDTI11newInstanceEv at 0x00e457d0-0x00e457fd, code DWARF attributes to no inlined copy; sz is the class's size (160), align the allocation's other whole constant (16)
 inline void* rSoundBank::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundBank::DTI)->memAlloc(sz, align, ::rSoundBank::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rSoundBank::DTI)->memAlloc(sz, align, rSoundBank::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rSoundBank::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rSoundBankD0Ev at 0x00e45a44-0x00e45a65, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundBank::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundBank::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundBank::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void rSoundBank::operator delete(void* p_addr) {
 // Also emitted as: _ZN10rSoundBankD0Ev at 0x00e45a20
 rSoundBank::~rSoundBank() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rSoundBank::freeAll();
+    freeAll();
 }
 
 // Address: 0x01b5b860 - 0x01b5b868 (8 bytes)
@@ -113,19 +113,19 @@ __attribute__((weak)) bool rSoundBank::save(MtStream& out) {
 // Address: 0x00e45ff0 - 0x00e4602c (60 bytes)
 const rSoundBank::Program* rSoundBank::findProgram(u32 no) const {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (this->mProgramNum != static_cast<u32>(0)) {
-        u32 i = static_cast<u32>(0);
+    if (mProgramNum != 0) {
+        u32 i = 0;
         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-        rSoundBank::Program* p2 = this->mpProgramArray;
+        Program* p2 = mpProgramArray;
         do {
             if (p2->mProgramNumber == no) {
                 return p2;
             }
-            i += static_cast<u32>(1);
+            i += 1u;
             p2 += static_cast<int>(1);
-        } while (i < this->mProgramNum);
+        } while (i < mProgramNum);
     }
-    return static_cast<const rSoundBank::Program*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,23 +134,23 @@ const rSoundBank::Program* rSoundBank::findProgram(u32 no) const {
 // Address: 0x00e46040 - 0x00e4604e (14 bytes)
 const rSoundBank::Element* rSoundBank::getElement(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpElementArray[index];
+    return &mpElementArray[index];
 }
 
 // Address: 0x00e46050 - 0x00e46088 (56 bytes)
 const rSoundBank::Bus* rSoundBank::getBus(u32 no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBusNum != static_cast<u32>(0)) {
+    if (mBusNum != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0xe46050, 0xe46087)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mpBusArray[i].mBusNo == no) {
-                return &this->mpBusArray[i];
+            if (mpBusArray[i].mBusNo == no) {
+                return &mpBusArray[i];
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mBusNum);
+            i += 1u;
+        } while (i < mBusNum);
     }
-    return static_cast<const rSoundBank::Bus*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00e46090 - 0x00e460a2 (18 bytes)
@@ -196,12 +196,14 @@ __attribute__((weak)) void rSoundBank::freeAll() {
 // No out-of-line body: no code in the ELF
 // void rSoundBank::memFree(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundBank::MyDTI rSoundBank::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundBank::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00e457d0 - 0x00e4585e (142 bytes)
 MtObject* rSoundBank::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundBank;
+    return new (16u) rSoundBank;
 }
 

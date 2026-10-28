@@ -184,11 +184,11 @@ public:
 inline rNPCMotionSet::InfoBinary::InfoBinary() {
     this->mTransOff = false;
     this->mRandomOn = false;
-    this->mTalkMot = static_cast<s16>(-1);
-    this->mHeadCtrl = static_cast<s16>(0);
-    this->mTurnType = static_cast<u8>(0);
-    this->mpMotList = static_cast<rNPCMotionSet::InfoBinary::MotDataBinary*>(nullptr);
-    this->mMotListNum = static_cast<u32>(0);
+    this->mTalkMot = -1;
+    this->mHeadCtrl = 0;
+    this->mTurnType = 0;
+    this->mpMotList = nullptr;
+    this->mMotListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -222,14 +222,14 @@ inline u8 rNPCMotionSet::InfoBinary::getTurnType() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rNPCMotionSet::InfoBinary::MotDataBinary::MotDataBinary() {
-    this->mMotionNo = static_cast<s16>(-1);
-    this->mWait = static_cast<s16>(-1);
-    this->mRandWait = static_cast<s16>(0);
-    this->mStartFrame = static_cast<s16>(0);
-    this->mBankNo = static_cast<u8>(8);
-    this->mProbability = static_cast<u8>(100);
-    this->mNext = static_cast<s8>(1);
-    this->mFrame = static_cast<s8>(-1);
+    this->mMotionNo = -1;
+    this->mWait = -1;
+    this->mRandWait = 0;
+    this->mStartFrame = 0;
+    this->mBankNo = 8;
+    this->mProbability = 100;
+    this->mNext = 1;
+    this->mFrame = -1;
     this->mDispItem = false;
     this->mPlayMusic = false;
     this->mDisableCancel = false;

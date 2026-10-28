@@ -27,7 +27,7 @@ const MtDTI& cpBakeJointHuman::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpBakeJointHuman::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpBakeJointHuman::DTI);
+    return MtMemoryAllocator::getAllocator(cpBakeJointHuman::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpBakeJointHuman::getAllocator() {
 // Address: 0x0017b7e0 - 0x0017b820 (64 bytes)
 void* cpBakeJointHuman::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpBakeJointHuman::getAllocator()->memAlloc(sz, align, ::cpBakeJointHuman::DTI.::MtDTI::getID());
+    return cpBakeJointHuman::getAllocator()->memAlloc(sz, align, cpBakeJointHuman::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpBakeJointHuman::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpBakeJointHuman::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpBakeJointHuman::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpBakeJointHuman::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,38 +66,38 @@ inline void cpBakeJointHuman::operator delete(void* p_addr) {
 // Address: 0x0017b890 - 0x0017b8ce (62 bytes)
 cpBakeJointHuman::cpBakeJointHuman() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBakeType = static_cast<u32>(0);
-    this->mBakeRequestType = static_cast<u32>(7);
-    this->mTimer = static_cast<s32>(0);
+    mBakeType = 0;
+    mBakeRequestType = 7;
+    mTimer = 0;
 }
 
 // Address: 0x0017b8d0 - 0x0017b911 (65 bytes)
 // Also emitted as: _ZN16cpBakeJointHumanD0Ev at 0x0017b920
 cpBakeJointHuman::~cpBakeJointHuman() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpBakeJoint::mpResource == static_cast<rBakeJoint*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->::cpBakeJoint::mpResource->::cResource::release();
-    this->::cpBakeJoint::mpResource = static_cast<rBakeJoint*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // Address: 0x0017b990 - 0x0017b995 (5 bytes)
 void cpBakeJointHuman::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpBakeJoint::setup();
+    this->cpBakeJoint::setup();
 }
 
 // Address: 0x0017b9b0 - 0x0017b9b5 (5 bytes)
 void cpBakeJointHuman::upadatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x0017b9a0 - 0x0017b9a5 (5 bytes)
 void cpBakeJointHuman::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpBakeJoint::setOwner(pOwner);
+    this->cpBakeJoint::setOwner(pOwner);
 }
 
 // Address: 0x0017b980 - 0x0017b981 (1 bytes)
@@ -114,11 +114,10 @@ __attribute__((weak)) void cpBakeJointHuman::createProperty(MtPropertyList& s) {
 // Address: 0x0017bb60 - 0x0017bb7a (26 bytes)
 void cpBakeJointHuman::requestBake(u32 type, s32 timer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBakeType == type) {
-    } else {
-        this->mBakeRequestType = type;
-        this->mTimer = timer;
-        this->::cpBakeJoint::requestBake();
+    if (mBakeType != type) {
+        mBakeRequestType = type;
+        mTimer = timer;
+        this->cpBakeJoint::requestBake();
     }
 }
 
@@ -131,8 +130,8 @@ void cpBakeJointHuman::requestBake(u32 type, s32 timer) {
 bool cpBakeJointHuman::initBake() {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpBakeJointHuman::initBake(this->mBakeRequestType) != false) {
-        this->::cpBakeJoint::initBake();
+    if (this->cpBakeJointHuman::initBake(mBakeRequestType)) {
+        this->cpBakeJoint::initBake();
         return true;
     } else {
         return false;
@@ -195,6 +194,8 @@ __attribute__((weak)) bool cpBakeJointHuman::setOriginalEnvelope() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpBakeJointHuman::MyDTI cpBakeJointHuman::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpBakeJointHuman.cpp at 0x0017ca1f-0x0017ca5c (called at cpBakeJointHuman.cpp:34)
 //   in _GLOBAL__sub_I_cpBakeJointHuman.cpp at 0x0017ca1f-0x0017ca5c (called at cpBakeJointHuman.h:35)
@@ -203,6 +204,6 @@ __attribute__((weak)) bool cpBakeJointHuman::setOriginalEnvelope() {
 // Address: 0x0017b770 - 0x0017b7d9 (105 bytes)
 MtObject* cpBakeJointHuman::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpBakeJointHuman;
+    return new (16u) cpBakeJointHuman;
 }
 

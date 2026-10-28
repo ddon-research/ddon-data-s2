@@ -107,6 +107,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCraftSkillSpdData::cCraftSkillSpdData() {
-    this->mSpdRate1 = static_cast<u32>(0);
-    this->mSpdRate2 = static_cast<u32>(0);
+    this->mSpdRate1 = 0;
+    this->mSpdRate2 = 0;
 }

@@ -8,28 +8,28 @@
 // Address: 0x0004b490 - 0x0004b4ad (29 bytes)
 void nCharacterData::stCharacterName::clearName() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mLastName[7] = static_cast<char>(0);
-    this->mLastName[8] = static_cast<char>(0);
-    this->mLastName[3] = static_cast<char>(0);
-    this->mLastName[4] = static_cast<char>(0);
-    this->mLastName[5] = static_cast<char>(0);
-    this->mLastName[6] = static_cast<char>(0);
-    this->mFirstName[8] = static_cast<char>(0);
-    this->mFirstName[9] = static_cast<char>(0);
-    this->mFirstName[10] = static_cast<char>(0);
-    this->mFirstName[11] = static_cast<char>(0);
-    this->mFirstName[12] = static_cast<char>(0);
-    this->mLastName[0] = static_cast<char>(0);
-    this->mLastName[1] = static_cast<char>(0);
-    this->mLastName[2] = static_cast<char>(0);
-    this->mFirstName[0] = static_cast<char>(0);
-    this->mFirstName[1] = static_cast<char>(0);
-    this->mFirstName[2] = static_cast<char>(0);
-    this->mFirstName[3] = static_cast<char>(0);
-    this->mFirstName[4] = static_cast<char>(0);
-    this->mFirstName[5] = static_cast<char>(0);
-    this->mFirstName[6] = static_cast<char>(0);
-    this->mFirstName[7] = static_cast<char>(0);
+    mLastName[7] = 0;
+    mLastName[8] = 0;
+    mLastName[3] = 0;
+    mLastName[4] = 0;
+    mLastName[5] = 0;
+    mLastName[6] = 0;
+    mFirstName[8] = 0;
+    mFirstName[9] = 0;
+    mFirstName[10] = 0;
+    mFirstName[11] = 0;
+    mFirstName[12] = 0;
+    mLastName[0] = 0;
+    mLastName[1] = 0;
+    mLastName[2] = 0;
+    mFirstName[0] = 0;
+    mFirstName[1] = 0;
+    mFirstName[2] = 0;
+    mFirstName[3] = 0;
+    mFirstName[4] = 0;
+    mFirstName[5] = 0;
+    mFirstName[6] = 0;
+    mFirstName[7] = 0;
 }
 
 // No out-of-line body: 63 inlined copies in 37 functions (511 bytes)
@@ -156,16 +156,16 @@ void nCharacterData::stCharacterName::clearName() {
 // Address: 0x0004a920 - 0x0004a944 (36 bytes)
 bool nCharacterData::stEquipData::checkEquipCategory(nCharacterData::EQUIP_SLOT_TYPE category) const {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::nCharacterData::stEquipData::mEquipTbl;
     do {
         if ((*p2) == category) {
             return true;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(14));
+    } while (index <= 14u);
     return false;
 }
 
@@ -296,12 +296,12 @@ __attribute__((weak)) u32 nCharacterData::stEquipData::getExp(const u8 category,
 void nCharacterData::stEquipData::setJobItem(u32 itemNo, nCharacterData::ARROW_EQUIP no) {
     // DWARF local not rendered: u8 slotIdx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no != static_cast<nCharacterData::ARROW_EQUIP>(1)) {
-        if (no == static_cast<nCharacterData::ARROW_EQUIP>(2)) {
-            this->mJobEquip[1] = itemNo;
+    if (no != ::nCharacterData::ARROW_EQUIP_1) {
+        if (no == ::nCharacterData::ARROW_EQUIP_2) {
+            mJobEquip[1] = itemNo;
         }
     } else {
-        this->mJobEquip[0] = itemNo;
+        mJobEquip[0] = itemNo;
     }
 }
 
@@ -330,6 +330,8 @@ __attribute__((weak)) void nCharacterData::stEquipData::copyData(const nCharacte
     DDON_STUB("nCharacterData::stEquipData::copyData")
     /* stub */
 }
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const nCharacterData::EQUIP_SLOT_TYPE nCharacterData::stEquipData::mEquipTbl[15];
 
 // No out-of-line body: 5 inlined copies in 5 functions (60 bytes)
 //   in sItemManager::createUseItemList at 0x007dbcb5-0x007dbcbd (called at cItemParam.h:104)

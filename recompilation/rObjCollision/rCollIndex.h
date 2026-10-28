@@ -100,8 +100,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCollIndex::cCollIndex() {
-    this->mNode = static_cast<s16>(-1);
-    this->mAttack = static_cast<s16>(-1);
-    this->mLinkID = static_cast<s16>(0);
+    this->mNode = -1;
+    this->mAttack = -1;
+    this->mLinkID = 0;
     this->mLinkTop = false;
 }

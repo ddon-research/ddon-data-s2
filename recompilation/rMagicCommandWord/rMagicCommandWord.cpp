@@ -50,7 +50,7 @@ const MtDTI& cMagicCommandWord::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMagicCommandWord::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMagicCommandWord::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cMagicCommandWord::createProperty(MtPropertyList& s) 
     DDON_STUB("cMagicCommandWord::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMagicCommandWord::MyDTI cMagicCommandWord::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMagicCommandWord.cpp at 0x006a3980-0x006a39c2 (called at rMagicCommandWord.cpp:25)
@@ -117,7 +119,7 @@ const MtDTI& rMagicCommandWord::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMagicCommandWord::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMagicCommandWord::DTI)->memAlloc(sz, align, ::rMagicCommandWord::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMagicCommandWord::DTI)->memAlloc(sz, align, rMagicCommandWord::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline void* rMagicCommandWord::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rMagicCommandWordD0Ev at 0x01a9c554-0x01a9c573, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMagicCommandWord::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMagicCommandWord::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMagicCommandWord::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,14 +162,16 @@ MT_CTSTR rMagicCommandWord::getExt() const {
 // Address: 0x01a9c6a0 - 0x01a9c6a6 (6 bytes)
 u32 rMagicCommandWord::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x006a3970 - 0x006a3975 (5 bytes)
 void rMagicCommandWord::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMagicCommandWord::MyDTI rMagicCommandWord::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMagicCommandWord.cpp at 0x006a39c2-0x006a39ff (called at rMagicCommandWord.cpp:26)
@@ -177,7 +181,7 @@ void rMagicCommandWord::createProperty(MtPropertyList& s) {
 // Address: 0x006a1f00 - 0x006a1f64 (100 bytes)
 MtObject* rMagicCommandWord::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMagicCommandWord;
+    return new (16u) rMagicCommandWord;
 }
 
 // Instance at 0x01a9c650 - 0x01a9c665 (21 bytes) of the generic rTbl2<T>::getData

@@ -889,82 +889,82 @@ namespace nLoginSession {
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::CPacket_L2C_CLIENT_CHALLENGE_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
+    this->m_usError = 0;
     this->m_bIsReceived = false;
-    this->m_ucPasswordEnc[58] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[59] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[60] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[61] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[50] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[51] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[52] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[53] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[54] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[55] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[56] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[57] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[42] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[43] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[44] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[45] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[46] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[47] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[48] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[49] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[34] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[35] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[36] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[37] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[38] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[39] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[40] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[41] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[26] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[27] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[28] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[29] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[30] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[31] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[32] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[33] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[18] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[19] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[20] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[21] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[22] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[23] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[24] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[25] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[10] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[11] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[12] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[13] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[14] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[15] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[16] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[17] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[2] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[3] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[4] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[5] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[6] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[7] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[8] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[9] = static_cast<unsigned char>(0);
-    this->m_nResult = static_cast<s32>(0);
-    this->m_ucPasswordSrcSize = static_cast<u8>(0);
-    this->m_ucPasswordEncSize = static_cast<u8>(0);
-    this->m_ucPasswordEnc[0] = static_cast<unsigned char>(0);
-    this->m_ucPasswordEnc[1] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[58] = 0;
+    this->m_ucPasswordEnc[59] = 0;
+    this->m_ucPasswordEnc[60] = 0;
+    this->m_ucPasswordEnc[61] = 0;
+    this->m_ucPasswordEnc[50] = 0;
+    this->m_ucPasswordEnc[51] = 0;
+    this->m_ucPasswordEnc[52] = 0;
+    this->m_ucPasswordEnc[53] = 0;
+    this->m_ucPasswordEnc[54] = 0;
+    this->m_ucPasswordEnc[55] = 0;
+    this->m_ucPasswordEnc[56] = 0;
+    this->m_ucPasswordEnc[57] = 0;
+    this->m_ucPasswordEnc[42] = 0;
+    this->m_ucPasswordEnc[43] = 0;
+    this->m_ucPasswordEnc[44] = 0;
+    this->m_ucPasswordEnc[45] = 0;
+    this->m_ucPasswordEnc[46] = 0;
+    this->m_ucPasswordEnc[47] = 0;
+    this->m_ucPasswordEnc[48] = 0;
+    this->m_ucPasswordEnc[49] = 0;
+    this->m_ucPasswordEnc[34] = 0;
+    this->m_ucPasswordEnc[35] = 0;
+    this->m_ucPasswordEnc[36] = 0;
+    this->m_ucPasswordEnc[37] = 0;
+    this->m_ucPasswordEnc[38] = 0;
+    this->m_ucPasswordEnc[39] = 0;
+    this->m_ucPasswordEnc[40] = 0;
+    this->m_ucPasswordEnc[41] = 0;
+    this->m_ucPasswordEnc[26] = 0;
+    this->m_ucPasswordEnc[27] = 0;
+    this->m_ucPasswordEnc[28] = 0;
+    this->m_ucPasswordEnc[29] = 0;
+    this->m_ucPasswordEnc[30] = 0;
+    this->m_ucPasswordEnc[31] = 0;
+    this->m_ucPasswordEnc[32] = 0;
+    this->m_ucPasswordEnc[33] = 0;
+    this->m_ucPasswordEnc[18] = 0;
+    this->m_ucPasswordEnc[19] = 0;
+    this->m_ucPasswordEnc[20] = 0;
+    this->m_ucPasswordEnc[21] = 0;
+    this->m_ucPasswordEnc[22] = 0;
+    this->m_ucPasswordEnc[23] = 0;
+    this->m_ucPasswordEnc[24] = 0;
+    this->m_ucPasswordEnc[25] = 0;
+    this->m_ucPasswordEnc[10] = 0;
+    this->m_ucPasswordEnc[11] = 0;
+    this->m_ucPasswordEnc[12] = 0;
+    this->m_ucPasswordEnc[13] = 0;
+    this->m_ucPasswordEnc[14] = 0;
+    this->m_ucPasswordEnc[15] = 0;
+    this->m_ucPasswordEnc[16] = 0;
+    this->m_ucPasswordEnc[17] = 0;
+    this->m_ucPasswordEnc[2] = 0;
+    this->m_ucPasswordEnc[3] = 0;
+    this->m_ucPasswordEnc[4] = 0;
+    this->m_ucPasswordEnc[5] = 0;
+    this->m_ucPasswordEnc[6] = 0;
+    this->m_ucPasswordEnc[7] = 0;
+    this->m_ucPasswordEnc[8] = 0;
+    this->m_ucPasswordEnc[9] = 0;
+    this->m_nResult = 0;
+    this->m_ucPasswordSrcSize = 0;
+    this->m_ucPasswordEncSize = 0;
+    this->m_ucPasswordEnc[0] = 0;
+    this->m_ucPasswordEnc[1] = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::CPacket_L2C_CREATE_CHARACTER_DATA_NTC() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
-    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unCharacterID = 0;
     this->m_bIsReceived = false;
 }
 
@@ -972,9 +972,9 @@ inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::CPacket_L2C_CREATE_
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::CPacket_L2C_CREATE_CHARACTER_DATA_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
-    this->m_unWaitNum = static_cast<u32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unWaitNum = 0;
     this->m_bIsReceived = false;
 }
 
@@ -982,8 +982,8 @@ inline nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::CPacket_L2C_CREATE_
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -991,19 +991,19 @@ inline nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::CPacket_L2C_DECID
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::CPacket_L2C_DECIDE_CHARACTER_ID_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
+    this->m_usError = 0;
     this->m_bIsReceived = false;
-    this->m_unWaitNum = static_cast<u32>(0);
-    this->m_nResult = static_cast<s32>(0);
-    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_unWaitNum = 0;
+    this->m_nResult = 0;
+    this->m_unCharacterID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::CPacket_L2C_DELETE_CHARACTER_INFO_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1011,7 +1011,7 @@ inline nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::CPacket_L2C_DELETE_
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_EJECTION_NTC::CPacket_L2C_EJECTION_NTC() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1019,8 +1019,8 @@ inline nLoginSession::CPacket_L2C_EJECTION_NTC::CPacket_L2C_EJECTION_NTC() {
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::CPacket_L2C_GET_CHARACTER_LIST_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1028,7 +1028,7 @@ inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::CPacket_L2C_GET_CHARAC
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1036,8 +1036,8 @@ inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::CPacket_L2C_GET_ER
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1045,8 +1045,8 @@ inline nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::CPacket_L2C_GET_ER
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::CPacket_L2C_GET_GAME_SERVER_LIST_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1054,9 +1054,9 @@ inline nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::CPacket_L2C_GET_GAME
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::CPacket_L2C_GP_COURSE_GET_INFO_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_unResult = static_cast<u32>(0);
-    this->m_unVersion = static_cast<u32>(0);
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_unVersion = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1064,8 +1064,8 @@ inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::CPacket_L2C_GP_COURSE_
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_LOGIN_RES::CPacket_L2C_LOGIN_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1073,8 +1073,8 @@ inline nLoginSession::CPacket_L2C_LOGIN_RES::CPacket_L2C_LOGIN_RES() {
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::CPacket_L2C_LOGIN_WAIT_NUM_NTC() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_unWaitNum = static_cast<u32>(0);
+    this->m_usError = 0;
+    this->m_unWaitNum = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1082,8 +1082,8 @@ inline nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::CPacket_L2C_LOGIN_WAIT_NUM
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_LOGOUT_RES::CPacket_L2C_LOGOUT_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -1091,7 +1091,7 @@ inline nLoginSession::CPacket_L2C_LOGOUT_RES::CPacket_L2C_LOGOUT_RES() {
 // approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_PING_RES::CPacket_L2C_PING_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usError = static_cast<u16>(0);
-    this->m_nResult = static_cast<s32>(0);
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }

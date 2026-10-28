@@ -50,7 +50,7 @@ const MtDTI& cEmScaleTable::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmScaleTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmScaleTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -80,6 +80,8 @@ __attribute__((weak)) void cEmScaleTable::createProperty(MtPropertyList& s) {
     DDON_STUB("cEmScaleTable::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmScaleTable::MyDTI cEmScaleTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmScaleTable.cpp at 0x006692d0-0x00669312 (called at rEmScaleTable.cpp:23)
@@ -114,7 +116,7 @@ const MtDTI& rEmScaleTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmScaleTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmScaleTable::DTI)->memAlloc(sz, align, ::rEmScaleTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmScaleTable::DTI)->memAlloc(sz, align, rEmScaleTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -129,7 +131,7 @@ inline void* rEmScaleTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rEmScaleTableD0Ev at 0x01a87fc4-0x01a87fe3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmScaleTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmScaleTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmScaleTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,8 +161,10 @@ MT_CTSTR rEmScaleTable::getExt() const {
 // Address: 0x01a88110 - 0x01a88116 (6 bytes)
 u32 rEmScaleTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(257);
+    return 257;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmScaleTable::MyDTI rEmScaleTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmScaleTable.cpp at 0x00669312-0x0066934f (called at rEmScaleTable.cpp:70)
@@ -170,7 +174,7 @@ u32 rEmScaleTable::getDataVersion() const {
 // Address: 0x006691f0 - 0x00669254 (100 bytes)
 MtObject* rEmScaleTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmScaleTable;
+    return new (16u) rEmScaleTable;
 }
 
 // Instance at 0x01a880c0 - 0x01a880d2 (18 bytes) of the generic rTbl2<T>::getData

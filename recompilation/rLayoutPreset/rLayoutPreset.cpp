@@ -36,7 +36,7 @@ const MtDTI& cLayoutPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cLayoutPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cLayoutPreset::DTI)->memAlloc(sz, align, ::cLayoutPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cLayoutPreset::DTI)->memAlloc(sz, align, cLayoutPreset::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (52 bytes)
@@ -86,8 +86,10 @@ __attribute__((weak)) void cLayoutPreset::createProperty(MtPropertyList& s) {
 // Address: 0x0069ca50 - 0x0069ca55 (5 bytes)
 MtUI* cLayoutPreset::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLayoutPreset::MyDTI cLayoutPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLayoutPreset.cpp at 0x0069cd6f-0x0069cdac (called at rLayoutPreset.cpp:30)
@@ -97,7 +99,7 @@ MtUI* cLayoutPreset::createUI(MtProperty& prop) {
 // Address: 0x0069c710 - 0x0069c760 (80 bytes)
 MtObject* cLayoutPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLayoutPreset;
+    return new (16u) cLayoutPreset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ const MtDTI& rLayoutPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLayoutPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLayoutPreset::DTI)->memAlloc(sz, align, ::rLayoutPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLayoutPreset::DTI)->memAlloc(sz, align, rLayoutPreset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,8 +163,10 @@ MT_CTSTR rLayoutPreset::getExt() const {
 // Address: 0x01a9ad20 - 0x01a9ad26 (6 bytes)
 u32 rLayoutPreset::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLayoutPreset::MyDTI rLayoutPreset::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLayoutPreset.cpp at 0x0069cdac-0x0069cde9 (called at rLayoutPreset.cpp:110)
@@ -172,7 +176,7 @@ u32 rLayoutPreset::getDataVersion() const {
 // Address: 0x0069cb90 - 0x0069cbf4 (100 bytes)
 MtObject* rLayoutPreset::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLayoutPreset;
+    return new (16u) rLayoutPreset;
 }
 
 // Instance at 0x01a9acd0 - 0x01a9ace6 (22 bytes) of the generic rTbl2<T>::getData

@@ -31,7 +31,7 @@ const MtDTI& nDraw::VertexBuffer::getDTI() const {
 // Address: 0x01163c30 - 0x01163c70 (64 bytes)
 void* nDraw::VertexBuffer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::VertexBuffer::DTI)->memAlloc(sz, align, ::nDraw::VertexBuffer::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::VertexBuffer::DTI)->memAlloc(sz, align, ::nDraw::VertexBuffer::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ __attribute__((weak)) void nDraw::VertexBuffer::resume() {
 void* nDraw::VertexBuffer::map(nDraw::MAP_TYPE type) {
     // DWARF local not rendered: void* pbuf;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::nDraw::Buffer::mpBuffer;
+    return mpBuffer;
 }
 
 // Address: 0x01163d80 - 0x01163d81 (1 bytes)
@@ -93,15 +93,17 @@ __attribute__((weak)) void nDraw::VertexBuffer::unmap() {
 // Also emitted as: _ZN5nDraw12VertexBufferD0Ev at 0x01163de0
 nDraw::VertexBuffer::~VertexBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::nDraw::Buffer::mpBuffer != static_cast<void*>(nullptr)) {
-        ::MtMemory::mpAllocatorType[static_cast<int>(6)]->memFree(this->::nDraw::Buffer::mpBuffer);
+    if (mpBuffer != nullptr) {
+        ::MtMemory::mpAllocatorType[6]->memFree(mpBuffer);
     }
-    this->::nDraw::Buffer::mpBuffer = static_cast<void*>(nullptr);
-    this->mpVertexBuffer = static_cast<nDraw::HVertexBuffer>(nullptr);
+    mpBuffer = nullptr;
+    mpVertexBuffer = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nDraw::VertexBuffer::create(u32 size, const void* pinitvalues);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::VertexBuffer::MyDTI nDraw::VertexBuffer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::VertexBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

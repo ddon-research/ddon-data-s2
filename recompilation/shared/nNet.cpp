@@ -76,6 +76,8 @@ const MtDTI& CDataClientPartyListInfo::getDTI() const {
 // Defined in the class (its body was written in a header).
 // void CDataClientPartyListInfo::createProperty(MtPropertyList& s);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClientPartyListInfo::MyDTI CDataClientPartyListInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c45e-0x0037c49b (called at cNetGameServer.cpp:193)
 //   in _GLOBAL__sub_I_cNetGameServer.cpp at 0x0037c45e-0x0037c49b (called at nNet.h:1319)
@@ -99,8 +101,8 @@ bool nNet::isOnline(u8 onlineStatus) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (onlineStatus <= static_cast<u8>(12)) {
-        return static_cast<bool>((static_cast<unsigned long>(2042) >> static_cast<unsigned long>(onlineStatus & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    if (onlineStatus <= 12) {
+        return static_cast<bool>((2042ul >> static_cast<unsigned long>(onlineStatus & 31)) & 1ul);
     } else {
         return true;
     }
@@ -271,16 +273,16 @@ const CEntryMemberData* nNet::getMemberInfo(nNet::stEntryBoardItemInfo& info, u3
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa8 from nNet::stEntryBoardItemInfo*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + static_cast<long>(168))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + 168)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(info.MemberList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(32))) == characterId) {
-                return static_cast<const CEntryMemberData*>(info.MemberList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(info.MemberList.getBuffer()[static_cast<int>(i)]) + 32)) == characterId) {
+                return static_cast<const CEntryMemberData*>(info.MemberList.getBuffer()[static_cast<int>(i)]);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + static_cast<long>(168))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + 168)));
     }
-    return static_cast<const CEntryMemberData*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00618e10 - 0x00618e54 (68 bytes)
@@ -335,7 +337,7 @@ __attribute__((weak)) void nNet::clearRollBit(u32& itemRankCheckRoleType, nJob::
 bool nNet::checkRollBit(u32 itemRankCheckRoleType, nJob::E_ROLE_TYPE rollType) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(itemRankCheckRoleType) >> (static_cast<unsigned long>(rollType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(itemRankCheckRoleType) >> (static_cast<unsigned long>(rollType) & 31)) & 1ul) != 0;
 }
 
 // Address: 0x006196c0 - 0x00619752 (146 bytes)
@@ -351,7 +353,7 @@ u32 nNet::getClientVersion() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    return static_cast<u32>(static_cast<unsigned long>(static_cast<unsigned short>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getSessionChannel() * static_cast<u32>(256))) | static_cast<unsigned long>(538968082));
+    return static_cast<u32>(static_cast<unsigned long>(static_cast<unsigned short>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getSessionChannel() * 256u)) | 0x20200012);
 }
 
 // No out-of-line body: no code in the ELF
@@ -537,28 +539,28 @@ nNet::cResult::~cResult() {
 // Address: 0x006172b0 - 0x006172c1 (17 bytes)
 void nNet::cResult::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mError.mCause = static_cast<s32>(0);
-    this->mError.mNative = static_cast<s32>(0);
-    this->mState = static_cast<nNet::STATE>(0);
-    this->mError.mNo = static_cast<s32>(0);
+    mError.mCause = 0;
+    mError.mNative = 0;
+    mState = ::nNet::STATE_INIT;
+    mError.mNo = 0;
 }
 
 // Address: 0x006172d0 - 0x006172d8 (8 bytes)
 void nNet::cResult::success() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = static_cast<nNet::STATE>(3);
+    mState = ::nNet::STATE_SUCCESS;
 }
 
 // Address: 0x006172e0 - 0x006172e8 (8 bytes)
 void nNet::cResult::error() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = static_cast<nNet::STATE>(4);
+    mState = ::nNet::STATE_ERROR;
 }
 
 // Address: 0x006172f0 - 0x006172f8 (8 bytes)
 void nNet::cResult::abort() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = static_cast<nNet::STATE>(5);
+    mState = ::nNet::STATE_ABORT;
 }
 
 // No out-of-line body: 10 inlined copies in 8 functions (39 bytes)

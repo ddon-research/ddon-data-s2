@@ -172,7 +172,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline sOccluderEx::Area::Area() {
-    this->mPrio = static_cast<u32>(512);
-    this->mprOCC = static_cast<rOccluder*>(nullptr);
+    this->mPrio = 512;
+    this->mprOCC = nullptr;
     this->mbOCC = true;
 }

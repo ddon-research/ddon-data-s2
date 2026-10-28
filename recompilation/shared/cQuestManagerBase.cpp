@@ -46,7 +46,7 @@ const MtDTI& cQuestManagerBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestManagerBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestManagerBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestManagerBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ inline void cQuestManagerBase::operator delete(void* p_addr) {
 // Address: 0x00541e00 - 0x00541e04 (4 bytes)
 u32 cQuestManagerBase::getQuestNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestTask.::MtArray::mLength;
+    return mQuestTask.mLength;
 }
 
 // Address: 0x00541e10 - 0x00541e67 (87 bytes)
@@ -76,10 +76,10 @@ __attribute__((weak)) u32 cQuestManagerBase::getQuestOrderNum() const {
 // Address: 0x00541e70 - 0x00541e9c (44 bytes)
 cQuestTask* cQuestManagerBase::getQuestTask(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getQuestNum()) {
-        return static_cast<cQuestTask*>(this->mQuestTask.::MtArray::mpArray[index]);
+    if (index < getQuestNum()) {
+        return static_cast<cQuestTask*>(mQuestTask.mpArray[index]);
     } else {
-        return static_cast<cQuestTask*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -115,17 +115,17 @@ void cQuestManagerBase::cancelQuestNotOrder() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cQuestTask* pTask;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    const u32 taskNum = this->mQuestTask.::MtArray::mLength;
-    if (taskNum != static_cast<u32>(0)) {
+    const u32 taskNum = mQuestTask.mLength;
+    if (taskNum != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x542087 read, used twice; no DWARF local holds it
-            MtObject* t0 = this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            if (static_cast<cQuestTask*>(t0)->::cQuestTask::isMyOrder() == false) {
-                static_cast<cQuestTask*>(t0)->::cQuestTask::requestCancel();
+            MtObject* t0 = mQuestTask.getBuffer()[static_cast<int>(i0_3)];
+            if (!static_cast<cQuestTask*>(t0)->isMyOrder()) {
+                static_cast<cQuestTask*>(t0)->requestCancel();
             }
-            if (taskNum != (i0_3 + static_cast<unsigned int>(1))) {
-                i0_3 += static_cast<unsigned int>(1);
+            if (taskNum != (i0_3 + 1u)) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -154,17 +154,17 @@ void cQuestManagerBase::initStage() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cQuestTask* pTask;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    const u32 questNum = this->getQuestNum();
-    if (questNum != static_cast<u32>(0)) {
+    const u32 questNum = getQuestNum();
+    if (questNum != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the result of the call at 0x5422e8, used twice; no DWARF local holds it
-            cQuestTask* t0 = this->getQuestTask(i0_3);
-            if (t0 != static_cast<cQuestTask*>(nullptr)) {
-                t0->::cQuestTask::deleteFlagFsm();
+            cQuestTask* t0 = getQuestTask(i0_3);
+            if (t0 != nullptr) {
+                t0->deleteFlagFsm();
             }
-            if (questNum != (i0_3 + static_cast<unsigned int>(1))) {
-                i0_3 += static_cast<unsigned int>(1);
+            if (questNum != (i0_3 + 1u)) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -188,7 +188,7 @@ __attribute__((weak)) void cQuestManagerBase::addTask(cQuestTask* pTask) {
 // Address: 0x00542500 - 0x00542508 (8 bytes)
 void cQuestManagerBase::updateQuestTask(cQuestTask* pTask) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pTask->::cQuestTask::move();
+    pTask->move();
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,12 +201,12 @@ void cQuestManagerBase::updateQuestTask(cQuestTask* pTask) {
 void cQuestManagerBase::release() {
     // DWARF local not rendered: cQuestTask* pTask;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
-    if (this->mQuestTask.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mQuestTask.mLength != 0) {
         do {
-            static_cast<cQuestTask*>(this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i)])->::cQuestTask::forceDelete();
-            i += static_cast<u32>(1);
-        } while (i < this->mQuestTask.::MtArray::mLength);
+            static_cast<cQuestTask*>(mQuestTask.getBuffer()[static_cast<int>(i)])->forceDelete();
+            i += 1u;
+        } while (i < mQuestTask.mLength);
     }
 }
 
@@ -219,32 +219,32 @@ void cQuestManagerBase::move() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cQuestTask* pTask;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mQuestTask.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mQuestTask.mLength != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_8 = static_cast<unsigned int>(0);
+        unsigned int i0_8 = 0;
         // inferred: the value the loop at 0x54256d carries; no location-less local in scope fits
-        u32 v0_10 = this->mQuestTask.::MtArray::mLength;
+        u32 v0_10 = mQuestTask.mLength;
         // inferred: the value the loop at 0x542570 carries; no location-less local in scope fits
         u32 v1_8;
         for (;;) {
             v1_8 = v0_10;
             for (;;) {
                 // inferred: a temporary for the value the load at 0x542574 read, used 4 times; no DWARF local holds it
-                MtObject* t0 = this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i0_8)];
-                static_cast<cQuestTask*>(t0)->::cQuestTask::move();
-                if (static_cast<cQuestTask*>(t0)->::cQuestTask::isDelete() == false) {
+                MtObject* t0 = mQuestTask.getBuffer()[static_cast<int>(i0_8)];
+                static_cast<cQuestTask*>(t0)->move();
+                if (!static_cast<cQuestTask*>(t0)->isDelete()) {
                     break;
                 } else {
-                    static_cast<cQuestTask*>(t0)->::cQuestTask::getQuestManager()->deleteQuestTask(static_cast<cQuestTask*>(t0));
-                    if (i0_8 < (v1_8 - static_cast<u32>(1))) {
-                        v1_8 += static_cast<u32>(4294967295);
+                    static_cast<cQuestTask*>(t0)->getQuestManager()->deleteQuestTask(static_cast<cQuestTask*>(t0));
+                    if (i0_8 < (v1_8 - 1u)) {
+                        v1_8 += 0xFFFFFFFFu;
                     } else {
                         return;
                     }
                 }
             }
-            if ((i0_8 + static_cast<unsigned int>(1)) < v1_8) {
-                i0_8 += static_cast<unsigned int>(1);
+            if ((i0_8 + 1u) < v1_8) {
+                i0_8 += 1u;
                 v0_10 = v1_8;
             } else {
                 break;
@@ -256,7 +256,7 @@ void cQuestManagerBase::move() {
 // Address: 0x005425d0 - 0x005425d5 (5 bytes)
 void cQuestManagerBase::getQuestList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReqGetQuestList = true;
+    mIsReqGetQuestList = true;
 }
 
 // Address: 0x005425e0 - 0x005427d0 (496 bytes)
@@ -305,16 +305,16 @@ __attribute__((weak)) void cQuestManagerBase::noticeDecideDeliverItem(nQuest::SC
 // Address: 0x005430e0 - 0x00543125 (69 bytes)
 void cQuestManagerBase::callbackReloadMasterData() {
     // Approximate from the ELF: a cast to the other signedness; code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mQuestTask.::MtArray::mLength == static_cast<u32>(0)) {
-        this->getQuestList();
+    if (mQuestTask.mLength == 0) {
+        getQuestList();
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        static_cast<cQuestTask*>(this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i)])->::cQuestTask::forceDelete();
-        i += static_cast<u32>(1);
-    } while (i < this->mQuestTask.::MtArray::mLength);
-    this->getQuestList();
+        static_cast<cQuestTask*>(mQuestTask.getBuffer()[static_cast<int>(i)])->forceDelete();
+        i += 1u;
+    } while (i < mQuestTask.mLength);
+    getQuestList();
 }
 
 // Address: 0x00543130 - 0x005431a2 (114 bytes)
@@ -337,10 +337,9 @@ __attribute__((weak)) void cQuestManagerBase::cancelWaitOrder(cQuestTask* pTask,
 void cQuestManagerBase::callbackGetQuestList(u32 errorCode) {
     // DWARF local not rendered: const bool isSucceeded;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReqGetQuestList = false;
-    if (errorCode != static_cast<u32>(0)) {
-    } else {
-        this->registQuestList();
+    mIsReqGetQuestList = false;
+    if (errorCode == 0) {
+        registQuestList();
     }
 }
 
@@ -355,14 +354,16 @@ cQuestManagerBase::cQuestManagerBase(MT_CTSTR managerName) {
 cQuestManagerBase::~cQuestManagerBase() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
-    if (this->mQuestTask.::MtArray::mLength != static_cast<u32>(0)) {
+    unsigned int i3 = 0;
+    if (mQuestTask.mLength != 0) {
         do {
-            static_cast<cQuestTask*>(this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i3)])->::cQuestTask::forceDelete();
-            i3 += static_cast<unsigned int>(1);
-        } while (i3 < this->mQuestTask.::MtArray::mLength);
+            static_cast<cQuestTask*>(mQuestTask.getBuffer()[static_cast<int>(i3)])->forceDelete();
+            i3 += 1u;
+        } while (i3 < mQuestTask.mLength);
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cQuestManagerBase::MyDTI cQuestManagerBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cQuestManagerBase.cpp at 0x0054351f-0x0054355f (called at cQuestManagerBase.cpp:54)

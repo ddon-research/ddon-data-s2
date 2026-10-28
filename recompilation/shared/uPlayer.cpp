@@ -41,7 +41,7 @@ const MtDTI& uPlayer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uPlayer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uPlayer::DTI)->memAlloc(sz, align, ::uPlayer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uPlayer::DTI)->memAlloc(sz, align, uPlayer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline void* uPlayer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uPlayer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uPlayer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uPlayer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,13 +95,13 @@ __attribute__((weak)) void uPlayer::createComponent() {
 // Address: 0x00cb2bb0 - 0x00cb2bb5 (5 bytes)
 void uPlayer::setupComponentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uHuman::setupComponentPtr();
+    this->uHuman::setupComponentPtr();
 }
 
 // Address: 0x00cb30c0 - 0x00cb30c8 (8 bytes)
 void uPlayer::before() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsTargetIconOff = false;
+    mIsTargetIconOff = false;
 }
 
 // Address: 0x00cb2e90 - 0x00cb30be (558 bytes)
@@ -120,17 +120,17 @@ __attribute__((weak)) void uPlayer::update() {
 void uPlayer::kill() {
     // DWARF local not rendered: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-        if (this->::uDDOModel::getCtrl()->mpContextInst != static_cast<cContextInstance*>(nullptr)) {
-            cPlayerLoadManager& loadMgr = ::cContextInterface::getPlayerLoadMgr(this->::uDDOModel::getCtrl()->mContextInterface.mpContextInstance);
-            loadMgr.::cPlayerLoadManager::returnTicket();
-            loadMgr.mPlayerLoadStatus = static_cast<s32>(0);
-            this->::uHuman::kill();
+    if (getCtrl() != nullptr) {
+        if (getCtrl()->mpContextInst != nullptr) {
+            cPlayerLoadManager& loadMgr = cContextInterface::getPlayerLoadMgr(getCtrl()->mContextInterface.mpContextInstance);
+            loadMgr.cPlayerLoadManager::returnTicket();
+            loadMgr.mPlayerLoadStatus = 0;
+            this->uHuman::kill();
         } else {
-            this->::uHuman::kill();
+            this->uHuman::kill();
         }
     } else {
-        this->::uHuman::kill();
+        this->uHuman::kill();
     }
 }
 
@@ -153,16 +153,18 @@ __attribute__((weak)) const MtVector3 uPlayer::getDefaultTargetPos() {
 // Address: 0x00cb3120 - 0x00cb316e (78 bytes)
 void uPlayer::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uHuman::updateEfcHandle();
-    if (this->mpDyingEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    this->uHuman::updateEfcHandle();
+    if (mpDyingEfcHandle == nullptr) {
         return;
     }
-    if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpDyingEfcHandle) == false) {
+    if (!static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpDyingEfcHandle)) {
         return;
     }
-    this->mpDyingEfcHandle->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mpDyingEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    mpDyingEfcHandle->mpOwner = nullptr;
+    mpDyingEfcHandle = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uPlayer::MyDTI uPlayer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uPlayer.cpp at 0x00cb32ef-0x00cb332c (called at uPlayer.cpp:79)
@@ -172,6 +174,6 @@ void uPlayer::updateEfcHandle() {
 // Address: 0x00cb29b0 - 0x00cb2a30 (128 bytes)
 MtObject* uPlayer::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uPlayer;
+    return new (16u) uPlayer;
 }
 

@@ -35,7 +35,7 @@ const MtDTI& rLoadingParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLoadingParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLoadingParam::DTI)->memAlloc(sz, align, ::rLoadingParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLoadingParam::DTI)->memAlloc(sz, align, rLoadingParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rLoadingParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLoadingParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLoadingParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLoadingParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,42 +64,42 @@ inline void rLoadingParam::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rLoadingParam::rLoadingParam() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mArray.::MtArray::mAutoDelete = true;
+    setAttribute(18u);
+    mArray.mAutoDelete = true;
 }
 
 // Address: 0x0069e310 - 0x0069e3c1 (177 bytes)
 // Also emitted as: _ZN13rLoadingParamD0Ev at 0x0069e3d0
 rLoadingParam::~rLoadingParam() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x69e340 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x01a9b910 - 0x01a9b918 (8 bytes)
@@ -123,49 +123,51 @@ __attribute__((weak)) void rLoadingParam::createProperty(MtPropertyList& s) {
 // Address: 0x0069e590 - 0x0069e611 (129 bytes)
 bool rLoadingParam::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x0069e620 - 0x0069e6a6 (134 bytes)
 bool rLoadingParam::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rLoadingParam::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rLoadingParam::DTI));
 }
 
 // Address: 0x0069e6b0 - 0x0069e738 (136 bytes)
 void rLoadingParam::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x69e6d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLoadingParam::MyDTI rLoadingParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rLoadingParam.cpp at 0x0069eed0-0x0069ef11 (called at rLoadingParam.cpp:30)
@@ -175,7 +177,7 @@ void rLoadingParam::clear() {
 // Address: 0x0069e200 - 0x0069e284 (132 bytes)
 MtObject* rLoadingParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLoadingParam;
+    return new (16u) rLoadingParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,7 +216,7 @@ const MtDTI& rLoadingParam::cDataList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLoadingParam::cDataList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLoadingParam::cDataList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLoadingParam::cDataList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -233,8 +235,35 @@ inline void rLoadingParam::cDataList::operator delete(void* p_addr) {
 // Address: 0x0069eb70 - 0x0069ec0d (157 bytes)
 // Also emitted as: _ZN13rLoadingParam9cDataListD0Ev at 0x0069ec10
 rLoadingParam::cDataList::~cDataList() {
-    DDON_STUB("rLoadingParam::cDataList::~cDataList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mList.mLength != 0) {
+        // inferred: the value the loop at 0x69eba0 carries; no location-less local in scope fits
+        u32 v0_0 = mList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mList.mpArray[i0_3] != nullptr) {
+                delete mList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mList.mLength) {
+                    v0_0 = mList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mList.mpArray));
+    }
+    mList.mpArray = nullptr;
+    mList.mBufsiz = 0;
+    mList.mLength = 0;
 }
 
 // Address: 0x0069ecd0 - 0x0069ee62 (402 bytes)
@@ -254,6 +283,8 @@ bool rLoadingParam::cDataList::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLoadingParam::cDataList::MyDTI rLoadingParam::cDataList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rLoadingParam.cpp at 0x0069ef51-0x0069ef8a (called at rLoadingParam.cpp:146)
@@ -289,7 +320,7 @@ const MtDTI& rLoadingParam::cData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rLoadingParam::cData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLoadingParam::cData::DTI)->memAlloc(sz, align, ::rLoadingParam::cData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLoadingParam::cData::DTI)->memAlloc(sz, align, rLoadingParam::cData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -303,7 +334,7 @@ inline void* rLoadingParam::cData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rLoadingParam::cData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLoadingParam::cData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLoadingParam::cData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -346,12 +377,14 @@ bool rLoadingParam::cData::save(MtDataWriter& w) {
 // Address: 0x0069eeb0 - 0x0069eec2 (18 bytes)
 void rLoadingParam::cData::copy(rLoadingParam::cData* pSrc, bool isXml) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSrc == static_cast<rLoadingParam::cData*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    this->mMsgIdx = pSrc->mMsgIdx;
-    this->mImgId = pSrc->mImgId;
+    mMsgIdx = pSrc->mMsgIdx;
+    mImgId = pSrc->mImgId;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLoadingParam::cData::MyDTI rLoadingParam::cData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rLoadingParam.cpp at 0x0069ef11-0x0069ef51 (called at rLoadingParam.cpp:108)
@@ -361,7 +394,7 @@ void rLoadingParam::cData::copy(rLoadingParam::cData* pSrc, bool isXml) {
 // Address: 0x0069e740 - 0x0069e788 (72 bytes)
 MtObject* rLoadingParam::cData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLoadingParam::cData;
+    return new (16u) rLoadingParam::cData;
 }
 
 // Instance at 0x01a9b8c0 - 0x01a9b8c5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

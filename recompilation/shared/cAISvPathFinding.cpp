@@ -47,7 +47,7 @@ const MtDTI& cAISvPathFinding::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16cAISvPathFindingD0Ev at 0x010531fe-0x0105321f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAISvPathFinding::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAISvPathFinding::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAISvPathFinding::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,7 +87,7 @@ __attribute__((weak)) void cAISvPathFinding::createProperty(MtPropertyList& s) {
 // Address: 0x010533d0 - 0x010533d5 (5 bytes)
 MtUI* cAISvPathFinding::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIService::createUI(prop);
+    return this->cAIService::createUI(prop);
 }
 
 // Address: 0x010533e0 - 0x01053485 (165 bytes)
@@ -305,10 +305,18 @@ __attribute__((weak)) void cAISvPathFinding::setLinkEx(const MtOBB& obb, bool f)
 // void cAISvPathFinding::setAttributeEx(const MtOBB& obb, u32 index, u32 attr, bool f);
 
 // Address: 0x01053c90 - 0x01053cba (42 bytes)
-__attribute__((weak)) bool cAISvPathFinding::GraphFunc(MtObject* adr1, u32& num, u32& index, f32& cost, u32& param) {
-    // local: Node* node1;
-    DDON_STUB("cAISvPathFinding::GraphFunc")
-    return {};
+bool cAISvPathFinding::GraphFunc(MtObject* adr1, u32& num, u32& index, f32& cost, u32& param) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a downcast named by the DWARF local the source declared: node1, located in the register the access reads through
+    Node* node1 = static_cast<Node*>(adr1);
+    if ((num) < node1->mNumberOfLink) {
+        cost = node1->mpLink[num].mCost;
+        index = static_cast<unsigned int>(node1->mpLink[num].mNodeIndex);
+        num = (num) + 1u;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01b6bc40 - 0x01b6bc43 (3 bytes)
@@ -374,6 +382,8 @@ __attribute__((weak)) void cAISvPathFinding::setHashNode(u32 size) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAISvPathFinding::setHashExpData(u32 size);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAISvPathFinding::MyDTI cAISvPathFinding::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAISvPathFinding::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -435,10 +445,10 @@ cAISvPathFinding::Node::Node() {
 // Also emitted as: _ZN16cAISvPathFinding4NodeD0Ev at 0x01054090
 cAISvPathFinding::Node::~Node() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry == static_cast<MtGeometry*>(nullptr)) {
+    if (mpGeometry == nullptr) {
         return;
     }
-    delete this->mpGeometry;
+    delete mpGeometry;
 }
 
 // Address: 0x010540e0 - 0x010541cf (239 bytes)
@@ -447,6 +457,8 @@ __attribute__((weak)) void cAISvPathFinding::Node::removeData() {
     DDON_STUB("cAISvPathFinding::Node::removeData")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAISvPathFinding::Node::MyDTI cAISvPathFinding::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAISvPathFinding::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

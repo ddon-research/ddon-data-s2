@@ -50,7 +50,7 @@ const MtDTI& rGrass::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6rGrassD0Ev at 0x011c79fe-0x011c7a1f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGrass::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGrass::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGrass::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +128,7 @@ MT_CTSTR rGrass::getExt() const {
 // Address: 0x01b91b70 - 0x01b91b78 (8 bytes)
 MtArray* rGrass::getParams() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mParams;
+    return &mParams;
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,6 +163,8 @@ MtArray* rGrass::getParams() {
 
 // No out-of-line body: no code in the ELF
 // void rGrass::buildTree();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrass::MyDTI rGrass::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrass::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -205,7 +207,7 @@ const MtDTI& rGrass::cCluster::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rGrass::cCluster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGrass::cCluster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGrass::cCluster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -238,22 +240,22 @@ __attribute__((weak)) void rGrass::cCluster::createProperty(MtPropertyList& s) {
 // Address: 0x011c92e0 - 0x011c9351 (113 bytes)
 bool rGrass::cCluster::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    in.read(static_cast<void*>(&this->mVertexBase), static_cast<u32>(4));
-    in.read(static_cast<void*>(&this->mVertexCount), static_cast<u32>(4));
-    in.read(static_cast<void*>(&this->mIndexCount), static_cast<u32>(4));
-    in.read(static_cast<void*>(&this->mDequantizationCoordScale), static_cast<u32>(16));
-    in.read(static_cast<void*>(&this->mDequantizationCoordOffset), static_cast<u32>(16));
+    in.read(static_cast<void*>(&mVertexBase), 4u);
+    in.read(static_cast<void*>(&mVertexCount), 4u);
+    in.read(static_cast<void*>(&mIndexCount), 4u);
+    in.read(static_cast<void*>(&mDequantizationCoordScale), 16u);
+    in.read(static_cast<void*>(&mDequantizationCoordOffset), 16u);
     return true;
 }
 
 // Address: 0x011c9360 - 0x011c93e0 (128 bytes)
 bool rGrass::cCluster::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    out.write(static_cast<const void*>(&this->mVertexBase), static_cast<u32>(4));
-    out.write(static_cast<const void*>(&this->mVertexCount), static_cast<u32>(4));
-    out.write(static_cast<const void*>(&this->mIndexCount), static_cast<u32>(4));
-    out.write(static_cast<const void*>(&this->mDequantizationCoordScale), static_cast<u32>(16));
-    out.write(static_cast<const void*>(&this->mDequantizationCoordOffset), static_cast<u32>(16));
+    out.write(static_cast<const void*>(&mVertexBase), 4u);
+    out.write(static_cast<const void*>(&mVertexCount), 4u);
+    out.write(static_cast<const void*>(&mIndexCount), 4u);
+    out.write(static_cast<const void*>(&mDequantizationCoordScale), 16u);
+    out.write(static_cast<const void*>(&mDequantizationCoordOffset), 16u);
     return true;
 }
 
@@ -278,6 +280,8 @@ __attribute__((weak)) void rGrass::cCluster::draw(cDraw* pdraw, u32 index, const
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtVector4* rGrass::cCluster::getGlobalWind();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrass::cCluster::MyDTI rGrass::cCluster::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrass::cCluster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -341,19 +345,19 @@ rGrass::cSetting::cSetting() {
 // Also emitted as: _ZN6rGrass8cSettingD0Ev at 0x011c9cd0
 rGrass::cSetting::~cSetting() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAlbedoMap != static_cast<rTexture*>(nullptr)) {
-        this->mpAlbedoMap->::cResource::release();
-        this->mpAlbedoMap = static_cast<rTexture*>(nullptr);
+    if (mpAlbedoMap != nullptr) {
+        mpAlbedoMap->release();
+        mpAlbedoMap = nullptr;
     }
-    if (this->mpMaskMap != static_cast<rTexture*>(nullptr)) {
-        this->mpMaskMap->::cResource::release();
-        this->mpMaskMap = static_cast<rTexture*>(nullptr);
+    if (mpMaskMap != nullptr) {
+        mpMaskMap->release();
+        mpMaskMap = nullptr;
     }
-    if (this->mpNormalMap == static_cast<rTexture*>(nullptr)) {
+    if (mpNormalMap == nullptr) {
         return;
     }
-    this->mpNormalMap->::cResource::release();
-    this->mpNormalMap = static_cast<rTexture*>(nullptr);
+    mpNormalMap->release();
+    mpNormalMap = nullptr;
 }
 
 // Address: 0x011c9d60 - 0x011caaaa (3402 bytes)
@@ -365,7 +369,7 @@ __attribute__((weak)) void rGrass::cSetting::createProperty(MtPropertyList& s) {
 // Address: 0x011cac60 - 0x011cac65 (5 bytes)
 MtUI* rGrass::cSetting::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x011c87d0 - 0x011c8c14 (1092 bytes)
@@ -493,7 +497,7 @@ __attribute__((weak)) void rGrass::cSetting::update() {
 // Address: 0x01b91a90 - 0x01b91a98 (8 bytes)
 rTexture* rGrass::cSetting::getAlbedoTexture() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAlbedoMap;
+    return mpAlbedoMap;
 }
 
 // Address: 0x011caab0 - 0x011cab33 (131 bytes)
@@ -505,7 +509,7 @@ __attribute__((weak)) void rGrass::cSetting::setAlbedoTexture(rTexture* ptex) {
 // Address: 0x01b91aa0 - 0x01b91aa8 (8 bytes)
 rTexture* rGrass::cSetting::getMaskTexture() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaskMap;
+    return mpMaskMap;
 }
 
 // Address: 0x011cab40 - 0x011cabc3 (131 bytes)
@@ -517,7 +521,7 @@ __attribute__((weak)) void rGrass::cSetting::setMaskTexture(rTexture* ptex) {
 // Address: 0x01b91ab0 - 0x01b91ab8 (8 bytes)
 rTexture* rGrass::cSetting::getNormalTexture() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpNormalMap;
+    return mpNormalMap;
 }
 
 // Address: 0x011cabd0 - 0x011cac53 (131 bytes)
@@ -529,27 +533,27 @@ __attribute__((weak)) void rGrass::cSetting::setNormalTexture(rTexture* ptex) {
 // Address: 0x01b91ad0 - 0x01b91add (13 bytes)
 void rGrass::cSetting::setScale(f32 scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScale = scale;
-    this->::rGrass::cSetting::update();
+    mScale = scale;
+    update();
 }
 
 // Address: 0x01b91ac0 - 0x01b91ac9 (9 bytes)
 f32 rGrass::cSetting::getScale() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScale;
+    return mScale;
 }
 
 // Address: 0x01b91af0 - 0x01b91afd (13 bytes)
 void rGrass::cSetting::setAspect(f32 aspect) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAspect = aspect;
-    this->::rGrass::cSetting::update();
+    mAspect = aspect;
+    update();
 }
 
 // Address: 0x01b91ae0 - 0x01b91ae9 (9 bytes)
 f32 rGrass::cSetting::getAspect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAspect;
+    return mAspect;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -578,6 +582,8 @@ f32 rGrass::cSetting::getAspect() {
 
 // No out-of-line body: no code in the ELF
 // rGrass::cChainGrass* rGrass::cSetting::getChainGrassParam(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrass::cSetting::MyDTI rGrass::cSetting::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrass::cSetting::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -621,7 +627,7 @@ const MtDTI& rGrass::cChainGrass::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6rGrass11cChainGrassD0Ev at 0x01b91b90-0x01b91bba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGrass::cChainGrass::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGrass::cChainGrass::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGrass::cChainGrass::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -645,7 +651,7 @@ __attribute__((weak)) void rGrass::cChainGrass::createProperty(MtPropertyList& s
 // Address: 0x011c9700 - 0x011c9705 (5 bytes)
 MtUI* rGrass::cChainGrass::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -653,6 +659,8 @@ MtUI* rGrass::cChainGrass::createUI(MtProperty& prop) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 rGrass::cChainGrass::getTheta();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGrass::cChainGrass::MyDTI rGrass::cChainGrass::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGrass::cChainGrass::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -37,7 +37,7 @@ const MtDTI& uShlAlchemy::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uShlAlchemy::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uShlAlchemy::DTI)->memAlloc(sz, align, ::uShlAlchemy::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uShlAlchemy::DTI)->memAlloc(sz, align, uShlAlchemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* uShlAlchemy::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uShlAlchemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlAlchemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlAlchemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -105,15 +105,15 @@ __attribute__((weak)) void uShlAlchemy::initSub() {
 // Address: 0x00cb76d0 - 0x00cb771e (78 bytes)
 void uShlAlchemy::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::updateEfcHandle();
-    if (this->mpAlchemyMaxEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    this->uShlBase::updateEfcHandle();
+    if (mpAlchemyMaxEfcHandle == nullptr) {
         return;
     }
-    if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpAlchemyMaxEfcHandle) == false) {
+    if (!static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpAlchemyMaxEfcHandle)) {
         return;
     }
-    this->mpAlchemyMaxEfcHandle->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mpAlchemyMaxEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    mpAlchemyMaxEfcHandle->mpOwner = nullptr;
+    mpAlchemyMaxEfcHandle = nullptr;
 }
 
 // Address: 0x00cb7720 - 0x00cb778f (111 bytes)
@@ -166,7 +166,7 @@ __attribute__((weak)) void uShlAlchemy::resetReduceTime() {
 // Address: 0x00cb7f80 - 0x00cb7f85 (5 bytes)
 void uShlAlchemy::evAlchemyValueZero() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::requestKill();
+    requestKill();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (135 bytes)
@@ -282,6 +282,8 @@ __attribute__((weak)) void uShlAlchemy::callbackChecked(cHitInfo* pHitInfo) {
 //   in cpJob09::entryExplosionShlCS09 at 0x004b9ece-0x004b9ed6 (called at cpJob09.cpp:1845)
 // void uShlAlchemy::setUseBurstRelease(const bool flg);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uShlAlchemy::MyDTI uShlAlchemy::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlAlchemy.cpp at 0x00cb9e93-0x00cb9ed0 (called at uShlAlchemy.cpp:47)
 //   in _GLOBAL__sub_I_uShlAlchemy.cpp at 0x00cb9e93-0x00cb9ed0 (called at uShlAlchemy.h:27)
@@ -290,7 +292,7 @@ __attribute__((weak)) void uShlAlchemy::callbackChecked(cHitInfo* pHitInfo) {
 // Address: 0x00cb6d50 - 0x00cb6df6 (166 bytes)
 MtObject* uShlAlchemy::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uShlAlchemy;
+    return new (16u) uShlAlchemy;
 }
 
 // No out-of-line body: no code in the ELF
@@ -328,7 +330,7 @@ const MtDTI& uShlAlchemyCS03::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uShlAlchemyCS03D0Ev at 0x01b0b2fc-0x01b0b31d, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uShlAlchemyCS03::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlAlchemyCS03::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlAlchemyCS03::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -367,8 +369,8 @@ __attribute__((weak)) void uShlAlchemyCS03::updateSub() {
 // Address: 0x00cb9810 - 0x00cb9831 (33 bytes)
 void uShlAlchemyCS03::callbackDamage(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::callbackDamage(pHitInfo);
-    this->::uShlAlchemyCS03::checkDamageAlchemy(pHitInfo);
+    this->uShlBase::callbackDamage(pHitInfo);
+    checkDamageAlchemy(pHitInfo);
 }
 
 // Address: 0x00cb9840 - 0x00cb9a44 (516 bytes)
@@ -402,22 +404,22 @@ __attribute__((weak)) void uShlAlchemyCS03::checkDamageAlchemy(cHitInfo* pHitInf
 // Address: 0x00cb9a60 - 0x00cb9ab9 (89 bytes)
 void uShlAlchemyCS03::evAlchemyValueZero() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->::uBaseModel::mPartsDisp[14] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[15] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[12] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[13] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[10] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[11] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[8] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[9] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[6] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[7] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[4] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[5] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[2] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[3] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[0] = static_cast<unsigned int>(0);
-    this->::uBaseModel::mPartsDisp[1] = static_cast<unsigned int>(0);
+    mPartsDisp[14] = 0;
+    mPartsDisp[15] = 0;
+    mPartsDisp[12] = 0;
+    mPartsDisp[13] = 0;
+    mPartsDisp[10] = 0;
+    mPartsDisp[11] = 0;
+    mPartsDisp[8] = 0;
+    mPartsDisp[9] = 0;
+    mPartsDisp[6] = 0;
+    mPartsDisp[7] = 0;
+    mPartsDisp[4] = 0;
+    mPartsDisp[5] = 0;
+    mPartsDisp[2] = 0;
+    mPartsDisp[3] = 0;
+    mPartsDisp[0] = 0;
+    mPartsDisp[1] = 0;
 }
 
 // Address: 0x00cb9ac0 - 0x00cb9b19 (89 bytes)
@@ -426,6 +428,8 @@ __attribute__((weak)) void uShlAlchemyCS03::initSub() {
     DDON_STUB("uShlAlchemyCS03::initSub")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uShlAlchemyCS03::MyDTI uShlAlchemyCS03::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uShlAlchemy.cpp at 0x00cb9f0d-0x00cb9f46 (called at uShlAlchemy.cpp:50)

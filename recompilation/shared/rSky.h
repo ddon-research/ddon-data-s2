@@ -192,7 +192,7 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK12rStarCatalog5MyDTI11newInstanceEv at 0x011e0e70-0x011e0ea4, code DWARF attributes to no inlined copy
 inline rStarCatalog::rStarCatalog() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mStarNum = static_cast<u32>(0);
-    this->mpStarCatalog = static_cast<rStarCatalog::StarData*>(nullptr);
+    this->::cResource::mAttr = 16;
+    this->mStarNum = 0;
+    this->mpStarCatalog = nullptr;
 }

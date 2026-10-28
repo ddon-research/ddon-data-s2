@@ -36,7 +36,7 @@ const MtDTI& cAdjustParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cAdjustParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAdjustParam::DTI)->memAlloc(sz, align, ::cAdjustParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAdjustParam::DTI)->memAlloc(sz, align, cAdjustParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -51,7 +51,7 @@ inline void* cAdjustParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAdjustParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAdjustParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAdjustParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cAdjustParam::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAdjustParam::MyDTI cAdjustParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rAdjustParam.cpp at 0x0063e6e0-0x0063e722 (called at rAdjustParam.cpp:22)
 //   in _GLOBAL__sub_I_rAdjustParam.cpp at 0x0063e6e0-0x0063e722 (called at rAdjustParam.h:30)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cAdjustParam::createProperty(MtPropertyList& s) {
 // Address: 0x0063e430 - 0x0063e477 (71 bytes)
 MtObject* cAdjustParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAdjustParam;
+    return new (16u) cAdjustParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rAdjustParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAdjustParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAdjustParam::DTI)->memAlloc(sz, align, ::rAdjustParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAdjustParam::DTI)->memAlloc(sz, align, rAdjustParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rAdjustParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rAdjustParamD0Ev at 0x01a70f24-0x01a70f43, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAdjustParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAdjustParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAdjustParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,8 +160,10 @@ MT_CTSTR rAdjustParam::getExt() const {
 // Address: 0x01a71070 - 0x01a71076 (6 bytes)
 u32 rAdjustParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAdjustParam::MyDTI rAdjustParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAdjustParam.cpp at 0x0063e722-0x0063e75f (called at rAdjustParam.cpp:60)
@@ -169,7 +173,7 @@ u32 rAdjustParam::getDataVersion() const {
 // Address: 0x0063e600 - 0x0063e664 (100 bytes)
 MtObject* rAdjustParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAdjustParam;
+    return new (16u) rAdjustParam;
 }
 
 // Instance at 0x01a71020 - 0x01a71032 (18 bytes) of the generic rTbl2<T>::getData

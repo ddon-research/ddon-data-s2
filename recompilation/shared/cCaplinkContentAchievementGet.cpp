@@ -22,36 +22,36 @@
 void nCaplink::ContentAchievementGetAns::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::nCaplink::ContextListener::init();
-    ::memset(static_cast<void*>(&this->mAchievement[0]), static_cast<int>(0), static_cast<size_t>(2732));
-    this->mExtended.::MtArray::mAutoDelete = true;
-    if (this->mExtended.::MtArray::mLength != static_cast<u32>(0)) {
+    ::memset(static_cast<void*>(&mAchievement[0]), 0, 2732ul);
+    mExtended.mAutoDelete = true;
+    if (mExtended.mLength != 0) {
         // inferred: the value the loop at 0x1abf400 carries; no location-less local in scope fits
-        u32 v0_0 = this->mExtended.::MtArray::mLength;
+        u32 v0_0 = mExtended.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mExtended.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mExtended.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mExtended.::MtArray::mLength) {
-                    v0_0 = this->mExtended.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mExtended.mpArray[i0_3] != nullptr) {
+                delete mExtended.mpArray[i0_3];
+                if ((i0_3 + 1u) < mExtended.mLength) {
+                    v0_0 = mExtended.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mExtended.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mExtended.::MtArray::mpArray));
+    if (mExtended.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mExtended.mpArray));
     }
-    this->mExtended.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mExtended.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mExtended.::MtArray::mLength = static_cast<u32>(0);
+    mExtended.mpArray = nullptr;
+    mExtended.mBufsiz = 0;
+    mExtended.mLength = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

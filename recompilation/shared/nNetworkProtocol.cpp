@@ -60,7 +60,7 @@ __attribute__((weak)) void nNetwork::Protocol::createProperty(MtPropertyList& s)
 // Address: 0x013609e0 - 0x013609e5 (5 bytes)
 void nNetwork::Protocol::setup(nNetwork::Session* ps) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSession = ps;
+    mpSession = ps;
 }
 
 // Address: 0x01bd8220 - 0x01bd8221 (1 bytes)
@@ -103,6 +103,8 @@ __attribute__((weak)) void nNetwork::Protocol::dbgGetSummary(s32 index, MtString
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Protocol::process(u32 callback, s32 index, const void* data_ptr, u32 data_size);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Protocol::MyDTI nNetwork::Protocol::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Protocol::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

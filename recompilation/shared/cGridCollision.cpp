@@ -32,7 +32,7 @@ const MtDTI& cGridCollision::getDTI() const {
 // Address: 0x01066280 - 0x010662c0 (64 bytes)
 void* cGridCollision::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cGridCollision::DTI)->memAlloc(sz, align, ::cGridCollision::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memAlloc(sz, align, cGridCollision::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cGridCollision::operator new(size_t sz, void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cGridCollisionD0Ev at 0x0106666c-0x0106668d, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cGridCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGridCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,7 +72,7 @@ cGridCollision::cGridCollision() {
 // Also emitted as: _ZN14cGridCollisionD0Ev at 0x01066650
 cGridCollision::~cGridCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cGridCollision::clear();
+    clear();
 }
 
 // Address: 0x01066690 - 0x0106693a (682 bytes)
@@ -519,6 +519,12 @@ __attribute__((weak)) u32 cGridCollision::traverseCoreMainDefaultFullDefault(s32
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGridCollision::MyDTI cGridCollision::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cGridCollision::MAGIC;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cGridCollision::VERSION;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGridCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -576,7 +582,7 @@ __attribute__((weak)) MtObject* cGridCollision::MyDTI::newInstance() const {
 // Address: 0x01066c30 - 0x01066c38 (8 bytes)
 cGridCollisionRegistInfo::cGridCollisionRegistInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRegistParam = static_cast<u32>(4294967295);
+    mRegistParam = 0xFFFFFFFF;
 }
 
 // Address: 0x01066c40 - 0x01066c41 (1 bytes)

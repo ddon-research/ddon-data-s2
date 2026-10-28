@@ -26,7 +26,7 @@ const MtDTI& cpEffectStatusManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpEffectStatusManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpEffectStatusManager::DTI);
+    return MtMemoryAllocator::getAllocator(cpEffectStatusManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpEffectStatusManager::getAllocator() {
 // Address: 0x00470700 - 0x00470740 (64 bytes)
 void* cpEffectStatusManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpEffectStatusManager::getAllocator()->memAlloc(sz, align, ::cpEffectStatusManager::DTI.::MtDTI::getID());
+    return cpEffectStatusManager::getAllocator()->memAlloc(sz, align, cpEffectStatusManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpEffectStatusManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEffectStatusManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEffectStatusManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEffectStatusManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,13 +86,13 @@ __attribute__((weak)) void cpEffectStatusManager::setup() {
 // Address: 0x004708e0 - 0x004708ea (10 bytes)
 void cpEffectStatusManager::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpEffectStatusManager::allKill(static_cast<sEffectExt::EFC_END_TYPE>(2));
+    allKill(sEffectExt::EFC_END_TYPE_KILL);
 }
 
 // Address: 0x004708f0 - 0x004708f5 (5 bytes)
 void cpEffectStatusManager::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // No out-of-line body: 69 inlined copies in 50 functions (445 bytes)
@@ -171,6 +171,8 @@ __attribute__((weak)) cEfcHandle* cpEffectStatusManager::getEfcHandle(u64 syncFl
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEffectStatusManager::MyDTI cpEffectStatusManager::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEffectStatusManager.cpp at 0x00470c7c-0x00470cb9 (called at cpEffectStatusManager.cpp:27)
 //   in _GLOBAL__sub_I_cpEffectStatusManager.cpp at 0x00470c7c-0x00470cb9 (called at cpEffectStatusManager.h:163)
@@ -179,6 +181,6 @@ __attribute__((weak)) cEfcHandle* cpEffectStatusManager::getEfcHandle(u64 syncFl
 // Address: 0x00470670 - 0x004706f1 (129 bytes)
 MtObject* cpEffectStatusManager::MyDTI::newInstance() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cpEffectStatusManager;
+    return new (16u) cpEffectStatusManager;
 }
 

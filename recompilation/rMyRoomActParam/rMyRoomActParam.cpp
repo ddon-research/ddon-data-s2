@@ -51,7 +51,7 @@ const MtDTI& cMyRoomActParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMyRoomActParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMyRoomActParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMyRoomActParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -71,24 +71,24 @@ inline void cMyRoomActParam::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cMyRoomActParam::cMyRoomActParam() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mWaypoint = static_cast<u16>(0);
-    this->mPos = ::MtVector3::Zero;
-    this->mAngleY = 0.0f;
-    this->mNpcMotNo = static_cast<u16>(0);
-    this->mStartIdx = static_cast<u16>(0);
-    this->mNeedOM = static_cast<u32>(0);
-    this->mNeedOM4 = static_cast<u32>(0);
-    this->mNeedOM5 = static_cast<u32>(0);
-    this->mNeedOM2 = static_cast<u32>(0);
-    this->mNeedOM3 = static_cast<u32>(0);
-    this->mMessage = static_cast<s16>(-1);
-    this->mCondition = static_cast<u16>(0);
-    this->mLinkActNo = static_cast<s16>(-1);
-    this->mLinkActLv = static_cast<u16>(1);
-    this->mChangeEquip = static_cast<s16>(-1);
-    this->mIsGriffin = false;
-    this->mIsNotAvoid = false;
-    this->mIsSingle = false;
+    mWaypoint = 0;
+    mPos = MtVector3::Zero;
+    mAngleY = 0.0f;
+    mNpcMotNo = 0;
+    mStartIdx = 0;
+    mNeedOM = 0;
+    mNeedOM4 = 0;
+    mNeedOM5 = 0;
+    mNeedOM2 = 0;
+    mNeedOM3 = 0;
+    mMessage = -1;
+    mCondition = 0;
+    mLinkActNo = -1;
+    mLinkActLv = 1;
+    mChangeEquip = -1;
+    mIsGriffin = false;
+    mIsNotAvoid = false;
+    mIsSingle = false;
 }
 
 // Defined in the class (its body was written in a header).
@@ -158,6 +158,8 @@ __attribute__((weak)) void cMyRoomActParam::createProperty(MtPropertyList& s) {
 //   in cpPartnerPawn::checkOmTouch at 0x0019b560-0x0019b564 (called at cpPartnerPawn.cpp:2294)
 // bool cMyRoomActParam::isSingle();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMyRoomActParam::MyDTI cMyRoomActParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMyRoomActParam.cpp at 0x006a80f0-0x006a8132 (called at rMyRoomActParam.cpp:46)
 //   in _GLOBAL__sub_I_rMyRoomActParam.cpp at 0x006a80f0-0x006a8132 (called at rMyRoomActParam.h:37)
@@ -191,7 +193,7 @@ const MtDTI& rMyRoomActParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMyRoomActParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMyRoomActParam::DTI)->memAlloc(sz, align, ::rMyRoomActParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMyRoomActParam::DTI)->memAlloc(sz, align, rMyRoomActParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -206,7 +208,7 @@ inline void* rMyRoomActParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rMyRoomActParamD0Ev at 0x01a9d6e4-0x01a9d703, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMyRoomActParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMyRoomActParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMyRoomActParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -223,62 +225,62 @@ bool rMyRoomActParam::loadData(MtDataReader& in, cMyRoomActParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPos.x);
+    nDDOIO::readData(in, pData->mPos.x);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPos.y);
+    nDDOIO::readData(in, pData->mPos.y);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mPos.z);
+    nDDOIO::readData(in, pData->mPos.z);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAngleY);
+    nDDOIO::readData(in, pData->mAngleY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWaypoint);
+    nDDOIO::readData(in, pData->mWaypoint);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNpcMotNo);
+    nDDOIO::readData(in, pData->mNpcMotNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStartIdx);
+    nDDOIO::readData(in, pData->mStartIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedOM);
+    nDDOIO::readData(in, pData->mNeedOM);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedOM2);
+    nDDOIO::readData(in, pData->mNeedOM2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedOM3);
+    nDDOIO::readData(in, pData->mNeedOM3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedOM4);
+    nDDOIO::readData(in, pData->mNeedOM4);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNeedOM5);
+    nDDOIO::readData(in, pData->mNeedOM5);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMessage);
+    nDDOIO::readData(in, pData->mMessage);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCondition);
+    nDDOIO::readData(in, pData->mCondition);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLinkActNo);
+    nDDOIO::readData(in, pData->mLinkActNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLinkActLv);
+    nDDOIO::readData(in, pData->mLinkActLv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChangeEquip);
+    nDDOIO::readData(in, pData->mChangeEquip);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIsGriffin);
+    nDDOIO::readData(in, pData->mIsGriffin);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mIsNotAvoid = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mIsNotAvoid = in.readU8() != 0;
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mIsSingle = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mIsSingle = in.readU8() != 0;
     return true;
 }
 
@@ -291,8 +293,10 @@ MT_CTSTR rMyRoomActParam::getExt() const {
 // Address: 0x01a9d830 - 0x01a9d836 (6 bytes)
 u32 rMyRoomActParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(14);
+    return 14;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMyRoomActParam::MyDTI rMyRoomActParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMyRoomActParam.cpp at 0x006a8132-0x006a816f (called at rMyRoomActParam.cpp:157)
@@ -302,7 +306,7 @@ u32 rMyRoomActParam::getDataVersion() const {
 // Address: 0x006a7e80 - 0x006a7ee4 (100 bytes)
 MtObject* rMyRoomActParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMyRoomActParam;
+    return new (16u) rMyRoomActParam;
 }
 
 // Instance at 0x01a9d7e0 - 0x01a9d7f6 (22 bytes) of the generic rTbl2<T>::getData

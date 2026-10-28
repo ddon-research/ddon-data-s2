@@ -48,7 +48,7 @@ const MtDTI& uLight::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uLightD0Ev at 0x00f0cd0a-0x00f0cd29, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uLight::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uLight::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uLight::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,17 +67,17 @@ inline void uLight::operator delete(void* p_addr) {
 // Also emitted as: _ZN6uLightD0Ev at 0x00f0cc90
 uLight::~uLight() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sScene::mpInstance)->::sScene::detach(static_cast<cUnit*>(this));
-    (::sScene::mpInstance)->::sScene::detachNode(this->mNode);
-    if (this->mpProjectionTexture != static_cast<rTexture*>(nullptr)) {
-        this->mpProjectionTexture->::cResource::release();
-        this->mpProjectionTexture = static_cast<rTexture*>(nullptr);
+    (sScene::mpInstance)->sScene::detach(static_cast<cUnit*>(this));
+    (sScene::mpInstance)->sScene::detachNode(mNode);
+    if (mpProjectionTexture != nullptr) {
+        mpProjectionTexture->release();
+        mpProjectionTexture = nullptr;
     }
-    if (this->mplightVolume == static_cast<cLightVolume*>(nullptr)) {
+    if (mplightVolume == nullptr) {
         return;
     }
-    delete this->mplightVolume;
-    this->mplightVolume = static_cast<cLightVolume*>(nullptr);
+    delete mplightVolume;
+    mplightVolume = nullptr;
 }
 
 // Address: 0x00f0d4f0 - 0x00f0db3f (1615 bytes)
@@ -89,13 +89,13 @@ __attribute__((weak)) void uLight::createProperty(MtPropertyList& s) {
 // Address: 0x00f0dbd0 - 0x00f0dbd5 (5 bytes)
 MtUI* uLight::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00f0dbe0 - 0x00f0dbe6 (6 bytes)
 u64 uLight::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(4);
+    return 4;
 }
 
 // Address: 0x00f0e150 - 0x00f0e1b3 (99 bytes)
@@ -108,7 +108,7 @@ __attribute__((weak)) void uLight::applyWorldOffset(const MtVector3& offset, con
 // Address: 0x00f0cd30 - 0x00f0cd35 (5 bytes)
 void uLight::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWbFlag = this->mWbFlag ^ static_cast<u32>(1);
+    mWbFlag = mWbFlag ^ 1u;
 }
 
 // Address: 0x00f0dbf0 - 0x00f0e0ff (1295 bytes)
@@ -135,10 +135,10 @@ __attribute__((weak)) MtVector3 uLight::getColor() const {
 // Address: 0x01b62b50 - 0x01b62b75 (37 bytes)
 void uLight::setColor(const MtVector3& v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColor.x = v.x;
-    this->mColor.y = v.y;
-    this->mColor.z = v.z;
-    this->mColor.pad_ = 0.0f;
+    mColor.x = v.x;
+    mColor.y = v.y;
+    mColor.z = v.z;
+    mColor.pad_ = 0.0f;
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (22 bytes)
@@ -197,41 +197,41 @@ __attribute__((weak)) void uLight::setState(cDraw* pdraw, u32 slot, bool approx_
 // Address: 0x01b62b80 - 0x01b62b86 (6 bytes)
 bool uLight::getApproximateDisable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mApproximateDisable;
+    return mApproximateDisable;
 }
 
 // Address: 0x01b62b90 - 0x01b62ba5 (21 bytes)
 void uLight::setApproximateDisable(bool diable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mApproximateDisable = diable;
+    mApproximateDisable = diable;
 }
 
 // Address: 0x01b62ae0 - 0x01b62ae5 (5 bytes)
 u32 uLight::getAttr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAttr;
+    return mAttr;
 }
 
 // Address: 0x00f0d4d0 - 0x00f0d4e3 (19 bytes)
 void uLight::setAttr(u32 attr) {
     // Approximate from the ELF: a wider integer stored into a bitfield; the body oracle reports this body.
-    if (this->mType == static_cast<u32>(0)) {
-        this->mAttr = attr & static_cast<u32>(247);
+    if (mType == 0) {
+        mAttr = attr & 247u;
     } else {
-        this->mAttr = attr;
+        mAttr = attr;
     }
 }
 
 // Address: 0x01b62af0 - 0x01b62af7 (7 bytes)
 u32 uLight::getPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPriority;
+    return mPriority;
 }
 
 // Address: 0x01b62b00 - 0x01b62b11 (17 bytes)
 void uLight::setPriority(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPriority = v;
+    mPriority = v;
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,11 +271,11 @@ void uLight::setPriority(u32 v) {
 // Address: 0x00f0f090 - 0x00f0f0a8 (24 bytes)
 bool uLight::getBoundary(MtSphere* pdst) {
     // Approximate from the ELF: a vector copy split into members it may not keep apart; the body oracle reports this body.
-    if ((this->mBound & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        pdst->pos.x = this->mBoundingSphere.pos.x;
-        pdst->pos.y = this->mBoundingSphere.pos.y;
-        pdst->pos.z = this->mBoundingSphere.pos.z;
-        pdst->r = this->mBoundingSphere.r;
+    if ((mBound & 1u) != 0) {
+        pdst->pos.x = mBoundingSphere.pos.x;
+        pdst->pos.y = mBoundingSphere.pos.y;
+        pdst->pos.z = mBoundingSphere.pos.z;
+        pdst->r = mBoundingSphere.r;
         return true;
     } else {
         return false;
@@ -286,14 +286,14 @@ bool uLight::getBoundary(MtSphere* pdst) {
 bool uLight::isLimitRangeEnable() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    return static_cast<bool>(this->mAttr >> static_cast<u32>(7));
+    return static_cast<bool>(mAttr >> 7);
 }
 
 // Address: 0x01b62c30 - 0x01b62c46 (22 bytes)
 void uLight::setLimitRangeEnable(bool enable) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x48 from uLight*
-    this->mAttr = (enable == false) ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(72))) & static_cast<unsigned int>(127)) : (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(72))) & static_cast<unsigned int>(127)) + static_cast<unsigned int>(128));
+    mAttr = !enable ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 72)) & 127u) : (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 72)) & 127u) + 128u);
 }
 
 // Address: 0x01b08fa0 - 0x01b08fa3 (3 bytes)
@@ -344,14 +344,14 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* uLight::createHardwareDispCtrl()
 void uLight::setPS3DisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPS3Disable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPS3Disable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(1);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 1u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967294);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFEu;
     }
 }
 
@@ -359,14 +359,14 @@ void uLight::setPS3DisableMode(bool set) {
 void uLight::setPS4DisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPS4Disable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPS4Disable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(2);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 2u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967293);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFDu;
     }
 }
 
@@ -374,34 +374,36 @@ void uLight::setPS4DisableMode(bool set) {
 void uLight::setPCDisableMode(bool set) {
     // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPCDisable = set;
-    if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+    mIsPCDisable = set;
+    if (mpHardwareDispCtrl == nullptr) {
         return;
     }
-    if (set != false) {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag | static_cast<u32>(4);
+    if (set) {
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag | 4u;
     } else {
-        this->::cUnit::mpHardwareDispCtrl->mFlag = this->::cUnit::mpHardwareDispCtrl->mFlag & static_cast<u32>(4294967291);
+        mpHardwareDispCtrl->mFlag = mpHardwareDispCtrl->mFlag & 0xFFFFFFFBu;
     }
 }
 
 // Address: 0x01b62bb0 - 0x01b62bb7 (7 bytes)
 bool uLight::getPS3DisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPS3Disable;
+    return mIsPS3Disable;
 }
 
 // Address: 0x01b62bc0 - 0x01b62bc7 (7 bytes)
 bool uLight::getPS4DisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPS4Disable;
+    return mIsPS4Disable;
 }
 
 // Address: 0x01b62bd0 - 0x01b62bd7 (7 bytes)
 bool uLight::getPCDisableMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPCDisable;
+    return mIsPCDisable;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uLight::MyDTI uLight::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -432,9 +434,8 @@ const MtDTI& uLight::cHardwareDispCtrlLight::getDTI() const {
 
 // Address: 0x00f0e230 - 0x00f0e270 (64 bytes)
 void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uLight::cHardwareDispCtrlLight::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::uLight::cHardwareDispCtrlLight::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uLight::cHardwareDispCtrlLight::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(uLight::cHardwareDispCtrlLight::DTI)->memAlloc(sz, align, uLight::cHardwareDispCtrlLight::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -449,7 +450,7 @@ void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uLight22cHardwareDispCtrlLightD0Ev at 0x01b62d10-0x01b62d3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uLight::cHardwareDispCtrlLight::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uLight::cHardwareDispCtrlLight::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uLight::cHardwareDispCtrlLight::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -470,13 +471,28 @@ inline void uLight::cHardwareDispCtrlLight::operator delete(void* p_addr) {
 // uLight::cHardwareDispCtrlLight::cHardwareDispCtrlLight(cUnit* pOwner);
 
 // Address: 0x00f0e2e0 - 0x00f0e321 (65 bytes)
-__attribute__((weak)) void uLight::cHardwareDispCtrlLight::update() {
-    // local: bool isPS3Mode;
-    // local: bool isPS4Mode;
-    // local: bool isPCMode;
-    DDON_STUB("uLight::cHardwareDispCtrlLight::update")
-    /* stub */
+void uLight::cHardwareDispCtrlLight::update() {
+    // DWARF local not rendered: bool isPS3Mode;
+    // DWARF local not rendered: bool isPS4Mode;
+    // DWARF local not rendered: bool isPCMode;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0xf0e2f1 read, used once; no DWARF local holds it
+    bool t0 = (sScene::mpInstance)->mLightRestrictPS4;
+    // inferred: a temporary for the value the load at 0xf0e2f7 read, used once; no DWARF local holds it
+    bool t1 = (sScene::mpInstance)->mLightRestrictPC;
+    if ((sScene::mpInstance)->mLightRestrictPS3) {
+        mHard = 0;
+    }
+    if (t0) {
+        mHard = 1;
+    }
+    if (t1) {
+        mHard = 2;
+    }
+    this->cUnit::cHardwareDispCtrl::update();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uLight::cHardwareDispCtrlLight::MyDTI uLight::cHardwareDispCtrlLight::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uLight::cHardwareDispCtrlLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

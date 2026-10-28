@@ -59,7 +59,7 @@ const MtDTI& sNetwork::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8sNetworkD0Ev at 0x0124a1ae-0x0124a1cf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sNetwork::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sNetwork::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sNetwork::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,34 +90,34 @@ void sNetwork::reset() {
     // DWARF local not rendered: s32 service;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sMain::mpInstance)->mExit != false) {
-        ::MtNetCore::onGuideAppShutdown();
+    if ((sMain::mpInstance)->mExit) {
+        MtNetCore::onGuideAppShutdown();
     }
-    if (this->mpVoiceChat != static_cast<nNetwork::VoiceChat*>(nullptr)) {
-        this->shutdownVoiceChat();
+    if (mpVoiceChat != nullptr) {
+        shutdownVoiceChat();
     }
-    if (this->mpRanking != static_cast<nNetwork::nRanking::Object*>(nullptr)) {
-        this->shutdownRanking();
+    if (mpRanking != nullptr) {
+        shutdownRanking();
     }
-    if (this->mpSession[0] != static_cast<nNetwork::Session*>(nullptr)) {
-        this->shutdownSession();
+    if (mpSession[0] != nullptr) {
+        shutdownSession();
     }
-    if (this->mpAchievement != static_cast<nNetwork::nAchievement::Object*>(nullptr)) {
-        delete this->mpAchievement;
-        this->mpAchievement = static_cast<nNetwork::nAchievement::Object*>(nullptr);
+    if (mpAchievement != nullptr) {
+        delete mpAchievement;
+        mpAchievement = nullptr;
     }
-    if (this->mpStorage != static_cast<nNetwork::Storage*>(nullptr)) {
-        this->shutdownStorage();
+    if (mpStorage != nullptr) {
+        shutdownStorage();
     }
-    this->mContext[0].::nNetwork::Context::reset();
-    this->mContext[1].::nNetwork::Context::reset();
-    this->mContext[2].::nNetwork::Context::reset();
-    this->mContext[3].::nNetwork::Context::reset();
-    this->mUnresponsiveLimit = static_cast<u32>(20000);
-    this->mLogTimer = static_cast<MtNetTime::Total>(0);
-    this->mMuteListChange = false;
-    this->mSuspend = false;
-    this->::sNetwork::forceSingleService(static_cast<s32>(21), static_cast<s32>(0));
+    mContext[0].reset();
+    mContext[1].reset();
+    mContext[2].reset();
+    mContext[3].reset();
+    mUnresponsiveLimit = 20000;
+    mLogTimer = 0;
+    mMuteListChange = false;
+    mSuspend = false;
+    forceSingleService(21, 0);
 }
 
 // Address: 0x0124a3d0 - 0x0124a60f (575 bytes)
@@ -145,7 +145,7 @@ __attribute__((weak)) void sNetwork::createProperty(MtPropertyList& s) {
 // Address: 0x0124ad30 - 0x0124ad35 (5 bytes)
 MtUI* sNetwork::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 5094 inlined copies in 2581 functions (49494 bytes)
@@ -244,12 +244,11 @@ __attribute__((weak)) void sNetwork::getServiceError(u32 user_index, MtNetError*
 // Address: 0x0124a610 - 0x0124a632 (34 bytes)
 void sNetwork::procError(const MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (err == static_cast<const MtNetError*>(nullptr)) {
+    if (err == nullptr) {
         return;
     }
-    if ((::sMain::mpInstance)->mExit != false) {
-    } else {
-        this->handleErrorMessage(*err);
+    if (!(sMain::mpInstance)->mExit) {
+        handleErrorMessage(*err);
     }
 }
 
@@ -350,85 +349,73 @@ __attribute__((weak)) bool sNetwork::isSignInChange(u32 user_index, s32 service)
 // Address: 0x0124b6b0 - 0x0124b6c1 (17 bytes)
 void sNetwork::bootupSession() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sNetwork::bootupSessionEx(static_cast<u32>(1), ::nNetwork::Session::DTI);
+    bootupSessionEx(1u, nNetwork::Session::DTI);
 }
 
 // Address: 0x0124b8b0 - 0x0124b986 (214 bytes)
 void sNetwork::shutdownSession() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSession[0] == static_cast<nNetwork::Session*>(nullptr)) {
-        if (this->mpSession[1] == static_cast<nNetwork::Session*>(nullptr)) {
-            if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-            } else {
-                this->mpSession[2]->::nNetwork::Session::removeDriver();
-                if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-                } else {
-                    delete this->mpSession[2];
-                    this->mpSession[2] = static_cast<nNetwork::Session*>(nullptr);
+    if (mpSession[0] == nullptr) {
+        if (mpSession[1] == nullptr) {
+            if (mpSession[2] != nullptr) {
+                mpSession[2]->nNetwork::Session::removeDriver();
+                if (mpSession[2] != nullptr) {
+                    delete mpSession[2];
+                    mpSession[2] = nullptr;
                 }
             }
         } else {
-            this->mpSession[1]->::nNetwork::Session::removeDriver();
-            if (this->mpSession[1] == static_cast<nNetwork::Session*>(nullptr)) {
-                if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-                } else {
-                    this->mpSession[2]->::nNetwork::Session::removeDriver();
-                    if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-                    } else {
-                        delete this->mpSession[2];
-                        this->mpSession[2] = static_cast<nNetwork::Session*>(nullptr);
+            mpSession[1]->nNetwork::Session::removeDriver();
+            if (mpSession[1] == nullptr) {
+                if (mpSession[2] != nullptr) {
+                    mpSession[2]->nNetwork::Session::removeDriver();
+                    if (mpSession[2] != nullptr) {
+                        delete mpSession[2];
+                        mpSession[2] = nullptr;
                     }
                 }
             } else {
-                delete this->mpSession[1];
-                this->mpSession[1] = static_cast<nNetwork::Session*>(nullptr);
-                if (this->mpSession[2] != static_cast<nNetwork::Session*>(nullptr)) {
-                    this->mpSession[2]->::nNetwork::Session::removeDriver();
-                    if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-                    } else {
-                        delete this->mpSession[2];
-                        this->mpSession[2] = static_cast<nNetwork::Session*>(nullptr);
+                delete mpSession[1];
+                mpSession[1] = nullptr;
+                if (mpSession[2] != nullptr) {
+                    mpSession[2]->nNetwork::Session::removeDriver();
+                    if (mpSession[2] != nullptr) {
+                        delete mpSession[2];
+                        mpSession[2] = nullptr;
                     }
                 }
             }
         }
     } else {
-        this->mpSession[0]->::nNetwork::Session::removeDriver();
-        if (this->mpSession[0] == static_cast<nNetwork::Session*>(nullptr)) {
-        } else {
-            delete this->mpSession[0];
-            this->mpSession[0] = static_cast<nNetwork::Session*>(nullptr);
+        mpSession[0]->nNetwork::Session::removeDriver();
+        if (mpSession[0] != nullptr) {
+            delete mpSession[0];
+            mpSession[0] = nullptr;
         }
-        if (this->mpSession[1] == static_cast<nNetwork::Session*>(nullptr)) {
-        } else {
-            this->mpSession[1]->::nNetwork::Session::removeDriver();
-            if (this->mpSession[1] == static_cast<nNetwork::Session*>(nullptr)) {
-            } else {
-                delete this->mpSession[1];
-                this->mpSession[1] = static_cast<nNetwork::Session*>(nullptr);
+        if (mpSession[1] != nullptr) {
+            mpSession[1]->nNetwork::Session::removeDriver();
+            if (mpSession[1] != nullptr) {
+                delete mpSession[1];
+                mpSession[1] = nullptr;
             }
         }
-        if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-        } else {
-            this->mpSession[2]->::nNetwork::Session::removeDriver();
-            if (this->mpSession[2] == static_cast<nNetwork::Session*>(nullptr)) {
-            } else {
-                delete this->mpSession[2];
-                this->mpSession[2] = static_cast<nNetwork::Session*>(nullptr);
+        if (mpSession[2] != nullptr) {
+            mpSession[2]->nNetwork::Session::removeDriver();
+            if (mpSession[2] != nullptr) {
+                delete mpSession[2];
+                mpSession[2] = nullptr;
             }
         }
     }
-    if (this->mpSession[3] == static_cast<nNetwork::Session*>(nullptr)) {
-    } else {
-        this->mpSession[3]->::nNetwork::Session::removeDriver();
-        if (this->mpSession[3] == static_cast<nNetwork::Session*>(nullptr)) {
-        } else {
-            delete this->mpSession[3];
-            this->mpSession[3] = static_cast<nNetwork::Session*>(nullptr);
+    if (mpSession[3] != nullptr) {
+        mpSession[3]->nNetwork::Session::removeDriver();
+        if (mpSession[3] != nullptr) {
+            delete mpSession[3];
+            mpSession[3] = nullptr;
         }
     }
-    this->mTransportPool.::nNetwork::BlockPool::final();
+    mTransportPool.final();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -447,10 +434,10 @@ void sNetwork::shutdownSession() {
 // Address: 0x0124b890 - 0x0124b8a3 (19 bytes)
 const nNetwork::SessionDatabase* sNetwork::getSessionDatabase() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSession[0] != static_cast<nNetwork::Session*>(nullptr)) {
-        return this->mpSession[0]->mpDatabase;
+    if (mpSession[0] != nullptr) {
+        return mpSession[0]->mpDatabase;
     } else {
-        return static_cast<const nNetwork::SessionDatabase*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -519,11 +506,11 @@ __attribute__((weak)) void sNetwork::bootupRanking() {
 // Address: 0x0124b9e0 - 0x0124ba0d (45 bytes)
 void sNetwork::shutdownRanking() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRanking == static_cast<nNetwork::nRanking::Object*>(nullptr)) {
+    if (mpRanking == nullptr) {
         return;
     }
-    delete this->mpRanking;
-    this->mpRanking = static_cast<nNetwork::nRanking::Object*>(nullptr);
+    delete mpRanking;
+    mpRanking = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -532,26 +519,26 @@ void sNetwork::shutdownRanking() {
 // Address: 0x0124ba10 - 0x0124ba18 (8 bytes)
 nNetwork::nRanking::Object* sNetwork::getRanking() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRanking;
+    return mpRanking;
 }
 
 // Address: 0x0124ba20 - 0x0124ba5a (58 bytes)
 void sNetwork::bootupAchievement() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAchievement != static_cast<nNetwork::nAchievement::Object*>(nullptr)) {
+    if (mpAchievement != nullptr) {
         return;
     }
-    this->mpAchievement = new (static_cast<u32>(16)) ::nNetwork::nAchievement::Object;
+    mpAchievement = new (16u) nNetwork::nAchievement::Object;
 }
 
 // Address: 0x0124a2c0 - 0x0124a2ed (45 bytes)
 void sNetwork::shutdownAchievement() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAchievement == static_cast<nNetwork::nAchievement::Object*>(nullptr)) {
+    if (mpAchievement == nullptr) {
         return;
     }
-    delete this->mpAchievement;
-    this->mpAchievement = static_cast<nNetwork::nAchievement::Object*>(nullptr);
+    delete mpAchievement;
+    mpAchievement = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -561,26 +548,26 @@ void sNetwork::shutdownAchievement() {
 // Address: 0x0124ba60 - 0x0124ba68 (8 bytes)
 nNetwork::nAchievement::Object* sNetwork::getAchievement() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAchievement;
+    return mpAchievement;
 }
 
 // Address: 0x0124ba70 - 0x0124baaa (58 bytes)
 void sNetwork::bootupStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStorage != static_cast<nNetwork::Storage*>(nullptr)) {
+    if (mpStorage != nullptr) {
         return;
     }
-    this->mpStorage = new (static_cast<u32>(16)) ::nNetwork::Storage;
+    mpStorage = new (16u) nNetwork::Storage;
 }
 
 // Address: 0x0124bab0 - 0x0124badd (45 bytes)
 void sNetwork::shutdownStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStorage == static_cast<nNetwork::Storage*>(nullptr)) {
+    if (mpStorage == nullptr) {
         return;
     }
-    delete this->mpStorage;
-    this->mpStorage = static_cast<nNetwork::Storage*>(nullptr);
+    delete mpStorage;
+    mpStorage = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -589,7 +576,7 @@ void sNetwork::shutdownStorage() {
 // Address: 0x0124bae0 - 0x0124bae8 (8 bytes)
 nNetwork::Storage* sNetwork::getStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpStorage;
+    return mpStorage;
 }
 
 // Address: 0x0124baf0 - 0x0124bb36 (70 bytes)
@@ -601,11 +588,11 @@ __attribute__((weak)) void sNetwork::bootupVoiceChat() {
 // Address: 0x0124bb40 - 0x0124bb6d (45 bytes)
 void sNetwork::shutdownVoiceChat() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpVoiceChat == static_cast<nNetwork::VoiceChat*>(nullptr)) {
+    if (mpVoiceChat == nullptr) {
         return;
     }
-    delete this->mpVoiceChat;
-    this->mpVoiceChat = static_cast<nNetwork::VoiceChat*>(nullptr);
+    delete mpVoiceChat;
+    mpVoiceChat = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -623,12 +610,12 @@ __attribute__((weak)) void sNetwork::bootupSharedMemory(s32 type) {
 // Address: 0x0124bbf0 - 0x0124bc38 (72 bytes)
 void sNetwork::shutdownSharedMemory(s32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type <= static_cast<s32>(1)) {
-        if (this->mpSharedMemory[type] != static_cast<nNetwork::nSharedMemory2::Object*>(nullptr)) {
-            this->mpSharedMemory[type]->::nNetwork::nSharedMemory2::Object::final();
-            if (this->mpSharedMemory[type] != static_cast<nNetwork::nSharedMemory2::Object*>(nullptr)) {
-                delete this->mpSharedMemory[type];
-                this->mpSharedMemory[type] = static_cast<nNetwork::nSharedMemory2::Object*>(nullptr);
+    if (type <= 1) {
+        if (mpSharedMemory[type] != nullptr) {
+            mpSharedMemory[type]->nNetwork::nSharedMemory2::Object::final();
+            if (mpSharedMemory[type] != nullptr) {
+                delete mpSharedMemory[type];
+                mpSharedMemory[type] = nullptr;
             }
         }
     }
@@ -659,55 +646,54 @@ __attribute__((weak)) s32 sNetwork::getLogLevel() const {
 // Address: 0x01b9ff10 - 0x01b9ff1c (12 bytes)
 void sNetwork::setLogLevel(s32 level) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtNetLog::mInstance.::MtNetLog::setLevel(level);
+    MtNetLog::mInstance.setLevel(level);
 }
 
 // Address: 0x0124a2f0 - 0x0124a3cc (220 bytes)
 __attribute__((weak)) void sNetwork::forceSingleService(s32 service, s32 option) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mContext[0].mState == static_cast<s32>(0)) {
-    } else {
-        this->mContext[0].::nNetwork::Context::reset();
+    if (mContext[0].mState != 0) {
+        mContext[0].reset();
     }
-    this->mContext[0].mService = service;
-    this->mContext[0].mOption = option;
-    if (this->mContext[1].mState == static_cast<s32>(0)) {
-        this->mContext[1].mService = this->mContext[0].mService;
-        this->mContext[1].mOption = this->mContext[0].mOption;
+    mContext[0].mService = service;
+    mContext[0].mOption = option;
+    if (mContext[1].mState == 0) {
+        mContext[1].mService = mContext[0].mService;
+        mContext[1].mOption = mContext[0].mOption;
     } else {
-        this->mContext[1].::nNetwork::Context::reset();
-        this->mContext[1].mService = service;
-        this->mContext[1].mOption = option;
+        mContext[1].reset();
+        mContext[1].mService = service;
+        mContext[1].mOption = option;
     }
-    if (this->mContext[2].mState == static_cast<s32>(0)) {
-        this->mContext[2].mService = this->mContext[1].mService;
-        this->mContext[2].mOption = this->mContext[1].mOption;
+    if (mContext[2].mState == 0) {
+        mContext[2].mService = mContext[1].mService;
+        mContext[2].mOption = mContext[1].mOption;
     } else {
-        this->mContext[2].::nNetwork::Context::reset();
-        this->mContext[2].mService = service;
-        this->mContext[2].mOption = option;
+        mContext[2].reset();
+        mContext[2].mService = service;
+        mContext[2].mOption = option;
     }
-    if (this->mContext[3].mState == static_cast<s32>(0)) {
-        this->mContext[3].mService = this->mContext[2].mService;
-        this->mContext[3].mOption = this->mContext[2].mOption;
+    if (mContext[3].mState == 0) {
+        mContext[3].mService = mContext[2].mService;
+        mContext[3].mOption = mContext[2].mOption;
     } else {
-        this->mContext[3].::nNetwork::Context::reset();
-        this->mContext[3].mService = service;
-        this->mContext[3].mOption = option;
+        mContext[3].reset();
+        mContext[3].mService = service;
+        mContext[3].mOption = option;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+    if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
         return;
     }
-    ::abort();
+    abort();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -725,14 +711,18 @@ __attribute__((weak)) void sNetwork::forceSingleService(s32 service, s32 option)
 // Address: 0x0124b060 - 0x0124b0b3 (83 bytes)
 void sNetwork::notifyServiceStateChange(u32 user_index, s32 state, const MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCore == static_cast<MtNetCore*>(nullptr)) {
+    if (mpCore == nullptr) {
         return;
     }
-    if (this->mpCore->isFatal() != false) {
-    } else {
-        this->onServiceStateChange(user_index, state, err);
+    if (!mpCore->isFatal()) {
+        onServiceStateChange(user_index, state, err);
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sNetwork::MyDTI sNetwork::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sNetwork* sNetwork::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sNetwork::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

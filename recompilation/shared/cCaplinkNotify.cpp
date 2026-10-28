@@ -16,21 +16,21 @@
 void nCaplink::NotifyAns::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::nCaplink::ContextListener::init();
-    this->mContentTotal = static_cast<s32>(0);
-    this->mContentUpdate = static_cast<s8>(0);
-    this->mResourcePresetTotal = static_cast<s32>(0);
-    this->mResourcePresetUpdate = static_cast<s8>(0);
-    this->mProfileUpdate = static_cast<s8>(0);
-    this->mStampUpdate = static_cast<s8>(0);
-    this->mStampTotal = static_cast<s32>(0);
-    this->mLastPostId = static_cast<s32>(0);
-    this->mAppNotifyTotal = static_cast<s32>(0);
-    this->mTagTotal = static_cast<s32>(0);
-    this->mContentInviteTotal = static_cast<s32>(0);
-    this->mFriendTagFreeTotal = static_cast<s32>(0);
-    this->mFriendRequestReceiveTotal = static_cast<s32>(0);
-    this->mFriendTotal = static_cast<s32>(0);
-    this->mFriendTagContentTotal = static_cast<s32>(0);
+    mContentTotal = 0;
+    mContentUpdate = 0;
+    mResourcePresetTotal = 0;
+    mResourcePresetUpdate = 0;
+    mProfileUpdate = 0;
+    mStampUpdate = 0;
+    mStampTotal = 0;
+    mLastPostId = 0;
+    mAppNotifyTotal = 0;
+    mTagTotal = 0;
+    mContentInviteTotal = 0;
+    mFriendTagFreeTotal = 0;
+    mFriendRequestReceiveTotal = 0;
+    mFriendTotal = 0;
+    mFriendTagContentTotal = 0;
 }
 
 // No out-of-line body: no code in the ELF

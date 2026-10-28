@@ -41,7 +41,7 @@ const MtDTI& cSoundLayoutInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSoundLayoutInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundLayoutInfo::DTI)->memAlloc(sz, align, ::cSoundLayoutInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundLayoutInfo::DTI)->memAlloc(sz, align, cSoundLayoutInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ inline void* cSoundLayoutInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundLayoutInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundLayoutInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundLayoutInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,7 +71,7 @@ inline void cSoundLayoutInfo::operator delete(void* p_addr) {
 // Address: 0x00d4f4b0 - 0x00d4f4da (42 bytes)
 cSoundLayoutInfo::cSoundLayoutInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mZoneHit = static_cast<u32>(0);
+    mZoneHit = 0;
 }
 
 // Address: 0x00d4f4e0 - 0x00d4f4e5 (5 bytes)
@@ -83,7 +83,7 @@ cSoundLayoutInfo::~cSoundLayoutInfo() {
 // Address: 0x00d4f520 - 0x00d4f525 (5 bytes)
 MtUI* cSoundLayoutInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d4f530 - 0x00d4f618 (232 bytes)
@@ -103,7 +103,7 @@ __attribute__((weak)) void cSoundLayoutInfo::evChangeEnable(bool flag) {
 // Address: 0x01b25d50 - 0x01b25d56 (6 bytes)
 s32 cSoundLayoutInfo::getContentsIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: 8 inlined copies in 4 functions (43 bytes)
@@ -143,12 +143,14 @@ s32 cSoundLayoutInfo::getContentsIndex(u32 index) {
 const nZone::ShapeInfoBase* cSoundLayoutInfo::getOriginalShape() {
     // DWARF local not rendered: cLayoutElement* pOwnerLayoutElement;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cZoneExtendObject::getOwner() != static_cast<nZone::cLayoutElement*>(nullptr)) {
-        return this->::cZoneExtendObject::getOwner()->::nZone::cLayoutElement::getShapeInfoResource();
+    if (getOwner() != nullptr) {
+        return getOwner()->getShapeInfoResource();
     } else {
-        return static_cast<const nZone::ShapeInfoBase*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSoundLayoutInfo::MyDTI cSoundLayoutInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundZoneBase.cpp at 0x00d505af-0x00d505ec (called at uSoundZoneBase.cpp:171)
@@ -158,7 +160,7 @@ const nZone::ShapeInfoBase* cSoundLayoutInfo::getOriginalShape() {
 // Address: 0x00d4f3e0 - 0x00d4f435 (85 bytes)
 MtObject* cSoundLayoutInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSoundLayoutInfo;
+    return new (16u) cSoundLayoutInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -197,7 +199,7 @@ const MtDTI& cSoundZoneListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSoundZoneListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundZoneListener::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundZoneListener::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -224,7 +226,7 @@ cSoundZoneListener::~cSoundZoneListener() {
 // Address: 0x00d4f3a0 - 0x00d4f3a5 (5 bytes)
 MtUI* cSoundZoneListener::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d4f2a0 - 0x00d4f391 (241 bytes)
@@ -242,8 +244,10 @@ __attribute__((weak)) MtVector3 cSoundZoneListener::myPos() {
 // Address: 0x01b254b0 - 0x01b254d5 (37 bytes)
 void cSoundZoneListener::setMyPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMyPos = pos;
+    mMyPos = pos;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSoundZoneListener::MyDTI cSoundZoneListener::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundZoneBase.cpp at 0x00d50572-0x00d505af (called at uSoundZoneBase.cpp:108)
@@ -292,7 +296,7 @@ const MtDTI& uSoundZoneBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundZoneBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundZoneBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -314,13 +318,13 @@ uSoundZoneBase::uSoundZoneBase() {
 // Also emitted as: _ZN14uSoundZoneBaseD0Ev at 0x00d4fa00
 uSoundZoneBase::~uSoundZoneBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sZone::getInstance()->::sZone::deleteZoneHandle(this->mZoneHandle);
+    sZone::getInstance()->deleteZoneHandle(mZoneHandle);
 }
 
 // Address: 0x00d4fc00 - 0x00d4fc05 (5 bytes)
 MtUI* uSoundZoneBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00d4fa60 - 0x00d4fbfc (412 bytes)
@@ -337,35 +341,35 @@ __attribute__((weak)) void uSoundZoneBase::setup() {
 // Address: 0x00d4fc20 - 0x00d4fc3f (31 bytes)
 void uSoundZoneBase::sync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParentModel == static_cast<uModel*>(nullptr)) {
+    if (mpParentModel == nullptr) {
         return;
     }
-    if (this->mpParentModel->::cUnit::isEnable() != false) {
+    if (mpParentModel->isEnable()) {
         return;
     }
-    this->mpParentModel = static_cast<uModel*>(nullptr);
+    mpParentModel = nullptr;
 }
 
 // Address: 0x00d4fc40 - 0x00d4fcd1 (145 bytes)
 void uSoundZoneBase::setupFromResource(rZone* pRes) {
     // DWARF local not rendered: cZoneLayout* pZone;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRes == static_cast<rZone*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (this->mZoneHandle != (::cZoneLayout::INVALID_HANDLE)) {
-        ::sZone::getInstance()->::sZone::deleteZoneHandle(this->mZoneHandle);
-        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
-        this->mZoneHandle = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
-        cSoundZoneListener* pListener = this->getZoneListener();
-        ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-        this->getZoneListener();
+    if (mZoneHandle != (cZoneLayout::INVALID_HANDLE)) {
+        sZone::getInstance()->deleteZoneHandle(mZoneHandle);
+        const MtDTI* pGroupManagerDTI = getGroupManagerDTI();
+        mZoneHandle = sZone::getInstance()->addZoneLayout(pRes, pGroupManagerDTI);
+        cSoundZoneListener* pListener = getZoneListener();
+        sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+        getZoneListener();
     } else {
-        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
-        this->mZoneHandle = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
-        cSoundZoneListener* pListener = this->getZoneListener();
-        ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-        this->getZoneListener();
+        const MtDTI* pGroupManagerDTI = getGroupManagerDTI();
+        mZoneHandle = sZone::getInstance()->addZoneLayout(pRes, pGroupManagerDTI);
+        cSoundZoneListener* pListener = getZoneListener();
+        sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+        getZoneListener();
     }
 }
 
@@ -373,51 +377,51 @@ void uSoundZoneBase::setupFromResource(rZone* pRes) {
 void uSoundZoneBase::setupFromResource(rZone* pRes, const MtVector3& pos) {
     // DWARF local not rendered: cZoneLayout* pZone;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (pRes == static_cast<rZone*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (this->mZoneHandle != (::cZoneLayout::INVALID_HANDLE)) {
-        ::sZone::getInstance()->::sZone::deleteZoneHandle(this->mZoneHandle);
-        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
+    if (mZoneHandle != (cZoneLayout::INVALID_HANDLE)) {
+        sZone::getInstance()->deleteZoneHandle(mZoneHandle);
+        const MtDTI* pGroupManagerDTI = getGroupManagerDTI();
         // inferred: a temporary for the result of the call at 0xd4fd57, used 3 times; no DWARF local holds it
-        u32 t0 = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
-        this->mZoneHandle = t0;
-        if (this->mZoneHandle < ::sZone::getInstance()->mZoneLayoutArray.::MtArray::mLength) {
-            if (::sZone::getInstance()->mZoneLayoutArray.::MtArray::mpArray[t0] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cZoneLayout*>(::sZone::getInstance()->mZoneLayoutArray.::MtArray::mpArray[t0])->::cZoneLayout::applyWorldOffset(::MtVector3::Zero, pos);
-                cSoundZoneListener* pListener = this->getZoneListener();
-                ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-                this->getZoneListener();
+        u32 t0 = sZone::getInstance()->addZoneLayout(pRes, pGroupManagerDTI);
+        mZoneHandle = t0;
+        if (mZoneHandle < sZone::getInstance()->mZoneLayoutArray.mLength) {
+            if (sZone::getInstance()->mZoneLayoutArray.mpArray[t0] != nullptr) {
+                static_cast<cZoneLayout*>(sZone::getInstance()->mZoneLayoutArray.mpArray[t0])->applyWorldOffset(MtVector3::Zero, pos);
+                cSoundZoneListener* pListener = getZoneListener();
+                sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+                getZoneListener();
             } else {
-                cSoundZoneListener* pListener = this->getZoneListener();
-                ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-                this->getZoneListener();
+                cSoundZoneListener* pListener = getZoneListener();
+                sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+                getZoneListener();
             }
         } else {
-            cSoundZoneListener* pListener = this->getZoneListener();
-            ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-            this->getZoneListener();
+            cSoundZoneListener* pListener = getZoneListener();
+            sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+            getZoneListener();
         }
     } else {
-        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
+        const MtDTI* pGroupManagerDTI = getGroupManagerDTI();
         // inferred: a temporary for the result of the call at 0xd4fd57, used 3 times; no DWARF local holds it
-        u32 t0 = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
-        this->mZoneHandle = t0;
-        if (this->mZoneHandle < ::sZone::getInstance()->mZoneLayoutArray.::MtArray::mLength) {
-            if (::sZone::getInstance()->mZoneLayoutArray.::MtArray::mpArray[t0] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cZoneLayout*>(::sZone::getInstance()->mZoneLayoutArray.::MtArray::mpArray[t0])->::cZoneLayout::applyWorldOffset(::MtVector3::Zero, pos);
-                cSoundZoneListener* pListener = this->getZoneListener();
-                ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-                this->getZoneListener();
+        u32 t0 = sZone::getInstance()->addZoneLayout(pRes, pGroupManagerDTI);
+        mZoneHandle = t0;
+        if (mZoneHandle < sZone::getInstance()->mZoneLayoutArray.mLength) {
+            if (sZone::getInstance()->mZoneLayoutArray.mpArray[t0] != nullptr) {
+                static_cast<cZoneLayout*>(sZone::getInstance()->mZoneLayoutArray.mpArray[t0])->applyWorldOffset(MtVector3::Zero, pos);
+                cSoundZoneListener* pListener = getZoneListener();
+                sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+                getZoneListener();
             } else {
-                cSoundZoneListener* pListener = this->getZoneListener();
-                ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-                this->getZoneListener();
+                cSoundZoneListener* pListener = getZoneListener();
+                sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+                getZoneListener();
             }
         } else {
-            cSoundZoneListener* pListener = this->getZoneListener();
-            ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
-            this->getZoneListener();
+            cSoundZoneListener* pListener = getZoneListener();
+            sZone::getInstance()->addListener(static_cast<cZoneListener*>(pListener), mZoneHandle);
+            getZoneListener();
         }
     }
 }
@@ -425,7 +429,7 @@ void uSoundZoneBase::setupFromResource(rZone* pRes, const MtVector3& pos) {
 // Address: 0x01b25c40 - 0x01b25c48 (8 bytes)
 const MtDTI* uSoundZoneBase::getGroupManagerDTI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &::uSoundZoneBase::cGroupManager::DTI;
+    return &uSoundZoneBase::cGroupManager::DTI;
 }
 
 // Address: 0x01b25c50 - 0x01b25c53 (3 bytes)
@@ -443,10 +447,10 @@ __attribute__((weak)) MtVector3 uSoundZoneBase::getZoneListenerPos() {
 // Address: 0x01b25cd0 - 0x01b25d0f (63 bytes)
 void uSoundZoneBase::setZoneListenerPos(const MtVector3& NewListenerPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->getZoneListener() == static_cast<cSoundZoneListener*>(nullptr)) {
+    if (getZoneListener() == nullptr) {
         return;
     }
-    this->getZoneListener()->setMyPos(NewListenerPos);
+    getZoneListener()->setMyPos(NewListenerPos);
 }
 
 // Address: 0x01b25560 - 0x01b25563 (3 bytes)
@@ -467,11 +471,11 @@ cSoundLayoutInfo* uSoundZoneBase::getLayoutInfo(u32 index) {
 // Address: 0x00d4fce0 - 0x00d4fcfd (29 bytes)
 cZoneLayout* uSoundZoneBase::getZoneLayout() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cZoneListener* pListener = this->getZoneListener();
-    if (pListener != static_cast<cZoneListener*>(nullptr)) {
-        return pListener->::cZoneListener::getZoneLayout();
+    cZoneListener* pListener = getZoneListener();
+    if (pListener != nullptr) {
+        return pListener->cZoneListener::getZoneLayout();
     } else {
-        return static_cast<cZoneLayout*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -520,21 +524,21 @@ __attribute__((weak)) void uSoundZoneBase::setQuat(MtQuaternion& quat) {
 // Address: 0x00d4fde0 - 0x00d4fe1d (61 bytes)
 uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromLayout(nZone::cLayoutElement* pLayoutElement) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pLayoutElement != static_cast<nZone::cLayoutElement*>(nullptr)) {
+    if (pLayoutElement != nullptr) {
         // inferred: a temporary for the result of the call at 0xd4fdf3, used twice; no DWARF local holds it
-        cSoundZoneListener* t0 = this->getZoneListener();
-        if (t0 != static_cast<cSoundZoneListener*>(nullptr)) {
-            cZoneLayout* pMyZoneLayout = t0->::cZoneListener::getZoneLayout();
-            if (pMyZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
-                return static_cast<uSoundZoneBase::cGroupManager*>(pMyZoneLayout->::cZoneLayout::getGroupManagerFromLayout(*pLayoutElement));
+        cSoundZoneListener* t0 = getZoneListener();
+        if (t0 != nullptr) {
+            cZoneLayout* pMyZoneLayout = t0->getZoneLayout();
+            if (pMyZoneLayout != nullptr) {
+                return static_cast<cGroupManager*>(pMyZoneLayout->cZoneLayout::getGroupManagerFromLayout(*pLayoutElement));
             } else {
-                return static_cast<uSoundZoneBase::cGroupManager*>(nullptr);
+                return nullptr;
             }
         } else {
-            return static_cast<uSoundZoneBase::cGroupManager*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<uSoundZoneBase::cGroupManager*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -542,16 +546,16 @@ uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromLayout(nZone::
 uSoundZoneBase::cGroupManager* uSoundZoneBase::getGroupManagerFromGroupId(s32 groupId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xd4fe2b, used twice; no DWARF local holds it
-    cSoundZoneListener* t0 = this->getZoneListener();
-    if (t0 != static_cast<cSoundZoneListener*>(nullptr)) {
-        cZoneLayout* pMyZoneLayout = t0->::cZoneListener::getZoneLayout();
-        if (pMyZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
-            return static_cast<uSoundZoneBase::cGroupManager*>(pMyZoneLayout->::cZoneLayout::getGroupManagerFromGroupID(groupId));
+    cSoundZoneListener* t0 = getZoneListener();
+    if (t0 != nullptr) {
+        cZoneLayout* pMyZoneLayout = t0->getZoneLayout();
+        if (pMyZoneLayout != nullptr) {
+            return static_cast<cGroupManager*>(pMyZoneLayout->cZoneLayout::getGroupManagerFromGroupID(groupId));
         } else {
-            return static_cast<uSoundZoneBase::cGroupManager*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<uSoundZoneBase::cGroupManager*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -572,21 +576,21 @@ void uSoundZoneBase::clearZoneHit() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xf from cSoundLayoutInfo*
     // inferred: a temporary for the result of the call at 0xd4feed, used twice; no DWARF local holds it
-    cSoundZoneListener* t0 = this->getZoneListener();
-    if (t0 != static_cast<cSoundZoneListener*>(nullptr)) {
-        cZoneLayout* pZone = t0->::cZoneListener::getZoneLayout();
-        if (pZone != static_cast<cZoneLayout*>(nullptr)) {
-            const u32 layoutNum = pZone->::cZoneLayout::getLayoutElementNum();
-            if (layoutNum != static_cast<u32>(0)) {
+    cSoundZoneListener* t0 = getZoneListener();
+    if (t0 != nullptr) {
+        cZoneLayout* pZone = t0->getZoneLayout();
+        if (pZone != nullptr) {
+            const u32 layoutNum = pZone->cZoneLayout::getLayoutElementNum();
+            if (layoutNum != 0) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i0_3 = 0;;) {
                     // inferred: a temporary for the result of the call at 0xd4ff25, used twice; no DWARF local holds it
-                    cSoundLayoutInfo* t1 = ::nSoundZone::getLayoutInfoFromZoneLayout(pZone, i0_3);
-                    if (t1 != static_cast<cSoundLayoutInfo*>(nullptr)) {
-                        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + static_cast<long>(15)) = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + static_cast<long>(15))) & static_cast<unsigned short>(64767);
+                    cSoundLayoutInfo* t1 = nSoundZone::getLayoutInfoFromZoneLayout(pZone, i0_3);
+                    if (t1 != nullptr) {
+                        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + 15) = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + 15)) & 64767;
                     }
-                    if (layoutNum != (i0_3 + static_cast<unsigned int>(1))) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if (layoutNum != (i0_3 + 1u)) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -625,6 +629,8 @@ __attribute__((weak)) void uSoundZoneBase::followQuatMatrix() {
 // No out-of-line body: no code in the ELF
 // void uSoundZoneBase::multipleShape(nZone::ShapeInfoBase* pDstShape, const nZone::ShapeInfoBase* pSrcShape, const MtMatrix& mat);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uSoundZoneBase::MyDTI uSoundZoneBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundZoneBase.cpp at 0x00d50629-0x00d50666 (called at uSoundZoneBase.cpp:295)
 //   in _GLOBAL__sub_I_uSoundZoneBase.cpp at 0x00d50629-0x00d50666 (called at uSoundZoneBase.h:337)
@@ -659,7 +665,7 @@ const MtDTI& uSoundZoneBase::cGroupManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::cGroupManager::DTI)->memAlloc(sz, align, ::uSoundZoneBase::cGroupManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uSoundZoneBase::cGroupManager::DTI)->memAlloc(sz, align, uSoundZoneBase::cGroupManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -674,7 +680,7 @@ inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSoundZoneBase::cGroupManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::cGroupManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSoundZoneBase::cGroupManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -700,14 +706,16 @@ uSoundZoneBase::cGroupManager::~cGroupManager() {
 // Address: 0x00d4f790 - 0x00d4f795 (5 bytes)
 MtUI* uSoundZoneBase::cGroupManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00d4f780 - 0x00d4f785 (5 bytes)
 void uSoundZoneBase::cGroupManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cZoneLayout::cInGameGroupManager::createProperty(s);
+    this->cZoneLayout::cInGameGroupManager::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uSoundZoneBase::cGroupManager::MyDTI uSoundZoneBase::cGroupManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSoundZoneBase.cpp at 0x00d505ec-0x00d50629 (called at uSoundZoneBase.cpp:248)
@@ -717,6 +725,6 @@ void uSoundZoneBase::cGroupManager::createProperty(MtPropertyList& s) {
 // Address: 0x00d4f650 - 0x00d4f69e (78 bytes)
 MtObject* uSoundZoneBase::cGroupManager::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uSoundZoneBase::cGroupManager;
+    return new (16u) uSoundZoneBase::cGroupManager;
 }
 

@@ -33,7 +33,7 @@ inline MtAllocator* nShlBase::cShlStickContextInfo::getAllocator() {
 // Address: 0x00cc2370 - 0x00cc23b0 (64 bytes)
 void* nShlBase::cShlStickContextInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nShlBase::cShlStickContextInfo::getAllocator()->memAlloc(sz, align, ::nShlBase::cShlStickContextInfo::DTI.::MtDTI::getID());
+    return ::nShlBase::cShlStickContextInfo::getAllocator()->memAlloc(sz, align, ::nShlBase::cShlStickContextInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,15 +60,31 @@ __attribute__((weak)) void nShlBase::cShlStickContextInfo::operator delete(void*
 // No out-of-line body: no code in the ELF
 // void nShlBase::cShlStickContextInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 14 inlined copies in 6 functions (1286 bytes)
-//   in cContextCharacter::addShlStickInfo at 0x00053c6f-0x00053ccd (called at cContext.cpp:1040)
-//   in cContextCharacter::addShlStickInfo at 0x00053c6f-0x00053ccd (called at nShlBase.h:1280)
-//   in cpJob09::addAlchemyValue at 0x004b79b1-0x004b79f4 (called at cpJob09.cpp:1235)
-//   and 11 more (every copy is in <bundle>.inlined.json)
-// nShlBase::cShlStickContextInfo::cShlStickContextInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it; 6 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+nShlBase::cShlStickContextInfo::cShlStickContextInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mIsStickCreateControl = false;
+    mStickShlIndex = 0;
+    mStickJointNo = 0;
+    mStickShlGroup = 0;
+    mStickShlUniqueId = 0;
+    mStickUniqueId = 0;
+    mStickJointOffset.x = ::MtVector3::Zero.x;
+    mStickJointOffset.y = ::MtVector3::Zero.y;
+    mStickJointOffset.z = ::MtVector3::Zero.z;
+    mStickDirection.pad_ = 0.0f;
+    mStickDirection.y = 0.0f;
+    mStickDirection.z = 0.0f;
+    mStickJointOffset.pad_ = 0.0f;
+    mStickDirection.x = 0.0f;
+}
 
 // Defined in the class (its body was written in a header).
 // nShlBase::cShlStickContextInfo::~cShlStickContextInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nShlBase::cShlStickContextInfo::MyDTI nShlBase::cShlStickContextInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uShlBase.cpp at 0x00ccdddb-0x00ccde14 (called at uShlBase.cpp:80)

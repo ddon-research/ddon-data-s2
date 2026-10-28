@@ -3,6 +3,7 @@
 #include "cNetSessionManager.h"
 #include "../shared/ChatMsgType.h"
 #include "../shared/MtAllocator.h"
+#include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtNetSession.h"
@@ -55,7 +56,7 @@ const MtDTI& nSessionManager::MyListener::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nSessionManager::MyListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memAlloc(sz, align, ::nSessionManager::MyListener::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memAlloc(sz, align, ::nSessionManager::MyListener::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,9 +140,9 @@ __attribute__((weak)) void nSessionManager::MyListener::onLeaveMember(s32 index,
 void nSessionManager::MyListener::onDrop(MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x38fe30 read, used twice; no DWARF local holds it
-    nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager();
-    t0->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589824), static_cast<nNet::cProgress::CTRL_IDX>(6), false, static_cast<u32>(0));
-    t0->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589825), static_cast<nNet::cProgress::CTRL_IDX>(10), false, static_cast<u32>(0));
+    nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager();
+    t0->requestSessionCommand(::nNet::cProgress::CMD_FINAL_GAME, ::nNet::cProgress::CTRL_IDX_FINAL_SESSION_GAME, false, 0u);
+    t0->requestSessionCommand(::nNet::cProgress::CMD_FINAL_LOBBY, ::nNet::cProgress::CTRL_IDX_FINAL_LOBBY, false, 0u);
 }
 
 // Address: 0x0038feb0 - 0x0038fee6 (54 bytes)
@@ -214,6 +215,8 @@ __attribute__((weak)) void nSessionManager::MyListener::onLobbyInviteDeclineMsgN
 //   in nSessionManager::MyListener::onJoinComplete at 0x0038fb07-0x0038fb0a (called at cNetSessionManager.cpp:1004)
 // s32 nSessionManager::MyListener::getSessionId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nSessionManager::MyListener::MyDTI nSessionManager::MyListener::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cNetSessionManager.cpp at 0x00392647-0x00392684 (called at cNetSessionManager.cpp:894)
 //   in _GLOBAL__sub_I_cNetSessionManager.cpp at 0x00392647-0x00392684 (called at cNetSessionManager.h:75)
@@ -222,7 +225,7 @@ __attribute__((weak)) void nSessionManager::MyListener::onLobbyInviteDeclineMsgN
 // Address: 0x0038f940 - 0x0038f987 (71 bytes)
 MtObject* nSessionManager::MyListener::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nSessionManager::MyListener;
+    return new (16u) ::nSessionManager::MyListener;
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (98 bytes)
@@ -254,7 +257,7 @@ const MtDTI& nSessionManager::cLobbyDataMessage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nSessionManager::cLobbyDataMessage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memAlloc(sz, align, ::nSessionManager::cLobbyDataMessage::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memAlloc(sz, align, ::nSessionManager::cLobbyDataMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -291,10 +294,10 @@ __attribute__((weak)) void nSessionManager::cLobbyDataMessage::serialize(BitWrit
 void nSessionManager::cLobbyDataMessage::deserialize(BitReader& r) {
     // DWARF local not rendered: s32 sessionType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (r.::BitReader::readS32() == static_cast<s32>(0)) {
-        this->mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(r.::BitReader::readS32());
+    if (r.readS32() == 0) {
+        mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(r.readS32());
     } else {
-        this->mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(1);
+        mMsgType = LOBBY_MSG_TYPE_RPC;
     }
 }
 
@@ -305,6 +308,8 @@ void nSessionManager::cLobbyDataMessage::deserialize(BitReader& r) {
 //   in cNetGameServer::sendLobbyMessage at 0x00343d1a-0x00343d34 (called at cNetGameServer.cpp:4536)
 // void nSessionManager::cLobbyDataMessage::setMsgType(nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE type);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nSessionManager::cLobbyDataMessage::MyDTI nSessionManager::cLobbyDataMessage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetSessionManager.cpp at 0x0039260e-0x00392647 (called at cNetSessionManager.cpp:69)
 //   in _GLOBAL__sub_I_cNetSessionManager.cpp at 0x0039260e-0x00392647 (called at cNetSessionManager.h:50)
@@ -313,7 +318,7 @@ void nSessionManager::cLobbyDataMessage::deserialize(BitReader& r) {
 // Address: 0x0038d430 - 0x0038d477 (71 bytes)
 MtObject* nSessionManager::cLobbyDataMessage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nSessionManager::cLobbyDataMessage;
+    return new (16u) ::nSessionManager::cLobbyDataMessage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -339,7 +344,7 @@ inline MtAllocator* nSessionManager::cNetSessionManager::getAllocator() {
 // Address: 0x0038d380 - 0x0038d3c0 (64 bytes)
 void* nSessionManager::cNetSessionManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nSessionManager::cNetSessionManager::getAllocator()->memAlloc(sz, align, ::nSessionManager::cNetSessionManager::DTI.::MtDTI::getID());
+    return ::nSessionManager::cNetSessionManager::getAllocator()->memAlloc(sz, align, ::nSessionManager::cNetSessionManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -402,10 +407,10 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::sendInvite(const
 // Address: 0x00392290 - 0x003922ac (28 bytes)
 void nSessionManager::cNetSessionManager::sendInviteCancel(u32 serverNo, u32 partyID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (partyID == static_cast<u32>(4294967295)) {
+    if (partyID == 0xFFFFFFFFu) {
         return;
     }
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::cancelInviteParty(serverNo, partyID);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->cancelInviteParty(serverNo, partyID);
 }
 
 // Address: 0x003922b0 - 0x003923d7 (295 bytes)
@@ -418,17 +423,17 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::sendInviteCancel
 // Address: 0x003923e0 - 0x003923f6 (22 bytes)
 void nSessionManager::cNetSessionManager::sendInviteDecline(u32 characterID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::refuseInviteParty();
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->refuseInviteParty();
 }
 
 // Address: 0x00392400 - 0x00392459 (89 bytes)
 void nSessionManager::cNetSessionManager::sendRpc(s32 sessionId, u8* data_ptr, u32 data_size, s32 sendMemberType, u32 characterId, u32 protocol) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (sessionId == static_cast<s32>(2)) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendLobbyMessage(static_cast<s32>(1), sendMemberType, characterId, data_ptr, data_size);
+    if (sessionId == 2) {
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendLobbyMessage(1, sendMemberType, characterId, data_ptr, data_size);
     } else {
-        if (sessionId == static_cast<s32>(0)) {
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendBinary(sendMemberType, characterId, data_ptr, data_size);
+        if (sessionId == 0) {
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendBinary(sendMemberType, characterId, data_ptr, data_size);
         }
     }
 }
@@ -456,19 +461,19 @@ __attribute__((weak)) bool nSessionManager::cNetSessionManager::isSessionOnline(
 // Address: 0x00391e90 - 0x00391eab (27 bytes)
 bool nSessionManager::cNetSessionManager::isGameSessionMySelf(s32 memberIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mSelfMemberIndex == memberIndex;
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mSelfMemberIndex == memberIndex;
 }
 
 // Address: 0x00391e70 - 0x00391e8b (27 bytes)
 bool nSessionManager::cNetSessionManager::isPartyLeader(u32 characterId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLeaderCharacterId == characterId;
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == characterId;
 }
 
 // Address: 0x0038f390 - 0x0038f3b1 (33 bytes)
 bool nSessionManager::cNetSessionManager::isPartyLeader() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId;
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mLobbyCharacterId;
 }
 
 // Address: 0x0038e890 - 0x0038e907 (119 bytes)
@@ -493,10 +498,10 @@ __attribute__((weak)) u32 nSessionManager::cNetSessionManager::getPartyMemberCha
 // Address: 0x0038fdf0 - 0x0038fe0f (31 bytes)
 s32 nSessionManager::cNetSessionManager::getSelfIndex(s32 session_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (session_id != static_cast<s32>(1)) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getSelfIndex();
+    if (session_id != 1) {
+        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->getSelfIndex();
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -563,17 +568,17 @@ void nSessionManager::cNetSessionManager::setup() {
     // DWARF local not rendered: s32 i;
     // DWARF local not rendered: Session* pSession;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sNetwork::getInstance()->mpSession[0] != static_cast<nNetwork::Session*>(nullptr)) {
-        ::sNetwork::getInstance()->mpSession[0]->::nNetwork::Session::addListener(static_cast<nNetwork::SessionListener*>(&this->mListener[0]));
+    if (::sNetwork::getInstance()->mpSession[0] != nullptr) {
+        ::sNetwork::getInstance()->mpSession[0]->::nNetwork::Session::addListener(static_cast<nNetwork::SessionListener*>(&mListener[0]));
     }
-    this->mListener[0].mSessionId = static_cast<s32>(0);
-    this->mListener[1].mSessionId = static_cast<s32>(1);
+    mListener[0].mSessionId = 0;
+    mListener[1].mSessionId = 1;
 }
 
 // Address: 0x0038e150 - 0x0038e155 (5 bytes)
 void nSessionManager::cNetSessionManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::moveSessionManager();
+    moveSessionManager();
 }
 
 // Address: 0x0038e440 - 0x0038e441 (1 bytes)
@@ -586,47 +591,47 @@ bool nSessionManager::cNetSessionManager::createFlow(nNet::cProgress& progress) 
     // DWARF local not rendered: s32 session_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
-        case static_cast<nNet::STATE>(0):
+        case ::nNet::STATE_INIT:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqCreateParty(::sGame::getInstance()->mCharData.mCharData.mMatchProfile.mInviteWait) != false) {
-                progress.mResult.::nNet::cResult::init();
-                progress.mState = static_cast<nNet::STATE>(2);
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqCreateParty(::sGame::getInstance()->mCharData.mCharData.mMatchProfile.mInviteWait)) {
+                progress.mResult.init();
+                progress.mState = ::nNet::STATE_WAIT;
                 return false;
             } else {
-                progress.mState = static_cast<nNet::STATE>(4);
-                progress.mResult.mError.mNative = static_cast<s32>(0);
-                progress.mResult.mError.mCause = static_cast<s32>(0);
-                progress.mResult.mError.mNo = static_cast<s32>(0);
+                progress.mState = ::nNet::STATE_ERROR;
+                progress.mResult.mError.mNative = 0;
+                progress.mResult.mError.mCause = 0;
+                progress.mResult.mError.mNo = 0;
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(2):
+        case ::nNet::STATE_WAIT:
         {
-            if (progress.::nNet::cProgress::getCancelFlag() != false) {
-                progress.mState = static_cast<nNet::STATE>(4);
+            if (progress.getCancelFlag()) {
+                progress.mState = ::nNet::STATE_ERROR;
                 return false;
             } else {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::createPartyFlow();
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->createPartyFlow();
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(3):
+        case ::nNet::STATE_SUCCESS:
         {
-            progress.mResult.::nNet::cResult::success();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.success();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
-        case static_cast<nNet::STATE>(4):
+        case ::nNet::STATE_ERROR:
         {
-            progress.mResult.::nNet::cResult::error();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.error();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
         default:
         {
-            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+            if (!progress.getWaitFlag()) {
                 return true;
             } else {
                 return false;
@@ -647,59 +652,59 @@ bool nSessionManager::cNetSessionManager::joinFlow(nNet::cProgress& progress) {
     // DWARF local not rendered: bool success;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
-        case static_cast<nNet::STATE>(0):
+        case ::nNet::STATE_INIT:
         {
-            if (progress.mValue != static_cast<u32>(0)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqJoinParty() != false) {
-                    progress.mState = static_cast<nNet::STATE>(2);
+            if (progress.mValue != 0) {
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqJoinParty()) {
+                    progress.mState = ::nNet::STATE_WAIT;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqJoinInviteParty() != false) {
-                    progress.mState = static_cast<nNet::STATE>(2);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqJoinInviteParty()) {
+                    progress.mState = ::nNet::STATE_WAIT;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             }
             break;
         }
-        case static_cast<nNet::STATE>(2):
+        case ::nNet::STATE_WAIT:
         {
-            if (progress.::nNet::cProgress::getCancelFlag() != false) {
-                progress.mState = static_cast<nNet::STATE>(4);
+            if (progress.getCancelFlag()) {
+                progress.mState = ::nNet::STATE_ERROR;
                 return false;
             } else {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::joinPartyFlow();
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->joinPartyFlow();
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(3):
+        case ::nNet::STATE_SUCCESS:
         {
-            progress.mResult.::nNet::cResult::success();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.success();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
-        case static_cast<nNet::STATE>(4):
+        case ::nNet::STATE_ERROR:
         {
-            progress.mResult.::nNet::cResult::error();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.error();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
         default:
         {
-            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+            if (!progress.getWaitFlag()) {
                 return true;
             } else {
                 return false;
@@ -720,59 +725,59 @@ bool nSessionManager::cNetSessionManager::startFlow(nNet::cProgress& progress) {
     // DWARF local not rendered: bool success;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
-        case static_cast<nNet::STATE>(0):
+        case ::nNet::STATE_INIT:
         {
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::requestGetServerRealTime();
-            if (progress.mValue == static_cast<u32>(1)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::playStartCycleContents() != false) {
-                    progress.mState = static_cast<nNet::STATE>(2);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->requestGetServerRealTime();
+            if (progress.mValue == 1) {
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->playStartCycleContents()) {
+                    progress.mState = ::nNet::STATE_WAIT;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::startPlay() != false) {
-                    progress.mState = static_cast<nNet::STATE>(2);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->startPlay()) {
+                    progress.mState = ::nNet::STATE_WAIT;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             }
             break;
         }
-        case static_cast<nNet::STATE>(2):
+        case ::nNet::STATE_WAIT:
         {
-            if (progress.::nNet::cProgress::getCancelFlag() != false) {
-                progress.mState = static_cast<nNet::STATE>(4);
+            if (progress.getCancelFlag()) {
+                progress.mState = ::nNet::STATE_ERROR;
                 return false;
             } else {
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(3):
+        case ::nNet::STATE_SUCCESS:
         {
-            progress.mResult.::nNet::cResult::success();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.success();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
-        case static_cast<nNet::STATE>(4):
+        case ::nNet::STATE_ERROR:
         {
-            progress.mResult.::nNet::cResult::error();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.error();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
         default:
         {
-            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+            if (!progress.getWaitFlag()) {
                 return true;
             } else {
                 return false;
@@ -789,70 +794,70 @@ bool nSessionManager::cNetSessionManager::finalFlow(nNet::cProgress& progress) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from nNet::cProgress*
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe50
     switch (progress.mState) {
-        case static_cast<nNet::STATE>(0):
+        case ::nNet::STATE_INIT:
         {
             // inferred: a temporary for the value the load at 0x390d57 read, used once; no DWARF local holds it
-            unsigned char t0 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&progress) + static_cast<long>(8));
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mIsNowQuickMatch = false;
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchTimer = 0.0f;
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno = static_cast<s32>(0);
-                this->::nSessionManager::cNetSessionManager::initFinalFlow(t0, progress.mFlag);
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqFinalParty(true) != false) {
-                    progress.mResult.::nNet::cResult::init();
-                    progress.mState = static_cast<nNet::STATE>(2);
+            unsigned char t0 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&progress) + 8);
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchRno != 0) {
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mIsNowQuickMatch = false;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchTimer = 0.0f;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchRno = 0;
+                initFinalFlow(t0, progress.mFlag);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqFinalParty(true)) {
+                    progress.mResult.init();
+                    progress.mState = ::nNet::STATE_WAIT;
                     progress.mTimer = 0.0f;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             } else {
-                this->::nSessionManager::cNetSessionManager::initFinalFlow(t0, progress.mFlag);
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqFinalParty(true) != false) {
-                    progress.mResult.::nNet::cResult::init();
-                    progress.mState = static_cast<nNet::STATE>(2);
+                initFinalFlow(t0, progress.mFlag);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqFinalParty(true)) {
+                    progress.mResult.init();
+                    progress.mState = ::nNet::STATE_WAIT;
                     progress.mTimer = 0.0f;
                     return false;
                 } else {
-                    progress.mState = static_cast<nNet::STATE>(4);
-                    progress.mResult.mError.mNative = static_cast<s32>(0);
-                    progress.mResult.mError.mCause = static_cast<s32>(0);
-                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    progress.mState = ::nNet::STATE_ERROR;
+                    progress.mResult.mError.mNative = 0;
+                    progress.mResult.mError.mCause = 0;
+                    progress.mResult.mError.mNo = 0;
                     return false;
                 }
             }
             break;
         }
-        case static_cast<nNet::STATE>(2):
+        case ::nNet::STATE_WAIT:
         {
-            if (progress.::nNet::cProgress::getCancelFlag() != false) {
-                progress.mState = static_cast<nNet::STATE>(4);
+            if (progress.getCancelFlag()) {
+                progress.mState = ::nNet::STATE_ERROR;
                 return false;
             } else {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::finalPartyFlow();
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->finalPartyFlow();
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(3):
+        case ::nNet::STATE_SUCCESS:
         {
-            progress.mResult.::nNet::cResult::success();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.success();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
-        case static_cast<nNet::STATE>(4):
+        case ::nNet::STATE_ERROR:
         {
-            progress.mResult.::nNet::cResult::error();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.error();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
         default:
         {
-            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+            if (!progress.getWaitFlag()) {
                 return true;
             } else {
                 return false;
@@ -873,97 +878,97 @@ bool nSessionManager::cNetSessionManager::finalLobbyFlow(nNet::cProgress& progre
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe50
     switch (progress.mState) {
-        case static_cast<nNet::STATE>(0):
+        case ::nNet::STATE_INIT:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mIsNowQuickMatch = false;
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchTimer = 0.0f;
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno = static_cast<s32>(0);
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyMembers.::MtArray::mLength != static_cast<u32>(0)) {
-                    this->::nSessionManager::cNetSessionManager::initFinalFlow(static_cast<s32>(1), false);
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveLobbyRequest() != false) {
-                        progress.mResult.::nNet::cResult::init();
-                        progress.mState = static_cast<nNet::STATE>(2);
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchRno != 0) {
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mIsNowQuickMatch = false;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchTimer = 0.0f;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->getSessionManager()->mQuickMatchRno = 0;
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mLobbyMembers.mLength != 0) {
+                    initFinalFlow(1, false);
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->leaveLobbyRequest()) {
+                        progress.mResult.init();
+                        progress.mState = ::nNet::STATE_WAIT;
                         progress.mTimer = 0.0f;
                         return false;
                     } else {
-                        progress.mState = static_cast<nNet::STATE>(4);
-                        progress.mResult.mError.mNative = static_cast<s32>(0);
-                        progress.mResult.mError.mCause = static_cast<s32>(0);
-                        progress.mResult.mError.mNo = static_cast<s32>(0);
+                        progress.mState = ::nNet::STATE_ERROR;
+                        progress.mResult.mError.mNative = 0;
+                        progress.mResult.mError.mCause = 0;
+                        progress.mResult.mError.mNo = 0;
                         return false;
                     }
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveLobbyRequest() != false) {
-                        progress.mResult.::nNet::cResult::init();
-                        progress.mState = static_cast<nNet::STATE>(2);
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->leaveLobbyRequest()) {
+                        progress.mResult.init();
+                        progress.mState = ::nNet::STATE_WAIT;
                         progress.mTimer = 0.0f;
                         return false;
                     } else {
-                        progress.mState = static_cast<nNet::STATE>(4);
-                        progress.mResult.mError.mNative = static_cast<s32>(0);
-                        progress.mResult.mError.mCause = static_cast<s32>(0);
-                        progress.mResult.mError.mNo = static_cast<s32>(0);
+                        progress.mState = ::nNet::STATE_ERROR;
+                        progress.mResult.mError.mNative = 0;
+                        progress.mResult.mError.mCause = 0;
+                        progress.mResult.mError.mNo = 0;
                         return false;
                     }
                 }
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyMembers.::MtArray::mLength != static_cast<u32>(0)) {
-                    this->::nSessionManager::cNetSessionManager::initFinalFlow(static_cast<s32>(1), false);
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveLobbyRequest() != false) {
-                        progress.mResult.::nNet::cResult::init();
-                        progress.mState = static_cast<nNet::STATE>(2);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mLobbyMembers.mLength != 0) {
+                    initFinalFlow(1, false);
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->leaveLobbyRequest()) {
+                        progress.mResult.init();
+                        progress.mState = ::nNet::STATE_WAIT;
                         progress.mTimer = 0.0f;
                         return false;
                     } else {
-                        progress.mState = static_cast<nNet::STATE>(4);
-                        progress.mResult.mError.mNative = static_cast<s32>(0);
-                        progress.mResult.mError.mCause = static_cast<s32>(0);
-                        progress.mResult.mError.mNo = static_cast<s32>(0);
+                        progress.mState = ::nNet::STATE_ERROR;
+                        progress.mResult.mError.mNative = 0;
+                        progress.mResult.mError.mCause = 0;
+                        progress.mResult.mError.mNo = 0;
                         return false;
                     }
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveLobbyRequest() != false) {
-                        progress.mResult.::nNet::cResult::init();
-                        progress.mState = static_cast<nNet::STATE>(2);
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->leaveLobbyRequest()) {
+                        progress.mResult.init();
+                        progress.mState = ::nNet::STATE_WAIT;
                         progress.mTimer = 0.0f;
                         return false;
                     } else {
-                        progress.mState = static_cast<nNet::STATE>(4);
-                        progress.mResult.mError.mNative = static_cast<s32>(0);
-                        progress.mResult.mError.mCause = static_cast<s32>(0);
-                        progress.mResult.mError.mNo = static_cast<s32>(0);
+                        progress.mState = ::nNet::STATE_ERROR;
+                        progress.mResult.mError.mNative = 0;
+                        progress.mResult.mError.mCause = 0;
+                        progress.mResult.mError.mNo = 0;
                         return false;
                     }
                 }
             }
             break;
         }
-        case static_cast<nNet::STATE>(2):
+        case ::nNet::STATE_WAIT:
         {
-            if (progress.::nNet::cProgress::getCancelFlag() != false) {
-                progress.mState = static_cast<nNet::STATE>(4);
+            if (progress.getCancelFlag()) {
+                progress.mState = ::nNet::STATE_ERROR;
                 return false;
             } else {
                 return false;
             }
             break;
         }
-        case static_cast<nNet::STATE>(3):
+        case ::nNet::STATE_SUCCESS:
         {
-            progress.mResult.::nNet::cResult::success();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.success();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
-        case static_cast<nNet::STATE>(4):
+        case ::nNet::STATE_ERROR:
         {
-            progress.mResult.::nNet::cResult::error();
-            progress.mState = static_cast<nNet::STATE>(6);
+            progress.mResult.error();
+            progress.mState = ::nNet::STATE_END;
             return false;
         }
         default:
         {
-            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+            if (!progress.getWaitFlag()) {
                 return true;
             } else {
                 return false;
@@ -1018,32 +1023,32 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::reqQuickPartyDis
 // Address: 0x0038edf0 - 0x0038ee4a (90 bytes)
 void nSessionManager::cNetSessionManager::startQuickMatch(nNet::QUICK_MATCH_TYPE type, CQuickPartyMatching& matching) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuickMatchTimer = 0.0f;
-    this->mQuickMatchRno = static_cast<s32>(1);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqQuickMatchParty(type, matching);
-    this->mQuickMatchJob = ::cContextInterface::getJob(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
+    mQuickMatchTimer = 0.0f;
+    mQuickMatchRno = 1;
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqQuickMatchParty(type, matching);
+    mQuickMatchJob = ::cContextInterface::getJob(::sContextManager::getInstance()->getContextMyPlayer());
 }
 
 // Address: 0x0038ee50 - 0x0038ee9f (79 bytes)
 void nSessionManager::cNetSessionManager::cancelQuickMatch(bool isReqServer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mQuickMatchRno == static_cast<s32>(0)) {
+    if (mQuickMatchRno == 0) {
         return;
     }
-    this->mIsNowQuickMatch = false;
-    this->mQuickMatchTimer = 0.0f;
-    if (isReqServer != false) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqQuickPartyCancel();
+    mIsNowQuickMatch = false;
+    mQuickMatchTimer = 0.0f;
+    if (isReqServer) {
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->reqQuickPartyCancel();
     }
-    this->mQuickMatchRno = static_cast<s32>(0);
+    mQuickMatchRno = 0;
 }
 
 // Address: 0x0038eea0 - 0x0038eebc (28 bytes)
 void nSessionManager::cNetSessionManager::unreadyQuickMatch() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsNowQuickMatch = true;
-    this->mQuickMatchTimer = 0.0f;
-    this->mQuickMatchRno = static_cast<s32>(1);
+    mIsNowQuickMatch = true;
+    mQuickMatchTimer = 0.0f;
+    mQuickMatchRno = 1;
 }
 
 // Address: 0x0038eec0 - 0x0038ef4a (138 bytes)
@@ -1053,13 +1058,13 @@ void nSessionManager::cNetSessionManager::endQuickMatch() {
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167f
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1680
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1684
-    this->mIsNowQuickMatch = false;
-    this->mQuickMatchTimer = 0.0f;
-    this->mQuickMatchRno = static_cast<s32>(0);
+    mIsNowQuickMatch = false;
+    mQuickMatchTimer = 0.0f;
+    mQuickMatchRno = 0;
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJoinParty = true;
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsQuickPartyJoin = true;
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJob = this->::nSessionManager::cNetSessionManager::getQuickMatchJob();
-    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::requestStageJump(static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getInvitedStageNo()), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mInvitedPosNo + (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getInvitedPosOffset() & static_cast<u32>(3)), static_cast<u32>(0), false);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJob = getQuickMatchJob();
+    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->requestStageJump(static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->getInvitedStageNo()), static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mInvitedPosNo + (static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->getInvitedPosOffset() & 3u), 0u, false);
     ::sGame::getInstance()->mIsReqChangeServer = true;
 }
 
@@ -1081,7 +1086,7 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::moveQuickMatch()
 // Address: 0x0038f170 - 0x0038f188 (24 bytes)
 u32 nSessionManager::cNetSessionManager::getInvitePartyLeaderId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getInviteLeaderCharacterId();
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->getInviteLeaderCharacterId();
 }
 
 // Address: 0x0038f190 - 0x0038f289 (249 bytes)
@@ -1117,35 +1122,35 @@ void nSessionManager::cNetSessionManager::setReadyAction(bool withPawn) {
     // DWARF local not rendered: const cContextInstHm* pContext;
     // DWARF local not rendered: uHuman* pPawn;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(14), true, true, false);
-    if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-        if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uHuman::isCanSetEmotion() != false) {
-            ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uHuman::requestHumanHighPriorityAction(static_cast<u32>(373));
+    ::sFlag::getInstance()->setFlag(4u, 14u, true, true, false);
+    if (::sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+        if (::sPlayerManager::getInstance()->getMyPlayer()->isCanSetEmotion()) {
+            ::sPlayerManager::getInstance()->getMyPlayer()->requestHumanHighPriorityAction(373u);
         }
     }
-    if (withPawn != false) {
+    if (withPawn) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the result of the call at 0x38f59b, used twice; no DWARF local holds it
-            cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_3, true);
-            if (::cContextInterface::isPawnOwner(t0) != false) {
+            cContextInstHm* t0 = ::sContextManager::getInstance()->getContextPartyPlayerIndex(i0_3, true);
+            if (::cContextInterface::isPawnOwner(t0)) {
                 // inferred: a temporary for the result of the call at 0x38f5b5, used 4 times; no DWARF local holds it
-                uHuman* t1 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t0);
-                if (t1 != static_cast<uHuman*>(nullptr)) {
-                    if (t1->::cUnit::isEnable()) {
-                        if (t1->::uHuman::isCanSetEmotion() != false) {
-                            t1->::uHuman::requestHumanHighPriorityAction(static_cast<u32>(373));
+                uHuman* t1 = ::sPlayerManager::getInstance()->getPlayer(t0);
+                if (t1 != nullptr) {
+                    if (t1->isEnable()) {
+                        if (t1->isCanSetEmotion()) {
+                            t1->requestHumanHighPriorityAction(373u);
                         }
                     }
                 }
-                if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) != 8) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) != 8) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
@@ -1159,8 +1164,8 @@ bool nSessionManager::cNetSessionManager::isSetReadyAction() {
     // DWARF local not rendered: uPlayer* pPl;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-        if (::nHumanActUtility::getActionNo(*::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()) != static_cast<u32>(373)) {
+    if (::sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+        if (::nHumanActUtility::getActionNo(*::sPlayerManager::getInstance()->getMyPlayer()) != 373) {
             return false;
         } else {
             return true;
@@ -1177,40 +1182,40 @@ void nSessionManager::cNetSessionManager::endReadyAction() {
     // DWARF local not rendered: const cContextInstHm* pContext;
     // DWARF local not rendered: uHuman* pPawn;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(14), false, true, false);
+    ::sFlag::getInstance()->setFlag(4u, 14u, false, true, false);
     // inferred: a temporary for the value the load at 0x38f66d read, used 4 times; no DWARF local holds it
-    uPlayer* t0 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
-    if (t0 != static_cast<uPlayer*>(nullptr)) {
-        if (t0->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-            if (t0->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                t0->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+    uPlayer* t0 = ::sPlayerManager::getInstance()->getMyPlayer();
+    if (t0 != nullptr) {
+        if (t0->getActMgrPtr() != nullptr) {
+            if (t0->getActMgrPtr()->getActionNo() == 373) {
+                t0->getActionRequestPtr()->mRequestActionReq = 374;
             }
         }
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_11 = static_cast<unsigned int>(0);;) {
+    for (unsigned int i0_11 = 0;;) {
         // inferred: a temporary for the result of the call at 0x38f6b2, used twice; no DWARF local holds it
-        cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_11, true);
-        if (::cContextInterface::isPawnOwner(t1) != false) {
+        cContextInstHm* t1 = ::sContextManager::getInstance()->getContextPartyPlayerIndex(i0_11, true);
+        if (::cContextInterface::isPawnOwner(t1)) {
             // inferred: a temporary for the result of the call at 0x38f6cd, used 5 times; no DWARF local holds it
-            uHuman* t2 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t1);
-            if (t2 != static_cast<uHuman*>(nullptr)) {
-                if (t2->::cUnit::isEnable()) {
-                    if (t2->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-                        if (t2->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                            t2->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+            uHuman* t2 = ::sPlayerManager::getInstance()->getPlayer(t1);
+            if (t2 != nullptr) {
+                if (t2->isEnable()) {
+                    if (t2->getActMgrPtr() != nullptr) {
+                        if (t2->getActMgrPtr()->getActionNo() == 373) {
+                            t2->getActionRequestPtr()->mRequestActionReq = 374;
                         }
                     }
                 }
             }
-            if ((i0_11 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                i0_11 += static_cast<unsigned int>(1);
+            if ((i0_11 + 1u) != 8) {
+                i0_11 += 1u;
             } else {
                 break;
             }
         } else {
-            if ((i0_11 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(8)) {
-                i0_11 += static_cast<unsigned int>(1);
+            if ((i0_11 + 1u) != 8) {
+                i0_11 += 1u;
             } else {
                 break;
             }
@@ -1219,9 +1224,37 @@ void nSessionManager::cNetSessionManager::endReadyAction() {
 }
 
 // Address: 0x0038f730 - 0x0038f7d7 (167 bytes)
-__attribute__((weak)) void nSessionManager::cNetSessionManager::clearPartyReqInfo(s32 index) {
-    DDON_STUB("nSessionManager::cNetSessionManager::clearPartyReqInfo")
-    /* stub */
+void nSessionManager::cNetSessionManager::clearPartyReqInfo(s32 index) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    mPartyReqInfo[index].m_LeaderBaseInfo.m_unCharacterID = 0;
+    if (mPartyReqInfo[index].m_MemberList.mLength != 0) {
+        // inferred: the value the loop at 0x38f770 carries; no location-less local in scope fits
+        u32 v0_0 = mPartyReqInfo[index].m_MemberList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mPartyReqInfo[index].m_MemberList.mpArray[i0_3] != nullptr) {
+                delete mPartyReqInfo[index].m_MemberList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPartyReqInfo[index].m_MemberList.mLength) {
+                    v0_0 = mPartyReqInfo[index].m_MemberList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mPartyReqInfo[index].m_MemberList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mPartyReqInfo[index].m_MemberList.mpArray));
+    }
+    mPartyReqInfo[index].m_MemberList.mpArray = nullptr;
+    mPartyReqInfo[index].m_MemberList.mBufsiz = 0;
+    mPartyReqInfo[index].m_MemberList.mLength = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (52 bytes)
@@ -1388,45 +1421,45 @@ __attribute__((weak)) CPartyMember* nSessionManager::cNetSessionManager::getInvi
 // Address: 0x00391910 - 0x00391936 (38 bytes)
 void nSessionManager::cNetSessionManager::sendChatLobby(MT_CTSTR str, nChatMsgType::E_CHAT_MSG_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(type) <= static_cast<unsigned int>(1)) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(type), str, static_cast<u32>(0));
+    if (static_cast<unsigned int>(type) <= 1) {
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(static_cast<u32>(type), str, 0u);
     }
 }
 
 // Address: 0x00391940 - 0x00391963 (35 bytes)
 void nSessionManager::cNetSessionManager::sendChatParty(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(4), str, static_cast<u32>(0));
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(4u, str, 0u);
 }
 
 // Address: 0x00391970 - 0x0039198f (31 bytes)
 void nSessionManager::cNetSessionManager::sendChatTell(CCommunityCharacterBaseInfo& charInfo, MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendTellChatMessage(str, charInfo);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendTellChatMessage(str, charInfo);
 }
 
 // Address: 0x00391990 - 0x003919b3 (35 bytes)
 void nSessionManager::cNetSessionManager::sendChatGroup(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(6), str, static_cast<u32>(0));
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(6u, str, 0u);
 }
 
 // Address: 0x003919c0 - 0x003919e3 (35 bytes)
 void nSessionManager::cNetSessionManager::sendChatClan(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(7), str, static_cast<u32>(0));
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(7u, str, 0u);
 }
 
 // Address: 0x003919f0 - 0x00391a13 (35 bytes)
 void nSessionManager::cNetSessionManager::sendChatClanNtc(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(13), str, static_cast<u32>(0));
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(13u, str, 0u);
 }
 
 // Address: 0x00391a20 - 0x00391a43 (35 bytes)
 void nSessionManager::cNetSessionManager::sendChatEntryBoard(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendChatMessage(static_cast<u32>(8), str, static_cast<u32>(0));
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->sendChatMessage(8u, str, 0u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1451,25 +1484,25 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::moveSessionManag
 // Address: 0x00391a60 - 0x00391a71 (17 bytes)
 void nSessionManager::cNetSessionManager::createGameSessionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<const nNet::cProgress::CMD>(65536), static_cast<const nNet::cProgress::CTRL_IDX>(0), false, static_cast<const u32>(0));
+    requestSessionCommand(static_cast<const nNet::cProgress::CMD>(65536), static_cast<const nNet::cProgress::CTRL_IDX>(0), false, 0u);
 }
 
 // Address: 0x00391c70 - 0x00391c84 (20 bytes)
 void nSessionManager::cNetSessionManager::searchGameSessionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<const nNet::cProgress::CMD>(131072), static_cast<const nNet::cProgress::CTRL_IDX>(1), false, static_cast<const u32>(0));
+    requestSessionCommand(static_cast<const nNet::cProgress::CMD>(131072), static_cast<const nNet::cProgress::CTRL_IDX>(1), false, 0u);
 }
 
 // Address: 0x00391c90 - 0x00391ca6 (22 bytes)
 void nSessionManager::cNetSessionManager::joinGameSessionRequest(u32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(196608), static_cast<nNet::cProgress::CTRL_IDX>(2), false, value);
+    requestSessionCommand(::nNet::cProgress::CMD_JOIN_GAME, ::nNet::cProgress::CTRL_IDX_JOIN_SESSION, false, value);
 }
 
 // Address: 0x00391cb0 - 0x00391cc7 (23 bytes)
 void nSessionManager::cNetSessionManager::joinLobbySessionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<const nNet::cProgress::CMD>(196609), static_cast<const nNet::cProgress::CTRL_IDX>(9), true, static_cast<const u32>(0));
+    requestSessionCommand(static_cast<const nNet::cProgress::CMD>(196609), static_cast<const nNet::cProgress::CTRL_IDX>(9), true, 0u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1478,26 +1511,26 @@ void nSessionManager::cNetSessionManager::joinLobbySessionRequest() {
 // Address: 0x00391ce0 - 0x00391cf6 (22 bytes)
 void nSessionManager::cNetSessionManager::startGameSessionRequest(u32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(458752), static_cast<nNet::cProgress::CTRL_IDX>(4), false, value);
+    requestSessionCommand(::nNet::cProgress::CMD_START_GAME, ::nNet::cProgress::CTRL_IDX_START_SESSION, false, value);
 }
 
 // Address: 0x003913c0 - 0x003913d6 (22 bytes)
 void nSessionManager::cNetSessionManager::finalGameSessionRequest(bool noAreaJump) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589824), static_cast<nNet::cProgress::CTRL_IDX>(6), noAreaJump, static_cast<u32>(0));
+    requestSessionCommand(::nNet::cProgress::CMD_FINAL_GAME, ::nNet::cProgress::CTRL_IDX_FINAL_SESSION_GAME, noAreaJump, 0u);
 }
 
 // Address: 0x00391d00 - 0x00391d14 (20 bytes)
 void nSessionManager::cNetSessionManager::finalLobbySessionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<const nNet::cProgress::CMD>(589825), static_cast<const nNet::cProgress::CTRL_IDX>(10), false, static_cast<const u32>(0));
+    requestSessionCommand(static_cast<const nNet::cProgress::CMD>(589825), static_cast<const nNet::cProgress::CTRL_IDX>(10), false, 0u);
 }
 
 // Address: 0x0038fe70 - 0x0038feaa (58 bytes)
 void nSessionManager::cNetSessionManager::finalAllSessionRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589824), static_cast<nNet::cProgress::CTRL_IDX>(6), false, static_cast<u32>(0));
-    this->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589825), static_cast<nNet::cProgress::CTRL_IDX>(10), false, static_cast<u32>(0));
+    requestSessionCommand(::nNet::cProgress::CMD_FINAL_GAME, ::nNet::cProgress::CTRL_IDX_FINAL_SESSION_GAME, false, 0u);
+    requestSessionCommand(::nNet::cProgress::CMD_FINAL_LOBBY, ::nNet::cProgress::CTRL_IDX_FINAL_LOBBY, false, 0u);
 }
 
 // Address: 0x003913e0 - 0x003915b2 (466 bytes)
@@ -1518,37 +1551,29 @@ void nSessionManager::cNetSessionManager::abortAllSessionCommand() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cProgress& progress;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSesMngProgress[0].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[0].mCancelFlag = true;
+    if (mSesMngProgress[0].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[0].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[1].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[1].mCancelFlag = true;
+    if (mSesMngProgress[1].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[1].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[2].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[2].mCancelFlag = true;
+    if (mSesMngProgress[2].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[2].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[3].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[3].mCancelFlag = true;
+    if (mSesMngProgress[3].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[3].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[4].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[4].mCancelFlag = true;
+    if (mSesMngProgress[4].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[4].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[5].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[5].mCancelFlag = true;
+    if (mSesMngProgress[5].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[5].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[6].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[6].mCancelFlag = true;
+    if (mSesMngProgress[6].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[6].mCancelFlag = true;
     }
-    if (this->mSesMngProgress[7].mState == static_cast<nNet::STATE>(7)) {
-    } else {
-        this->mSesMngProgress[7].mCancelFlag = true;
+    if (mSesMngProgress[7].mState != ::nNet::STATE_DEAD) {
+        mSesMngProgress[7].mCancelFlag = true;
     }
 }
 
@@ -1630,6 +1655,8 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::requestSessionCo
 // No out-of-line body: 1 inlined copy in 1 function (51 bytes)
 //   in nSessionManager::cNetSessionManager::requestSessionCommand at 0x00391aa6-0x00391ad9 (called at cNetSessionManager.cpp:2831)
 // bool nSessionManager::cNetSessionManager::isSameCommandContinue(nNet::cProgress::CMD cmd);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nSessionManager::cNetSessionManager::MyDTI nSessionManager::cNetSessionManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetSessionManager.cpp at 0x003925ce-0x0039260e (called at cNetSessionManager.cpp:68)

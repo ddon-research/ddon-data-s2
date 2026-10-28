@@ -81,7 +81,7 @@ __attribute__((weak)) void nZone::ShapeInfoBase::createProperty(MtPropertyList& 
 // Address: 0x011aa5e0 - 0x011aa5ed (13 bytes)
 bool nZone::ShapeInfoBase::copy(const nZone::ShapeInfoBase& copyShape) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDecay = copyShape.mDecay;
+    mDecay = copyShape.mDecay;
     return true;
 }
 
@@ -91,7 +91,7 @@ bool nZone::ShapeInfoBase::copy(const nZone::ShapeInfoBase& copyShape) {
 // Address: 0x01b89150 - 0x01b89153 (3 bytes)
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoBase::getShapeType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(0);
+    return SHAPE_TYPE_NONE;
 }
 
 // Address: 0x01b89160 - 0x01b89163 (3 bytes)
@@ -134,14 +134,14 @@ __attribute__((weak)) void nZone::ShapeInfoBase::loadBinary(MtDataReader& r) {
 void nZone::ShapeInfoBase::saveBinary(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeF32(this->mDecay);
+    w.writeF32(mDecay);
     // inferred: a temporary for the value the load at 0x11aa66c read, used once; no DWARF local holds it
-    bool t0 = this->mIsNativeData;
+    bool t0 = mIsNativeData;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    w.mSeekPt = w.mSeekPt + 1u;
 }
 
 // Address: 0x01b891b0 - 0x01b891b3 (3 bytes)
@@ -279,6 +279,8 @@ f32 nZone::ShapeInfoBase::calcWeight(const MtVector3& pos) const {
 // No out-of-line body: no code in the ELF
 // size_t nZone::ShapeInfoBase::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::ShapeInfoBase::MyDTI nZone::ShapeInfoBase::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::ShapeInfoBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -309,7 +311,7 @@ const MtDTI& nZone::ShapeInfoOBB::getDTI() const {
 // Address: 0x011b05f0 - 0x011b0630 (64 bytes)
 void* nZone::ShapeInfoOBB::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoOBB::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoOBB::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoOBB::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoOBB::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -373,32 +375,32 @@ __attribute__((weak)) void nZone::ShapeInfoOBB::applyWorldOffset(const MtVector3
 // Address: 0x01b89950 - 0x01b89956 (6 bytes)
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoOBB::getShapeType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(3);
+    return SHAPE_TYPE_OBB;
 }
 
 // Address: 0x011b0ed0 - 0x011b0ed9 (9 bytes)
 bool nZone::ShapeInfoOBB::isHit(const MtVector3& pos) const {
     // DWARF local not rendered: const bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, pos);
+    return ::MtCollision::intersect(mOBB, pos);
 }
 
 // Address: 0x011b0ee0 - 0x011b0ee9 (9 bytes)
 bool nZone::ShapeInfoOBB::isHitLineSegment(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, ls);
+    return ::MtCollision::intersect(mOBB, ls);
 }
 
 // Address: 0x011b0ef0 - 0x011b0f06 (22 bytes)
 bool nZone::ShapeInfoOBB::isHitConvex(const MtGeomConvex& convex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return convex.isIntersect(this->mOBB);
+    return convex.isIntersect(mOBB);
 }
 
 // Address: 0x011b0f10 - 0x011b0f19 (9 bytes)
 bool nZone::ShapeInfoOBB::isIntersectAABB(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, aabb);
+    return ::MtCollision::intersect(mOBB, aabb);
 }
 
 // Address: 0x011b0f20 - 0x011b0f29 (9 bytes)
@@ -418,36 +420,36 @@ __attribute__((weak)) void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
 void nZone::ShapeInfoOBB::saveBinary(MtDataWriter& w) {
     // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeF32(this->::nZone::ShapeInfoBase::mDecay);
+    w.writeF32(mDecay);
     // inferred: a temporary for the value the load at 0x11b100f read, used once; no DWARF local holds it
-    bool t0 = this->::nZone::ShapeInfoBase::mIsNativeData;
+    bool t0 = mIsNativeData;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        w.write(static_cast<const void*>(&this->mOBB), static_cast<u32>(80));
-        w.writeF32(this->mDecayY);
-        w.writeF32(this->mDecayZ);
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.write(static_cast<const void*>(&mOBB), 80u);
+        w.writeF32(mDecayY);
+        w.writeF32(mDecayZ);
         // inferred: a temporary for the value the load at 0x11b1064 read, used once; no DWARF local holds it
-        bool t1 = this->mIsEnableExtendedDecay;
+        bool t1 = mIsEnableExtendedDecay;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
         }
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t1);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.mSeekPt = w.mSeekPt + 1u;
     } else {
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        w.write(static_cast<const void*>(&this->mOBB), static_cast<u32>(80));
-        w.writeF32(this->mDecayY);
-        w.writeF32(this->mDecayZ);
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.write(static_cast<const void*>(&mOBB), 80u);
+        w.writeF32(mDecayY);
+        w.writeF32(mDecayZ);
         // inferred: a temporary for the value the load at 0x11b1064 read, used once; no DWARF local holds it
-        bool t1 = this->mIsEnableExtendedDecay;
+        bool t1 = mIsEnableExtendedDecay;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
         }
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t1);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.mSeekPt = w.mSeekPt + 1u;
     }
 }
 
@@ -552,7 +554,7 @@ __attribute__((weak)) f32 nZone::ShapeInfoOBB::calcWeight(const MtVector3& pos) 
 // Address: 0x01b88d20 - 0x01b88d2a (10 bytes)
 f32 nZone::ShapeInfoOBB::getHeight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOBB.extent.y + this->mOBB.extent.y;
+    return mOBB.extent.y + mOBB.extent.y;
 }
 
 // Address: 0x011b0dd0 - 0x011b0e48 (120 bytes)
@@ -609,6 +611,8 @@ __attribute__((weak)) void nZone::ShapeInfoOBB::setHeight(f32 height) {
 // No out-of-line body: no code in the ELF
 // size_t nZone::ShapeInfoOBB::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::ShapeInfoOBB::MyDTI nZone::ShapeInfoOBB::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::ShapeInfoOBB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -639,7 +643,7 @@ const MtDTI& nZone::ShapeInfoPanel::getDTI() const {
 // Address: 0x011b67a0 - 0x011b67e0 (64 bytes)
 void* nZone::ShapeInfoPanel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoPanel::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoPanel::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -701,7 +705,7 @@ __attribute__((weak)) void nZone::ShapeInfoPanel::applyWorldOffset(const MtVecto
 // Address: 0x01b89ca0 - 0x01b89ca6 (6 bytes)
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoPanel::getShapeType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(9);
+    return SHAPE_TYPE_PANEL;
 }
 
 // Address: 0x011b6cf0 - 0x011b6e1b (299 bytes)
@@ -753,15 +757,15 @@ __attribute__((weak)) void nZone::ShapeInfoPanel::loadBinary(MtDataReader& r) {
 void nZone::ShapeInfoPanel::saveBinary(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeF32(this->::nZone::ShapeInfoBase::mDecay);
+    w.writeF32(mDecay);
     // inferred: a temporary for the value the load at 0x11b750f read, used once; no DWARF local holds it
-    bool t0 = this->::nZone::ShapeInfoBase::mIsNativeData;
+    bool t0 = mIsNativeData;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    w.write(static_cast<const void*>(&this->mVertex[0]), static_cast<u32>(64));
+    w.mSeekPt = w.mSeekPt + 1u;
+    w.write(static_cast<const void*>(&mVertex[0]), 64u);
 }
 
 // Address: 0x011b7620 - 0x011b7623 (3 bytes)
@@ -868,58 +872,58 @@ void nZone::ShapeInfoPanel::shiftDiagonal() {
     // DWARF local not rendered: MtVector3 temp2;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11b6baf read, used once; no DWARF local holds it
-    f32 t0 = this->mVertex[1].x;
+    f32 t0 = mVertex[1].x;
     // inferred: a temporary for the value the load at 0x11b6bb4 read, used once; no DWARF local holds it
-    f32 t1 = this->mVertex[1].y;
+    f32 t1 = mVertex[1].y;
     // inferred: a temporary for the value the load at 0x11b6bb9 read, used once; no DWARF local holds it
-    f32 t2 = this->mVertex[1].z;
-    this->mVertex[1].x = this->mVertex[0].x;
-    this->mVertex[1].y = this->mVertex[0].y;
-    this->mVertex[1].z = this->mVertex[0].z;
-    this->mVertex[1].pad_ = 0.0f;
+    f32 t2 = mVertex[1].z;
+    mVertex[1].x = mVertex[0].x;
+    mVertex[1].y = mVertex[0].y;
+    mVertex[1].z = mVertex[0].z;
+    mVertex[1].pad_ = 0.0f;
     // inferred: a temporary for the value the load at 0x11b6bd4 read, used once; no DWARF local holds it
-    f32 t3 = this->mVertex[2].x;
+    f32 t3 = mVertex[2].x;
     // inferred: a temporary for the value the load at 0x11b6bd9 read, used once; no DWARF local holds it
-    f32 t4 = this->mVertex[2].y;
+    f32 t4 = mVertex[2].y;
     // inferred: a temporary for the value the load at 0x11b6bde read, used once; no DWARF local holds it
-    f32 t5 = this->mVertex[2].z;
-    this->mVertex[2].x = t0;
-    this->mVertex[2].y = t1;
-    this->mVertex[2].z = t2;
-    this->mVertex[2].pad_ = 0.0f;
+    f32 t5 = mVertex[2].z;
+    mVertex[2].x = t0;
+    mVertex[2].y = t1;
+    mVertex[2].z = t2;
+    mVertex[2].pad_ = 0.0f;
     // inferred: a temporary for the value the load at 0x11b6bf9 read, used once; no DWARF local holds it
-    f32 t6 = this->mVertex[3].x;
+    f32 t6 = mVertex[3].x;
     // inferred: a temporary for the value the load at 0x11b6bfe read, used once; no DWARF local holds it
-    f32 t7 = this->mVertex[3].y;
+    f32 t7 = mVertex[3].y;
     // inferred: a temporary for the value the load at 0x11b6c03 read, used once; no DWARF local holds it
-    f32 t8 = this->mVertex[3].z;
-    this->mVertex[3].x = t3;
-    this->mVertex[3].y = t4;
-    this->mVertex[3].z = t5;
-    this->mVertex[3].pad_ = 0.0f;
-    this->mVertex[0].x = t6;
-    this->mVertex[0].y = t7;
-    this->mVertex[0].z = t8;
-    this->mVertex[0].pad_ = 0.0f;
+    f32 t8 = mVertex[3].z;
+    mVertex[3].x = t3;
+    mVertex[3].y = t4;
+    mVertex[3].z = t5;
+    mVertex[3].pad_ = 0.0f;
+    mVertex[0].x = t6;
+    mVertex[0].y = t7;
+    mVertex[0].z = t8;
+    mVertex[0].pad_ = 0.0f;
 }
 
 // Address: 0x011b6b50 - 0x011b6b9b (75 bytes)
 void nZone::ShapeInfoPanel::reversePanelDirection() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11b6b50 read, used once; no DWARF local holds it
-    f32 t0 = this->mVertex[1].x;
+    f32 t0 = mVertex[1].x;
     // inferred: a temporary for the value the load at 0x11b6b55 read, used once; no DWARF local holds it
-    f32 t1 = this->mVertex[1].y;
+    f32 t1 = mVertex[1].y;
     // inferred: a temporary for the value the load at 0x11b6b5a read, used once; no DWARF local holds it
-    f32 t2 = this->mVertex[1].z;
-    this->mVertex[1].x = this->mVertex[3].x;
-    this->mVertex[1].y = this->mVertex[3].y;
-    this->mVertex[1].z = this->mVertex[3].z;
-    this->mVertex[1].pad_ = 0.0f;
-    this->mVertex[3].x = t0;
-    this->mVertex[3].y = t1;
-    this->mVertex[3].z = t2;
-    this->mVertex[3].pad_ = 0.0f;
+    f32 t2 = mVertex[1].z;
+    mVertex[1].x = mVertex[3].x;
+    mVertex[1].y = mVertex[3].y;
+    mVertex[1].z = mVertex[3].z;
+    mVertex[1].pad_ = 0.0f;
+    mVertex[3].x = t0;
+    mVertex[3].y = t1;
+    mVertex[3].z = t2;
+    mVertex[3].pad_ = 0.0f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -946,6 +950,8 @@ __attribute__((weak)) MtTriangle nZone::ShapeInfoPanel::getTriangle(u32 index) c
 
 // No out-of-line body: no code in the ELF
 // size_t nZone::ShapeInfoPanel::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::ShapeInfoPanel::MyDTI nZone::ShapeInfoPanel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::ShapeInfoPanel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1001,6 +1007,8 @@ __attribute__((weak)) MtObject* nZone::ShapeInfoPanel::MyDTI::newInstance() cons
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // nZone::cAllocaterIntermediate::~cAllocaterIntermediate();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nZone::cAllocaterIntermediate::MyDTI nZone::cAllocaterIntermediate::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::cAllocaterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1031,7 +1039,7 @@ const MtDTI& nZone::cContentsPool::getDTI() const {
 // Address: 0x011b87f0 - 0x011b8830 (64 bytes)
 void* nZone::cContentsPool::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memAlloc(sz, align, ::nZone::cContentsPool::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memAlloc(sz, align, ::nZone::cContentsPool::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1098,8 +1106,8 @@ __attribute__((weak)) bool nZone::cContentsPool::loadBeforeAllocateAlign4(nColli
 // Address: 0x011b9030 - 0x011b90af (127 bytes)
 bool nZone::cContentsPool::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&this->mContentsListArray), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.::MtSerializer::deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&mContentsListArray), ::MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x011b90b0 - 0x011b9140 (144 bytes)
@@ -1155,6 +1163,8 @@ __attribute__((weak)) void nZone::cContentsPool::copyObjectProperty(MtObject* pD
 
 // No out-of-line body: no code in the ELF
 // size_t nZone::cContentsPool::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::cContentsPool::MyDTI nZone::cContentsPool::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::cContentsPool::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1237,9 +1247,8 @@ __attribute__((weak)) void nZone::cContentsPool::cContentsList::createProperty(M
 
 // Address: 0x01b88de0 - 0x01b88de4 (4 bytes)
 u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const nZone::cContentsPool::cContentsList*
-    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mZoneContentsArray.mLength;
 }
 
 // No out-of-line body: 10 inlined copies in 4 functions (136 bytes)
@@ -1295,6 +1304,8 @@ u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {
 // No out-of-line body: no code in the ELF
 // size_t nZone::cContentsPool::cContentsList::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::cContentsPool::cContentsList::MyDTI nZone::cContentsPool::cContentsList::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::cContentsPool::cContentsList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1328,7 +1339,7 @@ const MtDTI& nZone::cLayoutElement::getDTI() const {
 // Address: 0x011b9230 - 0x011b9270 (64 bytes)
 void* nZone::cLayoutElement::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nZone::cLayoutElement::DTI)->memAlloc(sz, align, ::nZone::cLayoutElement::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nZone::cLayoutElement::DTI)->memAlloc(sz, align, ::nZone::cLayoutElement::DTI.mID);
 }
 
 // Address: 0x011b9270 - 0x011b9274 (4 bytes)
@@ -1377,39 +1388,39 @@ __attribute__((weak)) void nZone::cLayoutElement::createProperty(MtPropertyList&
 // Address: 0x011bb200 - 0x011bb294 (148 bytes)
 void nZone::cLayoutElement::copy(nZone::cLayoutElement* pE) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pE == static_cast<nZone::cLayoutElement*>(nullptr)) {
+    if (pE == nullptr) {
         return;
     }
-    this->mPriority = pE->mPriority;
-    this->mIsEnable = pE->mIsEnable;
+    mPriority = pE->mPriority;
+    mIsEnable = pE->mIsEnable;
     // inferred: a temporary for the value the load at 0x11bb223 read, used 3 times; no DWARF local holds it
     nZone::ShapeInfoBase* t0 = pE->mpShapeInfo;
-    if (t0 != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        this->::nZone::cLayoutElement::createShape(static_cast<u32>(t0->getShapeType()));
-        if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-            this->mpShapeInfo->copy(*t0);
+    if (t0 != nullptr) {
+        createShape(static_cast<u32>(t0->getShapeType()));
+        if (mpShapeInfo != nullptr) {
+            mpShapeInfo->copy(*t0);
         }
     } else {
-        if (this->mFlgShallowCopyShape == false) {
-            if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-                delete this->mpShapeInfo;
-                this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+        if (!mFlgShallowCopyShape) {
+            if (mpShapeInfo != nullptr) {
+                delete mpShapeInfo;
+                mpShapeInfo = nullptr;
             }
         } else {
-            this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+            mpShapeInfo = nullptr;
         }
     }
-    this->mFlgShallowCopyShape = false;
-    this->::nZone::cLayoutElement::copyContents(pE);
+    mFlgShallowCopyShape = false;
+    copyContents(pE);
 }
 
 // Address: 0x011ba090 - 0x011ba0a2 (18 bytes)
 u32 nZone::cLayoutElement::getShapeType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        return static_cast<u32>(this->mpShapeInfo->getShapeType());
+    if (mpShapeInfo != nullptr) {
+        return static_cast<u32>(mpShapeInfo->getShapeType());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1468,7 +1479,7 @@ __attribute__((weak)) void nZone::cLayoutElement::createShape(u32 NewShapeType) 
 // Address: 0x011bae70 - 0x011bae74 (4 bytes)
 s32 nZone::cLayoutElement::getContentsPoolGroupID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mContentsPoolGroupID;
+    return mContentsPoolGroupID;
 }
 
 // Address: 0x011bb370 - 0x011bb5e2 (626 bytes)
@@ -1496,43 +1507,43 @@ __attribute__((weak)) bool nZone::cLayoutElement::loadBinary(MtDataReader& r) {
 bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
     // Approximate from the ELF: a frame object built in several branches; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeS32(this->mPriority);
-    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        this->mpShapeInfo->saveBinary(w);
-        w.writeS32(this->mContentsPoolID);
-        w.writeS32(this->mContentsPoolGroupID);
+    w.writeS32(mPriority);
+    if (mpShapeInfo != nullptr) {
+        mpShapeInfo->saveBinary(w);
+        w.writeS32(mContentsPoolID);
+        w.writeS32(mContentsPoolGroupID);
         // inferred: a temporary for the value the load at 0x11bbc20 read, used once; no DWARF local holds it
-        bool t0 = this->mIsEnable;
+        bool t0 = mIsEnable;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
         }
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        w.writeU32(this->mIndex);
-        w.writeU32(this->mLayoutGroupIndex);
-        w.writeU32(this->mIndexOfLayoutGroup);
-        w.writeU32(this->mUniqueID);
-        w.writeS32(this->mGroupID);
-        if (this->mpExtendObj != static_cast<MtObject*>(nullptr)) {
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.writeU32(mIndex);
+        w.writeU32(mLayoutGroupIndex);
+        w.writeU32(mIndexOfLayoutGroup);
+        w.writeU32(mUniqueID);
+        w.writeS32(mGroupID);
+        if (mpExtendObj != nullptr) {
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
-                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
-                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                MtSerializer sz(static_cast<s32>(65536));
+                w.mBuffer[w.mSeekPt] = 1;
+                w.mSeekPt = w.mSeekPt + 1u;
+                MtSerializer sz(65536);
                 // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
-                if (t1 == false) {
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                if (!t1) {
                     return false;
                 } else {
                     return true;
                 }
             } else {
-                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
-                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                MtSerializer sz(static_cast<s32>(65536));
+                w.mBuffer[w.mSeekPt] = 1;
+                w.mSeekPt = w.mSeekPt + 1u;
+                MtSerializer sz(65536);
                 // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
-                if (t1 == false) {
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                if (!t1) {
                     return false;
                 } else {
                     return true;
@@ -1542,45 +1553,45 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
             }
-            w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(0);
-            w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+            w.mBuffer[w.mSeekPt] = 0;
+            w.mSeekPt = w.mSeekPt + 1u;
             return true;
         }
     } else {
-        w.writeS32(this->mContentsPoolID);
-        w.writeS32(this->mContentsPoolGroupID);
+        w.writeS32(mContentsPoolID);
+        w.writeS32(mContentsPoolGroupID);
         // inferred: a temporary for the value the load at 0x11bbc20 read, used once; no DWARF local holds it
-        bool t0 = this->mIsEnable;
+        bool t0 = mIsEnable;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
         }
         w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        w.writeU32(this->mIndex);
-        w.writeU32(this->mLayoutGroupIndex);
-        w.writeU32(this->mIndexOfLayoutGroup);
-        w.writeU32(this->mUniqueID);
-        w.writeS32(this->mGroupID);
-        if (this->mpExtendObj != static_cast<MtObject*>(nullptr)) {
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.writeU32(mIndex);
+        w.writeU32(mLayoutGroupIndex);
+        w.writeU32(mIndexOfLayoutGroup);
+        w.writeU32(mUniqueID);
+        w.writeS32(mGroupID);
+        if (mpExtendObj != nullptr) {
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
-                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
-                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                MtSerializer sz(static_cast<s32>(65536));
+                w.mBuffer[w.mSeekPt] = 1;
+                w.mSeekPt = w.mSeekPt + 1u;
+                MtSerializer sz(65536);
                 // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
-                if (t1 == false) {
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                if (!t1) {
                     return false;
                 } else {
                     return true;
                 }
             } else {
-                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
-                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-                MtSerializer sz(static_cast<s32>(65536));
+                w.mBuffer[w.mSeekPt] = 1;
+                w.mSeekPt = w.mSeekPt + 1u;
+                MtSerializer sz(65536);
                 // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
-                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
-                if (t1 == false) {
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), mpExtendObj, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+                if (!t1) {
                     return false;
                 } else {
                     return true;
@@ -1590,8 +1601,8 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
             if (w.mSeekPt >= w.mBufsiz) {
                 w.flush();
             }
-            w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(0);
-            w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+            w.mBuffer[w.mSeekPt] = 0;
+            w.mSeekPt = w.mSeekPt + 1u;
             return true;
         }
     }
@@ -1607,7 +1618,7 @@ bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
 // Address: 0x01b88e60 - 0x01b88e65 (5 bytes)
 nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpShapeInfo;
+    return mpShapeInfo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (12 bytes)
@@ -1618,16 +1629,16 @@ nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfo() const {
 const nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfoResource() const {
     // DWARF local not rendered: const cLayoutElement* pLayoutElementResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-        if (this->mpOwner->mpNativeResource != static_cast<rZone*>(nullptr)) {
-            if (this->mIndex < this->mpOwner->mpNativeResource->mLayoutElementsNum) {
-                if ((&this->mpOwner->mpNativeResource->mpLayoutElements[this->mIndex]) != static_cast<nZone::cLayoutElement*>(nullptr)) {
-                    return this->mpOwner->mpNativeResource->mpLayoutElements[this->mIndex].mpShapeInfo;
+    if (mpOwner != nullptr) {
+        if (mpOwner->mpNativeResource != nullptr) {
+            if (mIndex < mpOwner->mpNativeResource->mLayoutElementsNum) {
+                if ((&mpOwner->mpNativeResource->mpLayoutElements[mIndex]) != nullptr) {
+                    return mpOwner->mpNativeResource->mpLayoutElements[mIndex].mpShapeInfo;
                 }
             }
         }
     }
-    return static_cast<const nZone::ShapeInfoBase*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1636,20 +1647,20 @@ const nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfoResource() const 
 // Address: 0x01b88e20 - 0x01b88e24 (4 bytes)
 s32 nZone::cLayoutElement::getContentsPoolID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mContentsPoolID;
+    return mContentsPoolID;
 }
 
 // Address: 0x011b9fe0 - 0x011b9ff6 (22 bytes)
 void nZone::cLayoutElement::setContentsPoolID(s32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpContentsPool != static_cast<nZone::cContentsPool*>(nullptr)) {
-        if (id > static_cast<s32>(-1)) {
-            if (id < static_cast<int>(this->mpContentsPool->mContentsListArray.::MtArray::mLength)) {
-                this->mContentsPoolID = id;
+    if (mpContentsPool != nullptr) {
+        if (id > -1) {
+            if (id < static_cast<int>(mpContentsPool->mContentsListArray.mLength)) {
+                mContentsPoolID = id;
             }
         }
     } else {
-        this->mContentsPoolID = id;
+        mContentsPoolID = id;
     }
 }
 
@@ -1708,11 +1719,11 @@ __attribute__((weak)) void nZone::cLayoutElement::setEnable(bool flag) {
 // Address: 0x011bb180 - 0x011bb1bb (59 bytes)
 bool nZone::cLayoutElement::isEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEnable != false) {
-        if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-            const cZoneLayout::cInGameGroupManager* pGroupManager = this->mpOwner->::cZoneLayout::getGroupManagerFromLayoutConst(*this);
-            if (pGroupManager != static_cast<const cZoneLayout::cInGameGroupManager*>(nullptr)) {
-                return pGroupManager->mFlgEnable != false;
+    if (mIsEnable) {
+        if (mpOwner != nullptr) {
+            const cZoneLayout::cInGameGroupManager* pGroupManager = mpOwner->getGroupManagerFromLayoutConst(*this);
+            if (pGroupManager != nullptr) {
+                return pGroupManager->mFlgEnable;
             } else {
                 return true;
             }
@@ -1727,34 +1738,34 @@ bool nZone::cLayoutElement::isEnable() const {
 // Address: 0x011bb1c0 - 0x011bb1f3 (51 bytes)
 void nZone::cLayoutElement::setDynamic(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        if (this->mpShapeInfo->mIsNativeData == false) {
-            if (flag == false) {
-                if (this->mIsDynamic != false) {
-                    this->mIsDynamic = flag;
-                    if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-                        this->mpOwner->::cZoneLayout::requestUpdateDBVT(*this);
+    if (mpShapeInfo != nullptr) {
+        if (!mpShapeInfo->mIsNativeData) {
+            if (!flag) {
+                if (mIsDynamic) {
+                    mIsDynamic = flag;
+                    if (mpOwner != nullptr) {
+                        mpOwner->requestUpdateDBVT(*this);
                     }
                 }
             } else {
-                this->mIsDynamic = flag;
-                if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-                    this->mpOwner->::cZoneLayout::requestUpdateDBVT(*this);
+                mIsDynamic = flag;
+                if (mpOwner != nullptr) {
+                    mpOwner->requestUpdateDBVT(*this);
                 }
             }
         }
     } else {
-        if (flag == false) {
-            if (this->mIsDynamic != false) {
-                this->mIsDynamic = flag;
-                if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-                    this->mpOwner->::cZoneLayout::requestUpdateDBVT(*this);
+        if (!flag) {
+            if (mIsDynamic) {
+                mIsDynamic = flag;
+                if (mpOwner != nullptr) {
+                    mpOwner->requestUpdateDBVT(*this);
                 }
             }
         } else {
-            this->mIsDynamic = flag;
-            if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-                this->mpOwner->::cZoneLayout::requestUpdateDBVT(*this);
+            mIsDynamic = flag;
+            if (mpOwner != nullptr) {
+                mpOwner->requestUpdateDBVT(*this);
             }
         }
     }
@@ -1800,50 +1811,50 @@ __attribute__((weak)) void nZone::cLayoutElement::copyContents(nZone::cLayoutEle
 // Address: 0x011ba060 - 0x011ba08a (42 bytes)
 void nZone::cLayoutElement::setShapeInfo(nZone::ShapeInfoBase* pShape) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pShape == this->mpShapeInfo) {
+    if (pShape == mpShapeInfo) {
         return;
     }
-    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        delete this->mpShapeInfo;
+    if (mpShapeInfo != nullptr) {
+        delete mpShapeInfo;
     }
-    this->mpShapeInfo = pShape;
+    mpShapeInfo = pShape;
 }
 
 // Address: 0x011bbd50 - 0x011bbddc (140 bytes)
 void nZone::cLayoutElement::repairShapeByResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShapeInfo == static_cast<nZone::ShapeInfoBase*>(nullptr)) {
+    if (mpShapeInfo == nullptr) {
         return;
     }
-    if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
-        if (this->mpOwner->mpNativeResource != static_cast<rZone*>(nullptr)) {
-            if (this->mIndex < this->mpOwner->mpNativeResource->mLayoutElementsNum) {
-                if ((&this->mpOwner->mpNativeResource->mpLayoutElements[this->mIndex]) != static_cast<nZone::cLayoutElement*>(nullptr)) {
-                    const nZone::ShapeInfoBase* pOrignalShape = this->mpOwner->mpNativeResource->mpLayoutElements[this->mIndex].mpShapeInfo;
-                    if (pOrignalShape != static_cast<const nZone::ShapeInfoBase*>(nullptr)) {
-                        this->::nZone::cLayoutElement::createShape(static_cast<u32>(pOrignalShape->getShapeType()));
-                        if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-                            this->mpShapeInfo->copy(*pOrignalShape);
+    if (mpOwner != nullptr) {
+        if (mpOwner->mpNativeResource != nullptr) {
+            if (mIndex < mpOwner->mpNativeResource->mLayoutElementsNum) {
+                if ((&mpOwner->mpNativeResource->mpLayoutElements[mIndex]) != nullptr) {
+                    const nZone::ShapeInfoBase* pOrignalShape = mpOwner->mpNativeResource->mpLayoutElements[mIndex].mpShapeInfo;
+                    if (pOrignalShape != nullptr) {
+                        createShape(static_cast<u32>(pOrignalShape->getShapeType()));
+                        if (mpShapeInfo != nullptr) {
+                            mpShapeInfo->copy(*pOrignalShape);
                         }
                     } else {
-                        delete this->mpShapeInfo;
-                        this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+                        delete mpShapeInfo;
+                        mpShapeInfo = nullptr;
                     }
                 } else {
-                    delete this->mpShapeInfo;
-                    this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+                    delete mpShapeInfo;
+                    mpShapeInfo = nullptr;
                 }
             } else {
-                delete this->mpShapeInfo;
-                this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+                delete mpShapeInfo;
+                mpShapeInfo = nullptr;
             }
         } else {
-            delete this->mpShapeInfo;
-            this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+            delete mpShapeInfo;
+            mpShapeInfo = nullptr;
         }
     } else {
-        delete this->mpShapeInfo;
-        this->mpShapeInfo = static_cast<nZone::ShapeInfoBase*>(nullptr);
+        delete mpShapeInfo;
+        mpShapeInfo = nullptr;
     }
 }
 
@@ -1906,17 +1917,17 @@ __attribute__((weak)) nZone::cContentsPool::cContentsList* nZone::cLayoutElement
 // Address: 0x01b88e30 - 0x01b88e42 (18 bytes)
 u32 nZone::cLayoutElement::getShapeTypeInterface() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
-        return static_cast<u32>(this->mpShapeInfo->getShapeType());
+    if (mpShapeInfo != nullptr) {
+        return static_cast<u32>(mpShapeInfo->getShapeType());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01b88e50 - 0x01b88e55 (5 bytes)
 void nZone::cLayoutElement::setShapeTypeInterface(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nZone::cLayoutElement::createShape(type);
+    createShape(type);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1934,8 +1945,16 @@ __attribute__((weak)) void nZone::cLayoutElement::setContentsPoolGroupIDForUI(s3
 // Address: 0x011ba000 - 0x011ba004 (4 bytes)
 s32 nZone::cLayoutElement::getContentsPoolGroupIDForUI() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mContentsPoolGroupID;
+    return mContentsPoolGroupID;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nZone::cLayoutElement::MyDTI nZone::cLayoutElement::DTI;
+
+// Not defined (relocated bytes): MT_CTSTR nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID;
+
+// Not defined (relocated bytes): MT_CTSTR nZone::cLayoutElement::PROP_TITLE_CONTENTS_GROUP_ID_DIRECT;
+
+// Not defined (relocated bytes): MT_CTSTR nZone::cLayoutElement::PROP_TITLE_SHAPE_TYPE;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nZone::cLayoutElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -30,7 +30,7 @@ const MtDTI& cSplitArc::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cSplitArc::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cSplitArc::DTI);
+    return MtMemoryAllocator::getAllocator(cSplitArc::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* cSplitArc::getAllocator() {
 // Address: 0x0056de60 - 0x0056dea0 (64 bytes)
 void* cSplitArc::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cSplitArc::getAllocator()->memAlloc(sz, align, ::cSplitArc::DTI.::MtDTI::getID());
+    return cSplitArc::getAllocator()->memAlloc(sz, align, cSplitArc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* cSplitArc::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSplitArc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSplitArc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSplitArc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,18 +69,18 @@ inline void cSplitArc::operator delete(void* p_addr) {
 // Address: 0x0056df10 - 0x0056df46 (54 bytes)
 cSplitArc::cSplitArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mArcTicket = static_cast<TICKET>(::sArchiveManager::INVALID_TICKET);
-    this->mFno = static_cast<u8>(255);
+    mArcTicket = static_cast<TICKET>(sArchiveManager::INVALID_TICKET);
+    mFno = 0xFF;
 }
 
 // Address: 0x0056df50 - 0x0056df7e (46 bytes)
 // Also emitted as: _ZN9cSplitArcD0Ev at 0x0056df80
 cSplitArc::~cSplitArc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mArcTicket == (::sArchiveManager::INVALID_TICKET)) {
+    if (mArcTicket == (sArchiveManager::INVALID_TICKET)) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArcTicket);
+    sArchiveManager::getInstance()->returnTicket(mArcTicket);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,6 +96,8 @@ __attribute__((weak)) bool cSplitArc::setArcTicket(s32 stageNo, s32 x, s32 z, MT
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSplitArc::MyDTI cSplitArc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e284-0x0056e2bd (called at cSplitBase.cpp:221)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e284-0x0056e2bd (called at cSplitBase.h:112)
@@ -104,7 +106,7 @@ __attribute__((weak)) bool cSplitArc::setArcTicket(s32 stageNo, s32 x, s32 z, MT
 // Address: 0x0056ddf0 - 0x0056de57 (103 bytes)
 MtObject* cSplitArc::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSplitArc;
+    return new (16u) cSplitArc;
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ const MtDTI& cSplitBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSplitBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSplitBase::DTI)->memAlloc(sz, align, ::cSplitBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSplitBase::DTI)->memAlloc(sz, align, cSplitBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,7 +146,7 @@ inline void* cSplitBase::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSplitBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSplitBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSplitBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -211,6 +213,8 @@ __attribute__((weak)) void cSplitBase::createProperty(MtPropertyList& s) {
 //   in uStagePartsCtrl::uStageCustomCtrlUpdateArc at 0x00d3ab7c-0x00d3ab87 (called at uStageParts.cpp:2206)
 // bool cSplitBase::hasSameXZ(s32 x, s32 z) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSplitBase::MyDTI cSplitBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e20e-0x0056e24b (called at cSplitBase.cpp:38)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e20e-0x0056e24b (called at cSplitBase.h:44)
@@ -219,7 +223,7 @@ __attribute__((weak)) void cSplitBase::createProperty(MtPropertyList& s) {
 // Address: 0x0056d5f0 - 0x0056d645 (85 bytes)
 MtObject* cSplitBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSplitBase;
+    return new (16u) cSplitBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -236,7 +240,7 @@ const MtDTI& cSplitLot::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cSplitLot::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cSplitLot::DTI);
+    return MtMemoryAllocator::getAllocator(cSplitLot::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -245,7 +249,7 @@ inline MtAllocator* cSplitLot::getAllocator() {
 // Address: 0x0056d9b0 - 0x0056d9f0 (64 bytes)
 void* cSplitLot::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cSplitLot::getAllocator()->memAlloc(sz, align, ::cSplitLot::DTI.::MtDTI::getID());
+    return cSplitLot::getAllocator()->memAlloc(sz, align, cSplitLot::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -260,7 +264,7 @@ void* cSplitLot::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSplitLot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSplitLot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSplitLot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -275,29 +279,29 @@ inline void cSplitLot::operator delete(void* p_addr) {
 // Address: 0x0056da60 - 0x0056daa6 (70 bytes)
 cSplitLot::cSplitLot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEraseTimer = 1.0f;
+    mEraseTimer = 1.0f;
 }
 
 // Address: 0x0056dab0 - 0x0056db9b (235 bytes)
 // Also emitted as: _ZN9cSplitLotD0Ev at 0x0056dba0
 cSplitLot::~cSplitLot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLotSet.::cLayoutSet::kill();
-    if (this->::cSplitBase::getX() != static_cast<s32>(0)) {
-        if (this->::cSplitBase::getZ() != static_cast<s32>(0)) {
-            ::sSetManager::getInstance()->::sSetManager::releaseSplitUnitSet(static_cast<rLayout::TYPE>(2), static_cast<u32>(this->::cSplitBase::getX()), static_cast<u32>(this->::cSplitBase::getZ()));
-            ::sSetManager::getInstance()->::sSetManager::releaseSplitUnitSet(static_cast<rLayout::TYPE>(3), static_cast<u32>(this->::cSplitBase::getX()), static_cast<u32>(this->::cSplitBase::getZ()));
-            ::sSetManager::getInstance()->::sSetManager::releaseSplitUnitSet(static_cast<rLayout::TYPE>(0), static_cast<u32>(this->::cSplitBase::getX()), static_cast<u32>(this->::cSplitBase::getZ()));
-            ::sSetManager::getInstance()->::sSetManager::releaseSplitUnitSet(static_cast<rLayout::TYPE>(1), static_cast<u32>(this->::cSplitBase::getX()), static_cast<u32>(this->::cSplitBase::getZ()));
-            ::sSetManager::getInstance()->::sSetManager::releaseSplitUnitSet(static_cast<rLayout::TYPE>(4), static_cast<u32>(this->::cSplitBase::getX()), static_cast<u32>(this->::cSplitBase::getZ()));
+    mLotSet.kill();
+    if (getX() != 0) {
+        if (getZ() != 0) {
+            sSetManager::getInstance()->releaseSplitUnitSet(rLayout::TYPE_ENEMY, static_cast<u32>(getX()), static_cast<u32>(getZ()));
+            sSetManager::getInstance()->releaseSplitUnitSet(rLayout::TYPE_NPC, static_cast<u32>(getX()), static_cast<u32>(getZ()));
+            sSetManager::getInstance()->releaseSplitUnitSet(rLayout::TYPE_SCR, static_cast<u32>(getX()), static_cast<u32>(getZ()));
+            sSetManager::getInstance()->releaseSplitUnitSet(rLayout::TYPE_PLAN, static_cast<u32>(getX()), static_cast<u32>(getZ()));
+            sSetManager::getInstance()->releaseSplitUnitSet(rLayout::TYPE_TARGET, static_cast<u32>(getX()), static_cast<u32>(getZ()));
         }
     }
-    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isPartsStage() == false) {
+    if (!static_cast<sAreaExt*>(sArea::getInstance())->isPartsStage()) {
         return;
     }
-    ::sSetManager::getInstance()->::sSetManager::releaseSplitPartsSet(static_cast<rLayout::TYPE>(0), static_cast<u32>(this->::cSplitBase::getZ()));
-    ::sSetManager::getInstance()->::sSetManager::releaseSplitPartsSet(static_cast<rLayout::TYPE>(1), static_cast<u32>(this->::cSplitBase::getZ()));
-    ::sSetManager::getInstance()->::sSetManager::releaseSplitPartsSet(static_cast<rLayout::TYPE>(2), static_cast<u32>(this->::cSplitBase::getZ()));
+    sSetManager::getInstance()->releaseSplitPartsSet(rLayout::TYPE_SCR, static_cast<u32>(getZ()));
+    sSetManager::getInstance()->releaseSplitPartsSet(rLayout::TYPE_PLAN, static_cast<u32>(getZ()));
+    sSetManager::getInstance()->releaseSplitPartsSet(rLayout::TYPE_ENEMY, static_cast<u32>(getZ()));
 }
 
 // Address: 0x0056dbd0 - 0x0056dcb8 (232 bytes)
@@ -309,16 +313,16 @@ __attribute__((weak)) void cSplitLot::createProperty(MtPropertyList& s) {
 // Address: 0x0056dcc0 - 0x0056dcf9 (57 bytes)
 void cSplitLot::eraseWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEraseTimer = this->mEraseTimer + (::sMain::getInstance()->mDeltaTime * (-0.2f));
-    if (0.0f >= this->mEraseTimer) {
-        this->::cSplitBase::mStatus = static_cast<s32>(6);
+    mEraseTimer = mEraseTimer + (sMain::getInstance()->mDeltaTime * -0.2f);
+    if (0.0f >= mEraseTimer) {
+        mStatus = 6;
     }
 }
 
 // Address: 0x0056dd00 - 0x0056dd09 (9 bytes)
 void cSplitLot::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLotSet.::cLayoutSet::update();
+    mLotSet.update();
 }
 
 // Address: 0x0056dd10 - 0x0056dd11 (1 bytes)
@@ -338,8 +342,8 @@ __attribute__((weak)) void cSplitLot::setLotResource() {
 // Address: 0x0056ddd0 - 0x0056dde3 (19 bytes)
 bool cSplitLot::updateLotSbcResourceUsage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cSplitBase::mStatus == static_cast<s32>(1)) {
-        this->::cSplitBase::mStatus = static_cast<s32>(2);
+    if (mStatus == 1) {
+        mStatus = 2;
         return true;
     } else {
         return false;
@@ -350,6 +354,8 @@ bool cSplitLot::updateLotSbcResourceUsage() {
 //   in cSplitLot::setLotResource at 0x0056dd6d-0x0056dd71 (called at cSplitBase.cpp:188)
 // cLayoutSet* cSplitLot::getLotSet();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSplitLot::MyDTI cSplitLot::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e24b-0x0056e284 (called at cSplitBase.cpp:83)
 //   in _GLOBAL__sub_I_cSplitBase.cpp at 0x0056e24b-0x0056e284 (called at cSplitBase.h:79)
@@ -358,6 +364,6 @@ bool cSplitLot::updateLotSbcResourceUsage() {
 // Address: 0x0056d940 - 0x0056d9ae (110 bytes)
 MtObject* cSplitLot::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSplitLot;
+    return new (16u) cSplitLot;
 }
 

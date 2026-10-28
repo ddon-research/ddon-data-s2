@@ -99,6 +99,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cStatusGain::cStatusGain() {
-    this->mRequiedDogma = static_cast<u32>(0);
-    this->mUpStatusValue = static_cast<u32>(0);
+    this->mRequiedDogma = 0;
+    this->mUpStatusValue = 0;
 }

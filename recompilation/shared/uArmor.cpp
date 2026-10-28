@@ -56,7 +56,7 @@ const MtDTI& uArmor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uArmor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uArmor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uArmor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,47 +76,47 @@ inline void uArmor::operator delete(void* p_addr) {
 // Also emitted as: _ZN6uArmorD0Ev at 0x0087da80
 uArmor::~uArmor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModelRes != static_cast<rModel*>(nullptr)) {
-        this->mpModelRes->::cResource::release();
-        this->mpModelRes = static_cast<rModel*>(nullptr);
+    if (mpModelRes != nullptr) {
+        mpModelRes->release();
+        mpModelRes = nullptr;
     }
-    if (this->mpDwmRes != static_cast<rDeformWeightMap*>(nullptr)) {
-        this->mpDwmRes->::cResource::release();
-        this->mpDwmRes = static_cast<rDeformWeightMap*>(nullptr);
+    if (mpDwmRes != nullptr) {
+        mpDwmRes->release();
+        mpDwmRes = nullptr;
     }
-    if (this->mpMontage == static_cast<rDDOModelMontage*>(nullptr)) {
+    if (mpMontage == nullptr) {
         return;
     }
-    this->mpMontage->::cResource::release();
-    this->mpMontage = static_cast<rDDOModelMontage*>(nullptr);
+    mpMontage->release();
+    mpMontage = nullptr;
 }
 
 // Address: 0x0087db20 - 0x0087dbfb (219 bytes)
 void uArmor::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::setup();
-    if (this->mpModelRes != static_cast<rModel*>(nullptr)) {
-        this->setModel(this->mpModelRes);
+    this->uDDOModel::setup();
+    if (mpModelRes != nullptr) {
+        setModel(mpModelRes);
     }
-    if (this->mpOwner != static_cast<uModel*>(nullptr)) {
-        this->setParent(static_cast<uCoord*>(this->mpOwner), static_cast<s32>(-1));
-        if (this->mpOwner != static_cast<uModel*>(nullptr)) {
-            this->::uBaseModel::mLightGroup = this->mpOwner->::uBaseModel::getLightGroup();
-            this->::cUnit::mDrawMode = this->mpOwner->::cUnit::mDrawMode;
+    if (mpOwner != nullptr) {
+        setParent(static_cast<uCoord*>(mpOwner), -1);
+        if (mpOwner != nullptr) {
+            mLightGroup = mpOwner->getLightGroup();
+            mDrawMode = mpOwner->mDrawMode;
         }
     }
-    if (this->mpDwmRes != static_cast<rDeformWeightMap*>(nullptr)) {
-        if (this->::uDDOModel::mpSoftBody != static_cast<cpSoftBody*>(nullptr)) {
-            this->::uDDOModel::mpSoftBody->::cpSoftBody::setSoftBody(static_cast<uModel*>(this), this->mpDwmRes, static_cast<u32>(1));
+    if (mpDwmRes != nullptr) {
+        if (mpSoftBody != nullptr) {
+            mpSoftBody->setSoftBody(static_cast<uModel*>(this), mpDwmRes, 1u);
         }
     }
-    if (this->mUseHumanEnemyMontage != false) {
-        if (this->mpMontage != static_cast<rDDOModelMontage*>(nullptr)) {
-            this->mpMontage->::rDDOModelMontage::applyMontage(static_cast<uModel*>(this), this->mPartsPatern);
+    if (mUseHumanEnemyMontage) {
+        if (mpMontage != nullptr) {
+            mpMontage->applyMontage(static_cast<uModel*>(this), mPartsPatern);
         }
     } else {
-        this->::uArmor::setParts(this->mPartsPatern);
-        this->::uArmor::setColor(this->mColorPatern);
+        setParts(mPartsPatern);
+        setColor(mColorPatern);
     }
 }
 
@@ -144,37 +144,37 @@ __attribute__((weak)) void uArmor::moveAfter() {
 // Address: 0x0087e340 - 0x0087e345 (5 bytes)
 void uArmor::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::draw(pDraw);
+    this->uDDOModel::draw(pDraw);
 }
 
 // Address: 0x0087e130 - 0x0087e17d (77 bytes)
 void uArmor::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(static_cast<rModel*>(nullptr));
-    this->mpOwner = static_cast<uModel*>(nullptr);
-    if (this->mpSimSoftBody != static_cast<uSimSoftBody*>(nullptr)) {
-        this->mpSimSoftBody->kill();
-        this->mpSimSoftBody = static_cast<uSimSoftBody*>(nullptr);
+    setModel(static_cast<rModel*>(nullptr));
+    mpOwner = nullptr;
+    if (mpSimSoftBody != nullptr) {
+        mpSimSoftBody->kill();
+        mpSimSoftBody = nullptr;
     }
-    this->::uDDOModel::kill();
+    this->uDDOModel::kill();
 }
 
 // Address: 0x0087e0d0 - 0x0087e12d (93 bytes)
 void uArmor::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::updatePtr();
-    if (this->mpOwner != static_cast<uModel*>(nullptr)) {
-        if (this->mpOwner->::cUnit::isEnable() == false) {
-            this->mpOwner = static_cast<uModel*>(nullptr);
+    this->uDDOModel::updatePtr();
+    if (mpOwner != nullptr) {
+        if (!mpOwner->isEnable()) {
+            mpOwner = nullptr;
         }
     }
-    if (this->mpSimSoftBody == static_cast<uSimSoftBody*>(nullptr)) {
+    if (mpSimSoftBody == nullptr) {
         return;
     }
-    if (this->mpSimSoftBody->::cUnit::isEnable() != false) {
+    if (mpSimSoftBody->isEnable()) {
         return;
     }
-    this->mpSimSoftBody = static_cast<uSimSoftBody*>(nullptr);
+    mpSimSoftBody = nullptr;
 }
 
 // Address: 0x0087df50 - 0x0087dfa5 (85 bytes)
@@ -313,6 +313,8 @@ __attribute__((weak)) void uArmor::setColor(s8 colorPatern) {
 // No out-of-line body: 1 inlined copy in 1 function (33 bytes)
 //   in uArmor::setup at 0x0087dbaf-0x0087dbd0 (called at uArmor.cpp:336)
 // void uArmor::setHumanEnemyMontage();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uArmor::MyDTI uArmor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uArmor.cpp at 0x0087e57f-0x0087e5bc (called at uArmor.cpp:44)

@@ -36,7 +36,7 @@ const MtDTI& cDmVecWeightParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cDmVecWeightParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cDmVecWeightParam::DTI)->memAlloc(sz, align, ::cDmVecWeightParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cDmVecWeightParam::DTI)->memAlloc(sz, align, cDmVecWeightParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cDmVecWeightParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cDmVecWeightParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cDmVecWeightParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cDmVecWeightParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -80,6 +80,8 @@ __attribute__((weak)) void cDmVecWeightParam::createProperty(MtPropertyList& s) 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDmVecWeightParam::MyDTI cDmVecWeightParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rDmVecWeightparam.cpp at 0x0065fe60-0x0065fea2 (called at rDmVecWeightparam.cpp:24)
 //   in _GLOBAL__sub_I_rDmVecWeightparam.cpp at 0x0065fe60-0x0065fea2 (called at rDmVecWeightParam.h:29)
@@ -88,7 +90,7 @@ __attribute__((weak)) void cDmVecWeightParam::createProperty(MtPropertyList& s) 
 // Address: 0x0065f840 - 0x0065f897 (87 bytes)
 MtObject* cDmVecWeightParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cDmVecWeightParam;
+    return new (16u) cDmVecWeightParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,7 +115,7 @@ const MtDTI& rDmVecWeightParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDmVecWeightParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDmVecWeightParam::DTI)->memAlloc(sz, align, ::rDmVecWeightParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDmVecWeightParam::DTI)->memAlloc(sz, align, rDmVecWeightParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +130,7 @@ inline void* rDmVecWeightParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rDmVecWeightParamD0Ev at 0x01a84a54-0x01a84a73, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rDmVecWeightParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDmVecWeightParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDmVecWeightParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,19 +147,19 @@ bool rDmVecWeightParam::loadData(MtDataReader& in, cDmVecWeightParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWeight);
+    nDDOIO::readData(in, pData->mWeight);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWeightAdjSpeedXZ);
+    nDDOIO::readData(in, pData->mWeightAdjSpeedXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWeightAdjSpeedY);
+    nDDOIO::readData(in, pData->mWeightAdjSpeedY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWeightAdjAccXZ);
+    nDDOIO::readData(in, pData->mWeightAdjAccXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWeightAdjAccY);
+    nDDOIO::readData(in, pData->mWeightAdjAccY);
     return true;
 }
 
@@ -170,8 +172,10 @@ MT_CTSTR rDmVecWeightParam::getExt() const {
 // Address: 0x01a84ba0 - 0x01a84ba6 (6 bytes)
 u32 rDmVecWeightParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDmVecWeightParam::MyDTI rDmVecWeightParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rDmVecWeightparam.cpp at 0x0065fea2-0x0065fedf (called at rDmVecWeightparam.cpp:84)
@@ -181,7 +185,7 @@ u32 rDmVecWeightParam::getDataVersion() const {
 // Address: 0x0065fd20 - 0x0065fd84 (100 bytes)
 MtObject* rDmVecWeightParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDmVecWeightParam;
+    return new (16u) rDmVecWeightParam;
 }
 
 // Instance at 0x01a84b50 - 0x01a84b62 (18 bytes) of the generic rTbl2<T>::getData

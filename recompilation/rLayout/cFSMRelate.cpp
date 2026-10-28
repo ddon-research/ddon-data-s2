@@ -24,7 +24,7 @@ const MtDTI& cFSMRelate::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cFSMRelate::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cFSMRelate::DTI);
+    return MtMemoryAllocator::getAllocator(cFSMRelate::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cFSMRelate::getAllocator() {
 // Address: 0x001ef1f0 - 0x001ef230 (64 bytes)
 void* cFSMRelate::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cFSMRelate::getAllocator()->memAlloc(sz, align, ::cFSMRelate::DTI.::MtDTI::getID());
+    return cFSMRelate::getAllocator()->memAlloc(sz, align, cFSMRelate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* cFSMRelate::operator new(size_t sz, u32 align) {
 // Address: 0x001ef2a0 - 0x001ef2bb (27 bytes)
 cFSMRelate::cFSMRelate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFSMType = static_cast<u8>(0);
+    mFSMType = 0;
 }
 
 // Address: 0x001ef2c0 - 0x001ef33b (123 bytes)
@@ -80,7 +80,7 @@ __attribute__((weak)) void cFSMRelate::createProperty(MtPropertyList& s) {
 // Address: 0x001ef780 - 0x001ef785 (5 bytes)
 MtUI* cFSMRelate::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 6 inlined copies in 4 functions (160 bytes)
@@ -106,6 +106,8 @@ __attribute__((weak)) void cFSMRelate::setFSMResource(rAIFSM* pr) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMRelate::MyDTI cFSMRelate::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cFSMRelate.cpp at 0x001ef790-0x001ef7d2 (called at cFSMRelate.cpp:36)
 //   in _GLOBAL__sub_I_cFSMRelate.cpp at 0x001ef790-0x001ef7d2 (called at cFSMRelate.h:40)
@@ -114,6 +116,6 @@ __attribute__((weak)) void cFSMRelate::setFSMResource(rAIFSM* pr) {
 // Address: 0x001ef1a0 - 0x001ef1ec (76 bytes)
 MtObject* cFSMRelate::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMRelate;
+    return new (16u) cFSMRelate;
 }
 

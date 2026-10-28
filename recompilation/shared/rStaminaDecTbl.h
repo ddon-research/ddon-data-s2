@@ -169,7 +169,7 @@ public:
 inline cStaminaDecList::cStaminaDecList() {
     this->mCType = static_cast<nStamina::CONTINUATION_TYPE>(0);
     this->mExecuteType = static_cast<nStamina::UPDATE_TYPE>(0);
-    this->mStaminaType = static_cast<u32>(0);
+    this->mStaminaType = 0;
     this->mValueType = static_cast<nStamina::VALUE_TYPE>(0);
     this->mStaminaDecList.::MtArray::mAutoDelete = true;
 }

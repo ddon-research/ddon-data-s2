@@ -26,7 +26,7 @@ const MtDTI& cTbl2ChatMacro::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* cTbl2ChatMacro::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cTbl2ChatMacro::DTI);
+    return MtMemoryAllocator::getAllocator(cTbl2ChatMacro::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ MtAllocator* cTbl2ChatMacro::getAllocator() {
 // Address: 0x00708d20 - 0x00708d60 (64 bytes)
 void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cTbl2ChatMacro::getAllocator()->memAlloc(sz, align, ::cTbl2ChatMacro::DTI.::MtDTI::getID());
+    return cTbl2ChatMacro::getAllocator()->memAlloc(sz, align, cTbl2ChatMacro::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (52 bytes)
@@ -64,12 +64,15 @@ void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
 // No out-of-line body: no code in the ELF
 // void cTbl2ChatMacro::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 6 inlined copies in 3 functions (210 bytes)
-//   in cTbl2ChatMacro::MyDTI::newInstance at 0x00708cfd-0x00708d1b (called at rTbl2ChatMacro.cpp:24)
-//   in cTbl2ChatMacro::MyDTI::newInstance at 0x00708cfd-0x00708d1b (called at rTbl2ChatMacro.h:36)
-//   in sGUIExt::loadResidentResource at 0x0079976d-0x0079977c, 0x00799792-0x007997a9 (called at sGUIExt.cpp:4202)
-//   and 3 more (every copy is in <bundle>.inlined.json)
-// cTbl2ChatMacro::cTbl2ChatMacro();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cTbl2ChatMacro::cTbl2ChatMacro() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mCmdId = 0;
+    mHelpMsgId = 0;
+    mMacro.value = nullptr;
+}
 
 // Address: 0x00708dd0 - 0x00708e4b (123 bytes)
 // Also emitted as: _ZN14cTbl2ChatMacroD0Ev at 0x00708e50
@@ -89,6 +92,8 @@ __attribute__((weak)) void cTbl2ChatMacro::copy(cTbl2ChatMacro* pSrc) {
     DDON_STUB("cTbl2ChatMacro::copy")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cTbl2ChatMacro::MyDTI cTbl2ChatMacro::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTbl2ChatMacro.cpp at 0x0070952f-0x0070956c (called at rTbl2ChatMacro.cpp:24)
@@ -123,7 +128,7 @@ const MtDTI& rTbl2ChatMacro::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTbl2ChatMacro::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTbl2ChatMacro::DTI)->memAlloc(sz, align, ::rTbl2ChatMacro::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTbl2ChatMacro::DTI)->memAlloc(sz, align, rTbl2ChatMacro::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,8 +168,10 @@ MT_CTSTR rTbl2ChatMacro::getExt() const {
 // Address: 0x01ab4760 - 0x01ab4766 (6 bytes)
 u32 rTbl2ChatMacro::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTbl2ChatMacro::MyDTI rTbl2ChatMacro::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTbl2ChatMacro.cpp at 0x0070956c-0x007095a9 (called at rTbl2ChatMacro.cpp:160)
@@ -174,7 +181,7 @@ u32 rTbl2ChatMacro::getDataVersion() const {
 // Address: 0x00709350 - 0x007093b4 (100 bytes)
 MtObject* rTbl2ChatMacro::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTbl2ChatMacro;
+    return new (16u) rTbl2ChatMacro;
 }
 
 // Instance at 0x01ab4710 - 0x01ab4726 (22 bytes) of the generic rTbl2<T>::getData

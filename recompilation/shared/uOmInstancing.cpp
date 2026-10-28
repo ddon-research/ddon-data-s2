@@ -28,7 +28,7 @@ const MtDTI& uOmSwingInstancing::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uOmSwingInstancing::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uOmSwingInstancing::DTI);
+    return MtMemoryAllocator::getAllocator(uOmSwingInstancing::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uOmSwingInstancing::getAllocator() {
 // Address: 0x00caea40 - 0x00caea80 (64 bytes)
 void* uOmSwingInstancing::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uOmSwingInstancing::getAllocator()->memAlloc(sz, align, ::uOmSwingInstancing::DTI.::MtDTI::getID());
+    return uOmSwingInstancing::getAllocator()->memAlloc(sz, align, uOmSwingInstancing::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uOmSwingInstancing::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uOmSwingInstancing::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uOmSwingInstancing::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uOmSwingInstancing::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,11 +88,11 @@ __attribute__((weak)) void uOmSwingInstancing::createProperty(MtPropertyList& s)
 bool uOmSwingInstancing::delInstance(u64 resID) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-        if (this->mHoldNum != static_cast<u32>(0)) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        if (mHoldNum != 0) {
             // inferred: the value the loop at 0xcaf0d0 carries; no location-less local in scope fits
-            u32 v0_0 = this->mHoldNum;
-            u32 j = static_cast<u32>(0);
+            u32 v0_0 = mHoldNum;
+            u32 j = 0;
             // inferred: the value the loop at 0xcaf100 carries; no location-less local in scope fits
             u32 v1_2;
             // inferred: the value carried to 0xcaf135; no location-less local in scope fits
@@ -100,41 +100,41 @@ bool uOmSwingInstancing::delInstance(u64 resID) {
             // inferred: the value carried to 0xcaf144; no location-less local in scope fits
             u32 v3_0;
             for (;;) {
-                if (resID == this->mResID[j]) {
-                    this->::uInstancing<uOmSwingModel, cInstancingFromMatrices>::mInstance.::cInstancingFromMatrices::delInstance(this->mHoldID[j]);
-                    if ((j + static_cast<u32>(1)) >= this->mHoldNum) {
-                        v2_0 = this->mHoldNum;
+                if (resID == mResID[j]) {
+                    mInstance.delInstance(mHoldID[j]);
+                    if ((j + 1u) >= mHoldNum) {
+                        v2_0 = mHoldNum;
                     } else {
                         v1_2 = j;
                         for (;;) {
-                            this->mHoldID[v1_2] = this->mHoldID[v1_2 + static_cast<u32>(1)];
-                            this->mResID[v1_2] = this->mResID[v1_2 + static_cast<u32>(1)];
-                            if ((v1_2 + static_cast<u32>(2)) < this->mHoldNum) {
-                                v1_2 += static_cast<u32>(1);
+                            mHoldID[v1_2] = mHoldID[v1_2 + 1u];
+                            mResID[v1_2] = mResID[v1_2 + 1u];
+                            if ((v1_2 + 2u) < mHoldNum) {
+                                v1_2 += 1u;
                             } else {
-                                v2_0 = this->mHoldNum;
+                                v2_0 = mHoldNum;
                                 break;
                             }
                         }
                     }
-                    this->mHoldNum = v2_0 - static_cast<u32>(1);
-                    v3_0 = v2_0 - static_cast<u32>(1);
+                    mHoldNum = v2_0 - 1u;
+                    v3_0 = v2_0 - 1u;
                 } else {
                     v3_0 = v0_0;
                 }
-                if ((j + static_cast<u32>(1)) < v3_0) {
+                if ((j + 1u) < v3_0) {
                     v0_0 = v3_0;
-                    j += static_cast<u32>(1);
+                    j += 1u;
                 } else {
                     break;
                 }
             }
         }
-        if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
-            return this->mHoldNum != static_cast<u32>(0);
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return mHoldNum != 0;
         }
     }
-    ::abort();
+    abort();
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,8 +159,8 @@ __attribute__((weak)) void uOmSwingInstancing::init(s32 omNumber) {
 // Address: 0x00caeef0 - 0x00caef18 (40 bytes)
 void uOmSwingInstancing::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uOmSwingModel::setup();
-    (&this->::uInstancing<uOmSwingModel, cInstancingFromMatrices>::mInstance)->setup();
+    this->uOmSwingModel::setup();
+    (&mInstance)->setup();
 }
 
 // Address: 0x00caef30 - 0x00caf072 (322 bytes)
@@ -183,6 +183,8 @@ __attribute__((weak)) void uOmSwingInstancing::applyWorldOffset(const MtVector3&
     DDON_STUB("uOmSwingInstancing::applyWorldOffset")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uOmSwingInstancing::MyDTI uOmSwingInstancing::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uOmInstancing.cpp at 0x00caf4eb-0x00caf524 (called at uOmInstancing.cpp:524)
@@ -279,6 +281,8 @@ __attribute__((weak)) void uOmSwingModelInstancing::drawModelNonSkinInstance(cDr
     DDON_STUB("uOmSwingModelInstancing::drawModelNonSkinInstance")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uOmSwingModelInstancing::MyDTI uOmSwingModelInstancing::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uOmInstancing.cpp at 0x00caf4ae-0x00caf4eb (called at uOmInstancing.cpp:57)

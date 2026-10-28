@@ -65,23 +65,23 @@ inline void nNetBase::cNetBase::operator delete(void* p_addr) {
 // Address: 0x002dbc50 - 0x002dbc9f (79 bytes)
 nNetBase::cNetBase::cNetBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroup = static_cast<u8>(255);
-    this->mId = static_cast<u8>(255);
-    this->mType = static_cast<u8>(255);
-    this->mKind = static_cast<u8>(255);
-    this->mPrio = static_cast<nNetMsg::MSG_PRIO>(0);
-    this->mAdr = static_cast<nNetMsg::MSG_ADR>(0);
-    this->mCharacterId = static_cast<u32>(0);
-    this->mLastSendFrame = ::sMain::getInstance()->::sMain::getFrameTimer();
-    this->mLastSendMsgId = static_cast<u8>(0);
-    this->mLastRecvMsgId = static_cast<u8>(0);
+    mGroup = 0xFF;
+    mId = 0xFF;
+    mType = 0xFF;
+    mKind = 0xFF;
+    mPrio = ::nNetMsg::MSG_PRIO_LOW;
+    mAdr = ::nNetMsg::MSG_ADR_LOCAL;
+    mCharacterId = 0;
+    mLastSendFrame = ::sMain::getInstance()->getFrameTimer();
+    mLastSendMsgId = 0;
+    mLastRecvMsgId = 0;
 }
 
 // Address: 0x002dbca0 - 0x002dbcca (42 bytes)
 // Also emitted as: _ZN8nNetBase8cNetBaseD0Ev at 0x002dbcd0
 nNetBase::cNetBase::~cNetBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cRemoteProcedure::remove();
+    remove();
 }
 
 // Address: 0x002dbd20 - 0x002dbd25 (5 bytes)
@@ -99,58 +99,58 @@ MtUI* nNetBase::cNetBase::createUI(MtProperty& prop) {
 // Address: 0x002dbfb0 - 0x002dc12c (380 bytes)
 void nNetBase::cNetBase::castMsgAddress(nNetMsg::cNetMsgBase* pMsg) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    switch (this->mAdr) {
-        case static_cast<nNetMsg::MSG_ADR>(0):
+    switch (mAdr) {
+        case ::nNetMsg::MSG_ADR_LOCAL:
         {
-            this->::nNetBase::cNetBase::sendLocal(this->::nNetBase::cNetBase::getRpcId(), *pMsg);
+            sendLocal(getRpcId(), *pMsg);
             break;
         }
-        case static_cast<nNetMsg::MSG_ADR>(1):
+        case ::nNetMsg::MSG_ADR_ALL:
         {
-            if (this->::cRemoteProcedure::mValid != false) {
+            if (mValid) {
                 // inferred: a temporary for the value the load at 0x2dbff6 read, used 3 times; no DWARF local holds it
-                RPC_ID t0 = this->::nNetBase::cNetBase::getRpcId();
-                if (t0 != static_cast<RPC_ID>(0)) {
-                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->::sRemoteProcedureExt::sendNetwork(static_cast<MtObject*>(pMsg), static_cast<s32>(131072), static_cast<u32>(0), static_cast<u32>(this->::nNetBase::cNetBase::getPrio()), t0);
-                    this->::nNetBase::cNetBase::sendLocal(t0, *pMsg);
+                RPC_ID t0 = getRpcId();
+                if (t0 != 0) {
+                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->sendNetwork(static_cast<MtObject*>(pMsg), 131072, 0u, static_cast<u32>(getPrio()), t0);
+                    sendLocal(t0, *pMsg);
                 }
             }
             break;
         }
-        case static_cast<nNetMsg::MSG_ADR>(2):
+        case ::nNetMsg::MSG_ADR_OTHER:
         {
-            if (this->::cRemoteProcedure::mValid != false) {
-                if (this->::nNetBase::cNetBase::getRpcId() != static_cast<RPC_ID>(0)) {
-                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->::sRemoteProcedureExt::sendNetwork(static_cast<MtObject*>(pMsg), static_cast<s32>(196608), static_cast<u32>(0), static_cast<u32>(this->::nNetBase::cNetBase::getPrio()), this->::nNetBase::cNetBase::getRpcId());
+            if (mValid) {
+                if (getRpcId() != 0) {
+                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->sendNetwork(static_cast<MtObject*>(pMsg), 196608, 0u, static_cast<u32>(getPrio()), getRpcId());
                 }
             }
             break;
         }
-        case static_cast<nNetMsg::MSG_ADR>(3):
+        case ::nNetMsg::MSG_ADR_PEER:
         {
-            if (this->::cRemoteProcedure::mValid != false) {
+            if (mValid) {
                 // inferred: a temporary for the value the load at 0x2dc063 read, used 3 times; no DWARF local holds it
-                RPC_ID t1 = this->::nNetBase::cNetBase::getRpcId();
-                if (t1 != static_cast<RPC_ID>(0)) {
+                RPC_ID t1 = getRpcId();
+                if (t1 != 0) {
                     // inferred: a temporary for the value the load at 0x2dc070 read, used twice; no DWARF local holds it
-                    u32 t2 = this->::nNetBase::cNetBase::getCharacterId();
+                    u32 t2 = getCharacterId();
                     // inferred: a temporary for the value the load at 0x2dc074 read, used once; no DWARF local holds it
-                    nNetMsg::MSG_PRIO t3 = this->::nNetBase::cNetBase::getPrio();
+                    nNetMsg::MSG_PRIO t3 = getPrio();
                     // inferred: a temporary for the result of the call at 0x2dc087, used once; no DWARF local holds it
                     bool t4 = (::sGame::mpInstance)->::sGame::isMySelfCharacterId(t2);
-                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::getInstance())->::sRemoteProcedureExt::sendNetwork(static_cast<MtObject*>(pMsg), static_cast<s32>(0), t2, static_cast<u32>(t3), t1);
-                    if (t4 != false) {
-                        this->::nNetBase::cNetBase::sendLocal(t1, *pMsg);
+                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::getInstance())->sendNetwork(static_cast<MtObject*>(pMsg), 0, t2, static_cast<u32>(t3), t1);
+                    if (t4) {
+                        sendLocal(t1, *pMsg);
                     }
                 }
             }
             break;
         }
-        case static_cast<nNetMsg::MSG_ADR>(4):
+        case ::nNetMsg::MSG_ADR_SERVER:
         {
-            if (this->::cRemoteProcedure::mValid != false) {
-                if (this->::nNetBase::cNetBase::getRpcId() != static_cast<RPC_ID>(0)) {
-                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->::sRemoteProcedureExt::sendNetwork(static_cast<MtObject*>(pMsg), static_cast<s32>(262144), static_cast<u32>(0), static_cast<u32>(0), this->::nNetBase::cNetBase::getRpcId());
+            if (mValid) {
+                if (getRpcId() != 0) {
+                    static_cast<sRemoteProcedureExt*>(::sRemoteProcedure::mpInstance)->sendNetwork(static_cast<MtObject*>(pMsg), 262144, 0u, 0u, getRpcId());
                 }
             }
             break;
@@ -383,6 +383,8 @@ __attribute__((weak)) bool nNetBase::cNetBase::processRemoteCall(cRemoteCall& rp
 //   in nNetBase::cNetGame::sendNetGameEasy at 0x002dcace-0x002dcad1 (called at cNetGame.cpp:159)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // void nNetBase::cNetBase::setCharacterId(u32 id);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nNetBase::cNetBase::MyDTI nNetBase::cNetBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetBase.cpp at 0x002dc24f-0x002dc28f (called at cNetBase.cpp:39)

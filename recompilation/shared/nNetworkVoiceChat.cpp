@@ -53,7 +53,7 @@ const MtDTI& nNetwork::VoiceChat::getDTI() const {
 // Address: 0x01368780 - 0x013687c0 (64 bytes)
 void* nNetwork::VoiceChat::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::DTI)->memAlloc(sz, align, ::nNetwork::VoiceChat::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::DTI)->memAlloc(sz, align, ::nNetwork::VoiceChat::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -96,15 +96,13 @@ MtUI* nNetwork::VoiceChat::createUI(MtProperty& prop) {
 void nNetwork::VoiceChat::init() {
     // DWARF local not rendered: MtAutoCriticalSection acs;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
+    if (::scePthreadMutexLock(&mCS.mCSection) != 0) {
         ::abort();
     }
-    if (this->mInit == false) {
-        this->::nNetwork::VoiceChat::nativeInit();
+    if (!mInit) {
+        nativeInit();
     }
-    if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
+    if (::scePthreadMutexUnlock(&mCS.mCSection) != 0) {
         ::abort();
     }
 }
@@ -164,7 +162,7 @@ __attribute__((weak)) void nNetwork::VoiceChat::setSessionIndex(u32 index) {
 // Address: 0x01bd8740 - 0x01bd8744 (4 bytes)
 u32 nNetwork::VoiceChat::getSessionIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSessionIndex;
+    return mSessionIndex;
 }
 
 // No out-of-line body: no code in the ELF
@@ -189,7 +187,7 @@ __attribute__((weak)) void nNetwork::VoiceChat::setMicMute(bool f) {
 // Address: 0x01bd8750 - 0x01bd8757 (7 bytes)
 bool nNetwork::VoiceChat::isMicMute() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMicMute;
+    return mMicMute;
 }
 
 // Address: 0x01369440 - 0x013694a9 (105 bytes)
@@ -202,7 +200,7 @@ __attribute__((weak)) void nNetwork::VoiceChat::setSpeakerVolume(f32 vol) {
 // Address: 0x01bd8760 - 0x01bd8769 (9 bytes)
 f32 nNetwork::VoiceChat::getSpeakerVolume() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeakerVolume;
+    return mSpeakerVolume;
 }
 
 // Address: 0x01369500 - 0x013695e6 (230 bytes)
@@ -284,6 +282,8 @@ __attribute__((weak)) void nNetwork::VoiceChat::putVoiceData(u8* pbuf, u32 len, 
 // No out-of-line body: no code in the ELF
 // u32 nNetwork::VoiceChat::getPriority() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::VoiceChat::MyDTI nNetwork::VoiceChat::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::VoiceChat::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -352,25 +352,25 @@ __attribute__((weak)) void nNetwork::VoiceChat::Talker::createProperty(MtPropert
 // Address: 0x01bd8e90 - 0x01bd8e9b (11 bytes)
 void nNetwork::VoiceChat::Talker::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInit = true;
-    this->mLoopback = false;
-    this->mTask = this->mTask | static_cast<u32>(2);
+    mInit = true;
+    mLoopback = false;
+    mTask = mTask | 2u;
 }
 
 // Address: 0x01bd8770 - 0x01bd877b (11 bytes)
 void nNetwork::VoiceChat::Talker::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInit = false;
-    this->mLoopback = false;
-    this->mTask = this->mTask | static_cast<u32>(2);
+    mInit = false;
+    mLoopback = false;
+    mTask = mTask | 2u;
 }
 
 // Address: 0x01bd8ea0 - 0x01bd8eab (11 bytes)
 void nNetwork::VoiceChat::Talker::loopback() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInit = false;
-    this->mLoopback = true;
-    this->mTask = this->mTask | static_cast<u32>(2);
+    mInit = false;
+    mLoopback = true;
+    mTask = mTask | 2u;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -384,6 +384,8 @@ void nNetwork::VoiceChat::Talker::loopback() {
 
 // No out-of-line body: no code in the ELF
 // s32 nNetwork::VoiceChat::Talker::getDst() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::VoiceChat::Talker::MyDTI nNetwork::VoiceChat::Talker::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::VoiceChat::Talker::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

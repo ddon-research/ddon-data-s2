@@ -161,5 +161,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIMenuTutorial::cCaption::cCaption() {
-    this->mGuideNo = static_cast<u32>(0);
+    this->mGuideNo = 0;
 }

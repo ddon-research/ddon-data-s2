@@ -72,7 +72,7 @@ const MtDTI& cPlActWpnBow::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPlActWpnBow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlActWpnBow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlActWpnBow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,40 +133,40 @@ __attribute__((weak)) void cPlActWpnBow::final() {
 void cPlActWpnBow::updateEfcHandle() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpEfcHandleCharge != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleCharge) != false) {
-            this->mpEfcHandleCharge->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcHandleCharge = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcHandleCharge != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcHandleCharge)) {
+            mpEfcHandleCharge->mpOwner = nullptr;
+            mpEfcHandleCharge = nullptr;
         }
     }
-    if (this->mpEfcHandleChargeSkill != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleChargeSkill) != false) {
-            this->mpEfcHandleChargeSkill->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcHandleChargeSkill = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcHandleChargeSkill != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcHandleChargeSkill)) {
+            mpEfcHandleChargeSkill->mpOwner = nullptr;
+            mpEfcHandleChargeSkill = nullptr;
         }
     }
-    if (this->mpEfcHandleLandMark != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleLandMark) != false) {
-            this->mpEfcHandleLandMark->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcHandleLandMark = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcHandleLandMark != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcHandleLandMark)) {
+            mpEfcHandleLandMark->mpOwner = nullptr;
+            mpEfcHandleLandMark = nullptr;
         }
     }
-    if (this->mpEfcHandleFilter != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleFilter) != false) {
-            this->mpEfcHandleFilter->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcHandleFilter = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcHandleFilter != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcHandleFilter)) {
+            mpEfcHandleFilter->mpOwner = nullptr;
+            mpEfcHandleFilter = nullptr;
         }
     }
-    if (this->mpEfcKamaeHandle != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcKamaeHandle) != false) {
-            this->mpEfcKamaeHandle->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcKamaeHandle = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcKamaeHandle != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcKamaeHandle)) {
+            mpEfcKamaeHandle->mpOwner = nullptr;
+            mpEfcKamaeHandle = nullptr;
         }
     }
-    if (this->mpEfcSpecial != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcSpecial) != false) {
-            this->mpEfcSpecial->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpEfcSpecial = static_cast<cEfcHandle*>(nullptr);
+    if (mpEfcSpecial != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcSpecial)) {
+            mpEfcSpecial->mpOwner = nullptr;
+            mpEfcSpecial = nullptr;
         }
     }
 }
@@ -242,8 +242,8 @@ __attribute__((weak)) bool cPlActWpnBow::checkLow_Fall() {
 // Address: 0x00222680 - 0x002226a2 (34 bytes)
 bool cPlActWpnBow::checkLow_Land() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsCheckLand != false) {
-        return this->::cHumanActBase::mpHuman->::uDDOModel::getScrCollisionPtr()->::cpScrCollision::isHitLand() != false;
+    if (mIsCheckLand) {
+        return mpHuman->getScrCollisionPtr()->isHitLand();
     } else {
         return false;
     }
@@ -256,17 +256,16 @@ bool cPlActWpnBow::checkLow_Land() {
 // Address: 0x00221560 - 0x002215ff (159 bytes)
 void cPlActWpnBow::initLow_Wait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.x = ::MtVector3::Zero.x;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.y = ::MtVector3::Zero.y;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.z = ::MtVector3::Zero.z;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.pad_ = 0.0f;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.x = ::MtVector3::Zero.x;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.y = ::MtVector3::Zero.y;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.z = ::MtVector3::Zero.z;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.pad_ = 0.0f;
-    if (this->::cHumanActBase::mpHuman->::uDDOModel::isMaster() != false) {
-    } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(7));
+    mpHuman->mVelocity.x = MtVector3::Zero.x;
+    mpHuman->mVelocity.y = MtVector3::Zero.y;
+    mpHuman->mVelocity.z = MtVector3::Zero.z;
+    mpHuman->mVelocity.pad_ = 0.0f;
+    mpHuman->mAcceleration.x = MtVector3::Zero.x;
+    mpHuman->mAcceleration.y = MtVector3::Zero.y;
+    mpHuman->mAcceleration.z = MtVector3::Zero.z;
+    mpHuman->mAcceleration.pad_ = 0.0f;
+    if (!mpHuman->isMaster()) {
+        mpHuman->getSlavePtr()->setInterpolateType(7u);
     }
 }
 
@@ -313,46 +312,44 @@ __attribute__((weak)) void cPlActWpnBow::moveLow_Turn() {
 // Address: 0x00221660 - 0x00221698 (56 bytes)
 void cPlActWpnBow::initLow_Walk() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cHumanActBase::mpHuman->::uDDOModel::isMaster() != false) {
-    } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(7));
+    if (!mpHuman->isMaster()) {
+        mpHuman->getSlavePtr()->setInterpolateType(7u);
     }
 }
 
 // Address: 0x002216a0 - 0x00221703 (99 bytes)
 void cPlActWpnBow::moveLow_Walk() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cPlActWpnBow::setLowerMotion(&this->::cPlActWpnBow::getActParam()->motWalk_Low[0], 10.0f, false, false);
-    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateWalk;
-    if (this->::cPlActWpnBow::getActParam()->isVJump == false) {
-        if (this->::cPlActWpnBow::getActParam()->isMovingJump != false) {
-            this->::cHumanActBase::mpHuman->mIsBowJumpEnable = true;
+    setLowerMotion(&getActParam()->motWalk_Low[0], 10.0f, false, false);
+    mIdealAccurate = getActParam()->accurateWalk;
+    if (!getActParam()->isVJump) {
+        if (getActParam()->isMovingJump) {
+            mpHuman->mIsBowJumpEnable = true;
         }
     } else {
-        this->::cHumanActBase::mpHuman->mIsBowJumpEnable = true;
+        mpHuman->mIsBowJumpEnable = true;
     }
 }
 
 // Address: 0x00221710 - 0x00221748 (56 bytes)
 void cPlActWpnBow::initLow_Run() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cHumanActBase::mpHuman->::uDDOModel::isMaster() != false) {
-    } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(7));
+    if (!mpHuman->isMaster()) {
+        mpHuman->getSlavePtr()->setInterpolateType(7u);
     }
 }
 
 // Address: 0x00221750 - 0x002217b3 (99 bytes)
 void cPlActWpnBow::moveLow_Run() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cPlActWpnBow::setLowerMotion(&this->::cPlActWpnBow::getActParam()->motRun_Low[0], 10.0f, false, false);
-    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateRun;
-    if (this->::cPlActWpnBow::getActParam()->isVJump == false) {
-        if (this->::cPlActWpnBow::getActParam()->isMovingJump != false) {
-            this->::cHumanActBase::mpHuman->mIsBowJumpEnable = true;
+    setLowerMotion(&getActParam()->motRun_Low[0], 10.0f, false, false);
+    mIdealAccurate = getActParam()->accurateRun;
+    if (!getActParam()->isVJump) {
+        if (getActParam()->isMovingJump) {
+            mpHuman->mIsBowJumpEnable = true;
         }
     } else {
-        this->::cHumanActBase::mpHuman->mIsBowJumpEnable = true;
+        mpHuman->mIsBowJumpEnable = true;
     }
 }
 
@@ -361,19 +358,19 @@ void cPlActWpnBow::initLow_JumpBgn() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateJump;
-    this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpBgn[this->mJumpType]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
-    this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(2));
+    mIdealAccurate = getActParam()->accurateJump;
+    mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motJumpBgn[mJumpType]) | 1024), true, 0u, 10.0f, 0.0f, 1.0f);
+    mpHuman->getSlavePtr()->setInterpolateType(2u);
 }
 
 // Address: 0x00221d20 - 0x00221d50 (48 bytes)
 void cPlActWpnBow::moveLow_JumpBgn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cHumanActBase::mpHuman->::uHuman::checkSeqCntMotionEnd(static_cast<u32>(0)) == false) {
+    if (!mpHuman->checkSeqCntMotionEnd(0u)) {
         return;
     }
-    this->mIsLowActReq = true;
-    this->mLowActReqNo = static_cast<cPlActWpnBow::LOW_ACT_NO>(5);
+    mIsLowActReq = true;
+    mLowActReqNo = LOW_ACT_JUMP;
 }
 
 // Address: 0x00221d50 - 0x00221de7 (151 bytes)
@@ -381,13 +378,13 @@ void cPlActWpnBow::initLow_Jump() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpNow[this->mJumpType]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
-    this->::cPlActWpnBowBase::mMoveRadian = this->mJumpInitMoveRad;
-    this->mIsCheckLand = true;
-    if (this->mJumpType == static_cast<cPlActWpnBow::JUMP_TYPE>(1)) {
-        this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::initializeY(this->::cHumanActBase::mpHuman, static_cast<u32>(0), static_cast<u32>(11));
+    mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motJumpNow[mJumpType]) | 1024), true, 0u, 10.0f, 0.0f, 1.0f);
+    mMoveRadian = mJumpInitMoveRad;
+    mIsCheckLand = true;
+    if (mJumpType == JUMP_TYPE_V) {
+        mJumpParamCtrl.initializeY(mpHuman, 0u, 11u);
     } else {
-        this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::initializeMoveRad(this->::cHumanActBase::mpHuman, static_cast<u32>(0), static_cast<u32>(11));
+        mJumpParamCtrl.initializeMoveRad(mpHuman, 0u, 11u);
     }
 }
 
@@ -396,13 +393,13 @@ void cPlActWpnBow::moveLow_Jump() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::updateParam(this->::cHumanActBase::mpHuman);
-    this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::updatePadAdjustPos(this->::cHumanActBase::mpHuman);
-    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(6)) {
+    mJumpParamCtrl.updateParam(mpHuman);
+    mJumpParamCtrl.updatePadAdjustPos(mpHuman);
+    if (mUpActNo != UP_ACT_END) {
         return;
     }
-    if (0.0f >= this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.y) {
-        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motFall) | static_cast<unsigned long>(1024)), false, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    if (0.0f >= mpHuman->mVelocity.y) {
+        mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motFall) | 1024), false, 0u, 10.0f, 0.0f, 1.0f);
     }
 }
 
@@ -411,21 +408,20 @@ void cPlActWpnBow::initLow_Fall() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    f32 accy = this->::cHumanActBase::mpHuman->::uHuman::getComAdjustParam(static_cast<u32>(0));
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.x = 0.0f;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.y = accy;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.z = 0.0f;
-    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.pad_ = 0.0f;
-    this->mIsCheckLand = true;
-    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateFall;
-    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(0)) {
-        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motFall) | static_cast<unsigned long>(1024)), false, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    f32 accy = mpHuman->getComAdjustParam(0u);
+    mpHuman->mAcceleration.x = 0.0f;
+    mpHuman->mAcceleration.y = accy;
+    mpHuman->mAcceleration.z = 0.0f;
+    mpHuman->mAcceleration.pad_ = 0.0f;
+    mIsCheckLand = true;
+    mIdealAccurate = getActParam()->accurateFall;
+    if (mUpActNo != UP_ACT_BGN) {
+        mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motFall) | 1024), false, 0u, 10.0f, 0.0f, 1.0f);
     } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpNow[1]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 5.0f, 1.0f);
+        mpHuman->setDDOMotion(MOT_BASE, static_cast<u32>(static_cast<unsigned long>(getActParam()->motJumpNow[1]) | 1024), true, 0u, 10.0f, 5.0f, 1.0f);
     }
-    if (this->::cHumanActBase::mpHuman->::uDDOModel::isMaster() != false) {
-    } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(4));
+    if (!mpHuman->isMaster()) {
+        mpHuman->getSlavePtr()->setInterpolateType(4u);
     }
 }
 
@@ -500,26 +496,26 @@ __attribute__((weak)) void cPlActWpnBow::moveShijimScopeFilter() {
 void cPlActWpnBow::requestScopeSeBgn() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x21f10d read, used twice; no DWARF local holds it
-    uHuman* t0 = this->::cHumanActBase::mpHuman;
-    if (t0->::uDDOModel::isMaster() == false) {
+    uHuman* t0 = mpHuman;
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->uDDOModel::mUnitId & 8u) == 0) {
         return;
     }
     // inferred: a temporary for the value the load at 0x21f12d read, used twice; no DWARF local holds it
-    const s16 t1 = this->::cPlActWpnBow::getActParam()->seNoScopeBgn;
-    if (this->::cPlActWpnBow::getActParam()->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
-        if (t1 > static_cast<s16>(-1)) {
+    const s16 t1 = getActParam()->seNoScopeBgn;
+    if (getActParam()->seType != nHumanBow::cBowActParam::SE_SKILL) {
+        if (t1 > -1) {
             // inferred: a temporary for the result of the call at 0x21f148, used once; no DWARF local holds it
-            rSoundRequest* t2 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t2, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t2 = mpHuman->getCommonShlSe();
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t2, t1, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
         }
     } else {
-        if (t1 > static_cast<s16>(-1)) {
+        if (t1 > -1) {
             // inferred: a temporary for the result of the call at 0x21f15c, used once; no DWARF local holds it
-            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(this->::cPlActWpnBow::getActParam()->customId));
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t3 = mpHuman->getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(getActParam()->customId));
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t3, t1, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
         }
     }
 }
@@ -528,26 +524,26 @@ void cPlActWpnBow::requestScopeSeBgn() {
 void cPlActWpnBow::requestScopeSeEnd() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x21f1ad read, used twice; no DWARF local holds it
-    uHuman* t0 = this->::cHumanActBase::mpHuman;
-    if (t0->::uDDOModel::isMaster() == false) {
+    uHuman* t0 = mpHuman;
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->uDDOModel::mUnitId & 8u) == 0) {
         return;
     }
     // inferred: a temporary for the value the load at 0x21f1cd read, used twice; no DWARF local holds it
-    const s16 t1 = this->::cPlActWpnBow::getActParam()->seNoScopeEnd;
-    if (this->::cPlActWpnBow::getActParam()->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
-        if (t1 > static_cast<s16>(-1)) {
+    const s16 t1 = getActParam()->seNoScopeEnd;
+    if (getActParam()->seType != nHumanBow::cBowActParam::SE_SKILL) {
+        if (t1 > -1) {
             // inferred: a temporary for the result of the call at 0x21f1e8, used once; no DWARF local holds it
-            rSoundRequest* t2 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t2, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t2 = mpHuman->getCommonShlSe();
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t2, t1, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
         }
     } else {
-        if (t1 > static_cast<s16>(-1)) {
+        if (t1 > -1) {
             // inferred: a temporary for the result of the call at 0x21f1fc, used once; no DWARF local holds it
-            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(this->::cPlActWpnBow::getActParam()->customId));
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t3 = mpHuman->getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(getActParam()->customId));
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t3, t1, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
         }
     }
 }
@@ -576,7 +572,7 @@ __attribute__((weak)) void cPlActWpnBow::checkUp() {
 // Address: 0x00225a90 - 0x00225a97 (7 bytes)
 bool cPlActWpnBow::checkUp_Wait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsUpActEnd;
+    return mIsUpActEnd;
 }
 
 // Address: 0x002255a0 - 0x00225a90 (1264 bytes)
@@ -706,18 +702,18 @@ __attribute__((weak)) void cPlActWpnBow::initUp_Wait() {
 // Address: 0x00223ab0 - 0x00223ac0 (16 bytes)
 void cPlActWpnBow::moveUp_Wait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cHumanActBase::mpHuman->mIsBowAimUpWait = true;
-    this->::cPlActWpnBow::setUpperWaitMotion();
+    mpHuman->mIsBowAimUpWait = true;
+    setUpperWaitMotion();
 }
 
 // Address: 0x00223ac0 - 0x00223af0 (48 bytes)
 void cPlActWpnBow::finalUp_Wait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCoreSearch == static_cast<uCorePointSearch*>(nullptr)) {
+    if (mpCoreSearch == nullptr) {
         return;
     }
-    this->mpCoreSearch->kill();
-    this->mpCoreSearch = static_cast<uCorePointSearch*>(nullptr);
+    mpCoreSearch->kill();
+    mpCoreSearch = nullptr;
 }
 
 // Address: 0x00223e60 - 0x002244a1 (1601 bytes)
@@ -744,17 +740,17 @@ __attribute__((weak)) void cPlActWpnBow::moveUp_Shot() {
 // Address: 0x00224730 - 0x00224783 (83 bytes)
 void cPlActWpnBow::finalUp_Shot() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsFinishShot = false;
-    if (this->::cHumanActBase::mpHuman->mpContextPlayerInfo == static_cast<cContextPlayerInfo*>(nullptr)) {
+    mIsFinishShot = false;
+    if (mpHuman->mpContextPlayerInfo == nullptr) {
         return;
     }
-    if (this->::cHumanActBase::mpHuman->mpContextPlayerInfo->mCurrentJob_pri != static_cast<u8>(3)) {
+    if (mpHuman->mpContextPlayerInfo->mCurrentJob_pri != 3) {
         return;
     }
-    if (this->::cPlActWpnBow::getActParam()->customId == static_cast<u32>(2)) {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(1), static_cast<u32>(34));
+    if (getActParam()->customId == 2) {
+        mpHuman->getObjCollisionPtr()->killNode(1u, 34u);
     } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(1), static_cast<u32>(31));
+        mpHuman->getObjCollisionPtr()->killNode(1u, 31u);
     }
 }
 
@@ -984,7 +980,7 @@ __attribute__((weak)) void cPlActWpnBow::setShl(s32 group, s32 no, f32 degX, f32
 // Address: 0x01993b60 - 0x01993b6b (11 bytes)
 bool cPlActWpnBow::canSetShl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(6);
+    return mUpActNo != UP_ACT_END;
 }
 
 // Defined in the class (its body was written in a header).
@@ -1259,7 +1255,7 @@ __attribute__((weak)) void cPlActWpnBow::initChargeEfct() {
 // Address: 0x002295a0 - 0x002295b4 (20 bytes)
 f32 cPlActWpnBow::getChargeFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cPlActWpnBow::getActParam()->chargeFrames[this->mChargeLv];
+    return getActParam()->chargeFrames[mChargeLv];
 }
 
 // No out-of-line body: no code in the ELF
@@ -1281,33 +1277,33 @@ f32 cPlActWpnBow::getChargeFrame() const {
 // Address: 0x002265c0 - 0x00226685 (197 bytes)
 void cPlActWpnBow::setChargeCompEfct() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    uDDOModel* pParent = this->::cHumanActBase::mpHuman;
-    if ((this->::cPlActWpnBow::getActParam()->efOption & static_cast<u32>(2)) != static_cast<u32>(0)) {
-        if (pParent->mpEquip != static_cast<cpEquip*>(nullptr)) {
+    uDDOModel* pParent = mpHuman;
+    if ((getActParam()->efOption & 2u) != 0) {
+        if (pParent->mpEquip != nullptr) {
             // inferred: a temporary for the result of the call at 0x2265f2, used twice; no DWARF local holds it
-            uWeapon* t0 = pParent->mpEquip->::cpEquip::getWeapon(static_cast<u32>(0));
-            if (this->mChargeLv == static_cast<u32>(1)) {
-                this->::cPlActWpnBow::setEffect(this->mprEpvCmn, this->::cPlActWpnBow::getActParam()->epvIndex, this->::cPlActWpnBow::getActParam()->epvNoChargeComp, static_cast<uDDOModel*>(t0));
+            uWeapon* t0 = pParent->mpEquip->cpEquip::getWeapon(0u);
+            if (mChargeLv == 1) {
+                setEffect(mprEpvCmn, getActParam()->epvIndex, getActParam()->epvNoChargeComp, static_cast<uDDOModel*>(t0));
             }
-            if (this->mChargeLv != static_cast<u32>(0)) {
-                if (this->mChargeLv <= static_cast<u32>(5)) {
-                    this->::cPlActWpnBow::setEffect(this->mprEpvSkill, this->::cPlActWpnBow::getActParam()->epvIndexSkill, this->::cPlActWpnBow::getActParam()->epvNoChargeCompCs[this->mChargeLv - static_cast<u32>(1)], static_cast<uDDOModel*>(t0));
+            if (mChargeLv != 0) {
+                if (mChargeLv <= 5u) {
+                    setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeCompCs[mChargeLv - 1u], static_cast<uDDOModel*>(t0));
                 }
             }
         } else {
-            if (this->mChargeLv == static_cast<u32>(1)) {
-                this->::cPlActWpnBow::setEffect(this->mprEpvCmn, this->::cPlActWpnBow::getActParam()->epvIndex, this->::cPlActWpnBow::getActParam()->epvNoChargeComp, static_cast<uDDOModel*>(nullptr));
+            if (mChargeLv == 1) {
+                setEffect(mprEpvCmn, getActParam()->epvIndex, getActParam()->epvNoChargeComp, static_cast<uDDOModel*>(nullptr));
             }
-            if (this->mChargeLv != static_cast<u32>(0)) {
-                if (this->mChargeLv <= static_cast<u32>(5)) {
-                    this->::cPlActWpnBow::setEffect(this->mprEpvSkill, this->::cPlActWpnBow::getActParam()->epvIndexSkill, this->::cPlActWpnBow::getActParam()->epvNoChargeCompCs[this->mChargeLv - static_cast<u32>(1)], static_cast<uDDOModel*>(nullptr));
+            if (mChargeLv != 0) {
+                if (mChargeLv <= 5u) {
+                    setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeCompCs[mChargeLv - 1u], static_cast<uDDOModel*>(nullptr));
                 }
             }
         }
     } else {
-        if (this->mChargeLv != static_cast<u32>(0)) {
-            if (this->mChargeLv <= static_cast<u32>(5)) {
-                this->::cPlActWpnBow::setEffect(this->mprEpvSkill, this->::cPlActWpnBow::getActParam()->epvIndexSkill, this->::cPlActWpnBow::getActParam()->epvNoChargeCompCs[this->mChargeLv - static_cast<u32>(1)], pParent);
+        if (mChargeLv != 0) {
+            if (mChargeLv <= 5u) {
+                setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeCompCs[mChargeLv - 1u], pParent);
             }
         }
     }
@@ -1355,7 +1351,7 @@ __attribute__((weak)) f32 cPlActWpnBow::getMoveSpeed() {
 // Address: 0x0022a290 - 0x0022a293 (3 bytes)
 u32 cPlActWpnBow::getShlElement() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (60 bytes)
@@ -1394,12 +1390,11 @@ __attribute__((weak)) void cPlActWpnBow::requestMgcBowKamaeSe() {
     /* stub */
 }
 
-// No out-of-line body: 5 inlined copies in 5 functions (211 bytes)
-//   in cPlActWpnBow::initUp_Shot at 0x0022434a-0x0022437b (called at cHumanActBow.cpp:3865)
-//   in cPlActWpnBow::initup_Change at 0x0022481b-0x00224843 (called at cHumanActBow.cpp:4326)
-//   in cPlActWpnBow::initUp_End at 0x00224bab-0x00224bd4 (called at cHumanActBow.cpp:4400)
-//   and 2 more (every copy is in <bundle>.inlined.json)
-// void cPlActWpnBow::stopMgcBowKamaeSe();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPlActWpnBow::requestMgcBowKamaeSe at 0x22ab4a-0x22ab72; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 4 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cPlActWpnBow::stopMgcBowKamaeSe() {
+    static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(static_cast<sSoundExt*>(sSound::mpInstance)->mprMagicRequest, 500u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
+}
 
 // No out-of-line body: 2 inlined copies in 1 function (102 bytes)
 //   in cPlActWpnMagicBow::move at 0x0022aaa7-0x0022aab1 (called at cHumanActBow.cpp:6789)
@@ -1519,37 +1514,51 @@ void cPlActWpnBow::explosionReload(MOT_TYPE type) {
     // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
-    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(4)) {
+    if (mUpActNo != UP_ACT_SHOT) {
         return;
     }
-    if (this->::cPlActWpnBow::getActParam()->isFastExplosionReload == false) {
+    if (!getActParam()->isFastExplosionReload) {
         return;
     }
-    if (this->::cHumanActBase::mpHuman->::uDDOModel::getSequenceCtrlPtr()->::cpSequenceCtrl::getSequenceCount(static_cast<s32>(0)) == static_cast<s32>(1)) {
-        f32 motSpeed = this->::cHumanActBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(27));
+    if (mpHuman->getSequenceCtrlPtr()->getSequenceCount(0) == 1) {
+        f32 motSpeed = mpHuman->getJobAdjustParam(27u);
         // inferred: a temporary for the value the load at 0x222bdc read, used 4 times; no DWARF local holds it
-        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cHumanActBase::mpHuman) + static_cast<long>(13376));
-        if (t0 != static_cast<unsigned long>(0)) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
-                this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+        if (t0 != 0) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) > 9) {
+                mpHuman->setMotionSpeed(1u, motSpeed);
             } else {
                 // inferred: a temporary for the result of the call at 0x222c1b, used once; no DWARF local holds it
-                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
-                if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(::nHuman::getNormalSkillIdArrayIndex(static_cast<nHuman::GROW_NORMAL_SKILL_ENUM>(2)) * static_cast<u32>(4))) + static_cast<long>(3176))) > static_cast<int>(0)) {
+                u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
+                if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * 40u)) + static_cast<unsigned long>(nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ID_02) * 4u)) + 3176)) > 0) {
                     // inferred: a temporary for the result of the call at 0x222c52, used once; no DWARF local holds it
-                    f32 t2 = this->::cHumanActBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(28));
-                    this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), t2);
+                    f32 t2 = mpHuman->getJobAdjustParam(28u);
+                    mpHuman->setMotionSpeed(1u, t2);
                 } else {
-                    this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+                    mpHuman->setMotionSpeed(1u, motSpeed);
                 }
             }
         } else {
-            this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+            mpHuman->setMotionSpeed(1u, motSpeed);
         }
     } else {
-        this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), 1.0f);
+        mpHuman->setMotionSpeed(1u, 1.0f);
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cPlActWpnBow::MyDTI cPlActWpnBow::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cPlActWpnBow::FAR_CAMETA_OFFSET;
+
+// Not defined (no member-wise spelling: a class outside the bundle): cPlActWpnBow::stActTbl cPlActWpnBow::lowActTbl[8];
+
+// Not defined (no member-wise spelling: a class outside the bundle): cPlActWpnBow::stLowCheckTbl cPlActWpnBow::lowCheckTbl[7];
+
+// Not defined (no member-wise spelling: a class outside the bundle): cPlActWpnBow::stActTbl cPlActWpnBow::upActTbl[7];
+
+// Not defined (no member-wise spelling: a class outside the bundle): cPlActWpnBow::stUpCheckTbl cPlActWpnBow::upCheckTbl[6];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cPlActWpnBow::NET_PERIOD_INTERVAL;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHumanActBow.cpp at 0x0022c790-0x0022c7c9 (called at cHumanActBow.cpp:428)
@@ -1601,7 +1610,7 @@ const MtDTI& cPlActWpnBowBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPlActWpnBowBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlActWpnBowBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlActWpnBowBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1644,10 +1653,10 @@ __attribute__((weak)) void cPlActWpnBowBase::move() {
 // Address: 0x0021d0a0 - 0x0021d101 (97 bytes)
 void cPlActWpnBowBase::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cHumanActBase::final();
-    this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(1), static_cast<u32>(65535), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
-    this->::cHumanActBase::mpHuman->::uDDOModel::setMotionBlendRate(static_cast<u32>(1), 0.0f);
-    this->::cHumanActBase::mpHuman->mIsBowAim = false;
+    this->cHumanActBase::final();
+    mpHuman->setDDOMotion(MOT_BLEND1, 0xFFFFu, true, 0u, -1.0f, 0.0f, 1.0f);
+    mpHuman->setMotionBlendRate(1u, 0.0f);
+    mpHuman->mIsBowAim = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1676,6 +1685,16 @@ void cPlActWpnBowBase::final() {
 // No out-of-line body: 1 inlined copy in 1 function (31 bytes)
 //   in cPlActWpnBow::setShl at 0x00228728-0x00228747 (called at cHumanActBow.cpp:6192)
 // bool cPlActWpnBowBase::isPlayer();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPlActWpnBowBase::MyDTI cPlActWpnBowBase::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cPlActWpnBowBase::mSlaveRunDistance;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cPlActWpnBowBase::mSlaveWalkDistance;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cPlActWpnBowBase::mSlaveWaitDistance;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 cPlActWpnBowBase::mCustomBeginTime;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cHumanActBow.cpp at 0x0022c753-0x0022c790 (called at cHumanActBow.cpp:105)

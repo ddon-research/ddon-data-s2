@@ -26,6 +26,7 @@ class MtUI;
 class MtVector3;
 class cParticleManager;
 class cWind;
+class cpErosionSuperEnemy;
 namespace nDraw { class Material; }
 class rTexture;
 class uBaseEffect;
@@ -55,6 +56,8 @@ class sEffect : public cSystem
 {
     // inferred: cParticleManager::~cParticleManager names sEffect::mpInstance
     friend class cParticleManager;
+    // inferred: cpErosionSuperEnemy::activeCameraEffect names sEffect::mpInstance
+    friend class cpErosionSuperEnemy;
     // inferred: uBaseEffect::setParticleVolume names sEffect::mpInstance
     friend class uBaseEffect;
     // inferred: uEffect::updateDrawBuffSize names sEffect::mpInstance

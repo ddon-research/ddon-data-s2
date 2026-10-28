@@ -145,5 +145,23 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cZoneListenerEffectEFL::notified at 0x59532a-0x59532e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cZCEFLControl::cResourceSet::setResourceType(u32 type) {
+    this->mResourceType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cZoneListenerEffectEFL::notified at 0x595333-0x595337; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cZCEFLControl::cResourceSet::setIndexNo(u32 index) {
+    this->mIndexNo = index;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cZoneListenerEffectEFL::notified at 0x59533c-0x595340; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cZCEFLControl::cResourceSet::setElementNo(u32 element) {
+    this->mElementNo = element;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cZCEffectControl::cZCEffectControl() {
 }

@@ -389,26 +389,42 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 inline rStageCustomPartsEx::rStageCustomPartsEx() {
     this->mChangeFrame = 60.0f;
-    this->mpArrayColorFog = static_cast<rStageCustomPartsEx::ColorFog*>(nullptr);
-    this->mArrayColorFogNum = static_cast<u32>(0);
-    this->mpArrayHemiSphLight = static_cast<rStageCustomPartsEx::HemiSphLight*>(nullptr);
-    this->mArrayHemiSphLightNum = static_cast<u32>(0);
-    this->mpArrayInfiLight = static_cast<rStageCustomPartsEx::InfiLight*>(nullptr);
-    this->mArrayInfiLightNum = static_cast<u32>(0);
-    this->mpArrayPattern = static_cast<rStageCustomPartsEx::Pattern*>(nullptr);
-    this->mArrayPatternNum = static_cast<u32>(0);
+    this->mpArrayColorFog = nullptr;
+    this->mArrayColorFogNum = 0;
+    this->mpArrayHemiSphLight = nullptr;
+    this->mArrayHemiSphLightNum = 0;
+    this->mpArrayInfiLight = nullptr;
+    this->mArrayInfiLightNum = 0;
+    this->mpArrayPattern = nullptr;
+    this->mArrayPatternNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rStageCustomPartsEx::Pattern::Pattern() {
-    this->mColorFogNo = static_cast<s32>(-1);
-    this->mHemiSphLightNo = static_cast<s32>(-1);
-    this->mInfiLightNo = static_cast<s32>(-1);
+    this->mColorFogNo = -1;
+    this->mHemiSphLightNo = -1;
+    this->mInfiLightNo = -1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rStageCustomPartsEx::AreaParam::AreaParam() {
+    this->mUseAllFilter = true;
+    this->mFilterNo = 0;
+    this->mPatternNo = -1;
+    this->mAreaHitShapeList.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rStageCustomPartsEx::InfoEx::InfoEx() {
+    this->mAddVersion = 256;
+    this->mAreaParamList.::MtArray::mAutoDelete = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rStageCustomPartsEx::FilterEx::FilterEx() {
-    this->mAddVersion = static_cast<u32>(512);
+    this->mAddVersion = 512;
 }

@@ -32,7 +32,7 @@ const MtDTI& cObjHitCache::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cObjHitCache::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cObjHitCache::DTI)->memAlloc(sz, align, ::cObjHitCache::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cObjHitCache::DTI)->memAlloc(sz, align, cObjHitCache::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* cObjHitCache::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12cObjHitCacheD0Ev at 0x01980b30-0x01980b5a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cObjHitCache::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cObjHitCache::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cObjHitCache::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,64 +62,64 @@ inline void cObjHitCache::operator delete(void* p_addr) {
 // Address: 0x001787b0 - 0x0017880f (95 bytes)
 cObjHitCache::cObjHitCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPri = static_cast<u64>(-1);
-    this->mpDfdModel = static_cast<uDDOModel*>(nullptr);
-    this->mpAtkModel = static_cast<uDDOModel*>(nullptr);
-    this->mpDfdGeom = static_cast<cHitGeom*>(nullptr);
-    this->mpAtkGeom = static_cast<cHitGeom*>(nullptr);
-    this->mpDfdNode = static_cast<cHitNode*>(nullptr);
-    this->mpAtkNode = static_cast<cHitNode*>(nullptr);
-    this->mAtkAttr = static_cast<u32>(0);
-    this->mDfdAttr = static_cast<u32>(0);
-    this->mAge = 0.0f;
-    this->mLinkID = static_cast<s32>(0);
-    this->mUID = static_cast<u32>(0);
-    this->mTimer = 0.0f;
+    mPri = 0xFFFFFFFFFFFFFFFFul;
+    mpDfdModel = nullptr;
+    mpAtkModel = nullptr;
+    mpDfdGeom = nullptr;
+    mpAtkGeom = nullptr;
+    mpDfdNode = nullptr;
+    mpAtkNode = nullptr;
+    mAtkAttr = 0;
+    mDfdAttr = 0;
+    mAge = 0.0f;
+    mLinkID = 0;
+    mUID = 0;
+    mTimer = 0.0f;
 }
 
 // Address: 0x00178810 - 0x00178861 (81 bytes)
 void cObjHitCache::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPri = static_cast<u64>(-1);
-    this->mpDfdModel = static_cast<uDDOModel*>(nullptr);
-    this->mpAtkModel = static_cast<uDDOModel*>(nullptr);
-    this->mpDfdGeom = static_cast<cHitGeom*>(nullptr);
-    this->mpAtkGeom = static_cast<cHitGeom*>(nullptr);
-    this->mpDfdNode = static_cast<cHitNode*>(nullptr);
-    this->mpAtkNode = static_cast<cHitNode*>(nullptr);
-    this->mAtkAttr = static_cast<u32>(0);
-    this->mDfdAttr = static_cast<u32>(0);
-    this->mAge = 0.0f;
-    this->mLinkID = static_cast<s32>(0);
-    this->mUID = static_cast<u32>(0);
-    this->mTimer = 0.0f;
+    mPri = 0xFFFFFFFFFFFFFFFFul;
+    mpDfdModel = nullptr;
+    mpAtkModel = nullptr;
+    mpDfdGeom = nullptr;
+    mpAtkGeom = nullptr;
+    mpDfdNode = nullptr;
+    mpAtkNode = nullptr;
+    mAtkAttr = 0;
+    mDfdAttr = 0;
+    mAge = 0.0f;
+    mLinkID = 0;
+    mUID = 0;
+    mTimer = 0.0f;
 }
 
 // Address: 0x00178870 - 0x001788e8 (120 bytes)
 void cObjHitCache::copy(const cObjHitCache* pSrc, bool copy_node) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSrc == static_cast<const cObjHitCache*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    this->mPri = pSrc->mPri;
-    this->mUID = pSrc->mUID;
-    this->mTimer = pSrc->mTimer;
-    this->mAge = pSrc->mAge;
-    this->mAtkAttr = pSrc->mAtkAttr;
-    this->mDfdAttr = pSrc->mDfdAttr;
-    if (copy_node != false) {
-        this->mpAtkNode = pSrc->mpAtkNode;
-        this->mpDfdNode = pSrc->mpDfdNode;
-        this->mpAtkGeom = pSrc->mpAtkGeom;
-        this->mpDfdGeom = pSrc->mpDfdGeom;
+    mPri = pSrc->mPri;
+    mUID = pSrc->mUID;
+    mTimer = pSrc->mTimer;
+    mAge = pSrc->mAge;
+    mAtkAttr = pSrc->mAtkAttr;
+    mDfdAttr = pSrc->mDfdAttr;
+    if (copy_node) {
+        mpAtkNode = pSrc->mpAtkNode;
+        mpDfdNode = pSrc->mpDfdNode;
+        mpAtkGeom = pSrc->mpAtkGeom;
+        mpDfdGeom = pSrc->mpDfdGeom;
     } else {
-        this->mpAtkGeom = static_cast<cHitGeom*>(nullptr);
-        this->mpDfdNode = static_cast<cHitNode*>(nullptr);
-        this->mpAtkNode = static_cast<cHitNode*>(nullptr);
-        this->mpDfdGeom = static_cast<cHitGeom*>(nullptr);
+        mpAtkGeom = nullptr;
+        mpDfdNode = nullptr;
+        mpAtkNode = nullptr;
+        mpDfdGeom = nullptr;
     }
-    this->mpAtkModel = pSrc->mpAtkModel;
-    this->mpDfdModel = pSrc->mpDfdModel;
+    mpAtkModel = pSrc->mpAtkModel;
+    mpDfdModel = pSrc->mpDfdModel;
 }
 
 // Address: 0x001788f0 - 0x00178f3e (1614 bytes)
@@ -131,11 +131,13 @@ __attribute__((weak)) void cObjHitCache::createProperty(MtPropertyList& s) {
 // Address: 0x00178f40 - 0x00178f4f (15 bytes)
 void cObjHitCache::resetHitCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
+    if (mpAtkNode == nullptr) {
         return;
     }
-    this->mpAtkNode->::cHitNode::resetHitNode();
+    mpAtkNode->resetHitNode();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cObjHitCache::MyDTI cObjHitCache::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cObjHitCache.cpp at 0x00178f50-0x00178f92 (called at cObjHitCache.cpp:20)
@@ -145,6 +147,6 @@ void cObjHitCache::resetHitCache() {
 // Address: 0x001786b0 - 0x00178740 (144 bytes)
 MtObject* cObjHitCache::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cObjHitCache;
+    return new (16u) cObjHitCache;
 }
 

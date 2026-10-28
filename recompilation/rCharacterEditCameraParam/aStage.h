@@ -676,6 +676,12 @@ inline uStageMyRoom* aStage::getStageMyRoom() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMap::updateDispAreaName at 0xb75685-0xb7568b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 aStage::getStageMsgId() const {
+    return this->mStageMsgId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline s32 aStage::getJmpStatus() const {
     return this->mGuardData.mJmpStatus;
@@ -685,6 +691,18 @@ inline s32 aStage::getJmpStatus() const {
 // approximate: only approximate callers check this inline body
 inline s32 aStage::getJmpStageNo() const {
     return this->mGuardData.mJmpStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::aStage at 0x736f-0x737a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void aStage::constructWeather() {
+    this->mpLightSchdl = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::aStage at 0x7385-0x7390; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void aStage::constructSound() {
+    this->mprSoundAttribute = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -700,4 +718,17 @@ inline bool aStage::isFsmEvent() {
 // Inline, no code of its own: checked where it is inlined.
 inline bool aStage::isFsmEventPlay() {
     return this->mbFsmEventPlay;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cFSMEvent::isCancelFsmEvent at 0x1e2f71-0x1e2f77; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline bool aStage::isFsmCancel() {
+    return this->mbFsmCancel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in aStage::aStage at 0x7521-0x752c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void aStage::initGetAnnounce() {
+    this->mRnoGetAnnounce = 0;
+    this->mRnoGetGameTimeBaseInfo = 0;
 }

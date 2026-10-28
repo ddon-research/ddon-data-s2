@@ -7,6 +7,8 @@
 #include "MtMemoryAllocator.h"
 #include "cResource.h"
 #include "rSoundSource.h"
+#include "../rSoundStreamRequest/rSoundStreamSourcePackage.h"
+#include "sResource.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -46,7 +48,7 @@ const MtDTI& rSoundStreamRequest::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rSoundStreamRequestD0Ev at 0x0120370b-0x0120372c, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundStreamRequest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundStreamRequest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,28 +140,28 @@ MT_CTSTR rSoundStreamRequest::getExt() const {
 rSoundStreamRequest::Element* rSoundStreamRequest::getElement(u32 reqNo) const {
     // DWARF local not rendered: u16 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (this->mpReqNoToIndexTbl != static_cast<u16*>(nullptr)) {
-        if (reqNo < this->mReqNoToIndexTblNum) {
-            if (this->mpReqNoToIndexTbl[reqNo] != static_cast<unsigned short>(65535)) {
-                return &this->mpElement[this->mpReqNoToIndexTbl[reqNo]];
+    if (mpReqNoToIndexTbl != nullptr) {
+        if (reqNo < mReqNoToIndexTblNum) {
+            if (mpReqNoToIndexTbl[reqNo] != 0xFFFF) {
+                return &mpElement[mpReqNoToIndexTbl[reqNo]];
             }
         }
-        return static_cast<rSoundStreamRequest::Element*>(nullptr);
+        return nullptr;
     }
-    if (this->mElementNum == static_cast<u32>(0)) {
-        return static_cast<rSoundStreamRequest::Element*>(nullptr);
+    if (mElementNum == 0) {
+        return nullptr;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    rSoundStreamRequest::Element* p2 = this->mpElement;
+    Element* p2 = mpElement;
     do {
         if (p2->mReqNo == reqNo) {
             return p2;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i < this->mElementNum);
-    return static_cast<rSoundStreamRequest::Element*>(nullptr);
+    } while (i < mElementNum);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -191,6 +193,8 @@ __attribute__((weak)) bool rSoundStreamRequest::createReqNoToIndexTbl() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundStreamRequest::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundStreamRequest::MyDTI rSoundStreamRequest::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundStreamRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -212,7 +216,7 @@ __attribute__((weak)) MtObject* rSoundStreamRequest::MyDTI::newInstance() const 
 // Address: 0x012031c0 - 0x012031c4 (4 bytes)
 u32 rSoundStreamRequest::SoundSource::getChannelNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mChannelNum;
+    return mChannelNum;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -224,13 +228,13 @@ u32 rSoundStreamRequest::SoundSource::getChannelNum() const {
 // Address: 0x012031e0 - 0x012031e4 (4 bytes)
 s32 rSoundStreamRequest::SoundSource::getLoopStart() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLoopStart;
+    return mLoopStart;
 }
 
 // Address: 0x012031f0 - 0x012031f4 (4 bytes)
 s32 rSoundStreamRequest::SoundSource::getLoopEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLoopEnd;
+    return mLoopEnd;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -249,9 +253,28 @@ s32 rSoundStreamRequest::SoundSource::getLoopEnd() const {
 // void rSoundStreamRequest::SoundSource::makeStreamInfo(rSoundStreamRequest::StreamInfo* pinfo);
 
 // Address: 0x012030b0 - 0x0120314b (155 bytes)
-__attribute__((weak)) rSoundSource* rSoundStreamRequest::SoundSource::createResource() {
-    DDON_STUB("rSoundStreamRequest::SoundSource::createResource")
-    return nullptr;
+rSoundSource* rSoundStreamRequest::SoundSource::createResource() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpStreamSourcePackage != nullptr) {
+        if (mpSource != nullptr) {
+            if (mpSource->getBuffer() == nullptr) {
+                mpSource = mpStreamSourcePackage->setSourceParamFromPackage(mSourceIndex, mpSource);
+            }
+        } else {
+            mpSource = mpStreamSourcePackage->setSourceParamFromPackage(mSourceIndex, static_cast<rSoundSource*>(nullptr));
+        }
+    } else {
+        if (mpSource == nullptr) {
+            if (mpResourcePath != nullptr) {
+                if ((mpSource = static_cast<rSoundSource*>((sResource::mpInstance)->create(*MtDTI::from(mDTIID), mpResourcePath, mReadMode))) != nullptr) {
+                    mpSource;
+                    return mpSource;
+                }
+            }
+            return nullptr;
+        }
+    }
+    return mpSource;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

@@ -107,5 +107,5 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestSvNoticeCallback::cQuestSvNoticeCallback() {
     this->mpCallbackFunc = static_cast<cQuestSvNoticeCallback::PCallbackFunc>(0);
-    this->mpFromClass = static_cast<MtObject*>(nullptr);
+    this->mpFromClass = nullptr;
 }

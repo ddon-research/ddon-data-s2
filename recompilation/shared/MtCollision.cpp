@@ -47,25 +47,25 @@
 // Address: 0x00da7820 - 0x00da7846 (38 bytes)
 bool MtCollision::intersect(const MtLine& line, const MtVector3& pos, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(line, pos, static_cast<f32*>(nullptr));
+    return epsilon > MtCollision::sqrDistance(line, pos, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x00da7850 - 0x00da7880 (48 bytes)
 bool MtCollision::intersect(const MtLine& line0, const MtLine& line1, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(line0, line1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(line0, line1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // Address: 0x00da7880 - 0x00da78b9 (57 bytes)
 bool MtCollision::intersect(const MtLine& line, const MtRay& ray, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ray, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ray, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // Address: 0x00da78c0 - 0x00da78f9 (57 bytes)
 bool MtCollision::intersect(const MtLine& line, const MtLineSegment& ls, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ls, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ls, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -125,25 +125,25 @@ __attribute__((weak)) bool MtCollision::intersect(const MtLine& line, const MtPl
 // Address: 0x00da7a10 - 0x00da7a36 (38 bytes)
 bool MtCollision::intersect(const MtRay& ray, const MtVector3& pos, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ray, pos, static_cast<f32*>(nullptr));
+    return epsilon > MtCollision::sqrDistance(ray, pos, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x00da7a40 - 0x00da7a70 (48 bytes)
 bool MtCollision::intersect(const MtRay& ray, const MtLine& line, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ray, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ray, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // Address: 0x00da7a70 - 0x00da7aa0 (48 bytes)
 bool MtCollision::intersect(const MtRay& ray0, const MtRay& ray1, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ray0, ray1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ray0, ray1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // Address: 0x00da7aa0 - 0x00da7ad0 (48 bytes)
 bool MtCollision::intersect(const MtRay& ray, const MtLineSegment& ls, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -209,33 +209,33 @@ __attribute__((weak)) bool MtCollision::intersect(const MtRayY& rayY, const MtPl
 // Address: 0x00da7c40 - 0x00da7c4c (12 bytes)
 bool MtCollision::intersect(const MtRayY& rayY, const MtTriangle& triangle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::find(rayY, triangle, static_cast<f32*>(nullptr), static_cast<MtContact*>(nullptr), static_cast<MtContact*>(nullptr));
+    return MtCollision::find(rayY, triangle, static_cast<f32*>(nullptr), static_cast<MtContact*>(nullptr), static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x00da7c50 - 0x00da7c76 (38 bytes)
 bool MtCollision::intersect(const MtLineSegment& ls, const MtVector3& pos, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ls, pos, static_cast<f32*>(nullptr));
+    return epsilon > MtCollision::sqrDistance(ls, pos, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x00da7c80 - 0x00da7cb0 (48 bytes)
 bool MtCollision::intersect(const MtLineSegment& ls, const MtLine& line, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ls, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ls, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // Address: 0x00da7cb0 - 0x00da7cdf (47 bytes)
 bool MtCollision::intersect(const MtLineSegment& ls, const MtRay& ray, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xda7cc9, used once; no DWARF local holds it
-    f32 t1 = ::MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    f32 t1 = MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
     return 1.1920929e-7f > t1;
 }
 
 // Address: 0x00da7ce0 - 0x00da7d10 (48 bytes)
 bool MtCollision::intersect(const MtLineSegment& ls0, const MtLineSegment& ls1, f32 epsilon) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return epsilon > ::MtCollision::sqrDistance(ls0, ls1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return epsilon > MtCollision::sqrDistance(ls0, ls1, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -486,14 +486,14 @@ __attribute__((weak)) bool MtCollision::intersect(const MtCapsule& capsule, cons
 bool MtCollision::intersect(const MtAABB& aabb, const MtLine& line) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
-    return ::MtCollision::intersect(aabb, line, &line_t);
+    return MtCollision::intersect(aabb, line, &line_t);
 }
 
 // Address: 0x00da8f40 - 0x00da8f76 (54 bytes)
 bool MtCollision::intersect(const MtAABB& aabb, const MtRay& ray) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
-    return ::MtCollision::intersect(aabb, ray, &line_t);
+    return MtCollision::intersect(aabb, ray, &line_t);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -503,7 +503,7 @@ bool MtCollision::intersect(const MtAABB& aabb, const MtRay& ray) {
 bool MtCollision::intersect(const MtAABB& aabb, const MtLineSegment& ls) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
-    return ::MtCollision::intersect(aabb, ls, &line_t);
+    return MtCollision::intersect(aabb, ls, &line_t);
 }
 
 // Address: 0x00da9530 - 0x00da9555 (37 bytes)
@@ -834,7 +834,7 @@ __attribute__((weak)) bool MtCollision::intersect(const MtTriangle& tri0, const 
 bool MtCollision::intersect(const MtTriangle& tri, const MtLineSegment& ls, MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 t;
-    return ::MtCollision::intersect(tri, ls, pos, t);
+    return MtCollision::intersect(tri, ls, pos, t);
 }
 
 // Address: 0x00daa9a0 - 0x00daaf84 (1508 bytes)
@@ -1160,7 +1160,7 @@ __attribute__((weak)) f32 MtCollision::sqrDistance(const MtLine& line, const MtV
     const f32 t7 = line.dir.y;
     // inferred: a temporary for the value the load at 0xdae872 read, used twice; no DWARF local holds it
     const f32 t8 = line.dir.z;
-    if (pLine_t != static_cast<f32*>(nullptr)) {
+    if (pLine_t != nullptr) {
         *pLine_t = ((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5));
     }
     return ((((t0 - t2) - (t6 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5))))) * ((t0 - t2) - (t6 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5)))))) + (((t1 - t3) - (t7 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5))))) * ((t1 - t3) - (t7 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5))))))) + (((t4 - t5) - (t8 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5))))) * ((t4 - t5) - (t8 * (((t6 * (t0 - t2)) + (t7 * (t1 - t3))) + (t8 * (t4 - t5))))));
@@ -1377,7 +1377,7 @@ __attribute__((weak)) f32 MtCollision::sqrDistance(const MtAABB& aabb, const MtV
 f32 MtCollision::sqrDistance(const MtAABB& aabb, const MtLineSegment& ls) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
-    return ::MtCollision::sqrDistance(aabb, ls, &line_t);
+    return MtCollision::sqrDistance(aabb, ls, &line_t);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4768,28 +4768,28 @@ void MtCollision::getCoGId2(MtCollisionUtil::MtVectorU4& ret, const MtTriangle& 
     // inferred: a value cast to the type its use takes: bool used as unsigned int
     if (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))))) >= (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))))) + ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z))))))) {
         if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) {
-            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | static_cast<unsigned long>(2));
+            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | 2);
         } else {
             ret.u4[0] = static_cast<unsigned int>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z))))));
         }
     } else {
         if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) {
-            ret.u4[0] = static_cast<unsigned int>(6);
+            ret.u4[0] = 6;
         } else {
-            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | static_cast<unsigned long>(4));
+            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | 4);
         }
     }
     if (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))))) >= (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))))) + ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z))))))) {
         if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) {
-            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | static_cast<unsigned long>(2));
+            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | 2);
         } else {
             ret.u4[1] = static_cast<unsigned int>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z))))));
         }
     } else {
         if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) {
-            ret.u4[1] = static_cast<unsigned int>(6);
+            ret.u4[1] = 6;
         } else {
-            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | static_cast<unsigned long>(4));
+            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | 4);
         }
     }
 }
@@ -4813,33 +4813,33 @@ u32 MtCollision::getVoronoiId(const MtAABB& aabb, const MtVector3& pos) {
     if (aabb.minpos.x > pos.x) {
         if (aabb.minpos.y > pos.y) {
             if (aabb.minpos.z > pos.z) {
-                return static_cast<u32>(21);
+                return 21;
             } else {
                 if (pos.z > aabb.maxpos.z) {
-                    return static_cast<u32>(37);
+                    return 37;
                 } else {
-                    return static_cast<u32>(5);
+                    return 5;
                 }
             }
         } else {
             if (pos.y > aabb.maxpos.y) {
                 if (aabb.minpos.z > pos.z) {
-                    return static_cast<u32>(25);
+                    return 25;
                 } else {
                     if (pos.z > aabb.maxpos.z) {
-                        return static_cast<u32>(41);
+                        return 41;
                     } else {
-                        return static_cast<u32>(9);
+                        return 9;
                     }
                 }
             } else {
                 if (aabb.minpos.z > pos.z) {
-                    return static_cast<u32>(17);
+                    return 17;
                 } else {
                     if (pos.z > aabb.maxpos.z) {
-                        return static_cast<u32>(33);
+                        return 33;
                     } else {
-                        return static_cast<u32>(1);
+                        return 1;
                     }
                 }
             }
@@ -4848,33 +4848,33 @@ u32 MtCollision::getVoronoiId(const MtAABB& aabb, const MtVector3& pos) {
         if (pos.x > aabb.maxpos.x) {
             if (aabb.minpos.y > pos.y) {
                 if (aabb.minpos.z > pos.z) {
-                    return static_cast<u32>(22);
+                    return 22;
                 } else {
                     if (pos.z > aabb.maxpos.z) {
-                        return static_cast<u32>(38);
+                        return 38;
                     } else {
-                        return static_cast<u32>(6);
+                        return 6;
                     }
                 }
             } else {
                 if (pos.y > aabb.maxpos.y) {
                     if (aabb.minpos.z > pos.z) {
-                        return static_cast<u32>(26);
+                        return 26;
                     } else {
                         if (pos.z > aabb.maxpos.z) {
-                            return static_cast<u32>(42);
+                            return 42;
                         } else {
-                            return static_cast<u32>(10);
+                            return 10;
                         }
                     }
                 } else {
                     if (aabb.minpos.z > pos.z) {
-                        return static_cast<u32>(18);
+                        return 18;
                     } else {
                         if (pos.z > aabb.maxpos.z) {
-                            return static_cast<u32>(34);
+                            return 34;
                         } else {
-                            return static_cast<u32>(2);
+                            return 2;
                         }
                     }
                 }
@@ -4882,33 +4882,33 @@ u32 MtCollision::getVoronoiId(const MtAABB& aabb, const MtVector3& pos) {
         } else {
             if (aabb.minpos.y > pos.y) {
                 if (aabb.minpos.z > pos.z) {
-                    return static_cast<u32>(20);
+                    return 20;
                 } else {
                     if (pos.z > aabb.maxpos.z) {
-                        return static_cast<u32>(36);
+                        return 36;
                     } else {
-                        return static_cast<u32>(4);
+                        return 4;
                     }
                 }
             } else {
                 if (pos.y > aabb.maxpos.y) {
                     if (aabb.minpos.z > pos.z) {
-                        return static_cast<u32>(24);
+                        return 24;
                     } else {
                         if (pos.z > aabb.maxpos.z) {
-                            return static_cast<u32>(40);
+                            return 40;
                         } else {
-                            return static_cast<u32>(8);
+                            return 8;
                         }
                     }
                 } else {
                     if (aabb.minpos.z > pos.z) {
-                        return static_cast<u32>(16);
+                        return 16;
                     } else {
                         if (pos.z > aabb.maxpos.z) {
-                            return static_cast<u32>(32);
+                            return 32;
                         } else {
-                            return static_cast<u32>(0);
+                            return 0;
                         }
                     }
                 }
@@ -4950,9 +4950,9 @@ __attribute__((weak)) f32 MtCollision::getMinimumDistSq(const MtAABB& aabb, cons
 // Address: 0x00de2670 - 0x00de2828 (440 bytes)
 bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_ls, bool* edge, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (edge[index] != false) {
+    if (edge[index]) {
         switch (index) {
-            case static_cast<u32>(0):
+            case 0:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -4962,7 +4962,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -4972,7 +4972,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -4982,7 +4982,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -4992,7 +4992,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -5002,7 +5002,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(5):
+            case 5:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -5012,7 +5012,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(6):
+            case 6:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -5022,7 +5022,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(7):
+            case 7:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -5032,7 +5032,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = edge_ls.p0.z;
                 return true;
             }
-            case static_cast<u32>(8):
+            case 8:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -5042,7 +5042,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = aabb.maxpos.z;
                 return true;
             }
-            case static_cast<u32>(9):
+            case 9:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.maxpos.y;
@@ -5052,7 +5052,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = aabb.maxpos.z;
                 return true;
             }
-            case static_cast<u32>(10):
+            case 10:
             {
                 edge_ls.p0.x = aabb.maxpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -5062,7 +5062,7 @@ bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_l
                 edge_ls.p1.z = aabb.maxpos.z;
                 return true;
             }
-            case static_cast<u32>(11):
+            case 11:
             {
                 edge_ls.p0.x = aabb.minpos.x;
                 edge_ls.p0.y = aabb.minpos.y;
@@ -5112,9 +5112,9 @@ __attribute__((weak)) u32 MtCollision::getAABBEdgeList(MtLineSegment* edge, cons
 // Address: 0x00de3570 - 0x00de36a8 (312 bytes)
 bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID) {
     // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
-    if (static_cast<int>(VoronoiID) <= static_cast<int>(36)) {
-        switch (VoronoiID - static_cast<u32>(21)) {
-            case static_cast<u32>(0):
+    if (static_cast<int>(VoronoiID) <= 36) {
+        switch (VoronoiID - 21u) {
+            case 0:
             {
                 pos.x = aabb.minpos.x;
                 pos.y = aabb.minpos.y;
@@ -5122,7 +5122,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
                 // inferred: a temporary for the value the load at 0xde35db read, used once; no DWARF local holds it
                 const f32 t1 = aabb.minpos.y;
@@ -5134,7 +5134,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
                 // inferred: a temporary for the value the load at 0xde35e7 read, used once; no DWARF local holds it
                 const f32 t3 = aabb.maxpos.y;
@@ -5146,7 +5146,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(5):
+            case 5:
             {
                 // inferred: a temporary for the value the load at 0xde35f7 read, used once; no DWARF local holds it
                 const f32 t5 = aabb.minpos.z;
@@ -5164,8 +5164,8 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
             }
         }
     } else {
-        switch (VoronoiID - static_cast<u32>(37)) {
-            case static_cast<u32>(0):
+        switch (VoronoiID - 37u) {
+            case 0:
             {
                 // inferred: a temporary for the value the load at 0xde35cf read, used once; no DWARF local holds it
                 const f32 t0 = aabb.minpos.y;
@@ -5177,7 +5177,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
                 // inferred: a temporary for the value the load at 0xde3611 read, used once; no DWARF local holds it
                 const f32 t7 = aabb.minpos.y;
@@ -5189,7 +5189,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
                 // inferred: a temporary for the value the load at 0xde3634 read, used once; no DWARF local holds it
                 const f32 t9 = aabb.maxpos.y;
@@ -5201,7 +5201,7 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
                 pos.pad_ = 0.0f;
                 return true;
             }
-            case static_cast<u32>(5):
+            case 5:
             {
                 pos.x = aabb.maxpos.x;
                 pos.y = aabb.maxpos.y;
@@ -5216,6 +5216,10 @@ bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiI
         }
     }
 }
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 MtCollision::FINDCORE_CAPSULE_EPSILON;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 MtCollision::FINDCORE_CAPSULE_ITERATION;
 
 // No out-of-line body: 16 inlined copies in 4 functions (676 bytes)
 //   in cpObjCollisionBase::findIntersect at 0x004d7fc9-0x004d7ff8 (called at cpObjCollision.cpp:1800)

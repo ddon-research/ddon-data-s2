@@ -163,3 +163,9 @@ public:
     static const s32 NativeFileMagic = 5260114;
     static const s32 NativeVersion = 6;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICraft::setupUpGradeParam at 0xa5f6b5-0xa5f6b8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 rCraftRecipe::cCraftRecipe::getCreateTime() const {
+    return this->mCreateTime;
+}

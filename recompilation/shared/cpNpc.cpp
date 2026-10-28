@@ -24,7 +24,7 @@ const MtDTI& cpNpc::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpNpc::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpNpc::DTI);
+    return MtMemoryAllocator::getAllocator(cpNpc::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cpNpc::getAllocator() {
 // Address: 0x004d3710 - 0x004d3750 (64 bytes)
 void* cpNpc::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpNpc::getAllocator()->memAlloc(sz, align, ::cpNpc::DTI.::MtDTI::getID());
+    return cpNpc::getAllocator()->memAlloc(sz, align, cpNpc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cpNpc::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpNpc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpNpc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpNpc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,13 +86,13 @@ __attribute__((weak)) void cpNpc::move() {
 // Address: 0x004d3840 - 0x004d386a (42 bytes)
 cpNpc::cpNpc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNpcId = static_cast<u32>(0);
+    mNpcId = 0;
 }
 
 // Address: 0x004d3870 - 0x004d3899 (41 bytes)
 cpNpc::cpNpc(u32 npcId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNpcId = npcId;
+    mNpcId = npcId;
 }
 
 // Address: 0x004d38a0 - 0x004d38a5 (5 bytes)
@@ -107,6 +107,8 @@ __attribute__((weak)) void cpNpc::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpNpc::MyDTI cpNpc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpNpc.cpp at 0x004d3acf-0x004d3b0c (called at cpNpc.cpp:33)
 //   in _GLOBAL__sub_I_cpNpc.cpp at 0x004d3acf-0x004d3b0c (called at cpNpc.h:31)
@@ -115,6 +117,6 @@ __attribute__((weak)) void cpNpc::createProperty(MtPropertyList& s) {
 // Address: 0x004d36b0 - 0x004d3705 (85 bytes)
 MtObject* cpNpc::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpNpc;
+    return new (16u) cpNpc;
 }
 

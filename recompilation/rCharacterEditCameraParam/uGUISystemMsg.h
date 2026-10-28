@@ -26,9 +26,11 @@ class cGUIObjMessage;
 class cGUIObjNull;
 class cGUIObjPolygon;
 class cGUIObjTexture;
+class cGUIUtility;
 class rGUI;
 class rSoundRequest;
 class sGUIExt;
+class sScenario;
 class uGUIItemBase01;
 
 // Declarations
@@ -45,8 +47,12 @@ using u32 = unsigned int;
 
 class uGUISystemMsg : public uGUIBase
 {
+    // inferred: cGUIUtility::reqDialog names uGUISystemMsg::mIsCancelChoiseOff
+    friend class cGUIUtility;
     // inferred: sGUIExt::setSystemMsgMode names uGUISystemMsg::mMode
     friend class sGUIExt;
+    // inferred: sScenario::createSystemMsg names uGUISystemMsg::mSkipType
+    friend class sScenario;
     // inferred: uGUIItemBase01::evOnlineShop names uGUISystemMsg::mMode
     friend class uGUIItemBase01;
 public:
@@ -356,6 +362,12 @@ inline u32 uGUISystemMsg::getSerialNo() {
 // Inline, no code of its own: checked where it is inlined.
 inline u32 uGUISystemMsg::getCurrentPage() {
     return this->mCurrentPage;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUISystemMsg::setPointerPosPrio(u32 uPrio) {
+    this->mPointerPosPrio = uPrio;
 }
 
 // Inline, no code of its own: checked where it is inlined.

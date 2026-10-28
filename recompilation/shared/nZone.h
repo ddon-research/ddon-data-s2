@@ -590,6 +590,12 @@ inline nZone::cAllocaterIntermediate::cAllocaterIntermediate() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cZoneMultiListener::moveMultiListener at 0x597d18-0x597d1b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 nZone::cLayoutElement::getPriority() const {
+    return this->mPriority;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 nZone::cLayoutElement::getIndex() const {
     return this->mIndex;
 }
@@ -597,4 +603,10 @@ inline u32 nZone::cLayoutElement::getIndex() const {
 // Inline, no code of its own: checked where it is inlined.
 inline MtObject* nZone::cLayoutElement::getExtendObj() const {
     return this->mpExtendObj;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 3 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 nZone::cLayoutElement::getUniqueID() const {
+    return this->mUniqueID;
 }

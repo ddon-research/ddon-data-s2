@@ -10,7 +10,7 @@
 MtXmlReader::MtXmlReader(MtStream& in, MtXmlReader::ENCODE_TYPE encode) : mStream(in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the mem-initializer mStream(in): the constructor stores in into this+0x8 once, before anything reads it; a reference member is bound only there
-    this->mEncode = encode;
+    mEncode = encode;
 }
 
 // Address: 0x00dd4e90 - 0x00dd4e91 (1 bytes)
@@ -91,7 +91,7 @@ __attribute__((weak)) void MtXmlReader::decodeAttributes(MtXmlReader::WORK* pWor
 // Address: 0x00dd4ce0 - 0x00dd4cf3 (19 bytes)
 MtXmlReader::Handler::Handler() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mError = false;
+    mError = false;
 }
 
 // Address: 0x00dd4d00 - 0x00dd4d01 (1 bytes)
@@ -139,15 +139,15 @@ __attribute__((weak)) void MtXmlReader::Handler::startElement(MT_CTSTR localname
 MT_CTSTR MtXmlReader::Handler::getAttrValue(MT_CTSTR attrName, MtXmlReader::ATTRIBUTE* attr, u32 attr_num) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0xdd4dad, 0xdd4dea)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtXmlReader::ATTRIBUTE* p8 = attr;
-    if (attr_num != static_cast<u32>(0)) {
+    ATTRIBUTE* p8 = attr;
+    if (attr_num != 0) {
         do {
-            if (::strcmp(p8->name, attrName) == static_cast<int>(0)) {
+            if (strcmp(p8->name, attrName) == 0) {
                 return attr[i].value;
             }
-            i += static_cast<u32>(1);
+            i += 1u;
             p8 += static_cast<int>(1);
         } while (i < attr_num);
     }
@@ -158,15 +158,15 @@ MT_CTSTR MtXmlReader::Handler::getAttrValue(MT_CTSTR attrName, MtXmlReader::ATTR
 bool MtXmlReader::Handler::hasAttribute(MT_CTSTR attrName, MtXmlReader::ATTRIBUTE* attr, u32 attr_num) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0xdd4e1b, 0xdd4e3f)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtXmlReader::ATTRIBUTE* p8 = attr;
-    if (attr_num != static_cast<u32>(0)) {
+    ATTRIBUTE* p8 = attr;
+    if (attr_num != 0) {
         do {
-            if (::strcmp(p8->name, attrName) == static_cast<int>(0)) {
+            if (strcmp(p8->name, attrName) == 0) {
                 return true;
             }
-            i += static_cast<u32>(1);
+            i += 1u;
             p8 += static_cast<int>(1);
         } while (i < attr_num);
     }
@@ -176,7 +176,7 @@ bool MtXmlReader::Handler::hasAttribute(MT_CTSTR attrName, MtXmlReader::ATTRIBUT
 // Address: 0x00dd4d40 - 0x00dd4d45 (5 bytes)
 void MtXmlReader::Handler::error(MT_CTSTR error) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mError = true;
+    mError = true;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

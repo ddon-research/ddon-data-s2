@@ -186,12 +186,12 @@ inline sShlManager* sShlManager::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sShlManager::cShlLimitCtrl::cShlLimitCtrl() {
-    this->mpShl = static_cast<uShlBase*>(nullptr);
+    this->mpShl = nullptr;
     this->mLimitId = static_cast<nShlBase::LIMIT_ID>(-1);
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sShlManager::cShlLimitCnt::cShlLimitCnt() {
-    this->mpOwner = static_cast<uDDOModel*>(nullptr);
-    this->mShlCnt = static_cast<u32>(0);
+    this->mpOwner = nullptr;
+    this->mShlCnt = 0;
 }

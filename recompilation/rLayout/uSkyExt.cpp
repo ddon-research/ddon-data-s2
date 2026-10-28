@@ -29,7 +29,7 @@ const MtDTI& uSkyExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uSkyExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uSkyExt::DTI);
+    return MtMemoryAllocator::getAllocator(uSkyExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uSkyExt::getAllocator() {
 // Address: 0x00d0f840 - 0x00d0f880 (64 bytes)
 void* uSkyExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uSkyExt::getAllocator()->memAlloc(sz, align, ::uSkyExt::DTI.::MtDTI::getID());
+    return uSkyExt::getAllocator()->memAlloc(sz, align, uSkyExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uSkyExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uSkyExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSkyExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSkyExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,8 +79,8 @@ uSkyExt::~uSkyExt() {
 void uSkyExt::setup() {
     // DWARF local not rendered: u64 u_group;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::createBuffer();
-    ::sUnit::getInstance()->::sUnit::setUnitGroupBit(static_cast<cUnit*>(this), static_cast<u64>(432345564228616192));
+    createBuffer();
+    sUnit::getInstance()->setUnitGroupBit(static_cast<cUnit*>(this), 0x600000000100000ul);
 }
 
 // Address: 0x00d0fbb0 - 0x00d10293 (1763 bytes)
@@ -106,37 +106,37 @@ __attribute__((weak)) void uSkyExt::move() {
 // Address: 0x00d11170 - 0x00d11175 (5 bytes)
 void uSkyExt::setStarTexture(rTexture* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarTexture(pRes);
+    this->uSky::setStarTexture(pRes);
 }
 
 // Address: 0x00d11180 - 0x00d11185 (5 bytes)
 void uSkyExt::setStarIntensity(f32 starIntensity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarIntensity(starIntensity);
+    this->uSky::setStarIntensity(starIntensity);
 }
 
 // Address: 0x00d11190 - 0x00d11195 (5 bytes)
 void uSkyExt::setStarSize(f32 starSize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarSize(starSize);
+    this->uSky::setStarSize(starSize);
 }
 
 // Address: 0x00d111a0 - 0x00d111a5 (5 bytes)
 void uSkyExt::setStarrySkyIntensity(f32 starrySkyIntensity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarrySkyIntensity(starrySkyIntensity);
+    this->uSky::setStarrySkyIntensity(starrySkyIntensity);
 }
 
 // Address: 0x00d111b0 - 0x00d111b5 (5 bytes)
 void uSkyExt::setStarTwinkleAmplitude(f32 starTwinkleAmplitude) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarTwinkleAmplitude(starTwinkleAmplitude);
+    this->uSky::setStarTwinkleAmplitude(starTwinkleAmplitude);
 }
 
 // Address: 0x00d111c0 - 0x00d111c5 (5 bytes)
 void uSkyExt::setStarCount(u32 cnt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::setStarCount(cnt);
+    this->uSky::setStarCount(cnt);
 }
 
 // Address: 0x00d107a0 - 0x00d107d1 (49 bytes)
@@ -163,10 +163,10 @@ __attribute__((weak)) void uSkyExt::updateWeather() {
 // Address: 0x00d107e0 - 0x00d1081e (62 bytes)
 void uSkyExt::drawSun(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sWeatherManager::getInstance()->::sWeatherManager::isDisableSun() != 0.0f) {
+    if (sWeatherManager::getInstance()->isDisableSun() != 0.0f) {
         return;
     }
-    this->::uSky::drawSun(pdraw);
+    this->uSky::drawSun(pdraw);
 }
 
 // Address: 0x00d10820 - 0x00d1112c (2316 bytes)
@@ -211,6 +211,8 @@ __attribute__((weak)) MtVector3 uSkyExt::getMoonDirection() {
 //   in sWeatherManager::setWeatherMoonEnable at 0x0086fccc-0x0086fcd3 (called at sWeatherManager.cpp:1592)
 //   in sWeatherManager::setupWeatherStageUnit at 0x00870965-0x0087096c (called at uSkyExt.h:93)
 // void uSkyExt::setMoonEnable(bool b);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSkyExt::MyDTI uSkyExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uSkyExt.cpp at 0x00d1136e-0x00d113ab (called at uSkyExt.cpp:27)

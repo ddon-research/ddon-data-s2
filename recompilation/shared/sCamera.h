@@ -29,6 +29,7 @@ class cDraw;
 namespace nDraw { class Scene; }
 class rSceneTexture;
 class sCameraExt;
+class sGUIExt;
 class uCamera;
 class uDOFFilter;
 
@@ -46,6 +47,8 @@ using u8 = unsigned char;
 
 class sCamera : public cSystem
 {
+    // inferred: sGUIExt::begin names sCamera::mpInstance
+    friend class sGUIExt;
     // inferred: uDOFFilter::setNear names sCamera::mpInstance
     friend class uDOFFilter;
 public:

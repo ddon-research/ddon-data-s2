@@ -33,7 +33,7 @@ const MtDTI& uFreeCamera::getDTI() const {
 // Address: 0x00ed1ba0 - 0x00ed1be0 (64 bytes)
 void* uFreeCamera::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uFreeCamera::DTI)->memAlloc(sz, align, ::uFreeCamera::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uFreeCamera::DTI)->memAlloc(sz, align, uFreeCamera::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uFreeCamera::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uFreeCameraD0Ev at 0x00ed1d0e-0x00ed1d2f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uFreeCamera::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uFreeCamera::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uFreeCamera::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +107,7 @@ __attribute__((weak)) void uFreeCamera::applyWorldOffset(const MtVector3& offset
 // Address: 0x00ed20d0 - 0x00ed20d5 (5 bytes)
 MtUI* uFreeCamera::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCamera::createUI(prop);
+    return this->uCamera::createUI(prop);
 }
 
 // Address: 0x00ed20e0 - 0x00ed267f (1439 bytes)
@@ -166,6 +166,8 @@ __attribute__((weak)) MtVector3 uFreeCamera::getWorldTargetPos() {
 
 // No out-of-line body: no code in the ELF
 // void uFreeCamera::setPadControl(bool);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uFreeCamera::MyDTI uFreeCamera::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uFreeCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

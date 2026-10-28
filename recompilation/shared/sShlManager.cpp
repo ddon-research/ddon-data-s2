@@ -36,7 +36,7 @@ const MtDTI& sShlManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sShlManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sShlManager::DTI);
+    return MtMemoryAllocator::getAllocator(sShlManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* sShlManager::getAllocator() {
 // Address: 0x00847640 - 0x00847680 (64 bytes)
 void* sShlManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sShlManager::getAllocator()->memAlloc(sz, align, ::sShlManager::DTI.::MtDTI::getID());
+    return sShlManager::getAllocator()->memAlloc(sz, align, sShlManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* sShlManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sShlManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShlManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShlManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,15 +94,15 @@ __attribute__((weak)) void sShlManager::createProperty(MtPropertyList& s) {
 // Address: 0x00847ef0 - 0x00847ef5 (5 bytes)
 MtUI* sShlManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sUnitManager::createUI(prop);
+    return this->sUnitManager::createUI(prop);
 }
 
 // Address: 0x00847f00 - 0x00847f1c (28 bytes)
 void sShlManager::move() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sShlManager::moveShlLimit();
-    this->::sUnitManager::move();
+    moveShlLimit();
+    this->sUnitManager::move();
 }
 
 // No out-of-line body: 75 inlined copies in 60 functions (994 bytes)
@@ -129,31 +129,31 @@ u32 sShlManager::getShlUniqueId() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from sShlManager*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: an ordered temporary, read before a later effect: the value read at 0x849638, held ahead of the effects the ELF orders after it
-    bool t0 = ::cSystem::mJobSafe;
+    bool t0 = cSystem::mJobSafe;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x84963a, held ahead of the effects the ELF orders after it
-    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16));
+    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16);
     // inferred: DWARF's location-less 'cnt' (function scope) is the value the loop at 0x849680 carries
     u32 cnt;
     // inferred: the value the loop at 0x849680 carries; no location-less local in scope fits
     s32 v0_10;
     u32 uniqId;
-    if ((static_cast<unsigned long>(t0) | static_cast<unsigned long>(t1)) != static_cast<unsigned long>(0)) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if ((static_cast<unsigned long>(t0) | static_cast<unsigned long>(t1)) != 0) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: an ordered temporary, read before a later effect: the value read at 0x84965a, held ahead of the effects the ELF orders after it
-        sGame* t3 = ::sGame::getInstance();
-        s32 index = t3->::sGame::getSelfMemberIndex();
-        cnt = this->mShlShotCnt[index];
+        sGame* t3 = sGame::getInstance();
+        s32 index = t3->getSelfMemberIndex();
+        cnt = mShlShotCnt[index];
         v0_10 = index;
-        uniqId = static_cast<unsigned int>(static_cast<unsigned long>(65536) << static_cast<unsigned long>(static_cast<unsigned char>(index) & static_cast<unsigned char>(31)));
+        uniqId = static_cast<unsigned int>(0x10000ul << static_cast<unsigned long>(static_cast<unsigned char>(index) & 31));
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x84965a, held ahead of the effects the ELF orders after it
-        sGame* t3 = ::sGame::getInstance();
-        s32 index = t3->::sGame::getSelfMemberIndex();
-        cnt = this->mShlShotCnt[index];
+        sGame* t3 = sGame::getInstance();
+        s32 index = t3->getSelfMemberIndex();
+        cnt = mShlShotCnt[index];
         v0_10 = index;
-        uniqId = static_cast<unsigned int>(static_cast<unsigned long>(65536) << static_cast<unsigned long>(static_cast<unsigned char>(index) & static_cast<unsigned char>(31)));
+        uniqId = static_cast<unsigned int>(0x10000ul << static_cast<unsigned long>(static_cast<unsigned char>(index) & 31));
     }
     // inferred: the value carried to 0x8496a9; the location-less local in scope that fits is declared on no line of the value's writes
     unsigned int v1_1;
@@ -161,58 +161,58 @@ u32 sShlManager::getShlUniqueId() {
     u32 v1_3;
     for (;;) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x84968a, held ahead of the effects the ELF orders after it
-        sRemoteProcedure* t4 = ::sRemoteProcedure::getInstance();
+        sRemoteProcedure* t4 = sRemoteProcedure::getInstance();
         // inferred: a temporary for the result of the call at 0x84968d, used once; no DWARF local holds it
-        cRemoteProcedure* t5 = t4->::sRemoteProcedure::getObject(((cnt * static_cast<u32>(8)) + uniqId) + static_cast<u32>(3006));
+        cRemoteProcedure* t5 = t4->getObject(((cnt * 8u) + uniqId) + 3006u);
         // inferred: a temporary for the value the load at 0x849692 read, used twice; no DWARF local holds it
-        unsigned int t7 = this->mShlShotCnt[v0_10];
-        this->mShlShotCnt[v0_10] = t7 + static_cast<unsigned int>(1);
-        if (t5 != static_cast<cRemoteProcedure*>(nullptr)) {
-            cnt = t7 + static_cast<unsigned int>(1);
+        unsigned int t7 = mShlShotCnt[v0_10];
+        mShlShotCnt[v0_10] = t7 + 1u;
+        if (t5 != nullptr) {
+            cnt = t7 + 1u;
         } else {
-            v1_1 = t7 + static_cast<unsigned int>(1);
+            v1_1 = t7 + 1u;
             v1_3 = cnt;
             break;
         }
     }
-    if (v1_1 > static_cast<unsigned int>(65528)) {
-        this->mShlShotCnt[v0_10] = static_cast<unsigned int>(0);
+    if (v1_1 > 0xFFF8u) {
+        mShlShotCnt[v0_10] = 0;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x8496c4, held ahead of the effects the ELF orders after it
-        bool t8 = ::cSystem::mJobSafe;
+        bool t8 = cSystem::mJobSafe;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x8496c6, held ahead of the effects the ELF orders after it
-        unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16));
-        if ((static_cast<unsigned long>(t8) | static_cast<unsigned long>(t9)) != static_cast<unsigned long>(0)) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16);
+        if ((static_cast<unsigned long>(t8) | static_cast<unsigned long>(t9)) != 0) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        return ((v1_3 * static_cast<u32>(8)) + uniqId) + static_cast<u32>(6);
+        return ((v1_3 * 8u) + uniqId) + 6u;
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x8496c4, held ahead of the effects the ELF orders after it
-        bool t8 = ::cSystem::mJobSafe;
+        bool t8 = cSystem::mJobSafe;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x8496c6, held ahead of the effects the ELF orders after it
-        unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16));
-        if ((static_cast<unsigned long>(t8) | static_cast<unsigned long>(t9)) != static_cast<unsigned long>(0)) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 16);
+        if ((static_cast<unsigned long>(t8) | static_cast<unsigned long>(t9)) != 0) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        return ((v1_3 * static_cast<u32>(8)) + uniqId) + static_cast<u32>(6);
+        return ((v1_3 * 8u) + uniqId) + 6u;
     }
 }
 
 // Address: 0x00849460 - 0x008494a8 (72 bytes)
 void sShlManager::releaseResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprShlLimit != static_cast<rShlLimit*>(nullptr)) {
-        this->mprShlLimit->::cResource::release();
-        this->mprShlLimit = static_cast<rShlLimit*>(nullptr);
+    if (mprShlLimit != nullptr) {
+        mprShlLimit->release();
+        mprShlLimit = nullptr;
     }
-    if (this->mprCustomShlLimit == static_cast<rCustimShlLimit*>(nullptr)) {
+    if (mprCustomShlLimit == nullptr) {
         return;
     }
-    this->mprCustomShlLimit->::cResource::release();
-    this->mprCustomShlLimit = static_cast<rCustimShlLimit*>(nullptr);
+    mprCustomShlLimit->release();
+    mprCustomShlLimit = nullptr;
 }
 
 // Address: 0x00847f20 - 0x00849277 (4951 bytes)
@@ -335,25 +335,25 @@ void sShlManager::createShlLimitResource() {
     // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x849abd, used 4 times; no DWARF local holds it
-    cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_SHL_LIMIT_SLM", static_cast<u32>(1), false);
-    if (t0 != static_cast<cResource*>(nullptr)) {
-        this->mprShlLimit = static_cast<rShlLimit*>(t0);
-        t0->::cResource::addRef();
-        t0->::cResource::release();
+    cResource* t0 = sArchiveManager::getInstance()->createRes("game_common", "RES_ID_SHL_LIMIT_SLM", 1u, false);
+    if (t0 != nullptr) {
+        mprShlLimit = static_cast<rShlLimit*>(t0);
+        t0->addRef();
+        t0->release();
         // inferred: a temporary for the result of the call at 0x849afa, used 4 times; no DWARF local holds it
-        cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_SHL_LIMIT_CSL", static_cast<u32>(1), false);
-        if (t1 != static_cast<cResource*>(nullptr)) {
-            this->mprCustomShlLimit = static_cast<rCustimShlLimit*>(t1);
-            t1->::cResource::addRef();
-            t1->::cResource::release();
+        cResource* t1 = sArchiveManager::getInstance()->createRes("game_common", "RES_ID_SHL_LIMIT_CSL", 1u, false);
+        if (t1 != nullptr) {
+            mprCustomShlLimit = static_cast<rCustimShlLimit*>(t1);
+            t1->addRef();
+            t1->release();
         }
     } else {
         // inferred: a temporary for the result of the call at 0x849afa, used 4 times; no DWARF local holds it
-        cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_SHL_LIMIT_CSL", static_cast<u32>(1), false);
-        if (t1 != static_cast<cResource*>(nullptr)) {
-            this->mprCustomShlLimit = static_cast<rCustimShlLimit*>(t1);
-            t1->::cResource::addRef();
-            t1->::cResource::release();
+        cResource* t1 = sArchiveManager::getInstance()->createRes("game_common", "RES_ID_SHL_LIMIT_CSL", 1u, false);
+        if (t1 != nullptr) {
+            mprCustomShlLimit = static_cast<rCustimShlLimit*>(t1);
+            t1->addRef();
+            t1->release();
         }
     }
 }
@@ -365,6 +365,11 @@ __attribute__((weak)) void sShlManager::deleteShlFromOwner(uDDOModel* pOwner) {
     DDON_STUB("sShlManager::deleteShlFromOwner")
     /* stub */
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sShlManager* sShlManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShlManager::MyDTI sShlManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sShlManager.cpp at 0x00849d0e-0x00849d4b (called at sShlManager.cpp:36)
@@ -401,7 +406,7 @@ const MtDTI& sShlManager::cShlLimitCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sShlManager::cShlLimitCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCtrl::DTI)->memAlloc(sz, align, ::sShlManager::cShlLimitCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCtrl::DTI)->memAlloc(sz, align, sShlManager::cShlLimitCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -416,7 +421,7 @@ inline void* sShlManager::cShlLimitCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sShlManager::cShlLimitCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -442,6 +447,8 @@ sShlManager::cShlLimitCtrl::~cShlLimitCtrl() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShlManager::cShlLimitCtrl::MyDTI sShlManager::cShlLimitCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sShlManager.cpp at 0x00849d4b-0x00849d8b (called at sShlManager.cpp:37)
 //   in _GLOBAL__sub_I_sShlManager.cpp at 0x00849d4b-0x00849d8b (called at sShlManager.h:36)
@@ -450,7 +457,7 @@ sShlManager::cShlLimitCtrl::~cShlLimitCtrl() {
 // Address: 0x008476f0 - 0x0084773f (79 bytes)
 MtObject* sShlManager::cShlLimitCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sShlManager::cShlLimitCtrl;
+    return new (16u) sShlManager::cShlLimitCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -476,7 +483,7 @@ const MtDTI& sShlManager::cShlLimitCnt::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sShlManager::cShlLimitCnt::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCnt::DTI)->memAlloc(sz, align, ::sShlManager::cShlLimitCnt::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCnt::DTI)->memAlloc(sz, align, sShlManager::cShlLimitCnt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -491,7 +498,7 @@ inline void* sShlManager::cShlLimitCnt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sShlManager::cShlLimitCnt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCnt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCnt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -517,6 +524,8 @@ sShlManager::cShlLimitCnt::~cShlLimitCnt() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sShlManager::cShlLimitCnt::MyDTI sShlManager::cShlLimitCnt::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sShlManager.cpp at 0x00849d8b-0x00849dc4 (called at sShlManager.cpp:38)
 //   in _GLOBAL__sub_I_sShlManager.cpp at 0x00849d8b-0x00849dc4 (called at sShlManager.h:52)
@@ -525,7 +534,7 @@ sShlManager::cShlLimitCnt::~cShlLimitCnt() {
 // Address: 0x008477b0 - 0x008477ff (79 bytes)
 MtObject* sShlManager::cShlLimitCnt::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sShlManager::cShlLimitCnt;
+    return new (16u) sShlManager::cShlLimitCnt;
 }
 
 // Instance at 0x01acf550 - 0x01acf555 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

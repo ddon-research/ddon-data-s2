@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtStlAllocator.h"
 #include "MtStlCustom.h"
 #include "MtString.h"
@@ -49,7 +50,7 @@ const MtDTI& sRemoteProcedure::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16sRemoteProcedureD0Ev at 0x0125c76e-0x0125c78f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sRemoteProcedure::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sRemoteProcedure::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sRemoteProcedure::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,12 +90,12 @@ __attribute__((weak)) void sRemoteProcedure::sync() {
 // Address: 0x0125c9e0 - 0x0125ca0e (46 bytes)
 void sRemoteProcedure::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sRemoteProcedure::sAutoAllocatorTop = static_cast<unsigned int>(1000);
-    this->mAutoAllocator = static_cast<RPC_ID>(1000);
-    this->mSystemAllocator = static_cast<u16>(0);
-    this->mSynchronizerAllocator = static_cast<u16>(0);
-    this->mHealthCheckerAllocator = static_cast<u16>(0);
-    this->mUseTemporary = false;
+    sRemoteProcedure::sAutoAllocatorTop = 1000;
+    mAutoAllocator = 1000;
+    mSystemAllocator = 0;
+    mSynchronizerAllocator = 0;
+    mHealthCheckerAllocator = 0;
+    mUseTemporary = false;
 }
 
 // Address: 0x0125ca10 - 0x0125cb1f (271 bytes)
@@ -106,8 +107,8 @@ __attribute__((weak)) void sRemoteProcedure::final() {
 // Address: 0x0125ccc0 - 0x0125ccde (30 bytes)
 void sRemoteProcedure::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->final();
-    this->init();
+    final();
+    init();
 }
 
 // Address: 0x0125cce0 - 0x0125cd87 (167 bytes)
@@ -129,7 +130,7 @@ __attribute__((weak)) void sRemoteProcedure::createProperty(MtPropertyList& s) {
 // Address: 0x0125ce40 - 0x0125ce45 (5 bytes)
 MtUI* sRemoteProcedure::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0125ce50 - 0x0125d04e (510 bytes)
@@ -193,8 +194,8 @@ __attribute__((weak)) cRemoteProcedure* sRemoteProcedure::getObject(RPC_ID rpc_i
 // Address: 0x0125da20 - 0x0125da2f (15 bytes)
 void sRemoteProcedure::setUserLocation(u32 range) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sRemoteProcedure::sAutoAllocatorTop = range + (::sRemoteProcedure::sAutoAllocatorTop);
-    this->mAutoAllocator = ::sRemoteProcedure::sAutoAllocatorTop;
+    sRemoteProcedure::sAutoAllocatorTop = range + (sRemoteProcedure::sAutoAllocatorTop);
+    mAutoAllocator = sRemoteProcedure::sAutoAllocatorTop;
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,7 +250,7 @@ __attribute__((weak)) cRemoteProcedure* sRemoteProcedure::getElement(u32 index) 
 u32 sRemoteProcedure::getElementNum() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from sRemoteProcedure*
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 48);
 }
 
 // Address: 0x01ba37d0 - 0x01ba37d1 (1 bytes)
@@ -268,10 +269,10 @@ __attribute__((weak)) void sRemoteProcedure::setElementNum(u32 num) {
 // Address: 0x0125c860 - 0x0125c873 (19 bytes)
 void sRemoteProcedure::sFuncUpdateParallel(cRemoteProcedure* object) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (object == static_cast<cRemoteProcedure*>(nullptr)) {
+    if (object == nullptr) {
         return;
     }
-    if (object->mKill == false) {
+    if (!object->mKill) {
         return;
     }
     delete object;
@@ -312,6 +313,14 @@ __attribute__((weak)) void sRemoteProcedure::clearTemporaryAll() {
 // No out-of-line body: no code in the ELF
 // bool sRemoteProcedure::isPoolTemprary(RPC_ID id);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sRemoteProcedure::MyDTI sRemoteProcedure::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+RPC_ID sRemoteProcedure::sAutoAllocatorTop;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sRemoteProcedure* sRemoteProcedure::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sRemoteProcedure::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -345,8 +354,11 @@ const MtDTI& sRemoteProcedure::cTemporaryRemoteCall::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sRemoteProcedure::cTemporaryRemoteCall::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK16sRemoteProcedure20cTemporaryRemoteCall5MyDTI11newInstanceEv at 0x0125da50-0x0125da7d, code DWARF attributes to no inlined copy; sz is the class's size (32), align the allocation's other whole constant (16)
+inline void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sRemoteProcedure::cTemporaryRemoteCall::DTI)->memAlloc(sz, align, sRemoteProcedure::cTemporaryRemoteCall::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* sRemoteProcedure::cTemporaryRemoteCall::operator new[](size_t sz, u32 align);
@@ -360,7 +372,7 @@ const MtDTI& sRemoteProcedure::cTemporaryRemoteCall::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16sRemoteProcedure20cTemporaryRemoteCallD0Ev at 0x0125dbbc-0x0125dbdd, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sRemoteProcedure::cTemporaryRemoteCall::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sRemoteProcedure::cTemporaryRemoteCall::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sRemoteProcedure::cTemporaryRemoteCall::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,12 +403,14 @@ sRemoteProcedure::cTemporaryRemoteCall::~cTemporaryRemoteCall() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // s32 sRemoteProcedure::cTemporaryRemoteCall::getFromId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sRemoteProcedure::cTemporaryRemoteCall::MyDTI sRemoteProcedure::cTemporaryRemoteCall::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sRemoteProcedure::cTemporaryRemoteCall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0125da50 - 0x0125daa6 (86 bytes)
-__attribute__((weak)) MtObject* sRemoteProcedure::cTemporaryRemoteCall::MyDTI::newInstance() const {
-    DDON_STUB("sRemoteProcedure::cTemporaryRemoteCall::MyDTI::newInstance")
-    return nullptr;
+MtObject* sRemoteProcedure::cTemporaryRemoteCall::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) sRemoteProcedure::cTemporaryRemoteCall;
 }
 

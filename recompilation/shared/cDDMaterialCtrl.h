@@ -126,6 +126,8 @@ public:
 public:
     class cShaderData : public MtObject
     {
+        // inferred: cDDMaterialCtrl::cShaderDataDead::init names cDDMaterialCtrl::cShaderData::mpOwner, through its enclosing class cDDMaterialCtrl
+        friend class cDDMaterialCtrl;
     public:
         class MyDTI;
     public:
@@ -191,6 +193,8 @@ public:
 public:
     class cShaderDataStatusAilments : public cDDMaterialCtrl::cShaderData
     {
+        // inferred: cDDMaterialCtrl::cShaderDataFreeze::update names cDDMaterialCtrl::cShaderDataStatusAilments::mFactorS, through its enclosing class cDDMaterialCtrl
+        friend class cDDMaterialCtrl;
     public:
         class MyDTI;
     public:
@@ -373,6 +377,8 @@ public:
 public:
     class cShaderDataMaterial : public cDDMaterialCtrl::cShaderData
     {
+        // inferred: cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::init names cDDMaterialCtrl::cShaderDataMaterial::mIsEnd, through its enclosing class cDDMaterialCtrl
+        friend class cDDMaterialCtrl;
     public:
         class MyDTI;
     public:
@@ -2502,11 +2508,35 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cDDMaterialCtrl::cShaderDataDamage::setCommonCB at 0x86a97-0x86a9d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cDDMaterialCtrl::cShaderDataDamage::getAlphaClipThreshold() {
+    return this->mAlphaClipThreshold;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cDDMaterialCtrl::cShaderDataDamage::setCommonCB at 0x86aa5-0x86aab; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cDDMaterialCtrl::cShaderDataDamage::getBlendAlphaThreshold() {
+    return this->mBlendAlphaThreshold;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cDDMaterialCtrl::cShaderDataDamage::setCommonCB at 0x86ab3-0x86ab9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cDDMaterialCtrl::cShaderDataDamage::getBlendAlphaBand() {
+    return this->mBlendAlphaBand;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cDDMaterialCtrl::cShaderDataDamage::setCommonState at 0x86596-0x8659b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cDDMaterialCtrl::cShaderDataDamage::setAlbedoBlendRate(f32 set) {
+    this->mAlbedoBlendRate = set;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cDDMaterialCtrl::cShaderData::cShaderData() {
     this->mIsCacheNone = false;
-    this->mpMaterialCtrl = static_cast<cDDMaterialCtrl*>(nullptr);
-    this->mpBakeModel = static_cast<cBakeModel*>(nullptr);
-    this->mpOwner = static_cast<uBaseModel*>(nullptr);
+    this->mpMaterialCtrl = nullptr;
+    this->mpBakeModel = nullptr;
+    this->mpOwner = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -2536,9 +2566,14 @@ inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getFactorS() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getResetFactorS() {
+    return this->mResetFactorS;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cDDMaterialCtrl::cShaderDataAnimation::cAnimData::cAnimData() {
-    this->mAnimName[0] = static_cast<char>(0);
+    this->mAnimName[0] = 0;
     this->mCostFrame = 60.0f;
     this->mStartFrame = 0.0f;
-    this->mMaterialId = static_cast<u32>(0);
+    this->mMaterialId = 0;
 }

@@ -49,7 +49,7 @@ const MtDTI& sOccluder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9sOccluderD0Ev at 0x0124c1cb-0x0124c1ec, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sOccluder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOccluder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOccluder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,11 +65,11 @@ inline void sOccluder::operator delete(void* p_addr) {
 // Also emitted as: _ZN9sOccluderD0Ev at 0x0124c190
 sOccluder::~sOccluder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOccluder == static_cast<rOccluder*>(nullptr)) {
+    if (mpOccluder == nullptr) {
         return;
     }
-    this->mpOccluder->::cResource::release();
-    this->mpOccluder = static_cast<rOccluder*>(nullptr);
+    mpOccluder->release();
+    mpOccluder = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,7 +94,7 @@ __attribute__((weak)) void sOccluder::createProperty(MtPropertyList& s) {
 // Address: 0x0124c660 - 0x0124c665 (5 bytes)
 MtUI* sOccluder::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0124c670 - 0x0124c6d4 (100 bytes)
@@ -107,49 +107,44 @@ __attribute__((weak)) void sOccluder::applyWorldOffset(const MtVector3& offset, 
 bool sOccluder::add(cUnit* punit) {
     // DWARF local not rendered: bool check;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mUnitCount <= static_cast<u32>(31)) {
-        if (this->mpOccluder != static_cast<rOccluder*>(nullptr)) {
-            if ((this->mUnitCount + this->mpOccluder->mOccluderCount) <= static_cast<u32>(31)) {
-                this->mpUnits[this->mUnitCount] = punit;
-                this->mUnitCount = this->mUnitCount + static_cast<u32>(1);
-                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+    if (mUnitCount <= 31u) {
+        if (mpOccluder != nullptr) {
+            if ((mUnitCount + mpOccluder->mOccluderCount) <= 31u) {
+                mpUnits[mUnitCount] = punit;
+                mUnitCount = mUnitCount + 1u;
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
                 return true;
             } else {
-                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
                 return false;
             }
         } else {
-            this->mpUnits[this->mUnitCount] = punit;
-            this->mUnitCount = this->mUnitCount + static_cast<u32>(1);
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            mpUnits[mUnitCount] = punit;
+            mUnitCount = mUnitCount + 1u;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
             return true;
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
         return false;
@@ -166,19 +161,17 @@ __attribute__((weak)) void sOccluder::del(cUnit* punit) {
 // Address: 0x0124c810 - 0x0124c864 (84 bytes)
 void sOccluder::reset() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mInfoCount = static_cast<u32>(0);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mInfoCount = 0;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -252,15 +245,15 @@ __attribute__((weak)) u32 sOccluder::update(const MtMatrix& vp, const MtMatrix& 
 // Address: 0x0124ef00 - 0x0124ef42 (66 bytes)
 void sOccluder::setResource(rOccluder* p_resource) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOccluder != static_cast<rOccluder*>(nullptr)) {
-        this->mpOccluder->::cResource::release();
-        this->mpOccluder = static_cast<rOccluder*>(nullptr);
+    if (mpOccluder != nullptr) {
+        mpOccluder->release();
+        mpOccluder = nullptr;
     }
-    if (p_resource == static_cast<rOccluder*>(nullptr)) {
+    if (p_resource == nullptr) {
         return;
     }
-    p_resource->::cResource::addRef();
-    this->mpOccluder = p_resource;
+    p_resource->addRef();
+    mpOccluder = p_resource;
 }
 
 // No out-of-line body: no code in the ELF
@@ -462,6 +455,11 @@ sOccluder::sOccluder() {
     DDON_STUB("sOccluder::sOccluder")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sOccluder::MyDTI sOccluder::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sOccluder* sOccluder::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sOccluder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

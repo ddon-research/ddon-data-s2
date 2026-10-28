@@ -48,7 +48,7 @@ const MtDTI& rSky::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4rSkyD0Ev at 0x011e0757-0x011e0778, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSky::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSky::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSky::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,15 +71,15 @@ rSky::rSky() {
 // Also emitted as: _ZN4rSkyD0Ev at 0x011e0700
 rSky::~rSky() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSunTexture != static_cast<rTexture*>(nullptr)) {
-        this->mpSunTexture->::cResource::release();
-        this->mpSunTexture = static_cast<rTexture*>(nullptr);
+    if (mpSunTexture != nullptr) {
+        mpSunTexture->release();
+        mpSunTexture = nullptr;
     }
-    if (this->mpMoonTexture == static_cast<rTexture*>(nullptr)) {
+    if (mpMoonTexture == nullptr) {
         return;
     }
-    this->mpMoonTexture->::cResource::release();
-    this->mpMoonTexture = static_cast<rTexture*>(nullptr);
+    mpMoonTexture->release();
+    mpMoonTexture = nullptr;
 }
 
 // Address: 0x011e0780 - 0x011e0aa2 (802 bytes)
@@ -209,6 +209,8 @@ __attribute__((weak)) MtVector3 rSky::getRayleighScattering() const {
 //   in uSkyExt::drawMoon at 0x00d10ca3-0x00d10cad (called at uSkyExt.cpp:238)
 // f32 rSky::getEarthShine() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSky::MyDTI rSky::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSky::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -239,7 +241,7 @@ const MtDTI& rStarCatalog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK12rStarCatalog5MyDTI11newInstanceEv at 0x011e0e40-0x011e0e6d, code DWARF attributes to no inlined copy; sz is the class's size (128), align the allocation's other whole constant (16)
 inline void* rStarCatalog::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStarCatalog::DTI)->memAlloc(sz, align, ::rStarCatalog::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memAlloc(sz, align, rStarCatalog::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -254,7 +256,7 @@ inline void* rStarCatalog::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rStarCatalogD0Ev at 0x011e0fac-0x011e0fc7, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStarCatalog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStarCatalog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -273,7 +275,7 @@ inline void rStarCatalog::operator delete(void* p_addr) {
 // Also emitted as: _ZN12rStarCatalogD0Ev at 0x011e0f70
 rStarCatalog::~rStarCatalog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::rStarCatalog::DTI)->memFree(static_cast<void*>(this->mpStarCatalog));
+    MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memFree(static_cast<void*>(mpStarCatalog));
 }
 
 // Address: 0x01b93290 - 0x01b93298 (8 bytes)
@@ -293,28 +295,30 @@ __attribute__((weak)) bool rStarCatalog::load(MtStream& in) {
 // Address: 0x011e10d0 - 0x011e116b (155 bytes)
 bool rStarCatalog::save(MtStream& in) {
     // Approximate from the ELF: an unlocated local at the frame address its call receives; the body oracle reports this body.
-    MtDataWriter w(in, static_cast<u32>(4096), static_cast<u32>(4096));
+    MtDataWriter w(in, 4096u, 4096u);
     // inferred: an unlocated local at the frame address its call receives
-    rStarCatalog::Header h;
-    h.mMagic = static_cast<s32>(1380013139);
-    h.mVersion = static_cast<u32>(0);
-    h.mStarNum = this->mStarNum;
-    w.::MtDataWriter::write(static_cast<const void*>(&h), static_cast<u32>(12));
-    w.::MtDataWriter::write(static_cast<const void*>(this->mpStarCatalog), this->mStarNum * static_cast<u32>(16));
+    Header h;
+    h.mMagic = 1380013139;
+    h.mVersion = 0;
+    h.mStarNum = mStarNum;
+    w.MtDataWriter::write(static_cast<const void*>(&h), 12u);
+    w.MtDataWriter::write(static_cast<const void*>(mpStarCatalog), mStarNum * 16u);
     return true;
 }
 
 // Address: 0x011e1170 - 0x011e1174 (4 bytes)
 u32 rStarCatalog::getStarNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStarNum;
+    return mStarNum;
 }
 
 // Address: 0x011e1180 - 0x011e118b (11 bytes)
 const rStarCatalog::StarData* rStarCatalog::getStarData(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpStarCatalog[index];
+    return &mpStarCatalog[index];
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStarCatalog::MyDTI rStarCatalog::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rStarCatalog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -322,6 +326,6 @@ const rStarCatalog::StarData* rStarCatalog::getStarData(u32 index) const {
 // Address: 0x011e0e40 - 0x011e0ea4 (100 bytes)
 MtObject* rStarCatalog::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStarCatalog;
+    return new (16u) rStarCatalog;
 }
 

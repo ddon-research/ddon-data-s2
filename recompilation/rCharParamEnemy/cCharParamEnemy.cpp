@@ -24,7 +24,7 @@ const MtDTI& cCharParamEnemy::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCharParamEnemy::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::DTI);
+    return MtMemoryAllocator::getAllocator(cCharParamEnemy::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cCharParamEnemy::getAllocator() {
 // Address: 0x0004d130 - 0x0004d170 (64 bytes)
 void* cCharParamEnemy::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCharParamEnemy::getAllocator()->memAlloc(sz, align, ::cCharParamEnemy::DTI.::MtDTI::getID());
+    return cCharParamEnemy::getAllocator()->memAlloc(sz, align, cCharParamEnemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ void* cCharParamEnemy::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharParamEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharParamEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ __attribute__((weak)) void cCharParamEnemy::createProperty(MtPropertyList& s) {
 // Address: 0x0004fa10 - 0x0004fa15 (5 bytes)
 MtUI* cCharParamEnemy::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cCharParam::createUI(prop);
+    return this->cCharParam::createUI(prop);
 }
 
 // Address: 0x0004fa20 - 0x0004fbd7 (439 bytes)
@@ -86,6 +86,8 @@ __attribute__((weak)) void cCharParamEnemy::paramClassCopy(MtObject* pObject) {
     DDON_STUB("cCharParamEnemy::paramClassCopy")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCharParamEnemy::MyDTI cCharParamEnemy::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCharParamEnemy.cpp at 0x0004fd57-0x0004fd94 (called at cCharParamEnemy.cpp:41)
@@ -121,7 +123,7 @@ const MtDTI& cCharParamEnemy::cJumpAttackSpeed::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCharParamEnemy::cJumpAttackSpeed::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cJumpAttackSpeed::DTI)->memAlloc(sz, align, ::cCharParamEnemy::cJumpAttackSpeed::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharParamEnemy::cJumpAttackSpeed::DTI)->memAlloc(sz, align, cCharParamEnemy::cJumpAttackSpeed::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* cCharParamEnemy::cJumpAttackSpeed::operator new(size_t sz, u32 alig
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharParamEnemy::cJumpAttackSpeed::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cJumpAttackSpeed::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharParamEnemy::cJumpAttackSpeed::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -166,8 +168,10 @@ __attribute__((weak)) void cCharParamEnemy::cJumpAttackSpeed::createProperty(MtP
 // Address: 0x01961200 - 0x01961205 (5 bytes)
 MtUI* cCharParamEnemy::cJumpAttackSpeed::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharParamEnemy::cJumpAttackSpeed::MyDTI cCharParamEnemy::cJumpAttackSpeed::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cCharParamEnemy.cpp at 0x0004fcde-0x0004fd1e (called at cCharParamEnemy.cpp:39)
@@ -177,7 +181,7 @@ MtUI* cCharParamEnemy::cJumpAttackSpeed::createUI(MtProperty& prop) {
 // Address: 0x0004cf60 - 0x0004cfb9 (89 bytes)
 MtObject* cCharParamEnemy::cJumpAttackSpeed::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharParamEnemy::cJumpAttackSpeed;
+    return new (16u) cCharParamEnemy::cJumpAttackSpeed;
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,7 +207,7 @@ const MtDTI& cCharParamEnemy::cGuardCounter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCharParamEnemy::cGuardCounter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cGuardCounter::DTI)->memAlloc(sz, align, ::cCharParamEnemy::cGuardCounter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharParamEnemy::cGuardCounter::DTI)->memAlloc(sz, align, cCharParamEnemy::cGuardCounter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,7 +221,7 @@ inline void* cCharParamEnemy::cGuardCounter::operator new(size_t sz, u32 align) 
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharParamEnemy::cGuardCounter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cGuardCounter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharParamEnemy::cGuardCounter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,8 +252,10 @@ __attribute__((weak)) void cCharParamEnemy::cGuardCounter::createProperty(MtProp
 // Address: 0x01961010 - 0x01961015 (5 bytes)
 MtUI* cCharParamEnemy::cGuardCounter::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharParamEnemy::cGuardCounter::MyDTI cCharParamEnemy::cGuardCounter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCharParamEnemy.cpp at 0x0004fd1e-0x0004fd57 (called at cCharParamEnemy.cpp:40)
@@ -259,6 +265,6 @@ MtUI* cCharParamEnemy::cGuardCounter::createUI(MtProperty& prop) {
 // Address: 0x0004d030 - 0x0004d076 (70 bytes)
 MtObject* cCharParamEnemy::cGuardCounter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharParamEnemy::cGuardCounter;
+    return new (16u) cCharParamEnemy::cGuardCounter;
 }
 

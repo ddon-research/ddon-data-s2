@@ -80,3 +80,9 @@ public:
 protected:
     static const u8 DATA_VERSION = 6;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCamImpMot::initSub at 0x3af2b-0x3af32; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rCameraList* rCameraParamList::getCameraListResource() {
+    return this->mprCameraList;
+}

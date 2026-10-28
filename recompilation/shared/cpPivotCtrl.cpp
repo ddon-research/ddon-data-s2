@@ -27,7 +27,7 @@ const MtDTI& cpPivotCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpPivotCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpPivotCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpPivotCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpPivotCtrl::getAllocator() {
 // Address: 0x005232b0 - 0x005232f0 (64 bytes)
 void* cpPivotCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpPivotCtrl::getAllocator()->memAlloc(sz, align, ::cpPivotCtrl::DTI.::MtDTI::getID());
+    return cpPivotCtrl::getAllocator()->memAlloc(sz, align, cpPivotCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpPivotCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpPivotCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpPivotCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpPivotCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,28 +78,28 @@ cpPivotCtrl::~cpPivotCtrl() {
 // Address: 0x01a5f0b0 - 0x01a5f0b9 (9 bytes)
 void cpPivotCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x005237e0 - 0x005237fd (29 bytes)
 void cpPivotCtrl::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
-    this->mpModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
+    this->cpComponent::setup();
+    mpModel = static_cast<uDDOModel*>(getOwner());
 }
 
 // Address: 0x00523800 - 0x00523833 (51 bytes)
 void cpPivotCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00523460 - 0x00523509 (169 bytes)
@@ -176,6 +176,8 @@ __attribute__((weak)) void cpPivotCtrl::setPivotPos(const MtVector3& pos) {
 //   in cpPivotCtrl::after at 0x00523a4e-0x00523aaa (called at cpPivotCtrl.cpp:157)
 //   in cpPivotCtrl::setPivotPos at 0x00524190-0x005241ec (called at cpPivotCtrl.cpp:240)
 // bool cpPivotCtrl::isActive();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpPivotCtrl::MyDTI cpPivotCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpPivotCtrl.cpp at 0x00524390-0x005243d2 (called at cpPivotCtrl.cpp:25)

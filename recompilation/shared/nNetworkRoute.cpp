@@ -100,11 +100,11 @@ __attribute__((weak)) void nNetwork::Route::update(u32 delta) {
 // Address: 0x011a0010 - 0x011a0039 (41 bytes)
 void nNetwork::Route::registerPeerId(s32 peer_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPeerId = peer_id;
-    this->mReqPeer = static_cast<u32>(0);
-    this->mPeerEnable = true;
-    this->mAbort = false;
-    this->mPeerRecvElapse = static_cast<u32>(0);
+    mPeerId = peer_id;
+    mReqPeer = 0;
+    mPeerEnable = true;
+    mAbort = false;
+    mPeerRecvElapse = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -113,10 +113,10 @@ void nNetwork::Route::registerPeerId(s32 peer_id) {
 // Address: 0x011a0040 - 0x011a0063 (35 bytes)
 void nNetwork::Route::clearPeerId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPeerId = static_cast<s32>(-1);
-    this->mReqPeer = static_cast<u32>(0);
-    this->mPeerEnable = false;
-    this->mAbort = false;
+    mPeerId = -1;
+    mReqPeer = 0;
+    mPeerEnable = false;
+    mAbort = false;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -182,8 +182,8 @@ void nNetwork::Route::clearPeerId() {
 // Address: 0x011a05b0 - 0x011a05bf (15 bytes)
 void nNetwork::Route::recQueueDelay(u32 delay) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mQueueDelayNext < delay) {
-        this->mQueueDelayNext = delay;
+    if (mQueueDelayNext < delay) {
+        mQueueDelayNext = delay;
     }
 }
 
@@ -322,7 +322,7 @@ void nNetwork::Route::recQueueDelay(u32 delay) {
 // Address: 0x011a0070 - 0x011a0078 (8 bytes)
 void nNetwork::Route::activate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActive = true;
+    mActive = true;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -337,15 +337,15 @@ void nNetwork::Route::activate() {
 // Address: 0x011a0430 - 0x011a0468 (56 bytes)
 void nNetwork::Route::recSend(u32 length) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSendRate.mTotalLength = length + this->mSendRate.mTotalLength;
-    this->mSendRate.mTotalCount = this->mSendRate.mTotalCount + static_cast<u32>(1);
+    mSendRate.mTotalLength = length + mSendRate.mTotalLength;
+    mSendRate.mTotalCount = mSendRate.mTotalCount + 1u;
     // inferred: a temporary for the value the load at 0x11a043c read, used twice; no DWARF local holds it
-    u32 t0 = this->mSendRate.mHead;
-    this->mSendRate.mRecord[t0].mTotal = length + this->mSendRate.mRecord[t0].mTotal;
-    this->mSendRate.mRecord[t0].mCount = this->mSendRate.mRecord[t0].mCount + static_cast<u32>(1);
-    this->mSendElapse = static_cast<u32>(0);
-    this->mPriority = length + this->mPriority;
-    this->mReady = false;
+    u32 t0 = mSendRate.mHead;
+    mSendRate.mRecord[t0].mTotal = length + mSendRate.mRecord[t0].mTotal;
+    mSendRate.mRecord[t0].mCount = mSendRate.mRecord[t0].mCount + 1u;
+    mSendElapse = 0;
+    mPriority = length + mPriority;
+    mReady = false;
 }
 
 // Address: 0x011a0470 - 0x011a05a5 (309 bytes)
@@ -358,14 +358,14 @@ __attribute__((weak)) void nNetwork::Route::recRecv(u32 seq, u32 length, u32 hop
 void nNetwork::Route::ready() {
     // DWARF local not rendered: s32 ival;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mReady != false) {
+    if (mReady) {
         return;
     }
-    this->mReady = true;
-    if (this->mRecoveryTime != static_cast<u32>(0)) {
-        this->mRecoveryTime = (this->mSendElapse + (this->mRecoveryTime * static_cast<u32>(15))) >> static_cast<u32>(4);
+    mReady = true;
+    if (mRecoveryTime != 0) {
+        mRecoveryTime = (mSendElapse + (mRecoveryTime * 15u)) >> 4;
     } else {
-        this->mRecoveryTime = this->mSendElapse;
+        mRecoveryTime = mSendElapse;
     }
 }
 
@@ -425,6 +425,8 @@ __attribute__((weak)) void nNetwork::Route::setFatal(const MtNetError& err) {
 
 // No out-of-line body: no code in the ELF
 // void nNetwork::Route::getBestDetour(u32& cost, u32& interval, s32& route_index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Route::MyDTI nNetwork::Route::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Route::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

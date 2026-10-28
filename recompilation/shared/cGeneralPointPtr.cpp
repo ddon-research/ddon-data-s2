@@ -11,38 +11,38 @@
 // Address: 0x001fe960 - 0x001fe989 (41 bytes)
 cGeneralPointPtr::cGeneralPointPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpPtr = static_cast<cGeneralPoint*>(nullptr);
-    this->mRefIdx = static_cast<s32>(-1);
-    if (::sGeneralPoint::getInstance() == static_cast<sGeneralPoint*>(nullptr)) {
+    mpPtr = nullptr;
+    mRefIdx = -1;
+    if (sGeneralPoint::getInstance() == nullptr) {
         return;
     }
-    ::sGeneralPoint::getInstance()->::sGeneralPoint::addPtr(this);
+    sGeneralPoint::getInstance()->addPtr(this);
 }
 
 // Address: 0x001fe990 - 0x001fe9b8 (40 bytes)
 cGeneralPointPtr::cGeneralPointPtr(const cGeneralPointPtr& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpPtr = src.mpPtr;
-    this->mRefIdx = static_cast<s32>(-1);
-    if (::sGeneralPoint::getInstance() == static_cast<sGeneralPoint*>(nullptr)) {
+    mpPtr = src.mpPtr;
+    mRefIdx = -1;
+    if (sGeneralPoint::getInstance() == nullptr) {
         return;
     }
-    ::sGeneralPoint::getInstance()->::sGeneralPoint::addPtr(this);
+    sGeneralPoint::getInstance()->addPtr(this);
 }
 
 // Address: 0x001fe9c0 - 0x001fe9db (27 bytes)
 cGeneralPointPtr::~cGeneralPointPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sGeneralPoint::getInstance() == static_cast<sGeneralPoint*>(nullptr)) {
+    if (sGeneralPoint::getInstance() == nullptr) {
         return;
     }
-    ::sGeneralPoint::getInstance()->::sGeneralPoint::erasePtr(this);
+    sGeneralPoint::getInstance()->erasePtr(this);
 }
 
 // Address: 0x001fe9e0 - 0x001fe9f5 (21 bytes)
 void cGeneralPointPtr::releaseGpPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sGeneralPoint::getInstance()->::sGeneralPoint::releasePoint(this->mpPtr);
+    sGeneralPoint::getInstance()->releasePoint(mpPtr);
 }
 
 // No out-of-line body: 62 inlined copies in 49 functions (1049 bytes)
@@ -110,12 +110,12 @@ void cGeneralPointPtr::releaseGpPtr() {
 // Address: 0x001fea20 - 0x001fea3f (31 bytes)
 void* cGeneralPointPtr::operator new[](size_t s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memAlloc(s, static_cast<u32>(16));
+    return MtMemory::mpAllocatorType[1]->memAlloc(s, 16u);
 }
 
 // Address: 0x001fea40 - 0x001fea5a (26 bytes)
 void cGeneralPointPtr::operator delete[](void* padr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->memFree(padr);
+    MtMemory::mpAllocatorType[1]->memFree(padr);
 }
 

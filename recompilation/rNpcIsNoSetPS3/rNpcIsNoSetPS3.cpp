@@ -39,7 +39,7 @@ const MtDTI& cNpcIsNoSetPS3::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::cNpcIsNoSetPS3::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, cNpcIsNoSetPS3::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -54,7 +54,7 @@ inline void* cNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNpcIsNoSetPS3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNpcIsNoSetPS3::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -86,6 +86,8 @@ __attribute__((weak)) void cNpcIsNoSetPS3::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // bool cNpcIsNoSetPS3::hasSameAttributes(u16 stageNo, u16 groupNo, u8 unitNo, u32 questId) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNpcIsNoSetPS3::MyDTI cNpcIsNoSetPS3::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcIsNoSetPS3.cpp at 0x006ab910-0x006ab952 (called at rNpcIsNoSetPS3.cpp:24)
 //   in _GLOBAL__sub_I_rNpcIsNoSetPS3.cpp at 0x006ab910-0x006ab952 (called at rNpcIsNoSetPS3.h:32)
@@ -94,7 +96,7 @@ __attribute__((weak)) void cNpcIsNoSetPS3::createProperty(MtPropertyList& s) {
 // Address: 0x006ab3a0 - 0x006ab3f7 (87 bytes)
 MtObject* cNpcIsNoSetPS3::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cNpcIsNoSetPS3;
+    return new (16u) cNpcIsNoSetPS3;
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ const MtDTI& rNpcIsNoSetPS3::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::rNpcIsNoSetPS3::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcIsNoSetPS3::DTI)->memAlloc(sz, align, rNpcIsNoSetPS3::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +136,7 @@ inline void* rNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rNpcIsNoSetPS3D0Ev at 0x01a9ef44-0x01a9ef63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcIsNoSetPS3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcIsNoSetPS3::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcIsNoSetPS3::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -152,10 +154,10 @@ bool rNpcIsNoSetPS3::loadData(MtDataReader& in, cNpcIsNoSetPS3* pData) {
     // DWARF local not rendered: u8 ReadU8;
     // DWARF local not rendered: u32 ReadU32;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cNpcIsNoSetPS3*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mStageNo = in.readU16();
         pData->mGroupNo = in.readU16();
-        pData->mUnitNo = in.::MtDataReader::readU8();
+        pData->mUnitNo = in.readU8();
         pData->mQuestId = in.readU32();
         return true;
     } else {
@@ -172,8 +174,10 @@ MT_CTSTR rNpcIsNoSetPS3::getExt() const {
 // Address: 0x01a9f090 - 0x01a9f096 (6 bytes)
 u32 rNpcIsNoSetPS3::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcIsNoSetPS3::MyDTI rNpcIsNoSetPS3::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNpcIsNoSetPS3.cpp at 0x006ab952-0x006ab98f (called at rNpcIsNoSetPS3.cpp:96)
@@ -183,7 +187,7 @@ u32 rNpcIsNoSetPS3::getDataVersion() const {
 // Address: 0x006ab830 - 0x006ab894 (100 bytes)
 MtObject* rNpcIsNoSetPS3::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcIsNoSetPS3;
+    return new (16u) rNpcIsNoSetPS3;
 }
 
 // Instance at 0x01a9f040 - 0x01a9f056 (22 bytes) of the generic rTbl2<T>::getData

@@ -212,6 +212,8 @@ namespace nNetwork {
 namespace nNetwork {
     class ReceiverBase
     {
+        // inferred: nNetwork::Callback::Entry::getClass names nNetwork::ReceiverBase::mpObject, through its enclosing class nNetwork::Callback
+        friend class nNetwork::Callback;
     public:
         ReceiverBase();
         virtual ~ReceiverBase() {}

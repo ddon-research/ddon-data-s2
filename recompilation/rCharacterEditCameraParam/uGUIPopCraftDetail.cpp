@@ -33,7 +33,7 @@ const MtDTI& uGUIPopCraftDetail::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopCraftDetail::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopCraftDetail::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopCraftDetail::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -42,7 +42,7 @@ inline MtAllocator* uGUIPopCraftDetail::getAllocator() {
 // Address: 0x00b9b930 - 0x00b9b970 (64 bytes)
 void* uGUIPopCraftDetail::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopCraftDetail::getAllocator()->memAlloc(sz, align, ::uGUIPopCraftDetail::DTI.::MtDTI::getID());
+    return uGUIPopCraftDetail::getAllocator()->memAlloc(sz, align, uGUIPopCraftDetail::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ void* uGUIPopCraftDetail::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopCraftDetail::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopCraftDetail::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopCraftDetail::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,21 +82,21 @@ uGUIPopCraftDetail::~uGUIPopCraftDetail() {
 // Address: 0x00b9bd30 - 0x00b9bd35 (5 bytes)
 void uGUIPopCraftDetail::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b9bd40 - 0x00b9be85 (325 bytes)
 bool uGUIPopCraftDetail::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_CRAFT_DETAIL_GUI"), static_cast<u32>(129), static_cast<t64>(1477041087)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpGMDParamRes == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGMDParamRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                                if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                    this->mpGMDJewelryCtgr;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_CRAFT_DETAIL_GUI"), 129u, 1477041087l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpGMDParamRes == nullptr) {
+                        if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
+                            if (mpGMDJewelryCtgr == nullptr) {
+                                if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                                    mpGMDJewelryCtgr;
                                     return true;
                                 } else {
                                     return false;
@@ -108,9 +108,9 @@ bool uGUIPopCraftDetail::loadResource() {
                             return false;
                         }
                     } else {
-                        if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGMDJewelryCtgr;
+                        if (mpGMDJewelryCtgr == nullptr) {
+                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                                mpGMDJewelryCtgr;
                                 return true;
                             } else {
                                 return false;
@@ -123,11 +123,11 @@ bool uGUIPopCraftDetail::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpGMDParamRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGMDParamRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGMDJewelryCtgr;
+                if (mpGMDParamRes == nullptr) {
+                    if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
+                        if (mpGMDJewelryCtgr == nullptr) {
+                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                                mpGMDJewelryCtgr;
                                 return true;
                             } else {
                                 return false;
@@ -139,9 +139,9 @@ bool uGUIPopCraftDetail::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGMDJewelryCtgr;
+                    if (mpGMDJewelryCtgr == nullptr) {
+                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                            mpGMDJewelryCtgr;
                             return true;
                         } else {
                             return false;
@@ -155,13 +155,13 @@ bool uGUIPopCraftDetail::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpGMDParamRes == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGMDParamRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                            if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                                this->mpGMDJewelryCtgr;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                if (mpGMDParamRes == nullptr) {
+                    if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
+                        if (mpGMDJewelryCtgr == nullptr) {
+                            if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                                mpGMDJewelryCtgr;
                                 return true;
                             } else {
                                 return false;
@@ -173,9 +173,9 @@ bool uGUIPopCraftDetail::loadResource() {
                         return false;
                     }
                 } else {
-                    if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGMDJewelryCtgr;
+                    if (mpGMDJewelryCtgr == nullptr) {
+                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                            mpGMDJewelryCtgr;
                             return true;
                         } else {
                             return false;
@@ -188,11 +188,11 @@ bool uGUIPopCraftDetail::loadResource() {
                 return false;
             }
         } else {
-            if (this->mpGMDParamRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDParamRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGMDJewelryCtgr;
+            if (mpGMDParamRes == nullptr) {
+                if ((mpGMDParamRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PARAMETER_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpGMDJewelryCtgr == nullptr) {
+                        if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                            mpGMDJewelryCtgr;
                             return true;
                         } else {
                             return false;
@@ -204,9 +204,9 @@ bool uGUIPopCraftDetail::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpGMDJewelryCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGMDJewelryCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGMDJewelryCtgr;
+                if (mpGMDJewelryCtgr == nullptr) {
+                    if ((mpGMDJewelryCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JEWELRY_CTGR_GMD"), 129u, 0l))) != nullptr) {
+                        mpGMDJewelryCtgr;
                         return true;
                     } else {
                         return false;
@@ -239,13 +239,13 @@ __attribute__((weak)) void uGUIPopCraftDetail::setup() {
 // Address: 0x00b9be90 - 0x00b9be95 (5 bytes)
 void uGUIPopCraftDetail::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b9bea0 - 0x00b9bea5 (5 bytes)
 void uGUIPopCraftDetail::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00b9cc30 - 0x00b9dc1b (4075 bytes)
@@ -349,9 +349,12 @@ __attribute__((weak)) void uGUIPopCraftDetail::setupColorInfo(cItemParam* pParam
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (12 bytes)
-//   in uGUIPopDetail01::updatePageDotNum at 0x00baa5b3-0x00baa5bf (called at uGUIPopDetail01.cpp:2708)
-// void uGUIPopCraftDetail::setPageNum(u32 page_num);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPopDetail01::updatePageDotNum at 0xbaa5b3-0xbaa5bf; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void uGUIPopCraftDetail::setPageNum(u32 page_num) {
+    mPage.mPageDot.setDispPageNum(page_num);
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
 //   in uGUICraft::setEnableOrder at 0x00a661af-0x00a661b8 (called at uGUICraft.cpp:7820)
@@ -363,7 +366,7 @@ __attribute__((weak)) void uGUIPopCraftDetail::setupColorInfo(cItemParam* pParam
 // Address: 0x00b9cc10 - 0x00b9cc1c (12 bytes)
 void uGUIPopCraftDetail::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTop.mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    mTop.mIcon.uGUIBase::cReferenceUIIconItem::update();
 }
 
 // No out-of-line body: no code in the ELF
@@ -373,16 +376,16 @@ void uGUIPopCraftDetail::updateInit() {
 void uGUIPopCraftDetail::setupCrestResult(uGUIPopCraftDetail::stCrestResult& crest, cGUIInstance* pInstNull, cGUIInstance* pInstHeader, cGUIInstance* pInstResult) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     crest.mpInstNull = static_cast<cGUIInstNull*>(pInstNull);
-    crest.mpObjMsgName = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstHeader, static_cast<u32>(2)));
-    crest.mpObjMsgExp = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(11)));
-    crest.mpObjMsgExpVal = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(15)));
-    crest.mpObjMsgExpUnit = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(14)));
-    crest.mpObjNullCost = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(19)));
-    crest.mpObjMsgCost = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(20)));
-    crest.mpObjMsgCostVal = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(34)));
-    crest.mpObjNullCostRise = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(47)));
-    crest.mpObjMsgCostRiseVal = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(23)));
-    crest.mpObjMsgCostUnit = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(pInstResult, static_cast<u32>(22)));
+    crest.mpObjMsgName = static_cast<cGUIObjMessage*>(getObjectFromId(pInstHeader, 2u));
+    crest.mpObjMsgExp = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 11u));
+    crest.mpObjMsgExpVal = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 15u));
+    crest.mpObjMsgExpUnit = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 14u));
+    crest.mpObjNullCost = static_cast<cGUIObjNull*>(getObjectFromId(pInstResult, 19u));
+    crest.mpObjMsgCost = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 20u));
+    crest.mpObjMsgCostVal = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 34u));
+    crest.mpObjNullCostRise = static_cast<cGUIObjNull*>(getObjectFromId(pInstResult, 47u));
+    crest.mpObjMsgCostRiseVal = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 23u));
+    crest.mpObjMsgCostUnit = static_cast<cGUIObjMessage*>(getObjectFromId(pInstResult, 22u));
 }
 
 // Address: 0x00b9dc20 - 0x00b9e3ec (1996 bytes)
@@ -452,6 +455,8 @@ __attribute__((weak)) void uGUIPopCraftDetail::setExpVal(cGUIObjMessage* pObj, c
 //   in uGUIPopCraftDetail::setupBasicInfo at 0x00b9e296-0x00b9e2af (called at uGUIPopCraftDetail.cpp:761)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIPopCraftDetail::getCmnMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopCraftDetail::MyDTI uGUIPopCraftDetail::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopCraftDetail.cpp at 0x00b9f53f-0x00b9f57c (called at uGUIPopCraftDetail.cpp:32)

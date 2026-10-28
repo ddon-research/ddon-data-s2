@@ -9,8 +9,10 @@
 #include "../shared/MtString.h"
 #include "cScenario.h"
 #include "../shared/cSystem.h"
+#include "../shared/cTalkMsgData.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/sGame.h"
 #include "../shared/uGUIBase.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
@@ -89,16 +91,16 @@ __attribute__((weak)) void SCE_AH_LIST::createProperty(MtPropertyList& s) {
 // Address: 0x00839370 - 0x00839375 (5 bytes)
 MtUI* SCE_AH_LIST::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00838f60 - 0x00838f72 (18 bytes)
 cScenario* SCE_AH_LIST::getScenario(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no < this->mArray.mLength) {
-        return static_cast<cScenario*>(this->mArray.mpArray[no]);
+    if (no < mArray.mLength) {
+        return static_cast<cScenario*>(mArray.mpArray[no]);
     } else {
-        return static_cast<cScenario*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -156,6 +158,8 @@ cScenario* SCE_AH_LIST::getScenario(u32 no) {
 // No out-of-line body: no code in the ELF
 // u32 SCE_AH_LIST::getNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): SCE_AH_LIST::MyDTI SCE_AH_LIST::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sScenario.cpp at 0x0083956c-0x008395a9 (called at sScenario.cpp:53)
 //   in _GLOBAL__sub_I_sScenario.cpp at 0x0083956c-0x008395a9 (called at sScenario.h:132)
@@ -181,7 +185,7 @@ const MtDTI& sScenario::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sScenario::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sScenario::DTI);
+    return MtMemoryAllocator::getAllocator(sScenario::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -190,7 +194,7 @@ inline MtAllocator* sScenario::getAllocator() {
 // Address: 0x00837980 - 0x008379c0 (64 bytes)
 void* sScenario::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sScenario::getAllocator()->memAlloc(sz, align, ::sScenario::DTI.::MtDTI::getID());
+    return sScenario::getAllocator()->memAlloc(sz, align, sScenario::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -205,7 +209,7 @@ void* sScenario::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sScenario::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sScenario::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sScenario::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,7 +330,7 @@ __attribute__((weak)) void sScenario::release(cScenario* p) {
 // Address: 0x00838dd0 - 0x00838ddb (11 bytes)
 SCE_AH_LIST* sScenario::getAreaHitList(SCENARIO_TASK_ENUM tasktype) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAccessList[tasktype];
+    return mAccessList[tasktype];
 }
 
 // Address: 0x00838de0 - 0x00838e76 (150 bytes)
@@ -350,36 +354,80 @@ __attribute__((weak)) void sScenario::evEventFinish() {
 cScenario* sScenario::getScenario(u32 type, u32 no) {
     // DWARF local not rendered: SCE_AH_LIST* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sScenario::getInstance()->mAccessList[type] != static_cast<SCE_AH_LIST*>(nullptr)) {
-        if (no < ::sScenario::getInstance()->mAccessList[type]->mArray.mLength) {
-            return static_cast<cScenario*>(::sScenario::getInstance()->mAccessList[type]->mArray.mpArray[no]);
+    if (sScenario::getInstance()->mAccessList[type] != nullptr) {
+        if (no < sScenario::getInstance()->mAccessList[type]->mArray.mLength) {
+            return static_cast<cScenario*>(sScenario::getInstance()->mAccessList[type]->mArray.mpArray[no]);
         }
     }
-    return static_cast<cScenario*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00838f80 - 0x008390a0 (288 bytes)
-__attribute__((weak)) void sScenario::createSystemMsg(u32 textNo) {
-    // local: cTalkMsgData* pMsgData;
-    // local: u32 i;
-    DDON_STUB("sScenario::createSystemMsg")
-    /* stub */
+void sScenario::createSystemMsg(u32 textNo) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (mpGUISystemMsg != nullptr) {
+        if (mpGUISystemMsg != static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+            mpGUISystemMsg->kill();
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
+        }
+        mpGUISystemMsg = nullptr;
+    }
+    cTalkMsgData* pMsgData = sGame::getInstance()->getExmineMsgData();
+    if (pMsgData != nullptr) {
+        pMsgData->cTalkMsgData::setDispGrpSerialNo(textNo);
+        if ((mpGUISystemMsg = static_cast<uGUISystemMsg*>(static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUISystemMsg::DTI)))) == nullptr) {
+            mpGUISystemMsg;
+        } else {
+            if (pMsgData->cTalkMsgData::getDispPageNum() != 0) {
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i2_3 = 0;;) {
+                    if (pMsgData->cTalkMsgData::getMessage() != nullptr) {
+                        // inferred: a temporary for the value the load at 0x83903d read, used once; no DWARF local holds it
+                        uGUISystemMsg* t0 = mpGUISystemMsg;
+                        // inferred: a temporary for the result of the call at 0x839047, used once; no DWARF local holds it
+                        MT_CTSTR t1 = pMsgData->cTalkMsgData::getMessage();
+                        if (i2_3 != 0) {
+                            t0->addPageInfo(t1);
+                        } else {
+                            t0->setText(t1, -1);
+                        }
+                    }
+                    pMsgData->cTalkMsgData::addDispPageNo();
+                    if ((i2_3 + 1u) < pMsgData->cTalkMsgData::getDispPageNum()) {
+                        i2_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            mpGUISystemMsg->mSkipType = 0;
+        }
+    }
 }
 
 // Address: 0x00838540 - 0x0083858d (77 bytes)
 void sScenario::deleteSystemMsg() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    if (this->mpGUISystemMsg != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
-        this->mpGUISystemMsg->kill();
+    if (mpGUISystemMsg != static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+        mpGUISystemMsg->kill();
     } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
+        static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
     }
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpGUISystemMsg = nullptr;
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sScenario* sScenario::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sScenario::MyDTI sScenario::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sScenario.cpp at 0x0083952f-0x0083956c (called at sScenario.cpp:52)

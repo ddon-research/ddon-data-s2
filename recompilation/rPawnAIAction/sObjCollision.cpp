@@ -49,7 +49,7 @@ const MtDTI& sObjCollision::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sObjCollision::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sObjCollision::DTI);
+    return MtMemoryAllocator::getAllocator(sObjCollision::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ inline MtAllocator* sObjCollision::getAllocator() {
 // Address: 0x007f4a20 - 0x007f4a60 (64 bytes)
 void* sObjCollision::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sObjCollision::getAllocator()->memAlloc(sz, align, ::sObjCollision::DTI.::MtDTI::getID());
+    return sObjCollision::getAllocator()->memAlloc(sz, align, sObjCollision::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,7 +73,7 @@ void* sObjCollision::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sObjCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sObjCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sObjCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,16 +95,16 @@ sObjCollision::sObjCollision() {
 // Also emitted as: _ZN13sObjCollisionD0Ev at 0x007f5620
 sObjCollision::~sObjCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttackParamManager != static_cast<sObjCollision::cParamInfoManager<rAttackParam>*>(nullptr)) {
-        delete this->mpAttackParamManager;
-        this->mpAttackParamManager = static_cast<sObjCollision::cParamInfoManager<rAttackParam>*>(nullptr);
+    if (mpAttackParamManager != nullptr) {
+        delete mpAttackParamManager;
+        mpAttackParamManager = nullptr;
     }
-    if (this->mpCollNodeManager != static_cast<sObjCollision::cParamInfoManager<rCollNode>*>(nullptr)) {
-        delete this->mpCollNodeManager;
-        this->mpCollNodeManager = static_cast<sObjCollision::cParamInfoManager<rCollNode>*>(nullptr);
+    if (mpCollNodeManager != nullptr) {
+        delete mpCollNodeManager;
+        mpCollNodeManager = nullptr;
     }
-    this->::sObjCollision::releaseResource();
-    ::sObjCollision::mpInstance = static_cast<sObjCollision*>(nullptr);
+    releaseResource();
+    sObjCollision::mpInstance = nullptr;
 }
 
 // No out-of-line body: 249 inlined copies in 94 functions (3891 bytes)
@@ -120,16 +120,16 @@ sObjCollision::~sObjCollision() {
 // Address: 0x007f60f0 - 0x007f6105 (21 bytes)
 void sObjCollision::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsReady == false) {
-        this->mIsReady = true;
+    if (!mIsReady) {
+        mIsReady = true;
     }
-    this->::sObjCollision::cheatCheck();
+    cheatCheck();
 }
 
 // Address: 0x007f6330 - 0x007f6335 (5 bytes)
 void sObjCollision::setupBeforeUnitMove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sObjCollision::clearHitCache();
+    clearHitCache();
 }
 
 // Address: 0x007f56b0 - 0x007f56b1 (1 bytes)
@@ -141,70 +141,68 @@ __attribute__((weak)) void sObjCollision::reset() {
 __attribute__((weak)) void sObjCollision::cheatCheck() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->mSendInterval = ::sMain::getInstance()->mDeltaTime + this->mSendInterval;
-    if (450.0f > this->mSendInterval) {
+    mSendInterval = sMain::getInstance()->mDeltaTime + mSendInterval;
+    if (450.0f > mSendInterval) {
     } else {
-        if (this->mCntCheatHpAlter_PL != static_cast<u32>(0)) {
-            this->mCntCheatHpAlter_PL = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(3));
+        if (mCntCheatHpAlter_PL != 0) {
+            mCntCheatHpAlter_PL = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(3));
         }
-        if (this->mCntCheatHpAlter_EM != static_cast<u32>(0)) {
-            this->mCntCheatHpAlter_EM = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(4));
+        if (mCntCheatHpAlter_EM != 0) {
+            mCntCheatHpAlter_EM = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(4));
         }
-        if (this->mCntCheatHpZero_EM != static_cast<u32>(0)) {
-            this->mCntCheatHpZero_EM = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(1));
+        if (mCntCheatHpZero_EM != 0) {
+            mCntCheatHpZero_EM = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(1));
         }
-        if (this->mCntCheatDead_EM != static_cast<u32>(0)) {
-            this->mCntCheatDead_EM = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(1));
+        if (mCntCheatDead_EM != 0) {
+            mCntCheatDead_EM = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(1));
         }
-        if (this->mCntCheatHpAlter_Other != static_cast<u32>(0)) {
-            this->mCntCheatHpAlter_Other = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(4));
+        if (mCntCheatHpAlter_Other != 0) {
+            mCntCheatHpAlter_Other = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(4));
         }
-        if (this->mCntCheatInvFlag_PL != static_cast<u32>(0)) {
-            this->mCntCheatInvFlag_PL = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(11));
+        if (mCntCheatInvFlag_PL != 0) {
+            mCntCheatInvFlag_PL = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(11));
         }
-        if (this->mCntCheatInvFlag_EM != static_cast<u32>(0)) {
-            this->mCntCheatInvFlag_EM = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(12));
+        if (mCntCheatInvFlag_EM != 0) {
+            mCntCheatInvFlag_EM = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(12));
         }
-        if (this->mCntCheatInvFlagGold_PL != static_cast<u32>(0)) {
-            this->mCntCheatInvFlagGold_PL = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(13));
+        if (mCntCheatInvFlagGold_PL != 0) {
+            mCntCheatInvFlagGold_PL = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(13));
         }
-        if (this->mCntCheatInvFlag_Other != static_cast<u32>(0)) {
-            this->mCntCheatInvFlag_Other = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(14));
+        if (mCntCheatInvFlag_Other != 0) {
+            mCntCheatInvFlag_Other = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(14));
         }
-        if (this->mCntCheatDamageBig != static_cast<u32>(0)) {
-            this->mCntCheatDamageBig = static_cast<u32>(0);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(2));
+        if (mCntCheatDamageBig != 0) {
+            mCntCheatDamageBig = 0;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reportCheat(static_cast<u8>(2));
         }
-        this->mSendInterval = 0.0f;
+        mSendInterval = 0.0f;
     }
 }
 
 // Address: 0x007f56c0 - 0x007f5718 (88 bytes)
 u16 sObjCollision::createUID() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mUID = static_cast<unsigned short>(this->mUID + static_cast<int>(1));
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    mUID = static_cast<unsigned short>(mUID + 1);
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    return this->mUID;
+    return mUID;
 }
 
 // Address: 0x007f6340 - 0x007f63ac (108 bytes)
@@ -304,7 +302,7 @@ u64 sObjCollision::makeParamUID(u32 tableUID, u32 index) const {
     // DWARF local not rendered: u64 uID;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as u64
-    return static_cast<u64>((tableUID * static_cast<u32>(0)) | index);
+    return static_cast<u64>((tableUID * 0u) | index);
 }
 
 // Address: 0x007f6420 - 0x007f6427 (7 bytes)
@@ -312,7 +310,7 @@ u32 sObjCollision::extractTableUID(u64 paramUID) const {
     // DWARF local not rendered: u32 uID;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u64 used as u32
-    return static_cast<u32>(paramUID >> static_cast<u64>(32));
+    return static_cast<u32>(paramUID >> 32);
 }
 
 // Address: 0x007f6430 - 0x007f6433 (3 bytes)
@@ -402,27 +400,27 @@ const cDmJobAdjParam* sObjCollision::getDmJobAdjParam(nHuman::JOB_ENUM jobID) {
     // inferred: a value cast to the type its use takes: nHuman::JOB_ENUM used as unsigned int
     // inferred: the value carried to 0x7f73d9; no location-less local in scope fits
     cDmJobAdjParam* v1_0;
-    if (this->mpJobAdjRes == static_cast<rDmJobAdjParam*>(nullptr)) {
-        v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+    if (mpJobAdjRes == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpJobAdjRes->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+        u32 dataNum = mpJobAdjRes->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f73bc, used 3 times; no DWARF local holds it
-                cDmJobAdjParam* t0 = this->mpJobAdjRes->getData(i0_2);
-                if (t0 != static_cast<cDmJobAdjParam*>(nullptr)) {
+                cDmJobAdjParam* t0 = mpJobAdjRes->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mJobType == static_cast<unsigned int>(jobID)) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < dataNum) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -439,27 +437,27 @@ const cDmJobPawnAdjParam* sObjCollision::getDmJobPawnAdjParam(nHuman::JOB_ENUM j
     // inferred: a value cast to the type its use takes: nHuman::JOB_ENUM used as unsigned int
     // inferred: the value carried to 0x7f7459; no location-less local in scope fits
     cDmJobPawnAdjParam* v1_0;
-    if (this->mpJobPawnAdjParamRes == static_cast<rDmJobPawnAdjParam*>(nullptr)) {
-        v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+    if (mpJobPawnAdjParamRes == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpJobPawnAdjParamRes->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+        u32 dataNum = mpJobPawnAdjParamRes->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f743c, used 3 times; no DWARF local holds it
-                cDmJobPawnAdjParam* t0 = this->mpJobPawnAdjParamRes->getData(i0_2);
-                if (t0 != static_cast<cDmJobPawnAdjParam*>(nullptr)) {
+                cDmJobPawnAdjParam* t0 = mpJobPawnAdjParamRes->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mJobType == static_cast<unsigned int>(jobID)) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < dataNum) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -475,27 +473,27 @@ const cDmLvPawnAdjParam* sObjCollision::getDmLvPawnAdjParam(u32 keyLv) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f74d9; no location-less local in scope fits
     cDmLvPawnAdjParam* v1_0;
-    if (this->mpLvPawnAdjParamRes == static_cast<rDmLvPawnAdjParam*>(nullptr)) {
-        v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+    if (mpLvPawnAdjParamRes == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpLvPawnAdjParamRes->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+        u32 dataNum = mpLvPawnAdjParamRes->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f74bc, used 3 times; no DWARF local holds it
-                cDmLvPawnAdjParam* t0 = this->mpLvPawnAdjParamRes->getData(i0_2);
-                if (t0 != static_cast<cDmLvPawnAdjParam*>(nullptr)) {
+                cDmLvPawnAdjParam* t0 = mpLvPawnAdjParamRes->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mKeyLv == keyLv) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < dataNum) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -512,35 +510,35 @@ const cDamageSaveEmLvParam* sObjCollision::getDamageSaveEmLvParam(u32 keyLv) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f757a; no location-less local in scope fits
     cDamageSaveEmLvParam* v1_0;
-    if (this->mpDamageSaveEmLvParam == static_cast<rDamageSaveEmLvParam*>(nullptr)) {
-        v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+    if (mpDamageSaveEmLvParam == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpDamageSaveEmLvParam->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+        u32 dataNum = mpDamageSaveEmLvParam->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: a temporary for the result of the call at 0x7f7532, used twice; no DWARF local holds it
-            cDamageSaveEmLvParam* t0 = this->mpDamageSaveEmLvParam->getData(static_cast<u32>(0));
-            if (t0 == static_cast<cDamageSaveEmLvParam*>(nullptr)) {
-                v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+            cDamageSaveEmLvParam* t0 = mpDamageSaveEmLvParam->getData(0u);
+            if (t0 == nullptr) {
+                v1_0 = nullptr;
             } else {
                 if (keyLv < t0->mKeyLv) {
-                    v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+                    v1_0 = nullptr;
                 } else {
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                    for (unsigned int i0_2 = 0;;) {
                         // inferred: a temporary for the result of the call at 0x7f755d, used 3 times; no DWARF local holds it
-                        cDamageSaveEmLvParam* t1 = this->mpDamageSaveEmLvParam->getData(i0_2);
-                        if (t1 != static_cast<cDamageSaveEmLvParam*>(nullptr)) {
+                        cDamageSaveEmLvParam* t1 = mpDamageSaveEmLvParam->getData(i0_2);
+                        if (t1 != nullptr) {
                             if (keyLv >= t1->mKeyLv) {
                                 v1_0 = t1;
                                 break;
                             }
                         }
-                        if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                            i0_2 += static_cast<unsigned int>(1);
+                        if ((i0_2 + 1u) < dataNum) {
+                            i0_2 += 1u;
                         } else {
-                            v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+                            v1_0 = nullptr;
                             break;
                         }
                     }
@@ -559,35 +557,35 @@ const cBlowSaveEmLvParam* sObjCollision::getBlowSaveEmLvParam(u32 keyLv) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f761a; no location-less local in scope fits
     cBlowSaveEmLvParam* v1_0;
-    if (this->mpBlowSaveEmLvParam == static_cast<rBlowSaveEmLvParam*>(nullptr)) {
-        v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+    if (mpBlowSaveEmLvParam == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpBlowSaveEmLvParam->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+        u32 dataNum = mpBlowSaveEmLvParam->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: a temporary for the result of the call at 0x7f75d2, used twice; no DWARF local holds it
-            cBlowSaveEmLvParam* t0 = this->mpBlowSaveEmLvParam->getData(static_cast<u32>(0));
-            if (t0 == static_cast<cBlowSaveEmLvParam*>(nullptr)) {
-                v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+            cBlowSaveEmLvParam* t0 = mpBlowSaveEmLvParam->getData(0u);
+            if (t0 == nullptr) {
+                v1_0 = nullptr;
             } else {
                 if (keyLv < t0->mKeyLv) {
-                    v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+                    v1_0 = nullptr;
                 } else {
                     // inferred: the counter this loop steps; no location-less local in scope fits
-                    for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                    for (unsigned int i0_2 = 0;;) {
                         // inferred: a temporary for the result of the call at 0x7f75fd, used 3 times; no DWARF local holds it
-                        cBlowSaveEmLvParam* t1 = this->mpBlowSaveEmLvParam->getData(i0_2);
-                        if (t1 != static_cast<cBlowSaveEmLvParam*>(nullptr)) {
+                        cBlowSaveEmLvParam* t1 = mpBlowSaveEmLvParam->getData(i0_2);
+                        if (t1 != nullptr) {
                             if (keyLv >= t1->mKeyLv) {
                                 v1_0 = t1;
                                 break;
                             }
                         }
-                        if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                            i0_2 += static_cast<unsigned int>(1);
+                        if ((i0_2 + 1u) < dataNum) {
+                            i0_2 += 1u;
                         } else {
-                            v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+                            v1_0 = nullptr;
                             break;
                         }
                     }
@@ -603,12 +601,12 @@ const cDamageSpecialAdj* sObjCollision::getDamageSpecialAdj(nObjCollision::DAMAG
     // DWARF local not rendered: u32 dataNum;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: nObjCollision::DAMAGE_SPECIAL_ADJ used as unsigned int
-    if (this->mpDamageSpecialAdj != static_cast<rDamageSpecialAdj*>(nullptr)) {
-        if (static_cast<unsigned int>(adjType) < this->mpDamageSpecialAdj->getDataNum()) {
-            return this->mpDamageSpecialAdj->getData(static_cast<u32>(adjType));
+    if (mpDamageSpecialAdj != nullptr) {
+        if (static_cast<unsigned int>(adjType) < mpDamageSpecialAdj->getDataNum()) {
+            return mpDamageSpecialAdj->getData(static_cast<u32>(adjType));
         }
     }
-    return static_cast<const cDamageSpecialAdj*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007f6940 - 0x007f69cf (143 bytes)
@@ -619,18 +617,18 @@ const cShrinkBlowValue* sObjCollision::getShBlValue(nObjCollision::SHRINK_BLOW_T
     // inferred: a value cast to the type its use takes: nObjCollision::SHRINK_BLOW_TYPE used as unsigned int
     // inferred: the value carried to 0x7f69c0; no location-less local in scope fits
     cShrinkBlowValue* v1_0;
-    if (this->mpShBlValue == static_cast<rShrinkBlowValue*>(nullptr)) {
-        v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+    if (mpShBlValue == nullptr) {
+        v1_0 = nullptr;
     } else {
-        u32 dataNum = this->mpShBlValue->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+        u32 dataNum = mpShBlValue->getDataNum();
+        if (dataNum == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x7f699d, used 4 times; no DWARF local holds it
-                cShrinkBlowValue* t0 = this->mpShBlValue->getData(i0_2);
-                if (t0 != static_cast<cShrinkBlowValue*>(nullptr)) {
+                cShrinkBlowValue* t0 = mpShBlValue->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mDamageType == static_cast<unsigned int>(type)) {
                         if (t0->mLv == Lv) {
                             v1_0 = t0;
@@ -638,10 +636,10 @@ const cShrinkBlowValue* sObjCollision::getShBlValue(nObjCollision::SHRINK_BLOW_T
                         }
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < dataNum) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -685,23 +683,23 @@ const cDmVecWeightParam* sObjCollision::getDmVecWeightParam(f32 weight) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f6d9d; no location-less local in scope fits
     cDmVecWeightParam* v1_8;
-    if (this->mpDmVecWeightParam == static_cast<rDmVecWeightParam*>(nullptr)) {
-        v1_8 = static_cast<cDmVecWeightParam*>(nullptr);
+    if (mpDmVecWeightParam == nullptr) {
+        v1_8 = nullptr;
     } else {
-        u32 dataNum = this->mpDmVecWeightParam->getDataNum();
-        if (dataNum == static_cast<u32>(0)) {
-            v1_8 = static_cast<cDmVecWeightParam*>(nullptr);
+        u32 dataNum = mpDmVecWeightParam->getDataNum();
+        if (dataNum == 0) {
+            v1_8 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value the loop at 0x7f6d60 carries; no location-less local in scope fits
-            for (cDmVecWeightParam* v0_10 = static_cast<cDmVecWeightParam*>(nullptr);;) {
+            for (cDmVecWeightParam* v0_10 = nullptr;;) {
                 // inferred: a temporary for the result of the call at 0x7f6d6c, used 3 times; no DWARF local holds it
-                cDmVecWeightParam* t0 = this->mpDmVecWeightParam->getData(i0_3);
-                if (t0 != static_cast<cDmVecWeightParam*>(nullptr)) {
+                cDmVecWeightParam* t0 = mpDmVecWeightParam->getData(i0_3);
+                if (t0 != nullptr) {
                     if (weight > t0->mWeight) {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < dataNum) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < dataNum) {
+                            i0_3 += 1u;
                             v0_10 = t0;
                         } else {
                             v1_8 = t0;
@@ -712,8 +710,8 @@ const cDmVecWeightParam* sObjCollision::getDmVecWeightParam(f32 weight) {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < dataNum) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < dataNum) {
+                        i0_3 += 1u;
                     } else {
                         v1_8 = v0_10;
                         break;
@@ -728,9 +726,9 @@ const cDmVecWeightParam* sObjCollision::getDmVecWeightParam(f32 weight) {
 // Address: 0x007f7310 - 0x007f733d (45 bytes)
 f32 sObjCollision::getSystemParam(sObjCollision::SYS_PARAM_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSystemParamRes != static_cast<rAdjustParam*>(nullptr)) {
-        const cAdjustParam* pData = this->mpSystemParamRes->getData(static_cast<u32>(type));
-        if (pData != static_cast<const cAdjustParam*>(nullptr)) {
+    if (mpSystemParamRes != nullptr) {
+        const cAdjustParam* pData = mpSystemParamRes->getData(static_cast<u32>(type));
+        if (pData != nullptr) {
             return pData->mParam;
         } else {
             return 0.0f;
@@ -743,9 +741,9 @@ f32 sObjCollision::getSystemParam(sObjCollision::SYS_PARAM_TYPE type) const {
 // Address: 0x007f7340 - 0x007f736d (45 bytes)
 f32 sObjCollision::getPawnConstantParam(sObjCollision::PAWN_CONSTANT_PARAM type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPawnConstantParamRes != static_cast<rAdjustParam*>(nullptr)) {
-        const cAdjustParam* pData = this->mpPawnConstantParamRes->getData(static_cast<u32>(type));
-        if (pData != static_cast<const cAdjustParam*>(nullptr)) {
+    if (mpPawnConstantParamRes != nullptr) {
+        const cAdjustParam* pData = mpPawnConstantParamRes->getData(static_cast<u32>(type));
+        if (pData != nullptr) {
             return pData->mParam;
         } else {
             return 0.0f;
@@ -822,101 +820,101 @@ __attribute__((weak)) void sObjCollision::createResource() {
 __attribute__((weak)) void sObjCollision::releaseResource() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpDmLvAdjRes != static_cast<rCalcDamageLvAdj*>(nullptr)) {
-        this->mpDmLvAdjRes->::cResource::release();
-        this->mpDmLvAdjRes = static_cast<rCalcDamageLvAdj*>(nullptr);
+    if (mpDmLvAdjRes != nullptr) {
+        mpDmLvAdjRes->release();
+        mpDmLvAdjRes = nullptr;
     }
-    if (this->mpDmAtdmAdjResHM != static_cast<rCalcDamageAtdmAdj*>(nullptr)) {
-        this->mpDmAtdmAdjResHM->::cResource::release();
-        this->mpDmAtdmAdjResHM = static_cast<rCalcDamageAtdmAdj*>(nullptr);
+    if (mpDmAtdmAdjResHM != nullptr) {
+        mpDmAtdmAdjResHM->release();
+        mpDmAtdmAdjResHM = nullptr;
     }
-    if (this->mpDmAtdmAdjResEM != static_cast<rCalcDamageAtdmAdj*>(nullptr)) {
-        this->mpDmAtdmAdjResEM->::cResource::release();
-        this->mpDmAtdmAdjResEM = static_cast<rCalcDamageAtdmAdj*>(nullptr);
+    if (mpDmAtdmAdjResEM != nullptr) {
+        mpDmAtdmAdjResEM->release();
+        mpDmAtdmAdjResEM = nullptr;
     }
-    if (this->mpDmAtdmAdjRateRes != static_cast<rCalcDamageAtdmAdjRate*>(nullptr)) {
-        this->mpDmAtdmAdjRateRes->::cResource::release();
-        this->mpDmAtdmAdjRateRes = static_cast<rCalcDamageAtdmAdjRate*>(nullptr);
+    if (mpDmAtdmAdjRateRes != nullptr) {
+        mpDmAtdmAdjRateRes->release();
+        mpDmAtdmAdjRateRes = nullptr;
     }
-    if (this->mpShBlValue != static_cast<rShrinkBlowValue*>(nullptr)) {
-        this->mpShBlValue->::cResource::release();
-        this->mpShBlValue = static_cast<rShrinkBlowValue*>(nullptr);
+    if (mpShBlValue != nullptr) {
+        mpShBlValue->release();
+        mpShBlValue = nullptr;
     }
-    if (this->mpJobAdjRes != static_cast<rDmJobAdjParam*>(nullptr)) {
-        this->mpJobAdjRes->::cResource::release();
-        this->mpJobAdjRes = static_cast<rDmJobAdjParam*>(nullptr);
+    if (mpJobAdjRes != nullptr) {
+        mpJobAdjRes->release();
+        mpJobAdjRes = nullptr;
     }
-    if (this->mpEmDamageDirInfo != static_cast<rEmDamageDirInfo*>(nullptr)) {
-        this->mpEmDamageDirInfo->::cResource::release();
-        this->mpEmDamageDirInfo = static_cast<rEmDamageDirInfo*>(nullptr);
+    if (mpEmDamageDirInfo != nullptr) {
+        mpEmDamageDirInfo->release();
+        mpEmDamageDirInfo = nullptr;
     }
-    if (this->mpDmVecWeightParam != static_cast<rDmVecWeightParam*>(nullptr)) {
-        this->mpDmVecWeightParam->::cResource::release();
-        this->mpDmVecWeightParam = static_cast<rDmVecWeightParam*>(nullptr);
+    if (mpDmVecWeightParam != nullptr) {
+        mpDmVecWeightParam->release();
+        mpDmVecWeightParam = nullptr;
     }
-    if (this->mpAdjLimitParamRes != static_cast<rAdjLimitParam*>(nullptr)) {
-        this->mpAdjLimitParamRes->::cResource::release();
-        this->mpAdjLimitParamRes = static_cast<rAdjLimitParam*>(nullptr);
+    if (mpAdjLimitParamRes != nullptr) {
+        mpAdjLimitParamRes->release();
+        mpAdjLimitParamRes = nullptr;
     }
-    if (this->mpJobPawnAdjParamRes != static_cast<rDmJobPawnAdjParam*>(nullptr)) {
-        this->mpJobPawnAdjParamRes->::cResource::release();
-        this->mpJobPawnAdjParamRes = static_cast<rDmJobPawnAdjParam*>(nullptr);
+    if (mpJobPawnAdjParamRes != nullptr) {
+        mpJobPawnAdjParamRes->release();
+        mpJobPawnAdjParamRes = nullptr;
     }
-    if (this->mpLvPawnAdjParamRes != static_cast<rDmLvPawnAdjParam*>(nullptr)) {
-        this->mpLvPawnAdjParamRes->::cResource::release();
-        this->mpLvPawnAdjParamRes = static_cast<rDmLvPawnAdjParam*>(nullptr);
+    if (mpLvPawnAdjParamRes != nullptr) {
+        mpLvPawnAdjParamRes->release();
+        mpLvPawnAdjParamRes = nullptr;
     }
-    if (this->mpDamageSaveEmLvParam != static_cast<rDamageSaveEmLvParam*>(nullptr)) {
-        this->mpDamageSaveEmLvParam->::cResource::release();
-        this->mpDamageSaveEmLvParam = static_cast<rDamageSaveEmLvParam*>(nullptr);
+    if (mpDamageSaveEmLvParam != nullptr) {
+        mpDamageSaveEmLvParam->release();
+        mpDamageSaveEmLvParam = nullptr;
     }
-    if (this->mpBlowSaveEmLvParam != static_cast<rBlowSaveEmLvParam*>(nullptr)) {
-        this->mpBlowSaveEmLvParam->::cResource::release();
-        this->mpBlowSaveEmLvParam = static_cast<rBlowSaveEmLvParam*>(nullptr);
+    if (mpBlowSaveEmLvParam != nullptr) {
+        mpBlowSaveEmLvParam->release();
+        mpBlowSaveEmLvParam = nullptr;
     }
-    if (this->mpDamageSpecialAdj != static_cast<rDamageSpecialAdj*>(nullptr)) {
-        this->mpDamageSpecialAdj->::cResource::release();
-        this->mpDamageSpecialAdj = static_cast<rDamageSpecialAdj*>(nullptr);
+    if (mpDamageSpecialAdj != nullptr) {
+        mpDamageSpecialAdj->release();
+        mpDamageSpecialAdj = nullptr;
     }
-    if (this->mpSystemParamRes != static_cast<rAdjustParam*>(nullptr)) {
-        this->mpSystemParamRes->::cResource::release();
-        this->mpSystemParamRes = static_cast<rAdjustParam*>(nullptr);
+    if (mpSystemParamRes != nullptr) {
+        mpSystemParamRes->release();
+        mpSystemParamRes = nullptr;
     }
-    if (this->mpPawnConstantParamRes != static_cast<rAdjustParam*>(nullptr)) {
-        this->mpPawnConstantParamRes->::cResource::release();
-        this->mpPawnConstantParamRes = static_cast<rAdjustParam*>(nullptr);
+    if (mpPawnConstantParamRes != nullptr) {
+        mpPawnConstantParamRes->release();
+        mpPawnConstantParamRes = nullptr;
     }
-    if (this->mpPushRateMoveMove != static_cast<rPushRate*>(nullptr)) {
-        this->mpPushRateMoveMove->::cResource::release();
-        this->mpPushRateMoveMove = static_cast<rPushRate*>(nullptr);
+    if (mpPushRateMoveMove != nullptr) {
+        mpPushRateMoveMove->release();
+        mpPushRateMoveMove = nullptr;
     }
-    if (this->mpPushRateStopMove != static_cast<rPushRate*>(nullptr)) {
-        this->mpPushRateStopMove->::cResource::release();
-        this->mpPushRateStopMove = static_cast<rPushRate*>(nullptr);
+    if (mpPushRateStopMove != nullptr) {
+        mpPushRateStopMove->release();
+        mpPushRateStopMove = nullptr;
     }
-    if (this->mpPushRateFix != static_cast<rPushRate*>(nullptr)) {
-        this->mpPushRateFix->::cResource::release();
-        this->mpPushRateFix = static_cast<rPushRate*>(nullptr);
+    if (mpPushRateFix != nullptr) {
+        mpPushRateFix->release();
+        mpPushRateFix = nullptr;
     }
-    if (this->mpCaughtDamageRateRefTbl != static_cast<rCaughtDamageRateRefTbl*>(nullptr)) {
-        this->mpCaughtDamageRateRefTbl->::cResource::release();
-        this->mpCaughtDamageRateRefTbl = static_cast<rCaughtDamageRateRefTbl*>(nullptr);
+    if (mpCaughtDamageRateRefTbl != nullptr) {
+        mpCaughtDamageRateRefTbl->release();
+        mpCaughtDamageRateRefTbl = nullptr;
     }
-    if (this->mpCaughtDamageRateTbl != static_cast<rCaughtDamageRateTbl*>(nullptr)) {
-        this->mpCaughtDamageRateTbl->::cResource::release();
-        this->mpCaughtDamageRateTbl = static_cast<rCaughtDamageRateTbl*>(nullptr);
+    if (mpCaughtDamageRateTbl != nullptr) {
+        mpCaughtDamageRateTbl->release();
+        mpCaughtDamageRateTbl = nullptr;
     }
-    if (this->mpErosionShakeConvert != static_cast<rErosionShakeConvert*>(nullptr)) {
-        this->mpErosionShakeConvert->::cResource::release();
-        this->mpErosionShakeConvert = static_cast<rErosionShakeConvert*>(nullptr);
+    if (mpErosionShakeConvert != nullptr) {
+        mpErosionShakeConvert->release();
+        mpErosionShakeConvert = nullptr;
     }
 }
 
 // Address: 0x007f6db0 - 0x007f6dc9 (25 bytes)
 f32 sObjCollision::getGuardAtkAdjMax(nObjCollision::GUARD_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mGuardAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mGuardAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -925,8 +923,8 @@ f32 sObjCollision::getGuardAtkAdjMax(nObjCollision::GUARD_ATTACK_ADJ_TYPE type) 
 // Address: 0x007f6dd0 - 0x007f6de9 (25 bytes)
 f32 sObjCollision::getGuardAtkAdjMin(nObjCollision::GUARD_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mGuardAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mGuardAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -935,8 +933,8 @@ f32 sObjCollision::getGuardAtkAdjMin(nObjCollision::GUARD_ATTACK_ADJ_TYPE type) 
 // Address: 0x007f6df0 - 0x007f6e09 (25 bytes)
 f32 sObjCollision::getGuardDefAdjMax(nObjCollision::GUARD_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mGuardDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mGuardDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -945,8 +943,8 @@ f32 sObjCollision::getGuardDefAdjMax(nObjCollision::GUARD_DEFENCE_ADJ_TYPE type)
 // Address: 0x007f6e10 - 0x007f6e29 (25 bytes)
 f32 sObjCollision::getGuardDefAdjMin(nObjCollision::GUARD_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mGuardDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mGuardDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -955,8 +953,8 @@ f32 sObjCollision::getGuardDefAdjMin(nObjCollision::GUARD_DEFENCE_ADJ_TYPE type)
 // Address: 0x007f6e30 - 0x007f6e49 (25 bytes)
 f32 sObjCollision::getStaminaDamageAdjMax(nObjCollision::STAMINA_DAMAGE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaDamageAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaDamageAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -965,8 +963,8 @@ f32 sObjCollision::getStaminaDamageAdjMax(nObjCollision::STAMINA_DAMAGE_ADJ_TYPE
 // Address: 0x007f6e50 - 0x007f6e69 (25 bytes)
 f32 sObjCollision::getStaminaDamageAdjMin(nObjCollision::STAMINA_DAMAGE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaDamageAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaDamageAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -975,8 +973,8 @@ f32 sObjCollision::getStaminaDamageAdjMin(nObjCollision::STAMINA_DAMAGE_ADJ_TYPE
 // Address: 0x007f6e70 - 0x007f6e8c (28 bytes)
 f32 sObjCollision::getHpDamageAtkAdjMax(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpDamageAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpDamageAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -985,8 +983,8 @@ f32 sObjCollision::getHpDamageAtkAdjMax(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE
 // Address: 0x007f6e90 - 0x007f6eac (28 bytes)
 f32 sObjCollision::getHpDamageAtkAdjMin(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpDamageAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpDamageAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -995,8 +993,8 @@ f32 sObjCollision::getHpDamageAtkAdjMin(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE
 // Address: 0x007f6eb0 - 0x007f6ecc (28 bytes)
 f32 sObjCollision::getHpDamageDefAdjMax(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpDamageDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpDamageDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1005,8 +1003,8 @@ f32 sObjCollision::getHpDamageDefAdjMax(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_TYP
 // Address: 0x007f6ed0 - 0x007f6eec (28 bytes)
 f32 sObjCollision::getHpDamageDefAdjMin(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpDamageDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpDamageDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1015,8 +1013,8 @@ f32 sObjCollision::getHpDamageDefAdjMin(nObjCollision::HP_DAMAGE_DEFENCE_ADJ_TYP
 // Address: 0x007f6ef0 - 0x007f6f0c (28 bytes)
 f32 sObjCollision::getShrinkAtkAdjMax(nObjCollision::SHRINK_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShrinkAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShrinkAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1025,8 +1023,8 @@ f32 sObjCollision::getShrinkAtkAdjMax(nObjCollision::SHRINK_ATTACK_ADJ_TYPE type
 // Address: 0x007f6f10 - 0x007f6f2c (28 bytes)
 f32 sObjCollision::getShrinkAtkAdjMin(nObjCollision::SHRINK_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShrinkAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShrinkAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1035,8 +1033,8 @@ f32 sObjCollision::getShrinkAtkAdjMin(nObjCollision::SHRINK_ATTACK_ADJ_TYPE type
 // Address: 0x007f6f30 - 0x007f6f4c (28 bytes)
 f32 sObjCollision::getShrinkDefAdjMax(nObjCollision::SHRINK_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShrinkDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShrinkDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1045,8 +1043,8 @@ f32 sObjCollision::getShrinkDefAdjMax(nObjCollision::SHRINK_DEFENCE_ADJ_TYPE typ
 // Address: 0x007f6f50 - 0x007f6f6c (28 bytes)
 f32 sObjCollision::getShrinkDefAdjMin(nObjCollision::SHRINK_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShrinkDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShrinkDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1055,8 +1053,8 @@ f32 sObjCollision::getShrinkDefAdjMin(nObjCollision::SHRINK_DEFENCE_ADJ_TYPE typ
 // Address: 0x007f6f70 - 0x007f6f8c (28 bytes)
 f32 sObjCollision::getBlowAtkAdjMax(nObjCollision::BLOW_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mBlowAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mBlowAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1065,8 +1063,8 @@ f32 sObjCollision::getBlowAtkAdjMax(nObjCollision::BLOW_ATTACK_ADJ_TYPE type) co
 // Address: 0x007f6f90 - 0x007f6fac (28 bytes)
 f32 sObjCollision::getBlowAtkAdjMin(nObjCollision::BLOW_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mBlowAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mBlowAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1075,8 +1073,8 @@ f32 sObjCollision::getBlowAtkAdjMin(nObjCollision::BLOW_ATTACK_ADJ_TYPE type) co
 // Address: 0x007f6fb0 - 0x007f6fcc (28 bytes)
 f32 sObjCollision::getBlowDefAdjMax(nObjCollision::BLOW_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mBlowDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mBlowDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1085,8 +1083,8 @@ f32 sObjCollision::getBlowDefAdjMax(nObjCollision::BLOW_DEFENCE_ADJ_TYPE type) c
 // Address: 0x007f6fd0 - 0x007f6fec (28 bytes)
 f32 sObjCollision::getBlowDefAdjMin(nObjCollision::BLOW_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mBlowDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mBlowDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1095,8 +1093,8 @@ f32 sObjCollision::getBlowDefAdjMin(nObjCollision::BLOW_DEFENCE_ADJ_TYPE type) c
 // Address: 0x007f6ff0 - 0x007f700c (28 bytes)
 f32 sObjCollision::getShakeAtkAdjMax(nObjCollision::SHAKE_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShakeAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShakeAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1105,8 +1103,8 @@ f32 sObjCollision::getShakeAtkAdjMax(nObjCollision::SHAKE_ATTACK_ADJ_TYPE type) 
 // Address: 0x007f7010 - 0x007f702c (28 bytes)
 f32 sObjCollision::getShakeAtkAdjMin(nObjCollision::SHAKE_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShakeAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShakeAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1115,8 +1113,8 @@ f32 sObjCollision::getShakeAtkAdjMin(nObjCollision::SHAKE_ATTACK_ADJ_TYPE type) 
 // Address: 0x007f7030 - 0x007f704c (28 bytes)
 f32 sObjCollision::getShakeDefAdjMax(nObjCollision::SHAKE_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShakeDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShakeDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1125,8 +1123,8 @@ f32 sObjCollision::getShakeDefAdjMax(nObjCollision::SHAKE_DEFENCE_ADJ_TYPE type)
 // Address: 0x007f7050 - 0x007f706c (28 bytes)
 f32 sObjCollision::getShakeDefAdjMin(nObjCollision::SHAKE_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mShakeDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mShakeDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1135,8 +1133,8 @@ f32 sObjCollision::getShakeDefAdjMin(nObjCollision::SHAKE_DEFENCE_ADJ_TYPE type)
 // Address: 0x007f7070 - 0x007f708c (28 bytes)
 f32 sObjCollision::getDownAtkAdjMax(nObjCollision::DOWN_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDownAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDownAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1145,8 +1143,8 @@ f32 sObjCollision::getDownAtkAdjMax(nObjCollision::DOWN_ATTACK_ADJ_TYPE type) co
 // Address: 0x007f7090 - 0x007f70ac (28 bytes)
 f32 sObjCollision::getDownAtkAdjMin(nObjCollision::DOWN_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDownAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDownAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1155,8 +1153,8 @@ f32 sObjCollision::getDownAtkAdjMin(nObjCollision::DOWN_ATTACK_ADJ_TYPE type) co
 // Address: 0x007f70b0 - 0x007f70cc (28 bytes)
 f32 sObjCollision::getDownDefAdjMax(nObjCollision::DOWN_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDownDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDownDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1165,8 +1163,8 @@ f32 sObjCollision::getDownDefAdjMax(nObjCollision::DOWN_DEFENCE_ADJ_TYPE type) c
 // Address: 0x007f70d0 - 0x007f70ec (28 bytes)
 f32 sObjCollision::getDownDefAdjMin(nObjCollision::DOWN_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDownDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDownDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1175,8 +1173,8 @@ f32 sObjCollision::getDownDefAdjMin(nObjCollision::DOWN_DEFENCE_ADJ_TYPE type) c
 // Address: 0x007f70f0 - 0x007f710c (28 bytes)
 f32 sObjCollision::getOcdAtkAdjMax(nObjCollision::OCD_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mOcdAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mOcdAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1185,8 +1183,8 @@ f32 sObjCollision::getOcdAtkAdjMax(nObjCollision::OCD_ATTACK_ADJ_TYPE type) cons
 // Address: 0x007f7110 - 0x007f712c (28 bytes)
 f32 sObjCollision::getOcdAtkAdjMin(nObjCollision::OCD_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mOcdAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mOcdAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1195,8 +1193,8 @@ f32 sObjCollision::getOcdAtkAdjMin(nObjCollision::OCD_ATTACK_ADJ_TYPE type) cons
 // Address: 0x007f7130 - 0x007f714c (28 bytes)
 f32 sObjCollision::getOcdDefAdjMax(nObjCollision::OCD_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mOcdDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mOcdDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1205,8 +1203,8 @@ f32 sObjCollision::getOcdDefAdjMax(nObjCollision::OCD_DEFENCE_ADJ_TYPE type) con
 // Address: 0x007f7150 - 0x007f716c (28 bytes)
 f32 sObjCollision::getOcdDefAdjMin(nObjCollision::OCD_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mOcdDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mOcdDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1215,8 +1213,8 @@ f32 sObjCollision::getOcdDefAdjMin(nObjCollision::OCD_DEFENCE_ADJ_TYPE type) con
 // Address: 0x007f7170 - 0x007f718c (28 bytes)
 f32 sObjCollision::getHpHealAtkAdjMax(nObjCollision::HP_HEAL_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpHealAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpHealAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1225,8 +1223,8 @@ f32 sObjCollision::getHpHealAtkAdjMax(nObjCollision::HP_HEAL_ATTACK_ADJ_TYPE typ
 // Address: 0x007f7190 - 0x007f71ac (28 bytes)
 f32 sObjCollision::getHpHealAtkAdjMin(nObjCollision::HP_HEAL_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpHealAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpHealAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1235,8 +1233,8 @@ f32 sObjCollision::getHpHealAtkAdjMin(nObjCollision::HP_HEAL_ATTACK_ADJ_TYPE typ
 // Address: 0x007f71b0 - 0x007f71cc (28 bytes)
 f32 sObjCollision::getHpHealDefAdjMax(nObjCollision::HP_HEAL_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpHealDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpHealDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1245,8 +1243,8 @@ f32 sObjCollision::getHpHealDefAdjMax(nObjCollision::HP_HEAL_DEFENCE_ADJ_TYPE ty
 // Address: 0x007f71d0 - 0x007f71ec (28 bytes)
 f32 sObjCollision::getHpHealDefAdjMin(nObjCollision::HP_HEAL_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mHpHealDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mHpHealDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1255,8 +1253,8 @@ f32 sObjCollision::getHpHealDefAdjMin(nObjCollision::HP_HEAL_DEFENCE_ADJ_TYPE ty
 // Address: 0x007f71f0 - 0x007f720c (28 bytes)
 f32 sObjCollision::getStaminaHealAtkAdjMax(nObjCollision::STAMINA_HEAL_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaHealAtkAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaHealAtkAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1265,8 +1263,8 @@ f32 sObjCollision::getStaminaHealAtkAdjMax(nObjCollision::STAMINA_HEAL_ATTACK_AD
 // Address: 0x007f7210 - 0x007f722c (28 bytes)
 f32 sObjCollision::getStaminaHealAtkAdjMin(nObjCollision::STAMINA_HEAL_ATTACK_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaHealAtkAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaHealAtkAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1275,8 +1273,8 @@ f32 sObjCollision::getStaminaHealAtkAdjMin(nObjCollision::STAMINA_HEAL_ATTACK_AD
 // Address: 0x007f7230 - 0x007f724c (28 bytes)
 f32 sObjCollision::getStaminaHealDefAdjMax(nObjCollision::STAMINA_HEAL_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaHealDefAdjMax[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaHealDefAdjMax[type];
     } else {
         return 0.0f;
     }
@@ -1285,8 +1283,8 @@ f32 sObjCollision::getStaminaHealDefAdjMax(nObjCollision::STAMINA_HEAL_DEFENCE_A
 // Address: 0x007f7250 - 0x007f726c (28 bytes)
 f32 sObjCollision::getStaminaHealDefAdjMin(nObjCollision::STAMINA_HEAL_DEFENCE_ADJ_TYPE type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mStaminaHealDefAdjMin[type];
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mStaminaHealDefAdjMin[type];
     } else {
         return 0.0f;
     }
@@ -1295,8 +1293,8 @@ f32 sObjCollision::getStaminaHealDefAdjMin(nObjCollision::STAMINA_HEAL_DEFENCE_A
 // Address: 0x007f72b0 - 0x007f72d0 (32 bytes)
 f32 sObjCollision::getHolyAbsorpMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return static_cast<float>(this->mpAdjLimitParamData->mHolyAbsorpMax);
+    if (mpAdjLimitParamData != nullptr) {
+        return static_cast<float>(mpAdjLimitParamData->mHolyAbsorpMax);
     } else {
         return 0.0f;
     }
@@ -1305,11 +1303,11 @@ f32 sObjCollision::getHolyAbsorpMax() const {
 // Address: 0x007f72d0 - 0x007f7305 (53 bytes)
 f32 sObjCollision::getHolyAbsorpMin() const {
     // Approximate from the ELF: a float comparison the recompile folds to an integer test; the body oracle reports this body.
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        if (1.1920929e-7f > static_cast<float>(this->mpAdjLimitParamData->mHolyAbsorpMin)) {
+    if (mpAdjLimitParamData != nullptr) {
+        if (1.1920929e-7f > static_cast<float>(mpAdjLimitParamData->mHolyAbsorpMin)) {
             return 0.0f;
         } else {
-            return static_cast<float>(this->mpAdjLimitParamData->mHolyAbsorpMin);
+            return static_cast<float>(mpAdjLimitParamData->mHolyAbsorpMin);
         }
     } else {
         return 0.0f;
@@ -1319,8 +1317,8 @@ f32 sObjCollision::getHolyAbsorpMin() const {
 // Address: 0x007f7270 - 0x007f7289 (25 bytes)
 f32 sObjCollision::getHpDamageMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDamageMax;
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDamageMax;
     } else {
         return 0.0f;
     }
@@ -1329,8 +1327,8 @@ f32 sObjCollision::getHpDamageMax() const {
 // Address: 0x007f7290 - 0x007f72a9 (25 bytes)
 f32 sObjCollision::getHpDamageMin() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAdjLimitParamData != static_cast<cAdjLimitParam*>(nullptr)) {
-        return this->mpAdjLimitParamData->mDamageMin;
+    if (mpAdjLimitParamData != nullptr) {
+        return mpAdjLimitParamData->mDamageMin;
     } else {
         return 0.0f;
     }
@@ -1342,20 +1340,20 @@ f32 sObjCollision::findErosionCoreAddTime(f32 shakesRate) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x7f76fe; no location-less local in scope fits
     f32 v2_9;
-    if (this->mpErosionShakeConvert == static_cast<rErosionShakeConvert*>(nullptr)) {
+    if (mpErosionShakeConvert == nullptr) {
         v2_9 = 0.0f;
     } else {
-        u32 dataNum = this->mpErosionShakeConvert->getDataNum();
-        if (dataNum != static_cast<u32>(0)) {
+        u32 dataNum = mpErosionShakeConvert->getDataNum();
+        if (dataNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             const cErosionShakeConvert* pLastData;
             for (;;) {
-                pLastData = this->mpErosionShakeConvert->getData(i0_3);
-                if (pLastData != static_cast<const cErosionShakeConvert*>(nullptr)) {
+                pLastData = mpErosionShakeConvert->getData(i0_3);
+                if (pLastData != nullptr) {
                     if (shakesRate > pLastData->mKeyShakesRate) {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < dataNum) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < dataNum) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
@@ -1363,15 +1361,15 @@ f32 sObjCollision::findErosionCoreAddTime(f32 shakesRate) const {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < dataNum) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < dataNum) {
+                        i0_3 += 1u;
                     } else {
                         v2_9 = 0.0f;
                         return v2_9;
                     }
                 }
             }
-            v2_9 = pLastData->::cErosionShakeConvert::getAddCoreTime();
+            v2_9 = pLastData->cErosionShakeConvert::getAddCoreTime();
         } else {
             v2_9 = 0.0f;
         }
@@ -1463,38 +1461,34 @@ f32 sObjCollision::findErosionCoreAddTime(f32 shakesRate) const {
 // Address: 0x007f78d0 - 0x007f7933 (99 bytes)
 void sObjCollision::addModelList(cModelList& ModelList, uDDOModel* pModel) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    ModelList.::cModelList::add_unsafe(pModel);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    ModelList.add_unsafe(pModel);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x007f7940 - 0x007f79a3 (99 bytes)
 void sObjCollision::removeModelList(cModelList& ModelList, uDDOModel* pModel) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    ModelList.::cModelList::remove_unsafe(pModel);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    ModelList.remove_unsafe(pModel);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1502,19 +1496,17 @@ void sObjCollision::removeModelList(cModelList& ModelList, uDDOModel* pModel) {
 bool sObjCollision::findModelList(cModelList& ModelList, uDDOModel* pModel) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the result of the call at 0x7f79e7, used once; no DWARF local holds it
-        bool t0 = ModelList.::cModelList::find_unsafe(pModel);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = ModelList.find_unsafe(pModel);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7f79ff, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -1522,13 +1514,12 @@ bool sObjCollision::findModelList(cModelList& ModelList, uDDOModel* pModel) {
         }
     } else {
         // inferred: a temporary for the result of the call at 0x7f79e7, used once; no DWARF local holds it
-        bool t0 = ModelList.::cModelList::find_unsafe(pModel);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = ModelList.find_unsafe(pModel);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7f79ff, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -1541,19 +1532,17 @@ bool sObjCollision::findModelList(cModelList& ModelList, uDDOModel* pModel) {
 bool sObjCollision::isEmptyModelList(cModelList& ModelList) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the result of the call at 0x7f7a4f, used once; no DWARF local holds it
-        bool t0 = ModelList.::cModelList::isEmpty_unsafe();
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = ModelList.isEmpty_unsafe();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7f7a66, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -1561,13 +1550,12 @@ bool sObjCollision::isEmptyModelList(cModelList& ModelList) {
         }
     } else {
         // inferred: a temporary for the result of the call at 0x7f7a4f, used once; no DWARF local holds it
-        bool t0 = ModelList.::cModelList::isEmpty_unsafe();
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = ModelList.isEmpty_unsafe();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7f7a66, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -1579,19 +1567,17 @@ bool sObjCollision::isEmptyModelList(cModelList& ModelList) {
 // Address: 0x007f7a90 - 0x007f7aec (92 bytes)
 void sObjCollision::clearModelList(cModelList& ModelList) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    ModelList.::cModelList::clear_unsafe();
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    ModelList.clear_unsafe();
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1687,6 +1673,11 @@ void sObjCollision::clearModelList(cModelList& ModelList) {
 //   in cpHpDamageCtrl::addDamageCheatCheck at 0x004894dd-0x004894e3 (called at cpHpDamageCtrl.cpp:8514)
 //   in sObjCollision::cheatCheck at 0x007f62f1-0x007f62fb (called at sObjCollision.cpp:671)
 // void sObjCollision::setCntCheatDamageBig(u32 NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sObjCollision::MyDTI sObjCollision::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sObjCollision* sObjCollision::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sObjCollision.cpp at 0x007f7bee-0x007f7c2b (called at sObjCollision.cpp:60)

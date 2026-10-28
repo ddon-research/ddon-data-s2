@@ -40,7 +40,7 @@ const MtDTI& uScreenSpace::getDTI() const {
 // Address: 0x00f65830 - 0x00f65870 (64 bytes)
 void* uScreenSpace::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uScreenSpace::DTI)->memAlloc(sz, align, ::uScreenSpace::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uScreenSpace::DTI)->memAlloc(sz, align, uScreenSpace::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uScreenSpace::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12uScreenSpaceD0Ev at 0x01b63efd-0x01b63f1e, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uScreenSpace::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uScreenSpace::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uScreenSpace::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,12 +80,12 @@ uScreenSpace::~uScreenSpace() {
 // Address: 0x00f658e0 - 0x00f65917 (55 bytes)
 void uScreenSpace::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRenderTarget == static_cast<rRenderTargetTexture*>(nullptr)) {
-        if (this->mpColorTarget == static_cast<nDraw::Texture*>(nullptr)) {
-            this->createTexture(this->mTextureSize);
+    if (mpRenderTarget == nullptr) {
+        if (mpColorTarget == nullptr) {
+            createTexture(mTextureSize);
         }
     }
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x00f66e60 - 0x00f6756d (1805 bytes)
@@ -101,7 +101,7 @@ __attribute__((weak)) void uScreenSpace::draw(cDraw* p_draw) {
 // Address: 0x00f65920 - 0x00f65925 (5 bytes)
 MtUI* uScreenSpace::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00f65930 - 0x00f66bf2 (4802 bytes)
@@ -137,19 +137,18 @@ __attribute__((weak)) void uScreenSpace::createProperty(MtPropertyList& prop_lis
 // Address: 0x01b63d60 - 0x01b63d7c (28 bytes)
 void uScreenSpace::setTextureSize(u32 sz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTextureSize == sz) {
+    if (mTextureSize == sz) {
         return;
     }
-    if (this->mpRenderTarget != static_cast<rRenderTargetTexture*>(nullptr)) {
-    } else {
-        this->createTexture(sz);
+    if (mpRenderTarget == nullptr) {
+        createTexture(sz);
     }
 }
 
 // Address: 0x01b63d50 - 0x01b63d57 (7 bytes)
 u32 uScreenSpace::getTextureSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTextureSize;
+    return mTextureSize;
 }
 
 // No out-of-line body: no code in the ELF
@@ -243,33 +242,33 @@ u32 uScreenSpace::getTextureSize() {
 // Address: 0x01b63d90 - 0x01b63d95 (5 bytes)
 rRenderTargetTexture* uScreenSpace::getRenderTarget() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRenderTarget;
+    return mpRenderTarget;
 }
 
 // Address: 0x01b63da0 - 0x01b63e3a (154 bytes)
 void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
     // DWARF local not rendered: bool rt_mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRenderTarget != static_cast<rRenderTargetTexture*>(nullptr)) {
-        this->mpRenderTarget->::cResource::release();
-        this->mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
-        if (p_rt != static_cast<rRenderTargetTexture*>(nullptr)) {
-            this->releaseTexture();
-            this->mpRenderTarget = p_rt;
-            p_rt->::cResource::addRef();
-            this->createDepth(this->mpRenderTarget);
+    if (mpRenderTarget != nullptr) {
+        mpRenderTarget->release();
+        mpRenderTarget = nullptr;
+        if (p_rt != nullptr) {
+            releaseTexture();
+            mpRenderTarget = p_rt;
+            p_rt->addRef();
+            createDepth(mpRenderTarget);
         } else {
-            this->mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
-            this->createTexture(this->mTextureSize);
+            mpRenderTarget = nullptr;
+            createTexture(mTextureSize);
         }
     } else {
-        if (p_rt != static_cast<rRenderTargetTexture*>(nullptr)) {
-            this->releaseTexture();
-            this->mpRenderTarget = p_rt;
-            p_rt->::cResource::addRef();
-            this->createDepth(this->mpRenderTarget);
+        if (p_rt != nullptr) {
+            releaseTexture();
+            mpRenderTarget = p_rt;
+            p_rt->addRef();
+            createDepth(mpRenderTarget);
         } else {
-            this->mpRenderTarget = static_cast<rRenderTargetTexture*>(nullptr);
+            mpRenderTarget = nullptr;
         }
     }
 }
@@ -315,7 +314,7 @@ void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
 // Address: 0x01b63d80 - 0x01b63d87 (7 bytes)
 bool uScreenSpace::isDistortionEnabled() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDistortionEnabled;
+    return mDistortionEnabled;
 }
 
 // Address: 0x00f66c00 - 0x00f66c35 (53 bytes)
@@ -339,23 +338,23 @@ __attribute__((weak)) s32 uScreenSpace::createTexture(u32 sz) {
 // Address: 0x00f66df0 - 0x00f66e5e (110 bytes)
 s32 uScreenSpace::releaseTexture() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpColorTarget != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpColorTarget->release();
-        this->mpColorTarget = static_cast<nDraw::Texture*>(nullptr);
+    if (mpColorTarget != nullptr) {
+        mpColorTarget->release();
+        mpColorTarget = nullptr;
     }
-    if (this->mpDepthTarget != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDepthTarget->release();
-        this->mpDepthTarget = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDepthTarget != nullptr) {
+        mpDepthTarget->release();
+        mpDepthTarget = nullptr;
     }
-    if (this->mpTempColorTarget != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpTempColorTarget->release();
-        this->mpTempColorTarget = static_cast<nDraw::Texture*>(nullptr);
+    if (mpTempColorTarget != nullptr) {
+        mpTempColorTarget->release();
+        mpTempColorTarget = nullptr;
     }
-    if (this->mpDistortionTex != static_cast<nDraw::Texture*>(nullptr)) {
-        this->mpDistortionTex->release();
-        this->mpDistortionTex = static_cast<nDraw::Texture*>(nullptr);
+    if (mpDistortionTex != nullptr) {
+        mpDistortionTex->release();
+        mpDistortionTex = nullptr;
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x00f683b0 - 0x00f684e7 (311 bytes)
@@ -401,6 +400,8 @@ __attribute__((weak)) void uScreenSpace::createDistortion(u32 width, u32 height)
     DDON_STUB("uScreenSpace::createDistortion")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uScreenSpace::MyDTI uScreenSpace::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScreenSpace::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

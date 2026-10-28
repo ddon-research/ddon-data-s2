@@ -477,3 +477,81 @@ public:
     static const s32 JOINT_NONE = -1;
     static const s32 JOINT_MAX = 4;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b44df-0x8b44e6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setFitDir(s32 dir) {
+    this->mFitDir = dir;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b44ec-0x8b44f3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setFitUp(s32 up) {
+    this->mFitUp = up;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b4508-0x8b4511; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffPitchMin(f32 EffPitchMin) {
+    this->mEffPitchMin = EffPitchMin;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b4519-0x8b4522; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffPitchMax(f32 EffPitchMax) {
+    this->mEffPitchMax = EffPitchMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b452a-0x8b4533; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffRotMin(f32 EffRotMin) {
+    this->mEffRotMin = EffRotMin;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b453b-0x8b4544; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffRotMax(f32 EffRotMax) {
+    this->mEffRotMax = EffRotMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b454c-0x8b4555; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffDistMin(f32 EffDistMin) {
+    this->mEffDistMin = EffDistMin;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b455d-0x8b4566; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setEffDistMax(f32 EffDistMax) {
+    this->mEffDistMax = EffDistMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b45f4-0x8b45fd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setHeelOffset(f32 HeelOffset) {
+    this->mHeelOffset = HeelOffset;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b462b-0x8b4634; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setCheckGroundLengthUpper(f32 CheckGroundLengthUpper) {
+    this->mCheckGroundLengthUpper = CheckGroundLengthUpper;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b463c-0x8b4645; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setCheckGroundLengthLower(f32 CheckGroundLengthLower) {
+    this->mCheckGroundLengthLower = CheckGroundLengthLower;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b464d-0x8b4656; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setGroundLevel(f32 GroundLevel) {
+    this->mGroundLevel = GroundLevel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsDDOIK::setResource at 0x8b46a7-0x8b46b0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsDDOIK::setMotionFitDist(f32 dist) {
+    this->mMotionFitDist = dist;
+}

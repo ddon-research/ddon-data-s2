@@ -69,14 +69,14 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataGameTimeBaseInfo::CDataGameTimeBaseInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unOriginalWeek = static_cast<u32>(0);
-    this->m_unOriginalMoonAge = static_cast<u32>(0);
-    this->m_llOriginalGameTimeSec = static_cast<s64>(0);
-    this->m_llOriginalRealTimeSec = static_cast<s64>(0);
-    this->m_unGameTimeWeekDay = static_cast<u32>(0);
-    this->m_unGameTimeMoonAge = static_cast<u32>(0);
-    this->m_unGameTimeMonthDay = static_cast<u32>(0);
-    this->m_unGameTimeDayHour = static_cast<u32>(0);
-    this->m_unGameTimeOneDayMin = static_cast<u32>(0);
-    this->m_unGameTimeYearMonth = static_cast<u32>(0);
+    this->m_unOriginalWeek = 0;
+    this->m_unOriginalMoonAge = 0;
+    this->m_llOriginalGameTimeSec = 0;
+    this->m_llOriginalRealTimeSec = 0;
+    this->m_unGameTimeWeekDay = 0;
+    this->m_unGameTimeMoonAge = 0;
+    this->m_unGameTimeMonthDay = 0;
+    this->m_unGameTimeDayHour = 0;
+    this->m_unGameTimeOneDayMin = 0;
+    this->m_unGameTimeYearMonth = 0;
 }

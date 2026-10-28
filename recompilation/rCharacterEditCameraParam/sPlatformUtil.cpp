@@ -31,7 +31,7 @@ const MtDTI& sPlatformUtil::getDTI() const {
 // Address: 0x00e492e0 - 0x00e49320 (64 bytes)
 void* sPlatformUtil::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sPlatformUtil::DTI)->memAlloc(sz, align, ::sPlatformUtil::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sPlatformUtil::DTI)->memAlloc(sz, align, sPlatformUtil::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ void* sPlatformUtil::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13sPlatformUtilD0Ev at 0x00e495fe-0x00e4961f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sPlatformUtil::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPlatformUtil::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPlatformUtil::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,7 +74,7 @@ __attribute__((weak)) void sPlatformUtil::createProperty(MtPropertyList& s) {
 // Address: 0x00e49af0 - 0x00e49af5 (5 bytes)
 MtUI* sPlatformUtil::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x00e494c0 - 0x00e494c9 (9 bytes)
@@ -245,6 +245,11 @@ __attribute__((weak)) void sPlatformUtil::onLiveStremingUpdate(const char* ppara
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sPlatformUtil::hideSplashScreen();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPlatformUtil::MyDTI sPlatformUtil::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sPlatformUtil* sPlatformUtil::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sPlatformUtil::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

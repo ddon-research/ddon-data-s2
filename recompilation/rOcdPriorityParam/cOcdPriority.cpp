@@ -23,7 +23,7 @@ const MtDTI& cOcdPriorityParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOcdPriorityParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI);
+    return MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -32,13 +32,13 @@ inline MtAllocator* cOcdPriorityParam::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdPriorityParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI)->memAlloc(sz, align, ::cOcdPriorityParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI)->memAlloc(sz, align, cOcdPriorityParam::DTI.getID());
 }
 
 // Address: 0x003a9d30 - 0x003a9d70 (64 bytes)
 void* cOcdPriorityParam::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOcdPriorityParam::getAllocator()->memAlloc(sz, align, ::cOcdPriorityParam::DTI.::MtDTI::getID());
+    return cOcdPriorityParam::getAllocator()->memAlloc(sz, align, cOcdPriorityParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,13 +50,13 @@ void* cOcdPriorityParam::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cOcdPriorityParamD0Ev at 0x01a45ce0-0x01a45d0a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOcdPriorityParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI)->memFree(p_addr);
 }
 
 // Address: 0x003a9da0 - 0x003a9dca (42 bytes)
 void cOcdPriorityParam::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cOcdPriorityParam::getAllocator()->memFree(p_addr);
+    cOcdPriorityParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,87 +69,87 @@ void cOcdPriorityParam::operator delete[](void* p_addr) {
 cOcdPriorityParam::cOcdPriorityParam() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mOcdUID = static_cast<u32>(0);
-    this->mIsMultiApply = true;
-    this->mIsMultiNumLimit = false;
-    this->mMultiApplyNum = static_cast<u32>(4);
-    this->mOcdClass = static_cast<u32>(0);
-    this->mOcdLank = static_cast<u32>(0);
-    this->mIsAnnihilateEnemyOcd[2] = false;
-    this->mIsAnnihilateEnemyOcd[0] = false;
-    this->mIsAnnihilateEnemyOcd[1] = false;
-    this->mIsAnnihilateHumanOcd[1] = false;
-    this->mIsAnnihilateHumanOcd[2] = false;
-    this->mIsAnnihilateHumanOcd[3] = false;
-    this->mIsAnnihilateHumanOcd[4] = false;
-    this->mIsAnnihilateHumanOcd[5] = false;
-    this->mIsAnnihilateHumanOcd[6] = false;
-    this->mIsAnnihilateHumanOcd[7] = false;
-    this->mIsAnnihilateHumanOcd[8] = false;
-    this->mIsAnnihilateBadOcd[29] = false;
-    this->mIsAnnihilateBadOcd[30] = false;
-    this->mIsAnnihilateEnchantOcd[0] = false;
-    this->mIsAnnihilateEnchantOcd[1] = false;
-    this->mIsAnnihilateEnchantOcd[2] = false;
-    this->mIsAnnihilateEnchantOcd[3] = false;
-    this->mIsAnnihilateEnchantOcd[4] = false;
-    this->mIsAnnihilateHumanOcd[0] = false;
-    this->mIsAnnihilateBadOcd[21] = false;
-    this->mIsAnnihilateBadOcd[22] = false;
-    this->mIsAnnihilateBadOcd[23] = false;
-    this->mIsAnnihilateBadOcd[24] = false;
-    this->mIsAnnihilateBadOcd[25] = false;
-    this->mIsAnnihilateBadOcd[26] = false;
-    this->mIsAnnihilateBadOcd[27] = false;
-    this->mIsAnnihilateBadOcd[28] = false;
-    this->mIsAnnihilateBadOcd[13] = false;
-    this->mIsAnnihilateBadOcd[14] = false;
-    this->mIsAnnihilateBadOcd[15] = false;
-    this->mIsAnnihilateBadOcd[16] = false;
-    this->mIsAnnihilateBadOcd[17] = false;
-    this->mIsAnnihilateBadOcd[18] = false;
-    this->mIsAnnihilateBadOcd[19] = false;
-    this->mIsAnnihilateBadOcd[20] = false;
-    this->mIsAnnihilateBadOcd[5] = false;
-    this->mIsAnnihilateBadOcd[6] = false;
-    this->mIsAnnihilateBadOcd[7] = false;
-    this->mIsAnnihilateBadOcd[8] = false;
-    this->mIsAnnihilateBadOcd[9] = false;
-    this->mIsAnnihilateBadOcd[10] = false;
-    this->mIsAnnihilateBadOcd[11] = false;
-    this->mIsAnnihilateBadOcd[12] = false;
-    this->mIsAnnihilateGoodOcd[24] = false;
-    this->mIsAnnihilateGoodOcd[25] = false;
-    this->mIsAnnihilateGoodOcd[26] = false;
-    this->mIsAnnihilateBadOcd[0] = false;
-    this->mIsAnnihilateBadOcd[1] = false;
-    this->mIsAnnihilateBadOcd[2] = false;
-    this->mIsAnnihilateBadOcd[3] = false;
-    this->mIsAnnihilateBadOcd[4] = false;
-    this->mIsAnnihilateGoodOcd[16] = false;
-    this->mIsAnnihilateGoodOcd[17] = false;
-    this->mIsAnnihilateGoodOcd[18] = false;
-    this->mIsAnnihilateGoodOcd[19] = false;
-    this->mIsAnnihilateGoodOcd[20] = false;
-    this->mIsAnnihilateGoodOcd[21] = false;
-    this->mIsAnnihilateGoodOcd[22] = false;
-    this->mIsAnnihilateGoodOcd[23] = false;
-    this->mIsAnnihilateGoodOcd[8] = false;
-    this->mIsAnnihilateGoodOcd[9] = false;
-    this->mIsAnnihilateGoodOcd[10] = false;
-    this->mIsAnnihilateGoodOcd[11] = false;
-    this->mIsAnnihilateGoodOcd[12] = false;
-    this->mIsAnnihilateGoodOcd[13] = false;
-    this->mIsAnnihilateGoodOcd[14] = false;
-    this->mIsAnnihilateGoodOcd[15] = false;
-    this->mIsAnnihilateGoodOcd[0] = false;
-    this->mIsAnnihilateGoodOcd[1] = false;
-    this->mIsAnnihilateGoodOcd[2] = false;
-    this->mIsAnnihilateGoodOcd[3] = false;
-    this->mIsAnnihilateGoodOcd[4] = false;
-    this->mIsAnnihilateGoodOcd[5] = false;
-    this->mIsAnnihilateGoodOcd[6] = false;
-    this->mIsAnnihilateGoodOcd[7] = false;
+    mOcdUID = 0;
+    mIsMultiApply = true;
+    mIsMultiNumLimit = false;
+    mMultiApplyNum = 4;
+    mOcdClass = 0;
+    mOcdLank = 0;
+    mIsAnnihilateEnemyOcd[2] = false;
+    mIsAnnihilateEnemyOcd[0] = false;
+    mIsAnnihilateEnemyOcd[1] = false;
+    mIsAnnihilateHumanOcd[1] = false;
+    mIsAnnihilateHumanOcd[2] = false;
+    mIsAnnihilateHumanOcd[3] = false;
+    mIsAnnihilateHumanOcd[4] = false;
+    mIsAnnihilateHumanOcd[5] = false;
+    mIsAnnihilateHumanOcd[6] = false;
+    mIsAnnihilateHumanOcd[7] = false;
+    mIsAnnihilateHumanOcd[8] = false;
+    mIsAnnihilateBadOcd[29] = false;
+    mIsAnnihilateBadOcd[30] = false;
+    mIsAnnihilateEnchantOcd[0] = false;
+    mIsAnnihilateEnchantOcd[1] = false;
+    mIsAnnihilateEnchantOcd[2] = false;
+    mIsAnnihilateEnchantOcd[3] = false;
+    mIsAnnihilateEnchantOcd[4] = false;
+    mIsAnnihilateHumanOcd[0] = false;
+    mIsAnnihilateBadOcd[21] = false;
+    mIsAnnihilateBadOcd[22] = false;
+    mIsAnnihilateBadOcd[23] = false;
+    mIsAnnihilateBadOcd[24] = false;
+    mIsAnnihilateBadOcd[25] = false;
+    mIsAnnihilateBadOcd[26] = false;
+    mIsAnnihilateBadOcd[27] = false;
+    mIsAnnihilateBadOcd[28] = false;
+    mIsAnnihilateBadOcd[13] = false;
+    mIsAnnihilateBadOcd[14] = false;
+    mIsAnnihilateBadOcd[15] = false;
+    mIsAnnihilateBadOcd[16] = false;
+    mIsAnnihilateBadOcd[17] = false;
+    mIsAnnihilateBadOcd[18] = false;
+    mIsAnnihilateBadOcd[19] = false;
+    mIsAnnihilateBadOcd[20] = false;
+    mIsAnnihilateBadOcd[5] = false;
+    mIsAnnihilateBadOcd[6] = false;
+    mIsAnnihilateBadOcd[7] = false;
+    mIsAnnihilateBadOcd[8] = false;
+    mIsAnnihilateBadOcd[9] = false;
+    mIsAnnihilateBadOcd[10] = false;
+    mIsAnnihilateBadOcd[11] = false;
+    mIsAnnihilateBadOcd[12] = false;
+    mIsAnnihilateGoodOcd[24] = false;
+    mIsAnnihilateGoodOcd[25] = false;
+    mIsAnnihilateGoodOcd[26] = false;
+    mIsAnnihilateBadOcd[0] = false;
+    mIsAnnihilateBadOcd[1] = false;
+    mIsAnnihilateBadOcd[2] = false;
+    mIsAnnihilateBadOcd[3] = false;
+    mIsAnnihilateBadOcd[4] = false;
+    mIsAnnihilateGoodOcd[16] = false;
+    mIsAnnihilateGoodOcd[17] = false;
+    mIsAnnihilateGoodOcd[18] = false;
+    mIsAnnihilateGoodOcd[19] = false;
+    mIsAnnihilateGoodOcd[20] = false;
+    mIsAnnihilateGoodOcd[21] = false;
+    mIsAnnihilateGoodOcd[22] = false;
+    mIsAnnihilateGoodOcd[23] = false;
+    mIsAnnihilateGoodOcd[8] = false;
+    mIsAnnihilateGoodOcd[9] = false;
+    mIsAnnihilateGoodOcd[10] = false;
+    mIsAnnihilateGoodOcd[11] = false;
+    mIsAnnihilateGoodOcd[12] = false;
+    mIsAnnihilateGoodOcd[13] = false;
+    mIsAnnihilateGoodOcd[14] = false;
+    mIsAnnihilateGoodOcd[15] = false;
+    mIsAnnihilateGoodOcd[0] = false;
+    mIsAnnihilateGoodOcd[1] = false;
+    mIsAnnihilateGoodOcd[2] = false;
+    mIsAnnihilateGoodOcd[3] = false;
+    mIsAnnihilateGoodOcd[4] = false;
+    mIsAnnihilateGoodOcd[5] = false;
+    mIsAnnihilateGoodOcd[6] = false;
+    mIsAnnihilateGoodOcd[7] = false;
 }
 
 // Address: 0x003a9ee0 - 0x003aa39c (1212 bytes)
@@ -178,26 +178,26 @@ bool cOcdPriorityParam::isAnnihilateOcd(u32 OcdUID) const {
     // DWARF local not rendered: u32 bank;
     // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch ((OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)) {
-        case static_cast<u32>(0):
+    switch ((OcdUID >> 12) & 15u) {
+        case 0:
         {
-            return this->mIsAnnihilateGoodOcd[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != false;
+            return mIsAnnihilateGoodOcd[(OcdUID & 0xFFFF0FFFu) - 1u];
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return this->mIsAnnihilateBadOcd[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != false;
+            return mIsAnnihilateBadOcd[(OcdUID & 0xFFFF0FFFu) - 1u];
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return this->mIsAnnihilateEnchantOcd[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != false;
+            return mIsAnnihilateEnchantOcd[(OcdUID & 0xFFFF0FFFu) - 1u];
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return this->mIsAnnihilateHumanOcd[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != false;
+            return mIsAnnihilateHumanOcd[(OcdUID & 0xFFFF0FFFu) - 1u];
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            return this->mIsAnnihilateEnemyOcd[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != false;
+            return mIsAnnihilateEnemyOcd[(OcdUID & 0xFFFF0FFFu) - 1u];
         }
         default:
         {
@@ -220,6 +220,8 @@ bool cOcdPriorityParam::isAnnihilateOcd(u32 OcdUID) const {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // u32 cOcdPriorityParam::getLank() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdPriorityParam::MyDTI cOcdPriorityParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cOcdPriority.cpp at 0x003aa3a0-0x003aa3e2 (called at cOcdPriority.cpp:21)
 //   in _GLOBAL__sub_I_cOcdPriority.cpp at 0x003aa3a0-0x003aa3e2 (called at cOcdPriority.h:33)
@@ -228,6 +230,6 @@ bool cOcdPriorityParam::isAnnihilateOcd(u32 OcdUID) const {
 // Address: 0x003a9c70 - 0x003a9d20 (176 bytes)
 MtObject* cOcdPriorityParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdPriorityParam;
+    return new (16u) cOcdPriorityParam;
 }
 

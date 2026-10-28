@@ -82,18 +82,18 @@ cFurnitureMenuFlow::~cFurnitureMenuFlow() {
 // Address: 0x000cf020 - 0x000cf05d (61 bytes)
 void cFurnitureMenuFlow::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGUIMyRoom != static_cast<uGUIMyRoom*>(nullptr)) {
-        if (this->mGUIMyRoom->::cUnit::isEnable() == false) {
-            this->mGUIMyRoom = static_cast<uGUIMyRoom*>(nullptr);
+    if (mGUIMyRoom != nullptr) {
+        if (!mGUIMyRoom->isEnable()) {
+            mGUIMyRoom = nullptr;
         }
     }
-    if (this->mGUIMyRoomPopup == static_cast<uGUIMyRoomPopup*>(nullptr)) {
+    if (mGUIMyRoomPopup == nullptr) {
         return;
     }
-    if (this->mGUIMyRoomPopup->::cUnit::isEnable() != false) {
+    if (mGUIMyRoomPopup->isEnable()) {
         return;
     }
-    this->mGUIMyRoomPopup = static_cast<uGUIMyRoomPopup*>(nullptr);
+    mGUIMyRoomPopup = nullptr;
 }
 
 // Address: 0x000cf060 - 0x000cf290 (560 bytes)
@@ -106,33 +106,33 @@ __attribute__((weak)) void cFurnitureMenuFlow::start(cFurniture& furniture, rFur
 // Address: 0x000cecf0 - 0x000ceda8 (184 bytes)
 __attribute__((weak)) void cFurnitureMenuFlow::end() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGUIMyRoomPopup != static_cast<uGUIMyRoomPopup*>(nullptr)) {
-        this->mGUIMyRoomPopup->kill();
-        this->mGUIMyRoomPopup = static_cast<uGUIMyRoomPopup*>(nullptr);
+    if (mGUIMyRoomPopup != nullptr) {
+        mGUIMyRoomPopup->kill();
+        mGUIMyRoomPopup = nullptr;
     }
-    if (this->mGUIMyRoom != static_cast<uGUIMyRoom*>(nullptr)) {
-        this->mGUIMyRoom->kill();
-        this->mGUIMyRoom = static_cast<uGUIMyRoom*>(nullptr);
+    if (mGUIMyRoom != nullptr) {
+        mGUIMyRoom->kill();
+        mGUIMyRoom = nullptr;
     }
-    this->mFurnitureListItems.::nFurnitureMenuFlow::cFurnitureListItems::release();
-    this->mFurnitureGroupListItems.::nFurnitureMenuFlow::cFurnitureGroupListItems::release();
-    if (this->mFurnitureGroups != static_cast<rFurnitureGroup*>(nullptr)) {
-        this->mFurnitureGroups->::cResource::release();
-        this->mFurnitureGroups = static_cast<rFurnitureGroup*>(nullptr);
+    mFurnitureListItems.release();
+    mFurnitureGroupListItems.release();
+    if (mFurnitureGroups != nullptr) {
+        mFurnitureGroups->release();
+        mFurnitureGroups = nullptr;
     }
-    if (this->mFurnitureGroupNames != static_cast<rGUIMessage*>(nullptr)) {
-        this->mFurnitureGroupNames->::cResource::release();
-        this->mFurnitureGroupNames = static_cast<rGUIMessage*>(nullptr);
+    if (mFurnitureGroupNames != nullptr) {
+        mFurnitureGroupNames->release();
+        mFurnitureGroupNames = nullptr;
     }
-    if (this->mFurnitureLayouts != static_cast<rFurnitureLayout*>(nullptr)) {
-        this->mFurnitureLayouts->::cResource::release();
-        this->mFurnitureLayouts = static_cast<rFurnitureLayout*>(nullptr);
+    if (mFurnitureLayouts != nullptr) {
+        mFurnitureLayouts->release();
+        mFurnitureLayouts = nullptr;
     }
-    if (this->mFurnitureLayoutNames != static_cast<rGUIMessage*>(nullptr)) {
-        this->mFurnitureLayoutNames->::cResource::release();
-        this->mFurnitureLayoutNames = static_cast<rGUIMessage*>(nullptr);
+    if (mFurnitureLayoutNames != nullptr) {
+        mFurnitureLayoutNames->release();
+        mFurnitureLayoutNames = nullptr;
     }
-    this->mStateId = static_cast<cFurnitureMenuFlow::STATE_ID>(0);
+    mStateId = STATE_ID_INVALID;
 }
 
 // Address: 0x000cf290 - 0x000cf484 (500 bytes)
@@ -147,19 +147,19 @@ __attribute__((weak)) void cFurnitureMenuFlow::move(cFurniture& furniture) {
 // Address: 0x000cf5a0 - 0x000cf5a8 (8 bytes)
 bool cFurnitureMenuFlow::isMove() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStateId != static_cast<cFurnitureMenuFlow::STATE_ID>(0);
+    return mStateId != STATE_ID_INVALID;
 }
 
 // Address: 0x000cf5b0 - 0x000cf5bb (11 bytes)
 bool cFurnitureMenuFlow::isRoomWearCamera() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCameraNo == static_cast<u32>(128);
+    return mCameraNo == 128;
 }
 
 // Address: 0x000cf5c0 - 0x000cf5de (30 bytes)
 void cFurnitureMenuFlow::onListInputEventSelect(uGUIMyRoom& guiMyRoom, u32 itemIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCameraNo = this->mFurnitureGroupListItems.::nFurnitureMenuFlow::cFurnitureGroupListItems::getCameraNo(itemIndex);
+    mCameraNo = mFurnitureGroupListItems.getCameraNo(itemIndex);
 }
 
 // Address: 0x000cf600 - 0x000cf6a1 (161 bytes)
@@ -175,35 +175,35 @@ __attribute__((weak)) void cFurnitureMenuFlow::onListInputEventDecide(uGUIMyRoom
 // Address: 0x000cf760 - 0x000cf76c (12 bytes)
 void cFurnitureMenuFlow::onListInputEventCancel(uGUIMyRoom& guiMyRoom) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCameraNo = static_cast<u32>(4294967295);
-    this->::cFurnitureMenuFlow::end();
+    mCameraNo = 0xFFFFFFFF;
+    end();
 }
 
 // Address: 0x000cf780 - 0x000cf7aa (42 bytes)
 void cFurnitureMenuFlow::onPopupListInputEventSelect(uGUIMyRoomPopup& guiMyRoomPopup, u32 itemIndex, u32 itemListIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = this->mFurnitureListItems.::nFurnitureMenuFlow::cFurnitureListItems::getItemId(itemIndex, itemListIndex);
-    this->mItemIdRequest = static_cast<u32>(4294967295);
+    mItemId = mFurnitureListItems.getItemId(itemIndex, itemListIndex);
+    mItemIdRequest = 0xFFFFFFFF;
 }
 
 // Address: 0x000cf7e0 - 0x000cf803 (35 bytes)
 void cFurnitureMenuFlow::onPopupListInputEventChange(uGUIMyRoomPopup& guiMyRoomPopup, u32 itemIndex, u32 itemListIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemIdRequest = this->mFurnitureListItems.::nFurnitureMenuFlow::cFurnitureListItems::getItemId(itemIndex, itemListIndex);
+    mItemIdRequest = mFurnitureListItems.getItemId(itemIndex, itemListIndex);
 }
 
 // Address: 0x000cf840 - 0x000cf867 (39 bytes)
 void cFurnitureMenuFlow::onPopupListInputEventDecide(uGUIMyRoomPopup& guiMyRoomPopup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    guiMyRoomPopup.::uGUIBaseExt::pauseInput(true);
-    this->mStateId = static_cast<cFurnitureMenuFlow::STATE_ID>(6);
+    guiMyRoomPopup.pauseInput(true);
+    mStateId = STATE_ID_MYROOM_POPUP_DECIDE;
 }
 
 // Address: 0x000cf8a0 - 0x000cf8c7 (39 bytes)
 void cFurnitureMenuFlow::onPopupListInputEventCancel(uGUIMyRoomPopup& guiMyRoomPopup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    guiMyRoomPopup.::uGUIBaseExt::pauseInput(true);
-    this->mStateId = static_cast<cFurnitureMenuFlow::STATE_ID>(5);
+    guiMyRoomPopup.pauseInput(true);
+    mStateId = STATE_ID_MYROOM_POPUP_CANCEL;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (86 bytes)
@@ -242,6 +242,8 @@ __attribute__((weak)) void cFurnitureMenuFlow::moveStateMyRoomPopupLoad(uGUIMyRo
 // No out-of-line body: 1 inlined copy in 1 function (98 bytes)
 //   in cFurnitureMenuFlow::move at 0x000cf3cc-0x000cf42e (called at cFurnitureMenuFlow.cpp:216)
 // void cFurnitureMenuFlow::moveStateMyRoomPopupWait(uGUIMyRoomPopup& guiMyRoomPopup, uGUIMyRoom& guiMyRoom, cFurniture& furniture);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurnitureMenuFlow::MyDTI cFurnitureMenuFlow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cFurnitureMenuFlow.cpp at 0x000cfa0f-0x000cfa4c (called at cFurnitureMenuFlow.cpp:27)

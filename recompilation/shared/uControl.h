@@ -59,6 +59,8 @@ class uControl : public cUnit
     friend class cPlayerLoadManager;
     // inferred: cpErosionEnemySmall::setupBeforeContext names uControl::mCtrlType
     friend class cpErosionEnemySmall;
+    // inferred: cpLayout::setFadeOut names uControl::mIsFadeOut
+    friend class cpLayout;
     // inferred: sControlManager::dispPlayerModel names uControl::mContextInterface.mpContextInstance
     friend class sControlManager;
     // inferred: sSetManager::createCharacterInstance names uControl::mCtrlType
@@ -272,27 +274,33 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uControl::isPlayer() {
-    return this->mCtrlType == static_cast<u8>(0);
+    return this->mCtrlType == 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uControl::isPawn() {
-    return this->mCtrlType == static_cast<u8>(8);
+    return this->mCtrlType == 8;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uControl::isNpc() {
-    return this->mCtrlType == static_cast<u8>(16);
+    return this->mCtrlType == 16;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline bool uControl::isEnemy() {
-    return this->mCtrlType == static_cast<u8>(32);
+    return this->mCtrlType == 32;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uDDOModel* uControl::getObjModel() {
     return this->mpModel;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActRescue::move at 0x238381-0x238385; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nNetBase::cNetBase* uControl::getNetRpc() {
+    return this->mpNetRpc;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -313,6 +321,18 @@ inline u32 uControl::getUniqueId() {
 // Inline, no code of its own: checked where it is inlined.
 inline u32 uControl::getUnitId() {
     return this->mUnitId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 3 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline s32 uControl::getSetNo() const {
+    return this->mLayout.mSetNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 3 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline const cGroupParam* uControl::getGroupParam() const {
+    return this->mLayout.mpGroupParam;
 }
 
 // Inline, no code of its own: checked where it is inlined.

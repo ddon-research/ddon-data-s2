@@ -48,7 +48,7 @@ const MtDTI& cAIFSM::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6cAIFSMD0Ev at 0x0102e46e-0x0102e48f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSM::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSM::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSM::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,18 +98,18 @@ __attribute__((weak)) bool cAIFSM::createCore(u32 num) {
 bool cAIFSM::setResource(rAIFSM* pRes, u32 index) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x102eede read, used 6 times; no DWARF local holds it
-    cAIFSM::Core* t0 = this->mCoreList;
-    if (t0 != static_cast<cAIFSM::Core*>(nullptr)) {
-        if (index < this->mCoreNum) {
-            if (t0[index].mpResource != static_cast<rAIFSM*>(nullptr)) {
-                t0[index].mpResource->::cResource::release();
-                t0[index].mpResource = static_cast<rAIFSM*>(nullptr);
+    Core* t0 = mCoreList;
+    if (t0 != nullptr) {
+        if (index < mCoreNum) {
+            if (t0[index].mpResource != nullptr) {
+                t0[index].mpResource->release();
+                t0[index].mpResource = nullptr;
             }
-            if (pRes != static_cast<rAIFSM*>(nullptr)) {
-                pRes->::cResource::addRef();
+            if (pRes != nullptr) {
+                pRes->addRef();
             }
             t0[index].mpResource = pRes;
-            t0[index].::cAIFSM::Core::createInfoFromResource(pRes);
+            t0[index].createInfoFromResource(pRes);
             return true;
         }
     }
@@ -119,12 +119,12 @@ bool cAIFSM::setResource(rAIFSM* pRes, u32 index) {
 // Address: 0x0102ef60 - 0x0102ef81 (33 bytes)
 rAIFSM* cAIFSM::getResource(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCoreList != static_cast<cAIFSM::Core*>(nullptr)) {
-        if (index < this->mCoreNum) {
-            return this->mCoreList[index].mpResource;
+    if (mCoreList != nullptr) {
+        if (index < mCoreNum) {
+            return mCoreList[index].mpResource;
         }
     }
-    return static_cast<rAIFSM*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,18 +157,18 @@ rAIFSM* cAIFSM::getResource(u32 index) {
 // Address: 0x01b6a720 - 0x01b6a724 (4 bytes)
 u32 cAIFSM::getCoreNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCoreNum;
+    return mCoreNum;
 }
 
 // Address: 0x0102e7a0 - 0x0102e7c2 (34 bytes)
 cAIFSM::Core* cAIFSM::getCore(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCoreList != static_cast<cAIFSM::Core*>(nullptr)) {
-        if (index < this->mCoreNum) {
-            return &this->mCoreList[index];
+    if (mCoreList != nullptr) {
+        if (index < mCoreNum) {
+            return &mCoreList[index];
         }
     }
-    return static_cast<cAIFSM::Core*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -262,30 +262,30 @@ __attribute__((weak)) void cAIFSM::setDefaultUpdateFunc(cAIUserProcessCallback::
 // Address: 0x0102e7d0 - 0x0102e83c (108 bytes)
 void cAIFSM::reset() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mStatus = static_cast<u32>(0);
-    if (this->mCoreNum != static_cast<u32>(0)) {
+    mStatus = 0;
+    if (mCoreNum != 0) {
         // inferred: the value the loop at 0x102e7f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mCoreNum;
+        u32 v0_0 = mCoreNum;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x102e7f2 read, used 5 times; no DWARF local holds it
-            cAIFSM::Core* t0 = this->mCoreList;
-            t0[i0_3].mClusterStackBottom = static_cast<u32>(0);
-            if (t0[i0_3].mpResource != static_cast<rAIFSM*>(nullptr)) {
-                t0[i0_3].::cAIFSM::Core::pushCluster(t0[i0_3].mpResource->mpRootCluster);
+            Core* t0 = mCoreList;
+            t0[i0_3].mClusterStackBottom = 0;
+            if (t0[i0_3].mpResource != nullptr) {
+                t0[i0_3].pushCluster(t0[i0_3].mpResource->mpRootCluster);
                 t0[i0_3].mIsReset = true;
                 t0[i0_3].mIsImported = false;
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCoreNum) {
-                    v0_0 = this->mCoreNum;
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < mCoreNum) {
+                    v0_0 = mCoreNum;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
                 t0[i0_3].mIsReset = true;
                 t0[i0_3].mIsImported = false;
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
@@ -297,12 +297,12 @@ void cAIFSM::reset() {
 // Address: 0x0102e850 - 0x0102e89c (76 bytes)
 void cAIFSM::reset(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = static_cast<u32>(0);
+    mStatus = 0;
     // inferred: a temporary for the value the load at 0x102e860 read, used 5 times; no DWARF local holds it
-    cAIFSM::Core* t0 = this->mCoreList;
-    t0[index].mClusterStackBottom = static_cast<u32>(0);
-    if (t0[index].mpResource != static_cast<rAIFSM*>(nullptr)) {
-        t0[index].::cAIFSM::Core::pushCluster(t0[index].mpResource->mpRootCluster);
+    Core* t0 = mCoreList;
+    t0[index].mClusterStackBottom = 0;
+    if (t0[index].mpResource != nullptr) {
+        t0[index].pushCluster(t0[index].mpResource->mpRootCluster);
     }
     t0[index].mIsReset = true;
     t0[index].mIsImported = false;
@@ -312,15 +312,15 @@ void cAIFSM::reset(u32 index) {
 void cAIFSM::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i7 = static_cast<unsigned int>(0);
-    if (this->mCoreNum != static_cast<u32>(0)) {
+    unsigned int i7 = 0;
+    if (mCoreNum != 0) {
         do {
-            this->mpCurrentCore = &this->mCoreList[i7];
-            this->beginCore(&this->mCoreList[i7]);
-            this->mpCurrentCore->::cAIFSM::Core::move();
-            this->endCore(this->mpCurrentCore);
-            i7 += static_cast<unsigned int>(1);
-        } while (i7 < this->mCoreNum);
+            mpCurrentCore = &mCoreList[i7];
+            beginCore(&mCoreList[i7]);
+            mpCurrentCore->move();
+            endCore(mpCurrentCore);
+            i7 += 1u;
+        } while (i7 < mCoreNum);
     }
 }
 
@@ -354,6 +354,8 @@ __attribute__((weak)) void cAIFSM::setCore(cAIFSM::Core* pc, u32 index) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAIFSM::setStatus(u32 status, bool flag);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSM::MyDTI cAIFSM::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSM::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -397,7 +399,7 @@ const MtDTI& cAIFSM::Core::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6cAIFSM4CoreD0Ev at 0x0102f5be-0x0102f5df, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSM::Core::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSM::Core::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -422,7 +424,7 @@ cAIFSM::Core::~Core() {
 // Address: 0x0102f5e0 - 0x0102f5e7 (7 bytes)
 void cAIFSM::Core::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAIFSM::Core::createCoreProperty(s, false);
+    createCoreProperty(s, false);
 }
 
 // Address: 0x0102f5f0 - 0x0102f9e9 (1017 bytes)
@@ -531,7 +533,7 @@ __attribute__((weak)) void cAIFSM::Core::setStatus(u32 st) {
 // Address: 0x01b6a810 - 0x01b6a817 (7 bytes)
 u32 cAIFSM::Core::getStatus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStatus;
+    return mStatus;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -674,7 +676,7 @@ __attribute__((weak)) bool cAIFSM::Core::pushCluster(cAIFSMCluster* pCluster) {
 // Address: 0x01b6a850 - 0x01b6a854 (4 bytes)
 u32 cAIFSM::Core::getClusterWorkNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClusterWorkNum;
+    return mClusterWorkNum;
 }
 
 // Address: 0x01b6a860 - 0x01b6a861 (1 bytes)
@@ -685,7 +687,7 @@ __attribute__((weak)) void cAIFSM::Core::setClusterWorkNum(u32) {
 // Address: 0x0102f9f0 - 0x0102f9fb (11 bytes)
 cAIFSM::Core::ClusterWork* cAIFSM::Core::getClusterWork(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mClusterWorkList[index];
+    return &mClusterWorkList[index];
 }
 
 // Address: 0x01b6a840 - 0x01b6a841 (1 bytes)
@@ -710,6 +712,8 @@ __attribute__((weak)) void cAIFSM::Core::setClusterWork(cAIFSM::Core::ClusterWor
 
 // No out-of-line body: no code in the ELF
 // void cAIFSM::Core::clearTransitionOnceStateByID(u32 stateID, bool withSubCluster);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSM::Core::MyDTI cAIFSM::Core::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSM::Core::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -738,8 +742,11 @@ const MtDTI& cAIFSM::Core::ClusterDriveInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAIFSM::Core::ClusterDriveInfo::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* cAIFSM::Core::ClusterDriveInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK6cAIFSM4Core16ClusterDriveInfo5MyDTI11newInstanceEv at 0x01030950-0x0103097d, code DWARF attributes to no inlined copy; sz is the class's size (64), align the allocation's other whole constant (16)
+inline void* cAIFSM::Core::ClusterDriveInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterDriveInfo::DTI)->memAlloc(sz, align, cAIFSM::Core::ClusterDriveInfo::DTI.mID);
+}
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void* cAIFSM::Core::ClusterDriveInfo::operator new[](size_t sz, u32 align);
@@ -753,7 +760,7 @@ const MtDTI& cAIFSM::Core::ClusterDriveInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6cAIFSM4Core16ClusterDriveInfoD0Ev at 0x01b6b1de-0x01b6b1ff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSM::Core::ClusterDriveInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterDriveInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterDriveInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -774,13 +781,15 @@ inline void cAIFSM::Core::ClusterDriveInfo::operator delete(void* p_addr) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 cAIFSM::Core::ClusterDriveInfo::getNodeIndex();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSM::Core::ClusterDriveInfo::MyDTI cAIFSM::Core::ClusterDriveInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSM::Core::ClusterDriveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01030950 - 0x010309df (143 bytes)
-__attribute__((weak)) MtObject* cAIFSM::Core::ClusterDriveInfo::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSM::Core::ClusterDriveInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSM::Core::ClusterDriveInfo::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) cAIFSM::Core::ClusterDriveInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -801,8 +810,11 @@ const MtDTI& cAIFSM::Core::ClusterWork::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAIFSM::Core::ClusterWork::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* cAIFSM::Core::ClusterWork::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK6cAIFSM4Core11ClusterWork5MyDTI11newInstanceEv at 0x01030a40-0x01030a6d, code DWARF attributes to no inlined copy; sz is the class's size (32), align the allocation's other whole constant (16)
+inline void* cAIFSM::Core::ClusterWork::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(sz, align, cAIFSM::Core::ClusterWork::DTI.mID);
+}
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void* cAIFSM::Core::ClusterWork::operator new[](size_t sz, u32 align);
@@ -816,7 +828,7 @@ const MtDTI& cAIFSM::Core::ClusterWork::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6cAIFSM4Core11ClusterWorkD0Ev at 0x01b6ad8f-0x01b6adb0, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSM::Core::ClusterWork::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -835,12 +847,12 @@ inline void cAIFSM::Core::ClusterWork::operator delete(void* p_addr) {
 // Also emitted as: _ZN6cAIFSM4Core11ClusterWorkD0Ev at 0x01b6ad40
 cAIFSM::Core::ClusterWork::~ClusterWork() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+    if (mTransitionOnceStateList != nullptr) {
+        MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
     }
-    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-    this->mTransitionOnceStateListLength = static_cast<u32>(0);
-    this->mTransitionOnceStateNum = static_cast<u32>(0);
+    mTransitionOnceStateList = nullptr;
+    mTransitionOnceStateListLength = 0;
+    mTransitionOnceStateNum = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -861,40 +873,40 @@ MtUI* cAIFSM::Core::ClusterWork::createUI(MtProperty& prop) {
 // Address: 0x01030440 - 0x01030544 (260 bytes)
 bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->mpCluster = pCluster;
-    if (pCluster != static_cast<cAIFSMCluster*>(nullptr)) {
-        if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
-            this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-            this->mTransitionOnceStateListLength = static_cast<u32>(0);
-            this->mTransitionOnceStateNum = static_cast<u32>(0);
-            u32 onceNodeNum = pCluster->::cAIFSMCluster::getNodeNumWithSetting(static_cast<u32>(8));
-            if (onceNodeNum != static_cast<u32>(0)) {
-                if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-                    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
-                    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-                    this->mTransitionOnceStateListLength = static_cast<u32>(0);
-                    this->mTransitionOnceStateNum = static_cast<u32>(0);
+    mpCluster = pCluster;
+    if (pCluster != nullptr) {
+        if (mTransitionOnceStateList != nullptr) {
+            MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
+            mTransitionOnceStateList = nullptr;
+            mTransitionOnceStateListLength = 0;
+            mTransitionOnceStateNum = 0;
+            u32 onceNodeNum = pCluster->getNodeNumWithSetting(8u);
+            if (onceNodeNum != 0) {
+                if (mTransitionOnceStateList != nullptr) {
+                    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
+                    mTransitionOnceStateList = nullptr;
+                    mTransitionOnceStateListLength = 0;
+                    mTransitionOnceStateNum = 0;
                     // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
-                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
-                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
-                        this->mTransitionOnceStateListLength = onceNodeNum;
-                        this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    void* t0 = MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * 4, 16u);
+                    if ((mTransitionOnceStateList = static_cast<u32*>(t0)) != nullptr) {
+                        memset(t0, 0, static_cast<size_t>(onceNodeNum) * 4);
+                        mTransitionOnceStateListLength = onceNodeNum;
+                        mTransitionOnceStateNum = 0;
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-                    this->mTransitionOnceStateListLength = static_cast<u32>(0);
-                    this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    mTransitionOnceStateList = nullptr;
+                    mTransitionOnceStateListLength = 0;
+                    mTransitionOnceStateNum = 0;
                     // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
-                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
-                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
-                        this->mTransitionOnceStateListLength = onceNodeNum;
-                        this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    void* t0 = MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * 4, 16u);
+                    if ((mTransitionOnceStateList = static_cast<u32*>(t0)) != nullptr) {
+                        memset(t0, 0, static_cast<size_t>(onceNodeNum) * 4);
+                        mTransitionOnceStateListLength = onceNodeNum;
+                        mTransitionOnceStateNum = 0;
                         return true;
                     } else {
                         return false;
@@ -904,36 +916,36 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
                 return true;
             }
         } else {
-            this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-            this->mTransitionOnceStateListLength = static_cast<u32>(0);
-            this->mTransitionOnceStateNum = static_cast<u32>(0);
-            u32 onceNodeNum = pCluster->::cAIFSMCluster::getNodeNumWithSetting(static_cast<u32>(8));
-            if (onceNodeNum != static_cast<u32>(0)) {
-                if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-                    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
-                    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-                    this->mTransitionOnceStateListLength = static_cast<u32>(0);
-                    this->mTransitionOnceStateNum = static_cast<u32>(0);
+            mTransitionOnceStateList = nullptr;
+            mTransitionOnceStateListLength = 0;
+            mTransitionOnceStateNum = 0;
+            u32 onceNodeNum = pCluster->getNodeNumWithSetting(8u);
+            if (onceNodeNum != 0) {
+                if (mTransitionOnceStateList != nullptr) {
+                    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
+                    mTransitionOnceStateList = nullptr;
+                    mTransitionOnceStateListLength = 0;
+                    mTransitionOnceStateNum = 0;
                     // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
-                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
-                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
-                        this->mTransitionOnceStateListLength = onceNodeNum;
-                        this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    void* t0 = MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * 4, 16u);
+                    if ((mTransitionOnceStateList = static_cast<u32*>(t0)) != nullptr) {
+                        memset(t0, 0, static_cast<size_t>(onceNodeNum) * 4);
+                        mTransitionOnceStateListLength = onceNodeNum;
+                        mTransitionOnceStateNum = 0;
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-                    this->mTransitionOnceStateListLength = static_cast<u32>(0);
-                    this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    mTransitionOnceStateList = nullptr;
+                    mTransitionOnceStateListLength = 0;
+                    mTransitionOnceStateNum = 0;
                     // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
-                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
-                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
-                        this->mTransitionOnceStateListLength = onceNodeNum;
-                        this->mTransitionOnceStateNum = static_cast<u32>(0);
+                    void* t0 = MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * 4, 16u);
+                    if ((mTransitionOnceStateList = static_cast<u32*>(t0)) != nullptr) {
+                        memset(t0, 0, static_cast<size_t>(onceNodeNum) * 4);
+                        mTransitionOnceStateListLength = onceNodeNum;
+                        mTransitionOnceStateNum = 0;
                         return true;
                     } else {
                         return false;
@@ -975,13 +987,15 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAIFSM::Core::ClusterWork::destroyTransitionOnceStateList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSM::Core::ClusterWork::MyDTI cAIFSM::Core::ClusterWork::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSM::Core::ClusterWork::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01030a40 - 0x01030aa6 (102 bytes)
-__attribute__((weak)) MtObject* cAIFSM::Core::ClusterWork::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSM::Core::ClusterWork::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAIFSM::Core::ClusterWork::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) cAIFSM::Core::ClusterWork;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1017,7 +1031,7 @@ const MtDTI& cAIFSM::Core::ClearTransitionFromAllOnceParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6cAIFSM4Core31ClearTransitionFromAllOnceParamD0Ev at 0x01b6afde-0x01b6afff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSM::Core::ClearTransitionFromAllOnceParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1045,14 +1059,14 @@ void cAIFSM::Core::ClearTransitionFromAllOnceParam::copy(cAICopiableParameter* p
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cAICopiableParameter*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from cAICopiableParameter*
-    this->mType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8));
-    this->mStateID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12));
+    mType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8);
+    mStateID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 12);
 }
 
 // Address: 0x01b6b000 - 0x01b6b005 (5 bytes)
 MtUI* cAIFSM::Core::ClearTransitionFromAllOnceParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
 
 // Address: 0x01b6b010 - 0x01b6b1a7 (407 bytes)
@@ -1060,6 +1074,8 @@ __attribute__((weak)) void cAIFSM::Core::ClearTransitionFromAllOnceParam::create
     DDON_STUB("cAIFSM::Core::ClearTransitionFromAllOnceParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1091,7 +1107,7 @@ const MtDTI& cAIFSMData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator new from _ZNK10cAIFSMData5MyDTI11newInstanceEv at 0x010319a0-0x010319cd, code DWARF attributes to no inlined copy; sz is the class's size (104), align the allocation's other whole constant (16); approximate: only approximate callers check this inline body
 inline void* cAIFSMData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memAlloc(sz, align, ::cAIFSMData::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memAlloc(sz, align, cAIFSMData::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1106,7 +1122,7 @@ inline void* cAIFSMData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10cAIFSMDataD0Ev at 0x01031bde-0x01031bff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSMData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1128,38 +1144,38 @@ inline void cAIFSMData::operator delete(void* p_addr) {
 // Also emitted as: _ZN10cAIFSMDataD0Ev at 0x01031bd0
 cAIFSMData::~cAIFSMData() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpCore != static_cast<cAIFSMData::Core* *>(nullptr)) {
-        if (this->mCoreNum != static_cast<u32>(0)) {
+    if (mpCore != nullptr) {
+        if (mCoreNum != 0) {
             // inferred: the value the loop at 0x1031b24 carries; no location-less local in scope fits
-            u32 v0_0 = this->mCoreNum;
+            u32 v0_0 = mCoreNum;
             // inferred: the value the loop at 0x1031b24 carries; no location-less local in scope fits
-            cAIFSMData::Core* * v0_1 = this->mpCore;
+            Core* * v0_1 = mpCore;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (v0_1[i0_3] != static_cast<cAIFSMData::Core*>(nullptr)) {
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
                     delete v0_1[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) >= this->mCoreNum) {
+                    if ((i0_3 + 1u) >= mCoreNum) {
                         break;
                     }
-                    v0_0 = this->mCoreNum;
+                    v0_0 = mCoreNum;
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) >= v0_0) {
+                    if ((i0_3 + 1u) >= v0_0) {
                         break;
                     }
                 }
-                v0_1 = this->mpCore;
-                i0_3 += static_cast<unsigned int>(1);
+                v0_1 = mpCore;
+                i0_3 += 1u;
             }
         }
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(static_cast<void*>(this->mpCore));
+        MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(static_cast<void*>(mpCore));
     }
-    this->mCoreNum = static_cast<u32>(0);
-    this->mpCore = static_cast<cAIFSMData::Core* *>(nullptr);
-    if (this->mStreamData != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(static_cast<void*>(this->mStreamData));
+    mCoreNum = 0;
+    mpCore = nullptr;
+    if (mStreamData != nullptr) {
+        MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(static_cast<void*>(mStreamData));
     }
-    this->mStreamDataSize = static_cast<u32>(0);
-    this->mStreamData = static_cast<u32*>(nullptr);
+    mStreamDataSize = 0;
+    mStreamData = nullptr;
 }
 
 // Address: 0x01031c00 - 0x01031e2c (556 bytes)
@@ -1189,34 +1205,66 @@ __attribute__((weak)) void cAIFSMData::createProperty(MtPropertyList& s) {
 // Address: 0x0102f190 - 0x0102f1a9 (25 bytes)
 cAIFSMData::Core* cAIFSMData::getCore(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCore != static_cast<cAIFSMData::Core* *>(nullptr)) {
-        if (index < this->mCoreNum) {
-            return this->mpCore[index];
+    if (mpCore != nullptr) {
+        if (index < mCoreNum) {
+            return mpCore[index];
         }
     }
-    return static_cast<cAIFSMData::Core*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x01b6a820 - 0x01b6a824 (4 bytes)
 u32 cAIFSMData::getCoreNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCoreNum;
+    return mCoreNum;
 }
 
 // Address: 0x01b6a960 - 0x01b6aa26 (198 bytes)
-__attribute__((weak)) void cAIFSMData::setCoreNum(u32 num) {
-    DDON_STUB("cAIFSMData::setCoreNum")
-    /* stub */
+void cAIFSMData::setCoreNum(u32 num) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpCore != nullptr) {
+        if (mCoreNum != 0) {
+            // inferred: the value the loop at 0x1b6a995 carries; no location-less local in scope fits
+            u32 v0_0 = mCoreNum;
+            // inferred: the value the loop at 0x1b6a995 carries; no location-less local in scope fits
+            Core* * v0_1 = mpCore;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + 1u) >= mCoreNum) {
+                        break;
+                    }
+                    v0_0 = mCoreNum;
+                } else {
+                    if ((i0_3 + 1u) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpCore;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(static_cast<void*>(mpCore));
+    }
+    mCoreNum = 0;
+    mpCore = nullptr;
+    // inferred: a temporary for the result of the call at 0x1b6a9fe, used twice; no DWARF local holds it
+    void* t0 = MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+    if ((mpCore = static_cast<Core* *>(t0)) != nullptr) {
+        mCoreNum = num;
+        memset(t0, 0, static_cast<size_t>(num) * 8);
+    }
 }
 
 // Address: 0x0102f150 - 0x0102f165 (21 bytes)
 void cAIFSMData::setCore(cAIFSMData::Core* pCore, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCore == static_cast<cAIFSMData::Core* *>(nullptr)) {
+    if (mpCore == nullptr) {
         return;
     }
-    if (index < this->mCoreNum) {
-        this->mpCore[index] = pCore;
+    if (index < mCoreNum) {
+        mpCore[index] = pCore;
     }
 }
 
@@ -1235,13 +1283,15 @@ void cAIFSMData::setCore(cAIFSMData::Core* pCore, u32 index) {
 // No out-of-line body: no code in the ELF
 // const cAIFSMData& cAIFSMData::operator=(const cAIFSMData&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSMData::MyDTI cAIFSMData::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSMData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x010319a0 - 0x01031a4c (172 bytes)
 MtObject* cAIFSMData::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAIFSMData;
+    return new (16u) cAIFSMData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1277,7 +1327,7 @@ const MtDTI& cAIFSMData::Core::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10cAIFSMData4CoreD0Ev at 0x0103269e-0x010326bf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSMData::Core::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1299,60 +1349,60 @@ inline void cAIFSMData::Core::operator delete(void* p_addr) {
 // Also emitted as: _ZN10cAIFSMData4CoreD0Ev at 0x01032690
 cAIFSMData::Core::~Core() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpCluster != static_cast<cAIFSMData::Cluster* *>(nullptr)) {
-        if (this->mClusterNum != static_cast<u32>(0)) {
+    if (mpCluster != nullptr) {
+        if (mClusterNum != 0) {
             // inferred: the value the loop at 0x10325c4 carries; no location-less local in scope fits
-            u32 v0_0 = this->mClusterNum;
+            u32 v0_0 = mClusterNum;
             // inferred: the value the loop at 0x10325c4 carries; no location-less local in scope fits
-            cAIFSMData::Cluster* * v0_1 = this->mpCluster;
+            Cluster* * v0_1 = mpCluster;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (v0_1[i0_3] != static_cast<cAIFSMData::Cluster*>(nullptr)) {
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
                     delete v0_1[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) >= this->mClusterNum) {
+                    if ((i0_3 + 1u) >= mClusterNum) {
                         break;
                     }
-                    v0_0 = this->mClusterNum;
+                    v0_0 = mClusterNum;
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) >= v0_0) {
+                    if ((i0_3 + 1u) >= v0_0) {
                         break;
                     }
                 }
-                v0_1 = this->mpCluster;
-                i0_3 += static_cast<unsigned int>(1);
+                v0_1 = mpCluster;
+                i0_3 += 1u;
             }
         }
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(static_cast<void*>(this->mpCluster));
+        MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(static_cast<void*>(mpCluster));
     }
-    this->mClusterNum = static_cast<u32>(0);
-    this->mpCluster = static_cast<cAIFSMData::Cluster* *>(nullptr);
-    if (this->mpClusterLog != static_cast<cAIFSMData::ClusterLog* *>(nullptr)) {
-        if (this->mClusterLogNum != static_cast<u32>(0)) {
+    mClusterNum = 0;
+    mpCluster = nullptr;
+    if (mpClusterLog != nullptr) {
+        if (mClusterLogNum != 0) {
             // inferred: the value the loop at 0x1032624 carries; no location-less local in scope fits
-            u32 v3_0 = this->mClusterLogNum;
+            u32 v3_0 = mClusterLogNum;
             // inferred: the value the loop at 0x1032624 carries; no location-less local in scope fits
-            cAIFSMData::ClusterLog* * v3_1 = this->mpClusterLog;
+            ClusterLog* * v3_1 = mpClusterLog;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
-                if (v3_1[i3_3] != static_cast<cAIFSMData::ClusterLog*>(nullptr)) {
+            for (unsigned int i3_3 = 0;;) {
+                if (v3_1[i3_3] != nullptr) {
                     delete v3_1[i3_3];
-                    if ((i3_3 + static_cast<unsigned int>(1)) >= this->mClusterLogNum) {
+                    if ((i3_3 + 1u) >= mClusterLogNum) {
                         break;
                     }
-                    v3_0 = this->mClusterLogNum;
+                    v3_0 = mClusterLogNum;
                 } else {
-                    if ((i3_3 + static_cast<unsigned int>(1)) >= v3_0) {
+                    if ((i3_3 + 1u) >= v3_0) {
                         break;
                     }
                 }
-                v3_1 = this->mpClusterLog;
-                i3_3 += static_cast<unsigned int>(1);
+                v3_1 = mpClusterLog;
+                i3_3 += 1u;
             }
         }
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(static_cast<void*>(this->mpClusterLog));
+        MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(static_cast<void*>(mpClusterLog));
     }
-    this->mClusterLogNum = static_cast<u32>(0);
-    this->mpClusterLog = static_cast<cAIFSMData::ClusterLog* *>(nullptr);
+    mClusterLogNum = 0;
+    mpClusterLog = nullptr;
 }
 
 // Address: 0x010326c0 - 0x01032a4b (907 bytes)
@@ -1370,41 +1420,112 @@ __attribute__((weak)) void cAIFSMData::Core::createProperty(MtPropertyList& s) {
 // Address: 0x01b6a880 - 0x01b6a884 (4 bytes)
 u32 cAIFSMData::Core::getClusterNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClusterNum;
+    return mClusterNum;
 }
 
 // Address: 0x01b6aaf0 - 0x01b6abb6 (198 bytes)
-__attribute__((weak)) void cAIFSMData::Core::setClusterNum(u32 num) {
-    DDON_STUB("cAIFSMData::Core::setClusterNum")
-    /* stub */
+void cAIFSMData::Core::setClusterNum(u32 num) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpCluster != nullptr) {
+        if (mClusterNum != 0) {
+            // inferred: the value the loop at 0x1b6ab25 carries; no location-less local in scope fits
+            u32 v0_0 = mClusterNum;
+            // inferred: the value the loop at 0x1b6ab25 carries; no location-less local in scope fits
+            Cluster* * v0_1 = mpCluster;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + 1u) >= mClusterNum) {
+                        break;
+                    }
+                    v0_0 = mClusterNum;
+                } else {
+                    if ((i0_3 + 1u) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpCluster;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(static_cast<void*>(mpCluster));
+    }
+    mClusterNum = 0;
+    mpCluster = nullptr;
+    // inferred: a temporary for the result of the call at 0x1b6ab8e, used twice; no DWARF local holds it
+    void* t0 = MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+    if ((mpCluster = static_cast<Cluster* *>(t0)) != nullptr) {
+        mClusterNum = num;
+        memset(t0, 0, static_cast<size_t>(num) * 8);
+    }
 }
 
 // Address: 0x01030700 - 0x01030719 (25 bytes)
 cAIFSMData::Cluster* cAIFSMData::Core::getCluster(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCluster != static_cast<cAIFSMData::Cluster* *>(nullptr)) {
-        if (index < this->mClusterNum) {
-            return this->mpCluster[index];
+    if (mpCluster != nullptr) {
+        if (index < mClusterNum) {
+            return mpCluster[index];
         }
     }
-    return static_cast<cAIFSMData::Cluster*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x010305a0 - 0x010305b5 (21 bytes)
 void cAIFSMData::Core::setCluster(cAIFSMData::Cluster* pCluster, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCluster == static_cast<cAIFSMData::Cluster* *>(nullptr)) {
+    if (mpCluster == nullptr) {
         return;
     }
-    if (index < this->mClusterNum) {
-        this->mpCluster[index] = pCluster;
+    if (index < mClusterNum) {
+        mpCluster[index] = pCluster;
     }
 }
 
 // Address: 0x010305c0 - 0x01030695 (213 bytes)
 __attribute__((weak)) bool cAIFSMData::Core::createClusterLogList(u32 num) {
-    DDON_STUB("cAIFSMData::Core::createClusterLogList")
-    return {};
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpClusterLog != nullptr) {
+        if (mClusterLogNum != 0) {
+            // inferred: the value the loop at 0x10305f4 carries; no location-less local in scope fits
+            u32 v0_0 = mClusterLogNum;
+            // inferred: the value the loop at 0x10305f4 carries; no location-less local in scope fits
+            ClusterLog* * v0_1 = mpClusterLog;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_1[i0_3] != nullptr) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + 1u) >= mClusterLogNum) {
+                        break;
+                    }
+                    v0_0 = mClusterLogNum;
+                } else {
+                    if ((i0_3 + 1u) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = mpClusterLog;
+                i0_3 += 1u;
+            }
+        }
+        MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(static_cast<void*>(mpClusterLog));
+    }
+    mClusterLogNum = 0;
+    mpClusterLog = nullptr;
+    if (num != 0) {
+        // inferred: a temporary for the result of the call at 0x1030661, used twice; no DWARF local holds it
+        void* t0 = MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        if ((mpClusterLog = static_cast<ClusterLog* *>(t0)) != nullptr) {
+            mClusterLogNum = num;
+            memset(t0, 0, static_cast<size_t>(num) * 8);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1413,34 +1534,34 @@ __attribute__((weak)) bool cAIFSMData::Core::createClusterLogList(u32 num) {
 // Address: 0x01b6a890 - 0x01b6a894 (4 bytes)
 u32 cAIFSMData::Core::getClusterLogNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClusterLogNum;
+    return mClusterLogNum;
 }
 
 // Address: 0x01b6abc0 - 0x01b6abc5 (5 bytes)
 void cAIFSMData::Core::setClusterLogNum(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cAIFSMData::Core::createClusterLogList(num);
+    createClusterLogList(num);
 }
 
 // Address: 0x01030730 - 0x01030749 (25 bytes)
 cAIFSMData::ClusterLog* cAIFSMData::Core::getClusterLog(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpClusterLog != static_cast<cAIFSMData::ClusterLog* *>(nullptr)) {
-        if (index < this->mClusterLogNum) {
-            return this->mpClusterLog[index];
+    if (mpClusterLog != nullptr) {
+        if (index < mClusterLogNum) {
+            return mpClusterLog[index];
         }
     }
-    return static_cast<cAIFSMData::ClusterLog*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x010306a0 - 0x010306b5 (21 bytes)
 void cAIFSMData::Core::setClusterLog(cAIFSMData::ClusterLog* pCluster, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpClusterLog == static_cast<cAIFSMData::ClusterLog* *>(nullptr)) {
+    if (mpClusterLog == nullptr) {
         return;
     }
-    if (index < this->mClusterLogNum) {
-        this->mpClusterLog[index] = pCluster;
+    if (index < mClusterLogNum) {
+        mpClusterLog[index] = pCluster;
     }
 }
 
@@ -1455,6 +1576,8 @@ void cAIFSMData::Core::setClusterLog(cAIFSMData::ClusterLog* pCluster, u32 index
 
 // No out-of-line body: no code in the ELF
 // void cAIFSMData::Core::copy(const cAIFSMData::Core& source);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSMData::Core::MyDTI cAIFSMData::Core::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSMData::Core::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1497,7 +1620,7 @@ const MtDTI& cAIFSMData::Cluster::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAIFSMData::Cluster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSMData::Cluster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSMData::Cluster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1532,6 +1655,8 @@ MtUI* cAIFSMData::Cluster::createUI(MtProperty& prop) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAIFSMData::Cluster::copy(const cAIFSMData::Cluster& source);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSMData::Cluster::MyDTI cAIFSMData::Cluster::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSMData::Cluster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1575,7 +1700,7 @@ const MtDTI& cAIFSMData::ClusterLog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10cAIFSMData10ClusterLogD0Ev at 0x01b6acd6-0x01b6acf7, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cAIFSMData::ClusterLog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1597,11 +1722,11 @@ inline void cAIFSMData::ClusterLog::operator delete(void* p_addr) {
 // Also emitted as: _ZN10cAIFSMData10ClusterLogD0Ev at 0x01b6ac90
 cAIFSMData::ClusterLog::~ClusterLog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+    if (mTransitionOnceStateList != nullptr) {
+        MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
     }
-    this->mTransitionOnceStateNum = static_cast<u32>(0);
-    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
+    mTransitionOnceStateNum = 0;
+    mTransitionOnceStateList = nullptr;
 }
 
 // Address: 0x010322a0 - 0x0103241c (380 bytes)
@@ -1619,53 +1744,55 @@ __attribute__((weak)) void cAIFSMData::ClusterLog::createProperty(MtPropertyList
 // Address: 0x01030750 - 0x01030766 (22 bytes)
 u32 cAIFSMData::ClusterLog::getTransitionOnceState(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-        if (index < this->mTransitionOnceStateNum) {
-            return this->mTransitionOnceStateList[index];
+    if (mTransitionOnceStateList != nullptr) {
+        if (index < mTransitionOnceStateNum) {
+            return mTransitionOnceStateList[index];
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x010306d0 - 0x010306e4 (20 bytes)
 void cAIFSMData::ClusterLog::setTransitionOnceState(u32 id, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTransitionOnceStateList == static_cast<u32*>(nullptr)) {
+    if (mTransitionOnceStateList == nullptr) {
         return;
     }
-    if (index < this->mTransitionOnceStateNum) {
-        this->mTransitionOnceStateList[index] = id;
+    if (index < mTransitionOnceStateNum) {
+        mTransitionOnceStateList[index] = id;
     }
 }
 
 // Address: 0x01b6a8a0 - 0x01b6a8a4 (4 bytes)
 u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTransitionOnceStateNum;
+    return mTransitionOnceStateNum;
 }
 
 // Address: 0x01b6aa50 - 0x01b6aadd (141 bytes)
 void cAIFSMData::ClusterLog::setTransitionOnceStateNum(u32 num) {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+    if (mTransitionOnceStateList != nullptr) {
+        MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memFree(static_cast<void*>(mTransitionOnceStateList));
     }
-    this->mTransitionOnceStateNum = static_cast<u32>(0);
-    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-    if (num == static_cast<u32>(0)) {
+    mTransitionOnceStateNum = 0;
+    mTransitionOnceStateList = nullptr;
+    if (num == 0) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x1b6aab5, used twice; no DWARF local holds it
-    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16));
-    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) == static_cast<u32*>(nullptr)) {
+    void* t0 = MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memAlloc(static_cast<size_t>(num) * 4, 16u);
+    if ((mTransitionOnceStateList = static_cast<u32*>(t0)) == nullptr) {
         return;
     }
-    this->mTransitionOnceStateNum = num;
-    ::memset(t0, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(4));
+    mTransitionOnceStateNum = num;
+    memset(t0, 0, static_cast<size_t>(num) * 4);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAIFSMData::ClusterLog::copy(const cAIFSMData::ClusterLog& source);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIFSMData::ClusterLog::MyDTI cAIFSMData::ClusterLog::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cAIFSMData::ClusterLog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -35,7 +35,7 @@ const MtDTI& uGUIPlace::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPlace::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPlace::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPlace::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* uGUIPlace::getAllocator() {
 // Address: 0x00b97080 - 0x00b970c0 (64 bytes)
 void* uGUIPlace::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPlace::getAllocator()->memAlloc(sz, align, ::uGUIPlace::DTI.::MtDTI::getID());
+    return uGUIPlace::getAllocator()->memAlloc(sz, align, uGUIPlace::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* uGUIPlace::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPlace::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPlace::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPlace::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,19 +78,19 @@ inline void uGUIPlace::operator delete(void* p_addr) {
 // Also emitted as: _ZN9uGUIPlaceD0Ev at 0x00b97270
 uGUIPlace::~uGUIPlace() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b972d0 - 0x00b97338 (104 bytes)
 bool uGUIPlace::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PLACE_GUI"), static_cast<u32>(129), static_cast<t64>(1427770698)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PLACE_GUI"), 129u, 1427770698l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -103,32 +103,32 @@ bool uGUIPlace::loadResource() {
 // Address: 0x00b97340 - 0x00b973ff (191 bytes)
 void uGUIPlace::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(0)), true);
-    this->setPlay(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(0u), true);
+    setPlay(true);
+    setFlowAndInit(3u, false);
     // inferred: a temporary for the result of the call at 0xb973a8, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(3), false);
-    this->mpINST_msg_place = static_cast<cGUIInstAnimation*>(t0);
-    this->mpOBJ_test_message_Message = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(2)));
-    if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpINST_msg_place->::cGUIInstance::setVisible(false);
+    cGUIInstance* t0 = getInstance(3u, false);
+    mpINST_msg_place = static_cast<cGUIInstAnimation*>(t0);
+    mpOBJ_test_message_Message = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 2u));
+    if (mpINST_msg_place != nullptr) {
+        mpINST_msg_place->setVisible(false);
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateInit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateInit);
 }
 
 // Address: 0x00b97420 - 0x00b97451 (49 bytes)
 void uGUIPlace::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,8 +154,8 @@ bool uGUIPlace::isDisp() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstAnimation*
     // inferred: a value cast to the type its use takes: unsigned char used as bool
-    if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-        return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpINST_msg_place) + static_cast<long>(88))) & static_cast<unsigned char>(1));
+    if (mpINST_msg_place != nullptr) {
+        return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpINST_msg_place) + 88)) & 1);
     } else {
         return false;
     }
@@ -164,103 +164,103 @@ bool uGUIPlace::isDisp() const {
 // Address: 0x00b975b0 - 0x00b975b8 (8 bytes)
 void uGUIPlace::startDisp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsOn = true;
+    mIsOn = true;
 }
 
 // Address: 0x00b97400 - 0x00b9741a (26 bytes)
 void uGUIPlace::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateWait);
 }
 
 // Address: 0x00b975c0 - 0x00b97788 (456 bytes)
 void uGUIPlace::updateWait() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    switch (this->mStep) {
-        case static_cast<uGUIPlace::STEP>(0):
+    switch (mStep) {
+        case STEP_IDLE:
         {
-            if (::sGame::getInstance()->::sGame::isFadeOut() == false) {
-                if (this->mIsOn != false) {
-                    this->mTimer = 0.0f;
-                    this->mStep = static_cast<uGUIPlace::STEP>(1);
+            if (!sGame::getInstance()->isFadeOut()) {
+                if (mIsOn) {
+                    mTimer = 0.0f;
+                    mStep = STEP_DELAY;
                 }
             }
             break;
         }
-        case static_cast<uGUIPlace::STEP>(1):
+        case STEP_DELAY:
         {
-            if (this->::uGUIPlace::updateStepDelay() != false) {
-                this->mStep = static_cast<uGUIPlace::STEP>(2);
+            if (updateStepDelay()) {
+                mStep = STEP_FADE_IN;
             }
             break;
         }
-        case static_cast<uGUIPlace::STEP>(2):
+        case STEP_FADE_IN:
         {
-            if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                if (this->::uGUI::isEndAnimation(static_cast<cGUIInstance*>(this->mpINST_msg_place)) != false) {
+            if (mpINST_msg_place != nullptr) {
+                if (isEndAnimation(static_cast<cGUIInstance*>(mpINST_msg_place))) {
                     // inferred: a temporary for the value the load at 0xb97666 read, used 3 times; no DWARF local holds it
-                    cGUIInstAnimation* t0 = this->mpINST_msg_place;
-                    if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                        t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
-                        t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
-                        this->mStep = static_cast<uGUIPlace::STEP>(3);
+                    cGUIInstAnimation* t0 = mpINST_msg_place;
+                    if (t0 != nullptr) {
+                        t0->setSequenceId(1u);
+                        t0->setSequenceId(1u);
+                        mStep = STEP_WAIT;
                     } else {
-                        this->mStep = static_cast<uGUIPlace::STEP>(3);
+                        mStep = STEP_WAIT;
                     }
                 }
             }
             break;
         }
-        case static_cast<uGUIPlace::STEP>(3):
+        case STEP_WAIT:
         {
-            this->mTimer = this->::cUnit::getDeltaTime() + this->mTimer;
-            if (this->mTimer > (::sMain::getInstance()->::sMain::getFps() * 3.0f)) {
+            mTimer = getDeltaTime() + mTimer;
+            if (mTimer > (sMain::getInstance()->getFps() * 3.0f)) {
                 // inferred: a temporary for the value the load at 0xb976d1 read, used 3 times; no DWARF local holds it
-                cGUIInstAnimation* t1 = this->mpINST_msg_place;
-                if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                    t1->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1));
-                    t1->::cGUIInstAnimation::setSequenceId(static_cast<u32>(3));
-                    this->mStep = static_cast<uGUIPlace::STEP>(4);
+                cGUIInstAnimation* t1 = mpINST_msg_place;
+                if (t1 != nullptr) {
+                    t1->setSequenceId(1u);
+                    t1->setSequenceId(3u);
+                    mStep = STEP_FADE_OUT;
                 } else {
-                    this->mStep = static_cast<uGUIPlace::STEP>(4);
+                    mStep = STEP_FADE_OUT;
                 }
             }
             break;
         }
-        case static_cast<uGUIPlace::STEP>(4):
+        case STEP_FADE_OUT:
         {
-            if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                if (this->::uGUI::isEndAnimation(static_cast<cGUIInstance*>(this->mpINST_msg_place)) != false) {
-                    if (this->mpOBJ_test_message_Message != static_cast<cGUIObjMessage*>(nullptr)) {
-                        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpOBJ_test_message_Message), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), false);
-                        if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                            this->mpINST_msg_place->::cGUIInstance::setVisible(false);
-                            if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                                this->mpINST_msg_place->::cGUIInstance::setExecute(false);
-                                this->mStep = static_cast<uGUIPlace::STEP>(0);
-                                this->mIsOn = false;
+            if (mpINST_msg_place != nullptr) {
+                if (isEndAnimation(static_cast<cGUIInstance*>(mpINST_msg_place))) {
+                    if (mpOBJ_test_message_Message != nullptr) {
+                        setObjectMessage(static_cast<cGUIObject*>(mpOBJ_test_message_Message), static_cast<MT_CTSTR>(nullptr), 0u, false);
+                        if (mpINST_msg_place != nullptr) {
+                            mpINST_msg_place->setVisible(false);
+                            if (mpINST_msg_place != nullptr) {
+                                mpINST_msg_place->setExecute(false);
+                                mStep = STEP_IDLE;
+                                mIsOn = false;
                             } else {
-                                this->mStep = static_cast<uGUIPlace::STEP>(0);
-                                this->mIsOn = false;
+                                mStep = STEP_IDLE;
+                                mIsOn = false;
                             }
                         } else {
-                            this->mStep = static_cast<uGUIPlace::STEP>(0);
-                            this->mIsOn = false;
+                            mStep = STEP_IDLE;
+                            mIsOn = false;
                         }
                     } else {
-                        if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                            this->mpINST_msg_place->::cGUIInstance::setVisible(false);
-                            if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
-                                this->mpINST_msg_place->::cGUIInstance::setExecute(false);
-                                this->mStep = static_cast<uGUIPlace::STEP>(0);
-                                this->mIsOn = false;
+                        if (mpINST_msg_place != nullptr) {
+                            mpINST_msg_place->setVisible(false);
+                            if (mpINST_msg_place != nullptr) {
+                                mpINST_msg_place->setExecute(false);
+                                mStep = STEP_IDLE;
+                                mIsOn = false;
                             } else {
-                                this->mStep = static_cast<uGUIPlace::STEP>(0);
-                                this->mIsOn = false;
+                                mStep = STEP_IDLE;
+                                mIsOn = false;
                             }
                         } else {
-                            this->mStep = static_cast<uGUIPlace::STEP>(0);
-                            this->mIsOn = false;
+                            mStep = STEP_IDLE;
+                            mIsOn = false;
                         }
                     }
                 }
@@ -299,6 +299,8 @@ __attribute__((weak)) bool uGUIPlace::updateStepDelay() {
 // No out-of-line body: 1 inlined copy in 1 function (89 bytes)
 //   in uGUIPlace::updateWait at 0x00b97703-0x00b9775c (called at uGUIPlace.cpp:265)
 // bool uGUIPlace::updateStepFadeOut();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPlace::MyDTI uGUIPlace::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPlace.cpp at 0x00b9798f-0x00b979cc (called at uGUIPlace.cpp:23)

@@ -152,6 +152,8 @@ __attribute__((weak)) bool cCamInterAll::interporateAllXX(const MtVector3& eye, 
 // No out-of-line body: no code in the ELF
 // void cCamInterAll::setSprintF(f32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterAll::MyDTI cCamInterAll::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045e70-0x00045ea9 (called at cCamInterporate.cpp:283)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045e70-0x00045ea9 (called at cCamInterporate.h:591)
@@ -222,7 +224,7 @@ const MtDTI& cCamInterporateAng::getDTI() const {
 // Address: 0x01955830 - 0x0195583d (13 bytes)
 f32 cCamInterporateAng::calcDisplace(const f32& now, const f32& end) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nDDOMath::getRadianDifference(now, end);
+    return nDDOMath::getRadianDifference(now, end);
 }
 
 // Address: 0x01955840 - 0x0195588e (78 bytes)
@@ -243,10 +245,12 @@ __attribute__((weak)) void cCamInterporateAng::updateVelocity(const f32& accel) 
 void cCamInterporateAng::updatePosition(const f32& velocity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x19558ce read, used twice; no DWARF local holds it
-    float t0 = this->::cCamInterporate<f32>::mNow;
-    this->::cCamInterporate<f32>::mNow = this->::cCamInterporate<f32>::mVelocity + t0;
-    this->::cCamInterporate<f32>::mNow = ::nDDOMath::clampRadian(this->::cCamInterporate<f32>::mVelocity + t0);
+    float t0 = mNow;
+    mNow = mVelocity + t0;
+    mNow = nDDOMath::clampRadian(mVelocity + t0);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterporateAng::MyDTI cCamInterporateAng::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045dfe-0x00045e37 (called at cCamInterporate.cpp:44)
@@ -339,13 +343,13 @@ __attribute__((weak)) void cCamInterporateAng3Time::updateVelocity(const MtVecto
 void cCamInterporateAng3Time::updatePosition(const MtVector3& velocity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x195ff9e read, used twice; no DWARF local holds it
-    f32 t0 = this->::cCamInterporate<MtVector3>::mNow.x;
-    this->::cCamInterporate<MtVector3>::mNow.x = this->::cCamInterporate<MtVector3>::mVelocity.x + t0;
-    this->::cCamInterporate<MtVector3>::mNow.y = this->::cCamInterporate<MtVector3>::mVelocity.y + this->::cCamInterporate<MtVector3>::mNow.y;
-    this->::cCamInterporate<MtVector3>::mNow.z = this->::cCamInterporate<MtVector3>::mVelocity.z + this->::cCamInterporate<MtVector3>::mNow.z;
-    this->::cCamInterporate<MtVector3>::mNow.x = ::nDDOMath::clampRadian(this->::cCamInterporate<MtVector3>::mVelocity.x + t0);
-    this->::cCamInterporate<MtVector3>::mNow.y = ::nDDOMath::clampRadian(this->::cCamInterporate<MtVector3>::mNow.y);
-    this->::cCamInterporate<MtVector3>::mNow.z = ::nDDOMath::clampRadian(this->::cCamInterporate<MtVector3>::mNow.z);
+    f32 t0 = mNow.x;
+    mNow.x = mVelocity.x + t0;
+    mNow.y = mVelocity.y + mNow.y;
+    mNow.z = mVelocity.z + mNow.z;
+    mNow.x = nDDOMath::clampRadian(mVelocity.x + t0);
+    mNow.y = nDDOMath::clampRadian(mNow.y);
+    mNow.z = nDDOMath::clampRadian(mNow.z);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (136 bytes)
@@ -359,6 +363,8 @@ void cCamInterporateAng3Time::updatePosition(const MtVector3& velocity) {
 //   in cCamInterporateAng3Time::updateVelocity at 0x0195ff55-0x0195ff7d (called at cCamInterporate.h:559)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void cCamInterporateAng3Time::clampRadianVec3(MtVector3& vec);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterporateAng3Time::MyDTI cCamInterporateAng3Time::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045d53-0x00045d8c (called at cCamInterporate.cpp:41)
@@ -385,7 +391,7 @@ const MtDTI& cCamInterporateRange::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCamInterporateRange::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCamInterporateRange::DTI);
+    return MtMemoryAllocator::getAllocator(cCamInterporateRange::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -407,7 +413,7 @@ inline MtAllocator* cCamInterporateRange::getAllocator() {
 // Address: 0x00045050 - 0x0004507a (42 bytes)
 __attribute__((weak)) void cCamInterporateRange::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCamInterporateRange::getAllocator()->memFree(p_addr);
+    cCamInterporateRange::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -447,6 +453,8 @@ __attribute__((weak)) const MtVector3& cCamInterporateRange::interporateTransfor
 //   in cCamInterporateRange::interporateTransform at 0x019516b1-0x019516b7, 0x019516bb-0x0195175f (called at cCamInterporate.h:351)
 // bool cCamInterporateRange::calcAdjustElem(f32& target, f32 now, f32 range) const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterporateRange::MyDTI cCamInterporateRange::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045d8c-0x00045dc5 (called at cCamInterporate.cpp:42)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045d8c-0x00045dc5 (called at cCamInterporate.h:313)
@@ -472,7 +480,7 @@ const MtDTI& cCamInterporateRangeAng::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCamInterporateRangeAng::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCamInterporateRangeAng::DTI);
+    return MtMemoryAllocator::getAllocator(cCamInterporateRangeAng::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -494,7 +502,7 @@ inline MtAllocator* cCamInterporateRangeAng::getAllocator() {
 // Address: 0x000452b0 - 0x000452da (42 bytes)
 __attribute__((weak)) void cCamInterporateRangeAng::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCamInterporateRangeAng::getAllocator()->memFree(p_addr);
+    cCamInterporateRangeAng::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -523,6 +531,8 @@ __attribute__((weak)) f32 cCamInterporateRangeAng::interporateRangeAng(f32 targe
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterporateRangeAng::MyDTI cCamInterporateRangeAng::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045e37-0x00045e70 (called at cCamInterporate.cpp:45)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045e37-0x00045e70 (called at cCamInterporate.h:418)
@@ -548,7 +558,7 @@ const MtDTI& cCamInterporateVec3::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCamInterporateVec3::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCamInterporateVec3::DTI);
+    return MtMemoryAllocator::getAllocator(cCamInterporateVec3::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -570,7 +580,7 @@ inline MtAllocator* cCamInterporateVec3::getAllocator() {
 // Address: 0x00044e50 - 0x00044e7a (42 bytes)
 __attribute__((weak)) void cCamInterporateVec3::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCamInterporateVec3::getAllocator()->memFree(p_addr);
+    cCamInterporateVec3::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -619,6 +629,8 @@ __attribute__((weak)) const MtVector3& cCamInterporateVec3::interporateRot(const
 
 // No out-of-line body: no code in the ELF
 // const MtVector3& cCamInterporateVec3::interporateForTarget(const MtVector3& targetPos, f32 rate);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCamInterporateVec3::MyDTI cCamInterporateVec3::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cCamInterporate.cpp at 0x00045d1a-0x00045d53 (called at cCamInterporate.cpp:40)

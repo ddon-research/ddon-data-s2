@@ -145,9 +145,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyReactRes::cEnemyReactRes() {
-    this->mParam1 = static_cast<s32>(0);
+    this->mParam1 = 0;
     this->mPercent = 0.0f;
-    this->mParam0 = static_cast<s32>(0);
-    this->mCountStart = static_cast<u32>(0);
-    this->mCountEnd = static_cast<u32>(0);
+    this->mParam0 = 0;
+    this->mCountStart = 0;
+    this->mCountEnd = 0;
 }

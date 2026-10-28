@@ -138,6 +138,39 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetStorage::move at 0x392d3a-0x392d6c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetStorage::endReqCommand() {
+    this->mReqCommand[0] = this->mReqCommand[1];
+    this->mReqCommandState[0] = this->mReqCommandState[1];
+    this->mReqCommand[1] = this->mReqCommand[2];
+    this->mReqCommandState[1] = this->mReqCommandState[2];
+    this->mReqCommand[2] = this->mReqCommand[3];
+    this->mReqCommandState[2] = this->mReqCommandState[3];
+    this->mReqCommand[3] = -1;
+    this->mReqCommandState[3] = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetStorage::move at 0x392d33-0x392d6c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetStorage::endState() {
+    this->mState = 0;
+    this->mReqCommand[0] = this->mReqCommand[1];
+    this->mReqCommandState[0] = this->mReqCommandState[1];
+    this->mReqCommand[1] = this->mReqCommand[2];
+    this->mReqCommandState[1] = this->mReqCommandState[2];
+    this->mReqCommand[2] = this->mReqCommand[3];
+    this->mReqCommandState[2] = this->mReqCommandState[3];
+    this->mReqCommand[3] = -1;
+    this->mReqCommandState[3] = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetStorage::saveNativeCharStorage at 0x393170-0x393173; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cNetStorage::setCharId(s32 charId) {
+    this->mCharId = charId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cNetStorage::getComId() {
     return this->mComId;

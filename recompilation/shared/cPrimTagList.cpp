@@ -31,7 +31,7 @@ const MtDTI& cPrimTagList::getDTI() const {
 // Address: 0x0132ba20 - 0x0132ba60 (64 bytes)
 void* cPrimTagList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cPrimTagList::DTI)->memAlloc(sz, align, ::cPrimTagList::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cPrimTagList::DTI)->memAlloc(sz, align, cPrimTagList::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ void* cPrimTagList::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPrimTagList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrimTagList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrimTagList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,14 +60,14 @@ inline void cPrimTagList::operator delete(void* p_addr) {
 // Address: 0x0132bad0 - 0x0132bb2b (91 bytes)
 cPrimTagList::cPrimTagList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurrentStack = static_cast<u32>(0);
-    this->mTagSize = static_cast<u32>(0);
-    this->mCurrentTagSize = static_cast<u32>(0);
-    this->mpCurrentIdxPtr = static_cast<cPrimTagList::IndexTag*>(nullptr);
-    this->mpCurrentTagPtr = static_cast<cPrimTagList::PrimTag*>(nullptr);
-    this->mpWork = static_cast<void*>(nullptr);
-    this->mpSorted = static_cast<cPrimTagList::IndexTag*>(nullptr);
-    this->mpTags = static_cast<cPrimTagList::PrimTag*>(nullptr);
+    mCurrentStack = 0;
+    mTagSize = 0;
+    mCurrentTagSize = 0;
+    mpCurrentIdxPtr = nullptr;
+    mpCurrentTagPtr = nullptr;
+    mpWork = nullptr;
+    mpSorted = nullptr;
+    mpTags = nullptr;
 }
 
 // Address: 0x0132bb30 - 0x0132bb31 (1 bytes)
@@ -126,16 +126,16 @@ s32 cPrimTagList::push() {
     // DWARF local not rendered: ObjState* p_stack;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x132bce0 read, used 5 times; no DWARF local holds it
-    u32 t0 = this->mCurrentStack;
-    if (t0 <= static_cast<u32>(5)) {
-        this->mStack[t0].tag_ptr = this->mpCurrentTagPtr;
-        this->mStack[t0].index_ptr = this->mpCurrentIdxPtr;
-        this->mStack[t0].tag_num = static_cast<u32>(0);
-        this->mStack[t0].sorted = false;
-        this->mCurrentStack = this->mCurrentStack + static_cast<u32>(1);
-        return static_cast<s32>(0);
+    u32 t0 = mCurrentStack;
+    if (t0 <= 5u) {
+        mStack[t0].tag_ptr = mpCurrentTagPtr;
+        mStack[t0].index_ptr = mpCurrentIdxPtr;
+        mStack[t0].tag_num = 0;
+        mStack[t0].sorted = false;
+        mCurrentStack = mCurrentStack + 1u;
+        return 0;
     } else {
-        return static_cast<s32>(9);
+        return 9;
     }
 }
 
@@ -144,15 +144,15 @@ s32 cPrimTagList::pop() {
     // DWARF local not rendered: ObjState* p_stack;
     // Approximate from the ELF: adjacent members copied one by one; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x132bd30 read, used 5 times; no DWARF local holds it
-    u32 t0 = this->mCurrentStack;
-    if (t0 != static_cast<u32>(0)) {
-        this->mCurrentStack = t0 - static_cast<u32>(1);
-        this->mpCurrentTagPtr = this->mStack[t0 - static_cast<u32>(1)].tag_ptr;
-        this->mpCurrentIdxPtr = this->mStack[t0 - static_cast<u32>(1)].index_ptr;
-        this->mCurrentTagSize = this->mCurrentTagSize - this->mStack[t0 - static_cast<u32>(1)].tag_num;
-        return static_cast<s32>(0);
+    u32 t0 = mCurrentStack;
+    if (t0 != 0) {
+        mCurrentStack = t0 - 1u;
+        mpCurrentTagPtr = mStack[t0 - 1u].tag_ptr;
+        mpCurrentIdxPtr = mStack[t0 - 1u].index_ptr;
+        mCurrentTagSize = mCurrentTagSize - mStack[t0 - 1u].tag_num;
+        return 0;
     } else {
-        return static_cast<s32>(10);
+        return 10;
     }
 }
 
@@ -169,15 +169,17 @@ s32 cPrimTagList::pop() {
 void cPrimTagList::clearTag() {
     // DWARF local not rendered: ObjState* p_stack;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurrentTagSize = static_cast<u32>(0);
-    this->mpCurrentTagPtr = this->mpTags;
-    this->mpCurrentIdxPtr = this->mpSorted;
-    this->mStack[0].tag_ptr = this->mpCurrentTagPtr;
-    this->mStack[0].index_ptr = this->mpCurrentIdxPtr;
-    this->mStack[0].tag_num = static_cast<u32>(0);
-    this->mStack[0].sorted = false;
-    this->mCurrentStack = static_cast<u32>(1);
+    mCurrentTagSize = 0;
+    mpCurrentTagPtr = mpTags;
+    mpCurrentIdxPtr = mpSorted;
+    mStack[0].tag_ptr = mpCurrentTagPtr;
+    mStack[0].index_ptr = mpCurrentIdxPtr;
+    mStack[0].tag_num = 0;
+    mStack[0].sorted = false;
+    mCurrentStack = 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrimTagList::MyDTI cPrimTagList::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimTagList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

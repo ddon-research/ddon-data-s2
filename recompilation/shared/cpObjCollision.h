@@ -39,6 +39,7 @@ class cHitNode;
 class cObjHitCache;
 class cOcdDamageInfo;
 class cpSequenceCtrl;
+class cpShlShotCtrl;
 class rAttackParam;
 class rBitTable;
 class rObjCollision;
@@ -165,6 +166,8 @@ public:
 
 class cpObjCollisionBase : public cpComponent
 {
+    // inferred: cpShlShotCtrl::cShlShotReqInfo::copySharedUID names cpObjCollisionBase::mSharedUID[0], through its enclosing class cpShlShotCtrl
+    friend class cpShlShotCtrl;
     // inferred: uDDOModel::isAttackTestHit calls cpObjCollisionBase::isAttackHitSub
     friend class uDDOModel;
     // inferred: uShlBase::setCollision names cpObjCollisionBase::mpResource[0]
@@ -425,6 +428,12 @@ inline cAttackParam* cHitInfo::getAttackParam() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpObjCollisionBase::calcPush at 0x4d7397-0x4d739e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cpObjCollisionBase::getPushGroup() {
+    return this->mPushGroup;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline u32 cpObjCollisionBase::getSharedUID(u32 index) {
     return this->mSharedUID[index];
@@ -433,7 +442,7 @@ inline u32 cpObjCollisionBase::getSharedUID(u32 index) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpObjCollisionBase::clearColNodeProgFlag() {
-    this->mColNodeProgFlag = static_cast<u32>(0);
+    this->mColNodeProgFlag = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -443,15 +452,15 @@ inline uDDOModel* cpObjCollisionBase::getModel() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpObjCollisionBase::cHitFlag::cHitFlag() {
-    this->mHealedHit = static_cast<u32>(0);
-    this->mGuardedHit = static_cast<u32>(0);
-    this->mHealHit = static_cast<u32>(0);
-    this->mPushHit = static_cast<u32>(0);
-    this->mGuardHit = static_cast<u32>(0);
-    this->mCatchHit = static_cast<u32>(0);
-    this->mCaughtHit = static_cast<u32>(0);
-    this->mCheckHit = static_cast<u32>(0);
-    this->mCheckedHit = static_cast<u32>(0);
-    this->mAttackHit = static_cast<u32>(0);
-    this->mDamageHit = static_cast<u32>(0);
+    this->mHealedHit = 0;
+    this->mGuardedHit = 0;
+    this->mHealHit = 0;
+    this->mPushHit = 0;
+    this->mGuardHit = 0;
+    this->mCatchHit = 0;
+    this->mCaughtHit = 0;
+    this->mCheckHit = 0;
+    this->mCheckedHit = 0;
+    this->mAttackHit = 0;
+    this->mDamageHit = 0;
 }

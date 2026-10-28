@@ -38,7 +38,7 @@ const MtDTI& uGUIMenuAreaInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMenuAreaInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* uGUIMenuAreaInfo::getAllocator() {
 // Address: 0x00b0a990 - 0x00b0a9d0 (64 bytes)
 void* uGUIMenuAreaInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMenuAreaInfo::getAllocator()->memAlloc(sz, align, ::uGUIMenuAreaInfo::DTI.::MtDTI::getID());
+    return uGUIMenuAreaInfo::getAllocator()->memAlloc(sz, align, uGUIMenuAreaInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* uGUIMenuAreaInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMenuAreaInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,21 +87,21 @@ uGUIMenuAreaInfo::~uGUIMenuAreaInfo() {
 // Address: 0x00b0b670 - 0x00b0b675 (5 bytes)
 void uGUIMenuAreaInfo::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b0b680 - 0x00b0b72c (172 bytes)
 bool uGUIMenuAreaInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_AREADIARY_GUI"), static_cast<u32>(129), static_cast<t64>(1473927593)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_MENUAREAINFO_RES_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POPTOP_SEL_RES_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_AREADIARY_GUI"), 129u, 1473927593l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_MENUAREAINFO_RES_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_POPTOP_SEL_RES_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_MENUAREAINFO_RES_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POPTOP_SEL_RES_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_MENUAREAINFO_RES_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_POPTOP_SEL_RES_GMD", 1u);
         }
     }
     return false;
@@ -120,32 +120,32 @@ __attribute__((weak)) void uGUIMenuAreaInfo::setup() {
 // Address: 0x00b0c770 - 0x00b0c7c7 (87 bytes)
 void uGUIMenuAreaInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
-        this->mpGUIPopCmd->kill();
-        this->mpGUIPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+    if (mpGUIPopCmd != nullptr) {
+        mpGUIPopCmd->kill();
+        mpGUIPopCmd = nullptr;
     }
-    if (this->mpGUIAreaMaster != static_cast<uGUIAreaMaster*>(nullptr)) {
-        this->mpGUIAreaMaster->kill();
-        this->mpGUIAreaMaster = static_cast<uGUIAreaMaster*>(nullptr);
+    if (mpGUIAreaMaster != nullptr) {
+        mpGUIAreaMaster->kill();
+        mpGUIAreaMaster = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b0c7d0 - 0x00b0c819 (73 bytes)
 void uGUIMenuAreaInfo::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
-        if (this->mpGUIPopCmd->::cUnit::isEnable() == false) {
-            this->mpGUIPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+    if (mpGUIPopCmd != nullptr) {
+        if (!mpGUIPopCmd->isEnable()) {
+            mpGUIPopCmd = nullptr;
         }
     }
-    if (this->mpGUIAreaMaster == static_cast<uGUIAreaMaster*>(nullptr)) {
+    if (mpGUIAreaMaster == nullptr) {
         return;
     }
-    if (this->mpGUIAreaMaster->::cUnit::isEnable() != false) {
+    if (mpGUIAreaMaster->isEnable()) {
         return;
     }
-    this->mpGUIAreaMaster = static_cast<uGUIAreaMaster*>(nullptr);
+    mpGUIAreaMaster = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
@@ -156,35 +156,35 @@ void uGUIMenuAreaInfo::updatePtr() {
 // Address: 0x00b0c6a0 - 0x00b0c768 (200 bytes)
 void uGUIMenuAreaInfo::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-    if ((this->mFlowId & static_cast<u32>(4294967294)) == static_cast<u32>(2)) {
-        this->mScrollList.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+    mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    if ((mFlowId & 0xFFFFFFFEu) == 2) {
+        mScrollList.uGUIBase::cScrollList::update(getDeltaTime());
     }
-    if ((this->mFlowId - static_cast<u32>(4)) <= static_cast<u32>(2)) {
-        this->::uGUIMenuAreaInfo::updateAreaMaster();
+    if ((mFlowId - 4u) <= 2u) {
+        updateAreaMaster();
     } else {
-        if (this->mFlowId == static_cast<u32>(3)) {
-            if (this->mpGUIPopCmd == static_cast<uGUIPopCmd01*>(nullptr)) {
-                switch (this->mCmdResult) {
-                    case static_cast<u32>(0):
+        if (mFlowId == 3) {
+            if (mpGUIPopCmd == nullptr) {
+                switch (mCmdResult) {
+                    case 0:
                     {
-                        this->::uGUIMenuAreaInfo::setFlowId(static_cast<u32>(2));
+                        setFlowId(2u);
                         break;
                     }
-                    case static_cast<u32>(1):
+                    case 1:
                     {
-                        this->::uGUIMenuAreaInfo::setFlowId(static_cast<u32>(4));
+                        setFlowId(4u);
                         break;
                     }
-                    case static_cast<u32>(2):
+                    case 2:
                     {
-                        this->::uGUIMenuAreaInfo::setFlowId(static_cast<u32>(5));
+                        setFlowId(5u);
                         break;
                     }
-                    case static_cast<u32>(3):
+                    case 3:
                     {
-                        this->::uGUIMenuAreaInfo::setFlowId(static_cast<u32>(6));
+                        setFlowId(6u);
                         break;
                     }
                     default:
@@ -200,7 +200,7 @@ void uGUIMenuAreaInfo::updateWait() {
 // Address: 0x00b0cc20 - 0x00b0cc29 (9 bytes)
 void uGUIMenuAreaInfo::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b0cc30 - 0x00b0cdf0 (448 bytes)
@@ -237,17 +237,17 @@ __attribute__((weak)) void uGUIMenuAreaInfo::setupList() {
 void uGUIMenuAreaInfo::setupSectionMessage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xb0c07d read, used once; no DWARF local holds it
-    cGUIObjMessage* t0 = this->mpObjMsgSection02;
-    if (this->mListMode == static_cast<u32>(1)) {
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(8)), static_cast<u32>(0), false);
+    cGUIObjMessage* t0 = mpObjMsgSection02;
+    if (mListMode == 1) {
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 8u), 0u, false);
         // inferred: a temporary for the value the load at 0xb0c0c2 read, used once; no DWARF local holds it
-        cGUIObjMessage* t1 = this->mpObjMsgSection03;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(9)), static_cast<u32>(0), false);
+        cGUIObjMessage* t1 = mpObjMsgSection03;
+        setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 9u), 0u, false);
     } else {
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(5)), static_cast<u32>(0), false);
+        setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 5u), 0u, false);
         // inferred: a temporary for the value the load at 0xb0c0f7 read, used once; no DWARF local holds it
-        cGUIObjMessage* t2 = this->mpObjMsgSection03;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(6)), static_cast<u32>(0), false);
+        cGUIObjMessage* t2 = mpObjMsgSection03;
+        setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 6u), 0u, false);
     }
 }
 
@@ -300,7 +300,7 @@ __attribute__((weak)) void uGUIMenuAreaInfo::updateAreaMaster() {
 // Address: 0x00b0dde0 - 0x00b0ddf6 (22 bytes)
 bool uGUIMenuAreaInfo::requestAreaBaseInfoList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAreaPointList();
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAreaPointList();
 }
 
 // Address: 0x00b0de00 - 0x00b0df0e (270 bytes)
@@ -312,15 +312,15 @@ __attribute__((weak)) void uGUIMenuAreaInfo::callbackAreaBaseInfoList() {
 // Address: 0x00b0c820 - 0x00b0c869 (73 bytes)
 void uGUIMenuAreaInfo::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(2)) {
+    if (mFlowId != 2) {
         return;
     }
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
-    this->mScrollList.::uGUIBase::cScrollList::executeCtrl();
-    if (this->mpCtrl == static_cast<cControl*>(nullptr)) {
+    mCloseBtn.execute();
+    mScrollList.executeCtrl();
+    if (mpCtrl == nullptr) {
         return;
     }
-    this->mpCtrl->execute();
+    mpCtrl->execute();
 }
 
 // Address: 0x00b0c870 - 0x00b0ca60 (496 bytes)
@@ -350,7 +350,7 @@ __attribute__((weak)) void uGUIMenuAreaInfo::moveEvent() {
 // Address: 0x00b0d950 - 0x00b0d95a (10 bytes)
 void uGUIMenuAreaInfo::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMenuAreaInfo::setFlowId(static_cast<u32>(7));
+    setFlowId(7u);
 }
 
 // Address: 0x00b0c5f0 - 0x00b0c649 (89 bytes)
@@ -363,22 +363,22 @@ __attribute__((weak)) u32 uGUIMenuAreaInfo::evCtrlDecide(cControl::Message* msg)
 // Address: 0x00b0c670 - 0x00b0c685 (21 bytes)
 u32 uGUIMenuAreaInfo::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(1);
+    setInputEvent(67u);
+    return 1;
 }
 
 // Address: 0x00b0c050 - 0x00b0c065 (21 bytes)
 u32 uGUIMenuAreaInfo::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x00b0c650 - 0x00b0c665 (21 bytes)
 u32 uGUIMenuAreaInfo::evCtrlChangeList(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(1);
+    setInputEvent(69u);
+    return 1;
 }
 
 // Address: 0x00b0d8e0 - 0x00b0d946 (102 bytes)
@@ -390,22 +390,22 @@ __attribute__((weak)) bool uGUIMenuAreaInfo::evCtrlScrlMouseClick(cControl::Mess
 // Address: 0x01af7ea0 - 0x01af7ead (13 bytes)
 u32 uGUIMenuAreaInfo::callbackCmd00(MtObject* pCaller, MtObject* pDummy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCmdResult = static_cast<u32>(1);
-    return static_cast<u32>(0);
+    mCmdResult = 1;
+    return 0;
 }
 
 // Address: 0x01af7e90 - 0x01af7e9d (13 bytes)
 u32 uGUIMenuAreaInfo::callbackCmd01(MtObject* pCaller, MtObject* pDummy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCmdResult = static_cast<u32>(2);
-    return static_cast<u32>(0);
+    mCmdResult = 2;
+    return 0;
 }
 
 // Address: 0x01af7eb0 - 0x01af7ebd (13 bytes)
 u32 uGUIMenuAreaInfo::callbackCmd02(MtObject* pCaller, MtObject* pDummy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCmdResult = static_cast<u32>(3);
-    return static_cast<u32>(0);
+    mCmdResult = 3;
+    return 0;
 }
 
 // Address: 0x00b0c130 - 0x00b0c5f0 (1216 bytes)
@@ -455,6 +455,8 @@ __attribute__((weak)) void uGUIMenuAreaInfo::updateScrollListHide(uGUIBase::cScr
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // uGUIMenuAreaInfo::cListInfo* uGUIMenuAreaInfo::getListInfo();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIMenuAreaInfo::MyDTI uGUIMenuAreaInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e013-0x00b0e050 (called at uGUIMenuAreaInfo.cpp:68)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e013-0x00b0e050 (called at uGUIMenuAreaInfo.h:22)
@@ -501,7 +503,7 @@ const MtDTI& uGUIMenuAreaInfo::cListItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMenuAreaInfo::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -522,6 +524,8 @@ inline void uGUIMenuAreaInfo::cListItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIMenuAreaInfo::cListItem::~cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMenuAreaInfo::cListItem::MyDTI uGUIMenuAreaInfo::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e0d0-0x00b0e109 (called at uGUIMenuAreaInfo.cpp:71)
@@ -569,7 +573,7 @@ const MtDTI& uGUIMenuAreaInfo::cHeaderItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMenuAreaInfo::cHeaderItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cHeaderItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -590,6 +594,8 @@ inline void uGUIMenuAreaInfo::cHeaderItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIMenuAreaInfo::cHeaderItem::~cHeaderItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMenuAreaInfo::cHeaderItem::MyDTI uGUIMenuAreaInfo::cHeaderItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e050-0x00b0e090 (called at uGUIMenuAreaInfo.cpp:69)
@@ -644,7 +650,7 @@ const MtDTI& uGUIMenuAreaInfo::cListInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMenuAreaInfo::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -665,6 +671,8 @@ inline void uGUIMenuAreaInfo::cListInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIMenuAreaInfo::cListInfo::~cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMenuAreaInfo::cListInfo::MyDTI uGUIMenuAreaInfo::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e109-0x00b0e142 (called at uGUIMenuAreaInfo.cpp:72)
@@ -714,7 +722,7 @@ const MtDTI& uGUIMenuAreaInfo::cHeaderInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMenuAreaInfo::cHeaderInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cHeaderInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -735,6 +743,8 @@ inline void uGUIMenuAreaInfo::cHeaderInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIMenuAreaInfo::cHeaderInfo::~cHeaderInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMenuAreaInfo::cHeaderInfo::MyDTI uGUIMenuAreaInfo::cHeaderInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuAreaInfo.cpp at 0x00b0e090-0x00b0e0d0 (called at uGUIMenuAreaInfo.cpp:70)

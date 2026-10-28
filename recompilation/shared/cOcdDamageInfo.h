@@ -110,3 +110,9 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cOcdDamageInfo::setElementFinalType(cOcdDamageInfo::ELEMENT_FINAL_TYPE type) {
+    this->mElementFinalType = type;
+}

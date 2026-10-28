@@ -46,7 +46,7 @@ const MtDTI& uGUIAreaMaster::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIAreaMaster::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline MtAllocator* uGUIAreaMaster::getAllocator() {
 // Address: 0x00925450 - 0x00925490 (64 bytes)
 void* uGUIAreaMaster::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIAreaMaster::getAllocator()->memAlloc(sz, align, ::uGUIAreaMaster::DTI.::MtDTI::getID());
+    return uGUIAreaMaster::getAllocator()->memAlloc(sz, align, uGUIAreaMaster::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,7 +70,7 @@ void* uGUIAreaMaster::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIAreaMaster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,7 +102,7 @@ uGUIAreaMaster::~uGUIAreaMaster() {
 // Address: 0x009266c0 - 0x009266c5 (5 bytes)
 void uGUIAreaMaster::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009266d0 - 0x00926b41 (1137 bytes)
@@ -158,78 +158,72 @@ __attribute__((weak)) void uGUIAreaMaster::setup() {
 // Address: 0x00926b50 - 0x00926c36 (230 bytes)
 void uGUIAreaMaster::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIPopTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-        this->mpGUIPopTopSel->kill();
-        this->mpGUIPopTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if (mpGUIPopTopSel != nullptr) {
+        mpGUIPopTopSel->kill();
+        mpGUIPopTopSel = nullptr;
     }
-    if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-        this->mpGUIGiveAndTake->kill();
-        this->mpGUIGiveAndTake = static_cast<uGUIGiveAndTake*>(nullptr);
+    if (mpGUIGiveAndTake != nullptr) {
+        mpGUIGiveAndTake->kill();
+        mpGUIGiveAndTake = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIMap != static_cast<uGUIMapMini*>(nullptr)) {
-        this->mpGUIMap->kill();
-        this->mpGUIMap = static_cast<uGUIMapMini*>(nullptr);
+    if (mpGUIMap != nullptr) {
+        mpGUIMap->kill();
+        mpGUIMap = nullptr;
     }
-    if (this->mpGUILargeMap != static_cast<uGUIMap*>(nullptr)) {
-        this->mpGUILargeMap->kill();
-        this->mpGUILargeMap = static_cast<uGUIMap*>(nullptr);
+    if (mpGUILargeMap != nullptr) {
+        mpGUILargeMap->kill();
+        mpGUILargeMap = nullptr;
     }
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpGUIPopDetail->kill();
-        this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        mpGUIPopDetail->kill();
+        mpGUIPopDetail = nullptr;
     }
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteDataChargesHUD();
-    this->::uGUIBase::kill();
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteDataChargesHUD();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00926c40 - 0x00926c45 (5 bytes)
 void uGUIAreaMaster::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00926c50 - 0x00926d29 (217 bytes)
 void uGUIAreaMaster::updatePtr() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpGUIPopTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-        if (this->mpGUIPopTopSel->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIPopTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if (mpGUIPopTopSel != nullptr) {
+        if (!mpGUIPopTopSel->cUnit::isEnable()) {
+            mpGUIPopTopSel = nullptr;
         }
     }
-    if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-        if (this->mpGUIGiveAndTake->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIGiveAndTake = static_cast<uGUIGiveAndTake*>(nullptr);
+    if (mpGUIGiveAndTake != nullptr) {
+        if (!mpGUIGiveAndTake->isEnable()) {
+            mpGUIGiveAndTake = nullptr;
         }
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
-        } else {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUIMap != static_cast<uGUIMapMini*>(nullptr)) {
-        if (this->mpGUIMap->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIMap = static_cast<uGUIMapMini*>(nullptr);
+    if (mpGUIMap != nullptr) {
+        if (!mpGUIMap->isEnable()) {
+            mpGUIMap = nullptr;
         }
     }
-    if (this->mpGUILargeMap != static_cast<uGUIMap*>(nullptr)) {
-        if (this->mpGUILargeMap->::cUnit::isEnable()) {
-        } else {
-            this->mpGUILargeMap = static_cast<uGUIMap*>(nullptr);
+    if (mpGUILargeMap != nullptr) {
+        if (!mpGUILargeMap->isEnable()) {
+            mpGUILargeMap = nullptr;
         }
     }
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        if (this->mpGUIPopDetail->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        if (!mpGUIPopDetail->isEnable()) {
+            mpGUIPopDetail = nullptr;
         }
     }
 }
@@ -237,8 +231,8 @@ void uGUIAreaMaster::updatePtr() {
 // Address: 0x009326c0 - 0x009326cd (13 bytes)
 void uGUIAreaMaster::setMenuMode(u32 area_id, u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAreaId = area_id;
-    this->mMode = mode;
+    mAreaId = area_id;
+    mMode = mode;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -286,107 +280,106 @@ __attribute__((weak)) void uGUIAreaMaster::setProcess(u32 flow_id, bool isInit) 
 // Address: 0x0092b660 - 0x0092b750 (240 bytes)
 void uGUIAreaMaster::setupWindowActive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mFlowId) {
-        case static_cast<u32>(0):
+    switch (mFlowId) {
+        case 0:
         {
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->mpGUISystemMsg->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUISystemMsg->::uGUIBase::setWindowActive(true);
+            if (mpGUISystemMsg != nullptr) {
+                if (!mpGUISystemMsg->mIsWindowActive) {
+                    mpGUISystemMsg->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            if (this->mpGUIPopTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-                if (this->mpGUIPopTopSel->::uGUIBase::mIsWindowActive != false) {
-                } else {
-                    this->mpGUIPopTopSel->::uGUIBase::setWindowActive(true);
+            if (mpGUIPopTopSel != nullptr) {
+                if (!mpGUIPopTopSel->mIsWindowActive) {
+                    mpGUIPopTopSel->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->mpGUISystemMsg->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUISystemMsg->::uGUIBase::setWindowActive(true);
+            if (mpGUISystemMsg != nullptr) {
+                if (!mpGUISystemMsg->mIsWindowActive) {
+                    mpGUISystemMsg->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->mpGUISystemMsg->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUISystemMsg->::uGUIBase::setWindowActive(true);
+            if (mpGUISystemMsg != nullptr) {
+                if (!mpGUISystemMsg->mIsWindowActive) {
+                    mpGUISystemMsg->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            if (this->mpGUILargeMap != static_cast<uGUIMap*>(nullptr)) {
-                if (this->mpGUILargeMap->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUILargeMap->::uGUIBase::setWindowActive(true);
+            if (mpGUILargeMap != nullptr) {
+                if (!mpGUILargeMap->mIsWindowActive) {
+                    mpGUILargeMap->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(11):
+        case 11:
         {
-            if (this->mpGUILargeMap != static_cast<uGUIMap*>(nullptr)) {
-                if (this->mpGUILargeMap->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUILargeMap->::uGUIBase::setWindowActive(true);
+            if (mpGUILargeMap != nullptr) {
+                if (!mpGUILargeMap->mIsWindowActive) {
+                    mpGUILargeMap->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(12):
+        case 12:
         {
             break;
         }
-        case static_cast<u32>(13):
+        case 13:
         {
             break;
         }
-        case static_cast<u32>(14):
+        case 14:
         {
             break;
         }
-        case static_cast<u32>(17):
+        case 17:
         {
             break;
         }
-        case static_cast<u32>(18):
+        case 18:
         {
-            if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-                if (this->mpGUIGiveAndTake->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUIGiveAndTake->::uGUIBase::setWindowActive(true);
+            if (mpGUIGiveAndTake != nullptr) {
+                if (!mpGUIGiveAndTake->mIsWindowActive) {
+                    mpGUIGiveAndTake->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(19):
+        case 19:
         {
-            if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-                if (this->mpGUIGiveAndTake->::uGUIBase::mIsWindowActive == false) {
-                    this->mpGUIGiveAndTake->::uGUIBase::setWindowActive(true);
+            if (mpGUIGiveAndTake != nullptr) {
+                if (!mpGUIGiveAndTake->mIsWindowActive) {
+                    mpGUIGiveAndTake->setWindowActive(true);
                 }
             }
             break;
         }
-        case static_cast<u32>(20):
+        case 20:
         {
             break;
         }
         default:
         {
-            this->::uGUIBase::setWindowActive(true);
+            setWindowActive(true);
             break;
         }
     }
@@ -415,22 +408,22 @@ __attribute__((weak)) void uGUIAreaMaster::moveEvent() {
 // Address: 0x0092b760 - 0x0092b7d5 (117 bytes)
 void uGUIAreaMaster::updateSetFlow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::mIsAttachedResource == false) {
+    if (!mIsAttachedResource) {
         return;
     }
-    if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-        if (this->mpGUIGiveAndTake->::uGUIBase::isAttachedResource() != false) {
-            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isUpdateIndexListForSetQuest(this->mAreaId) == false) {
-                this->mIsCreateList = true;
-                this->::uGUIAreaMaster::setFlowId(this->mFlowIdNext);
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
+    if (mpGUIGiveAndTake != nullptr) {
+        if (mpGUIGiveAndTake->isAttachedResource()) {
+            if (!sQuestManagerExt::getInstance()->isUpdateIndexListForSetQuest(mAreaId)) {
+                mIsCreateList = true;
+                setFlowId(mFlowIdNext);
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
             }
         }
     } else {
-        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isUpdateIndexListForSetQuest(this->mAreaId) == false) {
-            this->mIsCreateList = true;
-            this->::uGUIAreaMaster::setFlowId(this->mFlowIdNext);
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
+        if (!sQuestManagerExt::getInstance()->isUpdateIndexListForSetQuest(mAreaId)) {
+            mIsCreateList = true;
+            setFlowId(mFlowIdNext);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
         }
     }
 }
@@ -792,10 +785,18 @@ __attribute__((weak)) uGUIAreaMaster::cDetailInfo* uGUIAreaMaster::addInfo(cGUII
 }
 
 // Address: 0x0092af10 - 0x0092af2b (27 bytes)
-__attribute__((weak)) void uGUIAreaMaster::setupDetailItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    // local: cDetailInfo* pInfo;
-    DDON_STUB("uGUIAreaMaster::setupDetailItem")
-    /* stub */
+void uGUIAreaMaster::setupDetailItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    if (pInfoBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pInfo, its location optimized out, declared in the lexical block that holds the access
+    cDetailInfo* pInfo = static_cast<cDetailInfo*>(pInfoBase);
+    pItemBase->mpObjPointerTarget = pInfo->mpObjPointerTarget;
+    pItemBase->mpInstPointerTarget = pInfo->mpInstPointerTarget;
 }
 
 // Address: 0x01ad8c50 - 0x01ad8c51 (1 bytes)
@@ -992,15 +993,15 @@ __attribute__((weak)) void uGUIAreaMaster::makeNotice(MT_CTSTR msg) {
 // Address: 0x00937040 - 0x0093705d (29 bytes)
 bool uGUIAreaMaster::reqCostRecover() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPawnExpeditionReqSuccess = false;
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqPawnExpeditionChargeSallyCount();
+    mIsPawnExpeditionReqSuccess = false;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqPawnExpeditionChargeSallyCount();
 }
 
 // Address: 0x00937060 - 0x0093707d (29 bytes)
 bool uGUIAreaMaster::reqSallyInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPawnExpeditionReqSuccess = false;
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getPawnExpeditionGetSallyInfo();
+    mIsPawnExpeditionReqSuccess = false;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getPawnExpeditionGetSallyInfo();
 }
 
 // Address: 0x00937080 - 0x009370e3 (99 bytes)
@@ -1013,14 +1014,14 @@ __attribute__((weak)) bool uGUIAreaMaster::reqSally() {
 // Address: 0x009370f0 - 0x0093710d (29 bytes)
 bool uGUIAreaMaster::reqGoldSally() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPawnExpeditionReqSuccess = false;
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqPawnExpeditionChargeGoldenSally();
+    mIsPawnExpeditionReqSuccess = false;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqPawnExpeditionChargeGoldenSally();
 }
 
 // Address: 0x01ad8ed0 - 0x01ad8ed8 (8 bytes)
 void uGUIAreaMaster::callbackPawnExpeditionReq() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsPawnExpeditionReqSuccess = true;
+    mIsPawnExpeditionReqSuccess = true;
 }
 
 // Address: 0x00931360 - 0x009317a4 (1092 bytes)
@@ -1142,26 +1143,26 @@ void uGUIAreaMaster::clearListHeader() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: stListHeader& header;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mList.mHeader[0].mpInstAnim), false);
-    if (this->mList.mHeader[0].mpObjTexIcon != static_cast<cGUIObjTexture*>(nullptr)) {
-        this->mList.mHeader[0].mpObjTexIcon->::cGUIObject::setVisible(false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mList.mHeader[0].mpInstAnim), false);
+    if (mList.mHeader[0].mpObjTexIcon != nullptr) {
+        mList.mHeader[0].mpObjTexIcon->setVisible(false);
     }
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mList.mHeader[0].mpObjMsg), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mList.mHeader[1].mpInstAnim), false);
-    if (this->mList.mHeader[1].mpObjTexIcon != static_cast<cGUIObjTexture*>(nullptr)) {
-        this->mList.mHeader[1].mpObjTexIcon->::cGUIObject::setVisible(false);
+    setObjectMessage(static_cast<cGUIObject*>(mList.mHeader[0].mpObjMsg), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mList.mHeader[1].mpInstAnim), false);
+    if (mList.mHeader[1].mpObjTexIcon != nullptr) {
+        mList.mHeader[1].mpObjTexIcon->setVisible(false);
     }
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mList.mHeader[1].mpObjMsg), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mList.mHeader[2].mpInstAnim), false);
-    if (this->mList.mHeader[2].mpObjTexIcon != static_cast<cGUIObjTexture*>(nullptr)) {
-        this->mList.mHeader[2].mpObjTexIcon->::cGUIObject::setVisible(false);
+    setObjectMessage(static_cast<cGUIObject*>(mList.mHeader[1].mpObjMsg), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mList.mHeader[2].mpInstAnim), false);
+    if (mList.mHeader[2].mpObjTexIcon != nullptr) {
+        mList.mHeader[2].mpObjTexIcon->setVisible(false);
     }
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mList.mHeader[2].mpObjMsg), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mList.mHeader[3].mpInstAnim), false);
-    if (this->mList.mHeader[3].mpObjTexIcon != static_cast<cGUIObjTexture*>(nullptr)) {
-        this->mList.mHeader[3].mpObjTexIcon->::cGUIObject::setVisible(false);
+    setObjectMessage(static_cast<cGUIObject*>(mList.mHeader[2].mpObjMsg), "", 0u, false);
+    setInstanceVisible(static_cast<cGUIInstance*>(mList.mHeader[3].mpInstAnim), false);
+    if (mList.mHeader[3].mpObjTexIcon != nullptr) {
+        mList.mHeader[3].mpObjTexIcon->setVisible(false);
     }
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mList.mHeader[3].mpObjMsg), "", static_cast<u32>(0), false);
+    setObjectMessage(static_cast<cGUIObject*>(mList.mHeader[3].mpObjMsg), "", 0u, false);
 }
 
 // Address: 0x0092a0a0 - 0x0092abec (2892 bytes)
@@ -1366,120 +1367,120 @@ __attribute__((weak)) void uGUIAreaMaster::requestServer(u32 next_flow_id) {
 // Address: 0x00937140 - 0x0093715f (31 bytes)
 bool uGUIAreaMaster::requestAreaMasterInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAreaMasterInfo(this->mAreaId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAreaMasterInfo(mAreaId);
 }
 
 // Address: 0x00937160 - 0x00937172 (18 bytes)
 void uGUIAreaMaster::callbackAreaMasterInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967294);
-    this->::uGUIAreaMaster::requestServer(this->mFlowIdNext);
+    mRequestFlag = mRequestFlag & 0xFFFFFFFEu;
+    requestServer(mFlowIdNext);
 }
 
 // Address: 0x00937180 - 0x0093719f (31 bytes)
 bool uGUIAreaMaster::requestGetSupplyList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAreaSupplyInfoList(this->mAreaId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAreaSupplyInfoList(mAreaId);
 }
 
 // Address: 0x009371a0 - 0x009371b2 (18 bytes)
 void uGUIAreaMaster::callbackGetSupplyList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967293);
-    this->::uGUIAreaMaster::requestServer(this->mFlowIdNext);
+    mRequestFlag = mRequestFlag & 0xFFFFFFFDu;
+    requestServer(mFlowIdNext);
 }
 
 // Address: 0x009371c0 - 0x009371df (31 bytes)
 bool uGUIAreaMaster::requestGetQuestList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAreaQuestInfoList(this->mAreaId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getAreaQuestInfoList(mAreaId);
 }
 
 // Address: 0x009371e0 - 0x009371f2 (18 bytes)
 void uGUIAreaMaster::callbackGetQuestList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967291);
-    this->::uGUIAreaMaster::requestServer(this->mFlowIdNext);
+    mRequestFlag = mRequestFlag & 0xFFFFFFFBu;
+    requestServer(mFlowIdNext);
 }
 
 // Address: 0x00937200 - 0x0093723c (60 bytes)
 bool uGUIAreaMaster::requestBuyQuestInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x937211 read, used once; no DWARF local holds it
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
     // inferred: a temporary for the value the load at 0x937218 read, used once; no DWARF local holds it
-    u32 t1 = this->mAreaId;
-    return t0->::cNetGameServer::buyAreaQuestInfo(t1, this->mScheduleId.::nQuest::SCHEDULE_ID::toU32());
+    u32 t1 = mAreaId;
+    return t0->buyAreaQuestInfo(t1, mScheduleId.toU32());
 }
 
 // Address: 0x00937240 - 0x0093725d (29 bytes)
 void uGUIAreaMaster::callbackBuyQuestInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = (this->mRequestFlag & static_cast<u32>(4294967283)) | static_cast<u32>(4);
-    this->::uGUIAreaMaster::requestServer(this->mFlowIdNext);
+    mRequestFlag = (mRequestFlag & 0xFFFFFFF3u) | 4u;
+    requestServer(mFlowIdNext);
 }
 
 // Address: 0x00937260 - 0x0093727f (31 bytes)
 bool uGUIAreaMaster::requestGetSpotInfoList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getSpotInfoList(this->mAreaId);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getSpotInfoList(mAreaId);
 }
 
 // Address: 0x00937280 - 0x00937292 (18 bytes)
 void uGUIAreaMaster::callbackGetSpotInfoList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestFlag = this->mRequestFlag & static_cast<u32>(4294967279);
-    this->::uGUIAreaMaster::requestServer(this->mFlowIdNext);
+    mRequestFlag = mRequestFlag & 0xFFFFFFEFu;
+    requestServer(mFlowIdNext);
 }
 
 // Address: 0x00932d50 - 0x00932e7c (300 bytes)
 void uGUIAreaMaster::eventDecide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mFlowId - static_cast<u32>(2)) {
-        case static_cast<u32>(0):
+    switch (mFlowId - 2u) {
+        case 0:
         {
-            this->::uGUIAreaMaster::decideTop();
+            decideTop();
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(4));
+            setFlowId(4u);
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(6));
+            setFlowId(6u);
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(7));
-            this->mRequestFlag = this->mRequestFlag | static_cast<u32>(8);
-            this->::uGUIAreaMaster::requestServer(static_cast<u32>(3));
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(182));
+            setFlowId(7u);
+            mRequestFlag = mRequestFlag | 8u;
+            requestServer(3u);
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 182u);
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(10));
+            setFlowId(10u);
             break;
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            if (this->mMode == static_cast<u32>(4)) {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(14));
+            if (mMode == 4) {
+                setFlowId(14u);
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(13));
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+                    setFlowId(13u);
                 } else {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(12));
+                    setFlowId(12u);
                 }
             }
             break;
         }
-        case static_cast<u32>(16):
+        case 16:
         {
-            this->::uGUIAreaMaster::decideSuppliesReceive();
+            decideSuppliesReceive();
             break;
         }
         default:
@@ -1492,79 +1493,79 @@ void uGUIAreaMaster::eventDecide() {
 // Address: 0x00932e80 - 0x00932f4c (204 bytes)
 void uGUIAreaMaster::eventCancel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mFlowId - static_cast<u32>(2)) {
-        case static_cast<u32>(0):
+    switch (mFlowId - 2u) {
+        case 0:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+            setFlowId(20u);
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+            setFlowId(2u);
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(3));
+            setFlowId(3u);
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(3));
+            setFlowId(3u);
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(5));
+            setFlowId(5u);
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            if (this->mMode != static_cast<u32>(0)) {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+            if (mMode != 0) {
+                setFlowId(20u);
             } else {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+                setFlowId(2u);
             }
             break;
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(9));
+            setFlowId(9u);
             break;
         }
-        case static_cast<u32>(13):
+        case 13:
         {
-            if (this->mMode != static_cast<u32>(0)) {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+            if (mMode != 0) {
+                setFlowId(20u);
             } else {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+                setFlowId(2u);
             }
             break;
         }
-        case static_cast<u32>(14):
+        case 14:
         {
-            if (this->mMode != static_cast<u32>(0)) {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+            if (mMode != 0) {
+                setFlowId(20u);
             } else {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+                setFlowId(2u);
             }
             break;
         }
-        case static_cast<u32>(16):
+        case 16:
         {
-            if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
-                this->mpGUIGiveAndTake->::uGUIGiveAndTake::resetItemInfo();
-                this->mpGUIGiveAndTake->mSleep = true;
-                if (this->mMode != static_cast<u32>(0)) {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+            if (mpGUIGiveAndTake != nullptr) {
+                mpGUIGiveAndTake->resetItemInfo();
+                mpGUIGiveAndTake->mSleep = true;
+                if (mMode != 0) {
+                    setFlowId(20u);
                 } else {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+                    setFlowId(2u);
                 }
             } else {
-                if (this->mMode != static_cast<u32>(0)) {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(20));
+                if (mMode != 0) {
+                    setFlowId(20u);
                 } else {
-                    this->::uGUIAreaMaster::setFlowId(static_cast<u32>(2));
+                    setFlowId(2u);
                 }
             }
             break;
@@ -1593,44 +1594,44 @@ __attribute__((weak)) void uGUIAreaMaster::eventAdjustCursor() {
 // Address: 0x00932f70 - 0x0093303a (202 bytes)
 void uGUIAreaMaster::eventAdjustTab() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mFlowId - static_cast<u32>(15)) <= static_cast<u32>(1)) {
-        if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mPointList.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(this->mpTabCtrl->::cControl::getCurrentPos()), true, true);
+    if ((mFlowId - 15u) <= 1u) {
+        if (mpTabCtrl != nullptr) {
+            mPointList.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(mpTabCtrl->getCurrentPos()), true, true);
         } else {
-            this->mPointList.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(0), true, true);
+            mPointList.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
         }
-        if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            if (this->mpTabCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(16));
+        if (mpTabCtrl != nullptr) {
+            if (mpTabCtrl->mCurrentPos != 0) {
+                setFlowId(16u);
             } else {
-                this->::uGUIAreaMaster::setFlowId(static_cast<u32>(15));
+                setFlowId(15u);
             }
         } else {
-            this->::uGUIAreaMaster::setFlowId(static_cast<u32>(15));
+            setFlowId(15u);
         }
     } else {
-        if (this->mFlowId != static_cast<u32>(3)) {
-            if (this->mFlowId == static_cast<u32>(5)) {
-                if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    this->mQuestInfo.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(this->mpTabCtrl->::cControl::getCurrentPos()), true, true);
+        if (mFlowId != 3) {
+            if (mFlowId == 5) {
+                if (mpTabCtrl != nullptr) {
+                    mQuestInfo.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(mpTabCtrl->getCurrentPos()), true, true);
                 } else {
-                    this->mQuestInfo.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(0), true, true);
+                    mQuestInfo.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
                 }
-                if (this->mQuestInfo.mIsUpdate == false) {
-                    this->::uGUIAreaMaster::setupQuestInfo();
+                if (!mQuestInfo.mIsUpdate) {
+                    setupQuestInfo();
                 }
-                this->::uGUIAreaMaster::adjustQuestInfoCursor();
+                adjustQuestInfoCursor();
             }
         } else {
-            if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mQuestInfo.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(this->mpTabCtrl->::cControl::getCurrentPos()), true, true);
+            if (mpTabCtrl != nullptr) {
+                mQuestInfo.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(mpTabCtrl->getCurrentPos()), true, true);
             } else {
-                this->mQuestInfo.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(0), true, true);
+                mQuestInfo.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
             }
-            if (this->mQuestInfo.mIsUpdate == false) {
-                this->::uGUIAreaMaster::setupQuestInfo();
+            if (!mQuestInfo.mIsUpdate) {
+                setupQuestInfo();
             }
-            this->::uGUIAreaMaster::adjustQuestInfoCursor();
+            adjustQuestInfoCursor();
         }
     }
 }
@@ -1647,21 +1648,21 @@ __attribute__((weak)) u32 uGUIAreaMaster::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x0092b0a0 - 0x0092b0be (30 bytes)
 u32 uGUIAreaMaster::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x0092a080 - 0x0092a09e (30 bytes)
 u32 uGUIAreaMaster::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x0092b0c0 - 0x0092b198 (216 bytes)
@@ -1675,18 +1676,18 @@ __attribute__((weak)) u32 uGUIAreaMaster::evCtrlCheck(cControl::Message* msg) {
 // Address: 0x0092b1a0 - 0x0092b1be (30 bytes)
 u32 uGUIAreaMaster::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x0092b1c0 - 0x0092b1d2 (18 bytes)
 u32 uGUIAreaMaster::evCtrlAdjustTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(0);
+    setInputEvent(71u);
+    return 0;
 }
 
 // Address: 0x00935350 - 0x0093552b (475 bytes)
@@ -1726,6 +1727,8 @@ __attribute__((weak)) u32 uGUIAreaMaster::evCtrlMouseClick(cControl::Message* ms
 //   in uGUIAreaMaster::setupListItem at 0x0092a954-0x0092a959, 0x0092a95e-0x0092a96e (called at uGUIAreaMaster.cpp:5363)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIAreaMaster::getMsg(rGUIMessage* pMsg, u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::MyDTI uGUIAreaMaster::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x009373a3-0x009373e0 (called at uGUIAreaMaster.cpp:56)
@@ -1787,7 +1790,7 @@ const MtDTI& uGUIAreaMaster::cListItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1808,6 +1811,8 @@ inline void uGUIAreaMaster::cListItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cListItem::~cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cListItem::MyDTI uGUIAreaMaster::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x009373e0-0x00937420 (called at uGUIAreaMaster.cpp:57)
@@ -1855,7 +1860,7 @@ const MtDTI& uGUIAreaMaster::cPawnListItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cPawnListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPawnListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPawnListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1876,6 +1881,8 @@ inline void uGUIAreaMaster::cPawnListItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cPawnListItem::~cPawnListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cPawnListItem::MyDTI uGUIAreaMaster::cPawnListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x00937420-0x00937459 (called at uGUIAreaMaster.cpp:58)
@@ -1923,7 +1930,7 @@ const MtDTI& uGUIAreaMaster::cPointItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cPointItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPointItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPointItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1944,6 +1951,8 @@ inline void uGUIAreaMaster::cPointItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cPointItem::~cPointItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cPointItem::MyDTI uGUIAreaMaster::cPointItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x00937499-0x009374d2 (called at uGUIAreaMaster.cpp:60)
@@ -1991,7 +2000,7 @@ const MtDTI& uGUIAreaMaster::cSuppliesHeaderItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cSuppliesHeaderItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2012,6 +2021,8 @@ inline void uGUIAreaMaster::cSuppliesHeaderItem::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cSuppliesHeaderItem::~cSuppliesHeaderItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cSuppliesHeaderItem::MyDTI uGUIAreaMaster::cSuppliesHeaderItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x00937544-0x0093757d (called at uGUIAreaMaster.cpp:63)
@@ -2060,7 +2071,7 @@ const MtDTI& uGUIAreaMaster::cSuppliesItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIAreaMaster::cSuppliesItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2084,6 +2095,8 @@ inline void uGUIAreaMaster::cSuppliesItem::operator delete(void* p_addr) {
 uGUIAreaMaster::cSuppliesItem::~cSuppliesItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cSuppliesItem::MyDTI uGUIAreaMaster::cSuppliesItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x009375b6-0x009375ef (called at uGUIAreaMaster.cpp:65)
@@ -2199,7 +2212,7 @@ const MtDTI& uGUIAreaMaster::cDetailInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cDetailInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cDetailInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cDetailInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2224,11 +2237,13 @@ inline void uGUIAreaMaster::cDetailInfo::operator delete(void* p_addr) {
 // Address: 0x01adab10 - 0x01adab30 (32 bytes)
 void uGUIAreaMaster::cDetailInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner == static_cast<uGUIAreaMaster*>(nullptr)) {
+    if (mpOwner == nullptr) {
         return;
     }
-    this->mpOwner->::uGUIAreaMaster::setupMouseCollision(pCtrl, pos, this->mIsReward, this->mIsButton, this->mIsSpotButton);
+    mpOwner->setupMouseCollision(pCtrl, pos, mIsReward, mIsButton, mIsSpotButton);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cDetailInfo::MyDTI uGUIAreaMaster::cDetailInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x0093750b-0x00937544 (called at uGUIAreaMaster.cpp:62)
@@ -2281,7 +2296,7 @@ const MtDTI& uGUIAreaMaster::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIAreaMaster::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2305,6 +2320,8 @@ inline void uGUIAreaMaster::cListInfo::operator delete(void* p_addr) {
 uGUIAreaMaster::cListInfo::~cListInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cListInfo::MyDTI uGUIAreaMaster::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x00937459-0x00937499 (called at uGUIAreaMaster.cpp:59)
@@ -2354,7 +2371,7 @@ const MtDTI& uGUIAreaMaster::cPointInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cPointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2375,6 +2392,8 @@ inline void uGUIAreaMaster::cPointInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cPointInfo::~cPointInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cPointInfo::MyDTI uGUIAreaMaster::cPointInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x009374d2-0x0093750b (called at uGUIAreaMaster.cpp:61)
@@ -2429,7 +2448,7 @@ const MtDTI& uGUIAreaMaster::cSuppliesHeaderInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cSuppliesHeaderInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesHeaderInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2450,6 +2469,8 @@ inline void uGUIAreaMaster::cSuppliesHeaderInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cSuppliesHeaderInfo::~cSuppliesHeaderInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cSuppliesHeaderInfo::MyDTI uGUIAreaMaster::cSuppliesHeaderInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x0093757d-0x009375b6 (called at uGUIAreaMaster.cpp:64)
@@ -2499,7 +2520,7 @@ const MtDTI& uGUIAreaMaster::cSuppliesInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIAreaMaster::cSuppliesInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2520,6 +2541,8 @@ inline void uGUIAreaMaster::cSuppliesInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIAreaMaster::cSuppliesInfo::~cSuppliesInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAreaMaster::cSuppliesInfo::MyDTI uGUIAreaMaster::cSuppliesInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIAreaMaster.cpp at 0x009375ef-0x00937628 (called at uGUIAreaMaster.cpp:66)

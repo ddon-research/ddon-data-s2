@@ -36,7 +36,7 @@ const MtDTI& cStartPosArea::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cStartPosArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memAlloc(sz, align, ::cStartPosArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStartPosArea::DTI)->memAlloc(sz, align, cStartPosArea::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cStartPosArea::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStartPosArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStartPosArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,8 +83,10 @@ __attribute__((weak)) void cStartPosArea::createProperty(MtPropertyList& s) {
 // Address: 0x006c4bc0 - 0x006c4bc5 (5 bytes)
 MtUI* cStartPosArea::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStartPosArea::MyDTI cStartPosArea::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStartPosArea.cpp at 0x006c4ce0-0x006c4d22 (called at rStartPosArea.cpp:26)
@@ -94,7 +96,7 @@ MtUI* cStartPosArea::createUI(MtProperty& prop) {
 // Address: 0x006c4950 - 0x006c4997 (71 bytes)
 MtObject* cStartPosArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStartPosArea;
+    return new (16u) cStartPosArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ const MtDTI& rStartPosArea::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStartPosArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStartPosArea::DTI)->memAlloc(sz, align, ::rStartPosArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStartPosArea::DTI)->memAlloc(sz, align, rStartPosArea::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -134,7 +136,7 @@ inline void* rStartPosArea::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rStartPosAreaD0Ev at 0x01aa92b4-0x01aa92d3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStartPosArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStartPosArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStartPosArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,10 +153,10 @@ bool rStartPosArea::loadData(MtDataReader& in, cStartPosArea* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStartPosNo);
+    nDDOIO::readData(in, pData->mStartPosNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mAreaId);
+    nDDOIO::readData(in, pData->mAreaId);
     return true;
 }
 
@@ -167,8 +169,10 @@ MT_CTSTR rStartPosArea::getExt() const {
 // Address: 0x01aa9400 - 0x01aa9403 (3 bytes)
 u32 rStartPosArea::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStartPosArea::MyDTI rStartPosArea::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStartPosArea.cpp at 0x006c4d22-0x006c4d5f (called at rStartPosArea.cpp:80)
@@ -178,7 +182,7 @@ u32 rStartPosArea::getDataVersion() const {
 // Address: 0x006c4c00 - 0x006c4c64 (100 bytes)
 MtObject* rStartPosArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStartPosArea;
+    return new (16u) rStartPosArea;
 }
 
 // Instance at 0x01aa93b0 - 0x01aa93c2 (18 bytes) of the generic rTbl2<T>::getData

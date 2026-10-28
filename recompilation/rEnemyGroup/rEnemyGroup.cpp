@@ -50,7 +50,7 @@ const MtDTI& cEnemyGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cEnemyGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
@@ -72,34 +72,34 @@ inline void cEnemyGroup::operator delete(void* p_addr) {
 // Also emitted as: _ZN11cEnemyGroupD0Ev at 0x0066b1c0
 cEnemyGroup::~cEnemyGroup() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mEmList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mEmList.mLength != 0) {
         // inferred: the value the loop at 0x66b150 carries; no location-less local in scope fits
-        u32 v0_0 = this->mEmList.::MtArray::mLength;
+        u32 v0_0 = mEmList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mEmList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mEmList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mEmList.::MtArray::mLength) {
-                    v0_0 = this->mEmList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mEmList.mpArray[i0_3] != nullptr) {
+                delete mEmList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEmList.mLength) {
+                    v0_0 = mEmList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mEmList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mEmList.::MtArray::mpArray));
+    if (mEmList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEmList.mpArray));
     }
-    this->mEmList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mEmList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mEmList.::MtArray::mLength = static_cast<u32>(0);
+    mEmList.mpArray = nullptr;
+    mEmList.mBufsiz = 0;
+    mEmList.mLength = 0;
 }
 
 // Address: 0x0066b280 - 0x0066b4e1 (609 bytes)
@@ -119,6 +119,8 @@ __attribute__((weak)) void cEnemyGroup::createProperty(MtPropertyList& s) {
 // No out-of-line body: 1 inlined copy in 1 function (168 bytes)
 //   in rEnemyGroup::loadData at 0x0066b5af-0x0066b657 (called at rEnemyGroup.cpp:99)
 // void cEnemyGroup::addEmList(cEnemyGroup::cEmList* p);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyGroup::MyDTI cEnemyGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rEnemyGroup.cpp at 0x0066b940-0x0066b984 (called at rEnemyGroup.cpp:25)
@@ -154,7 +156,7 @@ const MtDTI& cEnemyGroup::cEmList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cEnemyGroup::cEmList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::cEmList::DTI)->memAlloc(sz, align, ::cEnemyGroup::cEmList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyGroup::cEmList::DTI)->memAlloc(sz, align, cEnemyGroup::cEmList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,7 +171,7 @@ inline void* cEnemyGroup::cEmList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cEnemyGroup7cEmListD0Ev at 0x01a8a670-0x01a8a69a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cEnemyGroup::cEmList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyGroup::cEmList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyGroup::cEmList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -204,6 +206,8 @@ __attribute__((weak)) void cEnemyGroup::cEmList::createProperty(MtPropertyList& 
 // No out-of-line body: no code in the ELF
 // bool cEnemyGroup::cEmList::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyGroup::cEmList::MyDTI cEnemyGroup::cEmList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEnemyGroup.cpp at 0x0066b984-0x0066b9bd (called at rEnemyGroup.cpp:138)
 //   in _GLOBAL__sub_I_rEnemyGroup.cpp at 0x0066b984-0x0066b9bd (called at rEnemyGroup.h:26)
@@ -212,7 +216,7 @@ __attribute__((weak)) void cEnemyGroup::cEmList::createProperty(MtPropertyList& 
 // Address: 0x0066b690 - 0x0066b6d7 (71 bytes)
 MtObject* cEnemyGroup::cEmList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyGroup::cEmList;
+    return new (16u) cEnemyGroup::cEmList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -237,7 +241,7 @@ const MtDTI& rEnemyGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyGroup::DTI)->memAlloc(sz, align, ::rEnemyGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyGroup::DTI)->memAlloc(sz, align, rEnemyGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -252,7 +256,7 @@ inline void* rEnemyGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rEnemyGroupD0Ev at 0x01a8a734-0x01a8a755, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -282,8 +286,10 @@ MT_CTSTR rEnemyGroup::getExt() const {
 // Address: 0x01a8a880 - 0x01a8a886 (6 bytes)
 u32 rEnemyGroup::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyGroup::MyDTI rEnemyGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyGroup.cpp at 0x0066b9bd-0x0066b9fa (called at rEnemyGroup.cpp:188)
@@ -293,7 +299,7 @@ u32 rEnemyGroup::getDataVersion() const {
 // Address: 0x0066b860 - 0x0066b8c4 (100 bytes)
 MtObject* rEnemyGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyGroup;
+    return new (16u) rEnemyGroup;
 }
 
 // Instance at 0x01a8a620 - 0x01a8a625 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

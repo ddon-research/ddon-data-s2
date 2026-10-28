@@ -22,7 +22,10 @@ namespace nDraw { class IndexBuffer; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetMsgData { namespace Head { struct stMsgHead; } }
 namespace nNetwork { class Decoder; }
+class rArchive;
 class rEffect2D;
+class rEffectAnim;
+class rEffectList;
 class rEffectStrip;
 class rVibration;
 class sBrowser;
@@ -30,6 +33,7 @@ class sItemManager;
 class sMain;
 class sRender;
 class sScreenShot;
+class uSoundOcclusion;
 
 // Declarations
 class MtMemory;
@@ -73,8 +77,14 @@ class MtMemory
     friend nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec);
     // inferred: nNetMsgData::Head::freeData names MtMemory::mpAllocatorType
     friend void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData);
+    // inferred: rArchive::DecompressStream::~DecompressStream names MtMemory::mpAllocatorType, through its enclosing class rArchive
+    friend class rArchive;
     // inferred: rEffect2D::save names MtMemory::mpAllocatorType
     friend class rEffect2D;
+    // inferred: rEffectAnim::load names MtMemory::mpAllocatorType
+    friend class rEffectAnim;
+    // inferred: rEffectList::load names MtMemory::mpAllocatorType
+    friend class rEffectList;
     // inferred: rEffectStrip::load names MtMemory::mpAllocatorType
     friend class rEffectStrip;
     // inferred: rVibration::load names MtMemory::mpAllocatorType
@@ -89,6 +99,8 @@ class MtMemory
     friend class sRender;
     // inferred: sScreenShot::reset names MtMemory::mpAllocatorType
     friend class sScreenShot;
+    // inferred: uSoundOcclusion::cBoundingBox::~cBoundingBox names MtMemory::mpAllocatorType, through its enclosing class uSoundOcclusion
+    friend class uSoundOcclusion;
 public:
     static void terminateAllocator();
     static u32 getAllocatorNum();

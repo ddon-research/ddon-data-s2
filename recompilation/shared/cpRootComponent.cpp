@@ -24,7 +24,7 @@ const MtDTI& cpRootComponent::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpRootComponent::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpRootComponent::DTI);
+    return MtMemoryAllocator::getAllocator(cpRootComponent::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cpRootComponent::getAllocator() {
 // Address: 0x00527e40 - 0x00527e80 (64 bytes)
 void* cpRootComponent::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpRootComponent::getAllocator()->memAlloc(sz, align, ::cpRootComponent::DTI.::MtDTI::getID());
+    return cpRootComponent::getAllocator()->memAlloc(sz, align, cpRootComponent::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cpRootComponent::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpRootComponent::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpRootComponent::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpRootComponent::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,7 +76,7 @@ cpRootComponent::~cpRootComponent() {
 // Address: 0x00528030 - 0x00528035 (5 bytes)
 void cpRootComponent::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00528040 - 0x00528041 (1 bytes)
@@ -94,6 +94,8 @@ __attribute__((weak)) void cpRootComponent::kill() {
 
 // No out-of-line body: no code in the ELF
 // s32 cpRootComponent::testFunc();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpRootComponent::MyDTI cpRootComponent::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpRootComponent.cpp at 0x00528060-0x005280a2 (called at cpRootComponent.cpp:23)

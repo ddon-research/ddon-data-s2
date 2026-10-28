@@ -14,6 +14,7 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class sPrimitive;
 
 // Declarations
 class cPrimBufferManager;
@@ -27,6 +28,8 @@ using u32 = unsigned int;
 
 class cPrimBufferManager : public cPrimObj
 {
+    // inferred: sPrimitive::reserveBuffer names cPrimBufferManager::mpBuffer
+    friend class sPrimitive;
 public:
     class MyDTI;
 public:

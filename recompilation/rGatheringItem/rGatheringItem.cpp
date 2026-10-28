@@ -36,7 +36,7 @@ const MtDTI& cGatheringItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cGatheringItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memAlloc(sz, align, ::cGatheringItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cGatheringItem::DTI)->memAlloc(sz, align, cGatheringItem::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cGatheringItem::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cGatheringItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGatheringItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -85,8 +85,10 @@ __attribute__((weak)) void cGatheringItem::createProperty(MtPropertyList& s) {
 // Address: 0x0067bab0 - 0x0067bab5 (5 bytes)
 MtUI* cGatheringItem::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGatheringItem::MyDTI cGatheringItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rGatheringItem.cpp at 0x0067bbd0-0x0067bc12 (called at rGatheringItem.cpp:21)
@@ -96,7 +98,7 @@ MtUI* cGatheringItem::createUI(MtProperty& prop) {
 // Address: 0x0067b850 - 0x0067b898 (72 bytes)
 MtObject* cGatheringItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cGatheringItem;
+    return new (16u) cGatheringItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ const MtDTI& rGatheringItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rGatheringItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rGatheringItem::DTI)->memAlloc(sz, align, ::rGatheringItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rGatheringItem::DTI)->memAlloc(sz, align, rGatheringItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,7 +138,7 @@ inline void* rGatheringItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rGatheringItemD0Ev at 0x01a92724-0x01a92743, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGatheringItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGatheringItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGatheringItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,10 +155,10 @@ bool rGatheringItem::loadData(MtDataReader& r, cGatheringItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mItemNo);
+    nDDOIO::readData(r, pData->mItemNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mType);
+    nDDOIO::readData(r, pData->mType);
     return true;
 }
 
@@ -169,8 +171,10 @@ MT_CTSTR rGatheringItem::getExt() const {
 // Address: 0x01a92870 - 0x01a92876 (6 bytes)
 u32 rGatheringItem::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGatheringItem::MyDTI rGatheringItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rGatheringItem.cpp at 0x0067bc12-0x0067bc4f (called at rGatheringItem.cpp:114)
@@ -180,7 +184,7 @@ u32 rGatheringItem::getDataVersion() const {
 // Address: 0x0067baf0 - 0x0067bb54 (100 bytes)
 MtObject* rGatheringItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rGatheringItem;
+    return new (16u) rGatheringItem;
 }
 
 // Instance at 0x01a92820 - 0x01a92832 (18 bytes) of the generic rTbl2<T>::getData

@@ -253,7 +253,7 @@ const MtDTI& cOcdInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOcdInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOcdInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cOcdInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -262,7 +262,7 @@ inline MtAllocator* cOcdInfo::getAllocator() {
 // Address: 0x003a8630 - 0x003a8670 (64 bytes)
 void* cOcdInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOcdInfo::getAllocator()->memAlloc(sz, align, ::cOcdInfo::DTI.::MtDTI::getID());
+    return cOcdInfo::getAllocator()->memAlloc(sz, align, cOcdInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -277,7 +277,7 @@ void* cOcdInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOcdInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -299,11 +299,11 @@ inline void cOcdInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN8cOcdInfoD0Ev at 0x003a8970
 cOcdInfo::~cOcdInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjCondition == static_cast<cOcdBase*>(nullptr)) {
+    if (mpObjCondition == nullptr) {
         return;
     }
-    delete this->mpObjCondition;
-    this->mpObjCondition = static_cast<cOcdBase*>(nullptr);
+    delete mpObjCondition;
+    mpObjCondition = nullptr;
 }
 
 // Address: 0x003a8a00 - 0x003a8a01 (1 bytes)
@@ -328,7 +328,7 @@ __attribute__((weak)) void cOcdInfo::setup() {
 // Address: 0x003a8a10 - 0x003a8a1b (11 bytes)
 bool cOcdInfo::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdMode == static_cast<nObjCondition::OCD_MODE>(1);
+    return mOcdMode == nObjCondition::OCD_MODE_ACTIVE;
 }
 
 // Address: 0x003a8b60 - 0x003a8bd6 (118 bytes)
@@ -340,39 +340,39 @@ __attribute__((weak)) void cOcdInfo::reqChangeOcdMode(nObjCondition::OCD_REQ_MOD
 // Address: 0x003a8a30 - 0x003a8a37 (7 bytes)
 bool cOcdInfo::isReqestAbleCustom(s32 priority) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdCustomReq.mPriority < priority;
+    return mOcdCustomReq.mPriority < priority;
 }
 
 // Address: 0x003a8a40 - 0x003a8a63 (35 bytes)
 void cOcdInfo::setCustomReqest(const cOcdCustomReqInfo& reqInfo, s32 priority) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdCustomReq.::cOcdCustomReqInfo::copy(reqInfo);
-    this->mOcdCustomReq.mPriority = priority;
-    this->mOcdCustomReq.mIsRequest = true;
+    mOcdCustomReq.copy(reqInfo);
+    mOcdCustomReq.mPriority = priority;
+    mOcdCustomReq.mIsRequest = true;
 }
 
 // Address: 0x003a8a70 - 0x003a8a74 (4 bytes)
 bool cOcdInfo::isCustomRequest() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdCustomReq.mIsRequest;
+    return mOcdCustomReq.mIsRequest;
 }
 
 // Address: 0x003a8a80 - 0x003a8a85 (5 bytes)
 const cOcdCustomReqInfo& cOcdInfo::getCustomRequest() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdCustomReq;
+    return mOcdCustomReq;
 }
 
 // Address: 0x003a8a90 - 0x003a8a99 (9 bytes)
 void cOcdInfo::clearCustomReqInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdCustomReq.::cOcdCustomReqInfo::clear();
+    mOcdCustomReq.clear();
 }
 
 // Address: 0x003a8a20 - 0x003a8a27 (7 bytes)
 nObjCondition::OCD_MODE cOcdInfo::getOcdMode() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdMode;
+    return mOcdMode;
 }
 
 // Address: 0x003a89c0 - 0x003a89cf (15 bytes)
@@ -384,7 +384,7 @@ __attribute__((weak)) void cOcdInfo::setOcdMode(nObjCondition::OCD_MODE mode) {
 // Address: 0x003a8b00 - 0x003a8b07 (7 bytes)
 nObjCondition::OCD_REQ_MODE cOcdInfo::getOcdModeReq() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdModeReq;
+    return mOcdModeReq;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (96 bytes)
@@ -397,7 +397,7 @@ nObjCondition::OCD_REQ_MODE cOcdInfo::getOcdModeReq() const {
 // Address: 0x003a8b30 - 0x003a8b37 (7 bytes)
 nObjCondition::OCD_MODE_REQ_RESULT cOcdInfo::getOcdReqResult() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdReqResult;
+    return mOcdReqResult;
 }
 
 // Address: 0x003a89e0 - 0x003a89ef (15 bytes)
@@ -424,13 +424,13 @@ void cOcdInfo::reportCheatOcd() {
     // DWARF local not rendered: u32 num;
     // DWARF local not rendered: u32 num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mOcdUID == static_cast<u32>(12295)) {
-        ::sObjCondition::getInstance()->mCntCheatOcdAlter_Gold = ::sObjCondition::getInstance()->mCntCheatOcdAlter_Gold + static_cast<u32>(1);
+    if (mOcdUID == 12295) {
+        sObjCondition::getInstance()->mCntCheatOcdAlter_Gold = sObjCondition::getInstance()->mCntCheatOcdAlter_Gold + 1u;
     } else {
-        if ((this->mpModel->mUnitId & static_cast<u32>(208)) != static_cast<u32>(0)) {
-            ::sObjCondition::getInstance()->mCntCheatOcdAlter_PL = ::sObjCondition::getInstance()->mCntCheatOcdAlter_PL + static_cast<u32>(1);
+        if ((mpModel->mUnitId & 208u) != 0) {
+            sObjCondition::getInstance()->mCntCheatOcdAlter_PL = sObjCondition::getInstance()->mCntCheatOcdAlter_PL + 1u;
         } else {
-            ::sObjCondition::getInstance()->mCntCheatOcdAlter_EM = ::sObjCondition::getInstance()->mCntCheatOcdAlter_EM + static_cast<u32>(1);
+            sObjCondition::getInstance()->mCntCheatOcdAlter_EM = sObjCondition::getInstance()->mCntCheatOcdAlter_EM + 1u;
         }
     }
 }
@@ -441,15 +441,15 @@ void cOcdInfo::reportCheatOcd() {
 // Address: 0x003a8aa0 - 0x003a8ab5 (21 bytes)
 void cOcdInfo::turnOffChengeRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdModeReq = static_cast<nObjCondition::OCD_REQ_MODE>(0);
-    this->mOcdModeReqCheatCheck = static_cast<u32>(4294967295);
+    mOcdModeReq = nObjCondition::OCD_REQ_NONE;
+    mOcdModeReqCheatCheck = 0xFFFFFFFF;
 }
 
 // Address: 0x003a8ac0 - 0x003a8ad5 (21 bytes)
 void cOcdInfo::turnOffReqResult() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdReqResult = static_cast<nObjCondition::OCD_MODE_REQ_RESULT>(0);
-    this->mOcdReqResultCheatCheck = static_cast<u32>(4294967295);
+    mOcdReqResult = nObjCondition::OCD_RESULT_NONE;
+    mOcdReqResultCheatCheck = 0xFFFFFFFF;
 }
 
 // No out-of-line body: 10 inlined copies in 6 functions (80 bytes)
@@ -462,13 +462,13 @@ void cOcdInfo::turnOffReqResult() {
 // Address: 0x003a8bf0 - 0x003a8bf9 (9 bytes)
 void cOcdInfo::setStatusParamRes(const cOcdStatusParamRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpObjCondition->::cOcdBase::setStatusParamRes(data);
+    mpObjCondition->setStatusParamRes(data);
 }
 
 // Address: 0x003a8c00 - 0x003a8c09 (9 bytes)
 void cOcdInfo::setImuuneParamRes(const cOcdImmuneParamRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpObjCondition->::cOcdBase::setImuuneParamRes(data);
+    mpObjCondition->setImuuneParamRes(data);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -581,6 +581,8 @@ void cOcdInfo::setImuuneParamRes(const cOcdImmuneParamRes& data) {
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
 //   in cOcdInfo::reqChangeOcdMode at 0x003a8b96-0x003a8b9a (called at cOcdInfo.cpp:484)
 // bool cOcdInfo::isBadOcd() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdInfo::MyDTI cOcdInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cOcdInfo.cpp at 0x003a8d70-0x003a8db2 (called at cOcdInfo.cpp:27)

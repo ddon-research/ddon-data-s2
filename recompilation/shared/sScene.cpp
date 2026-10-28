@@ -52,7 +52,7 @@ const MtDTI& sScene::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6sSceneD0Ev at 0x01270a4e-0x01270a6f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sScene::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sScene::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sScene::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,15 +128,15 @@ __attribute__((weak)) void sScene::createProperty(MtPropertyList& s) {
 // Address: 0x01279fc0 - 0x01279fc5 (5 bytes)
 MtUI* sScene::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01279fd0 - 0x01279ffc (44 bytes)
 void sScene::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTree[0]->::cDynamicBVHCollision::applyWorldOffset(offset);
-    this->mpTree[1]->::cDynamicBVHCollision::applyWorldOffset(offset);
+    mpTree[0]->cDynamicBVHCollision::applyWorldOffset(offset);
+    mpTree[1]->cDynamicBVHCollision::applyWorldOffset(offset);
 }
 
 // Address: 0x01273c40 - 0x01273f30 (752 bytes)
@@ -399,48 +399,45 @@ __attribute__((weak)) void sScene::setToneMapState(cDraw* pdraw) {
 // Address: 0x01278bb0 - 0x01278c40 (144 bytes)
 void sScene::attach(cUnit* punit) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (punit == static_cast<cUnit*>(nullptr)) {
+    if (punit == nullptr) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the value the load at 0x1278be1 read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mUnitNum;
-        if (t0 < (this->mUnitPoolMax >> static_cast<u32>(1))) {
-            this->mUnitNum = t0 + static_cast<u32>(1);
-            this->mpUnitPool[t0] = punit;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+        u32 t0 = mUnitNum;
+        if (t0 < (mUnitPoolMax >> 1)) {
+            mUnitNum = t0 + 1u;
+            mpUnitPool[t0] = punit;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x1278be1 read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mUnitNum;
-        if (t0 < (this->mUnitPoolMax >> static_cast<u32>(1))) {
-            this->mUnitNum = t0 + static_cast<u32>(1);
-            this->mpUnitPool[t0] = punit;
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+        u32 t0 = mUnitNum;
+        if (t0 < (mUnitPoolMax >> 1)) {
+            mUnitNum = t0 + 1u;
+            mpUnitPool[t0] = punit;
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
@@ -511,10 +508,10 @@ __attribute__((weak)) void sScene::setMultiShadowState(cDraw* pdraw, u32 shadowG
 void sScene::resetMultiShadowState(cDraw* pdraw) const {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(0));
-    ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(1));
-    ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(2));
-    ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(3));
+    uShadow::setNullShadowReceiveState(pdraw, 0u);
+    uShadow::setNullShadowReceiveState(pdraw, 1u);
+    uShadow::setNullShadowReceiveState(pdraw, 2u);
+    uShadow::setNullShadowReceiveState(pdraw, 3u);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -593,13 +590,13 @@ __attribute__((weak)) void sScene::setEnvelope(cDraw* pdraw, u32 handle) {
 // Address: 0x01ba73a0 - 0x01ba73a4 (4 bytes)
 u32 sScene::getTextureDetail(MT_CTSTR path) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTextureDetail;
+    return mTextureDetail;
 }
 
 // Address: 0x01acaa60 - 0x01acaa67 (7 bytes)
 u32 sScene::getTextureMipLimite(MT_CTSTR path) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTextureMipLimite;
+    return mTextureMipLimite;
 }
 
 // No out-of-line body: no code in the ELF
@@ -903,26 +900,26 @@ uShadow* sScene::getShadowUnit(uLight* light) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x127752b; no location-less local in scope fits
     cUnit* v1_8;
-    if (light == static_cast<uLight*>(nullptr)) {
-        v1_8 = static_cast<cUnit*>(nullptr);
+    if (light == nullptr) {
+        v1_8 = nullptr;
     } else {
-        if (this->mUnitMap[4].count == static_cast<u32>(0)) {
-            v1_8 = static_cast<cUnit*>(nullptr);
+        if (mUnitMap[4].count == 0) {
+            v1_8 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the value the load at 0x12774fa read, used twice; no DWARF local holds it
-                cUnit* t0 = this->mpUnitPool[i0_3 + this->mUnitMap[4].offset];
-                if ((::sUnit::mpInstance)->::sUnit::isDrawUnit(t0) != false) {
-                    if (static_cast<uShadow*>(t0)->::uShadow::isMappedTo(light) != false) {
+                cUnit* t0 = mpUnitPool[i0_3 + mUnitMap[4].offset];
+                if ((sUnit::mpInstance)->sUnit::isDrawUnit(t0)) {
+                    if (static_cast<uShadow*>(t0)->isMappedTo(light)) {
                         v1_8 = t0;
                         break;
                     }
                 }
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitMap[4].count) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < mUnitMap[4].count) {
+                    i0_3 += 1u;
                 } else {
-                    v1_8 = static_cast<cUnit*>(nullptr);
+                    v1_8 = nullptr;
                     break;
                 }
             }
@@ -1036,12 +1033,12 @@ __attribute__((weak)) u32 sScene::pickDynamicLightFromScene(uLight* * outputLigh
 // Address: 0x0127a860 - 0x0127a89f (63 bytes)
 void sScene::addCorrectBloomPassageFrame(f32 add) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCorrectBloomPassageFrame = this->mCorrectBloomPassageFrame + add;
-    if (this->mCorrectBloomPassageFrame > this->mCorrectBloomUseFrame) {
-        this->mCorrectBloomPassageFrame = this->mCorrectBloomUseFrame;
+    mCorrectBloomPassageFrame = mCorrectBloomPassageFrame + add;
+    if (mCorrectBloomPassageFrame > mCorrectBloomUseFrame) {
+        mCorrectBloomPassageFrame = mCorrectBloomUseFrame;
     }
-    if (0.0f > this->mCorrectBloomPassageFrame) {
-        this->mCorrectBloomPassageFrame = 0.0f;
+    if (0.0f > mCorrectBloomPassageFrame) {
+        mCorrectBloomPassageFrame = 0.0f;
     }
 }
 
@@ -1089,6 +1086,11 @@ void sScene::addCorrectBloomPassageFrame(f32 add) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 sScene::getInstanceFadeSwitchStartParcent();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sScene::MyDTI sScene::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sScene* sScene::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sScene::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -1131,7 +1133,7 @@ const MtDTI& sScene::TextureInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6sScene11TextureInfoD0Ev at 0x01ba7340-0x01ba736a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sScene::TextureInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sScene::TextureInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sScene::TextureInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1151,6 +1153,8 @@ __attribute__((weak)) void sScene::TextureInfo::createProperty(MtPropertyList& s
     DDON_STUB("sScene::TextureInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sScene::TextureInfo::MyDTI sScene::TextureInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sScene::TextureInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

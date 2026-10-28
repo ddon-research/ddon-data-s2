@@ -28,7 +28,7 @@ const MtDTI& CDataBattleResultInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataBattleResultInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataBattleResultInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataBattleResultInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* CDataBattleResultInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataBattleResultInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataBattleResultInfo::DTI)->memAlloc(sz, align, ::CDataBattleResultInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataBattleResultInfo::DTI)->memAlloc(sz, align, CDataBattleResultInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* CDataBattleResultInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d6fe0 - 0x003d700a (42 bytes)
 __attribute__((weak)) void CDataBattleResultInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataBattleResultInfo::getAllocator()->memFree(p_addr);
+    CDataBattleResultInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,6 +74,8 @@ __attribute__((weak)) void CDataBattleResultInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataBattleResultInfo::CDataBattleResultInfo(u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataBattleResultInfo::MyDTI CDataBattleResultInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e575-0x0041e5ae (called at ClanImplement.inc:31)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e575-0x0041e5ae (called at Clan.h:1714)
@@ -82,7 +84,7 @@ __attribute__((weak)) void CDataBattleResultInfo::operator delete(void* p_addr) 
 // Address: 0x003d6f60 - 0x003d6faf (79 bytes)
 MtObject* CDataBattleResultInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataBattleResultInfo;
+    return new (16u) CDataBattleResultInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,7 +101,7 @@ const MtDTI& CDataClanConciergeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanConciergeInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanConciergeInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +110,7 @@ inline MtAllocator* CDataClanConciergeInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataClanConciergeInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeInfo::DTI)->memAlloc(sz, align, ::CDataClanConciergeInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataClanConciergeInfo::DTI)->memAlloc(sz, align, CDataClanConciergeInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +125,7 @@ inline void* CDataClanConciergeInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d6c80 - 0x003d6caa (42 bytes)
 __attribute__((weak)) void CDataClanConciergeInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanConciergeInfo::getAllocator()->memFree(p_addr);
+    CDataClanConciergeInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,6 +147,8 @@ __attribute__((weak)) void CDataClanConciergeInfo::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataClanConciergeInfo::CDataClanConciergeInfo(u32, const MtTypedArray<CDataClanConciergeNpc>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanConciergeInfo::MyDTI CDataClanConciergeInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e4ca-0x0041e503 (called at ClanImplement.inc:28)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e4ca-0x0041e503 (called at Clan.h:1520)
@@ -153,7 +157,7 @@ __attribute__((weak)) void CDataClanConciergeInfo::operator delete(void* p_addr)
 // Address: 0x003d6be0 - 0x003d6c50 (112 bytes)
 MtObject* CDataClanConciergeInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanConciergeInfo;
+    return new (16u) CDataClanConciergeInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,7 +174,7 @@ const MtDTI& CDataClanConciergeNpc::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanConciergeNpc::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeNpc::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanConciergeNpc::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,7 +183,7 @@ inline MtAllocator* CDataClanConciergeNpc::getAllocator() {
 // Address: 0x003d6b10 - 0x003d6b50 (64 bytes)
 void* CDataClanConciergeNpc::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanConciergeNpc::getAllocator()->memAlloc(sz, align, ::CDataClanConciergeNpc::DTI.::MtDTI::getID());
+    return CDataClanConciergeNpc::getAllocator()->memAlloc(sz, align, CDataClanConciergeNpc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -194,7 +198,7 @@ void* CDataClanConciergeNpc::operator new(size_t sz, u32 align) {
 // Address: 0x003d6b80 - 0x003d6baa (42 bytes)
 __attribute__((weak)) void CDataClanConciergeNpc::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanConciergeNpc::getAllocator()->memFree(p_addr);
+    CDataClanConciergeNpc::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,6 +220,8 @@ __attribute__((weak)) void CDataClanConciergeNpc::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataClanConciergeNpc::CDataClanConciergeNpc(u32, u32, b8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanConciergeNpc::MyDTI CDataClanConciergeNpc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e491-0x0041e4ca (called at ClanImplement.inc:27)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e491-0x0041e4ca (called at Clan.h:1453)
@@ -224,7 +230,7 @@ __attribute__((weak)) void CDataClanConciergeNpc::operator delete(void* p_addr) 
 // Address: 0x003d6ab0 - 0x003d6b09 (89 bytes)
 MtObject* CDataClanConciergeNpc::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanConciergeNpc;
+    return new (16u) CDataClanConciergeNpc;
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +247,7 @@ const MtDTI& CDataClanDungeonInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanDungeonInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanDungeonInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanDungeonInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,7 +256,7 @@ inline MtAllocator* CDataClanDungeonInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataClanDungeonInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanDungeonInfo::DTI)->memAlloc(sz, align, ::CDataClanDungeonInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataClanDungeonInfo::DTI)->memAlloc(sz, align, CDataClanDungeonInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,7 +271,7 @@ inline void* CDataClanDungeonInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d6990 - 0x003d69ba (42 bytes)
 __attribute__((weak)) void CDataClanDungeonInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanDungeonInfo::getAllocator()->memFree(p_addr);
+    CDataClanDungeonInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,6 +293,8 @@ __attribute__((weak)) void CDataClanDungeonInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataClanDungeonInfo::CDataClanDungeonInfo(const MtTypedArray<CDataCommonU32>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanDungeonInfo::MyDTI CDataClanDungeonInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e41f-0x0041e458 (called at ClanImplement.inc:25)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e41f-0x0041e458 (called at Clan.h:1340)
@@ -295,7 +303,7 @@ __attribute__((weak)) void CDataClanDungeonInfo::operator delete(void* p_addr) {
 // Address: 0x003d68f0 - 0x003d6959 (105 bytes)
 MtObject* CDataClanDungeonInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanDungeonInfo;
+    return new (16u) CDataClanDungeonInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +320,7 @@ const MtDTI& CDataClanFunctionInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanFunctionInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanFunctionInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanFunctionInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -321,7 +329,7 @@ inline MtAllocator* CDataClanFunctionInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataClanFunctionInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanFunctionInfo::DTI)->memAlloc(sz, align, ::CDataClanFunctionInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataClanFunctionInfo::DTI)->memAlloc(sz, align, CDataClanFunctionInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,7 +344,7 @@ inline void* CDataClanFunctionInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d6890 - 0x003d68ba (42 bytes)
 __attribute__((weak)) void CDataClanFunctionInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanFunctionInfo::getAllocator()->memFree(p_addr);
+    CDataClanFunctionInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -358,6 +366,8 @@ __attribute__((weak)) void CDataClanFunctionInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataClanFunctionInfo::CDataClanFunctionInfo(const MtTypedArray<CDataCommonU32>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanFunctionInfo::MyDTI CDataClanFunctionInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e3e6-0x0041e41f (called at ClanImplement.inc:24)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e3e6-0x0041e41f (called at Clan.h:1294)
@@ -366,7 +376,7 @@ __attribute__((weak)) void CDataClanFunctionInfo::operator delete(void* p_addr) 
 // Address: 0x003d67f0 - 0x003d6859 (105 bytes)
 MtObject* CDataClanFunctionInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanFunctionInfo;
+    return new (16u) CDataClanFunctionInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -383,7 +393,7 @@ const MtDTI& CDataClanHistoryElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanHistoryElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanHistoryElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanHistoryElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -392,7 +402,7 @@ inline MtAllocator* CDataClanHistoryElement::getAllocator() {
 // Address: 0x003d6e90 - 0x003d6ed0 (64 bytes)
 void* CDataClanHistoryElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanHistoryElement::getAllocator()->memAlloc(sz, align, ::CDataClanHistoryElement::DTI.::MtDTI::getID());
+    return CDataClanHistoryElement::getAllocator()->memAlloc(sz, align, CDataClanHistoryElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -407,7 +417,7 @@ void* CDataClanHistoryElement::operator new(size_t sz, u32 align) {
 // Address: 0x003d6f00 - 0x003d6f2a (42 bytes)
 __attribute__((weak)) void CDataClanHistoryElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanHistoryElement::getAllocator()->memFree(p_addr);
+    CDataClanHistoryElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -430,6 +440,8 @@ __attribute__((weak)) void CDataClanHistoryElement::operator delete(void* p_addr
 //   in nMenuClanHistory::ListItems::ListItems at 0x01979821-0x01979885, 0x01979889-0x019798a6 (called at cMenuBaseClan.cpp:5342)
 //   in nMenuClanHistory::ListItems::ListItems at 0x01979821-0x01979885, 0x01979889-0x019798a6 (called at Clan.h:1654)
 // CDataClanHistoryElement::CDataClanHistoryElement(s64 in_Date, u8 in_Type, const CCharacterName& in_CharacterName, u32 in_Value1, u32 in_Value2, u32 in_Value3, const char* in_strFreeText);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanHistoryElement::MyDTI CDataClanHistoryElement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e53c-0x0041e575 (called at ClanImplement.inc:30)
@@ -456,7 +468,7 @@ const MtDTI& CDataClanJoinRequest::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanJoinRequest::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanJoinRequest::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanJoinRequest::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -465,7 +477,7 @@ inline MtAllocator* CDataClanJoinRequest::getAllocator() {
 // Address: 0x003d6030 - 0x003d6070 (64 bytes)
 void* CDataClanJoinRequest::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanJoinRequest::getAllocator()->memAlloc(sz, align, ::CDataClanJoinRequest::DTI.::MtDTI::getID());
+    return CDataClanJoinRequest::getAllocator()->memAlloc(sz, align, CDataClanJoinRequest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -480,7 +492,7 @@ void* CDataClanJoinRequest::operator new(size_t sz, u32 align) {
 // Address: 0x003d60a0 - 0x003d60ca (42 bytes)
 __attribute__((weak)) void CDataClanJoinRequest::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanJoinRequest::getAllocator()->memFree(p_addr);
+    CDataClanJoinRequest::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -501,6 +513,8 @@ __attribute__((weak)) void CDataClanJoinRequest::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanJoinRequest::CDataClanJoinRequest(u32, const char*, const CCommunityCharacterBaseInfo&, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanJoinRequest::MyDTI CDataClanJoinRequest::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e21e-0x0041e257 (called at ClanImplement.inc:16)
@@ -527,7 +541,7 @@ const MtDTI& CDataClanMemberInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanMemberInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanMemberInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanMemberInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -536,7 +550,7 @@ inline MtAllocator* CDataClanMemberInfo::getAllocator() {
 // Address: 0x003d5700 - 0x003d5740 (64 bytes)
 void* CDataClanMemberInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanMemberInfo::getAllocator()->memAlloc(sz, align, ::CDataClanMemberInfo::DTI.::MtDTI::getID());
+    return CDataClanMemberInfo::getAllocator()->memAlloc(sz, align, CDataClanMemberInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -551,7 +565,7 @@ void* CDataClanMemberInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d5770 - 0x003d579a (42 bytes)
 __attribute__((weak)) void CDataClanMemberInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanMemberInfo::getAllocator()->memFree(p_addr);
+    CDataClanMemberInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -572,6 +586,8 @@ __attribute__((weak)) void CDataClanMemberInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanMemberInfo::CDataClanMemberInfo(u32, s64, s64, s64, u32, const CCharacterListElement&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanMemberInfo::MyDTI CDataClanMemberInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e0c8-0x0041e101 (called at ClanImplement.inc:10)
@@ -598,7 +614,7 @@ const MtDTI& CDataClanParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -620,7 +636,7 @@ inline MtAllocator* CDataClanParam::getAllocator() {
 // Address: 0x003d5cd0 - 0x003d5cfa (42 bytes)
 __attribute__((weak)) void CDataClanParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanParam::getAllocator()->memFree(p_addr);
+    CDataClanParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -641,6 +657,8 @@ __attribute__((weak)) void CDataClanParam::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanParam::CDataClanParam(const CClanUserParam&, const CClanServerParam&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanParam::MyDTI CDataClanParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e173-0x0041e1ac (called at ClanImplement.inc:13)
@@ -667,7 +685,7 @@ const MtDTI& CDataClanPartnerPawnInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanPartnerPawnInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanPartnerPawnInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanPartnerPawnInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -689,7 +707,7 @@ inline MtAllocator* CDataClanPartnerPawnInfo::getAllocator() {
 // Address: 0x003d6da0 - 0x003d6dca (42 bytes)
 __attribute__((weak)) void CDataClanPartnerPawnInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanPartnerPawnInfo::getAllocator()->memFree(p_addr);
+    CDataClanPartnerPawnInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -710,6 +728,8 @@ __attribute__((weak)) void CDataClanPartnerPawnInfo::operator delete(void* p_add
 
 // No out-of-line body: no code in the ELF
 // CDataClanPartnerPawnInfo::CDataClanPartnerPawnInfo(const MtTypedArray<CDataCommonU32>&, const MtTypedArray<CDataCommonU32>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanPartnerPawnInfo::MyDTI CDataClanPartnerPawnInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e503-0x0041e53c (called at ClanImplement.inc:29)
@@ -736,7 +756,7 @@ const MtDTI& CDataClanScoutEntryInviteInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanScoutEntryInviteInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryInviteInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanScoutEntryInviteInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -745,7 +765,7 @@ inline MtAllocator* CDataClanScoutEntryInviteInfo::getAllocator() {
 // Address: 0x003d63f0 - 0x003d6430 (64 bytes)
 void* CDataClanScoutEntryInviteInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanScoutEntryInviteInfo::getAllocator()->memAlloc(sz, align, ::CDataClanScoutEntryInviteInfo::DTI.::MtDTI::getID());
+    return CDataClanScoutEntryInviteInfo::getAllocator()->memAlloc(sz, align, CDataClanScoutEntryInviteInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -760,7 +780,7 @@ void* CDataClanScoutEntryInviteInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d6460 - 0x003d648a (42 bytes)
 __attribute__((weak)) void CDataClanScoutEntryInviteInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanScoutEntryInviteInfo::getAllocator()->memFree(p_addr);
+    CDataClanScoutEntryInviteInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -781,6 +801,8 @@ __attribute__((weak)) void CDataClanScoutEntryInviteInfo::operator delete(void* 
 
 // No out-of-line body: no code in the ELF
 // CDataClanScoutEntryInviteInfo::CDataClanScoutEntryInviteInfo(u32, u32, const char*, const CCommunityCharacterBaseInfo&, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanScoutEntryInviteInfo::MyDTI CDataClanScoutEntryInviteInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e2c9-0x0041e302 (called at ClanImplement.inc:19)
@@ -807,7 +829,7 @@ const MtDTI& CDataClanScoutEntryParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanScoutEntryParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanScoutEntryParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -816,7 +838,7 @@ inline MtAllocator* CDataClanScoutEntryParam::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataClanScoutEntryParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryParam::DTI)->memAlloc(sz, align, ::CDataClanScoutEntryParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataClanScoutEntryParam::DTI)->memAlloc(sz, align, CDataClanScoutEntryParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -831,7 +853,7 @@ inline void* CDataClanScoutEntryParam::operator new(size_t sz, u32 align) {
 // Address: 0x003d6190 - 0x003d61ba (42 bytes)
 __attribute__((weak)) void CDataClanScoutEntryParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanScoutEntryParam::getAllocator()->memFree(p_addr);
+    CDataClanScoutEntryParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -853,6 +875,8 @@ __attribute__((weak)) void CDataClanScoutEntryParam::operator delete(void* p_add
 // No out-of-line body: no code in the ELF
 // CDataClanScoutEntryParam::CDataClanScoutEntryParam(u16, u16, u32, u32, u32, u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanScoutEntryParam::MyDTI CDataClanScoutEntryParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e257-0x0041e290 (called at ClanImplement.inc:17)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e257-0x0041e290 (called at Clan.h:825)
@@ -861,7 +885,7 @@ __attribute__((weak)) void CDataClanScoutEntryParam::operator delete(void* p_add
 // Address: 0x003d6100 - 0x003d615f (95 bytes)
 MtObject* CDataClanScoutEntryParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanScoutEntryParam;
+    return new (16u) CDataClanScoutEntryParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -878,7 +902,7 @@ const MtDTI& CDataClanScoutEntrySearchResult::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanScoutEntrySearchResult::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntrySearchResult::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanScoutEntrySearchResult::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -887,7 +911,7 @@ inline MtAllocator* CDataClanScoutEntrySearchResult::getAllocator() {
 // Address: 0x003d6280 - 0x003d62c0 (64 bytes)
 void* CDataClanScoutEntrySearchResult::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanScoutEntrySearchResult::getAllocator()->memAlloc(sz, align, ::CDataClanScoutEntrySearchResult::DTI.::MtDTI::getID());
+    return CDataClanScoutEntrySearchResult::getAllocator()->memAlloc(sz, align, CDataClanScoutEntrySearchResult::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -902,7 +926,7 @@ void* CDataClanScoutEntrySearchResult::operator new(size_t sz, u32 align) {
 // Address: 0x003d62f0 - 0x003d631a (42 bytes)
 __attribute__((weak)) void CDataClanScoutEntrySearchResult::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanScoutEntrySearchResult::getAllocator()->memFree(p_addr);
+    CDataClanScoutEntrySearchResult::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -923,6 +947,8 @@ __attribute__((weak)) void CDataClanScoutEntrySearchResult::operator delete(void
 
 // No out-of-line body: no code in the ELF
 // CDataClanScoutEntrySearchResult::CDataClanScoutEntrySearchResult(const CCommunityCharacterBaseInfo&, const char*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanScoutEntrySearchResult::MyDTI CDataClanScoutEntrySearchResult::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e290-0x0041e2c9 (called at ClanImplement.inc:18)
@@ -949,7 +975,7 @@ const MtDTI& CDataClanSearchParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanSearchParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanSearchParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -958,7 +984,7 @@ inline MtAllocator* CDataClanSearchParam::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataClanSearchParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchParam::DTI)->memAlloc(sz, align, ::CDataClanSearchParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataClanSearchParam::DTI)->memAlloc(sz, align, CDataClanSearchParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -973,7 +999,7 @@ inline void* CDataClanSearchParam::operator new(size_t sz, u32 align) {
 // Address: 0x003d5dd0 - 0x003d5dfa (42 bytes)
 __attribute__((weak)) void CDataClanSearchParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanSearchParam::getAllocator()->memFree(p_addr);
+    CDataClanSearchParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -995,6 +1021,8 @@ __attribute__((weak)) void CDataClanSearchParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataClanSearchParam::CDataClanSearchParam(u8, const char*, u16, u16, u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanSearchParam::MyDTI CDataClanSearchParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e1ac-0x0041e1e5 (called at ClanImplement.inc:14)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e1ac-0x0041e1e5 (called at Clan.h:540)
@@ -1003,7 +1031,7 @@ __attribute__((weak)) void CDataClanSearchParam::operator delete(void* p_addr) {
 // Address: 0x003d5d30 - 0x003d5d93 (99 bytes)
 MtObject* CDataClanSearchParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanSearchParam;
+    return new (16u) CDataClanSearchParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1020,7 +1048,7 @@ const MtDTI& CDataClanSearchResult::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanSearchResult::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchResult::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanSearchResult::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1029,7 +1057,7 @@ inline MtAllocator* CDataClanSearchResult::getAllocator() {
 // Address: 0x003d5ec0 - 0x003d5f00 (64 bytes)
 void* CDataClanSearchResult::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanSearchResult::getAllocator()->memAlloc(sz, align, ::CDataClanSearchResult::DTI.::MtDTI::getID());
+    return CDataClanSearchResult::getAllocator()->memAlloc(sz, align, CDataClanSearchResult::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1044,7 +1072,7 @@ void* CDataClanSearchResult::operator new(size_t sz, u32 align) {
 // Address: 0x003d5f30 - 0x003d5f5a (42 bytes)
 __attribute__((weak)) void CDataClanSearchResult::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanSearchResult::getAllocator()->memFree(p_addr);
+    CDataClanSearchResult::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1065,6 +1093,8 @@ __attribute__((weak)) void CDataClanSearchResult::operator delete(void* p_addr) 
 
 // No out-of-line body: no code in the ELF
 // CDataClanSearchResult::CDataClanSearchResult(u32, const char*, u16, u16, u32, u8, u8, u8, u8, u32, const CCharacterName&, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanSearchResult::MyDTI CDataClanSearchResult::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e1e5-0x0041e21e (called at ClanImplement.inc:15)
@@ -1091,7 +1121,7 @@ const MtDTI& CDataClanServerParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanServerParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanServerParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanServerParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1113,7 +1143,7 @@ inline MtAllocator* CDataClanServerParam::getAllocator() {
 // Address: 0x003d5a70 - 0x003d5a9a (42 bytes)
 __attribute__((weak)) void CDataClanServerParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanServerParam::getAllocator()->memFree(p_addr);
+    CDataClanServerParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1134,6 +1164,8 @@ __attribute__((weak)) void CDataClanServerParam::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanServerParam::CDataClanServerParam(u32, u16, u16, const CClanMemberInfo&, b8, b8, b8, u32, u32, u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanServerParam::MyDTI CDataClanServerParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e13a-0x0041e173 (called at ClanImplement.inc:12)
@@ -1160,7 +1192,7 @@ const MtDTI& CDataClanShopBuffInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopBuffInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopBuffInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopBuffInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1169,7 +1201,7 @@ inline MtAllocator* CDataClanShopBuffInfo::getAllocator() {
 // Address: 0x003d7460 - 0x003d74a0 (64 bytes)
 void* CDataClanShopBuffInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopBuffInfo::getAllocator()->memAlloc(sz, align, ::CDataClanShopBuffInfo::DTI.::MtDTI::getID());
+    return CDataClanShopBuffInfo::getAllocator()->memAlloc(sz, align, CDataClanShopBuffInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1184,7 +1216,7 @@ void* CDataClanShopBuffInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d74d0 - 0x003d74fa (42 bytes)
 __attribute__((weak)) void CDataClanShopBuffInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopBuffInfo::getAllocator()->memFree(p_addr);
+    CDataClanShopBuffInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1206,6 +1238,8 @@ __attribute__((weak)) void CDataClanShopBuffInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataClanShopBuffInfo::CDataClanShopBuffInfo(u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopBuffInfo::MyDTI CDataClanShopBuffInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e659-0x0041e692 (called at ClanImplement.inc:35)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e659-0x0041e692 (called at Clan.h:1975)
@@ -1214,7 +1248,7 @@ __attribute__((weak)) void CDataClanShopBuffInfo::operator delete(void* p_addr) 
 // Address: 0x003d7410 - 0x003d745b (75 bytes)
 MtObject* CDataClanShopBuffInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopBuffInfo;
+    return new (16u) CDataClanShopBuffInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1231,7 +1265,7 @@ const MtDTI& CDataClanShopBuffItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopBuffItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopBuffItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopBuffItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1240,7 +1274,7 @@ inline MtAllocator* CDataClanShopBuffItem::getAllocator() {
 // Address: 0x003d75f0 - 0x003d7630 (64 bytes)
 void* CDataClanShopBuffItem::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopBuffItem::getAllocator()->memAlloc(sz, align, ::CDataClanShopBuffItem::DTI.::MtDTI::getID());
+    return CDataClanShopBuffItem::getAllocator()->memAlloc(sz, align, CDataClanShopBuffItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1255,7 +1289,7 @@ void* CDataClanShopBuffItem::operator new(size_t sz, u32 align) {
 // Address: 0x003d7660 - 0x003d768a (42 bytes)
 __attribute__((weak)) void CDataClanShopBuffItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopBuffItem::getAllocator()->memFree(p_addr);
+    CDataClanShopBuffItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1277,6 +1311,8 @@ __attribute__((weak)) void CDataClanShopBuffItem::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataClanShopBuffItem::CDataClanShopBuffItem(u32, u32, u8, u32, const char*, const MtTypedArray<CDataClanShopBuffInfo>&, const MtTypedArray<CDataCommonU32>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopBuffItem::MyDTI CDataClanShopBuffItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e692-0x0041e6cb (called at ClanImplement.inc:36)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e692-0x0041e6cb (called at Clan.h:2028)
@@ -1285,7 +1321,7 @@ __attribute__((weak)) void CDataClanShopBuffItem::operator delete(void* p_addr) 
 // Address: 0x003d7530 - 0x003d75e3 (179 bytes)
 MtObject* CDataClanShopBuffItem::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopBuffItem;
+    return new (16u) CDataClanShopBuffItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1302,7 +1338,7 @@ const MtDTI& CDataClanShopConciergeItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopConciergeItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopConciergeItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopConciergeItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1311,7 +1347,7 @@ inline MtAllocator* CDataClanShopConciergeItem::getAllocator() {
 // Address: 0x003d7710 - 0x003d7750 (64 bytes)
 void* CDataClanShopConciergeItem::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopConciergeItem::getAllocator()->memAlloc(sz, align, ::CDataClanShopConciergeItem::DTI.::MtDTI::getID());
+    return CDataClanShopConciergeItem::getAllocator()->memAlloc(sz, align, CDataClanShopConciergeItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1326,7 +1362,7 @@ void* CDataClanShopConciergeItem::operator new(size_t sz, u32 align) {
 // Address: 0x003d7780 - 0x003d77aa (42 bytes)
 __attribute__((weak)) void CDataClanShopConciergeItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopConciergeItem::getAllocator()->memFree(p_addr);
+    CDataClanShopConciergeItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1348,6 +1384,8 @@ __attribute__((weak)) void CDataClanShopConciergeItem::operator delete(void* p_a
 // No out-of-line body: no code in the ELF
 // CDataClanShopConciergeItem::CDataClanShopConciergeItem(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopConciergeItem::MyDTI CDataClanShopConciergeItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e6cb-0x0041e704 (called at ClanImplement.inc:37)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e6cb-0x0041e704 (called at Clan.h:2116)
@@ -1356,7 +1394,7 @@ __attribute__((weak)) void CDataClanShopConciergeItem::operator delete(void* p_a
 // Address: 0x003d76c0 - 0x003d7708 (72 bytes)
 MtObject* CDataClanShopConciergeItem::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopConciergeItem;
+    return new (16u) CDataClanShopConciergeItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1373,7 +1411,7 @@ const MtDTI& CDataClanShopFunctionInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopFunctionInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopFunctionInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopFunctionInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1382,7 +1420,7 @@ inline MtAllocator* CDataClanShopFunctionInfo::getAllocator() {
 // Address: 0x003d71b0 - 0x003d71f0 (64 bytes)
 void* CDataClanShopFunctionInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopFunctionInfo::getAllocator()->memAlloc(sz, align, ::CDataClanShopFunctionInfo::DTI.::MtDTI::getID());
+    return CDataClanShopFunctionInfo::getAllocator()->memAlloc(sz, align, CDataClanShopFunctionInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1397,7 +1435,7 @@ void* CDataClanShopFunctionInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d7220 - 0x003d724a (42 bytes)
 __attribute__((weak)) void CDataClanShopFunctionInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopFunctionInfo::getAllocator()->memFree(p_addr);
+    CDataClanShopFunctionInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1419,6 +1457,8 @@ __attribute__((weak)) void CDataClanShopFunctionInfo::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // CDataClanShopFunctionInfo::CDataClanShopFunctionInfo(u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopFunctionInfo::MyDTI CDataClanShopFunctionInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e5e7-0x0041e620 (called at ClanImplement.inc:33)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e5e7-0x0041e620 (called at Clan.h:1834)
@@ -1427,7 +1467,7 @@ __attribute__((weak)) void CDataClanShopFunctionInfo::operator delete(void* p_ad
 // Address: 0x003d7160 - 0x003d71ab (75 bytes)
 MtObject* CDataClanShopFunctionInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopFunctionInfo;
+    return new (16u) CDataClanShopFunctionInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1444,7 +1484,7 @@ const MtDTI& CDataClanShopFunctionItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopFunctionItem::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopFunctionItem::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopFunctionItem::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1453,7 +1493,7 @@ inline MtAllocator* CDataClanShopFunctionItem::getAllocator() {
 // Address: 0x003d7340 - 0x003d7380 (64 bytes)
 void* CDataClanShopFunctionItem::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopFunctionItem::getAllocator()->memAlloc(sz, align, ::CDataClanShopFunctionItem::DTI.::MtDTI::getID());
+    return CDataClanShopFunctionItem::getAllocator()->memAlloc(sz, align, CDataClanShopFunctionItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1468,7 +1508,7 @@ void* CDataClanShopFunctionItem::operator new(size_t sz, u32 align) {
 // Address: 0x003d73b0 - 0x003d73da (42 bytes)
 __attribute__((weak)) void CDataClanShopFunctionItem::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopFunctionItem::getAllocator()->memFree(p_addr);
+    CDataClanShopFunctionItem::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1490,6 +1530,8 @@ __attribute__((weak)) void CDataClanShopFunctionItem::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // CDataClanShopFunctionItem::CDataClanShopFunctionItem(u32, u32, u8, u32, const char*, const MtTypedArray<CDataClanShopFunctionInfo>&, const MtTypedArray<CDataCommonU32>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopFunctionItem::MyDTI CDataClanShopFunctionItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e620-0x0041e659 (called at ClanImplement.inc:34)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e620-0x0041e659 (called at Clan.h:1887)
@@ -1498,7 +1540,7 @@ __attribute__((weak)) void CDataClanShopFunctionItem::operator delete(void* p_ad
 // Address: 0x003d7280 - 0x003d7333 (179 bytes)
 MtObject* CDataClanShopFunctionItem::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopFunctionItem;
+    return new (16u) CDataClanShopFunctionItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1515,7 +1557,7 @@ const MtDTI& CDataClanShopInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1537,7 +1579,7 @@ inline MtAllocator* CDataClanShopInfo::getAllocator() {
 // Address: 0x003d7100 - 0x003d712a (42 bytes)
 __attribute__((weak)) void CDataClanShopInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopInfo::getAllocator()->memFree(p_addr);
+    CDataClanShopInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1558,6 +1600,8 @@ __attribute__((weak)) void CDataClanShopInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanShopInfo::CDataClanShopInfo(u32, const MtTypedArray<CDataCommonU32>&, const MtTypedArray<CDataCommonU32>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopInfo::MyDTI CDataClanShopInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e5ae-0x0041e5e7 (called at ClanImplement.inc:32)
@@ -1584,7 +1628,7 @@ const MtDTI& CDataClanShopLineupName::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanShopLineupName::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanShopLineupName::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanShopLineupName::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1593,7 +1637,7 @@ inline MtAllocator* CDataClanShopLineupName::getAllocator() {
 // Address: 0x003d7b50 - 0x003d7b90 (64 bytes)
 void* CDataClanShopLineupName::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanShopLineupName::getAllocator()->memAlloc(sz, align, ::CDataClanShopLineupName::DTI.::MtDTI::getID());
+    return CDataClanShopLineupName::getAllocator()->memAlloc(sz, align, CDataClanShopLineupName::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1608,7 +1652,7 @@ void* CDataClanShopLineupName::operator new(size_t sz, u32 align) {
 // Address: 0x003d7bc0 - 0x003d7bea (42 bytes)
 __attribute__((weak)) void CDataClanShopLineupName::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanShopLineupName::getAllocator()->memFree(p_addr);
+    CDataClanShopLineupName::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1630,6 +1674,8 @@ __attribute__((weak)) void CDataClanShopLineupName::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataClanShopLineupName::CDataClanShopLineupName(u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanShopLineupName::MyDTI CDataClanShopLineupName::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e7af-0x0041e7e8 (called at ClanImplement.inc:41)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e7af-0x0041e7e8 (called at Clan.h:2342)
@@ -1638,7 +1684,7 @@ __attribute__((weak)) void CDataClanShopLineupName::operator delete(void* p_addr
 // Address: 0x003d7b00 - 0x003d7b4f (79 bytes)
 MtObject* CDataClanShopLineupName::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanShopLineupName;
+    return new (16u) CDataClanShopLineupName;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1655,7 +1701,7 @@ const MtDTI& CDataClanUserParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanUserParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanUserParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanUserParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1677,7 +1723,7 @@ inline MtAllocator* CDataClanUserParam::getAllocator() {
 // Address: 0x003d5890 - 0x003d58ba (42 bytes)
 __attribute__((weak)) void CDataClanUserParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanUserParam::getAllocator()->memFree(p_addr);
+    CDataClanUserParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1698,6 +1744,8 @@ __attribute__((weak)) void CDataClanUserParam::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataClanUserParam::CDataClanUserParam(const char*, const char*, u8, u8, u8, u8, u32, u32, u32, u32, b8, const char*, const char*, s64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanUserParam::MyDTI CDataClanUserParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e101-0x0041e13a (called at ClanImplement.inc:11)
@@ -1724,7 +1772,7 @@ const MtDTI& CDataClanValueInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataClanValueInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataClanValueInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataClanValueInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1733,7 +1781,7 @@ inline MtAllocator* CDataClanValueInfo::getAllocator() {
 // Address: 0x003d7910 - 0x003d7950 (64 bytes)
 void* CDataClanValueInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataClanValueInfo::getAllocator()->memAlloc(sz, align, ::CDataClanValueInfo::DTI.::MtDTI::getID());
+    return CDataClanValueInfo::getAllocator()->memAlloc(sz, align, CDataClanValueInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1748,7 +1796,7 @@ void* CDataClanValueInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d7980 - 0x003d79aa (42 bytes)
 __attribute__((weak)) void CDataClanValueInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataClanValueInfo::getAllocator()->memFree(p_addr);
+    CDataClanValueInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1770,6 +1818,8 @@ __attribute__((weak)) void CDataClanValueInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataClanValueInfo::CDataClanValueInfo(u8, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataClanValueInfo::MyDTI CDataClanValueInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e73d-0x0041e776 (called at ClanImplement.inc:39)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e73d-0x0041e776 (called at Clan.h:2229)
@@ -1778,7 +1828,7 @@ __attribute__((weak)) void CDataClanValueInfo::operator delete(void* p_addr) {
 // Address: 0x003d78c0 - 0x003d790b (75 bytes)
 MtObject* CDataClanValueInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataClanValueInfo;
+    return new (16u) CDataClanValueInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1795,7 +1845,7 @@ const MtDTI& CDataPawnExpeditionClanSallySpotInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPawnExpeditionClanSallySpotInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionClanSallySpotInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPawnExpeditionClanSallySpotInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1804,7 +1854,7 @@ inline MtAllocator* CDataPawnExpeditionClanSallySpotInfo::getAllocator() {
 // Address: 0x003d7a30 - 0x003d7a70 (64 bytes)
 void* CDataPawnExpeditionClanSallySpotInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPawnExpeditionClanSallySpotInfo::getAllocator()->memAlloc(sz, align, ::CDataPawnExpeditionClanSallySpotInfo::DTI.::MtDTI::getID());
+    return CDataPawnExpeditionClanSallySpotInfo::getAllocator()->memAlloc(sz, align, CDataPawnExpeditionClanSallySpotInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1819,7 +1869,7 @@ void* CDataPawnExpeditionClanSallySpotInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d7aa0 - 0x003d7aca (42 bytes)
 __attribute__((weak)) void CDataPawnExpeditionClanSallySpotInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPawnExpeditionClanSallySpotInfo::getAllocator()->memFree(p_addr);
+    CDataPawnExpeditionClanSallySpotInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1841,6 +1891,8 @@ __attribute__((weak)) void CDataPawnExpeditionClanSallySpotInfo::operator delete
 // No out-of-line body: no code in the ELF
 // CDataPawnExpeditionClanSallySpotInfo::CDataPawnExpeditionClanSallySpotInfo(u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPawnExpeditionClanSallySpotInfo::MyDTI CDataPawnExpeditionClanSallySpotInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e776-0x0041e7af (called at ClanImplement.inc:40)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e776-0x0041e7af (called at Clan.h:2282)
@@ -1849,7 +1901,7 @@ __attribute__((weak)) void CDataPawnExpeditionClanSallySpotInfo::operator delete
 // Address: 0x003d79e0 - 0x003d7a2f (79 bytes)
 MtObject* CDataPawnExpeditionClanSallySpotInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataPawnExpeditionClanSallySpotInfo;
+    return new (16u) CDataPawnExpeditionClanSallySpotInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1866,7 +1918,7 @@ const MtDTI& CDataPawnExpeditionInformation::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPawnExpeditionInformation::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionInformation::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPawnExpeditionInformation::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1875,7 +1927,7 @@ inline MtAllocator* CDataPawnExpeditionInformation::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* CDataPawnExpeditionInformation::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionInformation::DTI)->memAlloc(sz, align, ::CDataPawnExpeditionInformation::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataPawnExpeditionInformation::DTI)->memAlloc(sz, align, CDataPawnExpeditionInformation::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1890,7 +1942,7 @@ inline void* CDataPawnExpeditionInformation::operator new(size_t sz, u32 align) 
 // Address: 0x003d7860 - 0x003d788a (42 bytes)
 __attribute__((weak)) void CDataPawnExpeditionInformation::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPawnExpeditionInformation::getAllocator()->memFree(p_addr);
+    CDataPawnExpeditionInformation::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1912,6 +1964,8 @@ __attribute__((weak)) void CDataPawnExpeditionInformation::operator delete(void*
 // No out-of-line body: no code in the ELF
 // CDataPawnExpeditionInformation::CDataPawnExpeditionInformation(u8, u8, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPawnExpeditionInformation::MyDTI CDataPawnExpeditionInformation::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e704-0x0041e73d (called at ClanImplement.inc:38)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041e704-0x0041e73d (called at Clan.h:2169)
@@ -1920,6 +1974,6 @@ __attribute__((weak)) void CDataPawnExpeditionInformation::operator delete(void*
 // Address: 0x003d77e0 - 0x003d782a (74 bytes)
 MtObject* CDataPawnExpeditionInformation::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataPawnExpeditionInformation;
+    return new (16u) CDataPawnExpeditionInformation;
 }
 

@@ -44,7 +44,7 @@ const MtDTI& sNetworkExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sNetworkExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sNetworkExt::DTI);
+    return MtMemoryAllocator::getAllocator(sNetworkExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline MtAllocator* sNetworkExt::getAllocator() {
 // Address: 0x007ebef0 - 0x007ebf30 (64 bytes)
 void* sNetworkExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sNetworkExt::getAllocator()->memAlloc(sz, align, ::sNetworkExt::DTI.::MtDTI::getID());
+    return sNetworkExt::getAllocator()->memAlloc(sz, align, sNetworkExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ void* sNetworkExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sNetworkExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sNetworkExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sNetworkExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,7 +94,7 @@ sNetworkExt::~sNetworkExt() {
 // Address: 0x007ed000 - 0x007ed005 (5 bytes)
 void sNetworkExt::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sNetwork::reset();
+    this->sNetwork::reset();
 }
 
 // Address: 0x007ed010 - 0x007ed21b (523 bytes)
@@ -110,27 +110,27 @@ __attribute__((weak)) void sNetworkExt::moveBefore() {
 void sNetworkExt::move() {
     // DWARF local not rendered: Profile __profile;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::sNetworkExt::moveBefore();
-    this->::sNetwork::getContext(static_cast<u32>(this->mUserIndex), static_cast<s32>(0));
-    this->::sNetworkExt::getLoginServer()->::cNetLoginServer::move();
-    this->::sNetworkExt::getGameServer()->::cNetGameServer::move();
-    this->mpSessionManager->::nSessionManager::cNetSessionManager::move();
-    this->mpNetStorageWorldInfo->move();
-    this->mpNetStorageCharInfo->move();
-    this->::sNetworkExt::updateWorldServerTime();
-    this->::sNetworkExt::updateEntryBoardAliveTimer();
+    moveBefore();
+    getContext(static_cast<u32>(mUserIndex), 0);
+    getLoginServer()->move();
+    getGameServer()->move();
+    mpSessionManager->move();
+    mpNetStorageWorldInfo->move();
+    mpNetStorageCharInfo->move();
+    updateWorldServerTime();
+    updateEntryBoardAliveTimer();
     // inferred: the value the loop at 0x7ed700 carries; no location-less local in scope fits
     u64 v0_0;
     // inferred: DWARF's location-less 'i' (lexical block [0x7ed6fc, 0x7ed734)) is the counter this loop steps
     s32 i;
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isLeaveOnTheWayBusy() != false) {
-        if (this->mLeaveOnTheWayTimer > 0.0f) {
-            this->mLeaveOnTheWayTimer = this->mLeaveOnTheWayTimer - ::sMain::getInstance()->mDeltaTime;
-            this->::sNetwork::move();
-            v0_0 = this->mAchievementFlag;
-            if (v0_0 != static_cast<u64>(0)) {
-                if (this->mAchievementStatus != static_cast<nNet::STATE>(2)) {
-                    i = static_cast<s32>(0);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isLeaveOnTheWayBusy()) {
+        if (mLeaveOnTheWayTimer > 0.0f) {
+            mLeaveOnTheWayTimer = mLeaveOnTheWayTimer - sMain::getInstance()->mDeltaTime;
+            this->sNetwork::move();
+            v0_0 = mAchievementFlag;
+            if (v0_0 != 0) {
+                if (mAchievementStatus != nNet::STATE_WAIT) {
+                    i = 0;
                 } else {
                     return;
                 }
@@ -138,11 +138,11 @@ void sNetworkExt::move() {
                 return;
             }
         } else {
-            this->::sNetwork::move();
-            v0_0 = this->mAchievementFlag;
-            if (v0_0 != static_cast<u64>(0)) {
-                if (this->mAchievementStatus != static_cast<nNet::STATE>(2)) {
-                    i = static_cast<s32>(0);
+            this->sNetwork::move();
+            v0_0 = mAchievementFlag;
+            if (v0_0 != 0) {
+                if (mAchievementStatus != nNet::STATE_WAIT) {
+                    i = 0;
                 } else {
                     return;
                 }
@@ -151,11 +151,11 @@ void sNetworkExt::move() {
             }
         }
     } else {
-        this->::sNetwork::move();
-        v0_0 = this->mAchievementFlag;
-        if (v0_0 != static_cast<u64>(0)) {
-            if (this->mAchievementStatus != static_cast<nNet::STATE>(2)) {
-                i = static_cast<s32>(0);
+        this->sNetwork::move();
+        v0_0 = mAchievementFlag;
+        if (v0_0 != 0) {
+            if (mAchievementStatus != nNet::STATE_WAIT) {
+                i = 0;
             } else {
                 return;
             }
@@ -164,15 +164,15 @@ void sNetworkExt::move() {
         }
     }
     for (;;) {
-        if (((static_cast<unsigned long>(v0_0) >> static_cast<unsigned long>(i & static_cast<s32>(63))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-            if ((i + static_cast<s32>(1)) <= static_cast<s32>(12)) {
-                i = i + static_cast<s32>(1);
+        if (((static_cast<unsigned long>(v0_0) >> static_cast<unsigned long>(i & 63)) & 1ul) == 0) {
+            if ((i + 1) <= 12) {
+                i = i + 1;
             } else {
                 break;
             }
         } else {
-            this->::sNetwork::getAchievement()->::nNetwork::nAchievement::Object::award(this->mUserIndex, i);
-            this->mAchievementStatus = static_cast<nNet::STATE>(2);
+            getAchievement()->award(mUserIndex, i);
+            mAchievementStatus = nNet::STATE_WAIT;
             return;
         }
     }
@@ -192,7 +192,7 @@ __attribute__((weak)) void sNetworkExt::createMenu(MtPropertyList& s) {
 // Address: 0x007edd20 - 0x007edd25 (5 bytes)
 MtUI* sNetworkExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sNetwork::createUI(prop);
+    return this->sNetwork::createUI(prop);
 }
 
 // Address: 0x007ecc00 - 0x007ecd3a (314 bytes)
@@ -206,8 +206,8 @@ __attribute__((weak)) void sNetworkExt::init() {
 // Address: 0x007ecfd0 - 0x007ecff4 (36 bytes)
 void sNetworkExt::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::remove();
-    this->shutdownSession();
+    getSessionManager()->remove();
+    shutdownSession();
 }
 
 // No out-of-line body: no code in the ELF
@@ -252,11 +252,11 @@ void sNetworkExt::final() {
 void sNetworkExt::requestAward(s32 id) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (this->mAchievementReady == false) {
+    if (!mAchievementReady) {
         return;
     }
-    if (id <= static_cast<s32>(63)) {
-        this->mAchievementFlag = static_cast<u64>(static_cast<unsigned long>(this->mAchievementFlag) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(id) & static_cast<unsigned char>(63))));
+    if (id <= 63) {
+        mAchievementFlag = static_cast<u64>(static_cast<unsigned long>(mAchievementFlag) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(id) & 63)));
     }
 }
 
@@ -273,7 +273,7 @@ void sNetworkExt::requestAward(s32 id) {
 // Address: 0x007eddc0 - 0x007eddd2 (18 bytes)
 void sNetworkExt::startTrophy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sNetwork::getAchievement()->::nNetwork::nAchievement::Object::start();
+    getAchievement()->start();
 }
 
 // No out-of-line body: no code in the ELF
@@ -282,8 +282,8 @@ void sNetworkExt::startTrophy() {
 // Address: 0x007eddf0 - 0x007ede2e (62 bytes)
 bool sNetworkExt::setTrophyVolume(f32 vol) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sNetwork::getAchievement()->mState == static_cast<s32>(1)) {
-        this->::sNetwork::getAchievement()->::nNetwork::nAchievement::Object::setVolume(vol);
+    if (getAchievement()->mState == 1) {
+        getAchievement()->setVolume(vol);
         return true;
     } else {
         return false;
@@ -356,15 +356,15 @@ __attribute__((weak)) void sNetworkExt::clrNotifySync(u32& flag, s32 memberIndex
 // Address: 0x007ee440 - 0x007ee447 (7 bytes)
 void sNetworkExt::clrNotifySyncAll(u32& flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    flag = static_cast<unsigned int>(0);
+    flag = 0;
 }
 
 // Address: 0x007ee450 - 0x007ee461 (17 bytes)
 void sNetworkExt::setNotifySync(u32& flag, s32 memberIndex) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (memberIndex <= static_cast<s32>(31)) {
-        flag = static_cast<unsigned int>(static_cast<unsigned long>(flag) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(memberIndex) & static_cast<unsigned char>(31))));
+    if (memberIndex <= 31) {
+        flag = static_cast<unsigned int>(static_cast<unsigned long>(flag) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(memberIndex) & 31)));
     }
 }
 
@@ -463,19 +463,19 @@ __attribute__((weak)) void sNetworkExt::requestNetworkErrorDialog(s32 errNo) {
 // Address: 0x007edf80 - 0x007edfb3 (51 bytes)
 void sNetworkExt::reserveNetworkErrorDialog(s32 comId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() == false) {
+    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
         return;
     }
-    this->mReserveErrComId = comId;
+    mReserveErrComId = comId;
 }
 
 // Address: 0x007edfc0 - 0x007edfd3 (19 bytes)
 void sNetworkExt::cancelReserveNetworkErrorDialog(s32 comId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mReserveErrComId != comId) {
+    if (mReserveErrComId != comId) {
         return;
     }
-    this->mReserveErrComId = static_cast<s32>(-1);
+    mReserveErrComId = -1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -506,8 +506,8 @@ __attribute__((weak)) bool sNetworkExt::isDispErrorDialog() {
 // Address: 0x007ee1e0 - 0x007ee209 (41 bytes)
 void sNetworkExt::closeErrorDisp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtNetServiceError::getInstance()->::MtNetServiceError::clear();
-    this->mErrorDispPhase = static_cast<s32>(0);
+    MtNetServiceError::getInstance()->clear();
+    mErrorDispPhase = 0;
 }
 
 // No out-of-line body: 33 inlined copies in 28 functions (258 bytes)
@@ -547,8 +547,8 @@ __attribute__((weak)) void sNetworkExt::setWorldServerTime(MtTime time, u16 msec
 // Address: 0x007ee2a0 - 0x007ee2df (63 bytes)
 void sNetworkExt::requestGetServerRealTime() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendGetRealTime();
-    this->mUpdateTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime() + static_cast<MtNetTime::Total>(3600000);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->sendGetRealTime();
+    mUpdateTime = MtNetTime::mInstance.getTotalTime() + 0x36EE80ul;
 }
 
 // Address: 0x007ed740 - 0x007ed831 (241 bytes)
@@ -662,7 +662,7 @@ __attribute__((weak)) void sNetworkExt::resetSaveCharTime() {
 // Address: 0x007ee410 - 0x007ee425 (21 bytes)
 u32 sNetworkExt::calcPeriodicTime(f32 rate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned int>(static_cast<long>(rate * static_cast<float>(this->mBasePeriodicTime)));
+    return static_cast<unsigned int>(static_cast<long>(rate * static_cast<float>(mBasePeriodicTime)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -690,14 +690,14 @@ __attribute__((weak)) void sNetworkExt::clearMyClanInfo() {
 // Address: 0x007ee530 - 0x007ee54c (28 bytes)
 bool sNetworkExt::isBelongClan() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != static_cast<u32>(0);
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0;
 }
 
 // Address: 0x007ee550 - 0x007ee585 (53 bytes)
 bool sNetworkExt::isClanLeader() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != static_cast<u32>(0)) {
-        return ::sGame::getInstance()->mCharData.mCharData.mCardClan.mMyPost == static_cast<u8>(1);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
+        return sGame::getInstance()->mCharData.mCharData.mCardClan.mMyPost == 1;
     } else {
         return false;
     }
@@ -713,10 +713,10 @@ bool sNetworkExt::isClanLeader() {
 // Address: 0x007ee590 - 0x007ee5b8 (40 bytes)
 bool sNetworkExt::isApplyClan() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != static_cast<u32>(0)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
         return false;
     } else {
-        return this->mIsApplyClan != false;
+        return mIsApplyClan;
     }
 }
 
@@ -730,10 +730,10 @@ bool sNetworkExt::isApplyClan() {
 // Address: 0x007ee5c0 - 0x007ee5e8 (40 bytes)
 bool sNetworkExt::isClanScoutEntry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != static_cast<u32>(0)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
         return false;
     } else {
-        return this->mIsClanScoutEntry != false;
+        return mIsClanScoutEntry;
     }
 }
 
@@ -753,7 +753,7 @@ bool sNetworkExt::isClanInterval() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as unsigned long
     // inferred: a value cast to the type its use takes: s64 used as unsigned long
-    return static_cast<unsigned long>(this->mClanIntervalTime) >= static_cast<unsigned long>(this->mWorldServerTime.::MtTime::getTime() - this->mLastClanLeaveTime);
+    return static_cast<unsigned long>(mClanIntervalTime) >= static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
 }
 
 // Address: 0x007ee620 - 0x007ee638 (24 bytes)
@@ -787,14 +787,14 @@ __attribute__((weak)) bool sNetworkExt::isClanIntervalMember(const CClanMemberIn
 u64 sNetworkExt::getClanIntervalRemainTime() {
     // DWARF local not rendered: t64 remainTime;
     // Approximate from the ELF: a clamp the recompile turns around; the body oracle reports this body.
-    if (this->mLastClanLeaveTime != static_cast<s64>(0)) {
-        if (((this->mLastClanLeaveTime + this->mClanIntervalTime) - this->mWorldServerTime.mTime) <= static_cast<t64>(0)) {
-            return static_cast<u64>(0);
+    if (mLastClanLeaveTime != 0) {
+        if (((mLastClanLeaveTime + mClanIntervalTime) - mWorldServerTime.mTime) <= 0) {
+            return 0;
         } else {
-            return static_cast<u64>((this->mLastClanLeaveTime + this->mClanIntervalTime) - this->mWorldServerTime.mTime);
+            return static_cast<u64>((mLastClanLeaveTime + mClanIntervalTime) - mWorldServerTime.mTime);
         }
     } else {
-        return static_cast<u64>(0);
+        return 0;
     }
 }
 
@@ -804,7 +804,7 @@ u64 sNetworkExt::getClanIntervalRemainTime() {
 // Address: 0x007ee520 - 0x007ee528 (8 bytes)
 void sNetworkExt::setClanBaseRelease(bool flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsClanBaseRelease = flag;
+    mIsClanBaseRelease = flag;
 }
 
 // Address: 0x007ee670 - 0x007ee6c9 (89 bytes)
@@ -817,7 +817,7 @@ __attribute__((weak)) bool sNetworkExt::isClanPermission(nClan::E_CLAN_PERMISSIO
 // Address: 0x007ee720 - 0x007ee738 (24 bytes)
 u32 sNetworkExt::getMyClanId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID;
 }
 
 // No out-of-line body: no code in the ELF
@@ -869,7 +869,7 @@ __attribute__((weak)) bool sNetworkExt::isClanMember(u32 characterId) {
 const ClanMemberInfoVec& sNetworkExt::getMyClanMemberListRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the method's own class: a sNetworkExt member read past the end of the class its pointer is typed with
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->mpGameServer->mMyClanMemberList;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->mpGameServer->mMyClanMemberList;
 }
 
 // Address: 0x007ee6d0 - 0x007ee717 (71 bytes)
@@ -877,19 +877,19 @@ CClanMemberInfo* sNetworkExt::getMyClanMemberInfoFromCharId(u32 characterId) {
     // DWARF local not rendered: const ClanMemberInfoVec& list;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x7ee700 carries; no location-less local in scope fits
-    u32 v0_3 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanMemberList.::MtArray::mLength;
+    u32 v0_3 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanMemberList.mLength;
     // inferred: the value carried to 0x7ee716; no location-less local in scope fits
     MtObject* v2_0;
-    if (v0_3 == static_cast<u32>(0)) {
-        v2_0 = static_cast<MtObject*>(nullptr);
+    if (v0_3 == 0) {
+        v2_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x7ee700 carries; no location-less local in scope fits
-        MtObject* * v0_1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanMemberList.::MtArray::mpArray;
+        MtObject* * v0_1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanMemberList.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x7ee6e1, 0x7ee713)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i]) + static_cast<long>(64))) != characterId) {
-                if ((i + static_cast<u32>(1)) < v0_3) {
-                    i = i + static_cast<u32>(1);
+        for (u32 i = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i]) + 64)) != characterId) {
+                if ((i + 1u) < v0_3) {
+                    i = i + 1u;
                 } else {
                     break;
                 }
@@ -898,7 +898,7 @@ CClanMemberInfo* sNetworkExt::getMyClanMemberInfoFromCharId(u32 characterId) {
                 return static_cast<CClanMemberInfo*>(v2_0);
             }
         }
-        v2_0 = static_cast<MtObject*>(nullptr);
+        v2_0 = nullptr;
     }
     return static_cast<CClanMemberInfo*>(v2_0);
 }
@@ -921,8 +921,8 @@ CClanMemberInfo* sNetworkExt::getMyClanMemberInfoFromCharId(u32 characterId) {
 bool sNetworkExt::isClanInvited() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == static_cast<u32>(0)) {
-        if (this->mClanInvitedNum == static_cast<u32>(0)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == 0) {
+        if (mClanInvitedNum == 0) {
             return false;
         } else {
             return true;
@@ -955,8 +955,8 @@ bool sNetworkExt::isClanApproved() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x87b8 from cNetGameServer*
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(34744))) != static_cast<unsigned int>(0)) {
-        if (this->mClanApprovedNum == static_cast<u32>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) != 0) {
+        if (mClanApprovedNum == 0) {
             return false;
         } else {
             return true;
@@ -976,18 +976,18 @@ bool sNetworkExt::isEnableCreateClan() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x87b8 from cNetGameServer*
     // inferred: a value cast to the type its use takes: u32 used as unsigned long
     // inferred: a value cast to the type its use takes: s64 used as unsigned long
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(34744))) == static_cast<unsigned int>(0)) {
-        if (this->mIsClanScoutEntry != false) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) == 0) {
+        if (mIsClanScoutEntry) {
             return false;
         } else {
-            if (this->mIsApplyClan != false) {
+            if (mIsApplyClan) {
                 return false;
             } else {
-                return static_cast<unsigned long>(this->mClanIntervalTime) < static_cast<unsigned long>(this->mWorldServerTime.::MtTime::getTime() - this->mLastClanLeaveTime);
+                return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
             }
         }
     } else {
-        return static_cast<unsigned long>(this->mClanIntervalTime) < static_cast<unsigned long>(this->mWorldServerTime.::MtTime::getTime() - this->mLastClanLeaveTime);
+        return static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime);
     }
 }
 
@@ -997,33 +997,33 @@ void sNetworkExt::reqCreateClanDisableAnnounce() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x87b8 from cNetGameServer*
     // inferred: a value cast to the type its use takes: u32 used as unsigned long
     // inferred: a value cast to the type its use takes: s64 used as unsigned long
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(34744))) == static_cast<unsigned int>(0)) {
-        if (this->mIsClanScoutEntry != false) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 34744)) == 0) {
+        if (mIsClanScoutEntry) {
             // inferred: a temporary for the value the load at 0x7ee973 read, used twice; no DWARF local holds it
-            sGUI* t0 = ::sGUI::getInstance();
-            static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(383)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            sGUI* t0 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 383u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         } else {
-            if (this->mIsApplyClan != false) {
+            if (mIsApplyClan) {
                 // inferred: a temporary for the value the load at 0x7ee994 read, used twice; no DWARF local holds it
-                sGUI* t1 = ::sGUI::getInstance();
-                static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(384)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                sGUI* t1 = sGUI::getInstance();
+                static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 384u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
             } else {
                 // inferred: a temporary for the value the load at 0x7ee9c0 read, used twice; no DWARF local holds it
-                sGUI* t2 = ::sGUI::getInstance();
-                if (static_cast<unsigned long>(this->mClanIntervalTime) < static_cast<unsigned long>(this->mWorldServerTime.::MtTime::getTime() - this->mLastClanLeaveTime)) {
-                    static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                sGUI* t2 = sGUI::getInstance();
+                if (static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime)) {
+                    static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
                 } else {
-                    static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(445)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                    static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 445u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
                 }
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x7ee9c0 read, used twice; no DWARF local holds it
-        sGUI* t2 = ::sGUI::getInstance();
-        if (static_cast<unsigned long>(this->mClanIntervalTime) < static_cast<unsigned long>(this->mWorldServerTime.::MtTime::getTime() - this->mLastClanLeaveTime)) {
-            static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+        sGUI* t2 = sGUI::getInstance();
+        if (static_cast<unsigned long>(mClanIntervalTime) < static_cast<unsigned long>(mWorldServerTime.getTime() - mLastClanLeaveTime)) {
+            static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         } else {
-            static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(445)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 445u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         }
     }
 }
@@ -1031,11 +1031,11 @@ void sNetworkExt::reqCreateClanDisableAnnounce() {
 // Address: 0x007eea20 - 0x007eea53 (51 bytes)
 bool sNetworkExt::isEnableClanScoutEntry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == static_cast<u32>(0)) {
-        if (this->mIsClanScoutEntry != false) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID == 0) {
+        if (mIsClanScoutEntry) {
             return false;
         } else {
-            return this->mIsApplyClan == false;
+            return !mIsApplyClan;
         }
     } else {
         return true;
@@ -1045,17 +1045,17 @@ bool sNetworkExt::isEnableClanScoutEntry() {
 // Address: 0x007eea60 - 0x007eeaf2 (146 bytes)
 void sNetworkExt::reqClanScoutEntryDisableAnnounce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != static_cast<u32>(0)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unID != 0) {
         // inferred: a temporary for the value the load at 0x7eea8a read, used twice; no DWARF local holds it
-        sGUI* t0 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+        sGUI* t0 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
     } else {
         // inferred: a temporary for the value the load at 0x7eeaa4 read, used twice; no DWARF local holds it
-        sGUI* t1 = ::sGUI::getInstance();
-        if (this->mIsApplyClan != false) {
-            static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(494)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+        sGUI* t1 = sGUI::getInstance();
+        if (mIsApplyClan) {
+            static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 494u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         } else {
-            static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+            static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 227u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
         }
     }
 }
@@ -1063,7 +1063,7 @@ void sNetworkExt::reqClanScoutEntryDisableAnnounce() {
 // Address: 0x007eeb00 - 0x007eeb18 (24 bytes)
 u32 sNetworkExt::getClanDirectInvitedNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mClanDirectInvitedList.::MtArray::mLength;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mClanDirectInvitedList.mLength;
 }
 
 // Address: 0x007eebe0 - 0x007eec13 (51 bytes)
@@ -1107,19 +1107,18 @@ __attribute__((weak)) const MtTypedArray<CDataCommonU32>& sNetworkExt::getClanMe
 
 // Address: 0x007eeb20 - 0x007eebd8 (184 bytes)
 void sNetworkExt::setClanMemberMax(u32 num) {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    this->mClanMemberMax = num;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mClanMemberMax = num;
     // inferred: a temporary for the value the load at 0x7eeb42 read, used 5 times; no DWARF local holds it
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (t0->mMyClanMemberList.::MtArray::mBufsiz < num) {
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (t0->mMyClanMemberList.mBufsiz < num) {
         // inferred: a temporary for the result of the call at 0x7eeb76, used 3 times; no DWARF local holds it
-        void* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(8), static_cast<u32>(16));
-        ::memset(t1, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(8));
-        ::memcpy(t1, static_cast<const void*>(t0->mMyClanMemberList.::MtArray::mpArray), static_cast<size_t>(t0->mMyClanMemberList.::MtArray::mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(t0->mMyClanMemberList.::MtArray::mpArray));
-        t0->mMyClanMemberList.::MtArray::mpArray = static_cast<MtObject* *>(t1);
-        t0->mMyClanMemberList.::MtArray::mBufsiz = num;
+        void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        memset(t1, 0, static_cast<size_t>(num) * 8);
+        memcpy(t1, static_cast<const void*>(t0->mMyClanMemberList.mpArray), static_cast<size_t>(t0->mMyClanMemberList.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(t0->mMyClanMemberList.mpArray));
+        t0->mMyClanMemberList.mpArray = static_cast<MtObject* *>(t1);
+        t0->mMyClanMemberList.mBufsiz = num;
     }
 }
 
@@ -1133,88 +1132,88 @@ void sNetworkExt::setClanMemberMax(u32 num) {
 // Address: 0x007ece60 - 0x007ecfc1 (353 bytes)
 void sNetworkExt::clearFriendInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mIsAppliedFriend = false;
+    mIsAppliedFriend = false;
     // inferred: the value the loop at 0x7ece90 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mFriendList.mLength != 0) {
         // inferred: the value the loop at 0x7ece90 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mFriendList.::MtArray::mLength;
+        u32 v0_0 = v0_8->mFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mFriendList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mFriendList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mFriendList.::MtArray::mLength) {
-                    v0_0 = v0_8->mFriendList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mFriendList.mpArray[i0_3] != nullptr) {
+                delete v0_8->mFriendList.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mFriendList.mLength) {
+                    v0_0 = v0_8->mFriendList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    v0_8->mFriendList.::MtArray::mLength = static_cast<u32>(0);
-    if (v0_8->mApplyingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    v0_8->mFriendList.mLength = 0;
+    if (v0_8->mApplyingFriendList.mLength != 0) {
         // inferred: the value the loop at 0x7eced0 carries; no location-less local in scope fits
-        u32 v2_0 = v0_8->mApplyingFriendList.::MtArray::mLength;
+        u32 v2_0 = v0_8->mApplyingFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < v0_8->mApplyingFriendList.::MtArray::mLength) {
-                    v2_0 = v0_8->mApplyingFriendList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (v0_8->mApplyingFriendList.mpArray[i2_3] != nullptr) {
+                delete v0_8->mApplyingFriendList.mpArray[i2_3];
+                if ((i2_3 + 1u) < v0_8->mApplyingFriendList.mLength) {
+                    v2_0 = v0_8->mApplyingFriendList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mApplyingFriendList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApplyingFriendList.::MtArray::mpArray));
+    if (v0_8->mApplyingFriendList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApplyingFriendList.mpArray));
     }
-    v0_8->mApplyingFriendList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mApplyingFriendList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mApplyingFriendList.::MtArray::mLength = static_cast<u32>(0);
-    if (v0_8->mApprovingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
+    v0_8->mApplyingFriendList.mpArray = nullptr;
+    v0_8->mApplyingFriendList.mBufsiz = 0;
+    v0_8->mApplyingFriendList.mLength = 0;
+    if (v0_8->mApprovingFriendList.mLength != 0) {
         // inferred: the value the loop at 0x7ecf50 carries; no location-less local in scope fits
-        u32 v4_0 = v0_8->mApprovingFriendList.::MtArray::mLength;
+        u32 v4_0 = v0_8->mApprovingFriendList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < v0_8->mApprovingFriendList.::MtArray::mLength) {
-                    v4_0 = v0_8->mApprovingFriendList.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (v0_8->mApprovingFriendList.mpArray[i4_3] != nullptr) {
+                delete v0_8->mApprovingFriendList.mpArray[i4_3];
+                if ((i4_3 + 1u) < v0_8->mApprovingFriendList.mLength) {
+                    v4_0 = v0_8->mApprovingFriendList.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mApprovingFriendList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApprovingFriendList.::MtArray::mpArray));
+    if (v0_8->mApprovingFriendList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mApprovingFriendList.mpArray));
     }
-    v0_8->mApprovingFriendList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mApprovingFriendList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mApprovingFriendList.::MtArray::mLength = static_cast<u32>(0);
+    v0_8->mApprovingFriendList.mpArray = nullptr;
+    v0_8->mApprovingFriendList.mBufsiz = 0;
+    v0_8->mApprovingFriendList.mLength = 0;
 }
 
 // Address: 0x007eecd0 - 0x007eed1a (74 bytes)
@@ -1239,19 +1238,18 @@ __attribute__((weak)) bool sNetworkExt::isFriend(u32 characterId) {
 
 // Address: 0x007eed20 - 0x007eedd8 (184 bytes)
 void sNetworkExt::setFriendListMax(u32 num) {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    this->mFriendListMax = num;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mFriendListMax = num;
     // inferred: a temporary for the value the load at 0x7eed42 read, used 5 times; no DWARF local holds it
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (t0->mFriendList.::MtArray::mBufsiz < num) {
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (t0->mFriendList.mBufsiz < num) {
         // inferred: a temporary for the result of the call at 0x7eed76, used 3 times; no DWARF local holds it
-        void* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(8), static_cast<u32>(16));
-        ::memset(t1, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(8));
-        ::memcpy(t1, static_cast<const void*>(t0->mFriendList.::MtArray::mpArray), static_cast<size_t>(t0->mFriendList.::MtArray::mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(t0->mFriendList.::MtArray::mpArray));
-        t0->mFriendList.::MtArray::mpArray = static_cast<MtObject* *>(t1);
-        t0->mFriendList.::MtArray::mBufsiz = num;
+        void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        memset(t1, 0, static_cast<size_t>(num) * 8);
+        memcpy(t1, static_cast<const void*>(t0->mFriendList.mpArray), static_cast<size_t>(t0->mFriendList.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(t0->mFriendList.mpArray));
+        t0->mFriendList.mpArray = static_cast<MtObject* *>(t1);
+        t0->mFriendList.mBufsiz = num;
     }
 }
 
@@ -1264,19 +1262,18 @@ void sNetworkExt::setFriendListMax(u32 num) {
 
 // Address: 0x007eede0 - 0x007eee98 (184 bytes)
 void sNetworkExt::setGroupChatMemberMax(u32 num) {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    this->mGroupChatMemberMax = num;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mGroupChatMemberMax = num;
     // inferred: a temporary for the value the load at 0x7eee02 read, used 5 times; no DWARF local holds it
-    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (t0->mGroupChatMemberList.::MtArray::mBufsiz < num) {
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (t0->mGroupChatMemberList.mBufsiz < num) {
         // inferred: a temporary for the result of the call at 0x7eee36, used 3 times; no DWARF local holds it
-        void* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(8), static_cast<u32>(16));
-        ::memset(t1, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(8));
-        ::memcpy(t1, static_cast<const void*>(t0->mGroupChatMemberList.::MtArray::mpArray), static_cast<size_t>(t0->mGroupChatMemberList.::MtArray::mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(t0->mGroupChatMemberList.::MtArray::mpArray));
-        t0->mGroupChatMemberList.::MtArray::mpArray = static_cast<MtObject* *>(t1);
-        t0->mGroupChatMemberList.::MtArray::mBufsiz = num;
+        void* t1 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(num) * 8, 16u);
+        memset(t1, 0, static_cast<size_t>(num) * 8);
+        memcpy(t1, static_cast<const void*>(t0->mGroupChatMemberList.mpArray), static_cast<size_t>(t0->mGroupChatMemberList.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(t0->mGroupChatMemberList.mpArray));
+        t0->mGroupChatMemberList.mpArray = static_cast<MtObject* *>(t1);
+        t0->mGroupChatMemberList.mBufsiz = num;
     }
 }
 
@@ -1320,7 +1317,7 @@ __attribute__((weak)) void sNetworkExt::clearAllEntryBoardInfo() {
 // Address: 0x007ef040 - 0x007ef047 (7 bytes)
 bool sNetworkExt::isEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEntryBoardItem;
+    return mIsEntryBoardItem;
 }
 
 // No out-of-line body: 14 inlined copies in 13 functions (139 bytes)
@@ -1333,21 +1330,21 @@ bool sNetworkExt::isEntryBoardItem() {
 // Address: 0x007ef050 - 0x007ef0c5 (117 bytes)
 bool sNetworkExt::isEntryLeader() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEntryBoardItem == false) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+    if (!mIsEntryBoardItem) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
             } else {
-                return this->mIsEntryItemLeader != false;
+                return mIsEntryItemLeader;
             }
         } else {
             return false;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-            return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader();
         } else {
-            return this->mIsEntryItemLeader != false;
+            return mIsEntryItemLeader;
         }
     }
 }
@@ -1355,10 +1352,10 @@ bool sNetworkExt::isEntryLeader() {
 // Address: 0x007ef0d0 - 0x007ef0e3 (19 bytes)
 u64 sNetworkExt::getMyEntryBoardId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEntryBoardItem != false) {
-        return this->mEntryBoardId;
+    if (mIsEntryBoardItem) {
+        return mEntryBoardId;
     } else {
-        return static_cast<u64>(0);
+        return 0;
     }
 }
 
@@ -1366,16 +1363,16 @@ u64 sNetworkExt::getMyEntryBoardId() {
 bool sNetworkExt::enableEntryBoardExtend() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mIsEntryBoardItem != false) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader() != false) {
-                if (54000.0f > this->mEntryBoardAliveTimer) {
+    if (mIsEntryBoardItem) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader()) {
+                if (54000.0f > mEntryBoardAliveTimer) {
                     return true;
                 }
             }
         } else {
-            if (this->mIsEntryItemLeader != false) {
-                if (54000.0f > this->mEntryBoardAliveTimer) {
+            if (mIsEntryItemLeader) {
+                if (54000.0f > mEntryBoardAliveTimer) {
                     return true;
                 }
             }
@@ -1411,9 +1408,9 @@ bool sNetworkExt::enableEntryBoardExtend() {
 // Address: 0x007ef160 - 0x007ef176 (22 bytes)
 void sNetworkExt::setEntryBoardReadyWait(bool wait) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEntryBoardReadyWait = wait;
-    this->mEntryBoardReadyWaitAnnounce = wait;
-    this->mEntryBoardReady = false;
+    mEntryBoardReadyWait = wait;
+    mEntryBoardReadyWaitAnnounce = wait;
+    mEntryBoardReady = false;
 }
 
 // No out-of-line body: 13 inlined copies in 9 functions (119 bytes)
@@ -1583,7 +1580,7 @@ __attribute__((weak)) void sNetworkExt::clearEntryInviteInfoAll() {
 // Address: 0x007ef370 - 0x007ef388 (24 bytes)
 const sNetworkExt::stEntryInvitedInfo& sNetworkExt::getEntryInviteInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEntryInvitedList[(index <= static_cast<u32>(4)) ? index : static_cast<u32>(0)];
+    return mEntryInvitedList[(index <= 4u) ? index : 0u];
 }
 
 // Address: 0x007ef390 - 0x007ef3b9 (41 bytes)
@@ -1591,21 +1588,21 @@ const sNetworkExt::stEntryInvitedInfo* sNetworkExt::getEntryInviteInfoRecent() c
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    int i0_1 = static_cast<int>(5);
+    int i0_1 = 5;
     // inferred: the value the loop at 0x7ef3a0 carries; no location-less local in scope fits
-    const sNetworkExt::stEntryInvitedInfo* v0_2 = &this->mEntryInvitedList[4];
+    const stEntryInvitedInfo* v0_2 = &mEntryInvitedList[4];
     // inferred: the value carried to 0x7ef3b8; no location-less local in scope fits
-    const sNetworkExt::stEntryInvitedInfo* v1_0;
+    const stEntryInvitedInfo* v1_0;
     for (;;) {
-        if (v0_2->mHostInfo.m_unCharacterID != static_cast<u32>(0)) {
+        if (v0_2->mHostInfo.m_unCharacterID != 0) {
             v1_0 = v0_2;
             break;
         } else {
-            if ((i0_1 - static_cast<int>(1)) > static_cast<int>(0)) {
-                i0_1 += static_cast<int>(-1);
-                v0_2 += static_cast<int>(-1);
+            if ((i0_1 - 1) > 0) {
+                i0_1 += -1;
+                v0_2 += -1;
             } else {
-                v1_0 = static_cast<const sNetworkExt::stEntryInvitedInfo*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
@@ -1638,21 +1635,21 @@ s32 sNetworkExt::getEntryInviteIdRecent() const {
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    int i0_1 = static_cast<int>(5);
+    int i0_1 = 5;
     // inferred: the value the loop at 0x7ef430 carries; no location-less local in scope fits
-    for (const u32* v0_2 = &this->mEntryInvitedList[4].mHostInfo.m_unCharacterID;;) {
-        if ((*v0_2) != static_cast<unsigned int>(0)) {
-            return i0_1 - static_cast<int>(1);
+    for (const u32* v0_2 = &mEntryInvitedList[4].mHostInfo.m_unCharacterID;;) {
+        if ((*v0_2) != 0) {
+            return i0_1 - 1;
         } else {
-            if ((i0_1 - static_cast<int>(1)) > static_cast<int>(0)) {
-                i0_1 += static_cast<int>(-1);
-                v0_2 += static_cast<int>(-16);
+            if ((i0_1 - 1) > 0) {
+                i0_1 += -1;
+                v0_2 += -16;
             } else {
                 break;
             }
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // Address: 0x007ef450 - 0x007ef4b3 (99 bytes)
@@ -1740,9 +1737,16 @@ __attribute__((weak)) void sNetworkExt::updateEntryBoardAliveTimer() {
 // No out-of-line body: no code in the ELF
 // f32 sNetworkExt::getLeaveOnTheWayTimer();
 
-// No out-of-line body: 1 inlined copy in 1 function (62 bytes)
-//   in sNetworkExt::move at 0x007ed69e-0x007ed6dc (called at sNetworkExt.cpp:530)
-// void sNetworkExt::updateLeaveOnTheWayTimer();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sNetworkExt::move at 0x7ed69e-0x7ed6dc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sNetworkExt::updateLeaveOnTheWayTimer() {
+    if (!static_cast<sNetworkExt*>(sNetwork::mpInstance)->mLeaveOnTheWayBusy) {
+        return;
+    }
+    if (mLeaveOnTheWayTimer > 0.0f) {
+        mLeaveOnTheWayTimer = mLeaveOnTheWayTimer - (sMain::mpInstance)->mDeltaTime;
+    }
+}
 
 // No out-of-line body: 8 inlined copies in 8 functions (70 bytes)
 //   in cSeedGameSvConnection::OnPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE at 0x002f04c1-0x002f04c8 (called at cNetGameServer.cpp:27747)
@@ -1778,6 +1782,8 @@ __attribute__((weak)) bool sNetworkExt::moveTitleUpdateCheck() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sNetworkExt::MyDTI sNetworkExt::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sNetworkExt.cpp at 0x007efb6f-0x007efbac (called at sNetworkExt.cpp:104)
 //   in _GLOBAL__sub_I_sNetworkExt.cpp at 0x007efb6f-0x007efbac (called at sNetworkExt.h:46)
@@ -1792,39 +1798,41 @@ __attribute__((weak)) MtObject* sNetworkExt::MyDTI::newInstance() const {
 // Defined in the class (its body was written in a header).
 // sNetworkExt::cAchievementListener::~cAchievementListener();
 
-// No out-of-line body: 1 inlined copy in 1 function (8 bytes)
-//   in sNetworkExt::sNetworkExt at 0x007ec472-0x007ec47a (called at sNetworkExt.cpp:119)
-// void sNetworkExt::cAchievementListener::setParent(sNetworkExt* p);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sNetworkExt::sNetworkExt at 0x7ec472-0x7ec47a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sNetworkExt::cAchievementListener::setParent(sNetworkExt* p) {
+    p->mAchievementListener.mpParent = p;
+}
 
 // Address: 0x007ede30 - 0x007ede48 (24 bytes)
 void sNetworkExt::cAchievementListener::onInitComplete(u64 option, MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (err != static_cast<MtNetError*>(nullptr)) {
+    if (err != nullptr) {
         return;
     }
-    this->mpParent->mAchievementBootup = true;
-    this->mpParent->mTrophySize = option;
+    mpParent->mAchievementBootup = true;
+    mpParent->mTrophySize = option;
 }
 
 // Address: 0x007ede50 - 0x007ede61 (17 bytes)
 void sNetworkExt::cAchievementListener::onStartComplete(MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (err != static_cast<MtNetError*>(nullptr)) {
+    if (err != nullptr) {
         return;
     }
-    this->mpParent->mAchievementReady = true;
+    mpParent->mAchievementReady = true;
 }
 
 // Address: 0x007ede70 - 0x007ede9e (46 bytes)
 void sNetworkExt::cAchievementListener::onGetInfoComplete(s32 user_index, s32 id, bool is_award, MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (err != static_cast<MtNetError*>(nullptr)) {
-        this->mpParent->mAchievementIsAward = static_cast<nNet::STATE>(4);
+    if (err != nullptr) {
+        mpParent->mAchievementIsAward = nNet::STATE_ERROR;
     } else {
-        if (is_award != false) {
-            this->mpParent->mAchievementIsAward = static_cast<nNet::STATE>(3);
+        if (is_award) {
+            mpParent->mAchievementIsAward = nNet::STATE_SUCCESS;
         } else {
-            this->mpParent->mAchievementIsAward = static_cast<nNet::STATE>(6);
+            mpParent->mAchievementIsAward = nNet::STATE_END;
         }
     }
 }

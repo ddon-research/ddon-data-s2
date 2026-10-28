@@ -285,8 +285,38 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cAreaHit::update at 0x256b6-0x256bb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void AreaHitShape::setCkAngle(f32 ang) {
+    this->mCheckAngle = ang;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cAreaHit::update at 0x255fb-0x25600; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void AreaHitShape::setCkRange(f32 ang) {
+    this->mCheckRange = ang;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cAreaHit::checkToward at 0x26438-0x2643d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline f32 AreaHitShape::getCkToward() const {
+    return this->mCheckToward;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cScenario::createArea at 0x558867-0x55886b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cAreaHit::setOwner(MtObject* pOwner) {
+    this->mpOwner = pOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cAreaHit::isEnable() {
     return this->mbEnable;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cScenario::createArea at 0x558872-0x558875; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cAreaHit::setAttribute(u32 attr) {
+    this->mAttr = attr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

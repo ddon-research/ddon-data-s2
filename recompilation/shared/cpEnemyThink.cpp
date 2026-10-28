@@ -44,7 +44,7 @@ const MtDTI& cRage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cRage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memAlloc(sz, align, ::cRage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cRage::DTI)->memAlloc(sz, align, cRage::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -59,7 +59,7 @@ inline void* cRage::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cRage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cRage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -99,6 +99,8 @@ __attribute__((weak)) bool cRage::checkRageStatus(uDDOModel* pModel) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cRage::MyDTI cRage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEnemyThink.cpp at 0x0047846c-0x004784a9 (called at cpEnemyThink.cpp:85)
 //   in _GLOBAL__sub_I_cpEnemyThink.cpp at 0x0047846c-0x004784a9 (called at cpEnemyThink.h:34)
@@ -107,7 +109,7 @@ __attribute__((weak)) bool cRage::checkRageStatus(uDDOModel* pModel) {
 // Address: 0x00475910 - 0x00475970 (96 bytes)
 MtObject* cRage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cRage;
+    return new (16u) cRage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ const MtDTI& cpEnemyThink::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpEnemyThink::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpEnemyThink::DTI);
+    return MtMemoryAllocator::getAllocator(cpEnemyThink::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,7 +135,7 @@ inline MtAllocator* cpEnemyThink::getAllocator() {
 // Address: 0x00475860 - 0x004758a0 (64 bytes)
 void* cpEnemyThink::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpEnemyThink::getAllocator()->memAlloc(sz, align, ::cpEnemyThink::DTI.::MtDTI::getID());
+    return cpEnemyThink::getAllocator()->memAlloc(sz, align, cpEnemyThink::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,7 +150,7 @@ void* cpEnemyThink::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpEnemyThink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpEnemyThink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpEnemyThink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -183,119 +185,119 @@ __attribute__((weak)) void cpEnemyThink::setup() {
 // Address: 0x00475fd0 - 0x00475fe2 (18 bytes)
 void cpEnemyThink::before() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mcThink.::cThinkMgrName::cThinkMgr::NextThinkTimer(this->mpModel->::cUnit::getDeltaTime());
+    mcThink.NextThinkTimer(mpModel->getDeltaTime());
 }
 
 // Address: 0x00475ff0 - 0x004760f4 (260 bytes)
 u32 cpEnemyThink::callbackGetAction() {
     // DWARF local not rendered: bool isUpdate;
     // Approximate from the ELF: a statement both arms of a test start with; a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mIsThinkStop != false) {
-        this->mIsThinkStop = false;
-        return static_cast<u32>(4294967295);
+    if (mIsThinkStop) {
+        mIsThinkStop = false;
+        return 0xFFFFFFFF;
     } else {
-        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-            if (this->mpModel->mGuardComponent.mpActMgr != static_cast<cpActionManager*>(nullptr)) {
-                if (this->::cpComponent::mActive != false) {
-                    if (this->mpModel->::uDDOModel::isDead() == false) {
+        if (mpModel != nullptr) {
+            if (mpModel->mGuardComponent.mpActMgr != nullptr) {
+                if (mActive) {
+                    if (!mpModel->isDead()) {
                         // inferred: a temporary for the result of the call at 0x47604c, used once; no DWARF local holds it
-                        u32 t0 = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
-                        if (((this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() >> static_cast<u32>(8)) & static_cast<u32>(32)) == static_cast<u32>(0)) {
-                            if ((this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() & static_cast<u32>(12288)) == static_cast<u32>(12288)) {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() != static_cast<u32>(4294967295)) {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() != false) {
-                                        if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() == false) {
-                                            if (this->mcThink.::cThinkMgrName::cThinkMgr::isActTrue() != false) {
-                                                this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                        u32 t0 = mpModel->getActMgrPtr()->getActionNo();
+                        if (((mpModel->getActMgrPtr()->getActionNo() >> 8) & 32u) == 0) {
+                            if ((mpModel->getActMgrPtr()->getActionNo() & 12288u) == 12288) {
+                                if (mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) {
+                                    if (mpModel->getActMgrPtr()->isEndAction()) {
+                                        if (!mpModel->getActMgrPtr()->isEndAction()) {
+                                            if (mcThink.isActTrue()) {
+                                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                             } else {
-                                                this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
-                                                if (t0 != static_cast<u32>(4294967295)) {
-                                                    return static_cast<u32>(4294967295);
+                                                mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                                if (t0 != 0xFFFFFFFFu) {
+                                                    return 0xFFFFFFFF;
                                                 }
                                             }
                                         } else {
-                                            this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                         }
-                                        return this->::cpEnemyThink::getActionNo();
+                                        return getActionNo();
                                     } else {
-                                        return static_cast<u32>(4294967295);
+                                        return 0xFFFFFFFF;
                                     }
                                 } else {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() == false) {
-                                        if (this->mcThink.::cThinkMgrName::cThinkMgr::isActTrue() != false) {
-                                            this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                    if (!mpModel->getActMgrPtr()->isEndAction()) {
+                                        if (mcThink.isActTrue()) {
+                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                         } else {
-                                            this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
-                                            if (t0 != static_cast<u32>(4294967295)) {
-                                                return static_cast<u32>(4294967295);
+                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                            if (t0 != 0xFFFFFFFFu) {
+                                                return 0xFFFFFFFF;
                                             }
                                         }
                                     } else {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                     }
-                                    return this->::cpEnemyThink::getActionNo();
+                                    return getActionNo();
                                 }
                             } else {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() == false) {
-                                    if (this->mcThink.::cThinkMgrName::cThinkMgr::isActTrue() != false) {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                if (!mpModel->getActMgrPtr()->isEndAction()) {
+                                    if (mcThink.isActTrue()) {
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                     } else {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
-                                        if (t0 != static_cast<u32>(4294967295)) {
-                                            return static_cast<u32>(4294967295);
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                        if (t0 != 0xFFFFFFFFu) {
+                                            return 0xFFFFFFFF;
                                         }
                                     }
                                 } else {
-                                    this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                    mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                 }
-                                return this->::cpEnemyThink::getActionNo();
+                                return getActionNo();
                             }
                         } else {
-                            if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() != static_cast<u32>(4294967295)) {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() != false) {
-                                    if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() == false) {
-                                        if (this->mcThink.::cThinkMgrName::cThinkMgr::isActTrue() != false) {
-                                            this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                            if (mpModel->getActMgrPtr()->getActionNo() != 0xFFFFFFFFu) {
+                                if (mpModel->getActMgrPtr()->isEndAction()) {
+                                    if (!mpModel->getActMgrPtr()->isEndAction()) {
+                                        if (mcThink.isActTrue()) {
+                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                         } else {
-                                            this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
-                                            if (t0 != static_cast<u32>(4294967295)) {
-                                                return static_cast<u32>(4294967295);
+                                            mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                            if (t0 != 0xFFFFFFFFu) {
+                                                return 0xFFFFFFFF;
                                             }
                                         }
                                     } else {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                     }
-                                    return this->::cpEnemyThink::getActionNo();
+                                    return getActionNo();
                                 } else {
-                                    return static_cast<u32>(4294967295);
+                                    return 0xFFFFFFFF;
                                 }
                             } else {
-                                if (this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction() == false) {
-                                    if (this->mcThink.::cThinkMgrName::cThinkMgr::isActTrue() != false) {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                if (!mpModel->getActMgrPtr()->isEndAction()) {
+                                    if (mcThink.isActTrue()) {
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                     } else {
-                                        this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
-                                        if (t0 != static_cast<u32>(4294967295)) {
-                                            return static_cast<u32>(4294967295);
+                                        mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
+                                        if (t0 != 0xFFFFFFFFu) {
+                                            return 0xFFFFFFFF;
                                         }
                                     }
                                 } else {
-                                    this->mcThink.mbActEndFlg = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::isEndAction();
+                                    mcThink.mbActEndFlg = mpModel->getActMgrPtr()->isEndAction();
                                 }
-                                return this->::cpEnemyThink::getActionNo();
+                                return getActionNo();
                             }
                         }
                     } else {
-                        return static_cast<u32>(4294967295);
+                        return 0xFFFFFFFF;
                     }
                 } else {
-                    return static_cast<u32>(4294967295);
+                    return 0xFFFFFFFF;
                 }
             } else {
-                return static_cast<u32>(4294967295);
+                return 0xFFFFFFFF;
             }
         } else {
-            return static_cast<u32>(4294967295);
+            return 0xFFFFFFFF;
         }
     }
 }
@@ -303,15 +305,15 @@ u32 cpEnemyThink::callbackGetAction() {
 // Address: 0x00477fc0 - 0x00478005 (69 bytes)
 void cpEnemyThink::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    this->mcThink.mTargetMgr.::cThinkMgrName::cThinkMgrTargetMgr::updatePtr();
-    if (this->mpFsmTarget == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    mcThink.mTargetMgr.updatePtr();
+    if (mpFsmTarget == nullptr) {
         return;
     }
-    if (this->mpFsmTarget->::cUnit::isEnable() != false) {
+    if (mpFsmTarget->isEnable()) {
         return;
     }
-    this->mpFsmTarget = static_cast<uDDOModel*>(nullptr);
+    mpFsmTarget = nullptr;
 }
 
 // Address: 0x00478010 - 0x00478107 (247 bytes)
@@ -489,6 +491,8 @@ __attribute__((weak)) void cpEnemyThink::setResourceRage(rRageTable* pRes) {
 // No out-of-line body: no code in the ELF
 // void cpEnemyThink::calcSetTargetQuat(const MtVector3& tag, f32 speed);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpEnemyThink::MyDTI cpEnemyThink::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEnemyThink.cpp at 0x0047842f-0x0047846c (called at cpEnemyThink.cpp:82)
 //   in _GLOBAL__sub_I_cpEnemyThink.cpp at 0x0047842f-0x0047846c (called at cpEnemyThink.h:111)
@@ -522,7 +526,7 @@ const MtDTI& rRageTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rRageTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rRageTable::DTI)->memAlloc(sz, align, ::rRageTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rRageTable::DTI)->memAlloc(sz, align, rRageTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -537,7 +541,7 @@ inline void* rRageTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rRageTableD0Ev at 0x01a593a4-0x01a593c3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rRageTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rRageTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rRageTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -554,16 +558,16 @@ bool rRageTable::loadData(MtDataReader& in, cRage* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStatusStartHpPer);
+    nDDOIO::readData(in, pData->mStatusStartHpPer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mStatusEndHpPer);
+    nDDOIO::readData(in, pData->mStatusEndHpPer);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMindStatus);
+    nDDOIO::readData(in, pData->mMindStatus);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMindStatusFrameMax);
+    nDDOIO::readData(in, pData->mMindStatusFrameMax);
     return true;
 }
 
@@ -576,8 +580,10 @@ MT_CTSTR rRageTable::getExt() const {
 // Address: 0x01a594f0 - 0x01a594f6 (6 bytes)
 u32 rRageTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(257);
+    return 257;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rRageTable::MyDTI rRageTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpEnemyThink.cpp at 0x004784a9-0x004784e6 (called at cpEnemyThink.cpp:233)
@@ -587,7 +593,7 @@ u32 rRageTable::getDataVersion() const {
 // Address: 0x00475b60 - 0x00475bc4 (100 bytes)
 MtObject* rRageTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rRageTable;
+    return new (16u) rRageTable;
 }
 
 // Instance at 0x01a597e0 - 0x01a597e5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

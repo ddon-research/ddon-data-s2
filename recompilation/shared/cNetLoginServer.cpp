@@ -36,7 +36,7 @@ const MtDTI& cNetLoginServer::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cNetLoginServer::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cNetLoginServer::DTI);
+    return MtMemoryAllocator::getAllocator(cNetLoginServer::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* cNetLoginServer::getAllocator() {
 // Address: 0x0037e0f0 - 0x0037e130 (64 bytes)
 void* cNetLoginServer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cNetLoginServer::getAllocator()->memAlloc(sz, align, ::cNetLoginServer::DTI.::MtDTI::getID());
+    return cNetLoginServer::getAllocator()->memAlloc(sz, align, cNetLoginServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* cNetLoginServer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cNetLoginServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNetLoginServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNetLoginServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,30 +98,30 @@ cNetLoginServer::~cNetLoginServer() {
 // Address: 0x0037e7b0 - 0x0037e821 (113 bytes)
 void cNetLoginServer::clearAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLoginWaitNum = static_cast<u32>(0);
-    this->mDecideCharReqHandle = static_cast<u8>(0);
-    this->mIsWaitCreateCharacter = false;
-    this->mIsWaitDecideCharacter = false;
-    this->mMaxRTT = static_cast<MtNetTime::Total>(0);
-    this->mAverageRTT = static_cast<MtNetTime::Total>(0);
-    this->mLastSendPingTime = static_cast<MtNetTime::Total>(0);
-    this->mCharacterInfoForCreate.m_CharacterJobDataList.::MtArray::mAutoDelete = true;
-    this->mCharacterInfoForCreate.m_CharacterEquipDataList.::MtArray::mAutoDelete = true;
-    this->mCharacterInfoForCreate.m_CharacterEquipViewDataList.::MtArray::mAutoDelete = true;
-    this->mCharacterInfoForCreate.m_MsgSetList.::MtArray::mAutoDelete = true;
-    this->mCharacterInfoForCreate.m_ShortCutList.::MtArray::mAutoDelete = true;
-    this->mCharacterInfoForCreate.m_CommunicationShortCutList.::MtArray::mAutoDelete = true;
-    this->mCreateCharacterUpdateTime = static_cast<MtNetTime::Total>(0);
+    mLoginWaitNum = 0;
+    mDecideCharReqHandle = 0;
+    mIsWaitCreateCharacter = false;
+    mIsWaitDecideCharacter = false;
+    mMaxRTT = 0;
+    mAverageRTT = 0;
+    mLastSendPingTime = 0;
+    mCharacterInfoForCreate.m_CharacterJobDataList.mAutoDelete = true;
+    mCharacterInfoForCreate.m_CharacterEquipDataList.mAutoDelete = true;
+    mCharacterInfoForCreate.m_CharacterEquipViewDataList.mAutoDelete = true;
+    mCharacterInfoForCreate.m_MsgSetList.mAutoDelete = true;
+    mCharacterInfoForCreate.m_ShortCutList.mAutoDelete = true;
+    mCharacterInfoForCreate.m_CommunicationShortCutList.mAutoDelete = true;
+    mCreateCharacterUpdateTime = 0;
 }
 
 // Address: 0x0037ed00 - 0x0037ed31 (49 bytes)
 void cNetLoginServer::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        this->mpConnection->move();
+    if (mpConnection != nullptr) {
+        mpConnection->move();
     }
-    this->::cNetLoginServer::updateRTT();
-    this->::cNetLoginServer::updateComTimer();
+    updateRTT();
+    updateComTimer();
 }
 
 // No out-of-line body: 14 inlined copies in 9 functions (67 bytes)
@@ -175,9 +175,8 @@ void cNetLoginServer::move() {
 // Address: 0x0037e930 - 0x0037e94e (30 bytes)
 void cNetLoginServer::reqErrorDialog(u32 comId, s32 errNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsNgErrorDialog[comId] != false) {
-    } else {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::requestNetworkErrorDialog(errNo);
+    if (!mIsNgErrorDialog[comId]) {
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->requestNetworkErrorDialog(errNo);
     }
 }
 
@@ -190,13 +189,13 @@ void cNetLoginServer::reqErrorDialog(u32 comId, s32 errNo) {
 // Address: 0x0037e950 - 0x0037e991 (65 bytes)
 bool cNetLoginServer::isDispErrorDialog() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (::sDialogBase::getInstance() != static_cast<sDialogBase*>(nullptr)) {
+    if (sDialogBase::getInstance() != nullptr) {
         // inferred: a temporary for the result of the call at 0x37e96c, used 4 times; no DWARF local holds it
-        nDialog::stInfo* t0 = ::sDialogBase::getInstance()->::sDialogBase::getInfo(this->mErrorDialogHandle);
-        if (t0 != static_cast<nDialog::stInfo*>(nullptr)) {
-            if (t0->state != static_cast<nDialog::STATE>(0)) {
-                if (t0->state == static_cast<nDialog::STATE>(6)) {
-                    if (t0->result != static_cast<nDialog::RESULT>(1)) {
+        nDialog::stInfo* t0 = sDialogBase::getInstance()->getInfo(mErrorDialogHandle);
+        if (t0 != nullptr) {
+            if (t0->state != nDialog::STATE_NONE) {
+                if (t0->state == nDialog::STATE_END) {
+                    if (t0->result != nDialog::RLT_CONTINUE) {
                         return false;
                     }
                 }
@@ -273,15 +272,15 @@ __attribute__((weak)) void cNetLoginServer::updateComTimer() {
 // Address: 0x0037ee20 - 0x0037ee5f (63 bytes)
 bool cNetLoginServer::reqConnectServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlow[1].mFTimer = 0.0f;
-    this->mFlow[1].mError.mCause = static_cast<s32>(0);
-    this->mFlow[1].mError.mNative = static_cast<s32>(0);
-    this->mFlow[1].mCommand = static_cast<s32>(0);
-    this->mFlow[1].mError.mNo = static_cast<s32>(0);
-    this->mFlow[1].mRno0 = static_cast<s32>(0);
-    this->mFlow[1].mRno1 = static_cast<s32>(0);
-    this->mFlow[1].mIsCallback = true;
-    this->mFlow[1].mRno0 = static_cast<s32>(0);
+    mFlow[1].mFTimer = 0.0f;
+    mFlow[1].mError.mCause = 0;
+    mFlow[1].mError.mNative = 0;
+    mFlow[1].mCommand = 0;
+    mFlow[1].mError.mNo = 0;
+    mFlow[1].mRno0 = 0;
+    mFlow[1].mRno1 = 0;
+    mFlow[1].mIsCallback = true;
+    mFlow[1].mRno0 = 0;
     return true;
 }
 
@@ -360,8 +359,8 @@ __attribute__((weak)) bool cNetLoginServer::clientChallenge() {
 // Address: 0x0037fea0 - 0x0037feb7 (23 bytes)
 bool cNetLoginServer::isConnectServer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        return this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4);
+    if (mpConnection != nullptr) {
+        return mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED;
     } else {
         return false;
     }
@@ -370,9 +369,9 @@ bool cNetLoginServer::isConnectServer() {
 // Address: 0x0037fef0 - 0x0037ff13 (35 bytes)
 bool cNetLoginServer::isLogin() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            return this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            return mpConnection->isLoginSuccess();
         }
     }
     return false;
@@ -464,16 +463,16 @@ bool cNetLoginServer::getGameSessionKey() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[8] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(8));
-    this->mErrorCode[8] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_GET_GAME_SESSION_KEY_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[8] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(8));
-                    this->mComTimer[8] = 0.0f;
+    mStatus[8] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(8);
+    mErrorCode[8] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2L_GET_GAME_SESSION_KEY_REQ() != 0) {
+                    mStatus[8] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(8);
+                    mComTimer[8] = 0.0f;
                     return true;
                 }
             }
@@ -495,16 +494,16 @@ bool cNetLoginServer::getGameSetting() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[10] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(10));
-    this->mErrorCode[10] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_GET_LOGIN_SETTING_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[10] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(10));
-                    this->mComTimer[10] = 0.0f;
+    mStatus[10] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(10);
+    mErrorCode[10] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2L_GET_LOGIN_SETTING_REQ() != 0) {
+                    mStatus[10] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(10);
+                    mComTimer[10] = 0.0f;
                     return true;
                 }
             }
@@ -518,16 +517,16 @@ bool cNetLoginServer::getGPCourseInfo() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[11] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(11));
-    this->mErrorCode[11] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_GP_COURSE_GET_INFO_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[11] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(11));
-                    this->mComTimer[11] = 0.0f;
+    mStatus[11] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(11);
+    mErrorCode[11] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2L_GP_COURSE_GET_INFO_REQ() != 0) {
+                    mStatus[11] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(11);
+                    mComTimer[11] = 0.0f;
                     return true;
                 }
             }
@@ -541,16 +540,16 @@ bool cNetLoginServer::getCharacterList() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[12] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(12));
-    this->mErrorCode[12] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_GET_CHARACTER_LIST_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[12] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(12));
-                    this->mComTimer[12] = 0.0f;
+    mStatus[12] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(12);
+    mErrorCode[12] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2L_GET_CHARACTER_LIST_REQ() != 0) {
+                    mStatus[12] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(12);
+                    mComTimer[12] = 0.0f;
                     return true;
                 }
             }
@@ -580,16 +579,16 @@ bool cNetLoginServer::cancelDecideCharacterId() {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[15] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(15));
-    this->mErrorCode[15] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_DECIDE_CANCEL_CHARACTER_REQ() != static_cast<s32>(0)) {
-                    this->mStatus[15] = static_cast<sNetworkExt::NET_STAT>(1);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(15));
-                    this->mComTimer[15] = 0.0f;
+    mStatus[15] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(15);
+    mErrorCode[15] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                if (mpConnection->Send_C2L_DECIDE_CANCEL_CHARACTER_REQ() != 0) {
+                    mStatus[15] = sNetworkExt::NET_STAT_REQ;
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(15);
+                    mComTimer[15] = 0.0f;
                     return true;
                 }
             }
@@ -603,17 +602,17 @@ bool cNetLoginServer::deleteCharacter(s32 id) {
     // DWARF local not rendered: bool ret;
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus[16] = static_cast<sNetworkExt::NET_STAT>(4);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(16));
-    this->mErrorCode[16] = static_cast<nError::ERROR_CODE>(33000);
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->mGuardData.mIsLoginSuccess != false) {
-                if (id > static_cast<s32>(-1)) {
-                    if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_DELETE_CHARACTER_INFO_REQ(static_cast<u32>(id)) != static_cast<s32>(0)) {
-                        this->mStatus[16] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(16));
-                        this->mComTimer[16] = 0.0f;
+    mStatus[16] = sNetworkExt::NET_STAT_ERROR;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(16);
+    mErrorCode[16] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->mGuardData.mIsLoginSuccess) {
+                if (id > -1) {
+                    if (mpConnection->Send_C2L_DELETE_CHARACTER_INFO_REQ(static_cast<u32>(id)) != 0) {
+                        mStatus[16] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(16);
+                        mComTimer[16] = 0.0f;
                         return true;
                     }
                 }
@@ -759,11 +758,11 @@ __attribute__((weak)) void cNetLoginServer::copyRecvCharacterDataFromList(cChara
 // Address: 0x00380fb0 - 0x00380ffb (75 bytes)
 bool cNetLoginServer::isCreateCharacterTimeOut() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                MtNetTime::Total now_time = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
-                return (this->mCreateCharacterUpdateTime + static_cast<MtNetTime::Total>(60000)) < now_time;
+    if (mpConnection != nullptr) {
+        if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+            if (mpConnection->isLoginSuccess()) {
+                MtNetTime::Total now_time = MtNetTime::mInstance.getTotalTime();
+                return (mCreateCharacterUpdateTime + 60000ul) < now_time;
             }
         }
     }
@@ -777,28 +776,28 @@ bool cNetLoginServer::isCreateCharacterTimeOut() {
 // Address: 0x0037ed40 - 0x0037ee14 (212 bytes)
 __attribute__((weak)) void cNetLoginServer::updateRTT() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection == static_cast<cSeedLoginSvConnection*>(nullptr)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getLoginServer()->mpConnection == nullptr) {
         return;
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection->::cSeedServerConnection::mConnStatus != static_cast<cSeedServerConnection::eConnStatus>(4)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getLoginServer()->mpConnection->mConnStatus != cSeedServerConnection::CONN_CONNECTED) {
         return;
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() == false) {
+    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getLoginServer()->mpConnection->isLoginSuccess()) {
         return;
     }
-    MtNetTime::Total total_time = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
-    if ((this->mLastSendPingTime + static_cast<MtNetTime::Total>(10000)) < total_time) {
-        this->mStatus[3] = static_cast<sNetworkExt::NET_STAT>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(3));
-        this->mErrorCode[3] = static_cast<nError::ERROR_CODE>(33000);
-        if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
-            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
-                if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_PING_REQ() != static_cast<s32>(0)) {
-                        this->mStatus[3] = static_cast<sNetworkExt::NET_STAT>(1);
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(3));
-                        this->mComTimer[3] = -1.0f;
-                        this->mLastSendPingTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+    MtNetTime::Total total_time = MtNetTime::mInstance.getTotalTime();
+    if ((mLastSendPingTime + 10000ul) < total_time) {
+        mStatus[3] = sNetworkExt::NET_STAT_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->reserveNetworkErrorDialog(3);
+        mErrorCode[3] = nError::ERROR_CODE_CLIENT_REQ_ERROR;
+        if (mpConnection != nullptr) {
+            if (mpConnection->mConnStatus == cSeedServerConnection::CONN_CONNECTED) {
+                if (mpConnection->isLoginSuccess()) {
+                    if (mpConnection->Send_C2L_PING_REQ() != 0) {
+                        mStatus[3] = sNetworkExt::NET_STAT_REQ;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->cancelReserveNetworkErrorDialog(3);
+                        mComTimer[3] = -1.0f;
+                        mLastSendPingTime = MtNetTime::mInstance.getTotalTime();
                     }
                 }
             }
@@ -854,26 +853,28 @@ __attribute__((weak)) void cNetLoginServer::onConnectionClosed(s32 errCode) {
 // Address: 0x003815e0 - 0x003815ef (15 bytes)
 nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES* cNetLoginServer::getGetGameSettingPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetGameSettingPacket;
+    return mpConnection->mpGetGameSettingPacket;
 }
 
 // Address: 0x003815d0 - 0x003815df (15 bytes)
 nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC* cNetLoginServer::getGetErrorMessageListPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpGetErrorMessageListPacket;
+    return mpConnection->mpGetErrorMessageListPacket;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES* cNetLoginServer::getGetCharacterListPacket() {
-    return this->mpConnection->mpGetCharacterListPacket;
+    return mpConnection->mpGetCharacterListPacket;
 }
 
 // Address: 0x00381600 - 0x0038160f (15 bytes)
 nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC* cNetLoginServer::getNextConnectServerPacket() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpConnection->mpNextConnectServerPacket;
+    return mpConnection->mpNextConnectServerPacket;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetLoginServer::MyDTI cNetLoginServer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cNetLoginServer.cpp at 0x0038263e-0x0038267e (called at cNetLoginServer.cpp:60)
@@ -921,7 +922,7 @@ const MtDTI& cNetLoginServer::cCtrlFlow::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNetLoginServer::cCtrlFlow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNetLoginServer::cCtrlFlow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNetLoginServer::cCtrlFlow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -952,7 +953,7 @@ __attribute__((weak)) void cNetLoginServer::cCtrlFlow::createProperty(MtProperty
 // Address: 0x01a40b00 - 0x01a40b05 (5 bytes)
 MtUI* cNetLoginServer::cCtrlFlow::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (285 bytes)
@@ -985,6 +986,8 @@ MtUI* cNetLoginServer::cCtrlFlow::createUI(MtProperty& prop) {
 
 // No out-of-line body: no code in the ELF
 // bool cNetLoginServer::cCtrlFlow::isCallback();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNetLoginServer::cCtrlFlow::MyDTI cNetLoginServer::cCtrlFlow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cNetLoginServer.cpp at 0x0038267e-0x003826b7 (called at cNetLoginServer.cpp:61)
@@ -1046,7 +1049,7 @@ const MtDTI& cSeedLoginSvConnection::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSeedLoginSvConnection::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSeedLoginSvConnection::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSeedLoginSvConnection::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1076,33 +1079,33 @@ __attribute__((weak)) void cSeedLoginSvConnection::init() {
 // Also emitted as: _ZN22cSeedLoginSvConnectionD0Ev at 0x003814e0
 cSeedLoginSvConnection::~cSeedLoginSvConnection() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGetGameServerListPacket != static_cast<nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES*>(nullptr)) {
-        delete this->mpGetGameServerListPacket;
-        this->mpGetGameServerListPacket = static_cast<nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES*>(nullptr);
+    if (mpGetGameServerListPacket != nullptr) {
+        delete mpGetGameServerListPacket;
+        mpGetGameServerListPacket = nullptr;
     }
-    if (this->mpGetGameSettingPacket != static_cast<nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES*>(nullptr)) {
-        delete this->mpGetGameSettingPacket;
-        this->mpGetGameSettingPacket = static_cast<nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES*>(nullptr);
+    if (mpGetGameSettingPacket != nullptr) {
+        delete mpGetGameSettingPacket;
+        mpGetGameSettingPacket = nullptr;
     }
-    if (this->mpGetErrorMessageListPacket != static_cast<nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC*>(nullptr)) {
-        delete this->mpGetErrorMessageListPacket;
-        this->mpGetErrorMessageListPacket = static_cast<nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC*>(nullptr);
+    if (mpGetErrorMessageListPacket != nullptr) {
+        delete mpGetErrorMessageListPacket;
+        mpGetErrorMessageListPacket = nullptr;
     }
-    if (this->mpGetCharacterListPacket != static_cast<nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES*>(nullptr)) {
-        delete this->mpGetCharacterListPacket;
-        this->mpGetCharacterListPacket = static_cast<nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES*>(nullptr);
+    if (mpGetCharacterListPacket != nullptr) {
+        delete mpGetCharacterListPacket;
+        mpGetCharacterListPacket = nullptr;
     }
-    if (this->mpNextConnectServerPacket == static_cast<nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC*>(nullptr)) {
+    if (mpNextConnectServerPacket == nullptr) {
         return;
     }
-    delete this->mpNextConnectServerPacket;
-    this->mpNextConnectServerPacket = static_cast<nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC*>(nullptr);
+    delete mpNextConnectServerPacket;
+    mpNextConnectServerPacket = nullptr;
 }
 
 // Address: 0x01a3e300 - 0x01a3e305 (5 bytes)
 void cSeedLoginSvConnection::initialize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSeedServerConnection::initialize();
+    this->cSeedServerConnection::initialize();
 }
 
 // No out-of-line body: 12 inlined copies in 11 functions (121 bytes)
@@ -1115,72 +1118,72 @@ void cSeedLoginSvConnection::initialize() {
 // Address: 0x01a3e310 - 0x01a3e37a (106 bytes)
 void cSeedLoginSvConnection::disconnect(cSeedServerConnection::eConnStatus aNextStatus) {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mGuardData.mIsLoginSuccess = false;
-    this->mGuardData.mSessionKey[0] = static_cast<char>(100);
-    this->mGuardData.mSessionKey[1] = static_cast<char>(117);
-    this->mGuardData.mSessionKey[2] = static_cast<char>(115);
-    this->mGuardData.mSessionKey[3] = static_cast<char>(116);
-    this->mGuardData.mSessionKey[4] = static_cast<char>(32);
-    this->mGuardData.mSessionKey[5] = static_cast<char>(107);
-    this->mGuardData.mSessionKey[6] = static_cast<char>(101);
-    this->mGuardData.mSessionKey[7] = static_cast<char>(121);
-    this->mGuardData.mSessionKey[56] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[57] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[58] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[59] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[60] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[61] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[62] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[63] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[48] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[49] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[50] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[51] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[52] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[53] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[54] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[55] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[40] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[41] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[42] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[43] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[44] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[45] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[46] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[47] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[32] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[33] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[34] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[35] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[36] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[37] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[38] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[39] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[24] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[25] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[26] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[27] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[28] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[29] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[30] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[31] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[16] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[17] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[18] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[19] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[20] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[21] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[22] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[23] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[8] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[9] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[10] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[11] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[12] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[13] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[14] = static_cast<char>(0);
-    this->mGuardData.mSessionKey[15] = static_cast<char>(0);
-    this->::cSeedServerConnection::disconnect(aNextStatus);
+    mGuardData.mIsLoginSuccess = false;
+    mGuardData.mSessionKey[0] = 100;
+    mGuardData.mSessionKey[1] = 117;
+    mGuardData.mSessionKey[2] = 115;
+    mGuardData.mSessionKey[3] = 116;
+    mGuardData.mSessionKey[4] = 32;
+    mGuardData.mSessionKey[5] = 107;
+    mGuardData.mSessionKey[6] = 101;
+    mGuardData.mSessionKey[7] = 121;
+    mGuardData.mSessionKey[56] = 0;
+    mGuardData.mSessionKey[57] = 0;
+    mGuardData.mSessionKey[58] = 0;
+    mGuardData.mSessionKey[59] = 0;
+    mGuardData.mSessionKey[60] = 0;
+    mGuardData.mSessionKey[61] = 0;
+    mGuardData.mSessionKey[62] = 0;
+    mGuardData.mSessionKey[63] = 0;
+    mGuardData.mSessionKey[48] = 0;
+    mGuardData.mSessionKey[49] = 0;
+    mGuardData.mSessionKey[50] = 0;
+    mGuardData.mSessionKey[51] = 0;
+    mGuardData.mSessionKey[52] = 0;
+    mGuardData.mSessionKey[53] = 0;
+    mGuardData.mSessionKey[54] = 0;
+    mGuardData.mSessionKey[55] = 0;
+    mGuardData.mSessionKey[40] = 0;
+    mGuardData.mSessionKey[41] = 0;
+    mGuardData.mSessionKey[42] = 0;
+    mGuardData.mSessionKey[43] = 0;
+    mGuardData.mSessionKey[44] = 0;
+    mGuardData.mSessionKey[45] = 0;
+    mGuardData.mSessionKey[46] = 0;
+    mGuardData.mSessionKey[47] = 0;
+    mGuardData.mSessionKey[32] = 0;
+    mGuardData.mSessionKey[33] = 0;
+    mGuardData.mSessionKey[34] = 0;
+    mGuardData.mSessionKey[35] = 0;
+    mGuardData.mSessionKey[36] = 0;
+    mGuardData.mSessionKey[37] = 0;
+    mGuardData.mSessionKey[38] = 0;
+    mGuardData.mSessionKey[39] = 0;
+    mGuardData.mSessionKey[24] = 0;
+    mGuardData.mSessionKey[25] = 0;
+    mGuardData.mSessionKey[26] = 0;
+    mGuardData.mSessionKey[27] = 0;
+    mGuardData.mSessionKey[28] = 0;
+    mGuardData.mSessionKey[29] = 0;
+    mGuardData.mSessionKey[30] = 0;
+    mGuardData.mSessionKey[31] = 0;
+    mGuardData.mSessionKey[16] = 0;
+    mGuardData.mSessionKey[17] = 0;
+    mGuardData.mSessionKey[18] = 0;
+    mGuardData.mSessionKey[19] = 0;
+    mGuardData.mSessionKey[20] = 0;
+    mGuardData.mSessionKey[21] = 0;
+    mGuardData.mSessionKey[22] = 0;
+    mGuardData.mSessionKey[23] = 0;
+    mGuardData.mSessionKey[8] = 0;
+    mGuardData.mSessionKey[9] = 0;
+    mGuardData.mSessionKey[10] = 0;
+    mGuardData.mSessionKey[11] = 0;
+    mGuardData.mSessionKey[12] = 0;
+    mGuardData.mSessionKey[13] = 0;
+    mGuardData.mSessionKey[14] = 0;
+    mGuardData.mSessionKey[15] = 0;
+    this->cSeedServerConnection::disconnect(aNextStatus);
 }
 
 // No out-of-line body: 28 inlined copies in 19 functions (230 bytes)
@@ -1193,25 +1196,25 @@ void cSeedLoginSvConnection::disconnect(cSeedServerConnection::eConnStatus aNext
 // Address: 0x01a3e3c0 - 0x01a3e3c9 (9 bytes)
 void cSeedLoginSvConnection::onConnected(bool result) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSeedServerConnection::onConnected(result);
+    this->cSeedServerConnection::onConnected(result);
 }
 
 // Address: 0x01a3e3d0 - 0x01a3e3dc (12 bytes)
 void cSeedLoginSvConnection::onDisconnectedByPeer(s32 aMtNetError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpManager->::cNetLoginServer::onConnectionClosed(aMtNetError);
+    mpManager->onConnectionClosed(aMtNetError);
 }
 
 // Address: 0x01a3e3e0 - 0x01a3e3ec (12 bytes)
 void cSeedLoginSvConnection::onSocketError(s32 aMtNetError) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpManager->::cNetLoginServer::onConnectionClosed(aMtNetError);
+    mpManager->onConnectionClosed(aMtNetError);
 }
 
 // Address: 0x01a3e3f0 - 0x01a3e3f9 (9 bytes)
 void cSeedLoginSvConnection::onHandshakeDone(bool result) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSeedServerConnection::onHandshakeDone(result);
+    this->cSeedServerConnection::onHandshakeDone(result);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (398 bytes)
@@ -1232,13 +1235,13 @@ __attribute__((weak)) void cSeedLoginSvConnection::reqLoginError(s32 errCode) {
 // Address: 0x01a3e400 - 0x01a3e406 (6 bytes)
 u32 cSeedLoginSvConnection::getHandShakeSendCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
 
 // Address: 0x01a3e410 - 0x01a3e416 (6 bytes)
 u32 cSeedLoginSvConnection::getHandShakeRecvCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1254,25 +1257,25 @@ u32 cSeedLoginSvConnection::getHandShakeRecvCommandNo() {
 // Address: 0x01a3d100 - 0x01a3d107 (7 bytes)
 bool cSeedLoginSvConnection::isLoginWithSessionKeyPrivate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardData.mIsLoginWithSessionKey;
+    return mGuardData.mIsLoginWithSessionKey;
 }
 
 // Address: 0x01a3d110 - 0x01a3d118 (8 bytes)
 void cSeedLoginSvConnection::setLoginWithSessionKeyPrivate(bool NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardData.mIsLoginWithSessionKey = NewValue;
+    mGuardData.mIsLoginWithSessionKey = NewValue;
 }
 
 // Address: 0x01a3d120 - 0x01a3d127 (7 bytes)
 bool cSeedLoginSvConnection::isLoginSuccessPrivate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardData.mIsLoginSuccess;
+    return mGuardData.mIsLoginSuccess;
 }
 
 // Address: 0x01a3d130 - 0x01a3d138 (8 bytes)
 void cSeedLoginSvConnection::setLoginSuccessPrivate(bool NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardData.mIsLoginSuccess = NewValue;
+    mGuardData.mIsLoginSuccess = NewValue;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (116 bytes)
@@ -1282,7 +1285,7 @@ void cSeedLoginSvConnection::setLoginSuccessPrivate(bool NewValue) {
 // Address: 0x0037c6b0 - 0x0037c6b6 (6 bytes)
 BOOL cSeedLoginSvConnection::OnPacket_L2C_NONE(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(1);
+    return 1;
 }
 
 // Address: 0x0037c6c0 - 0x0037c7f6 (310 bytes)
@@ -1458,7 +1461,7 @@ __attribute__((weak)) BOOL cSeedLoginSvConnection::callOnPacketFunc(u32 index, C
 // Address: 0x01a3e3b0 - 0x01a3e3b6 (6 bytes)
 u32 cSeedLoginSvConnection::getOnPacketFuncNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(21);
+    return 21;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1562,6 +1565,12 @@ __attribute__((weak)) s32 cSeedLoginSvConnection::Send_C2L_DELETE_CHARACTER_INFO
     DDON_STUB("cSeedLoginSvConnection::Send_C2L_DELETE_CHARACTER_INFO_REQ")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSeedLoginSvConnection::MyDTI cSeedLoginSvConnection::DTI;
+
+// Not defined (relocated bytes): BOOL(cSeedLoginSvConnection::THISCLASS::*cSeedLoginSvConnection::L2C_OnPacketFuncTbl[])(CPacket*);
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cSeedLoginSvConnection::mL2C_OnPacketFuncNum;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cNetLoginServer.cpp at 0x003826b7-0x003826f4 (called at cNetLoginServer.cpp:62)

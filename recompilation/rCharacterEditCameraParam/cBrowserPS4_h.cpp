@@ -51,7 +51,7 @@ const MtDTI& cBrowserKeepString::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cBrowserKeepString::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBrowserKeepString::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBrowserKeepString::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,6 +93,8 @@ cBrowserKeepString::~cBrowserKeepString() {
 //   in cBrowserKeepString::~cBrowserKeepString at 0x00018e07-0x00018e27 (called at cBrowserPS4_cpp.inl:1347)
 // void cBrowserKeepString::finalize();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBrowserKeepString::MyDTI cBrowserKeepString::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cBrowser.cpp at 0x00018f9e-0x00018fd7 (called at cBrowserPS4_cpp.inl:1323)
 //   in _GLOBAL__sub_I_cBrowser.cpp at 0x00018f9e-0x00018fd7 (called at cBrowserPS4_h.inl:64)
@@ -118,7 +120,7 @@ const MtDTI& cBrowserPS4::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cBrowserPS4::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cBrowserPS4::DTI);
+    return MtMemoryAllocator::getAllocator(cBrowserPS4::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline MtAllocator* cBrowserPS4::getAllocator() {
 // Address: 0x000175d0 - 0x00017610 (64 bytes)
 void* cBrowserPS4::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cBrowserPS4::getAllocator()->memAlloc(sz, align, ::cBrowserPS4::DTI.::MtDTI::getID());
+    return cBrowserPS4::getAllocator()->memAlloc(sz, align, cBrowserPS4::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,7 +144,7 @@ void* cBrowserPS4::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cBrowserPS4::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBrowserPS4::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBrowserPS4::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,23 +328,23 @@ __attribute__((weak)) void cBrowserPS4::call_js_function(const char* pFunctionSt
 // Address: 0x000185e0 - 0x0001864b (107 bytes)
 u32 cBrowserPS4::checkValidDevice() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mValidDevice == static_cast<u32>(1)) {
-        if (this->::cBrowserPS4::checkInputMouse() != false) {
-            this->mValidDevice = static_cast<u32>(0);
-            return static_cast<u32>(0);
+    if (mValidDevice == 1) {
+        if (checkInputMouse()) {
+            mValidDevice = 0;
+            return 0;
         }
     } else {
-        if (this->mValidDevice == static_cast<u32>(0)) {
-            if ((::sPad::mpInstance)->::sPad::isActive() != false) {
-                if ((::sPad::mpInstance)->mPad[0].Data.On != static_cast<u32>(0)) {
-                    this->mValidDevice = static_cast<u32>(1);
-                    return static_cast<u32>(1);
+        if (mValidDevice == 0) {
+            if ((sPad::mpInstance)->sPad::isActive()) {
+                if ((sPad::mpInstance)->mPad[0].Data.On != 0) {
+                    mValidDevice = 1;
+                    return 1;
                 }
             }
-            return static_cast<u32>(0);
+            return 0;
         }
     }
-    return this->mValidDevice;
+    return mValidDevice;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (60 bytes)
@@ -388,6 +390,10 @@ __attribute__((weak)) bool cBrowserPS4::setDrawBuffer(void* pDst, u32 pitch, u32
 //   in cBrowserRenderDevicePS4::CreateTexture at 0x0001b010-0x0001b017 (called at cBrowserRenderDevicePS4_cpp.inl:109)
 //   in cBrowserRenderDevicePS4::ReleaseTexture at 0x0001b052-0x0001b059 (called at cBrowserRenderDevicePS4_cpp.inl:119)
 // cBrowserRenderDevicePS4* cBrowserPS4::getRenderDevice();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBrowserPS4::MyDTI cBrowserPS4::DTI;
+
+// Not defined (relocated bytes): const char* cBrowserPS4::mUserAgentTable[2][2];
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cBrowser.cpp at 0x00018f5e-0x00018f9e (called at cBrowserPS4_cpp.inl:113)

@@ -39,7 +39,7 @@ const MtDTI& uGUIPopTopSel::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopTopSel::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopTopSel::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopTopSel::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline MtAllocator* uGUIPopTopSel::getAllocator() {
 // Address: 0x00bcde00 - 0x00bcde40 (64 bytes)
 void* uGUIPopTopSel::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopTopSel::getAllocator()->memAlloc(sz, align, ::uGUIPopTopSel::DTI.::MtDTI::getID());
+    return uGUIPopTopSel::getAllocator()->memAlloc(sz, align, uGUIPopTopSel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ void* uGUIPopTopSel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopTopSel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopTopSel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopTopSel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,10 +81,10 @@ u32 uGUIPopTopSel::GetClanMode() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan() != false) {
-        return static_cast<u32>(static_cast<unsigned long>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isClanLeader()) | static_cast<unsigned long>(4));
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isBelongClan()) {
+        return static_cast<u32>(static_cast<unsigned long>(static_cast<sNetworkExt*>(sNetwork::getInstance())->isClanLeader()) | 4);
     } else {
-        return static_cast<u32>(3);
+        return 3;
     }
 }
 
@@ -101,17 +101,17 @@ uGUIPopTopSel::~uGUIPopTopSel() {
 // Address: 0x00bce510 - 0x00bce515 (5 bytes)
 void uGUIPopTopSel::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIsMenuBase::createProperty(s);
+    this->uGUIsMenuBase::createProperty(s);
 }
 
 // Address: 0x00bce520 - 0x00bce5cf (175 bytes)
 bool uGUIPopTopSel::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_TOPSEL_GUI"), static_cast<u32>(129), static_cast<t64>(1476264485)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_TOPSEL_GUI"), 129u, 1476264485l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -123,9 +123,9 @@ bool uGUIPopTopSel::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -167,11 +167,11 @@ __attribute__((weak)) void uGUIPopTopSel::setup() {
 // Address: 0x00bd1bd0 - 0x00bd1c18 (72 bytes)
 void uGUIPopTopSel::begin() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelectResult = static_cast<u32>(0);
-    this->mIsBegin = true;
-    this->mIsInitOnce = false;
-    this->::uGUIBase::setWindowActive(true);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateInit);
+    mSelectResult = 0;
+    mIsBegin = true;
+    mIsInitOnce = false;
+    setWindowActive(true);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateInit);
 }
 
 // Address: 0x00bd1c20 - 0x00bd1cbf (159 bytes)
@@ -190,20 +190,20 @@ __attribute__((weak)) void uGUIPopTopSel::hide() {
 // Address: 0x00bd1d90 - 0x00bd1e1b (139 bytes)
 void uGUIPopTopSel::stay() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->setFocus(false);
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->setFocus(false);
     }
-    if (this->mpSelectorCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpSelectorCtrl->setFocus(false);
+    if (mpSelectorCtrl != nullptr) {
+        mpSelectorCtrl->setFocus(false);
     }
-    if (this->mpSelectorLRCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpSelectorLRCtrl->setFocus(false);
+    if (mpSelectorLRCtrl != nullptr) {
+        mpSelectorLRCtrl->setFocus(false);
     }
-    this->mIsBegin = false;
-    this->mIsInitialized = false;
-    this->mStayCursorPos = this->mpListCtrl->::cControl::getCurrentPos();
-    this->::uGUIBase::setWindowActive(false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateWait);
+    mIsBegin = false;
+    mIsInitialized = false;
+    mStayCursorPos = mpListCtrl->getCurrentPos();
+    setWindowActive(false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateWait);
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,8 +215,8 @@ void uGUIPopTopSel::stay() {
 // Address: 0x00bd7070 - 0x00bd7083 (19 bytes)
 void uGUIPopTopSel::setEnable(u32 index, bool isEnable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(5)) {
-        this->mEnable[index].mIsEnable = isEnable;
+    if (index <= 5u) {
+        mEnable[index].mIsEnable = isEnable;
     }
 }
 
@@ -287,8 +287,8 @@ __attribute__((weak)) uGUIPopTopSel::CLAN_MENU_ID uGUIPopTopSel::getSelectClanMe
 // Address: 0x00bd7090 - 0x00bd709e (14 bytes)
 void uGUIPopTopSel::setCompleteIcon(bool isVisible, u32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNumberIcons.elems[0].mIsVisible = isVisible;
-    this->mNumberIcons.elems[0].mValue = value;
+    mNumberIcons.elems[0].mIsVisible = isVisible;
+    mNumberIcons.elems[0].mValue = value;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (47 bytes)
@@ -307,11 +307,11 @@ void uGUIPopTopSel::setCompleteIcon(bool isVisible, u32 value) {
 // Address: 0x00bd7030 - 0x00bd7054 (36 bytes)
 void uGUIPopTopSel::setExamIcon(bool isVisible) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsVisibleExamIcon = isVisible;
-    if (this->::uGUIBase::mIsAttachedResource == false) {
+    mIsVisibleExamIcon = isVisible;
+    if (!mIsAttachedResource) {
         return;
     }
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpInstAnimExamIcon), isVisible);
+    setInstanceVisible(static_cast<cGUIInstance*>(mpInstAnimExamIcon), isVisible);
 }
 
 // Address: 0x00bd6fe0 - 0x00bd7030 (80 bytes)
@@ -351,17 +351,17 @@ __attribute__((weak)) void uGUIPopTopSel::setBazaarIcon(u32 index, u8 type) {
 // Address: 0x00bd70a0 - 0x00bd70f8 (88 bytes)
 void uGUIPopTopSel::playEntryFlashAnm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpInstAnimBtn02_flash == static_cast<cGUIInstAnimation*>(nullptr)) {
+    if (mpInstAnimBtn02_flash == nullptr) {
         return;
     }
-    if ((this->mMode & static_cast<u32>(4294967294)) != static_cast<u32>(16)) {
+    if ((mMode & 0xFFFFFFFEu) != 16) {
         return;
     }
-    this->::uGUIBase::setSequenceId(this->mpInstAnimBtn02_flash, static_cast<u32>(1), true);
-    if (this->mpInstAnimBtn02_flash == static_cast<cGUIInstAnimation*>(nullptr)) {
+    setSequenceId(mpInstAnimBtn02_flash, 1u, true);
+    if (mpInstAnimBtn02_flash == nullptr) {
         return;
     }
-    this->mpInstAnimBtn02_flash->::cGUIInstance::setVisible(true);
+    mpInstAnimBtn02_flash->setVisible(true);
 }
 
 // No out-of-line body: 11 inlined copies in 1 function (94 bytes)
@@ -392,22 +392,22 @@ void uGUIPopTopSel::playEntryFlashAnm() {
 // Address: 0x00bd1e20 - 0x00bd1e93 (115 bytes)
 void uGUIPopTopSel::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsInitialized == false) {
+    if (!mIsInitialized) {
         return;
     }
-    if (this->mIsExecuteCtrl == false) {
+    if (!mIsExecuteCtrl) {
         return;
     }
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->execute();
+    mClose.execute();
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->execute();
     }
-    if (this->mpSelectorLRCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpSelectorLRCtrl->execute();
+    if (mpSelectorLRCtrl != nullptr) {
+        mpSelectorLRCtrl->execute();
     }
-    if (this->mMode <= static_cast<u32>(1)) {
-        if (this->mpSelectorCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpSelectorCtrl->execute();
+    if (mMode <= 1u) {
+        if (mpSelectorCtrl != nullptr) {
+            mpSelectorCtrl->execute();
         }
     }
 }
@@ -598,7 +598,7 @@ __attribute__((weak)) void uGUIPopTopSel::btnValidCheck() {
 // Address: 0x00bcdc90 - 0x00bcdca8 (24 bytes)
 bool uGUIPopTopSel::isExitEntryBoard() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isExecuteMenuJump();
+    return static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isExecuteMenuJump();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)
@@ -685,43 +685,43 @@ __attribute__((weak)) u32 uGUIPopTopSel::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00bcf480 - 0x00bcf4ac (44 bytes)
 u32 uGUIPopTopSel::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode != static_cast<u32>(9)) {
-        if (this->mMode == static_cast<u32>(18)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(5));
+    if (mMode != 9) {
+        if (mMode == 18) {
+            setInputEvent(5u);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+            setInputEvent(67u);
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(5));
+        setInputEvent(5u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00bcf560 - 0x00bcf596 (54 bytes)
 u32 uGUIPopTopSel::evCtrlChkout(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mMode - static_cast<u32>(12)) <= static_cast<u32>(5)) {
-        if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(3)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if ((mMode - 12u) <= 5u) {
+        if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_CYCLE) {
+            setInputEvent(68u);
         }
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00bcf5a0 - 0x00bcf5c3 (35 bytes)
 u32 uGUIPopTopSel::evCtrlTopbtn(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mMode - static_cast<u32>(12)) <= static_cast<u32>(5)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if ((mMode - 12u) <= 5u) {
+        setInputEvent(69u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00bcf4b0 - 0x00bcf4c2 (18 bytes)
 u32 uGUIPopTopSel::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00bcf700 - 0x00bcf89c (412 bytes)
@@ -773,10 +773,10 @@ __attribute__((weak)) u32 uGUIPopTopSel::evCtrlClick(cControl::Message* msg) {
 // Address: 0x00bd7100 - 0x00bd7115 (21 bytes)
 s32 uGUIPopTopSel::getSMenuCursorY() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        return this->mpListCtrl->::cControl::getCurrentPos();
+    if (mpListCtrl != nullptr) {
+        return mpListCtrl->getCurrentPos();
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -789,6 +789,8 @@ __attribute__((weak)) s32 uGUIPopTopSel::getClanMenuIds(uGUIPopTopSel::ClanMenuI
     DDON_STUB("uGUIPopTopSel::getClanMenuIds")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopTopSel::MyDTI uGUIPopTopSel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopTopSel.cpp at 0x00bd724f-0x00bd728c (called at uGUIPopTopSel.cpp:171)

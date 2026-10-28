@@ -48,19 +48,19 @@ __attribute__((weak)) u32 nInputText::CandidateList::getDispNum() const {
 // Address: 0x00616aa0 - 0x00616aa5 (5 bytes)
 MT_CWSTR nInputText::CandidateList::getDispString(u32 dispIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::nIMEPS4::CandidateDispInfo&>(this->mCandidateDispInfo).::nIMEPS4::CandidateDispInfo::getDispString(dispIndex);
+    return static_cast<const ::nIMEPS4::CandidateDispInfo&>(mCandidateDispInfo).::nIMEPS4::CandidateDispInfo::getDispString(dispIndex);
 }
 
 // Address: 0x00616ab0 - 0x00616ab4 (4 bytes)
 u32 nInputText::CandidateList::getCandidateListCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCandidateDispInfo.::nIME::CandidateDispInfo::mListNum;
+    return mCandidateDispInfo.mListNum;
 }
 
 // Address: 0x00616ac0 - 0x00616ac4 (4 bytes)
 u32 nInputText::CandidateList::getCandidateListSelectIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCandidateDispInfo.::nIME::CandidateDispInfo::mListSelectIndex;
+    return mCandidateDispInfo.mListSelectIndex;
 }
 
 // Address: 0x00616920 - 0x00616979 (89 bytes)
@@ -85,7 +85,7 @@ __attribute__((weak)) void nInputText::ConvertInfo::copy(const nInputText::Conve
 // Address: 0x006169e0 - 0x006169ec (12 bytes)
 u32 nInputText::ConvertInfo::getCaretPos() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::nIMEPS4::InputInfo&>(this->mInputInfo).::nIMEPS4::InputInfo::getCaretIndex();
+    return static_cast<const ::nIMEPS4::InputInfo&>(mInputInfo).::nIMEPS4::InputInfo::getCaretIndex();
 }
 
 // Address: 0x006169f0 - 0x00616a19 (41 bytes)
@@ -99,10 +99,10 @@ __attribute__((weak)) nInputText::CHARACTER_ATTRIBUTE nInputText::ConvertInfo::g
 // Address: 0x00616630 - 0x0061664b (27 bytes)
 nInputText::cUnicodeString::cUnicodeString() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIndex = static_cast<u32>(0);
-    this->mSelectIndex = static_cast<u32>(4294967295);
-    this->mBuffer[0] = static_cast<wchar_t>(0);
-    this->mBufferUtf8[0] = static_cast<char>(0);
+    mIndex = 0;
+    mSelectIndex = 0xFFFFFFFF;
+    mBuffer[0] = static_cast<wchar_t>(0);
+    mBufferUtf8[0] = 0;
 }
 
 // Address: 0x00616650 - 0x00616651 (1 bytes)
@@ -122,10 +122,10 @@ nInputText::cUnicodeString::~cUnicodeString() {
 // Address: 0x00616660 - 0x0061667b (27 bytes)
 void nInputText::cUnicodeString::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIndex = static_cast<u32>(0);
-    this->mSelectIndex = static_cast<u32>(4294967295);
-    this->mBuffer[0] = static_cast<wchar_t>(0);
-    this->mBufferUtf8[0] = static_cast<char>(0);
+    mIndex = 0;
+    mSelectIndex = 0xFFFFFFFF;
+    mBuffer[0] = static_cast<wchar_t>(0);
+    mBufferUtf8[0] = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -150,20 +150,20 @@ bool nInputText::cUnicodeString::getSelectRange(u32* pTop, u32* pLen, u32* pEnd)
     // DWARF local not rendered: u32 SelectTop;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x6166c0 read, used 5 times; no DWARF local holds it
-    const u32 t0 = this->mSelectIndex;
-    if (t0 != static_cast<u32>(4294967295)) {
+    const u32 t0 = mSelectIndex;
+    if (t0 != 0xFFFFFFFFu) {
         // inferred: a temporary for the value the load at 0x6166ca read, used 4 times; no DWARF local holds it
-        const u32 t1 = this->mIndex;
+        const u32 t1 = mIndex;
         if (t0 == t1) {
             return false;
         } else {
-            if (pTop != static_cast<u32*>(nullptr)) {
+            if (pTop != nullptr) {
                 *pTop = (t0 < t1) ? t0 : t1;
             }
-            if (pLen != static_cast<u32*>(nullptr)) {
+            if (pLen != nullptr) {
                 *pLen = ((t0 < t1) ? t1 : t0) - ((t0 < t1) ? t0 : t1);
             }
-            if (pEnd != static_cast<u32*>(nullptr)) {
+            if (pEnd != nullptr) {
                 *pEnd = (t0 < t1) ? t1 : t0;
             }
             return true;
@@ -177,9 +177,9 @@ bool nInputText::cUnicodeString::getSelectRange(u32* pTop, u32* pLen, u32* pEnd)
 bool nInputText::cUnicodeString::forward() {
     // DWARF local not rendered: bool is_success;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const u32 forward_index = ::nUnicode::GetForward(&this->mBuffer[0], this->mIndex);
-    if (forward_index != static_cast<u32>(4294967295)) {
-        this->mIndex = forward_index;
+    const u32 forward_index = ::nUnicode::GetForward(&mBuffer[0], mIndex);
+    if (forward_index != 0xFFFFFFFFu) {
+        mIndex = forward_index;
         return true;
     } else {
         return false;
@@ -219,16 +219,16 @@ __attribute__((weak)) u32 nInputText::cUnicodeString::insert(MT_CWSTR src) {
 u32 nInputText::cUnicodeString::copy(MT_CWSTR src) {
     // DWARF local not rendered: const u32 copy_num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIndex = ::nUnicode::Copy(&this->mBuffer[0], src, static_cast<u32>(1023));
-    return this->mIndex;
+    mIndex = ::nUnicode::Copy(&mBuffer[0], src, 1023u);
+    return mIndex;
 }
 
 // Address: 0x006167f0 - 0x00616820 (48 bytes)
 void nInputText::cUnicodeString::copy(const nInputText::cUnicodeString& other) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memcpy(static_cast<void*>(&this->mBuffer[0]), static_cast<const void*>(&other.mBuffer[0]), static_cast<size_t>(4096));
-    this->mIndex = other.::nInputText::cUnicodeString::getIndex();
-    this->mSelectIndex = other.::nInputText::cUnicodeString::getSelectIndex();
+    ::memcpy(static_cast<void*>(&mBuffer[0]), static_cast<const void*>(&other.mBuffer[0]), 4096ul);
+    mIndex = other.getIndex();
+    mSelectIndex = other.getSelectIndex();
 }
 
 // No out-of-line body: no code in the ELF
@@ -246,19 +246,19 @@ void nInputText::cUnicodeString::copy(const nInputText::cUnicodeString& other) {
 // Address: 0x00616860 - 0x00616897 (55 bytes)
 void nInputText::cUnicodeString::cut(u32 maxCharacterCount) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const u32 index = ::nUnicode::GetIndexFromCount(&this->mBuffer[0], maxCharacterCount);
-    this->mBuffer[index] = static_cast<wchar_t>(0);
-    if (index < this->mIndex) {
-        this->mIndex = index;
-        if (this->mSelectIndex != static_cast<u32>(4294967295)) {
-            if (this->mIndex < this->mSelectIndex) {
-                this->mSelectIndex = this->mIndex;
+    const u32 index = ::nUnicode::GetIndexFromCount(&mBuffer[0], maxCharacterCount);
+    mBuffer[index] = static_cast<wchar_t>(0);
+    if (index < mIndex) {
+        mIndex = index;
+        if (mSelectIndex != 0xFFFFFFFFu) {
+            if (mIndex < mSelectIndex) {
+                mSelectIndex = mIndex;
             }
         }
     } else {
-        if (this->mSelectIndex != static_cast<u32>(4294967295)) {
-            if (index < this->mSelectIndex) {
-                this->mSelectIndex = index;
+        if (mSelectIndex != 0xFFFFFFFFu) {
+            if (index < mSelectIndex) {
+                mSelectIndex = index;
             }
         }
     }
@@ -284,7 +284,7 @@ void nInputText::cUnicodeString::cut(u32 maxCharacterCount) {
 // Address: 0x006168c0 - 0x006168cb (11 bytes)
 u32 nInputText::cUnicodeString::getCharacterIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nUnicode::GetCharacterCount(&this->mBuffer[0], this->mIndex);
+    return ::nUnicode::GetCharacterCount(&mBuffer[0], mIndex);
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,7 +296,7 @@ u32 nInputText::cUnicodeString::getCharacterIndex() const {
 // Address: 0x006168e0 - 0x006168ee (14 bytes)
 u32 nInputText::cUnicodeString::getCharacterCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nUnicode::GetCharacterCount(&this->mBuffer[0], static_cast<u32>(4294967295));
+    return ::nUnicode::GetCharacterCount(&mBuffer[0], 0xFFFFFFFFu);
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (39 bytes)
@@ -312,8 +312,8 @@ u32 nInputText::cUnicodeString::getCharacterCount() const {
 // Address: 0x006168f0 - 0x00616918 (40 bytes)
 MT_CTSTR nInputText::cUnicodeString::getUtf8() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nUnicode::ConvertUcs16toUtf8(&this->mBufferUtf8[0], &this->mBuffer[0], static_cast<u32>(1023));
-    return &this->mBufferUtf8[0];
+    ::nUnicode::ConvertUcs16toUtf8(&mBufferUtf8[0], &mBuffer[0], 1023u);
+    return &mBufferUtf8[0];
 }
 
 // No out-of-line body: no code in the ELF

@@ -130,20 +130,20 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cRoomWearParam::cRoomWearParam() {
-    this->mWL_W = static_cast<u16>(0);
-    this->mAC_W = static_cast<u16>(0);
-    this->mAB_W = static_cast<u16>(0);
-    this->mWB_W = static_cast<u16>(0);
-    this->mAA_W = static_cast<u16>(0);
-    this->mAL_W = static_cast<u16>(0);
-    this->mAL_M = static_cast<u16>(0);
-    this->mWL_M = static_cast<u16>(0);
-    this->mAC_M = static_cast<u16>(0);
-    this->mAH_W = static_cast<u16>(0);
-    this->mAH_M = static_cast<u16>(0);
-    this->mAB_M = static_cast<u16>(0);
-    this->mWB_M = static_cast<u16>(0);
-    this->mAA_M = static_cast<u16>(0);
-    this->mItem = static_cast<u32>(0);
-    this->mType = static_cast<u32>(0);
+    this->mWL_W = 0;
+    this->mAC_W = 0;
+    this->mAB_W = 0;
+    this->mWB_W = 0;
+    this->mAA_W = 0;
+    this->mAL_W = 0;
+    this->mAL_M = 0;
+    this->mWL_M = 0;
+    this->mAC_M = 0;
+    this->mAH_W = 0;
+    this->mAH_M = 0;
+    this->mAB_M = 0;
+    this->mWB_M = 0;
+    this->mAA_M = 0;
+    this->mItem = 0;
+    this->mType = 0;
 }

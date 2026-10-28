@@ -24,7 +24,7 @@ const MtDTI& cHitInfoAfterLocal::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cHitInfoAfterLocal::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cHitInfoAfterLocal::DTI);
+    return MtMemoryAllocator::getAllocator(cHitInfoAfterLocal::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* cHitInfoAfterLocal::getAllocator() {
 // Address: 0x0020c450 - 0x0020c47a (42 bytes)
 __attribute__((weak)) void cHitInfoAfterLocal::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cHitInfoAfterLocal::getAllocator()->memFree(p_addr);
+    cHitInfoAfterLocal::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -149,6 +149,8 @@ __attribute__((weak)) void cHitInfoAfterLocal::operator delete(void* p_addr) {
 //   in cContextCharacter::addDamageMsg at 0x00052a23-0x00052a47 (called at cHitInfoAfterLocal.h:57)
 //   and 11 more (every copy is in <bundle>.inlined.json)
 // void cHitInfoAfterLocal::setHitPosPrivate(const MtVector3& NewValue);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitInfoAfterLocal::MyDTI cHitInfoAfterLocal::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cHitInfoAfterLocal.cpp at 0x0020c4b0-0x0020c4f2 (called at cHitInfoAfterLocal.cpp:19)

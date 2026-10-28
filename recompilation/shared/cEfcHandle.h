@@ -136,29 +136,41 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEfcHandle::cEfcHandle() {
-    this->UnitType = static_cast<u32>(5);
-    this->GroupID[7] = static_cast<long unsigned int>(-1);
-    this->GroupID[6] = static_cast<long unsigned int>(-1);
-    this->GroupID[5] = static_cast<long unsigned int>(-1);
-    this->GroupID[4] = static_cast<long unsigned int>(-1);
-    this->GroupID[3] = static_cast<long unsigned int>(-1);
-    this->GroupID[2] = static_cast<long unsigned int>(-1);
-    this->GroupID[1] = static_cast<long unsigned int>(-1);
-    this->GroupID[0] = static_cast<long unsigned int>(-1);
-    this->UniqueID = static_cast<u64>(-1);
-    this->mpNext = static_cast<cEfcHandle*>(nullptr);
-    this->mRefCount = static_cast<u32>(0);
-    this->mpEventOwner = static_cast<cUnit*>(nullptr);
-    this->mElement = static_cast<s32>(0);
-    this->mEventNo = static_cast<u32>(0);
-    this->mE2DType = static_cast<u32>(0);
-    this->mIndex = static_cast<s32>(0);
-    this->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mArrowJointNo = static_cast<s32>(-1);
+    this->UnitType = 5;
+    this->GroupID[7] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[6] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[5] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[4] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[3] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[2] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[1] = 0xFFFFFFFFFFFFFFFFul;
+    this->GroupID[0] = 0xFFFFFFFFFFFFFFFFul;
+    this->UniqueID = 0xFFFFFFFFFFFFFFFFul;
+    this->mpNext = nullptr;
+    this->mRefCount = 0;
+    this->mpEventOwner = nullptr;
+    this->mElement = 0;
+    this->mEventNo = 0;
+    this->mE2DType = 0;
+    this->mIndex = 0;
+    this->mpOwner = nullptr;
+    this->mArrowJointNo = -1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline u32 cEfcHandle::getUnitType() const {
     return this->UnitType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 9 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u64 cEfcHandle::getUniqueID() const {
+    return this->UniqueID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cEfcHandle::setOwner(cUnit* pOwner) {
+    this->mpOwner = pOwner;
 }

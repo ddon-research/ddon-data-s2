@@ -37,7 +37,7 @@ const MtDTI& uGUIMissionInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMissionInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMissionInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* uGUIMissionInfo::getAllocator() {
 // Address: 0x00b1a4d0 - 0x00b1a510 (64 bytes)
 void* uGUIMissionInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMissionInfo::getAllocator()->memAlloc(sz, align, ::uGUIMissionInfo::DTI.::MtDTI::getID());
+    return uGUIMissionInfo::getAllocator()->memAlloc(sz, align, uGUIMissionInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* uGUIMissionInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMissionInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,14 +86,14 @@ uGUIMissionInfo::~uGUIMissionInfo() {
 // Address: 0x00b1ac50 - 0x00b1acd7 (135 bytes)
 bool uGUIMissionInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MISSION_INFO_GUI"), static_cast<u32>(129), static_cast<t64>(1478682932)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MISSION_INFO_GUI"), 129u, 1478682932l))) != nullptr) {
+            return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(::rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", static_cast<u32>(0));
+        return loadGMDarc(rArchiveListArray::convTagId("uGUIEntryBoard"), "RES_ID_ENTRY_BOARD_GMD", 0u);
     }
 }
 
@@ -118,43 +118,43 @@ __attribute__((weak)) void uGUIMissionInfo::setup() {
 // Address: 0x00b1ace0 - 0x00b1ace5 (5 bytes)
 void uGUIMissionInfo::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIsMenuBase::move();
+    this->uGUIsMenuBase::move();
 }
 
 // Address: 0x00b1c6e0 - 0x00b1c751 (113 bytes)
 void uGUIMissionInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpDetail->kill();
-        this->mpDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpDetail != nullptr) {
+        mpDetail->kill();
+        mpDetail = nullptr;
     }
-    if (this->mpPopBonus != static_cast<uGUIPopRmcQuestInfo*>(nullptr)) {
-        this->mpPopBonus->kill();
-        this->mpPopBonus = static_cast<uGUIPopRmcQuestInfo*>(nullptr);
+    if (mpPopBonus != nullptr) {
+        mpPopBonus->kill();
+        mpPopBonus = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b1c760 - 0x00b1c7a9 (73 bytes)
 void uGUIMissionInfo::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        if (this->mpDetail->::cUnit::isEnable() == false) {
-            this->mpDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpDetail != nullptr) {
+        if (!mpDetail->isEnable()) {
+            mpDetail = nullptr;
         }
     }
-    if (this->mpPopBonus == static_cast<uGUIPopRmcQuestInfo*>(nullptr)) {
+    if (mpPopBonus == nullptr) {
         return;
     }
-    if (this->mpPopBonus->::cUnit::isEnable() != false) {
+    if (mpPopBonus->isEnable()) {
         return;
     }
-    this->mpPopBonus = static_cast<uGUIPopRmcQuestInfo*>(nullptr);
+    mpPopBonus = nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (23 bytes)
@@ -180,29 +180,29 @@ void uGUIMissionInfo::updatePtr() {
 // Address: 0x00b1ebc0 - 0x00b1ec1c (92 bytes)
 bool uGUIMissionInfo::isSelectDecideButton() {
     // Approximate from the ELF: a bool compared with true; the body oracle reports this body.
-    if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (this->mpVCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
+    if (mpVCtrl != nullptr) {
+        if (mpVCtrl->mCurrentPos != 0) {
             return false;
         }
     }
-    if (this->mpBtnHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        if (this->mpBtnHCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-            if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-                if (this->mInvitation == true) {
+    if (mpBtnHCtrl != nullptr) {
+        if (mpBtnHCtrl->mCurrentPos != 0) {
+            if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+                if (mInvitation == true) {
                     return false;
                 } else {
-                    this->mIsSkipAction = true;
+                    mIsSkipAction = true;
                     return true;
                 }
             } else {
                 return false;
             }
         } else {
-            this->mIsSkipAction = true;
+            mIsSkipAction = true;
             return true;
         }
     } else {
-        this->mIsSkipAction = true;
+        mIsSkipAction = true;
         return true;
     }
 }
@@ -210,68 +210,60 @@ bool uGUIMissionInfo::isSelectDecideButton() {
 // Address: 0x00b1c5c0 - 0x00b1c6da (282 bytes)
 void uGUIMissionInfo::initSystem(bool focus) {
     // Approximate from the ELF: a bool compared with true; a cast to the other signedness; the body oracle reports this body.
-    if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-    } else {
-        if (this->mItemNum != static_cast<u32>(0)) {
-            this->mpVCtrl->::cControl::resetItemNum(static_cast<s32>(2), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+    if (mpVCtrl != nullptr) {
+        if (mItemNum != 0) {
+            mpVCtrl->resetItemNum(2, static_cast<const u32*>(nullptr), 0);
         } else {
-            this->mpVCtrl->::cControl::resetItemNum(static_cast<s32>(1), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+            mpVCtrl->resetItemNum(1, static_cast<const u32*>(nullptr), 0);
         }
-        if (this->mpBtnHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        } else {
-            this->mpBtnHCtrl->::cControl::resetItemNum(static_cast<s32>(2), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+        if (mpBtnHCtrl != nullptr) {
+            mpBtnHCtrl->resetItemNum(2, static_cast<const u32*>(nullptr), 0);
         }
-        if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType != static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-        } else {
-            if (this->mInvitation == true) {
-            } else {
-                if ((this->mPlayType & static_cast<u32>(3)) == static_cast<u32>(3)) {
-                } else {
-                    if (this->mpBtnHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    } else {
-                        this->mpBtnHCtrl->::cControl::resetItemNum(static_cast<s32>(1), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+        if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+            if (mInvitation != true) {
+                if ((mPlayType & 3u) != 3) {
+                    if (mpBtnHCtrl != nullptr) {
+                        mpBtnHCtrl->resetItemNum(1, static_cast<const u32*>(nullptr), 0);
                     }
                 }
             }
         }
-        if (this->mpItemHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        } else {
-            this->mpItemHCtrl->::cControl::resetItemNum(static_cast<s32>((static_cast<int>(this->mItemNum) <= static_cast<int>(0)) ? static_cast<u32>(1) : this->mItemNum), static_cast<const u32*>(nullptr), static_cast<s32>(0));
-            if (this->mpItemHCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            } else {
-                this->mpItemHCtrl->::cControl::mCtrlF = this->mpItemHCtrl->::cControl::mCtrlF | static_cast<u32>(8);
+        if (mpItemHCtrl != nullptr) {
+            mpItemHCtrl->resetItemNum(static_cast<s32>((static_cast<int>(mItemNum) <= 0) ? 1u : mItemNum), static_cast<const u32*>(nullptr), 0);
+            if (mpItemHCtrl != nullptr) {
+                mpItemHCtrl->mCtrlF = mpItemHCtrl->mCtrlF | 8u;
             }
         }
-        if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpVCtrl->::cControl::getCurrentPos() == static_cast<s32>(1)) {
-                this->::uGUIMissionInfo::eventCursorItem();
+        if (mpVCtrl != nullptr) {
+            if (mpVCtrl->getCurrentPos() == 1) {
+                eventCursorItem();
             } else {
-                if (this->mpVCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                    this->::uGUIMissionInfo::eventCursorBtn(focus);
+                if (mpVCtrl->getCurrentPos() == 0) {
+                    eventCursorBtn(focus);
                 }
             }
         } else {
-            this->::uGUIMissionInfo::eventCursorBtn(focus);
+            eventCursorBtn(focus);
         }
     }
-    this->mIsDecide = false;
-    this->mIsCancel = false;
-    this->mIsMemberInfo = false;
+    mIsDecide = false;
+    mIsCancel = false;
+    mIsMemberInfo = false;
 }
 
 // Address: 0x00b1c7c0 - 0x00b1c7ea (42 bytes)
 void uGUIMissionInfo::reStartSystem(bool focus) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (this->mpVCtrl->::cControl::getCurrentPos() == static_cast<s32>(1)) {
-            this->::uGUIMissionInfo::eventCursorItem();
+    if (mpVCtrl != nullptr) {
+        if (mpVCtrl->getCurrentPos() == 1) {
+            eventCursorItem();
         } else {
-            if (this->mpVCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                this->::uGUIMissionInfo::eventCursorBtn(focus);
+            if (mpVCtrl->getCurrentPos() == 0) {
+                eventCursorBtn(focus);
             }
         }
     } else {
-        this->::uGUIMissionInfo::eventCursorBtn(focus);
+        eventCursorBtn(focus);
     }
 }
 
@@ -357,46 +349,46 @@ __attribute__((weak)) void uGUIMissionInfo::moveEvent() {
 // Address: 0x00b1dfe0 - 0x00b1e036 (86 bytes)
 void uGUIMissionInfo::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-        this->::uGUIMissionInfo::updateEndInfo();
+    if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+        updateEndInfo();
     } else {
-        this->::uGUIMissionInfo::updateCycleInfo();
+        updateCycleInfo();
     }
-    this->::uGUIMissionInfo::updateWait();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionInfo::updateWait);
+    updateWait();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionInfo::updateWait);
 }
 
 // Address: 0x00b1e050 - 0x00b1e124 (212 bytes)
 __attribute__((weak)) void uGUIMissionInfo::updateWait() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    if (this->mIsExecuteCtrl == false) {
+    if (!mIsExecuteCtrl) {
         return;
     }
-    (&this->mRefButtonDecide)->update();
-    (&this->mRefButtonSolo)->update();
-    (&this->mRefButtonCancel)->update();
-    if (::sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == static_cast<nNetSv::E_CONTENT_TYPE>(4)) {
-        this->::uGUIMissionInfo::updateEndInfo();
+    (&mRefButtonDecide)->update();
+    (&mRefButtonSolo)->update();
+    (&mRefButtonCancel)->update();
+    if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
+        updateEndInfo();
     } else {
-        this->::uGUIMissionInfo::updateCycleInfo();
+        updateCycleInfo();
     }
-    this->::uGUIMissionInfo::updateItem();
-    this->::uGUIMissionInfo::updateCharges();
-    this->::uGUIMissionInfo::updateDetail();
-    if (this->mIsGuideDetailEnable != false) {
-        if (this->mIsStandAlone != false) {
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(3));
+    updateItem();
+    updateCharges();
+    updateDetail();
+    if (mIsGuideDetailEnable) {
+        if (mIsStandAlone) {
+            mGuide.setDispBit(3u);
         } else {
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(2));
+            mGuide.setDispBit(2u);
         }
     } else {
-        if (this->mIsStandAlone != false) {
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(1));
+        if (mIsStandAlone) {
+            mGuide.setDispBit(1u);
         } else {
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(0));
+            mGuide.setDispBit(0u);
         }
     }
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+    mGuide.uGUIBase::cReferenceUIBtnGuide::update();
 }
 
 // No out-of-line body: no code in the ELF
@@ -525,29 +517,29 @@ __attribute__((weak)) u32 uGUIMissionInfo::evCtrlDecide(cControl::Message* msg) 
 // Address: 0x01af81f0 - 0x01af8202 (18 bytes)
 u32 uGUIMissionInfo::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x01af8210 - 0x01af8222 (18 bytes)
 u32 uGUIMissionInfo::evCtrlCursorV(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x01af8230 - 0x01af8242 (18 bytes)
 u32 uGUIMissionInfo::evCtrlCursorBtn(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x01af8250 - 0x01af8262 (18 bytes)
 u32 uGUIMissionInfo::evCtrlCursorItem(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b1c440 - 0x00b1c513 (211 bytes)
@@ -559,7 +551,7 @@ __attribute__((weak)) u32 uGUIMissionInfo::evCtrlItemClick(cControl::Message* ms
 // Address: 0x00b1c350 - 0x00b1c353 (3 bytes)
 u32 uGUIMissionInfo::evCtrlOver(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b1c360 - 0x00b1c43e (222 bytes)
@@ -571,14 +563,14 @@ __attribute__((weak)) u32 uGUIMissionInfo::evCtrlBtnClick(cControl::Message* msg
 // Address: 0x00b1c320 - 0x00b1c349 (41 bytes)
 u32 uGUIMissionInfo::evCtrlChkout(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsStandAlone != false) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+    if (mIsStandAlone) {
+        setInputEvent(72u);
     } else {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(0);
+        if (msg != nullptr) {
+            msg->changeSE = 0;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -624,6 +616,8 @@ __attribute__((weak)) void uGUIMissionInfo::eventCursorItem() {
 //   in uGUIMissionInfo::evCtrlBtnClick at 0x00b1c3e4-0x00b1c425 (called at uGUIMissionInfo.cpp:1653)
 //   in uGUIMissionInfo::evCtrlItemClick at 0x00b1c461-0x00b1c488 (called at uGUIMissionInfo.cpp:1616)
 // bool uGUIMissionInfo::eventCheckWindow();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionInfo::MyDTI uGUIMissionInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionInfo.cpp at 0x00b1ed3f-0x00b1ed7c (called at uGUIMissionInfo.cpp:32)
@@ -673,7 +667,7 @@ const MtDTI& uGUIMissionInfo::cItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15uGUIMissionInfo5cItemD0Ev at 0x01af8300-0x01af8321, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIMissionInfo::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::cItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMissionInfo::cItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -691,6 +685,8 @@ inline void uGUIMissionInfo::cItem::operator delete(void* p_addr) {
 //   in uGUIMissionInfo::setup at 0x00b1b36b-0x00b1b38f, 0x00b1b3b9-0x00b1b3f7, 0x00b1b400-0x00b1b40e (called at uGUIMissionInfo.cpp:271)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIMissionInfo::cItem::cItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMissionInfo::cItem::MyDTI uGUIMissionInfo::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMissionInfo.cpp at 0x00b1ed7c-0x00b1edb9 (called at uGUIMissionInfo.cpp:33)

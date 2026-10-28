@@ -55,7 +55,7 @@ const MtDTI& cIKHandle::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cIKHandle::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cIKHandle::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cIKHandle::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,7 +87,7 @@ __attribute__((weak)) void cIKHandle::createProperty(MtPropertyList& s) {
 // Address: 0x0048bd30 - 0x0048bd35 (5 bytes)
 void cIKHandle::setIKActive(bool active) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActive = active;
+    mActive = active;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
@@ -122,15 +122,15 @@ __attribute__((weak)) void cIKHandle::setEffector(const MtMatrix& mat) {
 // Address: 0x0048be60 - 0x0048be8c (44 bytes)
 void cIKHandle::setIKTarget(uModel* pModel, u32 JntNo, u32 Pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetModel = pModel;
-    this->mTargetJntNo = JntNo;
-    if (pModel != static_cast<uModel*>(nullptr)) {
-        if (this->mpIKTarget != static_cast<uCnsIKTarget*>(nullptr)) {
-            this->mpIKTarget->::uCnsIKTarget::set(pModel, JntNo, Pri);
+    mpTargetModel = pModel;
+    mTargetJntNo = JntNo;
+    if (pModel != nullptr) {
+        if (mpIKTarget != nullptr) {
+            mpIKTarget->set(pModel, JntNo, Pri);
         }
     } else {
-        if (this->mpIKTarget != static_cast<uCnsIKTarget*>(nullptr)) {
-            this->mpIKTarget->remove();
+        if (mpIKTarget != nullptr) {
+            mpIKTarget->remove();
         }
     }
 }
@@ -141,14 +141,14 @@ void cIKHandle::setIKTarget(uModel* pModel, u32 JntNo, u32 Pri) {
 // Address: 0x0048bea0 - 0x0048bed5 (53 bytes)
 void cIKHandle::setTargetJointDef(u32 JntNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetJntNo = JntNo;
-    if (this->mpTargetModel != static_cast<uModel*>(nullptr)) {
-        if (this->mpIKTarget != static_cast<uCnsIKTarget*>(nullptr)) {
-            this->mpIKTarget->::uCnsIKTarget::set(this->mpTargetModel, JntNo, static_cast<u32>(9001));
+    mTargetJntNo = JntNo;
+    if (mpTargetModel != nullptr) {
+        if (mpIKTarget != nullptr) {
+            mpIKTarget->set(mpTargetModel, JntNo, 9001u);
         }
     } else {
-        if (this->mpIKTarget != static_cast<uCnsIKTarget*>(nullptr)) {
-            this->mpIKTarget->remove();
+        if (mpIKTarget != nullptr) {
+            mpIKTarget->remove();
         }
     }
 }
@@ -161,7 +161,7 @@ void cIKHandle::setTargetJointDef(u32 JntNo) {
 // Address: 0x01a5a1f0 - 0x01a5a1f4 (4 bytes)
 u32 cIKHandle::getTargetJoint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetJntNo;
+    return mTargetJntNo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +177,7 @@ u32 cIKHandle::getTargetJoint() {
 // Address: 0x0048bee0 - 0x0048bee4 (4 bytes)
 void cIKHandle::setBehavior(nIKCtrl::EFF_BEHAVIOR behavior) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBehavior = static_cast<u32>(behavior);
+    mBehavior = static_cast<u32>(behavior);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -187,8 +187,8 @@ void cIKHandle::setBehavior(nIKCtrl::EFF_BEHAVIOR behavior) {
 // Address: 0x0048c5e0 - 0x0048c5eb (11 bytes)
 void cIKHandle::setCnsIKBlend(f32 blend, f32 blendSpeed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBlend = blend;
-    this->mBlendSpeed = blendSpeed;
+    mBlend = blend;
+    mBlendSpeed = blendSpeed;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -204,8 +204,8 @@ void cIKHandle::setCnsIKBlend(f32 blend, f32 blendSpeed) {
 // Address: 0x0048c610 - 0x0048c626 (22 bytes)
 f32 cIKHandle::getCnsIKBlendWight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsIK != static_cast<uCnsDDOIK*>(nullptr)) {
-        return this->mpCnsIK->::uConstraint::getBlendWeight();
+    if (mpCnsIK != nullptr) {
+        return mpCnsIK->getBlendWeight();
     } else {
         return 0.0f;
     }
@@ -221,6 +221,8 @@ f32 cIKHandle::getCnsIKBlendWight() const {
 // No out-of-line body: 1 inlined copy in 1 function (180 bytes)
 //   in cpIKCtrl::updateIKHandle at 0x0048ec39-0x0048ec5d, 0x0048ec6c-0x0048ec90, 0x0048ec9f-0x0048ecc3, 0x0048ecd2-0x0048ecf6, 0x0048ed05-0x0048ed29 (called at cpIKCtrl.cpp:924)
 // void cIKHandle::updatePtr();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cIKHandle::MyDTI cIKHandle::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpIKCtrl.cpp at 0x004902b0-0x004902f2 (called at cpIKCtrl.cpp:45)
@@ -247,7 +249,7 @@ const MtDTI& cpIKCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpIKCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpIKCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpIKCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -256,7 +258,7 @@ inline MtAllocator* cpIKCtrl::getAllocator() {
 // Address: 0x0048c670 - 0x0048c6b0 (64 bytes)
 void* cpIKCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpIKCtrl::getAllocator()->memAlloc(sz, align, ::cpIKCtrl::DTI.::MtDTI::getID());
+    return cpIKCtrl::getAllocator()->memAlloc(sz, align, cpIKCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,7 +273,7 @@ void* cpIKCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpIKCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpIKCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpIKCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -314,33 +316,33 @@ void cpIKCtrl::setActive(bool active) {
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->::cpComponent::mActive = active;
-    if (this->mpCnsIK[0] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[0]->setConstraintEnable(active);
+    mActive = active;
+    if (mpCnsIK[0] != nullptr) {
+        mpCnsIK[0]->setConstraintEnable(active);
     }
-    if (this->mpCnsIK[1] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[1]->setConstraintEnable(active);
+    if (mpCnsIK[1] != nullptr) {
+        mpCnsIK[1]->setConstraintEnable(active);
     }
-    if (this->mpCnsIK[2] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[2]->setConstraintEnable(active);
+    if (mpCnsIK[2] != nullptr) {
+        mpCnsIK[2]->setConstraintEnable(active);
     }
-    if (this->mpCnsIK[3] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[3]->setConstraintEnable(active);
+    if (mpCnsIK[3] != nullptr) {
+        mpCnsIK[3]->setConstraintEnable(active);
     }
-    if (this->mpCnsIKHandle[0] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[0]->setConstraintEnable(active);
+    if (mpCnsIKHandle[0] != nullptr) {
+        mpCnsIKHandle[0]->setConstraintEnable(active);
     }
-    if (this->mpCnsIKHandle[1] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[1]->setConstraintEnable(active);
+    if (mpCnsIKHandle[1] != nullptr) {
+        mpCnsIKHandle[1]->setConstraintEnable(active);
     }
-    if (this->mpCnsIKHandle[2] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[2]->setConstraintEnable(active);
+    if (mpCnsIKHandle[2] != nullptr) {
+        mpCnsIKHandle[2]->setConstraintEnable(active);
     }
-    if (this->mpCnsIKHandle[3] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[3]->setConstraintEnable(active);
+    if (mpCnsIKHandle[3] != nullptr) {
+        mpCnsIKHandle[3]->setConstraintEnable(active);
     }
-    if (this->mpCnsIKHandle[4] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[4]->setConstraintEnable(active);
+    if (mpCnsIKHandle[4] != nullptr) {
+        mpCnsIKHandle[4]->setConstraintEnable(active);
         return;
     }
 }
@@ -365,18 +367,18 @@ void cpIKCtrl::setActive(bool active) {
 // Address: 0x01a5a250 - 0x01a5a292 (66 bytes)
 void cpIKCtrl::setOwner(MtObject* pOwner) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cpComponent::mpOwner = pOwner;
+    mpOwner = pOwner;
     // inferred: a temporary for the result of the call at 0x1a5a267, used once; no DWARF local holds it
     const MtDTI& t0 = pOwner->getDTI();
     // inferred: the value the loop at 0x1a5a275 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
     // inferred: the value the loop at 0x1a5a275 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
-            this->mpModel = static_cast<uModel*>(pOwner);
+            mpModel = static_cast<uModel*>(pOwner);
             return;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -396,29 +398,29 @@ __attribute__((weak)) void cpIKCtrl::setup() {
 void cpIKCtrl::move() {
     // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    this->::cpIKCtrl::updateIKBlend();
-    if (this->::cpIKCtrl::isIKCtrlActive() == false) {
+    updateIKBlend();
+    if (!isIKCtrlActive()) {
         return;
     }
-    if (this->mFBIKActive != false) {
+    if (mFBIKActive) {
         return;
     }
-    if (this->mpCnsIK[0] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[0]->move();
+    if (mpCnsIK[0] != nullptr) {
+        mpCnsIK[0]->move();
     }
-    if (this->mpCnsIK[1] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[1]->move();
+    if (mpCnsIK[1] != nullptr) {
+        mpCnsIK[1]->move();
     }
-    if (this->mpCnsIK[2] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[2]->move();
+    if (mpCnsIK[2] != nullptr) {
+        mpCnsIK[2]->move();
     }
-    if (this->mpCnsIK[3] == static_cast<uCnsDDOIK*>(nullptr)) {
+    if (mpCnsIK[3] == nullptr) {
         return;
     }
-    this->mpCnsIK[3]->move();
+    mpCnsIK[3]->move();
 }
 
 // Address: 0x0048d1b0 - 0x0048d21c (108 bytes)
@@ -430,23 +432,23 @@ __attribute__((weak)) void cpIKCtrl::after() {
 // Address: 0x0048d220 - 0x0048d230 (16 bytes)
 void cpIKCtrl::compMoveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    this->::cpIKCtrl::updateEffector();
+    updateEffector();
 }
 
 // Address: 0x0048d630 - 0x0048d669 (57 bytes)
 void cpIKCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0048d670 - 0x0048dcfa (1674 bytes)
@@ -475,21 +477,21 @@ __attribute__((weak)) void cpIKCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x0048dd00 - 0x0048dd49 (73 bytes)
 void cpIKCtrl::setResource(rIKCtrl* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rIKCtrl*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rIKCtrl*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes != static_cast<rIKCtrl*>(nullptr)) {
-        this->mpResource = pRes;
-        pRes->::cResource::addRef();
+    if (pRes != nullptr) {
+        mpResource = pRes;
+        pRes->addRef();
     }
-    this->::cpIKCtrl::init();
+    init();
 }
 
 // Address: 0x01a5a210 - 0x01a5a218 (8 bytes)
 rIKCtrl* cpIKCtrl::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // No out-of-line body: 27 inlined copies in 11 functions (482 bytes)
@@ -505,305 +507,295 @@ rIKCtrl* cpIKCtrl::getResource() {
 // Address: 0x0048eb20 - 0x0048ec14 (244 bytes)
 void cpIKCtrl::checkResetIKHandle() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mIsReset == false) {
+    if (!mIsReset) {
         return;
     }
-    if (this->mpCnsIK[this->mIKHandle[0].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+    if (mpCnsIK[mIKHandle[0].mType] != nullptr) {
         // inferred: a temporary for the value the load at 0x48eb49 read, used twice; no DWARF local holds it
-        f32 t0 = this->mIKHandle[0].mBlend;
-        this->mpCnsIK[this->mIKHandle[0].mType]->::uConstraint::mBlend = t0;
-        this->mpCnsIK[this->mIKHandle[0].mType]->::uConstraint::mBlendWeight = t0;
-        if (this->mpCnsIK[this->mIKHandle[1].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+        f32 t0 = mIKHandle[0].mBlend;
+        mpCnsIK[mIKHandle[0].mType]->::uConstraint::mBlend = t0;
+        mpCnsIK[mIKHandle[0].mType]->::uConstraint::mBlendWeight = t0;
+        if (mpCnsIK[mIKHandle[1].mType] != nullptr) {
             // inferred: a temporary for the value the load at 0x48eb71 read, used twice; no DWARF local holds it
-            f32 t1 = this->mIKHandle[1].mBlend;
-            this->mpCnsIK[this->mIKHandle[1].mType]->::uConstraint::mBlend = t1;
-            this->mpCnsIK[this->mIKHandle[1].mType]->::uConstraint::mBlendWeight = t1;
-            if (this->mpCnsIK[this->mIKHandle[2].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+            f32 t1 = mIKHandle[1].mBlend;
+            mpCnsIK[mIKHandle[1].mType]->::uConstraint::mBlend = t1;
+            mpCnsIK[mIKHandle[1].mType]->::uConstraint::mBlendWeight = t1;
+            if (mpCnsIK[mIKHandle[2].mType] != nullptr) {
                 // inferred: a temporary for the value the load at 0x48eb99 read, used twice; no DWARF local holds it
-                f32 t2 = this->mIKHandle[2].mBlend;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlend = t2;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                f32 t2 = mIKHandle[2].mBlend;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlend = t2;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             } else {
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             }
         } else {
-            if (this->mpCnsIK[this->mIKHandle[2].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+            if (mpCnsIK[mIKHandle[2].mType] != nullptr) {
                 // inferred: a temporary for the value the load at 0x48eb99 read, used twice; no DWARF local holds it
-                f32 t2 = this->mIKHandle[2].mBlend;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlend = t2;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                f32 t2 = mIKHandle[2].mBlend;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlend = t2;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             } else {
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             }
         }
     } else {
-        if (this->mpCnsIK[this->mIKHandle[1].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+        if (mpCnsIK[mIKHandle[1].mType] != nullptr) {
             // inferred: a temporary for the value the load at 0x48eb71 read, used twice; no DWARF local holds it
-            f32 t1 = this->mIKHandle[1].mBlend;
-            this->mpCnsIK[this->mIKHandle[1].mType]->::uConstraint::mBlend = t1;
-            this->mpCnsIK[this->mIKHandle[1].mType]->::uConstraint::mBlendWeight = t1;
-            if (this->mpCnsIK[this->mIKHandle[2].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+            f32 t1 = mIKHandle[1].mBlend;
+            mpCnsIK[mIKHandle[1].mType]->::uConstraint::mBlend = t1;
+            mpCnsIK[mIKHandle[1].mType]->::uConstraint::mBlendWeight = t1;
+            if (mpCnsIK[mIKHandle[2].mType] != nullptr) {
                 // inferred: a temporary for the value the load at 0x48eb99 read, used twice; no DWARF local holds it
-                f32 t2 = this->mIKHandle[2].mBlend;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlend = t2;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                f32 t2 = mIKHandle[2].mBlend;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlend = t2;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             } else {
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             }
         } else {
-            if (this->mpCnsIK[this->mIKHandle[2].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+            if (mpCnsIK[mIKHandle[2].mType] != nullptr) {
                 // inferred: a temporary for the value the load at 0x48eb99 read, used twice; no DWARF local holds it
-                f32 t2 = this->mIKHandle[2].mBlend;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlend = t2;
-                this->mpCnsIK[this->mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                f32 t2 = mIKHandle[2].mBlend;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlend = t2;
+                mpCnsIK[mIKHandle[2].mType]->::uConstraint::mBlendWeight = t2;
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             } else {
-                if (this->mpCnsIK[this->mIKHandle[3].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                if (mpCnsIK[mIKHandle[3].mType] != nullptr) {
                     // inferred: a temporary for the value the load at 0x48ebc1 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mIKHandle[3].mBlend;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlend = t3;
-                    this->mpCnsIK[this->mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    f32 t3 = mIKHandle[3].mBlend;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlend = t3;
+                    mpCnsIK[mIKHandle[3].mType]->::uConstraint::mBlendWeight = t3;
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 } else {
-                    if (this->mpCnsIK[this->mIKHandle[4].mType] != static_cast<uCnsDDOIK*>(nullptr)) {
+                    if (mpCnsIK[mIKHandle[4].mType] != nullptr) {
                         // inferred: a temporary for the value the load at 0x48ebe9 read, used twice; no DWARF local holds it
-                        f32 t4 = this->mIKHandle[4].mBlend;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlend = t4;
-                        this->mpCnsIK[this->mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
-                        this->::cpIKCtrl::updateIKHandle();
+                        f32 t4 = mIKHandle[4].mBlend;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlend = t4;
+                        mpCnsIK[mIKHandle[4].mType]->::uConstraint::mBlendWeight = t4;
+                        updateIKHandle();
                     } else {
-                        this->::cpIKCtrl::updateIKHandle();
+                        updateIKHandle();
                     }
                 }
             }
         }
     }
-    this->mIsReset = false;
+    mIsReset = false;
 }
 
 // Address: 0x0048ec30 - 0x0048ed3e (270 bytes)
 __attribute__((weak)) void cpIKCtrl::updateIKHandle() {
     // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIKHandle[0].mpTargetModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        if ((this->mIKHandle[0].mpTargetModel->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        } else {
-            this->mIKHandle[0].mpTargetModel = static_cast<uModel*>(nullptr);
+    if (mIKHandle[0].mpTargetModel != nullptr) {
+        if ((mIKHandle[0].mpTargetModel->mBeFlag - 1u) > 1u) {
+            mIKHandle[0].mpTargetModel = nullptr;
         }
     }
-    this->::cpIKCtrl::updateIKHandle(&this->mIKHandle[0]);
-    if (this->mIKHandle[1].mpTargetModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        if ((this->mIKHandle[1].mpTargetModel->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        } else {
-            this->mIKHandle[1].mpTargetModel = static_cast<uModel*>(nullptr);
+    updateIKHandle(&mIKHandle[0]);
+    if (mIKHandle[1].mpTargetModel != nullptr) {
+        if ((mIKHandle[1].mpTargetModel->mBeFlag - 1u) > 1u) {
+            mIKHandle[1].mpTargetModel = nullptr;
         }
     }
-    this->::cpIKCtrl::updateIKHandle(&this->mIKHandle[1]);
-    if (this->mIKHandle[2].mpTargetModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        if ((this->mIKHandle[2].mpTargetModel->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        } else {
-            this->mIKHandle[2].mpTargetModel = static_cast<uModel*>(nullptr);
+    updateIKHandle(&mIKHandle[1]);
+    if (mIKHandle[2].mpTargetModel != nullptr) {
+        if ((mIKHandle[2].mpTargetModel->mBeFlag - 1u) > 1u) {
+            mIKHandle[2].mpTargetModel = nullptr;
         }
     }
-    this->::cpIKCtrl::updateIKHandle(&this->mIKHandle[2]);
-    if (this->mIKHandle[3].mpTargetModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        if ((this->mIKHandle[3].mpTargetModel->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        } else {
-            this->mIKHandle[3].mpTargetModel = static_cast<uModel*>(nullptr);
+    updateIKHandle(&mIKHandle[2]);
+    if (mIKHandle[3].mpTargetModel != nullptr) {
+        if ((mIKHandle[3].mpTargetModel->mBeFlag - 1u) > 1u) {
+            mIKHandle[3].mpTargetModel = nullptr;
         }
     }
-    this->::cpIKCtrl::updateIKHandle(&this->mIKHandle[3]);
-    if (this->mIKHandle[4].mpTargetModel == static_cast<uModel*>(nullptr)) {
-    } else {
-        if ((this->mIKHandle[4].mpTargetModel->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        } else {
-            this->mIKHandle[4].mpTargetModel = static_cast<uModel*>(nullptr);
+    updateIKHandle(&mIKHandle[3]);
+    if (mIKHandle[4].mpTargetModel != nullptr) {
+        if ((mIKHandle[4].mpTargetModel->mBeFlag - 1u) > 1u) {
+            mIKHandle[4].mpTargetModel = nullptr;
         }
     }
-    this->::cpIKCtrl::updateIKHandle(&this->mIKHandle[4]);
+    updateIKHandle(&mIKHandle[4]);
 }
 
 // Address: 0x0048f480 - 0x0048f67b (507 bytes)
@@ -830,37 +822,37 @@ void cpIKCtrl::enableConstraint(bool enable) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpCnsIKHandle[0] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[0]->::uConstraint::mEnable = enable;
-        this->mpCnsIKTarget[0]->::uConstraint::mEnable = enable;
+    if (mpCnsIKHandle[0] != nullptr) {
+        mpCnsIKHandle[0]->::uConstraint::mEnable = enable;
+        mpCnsIKTarget[0]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIKHandle[1] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[1]->::uConstraint::mEnable = enable;
-        this->mpCnsIKTarget[1]->::uConstraint::mEnable = enable;
+    if (mpCnsIKHandle[1] != nullptr) {
+        mpCnsIKHandle[1]->::uConstraint::mEnable = enable;
+        mpCnsIKTarget[1]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIKHandle[2] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[2]->::uConstraint::mEnable = enable;
-        this->mpCnsIKTarget[2]->::uConstraint::mEnable = enable;
+    if (mpCnsIKHandle[2] != nullptr) {
+        mpCnsIKHandle[2]->::uConstraint::mEnable = enable;
+        mpCnsIKTarget[2]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIKHandle[3] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[3]->::uConstraint::mEnable = enable;
-        this->mpCnsIKTarget[3]->::uConstraint::mEnable = enable;
+    if (mpCnsIKHandle[3] != nullptr) {
+        mpCnsIKHandle[3]->::uConstraint::mEnable = enable;
+        mpCnsIKTarget[3]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIKHandle[4] != static_cast<uCnsIKHandle*>(nullptr)) {
-        this->mpCnsIKHandle[4]->::uConstraint::mEnable = enable;
-        this->mpCnsIKTarget[4]->::uConstraint::mEnable = enable;
+    if (mpCnsIKHandle[4] != nullptr) {
+        mpCnsIKHandle[4]->::uConstraint::mEnable = enable;
+        mpCnsIKTarget[4]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIK[0] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[0]->::uConstraint::mEnable = enable;
+    if (mpCnsIK[0] != nullptr) {
+        mpCnsIK[0]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIK[1] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[1]->::uConstraint::mEnable = enable;
+    if (mpCnsIK[1] != nullptr) {
+        mpCnsIK[1]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIK[2] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[2]->::uConstraint::mEnable = enable;
+    if (mpCnsIK[2] != nullptr) {
+        mpCnsIK[2]->::uConstraint::mEnable = enable;
     }
-    if (this->mpCnsIK[3] != static_cast<uCnsDDOIK*>(nullptr)) {
-        this->mpCnsIK[3]->::uConstraint::mEnable = enable;
+    if (mpCnsIK[3] != nullptr) {
+        mpCnsIK[3]->::uConstraint::mEnable = enable;
     }
 }
 
@@ -941,74 +933,74 @@ __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x32c from cpIKCtrl*
     // inferred: a branching shape written through regions, with 8 goto statements as its last resort
     // inferred: the value carried to 0x48d0d2; no location-less local in scope fits
-    uCnsDDOIK* v0_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(176))];
-    if (v0_0 != static_cast<uCnsDDOIK*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(172))) != static_cast<unsigned char>(0)) {
-            if (this->::cpComponent::mActive != false) {
+    uCnsDDOIK* v0_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 176)];
+    if (v0_0 != nullptr) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 172)) != 0) {
+            if (mActive) {
                 goto region_48d0dd;
             }
         }
     } else {
         goto region_48d0dd;
     }
-    v0_0->::uConstraint::mBlendSpeed = 1.0f;
-    v0_0->::uConstraint::mBlend = 0.0f;
+    v0_0->mBlendSpeed = 1.0f;
+    v0_0->mBlend = 0.0f;
     region_48d0dd:;
     // inferred: the value carried to 0x48d0ff; no location-less local in scope fits
-    uCnsDDOIK* v2_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(336))];
-    if (v2_0 != static_cast<uCnsDDOIK*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(332))) != static_cast<unsigned char>(0)) {
-            if (this->::cpComponent::mActive != false) {
+    uCnsDDOIK* v2_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 336)];
+    if (v2_0 != nullptr) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 332)) != 0) {
+            if (mActive) {
                 goto region_48d10a;
             }
         }
     } else {
         goto region_48d10a;
     }
-    v2_0->::uConstraint::mBlendSpeed = 1.0f;
-    v2_0->::uConstraint::mBlend = 0.0f;
+    v2_0->mBlendSpeed = 1.0f;
+    v2_0->mBlend = 0.0f;
     region_48d10a:;
     // inferred: the value carried to 0x48d12c; no location-less local in scope fits
-    uCnsDDOIK* v4_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(496))];
-    if (v4_0 != static_cast<uCnsDDOIK*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(492))) != static_cast<unsigned char>(0)) {
-            if (this->::cpComponent::mActive != false) {
+    uCnsDDOIK* v4_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 496)];
+    if (v4_0 != nullptr) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 492)) != 0) {
+            if (mActive) {
                 goto region_48d137;
             }
         }
     } else {
         goto region_48d137;
     }
-    v4_0->::uConstraint::mBlendSpeed = 1.0f;
-    v4_0->::uConstraint::mBlend = 0.0f;
+    v4_0->mBlendSpeed = 1.0f;
+    v4_0->mBlend = 0.0f;
     region_48d137:;
     // inferred: the value carried to 0x48d159; no location-less local in scope fits
-    uCnsDDOIK* v6_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(656))];
-    if (v6_0 != static_cast<uCnsDDOIK*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(652))) != static_cast<unsigned char>(0)) {
-            if (this->::cpComponent::mActive != false) {
+    uCnsDDOIK* v6_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 656)];
+    if (v6_0 != nullptr) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 652)) != 0) {
+            if (mActive) {
                 goto region_48d164;
             }
         }
     } else {
         goto region_48d164;
     }
-    v6_0->::uConstraint::mBlendSpeed = 1.0f;
-    v6_0->::uConstraint::mBlend = 0.0f;
+    v6_0->mBlendSpeed = 1.0f;
+    v6_0->mBlend = 0.0f;
     region_48d164:;
     // inferred: the value carried to 0x48d186; no location-less local in scope fits
-    uCnsDDOIK* v8_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(816))];
-    if (v8_0 != static_cast<uCnsDDOIK*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(812))) != static_cast<unsigned char>(0)) {
-            if (this->::cpComponent::mActive != false) {
+    uCnsDDOIK* v8_0 = mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 816)];
+    if (v8_0 != nullptr) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 812)) != 0) {
+            if (mActive) {
                 return;
             }
         }
     } else {
         return;
     }
-    v8_0->::uConstraint::mBlendSpeed = 1.0f;
-    v8_0->::uConstraint::mBlend = 0.0f;
+    v8_0->mBlendSpeed = 1.0f;
+    v8_0->mBlend = 0.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (225 bytes)
@@ -1056,6 +1048,8 @@ __attribute__((weak)) void cpIKCtrl::createConstraint(bool UseFBIK) {
     DDON_STUB("cpIKCtrl::createConstraint")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpIKCtrl::MyDTI cpIKCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpIKCtrl.cpp at 0x004902f2-0x0049032f (called at cpIKCtrl.cpp:335)

@@ -46,7 +46,7 @@ const MtDTI& rModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6rModelD0Ev at 0x011d7514-0x011d7535, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ inline void rModel::operator delete(void* p_addr) {
 // Address: 0x011d8460 - 0x011d846d (13 bytes)
 bool rModel::loadEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rModel::initMaterial();
+    initMaterial();
     return true;
 }
 
@@ -108,7 +108,7 @@ bool rModel::save(MtStream& out) {
 // Address: 0x011d7560 - 0x011d7565 (5 bytes)
 MtUI* rModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x011d7570 - 0x011d7a40 (1232 bytes)
@@ -194,7 +194,7 @@ MT_CTSTR rModel::getExt() const {
 // Address: 0x011d7540 - 0x011d754e (14 bytes)
 const nDraw::Material* rModel::getMaterial(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaterials[index];
+    return mpMaterials[index];
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (51 bytes)
@@ -205,7 +205,7 @@ const nDraw::Material* rModel::getMaterial(u32 index) const {
 // Address: 0x01b92d70 - 0x01b92d78 (8 bytes)
 rMaterial* rModel::getMaterialResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMaterial;
+    return mpMaterial;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (28 bytes)
@@ -225,19 +225,19 @@ rMaterial* rModel::getMaterialResource() {
 // Address: 0x011d7a40 - 0x011d7a7b (59 bytes)
 u32 rModel::getPrimitiveIndexFromParts(u32 parts_no) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (this->mPrimitiveNum != static_cast<u32>(0)) {
-        u32 i = static_cast<u32>(0);
+    if (mPrimitiveNum != 0) {
+        u32 i = 0;
         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-        rModel::PRIMITIVE_INFO* p2 = this->mPrimitiveInfo;
+        PRIMITIVE_INFO* p2 = mPrimitiveInfo;
         do {
             if (p2->parts_no == parts_no) {
                 return i;
             }
-            i += static_cast<u32>(1);
+            i += 1u;
             p2 += static_cast<int>(1);
-        } while (i < this->mPrimitiveNum);
+        } while (i < mPrimitiveNum);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -259,20 +259,20 @@ u32 rModel::getPrimitiveIndexFromParts(u32 parts_no) {
 // Address: 0x011d8890 - 0x011d8898 (8 bytes)
 u32 rModel::getRCNWidth() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRCNInfo.width;
+    return mRCNInfo.width;
 }
 
 // Address: 0x011d88a0 - 0x011d88a8 (8 bytes)
 u32 rModel::getRCNHeight() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRCNInfo.height;
+    return mRCNInfo.height;
 }
 
 // Address: 0x011d74c0 - 0x011d74ea (42 bytes)
 // Also emitted as: _ZN6rModelD0Ev at 0x011d74f0
 rModel::~rModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rModel::clear();
+    this->rModel::clear();
 }
 
 // No out-of-line body: no code in the ELF
@@ -294,6 +294,8 @@ __attribute__((weak)) void rModel::initMaterial() {
 // No out-of-line body: 1 inlined copy in 1 function (40 bytes)
 //   in cBakeModel::buildBakeJointsVertex at 0x00030b22-0x00030b4a (called at cBakeModel.cpp:1308)
 // bool rModel::isSeparateStride(const u32 bstride, const u32 stride) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rModel::MyDTI rModel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

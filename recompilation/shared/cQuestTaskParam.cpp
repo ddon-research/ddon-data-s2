@@ -50,7 +50,7 @@ const MtDTI& cQuestTaskParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cQuestTaskParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestTaskParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ inline void cQuestTaskParam::operator delete(void* p_addr) {
 nQuest::QUEST_TYPE cQuestTaskParam::getQuestType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::QUEST_TYPE
-    return static_cast<nQuest::QUEST_TYPE>(this->mQuestType);
+    return static_cast<nQuest::QUEST_TYPE>(mQuestType);
 }
 
 // Address: 0x001c55e0 - 0x001c55f5 (21 bytes)
@@ -121,38 +121,38 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setQuestLogDetail(const 
 // Address: 0x001c5d40 - 0x001c5d47 (7 bytes)
 bool cQuestTaskParam::hasHint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHasHint;
+    return mHasHint;
 }
 
 // Address: 0x001c5d50 - 0x001c5d58 (8 bytes)
 void cQuestTaskParam::buyHint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHasHint = true;
+    mHasHint = true;
 }
 
 // Address: 0x001c5d60 - 0x001c5d67 (7 bytes)
 bool cQuestTaskParam::isEnableCancel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnableCancel;
+    return mEnableCancel;
 }
 
 // Address: 0x001c5d70 - 0x001c5d7b (11 bytes)
 cQuestTaskParam& cQuestTaskParam::setEnableCancel(bool isEnableCancel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnableCancel = isEnableCancel;
+    mEnableCancel = isEnableCancel;
     return *this;
 }
 
 // Address: 0x001c5d80 - 0x001c5d87 (7 bytes)
 bool cQuestTaskParam::isTutorialGuide() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsTutorialGuide;
+    return mIsTutorialGuide;
 }
 
 // Address: 0x001c5d90 - 0x001c5d9b (11 bytes)
 cQuestTaskParam& cQuestTaskParam::setTutorialGuide(bool isTutorialGuide) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsTutorialGuide = isTutorialGuide;
+    mIsTutorialGuide = isTutorialGuide;
     return *this;
 }
 
@@ -195,90 +195,90 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setAreaId(u32 areaId) {
 // Address: 0x001c5de0 - 0x001c5f71 (401 bytes)
 void cQuestTaskParam::resetParam() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mKeyItemPoint.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mKeyItemPoint.mLength != 0) {
         // inferred: the value the loop at 0x1c5e00 carries; no location-less local in scope fits
-        u32 v0_0 = this->mKeyItemPoint.::MtArray::mLength;
+        u32 v0_0 = mKeyItemPoint.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mKeyItemPoint.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mKeyItemPoint.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mKeyItemPoint.::MtArray::mLength) {
-                    v0_0 = this->mKeyItemPoint.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mKeyItemPoint.mpArray[i0_3] != nullptr) {
+                delete mKeyItemPoint.mpArray[i0_3];
+                if ((i0_3 + 1u) < mKeyItemPoint.mLength) {
+                    v0_0 = mKeyItemPoint.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mKeyItemPoint.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mKeyItemPoint.::MtArray::mpArray));
+    if (mKeyItemPoint.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mKeyItemPoint.mpArray));
     }
-    this->mKeyItemPoint.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mKeyItemPoint.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mKeyItemPoint.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mRandomValue.::MtArray::mLength != static_cast<u32>(0)) {
+    mKeyItemPoint.mpArray = nullptr;
+    mKeyItemPoint.mBufsiz = 0;
+    mKeyItemPoint.mLength = 0;
+    if (mRandomValue.mLength != 0) {
         // inferred: the value the loop at 0x1c5e80 carries; no location-less local in scope fits
-        u32 v2_0 = this->mRandomValue.::MtArray::mLength;
+        u32 v2_0 = mRandomValue.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRandomValue.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRandomValue.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mRandomValue.::MtArray::mLength) {
-                    v2_0 = this->mRandomValue.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mRandomValue.mpArray[i2_3] != nullptr) {
+                delete mRandomValue.mpArray[i2_3];
+                if ((i2_3 + 1u) < mRandomValue.mLength) {
+                    v2_0 = mRandomValue.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRandomValue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRandomValue.::MtArray::mpArray));
+    if (mRandomValue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRandomValue.mpArray));
     }
-    this->mRandomValue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRandomValue.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRandomValue.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mTimer.::MtArray::mLength != static_cast<u32>(0)) {
+    mRandomValue.mpArray = nullptr;
+    mRandomValue.mBufsiz = 0;
+    mRandomValue.mLength = 0;
+    if (mTimer.mLength != 0) {
         // inferred: the value the loop at 0x1c5f00 carries; no location-less local in scope fits
-        u32 v4_0 = this->mTimer.::MtArray::mLength;
+        u32 v4_0 = mTimer.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTimer.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTimer.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mTimer.::MtArray::mLength) {
-                    v4_0 = this->mTimer.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mTimer.mpArray[i4_3] != nullptr) {
+                delete mTimer.mpArray[i4_3];
+                if ((i4_3 + 1u) < mTimer.mLength) {
+                    v4_0 = mTimer.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTimer.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTimer.::MtArray::mpArray));
+    if (mTimer.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTimer.mpArray));
     }
-    this->mTimer.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTimer.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTimer.::MtArray::mLength = static_cast<u32>(0);
+    mTimer.mpArray = nullptr;
+    mTimer.mBufsiz = 0;
+    mTimer.mLength = 0;
 }
 
 // Address: 0x001c5f80 - 0x001c60eb (363 bytes)
@@ -303,17 +303,17 @@ u32 cQuestTaskParam::getKeyItemPoint(u32 idx) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(304))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 304)) != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x1c60f8, 0x1c6127)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(320))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(320))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 320)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 320)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(304))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 304)));
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001c6130 - 0x001c6292 (354 bytes)
@@ -332,15 +332,15 @@ bool cQuestTaskParam::hasRandom(u32 idx) const {
     // DWARF local not rendered: cQuestPoint* pRndValue;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mRandomValue.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mRandomValue.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x1c62a6, 0x1c62d2)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mRandomValue.::MtArray::mpArray[i]) + static_cast<long>(8))) == idx) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mRandomValue.mpArray[i]) + 8)) == idx) {
                 return true;
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mRandomValue.::MtArray::mLength);
+            i += 1u;
+        } while (i < mRandomValue.mLength);
     }
     return false;
 }
@@ -356,26 +356,97 @@ s32 cQuestTaskParam::getRandom(u32 idx) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(336))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 336)) != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x1c62e8, 0x1c6317)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(352))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
-                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(352))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12)));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 352)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 352)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12));
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(336))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 336)));
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x001c6320 - 0x001c63fa (218 bytes)
-__attribute__((weak)) void cQuestTaskParam::resetRandom(u32 idx) {
-    // local: const u32 randNum;
-    // local: u32 i;
-    // local: cQuestPoint* pRndValue;
-    DDON_STUB("cQuestTaskParam::resetRandom")
-    /* stub */
+void cQuestTaskParam::resetRandom(u32 idx) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cQuestPoint* pRndValue;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    const u32 randNum = mRandomValue.mLength;
+    if (randNum != 0) {
+        // inferred: the value the loop at 0x1c6350 carries; no location-less local in scope fits
+        MtObject* * v0_1 = mRandomValue.getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_2 = 0;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i3_3;
+        // inferred: the value carried to 0x1c639e; no location-less local in scope fits
+        u32 v6_0;
+        // inferred: the value the loop at 0x1c63b0 carries; no location-less local in scope fits
+        unsigned int v7_1;
+        // inferred: the value the loop at 0x1c63b0 carries; no location-less local in scope fits
+        u32 v7_2;
+        // inferred: the value the loop at 0x1c63b0 carries; no location-less local in scope fits
+        unsigned int v7_3;
+        for (;;) {
+            // inferred: the value the loop at 0x1c6370 carries; no location-less local in scope fits
+            MtObject* v3_5 = v0_1[static_cast<int>(i0_2)];
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_5) + 8)) == idx) {
+                i3_3 = 0;
+                for (;;) {
+                    if (v3_5 == v0_1[i3_3]) {
+                        if (!mRandomValue.mAutoDelete) {
+                            v6_0 = randNum;
+                        } else {
+                            if (v3_5 == nullptr) {
+                                v6_0 = randNum;
+                            } else {
+                                delete v3_5;
+                                v6_0 = mRandomValue.mLength;
+                            }
+                        }
+                        if ((i3_3 + 1u) < v6_0) {
+                            v7_1 = i3_3 + 1u;
+                            v7_2 = v6_0;
+                            v7_3 = i3_3;
+                            for (;;) {
+                                mRandomValue.mpArray[v7_3] = mRandomValue.mpArray[v7_1];
+                                if (v7_2 != (v7_1 + 1u)) {
+                                    v7_3 = v7_1;
+                                    v7_1 = v7_1 + 1u;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        mRandomValue.mLength = v6_0 - 1u;
+                        break;
+                    } else {
+                        if ((i3_3 + 1u) < randNum) {
+                            i3_3 = i3_3 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (v3_5 != nullptr) {
+                    delete v3_5;
+                    return;
+                } else {
+                    break;
+                }
+                break;
+            }
+            if ((i0_2 + 1u) < randNum) {
+                i0_2 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x001c6400 - 0x001c6562 (354 bytes)
@@ -402,17 +473,17 @@ s32 cQuestTaskParam::getTimer(u32 idx) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(368))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 368)) != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x1c658c, 0x1c65b6)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(384))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
-                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(384))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12)));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 384)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 384)) + static_cast<unsigned long>(i * 8u)) + 0)) + 12));
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(368))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 368)));
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // Address: 0x001c65c0 - 0x001c65fa (58 bytes)
@@ -421,17 +492,17 @@ void cQuestTaskParam::endTimer(u32 idx) {
     // DWARF local not rendered: cQuestPoint* pTimer;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x170 from cQuestTaskParam*
-    const u32 timerNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(368));
-    if (timerNum != static_cast<u32>(0)) {
+    const u32 timerNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 368);
+    if (timerNum != 0) {
         // inferred: the value the loop at 0x1c65e0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mTimer.::MtArray::getBuffer();
+        MtObject* * v0_1 = mTimer.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) == idx) {
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(12)) = static_cast<unsigned int>(0);
+        for (unsigned int i0_2 = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 8)) == idx) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 12) = 0;
             }
-            if (timerNum != (i0_2 + static_cast<unsigned int>(1))) {
-                i0_2 += static_cast<unsigned int>(1);
+            if (timerNum != (i0_2 + 1u)) {
+                i0_2 += 1u;
             } else {
                 break;
             }
@@ -440,39 +511,110 @@ void cQuestTaskParam::endTimer(u32 idx) {
 }
 
 // Address: 0x001c6600 - 0x001c66da (218 bytes)
-__attribute__((weak)) void cQuestTaskParam::resetTimer(u32 idx) {
-    // local: const u32 timerNum;
-    // local: u32 i;
-    // local: cQuestPoint* pTimer;
-    DDON_STUB("cQuestTaskParam::resetTimer")
-    /* stub */
+void cQuestTaskParam::resetTimer(u32 idx) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cQuestPoint* pTimer;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    const u32 timerNum = mTimer.mLength;
+    if (timerNum != 0) {
+        // inferred: the value the loop at 0x1c6630 carries; no location-less local in scope fits
+        MtObject* * v0_1 = mTimer.getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_2 = 0;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i3_3;
+        // inferred: the value carried to 0x1c667e; no location-less local in scope fits
+        u32 v6_0;
+        // inferred: the value the loop at 0x1c6690 carries; no location-less local in scope fits
+        unsigned int v7_1;
+        // inferred: the value the loop at 0x1c6690 carries; no location-less local in scope fits
+        u32 v7_2;
+        // inferred: the value the loop at 0x1c6690 carries; no location-less local in scope fits
+        unsigned int v7_3;
+        for (;;) {
+            // inferred: the value the loop at 0x1c6650 carries; no location-less local in scope fits
+            MtObject* v3_5 = v0_1[static_cast<int>(i0_2)];
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_5) + 8)) == idx) {
+                i3_3 = 0;
+                for (;;) {
+                    if (v3_5 == v0_1[i3_3]) {
+                        if (!mTimer.mAutoDelete) {
+                            v6_0 = timerNum;
+                        } else {
+                            if (v3_5 == nullptr) {
+                                v6_0 = timerNum;
+                            } else {
+                                delete v3_5;
+                                v6_0 = mTimer.mLength;
+                            }
+                        }
+                        if ((i3_3 + 1u) < v6_0) {
+                            v7_1 = i3_3 + 1u;
+                            v7_2 = v6_0;
+                            v7_3 = i3_3;
+                            for (;;) {
+                                mTimer.mpArray[v7_3] = mTimer.mpArray[v7_1];
+                                if (v7_2 != (v7_1 + 1u)) {
+                                    v7_3 = v7_1;
+                                    v7_1 = v7_1 + 1u;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        mTimer.mLength = v6_0 - 1u;
+                        break;
+                    } else {
+                        if ((i3_3 + 1u) < timerNum) {
+                            i3_3 = i3_3 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (v3_5 != nullptr) {
+                    delete v3_5;
+                    return;
+                } else {
+                    break;
+                }
+                break;
+            }
+            if ((i0_2 + 1u) < timerNum) {
+                i0_2 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x001c66e0 - 0x001c66e7 (7 bytes)
 u32 cQuestTaskParam::getOrderConditionNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrderConditions.::MtArray::mLength;
+    return mOrderConditions.mLength;
 }
 
 // Address: 0x001c66f0 - 0x001c670d (29 bytes)
 u32 cQuestTaskParam::getOrderConditionType(u32 Idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Idx < this->mOrderConditions.::MtArray::mLength) {
-        return static_cast<u32>(static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::mpArray[Idx])->::nQuest::cOrderCondition::getConditionType());
+    if (Idx < mOrderConditions.mLength) {
+        return static_cast<u32>(static_cast<nQuest::cOrderCondition*>(mOrderConditions.mpArray[Idx])->getConditionType());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x001c6710 - 0x001c674d (61 bytes)
 MT_CTSTR cQuestTaskParam::getOrderConditionParamMessage(u32 idx, u32 paramIdx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mOrderConditions.::MtArray::mLength) {
-        if (paramIdx == static_cast<u32>(1)) {
-            return static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::mpArray[idx])->::nQuest::cOrderCondition::getConditionParam2Message();
+    if (idx < mOrderConditions.mLength) {
+        if (paramIdx == 1) {
+            return static_cast<nQuest::cOrderCondition*>(mOrderConditions.mpArray[idx])->getConditionParam2Message();
         } else {
-            if (paramIdx == static_cast<u32>(0)) {
-                return static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::mpArray[idx])->::nQuest::cOrderCondition::getConditionParam1Message();
+            if (paramIdx == 0) {
+                return static_cast<nQuest::cOrderCondition*>(mOrderConditions.mpArray[idx])->getConditionParam1Message();
             } else {
                 return "";
             }
@@ -488,7 +630,7 @@ MT_CTSTR cQuestTaskParam::getOrderConditionParamMessage(u32 idx, u32 paramIdx) c
 // Address: 0x001c6760 - 0x001c676c (12 bytes)
 nQuest::RET_DISABLE_ORDER_CONDITION_TYPE cQuestTaskParam::getEnableOrderList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::getEnableOrderList(this->mOrderConditions);
+    return nQuest::getEnableOrderList(mOrderConditions);
 }
 
 // No out-of-line body: no code in the ELF
@@ -507,34 +649,34 @@ __attribute__((weak)) bool cQuestTaskParam::loadOrderConditionQuest() {
 // Address: 0x001c5a50 - 0x001c5ae1 (145 bytes)
 void cQuestTaskParam::resetOrderCondition() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mOrderConditions.mLength != 0) {
         // inferred: the value the loop at 0x1c5a70 carries; no location-less local in scope fits
-        u32 v0_0 = this->mOrderConditions.::MtArray::mLength;
+        u32 v0_0 = mOrderConditions.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mOrderConditions.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mOrderConditions.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mOrderConditions.::MtArray::mLength) {
-                    v0_0 = this->mOrderConditions.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mOrderConditions.mpArray[i0_3] != nullptr) {
+                delete mOrderConditions.mpArray[i0_3];
+                if ((i0_3 + 1u) < mOrderConditions.mLength) {
+                    v0_0 = mOrderConditions.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mOrderConditions.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mOrderConditions.::MtArray::mpArray));
+    if (mOrderConditions.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mOrderConditions.mpArray));
     }
-    this->mOrderConditions.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mOrderConditions.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mOrderConditions.::MtArray::mLength = static_cast<u32>(0);
+    mOrderConditions.mpArray = nullptr;
+    mOrderConditions.mBufsiz = 0;
+    mOrderConditions.mLength = 0;
 }
 
 // Address: 0x001c5af0 - 0x001c5bf7 (263 bytes)
@@ -548,14 +690,14 @@ __attribute__((weak)) void cQuestTaskParam::addOrderCondition(u32 Type, s32 Para
 void cQuestTaskParam::updateOrderConditionMsg() {
     // DWARF local not rendered: cOrderCondition* pCondition;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
-    if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mOrderConditions.mLength != 0) {
         do {
-            if (this->mOrderConditions.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::getBuffer()[static_cast<int>(i)])->::nQuest::cOrderCondition::updateConditionMessage();
+            if (mOrderConditions.getBuffer()[static_cast<int>(i)] != nullptr) {
+                static_cast<nQuest::cOrderCondition*>(mOrderConditions.getBuffer()[static_cast<int>(i)])->updateConditionMessage();
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mOrderConditions.::MtArray::mLength);
+            i += 1u;
+        } while (i < mOrderConditions.mLength);
     }
 }
 
@@ -575,7 +717,7 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::offTaskState(cQuestTaskP
 bool cQuestTaskParam::checkTaskState(u32 questState) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mTaskStatus) >> static_cast<unsigned long>(questState & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mTaskStatus) >> static_cast<unsigned long>(questState & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x001c6890 - 0x001c68b4 (36 bytes)
@@ -583,8 +725,8 @@ bool cQuestTaskParam::isEndDistribution() const {
     // DWARF local not rendered: t64 endDistTime;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1120
-    if (this->mEndDistributionData.::MtTime::getTime() != static_cast<t64>(0)) {
-        return this->mEndDistributionData.::MtTime::getTime() < static_cast<sNetworkExt*>(::sNetwork::getInstance())->mWorldServerTime.mTime;
+    if (mEndDistributionData.getTime() != 0) {
+        return mEndDistributionData.getTime() < static_cast<sNetworkExt*>(sNetwork::getInstance())->mWorldServerTime.mTime;
     } else {
         return false;
     }
@@ -596,32 +738,32 @@ bool cQuestTaskParam::isEndDistribution() const {
 // Address: 0x001c68d0 - 0x001c68d8 (8 bytes)
 const MtTime& cQuestTaskParam::getEndDistributionData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndDistributionData;
+    return mEndDistributionData;
 }
 
 // Address: 0x001c68e0 - 0x001c68e8 (8 bytes)
 u32 cQuestTaskParam::getBaseLevel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBaseLevel;
+    return mBaseLevel;
 }
 
 // Address: 0x001c68f0 - 0x001c68f7 (7 bytes)
 bool cQuestTaskParam::isDiscovery() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDiscovery;
+    return mIsDiscovery;
 }
 
 // Address: 0x001c6900 - 0x001c690b (11 bytes)
 cQuestTaskParam& cQuestTaskParam::setDiscovery(bool isDiscovery) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDiscovery = isDiscovery;
+    mIsDiscovery = isDiscovery;
     return *this;
 }
 
 // Address: 0x001c6910 - 0x001c6918 (8 bytes)
 u32 cQuestTaskParam::getNpcId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNpcId;
+    return mNpcId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -630,7 +772,7 @@ u32 cQuestTaskParam::getNpcId() const {
 // Address: 0x001c6930 - 0x001c6938 (8 bytes)
 u32 cQuestTaskParam::getClearNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClearNum;
+    return mClearNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -639,106 +781,106 @@ u32 cQuestTaskParam::getClearNum() const {
 // Address: 0x001c6950 - 0x001c6957 (7 bytes)
 nQuest::REPEAT_BONUS_TYPE cQuestTaskParam::getRepeatBonusType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nQuest::REPEAT_BONUS_TYPE>(this->mRepeatBonus.mType);
+    return static_cast<nQuest::REPEAT_BONUS_TYPE>(mRepeatBonus.mType);
 }
 
 // Address: 0x001c6960 - 0x001c6967 (7 bytes)
 u32 cQuestTaskParam::getRepeatBonusParam() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRepeatBonus.mParam;
+    return mRepeatBonus.mParam;
 }
 
 // Address: 0x001c6970 - 0x001c6977 (7 bytes)
 u32 cQuestTaskParam::getNextRepeatBonusNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRepeatBonus.mNum;
+    return mRepeatBonus.mNum;
 }
 
 // Address: 0x001c6980 - 0x001c6988 (8 bytes)
 u32 cQuestTaskParam::getAreaId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaId;
+    return mAreaId;
 }
 
 // Address: 0x001c6990 - 0x001c6997 (7 bytes)
 u32 cQuestTaskParam::getAreaPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaPoint;
+    return mAreaPoint;
 }
 
 // Address: 0x001c69a0 - 0x001c69a7 (7 bytes)
 u32 cQuestTaskParam::getExp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mExp;
+    return mExp;
 }
 
 // Address: 0x001c69b0 - 0x001c69b7 (7 bytes)
 u32 cQuestTaskParam::getGold() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGold;
+    return mGold;
 }
 
 // Address: 0x001c69c0 - 0x001c69c7 (7 bytes)
 u32 cQuestTaskParam::getRim() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRim;
+    return mRim;
 }
 
 // Address: 0x001c69d0 - 0x001c69d7 (7 bytes)
 u32 cQuestTaskParam::getUndiscoverItemId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUndiscoveryItemId;
+    return mUndiscoveryItemId;
 }
 
 // Address: 0x001c69e0 - 0x001c69e7 (7 bytes)
 u32 cQuestTaskParam::getUndiscoverExp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUndiscoveryExp;
+    return mUndiscoveryExp;
 }
 
 // Address: 0x001c69f0 - 0x001c69f7 (7 bytes)
 u32 cQuestTaskParam::getUndiscoverGold() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUndiscoveryGold;
+    return mUndiscoveryGold;
 }
 
 // Address: 0x001c6a00 - 0x001c6a07 (7 bytes)
 u32 cQuestTaskParam::getUndiscoverRim() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUndiscoveryRim;
+    return mUndiscoveryRim;
 }
 
 // Address: 0x001c6a10 - 0x001c6a18 (8 bytes)
 u16 cQuestTaskParam::getOrderLimit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrderLimit;
+    return mOrderLimit;
 }
 
 // Address: 0x001c6a20 - 0x001c6a27 (7 bytes)
 u32 cQuestTaskParam::getCP() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGetCP;
+    return mGetCP;
 }
 
 // Address: 0x001c6a30 - 0x001c6a38 (8 bytes)
 u32 cQuestTaskParam::getBoardType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBoardType;
+    return mBoardType;
 }
 
 // Address: 0x001c6a40 - 0x001c6a4d (13 bytes)
 const nQuest::cFixRewardData* cQuestTaskParam::getSelectReward(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (idx == static_cast<u32>(0)) ? (&this->mSelectReward[0]) : static_cast<const nQuest::cFixRewardData*>(nullptr);
+    return (idx == 0) ? (&mSelectReward[0]) : static_cast<const nQuest::cFixRewardData*>(nullptr);
 }
 
 // Address: 0x001c6a50 - 0x001c6a63 (19 bytes)
 const nQuest::cRewardData* cQuestTaskParam::getFixReward(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(7)) {
-        return &this->mFixReward[idx];
+    if (idx <= 7u) {
+        return &mFixReward[idx];
     } else {
-        return static_cast<const nQuest::cRewardData*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -748,19 +890,19 @@ const nQuest::cRewardData* cQuestTaskParam::getFixReward(u32 idx) const {
 // Address: 0x001c6a80 - 0x001c6a88 (8 bytes)
 u32 cQuestTaskParam::getRandomRewardNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRandomRewardNum;
+    return mRandomRewardNum;
 }
 
 // Address: 0x001c6a90 - 0x001c6a98 (8 bytes)
 u32 cQuestTaskParam::getChargeRewardNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mChargeRewardNum;
+    return mChargeRewardNum;
 }
 
 // Address: 0x001c6aa0 - 0x001c6aa8 (8 bytes)
 u32 cQuestTaskParam::getProgressBonusNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mProgressBonusNum;
+    return mProgressBonusNum;
 }
 
 // Address: 0x001c6ab0 - 0x001c6ca5 (501 bytes)
@@ -784,8 +926,10 @@ __attribute__((weak)) void cQuestTaskParam::createProperty(MtPropertyList& s) {
 // Address: 0x001c7000 - 0x001c7005 (5 bytes)
 MtUI* cQuestTaskParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestTaskParam::MyDTI cQuestTaskParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cQuestTaskParam.cpp at 0x001c723e-0x001c727e (called at cQuestTaskParam.cpp:93)
@@ -823,7 +967,7 @@ const MtDTI& cQuestTaskParam::cQuestPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cQuestTaskParam::cQuestPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::cQuestPoint::DTI)->memAlloc(sz, align, ::cQuestTaskParam::cQuestPoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestTaskParam::cQuestPoint::DTI)->memAlloc(sz, align, cQuestTaskParam::cQuestPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -837,7 +981,7 @@ inline void* cQuestTaskParam::cQuestPoint::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestTaskParam::cQuestPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::cQuestPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestTaskParam::cQuestPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -870,6 +1014,8 @@ __attribute__((weak)) void cQuestTaskParam::cQuestPoint::createProperty(MtProper
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestTaskParam::cQuestPoint::MyDTI cQuestTaskParam::cQuestPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cQuestTaskParam.cpp at 0x001c727e-0x001c72b7 (called at cQuestTaskParam.cpp:1720)
 //   in _GLOBAL__sub_I_cQuestTaskParam.cpp at 0x001c727e-0x001c72b7 (called at cQuestTaskParam.cpp:35)
@@ -878,7 +1024,7 @@ __attribute__((weak)) void cQuestTaskParam::cQuestPoint::createProperty(MtProper
 // Address: 0x001c7010 - 0x001c7058 (72 bytes)
 MtObject* cQuestTaskParam::cQuestPoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestTaskParam::cQuestPoint;
+    return new (16u) cQuestTaskParam::cQuestPoint;
 }
 
 // Instance at 0x01987150 - 0x01987155 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

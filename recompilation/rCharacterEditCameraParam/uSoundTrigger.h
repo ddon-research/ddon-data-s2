@@ -264,5 +264,5 @@ inline cSoundTriggerListener::cSoundTriggerListener() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uSoundTrigger::cTriggerGroupManager::cTriggerGroupManager() {
-    this->mHitCount = static_cast<u16>(0);
+    this->mHitCount = 0;
 }

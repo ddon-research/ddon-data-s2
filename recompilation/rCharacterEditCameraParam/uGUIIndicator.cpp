@@ -28,7 +28,7 @@ const MtDTI& uGUIIndicator::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIIndicator::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIIndicator::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIIndicator::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIIndicator::getAllocator() {
 // Address: 0x00b66060 - 0x00b660a0 (64 bytes)
 void* uGUIIndicator::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIIndicator::getAllocator()->memAlloc(sz, align, ::uGUIIndicator::DTI.::MtDTI::getID());
+    return uGUIIndicator::getAllocator()->memAlloc(sz, align, uGUIIndicator::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,15 +75,15 @@ uGUIIndicator::~uGUIIndicator() {
 // Address: 0x00b66320 - 0x00b66325 (5 bytes)
 void uGUIIndicator::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b66330 - 0x00b66398 (104 bytes)
 bool uGUIIndicator::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SAVE_ICON_GUI"), static_cast<u32>(129), static_cast<t64>(1421660773)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SAVE_ICON_GUI"), 129u, 1421660773l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -103,21 +103,21 @@ __attribute__((weak)) void uGUIIndicator::setup() {
 // Address: 0x00b66630 - 0x00b66661 (49 bytes)
 void uGUIIndicator::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b66670 - 0x00b6667f (15 bytes)
 void uGUIIndicator::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u32>(0)) {
+    if (mType == 0) {
         return;
     }
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (29 bytes)
@@ -132,7 +132,7 @@ void uGUIIndicator::draw(cDraw* pDraw) {
 // Address: 0x00b66610 - 0x00b6662a (26 bytes)
 void uGUIIndicator::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIIndicator::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIIndicator::updateWait);
 }
 
 // Address: 0x00b66680 - 0x00b66681 (1 bytes)
@@ -142,6 +142,8 @@ __attribute__((weak)) void uGUIIndicator::updateWait() {
 
 // No out-of-line body: no code in the ELF
 // void uGUIIndicator::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIIndicator::MyDTI uGUIIndicator::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIIndicator.cpp at 0x00b6679f-0x00b667dc (called at uGUIIndicator.cpp:44)

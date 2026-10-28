@@ -36,7 +36,7 @@ const MtDTI& uGUIAnnounce::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIAnnounce::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIAnnounce::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIAnnounce::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uGUIAnnounce::getAllocator() {
 // Address: 0x00923f60 - 0x00923fa0 (64 bytes)
 void* uGUIAnnounce::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIAnnounce::getAllocator()->memAlloc(sz, align, ::uGUIAnnounce::DTI.::MtDTI::getID());
+    return uGUIAnnounce::getAllocator()->memAlloc(sz, align, uGUIAnnounce::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uGUIAnnounce::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIAnnounce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIAnnounce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIAnnounce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,25 +79,25 @@ inline void uGUIAnnounce::operator delete(void* p_addr) {
 // Also emitted as: _ZN12uGUIAnnounceD0Ev at 0x00924140
 uGUIAnnounce::~uGUIAnnounce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x009241a0 - 0x009241a5 (5 bytes)
 void uGUIAnnounce::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009241b0 - 0x00924218 (104 bytes)
 bool uGUIAnnounce::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ANOUNCE_GUI"), static_cast<u32>(129), static_cast<t64>(1427764303)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ANOUNCE_GUI"), 129u, 1427764303l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -180,22 +180,22 @@ __attribute__((weak)) void uGUIAnnounce::updateNoLeader() {
 void uGUIAnnounce::updateEntryBoardReady() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167b
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isEntryBoardReadyWait() != false) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady == false) {
-            if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() == false) {
-                this->mType = static_cast<u32>(0);
-                this->mFrame = 0.0f;
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isEntryBoardReadyWait()) {
+        if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->mEntryBoardReady) {
+            if (!static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
+                mType = 0;
+                mFrame = 0.0f;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
             }
         } else {
-            this->mType = static_cast<u32>(0);
-            this->mFrame = 0.0f;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            mType = 0;
+            mFrame = 0.0f;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
         }
     } else {
-        this->mType = static_cast<u32>(0);
-        this->mFrame = 0.0f;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        mType = 0;
+        mFrame = 0.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
     }
 }
 
@@ -222,22 +222,22 @@ __attribute__((weak)) void uGUIAnnounce::updateEntryBoardReentry() {
 // Address: 0x00925010 - 0x00925092 (130 bytes)
 void uGUIAnnounce::updateDisableContents() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
-            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableEntryBoard() != false) {
-                this->mType = static_cast<u32>(0);
-                this->mFrame = 0.0f;
-                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+            if (sQuestManagerExt::getInstance()->isEnableEntryBoard()) {
+                mType = 0;
+                mFrame = 0.0f;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
             }
         } else {
-            this->mType = static_cast<u32>(0);
-            this->mFrame = 0.0f;
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            mType = 0;
+            mFrame = 0.0f;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
         }
     } else {
-        this->mType = static_cast<u32>(0);
-        this->mFrame = 0.0f;
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        mType = 0;
+        mFrame = 0.0f;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
     }
 }
 
@@ -251,19 +251,19 @@ __attribute__((weak)) void uGUIAnnounce::updateNoSituation() {
 // Address: 0x009248c0 - 0x009248ff (63 bytes)
 void uGUIAnnounce::updateEndWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
-        if (this->mpInstAnim->isAnimationEnd() != false) {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
+    if (mpInstAnim != nullptr) {
+        if (mpInstAnim->isAnimationEnd()) {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
         }
     } else {
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
     }
 }
 
 // Address: 0x009251b0 - 0x009251b9 (9 bytes)
 void uGUIAnnounce::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (407 bytes)
@@ -277,6 +277,8 @@ void uGUIAnnounce::updateExit() {
 //   in uGUIAnnounce::updateWait at 0x009247d6-0x00924820 (called at uGUIAnnounce.cpp:267)
 //   in uGUIAnnounce::updateNoLeader at 0x00924afd-0x00924b49 (called at uGUIAnnounce.cpp:347)
 // void uGUIAnnounce::adjustWindowColor();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIAnnounce::MyDTI uGUIAnnounce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIAnnounce.cpp at 0x009253bf-0x009253fc (called at uGUIAnnounce.cpp:36)

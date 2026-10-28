@@ -35,7 +35,7 @@ const MtDTI& rStageList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageList::DTI)->memAlloc(sz, align, ::rStageList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageList::DTI)->memAlloc(sz, align, rStageList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rStageList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,10 +64,10 @@ inline void rStageList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStageList::rStageList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->::cResource::clear();
-    this->mpArrayInfo = static_cast<rStageList::Info*>(nullptr);
-    this->mArrayInfoNum = static_cast<u32>(0);
+    setAttribute(18u);
+    this->cResource::clear();
+    mpArrayInfo = nullptr;
+    mArrayInfoNum = 0;
 }
 
 // Address: 0x006c27f0 - 0x006c2871 (129 bytes)
@@ -118,17 +118,17 @@ __attribute__((weak)) bool rStageList::save(MtStream& out) {
 // Address: 0x01aa85c0 - 0x01aa85ef (47 bytes)
 rStageList::Info* rStageList::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getNum()) {
-        return &this->mpArrayInfo[index];
+    if (index < getNum()) {
+        return &mpArrayInfo[index];
     } else {
-        return static_cast<rStageList::Info*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01aa85f0 - 0x01aa85f4 (4 bytes)
 u32 rStageList::getNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayInfoNum;
+    return mArrayInfoNum;
 }
 
 // No out-of-line body: 6 inlined copies in 4 functions (140 bytes)
@@ -170,27 +170,26 @@ bool rStageList::isLobby(s32 stgNo) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from const unsigned long
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc1, held ahead of the effects the ELF orders after it
-    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc4, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(136));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 136);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc4, held ahead of the effects the ELF orders after it
-    u32 t1 = this->getNum();
+    u32 t1 = getNum();
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
-    if (t1 != static_cast<u32>(0)) {
+    unsigned int i3 = 0;
+    if (t1 != 0) {
         do {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2ce0, held ahead of the effects the ELF orders after it
-            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2ce8, held ahead of the effects the ELF orders after it
-            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(128));
-            const rStageList::Info* pInfo = this->getInfo(i3);
-            if (pInfo != static_cast<const rStageList::Info*>(nullptr)) {
-                if (pInfo->mStageNo != static_cast<unsigned int>(stgNo)) {
-                } else {
-                    return pInfo->mType == static_cast<u32>(1);
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 128);
+            const Info* pInfo = getInfo(i3);
+            if (pInfo != nullptr) {
+                if (pInfo->mStageNo == static_cast<unsigned int>(stgNo)) {
+                    return pInfo->mType == 1;
                 }
             }
-            i3 += static_cast<unsigned int>(1);
+            i3 += 1u;
         } while (i3 < t1);
     }
     return false;
@@ -204,27 +203,26 @@ bool rStageList::isField(s32 stgNo) const {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from const unsigned long
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d91, held ahead of the effects the ELF orders after it
-    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d94, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(136));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 136);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d94, held ahead of the effects the ELF orders after it
-    u32 t1 = this->getNum();
+    u32 t1 = getNum();
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
-    if (t1 != static_cast<u32>(0)) {
+    unsigned int i3 = 0;
+    if (t1 != 0) {
         do {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2db0, held ahead of the effects the ELF orders after it
-            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2db8, held ahead of the effects the ELF orders after it
-            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(128));
-            const rStageList::Info* pInfo = this->getInfo(i3);
-            if (pInfo != static_cast<const rStageList::Info*>(nullptr)) {
-                if (pInfo->mStageNo != static_cast<unsigned int>(stgNo)) {
-                } else {
-                    return pInfo->mType == static_cast<u32>(2);
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + 128);
+            const Info* pInfo = getInfo(i3);
+            if (pInfo != nullptr) {
+                if (pInfo->mStageNo == static_cast<unsigned int>(stgNo)) {
+                    return pInfo->mType == 2;
                 }
             }
-            i3 += static_cast<unsigned int>(1);
+            i3 += 1u;
         } while (i3 < t1);
     }
     return false;
@@ -236,32 +234,34 @@ rStageList::Info* rStageList::searchInfo(s32 stgNo) const {
     // DWARF local not rendered: Info* pInfo;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    const u32 numOfStages = this->getNum();
+    const u32 numOfStages = getNum();
     // inferred: the value carried to 0x6c2d76; no location-less local in scope fits
-    rStageList::Info* v1_0;
-    if (numOfStages == static_cast<u32>(0)) {
-        v1_0 = static_cast<rStageList::Info*>(nullptr);
+    Info* v1_0;
+    if (numOfStages == 0) {
+        v1_0 = nullptr;
     } else {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_2 = 0;;) {
             // inferred: a temporary for the result of the call at 0x6c2d59, used 3 times; no DWARF local holds it
-            rStageList::Info* t0 = this->getInfo(i0_2);
-            if (t0 != static_cast<rStageList::Info*>(nullptr)) {
+            Info* t0 = getInfo(i0_2);
+            if (t0 != nullptr) {
                 if (t0->mStageNo == static_cast<unsigned int>(stgNo)) {
                     v1_0 = t0;
                     break;
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < numOfStages) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < numOfStages) {
+                i0_2 += 1u;
             } else {
-                v1_0 = static_cast<rStageList::Info*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
     }
     return v1_0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageList::MyDTI rStageList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageList.cpp at 0x006c2f92-0x006c2fcf (called at rStageList.cpp:107)
@@ -271,7 +271,7 @@ rStageList::Info* rStageList::searchInfo(s32 stgNo) const {
 // Address: 0x006c2700 - 0x006c276c (108 bytes)
 MtObject* rStageList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageList;
+    return new (16u) rStageList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,7 +296,7 @@ const MtDTI& rStageList::Info::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageList::Info::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageList::Info::DTI)->memAlloc(sz, align, ::rStageList::Info::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageList::Info::DTI)->memAlloc(sz, align, rStageList::Info::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -311,7 +311,7 @@ inline void* rStageList::Info::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rStageList4InfoD0Ev at 0x01aa8610-0x01aa863a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStageList::Info::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageList::Info::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageList::Info::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -337,7 +337,7 @@ __attribute__((weak)) void rStageList::Info::createProperty(MtPropertyList& s) {
 // Address: 0x006c26c0 - 0x006c26c5 (5 bytes)
 MtUI* rStageList::Info::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -351,6 +351,8 @@ MtUI* rStageList::Info::createUI(MtProperty& prop) {
 //   in rStageList::save at 0x006c2bc7-0x006c2c5e (called at rStageList.cpp:191)
 // bool rStageList::Info::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageList::Info::MyDTI rStageList::Info::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rStageList.cpp at 0x006c2f50-0x006c2f92 (called at rStageList.cpp:13)
 //   in _GLOBAL__sub_I_rStageList.cpp at 0x006c2f50-0x006c2f92 (called at rStageList.h:18)
@@ -359,6 +361,6 @@ MtUI* rStageList::Info::createUI(MtProperty& prop) {
 // Address: 0x006c21e0 - 0x006c2240 (96 bytes)
 MtObject* rStageList::Info::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageList::Info;
+    return new (16u) rStageList::Info;
 }
 

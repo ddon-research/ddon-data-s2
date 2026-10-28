@@ -29,7 +29,7 @@ const MtDTI& uGUIPopRmcQuestInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopRmcQuestInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopRmcQuestInfo::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIPopRmcQuestInfo::getAllocator() {
 // Address: 0x00bcabd0 - 0x00bcac10 (64 bytes)
 void* uGUIPopRmcQuestInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopRmcQuestInfo::getAllocator()->memAlloc(sz, align, ::uGUIPopRmcQuestInfo::DTI.::MtDTI::getID());
+    return uGUIPopRmcQuestInfo::getAllocator()->memAlloc(sz, align, uGUIPopRmcQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIPopRmcQuestInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopRmcQuestInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,17 +78,17 @@ uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {
 // Address: 0x00bcb000 - 0x00bcb005 (5 bytes)
 void uGUIPopRmcQuestInfo::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00bcb010 - 0x00bcb0bf (175 bytes)
 bool uGUIPopRmcQuestInfo::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_BNSINFO_GUI"), static_cast<u32>(129), static_cast<t64>(1419228881)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_BNSINFO_GUI"), 129u, 1419228881l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -100,9 +100,9 @@ bool uGUIPopRmcQuestInfo::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUEST_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -125,7 +125,7 @@ __attribute__((weak)) void uGUIPopRmcQuestInfo::setup() {
 // Address: 0x00bcb470 - 0x00bcb475 (5 bytes)
 void uGUIPopRmcQuestInfo::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00bcb480 - 0x00bcba24 (1444 bytes)
@@ -235,6 +235,8 @@ __attribute__((weak)) bool uGUIPopRmcQuestInfo::setupBonusPos(uGUIPopRmcQuestInf
 //   in uGUIPopRmcQuestInfo::setupItem at 0x00bcbc75-0x00bcbc8e (called at uGUIPopRmcQuestInfo.cpp:564)
 //   and 13 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIPopRmcQuestInfo::getMsg(u32 index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopRmcQuestInfo::MyDTI uGUIPopRmcQuestInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopRmcQuestInfo.cpp at 0x00bcc7bf-0x00bcc7fc (called at uGUIPopRmcQuestInfo.cpp:32)

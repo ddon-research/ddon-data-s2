@@ -35,7 +35,7 @@ const MtDTI& cpJob01::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpJob01::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpJob01::DTI);
+    return MtMemoryAllocator::getAllocator(cpJob01::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* cpJob01::getAllocator() {
 // Address: 0x00498ff0 - 0x00499030 (64 bytes)
 void* cpJob01::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpJob01::getAllocator()->memAlloc(sz, align, ::cpJob01::DTI.::MtDTI::getID());
+    return cpJob01::getAllocator()->memAlloc(sz, align, cpJob01::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* cpJob01::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJob01::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJob01::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJob01::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,17 +88,17 @@ cpJob01::~cpJob01() {
 // Address: 0x004990a0 - 0x004990a5 (5 bytes)
 void cpJob01::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::setup();
+    this->cpJobBase::setup();
 }
 
 // Address: 0x004990b0 - 0x004990ef (63 bytes)
 void cpJob01::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpJobBase::update();
-    if (this->mGuardModeNoCancelTimer > 0.0f) {
-        this->mGuardModeNoCancelTimer = this->mGuardModeNoCancelTimer - ::sMain::getInstance()->mDeltaTime;
+    this->cpJobBase::update();
+    if (mGuardModeNoCancelTimer > 0.0f) {
+        mGuardModeNoCancelTimer = mGuardModeNoCancelTimer - sMain::getInstance()->mDeltaTime;
     }
-    this->::cpJob01::updateGuardInfo();
+    updateGuardInfo();
 }
 
 // Address: 0x004992c0 - 0x0049947c (444 bytes)
@@ -127,11 +127,11 @@ __attribute__((weak)) void cpJob01::callbackGuard(cHitInfo* pHitInfo) {
 // Address: 0x00499770 - 0x0049979b (43 bytes)
 void cpJob01::callbackGuard_calc(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHitInfo->mpGuardInfo->mGuardDefenceResultType != static_cast<u32>(1)) {
+    if (pHitInfo->mpGuardInfo->mGuardDefenceResultType != 1) {
         return;
     }
-    if (this->mJustGuardTimer > 0.0f) {
-        if ((this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) == static_cast<u32>(0)) {
+    if (mJustGuardTimer > 0.0f) {
+        if ((mpHuman->uDDOModel::mUnitId & 1024u) == 0) {
             pHitInfo->mpGuardInfo->mIsJustGuardSuccess = true;
         }
     }
@@ -141,30 +141,30 @@ void cpJob01::callbackGuard_calc(cHitInfo* pHitInfo) {
 void cpJob01::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
     // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+    if (mpHuman == nullptr) {
         return;
     }
-    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
+    if (mpHuman->getActMgrPtr() == nullptr) {
         return;
     }
-    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() != static_cast<u32>(4119)) {
+    if (mpHuman->getActMgrPtr()->getActionNo() != 4119) {
         return;
     }
-    if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+    if (mpHuman == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam() == static_cast<cAttackParam*>(nullptr)) {
+    if (pHitInfo->getAttackParam() == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfo::getAttackParam()->mAttackID != static_cast<u16>(7)) {
+    if (pHitInfo->getAttackParam()->mAttackID != 7) {
         return;
     }
-    if (this->::cpJobBase::mpHuman->::uCharacter::mpAltitudeFallCtrl->mLastFallDistance > (-200.0f)) {
+    if (mpHuman->mpAltitudeFallCtrl->mLastFallDistance > -200.0f) {
     } else {
-        if (this->::cpJobBase::mpHuman->::uCharacter::mpAltitudeFallCtrl->mLastFallDistance > (-500.0f)) {
-            this->::cpJobBase::mpHuman->::uDDOModel::attackParamReplace(pHitInfo, static_cast<s32>(1));
+        if (mpHuman->mpAltitudeFallCtrl->mLastFallDistance > -500.0f) {
+            mpHuman->attackParamReplace(pHitInfo, 1);
         } else {
-            this->::cpJobBase::mpHuman->::uDDOModel::attackParamReplace(pHitInfo, static_cast<s32>(2));
+            mpHuman->attackParamReplace(pHitInfo, 2);
         }
     }
 }
@@ -178,24 +178,24 @@ __attribute__((weak)) void cpJob01::callbackReplaceHitInfo_Def(cHitInfo* pHitInf
 void cpJob01::callbackAttack(cHitInfo* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x49986a read, used 3 times; no DWARF local holds it
-    uHuman* t0 = this->::cpJobBase::mpHuman;
-    if (t0 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = mpHuman;
+    if (t0 == nullptr) {
         return;
     }
-    if (t0->::uDDOModel::isMaster() == false) {
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->uDDOModel::mUnitId & 8u) == 0) {
         return;
     }
-    u32 actNo = this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
-    if ((actNo - static_cast<u32>(8192)) <= static_cast<u32>(2)) {
-        ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(0));
+    u32 actNo = mpHuman->getActMgrPtr()->getActionNo();
+    if ((actNo - 8192u) <= 2u) {
+        nDDOUtility::requestOnTutorialFlg(0);
     }
-    if ((actNo & static_cast<u32>(4294967294)) != static_cast<u32>(8200)) {
+    if ((actNo & 0xFFFFFFFEu) != 8200) {
         return;
     }
-    ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(2));
+    nDDOUtility::requestOnTutorialFlg(2);
 }
 
 // Address: 0x004998d0 - 0x004998d1 (1 bytes)
@@ -233,19 +233,19 @@ bool cpJob01::checkCndEnableDelayCombo() const {
     // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
-    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
-        nHuman::GROW_NORMAL_SKILL_ENUM skillID = ::cHumanActId::getNormalSkillId(static_cast<u32>(8217), static_cast<nHuman::JOB_ENUM>(1));
+    if (mpHuman != nullptr) {
+        nHuman::GROW_NORMAL_SKILL_ENUM skillID = cHumanActId::getNormalSkillId(8217u, nHuman::JOB_ID_TOP);
         // inferred: a temporary for the value the load at 0x499d8a read, used 4 times; no DWARF local holds it
-        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
-        if (t0 != static_cast<unsigned long>(0)) {
-            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+        if (t0 != 0) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) > 9) {
                 return false;
             } else {
                 // inferred: a temporary for the result of the call at 0x499db3, used once; no DWARF local holds it
-                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
                 // inferred: a temporary for the result of the call at 0x499dbe, used once; no DWARF local holds it
-                u32 t2 = ::nHuman::getNormalSkillIdArrayIndex(skillID);
-                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(3176))) != static_cast<unsigned int>(0);
+                u32 t2 = nHuman::getNormalSkillIdArrayIndex(skillID);
+                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * 40u)) + static_cast<unsigned long>(t2 * 4u)) + 3176)) != 0;
             }
         } else {
             return false;
@@ -283,9 +283,9 @@ bool cpJob01::isCanCustom13() {
     // DWARF local not rendered: u32 nowAct;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
-        if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-            if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() & static_cast<u32>(4294967292)) == static_cast<u32>(4136)) {
+    if (mpHuman != nullptr) {
+        if (mpHuman->getActMgrPtr() != nullptr) {
+            if ((mpHuman->getActMgrPtr()->getActionNo() & 0xFFFFFFFCu) == 4136) {
                 return false;
             } else {
                 return true;
@@ -326,6 +326,8 @@ __attribute__((weak)) void cpJob01::updateGuardInfo() {
 //   in cpJob01::callbackReplaceHitInfo_Atk at 0x004997de-0x00499815, 0x0049981a-0x0049983c (called at cpJob01.cpp:457)
 // void cpJob01::replaceHitInfo_CUSTOM_08(cHitInfo* pHitInfo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJob01::MyDTI cpJob01::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpJob01.cpp at 0x00499f2f-0x00499f6c (called at cpJob01.cpp:50)
 //   in _GLOBAL__sub_I_cpJob01.cpp at 0x00499f2f-0x00499f6c (called at cpJob01.h:25)
@@ -334,6 +336,6 @@ __attribute__((weak)) void cpJob01::updateGuardInfo() {
 // Address: 0x00498f80 - 0x00498fe8 (104 bytes)
 MtObject* cpJob01::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpJob01;
+    return new (16u) cpJob01;
 }
 

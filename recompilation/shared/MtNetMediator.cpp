@@ -43,7 +43,7 @@ MtNetMediator::~MtNetMediator() {
 // Address: 0x00db7140 - 0x00db7145 (5 bytes)
 void MtNetMediator::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::createProperty(s);
+    this->MtNetObject::createProperty(s);
 }
 
 // Address: 0x00db7b10 - 0x00db7d80 (624 bytes)
@@ -79,14 +79,12 @@ __attribute__((weak)) void MtNetMediator::move() {
 void MtNetMediator::setLibsslContextId(int id) {
     // DWARF local not rendered: ScopedLock sl;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
-    this->mLibsslContextId = id;
-    if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mLibsslContextId = id;
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -101,14 +99,12 @@ __attribute__((weak)) int MtNetMediator::getLibsslContextId() {
 void MtNetMediator::setLibhttpContextId(int id) {
     // DWARF local not rendered: ScopedLock sl;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
-    this->mLibhttpContextId = id;
-    if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mLibhttpContextId = id;
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -286,14 +282,12 @@ __attribute__((weak)) void MtNetMediator::setBlockList(SceUserServiceUserId user
 void MtNetMediator::setWebApiLibContextId(int32_t id) {
     // DWARF local not rendered: ScopedLock sl;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
-    this->mWebApiLibContextId = id;
-    if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mWebApiLibContextId = id;
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -516,7 +510,7 @@ __attribute__((weak)) int MtNetMediator::getNpScoreContextId(SceUserServiceUserI
 // Address: 0x00dba250 - 0x00dba256 (6 bytes)
 s32 MtNetMediator::getNpScoreGameDataRankThreashold(s32 board_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(100);
+    return 100;
 }
 
 // Address: 0x00db9eb0 - 0x00db9f94 (228 bytes)
@@ -693,4 +687,7 @@ __attribute__((weak)) void MtNetMediator::updatePsnUsrAuthAsync(MtNetMediator::P
 
 // No out-of-line body: no code in the ELF
 // void MtNetMediator::setPsPlusEvent(SceUserServiceUserId user_id, SceNpPlusEventType event_id);
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtNetMediator* MtNetMediator::mpInstance;
 

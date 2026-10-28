@@ -115,21 +115,21 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cPrologueHmStatus::cPrologueHmStatus() {
-    this->mJob = static_cast<u8>(1);
-    this->mLv = static_cast<u8>(1);
-    this->mNormalId3 = static_cast<u8>(0);
-    this->mNormalId1 = static_cast<u8>(0);
-    this->mNormalId2 = static_cast<u8>(0);
-    this->mCustomId1 = static_cast<u8>(0);
-    this->mCustomId2 = static_cast<u8>(0);
-    this->mCustomId3 = static_cast<u8>(0);
-    this->mCustomId4 = static_cast<u8>(0);
-    this->mCustomId1Lv = static_cast<u8>(0);
-    this->mCustomId2Lv = static_cast<u8>(0);
-    this->mCustomId3Lv = static_cast<u8>(0);
-    this->mCustomId4Lv = static_cast<u8>(0);
-    this->mAtk = static_cast<u16>(0);
-    this->mDef = static_cast<u16>(0);
-    this->mMAtk = static_cast<u16>(0);
-    this->mMDef = static_cast<u16>(0);
+    this->mJob = 1;
+    this->mLv = 1;
+    this->mNormalId3 = 0;
+    this->mNormalId1 = 0;
+    this->mNormalId2 = 0;
+    this->mCustomId1 = 0;
+    this->mCustomId2 = 0;
+    this->mCustomId3 = 0;
+    this->mCustomId4 = 0;
+    this->mCustomId1Lv = 0;
+    this->mCustomId2Lv = 0;
+    this->mCustomId3Lv = 0;
+    this->mCustomId4Lv = 0;
+    this->mAtk = 0;
+    this->mDef = 0;
+    this->mMAtk = 0;
+    this->mMDef = 0;
 }

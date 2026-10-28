@@ -26,7 +26,7 @@ const MtDTI& cChildRegionStatus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cChildRegionStatus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cChildRegionStatus::DTI);
+    return MtMemoryAllocator::getAllocator(cChildRegionStatus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cChildRegionStatus::getAllocator() {
 // Address: 0x00050910 - 0x00050950 (64 bytes)
 void* cChildRegionStatus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cChildRegionStatus::getAllocator()->memAlloc(sz, align, ::cChildRegionStatus::DTI.::MtDTI::getID());
+    return cChildRegionStatus::getAllocator()->memAlloc(sz, align, cChildRegionStatus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cChildRegionStatus::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cChildRegionStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cChildRegionStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cChildRegionStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,104 +104,106 @@ void cChildRegionStatus::setParamFromRes(cChildRegionStatusParam* paramRes) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (paramRes == static_cast<cChildRegionStatusParam*>(nullptr)) {
+    if (paramRes == nullptr) {
         return;
     }
-    this->mNo = paramRes->mNo;
-    this->mParentNo[0] = paramRes->mParentNo[0];
-    this->mParentNo[1] = paramRes->mParentNo[1];
-    this->mAttackTolerance[0] = paramRes->mAttackTolerance[0];
-    this->mAttackTolerance[1] = paramRes->mAttackTolerance[1];
-    this->mAttackTolerance[2] = paramRes->mAttackTolerance[2];
-    this->mAttackTolerance[3] = paramRes->mAttackTolerance[3];
-    this->mMagicTolerance[0] = paramRes->mMagicTolerance[0];
-    this->mMagicTolerance[1] = paramRes->mMagicTolerance[1];
-    this->mMagicTolerance[2] = paramRes->mMagicTolerance[2];
-    this->mMagicTolerance[3] = paramRes->mMagicTolerance[3];
-    this->mMagicTolerance[4] = paramRes->mMagicTolerance[4];
-    this->mMagicTolerance[5] = paramRes->mMagicTolerance[5];
-    this->mMagicTolerance[6] = paramRes->mMagicTolerance[6];
-    this->mShrinkAdj = paramRes->mShrinkAdj;
-    this->mBlowAdj = paramRes->mBlowAdj;
-    this->mDownAdj = paramRes->mDownAdj;
-    this->mOcdAdj = paramRes->mOcdAdj;
-    this->mRageShrinkAdj = paramRes->mRageShrinkAdj;
-    this->mShakeAdjPhys[0] = paramRes->mShakeAdjPhys[0];
-    this->mShakeAdjPhys[1] = paramRes->mShakeAdjPhys[1];
-    this->mShakeAdjPhys[2] = paramRes->mShakeAdjPhys[2];
-    this->mShakeAdjPhys[3] = paramRes->mShakeAdjPhys[3];
-    this->mShakeAdjMagic[0] = paramRes->mShakeAdjMagic[0];
-    this->mShakeAdjMagic[1] = paramRes->mShakeAdjMagic[1];
-    this->mShakeAdjMagic[2] = paramRes->mShakeAdjMagic[2];
-    this->mShakeAdjMagic[3] = paramRes->mShakeAdjMagic[3];
-    this->mShakeAdjMagic[4] = paramRes->mShakeAdjMagic[4];
-    this->mShakeAdjMagic[5] = paramRes->mShakeAdjMagic[5];
-    this->mShakeAdjMagic[6] = paramRes->mShakeAdjMagic[6];
-    this->mShrinkDamageRatePhys[0] = paramRes->mShrinkDamageRatePhys[0];
-    this->mShrinkDamageRatePhys[1] = paramRes->mShrinkDamageRatePhys[1];
-    this->mShrinkDamageRatePhys[2] = paramRes->mShrinkDamageRatePhys[2];
-    this->mShrinkDamageRatePhys[3] = paramRes->mShrinkDamageRatePhys[3];
-    this->mShrinkDamageRateMagic[0] = paramRes->mShrinkDamageRateMagic[0];
-    this->mShrinkDamageRateMagic[1] = paramRes->mShrinkDamageRateMagic[1];
-    this->mShrinkDamageRateMagic[2] = paramRes->mShrinkDamageRateMagic[2];
-    this->mShrinkDamageRateMagic[3] = paramRes->mShrinkDamageRateMagic[3];
-    this->mShrinkDamageRateMagic[4] = paramRes->mShrinkDamageRateMagic[4];
-    this->mShrinkDamageRateMagic[5] = paramRes->mShrinkDamageRateMagic[5];
-    this->mShrinkDamageRateMagic[6] = paramRes->mShrinkDamageRateMagic[6];
-    this->mBlowDamageRatePhys[0] = paramRes->mBlowDamageRatePhys[0];
-    this->mBlowDamageRatePhys[1] = paramRes->mBlowDamageRatePhys[1];
-    this->mBlowDamageRatePhys[2] = paramRes->mBlowDamageRatePhys[2];
-    this->mBlowDamageRatePhys[3] = paramRes->mBlowDamageRatePhys[3];
-    this->mBlowDamageRateMagic[0] = paramRes->mBlowDamageRateMagic[0];
-    this->mBlowDamageRateMagic[1] = paramRes->mBlowDamageRateMagic[1];
-    this->mBlowDamageRateMagic[2] = paramRes->mBlowDamageRateMagic[2];
-    this->mBlowDamageRateMagic[3] = paramRes->mBlowDamageRateMagic[3];
-    this->mBlowDamageRateMagic[4] = paramRes->mBlowDamageRateMagic[4];
-    this->mBlowDamageRateMagic[5] = paramRes->mBlowDamageRateMagic[5];
-    this->mBlowDamageRateMagic[6] = paramRes->mBlowDamageRateMagic[6];
-    this->mDownDamageRatePhys[0] = paramRes->mDownDamageRatePhys[0];
-    this->mDownDamageRatePhys[1] = paramRes->mDownDamageRatePhys[1];
-    this->mDownDamageRatePhys[2] = paramRes->mDownDamageRatePhys[2];
-    this->mDownDamageRatePhys[3] = paramRes->mDownDamageRatePhys[3];
-    this->mDownDamageRateMagic[0] = paramRes->mDownDamageRateMagic[0];
-    this->mDownDamageRateMagic[1] = paramRes->mDownDamageRateMagic[1];
-    this->mDownDamageRateMagic[2] = paramRes->mDownDamageRateMagic[2];
-    this->mDownDamageRateMagic[3] = paramRes->mDownDamageRateMagic[3];
-    this->mDownDamageRateMagic[4] = paramRes->mDownDamageRateMagic[4];
-    this->mDownDamageRateMagic[5] = paramRes->mDownDamageRateMagic[5];
-    this->mDownDamageRateMagic[6] = paramRes->mDownDamageRateMagic[6];
-    this->mShakeAdjPhys[0] = paramRes->mShakeAdjPhys[0];
-    this->mShakeAdjPhys[1] = paramRes->mShakeAdjPhys[1];
-    this->mShakeAdjPhys[2] = paramRes->mShakeAdjPhys[2];
-    this->mShakeAdjPhys[3] = paramRes->mShakeAdjPhys[3];
-    this->mShakeAdjShake = paramRes->mShakeAdjShake;
-    this->mHitStopAdj = paramRes->mHitStopAdj;
-    this->mHitSlowAdj = paramRes->mHitSlowAdj;
-    this->mHitStopDefenceAttr = paramRes->mHitStopDefenceAttr;
-    this->mSurface = paramRes->mSurface;
-    this->mIsClimbBonus = paramRes->mIsClimbBonus;
-    this->mIsDownWeakRegion = paramRes->mIsDownWeakRegion;
-    this->mCorePointType = static_cast<nRegionStatus::CORE_POINT_TYPE>(paramRes->mCorePointType);
-    this->mCorePointID = paramRes->mCorePointID;
-    this->mCoreJointNo = paramRes->mCoreJointNo;
-    this->mCoreJointOffset.x = paramRes->mCoreJointOffset.x;
-    this->mCoreJointOffset.y = paramRes->mCoreJointOffset.y;
-    this->mCoreJointOffset.z = paramRes->mCoreJointOffset.z;
-    this->mCoreJointOffset.pad_ = 0.0f;
-    this->mCoreEpvIndex = paramRes->mCoreEpvIndex;
-    this->mCoreEpvElementNo = paramRes->mCoreEpvElementNo;
-    this->mAttackReactionType[0] = paramRes->mAttackReactionType[0];
-    this->mAttackReactionType[1] = paramRes->mAttackReactionType[1];
-    this->mAttackReactionType[2] = paramRes->mAttackReactionType[2];
-    this->mAttackReactionType[3] = paramRes->mAttackReactionType[3];
-    this->mIsElementWeakRegion[0] = paramRes->mIsElementWeakRegion[0];
-    this->mIsElementWeakRegion[1] = paramRes->mIsElementWeakRegion[1];
-    this->mIsElementWeakRegion[2] = paramRes->mIsElementWeakRegion[2];
-    this->mIsElementWeakRegion[3] = paramRes->mIsElementWeakRegion[3];
-    this->mIsElementWeakRegion[4] = paramRes->mIsElementWeakRegion[4];
-    this->mIsElementWeakRegion[5] = paramRes->mIsElementWeakRegion[5];
-    this->mIsElementWeakRegion[6] = paramRes->mIsElementWeakRegion[6];
+    mNo = paramRes->mNo;
+    mParentNo[0] = paramRes->mParentNo[0];
+    mParentNo[1] = paramRes->mParentNo[1];
+    mAttackTolerance[0] = paramRes->mAttackTolerance[0];
+    mAttackTolerance[1] = paramRes->mAttackTolerance[1];
+    mAttackTolerance[2] = paramRes->mAttackTolerance[2];
+    mAttackTolerance[3] = paramRes->mAttackTolerance[3];
+    mMagicTolerance[0] = paramRes->mMagicTolerance[0];
+    mMagicTolerance[1] = paramRes->mMagicTolerance[1];
+    mMagicTolerance[2] = paramRes->mMagicTolerance[2];
+    mMagicTolerance[3] = paramRes->mMagicTolerance[3];
+    mMagicTolerance[4] = paramRes->mMagicTolerance[4];
+    mMagicTolerance[5] = paramRes->mMagicTolerance[5];
+    mMagicTolerance[6] = paramRes->mMagicTolerance[6];
+    mShrinkAdj = paramRes->mShrinkAdj;
+    mBlowAdj = paramRes->mBlowAdj;
+    mDownAdj = paramRes->mDownAdj;
+    mOcdAdj = paramRes->mOcdAdj;
+    mRageShrinkAdj = paramRes->mRageShrinkAdj;
+    mShakeAdjPhys[0] = paramRes->mShakeAdjPhys[0];
+    mShakeAdjPhys[1] = paramRes->mShakeAdjPhys[1];
+    mShakeAdjPhys[2] = paramRes->mShakeAdjPhys[2];
+    mShakeAdjPhys[3] = paramRes->mShakeAdjPhys[3];
+    mShakeAdjMagic[0] = paramRes->mShakeAdjMagic[0];
+    mShakeAdjMagic[1] = paramRes->mShakeAdjMagic[1];
+    mShakeAdjMagic[2] = paramRes->mShakeAdjMagic[2];
+    mShakeAdjMagic[3] = paramRes->mShakeAdjMagic[3];
+    mShakeAdjMagic[4] = paramRes->mShakeAdjMagic[4];
+    mShakeAdjMagic[5] = paramRes->mShakeAdjMagic[5];
+    mShakeAdjMagic[6] = paramRes->mShakeAdjMagic[6];
+    mShrinkDamageRatePhys[0] = paramRes->mShrinkDamageRatePhys[0];
+    mShrinkDamageRatePhys[1] = paramRes->mShrinkDamageRatePhys[1];
+    mShrinkDamageRatePhys[2] = paramRes->mShrinkDamageRatePhys[2];
+    mShrinkDamageRatePhys[3] = paramRes->mShrinkDamageRatePhys[3];
+    mShrinkDamageRateMagic[0] = paramRes->mShrinkDamageRateMagic[0];
+    mShrinkDamageRateMagic[1] = paramRes->mShrinkDamageRateMagic[1];
+    mShrinkDamageRateMagic[2] = paramRes->mShrinkDamageRateMagic[2];
+    mShrinkDamageRateMagic[3] = paramRes->mShrinkDamageRateMagic[3];
+    mShrinkDamageRateMagic[4] = paramRes->mShrinkDamageRateMagic[4];
+    mShrinkDamageRateMagic[5] = paramRes->mShrinkDamageRateMagic[5];
+    mShrinkDamageRateMagic[6] = paramRes->mShrinkDamageRateMagic[6];
+    mBlowDamageRatePhys[0] = paramRes->mBlowDamageRatePhys[0];
+    mBlowDamageRatePhys[1] = paramRes->mBlowDamageRatePhys[1];
+    mBlowDamageRatePhys[2] = paramRes->mBlowDamageRatePhys[2];
+    mBlowDamageRatePhys[3] = paramRes->mBlowDamageRatePhys[3];
+    mBlowDamageRateMagic[0] = paramRes->mBlowDamageRateMagic[0];
+    mBlowDamageRateMagic[1] = paramRes->mBlowDamageRateMagic[1];
+    mBlowDamageRateMagic[2] = paramRes->mBlowDamageRateMagic[2];
+    mBlowDamageRateMagic[3] = paramRes->mBlowDamageRateMagic[3];
+    mBlowDamageRateMagic[4] = paramRes->mBlowDamageRateMagic[4];
+    mBlowDamageRateMagic[5] = paramRes->mBlowDamageRateMagic[5];
+    mBlowDamageRateMagic[6] = paramRes->mBlowDamageRateMagic[6];
+    mDownDamageRatePhys[0] = paramRes->mDownDamageRatePhys[0];
+    mDownDamageRatePhys[1] = paramRes->mDownDamageRatePhys[1];
+    mDownDamageRatePhys[2] = paramRes->mDownDamageRatePhys[2];
+    mDownDamageRatePhys[3] = paramRes->mDownDamageRatePhys[3];
+    mDownDamageRateMagic[0] = paramRes->mDownDamageRateMagic[0];
+    mDownDamageRateMagic[1] = paramRes->mDownDamageRateMagic[1];
+    mDownDamageRateMagic[2] = paramRes->mDownDamageRateMagic[2];
+    mDownDamageRateMagic[3] = paramRes->mDownDamageRateMagic[3];
+    mDownDamageRateMagic[4] = paramRes->mDownDamageRateMagic[4];
+    mDownDamageRateMagic[5] = paramRes->mDownDamageRateMagic[5];
+    mDownDamageRateMagic[6] = paramRes->mDownDamageRateMagic[6];
+    mShakeAdjPhys[0] = paramRes->mShakeAdjPhys[0];
+    mShakeAdjPhys[1] = paramRes->mShakeAdjPhys[1];
+    mShakeAdjPhys[2] = paramRes->mShakeAdjPhys[2];
+    mShakeAdjPhys[3] = paramRes->mShakeAdjPhys[3];
+    mShakeAdjShake = paramRes->mShakeAdjShake;
+    mHitStopAdj = paramRes->mHitStopAdj;
+    mHitSlowAdj = paramRes->mHitSlowAdj;
+    mHitStopDefenceAttr = paramRes->mHitStopDefenceAttr;
+    mSurface = paramRes->mSurface;
+    mIsClimbBonus = paramRes->mIsClimbBonus;
+    mIsDownWeakRegion = paramRes->mIsDownWeakRegion;
+    mCorePointType = static_cast<nRegionStatus::CORE_POINT_TYPE>(paramRes->mCorePointType);
+    mCorePointID = paramRes->mCorePointID;
+    mCoreJointNo = paramRes->mCoreJointNo;
+    mCoreJointOffset.x = paramRes->mCoreJointOffset.x;
+    mCoreJointOffset.y = paramRes->mCoreJointOffset.y;
+    mCoreJointOffset.z = paramRes->mCoreJointOffset.z;
+    mCoreJointOffset.pad_ = 0.0f;
+    mCoreEpvIndex = paramRes->mCoreEpvIndex;
+    mCoreEpvElementNo = paramRes->mCoreEpvElementNo;
+    mAttackReactionType[0] = paramRes->mAttackReactionType[0];
+    mAttackReactionType[1] = paramRes->mAttackReactionType[1];
+    mAttackReactionType[2] = paramRes->mAttackReactionType[2];
+    mAttackReactionType[3] = paramRes->mAttackReactionType[3];
+    mIsElementWeakRegion[0] = paramRes->mIsElementWeakRegion[0];
+    mIsElementWeakRegion[1] = paramRes->mIsElementWeakRegion[1];
+    mIsElementWeakRegion[2] = paramRes->mIsElementWeakRegion[2];
+    mIsElementWeakRegion[3] = paramRes->mIsElementWeakRegion[3];
+    mIsElementWeakRegion[4] = paramRes->mIsElementWeakRegion[4];
+    mIsElementWeakRegion[5] = paramRes->mIsElementWeakRegion[5];
+    mIsElementWeakRegion[6] = paramRes->mIsElementWeakRegion[6];
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cChildRegionStatus::MyDTI cChildRegionStatus::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cChildRegionStatus.cpp at 0x00051020-0x00051062 (called at cChildRegionStatus.cpp:21)

@@ -31,7 +31,7 @@ const MtDTI& uStageCraftPawnCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStageCraftPawnCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStageCraftPawnCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uStageCraftPawnCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* uStageCraftPawnCtrl::getAllocator() {
 // Address: 0x00d2b010 - 0x00d2b050 (64 bytes)
 void* uStageCraftPawnCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStageCraftPawnCtrl::getAllocator()->memAlloc(sz, align, ::uStageCraftPawnCtrl::DTI.::MtDTI::getID());
+    return uStageCraftPawnCtrl::getAllocator()->memAlloc(sz, align, uStageCraftPawnCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uStageCraftPawnCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageCraftPawnCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageCraftPawnCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageCraftPawnCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,10 +70,10 @@ inline void uStageCraftPawnCtrl::operator delete(void* p_addr) {
 // Address: 0x00d2b0c0 - 0x00d2b12e (110 bytes)
 uStageCraftPawnCtrl::uStageCraftPawnCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getMyPawnList();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getRentedPawnList();
-    this->mUpdateTime = ::sMain::getInstance()->::sMain::getFps() * 5.0f;
-    this->mUpdateTimer = this->mUpdateTime;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getMyPawnList();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRentedPawnList();
+    mUpdateTime = sMain::getInstance()->getFps() * 5.0f;
+    mUpdateTimer = mUpdateTime;
 }
 
 // Address: 0x00d2b130 - 0x00d2b135 (5 bytes)
@@ -98,11 +98,11 @@ __attribute__((weak)) void uStageCraftPawnCtrl::move() {
 void uStageCraftPawnCtrl::requestUpdatePawn() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from uStageCraftPawnCtrl*
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) != static_cast<unsigned char>(1)) {
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) != 1) {
         return;
     }
-    this->::uStageCraftPawnCtrl::updatePawnList();
-    this->::uStageCraftPawnCtrl::updatePawnDisp();
+    updatePawnList();
+    updatePawnDisp();
 }
 
 // Address: 0x00d2beb0 - 0x00d2beb1 (1 bytes)
@@ -133,35 +133,33 @@ __attribute__((weak)) void uStageCraftPawnCtrl::moveMain() {
 // Address: 0x00d2b360 - 0x00d2b418 (184 bytes)
 __attribute__((weak)) void uStageCraftPawnCtrl::updatePawnList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    ::memset(static_cast<void*>(&this->mMainPawnList[0]), static_cast<int>(0), static_cast<size_t>(640));
-    if (::sCraftManager::getInstance()->::sCraftManager::getMyPawnNum() <= static_cast<s32>(0)) {
-    } else {
+    memset(static_cast<void*>(&mMainPawnList[0]), 0, 640ul);
+    if (sCraftManager::getInstance()->getMyPawnNum() > 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (int i0_3 = static_cast<int>(0);;) {
-            if (::sCraftManager::getInstance()->::sCraftManager::getMyPawnState(static_cast<u32>(i0_3)) != static_cast<u8>(1)) {
-                this->mMainPawnList[i0_3] = ::sCraftManager::getInstance()->::sCraftManager::getMyPawnId(static_cast<u32>(i0_3));
+        for (int i0_3 = 0;;) {
+            if (sCraftManager::getInstance()->getMyPawnState(static_cast<u32>(i0_3)) != 1) {
+                mMainPawnList[i0_3] = sCraftManager::getInstance()->getMyPawnId(static_cast<u32>(i0_3));
             }
-            if ((i0_3 + static_cast<int>(1)) < ::sCraftManager::getInstance()->::sCraftManager::getMyPawnNum()) {
-                i0_3 = i0_3 + static_cast<int>(1);
+            if ((i0_3 + 1) < sCraftManager::getInstance()->getMyPawnNum()) {
+                i0_3 = i0_3 + 1;
             } else {
                 break;
             }
         }
     }
-    if (::sCraftManager::getInstance()->::sCraftManager::getRentalPawnNum() <= static_cast<s32>(0)) {
-    } else {
+    if (sCraftManager::getInstance()->getRentalPawnNum() > 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (int i2_3 = static_cast<int>(0);;) {
-            this->mRentalPawnList[i2_3] = ::sCraftManager::getInstance()->::sCraftManager::getRentalPawnId(static_cast<u32>(i2_3));
-            if ((i2_3 + static_cast<int>(1)) < ::sCraftManager::getInstance()->::sCraftManager::getRentalPawnNum()) {
-                i2_3 = i2_3 + static_cast<int>(1);
+        for (int i2_3 = 0;;) {
+            mRentalPawnList[i2_3] = sCraftManager::getInstance()->getRentalPawnId(static_cast<u32>(i2_3));
+            if ((i2_3 + 1) < sCraftManager::getInstance()->getRentalPawnNum()) {
+                i2_3 = i2_3 + 1;
             } else {
                 break;
             }
         }
     }
-    this->::uStageCraftPawnCtrl::updateWorkPawnList();
-    this->::uStageCraftPawnCtrl::updateWaitPawnList();
+    updateWorkPawnList();
+    updateWaitPawnList();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (83 bytes)
@@ -190,7 +188,7 @@ __attribute__((weak)) void uStageCraftPawnCtrl::updateWaitPawnList() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uStageCraftPawnCtrl::clearPawnList() {
-    ::memset(static_cast<void*>(&this->mMainPawnList[0]), static_cast<int>(0), static_cast<size_t>(640));
+    memset(static_cast<void*>(&mMainPawnList[0]), 0, 640ul);
 }
 
 // Address: 0x00d2b420 - 0x00d2b6a7 (647 bytes)
@@ -253,6 +251,8 @@ __attribute__((weak)) void uStageCraftPawnCtrl::onDispPawn(uControlNpc* pCtrlNpc
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageCraftPawnCtrl::MyDTI uStageCraftPawnCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageCraftPawnCtrl.cpp at 0x00d2bfbf-0x00d2bffc (called at uStageCraftPawnCtrl.cpp:30)
 //   in _GLOBAL__sub_I_uStageCraftPawnCtrl.cpp at 0x00d2bfbf-0x00d2bffc (called at uStageCraftPawnCtrl.h:49)
@@ -261,6 +261,6 @@ __attribute__((weak)) void uStageCraftPawnCtrl::onDispPawn(uControlNpc* pCtrlNpc
 // Address: 0x00d2af70 - 0x00d2b00a (154 bytes)
 MtObject* uStageCraftPawnCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uStageCraftPawnCtrl;
+    return new (16u) uStageCraftPawnCtrl;
 }
 

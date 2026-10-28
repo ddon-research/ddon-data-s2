@@ -36,14 +36,14 @@ __attribute__((weak)) bool cInputTextKeyboardHook::OnKeyEvent(cInputTextKeyboard
 // Address: 0x000dfb60 - 0x000dfb67 (7 bytes)
 void nInputTextKeyboardHook::Keycode::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->keyType = static_cast<u16>(0);
-    this->modifierFlags = static_cast<u16>(0);
+    keyType = 0;
+    modifierFlags = 0;
 }
 
 // Address: 0x000dfb70 - 0x000dfb78 (8 bytes)
 bool nInputTextKeyboardHook::Keycode::isValid() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->keyType != static_cast<u16>(0);
+    return keyType != 0;
 }
 
 // No out-of-line body: no code in the ELF

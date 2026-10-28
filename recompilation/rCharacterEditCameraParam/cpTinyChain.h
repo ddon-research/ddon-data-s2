@@ -84,3 +84,9 @@ protected:
     static const u32 STABLIZE_NUM = 20;
     static const u32 EVENT_STABLIZE_NUM = 200;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpTinyChain::initActiveSequence at 0x53e676-0x53e67b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpTinyChain::setBlendSpeedCain(f32 blendSpeed) {
+    this->mBlendSpeedChain = blendSpeed;
+}

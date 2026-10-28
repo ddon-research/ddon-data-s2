@@ -51,7 +51,7 @@ const MtDTI& uGUIsMenuBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIsMenuBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIsMenuBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIsMenuBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,33 +87,33 @@ __attribute__((weak)) void uGUIsMenuBase::createProperty(MtPropertyList& s) {
 // Address: 0x00c59120 - 0x00c591a0 (128 bytes)
 bool uGUIsMenuBase::changeFlow(u32 sw, bool force) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSwitch == sw) {
-        if (force == false) {
+    if (mSwitch == sw) {
+        if (!force) {
             return false;
         }
     }
-    this->mSwitch = sw;
-    this->::uGUIBase::setVariableParamFromId(this->mVAR_sw, sw, true);
-    this->::uGUIBase::setChangeFlowVariable(this->mVAR_change_flow, true);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIsMenuBase::updateInit);
-    this->::uGUI::play(0.0f);
-    this->execChangeFlow();
+    mSwitch = sw;
+    setVariableParamFromId(mVAR_sw, sw, true);
+    setChangeFlowVariable(mVAR_change_flow, true);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIsMenuBase::updateInit);
+    play(0.0f);
+    execChangeFlow();
     return true;
 }
 
 // Address: 0x00c591a0 - 0x00c591db (59 bytes)
 bool uGUIsMenuBase::reserveFlow(u32 sw, bool force) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSwitch == sw) {
-        if (force == false) {
+    if (mSwitch == sw) {
+        if (!force) {
             return false;
         }
     }
-    if (this->mMoveNum != static_cast<s32>(0)) {
-        this->mReserveSwitch = sw;
-        this->mIsReserveForce = force;
+    if (mMoveNum != 0) {
+        mReserveSwitch = sw;
+        mIsReserveForce = force;
     } else {
-        this->changeFlow(sw, force);
+        changeFlow(sw, force);
     }
     return true;
 }
@@ -132,35 +132,27 @@ __attribute__((weak)) void uGUIsMenuBase::updateWaiting() {
 // Address: 0x00c58ea0 - 0x00c58f49 (169 bytes)
 void uGUIsMenuBase::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
-    } else {
-        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
-        } else {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mReserveSwitch == static_cast<u32>(4294967295)) {
-    } else {
-        if (this->::uGUIBase::mIsEndLoadResource == false) {
-        } else {
-            this->::uGUIBase::mIsCurrentFuncExecute = false;
+    if (mReserveSwitch != 0xFFFFFFFFu) {
+        if (mIsEndLoadResource) {
+            mIsCurrentFuncExecute = false;
         }
     }
-    this->::uGUIBase::move();
-    if (this->mReserveSwitch == static_cast<u32>(4294967295)) {
-    } else {
-        if (this->::uGUIBase::mIsEndLoadResource == false) {
-        } else {
-            this->::uGUIBase::mIsCurrentFuncExecute = true;
-            this->changeFlow(this->mReserveSwitch, this->mIsReserveForce);
-            this->mReserveSwitch = static_cast<u32>(4294967295);
+    this->uGUIBase::move();
+    if (mReserveSwitch != 0xFFFFFFFFu) {
+        if (mIsEndLoadResource) {
+            mIsCurrentFuncExecute = true;
+            changeFlow(mReserveSwitch, mIsReserveForce);
+            mReserveSwitch = 0xFFFFFFFF;
         }
     }
-    if (this->mMoveNum > static_cast<s32>(99)) {
-    } else {
-        if (this->::uGUIBase::mIsEndLoadResource == false) {
-        } else {
-            this->mMoveNum = this->mMoveNum + static_cast<s32>(1);
+    if (mMoveNum <= 99) {
+        if (mIsEndLoadResource) {
+            mMoveNum = mMoveNum + 1;
         }
     }
 }
@@ -213,13 +205,12 @@ __attribute__((weak)) void uGUIsMenuBase::setAllFocusOffForReferenceUI() {
 // Address: 0x00c59000 - 0x00c59061 (97 bytes)
 void uGUIsMenuBase::setPointerPosReq(const MtVector2& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsDisablePointerPosReq != false) {
-    } else {
+    if (!mIsDisablePointerPosReq) {
         // inferred: a temporary for the value the load at 0xc59023 read, used once; no DWARF local holds it
-        u32 t0 = this->::uGUIBase::getBasePointerPriority();
+        u32 t0 = getBasePointerPriority();
         // inferred: a temporary for the value the load at 0xc59031 read, used twice; no DWARF local holds it
-        sGUI* t1 = ::sGUI::getInstance();
-        static_cast<sGUIExt*>(t1)->::sGUIExt::setPointerPosReq(static_cast<uGUIBase*>(this), pos, t0, static_cast<sGUIExt*>(t1)->::sGUIExt::getPrioGrpFromIssueIdx(this->::uGUIBase::mPrioIssueIdx), static_cast<const MtVector2*>(nullptr));
+        sGUI* t1 = sGUI::getInstance();
+        static_cast<sGUIExt*>(t1)->setPointerPosReq(static_cast<uGUIBase*>(this), pos, t0, static_cast<sGUIExt*>(t1)->getPrioGrpFromIssueIdx(mPrioIssueIdx), static_cast<const MtVector2*>(nullptr));
     }
 }
 
@@ -236,6 +227,8 @@ __attribute__((weak)) void uGUIsMenuBase::setPointerPosReqIgnoreZeroPos(const Mt
 
 // No out-of-line body: no code in the ELF
 // bool uGUIsMenuBase::isSizeOverCheckMtArray(u32, MtArray*);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIsMenuBase::MyDTI uGUIsMenuBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIsMenuBase.cpp at 0x00c592ef-0x00c5932f (called at uGUIsMenuBase.cpp:18)
@@ -262,7 +255,7 @@ const MtDTI& uGUIsMenuBase::cPulldown::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIsMenuBase::cPulldown::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIsMenuBase::cPulldown::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIsMenuBase::cPulldown::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,7 +264,7 @@ inline MtAllocator* uGUIsMenuBase::cPulldown::getAllocator() {
 // Address: 0x00c58750 - 0x00c58790 (64 bytes)
 void* uGUIsMenuBase::cPulldown::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIsMenuBase::cPulldown::getAllocator()->memAlloc(sz, align, ::uGUIsMenuBase::cPulldown::DTI.::MtDTI::getID());
+    return uGUIsMenuBase::cPulldown::getAllocator()->memAlloc(sz, align, uGUIsMenuBase::cPulldown::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,7 +279,7 @@ void* uGUIsMenuBase::cPulldown::operator new(size_t sz, u32 align) {
 // Address: 0x00c587c0 - 0x00c587ea (42 bytes)
 __attribute__((weak)) void uGUIsMenuBase::cPulldown::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::uGUIsMenuBase::cPulldown::getAllocator()->memFree(p_addr);
+    uGUIsMenuBase::cPulldown::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -304,6 +297,8 @@ __attribute__((weak)) void uGUIsMenuBase::cPulldown::operator delete(void* p_add
 //   in uGUIsMenuBase::cPulldown::MyDTI::newInstance at 0x00c58700-0x00c58742 (called at uGUIsMenuBase.cpp:19)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIsMenuBase::cPulldown::cPulldown();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIsMenuBase::cPulldown::MyDTI uGUIsMenuBase::cPulldown::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIsMenuBase.cpp at 0x00c5932f-0x00c5936c (called at uGUIsMenuBase.cpp:19)

@@ -36,7 +36,7 @@ const MtDTI& cNpcMeetingPlace::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cNpcMeetingPlace::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memAlloc(sz, align, ::cNpcMeetingPlace::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cNpcMeetingPlace::DTI)->memAlloc(sz, align, cNpcMeetingPlace::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cNpcMeetingPlace::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNpcMeetingPlace::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNpcMeetingPlace::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cNpcMeetingPlace::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNpcMeetingPlace::MyDTI cNpcMeetingPlace::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcMeetingPlace.cpp at 0x006ae450-0x006ae492 (called at rNpcMeetingPlace.cpp:23)
 //   in _GLOBAL__sub_I_rNpcMeetingPlace.cpp at 0x006ae450-0x006ae492 (called at rNpcMeetingPlace.h:23)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cNpcMeetingPlace::createProperty(MtPropertyList& s) {
 // Address: 0x006adfe0 - 0x006ae035 (85 bytes)
 MtObject* cNpcMeetingPlace::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cNpcMeetingPlace;
+    return new (16u) cNpcMeetingPlace;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rNpcMeetingPlace::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcMeetingPlace::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcMeetingPlace::DTI)->memAlloc(sz, align, ::rNpcMeetingPlace::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcMeetingPlace::DTI)->memAlloc(sz, align, rNpcMeetingPlace::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rNpcMeetingPlace::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rNpcMeetingPlaceD0Ev at 0x01a9ff44-0x01a9ff63, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcMeetingPlace::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcMeetingPlace::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcMeetingPlace::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +147,7 @@ inline void rNpcMeetingPlace::operator delete(void* p_addr) {
 // Address: 0x006ae320 - 0x006ae364 (68 bytes)
 bool rNpcMeetingPlace::loadData(MtDataReader& in, cNpcMeetingPlace* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cNpcMeetingPlace*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mNpcId = in.readU32();
         pData->mStageNo = in.readS32();
         pData->mStartPosNo = in.readU32();
@@ -164,8 +166,10 @@ MT_CTSTR rNpcMeetingPlace::getExt() const {
 // Address: 0x01aa0090 - 0x01aa0093 (3 bytes)
 u32 rNpcMeetingPlace::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcMeetingPlace::MyDTI rNpcMeetingPlace::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNpcMeetingPlace.cpp at 0x006ae492-0x006ae4cf (called at rNpcMeetingPlace.cpp:68)
@@ -175,7 +179,7 @@ u32 rNpcMeetingPlace::getDataVersion() const {
 // Address: 0x006ae370 - 0x006ae3d4 (100 bytes)
 MtObject* rNpcMeetingPlace::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcMeetingPlace;
+    return new (16u) rNpcMeetingPlace;
 }
 
 // Instance at 0x01aa0040 - 0x01aa0056 (22 bytes) of the generic rTbl2<T>::getData

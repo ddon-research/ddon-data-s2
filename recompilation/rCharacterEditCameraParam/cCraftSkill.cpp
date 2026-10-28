@@ -35,7 +35,7 @@ const MtDTI& cCraftSkill::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftSkill::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftSkill::DTI)->memAlloc(sz, align, ::cCraftSkill::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftSkill::DTI)->memAlloc(sz, align, cCraftSkill::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* cCraftSkill::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCraftSkill::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftSkill::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftSkill::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,22 +65,22 @@ inline void cCraftSkill::operator delete(void* p_addr) {
 // Address: 0x000716f0 - 0x0007170f (31 bytes)
 cCraftSkill::cCraftSkill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCraftSkill::init();
+    init();
 }
 
 // Address: 0x00071720 - 0x0007176a (74 bytes)
 // Also emitted as: _ZN11cCraftSkillD0Ev at 0x00071770
 cCraftSkill::~cCraftSkill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSpdResource != static_cast<rCraftSkillSpd*>(nullptr)) {
-        this->mpSpdResource->::cResource::release();
-        this->mpSpdResource = static_cast<rCraftSkillSpd*>(nullptr);
+    if (mpSpdResource != nullptr) {
+        mpSpdResource->release();
+        mpSpdResource = nullptr;
     }
-    if (this->mpCostResource == static_cast<rCraftSkillCost*>(nullptr)) {
+    if (mpCostResource == nullptr) {
         return;
     }
-    this->mpCostResource->::cResource::release();
-    this->mpCostResource = static_cast<rCraftSkillCost*>(nullptr);
+    mpCostResource->release();
+    mpCostResource = nullptr;
 }
 
 // Address: 0x000717e0 - 0x000719e9 (521 bytes)
@@ -92,86 +92,86 @@ __attribute__((weak)) void cCraftSkill::createProperty(MtPropertyList& s) {
 // Address: 0x00071a90 - 0x00071a95 (5 bytes)
 MtUI* cCraftSkill::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00071a00 - 0x00071a3d (61 bytes)
 void cCraftSkill::setSpdResource(rCraftSkillSpd* pResource) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSpdResource != static_cast<rCraftSkillSpd*>(nullptr)) {
-        this->mpSpdResource->::cResource::release();
-        this->mpSpdResource = static_cast<rCraftSkillSpd*>(nullptr);
+    if (mpSpdResource != nullptr) {
+        mpSpdResource->release();
+        mpSpdResource = nullptr;
     }
-    if (pResource == static_cast<rCraftSkillSpd*>(nullptr)) {
+    if (pResource == nullptr) {
         return;
     }
-    this->mpSpdResource = pResource;
-    pResource->::cResource::addRef();
+    mpSpdResource = pResource;
+    pResource->addRef();
 }
 
 // Address: 0x000719f0 - 0x000719f5 (5 bytes)
 rCraftSkillSpd* cCraftSkill::getSpdResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSpdResource;
+    return mpSpdResource;
 }
 
 // Address: 0x00071aa0 - 0x00071ac6 (38 bytes)
 void cCraftSkill::releaseSpdResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSpdResource == static_cast<rCraftSkillSpd*>(nullptr)) {
+    if (mpSpdResource == nullptr) {
         return;
     }
-    this->mpSpdResource->::cResource::release();
-    this->mpSpdResource = static_cast<rCraftSkillSpd*>(nullptr);
+    mpSpdResource->release();
+    mpSpdResource = nullptr;
 }
 
 // Address: 0x00071a50 - 0x00071a8d (61 bytes)
 void cCraftSkill::setCostResource(rCraftSkillCost* pResource) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCostResource != static_cast<rCraftSkillCost*>(nullptr)) {
-        this->mpCostResource->::cResource::release();
-        this->mpCostResource = static_cast<rCraftSkillCost*>(nullptr);
+    if (mpCostResource != nullptr) {
+        mpCostResource->release();
+        mpCostResource = nullptr;
     }
-    if (pResource == static_cast<rCraftSkillCost*>(nullptr)) {
+    if (pResource == nullptr) {
         return;
     }
-    this->mpCostResource = pResource;
-    pResource->::cResource::addRef();
+    mpCostResource = pResource;
+    pResource->addRef();
 }
 
 // Address: 0x00071a40 - 0x00071a45 (5 bytes)
 rCraftSkillCost* cCraftSkill::getCostResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCostResource;
+    return mpCostResource;
 }
 
 // Address: 0x00071ad0 - 0x00071af6 (38 bytes)
 void cCraftSkill::releaseCostResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCostResource == static_cast<rCraftSkillCost*>(nullptr)) {
+    if (mpCostResource == nullptr) {
         return;
     }
-    this->mpCostResource->::cResource::release();
-    this->mpCostResource = static_cast<rCraftSkillCost*>(nullptr);
+    mpCostResource->release();
+    mpCostResource = nullptr;
 }
 
 // Address: 0x00071b00 - 0x00071b61 (97 bytes)
 u32 cCraftSkill::getSpdRate(u32 type, u32 Lv) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSpdResource != static_cast<rCraftSkillSpd*>(nullptr)) {
-        u32 list = this->mpSpdResource->getDataNum();
+    if (mpSpdResource != nullptr) {
+        u32 list = mpSpdResource->getDataNum();
         if (Lv < list) {
-            cCraftSkillSpdData* pRes = this->mpSpdResource->getData(Lv);
-            if (pRes != static_cast<cCraftSkillSpdData*>(nullptr)) {
-                return pRes->::cCraftSkillSpdData::getRate(type);
+            cCraftSkillSpdData* pRes = mpSpdResource->getData(Lv);
+            if (pRes != nullptr) {
+                return pRes->cCraftSkillSpdData::getRate(type);
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -190,6 +190,8 @@ __attribute__((weak)) f32 cCraftSkill::getCostRate(u32 Total, u32 Num) {
 //   in cCraftSkill::cCraftSkill at 0x000716fe-0x0007170e (called at cCraftSkill.cpp:57)
 // void cCraftSkill::init();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftSkill::MyDTI cCraftSkill::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cCraftSkill.cpp at 0x00071c00-0x00071c42 (called at cCraftSkill.cpp:44)
 //   in _GLOBAL__sub_I_cCraftSkill.cpp at 0x00071c00-0x00071c42 (called at cCraftSkill.h:31)
@@ -198,6 +200,6 @@ __attribute__((weak)) f32 cCraftSkill::getCostRate(u32 Total, u32 Num) {
 // Address: 0x00071630 - 0x00071680 (80 bytes)
 MtObject* cCraftSkill::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftSkill;
+    return new (16u) cCraftSkill;
 }
 

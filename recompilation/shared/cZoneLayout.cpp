@@ -35,7 +35,7 @@ const MtDTI& cZoneLayout::getDTI() const {
 // Address: 0x01068ba0 - 0x01068be0 (64 bytes)
 void* cZoneLayout::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cZoneLayout::DTI)->memAlloc(sz, align, ::cZoneLayout::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cZoneLayout::DTI)->memAlloc(sz, align, cZoneLayout::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cZoneLayout::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cZoneLayoutD0Ev at 0x01068f2e-0x01068f4f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cZoneLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,10 +131,10 @@ __attribute__((weak)) void cZoneLayout::repairValueFromResource() {
 // Address: 0x01068760 - 0x01068778 (24 bytes)
 nZone::cLayoutElement* cZoneLayout::getLayoutElement(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mLayoutElementNum) {
-        return &this->mpLayoutElementArray[index];
+    if (index < mLayoutElementNum) {
+        return &mpLayoutElementArray[index];
     } else {
-        return static_cast<nZone::cLayoutElement*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -147,49 +147,49 @@ nZone::cLayoutElement* cZoneLayout::getLayoutElement(u32 index) {
 // Address: 0x0106a4b0 - 0x0106a4e9 (57 bytes)
 nZone::cLayoutElement* cZoneLayout::getLayoutElementFromUniqueID(u32 UniqueID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNativeResource != static_cast<rZone*>(nullptr)) {
-        const u32 TargetIndex = this->mpNativeResource->::rZone::getLayoutIndexFromUniqueID(UniqueID);
-        if (TargetIndex < this->mLayoutElementNum) {
-            return &this->mpLayoutElementArray[TargetIndex];
+    if (mpNativeResource != nullptr) {
+        const u32 TargetIndex = mpNativeResource->getLayoutIndexFromUniqueID(UniqueID);
+        if (TargetIndex < mLayoutElementNum) {
+            return &mpLayoutElementArray[TargetIndex];
         } else {
-            return static_cast<nZone::cLayoutElement*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<nZone::cLayoutElement*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01069860 - 0x01069867 (7 bytes)
 u32 cZoneLayout::getLayoutElementNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLayoutElementNum;
+    return mLayoutElementNum;
 }
 
 // Address: 0x0106a4f0 - 0x0106a53a (74 bytes)
 nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(u32 GlobalShapeIndex) {
     // DWARF local not rendered: const u32 GlobalLayoutNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNativeResource != static_cast<rZone*>(nullptr)) {
-        if (GlobalShapeIndex < this->mpNativeResource->mGlobalLayoutIndexArrayNum) {
-            const u32 GlobalLayoutIndex = this->mpNativeResource->::rZone::getGlobalLayoutIndex(GlobalShapeIndex);
-            if (GlobalLayoutIndex != static_cast<u32>(4294967295)) {
-                if (GlobalLayoutIndex < this->mLayoutElementNum) {
-                    return &this->mpLayoutElementArray[GlobalLayoutIndex];
+    if (mpNativeResource != nullptr) {
+        if (GlobalShapeIndex < mpNativeResource->mGlobalLayoutIndexArrayNum) {
+            const u32 GlobalLayoutIndex = mpNativeResource->getGlobalLayoutIndex(GlobalShapeIndex);
+            if (GlobalLayoutIndex != 0xFFFFFFFFu) {
+                if (GlobalLayoutIndex < mLayoutElementNum) {
+                    return &mpLayoutElementArray[GlobalLayoutIndex];
                 }
             }
-            return static_cast<nZone::cLayoutElement*>(nullptr);
+            return nullptr;
         }
     }
-    return static_cast<nZone::cLayoutElement*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x0106a540 - 0x0106a552 (18 bytes)
 u32 cZoneLayout::getGlobalLayoutElementNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNativeResource != static_cast<rZone*>(nullptr)) {
-        return this->mpNativeResource->mGlobalLayoutIndexArrayNum;
+    if (mpNativeResource != nullptr) {
+        return mpNativeResource->mGlobalLayoutIndexArrayNum;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -197,24 +197,24 @@ u32 cZoneLayout::getGlobalLayoutElementNum() {
 nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(cZoneLayout::cInGameGroupManager& TargetGroupManager, u32 GlobalShapeIndex) {
     // DWARF local not rendered: cLayoutElement* pNowLayoutElement;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const u32 GlobalShapeNum = TargetGroupManager.mpResourceGroupManager->::rZone::cGroupManager::getGroupGlobalLayoutIndexNum();
+    const u32 GlobalShapeNum = TargetGroupManager.mpResourceGroupManager->getGroupGlobalLayoutIndexNum();
     if (GlobalShapeIndex < GlobalShapeNum) {
-        const u32 GlobalLayoutIndex = TargetGroupManager.mpResourceGroupManager->::rZone::cGroupManager::getGroupGlobalLayoutIndex(GlobalShapeIndex);
-        if (GlobalLayoutIndex != static_cast<u32>(4294967295)) {
-            if (GlobalLayoutIndex < this->mLayoutElementNum) {
-                return &this->mpLayoutElementArray[GlobalLayoutIndex];
+        const u32 GlobalLayoutIndex = TargetGroupManager.mpResourceGroupManager->getGroupGlobalLayoutIndex(GlobalShapeIndex);
+        if (GlobalLayoutIndex != 0xFFFFFFFFu) {
+            if (GlobalLayoutIndex < mLayoutElementNum) {
+                return &mpLayoutElementArray[GlobalLayoutIndex];
             }
         }
-        return static_cast<nZone::cLayoutElement*>(nullptr);
+        return nullptr;
     } else {
-        return static_cast<nZone::cLayoutElement*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0106a5c0 - 0x0106a5c9 (9 bytes)
 u32 cZoneLayout::getGlobalLayoutElementNum(cZoneLayout::cInGameGroupManager& TargetGroupManager) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return TargetGroupManager.mpResourceGroupManager->::rZone::cGroupManager::getGroupGlobalLayoutIndexNum();
+    return TargetGroupManager.mpResourceGroupManager->getGroupGlobalLayoutIndexNum();
 }
 
 // Address: 0x0106a5d0 - 0x0106a64d (125 bytes)
@@ -246,10 +246,10 @@ __attribute__((weak)) cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupMan
 // Address: 0x0106a750 - 0x0106a768 (24 bytes)
 cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupManagerFromIndex(s32 GroupIndex) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (GroupIndex < static_cast<int>(this->mGroupManagerArray.::MtArray::mLength)) {
-        return static_cast<cZoneLayout::cInGameGroupManager*>(this->mGroupManagerArray.::MtArray::mpArray[static_cast<unsigned int>(GroupIndex)]);
+    if (GroupIndex < static_cast<int>(mGroupManagerArray.mLength)) {
+        return static_cast<cInGameGroupManager*>(mGroupManagerArray.mpArray[static_cast<unsigned int>(GroupIndex)]);
     } else {
-        return static_cast<cZoneLayout::cInGameGroupManager*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -259,7 +259,7 @@ cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupManagerFromIndex(s32 Grou
 // Address: 0x0106a070 - 0x0106a077 (7 bytes)
 u32 cZoneLayout::getGroupManagerNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupManagerArray.::MtArray::mLength;
+    return mGroupManagerArray.mLength;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -347,7 +347,7 @@ __attribute__((weak)) MtVector3 cZoneLayout::getWorldOffsetForPropDynamic() cons
 // Address: 0x01b71440 - 0x01b7144d (13 bytes)
 MtQuaternion cZoneLayout::getQuaternionForPropDynamic() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuaternion;
+    return mQuaternion;
 }
 
 // Address: 0x010699a0 - 0x01069ad9 (313 bytes)
@@ -392,6 +392,17 @@ __attribute__((weak)) void cZoneLayout::requestUpdateDBVT(nZone::cLayoutElement&
     DDON_STUB("cZoneLayout::requestUpdateDBVT")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneLayout::MyDTI cZoneLayout::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cZoneLayout::INVALID_ID;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cZoneLayout::INVALID_INDEX;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cZoneLayout::INVALID_HANDLE;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_cZoneLayout.cpp leave in .bss, under its symbol (D-S1b): const MtString cZoneLayout::INVALID_PATH;
+alignas(8) unsigned char cZoneLayout_INVALID_PATH_bytes[8] __asm__("_ZN11cZoneLayout12INVALID_PATHE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneLayout::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -447,22 +458,22 @@ const MtDTI& cZoneLayout::cInGameGroupManager::getDTI() const {
 // Address: 0x010681a0 - 0x010681da (58 bytes)
 cZoneLayout::cInGameGroupManager::cInGameGroupManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIndex = static_cast<u32>(2147483647);
-    this->mpResourceGroupManager = static_cast<rZone::cGroupManager*>(nullptr);
-    this->mpSystemOwner = static_cast<cZoneLayout*>(nullptr);
-    this->mpUserOwner = static_cast<MtObject*>(nullptr);
-    this->mFlgEnable = true;
-    this->mpDynamicBvhMaster = static_cast<cZoneLayout::cDynamicBVHMaster*>(nullptr);
+    mIndex = 0x7FFFFFFF;
+    mpResourceGroupManager = nullptr;
+    mpSystemOwner = nullptr;
+    mpUserOwner = nullptr;
+    mFlgEnable = true;
+    mpDynamicBvhMaster = nullptr;
 }
 
 // Address: 0x010681e0 - 0x010681fe (30 bytes)
 // Also emitted as: _ZN11cZoneLayout19cInGameGroupManagerD0Ev at 0x01068200
 cZoneLayout::cInGameGroupManager::~cInGameGroupManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDynamicBvhMaster == static_cast<cZoneLayout::cDynamicBVHMaster*>(nullptr)) {
+    if (mpDynamicBvhMaster == nullptr) {
         return;
     }
-    delete this->mpDynamicBvhMaster;
+    delete mpDynamicBvhMaster;
 }
 
 // Address: 0x01068250 - 0x0106870c (1212 bytes)
@@ -474,10 +485,10 @@ __attribute__((weak)) void cZoneLayout::cInGameGroupManager::createProperty(MtPr
 // Address: 0x01068710 - 0x0106871f (15 bytes)
 void cZoneLayout::cInGameGroupManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDynamicBvhMaster == static_cast<cZoneLayout::cDynamicBVHMaster*>(nullptr)) {
+    if (mpDynamicBvhMaster == nullptr) {
         return;
     }
-    this->mpDynamicBvhMaster->::cZoneLayout::cDynamicBVHMaster::update();
+    mpDynamicBvhMaster->update();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -495,15 +506,15 @@ void cZoneLayout::cInGameGroupManager::move() {
 // Address: 0x01068720 - 0x0106875f (63 bytes)
 nZone::cLayoutElement* cZoneLayout::cInGameGroupManager::getGroupLayoutElementFromIndex(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSystemOwner != static_cast<cZoneLayout*>(nullptr)) {
-        const u32 LayoutIndex = this->mpResourceGroupManager->::rZone::cGroupManager::getGroupLayoutIndex(index);
-        if (LayoutIndex < this->mpSystemOwner->mLayoutElementNum) {
-            return &this->mpSystemOwner->mpLayoutElementArray[LayoutIndex];
+    if (mpSystemOwner != nullptr) {
+        const u32 LayoutIndex = mpResourceGroupManager->getGroupLayoutIndex(index);
+        if (LayoutIndex < mpSystemOwner->mLayoutElementNum) {
+            return &mpSystemOwner->mpLayoutElementArray[LayoutIndex];
         } else {
-            return static_cast<nZone::cLayoutElement*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<nZone::cLayoutElement*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -588,6 +599,8 @@ __attribute__((weak)) void cZoneLayout::cInGameGroupManager::requestUpdateDBVT(n
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cZoneLayout::cInGameGroupManager::registerResourceGroupManager(rZone::cGroupManager* pOfflineGroupManager);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cZoneLayout::cInGameGroupManager::MyDTI cZoneLayout::cInGameGroupManager::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneLayout::cInGameGroupManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -630,7 +643,7 @@ const MtDTI& cZoneLayout::cDynamicBVHMaster::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cZoneLayout17cDynamicBVHMasterD0Ev at 0x01067cdc-0x01067cfb, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cZoneLayout::cDynamicBVHMaster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cZoneLayout::cDynamicBVHMaster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cZoneLayout::cDynamicBVHMaster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -683,6 +696,8 @@ __attribute__((weak)) void cZoneLayout::cDynamicBVHMaster::requestUpdateDBVT(nZo
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 cZoneLayout::cDynamicBVHMaster::getRegisterNum() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cZoneLayout::cDynamicBVHMaster::MyDTI cZoneLayout::cDynamicBVHMaster::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneLayout::cDynamicBVHMaster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

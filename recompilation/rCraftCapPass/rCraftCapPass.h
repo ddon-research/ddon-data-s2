@@ -118,10 +118,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCraftCapPassData::cCraftCapPassData() {
-    this->mRecipeId = static_cast<u32>(0);
-    this->mStartLv = static_cast<u16>(1);
-    this->mLvCap = static_cast<u16>(1);
-    this->mVer = static_cast<u16>(0);
-    this->mRound = static_cast<u8>(1);
-    this->mType = static_cast<u8>(0);
+    this->mRecipeId = 0;
+    this->mStartLv = 1;
+    this->mLvCap = 1;
+    this->mVer = 0;
+    this->mRound = 1;
+    this->mType = 0;
 }

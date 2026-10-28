@@ -52,14 +52,14 @@
 // Address: 0x001bea40 - 0x001bea48 (8 bytes)
 cQuestSvRequest& cQuestSvRequest::setFromClass(MtObject* pFrom) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpFromClass = pFrom;
+    mpFromClass = pFrom;
     return *this;
 }
 
 // Address: 0x001bea50 - 0x001bea55 (5 bytes)
 const MtObject* cQuestSvRequest::getFromClass() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpFromClass;
+    return mpFromClass;
 }
 
 // Address: 0x001bea60 - 0x001bea6c (12 bytes)
@@ -71,7 +71,7 @@ __attribute__((weak)) cQuestSvRequest& cQuestSvRequest::setCallbackFunc(cQuestSv
 // Address: 0x001bea70 - 0x001bea7b (11 bytes)
 bool cQuestSvRequest::isDelete() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno0 == static_cast<u8>(3);
+    return mRno0 == 3;
 }
 
 // Address: 0x001bea90 - 0x001bea93 (3 bytes)
@@ -83,7 +83,7 @@ bool cQuestSvRequest::isScheduleIdSame(nQuest::SCHEDULE_ID scheduleId) const {
 // Address: 0x001beaa0 - 0x001beaab (11 bytes)
 bool cQuestSvRequest::waitsResult() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno0 == static_cast<u8>(2);
+    return mRno0 == 2;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -156,7 +156,7 @@ __attribute__((weak)) void cQuestSvRequest::createProperty(MtPropertyList& s) {
 // Address: 0x001beba0 - 0x001beba5 (5 bytes)
 MtUI* cQuestSvRequest::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x001bebb0 - 0x001bec6b (187 bytes)
@@ -164,6 +164,8 @@ __attribute__((weak)) void cQuestSvRequest::move() {
     DDON_STUB("cQuestSvRequest::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSvRequest::MyDTI cQuestSvRequest::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cQuestSvRequest.cpp at 0x001c286e-0x001c28ae (called at cQuestSvRequest.cpp:40)

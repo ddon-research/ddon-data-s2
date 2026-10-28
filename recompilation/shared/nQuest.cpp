@@ -209,7 +209,7 @@ __attribute__((weak)) bool nQuest::isDispActiveQuest(nQuest::SCHEDULE_ID Schedul
 // Address: 0x0062bef0 - 0x0062bef4 (4 bytes)
 nQuest::SCHEDULE_ID::operator unsigned int() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScheduleId;
+    return mScheduleId;
 }
 
 // Address: 0x0062bf10 - 0x0062bf1a (10 bytes)
@@ -233,19 +233,19 @@ __attribute__((weak)) bool nQuest::SCHEDULE_ID::operator!=(nQuest::SCHEDULE_ID i
 // Address: 0x0062bf00 - 0x0062bf04 (4 bytes)
 u32 nQuest::SCHEDULE_ID::toU32() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScheduleId;
+    return mScheduleId;
 }
 
 // Address: 0x0062bf50 - 0x0062bf66 (22 bytes)
 nQuest::SCHEDULE_ID::SCHEDULE_ID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScheduleId = static_cast<u32>(0);
+    mScheduleId = 0;
 }
 
 // Address: 0x0062bf70 - 0x0062bf82 (18 bytes)
 nQuest::SCHEDULE_ID::SCHEDULE_ID(u32 scheduleId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScheduleId = scheduleId;
+    mScheduleId = scheduleId;
 }
 
 // Address: 0x0062bf90 - 0x0062bf91 (1 bytes)
@@ -262,7 +262,7 @@ __attribute__((weak)) void nQuest::SCHEDULE_ID::createProperty(MtPropertyList& s
 // Address: 0x0062bfc0 - 0x0062bfc4 (4 bytes)
 nQuest::QUEST_ID::operator unsigned int() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestId;
+    return mQuestId;
 }
 
 // Address: 0x0062bfe0 - 0x0062bfea (10 bytes)
@@ -286,19 +286,19 @@ __attribute__((weak)) bool nQuest::QUEST_ID::operator!=(nQuest::QUEST_ID id) con
 // Address: 0x0062bfd0 - 0x0062bfd4 (4 bytes)
 u32 nQuest::QUEST_ID::toU32() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestId;
+    return mQuestId;
 }
 
 // Address: 0x0062c020 - 0x0062c036 (22 bytes)
 nQuest::QUEST_ID::QUEST_ID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuestId = static_cast<u32>(0);
+    mQuestId = 0;
 }
 
 // Address: 0x0062c040 - 0x0062c052 (18 bytes)
 nQuest::QUEST_ID::QUEST_ID(u32 questId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQuestId = questId;
+    mQuestId = questId;
 }
 
 // Address: 0x0062c060 - 0x0062c061 (1 bytes)
@@ -359,6 +359,8 @@ inline void nQuest::cQuestInfoBase::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void nQuest::cQuestInfoBase::operator delete[](void* p_addr, u32 align);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cQuestInfoBase::MyDTI nQuest::cQuestInfoBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638c27-0x00638c67 (called at nQuest.cpp:911)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638c27-0x00638c67 (called at nQuest.h:663)
@@ -393,7 +395,7 @@ inline MtAllocator* nQuest::cOrderCondition::getAllocator() {
 // Address: 0x0062c340 - 0x0062c380 (64 bytes)
 void* nQuest::cOrderCondition::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cOrderCondition::getAllocator()->memAlloc(sz, align, ::nQuest::cOrderCondition::DTI.::MtDTI::getID());
+    return ::nQuest::cOrderCondition::getAllocator()->memAlloc(sz, align, ::nQuest::cOrderCondition::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -422,7 +424,7 @@ void* nQuest::cOrderCondition::operator new(size_t sz, u32 align) {
 nQuest::ORDER_CONDITION_TYPE nQuest::cOrderCondition::getConditionType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::ORDER_CONDITION_TYPE
-    return static_cast<nQuest::ORDER_CONDITION_TYPE>(this->mConditionType);
+    return static_cast<nQuest::ORDER_CONDITION_TYPE>(mConditionType);
 }
 
 // No out-of-line body: 11 inlined copies in 5 functions (44 bytes)
@@ -447,9 +449,17 @@ __attribute__((weak)) MT_CTSTR nQuest::cOrderCondition::getConditionParam2Messag
     return {};
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (44 bytes)
-//   in nQuest::cOrderCondition::MyDTI::newInstance at 0x0062c30d-0x0062c339 (called at nQuest.cpp:924)
-// nQuest::cOrderCondition::cOrderCondition();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline nQuest::cOrderCondition::cOrderCondition() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mConditionType = 0;
+    mIsMsgCreated = false;
+    mConditionParam1 = 0;
+    mConditionParam2 = 0;
+    mConditionParam2Message.value = nullptr;
+    mConditionParam1Message.value = nullptr;
+}
 
 // Address: 0x0062c470 - 0x0062c560 (240 bytes)
 nQuest::cOrderCondition::cOrderCondition(u8 type, u32 param1, u32 param2) {
@@ -488,6 +498,8 @@ __attribute__((weak)) bool nQuest::cOrderCondition::loadConditionInfo() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cOrderCondition::MyDTI nQuest::cOrderCondition::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638c67-0x00638ca0 (called at nQuest.cpp:924)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638c67-0x00638ca0 (called at nQuest.h:681)
@@ -522,7 +534,7 @@ const MtDTI& nQuest::cRepeatBonus::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nQuest::cRepeatBonus::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cRepeatBonus::DTI)->memAlloc(sz, align, ::nQuest::cRepeatBonus::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cRepeatBonus::DTI)->memAlloc(sz, align, ::nQuest::cRepeatBonus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -551,9 +563,9 @@ inline void nQuest::cRepeatBonus::operator delete(void* p_addr) {
 // Address: 0x0062cff0 - 0x0062d00e (30 bytes)
 nQuest::cRepeatBonus::cRepeatBonus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = static_cast<u32>(0);
-    this->mParam = static_cast<u32>(0);
-    this->mNum = static_cast<u32>(0);
+    mType = 0;
+    mParam = 0;
+    mNum = 0;
 }
 
 // Address: 0x0062d010 - 0x0062d011 (1 bytes)
@@ -567,6 +579,8 @@ __attribute__((weak)) void nQuest::cRepeatBonus::createProperty(MtPropertyList& 
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cRepeatBonus::MyDTI nQuest::cRepeatBonus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ca0-0x00638cd9 (called at nQuest.cpp:1322)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ca0-0x00638cd9 (called at nQuest.h:738)
@@ -575,7 +589,7 @@ __attribute__((weak)) void nQuest::cRepeatBonus::createProperty(MtPropertyList& 
 // Address: 0x0062cf30 - 0x0062cf7f (79 bytes)
 MtObject* nQuest::cRepeatBonus::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cRepeatBonus;
+    return new (16u) ::nQuest::cRepeatBonus;
 }
 
 // No out-of-line body: no code in the ELF
@@ -601,7 +615,7 @@ const MtDTI& nQuest::cRewardData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* nQuest::cRewardData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cRewardData::DTI)->memAlloc(sz, align, ::nQuest::cRewardData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cRewardData::DTI)->memAlloc(sz, align, ::nQuest::cRewardData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -630,41 +644,41 @@ inline void nQuest::cRewardData::operator delete(void* p_addr) {
 // Address: 0x0062d120 - 0x0062d124 (4 bytes)
 u32 nQuest::cRewardData::getItemId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItemId;
+    return mItemId;
 }
 
 // Address: 0x0062d130 - 0x0062d137 (7 bytes)
 nQuest::cRewardData& nQuest::cRewardData::setItemId(u32 itemId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = itemId;
+    mItemId = itemId;
     return *this;
 }
 
 // Address: 0x0062d140 - 0x0062d144 (4 bytes)
 u32 nQuest::cRewardData::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItemNum;
+    return mItemNum;
 }
 
 // Address: 0x0062d150 - 0x0062d157 (7 bytes)
 nQuest::cRewardData& nQuest::cRewardData::setItemNum(u32 itemNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemNum = itemNum;
+    mItemNum = itemNum;
     return *this;
 }
 
 // Address: 0x0062d160 - 0x0062d177 (23 bytes)
 nQuest::cRewardData::cRewardData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    mItemId = 0;
+    mItemNum = 0;
 }
 
 // Address: 0x0062d180 - 0x0062d195 (21 bytes)
 nQuest::cRewardData::cRewardData(u32 itemId, u32 itemNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = itemId;
-    this->mItemNum = itemNum;
+    mItemId = itemId;
+    mItemNum = itemNum;
 }
 
 // Address: 0x0062d1a0 - 0x0062d1a1 (1 bytes)
@@ -678,6 +692,8 @@ __attribute__((weak)) void nQuest::cRewardData::createProperty(MtPropertyList& s
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cRewardData::MyDTI nQuest::cRewardData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638cd9-0x00638d12 (called at nQuest.cpp:1373)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638cd9-0x00638d12 (called at nQuest.h:775)
@@ -686,7 +702,7 @@ __attribute__((weak)) void nQuest::cRewardData::createProperty(MtPropertyList& s
 // Address: 0x0062d060 - 0x0062d0a8 (72 bytes)
 MtObject* nQuest::cRewardData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cRewardData;
+    return new (16u) ::nQuest::cRewardData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -739,10 +755,10 @@ inline void nQuest::cFixRewardData::operator delete(void* p_addr) {
 // Address: 0x0062d2f0 - 0x0062d302 (18 bytes)
 u32 nQuest::cFixRewardData::getItemId(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(4)) {
-        return this->mRewardData[idx].mItemId;
+    if (idx <= 4u) {
+        return mRewardData[idx].mItemId;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -752,10 +768,10 @@ u32 nQuest::cFixRewardData::getItemId(u32 idx) const {
 // Address: 0x0062d320 - 0x0062d332 (18 bytes)
 u32 nQuest::cFixRewardData::getItemNum(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(4)) {
-        return this->mRewardData[idx].mItemNum;
+    if (idx <= 4u) {
+        return mRewardData[idx].mItemNum;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -788,6 +804,8 @@ nQuest::cFixRewardData::~cFixRewardData() {
 __attribute__((weak)) void nQuest::cFixRewardData::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cFixRewardData::MyDTI nQuest::cFixRewardData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638d12-0x00638d4b (called at nQuest.cpp:1487)
@@ -823,7 +841,7 @@ inline MtAllocator* nQuest::cDeliverRequestItemInfo::getAllocator() {
 // Address: 0x0062d490 - 0x0062d4d0 (64 bytes)
 void* nQuest::cDeliverRequestItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cDeliverRequestItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliverRequestItemInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cDeliverRequestItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliverRequestItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -852,8 +870,8 @@ inline void nQuest::cDeliverRequestItemInfo::operator delete(void* p_addr) {
 // Address: 0x0062d540 - 0x0062d55c (28 bytes)
 nQuest::cDeliverRequestItemInfo::cDeliverRequestItemInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = static_cast<u32>(0);
-    this->mNeedItemNum = static_cast<u16>(0);
+    mItemId = 0;
+    mNeedItemNum = 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -864,6 +882,8 @@ __attribute__((weak)) void nQuest::cDeliverRequestItemInfo::createProperty(MtPro
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cDeliverRequestItemInfo::MyDTI nQuest::cDeliverRequestItemInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638d4b-0x00638d84 (called at nQuest.cpp:1643)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638d4b-0x00638d84 (called at nQuest.h:889)
@@ -872,7 +892,7 @@ __attribute__((weak)) void nQuest::cDeliverRequestItemInfo::createProperty(MtPro
 // Address: 0x0062d440 - 0x0062d48d (77 bytes)
 MtObject* nQuest::cDeliverRequestItemInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cDeliverRequestItemInfo;
+    return new (16u) ::nQuest::cDeliverRequestItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -898,7 +918,7 @@ inline MtAllocator* nQuest::cQuestDeliverRequestInfo::getAllocator() {
 // Address: 0x0062d600 - 0x0062d640 (64 bytes)
 void* nQuest::cQuestDeliverRequestInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cQuestDeliverRequestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestDeliverRequestInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cQuestDeliverRequestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestDeliverRequestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -953,6 +973,8 @@ __attribute__((weak)) void nQuest::cQuestDeliverRequestInfo::createProperty(MtPr
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cQuestDeliverRequestInfo::MyDTI nQuest::cQuestDeliverRequestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638d84-0x00638dbd (called at nQuest.cpp:1682)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638d84-0x00638dbd (called at nQuest.h:930)
@@ -987,7 +1009,7 @@ inline MtAllocator* nQuest::cDeliveredItemInfo::getAllocator() {
 // Address: 0x0062dac0 - 0x0062db00 (64 bytes)
 void* nQuest::cDeliveredItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cDeliveredItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliveredItemInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cDeliveredItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliveredItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1024,40 +1046,42 @@ nQuest::cDeliveredItemInfo::cDeliveredItemInfo() {
 // Also emitted as: _ZN6nQuest18cDeliveredItemInfoD0Ev at 0x0062dd80
 nQuest::cDeliveredItemInfo::~cDeliveredItemInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mCharacterDeliverInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mCharacterDeliverInfo.mLength != 0) {
         // inferred: the value the loop at 0x62dd10 carries; no location-less local in scope fits
-        u32 v0_0 = this->mCharacterDeliverInfo.::MtArray::mLength;
+        u32 v0_0 = mCharacterDeliverInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mCharacterDeliverInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mCharacterDeliverInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCharacterDeliverInfo.::MtArray::mLength) {
-                    v0_0 = this->mCharacterDeliverInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mCharacterDeliverInfo.mpArray[i0_3] != nullptr) {
+                delete mCharacterDeliverInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mCharacterDeliverInfo.mLength) {
+                    v0_0 = mCharacterDeliverInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mCharacterDeliverInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCharacterDeliverInfo.::MtArray::mpArray));
+    if (mCharacterDeliverInfo.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mCharacterDeliverInfo.mpArray));
     }
-    this->mCharacterDeliverInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mCharacterDeliverInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mCharacterDeliverInfo.::MtArray::mLength = static_cast<u32>(0);
+    mCharacterDeliverInfo.mpArray = nullptr;
+    mCharacterDeliverInfo.mBufsiz = 0;
+    mCharacterDeliverInfo.mLength = 0;
 }
 
 // Address: 0x0062de40 - 0x0062de41 (1 bytes)
 __attribute__((weak)) void nQuest::cDeliveredItemInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cDeliveredItemInfo::MyDTI nQuest::cDeliveredItemInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638dbd-0x00638df6 (called at nQuest.cpp:1761)
@@ -1093,7 +1117,7 @@ inline MtAllocator* nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getAlloca
 // Address: 0x0062dbc0 - 0x0062dc00 (64 bytes)
 void* nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1136,6 +1160,8 @@ __attribute__((weak)) void nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cr
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::MyDTI nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638df6-0x00638e2f (called at nQuest.cpp:1762)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638df6-0x00638e2f (called at nQuest.h:987)
@@ -1144,7 +1170,7 @@ __attribute__((weak)) void nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cr
 // Address: 0x0062db70 - 0x0062dbbd (77 bytes)
 MtObject* nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo;
+    return new (16u) ::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1170,7 +1196,7 @@ inline MtAllocator* nQuest::cQuestDeliveredInfo::getAllocator() {
 // Address: 0x0062ded0 - 0x0062df10 (64 bytes)
 void* nQuest::cQuestDeliveredInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cQuestDeliveredInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestDeliveredInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cQuestDeliveredInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestDeliveredInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1215,6 +1241,8 @@ __attribute__((weak)) void nQuest::cQuestDeliveredInfo::createProperty(MtPropert
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cQuestDeliveredInfo::MyDTI nQuest::cQuestDeliveredInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638e2f-0x00638e68 (called at nQuest.cpp:1819)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638e2f-0x00638e68 (called at nQuest.h:1050)
@@ -1249,7 +1277,7 @@ inline MtAllocator* nQuest::cQuestMarker::getAllocator() {
 // Address: 0x0062e1d0 - 0x0062e210 (64 bytes)
 void* nQuest::cQuestMarker::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cQuestMarker::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestMarker::DTI.::MtDTI::getID());
+    return ::nQuest::cQuestMarker::getAllocator()->memAlloc(sz, align, ::nQuest::cQuestMarker::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1279,35 +1307,35 @@ inline void nQuest::cQuestMarker::operator delete(void* p_addr) {
 // Address: 0x0062e280 - 0x0062e285 (5 bytes)
 const nMarker::cMarkerInfo& nQuest::cQuestMarker::getMarkerInfo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMarkerInfo;
+    return mMarkerInfo;
 }
 
 // Address: 0x0062e290 - 0x0062e295 (5 bytes)
 const nMarker::cMarkerInfo* nQuest::cQuestMarker::getMarkerInfoPtr() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mMarkerInfo;
+    return &mMarkerInfo;
 }
 
 // Address: 0x0062e2a0 - 0x0062e2df (63 bytes)
 void nQuest::cQuestMarker::setPosition(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMarkerInfo.::nMarker::cMarkerInfo::getPosList().::MtArray::mLength != static_cast<u32>(0)) {
-        this->mMarkerInfo.::nMarker::cMarkerInfo::setPosition(static_cast<u32>(0), pos);
+    if (mMarkerInfo.getPosList().mLength != 0) {
+        mMarkerInfo.setPosition(0u, pos);
     } else {
-        this->mMarkerInfo.::nMarker::cMarkerInfo::addPosition(pos);
+        mMarkerInfo.addPosition(pos);
     }
 }
 
 // Address: 0x0062e2e0 - 0x0062e2e7 (7 bytes)
 bool nQuest::cQuestMarker::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsActive;
+    return mIsActive;
 }
 
 // Address: 0x0062e2f0 - 0x0062e2f8 (8 bytes)
 void nQuest::cQuestMarker::setActive(bool active) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActive = active;
+    mIsActive = active;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1316,7 +1344,7 @@ void nQuest::cQuestMarker::setActive(bool active) {
 // Address: 0x0062e310 - 0x0062e314 (4 bytes)
 u32 nQuest::cQuestMarker::getQuestIdU32() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestId.mQuestId;
+    return mQuestId.mQuestId;
 }
 
 // Address: 0x0062e320 - 0x0062e327 (7 bytes)
@@ -1343,13 +1371,13 @@ __attribute__((weak)) void nQuest::cQuestMarker::setScheduleId(nQuest::SCHEDULE_
 // Address: 0x0062e370 - 0x0062e375 (5 bytes)
 u32 nQuest::cQuestMarker::getTargetType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetType;
+    return mTargetType;
 }
 
 // Address: 0x0062e380 - 0x0062e385 (5 bytes)
 void nQuest::cQuestMarker::setTargetType(u32 targetType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetType = static_cast<unsigned char>(targetType);
+    mTargetType = static_cast<unsigned char>(targetType);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1361,43 +1389,43 @@ void nQuest::cQuestMarker::setTargetType(u32 targetType) {
 // Address: 0x0062e3b0 - 0x0062e3b8 (8 bytes)
 void nQuest::cQuestMarker::setIsOrder(bool isOrder) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsOrder = isOrder;
+    mIsOrder = isOrder;
 }
 
 // Address: 0x0062e3c0 - 0x0062e3d0 (16 bytes)
 s32 nQuest::cQuestMarker::getStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMarkerInfo.::nMarker::cMarkerInfo::getStageNo();
+    return mMarkerInfo.getStageNo();
 }
 
 // Address: 0x0062e3d0 - 0x0062e3dc (12 bytes)
 void nQuest::cQuestMarker::setStageNo(s32 stageNo) {
     // Approximate from the ELF: a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
-    this->mMarkerInfo.::nMarker::cMarkerInfo::setStageNo(static_cast<short>(stageNo));
+    mMarkerInfo.setStageNo(static_cast<short>(stageNo));
 }
 
 // Address: 0x0062e3e0 - 0x0062e3e4 (4 bytes)
 u32 nQuest::cQuestMarker::getGroupNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupNo;
+    return mGroupNo;
 }
 
 // Address: 0x0062e3f0 - 0x0062e3f4 (4 bytes)
 void nQuest::cQuestMarker::setGroupNo(u32 groupNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroupNo = groupNo;
+    mGroupNo = groupNo;
 }
 
 // Address: 0x0062e400 - 0x0062e405 (5 bytes)
 s16 nQuest::cQuestMarker::getMapGroupNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMapGroupNo;
+    return mMapGroupNo;
 }
 
 // Address: 0x0062e410 - 0x0062e415 (5 bytes)
 void nQuest::cQuestMarker::setMapGroupNo(s16 mapGroupNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMapGroupNo = mapGroupNo;
+    mMapGroupNo = mapGroupNo;
 }
 
 // Address: 0x0062e420 - 0x0062e425 (5 bytes)
@@ -1422,7 +1450,7 @@ nQuest::cQuestMarker::~cQuestMarker() {
 // Address: 0x0062e510 - 0x0062e519 (9 bytes)
 void nQuest::cQuestMarker::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMarkerInfo.::nMarker::cMarkerInfo::createProperty(s);
+    mMarkerInfo.::nMarker::cMarkerInfo::createProperty(s);
 }
 
 // Address: 0x0062e520 - 0x0062e525 (5 bytes)
@@ -1430,6 +1458,8 @@ MtUI* nQuest::cQuestMarker::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cQuestMarker::MyDTI nQuest::cQuestMarker::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638e68-0x00638ea1 (called at nQuest.cpp:1872)
@@ -1465,7 +1495,7 @@ inline MtAllocator* nQuest::cCycleContentsPersonalRankInfo::getAllocator() {
 // Address: 0x0062e5c0 - 0x0062e600 (64 bytes)
 void* nQuest::cCycleContentsPersonalRankInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cCycleContentsPersonalRankInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsPersonalRankInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cCycleContentsPersonalRankInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsPersonalRankInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1535,6 +1565,8 @@ __attribute__((weak)) void nQuest::cCycleContentsPersonalRankInfo::createPropert
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsPersonalRankInfo::MyDTI nQuest::cCycleContentsPersonalRankInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ea1-0x00638eda (called at nQuest.cpp:2331)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ea1-0x00638eda (called at nQuest.h:1187)
@@ -1569,7 +1601,7 @@ inline MtAllocator* nQuest::cCycleContentsInfo::getAllocator() {
 // Address: 0x0062e6c0 - 0x0062e700 (64 bytes)
 void* nQuest::cCycleContentsInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cCycleContentsInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cCycleContentsInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1600,7 +1632,7 @@ inline void nQuest::cCycleContentsInfo::operator delete(void* p_addr) {
 MT_CTSTR nQuest::cCycleContentsInfo::getContentsName() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    return ::sQuestManagerExt::getInstance()->getCycleContentsName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1609,7 +1641,7 @@ MT_CTSTR nQuest::cCycleContentsInfo::getContentsName() const {
 // Address: 0x0062e7a0 - 0x0062e7a8 (8 bytes)
 bool nQuest::cCycleContentsInfo::isPlayContents() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPlayNum != static_cast<u32>(0);
+    return mPlayNum != 0;
 }
 
 // Address: 0x0062e7b0 - 0x0062e7dc (44 bytes)
@@ -1617,23 +1649,23 @@ u32 nQuest::cCycleContentsInfo::getRanking() const {
     // DWARF local not rendered: u32 length;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    if (this->mContentsRank.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mContentsRank.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x62e7b5, 0x62e7db)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mContentsRank.::MtArray::mpArray[i]) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
-                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(this->mContentsRank.::MtArray::mpArray[i])->::nQuest::cCycleContentsPersonalRankInfo::getRanking();
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mContentsRank.mpArray[i]) + 8)) == 1) {
+                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(mContentsRank.mpArray[i])->getRanking();
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mContentsRank.::MtArray::mLength);
+            i += 1u;
+        } while (i < mContentsRank.mLength);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0062e7e0 - 0x0062e7e4 (4 bytes)
 u32 nQuest::cCycleContentsInfo::getPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTotalPoint;
+    return mTotalPoint;
 }
 
 // Address: 0x0062e7f0 - 0x0062e81c (44 bytes)
@@ -1641,45 +1673,45 @@ u32 nQuest::cCycleContentsInfo::getRankPoint() const {
     // DWARF local not rendered: u32 length;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    if (this->mContentsRank.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mContentsRank.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x62e7f5, 0x62e81b)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mContentsRank.::MtArray::mpArray[i]) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
-                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(this->mContentsRank.::MtArray::mpArray[i])->::nQuest::cCycleContentsPersonalRankInfo::getScore();
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mContentsRank.mpArray[i]) + 8)) == 1) {
+                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(mContentsRank.mpArray[i])->getScore();
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mContentsRank.::MtArray::mLength);
+            i += 1u;
+        } while (i < mContentsRank.mLength);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0062e820 - 0x0062e839 (25 bytes)
 MT_CTSTR nQuest::cCycleContentsInfo::getContentsInfo() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    return ::sQuestManagerExt::getInstance()->getCycleContentsInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
 }
 
 // Address: 0x0062e840 - 0x0062e859 (25 bytes)
 MT_CTSTR nQuest::cCycleContentsInfo::getOrderPlace() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsOrderPlace(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    return ::sQuestManagerExt::getInstance()->getCycleContentsOrderPlace(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
 }
 
 // Address: 0x0062e860 - 0x0062e880 (32 bytes)
 MT_CTSTR nQuest::cCycleContentsInfo::getPhaseName() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), this->mPeriod, this->::nQuest::cCycleContentsInfo::getSituation());
+    return ::sQuestManagerExt::getInstance()->getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory), mPeriod, getSituation());
 }
 
 // Address: 0x0062e880 - 0x0062e8a0 (32 bytes)
 MT_CTSTR nQuest::cCycleContentsInfo::getPhaseInfo() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), this->mPeriod, this->::nQuest::cCycleContentsInfo::getSituation());
+    return ::sQuestManagerExt::getInstance()->getCycleContentsSituationInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory), mPeriod, getSituation());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1688,23 +1720,23 @@ MT_CTSTR nQuest::cCycleContentsInfo::getPhaseInfo() const {
 // Address: 0x0062e8b0 - 0x0062e8bf (15 bytes)
 u32 nQuest::cCycleContentsInfo::getPhaseImageResId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPeriod == static_cast<u32>(2)) {
-        return this->::nQuest::cCycleContentsInfo::getSituation() + static_cast<u32>(5);
+    if (mPeriod == 2) {
+        return getSituation() + 5u;
     } else {
-        return this->mPeriod;
+        return mPeriod;
     }
 }
 
 // Address: 0x0062e8c0 - 0x0062e8c5 (5 bytes)
 const MtTime& nQuest::cCycleContentsInfo::getStartTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStartTime;
+    return mStartTime;
 }
 
 // Address: 0x0062e8d0 - 0x0062e8d5 (5 bytes)
 const MtTime& nQuest::cCycleContentsInfo::getEndTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndTime;
+    return mEndTime;
 }
 
 // Address: 0x0062e8e0 - 0x0062e91a (58 bytes)
@@ -1734,10 +1766,10 @@ __attribute__((weak)) bool nQuest::cCycleContentsInfo::getRankingListUpdateTime(
 // Address: 0x0062e920 - 0x0062e92e (14 bytes)
 u32 nQuest::cCycleContentsInfo::getRewardItem(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(4)) {
-        return this->mRewardItem[idx];
+    if (idx <= 4u) {
+        return mRewardItem[idx];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1758,18 +1790,18 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cCycleContentsInfo::getCycleCo
 // Address: 0x0062ea00 - 0x0062ea04 (4 bytes)
 nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriod() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(this->mPeriod);
+    return static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(mPeriod);
 }
 
 // Address: 0x0062ea10 - 0x0062ea4e (62 bytes)
 nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    cCycleQuestManagerBase* pMgr = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsMgr(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
-    if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
-        return pMgr->::cCycleQuestManagerBase::getCycleContentsPeriodFromSubCategory(static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    cCycleQuestManagerBase* pMgr = ::sQuestManagerExt::getInstance()->getCycleContentsMgr(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
+    if (pMgr != nullptr) {
+        return pMgr->::cCycleQuestManagerBase::getCycleContentsPeriodFromSubCategory(static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory));
     } else {
-        return static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(0);
+        return ::nQuest::CYCLE_CONTENTS_PERIOD_NONE;
     }
 }
 
@@ -1783,7 +1815,7 @@ nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriod
 // Address: 0x0062ea50 - 0x0062ea54 (4 bytes)
 u32 nQuest::cCycleContentsInfo::getItemRankAvg() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItemRankAvg;
+    return mItemRankAvg;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (11 bytes)
@@ -1808,6 +1840,8 @@ nQuest::cCycleContentsInfo::~cCycleContentsInfo() {
 __attribute__((weak)) void nQuest::cCycleContentsInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsInfo::MyDTI nQuest::cCycleContentsInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638eda-0x00638f13 (called at nQuest.cpp:2364)
@@ -1843,7 +1877,7 @@ inline MtAllocator* nQuest::cGUINewspaperSetQuestMonsterInfo::getAllocator() {
 // Address: 0x0062ecc0 - 0x0062ed00 (64 bytes)
 void* nQuest::cGUINewspaperSetQuestMonsterInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUINewspaperSetQuestMonsterInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestMonsterInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cGUINewspaperSetQuestMonsterInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestMonsterInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1888,10 +1922,12 @@ inline void nQuest::cGUINewspaperSetQuestMonsterInfo::operator delete(void* p_ad
 // Address: 0x0062edb0 - 0x0062edc8 (24 bytes)
 nQuest::cGUINewspaperSetQuestMonsterInfo::cGUINewspaperSetQuestMonsterInfo(u32 lv, u32 id, bool isParty) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnemyLv = lv;
-    this->mEnemyGroupId = id;
-    this->mIsPartyRecommanded = isParty;
+    mEnemyLv = lv;
+    mEnemyGroupId = id;
+    mIsPartyRecommanded = isParty;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUINewspaperSetQuestMonsterInfo::MyDTI nQuest::cGUINewspaperSetQuestMonsterInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638f13-0x00638f4c (called at nQuest.cpp:2801)
@@ -1901,7 +1937,7 @@ nQuest::cGUINewspaperSetQuestMonsterInfo::cGUINewspaperSetQuestMonsterInfo(u32 l
 // Address: 0x0062ec60 - 0x0062ecb2 (82 bytes)
 MtObject* nQuest::cGUINewspaperSetQuestMonsterInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUINewspaperSetQuestMonsterInfo;
+    return new (16u) ::nQuest::cGUINewspaperSetQuestMonsterInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1927,7 +1963,7 @@ inline MtAllocator* nQuest::cGUINewspaperSetQuestItemInfo::getAllocator() {
 // Address: 0x0062ee20 - 0x0062ee60 (64 bytes)
 void* nQuest::cGUINewspaperSetQuestItemInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUINewspaperSetQuestItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestItemInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cGUINewspaperSetQuestItemInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestItemInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1969,9 +2005,11 @@ inline void nQuest::cGUINewspaperSetQuestItemInfo::operator delete(void* p_addr)
 // Address: 0x0062ef00 - 0x0062ef15 (21 bytes)
 nQuest::cGUINewspaperSetQuestItemInfo::cGUINewspaperSetQuestItemInfo(u32 id, u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemId = id;
-    this->mItemNum = num;
+    mItemId = id;
+    mItemNum = num;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUINewspaperSetQuestItemInfo::MyDTI nQuest::cGUINewspaperSetQuestItemInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638f4c-0x00638f85 (called at nQuest.cpp:2878)
@@ -1981,7 +2019,7 @@ nQuest::cGUINewspaperSetQuestItemInfo::cGUINewspaperSetQuestItemInfo(u32 id, u32
 // Address: 0x0062edd0 - 0x0062ee18 (72 bytes)
 MtObject* nQuest::cGUINewspaperSetQuestItemInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUINewspaperSetQuestItemInfo;
+    return new (16u) ::nQuest::cGUINewspaperSetQuestItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2007,7 +2045,7 @@ inline MtAllocator* nQuest::cGUINewspaperSetQuestInfo::getAllocator() {
 // Address: 0x0062ef60 - 0x0062efa0 (64 bytes)
 void* nQuest::cGUINewspaperSetQuestInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUINewspaperSetQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cGUINewspaperSetQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2064,71 +2102,71 @@ __attribute__((weak)) MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getEyewitnessI
 // Address: 0x0062f1b0 - 0x0062f1be (14 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getSelectReward(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(4)) {
-        return this->mSelectReward[idx];
+    if (idx <= 4u) {
+        return mSelectReward[idx];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062f1c0 - 0x0062f1c4 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getRandomRewardNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRandomRewardNum;
+    return mRandomRewardNum;
 }
 
 // Address: 0x0062f1d0 - 0x0062f1d4 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDiscoverRewardItemId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDiscoverBonusItemId;
+    return mDiscoverBonusItemId;
 }
 
 // Address: 0x0062f1e0 - 0x0062f1e4 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDiscoverBonusGold() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDiscoverBonusGold;
+    return mDiscoverBonusGold;
 }
 
 // Address: 0x0062f1f0 - 0x0062f1f4 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDiscoverBonusRim() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDiscoverBonusRim;
+    return mDiscoverBonusRim;
 }
 
 // Address: 0x0062f200 - 0x0062f204 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDiscoverBonusExp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDiscoverBonusExp;
+    return mDiscoverBonusExp;
 }
 
 // Address: 0x0062f210 - 0x0062f215 (5 bytes)
 const MtTime& nQuest::cGUINewspaperSetQuestInfo::getEndDistributionDate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndDistributionDate;
+    return mEndDistributionDate;
 }
 
 // Address: 0x0062f220 - 0x0062f224 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getBaseLevel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBaseLevel;
+    return mBaseLevel;
 }
 
 // Address: 0x0062f240 - 0x0062f244 (4 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getThumbnailResourceId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuestThumbnailResourceId;
+    return mQuestThumbnailResourceId;
 }
 
 // Address: 0x0062f250 - 0x0062f257 (7 bytes)
 bool nQuest::cGUINewspaperSetQuestInfo::isDiscover() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDiscovery;
+    return mIsDiscovery;
 }
 
 // Address: 0x0062f120 - 0x0062f12b (11 bytes)
 bool nQuest::cGUINewspaperSetQuestInfo::isCleared() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCompleteNum != static_cast<u32>(0);
+    return mCompleteNum != 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2137,13 +2175,13 @@ bool nQuest::cGUINewspaperSetQuestInfo::isCleared() const {
 // Address: 0x0062f270 - 0x0062f277 (7 bytes)
 bool nQuest::cGUINewspaperSetQuestInfo::isPartyBonus() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsPartyBonus;
+    return mIsPartyBonus;
 }
 
 // Address: 0x0062f280 - 0x0062f28b (11 bytes)
 bool nQuest::cGUINewspaperSetQuestInfo::isPopularQuickParty() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQuickPartyPopularity != static_cast<u32>(0);
+    return mQuickPartyPopularity != 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (42 bytes)
@@ -2153,7 +2191,7 @@ bool nQuest::cGUINewspaperSetQuestInfo::isPopularQuickParty() const {
 // Address: 0x0062f2a0 - 0x0062f2a7 (7 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetEnemyArray.::MtArray::mLength;
+    return mTargetEnemyArray.mLength;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
@@ -2170,10 +2208,10 @@ __attribute__((weak)) MT_CTSTR nQuest::cGUINewspaperSetQuestInfo::getTargetEnemy
 // Address: 0x0062f2f0 - 0x0062f30b (27 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyLv(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mTargetEnemyArray.::MtArray::mLength) {
-        return static_cast<nQuest::cGUINewspaperSetQuestMonsterInfo*>(this->mTargetEnemyArray.::MtArray::mpArray[idx])->::nQuest::cGUINewspaperSetQuestMonsterInfo::getEnemyLv();
+    if (idx < mTargetEnemyArray.mLength) {
+        return static_cast<nQuest::cGUINewspaperSetQuestMonsterInfo*>(mTargetEnemyArray.mpArray[idx])->getEnemyLv();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2185,19 +2223,19 @@ u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyLv(u32 idx) const {
 bool nQuest::cGUINewspaperSetQuestInfo::hasEnemyInfo(u32 enemyGroupId, u32 enemyLv) const {
     // DWARF local not rendered: cGUINewspaperSetQuestMonsterInfo* pEmId;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    const u32 emIdNum = this->mTargetEnemyArray.::MtArray::mLength;
-    if (emIdNum != static_cast<u32>(0)) {
+    const u32 emIdNum = mTargetEnemyArray.mLength;
+    if (emIdNum != 0) {
         // inferred: the value the loop at 0x62f330 carries; no location-less local in scope fits
-        MtObject* * v0_4 = this->mTargetEnemyArray.::MtArray::mpArray;
+        MtObject* * v0_4 = mTargetEnemyArray.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x62f317, 0x62f348)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(12))) == enemyGroupId) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(8))) == enemyLv) {
+        for (u32 i = 0;;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 12)) == enemyGroupId) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + 8)) == enemyLv) {
                     return true;
                 }
             }
-            if ((i + static_cast<u32>(1)) < emIdNum) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < emIdNum) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -2209,26 +2247,26 @@ bool nQuest::cGUINewspaperSetQuestInfo::hasEnemyInfo(u32 enemyGroupId, u32 enemy
 // Address: 0x0062f350 - 0x0062f357 (7 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDeliveryItemListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeliveryItemArray.::MtArray::mLength;
+    return mDeliveryItemArray.mLength;
 }
 
 // Address: 0x0062f360 - 0x0062f37b (27 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDeliveryItemId(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mDeliveryItemArray.::MtArray::mLength) {
-        return static_cast<nQuest::cGUINewspaperSetQuestItemInfo*>(this->mDeliveryItemArray.::MtArray::mpArray[idx])->::nQuest::cGUINewspaperSetQuestItemInfo::getItemId();
+    if (idx < mDeliveryItemArray.mLength) {
+        return static_cast<nQuest::cGUINewspaperSetQuestItemInfo*>(mDeliveryItemArray.mpArray[idx])->getItemId();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062f380 - 0x0062f39b (27 bytes)
 u32 nQuest::cGUINewspaperSetQuestInfo::getDeliveryItemNum(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx < this->mDeliveryItemArray.::MtArray::mLength) {
-        return static_cast<nQuest::cGUINewspaperSetQuestItemInfo*>(this->mDeliveryItemArray.::MtArray::mpArray[idx])->::nQuest::cGUINewspaperSetQuestItemInfo::getItemNum();
+    if (idx < mDeliveryItemArray.mLength) {
+        return static_cast<nQuest::cGUINewspaperSetQuestItemInfo*>(mDeliveryItemArray.mpArray[idx])->getItemNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2256,6 +2294,8 @@ nQuest::cGUINewspaperSetQuestInfo::~cGUINewspaperSetQuestInfo() {
 __attribute__((weak)) void nQuest::cGUINewspaperSetQuestInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUINewspaperSetQuestInfo::MyDTI nQuest::cGUINewspaperSetQuestInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638f85-0x00638fbf (called at nQuest.cpp:2941)
@@ -2291,7 +2331,7 @@ inline MtAllocator* nQuest::cGUINewspaperRecommededQuestInfo::getAllocator() {
 // Address: 0x0062f850 - 0x0062f890 (64 bytes)
 void* nQuest::cGUINewspaperRecommededQuestInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUINewspaperRecommededQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperRecommededQuestInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cGUINewspaperRecommededQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperRecommededQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2319,7 +2359,7 @@ void* nQuest::cGUINewspaperRecommededQuestInfo::operator new(size_t sz, u32 alig
 // Address: 0x0062f900 - 0x0062f907 (7 bytes)
 u32 nQuest::cGUINewspaperRecommededQuestInfo::getAreaId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAreaId;
+    return mAreaId;
 }
 
 // Address: 0x0062f910 - 0x0062f944 (52 bytes)
@@ -2343,6 +2383,8 @@ nQuest::cGUINewspaperRecommededQuestInfo::~cGUINewspaperRecommededQuestInfo() {
 __attribute__((weak)) void nQuest::cGUINewspaperRecommededQuestInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUINewspaperRecommededQuestInfo::MyDTI nQuest::cGUINewspaperRecommededQuestInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638fbf-0x00638ff8 (called at nQuest.cpp:3615)
@@ -2378,7 +2420,7 @@ inline MtAllocator* nQuest::cGUINewspaperSetQuestOpenDateInfo::getAllocator() {
 // Address: 0x0062fa30 - 0x0062fa70 (64 bytes)
 void* nQuest::cGUINewspaperSetQuestOpenDateInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUINewspaperSetQuestOpenDateInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestOpenDateInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cGUINewspaperSetQuestOpenDateInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cGUINewspaperSetQuestOpenDateInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2438,6 +2480,8 @@ __attribute__((weak)) void nQuest::cGUINewspaperSetQuestOpenDateInfo::createProp
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUINewspaperSetQuestOpenDateInfo::MyDTI nQuest::cGUINewspaperSetQuestOpenDateInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ff8-0x00639031 (called at nQuest.cpp:3688)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00638ff8-0x00639031 (called at nQuest.h:1634)
@@ -2473,7 +2517,7 @@ const MtDTI& nQuest::cCycleContentsResultPointInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nQuest::cCycleContentsResultPointInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultPointInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultPointInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultPointInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultPointInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2510,43 +2554,43 @@ __attribute__((weak)) nQuest::cCycleContentsResultPointInfo* nQuest::cCycleConte
 nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE nQuest::cCycleContentsResultPointInfo::getType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE
-    return static_cast<nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE>(this->mType);
+    return static_cast<nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE>(mType);
 }
 
 // Address: 0x0062fd40 - 0x0062fd4f (15 bytes)
 u32 nQuest::cCycleContentsResultPointInfo::getEnemyId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(1)) {
-        return this->mParam01;
+    if (mType == 1) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062fd50 - 0x0062fd5f (15 bytes)
 u32 nQuest::cCycleContentsResultPointInfo::getEnemyNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(1)) {
-        return this->mParam02;
+    if (mType == 1) {
+        return mParam02;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062fd60 - 0x0062fd6f (15 bytes)
 u32 nQuest::cCycleContentsResultPointInfo::getExtraBonusNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(2)) {
-        return this->mParam01;
+    if (mType == 2) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062fd70 - 0x0062fd74 (4 bytes)
 u32 nQuest::cCycleContentsResultPointInfo::getPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPoint;
+    return mPoint;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (68 bytes)
@@ -2565,6 +2609,8 @@ __attribute__((weak)) void nQuest::cCycleContentsResultPointInfo::createProperty
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsResultPointInfo::MyDTI nQuest::cCycleContentsResultPointInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639031-0x0063906a (called at nQuest.cpp:3788)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639031-0x0063906a (called at nQuest.h:1676)
@@ -2573,7 +2619,7 @@ __attribute__((weak)) void nQuest::cCycleContentsResultPointInfo::createProperty
 // Address: 0x0062fbd0 - 0x0062fc23 (83 bytes)
 MtObject* nQuest::cCycleContentsResultPointInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsResultPointInfo;
+    return new (16u) ::nQuest::cCycleContentsResultPointInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2601,7 +2647,7 @@ const MtDTI& nQuest::cCycleContentsResultRewardInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nQuest::cCycleContentsResultRewardInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultRewardInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultRewardInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2645,94 +2691,94 @@ __attribute__((weak)) nQuest::cCycleContentsResultRewardInfo* nQuest::cCycleCont
 nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE nQuest::cCycleContentsResultRewardInfo::getType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE
-    return static_cast<nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE>(this->mType);
+    return static_cast<nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE>(mType);
 }
 
 // Address: 0x0062ffb0 - 0x0062ffc1 (17 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getItemId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(this->mType - static_cast<int>(1)) <= static_cast<unsigned int>(1)) {
-        return this->mParam01;
+    if (static_cast<unsigned int>(mType - 1) <= 1) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062ffd0 - 0x0062ffe1 (17 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(this->mType - static_cast<int>(1)) <= static_cast<unsigned int>(1)) {
-        return this->mParam02;
+    if (static_cast<unsigned int>(mType - 1) <= 1) {
+        return mParam02;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0062fff0 - 0x0062ffff (15 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getGold() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(3)) {
-        return this->mParam01;
+    if (mType == 3) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00630000 - 0x0063000f (15 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getRim() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(4)) {
-        return this->mParam01;
+    if (mType == 4) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00630010 - 0x00630024 (20 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getJobPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType != static_cast<u8>(5)) {
-        if (this->mType == static_cast<u8>(9)) {
-            return this->mParam01;
+    if (mType != 5) {
+        if (mType == 9) {
+            return mParam01;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return this->mParam01;
+        return mParam01;
     }
 }
 
 // Address: 0x00630030 - 0x00630044 (20 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getExp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType != static_cast<u8>(6)) {
-        if (this->mType == static_cast<u8>(10)) {
-            return this->mParam01;
+    if (mType != 6) {
+        if (mType == 10) {
+            return mParam01;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return this->mParam01;
+        return mParam01;
     }
 }
 
 // Address: 0x00630050 - 0x0063005f (15 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getBloodOrb() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(7)) {
-        return this->mParam01;
+    if (mType == 7) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00630060 - 0x0063006f (15 bytes)
 u32 nQuest::cCycleContentsResultRewardInfo::getAbilityNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType == static_cast<u8>(8)) {
-        return this->mParam01;
+    if (mType == 8) {
+        return mParam01;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2753,6 +2799,8 @@ __attribute__((weak)) void nQuest::cCycleContentsResultRewardInfo::createPropert
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsResultRewardInfo::MyDTI nQuest::cCycleContentsResultRewardInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063906a-0x006390a3 (called at nQuest.cpp:3935)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063906a-0x006390a3 (called at nQuest.h:1731)
@@ -2761,7 +2809,7 @@ __attribute__((weak)) void nQuest::cCycleContentsResultRewardInfo::createPropert
 // Address: 0x0062fde0 - 0x0062fe2c (76 bytes)
 MtObject* nQuest::cCycleContentsResultRewardInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsResultRewardInfo;
+    return new (16u) ::nQuest::cCycleContentsResultRewardInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2818,19 +2866,19 @@ inline void nQuest::cCycleContentsResultInfo::operator delete(void* p_addr) {
 // Address: 0x00630220 - 0x0063022f (15 bytes)
 MT_CTSTR nQuest::cCycleContentsResultInfo::getSituationName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationNamePlayNow();
+    return ::sQuestManagerExt::getInstance()->getCycleContentsSituationNamePlayNow();
 }
 
 // Address: 0x00630230 - 0x00630234 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getResultPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResultPoint;
+    return mResultPoint;
 }
 
 // Address: 0x00630240 - 0x00630244 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getResultBonusPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResultBonusPoint;
+    return mResultBonusPoint;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -2848,49 +2896,49 @@ u32 nQuest::cCycleContentsResultInfo::getResultBonusPoint() const {
 // Address: 0x00630250 - 0x00630254 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getTechnicalScore() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTechnicalScore;
+    return mTechnicalScore;
 }
 
 // Address: 0x00630260 - 0x00630264 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getBestTechnicalScore() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBestTechnicalScore;
+    return mBestTechnicalScore;
 }
 
 // Address: 0x00630270 - 0x00630274 (4 bytes)
 bool nQuest::cCycleContentsResultInfo::isNewRecord() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsNewRecord;
+    return mIsNewRecord;
 }
 
 // Address: 0x00630280 - 0x00630284 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getTechnicalScoreTimeBonus() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTechnicalSocreTimeBonus;
+    return mTechnicalSocreTimeBonus;
 }
 
 // Address: 0x00630290 - 0x00630294 (4 bytes)
 u32 nQuest::cCycleContentsResultInfo::getClearTimeBonusRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mClearTimeBonusRate;
+    return mClearTimeBonusRate;
 }
 
 // Address: 0x006302a0 - 0x006302a5 (5 bytes)
 const nQuest::CycleContentsResultPointInfoArray& nQuest::cCycleContentsResultInfo::getPointList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPointList;
+    return mPointList;
 }
 
 // Address: 0x006302b0 - 0x006302b5 (5 bytes)
 const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsResultInfo::getRewardItemIdList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRewardList;
+    return mRewardList;
 }
 
 // Address: 0x006302c0 - 0x006302c4 (4 bytes)
 bool nQuest::cCycleContentsResultInfo::hasRegionBreakReward() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHasRegionBreakReward;
+    return mHasRegionBreakReward;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -2907,68 +2955,70 @@ nQuest::cCycleContentsResultInfo::cCycleContentsResultInfo() {
 // Also emitted as: _ZN6nQuest24cCycleContentsResultInfoD0Ev at 0x00630490
 nQuest::cCycleContentsResultInfo::~cCycleContentsResultInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPointList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPointList.mLength != 0) {
         // inferred: the value the loop at 0x6303a0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPointList.::MtArray::mLength;
+        u32 v0_0 = mPointList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPointList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPointList.::MtArray::mLength) {
-                    v0_0 = this->mPointList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPointList.mpArray[i0_3] != nullptr) {
+                delete mPointList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPointList.mLength) {
+                    v0_0 = mPointList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPointList.::MtArray::mpArray));
+    if (mPointList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mPointList.mpArray));
     }
-    this->mPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPointList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPointList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+    mPointList.mpArray = nullptr;
+    mPointList.mBufsiz = 0;
+    mPointList.mLength = 0;
+    if (mRewardList.mLength != 0) {
         // inferred: the value the loop at 0x630410 carries; no location-less local in scope fits
-        u32 v2_0 = this->mRewardList.::MtArray::mLength;
+        u32 v2_0 = mRewardList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRewardList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRewardList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
-                    v2_0 = this->mRewardList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mRewardList.mpArray[i2_3] != nullptr) {
+                delete mRewardList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mRewardList.mLength) {
+                    v2_0 = mRewardList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    if (mRewardList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mRewardList.mpArray));
     }
-    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
+    mRewardList.mpArray = nullptr;
+    mRewardList.mBufsiz = 0;
+    mRewardList.mLength = 0;
 }
 
 // Address: 0x006304c0 - 0x006304c1 (1 bytes)
 __attribute__((weak)) void nQuest::cCycleContentsResultInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsResultInfo::MyDTI nQuest::cCycleContentsResultInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006390a3-0x006390dc (called at nQuest.cpp:4169)
@@ -3058,19 +3108,25 @@ __attribute__((weak)) MT_CTSTR nQuest::cCycleContentsRankingInfo::getClanName() 
 u32 nQuest::cCycleContentsRankingInfo::getPoint() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x28 from const nQuest::cCycleContentsRankingInfo*
-    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(40));
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 40);
 }
 
 // Address: 0x006308d0 - 0x006308d4 (4 bytes)
 u32 nQuest::cCycleContentsRankingInfo::getRank() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRank;
+    return mRank;
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (115 bytes)
-//   in nQuest::cCycleContentsRankingInfo::MyDTI::newInstance at 0x006304fd-0x00630532 (called at nQuest.cpp:4379)
-//   in nQuest::cCycleContentsRankingInfo::newInstance at 0x00630609-0x00630640, 0x00630662-0x00630669 (called at nQuest.cpp:4390)
-// nQuest::cCycleContentsRankingInfo::cCycleContentsRankingInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline nQuest::cCycleContentsRankingInfo::cCycleContentsRankingInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPoint = 0;
+    mRank = 0;
+    mClanName.value = nullptr;
+    mLastName.value = nullptr;
+    mFirstName.value = nullptr;
+}
 
 // Address: 0x006308f0 - 0x006309dd (237 bytes)
 // Also emitted as: _ZN6nQuest25cCycleContentsRankingInfoD0Ev at 0x006309e0
@@ -3083,6 +3139,8 @@ nQuest::cCycleContentsRankingInfo::~cCycleContentsRankingInfo() {
 __attribute__((weak)) void nQuest::cCycleContentsRankingInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsRankingInfo::MyDTI nQuest::cCycleContentsRankingInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006390dc-0x00639115 (called at nQuest.cpp:4379)
@@ -3119,7 +3177,7 @@ const MtDTI& nQuest::cCycleContentsRankingRewardInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nQuest::cCycleContentsRankingRewardInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsRankingRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsRankingRewardInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsRankingRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsRankingRewardInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3165,19 +3223,19 @@ __attribute__((weak)) void nQuest::cCycleContentsRankingRewardInfo::addReward(nQ
 // Address: 0x00630d60 - 0x00630d64 (4 bytes)
 u32 nQuest::cCycleContentsRankingRewardInfo::getUnderRank() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnderRank;
+    return mUnderRank;
 }
 
 // Address: 0x00630d70 - 0x00630d74 (4 bytes)
 u32 nQuest::cCycleContentsRankingRewardInfo::getOverRank() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOverRank;
+    return mOverRank;
 }
 
 // Address: 0x00630d80 - 0x00630d85 (5 bytes)
 const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsRankingRewardInfo::getRewardList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRewardList;
+    return mRewardList;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (140 bytes)
@@ -3189,40 +3247,42 @@ const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsRankingReward
 // Also emitted as: _ZN6nQuest31cCycleContentsRankingRewardInfoD0Ev at 0x00630e40
 nQuest::cCycleContentsRankingRewardInfo::~cCycleContentsRankingRewardInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mRewardList.mLength != 0) {
         // inferred: the value the loop at 0x630dd0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mRewardList.::MtArray::mLength;
+        u32 v0_0 = mRewardList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRewardList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRewardList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
-                    v0_0 = this->mRewardList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRewardList.mpArray[i0_3] != nullptr) {
+                delete mRewardList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mRewardList.mLength) {
+                    v0_0 = mRewardList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    if (mRewardList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mRewardList.mpArray));
     }
-    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
+    mRewardList.mpArray = nullptr;
+    mRewardList.mBufsiz = 0;
+    mRewardList.mLength = 0;
 }
 
 // Address: 0x00630f00 - 0x00630f01 (1 bytes)
 __attribute__((weak)) void nQuest::cCycleContentsRankingRewardInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsRankingRewardInfo::MyDTI nQuest::cCycleContentsRankingRewardInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639115-0x0063914e (called at nQuest.cpp:4515)
@@ -3232,7 +3292,7 @@ __attribute__((weak)) void nQuest::cCycleContentsRankingRewardInfo::createProper
 // Address: 0x00630b00 - 0x00630b77 (119 bytes)
 MtObject* nQuest::cCycleContentsRankingRewardInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsRankingRewardInfo;
+    return new (16u) ::nQuest::cCycleContentsRankingRewardInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3260,7 +3320,7 @@ const MtDTI& nQuest::cCycleContentsBorderRewardInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nQuest::cCycleContentsBorderRewardInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsBorderRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsBorderRewardInfo::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsBorderRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsBorderRewardInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3310,19 +3370,19 @@ __attribute__((weak)) void nQuest::cCycleContentsBorderRewardInfo::addReward(nQu
 // Address: 0x00631200 - 0x00631204 (4 bytes)
 s32 nQuest::cCycleContentsBorderRewardInfo::getUnderPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnderPoint;
+    return mUnderPoint;
 }
 
 // Address: 0x00631210 - 0x00631214 (4 bytes)
 s32 nQuest::cCycleContentsBorderRewardInfo::getOverPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOverPoint;
+    return mOverPoint;
 }
 
 // Address: 0x00631220 - 0x00631225 (5 bytes)
 const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsBorderRewardInfo::getRewardList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRewardList;
+    return mRewardList;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (211 bytes)
@@ -3335,40 +3395,42 @@ const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsBorderRewardI
 // Also emitted as: _ZN6nQuest30cCycleContentsBorderRewardInfoD0Ev at 0x006312e0
 nQuest::cCycleContentsBorderRewardInfo::~cCycleContentsBorderRewardInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mRewardList.mLength != 0) {
         // inferred: the value the loop at 0x631270 carries; no location-less local in scope fits
-        u32 v0_0 = this->mRewardList.::MtArray::mLength;
+        u32 v0_0 = mRewardList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRewardList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRewardList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
-                    v0_0 = this->mRewardList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRewardList.mpArray[i0_3] != nullptr) {
+                delete mRewardList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mRewardList.mLength) {
+                    v0_0 = mRewardList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    if (mRewardList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mRewardList.mpArray));
     }
-    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
+    mRewardList.mpArray = nullptr;
+    mRewardList.mBufsiz = 0;
+    mRewardList.mLength = 0;
 }
 
 // Address: 0x006313a0 - 0x006313a1 (1 bytes)
 __attribute__((weak)) void nQuest::cCycleContentsBorderRewardInfo::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsBorderRewardInfo::MyDTI nQuest::cCycleContentsBorderRewardInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063914e-0x00639187 (called at nQuest.cpp:4651)
@@ -3378,7 +3440,7 @@ __attribute__((weak)) void nQuest::cCycleContentsBorderRewardInfo::createPropert
 // Address: 0x00630f10 - 0x00630f87 (119 bytes)
 MtObject* nQuest::cCycleContentsBorderRewardInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsBorderRewardInfo;
+    return new (16u) ::nQuest::cCycleContentsBorderRewardInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3404,7 +3466,7 @@ const MtDTI& nQuest::cQuestCommand::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nQuest::cQuestCommand::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestCommand::DTI)->memAlloc(sz, align, ::nQuest::cQuestCommand::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestCommand::DTI)->memAlloc(sz, align, ::nQuest::cQuestCommand::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3433,11 +3495,11 @@ inline void nQuest::cQuestCommand::operator delete(void* p_addr) {
 // Address: 0x00631480 - 0x006314a5 (37 bytes)
 nQuest::cQuestCommand::cQuestCommand() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->m_usCommand = static_cast<u16>(0);
-    this->m_nParam03 = static_cast<s32>(0);
-    this->m_nParam04 = static_cast<s32>(0);
-    this->m_nParam01 = static_cast<s32>(0);
-    this->m_nParam02 = static_cast<s32>(0);
+    m_usCommand = 0;
+    m_nParam03 = 0;
+    m_nParam04 = 0;
+    m_nParam01 = 0;
+    m_nParam02 = 0;
 }
 
 // Address: 0x006314b0 - 0x006314b1 (1 bytes)
@@ -3454,12 +3516,14 @@ __attribute__((weak)) void nQuest::cQuestCommand::createProperty(MtPropertyList&
 // Address: 0x00631500 - 0x00631513 (19 bytes)
 void nQuest::cQuestCommand::copy(const CDataQuestCommand* pSrc) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->m_usCommand = pSrc->m_usCommand;
-    this->m_nParam01 = pSrc->m_nParam01;
-    this->m_nParam02 = pSrc->m_nParam02;
-    this->m_nParam03 = pSrc->m_nParam03;
-    this->m_nParam04 = pSrc->m_nParam04;
+    m_usCommand = pSrc->m_usCommand;
+    m_nParam01 = pSrc->m_nParam01;
+    m_nParam02 = pSrc->m_nParam02;
+    m_nParam03 = pSrc->m_nParam03;
+    m_nParam04 = pSrc->m_nParam04;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cQuestCommand::MyDTI nQuest::cQuestCommand::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639187-0x006391c0 (called at nQuest.cpp:4790)
@@ -3469,7 +3533,7 @@ void nQuest::cQuestCommand::copy(const CDataQuestCommand* pSrc) {
 // Address: 0x006313b0 - 0x00631406 (86 bytes)
 MtObject* nQuest::cQuestCommand::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cQuestCommand;
+    return new (16u) ::nQuest::cQuestCommand;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3495,7 +3559,7 @@ inline MtAllocator* nQuest::cTalkData::getAllocator() {
 // Address: 0x00631740 - 0x00631780 (64 bytes)
 void* nQuest::cTalkData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cTalkData::getAllocator()->memAlloc(sz, align, ::nQuest::cTalkData::DTI.::MtDTI::getID());
+    return ::nQuest::cTalkData::getAllocator()->memAlloc(sz, align, ::nQuest::cTalkData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3524,11 +3588,11 @@ inline void nQuest::cTalkData::operator delete(void* p_addr) {
 // Address: 0x006317f0 - 0x00631814 (36 bytes)
 nQuest::cTalkData::cTalkData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsOneOnly = false;
-    this->mIsDispOrderUI = false;
-    this->mNoOrderGroupSerial = static_cast<u32>(0);
-    this->mGroupSerial = static_cast<u32>(0);
-    this->mNpcId = static_cast<u32>(0);
+    mIsOneOnly = false;
+    mIsDispOrderUI = false;
+    mNoOrderGroupSerial = 0;
+    mGroupSerial = 0;
+    mNpcId = 0;
 }
 
 // Address: 0x00631820 - 0x00631821 (1 bytes)
@@ -3542,6 +3606,8 @@ __attribute__((weak)) void nQuest::cTalkData::createProperty(MtPropertyList& s) 
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cTalkData::MyDTI nQuest::cTalkData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006391c0-0x006391f9 (called at nQuest.cpp:4907)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006391c0-0x006391f9 (called at nQuest.h:2091)
@@ -3550,7 +3616,7 @@ __attribute__((weak)) void nQuest::cTalkData::createProperty(MtPropertyList& s) 
 // Address: 0x006316e0 - 0x00631735 (85 bytes)
 MtObject* nQuest::cTalkData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cTalkData;
+    return new (16u) ::nQuest::cTalkData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3576,7 +3642,7 @@ inline MtAllocator* nQuest::cDeliverTargetInfo::getAllocator() {
 // Address: 0x006318d0 - 0x00631910 (64 bytes)
 void* nQuest::cDeliverTargetInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cDeliverTargetInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliverTargetInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cDeliverTargetInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cDeliverTargetInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3605,37 +3671,37 @@ inline void nQuest::cDeliverTargetInfo::operator delete(void* p_addr) {
 // Address: 0x00631980 - 0x00631984 (4 bytes)
 u32 nQuest::cDeliverTargetInfo::getStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo;
+    return mStageNo;
 }
 
 // Address: 0x00631990 - 0x00631994 (4 bytes)
 u32 nQuest::cDeliverTargetInfo::getGroupNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupNo;
+    return mGroupNo;
 }
 
 // Address: 0x006319a0 - 0x006319a4 (4 bytes)
 u32 nQuest::cDeliverTargetInfo::getSetNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSetNo;
+    return mSetNo;
 }
 
 // Address: 0x006319b0 - 0x006319b4 (4 bytes)
 u32 nQuest::cDeliverTargetInfo::getMsgGroupSerial() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMsgGroupSerial;
+    return mMsgGroupSerial;
 }
 
 // Address: 0x006319c0 - 0x006319c4 (4 bytes)
 u32 nQuest::cDeliverTargetInfo::getNpcId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNpcId;
+    return mNpcId;
 }
 
 // Address: 0x006319d0 - 0x006319d8 (8 bytes)
 bool nQuest::cDeliverTargetInfo::isQuestSet() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNpcId == static_cast<u32>(0);
+    return mNpcId == 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)
@@ -3645,21 +3711,21 @@ bool nQuest::cDeliverTargetInfo::isQuestSet() const {
 // Address: 0x006319f0 - 0x00631a16 (38 bytes)
 nQuest::cDeliverTargetInfo::cDeliverTargetInfo(u32 stageNo, u32 npcId, u32 msgGroupSerial) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = stageNo;
-    this->mGroupNo = static_cast<u32>(0);
-    this->mSetNo = static_cast<u32>(0);
-    this->mMsgGroupSerial = msgGroupSerial;
-    this->mNpcId = npcId;
+    mStageNo = stageNo;
+    mGroupNo = 0;
+    mSetNo = 0;
+    mMsgGroupSerial = msgGroupSerial;
+    mNpcId = npcId;
 }
 
 // Address: 0x00631a20 - 0x00631a43 (35 bytes)
 nQuest::cDeliverTargetInfo::cDeliverTargetInfo(u32 stageNo, u32 groupNo, u32 setNo, u32 msgGroupSerial) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = stageNo;
-    this->mGroupNo = groupNo;
-    this->mSetNo = setNo;
-    this->mMsgGroupSerial = msgGroupSerial;
-    this->mNpcId = static_cast<u32>(0);
+    mStageNo = stageNo;
+    mGroupNo = groupNo;
+    mSetNo = setNo;
+    mMsgGroupSerial = msgGroupSerial;
+    mNpcId = 0;
 }
 
 // Address: 0x00631a50 - 0x00631a51 (1 bytes)
@@ -3673,6 +3739,8 @@ __attribute__((weak)) void nQuest::cDeliverTargetInfo::createProperty(MtProperty
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cDeliverTargetInfo::MyDTI nQuest::cDeliverTargetInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006391f9-0x00639232 (called at nQuest.cpp:4963)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006391f9-0x00639232 (called at nQuest.h:2130)
@@ -3681,7 +3749,7 @@ __attribute__((weak)) void nQuest::cDeliverTargetInfo::createProperty(MtProperty
 // Address: 0x00631870 - 0x006318c7 (87 bytes)
 MtObject* nQuest::cDeliverTargetInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cDeliverTargetInfo;
+    return new (16u) ::nQuest::cDeliverTargetInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3707,7 +3775,7 @@ inline MtAllocator* nQuest::cGUIListData::getAllocator() {
 // Address: 0x00631b10 - 0x00631b50 (64 bytes)
 void* nQuest::cGUIListData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUIListData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIListData::DTI.::MtDTI::getID());
+    return ::nQuest::cGUIListData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIListData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4071,6 +4139,8 @@ nQuest::cGUIListData::~cGUIListData() {
 __attribute__((weak)) void nQuest::cGUIListData::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIListData::MyDTI nQuest::cGUIListData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639232-0x0063926b (called at nQuest.cpp:5118)
@@ -4442,6 +4512,8 @@ __attribute__((weak)) void nQuest::cGUIInfoData::createProperty(MtPropertyList& 
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIInfoData::MyDTI nQuest::cGUIInfoData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063926b-0x006392a4 (called at nQuest.cpp:6038)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063926b-0x006392a4 (called at nQuest.h:2317)
@@ -4476,7 +4548,7 @@ inline MtAllocator* nQuest::cGUIBoardData::getAllocator() {
 // Address: 0x00634a90 - 0x00634ad0 (64 bytes)
 void* nQuest::cGUIBoardData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUIBoardData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIBoardData::DTI.::MtDTI::getID());
+    return ::nQuest::cGUIBoardData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIBoardData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4585,6 +4657,8 @@ __attribute__((weak)) void nQuest::cGUIBoardData::createProperty(MtPropertyList&
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIBoardData::MyDTI nQuest::cGUIBoardData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006392a4-0x006392dd (called at nQuest.cpp:6862)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006392a4-0x006392dd (called at nQuest.h:2457)
@@ -4593,7 +4667,7 @@ __attribute__((weak)) void nQuest::cGUIBoardData::createProperty(MtPropertyList&
 // Address: 0x00634a30 - 0x00634a86 (86 bytes)
 MtObject* nQuest::cGUIBoardData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUIBoardData;
+    return new (16u) ::nQuest::cGUIBoardData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4619,7 +4693,7 @@ inline MtAllocator* nQuest::cGUIDeliveryData::getAllocator() {
 // Address: 0x00634fe0 - 0x00635020 (64 bytes)
 void* nQuest::cGUIDeliveryData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUIDeliveryData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIDeliveryData::DTI.::MtDTI::getID());
+    return ::nQuest::cGUIDeliveryData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIDeliveryData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4700,6 +4774,8 @@ __attribute__((weak)) void nQuest::cGUIDeliveryData::createProperty(MtPropertyLi
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIDeliveryData::MyDTI nQuest::cGUIDeliveryData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006392dd-0x00639316 (called at nQuest.cpp:7070)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006392dd-0x00639316 (called at nQuest.h:2528)
@@ -4708,7 +4784,7 @@ __attribute__((weak)) void nQuest::cGUIDeliveryData::createProperty(MtPropertyLi
 // Address: 0x00634f80 - 0x00634fdd (93 bytes)
 MtObject* nQuest::cGUIDeliveryData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUIDeliveryData;
+    return new (16u) ::nQuest::cGUIDeliveryData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4734,7 +4810,7 @@ const MtDTI& nQuest::cGUIEventBoardData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nQuest::cGUIEventBoardData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIEventBoardData::DTI)->memAlloc(sz, align, ::nQuest::cGUIEventBoardData::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIEventBoardData::DTI)->memAlloc(sz, align, ::nQuest::cGUIEventBoardData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4793,6 +4869,8 @@ __attribute__((weak)) void nQuest::cGUIEventBoardData::createProperty(MtProperty
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIEventBoardData::MyDTI nQuest::cGUIEventBoardData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639316-0x0063934f (called at nQuest.cpp:7243)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639316-0x0063934f (called at nQuest.h:2584)
@@ -4801,7 +4879,7 @@ __attribute__((weak)) void nQuest::cGUIEventBoardData::createProperty(MtProperty
 // Address: 0x00635470 - 0x006354c6 (86 bytes)
 MtObject* nQuest::cGUIEventBoardData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUIEventBoardData;
+    return new (16u) ::nQuest::cGUIEventBoardData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4827,7 +4905,7 @@ inline MtAllocator* nQuest::cGUIAreaMasterData::getAllocator() {
 // Address: 0x00635660 - 0x006356a0 (64 bytes)
 void* nQuest::cGUIAreaMasterData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUIAreaMasterData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIAreaMasterData::DTI.::MtDTI::getID());
+    return ::nQuest::cGUIAreaMasterData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIAreaMasterData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5134,6 +5212,8 @@ __attribute__((weak)) void nQuest::cGUIAreaMasterData::createProperty(MtProperty
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIAreaMasterData::MyDTI nQuest::cGUIAreaMasterData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063934f-0x00639388 (called at nQuest.cpp:7371)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063934f-0x00639388 (called at nQuest.h:2641)
@@ -5168,7 +5248,7 @@ inline MtAllocator* nQuest::cGUIActiveData::getAllocator() {
 // Address: 0x00636bc0 - 0x00636c00 (64 bytes)
 void* nQuest::cGUIActiveData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cGUIActiveData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIActiveData::DTI.::MtDTI::getID());
+    return ::nQuest::cGUIActiveData::getAllocator()->memAlloc(sz, align, ::nQuest::cGUIActiveData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5227,6 +5307,8 @@ __attribute__((weak)) void nQuest::cGUIActiveData::createProperty(MtPropertyList
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cGUIActiveData::MyDTI nQuest::cGUIActiveData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639388-0x006393c1 (called at nQuest.cpp:8159)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639388-0x006393c1 (called at nQuest.h:2770)
@@ -5235,7 +5317,7 @@ __attribute__((weak)) void nQuest::cGUIActiveData::createProperty(MtPropertyList
 // Address: 0x00636b60 - 0x00636bb6 (86 bytes)
 MtObject* nQuest::cGUIActiveData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cGUIActiveData;
+    return new (16u) ::nQuest::cGUIActiveData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5261,7 +5343,7 @@ inline MtAllocator* nQuest::cCycleContentsSituationInfo::getAllocator() {
 // Address: 0x00636e60 - 0x00636ea0 (64 bytes)
 void* nQuest::cCycleContentsSituationInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cCycleContentsSituationInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsSituationInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cCycleContentsSituationInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cCycleContentsSituationInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5304,14 +5386,14 @@ __attribute__((weak)) nQuest::QUEST_ID nQuest::cCycleContentsSituationInfo::getQ
 MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsName() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), static_cast<u32>(2), this->mSituationNo);
+    return ::sQuestManagerExt::getInstance()->getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory), 2u, mSituationNo);
 }
 
 // Address: 0x00636fa0 - 0x00636fc3 (35 bytes)
 MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsInfo() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationDetailedInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), static_cast<u32>(2), this->mSituationNo);
+    return ::sQuestManagerExt::getInstance()->getCycleContentsSituationDetailedInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(mCycleContentsSubCategory), 2u, mSituationNo);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5320,25 +5402,25 @@ MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsInfo() const {
 // Address: 0x00636fe0 - 0x00636fe4 (4 bytes)
 u32 nQuest::cCycleContentsSituationInfo::getBaseLevel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBaseLevel;
+    return mBaseLevel;
 }
 
 // Address: 0x00636ff0 - 0x00637004 (20 bytes)
 bool nQuest::cCycleContentsSituationInfo::isEnableOrder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::getEnableOrderList(this->mOrderConditions) == static_cast<nQuest::RET_DISABLE_ORDER_CONDITION_TYPE>(0);
+    return ::nQuest::getEnableOrderList(mOrderConditions) == ::nQuest::RET_DIS_ORDER_CONDITION_TYPE_NONE;
 }
 
 // Address: 0x00637010 - 0x00637019 (9 bytes)
 nQuest::RET_DISABLE_ORDER_CONDITION_TYPE nQuest::cCycleContentsSituationInfo::getEnableOrder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::getEnableOrderList(this->mOrderConditions);
+    return ::nQuest::getEnableOrderList(mOrderConditions);
 }
 
 // Address: 0x00637020 - 0x00637024 (4 bytes)
 u32 nQuest::cCycleContentsSituationInfo::getOrderConditionNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrderConditions.::MtArray::mLength;
+    return mOrderConditions.mLength;
 }
 
 // Address: 0x00637030 - 0x00637046 (22 bytes)
@@ -5348,10 +5430,10 @@ u32 nQuest::cCycleContentsSituationInfo::getOrderConditionType(u32 idx) const {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from unsigned long
-    if (idx < this->mOrderConditions.::MtArray::mLength) {
-        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(32));
+    if (idx < mOrderConditions.mLength) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 32)) + static_cast<unsigned long>(idx * 8u)) + 0)) + 32);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -5373,35 +5455,35 @@ __attribute__((weak)) MT_CTSTR nQuest::cCycleContentsSituationInfo::getOrderCond
 // Address: 0x006370e0 - 0x006370ee (14 bytes)
 u32 nQuest::cCycleContentsSituationInfo::getRewardItem(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(6)) {
-        return this->mRewardItem[idx];
+    if (idx <= 6u) {
+        return mRewardItem[idx];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x006370f0 - 0x006370f4 (4 bytes)
 u32 nQuest::cCycleContentsSituationInfo::getMaxClearTimeBonusRatio() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxClearTimeBonusRatio;
+    return mMaxClearTimeBonusRatio;
 }
 
 // Address: 0x00637100 - 0x00637105 (5 bytes)
 u32 nQuest::cCycleContentsSituationInfo::getSituationNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSituationNo;
+    return mSituationNo;
 }
 
 // Address: 0x00636f10 - 0x00636f14 (4 bytes)
 bool nQuest::cCycleContentsSituationInfo::isDistribution() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDistribution;
+    return mIsDistribution;
 }
 
 // Address: 0x00636f20 - 0x00636f25 (5 bytes)
 void nQuest::cCycleContentsSituationInfo::setDistribution(bool setDist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDistribution = setDist;
+    mIsDistribution = setDist;
 }
 
 // Address: 0x00637110 - 0x0063721e (270 bytes)
@@ -5414,12 +5496,12 @@ __attribute__((weak)) void nQuest::cCycleContentsSituationInfo::addOrderConditio
 // Address: 0x00637220 - 0x0063725d (61 bytes)
 void nQuest::cCycleContentsSituationInfo::updateOrderConditionInfo() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
-    if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mOrderConditions.mLength != 0) {
         do {
-            static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::getBuffer()[static_cast<int>(i)])->::nQuest::cOrderCondition::updateConditionMessage();
-            i += static_cast<u32>(1);
-        } while (i < this->mOrderConditions.::MtArray::mLength);
+            static_cast<nQuest::cOrderCondition*>(mOrderConditions.getBuffer()[static_cast<int>(i)])->updateConditionMessage();
+            i += 1u;
+        } while (i < mOrderConditions.mLength);
     }
 }
 
@@ -5448,6 +5530,8 @@ nQuest::cCycleContentsSituationInfo::~cCycleContentsSituationInfo() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cCycleContentsSituationInfo::MyDTI nQuest::cCycleContentsSituationInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006393c1-0x006393fa (called at nQuest.cpp:8241)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006393c1-0x006393fa (called at nQuest.h:2821)
@@ -5456,7 +5540,7 @@ nQuest::cCycleContentsSituationInfo::~cCycleContentsSituationInfo() {
 // Address: 0x00636d80 - 0x00636e53 (211 bytes)
 MtObject* nQuest::cCycleContentsSituationInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsSituationInfo;
+    return new (16u) ::nQuest::cCycleContentsSituationInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5482,7 +5566,7 @@ inline MtAllocator* nQuest::cEndContentsGroupQuestInfo::getAllocator() {
 // Address: 0x00637600 - 0x00637640 (64 bytes)
 void* nQuest::cEndContentsGroupQuestInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cEndContentsGroupQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cEndContentsGroupQuestInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cEndContentsGroupQuestInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cEndContentsGroupQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5524,13 +5608,13 @@ __attribute__((weak)) nQuest::QUEST_ID nQuest::cEndContentsGroupQuestInfo::getQu
 // Address: 0x006376f0 - 0x00637704 (20 bytes)
 bool nQuest::cEndContentsGroupQuestInfo::isEnableOrder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::getEnableOrderList(this->mOrderConditions) == static_cast<nQuest::RET_DISABLE_ORDER_CONDITION_TYPE>(0);
+    return ::nQuest::getEnableOrderList(mOrderConditions) == ::nQuest::RET_DIS_ORDER_CONDITION_TYPE_NONE;
 }
 
 // Address: 0x00637710 - 0x00637719 (9 bytes)
 nQuest::RET_DISABLE_ORDER_CONDITION_TYPE nQuest::cEndContentsGroupQuestInfo::getEnableOrder() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::getEnableOrderList(this->mOrderConditions);
+    return ::nQuest::getEnableOrderList(mOrderConditions);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5543,10 +5627,10 @@ u32 nQuest::cEndContentsGroupQuestInfo::getOrderConditionType(u32 idx) const {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from unsigned long
-    if (idx < this->mOrderConditions.::MtArray::mLength) {
-        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(32));
+    if (idx < mOrderConditions.mLength) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 32)) + static_cast<unsigned long>(idx * 8u)) + 0)) + 32);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -5572,12 +5656,12 @@ __attribute__((weak)) void nQuest::cEndContentsGroupQuestInfo::addOrderCondition
 // Address: 0x006378e0 - 0x0063791d (61 bytes)
 void nQuest::cEndContentsGroupQuestInfo::updateOrderConditionInfo() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
-    if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mOrderConditions.mLength != 0) {
         do {
-            static_cast<nQuest::cOrderCondition*>(this->mOrderConditions.::MtArray::getBuffer()[static_cast<int>(i)])->::nQuest::cOrderCondition::updateConditionMessage();
-            i += static_cast<u32>(1);
-        } while (i < this->mOrderConditions.::MtArray::mLength);
+            static_cast<nQuest::cOrderCondition*>(mOrderConditions.getBuffer()[static_cast<int>(i)])->updateConditionMessage();
+            i += 1u;
+        } while (i < mOrderConditions.mLength);
     }
 }
 
@@ -5605,6 +5689,8 @@ nQuest::cEndContentsGroupQuestInfo::~cEndContentsGroupQuestInfo() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cEndContentsGroupQuestInfo::MyDTI nQuest::cEndContentsGroupQuestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006393fa-0x00639433 (called at nQuest.cpp:8602)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006393fa-0x00639433 (called at nQuest.h:2899)
@@ -5613,7 +5699,7 @@ nQuest::cEndContentsGroupQuestInfo::~cEndContentsGroupQuestInfo() {
 // Address: 0x00637560 - 0x006375f5 (149 bytes)
 MtObject* nQuest::cEndContentsGroupQuestInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cEndContentsGroupQuestInfo;
+    return new (16u) ::nQuest::cEndContentsGroupQuestInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5639,7 +5725,7 @@ inline MtAllocator* nQuest::cTargetEnemyInfo::getAllocator() {
 // Address: 0x00637c20 - 0x00637c60 (64 bytes)
 void* nQuest::cTargetEnemyInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cTargetEnemyInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cTargetEnemyInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cTargetEnemyInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cTargetEnemyInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5668,8 +5754,8 @@ inline void nQuest::cTargetEnemyInfo::operator delete(void* p_addr) {
 // Address: 0x00637cd0 - 0x00637cdf (15 bytes)
 bool nQuest::cTargetEnemyInfo::sameInfo(u32 stageNo, u32 groupNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStageNo == stageNo) {
-        return this->mGroupNo == groupNo;
+    if (mStageNo == stageNo) {
+        return mGroupNo == groupNo;
     } else {
         return false;
     }
@@ -5678,13 +5764,13 @@ bool nQuest::cTargetEnemyInfo::sameInfo(u32 stageNo, u32 groupNo) const {
 // Address: 0x00637ce0 - 0x00637ce4 (4 bytes)
 u32 nQuest::cTargetEnemyInfo::getStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo;
+    return mStageNo;
 }
 
 // Address: 0x00637cf0 - 0x00637cf4 (4 bytes)
 u32 nQuest::cTargetEnemyInfo::getGroupNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGroupNo;
+    return mGroupNo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
@@ -5694,8 +5780,8 @@ u32 nQuest::cTargetEnemyInfo::getGroupNo() const {
 // Address: 0x00637d10 - 0x00637d25 (21 bytes)
 nQuest::cTargetEnemyInfo::cTargetEnemyInfo(u32 stageNo, u32 groupNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = stageNo;
-    this->mGroupNo = groupNo;
+    mStageNo = stageNo;
+    mGroupNo = groupNo;
 }
 
 // Address: 0x00637d30 - 0x00637d31 (1 bytes)
@@ -5709,6 +5795,8 @@ __attribute__((weak)) void nQuest::cTargetEnemyInfo::createProperty(MtPropertyLi
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cTargetEnemyInfo::MyDTI nQuest::cTargetEnemyInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639433-0x0063946c (called at nQuest.cpp:8813)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x00639433-0x0063946c (called at nQuest.h:2957)
@@ -5717,7 +5805,7 @@ __attribute__((weak)) void nQuest::cTargetEnemyInfo::createProperty(MtPropertyLi
 // Address: 0x00637bd0 - 0x00637c18 (72 bytes)
 MtObject* nQuest::cTargetEnemyInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nQuest::cTargetEnemyInfo;
+    return new (16u) ::nQuest::cTargetEnemyInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5808,6 +5896,8 @@ __attribute__((weak)) void nQuest::cScheduleInfo::createProperty(MtPropertyList&
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): nQuest::cScheduleInfo::MyDTI nQuest::cScheduleInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063946c-0x006394a5 (called at nQuest.cpp:9005)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x0063946c-0x006394a5 (called at nQuest.h:3025)
@@ -5842,7 +5932,7 @@ inline MtAllocator* nQuest::cPartyBonusInfo::getAllocator() {
 // Address: 0x00638270 - 0x006382b0 (64 bytes)
 void* nQuest::cPartyBonusInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nQuest::cPartyBonusInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cPartyBonusInfo::DTI.::MtDTI::getID());
+    return ::nQuest::cPartyBonusInfo::getAllocator()->memAlloc(sz, align, ::nQuest::cPartyBonusInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5910,7 +6000,7 @@ __attribute__((weak)) nQuest::SCHEDULE_ID nQuest::cPartyBonusInfo::getScheduleId
 // Address: 0x006331c0 - 0x006331c4 (4 bytes)
 u32 nQuest::cPartyBonusInfo::getOrbNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrbNum;
+    return mOrbNum;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (27 bytes)
@@ -5922,7 +6012,7 @@ u32 nQuest::cPartyBonusInfo::getOrbNum() const {
 // Address: 0x00638370 - 0x00638375 (5 bytes)
 void nQuest::cPartyBonusInfo::receive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHasReceived = true;
+    mHasReceived = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (94 bytes)
@@ -5946,6 +6036,8 @@ __attribute__((weak)) void nQuest::cPartyBonusInfo::createProperty(MtPropertyLis
     DDON_STUB("nQuest::cPartyBonusInfo::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nQuest::cPartyBonusInfo::MyDTI nQuest::cPartyBonusInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nQuest.cpp at 0x006394a5-0x006394de (called at nQuest.cpp:9116)
@@ -5985,25 +6077,25 @@ nQuest::cGUINewspaperSetQuestInfoList::cGUINewspaperSetQuestInfoList() {
 // Address: 0x00637d80 - 0x00637d84 (4 bytes)
 u32 nQuest::TargetEnemyInfoArray::getFlagNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlagNo;
+    return mFlagNo;
 }
 
 // Address: 0x00637d90 - 0x00637d94 (4 bytes)
 void nQuest::TargetEnemyInfoArray::setFlagNo(u32 flagNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlagNo = flagNo;
+    mFlagNo = flagNo;
 }
 
 // Address: 0x00637da0 - 0x00637da4 (4 bytes)
 bool nQuest::TargetEnemyInfoArray::isValid() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsValid;
+    return mIsValid;
 }
 
 // Address: 0x00637db0 - 0x00637db5 (5 bytes)
 void nQuest::TargetEnemyInfoArray::setIsValid(bool isValid) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsValid = isValid;
+    mIsValid = isValid;
 }
 
 // Address: 0x00637dc0 - 0x00637df4 (52 bytes)

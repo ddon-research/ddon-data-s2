@@ -34,7 +34,7 @@ const MtDTI& sGUI::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sGUI::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sGUI::DTI);
+    return MtMemoryAllocator::getAllocator(sGUI::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline MtAllocator* sGUI::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4sGUID0Ev at 0x0124243e-0x0124245f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sGUI::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sGUI::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sGUI::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,14 +114,14 @@ __attribute__((weak)) void sGUI::move() {
 // Address: 0x012426d0 - 0x01242705 (53 bytes)
 void sGUI::end() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpVertexBuffer[this->mBufferIndex]->::nDraw::VertexBuffer::unmap();
-    this->mpIndexBuffer[this->mBufferIndex]->::nDraw::IndexBuffer::unmap();
+    mpVertexBuffer[mBufferIndex]->nDraw::VertexBuffer::unmap();
+    mpIndexBuffer[mBufferIndex]->nDraw::IndexBuffer::unmap();
 }
 
 // Address: 0x01242710 - 0x01242715 (5 bytes)
 MtUI* sGUI::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01242720 - 0x01243540 (3616 bytes)
@@ -150,7 +150,7 @@ __attribute__((weak)) void sGUI::draw(cDraw* pDraw) {
 // Address: 0x01243690 - 0x01243696 (6 bytes)
 u32 sGUI::getPlatform() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(6);
+    return 6;
 }
 
 // Address: 0x012436a0 - 0x012437c1 (289 bytes)
@@ -193,7 +193,7 @@ bool sGUI::isUseSystemFont() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x20 from const sGUI*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 32)) & 2) >> 1);
 }
 
 // Address: 0x01243830 - 0x01243920 (240 bytes)
@@ -206,30 +206,27 @@ __attribute__((weak)) void sGUI::createAlphaMap() {
 // Address: 0x01243920 - 0x01243992 (114 bytes)
 void sGUI::releaseAlphaMap() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place read twice with no call between; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mpAlphaMap != static_cast<nDraw::Texture*>(nullptr)) {
+    if (mpAlphaMap != nullptr) {
         // inferred: a temporary for the value the load at 0x1243952 read, used once; no DWARF local holds it
-        s32 t0 = this->mpAlphaMap->::nDraw::Resource::mRefCount;
-        this->mpAlphaMap->release();
-        if (t0 <= static_cast<s32>(1)) {
-            this->mpAlphaMap = static_cast<nDraw::Texture*>(nullptr);
+        s32 t0 = mpAlphaMap->mRefCount;
+        mpAlphaMap->release();
+        if (t0 <= 1) {
+            mpAlphaMap = nullptr;
         }
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -249,20 +246,20 @@ __attribute__((weak)) void sGUI::setLanguageSettingNum(u32 v) {
 // Address: 0x01b9fc60 - 0x01b9fc66 (6 bytes)
 u32 sGUI::getLanguageSettingNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x01b9fc40 - 0x01b9fc47 (7 bytes)
 nGUI::LANGUAGE sGUI::getLanguageId(nGUI::LANGUAGE_SETTING setting) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLanguageId[setting];
+    return mLanguageId[setting];
 }
 
 // Address: 0x01b9fc50 - 0x01b9fc5c (12 bytes)
 void sGUI::setLanguageIdForProperty(u32 value, u32 setting) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<int>(value) <= static_cast<int>(21)) {
-        this->mLanguageId[setting] = static_cast<nGUI::LANGUAGE>(value);
+    if (static_cast<int>(value) <= 21) {
+        mLanguageId[setting] = static_cast<nGUI::LANGUAGE>(value);
     }
 }
 
@@ -293,7 +290,7 @@ __attribute__((weak)) void sGUI::setFontCount(s32 slot) {
 // Address: 0x01b9fc80 - 0x01b9fc86 (6 bytes)
 s32 sGUI::getFontCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(8);
+    return 8;
 }
 
 // Address: 0x01243550 - 0x012435a7 (87 bytes)
@@ -305,35 +302,35 @@ __attribute__((weak)) void sGUI::setFont(rGUIFont* pFont, u32 slot) {
 // Address: 0x01243540 - 0x0124354f (15 bytes)
 rGUIFont* sGUI::getFont(u32 slot) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (slot <= static_cast<u32>(7)) {
-        return this->mpFontArray[slot];
+    if (slot <= 7u) {
+        return mpFontArray[slot];
     } else {
-        return static_cast<rGUIFont*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01b9fce0 - 0x01b9fce7 (7 bytes)
 void sGUI::setRubyLineSpace(s32 space) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRubyLineSpace = space;
+    mRubyLineSpace = space;
 }
 
 // Address: 0x01b9fcd0 - 0x01b9fcd7 (7 bytes)
 s32 sGUI::getRubyLineSpace() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRubyLineSpace;
+    return mRubyLineSpace;
 }
 
 // Address: 0x01b9fd00 - 0x01b9fd09 (9 bytes)
 void sGUI::setRubyRatio(f32 ratio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRubyRatio = ratio;
+    mRubyRatio = ratio;
 }
 
 // Address: 0x01b9fcf0 - 0x01b9fcf9 (9 bytes)
 f32 sGUI::getRubyRatio() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRubyRatio;
+    return mRubyRatio;
 }
 
 // Address: 0x01243610 - 0x01243656 (70 bytes)
@@ -345,21 +342,21 @@ __attribute__((weak)) void sGUI::setRubyFont(rGUIFont* pResource) {
 // Address: 0x01b9fcc0 - 0x01b9fcc8 (8 bytes)
 rGUIFont* sGUI::getRubyFont() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRubyFont;
+    return mpRubyFont;
 }
 
 // Address: 0x01243b20 - 0x01243b5c (60 bytes)
 void sGUI::updateDynamicFont() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLayoutingFont == static_cast<rGUIFont*>(nullptr)) {
+    if (mpLayoutingFont == nullptr) {
         return;
     }
-    if (this->mpLayoutingFont->::rGUIFont::executeLayoutChar() == false) {
+    if (!mpLayoutingFont->executeLayoutChar()) {
         return;
     }
-    rGUIFont* pNext = this->mpLayoutingFont->mpLayoutNext;
-    this->mpLayoutingFont->mpLayoutNext = static_cast<rGUIFont*>(nullptr);
-    this->mpLayoutingFont = pNext;
+    rGUIFont* pNext = mpLayoutingFont->mpLayoutNext;
+    mpLayoutingFont->mpLayoutNext = nullptr;
+    mpLayoutingFont = pNext;
 }
 
 // No out-of-line body: no code in the ELF
@@ -377,10 +374,10 @@ void sGUI::updateDynamicFont() {
 // Address: 0x01243b90 - 0x01243bab (27 bytes)
 cGUIFontFilter* sGUI::getFontFilter(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFontFilterResource != static_cast<rGUI*>(nullptr)) {
-        return this->mpFontFilterResource->getFontFilterFromId(id);
+    if (mpFontFilterResource != nullptr) {
+        return mpFontFilterResource->getFontFilterFromId(id);
     } else {
-        return static_cast<cGUIFontFilter*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -406,38 +403,35 @@ __attribute__((weak)) nGUI::MTAG* sGUI::allocTempMTagArray(u32 count) {
 // Address: 0x01243da0 - 0x01243e2b (139 bytes)
 __attribute__((weak)) void sGUI::freeTempMTag(nGUI::MTAG* pMTag) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (pMTag == static_cast<nGUI::MTAG*>(nullptr)) {
+    if (pMTag == nullptr) {
         return;
     }
-    if (pMTag->type == static_cast<u32>(22)) {
-        this->freeMTagExtendData(pMTag->extend.pData);
+    if (pMTag->type == 22) {
+        freeMTagExtendData(pMTag->extend.pData);
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the value the load at 0x1243de9 read, used once; no DWARF local holds it
-        bool t0 = this->::cSystem::mThreadSafe;
+        bool t0 = mThreadSafe;
         // inferred: a temporary for the value the load at 0x1243dec read, used twice; no DWARF local holds it
-        u32 t1 = this->mTempMTagOffset;
-        this->mTempMTagOffset = t1 + static_cast<u32>(1);
-        this->mpEmptyTempMTagBuffer[t1] = pMTag;
-        if ((t0 || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t1 = mTempMTagOffset;
+        mTempMTagOffset = t1 + 1u;
+        mpEmptyTempMTagBuffer[t1] = pMTag;
+        if (t0 || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x1243dec read, used twice; no DWARF local holds it
-        u32 t1 = this->mTempMTagOffset;
-        this->mTempMTagOffset = t1 + static_cast<u32>(1);
-        this->mpEmptyTempMTagBuffer[t1] = pMTag;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        u32 t1 = mTempMTagOffset;
+        mTempMTagOffset = t1 + 1u;
+        mpEmptyTempMTagBuffer[t1] = pMTag;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -446,28 +440,28 @@ __attribute__((weak)) void sGUI::freeTempMTag(nGUI::MTAG* pMTag) {
 // Address: 0x01243e30 - 0x01243e3c (12 bytes)
 void sGUI::freeMTagExtendData(void* pt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->memFree(pt);
+    memFree(pt);
 }
 
 // Address: 0x01243e40 - 0x01243e89 (73 bytes)
 void sGUI::freeMTAGList(nGUI::MTAG* & pMTag) {
     // DWARF local not rendered: MTAG* pTemp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if ((pMTag) != static_cast<nGUI::MTAG*>(nullptr)) {
+    if ((pMTag) != nullptr) {
         // inferred: the value the loop at 0x1243e60 carries; no location-less local in scope fits
         for (nGUI::MTAG* v0_4 = pMTag;;) {
             // inferred: a temporary for the value the load at 0x1243e60 read, used once; no DWARF local holds it
             nGUI::MTAG* t0 = v0_4->pNext;
-            this->::sGUI::freeTempMTag(v0_4);
+            freeTempMTag(v0_4);
             pMTag = t0;
-            if ((pMTag) != static_cast<nGUI::MTAG*>(nullptr)) {
+            if ((pMTag) != nullptr) {
                 v0_4 = t0;
             } else {
                 break;
             }
         }
     }
-    pMTag = static_cast<nGUI::MTAG*>(nullptr);
+    pMTag = nullptr;
 }
 
 // Address: 0x01b9fd50 - 0x01b9fd51 (1 bytes)
@@ -478,7 +472,7 @@ __attribute__((weak)) void sGUI::setTempMTagOffset(u32 v) {
 // Address: 0x01b9fd40 - 0x01b9fd47 (7 bytes)
 u32 sGUI::getTempMTagOffset() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTempMTagOffset;
+    return mTempMTagOffset;
 }
 
 // Address: 0x01b9fd70 - 0x01b9fd71 (1 bytes)
@@ -489,7 +483,7 @@ __attribute__((weak)) void sGUI::setTempMTagBufferCount(u32 count) {
 // Address: 0x01b9fd60 - 0x01b9fd67 (7 bytes)
 u32 sGUI::getTempMTagBufferCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTempMTagBufferCount;
+    return mTempMTagBufferCount;
 }
 
 // Address: 0x01b9fd80 - 0x01b9fd81 (1 bytes)
@@ -500,7 +494,7 @@ __attribute__((weak)) void sGUI::setUseTempMTagCount(u32 count) {
 // Address: 0x01243660 - 0x0124366d (13 bytes)
 u32 sGUI::getUseTempMTagCount() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTempMTagBufferCount - this->mTempMTagOffset;
+    return mTempMTagBufferCount - mTempMTagOffset;
 }
 
 // Address: 0x01243e90 - 0x01243e93 (3 bytes)
@@ -529,14 +523,14 @@ __attribute__((weak)) u32 sGUI::analyzeTagIcon(MT_CTSTR pParam, nGUI::ICON_INFO*
 // Address: 0x01b9fd20 - 0x01b9fd35 (21 bytes)
 void sGUI::setUseIconFontFilter(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (v == false) ? (this->mAttr & static_cast<u32>(4294967294)) : (this->mAttr | static_cast<u32>(1));
+    mAttr = !v ? (mAttr & 0xFFFFFFFEu) : (mAttr | 1u);
 }
 
 // Address: 0x01b9fd10 - 0x01b9fd17 (7 bytes)
 bool sGUI::isUseIconFontFilter() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
+    return static_cast<bool>(mAttr & 1u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -545,18 +539,18 @@ bool sGUI::isUseIconFontFilter() const {
 // Address: 0x01243f10 - 0x01243fab (155 bytes)
 void sGUI::setIconInfo(rGUIIconInfo* pResource) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpIconInfo != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-        this->memFree(static_cast<void*>(this->mpIconInfo));
-        this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+    if (mpIconInfo != nullptr) {
+        memFree(static_cast<void*>(mpIconInfo));
+        mpIconInfo = nullptr;
     }
-    if (this->mpIconNameBuffer != static_cast<MT_CHAR*>(nullptr)) {
-        this->memFree(static_cast<void*>(this->mpIconNameBuffer));
-        this->mpIconNameBuffer = static_cast<MT_CHAR*>(nullptr);
+    if (mpIconNameBuffer != nullptr) {
+        memFree(static_cast<void*>(mpIconNameBuffer));
+        mpIconNameBuffer = nullptr;
     }
-    if (pResource == static_cast<rGUIIconInfo*>(nullptr)) {
+    if (pResource == nullptr) {
         return;
     }
-    pResource->::rGUIIconInfo::createIconInfo(&this->mpIconInfo, &this->mpIconNameBuffer, ::MtMemoryAllocator::getAllocator(::sGUI::DTI));
+    pResource->createIconInfo(&mpIconInfo, &mpIconNameBuffer, MtMemoryAllocator::getAllocator(sGUI::DTI));
 }
 
 // No out-of-line body: no code in the ELF
@@ -571,7 +565,7 @@ __attribute__((weak)) void sGUI::setIconFont(rGUIFont* pResource) {
 // Address: 0x01b9fca0 - 0x01b9fca5 (5 bytes)
 rGUIFont* sGUI::getIconFont() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpIconFont;
+    return mpIconFont;
 }
 
 // No out-of-line body: no code in the ELF
@@ -611,7 +605,7 @@ rGUIFont* sGUI::getIconFont() const {
 // Address: 0x01b9fd90 - 0x01b9fd95 (5 bytes)
 void sGUI::requestBufferCompaction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = this->mAttr | static_cast<u32>(4);
+    mAttr = mAttr | 4u;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -634,28 +628,26 @@ __attribute__((weak)) bool sGUI::allocVertexBuffer(nGUI::BufferObject& bufferObj
 // Address: 0x01244250 - 0x012442ee (158 bytes)
 void sGUI::freeVertexBuffer(nGUI::BufferObject& bufferObject) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((bufferObject.valid & static_cast<u32>(1)) == static_cast<u32>(0)) {
+    if ((bufferObject.valid & 1u) == 0) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    bufferObject.valid = static_cast<u32>(0);
-    bufferObject.pBack->blank = static_cast<u32>(1);
+    bufferObject.valid = 0;
+    bufferObject.pBack->blank = 1;
     bufferObject.pBack->pNext = bufferObject.pNext;
-    if (bufferObject.pNext != static_cast<nGUI::BufferObject*>(nullptr)) {
+    if (bufferObject.pNext != nullptr) {
         bufferObject.pNext->pBack = bufferObject.pBack;
     }
-    this->mVertexBufferBlankSize = this->mVertexBufferBlankSize + bufferObject.size;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mVertexBufferBlankSize = mVertexBufferBlankSize + bufferObject.size;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -684,28 +676,26 @@ __attribute__((weak)) bool sGUI::allocIndexBuffer(nGUI::BufferObject& bufferObje
 // Address: 0x01244590 - 0x0124462e (158 bytes)
 void sGUI::freeIndexBuffer(nGUI::BufferObject& bufferObject) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((bufferObject.valid & static_cast<u32>(1)) == static_cast<u32>(0)) {
+    if ((bufferObject.valid & 1u) == 0) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    bufferObject.valid = static_cast<u32>(0);
-    bufferObject.pBack->blank = static_cast<u32>(1);
+    bufferObject.valid = 0;
+    bufferObject.pBack->blank = 1;
     bufferObject.pBack->pNext = bufferObject.pNext;
-    if (bufferObject.pNext != static_cast<nGUI::BufferObject*>(nullptr)) {
+    if (bufferObject.pNext != nullptr) {
         bufferObject.pNext->pBack = bufferObject.pBack;
     }
-    this->mIndexBufferBlankSize = this->mIndexBufferBlankSize + bufferObject.size;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mIndexBufferBlankSize = mIndexBufferBlankSize + bufferObject.size;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -724,13 +714,13 @@ void sGUI::freeIndexBuffer(nGUI::BufferObject& bufferObject) {
 // Address: 0x01ac49c0 - 0x01ac49ed (45 bytes)
 void* sGUI::memAlloc(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sGUI::getAllocator()->memAlloc(size, static_cast<u32>(16));
+    return sGUI::getAllocator()->memAlloc(size, 16u);
 }
 
 // Address: 0x01ac49f0 - 0x01ac4a1a (42 bytes)
 void sGUI::memFree(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sGUI::getAllocator()->memFree(p_addr);
+    sGUI::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -771,17 +761,17 @@ const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const 
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x1244904; no location-less local in scope fits
     const nGUI::CLASS_INFO* v2_0;
-    if (pInfo->dtiId == static_cast<u32>(0)) {
-        v2_0 = static_cast<const nGUI::CLASS_INFO*>(nullptr);
+    if (pInfo->dtiId == 0) {
+        v2_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x12448f0 carries; no location-less local in scope fits
         u32 v0_0 = pInfo->dtiId;
         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
         for (const nGUI::CLASS_INFO* p0_1 = pInfo;;) {
             if (dtiId != v0_0) {
-                if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + static_cast<long>(16))) != static_cast<unsigned int>(0)) {
-                    v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + static_cast<long>(16));
-                    p0_1 += static_cast<int>(1);
+                if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + 16)) != 0) {
+                    v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + 16);
+                    p0_1 += 1;
                 } else {
                     break;
                 }
@@ -790,7 +780,7 @@ const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const 
                 return v2_0;
             }
         }
-        v2_0 = static_cast<const nGUI::CLASS_INFO*>(nullptr);
+        v2_0 = nullptr;
     }
     return v2_0;
 }
@@ -828,6 +818,11 @@ __attribute__((weak)) nGUI::WrapPoint* sGUI::getWrapPointByUnicode(u32 unicode) 
 
 // No out-of-line body: no code in the ELF
 // void sGUI::setEnableGUIPlacementNew(bool);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sGUI::MyDTI sGUI::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sGUI* sGUI::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sGUI::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

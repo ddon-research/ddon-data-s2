@@ -37,7 +37,7 @@ const MtDTI& rQuestTextData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rQuestTextData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestTextData::DTI)->memAlloc(sz, align, ::rQuestTextData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestTextData::DTI)->memAlloc(sz, align, rQuestTextData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rQuestTextData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rQuestTextData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestTextData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestTextData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,41 +78,41 @@ MT_CTSTR rQuestTextData::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rQuestTextData::rQuestTextData() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x006b85f0 - 0x006b86a1 (177 bytes)
 // Also emitted as: _ZN14rQuestTextDataD0Ev at 0x006b86b0
 rQuestTextData::~rQuestTextData() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x6b8620 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x006b8780 - 0x006b8863 (227 bytes)
@@ -127,19 +127,19 @@ bool rQuestTextData::save(MtStream& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rQuestTextData*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(4478033));
-    (&w)->writeU32(static_cast<u32>(2));
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x445451u);
+    (&w)->writeU32(2u);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x6b890b read, used twice; no DWARF local holds it
-            MtObject* t3 = this->mArray.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
-            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
-                i0_3 += static_cast<unsigned int>(1);
+            MtObject* t3 = mArray.getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 8));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 12));
+            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120))) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -153,15 +153,17 @@ bool rQuestTextData::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4478033)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mArray);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x445451) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mArray);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestTextData::MyDTI rQuestTextData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rQuestTextData.cpp at 0x006b8cf0-0x006b8d32 (called at rQuestTextData.cpp:28)
@@ -171,7 +173,7 @@ bool rQuestTextData::load(MtStream& in) {
 // Address: 0x006b84e0 - 0x006b8564 (132 bytes)
 MtObject* rQuestTextData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rQuestTextData;
+    return new (16u) rQuestTextData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -199,7 +201,7 @@ const MtDTI& rQuestTextData::cTextData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rQuestTextData::cTextData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestTextData::cTextData::DTI)->memAlloc(sz, align, ::rQuestTextData::cTextData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestTextData::cTextData::DTI)->memAlloc(sz, align, rQuestTextData::cTextData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,7 +215,7 @@ void* rQuestTextData::cTextData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rQuestTextData::cTextData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestTextData::cTextData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestTextData::cTextData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,6 +252,8 @@ __attribute__((weak)) void rQuestTextData::cTextData::createProperty(MtPropertyL
 //   in rQuestTextData::save at 0x006b890f-0x006b8931 (called at nDDOIO.h:463)
 // void rQuestTextData::cTextData::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestTextData::cTextData::MyDTI rQuestTextData::cTextData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rQuestTextData.cpp at 0x006b8d32-0x006b8d6f (called at rQuestTextData.cpp:127)
 //   in _GLOBAL__sub_I_rQuestTextData.cpp at 0x006b8d32-0x006b8d6f (called at rQuestTextData.h:95)
@@ -258,7 +262,7 @@ __attribute__((weak)) void rQuestTextData::cTextData::createProperty(MtPropertyL
 // Address: 0x006b8a20 - 0x006b8a68 (72 bytes)
 MtObject* rQuestTextData::cTextData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rQuestTextData::cTextData;
+    return new (16u) rQuestTextData::cTextData;
 }
 
 // Instance at 0x01aa3840 - 0x01aa3845 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

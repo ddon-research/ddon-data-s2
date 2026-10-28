@@ -51,7 +51,7 @@ const MtDTI& cEmEffectTable::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmEffectTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmEffectTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,6 +78,8 @@ __attribute__((weak)) void cEmEffectTable::createProperty(MtPropertyList& s) {
     DDON_STUB("cEmEffectTable::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmEffectTable::MyDTI cEmEffectTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmEffectTable.cpp at 0x0066713f-0x0066717c (called at rEmEffectTable.cpp:24)
@@ -112,7 +114,7 @@ const MtDTI& rEmEffectTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmEffectTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmEffectTable::DTI)->memAlloc(sz, align, ::rEmEffectTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmEffectTable::DTI)->memAlloc(sz, align, rEmEffectTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -127,7 +129,7 @@ inline void* rEmEffectTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rEmEffectTableD0Ev at 0x01a86a9e-0x01a86abf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmEffectTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmEffectTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmEffectTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +143,7 @@ inline void rEmEffectTable::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rEmEffectTable::rEmEffectTable() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    setAttribute(16u);
 }
 
 // Address: 0x01a86c50 - 0x01a86c58 (8 bytes)
@@ -159,14 +161,14 @@ MT_CTSTR rEmEffectTable::getExt() const {
 // Address: 0x01a86c70 - 0x01a86c76 (6 bytes)
 u16 rEmEffectTable::getDataVersion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u16>(258);
+    return 258;
 }
 
 // Address: 0x01a86ae0 - 0x01a86b49 (105 bytes)
 bool rEmEffectTable::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    return this->::rEmEffectTable::loadData(r);
+    MtDataReader r(in, 4096u);
+    return loadData(r);
 }
 
 // Address: 0x01a86c80 - 0x01a86e7f (511 bytes)
@@ -206,7 +208,7 @@ bool rEmEffectTable::loadData(MtDataReader& in, cEmEffectTable* pData) {
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetPos = in.readV3();
-    ::nDDOIO::readData(in, pData->mDieNoCall);
+    nDDOIO::readData(in, pData->mDieNoCall);
     return true;
 }
 
@@ -223,6 +225,8 @@ __attribute__((weak)) bool rEmEffectTable::saveData(MtDataWriter& out, cEmEffect
 // No out-of-line body: no code in the ELF
 // void rEmEffectTable::setData(MtObject*, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmEffectTable::MyDTI rEmEffectTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmEffectTable.cpp at 0x0066717c-0x006671b9 (called at rEmEffectTable.cpp:165)
 //   in _GLOBAL__sub_I_rEmEffectTable.cpp at 0x0066717c-0x006671b9 (called at rEmEffectTable.h:81)
@@ -231,6 +235,6 @@ __attribute__((weak)) bool rEmEffectTable::saveData(MtDataWriter& out, cEmEffect
 // Address: 0x00666f70 - 0x00666fc5 (85 bytes)
 MtObject* rEmEffectTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmEffectTable;
+    return new (16u) rEmEffectTable;
 }
 

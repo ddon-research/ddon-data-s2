@@ -42,7 +42,7 @@ const MtDTI& rStageCustomPartsEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageCustomPartsEx::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ inline void* rStageCustomPartsEx::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageCustomPartsEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,7 +77,7 @@ inline void rStageCustomPartsEx::operator delete(void* p_addr) {
 // Also emitted as: _ZN19rStageCustomPartsExD0Ev at 0x006c1340
 rStageCustomPartsEx::~rStageCustomPartsEx() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rStageCustomPartsEx::destruct();
+    destruct();
 }
 
 // Address: 0x01aa7d30 - 0x01aa7d38 (8 bytes)
@@ -171,7 +171,7 @@ __attribute__((weak)) rStageCustomParts::Info* rStageCustomPartsEx::getInfo(u32 
 // Address: 0x01aa7d80 - 0x01aa7d87 (7 bytes)
 u32 rStageCustomPartsEx::getInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rStageCustomParts::mArrayInfoNum;
+    return mArrayInfoNum;
 }
 
 // Address: 0x01aa7d90 - 0x01aa7dc2 (50 bytes)
@@ -184,97 +184,99 @@ __attribute__((weak)) rStageCustomParts::Filter* rStageCustomPartsEx::getFilter(
 // Address: 0x01aa7dd0 - 0x01aa7dd7 (7 bytes)
 u32 rStageCustomPartsEx::getFilterNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::rStageCustomParts::mArrayFilterNum;
+    return mArrayFilterNum;
 }
 
 // Address: 0x01aa7de0 - 0x01aa7e12 (50 bytes)
 rStageCustomPartsEx::Pattern* rStageCustomPartsEx::getPattern(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getPatternNum()) {
-        return &this->mpArrayPattern[index];
+    if (index < getPatternNum()) {
+        return &mpArrayPattern[index];
     } else {
-        return static_cast<rStageCustomPartsEx::Pattern*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01aa7e20 - 0x01aa7e27 (7 bytes)
 u32 rStageCustomPartsEx::getPatternNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayPatternNum;
+    return mArrayPatternNum;
 }
 
 // Address: 0x01aa7e30 - 0x01aa7e62 (50 bytes)
 rStageCustomPartsEx::ColorFog* rStageCustomPartsEx::getColorFog(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getColorFogNum()) {
-        return &this->mpArrayColorFog[index];
+    if (index < getColorFogNum()) {
+        return &mpArrayColorFog[index];
     } else {
-        return static_cast<rStageCustomPartsEx::ColorFog*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01aa7e70 - 0x01aa7e77 (7 bytes)
 u32 rStageCustomPartsEx::getColorFogNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayColorFogNum;
+    return mArrayColorFogNum;
 }
 
 // Address: 0x01aa7e80 - 0x01aa7eb6 (54 bytes)
 rStageCustomPartsEx::HemiSphLight* rStageCustomPartsEx::getHemiSphLight(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getHemiSphLightNum()) {
-        return &this->mpArrayHemiSphLight[index];
+    if (index < getHemiSphLightNum()) {
+        return &mpArrayHemiSphLight[index];
     } else {
-        return static_cast<rStageCustomPartsEx::HemiSphLight*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01aa7ec0 - 0x01aa7ec7 (7 bytes)
 u32 rStageCustomPartsEx::getHemiSphLightNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayHemiSphLightNum;
+    return mArrayHemiSphLightNum;
 }
 
 // Address: 0x01aa7ed0 - 0x01aa7f02 (50 bytes)
 rStageCustomPartsEx::InfiLight* rStageCustomPartsEx::getInfiLight(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getInfiLightNum()) {
-        return &this->mpArrayInfiLight[index];
+    if (index < getInfiLightNum()) {
+        return &mpArrayInfiLight[index];
     } else {
-        return static_cast<rStageCustomPartsEx::InfiLight*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01aa7f10 - 0x01aa7f17 (7 bytes)
 u32 rStageCustomPartsEx::getInfiLightNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayInfiLightNum;
+    return mArrayInfiLightNum;
 }
 
 // Address: 0x006c1f70 - 0x006c1fe4 (116 bytes)
 rStageCustomParts::Info* rStageCustomPartsEx::searchInfo(u32 areaNo) const {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->getInfoNum() != static_cast<u32>(0)) {
+    if (getInfoNum() != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->getInfo(i0_3)->mAreaNo == areaNo) {
-                return this->getInfo(i0_3);
+        for (unsigned int i0_3 = 0;;) {
+            if (getInfo(i0_3)->mAreaNo == areaNo) {
+                return getInfo(i0_3);
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->getInfoNum()) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < getInfoNum()) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    return static_cast<rStageCustomParts::Info*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
 //   in uStagePartsCtrl::uStageCustomCtrlSetup at 0x00d3910b-0x00d39113 (called at uStageParts.cpp:1337)
 // f32 rStageCustomPartsEx::getChangeFrame() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::MyDTI rStageCustomPartsEx::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2192-0x006c21cf (called at rStageCustomPartsEx.cpp:1056)
@@ -284,7 +286,7 @@ rStageCustomParts::Info* rStageCustomPartsEx::searchInfo(u32 areaNo) const {
 // Address: 0x006c0f50 - 0x006c0ffc (172 bytes)
 MtObject* rStageCustomPartsEx::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageCustomPartsEx;
+    return new (16u) rStageCustomPartsEx;
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,7 +312,7 @@ const MtDTI& rStageCustomPartsEx::Pattern::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::Pattern::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::Pattern::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::Pattern::DTI)->memAlloc(sz, align, rStageCustomPartsEx::Pattern::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -367,6 +369,8 @@ __attribute__((weak)) void rStageCustomPartsEx::Pattern::createProperty(MtProper
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::Pattern::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::Pattern::MyDTI rStageCustomPartsEx::Pattern::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2159-0x006c2192 (called at rStageCustomPartsEx.cpp:40)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2159-0x006c2192 (called at rStageCustomPartsEx.h:320)
@@ -375,7 +379,7 @@ __attribute__((weak)) void rStageCustomPartsEx::Pattern::createProperty(MtProper
 // Address: 0x006bf100 - 0x006bf15d (93 bytes)
 MtObject* rStageCustomPartsEx::Pattern::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rStageCustomPartsEx::Pattern;
+    return new (16u) rStageCustomPartsEx::Pattern;
 }
 
 // No out-of-line body: no code in the ELF
@@ -448,26 +452,26 @@ __attribute__((weak)) void rStageCustomPartsEx::ColorFog::createProperty(MtPrope
 // Address: 0x006c0120 - 0x006c02c3 (419 bytes)
 bool rStageCustomPartsEx::ColorFog::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBase.mHeightStart = r.readF32();
-    this->mBase.mHeightEnd = r.readF32();
-    this->mBase.mHeightDensity = r.readF32();
-    this->mBase.mHeightColor = r.readV3();
-    this->mBase.mStart = r.readF32();
-    this->mBase.mEnd = r.readF32();
-    this->mBase.mDensity = r.readF32();
-    this->mBase.mColor = r.readV3();
-    this->mBase.mDiffuseBlendFactor = r.readF32();
-    this->mNight.mHeightStart = r.readF32();
-    this->mNight.mHeightEnd = r.readF32();
-    this->mNight.mHeightDensity = r.readF32();
-    this->mNight.mHeightColor = r.readV3();
-    this->mNight.mStart = r.readF32();
-    this->mNight.mEnd = r.readF32();
-    this->mNight.mDensity = r.readF32();
+    mBase.mHeightStart = r.readF32();
+    mBase.mHeightEnd = r.readF32();
+    mBase.mHeightDensity = r.readF32();
+    mBase.mHeightColor = r.readV3();
+    mBase.mStart = r.readF32();
+    mBase.mEnd = r.readF32();
+    mBase.mDensity = r.readF32();
+    mBase.mColor = r.readV3();
+    mBase.mDiffuseBlendFactor = r.readF32();
+    mNight.mHeightStart = r.readF32();
+    mNight.mHeightEnd = r.readF32();
+    mNight.mHeightDensity = r.readF32();
+    mNight.mHeightColor = r.readV3();
+    mNight.mStart = r.readF32();
+    mNight.mEnd = r.readF32();
+    mNight.mDensity = r.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mNight.mColor = r.readV3();
-    ::nDDOIO::readData(r, this->mNight.mDiffuseBlendFactor);
+    mNight.mColor = r.readV3();
+    nDDOIO::readData(r, mNight.mDiffuseBlendFactor);
     return true;
 }
 
@@ -482,6 +486,8 @@ __attribute__((weak)) void rStageCustomPartsEx::ColorFog::clear() {
     DDON_STUB("rStageCustomPartsEx::ColorFog::clear")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::ColorFog::MyDTI rStageCustomPartsEx::ColorFog::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c20ae-0x006c20e7 (called at rStageCustomPartsEx.cpp:37)
@@ -540,10 +546,28 @@ const MtDTI& rStageCustomPartsEx::HemiSphLight::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::HemiSphLight::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (407 bytes)
-//   in rStageCustomPartsEx::HemiSphLight::MyDTI::newInstance at 0x006beebd-0x006bef71 (called at rStageCustomPartsEx.cpp:38)
-//   in rStageCustomPartsEx::load at 0x006c16fb-0x006c17de (called at rStageCustomPartsEx.cpp:1178)
-// rStageCustomPartsEx::HemiSphLight::HemiSphLight();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3(), MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mLightColor.x = MtVector3::One.x;
+    mLightColor.y = MtVector3::One.y;
+    mLightColor.z = MtVector3::One.z;
+    mLightColor.pad_ = 0.0f;
+    mRevColor.x = MtVector3::Zero.x;
+    mRevColor.y = MtVector3::Zero.y;
+    mRevColor.z = MtVector3::Zero.z;
+    mRevColor.pad_ = 0.0f;
+    mNightColor.x = MtVector3::One.x;
+    mNightColor.y = MtVector3::One.y;
+    mNightColor.z = MtVector3::One.z;
+    mNightColor.pad_ = 0.0f;
+    mNightRevColor.x = MtVector3::Zero.x;
+    mNightRevColor.y = MtVector3::Zero.y;
+    mNightRevColor.z = MtVector3::Zero.z;
+    mNightRevColor.pad_ = 0.0f;
+    mComment.value = nullptr;
+}
 
 // Address: 0x01aa81b0 - 0x01aa822b (123 bytes)
 // Also emitted as: _ZN19rStageCustomPartsEx12HemiSphLightD0Ev at 0x01aa8230
@@ -571,6 +595,8 @@ __attribute__((weak)) void rStageCustomPartsEx::HemiSphLight::createProperty(MtP
 
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::HemiSphLight::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::HemiSphLight::MyDTI rStageCustomPartsEx::HemiSphLight::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c20e7-0x006c2120 (called at rStageCustomPartsEx.cpp:38)
@@ -629,10 +655,20 @@ const MtDTI& rStageCustomPartsEx::InfiLight::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::InfiLight::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (229 bytes)
-//   in rStageCustomPartsEx::InfiLight::MyDTI::newInstance at 0x006bf01d-0x006bf082 (called at rStageCustomPartsEx.cpp:39)
-//   in rStageCustomPartsEx::load at 0x006c18f9-0x006c1979 (called at rStageCustomPartsEx.cpp:1197)
-// rStageCustomPartsEx::InfiLight::InfiLight();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rStageCustomPartsEx::InfiLight::InfiLight() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3(), MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mLightColor.x = MtVector3::One.x;
+    mLightColor.y = MtVector3::One.y;
+    mLightColor.z = MtVector3::One.z;
+    mLightColor.pad_ = 0.0f;
+    mNightColor.x = MtVector3::One.x;
+    mNightColor.y = MtVector3::One.y;
+    mNightColor.z = MtVector3::One.z;
+    mNightColor.pad_ = 0.0f;
+    mComment.value = nullptr;
+}
 
 // Address: 0x01aa82e0 - 0x01aa835b (123 bytes)
 // Also emitted as: _ZN19rStageCustomPartsEx9InfiLightD0Ev at 0x01aa8360
@@ -660,6 +696,8 @@ __attribute__((weak)) void rStageCustomPartsEx::InfiLight::createProperty(MtProp
 
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::InfiLight::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::InfiLight::MyDTI rStageCustomPartsEx::InfiLight::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2120-0x006c2159 (called at rStageCustomPartsEx.cpp:39)
@@ -693,10 +731,12 @@ const MtDTI& rStageCustomPartsEx::AreaParam::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::AreaParam::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in _ZNK19rStageCustomPartsEx9AreaParam5MyDTI11newInstanceEv at 0x006beae4-0x006beb0d (called at rStageCustomPartsEx.cpp:34)
-//   in _ZN6nDDOIO11readMtArrayIN19rStageCustomPartsEx9AreaParamEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01aa7a13-0x01aa7a3c (called at rStageCustomPartsEx.cpp:34)
-// void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::AreaParam::DTI)->memAlloc(sz, align, rStageCustomPartsEx::AreaParam::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rStageCustomPartsEx::AreaParam::operator new[](size_t sz, u32 align);
@@ -710,7 +750,7 @@ const MtDTI& rStageCustomPartsEx::AreaParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageCustomPartsEx::AreaParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::AreaParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::AreaParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -760,15 +800,17 @@ __attribute__((weak)) void rStageCustomPartsEx::AreaParam::createProperty(MtProp
 //   in rStageCustomPartsEx::InfoEx::getAreaParam at 0x006bfaba-0x006bfaf6 (called at rStageCustomPartsEx.cpp:417)
 // bool rStageCustomPartsEx::AreaParam::hitCheck(const MtVector3& pos);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::AreaParam::MyDTI rStageCustomPartsEx::AreaParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c1ff0-0x006c2034 (called at rStageCustomPartsEx.cpp:34)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c1ff0-0x006c2034 (called at rStageCustomPartsEx.h:106)
 // rStageCustomPartsEx::AreaParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006beae0 - 0x006beb63 (131 bytes)
-__attribute__((weak)) MtObject* rStageCustomPartsEx::AreaParam::MyDTI::newInstance() const {
-    DDON_STUB("rStageCustomPartsEx::AreaParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageCustomPartsEx::AreaParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (16u) rStageCustomPartsEx::AreaParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -791,9 +833,11 @@ const MtDTI& rStageCustomPartsEx::InfoEx::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::InfoEx::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (44 bytes)
-//   in rStageCustomPartsEx::InfoEx::MyDTI::newInstance at 0x006bebe4-0x006bec10 (called at rStageCustomPartsEx.cpp:35)
-// void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfoEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::InfoEx::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rStageCustomPartsEx::InfoEx::operator new[](size_t sz, u32 align);
@@ -807,7 +851,7 @@ const MtDTI& rStageCustomPartsEx::InfoEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageCustomPartsEx::InfoEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::InfoEx::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfoEx::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -859,15 +903,17 @@ __attribute__((weak)) rStageCustomPartsEx::AreaParam* rStageCustomPartsEx::InfoE
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::InfoEx::MyDTI rStageCustomPartsEx::InfoEx::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2034-0x006c2071 (called at rStageCustomPartsEx.cpp:35)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2034-0x006c2071 (called at rStageCustomPartsEx.h:153)
 // rStageCustomPartsEx::InfoEx::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006bebe0 - 0x006bec70 (144 bytes)
-__attribute__((weak)) MtObject* rStageCustomPartsEx::InfoEx::MyDTI::newInstance() const {
-    DDON_STUB("rStageCustomPartsEx::InfoEx::MyDTI::newInstance")
-    return nullptr;
+MtObject* rStageCustomPartsEx::InfoEx::MyDTI::newInstance() const {
+    // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (16u) rStageCustomPartsEx::InfoEx;
 }
 
 // No out-of-line body: no code in the ELF
@@ -893,7 +939,7 @@ const MtDTI& rStageCustomPartsEx::FilterEx::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::FilterEx::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::FilterEx::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::FilterEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::FilterEx::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -950,6 +996,8 @@ __attribute__((weak)) void rStageCustomPartsEx::FilterEx::createProperty(MtPrope
 // No out-of-line body: no code in the ELF
 // void rStageCustomPartsEx::FilterEx::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageCustomPartsEx::FilterEx::MyDTI rStageCustomPartsEx::FilterEx::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2071-0x006c20ae (called at rStageCustomPartsEx.cpp:36)
 //   in _GLOBAL__sub_I_rStageCustomPartsEx.cpp at 0x006c2071-0x006c20ae (called at rStageCustomPartsEx.h:189)
@@ -958,7 +1006,7 @@ __attribute__((weak)) void rStageCustomPartsEx::FilterEx::createProperty(MtPrope
 // Address: 0x006bece0 - 0x006bed3d (93 bytes)
 MtObject* rStageCustomPartsEx::FilterEx::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rStageCustomPartsEx::FilterEx;
+    return new (16u) rStageCustomPartsEx::FilterEx;
 }
 
 // Instance at 0x01aa78d0 - 0x01aa78d5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

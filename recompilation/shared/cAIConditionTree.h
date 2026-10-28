@@ -386,7 +386,7 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK20cAIConditionTreeNode5MyDTI11newInstanceEv at 0x01321cf0-0x01321d25, code DWARF attributes to no inlined copy
 inline cAIConditionTreeNode::cAIConditionTreeNode() {
-    this->mChildNum = static_cast<u32>(0);
-    this->mpChildList = static_cast<cAIConditionTreeNode* *>(nullptr);
-    this->mpResource = static_cast<rAIConditionTreeNode*>(nullptr);
+    this->mChildNum = 0;
+    this->mpChildList = nullptr;
+    this->mpResource = nullptr;
 }

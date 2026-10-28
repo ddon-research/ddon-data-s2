@@ -33,7 +33,7 @@ const MtDTI& cpComponent::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cpComponent::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpComponent::DTI)->memAlloc(sz, align, ::cpComponent::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpComponent::DTI)->memAlloc(sz, align, cpComponent::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,14 +61,14 @@ inline void* cpComponent::operator new(size_t sz, u32 align) {
 // Address: 0x0046b520 - 0x0046b56f (79 bytes)
 cpComponent::cpComponent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActive = true;
-    this->mpOwner = static_cast<MtObject*>(nullptr);
-    this->mpNext = static_cast<cpComponent*>(nullptr);
-    this->mpPrev = static_cast<cpComponent*>(nullptr);
-    this->mpChildBottom = static_cast<cpComponent*>(nullptr);
-    this->mpChildTop = static_cast<cpComponent*>(nullptr);
-    this->mpParent = static_cast<cpComponent*>(nullptr);
-    this->mpRootComponent = this;
+    mActive = true;
+    mpOwner = nullptr;
+    mpNext = nullptr;
+    mpPrev = nullptr;
+    mpChildBottom = nullptr;
+    mpChildTop = nullptr;
+    mpParent = nullptr;
+    mpRootComponent = this;
 }
 
 // Address: 0x0046b570 - 0x0046b5eb (123 bytes)
@@ -81,7 +81,7 @@ cpComponent::~cpComponent() {
 // Address: 0x0046b6a0 - 0x0046b6a6 (6 bytes)
 void cpComponent::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->getDTI();
+    getDTI();
 }
 
 // Defined in the class (its body was written in a header).
@@ -107,7 +107,7 @@ __attribute__((weak)) void cpComponent::updatePtr() {
 // Address: 0x0197b4a0 - 0x0197b4a5 (5 bytes)
 void cpComponent::setActive(bool active) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActive = active;
+    mActive = active;
 }
 
 // No out-of-line body: 149 inlined copies in 111 functions (1071 bytes)
@@ -164,7 +164,7 @@ __attribute__((weak)) void cpComponent::setName(const MtString& name) {
 // Address: 0x0197b4b0 - 0x0197b4b5 (5 bytes)
 void cpComponent::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = pOwner;
+    mpOwner = pOwner;
 }
 
 // No out-of-line body: 411 inlined copies in 280 functions (2128 bytes)
@@ -177,49 +177,48 @@ void cpComponent::setOwner(MtObject* pOwner) {
 // Address: 0x0046b6b0 - 0x0046b785 (213 bytes)
 void cpComponent::setParent(cpComponent* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pParent == this->mpParent) {
+    if (pParent == mpParent) {
         return;
     }
-    if (this->mpParent != static_cast<cpComponent*>(nullptr)) {
-        if (this != this->mpParent->mpChildTop) {
-            if (this != this->mpParent->mpChildBottom) {
-                this->mpPrev->mpNext = this->mpNext;
-                this->mpNext->mpPrev = this->mpPrev;
-                this->mpNext = static_cast<cpComponent*>(nullptr);
+    if (mpParent != nullptr) {
+        if (this != mpParent->mpChildTop) {
+            if (this != mpParent->mpChildBottom) {
+                mpPrev->mpNext = mpNext;
+                mpNext->mpPrev = mpPrev;
+                mpNext = nullptr;
             } else {
-                this->mpParent->mpChildBottom = this->mpPrev;
-                this->mpPrev->mpNext = static_cast<cpComponent*>(nullptr);
+                mpParent->mpChildBottom = mpPrev;
+                mpPrev->mpNext = nullptr;
             }
-            this->mpPrev = static_cast<cpComponent*>(nullptr);
+            mpPrev = nullptr;
         } else {
-            if (this != this->mpParent->mpChildBottom) {
-                this->mpParent->mpChildTop = this->mpNext;
-                this->mpNext->mpPrev = static_cast<cpComponent*>(nullptr);
-                this->mpNext = static_cast<cpComponent*>(nullptr);
+            if (this != mpParent->mpChildBottom) {
+                mpParent->mpChildTop = mpNext;
+                mpNext->mpPrev = nullptr;
+                mpNext = nullptr;
             } else {
-                this->mpParent->mpChildBottom = static_cast<cpComponent*>(nullptr);
-                this->mpParent->mpChildTop = static_cast<cpComponent*>(nullptr);
+                mpParent->mpChildBottom = nullptr;
+                mpParent->mpChildTop = nullptr;
             }
         }
-        this->mpParent = static_cast<cpComponent*>(nullptr);
-        this->mpRootComponent = this;
+        mpParent = nullptr;
+        mpRootComponent = this;
     }
-    if (pParent == static_cast<cpComponent*>(nullptr)) {
+    if (pParent == nullptr) {
         return;
     }
-    this->mpParent = pParent;
-    this->mpRootComponent = pParent->mpRootComponent;
-    if (pParent->mpChildTop != static_cast<cpComponent*>(nullptr)) {
-        if (pParent->mpChildBottom == static_cast<cpComponent*>(nullptr)) {
-        } else {
+    mpParent = pParent;
+    mpRootComponent = pParent->mpRootComponent;
+    if (pParent->mpChildTop != nullptr) {
+        if (pParent->mpChildBottom != nullptr) {
             pParent->mpChildBottom->mpNext = this;
-            this->mpPrev = pParent->mpChildBottom;
+            mpPrev = pParent->mpChildBottom;
             pParent->mpChildBottom = this;
         }
     } else {
-        if (pParent->mpChildBottom != static_cast<cpComponent*>(nullptr)) {
+        if (pParent->mpChildBottom != nullptr) {
             pParent->mpChildBottom->mpNext = this;
-            this->mpPrev = pParent->mpChildBottom;
+            mpPrev = pParent->mpChildBottom;
         } else {
             pParent->mpChildTop = this;
         }
@@ -260,6 +259,8 @@ void cpComponent::setParent(cpComponent* pParent) {
 //   in cpComponent::setParent at 0x0046b6bd-0x0046b74a (called at cpComponent.cpp:159)
 // void cpComponent::removeFromParent();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpComponent::MyDTI cpComponent::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpComponent.cpp at 0x0046bf70-0x0046bfb2 (called at cpComponent.cpp:24)
 //   in _GLOBAL__sub_I_cpComponent.cpp at 0x0046bf70-0x0046bfb2 (called at cpComponent.h:31)
@@ -268,7 +269,7 @@ void cpComponent::setParent(cpComponent* pParent) {
 // Address: 0x0046b430 - 0x0046b4b0 (128 bytes)
 MtObject* cpComponent::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpComponent;
+    return new (16u) cpComponent;
 }
 
 // No out-of-line body: 24 inlined copies in 12 functions (192 bytes)
@@ -281,11 +282,11 @@ MtObject* cpComponent::MyDTI::newInstance() const {
 // Address: 0x0046ba00 - 0x0046ba14 (20 bytes)
 void cpComponent::Iterator::begin(cpComponent* pBegin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpRoot = pBegin;
-    this->mpCurrent = pBegin;
-    this->mEnd = false;
-    this->mDepth = static_cast<s32>(0);
-    this->mIndex = static_cast<s32>(0);
+    mpRoot = pBegin;
+    mpCurrent = pBegin;
+    mEnd = false;
+    mDepth = 0;
+    mIndex = 0;
 }
 
 // Address: 0x0046b7d0 - 0x0046b843 (115 bytes)
@@ -298,7 +299,7 @@ __attribute__((weak)) void cpComponent::Iterator::next() {
 // Address: 0x0046b7c0 - 0x0046b7c4 (4 bytes)
 bool cpComponent::Iterator::isEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnd;
+    return mEnd;
 }
 
 // No out-of-line body: 11 inlined copies in 11 functions (88 bytes)

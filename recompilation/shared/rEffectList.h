@@ -2318,20 +2318,20 @@ protected:
 // inferred: the constructor from _ZNK11rEffectList5MyDTI11newInstanceEv at 0x011f3770-0x011f37ff, code DWARF attributes to no inlined copy
 inline rEffectList::rEffectList() {
     this->mBaseFps = 0.0f;
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->mParamBuffSize = static_cast<u32>(0);
-    this->mResourceInfo = static_cast<rEffectList::ResourceInfo*>(nullptr);
-    this->mUnitGeneratorType = static_cast<u32>(0);
-    this->mUnitMoveType = static_cast<u32>(0);
-    this->mJointShare = static_cast<u32>(1);
-    this->mListNum = static_cast<u32>(0);
-    this->mJointNum = static_cast<u32>(0);
-    this->mResourceInfoNum = static_cast<u32>(0);
-    this->mJointIndexOffset = static_cast<u32>(0);
-    this->mUnitJointParamOffset = static_cast<u32>(0);
-    this->mUnitParamOffset = static_cast<u32>(0);
-    this->mUnitGeneratorParamOffset = static_cast<u32>(0);
-    this->mUnitMoveParamOffset = static_cast<u32>(0);
-    this->mpSerialEffect = static_cast<rEffectList*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    this->mpParamBuff = nullptr;
+    this->mParamBuffSize = 0;
+    this->mResourceInfo = nullptr;
+    this->mUnitGeneratorType = 0;
+    this->mUnitMoveType = 0;
+    this->mJointShare = 1;
+    this->mListNum = 0;
+    this->mJointNum = 0;
+    this->mResourceInfoNum = 0;
+    this->mJointIndexOffset = 0;
+    this->mUnitJointParamOffset = 0;
+    this->mUnitParamOffset = 0;
+    this->mUnitGeneratorParamOffset = 0;
+    this->mUnitMoveParamOffset = 0;
+    this->mpSerialEffect = nullptr;
+    this->::cResource::mAttr = 22;
 }

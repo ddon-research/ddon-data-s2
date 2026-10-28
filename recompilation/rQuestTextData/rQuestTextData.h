@@ -105,6 +105,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rQuestTextData::cTextData::cTextData() {
-    this->mType = static_cast<u32>(0);
-    this->mMsgGmdIdx = static_cast<u32>(0);
+    this->mType = 0;
+    this->mMsgGmdIdx = 0;
 }

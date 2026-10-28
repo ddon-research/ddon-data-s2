@@ -38,7 +38,7 @@ const MtDTI& rLocationData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLocationData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLocationData::DTI)->memAlloc(sz, align, ::rLocationData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLocationData::DTI)->memAlloc(sz, align, rLocationData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* rLocationData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLocationData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLocationData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLocationData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,9 +67,9 @@ inline void rLocationData::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rLocationData::rLocationData() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mpArray = static_cast<rLocationData::Data*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(22u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x0069fb60 - 0x0069fbe1 (129 bytes)
@@ -117,14 +117,16 @@ __attribute__((weak)) bool rLocationData::load(MtStream& in) {
 // Address: 0x01a9ba50 - 0x01a9ba5b (11 bytes)
 rLocationData::Data* rLocationData::getData(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpArray[index];
+    return &mpArray[index];
 }
 
 // Address: 0x01a9ba60 - 0x01a9ba64 (4 bytes)
 u32 rLocationData::getDataNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLocationData::MyDTI rLocationData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rLocationData.cpp at 0x0069fea2-0x0069fedf (called at rLocationData.cpp:234)
@@ -134,7 +136,7 @@ u32 rLocationData::getDataNum() const {
 // Address: 0x0069fa70 - 0x0069fad4 (100 bytes)
 MtObject* rLocationData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLocationData;
+    return new (16u) rLocationData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -172,7 +174,7 @@ const MtDTI& rLocationData::Data::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rLocationData::Data::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLocationData::Data::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLocationData::Data::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -184,10 +186,23 @@ inline void rLocationData::Data::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rLocationData::Data::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (230 bytes)
-//   in rLocationData::Data::MyDTI::newInstance at 0x0069efcd-0x0069f02e (called at rLocationData.cpp:32)
-//   in rLocationData::load at 0x0069fd66-0x0069fdeb (called at rLocationData.cpp:284)
-// rLocationData::Data::Data();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rLocationData::Data::Data() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mRadius = 100.0f;
+    mAngle = 0.0f;
+    mRange = 360.0f;
+    mVersion = 0;
+    mSafeZone = false;
+    mMessageNo = 0;
+    mType = 0;
+    mWarpPointId = 0;
+}
 
 // Defined in the class (its body was written in a header).
 // rLocationData::Data::~Data();
@@ -201,7 +216,7 @@ __attribute__((weak)) void rLocationData::Data::createProperty(MtPropertyList& s
 // Address: 0x0069f7e0 - 0x0069f7e5 (5 bytes)
 MtUI* rLocationData::Data::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0069f7f0 - 0x0069f8af (191 bytes)
@@ -209,26 +224,26 @@ bool rLocationData::Data::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mPos = r.readV3();
-    ::nDDOIO::readData(r, this->mRadius);
+    mPos = r.readV3();
+    nDDOIO::readData(r, mRadius);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mAngle);
+    nDDOIO::readData(r, mAngle);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mRange);
+    nDDOIO::readData(r, mRange);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMessageNo);
+    nDDOIO::readData(r, mMessageNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mType);
+    nDDOIO::readData(r, mType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mWarpPointId);
+    nDDOIO::readData(r, mWarpPointId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mSafeZone);
+    nDDOIO::readData(r, mSafeZone);
     return true;
 }
 
@@ -258,6 +273,8 @@ __attribute__((weak)) bool rLocationData::Data::hitcheck(MtVector3& pl_pos) {
 //   in sControlManager::checkNpcExMotionLoad at 0x0075284e-0x00752854 (called at sControlManager.cpp:185)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // bool rLocationData::Data::isSafeZone();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLocationData::Data::MyDTI rLocationData::Data::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rLocationData.cpp at 0x0069fe60-0x0069fea2 (called at rLocationData.cpp:32)

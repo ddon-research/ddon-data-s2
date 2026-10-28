@@ -57,7 +57,7 @@ const MtDTI& cHumanActBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13cHumanActBaseD0Ev at 0x01994c1e-0x01994c3f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cHumanActBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanActBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanActBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,56 +88,56 @@ __attribute__((weak)) void cHumanActBase::init() {
 void cHumanActBase::move() {
     // DWARF local not rendered: bool iscanemotion;
     // Approximate from the ELF: a store at a join copied into the arms; the body oracle reports this body.
-    this->mpHuman->mIsOmTiming = false;
-    this->::cAction::move();
-    if (0.0f >= this->mpHuman->mEmotionTimer) {
-        if (this->mpHuman->::uHuman::isEventBusy() != false) {
-            this->mpHuman->mIsCanSetEmotion = false;
+    mpHuman->mIsOmTiming = false;
+    this->cAction::move();
+    if (0.0f >= mpHuman->mEmotionTimer) {
+        if (mpHuman->isEventBusy()) {
+            mpHuman->mIsCanSetEmotion = false;
         } else {
-            u32 actno = this->mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
-            if ((actno - static_cast<u32>(3)) > static_cast<u32>(1)) {
-                if (this->mpHuman->::uHuman::isFootWork() == false) {
-                    if (actno != static_cast<u32>(382)) {
-                        if ((actno - static_cast<u32>(242)) > static_cast<u32>(130)) {
-                            this->mpHuman->mIsCanSetEmotion = false;
+            u32 actno = mpHuman->getActMgrPtr()->getActionNo();
+            if ((actno - 3u) > 1u) {
+                if (!mpHuman->isFootWork()) {
+                    if (actno != 382) {
+                        if ((actno - 242u) > 130u) {
+                            mpHuman->mIsCanSetEmotion = false;
                         } else {
-                            this->mpHuman->mIsCanSetEmotion = true;
+                            mpHuman->mIsCanSetEmotion = true;
                         }
                     } else {
-                        this->mpHuman->mIsCanSetEmotion = true;
+                        mpHuman->mIsCanSetEmotion = true;
                     }
                 } else {
-                    this->mpHuman->mIsCanSetEmotion = true;
+                    mpHuman->mIsCanSetEmotion = true;
                 }
             } else {
-                this->mpHuman->mIsCanSetEmotion = true;
+                mpHuman->mIsCanSetEmotion = true;
             }
         }
     } else {
-        this->mpHuman->mIsCanSetEmotion = false;
+        mpHuman->mIsCanSetEmotion = false;
     }
 }
 
 // Address: 0x0022db00 - 0x0022db66 (102 bytes)
 void cHumanActBase::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    this->::cAction::final();
+    this->cAction::final();
     // inferred: a temporary for the value the load at 0x22db0f read, used 3 times; no DWARF local holds it
-    uHuman* t0 = this->mpHuman;
-    if (t0 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = mpHuman;
+    if (t0 == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x22db20, used once; no DWARF local holds it
-    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
-    this->mpHuman->mIsBeforeAttackHit = false;
-    this->mpHuman->mIsBeforeGuarded = false;
-    this->mpHuman->mIsRecevedDamage = false;
-    this->mpHuman->mCanNextCustmSkillLevel = false;
-    if (this->mpHuman == static_cast<uHuman*>(nullptr)) {
+    f32 t1 = t0->getComAdjustParam(1u);
+    t0->setDefaultRotateSpeed(0.017453294f * t1);
+    mpHuman->mIsBeforeAttackHit = false;
+    mpHuman->mIsBeforeGuarded = false;
+    mpHuman->mIsRecevedDamage = false;
+    mpHuman->mCanNextCustmSkillLevel = false;
+    if (mpHuman == nullptr) {
         return;
     }
-    this->mpHuman->mActionWorkFlag = false;
+    mpHuman->mActionWorkFlag = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -182,89 +182,89 @@ void cHumanActBase::getCustomSkillIDAndLevelFromActNo(u32 ActionNo) {
     // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
-    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) != 0) {
         // inferred: a temporary for the result of the call at 0x22dc1b, used twice; no DWARF local holds it
-        nHuman::CUSTOM_SKILL_ENUM t0 = ::cHumanActId::getCustomSkillId(ActionNo, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
-        this->mCustomSkillID = t0;
+        nHuman::CUSTOM_SKILL_ENUM t0 = cHumanActId::getCustomSkillId(ActionNo, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) + 40)));
+        mCustomSkillID = t0;
         // inferred: a temporary for the value the load at 0x22dc2a read, used 4 times; no DWARF local holds it
-        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376));
-        if (t1 != static_cast<unsigned long>(0)) {
-            if (static_cast<int>(this->mCustomSkillID) <= static_cast<int>(20)) {
-                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
-                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+        if (t1 != 0) {
+            if (static_cast<int>(mCustomSkillID) <= 20) {
+                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)) + 255) > 9) {
+                    mSkillLv = nHuman::HM_SKILL_LV_NONE;
                 } else {
                     // inferred: a temporary for the result of the call at 0x22dc5f, used once; no DWARF local holds it
-                    u32 t2 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))));
+                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)));
                     // inferred: a temporary for the value the load at 0x22dc7e read, used twice; no DWARF local holds it
-                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(t0) * static_cast<u32>(4))) + static_cast<long>(2376));
-                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
-                    if (t3 != static_cast<unsigned int>(0)) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
-                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
-                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
-                                this->mSkillLv = maxLv;
+                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * 80u)) + static_cast<unsigned long>(nHuman::getCustomSkillIdArrayIndex(t0) * 4u)) + 2376);
+                    mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
+                    if (t3 != 0) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) != 0) {
+                            nHuman::HM_SKILL_LV maxLv = cHumanActId::getCustomSkillLvMax(mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) + 40)));
+                            if (static_cast<int>(maxLv) < static_cast<int>(mSkillLv)) {
+                                mSkillLv = maxLv;
                             }
-                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
-                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            if (static_cast<int>(mSkillLv) > 5) {
+                                mpHuman->mCanNextCustmSkillLevel = true;
                             }
                         } else {
-                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(255));
-                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
-                                this->mSkillLv = maxLv;
+                            nHuman::HM_SKILL_LV maxLv = cHumanActId::getCustomSkillLvMax(mCustomSkillID, nHuman::JOB_ID_NONE);
+                            if (static_cast<int>(maxLv) < static_cast<int>(mSkillLv)) {
+                                mSkillLv = maxLv;
                             }
-                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
-                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            if (static_cast<int>(mSkillLv) > 5) {
+                                mpHuman->mCanNextCustmSkillLevel = true;
                             }
                         }
                     }
                 }
             } else {
-                this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+                mSkillLv = nHuman::HM_SKILL_LV_NONE;
             }
         } else {
-            this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+            mSkillLv = nHuman::HM_SKILL_LV_NONE;
         }
     } else {
         // inferred: a temporary for the result of the call at 0x22dc1b, used twice; no DWARF local holds it
-        nHuman::CUSTOM_SKILL_ENUM t0 = ::cHumanActId::getCustomSkillId(ActionNo, static_cast<nHuman::JOB_ENUM>(255));
-        this->mCustomSkillID = t0;
+        nHuman::CUSTOM_SKILL_ENUM t0 = cHumanActId::getCustomSkillId(ActionNo, nHuman::JOB_ID_NONE);
+        mCustomSkillID = t0;
         // inferred: a temporary for the value the load at 0x22dc2a read, used 4 times; no DWARF local holds it
-        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376));
-        if (t1 != static_cast<unsigned long>(0)) {
-            if (static_cast<int>(this->mCustomSkillID) <= static_cast<int>(20)) {
-                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
-                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+        if (t1 != 0) {
+            if (static_cast<int>(mCustomSkillID) <= 20) {
+                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)) + 255) > 9) {
+                    mSkillLv = nHuman::HM_SKILL_LV_NONE;
                 } else {
                     // inferred: a temporary for the result of the call at 0x22dc5f, used once; no DWARF local holds it
-                    u32 t2 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))));
+                    u32 t2 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 40)));
                     // inferred: a temporary for the value the load at 0x22dc7e read, used twice; no DWARF local holds it
-                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(t0) * static_cast<u32>(4))) + static_cast<long>(2376));
-                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
-                    if (t3 != static_cast<unsigned int>(0)) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
-                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
-                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
-                                this->mSkillLv = maxLv;
+                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * 80u)) + static_cast<unsigned long>(nHuman::getCustomSkillIdArrayIndex(t0) * 4u)) + 2376);
+                    mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
+                    if (t3 != 0) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) != 0) {
+                            nHuman::HM_SKILL_LV maxLv = cHumanActId::getCustomSkillLvMax(mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376)) + 40)));
+                            if (static_cast<int>(maxLv) < static_cast<int>(mSkillLv)) {
+                                mSkillLv = maxLv;
                             }
-                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
-                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            if (static_cast<int>(mSkillLv) > 5) {
+                                mpHuman->mCanNextCustmSkillLevel = true;
                             }
                         } else {
-                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(255));
-                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
-                                this->mSkillLv = maxLv;
+                            nHuman::HM_SKILL_LV maxLv = cHumanActId::getCustomSkillLvMax(mCustomSkillID, nHuman::JOB_ID_NONE);
+                            if (static_cast<int>(maxLv) < static_cast<int>(mSkillLv)) {
+                                mSkillLv = maxLv;
                             }
-                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
-                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            if (static_cast<int>(mSkillLv) > 5) {
+                                mpHuman->mCanNextCustmSkillLevel = true;
                             }
                         }
                     }
                 }
             } else {
-                this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+                mSkillLv = nHuman::HM_SKILL_LV_NONE;
             }
         } else {
-            this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+            mSkillLv = nHuman::HM_SKILL_LV_NONE;
         }
     }
 }
@@ -285,16 +285,16 @@ __attribute__((weak)) void cHumanActBase::getCustomSkillIDAndLevelFromActNo_PreI
 // Address: 0x0022dcd0 - 0x0022dcd8 (8 bytes)
 bool cHumanActBase::isCustomSKillBuildUp() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSkillLv > static_cast<int>(5);
+    return mSkillLv > 5;
 }
 
 // Address: 0x0022dde0 - 0x0022ddf1 (17 bytes)
 void cHumanActBase::actionWorkFlag_On() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHuman == static_cast<uHuman*>(nullptr)) {
+    if (mpHuman == nullptr) {
         return;
     }
-    this->mpHuman->mActionWorkFlag = true;
+    mpHuman->mActionWorkFlag = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -306,26 +306,26 @@ void cHumanActBase::actionWorkFlag_On() {
 // Address: 0x0022de10 - 0x0022def2 (226 bytes)
 void cHumanActBase::setEndActNoSendOcdBadStatus() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4100)) != false) {
-        this->::cAction::mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = static_cast<u32>(155);
+    if (mpHuman->getOcdCtrlPtr()->isOcdActive(4100u)) {
+        mpModel->getActionRequestPtr()->mEndAction = 155;
     } else {
-        if (this->mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4108)) != false) {
-            this->::cAction::mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = static_cast<u32>(159);
+        if (mpHuman->getOcdCtrlPtr()->isOcdActive(4108u)) {
+            mpModel->getActionRequestPtr()->mEndAction = 159;
         } else {
-            if (this->mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4106)) == false) {
-                if (this->mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4107)) != false) {
-                    this->::cAction::mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = static_cast<u32>(164);
+            if (!mpHuman->getOcdCtrlPtr()->isOcdActive(4106u)) {
+                if (mpHuman->getOcdCtrlPtr()->isOcdActive(4107u)) {
+                    mpModel->getActionRequestPtr()->mEndAction = 164;
                 } else {
-                    if (this->mpHuman->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4126)) != false) {
-                        this->::cAction::mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = static_cast<u32>(388);
+                    if (mpHuman->getOcdCtrlPtr()->isOcdActive(4126u)) {
+                        mpModel->getActionRequestPtr()->mEndAction = 388;
                     }
                 }
             } else {
-                this->::cAction::mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = static_cast<u32>(164);
+                mpModel->getActionRequestPtr()->mEndAction = 164;
             }
         }
     }
-    this->::cAction::endActionNoSend();
+    endActionNoSend();
 }
 
 // No out-of-line body: 89 inlined copies in 89 functions (1106 bytes)
@@ -340,6 +340,8 @@ void cHumanActBase::setEndActNoSendOcdBadStatus() {
 //   in cOcdBadErosionLvMAX::init at 0x003a16d6-0x003a16d9 (called at cOcdBadStatusHuman.cpp:2677)
 //   in uGUIActionPalette::updateDispGuide at 0x009200ca-0x009200ce (called at uGUIActionPalette.cpp:2090)
 // nHuman::CUSTOM_SKILL_ENUM cHumanActBase::getActCustomSkillId() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cHumanActBase::MyDTI cHumanActBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (124 bytes)
 //   in _GLOBAL__sub_I_cHumanAction.cpp at 0x00257fe2-0x00258020 (called at cHumanAction.cpp:909)
@@ -387,7 +389,7 @@ const MtDTI& cHumanActSetNpcMotMyRoom::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN24cHumanActSetNpcMotMyRoomD0Ev at 0x01997d4e-0x01997d6f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cHumanActSetNpcMotMyRoom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanActSetNpcMotMyRoom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanActSetNpcMotMyRoom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -414,7 +416,7 @@ inline void cHumanActSetNpcMotMyRoom::operator delete(void* p_addr) {
 // Address: 0x002552c0 - 0x002552d2 (18 bytes)
 u32 cHumanActSetNpcMotMyRoom::getEmotion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAction::mpModel->::uDDOModel::getActMgrPtr()->mActExParam.mUParam[3];
+    return mpModel->getActMgrPtr()->mActExParam.mUParam[3];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -428,7 +430,7 @@ u32 cHumanActSetNpcMotMyRoom::getEmotion() const {
 // Address: 0x002559c0 - 0x002559c5 (5 bytes)
 void cHumanActSetNpcMotMyRoom::setNextMotion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCancel = true;
+    mIsCancel = true;
 }
 
 // Address: 0x002552e0 - 0x00255588 (680 bytes)
@@ -475,24 +477,26 @@ __attribute__((weak)) void cHumanActSetNpcMotMyRoom::move() {
 // Address: 0x00255950 - 0x002559b6 (102 bytes)
 void cHumanActSetNpcMotMyRoom::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    this->::cAction::final();
+    this->cAction::final();
     // inferred: a temporary for the value the load at 0x25595f read, used 3 times; no DWARF local holds it
-    uHuman* t0 = this->::cHumanActBase::mpHuman;
-    if (t0 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = mpHuman;
+    if (t0 == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x255970, used once; no DWARF local holds it
-    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
-    this->::cHumanActBase::mpHuman->mIsBeforeAttackHit = false;
-    this->::cHumanActBase::mpHuman->mIsBeforeGuarded = false;
-    this->::cHumanActBase::mpHuman->mIsRecevedDamage = false;
-    this->::cHumanActBase::mpHuman->mCanNextCustmSkillLevel = false;
-    if (this->::cHumanActBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+    f32 t1 = t0->getComAdjustParam(1u);
+    t0->setDefaultRotateSpeed(0.017453294f * t1);
+    mpHuman->mIsBeforeAttackHit = false;
+    mpHuman->mIsBeforeGuarded = false;
+    mpHuman->mIsRecevedDamage = false;
+    mpHuman->mCanNextCustmSkillLevel = false;
+    if (mpHuman == nullptr) {
         return;
     }
-    this->::cHumanActBase::mpHuman->mActionWorkFlag = false;
+    mpHuman->mActionWorkFlag = false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHumanActSetNpcMotMyRoom::MyDTI cHumanActSetNpcMotMyRoom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHumanAction.cpp at 0x00259d4e-0x00259d87 (called at cHumanAction.cpp:14752)
@@ -540,7 +544,7 @@ const MtDTI& cHumanActSetNpcMotion::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN21cHumanActSetNpcMotionD0Ev at 0x019976be-0x019976df, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cHumanActSetNpcMotion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHumanActSetNpcMotion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHumanActSetNpcMotion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -555,13 +559,13 @@ inline void cHumanActSetNpcMotion::operator delete(void* p_addr) {
 // Address: 0x0024dbb0 - 0x0024dbc4 (20 bytes)
 u32 cHumanActSetNpcMotion::getCategory() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAction::mpModel->::uDDOModel::getActMgrPtr()->mActExParam.mUParam[0] - static_cast<unsigned int>(1);
+    return mpModel->getActMgrPtr()->mActExParam.mUParam[0] - 1u;
 }
 
 // Address: 0x0024dbd0 - 0x0024dbe2 (18 bytes)
 u32 cHumanActSetNpcMotion::getMotionNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAction::mpModel->::uDDOModel::getActMgrPtr()->mActExParam.mUParam[1];
+    return mpModel->getActMgrPtr()->mActExParam.mUParam[1];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (11 bytes)
@@ -602,24 +606,26 @@ __attribute__((weak)) void cHumanActSetNpcMotion::move() {
 // Address: 0x0024e1f0 - 0x0024e256 (102 bytes)
 void cHumanActSetNpcMotion::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    this->::cAction::final();
+    this->cAction::final();
     // inferred: a temporary for the value the load at 0x24e1ff read, used 3 times; no DWARF local holds it
-    uHuman* t0 = this->::cHumanActBase::mpHuman;
-    if (t0 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = mpHuman;
+    if (t0 == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x24e210, used once; no DWARF local holds it
-    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
-    this->::cHumanActBase::mpHuman->mIsBeforeAttackHit = false;
-    this->::cHumanActBase::mpHuman->mIsBeforeGuarded = false;
-    this->::cHumanActBase::mpHuman->mIsRecevedDamage = false;
-    this->::cHumanActBase::mpHuman->mCanNextCustmSkillLevel = false;
-    if (this->::cHumanActBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+    f32 t1 = t0->getComAdjustParam(1u);
+    t0->setDefaultRotateSpeed(0.017453294f * t1);
+    mpHuman->mIsBeforeAttackHit = false;
+    mpHuman->mIsBeforeGuarded = false;
+    mpHuman->mIsRecevedDamage = false;
+    mpHuman->mCanNextCustmSkillLevel = false;
+    if (mpHuman == nullptr) {
         return;
     }
-    this->::cHumanActBase::mpHuman->mActionWorkFlag = false;
+    mpHuman->mActionWorkFlag = false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHumanActSetNpcMotion::MyDTI cHumanActSetNpcMotion::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cHumanAction.cpp at 0x002598a1-0x002598da (called at cHumanAction.cpp:12521)
@@ -708,13 +714,13 @@ __attribute__((weak)) bool nHumanActUtility::reqSetSynchronizeEffectToTarget(uHu
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cHumanAction.cpp:506
 void nHumanActUtility::reqOnSyncFlag(uHuman* pHuman, u64 syncFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pHuman == static_cast<uHuman*>(nullptr)) {
+    if (pHuman == nullptr) {
         return;
     }
-    if (pHuman->::uDDOModel::mpEffectStatusManager == static_cast<cpEffectStatusManager*>(nullptr)) {
+    if (pHuman->mpEffectStatusManager == nullptr) {
         return;
     }
-    pHuman->::uDDOModel::mpEffectStatusManager->mSyncFlag = syncFlag | pHuman->::uDDOModel::mpEffectStatusManager->mSyncFlag;
+    pHuman->mpEffectStatusManager->mSyncFlag = syncFlag | pHuman->mpEffectStatusManager->mSyncFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -792,17 +798,17 @@ __attribute__((weak)) f32 nHumanActUtility::getSequenceCountFrame(uHuman& human,
 // Address: 0x0022d5d0 - 0x0022d602 (50 bytes)
 void nHumanActUtility::setCstmResource(nHuman::CUSTOM_SKILL_ENUM skillID, uHuman* pHuman) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pHuman->::uHuman::setCstmMotionList(skillID);
-    pHuman->::uHuman::setCstmCollision(skillID);
-    pHuman->::uHuman::setCstmMotionSe(skillID);
+    pHuman->setCstmMotionList(skillID);
+    pHuman->setCstmCollision(skillID);
+    pHuman->setCstmMotionSe(skillID);
 }
 
 // Address: 0x0022d610 - 0x0022d634 (36 bytes)
 void nHumanActUtility::resetCstmResource(uHuman* pHuman) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pHuman->::uHuman::resetCstmMotionList();
-    pHuman->::uHuman::resetCstmCollision();
-    pHuman->::uHuman::resetCstmMotionSe();
+    pHuman->resetCstmMotionList();
+    pHuman->resetCstmCollision();
+    pHuman->resetCstmMotionSe();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (11 bytes)
@@ -813,10 +819,10 @@ void nHumanActUtility::resetCstmResource(uHuman* pHuman) {
 u32 nHumanActUtility::getActionNo(uDDOModel& mod) {
     // DWARF local not rendered: cpActionManager* pActMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (mod.::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-        return mod.::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
+    if (mod.getActMgrPtr() != nullptr) {
+        return mod.getActMgrPtr()->getActionNo();
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 

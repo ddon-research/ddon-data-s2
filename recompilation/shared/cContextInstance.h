@@ -701,9 +701,183 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getActFreeWork at 0x5a6c7-0x5a6ce; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstChar::getActFreeWork() const {
+    return this->mActFreeWork;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getMoveSpeed at 0x5a78f-0x5a797; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstChar::getMoveSpeed() const {
+    return this->mMoveSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getCommonWork at 0x5e8d5-0x5e8de; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cContextInstChar::getCommonWork() const {
+    return this->mCommonWork;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getCustomWork at 0x5ea95-0x5ea9e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cContextInstChar::getCustomWork() const {
+    return this->mCustomWork;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getClimbEnemyJointNo at 0x5b2ea-0x5b2f1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstChar::getClimbEnemyJointNo() const {
+    return this->mClimbEnemyJointNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getClimbGeomIndex at 0x5b4e5-0x5b4ee; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cContextInstChar::getClimbGeomIndex() const {
+    return this->mClimbEnemyGeomIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getUseRegionBit at 0x5be75-0x5be7e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cContextInstChar::getUseRegionBit() const {
+    return this->mUseRegionBit_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getShakeEndurance at 0x5bfaf-0x5bfb7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstChar::getShakeEndurance() const {
+    return this->mShakeEndurance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getEnchantRate at 0x5c1ff-0x5c207; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstChar::getEnchantRate() const {
+    return this->mEnchantRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getEnemyStatusGroupNum at 0x5d3d7-0x5d3de; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstChar::getEnemyStatusGroupNum() const {
+    return this->mEnemyStatusGroupNoNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getMontageRandom at 0x5df67-0x5df6e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstChar::getMontageRandom() const {
+    return this->mMontageRandom;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstChar::setHp at 0x56c70-0x56c7a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstChar::setHpPrivate(HP_DATATYPE NewValue, u32 index) {
+    this->mHp_pri[index] = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstChar::setHpMax at 0x56c90-0x56c9a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstChar::setHpMaxPrivate(HP_DATATYPE NewValue, u32 index) {
+    this->mHpMax_pri[index] = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getUseRegionBit at 0x5be75-0x5be7e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u16 cContextInstChar::getUseRegionBitPrivate() const {
+    return this->mUseRegionBit_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in _ZN16cContextInstChar5setLvEi at 0x1962740-0x1962746; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cContextInstChar::setLvPrivate(s32 NewValue) {
+    this->mLv_pri = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstChar::getHpCheatCheck at 0x579a0-0x579aa; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline HP_DATATYPE cContextInstChar::getHpPrivateCheatCheck(u32 index) const {
+    return this->mHpCheatCheck_pri[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstChar::getHpMaxCheatCheck at 0x579b0-0x579ba; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline HP_DATATYPE cContextInstChar::getHpMaxPrivateCheatCheck(u32 index) const {
+    return this->mHpMaxCheatCheck_pri[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstChar::getIsDeadCheatCheck at 0x57990-0x57999; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline bool cContextInstChar::getIsDeadPrivateCheatCheck(u32 index) const {
+    return this->mIsDeadCheatCheck_pri[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setIndex at 0x5f065-0x5f06c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setIndex(u8 index) {
+    this->mIndex = index;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setOnlineStatus at 0x5f7a5-0x5f7ac; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setOnlineStatus(u8 status) {
+    this->mOnlineStatus = status;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getLostTimer at 0x5cc2f-0x5cc37; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstHm::getLostTime() const {
+    return this->mLostTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cContextInstHm::getSex() const {
     return this->mSex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setFloorGroupNo at 0x5f2c5-0x5f2cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cContextInstHm::setFloorGroupNo(const s32 no) {
+    this->mFloorGroupNo = no;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getStartPosNo at 0x5f2e7-0x5f2ed; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstHm::getStartPosNo() const {
+    return this->mStartPosNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setStartPosNo at 0x5f305-0x5f30b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setStartPosNo(const s32 no) {
+    this->mStartPosNo = no;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getClanNickName at 0x5f643-0x5f64a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MT_CTSTR cContextInstHm::getClanNickName() const {
+    return &this->mClanNickName[0];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setHumanType at 0x5fe05-0x5fe0c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cContextInstHm::setHumanType(u8 type) {
+    this->mHumanType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setPawnType at 0x5fe95-0x5fe9c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setPawnType(u8 type) {
+    this->mPawnType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setCharacterId at 0x5fed5-0x5fedb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setCharId(u32 charId) {
+    this->mCharId = charId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setPawnId at 0x60025-0x6002b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setPawnId(u32 pawnId) {
+    this->mPawnId = pawnId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -713,8 +887,38 @@ inline s32 cContextInstHm::getMemberIndex() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setMemberIndex at 0x60175-0x6017b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setMemberIndex(s32 memberIndex) {
+    this->mMemberIndex = memberIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 cContextInstHm::getEncountArea(u32 index) const {
     return this->mEncountArea[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getContextPlayerInfo at 0x608f0-0x608f7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const cContextPlayerInfo& cContextInstHm::getContextPlayerInfoConst() const {
+    return this->mPlayerInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setReviveStock at 0x60945-0x6094c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setReviveStock(u8 num) {
+    this->mReviveStock = num;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getReviveType at 0x60967-0x6096d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstHm::getReviveType() const {
+    return this->mReviveType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setReviveType at 0x609c5-0x609cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cContextInstHm::setReviveType(s32 type) {
+    this->mReviveType = type;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -723,8 +927,44 @@ inline s32 cContextInstHm::getStageNoFreeMarker(u32 idx) const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setStageNoFreeMarker at 0x60ab5-0x60abe; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setStageNoFreeMarker(s32 sStageNo, u32 idx) {
+    this->mStageNoFreeMarker[idx] = sStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 cContextInstHm::getGroupNoFreeMarker(u32 idx) const {
     return this->mGroupNoFreeMarker[idx];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setGroupNoFreeMarker at 0x60b05-0x60b0e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setGroupNoFreeMarker(s32 sGroupNo, u32 idx) {
+    this->mGroupNoFreeMarker[idx] = sGroupNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getOldGaugeContextType at 0x61507-0x6150d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstHm::getOldGaugeContextType() const {
+    return this->mOldGaugeContextType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setOldGaugeContextType at 0x61525-0x6152b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstHm::setOldGaugeContextType(s32 type) {
+    this->mOldGaugeContextType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getElementGuardTime at 0x60b4f-0x60b57; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstHm::getElementGuardTime() const {
+    return this->mElementGuardTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getElementCoverDamageRate at 0x60d8f-0x60d97; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstHm::getElementCoverDamageRate() const {
+    return this->mElementCoverDamageRate;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -748,5 +988,107 @@ inline s32 cContextInstHm::getSJobWork0() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 34 DWARF copies materializes its result
 inline bool cContextInstance::isValid() const {
-    return (this->mIsValid & static_cast<u8>(1)) != static_cast<u8>(0);
+    return (this->mIsValid & 1) != 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInstHm::removeParty at 0x592b0-0x592b4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::offPartySync() {
+    this->mIsValid = this->mIsValid & 247;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getNetRealPos at 0x5a433-0x5a437; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const nNetMsgData::stNetPos& cContextInstance::getNetRealPos() const {
+    return this->mNetPos;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getNetDir at 0x5a479-0x5a47e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cContextInstance::getNetDir() const {
+    return this->mNetDir;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setNetDir at 0x5a485-0x5a48a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setNetDir(f32 dir) {
+    this->mNetDir = dir;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getStageNo at 0x5a497-0x5a49a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstance::getStageNo() const {
+    return this->mStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setStageNo at 0x5a4a5-0x5a4a8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setStageNo(s32 StageNo) {
+    this->mStageNo = StageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getUniqueId at 0x5a4b7-0x5a4ba; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstance::getUniqueId() const {
+    return this->mUniqueId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setUniqueId at 0x5a4c5-0x5a4c8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setUniqueId(u32 UniqueId) {
+    this->mUniqueId = UniqueId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getMasterIndex at 0x5ec4a-0x5ec4d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstance::getMasterIndex() const {
+    return this->mMasterIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setMasterIndex at 0x5ec55-0x5ec58; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setMasterIndex(s32 index) {
+    this->mMasterIndex = index;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getMainEncountArea at 0x5ec6a-0x5ec6d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 cContextInstance::getMainEncountArea() const {
+    return this->mMainEncountArea;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setMainEncountArea at 0x5ec75-0x5ec78; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setMainEncountArea(s32 encountArea) {
+    this->mMainEncountArea = encountArea;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setCatchType at 0x5c965-0x5c968; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setCatchType(u8 type) {
+    this->mCatchType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getCatchTargetUID at 0x5c997-0x5c99a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstance::getCatchTargetUID() const {
+    return this->mCatchTargetUid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setCatchTargetUID at 0x5c9a5-0x5c9a8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setCatchTargetUID(u32 uid) {
+    this->mCatchTargetUid = uid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::getQuestId at 0x5a4d7-0x5a4da; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cContextInstance::getQuestId() const {
+    return this->mQuestId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cContextInterface::setQuestId at 0x5a4e5-0x5a4e8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cContextInstance::setQuestId(u32 QuestId) {
+    this->mQuestId = QuestId;
 }

@@ -37,7 +37,7 @@ const MtDTI& cpCharacterEdit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpCharacterEdit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpCharacterEdit::DTI);
+    return MtMemoryAllocator::getAllocator(cpCharacterEdit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* cpCharacterEdit::getAllocator() {
 // Address: 0x00459de0 - 0x00459e20 (64 bytes)
 void* cpCharacterEdit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpCharacterEdit::getAllocator()->memAlloc(sz, align, ::cpCharacterEdit::DTI.::MtDTI::getID());
+    return cpCharacterEdit::getAllocator()->memAlloc(sz, align, cpCharacterEdit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* cpCharacterEdit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpCharacterEdit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpCharacterEdit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpCharacterEdit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,8 +93,8 @@ cpCharacterEdit::~cpCharacterEdit() {
 // Address: 0x0045a5e0 - 0x0045a5e9 (9 bytes)
 void cpCharacterEdit::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpBodyModel = static_cast<uModel*>(pOwner);
+    mpOwner = pOwner;
+    mpBodyModel = static_cast<uModel*>(pOwner);
 }
 
 // Address: 0x0045a8a0 - 0x0045a96b (203 bytes)
@@ -104,35 +104,35 @@ void cpCharacterEdit::setup() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2280 from uModel*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2281 from uModel*
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
     // inferred: a temporary for the result of the call at 0x45a8b9, used once; no DWARF local holds it
-    const MtDTI& t0 = this->mpBodyModel->getDTI();
+    const MtDTI& t0 = mpBodyModel->getDTI();
     // inferred: the value the loop at 0x45a8c7 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
     // inferred: the value the loop at 0x45a8c7 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
             // inferred: a temporary for the value the load at 0x45a8d8 read, used 3 times; no DWARF local holds it
-            uModel* t1 = this->mpBodyModel;
-            if (t1 != static_cast<uModel*>(nullptr)) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(8832)) = static_cast<unsigned char>(1);
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(8833)) = static_cast<unsigned char>(1);
+            uModel* t1 = mpBodyModel;
+            if (t1 != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 8832) = 1;
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 8833) = 1;
             }
-            this->mpJobFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_JOB_FAT_ADJUST", static_cast<u32>(1), false));
-            this->mpCustomFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_CUSTOM_FAT_ADJUST", static_cast<u32>(1), false));
-            this->mpEventFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_EVENT_FAT_ADJUST", static_cast<u32>(1), false));
+            mpJobFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_JOB_FAT_ADJUST", 1u, false));
+            mpCustomFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_CUSTOM_FAT_ADJUST", 1u, false));
+            mpEventFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_EVENT_FAT_ADJUST", 1u, false));
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
             } else {
                 break;
             }
         }
     }
-    this->mpJobFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_JOB_FAT_ADJUST", static_cast<u32>(1), false));
-    this->mpCustomFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_CUSTOM_FAT_ADJUST", static_cast<u32>(1), false));
-    this->mpEventFatAdjust = static_cast<rFatAdjust*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("character_edit_common", "RES_ID_EVENT_FAT_ADJUST", static_cast<u32>(1), false));
+    mpJobFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_JOB_FAT_ADJUST", 1u, false));
+    mpCustomFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_CUSTOM_FAT_ADJUST", 1u, false));
+    mpEventFatAdjust = static_cast<rFatAdjust*>(sArchiveManager::getInstance()->createRes("character_edit_common", "RES_ID_EVENT_FAT_ADJUST", 1u, false));
 }
 
 // Address: 0x0045d3e0 - 0x0045d6b1 (721 bytes)
@@ -193,7 +193,7 @@ __attribute__((weak)) void cpCharacterEdit::setResource(rCharacterEdit* pRes) {
 // Address: 0x01a58380 - 0x01a58388 (8 bytes)
 rCharacterEdit* cpCharacterEdit::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // Address: 0x0045a650 - 0x0045a696 (70 bytes)
@@ -205,7 +205,7 @@ __attribute__((weak)) void cpCharacterEdit::setJobFatAdjust(rFatAdjust* pRes) {
 // Address: 0x01a58410 - 0x01a58418 (8 bytes)
 rFatAdjust* cpCharacterEdit::getJobFatAdjust() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpJobFatAdjust;
+    return mpJobFatAdjust;
 }
 
 // Address: 0x0045a6a0 - 0x0045a6e6 (70 bytes)
@@ -217,7 +217,7 @@ __attribute__((weak)) void cpCharacterEdit::setCustomFatAdjust(rFatAdjust* pRes)
 // Address: 0x01a58420 - 0x01a58428 (8 bytes)
 rFatAdjust* cpCharacterEdit::getCustomFatAdjust() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCustomFatAdjust;
+    return mpCustomFatAdjust;
 }
 
 // Address: 0x0045a6f0 - 0x0045a736 (70 bytes)
@@ -229,7 +229,7 @@ __attribute__((weak)) void cpCharacterEdit::setEventFatAdjust(rFatAdjust* pRes) 
 // Address: 0x01a58430 - 0x01a58438 (8 bytes)
 rFatAdjust* cpCharacterEdit::getEventFatAdjust() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpEventFatAdjust;
+    return mpEventFatAdjust;
 }
 
 // Address: 0x0045d850 - 0x0045dd22 (1234 bytes)
@@ -363,24 +363,24 @@ __attribute__((weak)) void cpCharacterEdit::updateAll() {
 rCharacterEdit* cpCharacterEdit::createBodyPresetResource(u32 body_type) {
     // DWARF local not rendered: rCharacterEdit* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    u32 PresetID = ::rArchiveListArray::convSearchId("RES_ID_HUMAN_M_PRESET_EDT");
-    if (body_type == static_cast<u32>(1)) {
+    u32 PresetID = rArchiveListArray::convSearchId("RES_ID_HUMAN_M_PRESET_EDT");
+    if (body_type == 1) {
         // inferred: a temporary for the result of the call at 0x466161, used once; no DWARF local holds it
-        ARC_SEARCHID t0 = ::rArchiveListArray::convSearchId("RES_ID_HUMAN_F_PRESET_EDT");
+        ARC_SEARCHID t0 = rArchiveListArray::convSearchId("RES_ID_HUMAN_F_PRESET_EDT");
         // inferred: a temporary for the value the load at 0x466170 read, used once; no DWARF local holds it
-        sArchiveManager* t1 = ::sArchiveManager::getInstance();
-        return static_cast<rCharacterEdit*>(t1->::sArchiveManager::createRes(::rArchiveListArray::convTagId("character_edit_common"), t0, static_cast<u32>(1), false));
+        sArchiveManager* t1 = sArchiveManager::getInstance();
+        return static_cast<rCharacterEdit*>(t1->createRes(rArchiveListArray::convTagId("character_edit_common"), t0, 1u, false));
     } else {
-        if (body_type == static_cast<u32>(0)) {
+        if (body_type == 0) {
             // inferred: a temporary for the result of the call at 0x466161, used once; no DWARF local holds it
-            ARC_SEARCHID t0 = ::rArchiveListArray::convSearchId("RES_ID_HUMAN_M_PRESET_EDT");
+            ARC_SEARCHID t0 = rArchiveListArray::convSearchId("RES_ID_HUMAN_M_PRESET_EDT");
             // inferred: a temporary for the value the load at 0x466170 read, used once; no DWARF local holds it
-            sArchiveManager* t1 = ::sArchiveManager::getInstance();
-            return static_cast<rCharacterEdit*>(t1->::sArchiveManager::createRes(::rArchiveListArray::convTagId("character_edit_common"), t0, static_cast<u32>(1), false));
+            sArchiveManager* t1 = sArchiveManager::getInstance();
+            return static_cast<rCharacterEdit*>(t1->createRes(rArchiveListArray::convTagId("character_edit_common"), t0, 1u, false));
         } else {
             // inferred: a temporary for the value the load at 0x466170 read, used once; no DWARF local holds it
-            sArchiveManager* t1 = ::sArchiveManager::getInstance();
-            return static_cast<rCharacterEdit*>(t1->::sArchiveManager::createRes(::rArchiveListArray::convTagId("character_edit_common"), PresetID, static_cast<u32>(1), false));
+            sArchiveManager* t1 = sArchiveManager::getInstance();
+            return static_cast<rCharacterEdit*>(t1->createRes(rArchiveListArray::convTagId("character_edit_common"), PresetID, 1u, false));
         }
     }
 }
@@ -574,16 +574,16 @@ __attribute__((weak)) rCharacterEditVoicePalette* cpCharacterEdit::getVoicePalet
 // Address: 0x004606e0 - 0x00460704 (36 bytes)
 bool cpCharacterEdit::isLoading() {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    bool* p2 = &this->mArcLoadReq[0];
+    bool* p2 = &mArcLoadReq[0];
     do {
-        if ((*p2) != false) {
+        if (*p2) {
             return true;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(8));
+    } while (i <= 8u);
     return false;
 }
 
@@ -597,7 +597,7 @@ bool cpCharacterEdit::isLoading() {
 // Address: 0x01a583e0 - 0x01a583eb (11 bytes)
 rCharacterEditColorDef* cpCharacterEdit::getColorDef(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpColorDef[type];
+    return mpColorDef[type];
 }
 
 // No out-of-line body: no code in the ELF
@@ -618,7 +618,7 @@ __attribute__((weak)) void cpCharacterEdit::setMuscleConstRes(rCharacterEditMusc
 // Address: 0x01a58390 - 0x01a58398 (8 bytes)
 rCharacterEditMuscle* cpCharacterEdit::getMuscleConstRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMuscleConstRes;
+    return mpMuscleConstRes;
 }
 
 // Address: 0x0045a790 - 0x0045a7d6 (70 bytes)
@@ -630,7 +630,7 @@ __attribute__((weak)) void cpCharacterEdit::setOrgJointPresetRes(rFacialEditJoin
 // Address: 0x01a583a0 - 0x01a583a8 (8 bytes)
 rFacialEditJointPreset* cpCharacterEdit::getOrgJointPresetRes() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOrgJointPresetRes;
+    return mpOrgJointPresetRes;
 }
 
 // Address: 0x0045a7e0 - 0x0045a83a (90 bytes)
@@ -642,7 +642,7 @@ __attribute__((weak)) void cpCharacterEdit::setFacialEditJointPresetRes(rFacialE
 // Address: 0x01a583b0 - 0x01a583bb (11 bytes)
 rFacialEditJointPreset* cpCharacterEdit::getFacialEditJointPresetRes(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpFacialEditJointPreset[type];
+    return mpFacialEditJointPreset[type];
 }
 
 // Address: 0x01a583d0 - 0x01a583d1 (1 bytes)
@@ -653,7 +653,7 @@ __attribute__((weak)) void cpCharacterEdit::setFacialEditJointPresetResNum() {
 // Address: 0x01a583c0 - 0x01a583c6 (6 bytes)
 u32 cpCharacterEdit::getFacialEditJointPresetResNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x0045a840 - 0x0045a89a (90 bytes)
@@ -670,7 +670,7 @@ __attribute__((weak)) void cpCharacterEdit::setColorDefNum() {
 // Address: 0x01a583f0 - 0x01a583f6 (6 bytes)
 u32 cpCharacterEdit::getColorDefNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x0045dd30 - 0x0045f628 (6392 bytes)
@@ -779,92 +779,92 @@ void cpCharacterEdit::calcHoho() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
     // inferred: the value carried to 0x461c97; no location-less local in scope fits
-    f32 v0_2 = this->mpResource->mpEditParam->mHanakuchijyouge.mValue;
+    f32 v0_2 = mpResource->mpEditParam->mHanakuchijyouge.mValue;
     // inferred: the value carried to 0x461c97; no location-less local in scope fits
-    f32 v0_3 = this->mpResource->mpEditParam->mAgosakihaba.mValue;
+    f32 v0_3 = mpResource->mpEditParam->mAgosakihaba.mValue;
     // inferred: the value carried to 0x461c97; no location-less local in scope fits
-    f32 v0_1 = this->mpResource->mpEditParam->mAgozengo.mValue;
+    f32 v0_1 = mpResource->mpEditParam->mAgozengo.mValue;
     // inferred: the value carried to 0x461c97; no location-less local in scope fits
-    f32 v0_4 = this->mpResource->mpEditParam->mAgosakijyouge.mValue;
-    if (this->mpCnsEdit[90] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[90]->mTrans.y = this->mpCnsEdit[90]->mTrans.y + (v0_2 * (-1.08f));
-        this->mpCnsEdit[90]->mTrans.z = this->mpCnsEdit[90]->mTrans.z + (v0_1 * 0.5f);
+    f32 v0_4 = mpResource->mpEditParam->mAgosakijyouge.mValue;
+    if (mpCnsEdit[90] != nullptr) {
+        mpCnsEdit[90]->mTrans.y = mpCnsEdit[90]->mTrans.y + (v0_2 * -1.08f);
+        mpCnsEdit[90]->mTrans.z = mpCnsEdit[90]->mTrans.z + (v0_1 * 0.5f);
     }
-    if (this->mpCnsEdit[91] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[91]->mTrans.y = this->mpCnsEdit[91]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[91]->mTrans.z = this->mpCnsEdit[91]->mTrans.z + (0.5f * v0_1);
+    if (mpCnsEdit[91] != nullptr) {
+        mpCnsEdit[91]->mTrans.y = mpCnsEdit[91]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[91]->mTrans.z = mpCnsEdit[91]->mTrans.z + (0.5f * v0_1);
     }
-    if (this->mpCnsEdit[92] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[92]->mTrans.y = this->mpCnsEdit[92]->mTrans.y + ((-0.14f) * v0_2);
-        this->mpCnsEdit[92]->mTrans.z = this->mpCnsEdit[92]->mTrans.z + (0.1f * v0_1);
+    if (mpCnsEdit[92] != nullptr) {
+        mpCnsEdit[92]->mTrans.y = mpCnsEdit[92]->mTrans.y + (-0.14f * v0_2);
+        mpCnsEdit[92]->mTrans.z = mpCnsEdit[92]->mTrans.z + (0.1f * v0_1);
     }
-    if (this->mpCnsEdit[93] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[93]->mTrans.y = static_cast<float>(((-0.14) * static_cast<double>(v0_2)) + static_cast<double>(this->mpCnsEdit[93]->mTrans.y));
-        this->mpCnsEdit[93]->mTrans.z = this->mpCnsEdit[93]->mTrans.z + (0.1f * v0_1);
+    if (mpCnsEdit[93] != nullptr) {
+        mpCnsEdit[93]->mTrans.y = static_cast<float>((-0.14 * static_cast<double>(v0_2)) + static_cast<double>(mpCnsEdit[93]->mTrans.y));
+        mpCnsEdit[93]->mTrans.z = mpCnsEdit[93]->mTrans.z + (0.1f * v0_1);
     }
-    if (this->mpCnsEdit[94] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[94]->mTrans.y = this->mpCnsEdit[94]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[94]->mTrans.z = this->mpCnsEdit[94]->mTrans.z + (1.4f * v0_1);
+    if (mpCnsEdit[94] != nullptr) {
+        mpCnsEdit[94]->mTrans.y = mpCnsEdit[94]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[94]->mTrans.z = mpCnsEdit[94]->mTrans.z + (1.4f * v0_1);
     }
-    if (this->mpCnsEdit[95] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[95]->mTrans.y = (this->mpCnsEdit[95]->mTrans.y + ((-1.08f) * v0_2)) + ((-1.4f) * v0_4);
-        this->mpCnsEdit[95]->mTrans.z = (this->mpCnsEdit[95]->mTrans.z + (1.4f * v0_1)) + ((-0.03f) * v0_4);
+    if (mpCnsEdit[95] != nullptr) {
+        mpCnsEdit[95]->mTrans.y = (mpCnsEdit[95]->mTrans.y + (-1.08f * v0_2)) + (-1.4f * v0_4);
+        mpCnsEdit[95]->mTrans.z = (mpCnsEdit[95]->mTrans.z + (1.4f * v0_1)) + (-0.03f * v0_4);
     }
-    if (this->mpCnsEdit[96] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[96]->mTrans.y = this->mpCnsEdit[96]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[96]->mTrans.z = this->mpCnsEdit[96]->mTrans.z + (1.25f * v0_1);
+    if (mpCnsEdit[96] != nullptr) {
+        mpCnsEdit[96]->mTrans.y = mpCnsEdit[96]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[96]->mTrans.z = mpCnsEdit[96]->mTrans.z + (1.25f * v0_1);
     }
-    if (this->mpCnsEdit[97] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[97]->mTrans.y = this->mpCnsEdit[97]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[97]->mTrans.z = this->mpCnsEdit[97]->mTrans.z + (1.25f * v0_1);
+    if (mpCnsEdit[97] != nullptr) {
+        mpCnsEdit[97]->mTrans.y = mpCnsEdit[97]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[97]->mTrans.z = mpCnsEdit[97]->mTrans.z + (1.25f * v0_1);
     }
-    if (this->mpCnsEdit[98] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[98]->mTrans.y = this->mpCnsEdit[98]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[98]->mTrans.z = this->mpCnsEdit[98]->mTrans.z + (1.25f * v0_1);
+    if (mpCnsEdit[98] != nullptr) {
+        mpCnsEdit[98]->mTrans.y = mpCnsEdit[98]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[98]->mTrans.z = mpCnsEdit[98]->mTrans.z + (1.25f * v0_1);
     }
-    if (this->mpCnsEdit[121] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[121]->mTrans.z = this->mpCnsEdit[121]->mTrans.z + (0.1f * v0_1);
+    if (mpCnsEdit[121] != nullptr) {
+        mpCnsEdit[121]->mTrans.z = mpCnsEdit[121]->mTrans.z + (0.1f * v0_1);
     }
-    if (this->mpCnsEdit[122] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[122]->mTrans.y = this->mpCnsEdit[122]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[122]->mTrans.z = this->mpCnsEdit[122]->mTrans.z + (0.5f * v0_1);
+    if (mpCnsEdit[122] != nullptr) {
+        mpCnsEdit[122]->mTrans.y = mpCnsEdit[122]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[122]->mTrans.z = mpCnsEdit[122]->mTrans.z + (0.5f * v0_1);
     }
-    if (this->mpCnsEdit[123] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[123]->mTrans.y = this->mpCnsEdit[123]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[123]->mTrans.z = this->mpCnsEdit[123]->mTrans.z + (0.9f * v0_1);
+    if (mpCnsEdit[123] != nullptr) {
+        mpCnsEdit[123]->mTrans.y = mpCnsEdit[123]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[123]->mTrans.z = mpCnsEdit[123]->mTrans.z + (0.9f * v0_1);
     }
-    if (this->mpCnsEdit[124] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[124]->mTrans.y = this->mpCnsEdit[124]->mTrans.y + ((-0.14f) * v0_2);
-        this->mpCnsEdit[124]->mTrans.z = this->mpCnsEdit[124]->mTrans.z + (0.2f * v0_1);
+    if (mpCnsEdit[124] != nullptr) {
+        mpCnsEdit[124]->mTrans.y = mpCnsEdit[124]->mTrans.y + (-0.14f * v0_2);
+        mpCnsEdit[124]->mTrans.z = mpCnsEdit[124]->mTrans.z + (0.2f * v0_1);
     }
-    if (this->mpCnsEdit[125] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[125]->mTrans.y = this->mpCnsEdit[125]->mTrans.y + ((-0.14f) * v0_2);
-        this->mpCnsEdit[125]->mTrans.z = this->mpCnsEdit[125]->mTrans.z + (0.2f * v0_1);
+    if (mpCnsEdit[125] != nullptr) {
+        mpCnsEdit[125]->mTrans.y = mpCnsEdit[125]->mTrans.y + (-0.14f * v0_2);
+        mpCnsEdit[125]->mTrans.z = mpCnsEdit[125]->mTrans.z + (0.2f * v0_1);
     }
-    if (this->mpCnsEdit[126] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[126]->mTrans.y = this->mpCnsEdit[126]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[126]->mTrans.z = this->mpCnsEdit[126]->mTrans.z + (0.9f * v0_1);
+    if (mpCnsEdit[126] != nullptr) {
+        mpCnsEdit[126]->mTrans.y = mpCnsEdit[126]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[126]->mTrans.z = mpCnsEdit[126]->mTrans.z + (0.9f * v0_1);
     }
-    if (this->mpCnsEdit[127] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[127]->mTrans.y = this->mpCnsEdit[127]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[127]->mTrans.z = this->mpCnsEdit[127]->mTrans.z + (0.9f * v0_1);
+    if (mpCnsEdit[127] != nullptr) {
+        mpCnsEdit[127]->mTrans.y = mpCnsEdit[127]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[127]->mTrans.z = mpCnsEdit[127]->mTrans.z + (0.9f * v0_1);
     }
-    if (this->mpCnsEdit[128] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[128]->mTrans.y = this->mpCnsEdit[128]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[128]->mTrans.z = this->mpCnsEdit[128]->mTrans.z + (0.7f * v0_1);
+    if (mpCnsEdit[128] != nullptr) {
+        mpCnsEdit[128]->mTrans.y = mpCnsEdit[128]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[128]->mTrans.z = mpCnsEdit[128]->mTrans.z + (0.7f * v0_1);
     }
-    if (this->mpCnsEdit[129] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[129]->mTrans.y = this->mpCnsEdit[129]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[129]->mTrans.z = this->mpCnsEdit[129]->mTrans.z + (0.7f * v0_1);
+    if (mpCnsEdit[129] != nullptr) {
+        mpCnsEdit[129]->mTrans.y = mpCnsEdit[129]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[129]->mTrans.z = mpCnsEdit[129]->mTrans.z + (0.7f * v0_1);
     }
-    if (this->mpCnsEdit[131] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[131]->mTrans.y = this->mpCnsEdit[131]->mTrans.y + ((-2.28f) * v0_4);
-        this->mpCnsEdit[131]->mTrans.z = this->mpCnsEdit[131]->mTrans.z + (1.36f * v0_4);
-        this->mpCnsEdit[131]->mScl.x = this->mpCnsEdit[131]->mScl.x + (0.67f * v0_3);
+    if (mpCnsEdit[131] != nullptr) {
+        mpCnsEdit[131]->mTrans.y = mpCnsEdit[131]->mTrans.y + (-2.28f * v0_4);
+        mpCnsEdit[131]->mTrans.z = mpCnsEdit[131]->mTrans.z + (1.36f * v0_4);
+        mpCnsEdit[131]->mScl.x = mpCnsEdit[131]->mScl.x + (0.67f * v0_3);
     }
-    if (this->mpCnsEdit[132] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[132]->mTrans.y = this->mpCnsEdit[132]->mTrans.y + ((-1.08f) * v0_2);
-        this->mpCnsEdit[132]->mTrans.z = this->mpCnsEdit[132]->mTrans.z + (1.25f * v0_1);
+    if (mpCnsEdit[132] != nullptr) {
+        mpCnsEdit[132]->mTrans.y = mpCnsEdit[132]->mTrans.y + (-1.08f * v0_2);
+        mpCnsEdit[132]->mTrans.z = mpCnsEdit[132]->mTrans.z + (1.25f * v0_1);
     }
 }
 
@@ -940,64 +940,64 @@ void cpCharacterEdit::calcKuchi() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
     // inferred: the value carried to 0x46452f; no location-less local in scope fits
-    f32 v0_1 = this->mpResource->mpEditParam->mKuchihaba.mValue;
+    f32 v0_1 = mpResource->mpEditParam->mKuchihaba.mValue;
     // inferred: the value carried to 0x46452f; no location-less local in scope fits
-    f32 v0_2 = this->mpResource->mpEditParam->mKuchiatsusa.mValue;
-    if (this->mpCnsEdit[96] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[96]->mTrans.x = this->mpCnsEdit[96]->mTrans.x + (v0_1 * (-0.54f));
+    f32 v0_2 = mpResource->mpEditParam->mKuchiatsusa.mValue;
+    if (mpCnsEdit[96] != nullptr) {
+        mpCnsEdit[96]->mTrans.x = mpCnsEdit[96]->mTrans.x + (v0_1 * -0.54f);
     }
-    if (this->mpCnsEdit[97] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[97]->mScl.x = this->mpCnsEdit[97]->mScl.x + (0.32f * v0_1);
+    if (mpCnsEdit[97] != nullptr) {
+        mpCnsEdit[97]->mScl.x = mpCnsEdit[97]->mScl.x + (0.32f * v0_1);
     }
-    if (this->mpCnsEdit[98] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[98]->mTrans.x = this->mpCnsEdit[98]->mTrans.x + (0.54f * v0_1);
+    if (mpCnsEdit[98] != nullptr) {
+        mpCnsEdit[98]->mTrans.x = mpCnsEdit[98]->mTrans.x + (0.54f * v0_1);
     }
-    if (this->mpCnsEdit[99] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[99]->mTrans.y = this->mpCnsEdit[99]->mTrans.y + (0.48f * v0_2);
+    if (mpCnsEdit[99] != nullptr) {
+        mpCnsEdit[99]->mTrans.y = mpCnsEdit[99]->mTrans.y + (0.48f * v0_2);
     }
-    if (this->mpCnsEdit[100] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[100]->mTrans.y = this->mpCnsEdit[100]->mTrans.y + (0.48f * v0_2);
-        this->mpCnsEdit[100]->mScl.x = this->mpCnsEdit[100]->mScl.x + (0.32f * v0_1);
+    if (mpCnsEdit[100] != nullptr) {
+        mpCnsEdit[100]->mTrans.y = mpCnsEdit[100]->mTrans.y + (0.48f * v0_2);
+        mpCnsEdit[100]->mScl.x = mpCnsEdit[100]->mScl.x + (0.32f * v0_1);
     }
-    if (this->mpCnsEdit[101] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[101]->mTrans.y = this->mpCnsEdit[101]->mTrans.y + (0.48f * v0_2);
+    if (mpCnsEdit[101] != nullptr) {
+        mpCnsEdit[101]->mTrans.y = mpCnsEdit[101]->mTrans.y + (0.48f * v0_2);
     }
-    if (this->mpCnsEdit[102] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[102]->mTrans.x = this->mpCnsEdit[102]->mTrans.x + ((-0.78f) * v0_1);
+    if (mpCnsEdit[102] != nullptr) {
+        mpCnsEdit[102]->mTrans.x = mpCnsEdit[102]->mTrans.x + (-0.78f * v0_1);
     }
-    if (this->mpCnsEdit[103] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[103]->mTrans.x = this->mpCnsEdit[103]->mTrans.x + (0.78f * v0_1);
+    if (mpCnsEdit[103] != nullptr) {
+        mpCnsEdit[103]->mTrans.x = mpCnsEdit[103]->mTrans.x + (0.78f * v0_1);
     }
-    if (this->mpCnsEdit[104] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[104]->mTrans.x = this->mpCnsEdit[104]->mTrans.x + ((-0.27f) * v0_1);
+    if (mpCnsEdit[104] != nullptr) {
+        mpCnsEdit[104]->mTrans.x = mpCnsEdit[104]->mTrans.x + (-0.27f * v0_1);
     }
-    if (this->mpCnsEdit[105] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[105]->mScl.x = this->mpCnsEdit[105]->mScl.x + (0.28f * v0_1);
+    if (mpCnsEdit[105] != nullptr) {
+        mpCnsEdit[105]->mScl.x = mpCnsEdit[105]->mScl.x + (0.28f * v0_1);
     }
-    if (this->mpCnsEdit[106] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[106]->mTrans.x = this->mpCnsEdit[106]->mTrans.x + (0.27f * v0_1);
+    if (mpCnsEdit[106] != nullptr) {
+        mpCnsEdit[106]->mTrans.x = mpCnsEdit[106]->mTrans.x + (0.27f * v0_1);
     }
-    if (this->mpCnsEdit[107] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[107]->mTrans.y = this->mpCnsEdit[107]->mTrans.y + ((-0.57f) * v0_2);
+    if (mpCnsEdit[107] != nullptr) {
+        mpCnsEdit[107]->mTrans.y = mpCnsEdit[107]->mTrans.y + (-0.57f * v0_2);
     }
-    if (this->mpCnsEdit[108] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[108]->mTrans.y = this->mpCnsEdit[108]->mTrans.y + ((-0.57f) * v0_2);
-        this->mpCnsEdit[108]->mScl.x = this->mpCnsEdit[108]->mScl.x + (0.28f * v0_1);
+    if (mpCnsEdit[108] != nullptr) {
+        mpCnsEdit[108]->mTrans.y = mpCnsEdit[108]->mTrans.y + (-0.57f * v0_2);
+        mpCnsEdit[108]->mScl.x = mpCnsEdit[108]->mScl.x + (0.28f * v0_1);
     }
-    if (this->mpCnsEdit[109] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[109]->mTrans.y = this->mpCnsEdit[109]->mTrans.y + ((-0.57f) * v0_2);
+    if (mpCnsEdit[109] != nullptr) {
+        mpCnsEdit[109]->mTrans.y = mpCnsEdit[109]->mTrans.y + (-0.57f * v0_2);
     }
-    if (this->mpCnsEdit[126] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[126]->mTrans.x = this->mpCnsEdit[126]->mTrans.x + ((-0.45f) * v0_1);
+    if (mpCnsEdit[126] != nullptr) {
+        mpCnsEdit[126]->mTrans.x = mpCnsEdit[126]->mTrans.x + (-0.45f * v0_1);
     }
-    if (this->mpCnsEdit[127] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[127]->mTrans.x = this->mpCnsEdit[127]->mTrans.x + (0.45f * v0_1);
+    if (mpCnsEdit[127] != nullptr) {
+        mpCnsEdit[127]->mTrans.x = mpCnsEdit[127]->mTrans.x + (0.45f * v0_1);
     }
-    if (this->mpCnsEdit[132] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[132]->mScl.x = this->mpCnsEdit[132]->mScl.x + (0.16f * v0_1);
+    if (mpCnsEdit[132] != nullptr) {
+        mpCnsEdit[132]->mScl.x = mpCnsEdit[132]->mScl.x + (0.16f * v0_1);
     }
-    if (this->mpCnsEdit[133] != static_cast<uCnsEdit*>(nullptr)) {
-        this->mpCnsEdit[133]->mScl.x = this->mpCnsEdit[133]->mScl.x + (0.11f * v0_1);
+    if (mpCnsEdit[133] != nullptr) {
+        mpCnsEdit[133]->mScl.x = mpCnsEdit[133]->mScl.x + (0.11f * v0_1);
     }
 }
 
@@ -1326,6 +1326,8 @@ __attribute__((weak)) bool cpCharacterEdit::setupBakeingMouthPreset() {
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in uCharacterEditBase::moveLoadUnit at 0x008a025e-0x008a0265 (called at uCharacterEdit.cpp:538)
 // void cpCharacterEdit::setUpdateMatrixRetry(bool flag);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpCharacterEdit::MyDTI cpCharacterEdit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpCharacterEdit.cpp at 0x00468c4f-0x00468c8c (called at cpCharacterEdit.cpp:270)

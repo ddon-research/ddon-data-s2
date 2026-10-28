@@ -169,9 +169,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cSplitBase::cSplitBase() {
-    this->mStatus = static_cast<s32>(0);
-    this->mIdX = static_cast<s32>(-1);
-    this->mIdZ = static_cast<s32>(-1);
+    this->mStatus = 0;
+    this->mIdX = -1;
+    this->mIdZ = -1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -182,4 +182,10 @@ inline s32 cSplitBase::getX() const {
 // Inline, no code of its own: checked where it is inlined.
 inline s32 cSplitBase::getZ() const {
     return this->mIdZ;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cSplitLot::setLotResource at 0x56dd6d-0x56dd71; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline cLayoutSet* cSplitLot::getLotSet() {
+    return &this->mLotSet;
 }

@@ -229,12 +229,36 @@ inline s32 cpShlShotCtrl::getLockOnIndex() {
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpShlShotCtrl::setLockOnIndex(s32 index) {
+    this->mLockOnIndex = index;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 cpShlShotCtrl::getPawnTargetUId() {
     return this->mPawnTargetUId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterBase::setResultMagLockOnTarget at 0x431441-0x431447; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpShlShotCtrl::setPawnTargetUId(u32 id) {
+    this->mPawnTargetUId = id;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline s32 cpShlShotCtrl::getPawnLockOnIndex() {
     return this->mPawnLockOnIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterBase::setResultMagLockOnTarget at 0x43144a-0x431450; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpShlShotCtrl::setPawnLockOnIndex(s32 index) {
+    this->mPawnLockOnIndex = index;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uOmModel::shotShl at 0xcafef4-0xcafef8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpShlShotCtrl::setShlOwner(uDDOModel* pOwner) {
+    this->mpShlOwner = pOwner;
 }

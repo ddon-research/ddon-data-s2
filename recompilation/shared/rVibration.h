@@ -174,9 +174,9 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK10rVibration5MyDTI11newInstanceEv at 0x01205960-0x0120599f, code DWARF attributes to no inlined copy
 inline rVibration::rVibration() {
-    this->mListNum = static_cast<u32>(0);
-    this->mParamBuffSize = static_cast<u32>(0);
+    this->mListNum = 0;
+    this->mParamBuffSize = 0;
     this->mBaseFps = 0.0f;
-    this->mpParamBuff = static_cast<u8*>(nullptr);
-    this->::cResource::mAttr = static_cast<u32>(22);
+    this->mpParamBuff = nullptr;
+    this->::cResource::mAttr = 22;
 }

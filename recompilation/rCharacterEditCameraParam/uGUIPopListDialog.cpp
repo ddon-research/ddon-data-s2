@@ -8,6 +8,7 @@
 #include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
@@ -32,7 +33,7 @@ const MtDTI& uGUIPopListDialog::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopListDialog::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopListDialog::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +42,7 @@ inline MtAllocator* uGUIPopListDialog::getAllocator() {
 // Address: 0x00bb5160 - 0x00bb51a0 (64 bytes)
 void* uGUIPopListDialog::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopListDialog::getAllocator()->memAlloc(sz, align, ::uGUIPopListDialog::DTI.::MtDTI::getID());
+    return uGUIPopListDialog::getAllocator()->memAlloc(sz, align, uGUIPopListDialog::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +57,7 @@ void* uGUIPopListDialog::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopListDialog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopListDialog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,15 +82,15 @@ uGUIPopListDialog::~uGUIPopListDialog() {
 // Address: 0x00bb57c0 - 0x00bb57c5 (5 bytes)
 void uGUIPopListDialog::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00bb57d0 - 0x00bb5838 (104 bytes)
 bool uGUIPopListDialog::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_LIST_GUI"), static_cast<u32>(129), static_cast<t64>(1438575847)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_LIST_GUI"), 129u, 1438575847l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -112,35 +113,35 @@ __attribute__((weak)) void uGUIPopListDialog::setup() {
 // Address: 0x00bb5840 - 0x00bb58d8 (152 bytes)
 void uGUIPopListDialog::kill() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mTempInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mTempInfo.mLength != 0) {
         // inferred: the value the loop at 0xbb5860 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTempInfo.::MtArray::mLength;
+        u32 v0_0 = mTempInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTempInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTempInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTempInfo.::MtArray::mLength) {
-                    v0_0 = this->mTempInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTempInfo.mpArray[i0_3] != nullptr) {
+                delete mTempInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTempInfo.mLength) {
+                    v0_0 = mTempInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTempInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTempInfo.::MtArray::mpArray));
+    if (mTempInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTempInfo.mpArray));
     }
-    this->mTempInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTempInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTempInfo.::MtArray::mLength = static_cast<u32>(0);
-    this->::uGUIBase::kill();
+    mTempInfo.mpArray = nullptr;
+    mTempInfo.mBufsiz = 0;
+    mTempInfo.mLength = 0;
+    this->uGUIBase::kill();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -183,20 +184,20 @@ __attribute__((weak)) void uGUIPopListDialog::setFlowId(u32 flow_id) {
 // Address: 0x00bb7020 - 0x00bb7081 (97 bytes)
 void uGUIPopListDialog::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(1)) {
+    if (mFlowId != 1) {
         return;
     }
-    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCancelCtrl->execute();
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->execute();
     }
-    if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpButtonCtrl->execute();
+    if (mpButtonCtrl != nullptr) {
+        mpButtonCtrl->execute();
     }
-    this->mList.mListCtrl.::uGUIBase::cScrollList::executeCtrl();
-    if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
+    mList.mListCtrl.executeCtrl();
+    if (mpDecideCtrl == nullptr) {
         return;
     }
-    this->mpDecideCtrl->execute();
+    mpDecideCtrl->execute();
 }
 
 // Address: 0x00bb7090 - 0x00bb71be (302 bytes)
@@ -208,21 +209,21 @@ __attribute__((weak)) void uGUIPopListDialog::moveEvent() {
 // Address: 0x00bb6750 - 0x00bb6795 (69 bytes)
 void uGUIPopListDialog::updateMove() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    (&this->mList.mButton[0])->update();
-    (&this->mList.mButton[1])->update();
+    mList.mListCtrl.uGUIBase::cScrollList::update(getDeltaTime());
+    (&mList.mButton[0])->update();
+    (&mList.mButton[1])->update();
 }
 
 // Address: 0x00bb67a0 - 0x00bb67a9 (9 bytes)
 void uGUIPopListDialog::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00bb67b0 - 0x00bb67ba (10 bytes)
 void uGUIPopListDialog::updateDecide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopListDialog::setFlowId(static_cast<u32>(3));
+    setFlowId(3u);
 }
 
 // Address: 0x00bb67c0 - 0x00bb6bf4 (1076 bytes)
@@ -288,10 +289,15 @@ __attribute__((weak)) void uGUIPopListDialog::setupListItem(uGUIBase::cScrollLis
 }
 
 // Address: 0x00bb6380 - 0x00bb63d9 (89 bytes)
-__attribute__((weak)) void uGUIPopListDialog::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: cListItem* pItem;
-    DDON_STUB("uGUIPopListDialog::hideListItem")
-    /* stub */
+void uGUIPopListDialog::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pItemBase == nullptr) {
+        return;
+    }
+    // inferred: a downcast named by the DWARF local the source declared: pItem, its location optimized out, declared in the lexical block that holds the access
+    cListItem* pItem = static_cast<cListItem*>(pItemBase);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsg), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgSub), "", 0u, false);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (82 bytes)
@@ -320,15 +326,15 @@ __attribute__((weak)) u32 uGUIPopListDialog::evCtrlDecide(cControl::Message* msg
 // Address: 0x00bb6430 - 0x00bb6442 (18 bytes)
 u32 uGUIPopListDialog::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00bb6450 - 0x00bb6462 (18 bytes)
 u32 uGUIPopListDialog::evCtrlAdjustButtonCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00bb6470 - 0x00bb6563 (243 bytes)
@@ -342,6 +348,8 @@ __attribute__((weak)) void uGUIPopListDialog::_setFunc(uGUIBase* pUnit, uGUIPopL
     DDON_STUB("uGUIPopListDialog::_setFunc")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopListDialog::MyDTI uGUIPopListDialog::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopListDialog.cpp at 0x00bb74ff-0x00bb753c (called at uGUIPopListDialog.cpp:32)
@@ -405,7 +413,7 @@ const MtDTI& uGUIPopListDialog::cListItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17uGUIPopListDialog9cListItemD0Ev at 0x01afdf60-0x01afdf8a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopListDialog::cListItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::cListItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -423,6 +431,8 @@ inline void uGUIPopListDialog::cListItem::operator delete(void* p_addr) {
 //   in uGUIPopListDialog::stList::stList at 0x01afdab8-0x01afdf33 (called at uGUIPopListDialog.h:133)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIPopListDialog::cListItem::cListItem();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopListDialog::cListItem::MyDTI uGUIPopListDialog::cListItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopListDialog.cpp at 0x00bb7579-0x00bb75b6 (called at uGUIPopListDialog.cpp:34)
@@ -472,7 +482,7 @@ const MtDTI& uGUIPopListDialog::cListInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17uGUIPopListDialog9cListInfoD0Ev at 0x01afdfb0-0x01afdfda, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIPopListDialog::cListInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::cListInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -490,6 +500,8 @@ inline void uGUIPopListDialog::cListInfo::operator delete(void* p_addr) {
 //   in uGUIPopListDialog::setItemList at 0x00bb7225-0x00bb7234, 0x00bb727d-0x00bb72ae (called at uGUIPopListDialog.cpp:488)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIPopListDialog::cListInfo::cListInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopListDialog::cListInfo::MyDTI uGUIPopListDialog::cListInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopListDialog.cpp at 0x00bb753c-0x00bb7579 (called at uGUIPopListDialog.cpp:33)

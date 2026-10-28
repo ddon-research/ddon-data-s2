@@ -946,8 +946,14 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::cMap::move at 0x7930fc-0x793102; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uGUIMap::getLandType() {
+    return this->mLandType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline uGUIMap::cLandId::cLandId() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mLandId = static_cast<u32>(0);
+    this->mLandId = 0;
 }

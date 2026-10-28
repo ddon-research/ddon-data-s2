@@ -55,7 +55,7 @@ const MtDTI& cpBakeJoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpBakeJoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpBakeJoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpBakeJoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,14 +119,14 @@ __attribute__((weak)) u32 cpBakeJoint::getSkinJointNum() const {
 // Address: 0x0017b400 - 0x0017b47e (126 bytes)
 bool cpBakeJoint::setRenewalEnvelope() {
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    if (this->mpModel != static_cast<uModel*>(nullptr)) {
-        ::sScene::getInstance()->::sScene::releaseEnvelope(this->mpModel->::uModel::getEnvelopeHandle());
+    if (mpModel != nullptr) {
+        sScene::getInstance()->releaseEnvelope(mpModel->getEnvelopeHandle());
         // inferred: a temporary for the value the load at 0x17b42e read, used twice; no DWARF local holds it
-        uModel* t0 = this->mpModel;
-        t0->mEnvelopeHandle = static_cast<u32>(4294967295);
-        t0->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(this->mSkinJointNum);
-        if (this->mpModel->mEnvelopeHandle != static_cast<u32>(4294967295)) {
-            this->mIsBaked = true;
+        uModel* t0 = mpModel;
+        t0->mEnvelopeHandle = 0xFFFFFFFF;
+        t0->mEnvelopeHandle = sScene::getInstance()->createEnvelope(mSkinJointNum);
+        if (mpModel->mEnvelopeHandle != 0xFFFFFFFFu) {
+            mIsBaked = true;
             return true;
         } else {
             return false;
@@ -139,41 +139,41 @@ bool cpBakeJoint::setRenewalEnvelope() {
 // Address: 0x0017b480 - 0x0017b51e (158 bytes)
 bool cpBakeJoint::setOriginalEnvelope() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sScene::getInstance()->::sScene::releaseEnvelope(this->mpModel->::uModel::getEnvelopeHandle());
+    sScene::getInstance()->releaseEnvelope(mpModel->getEnvelopeHandle());
     // inferred: a temporary for the value the load at 0x17b4a9 read, used 3 times; no DWARF local holds it
-    uModel* t0 = this->mpModel;
-    t0->mEnvelopeHandle = static_cast<u32>(4294967295);
-    t0->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(t0->::uBaseModel::mpModel->::rModel::getJointNum());
-    ::sBakingJointOrder::getInstance()->::sBakingJointOrder::returnBakeQueue(this->mHandle);
-    this->mHandle = static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295);
-    ::sBakingJointOrder::getInstance()->::sBakingJointOrder::removeProtectUnits(static_cast<cUnit*>(this->mpModel));
-    return this->mpModel->mEnvelopeHandle != static_cast<u32>(4294967295);
+    uModel* t0 = mpModel;
+    t0->mEnvelopeHandle = 0xFFFFFFFF;
+    t0->mEnvelopeHandle = sScene::getInstance()->createEnvelope(t0->mpModel->getJointNum());
+    sBakingJointOrder::getInstance()->returnBakeQueue(mHandle);
+    mHandle = 0xFFFFFFFF;
+    sBakingJointOrder::getInstance()->removeProtectUnits(static_cast<cUnit*>(mpModel));
+    return mpModel->mEnvelopeHandle != 0xFFFFFFFFu;
 }
 
 // Address: 0x0017b520 - 0x0017b528 (8 bytes)
 cUnit* cpBakeJoint::getOwnerUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModel;
+    return mpModel;
 }
 
 // Address: 0x0017b530 - 0x0017b572 (66 bytes)
 void cpBakeJoint::setResource(rBakeJoint* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rBakeJoint*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rBakeJoint*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes == static_cast<rBakeJoint*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    pRes->::cResource::addRef();
-    this->mpResource = pRes;
+    pRes->addRef();
+    mpResource = pRes;
 }
 
 // Address: 0x0017b580 - 0x0017b588 (8 bytes)
 rBakeJoint* cpBakeJoint::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (177 bytes)
@@ -219,7 +219,7 @@ cpBakeJoint::~cpBakeJoint() {
 // Address: 0x0017ae10 - 0x0017ae15 (5 bytes)
 void cpBakeJoint::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x0017ae70 - 0x0017af8b (283 bytes)
@@ -236,45 +236,45 @@ __attribute__((weak)) void cpBakeJoint::move() {
 // Address: 0x0017afc0 - 0x0017afcb (11 bytes)
 void cpBakeJoint::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHandle = static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295);
+    mHandle = 0xFFFFFFFF;
 }
 
 // Address: 0x0017afd0 - 0x0017b009 (57 bytes)
 void cpBakeJoint::upadatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0017ae20 - 0x0017ae68 (72 bytes)
 void cpBakeJoint::setOwner(MtObject* pOwner) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uModel*>(pOwner);
     // inferred: a temporary for the result of the call at 0x17ae3a, used once; no DWARF local holds it
     const MtDTI& t0 = pOwner->getDTI();
     // inferred: the value the loop at 0x17ae4a carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
     // inferred: the value the loop at 0x17ae4a carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
-            this->mIsDDOModel = true;
+            mIsDDOModel = true;
             return;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         }
     }
-    this->mIsDDOModel = false;
+    mIsDDOModel = false;
 }
 
 // Address: 0x0017ae00 - 0x0017ae01 (1 bytes)
@@ -289,34 +289,34 @@ __attribute__((weak)) void cpBakeJoint::setupComponentPtr() {
 // Address: 0x0017b590 - 0x0017b5d5 (69 bytes)
 void cpBakeJoint::drawBake(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pdraw->::cDraw::pushContext(false);
-    ::sBakingJointOrder::getInstance()->::sBakingJointOrder::drawBakingModelOrder(pdraw, this->mpModel, this->mHandle);
-    pdraw->::cDraw::popContext(false);
+    pdraw->pushContext(false);
+    sBakingJointOrder::getInstance()->drawBakingModelOrder(pdraw, mpModel, mHandle);
+    pdraw->popContext(false);
 }
 
 // Address: 0x0017af90 - 0x0017afa8 (24 bytes)
 bool cpBakeJoint::isBaked() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sBakingJointOrder::getInstance()->::sBakingJointOrder::isBaked(this->mHandle);
+    return sBakingJointOrder::getInstance()->isBaked(mHandle);
 }
 
 // Address: 0x0017b5e0 - 0x0017b5f8 (24 bytes)
 void cpBakeJoint::requestBake() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBakeReq = true;
-    if (this->mHandle == static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295)) {
+    mBakeReq = true;
+    if (mHandle == 0xFFFFFFFFu) {
         return;
     }
-    this->mBakeReleaseReq = true;
+    mBakeReleaseReq = true;
 }
 
 // Address: 0x0017b600 - 0x0017b611 (17 bytes)
 void cpBakeJoint::releaseBake() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mHandle == static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295)) {
+    if (mHandle == 0xFFFFFFFFu) {
         return;
     }
-    this->mBakeReleaseReq = true;
+    mBakeReleaseReq = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -325,9 +325,11 @@ void cpBakeJoint::releaseBake() {
 // Address: 0x0017b010 - 0x0017b01a (10 bytes)
 bool cpBakeJoint::initBake() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsBaked = false;
+    mIsBaked = false;
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpBakeJoint::MyDTI cpBakeJoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpBakeJoint.cpp at 0x0017b71f-0x0017b75f (called at cpBakeJoint.cpp:28)

@@ -74,26 +74,26 @@ inline void nNetwork::Session::operator delete(void* p_addr) {
 // Also emitted as: _ZN8nNetwork7SessionD0Ev at 0x011a0a10
 nNetwork::Session::~Session() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sNetwork::mpInstance)->::sNetwork::clearReceiveCallback(static_cast<u32>(1));
-    (::sNetwork::mpInstance)->::sNetwork::clearReceiveCallback(static_cast<u32>(3));
-    this->::nNetwork::Session::removeDriver();
-    if (this->mpDatabase != static_cast<nNetwork::SessionDatabase*>(nullptr)) {
-        delete this->mpDatabase;
-        this->mpDatabase = static_cast<nNetwork::SessionDatabase*>(nullptr);
+    (::sNetwork::mpInstance)->::sNetwork::clearReceiveCallback(1u);
+    (::sNetwork::mpInstance)->::sNetwork::clearReceiveCallback(3u);
+    removeDriver();
+    if (mpDatabase != nullptr) {
+        delete mpDatabase;
+        mpDatabase = nullptr;
     }
-    if (this->mpConnect != static_cast<nNetwork::Connect*>(nullptr)) {
-        delete this->mpConnect;
-        this->mpConnect = static_cast<nNetwork::Connect*>(nullptr);
+    if (mpConnect != nullptr) {
+        delete mpConnect;
+        mpConnect = nullptr;
     }
-    if (this->mpTransport != static_cast<nNetwork::Transport*>(nullptr)) {
-        delete this->mpTransport;
-        this->mpTransport = static_cast<nNetwork::Transport*>(nullptr);
+    if (mpTransport != nullptr) {
+        delete mpTransport;
+        mpTransport = nullptr;
     }
-    if (this->mpMatch == static_cast<nNetwork::Match*>(nullptr)) {
+    if (mpMatch == nullptr) {
         return;
     }
-    delete this->mpMatch;
-    this->mpMatch = static_cast<nNetwork::Match*>(nullptr);
+    delete mpMatch;
+    mpMatch = nullptr;
 }
 
 // Address: 0x011a0cb0 - 0x011a130d (1629 bytes)
@@ -120,27 +120,27 @@ __attribute__((weak)) void nNetwork::Session::setup() {
 void nNetwork::Session::move() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDriver.::nNetwork::SessionDriver::move();
-    this->mpMatch->move();
+    mDriver.move();
+    mpMatch->move();
 }
 
 // Address: 0x011a0c40 - 0x011a0c50 (16 bytes)
 void nNetwork::Session::send() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTransport == static_cast<nNetwork::Transport*>(nullptr)) {
+    if (mpTransport == nullptr) {
         return;
     }
-    this->mpTransport->move();
+    mpTransport->move();
 }
 
 // Address: 0x011a0c50 - 0x011a0c84 (52 bytes)
 void nNetwork::Session::recv() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCallback.::nNetwork::Callback::begin();
-    if (this->mpConnect != static_cast<nNetwork::Connect*>(nullptr)) {
-        this->mpConnect->move();
+    mCallback.begin();
+    if (mpConnect != nullptr) {
+        mpConnect->move();
     }
-    this->mCallback.::nNetwork::Callback::move();
+    mCallback.move();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -308,9 +308,12 @@ __attribute__((weak)) bool nNetwork::Session::callback(u32 callback_index, s32 r
 // No out-of-line body: no code in the ELF
 // bool nNetwork::Session::invite();
 
-// No out-of-line body: 1 inlined copy in 1 function (12 bytes)
-//   in nSessionManager::cNetSessionManager::abortSessionCommand at 0x0039146e-0x0039147a (called at cNetSessionManager.cpp:2691)
-// void nNetwork::Session::abortRequest();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nSessionManager::cNetSessionManager::abortSessionCommand at 0x39146e-0x39147a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void nNetwork::Session::abortRequest() {
+    mDriver.tryAbort();
+}
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Session::kill();
@@ -403,53 +406,53 @@ void nNetwork::Session::removeListener(nNetwork::SessionListener* p) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (p == this->mpListener[0]) {
-        this->mpListener[0] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[0]) {
+        mpListener[0] = nullptr;
     }
-    if (p == this->mpListener[1]) {
-        this->mpListener[1] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[1]) {
+        mpListener[1] = nullptr;
     }
-    if (p == this->mpListener[2]) {
-        this->mpListener[2] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[2]) {
+        mpListener[2] = nullptr;
     }
-    if (p == this->mpListener[3]) {
-        this->mpListener[3] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[3]) {
+        mpListener[3] = nullptr;
     }
-    if (p == this->mpListener[4]) {
-        this->mpListener[4] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[4]) {
+        mpListener[4] = nullptr;
     }
-    if (p == this->mpListener[5]) {
-        this->mpListener[5] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[5]) {
+        mpListener[5] = nullptr;
     }
-    if (p == this->mpListener[6]) {
-        this->mpListener[6] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[6]) {
+        mpListener[6] = nullptr;
     }
-    if (p == this->mpListener[7]) {
-        this->mpListener[7] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[7]) {
+        mpListener[7] = nullptr;
     }
-    if (p == this->mpListener[8]) {
-        this->mpListener[8] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[8]) {
+        mpListener[8] = nullptr;
     }
-    if (p == this->mpListener[9]) {
-        this->mpListener[9] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[9]) {
+        mpListener[9] = nullptr;
     }
-    if (p == this->mpListener[10]) {
-        this->mpListener[10] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[10]) {
+        mpListener[10] = nullptr;
     }
-    if (p == this->mpListener[11]) {
-        this->mpListener[11] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[11]) {
+        mpListener[11] = nullptr;
     }
-    if (p == this->mpListener[12]) {
-        this->mpListener[12] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[12]) {
+        mpListener[12] = nullptr;
     }
-    if (p == this->mpListener[13]) {
-        this->mpListener[13] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[13]) {
+        mpListener[13] = nullptr;
     }
-    if (p == this->mpListener[14]) {
-        this->mpListener[14] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[14]) {
+        mpListener[14] = nullptr;
     }
-    if (p == this->mpListener[15]) {
-        this->mpListener[15] = static_cast<nNetwork::SessionListener*>(nullptr);
+    if (p == mpListener[15]) {
+        mpListener[15] = nullptr;
     }
 }
 
@@ -524,11 +527,11 @@ __attribute__((weak)) void nNetwork::Session::removeDriver() {
 // Address: 0x011a0ba0 - 0x011a0bec (76 bytes)
 void nNetwork::Session::updateUniqueId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtNetContext* pcon = (::sNetwork::mpInstance)->::sNetwork::getContext(this->mUserIndex, static_cast<s32>(this->mService));
-    if (pcon == static_cast<MtNetContext*>(nullptr)) {
+    MtNetContext* pcon = (::sNetwork::mpInstance)->::sNetwork::getContext(mUserIndex, static_cast<s32>(mService));
+    if (pcon == nullptr) {
         return;
     }
-    pcon->getUniqueId(&this->mUniqueId);
+    pcon->getUniqueId(&mUniqueId);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -656,6 +659,8 @@ __attribute__((weak)) void nNetwork::Session::onGameEnd() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void nNetwork::Session::onFinalize();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Session::MyDTI nNetwork::Session::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Session::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

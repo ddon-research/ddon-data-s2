@@ -31,7 +31,7 @@ const MtDTI& cpMotionFilter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpMotionFilter::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpMotionFilter::DTI);
+    return MtMemoryAllocator::getAllocator(cpMotionFilter::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpMotionFilter::getAllocator() {
 // Address: 0x004cfb60 - 0x004cfba0 (64 bytes)
 void* cpMotionFilter::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpMotionFilter::getAllocator()->memAlloc(sz, align, ::cpMotionFilter::DTI.::MtDTI::getID());
+    return cpMotionFilter::getAllocator()->memAlloc(sz, align, cpMotionFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpMotionFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpMotionFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpMotionFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpMotionFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,24 +71,24 @@ inline void cpMotionFilter::operator delete(void* p_addr) {
 cpMotionFilter::cpMotionFilter() {
     // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpMotFilter[9] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[8] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[7] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[6] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[5] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[4] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[3] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[2] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[1] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mpMotFilter[0] = static_cast<uCnsMotFilter*>(nullptr);
-    this->mSleep = false;
-    this->mManWoman = 0.0f;
-    this->mSex = static_cast<u32>(0);
-    this->mManWomanRate = 0.0f;
-    this->mpResource = static_cast<rMotionFilter*>(nullptr);
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
-    this->mNormalR = 1.0f;
-    this->mNormalL = 1.0f;
+    mpMotFilter[9] = nullptr;
+    mpMotFilter[8] = nullptr;
+    mpMotFilter[7] = nullptr;
+    mpMotFilter[6] = nullptr;
+    mpMotFilter[5] = nullptr;
+    mpMotFilter[4] = nullptr;
+    mpMotFilter[3] = nullptr;
+    mpMotFilter[2] = nullptr;
+    mpMotFilter[1] = nullptr;
+    mpMotFilter[0] = nullptr;
+    mSleep = false;
+    mManWoman = 0.0f;
+    mSex = 0;
+    mManWomanRate = 0.0f;
+    mpResource = nullptr;
+    mpModel = nullptr;
+    mNormalR = 1.0f;
+    mNormalL = 1.0f;
 }
 
 // Address: 0x004cfcd0 - 0x004cfd47 (119 bytes)
@@ -101,7 +101,7 @@ cpMotionFilter::~cpMotionFilter() {
 // Address: 0x004cfe40 - 0x004cfe45 (5 bytes)
 void cpMotionFilter::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x004cff30 - 0x004d0013 (227 bytes)
@@ -109,38 +109,38 @@ void cpMotionFilter::move() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::cpComponent::mActive != false) {
-        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-            if (this->mSleep == false) {
-                if (this->mpMotFilter[0] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[0]->move();
+    if (mActive) {
+        if (mpModel != nullptr) {
+            if (!mSleep) {
+                if (mpMotFilter[0] != nullptr) {
+                    mpMotFilter[0]->move();
                 }
-                if (this->mpMotFilter[1] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[1]->move();
+                if (mpMotFilter[1] != nullptr) {
+                    mpMotFilter[1]->move();
                 }
-                if (this->mpMotFilter[2] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[2]->move();
+                if (mpMotFilter[2] != nullptr) {
+                    mpMotFilter[2]->move();
                 }
-                if (this->mpMotFilter[3] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[3]->move();
+                if (mpMotFilter[3] != nullptr) {
+                    mpMotFilter[3]->move();
                 }
-                if (this->mpMotFilter[4] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[4]->move();
+                if (mpMotFilter[4] != nullptr) {
+                    mpMotFilter[4]->move();
                 }
-                if (this->mpMotFilter[5] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[5]->move();
+                if (mpMotFilter[5] != nullptr) {
+                    mpMotFilter[5]->move();
                 }
-                if (this->mpMotFilter[6] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[6]->move();
+                if (mpMotFilter[6] != nullptr) {
+                    mpMotFilter[6]->move();
                 }
-                if (this->mpMotFilter[7] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[7]->move();
+                if (mpMotFilter[7] != nullptr) {
+                    mpMotFilter[7]->move();
                 }
-                if (this->mpMotFilter[8] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[8]->move();
+                if (mpMotFilter[8] != nullptr) {
+                    mpMotFilter[8]->move();
                 }
-                if (this->mpMotFilter[9] != static_cast<uCnsMotFilter*>(nullptr)) {
-                    this->mpMotFilter[9]->move();
+                if (mpMotFilter[9] != nullptr) {
+                    mpMotFilter[9]->move();
                     return;
                 }
             }
@@ -156,21 +156,21 @@ __attribute__((weak)) void cpMotionFilter::kill() {
 // Address: 0x004d0330 - 0x004d0363 (51 bytes)
 void cpMotionFilter::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x004d0370 - 0x004d0379 (9 bytes)
 void cpMotionFilter::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004d0380 - 0x004d0792 (1042 bytes)
@@ -182,7 +182,7 @@ __attribute__((weak)) void cpMotionFilter::createProperty(MtPropertyList& s) {
 // Address: 0x004cfe50 - 0x004cfe55 (5 bytes)
 void cpMotionFilter::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpMotionFilter::createConstraint();
+    createConstraint();
 }
 
 // Address: 0x004cfe60 - 0x004cff2c (204 bytes)
@@ -233,7 +233,7 @@ __attribute__((weak)) void cpMotionFilter::update() {
 // Address: 0x004d1ec0 - 0x004d1ec6 (6 bytes)
 void cpMotionFilter::setManWoman(f32 rate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mManWomanRate = rate;
+    mManWomanRate = rate;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (1156 bytes)
@@ -313,27 +313,31 @@ __attribute__((weak)) MtMatrix cpMotionFilter::calc_rotate(uModel::Joint* pJnt, 
 // Address: 0x004d07a0 - 0x004d07dd (61 bytes)
 void cpMotionFilter::setResource(rMotionFilter* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rMotionFilter*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rMotionFilter*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes == static_cast<rMotionFilter*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    this->mpResource = pRes;
-    pRes->::cResource::addRef();
+    mpResource = pRes;
+    pRes->addRef();
 }
 
 // Address: 0x01a5c230 - 0x01a5c235 (5 bytes)
 rMotionFilter* cpMotionFilter::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (10 bytes)
 //   in cpMotionFilter::calc_hara at 0x004d0984-0x004d0989 (called at cpMotionFilter.cpp:324)
 //   in cpMotionFilter::calc_mune at 0x004d0cc4-0x004d0cc9 (called at cpMotionFilter.cpp:352)
 // f32 cpMotionFilter::cond(bool flag, f32 true_val, f32 false_val);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpMotionFilter::MyDTI cpMotionFilter::DTI;
+
+// Not defined (no member-wise spelling: a class with constructors or bases): MtVector3 cpMotionFilter::mRotData[5];
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpMotionFilter.cpp at 0x004d1ed0-0x004d1f12 (called at cpMotionFilter.cpp:27)
@@ -343,6 +347,6 @@ rMotionFilter* cpMotionFilter::getResource() {
 // Address: 0x004cfa70 - 0x004cfb5a (234 bytes)
 MtObject* cpMotionFilter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpMotionFilter;
+    return new (16u) cpMotionFilter;
 }
 

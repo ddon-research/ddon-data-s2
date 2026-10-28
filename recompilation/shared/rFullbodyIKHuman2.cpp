@@ -47,7 +47,7 @@ const MtDTI& rFullbodyIKHuman2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rFullbodyIKHuman2D0Ev at 0x00e43ece-0x00e43eef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFullbodyIKHuman2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFullbodyIKHuman2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFullbodyIKHuman2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,13 +81,13 @@ __attribute__((weak)) void rFullbodyIKHuman2::createProperty(MtPropertyList& s) 
 // Address: 0x00e45730 - 0x00e45735 (5 bytes)
 MtUI* rFullbodyIKHuman2::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x01b5b790 - 0x01b5b796 (6 bytes)
 u32 rFullbodyIKHuman2::getAssignedJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(24);
+    return 24;
 }
 
 // Address: 0x01b5b7a0 - 0x01b5b7a1 (1 bytes)
@@ -98,14 +98,14 @@ __attribute__((weak)) void rFullbodyIKHuman2::setAssignedJointNum(u32 Num) {
 // Address: 0x00e456f0 - 0x00e45703 (19 bytes)
 rFullbodyIKHuman2::JointAssign* rFullbodyIKHuman2::getAssignedJoint(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mJointAssign[idx];
+    return &mJointAssign[idx];
 }
 
 // Address: 0x00e45710 - 0x00e4572f (31 bytes)
 void rFullbodyIKHuman2::setAssignedJoint(rFullbodyIKHuman2::JointAssign* pJointAssign, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mJointAssign[idx].mFBIKJntNo = pJointAssign->mFBIKJntNo;
-    this->mJointAssign[idx].mTargetJntNo = pJointAssign->mTargetJntNo;
+    mJointAssign[idx].mFBIKJntNo = pJointAssign->mFBIKJntNo;
+    mJointAssign[idx].mTargetJntNo = pJointAssign->mTargetJntNo;
 }
 
 // Address: 0x00e43eb0 - 0x00e43eb5 (5 bytes)
@@ -117,16 +117,18 @@ rFullbodyIKHuman2::~rFullbodyIKHuman2() {
 // Address: 0x00e43ef0 - 0x00e43f6e (126 bytes)
 bool rFullbodyIKHuman2::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x00e43f70 - 0x00e43ff3 (131 bytes)
 bool rFullbodyIKHuman2::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rFullbodyIKHuman2::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rFullbodyIKHuman2::DTI));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFullbodyIKHuman2::MyDTI rFullbodyIKHuman2::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rFullbodyIKHuman2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -169,7 +171,7 @@ const MtDTI& rFullbodyIKHuman2::JointAssign::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rFullbodyIKHuman2::JointAssign::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFullbodyIKHuman2::JointAssign::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFullbodyIKHuman2::JointAssign::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -196,8 +198,10 @@ __attribute__((weak)) void rFullbodyIKHuman2::JointAssign::createProperty(MtProp
 // Address: 0x00e43be0 - 0x00e43be5 (5 bytes)
 MtUI* rFullbodyIKHuman2::JointAssign::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFullbodyIKHuman2::JointAssign::MyDTI rFullbodyIKHuman2::JointAssign::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rFullbodyIKHuman2::JointAssign::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

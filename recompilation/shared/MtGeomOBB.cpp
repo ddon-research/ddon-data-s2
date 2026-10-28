@@ -35,7 +35,7 @@ const MtDTI& MtGeomOBB::getDTI() const {
 // Address: 0x00d70ed0 - 0x00d70f10 (64 bytes)
 void* MtGeomOBB::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtGeomOBB::DTI)->memAlloc(sz, align, ::MtGeomOBB::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtGeomOBB::DTI)->memAlloc(sz, align, MtGeomOBB::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* MtGeomOBB::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtGeomOBB::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtGeomOBB::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtGeomOBB::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,26 +81,26 @@ void MtGeomOBB::load(MtDataReader& fin) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 j;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOBB.coord.m[0].x = fin.readF32();
-    this->mOBB.coord.m[0].y = fin.readF32();
-    this->mOBB.coord.m[0].z = fin.readF32();
-    this->mOBB.coord.m[0].w = fin.readF32();
-    this->mOBB.extent.x = fin.readF32();
-    this->mOBB.coord.m[1].x = fin.readF32();
-    this->mOBB.coord.m[1].y = fin.readF32();
-    this->mOBB.coord.m[1].z = fin.readF32();
-    this->mOBB.coord.m[1].w = fin.readF32();
-    this->mOBB.extent.y = fin.readF32();
-    this->mOBB.coord.m[2].x = fin.readF32();
-    this->mOBB.coord.m[2].y = fin.readF32();
-    this->mOBB.coord.m[2].z = fin.readF32();
-    this->mOBB.coord.m[2].w = fin.readF32();
-    this->mOBB.extent.z = fin.readF32();
-    this->mOBB.coord.m[3].x = fin.readF32();
-    this->mOBB.coord.m[3].y = fin.readF32();
-    this->mOBB.coord.m[3].z = fin.readF32();
-    this->mOBB.coord.m[3].w = fin.readF32();
-    this->mOBB.extent.pad_ = fin.readF32();
+    mOBB.coord.m[0].x = fin.readF32();
+    mOBB.coord.m[0].y = fin.readF32();
+    mOBB.coord.m[0].z = fin.readF32();
+    mOBB.coord.m[0].w = fin.readF32();
+    mOBB.extent.x = fin.readF32();
+    mOBB.coord.m[1].x = fin.readF32();
+    mOBB.coord.m[1].y = fin.readF32();
+    mOBB.coord.m[1].z = fin.readF32();
+    mOBB.coord.m[1].w = fin.readF32();
+    mOBB.extent.y = fin.readF32();
+    mOBB.coord.m[2].x = fin.readF32();
+    mOBB.coord.m[2].y = fin.readF32();
+    mOBB.coord.m[2].z = fin.readF32();
+    mOBB.coord.m[2].w = fin.readF32();
+    mOBB.extent.z = fin.readF32();
+    mOBB.coord.m[3].x = fin.readF32();
+    mOBB.coord.m[3].y = fin.readF32();
+    mOBB.coord.m[3].z = fin.readF32();
+    mOBB.coord.m[3].w = fin.readF32();
+    mOBB.extent.pad_ = fin.readF32();
 }
 
 // Address: 0x00d710c0 - 0x00d71200 (320 bytes)
@@ -108,26 +108,26 @@ void MtGeomOBB::save(MtDataWriter& fout) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 j;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    fout.writeF32(this->mOBB.coord.m[0].x);
-    fout.writeF32(this->mOBB.coord.m[0].y);
-    fout.writeF32(this->mOBB.coord.m[0].z);
-    fout.writeF32(this->mOBB.coord.m[0].w);
-    fout.writeF32(this->mOBB.extent.x);
-    fout.writeF32(this->mOBB.coord.m[1].x);
-    fout.writeF32(this->mOBB.coord.m[1].y);
-    fout.writeF32(this->mOBB.coord.m[1].z);
-    fout.writeF32(this->mOBB.coord.m[1].w);
-    fout.writeF32(this->mOBB.extent.y);
-    fout.writeF32(this->mOBB.coord.m[2].x);
-    fout.writeF32(this->mOBB.coord.m[2].y);
-    fout.writeF32(this->mOBB.coord.m[2].z);
-    fout.writeF32(this->mOBB.coord.m[2].w);
-    fout.writeF32(this->mOBB.extent.z);
-    fout.writeF32(this->mOBB.coord.m[3].x);
-    fout.writeF32(this->mOBB.coord.m[3].y);
-    fout.writeF32(this->mOBB.coord.m[3].z);
-    fout.writeF32(this->mOBB.coord.m[3].w);
-    fout.writeF32(this->mOBB.extent.pad_);
+    fout.writeF32(mOBB.coord.m[0].x);
+    fout.writeF32(mOBB.coord.m[0].y);
+    fout.writeF32(mOBB.coord.m[0].z);
+    fout.writeF32(mOBB.coord.m[0].w);
+    fout.writeF32(mOBB.extent.x);
+    fout.writeF32(mOBB.coord.m[1].x);
+    fout.writeF32(mOBB.coord.m[1].y);
+    fout.writeF32(mOBB.coord.m[1].z);
+    fout.writeF32(mOBB.coord.m[1].w);
+    fout.writeF32(mOBB.extent.y);
+    fout.writeF32(mOBB.coord.m[2].x);
+    fout.writeF32(mOBB.coord.m[2].y);
+    fout.writeF32(mOBB.coord.m[2].z);
+    fout.writeF32(mOBB.coord.m[2].w);
+    fout.writeF32(mOBB.extent.z);
+    fout.writeF32(mOBB.coord.m[3].x);
+    fout.writeF32(mOBB.coord.m[3].y);
+    fout.writeF32(mOBB.coord.m[3].z);
+    fout.writeF32(mOBB.coord.m[3].w);
+    fout.writeF32(mOBB.extent.pad_);
 }
 
 // Address: 0x00d71200 - 0x00d7146c (620 bytes)
@@ -139,7 +139,7 @@ __attribute__((weak)) void MtGeomOBB::createProperty(MtPropertyList& s) {
 // Address: 0x01b30290 - 0x01b30299 (9 bytes)
 void MtGeomOBB::getBoundingAABB(MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<const ::MtOBB&>(this->mOBB).::MtOBB::getBoundingAABB(aabb);
+    static_cast<const MtOBB&>(mOBB).getBoundingAABB(aabb);
 }
 
 // Address: 0x01b302a0 - 0x01b30376 (214 bytes)
@@ -163,55 +163,55 @@ __attribute__((weak)) void MtGeomOBB::copy(const MtGeometry& input) {
 // Address: 0x01b30460 - 0x01b30469 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtVector3& pos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, pos);
+    return MtCollision::intersect(mOBB, pos);
 }
 
 // Address: 0x01b30470 - 0x01b30479 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtLine& line) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, line);
+    return MtCollision::intersect(mOBB, line);
 }
 
 // Address: 0x01b30480 - 0x01b30489 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtRay& ray) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, ray);
+    return MtCollision::intersect(mOBB, ray);
 }
 
 // Address: 0x01b30490 - 0x01b30499 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtLineSegment& ls) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, ls);
+    return MtCollision::intersect(mOBB, ls);
 }
 
 // Address: 0x01b304a0 - 0x01b304a9 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtSphere& sphere) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, sphere);
+    return MtCollision::intersect(mOBB, sphere);
 }
 
 // Address: 0x01b304b0 - 0x01b304b9 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtCapsule& capsule) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, capsule);
+    return MtCollision::intersect(mOBB, capsule);
 }
 
 // Address: 0x01b304c0 - 0x01b304c9 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtAABB& aabb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, aabb);
+    return MtCollision::intersect(mOBB, aabb);
 }
 
 // Address: 0x01b304d0 - 0x01b304d9 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtOBB& obb) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, obb);
+    return MtCollision::intersect(mOBB, obb);
 }
 
 // Address: 0x01b304e0 - 0x01b304e9 (9 bytes)
 bool MtGeomOBB::isIntersect(const MtPlane& plane) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(this->mOBB, plane);
+    return MtCollision::intersect(mOBB, plane);
 }
 
 // Address: 0x01b304f0 - 0x01b304f3 (3 bytes)
@@ -223,91 +223,91 @@ bool MtGeomOBB::isIntersect(const MtPlaneXZ& planeXZ) const {
 // Address: 0x01b30500 - 0x01b3050f (15 bytes)
 bool MtGeomOBB::isIntersect(const MtTriangle& tri) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(tri, this->mOBB);
+    return MtCollision::intersect(tri, mOBB);
 }
 
 // Address: 0x01b30510 - 0x01b3051f (15 bytes)
 bool MtGeomOBB::isIntersect(const MtCylinder& cylinder) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::intersect(cylinder, this->mOBB);
+    return MtCollision::intersect(cylinder, mOBB);
 }
 
 // Address: 0x01b30520 - 0x01b30529 (9 bytes)
 bool MtGeomOBB::getClosest(const MtVector3& pos, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, pos, pContact);
+    return MtCollision::closest(mOBB, pos, pContact);
 }
 
 // Address: 0x01b30530 - 0x01b3053b (11 bytes)
 bool MtGeomOBB::getClosest(const MtLine& line, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, line, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mOBB, line, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b30540 - 0x01b3054b (11 bytes)
 bool MtGeomOBB::getClosest(const MtRay& ray, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, ray, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mOBB, ray, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b30550 - 0x01b3055b (11 bytes)
 bool MtGeomOBB::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, ls, pContact, static_cast<f32*>(nullptr));
+    return MtCollision::closest(mOBB, ls, pContact, static_cast<f32*>(nullptr));
 }
 
 // Address: 0x01b30560 - 0x01b3056b (11 bytes)
 bool MtGeomOBB::getClosest(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mOBB, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b30570 - 0x01b3057b (11 bytes)
 bool MtGeomOBB::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, capsule, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mOBB, capsule, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b30580 - 0x01b30597 (23 bytes)
 bool MtGeomOBB::getClosest(const MtAABB& aabb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(aabb, this->mOBB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(aabb, mOBB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b305a0 - 0x01b305ab (11 bytes)
 bool MtGeomOBB::getClosest(const MtOBB& obb, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, obb, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mOBB, obb, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b305b0 - 0x01b305bb (11 bytes)
 bool MtGeomOBB::getClosest(const MtPlane& plane, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, plane, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mOBB, plane, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b305c0 - 0x01b305cb (11 bytes)
 bool MtGeomOBB::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(this->mOBB, planeXZ, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closest(mOBB, planeXZ, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b305d0 - 0x01b305e7 (23 bytes)
 bool MtGeomOBB::getClosest(const MtTriangle& tri, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closest(tri, this->mOBB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closest(tri, mOBB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b305f0 - 0x01b305fb (11 bytes)
 bool MtGeomOBB::getClosestXZ(const MtSphere& sphere, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(this->mOBB, sphere, pContact, static_cast<MtContact*>(nullptr));
+    return MtCollision::closestXZ(mOBB, sphere, pContact, static_cast<MtContact*>(nullptr));
 }
 
 // Address: 0x01b30600 - 0x01b30617 (23 bytes)
 bool MtGeomOBB::getClosestXZ(const MtCapsule& capsule, MtContact* pContact) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCollision::closestXZ(capsule, this->mOBB, static_cast<MtContact*>(nullptr), pContact);
+    return MtCollision::closestXZ(capsule, mOBB, static_cast<MtContact*>(nullptr), pContact);
 }
 
 // Address: 0x01b30620 - 0x01b30623 (3 bytes)
@@ -343,9 +343,9 @@ __attribute__((weak)) void MtGeomOBB::addPos(const MtVector3& pos) {
 // Address: 0x01b30690 - 0x01b306af (31 bytes)
 void MtGeomOBB::setScale(f32 scale) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOBB.extent.x = this->mOBB.extent.x * scale;
-    this->mOBB.extent.y = this->mOBB.extent.y * scale;
-    this->mOBB.extent.z = this->mOBB.extent.z * scale;
+    mOBB.extent.x = mOBB.extent.x * scale;
+    mOBB.extent.y = mOBB.extent.y * scale;
+    mOBB.extent.z = mOBB.extent.z * scale;
 }
 
 // No out-of-line body: no code in the ELF
@@ -407,6 +407,8 @@ void MtGeomOBB::setScale(f32 scale) {
 
 // No out-of-line body: no code in the ELF
 // bool MtGeomOBB::closest(const MtOBB&, const MtOBB&, MtContact*, MtContact*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtGeomOBB::MyDTI MtGeomOBB::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtGeomOBB::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

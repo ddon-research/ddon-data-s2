@@ -106,31 +106,31 @@ __attribute__((weak)) void MtAllocator::createProperty(MtPropertyList& s) {
 // Address: 0x00d5d530 - 0x00d5d535 (5 bytes)
 MtUI* MtAllocator::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01b26a60 - 0x01b26a65 (5 bytes)
 size_t MtAllocator::getTotalSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTotalSize;
+    return mTotalSize;
 }
 
 // Address: 0x01b26a80 - 0x01b26a85 (5 bytes)
 size_t MtAllocator::getUsedSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUsedSize;
+    return mUsedSize;
 }
 
 // Address: 0x01b26a90 - 0x01b26a99 (9 bytes)
 size_t MtAllocator::getAvailSize() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTotalSize - this->mUsedSize;
+    return mTotalSize - mUsedSize;
 }
 
 // Address: 0x01b26b00 - 0x01b26b03 (3 bytes)
 size_t MtAllocator::getMaxAvailSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<size_t>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -195,6 +195,11 @@ __attribute__((weak)) void MtAllocator::createStatisticProperty(MtPropertyList& 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void MtAllocator::setAllocatorIndex(u32 alloc_idx);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtAllocator::MyDTI MtAllocator::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+bool MtAllocator::mJobSafe;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtAllocator::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -269,13 +274,13 @@ __attribute__((weak)) void MtDefaultAllocator::initializeAllocator(MT_CTSTR name
 // Address: 0x01b26bf0 - 0x01b26bfe (14 bytes)
 void* MtDefaultAllocator::memAlloc(size_t size, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->memAlloc(size, align, static_cast<u32>(0), static_cast<u32>(0));
+    return memAlloc(size, align, 0u, 0u);
 }
 
 // Address: 0x01b26c00 - 0x01b26c0c (12 bytes)
 void* MtDefaultAllocator::memAlloc(size_t size, u32 align, u32 user_tag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->memAlloc(size, align, user_tag, static_cast<u32>(0));
+    return memAlloc(size, align, user_tag, 0u);
 }
 
 // Address: 0x00d5d780 - 0x00d5d855 (213 bytes)
@@ -302,12 +307,14 @@ size_t MtDefaultAllocator::memSize(void* padr) {
     // DWARF local not rendered: uintptr* padrPtr;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xfffffffffffffff8 from void*
-    if (padr != static_cast<void*>(nullptr)) {
-        return static_cast<size_t>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(padr) + static_cast<long>(-8)));
+    if (padr != nullptr) {
+        return static_cast<size_t>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(padr) + -8));
     } else {
-        return static_cast<size_t>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtDefaultAllocator::MyDTI MtDefaultAllocator::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtDefaultAllocator::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

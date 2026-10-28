@@ -40,7 +40,7 @@ const MtDTI& cErosionRegion::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cErosionRegion::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cErosionRegion::DTI)->memAlloc(sz, align, ::cErosionRegion::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cErosionRegion::DTI)->memAlloc(sz, align, cErosionRegion::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ inline void* cErosionRegion::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cErosionRegionD0Ev at 0x0196de30-0x0196de5a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cErosionRegion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cErosionRegion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cErosionRegion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,25 +70,25 @@ inline void cErosionRegion::operator delete(void* p_addr) {
 // Address: 0x000c9d60 - 0x000c9db7 (87 bytes)
 cErosionRegion::cErosionRegion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRegionNo = static_cast<nRegionStatus::P_REGION_TYPE>(11);
-    this->mIsSeted = false;
-    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(0);
-    this->mChangeStateReq = static_cast<cErosionRegion::CHANGE_STATE_REQ>(0);
-    this->mInitState = static_cast<nErosionEnemy::EROSION_REGION_INIT_STATE>(0);
-    this->mpEnemy = static_cast<uEnemy*>(nullptr);
-    this->mpErosionEnemy = static_cast<cpErosionEnemy*>(nullptr);
+    mRegionNo = nRegionStatus::P_REGION_INVALID;
+    mIsSeted = false;
+    mErosionMode = nErosionEnemy::EROSION_MODE_NONE;
+    mChangeStateReq = CHANGE_STATE_REQ_NONE;
+    mInitState = nErosionEnemy::EROSION_REGION_INIT_STATE_NONE;
+    mpEnemy = nullptr;
+    mpErosionEnemy = nullptr;
 }
 
 // Address: 0x000c9dd0 - 0x000c9def (31 bytes)
 void cErosionRegion::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEnemy == static_cast<uEnemy*>(nullptr)) {
+    if (mpEnemy == nullptr) {
         return;
     }
-    if (this->mpEnemy->::cUnit::isEnable() != false) {
+    if (mpEnemy->isEnable()) {
         return;
     }
-    this->mpEnemy = static_cast<uEnemy*>(nullptr);
+    mpEnemy = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,14 +97,14 @@ void cErosionRegion::updatePtr() {
 // Address: 0x000cabc0 - 0x000cabfa (58 bytes)
 void cErosionRegion::beforeErosionRegion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mChangeStateReq == static_cast<cErosionRegion::CHANGE_STATE_REQ>(2)) {
-        this->::cErosionRegion::changeStateGenerate(false);
+    if (mChangeStateReq == CHANGE_STATE_REQ_GENERATE) {
+        changeStateGenerate(false);
     } else {
-        if (this->mChangeStateReq == static_cast<cErosionRegion::CHANGE_STATE_REQ>(1)) {
-            this->::cErosionRegion::changeStateBreak(false);
+        if (mChangeStateReq == CHANGE_STATE_REQ_BREAK) {
+            changeStateBreak(false);
         }
     }
-    this->mChangeStateReq = static_cast<cErosionRegion::CHANGE_STATE_REQ>(0);
+    mChangeStateReq = CHANGE_STATE_REQ_NONE;
 }
 
 // Address: 0x000cac00 - 0x000cac01 (1 bytes)
@@ -120,61 +120,61 @@ __attribute__((weak)) void cErosionRegion::updateErosionRegion() {
 // Address: 0x000c9e00 - 0x000c9e24 (36 bytes)
 void cErosionRegion::setErosionRes(const cErosionRegionRes& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mErosionRegionRes.::cErosionRegionRes::copyParam(data);
-    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(1);
-    this->mIsSeted = true;
+    mErosionRegionRes.copyParam(data);
+    mErosionMode = nErosionEnemy::EROSION_MODE_WAIT;
+    mIsSeted = true;
 }
 
 // Address: 0x000c9e30 - 0x000c9e34 (4 bytes)
 void cErosionRegion::setParentRegionNo(nRegionStatus::P_REGION_TYPE regionNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRegionNo = regionNo;
+    mRegionNo = regionNo;
 }
 
 // Address: 0x000c9e40 - 0x000c9e49 (9 bytes)
 void cErosionRegion::setErosionOwner(uCharacter* pEnemy, cpErosionEnemy* pCpErosionEnemy) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpEnemy = static_cast<uEnemy*>(pEnemy);
-    this->mpErosionEnemy = pCpErosionEnemy;
+    mpEnemy = static_cast<uEnemy*>(pEnemy);
+    mpErosionEnemy = pCpErosionEnemy;
 }
 
 // Address: 0x000c9e50 - 0x000c9e58 (8 bytes)
 bool cErosionRegion::isInvalid() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsSeted == false;
+    return !mIsSeted;
 }
 
 // Address: 0x000c9e60 - 0x000c9e64 (4 bytes)
 nRegionStatus::P_REGION_CATEGORY cErosionRegion::getRegionCategory() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nRegionStatus::P_REGION_CATEGORY>(this->mErosionRegionRes.::cErosionRegionRes::getRegionCategory());
+    return static_cast<nRegionStatus::P_REGION_CATEGORY>(mErosionRegionRes.getRegionCategory());
 }
 
 // Address: 0x000c9e70 - 0x000c9e74 (4 bytes)
 nRegionStatus::P_REGION_TYPE cErosionRegion::getRegionNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRegionNo;
+    return mRegionNo;
 }
 
 // Address: 0x000ca180 - 0x000ca188 (8 bytes)
 bool cErosionRegion::isActiveErosion() const {
     // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionMode == static_cast<nErosionEnemy::EROSION_MODE>(2);
+    return mErosionMode == nErosionEnemy::EROSION_MODE_ACTIVE;
 }
 
 // Address: 0x000ca1a0 - 0x000ca1a8 (8 bytes)
 bool cErosionRegion::isRegenerate() const {
     // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionMode != static_cast<nErosionEnemy::EROSION_MODE>(2);
+    return mErosionMode != nErosionEnemy::EROSION_MODE_ACTIVE;
 }
 
 // Address: 0x000ca1b0 - 0x000ca1b8 (8 bytes)
 bool cErosionRegion::isEnableBreak() const {
     // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionMode == static_cast<nErosionEnemy::EROSION_MODE>(2);
+    return mErosionMode == nErosionEnemy::EROSION_MODE_ACTIVE;
 }
 
 // Address: 0x000ca1c0 - 0x000ca71c (1372 bytes)
@@ -208,21 +208,21 @@ __attribute__((weak)) void cErosionRegion::breakErosion() {
 // Address: 0x000c9e80 - 0x000c9ede (94 bytes)
 void cErosionRegion::setupContextErosion(bool recvFlag, bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (initSet != false) {
-        if (this->mInitState != static_cast<nErosionEnemy::EROSION_REGION_INIT_STATE>(2)) {
-            if (this->mpErosionEnemy->mErosionInitType == static_cast<nErosionEnemy::EROSION_INIT_TYPE>(1)) {
-                this->::cErosionRegion::changeStateBreak(recvFlag == false);
+    if (initSet) {
+        if (mInitState != nErosionEnemy::EROSION_REGION_INIT_STATE_INACTIVE) {
+            if (mpErosionEnemy->mErosionInitType == nErosionEnemy::EROSION_INIT_ZERO) {
+                changeStateBreak(!recvFlag);
             } else {
-                this->::cErosionRegion::changeStateGenerate(recvFlag == false);
+                changeStateGenerate(!recvFlag);
             }
         } else {
-            this->::cErosionRegion::changeStateBreak(recvFlag == false);
+            changeStateBreak(!recvFlag);
         }
     } else {
-        if (this->mpEnemy->::uDDOModel::isDead(static_cast<u32>(this->mRegionNo)) != false) {
-            this->::cErosionRegion::changeStateBreak(recvFlag == false);
+        if (mpEnemy->isDead(static_cast<u32>(mRegionNo))) {
+            changeStateBreak(!recvFlag);
         } else {
-            this->::cErosionRegion::changeStateGenerate(recvFlag == false);
+            changeStateGenerate(!recvFlag);
         }
     }
 }
@@ -253,41 +253,41 @@ void cErosionRegion::setupContextErosion(bool recvFlag, bool initSet) {
 __attribute__((weak)) void cErosionRegion::changeStateGenerate(bool isSetup) {
     // DWARF local not rendered: bool isToContext;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(2);
-    cpStatusChange* pCpStatusChange = this->mpEnemy->::uDDOModel::getStatusChangePtr();
-    if (pCpStatusChange == static_cast<cpStatusChange*>(nullptr)) {
+    mErosionMode = nErosionEnemy::EROSION_MODE_ACTIVE;
+    cpStatusChange* pCpStatusChange = mpEnemy->getStatusChangePtr();
+    if (pCpStatusChange == nullptr) {
         return;
     }
-    if (this->mpEnemy->::uDDOModel::isMaster() == false) {
+    if (!mpEnemy->isMaster()) {
         return;
     }
-    switch (static_cast<unsigned int>(this->mErosionRegionRes.::cErosionRegionRes::getRegionCategory() - static_cast<s32>(1))) {
-        case static_cast<unsigned int>(0):
+    switch (static_cast<unsigned int>(mErosionRegionRes.getRegionCategory() - 1)) {
+        case 0:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(33), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(32), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(40), true, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(33u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(32u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(40u, true, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(35), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(34), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(41), true, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(35u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(34u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(41u, true, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(37), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(36), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(42), true, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(37u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(36u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(42u, true, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(39), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(38), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(43), true, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(39u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(38u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(43u, true, !isSetup);
             break;
         }
         default:
@@ -301,41 +301,41 @@ __attribute__((weak)) void cErosionRegion::changeStateGenerate(bool isSetup) {
 __attribute__((weak)) void cErosionRegion::changeStateBreak(bool isSetup) {
     // DWARF local not rendered: bool isToContext;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(1);
-    cpStatusChange* pCpStatusChange = this->mpEnemy->::uDDOModel::getStatusChangePtr();
-    if (pCpStatusChange == static_cast<cpStatusChange*>(nullptr)) {
+    mErosionMode = nErosionEnemy::EROSION_MODE_WAIT;
+    cpStatusChange* pCpStatusChange = mpEnemy->getStatusChangePtr();
+    if (pCpStatusChange == nullptr) {
         return;
     }
-    if (this->mpEnemy->::uDDOModel::isMaster() == false) {
+    if (!mpEnemy->isMaster()) {
         return;
     }
-    switch (static_cast<unsigned int>(this->mErosionRegionRes.::cErosionRegionRes::getRegionCategory() - static_cast<s32>(1))) {
-        case static_cast<unsigned int>(0):
+    switch (static_cast<unsigned int>(mErosionRegionRes.getRegionCategory() - 1)) {
+        case 0:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(33), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(32), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(40), false, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(33u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(32u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(40u, false, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(35), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(34), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(41), false, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(35u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(34u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(41u, false, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(37), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(36), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(42), false, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(37u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(36u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(42u, false, !isSetup);
             break;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(39), false, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(38), true, isSetup == false);
-            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(43), false, isSetup == false);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(39u, false, !isSetup);
+            pCpStatusChange->cpStatusChange::changeCollisionBitProg(38u, true, !isSetup);
+            pCpStatusChange->cpStatusChange::changeMontageBitProg(43u, false, !isSetup);
             break;
         }
         default:
@@ -351,6 +351,8 @@ __attribute__((weak)) void cErosionRegion::changeStateBreak(bool isSetup) {
 //   in cErosionRegion::beforeErosionRegion at 0x000cabec-0x000cabf3 (called at cErosionRegion.cpp:784)
 // void cErosionRegion::setChangeStateReq(cErosionRegion::CHANGE_STATE_REQ stateReq);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cErosionRegion::MyDTI cErosionRegion::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cErosionRegion.cpp at 0x000cad2f-0x000cad6c (called at cErosionRegion.cpp:47)
 //   in _GLOBAL__sub_I_cErosionRegion.cpp at 0x000cad2f-0x000cad6c (called at cErosionRegion.h:44)
@@ -359,6 +361,6 @@ __attribute__((weak)) void cErosionRegion::changeStateBreak(bool isSetup) {
 // Address: 0x000c9c70 - 0x000c9cef (127 bytes)
 MtObject* cErosionRegion::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cErosionRegion;
+    return new (16u) cErosionRegion;
 }
 

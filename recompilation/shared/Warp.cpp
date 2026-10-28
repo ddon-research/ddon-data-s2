@@ -24,7 +24,7 @@ const MtDTI& CDataAreaWarpPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataAreaWarpPoint::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataAreaWarpPoint::DTI);
+    return MtMemoryAllocator::getAllocator(CDataAreaWarpPoint::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataAreaWarpPoint::getAllocator() {
 // Address: 0x003bb810 - 0x003bb850 (64 bytes)
 void* CDataAreaWarpPoint::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataAreaWarpPoint::getAllocator()->memAlloc(sz, align, ::CDataAreaWarpPoint::DTI.::MtDTI::getID());
+    return CDataAreaWarpPoint::getAllocator()->memAlloc(sz, align, CDataAreaWarpPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataAreaWarpPoint::operator new(size_t sz, u32 align) {
 // Address: 0x003bb880 - 0x003bb8aa (42 bytes)
 __attribute__((weak)) void CDataAreaWarpPoint::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataAreaWarpPoint::getAllocator()->memFree(p_addr);
+    CDataAreaWarpPoint::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataAreaWarpPoint::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataAreaWarpPoint::CDataAreaWarpPoint(u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataAreaWarpPoint::MyDTI CDataAreaWarpPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004199fa-0x00419a33 (called at WarpImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004199fa-0x00419a33 (called at Warp.h:134)
@@ -78,7 +80,7 @@ __attribute__((weak)) void CDataAreaWarpPoint::operator delete(void* p_addr) {
 // Address: 0x003bb7c0 - 0x003bb80f (79 bytes)
 MtObject* CDataAreaWarpPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataAreaWarpPoint;
+    return new (16u) CDataAreaWarpPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,7 +97,7 @@ const MtDTI& CDataFavoriteWarpPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataFavoriteWarpPoint::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataFavoriteWarpPoint::DTI);
+    return MtMemoryAllocator::getAllocator(CDataFavoriteWarpPoint::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +106,7 @@ inline MtAllocator* CDataFavoriteWarpPoint::getAllocator() {
 // Address: 0x003bb6f0 - 0x003bb730 (64 bytes)
 void* CDataFavoriteWarpPoint::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataFavoriteWarpPoint::getAllocator()->memAlloc(sz, align, ::CDataFavoriteWarpPoint::DTI.::MtDTI::getID());
+    return CDataFavoriteWarpPoint::getAllocator()->memAlloc(sz, align, CDataFavoriteWarpPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -119,7 +121,7 @@ void* CDataFavoriteWarpPoint::operator new(size_t sz, u32 align) {
 // Address: 0x003bb760 - 0x003bb78a (42 bytes)
 __attribute__((weak)) void CDataFavoriteWarpPoint::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataFavoriteWarpPoint::getAllocator()->memFree(p_addr);
+    CDataFavoriteWarpPoint::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,6 +147,8 @@ __attribute__((weak)) void CDataFavoriteWarpPoint::operator delete(void* p_addr)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // CDataFavoriteWarpPoint::CDataFavoriteWarpPoint(u32 in_SlotNo, u32 in_WarpPointID, u32 in_Price);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataFavoriteWarpPoint::MyDTI CDataFavoriteWarpPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004199c1-0x004199fa (called at WarpImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004199c1-0x004199fa (called at Warp.h:74)
@@ -153,7 +157,7 @@ __attribute__((weak)) void CDataFavoriteWarpPoint::operator delete(void* p_addr)
 // Address: 0x003bb6a0 - 0x003bb6ef (79 bytes)
 MtObject* CDataFavoriteWarpPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataFavoriteWarpPoint;
+    return new (16u) CDataFavoriteWarpPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,7 +174,7 @@ const MtDTI& CDataWarpPoint::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataWarpPoint::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataWarpPoint::DTI);
+    return MtMemoryAllocator::getAllocator(CDataWarpPoint::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,7 +183,7 @@ inline MtAllocator* CDataWarpPoint::getAllocator() {
 // Address: 0x003bb5d0 - 0x003bb610 (64 bytes)
 void* CDataWarpPoint::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataWarpPoint::getAllocator()->memAlloc(sz, align, ::CDataWarpPoint::DTI.::MtDTI::getID());
+    return CDataWarpPoint::getAllocator()->memAlloc(sz, align, CDataWarpPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -194,7 +198,7 @@ void* CDataWarpPoint::operator new(size_t sz, u32 align) {
 // Address: 0x003bb640 - 0x003bb66a (42 bytes)
 __attribute__((weak)) void CDataWarpPoint::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataWarpPoint::getAllocator()->memFree(p_addr);
+    CDataWarpPoint::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,6 +220,8 @@ __attribute__((weak)) void CDataWarpPoint::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataWarpPoint::CDataWarpPoint(u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataWarpPoint::MyDTI CDataWarpPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419988-0x004199c1 (called at WarpImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419988-0x004199c1 (called at Warp.h:21)
@@ -224,6 +230,6 @@ __attribute__((weak)) void CDataWarpPoint::operator delete(void* p_addr) {
 // Address: 0x003bb580 - 0x003bb5c8 (72 bytes)
 MtObject* CDataWarpPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataWarpPoint;
+    return new (16u) CDataWarpPoint;
 }
 

@@ -648,6 +648,8 @@
 // No out-of-line body: no code in the ELF
 // bool MtCollisionUtil::MtVectorU4::cmpAnyLE(const MtCollisionUtil::MtVectorU4&) const;
 
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): const MtCollisionUtil::MtVectorU4 MtCollisionUtil::MtVectorU4::SELECT_PATTERN_LLLR;
+
 // No out-of-line body: no code in the ELF
 // MtCollisionUtil::MtVectorU43::MtVectorU43();
 

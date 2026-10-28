@@ -30,7 +30,7 @@ const MtDTI& cpLayout::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpLayout::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpLayout::DTI);
+    return MtMemoryAllocator::getAllocator(cpLayout::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* cpLayout::getAllocator() {
 // Address: 0x004cbcb0 - 0x004cbcf0 (64 bytes)
 void* cpLayout::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpLayout::getAllocator()->memAlloc(sz, align, ::cpLayout::DTI.::MtDTI::getID());
+    return cpLayout::getAllocator()->memAlloc(sz, align, cpLayout::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* cpLayout::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,27 +81,27 @@ cpLayout::~cpLayout() {
 // Address: 0x004cbdf0 - 0x004cbdf9 (9 bytes)
 void cpLayout::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004cbe00 - 0x004cbe05 (5 bytes)
 void cpLayout::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x004cbe10 - 0x004cbe43 (51 bytes)
 void cpLayout::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (46 bytes)
@@ -180,26 +180,26 @@ bool cpLayout::invalidGroupKill() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28c from uControl*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2a4 from uControl*
     // inferred: a temporary for the result of the call at 0x4cbe63, used once; no DWARF local holds it
-    uDDOModel* t0 = ::sTalkManager::getInstance()->::sTalkManager::getTalkTarget();
-    if (this->mpModel != t0) {
-        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-            if (this->mpGroupParam != static_cast<const cGroupParam*>(nullptr)) {
-                if (this->mpGroupParam->::cGroupParam::isValidGroup() != false) {
-                    if ((this->mpModel->mUnitId & static_cast<u32>(1026)) != static_cast<u32>(0)) {
-                        if (this->mpModel->::uDDOModel::isDead() == false) {
-                            if (this->mpGroupParam->::cGroupParam::isResetList() != false) {
-                                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-                                    if (this->mpModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(358))) == static_cast<unsigned char>(0)) {
-                                            this->mpModel->::uDDOModel::getCtrl()->::uControl::setFadeOut();
+    uDDOModel* t0 = sTalkManager::getInstance()->getTalkTarget();
+    if (mpModel != t0) {
+        if (mpModel != nullptr) {
+            if (mpGroupParam != nullptr) {
+                if (mpGroupParam->isValidGroup()) {
+                    if ((mpModel->mUnitId & 1026u) != 0) {
+                        if (!mpModel->isDead()) {
+                            if (mpGroupParam->isResetList()) {
+                                if (mpModel != nullptr) {
+                                    if (mpModel->getCtrl() != nullptr) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpModel->getCtrl()) + 358)) == 0) {
+                                            mpModel->getCtrl()->setFadeOut();
                                         }
                                     }
                                 }
                             } else {
-                                if (this->mpGroupParam->::cGroupParam::isDieStageBoss() != false) {
-                                    if (this->mpModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
-                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(652))) != static_cast<unsigned int>(7)) {
-                                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(676)) = static_cast<unsigned char>(1);
+                                if (mpGroupParam->isDieStageBoss()) {
+                                    if (mpModel->getCtrl() != nullptr) {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpModel->getCtrl()) + 652)) != 7) {
+                                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpModel->getCtrl()) + 676) = 1;
                                         }
                                     }
                                 }
@@ -221,9 +221,20 @@ bool cpLayout::invalidGroupKill() {
     }
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (37 bytes)
-//   in cpLayout::invalidGroupKill at 0x004cbec4-0x004cbee9 (called at cpLayout.cpp:123)
-// void cpLayout::setFadeOut();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpLayout::invalidGroupKill at 0x4cbec4-0x4cbee9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpLayout::setFadeOut() {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mpModel->mpCtrl == nullptr) {
+        return;
+    }
+    if (mpModel->mpCtrl->mIsFadeOut) {
+        return;
+    }
+    mpModel->mpCtrl->setFadeOut();
+}
 
 // Address: 0x004cbf30 - 0x004cbfca (154 bytes)
 __attribute__((weak)) void cpLayout::callbackDie() {
@@ -256,6 +267,8 @@ __attribute__((weak)) f32 cpLayout::distNearLifeAreaCenter(const MtVector3& pos)
     DDON_STUB("cpLayout::distNearLifeAreaCenter")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpLayout::MyDTI cpLayout::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpLayout.cpp at 0x004cc24f-0x004cc28c (called at cpLayout.cpp:28)

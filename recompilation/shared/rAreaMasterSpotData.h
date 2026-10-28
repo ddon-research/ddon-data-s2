@@ -328,25 +328,25 @@ public:
 // approximate: only approximate callers check this inline body
 inline cAreaMasterRankData::cAreaMasterRankData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mMsgGroupSerial = static_cast<u32>(0);
-    this->mPoint = static_cast<u32>(0);
-    this->mBonusType = static_cast<u8>(0);
+    this->mMsgGroupSerial = 0;
+    this->mPoint = 0;
+    this->mBonusType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cAreaMasterSpotData::cAreaMasterSpotData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mSpotId = static_cast<u32>(0);
-    this->mCategoryNo = static_cast<u32>(0);
-    this->mMessageId = static_cast<u32>(0);
-    this->mStageNoMap = static_cast<s32>(-1);
-    this->mMaskType = static_cast<u8>(0);
+    this->mSpotId = 0;
+    this->mCategoryNo = 0;
+    this->mMessageId = 0;
+    this->mStageNoMap = -1;
+    this->mMaskType = 0;
     this->mPosHide = false;
     this->mPosZ = 0.0f;
-    this->mImageId = static_cast<u16>(0);
-    this->mRecommendLevel = static_cast<u8>(0);
-    this->mKeyType = static_cast<u8>(0);
+    this->mImageId = 0;
+    this->mRecommendLevel = 0;
+    this->mKeyType = 0;
     this->mPosX = 0.0f;
     this->mPosY = 0.0f;
 }
@@ -355,7 +355,7 @@ inline cAreaMasterSpotData::cAreaMasterSpotData() {
 // approximate: only approximate callers check this inline body
 inline cAreaMasterSpotDetailData::cAreaMasterSpotDetailData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mSpotId = static_cast<u32>(0);
+    this->mSpotId = 0;
     this->mItemArray.::MtArray::mAutoDelete = true;
     this->mEnemyArray.::MtArray::mAutoDelete = true;
 }
@@ -364,17 +364,17 @@ inline cAreaMasterSpotDetailData::cAreaMasterSpotDetailData() {
 // approximate: only approximate callers check this inline body
 inline cSpotEnemyData::cSpotEnemyData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mRank = static_cast<u8>(0);
-    this->mLevel = static_cast<u16>(0);
-    this->mEnemyGroupId = static_cast<u32>(0);
-    this->mEnemyNamedId = static_cast<u32>(0);
+    this->mRank = 0;
+    this->mLevel = 0;
+    this->mEnemyGroupId = 0;
+    this->mEnemyNamedId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cSpotItemData::cSpotItemData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mItemId = static_cast<u32>(0);
+    this->mItemId = 0;
     this->mIsFeature = false;
     this->mIsCannotPawnTake = false;
 }

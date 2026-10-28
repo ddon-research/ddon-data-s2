@@ -105,6 +105,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rAreaInfoStage::cAreaInfoStage::cAreaInfoStage() {
-    this->mStageNo = static_cast<u32>(0);
-    this->mAreaId = static_cast<u32>(0);
+    this->mStageNo = 0;
+    this->mAreaId = 0;
 }

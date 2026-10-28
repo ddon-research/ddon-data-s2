@@ -36,7 +36,7 @@ const MtDTI& rBowActParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rBowActParamList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rBowActParamList::DTI)->memAlloc(sz, align, ::rBowActParamList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rBowActParamList::DTI)->memAlloc(sz, align, rBowActParamList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rBowActParamList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rBowActParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rBowActParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rBowActParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,8 +65,8 @@ inline void rBowActParamList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rBowActParamList::rBowActParamList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mParamList.mAutoDelete = true;
+    setAttribute(18u);
+    mParamList.mAutoDelete = true;
 }
 
 // Address: 0x00648770 - 0x00648821 (177 bytes)
@@ -90,15 +90,15 @@ __attribute__((weak)) void rBowActParamList::clear() {
 // Address: 0x00648a00 - 0x00648a81 (129 bytes)
 bool rBowActParamList::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(20), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(20), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x00648a90 - 0x00648b16 (134 bytes)
 bool rBowActParamList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(20), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rBowActParamList::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(20), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rBowActParamList::DTI));
 }
 
 // Address: 0x01a77220 - 0x01a77228 (8 bytes)
@@ -116,12 +116,14 @@ MT_CTSTR rBowActParamList::getExt() const {
 // Address: 0x00648b30 - 0x00648b45 (21 bytes)
 const nHumanBow::cBowActParam* rBowActParamList::getParam(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mParamList.mLength) {
-        return static_cast<const nHumanBow::cBowActParam*>(this->mParamList.mpArray[index]);
+    if (index < mParamList.mLength) {
+        return static_cast<const nHumanBow::cBowActParam*>(mParamList.mpArray[index]);
     } else {
-        return static_cast<const nHumanBow::cBowActParam*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rBowActParamList::MyDTI rBowActParamList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rBowActParamList.cpp at 0x00648b50-0x00648b92 (called at rBowActParamList.cpp:27)
@@ -131,6 +133,6 @@ const nHumanBow::cBowActParam* rBowActParamList::getParam(u32 index) {
 // Address: 0x00648660 - 0x006486e4 (132 bytes)
 MtObject* rBowActParamList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rBowActParamList;
+    return new (16u) rBowActParamList;
 }
 

@@ -107,15 +107,15 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cHumanEnemyEquip::cHumanEnemyEquip() {
-    this->mJewelry = static_cast<u32>(0);
-    this->mLegId = static_cast<u32>(0);
-    this->mAccessoryId = static_cast<u32>(0);
-    this->mArmorId = static_cast<u32>(0);
-    this->mHandId = static_cast<u32>(0);
-    this->mWearBottomId = static_cast<u32>(0);
-    this->mHeadId = static_cast<u32>(0);
-    this->mSubWeaponId = static_cast<u32>(0);
-    this->mWearTopId = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
-    this->mMainWeaponId = static_cast<u32>(0);
+    this->mJewelry = 0;
+    this->mLegId = 0;
+    this->mAccessoryId = 0;
+    this->mArmorId = 0;
+    this->mHandId = 0;
+    this->mWearBottomId = 0;
+    this->mHeadId = 0;
+    this->mSubWeaponId = 0;
+    this->mWearTopId = 0;
+    this->mId = 0;
+    this->mMainWeaponId = 0;
 }

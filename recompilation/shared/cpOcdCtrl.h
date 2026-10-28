@@ -34,6 +34,7 @@ class cOcdInfo;
 class cOcdMsgCtrl2;
 class cOcdStatusParam;
 class cOcdStatusParamRes;
+class cQuestTask;
 class cShlConditionInfo;
 class cUnitDieInfo;
 class cpShakeCtrl;
@@ -60,6 +61,8 @@ class cpOcdCtrl : public cpComponent
 {
     // inferred: cOcdMsgCtrl2::callBackReceiveActiveLv calls cpOcdCtrl::callbackReceiveActive
     friend class cOcdMsgCtrl2;
+    // inferred: cQuestTask::cQuestProcess::checkIsBadStatus names cpOcdCtrl::mOcdActiveBit[1], through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: cpShakeCtrl::shake names cpOcdCtrl::mOcdActiveBit[1]
     friend class cpShakeCtrl;
 public:
@@ -258,8 +261,21 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cEmActReturnTerritoryWarp::move at 0xb643b-0xb6444; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpOcdCtrl::setWarpReactionStartTiming() {
+    this->mReactionStartTiming = 3;
+    this->mTimerStartTiming = 3;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cpOcdCtrl::isInvalid() const {
     return this->mIsInvalid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpOcdCtrl::before at 0x4dc29b-0x4dc2a3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpOcdCtrl::clearMoveFreeze() {
+    this->mIsMoveFreeze = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -42,13 +42,13 @@ __attribute__((weak)) void MtNetRequest::createProperty(MtPropertyList& s) {
 // Address: 0x00dbfe90 - 0x00dbfe94 (4 bytes)
 s32 MtNetRequest::getId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mId;
+    return mId;
 }
 
 // Address: 0x00dbfea0 - 0x00dbfea4 (4 bytes)
 u32 MtNetRequest::getSequence() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSequence;
+    return mSequence;
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,13 +57,13 @@ u32 MtNetRequest::getSequence() const {
 // Address: 0x00dbfec0 - 0x00dbfec7 (7 bytes)
 void MtNetRequest::setPhase(s32 phase) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPhase = phase;
+    mPhase = phase;
 }
 
 // Address: 0x00dbfed0 - 0x00dbfed7 (7 bytes)
 s32 MtNetRequest::getPhase() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPhase;
+    return mPhase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,7 +81,7 @@ s32 MtNetRequest::getPhase() const {
 // Address: 0x00dbff10 - 0x00dbff17 (7 bytes)
 bool MtNetRequest::isAbort(u32 abortPoint) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsAbort;
+    return mIsAbort;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -90,7 +90,7 @@ bool MtNetRequest::isAbort(u32 abortPoint) const {
 // Address: 0x00dbff30 - 0x00dbff37 (7 bytes)
 bool MtNetRequest::isNeedAnswer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsNeedAnswer;
+    return mIsNeedAnswer;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -114,41 +114,44 @@ bool MtNetRequest::isNeedAnswer() const {
 // Address: 0x00dbffa0 - 0x00dbffa5 (5 bytes)
 void MtNetRequest::clearFatal() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::clearFatal();
+    this->MtNetObject::clearFatal();
 }
 
 // Address: 0x00dbffb0 - 0x00dbfff6 (70 bytes)
 void MtNetRequest::setFatal(const MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::setFatal(err);
+    this->MtNetObject::setFatal(err);
     MtNetError e;
-    this->getFatal(&e);
+    getFatal(&e);
 }
 
 // Address: 0x00dc0000 - 0x00dc0046 (70 bytes)
 void MtNetRequest::setFatal(s32 no, s32 cause, s32 native) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::setFatal(no, cause, native);
+    this->MtNetObject::setFatal(no, cause, native);
     MtNetError e;
-    this->getFatal(&e);
+    getFatal(&e);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // s32 MtNetRequest::setPointer(s32 idx, void* ptr);
 
+// From the ELF: its bytes in .data (D-S1).
+u32 MtNetRequest::mSequenceValue = 1;
+
 // Address: 0x00dc0050 - 0x00dc00bf (111 bytes)
 MtNetRequestController::MtNetRequestController() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsNeedFinalize = false;
-    this->mpReqQueue[7] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[6] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[5] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[4] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[3] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[2] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[1] = static_cast<MtNetRequest*>(nullptr);
-    this->mpReqQueue[0] = static_cast<MtNetRequest*>(nullptr);
-    this->mpListener = static_cast<MtNetRequestController::Listener*>(nullptr);
+    mIsNeedFinalize = false;
+    mpReqQueue[7] = nullptr;
+    mpReqQueue[6] = nullptr;
+    mpReqQueue[5] = nullptr;
+    mpReqQueue[4] = nullptr;
+    mpReqQueue[3] = nullptr;
+    mpReqQueue[2] = nullptr;
+    mpReqQueue[1] = nullptr;
+    mpReqQueue[0] = nullptr;
+    mpListener = nullptr;
 }
 
 // Address: 0x00dc00c0 - 0x00dc015a (154 bytes)
@@ -163,7 +166,7 @@ MtNetRequestController::~MtNetRequestController() {
 // Address: 0x00dc0210 - 0x00dc0215 (5 bytes)
 void MtNetRequestController::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::createProperty(s);
+    this->MtNetObject::createProperty(s);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

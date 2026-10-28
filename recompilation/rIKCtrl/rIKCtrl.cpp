@@ -39,7 +39,7 @@ const MtDTI& cIKCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cIKCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memAlloc(sz, align, ::cIKCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memAlloc(sz, align, cIKCtrl::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
@@ -55,7 +55,7 @@ inline void* cIKCtrl::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cIKCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -81,6 +81,8 @@ inline void cIKCtrl::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cIKCtrl::~cIKCtrl();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cIKCtrl::MyDTI cIKCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rIKCtrl.cpp at 0x0067fa40-0x0067fa82 (called at rIKCtrl.cpp:39)
 //   in _GLOBAL__sub_I_rIKCtrl.cpp at 0x0067fa40-0x0067fa82 (called at rIKCtrl.h:51)
@@ -89,7 +91,7 @@ inline void cIKCtrl::operator delete(void* p_addr) {
 // Address: 0x0067f600 - 0x0067f647 (71 bytes)
 MtObject* cIKCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cIKCtrl;
+    return new (16u) cIKCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rIKCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rIKCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rIKCtrl::DTI)->memAlloc(sz, align, ::rIKCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rIKCtrl::DTI)->memAlloc(sz, align, rIKCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rIKCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rIKCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rIKCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rIKCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +160,7 @@ rIKCtrl::~rIKCtrl() {
 bool rIKCtrl::loadData(MtDataReader& r, cIKCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, pData->mDummy);
+    nDDOIO::readData(r, pData->mDummy);
     return true;
 }
 
@@ -171,7 +173,7 @@ MT_CTSTR rIKCtrl::getExt() const {
 // Address: 0x01a953c0 - 0x01a953c6 (6 bytes)
 u32 rIKCtrl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x0067f7d0 - 0x0067fa31 (609 bytes)
@@ -179,6 +181,8 @@ __attribute__((weak)) bool rIKCtrl::loadCore(MtDataReader& r) {
     DDON_STUB("rIKCtrl::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rIKCtrl::MyDTI rIKCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rIKCtrl.cpp at 0x0067fa82-0x0067fabf (called at rIKCtrl.cpp:40)
@@ -188,7 +192,7 @@ __attribute__((weak)) bool rIKCtrl::loadCore(MtDataReader& r) {
 // Address: 0x0067f6c0 - 0x0067f740 (128 bytes)
 MtObject* rIKCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rIKCtrl;
+    return new (16u) rIKCtrl;
 }
 
 // Instance at 0x01a95370 - 0x01a95382 (18 bytes) of the generic rTbl2<T>::getData

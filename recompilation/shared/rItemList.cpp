@@ -11,6 +11,9 @@
 #include "nCharacterData.h"
 #include "nDDOIO.h"
 #include "nWeapon.h"
+#include "rGUIMessage.h"
+#include "sGUI.h"
+#include "sItemManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -40,7 +43,7 @@ const MtDTI& rItemList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rItemList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rItemList::DTI)->memAlloc(sz, align, ::rItemList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sz, align, rItemList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +58,7 @@ inline void* rItemList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,31 +72,31 @@ inline void rItemList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rItemList::rItemList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->::cResource::clear();
-    this->mpItemList = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mArrayDataNum = static_cast<u32>(0);
-    this->mpParamList = static_cast<rItemList::rParam*>(nullptr);
-    this->mArrayParamDataNum = static_cast<u32>(0);
-    this->mpVsParamList = static_cast<rItemList::rVsEnemyParam*>(nullptr);
-    this->mArrayVsParamDataNum = static_cast<u32>(0);
-    this->mpWeaponParamList = static_cast<rItemList::rWeaponParam*>(nullptr);
-    this->mArrayWeaponParamDataNum = static_cast<u32>(0);
-    this->mpProtectParamList = static_cast<rItemList::rProtectorParam*>(nullptr);
-    this->mArrayProtectParamDataNum = static_cast<u32>(0);
-    this->mpEquipParamS8List = static_cast<rItemList::rEquipParamS8*>(nullptr);
-    this->mArrayEquipParamS8DataNum = static_cast<u32>(0);
-    this->mMaxId = static_cast<u32>(0);
-    this->mpIndexTbl = static_cast<u16*>(nullptr);
+    setAttribute(22u);
+    this->cResource::clear();
+    mpItemList = nullptr;
+    mArrayDataNum = 0;
+    mpParamList = nullptr;
+    mArrayParamDataNum = 0;
+    mpVsParamList = nullptr;
+    mArrayVsParamDataNum = 0;
+    mpWeaponParamList = nullptr;
+    mArrayWeaponParamDataNum = 0;
+    mpProtectParamList = nullptr;
+    mArrayProtectParamDataNum = 0;
+    mpEquipParamS8List = nullptr;
+    mArrayEquipParamS8DataNum = 0;
+    mMaxId = 0;
+    mpIndexTbl = nullptr;
 }
 
 // Address: 0x0068c7e0 - 0x0068c831 (81 bytes)
 // Also emitted as: _ZN9rItemListD0Ev at 0x0068c9a0
 rItemList::~rItemList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rItemList::releaseWork();
-    ::MtMemoryAllocator::getAllocator(::rItemList::DTI)->memFree(static_cast<void*>(this->mpIndexTbl));
-    this->mpIndexTbl = static_cast<u16*>(nullptr);
+    releaseWork();
+    MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpIndexTbl));
+    mpIndexTbl = nullptr;
 }
 
 // Address: 0x0068ca10 - 0x0068ce4e (1086 bytes)
@@ -126,23 +129,23 @@ __attribute__((weak)) bool rItemList::load(MtStream& in) {
 bool rItemList::save(MtStream& out) {
     // DWARF local not rendered: rItemParam* pData;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    w.::MtDataWriter::writeU32(static_cast<u32>(6385769));
-    w.::MtDataWriter::writeU32(static_cast<u32>(58));
-    w.::MtDataWriter::writeU32(this->mArrayDataNum);
-    w.::MtDataWriter::writeU32(this->mArrayParamDataNum);
-    w.::MtDataWriter::writeU32(this->mArrayVsParamDataNum);
-    w.::MtDataWriter::writeU32(this->mArrayWeaponParamDataNum);
-    w.::MtDataWriter::writeU32(this->mArrayProtectParamDataNum);
-    w.::MtDataWriter::writeU32(this->mArrayEquipParamS8DataNum);
-    if (this->mArrayDataNum == static_cast<u32>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    w.MtDataWriter::writeU32(0x617069u);
+    w.MtDataWriter::writeU32(58u);
+    w.MtDataWriter::writeU32(mArrayDataNum);
+    w.MtDataWriter::writeU32(mArrayParamDataNum);
+    w.MtDataWriter::writeU32(mArrayVsParamDataNum);
+    w.MtDataWriter::writeU32(mArrayWeaponParamDataNum);
+    w.MtDataWriter::writeU32(mArrayProtectParamDataNum);
+    w.MtDataWriter::writeU32(mArrayEquipParamS8DataNum);
+    if (mArrayDataNum == 0) {
         return true;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mpItemList[i].save(w);
-        i += static_cast<u32>(1);
-    } while (i < this->mArrayDataNum);
+        mpItemList[i].save(w);
+        i += 1u;
+    } while (i < mArrayDataNum);
     return true;
 }
 
@@ -167,7 +170,7 @@ MT_CTSTR rItemList::getExt() const {
 // Address: 0x01a959b0 - 0x01a959b4 (4 bytes)
 u32 rItemList::getListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayDataNum;
+    return mArrayDataNum;
 }
 
 // Address: 0x0068c840 - 0x0068c999 (345 bytes)
@@ -182,30 +185,30 @@ rItemList::rItemParam* rItemList::getItemList(u32 no) const {
     // DWARF local not rendered: rItemParam* pParam;
     // DWARF local not rendered: u16 index;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mpIndexTbl != static_cast<u16*>(nullptr)) {
-        if (this->mMaxId >= no) {
+    if (mpIndexTbl != nullptr) {
+        if (mMaxId >= no) {
             // inferred: a temporary for the value the load at 0x68d084 read, used twice; no DWARF local holds it
-            unsigned short t0 = this->mpIndexTbl[no];
-            if (t0 < this->getListNum()) {
-                return &this->mpItemList[t0];
+            unsigned short t0 = mpIndexTbl[no];
+            if (t0 < getListNum()) {
+                return &mpItemList[t0];
             } else {
-                return static_cast<rItemList::rItemParam*>(nullptr);
+                return nullptr;
             }
         } else {
-            return static_cast<rItemList::rItemParam*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<rItemList::rItemParam*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0068d0b0 - 0x0068d0df (47 bytes)
 rItemList::rItemParam* rItemList::getItemListByIndex(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getListNum()) {
-        return &this->mpItemList[index];
+    if (index < getListNum()) {
+        return &mpItemList[index];
     } else {
-        return static_cast<rItemList::rItemParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -215,36 +218,36 @@ rItemList::rItemParam* rItemList::getItemListByArcTagNo(u32 arcTagNo) const {
     // DWARF local not rendered: rItemParam* pParam;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x68d16d; no location-less local in scope fits
-    rItemList::rItemParam* v1_0;
-    if (this->getListNum() == static_cast<u32>(0)) {
-        v1_0 = static_cast<rItemList::rItemParam*>(nullptr);
+    rItemParam* v1_0;
+    if (getListNum() == 0) {
+        v1_0 = nullptr;
     } else {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-            if ((&this->mpItemList[i0_2]) != static_cast<rItemList::rItemParam*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(72))) != static_cast<unsigned long>(0)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(72))) + static_cast<long>(8))) == arcTagNo) {
-                        v1_0 = &this->mpItemList[i0_2];
+        for (unsigned int i0_2 = 0;;) {
+            if ((&mpItemList[i0_2]) != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 72)) != 0) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 72)) + 8)) == arcTagNo) {
+                        v1_0 = &mpItemList[i0_2];
                         break;
                     }
                 } else {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(80))) != static_cast<unsigned long>(0)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(80))) + static_cast<long>(8))) == arcTagNo) {
-                            v1_0 = &this->mpItemList[i0_2];
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 80)) != 0) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&mpItemList[i0_2]) + 80)) + 8)) == arcTagNo) {
+                            v1_0 = &mpItemList[i0_2];
                             break;
                         }
                     } else {
-                        if (arcTagNo == static_cast<u32>(0)) {
-                            v1_0 = &this->mpItemList[i0_2];
+                        if (arcTagNo == 0) {
+                            v1_0 = &mpItemList[i0_2];
                             break;
                         }
                     }
                 }
             }
-            if ((i0_2 + static_cast<unsigned int>(1)) < this->getListNum()) {
-                i0_2 += static_cast<unsigned int>(1);
+            if ((i0_2 + 1u) < getListNum()) {
+                i0_2 += 1u;
             } else {
-                v1_0 = static_cast<rItemList::rItemParam*>(nullptr);
+                v1_0 = nullptr;
                 break;
             }
         }
@@ -265,6 +268,8 @@ __attribute__((weak)) void rItemList::createIndexTable() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::MyDTI rItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d51d-0x0068d55a (called at rItemList.cpp:3770)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d51d-0x0068d55a (called at rItemList.h:33)
@@ -273,7 +278,7 @@ __attribute__((weak)) void rItemList::createIndexTable() {
 // Address: 0x0068c670 - 0x0068c75a (234 bytes)
 MtObject* rItemList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rItemList;
+    return new (16u) rItemList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +317,7 @@ const MtDTI& rItemList::rItemParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rItemList::rItemParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rItemParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rItemParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -348,7 +353,7 @@ __attribute__((weak)) void rItemList::rItemParam::createProperty(MtPropertyList&
 // Address: 0x0068b4d0 - 0x0068b4d5 (5 bytes)
 MtUI* rItemList::rItemParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -409,10 +414,17 @@ __attribute__((weak)) bool rItemList::rItemParam::save(MtDataWriter& out) {
 // u32 rItemList::rItemParam::getItemId() const;
 
 // Address: 0x0068bce0 - 0x0068bd16 (54 bytes)
-__attribute__((weak)) MT_CTSTR rItemList::rItemParam::getItemName() const {
-    // local: rGUIMessage* prRes;
-    DDON_STUB("rItemList::rItemParam::getItemName")
-    return {};
+MT_CTSTR rItemList::rItemParam::getItemName() const {
+    // DWARF local not rendered: rGUIMessage* prRes;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((sGUI::mpInstance) != nullptr) {
+        if (sItemManager::getInstance() != nullptr) {
+            if (sItemManager::getInstance()->getItemNameGmd() != nullptr) {
+                return sItemManager::getInstance()->getItemNameGmd()->getMessage(mNameId);
+            }
+        }
+    }
+    return nullptr;
 }
 
 // Address: 0x0068bd20 - 0x0068be86 (358 bytes)
@@ -491,7 +503,7 @@ __attribute__((weak)) u32 rItemList::rItemParam::getStackMax(nCharacterData::ITE
 bool rItemList::rItemParam::getUseJob(u32 jobType) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mIsUseJob) >> static_cast<unsigned long>(jobType & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mIsUseJob) >> static_cast<unsigned long>(jobType & 31u)) & 1ul) != 0;
 }
 
 // No out-of-line body: 38 inlined copies in 17 functions (141 bytes)
@@ -521,10 +533,10 @@ __attribute__((weak)) rItemList::USE_CATEGORY rItemList::rItemParam::getUseType(
 // Address: 0x0068c570 - 0x0068c583 (19 bytes)
 u32 rItemList::rItemParam::getWepCategory() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mWepCategory;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mWepCategory;
     } else {
-        return static_cast<u32>(15);
+        return 15;
     }
 }
 
@@ -534,12 +546,12 @@ u32 rItemList::rItemParam::getEquipCategory() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x10 from const rItemList::rItemParam*
     // inferred: a value cast to the type its use takes: const unsigned char used as u32
-    if (this->mCategory == static_cast<u8>(3)) {
-        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) <= static_cast<unsigned char>(12)) {
-            return static_cast<u32>(((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) == static_cast<unsigned char>(12)) ? static_cast<unsigned char>(4) : (*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))));
+    if (mCategory == 3) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) <= 12) {
+            return static_cast<u32>(((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) == 12) ? static_cast<unsigned char>(4) : (*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)));
         }
     }
-    return static_cast<u32>(13);
+    return 13;
 }
 
 // Address: 0x0068bf10 - 0x0068bf20 (16 bytes)
@@ -547,10 +559,10 @@ rItemList::rItemParam::EQUIP_SUB_CATEGORY rItemList::rItemParam::getEquipSubCate
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x12 from const rItemList::rItemParam*
     // inferred: a value cast to the type its use takes: const unsigned short used as rItemList::rItemParam::EQUIP_SUB_CATEGORY
-    if (this->mCategory == static_cast<u8>(3)) {
-        return static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(18)));
+    if (mCategory == 3) {
+        return static_cast<EQUIP_SUB_CATEGORY>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 18));
     } else {
-        return static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(0);
+        return EQUIP_SUB_CATEGORY_NONE;
     }
 }
 
@@ -582,8 +594,8 @@ bool rItemList::rItemParam::isCostume() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x10 from const rItemList::rItemParam*
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mCategory == static_cast<u8>(3)) {
-        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) != static_cast<unsigned char>(12)) {
+    if (mCategory == 3) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 16)) != 12) {
             return false;
         } else {
             return true;
@@ -603,35 +615,35 @@ __attribute__((weak)) u8 rItemList::rItemParam::getPhysicalType() const {
 // Address: 0x0068c020 - 0x0068c032 (18 bytes)
 u8 rItemList::rItemParam::getElementType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mElementType;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mElementType;
     } else {
-        return static_cast<u8>(3);
+        return 3;
     }
 }
 
 // Address: 0x0068c040 - 0x0068c044 (4 bytes)
 u32 rItemList::rItemParam::getUseJob() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsUseJob;
+    return mIsUseJob;
 }
 
 // Address: 0x0068c050 - 0x0068c055 (5 bytes)
 u32 rItemList::rItemParam::getUseLv() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsUseLv;
+    return mIsUseLv;
 }
 
 // Address: 0x0068c060 - 0x0068c086 (38 bytes)
 u16 rItemList::rItemParam::getWight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mWeight;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mWeight;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mWeight;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mWeight;
         } else {
-            return static_cast<u16>(65535);
+            return 0xFFFF;
         }
     }
 }
@@ -642,13 +654,13 @@ u16 rItemList::rItemParam::getWight() const {
 // Address: 0x0068c090 - 0x0068c0b6 (38 bytes)
 u8 rItemList::rItemParam::getEleSlot() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mEleSlot;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mEleSlot;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mEleSlot;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mEleSlot;
         } else {
-            return static_cast<u8>(0);
+            return 0;
         }
     }
 }
@@ -657,13 +669,13 @@ u8 rItemList::rItemParam::getEleSlot() const {
 s8 rItemList::rItemParam::getMaterialColNo() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as s8
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return static_cast<s8>(this->mpWeaponParam->mColorNo);
+    if (mpWeaponParam != nullptr) {
+        return static_cast<s8>(mpWeaponParam->mColorNo);
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return static_cast<s8>(this->mpProtectorParam->mColorNo);
+        if (mpProtectorParam != nullptr) {
+            return static_cast<s8>(mpProtectorParam->mColorNo);
         } else {
-            return static_cast<s8>(0);
+            return 0;
         }
     }
 }
@@ -671,13 +683,13 @@ s8 rItemList::rItemParam::getMaterialColNo() const {
 // Address: 0x0068c0f0 - 0x0068c116 (38 bytes)
 u8 rItemList::rItemParam::getSex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mSex;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mSex;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mSex;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mSex;
         } else {
-            return static_cast<u8>(0);
+            return 0;
         }
     }
 }
@@ -685,13 +697,13 @@ u8 rItemList::rItemParam::getSex() const {
 // Address: 0x0068c120 - 0x0068c13c (28 bytes)
 u32 rItemList::rItemParam::getModelTagId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mModelTagId;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mModelTagId;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mModelTagId;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mModelTagId;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -699,13 +711,13 @@ u32 rItemList::rItemParam::getModelTagId() const {
 // Address: 0x0068c140 - 0x0068c166 (38 bytes)
 u8 rItemList::rItemParam::getModelParts() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mModelParts;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mModelParts;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mModelParts;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mModelParts;
         } else {
-            return static_cast<u8>(0);
+            return 0;
         }
     }
 }
@@ -716,13 +728,13 @@ u8 rItemList::rItemParam::getModelParts() const {
 // Address: 0x0068c520 - 0x0068c53c (28 bytes)
 u32 rItemList::rItemParam::getAttack() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mAttack;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mAttack;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mAttack;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mAttack;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -730,13 +742,13 @@ u32 rItemList::rItemParam::getAttack() const {
 // Address: 0x0068c540 - 0x0068c55c (28 bytes)
 u32 rItemList::rItemParam::getMagicAttack() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mMagicAttack;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mMagicAttack;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mMagicAttack;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mMagicAttack;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -744,13 +756,13 @@ u32 rItemList::rItemParam::getMagicAttack() const {
 // Address: 0x0068c170 - 0x0068c18c (28 bytes)
 u32 rItemList::rItemParam::getPowerRev() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mPowerRev;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mPowerRev;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mPowerRev;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mPowerRev;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -758,23 +770,23 @@ u32 rItemList::rItemParam::getPowerRev() const {
 // Address: 0x0068c560 - 0x0068c56f (15 bytes)
 u32 rItemList::rItemParam::getShieldStagger() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mShieldStagger;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mShieldStagger;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0068c1b0 - 0x0068c1cc (28 bytes)
 u32 rItemList::rItemParam::getDefense() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mDefense;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mDefense;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mDefense;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mDefense;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -782,13 +794,13 @@ u32 rItemList::rItemParam::getDefense() const {
 // Address: 0x0068c1d0 - 0x0068c1ec (28 bytes)
 u32 rItemList::rItemParam::getMagicDefense() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mMagicDefense;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mMagicDefense;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mMagicDefense;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mMagicDefense;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -796,13 +808,13 @@ u32 rItemList::rItemParam::getMagicDefense() const {
 // Address: 0x0068c1f0 - 0x0068c20c (28 bytes)
 u32 rItemList::rItemParam::getDurability() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mDurability;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mDurability;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mDurability;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mDurability;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -810,13 +822,13 @@ u32 rItemList::rItemParam::getDurability() const {
 // Address: 0x0068c210 - 0x0068c238 (40 bytes)
 u16 rItemList::rItemParam::getMaxHpRev() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mMaxHpRev;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mMaxHpRev;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mMaxHpRev;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mMaxHpRev;
         } else {
-            return static_cast<u16>(0);
+            return 0;
         }
     }
 }
@@ -824,13 +836,13 @@ u16 rItemList::rItemParam::getMaxHpRev() const {
 // Address: 0x0068c240 - 0x0068c268 (40 bytes)
 u16 rItemList::rItemParam::getMaxStRev() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mMaxStRev;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mMaxStRev;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mMaxStRev;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mMaxStRev;
         } else {
-            return static_cast<u16>(0);
+            return 0;
         }
     }
 }
@@ -848,13 +860,13 @@ __attribute__((weak)) void rItemList::rItemParam::getKindParamList(MtTypedArray<
 // Address: 0x0068c190 - 0x0068c1ac (28 bytes)
 u32 rItemList::rItemParam::getChanceNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
-        return this->mpWeaponParam->mChance;
+    if (mpWeaponParam != nullptr) {
+        return mpWeaponParam->mChance;
     } else {
-        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
-            return this->mpProtectorParam->mChance;
+        if (mpProtectorParam != nullptr) {
+            return mpProtectorParam->mChance;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     }
 }
@@ -869,10 +881,10 @@ u32 rItemList::rItemParam::getChanceNum() const {
 rItemList::rVsEnemyParam* rItemList::rItemParam::getVsEmParam(u32 index) {
     // DWARF local not rendered: rVsEnemyParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mVsEmNum) {
-        return &this->mpVsEmList[index];
+    if (index < mVsEmNum) {
+        return &mpVsEmList[index];
     } else {
-        return static_cast<rItemList::rVsEnemyParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -889,10 +901,10 @@ rItemList::rVsEnemyParam* rItemList::rItemParam::getVsEmParam(u32 index) {
 // Address: 0x0068c5c0 - 0x0068c5d2 (18 bytes)
 rItemList::rParam* rItemList::rItemParam::getItemParam(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no < this->mParamNum) {
-        return &this->mpItemParamList[no];
+    if (no < mParamNum) {
+        return &mpItemParamList[no];
     } else {
-        return static_cast<rItemList::rParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -921,6 +933,8 @@ __attribute__((weak)) rItemList::rParam* rItemList::rItemParam::getItemParam(rIt
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
 //   in rItemList::rItemParam::load at 0x0068b964-0x0068b980 (called at rItemList.cpp:2561)
 // bool rItemList::rItemParam::isProtectorElement();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rItemParam::MyDTI rItemList::rItemParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d4e4-0x0068d51d (called at rItemList.cpp:2304)
@@ -968,7 +982,7 @@ const MtDTI& rItemList::rParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rItemList6rParamD0Ev at 0x01a95720-0x01a9574a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rItemList::rParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -996,7 +1010,7 @@ __attribute__((weak)) void rItemList::rParam::createProperty(MtPropertyList& s) 
 // Address: 0x0068a040 - 0x0068a045 (5 bytes)
 MtUI* rItemList::rParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0068a050 - 0x0068a09c (76 bytes)
@@ -1012,10 +1026,10 @@ bool rItemList::rParam::save(MtDataWriter& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from rItemList::rParam*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xe from rItemList::rParam*
-    out.writeU16(static_cast<u16>(this->mKindType));
-    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(10)));
-    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(12)));
-    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(14)));
+    out.writeU16(static_cast<u16>(mKindType));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 10));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 12));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 14));
     return true;
 }
 
@@ -1076,6 +1090,8 @@ bool rItemList::rParam::save(MtDataWriter& out) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rItemList::rParam::setParam(rItemList::rParam* pParam);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rParam::MyDTI rItemList::rParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d472-0x0068d4ab (called at rItemList.cpp:2160)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d472-0x0068d4ab (called at rItemList.h:60)
@@ -1109,7 +1125,7 @@ const MtDTI& rItemList::rVsEnemyParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rItemList::rVsEnemyParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rItemList::rVsEnemyParam::DTI)->memAlloc(sz, align, ::rItemList::rVsEnemyParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rItemList::rVsEnemyParam::DTI)->memAlloc(sz, align, rItemList::rVsEnemyParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1124,7 +1140,7 @@ inline void* rItemList::rVsEnemyParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rItemList13rVsEnemyParamD0Ev at 0x01a95780-0x01a957aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rItemList::rVsEnemyParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rVsEnemyParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rVsEnemyParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1152,7 +1168,7 @@ __attribute__((weak)) void rItemList::rVsEnemyParam::createProperty(MtPropertyLi
 // Address: 0x0068a360 - 0x0068a365 (5 bytes)
 MtUI* rItemList::rVsEnemyParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0068a370 - 0x0068a3bf (79 bytes)
@@ -1160,17 +1176,25 @@ bool rItemList::rVsEnemyParam::load(MtDataReader& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mKindType);
+    nDDOIO::readData(in, mKindType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mParam);
+    nDDOIO::readData(in, mParam);
     return true;
 }
 
 // Address: 0x0068a3c0 - 0x0068a410 (80 bytes)
-__attribute__((weak)) bool rItemList::rVsEnemyParam::save(MtDataWriter& out) {
-    DDON_STUB("rItemList::rVsEnemyParam::save")
-    return {};
+bool rItemList::rVsEnemyParam::save(MtDataWriter& out) {
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0x68a3d0 read, used once; no DWARF local holds it
+    u8 t0 = mKindType;
+    if (out.mSeekPt >= out.mBufsiz) {
+        out.flush();
+    }
+    out.mBuffer[out.mSeekPt] = t0;
+    out.mSeekPt = out.mSeekPt + 1u;
+    out.writeU16(mParam);
+    return true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -1183,6 +1207,8 @@ __attribute__((weak)) bool rItemList::rVsEnemyParam::save(MtDataWriter& out) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rItemList::rVsEnemyParam::setParam(rItemList::rVsEnemyParam* pParam);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rVsEnemyParam::MyDTI rItemList::rVsEnemyParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d4ab-0x0068d4e4 (called at rItemList.cpp:2211)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d4ab-0x0068d4e4 (called at rItemList.h:449)
@@ -1191,7 +1217,7 @@ __attribute__((weak)) bool rItemList::rVsEnemyParam::save(MtDataWriter& out) {
 // Address: 0x0068a100 - 0x0068a14a (74 bytes)
 MtObject* rItemList::rVsEnemyParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rItemList::rVsEnemyParam(static_cast<rItemList::rVsEnemyParam::EM_PHYLOGENY_KIND>(0), static_cast<u16>(0));
+    return new (16u) rItemList::rVsEnemyParam(rItemList::rVsEnemyParam::EM_PHYLOGENY_KIND_NONE, static_cast<u16>(0));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1217,7 +1243,7 @@ const MtDTI& rItemList::rWeaponParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rItemList::rWeaponParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rItemList::rWeaponParam::DTI)->memAlloc(sz, align, ::rItemList::rWeaponParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rItemList::rWeaponParam::DTI)->memAlloc(sz, align, rItemList::rWeaponParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1232,7 +1258,7 @@ inline void* rItemList::rWeaponParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rItemList::rWeaponParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rWeaponParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rWeaponParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1266,7 +1292,7 @@ __attribute__((weak)) void rItemList::rWeaponParam::createProperty(MtPropertyLis
 // Address: 0x006819e0 - 0x006819e5 (5 bytes)
 MtUI* rItemList::rWeaponParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x006819f0 - 0x00681ca7 (695 bytes)
@@ -1294,6 +1320,8 @@ __attribute__((weak)) bool rItemList::rWeaponParam::save(MtDataWriter& out) {
 // No out-of-line body: no code in the ELF
 // u32 rItemList::rWeaponParam::setKindParam(rItemList::rItemParamXml* pParam, rItemList::rEquipParamS8* pEquipParamS8List);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rWeaponParam::MyDTI rItemList::rWeaponParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d3c7-0x0068d400 (called at rItemList.cpp:342)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d3c7-0x0068d400 (called at rItemList.h:981)
@@ -1302,7 +1330,7 @@ __attribute__((weak)) bool rItemList::rWeaponParam::save(MtDataWriter& out) {
 // Address: 0x006807f0 - 0x00680888 (152 bytes)
 MtObject* rItemList::rWeaponParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rItemList::rWeaponParam;
+    return new (16u) rItemList::rWeaponParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1340,7 +1368,7 @@ const MtDTI& rItemList::rEquipParamS8::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rItemList13rEquipParamS8D0Ev at 0x01a95850-0x01a9587a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rItemList::rEquipParamS8::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rEquipParamS8::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rEquipParamS8::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1368,7 +1396,7 @@ __attribute__((weak)) void rItemList::rEquipParamS8::createProperty(MtPropertyLi
 // Address: 0x006805a0 - 0x006805a5 (5 bytes)
 MtUI* rItemList::rEquipParamS8::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x006805b0 - 0x006806c8 (280 bytes)
@@ -1411,6 +1439,8 @@ __attribute__((weak)) bool rItemList::rEquipParamS8::save(MtDataWriter& out) {
 // No out-of-line body: no code in the ELF
 // s16 rItemList::rEquipParamS8::getKindParamU16();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rEquipParamS8::MyDTI rItemList::rEquipParamS8::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d38e-0x0068d3c7 (called at rItemList.cpp:161)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d38e-0x0068d3c7 (called at rItemList.h:918)
@@ -1441,9 +1471,11 @@ const MtDTI& rItemList::rItemParamXml::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rItemList::rItemParamXml::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rItemList::rItemParamXml::MyDTI::newInstance at 0x006831f4-0x0068321d (called at rItemList.cpp:1315)
-// void* rItemList::rItemParamXml::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* rItemList::rItemParamXml::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rItemList::rItemParamXml::DTI)->memAlloc(sz, align, rItemList::rItemParamXml::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rItemList::rItemParamXml::operator new[](size_t sz, u32 align);
@@ -1457,7 +1489,7 @@ const MtDTI& rItemList::rItemParamXml::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rItemList13rItemParamXmlD0Ev at 0x01a9594f-0x01a95970, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rItemList::rItemParamXml::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rItemParamXml::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rItemParamXml::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1485,7 +1517,7 @@ __attribute__((weak)) void rItemList::rItemParamXml::createProperty(MtPropertyLi
 // Address: 0x00689bf0 - 0x00689bf5 (5 bytes)
 MtUI* rItemList::rItemParamXml::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1509,15 +1541,17 @@ MtUI* rItemList::rItemParamXml::createUI(MtProperty& prop) {
 // No out-of-line body: no code in the ELF
 // u32 rItemList::rItemParamXml::getKindNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rItemParamXml::MyDTI rItemList::rItemParamXml::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d439-0x0068d472 (called at rItemList.cpp:1315)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d439-0x0068d472 (called at rItemList.h:659)
 // rItemList::rItemParamXml::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006831f0 - 0x00683454 (612 bytes)
-__attribute__((weak)) MtObject* rItemList::rItemParamXml::MyDTI::newInstance() const {
-    DDON_STUB("rItemList::rItemParamXml::MyDTI::newInstance")
-    return nullptr;
+MtObject* rItemList::rItemParamXml::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) rItemList::rItemParamXml;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1543,7 +1577,7 @@ const MtDTI& rItemList::rProtectorParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rItemList::rProtectorParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rItemList::rProtectorParam::DTI)->memAlloc(sz, align, ::rItemList::rProtectorParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rItemList::rProtectorParam::DTI)->memAlloc(sz, align, rItemList::rProtectorParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1558,7 +1592,7 @@ inline void* rItemList::rProtectorParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rItemList::rProtectorParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rProtectorParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rProtectorParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1592,7 +1626,7 @@ __attribute__((weak)) void rItemList::rProtectorParam::createProperty(MtProperty
 // Address: 0x00682de0 - 0x00682de5 (5 bytes)
 MtUI* rItemList::rProtectorParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00682df0 - 0x00683007 (535 bytes)
@@ -1604,11 +1638,1112 @@ __attribute__((weak)) bool rItemList::rProtectorParam::load(MtDataReader& in, rI
 }
 
 // Address: 0x00683010 - 0x006831c0 (432 bytes)
-__attribute__((weak)) bool rItemList::rProtectorParam::save(MtDataWriter& out) {
-    // local: u32 i;
-    // local: rEquipParamS8* pEquipParamS8;
-    DDON_STUB("rItemList::rProtectorParam::save")
-    return {};
+bool rItemList::rProtectorParam::save(MtDataWriter& out) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: rEquipParamS8* pEquipParamS8;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from MtDataWriter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x70 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x38 from unsigned long
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683020, held ahead of the effects the ELF orders after it
+    u32 t0 = mModelTagId;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683024, held ahead of the effects the ELF orders after it
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68302a, held ahead of the effects the ELF orders after it
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 24);
+    out.writeU32(t0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68302d, held ahead of the effects the ELF orders after it
+    u32 t4 = mPowerRev;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683031, held ahead of the effects the ELF orders after it
+    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683037, held ahead of the effects the ELF orders after it
+    unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 24);
+    out.writeU32(t4);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68303a, held ahead of the effects the ELF orders after it
+    u32 t8 = mChance;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68303e, held ahead of the effects the ELF orders after it
+    unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683044, held ahead of the effects the ELF orders after it
+    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t9) + 24);
+    out.writeU32(t8);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683047, held ahead of the effects the ELF orders after it
+    u32 t12 = mDefense;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68304b, held ahead of the effects the ELF orders after it
+    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683051, held ahead of the effects the ELF orders after it
+    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t13) + 24);
+    out.writeU32(t12);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683054, held ahead of the effects the ELF orders after it
+    u32 t16 = mMagicDefense;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683058, held ahead of the effects the ELF orders after it
+    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68305e, held ahead of the effects the ELF orders after it
+    unsigned long t19 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t17) + 24);
+    out.writeU32(t16);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683061, held ahead of the effects the ELF orders after it
+    u32 t20 = mDurability;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683065, held ahead of the effects the ELF orders after it
+    unsigned long t21 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68306b, held ahead of the effects the ELF orders after it
+    unsigned long t23 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t21) + 24);
+    out.writeU32(t20);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68306e, held ahead of the effects the ELF orders after it
+    u32 t24 = mAttack;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683072, held ahead of the effects the ELF orders after it
+    unsigned long t25 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683078, held ahead of the effects the ELF orders after it
+    unsigned long t27 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t25) + 24);
+    out.writeU32(t24);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68307b, held ahead of the effects the ELF orders after it
+    u32 t28 = mMagicAttack;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68307f, held ahead of the effects the ELF orders after it
+    unsigned long t29 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683085, held ahead of the effects the ELF orders after it
+    unsigned long t31 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t29) + 24);
+    out.writeU32(t28);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683088, held ahead of the effects the ELF orders after it
+    unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x68308b, held ahead of the effects the ELF orders after it
+    u16 t33 = mWeight;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683093, held ahead of the effects the ELF orders after it
+    unsigned long t35 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t32) + 16);
+    out.writeU16(t33);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683096, held ahead of the effects the ELF orders after it
+    unsigned long t36 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x683099, held ahead of the effects the ELF orders after it
+    u16 t37 = mMaxHpRev;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830a1, held ahead of the effects the ELF orders after it
+    unsigned long t39 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t36) + 16);
+    out.writeU16(t37);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830a4, held ahead of the effects the ELF orders after it
+    unsigned long t40 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830a7, held ahead of the effects the ELF orders after it
+    u16 t41 = mMaxStRev;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830af, held ahead of the effects the ELF orders after it
+    unsigned long t43 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t40) + 16);
+    out.writeU16(t41);
+    // inferred: a temporary for the value the load at 0x6830b2 read, used once; no DWARF local holds it
+    u8 t44 = mColorNo;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830b6, held ahead of the effects the ELF orders after it
+    u32 t45 = out.mSeekPt;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6830ba, held ahead of the effects the ELF orders after it
+    u32 t46 = out.mBufsiz;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_3;
+    // inferred: the value carried to 0x6831b3; no location-less local in scope fits
+    u32 v1_0;
+    if (t45 >= t46) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830c0, held ahead of the effects the ELF orders after it
+        unsigned long t47 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830c6, held ahead of the effects the ELF orders after it
+        unsigned long t49 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t47) + 112);
+        out.flush();
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830c9, held ahead of the effects the ELF orders after it
+        u32 t50 = out.mSeekPt;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830cd, held ahead of the effects the ELF orders after it
+        u8* t51 = out.mBuffer;
+        t51[t50] = t44;
+        // inferred: a temporary for the value the load at 0x6830d6 read, used twice; no DWARF local holds it
+        u32 t52 = out.mSeekPt;
+        out.mSeekPt = t52 + 1u;
+        // inferred: a temporary for the value the load at 0x6830e0 read, used once; no DWARF local holds it
+        u8 t53 = mSex;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830e4, held ahead of the effects the ELF orders after it
+        u32 t54 = out.mBufsiz;
+        if (out.mSeekPt >= t54) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830ea, held ahead of the effects the ELF orders after it
+            unsigned long t55 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f0, held ahead of the effects the ELF orders after it
+            unsigned long t57 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t55) + 112);
+            out.flush();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f3, held ahead of the effects the ELF orders after it
+            u32 t58 = out.mSeekPt;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f7, held ahead of the effects the ELF orders after it
+            u8* t59 = out.mBuffer;
+            t59[t58] = t53;
+            // inferred: a temporary for the value the load at 0x683100 read, used twice; no DWARF local holds it
+            u32 t60 = out.mSeekPt;
+            out.mSeekPt = t60 + 1u;
+            // inferred: a temporary for the value the load at 0x68310a read, used once; no DWARF local holds it
+            u8 t61 = mModelParts;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x68310e, held ahead of the effects the ELF orders after it
+            u32 t62 = out.mBufsiz;
+            if (out.mSeekPt >= t62) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683114, held ahead of the effects the ELF orders after it
+                unsigned long t63 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311a, held ahead of the effects the ELF orders after it
+                unsigned long t65 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t63) + 112);
+                out.flush();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311d, held ahead of the effects the ELF orders after it
+                u32 t66 = out.mSeekPt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t66] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t60 + 1u] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f7, held ahead of the effects the ELF orders after it
+            u8* t59 = out.mBuffer;
+            t59[t52 + 1u] = t53;
+            // inferred: a temporary for the value the load at 0x683100 read, used twice; no DWARF local holds it
+            u32 t60 = out.mSeekPt;
+            out.mSeekPt = t60 + 1u;
+            // inferred: a temporary for the value the load at 0x68310a read, used once; no DWARF local holds it
+            u8 t61 = mModelParts;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x68310e, held ahead of the effects the ELF orders after it
+            u32 t62 = out.mBufsiz;
+            if (out.mSeekPt >= t62) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683114, held ahead of the effects the ELF orders after it
+                unsigned long t63 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311a, held ahead of the effects the ELF orders after it
+                unsigned long t65 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t63) + 112);
+                out.flush();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311d, held ahead of the effects the ELF orders after it
+                u32 t66 = out.mSeekPt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t66] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t60 + 1u] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830cd, held ahead of the effects the ELF orders after it
+        u8* t51 = out.mBuffer;
+        t51[t45] = t44;
+        // inferred: a temporary for the value the load at 0x6830d6 read, used twice; no DWARF local holds it
+        u32 t52 = out.mSeekPt;
+        out.mSeekPt = t52 + 1u;
+        // inferred: a temporary for the value the load at 0x6830e0 read, used once; no DWARF local holds it
+        u8 t53 = mSex;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6830e4, held ahead of the effects the ELF orders after it
+        u32 t54 = out.mBufsiz;
+        if (out.mSeekPt >= t54) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830ea, held ahead of the effects the ELF orders after it
+            unsigned long t55 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f0, held ahead of the effects the ELF orders after it
+            unsigned long t57 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t55) + 112);
+            out.flush();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f3, held ahead of the effects the ELF orders after it
+            u32 t58 = out.mSeekPt;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f7, held ahead of the effects the ELF orders after it
+            u8* t59 = out.mBuffer;
+            t59[t58] = t53;
+            // inferred: a temporary for the value the load at 0x683100 read, used twice; no DWARF local holds it
+            u32 t60 = out.mSeekPt;
+            out.mSeekPt = t60 + 1u;
+            // inferred: a temporary for the value the load at 0x68310a read, used once; no DWARF local holds it
+            u8 t61 = mModelParts;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x68310e, held ahead of the effects the ELF orders after it
+            u32 t62 = out.mBufsiz;
+            if (out.mSeekPt >= t62) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683114, held ahead of the effects the ELF orders after it
+                unsigned long t63 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311a, held ahead of the effects the ELF orders after it
+                unsigned long t65 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t63) + 112);
+                out.flush();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311d, held ahead of the effects the ELF orders after it
+                u32 t66 = out.mSeekPt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t66] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t60 + 1u] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6830f7, held ahead of the effects the ELF orders after it
+            u8* t59 = out.mBuffer;
+            t59[t52 + 1u] = t53;
+            // inferred: a temporary for the value the load at 0x683100 read, used twice; no DWARF local holds it
+            u32 t60 = out.mSeekPt;
+            out.mSeekPt = t60 + 1u;
+            // inferred: a temporary for the value the load at 0x68310a read, used once; no DWARF local holds it
+            u8 t61 = mModelParts;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x68310e, held ahead of the effects the ELF orders after it
+            u32 t62 = out.mBufsiz;
+            if (out.mSeekPt >= t62) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683114, held ahead of the effects the ELF orders after it
+                unsigned long t63 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311a, held ahead of the effects the ELF orders after it
+                unsigned long t65 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t63) + 112);
+                out.flush();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x68311d, held ahead of the effects the ELF orders after it
+                u32 t66 = out.mSeekPt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t66] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683121, held ahead of the effects the ELF orders after it
+                u8* t67 = out.mBuffer;
+                t67[t60 + 1u] = t61;
+                // inferred: a temporary for the value the load at 0x68312a read, used twice; no DWARF local holds it
+                u32 t68 = out.mSeekPt;
+                out.mSeekPt = t68 + 1u;
+                // inferred: a temporary for the value the load at 0x683134 read, used once; no DWARF local holds it
+                u8 t69 = mEleSlot;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x683138, held ahead of the effects the ELF orders after it
+                u32 t70 = out.mBufsiz;
+                if (out.mSeekPt >= t70) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68313e, held ahead of the effects the ELF orders after it
+                    unsigned long t71 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683144, held ahead of the effects the ELF orders after it
+                    unsigned long t73 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t71) + 112);
+                    out.flush();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683147, held ahead of the effects the ELF orders after it
+                    u32 t74 = out.mSeekPt;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t74] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x68314b, held ahead of the effects the ELF orders after it
+                    u8* t75 = out.mBuffer;
+                    t75[t68 + 1u] = t69;
+                    // inferred: a temporary for the value the load at 0x683154 read, used twice; no DWARF local holds it
+                    u32 t76 = out.mSeekPt;
+                    out.mSeekPt = t76 + 1u;
+                    // inferred: a temporary for the value the load at 0x68315e read, used once; no DWARF local holds it
+                    u8 t77 = mEquipParamS8Num;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x683162, held ahead of the effects the ELF orders after it
+                    u32 t78 = out.mBufsiz;
+                    if (out.mSeekPt >= t78) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683168, held ahead of the effects the ELF orders after it
+                        unsigned long t79 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&out) + 0);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68316e, held ahead of the effects the ELF orders after it
+                        unsigned long t81 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t79) + 112);
+                        out.flush();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683171, held ahead of the effects the ELF orders after it
+                        u32 t82 = out.mSeekPt;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t82] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t82;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x683175, held ahead of the effects the ELF orders after it
+                        u8* t83 = out.mBuffer;
+                        t83[t76 + 1u] = t77;
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x68317e, held ahead of the effects the ELF orders after it
+                        u32 t84 = out.mSeekPt;
+                        out.mSeekPt = t84 + 1u;
+                        if (mEquipParamS8Num == 0) {
+                            v1_0 = t76 + 1u;
+                            return true;
+                        } else {
+                            i0_3 = 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    for (;;) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x683190, held ahead of the effects the ELF orders after it
+        rEquipParamS8* t85 = mpEquipParamS8List;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x68319e, held ahead of the effects the ELF orders after it
+        unsigned long t86 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t85[i0_3]) + 0);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x6831a5, held ahead of the effects the ELF orders after it
+        unsigned long t88 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t86) + 56);
+        t85[i0_3].save(out);
+        if ((i0_3 + 1u) < mEquipParamS8Num) {
+            i0_3 += 1u;
+        } else {
+            v1_0 = mEquipParamS8Num;
+            break;
+        }
+    }
+    return true;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1620,6 +2755,8 @@ __attribute__((weak)) bool rItemList::rProtectorParam::save(MtDataWriter& out) {
 // No out-of-line body: no code in the ELF
 // u32 rItemList::rProtectorParam::setKindParam(rItemList::rItemParamXml* pParam, rItemList::rEquipParamS8* pEquipParamS8List);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rProtectorParam::MyDTI rItemList::rProtectorParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d400-0x0068d439 (called at rItemList.cpp:820)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d400-0x0068d439 (called at rItemList.h:1031)
@@ -1628,7 +2765,7 @@ __attribute__((weak)) bool rItemList::rProtectorParam::save(MtDataWriter& out) {
 // Address: 0x00681f20 - 0x00681fa9 (137 bytes)
 MtObject* rItemList::rProtectorParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rItemList::rProtectorParam;
+    return new (16u) rItemList::rProtectorParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1666,7 +2803,7 @@ const MtDTI& rItemList::rEquipParamS32::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rItemList14rEquipParamS32D0Ev at 0x01a957f0-0x01a9581a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rItemList::rEquipParamS32::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rItemList::rEquipParamS32::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rItemList::rEquipParamS32::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1692,7 +2829,7 @@ __attribute__((weak)) void rItemList::rEquipParamS32::createProperty(MtPropertyL
 // Address: 0x0067fec0 - 0x0067fec5 (5 bytes)
 MtUI* rItemList::rEquipParamS32::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0067fed0 - 0x0067ff62 (146 bytes)
@@ -1721,6 +2858,8 @@ __attribute__((weak)) bool rItemList::rEquipParamS32::save(MtDataWriter& out) {
 
 // No out-of-line body: no code in the ELF
 // s16 rItemList::rEquipParamS32::getKindParamU32();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rItemList::rEquipParamS32::MyDTI rItemList::rEquipParamS32::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rItemList.cpp at 0x0068d34e-0x0068d38e (called at rItemList.cpp:53)

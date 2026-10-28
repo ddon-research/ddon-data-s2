@@ -108,6 +108,8 @@ __attribute__((weak)) void nCaplink::ContextListener::init() {
 //   in sCaplinkManager::cCaplinkListenerQueue::~cCaplinkListenerQueue at 0x0073439b-0x007343ec (called at sCaplinkManager.cpp:291)
 // void nCaplink::ContextListener::setError(s32 error_type, s32 error_code, MT_CTSTR detail_message);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::ContextListener::MyDTI nCaplink::ContextListener::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::ContextListener::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 

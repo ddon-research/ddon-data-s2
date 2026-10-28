@@ -63,32 +63,32 @@ MtNetCore::~MtNetCore() {
 // Address: 0x00db5900 - 0x00db5905 (5 bytes)
 void MtNetCore::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::MtNetObject::createProperty(s);
+    this->MtNetObject::createProperty(s);
 }
 
 // Address: 0x00db5910 - 0x00db5979 (105 bytes)
 void MtNetCore::addDependency(MtNetObject* obj) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount + static_cast<s32>(1);
+        mLockCount = mLockCount + 1;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtNetObject* * p0_0 = &this->mpDependObject[0];
+    MtNetObject* * p0_0 = &mpDependObject[0];
     // inferred: DWARF's location-less 'i' (lexical block [0xdb5939, 0xdb5956)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the value carried to 0xdb5956; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
-        if ((*p0_0) != static_cast<MtNetObject*>(nullptr)) {
-            if ((i + static_cast<s32>(1)) <= static_cast<s32>(3)) {
-                p0_0 += static_cast<int>(1);
-                i += static_cast<s32>(1);
+        if ((*p0_0) != nullptr) {
+            if ((i + 1) <= 3) {
+                p0_0 += 1;
+                i += 1;
             } else {
-                v1_1 = i + static_cast<s32>(1);
+                v1_1 = i + 1;
                 break;
             }
         } else {
@@ -97,10 +97,10 @@ void MtNetCore::addDependency(MtNetObject* obj) {
             break;
         }
     }
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount - static_cast<s32>(1);
-        if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -109,38 +109,38 @@ void MtNetCore::addDependency(MtNetObject* obj) {
 // Address: 0x00db5980 - 0x00db59ee (110 bytes)
 void MtNetCore::removeDependency(MtNetObject* obj) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        if (::scePthreadMutexLock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount + static_cast<s32>(1);
+        mLockCount = mLockCount + 1;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    MtNetObject* * p0_0 = &this->mpDependObject[0];
+    MtNetObject* * p0_0 = &mpDependObject[0];
     // inferred: DWARF's location-less 'i' (lexical block [0xdb59ab, 0xdb59c9)) is the counter this loop steps
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the value carried to 0xdb59c9; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
         if (obj != (*p0_0)) {
-            if ((i + static_cast<s32>(1)) <= static_cast<s32>(3)) {
-                p0_0 += static_cast<int>(1);
-                i += static_cast<s32>(1);
+            if ((i + 1) <= 3) {
+                p0_0 += 1;
+                i += 1;
             } else {
-                v1_1 = i + static_cast<s32>(1);
+                v1_1 = i + 1;
                 break;
             }
         } else {
-            *p0_0 = static_cast<MtNetObject*>(nullptr);
+            *p0_0 = nullptr;
             v1_1 = i;
             break;
         }
     }
-    if (this->::MtNetObject::mIsThreadSafe != false) {
-        this->::MtNetObject::mLockCount = this->::MtNetObject::mLockCount - static_cast<s32>(1);
-        if (::scePthreadMutexUnlock(&this->::MtNetObject::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mIsThreadSafe) {
+        mLockCount = mLockCount - 1;
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
             return;
         }
     }
@@ -194,7 +194,7 @@ __attribute__((weak)) MtNetSocket* MtNetCore::newSocket(s32 socket_lib, s32 sock
 // Address: 0x00db5f90 - 0x00db5fbf (47 bytes)
 MtNetRanking* MtNetCore::newRanking(MtNetContext* context) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::MtNetRanking(context);
+    return new (16u) MtNetRanking(context);
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,19 +292,19 @@ __attribute__((weak)) void MtNetCore::netCtlCallback(int event_type, void* arg_p
 // Address: 0x00db5df0 - 0x00db5e0d (29 bytes)
 void MtNetCore::npStateCallback(SceUserServiceUserId user_id, SceNpState np_state, SceNpId* np_id_ptr, void* arg_ptr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::MtNetMediator::mpInstance)->::MtNetMediator::setPsnUsrInfo(user_id, np_state, np_id_ptr);
+    (MtNetMediator::mpInstance)->MtNetMediator::setPsnUsrInfo(user_id, np_state, np_id_ptr);
 }
 
 // Address: 0x00db5e10 - 0x00db5e2e (30 bytes)
 void MtNetCore::npPresenceCallback(const SceNpOnlineId* online_id_ptr, SceNpGamePresenceStatus status, void* arg_ptr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::MtNetMediator::mpInstance)->::MtNetMediator::setPresenceCanUse(*online_id_ptr, status == static_cast<SceNpGamePresenceStatus>(1));
+    (MtNetMediator::mpInstance)->MtNetMediator::setPresenceCanUse(*online_id_ptr, status == SCE_NP_GAME_PRESENCE_STATUS_ONLINE);
 }
 
 // Address: 0x00db5e30 - 0x00db5e4a (26 bytes)
 void MtNetCore::npMatchContextCallback(SceNpMatching2ContextId context_id, SceNpMatching2Event event_id, SceNpMatching2EventCause event_cause, int error_code, void* arg_ptr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::MtNetMediator::mpInstance)->::MtNetMediator::setNpMatchContextEvent(context_id, event_id, event_cause, error_code);
+    (MtNetMediator::mpInstance)->MtNetMediator::setNpMatchContextEvent(context_id, event_id, event_cause, error_code);
 }
 
 // Address: 0x00db5e50 - 0x00db5ed0 (128 bytes)
@@ -323,4 +323,12 @@ __attribute__((weak)) void MtNetCore::npPartyRoomCallback(SceNpPartyRoomEventTyp
 
 // No out-of-line body: no code in the ELF
 // void MtNetCore::npPartyBinaryMessageCallback(SceNpPartyBinaryMessageEvent event_type, const void* data_ptr, void* arg_ptr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection MtNetCore::mStaticCS;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtNetCore* MtNetCore::mpInstance;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtNetContext* MtNetCore::mpContext[4];
 

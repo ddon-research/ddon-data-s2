@@ -107,6 +107,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCraftElementExpData::cCraftElementExpData() {
-    this->mExp = static_cast<u64>(0);
-    this->mPrice = static_cast<u32>(0);
+    this->mExp = 0;
+    this->mPrice = 0;
 }

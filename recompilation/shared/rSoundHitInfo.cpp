@@ -37,7 +37,7 @@ const MtDTI& rSoundHitInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundHitInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::DTI)->memAlloc(sz, align, ::rSoundHitInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memAlloc(sz, align, rSoundHitInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rSoundHitInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundHitInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,11 +66,11 @@ inline void rSoundHitInfo::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rSoundHitInfo::rSoundHitInfo() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->::cResource::clear();
-    this->mpArrayData = static_cast<rSoundHitInfo::cSoundHitInfo*>(nullptr);
-    this->mArrayDataNum = static_cast<u32>(0);
-    this->mVersion = static_cast<u32>(5);
+    setAttribute(22u);
+    this->cResource::clear();
+    mpArrayData = nullptr;
+    mArrayDataNum = 0;
+    mVersion = 5;
 }
 
 // Address: 0x006ee200 - 0x006ee285 (133 bytes)
@@ -101,18 +101,18 @@ __attribute__((weak)) bool rSoundHitInfo::load(MtStream& in) {
 bool rSoundHitInfo::save(MtStream& out) {
     // DWARF local not rendered: cSoundHitInfo* pData;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeS32(static_cast<s32>(4802643));
-    (&w)->writeU32(static_cast<u32>(5));
-    (&w)->writeU32(this->mArrayDataNum);
-    if (this->mArrayDataNum == static_cast<u32>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeS32(4802643);
+    (&w)->writeU32(5u);
+    (&w)->writeU32(mArrayDataNum);
+    if (mArrayDataNum == 0) {
         return true;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mpArrayData[i].::rSoundHitInfo::cSoundHitInfo::save(w);
-        i += static_cast<u32>(1);
-    } while (i < this->mArrayDataNum);
+        mpArrayData[i].save(w);
+        i += 1u;
+    } while (i < mArrayDataNum);
     return true;
 }
 
@@ -129,6 +129,8 @@ __attribute__((weak)) rSoundHitInfo::cSoundHitInfo* rSoundHitInfo::getHitInfo(u3
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundHitInfo::MyDTI rSoundHitInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundHitInfo.cpp at 0x006ee6d2-0x006ee70f (called at rSoundHitInfo.cpp:243)
 //   in _GLOBAL__sub_I_rSoundHitInfo.cpp at 0x006ee6d2-0x006ee70f (called at rSoundHitInfo.h:118)
@@ -137,7 +139,7 @@ __attribute__((weak)) rSoundHitInfo::cSoundHitInfo* rSoundHitInfo::getHitInfo(u3
 // Address: 0x006ee100 - 0x006ee173 (115 bytes)
 MtObject* rSoundHitInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundHitInfo;
+    return new (16u) rSoundHitInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -163,7 +165,7 @@ const MtDTI& rSoundHitInfo::cSoundHitInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundHitInfo::cSoundHitInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::cSoundHitInfo::DTI)->memAlloc(sz, align, ::rSoundHitInfo::cSoundHitInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundHitInfo::cSoundHitInfo::DTI)->memAlloc(sz, align, rSoundHitInfo::cSoundHitInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +179,7 @@ inline void* rSoundHitInfo::cSoundHitInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundHitInfo::cSoundHitInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::cSoundHitInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundHitInfo::cSoundHitInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,7 +211,7 @@ __attribute__((weak)) void rSoundHitInfo::cSoundHitInfo::createProperty(MtProper
 // Address: 0x006edee0 - 0x006edee5 (5 bytes)
 MtUI* rSoundHitInfo::cSoundHitInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -220,58 +222,58 @@ bool rSoundHitInfo::cSoundHitInfo::load(MtDataReader& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mBody);
+    nDDOIO::readData(in, mBody);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mBone);
+    nDDOIO::readData(in, mBone);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mIron);
+    nDDOIO::readData(in, mIron);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mStone);
+    nDDOIO::readData(in, mStone);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mWood);
+    nDDOIO::readData(in, mWood);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mWater);
+    nDDOIO::readData(in, mWater);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mSmoke);
+    nDDOIO::readData(in, mSmoke);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mAalche);
+    nDDOIO::readData(in, mAalche);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mIce);
+    nDDOIO::readData(in, mIce);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mWeek1);
+    nDDOIO::readData(in, mWeek1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mWeek2);
+    nDDOIO::readData(in, mWeek2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc00);
+    nDDOIO::readData(in, mEtc00);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc01);
+    nDDOIO::readData(in, mEtc01);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc02);
+    nDDOIO::readData(in, mEtc02);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc03);
+    nDDOIO::readData(in, mEtc03);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc04);
+    nDDOIO::readData(in, mEtc04);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc05);
+    nDDOIO::readData(in, mEtc05);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, this->mEtc06);
+    nDDOIO::readData(in, mEtc06);
     return true;
 }
 
@@ -279,41 +281,41 @@ bool rSoundHitInfo::cSoundHitInfo::load(MtDataReader& in) {
 __attribute__((weak)) bool rSoundHitInfo::cSoundHitInfo::save(MtDataWriter& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mBody);
+    nDDOIO::writeData(out, mBody);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mBone);
+    nDDOIO::writeData(out, mBone);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mIron);
+    nDDOIO::writeData(out, mIron);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mStone);
+    nDDOIO::writeData(out, mStone);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mWood);
+    nDDOIO::writeData(out, mWood);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mWater);
+    nDDOIO::writeData(out, mWater);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mSmoke);
+    nDDOIO::writeData(out, mSmoke);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mAalche);
+    nDDOIO::writeData(out, mAalche);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mIce);
+    nDDOIO::writeData(out, mIce);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mWeek1);
+    nDDOIO::writeData(out, mWeek1);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mWeek2);
+    nDDOIO::writeData(out, mWeek2);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc00);
+    nDDOIO::writeData(out, mEtc00);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc01);
+    nDDOIO::writeData(out, mEtc01);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc02);
+    nDDOIO::writeData(out, mEtc02);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc03);
+    nDDOIO::writeData(out, mEtc03);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc04);
+    nDDOIO::writeData(out, mEtc04);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc05);
+    nDDOIO::writeData(out, mEtc05);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(out, this->mEtc06);
+    nDDOIO::writeData(out, mEtc06);
     return true;
 }
 
@@ -388,6 +390,8 @@ __attribute__((weak)) bool rSoundHitInfo::cSoundHitInfo::save(MtDataWriter& out)
 // No out-of-line body: no code in the ELF
 // s32 rSoundHitInfo::cSoundHitInfo::getEtc06() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundHitInfo::cSoundHitInfo::MyDTI rSoundHitInfo::cSoundHitInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rSoundHitInfo.cpp at 0x006ee690-0x006ee6d2 (called at rSoundHitInfo.cpp:39)
 //   in _GLOBAL__sub_I_rSoundHitInfo.cpp at 0x006ee690-0x006ee6d2 (called at rSoundHitInfo.h:34)
@@ -396,6 +400,6 @@ __attribute__((weak)) bool rSoundHitInfo::cSoundHitInfo::save(MtDataWriter& out)
 // Address: 0x006ecf60 - 0x006ecfe8 (136 bytes)
 MtObject* rSoundHitInfo::cSoundHitInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundHitInfo::cSoundHitInfo;
+    return new (16u) rSoundHitInfo::cSoundHitInfo;
 }
 

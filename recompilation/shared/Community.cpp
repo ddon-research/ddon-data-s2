@@ -25,7 +25,7 @@ const MtDTI& CDataCharacterListElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCharacterListElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCharacterListElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCharacterListElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* CDataCharacterListElement::getAllocator() {
 // Address: 0x003bd760 - 0x003bd7a0 (64 bytes)
 void* CDataCharacterListElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCharacterListElement::getAllocator()->memAlloc(sz, align, ::CDataCharacterListElement::DTI.::MtDTI::getID());
+    return CDataCharacterListElement::getAllocator()->memAlloc(sz, align, CDataCharacterListElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* CDataCharacterListElement::operator new(size_t sz, u32 align) {
 // Address: 0x003bd7d0 - 0x003bd7fa (42 bytes)
 __attribute__((weak)) void CDataCharacterListElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCharacterListElement::getAllocator()->memFree(p_addr);
+    CDataCharacterListElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataCharacterListElement::operator delete(void* p_ad
 
 // No out-of-line body: no code in the ELF
 // CDataCharacterListElement::CDataCharacterListElement(const CCommunityCharacterBaseInfo&, u16, u8, const CJobBaseInfo&, const CJobBaseInfo&, const char*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCharacterListElement::MyDTI CDataCharacterListElement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419ffd-0x0041a036 (called at CommunityImplement.inc:10)
@@ -96,7 +98,7 @@ const MtDTI& CDataCharacterName::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCharacterName::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCharacterName::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCharacterName::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,7 +120,7 @@ inline MtAllocator* CDataCharacterName::getAllocator() {
 // Address: 0x003bd3e0 - 0x003bd40a (42 bytes)
 __attribute__((weak)) void CDataCharacterName::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCharacterName::getAllocator()->memFree(p_addr);
+    CDataCharacterName::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ CDataCharacterName::CDataCharacterName(const char* in_strFirstName, const char* 
     DDON_STUB("CDataCharacterName::CDataCharacterName")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCharacterName::MyDTI CDataCharacterName::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419f52-0x00419f8b (called at CommunityImplement.inc:7)
@@ -168,7 +172,7 @@ const MtDTI& CDataCommunityCharacterBaseInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCommunityCharacterBaseInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCommunityCharacterBaseInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCommunityCharacterBaseInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataCommunityCharacterBaseInfo::getAllocator() {
 // Address: 0x003bd4b0 - 0x003bd4f0 (64 bytes)
 void* CDataCommunityCharacterBaseInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCommunityCharacterBaseInfo::getAllocator()->memAlloc(sz, align, ::CDataCommunityCharacterBaseInfo::DTI.::MtDTI::getID());
+    return CDataCommunityCharacterBaseInfo::getAllocator()->memAlloc(sz, align, CDataCommunityCharacterBaseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataCommunityCharacterBaseInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003bd520 - 0x003bd54a (42 bytes)
 __attribute__((weak)) void CDataCommunityCharacterBaseInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCommunityCharacterBaseInfo::getAllocator()->memFree(p_addr);
+    CDataCommunityCharacterBaseInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,6 +217,8 @@ __attribute__((weak)) void CDataCommunityCharacterBaseInfo::operator delete(void
 
 // No out-of-line body: no code in the ELF
 // CDataCommunityCharacterBaseInfo::CDataCommunityCharacterBaseInfo(u32, const CCharacterName&, const char*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCommunityCharacterBaseInfo::MyDTI CDataCommunityCharacterBaseInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419f8b-0x00419fc4 (called at CommunityImplement.inc:8)
@@ -239,7 +245,7 @@ const MtDTI& CDataFriendInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataFriendInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataFriendInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataFriendInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -248,7 +254,7 @@ inline MtAllocator* CDataFriendInfo::getAllocator() {
 // Address: 0x003bdb00 - 0x003bdb40 (64 bytes)
 void* CDataFriendInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataFriendInfo::getAllocator()->memAlloc(sz, align, ::CDataFriendInfo::DTI.::MtDTI::getID());
+    return CDataFriendInfo::getAllocator()->memAlloc(sz, align, CDataFriendInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,7 +269,7 @@ void* CDataFriendInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003bdb70 - 0x003bdb9a (42 bytes)
 __attribute__((weak)) void CDataFriendInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataFriendInfo::getAllocator()->memFree(p_addr);
+    CDataFriendInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -284,6 +290,8 @@ __attribute__((weak)) void CDataFriendInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataFriendInfo::CDataFriendInfo(const CCharacterListElement&, u8, u32, b8);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataFriendInfo::MyDTI CDataFriendInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041a0a8-0x0041a0e1 (called at CommunityImplement.inc:13)
@@ -310,7 +318,7 @@ const MtDTI& CDataJobBaseInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataJobBaseInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataJobBaseInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataJobBaseInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,7 +327,7 @@ inline MtAllocator* CDataJobBaseInfo::getAllocator() {
 // Address: 0x003bd5d0 - 0x003bd610 (64 bytes)
 void* CDataJobBaseInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataJobBaseInfo::getAllocator()->memAlloc(sz, align, ::CDataJobBaseInfo::DTI.::MtDTI::getID());
+    return CDataJobBaseInfo::getAllocator()->memAlloc(sz, align, CDataJobBaseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -334,7 +342,7 @@ void* CDataJobBaseInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003bd640 - 0x003bd66a (42 bytes)
 __attribute__((weak)) void CDataJobBaseInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataJobBaseInfo::getAllocator()->memFree(p_addr);
+    CDataJobBaseInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,6 +364,8 @@ __attribute__((weak)) void CDataJobBaseInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataJobBaseInfo::CDataJobBaseInfo(u8, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataJobBaseInfo::MyDTI CDataJobBaseInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419fc4-0x00419ffd (called at CommunityImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419fc4-0x00419ffd (called at Community.h:134)
@@ -364,6 +374,6 @@ __attribute__((weak)) void CDataJobBaseInfo::operator delete(void* p_addr) {
 // Address: 0x003bd580 - 0x003bd5c6 (70 bytes)
 MtObject* CDataJobBaseInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataJobBaseInfo;
+    return new (16u) CDataJobBaseInfo;
 }
 

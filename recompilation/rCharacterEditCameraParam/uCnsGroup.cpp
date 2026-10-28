@@ -77,29 +77,29 @@ __attribute__((weak)) void uCnsGroup::createProperty(MtPropertyList& s) {
 // Address: 0x0130f930 - 0x0130f935 (5 bytes)
 MtUI* uCnsGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x0130f940 - 0x0130f9b5 (117 bytes)
 void uCnsGroup::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::move();
-    this->mIsAdjustCalculated = false;
-    if (this->mpTmpResource == static_cast<cResource*>(nullptr)) {
+    this->uConstraint::move();
+    mIsAdjustCalculated = false;
+    if (mpTmpResource == nullptr) {
         return;
     }
-    this->setResource(this->mpTmpResource);
-    if (this->mpTmpResource != static_cast<cResource*>(nullptr)) {
-        this->mpTmpResource->::cResource::release();
-        this->mpTmpResource = static_cast<cResource*>(nullptr);
+    setResource(mpTmpResource);
+    if (mpTmpResource != nullptr) {
+        mpTmpResource->release();
+        mpTmpResource = nullptr;
     }
-    if (this->mGroupNum == static_cast<u32>(0)) {
+    if (mGroupNum == 0) {
         return;
     }
-    if (this->::uConstraint::mpModel == static_cast<uModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    this->update();
+    update();
 }
 
 // Address: 0x0130f9c0 - 0x0130f9c1 (1 bytes)
@@ -122,16 +122,16 @@ cResource* uCnsGroup::getResource() {
 // Address: 0x0130f9d0 - 0x0130fa1c (76 bytes)
 void uCnsGroup::remove() {
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mGroupNum == static_cast<u32>(0)) {
-        this->::uConstraint::removeConstraint();
+    if (mGroupNum == 0) {
+        removeConstraint();
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mppGroups[i]->remove(false);
-        i += static_cast<u32>(1);
-    } while (i < this->mGroupNum);
-    this->::uConstraint::removeConstraint();
+        mppGroups[i]->remove(false);
+        i += 1u;
+    } while (i < mGroupNum);
+    removeConstraint();
 }
 
 // Address: 0x0130fa20 - 0x0130fb06 (230 bytes)
@@ -146,20 +146,20 @@ __attribute__((weak)) void uCnsGroup::update() {
 // Address: 0x0130fb20 - 0x0130fb7c (92 bytes)
 void uCnsGroup::setPri(u32 pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setPri(pri);
-    u32 i = static_cast<u32>(0);
-    if (this->mGroupNum != static_cast<u32>(0)) {
+    this->uConstraint::setPri(pri);
+    u32 i = 0;
+    if (mGroupNum != 0) {
         do {
-            this->mppGroups[i]->setPri(pri + static_cast<u32>(1));
-            i += static_cast<u32>(1);
-        } while (i < this->mGroupNum);
+            mppGroups[i]->setPri(pri + 1u);
+            i += 1u;
+        } while (i < mGroupNum);
     }
 }
 
 // Address: 0x01bbd630 - 0x01bbd633 (3 bytes)
 u32 uCnsGroup::getDependentJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01bbd640 - 0x01bbd643 (3 bytes)
@@ -181,15 +181,15 @@ __attribute__((weak)) void uCnsGroup::reset() {
 // Address: 0x01b68380 - 0x01b683c9 (73 bytes)
 void uCnsGroup::setModelUpdate(uModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setModel(pModel);
-    if (this->::uConstraint::mpModel != static_cast<uModel*>(nullptr)) {
-        if (this->mGroupNum != static_cast<u32>(0)) {
-            this->update();
+    setModel(pModel);
+    if (mpModel != nullptr) {
+        if (mGroupNum != 0) {
+            update();
         } else {
-            this->remove();
+            remove();
         }
     } else {
-        this->remove();
+        remove();
     }
 }
 
@@ -259,6 +259,8 @@ __attribute__((weak)) void uCnsGroup::setResourceNextMove(cResource* pRes) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCnsGroup::MyDTI uCnsGroup::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -301,7 +303,7 @@ const MtDTI& uCnsGroup::cGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9uCnsGroup6cGroupD0Ev at 0x0130ea6e-0x0130ea8f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsGroup::cGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsGroup::cGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,7 +338,7 @@ __attribute__((weak)) void uCnsGroup::cGroup::createProperty(MtPropertyList& s) 
 // Address: 0x0130f040 - 0x0130f045 (5 bytes)
 MtUI* uCnsGroup::cGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -345,12 +347,12 @@ MtUI* uCnsGroup::cGroup::createUI(MtProperty& prop) {
 // Address: 0x0130f050 - 0x0130f0a1 (81 bytes)
 void uCnsGroup::cGroup::setPri(u32 pri) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 i = static_cast<u32>(0);
-    if (this->mNodeNum != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (mNodeNum != 0) {
         do {
-            this->mpCnsChildlen[i].setPri(pri);
-            i += static_cast<u32>(1);
-        } while (i < this->mNodeNum);
+            mpCnsChildlen[i].setPri(pri);
+            i += 1u;
+        } while (i < mNodeNum);
     }
 }
 
@@ -365,21 +367,21 @@ __attribute__((weak)) bool uCnsGroup::cGroup::update(bool resetFlg) {
 // Address: 0x0130f0b0 - 0x0130f116 (102 bytes)
 void uCnsGroup::cGroup::remove(bool resetFlg) {
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mNodeNum == static_cast<u32>(0)) {
-        this->mIsReady = false;
-        if (resetFlg != false) {
-            this->mpCnsGroup->reset();
+    if (mNodeNum == 0) {
+        mIsReady = false;
+        if (resetFlg) {
+            mpCnsGroup->reset();
         }
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mpCnsChildlen[i].::uConstraint::removeConstraint();
-        i += static_cast<u32>(1);
-    } while (i < this->mNodeNum);
-    this->mIsReady = false;
-    if (resetFlg != false) {
-        this->mpCnsGroup->reset();
+        mpCnsChildlen[i].removeConstraint();
+        i += 1u;
+    } while (i < mNodeNum);
+    mIsReady = false;
+    if (resetFlg) {
+        mpCnsGroup->reset();
     }
 }
 
@@ -389,13 +391,13 @@ void uCnsGroup::cGroup::remove(bool resetFlg) {
 // Address: 0x01bbd730 - 0x01bbd73d (13 bytes)
 u32 uCnsGroup::cGroup::getDependentJointNum(u32 cnsIdx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCnsGroup->getDependentJointNum();
+    return mpCnsGroup->getDependentJointNum();
 }
 
 // Address: 0x01b68600 - 0x01b68612 (18 bytes)
 uModel::Joint* uCnsGroup::cGroup::getDependentJoint(u32 cnsIdx, u32 dependIdx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCnsGroup->getDependentJoint(dependIdx);
+    return mpCnsGroup->getDependentJoint(dependIdx);
 }
 
 // Defined in the class (its body was written in a header).
@@ -425,7 +427,7 @@ __attribute__((weak)) uCnsGroup::cNode* uCnsGroup::cGroup::createNode(u32 idx) {
 // Address: 0x01b686b0 - 0x01b686bb (11 bytes)
 uCnsGroup::cNode* uCnsGroup::cGroup::getNode(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mppNodes[idx];
+    return mppNodes[idx];
 }
 
 // Address: 0x0130ee70 - 0x0130f039 (457 bytes)
@@ -443,7 +445,7 @@ __attribute__((weak)) void uCnsGroup::cGroup::setNodeNum(u32 num) {
 // Address: 0x01bbd5c0 - 0x01bbd5c4 (4 bytes)
 u32 uCnsGroup::cGroup::getNodeNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNodeNum;
+    return mNodeNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -462,8 +464,10 @@ __attribute__((weak)) void uCnsGroup::cGroup::resizeCnsChildlen() {
 // Address: 0x01bbd5a0 - 0x01bbd5b1 (17 bytes)
 void uCnsGroup::cGroup::updateForProperty(u32 updateDepend) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->update(updateDepend != static_cast<u32>(0));
+    update(updateDepend != 0);
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCnsGroup::cGroup::MyDTI uCnsGroup::cGroup::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsGroup::cGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -506,7 +510,7 @@ const MtDTI& uCnsGroup::cNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uCnsGroup::cNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsGroup::cNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -521,7 +525,7 @@ inline void uCnsGroup::cNode::operator delete(void* p_addr) {
 // Address: 0x0130e700 - 0x0130e716 (22 bytes)
 uCnsGroup::cNode::cNode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mJointNo = static_cast<u32>(255);
+    mJointNo = 255;
 }
 
 // Address: 0x0130e720 - 0x0130e721 (1 bytes)
@@ -539,7 +543,7 @@ __attribute__((weak)) void uCnsGroup::cNode::createProperty(MtPropertyList& s) {
 // Address: 0x0130e850 - 0x0130e855 (5 bytes)
 MtUI* uCnsGroup::cNode::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -547,6 +551,8 @@ MtUI* uCnsGroup::cNode::createUI(MtProperty& prop) {
 
 // No out-of-line body: no code in the ELF
 // u32 uCnsGroup::cNode::getJointNo();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCnsGroup::cNode::MyDTI uCnsGroup::cNode::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsGroup::cNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -590,7 +596,7 @@ const MtDTI& uCnsGroup::cCnsChild::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9uCnsGroup9cCnsChildD0Ev at 0x01bbd7ee-0x01bbd80f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCnsGroup::cCnsChild::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cCnsChild::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsGroup::cCnsChild::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -617,7 +623,7 @@ inline void uCnsGroup::cCnsChild::operator delete(void* p_addr) {
 // Address: 0x01bbd8a0 - 0x01bbd8c5 (37 bytes)
 void uCnsGroup::cCnsChild::adjust(uModel::Joint* pjnt, uModel* pmod) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpGroup->adjust(this->mIndex, pjnt, pmod);
+    mpGroup->adjust(mIndex, pjnt, pmod);
 }
 
 // Defined in the class (its body was written in a header).
@@ -632,14 +638,16 @@ cResource* uCnsGroup::cCnsChild::getResource() {
 // Address: 0x01bbd860 - 0x01bbd879 (25 bytes)
 u32 uCnsGroup::cCnsChild::getDependentJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGroup->getDependentJointNum(this->mIndex);
+    return mpGroup->getDependentJointNum(mIndex);
 }
 
 // Address: 0x01bbd880 - 0x01bbd89f (31 bytes)
 uModel::Joint* uCnsGroup::cCnsChild::getDependentJoint(u32 Idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGroup->getDependentJoint(this->mIndex, Idx);
+    return mpGroup->getDependentJoint(mIndex, Idx);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsGroup::cCnsChild::MyDTI uCnsGroup::cCnsChild::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCnsGroup::cCnsChild::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

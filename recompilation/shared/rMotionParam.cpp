@@ -36,7 +36,7 @@ const MtDTI& cMotionParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMotionParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memAlloc(sz, align, ::cMotionParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMotionParam::DTI)->memAlloc(sz, align, cMotionParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cMotionParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMotionParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMotionParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cMotionParam::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cMotionParam::~cMotionParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMotionParam::MyDTI cMotionParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMotionParam.cpp at 0x006a50d0-0x006a5112 (called at rMotionParam.cpp:40)
 //   in _GLOBAL__sub_I_rMotionParam.cpp at 0x006a50d0-0x006a5112 (called at rMotionParam.h:45)
@@ -84,7 +86,7 @@ inline void cMotionParam::operator delete(void* p_addr) {
 // Address: 0x006a4eb0 - 0x006a4f09 (89 bytes)
 MtObject* cMotionParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMotionParam;
+    return new (16u) cMotionParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rMotionParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMotionParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMotionParam::DTI)->memAlloc(sz, align, ::rMotionParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMotionParam::DTI)->memAlloc(sz, align, rMotionParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rMotionParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rMotionParamD0Ev at 0x01a9d0c4-0x01a9d0e3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMotionParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMotionParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMotionParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,16 +143,16 @@ bool rMotionParam::loadData(MtDataReader& r, cMotionParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mInterFrame);
+    nDDOIO::readData(r, pData->mInterFrame);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIsContinue);
+    nDDOIO::readData(r, pData->mIsContinue);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIKFlag);
+    nDDOIO::readData(r, pData->mIKFlag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIKFlagFSM);
+    nDDOIO::readData(r, pData->mIKFlagFSM);
     return true;
 }
 
@@ -163,8 +165,10 @@ MT_CTSTR rMotionParam::getExt() const {
 // Address: 0x01a9d210 - 0x01a9d216 (6 bytes)
 u32 rMotionParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(21);
+    return 21;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMotionParam::MyDTI rMotionParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMotionParam.cpp at 0x006a5112-0x006a514f (called at rMotionParam.cpp:41)
@@ -174,7 +178,7 @@ u32 rMotionParam::getDataVersion() const {
 // Address: 0x006a4f80 - 0x006a4fe4 (100 bytes)
 MtObject* rMotionParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMotionParam;
+    return new (16u) rMotionParam;
 }
 
 // Instance at 0x01a9d1c0 - 0x01a9d1d6 (22 bytes) of the generic rTbl2<T>::getData

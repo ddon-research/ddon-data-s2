@@ -25,7 +25,7 @@ const MtDTI& cBitCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cBitCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cBitCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cBitCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cBitCtrl::getAllocator() {
 // Address: 0x000330c0 - 0x00033100 (64 bytes)
 void* cBitCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cBitCtrl::getAllocator()->memAlloc(sz, align, ::cBitCtrl::DTI.::MtDTI::getID());
+    return cBitCtrl::getAllocator()->memAlloc(sz, align, cBitCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cBitCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cBitCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBitCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBitCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,20 +64,20 @@ inline void cBitCtrl::operator delete(void* p_addr) {
 // Address: 0x00033170 - 0x00033197 (39 bytes)
 cBitCtrl::cBitCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpBitTableRes = static_cast<rBitTable*>(nullptr);
-    this->mOldBitData = static_cast<BitData>(0);
-    this->mCurrentBitData = static_cast<BitData>(0);
+    mpBitTableRes = nullptr;
+    mOldBitData = 0;
+    mCurrentBitData = 0;
 }
 
 // Address: 0x000331a0 - 0x000331d4 (52 bytes)
 // Also emitted as: _ZN8cBitCtrlD0Ev at 0x000331e0
 cBitCtrl::~cBitCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBitTableRes == static_cast<rBitTable*>(nullptr)) {
+    if (mpBitTableRes == nullptr) {
         return;
     }
-    this->mpBitTableRes->::cResource::release();
-    this->mpBitTableRes = static_cast<rBitTable*>(nullptr);
+    mpBitTableRes->release();
+    mpBitTableRes = nullptr;
 }
 
 // Address: 0x00033230 - 0x00033400 (464 bytes)
@@ -130,8 +130,8 @@ __attribute__((weak)) void cBitCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x000334b0 - 0x000334bc (12 bytes)
 BitData cBitCtrl::changeBitDataMaskOr(BitData mask) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCurrentBitData = mask | this->mCurrentBitData;
-    return this->mCurrentBitData;
+    mCurrentBitData = mask | mCurrentBitData;
+    return mCurrentBitData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -186,8 +186,10 @@ __attribute__((weak)) void cBitCtrl::setResource(rBitTable* pRes) {
 // Address: 0x01951250 - 0x01951255 (5 bytes)
 rBitTable* cBitCtrl::getResource() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpBitTableRes;
+    return mpBitTableRes;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBitCtrl::MyDTI cBitCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cBitCtrl.cpp at 0x00033720-0x00033762 (called at cBitCtrl.cpp:30)
@@ -197,6 +199,6 @@ rBitTable* cBitCtrl::getResource() const {
 // Address: 0x00033060 - 0x000330b8 (88 bytes)
 MtObject* cBitCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cBitCtrl;
+    return new (16u) cBitCtrl;
 }
 

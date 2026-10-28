@@ -17,6 +17,7 @@ class MtPropertyList;
 class MtUI;
 class aStage;
 class cFSMBase;
+class cQuestTask;
 namespace nLayout { class cGameDataCache; }
 namespace nSessionManager { class cNetSessionManager; }
 
@@ -40,6 +41,8 @@ class sFlag : public cSystem
     friend class aStage;
     // inferred: cFSMBase::stateUpdateGameGlobalFlagOn calls sFlag::setFlag
     friend class cFSMBase;
+    // inferred: cQuestTask::cQuestProcess::resultTutorialEnemyInvincibleOff calls sFlag::setFlag, through its enclosing class cQuestTask
+    friend class cQuestTask;
     // inferred: nDDOUtility::requestOnTutorialFlg calls sFlag::setFlag
     friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     // inferred: nLayout::cGameDataCache::setGameData calls sFlag::setFlag

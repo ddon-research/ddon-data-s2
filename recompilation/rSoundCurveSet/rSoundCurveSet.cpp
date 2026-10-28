@@ -31,7 +31,7 @@ const MtDTI& rSoundCurveSet::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK14rSoundCurveSet5MyDTI11newInstanceEv at 0x013706e0-0x0137070d, code DWARF attributes to no inlined copy; sz is the class's size (160), align the allocation's other whole constant (16)
 inline void* rSoundCurveSet::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memAlloc(sz, align, ::rSoundCurveSet::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memAlloc(sz, align, rSoundCurveSet::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* rSoundCurveSet::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rSoundCurveSetD0Ev at 0x01370885-0x013708a6, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundCurveSet::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,8 +66,8 @@ inline void rSoundCurveSet::operator delete(void* p_addr) {
 rSoundCurveSet::~rSoundCurveSet() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x1370808 read, used once; no DWARF local holds it
-    void* t0 = this->mpRawData;
-    ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memFree(t0);
+    void* t0 = mpRawData;
+    MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(t0);
 }
 
 // Address: 0x013708b0 - 0x01370a38 (392 bytes)
@@ -142,12 +142,14 @@ __attribute__((weak)) f32 rSoundCurveSet::getLFE(u32 index, f32 dist) const {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundCurveSet::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundCurveSet::MyDTI rSoundCurveSet::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundCurveSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x013706e0 - 0x01370770 (144 bytes)
 MtObject* rSoundCurveSet::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundCurveSet;
+    return new (16u) rSoundCurveSet;
 }
 

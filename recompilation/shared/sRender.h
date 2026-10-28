@@ -32,6 +32,7 @@ class MtUI;
 struct _SceKernelEventFlag;
 struct _SceKernelSema;
 class cDraw;
+class cStorageData;
 class cUnit;
 namespace nDraw { class BlendState; }
 namespace nDraw { class DepthStencilState; }
@@ -95,6 +96,10 @@ using uintptr = __uintptr_t;
 
 class sRender : public cSystem
 {
+    // inferred: cDraw::nextBuffer names sRender::mpInstance
+    friend class cDraw;
+    // inferred: cStorageData::stOptionDataSystem::reflectSavedGraphicOptionToGame names sRender::mDACGamma, through its enclosing class cStorageData
+    friend class cStorageData;
     // inferred: cUnit::isPossibleDrawFromDrawBuffer names sRender::mpInstance
     friend class cUnit;
     // inferred: sApp::execute names sRender::mpInstance
@@ -848,6 +853,18 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 inline sRender* sRender::getInstance() {
     return ::sRender::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cBrowserPS4::initialize at 0x17de6-0x17ded; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nDraw::HDeviceContext sRender::getDeviceContext() {
+    return this->mpDeviceContext;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sAreaExt::move at 0x722867-0x72286a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nDraw::FEATURE_LV sRender::getFeatureLevel() const {
+    return this->mFeatureLevel;
 }
 
 // Inline, no code of its own: checked where it is inlined.

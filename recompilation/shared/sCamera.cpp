@@ -46,7 +46,7 @@ const MtDTI& sCamera::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sCameraD0Ev at 0x012297de-0x012297ff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCamera::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCamera::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCamera::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -123,7 +123,7 @@ __attribute__((weak)) void sCamera::createProperty(MtPropertyList& s) {
 // Address: 0x0122a590 - 0x0122a595 (5 bytes)
 MtUI* sCamera::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0122ac10 - 0x0122af3d (813 bytes)
@@ -288,26 +288,31 @@ __attribute__((weak)) bool sCamera::isDispSphere(sCamera::VIEWPORT_NO vp, const 
 // Address: 0x01229660 - 0x0122967c (28 bytes)
 void sCamera::setInstancingDissolveDefaultParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInstancingDissolveStartDistance = 450.0f;
-    this->mInstancingDissolveEndDistance = 300.0f;
-    this->mInstancingDissolveAlpha = 0.5f;
+    mInstancingDissolveStartDistance = 450.0f;
+    mInstancingDissolveEndDistance = 300.0f;
+    mInstancingDissolveAlpha = 0.5f;
 }
 
 // Address: 0x0122af50 - 0x0122af6c (28 bytes)
 void sCamera::setInstancingDissolveEmLargeParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInstancingDissolveStartDistance = 1000.0f;
-    this->mInstancingDissolveEndDistance = 500.0f;
-    this->mInstancingDissolveAlpha = 0.3f;
+    mInstancingDissolveStartDistance = 1000.0f;
+    mInstancingDissolveEndDistance = 500.0f;
+    mInstancingDissolveAlpha = 0.3f;
 }
 
 // Address: 0x0122af70 - 0x0122af86 (22 bytes)
 void sCamera::setInstancingDissolveEventParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInstancingDissolveStartDistance = 0.0f;
-    this->mInstancingDissolveEndDistance = 0.0f;
-    this->mInstancingDissolveAlpha = 1.0f;
+    mInstancingDissolveStartDistance = 0.0f;
+    mInstancingDissolveEndDistance = 0.0f;
+    mInstancingDissolveAlpha = 1.0f;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sCamera::MyDTI sCamera::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sCamera* sCamera::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -373,7 +378,7 @@ sCamera::Viewport::~Viewport() {
 // Address: 0x01227cb0 - 0x01227cb5 (5 bytes)
 MtUI* sCamera::Viewport::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01227cc0 - 0x0122858d (2253 bytes)
@@ -503,6 +508,8 @@ __attribute__((weak)) void sCamera::Viewport::updateFrustum() {
     DDON_STUB("sCamera::Viewport::updateFrustum")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCamera::Viewport::MyDTI sCamera::Viewport::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCamera::Viewport::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

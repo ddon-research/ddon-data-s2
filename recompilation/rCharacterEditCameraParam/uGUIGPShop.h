@@ -1159,3 +1159,17 @@ private:
     static const u32 mCTTicketNameTable[1];
     static const _COGInfo mCTCOGInfoTable[4];
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIGPShopDialog::startGPShop at 0xabbc85-0xabbc8c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGPShop::setGPDialogOpen() {
+    this->mIsGPDialogOpen = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIGPShop::changeStatusList at 0xaae9f3-0xaaea11; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGPShop::endBrowser() {
+    this->mReqBrowserType = 1;
+    this->mHoldBrowserType = 0;
+    this->mIsCAPChargeBrowserExec = false;
+}

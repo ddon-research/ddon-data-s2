@@ -46,7 +46,7 @@ const MtDTI& cOnceRequestEffectType::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOnceRequestEffectType::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectType::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOnceRequestEffectType::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,100 +69,100 @@ inline void cOnceRequestEffectType::operator delete(void* p_addr) {
 // Also emitted as: _ZN22cOnceRequestEffectTypeD0Ev at 0x01968360
 cOnceRequestEffectType::~cOnceRequestEffectType() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mORETD.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mORETD.mLength != 0) {
         // inferred: the value the loop at 0x19682f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mORETD.::MtArray::mLength;
+        u32 v0_0 = mORETD.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mORETD.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mORETD.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mORETD.::MtArray::mLength) {
-                    v0_0 = this->mORETD.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mORETD.mpArray[i0_3] != nullptr) {
+                delete mORETD.mpArray[i0_3];
+                if ((i0_3 + 1u) < mORETD.mLength) {
+                    v0_0 = mORETD.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mORETD.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mORETD.::MtArray::mpArray));
+    if (mORETD.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mORETD.mpArray));
     }
-    this->mORETD.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mORETD.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mORETD.::MtArray::mLength = static_cast<u32>(0);
+    mORETD.mpArray = nullptr;
+    mORETD.mBufsiz = 0;
+    mORETD.mLength = 0;
 }
 
 // Address: 0x000a1550 - 0x000a15cc (124 bytes)
 void cOnceRequestEffectType::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mORETD.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mORETD.mLength != 0) {
         // inferred: the value the loop at 0xa1570 carries; no location-less local in scope fits
-        u32 v0_0 = this->mORETD.::MtArray::mLength;
+        u32 v0_0 = mORETD.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mORETD.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mORETD.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mORETD.::MtArray::mLength) {
-                    v0_0 = this->mORETD.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mORETD.mpArray[i0_3] != nullptr) {
+                delete mORETD.mpArray[i0_3];
+                if ((i0_3 + 1u) < mORETD.mLength) {
+                    v0_0 = mORETD.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mORETD.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mORETD.::MtArray::mpArray));
+    if (mORETD.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mORETD.mpArray));
     }
-    this->mORETD.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mORETD.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mORETD.::MtArray::mLength = static_cast<u32>(0);
+    mORETD.mpArray = nullptr;
+    mORETD.mBufsiz = 0;
+    mORETD.mLength = 0;
 }
 
 // Address: 0x000a15d0 - 0x000a164c (124 bytes)
 void cOnceRequestEffectType::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mORETD.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mORETD.mLength != 0) {
         // inferred: the value the loop at 0xa15f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mORETD.::MtArray::mLength;
+        u32 v0_0 = mORETD.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mORETD.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mORETD.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mORETD.::MtArray::mLength) {
-                    v0_0 = this->mORETD.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mORETD.mpArray[i0_3] != nullptr) {
+                delete mORETD.mpArray[i0_3];
+                if ((i0_3 + 1u) < mORETD.mLength) {
+                    v0_0 = mORETD.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mORETD.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mORETD.::MtArray::mpArray));
+    if (mORETD.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mORETD.mpArray));
     }
-    this->mORETD.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mORETD.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mORETD.::MtArray::mLength = static_cast<u32>(0);
+    mORETD.mpArray = nullptr;
+    mORETD.mBufsiz = 0;
+    mORETD.mLength = 0;
 }
 
 // Address: 0x01968420 - 0x01968484 (100 bytes)
@@ -202,6 +202,8 @@ __attribute__((weak)) void cOnceRequestEffectType::update() {
 //   in cOnceRequestEffectTypeSuperErosionCam::update at 0x000a1708-0x000a1713 (called at cEffectOnce.h:93)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // cOnceRequestEffectTypeData* cOnceRequestEffectType::getData(u32 idx);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOnceRequestEffectType::MyDTI cOnceRequestEffectType::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEffectOnce.cpp at 0x000a1aec-0x000a1b25 (called at cEffectOnce.cpp:27)
@@ -249,7 +251,7 @@ const MtDTI& cOnceRequestEffectTypeData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN26cOnceRequestEffectTypeDataD0Ev at 0x019684b0-0x019684da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cOnceRequestEffectTypeData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectTypeData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,9 +266,9 @@ inline void cOnceRequestEffectTypeData::operator delete(void* p_addr) {
 // Address: 0x000a1460 - 0x000a1474 (20 bytes)
 void cOnceRequestEffectTypeData::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpEffect = nullptr;
-    this->mPriority = static_cast<u32>(0);
-    this->mIsDraw = true;
+    mpEffect = nullptr;
+    mPriority = 0;
+    mIsDraw = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -295,6 +297,8 @@ void cOnceRequestEffectTypeData::init() {
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in cOnceRequestEffectTypeSuperErosionCam::isDraw at 0x000a1967-0x000a196e (called at cEffectOnce.cpp:153)
 // bool cOnceRequestEffectTypeData::getIsDraw();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOnceRequestEffectTypeData::MyDTI cOnceRequestEffectTypeData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cEffectOnce.cpp at 0x000a1a73-0x000a1ab3 (called at cEffectOnce.cpp:24)
@@ -397,6 +401,8 @@ __attribute__((weak)) bool cOnceRequestEffectTypeSuperErosionCam::isDraw(uEffect
 //   in cOnceRequestEffectTypeSuperErosionCam::update at 0x000a1776-0x000a177a (called at cEffectOnce.cpp:113)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // cOnceRequestEffectTypeSuperErosionCamData* cOnceRequestEffectTypeSuperErosionCam::getData(u32 idx);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOnceRequestEffectTypeSuperErosionCam::MyDTI cOnceRequestEffectTypeSuperErosionCam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cEffectOnce.cpp at 0x000a1b25-0x000a1b5e (called at cEffectOnce.cpp:28)

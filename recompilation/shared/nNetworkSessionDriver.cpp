@@ -103,13 +103,13 @@ __attribute__((weak)) void nNetwork::SessionDriver::setup(nNetwork::Session* par
 // Address: 0x00e42910 - 0x00e42946 (54 bytes)
 void nNetwork::SessionDriver::removeDriver() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDriver != static_cast<MtNetSession*>(nullptr)) {
-        delete this->mpDriver;
-        this->mpDriver = static_cast<MtNetSession*>(nullptr);
+    if (mpDriver != nullptr) {
+        delete mpDriver;
+        mpDriver = nullptr;
     }
-    this->mDrop = false;
-    this->mFinal = false;
-    this->mState = static_cast<s32>(0);
+    mDrop = false;
+    mFinal = false;
+    mState = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -152,9 +152,9 @@ __attribute__((weak)) bool nNetwork::SessionDriver::tryFinal() {
 // Address: 0x00e43720 - 0x00e43748 (40 bytes)
 bool nNetwork::SessionDriver::tryAbort() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDriver != static_cast<MtNetSession*>(nullptr)) {
-        if (this->mCoreSeq != static_cast<u32>(0)) {
-            this->mpDriver->::MtNetSession::abortRequest(this->mCoreSeq);
+    if (mpDriver != nullptr) {
+        if (mCoreSeq != 0) {
+            mpDriver->abortRequest(mCoreSeq);
             return true;
         }
     }
@@ -184,29 +184,29 @@ __attribute__((weak)) void nNetwork::SessionDriver::onNtcDestruct() {
 // Address: 0x00e42bc0 - 0x00e42bc5 (5 bytes)
 void nNetwork::SessionDriver::onNtcFinalize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrop = false;
+    mDrop = false;
 }
 
 // Address: 0x00e42be0 - 0x00e42c28 (72 bytes)
 void nNetwork::SessionDriver::onNtcDrop(MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrop = true;
-    this->mFinal = false;
-    this->mFinalTime = static_cast<MtNetTime::Total>(0);
-    this->mFinalCount = static_cast<s32>(0);
-    this->mpParent->mpDatabase->mAttribute = this->mpParent->mpDatabase->mAttribute & static_cast<u32>(4294967294);
-    this->mpParent->::nNetwork::Session::onDrop(err);
-    this->mState = static_cast<s32>(6);
+    mDrop = true;
+    mFinal = false;
+    mFinalTime = 0;
+    mFinalCount = 0;
+    mpParent->mpDatabase->mAttribute = mpParent->mpDatabase->mAttribute & 0xFFFFFFFEu;
+    mpParent->onDrop(err);
+    mState = 6;
 }
 
 // Address: 0x00e42c80 - 0x00e42cee (110 bytes)
 void nNetwork::SessionDriver::onNtcMemberJoin(s32 index, MtNetSession::Member* member) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setMemberData(index, member);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::updateSessionInfo(this->mpDriver, false, false);
-    this->mpParent->mpMatch->onJoinMember(index, member);
-    this->mpParent->::nNetwork::Session::updateMute(index);
-    this->mpParent->::nNetwork::Session::onJoinMember(index, member);
+    mpParent->mpDatabase->setMemberData(index, member);
+    mpParent->mpDatabase->updateSessionInfo(mpDriver, false, false);
+    mpParent->mpMatch->onJoinMember(index, member);
+    mpParent->updateMute(index);
+    mpParent->onJoinMember(index, member);
 }
 
 // Address: 0x00e42d60 - 0x00e42e0c (172 bytes)
@@ -218,89 +218,89 @@ __attribute__((weak)) void nNetwork::SessionDriver::onNtcMemberLeave(s32 index, 
 // Address: 0x00e42e20 - 0x00e42e8b (107 bytes)
 void nNetwork::SessionDriver::onNtcHostChange(s32 index, MtNetSession::Member* member) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::changeHostIndex(index, member);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::updateSessionInfo(this->mpDriver, false, false);
-    this->mpParent->mpMatch->onHostMemberChange(index, member);
-    this->mpParent->::nNetwork::Session::updateUniqueId();
-    this->mpParent->::nNetwork::Session::onHostMemberChange(index, member);
+    mpParent->mpDatabase->changeHostIndex(index, member);
+    mpParent->mpDatabase->updateSessionInfo(mpDriver, false, false);
+    mpParent->mpMatch->onHostMemberChange(index, member);
+    mpParent->updateUniqueId();
+    mpParent->onHostMemberChange(index, member);
 }
 
 // Address: 0x00e42f00 - 0x00e42f23 (35 bytes)
 void nNetwork::SessionDriver::onNtcLockChange(bool is_lock) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->mAttribute = (is_lock == false) ? (this->mpParent->mpDatabase->mAttribute & static_cast<u32>(4294967293)) : (this->mpParent->mpDatabase->mAttribute | static_cast<u32>(2));
+    mpParent->mpDatabase->mAttribute = !is_lock ? (mpParent->mpDatabase->mAttribute & 0xFFFFFFFDu) : (mpParent->mpDatabase->mAttribute | 2u);
 }
 
 // Address: 0x00e42f60 - 0x00e42f8a (42 bytes)
 void nNetwork::SessionDriver::onNtcGetSearchResult(MtNetSession::SearchResultList* result) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setSearchResult(result);
-    this->mpParent->::nNetwork::Session::onSearchResult(result);
+    mpParent->mpDatabase->setSearchResult(result);
+    mpParent->onSearchResult(result);
 }
 
 // Address: 0x00e42fc0 - 0x00e42fcd (13 bytes)
 void nNetwork::SessionDriver::onNtcGetBinary(s32 index, MtNetSessionInfo::Binary* binary) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setBinary(index, binary);
+    mpParent->mpDatabase->setBinary(index, binary);
 }
 
 // Address: 0x00e42fe0 - 0x00e42fed (13 bytes)
 void nNetwork::SessionDriver::onNtcGetPing(s32 index, MtNetSession::Ping* ping) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setPing(index, ping);
+    mpParent->mpDatabase->setPing(index, ping);
 }
 
 // Address: 0x00e43000 - 0x00e4304e (78 bytes)
 void nNetwork::SessionDriver::onReqP2pConnect(u32* req_seq, const MtNetUniqueId* uniq_id, const MtNetP2pConnectInfo* con_info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelfSeq = this->mSelfSeq + static_cast<u32>(1);
-    *req_seq = this->mSelfSeq;
-    this->mpParent->::nNetwork::Session::updateUniqueId();
-    this->mpParent->mpConnect->::nNetwork::Connect::createRoute(*req_seq, uniq_id, con_info, static_cast<s32*>(nullptr));
+    mSelfSeq = mSelfSeq + 1u;
+    *req_seq = mSelfSeq;
+    mpParent->updateUniqueId();
+    mpParent->mpConnect->createRoute(*req_seq, uniq_id, con_info, static_cast<s32*>(nullptr));
 }
 
 // Address: 0x00e430a0 - 0x00e430fa (90 bytes)
 void nNetwork::SessionDriver::onReqP2pConnect(u32* req_seq, const MtNetUniqueId* uniq_id, const MtNetP2pConnectInfo* con_info, s32* connect_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelfSeq = this->mSelfSeq + static_cast<u32>(1);
-    *req_seq = this->mSelfSeq;
-    this->mpParent->::nNetwork::Session::updateUniqueId();
-    this->mpParent->mpConnect->::nNetwork::Connect::createRoute(*req_seq, uniq_id, con_info, connect_id);
+    mSelfSeq = mSelfSeq + 1u;
+    *req_seq = mSelfSeq;
+    mpParent->updateUniqueId();
+    mpParent->mpConnect->createRoute(*req_seq, uniq_id, con_info, connect_id);
 }
 
 // Address: 0x00e43160 - 0x00e4317e (30 bytes)
 void nNetwork::SessionDriver::onNtcP2pSend(s32 route_index, const void* data_ptr, s32 data_size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->::nNetwork::Session::put(data_ptr, data_size, route_index, static_cast<u32>(196656), static_cast<u32>(1));
+    mpParent->put(data_ptr, data_size, route_index, 0x30030u, 1u);
 }
 
 // Address: 0x00e431a0 - 0x00e431af (15 bytes)
 void nNetwork::SessionDriver::onNtcP2pRemove(s32 route_index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpConnect->::nNetwork::Connect::removeRoute(route_index, static_cast<MtNetError*>(nullptr));
+    mpParent->mpConnect->removeRoute(route_index, static_cast<MtNetError*>(nullptr));
 }
 
 // Address: 0x00e431c0 - 0x00e43247 (135 bytes)
 void nNetwork::SessionDriver::onAnsCreateSucceed(u32 req_seq, s32 index, MtNetSession::Member* member, MtNetSessionInfo* info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->mAttribute = this->mpParent->mpDatabase->mAttribute | static_cast<u32>(1);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setSelfData(index, member);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::updateSessionInfo(this->mpDriver, true, false);
-    this->mpParent->::nNetwork::Session::updateMute(index);
-    if (this->mState == static_cast<s32>(3)) {
-        this->mState = static_cast<s32>(2);
+    mpParent->mpDatabase->mAttribute = mpParent->mpDatabase->mAttribute | 1u;
+    mpParent->mpDatabase->setSelfData(index, member);
+    mpParent->mpDatabase->updateSessionInfo(mpDriver, true, false);
+    mpParent->updateMute(index);
+    if (mState == 3) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onCreateComplete(true, static_cast<MtNetError*>(nullptr));
-    this->mpParent->::nNetwork::Session::onJoinMember(index, member);
+    mpParent->onCreateComplete(true, static_cast<MtNetError*>(nullptr));
+    mpParent->onJoinMember(index, member);
 }
 
 // Address: 0x00e43260 - 0x00e43278 (24 bytes)
 void nNetwork::SessionDriver::onAnsCreateFail(u32 req_seq, MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mState == static_cast<s32>(3)) {
-        this->mState = static_cast<s32>(1);
+    if (mState == 3) {
+        mState = 1;
     }
-    this->mpParent->::nNetwork::Session::onCreateComplete(false, err);
+    mpParent->onCreateComplete(false, err);
 }
 
 // Address: 0x00e432a0 - 0x00e432d6 (54 bytes)
@@ -318,82 +318,82 @@ __attribute__((weak)) void nNetwork::SessionDriver::onAnsSearchFail(u32 req_seq,
 // Address: 0x00e433a0 - 0x00e4343e (158 bytes)
 void nNetwork::SessionDriver::onAnsJoinSucceed(u32 req_seq, s32 index, MtNetSession::Member* member, MtNetSessionInfo* info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpDriver->canHost(this->mCanHost);
-    this->mCanHostOld = this->mCanHost;
-    this->mpParent->mpDatabase->mAttribute = this->mpParent->mpDatabase->mAttribute | static_cast<u32>(1);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::setSelfData(index, member);
-    this->mpParent->mpDatabase->::nNetwork::SessionDatabase::updateSessionInfo(this->mpDriver, true, false);
-    this->mpParent->::nNetwork::Session::updateMute(index);
-    if (this->mState == static_cast<s32>(5)) {
-        this->mState = static_cast<s32>(2);
+    mpDriver->canHost(mCanHost);
+    mCanHostOld = mCanHost;
+    mpParent->mpDatabase->mAttribute = mpParent->mpDatabase->mAttribute | 1u;
+    mpParent->mpDatabase->setSelfData(index, member);
+    mpParent->mpDatabase->updateSessionInfo(mpDriver, true, false);
+    mpParent->updateMute(index);
+    if (mState == 5) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onJoinComplete(true, static_cast<MtNetError*>(nullptr));
-    this->mpParent->::nNetwork::Session::onJoinMember(index, member);
+    mpParent->onJoinComplete(true, static_cast<MtNetError*>(nullptr));
+    mpParent->onJoinMember(index, member);
 }
 
 // Address: 0x00e43450 - 0x00e43489 (57 bytes)
 void nNetwork::SessionDriver::onAnsJoinFail(u32 req_seq, MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpConnect->::nNetwork::Connect::removeRouteAll();
-    if (this->mState == static_cast<s32>(5)) {
-        this->mState = static_cast<s32>(1);
+    mpParent->mpConnect->removeRouteAll();
+    if (mState == 5) {
+        mState = 1;
     }
-    this->mpParent->::nNetwork::Session::onJoinComplete(false, err);
+    mpParent->onJoinComplete(false, err);
 }
 
 // Address: 0x00e434d0 - 0x00e434d5 (5 bytes)
 void nNetwork::SessionDriver::onAnsFinalize(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFinal = false;
+    mFinal = false;
 }
 
 // Address: 0x00e434f0 - 0x00e43537 (71 bytes)
 void nNetwork::SessionDriver::onAnsLockSucceed(u32 req_seq, bool is_lock) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->mAttribute = (is_lock == false) ? (this->mpParent->mpDatabase->mAttribute & static_cast<u32>(4294967293)) : (this->mpParent->mpDatabase->mAttribute | static_cast<u32>(2));
-    if (static_cast<unsigned int>(this->mState - static_cast<s32>(9)) <= static_cast<unsigned int>(1)) {
-        this->mState = static_cast<s32>(2);
+    mpParent->mpDatabase->mAttribute = !is_lock ? (mpParent->mpDatabase->mAttribute & 0xFFFFFFFDu) : (mpParent->mpDatabase->mAttribute | 2u);
+    if (static_cast<unsigned int>(mState - 9) <= 1) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onLockComplete(true, is_lock, static_cast<MtNetError*>(nullptr));
+    mpParent->onLockComplete(true, is_lock, static_cast<MtNetError*>(nullptr));
 }
 
 // Address: 0x00e43590 - 0x00e435c2 (50 bytes)
 void nNetwork::SessionDriver::onAnsLockFail(u32 req_seq, MtNetError* err) {
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    if (static_cast<unsigned int>(this->mState - static_cast<s32>(9)) <= static_cast<unsigned int>(1)) {
-        this->mState = static_cast<s32>(2);
+    if (static_cast<unsigned int>(mState - 9) <= 1) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onLockComplete(false, static_cast<bool>((this->mpParent->mpDatabase->mAttribute & static_cast<u32>(2)) >> static_cast<u32>(1)), err);
+    mpParent->onLockComplete(false, static_cast<bool>((mpParent->mpDatabase->mAttribute & 2u) >> 1), err);
 }
 
 // Address: 0x00e43610 - 0x00e43626 (22 bytes)
 void nNetwork::SessionDriver::onAnsInvite(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mState == static_cast<s32>(11)) {
-        this->mState = static_cast<s32>(2);
+    if (mState == 11) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onInviteComplete();
+    mpParent->onInviteComplete();
 }
 
 // Address: 0x00e43650 - 0x00e43674 (36 bytes)
 void nNetwork::SessionDriver::onAnsStart(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->mAttribute = this->mpParent->mpDatabase->mAttribute | static_cast<u32>(4);
-    if (this->mState == static_cast<s32>(7)) {
-        this->mState = static_cast<s32>(2);
+    mpParent->mpDatabase->mAttribute = mpParent->mpDatabase->mAttribute | 4u;
+    if (mState == 7) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onGameStart();
+    mpParent->onGameStart();
 }
 
 // Address: 0x00e436b0 - 0x00e436d4 (36 bytes)
 void nNetwork::SessionDriver::onAnsEnd(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent->mpDatabase->mAttribute = this->mpParent->mpDatabase->mAttribute & static_cast<u32>(4294967291);
-    if (this->mState == static_cast<s32>(8)) {
-        this->mState = static_cast<s32>(2);
+    mpParent->mpDatabase->mAttribute = mpParent->mpDatabase->mAttribute & 0xFFFFFFFBu;
+    if (mState == 8) {
+        mState = 2;
     }
-    this->mpParent->::nNetwork::Session::onGameEnd();
+    mpParent->onGameEnd();
 }
 
 // No out-of-line body: no code in the ELF
@@ -402,8 +402,10 @@ void nNetwork::SessionDriver::onAnsEnd(u32 req_seq) {
 // Address: 0x00e428f0 - 0x00e42900 (16 bytes)
 void nNetwork::SessionDriver::receiveCore(s32 route_index, const void* pbuf, u32 length) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpDriver->onNtcP2pReceive(route_index, pbuf, static_cast<s32>(length));
+    mpDriver->onNtcP2pReceive(route_index, pbuf, static_cast<s32>(length));
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::SessionDriver::MyDTI nNetwork::SessionDriver::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::SessionDriver::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

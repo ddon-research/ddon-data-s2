@@ -45,7 +45,7 @@ const MtDTI& uGUIMap::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMap::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMap::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMap::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ inline MtAllocator* uGUIMap::getAllocator() {
 // Address: 0x00b66830 - 0x00b66870 (64 bytes)
 void* uGUIMap::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMap::getAllocator()->memAlloc(sz, align, ::uGUIMap::DTI.::MtDTI::getID());
+    return uGUIMap::getAllocator()->memAlloc(sz, align, uGUIMap::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,7 +69,7 @@ void* uGUIMap::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -94,11 +94,11 @@ uGUIMap::~uGUIMap() {
 // Address: 0x00b67e90 - 0x00b67f3f (175 bytes)
 bool uGUIMap::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MENU_MAP_GUI"), static_cast<u32>(129), static_cast<t64>(1458870630)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsgGuide;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MENU_MAP_GUI"), 129u, 1458870630l))) != nullptr) {
+            if (mpGUIMsgGuide == nullptr) {
+                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsgGuide;
                     return true;
                 } else {
                     return false;
@@ -110,9 +110,9 @@ bool uGUIMap::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsgGuide;
+        if (mpGUIMsgGuide == nullptr) {
+            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_MAP_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsgGuide;
                 return true;
             } else {
                 return false;
@@ -146,12 +146,12 @@ __attribute__((weak)) void uGUIMap::setup() {
 // Address: 0x00b6a860 - 0x00b6a891 (49 bytes)
 void uGUIMap::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b6a8a0 - 0x00b6a915 (117 bytes)
@@ -171,43 +171,43 @@ void uGUIMap::updatePtr() {
     unsigned int i0_1;
     // inferred: the value the loop at 0xb6a960 carries; no location-less local in scope fits
     uDDOModel* * v0_3;
-    if (this->mpSubMenu != static_cast<uGUIPopCmd01*>(nullptr)) {
-        if (this->mpSubMenu->::cUnit::isEnable() == false) {
-            this->mpSubMenu = static_cast<uGUIPopCmd01*>(nullptr);
-            v0_0 = this->mUpdCntEMInfo;
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
-                v0_3 = &this->mTblEMInfo[0].mpUnit;
+    if (mpSubMenu != nullptr) {
+        if (!mpSubMenu->isEnable()) {
+            mpSubMenu = nullptr;
+            v0_0 = mUpdCntEMInfo;
+            if (v0_0 != 0) {
+                i0_1 = 0;
+                v0_3 = &mTblEMInfo[0].mpUnit;
             } else {
                 return;
             }
         } else {
-            v0_0 = this->mUpdCntEMInfo;
-            if (v0_0 != static_cast<u32>(0)) {
-                i0_1 = static_cast<unsigned int>(0);
-                v0_3 = &this->mTblEMInfo[0].mpUnit;
+            v0_0 = mUpdCntEMInfo;
+            if (v0_0 != 0) {
+                i0_1 = 0;
+                v0_3 = &mTblEMInfo[0].mpUnit;
             } else {
                 return;
             }
         }
     } else {
-        v0_0 = this->mUpdCntEMInfo;
-        if (v0_0 != static_cast<u32>(0)) {
-            i0_1 = static_cast<unsigned int>(0);
-            v0_3 = &this->mTblEMInfo[0].mpUnit;
+        v0_0 = mUpdCntEMInfo;
+        if (v0_0 != 0) {
+            i0_1 = 0;
+            v0_3 = &mTblEMInfo[0].mpUnit;
         } else {
             return;
         }
     }
     for (;;) {
-        if ((*v0_3) != static_cast<uDDOModel*>(nullptr)) {
-            if ((*v0_3)->::cUnit::isEnable() == false) {
-                *v0_3 = static_cast<uDDOModel*>(nullptr);
+        if ((*v0_3) != nullptr) {
+            if (!(*v0_3)->cUnit::isEnable()) {
+                *v0_3 = nullptr;
             }
         }
-        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-            i0_1 += static_cast<unsigned int>(1);
-            v0_3 += static_cast<int>(8);
+        if ((i0_1 + 1u) < v0_0) {
+            i0_1 += 1u;
+            v0_3 += 8;
         } else {
             break;
         }
@@ -324,20 +324,20 @@ void uGUIMap::changeLandType() {
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab0
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab4
     // inferred: a temporary for the result of the call at 0xb6ae0a, used once; no DWARF local holds it
-    u32 t0 = ::sMarker::getInstance()->::sMarker::getDispFieldAreaIdFromLandId(static_cast<u32>(this->mLandType));
+    u32 t0 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(static_cast<u32>(mLandType));
     // inferred: a temporary for the result of the call at 0xb6ae14, used once; no DWARF local holds it
-    MT_CTSTR t1 = ::sMarker::getInstance()->::sMarker::getFieldAreaName(t0);
-    if (this->mpObjMsgLand != static_cast<cGUIObjMessage*>(nullptr)) {
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpObjMsgLand), t1, static_cast<u32>(0), false);
+    MT_CTSTR t1 = sMarker::getInstance()->getFieldAreaName(t0);
+    if (mpObjMsgLand != nullptr) {
+        setObjectMessage(static_cast<cGUIObject*>(mpObjMsgLand), t1, 0u, false);
     }
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
-    this->mUpdFrmQstInfo = 0.0f;
-    this->mUpdFrmLMInfo = 0.0f;
-    this->mUpdFrmPatchInfo = 0.0f;
-    this->mUpdFrmNpcClsInfo = 0.0f;
-    this->mUpdFrmEMInfo = 0.0f;
-    this->mUpdFrmOMInfo = 0.0f;
+    static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
+    static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
+    mUpdFrmQstInfo = 0.0f;
+    mUpdFrmLMInfo = 0.0f;
+    mUpdFrmPatchInfo = 0.0f;
+    mUpdFrmNpcClsInfo = 0.0f;
+    mUpdFrmEMInfo = 0.0f;
+    mUpdFrmOMInfo = 0.0f;
 }
 
 // Address: 0x00b758e0 - 0x00b75987 (167 bytes)
@@ -352,12 +352,12 @@ __attribute__((weak)) bool uGUIMap::calcMapPos(MtVector2& out_center_pos, MtVect
 // Address: 0x00b713f0 - 0x00b71412 (34 bytes)
 void uGUIMap::clearUpdFrm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUpdFrmQstInfo = 0.0f;
-    this->mUpdFrmLMInfo = 0.0f;
-    this->mUpdFrmPatchInfo = 0.0f;
-    this->mUpdFrmNpcClsInfo = 0.0f;
-    this->mUpdFrmEMInfo = 0.0f;
-    this->mUpdFrmOMInfo = 0.0f;
+    mUpdFrmQstInfo = 0.0f;
+    mUpdFrmLMInfo = 0.0f;
+    mUpdFrmPatchInfo = 0.0f;
+    mUpdFrmNpcClsInfo = 0.0f;
+    mUpdFrmEMInfo = 0.0f;
+    mUpdFrmOMInfo = 0.0f;
 }
 
 // Address: 0x00b71540 - 0x00b71740 (512 bytes)
@@ -371,103 +371,97 @@ __attribute__((weak)) void uGUIMap::getPointerRealPos(MtVector3& pos) {
 // Address: 0x00b6a7a0 - 0x00b6a853 (179 bytes)
 void uGUIMap::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCtrl->setFocus(true);
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(true);
     }
-    if (this->mpCtrlMapType != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrlMapType->setFocus(true);
+    if (mpCtrlMapType != nullptr) {
+        mpCtrlMapType->setFocus(true);
     }
-    if (this->mpCtrlZoom != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpCtrlZoom->setFocus(true);
+    if (mpCtrlZoom != nullptr) {
+        mpCtrlZoom->setFocus(true);
     }
-    if (this->mpCtrlMarkerIdx != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrlMarkerIdx->setFocus(true);
+    if (mpCtrlMarkerIdx != nullptr) {
+        mpCtrlMarkerIdx->setFocus(true);
     }
-    if (this->mpCtrlMarker != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlMarker->setFocus(true);
+    if (mpCtrlMarker != nullptr) {
+        mpCtrlMarker->setFocus(true);
     }
-    if (this->mpCtrlSubMenu != static_cast<cControl*>(nullptr)) {
-        this->mpCtrlSubMenu->setFocus(true);
+    if (mpCtrlSubMenu != nullptr) {
+        mpCtrlSubMenu->setFocus(true);
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateWait);
 }
 
 // Address: 0x00b70450 - 0x00b70478 (40 bytes)
 void uGUIMap::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMap::moveUpdate();
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-    this->::uGUIMap::updateDisp();
+    moveUpdate();
+    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+    updateDisp();
 }
 
 // Address: 0x00b70800 - 0x00b70809 (9 bytes)
 void uGUIMap::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b70820 - 0x00b708db (187 bytes)
 void uGUIMap::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5dc8
-    if (this->mpSubMenu != static_cast<uGUIPopCmd01*>(nullptr)) {
+    if (mpSubMenu != nullptr) {
         return;
     }
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mSCM.mMode == static_cast<u32>(2)) {
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mSCM.mMode == 2) {
         return;
     }
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpCtrl == static_cast<cControl*>(nullptr)) {
-    } else {
-        this->mpCtrl->execute();
+    mCloseBtn.execute();
+    if (mpCtrl != nullptr) {
+        mpCtrl->execute();
     }
-    if (this->mpCtrlMapType == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-    } else {
-        this->mpCtrlMapType->execute();
+    if (mpCtrlMapType != nullptr) {
+        mpCtrlMapType->execute();
     }
-    if (this->mpCtrlSubMenu == static_cast<cControl*>(nullptr)) {
-    } else {
-        this->mpCtrlSubMenu->execute();
+    if (mpCtrlSubMenu != nullptr) {
+        mpCtrlSubMenu->execute();
     }
-    if (this->mpCtrlZoom == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-    } else {
-        this->mpCtrlZoom->execute();
+    if (mpCtrlZoom != nullptr) {
+        mpCtrlZoom->execute();
     }
-    if (this->mpCtrlMarkerIdx == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-    } else {
-        this->mpCtrlMarkerIdx->execute();
+    if (mpCtrlMarkerIdx != nullptr) {
+        mpCtrlMarkerIdx->execute();
     }
-    if (this->mpCtrlMarker == static_cast<cControl*>(nullptr)) {
-    } else {
-        this->mpCtrlMarker->execute();
+    if (mpCtrlMarker != nullptr) {
+        mpCtrlMarker->execute();
     }
-    this->::uGUIMap::zoomInput();
-    this->::uGUIMap::markerInput();
+    zoomInput();
+    markerInput();
 }
 
 // Address: 0x00b6a290 - 0x00b6a2a2 (18 bytes)
 u32 uGUIMap::evCtrlEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00b6a2b0 - 0x00b6a2c2 (18 bytes)
 u32 uGUIMap::evCtrlChgAlpha(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b6a4a0 - 0x00b6a4e3 (67 bytes)
 u32 uGUIMap::evCtrlMapTypeMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        this->mCtrlTabType = static_cast<u32>(msg->current);
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(3));
-        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+    if (msg != nullptr) {
+        mCtrlTabType = static_cast<u32>(msg->current);
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 3u);
+        setInputEvent(71u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (85 bytes)
@@ -483,16 +477,16 @@ __attribute__((weak)) u32 uGUIMap::evCtrlChangeFreeMarker(cControl::Message* msg
 // Address: 0x00b6a4f0 - 0x00b6a507 (23 bytes)
 u32 uGUIMap::evCtrlSubmenu(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+    if (msg != nullptr) {
+        setInputEvent(72u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b713d0 - 0x00b713ea (26 bytes)
 void uGUIMap::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateExit);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (157 bytes)
@@ -522,69 +516,69 @@ __attribute__((weak)) void uGUIMap::evSubMenu() {
 void uGUIMap::setupMarker() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMarker.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMarker.mLength != 0) {
         // inferred: the value the loop at 0xb6a9d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMarker.::MtArray::mLength;
+        u32 v0_0 = mMarker.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMarker.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMarker.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMarker.::MtArray::mLength) {
-                    v0_0 = this->mMarker.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMarker.mpArray[i0_3] != nullptr) {
+                delete mMarker.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMarker.mLength) {
+                    v0_0 = mMarker.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMarker.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMarker.::MtArray::mpArray));
+    if (mMarker.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMarker.mpArray));
     }
-    this->mMarker.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMarker.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMarker.::MtArray::mLength = static_cast<u32>(0);
+    mMarker.mpArray = nullptr;
+    mMarker.mBufsiz = 0;
+    mMarker.mLength = 0;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-        if (i2_3 != static_cast<unsigned int>(0)) {
-            if (i2_3 <= static_cast<unsigned int>(8)) {
-                this->::uGUIMap::createMarker(static_cast<u32>(1), static_cast<s32>(i2_3 - static_cast<unsigned int>(1)));
+    for (unsigned int i2_3 = 0;;) {
+        if (i2_3 != 0) {
+            if (i2_3 <= 8u) {
+                createMarker(1u, static_cast<s32>(i2_3 - 1u));
             } else {
-                if (i2_3 <= static_cast<unsigned int>(12)) {
-                    this->::uGUIMap::createMarker(static_cast<u32>(2), static_cast<s32>(-1));
+                if (i2_3 <= 12u) {
+                    createMarker(2u, -1);
                 } else {
-                    if (i2_3 <= static_cast<unsigned int>(28)) {
-                        this->::uGUIMap::createMarker(static_cast<u32>(3), static_cast<s32>(-1));
+                    if (i2_3 <= 28u) {
+                        createMarker(3u, -1);
                     } else {
-                        if (i2_3 <= static_cast<unsigned int>(44)) {
-                            this->::uGUIMap::createMarker(static_cast<u32>(4), static_cast<s32>(-1));
+                        if (i2_3 <= 44u) {
+                            createMarker(4u, -1);
                         } else {
-                            if (i2_3 <= static_cast<unsigned int>(60)) {
-                                this->::uGUIMap::createMarker(static_cast<u32>(5), static_cast<s32>(-1));
+                            if (i2_3 <= 60u) {
+                                createMarker(5u, -1);
                             } else {
-                                if (i2_3 <= static_cast<unsigned int>(86)) {
-                                    this->::uGUIMap::createMarker(static_cast<u32>(6), static_cast<s32>(-1));
+                                if (i2_3 <= 86u) {
+                                    createMarker(6u, -1);
                                 } else {
-                                    if (i2_3 <= static_cast<unsigned int>(94)) {
-                                        this->::uGUIMap::createMarker(static_cast<u32>(7), static_cast<s32>(i2_3 - static_cast<unsigned int>(87)));
+                                    if (i2_3 <= 94u) {
+                                        createMarker(7u, static_cast<s32>(i2_3 - 87u));
                                     } else {
-                                        if (i2_3 <= static_cast<unsigned int>(126)) {
-                                            this->::uGUIMap::createMarker(static_cast<u32>(8), static_cast<s32>(-1));
+                                        if (i2_3 <= 126u) {
+                                            createMarker(8u, -1);
                                         } else {
-                                            if (i2_3 <= static_cast<unsigned int>(134)) {
-                                                this->::uGUIMap::createMarker(static_cast<u32>(9), static_cast<s32>(-1));
+                                            if (i2_3 <= 134u) {
+                                                createMarker(9u, -1);
                                             } else {
-                                                if (i2_3 <= static_cast<unsigned int>(140)) {
-                                                    this->::uGUIMap::createMarker(static_cast<u32>(10), static_cast<s32>(i2_3 - static_cast<unsigned int>(135)));
+                                                if (i2_3 <= 140u) {
+                                                    createMarker(10u, static_cast<s32>(i2_3 - 135u));
                                                 } else {
-                                                    if (i2_3 <= static_cast<unsigned int>(141)) {
-                                                        this->::uGUIMap::createMarker(static_cast<u32>(11), static_cast<s32>(-1));
+                                                    if (i2_3 <= 141u) {
+                                                        createMarker(11u, -1);
                                                     }
                                                 }
                                             }
@@ -596,14 +590,14 @@ void uGUIMap::setupMarker() {
                     }
                 }
             }
-            if ((i2_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(143)) {
-                i2_3 += static_cast<unsigned int>(1);
+            if ((i2_3 + 1u) != 143) {
+                i2_3 += 1u;
             } else {
                 break;
             }
         } else {
-            this->::uGUIMap::createMarker(static_cast<u32>(0), static_cast<s32>(-1));
-            i2_3 += static_cast<unsigned int>(1);
+            createMarker(0u, -1);
+            i2_3 += 1u;
         }
     }
 }
@@ -815,9 +809,14 @@ __attribute__((weak)) void uGUIMap::execPrimitiveMask(MtFloat2 wh, MtFloat4 rect
 //   in uGUIMap::updateDisp at 0x00b6a55b-0x00b6a629 (called at uGUIMap.cpp:1158)
 // void uGUIMap::execCompass();
 
-// No out-of-line body: 1 inlined copy in 1 function (61 bytes)
-//   in uGUIMap::updateDisp at 0x00b6a629-0x00b6a666 (called at uGUIMap.cpp:1161)
-// void uGUIMap::execZoomSlider();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMap::updateDisp at 0xb6a629-0xb6a666; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIMap::execZoomSlider() {
+    if (mpObjZoomSlider == nullptr) {
+        return;
+    }
+    mpObjZoomSlider->setCurrentFrame(100.0f * (static_cast<float>(mpCtrlZoom->mCurrentPos) / static_cast<float>(mpCtrlZoom->mItemNum - 1)), true);
+}
 
 // Address: 0x00b6ff70 - 0x00b70441 (1233 bytes)
 __attribute__((weak)) void uGUIMap::execPointerCursor() {
@@ -830,25 +829,25 @@ __attribute__((weak)) void uGUIMap::execPointerCursor() {
 // Address: 0x00b752f0 - 0x00b752f7 (7 bytes)
 void uGUIMap::execPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMap::updateDispMapPos(false);
+    updateDispMapPos(false);
 }
 
 // Address: 0x00b755a0 - 0x00b755f4 (84 bytes)
 void uGUIMap::execFooter() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpInstMask != static_cast<cGUIInstScissorMask*>(nullptr)) {
-        if (this->mpInstFooter != static_cast<cGUIInstance*>(nullptr)) {
+    if (mpInstMask != nullptr) {
+        if (mpInstFooter != nullptr) {
             // inferred: a temporary for the result of the call at 0xb755c2, used once; no DWARF local holds it
-            const MtDTI& t0 = this->mpInstFooter->getDTI();
+            const MtDTI& t0 = mpInstFooter->getDTI();
             // inferred: the value the loop at 0xb755d0 carries; no location-less local in scope fits
-            MT_CTSTR v0_1 = ::cGUIInstAnimation::DTI.::MtDTI::mName;
+            MT_CTSTR v0_1 = cGUIInstAnimation::DTI.mName;
             // inferred: the value the loop at 0xb755d0 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
                 if (v0_1 == v0_0->mName) {
-                    this->::uGUIMap::updateDispAreaName();
+                    updateDispAreaName();
                     return;
                 } else {
-                    if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    if (v0_0->mpParent != nullptr) {
                         v0_0 = v0_0->mpParent;
                     } else {
                         break;
@@ -863,12 +862,12 @@ void uGUIMap::execFooter() {
 void uGUIMap::execBtnGuaid() {
     // DWARF local not rendered: u32 dispBit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsEnableLandSubMenu != false) {
-        this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(63));
+    if (mIsEnableLandSubMenu) {
+        mBtnGuide.setDispBit(63u);
     } else {
-        this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(31));
+        mBtnGuide.setDispBit(31u);
     }
-    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
 }
 
 // Address: 0x00b71ee0 - 0x00b71ff0 (272 bytes)
@@ -1115,7 +1114,7 @@ __attribute__((weak)) void uGUIMap::evDirectLink() {
 // Address: 0x00b717f0 - 0x00b717ff (15 bytes)
 s32 uGUIMap::getLandTypeFromStageNo(s32 stageNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(::sGame::getInstance()->::sGame::getLandIdFromStage(stageNo));
+    return static_cast<s32>(sGame::getInstance()->getLandIdFromStage(stageNo));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -1291,33 +1290,33 @@ __attribute__((weak)) MtVector3 uGUIMap::getNearPlayerPosCalc(const nMarker::cMa
 
 // Address: 0x00b71750 - 0x00b717e3 (147 bytes)
 u32 uGUIMap::submenuCallBack(MtObject* pDummy, MtObject* pUnit) {
-    // DWARF local not rendered: cLandId* pId;
-    // Approximate from the ELF: a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab0
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab4
-    if (pUnit != static_cast<MtObject*>(nullptr)) {
+    if (pUnit != nullptr) {
+        // inferred: a downcast named by the DWARF local the source declared: pId, its location optimized out, declared in the lexical block that holds the access
+        cLandId* pId = static_cast<cLandId*>(pUnit);
         // inferred: a temporary for the value the load at 0xb7175f read, used twice; no DWARF local holds it
-        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pUnit) + static_cast<long>(8));
-        this->mLandType = static_cast<s32>(t0);
+        u32 t0 = pId->mLandId;
+        mLandType = static_cast<s32>(t0);
         // inferred: a temporary for the result of the call at 0xb71772, used once; no DWARF local holds it
-        u32 t1 = ::sMarker::getInstance()->::sMarker::getDispFieldAreaIdFromLandId(t0);
+        u32 t1 = sMarker::getInstance()->getDispFieldAreaIdFromLandId(t0);
         // inferred: a temporary for the result of the call at 0xb7177c, used once; no DWARF local holds it
-        MT_CTSTR t2 = ::sMarker::getInstance()->::sMarker::getFieldAreaName(t1);
-        if (this->mpObjMsgLand != static_cast<cGUIObjMessage*>(nullptr)) {
-            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpObjMsgLand), t2, static_cast<u32>(0), false);
+        MT_CTSTR t2 = sMarker::getInstance()->getFieldAreaName(t1);
+        if (mpObjMsgLand != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(mpObjMsgLand), t2, 0u, false);
         }
-        static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
-        static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
-        this->mUpdFrmQstInfo = 0.0f;
-        this->mUpdFrmLMInfo = 0.0f;
-        this->mUpdFrmPatchInfo = 0.0f;
-        this->mUpdFrmNpcClsInfo = 0.0f;
-        this->mUpdFrmEMInfo = 0.0f;
-        this->mUpdFrmOMInfo = 0.0f;
-        return static_cast<u32>(0);
+        static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
+        static_cast<sGUIExt*>(sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
+        mUpdFrmQstInfo = 0.0f;
+        mUpdFrmLMInfo = 0.0f;
+        mUpdFrmPatchInfo = 0.0f;
+        mUpdFrmNpcClsInfo = 0.0f;
+        mUpdFrmEMInfo = 0.0f;
+        mUpdFrmOMInfo = 0.0f;
+        return 0;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1330,6 +1329,8 @@ __attribute__((weak)) void uGUIMap::changeSubMenuDispState() {
     DDON_STUB("uGUIMap::changeSubMenuDispState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIMap::MyDTI uGUIMap::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b773e8-0x00b77425 (called at uGUIMap.cpp:146)
@@ -1365,7 +1366,7 @@ const MtDTI& uGUIMap::cLandId::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* uGUIMap::cLandId::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cLandId::DTI)->memAlloc(sz, align, ::uGUIMap::cLandId::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIMap::cLandId::DTI)->memAlloc(sz, align, uGUIMap::cLandId::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1380,7 +1381,7 @@ inline void* uGUIMap::cLandId::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7uGUIMap7cLandIdD0Ev at 0x01afb870-0x01afb89a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGUIMap::cLandId::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::cLandId::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::cLandId::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1402,6 +1403,8 @@ inline void uGUIMap::cLandId::operator delete(void* p_addr) {
 //   in uGUIMap::evSubMenu at 0x00b71189-0x00b7119b, 0x00b711d7-0x00b711e2 (called at uGUIMap.h:317)
 // uGUIMap::cLandId::cLandId(u32 id);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cLandId::MyDTI uGUIMap::cLandId::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77425-0x00b77465 (called at uGUIMap.cpp:147)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77425-0x00b77465 (called at uGUIMap.h:314)
@@ -1410,7 +1413,7 @@ inline void uGUIMap::cLandId::operator delete(void* p_addr) {
 // Address: 0x00b668e0 - 0x00b66927 (71 bytes)
 MtObject* uGUIMap::cLandId::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::uGUIMap::cLandId;
+    return new (16u) uGUIMap::cLandId;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (88 bytes)
@@ -1557,6 +1560,8 @@ __attribute__((weak)) void uGUIMap::cMarker::setMarkerPos(f32 fZoomRate, f32 fRo
 // No out-of-line body: no code in the ELF
 // u32 uGUIMap::cMarker::getUseF();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cMarker::MyDTI uGUIMap::cMarker::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77465-0x00b7749e (called at uGUIMap.cpp:148)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77465-0x00b7749e (called at uGUIMap.h:327)
@@ -1603,7 +1608,7 @@ const MtDTI& uGUIMap::cMarkerUpdInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerUpdInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::cMarkerUpdInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1618,16 +1623,16 @@ inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
 inline uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo() {
-    this->mEnable = false;
-    this->mIsDefFloor = false;
-    this->mQuestId = static_cast<u32>(0);
-    this->mIdx = static_cast<u32>(0);
-    this->mGroupNo = static_cast<u32>(0);
-    this->mDist = ::MtVector2::Zero;
-    this->mEffectiveRange = 0.0f;
-    this->mPosIdx = static_cast<u32>(0);
-    this->mSaveId = static_cast<s32>(-1);
-    this->mpUnit = static_cast<uDDOModel*>(nullptr);
+    mEnable = false;
+    mIsDefFloor = false;
+    mQuestId = 0;
+    mIdx = 0;
+    mGroupNo = 0;
+    mDist = MtVector2::Zero;
+    mEffectiveRange = 0.0f;
+    mPosIdx = 0;
+    mSaveId = -1;
+    mpUnit = nullptr;
 }
 
 // Address: 0x00b77250 - 0x00b77251 (1 bytes)
@@ -1635,6 +1640,8 @@ inline uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo() {
 uGUIMap::cMarkerUpdInfo::~cMarkerUpdInfo() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cMarkerUpdInfo::MyDTI uGUIMap::cMarkerUpdInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b774d7-0x00b77510 (called at uGUIMap.cpp:150)
@@ -1682,7 +1689,7 @@ const MtDTI& uGUIMap::cMarkerLandInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerLandInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::cMarkerLandInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1698,11 +1705,11 @@ inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
 // a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
 inline uGUIMap::cMarkerLandInfo::cMarkerLandInfo() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mWorldPos = ::MtVector3::Zero;
-    this->mDist = ::MtVector2::Zero;
-    this->mType = static_cast<u32>(0);
-    this->mSpotMessId = static_cast<u32>(0);
-    this->mMessId = static_cast<s32>(-1);
+    mWorldPos = MtVector3::Zero;
+    mDist = MtVector2::Zero;
+    mType = 0;
+    mSpotMessId = 0;
+    mMessId = -1;
 }
 
 // Address: 0x00b772a0 - 0x00b772a1 (1 bytes)
@@ -1710,6 +1717,8 @@ inline uGUIMap::cMarkerLandInfo::cMarkerLandInfo() {
 uGUIMap::cMarkerLandInfo::~cMarkerLandInfo() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cMarkerLandInfo::MyDTI uGUIMap::cMarkerLandInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77510-0x00b77549 (called at uGUIMap.cpp:151)
@@ -1757,7 +1766,7 @@ const MtDTI& uGUIMap::cPointerCursor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMap::cPointerCursor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::cPointerCursor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::cPointerCursor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1837,6 +1846,8 @@ __attribute__((weak)) void uGUIMap::cPointerCursor::execMouseCursorCtrl(s32 type
 //   in uGUIMap::cPointerCursor::execMouseCursorCtrl at 0x00b770bd-0x00b771c2 (called at uGUIMap.cpp:6491)
 // void uGUIMap::cPointerCursor::movingDispMapPos(f32 rot, const MtVector2& moveValue);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cPointerCursor::MyDTI uGUIMap::cPointerCursor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b7749e-0x00b774d7 (called at uGUIMap.cpp:149)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b7749e-0x00b774d7 (called at uGUIMap.h:556)
@@ -1895,7 +1906,7 @@ const MtDTI& uGUIMap::cQuestMarkerData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMap::cQuestMarkerData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMap::cQuestMarkerData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMap::cQuestMarkerData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1917,6 +1928,8 @@ inline void uGUIMap::cQuestMarkerData::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIMap::cQuestMarkerData::~cQuestMarkerData();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMap::cQuestMarkerData::MyDTI uGUIMap::cQuestMarkerData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMap.cpp at 0x00b77549-0x00b77582 (called at uGUIMap.cpp:152)

@@ -611,3 +611,9 @@ protected:
     static const s32 KEY_ITEM_NUM_MAX = 12;
     static const u32 KEY_HISTORY_NUM_MAX = 1;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIKeyConfig::onMoveEvent at 0xaf9d6c-0xaf9d72; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nGUIKeyConfig::SORT_TYPE uGUIKeyConfig::getSortType() const {
+    return static_cast<nGUIKeyConfig::SORT_TYPE>(this->mPulldown.mCursorIdx);
+}

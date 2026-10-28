@@ -7,6 +7,8 @@
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
 #include "cGUIControlMgr.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/nDDOUtility.h"
 #include "nGUIKeyConfig.h"
@@ -55,7 +57,7 @@ const MtDTI& uGUIKeyConfig::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIKeyConfig::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIKeyConfig::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,16 +122,16 @@ __attribute__((weak)) void uGUIKeyConfig::setKeyListItems(const nGUIKeyConfig::c
 // Address: 0x00af7b60 - 0x00af7b68 (8 bytes)
 void uGUIKeyConfig::setInputEventHandler(nGUIKeyConfig::cInputEventHandler* inputEventHandler) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInputEventHandler = inputEventHandler;
+    mInputEventHandler = inputEventHandler;
 }
 
 // Address: 0x00af7b70 - 0x00af7b86 (22 bytes)
 void uGUIKeyConfig::setCategoryName(u32 categoryListIndex, MT_CTSTR categoryName) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() == false) {
+    if (!isAttachedResource()) {
         return;
     }
-    this->mCategoryList.::uGUIKeyConfig::cCategoryList::setName(categoryListIndex, categoryName);
+    mCategoryList.setName(categoryListIndex, categoryName);
 }
 
 // Address: 0x00af7c60 - 0x00af7cea (138 bytes)
@@ -180,20 +182,20 @@ __attribute__((weak)) void uGUIKeyConfig::clearKeyHistory(u32 categoryListIndex)
 // Address: 0x00af79d0 - 0x00af79e5 (21 bytes)
 u32 uGUIKeyConfig::getCategoryListIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCategoryList.::uGUIKeyConfig::cList::mScrollList.mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        return static_cast<u32>(this->mCategoryList.::uGUIKeyConfig::cList::mScrollList.mpVCtrl->::cControl::getCurrentPos());
+    if (mCategoryList.mScrollList.mpVCtrl != nullptr) {
+        return static_cast<u32>(mCategoryList.mScrollList.mpVCtrl->getCurrentPos());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00af8180 - 0x00af8195 (21 bytes)
 u32 uGUIKeyConfig::getKeyListIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mKeyList.::uGUIKeyConfig::cList::mScrollList.mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        return static_cast<u32>(this->mKeyList.::uGUIKeyConfig::cList::mScrollList.mpVCtrl->::cControl::getCurrentPos());
+    if (mKeyList.mScrollList.mpVCtrl != nullptr) {
+        return static_cast<u32>(mKeyList.mScrollList.mpVCtrl->getCurrentPos());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -205,10 +207,10 @@ u32 uGUIKeyConfig::getKeyListIndex() const {
 const rGUIMessage* uGUIKeyConfig::getResMsgGroup() const {
     // DWARF local not rendered: const rGUIMessage* gmd;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        return this->::uGUIBase::mpGUIMsgs.elems[1];
+    if (isAttachedResource()) {
+        return mpGUIMsgs.elems[1];
     } else {
-        return static_cast<const rGUIMessage*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -216,10 +218,10 @@ const rGUIMessage* uGUIKeyConfig::getResMsgGroup() const {
 const rGUIMessage* uGUIKeyConfig::getResMsgDetail() const {
     // DWARF local not rendered: const rGUIMessage* gmd;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        return this->::uGUIBase::mpGUIMsgs.elems[2];
+    if (isAttachedResource()) {
+        return mpGUIMsgs.elems[2];
     } else {
-        return static_cast<const rGUIMessage*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -230,10 +232,10 @@ const rGUIMessage* uGUIKeyConfig::getResMsgDetail() const {
 // Address: 0x00af8200 - 0x00af821c (28 bytes)
 rKeyConfigTextTable* uGUIKeyConfig::getResTextTable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::isAttachedResource() != false) {
-        return static_cast<rKeyConfigTextTable*>(this->getRes(static_cast<u32>(0)));
+    if (isAttachedResource()) {
+        return static_cast<rKeyConfigTextTable*>(getRes(0u));
     } else {
-        return static_cast<rKeyConfigTextTable*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -253,7 +255,7 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIKeyConfig::getGuiResInfo()
 // Address: 0x00af8240 - 0x00af8246 (6 bytes)
 t64 uGUIKeyConfig::getGuiResUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<t64>(1477271303);
+    return 1477271303;
 }
 
 // Address: 0x00af8250 - 0x00af8268 (24 bytes)
@@ -266,7 +268,7 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIKeyConfig::getGmdResInfo(u
 // Address: 0x00af8270 - 0x00af8276 (6 bytes)
 u32 uGUIKeyConfig::getGmdResNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x00af8280 - 0x00af8290 (16 bytes)
@@ -279,7 +281,7 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIKeyConfig::getResInfo(u32 
 // Address: 0x00af8290 - 0x00af8296 (6 bytes)
 u32 uGUIKeyConfig::getResNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00af82a0 - 0x00af8387 (231 bytes)
@@ -332,11 +334,11 @@ __attribute__((weak)) void uGUIKeyConfig::onUpdateShow() {
 // Address: 0x00af8390 - 0x00af848d (253 bytes)
 void uGUIKeyConfig::setDefaultTexts() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(5), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(0)), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(5), static_cast<u32>(3), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(1)), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(142), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(2)), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(147), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(4)), static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessageFromId(static_cast<u32>(198), static_cast<u32>(2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(12)), static_cast<u32>(0), false);
+    setObjectMessageFromId(5u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 0u), 0u, false);
+    setObjectMessageFromId(5u, 3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 1u), 0u, false);
+    setObjectMessageFromId(142u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 2u), 0u, false);
+    setObjectMessageFromId(147u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 4u), 0u, false);
+    setObjectMessageFromId(198u, 2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 12u), 0u, false);
 }
 
 // Address: 0x00af8ba0 - 0x00af8ea1 (769 bytes)
@@ -372,8 +374,8 @@ __attribute__((weak)) void uGUIKeyConfig::setupControls() {
 // Address: 0x00afaaa0 - 0x00afaab2 (18 bytes)
 u32 uGUIKeyConfig::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
@@ -383,8 +385,8 @@ u32 uGUIKeyConfig::evCtrlClose(cControl::Message* msg) {
 // Address: 0x00afaac0 - 0x00afaad2 (18 bytes)
 u32 uGUIKeyConfig::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00af9fc0 - 0x00afa358 (920 bytes)
@@ -406,8 +408,8 @@ __attribute__((weak)) void uGUIKeyConfig::evDecide() {
 // Address: 0x00afaae0 - 0x00afaaf2 (18 bytes)
 u32 uGUIKeyConfig::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (29 bytes)
@@ -417,8 +419,8 @@ u32 uGUIKeyConfig::evCtrlCancel(cControl::Message* msg) {
 // Address: 0x00afab00 - 0x00afab12 (18 bytes)
 u32 uGUIKeyConfig::evCtrlSubMenuKeyList(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (169 bytes)
@@ -429,30 +431,30 @@ u32 uGUIKeyConfig::evCtrlSubMenuKeyList(cControl::Message* msg) {
 u32 uGUIKeyConfig::evCtrlLayoutMove(cControl::Message* msg) {
     // DWARF local not rendered: u32 input_event_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        const s32 old_layout_index = this->mControlMgr.::cGUIControlMgr::getOldPos(static_cast<u32>(2));
-        const s32 current_layout_index = this->mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2));
+    if (msg != nullptr) {
+        const s32 old_layout_index = mControlMgr.getOldPos(2u);
+        const s32 current_layout_index = mControlMgr.getCurrentPos(2u);
         if (old_layout_index != current_layout_index) {
-            if (current_layout_index == static_cast<s32>(1)) {
-                if (msg->reason == static_cast<nGUIExt::MSG_REASON>(1)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+            if (current_layout_index == 1) {
+                if (msg->reason == nGUIExt::TRG_DOWN) {
+                    setInputEvent(71u);
                 } else {
-                    if (msg->reason == static_cast<nGUIExt::MSG_REASON>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(72));
+                    if (msg->reason == nGUIExt::BTN_START) {
+                        setInputEvent(72u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                        setInputEvent(70u);
                     }
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                setInputEvent(70u);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+            setInputEvent(70u);
         }
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-        return static_cast<u32>(0);
+        setInputEvent(70u);
+        return 0;
     }
 }
 
@@ -477,8 +479,8 @@ __attribute__((weak)) u32 uGUIKeyConfig::evCtrlLayoutClick(cControl::Message* ms
 // Address: 0x00afac00 - 0x00afac12 (18 bytes)
 u32 uGUIKeyConfig::evCtrlButtonMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(0);
+    setInputEvent(73u);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -512,18 +514,18 @@ u32 uGUIKeyConfig::evCtrlScrollListKeyMouseOver(cControl::Message* msg) {
     // DWARF local not rendered: const s32 layout_index;
     // DWARF local not rendered: cScrollList& scroll_list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode == static_cast<uGUIKeyConfig::MODE>(1)) {
-        if (this->mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2)) != static_cast<s32>(1)) {
-            this->mControlMgr.::cGUIControlMgr::setCurrentPos(static_cast<u32>(2), static_cast<s32>(1));
+    if (mMode == MODE_RIGHT) {
+        if (mControlMgr.getCurrentPos(2u) != 1) {
+            mControlMgr.setCurrentPos(2u, 1);
         }
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+        if (msg->pSender != nullptr) {
             msg->pSender->setCurrentPos(msg->mouse_hit_id, false);
         }
-        this->mKeyList.::uGUIKeyConfig::cList::mScrollList.mIsInputEvent = true;
-        this->mKeyList.::uGUIKeyConfig::cList::mScrollList.mClickVol = msg->click_vol;
-        this->::uGUIBase::setInputEvent(static_cast<u32>(13));
+        mKeyList.mScrollList.mIsInputEvent = true;
+        mKeyList.mScrollList.mClickVol = msg->click_vol;
+        setInputEvent(13u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (106 bytes)
@@ -642,6 +644,8 @@ __attribute__((weak)) void uGUIKeyConfig::setMode(uGUIKeyConfig::MODE mode) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::MyDTI uGUIKeyConfig::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc2e2-0x00afc31f (called at uGUIKeyConfig.cpp:308)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc2e2-0x00afc31f (called at uGUIKeyConfig.h:22)
@@ -715,7 +719,7 @@ const MtDTI& uGUIKeyConfig::cCategoryItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIKeyConfig::cCategoryItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cCategoryItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -736,13 +740,68 @@ inline void uGUIKeyConfig::cCategoryItem::operator delete(void* p_addr) {
 // uGUIKeyConfig::cCategoryItem::~cCategoryItem();
 
 // Address: 0x00afb4c0 - 0x00afb581 (193 bytes)
-__attribute__((weak)) void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null_list) {
-    // local: cGUIInstNull* inst_copy;
-    // local: cGUIInstAnimation* inst_msg_list;
-    // local: cGUIInstAnimation* inst_fix_check;
-    // local: cGUIObjPolygon* obj_msg_list_mouseover;
-    DDON_STUB("uGUIKeyConfig::cCategoryItem::setup")
-    /* stub */
+void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null_list) {
+    // DWARF local not rendered: cGUIInstAnimation* inst_fix_check;
+    // DWARF local not rendered: cGUIObjPolygon* obj_msg_list_mouseover;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x128 from cGUIObject*
+    if (inst_null_list == nullptr) {
+        return;
+    }
+    cGUIInstNull* inst_copy = static_cast<cGUIInstNull*>(owner.ManageDuplicate(static_cast<cGUIInstance*>(inst_null_list), inst_null_list->getParent()));
+    if (inst_copy == nullptr) {
+        return;
+    }
+    mpINST_Null_list = inst_copy;
+    cGUIInstAnimation* inst_msg_list = static_cast<cGUIInstAnimation*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(7u));
+    if (inst_msg_list != nullptr) {
+        mpInstFocus = inst_msg_list;
+        mpInstMouseCollision = static_cast<cGUIInstance*>(inst_msg_list);
+        // inferred: a temporary for the result of the call at 0xafb524, used twice; no DWARF local holds it
+        cGUIObject* t0 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_list), 2u);
+        if ((mpOBJ_msg_list_m_txt = static_cast<cGUIObjMessage*>(t0)) != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296)) & 247;
+            // inferred: a temporary for the result of the call at 0xafb544, used twice; no DWARF local holds it
+            cGUIObject* t1 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_list), 3u);
+            if (t1 != nullptr) {
+                mpObjMouseCollision = t1;
+                // inferred: a temporary for the result of the call at 0xafb55a, used twice; no DWARF local holds it
+                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                if (t2 != nullptr) {
+                    mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafb55a, used twice; no DWARF local holds it
+                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                if (t2 != nullptr) {
+                    mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
+                }
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0xafb544, used twice; no DWARF local holds it
+            cGUIObject* t1 = owner.getObjectFromId(static_cast<cGUIInstance*>(inst_msg_list), 3u);
+            if (t1 != nullptr) {
+                mpObjMouseCollision = t1;
+                // inferred: a temporary for the result of the call at 0xafb55a, used twice; no DWARF local holds it
+                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                if (t2 != nullptr) {
+                    mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafb55a, used twice; no DWARF local holds it
+                cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+                if (t2 != nullptr) {
+                    mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
+                }
+            }
+        }
+    } else {
+        // inferred: a temporary for the result of the call at 0xafb55a, used twice; no DWARF local holds it
+        cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(148u);
+        if (t2 != nullptr) {
+            mpOBJ_fix_check_f_check = static_cast<cGUIObjTexture*>(owner.getObjectFromId(t2, 2u));
+        }
+    }
 }
 
 // Address: 0x00afb030 - 0x00afb0f1 (193 bytes)
@@ -766,6 +825,8 @@ __attribute__((weak)) void uGUIKeyConfig::cCategoryItem::show(uGUIKeyConfig::cCa
 //   in _ZN13uGUIKeyConfig16setCategoryStateEjN13nGUIKeyConfig14CATEGORY_STATEE at 0x00af7c9b-0x00af7ce5 (called at uGUIKeyConfig.cpp:2671)
 //   in uGUIKeyConfig::cCategoryItem::show at 0x00afb073-0x00afb0b9 (called at uGUIKeyConfig.cpp:2524)
 // void uGUIKeyConfig::cCategoryItem::setState(nGUIKeyConfig::CATEGORY_STATE state);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cCategoryItem::MyDTI uGUIKeyConfig::cCategoryItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc35f-0x00afc39f (called at uGUIKeyConfig.cpp:2462)
@@ -815,7 +876,7 @@ const MtDTI& uGUIKeyConfig::cCategoryInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIKeyConfig::cCategoryInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cCategoryInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -852,6 +913,8 @@ inline void uGUIKeyConfig::cCategoryInfo::operator delete(void* p_addr) {
 //   in uGUIKeyConfig::setCategoryListItems at 0x00af7255-0x00af725d (called at uGUIKeyConfig.cpp:611)
 //   in _ZN13uGUIKeyConfig16setCategoryStateEjN13nGUIKeyConfig14CATEGORY_STATEE at 0x00af7c8b-0x00af7c8e (called at uGUIKeyConfig.cpp:2667)
 // void uGUIKeyConfig::cCategoryInfo::setState(nGUIKeyConfig::CATEGORY_STATE state);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cCategoryInfo::MyDTI uGUIKeyConfig::cCategoryInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc31f-0x00afc35f (called at uGUIKeyConfig.cpp:2410)
@@ -910,9 +973,20 @@ __attribute__((weak)) void uGUIKeyConfig::cCategoryList::setName(u32 itemIndex, 
 // void uGUIKeyConfig::cCategoryList::setState(nGUIKeyConfig::CATEGORY_STATE state);
 
 // Address: 0x00afb5d0 - 0x00afb63a (106 bytes)
-__attribute__((weak)) void uGUIKeyConfig::cCategoryList::applyFocusToScrollList(bool isFocus) {
-    DDON_STUB("uGUIKeyConfig::cCategoryList::applyFocusToScrollList")
-    /* stub */
+void uGUIKeyConfig::cCategoryList::applyFocusToScrollList(bool isFocus) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mScrollList.setFocusCursor(isFocus);
+    mScrollList.mIsDecide = !isFocus;
+    mScrollList.setListFocus(false);
+    if (mScrollList.mpOwner != nullptr) {
+        // inferred: a temporary for the value the load at 0xafb61b read, used once; no DWARF local holds it
+        u32 t0 = mScrollList.mpOwner->getBasePointerPriority();
+        mScrollList.mIsAutoDispPointer = isFocus;
+        mScrollList.mPointerPrio = t0;
+    } else {
+        mScrollList.mIsAutoDispPointer = isFocus;
+        mScrollList.mPointerPrio = 10;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (1137 bytes)
@@ -948,8 +1022,8 @@ uGUIKeyConfig::cList::~cList() {
 // Address: 0x00afb1c0 - 0x00afb20a (74 bytes)
 void uGUIKeyConfig::cList::reset(s32 currentPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->applyFocusToScrollList(this->mIsFocus);
-    this->mScrollList.::uGUIBase::cScrollList::setupList(this->mMaskHeight, this->mMaskHeight, 0.0f, this->mMaskHeight, currentPos, 0.0f, true);
+    applyFocusToScrollList(mIsFocus);
+    mScrollList.setupList(mMaskHeight, mMaskHeight, 0.0f, mMaskHeight, currentPos, 0.0f, true);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (14 bytes)
@@ -962,9 +1036,19 @@ void uGUIKeyConfig::cList::reset(s32 currentPos) {
 // bool uGUIKeyConfig::cList::isFocus() const;
 
 // Address: 0x00afb210 - 0x00afb25c (76 bytes)
-__attribute__((weak)) void uGUIKeyConfig::cList::applyFocusToScrollList(bool isFocus) {
-    DDON_STUB("uGUIKeyConfig::cList::applyFocusToScrollList")
-    /* stub */
+void uGUIKeyConfig::cList::applyFocusToScrollList(bool isFocus) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mScrollList.mIsDecide = !isFocus;
+    mScrollList.setListFocus(false);
+    if (mScrollList.mpOwner != nullptr) {
+        // inferred: a temporary for the value the load at 0xafb244 read, used once; no DWARF local holds it
+        u32 t0 = mScrollList.mpOwner->getBasePointerPriority();
+        mScrollList.mIsAutoDispPointer = isFocus;
+        mScrollList.mPointerPrio = t0;
+    } else {
+        mScrollList.mIsAutoDispPointer = isFocus;
+        mScrollList.mPointerPrio = 10;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1002,7 +1086,7 @@ const MtDTI& uGUIKeyConfig::cKeySettingItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIKeyConfig::cKeySettingItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cKeySettingItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeySettingItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1022,15 +1106,227 @@ inline void uGUIKeyConfig::cKeySettingItem::operator delete(void* p_addr) {
 // uGUIKeyConfig::cKeySettingItem::~cKeySettingItem();
 
 // Address: 0x00afbb50 - 0x00afbcf7 (423 bytes)
-__attribute__((weak)) void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null) {
-    // local: cGUIInstNull* inst_copy;
-    // local: cGUIInstAnimation* inst_msg_number;
-    // local: cGUIInstAnimation* inst_msg_key_detail;
-    // local: cGUIInstAnimation* inst_msg_fix_key_icon;
-    // local: cGUIInstAnimation* inst_msg_fix_keycategory;
-    // local: cGUIObjPolygon* obj_msg_fix_key_icon_mouseover;
-    DDON_STUB("uGUIKeyConfig::cKeySettingItem::setup")
-    /* stub */
+void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null) {
+    // DWARF local not rendered: cGUIInstAnimation* inst_msg_number;
+    // DWARF local not rendered: cGUIInstAnimation* inst_msg_key_detail;
+    // DWARF local not rendered: cGUIInstAnimation* inst_msg_fix_key_icon;
+    // DWARF local not rendered: cGUIInstAnimation* inst_msg_fix_keycategory;
+    // DWARF local not rendered: cGUIObjPolygon* obj_msg_fix_key_icon_mouseover;
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    if (inst_null == nullptr) {
+        return;
+    }
+    cGUIInstNull* inst_copy = static_cast<cGUIInstNull*>(owner.ManageDuplicate(static_cast<cGUIInstance*>(inst_null), inst_null->getParent()));
+    if (inst_copy == nullptr) {
+        return;
+    }
+    mpINST_Null_keylist = inst_copy;
+    // inferred: a temporary for the result of the call at 0xafbb95, used twice; no DWARF local holds it
+    cGUIInstance* t0 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(154u);
+    if (t0 != nullptr) {
+        mpOBJ_msg_number_m_number = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t0, 3u));
+        // inferred: a temporary for the result of the call at 0xafbbbc, used twice; no DWARF local holds it
+        cGUIInstance* t1 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(151u);
+        if (t1 != nullptr) {
+            mpOBJ_msg_key_detail_m_key_detail = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t1, 10u));
+            // inferred: a temporary for the result of the call at 0xafbbe3, used 7 times; no DWARF local holds it
+            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            if (t2 != nullptr) {
+                mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
+                mDefaultSeqID = 1;
+                mFocusSeqID = 5;
+                mSelectSeqID = 1;
+                mDisableSeqID = 1;
+                mpInstMouseCollision = t2;
+                mpINST_msg_fix_key_icon = static_cast<cGUIInstAnimation*>(t2);
+                mpOBJ_msg_fix_key_icon_m_key = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t2, 16u));
+                mpOBJ_msg_fix_key_icon_f_basecolor = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t2, 13u));
+                // inferred: a temporary for the result of the call at 0xafbc5b, used twice; no DWARF local holds it
+                cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
+                if (t3 != nullptr) {
+                    mpObjMouseCollision = t3;
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                } else {
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                if (t4 != nullptr) {
+                    mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                    mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                    mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                }
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0xafbbe3, used 7 times; no DWARF local holds it
+            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            if (t2 != nullptr) {
+                mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
+                mDefaultSeqID = 1;
+                mFocusSeqID = 5;
+                mSelectSeqID = 1;
+                mDisableSeqID = 1;
+                mpInstMouseCollision = t2;
+                mpINST_msg_fix_key_icon = static_cast<cGUIInstAnimation*>(t2);
+                mpOBJ_msg_fix_key_icon_m_key = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t2, 16u));
+                mpOBJ_msg_fix_key_icon_f_basecolor = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t2, 13u));
+                // inferred: a temporary for the result of the call at 0xafbc5b, used twice; no DWARF local holds it
+                cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
+                if (t3 != nullptr) {
+                    mpObjMouseCollision = t3;
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                } else {
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                if (t4 != nullptr) {
+                    mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                    mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                    mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                }
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+            }
+        }
+    } else {
+        // inferred: a temporary for the result of the call at 0xafbbbc, used twice; no DWARF local holds it
+        cGUIInstance* t1 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(151u);
+        if (t1 != nullptr) {
+            mpOBJ_msg_key_detail_m_key_detail = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t1, 10u));
+            // inferred: a temporary for the result of the call at 0xafbbe3, used 7 times; no DWARF local holds it
+            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            if (t2 != nullptr) {
+                mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
+                mDefaultSeqID = 1;
+                mFocusSeqID = 5;
+                mSelectSeqID = 1;
+                mDisableSeqID = 1;
+                mpInstMouseCollision = t2;
+                mpINST_msg_fix_key_icon = static_cast<cGUIInstAnimation*>(t2);
+                mpOBJ_msg_fix_key_icon_m_key = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t2, 16u));
+                mpOBJ_msg_fix_key_icon_f_basecolor = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t2, 13u));
+                // inferred: a temporary for the result of the call at 0xafbc5b, used twice; no DWARF local holds it
+                cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
+                if (t3 != nullptr) {
+                    mpObjMouseCollision = t3;
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                } else {
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                if (t4 != nullptr) {
+                    mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                    mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                    mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                }
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0xafbbe3, used 7 times; no DWARF local holds it
+            cGUIInstance* t2 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(152u);
+            if (t2 != nullptr) {
+                mpInstFocus = static_cast<cGUIInstAnimation*>(t2);
+                mDefaultSeqID = 1;
+                mFocusSeqID = 5;
+                mSelectSeqID = 1;
+                mDisableSeqID = 1;
+                mpInstMouseCollision = t2;
+                mpINST_msg_fix_key_icon = static_cast<cGUIInstAnimation*>(t2);
+                mpOBJ_msg_fix_key_icon_m_key = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t2, 16u));
+                mpOBJ_msg_fix_key_icon_f_basecolor = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t2, 13u));
+                // inferred: a temporary for the result of the call at 0xafbc5b, used twice; no DWARF local holds it
+                cGUIObject* t3 = owner.getObjectFromId(t2, 25u);
+                if (t3 != nullptr) {
+                    mpObjMouseCollision = t3;
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                } else {
+                    // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                    cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                    if (t4 != nullptr) {
+                        mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                        mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                        mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                    }
+                    mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                    mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0xafbc72, used 4 times; no DWARF local holds it
+                cGUIInstance* t4 = inst_copy->cGUIInstance::getDuplicateInstanceFromId(185u);
+                if (t4 != nullptr) {
+                    mpOBJ_msg_fix_keycategory_f_base_frame = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 16u));
+                    mpOBJ_msg_fix_keycategory_f_base = static_cast<cGUIObjPolygon*>(owner.getObjectFromId(t4, 15u));
+                    mpOBJ_msg_fix_keycategory_m_keycategory = static_cast<cGUIObjMessage*>(owner.getObjectFromId(t4, 3u));
+                }
+                mpINST_Null_tip = static_cast<cGUIInstNull*>(inst_copy->cGUIInstance::getDuplicateInstanceFromId(196u));
+                mpInstPointerTarget = inst_copy->cGUIInstance::getDuplicateInstanceFromId(180u);
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (27 bytes)
@@ -1052,9 +1348,24 @@ __attribute__((weak)) void uGUIKeyConfig::cKeySettingItem::show(uGUIKeyConfig::c
 }
 
 // Address: 0x00afc110 - 0x00afc181 (113 bytes)
-__attribute__((weak)) void uGUIKeyConfig::cKeySettingItem::hide() {
-    DDON_STUB("uGUIKeyConfig::cKeySettingItem::hide")
-    /* stub */
+void uGUIKeyConfig::cKeySettingItem::hide() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpOBJ_msg_number_m_number != nullptr) {
+        mpOBJ_msg_number_m_number->clearMessage();
+    }
+    if (mpOBJ_msg_key_detail_m_key_detail != nullptr) {
+        mpOBJ_msg_key_detail_m_key_detail->clearMessage();
+    }
+    if (mpOBJ_msg_fix_key_icon_m_key != nullptr) {
+        mpOBJ_msg_fix_key_icon_m_key->clearMessage();
+    }
+    if (mpOBJ_msg_fix_keycategory_m_keycategory != nullptr) {
+        mpOBJ_msg_fix_keycategory_m_keycategory->clearMessage();
+    }
+    if (mpINST_Null_keylist == nullptr) {
+        return;
+    }
+    mpINST_Null_keylist->setVisible(false);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (88 bytes)
@@ -1093,6 +1404,8 @@ __attribute__((weak)) void uGUIKeyConfig::cKeySettingItem::setKey(nGUIKeyConfig:
 // No out-of-line body: 1 inlined copy in 1 function (82 bytes)
 //   in uGUIKeyConfig::updateToolTip at 0x00afa7eb-0x00afa83d (called at uGUIKeyConfig.cpp:2900)
 // void uGUIKeyConfig::cKeySettingItem::getToolTipPos(MtVector2& toolTipPos) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cKeySettingItem::MyDTI uGUIKeyConfig::cKeySettingItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc44e-0x00afc487 (called at uGUIKeyConfig.cpp:2913)
@@ -1151,6 +1464,8 @@ __attribute__((weak)) MtObject* uGUIKeyConfig::cKeySettingItem::MyDTI::newInstan
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // uGUIKeyConfig::cKeyItem::~cKeyItem();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cKeyItem::MyDTI uGUIKeyConfig::cKeyItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc3d9-0x00afc415 (called at uGUIKeyConfig.cpp:2712)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc3d9-0x00afc415 (called at uGUIKeyConfig.h:468)
@@ -1197,7 +1512,7 @@ const MtDTI& uGUIKeyConfig::cKeyInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIKeyConfig::cKeyInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cKeyInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeyInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1218,6 +1533,8 @@ inline void uGUIKeyConfig::cKeyInfo::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIKeyConfig::cKeyInfo::~cKeyInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cKeyInfo::MyDTI uGUIKeyConfig::cKeyInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (116 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc39f-0x00afc3d9 (called at uGUIKeyConfig.cpp:2702)
@@ -1404,13 +1721,13 @@ uGUIKeyConfig::cKeySettingInfo::~cKeySettingInfo() {
 void uGUIKeyConfig::cKeySettingInfo::addMouseTouchList(cControl* control, s32 pos) {
     // DWARF local not rendered: cKeySettingItem* const item;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::cScrollListInfoBase::mpItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (mpItem == nullptr) {
         return;
     }
-    if (control == static_cast<cControl*>(nullptr)) {
+    if (control == nullptr) {
         return;
     }
-    control->::cControl::addMouseTouchListLight(this->::uGUIBase::cScrollListInfoBase::mpItem->mpInstMouseCollision, this->::uGUIBase::cScrollListInfoBase::mpItem->mpObjMouseCollision, pos, static_cast<s32>(1));
+    control->addMouseTouchListLight(mpItem->mpInstMouseCollision, mpItem->mpObjMouseCollision, pos, 1);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -1490,6 +1807,8 @@ void uGUIKeyConfig::cKeySettingInfo::addMouseTouchList(cControl* control, s32 po
 // No out-of-line body: 1 inlined copy in 1 function (95 bytes)
 //   in uGUIKeyConfig::updateToolTip at 0x00afa7de-0x00afa83d (called at uGUIKeyConfig.cpp:3428)
 // bool uGUIKeyConfig::cKeySettingInfo::getToolTipPos(MtVector2& toolTipPos) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIKeyConfig::cKeySettingInfo::MyDTI uGUIKeyConfig::cKeySettingInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIKeyConfig.cpp at 0x00afc415-0x00afc44e (called at uGUIKeyConfig.cpp:2722)

@@ -13,6 +13,7 @@
 #include "cOcdInfo.h"
 #include "cOcdMsgCtrl2.h"
 #include "cpComponent.h"
+#include "cpDDMrlMgr.h"
 #include "nAction.h"
 #include "nDDOShader.h"
 #include "nDDOUtility.h"
@@ -40,7 +41,7 @@ const MtDTI& cpOcdCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpOcdCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpOcdCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpOcdCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +50,7 @@ inline MtAllocator* cpOcdCtrl::getAllocator() {
 // Address: 0x004db760 - 0x004db7a0 (64 bytes)
 void* cpOcdCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpOcdCtrl::getAllocator()->memAlloc(sz, align, ::cpOcdCtrl::DTI.::MtDTI::getID());
+    return cpOcdCtrl::getAllocator()->memAlloc(sz, align, cpOcdCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +65,7 @@ void* cpOcdCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpOcdCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpOcdCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpOcdCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,9 +145,9 @@ __attribute__((weak)) void cpOcdCtrl::kill() {
 // Address: 0x004dbef0 - 0x004dbf13 (35 bytes)
 void cpOcdCtrl::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
-    this->mOcdMsgCtrl2.::cOcdMsgCtrl2::setOwner(this, static_cast<uDDOModel*>(pOwner));
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
+    mOcdMsgCtrl2.setOwner(this, static_cast<uDDOModel*>(pOwner));
 }
 
 // Address: 0x004dc840 - 0x004dc841 (1 bytes)
@@ -158,22 +159,22 @@ __attribute__((weak)) void cpOcdCtrl::callbackDie(cUnitDieInfo& dieInfo) {
 void cpOcdCtrl::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: uCharacter* pDefender;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->::cpOcdCtrl::isInvalid() != false) {
+    if (isInvalid()) {
         return;
     }
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    uDDOModel* pAttacker = pHitInfo->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
-    if (pAttacker == static_cast<uDDOModel*>(nullptr)) {
+    uDDOModel* pAttacker = pHitInfo->mCommonInfo.getAttckerPtr();
+    if (pAttacker == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x4def96 read, used twice; no DWARF local holds it
     uDDOModel* t0 = pHitInfo->mCommonInfo.mpDfdModel;
-    if (t0 == static_cast<uDDOModel*>(nullptr)) {
+    if (t0 == nullptr) {
         return;
     }
-    if (pHitInfo->mCommonInfo.mIsAttackerShl != false) {
+    if (pHitInfo->mCommonInfo.mIsAttackerShl) {
         pAttacker->makeOcdAttackInfoShl(pHitInfo);
     } else {
         pAttacker->makeOcdAttackInfo(pHitInfo);
@@ -184,16 +185,16 @@ void cpOcdCtrl::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
 // Address: 0x004defe0 - 0x004deffd (29 bytes)
 void cpOcdCtrl::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpOcdCtrl::isInvalid() != false) {
+    if (isInvalid()) {
         return;
     }
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    if (pHitInfo->::cHitInfoAfter::isCalcOcd() == false) {
+    if (!pHitInfo->isCalcOcd()) {
         return;
     }
-    this->::cpOcdCtrl::calcOcdDamage(pHitInfo);
+    calcOcdDamage(pHitInfo);
 }
 
 // Address: 0x004df590 - 0x004df7ae (542 bytes)
@@ -215,33 +216,33 @@ __attribute__((weak)) void cpOcdCtrl::addOcdDamage(u32 OcdUID, f32 damage, nObjC
 // Address: 0x004df890 - 0x004df906 (118 bytes)
 void cpOcdCtrl::callbackApplyDamageVisual(cHitInfoAfter* pHitInfo) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->::cpOcdCtrl::isInvalid() != false) {
+    if (isInvalid()) {
         return;
     }
-    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+    if (pHitInfo == nullptr) {
         return;
     }
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x4df8b6, used 4 times; no DWARF local holds it
-    uDDOModel* t0 = pHitInfo->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
-    if (t0 == static_cast<uDDOModel*>(nullptr)) {
+    uDDOModel* t0 = pHitInfo->mCommonInfo.getAttckerPtr();
+    if (t0 == nullptr) {
         return;
     }
-    if (pHitInfo->mCommonInfo.mpDfdModel == static_cast<uDDOModel*>(nullptr)) {
+    if (pHitInfo->mCommonInfo.mpDfdModel == nullptr) {
         return;
     }
-    if (pHitInfo->mCommonInfo.mpDfdModel->::uDDOModel::isAbnormalConditionActive(static_cast<u32>(4111)) == false) {
+    if (!pHitInfo->mCommonInfo.mpDfdModel->isAbnormalConditionActive(4111u)) {
         return;
     }
-    if ((t0->mUnitId & static_cast<u32>(4)) == static_cast<u32>(0)) {
+    if ((t0->mUnitId & 4u) == 0) {
         return;
     }
-    if (::cOcdHolyAbsorp::isHpAbsorpAble(t0) == false) {
+    if (!cOcdHolyAbsorp::isHpAbsorpAble(t0)) {
         return;
     }
-    t0->::uDDOModel::requestOutline(static_cast<u32>(1));
+    t0->requestOutline(1u);
 }
 
 // Address: 0x004de6f0 - 0x004de74c (92 bytes)
@@ -342,10 +343,10 @@ __attribute__((weak)) void cpOcdCtrl::setImmuneParamRes(rOcdImmuneParamRes* pRes
 // Address: 0x004de270 - 0x004de28c (28 bytes)
 MtTypedArray<cOcdInfo>& cpOcdCtrl::getOcdList(u32 bank) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (bank > static_cast<u32>(6)) {
-        return this->mOcdList[0];
+    if (bank > 6u) {
+        return mOcdList[0];
     } else {
-        return this->mOcdList[bank];
+        return mOcdList[bank];
     }
 }
 
@@ -626,7 +627,7 @@ __attribute__((weak)) void cpOcdCtrl::reqOcdApply(u32 OcdUID, nObjCondition::OCD
 // Address: 0x004df9d0 - 0x004df9dd (13 bytes)
 void cpOcdCtrl::reqOcdApplyForce(u32 OcdUID, nObjCondition::OCD_REASON reason, f32 cacheTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpOcdCtrl::reqOcdApply(OcdUID, reason, cacheTime, static_cast<u32>(1), static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(0));
+    reqOcdApply(OcdUID, reason, cacheTime, 1u, nObjCollision::INV_THROUGH_TYPE_NONE);
 }
 
 // Address: 0x004df9e0 - 0x004dfbc8 (488 bytes)
@@ -671,15 +672,13 @@ bool cpOcdCtrl::isOcdActive(u32 OcdUID) const {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from MtObject*
-    if (this->mIsInvalid != false) {
-    } else {
-        if (((OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)) > static_cast<u32>(6)) {
-        } else {
-            if (this->mOcdList[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)].::MtArray::mLength != static_cast<u32>(0)) {
-                if (((OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)) < this->mOcdList[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)].::MtArray::mLength) {
-                    if (this->mOcdList[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)].::MtArray::mpArray[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mOcdList[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)].::MtArray::mpArray[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)]) + static_cast<long>(8))) != static_cast<unsigned long>(0)) {
-                            return static_cast<cOcdInfo*>(this->mOcdList[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)].::MtArray::mpArray[(OcdUID & static_cast<u32>(4294905855)) - static_cast<u32>(1)])->::cOcdInfo::isActive();
+    if (!mIsInvalid) {
+        if (((OcdUID >> 12) & 15u) <= 6u) {
+            if (mOcdList[(OcdUID >> 12) & 15u].mLength != 0) {
+                if (((OcdUID & 0xFFFF0FFFu) - 1u) < mOcdList[(OcdUID >> 12) & 15u].mLength) {
+                    if (mOcdList[(OcdUID >> 12) & 15u].mpArray[(OcdUID & 0xFFFF0FFFu) - 1u] != nullptr) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[(OcdUID >> 12) & 15u].mpArray[(OcdUID & 0xFFFF0FFFu) - 1u]) + 8)) != 0) {
+                            return static_cast<cOcdInfo*>(mOcdList[(OcdUID >> 12) & 15u].mpArray[(OcdUID & 0xFFFF0FFFu) - 1u])->isActive();
                         }
                     }
                 }
@@ -695,7 +694,7 @@ bool cpOcdCtrl::isOcdActiveOld(u32 OcdUID) const {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mOcdActiveBitOld[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)]) >> static_cast<unsigned long>((OcdUID - static_cast<u32>(1)) & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mOcdActiveBitOld[(OcdUID >> 12) & 15u]) >> static_cast<unsigned long>((OcdUID - 1u) & 31u)) & 1ul) != 0;
 }
 
 // Address: 0x004dff80 - 0x004e0038 (184 bytes)
@@ -759,7 +758,7 @@ __attribute__((weak)) f32 cpOcdCtrl::getOcdFreeParam(u32 OcdUID, u32 index) {
 // Address: 0x004e0260 - 0x004e0267 (7 bytes)
 void cpOcdCtrl::addOcdSystemFlag(u32 flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOcdSystemFlag = flag | this->mOcdSystemFlag;
+    mOcdSystemFlag = flag | mOcdSystemFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -797,7 +796,7 @@ __attribute__((weak)) void cpOcdCtrl::cancelOcdReqest(u32 OcdUID) {
 // Address: 0x004e02f0 - 0x004e02f7 (7 bytes)
 bool cpOcdCtrl::isRecoverEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOcdMsgCtrl2.mIsRecoverEnd;
+    return mOcdMsgCtrl2.mIsRecoverEnd;
 }
 
 // Address: 0x004e0300 - 0x004e031e (30 bytes)
@@ -812,11 +811,11 @@ __attribute__((weak)) bool cpOcdCtrl::isUseSleepChangeTime() const {
 // Address: 0x004e0320 - 0x004e0338 (24 bytes)
 void cpOcdCtrl::notifyReceiveMsg(bool recvFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsInvalid != false) {
+    if (mIsInvalid) {
         return;
     }
-    this->mOcdMsgCtrl2.mIsReceiveMsg = true;
-    this->mOcdMsgCtrl2.mInitFlag = recvFlag;
+    mOcdMsgCtrl2.mIsReceiveMsg = true;
+    mOcdMsgCtrl2.mInitFlag = recvFlag;
 }
 
 // Address: 0x004e0340 - 0x004e03dd (157 bytes)
@@ -885,10 +884,10 @@ __attribute__((weak)) void cpOcdCtrl::setOcdElectricRes(rOcdElectricParam* pResO
 // Address: 0x004df940 - 0x004df95b (27 bytes)
 void cpOcdCtrl::registOcdShader(nDDOShader::SHADER_MODE_ENUM shaderType, u32 priority, s32 lv) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (priority >= this->mShaderPriority) {
-        this->mShaderPriority = priority;
-        this->mOcdShaderType = shaderType;
-        this->mOcdShaderLv = lv;
+    if (priority >= mShaderPriority) {
+        mShaderPriority = priority;
+        mOcdShaderType = shaderType;
+        mOcdShaderLv = lv;
     }
 }
 
@@ -896,12 +895,12 @@ void cpOcdCtrl::registOcdShader(nDDOShader::SHADER_MODE_ENUM shaderType, u32 pri
 bool cpOcdCtrl::checkOcdDamageCache(const cOcdCache& newChach) {
     // DWARF local not rendered: OCD_REASON reason;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsInvalid != false) {
+    if (mIsInvalid) {
         return false;
     } else {
-        if (newChach.mReason != static_cast<nObjCondition::OCD_REASON>(0)) {
-            if (this->mOcdDamageCacheArray.elems[(static_cast<unsigned int>(newChach.mReason) <= static_cast<unsigned int>(2)) ? newChach.mReason : static_cast<nObjCondition::OCD_REASON>(0)].mIsActive == false) {
-                this->mOcdDamageCacheArray.elems[(static_cast<unsigned int>(newChach.mReason) <= static_cast<unsigned int>(2)) ? newChach.mReason : static_cast<nObjCondition::OCD_REASON>(0)].::cOcdCache::copy(newChach);
+        if (newChach.mReason != nObjCondition::OCD_REASON_NONE) {
+            if (!mOcdDamageCacheArray.elems[(static_cast<unsigned int>(newChach.mReason) <= 2) ? newChach.mReason : nObjCondition::OCD_REASON_NONE].mIsActive) {
+                mOcdDamageCacheArray.elems[(static_cast<unsigned int>(newChach.mReason) <= 2) ? newChach.mReason : nObjCondition::OCD_REASON_NONE].copy(newChach);
                 return true;
             } else {
                 return false;
@@ -930,87 +929,87 @@ void cpOcdCtrl::setupOcdCycleEffect() {
     // DWARF local not rendered: const cOutlineParam* pOutLineParam_A;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->mCycleEffectReqInfo.elems[1].mEffLoopTime = 30.0f;
-    this->mCycleEffectReqInfo.elems[1].mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(1);
-    this->mCycleEffectReqInfo.elems[2].mEffLoopTime = 30.0f;
+    mCycleEffectReqInfo.elems[1].mEffLoopTime = 30.0f;
+    mCycleEffectReqInfo.elems[1].mPartType = nEffectCycle::PART_TYPE_REST;
+    mCycleEffectReqInfo.elems[2].mEffLoopTime = 30.0f;
     // inferred: a temporary for the result of the call at 0x4dc5f7, used twice; no DWARF local holds it
-    const cOutlineParam* t0 = static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::getOutlineParam(static_cast<sEffectExt::OUTLINE>(4));
-    if (t0 != static_cast<const cOutlineParam*>(nullptr)) {
-        this->mCycleEffectReqInfo.elems[2].mEffLoopTime = t0->mFrame;
+    const cOutlineParam* t0 = static_cast<sEffectExt*>(sEffect::getInstance())->getOutlineParam(sEffectExt::OUTLINE_HEALING_SPOT);
+    if (t0 != nullptr) {
+        mCycleEffectReqInfo.elems[2].mEffLoopTime = t0->mFrame;
     }
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mCycleEffectReqInfo.elems[2].mEpvIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[2].mEpvElement = static_cast<s32>(23);
-            this->mCycleEffectReqInfo.elems[2].mIsEffect = true;
-            this->mCycleEffectReqInfo.elems[2].mEpvFinishIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[2].mEpvFinishElement = static_cast<s32>(24);
-            this->mCycleEffectReqInfo.elems[2].mIsEndEffect = true;
+    if (mpModel != nullptr) {
+        if ((mpModel->mUnitId & 16u) != 0) {
+            mCycleEffectReqInfo.elems[2].mEpvIndex = 1;
+            mCycleEffectReqInfo.elems[2].mEpvElement = 23;
+            mCycleEffectReqInfo.elems[2].mIsEffect = true;
+            mCycleEffectReqInfo.elems[2].mEpvFinishIndex = 1;
+            mCycleEffectReqInfo.elems[2].mEpvFinishElement = 24;
+            mCycleEffectReqInfo.elems[2].mIsEndEffect = true;
         }
     }
-    this->mCycleEffectReqInfo.elems[2].mOutLineIndex = static_cast<s32>(4);
-    this->mCycleEffectReqInfo.elems[2].mIsOutLine = true;
-    this->mCycleEffectReqInfo.elems[2].mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(2);
-    this->mCycleEffectReqInfo.elems[3].mEffLoopTime = 30.0f;
+    mCycleEffectReqInfo.elems[2].mOutLineIndex = 4;
+    mCycleEffectReqInfo.elems[2].mIsOutLine = true;
+    mCycleEffectReqInfo.elems[2].mPartType = nEffectCycle::PART_TYPE_EFFCT_CALL;
+    mCycleEffectReqInfo.elems[3].mEffLoopTime = 30.0f;
     // inferred: a temporary for the result of the call at 0x4dc686, used twice; no DWARF local holds it
-    const cOutlineParam* t1 = static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::getOutlineParam(static_cast<sEffectExt::OUTLINE>(5));
-    if (t1 != static_cast<const cOutlineParam*>(nullptr)) {
-        this->mCycleEffectReqInfo.elems[3].mEffLoopTime = t1->mFrame;
+    const cOutlineParam* t1 = static_cast<sEffectExt*>(sEffect::getInstance())->getOutlineParam(sEffectExt::OUTLINE_HOLY_ABSORB);
+    if (t1 != nullptr) {
+        mCycleEffectReqInfo.elems[3].mEffLoopTime = t1->mFrame;
     }
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mCycleEffectReqInfo.elems[3].mEpvIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[3].mEpvElement = static_cast<s32>(29);
-            this->mCycleEffectReqInfo.elems[3].mIsEffect = true;
-            this->mCycleEffectReqInfo.elems[3].mEpvFinishIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[3].mEpvFinishElement = static_cast<s32>(30);
-            this->mCycleEffectReqInfo.elems[3].mIsEndEffect = true;
+    if (mpModel != nullptr) {
+        if ((mpModel->mUnitId & 16u) != 0) {
+            mCycleEffectReqInfo.elems[3].mEpvIndex = 1;
+            mCycleEffectReqInfo.elems[3].mEpvElement = 29;
+            mCycleEffectReqInfo.elems[3].mIsEffect = true;
+            mCycleEffectReqInfo.elems[3].mEpvFinishIndex = 1;
+            mCycleEffectReqInfo.elems[3].mEpvFinishElement = 30;
+            mCycleEffectReqInfo.elems[3].mIsEndEffect = true;
         }
     }
-    this->mCycleEffectReqInfo.elems[3].mIsOutLine = true;
-    this->mCycleEffectReqInfo.elems[3].mOutLineIndex = static_cast<s32>(5);
-    this->mCycleEffectReqInfo.elems[3].mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(2);
-    this->mCycleEffectReqInfo.elems[4].mEffLoopTime = 30.0f;
+    mCycleEffectReqInfo.elems[3].mIsOutLine = true;
+    mCycleEffectReqInfo.elems[3].mOutLineIndex = 5;
+    mCycleEffectReqInfo.elems[3].mPartType = nEffectCycle::PART_TYPE_EFFCT_CALL;
+    mCycleEffectReqInfo.elems[4].mEffLoopTime = 30.0f;
     // inferred: a temporary for the result of the call at 0x4dc715, used twice; no DWARF local holds it
-    const cOutlineParam* t2 = static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::getOutlineParam(static_cast<sEffectExt::OUTLINE>(9));
-    if (t2 != static_cast<const cOutlineParam*>(nullptr)) {
-        this->mCycleEffectReqInfo.elems[4].mEffLoopTime = t2->mFrame;
+    const cOutlineParam* t2 = static_cast<sEffectExt*>(sEffect::getInstance())->getOutlineParam(sEffectExt::OUTLINE_ST_DOWN_TRG);
+    if (t2 != nullptr) {
+        mCycleEffectReqInfo.elems[4].mEffLoopTime = t2->mFrame;
     }
-    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mCycleEffectReqInfo.elems[4].mEpvIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[4].mEpvElement = static_cast<s32>(5);
-            this->mCycleEffectReqInfo.elems[4].mIsEffect = true;
-            this->mCycleEffectReqInfo.elems[4].mEpvFinishIndex = static_cast<s32>(-1);
-            this->mCycleEffectReqInfo.elems[4].mEpvFinishElement = static_cast<s32>(-1);
-            this->mCycleEffectReqInfo.elems[4].mIsEndEffect = false;
+    if (mpModel != nullptr) {
+        if ((mpModel->mUnitId & 16u) != 0) {
+            mCycleEffectReqInfo.elems[4].mEpvIndex = 1;
+            mCycleEffectReqInfo.elems[4].mEpvElement = 5;
+            mCycleEffectReqInfo.elems[4].mIsEffect = true;
+            mCycleEffectReqInfo.elems[4].mEpvFinishIndex = -1;
+            mCycleEffectReqInfo.elems[4].mEpvFinishElement = -1;
+            mCycleEffectReqInfo.elems[4].mIsEndEffect = false;
         }
     }
-    this->mCycleEffectReqInfo.elems[4].mIsOutLine = true;
-    this->mCycleEffectReqInfo.elems[4].mOutLineIndex = static_cast<s32>(9);
-    this->mCycleEffectReqInfo.elems[4].mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(2);
-    this->mCycleEffectReqInfo.elems[5].mEffLoopTime = 30.0f;
+    mCycleEffectReqInfo.elems[4].mIsOutLine = true;
+    mCycleEffectReqInfo.elems[4].mOutLineIndex = 9;
+    mCycleEffectReqInfo.elems[4].mPartType = nEffectCycle::PART_TYPE_EFFCT_CALL;
+    mCycleEffectReqInfo.elems[5].mEffLoopTime = 30.0f;
     // inferred: a temporary for the result of the call at 0x4dc7a4, used twice; no DWARF local holds it
-    const cOutlineParam* t3 = static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::getOutlineParam(static_cast<sEffectExt::OUTLINE>(8));
-    if (t3 != static_cast<const cOutlineParam*>(nullptr)) {
-        this->mCycleEffectReqInfo.elems[5].mEffLoopTime = t3->mFrame;
+    const cOutlineParam* t3 = static_cast<sEffectExt*>(sEffect::getInstance())->getOutlineParam(sEffectExt::OUTLINE_ST_UP_TRG);
+    if (t3 != nullptr) {
+        mCycleEffectReqInfo.elems[5].mEffLoopTime = t3->mFrame;
     }
     // inferred: the value carried to 0x4dc806; no location-less local in scope fits
-    uDDOModel* v7_3 = this->mpModel;
-    if (v7_3 != static_cast<uDDOModel*>(nullptr)) {
-        if ((v7_3->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
-            this->mCycleEffectReqInfo.elems[5].mEpvIndex = static_cast<s32>(1);
-            this->mCycleEffectReqInfo.elems[5].mEpvElement = static_cast<s32>(4);
-            this->mCycleEffectReqInfo.elems[5].mIsEffect = true;
-            this->mCycleEffectReqInfo.elems[5].mEpvFinishIndex = static_cast<s32>(-1);
-            this->mCycleEffectReqInfo.elems[5].mEpvFinishElement = static_cast<s32>(-1);
-            this->mCycleEffectReqInfo.elems[5].mIsEndEffect = false;
+    uDDOModel* v7_3 = mpModel;
+    if (v7_3 != nullptr) {
+        if ((v7_3->mUnitId & 16u) != 0) {
+            mCycleEffectReqInfo.elems[5].mEpvIndex = 1;
+            mCycleEffectReqInfo.elems[5].mEpvElement = 4;
+            mCycleEffectReqInfo.elems[5].mIsEffect = true;
+            mCycleEffectReqInfo.elems[5].mEpvFinishIndex = -1;
+            mCycleEffectReqInfo.elems[5].mEpvFinishElement = -1;
+            mCycleEffectReqInfo.elems[5].mIsEndEffect = false;
         }
     }
-    this->mCycleEffectReqInfo.elems[5].mIsOutLine = true;
-    this->mCycleEffectReqInfo.elems[5].mOutLineIndex = static_cast<s32>(8);
-    this->mCycleEffectReqInfo.elems[5].mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(2);
-    this->mEffectCycleCtrl.::cEffectCycleCtrl::setOwner(v7_3);
+    mCycleEffectReqInfo.elems[5].mIsOutLine = true;
+    mCycleEffectReqInfo.elems[5].mOutLineIndex = 8;
+    mCycleEffectReqInfo.elems[5].mPartType = nEffectCycle::PART_TYPE_EFFCT_CALL;
+    mEffectCycleCtrl.setOwner(v7_3);
 }
 
 // Address: 0x004dcc40 - 0x004dcf24 (740 bytes)
@@ -1029,9 +1028,21 @@ __attribute__((weak)) void cpOcdCtrl::updateOcdCycleEffect() {
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (79 bytes)
-//   in cpOcdCtrl::before at 0x004dc3c2-0x004dc411 (called at cpOcdCtrl.cpp:586)
-// void cpOcdCtrl::callOcdShader();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpOcdCtrl::before at 0x4dc3c2-0x4dc411; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpOcdCtrl::callOcdShader() {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mpModel->mpDDMrlMgr == nullptr) {
+        return;
+    }
+    mpModel->mpDDMrlMgr->requestAilmentShader(static_cast<u32>(mOcdShaderType), mShaderPriority);
+    if (mOcdShaderType != nDDOShader::SHADER_MODE_EROSION) {
+        return;
+    }
+    mpModel->mpDDMrlMgr->setErosionLevel(mOcdShaderLv);
+}
 
 // No out-of-line body: 2 inlined copies in 2 functions (63 bytes)
 //   in cpOcdCtrl::cpOcdCtrl at 0x004dbced-0x004dbd01, 0x004dbd4e-0x004dbd58 (called at cpOcdCtrl.cpp:101)
@@ -1053,7 +1064,7 @@ __attribute__((weak)) void cpOcdCtrl::updateOcdCycleEffect() {
 // Address: 0x004dd2f0 - 0x004dd2f8 (8 bytes)
 void cpOcdCtrl::notifyMoveFreeze() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsMoveFreeze = true;
+    mIsMoveFreeze = true;
 }
 
 // Address: 0x004dcf50 - 0x004dd19a (586 bytes)
@@ -1112,6 +1123,8 @@ __attribute__((weak)) f32 cpOcdCtrl::getOcdAccumulation(u32 OcdUID) {
 //   in _ZN6uHuman12isNowErosionEv at 0x00c9555b-0x00c95564 (called at uHuman.cpp:21812)
 //   in uHuman::checkSetErosionTouch at 0x00c9560b-0x00c95616 (called at uHuman.cpp:21812)
 // bool cpOcdCtrl::isOCDapplyContinue();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpOcdCtrl::MyDTI cpOcdCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpOcdCtrl.cpp at 0x004e071f-0x004e075c (called at cpOcdCtrl.cpp:66)

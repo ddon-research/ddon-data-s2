@@ -50,7 +50,7 @@ const MtDTI& uBaseEffect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uBaseEffectD0Ev at 0x00fc0a4b-0x00fc0a6c, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uBaseEffect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uBaseEffect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uBaseEffect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,23 +72,23 @@ uBaseEffect::uBaseEffect() {
 // Also emitted as: _ZN11uBaseEffectD0Ev at 0x00fc0a10
 uBaseEffect::~uBaseEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEffectList == static_cast<rEffectList*>(nullptr)) {
+    if (mpEffectList == nullptr) {
         return;
     }
-    this->mpEffectList->::cResource::release();
-    this->mpEffectList = static_cast<rEffectList*>(nullptr);
+    mpEffectList->release();
+    mpEffectList = nullptr;
 }
 
 // Address: 0x00fc0a70 - 0x00fc0a75 (5 bytes)
 MtUI* uBaseEffect::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uCoord::createUI(prop);
+    return this->uCoord::createUI(prop);
 }
 
 // Address: 0x00fc0a80 - 0x00fc0a86 (6 bytes)
 u64 uBaseEffect::getSystemUnitGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u64>(16);
+    return 16;
 }
 
 // Address: 0x00fc0a90 - 0x00fc0acc (60 bytes)
@@ -113,15 +113,15 @@ __attribute__((weak)) void uBaseEffect::applyWorldOffset(const MtVector3& offset
 // Address: 0x00fc11a0 - 0x00fc11bf (31 bytes)
 void uBaseEffect::setParent(uCoord* pParent, s32 ParentNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->setEffectParent(pParent);
-    this->::uCoord::mParentNo = ParentNo;
+    setEffectParent(pParent);
+    mParentNo = ParentNo;
 }
 
 // Address: 0x01b658d0 - 0x01b658dc (12 bytes)
 void uBaseEffect::setEffectParent(uCoord* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uCoord::mpParent = pParent;
-    this->mParentDisableFlag = static_cast<u32>(0);
+    mpParent = pParent;
+    mParentDisableFlag = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -134,13 +134,13 @@ bool uBaseEffect::getSleepMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 2) >> 1);
 }
 
 // Address: 0x01ad5e70 - 0x01ad5e8b (27 bytes)
 void uBaseEffect::setSleepMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967293)) : (this->mStatus | static_cast<u32>(2));
+    mStatus = !Mode ? (mStatus & 0xFFFFFFFDu) : (mStatus | 2u);
 }
 
 // Address: 0x01b659e0 - 0x01b659ec (12 bytes)
@@ -149,13 +149,13 @@ bool uBaseEffect::getSchedulerMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 4) >> 2);
 }
 
 // Address: 0x01b659f0 - 0x01b65a0b (27 bytes)
 void uBaseEffect::setSchedulerMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967291)) : (this->mStatus | static_cast<u32>(4));
+    mStatus = !Mode ? (mStatus & 0xFFFFFFFBu) : (mStatus | 4u);
 }
 
 // Address: 0x01b65a10 - 0x01b65a1c (12 bytes)
@@ -164,13 +164,13 @@ bool uBaseEffect::getEventMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 8) >> 3);
 }
 
 // Address: 0x01b65a20 - 0x01b65a3b (27 bytes)
 void uBaseEffect::setEventMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967287)) : (this->mStatus | static_cast<u32>(8));
+    mStatus = !Mode ? (mStatus & 0xFFFFFFF7u) : (mStatus | 8u);
 }
 
 // Address: 0x01b659c0 - 0x01b659cc (12 bytes)
@@ -179,13 +179,13 @@ bool uBaseEffect::getTimerControlMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 64) >> 6);
 }
 
 // Address: 0x01b65a40 - 0x01b65a5b (27 bytes)
 void uBaseEffect::setTimerControlMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967231)) : (this->mStatus | static_cast<u32>(64));
+    mStatus = !Mode ? (mStatus & 0xFFFFFFBFu) : (mStatus | 64u);
 }
 
 // Address: 0x01b65ad0 - 0x01b65ada (10 bytes)
@@ -194,13 +194,13 @@ bool uBaseEffect::getTextureOmitMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) >> static_cast<unsigned long>(7));
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) >> 7);
 }
 
 // Address: 0x01b65ae0 - 0x01b65b00 (32 bytes)
 void uBaseEffect::setTextureOmitMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967167)) : (this->mStatus | static_cast<u32>(128));
+    mStatus = !Mode ? (mStatus & 0xFFFFFF7Fu) : (mStatus | 128u);
 }
 
 // Address: 0x01b65b00 - 0x01b65b09 (9 bytes)
@@ -208,13 +208,13 @@ bool uBaseEffect::getVBInvalidMode() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: const unsigned char used as bool
-    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(1));
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 1);
 }
 
 // Address: 0x01b65b10 - 0x01b65b30 (32 bytes)
 void uBaseEffect::setVBInvalidMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294967039)) : (this->mStatus | static_cast<u32>(256));
+    mStatus = !Mode ? (mStatus & 0xFFFFFEFFu) : (mStatus | 256u);
 }
 
 // Address: 0x01b65b30 - 0x01b65b3b (11 bytes)
@@ -223,13 +223,13 @@ bool uBaseEffect::getNoFogMode() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 273)) & 2) >> 1);
 }
 
 // Address: 0x01b65b40 - 0x01b65b60 (32 bytes)
 void uBaseEffect::setNoFogMode(bool Mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Mode == false) ? (this->mStatus & static_cast<u32>(4294966783)) : (this->mStatus | static_cast<u32>(512));
+    mStatus = !Mode ? (mStatus & 0xFFFFFDFFu) : (mStatus | 512u);
 }
 
 // Address: 0x01ad5e90 - 0x01ad5e9c (12 bytes)
@@ -238,139 +238,138 @@ bool uBaseEffect::getRestartFlag() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 272)) & 16) >> 4);
 }
 
 // Address: 0x01ad5ea0 - 0x01ad5ebb (27 bytes)
 void uBaseEffect::setRestartFlag(bool Flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (Flag == false) ? (this->mStatus & static_cast<u32>(4294967279)) : (this->mStatus | static_cast<u32>(16));
+    mStatus = !Flag ? (mStatus & 0xFFFFFFEFu) : (mStatus | 16u);
 }
 
 // Address: 0x01b65990 - 0x01b65999 (9 bytes)
 f32 uBaseEffect::getDeltaTimeCoef() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTimeCoef;
+    return mDeltaTimeCoef;
 }
 
 // Address: 0x01b65980 - 0x01b65989 (9 bytes)
 void uBaseEffect::setDeltaTimeCoef(f32 DeltaTimeCoef) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTimeCoef = DeltaTimeCoef;
+    mDeltaTimeCoef = DeltaTimeCoef;
 }
 
 // Address: 0x01b65cb0 - 0x01b65cb7 (7 bytes)
 u32 uBaseEffect::getTimer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTimer;
+    return mTimer;
 }
 
 // Address: 0x01b65cc0 - 0x01b65cd0 (16 bytes)
 void uBaseEffect::setTimer(u32 Timer) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mStatus & static_cast<u32>(64)) == static_cast<u32>(0)) {
+    if ((mStatus & 64u) == 0) {
         return;
     }
-    this->mTimer = Timer;
+    mTimer = Timer;
 }
 
 // Address: 0x01b65d50 - 0x01b65d58 (8 bytes)
 u32 uBaseEffect::getLoopFrame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLoopFrame;
+    return mLoopFrame;
 }
 
 // Address: 0x01b65d60 - 0x01b65d74 (20 bytes)
 void uBaseEffect::setLoopFrame(u32 LoopFrame) {
     // Approximate from the ELF: a wider integer stored into a bitfield; the body oracle reports this body.
-    if (LoopFrame == static_cast<u32>(0)) {
+    if (LoopFrame == 0) {
         return;
     }
-    if (LoopFrame <= static_cast<u32>(600)) {
-        this->mLoopFrame = LoopFrame;
+    if (LoopFrame <= 600u) {
+        mLoopFrame = LoopFrame;
     }
 }
 
 // Address: 0x01b65f10 - 0x01b65f18 (8 bytes)
 u32 uBaseEffect::getKillNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mKillNo;
+    return mKillNo;
 }
 
 // Address: 0x01b65f20 - 0x01b65f28 (8 bytes)
 void uBaseEffect::setKillNo(u32 KillNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mKillNo = KillNo;
+    mKillNo = KillNo;
 }
 
 // Address: 0x01b65f30 - 0x01b65f38 (8 bytes)
 u32 uBaseEffect::getExclusionTrait() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mExclusionTrait;
+    return mExclusionTrait;
 }
 
 // Address: 0x01b65f40 - 0x01b65f48 (8 bytes)
 void uBaseEffect::setExclusionTrait(u32 ExclusionTrait) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExclusionTrait = ExclusionTrait;
+    mExclusionTrait = ExclusionTrait;
 }
 
 // Address: 0x01b65ff0 - 0x01b65fff (15 bytes)
 u32 uBaseEffect::getCullingGroup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCullingGroup;
+    return mCullingGroup;
 }
 
 // Address: 0x01b66000 - 0x01b6602e (46 bytes)
 void uBaseEffect::setCullingGroup(u32 Group) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCullingGroup = Group;
+    mCullingGroup = Group;
 }
 
 // Address: 0x01b65c20 - 0x01b65c2b (11 bytes)
 u32 uBaseEffect::getAxisType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAxisType;
+    return mAxisType;
 }
 
 // Address: 0x00fc1310 - 0x00fc1359 (73 bytes)
 void uBaseEffect::setAxisType(u32 AxisType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAxisType = AxisType;
-    if ((AxisType & static_cast<u32>(15)) == static_cast<u32>(6)) {
-    } else {
-        this->::uBaseEffect::setDir(this->mDir);
+    mAxisType = AxisType;
+    if ((AxisType & 15u) != 6) {
+        setDir(mDir);
     }
 }
 
 // Address: 0x01b65c30 - 0x01b65c3c (12 bytes)
 u32 uBaseEffect::getRelationType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRelationType;
+    return mRelationType;
 }
 
 // Address: 0x01b65c40 - 0x01b65c6e (46 bytes)
 void uBaseEffect::setRelationType(u32 RelationType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRelationType = RelationType;
+    mRelationType = RelationType;
 }
 
 // Address: 0x01b65c70 - 0x01b65c7a (10 bytes)
 u32 uBaseEffect::getEndType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndType;
+    return mEndType;
 }
 
 // Address: 0x01b65c80 - 0x01b65ca8 (40 bytes)
 void uBaseEffect::setEndType(u32 EndType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndType = EndType;
+    mEndType = EndType;
 }
 
 // Address: 0x01b661b0 - 0x01b661b8 (8 bytes)
 rEffectList* uBaseEffect::getEffectList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpEffectList;
+    return mpEffectList;
 }
 
 // Address: 0x00fc11c0 - 0x00fc12fd (317 bytes)
@@ -388,10 +387,10 @@ __attribute__((weak)) MtVector3 uBaseEffect::getOfs() const {
 // Address: 0x01b65e90 - 0x01b65ec1 (49 bytes)
 void uBaseEffect::setOfs(const MtVector3& Ofs) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfs.x = Ofs.x;
-    this->mOfs.y = Ofs.y;
-    this->mOfs.z = Ofs.z;
-    this->mOfs.pad_ = 0.0f;
+    mOfs.x = Ofs.x;
+    mOfs.y = Ofs.y;
+    mOfs.z = Ofs.z;
+    mOfs.pad_ = 0.0f;
 }
 
 // Address: 0x01b65ed0 - 0x01b65f01 (49 bytes)
@@ -442,18 +441,16 @@ __attribute__((weak)) void uBaseEffect::setDirPos(const MtVector3& Dir, const Mt
 // Address: 0x01b65f50 - 0x01b65f5f (15 bytes)
 u32 uBaseEffect::getParticleVolume() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParticleVolume;
+    return mParticleVolume;
 }
 
 // Address: 0x00fc21f0 - 0x00fc2259 (105 bytes)
 void uBaseEffect::setParticleVolume(u32 Volume) {
-    // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    if (Volume == static_cast<u32>(3)) {
-        this->mParticleVolume = static_cast<u32>(3);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Volume == 3) {
+        mParticleVolume = 3;
     } else {
-        // inferred: a temporary for the value the load at 0xfc221d read, used once; no DWARF local holds it
-        u32 t0 = (::sEffect::mpInstance)->mParticleVolume;
-        this->mParticleVolume = (t0 < Volume) ? t0 : Volume;
+        mParticleVolume = ((sEffect::mpInstance)->mParticleVolume < Volume) ? (sEffect::mpInstance)->mParticleVolume : Volume;
     }
 }
 
@@ -463,13 +460,13 @@ void uBaseEffect::setParticleVolume(u32 Volume) {
 // Address: 0x01b65f60 - 0x01b65f6f (15 bytes)
 u32 uBaseEffect::getFilterVolume() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFilterVolume;
+    return mFilterVolume;
 }
 
 // Address: 0x01b65f70 - 0x01b65f9d (45 bytes)
 void uBaseEffect::setFilterVolume(u32 Volume) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFilterVolume = Volume;
+    mFilterVolume = Volume;
 }
 
 // Address: 0x01b65fa0 - 0x01b65faf (15 bytes)
@@ -481,19 +478,19 @@ __attribute__((weak)) u32 uBaseEffect::getLifeFrameVolume() const {
 // Address: 0x01b65fb0 - 0x01b65fe1 (49 bytes)
 void uBaseEffect::setLifeFrameVolume(u32 Volume) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLifeFrameVolume = Volume;
+    mLifeFrameVolume = Volume;
 }
 
 // Address: 0x01b66070 - 0x01b6607f (15 bytes)
 u32 uBaseEffect::getBoundaryType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBoundaryType;
+    return mBoundaryType;
 }
 
 // Address: 0x01b66080 - 0x01b660b1 (49 bytes)
 void uBaseEffect::setBoundaryType(u32 BoundaryType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBoundaryType = BoundaryType;
+    mBoundaryType = BoundaryType;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -515,20 +512,20 @@ __attribute__((weak)) void uBaseEffect::doFinish() {
 // Address: 0x00fc2270 - 0x00fc2279 (9 bytes)
 void uBaseEffect::doRestart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->restart();
+    restart();
 }
 
 // Address: 0x00fc2280 - 0x00fc22d6 (86 bytes)
 void uBaseEffect::doClear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEffectList != static_cast<rEffectList*>(nullptr)) {
-        this->mpEffectList->::cResource::release();
-        this->mpEffectList = static_cast<rEffectList*>(nullptr);
+    if (mpEffectList != nullptr) {
+        mpEffectList->release();
+        mpEffectList = nullptr;
     }
-    this->mTimer = static_cast<u32>(0);
-    this->mParentDisableFlag = static_cast<u32>(0);
-    this->mBoundaryFlag = static_cast<u32>(0);
-    this->mLoopNum = static_cast<u32>(0);
+    mTimer = 0;
+    mParentDisableFlag = 0;
+    mBoundaryFlag = 0;
+    mLoopNum = 0;
 }
 
 // Address: 0x00fc22e0 - 0x00fc22e1 (1 bytes)
@@ -560,7 +557,7 @@ __attribute__((weak)) void uBaseEffect::doKeepHoldOff() {
 // Address: 0x01b660c0 - 0x01b660c9 (9 bytes)
 f32 uBaseEffect::getTransparency() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTransparencyParam.mTransparency[0];
+    return mTransparencyParam.mTransparency[0];
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -641,25 +638,25 @@ __attribute__((weak)) void uBaseEffect::calcPolygonVertexPos(MtVector3* pPos, u3
 // Address: 0x00fc2b40 - 0x00fc2b8a (74 bytes)
 void uBaseEffect::restart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = (this->mStatus & static_cast<u32>(3774873548)) | static_cast<u32>(1);
-    this->mTimeInterpolationRate = 1.0f;
-    this->mIntTimeInterpolationRate = static_cast<s32>(256);
-    this->mTimer = static_cast<u32>(0);
-    this->mParentDisableFlag = static_cast<u32>(0);
-    this->mLoopNum = static_cast<u32>(0);
+    mStatus = (mStatus & 0xE0FFFFCCu) | 1u;
+    mTimeInterpolationRate = 1.0f;
+    mIntTimeInterpolationRate = 256;
+    mTimer = 0;
+    mParentDisableFlag = 0;
+    mLoopNum = 0;
 }
 
 // Address: 0x00fc2b90 - 0x00fc2bc8 (56 bytes)
 bool uBaseEffect::finish() {
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xfc2b94 read, used twice; no DWARF local holds it
-    u32 t0 = this->mStatus;
-    this->mStatus = t0 & static_cast<u32>(4294967263);
-    if ((this->mStatus & static_cast<u32>(4)) != static_cast<u32>(0)) {
-        this->setSleepMode(true);
+    u32 t0 = mStatus;
+    mStatus = t0 & 0xFFFFFFDFu;
+    if ((mStatus & 4u) != 0) {
+        setSleepMode(true);
         return false;
     } else {
-        this->kill();
+        kill();
         return true;
     }
 }
@@ -668,12 +665,12 @@ bool uBaseEffect::finish() {
 void uBaseEffect::updateDeltaTimeRate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xfc2bd9 read, used once; no DWARF local holds it
-    f32 t0 = this->mBaseFps;
+    f32 t0 = mBaseFps;
     // inferred: a temporary for the value the load at 0xfc2be6 read, used once; no DWARF local holds it
-    f32 t1 = this->mDeltaTimeCoef;
+    f32 t1 = mDeltaTimeCoef;
     // inferred: a temporary for the value the load at 0xfc2bee read, used once; no DWARF local holds it
-    f32 t2 = this->::cUnit::mDeltaTime;
-    this->mDeltaTimeRate = (t1 * t2) * (t0 / (::sEffect::mpInstance)->::sEffect::getFps());
+    f32 t2 = mDeltaTime;
+    mDeltaTimeRate = (t1 * t2) * (t0 / (sEffect::mpInstance)->sEffect::getFps());
 }
 
 // Address: 0x00fc2c30 - 0x00fc2c33 (3 bytes)
@@ -685,17 +682,17 @@ bool uBaseEffect::checkRelation() {
 // Address: 0x00fc10f0 - 0x00fc1125 (53 bytes)
 bool uBaseEffect::checkEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mEndType & static_cast<u32>(15)) != static_cast<u32>(2)) {
-        if ((this->mEndType & static_cast<u32>(15)) != static_cast<u32>(1)) {
-            if ((this->mEndType & static_cast<u32>(15)) == static_cast<u32>(0)) {
-                this->doFinish();
+    if ((mEndType & 15u) != 2) {
+        if ((mEndType & 15u) != 1) {
+            if ((mEndType & 15u) == 0) {
+                doFinish();
             }
             return false;
         } else {
             return true;
         }
     } else {
-        this->doKeepHoldOff();
+        doKeepHoldOff();
         return false;
     }
 }
@@ -752,6 +749,8 @@ __attribute__((weak)) bool uBaseEffect::isBoundaryCulling(u32 ViewportNo) const 
     DDON_STUB("uBaseEffect::isBoundaryCulling")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uBaseEffect::MyDTI uBaseEffect::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uBaseEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

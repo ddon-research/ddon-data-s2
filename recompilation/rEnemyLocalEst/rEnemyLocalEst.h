@@ -146,12 +146,12 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyLocalEstTable::cEnemyLocalEstTable() {
     this->mSetUpOff = false;
-    this->mStatus = static_cast<u32>(1);
+    this->mStatus = 1;
     this->mCheckBit = true;
     this->mPlayAlways = false;
-    this->mBitNo = static_cast<u32>(0);
-    this->mIdx = static_cast<u32>(1);
-    this->mControlType = static_cast<u32>(1);
-    this->mControlIndex = static_cast<u32>(1);
-    this->mBitContrlCommand = static_cast<u32>(4);
+    this->mBitNo = 0;
+    this->mIdx = 1;
+    this->mControlType = 1;
+    this->mControlIndex = 1;
+    this->mBitContrlCommand = 4;
 }

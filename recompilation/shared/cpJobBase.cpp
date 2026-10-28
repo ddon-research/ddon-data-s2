@@ -51,7 +51,7 @@ const MtDTI& cpJobBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cpJobBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpJobBase::DTI)->memAlloc(sz, align, ::cpJobBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpJobBase::DTI)->memAlloc(sz, align, cpJobBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ inline void* cpJobBase::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJobBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJobBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJobBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,7 +95,7 @@ cpJobBase::~cpJobBase() {
 // Address: 0x004bece0 - 0x004bece5 (5 bytes)
 void cpJobBase::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x004becf0 - 0x004becf1 (1 bytes)
@@ -122,7 +122,7 @@ __attribute__((weak)) void cpJobBase::after() {
 // Address: 0x004bec80 - 0x004bec85 (5 bytes)
 void cpJobBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x004bed20 - 0x004bf02c (780 bytes)
@@ -261,16 +261,16 @@ u32 cpJobBase::replaceCollisionAttr(u32 attr, const cCollNode* pCollNode) {
 // Address: 0x004bec90 - 0x004becdb (75 bytes)
 void cpJobBase::setOwner(MtObject* pOwner) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cpComponent::mpOwner = pOwner;
+    mpOwner = pOwner;
     // inferred: a temporary for the result of the call at 0x4beca7, used twice; no DWARF local holds it
     const MtDTI& t0 = pOwner->getDTI();
     // inferred: the value the loop at 0x4becc0 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uHuman::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uHuman::DTI.mName;
     if (v0_1 != t0.mName) {
         // inferred: the value the loop at 0x4becc0 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                this->mpHuman = static_cast<uHuman*>(nullptr);
+            if (v0_0->mpParent == nullptr) {
+                mpHuman = nullptr;
                 return;
             } else {
                 if (v0_1 != v0_0->mpParent->mName) {
@@ -281,7 +281,7 @@ void cpJobBase::setOwner(MtObject* pOwner) {
             }
         }
     }
-    this->mpHuman = static_cast<uHuman*>(pOwner);
+    mpHuman = static_cast<uHuman*>(pOwner);
 }
 
 // Defined in the class (its body was written in a header).
@@ -304,59 +304,59 @@ __attribute__((weak)) void cpJobBase::setJobMotionParam(MT_CTSTR tag, MT_CTSTR i
 // Address: 0x004bf410 - 0x004bf456 (70 bytes)
 void cpJobBase::setJobParam(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uHuman::setJobParam(static_cast<rAdjustParam*>(pRes));
-    pRes->::cResource::release();
+    mpHuman->setJobParam(static_cast<rAdjustParam*>(pRes));
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf460 - 0x004bf4ab (75 bytes)
 void cpJobBase::setJumpParam(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uHuman::setJumpParamTbl(static_cast<u32>(1), static_cast<rJumpParamTbl*>(pRes));
-    pRes->::cResource::release();
+    mpHuman->setJumpParamTbl(1u, static_cast<rJumpParamTbl*>(pRes));
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf4b0 - 0x004bf512 (98 bytes)
 void cpJobBase::setCollision(MT_CTSTR tag, MT_CTSTR id, u32 bank) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::setResource(static_cast<rObjCollision*>(pRes), bank);
-    pRes->::cResource::release();
+    mpHuman->getObjCollisionPtr()->setResource(static_cast<rObjCollision*>(pRes), bank);
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf520 - 0x004bf57e (94 bytes)
 void cpJobBase::setShlParam(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uDDOModel::setShlParamList(static_cast<rShlParamList*>(pRes));
-    if (this->mpHuman->::uDDOModel::getShlShotCtrlPtr() != static_cast<cpShlShotCtrl*>(nullptr)) {
-        this->mpHuman->::uDDOModel::getShlShotCtrlPtr()->::cpShlShotCtrl::setShlParamList(static_cast<rShlParamList*>(pRes));
+    mpHuman->setShlParamList(static_cast<rShlParamList*>(pRes));
+    if (mpHuman->getShlShotCtrlPtr() != nullptr) {
+        mpHuman->getShlShotCtrlPtr()->setShlParamList(static_cast<rShlParamList*>(pRes));
     }
-    pRes->::cResource::release();
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf580 - 0x004bf5d2 (82 bytes)
 void cpJobBase::setEpvData(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uDDOModel::mpEffectProvider->::cpEffectProvider::setResource(static_cast<rEffectProvider*>(pRes), static_cast<cpEffectProvider::EPV_TYPE>(1));
-    pRes->::cResource::release();
+    mpHuman->mpEffectProvider->setResource(static_cast<rEffectProvider*>(pRes), cpEffectProvider::EPV_TYPE_CATEGORY_COMMON);
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf5e0 - 0x004bf650 (112 bytes)
@@ -370,46 +370,48 @@ __attribute__((weak)) void cpJobBase::setJobSe(MT_CTSTR tag, MT_CTSTR id) {
 // Address: 0x004bf650 - 0x004bf69b (75 bytes)
 void cpJobBase::setStaminaParam(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uHuman::setStaminaDecTbl(static_cast<u32>(1), static_cast<rStaminaDecTbl*>(pRes));
-    pRes->::cResource::release();
+    mpHuman->setStaminaDecTbl(1u, static_cast<rStaminaDecTbl*>(pRes));
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf6a0 - 0x004bf71d (125 bytes)
 void cpJobBase::setCameraParam(MT_CTSTR tag, MT_CTSTR id) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x4bf6b0 read, used twice; no DWARF local holds it
-    uHuman* t0 = this->mpHuman;
-    if (t0->::uDDOModel::isMaster() == false) {
+    uHuman* t0 = mpHuman;
+    if (!t0->isMaster()) {
         return;
     }
-    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->uDDOModel::mUnitId & 8u) == 0) {
         return;
     }
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::setParamListJob(static_cast<rCameraParamList*>(pRes));
-    pRes->::cResource::release();
+    static_cast<sCameraExt*>(sCamera::getInstance())->setParamListJob(static_cast<rCameraParamList*>(pRes));
+    pRes->cResource::release();
 }
 
 // Address: 0x004bf720 - 0x004bf773 (83 bytes)
 void cpJobBase::setMagicChantParam(MT_CTSTR tag, MT_CTSTR id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
+    if ((mpHuman->uDDOModel::mUnitId & 1024u) != 0) {
         return;
     }
-    cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    this->mpHuman->::uHuman::setMagicChantParam(static_cast<rMagicChantParam*>(pRes));
-    pRes->::cResource::release();
+    mpHuman->setMagicChantParam(static_cast<rMagicChantParam*>(pRes));
+    pRes->cResource::release();
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpJobBase::MyDTI cpJobBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpJobBase.cpp at 0x004bfb7f-0x004bfbbc (called at cpJobBase.cpp:43)
@@ -419,6 +421,6 @@ void cpJobBase::setMagicChantParam(MT_CTSTR tag, MT_CTSTR id) {
 // Address: 0x004bebb0 - 0x004bec06 (86 bytes)
 MtObject* cpJobBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpJobBase;
+    return new (16u) cpJobBase;
 }
 

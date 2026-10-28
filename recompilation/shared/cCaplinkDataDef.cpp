@@ -31,7 +31,7 @@ const MtDTI& nCaplink::cAchievementExtendedInfo::getDTI() const {
 // Address: 0x00e0ac40 - 0x00e0ac80 (64 bytes)
 void* nCaplink::cAchievementExtendedInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementExtendedInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementExtendedInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementExtendedInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementExtendedInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,6 +73,8 @@ __attribute__((weak)) void nCaplink::cAchievementExtendedInfo::operator delete(v
 // No out-of-line body: no code in the ELF
 // s8 nCaplink::cAchievementExtendedInfo::getCount() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cAchievementExtendedInfo::MyDTI nCaplink::cAchievementExtendedInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cAchievementExtendedInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -103,7 +105,7 @@ const MtDTI& nCaplink::cAchievementListInfo::getDTI() const {
 // Address: 0x00e0ad90 - 0x00e0add0 (64 bytes)
 void* nCaplink::cAchievementListInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementListInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementListInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementListInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementListInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -218,6 +220,8 @@ __attribute__((weak)) void nCaplink::cAchievementListInfo::operator delete(void*
 // No out-of-line body: no code in the ELF
 // s8 nCaplink::cAchievementListInfo::getCount() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cAchievementListInfo::MyDTI nCaplink::cAchievementListInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cAchievementListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -248,7 +252,7 @@ const MtDTI& nCaplink::cAchievementRelationInfo::getDTI() const {
 // Address: 0x00e0b060 - 0x00e0b0a0 (64 bytes)
 void* nCaplink::cAchievementRelationInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementRelationInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementRelationInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementRelationInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementRelationInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,6 +410,8 @@ __attribute__((weak)) void nCaplink::cAchievementRelationInfo::operator delete(v
 // No out-of-line body: no code in the ELF
 // s8 nCaplink::cAchievementRelationInfo::getAchievementCount() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cAchievementRelationInfo::MyDTI nCaplink::cAchievementRelationInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cAchievementRelationInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -436,7 +442,7 @@ const MtDTI& nCaplink::cAchievementRewardInfo::getDTI() const {
 // Address: 0x00e0aef0 - 0x00e0af30 (64 bytes)
 void* nCaplink::cAchievementRewardInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementRewardInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementRewardInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cAchievementRewardInfo::DTI)->memAlloc(sz, align, ::nCaplink::cAchievementRewardInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -487,6 +493,8 @@ __attribute__((weak)) void nCaplink::cAchievementRewardInfo::operator delete(voi
 //   in uGUICaplinkTopMenu::setupCaptrophyRelationInfo at 0x009e09b0-0x009e09b4 (called at uGUICaplinkTopMenu.cpp:1233)
 // s32 nCaplink::cAchievementRewardInfo::getAmount() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cAchievementRewardInfo::MyDTI nCaplink::cAchievementRewardInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cAchievementRewardInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -517,7 +525,7 @@ const MtDTI& nCaplink::cUserBaseInfo::getDTI() const {
 // Address: 0x00e0a070 - 0x00e0a0b0 (64 bytes)
 void* nCaplink::cUserBaseInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cUserBaseInfo::DTI)->memAlloc(sz, align, ::nCaplink::cUserBaseInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cUserBaseInfo::DTI)->memAlloc(sz, align, ::nCaplink::cUserBaseInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -582,6 +590,8 @@ __attribute__((weak)) void nCaplink::cUserBaseInfo::operator delete(void* p_addr
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in uGUICaplinkTalk::updateMemberListReq at 0x009da063-0x009da06a (called at uGUICaplinkTalk.cpp:1474)
 // MT_CTSTR nCaplink::cUserBaseInfo::getIconSmallUrl() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cUserBaseInfo::MyDTI nCaplink::cUserBaseInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cUserBaseInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -695,6 +705,8 @@ nCaplink::cUserProfile::cUserProfile(MT_CTSTR unique_id, MT_CTSTR nickname, MT_C
 // No out-of-line body: no code in the ELF
 // s32 nCaplink::cUserProfile::getIgnoresTotal() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cUserProfile::MyDTI nCaplink::cUserProfile::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cUserProfile::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -725,7 +737,7 @@ const MtDTI& nCaplink::cWebsocketServerInfo::getDTI() const {
 // Address: 0x00e0ba40 - 0x00e0ba80 (64 bytes)
 void* nCaplink::cWebsocketServerInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nCaplink::cWebsocketServerInfo::DTI)->memAlloc(sz, align, ::nCaplink::cWebsocketServerInfo::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nCaplink::cWebsocketServerInfo::DTI)->memAlloc(sz, align, ::nCaplink::cWebsocketServerInfo::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -780,6 +792,8 @@ inline void nCaplink::cWebsocketServerInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // MT_CTSTR nCaplink::cWebsocketServerInfo::getLastLifeDatetime() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nCaplink::cWebsocketServerInfo::MyDTI nCaplink::cWebsocketServerInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nCaplink::cWebsocketServerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

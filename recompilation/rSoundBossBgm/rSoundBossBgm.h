@@ -121,7 +121,7 @@ inline u32 rSoundBossBgm::getListNum() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rSoundBossBgm::cSoundBossBgm::cSoundBossBgm() {
-    this->mEnemyId = static_cast<u32>(4294967295);
-    this->mBgmNo = static_cast<u32>(0);
-    this->mSrqrId = static_cast<u64>(0);
+    this->mEnemyId = 0xFFFFFFFF;
+    this->mBgmNo = 0;
+    this->mSrqrId = 0;
 }

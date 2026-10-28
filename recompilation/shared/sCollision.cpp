@@ -31,6 +31,7 @@
 #include "nCollisionNode.h"
 #include "rCollision.h"
 #include "rCollisionHeightField.h"
+#include "sMain.h"
 #include "uDynamicSbc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -69,7 +70,7 @@ const MtDTI& sCollision::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollisionD0Ev at 0x012b4a2e-0x012b4a4f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,8 +139,8 @@ __attribute__((weak)) void sCollision::applyWorldOffset(const MtVector3& offset,
 // Address: 0x012b50c0 - 0x012b50e9 (41 bytes)
 void sCollision::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::unregistResourceAll();
-    this->mCollider.::sCollision::Collider::setNodeListBufSize(static_cast<u32>(0), static_cast<u32>(0), static_cast<u32>(0));
+    unregistResourceAll();
+    mCollider.setNodeListBufSize(0u, 0u, 0u);
 }
 
 // Address: 0x012b50f0 - 0x012b518b (155 bytes)
@@ -154,35 +155,33 @@ __attribute__((weak)) void sCollision::move() {
 void sCollision::sync() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCollider.::sCollision::Collider::sync();
-    this->mCollider.::sCollision::Collider::draw();
+    mCollider.sync();
+    mCollider.draw();
 }
 
 // Address: 0x012b55a0 - 0x012b563c (156 bytes)
 void sCollision::setup() {
     // DWARF local not rendered: bool FlgRunLock;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    this->mbSetup = true;
-    this->mbMove = false;
-    this->mCollider.::sCollision::Collider::setup();
-    if (this->mFlgMoveLock != false) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    mbSetup = true;
+    mbMove = false;
+    mCollider.setup();
+    if (mFlgMoveLock) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        this->mSbcObject.::sCollision::SbcObject::setup();
-        this->mSbcSkinMesh.::sCollision::cSbcSkinMesh::setup();
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        mSbcObject.setup();
+        mSbcSkinMesh.setup();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     } else {
-        this->mSbcObject.::sCollision::SbcObject::setup();
-        this->mSbcSkinMesh.::sCollision::cSbcSkinMesh::setup();
+        mSbcObject.setup();
+        mSbcSkinMesh.setup();
     }
 }
 
@@ -195,24 +194,23 @@ void sCollision::setup() {
 // Address: 0x012b5640 - 0x012b5645 (5 bytes)
 void sCollision::setEnableMoveLock() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgMoveLock = true;
+    mFlgMoveLock = true;
 }
 
 // Address: 0x012b5190 - 0x012b5194 (4 bytes)
 bool sCollision::isEnableMoveLock() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlgMoveLock;
+    return mFlgMoveLock;
 }
 
 // Address: 0x012b51a0 - 0x012b51c6 (38 bytes)
 void sCollision::lockSystem() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -222,12 +220,11 @@ void sCollision::lockSystem() {
 // Address: 0x012b5540 - 0x012b5566 (38 bytes)
 void sCollision::unlockSystem() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -332,7 +329,7 @@ __attribute__((weak)) u32 sCollision::findIntersection(const MtRayY& rayY, sColl
 // Address: 0x012d8220 - 0x012d822e (14 bytes)
 u32 sCollision::castConvex(MtVector3& pos, const MtVector3& old, const MtSphere& sphere, const sCollision::Param& param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::castConvex(pos, old, sphere, static_cast<sCollision::TriangleInfo*>(nullptr), param);
+    return castConvex(pos, old, sphere, static_cast<sCollision::TriangleInfo*>(nullptr), param);
 }
 
 // Address: 0x012d8230 - 0x012d851a (746 bytes)
@@ -564,10 +561,10 @@ __attribute__((weak)) u32 sCollision::repairConvexSinkIn(MtVector3& pos, const M
 // bool sCollision::registResourceWithConvert(sCollision::SBC_HANDLE& handle_output, rCollision* * ppResourceOutput, MT_CTSTR FileName, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove);
 
 // Address: 0x012e9d20 - 0x012e9d34 (20 bytes)
-sCollision::SBC_HANDLE sCollision::registResource(rCollision* pResource, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove) {
+__attribute__((weak)) sCollision::SBC_HANDLE sCollision::registResource(rCollision* pResource, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove) {
     // DWARF local not rendered: SBC_HANDLE hSbc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcArray.::sCollision::cSbcArrayBP::registResource(pResource, type, group, FlgForceRegist, FlgEnableMove);
+    return mSbcArray.registResource(pResource, type, group, FlgForceRegist, FlgEnableMove);
 }
 
 // No out-of-line body: no code in the ELF
@@ -576,13 +573,13 @@ sCollision::SBC_HANDLE sCollision::registResource(rCollision* pResource, u32 typ
 // Address: 0x012e9d50 - 0x012e9d5c (12 bytes)
 sCollision::cSbcSkinMesh::cRegisterInfo* sCollision::registResource(uDynamicSbc& DynamicSbc) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcSkinMesh.::sCollision::cSbcSkinMesh::registerUnit(DynamicSbc);
+    return mSbcSkinMesh.registerUnit(DynamicSbc);
 }
 
 // Address: 0x012e9d60 - 0x012e9d6c (12 bytes)
 sCollision::SbcObject::cRegisterInfo* sCollision::registerScrollCollisionNode(uScrollCollisionGeometry& node) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcObject.::sCollision::SbcObject::reserveRegisterNode(node);
+    return mSbcObject.reserveRegisterNode(node);
 }
 
 // Address: 0x012e9d70 - 0x012e9ee0 (368 bytes)
@@ -606,26 +603,26 @@ void sCollision::unregistResource(sCollision::SBC_HANDLE SbcHandle) {
     // DWARF local not rendered: u32 index;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; code after a join copied into the arms; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from MtObject*
-    if (SbcHandle < this->::sCollision::getSbcSize()) {
+    if (SbcHandle < getSbcSize()) {
         // inferred: a temporary for the value the load at 0x12e9f71 read, used 5 times; no DWARF local holds it
-        MtObject* t0 = this->mSbcArray.::MtArray::mpArray[SbcHandle];
-        if (t0 != static_cast<MtObject*>(nullptr)) {
+        MtObject* t0 = mSbcArray.mpArray[SbcHandle];
+        if (t0 != nullptr) {
             // inferred: a temporary for the value the load at 0x12e9f7a read, used 3 times; no DWARF local holds it
-            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(48));
-            if (t1 != static_cast<unsigned int>(0)) {
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(48)) = t1 - static_cast<unsigned int>(1);
-                if ((t1 - static_cast<unsigned int>(1)) == static_cast<unsigned int>(0)) {
-                    static_cast<sCollision::Sbc*>(t0)->::sCollision::Sbc::releaseAllDynamicData();
-                    if (this->mIsDeleteSbc_OnUnregistResource != false) {
+            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48);
+            if (t1 != 0) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48) = t1 - 1u;
+                if ((t1 - 1u) == 0) {
+                    static_cast<sCollision::Sbc*>(t0)->releaseAllDynamicData();
+                    if (mIsDeleteSbc_OnUnregistResource) {
                         delete t0;
-                        this->mSbcArray.::MtArray::mpArray[SbcHandle] = static_cast<MtObject*>(nullptr);
+                        mSbcArray.mpArray[SbcHandle] = nullptr;
                     }
                 }
             } else {
-                static_cast<sCollision::Sbc*>(t0)->::sCollision::Sbc::releaseAllDynamicData();
-                if (this->mIsDeleteSbc_OnUnregistResource != false) {
+                static_cast<sCollision::Sbc*>(t0)->releaseAllDynamicData();
+                if (mIsDeleteSbc_OnUnregistResource) {
                     delete t0;
-                    this->mSbcArray.::MtArray::mpArray[SbcHandle] = static_cast<MtObject*>(nullptr);
+                    mSbcArray.mpArray[SbcHandle] = nullptr;
                 }
             }
         }
@@ -638,7 +635,7 @@ void sCollision::unregistResource(sCollision::SBC_HANDLE SbcHandle) {
 // Address: 0x012e9fd0 - 0x012e9fdc (12 bytes)
 void sCollision::unregistResource(sCollision::cSbcSkinMesh::cRegisterInfo& DynamicSbcRegisterInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSbcSkinMesh.::sCollision::cSbcSkinMesh::unregisterUnit(DynamicSbcRegisterInfo);
+    mSbcSkinMesh.unregisterUnit(DynamicSbcRegisterInfo);
 }
 
 // Address: 0x012e9fe0 - 0x012ea2cb (747 bytes)
@@ -700,10 +697,10 @@ __attribute__((weak)) void sCollision::setSlopeDegree(f32 deg) {
 // Address: 0x012e7fb0 - 0x012e800b (91 bytes)
 void sCollision::setWallDegree(f32 deg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWallDegree = deg;
-    this->mWallSin = ::_FSin(0.017453294f * (90.0f - deg), static_cast<unsigned int>(0), static_cast<int>(0));
-    if (this->mSlopeDegree > this->mWallDegree) {
-        this->::sCollision::setSlopeDegree(deg);
+    mWallDegree = deg;
+    mWallSin = _FSin(0.017453294f * (90.0f - deg), 0u, 0);
+    if (mSlopeDegree > mWallDegree) {
+        setSlopeDegree(deg);
     }
 }
 
@@ -716,8 +713,8 @@ void sCollision::setWallDegree(f32 deg) {
 // Address: 0x012e8020 - 0x012e804b (43 bytes)
 void sCollision::setCeilingDegree(f32 deg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCeilingDegree = deg;
-    this->mCeilingSin = ::_FSin(0.017453294f * deg, static_cast<unsigned int>(0), static_cast<int>(0));
+    mCeilingDegree = deg;
+    mCeilingSin = _FSin(0.017453294f * deg, 0u, 0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -799,12 +796,12 @@ void sCollision::setActive(sCollision::SBC_HANDLE SbcHandle, bool bActive) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (SbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+    if (SbcHandle == 0xFFFFFFFFu) {
         return;
     }
-    if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(9)) = static_cast<unsigned char>(bActive);
+    if (SbcHandle < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[SbcHandle] != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mSbcArray.mpArray[SbcHandle]) + 9) = static_cast<unsigned char>(bActive);
         }
     }
 }
@@ -814,10 +811,10 @@ bool sCollision::getActive(sCollision::SBC_HANDLE SbcHandle) {
     // DWARF local not rendered: Sbc* p;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
-    if (SbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(9))) != static_cast<unsigned char>(0);
+    if (SbcHandle != 0xFFFFFFFFu) {
+        if (SbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[SbcHandle] != nullptr) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mSbcArray.mpArray[SbcHandle]) + 9)) != 0;
             }
         }
     }
@@ -844,12 +841,12 @@ void sCollision::setType(sCollision::SBC_HANDLE SbcHandle, u32 NewType) {
     // DWARF local not rendered: Sbc* pSbc;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if (SbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+    if (SbcHandle == 0xFFFFFFFFu) {
         return;
     }
-    if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(24)) = NewType;
+    if (SbcHandle < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[SbcHandle] != nullptr) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[SbcHandle]) + 24) = NewType;
         }
     }
 }
@@ -859,14 +856,14 @@ u32 sCollision::getType(sCollision::SBC_HANDLE SbcHandle) {
     // DWARF local not rendered: Sbc* pSbc;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if (SbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(24));
+    if (SbcHandle != 0xFFFFFFFFu) {
+        if (SbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[SbcHandle] != nullptr) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[SbcHandle]) + 24);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -897,10 +894,10 @@ bool sCollision::getPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 Targ
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
-    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24))) != static_cast<unsigned char>(0);
+    if (TargetSbcHandle != 0xFFFFFFFFu) {
+        if (TargetSbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 144)) + static_cast<unsigned long>(TargetPartsIndex * 120u)) + 24)) != 0;
             }
         }
     }
@@ -916,14 +913,14 @@ void sCollision::setPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 Targ
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+    if (TargetSbcHandle == 0xFFFFFFFFu) {
         return;
     }
-    if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(152)))) {
-                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) != static_cast<unsigned long>(0)) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24)) = static_cast<unsigned char>(FlagNextActive);
+    if (TargetSbcHandle < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 152))) {
+                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 144)) + static_cast<unsigned long>(TargetPartsIndex * 120u)) != 0) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 144)) + static_cast<unsigned long>(TargetPartsIndex * 120u)) + 24) = static_cast<unsigned char>(FlagNextActive);
                 }
             }
         }
@@ -952,14 +949,14 @@ void sCollision::setPartsActiveByIndex(u32 TargetSbcIndex, u32 TargetPartsIndex,
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (TargetSbcIndex == static_cast<u32>(4294967295)) {
+    if (TargetSbcIndex == 0xFFFFFFFFu) {
         return;
     }
-    if (TargetSbcIndex < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[TargetSbcIndex] != static_cast<MtObject*>(nullptr)) {
-            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(152)))) {
-                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) != static_cast<unsigned long>(0)) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24)) = static_cast<unsigned char>(FlagNextActive);
+    if (TargetSbcIndex < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[TargetSbcIndex] != nullptr) {
+            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcIndex]) + 152))) {
+                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcIndex]) + 144)) + static_cast<unsigned long>(TargetPartsIndex * 120u)) != 0) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcIndex]) + 144)) + static_cast<unsigned long>(TargetPartsIndex * 120u)) + 24) = static_cast<unsigned char>(FlagNextActive);
                 }
             }
         }
@@ -1022,7 +1019,7 @@ __attribute__((weak)) bool sCollision::setMatrixByIndexWithIndex(u32 SbcIndex, u
 bool sCollision::setMatrixAll(sCollision::SBC_HANDLE SbcHandle, MtMatrix* pmat, bool reset) {
     // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::setMatrixAllByIndex(SbcHandle, pmat, reset);
+    return setMatrixAllByIndex(SbcHandle, pmat, reset);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1120,7 +1117,7 @@ __attribute__((weak)) bool sCollision::reserveMatrixByIndexWithIndexRotTransQt(u
 bool sCollision::reserveMatrixAll(sCollision::SBC_HANDLE SbcHandle, const MtMatrix& MoveMat, bool reset) {
     // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::reserveMatrixAllByIndex(SbcHandle, MoveMat, reset);
+    return reserveMatrixAllByIndex(SbcHandle, MoveMat, reset);
 }
 
 // Address: 0x012e8ec0 - 0x012e8fdd (285 bytes)
@@ -1169,7 +1166,7 @@ __attribute__((weak)) bool sCollision::reserveMatrixAllByIndex(u32 SbcIndex, con
 // Address: 0x012e9070 - 0x012e9075 (5 bytes)
 bool sCollision::reserveResetMatrixById(sCollision::SBC_HANDLE handle, u32 PartsID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::reserveResetMatrixByIdWithIndex(handle, PartsID);
+    return reserveResetMatrixByIdWithIndex(handle, PartsID);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1199,7 +1196,7 @@ __attribute__((weak)) bool sCollision::reserveResetMatrixByIndexWithIndex(u32 Sb
 bool sCollision::reserveResetMatrixAll(sCollision::SBC_HANDLE SbcHandle) {
     // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::reserveResetMatrixAllByIndex(SbcHandle);
+    return reserveResetMatrixAllByIndex(SbcHandle);
 }
 
 // Address: 0x012e9560 - 0x012e979d (573 bytes)
@@ -1296,7 +1293,7 @@ __attribute__((weak)) bool sCollision::getMatrixById(sCollision::SBC_HANDLE SbcH
 // Address: 0x012e97d0 - 0x012e97d7 (7 bytes)
 __attribute__((weak)) u32 sCollision::getSbcSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcArray.::MtArray::mLength;
+    return mSbcArray.mLength;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1358,12 +1355,12 @@ void sCollision::setSbcActiveFromHandle(bool FlgNextActiveSetting, sCollision::S
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+    if (TargetSbcHandle == 0xFFFFFFFFu) {
         return;
     }
-    if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(9)) = static_cast<unsigned char>(FlgNextActiveSetting);
+    if (TargetSbcHandle < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 9) = static_cast<unsigned char>(FlgNextActiveSetting);
         }
     }
 }
@@ -1373,10 +1370,10 @@ bool sCollision::isSbcActiveFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
     // DWARF local not rendered: Sbc* pTarget;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
-    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(9))) != static_cast<unsigned char>(0);
+    if (TargetSbcHandle != 0xFFFFFFFFu) {
+        if (TargetSbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 9)) != 0;
             }
         }
     }
@@ -1397,14 +1394,14 @@ u32 sCollision::getSbcTypeFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
     // DWARF local not rendered: Sbc* pTarget;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(24));
+    if (TargetSbcHandle != 0xFFFFFFFFu) {
+        if (TargetSbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 24);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1423,12 +1420,12 @@ u32 sCollision::getSbcTypeFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
 void sCollision::setSbcGroupByBitFromHandle(u32 NewFilterGroupBit, sCollision::SBC_HANDLE TargetSbcHandle) {
     // DWARF local not rendered: Sbc* pTarget;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+    if (TargetSbcHandle == 0xFFFFFFFFu) {
         return;
     }
-    if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-        if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-            static_cast<sCollision::Sbc*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle])->::sCollision::Sbc::setGroupByBit(NewFilterGroupBit);
+    if (TargetSbcHandle < mSbcArray.mLength) {
+        if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+            static_cast<sCollision::Sbc*>(mSbcArray.mpArray[TargetSbcHandle])->setGroupByBit(NewFilterGroupBit);
         }
     }
 }
@@ -1438,14 +1435,14 @@ u32 sCollision::getSbcGroupByBitFromHandle(sCollision::SBC_HANDLE TargetSbcHandl
     // DWARF local not rendered: Sbc* pTarget;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from MtObject*
-    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(28));
+    if (TargetSbcHandle != 0xFFFFFFFFu) {
+        if (TargetSbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 28);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1456,14 +1453,14 @@ u32 sCollision::getSbcGroupByIndexFromHandle(sCollision::SBC_HANDLE TargetSbcHan
     // DWARF local not rendered: Sbc* pTarget;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from MtObject*
-    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
-        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
-            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
-                return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(32));
+    if (TargetSbcHandle != 0xFFFFFFFFu) {
+        if (TargetSbcHandle < mSbcArray.mLength) {
+            if (mSbcArray.mpArray[TargetSbcHandle] != nullptr) {
+                return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mSbcArray.mpArray[TargetSbcHandle]) + 32);
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1687,19 +1684,19 @@ __attribute__((weak)) bool sCollision::isTargetPolygon(u32 TargetPolygonAttribut
 // Address: 0x012e9ce0 - 0x012e9cec (12 bytes)
 sCollision::cSbcHeightField::cHeightField* sCollision::getSbcHeightFieldByIndex(u32 SbcHeightFieldIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcHeightField.::sCollision::cSbcHeightField::getArrayElementByIndex(SbcHeightFieldIndex);
+    return mSbcHeightField.getArrayElementByIndex(SbcHeightFieldIndex);
 }
 
 // Address: 0x012e9cf0 - 0x012e9cfc (12 bytes)
 sCollision::cSbcHeightField::cHeightField* sCollision::getSbcHeightFieldByHandle(sCollision::SBC_HANDLE_HF SbcHeightFieldHandle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSbcHeightField.::sCollision::cSbcHeightField::getArrayElementByHandle(SbcHeightFieldHandle);
+    return mSbcHeightField.getArrayElementByHandle(SbcHeightFieldHandle);
 }
 
 // Address: 0x012e9d00 - 0x012e9d0c (12 bytes)
 u32 sCollision::getSbcHeightFieldNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::sCollision::cSbcHeightField&>(this->mSbcHeightField).::sCollision::cSbcHeightField::getArrayLength();
+    return static_cast<const sCollision::cSbcHeightField&>(mSbcHeightField).getArrayLength();
 }
 
 // No out-of-line body: no code in the ELF
@@ -2306,7 +2303,7 @@ __attribute__((weak)) u32 sCollision::enumHeightFieldContact(MtGeometry* pTraver
 // Address: 0x012e58a0 - 0x012e58ba (26 bytes)
 u32 sCollision::callbackHeightFieldContact(u32 x, u32 z, u32 LeafID, uintptr UserParam, uintptr SystemParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::callbackHeightFieldContactCore(x, z, LeafID, UserParam, SystemParam, true);
+    return callbackHeightFieldContactCore(x, z, LeafID, UserParam, SystemParam, true);
 }
 
 // Address: 0x012e4330 - 0x012e49d3 (1699 bytes)
@@ -2352,13 +2349,13 @@ __attribute__((weak)) u32 sCollision::enumDynamicSbcContactCallback(MtGeometry& 
 // Address: 0x012e5cc0 - 0x012e5cc8 (8 bytes)
 u32 sCollision::callbackBvhParts(uintptr SendDataPtr, u32 PartsIndex, uintptr SystemParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::callbackBvhPartsCore(SendDataPtr, PartsIndex, SystemParam, false);
+    return callbackBvhPartsCore(SendDataPtr, PartsIndex, SystemParam, false);
 }
 
 // Address: 0x012e5cd0 - 0x012e5cdb (11 bytes)
 u32 sCollision::callbackBvhPartsOnce(uintptr SendDataPtr, u32 PartsIndex, uintptr SystemParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::callbackBvhPartsCore(SendDataPtr, PartsIndex, SystemParam, true);
+    return callbackBvhPartsCore(SendDataPtr, PartsIndex, SystemParam, true);
 }
 
 // Address: 0x01bb9570 - 0x01bb9841 (721 bytes)
@@ -3601,7 +3598,7 @@ void sCollision::enumSphereTriBeforeFunc(const MtSphere& s, sCollision::ScrColli
     // inferred: a temporary for the value the load at 0x12d55f8 read, used once; no DWARF local holds it
     const f32 t2 = s.pos.z;
     // inferred: a temporary for the value the load at 0x12d5608 read, used 6 times; no DWARF local holds it
-    const float t3 = ::sCollision::EPSILON_LOOSELY;
+    const float t3 = sCollision::EPSILON_LOOSELY;
     MyCollisionInfo.workVec[1].x = (s.pos.x - t0) - t3;
     MyCollisionInfo.workVec[1].y = (t1 - t0) - t3;
     MyCollisionInfo.workVec[1].z = (t2 - t0) - t3;
@@ -3791,9 +3788,9 @@ __attribute__((weak)) u32 sCollision::enumSphereWithLS_TriangleFunc(const sColli
 u32 sCollision::enumSphereWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumSphereMoveFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumSphereMoveFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3803,9 +3800,9 @@ u32 sCollision::enumSphereWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::S
 u32 sCollision::enumSphereWithLS_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumSphereResetFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeResetFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumSphereResetFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckBeforeResetFunc(pGeom, info);
+    return 0;
 }
 
 // Address: 0x012ce8e0 - 0x012ce930 (80 bytes)
@@ -3828,9 +3825,9 @@ __attribute__((weak)) u32 sCollision::enumCapsuleWithLS_TriangleFunc(const sColl
 u32 sCollision::enumCapsuleWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3840,9 +3837,9 @@ u32 sCollision::enumCapsuleWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::
 u32 sCollision::enumCapsuleWithLS_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumCapsuleResetFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeResetFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumCapsuleResetFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisLSHitCheckBeforeResetFunc(pGeom, info);
+    return 0;
 }
 
 // Address: 0x012ceb80 - 0x012cebd0 (80 bytes)
@@ -3879,9 +3876,9 @@ __attribute__((weak)) u32 sCollision::enumSphereWithSphere_TriangleFunc(const sC
 u32 sCollision::enumSphereWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumSphereMoveFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumSphereMoveFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3891,9 +3888,9 @@ u32 sCollision::enumSphereWithSphere_MoveFunc(MtGeometry* pGeom, const sCollisio
 u32 sCollision::enumSphereWithSphere_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumSphereResetFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumSphereResetFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
+    return 0;
 }
 
 // Address: 0x012cea60 - 0x012ceab0 (80 bytes)
@@ -3916,9 +3913,9 @@ __attribute__((weak)) u32 sCollision::enumCapsuleWithSphere_TriangleFunc(const s
 u32 sCollision::enumCapsuleWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3928,9 +3925,9 @@ u32 sCollision::enumCapsuleWithSphere_MoveFunc(MtGeometry* pGeom, const sCollisi
 u32 sCollision::enumCapsuleWithSphere_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
     // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::enumCapsuleResetFunc(pGeom, info, CollisionInfo);
-    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
-    return static_cast<u32>(0);
+    enumCapsuleResetFunc(pGeom, info, CollisionInfo);
+    static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
+    return 0;
 }
 
 // Address: 0x012ceca0 - 0x012cecf0 (80 bytes)
@@ -4342,13 +4339,13 @@ __attribute__((weak)) void sCollision::runReservedSbcProgram() {
 void sCollision::updateScrollCollisionNode(sCollision::SbcObject::cRegisterInfo& RegisterInfo, u32 MoveCode) {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSbcObject.::sCollision::SbcObject::updateScrCollisionGeometry(RegisterInfo, MoveCode);
+    mSbcObject.updateScrCollisionGeometry(RegisterInfo, MoveCode);
 }
 
 // Address: 0x012b5900 - 0x012b590c (12 bytes)
 void sCollision::unregisterScrollCollisionNode(sCollision::SbcObject::cRegisterInfo& RegisterInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSbcObject.::sCollision::SbcObject::reserveUnregisterNode(RegisterInfo);
+    mSbcObject.reserveUnregisterNode(RegisterInfo);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -4528,6 +4525,23 @@ __attribute__((weak)) void sCollision::callUsage() {
 //   and 422 more (every copy is in <bundle>.inlined.json)
 // sCollision* sCollision::getInstance();
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sCollision::MyDTI sCollision::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::DEFAULT_TRAVERSE_THRESHOLD_RAY_LENGTH;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::EPSILON_HI_LOOSELY;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::EPSILON_LOOSELY;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::EPSILON;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::EPSILON_DETAILS;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sCollision::EPSILON_HI_DETAILS;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sCollision* sCollision::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -4570,7 +4584,7 @@ const MtDTI& sCollision::cSbcArrayBP::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision11cSbcArrayBPD0Ev at 0x012c1ade-0x012c1aff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cSbcArrayBP::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcArrayBP::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4596,12 +4610,16 @@ sCollision::cSbcArrayBP::~cSbcArrayBP() {
 }
 
 // Address: 0x012c1b00 - 0x012c1b13 (19 bytes)
-__attribute__((weak)) void sCollision::cSbcArrayBP::setClass(MtObject* pObj, u32 i) {
-    // local: Sbc* pSbc;
-    // local: MtObject* * ppObj;
-    // local: const u32 NowCapacity;
-    DDON_STUB("sCollision::cSbcArrayBP::setClass")
-    /* stub */
+void sCollision::cSbcArrayBP::setClass(MtObject* pObj, u32 i) {
+    // DWARF local not rendered: Sbc* pSbc;
+    // DWARF local not rendered: MtObject* * ppObj;
+    // DWARF local not rendered: const u32 NowCapacity;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pObj) + 12) = i;
+    if (i < mBufsiz) {
+        mpArray[i] = pObj;
+    }
 }
 
 // Address: 0x012c1b20 - 0x012c1bdc (188 bytes)
@@ -4682,14 +4700,21 @@ __attribute__((weak)) void sCollision::cSbcArrayBP::runReserveInfoRCollisionMatr
 }
 
 // Address: 0x012c2910 - 0x012c2970 (96 bytes)
-__attribute__((weak)) void sCollision::cSbcArrayBP::runReserveInfoRegistRCollisionResource(sCollision::cSbcRegistReserveInfo& RegistResourceInfo) {
-    // local: rCollision* pRegistRSbc;
-    // local: SBC_HANDLE* pOutputHandle;
-    // local: u32 SbcType;
-    // local: SBC_HANDLE handle;
-    // local: u8 SbcGroup;
-    DDON_STUB("sCollision::cSbcArrayBP::runReserveInfoRegistRCollisionResource")
-    /* stub */
+void sCollision::cSbcArrayBP::runReserveInfoRegistRCollisionResource(sCollision::cSbcRegistReserveInfo& RegistResourceInfo) {
+    // DWARF local not rendered: u8 SbcGroup;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    rCollision* pRegistRSbc = RegistResourceInfo.mpRSbc;
+    SBC_HANDLE* pOutputHandle = RegistResourceInfo.mpOutputHandle;
+    u32 SbcType = RegistResourceInfo.mRegistType;
+    SBC_HANDLE handle = (sCollision::mpInstance)->sCollision::registResource(pRegistRSbc, SbcType, RegistResourceInfo.mRegistGroup, true, false);
+    if (RegistResourceInfo.mpRSbc != nullptr) {
+        RegistResourceInfo.mpRSbc->release();
+        RegistResourceInfo.mpRSbc = nullptr;
+    }
+    if (pOutputHandle == nullptr) {
+        return;
+    }
+    *pOutputHandle = handle;
 }
 
 // Address: 0x012c2970 - 0x012c2b4a (474 bytes)
@@ -4784,6 +4809,8 @@ __attribute__((weak)) void sCollision::cSbcArrayBP::updateSbcPartsMoveNum(sColli
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcArrayBP::setDummyU32(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcArrayBP::MyDTI sCollision::cSbcArrayBP::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcArrayBP::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -4811,8 +4838,11 @@ const MtDTI& sCollision::cSbcArrayBP::cDBVTMaster::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcArrayBP::cDBVTMaster::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* sCollision::cSbcArrayBP::cDBVTMaster::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK10sCollision11cSbcArrayBP11cDBVTMaster5MyDTI11newInstanceEv at 0x012c08c0-0x012c08ed, code DWARF attributes to no inlined copy; sz is the class's size (592), align the allocation's other whole constant (16)
+inline void* sCollision::cSbcArrayBP::cDBVTMaster::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memAlloc(sz, align, sCollision::cSbcArrayBP::cDBVTMaster::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* sCollision::cSbcArrayBP::cDBVTMaster::operator new[](size_t sz, u32 align);
@@ -4826,7 +4856,7 @@ const MtDTI& sCollision::cSbcArrayBP::cDBVTMaster::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision11cSbcArrayBP11cDBVTMasterD0Ev at 0x012c0a99-0x012c0aba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cSbcArrayBP::cDBVTMaster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4892,13 +4922,15 @@ sCollision::cSbcArrayBP::cDBVTMaster::~cDBVTMaster() {
 // No out-of-line body: no code in the ELF
 // const nCollision::cScrCommonFilter& sCollision::cSbcArrayBP::cDBVTMaster::getScrFilter() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcArrayBP::cDBVTMaster::MyDTI sCollision::cSbcArrayBP::cDBVTMaster::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcArrayBP::cDBVTMaster::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x012c08c0 - 0x012c0948 (136 bytes)
-__attribute__((weak)) MtObject* sCollision::cSbcArrayBP::cDBVTMaster::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcArrayBP::cDBVTMaster::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcArrayBP::cDBVTMaster::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) sCollision::cSbcArrayBP::cDBVTMaster;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4934,7 +4966,7 @@ const MtDTI& sCollision::cColArray::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision9cColArrayD0Ev at 0x012b29fe-0x012b2a1f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cColArray::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cColArray::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cColArray::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4957,6 +4989,8 @@ sCollision::cColArray::cColArray() {
 sCollision::cColArray::~cColArray() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sCollision::cColArray::MyDTI sCollision::cColArray::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cColArray::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -4984,15 +5018,14 @@ const MtDTI& sCollision::cSbcMoveReserveInfo::getDTI() const {
 
 // Address: 0x012c0090 - 0x012c00d0 (64 bytes)
 void* sCollision::cSbcMoveReserveInfo::operator new[](size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcMoveReserveInfo::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcMoveReserveInfo::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfo::DTI.mID);
 }
 
 // Address: 0x012c0100 - 0x012c012a (42 bytes)
 void sCollision::cSbcMoveReserveInfo::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5009,7 +5042,7 @@ void sCollision::cSbcMoveReserveInfo::operator delete[](void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSbcMoveReserveInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5063,6 +5096,8 @@ __attribute__((weak)) const sCollision::cSbcMoveReserveInfo& sCollision::cSbcMov
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcMoveReserveInfo::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcMoveReserveInfo::MyDTI sCollision::cSbcMoveReserveInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcMoveReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -5093,7 +5128,7 @@ const MtDTI& sCollision::Sbc::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision3SbcD0Ev at 0x012c3800-0x012c3821, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::Sbc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::Sbc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Sbc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5407,7 +5442,7 @@ __attribute__((weak)) void sCollision::Sbc::setPartsNum(u32 NewPartsNum) {
 // Address: 0x012c37c0 - 0x012c37c7 (7 bytes)
 __attribute__((weak)) void sCollision::Sbc::releaseAllDynamicData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::Sbc::setResource(static_cast<rCollision*>(nullptr));
+    setResource(static_cast<rCollision*>(nullptr));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -5415,6 +5450,8 @@ __attribute__((weak)) void sCollision::Sbc::releaseAllDynamicData() {
 
 // No out-of-line body: no code in the ELF
 // void sCollision::Sbc::setDummy(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Sbc::MyDTI sCollision::Sbc::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Sbc::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -5458,7 +5495,7 @@ const MtDTI& sCollision::Sbc::Parts::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision3Sbc5PartsD0Ev at 0x012c3550-0x012c3571, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::Sbc::Parts::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::Sbc::Parts::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Sbc::Parts::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -5496,11 +5533,24 @@ sCollision::Sbc::Parts::~Parts() {
 // sCollision::Sbc* sCollision::Sbc::Parts::getOwnerSbc();
 
 // Address: 0x012c3590 - 0x012c3610 (128 bytes)
-__attribute__((weak)) bool sCollision::Sbc::Parts::getRPartsAABB(MtAABB& aabb) const {
-    // local: rCollision* pRSbc;
-    // local: const PartsInfo* pRPartsInfo;
-    DDON_STUB("sCollision::Sbc::Parts::getRPartsAABB")
-    return {};
+bool sCollision::Sbc::Parts::getRPartsAABB(MtAABB& aabb) const {
+    // DWARF local not rendered: rCollision* pRSbc;
+    // DWARF local not rendered: const PartsInfo* pRPartsInfo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpOwnerSbc->mpRSbc != nullptr) {
+        if ((&mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex]) != nullptr) {
+            aabb.minpos.x = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.minpos.x;
+            aabb.minpos.y = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.minpos.y;
+            aabb.minpos.z = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.minpos.z;
+            aabb.minpos.pad_ = 0.0f;
+            aabb.maxpos.x = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.maxpos.x;
+            aabb.maxpos.y = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.maxpos.y;
+            aabb.maxpos.z = mpOwnerSbc->mpRSbc->mpPartsInfo[mPartsIndex].bv.maxpos.z;
+            aabb.maxpos.pad_ = 0.0f;
+            return true;
+        }
+    }
+    return false;
 }
 
 // Address: 0x012c22f0 - 0x012c2635 (837 bytes)
@@ -5611,6 +5661,8 @@ __attribute__((weak)) bool sCollision::Sbc::Parts::getPartsWorldAABB(MtAABB& aab
 // No out-of-line body: no code in the ELF
 // void sCollision::Sbc::Parts::setDummyMatrix(MtMatrix&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Sbc::Parts::MyDTI sCollision::Sbc::Parts::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Sbc::Parts::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -5638,8 +5690,11 @@ const MtDTI& sCollision::cSbcMoveMatrix::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcMoveMatrix::usage();
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* sCollision::cSbcMoveMatrix::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK10sCollision14cSbcMoveMatrix5MyDTI11newInstanceEv at 0x012b26f0-0x012b271d, code DWARF attributes to no inlined copy; sz is the class's size (72), align the allocation's other whole constant (16)
+inline void* sCollision::cSbcMoveMatrix::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveMatrix::DTI)->memAlloc(sz, align, sCollision::cSbcMoveMatrix::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* sCollision::cSbcMoveMatrix::operator new[](size_t sz, u32 align);
@@ -5653,7 +5708,7 @@ const MtDTI& sCollision::cSbcMoveMatrix::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision14cSbcMoveMatrixD0Ev at 0x012b27fe-0x012b281f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cSbcMoveMatrix::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveMatrix::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveMatrix::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5676,13 +5731,15 @@ sCollision::cSbcMoveMatrix::~cSbcMoveMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcMoveMatrix::MyDTI sCollision::cSbcMoveMatrix::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcMoveMatrix::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x012b26f0 - 0x012b273e (78 bytes)
-__attribute__((weak)) MtObject* sCollision::cSbcMoveMatrix::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcMoveMatrix::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcMoveMatrix::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) sCollision::cSbcMoveMatrix;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5720,7 +5777,7 @@ const MtDTI& sCollision::cSbcMoveResetReserveInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSbcMoveResetReserveInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveResetReserveInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5749,8 +5806,8 @@ __attribute__((weak)) bool sCollision::cSbcMoveResetReserveInfo::registReserveIn
 // Address: 0x012c0510 - 0x012c0524 (20 bytes)
 const sCollision::cSbcMoveResetReserveInfo& sCollision::cSbcMoveResetReserveInfo::operator=(const sCollision::cSbcMoveResetReserveInfo& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetSbc = src.mpTargetSbc;
-    this->mpTargetParts = src.mpTargetParts;
+    mpTargetSbc = src.mpTargetSbc;
+    mpTargetParts = src.mpTargetParts;
     return *this;
 }
 
@@ -5768,6 +5825,8 @@ const sCollision::cSbcMoveResetReserveInfo& sCollision::cSbcMoveResetReserveInfo
 
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcMoveResetReserveInfo::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcMoveResetReserveInfo::MyDTI sCollision::cSbcMoveResetReserveInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcMoveResetReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -5795,15 +5854,14 @@ const MtDTI& sCollision::cSbcRegistReserveInfo::getDTI() const {
 
 // Address: 0x012c05a0 - 0x012c05e0 (64 bytes)
 void* sCollision::cSbcRegistReserveInfo::operator new[](size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcRegistReserveInfo::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcRegistReserveInfo::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcRegistReserveInfo::DTI.mID);
 }
 
 // Address: 0x012c0610 - 0x012c063a (42 bytes)
 void sCollision::cSbcRegistReserveInfo::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcRegistReserveInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5830,32 +5888,32 @@ void sCollision::cSbcRegistReserveInfo::operator delete[](void* p_addr) {
 // Address: 0x012c0660 - 0x012c068a (42 bytes)
 sCollision::cSbcRegistReserveInfo::cSbcRegistReserveInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOutputHandle = static_cast<sCollision::SBC_HANDLE*>(nullptr);
-    this->mpRSbc = static_cast<rCollision*>(nullptr);
-    this->mRegistType = static_cast<u32>(4294967295);
-    this->mRegistGroup = static_cast<u8>(0);
+    mpOutputHandle = nullptr;
+    mpRSbc = nullptr;
+    mRegistType = 0xFFFFFFFF;
+    mRegistGroup = 0;
 }
 
 // Address: 0x012c0690 - 0x012c06c4 (52 bytes)
 // Also emitted as: _ZN10sCollision21cSbcRegistReserveInfoD0Ev at 0x012c06d0
 sCollision::cSbcRegistReserveInfo::~cSbcRegistReserveInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRSbc == static_cast<rCollision*>(nullptr)) {
+    if (mpRSbc == nullptr) {
         return;
     }
-    this->mpRSbc->::cResource::release();
-    this->mpRSbc = static_cast<rCollision*>(nullptr);
+    mpRSbc->release();
+    mpRSbc = nullptr;
 }
 
 // Address: 0x012c0720 - 0x012c0748 (40 bytes)
 bool sCollision::cSbcRegistReserveInfo::registReserveInfo(rCollision* pRSbc, sCollision::SBC_HANDLE* pOutputHandle, u32 RegistType, u8 RegistGroup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRSbc != static_cast<rCollision*>(nullptr)) {
-        this->mpRSbc = pRSbc;
-        this->mpOutputHandle = pOutputHandle;
-        this->mRegistType = RegistType;
-        this->mRegistGroup = RegistGroup;
-        pRSbc->::cResource::addRef();
+    if (pRSbc != nullptr) {
+        mpRSbc = pRSbc;
+        mpOutputHandle = pOutputHandle;
+        mRegistType = RegistType;
+        mRegistGroup = RegistGroup;
+        pRSbc->addRef();
         return true;
     } else {
         return false;
@@ -5892,6 +5950,8 @@ __attribute__((weak)) const sCollision::cSbcRegistReserveInfo& sCollision::cSbcR
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcRegistReserveInfo::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcRegistReserveInfo::MyDTI sCollision::cSbcRegistReserveInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcRegistReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -5918,15 +5978,14 @@ const MtDTI& sCollision::cSbcMoveReserveInfoAll::getDTI() const {
 
 // Address: 0x012bfea0 - 0x012bfee0 (64 bytes)
 void* sCollision::cSbcMoveReserveInfoAll::operator new[](size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcMoveReserveInfoAll::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcMoveReserveInfoAll::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfoAll::DTI.mID);
 }
 
 // Address: 0x012bff10 - 0x012bff3a (42 bytes)
 void sCollision::cSbcMoveReserveInfoAll::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5943,7 +6002,7 @@ void sCollision::cSbcMoveReserveInfoAll::operator delete[](void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSbcMoveReserveInfoAll::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5993,6 +6052,8 @@ __attribute__((weak)) const sCollision::cSbcMoveReserveInfoAll& sCollision::cSbc
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcMoveReserveInfoAll::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcMoveReserveInfoAll::MyDTI sCollision::cSbcMoveReserveInfoAll::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcMoveReserveInfoAll::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -6037,7 +6098,7 @@ const MtDTI& sCollision::cSbcMoveResetReserveInfoAll::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSbcMoveResetReserveInfoAll::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveResetReserveInfoAll::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfoAll::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6066,7 +6127,7 @@ __attribute__((weak)) bool sCollision::cSbcMoveResetReserveInfoAll::registReserv
 // Address: 0x012c03e0 - 0x012c03ec (12 bytes)
 const sCollision::cSbcMoveResetReserveInfoAll& sCollision::cSbcMoveResetReserveInfoAll::operator=(const sCollision::cSbcMoveResetReserveInfoAll& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpTargetSbc = src.mpTargetSbc;
+    mpTargetSbc = src.mpTargetSbc;
     return *this;
 }
 
@@ -6081,6 +6142,8 @@ const sCollision::cSbcMoveResetReserveInfoAll& sCollision::cSbcMoveResetReserveI
 
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcMoveResetReserveInfoAll::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcMoveResetReserveInfoAll::MyDTI sCollision::cSbcMoveResetReserveInfoAll::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcMoveResetReserveInfoAll::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -6124,7 +6187,7 @@ const MtDTI& sCollision::SbcObject::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision9SbcObjectD0Ev at 0x012c62ce-0x012c62ef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::SbcObject::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::SbcObject::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::SbcObject::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6157,7 +6220,7 @@ __attribute__((weak)) void sCollision::SbcObject::initialize() {
 // Address: 0x012c6300 - 0x012c6305 (5 bytes)
 __attribute__((weak)) void sCollision::SbcObject::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::SbcObject::unregisterNodeAll();
+    unregisterNodeAll();
 }
 
 // Address: 0x012c6490 - 0x012c64e9 (89 bytes)
@@ -6174,7 +6237,7 @@ __attribute__((weak)) void sCollision::SbcObject::move() {
 // Address: 0x012c6700 - 0x012c6705 (5 bytes)
 void sCollision::SbcObject::runReserveunregisterPG() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::SbcObject::unregisterNodeAll();
+    unregisterNodeAll();
 }
 
 // No out-of-line body: no code in the ELF
@@ -6294,6 +6357,8 @@ __attribute__((weak)) void sCollision::SbcObject::updateScrCollisionGeometry(sCo
 // No out-of-line body: no code in the ELF
 // void sCollision::SbcObject::setDummyU32(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::SbcObject::MyDTI sCollision::SbcObject::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::SbcObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -6335,7 +6400,7 @@ const MtDTI& sCollision::SbcObject::cRegisterInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::SbcObject::cRegisterInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::SbcObject::cRegisterInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::SbcObject::cRegisterInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6359,7 +6424,7 @@ sCollision::SbcObject::cRegisterInfo::~cRegisterInfo() {
 // Address: 0x012c5270 - 0x012c5274 (4 bytes)
 bool sCollision::SbcObject::cRegisterInfo::isEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlgEnable;
+    return mFlgEnable;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -6394,6 +6459,8 @@ bool sCollision::SbcObject::cRegisterInfo::isEnable() const {
 
 // No out-of-line body: no code in the ELF
 // size_t sCollision::SbcObject::cRegisterInfo::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::SbcObject::cRegisterInfo::MyDTI sCollision::SbcObject::cRegisterInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::SbcObject::cRegisterInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -6437,7 +6504,7 @@ const MtDTI& sCollision::cSbcSkinMesh::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision12cSbcSkinMeshD0Ev at 0x012be00e-0x012be02f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cSbcSkinMesh::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcSkinMesh::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6468,7 +6535,7 @@ sCollision::cSbcSkinMesh::~cSbcSkinMesh() {
 // Address: 0x012be040 - 0x012be045 (5 bytes)
 __attribute__((weak)) void sCollision::cSbcSkinMesh::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::cSbcSkinMesh::runUnregisterUnitReserveAll();
+    runUnregisterUnitReserveAll();
 }
 
 // Address: 0x012be060 - 0x012be40b (939 bytes)
@@ -6499,7 +6566,7 @@ __attribute__((weak)) void sCollision::cSbcSkinMesh::move() {
 // Address: 0x012be050 - 0x012be055 (5 bytes)
 void sCollision::cSbcSkinMesh::runReserveunregisterPG() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::cSbcSkinMesh::runUnregisterUnitReserveAll();
+    runUnregisterUnitReserveAll();
 }
 
 // No out-of-line body: no code in the ELF
@@ -6535,13 +6602,13 @@ __attribute__((weak)) void sCollision::cSbcSkinMesh::unregisterUnit(sCollision::
 // Address: 0x012be960 - 0x012be968 (8 bytes)
 cDynamicBVHCollision& sCollision::cSbcSkinMesh::getDBVTDynamicSbc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDBVTDynamicSbc;
+    return mDBVTDynamicSbc;
 }
 
 // Address: 0x012be970 - 0x012be97c (12 bytes)
 void sCollision::cSbcSkinMesh::removeBroadPhaseDBVTNoUseBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDBVTDynamicSbc.::cDynamicBVHCollision::removeWorkBuffer();
+    mDBVTDynamicSbc.removeWorkBuffer();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -6588,6 +6655,8 @@ __attribute__((weak)) void sCollision::cSbcSkinMesh::runUnregisterUnitReserveAll
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcSkinMesh::setDummyU32(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcSkinMesh::MyDTI sCollision::cSbcSkinMesh::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcSkinMesh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -6629,7 +6698,7 @@ const MtDTI& sCollision::cSbcSkinMesh::cRegisterInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSbcSkinMesh::cRegisterInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6679,6 +6748,8 @@ sCollision::cSbcSkinMesh::cRegisterInfo::~cRegisterInfo() {
 
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcSkinMesh::cRegisterInfo::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI sCollision::cSbcSkinMesh::cRegisterInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -6761,30 +6832,56 @@ sCollision::cSbcHeightField::~cSbcHeightField() {
 
 // Address: 0x012bef10 - 0x012bef1b (11 bytes)
 __attribute__((weak)) sCollision::cSbcHeightField::cHeightField* sCollision::cSbcHeightField::getArrayElementByHandle(sCollision::SBC_HANDLE_HF TargetHandle) {
-    DDON_STUB("sCollision::cSbcHeightField::getArrayElementByHandle")
-    return nullptr;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cHeightField*>(mHeightFieldArray.mpArray[TargetHandle]);
 }
 
 // Address: 0x012bef00 - 0x012bef0b (11 bytes)
 __attribute__((weak)) sCollision::cSbcHeightField::cHeightField* sCollision::cSbcHeightField::getArrayElementByIndex(u32 TargetIndex) {
-    DDON_STUB("sCollision::cSbcHeightField::getArrayElementByIndex")
-    return nullptr;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cHeightField*>(mHeightFieldArray.mpArray[TargetIndex]);
 }
 
 // Address: 0x012beee0 - 0x012beee4 (4 bytes)
 __attribute__((weak)) u32 sCollision::cSbcHeightField::getArrayLength() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const sCollision::cSbcHeightField*
-    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mHeightFieldArray.mLength;
 }
 
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcHeightField::setDraw(bool FlgDraw);
 
 // Address: 0x012bef30 - 0x012befac (124 bytes)
-__attribute__((weak)) void sCollision::cSbcHeightField::clear() {
-    DDON_STUB("sCollision::cSbcHeightField::clear")
-    /* stub */
+void sCollision::cSbcHeightField::clear() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mHeightFieldArray.mLength != 0) {
+        // inferred: the value the loop at 0x12bef50 carries; no location-less local in scope fits
+        u32 v0_0 = mHeightFieldArray.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mHeightFieldArray.mpArray[i0_3] != nullptr) {
+                delete mHeightFieldArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mHeightFieldArray.mLength) {
+                    v0_0 = mHeightFieldArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mHeightFieldArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mHeightFieldArray.mpArray));
+    }
+    mHeightFieldArray.mpArray = nullptr;
+    mHeightFieldArray.mBufsiz = 0;
+    mHeightFieldArray.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6795,6 +6892,8 @@ __attribute__((weak)) void sCollision::cSbcHeightField::clear() {
 
 // No out-of-line body: no code in the ELF
 // size_t sCollision::cSbcHeightField::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcHeightField::MyDTI sCollision::cSbcHeightField::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcHeightField::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -6823,8 +6922,11 @@ const MtDTI& sCollision::cSbcHeightField::cHeightField::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcHeightField::cHeightField::usage();
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* sCollision::cSbcHeightField::cHeightField::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK10sCollision15cSbcHeightField12cHeightField5MyDTI11newInstanceEv at 0x012bea20-0x012bea4d, code DWARF attributes to no inlined copy; sz is the class's size (48), align the allocation's other whole constant (16)
+inline void* sCollision::cSbcHeightField::cHeightField::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::cHeightField::DTI)->memAlloc(sz, align, sCollision::cSbcHeightField::cHeightField::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* sCollision::cSbcHeightField::cHeightField::operator new[](size_t sz, u32 align);
@@ -6838,7 +6940,7 @@ const MtDTI& sCollision::cSbcHeightField::cHeightField::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision15cSbcHeightField12cHeightFieldD0Ev at 0x012beb76-0x012beb97, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::cSbcHeightField::cHeightField::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcHeightField::cHeightField::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::cHeightField::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6857,11 +6959,11 @@ inline void sCollision::cSbcHeightField::cHeightField::operator delete(void* p_a
 // Also emitted as: _ZN10sCollision15cSbcHeightField12cHeightFieldD0Ev at 0x012beb40
 sCollision::cSbcHeightField::cHeightField::~cHeightField() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeightField == static_cast<rCollisionHeightField*>(nullptr)) {
+    if (mpHeightField == nullptr) {
         return;
     }
-    this->mpHeightField->::cResource::release();
-    this->mpHeightField = static_cast<rCollisionHeightField*>(nullptr);
+    mpHeightField->release();
+    mpHeightField = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6885,25 +6987,27 @@ sCollision::cSbcHeightField::cHeightField::~cHeightField() {
 // Address: 0x012bebf0 - 0x012bebf5 (5 bytes)
 rCollisionHeightField* sCollision::cSbcHeightField::cHeightField::getHeightFieldResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpHeightField;
+    return mpHeightField;
 }
 
 // Address: 0x012bec00 - 0x012bec05 (5 bytes)
 nCollision::cScrCommonFilter& sCollision::cSbcHeightField::cHeightField::getScrFilter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrFilter;
+    return mScrFilter;
 }
 
 // No out-of-line body: no code in the ELF
 // void sCollision::cSbcHeightField::cHeightField::registHeightFieldFromUI(rCollisionHeightField* pRCollisionHeightField);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSbcHeightField::cHeightField::MyDTI sCollision::cSbcHeightField::cHeightField::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSbcHeightField::cHeightField::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x012bea20 - 0x012bea7b (91 bytes)
-__attribute__((weak)) MtObject* sCollision::cSbcHeightField::cHeightField::MyDTI::newInstance() const {
-    DDON_STUB("sCollision::cSbcHeightField::cHeightField::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCollision::cSbcHeightField::cHeightField::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) sCollision::cSbcHeightField::cHeightField;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6939,7 +7043,7 @@ const MtDTI& sCollision::Collider::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision8ColliderD0Ev at 0x012bb830-0x012bb851, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::Collider::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::Collider::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Collider::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6965,9 +7069,40 @@ sCollision::Collider::~Collider() {
 }
 
 // Address: 0x012bb860 - 0x012bb90d (173 bytes)
-__attribute__((weak)) void sCollision::Collider::initialize(u32 NodeListNum) {
-    DDON_STUB("sCollision::Collider::initialize")
-    /* stub */
+void sCollision::Collider::initialize(u32 NodeListNum) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mNodeListArray.mLength != 0) {
+        // inferred: the value the loop at 0x12bb880 carries; no location-less local in scope fits
+        u32 v0_0 = mNodeListArray.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mNodeListArray.mpArray[i0_3] != nullptr) {
+                delete mNodeListArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mNodeListArray.mLength) {
+                    v0_0 = mNodeListArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mNodeListArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodeListArray.mpArray));
+    }
+    mNodeListArray.mpArray = nullptr;
+    mNodeListArray.mBufsiz = 0;
+    mNodeListArray.mLength = 0;
+    initializeNodeListNum(static_cast<s32>(NodeListNum));
+    mFlgMultiThread[0] = (sMain::mpInstance)->mJobThreadNum != 1;
+    mFlgMultiThread[1] = mFlgMultiThread[0];
+    mFlgMultiThread[2] = false;
 }
 
 // Address: 0x012bb910 - 0x012bbacb (443 bytes)
@@ -7198,6 +7333,8 @@ __attribute__((weak)) void sCollision::Collider::draw() {
 // No out-of-line body: no code in the ELF
 // void sCollision::Collider::setDummyU32(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Collider::MyDTI sCollision::Collider::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Collider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -7240,7 +7377,7 @@ const MtDTI& sCollision::Collider::cNodeListArray::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision8Collider14cNodeListArrayD0Ev at 0x012bb49e-0x012bb4bf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::Collider::cNodeListArray::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::Collider::cNodeListArray::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Collider::cNodeListArray::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7348,6 +7485,8 @@ sCollision::Collider::cNodeListArray::~cNodeListArray() {
 // No out-of-line body: no code in the ELF
 // void sCollision::Collider::cNodeListArray::correctCollisionInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Collider::cNodeListArray::MyDTI sCollision::Collider::cNodeListArray::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Collider::cNodeListArray::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -7374,15 +7513,14 @@ const MtDTI& sCollision::Node::getDTI() const {
 
 // Address: 0x012bf0b0 - 0x012bf0f0 (64 bytes)
 void* sCollision::Node::operator new(size_t sz, u32 align) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::Node::MyDTI*
-    return ::MtMemoryAllocator::getAllocator(::sCollision::Node::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::Node::DTI) + static_cast<long>(52)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return MtMemoryAllocator::getAllocator(sCollision::Node::DTI)->memAlloc(sz, align, sCollision::Node::DTI.mID);
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision4NodeD0Ev at 0x012bf20e-0x012bf22f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::Node::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::Node::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Node::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7415,14 +7553,13 @@ sCollision::Node::Node(MtGeomConvex* pGeometry, u32 GeometryAttribute, u32 Geome
 // Address: 0x012bf230 - 0x012bf235 (5 bytes)
 void sCollision::Node::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nCollision::cCollisionNodeObject::createProperty(s);
+    this->nCollision::cCollisionNodeObject::createProperty(s);
 }
 
 // Address: 0x012bf240 - 0x012bf29e (94 bytes)
 void sCollision::Node::copy(const nCollision::cObjectBase& src) {
     // DWARF local not rendered: const Node& MySrc;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from sCollision::Node::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xc8 from const nCollision::cObjectBase*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd0 from sCollision::Node*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xd0 from const nCollision::cObjectBase*
@@ -7430,19 +7567,19 @@ void sCollision::Node::copy(const nCollision::cObjectBase& src) {
     // inferred: a temporary for the result of the call at 0x12bf253, used once; no DWARF local holds it
     const MtDTI& t0 = src.getDTI();
     // inferred: the value the loop at 0x12bf261 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::sCollision::Node::DTI) + static_cast<long>(8));
+    MT_CTSTR v0_1 = sCollision::Node::DTI.mName;
     // inferred: the value the loop at 0x12bf261 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->::nCollision::cCollisionNodeObject::copy(src);
+        if (v0_1 == v0_0->mName) {
+            this->nCollision::cCollisionNodeObject::copy(src);
             // inferred: a temporary for the value the load at 0x12bf27d read, used once; no DWARF local holds it
-            const unsigned long t1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + static_cast<long>(200));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(208)) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + static_cast<long>(208));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(200)) = t1;
+            const unsigned long t1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 200);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 208) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 208);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 200) = t1;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
@@ -7469,9 +7606,15 @@ void sCollision::Node::copy(const nCollision::cObjectBase& src) {
 // sCollision::OBJ_FUNC sCollision::Node::getCallbackObjectCollisionInverse() const;
 
 // Address: 0x012bf2e0 - 0x012bf357 (119 bytes)
-__attribute__((weak)) void sCollision::Node::startCallback(sCollision::CALLBACK_MODE mode, sCollision::Node* pActiveNode, u32 param, MtContact* pContact, sCollision::TriangleInfo* pTriInfo, u32 HitGeomThisID, u32 HitGeomID, bool Hited) {
-    DDON_STUB("sCollision::Node::startCallback")
-    /* stub */
+void sCollision::Node::startCallback(sCollision::CALLBACK_MODE mode, sCollision::Node* pActiveNode, u32 param, MtContact* pContact, sCollision::TriangleInfo* pTriInfo, u32 HitGeomThisID, u32 HitGeomID, bool Hited) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mpOwner == nullptr) {
+        return;
+    }
+    if (mpCallbackFromRequest == static_cast<sCollision::OBJ_FUNC>(0)) {
+        return;
+    }
+    (mpOwner->*mpCallbackFromRequest)(mode, this, pActiveNode, pContact, param, pTriInfo, HitGeomThisID, HitGeomID, Hited);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7513,6 +7656,8 @@ __attribute__((weak)) void sCollision::Node::registOwner(MtObject* pOwner, sColl
     DDON_STUB("sCollision::Node::registOwner")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Node::MyDTI sCollision::Node::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -7601,6 +7746,8 @@ __attribute__((weak)) sCollision::TriangleInfo& sCollision::TriangleInfo::operat
 // No out-of-line body: no code in the ELF
 // f32 sCollision::TriangleInfo::getHitDepth();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::TriangleInfo::MyDTI sCollision::TriangleInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::TriangleInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -7643,7 +7790,7 @@ const MtDTI& sCollision::SbcInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision7SbcInfoD0Ev at 0x012c43be-0x012c43df, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::SbcInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::SbcInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::SbcInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7715,19 +7862,19 @@ __attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoObject(uScrollColli
 // Address: 0x012c46c0 - 0x012c46c4 (4 bytes)
 void sCollision::SbcInfo::setHitScrInfoObjectGeomID(u32 HitGeometryID) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->HitNodeGeomID = HitGeometryID;
+    HitNodeGeomID = HitGeometryID;
 }
 
 // Address: 0x012c46d0 - 0x012c471a (74 bytes)
 void sCollision::SbcInfo::setHitScrInfoHeightField(u32 HitHeightFieldNo, u32 HitTriangleID, u32 u, u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->clearHitInfo();
-    this->FlgMove = false;
-    this->FlgResetSet = true;
-    this->::sCollision::SbcInfoBase::HitHeightFieldHandle = HitHeightFieldNo;
-    this->::sCollision::SbcInfoBase::HitHeightFieldTriID = HitTriangleID;
-    this->::sCollision::SbcInfoBase::HitHeightFieldU = static_cast<s32>(u);
-    this->::sCollision::SbcInfoBase::HitHeightFieldV = static_cast<s32>(v);
+    clearHitInfo();
+    FlgMove = false;
+    FlgResetSet = true;
+    HitHeightFieldHandle = HitHeightFieldNo;
+    HitHeightFieldTriID = HitTriangleID;
+    HitHeightFieldU = static_cast<s32>(u);
+    HitHeightFieldV = static_cast<s32>(v);
 }
 
 // Address: 0x012c4720 - 0x012c476f (79 bytes)
@@ -7769,11 +7916,10 @@ __attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoDyamicSbc(uDynamicS
 
 // Address: 0x012c4770 - 0x012c4792 (34 bytes)
 bool sCollision::SbcInfo::isHitDynamicSbc() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uDynamicSbc*
-    if (this->::sCollision::SbcInfoBase::FlgHitDynamicSbc != false) {
-        if (this->::sCollision::SbcInfoBase::pHitDSbc != static_cast<uDynamicSbc*>(nullptr)) {
-            return ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::sCollision::SbcInfoBase::pHitDSbc) + static_cast<long>(16))) & static_cast<unsigned int>(7)) <= static_cast<unsigned int>(2);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (FlgHitDynamicSbc) {
+        if (pHitDSbc != nullptr) {
+            return pHitDSbc->mBeFlag <= 2u;
         }
     }
     return false;
@@ -8109,6 +8255,8 @@ __attribute__((weak)) MtObject* sCollision::SbcInfo::getHitTargetOwner() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // const MtMatrix& sCollision::SbcInfo::getOldMatrixInverse() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::SbcInfo::MyDTI sCollision::SbcInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::SbcInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -8150,7 +8298,7 @@ const MtDTI& sCollision::SbcInfoBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::SbcInfoBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::SbcInfoBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::SbcInfoBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8174,10 +8322,10 @@ sCollision::SbcInfoBase::~SbcInfoBase() {
 // Address: 0x012c3f50 - 0x012c3f6b (27 bytes)
 void sCollision::SbcInfoBase::clearHitInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->SbcHandle = static_cast<sCollision::SBC_HANDLE>(4294967295);
-    this->HitHeightFieldHandle = static_cast<sCollision::SBC_HANDLE_HF>(4294967295);
-    this->pHitScrGeometry = nullptr;
-    this->FlgHitDynamicSbc = false;
+    SbcHandle = 0xFFFFFFFF;
+    HitHeightFieldHandle = 0xFFFFFFFF;
+    pHitScrGeometry = nullptr;
+    FlgHitDynamicSbc = false;
 }
 
 // Address: 0x012c4170 - 0x012c4196 (38 bytes)
@@ -8189,19 +8337,19 @@ __attribute__((weak)) sCollision::SbcInfoBase& sCollision::SbcInfoBase::operator
 // Address: 0x012c3f70 - 0x012c3fa9 (57 bytes)
 void sCollision::SbcInfoBase::copy(const sCollision::SbcInfoBase& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->SbcHandle = src.SbcHandle;
-    this->SbcNo = src.SbcNo;
-    this->PartsNo = src.PartsNo;
-    this->HitLeafIndex = src.HitLeafIndex;
-    this->RTriNo = src.RTriNo;
-    this->pHitScrGeometry = src.pHitScrGeometry;
-    this->HitHeightFieldHandle = src.HitHeightFieldHandle;
-    this->HitHeightFieldU = src.HitHeightFieldU;
-    this->HitHeightFieldV = src.HitHeightFieldV;
-    this->HitHeightFieldTriID = src.HitHeightFieldTriID;
-    this->pHitDSbc = src.pHitDSbc;
-    this->DSbcBvhID = src.DSbcBvhID;
-    this->FlgHitDynamicSbc = src.FlgHitDynamicSbc;
+    SbcHandle = src.SbcHandle;
+    SbcNo = src.SbcNo;
+    PartsNo = src.PartsNo;
+    HitLeafIndex = src.HitLeafIndex;
+    RTriNo = src.RTriNo;
+    pHitScrGeometry = src.pHitScrGeometry;
+    HitHeightFieldHandle = src.HitHeightFieldHandle;
+    HitHeightFieldU = src.HitHeightFieldU;
+    HitHeightFieldV = src.HitHeightFieldV;
+    HitHeightFieldTriID = src.HitHeightFieldTriID;
+    pHitDSbc = src.pHitDSbc;
+    DSbcBvhID = src.DSbcBvhID;
+    FlgHitDynamicSbc = src.FlgHitDynamicSbc;
 }
 
 // Address: 0x012c3fb0 - 0x012c416d (445 bytes)
@@ -8212,6 +8360,8 @@ __attribute__((weak)) void sCollision::SbcInfoBase::convertSbcInfo(sCollision::S
     DDON_STUB("sCollision::SbcInfoBase::convertSbcInfo")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::SbcInfoBase::MyDTI sCollision::SbcInfoBase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::SbcInfoBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -8254,7 +8404,7 @@ const MtDTI& sCollision::ColliderPassiveNodeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::ColliderPassiveNodeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::ColliderPassiveNodeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::ColliderPassiveNodeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8304,6 +8454,8 @@ sCollision::ColliderPassiveNodeInfo::~ColliderPassiveNodeInfo() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCollision::ColliderPassiveNodeInfo::setDBVTNode(cDynamicBVHCollision::Node* pNode);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ColliderPassiveNodeInfo::MyDTI sCollision::ColliderPassiveNodeInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ColliderPassiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -8388,6 +8540,8 @@ sCollision::ColliderActiveNodeInfo::~ColliderActiveNodeInfo() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCollision::ColliderActiveNodeInfo::setNodeListIndex(u32 NodeListIndex);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ColliderActiveNodeInfo::MyDTI sCollision::ColliderActiveNodeInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ColliderActiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -8429,7 +8583,7 @@ const MtDTI& sCollision::ActiveNodeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::ActiveNodeInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::ActiveNodeInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::ActiveNodeInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8504,6 +8658,8 @@ sCollision::ActiveNodeInfo::~ActiveNodeInfo() {
 // No out-of-line body: no code in the ELF
 // size_t sCollision::ActiveNodeInfo::memSize(void*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ActiveNodeInfo::MyDTI sCollision::ActiveNodeInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ActiveNodeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -8546,7 +8702,7 @@ const MtDTI& sCollision::NodeList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision8NodeListD0Ev at 0x012b8ace-0x012b8aef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::NodeList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::NodeList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::NodeList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8970,6 +9126,8 @@ __attribute__((weak)) void sCollision::NodeList::executeTargetRequestNodeContact
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::NodeList::MyDTI sCollision::NodeList::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::NodeList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -8997,7 +9155,7 @@ const MtDTI& sCollision::Param::getDTI() const {
 // Address: 0x012bf590 - 0x012bf5ba (42 bytes)
 __attribute__((weak)) void sCollision::Param::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::sCollision::Param::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::Param::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9042,7 +9200,7 @@ sCollision::Param::~Param() {
 // Address: 0x012bf860 - 0x012bf865 (5 bytes)
 void sCollision::Param::setOwnerModelPtr(MtObject* _pOwnerModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwnerModel = _pOwnerModel;
+    mpOwnerModel = _pOwnerModel;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -9066,14 +9224,14 @@ void sCollision::Param::setOwnerModelPtr(MtObject* _pOwnerModel) {
 // Address: 0x012bf7d0 - 0x012bf825 (85 bytes)
 void sCollision::Param::startCallback(const sCollision::ScrCollisionInfo& NowScrCollisionInfo, const sCollision::SbcInfo& sbc) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->pObject == static_cast<MtObject*>(nullptr)) {
+    if (pObject == nullptr) {
         return;
     }
-    if (this->pFunc != static_cast<const sCollision::CONTACT_CALLBACK>(0)) {
-        (this->pObject->*this->pFunc)(sbc, this->param);
+    if (pFunc != static_cast<const sCollision::CONTACT_CALLBACK>(0)) {
+        (pObject->*pFunc)(sbc, param);
     } else {
-        if (this->pCallbackFunctionEx != static_cast<const sCollision::CONTACT_CALLBACK_EX>(0)) {
-            (this->pObject->*this->pCallbackFunctionEx)(NowScrCollisionInfo, sbc, this->param);
+        if (pCallbackFunctionEx != static_cast<const sCollision::CONTACT_CALLBACK_EX>(0)) {
+            (pObject->*pCallbackFunctionEx)(NowScrCollisionInfo, sbc, param);
         }
     }
 }
@@ -9120,14 +9278,14 @@ void sCollision::Param::startCallback(const sCollision::ScrCollisionInfo& NowScr
 // Address: 0x012bf8a0 - 0x012bf8ba (26 bytes)
 void sCollision::Param::setAdjustPositionContactMode(u32 icontact_mode, bool FlgContinuationCharaMode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (FlgContinuationCharaMode != false) {
-        if (static_cast<int>(this->contact_mode) <= static_cast<int>(-1)) {
-            this->contact_mode = icontact_mode | static_cast<u32>(2147483648);
+    if (FlgContinuationCharaMode) {
+        if (static_cast<int>(contact_mode) <= -1) {
+            contact_mode = icontact_mode | 0x80000000u;
         } else {
-            this->contact_mode = icontact_mode;
+            contact_mode = icontact_mode;
         }
     } else {
-        this->contact_mode = icontact_mode;
+        contact_mode = icontact_mode;
     }
 }
 
@@ -9140,12 +9298,12 @@ void sCollision::Param::setAdjustPositionContactMode(u32 icontact_mode, bool Flg
 // Address: 0x012bf8e0 - 0x012bf938 (88 bytes)
 void sCollision::Param::setAdjustPositionCharaSetting(bool FlgJumpMode, f32 VibrationStopDotArea) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->contact_mode = (FlgJumpMode == false) ? (this->contact_mode | static_cast<u32>(2147483648)) : (this->contact_mode | static_cast<u32>(3221225472));
-    this->FlgAdjPosWallStop = FlgJumpMode == false;
-    this->FlgAdjPosWallStopForceAttrOnly = false;
-    this->adjPosWallHitDownLen = 0.0f;
-    this->adjPosEpsilon = ::sCollision::EPSILON_HI_LOOSELY;
-    this->adjPosCharaVibrationStopDotArea = VibrationStopDotArea;
+    contact_mode = !FlgJumpMode ? (contact_mode | 0x80000000u) : (contact_mode | 0xC0000000u);
+    FlgAdjPosWallStop = !FlgJumpMode;
+    FlgAdjPosWallStopForceAttrOnly = false;
+    adjPosWallHitDownLen = 0.0f;
+    adjPosEpsilon = sCollision::EPSILON_HI_LOOSELY;
+    adjPosCharaVibrationStopDotArea = VibrationStopDotArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9169,13 +9327,13 @@ void sCollision::Param::setAdjustPositionCharaSetting(bool FlgJumpMode, f32 Vibr
 // Address: 0x012bf9c0 - 0x012bf9c8 (8 bytes)
 const MtLineSegment& sCollision::Param::getAdjPosCheckAxisLS() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->AdjPosAxisCheckLS;
+    return AdjPosAxisCheckLS;
 }
 
 // Address: 0x012bf9d0 - 0x012bf9db (11 bytes)
 bool sCollision::Param::isRegistAdjPosAxisLSCheck() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->AdjPosRegistAxisCollisionCheckMode == static_cast<u32>(1);
+    return AdjPosRegistAxisCollisionCheckMode == 1;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -9190,19 +9348,19 @@ bool sCollision::Param::isRegistAdjPosAxisLSCheck() const {
 // Address: 0x012bfa10 - 0x012bfa18 (8 bytes)
 __attribute__((weak)) const MtSphere& sCollision::Param::getAdjPosCheckAxisSphere() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->AdjPosAxisCheckSphere;
+    return AdjPosAxisCheckSphere;
 }
 
 // Address: 0x012bfa20 - 0x012bfa28 (8 bytes)
 __attribute__((weak)) const MtVector3& sCollision::Param::getAdjPosCheckAxisSphereMoveVector() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->AdjPosAxisCheckConvexMoveVec;
+    return AdjPosAxisCheckConvexMoveVec;
 }
 
 // Address: 0x012bfa30 - 0x012bfa3b (11 bytes)
 __attribute__((weak)) bool sCollision::Param::isRegistAdjPosAxisSphereCheck() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->AdjPosRegistAxisCollisionCheckMode == static_cast<u32>(2);
+    return AdjPosRegistAxisCollisionCheckMode == 2;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -9220,10 +9378,10 @@ __attribute__((weak)) sCollision::Param& sCollision::Param::operator=(const sCol
 // Address: 0x012bf830 - 0x012bf841 (17 bytes)
 void sCollision::Param::setCollisionTarget(u32 _type, u32 _filter, u32 _checkGroupBit, bool _FlgObjHitEnable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->type = _type;
-    this->filter = _filter;
-    this->checkGroupBit = _checkGroupBit;
-    this->FlgObjHitEnable = true;
+    type = _type;
+    filter = _filter;
+    checkGroupBit = _checkGroupBit;
+    FlgObjHitEnable = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9234,6 +9392,10 @@ __attribute__((weak)) void sCollision::Param::setCallbackEx(MtObject* pCallbackF
     DDON_STUB("sCollision::Param::setCallbackEx")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::Param::MyDTI sCollision::Param::DTI;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sCollision::Param sCollision::Param::Default;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::Param::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -9334,34 +9496,30 @@ __attribute__((weak)) void sCollision::ScrCollisionInfo::getBoundingAABBByTrans(
 
 // Address: 0x012c7990 - 0x012c7a21 (145 bytes)
 void sCollision::ScrCollisionInfo::updateMoveParam(const MtVector3& pos, const MtVector3& speed) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from sCollision::ScrCollisionInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2c from sCollision::ScrCollisionInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5c from sCollision::ScrCollisionInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6c from sCollision::ScrCollisionInfo*
-    this->::sCollision::ScrCollisionInfoBase::cpos.x = pos.x;
-    this->::sCollision::ScrCollisionInfoBase::cpos.y = pos.y;
-    this->::sCollision::ScrCollisionInfoBase::cpos.z = pos.z;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(28)) = static_cast<unsigned int>(0);
-    this->::sCollision::ScrCollisionInfoBase::cposTrans.x = pos.x;
-    this->::sCollision::ScrCollisionInfoBase::cposTrans.y = pos.y;
-    this->::sCollision::ScrCollisionInfoBase::cposTrans.z = pos.z;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(44)) = static_cast<unsigned int>(0);
-    this->::sCollision::ScrCollisionInfoBase::cspeed.x = speed.x;
-    this->::sCollision::ScrCollisionInfoBase::cspeed.y = speed.y;
-    this->::sCollision::ScrCollisionInfoBase::cspeed.z = speed.z;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(92)) = static_cast<unsigned int>(0);
-    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.x = speed.x;
-    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.y = speed.y;
-    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.z = speed.z;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(108)) = static_cast<unsigned int>(0);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    cpos.x = pos.x;
+    cpos.y = pos.y;
+    cpos.z = pos.z;
+    cpos.pad_ = 0.0f;
+    cposTrans.x = pos.x;
+    cposTrans.y = pos.y;
+    cposTrans.z = pos.z;
+    cposTrans.pad_ = 0.0f;
+    cspeed.x = speed.x;
+    cspeed.y = speed.y;
+    cspeed.z = speed.z;
+    cspeed.pad_ = 0.0f;
+    cspeedTrans.x = speed.x;
+    cspeedTrans.y = speed.y;
+    cspeedTrans.z = speed.z;
+    cspeedTrans.pad_ = 0.0f;
 }
 
 // Address: 0x012c7a30 - 0x012c7a3f (15 bytes)
 void sCollision::ScrCollisionInfo::setConvex(MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->pGeomOrg = _pGeomOrg;
-    this->pGeomTrans = _pGeomTrans;
+    pGeomOrg = _pGeomOrg;
+    pGeomTrans = _pGeomTrans;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -9381,6 +9539,8 @@ void sCollision::ScrCollisionInfo::setConvex(MtGeometry* _pGeomOrg, MtGeometry* 
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCollision::ScrCollisionInfo::getBoundingAABBByTrans(MtAABB& aabb_out, const MtCapsule& capsule);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfo::MyDTI sCollision::ScrCollisionInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -9424,7 +9584,7 @@ const MtDTI& sCollision::ScrCollisionInfoBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision20ScrCollisionInfoBaseD0Ev at 0x012c71c3-0x012c71e4, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::ScrCollisionInfoBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9490,6 +9650,8 @@ sCollision::ScrCollisionInfoBase::~ScrCollisionInfoBase() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCollision::ScrCollisionInfoBase::setSpeedUseByFlag(bool FlgUseOriginal);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoBase::MyDTI sCollision::ScrCollisionInfoBase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -9713,9 +9875,9 @@ __attribute__((weak)) MtObject* sCollision::ScrCollisionInfoBase::MyDTI::newInst
 // Address: 0x012b2820 - 0x012b2833 (19 bytes)
 sCollision::PreTraverseInfo::PreTraverseInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->pData = static_cast<sCollision::PreTraverseInfo::PreTraverseData*>(nullptr);
-    this->DataNum = static_cast<u32>(0);
-    this->FlgFailed = false;
+    pData = nullptr;
+    DataNum = 0;
+    FlgFailed = false;
 }
 
 // Address: 0x012b2840 - 0x012b2875 (53 bytes)
@@ -9804,6 +9966,8 @@ __attribute__((weak)) MtVector3 sCollision::ScrCollisionInfoFind::getHitNormalWo
 // No out-of-line body: no code in the ELF
 // f32 sCollision::ScrCollisionInfoFind::getHitDeepestDistance() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoFind::MyDTI sCollision::ScrCollisionInfoFind::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoFind::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -9878,17 +10042,19 @@ sCollision::ScrCollisionInfoCastConvex::~ScrCollisionInfoCastConvex() {
 // Address: 0x012c8370 - 0x012c83ab (59 bytes)
 void sCollision::ScrCollisionInfoCastConvex::initCastConvexCollisionParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sCollision::ScrCollisionInfoBase::FlgFind = false;
-    this->::sCollision::ScrCollisionInfoFind::NearestToi = 3.4028235e38f;
-    this->::sCollision::ScrCollisionInfoFind::deepestDistance = 3.4028235e38f;
-    this->contact.toi = 3.4028235e38f;
-    this->contact.bFind = false;
-    this->FlgEdgeHit = false;
-    this->FlgBackHit = false;
+    FlgFind = false;
+    NearestToi = 3.4028235e38f;
+    deepestDistance = 3.4028235e38f;
+    contact.toi = 3.4028235e38f;
+    contact.bFind = false;
+    FlgEdgeHit = false;
+    FlgBackHit = false;
 }
 
 // No out-of-line body: no code in the ELF
 // void sCollision::ScrCollisionInfoCastConvex::debugDraw(const MtVector3& pos, MtColor color, bool ztest, bool bOffsetEnable, const MtVector3& offset, const MtMatrix* pMatToWorld);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoCastConvex::MyDTI sCollision::ScrCollisionInfoCastConvex::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoCastConvex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -9932,7 +10098,7 @@ const MtDTI& sCollision::ScrCollisionInfoAdjustPosition::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision30ScrCollisionInfoAdjustPositionD0Ev at 0x012c8909-0x012c892a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::ScrCollisionInfoAdjustPosition::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoAdjustPosition::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoAdjustPosition::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10035,13 +10201,13 @@ __attribute__((weak)) u32 sCollision::ScrCollisionInfoAdjustPosition::runAxisLSH
 // Address: 0x012c9880 - 0x012c988c (12 bytes)
 bool sCollision::ScrCollisionInfoAdjustPosition::isRegistAxisCheckSphere() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::ScrCollisionInfoBase::pCollisionParam->::sCollision::Param::isRegistAdjPosAxisSphereCheck();
+    return pCollisionParam->isRegistAdjPosAxisSphereCheck();
 }
 
 // Address: 0x012c9890 - 0x012c989c (12 bytes)
 const MtSphere& sCollision::ScrCollisionInfoAdjustPosition::getAxisCheckSphere() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::ScrCollisionInfoBase::pCollisionParam->::sCollision::Param::getAdjPosCheckAxisSphere();
+    return pCollisionParam->getAdjPosCheckAxisSphere();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -10056,7 +10222,7 @@ const MtSphere& sCollision::ScrCollisionInfoAdjustPosition::getAxisCheckSphere()
 // Address: 0x012c98d0 - 0x012c98dc (12 bytes)
 const MtVector3& sCollision::ScrCollisionInfoAdjustPosition::getAxisCheckSphereMoveVector() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCollision::ScrCollisionInfoBase::pCollisionParam->::sCollision::Param::getAdjPosCheckAxisSphereMoveVector();
+    return pCollisionParam->getAdjPosCheckAxisSphereMoveVector();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -10197,6 +10363,8 @@ __attribute__((weak)) void sCollision::ScrCollisionInfoAdjustPosition::adjustmen
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoAdjustPosition::MyDTI sCollision::ScrCollisionInfoAdjustPosition::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoAdjustPosition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -10239,7 +10407,7 @@ const MtDTI& sCollision::ScrCollisionInfoGetAreaPoly::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sCollision27ScrCollisionInfoGetAreaPolyD0Ev at 0x012cb813-0x012cb834, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCollision::ScrCollisionInfoGetAreaPoly::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoGetAreaPoly::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoGetAreaPoly::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10266,6 +10434,8 @@ sCollision::ScrCollisionInfoGetAreaPoly::~ScrCollisionInfoGetAreaPoly() {
     DDON_STUB("sCollision::ScrCollisionInfoGetAreaPoly::~ScrCollisionInfoGetAreaPoly")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoGetAreaPoly::MyDTI sCollision::ScrCollisionInfoGetAreaPoly::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoGetAreaPoly::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -10356,14 +10526,16 @@ __attribute__((weak)) u32 sCollision::ScrCollisionInfoOriginal::runCallback(cons
 // Address: 0x012cbb60 - 0x012cbb99 (57 bytes)
 void sCollision::ScrCollisionInfoOriginal::runCallbackParts(const sCollision::SbcInfo& info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->pCallbackOwnerObj == static_cast<MtObject*>(nullptr)) {
+    if (pCallbackOwnerObj == nullptr) {
         return;
     }
-    if (this->pScrPartsHitCallback == static_cast<sCollision::CONTACT_CALLBACK_ORGFUNC_PARTS>(0)) {
+    if (pScrPartsHitCallback == static_cast<sCollision::CONTACT_CALLBACK_ORGFUNC_PARTS>(0)) {
         return;
     }
-    (this->pCallbackOwnerObj->*this->pScrPartsHitCallback)(info, this->CallbackParam);
+    (pCallbackOwnerObj->*pScrPartsHitCallback)(info, CallbackParam);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoOriginal::MyDTI sCollision::ScrCollisionInfoOriginal::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoOriginal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -10433,6 +10605,8 @@ sCollision::ScrCollisionInfoPreTraverse::~ScrCollisionInfoPreTraverse() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoPreTraverse::MyDTI sCollision::ScrCollisionInfoPreTraverse::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoPreTraverse::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -10498,6 +10672,8 @@ sCollision::ScrCollisionInfoFind4::~ScrCollisionInfoFind4() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ScrCollisionInfoFind4::MyDTI sCollision::ScrCollisionInfoFind4::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::ScrCollisionInfoFind4::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -10539,7 +10715,7 @@ const MtDTI& sCollision::cSystemInitializeParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCollision::cSystemInitializeParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCollision::cSystemInitializeParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCollision::cSystemInitializeParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10570,16 +10746,16 @@ sCollision::cSystemInitializeParam::~cSystemInitializeParam() {
 // Address: 0x012b2520 - 0x012b2524 (4 bytes)
 void sCollision::cSystemInitializeParam::setSbcMaxNum(u32 SbcNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSbcMaxNum = SbcNum;
+    mSbcMaxNum = SbcNum;
 }
 
 // Address: 0x012b2530 - 0x012b253e (14 bytes)
 u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcNoMoveAll(u32 SbcGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SbcGroupIndex <= static_cast<u32>(31)) {
-        return this->mDBVTReserveBufferNum_SbcNoMoveAll[SbcGroupIndex];
+    if (SbcGroupIndex <= 31u) {
+        return mDBVTReserveBufferNum_SbcNoMoveAll[SbcGroupIndex];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -10589,10 +10765,10 @@ u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcNoMoveAll(u32
 // Address: 0x012b2550 - 0x012b2561 (17 bytes)
 u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcStopAll(u32 SbcGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SbcGroupIndex <= static_cast<u32>(31)) {
-        return this->mDBVTReserveBufferNum_SbcStopAll[SbcGroupIndex];
+    if (SbcGroupIndex <= 31u) {
+        return mDBVTReserveBufferNum_SbcStopAll[SbcGroupIndex];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -10602,10 +10778,10 @@ u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcStopAll(u32 S
 // Address: 0x012b2580 - 0x012b2591 (17 bytes)
 u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcMoveAll(u32 SbcGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SbcGroupIndex <= static_cast<u32>(31)) {
-        return this->mDBVTReserveBufferNum_SbcMoveAll[SbcGroupIndex];
+    if (SbcGroupIndex <= 31u) {
+        return mDBVTReserveBufferNum_SbcMoveAll[SbcGroupIndex];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -10615,10 +10791,10 @@ u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcMoveAll(u32 S
 // Address: 0x012b25b0 - 0x012b25c1 (17 bytes)
 u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcStopParts(u32 SbcGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SbcGroupIndex <= static_cast<u32>(31)) {
-        return this->mDBVTReserveBufferNum_SbcStopParts[SbcGroupIndex];
+    if (SbcGroupIndex <= 31u) {
+        return mDBVTReserveBufferNum_SbcStopParts[SbcGroupIndex];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -10628,10 +10804,10 @@ u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcStopParts(u32
 // Address: 0x012b25e0 - 0x012b25f1 (17 bytes)
 u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcMoveParts(u32 SbcGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SbcGroupIndex <= static_cast<u32>(31)) {
-        return this->mDBVTReserveBufferNum_SbcMoveParts[SbcGroupIndex];
+    if (SbcGroupIndex <= 31u) {
+        return mDBVTReserveBufferNum_SbcMoveParts[SbcGroupIndex];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -10680,8 +10856,10 @@ u32 sCollision::cSystemInitializeParam::getDBVTReserveBufferNum_SbcMoveParts(u32
 // Address: 0x012b26e0 - 0x012b26e7 (7 bytes)
 void sCollision::cSystemInitializeParam::setColliderNodeListMaxNum(u32 ColliderNodeListNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColliderNodeListMaxNum = ColliderNodeListNum;
+    mColliderNodeListMaxNum = ColliderNodeListNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::cSystemInitializeParam::MyDTI sCollision::cSystemInitializeParam::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::cSystemInitializeParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -10754,6 +10932,8 @@ sCollision::SbcLockInfo::~SbcLockInfo() {
 // No out-of-line body: no code in the ELF
 // bool sCollision::SbcLockInfo::calcNextPos(MtVector3& NextPos, MtQuaternion& NextQt, MtVector3& HitConvexNormal, MtObject* & pHitOwner, const MtVector3& OffsetPos);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::SbcLockInfo::MyDTI sCollision::SbcLockInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sCollision::SbcLockInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -10768,6 +10948,8 @@ __attribute__((weak)) MtObject* sCollision::SbcLockInfo::MyDTI::newInstance() co
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCollision::ParamGetPolygons::setGetPolygonsParam(bool _FlgCullingEnable, const MtVector3& _CullingNormal, f32 _CullingArea);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCollision::ParamGetPolygons sCollision::ParamGetPolygons::Default;
 
 // No out-of-line body: no code in the ELF
 // sCollision::SbcLockInfoLight::SbcLockInfoLight();

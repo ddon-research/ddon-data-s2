@@ -32,13 +32,13 @@ const MtDTI& MtFileStream::getDTI() const {
 // Address: 0x00dd2c80 - 0x00dd2cc0 (64 bytes)
 void* MtFileStream::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtFileStream::DTI)->memAlloc(sz, align, ::MtFileStream::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memAlloc(sz, align, MtFileStream::DTI.mID);
 }
 
 // Address: 0x00dd2cd0 - 0x00dd2d10 (64 bytes)
 void* MtFileStream::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtFileStream::DTI)->memAlloc(sz, align, ::MtFileStream::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memAlloc(sz, align, MtFileStream::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,13 +49,13 @@ void* MtFileStream::operator new[](size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void MtFileStream::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtFileStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memFree(p_addr);
 }
 
 // Address: 0x00dd2d40 - 0x00dd2d6a (42 bytes)
 void MtFileStream::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtFileStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,7 +67,7 @@ void MtFileStream::operator delete[](void* p_addr) {
 // Address: 0x00dd2d90 - 0x00dd2da7 (23 bytes)
 MtFileStream::MtFileStream() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpFile = static_cast<MtFile*>(nullptr);
+    mpFile = nullptr;
 }
 
 // Address: 0x00dd2db0 - 0x00dd2dc3 (19 bytes)
@@ -91,8 +91,8 @@ __attribute__((weak)) void MtFileStream::open(MtFile& file) {
 // Address: 0x00dd2e20 - 0x00dd2e3c (28 bytes)
 bool MtFileStream::isReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->isReadable();
+    if (mpFile != nullptr) {
+        return mpFile->isReadable();
     } else {
         return false;
     }
@@ -101,8 +101,8 @@ bool MtFileStream::isReadable() {
 // Address: 0x00dd2eb0 - 0x00dd2ecc (28 bytes)
 bool MtFileStream::isWritable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->isWritable();
+    if (mpFile != nullptr) {
+        return mpFile->isWritable();
     } else {
         return false;
     }
@@ -111,9 +111,9 @@ bool MtFileStream::isWritable() {
 // Address: 0x00dd2ed0 - 0x00dd2f0b (59 bytes)
 bool MtFileStream::isSeekable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        if (this->mpFile->isReadable() == false) {
-            return this->mpFile->isWritable();
+    if (mpFile != nullptr) {
+        if (!mpFile->isReadable()) {
+            return mpFile->isWritable();
         } else {
             return true;
         }
@@ -125,8 +125,8 @@ bool MtFileStream::isSeekable() {
 // Address: 0x00dd2e90 - 0x00dd2eac (28 bytes)
 bool MtFileStream::isAsyncReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->isAsyncReadable();
+    if (mpFile != nullptr) {
+        return mpFile->isAsyncReadable();
     } else {
         return false;
     }
@@ -135,21 +135,21 @@ bool MtFileStream::isAsyncReadable() {
 // Address: 0x00dd2f10 - 0x00dd2f22 (18 bytes)
 u32 MtFileStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->getPosition();
+    if (mpFile != nullptr) {
+        return mpFile->getPosition();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00dd2f30 - 0x00dd2f57 (39 bytes)
 void MtFileStream::close() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile == static_cast<MtFile*>(nullptr)) {
+    if (mpFile == nullptr) {
         return;
     }
-    this->mpFile->close();
-    this->mpFile = static_cast<MtFile*>(nullptr);
+    mpFile->close();
+    mpFile = nullptr;
 }
 
 // Address: 0x00dd2f60 - 0x00dd2f61 (1 bytes)
@@ -160,38 +160,38 @@ __attribute__((weak)) void MtFileStream::flush() {
 // Address: 0x00dd2f70 - 0x00dd2fc1 (81 bytes)
 u32 MtFileStream::read(void* buf, u32 bufsiz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        if (this->isReadable() != false) {
-            return this->mpFile->read(buf, bufsiz);
+    if (mpFile != nullptr) {
+        if (isReadable()) {
+            return mpFile->read(buf, bufsiz);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00dd2e40 - 0x00dd2e55 (21 bytes)
 u32 MtFileStream::readAsync(void* buf, u32 bufsize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->readAsync(buf, bufsize);
+    if (mpFile != nullptr) {
+        return mpFile->readAsync(buf, bufsize);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00dd2e60 - 0x00dd2e70 (16 bytes)
 void MtFileStream::readWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile == static_cast<MtFile*>(nullptr)) {
+    if (mpFile == nullptr) {
         return;
     }
-    this->mpFile->readWait();
+    mpFile->readWait();
 }
 
 // Address: 0x00dd2e70 - 0x00dd2e89 (25 bytes)
 bool MtFileStream::isAsyncReading() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->isAsyncReading();
+    if (mpFile != nullptr) {
+        return mpFile->isAsyncReading();
     } else {
         return false;
     }
@@ -200,12 +200,12 @@ bool MtFileStream::isAsyncReading() const {
 // Address: 0x00dd2fd0 - 0x00dd3021 (81 bytes)
 u32 MtFileStream::write(const void* buf, u32 bufsiz) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        if (this->isWritable() != false) {
-            return this->mpFile->write(buf, bufsiz);
+    if (mpFile != nullptr) {
+        if (isWritable()) {
+            return mpFile->write(buf, bufsiz);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00dd3030 - 0x00dd3031 (1 bytes)
@@ -216,32 +216,32 @@ __attribute__((weak)) void MtFileStream::setLength(u32) {
 // Address: 0x00dd3040 - 0x00dd3052 (18 bytes)
 u32 MtFileStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        return this->mpFile->length();
+    if (mpFile != nullptr) {
+        return mpFile->length();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00dd3060 - 0x00dd30a4 (68 bytes)
 u32 MtFileStream::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFile != static_cast<MtFile*>(nullptr)) {
-        if (origin != static_cast<MtStream::SEEK_ORIGIN>(2)) {
-            if (origin == static_cast<MtStream::SEEK_ORIGIN>(1)) {
-                return this->mpFile->seek(offset, static_cast<MtFile::SEEKBASE>(2));
+    if (mpFile != nullptr) {
+        if (origin != ORG_END) {
+            if (origin == ORG_CURRENT) {
+                return mpFile->seek(offset, MtFile::SEEKBASE_CUR);
             } else {
-                if (origin == static_cast<MtStream::SEEK_ORIGIN>(0)) {
-                    return this->mpFile->seek(offset, static_cast<MtFile::SEEKBASE>(1));
+                if (origin == ORG_BEGIN) {
+                    return mpFile->seek(offset, MtFile::SEEKBASE_SET);
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            return this->mpFile->seek(offset, static_cast<MtFile::SEEKBASE>(3));
+            return mpFile->seek(offset, MtFile::SEEKBASE_END);
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -250,6 +250,8 @@ u32 MtFileStream::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
 
 // No out-of-line body: no code in the ELF
 // bool MtFileStream::copy(MT_CTSTR src, MT_CTSTR dst);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtFileStream::MyDTI MtFileStream::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtFileStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -281,7 +283,7 @@ const MtDTI& MtMemoryStream::getDTI() const {
 // Address: 0x00dd33b0 - 0x00dd33f0 (64 bytes)
 void* MtMemoryStream::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtMemoryStream::DTI)->memAlloc(sz, align, ::MtMemoryStream::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtMemoryStream::DTI)->memAlloc(sz, align, MtMemoryStream::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,7 +298,7 @@ void* MtMemoryStream::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14MtMemoryStreamD0Ev at 0x00dd358b-0x00dd35ac, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtMemoryStream::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtMemoryStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtMemoryStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -317,35 +319,35 @@ MtMemoryStream::MtMemoryStream(u32 bufsiz, u32 mode, MtAllocator* pallocator) {
 // Address: 0x00dd34c0 - 0x00dd34fc (60 bytes)
 MtMemoryStream::MtMemoryStream(void* pbuf, u32 bufsiz, u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMode = ((((mode & static_cast<u32>(4)) == static_cast<u32>(0)) || (bufsiz == static_cast<u32>(0))) == false) ? (mode & static_cast<u32>(4294967291)) : mode;
-    this->mSeekPt = static_cast<u32>(0);
-    this->mBuffer = static_cast<u8*>(pbuf);
-    this->mLength = bufsiz;
-    this->mBufferOverflow = static_cast<u32>(0);
+    mMode = ((((mode & 4u) == 0) || (bufsiz == 0)) == false) ? (mode & 0xFFFFFFFBu) : mode;
+    mSeekPt = 0;
+    mBuffer = static_cast<u8*>(pbuf);
+    mLength = bufsiz;
+    mBufferOverflow = 0;
 }
 
 // Address: 0x00dd3500 - 0x00dd3542 (66 bytes)
 // Also emitted as: _ZN14MtMemoryStreamD0Ev at 0x00dd3550
 MtMemoryStream::~MtMemoryStream() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mMode & static_cast<u32>(4)) != static_cast<u32>(0)) {
-        this->mpAllocator->memFree(static_cast<void*>(this->mBuffer));
+    if ((mMode & 4u) != 0) {
+        mpAllocator->memFree(static_cast<void*>(mBuffer));
     }
-    this->mBuffer = static_cast<u8*>(nullptr);
-    this->mSeekPt = static_cast<u32>(0);
-    this->mLength = static_cast<u32>(0);
+    mBuffer = nullptr;
+    mSeekPt = 0;
+    mLength = 0;
 }
 
 // Address: 0x00dd35b0 - 0x00dd35c8 (24 bytes)
 bool MtMemoryStream::isReadable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((this->mMode & static_cast<u32>(1)) != static_cast<u32>(0)) && ((this->mBuffer != static_cast<u8*>(nullptr)) && (this->mLength != static_cast<u32>(0)));
+    return ((mMode & 1u) != 0) && ((mBuffer != nullptr) && (mLength != 0));
 }
 
 // Address: 0x00dd35d0 - 0x00dd35e2 (18 bytes)
 bool MtMemoryStream::isWritable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((this->mMode & static_cast<u32>(6)) != static_cast<u32>(0)) && (this->mBuffer != static_cast<u8*>(nullptr));
+    return ((mMode & 6u) != 0) && (mBuffer != nullptr);
 }
 
 // Address: 0x00dd35f0 - 0x00dd35f3 (3 bytes)
@@ -357,18 +359,18 @@ bool MtMemoryStream::isSeekable() {
 // Address: 0x00dd3600 - 0x00dd3604 (4 bytes)
 u32 MtMemoryStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSeekPt;
+    return mSeekPt;
 }
 
 // Address: 0x00dd3610 - 0x00dd3644 (52 bytes)
 void MtMemoryStream::close() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mMode & static_cast<u32>(4)) != static_cast<u32>(0)) {
-        this->mpAllocator->memFree(static_cast<void*>(this->mBuffer));
+    if ((mMode & 4u) != 0) {
+        mpAllocator->memFree(static_cast<void*>(mBuffer));
     }
-    this->mBuffer = static_cast<u8*>(nullptr);
-    this->mSeekPt = static_cast<u32>(0);
-    this->mLength = static_cast<u32>(0);
+    mBuffer = nullptr;
+    mSeekPt = 0;
+    mLength = 0;
 }
 
 // Address: 0x00dd3650 - 0x00dd3651 (1 bytes)
@@ -379,32 +381,32 @@ __attribute__((weak)) void MtMemoryStream::flush() {
 // Address: 0x00dd3660 - 0x00dd36b6 (86 bytes)
 u32 MtMemoryStream::read(void* ptr, u32 bytes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isReadable() != false) {
+    if (isReadable()) {
         // inferred: a temporary for the value the load at 0xdd3681 read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mSeekPt;
+        u32 t0 = mSeekPt;
         // inferred: a temporary for the value the load at 0xdd3684 read, used 3 times; no DWARF local holds it
-        u32 t1 = this->mLength;
-        ::memcpy(ptr, static_cast<const void*>(&this->mBuffer[t0]), (t1 < (bytes + t0)) ? (t1 - t0) : bytes);
-        this->mSeekPt = this->mSeekPt + ((t1 < (bytes + t0)) ? (t1 - t0) : bytes);
+        u32 t1 = mLength;
+        memcpy(ptr, static_cast<const void*>(&mBuffer[t0]), (t1 < (bytes + t0)) ? (t1 - t0) : bytes);
+        mSeekPt = mSeekPt + ((t1 < (bytes + t0)) ? (t1 - t0) : bytes);
         return (t1 < (bytes + t0)) ? (t1 - t0) : bytes;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00dd36c0 - 0x00dd3716 (86 bytes)
 u32 MtMemoryStream::readAsync(void* ptr, u32 bytes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isReadable() != false) {
+    if (isReadable()) {
         // inferred: a temporary for the value the load at 0xdd36e1 read, used 3 times; no DWARF local holds it
-        u32 t0 = this->mSeekPt;
+        u32 t0 = mSeekPt;
         // inferred: a temporary for the value the load at 0xdd36e4 read, used 3 times; no DWARF local holds it
-        u32 t1 = this->mLength;
-        ::memcpy(ptr, static_cast<const void*>(&this->mBuffer[t0]), (t1 < (bytes + t0)) ? (t1 - t0) : bytes);
-        this->mSeekPt = this->mSeekPt + ((t1 < (bytes + t0)) ? (t1 - t0) : bytes);
+        u32 t1 = mLength;
+        memcpy(ptr, static_cast<const void*>(&mBuffer[t0]), (t1 < (bytes + t0)) ? (t1 - t0) : bytes);
+        mSeekPt = mSeekPt + ((t1 < (bytes + t0)) ? (t1 - t0) : bytes);
         return (t1 < (bytes + t0)) ? (t1 - t0) : bytes;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -417,17 +419,17 @@ __attribute__((weak)) u32 MtMemoryStream::write(const void* ptr, u32 bytes) {
 // Address: 0x00dd3820 - 0x00dd3886 (102 bytes)
 void MtMemoryStream::setLength(u32 length) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if ((this->mMode & static_cast<u32>(4)) == static_cast<u32>(0)) {
+    if ((mMode & 4u) == 0) {
         return;
     }
-    if (this->mLength < length) {
+    if (mLength < length) {
         // inferred: a temporary for the result of the call at 0xdd384b, used 3 times; no DWARF local holds it
-        void* t0 = this->mpAllocator->memAlloc(length, static_cast<u32>(16));
-        if (t0 != static_cast<void*>(nullptr)) {
-            ::memcpy(t0, static_cast<const void*>(this->mBuffer), this->mSeekPt);
-            this->mLength = length;
-            this->mpAllocator->memFree(static_cast<void*>(this->mBuffer));
-            this->mBuffer = static_cast<u8*>(t0);
+        void* t0 = mpAllocator->memAlloc(length, 16u);
+        if (t0 != nullptr) {
+            memcpy(t0, static_cast<const void*>(mBuffer), mSeekPt);
+            mLength = length;
+            mpAllocator->memFree(static_cast<void*>(mBuffer));
+            mBuffer = static_cast<u8*>(t0);
         }
     }
 }
@@ -435,33 +437,33 @@ void MtMemoryStream::setLength(u32 length) {
 // Address: 0x01a60ae0 - 0x01a60ae4 (4 bytes)
 u32 MtMemoryStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLength;
+    return mLength;
 }
 
 // Address: 0x01a60b00 - 0x01a60b05 (5 bytes)
 void* MtMemoryStream::getBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<void*>(this->mBuffer);
+    return static_cast<void*>(mBuffer);
 }
 
 // Address: 0x00dd3890 - 0x00dd38c9 (57 bytes)
 u32 MtMemoryStream::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (origin != static_cast<MtStream::SEEK_ORIGIN>(2)) {
-        if (origin == static_cast<MtStream::SEEK_ORIGIN>(1)) {
-            this->mSeekPt = (this->mLength < (offset + this->mSeekPt)) ? this->mLength : (offset + this->mSeekPt);
-            return this->mSeekPt;
+    if (origin != ORG_END) {
+        if (origin == ORG_CURRENT) {
+            mSeekPt = (mLength < (offset + mSeekPt)) ? mLength : (offset + mSeekPt);
+            return mSeekPt;
         } else {
-            if (origin == static_cast<MtStream::SEEK_ORIGIN>(0)) {
-                this->mSeekPt = (this->mLength < static_cast<unsigned int>(offset)) ? this->mLength : static_cast<unsigned int>(offset);
-                return this->mSeekPt;
+            if (origin == ORG_BEGIN) {
+                mSeekPt = (mLength < static_cast<unsigned int>(offset)) ? mLength : static_cast<unsigned int>(offset);
+                return mSeekPt;
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     } else {
-        this->mSeekPt = (static_cast<int>(this->mLength) < offset) ? static_cast<u32>(0) : (this->mLength - offset);
-        return this->mSeekPt;
+        mSeekPt = (static_cast<int>(mLength) < offset) ? 0u : (mLength - offset);
+        return mSeekPt;
     }
 }
 
@@ -470,11 +472,13 @@ bool MtMemoryStream::isBufferOverflowed() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x1c from const MtMemoryStream*
     // inferred: a value cast to the type its use takes: const unsigned int used as bool
-    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(28))) & static_cast<unsigned int>(1));
+    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 28)) & 1u);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void MtMemoryStream::extendBuffer(u32 bytes);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtMemoryStream::MyDTI MtMemoryStream::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtMemoryStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -506,7 +510,7 @@ const MtDTI& MtStream::getDTI() const {
 // Address: 0x00dd2a90 - 0x00dd2ad0 (64 bytes)
 void* MtStream::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtStream::DTI)->memAlloc(sz, align, ::MtStream::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtStream::DTI)->memAlloc(sz, align, MtStream::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -521,7 +525,7 @@ void* MtStream::operator new(size_t sz, u32 align) {
 // Address: 0x00dd2b00 - 0x00dd2b2a (42 bytes)
 __attribute__((weak)) void MtStream::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -566,7 +570,7 @@ bool MtStream::isAsyncReadable() {
 // Address: 0x01b4ef10 - 0x01b4ef13 (3 bytes)
 u32 MtStream::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -578,13 +582,13 @@ u32 MtStream::getPosition() {
 // Address: 0x01b4ef40 - 0x01b4ef43 (3 bytes)
 u32 MtStream::read(void*, u32) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b4ef50 - 0x01b4ef53 (3 bytes)
 u32 MtStream::readAsync(void* buf, u32 bufsize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -599,7 +603,7 @@ bool MtStream::isAsyncReading() const {
 // Address: 0x01b4ef60 - 0x01b4ef63 (3 bytes)
 u32 MtStream::write(const void*, u32) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Defined in the class (its body was written in a header).
@@ -608,13 +612,13 @@ u32 MtStream::write(const void*, u32) {
 // Address: 0x01b4ef80 - 0x01b4ef83 (3 bytes)
 u32 MtStream::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01b4ef90 - 0x01b4ef93 (3 bytes)
 u32 MtStream::seek(s32, MtStream::SEEK_ORIGIN) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00dd2b60 - 0x00dd2c24 (196 bytes)
@@ -631,6 +635,8 @@ bool MtStream::isAsyncOperationSucceeded() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtStream::MyDTI MtStream::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -63,10 +63,10 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataGoodsParam::CDataGoodsParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unRequireFavorite = static_cast<u32>(0);
-    this->m_unItemID = static_cast<u32>(0);
-    this->m_unStock = static_cast<u32>(0);
-    this->m_unMaxStock = static_cast<u32>(0);
-    this->m_unIndex = static_cast<u32>(0);
-    this->m_unPrice = static_cast<u32>(0);
+    this->m_unRequireFavorite = 0;
+    this->m_unItemID = 0;
+    this->m_unStock = 0;
+    this->m_unMaxStock = 0;
+    this->m_unIndex = 0;
+    this->m_unPrice = 0;
 }

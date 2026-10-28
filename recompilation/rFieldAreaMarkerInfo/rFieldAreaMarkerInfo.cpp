@@ -37,7 +37,7 @@ const MtDTI& rFieldAreaMarkerInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFieldAreaMarkerInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::DTI)->memAlloc(sz, align, ::rFieldAreaMarkerInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::DTI)->memAlloc(sz, align, rFieldAreaMarkerInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rFieldAreaMarkerInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldAreaMarkerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,7 +78,7 @@ __attribute__((weak)) MT_CTSTR rFieldAreaMarkerInfo::getFileResId(u32 type) {
 // Address: 0x00677a70 - 0x00677a75 (5 bytes)
 const rFieldAreaMarkerInfo::MarkerInfoArray& rFieldAreaMarkerInfo::getMarkerInfoList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMarkerInfoList;
+    return mMarkerInfoList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,42 +98,42 @@ MT_CTSTR rFieldAreaMarkerInfo::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rFieldAreaMarkerInfo::rFieldAreaMarkerInfo() {
-    this->mFieldAreaId = static_cast<u32>(0);
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    mFieldAreaId = 0;
+    setAttribute(22u);
 }
 
 // Address: 0x00677aa0 - 0x00677b51 (177 bytes)
 // Also emitted as: _ZN20rFieldAreaMarkerInfoD0Ev at 0x00677b60
 rFieldAreaMarkerInfo::~rFieldAreaMarkerInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMarkerInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMarkerInfoList.mLength != 0) {
         // inferred: the value the loop at 0x677ad0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMarkerInfoList.::MtArray::mLength;
+        u32 v0_0 = mMarkerInfoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMarkerInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMarkerInfoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMarkerInfoList.::MtArray::mLength) {
-                    v0_0 = this->mMarkerInfoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMarkerInfoList.mpArray[i0_3] != nullptr) {
+                delete mMarkerInfoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMarkerInfoList.mLength) {
+                    v0_0 = mMarkerInfoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMarkerInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMarkerInfoList.::MtArray::mpArray));
+    if (mMarkerInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMarkerInfoList.mpArray));
     }
-    this->mMarkerInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMarkerInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMarkerInfoList.::MtArray::mLength = static_cast<u32>(0);
+    mMarkerInfoList.mpArray = nullptr;
+    mMarkerInfoList.mBufsiz = 0;
+    mMarkerInfoList.mLength = 0;
 }
 
 // Address: 0x00677c30 - 0x00677cee (190 bytes)
@@ -141,11 +141,11 @@ bool rFieldAreaMarkerInfo::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4803910)) {
-        if ((&r)->readU32() == static_cast<u32>(1)) {
-            this->mFieldAreaId = (&r)->readU32();
-            ::nDDOIO::readMtArray(r, this->mMarkerInfoList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x494D46) {
+        if ((&r)->readU32() == 1) {
+            mFieldAreaId = (&r)->readU32();
+            nDDOIO::readMtArray(r, mMarkerInfoList);
             return true;
         }
     }
@@ -159,6 +159,8 @@ __attribute__((weak)) bool rFieldAreaMarkerInfo::save(MtStream& out) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaMarkerInfo::MyDTI rFieldAreaMarkerInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaMarkerInfo.cpp at 0x00678310-0x00678352 (called at rFieldAreaMarkerInfo.cpp:29)
 //   in _GLOBAL__sub_I_rFieldAreaMarkerInfo.cpp at 0x00678310-0x00678352 (called at rFieldAreaMarkerInfo.h:31)
@@ -167,7 +169,7 @@ __attribute__((weak)) bool rFieldAreaMarkerInfo::save(MtStream& out) {
 // Address: 0x00677940 - 0x006779ce (142 bytes)
 MtObject* rFieldAreaMarkerInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFieldAreaMarkerInfo;
+    return new (16u) rFieldAreaMarkerInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -207,7 +209,7 @@ const MtDTI& rFieldAreaMarkerInfo::cMarkerInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rFieldAreaMarkerInfo::cMarkerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,14 +243,14 @@ void rFieldAreaMarkerInfo::cMarkerInfo::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mPos = r.readV3();
-    ::nDDOIO::readData(r, this->mStageNo);
+    mPos = r.readV3();
+    nDDOIO::readData(r, mStageNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mGroupNo);
+    nDDOIO::readData(r, mGroupNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUniqueId);
+    nDDOIO::readData(r, mUniqueId);
 }
 
 // Address: 0x00678280 - 0x0067830f (143 bytes)
@@ -256,6 +258,8 @@ __attribute__((weak)) void rFieldAreaMarkerInfo::cMarkerInfo::save(MtDataWriter&
     DDON_STUB("rFieldAreaMarkerInfo::cMarkerInfo::save")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaMarkerInfo::cMarkerInfo::MyDTI rFieldAreaMarkerInfo::cMarkerInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaMarkerInfo.cpp at 0x00678352-0x0067838f (called at rFieldAreaMarkerInfo.cpp:195)

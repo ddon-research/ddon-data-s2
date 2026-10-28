@@ -37,7 +37,7 @@ const MtDTI& cAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAction::DTI)->memAlloc(sz, align, ::cAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAction::DTI)->memAlloc(sz, align, cAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* cAction::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,10 +66,10 @@ inline void cAction::operator delete(void* p_addr) {
 // Address: 0x0001cd20 - 0x0001cd4e (46 bytes)
 cAction::cAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<u32>(0);
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
-    this->mpActReq = static_cast<cpActionRequest*>(nullptr);
-    this->mpActMgr = static_cast<cpActionManager*>(nullptr);
+    this->mRno = 0;
+    mpModel = nullptr;
+    mpActReq = nullptr;
+    mpActMgr = nullptr;
 }
 
 // Address: 0x0001cd50 - 0x0001cd51 (1 bytes)
@@ -81,10 +81,10 @@ cAction::~cAction() {
 // Address: 0x0001cda0 - 0x0001cdaf (15 bytes)
 void cAction::preInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    this->mpModel->::uDDOModel::resetAtkAdjust();
+    mpModel->resetAtkAdjust();
 }
 
 // Address: 0x0001cdb0 - 0x0001ce5a (170 bytes)
@@ -103,13 +103,13 @@ __attribute__((weak)) void cAction::move() {
 // Address: 0x0001ce80 - 0x0001cea1 (33 bytes)
 void cAction::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->mpPivotCtrl == static_cast<cpPivotCtrl*>(nullptr)) {
+    if (mpModel->mpPivotCtrl == nullptr) {
         return;
     }
-    this->mpModel->mpPivotCtrl->setActive(false);
+    mpModel->mpPivotCtrl->setActive(false);
 }
 
 // Address: 0x0001ce70 - 0x0001ce71 (1 bytes)
@@ -168,46 +168,46 @@ __attribute__((weak)) void cAction::createProperty(MtPropertyList& s) {
 // Address: 0x0001cf60 - 0x0001cf79 (25 bytes)
 void cAction::setEndAction(u32 ActNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::uDDOModel::getActionRequestPtr() == static_cast<cpActionRequest*>(nullptr)) {
+    if (mpModel->getActionRequestPtr() == nullptr) {
         return;
     }
-    this->mpModel->::uDDOModel::getActionRequestPtr()->mEndAction = ActNo;
+    mpModel->getActionRequestPtr()->mEndAction = ActNo;
 }
 
 // Address: 0x0001cf80 - 0x0001cf99 (25 bytes)
 void cAction::setLandAction(u32 ActNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::uDDOModel::getActionRequestPtr() == static_cast<cpActionRequest*>(nullptr)) {
+    if (mpModel->getActionRequestPtr() == nullptr) {
         return;
     }
-    this->mpModel->::uDDOModel::getActionRequestPtr()->mLandAction = ActNo;
+    mpModel->getActionRequestPtr()->mLandAction = ActNo;
 }
 
 // Address: 0x0001cfa0 - 0x0001cfb9 (25 bytes)
 void cAction::setFallAction(u32 ActNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::uDDOModel::getActionRequestPtr() == static_cast<cpActionRequest*>(nullptr)) {
+    if (mpModel->getActionRequestPtr() == nullptr) {
         return;
     }
-    this->mpModel->::uDDOModel::getActionRequestPtr()->mFallAction = ActNo;
+    mpModel->getActionRequestPtr()->mFallAction = ActNo;
 }
 
 // Address: 0x0001cd90 - 0x0001cd9d (13 bytes)
 void cAction::requestAction(u32 ActNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpActReq == static_cast<cpActionRequest*>(nullptr)) {
+    if (mpActReq == nullptr) {
         return;
     }
-    this->mpActReq->mRequestActionReq = ActNo;
+    mpActReq->mRequestActionReq = ActNo;
 }
 
 // Address: 0x0001ceb0 - 0x0001cf2d (125 bytes)
@@ -219,10 +219,10 @@ __attribute__((weak)) void cAction::endAction() {
 // Address: 0x0001cf30 - 0x0001cf3f (15 bytes)
 void cAction::endActionNoSend() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpActMgr == static_cast<cpActionManager*>(nullptr)) {
+    if (mpActMgr == nullptr) {
         return;
     }
-    this->mpActMgr->::cpActionManager::endActionNoSend();
+    mpActMgr->endActionNoSend();
 }
 
 // Address: 0x0001cfc0 - 0x0001d041 (129 bytes)
@@ -306,6 +306,8 @@ __attribute__((weak)) bool cAction::isActionMotionEnd(MOT_TYPE type) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cAction::addColNodeFlag(u32 flag, bool isMyPlayerOnly);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cAction::MyDTI cAction::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cAction.cpp at 0x0001d2af-0x0001d2ec (called at cAction.cpp:28)
 //   in _GLOBAL__sub_I_cAction.cpp at 0x0001d2af-0x0001d2ec (called at cAction.h:51)
@@ -314,6 +316,6 @@ __attribute__((weak)) bool cAction::isActionMotionEnd(MOT_TYPE type) {
 // Address: 0x0001cc50 - 0x0001ccaf (95 bytes)
 MtObject* cAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAction;
+    return new (16u) cAction;
 }
 

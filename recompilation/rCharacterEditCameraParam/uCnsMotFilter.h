@@ -88,3 +88,9 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCnsMotFilter::set at 0x8c1dc4-0x8c1dcb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCnsMotFilter::setMotFilter(cpMotionFilter* pMotFlt) {
+    this->mpMotFlt = pMotFlt;
+}

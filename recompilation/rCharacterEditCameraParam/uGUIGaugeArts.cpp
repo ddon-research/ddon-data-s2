@@ -29,7 +29,7 @@ const MtDTI& uGUIGaugeArts::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeArts::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeArts::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeArts::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* uGUIGaugeArts::getAllocator() {
 // Address: 0x00a93f00 - 0x00a93f40 (64 bytes)
 void* uGUIGaugeArts::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeArts::getAllocator()->memAlloc(sz, align, ::uGUIGaugeArts::DTI.::MtDTI::getID());
+    return uGUIGaugeArts::getAllocator()->memAlloc(sz, align, uGUIGaugeArts::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* uGUIGaugeArts::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeArts::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeArts::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeArts::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,9 +121,9 @@ uGUIGaugeArts::~uGUIGaugeArts() {
 // Address: 0x00a942f0 - 0x00a94358 (104 bytes)
 bool uGUIGaugeArts::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JOB_ACTN_GUI"), static_cast<u32>(129), static_cast<t64>(1468991633)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOB_ACTN_GUI"), 129u, 1468991633l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -154,12 +154,12 @@ __attribute__((weak)) void uGUIGaugeArts::setup() {
 // Address: 0x00a94a80 - 0x00a94ab1 (49 bytes)
 void uGUIGaugeArts::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a94a20 - 0x00a94a7e (94 bytes)
@@ -250,6 +250,8 @@ __attribute__((weak)) void uGUIGaugeArts::updateWait() {
 //   in uGUIGaugeArts::updateWait at 0x00a94d41-0x00a94d7d (called at uGUIGaugeArts.cpp:529)
 //   in uGUIGaugeArts::updateWait at 0x00a9594a-0x00a9597f (called at uGUIGaugeArts.cpp:899)
 // void uGUIGaugeArts::setActPltType();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeArts::MyDTI uGUIGaugeArts::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeArts.cpp at 0x00a95def-0x00a95e2c (called at uGUIGaugeArts.cpp:87)

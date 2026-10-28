@@ -125,7 +125,7 @@ __attribute__((weak)) sArea::AreaInfo* sArea::getAreaInfo(const MtDTI& dti) {
 // Address: 0x01b9e7a0 - 0x01b9e7ab (11 bytes)
 cArea* sArea::getArea(u32 pt) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpArea[pt];
+    return mpArea[pt];
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -134,13 +134,13 @@ cArea* sArea::getArea(u32 pt) const {
 // Address: 0x01b9e7c0 - 0x01b9e7c6 (6 bytes)
 u32 sArea::getAreaNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(8);
+    return 8;
 }
 
 // Address: 0x01b9e7b0 - 0x01b9e7bb (11 bytes)
 void sArea::setArea(cArea* p, u32 pt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpArea[pt] = p;
+    mpArea[pt] = p;
 }
 
 // Address: 0x01b9e7d0 - 0x01b9e7d1 (1 bytes)
@@ -186,6 +186,11 @@ __attribute__((weak)) void sArea::addMenu(MtPropertyList& s, sArea::AreaInfo* pi
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sArea::MyDTI sArea::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sArea* sArea::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -228,7 +233,7 @@ const MtDTI& sArea::AreaInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5sArea8AreaInfoD0Ev at 0x01b9e810-0x01b9e83a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sArea::AreaInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sArea::AreaInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sArea::AreaInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,6 +269,8 @@ inline void sArea::AreaInfo::operator delete(void* p_addr) {
 // No out-of-line body: 1 inlined copy in 1 function (28 bytes)
 //   in sAreaExt::addMenuDDO at 0x00721f5e-0x00721f74, 0x00721f9e-0x00721fa4 (called at sAreaExt.cpp:308)
 // sArea::AreaInfo* sArea::AreaInfo::getChild();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sArea::AreaInfo::MyDTI sArea::AreaInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sArea::AreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

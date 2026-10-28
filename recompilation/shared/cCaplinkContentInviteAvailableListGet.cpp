@@ -20,35 +20,35 @@
 void nCaplink::ContentInviteAvailableListGetAns::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::nCaplink::ContextListener::init();
-    this->mContentInviteInfoTbl.mAutoDelete = true;
-    if (this->mContentInviteInfoTbl.mLength != static_cast<u32>(0)) {
+    mContentInviteInfoTbl.mAutoDelete = true;
+    if (mContentInviteInfoTbl.mLength != 0) {
         // inferred: the value the loop at 0x1abe990 carries; no location-less local in scope fits
-        u32 v0_0 = this->mContentInviteInfoTbl.mLength;
+        u32 v0_0 = mContentInviteInfoTbl.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mContentInviteInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mContentInviteInfoTbl.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mContentInviteInfoTbl.mLength) {
-                    v0_0 = this->mContentInviteInfoTbl.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mContentInviteInfoTbl.mpArray[i0_3] != nullptr) {
+                delete mContentInviteInfoTbl.mpArray[i0_3];
+                if ((i0_3 + 1u) < mContentInviteInfoTbl.mLength) {
+                    v0_0 = mContentInviteInfoTbl.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mContentInviteInfoTbl.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mContentInviteInfoTbl.mpArray));
+    if (mContentInviteInfoTbl.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mContentInviteInfoTbl.mpArray));
     }
-    this->mContentInviteInfoTbl.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mContentInviteInfoTbl.mBufsiz = static_cast<u32>(0);
-    this->mContentInviteInfoTbl.mLength = static_cast<u32>(0);
+    mContentInviteInfoTbl.mpArray = nullptr;
+    mContentInviteInfoTbl.mBufsiz = 0;
+    mContentInviteInfoTbl.mLength = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

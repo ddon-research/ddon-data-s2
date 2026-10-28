@@ -381,7 +381,13 @@ public:
 // approximate: only approximate callers check this inline body
 inline cCaptrophyRewardData::cCaptrophyRewardData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mRewardType = static_cast<s32>(-1);
-    this->mRewardId = static_cast<s32>(-1);
-    this->mRewardNum = static_cast<s32>(-1);
+    this->mRewardType = -1;
+    this->mRewardId = -1;
+    this->mRewardNum = -1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICaplinkChat::updateMemberList at 0x9b0e6e-0x9b0e75; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uGUICaplinkTopMenu::getChatIdType() {
+    return this->mChatIdType;
 }

@@ -49,7 +49,7 @@ const MtDTI& sCraftManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sCraftManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::DTI);
+    return MtMemoryAllocator::getAllocator(sCraftManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ inline MtAllocator* sCraftManager::getAllocator() {
 // Address: 0x0075fd00 - 0x0075fd40 (64 bytes)
 void* sCraftManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sCraftManager::getAllocator()->memAlloc(sz, align, ::sCraftManager::DTI.::MtDTI::getID());
+    return sCraftManager::getAllocator()->memAlloc(sz, align, sCraftManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,7 +73,7 @@ void* sCraftManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCraftManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -110,52 +110,52 @@ sCraftManager::~sCraftManager() {
 // Address: 0x00761210 - 0x00761215 (5 bytes)
 void sCraftManager::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaterialCache = static_cast<u8>(0);
+    mMaterialCache = 0;
 }
 
 // Address: 0x00761220 - 0x0076124c (44 bytes)
 void sCraftManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftCtrl.::sCraftManager::cCraftPawnCtrl::moveCraftProgressList();
-    if (this->mState != static_cast<u32>(3)) {
+    mCraftCtrl.moveCraftProgressList();
+    if (mState != 3) {
         return;
     }
-    this->mResult = static_cast<sCraftManager::CRAFT_RESULT>(2);
+    mResult = RESULT_EXIT;
 }
 
 // Address: 0x00761250 - 0x007612f1 (161 bytes)
 void sCraftManager::reset() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mCraftCtrl.mRecipeId = static_cast<u32>(0);
-    this->mCraftRecipe.::cCraftRecipe::clearRecipeList();
-    if (this->mRequest.::MtArray::mLength != static_cast<u32>(0)) {
+    mCraftCtrl.mRecipeId = 0;
+    mCraftRecipe.clearRecipeList();
+    if (mRequest.mLength != 0) {
         // inferred: the value the loop at 0x761280 carries; no location-less local in scope fits
-        u32 v0_0 = this->mRequest.::MtArray::mLength;
+        u32 v0_0 = mRequest.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRequest.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRequest.::MtArray::mLength) {
-                    v0_0 = this->mRequest.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRequest.mpArray[i0_3] != nullptr) {
+                delete mRequest.mpArray[i0_3];
+                if ((i0_3 + 1u) < mRequest.mLength) {
+                    v0_0 = mRequest.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRequest.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRequest.::MtArray::mpArray));
+    if (mRequest.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRequest.mpArray));
     }
-    this->mRequest.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRequest.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRequest.::MtArray::mLength = static_cast<u32>(0);
+    mRequest.mpArray = nullptr;
+    mRequest.mBufsiz = 0;
+    mRequest.mLength = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -224,7 +224,7 @@ void sCraftManager::reset() {
 // Address: 0x007613a0 - 0x007613c0 (32 bytes)
 MtTypedArray<CDataCommonU32>& sCraftManager::getCraftCreateRecipeList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGetCraftProgressListPacket()->m_CreatedReicpeList;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProgressListPacket()->m_CreatedReicpeList;
 }
 
 // Address: 0x007613c0 - 0x00761423 (99 bytes)
@@ -232,16 +232,16 @@ void sCraftManager::loadCommonCraftResource() {
     // DWARF local not rendered: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7613d4 read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x7613de, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("game_common");
-    this->mCraftPlusItem.::cCraftPlusItem::setQualityResource(static_cast<rCraftQuality*>(t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_CRAFT_QUALITY_CQR"), static_cast<u32>(1), false)));
+    ARC_TAGID t1 = rArchiveListArray::convTagId("game_common");
+    mCraftPlusItem.setQualityResource(static_cast<rCraftQuality*>(t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_CRAFT_QUALITY_CQR"), 1u, false)));
 }
 
 // Address: 0x00761430 - 0x0076143c (12 bytes)
 void sCraftManager::releaseCommonCraftResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftPlusItem.::cCraftPlusItem::releaseQualityResource();
+    mCraftPlusItem.releaseQualityResource();
 }
 
 // Address: 0x00761440 - 0x007616b3 (627 bytes)
@@ -260,45 +260,45 @@ __attribute__((weak)) void sCraftManager::loadCraftResource() {
 // Address: 0x007616c0 - 0x00761772 (178 bytes)
 void sCraftManager::releaseCraftResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftSkill.::cCraftSkill::releaseSpdResource();
-    this->mCraftSkill.::cCraftSkill::releaseCostResource();
-    if (this->mpCraftCap != static_cast<rCraftCapPass*>(nullptr)) {
-        this->mpCraftCap->::cResource::release();
-        this->mpCraftCap = static_cast<rCraftCapPass*>(nullptr);
+    mCraftSkill.releaseSpdResource();
+    mCraftSkill.releaseCostResource();
+    if (mpCraftCap != nullptr) {
+        mpCraftCap->release();
+        mpCraftCap = nullptr;
     }
-    if (this->mpCraftupGradeExp != static_cast<rCraftUpGradeExp*>(nullptr)) {
-        this->mpCraftupGradeExp->::cResource::release();
-        this->mpCraftupGradeExp = static_cast<rCraftUpGradeExp*>(nullptr);
+    if (mpCraftupGradeExp != nullptr) {
+        mpCraftupGradeExp->release();
+        mpCraftupGradeExp = nullptr;
     }
-    if (this->mpCraftElementExp != static_cast<rCraftElementExp*>(nullptr)) {
-        this->mpCraftElementExp->::cResource::release();
-        this->mpCraftElementExp = static_cast<rCraftElementExp*>(nullptr);
+    if (mpCraftElementExp != nullptr) {
+        mpCraftElementExp->release();
+        mpCraftElementExp = nullptr;
     }
-    if (this->mpCraftColorExp != static_cast<rCraftElementExp*>(nullptr)) {
-        this->mpCraftColorExp->::cResource::release();
-        this->mpCraftColorExp = static_cast<rCraftElementExp*>(nullptr);
+    if (mpCraftColorExp != nullptr) {
+        mpCraftColorExp->release();
+        mpCraftColorExp = nullptr;
     }
-    if (this->mpCraftExp == static_cast<rCraftElementExp*>(nullptr)) {
+    if (mpCraftExp == nullptr) {
         return;
     }
-    this->mpCraftExp->::cResource::release();
-    this->mpCraftExp = static_cast<rCraftElementExp*>(nullptr);
+    mpCraftExp->release();
+    mpCraftExp = nullptr;
 }
 
 // Address: 0x00758010 - 0x00758026 (22 bytes)
 cCraftRecipe* sCraftManager::getCraftRecipe(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (type == static_cast<u32>(1)) ? (&this->mCraftRecipeUpGrade) : (&this->mCraftRecipe);
+    return (type == 1) ? (&mCraftRecipeUpGrade) : (&mCraftRecipe);
 }
 
 // Address: 0x007617d0 - 0x00761805 (53 bytes)
 u32 sCraftManager::getItemNum(u32 target, u32 itemNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(target));
-    if (pBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
-        return pBag->::sItemManager::cItemBag::getItemTotalNum(itemNo);
+    sItemManager::cItemBag* pBag = sItemManager::getInstance()->setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(target));
+    if (pBag != nullptr) {
+        return pBag->sItemManager::cItemBag::getItemTotalNum(itemNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -313,17 +313,17 @@ __attribute__((weak)) u32 sCraftManager::getSupportNum(u32 pawnId) {
 // Address: 0x00761980 - 0x00761986 (6 bytes)
 u32 sCraftManager::getSupportNumMax() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x00761960 - 0x00761972 (18 bytes)
 u32 sCraftManager::getSupportNumFromPassNum(u32 passNum) {
     // DWARF local not rendered: u32 supportNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (passNum <= static_cast<u32>(2)) {
-        return this->mMasterSupportNumData[passNum];
+    if (passNum <= 2u) {
+        return mMasterSupportNumData[passNum];
     } else {
-        return static_cast<u32>(3);
+        return 3;
     }
 }
 
@@ -441,19 +441,19 @@ __attribute__((weak)) u32 sCraftManager::getPawnCraftExp(u32 pawnId) {
 u32 sCraftManager::getPawnCraftNextExp(rCraftElementExp* pCraftExp, u32 rank) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cCraftElementExpData*
-    if (pCraftExp != static_cast<rCraftElementExp*>(nullptr)) {
+    if (pCraftExp != nullptr) {
         if (rank < pCraftExp->getDataNum()) {
             cCraftElementExpData* pData = pCraftExp->getData(rank);
-            if (pData != static_cast<cCraftElementExpData*>(nullptr)) {
-                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pData) + static_cast<long>(8));
+            if (pData != nullptr) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pData) + 8);
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -516,7 +516,7 @@ __attribute__((weak)) u32 sCraftManager::getMyPawnCraftState(u32 pawnId) {
 s32 sCraftManager::getMyPawnNum() {
     // DWARF local not rendered: cPawnListVec& myPawnList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyPawnList.::MtArray::mLength);
+    return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength);
 }
 
 // No out-of-line body: no code in the ELF
@@ -590,7 +590,7 @@ __attribute__((weak)) bool sCraftManager::isMyPawn(u32 pawnId) {
 s32 sCraftManager::getRentalPawnNum() {
     // DWARF local not rendered: cPawnListVec& RentalPawnList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mRentedPawnList.::MtArray::mLength);
+    return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mLength);
 }
 
 // No out-of-line body: no code in the ELF
@@ -661,7 +661,7 @@ __attribute__((weak)) bool sCraftManager::isSupportSelectPawnId(u32 pawnId) {
 // Address: 0x00764a90 - 0x00764a9b (11 bytes)
 void sCraftManager::initCraftRegulate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(0);
+    mCraftColorRegulateState = COLOR_REGULATE_STATE_NONE;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -675,21 +675,21 @@ void sCraftManager::initCraftRegulate() {
 // Address: 0x00764aa0 - 0x00764af6 (86 bytes)
 void sCraftManager::reqCraftColorRegulateItemList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCraftColorRegulateState != static_cast<sCraftManager::COLOR_REGULATE_STATE>(0)) {
-        if (this->mCraftColorRegulateState != static_cast<sCraftManager::COLOR_REGULATE_STATE>(3)) {
-            if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(4)) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSetting() != false) {
-                    this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(1);
+    if (mCraftColorRegulateState != COLOR_REGULATE_STATE_NONE) {
+        if (mCraftColorRegulateState != COLOR_REGULATE_STATE_CANCEL) {
+            if (mCraftColorRegulateState == COLOR_REGULATE_STATE_ERROR) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSetting()) {
+                    mCraftColorRegulateState = COLOR_REGULATE_STATE_REQUEST;
                 }
             }
         } else {
-            this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(1);
+            mCraftColorRegulateState = COLOR_REGULATE_STATE_REQUEST;
         }
     } else {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSetting() != false) {
-            this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(1);
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSetting()) {
+            mCraftColorRegulateState = COLOR_REGULATE_STATE_REQUEST;
         }
     }
 }
@@ -700,40 +700,40 @@ void sCraftManager::setCraftColorRegulateItemList(void* packet) {
     // DWARF local not rendered: CPacket_S2C_GET_CRAFT_SETTING_RES* pPacket;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from void*
-    if (packet != static_cast<void*>(nullptr)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet) + static_cast<long>(12))) != static_cast<unsigned int>(0)) {
-            this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(4);
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+    if (packet != nullptr) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet) + 12)) != 0) {
+            mCraftColorRegulateState = COLOR_REGULATE_STATE_ERROR;
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
         } else {
-            if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(3)) {
-                this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(0);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+            if (mCraftColorRegulateState == COLOR_REGULATE_STATE_CANCEL) {
+                mCraftColorRegulateState = COLOR_REGULATE_STATE_NONE;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
             } else {
-                if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(1)) {
-                    this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(2);
+                if (mCraftColorRegulateState == COLOR_REGULATE_STATE_REQUEST) {
+                    mCraftColorRegulateState = COLOR_REGULATE_STATE_COMPLETE;
                 }
             }
         }
     } else {
-        this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(4);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+        mCraftColorRegulateState = COLOR_REGULATE_STATE_ERROR;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
     }
 }
 
 // Address: 0x00764b60 - 0x00764bb1 (81 bytes)
 void sCraftManager::releaseCraftColorRegulateItemList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
-    if (this->mCraftColorRegulateState != static_cast<sCraftManager::COLOR_REGULATE_STATE>(4)) {
-        if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(2)) {
-            this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(0);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftSettingPacket();
+    if (mCraftColorRegulateState != COLOR_REGULATE_STATE_ERROR) {
+        if (mCraftColorRegulateState == COLOR_REGULATE_STATE_COMPLETE) {
+            mCraftColorRegulateState = COLOR_REGULATE_STATE_NONE;
         } else {
-            if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(1)) {
-                this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(3);
+            if (mCraftColorRegulateState == COLOR_REGULATE_STATE_REQUEST) {
+                mCraftColorRegulateState = COLOR_REGULATE_STATE_CANCEL;
             }
         }
     } else {
-        this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(0);
+        mCraftColorRegulateState = COLOR_REGULATE_STATE_NONE;
     }
 }
 
@@ -748,7 +748,7 @@ __attribute__((weak)) bool sCraftManager::isEnableCraftColorChange(u32 itemId) {
 // Address: 0x00764c40 - 0x00764c4b (11 bytes)
 void sCraftManager::initCraftIrReductionData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftIrReductionDataState = static_cast<sCraftManager::IR_REDUCTION_DATA_STATE>(0);
+    mCraftIrReductionDataState = IR_REDUCTION_DATA_STATE_NONE;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (22 bytes)
@@ -1048,34 +1048,34 @@ __attribute__((weak)) sCraftManager::BAGGAGE_MATERIAL_STATE sCraftManager::waitB
 // Address: 0x007637a0 - 0x00763831 (145 bytes)
 void sCraftManager::clearPlusItemList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mAddItemList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mAddItemList.mLength != 0) {
         // inferred: the value the loop at 0x7637c0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAddItemList.::MtArray::mLength;
+        u32 v0_0 = mAddItemList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAddItemList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAddItemList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAddItemList.::MtArray::mLength) {
-                    v0_0 = this->mAddItemList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAddItemList.mpArray[i0_3] != nullptr) {
+                delete mAddItemList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAddItemList.mLength) {
+                    v0_0 = mAddItemList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAddItemList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAddItemList.::MtArray::mpArray));
+    if (mAddItemList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddItemList.mpArray));
     }
-    this->mAddItemList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAddItemList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAddItemList.::MtArray::mLength = static_cast<u32>(0);
+    mAddItemList.mpArray = nullptr;
+    mAddItemList.mBufsiz = 0;
+    mAddItemList.mLength = 0;
 }
 
 // Address: 0x00763840 - 0x00763855 (21 bytes)
@@ -1084,8 +1084,8 @@ void sCraftManager::createPlusItemList(u32 type, u32 rank) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as rItemList::MATERIAL_CATEGORY
-    this->mMaterialCache = static_cast<unsigned char>(static_cast<unsigned long>(this->mMaterialCache) | (static_cast<unsigned long>(type != static_cast<u32>(0)) + static_cast<unsigned long>(1)));
-    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != static_cast<u32>(0)) | static_cast<unsigned long>(26)), rank);
+    mMaterialCache = static_cast<unsigned char>(static_cast<unsigned long>(mMaterialCache) | (static_cast<unsigned long>(type != 0) + 1));
+    createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != 0) | 26), rank);
 }
 
 // Address: 0x00763860 - 0x0076387e (30 bytes)
@@ -1094,20 +1094,20 @@ void sCraftManager::createElementItemList(u32 type) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as rItemList::MATERIAL_CATEGORY
-    if (type != static_cast<u32>(0)) {
-        this->mMaterialCache = this->mMaterialCache | static_cast<u8>(8);
+    if (type != 0) {
+        mMaterialCache = mMaterialCache | 8;
     } else {
-        this->mMaterialCache = this->mMaterialCache | static_cast<u8>(4);
+        mMaterialCache = mMaterialCache | 4;
     }
-    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != static_cast<u32>(0)) | static_cast<unsigned long>(24)), static_cast<u32>(255));
+    createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != 0) | 24), 255u);
 }
 
 // Address: 0x00763880 - 0x00763893 (19 bytes)
 void sCraftManager::createColorItemList() {
     // DWARF local not rendered: MATERIAL_CATEGORY materialType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaterialCache = this->mMaterialCache | static_cast<u8>(16);
-    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(28), static_cast<u32>(255));
+    mMaterialCache = mMaterialCache | 16;
+    createPlusItemListSub(rItemList::MATERIAL_CATEGORY_COLOR, 255u);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -1119,10 +1119,10 @@ void sCraftManager::createColorItemList() {
 sCraftManager::cCraftUpGradeItemList* sCraftManager::getPlusItemList(u32 index) {
     // DWARF local not rendered: cCraftUpGradeItemList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mAddItemList.::MtArray::mLength) {
-        return static_cast<sCraftManager::cCraftUpGradeItemList*>(this->mAddItemList.::MtArray::mpArray[index]);
+    if (index < mAddItemList.mLength) {
+        return static_cast<cCraftUpGradeItemList*>(mAddItemList.mpArray[index]);
     } else {
-        return static_cast<sCraftManager::cCraftUpGradeItemList*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1164,17 +1164,17 @@ __attribute__((weak)) void sCraftManager::createProcessItemList(u32 listType) {
 // Address: 0x00763db0 - 0x00763dd6 (38 bytes)
 u32 sCraftManager::convEquipCategoryToIndex(nCharacterData::EQUIP_CATEGORY category) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 index = static_cast<u32>(0);
+    u32 index = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_CATEGORY* p2 = ::sCraftManager::mEquipCategoryTbl;
+    const nCharacterData::EQUIP_CATEGORY* p2 = sCraftManager::mEquipCategoryTbl;
     do {
         if ((*p2) == category) {
             return index;
         }
-        index += static_cast<u32>(1);
+        index += 1u;
         p2 += static_cast<int>(1);
-    } while (index <= static_cast<u32>(9));
-    return static_cast<u32>(0);
+    } while (index <= 9u);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1184,39 +1184,39 @@ u32 sCraftManager::convEquipCategoryToIndex(nCharacterData::EQUIP_CATEGORY categ
 u32 sCraftManager::getProcessItemCategoryNum(nCharacterData::EQUIP_CATEGORY category) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const nCharacterData::EQUIP_CATEGORY* p0_0 = ::sCraftManager::mEquipCategoryTbl;
+    const nCharacterData::EQUIP_CATEGORY* p0_0 = sCraftManager::mEquipCategoryTbl;
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i0_1 = static_cast<unsigned int>(0);
+    unsigned int i0_1 = 0;
     u32 index;
     for (;;) {
         if ((*p0_0) == category) {
-            if (i0_1 > static_cast<unsigned int>(9)) {
-                return static_cast<u32>(0);
+            if (i0_1 > 9u) {
+                return 0;
             } else {
                 index = i0_1;
                 break;
             }
         } else {
-            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(9)) {
-                p0_0 += static_cast<int>(1);
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) <= 9u) {
+                p0_0 += 1;
+                i0_1 += 1u;
             } else {
-                index = static_cast<u32>(0);
+                index = 0;
                 break;
             }
         }
     }
-    return this->mProcessItemList[index].::MtArray::mLength;
+    return mProcessItemList[index].mLength;
 }
 
 // Address: 0x00763eb0 - 0x00763ed0 (32 bytes)
 sCraftManager::cCraftUpGradeItemList* sCraftManager::getProcessItemList(u32 itemCate, u32 index) {
     // DWARF local not rendered: cCraftUpGradeItemList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mProcessItemList[itemCate].::MtArray::mLength) {
-        return static_cast<sCraftManager::cCraftUpGradeItemList*>(this->mProcessItemList[itemCate].::MtArray::mpArray[index]);
+    if (index < mProcessItemList[itemCate].mLength) {
+        return static_cast<cCraftUpGradeItemList*>(mProcessItemList[itemCate].mpArray[index]);
     } else {
-        return static_cast<sCraftManager::cCraftUpGradeItemList*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1275,26 +1275,26 @@ cCraftCapPassData* sCraftManager::getCraftCapDataFromStartLv(rCraftCapPass* pCap
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x761d55; no location-less local in scope fits
     cCraftCapPassData* v1_0;
-    if (pCapRes == static_cast<rCraftCapPass*>(nullptr)) {
-        v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+    if (pCapRes == nullptr) {
+        v1_0 = nullptr;
     } else {
-        if (pCapRes->getDataNum() == static_cast<u32>(0)) {
-            v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+        if (pCapRes->getDataNum() == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x761d28, used 3 times; no DWARF local holds it
                 cCraftCapPassData* t0 = pCapRes->getData(i0_2);
-                if (t0 != static_cast<cCraftCapPassData*>(nullptr)) {
+                if (t0 != nullptr) {
                     if (t0->mStartLv == startLv) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < pCapRes->getDataNum()) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < pCapRes->getDataNum()) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -1310,26 +1310,26 @@ cCraftCapPassData* sCraftManager::getCraftCapDataFromCapLv(rCraftCapPass* pCapRe
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x762fb5; no location-less local in scope fits
     cCraftCapPassData* v1_0;
-    if (pCapRes == static_cast<rCraftCapPass*>(nullptr)) {
-        v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+    if (pCapRes == nullptr) {
+        v1_0 = nullptr;
     } else {
-        if (pCapRes->getDataNum() == static_cast<u32>(0)) {
-            v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+        if (pCapRes->getDataNum() == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x762f88, used 3 times; no DWARF local holds it
                 cCraftCapPassData* t0 = pCapRes->getData(i0_2);
-                if (t0 != static_cast<cCraftCapPassData*>(nullptr)) {
+                if (t0 != nullptr) {
                     if (t0->mLvCap == capLv) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < pCapRes->getDataNum()) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < pCapRes->getDataNum()) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -1392,19 +1392,19 @@ __attribute__((weak)) void sCraftManager::addCraftNotice(u32 pawnId) {
 // Address: 0x00764290 - 0x007642e3 (83 bytes)
 u64 sCraftManager::getCraftUpGradeExpMax(u32 rank) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCraftupGradeExp != static_cast<rCraftUpGradeExp*>(nullptr)) {
-        if (rank < this->mpCraftupGradeExp->getDataNum()) {
-            cCraftUpGradeExpData* pExp = this->mpCraftupGradeExp->getData(rank);
-            if (pExp != static_cast<cCraftUpGradeExpData*>(nullptr)) {
-                return pExp->::cCraftUpGradeExpData::getExpMax();
+    if (mpCraftupGradeExp != nullptr) {
+        if (rank < mpCraftupGradeExp->getDataNum()) {
+            cCraftUpGradeExpData* pExp = mpCraftupGradeExp->getData(rank);
+            if (pExp != nullptr) {
+                return pExp->cCraftUpGradeExpData::getExpMax();
             } else {
-                return static_cast<u64>(0);
+                return 0;
             }
         } else {
-            return static_cast<u64>(0);
+            return 0;
         }
     } else {
-        return static_cast<u64>(0);
+        return 0;
     }
 }
 
@@ -1497,8 +1497,8 @@ __attribute__((weak)) void sCraftManager::moveKickParty() {
 // Address: 0x007649f0 - 0x00764a03 (19 bytes)
 bool sCraftManager::getCategoryCraftPlusMaterial(nCharacterData::EQUIP_CATEGORY category) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (category <= static_cast<int>(12)) {
-        return this->mMasterPlusCategory[category] != static_cast<unsigned char>(0);
+    if (category <= 12) {
+        return mMasterPlusCategory[category] != 0;
     } else {
         return false;
     }
@@ -1512,29 +1512,29 @@ void sCraftManager::setCategoryCraftPlusMaterial(MtTypedArray<CDataCommonU32>& l
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
-    this->mMasterPlusCategory[12] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[8] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[9] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[10] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[11] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[0] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[1] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[2] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[3] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[4] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[5] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[6] = static_cast<unsigned char>(0);
-    this->mMasterPlusCategory[7] = static_cast<unsigned char>(0);
-    u32 i = static_cast<u32>(0);
-    if (list.::MtArray::size() != static_cast<u32>(0)) {
+    mMasterPlusCategory[12] = 0;
+    mMasterPlusCategory[8] = 0;
+    mMasterPlusCategory[9] = 0;
+    mMasterPlusCategory[10] = 0;
+    mMasterPlusCategory[11] = 0;
+    mMasterPlusCategory[0] = 0;
+    mMasterPlusCategory[1] = 0;
+    mMasterPlusCategory[2] = 0;
+    mMasterPlusCategory[3] = 0;
+    mMasterPlusCategory[4] = 0;
+    mMasterPlusCategory[5] = 0;
+    mMasterPlusCategory[6] = 0;
+    mMasterPlusCategory[7] = 0;
+    u32 i = 0;
+    if (list.size() != 0) {
         do {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) <= static_cast<unsigned int>(12)) {
-                    this->mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))] = static_cast<unsigned char>(1);
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) <= 12u) {
+                    mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8)] = 1;
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < list.::MtArray::size());
+            i += 1u;
+        } while (i < list.size());
     }
 }
 
@@ -1546,16 +1546,23 @@ void sCraftManager::setSupportNumList(MtTypedArray<CDataCommonU32>& list) {
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from unsigned long
-    u32 i = static_cast<u32>(0);
-    if (list.::MtArray::size() != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (list.size() != 0) {
         do {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                this->mMasterSupportNumData[i] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
+                mMasterSupportNumData[i] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8);
             }
-            i += static_cast<u32>(1);
-        } while (i < list.::MtArray::size());
+            i += 1u;
+        } while (i < list.size());
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::MyDTI sCraftManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sCraftManager* sCraftManager::mpInstance;
+
+// Not defined (no member-wise spelling: an array of no extent): const nCharacterData::EQUIP_CATEGORY sCraftManager::mEquipCategoryTbl[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766f81-0x00766fbe (called at sCraftManager.cpp:4970)
@@ -1592,7 +1599,7 @@ const MtDTI& sCraftManager::cCraftFinishNotice::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftFinishNotice::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftFinishNotice::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftFinishNotice::DTI)->memAlloc(sz, align, sCraftManager::cCraftFinishNotice::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1606,7 +1613,7 @@ inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, u32 alig
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCraftManager::cCraftFinishNotice::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftFinishNotice::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cCraftFinishNotice::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1635,6 +1642,8 @@ inline void sCraftManager::cCraftFinishNotice::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // u32 sCraftManager::cCraftFinishNotice::getPawnId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftFinishNotice::MyDTI sCraftManager::cCraftFinishNotice::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e9d-0x00766ed6 (called at sCraftManager.cpp:4474)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e9d-0x00766ed6 (called at sCraftManager.h:1248)
@@ -1643,7 +1652,7 @@ inline void sCraftManager::cCraftFinishNotice::operator delete(void* p_addr) {
 // Address: 0x0075e4a0 - 0x0075e4e7 (71 bytes)
 MtObject* sCraftManager::cCraftFinishNotice::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::cCraftFinishNotice;
+    return new (16u) sCraftManager::cCraftFinishNotice;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1668,7 +1677,7 @@ const MtDTI& sCraftManager::cAddExp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sCraftManager::cAddExp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cAddExp::DTI)->memAlloc(sz, align, ::sCraftManager::cAddExp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::cAddExp::DTI)->memAlloc(sz, align, sCraftManager::cAddExp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1683,7 +1692,7 @@ inline void* sCraftManager::cAddExp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13sCraftManager7cAddExpD0Ev at 0x01ac21d0-0x01ac21fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCraftManager::cAddExp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cAddExp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cAddExp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1700,6 +1709,8 @@ inline void sCraftManager::cAddExp::operator delete(void* p_addr) {
 //   in sCraftManager::sCraftManager at 0x0075fe07-0x0075fe24 (called at sCraftManager.cpp:4987)
 // sCraftManager::cAddExp::cAddExp();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cAddExp::MyDTI sCraftManager::cAddExp::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766d80-0x00766db9 (called at sCraftManager.cpp:109)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766d80-0x00766db9 (called at sCraftManager.h:191)
@@ -1708,7 +1719,7 @@ inline void sCraftManager::cAddExp::operator delete(void* p_addr) {
 // Address: 0x00755a80 - 0x00755ac7 (71 bytes)
 MtObject* sCraftManager::cAddExp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::cAddExp;
+    return new (16u) sCraftManager::cAddExp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1733,7 +1744,7 @@ const MtDTI& sCraftManager::RecordRecipe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sCraftManager::RecordRecipe::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::RecordRecipe::DTI)->memAlloc(sz, align, ::sCraftManager::RecordRecipe::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::RecordRecipe::DTI)->memAlloc(sz, align, sCraftManager::RecordRecipe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1748,7 +1759,7 @@ inline void* sCraftManager::RecordRecipe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13sCraftManager12RecordRecipeD0Ev at 0x01ac2a00-0x01ac2a2a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCraftManager::RecordRecipe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::RecordRecipe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::RecordRecipe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1771,6 +1782,8 @@ inline void sCraftManager::RecordRecipe::operator delete(void* p_addr) {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sCraftManager::RecordRecipe::setRecipeNo(u32 recipeNo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::RecordRecipe::MyDTI sCraftManager::RecordRecipe::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766d0e-0x00766d47 (called at sCraftManager.cpp:101)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766d0e-0x00766d47 (called at sCraftManager.h:146)
@@ -1779,7 +1792,7 @@ inline void sCraftManager::RecordRecipe::operator delete(void* p_addr) {
 // Address: 0x00755900 - 0x00755947 (71 bytes)
 MtObject* sCraftManager::RecordRecipe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::RecordRecipe;
+    return new (16u) sCraftManager::RecordRecipe;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1817,7 +1830,7 @@ const MtDTI& sCraftManager::CreateItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13sCraftManager10CreateItemD0Ev at 0x01ac29b0-0x01ac29da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sCraftManager::CreateItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::CreateItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::CreateItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1851,6 +1864,8 @@ inline void sCraftManager::CreateItem::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void sCraftManager::CreateItem::setPawnNo(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::CreateItem::MyDTI sCraftManager::CreateItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766d47-0x00766d80 (called at sCraftManager.cpp:105)
@@ -1899,7 +1914,7 @@ const MtDTI& sCraftManager::cCraftPawnCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCraftManager::cCraftPawnCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftPawnCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cCraftPawnCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1939,44 +1954,44 @@ __attribute__((weak)) void sCraftManager::cCraftPawnCtrl::resetCraftPawn() {
 // Address: 0x00756bd0 - 0x00756bf8 (40 bytes)
 void sCraftManager::cCraftPawnCtrl::resetSelectedCraftPawn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelectSlotNo = static_cast<s32>(-1);
-    this->mSupportPawnId2 = static_cast<u32>(0);
-    this->mSupportPawnId3 = static_cast<u32>(0);
-    this->mMainPawnId = static_cast<u32>(0);
-    this->mSupportPawnId1 = static_cast<u32>(0);
-    this->mKeepSupportPawnId2 = static_cast<u32>(0);
-    this->mKeepSupportPawnId3 = static_cast<u32>(0);
-    this->mKeepMainPawnId = static_cast<u32>(0);
-    this->mKeepSupportPawnId1 = static_cast<u32>(0);
+    mSelectSlotNo = -1;
+    mSupportPawnId2 = 0;
+    mSupportPawnId3 = 0;
+    mMainPawnId = 0;
+    mSupportPawnId1 = 0;
+    mKeepSupportPawnId2 = 0;
+    mKeepSupportPawnId3 = 0;
+    mKeepMainPawnId = 0;
+    mKeepSupportPawnId1 = 0;
 }
 
 // Address: 0x00756c00 - 0x00756c54 (84 bytes)
 void sCraftManager::cCraftPawnCtrl::keepCraftPawn(u32 slotNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSelectSlotNo = static_cast<s32>(slotNo);
-    this->mKeepMainPawnId = this->mMainPawnId;
-    this->mKeepSupportPawnId1 = this->mSupportPawnId1;
-    this->mKeepSupportPawnId2 = this->mSupportPawnId2;
-    this->mKeepSupportPawnId3 = this->mSupportPawnId3;
+    mSelectSlotNo = static_cast<s32>(slotNo);
+    mKeepMainPawnId = mMainPawnId;
+    mKeepSupportPawnId1 = mSupportPawnId1;
+    mKeepSupportPawnId2 = mSupportPawnId2;
+    mKeepSupportPawnId3 = mSupportPawnId3;
     switch (slotNo) {
-        case static_cast<u32>(0):
+        case 0:
         {
-            this->mMainPawnId = static_cast<u32>(0);
+            mMainPawnId = 0;
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mSupportPawnId1 = static_cast<u32>(0);
+            mSupportPawnId1 = 0;
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mSupportPawnId2 = static_cast<u32>(0);
+            mSupportPawnId2 = 0;
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mSupportPawnId3 = static_cast<u32>(0);
+            mSupportPawnId3 = 0;
             break;
         }
         default:
@@ -1989,48 +2004,48 @@ void sCraftManager::cCraftPawnCtrl::keepCraftPawn(u32 slotNo) {
 // Address: 0x00756c60 - 0x00756c6b (11 bytes)
 void sCraftManager::cCraftPawnCtrl::returnKeepCraftPawn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMainPawnId = this->mKeepMainPawnId;
-    this->mSupportPawnId1 = this->mKeepSupportPawnId1;
-    this->mSupportPawnId2 = this->mKeepSupportPawnId2;
-    this->mSupportPawnId3 = this->mKeepSupportPawnId3;
+    mMainPawnId = mKeepMainPawnId;
+    mSupportPawnId1 = mKeepSupportPawnId1;
+    mSupportPawnId2 = mKeepSupportPawnId2;
+    mSupportPawnId3 = mKeepSupportPawnId3;
 }
 
 // Address: 0x00756c70 - 0x00756c77 (7 bytes)
 void sCraftManager::cCraftPawnCtrl::returnKeepCraftMainPawn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMainPawnId = this->mKeepMainPawnId;
+    mMainPawnId = mKeepMainPawnId;
 }
 
 // Address: 0x00756c80 - 0x00756c93 (19 bytes)
 void sCraftManager::cCraftPawnCtrl::returnKeepCraftSupportPawn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSupportPawnId1 = this->mKeepSupportPawnId1;
-    this->mSupportPawnId2 = this->mKeepSupportPawnId2;
-    this->mSupportPawnId3 = this->mKeepSupportPawnId3;
+    mSupportPawnId1 = mKeepSupportPawnId1;
+    mSupportPawnId2 = mKeepSupportPawnId2;
+    mSupportPawnId3 = mKeepSupportPawnId3;
 }
 
 // Address: 0x00756ca0 - 0x00756cd8 (56 bytes)
 void sCraftManager::cCraftPawnCtrl::setCraftPawnId(u32 pawnId, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (type) {
-        case static_cast<u32>(0):
+        case 0:
         {
-            this->mMainPawnId = pawnId;
+            mMainPawnId = pawnId;
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mSupportPawnId1 = pawnId;
+            mSupportPawnId1 = pawnId;
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mSupportPawnId2 = pawnId;
+            mSupportPawnId2 = pawnId;
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mSupportPawnId3 = pawnId;
+            mSupportPawnId3 = pawnId;
             break;
         }
         default:
@@ -2043,48 +2058,48 @@ void sCraftManager::cCraftPawnCtrl::setCraftPawnId(u32 pawnId, u32 type) {
 // Address: 0x00756ce0 - 0x00756cfc (28 bytes)
 void sCraftManager::cCraftPawnCtrl::setCraftPawnSlotNo(u32 slotNo, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type != static_cast<u32>(2)) {
-        if (type == static_cast<u32>(1)) {
-            this->mSupportPawnSlotNo1 = slotNo;
+    if (type != 2) {
+        if (type == 1) {
+            mSupportPawnSlotNo1 = slotNo;
         } else {
-            if (type == static_cast<u32>(0)) {
-                this->mMainPawnSlotNo = slotNo;
+            if (type == 0) {
+                mMainPawnSlotNo = slotNo;
             }
         }
     } else {
-        this->mSupportPawnSlotNo2 = slotNo;
+        mSupportPawnSlotNo2 = slotNo;
     }
 }
 
 // Address: 0x00756d00 - 0x00756d20 (32 bytes)
 void sCraftManager::cCraftPawnCtrl::setCraftSupportPawnId(u32 pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSelectSlotNo != static_cast<s32>(3)) {
-        if (this->mSelectSlotNo == static_cast<s32>(2)) {
-            this->mSupportPawnId2 = pawnId;
+    if (mSelectSlotNo != 3) {
+        if (mSelectSlotNo == 2) {
+            mSupportPawnId2 = pawnId;
         } else {
-            if (this->mSelectSlotNo == static_cast<s32>(1)) {
-                this->mSupportPawnId1 = pawnId;
+            if (mSelectSlotNo == 1) {
+                mSupportPawnId1 = pawnId;
             }
         }
     } else {
-        this->mSupportPawnId3 = pawnId;
+        mSupportPawnId3 = pawnId;
     }
 }
 
 // Address: 0x00756d20 - 0x00756d4c (44 bytes)
 void sCraftManager::cCraftPawnCtrl::releaseCraftSupportPawnId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSelectSlotNo != static_cast<s32>(3)) {
-        if (this->mSelectSlotNo == static_cast<s32>(2)) {
-            this->mSupportPawnId2 = static_cast<u32>(0);
+    if (mSelectSlotNo != 3) {
+        if (mSelectSlotNo == 2) {
+            mSupportPawnId2 = 0;
         } else {
-            if (this->mSelectSlotNo == static_cast<s32>(1)) {
-                this->mSupportPawnId1 = static_cast<u32>(0);
+            if (mSelectSlotNo == 1) {
+                mSupportPawnId1 = 0;
             }
         }
     } else {
-        this->mSupportPawnId3 = static_cast<u32>(0);
+        mSupportPawnId3 = 0;
     }
 }
 
@@ -2092,25 +2107,25 @@ void sCraftManager::cCraftPawnCtrl::releaseCraftSupportPawnId() {
 s32 sCraftManager::cCraftPawnCtrl::getCraftPawnId(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (type) {
-        case static_cast<u32>(0):
+        case 0:
         {
-            return static_cast<s32>(this->mMainPawnId);
+            return static_cast<s32>(mMainPawnId);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return static_cast<s32>(this->mSupportPawnId1);
+            return static_cast<s32>(mSupportPawnId1);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return static_cast<s32>(this->mSupportPawnId2);
+            return static_cast<s32>(mSupportPawnId2);
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return static_cast<s32>(this->mSupportPawnId3);
+            return static_cast<s32>(mSupportPawnId3);
         }
         default:
         {
-            return static_cast<s32>(0);
+            return 0;
         }
     }
 }
@@ -2122,25 +2137,25 @@ s32 sCraftManager::cCraftPawnCtrl::getCraftPawnId(u32 type) {
 s32 sCraftManager::cCraftPawnCtrl::getCraftPawnSlotNo(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (type) {
-        case static_cast<u32>(0):
+        case 0:
         {
-            return static_cast<s32>(this->mMainPawnSlotNo);
+            return static_cast<s32>(mMainPawnSlotNo);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return static_cast<s32>(this->mSupportPawnSlotNo1);
+            return static_cast<s32>(mSupportPawnSlotNo1);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return static_cast<s32>(this->mSupportPawnSlotNo2);
+            return static_cast<s32>(mSupportPawnSlotNo2);
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return static_cast<s32>(this->mSupportPawnSlotNo3);
+            return static_cast<s32>(mSupportPawnSlotNo3);
         }
         default:
         {
-            return static_cast<s32>(0);
+            return 0;
         }
     }
 }
@@ -2248,25 +2263,25 @@ u32 sCraftManager::cCraftPawnCtrl::getPawnSkillLv(u32 slotNo, u32 skill, bool is
     // DWARF local not rendered: s32 pawnId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (slotNo) {
-        case static_cast<u32>(0):
+        case 0:
         {
-            return this->::sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(static_cast<s32>(this->mMainPawnId), skill, isZero);
+            return getPawnSkillLvSub(static_cast<s32>(mMainPawnId), skill, isZero);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return this->::sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(static_cast<s32>(this->mSupportPawnId1), skill, isZero);
+            return getPawnSkillLvSub(static_cast<s32>(mSupportPawnId1), skill, isZero);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return this->::sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(static_cast<s32>(this->mSupportPawnId2), skill, isZero);
+            return getPawnSkillLvSub(static_cast<s32>(mSupportPawnId2), skill, isZero);
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return this->::sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(static_cast<s32>(this->mSupportPawnId3), skill, isZero);
+            return getPawnSkillLvSub(static_cast<s32>(mSupportPawnId3), skill, isZero);
         }
         default:
         {
-            return this->::sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(static_cast<s32>(0), skill, isZero);
+            return getPawnSkillLvSub(0, skill, isZero);
         }
     }
 }
@@ -2325,17 +2340,17 @@ __attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getCraftMoreTimeSub(u32
 // Address: 0x00757f60 - 0x00757fbf (95 bytes)
 void sCraftManager::cCraftPawnCtrl::setCreateCount(u8 count) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSettingPacket() != static_cast<nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES*>(nullptr)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSettingPacket()->::nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CreateCountMax() >= count) {
-            this->mCreateCount = count;
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSettingPacket() != nullptr) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSettingPacket()->CreateCountMax() >= count) {
+            mCreateCount = count;
         } else {
-            this->mCreateCount = static_cast<u8>(1);
+            mCreateCount = 1;
         }
     } else {
-        if (count <= static_cast<u8>(1)) {
-            this->mCreateCount = count;
+        if (count <= 1) {
+            mCreateCount = count;
         } else {
-            this->mCreateCount = static_cast<u8>(1);
+            mCreateCount = 1;
         }
     }
 }
@@ -2346,10 +2361,10 @@ void sCraftManager::cCraftPawnCtrl::setCreateCount(u8 count) {
 // Address: 0x00757fc0 - 0x00757fff (63 bytes)
 u8 sCraftManager::cCraftPawnCtrl::getCreateCountMax() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSettingPacket() != static_cast<nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES*>(nullptr)) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCraftSettingPacket()->::nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CreateCountMax();
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSettingPacket() != nullptr) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCraftSettingPacket()->CreateCountMax();
     } else {
-        return static_cast<u8>(1);
+        return 1;
     }
 }
 
@@ -2371,8 +2386,8 @@ u8 sCraftManager::cCraftPawnCtrl::getCreateCountMax() {
 // Address: 0x00758040 - 0x00758052 (18 bytes)
 void sCraftManager::cCraftPawnCtrl::reqCraftProgressList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCraftTaskRno = static_cast<u32>(1);
-    this->mIsCraftProgressComplete = false;
+    mCraftTaskRno = 1;
+    mIsCraftProgressComplete = false;
 }
 
 // Address: 0x00758060 - 0x007584e4 (1156 bytes)
@@ -2389,9 +2404,9 @@ __attribute__((weak)) void sCraftManager::cCraftPawnCtrl::moveCraftProgressList(
 // bool sCraftManager::cCraftPawnCtrl::isCraftProgressComplete();
 
 // Address: 0x00758530 - 0x0075854f (31 bytes)
-__attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getCraftTaskNum() {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftTaskNum")
-    return {};
+u32 sCraftManager::cCraftPawnCtrl::getCraftTaskNum() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProgressListPacket()->m_CraftProgressList.mLength;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2620,11 +2635,10 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::createCraftColorList(b
 // Address: 0x0075a670 - 0x0075a69d (45 bytes)
 bool sCraftManager::cCraftPawnCtrl::isCreateGold(u32 type) {
     // DWARF local not rendered: u32 cost;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from sItemManager*
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x75a679, used once; no DWARF local holds it
-    u32 t0 = this->::sCraftManager::cCraftPawnCtrl::getCreateGold(type);
-    return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sItemManager::getInstance()) + static_cast<long>(120))) >= (this->mCreateCount * t0);
+    u32 t0 = getCreateGold(type);
+    return sItemManager::getInstance()->mPoint[1] >= (mCreateCount * t0);
 }
 
 // Address: 0x0075ab40 - 0x0075b376 (2102 bytes)
@@ -2708,11 +2722,11 @@ void sCraftManager::cCraftPawnCtrl::getCraftItemCallBack(void* param) {
     // DWARF local not rendered: stRequest* pParam;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(136))) > static_cast<int>(-1)) {
-        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::requestAward(static_cast<s32>(3));
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 136)) > -1) {
+        mCraftReqResult = CRAFT_REQ_RESULT_SUCCESS;
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->requestAward(3);
     } else {
-        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+        mCraftReqResult = CRAFT_REQ_RESULT_ERROR;
     }
 }
 
@@ -2737,16 +2751,15 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::getCraftProductInfoReq
 // Address: 0x00758ae0 - 0x00758b0f (47 bytes)
 sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::getCraftProductInfoReqResult() {
     // DWARF local not rendered: NET_STAT stat;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x3f8 from cNetGameServer*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1016))) != static_cast<unsigned int>(1)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1016))) == static_cast<unsigned int>(4)) {
-            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[252] != sNetworkExt::NET_STAT_REQ) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[252] == sNetworkExt::NET_STAT_ERROR) {
+            return CRAFT_REQ_RESULT_ERROR;
         } else {
-            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+            return CRAFT_REQ_RESULT_SUCCESS;
         }
     } else {
-        return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
+        return CRAFT_REQ_RESULT_WAIT;
     }
 }
 
@@ -2757,11 +2770,11 @@ __attribute__((weak)) void sCraftManager::cCraftPawnCtrl::setCraftProductInfoPac
 }
 
 // Address: 0x00758b40 - 0x00758b60 (32 bytes)
-__attribute__((weak)) const CDataCraftProductInfo* sCraftManager::cCraftPawnCtrl::getCraftProudctInfo() {
-    // local: CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES* pPacket;
-    // local: const CDataCraftProductInfo& Info;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftProudctInfo")
-    return nullptr;
+const CDataCraftProductInfo* sCraftManager::cCraftPawnCtrl::getCraftProudctInfo() {
+    // DWARF local not rendered: CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES* pPacket;
+    // DWARF local not rendered: const CDataCraftProductInfo& Info;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return &static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductInfoPacket()->m_CraftProductInfo;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (22 bytes)
@@ -2792,18 +2805,17 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::cancelCraftReq(s32 ind
 // Address: 0x00758c30 - 0x00758c7e (78 bytes)
 sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::cancelCraftReqResult() {
     // DWARF local not rendered: NET_STAT stat;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x400 from cNetGameServer*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1024))) == static_cast<unsigned int>(4)) {
-        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
-        return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[254] == sNetworkExt::NET_STAT_ERROR) {
+        mCraftReqResult = CRAFT_REQ_RESULT_ERROR;
+        return CRAFT_REQ_RESULT_ERROR;
     } else {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1024))) == static_cast<unsigned int>(1)) {
-            this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
-            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[254] == sNetworkExt::NET_STAT_REQ) {
+            mCraftReqResult = CRAFT_REQ_RESULT_WAIT;
+            return CRAFT_REQ_RESULT_WAIT;
         } else {
-            this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
-            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+            mCraftReqResult = CRAFT_REQ_RESULT_SUCCESS;
+            return CRAFT_REQ_RESULT_SUCCESS;
         }
     }
 }
@@ -2812,23 +2824,35 @@ sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::cancelCraft
 // u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListNum();
 
 // Address: 0x0075b980 - 0x0075b9df (95 bytes)
-__attribute__((weak)) MT_CTSTR sCraftManager::cCraftPawnCtrl::getCraftProgressListItemName(u32 index) {
-    // local: u32 itemId;
-    // local: rItemParam* pItemParam;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftProgressListItemName")
-    return {};
+MT_CTSTR sCraftManager::cCraftPawnCtrl::getCraftProgressListItemName(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_nResult == 0) {
+        u32 itemId = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_CraftProduct.m_unItemID;
+        rItemList::rItemParam* pItemParam = sItemManager::getInstance()->getItemParam(itemId);
+        if (pItemParam != nullptr) {
+            return pItemParam->rItemList::rItemParam::getItemName();
+        } else {
+            return nullptr;
+        }
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x0075b9e0 - 0x0075ba20 (64 bytes)
-__attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListItemId(u32 index) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftProgressListItemId")
-    return {};
+u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListItemId(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_nResult == 0) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_CraftProduct.m_unItemID;
+    } else {
+        return 0;
+    }
 }
 
 // Address: 0x0075ba20 - 0x0075ba3f (31 bytes)
-__attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListItemNum(u32 index) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftProgressListItemNum")
-    return {};
+u32 sCraftManager::cCraftPawnCtrl::getCraftProgressListItemNum(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCraftProductPacket()->m_CraftProduct.m_unItemNum;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2960,7 +2984,7 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isElementGoldSub(sCraf
 // Address: 0x0075cf70 - 0x0075cf7a (10 bytes)
 bool sCraftManager::cCraftPawnCtrl::isElementGold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCraftManager::cCraftPawnCtrl::isElementGoldSub(static_cast<sCraftManager::MENU_TYPE>(3));
+    return isElementGoldSub(sCraftManager::MENU_TYPE_ELEMENT);
 }
 
 // Address: 0x0075cf80 - 0x0075cf92 (18 bytes)
@@ -3026,7 +3050,7 @@ __attribute__((weak)) void sCraftManager::cCraftPawnCtrl::setCraftColorUID(MT_CT
 // Address: 0x0075d6f0 - 0x0075d6fa (10 bytes)
 bool sCraftManager::cCraftPawnCtrl::isColorGold() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sCraftManager::cCraftPawnCtrl::isElementGoldSub(static_cast<sCraftManager::MENU_TYPE>(4));
+    return isElementGoldSub(sCraftManager::MENU_TYPE_COLOR);
 }
 
 // Address: 0x0075d700 - 0x0075d712 (18 bytes)
@@ -3084,6 +3108,8 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::startCraftSkillAnalyze
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftPawnCtrl::MyDTI sCraftManager::cCraftPawnCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766db9-0x00766df2 (called at sCraftManager.cpp:128)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766db9-0x00766df2 (called at sCraftManager.h:202)
@@ -3118,7 +3144,7 @@ const MtDTI& sCraftManager::cCraftRankUp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sCraftManager::cCraftRankUp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRankUp::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftRankUp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftRankUp::DTI)->memAlloc(sz, align, sCraftManager::cCraftRankUp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3132,7 +3158,7 @@ inline void* sCraftManager::cCraftRankUp::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCraftManager::cCraftRankUp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRankUp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cCraftRankUp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3155,15 +3181,15 @@ inline void sCraftManager::cCraftRankUp::operator delete(void* p_addr) {
 // Address: 0x0075e0e0 - 0x0075e105 (37 bytes)
 void sCraftManager::cCraftRankUp::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsRankUp = false;
-    this->mBonusExp = static_cast<u32>(0);
-    this->mTotalExp = static_cast<u32>(0);
-    this->mPawnId = static_cast<u32>(0);
-    this->mAddExp = static_cast<u32>(0);
-    this->mTotalCraftPoint = static_cast<u32>(0);
-    this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
-    this->mCraftRank = static_cast<u32>(0);
-    this->mAddCraftPoint = static_cast<u32>(0);
+    mIsRankUp = false;
+    mBonusExp = 0;
+    mTotalExp = 0;
+    mPawnId = 0;
+    mAddExp = 0;
+    mTotalCraftPoint = 0;
+    mCraftReqResult = CRAFT_REQ_RESULT_WAIT;
+    mCraftRank = 0;
+    mAddCraftPoint = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -3239,8 +3265,8 @@ void sCraftManager::cCraftRankUp::init() {
 // Address: 0x0075e110 - 0x0075e149 (57 bytes)
 bool sCraftManager::cCraftRankUp::craftPointReq(u32 pawnId, u32 Type, u32 level) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::craftSkillUp(pawnId, Type + static_cast<u32>(1), level) != false) {
-        this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->craftSkillUp(pawnId, Type + 1u, level)) {
+        mCraftReqResult = CRAFT_REQ_RESULT_WAIT;
         return true;
     } else {
         return false;
@@ -3250,21 +3276,22 @@ bool sCraftManager::cCraftRankUp::craftPointReq(u32 pawnId, u32 Type, u32 level)
 // Address: 0x0075e150 - 0x0075e195 (69 bytes)
 sCraftManager::cCraftRankUp::RESULT sCraftManager::cCraftRankUp::craftPointReqWait() {
     // DWARF local not rendered: NET_STAT stat;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x414 from cNetGameServer*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1044))) == static_cast<unsigned int>(4)) {
-        this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(2);
-        return static_cast<sCraftManager::cCraftRankUp::RESULT>(2);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[259] == sNetworkExt::NET_STAT_ERROR) {
+        mCraftReqResult = CRAFT_REQ_RESULT_ERROR;
+        return CRAFT_REQ_RESULT_ERROR;
     } else {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1044))) == static_cast<unsigned int>(1)) {
-            this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
-            return static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[259] == sNetworkExt::NET_STAT_REQ) {
+            mCraftReqResult = CRAFT_REQ_RESULT_WAIT;
+            return CRAFT_REQ_RESULT_WAIT;
         } else {
-            this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(1);
-            return static_cast<sCraftManager::cCraftRankUp::RESULT>(1);
+            mCraftReqResult = CRAFT_REQ_RESULT_SUCCESS;
+            return CRAFT_REQ_RESULT_SUCCESS;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftRankUp::MyDTI sCraftManager::cCraftRankUp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766df2-0x00766e2b (called at sCraftManager.cpp:4316)
@@ -3274,7 +3301,7 @@ sCraftManager::cCraftRankUp::RESULT sCraftManager::cCraftRankUp::craftPointReqWa
 // Address: 0x0075dff0 - 0x0075e054 (100 bytes)
 MtObject* sCraftManager::cCraftRankUp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::cCraftRankUp;
+    return new (16u) sCraftManager::cCraftRankUp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3429,6 +3456,8 @@ __attribute__((weak)) void sCraftManager::cCraftUpGrade::init() {
 //   in sItemManager::cItemBag::upGradeEquipChange at 0x007d07ec-0x007d07f6 (called at sItemManager.cpp:4815)
 // nCharacterData::EQUIP_SLOT_TYPE sCraftManager::cCraftUpGrade::getEquipSlot();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftUpGrade::MyDTI sCraftManager::cCraftUpGrade::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e2b-0x00766e64 (called at sCraftManager.cpp:4425)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e2b-0x00766e64 (called at sCraftManager.h:675)
@@ -3491,12 +3520,20 @@ const MtDTI& sCraftManager::cCraftUpGradeItemList::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sCraftManager::cCraftUpGradeItemList::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 8 inlined copies in 3 functions (580 bytes)
-//   in sCraftManager::cCraftUpGradeItemList::MyDTI::newInstance at 0x0075e3ed-0x0075e426 (called at sCraftManager.cpp:4469)
-//   in sCraftManager::cCraftUpGradeItemList::MyDTI::newInstance at 0x0075e3ed-0x0075e426 (called at sCraftManager.h:746)
-//   in sCraftManager::createPlusItemListSub at 0x0076306e-0x00763080, 0x0076318b-0x007631c0, 0x007631df-0x007631f1 (called at sCraftManager.cpp:7552)
-//   and 5 more (every copy is in <bundle>.inlined.json)
-// sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline sCraftManager::cCraftUpGradeItemList::cCraftUpGradeItemList() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mCustomSortNo = 0;
+    mEquipPoint = 0;
+    mQuality = 0;
+    mElementNum = 0;
+    mSortNo = 0;
+    mItemNum = 0;
+    mItemId = 0;
+    mBagType = 0;
+    mWstrUID.value = nullptr;
+}
 
 // Address: 0x01ac2690 - 0x01ac270b (123 bytes)
 // Also emitted as: _ZN13sCraftManager21cCraftUpGradeItemListD0Ev at 0x01ac2710
@@ -3593,6 +3630,8 @@ sCraftManager::cCraftUpGradeItemList::~cCraftUpGradeItemList() {
 // No out-of-line body: no code in the ELF
 // u32 sCraftManager::cCraftUpGradeItemList::getCustomSortNo() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftUpGradeItemList::MyDTI sCraftManager::cCraftUpGradeItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e64-0x00766e9d (called at sCraftManager.cpp:4469)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766e64-0x00766e9d (called at sCraftManager.h:725)
@@ -3629,7 +3668,7 @@ const MtDTI& sCraftManager::cCraftIrReductionData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sCraftManager::cCraftIrReductionData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftIrReductionData::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftIrReductionData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftIrReductionData::DTI)->memAlloc(sz, align, sCraftManager::cCraftIrReductionData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3643,7 +3682,7 @@ inline void* sCraftManager::cCraftIrReductionData::operator new(size_t sz, u32 a
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCraftManager::cCraftIrReductionData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftIrReductionData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cCraftIrReductionData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3674,6 +3713,8 @@ inline void sCraftManager::cCraftIrReductionData::operator delete(void* p_addr) 
 //   in sCraftManager::getCraftIrReductionData at 0x00757bd8-0x00757bdc (called at sCraftManager.cpp:8833)
 // u8 sCraftManager::cCraftIrReductionData::getRate();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftIrReductionData::MyDTI sCraftManager::cCraftIrReductionData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766ed6-0x00766f0f (called at sCraftManager.cpp:4479)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766ed6-0x00766f0f (called at sCraftManager.h:780)
@@ -3682,7 +3723,7 @@ inline void sCraftManager::cCraftIrReductionData::operator delete(void* p_addr) 
 // Address: 0x0075e560 - 0x0075e5a4 (68 bytes)
 MtObject* sCraftManager::cCraftIrReductionData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::cCraftIrReductionData;
+    return new (16u) sCraftManager::cCraftIrReductionData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3721,7 +3762,7 @@ const MtDTI& sCraftManager::cCraftRecipeControl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sCraftManager::cCraftRecipeControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRecipeControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::cCraftRecipeControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3742,14 +3783,128 @@ inline void sCraftManager::cCraftRecipeControl::operator delete(void* p_addr) {
 // Address: 0x0075e840 - 0x0075e960 (288 bytes)
 // Also emitted as: _ZN13sCraftManager19cCraftRecipeControlD0Ev at 0x0075e960
 sCraftManager::cCraftRecipeControl::~cCraftRecipeControl() {
-    DDON_STUB("sCraftManager::cCraftRecipeControl::~cCraftRecipeControl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mMasterRecipeList.mLength != 0) {
+        // inferred: the value the loop at 0x75e870 carries; no location-less local in scope fits
+        u32 v0_0 = mMasterRecipeList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mMasterRecipeList.mpArray[i0_3] != nullptr) {
+                delete mMasterRecipeList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMasterRecipeList.mLength) {
+                    v0_0 = mMasterRecipeList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mMasterRecipeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMasterRecipeList.mpArray));
+    }
+    mMasterRecipeList.mpArray = nullptr;
+    mMasterRecipeList.mBufsiz = 0;
+    mMasterRecipeList.mLength = 0;
+    if (mRecipeList.mLength != 0) {
+        // inferred: the value the loop at 0x75e8e0 carries; no location-less local in scope fits
+        u32 v2_0 = mRecipeList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = 0;;) {
+            if (mRecipeList.mpArray[i2_3] != nullptr) {
+                delete mRecipeList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mRecipeList.mLength) {
+                    v2_0 = mRecipeList.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mRecipeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecipeList.mpArray));
+    }
+    mRecipeList.mpArray = nullptr;
+    mRecipeList.mBufsiz = 0;
+    mRecipeList.mLength = 0;
 }
 
 // Address: 0x0075e740 - 0x0075e83c (252 bytes)
-__attribute__((weak)) void sCraftManager::cCraftRecipeControl::init() {
-    DDON_STUB("sCraftManager::cCraftRecipeControl::init")
-    /* stub */
+void sCraftManager::cCraftRecipeControl::init() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    mRecipeOffsetNum = 0;
+    mState = RECIPE_STATE_NONE;
+    mMasterRecipeList.mAutoDelete = true;
+    if (mMasterRecipeList.mLength != 0) {
+        // inferred: the value the loop at 0x75e770 carries; no location-less local in scope fits
+        u32 v0_0 = mMasterRecipeList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mMasterRecipeList.mpArray[i0_3] != nullptr) {
+                delete mMasterRecipeList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMasterRecipeList.mLength) {
+                    v0_0 = mMasterRecipeList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mMasterRecipeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMasterRecipeList.mpArray));
+    }
+    mMasterRecipeList.mpArray = nullptr;
+    mMasterRecipeList.mBufsiz = 0;
+    mMasterRecipeList.mLength = 0;
+    mRecipeList.mAutoDelete = true;
+    if (mRecipeList.mLength != 0) {
+        // inferred: the value the loop at 0x75e7e0 carries; no location-less local in scope fits
+        u32 v2_0 = mRecipeList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = 0;;) {
+            if (mRecipeList.mpArray[i2_3] != nullptr) {
+                delete mRecipeList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mRecipeList.mLength) {
+                    v2_0 = mRecipeList.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mRecipeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecipeList.mpArray));
+    }
+    mRecipeList.mpArray = nullptr;
+    mRecipeList.mBufsiz = 0;
+    mRecipeList.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3778,11 +3933,11 @@ __attribute__((weak)) void sCraftManager::cCraftRecipeControl::setRecipe(sCraftM
 // Address: 0x0075ed40 - 0x0075ed5a (26 bytes)
 void sCraftManager::cCraftRecipeControl::setRecipeDesignate(sCraftManager::RECIPE_TYPE type, void* packet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type == static_cast<sCraftManager::RECIPE_TYPE>(1)) {
-        this->::sCraftManager::cCraftRecipeControl::setGradeupRecipeDesignate(packet);
+    if (type == sCraftManager::RECIPE_TYPE_UPGRADE) {
+        setGradeupRecipeDesignate(packet);
     } else {
-        if (type == static_cast<sCraftManager::RECIPE_TYPE>(0)) {
-            this->::sCraftManager::cCraftRecipeControl::setCreateRecipeDesignate(packet);
+        if (type == sCraftManager::RECIPE_TYPE_CREATE) {
+            setCreateRecipeDesignate(packet);
         }
     }
 }
@@ -3799,10 +3954,22 @@ void sCraftManager::cCraftRecipeControl::setRecipeDesignate(sCraftManager::RECIP
 // MtTypedArray<rCraftRecipe::cCraftRecipe>* sCraftManager::cCraftRecipeControl::getMasterRecipeList();
 
 // Address: 0x0075f4b0 - 0x0075f4ec (60 bytes)
-__attribute__((weak)) rCraftRecipe::cCraftRecipe* sCraftManager::cCraftRecipeControl::getRecipeDataToRecipeId(u32 recipeId) {
-    // local: u32 i;
-    // local: cCraftRecipe* pParam;
-    DDON_STUB("sCraftManager::cCraftRecipeControl::getRecipeDataToRecipeId")
+rCraftRecipe::cCraftRecipe* sCraftManager::cCraftRecipeControl::getRecipeDataToRecipeId(u32 recipeId) {
+    // DWARF local not rendered: cCraftRecipe* pParam;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (mMasterRecipeList.mLength != 0) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x75f4b0, 0x75f4e8)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = 0;
+        do {
+            if (mMasterRecipeList.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMasterRecipeList.mpArray[i]) + 8)) == recipeId) {
+                    return static_cast<rCraftRecipe::cCraftRecipe*>(mMasterRecipeList.mpArray[i]);
+                }
+            }
+            i += 1u;
+        } while (i < mMasterRecipeList.mLength);
+    }
     return nullptr;
 }
 
@@ -3874,6 +4041,8 @@ __attribute__((weak)) void sCraftManager::cCraftRecipeControl::setGradeupRecipeD
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::cCraftRecipeControl::MyDTI sCraftManager::cCraftRecipeControl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766f0f-0x00766f48 (called at sCraftManager.cpp:4484)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766f0f-0x00766f48 (called at sCraftManager.h:796)
@@ -3909,7 +4078,7 @@ const MtDTI& sCraftManager::stRecipeRequest::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sCraftManager::stRecipeRequest::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::stRecipeRequest::DTI)->memAlloc(sz, align, ::sCraftManager::stRecipeRequest::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::stRecipeRequest::DTI)->memAlloc(sz, align, sCraftManager::stRecipeRequest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3923,7 +4092,7 @@ inline void* sCraftManager::stRecipeRequest::operator new(size_t sz, u32 align) 
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCraftManager::stRecipeRequest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::stRecipeRequest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::stRecipeRequest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3943,6 +4112,8 @@ inline void sCraftManager::stRecipeRequest::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // sCraftManager::stRecipeRequest::~stRecipeRequest();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::stRecipeRequest::MyDTI sCraftManager::stRecipeRequest::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766f48-0x00766f81 (called at sCraftManager.cpp:4956)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766f48-0x00766f81 (called at sCraftManager.h:847)
@@ -3951,7 +4122,7 @@ inline void sCraftManager::stRecipeRequest::operator delete(void* p_addr) {
 // Address: 0x0075fbf0 - 0x0075fc38 (72 bytes)
 MtObject* sCraftManager::stRecipeRequest::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::stRecipeRequest;
+    return new (16u) sCraftManager::stRecipeRequest;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3979,7 +4150,7 @@ const MtDTI& sCraftManager::PawnCost::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sCraftManager::PawnCost::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sCraftManager::PawnCost::DTI)->memAlloc(sz, align, ::sCraftManager::PawnCost::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sCraftManager::PawnCost::DTI)->memAlloc(sz, align, sCraftManager::PawnCost::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3993,7 +4164,7 @@ inline void* sCraftManager::PawnCost::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sCraftManager::PawnCost::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sCraftManager::PawnCost::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sCraftManager::PawnCost::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4064,6 +4235,8 @@ inline void sCraftManager::PawnCost::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // bool sCraftManager::PawnCost::isNoLimitCostSkill();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sCraftManager::PawnCost::MyDTI sCraftManager::PawnCost::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766cce-0x00766d0e (called at sCraftManager.cpp:77)
 //   in _GLOBAL__sub_I_sCraftManager.cpp at 0x00766cce-0x00766d0e (called at sCraftManager.h:117)
@@ -4072,7 +4245,7 @@ inline void sCraftManager::PawnCost::operator delete(void* p_addr) {
 // Address: 0x00755820 - 0x00755876 (86 bytes)
 MtObject* sCraftManager::PawnCost::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sCraftManager::PawnCost;
+    return new (16u) sCraftManager::PawnCost;
 }
 
 // Instance at 0x01ac1f30 - 0x01ac1f35 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

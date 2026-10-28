@@ -196,3 +196,14 @@ private:
     f32 mPatNoRate;  // offset: 0x8
     f32 mPatSpeed;  // offset: 0xc
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK11rEffectAnim5MyDTI11newInstanceEv at 0x011f2840-0x011f2875, code DWARF attributes to no inlined copy; approximate: only approximate callers check this inline body
+inline rEffectAnim::rEffectAnim() {
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from rEffectAnim*
+    // inferred: a bitfield storage unit accessed whole, by byte offset from its base: unsigned int at 0x74 from rEffectAnim*
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 120) = 0;
+    this->mParamBuffSize = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = 0;
+    this->::cResource::mAttr = 22;
+}

@@ -148,7 +148,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rPlantTree::Tree::Tree() {
-    this->mOmId = static_cast<u32>(0);
-    this->mpPointList = static_cast<rPlantTree::Tree::Point*>(nullptr);
-    this->mPointListNum = static_cast<u32>(0);
+    this->mOmId = 0;
+    this->mpPointList = nullptr;
+    this->mPointListNum = 0;
 }

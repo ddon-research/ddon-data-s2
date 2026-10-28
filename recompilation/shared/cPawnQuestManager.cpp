@@ -26,7 +26,7 @@ const MtDTI& cPawnQuestManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cPawnQuestManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::DTI);
+    return MtMemoryAllocator::getAllocator(cPawnQuestManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cPawnQuestManager::getAllocator() {
 // Address: 0x001513b0 - 0x001513f0 (64 bytes)
 void* cPawnQuestManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cPawnQuestManager::getAllocator()->memAlloc(sz, align, ::cPawnQuestManager::DTI.::MtDTI::getID());
+    return cPawnQuestManager::getAllocator()->memAlloc(sz, align, cPawnQuestManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cPawnQuestManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPawnQuestManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnQuestManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,7 +65,7 @@ inline void cPawnQuestManager::operator delete(void* p_addr) {
 // Address: 0x0197b400 - 0x0197b406 (6 bytes)
 u32 cPawnQuestManager::getQuestManagerType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(10);
+    return 10;
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,13 +83,13 @@ __attribute__((weak)) cPawnQuestManager::cPawnQuestInfo* cPawnQuestManager::getP
 // Address: 0x00151580 - 0x00151585 (5 bytes)
 void cPawnQuestManager::switchTalk(s8 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSwtichTalkType = type;
+    mSwtichTalkType = type;
 }
 
 // Address: 0x00151590 - 0x00151595 (5 bytes)
 s8 cPawnQuestManager::getSwitchTalkType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSwtichTalkType;
+    return mSwtichTalkType;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,35 +112,35 @@ __attribute__((weak)) void cPawnQuestManager::getQuestList() {
 // Address: 0x001517c0 - 0x0015183c (124 bytes)
 void cPawnQuestManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cQuestManagerBase::release();
-    if (this->mPawnQuestInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    this->cQuestManagerBase::release();
+    if (mPawnQuestInfoList.mLength != 0) {
         // inferred: the value the loop at 0x1517e0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
+        u32 v0_0 = mPawnQuestInfoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPawnQuestInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPawnQuestInfoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPawnQuestInfoList.::MtArray::mLength) {
-                    v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPawnQuestInfoList.mpArray[i0_3] != nullptr) {
+                delete mPawnQuestInfoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPawnQuestInfoList.mLength) {
+                    v0_0 = mPawnQuestInfoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPawnQuestInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPawnQuestInfoList.::MtArray::mpArray));
+    if (mPawnQuestInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPawnQuestInfoList.mpArray));
     }
-    this->mPawnQuestInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPawnQuestInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPawnQuestInfoList.::MtArray::mLength = static_cast<u32>(0);
+    mPawnQuestInfoList.mpArray = nullptr;
+    mPawnQuestInfoList.mBufsiz = 0;
+    mPawnQuestInfoList.mLength = 0;
 }
 
 // Address: 0x00151840 - 0x00151cc7 (1159 bytes)
@@ -193,35 +193,37 @@ __attribute__((weak)) void cPawnQuestManager::callbackOrder(u32 errorCode) {
 // Also emitted as: _ZN17cPawnQuestManagerD0Ev at 0x00152230
 cPawnQuestManager::~cPawnQuestManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPawnQuestInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPawnQuestInfoList.mLength != 0) {
         // inferred: the value the loop at 0x1521b0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
+        u32 v0_0 = mPawnQuestInfoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPawnQuestInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPawnQuestInfoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPawnQuestInfoList.::MtArray::mLength) {
-                    v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPawnQuestInfoList.mpArray[i0_3] != nullptr) {
+                delete mPawnQuestInfoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPawnQuestInfoList.mLength) {
+                    v0_0 = mPawnQuestInfoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPawnQuestInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPawnQuestInfoList.::MtArray::mpArray));
+    if (mPawnQuestInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPawnQuestInfoList.mpArray));
     }
-    this->mPawnQuestInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPawnQuestInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPawnQuestInfoList.::MtArray::mLength = static_cast<u32>(0);
+    mPawnQuestInfoList.mpArray = nullptr;
+    mPawnQuestInfoList.mBufsiz = 0;
+    mPawnQuestInfoList.mLength = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnQuestManager::MyDTI cPawnQuestManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPawnQuestManager.cpp at 0x0015261f-0x0015265c (called at cPawnQuestManager.cpp:30)
@@ -259,7 +261,7 @@ const MtDTI& cPawnQuestManager::cPawnQuestInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPawnQuestManager::cPawnQuestInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::cPawnQuestInfo::DTI)->memAlloc(sz, align, ::cPawnQuestManager::cPawnQuestInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnQuestManager::cPawnQuestInfo::DTI)->memAlloc(sz, align, cPawnQuestManager::cPawnQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -274,7 +276,7 @@ inline void* cPawnQuestManager::cPawnQuestInfo::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPawnQuestManager::cPawnQuestInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::cPawnQuestInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPawnQuestManager::cPawnQuestInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -298,54 +300,54 @@ inline void cPawnQuestManager::cPawnQuestInfo::operator delete(void* p_addr) {
 // Address: 0x001523e0 - 0x001523e4 (4 bytes)
 u32 cPawnQuestManager::cPawnQuestInfo::getItemId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam01;
+    return mParam01;
 }
 
 // Address: 0x001523f0 - 0x001523f4 (4 bytes)
 u32 cPawnQuestManager::cPawnQuestInfo::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam02;
+    return mParam02;
 }
 
 // Address: 0x00152400 - 0x00152404 (4 bytes)
 u32 cPawnQuestManager::cPawnQuestInfo::getEnemyGroupId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam01;
+    return mParam01;
 }
 
 // Address: 0x00152410 - 0x00152414 (4 bytes)
 u32 cPawnQuestManager::cPawnQuestInfo::getEnemyLv() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam02;
+    return mParam02;
 }
 
 // Address: 0x00152420 - 0x00152424 (4 bytes)
 u32 cPawnQuestManager::cPawnQuestInfo::getEnemyNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam03;
+    return mParam03;
 }
 
 // Address: 0x00152430 - 0x00152435 (5 bytes)
 u8 cPawnQuestManager::cPawnQuestInfo::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mType;
+    return mType;
 }
 
 // Address: 0x00152440 - 0x0015244e (14 bytes)
 void cPawnQuestManager::cPawnQuestInfo::setEnemyInfo(u32 enemyGroupId, u32 enemyLv, u32 enemyNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = static_cast<u8>(1);
-    this->mParam01 = enemyGroupId;
-    this->mParam02 = enemyLv;
-    this->mParam03 = enemyNum;
+    mType = 1;
+    mParam01 = enemyGroupId;
+    mParam02 = enemyLv;
+    mParam03 = enemyNum;
 }
 
 // Address: 0x00152450 - 0x0015245b (11 bytes)
 void cPawnQuestManager::cPawnQuestInfo::setDeliverInfo(u32 itemId, u32 itemNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mType = static_cast<u8>(2);
-    this->mParam01 = itemId;
-    this->mParam02 = itemNum;
+    mType = 2;
+    mParam01 = itemId;
+    mParam02 = itemNum;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (57 bytes)
@@ -366,6 +368,8 @@ cPawnQuestManager::cPawnQuestInfo::~cPawnQuestInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnQuestManager::cPawnQuestInfo::MyDTI cPawnQuestManager::cPawnQuestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPawnQuestManager.cpp at 0x0015265c-0x00152699 (called at cPawnQuestManager.cpp:462)
 //   in _GLOBAL__sub_I_cPawnQuestManager.cpp at 0x0015265c-0x00152699 (called at cPawnQuestManager.h:142)
@@ -374,7 +378,7 @@ cPawnQuestManager::cPawnQuestInfo::~cPawnQuestInfo() {
 // Address: 0x001522f0 - 0x00152361 (113 bytes)
 MtObject* cPawnQuestManager::cPawnQuestInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnQuestManager::cPawnQuestInfo;
+    return new (16u) cPawnQuestManager::cPawnQuestInfo;
 }
 
 // Instance at 0x0197b3a0 - 0x0197b3a5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

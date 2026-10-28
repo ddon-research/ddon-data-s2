@@ -11,7 +11,7 @@
 // Address: 0x007c20a0 - 0x007c20d6 (54 bytes)
 nIMEPS4::CandidateDispInfo::CandidateDispInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mDispList[0][0]), static_cast<int>(0), static_cast<size_t>(1120));
+    ::memset(static_cast<void*>(&mDispList[0][0]), 0, 1120ul);
 }
 
 // Address: 0x007c20e0 - 0x007c20e5 (5 bytes)
@@ -30,7 +30,7 @@ __attribute__((weak)) nIMEPS4::CandidateDispInfo& nIMEPS4::CandidateDispInfo::op
 void nIMEPS4::CandidateDispInfo::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::nIME::CandidateDispInfo::clear();
-    ::memset(static_cast<void*>(&this->mDispList[0][0]), static_cast<int>(0), static_cast<size_t>(1120));
+    ::memset(static_cast<void*>(&mDispList[0][0]), 0, 1120ul);
 }
 
 // Address: 0x007c2180 - 0x007c21a6 (38 bytes)
@@ -49,26 +49,26 @@ __attribute__((weak)) MT_CWSTR nIMEPS4::CandidateDispInfo::getDispString(u32 dis
 // Address: 0x007c21e0 - 0x007c21e6 (6 bytes)
 u32 nIMEPS4::CandidateDispInfo::getDispNumMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(10);
+    return 10;
 }
 
 // Address: 0x007c1ee0 - 0x007c1f3b (91 bytes)
 nIMEPS4::InputInfo::InputInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEditAreaPropertys[3].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[3].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[2].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[3].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[2].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[2].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[1].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[1].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[0].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[1].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[0].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[0].index = static_cast<uint32_t>(0);
-    this->mEditCaretIndex = static_cast<uint32_t>(0);
-    this->mEditAreaNum = static_cast<uint32_t>(0);
+    mEditAreaPropertys[3].index = 0;
+    mEditAreaPropertys[3].length = 0;
+    mEditAreaPropertys[2].length = 0;
+    mEditAreaPropertys[3].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[2].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[2].index = 0;
+    mEditAreaPropertys[1].index = 0;
+    mEditAreaPropertys[1].length = 0;
+    mEditAreaPropertys[0].length = 0;
+    mEditAreaPropertys[1].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[0].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[0].index = 0;
+    mEditCaretIndex = 0;
+    mEditAreaNum = 0;
 }
 
 // Address: 0x007c1f40 - 0x007c1f45 (5 bytes)
@@ -87,26 +87,26 @@ __attribute__((weak)) nIMEPS4::InputInfo& nIMEPS4::InputInfo::operator=(const nI
 // Address: 0x007c1fc0 - 0x007c1ff9 (57 bytes)
 void nIMEPS4::InputInfo::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEditAreaPropertys[3].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[3].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[2].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[3].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[2].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[2].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[1].index = static_cast<uint32_t>(0);
-    this->mEditAreaPropertys[1].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[0].length = static_cast<int32_t>(0);
-    this->mEditAreaPropertys[1].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[0].mode = static_cast<SceImeTextAreaMode>(0);
-    this->mEditAreaPropertys[0].index = static_cast<uint32_t>(0);
-    this->mEditCaretIndex = static_cast<uint32_t>(0);
-    this->mEditAreaNum = static_cast<uint32_t>(0);
+    mEditAreaPropertys[3].index = 0;
+    mEditAreaPropertys[3].length = 0;
+    mEditAreaPropertys[2].length = 0;
+    mEditAreaPropertys[3].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[2].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[2].index = 0;
+    mEditAreaPropertys[1].index = 0;
+    mEditAreaPropertys[1].length = 0;
+    mEditAreaPropertys[0].length = 0;
+    mEditAreaPropertys[1].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[0].mode = ::SCE_IME_TEXT_AREA_MODE_DISABLE;
+    mEditAreaPropertys[0].index = 0;
+    mEditCaretIndex = 0;
+    mEditAreaNum = 0;
 }
 
 // Address: 0x007c2000 - 0x007c2004 (4 bytes)
 u32 nIMEPS4::InputInfo::getCaretIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEditCaretIndex;
+    return mEditCaretIndex;
 }
 
 // Address: 0x007c2010 - 0x007c2084 (116 bytes)

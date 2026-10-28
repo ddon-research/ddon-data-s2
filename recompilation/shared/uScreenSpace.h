@@ -28,6 +28,7 @@ class cDraw;
 namespace nDraw { class Texture; }
 namespace nPrim { class PrimVertex; }
 class rRenderTargetTexture;
+class sOmManager;
 class uCamera;
 
 // Declarations
@@ -44,6 +45,8 @@ using u32 = unsigned int;
 
 class uScreenSpace : public cUnit
 {
+    // inferred: sOmManager::cClanEmblemTextureCtrl::setup names uScreenSpace::mpRenderTarget, through its enclosing class sOmManager
+    friend class sOmManager;
 public:
     enum eTexSize
     {

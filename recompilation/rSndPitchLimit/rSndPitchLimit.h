@@ -107,10 +107,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cSndPitchLimitData::cSndPitchLimitData() {
-    this->mVoiceType = static_cast<u32>(1);
-    this->mSex = static_cast<u32>(0);
-    this->mLimitUpper = static_cast<s32>(0);
-    this->mLimitDowner = static_cast<s32>(0);
+    this->mVoiceType = 1;
+    this->mSex = 0;
+    this->mLimitUpper = 0;
+    this->mLimitDowner = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

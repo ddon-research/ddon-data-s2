@@ -86,7 +86,7 @@ const MtDTI& cOutlineParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOutlineParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOutlineParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOutlineParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,6 +114,8 @@ __attribute__((weak)) void cOutlineParam::createProperty(MtPropertyList& s) {
     DDON_STUB("cOutlineParam::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOutlineParam::MyDTI cOutlineParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOutlineParamList.cpp at 0x006c92ac-0x006c92e9 (called at rOutlineParamList.cpp:295)
@@ -149,7 +151,7 @@ const MtDTI& rOutlineParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOutlineParamList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOutlineParamList::DTI)->memAlloc(sz, align, ::rOutlineParamList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOutlineParamList::DTI)->memAlloc(sz, align, rOutlineParamList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,7 +166,7 @@ inline void* rOutlineParamList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rOutlineParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOutlineParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOutlineParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,8 +180,8 @@ inline void rOutlineParamList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rOutlineParamList::rOutlineParamList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mParamList.mAutoDelete = true;
+    setAttribute(18u);
+    mParamList.mAutoDelete = true;
 }
 
 // Address: 0x006c8d90 - 0x006c8e41 (177 bytes)
@@ -203,15 +205,15 @@ __attribute__((weak)) void rOutlineParamList::clear() {
 // Address: 0x006c9020 - 0x006c90a1 (129 bytes)
 bool rOutlineParamList::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x006c90b0 - 0x006c9136 (134 bytes)
 bool rOutlineParamList::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rOutlineParamList::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rOutlineParamList::DTI));
 }
 
 // Address: 0x01aaae50 - 0x01aaae58 (8 bytes)
@@ -232,6 +234,8 @@ __attribute__((weak)) const cOutlineParam* const rOutlineParamList::getParam(sEf
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOutlineParamList::MyDTI rOutlineParamList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOutlineParamList.cpp at 0x006c926f-0x006c92ac (called at rOutlineParamList.cpp:294)
 //   in _GLOBAL__sub_I_rOutlineParamList.cpp at 0x006c926f-0x006c92ac (called at rOutlineParamList.h:105)
@@ -240,6 +244,6 @@ __attribute__((weak)) const cOutlineParam* const rOutlineParamList::getParam(sEf
 // Address: 0x006c87b0 - 0x006c8834 (132 bytes)
 MtObject* rOutlineParamList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOutlineParamList;
+    return new (16u) rOutlineParamList;
 }
 

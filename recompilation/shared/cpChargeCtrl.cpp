@@ -26,7 +26,7 @@ const MtDTI& cpChargeCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpChargeCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpChargeCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpChargeCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpChargeCtrl::getAllocator() {
 // Address: 0x004924a0 - 0x004924e0 (64 bytes)
 void* cpChargeCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpChargeCtrl::getAllocator()->memAlloc(sz, align, ::cpChargeCtrl::DTI.::MtDTI::getID());
+    return cpChargeCtrl::getAllocator()->memAlloc(sz, align, cpChargeCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpChargeCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpChargeCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpChargeCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpChargeCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,8 +78,8 @@ cpChargeCtrl::~cpChargeCtrl() {
 // Address: 0x00492670 - 0x00492690 (32 bytes)
 void cpChargeCtrl::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
-    this->mpModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
+    this->cpComponent::setup();
+    mpModel = static_cast<uDDOModel*>(getOwner());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (301 bytes)
@@ -90,7 +90,7 @@ void cpChargeCtrl::setup() {
 // Address: 0x004926a0 - 0x004926a5 (5 bytes)
 void cpChargeCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x004926b0 - 0x0049280a (346 bytes)
@@ -107,7 +107,7 @@ __attribute__((weak)) void cpChargeCtrl::update(f32 deltaTime) {
 // Address: 0x004929e0 - 0x00492a7e (158 bytes)
 void cpChargeCtrl::endCharge() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->::cpChargeCtrl::init();
+    init();
 }
 
 // Address: 0x00492880 - 0x0049298a (266 bytes)
@@ -120,15 +120,15 @@ __attribute__((weak)) void cpChargeCtrl::setupChargeStart(u8 maxLevel, bool flg,
 // Address: 0x00492990 - 0x004929af (31 bytes)
 void cpChargeCtrl::setChargeParm(u8 level, f32 chargeMax, f32 chargeSpeed, f32 justTimeMax) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mChargeMax_Gi[level] = chargeMax;
-    this->mChargeSpeed_Gi[level] = chargeSpeed;
-    this->mJustTimeMax.elems[(level <= static_cast<u8>(4)) ? level : static_cast<u8>(0)] = justTimeMax;
+    mChargeMax_Gi[level] = chargeMax;
+    mChargeSpeed_Gi[level] = chargeSpeed;
+    mJustTimeMax.elems[(level <= 4) ? level : static_cast<u8>(0)] = justTimeMax;
 }
 
 // Address: 0x004929b0 - 0x004929b5 (5 bytes)
 void cpChargeCtrl::requestChargeStart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCharging = true;
+    mIsCharging = true;
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (29 bytes)
@@ -155,10 +155,10 @@ void cpChargeCtrl::requestChargeStart() {
 // Address: 0x004929c0 - 0x004929da (26 bytes)
 void cpChargeCtrl::requestChargeMaxSoon() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsCharging == false) {
+    if (!mIsCharging) {
         return;
     }
-    this->mCharge_Gi[this->mNowChargeLevel] = this->mChargeMax_Gi[this->mNowChargeLevel];
+    mCharge_Gi[mNowChargeLevel] = mChargeMax_Gi[mNowChargeLevel];
 }
 
 // No out-of-line body: no code in the ELF
@@ -222,8 +222,8 @@ __attribute__((weak)) f32 cpChargeCtrl::getChargeSpeedHosei() {
 bool cpChargeCtrl::cheackJust() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mNowChargeLevel != static_cast<u8>(0)) {
-        if (this->mJustTimeMax.elems[(static_cast<unsigned int>(this->mNowChargeLevel - static_cast<int>(1)) <= static_cast<unsigned int>(4)) ? static_cast<unsigned int>(this->mNowChargeLevel - static_cast<int>(1)) : static_cast<unsigned int>(0)] > this->mJustCheck) {
+    if (mNowChargeLevel != 0) {
+        if (mJustTimeMax.elems[(static_cast<unsigned int>(mNowChargeLevel - 1) <= 4) ? static_cast<unsigned int>(mNowChargeLevel - 1) : 0u] > mJustCheck) {
             return true;
         }
     }
@@ -242,8 +242,8 @@ __attribute__((weak)) f32 cpChargeCtrl::getMinJustTime() {
 f32 cpChargeCtrl::getMaxJustTime() {
     // DWARF local not rendered: f32 nokori;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mChargeMax_Gi[this->mNowChargeLevel] - this->mCharge_Gi[this->mNowChargeLevel]) > 0.0f) {
-        return (this->mChargeMax_Gi[this->mNowChargeLevel] - this->mCharge_Gi[this->mNowChargeLevel]) / this->mChargeSpeed_Gi[this->mNowChargeLevel];
+    if ((mChargeMax_Gi[mNowChargeLevel] - mCharge_Gi[mNowChargeLevel]) > 0.0f) {
+        return (mChargeMax_Gi[mNowChargeLevel] - mCharge_Gi[mNowChargeLevel]) / mChargeSpeed_Gi[mNowChargeLevel];
     } else {
         return 0.0f;
     }
@@ -276,11 +276,11 @@ void cpChargeCtrl::chargeCut(f32 bairitu) {
     // DWARF local not rendered: f32 charge;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x492b37 read, used twice; no DWARF local holds it
-    float t0 = this->mCharge_Gi[this->mNowChargeLevel];
-    f32 chargeMax = this->mChargeMax_Gi[this->mNowChargeLevel];
-    this->mCharge_Gi[this->mNowChargeLevel] = t0 * bairitu;
+    float t0 = mCharge_Gi[mNowChargeLevel];
+    f32 chargeMax = mChargeMax_Gi[mNowChargeLevel];
+    mCharge_Gi[mNowChargeLevel] = t0 * bairitu;
     if ((t0 * bairitu) > chargeMax) {
-        this->mCharge_Gi[this->mNowChargeLevel] = chargeMax;
+        mCharge_Gi[mNowChargeLevel] = chargeMax;
     }
 }
 
@@ -340,6 +340,8 @@ void cpChargeCtrl::chargeCut(f32 bairitu) {
 // No out-of-line body: 1 inlined copy in 1 function (36 bytes)
 //   in cPlActWpnBow::moveCharge at 0x00225abe-0x00225ae2 (called at cHumanActBow.cpp:3122)
 // void cpChargeCtrl::chargeReset();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpChargeCtrl::MyDTI cpChargeCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpChargeCtrl.cpp at 0x00492c5f-0x00492c9c (called at cpChargeCtrl.cpp:28)

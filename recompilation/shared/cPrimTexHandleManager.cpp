@@ -30,7 +30,7 @@ const MtDTI& cPrimTexHandleManager::getDTI() const {
 // Address: 0x0132c230 - 0x0132c270 (64 bytes)
 void* cPrimTexHandleManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cPrimTexHandleManager::DTI)->memAlloc(sz, align, ::cPrimTexHandleManager::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cPrimTexHandleManager::DTI)->memAlloc(sz, align, cPrimTexHandleManager::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,11 +64,11 @@ cPrimTexHandleManager::cPrimTexHandleManager(u32 max_tex) {
 // Also emitted as: _ZN21cPrimTexHandleManagerD0Ev at 0x0132c420
 cPrimTexHandleManager::~cPrimTexHandleManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTexture == static_cast<nPrim::Texture*>(nullptr)) {
+    if (mpTexture == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::cPrimTexHandleManager::DTI)->memFree(static_cast<void*>(this->mpTexture));
-    this->mpTexture = static_cast<nPrim::Texture*>(nullptr);
+    MtMemoryAllocator::getAllocator(cPrimTexHandleManager::DTI)->memFree(static_cast<void*>(mpTexture));
+    mpTexture = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,6 +100,8 @@ __attribute__((weak)) void cPrimTexHandleManager::createProperty(MtPropertyList&
     DDON_STUB("cPrimTexHandleManager::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrimTexHandleManager::MyDTI cPrimTexHandleManager::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimTexHandleManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

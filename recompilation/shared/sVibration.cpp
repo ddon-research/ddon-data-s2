@@ -46,7 +46,7 @@ const MtDTI& sVibration::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10sVibrationD0Ev at 0x012ad57e-0x012ad59f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sVibration::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sVibration::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sVibration::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,13 +109,13 @@ __attribute__((weak)) void sVibration::createProperty(MtPropertyList& s) {
 // Address: 0x012af100 - 0x012af105 (5 bytes)
 MtUI* sVibration::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x01ba9540 - 0x01ba9545 (5 bytes)
 rVibration* sVibration::getVibration() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpVibration;
+    return mpVibration;
 }
 
 // Address: 0x012aee70 - 0x012aeead (61 bytes)
@@ -138,7 +138,7 @@ u32 sVibration::getPadVibrationNum() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x51e from const sVibration*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x5de from const sVibration*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return static_cast<unsigned int>(((((((static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(158))) & static_cast<unsigned short>(1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(350))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(542))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(734))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(926))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1118))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1310))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1502))) & static_cast<unsigned short>(1)));
+    return static_cast<unsigned int>(((((((static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 158)) & 1) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 350)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 542)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 734)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 926)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 1118)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 1310)) & 1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + 1502)) & 1));
 }
 
 // Address: 0x012aef10 - 0x012aef6c (92 bytes)
@@ -154,7 +154,7 @@ u32 sVibration::getCameraVibrationNum() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x45c from const sVibration*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x51c from const sVibration*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x5dc from const sVibration*
-    return (((((((((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(156))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(348))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(540))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(732))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(924))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1116))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1308))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1500))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1));
+    return (((((((((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 156)) >> 17) & 1u) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 348)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 540)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 732)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 924)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 1116)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 1308)) >> 17) & 1u)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 1500)) >> 17) & 1u);
 }
 
 // Address: 0x01ba9550 - 0x01ba9551 (1 bytes)
@@ -266,19 +266,19 @@ __attribute__((weak)) MtMatrix sVibration::getCameraVibrationViewMatrix(u32 View
 // Address: 0x01ba9560 - 0x01ba9567 (7 bytes)
 u32 sVibration::getPadViewportNo(u32 No) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPadViewportNo[No];
+    return mPadViewportNo[No];
 }
 
 // Address: 0x012aef70 - 0x012aef95 (37 bytes)
 void sVibration::setPadViewportNo(u32 ViewportNo, u32 No) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ViewportNo <= static_cast<u32>(7)) {
-        this->mPadViewportNo[No] = ViewportNo;
+    if (ViewportNo <= 7u) {
+        mPadViewportNo[No] = ViewportNo;
     } else {
-        if (this->mPadViewportNo[No] != static_cast<unsigned int>(0)) {
-            this->mPadViewportNo[No] = static_cast<unsigned int>(0);
+        if (mPadViewportNo[No] != 0) {
+            mPadViewportNo[No] = 0;
         } else {
-            this->mPadViewportNo[No] = static_cast<unsigned int>(7);
+            mPadViewportNo[No] = 7;
         }
     }
 }
@@ -286,19 +286,19 @@ void sVibration::setPadViewportNo(u32 ViewportNo, u32 No) {
 // Address: 0x01ba9570 - 0x01ba9576 (6 bytes)
 u32 sVibration::getPadNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x012afe00 - 0x012afe06 (6 bytes)
 u32 sVibration::getDefaultVibPad() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x012afe10 - 0x012afe16 (6 bytes)
 u32 sVibration::getDefaultVibCamera() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x012aefa0 - 0x012af089 (233 bytes)
@@ -310,7 +310,7 @@ __attribute__((weak)) void sVibration::doRequest() {
 // Address: 0x012af0f0 - 0x012af0fa (10 bytes)
 void sVibration::doFinish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sVibration::finishVibAll(this->mVibFinishTime);
+    finishVibAll(mVibFinishTime);
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,7 +330,7 @@ void sVibration::doFinish() {
 // Address: 0x012afe20 - 0x012afe2f (15 bytes)
 u64 sVibration::getTimer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (::sMain::mpInstance)->mTimer;
+    return (sMain::mpInstance)->mTimer;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -341,6 +341,11 @@ u64 sVibration::getTimer() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sVibration::clearVibParam();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sVibration::MyDTI sVibration::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sVibration* sVibration::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sVibration::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -358,11 +363,11 @@ __attribute__((weak)) MtObject* sVibration::MyDTI::newInstance() const {
 // Also emitted as: _ZN10sVibration10VibControlD0Ev at 0x012b0120
 sVibration::VibControl::~VibControl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpVibration == static_cast<rVibration*>(nullptr)) {
+    if (mpVibration == nullptr) {
         return;
     }
-    this->mpVibration->::cResource::release();
-    this->mpVibration = static_cast<rVibration*>(nullptr);
+    mpVibration->release();
+    mpVibration = nullptr;
 }
 
 // Address: 0x012afe30 - 0x012b00c5 (661 bytes)
@@ -513,6 +518,16 @@ sVibration::VibFlag::~VibFlag() {
 
 // No out-of-line body: no code in the ELF
 // void sVibration::VibFlag::setCamVibFlag(u32, u32, u32, u32, u32, u32, u32, u32);
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sVibration::VibFlag sVibration::VibFlag::Pad1;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sVibration::VibFlag sVibration::VibFlag::Pad2;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sVibration::VibFlag sVibration::VibFlag::Pad3;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sVibration::VibFlag sVibration::VibFlag::Pad4;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const sVibration::VibFlag sVibration::VibFlag::All;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sVibration::PadVibration::PadVibration();

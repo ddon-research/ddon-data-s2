@@ -25,7 +25,7 @@ const MtDTI& CDataScreenShotCategory::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataScreenShotCategory::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataScreenShotCategory::DTI);
+    return MtMemoryAllocator::getAllocator(CDataScreenShotCategory::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* CDataScreenShotCategory::getAllocator() {
 // Address: 0x003dd540 - 0x003dd580 (64 bytes)
 void* CDataScreenShotCategory::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataScreenShotCategory::getAllocator()->memAlloc(sz, align, ::CDataScreenShotCategory::DTI.::MtDTI::getID());
+    return CDataScreenShotCategory::getAllocator()->memAlloc(sz, align, CDataScreenShotCategory::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* CDataScreenShotCategory::operator new(size_t sz, u32 align) {
 // Address: 0x003dd5b0 - 0x003dd5da (42 bytes)
 __attribute__((weak)) void CDataScreenShotCategory::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataScreenShotCategory::getAllocator()->memFree(p_addr);
+    CDataScreenShotCategory::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataScreenShotCategory::operator delete(void* p_addr
 // No out-of-line body: no code in the ELF
 // CDataScreenShotCategory::CDataScreenShotCategory(u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataScreenShotCategory::MyDTI CDataScreenShotCategory::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f77e-0x0041f7b7 (called at ScreenShotImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f77e-0x0041f7b7 (called at ScreenShot.h:21)
@@ -79,6 +81,6 @@ __attribute__((weak)) void CDataScreenShotCategory::operator delete(void* p_addr
 // Address: 0x003dd4f0 - 0x003dd53f (79 bytes)
 MtObject* CDataScreenShotCategory::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataScreenShotCategory;
+    return new (16u) CDataScreenShotCategory;
 }
 

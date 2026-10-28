@@ -49,7 +49,7 @@ const MtDTI& cJointEx2::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cJointEx2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cJointEx2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (120 bytes)
@@ -70,19 +70,21 @@ inline void cJointEx2::operator delete(void* p_addr) {
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 cJointEx2::cJointEx2() {
     // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
-    this->mJntNo = static_cast<u8>(0);
-    this->mRefJntNo = static_cast<u8>(0);
-    this->mAxis = static_cast<u8>(7);
-    this->mRate = 0.5f;
-    this->mTwistRate = 0.0f;
-    this->mRotAdd = ::MtVector3::Zero;
-    this->mLimitAxis = static_cast<u8>(0);
-    this->mLimitMin = 0.0f;
-    this->mLimitMax = 0.0f;
+    mJntNo = 0;
+    mRefJntNo = 0;
+    mAxis = 7;
+    mRate = 0.5f;
+    mTwistRate = 0.0f;
+    mRotAdd = MtVector3::Zero;
+    mLimitAxis = 0;
+    mLimitMin = 0.0f;
+    mLimitMax = 0.0f;
 }
 
 // Defined in the class (its body was written in a header).
 // cJointEx2::~cJointEx2();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cJointEx2::MyDTI cJointEx2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJointEx2.cpp at 0x0068f410-0x0068f452 (called at rJointEx2.cpp:39)
@@ -118,7 +120,7 @@ const MtDTI& rJointEx2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJointEx2::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJointEx2::DTI)->memAlloc(sz, align, ::rJointEx2::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJointEx2::DTI)->memAlloc(sz, align, rJointEx2::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,7 +135,7 @@ inline void* rJointEx2::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rJointEx2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJointEx2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJointEx2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -172,7 +174,7 @@ MT_CTSTR rJointEx2::getExt() const {
 // Address: 0x01a968c0 - 0x01a968c6 (6 bytes)
 u32 rJointEx2::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x0068f360 - 0x0068f404 (164 bytes)
@@ -180,6 +182,8 @@ __attribute__((weak)) bool rJointEx2::loadCore(MtDataReader& r) {
     DDON_STUB("rJointEx2::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJointEx2::MyDTI rJointEx2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJointEx2.cpp at 0x0068f452-0x0068f48f (called at rJointEx2.cpp:40)
@@ -189,7 +193,7 @@ __attribute__((weak)) bool rJointEx2::loadCore(MtDataReader& r) {
 // Address: 0x0068f150 - 0x0068f1b4 (100 bytes)
 MtObject* rJointEx2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJointEx2;
+    return new (16u) rJointEx2;
 }
 
 // Instance at 0x01a96870 - 0x01a96882 (18 bytes) of the generic rTbl2<T>::getData

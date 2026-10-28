@@ -34,7 +34,7 @@ const MtDTI& rCollisionHeightField::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK21rCollisionHeightField5MyDTI11newInstanceEv at 0x01207f90-0x01207fbd, code DWARF attributes to no inlined copy; sz is the class's size (184), align the allocation's other whole constant (16)
 inline void* rCollisionHeightField::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCollisionHeightField::DTI)->memAlloc(sz, align, ::rCollisionHeightField::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rCollisionHeightField::DTI)->memAlloc(sz, align, rCollisionHeightField::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rCollisionHeightField::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN21rCollisionHeightFieldD0Ev at 0x01208114-0x01208135, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCollisionHeightField::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCollisionHeightField::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCollisionHeightField::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void rCollisionHeightField::operator delete(void* p_addr) {
 // Also emitted as: _ZN21rCollisionHeightFieldD0Ev at 0x012080f0
 rCollisionHeightField::~rCollisionHeightField() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rCollisionHeightField::clear();
+    this->rCollisionHeightField::clear();
 }
 
 // Address: 0x01208140 - 0x01208557 (1047 bytes)
@@ -195,7 +195,7 @@ __attribute__((weak)) void rCollisionHeightField::getCellGroupTriangleAndRect(Mt
 // Address: 0x01209310 - 0x01209321 (17 bytes)
 const rCollisionHeightField::cCellGroup& rCollisionHeightField::getCellGroup(u32 CellGroupIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCellGroupArray[CellGroupIndex];
+    return mpCellGroupArray[CellGroupIndex];
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,13 +265,15 @@ __attribute__((weak)) void rCollisionHeightField::allocateNativeMemoryCell(u32 C
 // No out-of-line body: no code in the ELF
 // void rCollisionHeightField::setDummyU32(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCollisionHeightField::MyDTI rCollisionHeightField::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rCollisionHeightField::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01207f90 - 0x01208034 (164 bytes)
 MtObject* rCollisionHeightField::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCollisionHeightField;
+    return new (16u) rCollisionHeightField;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

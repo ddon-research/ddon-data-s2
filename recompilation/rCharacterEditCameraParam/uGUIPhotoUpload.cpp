@@ -32,7 +32,7 @@ const MtDTI& uGUIPhotoUpload::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPhotoUpload::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPhotoUpload::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIPhotoUpload::getAllocator() {
 // Address: 0x00b422f0 - 0x00b42330 (64 bytes)
 void* uGUIPhotoUpload::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPhotoUpload::getAllocator()->memAlloc(sz, align, ::uGUIPhotoUpload::DTI.::MtDTI::getID());
+    return uGUIPhotoUpload::getAllocator()->memAlloc(sz, align, uGUIPhotoUpload::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIPhotoUpload::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPhotoUpload::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPhotoUpload::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,14 +81,14 @@ uGUIPhotoUpload::~uGUIPhotoUpload() {
 // Address: 0x00b426a0 - 0x00b42725 (133 bytes)
 bool uGUIPhotoUpload::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_PHOTO_UPLOAD_GUI"), static_cast<u32>(129), static_cast<t64>(1436407822)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PHOTO_UPLOAD_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_PHOTO_UPLOAD_GUI"), 129u, 1436407822l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_PHOTO_UPLOAD_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_PHOTO_UPLOAD_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_PHOTO_UPLOAD_GMD", 0u);
     }
 }
 
@@ -114,16 +114,16 @@ __attribute__((weak)) void uGUIPhotoUpload::setup() {
 // Address: 0x00b439a0 - 0x00b439f1 (81 bytes)
 void uGUIPhotoUpload::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (17 bytes)
@@ -133,21 +133,21 @@ void uGUIPhotoUpload::kill() {
 // Address: 0x00b43a00 - 0x00b43a25 (37 bytes)
 void uGUIPhotoUpload::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    if (mpGUISystemMsg == nullptr) {
         return;
     }
-    if (this->mpGUISystemMsg->::cUnit::isEnable() != false) {
+    if (mpGUISystemMsg->isEnable()) {
         return;
     }
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    mpGUISystemMsg = nullptr;
 }
 
 // Address: 0x00b43960 - 0x00b43996 (54 bytes)
 void uGUIPhotoUpload::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPhotoUpload::adjustCursor();
-    this->::uGUIPhotoUpload::updateWait();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoUpload::updateWait);
+    adjustCursor();
+    updateWait();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoUpload::updateWait);
 }
 
 // Address: 0x00b43a40 - 0x00b43ba4 (356 bytes)
@@ -159,34 +159,34 @@ __attribute__((weak)) void uGUIPhotoUpload::updateWait() {
 // Address: 0x00b44090 - 0x00b44099 (9 bytes)
 void uGUIPhotoUpload::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b440a0 - 0x00b44136 (150 bytes)
 void uGUIPhotoUpload::moveInput() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<unsigned int>(this->mProc) <= static_cast<unsigned int>(10)) {
-        if (((static_cast<unsigned long>(12) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-            if (((static_cast<unsigned long>(48) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                if (((static_cast<unsigned long>(1536) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-                    if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
-                        this->mpButtonCtrl->execute();
+    if (static_cast<unsigned int>(mProc) <= 10) {
+        if (((12ul >> (static_cast<unsigned long>(mProc) & 31)) & 1ul) == 0) {
+            if (((48ul >> (static_cast<unsigned long>(mProc) & 31)) & 1ul) == 0) {
+                if (((1536ul >> (static_cast<unsigned long>(mProc) & 31)) & 1ul) != 0) {
+                    if (mpButtonCtrl != nullptr) {
+                        mpButtonCtrl->execute();
                     }
                 }
             } else {
-                this->mReference.mPulldown.::uGUIBase::cReferenceUIPullDown::execute();
-                this->mReference.mComment.::uGUIBase::cReferenceUITextBox::execute();
+                mReference.mPulldown.execute();
+                mReference.mComment.execute();
             }
         } else {
-            if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                this->mpHCtrl->execute();
+            if (mpHCtrl != nullptr) {
+                mpHCtrl->execute();
             }
-            if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                this->mpVCtrl->execute();
+            if (mpVCtrl != nullptr) {
+                mpVCtrl->execute();
             }
-            this->mReference.mPulldown.::uGUIBase::cReferenceUIPullDown::execute();
-            this->mReference.mComment.::uGUIBase::cReferenceUITextBox::execute();
+            mReference.mPulldown.execute();
+            mReference.mComment.execute();
         }
     }
 }
@@ -320,22 +320,22 @@ __attribute__((weak)) u32 uGUIPhotoUpload::evCtrlDecide(cControl::Message* msg) 
 // Address: 0x01afad90 - 0x01afada2 (18 bytes)
 u32 uGUIPhotoUpload::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x01afadb0 - 0x01afadc2 (18 bytes)
 u32 uGUIPhotoUpload::evCtrlAdjustCursorV(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x01afad70 - 0x01afad82 (18 bytes)
 u32 uGUIPhotoUpload::evCtrlAdjustCursorH(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00b434b0 - 0x00b435c9 (281 bytes)
@@ -350,6 +350,8 @@ __attribute__((weak)) u32 uGUIPhotoUpload::evCtrlMouse(cControl::Message* msg) {
 
 // No out-of-line body: no code in the ELF
 // s32 uGUIPhotoUpload::getCtrlPos(cControl*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPhotoUpload::MyDTI uGUIPhotoUpload::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPhotoUpload.cpp at 0x00b448ef-0x00b4492c (called at uGUIPhotoUpload.cpp:50)
@@ -399,7 +401,7 @@ const MtDTI& uGUIPhotoUpload::cCate::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIPhotoUpload::cCate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::cCate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPhotoUpload::cCate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -420,6 +422,8 @@ inline void uGUIPhotoUpload::cCate::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // uGUIPhotoUpload::cCate::~cCate();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPhotoUpload::cCate::MyDTI uGUIPhotoUpload::cCate::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPhotoUpload.cpp at 0x00b4492c-0x00b44969 (called at uGUIPhotoUpload.cpp:51)

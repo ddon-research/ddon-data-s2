@@ -67,19 +67,19 @@ cZoneContents::~cZoneContents() {
 // Address: 0x01066f40 - 0x01066f45 (5 bytes)
 void cZoneContents::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cZoneContents::createPropertyContentsBase(s);
+    createPropertyContentsBase(s);
 }
 
 // Address: 0x01067280 - 0x01067289 (9 bytes)
 void cZoneContents::createPropertyForUI(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->createProperty(s);
+    createProperty(s);
 }
 
 // Address: 0x01067290 - 0x01067295 (5 bytes)
 void cZoneContents::copy(cZoneContents* pContents) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nZone::cContentsPool::copyObjectProperty(static_cast<MtObject*>(this), static_cast<MtObject*>(pContents));
+    nZone::cContentsPool::copyObjectProperty(static_cast<MtObject*>(this), static_cast<MtObject*>(pContents));
 }
 
 // Address: 0x010672a0 - 0x0106746c (460 bytes)
@@ -174,12 +174,14 @@ __attribute__((weak)) void cZoneContents::setExtendObjectDTI(const MtDTI& NewExt
 // Address: 0x01067720 - 0x0106774c (44 bytes)
 void cZoneContents::copyMainFromGame(cZoneContents* pSourceContents) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->copyResource(pSourceContents) != false) {
+    if (copyResource(pSourceContents)) {
         return;
     }
-    this->copy(pSourceContents);
-    this->mIsNativeData = false;
+    copy(pSourceContents);
+    mIsNativeData = false;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cZoneContents::MyDTI cZoneContents::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cZoneContents::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

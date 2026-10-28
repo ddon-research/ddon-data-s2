@@ -39,7 +39,7 @@ const MtDTI& cCharacterEditPresetPalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::cCharacterEditPresetPalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, cCharacterEditPresetPalette::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (84 bytes)
@@ -55,7 +55,7 @@ inline void* cCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharacterEditPresetPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditPresetPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -81,6 +81,8 @@ inline void cCharacterEditPresetPalette::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cCharacterEditPresetPalette::~cCharacterEditPresetPalette();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditPresetPalette::MyDTI cCharacterEditPresetPalette::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditPresetPalette.cpp at 0x00654180-0x006541c2 (called at rCharacterEditPresetPalette.cpp:39)
 //   in _GLOBAL__sub_I_rCharacterEditPresetPalette.cpp at 0x00654180-0x006541c2 (called at rCharacterEditPresetPalette.h:51)
@@ -89,7 +91,7 @@ inline void cCharacterEditPresetPalette::operator delete(void* p_addr) {
 // Address: 0x00653e20 - 0x00653e7c (92 bytes)
 MtObject* cCharacterEditPresetPalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharacterEditPresetPalette;
+    return new (16u) cCharacterEditPresetPalette;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rCharacterEditPresetPalette::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::rCharacterEditPresetPalette::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditPresetPalette::DTI)->memAlloc(sz, align, rCharacterEditPresetPalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCharacterEditPresetPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEditPresetPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEditPresetPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -159,11 +161,11 @@ bool rCharacterEditPresetPalette::loadData(MtDataReader& r, cCharacterEditPreset
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    pData->::cCharacterEditPaletteBase::loadData(r);
-    ::nDDOIO::readData(r, pData->mUID);
+    pData->loadData(r);
+    nDDOIO::readData(r, pData->mUID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mPath);
+    nDDOIO::readData(r, pData->mPath);
     return true;
 }
 
@@ -176,7 +178,7 @@ MT_CTSTR rCharacterEditPresetPalette::getExt() const {
 // Address: 0x01a7e9b0 - 0x01a7e9b6 (6 bytes)
 u32 rCharacterEditPresetPalette::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(34);
+    return 34;
 }
 
 // Address: 0x00654010 - 0x0065417b (363 bytes)
@@ -184,6 +186,8 @@ __attribute__((weak)) bool rCharacterEditPresetPalette::loadCore(MtDataReader& r
     DDON_STUB("rCharacterEditPresetPalette::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditPresetPalette::MyDTI rCharacterEditPresetPalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditPresetPalette.cpp at 0x006541c2-0x006541ff (called at rCharacterEditPresetPalette.cpp:40)
@@ -193,7 +197,7 @@ __attribute__((weak)) bool rCharacterEditPresetPalette::loadCore(MtDataReader& r
 // Address: 0x00653ef0 - 0x00653f54 (100 bytes)
 MtObject* rCharacterEditPresetPalette::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditPresetPalette;
+    return new (16u) rCharacterEditPresetPalette;
 }
 
 // Instance at 0x01a7e960 - 0x01a7e972 (18 bytes) of the generic rTbl2<T>::getData

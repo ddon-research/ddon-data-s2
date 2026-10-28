@@ -182,3 +182,9 @@ namespace nNetwork {
         static MyDTI DTI;
     };
 }  // namespace nNetwork
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK8nNetwork10TagChecker10RpcSyncReq5MyDTI11newInstanceEv at 0x011a3070-0x011a3095, code DWARF attributes to no inlined copy
+inline nNetwork::TagChecker::RpcSyncReq::RpcSyncReq() {
+    this->::cRemoteCall::mAttribute = 0;
+}

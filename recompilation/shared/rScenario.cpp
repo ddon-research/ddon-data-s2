@@ -37,7 +37,7 @@ const MtDTI& cScenarioData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cScenarioData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cScenarioData::DTI)->memAlloc(sz, align, ::cScenarioData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cScenarioData::DTI)->memAlloc(sz, align, cScenarioData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* cScenarioData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cScenarioData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cScenarioData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cScenarioData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,19 +72,19 @@ inline void cScenarioData::operator delete(void* p_addr) {
 // Also emitted as: _ZN13cScenarioDataD0Ev at 0x006f8240
 cScenarioData::~cScenarioData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpParam != static_cast<cScenarioParam*>(nullptr)) {
-        delete this->mpParam;
-        this->mpParam = static_cast<cScenarioParam*>(nullptr);
+    if (mpParam != nullptr) {
+        delete mpParam;
+        mpParam = nullptr;
     }
-    if (this->mpShape != static_cast<AreaHitShape*>(nullptr)) {
-        delete this->mpShape;
-        this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    if (mpShape != nullptr) {
+        delete mpShape;
+        mpShape = nullptr;
     }
-    if (this->mpArg == static_cast<cScenarioArg*>(nullptr)) {
+    if (mpArg == nullptr) {
         return;
     }
-    delete this->mpArg;
-    this->mpArg = static_cast<cScenarioArg*>(nullptr);
+    delete mpArg;
+    mpArg = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (138 bytes)
@@ -112,6 +112,8 @@ __attribute__((weak)) void cScenarioData::createProperty(MtPropertyList& s) {
 //   in cScenario::copyData at 0x00558af4-0x00558af8 (called at cScenario.cpp:904)
 // cScenarioArg* cScenarioData::getArg();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cScenarioData::MyDTI cScenarioData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rScenario.cpp at 0x006f8632-0x006f866f (called at rScenario.cpp:117)
 //   in _GLOBAL__sub_I_rScenario.cpp at 0x006f8632-0x006f866f (called at rScenario.h:82)
@@ -120,7 +122,7 @@ __attribute__((weak)) void cScenarioData::createProperty(MtPropertyList& s) {
 // Address: 0x006f80e0 - 0x006f813f (95 bytes)
 MtObject* cScenarioData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cScenarioData;
+    return new (16u) cScenarioData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,7 +148,7 @@ const MtDTI& rScenario::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rScenario::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rScenario::DTI)->memAlloc(sz, align, ::rScenario::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rScenario::DTI)->memAlloc(sz, align, rScenario::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,7 +163,7 @@ inline void* rScenario::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rScenario::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rScenario::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rScenario::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,7 +177,7 @@ inline void rScenario::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rScenario::rScenario() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
+    setAttribute(18u);
 }
 
 // Address: 0x006f7cb0 - 0x006f7d61 (177 bytes)
@@ -206,56 +208,60 @@ __attribute__((weak)) void rScenario::createProperty(MtPropertyList& s) {
 // Address: 0x006f7f30 - 0x006f7f35 (5 bytes)
 MtUI* rScenario::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x006f7f40 - 0x006f7fc1 (129 bytes)
 bool rScenario::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x006f7fd0 - 0x006f804e (126 bytes)
 bool rScenario::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    sz.::MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    MtSerializer sz(65536);
+    sz.MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     return true;
 }
 
 // Address: 0x006f8050 - 0x006f80d8 (136 bytes)
 void rScenario::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x6f8070 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.mLength) {
-                    v0_0 = this->mArray.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.mBufsiz = static_cast<u32>(0);
-    this->mArray.mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rScenario::MyDTI rScenario::DTI;
+
+// Not defined (relocated bytes): MT_CTSTR rScenario::mSubExt[4];
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rScenario.cpp at 0x006f85f0-0x006f8632 (called at rScenario.cpp:27)
@@ -265,6 +271,6 @@ void rScenario::clear() {
 // Address: 0x006f7ba0 - 0x006f7c24 (132 bytes)
 MtObject* rScenario::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rScenario;
+    return new (16u) rScenario;
 }
 

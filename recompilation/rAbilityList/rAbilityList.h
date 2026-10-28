@@ -269,14 +269,20 @@ inline cAbilityData::cAbilityData() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cAbilityData::getParamNum() const {
+    return this->mParamArray.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cAbilityParam::cAbilityParam() {
-    this->mParamType = static_cast<s32>(0);
-    this->mCorrectType = static_cast<s32>(0);
+    this->mParamType = 0;
+    this->mCorrectType = 0;
     this->mParamDataArray.::MtArray::mAutoDelete = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cAbilityParam::cParamData::cParamData() {
-    this->mLv = static_cast<s32>(1);
-    this->mParam = static_cast<s32>(0);
+    this->mLv = 1;
+    this->mParam = 0;
 }

@@ -89,3 +89,15 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpLockOn::setGpCategory at 0x4cdbdc-0x4cdbdf; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGeneralPoint::setReqCategory(s32 category) {
+    this->mCategoryReq = category;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGeneralPoint::releasePoint at 0x789a35-0x789a39; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cGeneralPoint::reqKill() {
+    this->mKillReq = true;
+}

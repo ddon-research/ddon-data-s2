@@ -42,7 +42,7 @@ const MtDTI& uGeometry2Base::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14uGeometry2BaseD0Ev at 0x0131128e-0x013112af, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry2Base::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2Base::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2Base::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,6 +64,8 @@ uGeometry2Base::uGeometry2Base() {
 uGeometry2Base::~uGeometry2Base() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGeometry2Base::MyDTI uGeometry2Base::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2Base::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

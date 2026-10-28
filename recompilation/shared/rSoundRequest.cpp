@@ -46,7 +46,7 @@ const MtDTI& rSoundRequest::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rSoundRequestD0Ev at 0x012007e9-0x0120080a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundRequest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundRequest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,28 +112,28 @@ MT_CTSTR rSoundRequest::getExt() const {
 rSoundRequest::Element* rSoundRequest::getElement(u32 reqNo) const {
     // DWARF local not rendered: u16 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (this->mpReqNoToIndexTbl != static_cast<u16*>(nullptr)) {
-        if (reqNo < this->mReqNoToIndexTblNum) {
-            if (this->mpReqNoToIndexTbl[reqNo] != static_cast<unsigned short>(65535)) {
-                return &this->mpElement[this->mpReqNoToIndexTbl[reqNo]];
+    if (mpReqNoToIndexTbl != nullptr) {
+        if (reqNo < mReqNoToIndexTblNum) {
+            if (mpReqNoToIndexTbl[reqNo] != 0xFFFF) {
+                return &mpElement[mpReqNoToIndexTbl[reqNo]];
             }
         }
-        return static_cast<rSoundRequest::Element*>(nullptr);
+        return nullptr;
     }
-    if (this->mElementNum == static_cast<u32>(0)) {
-        return static_cast<rSoundRequest::Element*>(nullptr);
+    if (mElementNum == 0) {
+        return nullptr;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    rSoundRequest::Element* p2 = this->mpElement;
+    Element* p2 = mpElement;
     do {
         if (p2->mReqNo == reqNo) {
             return p2;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i < this->mElementNum);
-    return static_cast<rSoundRequest::Element*>(nullptr);
+    } while (i < mElementNum);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,6 +182,8 @@ __attribute__((weak)) bool rSoundRequest::createReqNoToIndexTbl() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundRequest::memFree(void* p_addr);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundRequest::MyDTI rSoundRequest::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rSoundRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

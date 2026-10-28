@@ -24,7 +24,7 @@ const MtDTI& CDataGoodsParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGoodsParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGoodsParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGoodsParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataGoodsParam::getAllocator() {
 // Address: 0x003dad70 - 0x003dadb0 (64 bytes)
 void* CDataGoodsParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGoodsParam::getAllocator()->memAlloc(sz, align, ::CDataGoodsParam::DTI.::MtDTI::getID());
+    return CDataGoodsParam::getAllocator()->memAlloc(sz, align, CDataGoodsParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* CDataGoodsParam::operator new(size_t sz, u32 align) {
 // Address: 0x003dade0 - 0x003dae0a (42 bytes)
 __attribute__((weak)) void CDataGoodsParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGoodsParam::getAllocator()->memFree(p_addr);
+    CDataGoodsParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataGoodsParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataGoodsParam::CDataGoodsParam(u32, u32, u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGoodsParam::MyDTI CDataGoodsParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ef41-0x0041ef7a (called at ShopImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ef41-0x0041ef7a (called at Shop.h:21)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataGoodsParam::operator delete(void* p_addr) {
 // Address: 0x003dad10 - 0x003dad68 (88 bytes)
 MtObject* CDataGoodsParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGoodsParam;
+    return new (16u) CDataGoodsParam;
 }
 

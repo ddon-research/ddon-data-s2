@@ -47,7 +47,7 @@ const MtDTI& sPad::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4sPadD0Ev at 0x012532de-0x012532ff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sPad::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sPad::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sPad::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,32 +97,32 @@ __attribute__((weak)) void sPad::move() {
 void sPad::setRepeat(u32 no, u32 start_time, u32 next_time) {
     // DWARF local not rendered: PAD_REPEAT* pRep;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mPad[no].Repeat.Start = static_cast<unsigned short>(start_time);
-    this->mPad[no].Repeat.Next2 = static_cast<unsigned short>(start_time + (((start_time < next_time) ? start_time : next_time) * static_cast<u32>(65535)));
-    this->mPad[no].Repeat.Timer[20] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[21] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[22] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[23] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[16] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[17] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[18] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[19] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[12] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[13] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[14] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[15] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[8] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[9] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[10] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[11] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[4] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[5] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[6] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[7] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[0] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[1] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[2] = static_cast<unsigned short>(0);
-    this->mPad[no].Repeat.Timer[3] = static_cast<unsigned short>(0);
+    mPad[no].Repeat.Start = static_cast<unsigned short>(start_time);
+    mPad[no].Repeat.Next2 = static_cast<unsigned short>(start_time + (((start_time < next_time) ? start_time : next_time) * 0xFFFFu));
+    mPad[no].Repeat.Timer[20] = 0;
+    mPad[no].Repeat.Timer[21] = 0;
+    mPad[no].Repeat.Timer[22] = 0;
+    mPad[no].Repeat.Timer[23] = 0;
+    mPad[no].Repeat.Timer[16] = 0;
+    mPad[no].Repeat.Timer[17] = 0;
+    mPad[no].Repeat.Timer[18] = 0;
+    mPad[no].Repeat.Timer[19] = 0;
+    mPad[no].Repeat.Timer[12] = 0;
+    mPad[no].Repeat.Timer[13] = 0;
+    mPad[no].Repeat.Timer[14] = 0;
+    mPad[no].Repeat.Timer[15] = 0;
+    mPad[no].Repeat.Timer[8] = 0;
+    mPad[no].Repeat.Timer[9] = 0;
+    mPad[no].Repeat.Timer[10] = 0;
+    mPad[no].Repeat.Timer[11] = 0;
+    mPad[no].Repeat.Timer[4] = 0;
+    mPad[no].Repeat.Timer[5] = 0;
+    mPad[no].Repeat.Timer[6] = 0;
+    mPad[no].Repeat.Timer[7] = 0;
+    mPad[no].Repeat.Timer[0] = 0;
+    mPad[no].Repeat.Timer[1] = 0;
+    mPad[no].Repeat.Timer[2] = 0;
+    mPad[no].Repeat.Timer[3] = 0;
 }
 
 // No out-of-line body: 118 inlined copies in 65 functions (1121 bytes)
@@ -141,7 +141,7 @@ __attribute__((weak)) void sPad::createProperty(MtPropertyList& s) {
 // Address: 0x012541d0 - 0x012541d5 (5 bytes)
 MtUI* sPad::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -475,6 +475,11 @@ __attribute__((weak)) void sPad::clearInputData() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sPad::MyDTI sPad::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sPad* sPad::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sPad::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -539,7 +544,7 @@ sPad::Pad::~Pad() {
 // Address: 0x0124f390 - 0x0124f395 (5 bytes)
 MtUI* sPad::Pad::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0124f3a0 - 0x012514a0 (8448 bytes)
@@ -694,21 +699,21 @@ __attribute__((weak)) void sPad::Pad::createProperty(MtPropertyList& s) {
 // Address: 0x012514c0 - 0x012514f9 (57 bytes)
 void sPad::Pad::vibLow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sPad::Pad::setVibList(&this->Vib.List_low[0], this->mVibStartValue, this->mVibEndValue, this->mVibTime);
-    this->mTriggerVibLow = false;
+    setVibList(&Vib.List_low[0], mVibStartValue, mVibEndValue, mVibTime);
+    mTriggerVibLow = false;
 }
 
 // Address: 0x01251500 - 0x01251536 (54 bytes)
 void sPad::Pad::vibHigh() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sPad::Pad::setVibList(&this->Vib.List_high[0], this->mVibStartValue, this->mVibEndValue, this->mVibTime);
-    this->mTriggerVibHigh = false;
+    setVibList(&Vib.List_high[0], mVibStartValue, mVibEndValue, mVibTime);
+    mTriggerVibHigh = false;
 }
 
 // Address: 0x01251540 - 0x01251548 (8 bytes)
 void sPad::Pad::stopVib() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestVib = static_cast<u8>(1);
+    mRequestVib = 1;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -720,13 +725,13 @@ void sPad::Pad::stopVib() {
 // Address: 0x012514a0 - 0x012514bb (27 bytes)
 void sPad::Pad::detect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sPad::mpInstance)->::sPad::open(this->Info.Pad_no, static_cast<u32>(8));
+    (sPad::mpInstance)->sPad::open(Info.Pad_no, 8u);
 }
 
 // Address: 0x01ba00e0 - 0x01ba00e5 (5 bytes)
 u16 sPad::Pad::getRepeatStart() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->Repeat.Start;
+    return Repeat.Start;
 }
 
 // Address: 0x01ba00f0 - 0x01ba010e (30 bytes)
@@ -739,7 +744,7 @@ __attribute__((weak)) void sPad::Pad::setRepeatStart(u16 n) {
 // Address: 0x01ba0110 - 0x01ba011c (12 bytes)
 u16 sPad::Pad::getRepeatTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<unsigned short>(this->Repeat.Start + (this->Repeat.Next2 * static_cast<int>(65535)));
+    return static_cast<unsigned short>(Repeat.Start + (Repeat.Next2 * 0xFFFF));
 }
 
 // Address: 0x01ba0120 - 0x01ba0133 (19 bytes)
@@ -774,7 +779,7 @@ __attribute__((weak)) void sPad::Pad::initData() {
 // Address: 0x01251710 - 0x01251726 (22 bytes)
 void sPad::Pad::initVib() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->Vib), static_cast<int>(0), static_cast<size_t>(268));
+    memset(static_cast<void*>(&Vib), 0, 268ul);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -787,6 +792,8 @@ __attribute__((weak)) bool sPad::Pad::readPad() {
     DDON_STUB("sPad::Pad::readPad")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sPad::Pad::MyDTI sPad::Pad::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sPad::Pad::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

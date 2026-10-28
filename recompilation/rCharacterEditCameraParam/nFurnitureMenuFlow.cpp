@@ -60,6 +60,8 @@
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // nFurnitureMenuFlow::cElement::~cElement();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nFurnitureMenuFlow::cElement::MyDTI nFurnitureMenuFlow::cElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_nFurnitureMenuFlow.cpp at 0x0016f62d-0x0016f66d (called at nFurnitureMenuFlow.cpp:110)
 //   in _GLOBAL__sub_I_nFurnitureMenuFlow.cpp at 0x0016f62d-0x0016f66d (called at nFurnitureMenuFlow.h:35)
@@ -81,7 +83,7 @@ nFurnitureMenuFlow::cFurnitureGroupListItems::cFurnitureGroupListItems() {
 // Also emitted as: _ZN18nFurnitureMenuFlow24cFurnitureGroupListItemsD0Ev at 0x0016ddc0
 nFurnitureMenuFlow::cFurnitureGroupListItems::~cFurnitureGroupListItems() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nFurnitureMenuFlow::cFurnitureGroupListItems::release();
+    release();
 }
 
 // Address: 0x0016de00 - 0x0016e1a3 (931 bytes)
@@ -101,42 +103,42 @@ __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureGroupListItems::init(co
 // Address: 0x0016dd20 - 0x0016ddbc (156 bytes)
 __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureGroupListItems::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mFurnitureGroups != static_cast<rFurnitureGroup*>(nullptr)) {
-        this->mFurnitureGroups->::cResource::release();
-        this->mFurnitureGroups = static_cast<rFurnitureGroup*>(nullptr);
+    if (mFurnitureGroups != nullptr) {
+        mFurnitureGroups->release();
+        mFurnitureGroups = nullptr;
     }
-    if (this->mFurnitureGroupNames != static_cast<rGUIMessage*>(nullptr)) {
-        this->mFurnitureGroupNames->::cResource::release();
-        this->mFurnitureGroupNames = static_cast<rGUIMessage*>(nullptr);
+    if (mFurnitureGroupNames != nullptr) {
+        mFurnitureGroupNames->release();
+        mFurnitureGroupNames = nullptr;
     }
-    if (this->mItems.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mItems.mLength != 0) {
         // inferred: the value the loop at 0x16dd60 carries; no location-less local in scope fits
-        u32 v0_0 = this->mItems.::MtArray::mLength;
+        u32 v0_0 = mItems.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mItems.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mItems.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mItems.::MtArray::mLength) {
-                    v0_0 = this->mItems.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mItems.mpArray[i0_3] != nullptr) {
+                delete mItems.mpArray[i0_3];
+                if ((i0_3 + 1u) < mItems.mLength) {
+                    v0_0 = mItems.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mItems.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mItems.::MtArray::mpArray));
+    if (mItems.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mItems.mpArray));
     }
-    this->mItems.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mItems.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mItems.::MtArray::mLength = static_cast<u32>(0);
+    mItems.mpArray = nullptr;
+    mItems.mBufsiz = 0;
+    mItems.mLength = 0;
 }
 
 // Address: 0x0016e590 - 0x0016e5c7 (55 bytes)
@@ -148,12 +150,12 @@ u32 nFurnitureMenuFlow::cFurnitureGroupListItems::getGroupId(u32 itemIndex) cons
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
-    if (itemIndex < this->getItemNum()) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) + static_cast<unsigned long>(itemIndex * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) + static_cast<unsigned long>(itemIndex * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+    if (itemIndex < getItemNum()) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + static_cast<unsigned long>(itemIndex * 8u)) + 0)) != 0) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + static_cast<unsigned long>(itemIndex * 8u)) + 0)) + 8);
         }
     }
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x0016e5d0 - 0x0016e669 (153 bytes)
@@ -168,7 +170,7 @@ __attribute__((weak)) u32 nFurnitureMenuFlow::cFurnitureGroupListItems::getCamer
 // Address: 0x0016e680 - 0x0016e684 (4 bytes)
 u32 nFurnitureMenuFlow::cFurnitureGroupListItems::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItems.::MtArray::mLength;
+    return mItems.mLength;
 }
 
 // Address: 0x0016e690 - 0x0016e772 (226 bytes)
@@ -189,9 +191,9 @@ bool nFurnitureMenuFlow::cFurnitureGroupListItems::isItemDisable(u32 itemIndex) 
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from unsigned long
-    if (itemIndex < this->getItemNum()) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) + static_cast<unsigned long>(itemIndex * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) + static_cast<unsigned long>(itemIndex * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(16))) != static_cast<unsigned char>(0);
+    if (itemIndex < getItemNum()) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + static_cast<unsigned long>(itemIndex * 8u)) + 0)) != 0) {
+            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 48)) + static_cast<unsigned long>(itemIndex * 8u)) + 0)) + 16)) != 0;
         }
     }
     return false;
@@ -205,8 +207,8 @@ bool nFurnitureMenuFlow::cFurnitureGroupListItems::isItemDisable(u32 itemIndex) 
 // Address: 0x0016e550 - 0x0016e583 (51 bytes)
 bool nFurnitureMenuFlow::cFurnitureGroupListItems::PredicateItem(const nFurnitureMenuFlow::cFurnitureGroupListItems::cItem* a, const nFurnitureMenuFlow::cFurnitureGroupListItems::cItem* b, u32 param) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (a != static_cast<const nFurnitureMenuFlow::cFurnitureGroupListItems::cItem*>(nullptr)) {
-        if (b != static_cast<const nFurnitureMenuFlow::cFurnitureGroupListItems::cItem*>(nullptr)) {
+    if (a != nullptr) {
+        if (b != nullptr) {
             // inferred: a temporary for the result of the call at 0x16e569, used once; no DWARF local holds it
             u32 t0 = a->getSortNo();
             // inferred: a temporary for the result of the call at 0x16e575, used once; no DWARF local holds it
@@ -241,7 +243,7 @@ const MtDTI& nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::getDTI() const
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -284,8 +286,10 @@ nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::~cItem() {
 // Address: 0x0016e8f0 - 0x0016e8f4 (4 bytes)
 u32 nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::getSortNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSortNo;
+    return mSortNo;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::MyDTI nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nFurnitureMenuFlow.cpp at 0x0016f66d-0x0016f6a6 (called at nFurnitureMenuFlow.cpp:266)
@@ -295,7 +299,7 @@ u32 nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::getSortNo() const {
 // Address: 0x0016e7c0 - 0x0016e812 (82 bytes)
 MtObject* nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem;
+    return new (16u) ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem;
 }
 
 // Address: 0x0016e900 - 0x0016e94f (79 bytes)
@@ -308,7 +312,7 @@ nFurnitureMenuFlow::cFurnitureListItems::cFurnitureListItems() {
 // Also emitted as: _ZN18nFurnitureMenuFlow19cFurnitureListItemsD0Ev at 0x0016ea30
 nFurnitureMenuFlow::cFurnitureListItems::~cFurnitureListItems() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::nFurnitureMenuFlow::cFurnitureListItems::release();
+    release();
 }
 
 // Address: 0x0016e1b0 - 0x0016e53a (906 bytes)
@@ -337,43 +341,43 @@ __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureListItems::init(u32 fur
 // Address: 0x0016e980 - 0x0016ea2c (172 bytes)
 __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureListItems::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mGroupId = static_cast<u32>(4294967295);
-    if (this->mFurnitureLayouts != static_cast<rFurnitureLayout*>(nullptr)) {
-        this->mFurnitureLayouts->::cResource::release();
-        this->mFurnitureLayouts = static_cast<rFurnitureLayout*>(nullptr);
+    mGroupId = 0xFFFFFFFF;
+    if (mFurnitureLayouts != nullptr) {
+        mFurnitureLayouts->release();
+        mFurnitureLayouts = nullptr;
     }
-    if (this->mFurnitureLayoutNames != static_cast<rGUIMessage*>(nullptr)) {
-        this->mFurnitureLayoutNames->::cResource::release();
-        this->mFurnitureLayoutNames = static_cast<rGUIMessage*>(nullptr);
+    if (mFurnitureLayoutNames != nullptr) {
+        mFurnitureLayoutNames->release();
+        mFurnitureLayoutNames = nullptr;
     }
-    if (this->mItems.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mItems.mLength != 0) {
         // inferred: the value the loop at 0x16e9d0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mItems.::MtArray::mLength;
+        u32 v0_0 = mItems.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mItems.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mItems.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mItems.::MtArray::mLength) {
-                    v0_0 = this->mItems.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mItems.mpArray[i0_3] != nullptr) {
+                delete mItems.mpArray[i0_3];
+                if ((i0_3 + 1u) < mItems.mLength) {
+                    v0_0 = mItems.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mItems.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mItems.::MtArray::mpArray));
+    if (mItems.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mItems.mpArray));
     }
-    this->mItems.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mItems.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mItems.::MtArray::mLength = static_cast<u32>(0);
+    mItems.mpArray = nullptr;
+    mItems.mBufsiz = 0;
+    mItems.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -390,7 +394,7 @@ __attribute__((weak)) u32 nFurnitureMenuFlow::cFurnitureListItems::getItemId(u32
 // Address: 0x0016e540 - 0x0016e544 (4 bytes)
 u32 nFurnitureMenuFlow::cFurnitureListItems::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItems.::MtArray::mLength;
+    return mItems.mLength;
 }
 
 // Address: 0x0016ef30 - 0x0016f02a (250 bytes)
@@ -474,8 +478,8 @@ __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureListItems::add(const nF
 // Address: 0x0016edf0 - 0x0016ee23 (51 bytes)
 bool nFurnitureMenuFlow::cFurnitureListItems::PredicateInfo(const nFurnitureMenuFlow::cFurnitureListItems::cInfo* a, const nFurnitureMenuFlow::cFurnitureListItems::cInfo* b, u32 param) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (a != static_cast<const nFurnitureMenuFlow::cFurnitureListItems::cInfo*>(nullptr)) {
-        if (b != static_cast<const nFurnitureMenuFlow::cFurnitureListItems::cInfo*>(nullptr)) {
+    if (a != nullptr) {
+        if (b != nullptr) {
             // inferred: a temporary for the result of the call at 0x16ee09, used once; no DWARF local holds it
             u32 t0 = a->getSortNo();
             // inferred: a temporary for the result of the call at 0x16ee15, used once; no DWARF local holds it
@@ -489,8 +493,8 @@ bool nFurnitureMenuFlow::cFurnitureListItems::PredicateInfo(const nFurnitureMenu
 // Address: 0x0016edb0 - 0x0016ede3 (51 bytes)
 bool nFurnitureMenuFlow::cFurnitureListItems::PredicateItem(const nFurnitureMenuFlow::cFurnitureListItems::cItem* a, const nFurnitureMenuFlow::cFurnitureListItems::cItem* b, u32 param) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (a != static_cast<const nFurnitureMenuFlow::cFurnitureListItems::cItem*>(nullptr)) {
-        if (b != static_cast<const nFurnitureMenuFlow::cFurnitureListItems::cItem*>(nullptr)) {
+    if (a != nullptr) {
+        if (b != nullptr) {
             // inferred: a temporary for the result of the call at 0x16edc9, used once; no DWARF local holds it
             u32 t0 = a->getSortNo();
             // inferred: a temporary for the result of the call at 0x16edd5, used once; no DWARF local holds it
@@ -522,10 +526,11 @@ const MtDTI& nFurnitureMenuFlow::cFurnitureListItems::cItem::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nFurnitureMenuFlow::cFurnitureListItems::cItem::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in nFurnitureMenuFlow::cFurnitureListItems::add at 0x0016eb4c-0x0016eb75 (called at nFurnitureMenuFlow.cpp:628)
-//   in nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::newInstance at 0x0016f3d4-0x0016f3fd (called at nFurnitureMenuFlow.cpp:689)
-// void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new[](size_t sz, u32 align);
@@ -568,8 +573,10 @@ nFurnitureMenuFlow::cFurnitureListItems::cItem::~cItem() {
 // Address: 0x0016f550 - 0x0016f554 (4 bytes)
 u32 nFurnitureMenuFlow::cFurnitureListItems::cItem::getSortNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSortNo;
+    return mSortNo;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nFurnitureMenuFlow.cpp at 0x0016f6df-0x0016f718 (called at nFurnitureMenuFlow.cpp:689)
@@ -577,9 +584,9 @@ u32 nFurnitureMenuFlow::cFurnitureListItems::cItem::getSortNo() const {
 // nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0016f3d0 - 0x0016f447 (119 bytes)
-__attribute__((weak)) MtObject* nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::newInstance() const {
-    DDON_STUB("nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::newInstance() const {
+    // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (16u) ::nFurnitureMenuFlow::cFurnitureListItems::cItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -648,8 +655,10 @@ nFurnitureMenuFlow::cFurnitureListItems::cInfo::~cInfo() {
 // Address: 0x0016f3c0 - 0x0016f3c4 (4 bytes)
 u32 nFurnitureMenuFlow::cFurnitureListItems::cInfo::getSortNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParam.mSortNo;
+    return mParam.mSortNo;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nFurnitureMenuFlow::cFurnitureListItems::cInfo::MyDTI nFurnitureMenuFlow::cFurnitureListItems::cInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_nFurnitureMenuFlow.cpp at 0x0016f6a6-0x0016f6df (called at nFurnitureMenuFlow.cpp:662)

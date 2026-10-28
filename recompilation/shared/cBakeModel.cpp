@@ -59,7 +59,7 @@ const MtDTI& cBakeModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cBakeModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBakeModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBakeModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,28 +81,28 @@ inline void cBakeModel::operator delete(void* p_addr) {
 // Address: 0x01950c80 - 0x01950d38 (184 bytes)
 void cBakeModel::initialize() {
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    this->mStat = static_cast<u32>(0);
-    this->mpPrimitiveInfo = static_cast<rModel::PRIMITIVE_INFO*>(nullptr);
-    this->mPrimitiveInfoNum = static_cast<u32>(0);
-    this->mTempVertexBufferSize = static_cast<u32>(0);
-    this->mpTempVertexBuffer = static_cast<u8*>(nullptr);
-    this->mpIndexBuffer = static_cast<nDraw::IndexBuffer*>(nullptr);
-    this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
-    this->mpModel = static_cast<rModel*>(nullptr);
-    this->mMaterialNum = static_cast<u32>(0);
-    this->mpaNukiMaterials = static_cast<nDraw::Material* *>(nullptr);
-    this->mpaMaterials = static_cast<nDraw::Material* *>(nullptr);
-    ::memset(static_cast<void*>(&this->mConvertJointForCE[0]), static_cast<int>(0), static_cast<size_t>(1025));
-    ::memset(static_cast<void*>(&this->mpCommandCache[0]), static_cast<int>(0), static_cast<size_t>(1152));
-    ::memset(static_cast<void*>(&this->mCacheThread[0]), static_cast<int>(255), static_cast<size_t>(384));
-    this->mQuantPosScale = 1.0f;
+    mStat = 0;
+    mpPrimitiveInfo = nullptr;
+    mPrimitiveInfoNum = 0;
+    mTempVertexBufferSize = 0;
+    mpTempVertexBuffer = nullptr;
+    mpIndexBuffer = nullptr;
+    mpVertexBuffer = nullptr;
+    mpModel = nullptr;
+    mMaterialNum = 0;
+    mpaNukiMaterials = nullptr;
+    mpaMaterials = nullptr;
+    memset(static_cast<void*>(&mConvertJointForCE[0]), 0, 1025ul);
+    memset(static_cast<void*>(&mpCommandCache[0]), 0, 1152ul);
+    memset(static_cast<void*>(&mCacheThread[0]), 255, 384ul);
+    mQuantPosScale = 1.0f;
 }
 
 // Address: 0x01950c10 - 0x01950c23 (19 bytes)
 // Also emitted as: _ZN10cBakeModelD0Ev at 0x01950c30
 cBakeModel::~cBakeModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cBakeModel::finalize();
+    this->cBakeModel::finalize();
 }
 
 // Address: 0x0002d960 - 0x0002da4e (238 bytes)
@@ -161,22 +161,22 @@ void cBakeModel::buildJointIndexTable(uModel* pumodel) {
     // DWARF local not rendered: u32 jno;
     // DWARF local not rendered: u32 iMod;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpModel != static_cast<rModel*>(nullptr)) {
-        if (pumodel != static_cast<uModel*>(nullptr)) {
-            if (pumodel->::cUnit::isEnable() != false) {
-                if (pumodel->::uBaseModel::mpModel != static_cast<rModel*>(nullptr)) {
-                    if (this->mpModel->::rModel::getJointNum() != static_cast<u32>(0)) {
+    if (mpModel != nullptr) {
+        if (pumodel != nullptr) {
+            if (pumodel->isEnable()) {
+                if (pumodel->mpModel != nullptr) {
+                    if (mpModel->getJointNum() != 0) {
                         // inferred: the value the loop at 0x31480 carries; no location-less local in scope fits
-                        u32 v0_0 = this->mpModel->::rModel::getJointNum();
+                        u32 v0_0 = mpModel->getJointNum();
                         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-                        const rModel::JOINT_INFO* p0_1 = this->mpModel->::rModel::getJointInfo();
+                        const rModel::JOINT_INFO* p0_1 = mpModel->getJointInfo();
                         // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-                        for (unsigned char* p0_3 = &this->mOrgToMod[0];;) {
+                        for (unsigned char* p0_3 = &mOrgToMod[0];;) {
                             *p0_3 = pumodel->mJointTable[p0_1->no];
-                            if ((v0_0 - static_cast<u32>(1)) != static_cast<u32>(0)) {
-                                v0_0 += static_cast<u32>(4294967295);
-                                p0_1 += static_cast<int>(1);
-                                p0_3 += static_cast<int>(1);
+                            if ((v0_0 - 1u) != 0) {
+                                v0_0 += 0xFFFFFFFFu;
+                                p0_1 += 1;
+                                p0_3 += 1;
                             } else {
                                 break;
                             }
@@ -344,24 +344,24 @@ __attribute__((weak)) bool cBakeModel::rebuildQuantPos(cpBakeJoint* pcallback, c
 // Address: 0x000313c0 - 0x000313cb (11 bytes)
 nDraw::Material* cBakeModel::getMaterial(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpaMaterials[index];
+    return mpaMaterials[index];
 }
 
 // Address: 0x000313d0 - 0x00031431 (97 bytes)
 void cBakeModel::setMaterial(nDraw::Material* pmaterial, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pmaterial == this->mpaMaterials[index]) {
+    if (pmaterial == mpaMaterials[index]) {
         return;
     }
-    if (this->mpaMaterials[index] != static_cast<nDraw::Material*>(nullptr)) {
-        this->mpaMaterials[index]->release();
-        this->mpaMaterials[index] = static_cast<nDraw::Material*>(nullptr);
+    if (mpaMaterials[index] != nullptr) {
+        mpaMaterials[index]->release();
+        mpaMaterials[index] = nullptr;
     }
-    this->mpaMaterials[index] = pmaterial;
-    if (pmaterial == static_cast<nDraw::Material*>(nullptr)) {
+    mpaMaterials[index] = pmaterial;
+    if (pmaterial == nullptr) {
         return;
     }
-    pmaterial->::nDraw::Resource::addRef();
+    pmaterial->addRef();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (24 bytes)
@@ -420,7 +420,7 @@ void cBakeModel::setMaterial(nDraw::Material* pmaterial, u32 index) {
 // Address: 0x01950be0 - 0x01950be6 (6 bytes)
 u32 cBakeModel::callDrawPrimWrapper(cDraw* pdraw, u32 primIdx, u32 step, u32 lodidx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Defined in the class (its body was written in a header).
@@ -429,9 +429,9 @@ u32 cBakeModel::callDrawPrimWrapper(cDraw* pdraw, u32 primIdx, u32 step, u32 lod
 // Address: 0x000314a0 - 0x000314d2 (50 bytes)
 void cBakeModel::drawIndexedPolymorphic(u32 i, cDraw* pdraw, const rModel::PRIMITIVE_INFO* pp, bool edge) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pdraw->::cDraw::beginDraw();
-    pdraw->::cDraw::drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
-    pdraw->::cDraw::endDraw();
+    pdraw->beginDraw();
+    pdraw->drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
+    pdraw->endDraw();
 }
 
 // Address: 0x000314e0 - 0x000315e4 (260 bytes)
@@ -540,6 +540,8 @@ __attribute__((weak)) void cBakeModel::issueBakedModel(cDraw* pdraw, uModel* pCa
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBakeModel::MyDTI cBakeModel::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cBakeModel.cpp at 0x0003300f-0x0003304c (called at cBakeModel.cpp:65)
 //   in _GLOBAL__sub_I_cBakeModel.cpp at 0x0003300f-0x0003304c (called at cBakeModel.h:44)
@@ -563,45 +565,45 @@ __attribute__((weak)) MtObject* cBakeModel::MyDTI::newInstance() const {
 // Address: 0x01950dd0 - 0x01950eb0 (224 bytes)
 void cBakeModelEx::initialize() {
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    this->::cBakeModel::mStat = static_cast<u32>(0);
-    this->::cBakeModel::mpPrimitiveInfo = static_cast<rModel::PRIMITIVE_INFO*>(nullptr);
-    this->::cBakeModel::mPrimitiveInfoNum = static_cast<u32>(0);
-    this->::cBakeModel::mTempVertexBufferSize = static_cast<u32>(0);
-    this->::cBakeModel::mpTempVertexBuffer = static_cast<u8*>(nullptr);
-    this->::cBakeModel::mpIndexBuffer = static_cast<nDraw::IndexBuffer*>(nullptr);
-    this->::cBakeModel::mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
-    this->::cBakeModel::mpModel = static_cast<rModel*>(nullptr);
-    this->::cBakeModel::mMaterialNum = static_cast<u32>(0);
-    this->::cBakeModel::mpaNukiMaterials = static_cast<nDraw::Material* *>(nullptr);
-    this->::cBakeModel::mpaMaterials = static_cast<nDraw::Material* *>(nullptr);
-    ::memset(static_cast<void*>(&this->::cBakeModel::mConvertJointForCE[0]), static_cast<int>(0), static_cast<size_t>(1025));
-    ::memset(static_cast<void*>(&this->::cBakeModel::mpCommandCache[0]), static_cast<int>(0), static_cast<size_t>(1152));
-    ::memset(static_cast<void*>(&this->::cBakeModel::mCacheThread[0]), static_cast<int>(255), static_cast<size_t>(384));
-    this->::cBakeModel::mQuantPosScale = 1.0f;
-    this->mpCallBack = static_cast<cpBakeJoint*>(nullptr);
-    this->mDisableSoftBody = false;
-    this->mpDeformWeightMap = static_cast<rDeformWeightMap*>(nullptr);
-    this->mpCustomSoftBody = static_cast<uCustomSimSoftBody*>(nullptr);
+    mStat = 0;
+    mpPrimitiveInfo = nullptr;
+    mPrimitiveInfoNum = 0;
+    mTempVertexBufferSize = 0;
+    mpTempVertexBuffer = nullptr;
+    mpIndexBuffer = nullptr;
+    mpVertexBuffer = nullptr;
+    mpModel = nullptr;
+    mMaterialNum = 0;
+    mpaNukiMaterials = nullptr;
+    mpaMaterials = nullptr;
+    memset(static_cast<void*>(&mConvertJointForCE[0]), 0, 1025ul);
+    memset(static_cast<void*>(&mpCommandCache[0]), 0, 1152ul);
+    memset(static_cast<void*>(&mCacheThread[0]), 255, 384ul);
+    mQuantPosScale = 1.0f;
+    mpCallBack = nullptr;
+    mDisableSoftBody = false;
+    mpDeformWeightMap = nullptr;
+    mpCustomSoftBody = nullptr;
 }
 
 // Address: 0x000329e0 - 0x00032a24 (68 bytes)
 void cBakeModelEx::finalize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cBakeModel::finalize();
-    if (this->mpCustomSoftBody != static_cast<uCustomSimSoftBody*>(nullptr)) {
-        this->mpCustomSoftBody->mIsDeleteComplete = true;
+    this->cBakeModel::finalize();
+    if (mpCustomSoftBody != nullptr) {
+        mpCustomSoftBody->mIsDeleteComplete = true;
     }
-    if (this->mpDeformWeightMap == static_cast<rDeformWeightMap*>(nullptr)) {
+    if (mpDeformWeightMap == nullptr) {
         return;
     }
-    this->mpDeformWeightMap->::cResource::release();
-    this->mpDeformWeightMap = static_cast<rDeformWeightMap*>(nullptr);
+    mpDeformWeightMap->release();
+    mpDeformWeightMap = nullptr;
 }
 
 // Address: 0x00032c00 - 0x00032c16 (22 bytes)
 bool cBakeModelEx::isEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCallerUnit->::cUnit::isEnable();
+    return mpCallerUnit->isEnable();
 }
 
 // No out-of-line body: no code in the ELF
@@ -610,7 +612,7 @@ bool cBakeModelEx::isEnable() {
 // Address: 0x00032c20 - 0x00032c2c (12 bytes)
 u32 cBakeModelEx::getJointNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCallBack->::cpBakeJoint::getSkinJointNum();
+    return mpCallBack->getSkinJointNum();
 }
 
 // Address: 0x00032c30 - 0x00032c4a (26 bytes)
@@ -622,19 +624,19 @@ __attribute__((weak)) bool cBakeModelEx::isPartsDisp(u32 no) {
 // Address: 0x00032c50 - 0x00032c5c (12 bytes)
 const MtVector3& cBakeModelEx::getPos() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCallerUnit->::uCoord::mPos;
+    return mpCallerUnit->mPos;
 }
 
 // Address: 0x00032c60 - 0x00032c6d (13 bytes)
 const MtMatrix& cBakeModelEx::getWorldNullMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCallerUnit->::uCoord::mWmat;
+    return mpCallerUnit->mWmat;
 }
 
 // Address: 0x00032c70 - 0x00032c89 (25 bytes)
 const uModel::Joint* cBakeModelEx::getJointFromIndex(s32 jointIndex) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    return &this->mpCallerUnit->mJoint[static_cast<unsigned int>(jointIndex)];
+    return &mpCallerUnit->mJoint[static_cast<unsigned int>(jointIndex)];
 }
 
 // No out-of-line body: no code in the ELF
@@ -652,18 +654,18 @@ __attribute__((weak)) void cBakeModelEx::setCustomSimSoftBody(MT_CTSTR path, Bak
 // Address: 0x00032ca0 - 0x00032cc9 (41 bytes)
 u32 cBakeModelEx::callDrawPrimWrapper(cDraw* pdraw, u32 primIdx, u32 step, u32 lodidx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDisableSoftBody == false) {
-        if (this->mpCustomSoftBody != static_cast<uCustomSimSoftBody*>(nullptr)) {
-            if ((this->mpCustomSoftBody->::uSimSoftBody::mBuildState & static_cast<u32>(6)) != static_cast<u32>(0)) {
-                return static_cast<u32>(1);
+    if (!mDisableSoftBody) {
+        if (mpCustomSoftBody != nullptr) {
+            if ((mpCustomSoftBody->mBuildState & 6u) != 0) {
+                return 1;
             } else {
-                return this->mpCustomSoftBody->::uSimSoftBody::callDrawPrim(pdraw, primIdx, step);
+                return mpCustomSoftBody->callDrawPrim(pdraw, primIdx, step);
             }
         } else {
-            return static_cast<u32>(1);
+            return 1;
         }
     } else {
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
@@ -676,8 +678,8 @@ __attribute__((weak)) void cBakeModelEx::resetSoftBodyStream(cDraw* pdraw) {
 // Address: 0x00032ba0 - 0x00032bbb (27 bytes)
 bool cBakeModelEx::checkSoftBodyResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCustomSoftBody != static_cast<uCustomSimSoftBody*>(nullptr)) {
-        return this->mpCustomSoftBody->::uSimSoftBody::mpTargetUnit != static_cast<uModel*>(nullptr);
+    if (mpCustomSoftBody != nullptr) {
+        return mpCustomSoftBody->mpTargetUnit != nullptr;
     } else {
         return false;
     }
@@ -686,19 +688,18 @@ bool cBakeModelEx::checkSoftBodyResource() {
 // Address: 0x00032ce0 - 0x00032d35 (85 bytes)
 void cBakeModelEx::drawIndexedPolymorphic(u32 i, cDraw* pdraw, const rModel::PRIMITIVE_INFO* pp, bool edge) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDisableSoftBody == false) {
-        if (this->mpCustomSoftBody != static_cast<uCustomSimSoftBody*>(nullptr)) {
-            if ((this->mpCustomSoftBody->::uSimSoftBody::mBuildState & static_cast<u32>(6)) != static_cast<u32>(0)) {
-            } else {
-                pdraw->::cDraw::beginDraw();
-                pdraw->::cDraw::drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
-                pdraw->::cDraw::endDraw();
+    if (!mDisableSoftBody) {
+        if (mpCustomSoftBody != nullptr) {
+            if ((mpCustomSoftBody->mBuildState & 6u) == 0) {
+                pdraw->beginDraw();
+                pdraw->drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
+                pdraw->endDraw();
             }
         }
     } else {
-        pdraw->::cDraw::beginDraw();
-        pdraw->::cDraw::drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
-        pdraw->::cDraw::endDraw();
+        pdraw->beginDraw();
+        pdraw->drawIndexed(pp->index_num, pp->index_ofs, pp->index_base);
+        pdraw->endDraw();
     }
 }
 
@@ -716,9 +717,9 @@ __attribute__((weak)) void cBakeModelEx::udpatePtr() {
 // Address: 0x00032bc0 - 0x00032bfd (61 bytes)
 bool cBakeModelEx::convertSoftBody() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCustomSoftBody != static_cast<uCustomSimSoftBody*>(nullptr)) {
-        this->mpCustomSoftBody->::uSimSoftBody::rebuildSkinningData(this->::cBakeModel::mpVertexBuffer, this->::cBakeModel::mpPrimitiveInfo);
-        this->mpCustomSoftBody->mBakeRebuildComplete = true;
+    if (mpCustomSoftBody != nullptr) {
+        mpCustomSoftBody->rebuildSkinningData(mpVertexBuffer, mpPrimitiveInfo);
+        mpCustomSoftBody->mBakeRebuildComplete = true;
         return true;
     } else {
         return false;

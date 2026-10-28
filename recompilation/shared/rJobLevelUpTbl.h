@@ -103,9 +103,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cIncreaseParam2::cIncreaseParam2() {
-    this->mMDef = static_cast<u32>(0);
-    this->mDef = static_cast<u32>(0);
-    this->mMAtk = static_cast<u32>(0);
-    this->mLv = static_cast<u32>(0);
-    this->mAtk = static_cast<u32>(0);
+    this->mMDef = 0;
+    this->mDef = 0;
+    this->mMAtk = 0;
+    this->mLv = 0;
+    this->mAtk = 0;
 }

@@ -122,8 +122,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cQuestUnitGroup::cQuestUnitGroup() {
-    this->mpGroup = static_cast<cQuestGroup*>(nullptr);
-    this->mQuestId = static_cast<u32>(0);
+    this->mpGroup = nullptr;
+    this->mQuestId = 0;
     this->mCtrlListOm.::MtArray::mAutoDelete = false;
     this->mCtrlListNpc.::MtArray::mAutoDelete = false;
 }

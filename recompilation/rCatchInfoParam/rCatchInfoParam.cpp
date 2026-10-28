@@ -36,7 +36,7 @@ const MtDTI& cCatchInfoParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCatchInfoParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memAlloc(sz, align, ::cCatchInfoParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCatchInfoParam::DTI)->memAlloc(sz, align, cCatchInfoParam::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCatchInfoParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCatchInfoParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCatchInfoParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -85,6 +85,8 @@ __attribute__((weak)) void cCatchInfoParam::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCatchInfoParam::MyDTI cCatchInfoParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCatchInfoParam.cpp at 0x00650e20-0x00650e62 (called at rCatchInfoParam.cpp:25)
 //   in _GLOBAL__sub_I_rCatchInfoParam.cpp at 0x00650e20-0x00650e62 (called at rCatchInfoParam.h:29)
@@ -93,7 +95,7 @@ __attribute__((weak)) void cCatchInfoParam::createProperty(MtPropertyList& s) {
 // Address: 0x00650330 - 0x006503aa (122 bytes)
 MtObject* cCatchInfoParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCatchInfoParam;
+    return new (16u) cCatchInfoParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,7 +120,7 @@ const MtDTI& rCatchInfoParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCatchInfoParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCatchInfoParam::DTI)->memAlloc(sz, align, ::rCatchInfoParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCatchInfoParam::DTI)->memAlloc(sz, align, rCatchInfoParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,7 +135,7 @@ inline void* rCatchInfoParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rCatchInfoParamD0Ev at 0x01a7af74-0x01a7af93, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCatchInfoParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCatchInfoParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCatchInfoParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,14 +162,16 @@ MT_CTSTR rCatchInfoParam::getExt() const {
 // Address: 0x01a7b0c0 - 0x01a7b0c6 (6 bytes)
 u32 rCatchInfoParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(18);
+    return 18;
 }
 
 // Address: 0x00650e10 - 0x00650e15 (5 bytes)
 void rCatchInfoParam::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCatchInfoParam::MyDTI rCatchInfoParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCatchInfoParam.cpp at 0x00650e62-0x00650e9f (called at rCatchInfoParam.cpp:26)
@@ -177,7 +181,7 @@ void rCatchInfoParam::createProperty(MtPropertyList& s) {
 // Address: 0x00650420 - 0x00650484 (100 bytes)
 MtObject* rCatchInfoParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCatchInfoParam;
+    return new (16u) rCatchInfoParam;
 }
 
 // Instance at 0x01a7b070 - 0x01a7b086 (22 bytes) of the generic rTbl2<T>::getData

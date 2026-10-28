@@ -28,7 +28,7 @@ const MtDTI& cpVibration::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpVibration::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpVibration::DTI);
+    return MtMemoryAllocator::getAllocator(cpVibration::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpVibration::getAllocator() {
 // Address: 0x00540510 - 0x00540550 (64 bytes)
 void* cpVibration::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpVibration::getAllocator()->memAlloc(sz, align, ::cpVibration::DTI.::MtDTI::getID());
+    return cpVibration::getAllocator()->memAlloc(sz, align, cpVibration::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpVibration::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpVibration::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpVibration::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpVibration::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,18 +68,18 @@ inline void cpVibration::operator delete(void* p_addr) {
 cpVibration::cpVibration() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsSeqCtrl = false;
-    this->mpSeqCtrlModel = static_cast<uModel*>(nullptr);
-    this->mpViewModel = static_cast<uCoord*>(nullptr);
-    this->mpOwnerModel = static_cast<uBaseModel*>(nullptr);
-    this->mSeqPage = static_cast<u8>(2);
-    this->mSeqVibReqType = static_cast<u8>(0);
-    this->mSeqNoFlag = static_cast<u32>(58720256);
-    this->mprVibration[3] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[2] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[1] = static_cast<rVibration*>(nullptr);
-    this->mprVibration[0] = static_cast<rVibration*>(nullptr);
-    this->mPriority = static_cast<u32>(255);
+    mIsSeqCtrl = false;
+    mpSeqCtrlModel = nullptr;
+    mpViewModel = nullptr;
+    mpOwnerModel = nullptr;
+    mSeqPage = 2;
+    mSeqVibReqType = 0;
+    mSeqNoFlag = 0x3800000;
+    mprVibration[3] = nullptr;
+    mprVibration[2] = nullptr;
+    mprVibration[1] = nullptr;
+    mprVibration[0] = nullptr;
+    mPriority = 255;
 }
 
 // Address: 0x00540650 - 0x005406cd (125 bytes)
@@ -87,49 +87,49 @@ cpVibration::cpVibration() {
 cpVibration::~cpVibration() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprVibration[0] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[0]->::cResource::release();
-        this->mprVibration[0] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[0] != nullptr) {
+        mprVibration[0]->cResource::release();
+        mprVibration[0] = nullptr;
     }
-    if (this->mprVibration[1] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[1]->::cResource::release();
-        this->mprVibration[1] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[1] != nullptr) {
+        mprVibration[1]->cResource::release();
+        mprVibration[1] = nullptr;
     }
-    if (this->mprVibration[2] != static_cast<rVibration*>(nullptr)) {
-        this->mprVibration[2]->::cResource::release();
-        this->mprVibration[2] = static_cast<rVibration*>(nullptr);
+    if (mprVibration[2] != nullptr) {
+        mprVibration[2]->cResource::release();
+        mprVibration[2] = nullptr;
     }
-    if (this->mprVibration[3] == static_cast<rVibration*>(nullptr)) {
+    if (mprVibration[3] == nullptr) {
         return;
     }
-    this->mprVibration[3]->::cResource::release();
-    this->mprVibration[3] = static_cast<rVibration*>(nullptr);
+    mprVibration[3]->cResource::release();
+    mprVibration[3] = nullptr;
 }
 
 // Address: 0x00540770 - 0x005407a3 (51 bytes)
 void cpVibration::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpOwnerModel == static_cast<uBaseModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpOwnerModel == nullptr) {
         return;
     }
-    if (this->mpOwnerModel->::cUnit::isEnable() != false) {
+    if (mpOwnerModel->isEnable()) {
         return;
     }
-    this->mpOwnerModel = static_cast<uBaseModel*>(nullptr);
+    mpOwnerModel = nullptr;
 }
 
 // Address: 0x005407b0 - 0x00540807 (87 bytes)
 void cpVibration::setVibration(rVibration* pVibration, u32 ResType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ResType <= static_cast<u32>(3)) {
-        if (this->mprVibration[ResType] != static_cast<rVibration*>(nullptr)) {
-            this->mprVibration[ResType]->::cResource::release();
-            this->mprVibration[ResType] = static_cast<rVibration*>(nullptr);
+    if (ResType <= 3u) {
+        if (mprVibration[ResType] != nullptr) {
+            mprVibration[ResType]->cResource::release();
+            mprVibration[ResType] = nullptr;
         }
-        if (pVibration != static_cast<rVibration*>(nullptr)) {
-            this->mprVibration[ResType] = pVibration;
-            pVibration->::cResource::addRef();
+        if (pVibration != nullptr) {
+            mprVibration[ResType] = pVibration;
+            pVibration->addRef();
         }
     }
 }
@@ -249,6 +249,8 @@ __attribute__((weak)) void cpVibration::updateSequence() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpVibration::MyDTI cpVibration::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpVibration.cpp at 0x00540ecf-0x00540f0c (called at cpVibration.cpp:32)
 //   in _GLOBAL__sub_I_cpVibration.cpp at 0x00540ecf-0x00540f0c (called at cpVibration.h:28)
@@ -257,6 +259,6 @@ __attribute__((weak)) void cpVibration::updateSequence() {
 // Address: 0x00540450 - 0x00540502 (178 bytes)
 MtObject* cpVibration::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpVibration;
+    return new (16u) cpVibration;
 }
 

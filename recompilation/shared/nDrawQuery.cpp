@@ -30,7 +30,7 @@ const MtDTI& nDraw::OcclusionQuery::getDTI() const {
 // Address: 0x013492b0 - 0x013492f0 (64 bytes)
 void* nDraw::OcclusionQuery::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memAlloc(sz, align, ::nDraw::OcclusionQuery::DTI.::MtDTI::mID);
+    return ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memAlloc(sz, align, ::nDraw::OcclusionQuery::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* nDraw::OcclusionQuery::operator new(size_t sz, u32 align) {
 u32 nDraw::OcclusionQuery::get(s32* frame) {
     // DWARF local not rendered: u32 data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4294967295);
+    return 0xFFFFFFFF;
 }
 
 // Address: 0x013493b0 - 0x013493df (47 bytes)
@@ -71,6 +71,8 @@ nDraw::OcclusionQuery::~OcclusionQuery() {
     DDON_STUB("nDraw::OcclusionQuery::~OcclusionQuery")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::OcclusionQuery::MyDTI nDraw::OcclusionQuery::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::OcclusionQuery::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -153,6 +155,8 @@ nDraw::Query::~Query() {
 
 // No out-of-line body: no code in the ELF
 // void nDraw::Query::end();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nDraw::Query::MyDTI nDraw::Query::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nDraw::Query::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

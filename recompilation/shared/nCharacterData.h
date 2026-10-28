@@ -7,6 +7,8 @@
 class BitReader;
 class BitWriter;
 class cItemParam;
+class sItemManager;
+class uGUIBase;
 class uGUIPopDetail01;
 
 // Declarations
@@ -229,6 +231,10 @@ namespace nCharacterData {
     {
         // inferred: cItemParam::getItemNum names cItemParam::mItemParam.mItemNum_Guard
         friend class ::cItemParam;
+        // inferred: sItemManager::cItemBag::getItemNum names cItemParam::mItemParam.mItemNum_Guard, through its enclosing class sItemManager
+        friend class ::sItemManager;
+        // inferred: uGUIBase::cReferenceUIIconItem::setItem names cItemParam::mItemParam.mItemNum_Guard, through its enclosing class uGUIBase
+        friend class ::uGUIBase;
         // inferred: uGUIPopDetail01::setItemParam names cItemParam::mItemParam.mItemNum_Guard
         friend class ::uGUIPopDetail01;
     public:
@@ -264,3 +270,9 @@ namespace nCharacterData {
         bool mEmotToChat[10];  // offset: 0x454
     };
 }  // namespace nCharacterData
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cEquipData::retEquipToCharacterData at 0xc7f0c-0xc7f13; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void nCharacterData::stEquipData::setPresetNum(u8 num) {
+    this->mPresetNum = num;
+}

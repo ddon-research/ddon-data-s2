@@ -94,9 +94,9 @@ class cSystem : public MtObject
     friend class sObjCollision;
     // inferred: sOccluder::add names cSystem::mJobSafe
     friend class sOccluder;
-    // inferred: sOmManager::loadNyoro names cSystem::mThreadSafe
+    // inferred: sOmManager::releaseTreeInsCtrl names cSystem::mJobSafe
     friend class sOmManager;
-    // inferred: sPrimitive::reserveTex names cSystem::mJobSafe
+    // inferred: sPrimitive::reserveBuffer names cSystem::mJobSafe
     friend class sPrimitive;
     // inferred: sQuestManagerExt::notifyReloadMasterData names cSystem::mThreadSafe
     friend class sQuestManagerExt;

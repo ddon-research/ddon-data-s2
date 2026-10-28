@@ -38,7 +38,7 @@ const MtDTI& cAchievementData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cAchievementData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memAlloc(sz, align, ::cAchievementData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAchievementData::DTI)->memAlloc(sz, align, cAchievementData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -53,7 +53,7 @@ inline void* cAchievementData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAchievementData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAchievementData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -78,6 +78,8 @@ inline void cAchievementData::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cAchievementData::~cAchievementData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAchievementData::MyDTI cAchievementData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d500-0x0063d549 (called at rAchievement.cpp:21)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d500-0x0063d549 (called at rAchievement.h:20)
@@ -86,7 +88,7 @@ inline void cAchievementData::operator delete(void* p_addr) {
 // Address: 0x0063d0f0 - 0x0063d145 (85 bytes)
 MtObject* cAchievementData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAchievementData;
+    return new (16u) cAchievementData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -114,7 +116,7 @@ const MtDTI& cAchievementHeaderData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
 inline void* cAchievementHeaderData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memAlloc(sz, align, ::cAchievementHeaderData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cAchievementHeaderData::DTI)->memAlloc(sz, align, cAchievementHeaderData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -129,7 +131,7 @@ inline void* cAchievementHeaderData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAchievementHeaderData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAchievementHeaderData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -154,6 +156,8 @@ inline void cAchievementHeaderData::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cAchievementHeaderData::~cAchievementHeaderData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAchievementHeaderData::MyDTI cAchievementHeaderData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d589-0x0063d5c2 (called at rAchievement.cpp:23)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d589-0x0063d5c2 (called at rAchievement.h:56)
@@ -162,7 +166,7 @@ inline void cAchievementHeaderData::operator delete(void* p_addr) {
 // Address: 0x0063d2a0 - 0x0063d2e7 (71 bytes)
 MtObject* cAchievementHeaderData::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cAchievementHeaderData;
+    return new (16u) cAchievementHeaderData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -187,7 +191,7 @@ const MtDTI& rAchievement::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAchievement::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAchievement::DTI)->memAlloc(sz, align, ::rAchievement::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAchievement::DTI)->memAlloc(sz, align, rAchievement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -202,7 +206,7 @@ inline void* rAchievement::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rAchievementD0Ev at 0x01a6e804-0x01a6e823, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAchievement::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAchievement::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAchievement::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,17 +223,17 @@ bool rAchievement::loadData(MtDataReader& in, cAchievementData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mID);
+    nDDOIO::readData(in, pData->mID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mTargetNum);
+    nDDOIO::readData(in, pData->mTargetNum);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMessageIndex);
+    nDDOIO::readData(in, pData->mMessageIndex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCategory);
-    pData->mTrophy = in.::MtDataReader::readU8();
+    nDDOIO::readData(in, pData->mCategory);
+    pData->mTrophy = in.readU8();
     return true;
 }
 
@@ -242,8 +246,10 @@ MT_CTSTR rAchievement::getExt() const {
 // Address: 0x01a6e950 - 0x01a6e956 (6 bytes)
 u32 rAchievement::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAchievement::MyDTI rAchievement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d549-0x0063d589 (called at rAchievement.cpp:22)
@@ -253,7 +259,7 @@ u32 rAchievement::getDataVersion() const {
 // Address: 0x0063d1c0 - 0x0063d224 (100 bytes)
 MtObject* rAchievement::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAchievement;
+    return new (16u) rAchievement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -278,7 +284,7 @@ const MtDTI& rAchievementHeader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAchievementHeader::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAchievementHeader::DTI)->memAlloc(sz, align, ::rAchievementHeader::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAchievementHeader::DTI)->memAlloc(sz, align, rAchievementHeader::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -293,7 +299,7 @@ inline void* rAchievementHeader::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rAchievementHeaderD0Ev at 0x01a6eb84-0x01a6eba3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAchievementHeader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAchievementHeader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAchievementHeader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -309,7 +315,7 @@ inline void rAchievementHeader::operator delete(void* p_addr) {
 bool rAchievementHeader::loadData(MtDataReader& in, cAchievementHeaderData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(in, pData->mNum);
+    nDDOIO::readData(in, pData->mNum);
     return true;
 }
 
@@ -322,8 +328,10 @@ MT_CTSTR rAchievementHeader::getExt() const {
 // Address: 0x01a6ecd0 - 0x01a6ecd6 (6 bytes)
 u32 rAchievementHeader::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAchievementHeader::MyDTI rAchievementHeader::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAchievement.cpp at 0x0063d5c2-0x0063d5fb (called at rAchievement.cpp:24)
@@ -333,7 +341,7 @@ u32 rAchievementHeader::getDataVersion() const {
 // Address: 0x0063d360 - 0x0063d3c4 (100 bytes)
 MtObject* rAchievementHeader::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAchievementHeader;
+    return new (16u) rAchievementHeader;
 }
 
 // Instance at 0x01a6e900 - 0x01a6e916 (22 bytes) of the generic rTbl2<T>::getData

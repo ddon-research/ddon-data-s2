@@ -37,7 +37,7 @@ const MtDTI& rQuestMarkerInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rQuestMarkerInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::DTI)->memAlloc(sz, align, ::rQuestMarkerInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestMarkerInfo::DTI)->memAlloc(sz, align, rQuestMarkerInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rQuestMarkerInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rQuestMarkerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestMarkerInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,43 +85,43 @@ MT_CTSTR rQuestMarkerInfo::getExt() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rQuestMarkerInfo::rQuestMarkerInfo() {
-    this->mStageNo = static_cast<u32>(0);
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mInfoList.::MtArray::mAutoDelete = true;
+    mStageNo = 0;
+    setAttribute(22u);
+    mInfoList.mAutoDelete = true;
 }
 
 // Address: 0x006e2360 - 0x006e241a (186 bytes)
 // Also emitted as: _ZN16rQuestMarkerInfoD0Ev at 0x006e2420
 rQuestMarkerInfo::~rQuestMarkerInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mInfoList.mLength != 0) {
         // inferred: the value the loop at 0x6e2390 carries; no location-less local in scope fits
-        u32 v0_0 = this->mInfoList.::MtArray::mLength;
+        u32 v0_0 = mInfoList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mInfoList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mInfoList.::MtArray::mLength) {
-                    v0_0 = this->mInfoList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mInfoList.mpArray[i0_3] != nullptr) {
+                delete mInfoList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mInfoList.mLength) {
+                    v0_0 = mInfoList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mInfoList.::MtArray::mpArray));
+    if (mInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mInfoList.mpArray));
     }
-    this->mInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mInfoList.::MtArray::mLength = static_cast<u32>(0);
+    mInfoList.mpArray = nullptr;
+    mInfoList.mBufsiz = 0;
+    mInfoList.mLength = 0;
 }
 
 // Address: 0x006e2500 - 0x006e2692 (402 bytes)
@@ -135,11 +135,11 @@ bool rQuestMarkerInfo::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4803921)) {
-        if ((&r)->readU32() == static_cast<u32>(1)) {
-            this->mStageNo = (&r)->readU32();
-            ::nDDOIO::readMtArray(r, this->mInfoList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x494D51) {
+        if ((&r)->readU32() == 1) {
+            mStageNo = (&r)->readU32();
+            nDDOIO::readMtArray(r, mInfoList);
             return true;
         }
     }
@@ -153,6 +153,8 @@ __attribute__((weak)) bool rQuestMarkerInfo::save(MtStream& out) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestMarkerInfo::MyDTI rQuestMarkerInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rQuestMarkerInfo.cpp at 0x006e2ce0-0x006e2d22 (called at rQuestMarkerInfo.cpp:31)
 //   in _GLOBAL__sub_I_rQuestMarkerInfo.cpp at 0x006e2ce0-0x006e2d22 (called at rQuestMarkerInfo.h:30)
@@ -161,7 +163,7 @@ __attribute__((weak)) bool rQuestMarkerInfo::save(MtStream& out) {
 // Address: 0x006e2240 - 0x006e22d1 (145 bytes)
 MtObject* rQuestMarkerInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rQuestMarkerInfo;
+    return new (16u) rQuestMarkerInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,7 +203,7 @@ const MtDTI& rQuestMarkerInfo::cInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rQuestMarkerInfo::cInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::cInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestMarkerInfo::cInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,10 +215,18 @@ inline void rQuestMarkerInfo::cInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rQuestMarkerInfo::cInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (147 bytes)
-//   in rQuestMarkerInfo::cInfo::MyDTI::newInstance at 0x006e288d-0x006e28ce (called at rQuestMarkerInfo.cpp:136)
-//   in _ZN6nDDOIO11readMtArrayIN16rQuestMarkerInfo5cInfoEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01aaf088-0x01aaf097, 0x01aaf0cc-0x01aaf10f (called at rQuestMarkerInfo.cpp:136)
-// rQuestMarkerInfo::cInfo::cInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rQuestMarkerInfo::cInfo::cInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mGroupNo = 0;
+    mUniqueId = 0;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+}
 
 // Address: 0x006e2960 - 0x006e2961 (1 bytes)
 // Also emitted as: _ZN16rQuestMarkerInfo5cInfoD0Ev at 0x006e2970
@@ -235,11 +245,11 @@ void rQuestMarkerInfo::cInfo::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mPos = r.readV3();
-    ::nDDOIO::readData(r, this->mGroupNo);
+    mPos = r.readV3();
+    nDDOIO::readData(r, mGroupNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mUniqueId);
+    nDDOIO::readData(r, mUniqueId);
 }
 
 // Address: 0x006e2c60 - 0x006e2cdd (125 bytes)
@@ -247,6 +257,8 @@ __attribute__((weak)) void rQuestMarkerInfo::cInfo::save(MtDataWriter& w) {
     DDON_STUB("rQuestMarkerInfo::cInfo::save")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestMarkerInfo::cInfo::MyDTI rQuestMarkerInfo::cInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rQuestMarkerInfo.cpp at 0x006e2d22-0x006e2d5f (called at rQuestMarkerInfo.cpp:136)

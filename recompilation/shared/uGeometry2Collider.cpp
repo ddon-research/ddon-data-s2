@@ -49,7 +49,7 @@ const MtDTI& uGeometry2Collider::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18uGeometry2ColliderD0Ev at 0x01312427-0x01312448, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry2Collider::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2Collider::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -161,7 +161,7 @@ __attribute__((weak)) void uGeometry2Collider::registNode2Collider() {
 // Address: 0x01313610 - 0x01313615 (5 bytes)
 void uGeometry2Collider::registOwner(uModel* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = pOwner;
+    mpOwner = pOwner;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,14 +182,14 @@ void uGeometry2Collider::registOwner(uModel* pOwner) {
 // Address: 0x01312f60 - 0x01312f69 (9 bytes)
 void uGeometry2Collider::registAttachGeometry(uGeometry2* pGeometry2Unit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpAttachGeometry = pGeometry2Unit;
-    this->::uGeometry2Collider::restoreNodeFromGeometry();
+    mpAttachGeometry = pGeometry2Unit;
+    restoreNodeFromGeometry();
 }
 
 // Address: 0x01312f50 - 0x01312f55 (5 bytes)
 uGeometry2* uGeometry2Collider::getRegistAttachGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAttachGeometry;
+    return mpAttachGeometry;
 }
 
 // Address: 0x01313670 - 0x013139b1 (833 bytes)
@@ -230,6 +230,8 @@ __attribute__((weak)) void uGeometry2Collider::callbackColliderCollisionDetect(s
     DDON_STUB("uGeometry2Collider::callbackColliderCollisionDetect")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry2Collider::MyDTI uGeometry2Collider::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2Collider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -272,7 +274,7 @@ const MtDTI& uGeometry2Collider::cContactInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGeometry2Collider::cContactInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::cContactInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2Collider::cContactInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -317,6 +319,8 @@ __attribute__((weak)) void uGeometry2Collider::cContactInfo::createProperty(MtPr
 // No out-of-line body: no code in the ELF
 // const MtContact& uGeometry2Collider::cContactInfo::getContactResult() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry2Collider::cContactInfo::MyDTI uGeometry2Collider::cContactInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2Collider::cContactInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -344,8 +348,11 @@ const MtDTI& uGeometry2Collider::cNodeGeometryInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void uGeometry2Collider::cNodeGeometryInfo::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* uGeometry2Collider::cNodeGeometryInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK18uGeometry2Collider17cNodeGeometryInfo5MyDTI11newInstanceEv at 0x01311f30-0x01311f5d, code DWARF attributes to no inlined copy; sz is the class's size (88), align the allocation's other whole constant (16)
+inline void* uGeometry2Collider::cNodeGeometryInfo::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(uGeometry2Collider::cNodeGeometryInfo::DTI)->memAlloc(sz, align, uGeometry2Collider::cNodeGeometryInfo::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* uGeometry2Collider::cNodeGeometryInfo::operator new[](size_t sz, u32 align);
@@ -359,7 +366,7 @@ const MtDTI& uGeometry2Collider::cNodeGeometryInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18uGeometry2Collider17cNodeGeometryInfoD0Ev at 0x0131202e-0x0131204f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uGeometry2Collider::cNodeGeometryInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::cNodeGeometryInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGeometry2Collider::cNodeGeometryInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -392,12 +399,14 @@ __attribute__((weak)) void uGeometry2Collider::cNodeGeometryInfo::createProperty
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uGeometry2Collider::cNodeGeometryInfo::registGeometryParam(cColliderGeometryParam* pGeometryParam);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGeometry2Collider::cNodeGeometryInfo::MyDTI uGeometry2Collider::cNodeGeometryInfo::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uGeometry2Collider::cNodeGeometryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x01311f30 - 0x01311f8e (94 bytes)
-__attribute__((weak)) MtObject* uGeometry2Collider::cNodeGeometryInfo::MyDTI::newInstance() const {
-    DDON_STUB("uGeometry2Collider::cNodeGeometryInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGeometry2Collider::cNodeGeometryInfo::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) uGeometry2Collider::cNodeGeometryInfo;
 }
 

@@ -36,7 +36,7 @@ const MtDTI& uGUIMenuTutorial::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMenuTutorial::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMenuTutorial::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMenuTutorial::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uGUIMenuTutorial::getAllocator() {
 // Address: 0x00b16cf0 - 0x00b16d30 (64 bytes)
 void* uGUIMenuTutorial::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMenuTutorial::getAllocator()->memAlloc(sz, align, ::uGUIMenuTutorial::DTI.::MtDTI::getID());
+    return uGUIMenuTutorial::getAllocator()->memAlloc(sz, align, uGUIMenuTutorial::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uGUIMenuTutorial::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMenuTutorial::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuTutorial::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuTutorial::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,19 +85,19 @@ uGUIMenuTutorial::~uGUIMenuTutorial() {
 // Address: 0x00b182f0 - 0x00b182f5 (5 bytes)
 void uGUIMenuTutorial::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b18300 - 0x00b183fa (250 bytes)
 bool uGUIMenuTutorial::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_LIST_GUI"), static_cast<u32>(129), static_cast<t64>(1436165014)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsgCtgr == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsgCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GUIDE_CATEGORY_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                        if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                            this->mpGUIMsg;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_LIST_GUI"), 129u, 1436165014l))) != nullptr) {
+            if (mpGUIMsgCtgr == nullptr) {
+                if ((mpGUIMsgCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GUIDE_CATEGORY_GMD"), 129u, 0l))) != nullptr) {
+                    if (mpGUIMsg == nullptr) {
+                        if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), 129u, 0l))) != nullptr) {
+                            mpGUIMsg;
                             return true;
                         } else {
                             return false;
@@ -109,9 +109,9 @@ bool uGUIMenuTutorial::loadResource() {
                     return false;
                 }
             } else {
-                if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGUIMsg;
+                if (mpGUIMsg == nullptr) {
+                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), 129u, 0l))) != nullptr) {
+                        mpGUIMsg;
                         return true;
                     } else {
                         return false;
@@ -124,11 +124,11 @@ bool uGUIMenuTutorial::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsgCtgr == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsgCtgr = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GUIDE_CATEGORY_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                    if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                        this->mpGUIMsg;
+        if (mpGUIMsgCtgr == nullptr) {
+            if ((mpGUIMsgCtgr = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GUIDE_CATEGORY_GMD"), 129u, 0l))) != nullptr) {
+                if (mpGUIMsg == nullptr) {
+                    if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), 129u, 0l))) != nullptr) {
+                        mpGUIMsg;
                         return true;
                     } else {
                         return false;
@@ -140,9 +140,9 @@ bool uGUIMenuTutorial::loadResource() {
                 return false;
             }
         } else {
-            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsg;
+            if (mpGUIMsg == nullptr) {
+                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TUTORIAL_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsg;
                     return true;
                 } else {
                     return false;
@@ -167,27 +167,27 @@ __attribute__((weak)) void uGUIMenuTutorial::setup() {
 // Address: 0x00b198c0 - 0x00b19937 (119 bytes)
 void uGUIMenuTutorial::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGUIMsgCtgr != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGUIMsgCtgr->::cResource::release();
-        this->mpGUIMsgCtgr = static_cast<rGUIMessage*>(nullptr);
+    if (mpGUIMsgCtgr != nullptr) {
+        mpGUIMsgCtgr->release();
+        mpGUIMsgCtgr = nullptr;
     }
-    if (this->mpGUITutorialPop != static_cast<uGUITutorialPop*>(nullptr)) {
-        this->mpGUITutorialPop->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpGUITutorialPop->end();
+    if (mpGUITutorialPop != nullptr) {
+        mpGUITutorialPop->mEndType = 0;
+        mpGUITutorialPop->end();
     }
-    this->mpGUITutorialPop = static_cast<uGUITutorialPop*>(nullptr);
+    mpGUITutorialPop = nullptr;
 }
 
 // Address: 0x00b19940 - 0x00b19963 (35 bytes)
 void uGUIMenuTutorial::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
+    this->uGUIBase::move();
+    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,57 +200,57 @@ void uGUIMenuTutorial::move() {
 // Address: 0x00b19890 - 0x00b198aa (26 bytes)
 void uGUIMenuTutorial::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateWaitCtgr);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateWaitCtgr);
 }
 
 // Address: 0x00b19a30 - 0x00b19a64 (52 bytes)
 void uGUIMenuTutorial::updateWaitCtgr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrollListCtgr.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-    this->mScrollListCaption.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    mScrollListCtgr.uGUIBase::cScrollList::update(getDeltaTime());
+    mScrollListCaption.uGUIBase::cScrollList::update(getDeltaTime());
 }
 
 // Address: 0x00b19a70 - 0x00b19b0e (158 bytes)
 void uGUIMenuTutorial::updateWaitCaption() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUITutorialPop != static_cast<uGUITutorialPop*>(nullptr)) {
-        if (this->mpGUITutorialPop->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            this->mpGUITutorialPop->::uGUIBase::mEndType = static_cast<u32>(0);
-            this->mpGUITutorialPop->end();
-            this->mpGUITutorialPop = static_cast<uGUITutorialPop*>(nullptr);
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
-            this->mScrollListCaption.mIsDecide = false;
-            this->mScrollListCaption.::uGUIBase::cScrollList::setListFocus(false);
+    if (mpGUITutorialPop != nullptr) {
+        if (mpGUITutorialPop->mResult == RESULT_EXIT) {
+            mpGUITutorialPop->mEndType = 0;
+            mpGUITutorialPop->end();
+            mpGUITutorialPop = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            mScrollListCaption.mIsDecide = false;
+            mScrollListCaption.setListFocus(false);
         }
     } else {
-        this->mScrollListCtgr.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
-        this->mScrollListCaption.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+        mScrollListCtgr.uGUIBase::cScrollList::update(getDeltaTime());
+        mScrollListCaption.uGUIBase::cScrollList::update(getDeltaTime());
     }
 }
 
 // Address: 0x00b18b00 - 0x00b18b7b (123 bytes)
 void uGUIMenuTutorial::updateWaitDirectOpen() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUITutorialPop == static_cast<uGUITutorialPop*>(nullptr)) {
+    if (mpGUITutorialPop == nullptr) {
         return;
     }
-    if (this->mpGUITutorialPop->::uGUIBase::mResult != static_cast<uGUIBase::GUI_RESULT>(1)) {
+    if (mpGUITutorialPop->mResult != RESULT_EXIT) {
         return;
     }
-    this->::uGUIBase::takeOverEndFlag(static_cast<uGUIBase*>(this->mpGUITutorialPop));
-    if (this->mpGUITutorialPop != static_cast<uGUITutorialPop*>(nullptr)) {
-        this->mpGUITutorialPop->::uGUIBase::mEndType = static_cast<u32>(0);
-        this->mpGUITutorialPop->end();
+    takeOverEndFlag(static_cast<uGUIBase*>(mpGUITutorialPop));
+    if (mpGUITutorialPop != nullptr) {
+        mpGUITutorialPop->mEndType = 0;
+        mpGUITutorialPop->end();
     }
-    this->mpGUITutorialPop = static_cast<uGUITutorialPop*>(nullptr);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
-    this->evEnd();
+    mpGUITutorialPop = nullptr;
+    static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+    evEnd();
 }
 
 // Address: 0x00b19f50 - 0x00b19f59 (9 bytes)
 void uGUIMenuTutorial::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b19970 - 0x00b19a2a (186 bytes)
@@ -268,7 +268,7 @@ __attribute__((weak)) void uGUIMenuTutorial::moveEvent() {
 // Address: 0x00b19f60 - 0x00b19f7a (26 bytes)
 void uGUIMenuTutorial::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateExit);
 }
 
 // Address: 0x00b19da0 - 0x00b19f50 (432 bytes)
@@ -298,15 +298,15 @@ __attribute__((weak)) u32 uGUIMenuTutorial::evCtrlDecide(cControl::Message* msg)
 // Address: 0x00b18c80 - 0x00b18c92 (18 bytes)
 u32 uGUIMenuTutorial::evCtrlStart(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // Address: 0x00b18b80 - 0x00b18b92 (18 bytes)
 u32 uGUIMenuTutorial::evCtrlEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b194a0 - 0x00b19889 (1001 bytes)
@@ -368,19 +368,19 @@ __attribute__((weak)) void uGUIMenuTutorial::updateScrollListCaption() {
 // Address: 0x00b1a1f0 - 0x00b1a278 (136 bytes)
 void uGUIMenuTutorial::updateScrollListDispCtgr(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pDispItem == nullptr) {
         return;
     }
-    if (pListItem == static_cast<uGUIBase::cScrollListInfoBase*>(nullptr)) {
+    if (pListItem == nullptr) {
         return;
     }
-    u32 dispIndex = this->mScrollListCtgr.::uGUIBase::cScrollList::getDispIndex(pDispItem);
+    u32 dispIndex = mScrollListCtgr.getDispIndex(pDispItem);
     // inferred: a temporary for the value the load at 0xb1a217 read, used once; no DWARF local holds it
-    cGUIObject* t0 = this->mpObjListCtgr[dispIndex];
-    if (Index != static_cast<u32>(0)) {
-        this->::uGUIBase::setObjectMessage(t0, this->mpGUIMsgCtgr->::rGUIMessage::getMessage(Index - static_cast<u32>(1)), static_cast<u32>(0), false);
+    cGUIObject* t0 = mpObjListCtgr[dispIndex];
+    if (Index != 0) {
+        setObjectMessage(t0, mpGUIMsgCtgr->getMessage(Index - 1u), 0u, false);
     } else {
-        this->::uGUIBase::setObjectMessage(t0, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(5)), static_cast<u32>(0), false);
+        setObjectMessage(t0, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 5u), 0u, false);
     }
 }
 
@@ -388,22 +388,24 @@ void uGUIMenuTutorial::updateScrollListDispCtgr(uGUIBase::cScrollListItemBase* p
 void uGUIMenuTutorial::updateScrollListDispCaption(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+    if (pDispItem == nullptr) {
         return;
     }
-    if (pListItem == static_cast<uGUIBase::cScrollListInfoBase*>(nullptr)) {
+    if (pListItem == nullptr) {
         return;
     }
-    u32 dispIndex = this->mScrollListCaption.::uGUIBase::cScrollList::getDispIndex(pDispItem);
+    u32 dispIndex = mScrollListCaption.getDispIndex(pDispItem);
     // inferred: a temporary for the value the load at 0xb1a2b8 read, used once; no DWARF local holds it
-    cGUIObject* t0 = this->mpObjListCptn[dispIndex];
-    this->::uGUIBase::setObjectMessage(t0, ::sTutorialGuide::getInstance()->::sTutorialGuide::getGuideName(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCaptionList.::MtArray::getBuffer()[static_cast<int>(Index)]) + static_cast<long>(8))), static_cast<u32>(0), false);
+    cGUIObject* t0 = mpObjListCptn[dispIndex];
+    setObjectMessage(t0, sTutorialGuide::getInstance()->getGuideName(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCaptionList.getBuffer()[static_cast<int>(Index)]) + 8)), 0u, false);
 }
 
 // Address: 0x00b1a280 - 0x00b1a281 (1 bytes)
 __attribute__((weak)) void uGUIMenuTutorial::updateScrollListHide(uGUIBase::cScrollListItemBase* pDispItem) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIMenuTutorial::MyDTI uGUIMenuTutorial::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuTutorial.cpp at 0x00b1a40f-0x00b1a44c (called at uGUIMenuTutorial.cpp:49)
@@ -441,7 +443,7 @@ const MtDTI& uGUIMenuTutorial::cCaption::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* uGUIMenuTutorial::cCaption::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMenuTutorial::cCaption::DTI)->memAlloc(sz, align, ::uGUIMenuTutorial::cCaption::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIMenuTutorial::cCaption::DTI)->memAlloc(sz, align, uGUIMenuTutorial::cCaption::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -455,7 +457,7 @@ inline void* uGUIMenuTutorial::cCaption::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMenuTutorial::cCaption::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuTutorial::cCaption::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuTutorial::cCaption::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -477,6 +479,8 @@ inline void uGUIMenuTutorial::cCaption::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // uGUIMenuTutorial::cCaption::~cCaption();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMenuTutorial::cCaption::MyDTI uGUIMenuTutorial::cCaption::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuTutorial.cpp at 0x00b1a44c-0x00b1a489 (called at uGUIMenuTutorial.cpp:50)
 //   in _GLOBAL__sub_I_uGUIMenuTutorial.cpp at 0x00b1a44c-0x00b1a489 (called at uGUIMenuTutorial.h:46)
@@ -485,7 +489,7 @@ inline void uGUIMenuTutorial::cCaption::operator delete(void* p_addr) {
 // Address: 0x00b16da0 - 0x00b16de7 (71 bytes)
 MtObject* uGUIMenuTutorial::cCaption::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIMenuTutorial::cCaption;
+    return new (16u) uGUIMenuTutorial::cCaption;
 }
 
 // Instance at 0x01af8110 - 0x01af8115 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

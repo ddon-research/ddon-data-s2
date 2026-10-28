@@ -63,13 +63,13 @@ const MtDTI& cActorLight::getDTI() const {
 // Address: 0x007df9d0 - 0x007df9d4 (4 bytes)
 s32 cActorLight::getStageNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo;
+    return mStageNo;
 }
 
 // Address: 0x007df9e0 - 0x007df9e4 (4 bytes)
 void cActorLight::setStageNo(s32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStageNo = no;
+    mStageNo = no;
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (524 bytes)
@@ -88,8 +88,10 @@ __attribute__((weak)) void cActorLight::createProperty(MtPropertyList& s) {
 // Address: 0x007e00d0 - 0x007e00d5 (5 bytes)
 MtUI* cActorLight::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cActorLight::MyDTI cActorLight::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sLightExt.cpp at 0x007e030c-0x007e0349 (called at sLightExt.cpp:740)
@@ -124,7 +126,7 @@ const MtDTI& rActorLight::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rActorLight::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rActorLight::DTI)->memAlloc(sz, align, ::rActorLight::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rActorLight::DTI)->memAlloc(sz, align, rActorLight::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,7 +141,7 @@ inline void* rActorLight::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rActorLightD0Ev at 0x01ac664e-0x01ac666f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rActorLight::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rActorLight::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rActorLight::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,7 +155,7 @@ inline void rActorLight::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rActorLight::rActorLight() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    setAttribute(16u);
 }
 
 // Address: 0x01ac68f0 - 0x01ac68f8 (8 bytes)
@@ -171,14 +173,14 @@ MT_CTSTR rActorLight::getExt() const {
 // Address: 0x01ac6900 - 0x01ac6906 (6 bytes)
 u16 rActorLight::getDataVersion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u16>(1);
+    return 1;
 }
 
 // Address: 0x01ac6690 - 0x01ac66f9 (105 bytes)
 bool rActorLight::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    return this->::rActorLight::loadData(r);
+    MtDataReader r(in, 4096u);
+    return loadData(r);
 }
 
 // Address: 0x01ac6910 - 0x01ac6bb8 (680 bytes)
@@ -223,6 +225,8 @@ __attribute__((weak)) bool rActorLight::save(MtStream& out) {
 // No out-of-line body: no code in the ELF
 // void rActorLight::setData(MtObject*, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rActorLight::MyDTI rActorLight::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sLightExt.cpp at 0x007e0349-0x007e0386 (called at sLightExt.cpp:804)
 //   in _GLOBAL__sub_I_sLightExt.cpp at 0x007e0349-0x007e0386 (called at sLightExt.h:183)
@@ -231,6 +235,6 @@ __attribute__((weak)) bool rActorLight::save(MtStream& out) {
 // Address: 0x007e00e0 - 0x007e0135 (85 bytes)
 MtObject* rActorLight::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rActorLight;
+    return new (16u) rActorLight;
 }
 

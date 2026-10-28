@@ -146,8 +146,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cPawnQuestManager::cPawnQuestInfo::cPawnQuestInfo() {
-    this->mParam01 = static_cast<u32>(0);
-    this->mParam02 = static_cast<u32>(0);
-    this->mParam03 = static_cast<u32>(0);
-    this->mType = static_cast<u8>(3);
+    this->mParam01 = 0;
+    this->mParam02 = 0;
+    this->mParam03 = 0;
+    this->mType = 3;
 }

@@ -122,9 +122,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cLargeCameraParam::cLargeCameraParam() {
-    this->mEmId = static_cast<u32>(0);
+    this->mEmId = 0;
     this->mRange1 = 1000.0f;
     this->mRange2 = 1300.0f;
-    this->mCamera = static_cast<u32>(0);
+    this->mCamera = 0;
     this->mGroup = false;
 }

@@ -20,35 +20,35 @@
 void nCaplink::ResourcePresetListGetAns::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::nCaplink::ContextListener::init();
-    this->mResourceInfoTbl.mAutoDelete = true;
-    if (this->mResourceInfoTbl.mLength != static_cast<u32>(0)) {
+    mResourceInfoTbl.mAutoDelete = true;
+    if (mResourceInfoTbl.mLength != 0) {
         // inferred: the value the loop at 0x1abe4b0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mResourceInfoTbl.mLength;
+        u32 v0_0 = mResourceInfoTbl.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mResourceInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mResourceInfoTbl.mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mResourceInfoTbl.mLength) {
-                    v0_0 = this->mResourceInfoTbl.mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mResourceInfoTbl.mpArray[i0_3] != nullptr) {
+                delete mResourceInfoTbl.mpArray[i0_3];
+                if ((i0_3 + 1u) < mResourceInfoTbl.mLength) {
+                    v0_0 = mResourceInfoTbl.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mResourceInfoTbl.mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mResourceInfoTbl.mpArray));
+    if (mResourceInfoTbl.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mResourceInfoTbl.mpArray));
     }
-    this->mResourceInfoTbl.mpArray = static_cast<MtObject* *>(nullptr);
-    this->mResourceInfoTbl.mBufsiz = static_cast<u32>(0);
-    this->mResourceInfoTbl.mLength = static_cast<u32>(0);
+    mResourceInfoTbl.mpArray = nullptr;
+    mResourceInfoTbl.mBufsiz = 0;
+    mResourceInfoTbl.mLength = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

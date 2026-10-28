@@ -46,13 +46,13 @@ f32 nDDOMath::clampRadian(f32 rad) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (rad >= 0.0f) {
         if ((rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f)))) >= 3.1415927f) {
-            return (-6.2831855f) + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f))));
+            return -6.2831855f + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f))));
         } else {
             return rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f)));
         }
     } else {
         if ((6.2831855f + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f))))) >= 3.1415927f) {
-            return (-6.2831855f) + (6.2831855f + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f)))));
+            return -6.2831855f + (6.2831855f + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f)))));
         } else {
             return 6.2831855f + (rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f))));
         }
@@ -93,13 +93,13 @@ f32 nDDOMath::calcAngLimit(f32 ang) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (ang >= 0.0f) {
         if ((ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))) >= 3.1415927f) {
-            return (-6.2831855f) + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
+            return -6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
         } else {
             return ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)));
         }
     } else {
         if ((6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))))) >= 3.1415927f) {
-            return (-6.2831855f) + (6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))));
+            return -6.2831855f + (6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))));
         } else {
             return 6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
         }
@@ -111,16 +111,16 @@ f32 nDDOMath::calcXZAngle(const MtVector3& v0, const MtVector3& v1) {
     // DWARF local not rendered: f32 x0;
     // DWARF local not rendered: f32 z0;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    f32 ang = ::atan2f(v1.x - v0.x, v1.z - v0.z);
+    f32 ang = atan2f(v1.x - v0.x, v1.z - v0.z);
     if (ang >= 0.0f) {
         if ((ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))) >= 3.1415927f) {
-            return (-6.2831855f) + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
+            return -6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
         } else {
             return ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)));
         }
     } else {
         if ((6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))))) >= 3.1415927f) {
-            return (-6.2831855f) + (6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))));
+            return -6.2831855f + (6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))));
         } else {
             return 6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
         }
@@ -387,7 +387,7 @@ __attribute__((weak)) const MtVector3 nDDOMath::accelerateXZ(const MtVector3& ve
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOMath.cpp:996
 f32 nDDOMath::random(f32 min, f32 max) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return min + ((max - min) * (2.3283064e-10f * static_cast<float>(::MtRandom::instance.::MtRandom::nrand())));
+    return min + ((max - min) * (2.3283064e-10f * static_cast<float>(MtRandom::instance.nrand())));
 }
 
 // Address: 0x005b3140 - 0x005b3333 (499 bytes)
@@ -526,13 +526,13 @@ __attribute__((weak)) MtVector3 nDDOMath::alignVectorXZ(const MtVector3& OrgVec,
 f32 nDDOMath::dd_acos(f32 cs) {
     // DWARF local not rendered: f32 r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((-1.0f) > cs) {
-        return ::acosf(-1.0f);
+    if (-1.0f > cs) {
+        return acosf(-1.0f);
     } else {
         if (cs > 1.0f) {
-            return ::acosf(1.0f);
+            return acosf(1.0f);
         } else {
-            return ::acosf(cs);
+            return acosf(cs);
         }
     }
 }

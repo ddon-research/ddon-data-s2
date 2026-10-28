@@ -26,7 +26,7 @@ const MtDTI& cScenario::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cScenario::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cScenario::DTI);
+    return MtMemoryAllocator::getAllocator(cScenario::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cScenario::getAllocator() {
 // Address: 0x00557410 - 0x00557450 (64 bytes)
 void* cScenario::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cScenario::getAllocator()->memAlloc(sz, align, ::cScenario::DTI.::MtDTI::getID());
+    return cScenario::getAllocator()->memAlloc(sz, align, cScenario::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cScenario::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cScenario::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cScenario::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cScenario::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,15 +65,15 @@ inline void cScenario::operator delete(void* p_addr) {
 // Address: 0x005574c0 - 0x00557577 (183 bytes)
 cScenario::cScenario(SCENARIO_PRIO_ENUM prio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParam = new (static_cast<u32>(16)) ::cScenarioParam;
-    this->mSysStatus = static_cast<u32>(0);
-    this->mStatus = static_cast<u32>(0);
-    this->mDetectOld = static_cast<u32>(0);
-    this->mpActionEnd = static_cast<SCENARIO_ACTION_FUNC_END>(nullptr);
-    this->mpActionMain = static_cast<SCENARIO_ACTION_FUNC_MAIN>(nullptr);
-    this->mpActionInit = static_cast<SCENARIO_ACTION_FUNC_INIT>(nullptr);
-    this->mpArg = static_cast<cScenarioArg*>(nullptr);
-    this->mpArea = static_cast<cAreaHit*>(nullptr);
+    mpParam = new (16u) cScenarioParam;
+    mSysStatus = 0;
+    mStatus = 0;
+    mDetectOld = 0;
+    mpActionEnd = nullptr;
+    mpActionMain = nullptr;
+    mpActionInit = nullptr;
+    mpArg = nullptr;
+    mpArea = nullptr;
 }
 
 // Address: 0x00557580 - 0x005575e6 (102 bytes)
@@ -92,7 +92,7 @@ __attribute__((weak)) void cScenario::createProperty(MtPropertyList& s) {
 // Address: 0x00557e40 - 0x00557e45 (5 bytes)
 MtUI* cScenario::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00557e50 - 0x00557f80 (304 bytes)
@@ -104,11 +104,11 @@ __attribute__((weak)) void cScenario::init(SCENARIO_TASK_ENUM task) {
 // Address: 0x00557fa0 - 0x00557fc6 (38 bytes)
 void cScenario::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mpParam->mStatus;
-    if (this->mpParam->mTaskType != static_cast<u32>(1)) {
+    mStatus = mpParam->mStatus;
+    if (mpParam->mTaskType != 1) {
         return;
     }
-    ::sOmManager::getInstance()->::sOmManager::addWarpList(static_cast<MtObject*>(this));
+    sOmManager::getInstance()->addWarpList(static_cast<MtObject*>(this));
 }
 
 // Address: 0x00557fd0 - 0x00558704 (1844 bytes)
@@ -136,7 +136,7 @@ __attribute__((weak)) void cScenario::reqActionEnd() {
 // Address: 0x00557bf0 - 0x00557bf5 (5 bytes)
 cScenarioParam* cScenario::getParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpParam;
+    return mpParam;
 }
 
 // Address: 0x00557c00 - 0x00557c2d (45 bytes)
@@ -155,16 +155,16 @@ __attribute__((weak)) void cScenario::setParam(cScenarioParam* pParam) {
 // Address: 0x00558840 - 0x00558888 (72 bytes)
 cAreaHit* cScenario::createArea() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->releaseArea();
-    cAreaHit* pArea = ::sAreaHit::getInstance()->::sAreaHit::create(static_cast<AREAHIT_SHAPE_TYPE_ENUM>(0), static_cast<MtObject*>(nullptr));
-    if (pArea != static_cast<cAreaHit*>(nullptr)) {
+    releaseArea();
+    cAreaHit* pArea = sAreaHit::getInstance()->create(AREAHIT_SHAPE_TYPE_NONE, static_cast<MtObject*>(nullptr));
+    if (pArea != nullptr) {
         pArea->mpOwner = static_cast<MtObject*>(this);
-        pArea->mAttr = this->mpParam->::cScenarioParam::getDetectAttr();
+        pArea->mAttr = mpParam->getDetectAttr();
         pArea->mbEnable = true;
-        this->mSysStatus = this->mSysStatus | static_cast<u32>(1);
+        mSysStatus = mSysStatus | 1u;
     }
-    this->mpArea = pArea;
-    return this->mpArea;
+    mpArea = pArea;
+    return mpArea;
 }
 
 // Address: 0x005588a0 - 0x005588ee (78 bytes)
@@ -183,10 +183,10 @@ __attribute__((weak)) void cScenario::setAreaShape(AreaHitShape* pShape) {
 // Address: 0x00557c80 - 0x00557c90 (16 bytes)
 AreaHitShape* cScenario::getAreaShape() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cScenario::getArea() != static_cast<cAreaHit*>(nullptr)) {
-        return this->::cScenario::getArea()->::cAreaHit::getShapePtr();
+    if (getArea() != nullptr) {
+        return getArea()->getShapePtr();
     } else {
-        return static_cast<AreaHitShape*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -218,7 +218,7 @@ __attribute__((weak)) void cScenario::setArg(cScenarioArg* pArg) {
 // Address: 0x00557c30 - 0x00557c35 (5 bytes)
 cScenarioArg* cScenario::getArg() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpArg;
+    return mpArg;
 }
 
 // No out-of-line body: no code in the ELF
@@ -242,7 +242,7 @@ cScenarioArg* cScenario::getArg() {
 // Address: 0x00557e20 - 0x00557e28 (8 bytes)
 SCENARIO_TASK_ENUM cScenario::getTaskType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<SCENARIO_TASK_ENUM>(this->mpParam->mTaskType);
+    return static_cast<SCENARIO_TASK_ENUM>(mpParam->mTaskType);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (24 bytes)
@@ -253,7 +253,7 @@ SCENARIO_TASK_ENUM cScenario::getTaskType() {
 // Address: 0x00557e30 - 0x00557e38 (8 bytes)
 SCENARIO_BOOT_ENUM cScenario::getBootType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<SCENARIO_BOOT_ENUM>(this->mpParam->mBootType);
+    return static_cast<SCENARIO_BOOT_ENUM>(mpParam->mBootType);
 }
 
 // No out-of-line body: no code in the ELF
@@ -262,10 +262,10 @@ SCENARIO_BOOT_ENUM cScenario::getBootType() {
 // Address: 0x00558710 - 0x00558720 (16 bytes)
 bool cScenario::isEnable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mStatus & static_cast<u32>(4)) != static_cast<u32>(0)) {
+    if ((mStatus & 4u) != 0) {
         return false;
     } else {
-        return (this->mStatus & static_cast<u32>(34)) == static_cast<u32>(0);
+        return (mStatus & 34u) == 0;
     }
 }
 
@@ -273,7 +273,7 @@ bool cScenario::isEnable() {
 bool cScenario::isHit() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    return static_cast<bool>(this->mStatus & static_cast<u32>(1));
+    return static_cast<bool>(mStatus & 1u);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (20 bytes)
@@ -292,13 +292,13 @@ bool cScenario::isHit() {
 // Address: 0x00558990 - 0x00558998 (8 bytes)
 bool cScenario::isDead() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mStatus & static_cast<u32>(34)) != static_cast<u32>(0);
+    return (mStatus & 34u) != 0;
 }
 
 // Address: 0x00558800 - 0x00558805 (5 bytes)
 void cScenario::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus | static_cast<u32>(2);
+    mStatus = mStatus | 2u;
 }
 
 // Address: 0x00558740 - 0x00558749 (9 bytes)
@@ -307,7 +307,7 @@ bool cScenario::isDone() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38 from cScenario*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(56))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 56)) & 8) >> 3);
 }
 
 // No out-of-line body: no code in the ELF
@@ -323,7 +323,7 @@ bool cScenario::isDone() {
 // Address: 0x005589c0 - 0x005589c7 (7 bytes)
 bool cScenario::checkStatus(u32 st) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (st & this->mStatus) != static_cast<u32>(0);
+    return (st & mStatus) != 0;
 }
 
 // Address: 0x005589d0 - 0x005589de (14 bytes)
@@ -379,7 +379,7 @@ __attribute__((weak)) bool cScenario::isDetect() {
 // Address: 0x00557e10 - 0x00557e18 (8 bytes)
 SCENARIO_PRIO_ENUM cScenario::getPriority() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<SCENARIO_PRIO_ENUM>(this->mpParam->mPriority);
+    return static_cast<SCENARIO_PRIO_ENUM>(mpParam->mPriority);
 }
 
 // Address: 0x01a60580 - 0x01a60581 (1 bytes)
@@ -405,6 +405,8 @@ __attribute__((weak)) void cScenario::copyData(cScenarioData* pSrc) {
 //   in cScenario::move at 0x00558383-0x00558387 (called at cScenario.cpp:415)
 //   and 10 more (every copy is in <bundle>.inlined.json)
 // void cScenario::setSysStatus(cScenario::SYS_STATUS_FLAG f, bool b);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cScenario::MyDTI cScenario::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cScenario.cpp at 0x005593de-0x0055941e (called at cScenario.cpp:48)
@@ -452,7 +454,7 @@ const MtDTI& cScenarioArg::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cScenarioArg::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cScenarioArg::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cScenarioArg::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -467,19 +469,19 @@ inline void cScenarioArg::operator delete(void* p_addr) {
 // Address: 0x00559220 - 0x0055925a (58 bytes)
 cScenarioArg::cScenarioArg(cScenario* pSce) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpScenario = pSce;
-    this->mFFree3 = 0.0f;
-    this->mFFree1 = 0.0f;
-    this->mFFree2 = 0.0f;
-    this->mSFree3 = static_cast<s32>(0);
-    this->mFFree0 = 0.0f;
-    this->mSFree1 = static_cast<s32>(0);
-    this->mSFree2 = static_cast<s32>(0);
-    this->mRno0 = static_cast<u8>(0);
-    this->mRno1 = static_cast<u8>(0);
-    this->mRno2 = static_cast<u8>(0);
-    this->mRno3 = static_cast<u8>(0);
-    this->mSFree0 = static_cast<s32>(0);
+    mpScenario = pSce;
+    mFFree3 = 0.0f;
+    mFFree1 = 0.0f;
+    mFFree2 = 0.0f;
+    mSFree3 = 0;
+    mFFree0 = 0.0f;
+    mSFree1 = 0;
+    mSFree2 = 0;
+    mRno0 = 0;
+    mRno1 = 0;
+    mRno2 = 0;
+    mRno3 = 0;
+    mSFree0 = 0;
 }
 
 // Address: 0x00559260 - 0x00559261 (1 bytes)
@@ -502,7 +504,7 @@ __attribute__((weak)) void cScenarioArg::createProperty(MtPropertyList& s) {
 // Address: 0x005592b0 - 0x005592b5 (5 bytes)
 MtUI* cScenarioArg::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (12 bytes)
@@ -521,6 +523,8 @@ MtUI* cScenarioArg::createUI(MtProperty& prop) {
 
 // No out-of-line body: no code in the ELF
 // bool cScenarioArg::chkAction_Scenario(MtObject* pOwner, s32 pl_no, u32 uarg);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cScenarioArg::MyDTI cScenarioArg::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cScenario.cpp at 0x00559457-0x00559490 (called at cScenario.cpp:1206)
@@ -558,7 +562,7 @@ const MtDTI& cScenarioParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cScenarioParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cScenarioParam::DTI)->memAlloc(sz, align, ::cScenarioParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cScenarioParam::DTI)->memAlloc(sz, align, cScenarioParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -572,7 +576,7 @@ inline void* cScenarioParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cScenarioParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cScenarioParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cScenarioParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -614,7 +618,7 @@ __attribute__((weak)) void cScenarioParam::createProperty(MtPropertyList& s) {
 // Address: 0x00559130 - 0x00559135 (5 bytes)
 MtUI* cScenarioParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 10 inlined copies in 3 functions (54 bytes)
@@ -628,6 +632,8 @@ MtUI* cScenarioParam::createUI(MtProperty& prop) {
 //   in cScenario::init at 0x00557f40-0x00557f47 (called at cScenario.cpp:854)
 // void cScenarioParam::setDetectAttr(u32 d);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cScenarioParam::MyDTI cScenarioParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cScenario.cpp at 0x0055941e-0x00559457 (called at cScenario.cpp:967)
 //   in _GLOBAL__sub_I_cScenario.cpp at 0x0055941e-0x00559457 (called at cScenario.h:317)
@@ -636,6 +642,6 @@ MtUI* cScenarioParam::createUI(MtProperty& prop) {
 // Address: 0x00558b20 - 0x00558b84 (100 bytes)
 MtObject* cScenarioParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cScenarioParam;
+    return new (16u) cScenarioParam;
 }
 

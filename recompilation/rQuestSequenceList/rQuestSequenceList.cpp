@@ -36,7 +36,7 @@ const MtDTI& cQuestSequence::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cQuestSequence::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memAlloc(sz, align, ::cQuestSequence::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestSequence::DTI)->memAlloc(sz, align, cQuestSequence::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cQuestSequence::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestSequence::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestSequence::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (120 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cQuestSequence::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestSequence::MyDTI cQuestSequence::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rQuestSequenceList.cpp at 0x006b8492-0x006b84cf (called at rQuestSequenceList.cpp:24)
 //   in _GLOBAL__sub_I_rQuestSequenceList.cpp at 0x006b8492-0x006b84cf (called at rQuestSequenceList.h:43)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cQuestSequence::createProperty(MtPropertyList& s) {
 // Address: 0x006b80a0 - 0x006b80e8 (72 bytes)
 MtObject* cQuestSequence::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestSequence;
+    return new (16u) cQuestSequence;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ const MtDTI& rQuestSequenceList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rQuestSequenceList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rQuestSequenceList::DTI)->memAlloc(sz, align, ::rQuestSequenceList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rQuestSequenceList::DTI)->memAlloc(sz, align, rQuestSequenceList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline void* rQuestSequenceList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rQuestSequenceList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rQuestSequenceList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rQuestSequenceList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,10 +162,10 @@ bool rQuestSequenceList::loadData(MtDataReader& r, cQuestSequence* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSeqNo);
+    nDDOIO::readData(r, pData->mSeqNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mQstId);
+    nDDOIO::readData(r, pData->mQstId);
     return true;
 }
 
@@ -171,9 +173,9 @@ bool rQuestSequenceList::loadData(MtDataReader& r, cQuestSequence* pData) {
 bool rQuestSequenceList::saveData(MtDataWriter& w, cQuestSequence* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mSeqNo);
+    nDDOIO::writeData(w, pData->mSeqNo);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mQstId);
+    nDDOIO::writeData(w, pData->mQstId);
     return true;
 }
 
@@ -186,8 +188,10 @@ MT_CTSTR rQuestSequenceList::getExt() const {
 // Address: 0x01aa3600 - 0x01aa3606 (6 bytes)
 u32 rQuestSequenceList::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rQuestSequenceList::MyDTI rQuestSequenceList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rQuestSequenceList.cpp at 0x006b8450-0x006b8492 (called at rQuestSequenceList.cpp:23)
@@ -197,7 +201,7 @@ u32 rQuestSequenceList::getDataVersion() const {
 // Address: 0x006b7fc0 - 0x006b8024 (100 bytes)
 MtObject* rQuestSequenceList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rQuestSequenceList;
+    return new (16u) rQuestSequenceList;
 }
 
 // Instance at 0x01aa35b0 - 0x01aa35c2 (18 bytes) of the generic rTbl2<T>::getData

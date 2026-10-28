@@ -45,7 +45,7 @@ const MtDTI& sKeyboard::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9sKeyboardD0Ev at 0x0124589e-0x012458bf, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sKeyboard::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sKeyboard::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sKeyboard::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -104,7 +104,7 @@ __attribute__((weak)) void sKeyboard::createProperty(MtPropertyList& s) {
 // Address: 0x012461d0 - 0x012461d5 (5 bytes)
 MtUI* sKeyboard::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)
@@ -157,13 +157,13 @@ MtUI* sKeyboard::createUI(MtProperty& prop) {
 // Address: 0x01245f50 - 0x01245f53 (3 bytes)
 sKeyboard::TYPE sKeyboard::getCurrentType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sKeyboard::TYPE>(0);
+    return TYPE_DEFAULT;
 }
 
 // Address: 0x01245ca0 - 0x01245cb9 (25 bytes)
 void sKeyboard::clearKeyState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::memset(static_cast<void*>(&this->mState[0]), static_cast<int>(0), static_cast<size_t>(2240));
+    memset(static_cast<void*>(&mState[0]), 0, 2240ul);
 }
 
 // No out-of-line body: no code in the ELF
@@ -203,6 +203,13 @@ __attribute__((weak)) void sKeyboard::keyboardEvent(void* arg, const SceImeEvent
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sKeyboard::checkMouseState(u32 mouseButton, u32 keyboardButton);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sKeyboard::MyDTI sKeyboard::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const u8 sKeyboard::mKbAssign[];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sKeyboard* sKeyboard::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sKeyboard::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

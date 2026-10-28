@@ -194,3 +194,9 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUICaplinkImageSelect::moveEvent at 0x9c1552-0x9c155c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUICaplinkImageSelect::cancel() {
+    this->mSelectResult = 2;
+}

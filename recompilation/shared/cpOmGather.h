@@ -152,7 +152,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline ItemGetInfo::ItemGetInfo() {
-    this->mID = static_cast<s32>(0);
-    this->mItemID = static_cast<s32>(0);
-    this->mNum = static_cast<u32>(0);
+    this->mID = 0;
+    this->mItemID = 0;
+    this->mNum = 0;
 }

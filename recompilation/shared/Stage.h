@@ -366,41 +366,41 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataEncounterPawnInfo::CDataEncounterPawnInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ulLv = static_cast<u32>(0);
-    this->m_ulLvBand = static_cast<u32>(0);
-    this->m_ulThinkID = static_cast<u32>(0);
+    this->m_ulLv = 0;
+    this->m_ulLvBand = 0;
+    this->m_ulThinkID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGatheringItemElement::CDataGatheringItemElement() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ulID = static_cast<u32>(0);
-    this->m_ulItemId = static_cast<u32>(0);
-    this->m_ulNum = static_cast<u32>(0);
+    this->m_ulID = 0;
+    this->m_ulItemId = 0;
+    this->m_ulNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataGatheringItemGetRequest::CDataGatheringItemGetRequest() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ulID = static_cast<u32>(0);
-    this->m_ulNum = static_cast<u32>(0);
+    this->m_ulID = 0;
+    this->m_ulNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataLayoutEnemyData::CDataLayoutEnemyData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucPositionIndex = static_cast<u8>(0);
+    this->m_ucPositionIndex = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataOmData::CDataOmData() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ulKey = static_cast<u32>(0);
-    this->m_ulValue = static_cast<u32>(0);
+    this->m_ulKey = 0;
+    this->m_ulValue = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -422,10 +422,10 @@ inline CDataStageAttribute::CDataStageAttribute() {
 // approximate: only approximate callers check this inline body
 inline CDataStageInfo::CDataStageInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ulRandomStageGroupID = static_cast<u32>(0);
-    this->m_unType = static_cast<u32>(0);
-    this->m_ulID = static_cast<u32>(0);
-    this->m_ulStageNo = static_cast<u32>(0);
+    this->m_ulRandomStageGroupID = 0;
+    this->m_unType = 0;
+    this->m_ulID = 0;
+    this->m_ulStageNo = 0;
     this->m_bIsAutoSetBloodEnemy = false;
 }
 
@@ -435,29 +435,29 @@ inline CDataStageLayoutEnemyPresetEnemyInfoClient::CDataStageLayoutEnemyPresetEn
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_bIsAreaBoss = false;
     this->m_bIsBloodEnemy = false;
-    this->m_ucInfectionType = static_cast<u8>(0);
+    this->m_ucInfectionType = 0;
     this->m_bIsBossGauge = false;
     this->m_bIsBossBGM = false;
     this->m_bIsManualSet = false;
-    this->m_usHmPresetNo = static_cast<u16>(0);
-    this->m_ucStartThinkTblNo = static_cast<u8>(0);
-    this->m_ucRepopNum = static_cast<u8>(0);
-    this->m_ucRepopCount = static_cast<u8>(0);
-    this->m_ucEnemyTargetTypesId = static_cast<u8>(0);
-    this->m_ucMontageFixNo = static_cast<u8>(0);
-    this->m_ucSetType = static_cast<u8>(0);
-    this->m_unRaidBossID = static_cast<u32>(0);
-    this->m_usScale = static_cast<u16>(0);
-    this->m_usLv = static_cast<u16>(0);
-    this->m_unEnemyID = static_cast<u32>(0);
-    this->m_unNamedEnemyParamsId = static_cast<u32>(0);
+    this->m_usHmPresetNo = 0;
+    this->m_ucStartThinkTblNo = 0;
+    this->m_ucRepopNum = 0;
+    this->m_ucRepopCount = 0;
+    this->m_ucEnemyTargetTypesId = 0;
+    this->m_ucMontageFixNo = 0;
+    this->m_ucSetType = 0;
+    this->m_unRaidBossID = 0;
+    this->m_usScale = 0;
+    this->m_usLv = 0;
+    this->m_unEnemyID = 0;
+    this->m_unNamedEnemyParamsId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataStageLayoutID::CDataStageLayoutID() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unStageID = static_cast<u32>(0);
-    this->m_ucLayerNo = static_cast<u8>(0);
-    this->m_unGroupID = static_cast<u32>(0);
+    this->m_unStageID = 0;
+    this->m_ucLayerNo = 0;
+    this->m_unGroupID = 0;
 }

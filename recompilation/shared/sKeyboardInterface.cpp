@@ -26,7 +26,7 @@ const MtDTI& sKeyboardInterface::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sKeyboardInterface::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sKeyboardInterface::DTI);
+    return MtMemoryAllocator::getAllocator(sKeyboardInterface::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* sKeyboardInterface::getAllocator() {
 // Address: 0x007dd930 - 0x007dd970 (64 bytes)
 void* sKeyboardInterface::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sKeyboardInterface::getAllocator()->memAlloc(sz, align, ::sKeyboardInterface::DTI.::MtDTI::getID());
+    return sKeyboardInterface::getAllocator()->memAlloc(sz, align, sKeyboardInterface::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* sKeyboardInterface::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sKeyboardInterface::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sKeyboardInterface::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sKeyboardInterface::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,9 +65,9 @@ inline void sKeyboardInterface::operator delete(void* p_addr) {
 // Address: 0x007dd9e0 - 0x007dda1f (63 bytes)
 sKeyboardInterface::sKeyboardInterface() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sKeyboardInterface::mpInstance = this;
-    this->::sKeyboardInterface::init();
-    this->mKeyStateClearNum = static_cast<u32>(6);
+    sKeyboardInterface::mpInstance = this;
+    this->sKeyboardInterface::init();
+    mKeyStateClearNum = 6;
 }
 
 // Address: 0x007dda20 - 0x007dda25 (5 bytes)
@@ -79,7 +79,7 @@ sKeyboardInterface::~sKeyboardInterface() {
 // Address: 0x007dda60 - 0x007dda65 (5 bytes)
 void sKeyboardInterface::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007dda70 - 0x007ddc3f (463 bytes)
@@ -115,19 +115,23 @@ __attribute__((weak)) void sKeyboardInterface::reset() {
 // No out-of-line body: no code in the ELF
 // sKeyboardInterface::MODE sKeyboardInterface::getMode() const;
 
-// No out-of-line body: 1 inlined copy in 1 function (54 bytes)
-//   in sKeyboardInterface::setKeyboardSetting at 0x007de1e4-0x007de21a (called at sKeyboardInterface.cpp:717)
-// void sKeyboardInterface::setInputField(MT_CTSTR titleText, MT_CTSTR defaultText, u32 maxCharacterCount);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sKeyboardInterface::setKeyboardSetting at 0x7de1e4-0x7de21a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sKeyboardInterface::setInputField(MT_CTSTR titleText, MT_CTSTR defaultText, u32 maxCharacterCount) {
+    nUnicode::ConvertUtf8toUcs16(&mTitleText[0], titleText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
+    nUnicode::ConvertUtf8toUcs16(&mDefaultText[0], defaultText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
+    mMaxCharacterCount = (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u;
+}
 
 // Address: 0x007de150 - 0x007de170 (32 bytes)
 bool sKeyboardInterface::requestOpen(u32 option, cInputTextKeyboardHook* keyboardHook) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode != static_cast<sKeyboardInterface::MODE>(0)) {
+    if (mMode != MODE_IDLE) {
         return false;
     } else {
-        this->mRequest = static_cast<sKeyboardInterface::REQUEST>(1);
-        this->mOptionReq = option;
-        this->mKeyboardHookReq = keyboardHook;
+        mRequest = REQ_OPEN_TO_KEYBOARD;
+        mOptionReq = option;
+        mKeyboardHookReq = keyboardHook;
         return true;
     }
 }
@@ -135,12 +139,12 @@ bool sKeyboardInterface::requestOpen(u32 option, cInputTextKeyboardHook* keyboar
 // Address: 0x007de170 - 0x007de190 (32 bytes)
 bool sKeyboardInterface::requestOpenPad(u32 option, cInputTextKeyboardHook* keyboardHook) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMode != static_cast<sKeyboardInterface::MODE>(0)) {
+    if (mMode != MODE_IDLE) {
         return false;
     } else {
-        this->mRequest = static_cast<sKeyboardInterface::REQUEST>(2);
-        this->mOptionReq = option;
-        this->mKeyboardHookReq = keyboardHook;
+        mRequest = REQ_OPEN_TO_PAD;
+        mOptionReq = option;
+        mKeyboardHookReq = keyboardHook;
         return true;
     }
 }
@@ -167,23 +171,23 @@ __attribute__((weak)) bool sKeyboardInterface::requestClose(bool isCancel) {
 // Address: 0x007de1d0 - 0x007de225 (85 bytes)
 void sKeyboardInterface::setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE keyboardType, MT_CTSTR titleText, MT_CTSTR defaultText, s32 maxCharacterCount) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    this->mKeyboardType = keyboardType;
-    ::nUnicode::ConvertUtf8toUcs16(&this->mTitleText[0], titleText, (static_cast<unsigned int>(maxCharacterCount) <= static_cast<unsigned int>(1023)) ? static_cast<unsigned int>(maxCharacterCount) : static_cast<unsigned int>(1023));
-    ::nUnicode::ConvertUtf8toUcs16(&this->mDefaultText[0], defaultText, (static_cast<unsigned int>(maxCharacterCount) <= static_cast<unsigned int>(1023)) ? static_cast<unsigned int>(maxCharacterCount) : static_cast<unsigned int>(1023));
-    this->mMaxCharacterCount = (static_cast<unsigned int>(maxCharacterCount) <= static_cast<unsigned int>(1023)) ? static_cast<unsigned int>(maxCharacterCount) : static_cast<unsigned int>(1023);
+    mKeyboardType = keyboardType;
+    nUnicode::ConvertUtf8toUcs16(&mTitleText[0], titleText, (static_cast<unsigned int>(maxCharacterCount) <= 1023) ? static_cast<unsigned int>(maxCharacterCount) : 1023u);
+    nUnicode::ConvertUtf8toUcs16(&mDefaultText[0], defaultText, (static_cast<unsigned int>(maxCharacterCount) <= 1023) ? static_cast<unsigned int>(maxCharacterCount) : 1023u);
+    mMaxCharacterCount = (static_cast<unsigned int>(maxCharacterCount) <= 1023) ? static_cast<unsigned int>(maxCharacterCount) : 1023u;
 }
 
 // Address: 0x007de230 - 0x007de242 (18 bytes)
 bool sKeyboardInterface::isBusy() const {
     // DWARF local not rendered: bool is_busy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mMode != static_cast<sKeyboardInterface::MODE>(0)) || (this->mRequest != static_cast<sKeyboardInterface::REQUEST>(0));
+    return (mMode != MODE_IDLE) || (mRequest != REQ_NONE);
 }
 
 // Address: 0x007de250 - 0x007de258 (8 bytes)
 bool sKeyboardInterface::isRunning() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMode == static_cast<sKeyboardInterface::MODE>(1);
+    return mMode == MODE_RUNNING;
 }
 
 // Address: 0x007de260 - 0x007de27c (28 bytes)
@@ -200,7 +204,7 @@ __attribute__((weak)) bool sKeyboardInterface::isClosing() const {
 // Address: 0x007de280 - 0x007de284 (4 bytes)
 bool sKeyboardInterface::isSoftwareKeyboard() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsOpenByPad;
+    return mIsOpenByPad;
 }
 
 // No out-of-line body: no code in the ELF
@@ -245,6 +249,11 @@ __attribute__((weak)) int sKeyboardInterface::KeyboardFilter(const SceImeKeycode
     DDON_STUB("sKeyboardInterface::KeyboardFilter")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sKeyboardInterface::MyDTI sKeyboardInterface::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sKeyboardInterface* sKeyboardInterface::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sKeyboardInterface.cpp at 0x007de38f-0x007de3cc (called at sKeyboardInterface.cpp:50)

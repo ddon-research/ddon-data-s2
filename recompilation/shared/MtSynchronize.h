@@ -92,7 +92,7 @@ class MtCriticalSection
     friend class cZoneMultiStack;
     // inferred: nNetwork::VoiceChat::init names MtCriticalSection::mCSection
     friend class nNetwork::VoiceChat;
-    // inferred: rSoundSourceStreamAT9::prepareToBuffer names MtCriticalSection::mCSection
+    // inferred: rSoundSourceStreamAT9::close names MtCriticalSection::mCSection
     friend class rSoundSourceStreamAT9;
     // inferred: sAIPawnSys::releaseAIPawnRotateNo names MtCriticalSection::mCSection
     friend class sAIPawnSys;
@@ -130,9 +130,9 @@ class MtCriticalSection
     friend class sObjCollision;
     // inferred: sOccluder::add names MtCriticalSection::mCSection
     friend class sOccluder;
-    // inferred: sOmManager::loadNyoro names MtCriticalSection::mCSection
+    // inferred: sOmManager::releaseTreeInsCtrl names MtCriticalSection::mCSection
     friend class sOmManager;
-    // inferred: sPrimitive::reserveTex names MtCriticalSection::mCSection
+    // inferred: sPrimitive::reserveBuffer names MtCriticalSection::mCSection
     friend class sPrimitive;
     // inferred: sQuestManagerExt::notifyReloadMasterData names MtCriticalSection::mCSection
     friend class sQuestManagerExt;
@@ -148,7 +148,7 @@ class MtCriticalSection
     friend class sShadow;
     // inferred: sShlManager::getShlUniqueId names MtCriticalSection::mCSection
     friend class sShlManager;
-    // inferred: sSound::reset names MtCriticalSection::mCSection
+    // inferred: sSound::NativeSystem::updateVoice names MtCriticalSection::mCSection, through its enclosing class sSound
     friend class sSound;
     // inferred: sSoundManager::setCycleZone names MtCriticalSection::mCSection
     friend class sSoundManager;

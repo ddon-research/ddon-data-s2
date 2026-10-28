@@ -333,3 +333,15 @@ inline uGUIPopRmcQuestInfo* uGUIMissionInfo::getGUIPopRmcQuestInfoPtr() {
 inline u32 uGUIMissionInfo::getMemberNum() {
     return this->mMemberNum;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMissionInfo::moveEvent at 0xb1e7e2-0xb1e7e9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIMissionInfo::eventDecide() {
+    this->mIsDecide = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMissionInfo::moveEvent at 0xb1e7ea-0xb1e7f1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIMissionInfo::eventCancel() {
+    this->mIsCancel = true;
+}

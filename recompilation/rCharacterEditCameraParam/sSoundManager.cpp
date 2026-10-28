@@ -51,17 +51,17 @@ __attribute__((weak)) void sSoundManager::initStage() {
 // Address: 0x00854310 - 0x00854337 (39 bytes)
 void sSoundManager::startStage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsFsm_222 != false) {
+    if (mIsFsm_222) {
         return;
     }
-    if (this->mIsEvent_222 != false) {
+    if (mIsEvent_222) {
         return;
     }
-    if (this->mIsQuest_222 != false) {
+    if (mIsQuest_222) {
         return;
     }
-    this->mIsStage_222 = true;
-    this->mIsBtl_222 = true;
+    mIsStage_222 = true;
+    mIsBtl_222 = true;
 }
 
 // Address: 0x00854340 - 0x00854612 (722 bytes)
@@ -184,12 +184,144 @@ __attribute__((weak)) void sSoundManager::updateBtlBGMTemp() {
 // void sSoundManager::pauseBtl();
 
 // Address: 0x008573c0 - 0x0085751c (348 bytes)
-__attribute__((weak)) void sSoundManager::resumeBtl(rSoundStreamRequest* prBtl, u32 reqNo) {
-    // local: Element* pelem;
-    // local: const SoundSource* psrc;
-    // local: s32 lend;
-    DDON_STUB("sSoundManager::resumeBtl")
-    /* stub */
+void sSoundManager::resumeBtl(rSoundStreamRequest* prBtl, u32 reqNo) {
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (prBtl != nullptr) {
+        if (reqNo != 0xFFFFFFFFu) {
+            if (mprBtlPause != nullptr) {
+                if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                    if (mbBtlPauseNoBgm) {
+                        mbBtlPause = false;
+                        mbBtlPauseNoBgm = false;
+                        mprBtlPause->release();
+                        mprBtlPause = nullptr;
+                        mBtlReqNoPause = 0xFFFFFFFF;
+                    } else {
+                        if (prBtl == mprBtlPause) {
+                            if (mBtlReqNoPause == reqNo) {
+                                rSoundStreamRequest::Element* pelem = prBtl->getElement(reqNo);
+                                if (pelem != nullptr) {
+                                    const rSoundStreamRequest::SoundSource* psrc = pelem->mpSource;
+                                    if (psrc != nullptr) {
+                                        s32 lend = psrc->rSoundStreamRequest::SoundSource::getLoopEnd();
+                                        if (lend > -1) {
+                                            if (mBtlPausePos <= 0x36EE800u) {
+                                                if (static_cast<unsigned int>(lend) < (mBtlPausePos + 0x17700u)) {
+                                                    if (mprBtlPause != nullptr) {
+                                                        if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                                                            mbBtlPause = false;
+                                                            mbBtlPauseNoBgm = false;
+                                                            mprBtlPause->release();
+                                                            mprBtlPause = nullptr;
+                                                            mBtlReqNoPause = 0xFFFFFFFF;
+                                                            mBtlPausePos = 0;
+                                                        }
+                                                    }
+                                                } else {
+                                                    static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(mprBtlPause, mBtlReqNoPause, reinterpret_cast<const uintptr>(this), 2000u);
+                                                    if (mBtlPausePos != 0) {
+                                                        static_cast<sSoundExt*>(sSound::getInstance())->setPlayPos(mprBtlPause, mBtlReqNoPause, reinterpret_cast<const uintptr>(this), mBtlPausePos);
+                                                        mBtlPausePos = 0;
+                                                    }
+                                                    mbBtlPause = false;
+                                                    if (mprBtlPause != nullptr) {
+                                                        mprBtlPause->release();
+                                                        mprBtlPause = nullptr;
+                                                    }
+                                                    mBtlReqNoPause = 0xFFFFFFFF;
+                                                }
+                                            } else {
+                                                if (mprBtlPause != nullptr) {
+                                                    if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                                                        mbBtlPause = false;
+                                                        mbBtlPauseNoBgm = false;
+                                                        mprBtlPause->release();
+                                                        mprBtlPause = nullptr;
+                                                        mBtlReqNoPause = 0xFFFFFFFF;
+                                                        mBtlPausePos = 0;
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (mprBtlPause != nullptr) {
+                                                if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                                                    mbBtlPause = false;
+                                                    mbBtlPauseNoBgm = false;
+                                                    mprBtlPause->release();
+                                                    mprBtlPause = nullptr;
+                                                    mBtlReqNoPause = 0xFFFFFFFF;
+                                                    mBtlPausePos = 0;
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (mprBtlPause != nullptr) {
+                                            if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                                                mbBtlPause = false;
+                                                mbBtlPauseNoBgm = false;
+                                                mprBtlPause->release();
+                                                mprBtlPause = nullptr;
+                                                mBtlReqNoPause = 0xFFFFFFFF;
+                                                mBtlPausePos = 0;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (mprBtlPause != nullptr) {
+                                        if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                                            mbBtlPause = false;
+                                            mbBtlPauseNoBgm = false;
+                                            mprBtlPause->release();
+                                            mprBtlPause = nullptr;
+                                            mBtlReqNoPause = 0xFFFFFFFF;
+                                            mBtlPausePos = 0;
+                                        }
+                                    }
+                                }
+                            } else {
+                                mbBtlPause = false;
+                                mbBtlPauseNoBgm = false;
+                                mprBtlPause->release();
+                                mprBtlPause = nullptr;
+                                mBtlReqNoPause = 0xFFFFFFFF;
+                                mBtlPausePos = 0;
+                            }
+                        } else {
+                            mbBtlPause = false;
+                            mbBtlPauseNoBgm = false;
+                            mprBtlPause->release();
+                            mprBtlPause = nullptr;
+                            mBtlReqNoPause = 0xFFFFFFFF;
+                            mBtlPausePos = 0;
+                        }
+                    }
+                }
+            }
+        } else {
+            if (mprBtlPause != nullptr) {
+                if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                    mbBtlPause = false;
+                    mbBtlPauseNoBgm = false;
+                    mprBtlPause->release();
+                    mprBtlPause = nullptr;
+                    mBtlReqNoPause = 0xFFFFFFFF;
+                    mBtlPausePos = 0;
+                }
+            }
+        }
+    } else {
+        if (mprBtlPause != nullptr) {
+            if (mBtlReqNoPause != 0xFFFFFFFFu) {
+                mbBtlPause = false;
+                mbBtlPauseNoBgm = false;
+                mprBtlPause->release();
+                mprBtlPause = nullptr;
+                mBtlReqNoPause = 0xFFFFFFFF;
+                mBtlPausePos = 0;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (118 bytes)
@@ -277,7 +409,7 @@ __attribute__((weak)) u32 sSoundManager::getEmState() {
 // Address: 0x00858190 - 0x00858197 (7 bytes)
 u32 sSoundManager::getBattleInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEmSetState.::MtArray::mLength;
+    return mEmSetState.mLength;
 }
 
 // Address: 0x008581a0 - 0x008581c3 (35 bytes)
@@ -309,7 +441,7 @@ __attribute__((weak)) u32 sSoundManager::getBattleStateAreaBossType() const {
 // Address: 0x008582a0 - 0x008582a7 (7 bytes)
 sBattleState::SYS_BATTLE_STATE sSoundManager::getBattleState() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sBattleState::SYS_BATTLE_STATE>(this->mBattleState);
+    return static_cast<sBattleState::SYS_BATTLE_STATE>(mBattleState);
 }
 
 // Address: 0x008547f0 - 0x00854ba8 (952 bytes)
@@ -331,100 +463,100 @@ __attribute__((weak)) void sSoundManager::updateBtlState() {
 u32 sSoundManager::getStgState() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (this->mBtlStateSnd[0] == static_cast<unsigned int>(0)) {
-        if (this->mIsEvent_222 == false) {
-            if (this->mIsBar_222 != false) {
-                return static_cast<unsigned int>((static_cast<unsigned long>(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::checkStreamVoice(this->mprStg, this->mStgReqNo) == false) * static_cast<unsigned long>(8)) + static_cast<unsigned long>(3));
+    if (mBtlStateSnd[0] == 0) {
+        if (!mIsEvent_222) {
+            if (mIsBar_222) {
+                return static_cast<unsigned int>((static_cast<unsigned long>(!static_cast<sSoundExt*>(sSound::getInstance())->checkStreamVoice(mprStg, mStgReqNo)) * 8) + 3ul);
             } else {
                 // inferred: a temporary for the result of the call at 0x859d90, used twice; no DWARF local holds it
-                rSoundAreaInfo* t0 = this->::sSoundManager::getSAR();
-                if (t0 != static_cast<rSoundAreaInfo*>(nullptr)) {
-                    if (t0->::rSoundAreaInfo::isCycleStage() != false) {
-                        if (this->mbCycleZone != false) {
-                            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsHolding() == false) {
-                                if (this->mIsBase_222 == false) {
-                                    if (this->mIsJukeBox_222 != false) {
-                                        if (this->mIsJukeBoxChg != false) {
-                                            return static_cast<u32>(5);
+                rSoundAreaInfo* t0 = getSAR();
+                if (t0 != nullptr) {
+                    if (t0->isCycleStage()) {
+                        if (mbCycleZone) {
+                            if (!sQuestManagerExt::getInstance()->isCycleContentsHolding()) {
+                                if (!mIsBase_222) {
+                                    if (mIsJukeBox_222) {
+                                        if (mIsJukeBoxChg) {
+                                            return 5;
                                         } else {
-                                            return static_cast<u32>(4);
+                                            return 4;
                                         }
                                     } else {
-                                        if (this->mIsNPC_222 != false) {
-                                            return static_cast<u32>(6);
+                                        if (mIsNPC_222) {
+                                            return 6;
                                         } else {
-                                            return static_cast<u32>(1);
+                                            return 1;
                                         }
                                     }
                                 } else {
-                                    return static_cast<u32>(2);
+                                    return 2;
                                 }
                             } else {
-                                return static_cast<u32>(9);
+                                return 9;
                             }
                         } else {
-                            if (this->mIsBase_222 == false) {
-                                if (this->mIsJukeBox_222 != false) {
-                                    if (this->mIsJukeBoxChg != false) {
-                                        return static_cast<u32>(5);
+                            if (!mIsBase_222) {
+                                if (mIsJukeBox_222) {
+                                    if (mIsJukeBoxChg) {
+                                        return 5;
                                     } else {
-                                        return static_cast<u32>(4);
+                                        return 4;
                                     }
                                 } else {
-                                    if (this->mIsNPC_222 != false) {
-                                        return static_cast<u32>(6);
+                                    if (mIsNPC_222) {
+                                        return 6;
                                     } else {
-                                        return static_cast<u32>(1);
+                                        return 1;
                                     }
                                 }
                             } else {
-                                return static_cast<u32>(2);
+                                return 2;
                             }
                         }
                     } else {
-                        if (this->mIsBase_222 == false) {
-                            if (this->mIsJukeBox_222 != false) {
-                                if (this->mIsJukeBoxChg != false) {
-                                    return static_cast<u32>(5);
+                        if (!mIsBase_222) {
+                            if (mIsJukeBox_222) {
+                                if (mIsJukeBoxChg) {
+                                    return 5;
                                 } else {
-                                    return static_cast<u32>(4);
+                                    return 4;
                                 }
                             } else {
-                                if (this->mIsNPC_222 != false) {
-                                    return static_cast<u32>(6);
+                                if (mIsNPC_222) {
+                                    return 6;
                                 } else {
-                                    return static_cast<u32>(1);
+                                    return 1;
                                 }
                             }
                         } else {
-                            return static_cast<u32>(2);
+                            return 2;
                         }
                     }
                 } else {
-                    if (this->mIsBase_222 == false) {
-                        if (this->mIsJukeBox_222 != false) {
-                            if (this->mIsJukeBoxChg != false) {
-                                return static_cast<u32>(5);
+                    if (!mIsBase_222) {
+                        if (mIsJukeBox_222) {
+                            if (mIsJukeBoxChg) {
+                                return 5;
                             } else {
-                                return static_cast<u32>(4);
+                                return 4;
                             }
                         } else {
-                            if (this->mIsNPC_222 != false) {
-                                return static_cast<u32>(6);
+                            if (mIsNPC_222) {
+                                return 6;
                             } else {
-                                return static_cast<u32>(1);
+                                return 1;
                             }
                         }
                     } else {
-                        return static_cast<u32>(2);
+                        return 2;
                     }
                 }
             }
         } else {
-            return static_cast<u32>(7);
+            return 7;
         }
     } else {
-        return static_cast<u32>(10);
+        return 10;
     }
 }
 
@@ -477,7 +609,7 @@ __attribute__((weak)) void sSoundManager::releaseStg() {
 // Address: 0x00859d20 - 0x00859d28 (8 bytes)
 void sSoundManager::reqAreaChg() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbAreaChg = true;
+    mbAreaChg = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (53 bytes)
@@ -492,9 +624,84 @@ void sSoundManager::reqAreaChg() {
 // void sSoundManager::pauseStg();
 
 // Address: 0x0085a1a0 - 0x0085a314 (372 bytes)
-__attribute__((weak)) void sSoundManager::resumeStg(rSoundStreamRequest* prStg, u32 reqNo) {
-    DDON_STUB("sSoundManager::resumeStg")
-    /* stub */
+void sSoundManager::resumeStg(rSoundStreamRequest* prStg, u32 reqNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (prStg != nullptr) {
+        if (reqNo != 0xFFFFFFFFu) {
+            if (mbStgPauseNoBgm) {
+                mbStgPause = false;
+                mbStgPauseNoBgm = false;
+                if (mprStgPause != nullptr) {
+                    mprStgPause->release();
+                    mprStgPause = nullptr;
+                }
+                mStgReqNoPause = 0xFFFFFFFF;
+            } else {
+                if (prStg == mprStgPause) {
+                    if (mStgReqNoPause == reqNo) {
+                        static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                        if (mStgPausePos != 0) {
+                            static_cast<sSoundExt*>(sSound::getInstance())->setPlayPos(mprStgPause, mStgReqNoPause, reinterpret_cast<const uintptr>(this), mStgPausePos);
+                            mStgPausePos = 0;
+                        }
+                        mbStgPause = false;
+                        if (mprStgPause != nullptr) {
+                            mprStgPause->release();
+                            mprStgPause = nullptr;
+                        }
+                        mStgReqNoPause = 0xFFFFFFFF;
+                    } else {
+                        if (mprStgPause != nullptr) {
+                            if (mStgReqNoPause != 0xFFFFFFFFu) {
+                                mbStgPause = false;
+                                mbStgPauseNoBgm = false;
+                                mprStgPause->release();
+                                mprStgPause = nullptr;
+                                mStgReqNoPause = 0xFFFFFFFF;
+                                mStgPausePos = 0;
+                            }
+                        }
+                        static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                    }
+                } else {
+                    if (mprStgPause != nullptr) {
+                        if (mStgReqNoPause != 0xFFFFFFFFu) {
+                            mbStgPause = false;
+                            mbStgPauseNoBgm = false;
+                            mprStgPause->release();
+                            mprStgPause = nullptr;
+                            mStgReqNoPause = 0xFFFFFFFF;
+                            mStgPausePos = 0;
+                        }
+                    }
+                    static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                }
+            }
+        } else {
+            if (mprStgPause != nullptr) {
+                if (mStgReqNoPause != 0xFFFFFFFFu) {
+                    mbStgPause = false;
+                    mbStgPauseNoBgm = false;
+                    mprStgPause->release();
+                    mprStgPause = nullptr;
+                    mStgReqNoPause = 0xFFFFFFFF;
+                    mStgPausePos = 0;
+                }
+            }
+        }
+    } else {
+        if (mprStgPause != nullptr) {
+            if (mStgReqNoPause != 0xFFFFFFFFu) {
+                mbStgPause = false;
+                mbStgPauseNoBgm = false;
+                mprStgPause->release();
+                mprStgPause = nullptr;
+                mStgReqNoPause = 0xFFFFFFFF;
+                mStgPausePos = 0;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (257 bytes)
@@ -510,14 +717,102 @@ __attribute__((weak)) void sSoundManager::resumeStg(rSoundStreamRequest* prStg, 
 // void sSoundManager::pauseCycle();
 
 // Address: 0x0085a010 - 0x0085a188 (376 bytes)
-__attribute__((weak)) void sSoundManager::resumeCycle(rSoundStreamRequest* prStg, u32 reqNo) {
-    DDON_STUB("sSoundManager::resumeCycle")
-    /* stub */
+void sSoundManager::resumeCycle(rSoundStreamRequest* prStg, u32 reqNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (prStg != nullptr) {
+        if (reqNo != 0xFFFFFFFFu) {
+            if (mbCyclePauseNoBgm) {
+                mbCyclePause = false;
+                mbCyclePauseNoBgm = false;
+                if (mprCyclePause != nullptr) {
+                    mprCyclePause->release();
+                    mprCyclePause = nullptr;
+                }
+                mCycleReqNoPause = 0xFFFFFFFF;
+            } else {
+                if (prStg == mprCyclePause) {
+                    if (mCycleReqNoPause == reqNo) {
+                        static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                        if (mCyclePausePos != 0) {
+                            static_cast<sSoundExt*>(sSound::getInstance())->setPlayPos(mprCyclePause, mCycleReqNoPause, reinterpret_cast<const uintptr>(this), mCyclePausePos);
+                            mCyclePausePos = 0;
+                        }
+                        mbCyclePause = false;
+                        if (mprCyclePause != nullptr) {
+                            mprCyclePause->release();
+                            mprCyclePause = nullptr;
+                        }
+                        mCycleReqNoPause = 0xFFFFFFFF;
+                    } else {
+                        if (mprStgPause != nullptr) {
+                            if (mStgReqNoPause != 0xFFFFFFFFu) {
+                                mbStgPause = false;
+                                mbStgPauseNoBgm = false;
+                                mprStgPause->release();
+                                mprStgPause = nullptr;
+                                mStgReqNoPause = 0xFFFFFFFF;
+                                mStgPausePos = 0;
+                            }
+                        }
+                        static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                    }
+                } else {
+                    if (mprStgPause != nullptr) {
+                        if (mStgReqNoPause != 0xFFFFFFFFu) {
+                            mbStgPause = false;
+                            mbStgPauseNoBgm = false;
+                            mprStgPause->release();
+                            mprStgPause = nullptr;
+                            mStgReqNoPause = 0xFFFFFFFF;
+                            mStgPausePos = 0;
+                        }
+                    }
+                    static_cast<sSoundExt*>(sSound::getInstance())->fadeInStream(prStg, reqNo, reinterpret_cast<const uintptr>(this), 2000u);
+                }
+            }
+        } else {
+            if (mprCyclePause != nullptr) {
+                if (mCycleReqNoPause != 0xFFFFFFFFu) {
+                    mbCyclePause = false;
+                    mbCyclePauseNoBgm = false;
+                    mprCyclePause->release();
+                    mprCyclePause = nullptr;
+                    mCycleReqNoPause = 0xFFFFFFFF;
+                    mCyclePausePos = 0;
+                }
+            }
+        }
+    } else {
+        if (mprCyclePause != nullptr) {
+            if (mCycleReqNoPause != 0xFFFFFFFFu) {
+                mbCyclePause = false;
+                mbCyclePauseNoBgm = false;
+                mprCyclePause->release();
+                mprCyclePause = nullptr;
+                mCycleReqNoPause = 0xFFFFFFFF;
+                mCyclePausePos = 0;
+            }
+        }
+    }
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (66 bytes)
-//   in sSoundManager::resumeCycle at 0x0085a069-0x0085a0ab (called at sSoundManager.cpp:3833)
-// void sSoundManager::flushCycle();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundManager::resumeCycle at 0x85a069-0x85a0ab; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundManager::flushCycle() {
+    if (mprCyclePause == nullptr) {
+        return;
+    }
+    if (mCycleReqNoPause == 0xFFFFFFFFu) {
+        return;
+    }
+    mbCyclePause = false;
+    mbCyclePauseNoBgm = false;
+    mprCyclePause->release();
+    mprCyclePause = nullptr;
+    mCycleReqNoPause = 0xFFFFFFFF;
+    mCyclePausePos = 0;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (27 bytes)
 //   in sSoundManager::updateFsm at 0x008564dd-0x008564f8 (called at sSoundManager.cpp:2735)
@@ -533,9 +828,30 @@ __attribute__((weak)) void sSoundManager::updateFsm() {
 }
 
 // Address: 0x00858e70 - 0x00858f40 (208 bytes)
-__attribute__((weak)) void sSoundManager::startFsmReq(u32 bgmType, u32 reqNo) {
-    DDON_STUB("sSoundManager::startFsmReq")
-    /* stub */
+void sSoundManager::startFsmReq(u32 bgmType, u32 reqNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (bgmType <= 4u) {
+        if (((21ul >> static_cast<unsigned long>(bgmType & 31u)) & 1ul) != 0) {
+            if (mIsFsm_222) {
+                mFsmState[0] = 4;
+            }
+            mIsFsm_222 = true;
+            if (mprFsm != nullptr) {
+                mprFsm->release();
+                mprFsm = nullptr;
+            }
+            mFsmBgmType = bgmType;
+            mFsmReqNoTemp = reqNo;
+            if (mIsStage_222) {
+                mIsStage_222 = false;
+                static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mprStg, mStgReqNo, reinterpret_cast<const uintptr>(this), 2000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                releaseStg();
+            }
+            stopBtl();
+        }
+    }
 }
 
 // Address: 0x00859020 - 0x00859362 (834 bytes)
@@ -546,9 +862,30 @@ __attribute__((weak)) void sSoundManager::endFsmReq(bool isNotNormal) {
 }
 
 // Address: 0x00858f40 - 0x00859012 (210 bytes)
-__attribute__((weak)) void sSoundManager::startFsmReq(rSoundStreamRequest* pr, u32 reqNo) {
-    DDON_STUB("sSoundManager::startFsmReq")
-    /* stub */
+void sSoundManager::startFsmReq(rSoundStreamRequest* pr, u32 reqNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (pr == nullptr) {
+        return;
+    }
+    if (mIsFsm_222) {
+        mFsmState[0] = 4;
+    }
+    mIsFsm_222 = true;
+    if (mprFsm != nullptr) {
+        mprFsm->release();
+        mprFsm = nullptr;
+    }
+    mFsmBgmType = 6;
+    mprFsmTemp = pr;
+    pr->addRef();
+    mFsmReqNoTemp = reqNo;
+    if (mIsStage_222) {
+        mIsStage_222 = false;
+        static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mprStg, mStgReqNo, reinterpret_cast<const uintptr>(this), 2000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+        releaseStg();
+    }
+    stopBtl();
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (375 bytes)
@@ -587,9 +924,48 @@ __attribute__((weak)) void sSoundManager::updateQuest() {
 }
 
 // Address: 0x008593a0 - 0x00859466 (198 bytes)
-__attribute__((weak)) void sSoundManager::startQuestReq(s32 reqNo, u32 resourceType, u32 bgmType) {
-    DDON_STUB("sSoundManager::startQuestReq")
-    /* stub */
+void sSoundManager::startQuestReq(s32 reqNo, u32 resourceType, u32 bgmType) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    if (resourceType <= 3u) {
+        if (resourceType == 2) {
+            if (mIsQuest_222) {
+                mQuestState[0] = 4;
+            }
+            mIsQuest_222 = true;
+            if (mIsStage_222) {
+                mIsStage_222 = false;
+                static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mprStg, mStgReqNo, reinterpret_cast<const uintptr>(this), 2000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                releaseStg();
+            }
+            stopBtl();
+            if (mprQuest != nullptr) {
+                mprQuest->release();
+                mprQuest = nullptr;
+            }
+            mQuestBgmType = bgmType;
+            mQuestReqNoTemp = static_cast<u32>(reqNo);
+            mQuestResourceType = resourceType;
+        }
+    } else {
+        if (mIsQuest_222) {
+            mQuestState[0] = 4;
+        }
+        mIsQuest_222 = true;
+        if (mIsStage_222) {
+            mIsStage_222 = false;
+            static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mprStg, mStgReqNo, reinterpret_cast<const uintptr>(this), 2000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+            releaseStg();
+        }
+        stopBtl();
+        if (mprQuest != nullptr) {
+            mprQuest->release();
+            mprQuest = nullptr;
+        }
+        mQuestBgmType = bgmType;
+        mQuestReqNoTemp = static_cast<u32>(reqNo);
+        mQuestResourceType = resourceType;
+    }
 }
 
 // Address: 0x00859470 - 0x008597bb (843 bytes)
@@ -635,9 +1011,20 @@ __attribute__((weak)) void sSoundManager::endQuestReq(bool isNotNormal) {
 // void sSoundManager::updateEvent();
 
 // Address: 0x008597f0 - 0x00859862 (114 bytes)
-__attribute__((weak)) void sSoundManager::startEventReq(bool on_stg, bool on_btl) {
-    DDON_STUB("sSoundManager::startEventReq")
-    /* stub */
+void sSoundManager::startEventReq(bool on_stg, bool on_btl) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sSoundManager* used as const uintptr, which no DWARF type of the place gives; read with caution
+    mIsEvent_222 = true;
+    if (!on_stg) {
+        if (mIsStage_222) {
+            mIsStage_222 = false;
+            static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mprStg, mStgReqNo, reinterpret_cast<const uintptr>(this), 2000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+            releaseStg();
+        }
+    }
+    if (!on_btl) {
+        stopBtl();
+    }
 }
 
 // Address: 0x00859870 - 0x00859b1d (685 bytes)
@@ -662,112 +1049,131 @@ __attribute__((weak)) void sSoundManager::endEventReq(bool isNotNormal) {
 // Address: 0x00859b20 - 0x00859bad (141 bytes)
 void sSoundManager::startBarReq(rSoundStreamRequest* pRequest, u32 thisId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsBar_222 = true;
-    if (pRequest != this->mprBar) {
-        if (this->mprBar != static_cast<rSoundStreamRequest*>(nullptr)) {
-            this->mprBar->::cResource::release();
-            this->mprBar = static_cast<rSoundStreamRequest*>(nullptr);
+    mIsBar_222 = true;
+    if (pRequest != mprBar) {
+        if (mprBar != nullptr) {
+            mprBar->release();
+            mprBar = nullptr;
         }
-        if (pRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
-            pRequest->::cResource::addRef();
+        if (pRequest != nullptr) {
+            pRequest->addRef();
         }
-        this->mprBar = pRequest;
+        mprBar = pRequest;
     }
-    this->mBarPos.x = pos.x;
-    this->mBarPos.y = pos.y;
-    this->mBarPos.z = pos.z;
-    this->mBarPos.pad_ = 0.0f;
+    mBarPos.x = pos.x;
+    mBarPos.y = pos.y;
+    mBarPos.z = pos.z;
+    mBarPos.pad_ = 0.0f;
 }
 
 // Address: 0x00859bb0 - 0x00859be3 (51 bytes)
 void sSoundManager::endBarReq() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprBar != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mprBar->::cResource::release();
-        this->mprBar = static_cast<rSoundStreamRequest*>(nullptr);
+    if (mprBar != nullptr) {
+        mprBar->release();
+        mprBar = nullptr;
     }
-    this->mIsBar_222 = false;
+    mIsBar_222 = false;
 }
 
 // Address: 0x00859bf0 - 0x00859c51 (97 bytes)
 void sSoundManager::startBaseReq(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsBase_222 = true;
-    if (pRequest != this->mprBase) {
-        if (this->mprBase != static_cast<rSoundStreamRequest*>(nullptr)) {
-            this->mprBase->::cResource::release();
-            this->mprBase = static_cast<rSoundStreamRequest*>(nullptr);
+    mIsBase_222 = true;
+    if (pRequest != mprBase) {
+        if (mprBase != nullptr) {
+            mprBase->release();
+            mprBase = nullptr;
         }
-        if (pRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
-            pRequest->::cResource::addRef();
+        if (pRequest != nullptr) {
+            pRequest->addRef();
         }
-        this->mprBase = pRequest;
+        mprBase = pRequest;
     }
-    this->mBaseReqNo = reqNo;
+    mBaseReqNo = reqNo;
 }
 
 // Address: 0x00859c60 - 0x00859c93 (51 bytes)
 void sSoundManager::endBaseReq(rSoundStreamRequest* pRequest, u32 reqNo, u32 thisId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprBase != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mprBase->::cResource::release();
-        this->mprBase = static_cast<rSoundStreamRequest*>(nullptr);
+    if (mprBase != nullptr) {
+        mprBase->release();
+        mprBase = nullptr;
     }
-    this->mIsBase_222 = false;
+    mIsBase_222 = false;
 }
 
 // Address: 0x00859ca0 - 0x00859d04 (100 bytes)
 void sSoundManager::startJukeBox(u32 ability, u32 thisId, const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsJukeBox_222 != false) {
-        if (this->mJukeBoxAbilityNo != ability) {
-            this->mIsJukeBoxChg = true;
+    if (mIsJukeBox_222) {
+        if (mJukeBoxAbilityNo != ability) {
+            mIsJukeBoxChg = true;
         }
     } else {
-        this->mIsJukeBox_222 = true;
-        this->mIsJukeBoxChg = false;
+        mIsJukeBox_222 = true;
+        mIsJukeBoxChg = false;
     }
-    this->mJukeBoxAbilityNo = ability;
-    this->mJukeBoxPos.x = pos.x;
-    this->mJukeBoxPos.y = pos.y;
-    this->mJukeBoxPos.z = pos.z;
-    this->mJukeBoxPos.pad_ = 0.0f;
+    mJukeBoxAbilityNo = ability;
+    mJukeBoxPos.x = pos.x;
+    mJukeBoxPos.y = pos.y;
+    mJukeBoxPos.z = pos.z;
+    mJukeBoxPos.pad_ = 0.0f;
 }
 
 // Address: 0x00859d10 - 0x00859d1a (10 bytes)
 void sSoundManager::endJukeBox() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsJukeBox_222 = false;
-    this->mIsJukeBoxChg = false;
+    mIsJukeBox_222 = false;
+    mIsJukeBoxChg = false;
 }
 
-// No out-of-line body: 3 inlined copies in 3 functions (109 bytes)
-//   in sSoundManager::updateStg at 0x00855731-0x0085574d (called at sSoundManager.cpp:3326)
-//   in sSoundManager::startBarReq at 0x00859b3a-0x00859b6f (called at sSoundManager.cpp:3321)
-//   in sSoundManager::endBarReq at 0x00859bb9-0x00859bd5 (called at sSoundManager.cpp:3326)
-// void sSoundManager::setBarStqr(rSoundStreamRequest* pr);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundManager::startBarReq at 0x859b3a-0x859b6f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundManager::setBarStqr(rSoundStreamRequest* pr) {
+    if (pr == mprBar) {
+        return;
+    }
+    if (mprBar != nullptr) {
+        mprBar->release();
+        mprBar = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->addRef();
+    }
+    mprBar = pr;
+}
 
-// No out-of-line body: 2 inlined copies in 2 functions (81 bytes)
-//   in sSoundManager::startBaseReq at 0x00859c0a-0x00859c3f (called at sSoundManager.cpp:3335)
-//   in sSoundManager::endBaseReq at 0x00859c69-0x00859c85 (called at sSoundManager.cpp:3340)
-// void sSoundManager::setBaseStqr(rSoundStreamRequest* pr);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundManager::startBaseReq at 0x859c0a-0x859c3f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundManager::setBaseStqr(rSoundStreamRequest* pr) {
+    if (pr == mprBase) {
+        return;
+    }
+    if (mprBase != nullptr) {
+        mprBase->release();
+        mprBase = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->addRef();
+    }
+    mprBase = pr;
+}
 
 // Address: 0x0085a4a0 - 0x0085a4fd (93 bytes)
 void sSoundManager::setCycleZone(bool v) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mbCycleZone = v;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mbCycleZone = v;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -837,13 +1243,13 @@ u32 sSoundManager::getStageBgmReqNo() {
     // DWARF local not rendered: WEATHER_PHASE phase;
     // DWARF local not rendered: bool isAmb2;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rSoundAreaInfo* prsar = this->::sSoundManager::getSAR();
-    if (prsar != static_cast<rSoundAreaInfo*>(nullptr)) {
-        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isChangeBgmIsland() != false) {
-            this->mIsSecond = true;
-            if (prsar->mIsSecond != false) {
-                if (prsar->mIsAmb2 != false) {
-                    if (::sWeatherManager::getInstance()->::sWeatherManager::getWeatherPhase() != static_cast<sWeatherManager::WEATHER_PHASE>(0)) {
+    rSoundAreaInfo* prsar = getSAR();
+    if (prsar != nullptr) {
+        if (sQuestManagerExt::getInstance()->isChangeBgmIsland()) {
+            mIsSecond = true;
+            if (prsar->mIsSecond) {
+                if (prsar->mIsAmb2) {
+                    if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
                         return prsar->mNightBgmNo2;
                     } else {
                         return prsar->mDayBgmNo2;
@@ -852,21 +1258,21 @@ u32 sSoundManager::getStageBgmReqNo() {
                     return prsar->mBgmNo2;
                 }
             } else {
-                if (prsar->mIsAmb != false) {
-                    if (::sWeatherManager::getInstance()->::sWeatherManager::getWeatherPhase() != static_cast<sWeatherManager::WEATHER_PHASE>(0)) {
-                        return prsar->::rSoundAreaInfo::getNightBgmNo();
+                if (prsar->mIsAmb) {
+                    if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
+                        return prsar->rSoundAreaInfo::getNightBgmNo();
                     } else {
-                        return prsar->::rSoundAreaInfo::getDayBgmNo();
+                        return prsar->rSoundAreaInfo::getDayBgmNo();
                     }
                 } else {
-                    return prsar->::rSoundAreaInfo::getNormalBgmNo();
+                    return prsar->rSoundAreaInfo::getNormalBgmNo();
                 }
             }
         } else {
-            if (this->mIsSecond != false) {
-                if (prsar->mIsSecond != false) {
-                    if (prsar->mIsAmb2 != false) {
-                        if (::sWeatherManager::getInstance()->::sWeatherManager::getWeatherPhase() != static_cast<sWeatherManager::WEATHER_PHASE>(0)) {
+            if (mIsSecond) {
+                if (prsar->mIsSecond) {
+                    if (prsar->mIsAmb2) {
+                        if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
                             return prsar->mNightBgmNo2;
                         } else {
                             return prsar->mDayBgmNo2;
@@ -875,30 +1281,30 @@ u32 sSoundManager::getStageBgmReqNo() {
                         return prsar->mBgmNo2;
                     }
                 } else {
-                    if (prsar->mIsAmb != false) {
-                        if (::sWeatherManager::getInstance()->::sWeatherManager::getWeatherPhase() != static_cast<sWeatherManager::WEATHER_PHASE>(0)) {
-                            return prsar->::rSoundAreaInfo::getNightBgmNo();
+                    if (prsar->mIsAmb) {
+                        if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
+                            return prsar->rSoundAreaInfo::getNightBgmNo();
                         } else {
-                            return prsar->::rSoundAreaInfo::getDayBgmNo();
+                            return prsar->rSoundAreaInfo::getDayBgmNo();
                         }
                     } else {
-                        return prsar->::rSoundAreaInfo::getNormalBgmNo();
+                        return prsar->rSoundAreaInfo::getNormalBgmNo();
                     }
                 }
             } else {
-                if (prsar->mIsAmb != false) {
-                    if (::sWeatherManager::getInstance()->::sWeatherManager::getWeatherPhase() != static_cast<sWeatherManager::WEATHER_PHASE>(0)) {
-                        return prsar->::rSoundAreaInfo::getNightBgmNo();
+                if (prsar->mIsAmb) {
+                    if (sWeatherManager::getInstance()->getWeatherPhase() != sWeatherManager::WEATHER_PHASE_DAY) {
+                        return prsar->rSoundAreaInfo::getNightBgmNo();
                     } else {
-                        return prsar->::rSoundAreaInfo::getDayBgmNo();
+                        return prsar->rSoundAreaInfo::getDayBgmNo();
                     }
                 } else {
-                    return prsar->::rSoundAreaInfo::getNormalBgmNo();
+                    return prsar->rSoundAreaInfo::getNormalBgmNo();
                 }
             }
         }
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -981,7 +1387,7 @@ const MtDTI& sSoundManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sSoundManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sSoundManager::DTI);
+    return MtMemoryAllocator::getAllocator(sSoundManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -990,7 +1396,7 @@ inline MtAllocator* sSoundManager::getAllocator() {
 // Address: 0x0085a620 - 0x0085a660 (64 bytes)
 void* sSoundManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sSoundManager::getAllocator()->memAlloc(sz, align, ::sSoundManager::DTI.::MtDTI::getID());
+    return sSoundManager::getAllocator()->memAlloc(sz, align, sSoundManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1005,7 +1411,7 @@ void* sSoundManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSoundManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSoundManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSoundManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1040,7 +1446,7 @@ sSoundManager::~sSoundManager() {
 // Address: 0x0085a890 - 0x0085a895 (5 bytes)
 void sSoundManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x0085a7c0 - 0x0085a7e4 (36 bytes)
@@ -1057,8 +1463,23 @@ __attribute__((weak)) void sSoundManager::reset() {
 // Address: 0x0085a8b0 - 0x0085a8b5 (5 bytes)
 void sSoundManager::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSoundManager::move_222();
+    move_222();
 }
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sSoundManager::mBattleWinJudgeTime;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sSoundManager::mBattleEscapeJudgeTime;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sSoundManager::mBattleWinKeepTime;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 sSoundManager::mBattleEscapeKeepTime;
+
+// Not defined (no member-wise spelling: an array of no extent): const nAbility::ABILITY_ID sSoundManager::mBattleBgmChangeAbility[];
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSoundManager::MyDTI sSoundManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sSoundManager* sSoundManager::mpInstance;
 
 // No out-of-line body: no code in the ELF
 // MtDTI* sSoundManager::cEmSetState::getMyDTIPtr();
@@ -1084,7 +1505,7 @@ const MtDTI& sSoundManager::cEmSetState::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sSoundManager::cEmSetState::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sSoundManager::cEmSetState::DTI)->memAlloc(sz, align, ::sSoundManager::cEmSetState::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sSoundManager::cEmSetState::DTI)->memAlloc(sz, align, sSoundManager::cEmSetState::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1099,7 +1520,7 @@ inline void* sSoundManager::cEmSetState::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSoundManager::cEmSetState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSoundManager::cEmSetState::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSoundManager::cEmSetState::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1120,11 +1541,11 @@ inline void sSoundManager::cEmSetState::operator delete(void* p_addr) {
 // Also emitted as: _ZN13sSoundManager11cEmSetStateD0Ev at 0x008583f0
 sSoundManager::cEmSetState::~cEmSetState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprEm == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (mprEm == nullptr) {
         return;
     }
-    this->mprEm->::cResource::release();
-    this->mprEm = static_cast<rSoundStreamRequest*>(nullptr);
+    mprEm->release();
+    mprEm = nullptr;
 }
 
 // Address: 0x00858440 - 0x00858c8b (2123 bytes)
@@ -1147,6 +1568,8 @@ __attribute__((weak)) bool sSoundManager::cEmSetState::sort(const sSoundManager:
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSoundManager::cEmSetState::MyDTI sSoundManager::cEmSetState::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sSoundManager.cpp at 0x0085a9bf-0x0085a9fc (called at sSoundManager.cpp:2497)
 //   in _GLOBAL__sub_I_sSoundManager.cpp at 0x0085a9bf-0x0085a9fc (called at sSoundManager.h:339)
@@ -1155,7 +1578,7 @@ __attribute__((weak)) bool sSoundManager::cEmSetState::sort(const sSoundManager:
 // Address: 0x008582b0 - 0x0085832b (123 bytes)
 MtObject* sSoundManager::cEmSetState::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sSoundManager::cEmSetState;
+    return new (16u) sSoundManager::cEmSetState;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

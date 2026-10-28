@@ -98,3 +98,51 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871fc1-0x871fc9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setColorType(u32 type) {
+    this->mType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871fce-0x871fd8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setSunColorScale(f32 scale) {
+    this->mSunColorScale = scale;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871fdd-0x871fe7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setSaturationScale(f32 scale) {
+    this->mSaturationScale = scale;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871fec-0x871ff6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setIntensityScale(f32 scale) {
+    this->mIntensityScale = scale;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871ffb-0x872005; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setFogMulRate(f32 rate) {
+    this->mFogMulRate = rate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x87200a-0x872014; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setFogAddRate(f32 rate) {
+    this->mFogAddRate = rate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x871fa5-0x871fad; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setWeatherID(s32 weatherID) {
+    this->mWeatherID = weatherID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sWeatherManager::initWeatherCloudSub at 0x872017-0x87201f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uSkyCloudModel::setViewType(u32 viewType) {
+    this->mViewType = viewType;
+}

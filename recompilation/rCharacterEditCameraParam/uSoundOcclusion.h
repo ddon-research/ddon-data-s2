@@ -329,18 +329,18 @@ inline cSoundOcclusionListener::cSoundOcclusionListener() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uSoundOcclusion::cBoundingBox::cBoundingBox() {
-    this->mStaticBoundingNum = static_cast<u16>(0);
-    this->mDynamicBoundingNum = static_cast<u16>(0);
-    this->mpDynamicBoundingArray = static_cast<uSoundOcclusion::cBoundingBox::BoundingWork*>(nullptr);
-    this->mpStaticBoundingArray = static_cast<uSoundOcclusion::cBoundingBox::BoundingWork*>(nullptr);
+    this->mStaticBoundingNum = 0;
+    this->mDynamicBoundingNum = 0;
+    this->mpDynamicBoundingArray = nullptr;
+    this->mpStaticBoundingArray = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uSoundOcclusion::cHollowManager::cHollowManager() {
-    this->mHollowId = static_cast<s16>(0);
-    this->mIndexArrayNum = static_cast<u32>(0);
-    this->mpIndexArray = static_cast<u32*>(nullptr);
-    this->mMaxVolumeRate = static_cast<s16>(0);
+    this->mHollowId = 0;
+    this->mIndexArrayNum = 0;
+    this->mpIndexArray = nullptr;
+    this->mMaxVolumeRate = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

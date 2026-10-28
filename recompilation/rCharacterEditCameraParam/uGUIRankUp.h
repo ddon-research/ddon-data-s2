@@ -96,3 +96,15 @@ public:
 private:
     static const s32 disp_frame = 90;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuAreaMasterRankUp::moveAreaMasterRankUp at 0x123004-0x12300b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIRankUp::setRank(u32 rank) {
+    this->mRank = rank;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIRankUp::updateMove at 0xc1e646-0xc1e650; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIRankUp::setupWait() {
+    this->mDispFrame = 90.0f;
+}

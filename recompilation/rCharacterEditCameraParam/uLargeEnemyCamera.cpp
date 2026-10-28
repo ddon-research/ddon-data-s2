@@ -24,7 +24,7 @@ const MtDTI& uLargeEnemyCamera::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uLargeEnemyCamera::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uLargeEnemyCamera::DTI);
+    return MtMemoryAllocator::getAllocator(uLargeEnemyCamera::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uLargeEnemyCamera::getAllocator() {
 // Address: 0x00c9a2a0 - 0x00c9a2e0 (64 bytes)
 void* uLargeEnemyCamera::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uLargeEnemyCamera::getAllocator()->memAlloc(sz, align, ::uLargeEnemyCamera::DTI.::MtDTI::getID());
+    return uLargeEnemyCamera::getAllocator()->memAlloc(sz, align, uLargeEnemyCamera::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uLargeEnemyCamera::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uLargeEnemyCamera::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uLargeEnemyCamera::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uLargeEnemyCamera::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,14 +63,14 @@ inline void uLargeEnemyCamera::operator delete(void* p_addr) {
 // Address: 0x00c9a350 - 0x00c9a3a0 (80 bytes)
 uLargeEnemyCamera::uLargeEnemyCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStartDistance = 1000.0f;
-    this->mEndDistance = 1300.0f;
-    this->mIsLargeCamera = false;
-    this->mIsDissolveEmLarge = false;
-    this->mTimer = 0.0f;
-    this->mRange2 = 0.0f;
-    this->mCamera = static_cast<u32>(4294967295);
-    this->mEnemyID = static_cast<u32>(0);
+    mStartDistance = 1000.0f;
+    mEndDistance = 1300.0f;
+    mIsLargeCamera = false;
+    mIsDissolveEmLarge = false;
+    mTimer = 0.0f;
+    mRange2 = 0.0f;
+    mCamera = 0xFFFFFFFF;
+    mEnemyID = 0;
 }
 
 // Address: 0x00c9a3a0 - 0x00c9a3a5 (5 bytes)
@@ -82,7 +82,7 @@ uLargeEnemyCamera::~uLargeEnemyCamera() {
 // Address: 0x00c9a3e0 - 0x00c9a3e5 (5 bytes)
 void uLargeEnemyCamera::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUnit::setup();
+    this->cUnit::setup();
 }
 
 // Address: 0x00c9a3f0 - 0x00c9a7a9 (953 bytes)
@@ -116,6 +116,8 @@ __attribute__((weak)) void uLargeEnemyCamera::createProperty(MtPropertyList& s) 
 //   in uLargeEnemyCamera::move at 0x00c9a581-0x00c9a639 (called at uLargeEnemyCamera.cpp:105)
 // bool uLargeEnemyCamera::isSameGroupEnemy(uEnemy* pEnemy);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uLargeEnemyCamera::MyDTI uLargeEnemyCamera::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uLargeEnemyCamera.cpp at 0x00c9ab2f-0x00c9ab6c (called at uLargeEnemyCamera.cpp:31)
 //   in _GLOBAL__sub_I_uLargeEnemyCamera.cpp at 0x00c9ab2f-0x00c9ab6c (called at uLargeEnemyCamera.h:30)
@@ -124,6 +126,6 @@ __attribute__((weak)) void uLargeEnemyCamera::createProperty(MtPropertyList& s) 
 // Address: 0x00c9a220 - 0x00c9a29b (123 bytes)
 MtObject* uLargeEnemyCamera::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uLargeEnemyCamera;
+    return new (16u) uLargeEnemyCamera;
 }
 

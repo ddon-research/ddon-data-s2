@@ -103,21 +103,21 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cPartsCtrlTable::cPartsCtrlTable() {
-    this->mPartsDisp[14] = static_cast<unsigned int>(0);
-    this->mPartsDisp[15] = static_cast<unsigned int>(0);
-    this->mPartsDisp[12] = static_cast<unsigned int>(0);
-    this->mPartsDisp[13] = static_cast<unsigned int>(0);
-    this->mPartsDisp[10] = static_cast<unsigned int>(0);
-    this->mPartsDisp[11] = static_cast<unsigned int>(0);
-    this->mPartsDisp[8] = static_cast<unsigned int>(0);
-    this->mPartsDisp[9] = static_cast<unsigned int>(0);
-    this->mPartsDisp[6] = static_cast<unsigned int>(0);
-    this->mPartsDisp[7] = static_cast<unsigned int>(0);
-    this->mPartsDisp[4] = static_cast<unsigned int>(0);
-    this->mPartsDisp[5] = static_cast<unsigned int>(0);
-    this->mPartsDisp[2] = static_cast<unsigned int>(0);
-    this->mPartsDisp[3] = static_cast<unsigned int>(0);
-    this->mPartsDisp[0] = static_cast<unsigned int>(0);
-    this->mPartsDisp[1] = static_cast<unsigned int>(0);
-    this->mPartsKeyNo = static_cast<s32>(-1);
+    this->mPartsDisp[14] = 0;
+    this->mPartsDisp[15] = 0;
+    this->mPartsDisp[12] = 0;
+    this->mPartsDisp[13] = 0;
+    this->mPartsDisp[10] = 0;
+    this->mPartsDisp[11] = 0;
+    this->mPartsDisp[8] = 0;
+    this->mPartsDisp[9] = 0;
+    this->mPartsDisp[6] = 0;
+    this->mPartsDisp[7] = 0;
+    this->mPartsDisp[4] = 0;
+    this->mPartsDisp[5] = 0;
+    this->mPartsDisp[2] = 0;
+    this->mPartsDisp[3] = 0;
+    this->mPartsDisp[0] = 0;
+    this->mPartsDisp[1] = 0;
+    this->mPartsKeyNo = -1;
 }

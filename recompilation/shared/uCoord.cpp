@@ -43,7 +43,7 @@ const MtDTI& uCoord::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN6uCoordD0Ev at 0x00e7fece-0x00e7feef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uCoord::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCoord::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCoord::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +82,7 @@ __attribute__((weak)) void uCoord::createProperty(MtPropertyList& s) {
 // Address: 0x00e7fef0 - 0x00e7fef5 (5 bytes)
 MtUI* uCoord::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00e80680 - 0x00e806d1 (81 bytes)
@@ -94,14 +94,14 @@ __attribute__((weak)) void uCoord::applyWorldOffset(const MtVector3& offset, con
 // Address: 0x01989c40 - 0x01989c48 (8 bytes)
 void uCoord::setParent(uCoord* pparent, s32 parent_no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParent = pparent;
-    this->mParentNo = parent_no;
+    mpParent = pparent;
+    mParentNo = parent_no;
 }
 
 // Address: 0x01b659d0 - 0x01b659d5 (5 bytes)
 uCoord* uCoord::getParent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpParent;
+    return mpParent;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (13 bytes)
@@ -200,7 +200,7 @@ __attribute__((weak)) void uCoord::updateWorldMatrix() {
 // Address: 0x01989c50 - 0x01989c58 (8 bytes)
 const MtMatrix& uCoord::getWorldMatrix(s32 parent_no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWmat;
+    return mWmat;
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,26 +216,28 @@ const MtMatrix& uCoord::getWorldMatrix(s32 parent_no) const {
 // Address: 0x01b5e630 - 0x01b5e635 (5 bytes)
 void uCoord::setOrder(u32 order) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOrder = order;
+    mOrder = order;
 }
 
 // Address: 0x01b5e620 - 0x01b5e625 (5 bytes)
 u32 uCoord::getOrder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOrder;
+    return mOrder;
 }
 
 // Address: 0x01b5e610 - 0x01b5e615 (5 bytes)
 void uCoord::setParentFlags(u32 flags) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParentFlags = flags;
+    mParentFlags = flags;
 }
 
 // Address: 0x01b5e600 - 0x01b5e605 (5 bytes)
 u32 uCoord::getParentFlags() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mParentFlags;
+    return mParentFlags;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uCoord::MyDTI uCoord::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uCoord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

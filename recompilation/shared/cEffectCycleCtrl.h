@@ -224,19 +224,19 @@ public:
 inline cCyclePartInfo::cCyclePartInfo() {
     this->mEffLoopTimer = 0.0f;
     this->mEffLoopTimerMax = 30.0f;
-    this->mEpvIndex = static_cast<s32>(-1);
-    this->mEpvElement = static_cast<s32>(-1);
+    this->mEpvIndex = -1;
+    this->mEpvElement = -1;
     this->mIsEffect = false;
-    this->mEpvFinishIndex = static_cast<s32>(-1);
-    this->mEpvFinishElement = static_cast<s32>(-1);
+    this->mEpvFinishIndex = -1;
+    this->mEpvFinishElement = -1;
     this->mIsEndEffect = false;
-    this->mOutLineIndex = static_cast<s32>(-1);
+    this->mOutLineIndex = -1;
     this->mIsOutLine = false;
     this->mIsActive = false;
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
-    this->mpEffectCycleCtrl = static_cast<cEffectCycleCtrl*>(nullptr);
-    this->mpEfcHandle = static_cast<cEfcHandle*>(nullptr);
-    this->mCycleOrder = static_cast<s32>(-10000);
+    this->mpModel = nullptr;
+    this->mpEffectCycleCtrl = nullptr;
+    this->mpEfcHandle = nullptr;
+    this->mCycleOrder = -10000;
     this->mPartPhase = static_cast<nEffectCycle::CYCLE_PART_PAHSE>(0);
     this->mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(0);
     this->mPartKillPhase = static_cast<nEffectCycle::CYCLE_PART_KILL_PAHSE>(1);
@@ -245,13 +245,13 @@ inline cCyclePartInfo::cCyclePartInfo() {
 // Inline, no code of its own: checked where it is inlined.
 inline cCyclePartReqInfo::cCyclePartReqInfo() {
     this->mEffLoopTime = 30.0f;
-    this->mEpvIndex = static_cast<s32>(-1);
-    this->mEpvElement = static_cast<s32>(-1);
+    this->mEpvIndex = -1;
+    this->mEpvElement = -1;
     this->mIsEffect = false;
-    this->mEpvFinishIndex = static_cast<s32>(-1);
-    this->mEpvFinishElement = static_cast<s32>(-1);
+    this->mEpvFinishIndex = -1;
+    this->mEpvFinishElement = -1;
     this->mIsEndEffect = false;
-    this->mOutLineIndex = static_cast<s32>(-1);
+    this->mOutLineIndex = -1;
     this->mIsOutLine = false;
     this->mPartType = static_cast<nEffectCycle::CYCLE_PART_TYPE>(0);
 }

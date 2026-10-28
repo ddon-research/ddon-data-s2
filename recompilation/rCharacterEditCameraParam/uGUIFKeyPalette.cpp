@@ -31,7 +31,7 @@ const MtDTI& uGUIFKeyPalette::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIFKeyPalette::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIFKeyPalette::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIFKeyPalette::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* uGUIFKeyPalette::getAllocator() {
 // Address: 0x00a88470 - 0x00a884b0 (64 bytes)
 void* uGUIFKeyPalette::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIFKeyPalette::getAllocator()->memAlloc(sz, align, ::uGUIFKeyPalette::DTI.::MtDTI::getID());
+    return uGUIFKeyPalette::getAllocator()->memAlloc(sz, align, uGUIFKeyPalette::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uGUIFKeyPalette::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIFKeyPalette::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIFKeyPalette::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIFKeyPalette::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,15 +80,15 @@ uGUIFKeyPalette::~uGUIFKeyPalette() {
 // Address: 0x00a88d50 - 0x00a88dfc (172 bytes)
 bool uGUIFKeyPalette::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_FKEYPALETTE_GUI"), static_cast<u32>(129), static_cast<t64>(1474876603)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_BUTTON_GUIDE_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SHORTCUT_SETTING_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_FKEYPALETTE_GUI"), 129u, 1474876603l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_BUTTON_GUIDE_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_SHORTCUT_SETTING_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_BUTTON_GUIDE_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SHORTCUT_SETTING_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_BUTTON_GUIDE_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_SHORTCUT_SETTING_GMD", 1u);
         }
     }
     return false;
@@ -127,90 +127,90 @@ __attribute__((weak)) void uGUIFKeyPalette::setup() {
 // Address: 0x00a89c10 - 0x00a89c15 (5 bytes)
 void uGUIFKeyPalette::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00a89c20 - 0x00a89cea (202 bytes)
 void uGUIFKeyPalette::move() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType == static_cast<u8>(0)) {
+    if (static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mActPltType == 0) {
         return;
     }
-    this->::uGUIBase::move();
-    this->mSCMBtn[0].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[1].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[2].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[3].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[4].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[5].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[6].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[7].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[8].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[9].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[10].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-    this->mSCMBtn[11].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->uGUIBase::move();
+    mSCMBtn[0].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[1].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[2].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[3].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[4].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[5].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[6].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[7].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[8].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[9].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[10].mIcon.uGUIBase::cReferenceUIIconItem::update();
+    mSCMBtn[11].mIcon.uGUIBase::cReferenceUIIconItem::update();
 }
 
 // Address: 0x00a89cf0 - 0x00a89cf5 (5 bytes)
 void uGUIFKeyPalette::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x00a89d00 - 0x00a89ddd (221 bytes)
 void uGUIFKeyPalette::adjustScale() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    const f32 scale = this->getScaleForDefaultResolution(1.0f);
+    const f32 scale = getScaleForDefaultResolution(1.0f);
     // inferred: a temporary for the value the load at 0xa89d1f read, used 4 times; no DWARF local holds it
-    cGUIInstNull* t0 = this->mpInstNullGuideRoot;
-    if (t0 != static_cast<cGUIInstNull*>(nullptr)) {
-        t0->::cGUIInstNull::setScaleX(scale);
-        t0->::cGUIInstNull::setScaleY(scale);
-        t0->::cGUIInstNull::setScaleZ(scale);
+    cGUIInstNull* t0 = mpInstNullGuideRoot;
+    if (t0 != nullptr) {
+        t0->setScaleX(scale);
+        t0->setScaleY(scale);
+        t0->setScaleZ(scale);
         // inferred: a temporary for the value the load at 0xa89d5c read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullSCMRoot;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
-            t1->::cGUIInstNull::setScaleZ(scale);
+        cGUIInstNull* t1 = mpInstNullSCMRoot;
+        if (t1 != nullptr) {
+            t1->setScaleX(scale);
+            t1->setScaleY(scale);
+            t1->setScaleZ(scale);
             // inferred: a temporary for the value the load at 0xa89d99 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0xa89d99 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xa89d5c read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t1 = this->mpInstNullSCMRoot;
-        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
-            t1->::cGUIInstNull::setScaleZ(scale);
+        cGUIInstNull* t1 = mpInstNullSCMRoot;
+        if (t1 != nullptr) {
+            t1->setScaleX(scale);
+            t1->setScaleY(scale);
+            t1->setScaleZ(scale);
             // inferred: a temporary for the value the load at 0xa89d99 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0xa89d99 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t2 = this->mpInstNullSCCRoot;
-            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
-                t2->::cGUIInstNull::setScaleX(scale);
-                t2->::cGUIInstNull::setScaleY(scale);
-                t2->::cGUIInstNull::setScaleZ(scale);
+            cGUIInstNull* t2 = mpInstNullSCCRoot;
+            if (t2 != nullptr) {
+                t2->setScaleX(scale);
+                t2->setScaleY(scale);
+                t2->setScaleZ(scale);
             }
         }
     }
@@ -220,9 +220,9 @@ void uGUIFKeyPalette::adjustScale() {
 bool uGUIFKeyPalette::isForceSamplerLinear(cGUIObject* pObj) const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
-        if (this->mpInstNullGuideRoot != static_cast<cGUIInstNull*>(nullptr)) {
-            if (this->mpInstNullGuideRoot->mScale.x > 1.0f) {
+    if (!this->uGUIBase::isForceSamplerLinear(pObj)) {
+        if (mpInstNullGuideRoot != nullptr) {
+            if (mpInstNullGuideRoot->mScale.x > 1.0f) {
                 return true;
             }
         }
@@ -253,13 +253,13 @@ __attribute__((weak)) void uGUIFKeyPalette::setSCMEditMode(u32 uMode) {
 // Address: 0x00a89bf0 - 0x00a89c0a (26 bytes)
 void uGUIFKeyPalette::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIFKeyPalette::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIFKeyPalette::updateWait);
 }
 
 // Address: 0x00a89e20 - 0x00a89e25 (5 bytes)
 void uGUIFKeyPalette::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIFKeyPalette::updateDisp();
+    updateDisp();
 }
 
 // No out-of-line body: no code in the ELF
@@ -317,23 +317,23 @@ __attribute__((weak)) void uGUIFKeyPalette::updateDispSCC() {
 void uGUIFKeyPalette::setupKeyGuide(uGUIFKeyPalette::stKeyGuide& guide, u32 inst_id, bool isLeft) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xa8999c, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(inst_id, false);
+    cGUIInstance* t0 = getInstance(inst_id, false);
     guide.mpInstAnim = static_cast<cGUIInstAnimation*>(t0);
-    guide.mpObjMsgKey00 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(3)));
-    if (isLeft != false) {
-        guide.mpObjMsgKey01 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(10)));
-        guide.mpObjMsgAction = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(7)));
-        guide.mpObjTexPlus = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(9)));
-        guide.mpObjTexSealRight = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(11)));
-        guide.mpObjTexSealCenter = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(12)));
-        guide.mpObjTexSealLeft = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(13)));
+    guide.mpObjMsgKey00 = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 3u));
+    if (isLeft) {
+        guide.mpObjMsgKey01 = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 10u));
+        guide.mpObjMsgAction = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 7u));
+        guide.mpObjTexPlus = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 9u));
+        guide.mpObjTexSealRight = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 11u));
+        guide.mpObjTexSealCenter = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 12u));
+        guide.mpObjTexSealLeft = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 13u));
     } else {
-        guide.mpObjMsgKey01 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(11)));
-        guide.mpObjMsgAction = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(7)));
-        guide.mpObjTexPlus = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(9)));
-        guide.mpObjTexSealRight = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(12)));
-        guide.mpObjTexSealCenter = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(13)));
-        guide.mpObjTexSealLeft = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), static_cast<u32>(14)));
+        guide.mpObjMsgKey01 = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 11u));
+        guide.mpObjMsgAction = static_cast<cGUIObjMessage*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 7u));
+        guide.mpObjTexPlus = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 9u));
+        guide.mpObjTexSealRight = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 12u));
+        guide.mpObjTexSealCenter = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 13u));
+        guide.mpObjTexSealLeft = static_cast<cGUIObjTexture*>(getObjectFromId(static_cast<cGUIInstance*>(guide.mpInstAnim), 14u));
     }
     guide.mIsLeft = isLeft;
 }
@@ -365,13 +365,13 @@ __attribute__((weak)) void uGUIFKeyPalette::updateKeyGuide() {
 // Address: 0x00a8d5c0 - 0x00a8d637 (119 bytes)
 void uGUIFKeyPalette::clearKeyGuideMsg(uGUIFKeyPalette::stKeyGuide& guide) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgKey00), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgKey01), "", static_cast<u32>(0), false);
-    this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgAction), "", static_cast<u32>(0), false);
-    if (guide.mpObjTexPlus != static_cast<cGUIObjTexture*>(nullptr)) {
-        guide.mpObjTexPlus->::cGUIObject::setVisible(false);
+    setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgKey00), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgKey01), "", 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(guide.mpObjMsgAction), "", 0u, false);
+    if (guide.mpObjTexPlus != nullptr) {
+        guide.mpObjTexPlus->setVisible(false);
     }
-    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(guide.mpInstAnim), false);
+    setInstanceVisible(static_cast<cGUIInstance*>(guide.mpInstAnim), false);
 }
 
 // No out-of-line body: 44 inlined copies in 1 function (5836 bytes)
@@ -429,8 +429,8 @@ __attribute__((weak)) u32 uGUIFKeyPalette::getMsgIdxNormalSkill(const uHuman* pP
 // Address: 0x01af15f0 - 0x01af15fb (11 bytes)
 void uGUIFKeyPalette::replacePriority(u32 uPrioGrp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPrioGroup = uPrioGrp;
-    this->::uGUIBase::replacePriority(uPrioGrp);
+    mPrioGroup = uPrioGrp;
+    this->uGUIBase::replacePriority(uPrioGrp);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (138 bytes)
@@ -449,6 +449,8 @@ __attribute__((weak)) void uGUIFKeyPalette::updateButtonIconSCC() {
     DDON_STUB("uGUIFKeyPalette::updateButtonIconSCC")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIFKeyPalette::MyDTI uGUIFKeyPalette::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIFkeyPalette.cpp at 0x00a8e01f-0x00a8e05c (called at uGUIFkeyPalette.cpp:108)

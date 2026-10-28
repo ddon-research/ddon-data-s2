@@ -226,7 +226,6 @@ namespace nHuman {
 }  // namespace nHuman
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline bool nHuman::stShellRequestInfo::isSeted() const {
     return this->mIsSeted;
 }

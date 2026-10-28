@@ -53,7 +53,7 @@ const MtDTI& cCharacterEditColorDef::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharacterEditColorDef::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterEditColorDef::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -77,6 +77,8 @@ inline void cCharacterEditColorDef::operator delete(void* p_addr) {
 
 // Defined in the class (its body was written in a header).
 // cCharacterEditColorDef::~cCharacterEditColorDef();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterEditColorDef::MyDTI cCharacterEditColorDef::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditColorDef.cpp at 0x0065305f-0x0065309c (called at rCharacterEditColorDef.cpp:39)
@@ -111,7 +113,7 @@ const MtDTI& rCharacterEditColorDef::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCharacterEditColorDef::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCharacterEditColorDef::DTI)->memAlloc(sz, align, ::rCharacterEditColorDef::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCharacterEditColorDef::DTI)->memAlloc(sz, align, rCharacterEditColorDef::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ inline void* rCharacterEditColorDef::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22rCharacterEditColorDefD0Ev at 0x01a7d3c4-0x01a7d3e3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCharacterEditColorDef::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCharacterEditColorDef::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCharacterEditColorDef::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,8 +150,8 @@ bool rCharacterEditColorDef::loadData(MtDataReader& r, cCharacterEditColorDef* p
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    pData->::cCharacterEditPaletteBase::loadData(r);
-    ::nDDOIO::readData(r, pData->mUse);
+    pData->loadData(r);
+    nDDOIO::readData(r, pData->mUse);
     // inferred: a temporary for the result of the call at 0x652e96, used once; no DWARF local holds it
     f32 t0 = r.readF32();
     // inferred: a temporary for the result of the call at 0x652ea4, used once; no DWARF local holds it
@@ -166,7 +168,7 @@ bool rCharacterEditColorDef::loadData(MtDataReader& r, cCharacterEditColorDef* p
     pData->mColor.y = t1;
     pData->mColor.z = t2;
     pData->mColor.w = t3;
-    pData->mUIColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(a32 * static_cast<u32>(16777216)) | static_cast<unsigned long>((b32 * static_cast<u32>(65536)) & static_cast<u32>(16711680))) | static_cast<unsigned long>(static_cast<unsigned char>(r32))) | static_cast<unsigned long>(static_cast<unsigned short>(g32 * static_cast<u32>(256))));
+    pData->mUIColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(a32 * 0x1000000u) | static_cast<unsigned long>((b32 * 0x10000u) & 0xFF0000u)) | static_cast<unsigned long>(static_cast<unsigned char>(r32))) | static_cast<unsigned long>(static_cast<unsigned short>(g32 * 256u)));
     return true;
 }
 
@@ -179,8 +181,10 @@ MT_CTSTR rCharacterEditColorDef::getExt() const {
 // Address: 0x01a7d510 - 0x01a7d516 (6 bytes)
 u32 rCharacterEditColorDef::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(34);
+    return 34;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCharacterEditColorDef::MyDTI rCharacterEditColorDef::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCharacterEditColorDef.cpp at 0x0065309c-0x006530d9 (called at rCharacterEditColorDef.cpp:40)
@@ -190,7 +194,7 @@ u32 rCharacterEditColorDef::getDataVersion() const {
 // Address: 0x00652d60 - 0x00652dc4 (100 bytes)
 MtObject* rCharacterEditColorDef::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCharacterEditColorDef;
+    return new (16u) rCharacterEditColorDef;
 }
 
 // Instance at 0x01a7d4c0 - 0x01a7d4d2 (18 bytes) of the generic rTbl2<T>::getData

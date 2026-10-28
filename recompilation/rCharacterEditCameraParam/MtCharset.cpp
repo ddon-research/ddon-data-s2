@@ -80,22 +80,22 @@ u32 MtCharset::getCharLengthUTF8(const u8 c) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as u32
-    if ((c & static_cast<u8>(224)) != static_cast<u8>(192)) {
-        if ((c & static_cast<u8>(240)) != static_cast<u8>(224)) {
-            if ((c & static_cast<u8>(248)) != static_cast<u8>(240)) {
-                if ((c & static_cast<u8>(252)) != static_cast<u8>(248)) {
-                    return static_cast<u32>(((c & static_cast<u8>(254)) == static_cast<u8>(252)) ? static_cast<unsigned long>(6) : ((static_cast<unsigned long>(c) >> static_cast<unsigned long>(7)) ^ static_cast<unsigned long>(1)));
+    if ((c & 224) != 192) {
+        if ((c & 240) != 224) {
+            if ((c & 248) != 240) {
+                if ((c & 252) != 248) {
+                    return static_cast<u32>(((c & 254) == 252) ? 6ul : ((static_cast<unsigned long>(c) >> 7) ^ 1ul));
                 } else {
-                    return static_cast<u32>(5);
+                    return 5;
                 }
             } else {
-                return static_cast<u32>(4);
+                return 4;
             }
         } else {
-            return static_cast<u32>(3);
+            return 3;
         }
     } else {
-        return static_cast<u32>(2);
+        return 2;
     }
 }
 
@@ -221,10 +221,10 @@ __attribute__((weak)) u32 MtCharset::fromUTF16toUTF8(const u16* pUTF16, const s3
 // Address: 0x00d793e0 - 0x00d793ff (31 bytes)
 MtCharset::cMultiByteSolver::cMultiByteSolver() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLeadByte = static_cast<u8>(0);
-    this->mCurrentByte = static_cast<u8>(0);
-    this->mByteLength = static_cast<u32>(0);
-    this->mEndIndex = static_cast<u32>(0);
+    mLeadByte = 0;
+    mCurrentByte = 0;
+    mByteLength = 0;
+    mEndIndex = 0;
 }
 
 // Address: 0x00d79430 - 0x00d79431 (1 bytes)
@@ -238,7 +238,7 @@ void MtCharset::cMultiByteSolver::init(MT_CTSTR str) {
     // DWARF local not rendered: const u8* cacheString;
     // DWARF local not rendered: const s32 cacheLength;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEncoding = ::MtCharset::estimateCharEncoding(static_cast<const void*>(str), static_cast<s32>(static_cast<unsigned int>(::strlen(str))));
+    mEncoding = MtCharset::estimateCharEncoding(static_cast<const void*>(str), static_cast<s32>(static_cast<unsigned int>(strlen(str))));
 }
 
 // Address: 0x00d79450 - 0x00d79538 (232 bytes)
@@ -252,7 +252,7 @@ __attribute__((weak)) void MtCharset::cMultiByteSolver::solve(MT_CTSTR str, u32 
 // Address: 0x00d79540 - 0x00d79548 (8 bytes)
 bool MtCharset::cMultiByteSolver::isDividable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndIndex == static_cast<u32>(0);
+    return mEndIndex == 0;
 }
 
 // Address: 0x00d79550 - 0x00d79585 (53 bytes)
@@ -265,7 +265,7 @@ __attribute__((weak)) bool MtCharset::cMultiByteSolver::isLeadByte() const {
 // Address: 0x00d79590 - 0x00d79594 (4 bytes)
 u32 MtCharset::cMultiByteSolver::getRemainBytes() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEndIndex;
+    return mEndIndex;
 }
 
 // No out-of-line body: no code in the ELF

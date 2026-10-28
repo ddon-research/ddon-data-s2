@@ -30,15 +30,15 @@ __attribute__((weak)) nSoundZoneBase::cSoundZoneContents* nSoundZone::getContent
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nSoundZone.cpp:47
 cSoundLayoutInfo* nSoundZone::getLayoutInfoFromZoneLayout(cZoneLayout* pZone, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pZone != static_cast<cZoneLayout*>(nullptr)) {
-        nZone::cLayoutElement* pLayout = pZone->::cZoneLayout::getLayoutElement(index);
-        if (pLayout != static_cast<nZone::cLayoutElement*>(nullptr)) {
-            return static_cast<cSoundLayoutInfo*>(pLayout->::nZone::cLayoutElement::getExtendObj());
+    if (pZone != nullptr) {
+        nZone::cLayoutElement* pLayout = pZone->getLayoutElement(index);
+        if (pLayout != nullptr) {
+            return static_cast<cSoundLayoutInfo*>(pLayout->nZone::cLayoutElement::getExtendObj());
         } else {
-            return static_cast<cSoundLayoutInfo*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<cSoundLayoutInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -46,15 +46,15 @@ cSoundLayoutInfo* nSoundZone::getLayoutInfoFromZoneLayout(cZoneLayout* pZone, u3
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nSoundZone.cpp:92
 nZone::ShapeInfoBase* nSoundZone::getShapeFromZoneLayout(cZoneLayout* pZone, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pZone != static_cast<cZoneLayout*>(nullptr)) {
-        const nZone::cLayoutElement* pLayout = pZone->::cZoneLayout::getLayoutElement(index);
-        if (pLayout != static_cast<const nZone::cLayoutElement*>(nullptr)) {
+    if (pZone != nullptr) {
+        const nZone::cLayoutElement* pLayout = pZone->getLayoutElement(index);
+        if (pLayout != nullptr) {
             return pLayout->mpShapeInfo;
         } else {
-            return static_cast<nZone::ShapeInfoBase*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<nZone::ShapeInfoBase*>(nullptr);
+        return nullptr;
     }
 }
 

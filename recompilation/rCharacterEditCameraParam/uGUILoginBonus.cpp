@@ -38,7 +38,7 @@ const MtDTI& uGUILoginBonus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUILoginBonus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUILoginBonus::DTI);
+    return MtMemoryAllocator::getAllocator(uGUILoginBonus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* uGUILoginBonus::getAllocator() {
 // Address: 0x00afd910 - 0x00afd950 (64 bytes)
 void* uGUILoginBonus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUILoginBonus::getAllocator()->memAlloc(sz, align, ::uGUILoginBonus::DTI.::MtDTI::getID());
+    return uGUILoginBonus::getAllocator()->memAlloc(sz, align, uGUILoginBonus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* uGUILoginBonus::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUILoginBonus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUILoginBonus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUILoginBonus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,18 +87,18 @@ uGUILoginBonus::~uGUILoginBonus() {
 // Address: 0x00afe6d0 - 0x00afe6d5 (5 bytes)
 void uGUILoginBonus::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00afe6e0 - 0x00afe7b3 (211 bytes)
 bool uGUILoginBonus::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_LOGINBONUS_GUI"), static_cast<u32>(129), static_cast<t64>(1434077486)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_STAMPBONUS_GMD", static_cast<u32>(0)) != false) {
-                if (this->mpSeRes == static_cast<rSoundRequest*>(nullptr)) {
-                    if ((this->mpSeRes = static_cast<rSoundRequest*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rSoundRequest*>(nullptr)) {
-                        this->mpSeRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_LOGINBONUS_GUI"), 129u, 1434077486l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_STAMPBONUS_GMD", 0u)) {
+                if (mpSeRes == nullptr) {
+                    if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), 129u, 0l))) != nullptr) {
+                        mpSeRes;
                         return true;
                     } else {
                         return false;
@@ -113,10 +113,10 @@ bool uGUILoginBonus::loadResource() {
             return false;
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_STAMPBONUS_GMD", static_cast<u32>(0)) != false) {
-            if (this->mpSeRes == static_cast<rSoundRequest*>(nullptr)) {
-                if ((this->mpSeRes = static_cast<rSoundRequest*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rSoundRequest*>(nullptr)) {
-                    this->mpSeRes;
+        if (loadGMDarc(getArcTag(0u), "RES_ID_STAMPBONUS_GMD", 0u)) {
+            if (mpSeRes == nullptr) {
+                if ((mpSeRes = static_cast<rSoundRequest*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_ID_LOGIN_SRQR"), 129u, 0l))) != nullptr) {
+                    mpSeRes;
                     return true;
                 } else {
                     return false;
@@ -139,23 +139,23 @@ __attribute__((weak)) void uGUILoginBonus::setup() {
 // Address: 0x00b00010 - 0x00b00047 (55 bytes)
 void uGUILoginBonus::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpPopDetail->kill();
-        this->mpPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpPopDetail != nullptr) {
+        mpPopDetail->kill();
+        mpPopDetail = nullptr;
     }
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00b00050 - 0x00b00075 (37 bytes)
 void uGUILoginBonus::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPopDetail == static_cast<uGUIPopDetail01*>(nullptr)) {
+    if (mpPopDetail == nullptr) {
         return;
     }
-    if (this->mpPopDetail->::cUnit::isEnable() != false) {
+    if (mpPopDetail->isEnable()) {
         return;
     }
-    this->mpPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    mpPopDetail = nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (56 bytes)
@@ -210,122 +210,122 @@ __attribute__((weak)) void uGUILoginBonus::adjustScale() {
 // Address: 0x00b010b0 - 0x00b0121c (364 bytes)
 void uGUILoginBonus::setStampEffect(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->mStat) {
-        case static_cast<u32>(0):
+    switch (mStat) {
+        case 0:
         {
-            this->::uGUIBase::setSequenceId(this->mListCumIcon[idx].mpInstEffect, static_cast<u32>(2), true);
-            this->::uGUIBase::setSequenceId(this->mListCumIcon[idx].mpInstStamp, static_cast<u32>(2), true);
-            if (this->mListCumIcon[idx].mpTexEf != static_cast<cGUIObjTexture*>(nullptr)) {
-                this->mListCumIcon[idx].mpTexEf->::cGUIObject::setCurrentFrame(1.0f, true);
-                if (this->mListCumIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListCumIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(1.0f, true);
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+            setSequenceId(mListCumIcon[idx].mpInstEffect, 2u, true);
+            setSequenceId(mListCumIcon[idx].mpInstStamp, 2u, true);
+            if (mListCumIcon[idx].mpTexEf != nullptr) {
+                mListCumIcon[idx].mpTexEf->setCurrentFrame(1.0f, true);
+                if (mListCumIcon[idx].mpTexMsk != nullptr) {
+                    mListCumIcon[idx].mpTexMsk->setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 } else {
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 }
             } else {
-                if (this->mListCumIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListCumIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(1.0f, true);
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                if (mListCumIcon[idx].mpTexMsk != nullptr) {
+                    mListCumIcon[idx].mpTexMsk->setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 } else {
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIBase::setSequenceId(this->mListSeqIcon[idx].mpInstEffect, static_cast<u32>(2), true);
-            this->::uGUIBase::setSequenceId(this->mListSeqIcon[idx].mpInstStamp, static_cast<u32>(2), true);
-            if (this->mListSeqIcon[idx].mpTexEf != static_cast<cGUIObjTexture*>(nullptr)) {
-                this->mListSeqIcon[idx].mpTexEf->::cGUIObject::setCurrentFrame(0.0f, true);
-                if (this->mListSeqIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListSeqIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(0.0f, true);
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+            setSequenceId(mListSeqIcon[idx].mpInstEffect, 2u, true);
+            setSequenceId(mListSeqIcon[idx].mpInstStamp, 2u, true);
+            if (mListSeqIcon[idx].mpTexEf != nullptr) {
+                mListSeqIcon[idx].mpTexEf->setCurrentFrame(0.0f, true);
+                if (mListSeqIcon[idx].mpTexMsk != nullptr) {
+                    mListSeqIcon[idx].mpTexMsk->setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 } else {
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 }
             } else {
-                if (this->mListSeqIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListSeqIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(0.0f, true);
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                if (mListSeqIcon[idx].mpTexMsk != nullptr) {
+                    mListSeqIcon[idx].mpTexMsk->setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 } else {
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUIBase::setSequenceId(this->mListCumIcon[idx].mpInstEffect, static_cast<u32>(2), true);
-            this->::uGUIBase::setSequenceId(this->mListCumIcon[idx].mpInstStamp, static_cast<u32>(2), true);
-            if (this->mListCumIcon[idx].mpTexEf != static_cast<cGUIObjTexture*>(nullptr)) {
-                this->mListCumIcon[idx].mpTexEf->::cGUIObject::setCurrentFrame(1.0f, true);
-                if (this->mListCumIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListCumIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(1.0f, true);
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+            setSequenceId(mListCumIcon[idx].mpInstEffect, 2u, true);
+            setSequenceId(mListCumIcon[idx].mpInstStamp, 2u, true);
+            if (mListCumIcon[idx].mpTexEf != nullptr) {
+                mListCumIcon[idx].mpTexEf->setCurrentFrame(1.0f, true);
+                if (mListCumIcon[idx].mpTexMsk != nullptr) {
+                    mListCumIcon[idx].mpTexMsk->setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 } else {
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 }
             } else {
-                if (this->mListCumIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListCumIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(1.0f, true);
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                if (mListCumIcon[idx].mpTexMsk != nullptr) {
+                    mListCumIcon[idx].mpTexMsk->setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 } else {
-                    if (this->mListCumIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListCumIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(1.0f, true);
+                    if (mListCumIcon[idx].mpTexSt != nullptr) {
+                        mListCumIcon[idx].mpTexSt->setCurrentFrame(1.0f, true);
                     }
                 }
             }
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUIBase::setSequenceId(this->mListSeqIcon[idx].mpInstEffect, static_cast<u32>(2), true);
-            this->::uGUIBase::setSequenceId(this->mListSeqIcon[idx].mpInstStamp, static_cast<u32>(2), true);
-            if (this->mListSeqIcon[idx].mpTexEf != static_cast<cGUIObjTexture*>(nullptr)) {
-                this->mListSeqIcon[idx].mpTexEf->::cGUIObject::setCurrentFrame(0.0f, true);
-                if (this->mListSeqIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListSeqIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(0.0f, true);
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+            setSequenceId(mListSeqIcon[idx].mpInstEffect, 2u, true);
+            setSequenceId(mListSeqIcon[idx].mpInstStamp, 2u, true);
+            if (mListSeqIcon[idx].mpTexEf != nullptr) {
+                mListSeqIcon[idx].mpTexEf->setCurrentFrame(0.0f, true);
+                if (mListSeqIcon[idx].mpTexMsk != nullptr) {
+                    mListSeqIcon[idx].mpTexMsk->setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 } else {
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 }
             } else {
-                if (this->mListSeqIcon[idx].mpTexMsk != static_cast<cGUIObjTexture*>(nullptr)) {
-                    this->mListSeqIcon[idx].mpTexMsk->::cGUIObject::setCurrentFrame(0.0f, true);
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                if (mListSeqIcon[idx].mpTexMsk != nullptr) {
+                    mListSeqIcon[idx].mpTexMsk->setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 } else {
-                    if (this->mListSeqIcon[idx].mpTexSt != static_cast<cGUIObjTexture*>(nullptr)) {
-                        this->mListSeqIcon[idx].mpTexSt->::cGUIObject::setCurrentFrame(0.0f, true);
+                    if (mListSeqIcon[idx].mpTexSt != nullptr) {
+                        mListSeqIcon[idx].mpTexSt->setCurrentFrame(0.0f, true);
                     }
                 }
             }
@@ -492,195 +492,195 @@ __attribute__((weak)) void uGUILoginBonus::updateInit() {
 // Address: 0x00b00730 - 0x00b00864 (308 bytes)
 void uGUILoginBonus::updateWait() {
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
-    switch (this->mStat) {
-        case static_cast<u32>(0):
+    switch (mStat) {
+        case 0:
         {
-            this->::uGUILoginBonus::initCumulative();
-            this->mpMatCtrl->::uGUIBase::cMatrix::resetItemNum(static_cast<s32>(10), static_cast<s32>(5), static_cast<const u32*>(nullptr), this->mOldLocateCum, static_cast<u32>(0));
-            this->mListCumIcon[this->mpMatCtrl->::cControl::mCurrentPos].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            if (this->mCtrlStat == static_cast<u32>(0)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::updatePointerGuide(this->::uGUIBase::getBasePointerPriority());
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+            initCumulative();
+            mpMatCtrl->resetItemNum(10, 5, static_cast<const u32*>(nullptr), mOldLocateCum, 0u);
+            mListCumIcon[mpMatCtrl->mCurrentPos].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            if (mCtrlStat == 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->updatePointerGuide(getBasePointerPriority());
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             } else {
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUILoginBonus::initSequencial();
-            this->mpMatCtrl->::uGUIBase::cMatrix::resetItemNum(static_cast<s32>(8), static_cast<s32>(4), static_cast<const u32*>(nullptr), this->mOldLocateSeq, static_cast<u32>(0));
-            this->mListSeqIcon[this->mpMatCtrl->::cControl::mCurrentPos].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            if (this->mCtrlStat == static_cast<u32>(0)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::updatePointerGuide(this->::uGUIBase::getBasePointerPriority());
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+            initSequencial();
+            mpMatCtrl->resetItemNum(8, 4, static_cast<const u32*>(nullptr), mOldLocateSeq, 0u);
+            mListSeqIcon[mpMatCtrl->mCurrentPos].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            if (mCtrlStat == 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->updatePointerGuide(getBasePointerPriority());
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             } else {
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->::uGUILoginBonus::initCumulative();
-            this->mpMatCtrl->::uGUIBase::cMatrix::resetItemNum(static_cast<s32>(10), static_cast<s32>(5), static_cast<const u32*>(nullptr), this->mOldLocateCum, static_cast<u32>(0));
-            this->mListCumIcon[this->mpMatCtrl->::cControl::mCurrentPos].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            if (this->mCtrlStat == static_cast<u32>(0)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::updatePointerGuide(this->::uGUIBase::getBasePointerPriority());
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+            initCumulative();
+            mpMatCtrl->resetItemNum(10, 5, static_cast<const u32*>(nullptr), mOldLocateCum, 0u);
+            mListCumIcon[mpMatCtrl->mCurrentPos].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            if (mCtrlStat == 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->updatePointerGuide(getBasePointerPriority());
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             } else {
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             }
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->::uGUILoginBonus::initSequencial();
-            this->mpMatCtrl->::uGUIBase::cMatrix::resetItemNum(static_cast<s32>(8), static_cast<s32>(4), static_cast<const u32*>(nullptr), this->mOldLocateSeq, static_cast<u32>(0));
-            this->mListSeqIcon[this->mpMatCtrl->::cControl::mCurrentPos].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            if (this->mCtrlStat == static_cast<u32>(0)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::updatePointerGuide(this->::uGUIBase::getBasePointerPriority());
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+            initSequencial();
+            mpMatCtrl->resetItemNum(8, 4, static_cast<const u32*>(nullptr), mOldLocateSeq, 0u);
+            mListSeqIcon[mpMatCtrl->mCurrentPos].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            if (mCtrlStat == 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->updatePointerGuide(getBasePointerPriority());
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             } else {
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             }
             break;
         }
         default:
         {
-            if (this->mCtrlStat == static_cast<u32>(0)) {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::updatePointerGuide(this->::uGUIBase::getBasePointerPriority());
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+            if (mCtrlStat == 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->updatePointerGuide(getBasePointerPriority());
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             } else {
-                this->::uGUILoginBonus::callStampEffect();
-                if (this->mpBtnCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-                        (&this->mBtn)->update();
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                callStampEffect();
+                if (mpBtnCtrl != nullptr) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
+                        (&mBtn)->update();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     } else {
-                        this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                        this->::uGUILoginBonus::updateItemDetail();
+                        mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                        updateItemDetail();
                     }
                 } else {
-                    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-                    this->::uGUILoginBonus::updateItemDetail();
+                    mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+                    updateItemDetail();
                 }
             }
             break;
@@ -691,17 +691,17 @@ void uGUILoginBonus::updateWait() {
 // Address: 0x00b01220 - 0x00b01272 (82 bytes)
 void uGUILoginBonus::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[481] == static_cast<sNetworkExt::NET_STAT>(1)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[481] == sNetworkExt::NET_STAT_REQ) {
         return;
     }
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[483] == static_cast<sNetworkExt::NET_STAT>(1)) {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[483] == sNetworkExt::NET_STAT_REQ) {
         return;
     }
-    this->end();
-    if (this->mpPopDetail == static_cast<uGUIPopDetail01*>(nullptr)) {
+    end();
+    if (mpPopDetail == nullptr) {
         return;
     }
-    this->mpPopDetail->mIsDraw = false;
+    mpPopDetail->mIsDraw = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -744,25 +744,25 @@ __attribute__((weak)) void uGUILoginBonus::updateItemDetail() {
 // Address: 0x00b01280 - 0x00b01301 (129 bytes)
 void uGUILoginBonus::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCtrl->execute();
+    if (mpCtrl != nullptr) {
+        mpCtrl->execute();
     }
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
-    if ((this->mStat & static_cast<u32>(4294967294)) == static_cast<u32>(2)) {
-        if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->mpTabCtrl->execute();
+    mCloseBtn.execute();
+    if ((mStat & 0xFFFFFFFEu) == 2) {
+        if (mpTabCtrl != nullptr) {
+            mpTabCtrl->execute();
         }
     }
-    if (this->::uGUIBase::mInputEventId == static_cast<u32>(70)) {
+    if (mInputEventId == 70) {
         return;
     }
-    if (this->mpMatCtrl != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-        this->mpMatCtrl->execute();
+    if (mpMatCtrl != nullptr) {
+        mpMatCtrl->execute();
     }
-    if (this->mpBtnCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    if (mpBtnCtrl == nullptr) {
         return;
     }
-    this->mpBtnCtrl->execute();
+    mpBtnCtrl->execute();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (42 bytes)
@@ -778,7 +778,7 @@ __attribute__((weak)) void uGUILoginBonus::moveEvent() {
 // Address: 0x00b019a0 - 0x00b019ba (26 bytes)
 void uGUILoginBonus::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUILoginBonus::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUILoginBonus::updateExit);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (64 bytes)
@@ -808,22 +808,22 @@ __attribute__((weak)) void uGUILoginBonus::evAdjustCursor() {
 // Address: 0x00aff3a0 - 0x00aff3b2 (18 bytes)
 u32 uGUILoginBonus::evCtrlEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return static_cast<u32>(0);
+    setInputEvent(72u);
+    return 0;
 }
 
 // Address: 0x01af6db0 - 0x01af6dc2 (18 bytes)
 u32 uGUILoginBonus::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x01af6dd0 - 0x01af6de2 (18 bytes)
 u32 uGUILoginBonus::evCtrlAdjTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(0);
+    setInputEvent(71u);
+    return 0;
 }
 
 // Address: 0x00aff3d0 - 0x00aff45a (138 bytes)
@@ -835,126 +835,126 @@ u32 uGUILoginBonus::evCtrlAdjCursor(cControl::Message* msg) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from uGUIBase::cMatrix*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from unsigned long
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
+    if (msg != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3e2, held ahead of the effects the ELF orders after it
-        uGUIBase::cMatrix* t0 = this->mpMatCtrl;
-        if (t0 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+        cMatrix* t0 = mpMatCtrl;
+        if (t0 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3ee, held ahead of the effects the ELF orders after it
             cControl* t1 = msg->pSender;
             if (t0 == t1) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3f4, held ahead of the effects the ELF orders after it
                 nGUIExt::MSG_REASON t2 = msg->reason;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3f8, held ahead of the effects the ELF orders after it
-                s32 t3 = t0->::uGUIBase::cMatrix::getCurrentRow();
-                if (t3 == static_cast<s32>(0)) {
-                    if (t2 != static_cast<nGUIExt::MSG_REASON>(1)) {
+                s32 t3 = t0->getCurrentRow();
+                if (t3 == 0) {
+                    if (t2 != nGUIExt::TRG_DOWN) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff407, held ahead of the effects the ELF orders after it
-                        s32 t4 = t0->::uGUIBase::cMatrix::getRow();
-                        if (t3 == (t4 - static_cast<s32>(1))) {
-                            if (t2 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                        s32 t4 = t0->getRow();
+                        if (t3 == (t4 - 1)) {
+                            if (t2 == nGUIExt::BTN_START) {
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
-                                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
-                                s32 t6 = t0->::cControl::getOldPos();
+                                s32 t6 = t0->getOldPos();
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
-                                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
                                 t0->setCurrentPos(t6, false);
-                                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                                     nGUIExt::MSG_REASON t10 = msg->reason;
-                                    if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                        this->mIsPushUpBtn = true;
+                                    if (t10 == nGUIExt::BTN_START) {
+                                        mIsPushUpBtn = true;
                                     }
                                 }
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                                return static_cast<u32>(0);
+                                setInputEvent(70u);
+                                return 0;
                             }
                         }
-                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                             nGUIExt::MSG_REASON t10 = msg->reason;
-                            if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                this->mIsPushUpBtn = true;
+                            if (t10 == nGUIExt::BTN_START) {
+                                mIsPushUpBtn = true;
                             }
                         }
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                        return static_cast<u32>(0);
+                        setInputEvent(70u);
+                        return 0;
                     } else {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
-                        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
-                        s32 t6 = t0->::cControl::getOldPos();
+                        s32 t6 = t0->getOldPos();
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
-                        unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                        unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
                         t0->setCurrentPos(t6, false);
-                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                             nGUIExt::MSG_REASON t10 = msg->reason;
-                            if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                this->mIsPushUpBtn = true;
+                            if (t10 == nGUIExt::BTN_START) {
+                                mIsPushUpBtn = true;
                             }
                         }
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                        return static_cast<u32>(0);
+                        setInputEvent(70u);
+                        return 0;
                     }
                 } else {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff407, held ahead of the effects the ELF orders after it
-                    s32 t4 = t0->::uGUIBase::cMatrix::getRow();
-                    if (t3 == (t4 - static_cast<s32>(1))) {
-                        if (t2 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                    s32 t4 = t0->getRow();
+                    if (t3 == (t4 - 1)) {
+                        if (t2 == nGUIExt::BTN_START) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
-                            unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                            unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
-                            s32 t6 = t0->::cControl::getOldPos();
+                            s32 t6 = t0->getOldPos();
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
-                            unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                            unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
                             t0->setCurrentPos(t6, false);
-                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                                 nGUIExt::MSG_REASON t10 = msg->reason;
-                                if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                    this->mIsPushUpBtn = true;
+                                if (t10 == nGUIExt::BTN_START) {
+                                    mIsPushUpBtn = true;
                                 }
                             }
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                            return static_cast<u32>(0);
+                            setInputEvent(70u);
+                            return 0;
                         }
                     }
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                         nGUIExt::MSG_REASON t10 = msg->reason;
-                        if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                            this->mIsPushUpBtn = true;
+                        if (t10 == nGUIExt::BTN_START) {
+                            mIsPushUpBtn = true;
                         }
                     }
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                    return static_cast<u32>(0);
+                    setInputEvent(70u);
+                    return 0;
                 }
             } else {
-                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                     nGUIExt::MSG_REASON t10 = msg->reason;
-                    if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                        this->mIsPushUpBtn = true;
+                    if (t10 == nGUIExt::BTN_START) {
+                        mIsPushUpBtn = true;
                     }
                 }
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                return static_cast<u32>(0);
+                setInputEvent(70u);
+                return 0;
             }
         } else {
-            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
                 nGUIExt::MSG_REASON t10 = msg->reason;
-                if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                    this->mIsPushUpBtn = true;
+                if (t10 == nGUIExt::BTN_START) {
+                    mIsPushUpBtn = true;
                 }
             }
-            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-            return static_cast<u32>(0);
+            setInputEvent(70u);
+            return 0;
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-        return static_cast<u32>(0);
+        setInputEvent(70u);
+        return 0;
     }
 }
 
@@ -965,153 +965,155 @@ u32 uGUILoginBonus::evCtrlLClick(cControl::Message* msg) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from unsigned long
     // inferred: a temporary for the value the load at 0xaff46d read, used twice; no DWARF local holds it
     s32 t0 = msg->click_vol;
-    if (t0 != static_cast<s32>(-1)) {
-        this->mCtrlStat = static_cast<u32>(0);
+    if (t0 != -1) {
+        mCtrlStat = 0;
         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff480, held ahead of the effects the ELF orders after it
-        uGUIBase::cMatrix* t1 = this->mpMatCtrl;
-        if (t1 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+        cMatrix* t1 = mpMatCtrl;
+        if (t1 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff48c, held ahead of the effects the ELF orders after it
-            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(0));
+            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff491, held ahead of the effects the ELF orders after it
-            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + static_cast<long>(144));
+            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + 144);
             t1->setCurrentPos(t0, false);
-            this->mIsMatrixClick = true;
+            mIsMatrixClick = true;
             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff49e, held ahead of the effects the ELF orders after it
-            uGUIBase::cMatrix* t5 = this->mpMatCtrl;
-            if (t5 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+            cMatrix* t5 = mpMatCtrl;
+            if (t5 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4aa, held ahead of the effects the ELF orders after it
                 cControl* t6 = msg->pSender;
                 if (t5 == t6) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4b0, held ahead of the effects the ELF orders after it
                     nGUIExt::MSG_REASON t7 = msg->reason;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4b4, held ahead of the effects the ELF orders after it
-                    s32 t8 = t5->::uGUIBase::cMatrix::getCurrentRow();
-                    if (t8 == static_cast<s32>(0)) {
-                        if (t7 != static_cast<nGUIExt::MSG_REASON>(1)) {
+                    s32 t8 = t5->getCurrentRow();
+                    if (t8 == 0) {
+                        if (t7 != nGUIExt::TRG_DOWN) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4c3, held ahead of the effects the ELF orders after it
-                            s32 t9 = t5->::uGUIBase::cMatrix::getRow();
-                            if (t8 == (t9 - static_cast<s32>(1))) {
-                                if (t7 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                            s32 t9 = t5->getRow();
+                            if (t8 == (t9 - 1)) {
+                                if (t7 == nGUIExt::BTN_START) {
                                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
-                                    unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                                    unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
                                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
-                                    s32 t11 = t5->::cControl::getOldPos();
+                                    s32 t11 = t5->getOldPos();
                                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
-                                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
                                     t5->setCurrentPos(t11, false);
-                                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                                         nGUIExt::MSG_REASON t15 = msg->reason;
-                                        if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                            this->mIsPushUpBtn = true;
+                                        if (t15 == nGUIExt::BTN_START) {
+                                            mIsPushUpBtn = true;
                                         }
                                     }
-                                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                                    return static_cast<u32>(0);
+                                    setInputEvent(70u);
+                                    return 0;
                                 }
                             }
-                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                                 nGUIExt::MSG_REASON t15 = msg->reason;
-                                if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                    this->mIsPushUpBtn = true;
+                                if (t15 == nGUIExt::BTN_START) {
+                                    mIsPushUpBtn = true;
                                 }
                             }
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                            return static_cast<u32>(0);
+                            setInputEvent(70u);
+                            return 0;
                         } else {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
-                            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
-                            s32 t11 = t5->::cControl::getOldPos();
+                            s32 t11 = t5->getOldPos();
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
-                            unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                            unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
                             t5->setCurrentPos(t11, false);
-                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                                 nGUIExt::MSG_REASON t15 = msg->reason;
-                                if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                    this->mIsPushUpBtn = true;
+                                if (t15 == nGUIExt::BTN_START) {
+                                    mIsPushUpBtn = true;
                                 }
                             }
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                            return static_cast<u32>(0);
+                            setInputEvent(70u);
+                            return 0;
                         }
                     } else {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4c3, held ahead of the effects the ELF orders after it
-                        s32 t9 = t5->::uGUIBase::cMatrix::getRow();
-                        if (t8 == (t9 - static_cast<s32>(1))) {
-                            if (t7 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                        s32 t9 = t5->getRow();
+                        if (t8 == (t9 - 1)) {
+                            if (t7 == nGUIExt::BTN_START) {
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
-                                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 0);
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
-                                s32 t11 = t5->::cControl::getOldPos();
+                                s32 t11 = t5->getOldPos();
                                 // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
-                                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 144);
                                 t5->setCurrentPos(t11, false);
-                                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                                     nGUIExt::MSG_REASON t15 = msg->reason;
-                                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                        this->mIsPushUpBtn = true;
+                                    if (t15 == nGUIExt::BTN_START) {
+                                        mIsPushUpBtn = true;
                                     }
                                 }
-                                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                                return static_cast<u32>(0);
+                                setInputEvent(70u);
+                                return 0;
                             }
                         }
-                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                        if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                             // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                             nGUIExt::MSG_REASON t15 = msg->reason;
-                            if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                                this->mIsPushUpBtn = true;
+                            if (t15 == nGUIExt::BTN_START) {
+                                mIsPushUpBtn = true;
                             }
                         }
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                        return static_cast<u32>(0);
+                        setInputEvent(70u);
+                        return 0;
                     }
                 } else {
-                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                    if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                         // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                         nGUIExt::MSG_REASON t15 = msg->reason;
-                        if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                            this->mIsPushUpBtn = true;
+                        if (t15 == nGUIExt::BTN_START) {
+                            mIsPushUpBtn = true;
                         }
                     }
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                    return static_cast<u32>(0);
+                    setInputEvent(70u);
+                    return 0;
                 }
             } else {
-                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                     nGUIExt::MSG_REASON t15 = msg->reason;
-                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                        this->mIsPushUpBtn = true;
+                    if (t15 == nGUIExt::BTN_START) {
+                        mIsPushUpBtn = true;
                     }
                 }
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-                return static_cast<u32>(0);
+                setInputEvent(70u);
+                return 0;
             }
         } else {
-            this->mIsMatrixClick = true;
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+            mIsMatrixClick = true;
+            if (msg != nullptr) {
+                if (mBtn.uGUIBase::cReferenceUIButton::isFocus()) {
                     // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
                     nGUIExt::MSG_REASON t15 = msg->reason;
-                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
-                        this->mIsPushUpBtn = true;
+                    if (t15 == nGUIExt::BTN_START) {
+                        mIsPushUpBtn = true;
                     }
                 }
             }
-            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-            return static_cast<u32>(0);
+            setInputEvent(70u);
+            return 0;
         }
     } else {
-        this->mCtrlStat = static_cast<u32>(1);
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-        return static_cast<u32>(0);
+        mCtrlStat = 1;
+        setInputEvent(66u);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUILoginBonus::MyDTI uGUILoginBonus::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUILoginBonus.cpp at 0x00b01abf-0x00b01afc (called at uGUILoginBonus.cpp:44)

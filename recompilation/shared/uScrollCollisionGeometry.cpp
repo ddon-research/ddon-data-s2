@@ -40,7 +40,7 @@ const MtDTI& uScrollCollisionGeometry::getDTI() const {
 // Address: 0x00fdc410 - 0x00fdc450 (64 bytes)
 void* uScrollCollisionGeometry::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometry::DTI)->memAlloc(sz, align, ::uScrollCollisionGeometry::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(uScrollCollisionGeometry::DTI)->memAlloc(sz, align, uScrollCollisionGeometry::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* uScrollCollisionGeometry::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN24uScrollCollisionGeometryD0Ev at 0x00fdc90e-0x00fdc92f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uScrollCollisionGeometry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uScrollCollisionGeometry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,8 +89,8 @@ __attribute__((weak)) void uScrollCollisionGeometry::createProperty(MtPropertyLi
 // Address: 0x00fdd8b0 - 0x00fdd8dd (45 bytes)
 void uScrollCollisionGeometry::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpScrollRegisterInfo = (::sCollision::mpInstance)->::sCollision::registerScrollCollisionNode(*this);
-    this->::uScrollCollisionGeometry::updateBoundingAABB();
+    mpScrollRegisterInfo = (sCollision::mpInstance)->sCollision::registerScrollCollisionNode(*this);
+    updateBoundingAABB();
 }
 
 // Address: 0x00fddbe0 - 0x00fddbe1 (1 bytes)
@@ -157,8 +157,8 @@ bool uScrollCollisionGeometry::isGeometryActive(u32 GeometryIndex) const {
     // DWARF local not rendered: const cGeometryInfo& GeomInfo;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from MtObject*
-    if (GeometryIndex < this->mColliderGeometryArray.::MtArray::mLength) {
-        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mColliderGeometryArray.::MtArray::mpArray[GeometryIndex]) + static_cast<long>(96))) != static_cast<unsigned char>(0);
+    if (GeometryIndex < mColliderGeometryArray.mLength) {
+        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mColliderGeometryArray.mpArray[GeometryIndex]) + 96)) != 0;
     } else {
         return false;
     }
@@ -170,7 +170,7 @@ bool uScrollCollisionGeometry::isGeometryActive(u32 GeometryIndex) const {
 // Address: 0x00fde040 - 0x00fde044 (4 bytes)
 u32 uScrollCollisionGeometry::getGeometryInfoNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColliderGeometryArray.::MtArray::mLength;
+    return mColliderGeometryArray.mLength;
 }
 
 // Address: 0x00fde120 - 0x00fde3b2 (658 bytes)
@@ -201,13 +201,13 @@ __attribute__((weak)) rCollision::MaterialInfo* uScrollCollisionGeometry::getGeo
 // Address: 0x00fde410 - 0x00fde417 (7 bytes)
 bool uScrollCollisionGeometry::isMoveByScrMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrMatrix.mFlgMoveEnable;
+    return mScrMatrix.mFlgMoveEnable;
 }
 
 // Address: 0x00fde420 - 0x00fde427 (7 bytes)
 bool uScrollCollisionGeometry::isResetSetByScrMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrMatrix.mFlgMatResetSet;
+    return mScrMatrix.mFlgMatResetSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,7 +216,7 @@ bool uScrollCollisionGeometry::isResetSetByScrMatrix() {
 // Address: 0x00fde440 - 0x00fde448 (8 bytes)
 void uScrollCollisionGeometry::setEnableStopSetControl(bool FlgStopSetControl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgStopSetControl = FlgStopSetControl;
+    mFlgStopSetControl = FlgStopSetControl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -270,7 +270,7 @@ __attribute__((weak)) MtMatrix uScrollCollisionGeometry::getMatrixForUI() {
 // Address: 0x00fdd660 - 0x00fdd678 (24 bytes)
 void uScrollCollisionGeometry::resetScrMoveMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(static_cast<const MtMatrix*>(nullptr), true, true);
+    mScrMatrix.setMatrixForGame(static_cast<const MtMatrix*>(nullptr), true, true);
 }
 
 // No out-of-line body: no code in the ELF
@@ -288,13 +288,13 @@ __attribute__((weak)) void uScrollCollisionGeometry::setScrFilter(const nCollisi
 // Address: 0x00fdd640 - 0x00fdd647 (7 bytes)
 u32 uScrollCollisionGeometry::getScrType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrFilter.mScrType;
+    return mScrFilter.mScrType;
 }
 
 // Address: 0x00fdd650 - 0x00fdd657 (7 bytes)
 void uScrollCollisionGeometry::setScrType(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mScrFilter.mScrType = type;
+    mScrFilter.mScrType = type;
 }
 
 // No out-of-line body: no code in the ELF
@@ -303,7 +303,7 @@ void uScrollCollisionGeometry::setScrType(u32 type) {
 // Address: 0x00fde4d0 - 0x00fde4d8 (8 bytes)
 u8 uScrollCollisionGeometry::getScrGroupIndex() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScrFilter.mScrGroupIndex;
+    return mScrFilter.mScrGroupIndex;
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,8 +312,8 @@ u8 uScrollCollisionGeometry::getScrGroupIndex() {
 // Address: 0x00fde4f0 - 0x00fde505 (21 bytes)
 bool uScrollCollisionGeometry::isScrTarget(u32 TargetType, u32 TargetGroup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((TargetType & this->mScrFilter.mScrType) != static_cast<u32>(0)) {
-        return (TargetGroup & this->mScrFilter.mScrGroup) != static_cast<u32>(0);
+    if ((TargetType & mScrFilter.mScrType) != 0) {
+        return (TargetGroup & mScrFilter.mScrGroup) != 0;
     } else {
         return false;
     }
@@ -343,13 +343,13 @@ __attribute__((weak)) void uScrollCollisionGeometry::registOwner(MtObject* pOwne
 // Address: 0x00fde610 - 0x00fde619 (9 bytes)
 void uScrollCollisionGeometry::unregistOwner() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOwner = nullptr;
+    mpOwner = nullptr;
 }
 
 // Address: 0x00fde600 - 0x00fde605 (5 bytes)
 MtObject* uScrollCollisionGeometry::getOwner() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpOwner;
+    return mpOwner;
 }
 
 // No out-of-line body: no code in the ELF
@@ -376,7 +376,7 @@ MtObject* uScrollCollisionGeometry::getOwner() {
 // Address: 0x00fde670 - 0x00fde678 (8 bytes)
 const MtAABB& uScrollCollisionGeometry::getBoundingAABB() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBoundingAABB;
+    return mBoundingAABB;
 }
 
 // Address: 0x00fdd8e0 - 0x00fddbd3 (755 bytes)
@@ -392,7 +392,7 @@ __attribute__((weak)) void uScrollCollisionGeometry::updateBoundingAABB() {
 // Address: 0x00fdd680 - 0x00fdd687 (7 bytes)
 bool uScrollCollisionGeometry::isEnableAutoSync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlgAutoSync;
+    return mFlgAutoSync;
 }
 
 // Address: 0x00fdd690 - 0x00fdd749 (185 bytes)
@@ -407,7 +407,7 @@ __attribute__((weak)) void uScrollCollisionGeometry::setEnableAutoSync(bool FlgE
 // Address: 0x00fde6b0 - 0x00fde6b8 (8 bytes)
 void uScrollCollisionGeometry::setEnableAutoSyncMove(bool FlgEnableSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgAutoSyncEnableMove = FlgEnableSet;
+    mFlgAutoSyncEnableMove = FlgEnableSet;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -424,103 +424,103 @@ void uScrollCollisionGeometry::moveForSystem() {
     // DWARF local not rendered: cUnit* pOwnerUnit;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        if (this->mFlgEnableOwner != false) {
-            if (this->mpOwner != static_cast<MtObject*>(nullptr)) {
-                if (this->mFlgOwnerUnit != false) {
-                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpOwner) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(3)) <= static_cast<unsigned int>(1)) {
-                        this->kill();
+    if ((mBeFlag - 1u) <= 1u) {
+        if (mFlgEnableOwner) {
+            if (mpOwner != nullptr) {
+                if (mFlgOwnerUnit) {
+                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpOwner) + 16)) & 7u) - 3u) <= 1u) {
+                        kill();
                     } else {
-                        this->::uScrollCollisionGeometry::syncOwner();
-                        if (this->mFlgUpdateOnce == false) {
-                            if (this->mFlgAlwayUpdate != false) {
-                                if (this->mFlgReserveMatrixSet != false) {
-                                    const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                                    this->mFlgStopSet = this->mFlgReserveResetSet;
-                                    this->mFlgReserveMatrixSet = false;
-                                    this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                        syncOwner();
+                        if (!mFlgUpdateOnce) {
+                            if (mFlgAlwayUpdate) {
+                                if (mFlgReserveMatrixSet) {
+                                    const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                                    mFlgStopSet = mFlgReserveResetSet;
+                                    mFlgReserveMatrixSet = false;
+                                    updateBoundingAABB();
+                                    (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                                 } else {
-                                    this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                                    updateBoundingAABB();
+                                    (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                                 }
-                                this->mFlgUpdateOnce = false;
+                                mFlgUpdateOnce = false;
                             }
                         } else {
-                            if (this->mFlgReserveMatrixSet != false) {
-                                const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                                this->mFlgStopSet = this->mFlgReserveResetSet;
-                                this->mFlgReserveMatrixSet = false;
-                                this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                            if (mFlgReserveMatrixSet) {
+                                const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                                mFlgStopSet = mFlgReserveResetSet;
+                                mFlgReserveMatrixSet = false;
+                                updateBoundingAABB();
+                                (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                             } else {
-                                this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                                updateBoundingAABB();
+                                (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                             }
-                            this->mFlgUpdateOnce = false;
+                            mFlgUpdateOnce = false;
                         }
                     }
                 } else {
-                    this->::uScrollCollisionGeometry::syncOwner();
-                    if (this->mFlgUpdateOnce == false) {
-                        if (this->mFlgAlwayUpdate != false) {
-                            if (this->mFlgReserveMatrixSet != false) {
-                                const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                                this->mFlgStopSet = this->mFlgReserveResetSet;
-                                this->mFlgReserveMatrixSet = false;
-                                this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                    syncOwner();
+                    if (!mFlgUpdateOnce) {
+                        if (mFlgAlwayUpdate) {
+                            if (mFlgReserveMatrixSet) {
+                                const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                                mFlgStopSet = mFlgReserveResetSet;
+                                mFlgReserveMatrixSet = false;
+                                updateBoundingAABB();
+                                (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                             } else {
-                                this->::uScrollCollisionGeometry::updateBoundingAABB();
-                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                                updateBoundingAABB();
+                                (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                             }
-                            this->mFlgUpdateOnce = false;
+                            mFlgUpdateOnce = false;
                         }
                     } else {
-                        if (this->mFlgReserveMatrixSet != false) {
-                            const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                            this->mFlgStopSet = this->mFlgReserveResetSet;
-                            this->mFlgReserveMatrixSet = false;
-                            this->::uScrollCollisionGeometry::updateBoundingAABB();
-                            (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                        if (mFlgReserveMatrixSet) {
+                            const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                            mFlgStopSet = mFlgReserveResetSet;
+                            mFlgReserveMatrixSet = false;
+                            updateBoundingAABB();
+                            (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                         } else {
-                            this->::uScrollCollisionGeometry::updateBoundingAABB();
-                            (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                            updateBoundingAABB();
+                            (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                         }
-                        this->mFlgUpdateOnce = false;
+                        mFlgUpdateOnce = false;
                     }
                 }
             } else {
-                this->kill();
+                kill();
             }
         } else {
-            this->::uScrollCollisionGeometry::syncOwner();
-            if (this->mFlgUpdateOnce == false) {
-                if (this->mFlgAlwayUpdate != false) {
-                    if (this->mFlgReserveMatrixSet != false) {
-                        const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                        this->mFlgStopSet = this->mFlgReserveResetSet;
-                        this->mFlgReserveMatrixSet = false;
-                        this->::uScrollCollisionGeometry::updateBoundingAABB();
-                        (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+            syncOwner();
+            if (!mFlgUpdateOnce) {
+                if (mFlgAlwayUpdate) {
+                    if (mFlgReserveMatrixSet) {
+                        const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                        mFlgStopSet = mFlgReserveResetSet;
+                        mFlgReserveMatrixSet = false;
+                        updateBoundingAABB();
+                        (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                     } else {
-                        this->::uScrollCollisionGeometry::updateBoundingAABB();
-                        (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                        updateBoundingAABB();
+                        (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                     }
-                    this->mFlgUpdateOnce = false;
+                    mFlgUpdateOnce = false;
                 }
             } else {
-                if (this->mFlgReserveMatrixSet != false) {
-                    const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
-                    this->mFlgStopSet = this->mFlgReserveResetSet;
-                    this->mFlgReserveMatrixSet = false;
-                    this->::uScrollCollisionGeometry::updateBoundingAABB();
-                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                if (mFlgReserveMatrixSet) {
+                    const u32 MoveCode = mScrMatrix.setMatrixForGame(&mReserveMatrix, mFlgReserveResetSet, mFlgStopSetControl);
+                    mFlgStopSet = mFlgReserveResetSet;
+                    mFlgReserveMatrixSet = false;
+                    updateBoundingAABB();
+                    (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, MoveCode);
                 } else {
-                    this->::uScrollCollisionGeometry::updateBoundingAABB();
-                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                    updateBoundingAABB();
+                    (sCollision::mpInstance)->sCollision::updateScrollCollisionNode(*mpScrollRegisterInfo, 0u);
                 }
-                this->mFlgUpdateOnce = false;
+                mFlgUpdateOnce = false;
             }
         }
     }
@@ -592,6 +592,8 @@ __attribute__((weak)) void uScrollCollisionGeometry::applyWorldOffsetByAbsoluteW
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void uScrollCollisionGeometry::applyWorldOffsetByDifference(const MtVector3& offset);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uScrollCollisionGeometry::MyDTI uScrollCollisionGeometry::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScrollCollisionGeometry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -650,11 +652,11 @@ const MtDTI& uScrollCollisionGeometry::cGeometryInfo::getDTI() const {
 // Also emitted as: _ZN24uScrollCollisionGeometry13cGeometryInfoD0Ev at 0x00fdb140
 uScrollCollisionGeometry::cGeometryInfo::~cGeometryInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeomConvex == static_cast<MtGeomConvex*>(nullptr)) {
+    if (mpGeomConvex == nullptr) {
         return;
     }
-    delete this->mpGeomConvex;
-    this->mpGeomConvex = static_cast<MtGeomConvex*>(nullptr);
+    delete mpGeomConvex;
+    mpGeomConvex = nullptr;
 }
 
 // Address: 0x00fdb190 - 0x00fdbd9b (3083 bytes)
@@ -684,15 +686,14 @@ __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConve
 
 // Address: 0x00fdbda0 - 0x00fdbda8 (8 bytes)
 u32 uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtGeomConvex*
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpGeomConvex) + static_cast<long>(8));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mpGeomConvex->mType;
 }
 
 // Address: 0x00fdc2c0 - 0x00fdc2c5 (5 bytes)
 MtGeomConvex* uScrollCollisionGeometry::cGeometryInfo::getGeomConvex() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeomConvex;
+    return mpGeomConvex;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -706,22 +707,21 @@ __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConve
 
 // Address: 0x00fdc320 - 0x00fdc34a (42 bytes)
 void uScrollCollisionGeometry::cGeometryInfo::copyGeomConvex(MtGeomConvex& NewGeomConvex) {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtGeomConvex*
-    this->::uScrollCollisionGeometry::cGeometryInfo::setGeomConvexType(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&NewGeomConvex) + static_cast<long>(8)));
-    this->mpGeomConvex->copy(NewGeomConvex);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    setGeomConvexType(NewGeomConvex.mType);
+    mpGeomConvex->copy(NewGeomConvex);
 }
 
 // Address: 0x00fdc350 - 0x00fdc355 (5 bytes)
 rCollision::MaterialInfo& uScrollCollisionGeometry::cGeometryInfo::getGeomConvexMaterial() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeomMaterialInfo;
+    return mGeomMaterialInfo;
 }
 
 // Address: 0x00fdc360 - 0x00fdc365 (5 bytes)
 const rCollision::MaterialInfo& uScrollCollisionGeometry::cGeometryInfo::getGeomConvexMaterialConst() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGeomMaterialInfo;
+    return mGeomMaterialInfo;
 }
 
 // Address: 0x00fdc370 - 0x00fdc384 (20 bytes)
@@ -742,13 +742,13 @@ __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConve
 // Address: 0x00fdc2a0 - 0x00fdc2a4 (4 bytes)
 bool uScrollCollisionGeometry::cGeometryInfo::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFlgActive;
+    return mFlgActive;
 }
 
 // Address: 0x00fdc2b0 - 0x00fdc2b5 (5 bytes)
 void uScrollCollisionGeometry::cGeometryInfo::setActive(bool FlgActive) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFlgActive = FlgActive;
+    mFlgActive = FlgActive;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -768,6 +768,8 @@ void uScrollCollisionGeometry::cGeometryInfo::setActive(bool FlgActive) {
 
 // No out-of-line body: no code in the ELF
 // size_t uScrollCollisionGeometry::cGeometryInfo::memSize(void*);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uScrollCollisionGeometry::cGeometryInfo::MyDTI uScrollCollisionGeometry::cGeometryInfo::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScrollCollisionGeometry::cGeometryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

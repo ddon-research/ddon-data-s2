@@ -66,5 +66,5 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK20rRenderTargetTexture5MyDTI11newInstanceEv at 0x011dd700-0x011dd725, code DWARF attributes to no inlined copy
 inline rRenderTargetTexture::rRenderTargetTexture() {
-    this->::cResource::mAttr = static_cast<u32>(16);
+    this->::cResource::mAttr = 16;
 }

@@ -601,6 +601,78 @@ inline f32 cpCharacterEdit::getHeightScale() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7beb-0x8a7bf1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateHairReq() {
+    this->mUpdateHairReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7bf8-0x8a7bfe; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateBeardReq() {
+    this->mUpdateBeardReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7bb0-0x8a7bb4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateEyePresetReq() {
+    this->mUpdateEyePresetReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7b9d-0x8a7ba3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateNosePresetReq() {
+    this->mUpdateNosePresetReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7b8a-0x8a7b90; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateMouthPresetReq() {
+    this->mUpdateMouthPresetReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7c1f-0x8a7c25; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateEyebrowReq() {
+    this->mUpdateEyebrowReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7c05-0x8a7c0b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateMakeupReq() {
+    this->mUpdateMakeupReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uCharacterEdit::changeShape at 0x8a7c12-0x8a7c18; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::updateScarReq() {
+    this->mUpdateScarReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cpCharacterEdit::updateAllReq() {
+    this->mUpdateAllReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline rSoundRequest* cpCharacterEdit::getVoiceRes() const {
+    return this->mpVoice;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline rSoundStreamRequest* cpCharacterEdit::getVoiceStreamRes() const {
+    return this->mpVoiceStream;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sBakingJointOrder::execBakeQueue at 0x724bf3-0x724bfa; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpCharacterEdit::setBaking() {
+    this->mIsBaking = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cpCharacterEdit::isNeedUpdateMatrixRetry() const {
     return this->mIsmNeedUpdateMatrixRetry;
 }

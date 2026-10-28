@@ -98,5 +98,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cOcdElectricParam::cOcdElectricParam() {
-    this->mJointNo = static_cast<s32>(0);
+    this->mJointNo = 0;
 }

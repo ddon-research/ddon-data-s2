@@ -197,6 +197,6 @@ inline cCharParamEnemy::cJumpAttackSpeed::cJumpAttackSpeed() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCharParamEnemy::cGuardCounter::cGuardCounter() {
-    this->mTimes = static_cast<u8>(0);
-    this->mPercent = static_cast<u8>(0);
+    this->mTimes = 0;
+    this->mPercent = 0;
 }

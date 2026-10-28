@@ -42,6 +42,7 @@ namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stClanEmblem; }
 namespace nSessionManager { class cNetSessionManager; }
 class sCameraExt;
+class sGUIExt;
 class sGame;
 class sNetworkExt;
 class uGUIEngageInfo;
@@ -78,6 +79,8 @@ class cCharacterData : public MtObject
     friend class nSessionManager::cNetSessionManager;
     // inferred: sCameraExt::init names sGame::mCharData.mCharData.mOption.mCamPosType
     friend class sCameraExt;
+    // inferred: sGUIExt::cChat::setCustomChToCharData names sGame::mCharData.mCharData.mChatCstmCh[0].mName[0], through its enclosing class sGUIExt
+    friend class sGUIExt;
     // inferred: sGame::initDecideCharacter names sGame::mCharData.mCharData.mOption.mIsClanNtc
     friend class sGame;
     // inferred: sNetworkExt::isClanLeader names sGame::mCharData.mCharData.mCardClan.mMyPost
@@ -1035,3 +1038,51 @@ public:
     static MyDTI DTI;
     static const u32 CHARACTER_DATA_VERSION = 19;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCharacterData::copyData at 0x4886c-0x4886f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cCharacterData::setVersion(u32 version) {
+    this->mCharData.mVersion = version;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCharacterData::copyData at 0x4886f-0x48873; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cCharacterData::getReleaseVersion() const {
+    return this->mCharData.mReleaseVersion;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCharacterData::copyData at 0x48873-0x4888c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cCharacterData::setReleaseVersion(u32 version) {
+    this->mCharData.mReleaseVersion = version;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cCharacterData::setSex(u8 sex) {
+    this->mCharData.mCharacterEdit.mSex = sex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sContextManager::setContextCharacter at 0x74e4bd-0x74e4c4; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline CHAR_NAME& cCharacterData::getName() {
+    return this->mCharData.mCharacterEdit.mName;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sContextManager::setContextCharacter at 0x74e563-0x74e56a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline const nJobParam::cHumanBaseInfo& cCharacterData::getBaseInfo() const {
+    return this->mCharData.mBaseInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cCharacterData::copyData at 0x496cb-0x496d2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 cCharacterData::getMaxAbilityCost() const {
+    return this->mCharData.mMaxAbilityCost;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cCharacterData::setMaxAbilityCost(u32 cost) {
+    this->mCharData.mMaxAbilityCost = cost;
+}

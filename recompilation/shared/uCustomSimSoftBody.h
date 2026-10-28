@@ -96,3 +96,9 @@ public:
     bool mBakeRebuildComplete;  // offset: 0xe72
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cBakeModelEx::setCustomSimSoftBody at 0x32b5b-0x32b62; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uCustomSimSoftBody::setBakeModel(cBakeModelEx* target) {
+    this->mpBakeModel = target;
+}

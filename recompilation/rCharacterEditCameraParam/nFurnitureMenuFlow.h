@@ -249,7 +249,15 @@ inline nFurnitureMenuFlow::cElement::cElement() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::cItem() {
-    this->mGroupId = static_cast<u32>(4294967295);
-    this->mSortNo = static_cast<u32>(0);
+    this->mGroupId = 0xFFFFFFFF;
+    this->mSortNo = 0;
     this->mIsDisable = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nFurnitureMenuFlow::cFurnitureListItems::cItem::cItem() {
+    this->mLayoutId = 0xFFFFFFFF;
+    this->mSortNo = 0;
+    this->mInfos.::MtArray::mAutoDelete = true;
 }

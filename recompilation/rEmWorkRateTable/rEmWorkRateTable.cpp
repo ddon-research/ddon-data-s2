@@ -36,7 +36,7 @@ const MtDTI& cEmWorkRateTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cEmWorkRateTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memAlloc(sz, align, ::cEmWorkRateTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEmWorkRateTable::DTI)->memAlloc(sz, align, cEmWorkRateTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEmWorkRateTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEmWorkRateTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEmWorkRateTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -91,6 +91,8 @@ __attribute__((weak)) void cEmWorkRateTable::createProperty(MtPropertyList& s) {
 //   in cEmWorkRateCtrl::changeWorkRateNo at 0x000ba0df-0x000ba0e2 (called at cEmWorkRateCtrl.cpp:312)
 // u32 cEmWorkRateTable::getWorkRateStatus() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEmWorkRateTable::MyDTI cEmWorkRateTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEmWorkRateTable.cpp at 0x0066abc0-0x0066ac02 (called at rEmWorkRateTable.cpp:23)
 //   in _GLOBAL__sub_I_rEmWorkRateTable.cpp at 0x0066abc0-0x0066ac02 (called at rEmWorkRateTable.h:33)
@@ -99,7 +101,7 @@ __attribute__((weak)) void cEmWorkRateTable::createProperty(MtPropertyList& s) {
 // Address: 0x0066a850 - 0x0066a89e (78 bytes)
 MtObject* cEmWorkRateTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEmWorkRateTable;
+    return new (16u) cEmWorkRateTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ const MtDTI& rEmWorkRateTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEmWorkRateTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEmWorkRateTable::DTI)->memAlloc(sz, align, ::rEmWorkRateTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEmWorkRateTable::DTI)->memAlloc(sz, align, rEmWorkRateTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,7 +141,7 @@ inline void* rEmWorkRateTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rEmWorkRateTableD0Ev at 0x01a89cf4-0x01a89d13, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEmWorkRateTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEmWorkRateTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEmWorkRateTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,10 +158,10 @@ bool rEmWorkRateTable::loadData(MtDataReader& in, cEmWorkRateTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWorkRate);
+    nDDOIO::readData(in, pData->mWorkRate);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mWorkRateStatus);
+    nDDOIO::readData(in, pData->mWorkRateStatus);
     return true;
 }
 
@@ -172,8 +174,10 @@ MT_CTSTR rEmWorkRateTable::getExt() const {
 // Address: 0x01a89e40 - 0x01a89e46 (6 bytes)
 u32 rEmWorkRateTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(258);
+    return 258;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEmWorkRateTable::MyDTI rEmWorkRateTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEmWorkRateTable.cpp at 0x0066ac02-0x0066ac3f (called at rEmWorkRateTable.cpp:84)
@@ -183,7 +187,7 @@ u32 rEmWorkRateTable::getDataVersion() const {
 // Address: 0x0066aae0 - 0x0066ab44 (100 bytes)
 MtObject* rEmWorkRateTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEmWorkRateTable;
+    return new (16u) rEmWorkRateTable;
 }
 
 // Instance at 0x01a89df0 - 0x01a89e02 (18 bytes) of the generic rTbl2<T>::getData

@@ -181,3 +181,9 @@ protected:
     static const u32 NativeFileMagic = 4543309;
     static const s32 NativeFileVersion = 9;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSoundMotionSe::requestMotionSebyWork at 0xd20fe5-0xd20fe9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA* rSoundMotionSe::cSoundMotionSeData::getData() {
+    return &this->mData;
+}

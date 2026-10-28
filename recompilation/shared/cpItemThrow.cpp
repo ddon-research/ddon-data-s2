@@ -11,8 +11,10 @@
 #include "cpKeyCommand.h"
 #include "nDDOUtility.h"
 #include "sPlayerManager.h"
+#include "sUnit.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
+#include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -31,7 +33,7 @@ const MtDTI& cpItemThrow::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpItemThrow::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpItemThrow::DTI);
+    return MtMemoryAllocator::getAllocator(cpItemThrow::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +42,7 @@ inline MtAllocator* cpItemThrow::getAllocator() {
 // Address: 0x00156180 - 0x001561c0 (64 bytes)
 void* cpItemThrow::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpItemThrow::getAllocator()->memAlloc(sz, align, ::cpItemThrow::DTI.::MtDTI::getID());
+    return cpItemThrow::getAllocator()->memAlloc(sz, align, cpItemThrow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +57,7 @@ void* cpItemThrow::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpItemThrow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpItemThrow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpItemThrow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,7 +84,7 @@ cpItemThrow::~cpItemThrow() {
 // Address: 0x001562f0 - 0x001562f5 (5 bytes)
 void cpItemThrow::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00156300 - 0x00156301 (1 bytes)
@@ -93,44 +95,44 @@ __attribute__((weak)) void cpItemThrow::kill() {
 // Address: 0x00156310 - 0x00156319 (9 bytes)
 void cpItemThrow::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpHuman = static_cast<uHuman*>(pOwner);
+    mpOwner = pOwner;
+    mpHuman = static_cast<uHuman*>(pOwner);
 }
 
 // Address: 0x00156320 - 0x00156371 (81 bytes)
 void cpItemThrow::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpHuman != static_cast<uHuman*>(nullptr)) {
-        if (this->mpHuman->::cUnit::isEnable() == false) {
-            this->mpHuman = static_cast<uHuman*>(nullptr);
+    this->cpComponent::updatePtr();
+    if (mpHuman != nullptr) {
+        if (!mpHuman->isEnable()) {
+            mpHuman = nullptr;
         }
     }
-    if (this->mpItemModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpItemModel == nullptr) {
         return;
     }
-    if (this->mpItemModel->::cUnit::isEnable() != false) {
+    if (mpItemModel->isEnable()) {
         return;
     }
-    this->mpItemModel = static_cast<uDDOModel*>(nullptr);
+    mpItemModel = nullptr;
 }
 
 // Address: 0x00156a20 - 0x00156a82 (98 bytes)
 bool cpItemThrow::requestThrowItem(u32 id, MT_CTSTR uid) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsItemMode != false) {
+    if (mIsItemMode) {
         return false;
     } else {
-        if (this->mIsRequestThrowAct != false) {
+        if (mIsRequestThrowAct) {
             return false;
         } else {
-            if (::sPlayerManager::getInstance()->::sPlayerManager::isItemSeal(this->mpHuman) != false) {
+            if (sPlayerManager::getInstance()->isItemSeal(mpHuman)) {
                 return false;
             } else {
-                this->mThrowItemId = id;
-                this->mThrowItemUId = uid;
-                this->mIsRequestThrowAct = true;
-                this->mItemReqKeepTime = 90.0f;
+                mThrowItemId = id;
+                mThrowItemUId = uid;
+                mIsRequestThrowAct = true;
+                mItemReqKeepTime = 90.0f;
                 return true;
             }
         }
@@ -144,9 +146,12 @@ __attribute__((weak)) void cpItemThrow::checkItemMode() {
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (4 bytes)
-//   in uHuman::getItemModel at 0x00c7bd5e-0x00c7bd62 (called at uHuman.cpp:3634)
-// uModel* cpItemThrow::getItemModel() const;
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::getItemModel at 0xc7bd5e-0xc7bd62; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+uModel* cpItemThrow::getItemModel() const {
+    return mpItemModel;
+}
 
 // No out-of-line body: 3 inlined copies in 3 functions (19 bytes)
 //   in uHuman::update at 0x00c73e2f-0x00c73e35 (called at uHuman.cpp:3647)
@@ -157,14 +162,14 @@ __attribute__((weak)) void cpItemThrow::checkItemMode() {
 // Address: 0x00156b30 - 0x00156b49 (25 bytes)
 MT_CTSTR cpItemThrow::getNowThrowItemUId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsItemMode == false) {
-        if (this->mIsRequestThrowAct != false) {
-            return this->mThrowItemUId;
+    if (!mIsItemMode) {
+        if (mIsRequestThrowAct) {
+            return mThrowItemUId;
         } else {
             return "";
         }
     } else {
-        return this->mThrowItemUId;
+        return mThrowItemUId;
     }
 }
 
@@ -187,19 +192,19 @@ __attribute__((weak)) void cpItemThrow::changeCommandItemTbl() {
 void cpItemThrow::offItemMode() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHuman == static_cast<uHuman*>(nullptr)) {
+    if (mpHuman == nullptr) {
         return;
     }
-    this->mIsItemMode = false;
-    ::cContextInterface::subCustomWork(this->mpHuman->::uDDOModel::mContextInterface.mpContextInstance, this->mpHuman->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u16>(2));
-    cpKeyCommand* pCpKeyCommand = this->mpHuman->mpKeyCommand;
-    if (pCpKeyCommand == static_cast<cpKeyCommand*>(nullptr)) {
+    mIsItemMode = false;
+    cContextInterface::subCustomWork(mpHuman->mContextInterface.mpContextInstance, mpHuman->mContextInterface.mpContextCharacter, static_cast<u16>(2));
+    cpKeyCommand* pCpKeyCommand = mpHuman->mpKeyCommand;
+    if (pCpKeyCommand == nullptr) {
         return;
     }
-    pCpKeyCommand->::cpKeyCommand::setCommandTbl(static_cast<s32>(0), this->mBackUpItemTblList.elems[0]);
-    pCpKeyCommand->::cpKeyCommand::setCommandTbl(static_cast<s32>(1), this->mBackUpItemTblList.elems[1]);
-    pCpKeyCommand->::cpKeyCommand::setCommandTbl(static_cast<s32>(2), this->mBackUpItemTblList.elems[2]);
-    pCpKeyCommand->::cpKeyCommand::setCommandTbl(static_cast<s32>(3), this->mBackUpItemTblList.elems[3]);
+    pCpKeyCommand->cpKeyCommand::setCommandTbl(0, mBackUpItemTblList.elems[0]);
+    pCpKeyCommand->cpKeyCommand::setCommandTbl(1, mBackUpItemTblList.elems[1]);
+    pCpKeyCommand->cpKeyCommand::setCommandTbl(2, mBackUpItemTblList.elems[2]);
+    pCpKeyCommand->cpKeyCommand::setCommandTbl(3, mBackUpItemTblList.elems[3]);
 }
 
 // Address: 0x00156470 - 0x00156930 (1216 bytes)
@@ -212,9 +217,77 @@ __attribute__((weak)) void cpItemThrow::createItemOmModel() {
 }
 
 // Address: 0x00156930 - 0x00156a0a (218 bytes)
-__attribute__((weak)) void cpItemThrow::releaseItemModel() {
-    DDON_STUB("cpItemThrow::releaseItemModel")
-    /* stub */
+void cpItemThrow::releaseItemModel() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    // inferred: the value the loop at 0x156970 carries; no location-less local in scope fits
+    uDDOModel* v0_3 = mpItemModel;
+    if (v0_3 != nullptr) {
+        // inferred: the value the loop at 0x156970 carries; no location-less local in scope fits
+        uHuman* v0_4 = mpHuman;
+        // inferred: the value the loop at 0x156970 carries; no location-less local in scope fits
+        u32 v0_0 = v0_4->mSpecialEquipArray.mLength;
+        // inferred: the value carried to 0x1569db; no location-less local in scope fits
+        uDDOModel* v6_4;
+        if (v0_0 == 0) {
+            v6_4 = v0_3;
+        } else {
+            // inferred: the value the loop at 0x156970 carries; no location-less local in scope fits
+            MtObject* * v0_1 = v0_4->mSpecialEquipArray.mpArray;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_2 = 0;
+            // inferred: the value carried to 0x15699d; no location-less local in scope fits
+            u32 v3_0;
+            // inferred: the value carried to 0x15699d; no location-less local in scope fits
+            unsigned int v3_8;
+            // inferred: the value the loop at 0x1569b0 carries; no location-less local in scope fits
+            unsigned int v4_1;
+            // inferred: the value the loop at 0x1569b0 carries; no location-less local in scope fits
+            u32 v4_2;
+            // inferred: the value the loop at 0x1569b0 carries; no location-less local in scope fits
+            unsigned int v4_3;
+            for (;;) {
+                if (v0_3 == v0_1[i0_2]) {
+                    if (!v0_4->mSpecialEquipArray.mAutoDelete) {
+                        v3_0 = v0_0;
+                    } else {
+                        delete v0_3;
+                        v3_0 = v0_4->mSpecialEquipArray.mLength;
+                    }
+                    v3_8 = i0_2 + 1u;
+                    if (v3_8 < v3_0) {
+                        v4_1 = v3_8;
+                        v4_2 = v3_0;
+                        v4_3 = i0_2;
+                        for (;;) {
+                            v0_4->mSpecialEquipArray.mpArray[v4_3] = v0_4->mSpecialEquipArray.mpArray[v4_1];
+                            if (v4_2 != (v4_1 + 1u)) {
+                                v4_3 = v4_1;
+                                v4_1 = v4_1 + 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    v0_4->mSpecialEquipArray.mLength = v3_0 - 1u;
+                    v6_4 = mpItemModel;
+                    break;
+                } else {
+                    if ((i0_2 + 1u) < v0_0) {
+                        i0_2 = i0_2 + 1u;
+                    } else {
+                        v6_4 = v0_3;
+                        break;
+                    }
+                }
+            }
+        }
+        sUnit::getInstance()->remove(static_cast<cUnit*>(v6_4));
+        if (mpItemModel != nullptr) {
+            delete mpItemModel;
+            mpItemModel = nullptr;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -231,6 +304,8 @@ __attribute__((weak)) void cpItemThrow::releaseItemModel() {
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
 //   in cpItemThrow::requestThrowItem at 0x00156a33-0x00156a5a (called at cpItemThrow.cpp:361)
 // bool cpItemThrow::isUseThrowItemEnable();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpItemThrow::MyDTI cpItemThrow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpItemThrow.cpp at 0x00156cef-0x00156d2c (called at cpItemThrow.cpp:27)

@@ -371,9 +371,9 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK11cAITreeBase5MyDTI11newInstanceEv at 0x0102cb90-0x0102cbd8, code DWARF attributes to no inlined copy
 inline cAITreeBase::cAITreeBase() {
-    this->mNest = static_cast<u8>(0);
-    this->mNumberOfNode = static_cast<u32>(0);
-    this->mAxisPartition = static_cast<u8>(0);
-    this->mpNode = static_cast<cAITreeBase::Node*>(nullptr);
+    this->mNest = 0;
+    this->mNumberOfNode = 0;
+    this->mAxisPartition = 0;
+    this->mpNode = nullptr;
     this->mDelete = true;
 }

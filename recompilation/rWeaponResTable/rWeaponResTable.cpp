@@ -107,13 +107,13 @@ __attribute__((weak)) void cWeaponResTable::createProperty(MtPropertyList& s) {
 // Address: 0x00712760 - 0x00712765 (5 bytes)
 u64 cWeaponResTable::getModelResId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModelRes.::cResPathBase::getResId();
+    return mpModelRes.getResId();
 }
 
 // Address: 0x00712770 - 0x00712775 (5 bytes)
 u64 cWeaponResTable::getModelResId2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpModelRes2.::cResPathBase::getResId();
+    return mpModelRes2.getResId();
 }
 
 // No out-of-line body: no code in the ELF
@@ -125,17 +125,19 @@ u64 cWeaponResTable::getModelResId2() {
 // Address: 0x007127a0 - 0x007127a5 (5 bytes)
 u64 cWeaponResTable::getSndResId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSndRes.::cResPathBase::getResId();
+    return mpSndRes.getResId();
 }
 
 // Address: 0x007127b0 - 0x007127b5 (5 bytes)
 u64 cWeaponResTable::getMontageResId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpMontageRes.::cResPathBase::getResId();
+    return mpMontageRes.getResId();
 }
 
 // No out-of-line body: no code in the ELF
 // u64 cWeaponResTable::getMontageResId2();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cWeaponResTable::MyDTI cWeaponResTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWeaponResTable.cpp at 0x00712b0e-0x00712b4b (called at rWeaponResTable.cpp:66)
@@ -170,7 +172,7 @@ const MtDTI& rWeaponResTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rWeaponResTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rWeaponResTable::DTI)->memAlloc(sz, align, ::rWeaponResTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rWeaponResTable::DTI)->memAlloc(sz, align, rWeaponResTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -185,7 +187,7 @@ inline void* rWeaponResTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rWeaponResTableD0Ev at 0x01ab8d74-0x01ab8d95, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rWeaponResTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rWeaponResTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rWeaponResTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,8 +214,10 @@ MT_CTSTR rWeaponResTable::getExt() const {
 // Address: 0x01ab8ec0 - 0x01ab8ec6 (6 bytes)
 u32 rWeaponResTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(9);
+    return 9;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rWeaponResTable::MyDTI rWeaponResTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rWeaponResTable.cpp at 0x00712b4b-0x00712b88 (called at rWeaponResTable.cpp:394)
@@ -223,7 +227,7 @@ u32 rWeaponResTable::getDataVersion() const {
 // Address: 0x007127d0 - 0x00712834 (100 bytes)
 MtObject* rWeaponResTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rWeaponResTable;
+    return new (16u) rWeaponResTable;
 }
 
 // Instance at 0x01ab8e70 - 0x01ab8e86 (22 bytes) of the generic rTbl2<T>::getData

@@ -36,7 +36,7 @@ const MtDTI& rStageConnect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStageConnect::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageConnect::DTI)->memAlloc(sz, align, ::rStageConnect::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memAlloc(sz, align, rStageConnect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rStageConnect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rStageConnect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageConnect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,18 +65,18 @@ inline void rStageConnect::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rStageConnect::rStageConnect() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mpConnectorArray = static_cast<rStageConnect::Data*>(nullptr);
-    this->mConnectorNum = static_cast<u32>(0);
-    this->mpConnectionArray = static_cast<rStageConnect::Connect*>(nullptr);
-    this->mConnectionNum = static_cast<u32>(0);
+    setAttribute(22u);
+    mpConnectorArray = nullptr;
+    mConnectorNum = 0;
+    mpConnectionArray = nullptr;
+    mConnectionNum = 0;
 }
 
 // Address: 0x006be2d0 - 0x006be2fa (42 bytes)
 // Also emitted as: _ZN13rStageConnectD0Ev at 0x006be3e0
 rStageConnect::~rStageConnect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rStageConnect::destruct();
+    destruct();
 }
 
 // Address: 0x01aa7600 - 0x01aa7608 (8 bytes)
@@ -124,25 +124,25 @@ __attribute__((weak)) bool rStageConnect::load(MtStream& in) {
 // Address: 0x01aa7620 - 0x01aa762f (15 bytes)
 rStageConnect::Data* rStageConnect::getConnector(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpConnectorArray[index];
+    return &mpConnectorArray[index];
 }
 
 // Address: 0x01aa7630 - 0x01aa7634 (4 bytes)
 u32 rStageConnect::getConnectorNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mConnectorNum;
+    return mConnectorNum;
 }
 
 // Address: 0x01aa7640 - 0x01aa764e (14 bytes)
 rStageConnect::Connect* rStageConnect::getConnection(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpConnectionArray[index];
+    return &mpConnectionArray[index];
 }
 
 // Address: 0x01aa7650 - 0x01aa7657 (7 bytes)
 u32 rStageConnect::getConnectionNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mConnectionNum;
+    return mConnectionNum;
 }
 
 // Address: 0x006be6f0 - 0x006be7b9 (201 bytes)
@@ -171,6 +171,8 @@ __attribute__((weak)) u32 rStageConnect::getMarKerPosSub(u32 currentPartNo, u32 
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageConnect::MyDTI rStageConnect::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStageConnect.cpp at 0x006bea97-0x006bead4 (called at rStageConnect.cpp:231)
 //   in _GLOBAL__sub_I_rStageConnect.cpp at 0x006bea97-0x006bead4 (called at rStageConnect.h:108)
@@ -179,7 +181,7 @@ __attribute__((weak)) u32 rStageConnect::getMarKerPosSub(u32 currentPartNo, u32 
 // Address: 0x006be1d0 - 0x006be249 (121 bytes)
 MtObject* rStageConnect::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStageConnect;
+    return new (16u) rStageConnect;
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,7 +219,7 @@ const MtDTI& rStageConnect::Data::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rStageConnect::Data::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageConnect::Data::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageConnect::Data::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -229,10 +231,18 @@ inline void rStageConnect::Data::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rStageConnect::Data::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (168 bytes)
-//   in rStageConnect::Data::MyDTI::newInstance at 0x006bd96d-0x006bd9b5 (called at rStageConnect.cpp:36)
-//   in rStageConnect::load at 0x006be4ea-0x006be54a (called at rStageConnect.cpp:284)
-// rStageConnect::Data::Data();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rStageConnect::Data::Data() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mType = 0;
+    mPos.x = MtVector3::Zero.x;
+    mPos.y = MtVector3::Zero.y;
+    mPos.z = MtVector3::Zero.z;
+    mPos.pad_ = 0.0f;
+    mPartsNo = 0;
+    mMapGroup = 0;
+}
 
 // Defined in the class (its body was written in a header).
 // rStageConnect::Data::~Data();
@@ -249,6 +259,8 @@ __attribute__((weak)) void rStageConnect::Data::createProperty(MtPropertyList& s
 
 // No out-of-line body: no code in the ELF
 // void rStageConnect::Data::copy(rStageConnect::Data* src);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageConnect::Data::MyDTI rStageConnect::Data::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rStageConnect.cpp at 0x006bea1e-0x006bea5e (called at rStageConnect.cpp:36)
@@ -284,7 +296,7 @@ const MtDTI& rStageConnect::Connect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rStageConnect::Connect::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStageConnect::Connect::DTI)->memAlloc(sz, align, ::rStageConnect::Connect::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStageConnect::Connect::DTI)->memAlloc(sz, align, rStageConnect::Connect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -298,7 +310,7 @@ inline void* rStageConnect::Connect::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rStageConnect::Connect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStageConnect::Connect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStageConnect::Connect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -331,6 +343,8 @@ __attribute__((weak)) void rStageConnect::Connect::createProperty(MtPropertyList
 // No out-of-line body: no code in the ELF
 // void rStageConnect::Connect::copy(rStageConnect::Connect* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStageConnect::Connect::MyDTI rStageConnect::Connect::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rStageConnect.cpp at 0x006bea5e-0x006bea97 (called at rStageConnect.cpp:160)
 //   in _GLOBAL__sub_I_rStageConnect.cpp at 0x006bea5e-0x006bea97 (called at rStageConnect.h:84)
@@ -339,6 +353,6 @@ __attribute__((weak)) void rStageConnect::Connect::createProperty(MtPropertyList
 // Address: 0x006bdd90 - 0x006bddf2 (98 bytes)
 MtObject* rStageConnect::Connect::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rStageConnect::Connect;
+    return new (16u) rStageConnect::Connect;
 }
 

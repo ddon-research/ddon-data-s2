@@ -32,7 +32,7 @@ const MtDTI& cQuestFunctionManagerBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cQuestFunctionManagerBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestFunctionManagerBase::DTI)->memAlloc(sz, align, ::cQuestFunctionManagerBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestFunctionManagerBase::DTI)->memAlloc(sz, align, cQuestFunctionManagerBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cQuestFunctionManagerBase::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cQuestFunctionManagerBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestFunctionManagerBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestFunctionManagerBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,6 +79,8 @@ __attribute__((weak)) void cQuestFunctionManagerBase::createProperty(MtPropertyL
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cQuestFunctionManagerBase::MyDTI cQuestFunctionManagerBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cQuestFunctionManagerBase.cpp at 0x001a6460-0x001a64a2 (called at cQuestFunctionManagerBase.cpp:27)
 //   in _GLOBAL__sub_I_cQuestFunctionManagerBase.cpp at 0x001a6460-0x001a64a2 (called at cQuestFunctionManagerBAse.h:30)
@@ -87,6 +89,6 @@ __attribute__((weak)) void cQuestFunctionManagerBase::createProperty(MtPropertyL
 // Address: 0x001a6340 - 0x001a6380 (64 bytes)
 MtObject* cQuestFunctionManagerBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cQuestFunctionManagerBase;
+    return new (16u) cQuestFunctionManagerBase;
 }
 

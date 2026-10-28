@@ -42,7 +42,7 @@ const MtDTI& cpErosionEnemySmall::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpErosionEnemySmall::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpErosionEnemySmall::DTI);
+    return MtMemoryAllocator::getAllocator(cpErosionEnemySmall::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline MtAllocator* cpErosionEnemySmall::getAllocator() {
 // Address: 0x00154680 - 0x001546c0 (64 bytes)
 void* cpErosionEnemySmall::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpErosionEnemySmall::getAllocator()->memAlloc(sz, align, ::cpErosionEnemySmall::DTI.::MtDTI::getID());
+    return cpErosionEnemySmall::getAllocator()->memAlloc(sz, align, cpErosionEnemySmall::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,7 +66,7 @@ void* cpErosionEnemySmall::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpErosionEnemySmall::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpErosionEnemySmall::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpErosionEnemySmall::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,20 +81,20 @@ inline void cpErosionEnemySmall::operator delete(void* p_addr) {
 // Address: 0x00154730 - 0x001547c1 (145 bytes)
 cpErosionEnemySmall::cpErosionEnemySmall() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(0);
-    this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0);
-    this->mpErosionSmallInfoRes = static_cast<rErosionSmallInfoRes*>(nullptr);
-    this->mErosionScaleRate = 1.0f;
-    this->mErosionCancelWaitTimerMax = 60.0f;
-    this->mErosionCancelWaitTimer = 60.0f;
-    this->::cpErosionEnemyBase::mIsErosionEnemySmall = true;
-    this->mErosionActiveTimerMax = 90.0f;
-    this->mErosionActiveTimer = 0.0f;
-    this->mErosionCancelTimerMax = 90.0f;
-    this->mErosionCancelTimer = 0.0f;
-    this->mErosionSmallType = static_cast<nErosionEnemySmall::EROSION_TYPE_SMALL>(0);
-    this->mpErosionCheckNode = static_cast<cHitNode*>(nullptr);
-    this->mpErosionCheckedNode = static_cast<cHitNode*>(nullptr);
+    mErosionSmallMode = nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL;
+    mErosionCancelStatus = nErosionEnemySmall::EROSION_SMALL_STATUS_NORMAL;
+    mpErosionSmallInfoRes = nullptr;
+    mErosionScaleRate = 1.0f;
+    mErosionCancelWaitTimerMax = 60.0f;
+    mErosionCancelWaitTimer = 60.0f;
+    mIsErosionEnemySmall = true;
+    mErosionActiveTimerMax = 90.0f;
+    mErosionActiveTimer = 0.0f;
+    mErosionCancelTimerMax = 90.0f;
+    mErosionCancelTimer = 0.0f;
+    mErosionSmallType = nErosionEnemySmall::EROSION_TYPE_SMALL_NORMAL;
+    mpErosionCheckNode = nullptr;
+    mpErosionCheckedNode = nullptr;
 }
 
 // Address: 0x001547d0 - 0x001547d5 (5 bytes)
@@ -106,144 +106,144 @@ cpErosionEnemySmall::~cpErosionEnemySmall() {
 // Address: 0x00154810 - 0x0015483e (46 bytes)
 void cpErosionEnemySmall::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpErosionEnemyBase::setup();
-    this->mErosionActiveTimerMax = ::sEnemyManager::getInstance()->::sEnemyManager::getEmAdjustParam(static_cast<nEnemy::EM_ADJUST_PARAM>(0));
+    this->cpErosionEnemyBase::setup();
+    mErosionActiveTimerMax = sEnemyManager::getInstance()->getEmAdjustParam(nEnemy::EM_ADJUST_EROSION_FRAME);
 }
 
 // Address: 0x001549c0 - 0x00154a6a (170 bytes)
 void cpErosionEnemySmall::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(505), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
-    this->::cpErosionEnemyBase::kill();
-    if (this->mpErosionCheckedNode != static_cast<cHitNode*>(nullptr)) {
-        this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpErosionCheckedNode);
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 505u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
+    this->cpErosionEnemyBase::kill();
+    if (mpErosionCheckedNode != nullptr) {
+        mpEnemy->getObjCollisionPtr()->killNode(mpErosionCheckedNode);
     }
-    this->mpErosionCheckedNode = static_cast<cHitNode*>(nullptr);
-    if (this->mpErosionCheckNode != static_cast<cHitNode*>(nullptr)) {
-        this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpErosionCheckNode);
+    mpErosionCheckedNode = nullptr;
+    if (mpErosionCheckNode != nullptr) {
+        mpEnemy->getObjCollisionPtr()->killNode(mpErosionCheckNode);
     }
-    this->mpErosionCheckNode = static_cast<cHitNode*>(nullptr);
-    if (this->mpErosionSmallInfoRes == static_cast<rErosionSmallInfoRes*>(nullptr)) {
+    mpErosionCheckNode = nullptr;
+    if (mpErosionSmallInfoRes == nullptr) {
         return;
     }
-    this->mpErosionSmallInfoRes->::cResource::release();
-    this->mpErosionSmallInfoRes = static_cast<rErosionSmallInfoRes*>(nullptr);
+    mpErosionSmallInfoRes->release();
+    mpErosionSmallInfoRes = nullptr;
 }
 
 // Address: 0x00154aa0 - 0x00154baf (271 bytes)
 void cpErosionEnemySmall::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpErosionEnemyBase::update();
-    this->::cpErosionEnemySmall::checkReciveMsg();
-    if (this->::cpErosionEnemyBase::mpEnemy->getThinkMode() == static_cast<u32>(1)) {
-        if (this->::cpErosionEnemyBase::mpEnemy->::uCharacter::isReturnTerritoryFlag() == false) {
-            if (this->::cpErosionEnemySmall::getErosionCancelStatus() == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(2)) {
+    this->cpErosionEnemyBase::update();
+    checkReciveMsg();
+    if (mpEnemy->getThinkMode() == 1) {
+        if (!mpEnemy->isReturnTerritoryFlag()) {
+            if (getErosionCancelStatus() == nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL_WAIT) {
                 // inferred: a temporary for the result of the call at 0x154af7, used once; no DWARF local holds it
-                f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-                this->mErosionCancelWaitTimer = this->mErosionCancelWaitTimer - t0;
-                if (0.0f >= this->mErosionCancelWaitTimer) {
-                    this->mErosionCancelWaitTimer = this->mErosionCancelWaitTimerMax;
-                    this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1);
+                f32 t0 = sWorkRate::getInstance()->calc(3u);
+                mErosionCancelWaitTimer = mErosionCancelWaitTimer - t0;
+                if (0.0f >= mErosionCancelWaitTimer) {
+                    mErosionCancelWaitTimer = mErosionCancelWaitTimerMax;
+                    mErosionCancelStatus = nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL;
                 }
-                if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
-                    this->::cpErosionEnemyBase::reqOnSyncFlag(static_cast<u64>(2097152));
+                if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_1) {
+                    reqOnSyncFlag(0x200000ul);
                 }
-                this->::cpErosionEnemySmall::updateErosionMode();
+                updateErosionMode();
             } else {
-                if (this->::cpErosionEnemySmall::getErosionCancelStatus() == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1)) {
+                if (getErosionCancelStatus() == nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL) {
                     // inferred: a temporary for the result of the call at 0x154b4a, used once; no DWARF local holds it
-                    f32 t1 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-                    this->mErosionCancelTimer = this->mErosionCancelTimer - t1;
-                    if (0.0f >= this->mErosionCancelTimer) {
-                        this->mErosionCancelTimer = this->mErosionCancelTimerMax;
-                        this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0);
+                    f32 t1 = sWorkRate::getInstance()->calc(3u);
+                    mErosionCancelTimer = mErosionCancelTimer - t1;
+                    if (0.0f >= mErosionCancelTimer) {
+                        mErosionCancelTimer = mErosionCancelTimerMax;
+                        mErosionCancelStatus = nErosionEnemySmall::EROSION_SMALL_STATUS_NORMAL;
                     }
-                    if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
-                        this->::cpErosionEnemyBase::reqOnSyncFlag(static_cast<u64>(2097152));
+                    if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_1) {
+                        reqOnSyncFlag(0x200000ul);
                     }
-                    this->::cpErosionEnemySmall::updateErosionMode();
+                    updateErosionMode();
                 } else {
-                    if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
-                        this->::cpErosionEnemyBase::reqOnSyncFlag(static_cast<u64>(2097152));
+                    if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_1) {
+                        reqOnSyncFlag(0x200000ul);
                     }
-                    this->::cpErosionEnemySmall::updateErosionMode();
+                    updateErosionMode();
                 }
             }
         } else {
-            if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
-                this->::cpErosionEnemyBase::reqOnSyncFlag(static_cast<u64>(2097152));
+            if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_1) {
+                reqOnSyncFlag(0x200000ul);
             }
-            this->::cpErosionEnemySmall::updateErosionMode();
+            updateErosionMode();
         }
     } else {
-        if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
-            this->::cpErosionEnemyBase::reqOnSyncFlag(static_cast<u64>(2097152));
+        if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_1) {
+            reqOnSyncFlag(0x200000ul);
         }
-        this->::cpErosionEnemySmall::updateErosionMode();
+        updateErosionMode();
     }
 }
 
 // Address: 0x00154a90 - 0x00154a95 (5 bytes)
 void cpErosionEnemySmall::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpErosionEnemyBase::updatePtr();
+    this->cpErosionEnemyBase::updatePtr();
 }
 
 // Address: 0x00154d30 - 0x00154d35 (5 bytes)
 void cpErosionEnemySmall::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpErosionEnemyBase::updateEfcHandle();
+    this->cpErosionEnemyBase::updateEfcHandle();
 }
 
 // Address: 0x00154840 - 0x00154929 (233 bytes)
 void cpErosionEnemySmall::setupBeforeContext(bool initSet) {
     // Approximate from the ELF: a frame object built in several branches; the body oracle reports this body.
-    this->::cpErosionEnemyBase::setupBeforeContext(initSet);
-    uControlEnemy* pEmCtrl = static_cast<uControlEnemy*>(this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getCtrl());
-    if (pEmCtrl != static_cast<uControlEnemy*>(nullptr)) {
-        if (pEmCtrl->::uControl::mCtrlType == static_cast<u8>(32)) {
-            u32 initErosionLevel = pEmCtrl->::uControlEnemy::getErosionMode();
-            this->mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>((initErosionLevel <= static_cast<u32>(1)) ? initErosionLevel : static_cast<u32>(1));
-            if (this->mpErosionSmallInfoRes != static_cast<rErosionSmallInfoRes*>(nullptr)) {
-                if (this->mpErosionSmallInfoRes->getDataNum() != static_cast<u32>(0)) {
-                    const cErosionSmallInfoRes* pData = this->mpErosionSmallInfoRes->getData(static_cast<u32>(0));
-                    if (pData != static_cast<const cErosionSmallInfoRes*>(nullptr)) {
-                        if (this->mErosionSmallMode == static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(1)) {
-                            this->mErosionScaleRate = pData->::cErosionSmallInfoRes::getScaleActiveRate();
+    this->cpErosionEnemyBase::setupBeforeContext(initSet);
+    uControlEnemy* pEmCtrl = static_cast<uControlEnemy*>(mpEnemy->getCtrl());
+    if (pEmCtrl != nullptr) {
+        if (pEmCtrl->::uControl::mCtrlType == 32) {
+            u32 initErosionLevel = pEmCtrl->uControlEnemy::getErosionMode();
+            mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>((initErosionLevel <= 1u) ? initErosionLevel : 1u);
+            if (mpErosionSmallInfoRes != nullptr) {
+                if (mpErosionSmallInfoRes->getDataNum() != 0) {
+                    const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
+                    if (pData != nullptr) {
+                        if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
+                            mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
                         } else {
                             cEmRandomCtrl randomCtrl;
-                            this->mErosionScaleRate = randomCtrl.::cEmRandomCtrl::makeRandomErosionScale(pData->::cErosionSmallInfoRes::getScaleInActiveMax(), pData->::cErosionSmallInfoRes::getScaleInActiveMin(), this->::cpErosionEnemyBase::mpEnemy);
+                            mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
                         }
                     }
                 }
             }
         } else {
-            this->mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(0);
-            if (this->mpErosionSmallInfoRes != static_cast<rErosionSmallInfoRes*>(nullptr)) {
-                if (this->mpErosionSmallInfoRes->getDataNum() != static_cast<u32>(0)) {
-                    const cErosionSmallInfoRes* pData = this->mpErosionSmallInfoRes->getData(static_cast<u32>(0));
-                    if (pData != static_cast<const cErosionSmallInfoRes*>(nullptr)) {
-                        if (this->mErosionSmallMode == static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(1)) {
-                            this->mErosionScaleRate = pData->::cErosionSmallInfoRes::getScaleActiveRate();
+            mErosionSmallMode = nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL;
+            if (mpErosionSmallInfoRes != nullptr) {
+                if (mpErosionSmallInfoRes->getDataNum() != 0) {
+                    const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
+                    if (pData != nullptr) {
+                        if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
+                            mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
                         } else {
                             cEmRandomCtrl randomCtrl;
-                            this->mErosionScaleRate = randomCtrl.::cEmRandomCtrl::makeRandomErosionScale(pData->::cErosionSmallInfoRes::getScaleInActiveMax(), pData->::cErosionSmallInfoRes::getScaleInActiveMin(), this->::cpErosionEnemyBase::mpEnemy);
+                            mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
                         }
                     }
                 }
             }
         }
     } else {
-        this->mErosionSmallMode = static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(0);
-        if (this->mpErosionSmallInfoRes != static_cast<rErosionSmallInfoRes*>(nullptr)) {
-            if (this->mpErosionSmallInfoRes->getDataNum() != static_cast<u32>(0)) {
-                const cErosionSmallInfoRes* pData = this->mpErosionSmallInfoRes->getData(static_cast<u32>(0));
-                if (pData != static_cast<const cErosionSmallInfoRes*>(nullptr)) {
-                    if (this->mErosionSmallMode == static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(1)) {
-                        this->mErosionScaleRate = pData->::cErosionSmallInfoRes::getScaleActiveRate();
+        mErosionSmallMode = nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL;
+        if (mpErosionSmallInfoRes != nullptr) {
+            if (mpErosionSmallInfoRes->getDataNum() != 0) {
+                const cErosionSmallInfoRes* pData = mpErosionSmallInfoRes->getData(0u);
+                if (pData != nullptr) {
+                    if (mErosionSmallMode == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
+                        mErosionScaleRate = pData->cErosionSmallInfoRes::getScaleActiveRate();
                     } else {
                         cEmRandomCtrl randomCtrl;
-                        this->mErosionScaleRate = randomCtrl.::cEmRandomCtrl::makeRandomErosionScale(pData->::cErosionSmallInfoRes::getScaleInActiveMax(), pData->::cErosionSmallInfoRes::getScaleInActiveMin(), this->::cpErosionEnemyBase::mpEnemy);
+                        mErosionScaleRate = randomCtrl.cEmRandomCtrl::makeRandomErosionScale(pData->cErosionSmallInfoRes::getScaleInActiveMax(), pData->cErosionSmallInfoRes::getScaleInActiveMin(), mpEnemy);
                     }
                 }
             }
@@ -260,77 +260,77 @@ __attribute__((weak)) void cpErosionEnemySmall::setupContextErosion(bool recvFla
 // Address: 0x00155310 - 0x00155320 (16 bytes)
 bool cpErosionEnemySmall::isErosionRegionActiveAll() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cpErosionEnemyBase::getErosionRealLevel() != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0);
+    return getErosionRealLevel() != nErosionEnemyBase::EROSION_LEVEL_NONE;
 }
 
 // Address: 0x00155320 - 0x001553c8 (168 bytes)
 void cpErosionEnemySmall::callbackChecked(cHitInfo* pHitInfo) {
     // DWARF local not rendered: u16 nodeID;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() == false) {
+    if (!mpEnemy->isMaster()) {
         return;
     }
-    if (this->::cpErosionEnemyBase::mpEnemy->getThinkMode() != static_cast<u32>(1)) {
+    if (mpEnemy->getThinkMode() != 1) {
         return;
     }
-    if (this->::cpErosionEnemyBase::mpEnemy->::uCharacter::isReturnTerritoryFlag() != false) {
+    if (mpEnemy->isReturnTerritoryFlag()) {
         return;
     }
-    if (pHitInfo->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
+    if (pHitInfo->mpAtkNode == nullptr) {
         return;
     }
-    if (pHitInfo->mpAtkNode->::cHitNode::getCollNode() == static_cast<const cCollNode*>(nullptr)) {
+    if (pHitInfo->mpAtkNode->getCollNode() == nullptr) {
         return;
     }
-    switch (static_cast<unsigned int>(pHitInfo->mpAtkNode->::cHitNode::getCollNode()->mNodeID - static_cast<int>(17))) {
-        case static_cast<unsigned int>(0):
+    switch (static_cast<unsigned int>(pHitInfo->mpAtkNode->getCollNode()->mNodeID - 17)) {
+        case 0:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(4):
+        case 4:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(6):
+        case 6:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(7):
+        case 7:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(8):
+        case 8:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(9):
+        case 9:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
-        case static_cast<unsigned int>(10):
+        case 10:
         {
-            this->::cpErosionEnemySmall::activeteErosion();
+            activeteErosion();
             break;
         }
         default:
@@ -343,11 +343,11 @@ void cpErosionEnemySmall::callbackChecked(cHitInfo* pHitInfo) {
 // Address: 0x00154e30 - 0x00154e82 (82 bytes)
 bool cpErosionEnemySmall::callbackErosionCancel(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpErosionEnemyBase::callbackErosionCancel(pHitInfo) != false) {
-        if (this->mErosionCancelStatus == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0)) {
-            this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(2);
-            this->mErosionCancelTimer = this->mErosionCancelTimerMax;
-            this->mErosionCancelWaitTimer = this->mErosionCancelWaitTimerMax;
+    if (this->cpErosionEnemyBase::callbackErosionCancel(pHitInfo)) {
+        if (mErosionCancelStatus == nErosionEnemySmall::EROSION_SMALL_STATUS_NORMAL) {
+            mErosionCancelStatus = nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL_WAIT;
+            mErosionCancelTimer = mErosionCancelTimerMax;
+            mErosionCancelWaitTimer = mErosionCancelWaitTimerMax;
         }
         return true;
     } else {
@@ -365,14 +365,14 @@ __attribute__((weak)) void cpErosionEnemySmall::setErosionSmallInfoRes(rErosionS
 // Address: 0x00154df0 - 0x00154df9 (9 bytes)
 f32 cpErosionEnemySmall::getEnemyErosionScaleRate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mErosionScaleRate;
+    return mErosionScaleRate;
 }
 
 // Address: 0x00154e90 - 0x00154ebb (43 bytes)
 bool cpErosionEnemySmall::isErosionCancelStatus(bool isCheckOcdCnacel) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpErosionEnemyBase::isErosionCancelStatus(isCheckOcdCnacel) == false) {
-        return this->mErosionCancelStatus != static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0);
+    if (!this->cpErosionEnemyBase::isErosionCancelStatus(isCheckOcdCnacel)) {
+        return mErosionCancelStatus != nErosionEnemySmall::EROSION_SMALL_STATUS_NORMAL;
     } else {
         return true;
     }
@@ -381,19 +381,19 @@ bool cpErosionEnemySmall::isErosionCancelStatus(bool isCheckOcdCnacel) const {
 // Address: 0x00154bb0 - 0x00154c2f (127 bytes)
 __attribute__((weak)) void cpErosionEnemySmall::checkReciveMsg() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() != false) {
+    if (mpEnemy->isMaster()) {
         return;
     }
-    nErosionEnemyBase::EROSION_LEVEL level = this->::cpErosionEnemyBase::getErosionCurrentLevel();
+    nErosionEnemyBase::EROSION_LEVEL level = getErosionCurrentLevel();
     // inferred: a temporary for the result of the call at 0x154be9, used once; no DWARF local holds it
-    bool t0 = ::cContextInterface::isCustomWork(this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mContextInterface.mpContextInstance, this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u16>(2048));
-    if (level != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-        if (t0 == false) {
-            this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(0), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, true);
+    bool t0 = cContextInterface::isCustomWork(mpEnemy->mContextInterface.mpContextInstance, mpEnemy->mContextInterface.mpContextCharacter, static_cast<u16>(2048));
+    if (level != nErosionEnemyBase::EROSION_LEVEL_NONE) {
+        if (!t0) {
+            reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_NONE, getErosionCurrentLevel(), false, true);
         }
     } else {
-        if (t0 != false) {
-            this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(1), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, true);
+        if (t0) {
+            reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_1, getErosionCurrentLevel(), false, true);
         }
     }
 }
@@ -406,31 +406,31 @@ __attribute__((weak)) void cpErosionEnemySmall::checkReciveMsg() {
 __attribute__((weak)) void cpErosionEnemySmall::activeteErosion() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1553da read, used once; no DWARF local holds it
-    nErosionEnemySmall::EROSION_SMALL_MODE t0 = this->mErosionSmallMode;
+    nErosionEnemySmall::EROSION_SMALL_MODE t0 = mErosionSmallMode;
     // inferred: a temporary for the result of the call at 0x1553e1, used once; no DWARF local holds it
-    nErosionEnemyBase::EROSION_LEVEL t1 = this->::cpErosionEnemyBase::getErosionCurrentLevel();
-    if (t0 != static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(0)) {
-        if (t1 == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-            if (this->mErosionCancelStatus != static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(2)) {
-                this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(1), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, false);
-                if (this->mErosionCancelStatus == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1)) {
-                    if (this->mErosionCancelTimer >= 30.0f) {
-                        this->mErosionCancelTimer = 30.0f;
+    nErosionEnemyBase::EROSION_LEVEL t1 = getErosionCurrentLevel();
+    if (t0 != nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL) {
+        if (t1 == nErosionEnemyBase::EROSION_LEVEL_NONE) {
+            if (mErosionCancelStatus != nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL_WAIT) {
+                reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_1, getErosionCurrentLevel(), false, false);
+                if (mErosionCancelStatus == nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL) {
+                    if (mErosionCancelTimer >= 30.0f) {
+                        mErosionCancelTimer = 30.0f;
                     }
                 }
             }
         }
     } else {
-        if (t1 != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-            if (this->::cpErosionEnemySmall::getErosionCancelStatus() == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0)) {
-                this->mErosionActiveTimer = this->mErosionActiveTimerMax;
+        if (t1 != nErosionEnemyBase::EROSION_LEVEL_NONE) {
+            if (getErosionCancelStatus() == nErosionEnemySmall::EROSION_SMALL_STATUS_NORMAL) {
+                mErosionActiveTimer = mErosionActiveTimerMax;
             }
         } else {
-            if (this->::cpErosionEnemySmall::getErosionCancelStatus() != static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(2)) {
-                this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(1), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, false);
-                if (this->mErosionCancelStatus == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1)) {
-                    if (this->mErosionCancelTimer >= 30.0f) {
-                        this->mErosionCancelTimer = 30.0f;
+            if (getErosionCancelStatus() != nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL_WAIT) {
+                reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_1, getErosionCurrentLevel(), false, false);
+                if (mErosionCancelStatus == nErosionEnemySmall::EROSION_SMALL_STATUS_CANCEL) {
+                    if (mErosionCancelTimer >= 30.0f) {
+                        mErosionCancelTimer = 30.0f;
                     }
                 }
             }
@@ -438,31 +438,36 @@ __attribute__((weak)) void cpErosionEnemySmall::activeteErosion() {
     }
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (26 bytes)
-//   in cpErosionEnemySmall::update at 0x00154b87-0x00154ba1 (called at cpErosionEnemySmall.cpp:312)
-// void cpErosionEnemySmall::updateErosionLevel();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemySmall::update at 0x154b87-0x154ba1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemySmall::updateErosionLevel() {
+    if (getErosionCurrentLevel() != nErosionEnemyBase::EROSION_LEVEL_1) {
+        return;
+    }
+    reqOnSyncFlag(0x200000ul);
+}
 
 // Address: 0x00154c50 - 0x00154d27 (215 bytes)
 __attribute__((weak)) void cpErosionEnemySmall::updateErosionMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpErosionEnemySmall::getErosionSmallMode() == static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(1)) {
-        if (this->::cpErosionEnemyBase::getErosionCurrentLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-            if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() != false) {
-                if (this->isErosionCancelStatus(true) == false) {
-                    this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(1), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, false);
+    if (getErosionSmallMode() == nErosionEnemySmall::EROSION_SMALL_MODE_SOURCE) {
+        if (getErosionCurrentLevel() == nErosionEnemyBase::EROSION_LEVEL_NONE) {
+            if (mpEnemy->isMaster()) {
+                if (!isErosionCancelStatus(true)) {
+                    reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_1, getErosionCurrentLevel(), false, false);
                 }
             }
         }
     } else {
-        if (this->::cpErosionEnemySmall::getErosionSmallMode() == static_cast<nErosionEnemySmall::EROSION_SMALL_MODE>(0)) {
-            if (this->::cpErosionEnemyBase::mpEnemy->getThinkMode() == static_cast<u32>(1)) {
-                if (this->::cpErosionEnemyBase::mpEnemy->::uCharacter::isReturnTerritoryFlag() == false) {
-                    if (this->::cpErosionEnemyBase::getErosionCurrentLevel() != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-                        if (0.0f >= this->mErosionActiveTimer) {
-                            if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() != false) {
-                                this->::cpErosionEnemyBase::reqChangeErosionCurrentLevel(static_cast<nErosionEnemyBase::EROSION_LEVEL>(0), this->::cpErosionEnemyBase::getErosionCurrentLevel(), false, false);
+        if (getErosionSmallMode() == nErosionEnemySmall::EROSION_SMALL_MODE_NORMAL) {
+            if (mpEnemy->getThinkMode() == 1) {
+                if (!mpEnemy->isReturnTerritoryFlag()) {
+                    if (getErosionCurrentLevel() != nErosionEnemyBase::EROSION_LEVEL_NONE) {
+                        if (0.0f >= mErosionActiveTimer) {
+                            if (mpEnemy->isMaster()) {
+                                reqChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL_NONE, getErosionCurrentLevel(), false, false);
                             } else {
-                                this->mErosionActiveTimer = 0.1f;
+                                mErosionActiveTimer = 0.1f;
                             }
                         }
                     }
@@ -482,8 +487,8 @@ __attribute__((weak)) void cpErosionEnemySmall::callbackChangeErosionCurrentLeve
 // Address: 0x001552d0 - 0x0015530b (59 bytes)
 void cpErosionEnemySmall::callbackChangeErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpErosionEnemyBase::callbackChangeErosionRealLevel(level, oldLevel, initSet);
-    this->::cpErosionEnemyBase::mpEnemy->callbackChangeErosionRealLevel(level, oldLevel);
+    this->cpErosionEnemyBase::callbackChangeErosionRealLevel(level, oldLevel, initSet);
+    mpEnemy->callbackChangeErosionRealLevel(level, oldLevel);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (138 bytes)
@@ -502,25 +507,24 @@ __attribute__((weak)) void cpErosionEnemySmall::changeErosionLevelCollision(nEro
 // Address: 0x00155190 - 0x001552c4 (308 bytes)
 void cpErosionEnemySmall::changeErosionLevelSound(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel, bool initSet) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (oldLevel == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-        if (level != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-            static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(360), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
-            if (initSet == false) {
-                static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(361), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
+    if (oldLevel == nErosionEnemyBase::EROSION_LEVEL_NONE) {
+        if (level != nErosionEnemyBase::EROSION_LEVEL_NONE) {
+            static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 360u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
+            if (!initSet) {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 361u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
             }
         }
     } else {
-        if (level == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
-            static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(505), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
-            if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() != false) {
-                static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(508), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
+        if (level == nErosionEnemyBase::EROSION_LEVEL_NONE) {
+            static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 505u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
+            if (mpEnemy->isDead()) {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 508u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
             } else {
-                static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(507), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 507u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
             }
-            if (initSet == false) {
-                if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() != false) {
-                } else {
-                    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::requestSeEx(this->::cpErosionEnemyBase::getErosionSoundRes(), static_cast<u32>(506), static_cast<MtObject*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<const uCoord*>(this->::cpErosionEnemyBase::mpEnemy), static_cast<s32>(1));
+            if (!initSet) {
+                if (!mpEnemy->isDead()) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSoundRes(), 506u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), 1);
                 }
             }
         }
@@ -538,14 +542,23 @@ void cpErosionEnemySmall::changeErosionLevelSound(nErosionEnemyBase::EROSION_LEV
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void cpErosionEnemySmall::setErosionCancelStatus(nErosionEnemySmall::EROSION_SMALL_STATUS status);
 
-// No out-of-line body: 2 inlined copies in 2 functions (78 bytes)
-//   in cpErosionEnemySmall::kill at 0x00154a20-0x00154a47 (called at cpErosionEnemySmall.cpp:211)
-//   in cpErosionEnemySmall::changeErosionLevelCollision at 0x001550c5-0x001550ec (called at cpErosionEnemySmall.cpp:726)
-// void cpErosionEnemySmall::killErosionCheckNode();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpErosionEnemySmall::killErosionCheckNode() {
+    if (mpErosionCheckNode != nullptr) {
+        mpEnemy->mGuardComponent.mpObjCollision->killNode(mpErosionCheckNode);
+    }
+    mpErosionCheckNode = nullptr;
+}
 
-// No out-of-line body: 1 inlined copy in 1 function (39 bytes)
-//   in cpErosionEnemySmall::kill at 0x001549f9-0x00154a20 (called at cpErosionEnemySmall.cpp:209)
-// void cpErosionEnemySmall::killErosionCheckedNode();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpErosionEnemySmall::kill at 0x1549f9-0x154a20; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpErosionEnemySmall::killErosionCheckedNode() {
+    if (mpErosionCheckedNode != nullptr) {
+        mpEnemy->mGuardComponent.mpObjCollision->killNode(mpErosionCheckedNode);
+    }
+    mpErosionCheckedNode = nullptr;
+}
 
 // No out-of-line body: 3 inlined copies in 3 functions (85 bytes)
 //   in cpErosionEnemySmall::update at 0x00154ab6-0x00154ad5 (called at cpErosionEnemySmall.cpp:415)
@@ -563,6 +576,8 @@ void cpErosionEnemySmall::changeErosionLevelSound(nErosionEnemyBase::EROSION_LEV
 //   in cpErosionEnemySmall::activeteErosion at 0x001553fb-0x00155402 (called at cpErosionEnemySmall.cpp:978)
 // nErosionEnemySmall::EROSION_SMALL_STATUS cpErosionEnemySmall::getErosionCancelStatus() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpErosionEnemySmall::MyDTI cpErosionEnemySmall::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpErosionEnemySmall.cpp at 0x0015577e-0x001557bb (called at cpErosionEnemySmall.cpp:46)
 //   in _GLOBAL__sub_I_cpErosionEnemySmall.cpp at 0x0015577e-0x001557bb (called at cpErosionEnemySmall.h:43)
@@ -571,6 +586,6 @@ void cpErosionEnemySmall::changeErosionLevelSound(nErosionEnemyBase::EROSION_LEV
 // Address: 0x001545c0 - 0x0015467c (188 bytes)
 MtObject* cpErosionEnemySmall::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpErosionEnemySmall;
+    return new (16u) cpErosionEnemySmall;
 }
 

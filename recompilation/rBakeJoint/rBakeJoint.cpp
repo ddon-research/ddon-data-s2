@@ -37,7 +37,7 @@ const MtDTI& cBakeJoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cBakeJoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memAlloc(sz, align, ::cBakeJoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cBakeJoint::DTI)->memAlloc(sz, align, cBakeJoint::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (87 bytes)
@@ -53,7 +53,7 @@ inline void* cBakeJoint::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cBakeJoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBakeJoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -79,6 +79,8 @@ inline void cBakeJoint::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cBakeJoint::~cBakeJoint();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBakeJoint::MyDTI cBakeJoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rBakeJoint.cpp at 0x00648350-0x00648392 (called at rBakeJoint.cpp:39)
 //   in _GLOBAL__sub_I_rBakeJoint.cpp at 0x00648350-0x00648392 (called at rBakeJoint.h:50)
@@ -87,7 +89,7 @@ inline void cBakeJoint::operator delete(void* p_addr) {
 // Address: 0x00647fe0 - 0x00648026 (70 bytes)
 MtObject* cBakeJoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cBakeJoint;
+    return new (16u) cBakeJoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -113,7 +115,7 @@ const MtDTI& rBakeJoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rBakeJoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rBakeJoint::DTI)->memAlloc(sz, align, ::rBakeJoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rBakeJoint::DTI)->memAlloc(sz, align, rBakeJoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -128,7 +130,7 @@ inline void* rBakeJoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rBakeJoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rBakeJoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rBakeJoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,9 +159,9 @@ bool rBakeJoint::loadData(MtDataReader& r, cBakeJoint* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mBake);
+    nDDOIO::readData(r, pData->mBake);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mRefJnt = r.::MtDataReader::readU8();
+    pData->mRefJnt = r.readU8();
     return true;
 }
 
@@ -172,7 +174,7 @@ MT_CTSTR rBakeJoint::getExt() const {
 // Address: 0x01a76b40 - 0x01a76b46 (6 bytes)
 u32 rBakeJoint::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x006481f0 - 0x00648341 (337 bytes)
@@ -180,6 +182,8 @@ __attribute__((weak)) bool rBakeJoint::loadCore(MtDataReader& r) {
     DDON_STUB("rBakeJoint::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rBakeJoint::MyDTI rBakeJoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rBakeJoint.cpp at 0x00648392-0x006483cf (called at rBakeJoint.cpp:40)
@@ -189,7 +193,7 @@ __attribute__((weak)) bool rBakeJoint::loadCore(MtDataReader& r) {
 // Address: 0x006480a0 - 0x00648104 (100 bytes)
 MtObject* rBakeJoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rBakeJoint;
+    return new (16u) rBakeJoint;
 }
 
 // Instance at 0x01a76af0 - 0x01a76b02 (18 bytes) of the generic rTbl2<T>::getData

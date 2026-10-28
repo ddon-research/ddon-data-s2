@@ -14,8 +14,8 @@
 // Address: 0x01abf1a0 - 0x01abf1ad (13 bytes)
 void nCaplink::FriendAttributeAns::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFriendTotal = static_cast<s32>(0);
-    this->mFriendLimmit = static_cast<s32>(0);
+    mFriendTotal = 0;
+    mFriendLimmit = 0;
     this->::nCaplink::ContextListener::init();
 }
 

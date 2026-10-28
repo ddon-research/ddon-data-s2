@@ -36,7 +36,7 @@ const MtDTI& cNpcConstItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cNpcConstItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memAlloc(sz, align, ::cNpcConstItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cNpcConstItem::DTI)->memAlloc(sz, align, cNpcConstItem::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cNpcConstItem::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNpcConstItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNpcConstItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -93,6 +93,8 @@ __attribute__((weak)) void cNpcConstItem::createProperty(MtPropertyList& s) {
 //   in uWeapon::createWeaponModel at 0x00d59320-0x00d59323 (called at uWeapon.cpp:92)
 // u32 cNpcConstItem::getOffset();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNpcConstItem::MyDTI cNpcConstItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcConstItem.cpp at 0x006a9750-0x006a9792 (called at rNpcConstItem.cpp:44)
 //   in _GLOBAL__sub_I_rNpcConstItem.cpp at 0x006a9750-0x006a9792 (called at rNpcConstItem.h:34)
@@ -101,7 +103,7 @@ __attribute__((weak)) void cNpcConstItem::createProperty(MtPropertyList& s) {
 // Address: 0x006a9390 - 0x006a93d8 (72 bytes)
 MtObject* cNpcConstItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cNpcConstItem;
+    return new (16u) cNpcConstItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ const MtDTI& rNpcConstItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcConstItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcConstItem::DTI)->memAlloc(sz, align, ::rNpcConstItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcConstItem::DTI)->memAlloc(sz, align, rNpcConstItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +143,7 @@ inline void* rNpcConstItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rNpcConstItemD0Ev at 0x01a9e414-0x01a9e433, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcConstItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcConstItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcConstItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,10 +160,10 @@ bool rNpcConstItem::loadData(MtDataReader& in, cNpcConstItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMTag);
+    nDDOIO::readData(in, pData->mMTag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mOffset);
+    nDDOIO::readData(in, pData->mOffset);
     return true;
 }
 
@@ -174,8 +176,10 @@ MT_CTSTR rNpcConstItem::getExt() const {
 // Address: 0x01a9e560 - 0x01a9e566 (6 bytes)
 u32 rNpcConstItem::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcConstItem::MyDTI rNpcConstItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNpcConstItem.cpp at 0x006a9792-0x006a97cf (called at rNpcConstItem.cpp:142)
@@ -185,7 +189,7 @@ u32 rNpcConstItem::getDataVersion() const {
 // Address: 0x006a9640 - 0x006a96a4 (100 bytes)
 MtObject* rNpcConstItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcConstItem;
+    return new (16u) rNpcConstItem;
 }
 
 // Instance at 0x01a9e510 - 0x01a9e522 (18 bytes) of the generic rTbl2<T>::getData

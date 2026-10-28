@@ -15,7 +15,7 @@
 void nCaplink::ContentTotalGetAns::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::nCaplink::ContextListener::init();
-    this->mTotal = static_cast<s32>(0);
+    mTotal = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

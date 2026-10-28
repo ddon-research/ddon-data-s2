@@ -133,20 +133,20 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline cEnemyStatusChange::cEnemyStatusChange() {
-    this->mGroupNo = static_cast<u32>(0);
-    this->mGroupSubNo = static_cast<u32>(0);
-    this->mNextGroupSubNo = static_cast<u32>(0);
-    this->mType = static_cast<u32>(12);
+    this->mGroupNo = 0;
+    this->mGroupSubNo = 0;
+    this->mNextGroupSubNo = 0;
+    this->mType = 12;
     this->mTypeReverse = false;
-    this->mRepeatSetting = static_cast<u32>(1);
-    this->mChangeStatus = static_cast<u32>(1);
+    this->mRepeatSetting = 1;
+    this->mChangeStatus = 1;
     this->mNextGroupSubOneGo = false;
     this->mSystemParamWait = 0.0f;
     this->mSystemParam[1] = 0.0f;
     this->mSystemParam[2] = 0.0f;
     this->mParam[1] = 0.0f;
     this->mSystemParam[0] = 0.0f;
-    this->mSelectNo = static_cast<u32>(0);
+    this->mSelectNo = 0;
     this->mParam[0] = 0.0f;
-    this->mBitContrlCommand = static_cast<u32>(4);
+    this->mBitContrlCommand = 4;
 }

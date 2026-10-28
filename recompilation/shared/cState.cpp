@@ -42,7 +42,7 @@ const MtDTI& cState::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cState::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cState::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,9 +57,9 @@ inline void cState::operator delete(void* p_addr) {
 // Address: 0x005716a0 - 0x005716bf (31 bytes)
 cState::cState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
-    this->mStateNo = static_cast<s32>(-1);
-    this->mNextState = static_cast<s32>(-1);
+    mpModel = nullptr;
+    mStateNo = -1;
+    mNextState = -1;
 }
 
 // Address: 0x005716c0 - 0x005716c1 (1 bytes)
@@ -77,7 +77,7 @@ __attribute__((weak)) void cState::createProperty(MtPropertyList& s) {
 // Address: 0x00571820 - 0x00571825 (5 bytes)
 MtUI* cState::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -112,6 +112,8 @@ __attribute__((weak)) void cState::final() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cState::MyDTI cState::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (120 bytes)
 //   in _GLOBAL__sub_I_cState.cpp at 0x00573ab3-0x00573aef (called at cState.cpp:63)
 //   in _GLOBAL__sub_I_cState.cpp at 0x00573ab3-0x00573aef (called at cState.h:56)
@@ -137,7 +139,7 @@ const MtDTI& cStateInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cStateInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cStateInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cStateInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -146,7 +148,7 @@ inline MtAllocator* cStateInfo::getAllocator() {
 // Address: 0x00570a10 - 0x00570a50 (64 bytes)
 void* cStateInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cStateInfo::getAllocator()->memAlloc(sz, align, ::cStateInfo::DTI.::MtDTI::getID());
+    return cStateInfo::getAllocator()->memAlloc(sz, align, cStateInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,7 +162,7 @@ void* cStateInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStateInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStateInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStateInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,6 +195,8 @@ inline void cStateInfo::operator delete(void* p_addr) {
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
 //   in cpStateManager::setState at 0x0053904e-0x00539052 (called at cpStateManager.cpp:128)
 // const MtDTI* cStateInfo::getDTI();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStateInfo::MyDTI cStateInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cState.cpp at 0x00573a73-0x00573ab3 (called at cState.cpp:61)

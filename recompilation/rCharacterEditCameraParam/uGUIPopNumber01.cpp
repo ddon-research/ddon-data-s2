@@ -30,7 +30,7 @@ const MtDTI& uGUIPopNumber01::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopNumber01::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopNumber01::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopNumber01::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUIPopNumber01::getAllocator() {
 // Address: 0x00bb7750 - 0x00bb7790 (64 bytes)
 void* uGUIPopNumber01::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopNumber01::getAllocator()->memAlloc(sz, align, ::uGUIPopNumber01::DTI.::MtDTI::getID());
+    return uGUIPopNumber01::getAllocator()->memAlloc(sz, align, uGUIPopNumber01::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUIPopNumber01::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopNumber01::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopNumber01::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopNumber01::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,9 +79,9 @@ uGUIPopNumber01::~uGUIPopNumber01() {
 // Address: 0x00bb7aa0 - 0x00bb7b08 (104 bytes)
 bool uGUIPopNumber01::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_NUMBER01_GUI"), static_cast<u32>(129), static_cast<t64>(1421734081)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_NUMBER01_GUI"), 129u, 1421734081l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -94,14 +94,14 @@ bool uGUIPopNumber01::loadResource() {
 // Address: 0x00bb7b10 - 0x00bb7b49 (57 bytes)
 void uGUIPopNumber01::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopBase::updatePtr();
-    if (this->mpDialog == static_cast<uGUIBase*>(nullptr)) {
+    this->uGUIPopBase::updatePtr();
+    if (mpDialog == nullptr) {
         return;
     }
-    if (this->mpDialog->::cUnit::isEnable() != false) {
+    if (mpDialog->isEnable()) {
         return;
     }
-    this->mpDialog = static_cast<uGUIBase*>(nullptr);
+    mpDialog = nullptr;
 }
 
 // Address: 0x00bb7b50 - 0x00bb8315 (1989 bytes)
@@ -116,23 +116,23 @@ __attribute__((weak)) void uGUIPopNumber01::setup() {
 // Address: 0x00bb8550 - 0x00bb85ad (93 bytes)
 void uGUIPopNumber01::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    this->updatePtr();
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    this->uGUIBase::kill();
+    updatePtr();
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpDialog == static_cast<uGUIBase*>(nullptr)) {
+    if (mpDialog == nullptr) {
         return;
     }
-    this->mpDialog->kill();
-    this->mpDialog = static_cast<uGUIBase*>(nullptr);
+    mpDialog->kill();
+    mpDialog = nullptr;
 }
 
 // Address: 0x00bb85b0 - 0x00bb85b5 (5 bytes)
 void uGUIPopNumber01::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopBase::move();
+    this->uGUIPopBase::move();
 }
 
 // Address: 0x00bb85c0 - 0x00bb867a (186 bytes)
@@ -183,29 +183,29 @@ __attribute__((weak)) void uGUIPopNumber01::reboot() {
 void uGUIPopNumber01::setFlowId(uGUIPopNumber01::FLOW_ID flowId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (flowId) {
-        case static_cast<uGUIPopNumber01::FLOW_ID>(0):
+        case FLOW_ID_INIT:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateInit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateInit);
             break;
         }
-        case static_cast<uGUIPopNumber01::FLOW_ID>(1):
+        case FLOW_ID_WAIT:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
             break;
         }
-        case static_cast<uGUIPopNumber01::FLOW_ID>(2):
+        case FLOW_ID_NUM_EDIT:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateNumEdit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateNumEdit);
             break;
         }
-        case static_cast<uGUIPopNumber01::FLOW_ID>(3):
+        case FLOW_ID_POP_DIALOG_WAIT:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updatePopListDialog);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updatePopListDialog);
             break;
         }
-        case static_cast<uGUIPopNumber01::FLOW_ID>(4):
+        case FLOW_ID_EXIT:
         {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateExit);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateExit);
             break;
         }
         default:
@@ -218,16 +218,15 @@ void uGUIPopNumber01::setFlowId(uGUIPopNumber01::FLOW_ID flowId) {
 // Address: 0x00bb8a90 - 0x00bb8aed (93 bytes)
 void uGUIPopNumber01::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDialog != static_cast<uGUIBase*>(nullptr)) {
+    if (mpDialog != nullptr) {
         return;
     }
-    const uGUIBase::cReferenceUINumBox::MODE numbox_mode = this->mRefNumBox.::uGUIBase::cReferenceUINumBox::getMode();
-    this->mRefNumBox.::uGUIBase::cReferenceUINumBox::moveInput();
-    if (numbox_mode == static_cast<uGUIBase::cReferenceUINumBox::MODE>(1)) {
-    } else {
-        this->mpCtrlV->execute();
-        this->mpCtrlHnumbox->execute();
-        this->mpCtrlH->execute();
+    const cReferenceUINumBox::MODE numbox_mode = mRefNumBox.getMode();
+    mRefNumBox.moveInput();
+    if (numbox_mode != uGUIBase::cReferenceUINumBox::MODE_EDIT) {
+        mpCtrlV->execute();
+        mpCtrlHnumbox->execute();
+        mpCtrlH->execute();
     }
 }
 
@@ -267,7 +266,7 @@ __attribute__((weak)) void uGUIPopNumber01::updatePopListDialog() {
 // Address: 0x00bb8a80 - 0x00bb8a89 (9 bytes)
 void uGUIPopNumber01::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (264 bytes)
@@ -306,70 +305,72 @@ __attribute__((weak)) u32 uGUIPopNumber01::evCtrlDecide(cControl::Message* msg) 
 // Address: 0x00bb8350 - 0x00bb8376 (38 bytes)
 u32 uGUIPopNumber01::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlV != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (this->mpCtrlH != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if (mpCtrlV != nullptr) {
+        if (mpCtrlH != nullptr) {
+            setInputEvent(68u);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00bb84b0 - 0x00bb84cc (28 bytes)
 u32 uGUIPopNumber01::evCtrlNumStartMenu(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlV != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+    if (mpCtrlV != nullptr) {
+        setInputEvent(69u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00bb8320 - 0x00bb834e (46 bytes)
 u32 uGUIPopNumber01::evCtrlMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlV != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            if (msg->reason != static_cast<nGUIExt::MSG_REASON>(36)) {
-                msg->changeSE = static_cast<u32>(2);
+    if (mpCtrlV != nullptr) {
+        if (msg != nullptr) {
+            if (msg->reason != nGUIExt::MOUSE_OVER) {
+                msg->changeSE = 2;
             }
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        setInputEvent(66u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00bb8420 - 0x00bb84a2 (130 bytes)
 u32 uGUIPopNumber01::evCtrlNumDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrlHnumbox != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        if (this->mRefNumBox.mMode != static_cast<uGUIBase::cReferenceUINumBox::MODE>(1)) {
-            if (msg->reason != static_cast<nGUIExt::MSG_REASON>(37)) {
-                if (msg->reason != static_cast<nGUIExt::MSG_REASON>(3)) {
-                    if (msg->reason == static_cast<nGUIExt::MSG_REASON>(2)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (mpCtrlHnumbox != nullptr) {
+        if (mRefNumBox.mMode != uGUIBase::cReferenceUINumBox::MODE_EDIT) {
+            if (msg->reason != nGUIExt::MOUSE_LCLICK) {
+                if (msg->reason != nGUIExt::TRG_RIGHT) {
+                    if (msg->reason == nGUIExt::TRG_LEFT) {
+                        setInputEvent(70u);
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+                    setInputEvent(71u);
                 }
             } else {
-                if (this->mpCtrlV != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                    this->mpCtrlV->setCurrentPos(static_cast<s32>(0), false);
+                if (mpCtrlV != nullptr) {
+                    mpCtrlV->setCurrentPos(0, false);
                 }
-                if (msg->click_vol != static_cast<s32>(0)) {
-                    if (msg->click_vol == static_cast<s32>(2)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+                if (msg->click_vol != 0) {
+                    if (msg->click_vol == 2) {
+                        setInputEvent(69u);
                     } else {
-                        if (msg->click_vol == static_cast<s32>(1)) {
-                            this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+                        if (msg->click_vol == 1) {
+                            setInputEvent(71u);
                         }
                     }
                 } else {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                    setInputEvent(70u);
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopNumber01::MyDTI uGUIPopNumber01::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopNumber01.cpp at 0x00bb8e5f-0x00bb8e9c (called at uGUIPopNumber01.cpp:29)

@@ -30,7 +30,7 @@ const MtDTI& cPrimBuffer::getDTI() const {
 // Address: 0x01060a30 - 0x01060a70 (64 bytes)
 void* cPrimBuffer::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cPrimBuffer::DTI)->memAlloc(sz, align, ::cPrimBuffer::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cPrimBuffer::DTI)->memAlloc(sz, align, cPrimBuffer::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ void* cPrimBuffer::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPrimBuffer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrimBuffer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrimBuffer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,11 +59,11 @@ inline void cPrimBuffer::operator delete(void* p_addr) {
 // Address: 0x01060ae0 - 0x01060b0e (46 bytes)
 cPrimBuffer::cPrimBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWriteSize = static_cast<u32>(0);
-    this->mVBSize = static_cast<u32>(0);
-    this->mUsedVBSize = static_cast<u32>(0);
-    this->mpCurrentVB = static_cast<void*>(nullptr);
-    this->mpAllocVB = static_cast<void*>(nullptr);
+    mWriteSize = 0;
+    mVBSize = 0;
+    mUsedVBSize = 0;
+    mpCurrentVB = nullptr;
+    mpAllocVB = nullptr;
 }
 
 // Address: 0x01060b10 - 0x01060b11 (1 bytes)
@@ -95,10 +95,10 @@ __attribute__((weak)) void cPrimBuffer::createProperty(MtPropertyList& prop_list
 // Address: 0x01060b50 - 0x01060b69 (25 bytes)
 void cPrimBuffer::resetBuffer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVBSize = static_cast<u32>(0);
-    this->mUsedVBSize = static_cast<u32>(0);
-    this->mpCurrentVB = static_cast<void*>(nullptr);
-    this->mpAllocVB = static_cast<void*>(nullptr);
+    mVBSize = 0;
+    mUsedVBSize = 0;
+    mpCurrentVB = nullptr;
+    mpAllocVB = nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -113,6 +113,8 @@ __attribute__((weak)) void cPrimBuffer::reserveBuffer(u32 size) {
     DDON_STUB("cPrimBuffer::reserveBuffer")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrimBuffer::MyDTI cPrimBuffer::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrimBuffer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

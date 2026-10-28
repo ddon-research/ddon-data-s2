@@ -39,6 +39,7 @@ class MtSphere;
 class MtTriangle;
 class MtVector3;
 namespace nCollision { class cGeometry; }
+class uScrollCollisionGeometry;
 
 // Declarations
 class MtGeomConvex;
@@ -56,6 +57,8 @@ class MtGeometry : public MtObject
 {
     // inferred: nCollision::cGeometry::getGeometryType names MtGeometry::mType
     friend class nCollision::cGeometry;
+    // inferred: uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType names MtGeometry::mType, through its enclosing class uScrollCollisionGeometry
+    friend class uScrollCollisionGeometry;
 public:
     enum Type
     {

@@ -66,5 +66,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline void cCraftPlusItem::init() {
-    this->mpQualityResource = static_cast<rCraftQuality*>(nullptr);
+    this->mpQualityResource = nullptr;
 }

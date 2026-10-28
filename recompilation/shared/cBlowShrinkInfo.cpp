@@ -34,7 +34,7 @@ const MtDTI& cBlowShrinkInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cBlowShrinkInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cBlowShrinkInfo::DTI)->memAlloc(sz, align, ::cBlowShrinkInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cBlowShrinkInfo::DTI)->memAlloc(sz, align, cBlowShrinkInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* cBlowShrinkInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cBlowShrinkInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cBlowShrinkInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cBlowShrinkInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,18 +64,18 @@ inline void cBlowShrinkInfo::operator delete(void* p_addr) {
 cBlowShrinkInfo::cBlowShrinkInfo() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mIsActive = false;
-    this->mEndurance = 0.0f;
-    this->mEnduranceBaseMax = 100.0f;
-    this->mEnduranceMax = 100.0f;
-    this->mCureSpeed = 1.0f;
-    this->mCureSpeedRateResult = 1.0f;
-    this->mResetTimer = 0.0f;
-    this->mResetTimerMax = 1000.0f;
-    this->mIsTimerActive = false;
-    this->mCureSpeedRate[0] = 1.0f;
-    this->mCureSpeedRate[1] = 1.0f;
-    this->mCureSpeedRate[2] = 1.0f;
+    mIsActive = false;
+    mEndurance = 0.0f;
+    mEnduranceBaseMax = 100.0f;
+    mEnduranceMax = 100.0f;
+    mCureSpeed = 1.0f;
+    mCureSpeedRateResult = 1.0f;
+    mResetTimer = 0.0f;
+    mResetTimerMax = 1000.0f;
+    mIsTimerActive = false;
+    mCureSpeedRate[0] = 1.0f;
+    mCureSpeedRate[1] = 1.0f;
+    mCureSpeedRate[2] = 1.0f;
 }
 
 // Defined in the class (its body was written in a header).
@@ -84,35 +84,35 @@ cBlowShrinkInfo::cBlowShrinkInfo() {
 // Address: 0x00033db0 - 0x00033e4c (156 bytes)
 void cBlowShrinkInfo::update(f32 deltaTime) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mIsTimerActive == false) {
+    if (!mIsTimerActive) {
         // inferred: a temporary for the value the load at 0x33dbf read, used once; no DWARF local holds it
-        f32 t0 = this->mCureSpeed;
+        f32 t0 = mCureSpeed;
         // inferred: a temporary for the value the load at 0x33dc4 read, used once; no DWARF local holds it
-        f32 t1 = this->mCureSpeedRateResult;
+        f32 t1 = mCureSpeedRateResult;
         // inferred: a temporary for the result of the call at 0x33ddd, used once; no DWARF local holds it
-        f32 t2 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        this->mEndurance = this->mEndurance + (t2 * (t0 * t1));
-        if (this->mEndurance > this->mEnduranceMax) {
-            this->mEndurance = this->mEnduranceMax;
+        f32 t2 = sWorkRate::getInstance()->calc(3u);
+        mEndurance = mEndurance + (t2 * (t0 * t1));
+        if (mEndurance > mEnduranceMax) {
+            mEndurance = mEnduranceMax;
         }
-        if (this->mIsTimerActive != false) {
+        if (mIsTimerActive) {
             // inferred: a temporary for the result of the call at 0x33e1a, used once; no DWARF local holds it
-            f32 t3 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-            this->mResetTimer = this->mResetTimer + t3;
-            if (this->mResetTimer > this->mResetTimerMax) {
-                this->mEndurance = this->mEnduranceMax;
-                this->mIsTimerActive = false;
-                this->mResetTimer = 0.0f;
+            f32 t3 = sWorkRate::getInstance()->calc(3u);
+            mResetTimer = mResetTimer + t3;
+            if (mResetTimer > mResetTimerMax) {
+                mEndurance = mEnduranceMax;
+                mIsTimerActive = false;
+                mResetTimer = 0.0f;
             }
         }
     } else {
         // inferred: a temporary for the result of the call at 0x33e1a, used once; no DWARF local holds it
-        f32 t3 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        this->mResetTimer = this->mResetTimer + t3;
-        if (this->mResetTimer > this->mResetTimerMax) {
-            this->mEndurance = this->mEnduranceMax;
-            this->mIsTimerActive = false;
-            this->mResetTimer = 0.0f;
+        f32 t3 = sWorkRate::getInstance()->calc(3u);
+        mResetTimer = mResetTimer + t3;
+        if (mResetTimer > mResetTimerMax) {
+            mEndurance = mEnduranceMax;
+            mIsTimerActive = false;
+            mResetTimer = 0.0f;
         }
     }
 }
@@ -121,19 +121,19 @@ void cBlowShrinkInfo::update(f32 deltaTime) {
 void cBlowShrinkInfo::updateEndurance(f32 attackValue) {
     // DWARF local not rendered: f32 tmpE;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (0.0f >= (this->mEndurance - attackValue)) {
-        this->mIsActive = true;
-        this->mEndurance = 0.0f;
+    if (0.0f >= (mEndurance - attackValue)) {
+        mIsActive = true;
+        mEndurance = 0.0f;
     } else {
-        this->mEndurance = this->mEndurance - attackValue;
+        mEndurance = mEndurance - attackValue;
     }
 }
 
 // Address: 0x00033ea0 - 0x00033eac (12 bytes)
 void cBlowShrinkInfo::updateEnduranceForceActive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndurance = 0.0f;
-    this->mIsActive = true;
+    mEndurance = 0.0f;
+    mIsActive = true;
 }
 
 // Address: 0x00033eb0 - 0x00033ef1 (65 bytes)
@@ -143,15 +143,15 @@ void cBlowShrinkInfo::addRateDamage(f32 rate, bool isReaction) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (1.1920929e-7f > rate) {
     } else {
-        if (0.0f >= (this->mEndurance - (this->mEnduranceMax * rate))) {
-            this->mIsActive = isReaction;
-            if (isReaction == false) {
-                this->mEndurance = 0.0001f;
+        if (0.0f >= (mEndurance - (mEnduranceMax * rate))) {
+            mIsActive = isReaction;
+            if (!isReaction) {
+                mEndurance = 0.0001f;
             } else {
-                this->mEndurance = 0.0f;
+                mEndurance = 0.0f;
             }
         } else {
-            this->mEndurance = this->mEndurance - (this->mEnduranceMax * rate);
+            mEndurance = mEndurance - (mEnduranceMax * rate);
         }
     }
 }
@@ -162,22 +162,22 @@ void cBlowShrinkInfo::addRateDamage(f32 rate, bool isReaction) {
 // Address: 0x00033e50 - 0x00033e66 (22 bytes)
 void cBlowShrinkInfo::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEndurance = this->mEnduranceMax;
-    this->mIsTimerActive = false;
-    this->mResetTimer = 0.0f;
+    mEndurance = mEnduranceMax;
+    mIsTimerActive = false;
+    mResetTimer = 0.0f;
 }
 
 // Address: 0x00033f10 - 0x00033f3a (42 bytes)
 bool cBlowShrinkInfo::holdOneEndurance() {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsActive != false) {
-        if (1.0f > this->mEndurance) {
-            this->mEndurance = 1.0f;
-            this->mIsActive = false;
+    if (mIsActive) {
+        if (1.0f > mEndurance) {
+            mEndurance = 1.0f;
+            mIsActive = false;
             return true;
         }
-        this->mIsActive = false;
+        mIsActive = false;
     }
     return false;
 }
@@ -185,7 +185,7 @@ bool cBlowShrinkInfo::holdOneEndurance() {
 // Address: 0x00033f40 - 0x00033f49 (9 bytes)
 void cBlowShrinkInfo::setCureSpeedRate(nRegionStatus::ENDURANCE_CURE_RATE_TYPE type, f32 rate) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCureSpeedRate[type] = rate;
+    mCureSpeedRate[type] = rate;
 }
 
 // Address: 0x00033f50 - 0x00033f65 (21 bytes)
@@ -193,8 +193,10 @@ void cBlowShrinkInfo::reCalcCureSpeedRate() {
     // DWARF local not rendered: f32 rate;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCureSpeedRateResult = this->mCureSpeedRate[2] * (this->mCureSpeedRate[0] * this->mCureSpeedRate[1]);
+    mCureSpeedRateResult = mCureSpeedRate[2] * (mCureSpeedRate[0] * mCureSpeedRate[1]);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cBlowShrinkInfo::MyDTI cBlowShrinkInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cBlowShrinkInfo.cpp at 0x00033fb4-0x00033fed (called at cBlowShrinkInfo.cpp:22)
@@ -204,7 +206,7 @@ void cBlowShrinkInfo::reCalcCureSpeedRate() {
 // Address: 0x00033c40 - 0x00033cce (142 bytes)
 MtObject* cBlowShrinkInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cBlowShrinkInfo;
+    return new (16u) cBlowShrinkInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -251,6 +253,8 @@ MtObject* cBlowShrinkInfo::MyDTI::newInstance() const {
 
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // cDurableInfoBase::~cDurableInfoBase();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cDurableInfoBase::MyDTI cDurableInfoBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cBlowShrinkInfo.cpp at 0x00033f70-0x00033fb4 (called at cBlowShrinkInfo.cpp:21)

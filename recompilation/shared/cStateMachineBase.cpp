@@ -123,7 +123,7 @@ __attribute__((weak)) bool cStateMachineBase::processRemoteCallInStateMachine(cR
 // Address: 0x01379e70 - 0x01379e78 (8 bytes)
 void cStateMachineBase::initializeStateMachineBase(void* context) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpContext = context;
+    mpContext = context;
 }
 
 // Address: 0x01379e80 - 0x01379f81 (257 bytes)
@@ -193,7 +193,7 @@ const MtDTI& cStateMachineBase::StateBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStateMachineBase::StateBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStateMachineBase::StateBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStateMachineBase::StateBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -208,10 +208,10 @@ inline void cStateMachineBase::StateBase::operator delete(void* p_addr) {
 // Address: 0x0137a000 - 0x0137a02a (42 bytes)
 cStateMachineBase::StateBase::StateBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnd = false;
-    this->mFrameIndex = static_cast<u32>(0);
-    this->mpStateMachine = static_cast<cStateMachineBase*>(nullptr);
-    this->mpContext = static_cast<void*>(nullptr);
+    mIsEnd = false;
+    mFrameIndex = 0;
+    mpStateMachine = nullptr;
+    mpContext = nullptr;
 }
 
 // Address: 0x0137a1d0 - 0x0137a1d1 (1 bytes)
@@ -293,7 +293,7 @@ __attribute__((weak)) cStateMachineBase::StateBase* cStateMachineBase::StateBase
 // Address: 0x0137a180 - 0x0137a184 (4 bytes)
 s32 cStateMachineBase::StateBase::getId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mId;
+    return mId;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -332,11 +332,13 @@ s32 cStateMachineBase::StateBase::getId() const {
 // Address: 0x0137a1b0 - 0x0137a1b5 (5 bytes)
 void* cStateMachineBase::StateBase::getContextBase() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpContext;
+    return mpContext;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cStateMachineBase* cStateMachineBase::StateBase::getStateMachine() const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cStateMachineBase::StateBase::MyDTI cStateMachineBase::StateBase::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cStateMachineBase::StateBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

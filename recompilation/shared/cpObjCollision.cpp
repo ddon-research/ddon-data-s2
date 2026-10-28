@@ -63,7 +63,7 @@ const MtDTI& cHitInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cHitInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cHitInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cHitInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,15 +84,15 @@ inline void cHitInfo::operator delete(void* p_addr) {
 // Also emitted as: _ZN8cHitInfoD0Ev at 0x004daec0
 cHitInfo::~cHitInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGuardInfo != static_cast<cGuardInfo*>(nullptr)) {
-        delete this->mpGuardInfo;
-        this->mpGuardInfo = static_cast<cGuardInfo*>(nullptr);
+    if (mpGuardInfo != nullptr) {
+        delete mpGuardInfo;
+        mpGuardInfo = nullptr;
     }
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    delete this->mpAttackParam;
-    this->mpAttackParam = static_cast<cAttackParam*>(nullptr);
+    delete mpAttackParam;
+    mpAttackParam = nullptr;
 }
 
 // No out-of-line body: 35 inlined copies in 27 functions (253 bytes)
@@ -110,20 +110,20 @@ cHitInfo::~cHitInfo() {
 const cAttackParam* cHitInfo::getDefendParam() {
     // DWARF local not rendered: const cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDfdNode != static_cast<cHitNode*>(nullptr)) {
-        return this->mpDfdNode->::cHitNode::getAttackParam();
+    if (mpDfdNode != nullptr) {
+        return mpDfdNode->getAttackParam();
     } else {
-        return static_cast<const cAttackParam*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x004daf50 - 0x004daf61 (17 bytes)
 const cAttackParam* cHitInfo::getAttackParam(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAtkNode != static_cast<cHitNode*>(nullptr)) {
-        return this->mpAtkNode->::cHitNode::getAttackParamFromAttackNo(index);
+    if (mpAtkNode != nullptr) {
+        return mpAtkNode->getAttackParamFromAttackNo(index);
     } else {
-        return static_cast<const cAttackParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -133,17 +133,17 @@ const cAttackParam* cHitInfo::getAttackParam(u32 index) {
 // Address: 0x004daf80 - 0x004dafc5 (69 bytes)
 void cHitInfo::setAttackParam(const cAttackParam* pAttackParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
+    if (mpAtkNode == nullptr) {
         return;
     }
-    if (this->mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+    if (mpAttackParam == nullptr) {
         return;
     }
-    if (pAttackParam == static_cast<const cAttackParam*>(nullptr)) {
+    if (pAttackParam == nullptr) {
         return;
     }
-    this->mpAtkNode->::cHitNode::setAttackParam(pAttackParam);
-    this->mpAttackParam->::cAttackParam::copy(*pAttackParam);
+    mpAtkNode->setAttackParam(pAttackParam);
+    mpAttackParam->copy(*pAttackParam);
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,14 +156,14 @@ void cHitInfo::setAttackParam(const cAttackParam* pAttackParam) {
 uDDOModel* cHitInfo::getAttackerUnitPtr() const {
     // DWARF local not rendered: uShlBase* pShl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((this->mpAtkModel->mUnitId & static_cast<u32>(32)) != static_cast<u32>(0)) {
-            return static_cast<uShlBase*>(this->mpAtkModel)->::uShlBase::getOwner();
+    if (mpAtkModel != nullptr) {
+        if ((mpAtkModel->mUnitId & 32u) != 0) {
+            return static_cast<uShlBase*>(mpAtkModel)->getOwner();
         } else {
-            return this->mpAtkModel;
+            return mpAtkModel;
         }
     } else {
-        return static_cast<uDDOModel*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -175,6 +175,8 @@ __attribute__((weak)) bool cHitInfo::isAttackerShl() const {
 
 // No out-of-line body: no code in the ELF
 // u16 cHitInfo::getAtkCollNodID() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cHitInfo::MyDTI cHitInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpObjCollision.cpp at 0x004db660-0x004db6a0 (called at cpObjCollision.cpp:4230)
@@ -222,7 +224,7 @@ const MtDTI& cModelList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10cModelListD0Ev at 0x01a5c760-0x01a5c781, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cModelList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cModelList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cModelList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -237,20 +239,20 @@ inline void cModelList::operator delete(void* p_addr) {
 // Address: 0x004db250 - 0x004db26b (27 bytes)
 void cModelList::add(uDDOModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sObjCollision::getInstance()->::sObjCollision::addModelList(*this, pModel);
+    sObjCollision::getInstance()->addModelList(*this, pModel);
 }
 
 // Address: 0x004db3a0 - 0x004db3bb (27 bytes)
 void cModelList::remove(uDDOModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sObjCollision::getInstance()->::sObjCollision::removeModelList(*this, pModel);
+    sObjCollision::getInstance()->removeModelList(*this, pModel);
 }
 
 // Address: 0x004d7970 - 0x004d798b (27 bytes)
 bool cModelList::find(uDDOModel* pModel) {
     // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sObjCollision::getInstance()->::sObjCollision::findModelList(*this, pModel);
+    return sObjCollision::getInstance()->findModelList(*this, pModel);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (29 bytes)
@@ -261,7 +263,7 @@ bool cModelList::find(uDDOModel* pModel) {
 // Address: 0x004db460 - 0x004db475 (21 bytes)
 void cModelList::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sObjCollision::getInstance()->::sObjCollision::clearModelList(*this);
+    sObjCollision::getInstance()->clearModelList(*this);
 }
 
 // Address: 0x004db270 - 0x004db3a0 (304 bytes)
@@ -277,20 +279,20 @@ void cModelList::remove_unsafe(uDDOModel* pModel) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4db3d0 carries; no location-less local in scope fits
-    u32 v0_0 = this->mModelList.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mModelList.mLength;
+    if (v0_0 != 0) {
         // inferred: the value the loop at 0x4db3d0 carries; no location-less local in scope fits
-        MtObject* * v0_1 = this->mModelList.::MtArray::getBuffer();
+        MtObject* * v0_1 = mModelList.getBuffer();
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_2 = 0;;) {
             if (pModel != v0_1[static_cast<int>(i0_2)]) {
-                if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < v0_0) {
+                    i0_2 += 1u;
                 } else {
                     break;
                 }
             } else {
-                v0_1[static_cast<int>(i0_2)] = static_cast<MtObject*>(nullptr);
+                v0_1[static_cast<int>(i0_2)] = nullptr;
                 return;
             }
         }
@@ -300,14 +302,14 @@ void cModelList::remove_unsafe(uDDOModel* pModel) {
 // Address: 0x004db3f0 - 0x004db425 (53 bytes)
 bool cModelList::find_unsafe(uDDOModel* pModel) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mModelList.::MtArray::mLength != static_cast<u32>(0)) {
-        u32 i = static_cast<u32>(0);
+    if (mModelList.mLength != 0) {
+        u32 i = 0;
         do {
-            if (pModel == this->mModelList.::MtArray::getBuffer()[static_cast<int>(i)]) {
+            if (pModel == mModelList.getBuffer()[static_cast<int>(i)]) {
                 return true;
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mModelList.::MtArray::mLength);
+            i += 1u;
+        } while (i < mModelList.mLength);
     }
     return false;
 }
@@ -324,13 +326,13 @@ void cModelList::clear_unsafe() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4db490 carries; no location-less local in scope fits
-    u32 v0_0 = this->mModelList.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mModelList.mLength;
+    if (v0_0 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-            this->mModelList.::MtArray::getBuffer()[static_cast<int>(i0_1)] = static_cast<MtObject*>(nullptr);
-            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_1 += static_cast<unsigned int>(1);
+        for (unsigned int i0_1 = 0;;) {
+            mModelList.getBuffer()[static_cast<int>(i0_1)] = nullptr;
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 += 1u;
             } else {
                 break;
             }
@@ -343,6 +345,8 @@ void cModelList::clear_unsafe() {
 //   in cpObjCollisionBase::updatePtr at 0x004d56a4-0x004d56e7, 0x004d56ea-0x004d56f4 (called at cpObjCollision.cpp:279)
 //   in cpObjCollisionBase::updatePtr at 0x004d56f4-0x004d5737, 0x004d573a-0x004d5744 (called at cpObjCollision.cpp:280)
 // void cModelList::updatePtr();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cModelList::MyDTI cModelList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpObjCollision.cpp at 0x004db6d9-0x004db712 (called at cpObjCollision.cpp:4572)
@@ -389,7 +393,7 @@ const MtDTI& cpObjCollisionBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpObjCollisionBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpObjCollisionBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -457,16 +461,16 @@ u32 cpObjCollisionBase::objAdjust(MtVector3& NewPos, MtVector3& OldPos) {
     // inferred: a temporary for the value the load at 0x4d59d4 read, used once; no DWARF local holds it
     f32 t0 = OldPos.y;
     // inferred: a temporary for the value the load at 0x4d59e1 read, used once; no DWARF local holds it
-    f32 t1 = this->mPush.y;
+    f32 t1 = mPush.y;
     // inferred: a temporary for the value the load at 0x4d59e9 read, used once; no DWARF local holds it
     f32 t2 = OldPos.z;
     // inferred: a temporary for the value the load at 0x4d59ee read, used once; no DWARF local holds it
-    f32 t3 = this->mPush.z;
-    NewPos.x = OldPos.x + this->mPush.x;
+    f32 t3 = mPush.z;
+    NewPos.x = OldPos.x + mPush.x;
     NewPos.y = t0 + t1;
     NewPos.z = t2 + t3;
     NewPos.pad_ = 0.0f;
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x004d79a0 - 0x004d7e24 (1156 bytes)
@@ -590,19 +594,19 @@ void cpObjCollisionBase::allHangedRemove() {
     // DWARF local not rendered: uDDOModel* pMod;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4d9220 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    u32 v0_8 = this->mHangedList.mModelList.::MtArray::mLength;
-    if (v0_8 != static_cast<u32>(0)) {
+    u32 v0_8 = mHangedList.mModelList.mLength;
+    if (v0_8 != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x4d921b, 0x4d9258)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if (this->mHangedList.mModelList.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<cUnit*>(this->mHangedList.mModelList.::MtArray::mpArray[i])->::cUnit::isEnable()) {
-                    if (static_cast<uDDOModel*>(this->mHangedList.mModelList.::MtArray::mpArray[i])->::uDDOModel::isHuman()) {
-                        static_cast<uHuman*>(this->mHangedList.mModelList.::MtArray::mpArray[i])->::uHuman::requestClimbEnd();
+        for (u32 i = 0;;) {
+            if (mHangedList.mModelList.mpArray[i] != nullptr) {
+                if (static_cast<cUnit*>(mHangedList.mModelList.mpArray[i])->isEnable()) {
+                    if (static_cast<uDDOModel*>(mHangedList.mModelList.mpArray[i])->isHuman()) {
+                        static_cast<uHuman*>(mHangedList.mModelList.mpArray[i])->requestClimbEnd();
                     }
                 }
             }
-            if (v0_8 != (i + static_cast<u32>(1))) {
-                i = i + static_cast<u32>(1);
+            if (v0_8 != (i + 1u)) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -623,13 +627,13 @@ bool cpObjCollisionBase::isLayerOn(u32 no) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return ((static_cast<unsigned long>(this->mLayer) >> static_cast<unsigned long>(no & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    return ((static_cast<unsigned long>(mLayer) >> static_cast<unsigned long>(no & 63u)) & 1ul) != 0;
 }
 
 // Address: 0x004d9270 - 0x004d9278 (8 bytes)
 void cpObjCollisionBase::setLayerBit(u64 bit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLayer = bit;
+    mLayer = bit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -640,13 +644,13 @@ void cpObjCollisionBase::doBitCommand(u32 index, u32 commandSet) {
     // DWARF local not rendered: BitData data;
     // DWARF local not rendered: u32 bit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLayer = static_cast<unsigned int>(this->mBitCtrl.::cBitCtrl::doBitCommand(index, commandSet));
+    mLayer = static_cast<unsigned int>(mBitCtrl.doBitCommand(index, commandSet));
 }
 
 // Address: 0x004db070 - 0x004db07c (12 bytes)
 void cpObjCollisionBase::setBitTableRes(rBitTable* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBitCtrl.::cBitCtrl::setResource(pRes);
+    mBitCtrl.setResource(pRes);
 }
 
 // No out-of-line body: no code in the ELF
@@ -685,17 +689,17 @@ __attribute__((weak)) void cpObjCollisionBase::makeSharedUID() {
 void cpObjCollisionBase::copySharedUID(cpObjCollisionBase* pSrc) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSrc == static_cast<cpObjCollisionBase*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    this->mSharedUID[0] = pSrc->mSharedUID[0];
-    this->mSharedUID[1] = pSrc->mSharedUID[1];
-    this->mSharedUID[2] = pSrc->mSharedUID[2];
-    this->mSharedUID[3] = pSrc->mSharedUID[3];
-    this->mSharedUID[4] = pSrc->mSharedUID[4];
-    this->mSharedUID[5] = pSrc->mSharedUID[5];
-    this->mSharedUID[6] = pSrc->mSharedUID[6];
-    this->mSharedUID[7] = pSrc->mSharedUID[7];
+    mSharedUID[0] = pSrc->mSharedUID[0];
+    mSharedUID[1] = pSrc->mSharedUID[1];
+    mSharedUID[2] = pSrc->mSharedUID[2];
+    mSharedUID[3] = pSrc->mSharedUID[3];
+    mSharedUID[4] = pSrc->mSharedUID[4];
+    mSharedUID[5] = pSrc->mSharedUID[5];
+    mSharedUID[6] = pSrc->mSharedUID[6];
+    mSharedUID[7] = pSrc->mSharedUID[7];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (48 bytes)
@@ -847,14 +851,14 @@ nObjCollision::HIT_GROUP_BIT cpObjCollisionBase::getHitGroupAtk(cHitInfo* pHitIn
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cpObjCollisionBase*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pHitInfo != static_cast<cHitInfo*>(nullptr)) {
-        if (pHitInfo->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
-            if (pHitInfo->mpAtkModel->::uDDOModel::getObjCollisionPtr() != static_cast<cpObjCollisionBase*>(nullptr)) {
-                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel->::uDDOModel::getObjCollisionPtr()) + static_cast<long>(704))) & static_cast<unsigned char>(31))));
+    if (pHitInfo != nullptr) {
+        if (pHitInfo->mpAtkModel != nullptr) {
+            if (pHitInfo->mpAtkModel->getObjCollisionPtr() != nullptr) {
+                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(1ul << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel->getObjCollisionPtr()) + 704)) & 31)));
             }
         }
     }
-    return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+    return nObjCollision::HIT_GROUP_NONE_B;
 }
 
 // Address: 0x004daae0 - 0x004dab0a (42 bytes)
@@ -864,14 +868,14 @@ nObjCollision::HIT_GROUP_BIT cpObjCollisionBase::getHitGroupDfd(cHitInfo* pHitIn
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cpObjCollisionBase*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pHitInfo != static_cast<cHitInfo*>(nullptr)) {
-        if (pHitInfo->mpDfdModel != static_cast<uDDOModel*>(nullptr)) {
-            if (pHitInfo->mpDfdModel->::uDDOModel::getObjCollisionPtr() != static_cast<cpObjCollisionBase*>(nullptr)) {
-                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfo->mpDfdModel->::uDDOModel::getObjCollisionPtr()) + static_cast<long>(704))) & static_cast<unsigned char>(31))));
+    if (pHitInfo != nullptr) {
+        if (pHitInfo->mpDfdModel != nullptr) {
+            if (pHitInfo->mpDfdModel->getObjCollisionPtr() != nullptr) {
+                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(1ul << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfo->mpDfdModel->getObjCollisionPtr()) + 704)) & 31)));
             }
         }
     }
-    return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+    return nObjCollision::HIT_GROUP_NONE_B;
 }
 
 // Address: 0x004dab10 - 0x004dab6b (91 bytes)
@@ -881,24 +885,24 @@ nObjCollision::HIT_GROUP_BIT cpObjCollisionBase::getHitGroupAtk(cHitInfoAfter* p
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cpObjCollisionBase*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pHitInfoAfter != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (pHitInfoAfter->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr() != static_cast<uDDOModel*>(nullptr)) {
+    if (pHitInfoAfter != nullptr) {
+        if (pHitInfoAfter->mCommonInfo.getAttckerPtr() != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x4dab36, held ahead of the effects the ELF orders after it
-            uDDOModel* t1 = pHitInfoAfter->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
+            uDDOModel* t1 = pHitInfoAfter->mCommonInfo.getAttckerPtr();
             // inferred: an ordered temporary, read before a later effect: the value read at 0x4dab3b, held ahead of the effects the ELF orders after it
             cpObjCollisionBase* t3 = t1->mGuardComponent.mpObjCollision;
-            if (t3 != static_cast<cpObjCollisionBase*>(nullptr)) {
+            if (t3 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x4dab48, held ahead of the effects the ELF orders after it
-                uDDOModel* t4 = pHitInfoAfter->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
-                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4->::uDDOModel::getObjCollisionPtr()) + static_cast<long>(704))) & static_cast<unsigned char>(31))));
+                uDDOModel* t4 = pHitInfoAfter->mCommonInfo.getAttckerPtr();
+                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(1ul << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t4->getObjCollisionPtr()) + 704)) & 31)));
             } else {
-                return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+                return nObjCollision::HIT_GROUP_NONE_B;
             }
         } else {
-            return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+            return nObjCollision::HIT_GROUP_NONE_B;
         }
     } else {
-        return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+        return nObjCollision::HIT_GROUP_NONE_B;
     }
 }
 
@@ -909,14 +913,14 @@ nObjCollision::HIT_GROUP_BIT cpObjCollisionBase::getHitGroupDfd(cHitInfoAfter* p
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cpObjCollisionBase*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pHitInfoAfter != static_cast<cHitInfoAfter*>(nullptr)) {
-        if (pHitInfoAfter->mCommonInfo.mpDfdModel != static_cast<uDDOModel*>(nullptr)) {
-            if (pHitInfoAfter->mCommonInfo.mpDfdModel->::uDDOModel::getObjCollisionPtr() != static_cast<cpObjCollisionBase*>(nullptr)) {
-                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfoAfter->mCommonInfo.mpDfdModel->::uDDOModel::getObjCollisionPtr()) + static_cast<long>(704))) & static_cast<unsigned char>(31))));
+    if (pHitInfoAfter != nullptr) {
+        if (pHitInfoAfter->mCommonInfo.mpDfdModel != nullptr) {
+            if (pHitInfoAfter->mCommonInfo.mpDfdModel->getObjCollisionPtr() != nullptr) {
+                return static_cast<nObjCollision::HIT_GROUP_BIT>(static_cast<unsigned int>(1ul << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pHitInfoAfter->mCommonInfo.mpDfdModel->getObjCollisionPtr()) + 704)) & 31)));
             }
         }
     }
-    return static_cast<nObjCollision::HIT_GROUP_BIT>(0);
+    return nObjCollision::HIT_GROUP_NONE_B;
 }
 
 // Address: 0x004d3da0 - 0x004d42cd (1325 bytes)
@@ -939,8 +943,8 @@ cpObjCollisionBase::~cpObjCollisionBase() {
 // Address: 0x004d4550 - 0x004d455c (12 bytes)
 void cpObjCollisionBase::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x004d4560 - 0x004d47b8 (600 bytes)
@@ -971,25 +975,25 @@ __attribute__((weak)) void cpObjCollisionBase::updatePtr() {
 // Address: 0x004d4840 - 0x004d4845 (5 bytes)
 void cpObjCollisionBase::compSync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpObjCollisionBase::syncCache();
+    syncCache();
 }
 
 // Address: 0x004d4850 - 0x004d486f (31 bytes)
 void cpObjCollisionBase::compMoveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpObjCollisionBase::initTmpCache();
-    this->mColNodeProgFlag = static_cast<u32>(0);
+    initTmpCache();
+    mColNodeProgFlag = 0;
 }
 
 // Address: 0x004d6710 - 0x004d674c (60 bytes)
 void cpObjCollisionBase::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpObjCollisionBase::updateNode();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    updateNode();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable()) {
-        this->::cpObjCollisionBase::entryNode();
+    if (mpModel->isEnable()) {
+        entryNode();
     }
 }
 
@@ -1048,7 +1052,7 @@ __attribute__((weak)) void cpObjCollisionBase::killNode(u32 bank, u32 index) {
 // Address: 0x004d57e0 - 0x004d57ed (13 bytes)
 void cpObjCollisionBase::killNode(cHitNode* pNode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pNode == static_cast<cHitNode*>(nullptr)) {
+    if (pNode == nullptr) {
         return;
     }
     pNode->mKillReq = true;
@@ -1062,17 +1066,17 @@ void cpObjCollisionBase::killNodeAll() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x268 from cpObjCollisionBase*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x278 from cpObjCollisionBase*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(616))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616)) != 0) {
         // inferred: the value the loop at 0x4d5810 carries; no location-less local in scope fits
-        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(616));
+        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616);
         // inferred: the value the loop at 0x4d5810 carries; no location-less local in scope fits
-        for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(632));;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) + static_cast<long>(189)) = static_cast<unsigned char>(1);
+        for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 632);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) != 0) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 189) = 1;
             }
-            if ((v0_0 - static_cast<unsigned int>(1)) != static_cast<unsigned int>(0)) {
-                v0_0 += static_cast<unsigned int>(4294967295);
-                v0_1 += static_cast<unsigned long>(8);
+            if ((v0_0 - 1u) != 0) {
+                v0_0 += 0xFFFFFFFFu;
+                v0_1 += 8ul;
             } else {
                 break;
             }
@@ -1107,20 +1111,20 @@ void cpObjCollisionBase::callbackSetMotion(u32 blend, u32 mot_no, f32 hokan, f32
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x268 from cpObjCollisionBase*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x278 from cpObjCollisionBase*
-    if (blend == static_cast<u32>(0)) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(616))) != static_cast<unsigned int>(0)) {
+    if (blend == 0) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616)) != 0) {
             // inferred: the value the loop at 0x4d6ea0 carries; no location-less local in scope fits
-            unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(616));
+            unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 616);
             // inferred: the value the loop at 0x4d6ea0 carries; no location-less local in scope fits
-            for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(632));;) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) + static_cast<long>(188))) != static_cast<unsigned char>(0)) {
-                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) + static_cast<long>(189)) = static_cast<unsigned char>(1);
+            for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 632);;) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) != 0) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 188)) != 0) {
+                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + 0)) + 189) = 1;
                     }
                 }
-                if ((v0_0 - static_cast<unsigned int>(1)) != static_cast<unsigned int>(0)) {
-                    v0_0 += static_cast<unsigned int>(4294967295);
-                    v0_1 += static_cast<unsigned long>(8);
+                if ((v0_0 - 1u) != 0) {
+                    v0_0 += 0xFFFFFFFFu;
+                    v0_1 += 8ul;
                 } else {
                     break;
                 }
@@ -1132,28 +1136,28 @@ void cpObjCollisionBase::callbackSetMotion(u32 blend, u32 mot_no, f32 hokan, f32
 // Address: 0x004d47c0 - 0x004d4834 (116 bytes)
 void cpObjCollisionBase::callbackMoveEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHitFlag.mHealedHit = static_cast<u32>(0);
-    this->mHitFlag.mGuardedHit = static_cast<u32>(0);
-    this->mHitFlag.mHealHit = static_cast<u32>(0);
-    this->mHitFlag.mPushHit = static_cast<u32>(0);
-    this->mHitFlag.mGuardHit = static_cast<u32>(0);
-    this->mHitFlag.mCatchHit = static_cast<u32>(0);
-    this->mHitFlag.mCaughtHit = static_cast<u32>(0);
-    this->mHitFlag.mCheckHit = static_cast<u32>(0);
-    this->mHitFlag.mCheckedHit = static_cast<u32>(0);
-    this->mHitFlag.mAttackHit = static_cast<u32>(0);
-    this->mHitFlag.mDamageHit = static_cast<u32>(0);
-    this->mHitTestFlag.mHealedHit = static_cast<u32>(0);
-    this->mHitTestFlag.mGuardedHit = static_cast<u32>(0);
-    this->mHitTestFlag.mHealHit = static_cast<u32>(0);
-    this->mHitTestFlag.mPushHit = static_cast<u32>(0);
-    this->mHitTestFlag.mGuardHit = static_cast<u32>(0);
-    this->mHitTestFlag.mCatchHit = static_cast<u32>(0);
-    this->mHitTestFlag.mCaughtHit = static_cast<u32>(0);
-    this->mHitTestFlag.mCheckHit = static_cast<u32>(0);
-    this->mHitTestFlag.mCheckedHit = static_cast<u32>(0);
-    this->mHitTestFlag.mAttackHit = static_cast<u32>(0);
-    this->mHitTestFlag.mDamageHit = static_cast<u32>(0);
+    mHitFlag.mHealedHit = 0;
+    mHitFlag.mGuardedHit = 0;
+    mHitFlag.mHealHit = 0;
+    mHitFlag.mPushHit = 0;
+    mHitFlag.mGuardHit = 0;
+    mHitFlag.mCatchHit = 0;
+    mHitFlag.mCaughtHit = 0;
+    mHitFlag.mCheckHit = 0;
+    mHitFlag.mCheckedHit = 0;
+    mHitFlag.mAttackHit = 0;
+    mHitFlag.mDamageHit = 0;
+    mHitTestFlag.mHealedHit = 0;
+    mHitTestFlag.mGuardedHit = 0;
+    mHitTestFlag.mHealHit = 0;
+    mHitTestFlag.mPushHit = 0;
+    mHitTestFlag.mGuardHit = 0;
+    mHitTestFlag.mCatchHit = 0;
+    mHitTestFlag.mCaughtHit = 0;
+    mHitTestFlag.mCheckHit = 0;
+    mHitTestFlag.mCheckedHit = 0;
+    mHitTestFlag.mAttackHit = 0;
+    mHitTestFlag.mDamageHit = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1212,62 +1216,62 @@ void cpObjCollisionBase::deleteNodeAll() {
     // DWARF local not rendered: cHitNode* pNode;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x4d4460 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    u32 v0_8 = this->mNodeArray.mLength;
-    if (v0_8 == static_cast<u32>(0)) {
-        if (this->mNodeArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodeArray.mpArray));
+    u32 v0_8 = mNodeArray.mLength;
+    if (v0_8 == 0) {
+        if (mNodeArray.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodeArray.mpArray));
         }
-        this->mNodeArray.mpArray = static_cast<MtObject* *>(nullptr);
-        this->mNodeArray.mBufsiz = static_cast<u32>(0);
-        this->mNodeArray.mLength = static_cast<u32>(0);
+        mNodeArray.mpArray = nullptr;
+        mNodeArray.mBufsiz = 0;
+        mNodeArray.mLength = 0;
         return;
     } else {
         // inferred: DWARF's location-less 'i' (lexical block [0x4d444c, 0x4d4481)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if (this->mNodeArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                ::sAIPawnNotice::getInstance()->::sAIPawnNotice::reqDelHitNodeNotice(static_cast<cHitNode*>(this->mNodeArray.mpArray[i]));
+        for (u32 i = 0;;) {
+            if (mNodeArray.mpArray[i] != nullptr) {
+                sAIPawnNotice::getInstance()->reqDelHitNodeNotice(static_cast<cHitNode*>(mNodeArray.mpArray[i]));
             }
-            if (v0_8 != (i + static_cast<u32>(1))) {
-                i = i + static_cast<u32>(1);
+            if (v0_8 != (i + 1u)) {
+                i = i + 1u;
             } else {
                 break;
             }
         }
-        if (this->mNodeArray.mLength == static_cast<u32>(0)) {
-            if (this->mNodeArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodeArray.mpArray));
+        if (mNodeArray.mLength == 0) {
+            if (mNodeArray.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodeArray.mpArray));
             }
-            this->mNodeArray.mpArray = static_cast<MtObject* *>(nullptr);
-            this->mNodeArray.mBufsiz = static_cast<u32>(0);
-            this->mNodeArray.mLength = static_cast<u32>(0);
+            mNodeArray.mpArray = nullptr;
+            mNodeArray.mBufsiz = 0;
+            mNodeArray.mLength = 0;
             return;
         } else {
             // inferred: the value the loop at 0x4d44a0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-            u32 v2_0 = this->mNodeArray.mLength;
+            u32 v2_0 = mNodeArray.mLength;
             // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                if (this->mNodeArray.mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mNodeArray.mpArray[i2_3];
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mNodeArray.mLength) {
-                        v2_0 = this->mNodeArray.mLength;
-                        i2_3 += static_cast<unsigned int>(1);
+            for (unsigned int i2_3 = 0;;) {
+                if (mNodeArray.mpArray[i2_3] != nullptr) {
+                    delete mNodeArray.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mNodeArray.mLength) {
+                        v2_0 = mNodeArray.mLength;
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            if (this->mNodeArray.mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mNodeArray.mpArray));
+            if (mNodeArray.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mNodeArray.mpArray));
             }
-            this->mNodeArray.mpArray = static_cast<MtObject* *>(nullptr);
-            this->mNodeArray.mBufsiz = static_cast<u32>(0);
-            this->mNodeArray.mLength = static_cast<u32>(0);
+            mNodeArray.mpArray = nullptr;
+            mNodeArray.mBufsiz = 0;
+            mNodeArray.mLength = 0;
             return;
         }
     }
@@ -1308,16 +1312,16 @@ __attribute__((weak)) void cpObjCollisionBase::callbackNodeHit(sCollision::CALLB
 // Address: 0x004d94b0 - 0x004d94f9 (73 bytes)
 void cpObjCollisionBase::initCache() {
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (this->mHitCacheSize == static_cast<u32>(0)) {
-        this->::cpObjCollisionBase::initTmpCache();
+    if (mHitCacheSize == 0) {
+        initTmpCache();
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mpHitCache[i].::cObjHitCache::clear();
-        i += static_cast<u32>(1);
-    } while (i < this->mHitCacheSize);
-    this->::cpObjCollisionBase::initTmpCache();
+        mpHitCache[i].clear();
+        i += 1u;
+    } while (i < mHitCacheSize);
+    initTmpCache();
 }
 
 // Address: 0x004d53f0 - 0x004d55c2 (466 bytes)
@@ -1555,34 +1559,34 @@ bool cpObjCollisionBase::isCollisionGeomActive(u32 regionNo) const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x268 from const cpObjCollisionBase*
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x278 from const cpObjCollisionBase*
-    u32 nodeNum = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(616));
-    if (nodeNum != static_cast<u32>(0)) {
+    u32 nodeNum = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 616);
+    if (nodeNum != 0) {
         // inferred: the value the loop at 0x4daa20 carries; no location-less local in scope fits
-        unsigned long v0_4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(632));
+        unsigned long v0_4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 632);
         // inferred: DWARF's location-less 'nodeIndex' (lexical block [0x4daa07, 0x4daa82)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 nodeIndex = static_cast<u32>(0);
+        u32 nodeIndex = 0;
         // inferred: DWARF's location-less 'i' (lexical block [0x4daa37, 0x4daa7a)) is the counter this loop steps (DWARF's stale constant 0)
         u32 i;
         for (;;) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(160))) != static_cast<unsigned long>(0)) {
-                    u32 geomNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(88));
-                    if (geomNum != static_cast<u32>(0)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) != 0) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 160)) != 0) {
+                    u32 geomNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 88);
+                    if (geomNum != 0) {
                         // inferred: the value the loop at 0x4daa50 carries; no location-less local in scope fits
-                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(104));
-                        i = static_cast<u32>(0);
+                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_4 + static_cast<unsigned long>(nodeIndex * 8u)) + 0)) + 104);
+                        i = 0;
                         for (;;) {
-                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
-                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) != static_cast<unsigned long>(0)) {
-                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(56))) != static_cast<unsigned char>(0)) {
-                                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) + static_cast<long>(20))) == regionNo) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * 8u)) + 0)) != 0) {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) != 0) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 56)) != 0) {
+                                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1 + static_cast<unsigned long>(i * 8u)) + 0)) + 8)) + 20)) == regionNo) {
                                             return true;
                                         }
                                     }
                                 }
                             }
-                            if ((i + static_cast<u32>(1)) < geomNum) {
-                                i = i + static_cast<u32>(1);
+                            if ((i + 1u) < geomNum) {
+                                i = i + 1u;
                             } else {
                                 break;
                             }
@@ -1590,8 +1594,8 @@ bool cpObjCollisionBase::isCollisionGeomActive(u32 regionNo) const {
                     }
                 }
             }
-            if ((nodeIndex + static_cast<u32>(1)) < nodeNum) {
-                nodeIndex = nodeIndex + static_cast<u32>(1);
+            if ((nodeIndex + 1u) < nodeNum) {
+                nodeIndex = nodeIndex + 1u;
             } else {
                 break;
             }
@@ -1599,6 +1603,8 @@ bool cpObjCollisionBase::isCollisionGeomActive(u32 regionNo) const {
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpObjCollisionBase::MyDTI cpObjCollisionBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cpObjCollision.cpp at 0x004db5ae-0x004db5ee (called at cpObjCollision.cpp:68)
@@ -1634,7 +1640,7 @@ const MtDTI& cpObjCollisionBase::cHitFlag::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cpObjCollisionBase::cHitFlag::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::cHitFlag::DTI)->memAlloc(sz, align, ::cpObjCollisionBase::cHitFlag::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpObjCollisionBase::cHitFlag::DTI)->memAlloc(sz, align, cpObjCollisionBase::cHitFlag::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1648,7 +1654,7 @@ inline void* cpObjCollisionBase::cHitFlag::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cpObjCollisionBase::cHitFlag::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::cHitFlag::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpObjCollisionBase::cHitFlag::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1677,6 +1683,8 @@ inline void cpObjCollisionBase::cHitFlag::operator delete(void* p_addr) {
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // void cpObjCollisionBase::cHitFlag::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpObjCollisionBase::cHitFlag::MyDTI cpObjCollisionBase::cHitFlag::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cpObjCollision.cpp at 0x004db6a0-0x004db6d9 (called at cpObjCollision.cpp:4519)
 //   in _GLOBAL__sub_I_cpObjCollision.cpp at 0x004db6a0-0x004db6d9 (called at cpObjCollision.h:101)
@@ -1685,6 +1693,6 @@ inline void cpObjCollisionBase::cHitFlag::operator delete(void* p_addr) {
 // Address: 0x004db090 - 0x004db0ff (111 bytes)
 MtObject* cpObjCollisionBase::cHitFlag::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpObjCollisionBase::cHitFlag;
+    return new (16u) cpObjCollisionBase::cHitFlag;
 }
 

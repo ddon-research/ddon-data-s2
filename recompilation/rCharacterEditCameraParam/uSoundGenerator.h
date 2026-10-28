@@ -249,6 +249,12 @@ inline cSoundGeneratorListener::cSoundGeneratorListener() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in _Z13SoundCallBackRN6sSound13VoiceAccessorEPv at 0xd3bd83-0xd3bd89; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uSoundGenerator::getOcclusionMoveLine() {
+    return this->mOcclusionMoveLine;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uSoundGenerator::cGeneratorGroupManager::cGeneratorGroupManager() {
-    this->mpPlayInfomation = static_cast<uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation*>(nullptr);
+    this->mpPlayInfomation = nullptr;
 }

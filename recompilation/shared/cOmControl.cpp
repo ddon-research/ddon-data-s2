@@ -37,7 +37,7 @@ const MtDTI& cOmControl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOmControl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOmControl::DTI);
+    return MtMemoryAllocator::getAllocator(cOmControl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* cOmControl::getAllocator() {
 // Address: 0x003adbf0 - 0x003adc30 (64 bytes)
 void* cOmControl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOmControl::getAllocator()->memAlloc(sz, align, ::cOmControl::DTI.::MtDTI::getID());
+    return cOmControl::getAllocator()->memAlloc(sz, align, cOmControl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* cOmControl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOmControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOmControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOmControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,16 +108,16 @@ __attribute__((weak)) void cOmControl::move() {
 // Address: 0x003ad5d0 - 0x003ad5d8 (8 bytes)
 bool cOmControl::isEnableCtrl() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRnoState == static_cast<u32>(0);
+    return mRnoState == 0;
 }
 
 // Address: 0x003b07f0 - 0x003b07fe (14 bytes)
 void cOmControl::reqKillCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRnoState != static_cast<u32>(0)) {
+    if (mRnoState != 0) {
         return;
     }
-    this->mRnoState = static_cast<u32>(1);
+    mRnoState = 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,75 +126,75 @@ void cOmControl::reqKillCtrl() {
 // Address: 0x003ae120 - 0x003ae1d7 (183 bytes)
 void cOmControl::initLot() {
     // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; the body oracle reports this body.
-    this->mOmID = this->mLot.mOmID;
-    if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(603000)) > static_cast<unsigned int>(1)) {
-        if (this->mLot.mOmID == static_cast<s32>(522350)) {
-            if (this->mLot.mbWaitBowlOfLife == false) {
-                ::sOmManager::getInstance()->::sOmManager::add603000(this);
-                const cOmParam* param = ::sOmManager::getInstance()->::sOmManager::findOmParam(this->mOmID);
-                if (param != static_cast<const cOmParam*>(nullptr)) {
-                    if ((param->mUseComponent & static_cast<u32>(1024)) != static_cast<u32>(0)) {
-                        ::sOmManager::getInstance()->::sOmManager::addWarpList(static_cast<MtObject*>(this));
+    mOmID = mLot.mOmID;
+    if (static_cast<unsigned int>(mLot.mOmID - 603000) > 1) {
+        if (mLot.mOmID == 522350) {
+            if (!mLot.mbWaitBowlOfLife) {
+                sOmManager::getInstance()->add603000(this);
+                const cOmParam* param = sOmManager::getInstance()->findOmParam(mOmID);
+                if (param != nullptr) {
+                    if ((param->mUseComponent & 1024u) != 0) {
+                        sOmManager::getInstance()->addWarpList(static_cast<MtObject*>(this));
                     }
                 }
-                if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(510430)) <= static_cast<unsigned int>(2)) {
-                    this->mbHasLink = true;
-                    ::sOmManager::getInstance()->::sOmManager::linkLink(this);
+                if (static_cast<unsigned int>(mLot.mOmID - 510430) <= 2) {
+                    mbHasLink = true;
+                    sOmManager::getInstance()->linkLink(this);
                 } else {
-                    if (this->mLot.mOmID == static_cast<s32>(522550)) {
-                        this->mbHasCtrl = true;
-                        ::sOmManager::getInstance()->::sOmManager::linkControl(this);
+                    if (mLot.mOmID == 522550) {
+                        mbHasCtrl = true;
+                        sOmManager::getInstance()->linkControl(this);
                     }
                 }
             } else {
-                const cOmParam* param = ::sOmManager::getInstance()->::sOmManager::findOmParam(this->mLot.mOmID);
-                if (param != static_cast<const cOmParam*>(nullptr)) {
-                    if ((param->mUseComponent & static_cast<u32>(1024)) != static_cast<u32>(0)) {
-                        ::sOmManager::getInstance()->::sOmManager::addWarpList(static_cast<MtObject*>(this));
+                const cOmParam* param = sOmManager::getInstance()->findOmParam(mLot.mOmID);
+                if (param != nullptr) {
+                    if ((param->mUseComponent & 1024u) != 0) {
+                        sOmManager::getInstance()->addWarpList(static_cast<MtObject*>(this));
                     }
                 }
-                if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(510430)) <= static_cast<unsigned int>(2)) {
-                    this->mbHasLink = true;
-                    ::sOmManager::getInstance()->::sOmManager::linkLink(this);
+                if (static_cast<unsigned int>(mLot.mOmID - 510430) <= 2) {
+                    mbHasLink = true;
+                    sOmManager::getInstance()->linkLink(this);
                 } else {
-                    if (this->mLot.mOmID == static_cast<s32>(522550)) {
-                        this->mbHasCtrl = true;
-                        ::sOmManager::getInstance()->::sOmManager::linkControl(this);
+                    if (mLot.mOmID == 522550) {
+                        mbHasCtrl = true;
+                        sOmManager::getInstance()->linkControl(this);
                     }
                 }
             }
         } else {
-            const cOmParam* param = ::sOmManager::getInstance()->::sOmManager::findOmParam(this->mLot.mOmID);
-            if (param != static_cast<const cOmParam*>(nullptr)) {
-                if ((param->mUseComponent & static_cast<u32>(1024)) != static_cast<u32>(0)) {
-                    ::sOmManager::getInstance()->::sOmManager::addWarpList(static_cast<MtObject*>(this));
+            const cOmParam* param = sOmManager::getInstance()->findOmParam(mLot.mOmID);
+            if (param != nullptr) {
+                if ((param->mUseComponent & 1024u) != 0) {
+                    sOmManager::getInstance()->addWarpList(static_cast<MtObject*>(this));
                 }
             }
-            if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(510430)) <= static_cast<unsigned int>(2)) {
-                this->mbHasLink = true;
-                ::sOmManager::getInstance()->::sOmManager::linkLink(this);
+            if (static_cast<unsigned int>(mLot.mOmID - 510430) <= 2) {
+                mbHasLink = true;
+                sOmManager::getInstance()->linkLink(this);
             } else {
-                if (this->mLot.mOmID == static_cast<s32>(522550)) {
-                    this->mbHasCtrl = true;
-                    ::sOmManager::getInstance()->::sOmManager::linkControl(this);
+                if (mLot.mOmID == 522550) {
+                    mbHasCtrl = true;
+                    sOmManager::getInstance()->linkControl(this);
                 }
             }
         }
     } else {
-        ::sOmManager::getInstance()->::sOmManager::add603000(this);
-        const cOmParam* param = ::sOmManager::getInstance()->::sOmManager::findOmParam(this->mOmID);
-        if (param != static_cast<const cOmParam*>(nullptr)) {
-            if ((param->mUseComponent & static_cast<u32>(1024)) != static_cast<u32>(0)) {
-                ::sOmManager::getInstance()->::sOmManager::addWarpList(static_cast<MtObject*>(this));
+        sOmManager::getInstance()->add603000(this);
+        const cOmParam* param = sOmManager::getInstance()->findOmParam(mOmID);
+        if (param != nullptr) {
+            if ((param->mUseComponent & 1024u) != 0) {
+                sOmManager::getInstance()->addWarpList(static_cast<MtObject*>(this));
             }
         }
-        if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(510430)) <= static_cast<unsigned int>(2)) {
-            this->mbHasLink = true;
-            ::sOmManager::getInstance()->::sOmManager::linkLink(this);
+        if (static_cast<unsigned int>(mLot.mOmID - 510430) <= 2) {
+            mbHasLink = true;
+            sOmManager::getInstance()->linkLink(this);
         } else {
-            if (this->mLot.mOmID == static_cast<s32>(522550)) {
-                this->mbHasCtrl = true;
-                ::sOmManager::getInstance()->::sOmManager::linkControl(this);
+            if (mLot.mOmID == 522550) {
+                mbHasCtrl = true;
+                sOmManager::getInstance()->linkControl(this);
             }
         }
     }
@@ -348,25 +348,25 @@ bool cOmControl::hasSBC() {
     // DWARF local not rendered: bool hasSBC;
     // DWARF local not rendered: u64 rid;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (this->mpOmParam == static_cast<const cOmParam*>(nullptr)) {
+    if (mpOmParam == nullptr) {
         return false;
     }
-    if ((this->mpOmParam->mUseComponent & static_cast<u32>(168034304)) != static_cast<u32>(0)) {
+    if ((mpOmParam->mUseComponent & 0xA040000u) != 0) {
         return false;
     }
-    if (this->mLot.mbNoSbc != false) {
+    if (mLot.mbNoSbc) {
         return false;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const cResPath<rCollision>* p1 = &this->mpOmParam->mrCollision[0][0];
-    u32 index = static_cast<u32>(0);
+    const cResPath<rCollision>* p1 = &mpOmParam->mrCollision[0][0];
+    u32 index = 0;
     do {
-        if (p1->::cResPathBase::mId != static_cast<u64>(0)) {
+        if (p1->mId != 0) {
             return true;
         }
         p1 += static_cast<int>(1);
-        index += static_cast<u32>(1);
-    } while (index <= static_cast<u32>(1));
+        index += 1u;
+    } while (index <= 1u);
     return false;
 }
 
@@ -391,19 +391,19 @@ __attribute__((weak)) void cOmControl::setActiveSbc(bool act, u32 type, u32 inde
 // Address: 0x003ac7e0 - 0x003ac802 (34 bytes)
 void cOmControl::setActiveScrSbc(bool act) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mhSbc[0][0] == static_cast<unsigned int>(4294967295)) {
+    if (mhSbc[0][0] == 0xFFFFFFFFu) {
         return;
     }
-    ::sCollision::getInstance()->::sCollision::setPartsActiveID(this->mhSbc[0][0], static_cast<u32>(4294967295), act);
+    sCollision::getInstance()->setPartsActiveID(mhSbc[0][0], 0xFFFFFFFFu, act);
 }
 
 // Address: 0x003ac810 - 0x003ac832 (34 bytes)
 void cOmControl::setActiveEfcSbc(bool act) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mhSbc[1][0] == static_cast<unsigned int>(4294967295)) {
+    if (mhSbc[1][0] == 0xFFFFFFFFu) {
         return;
     }
-    ::sCollision::getInstance()->::sCollision::setPartsActiveID(this->mhSbc[1][0], static_cast<u32>(4294967295), act);
+    sCollision::getInstance()->setPartsActiveID(mhSbc[1][0], 0xFFFFFFFFu, act);
 }
 
 // No out-of-line body: no code in the ELF
@@ -417,20 +417,19 @@ void cOmControl::setActiveAllSbcParts(bool act) {
     // DWARF local not rendered: u32 cnt;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x3abee0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int v0_10 = this->mhSbc[0][0];
-    if (v0_10 != static_cast<unsigned int>(4294967295)) {
+    unsigned int v0_10 = mhSbc[0][0];
+    if (v0_10 != 0xFFFFFFFFu) {
         // inferred: a temporary for the value the load at 0x3abe9d read, used 3 times; no DWARF local holds it
-        sCollision* t0 = ::sCollision::getInstance();
-        if (v0_10 >= t0->::sCollision::getSbcSize()) {
-        } else {
-            if (t0->mSbcArray.::MtArray::mpArray[v0_10] != static_cast<MtObject*>(nullptr)) {
-                u32 num = static_cast<sCollision::Sbc*>(t0->mSbcArray.::MtArray::mpArray[v0_10])->::sCollision::Sbc::getPartsNum();
-                if (num != static_cast<u32>(0)) {
+        sCollision* t0 = sCollision::getInstance();
+        if (v0_10 < t0->getSbcSize()) {
+            if (t0->mSbcArray.mpArray[v0_10] != nullptr) {
+                u32 num = static_cast<sCollision::Sbc*>(t0->mSbcArray.mpArray[v0_10])->getPartsNum();
+                if (num != 0) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-                    for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(v0_10, i0_3, act);
-                        if (num != (i0_3 + static_cast<unsigned int>(1))) {
-                            i0_3 += static_cast<unsigned int>(1);
+                    for (unsigned int i0_3 = 0;;) {
+                        sCollision::getInstance()->setPartsActive(v0_10, i0_3, act);
+                        if (num != (i0_3 + 1u)) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
@@ -440,21 +439,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         }
     }
     // inferred: the value the loop at 0x3abf50 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int v2_10 = this->mhSbc[0][1];
-    if (v2_10 != static_cast<unsigned int>(4294967295)) {
+    unsigned int v2_10 = mhSbc[0][1];
+    if (v2_10 != 0xFFFFFFFFu) {
         // inferred: a temporary for the value the load at 0x3abf10 read, used 3 times; no DWARF local holds it
-        sCollision* t1 = ::sCollision::getInstance();
-        if (v2_10 >= t1->::sCollision::getSbcSize()) {
-        } else {
-            if (t1->mSbcArray.::MtArray::mpArray[v2_10] != static_cast<MtObject*>(nullptr)) {
+        sCollision* t1 = sCollision::getInstance();
+        if (v2_10 < t1->getSbcSize()) {
+            if (t1->mSbcArray.mpArray[v2_10] != nullptr) {
                 // inferred: the value the loop at 0x3abf50 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v2_11 = static_cast<sCollision::Sbc*>(t1->mSbcArray.::MtArray::mpArray[v2_10])->::sCollision::Sbc::getPartsNum();
-                if (v2_11 != static_cast<u32>(0)) {
+                u32 v2_11 = static_cast<sCollision::Sbc*>(t1->mSbcArray.mpArray[v2_10])->getPartsNum();
+                if (v2_11 != 0) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-                    for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(v2_10, i2_3, act);
-                        if (v2_11 != (i2_3 + static_cast<unsigned int>(1))) {
-                            i2_3 += static_cast<unsigned int>(1);
+                    for (unsigned int i2_3 = 0;;) {
+                        sCollision::getInstance()->setPartsActive(v2_10, i2_3, act);
+                        if (v2_11 != (i2_3 + 1u)) {
+                            i2_3 += 1u;
                         } else {
                             break;
                         }
@@ -464,21 +462,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         }
     }
     // inferred: the value the loop at 0x3abfc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int v4_10 = this->mhSbc[1][0];
-    if (v4_10 != static_cast<unsigned int>(4294967295)) {
+    unsigned int v4_10 = mhSbc[1][0];
+    if (v4_10 != 0xFFFFFFFFu) {
         // inferred: a temporary for the value the load at 0x3abf80 read, used 3 times; no DWARF local holds it
-        sCollision* t2 = ::sCollision::getInstance();
-        if (v4_10 >= t2->::sCollision::getSbcSize()) {
-        } else {
-            if (t2->mSbcArray.::MtArray::mpArray[v4_10] != static_cast<MtObject*>(nullptr)) {
+        sCollision* t2 = sCollision::getInstance();
+        if (v4_10 < t2->getSbcSize()) {
+            if (t2->mSbcArray.mpArray[v4_10] != nullptr) {
                 // inferred: the value the loop at 0x3abfc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v4_11 = static_cast<sCollision::Sbc*>(t2->mSbcArray.::MtArray::mpArray[v4_10])->::sCollision::Sbc::getPartsNum();
-                if (v4_11 != static_cast<u32>(0)) {
+                u32 v4_11 = static_cast<sCollision::Sbc*>(t2->mSbcArray.mpArray[v4_10])->getPartsNum();
+                if (v4_11 != 0) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-                    for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(v4_10, i4_3, act);
-                        if (v4_11 != (i4_3 + static_cast<unsigned int>(1))) {
-                            i4_3 += static_cast<unsigned int>(1);
+                    for (unsigned int i4_3 = 0;;) {
+                        sCollision::getInstance()->setPartsActive(v4_10, i4_3, act);
+                        if (v4_11 != (i4_3 + 1u)) {
+                            i4_3 += 1u;
                         } else {
                             break;
                         }
@@ -488,21 +485,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         }
     }
     // inferred: the value the loop at 0x3ac030 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int v6_11 = this->mhSbc[1][1];
-    if (v6_11 != static_cast<unsigned int>(4294967295)) {
+    unsigned int v6_11 = mhSbc[1][1];
+    if (v6_11 != 0xFFFFFFFFu) {
         // inferred: a temporary for the value the load at 0x3abff0 read, used 3 times; no DWARF local holds it
-        sCollision* t3 = ::sCollision::getInstance();
-        if (v6_11 >= t3->::sCollision::getSbcSize()) {
-        } else {
-            if (t3->mSbcArray.::MtArray::mpArray[v6_11] != static_cast<MtObject*>(nullptr)) {
+        sCollision* t3 = sCollision::getInstance();
+        if (v6_11 < t3->getSbcSize()) {
+            if (t3->mSbcArray.mpArray[v6_11] != nullptr) {
                 // inferred: the value the loop at 0x3ac030 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v6_10 = static_cast<sCollision::Sbc*>(t3->mSbcArray.::MtArray::mpArray[v6_11])->::sCollision::Sbc::getPartsNum();
-                if (v6_10 != static_cast<u32>(0)) {
+                u32 v6_10 = static_cast<sCollision::Sbc*>(t3->mSbcArray.mpArray[v6_11])->getPartsNum();
+                if (v6_10 != 0) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-                    for (unsigned int i6_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(v6_11, i6_3, act);
-                        if (v6_10 != (i6_3 + static_cast<unsigned int>(1))) {
-                            i6_3 += static_cast<unsigned int>(1);
+                    for (unsigned int i6_3 = 0;;) {
+                        sCollision::getInstance()->setPartsActive(v6_11, i6_3, act);
+                        if (v6_10 != (i6_3 + 1u)) {
+                            i6_3 += 1u;
                         } else {
                             break;
                         }
@@ -538,13 +534,13 @@ __attribute__((weak)) const cOmParam* cOmControl::getOmParam() const {
 // Address: 0x003b0140 - 0x003b0147 (7 bytes)
 u32 cOmControl::getCtrlState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCtrlState;
+    return mCtrlState;
 }
 
 // Address: 0x003b0150 - 0x003b0157 (7 bytes)
 void cOmControl::setCtrlState(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCtrlState = v;
+    mCtrlState = v;
 }
 
 // Address: 0x003afe40 - 0x003b013e (766 bytes)
@@ -686,17 +682,17 @@ __attribute__((weak)) void cOmControl::exchangePacket(InsValue packet) {
 cGatherItemList* cOmControl::getGatherItemList() {
     // DWARF local not rendered: uOmModel* puom;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+    if (mpuModel != nullptr) {
         // inferred: a temporary for the result of the call at 0x3b0685, used once; no DWARF local holds it
-        const MtDTI& t0 = this->mpuModel->getDTI();
+        const MtDTI& t0 = mpuModel->getDTI();
         // inferred: the value the loop at 0x3b0693 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
         // inferred: the value the loop at 0x3b0693 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
-                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getGatherItemList();
+                return static_cast<uOmModel*>(mpuModel)->getGatherItemList();
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -704,24 +700,24 @@ cGatherItemList* cOmControl::getGatherItemList() {
             }
         }
     }
-    return static_cast<cGatherItemList*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x003b06c0 - 0x003b070a (74 bytes)
 u32 cOmControl::getItemGetInfoNum() {
     // DWARF local not rendered: uOmModel* puom;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+    if (mpuModel != nullptr) {
         // inferred: a temporary for the result of the call at 0x3b06d5, used once; no DWARF local holds it
-        const MtDTI& t0 = this->mpuModel->getDTI();
+        const MtDTI& t0 = mpuModel->getDTI();
         // inferred: the value the loop at 0x3b06e3 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
         // inferred: the value the loop at 0x3b06e3 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
-                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getItemGetInfoNum();
+                return static_cast<uOmModel*>(mpuModel)->getItemGetInfoNum();
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -729,24 +725,24 @@ u32 cOmControl::getItemGetInfoNum() {
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x003b0710 - 0x003b075d (77 bytes)
 ItemGetInfo* cOmControl::getItemGetInfo(u32 idx) {
     // DWARF local not rendered: uOmModel* puom;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+    if (mpuModel != nullptr) {
         // inferred: a temporary for the result of the call at 0x3b0729, used once; no DWARF local holds it
-        const MtDTI& t0 = this->mpuModel->getDTI();
+        const MtDTI& t0 = mpuModel->getDTI();
         // inferred: the value the loop at 0x3b0737 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uOmModel::DTI.mName;
         // inferred: the value the loop at 0x3b0737 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
-                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getItemGetInfo(idx);
+                return static_cast<uOmModel*>(mpuModel)->getItemGetInfo(idx);
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -754,7 +750,7 @@ ItemGetInfo* cOmControl::getItemGetInfo(u32 idx) {
             }
         }
     }
-    return static_cast<ItemGetInfo*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -815,6 +811,10 @@ __attribute__((weak)) bool cOmControl::isNoZonePL(bool isLoad) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOmControl::MyDTI cOmControl::DTI;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection cOmControl::mCS;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOmControl.cpp at 0x003b2a44-0x003b2a7d (called at cOmControl.cpp:2054)
 //   in _GLOBAL__sub_I_cOmControl.cpp at 0x003b2a44-0x003b2a7d (called at cOmControl.h:256)
@@ -861,7 +861,7 @@ const MtDTI& cOmControl::InputLot::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOmControl::InputLot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOmControl::InputLot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOmControl::InputLot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -886,6 +886,8 @@ cOmControl::InputLot::InputLot() {
 cOmControl::InputLot::~InputLot() {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOmControl::InputLot::MyDTI cOmControl::InputLot::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cOmControl.cpp at 0x003b29cb-0x003b2a0b (called at cOmControl.cpp:75)
@@ -912,7 +914,7 @@ const MtDTI& cOmTreeControl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cOmTreeControl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cOmTreeControl::DTI);
+    return MtMemoryAllocator::getAllocator(cOmTreeControl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -921,7 +923,7 @@ inline MtAllocator* cOmTreeControl::getAllocator() {
 // Address: 0x003ad850 - 0x003ad890 (64 bytes)
 void* cOmTreeControl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cOmTreeControl::getAllocator()->memAlloc(sz, align, ::cOmTreeControl::DTI.::MtDTI::getID());
+    return cOmTreeControl::getAllocator()->memAlloc(sz, align, cOmTreeControl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -936,7 +938,7 @@ void* cOmTreeControl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOmTreeControl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOmTreeControl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOmTreeControl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1079,6 +1081,10 @@ __attribute__((weak)) void cOmTreeControl::updateSbc(MtMatrix& mtx) {
     DDON_STUB("cOmTreeControl::updateSbc")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOmTreeControl::MyDTI cOmTreeControl::DTI;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection cOmTreeControl::mCS;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOmControl.cpp at 0x003b2a0b-0x003b2a44 (called at cOmControl.cpp:1986)

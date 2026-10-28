@@ -32,7 +32,7 @@ const MtDTI& sMarker::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sMarker::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sMarker::DTI);
+    return MtMemoryAllocator::getAllocator(sMarker::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* sMarker::getAllocator() {
 // Address: 0x007e2610 - 0x007e2650 (64 bytes)
 void* sMarker::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMarker::getAllocator()->memAlloc(sz, align, ::sMarker::DTI.::MtDTI::getID());
+    return sMarker::getAllocator()->memAlloc(sz, align, sMarker::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* sMarker::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sMarker::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMarker::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMarker::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,25 +88,25 @@ const nMarker::cMarkerInfo* sMarker::getMarkerInfoFieldArea(const nQuest::cQuest
     // DWARF local not rendered: const bool isOtherFieldArea;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as int
-    if (pMarker != static_cast<const nQuest::cQuestMarker*>(nullptr)) {
-        if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
+    if (pMarker != nullptr) {
+        if (mpFieldAreaList != nullptr) {
             // inferred: a temporary for the value the load at 0x7e2cdf read, used once; no DWARF local holds it
-            s32 t0 = this->mFieldAreaId;
+            s32 t0 = mFieldAreaId;
             // inferred: a temporary for the result of the call at 0x7e2ce9, used once; no DWARF local holds it
-            s32 t1 = pMarker->::nQuest::cQuestMarker::getStageNo();
-            if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-                if (t0 == static_cast<int>(this->mpFieldAreaList->::rFieldAreaList::getFieldAreaIdFromStageList(t1))) {
-                    return pMarker->::nQuest::cQuestMarker::getMarkerInfoPtr();
+            s32 t1 = pMarker->getStageNo();
+            if (mpFieldAreaList != nullptr) {
+                if (t0 == static_cast<int>(mpFieldAreaList->getFieldAreaIdFromStageList(t1))) {
+                    return pMarker->getMarkerInfoPtr();
                 }
             } else {
-                if (t0 == static_cast<s32>(0)) {
-                    return pMarker->::nQuest::cQuestMarker::getMarkerInfoPtr();
+                if (t0 == 0) {
+                    return pMarker->getMarkerInfoPtr();
                 }
             }
-            return this->::sMarker::getFieldAreaAdjoinMarkerInfo(pMarker->::nQuest::cQuestMarker::getStageNo());
+            return getFieldAreaAdjoinMarkerInfo(pMarker->getStageNo());
         }
     }
-    return static_cast<const nMarker::cMarkerInfo*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007e2fb0 - 0x007e30d0 (288 bytes)
@@ -167,13 +167,13 @@ __attribute__((weak)) const nMarker::cMarkerInfo* sMarker::getFieldAreaAdjoinMar
 // Address: 0x007e3240 - 0x007e3247 (7 bytes)
 s32 sMarker::getStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNo;
+    return mStageNo;
 }
 
 // Address: 0x007e2d50 - 0x007e2d57 (7 bytes)
 s32 sMarker::getLoadFieldAreaId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFieldAreaId;
+    return mFieldAreaId;
 }
 
 // No out-of-line body: no code in the ELF
@@ -196,10 +196,10 @@ __attribute__((weak)) u32 sMarker::getDispFieldAreaNumFromStageNo(u32 stageNo) c
 // Address: 0x007e3320 - 0x007e3338 (24 bytes)
 u32 sMarker::getDispFieldAreaIdFromLandId(u32 landId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-        return this->mpFieldAreaList->::rFieldAreaList::getDispFieldAreaId(landId, static_cast<u32>(0), static_cast<u32>(0));
+    if (mpFieldAreaList != nullptr) {
+        return mpFieldAreaList->getDispFieldAreaId(landId, 0u, 0u);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -213,30 +213,30 @@ __attribute__((weak)) u32 sMarker::getDispLandFieldAreaId() const {
 // Address: 0x007e3390 - 0x007e33a4 (20 bytes)
 u32 sMarker::getFieldAreaIdFromBelongStage(s32 stageNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-        return this->mpFieldAreaList->::rFieldAreaList::getFieldAreaIdFromBelongStage(stageNo);
+    if (mpFieldAreaList != nullptr) {
+        return mpFieldAreaList->getFieldAreaIdFromBelongStage(stageNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007e2d60 - 0x007e2d74 (20 bytes)
 u32 sMarker::getFieldAreaIdFromStageList(s32 stageNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-        return this->mpFieldAreaList->::rFieldAreaList::getFieldAreaIdFromStageList(stageNo);
+    if (mpFieldAreaList != nullptr) {
+        return mpFieldAreaList->getFieldAreaIdFromStageList(stageNo);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007e3270 - 0x007e3284 (20 bytes)
 s32 sMarker::getStageNoFromFieldAreaId(u32 idx, u32 stageNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-        return this->mpFieldAreaList->::rFieldAreaList::getStageNoFromFieldAreaId(idx, stageNo);
+    if (mpFieldAreaList != nullptr) {
+        return mpFieldAreaList->getStageNoFromFieldAreaId(idx, stageNo);
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -254,22 +254,22 @@ __attribute__((weak)) s32 sMarker::getStageNoFromDispFieldAreaIdx(u32 dispStageN
 // Address: 0x007e3460 - 0x007e3478 (24 bytes)
 const rFieldAreaList::cFieldAreaInfo* sMarker::getFieldAreaInfo(u32 landId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
-        return this->mpFieldAreaList->::rFieldAreaList::getFieldAreaInfoFromLandArea(landId, static_cast<u32>(0), static_cast<u32>(0));
+    if (mpFieldAreaList != nullptr) {
+        return mpFieldAreaList->getFieldAreaInfoFromLandArea(landId, 0u, 0u);
     } else {
-        return static_cast<const rFieldAreaList::cFieldAreaInfo*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x007e3480 - 0x007e34d1 (81 bytes)
 MT_CTSTR sMarker::getFieldAreaName(u32 fieldAreaId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFieldAreaName != static_cast<rGUIMessage*>(nullptr)) {
-        const rFieldAreaList::cFieldAreaInfo* pInfo = this->mpFieldAreaList->::rFieldAreaList::getFieldAreaInfo(fieldAreaId);
-        if (pInfo != static_cast<const rFieldAreaList::cFieldAreaInfo*>(nullptr)) {
+    if (mpFieldAreaName != nullptr) {
+        const rFieldAreaList::cFieldAreaInfo* pInfo = mpFieldAreaList->getFieldAreaInfo(fieldAreaId);
+        if (pInfo != nullptr) {
             // inferred: a temporary for the value the load at 0x7e34a4 read, used once; no DWARF local holds it
-            rGUIMessage* t0 = this->mpFieldAreaName;
-            return t0->::rGUIMessage::getMessage(pInfo->::rFieldAreaList::cFieldAreaInfo::getGMDIndex());
+            rGUIMessage* t0 = mpFieldAreaName;
+            return t0->getMessage(pInfo->rFieldAreaList::cFieldAreaInfo::getGMDIndex());
         } else {
             return "";
         }
@@ -394,8 +394,8 @@ __attribute__((weak)) void sMarker::initStage() {
 // Address: 0x007e4d00 - 0x007e4d68 (104 bytes)
 void sMarker::initGame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpFieldAreaList = static_cast<rFieldAreaList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_FIELD_AREA_LIST", static_cast<u32>(1), false));
-    this->mpFieldAreaName = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_FIELD_AREA_NAME", static_cast<u32>(1), false));
+    mpFieldAreaList = static_cast<rFieldAreaList*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_FIELD_AREA_LIST", 1u, false));
+    mpFieldAreaName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_FIELD_AREA_NAME", 1u, false));
 }
 
 // Address: 0x007e4d70 - 0x007e518a (1050 bytes)
@@ -410,16 +410,16 @@ __attribute__((weak)) void sMarker::finalGame() {
 // Address: 0x007e5190 - 0x007e5197 (7 bytes)
 bool sMarker::hasChangedFieldAreaResource() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsFinishLoad[1];
+    return mIsFinishLoad[1];
 }
 
 // Address: 0x007e51b0 - 0x007e51e1 (49 bytes)
 bool sMarker::isLoadFieldAreaResource(s32 stageNo) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as int
-    const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = this->mpFieldAreaList->::rFieldAreaList::getFieldAreaInfoFromStageNo(stageNo);
-    if (pFieldAreaInfo != static_cast<const rFieldAreaList::cFieldAreaInfo*>(nullptr)) {
-        return this->mFieldAreaId == static_cast<int>(pFieldAreaInfo->mFieldAreaId);
+    const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = mpFieldAreaList->getFieldAreaInfoFromStageNo(stageNo);
+    if (pFieldAreaInfo != nullptr) {
+        return mFieldAreaId == static_cast<int>(pFieldAreaInfo->mFieldAreaId);
     } else {
         return false;
     }
@@ -428,20 +428,20 @@ bool sMarker::isLoadFieldAreaResource(s32 stageNo) const {
 // Address: 0x007e51f0 - 0x007e5202 (18 bytes)
 const rQuestMarkerInfo* sMarker::getStageMarkerInfo(rQuestMarkerInfo::RES_TYPE resType) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (resType <= static_cast<int>(3)) {
-        return this->mpStageMarkerInfo[resType];
+    if (resType <= 3) {
+        return mpStageMarkerInfo[resType];
     } else {
-        return static_cast<const rQuestMarkerInfo*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x007e5210 - 0x007e5222 (18 bytes)
 const rFieldAreaMarkerInfo* sMarker::getFieldAreaMarkerInfo(rQuestMarkerInfo::RES_TYPE resType) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (resType <= static_cast<int>(3)) {
-        return this->mpFieldAreaMarkerInfo[resType];
+    if (resType <= 3) {
+        return mpFieldAreaMarkerInfo[resType];
     } else {
-        return static_cast<const rFieldAreaMarkerInfo*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -522,7 +522,7 @@ __attribute__((weak)) void sMarker::createProperty(MtPropertyList& s) {
 // Address: 0x007e6200 - 0x007e6205 (5 bytes)
 MtUI* sMarker::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007e6210 - 0x007e63d2 (450 bytes)
@@ -535,6 +535,11 @@ __attribute__((weak)) void sMarker::move() {
     DDON_STUB("sMarker::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sMarker::MyDTI sMarker::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sMarker* sMarker::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sMarker.cpp at 0x007e65cf-0x007e660c (called at sMarker.cpp:296)
@@ -572,7 +577,7 @@ const MtDTI& sMarker::cLoadResource::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sMarker::cLoadResource::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sMarker::cLoadResource::DTI)->memAlloc(sz, align, ::sMarker::cLoadResource::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sMarker::cLoadResource::DTI)->memAlloc(sz, align, sMarker::cLoadResource::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -587,7 +592,7 @@ inline void* sMarker::cLoadResource::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7sMarker13cLoadResourceD0Ev at 0x01ac6c90-0x01ac6cba, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sMarker::cLoadResource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMarker::cLoadResource::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMarker::cLoadResource::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -614,6 +619,8 @@ inline void sMarker::cLoadResource::operator delete(void* p_addr) {
 //   in sMarker::changeFieldAreaResourceFromStageNo at 0x007e592f-0x007e5945 (called at sMarker.cpp:3611)
 // sMarker::cLoadResource::cLoadResource(sMarker::DATA_TYPE dataType);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sMarker::cLoadResource::MyDTI sMarker::cLoadResource::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sMarker.cpp at 0x007e660c-0x007e6649 (called at sMarker.cpp:4210)
 //   in _GLOBAL__sub_I_sMarker.cpp at 0x007e660c-0x007e6649 (called at sMarker.cpp:239)
@@ -622,7 +629,7 @@ inline void sMarker::cLoadResource::operator delete(void* p_addr) {
 // Address: 0x007e63f0 - 0x007e6437 (71 bytes)
 MtObject* sMarker::cLoadResource::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sMarker::cLoadResource;
+    return new (16u) sMarker::cLoadResource;
 }
 
 // Instance at 0x01ac6c30 - 0x01ac6c35 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

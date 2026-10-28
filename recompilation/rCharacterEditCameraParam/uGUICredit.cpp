@@ -35,7 +35,7 @@ const MtDTI& uGUICredit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICredit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICredit::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICredit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* uGUICredit::getAllocator() {
 // Address: 0x00a669d0 - 0x00a66a10 (64 bytes)
 void* uGUICredit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICredit::getAllocator()->memAlloc(sz, align, ::uGUICredit::DTI.::MtDTI::getID());
+    return uGUICredit::getAllocator()->memAlloc(sz, align, uGUICredit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* uGUICredit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICredit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICredit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICredit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,12 +109,12 @@ __attribute__((weak)) void uGUICredit::setup() {
 // Address: 0x00a67c50 - 0x00a67c81 (49 bytes)
 void uGUICredit::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
@@ -137,14 +137,14 @@ __attribute__((weak)) void uGUICredit::moveInput() {
 // Address: 0x00a67dc0 - 0x00a67e42 (130 bytes)
 void uGUICredit::moveEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIBase::mInputEventId != static_cast<u32>(66)) {
+    if (mInputEventId != 66) {
         return;
     }
-    if (this->mCreditType == static_cast<u32>(1)) {
-        ::sGame::getInstance()->::sGame::fadeOut(30.0f, static_cast<u32>(0));
-        static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::fadeOutStream(this->mpSoundRes, static_cast<u32>(31), static_cast<uintptr>(-1), static_cast<u32>(1000), static_cast<sSoundExt::STREAM_SEARCH_KEY>(1));
+    if (mCreditType == 1) {
+        sGame::getInstance()->fadeOut(30.0f, 0u);
+        static_cast<sSoundExt*>(sSound::getInstance())->fadeOutStream(mpSoundRes, 31u, 0xFFFFFFFFFFFFFFFFul, 1000u, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateFadeOut);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateFadeOut);
 }
 
 // Address: 0x00a67be0 - 0x00a67c4f (111 bytes)
@@ -166,23 +166,23 @@ __attribute__((weak)) void uGUICredit::updateWait() {
 // Address: 0x00a67e50 - 0x00a67ead (93 bytes)
 void uGUICredit::updateFadeOut() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpdRate = 1.0f;
-    if (this->mCreditType == static_cast<u32>(1)) {
-        if (::sGame::getInstance()->::sGame::isFadeEnd() != false) {
-            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
+    mSpdRate = 1.0f;
+    if (mCreditType == 1) {
+        if (sGame::getInstance()->isFadeEnd()) {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
         } else {
-            this->::uGUICredit::updateDisp();
+            updateDisp();
         }
     } else {
-        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
     }
 }
 
 // Address: 0x00a68370 - 0x00a68392 (34 bytes)
 void uGUICredit::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setPS4ShareNG(false);
-    this->end();
+    setPS4ShareNG(false);
+    end();
 }
 
 // Address: 0x00a67eb0 - 0x00a68364 (1204 bytes)
@@ -203,12 +203,14 @@ __attribute__((weak)) void uGUICredit::updateDisp() {
 // Address: 0x00a67bc0 - 0x00a67bd5 (21 bytes)
 u32 uGUICredit::evCtrlSkip(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Defined in the class (its body was written in a header).
 // void uGUICredit::adjustScale();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICredit::MyDTI uGUICredit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICredit.cpp at 0x00a6849f-0x00a684dc (called at uGUICredit.cpp:55)
@@ -282,6 +284,8 @@ uGUICredit::cElement::~cElement() {
     DDON_STUB("uGUICredit::cElement::~cElement")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICredit::cElement::MyDTI uGUICredit::cElement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICredit.cpp at 0x00a684dc-0x00a68519 (called at uGUICredit.cpp:68)

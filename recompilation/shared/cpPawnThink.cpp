@@ -6,13 +6,16 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cAITargetInfo.h"
 #include "cContextInterface.h"
 #include "cEvaluation.h"
+#include "cGuardInfo.h"
 #include "cHitNode.h"
 #include "cPawnActInterface.h"
 #include "cThinkMgr.h"
 #include "cUnit.h"
+#include "cpActionManager.h"
 #include "cpComponent.h"
 #include "cpObjCollision.h"
 #include "nDDOUtility.h"
@@ -46,7 +49,7 @@ const MtDTI& cpPawnThink::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpPawnThink::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpPawnThink::DTI);
+    return MtMemoryAllocator::getAllocator(cpPawnThink::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +58,7 @@ inline MtAllocator* cpPawnThink::getAllocator() {
 // Address: 0x0050f990 - 0x0050f9d0 (64 bytes)
 void* cpPawnThink::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpPawnThink::getAllocator()->memAlloc(sz, align, ::cpPawnThink::DTI.::MtDTI::getID());
+    return cpPawnThink::getAllocator()->memAlloc(sz, align, cpPawnThink::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,7 +73,7 @@ void* cpPawnThink::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpPawnThink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpPawnThink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpPawnThink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,13 +138,13 @@ __attribute__((weak)) void cpPawnThink::updatePtr() {
 // Address: 0x00517860 - 0x00517876 (22 bytes)
 void cpPawnThink::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sAIPawnSys::getInstance()->::sAIPawnSys::releaseAIPawnRotateNo(&this->mAIPawnRotateNo);
+    sAIPawnSys::getInstance()->releaseAIPawnRotateNo(&mAIPawnRotateNo);
 }
 
 // Address: 0x00517880 - 0x00517885 (5 bytes)
 void cpPawnThink::setActive(bool active) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mActive = active;
+    mActive = active;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (373 bytes)
@@ -180,11 +183,11 @@ __attribute__((weak)) void cpPawnThink::setModePartyNpc(rkThinkData* pThink, u32
 // Address: 0x00518050 - 0x0051806f (31 bytes)
 void cpPawnThink::setModeOff() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOmBreakHitNode == static_cast<cHitNode*>(nullptr)) {
+    if (mpOmBreakHitNode == nullptr) {
         return;
     }
-    this->mpOmBreakHitNode->mKillReq = true;
-    this->mpOmBreakHitNode = static_cast<cHitNode*>(nullptr);
+    mpOmBreakHitNode->mKillReq = true;
+    mpOmBreakHitNode = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -564,19 +567,19 @@ __attribute__((weak)) f32 cpPawnThink::getNpcEnemyEvaFunc(cAITargetInfo* pTarget
 // Address: 0x00519ed0 - 0x00519ed7 (7 bytes)
 u32 cpPawnThink::getPrioThinkGurdCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardCnt;
+    return mGuardCnt;
 }
 
 // Address: 0x00519ee0 - 0x00519ee5 (5 bytes)
 const cAITargetInfoArray& cpPawnThink::getPrioThinkPartyList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPartyList;
+    return mPartyList;
 }
 
 // Address: 0x00519ef0 - 0x00519f04 (20 bytes)
 bool cpPawnThink::isPrioThinkChantCancel() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mChatCancelTimer > 0.0f;
+    return mChatCancelTimer > 0.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -986,9 +989,9 @@ bool cpPawnThink::sortFuncCharacterHp(const uCharacter* pA, const uCharacter* pB
     // DWARF local not rendered: cContextInterface& b;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x51e3ad, used once; no DWARF local holds it
-    HP_DATATYPE t0 = ::cContextInterface::getHp(pA->::uDDOModel::mContextInterface.mpContextInstance, pA->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(0));
+    HP_DATATYPE t0 = cContextInterface::getHp(pA->mContextInterface.mpContextInstance, pA->mContextInterface.mpContextCharacter, 0u);
     // inferred: a temporary for the result of the call at 0x51e3c5, used once; no DWARF local holds it
-    HP_DATATYPE t1 = ::cContextInterface::getHp(pB->::uDDOModel::mContextInterface.mpContextInstance, pB->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(0));
+    HP_DATATYPE t1 = cContextInterface::getHp(pB->mContextInterface.mpContextInstance, pB->mContextInterface.mpContextCharacter, 0u);
     return t1 < t0;
 }
 
@@ -1021,7 +1024,7 @@ __attribute__((weak)) void cpPawnThink::addAIPawnActNoSwitchRes(rAIPawnActNoSwit
 // Address: 0x0051c300 - 0x0051c308 (8 bytes)
 uDDOModel* cpPawnThink::getThinkMgrNewTarget() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpThinkMgrTarget;
+    return mpThinkMgrTarget;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1063,7 +1066,7 @@ __attribute__((weak)) void cpPawnThink::reqPawnOrder(const cAIPawnOrderGroupArra
 // Address: 0x0051ee60 - 0x0051ee68 (8 bytes)
 void cpPawnThink::reqPawnOrderTarget(uDDOModel* pTarget) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpAIPawnOrderTargetReq = pTarget;
+    mpAIPawnOrderTargetReq = pTarget;
 }
 
 // Address: 0x0051e3f0 - 0x0051ea0b (1563 bytes)
@@ -1360,10 +1363,10 @@ __attribute__((weak)) bool cpPawnThink::isEnableStageFollowWarp() {
 // Address: 0x00511ee0 - 0x00511eed (13 bytes)
 void cpPawnThink::callbackChangeActionPawnThink(cpActionManager* pAct) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::isActive() == false) {
+    if (!isActive()) {
         return;
     }
-    this->mActChgCount = this->mActChgCount + static_cast<s32>(1);
+    mActChgCount = mActChgCount + 1;
 }
 
 // Address: 0x005215e0 - 0x005215e1 (1 bytes)
@@ -1378,45 +1381,102 @@ void cpPawnThink::callbackAttackTestPawnThink(cHitInfo* pHitInfo) {
     // DWARF local not rendered: uDDOModel* p_model;
     // DWARF local not rendered: u32 node_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::isActive() == false) {
+    if (!isActive()) {
         return;
     }
-    if (pHitInfo->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
+    if (pHitInfo->mpAtkNode == nullptr) {
         return;
     }
-    if (pHitInfo->mpAtkNode->::cHitNode::getCollNode() == static_cast<const cCollNode*>(nullptr)) {
+    if (pHitInfo->mpAtkNode->getCollNode() == nullptr) {
         return;
     }
-    if (pHitInfo->mpAtkNode->::cHitNode::getCollNode()->mNodeID != static_cast<u16>(11)) {
+    if (pHitInfo->mpAtkNode->getCollNode()->mNodeID != 11) {
         return;
     }
-    if (pHitInfo->mpDfdModel == static_cast<uDDOModel*>(nullptr)) {
+    if (pHitInfo->mpDfdModel == nullptr) {
         return;
     }
-    if (pHitInfo->mpDfdModel->::cUnit::isEnable()) {
-        this->mpAttackTestHitUnitReq = pHitInfo->mpDfdModel;
+    if (pHitInfo->mpDfdModel->isEnable()) {
+        mpAttackTestHitUnitReq = pHitInfo->mpDfdModel;
     }
 }
 
 // Address: 0x00521640 - 0x00521657 (23 bytes)
 void cpPawnThink::callbackGuardPawnThink(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::isActive() == false) {
+    if (!isActive()) {
         return;
     }
-    this->mGuardCnt = this->mGuardCnt + static_cast<u32>(1);
-    this->mGuardCntResetTimer = 60.0f;
+    mGuardCnt = mGuardCnt + 1u;
+    mGuardCntResetTimer = 60.0f;
 }
 
 // Address: 0x00521660 - 0x00521706 (166 bytes)
-__attribute__((weak)) void cpPawnThink::callbackGuardPawnThink_calc(cHitInfo* pHitInfo) {
-    // local: cGuardInfo* p_guard_info;
-    // local: uCharacter* p_owner;
-    // local: cContextInterface& context;
-    // local: cpActionManager* p_act_mgr;
-    // local: u32 old_act_no;
-    DDON_STUB("cpPawnThink::callbackGuardPawnThink_calc")
-    /* stub */
+void cpPawnThink::callbackGuardPawnThink_calc(cHitInfo* pHitInfo) {
+    // DWARF local not rendered: uCharacter* p_owner;
+    // DWARF local not rendered: cContextInterface& context;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1fa8 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as const cContextInstance*, which no DWARF type of the place gives; read with caution
+    if (!isActive()) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x521677 read, used 4 times; no DWARF local holds it
+    MtObject* t0 = getOwner();
+    if (t0 == nullptr) {
+        return;
+    }
+    if (static_cast<uDDOModel*>(t0)->isCharacter()) {
+        cGuardInfo* p_guard_info = pHitInfo->mpGuardInfo;
+        if (p_guard_info != nullptr) {
+            if (mDoJustGuardTimer > 0.0f) {
+                p_guard_info->mIsJustGuardSuccess = true;
+                if (cContextInterface::getJob(reinterpret_cast<const cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8104))) == 1) {
+                    cpActionManager* p_act_mgr = static_cast<uDDOModel*>(t0)->getActMgrPtr();
+                    if (p_act_mgr != nullptr) {
+                        u32 old_act_no = p_act_mgr->cpActionManager::getActionNoOld();
+                        if (old_act_no == 4108) {
+                            p_guard_info->mIsJustGuardSuccess = false;
+                        }
+                        if (mDoNormalGuardTimer > 0.0f) {
+                            p_guard_info->mIsJustGuardSuccess = false;
+                        }
+                    } else {
+                        if (mDoNormalGuardTimer > 0.0f) {
+                            p_guard_info->mIsJustGuardSuccess = false;
+                        }
+                    }
+                } else {
+                    if (mDoNormalGuardTimer > 0.0f) {
+                        p_guard_info->mIsJustGuardSuccess = false;
+                    }
+                }
+            } else {
+                if (p_guard_info->mIsJustGuardSuccess) {
+                    if (cContextInterface::getJob(reinterpret_cast<const cContextInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 8104))) == 1) {
+                        cpActionManager* p_act_mgr = static_cast<uDDOModel*>(t0)->getActMgrPtr();
+                        if (p_act_mgr != nullptr) {
+                            u32 old_act_no = p_act_mgr->cpActionManager::getActionNoOld();
+                            if (old_act_no == 4108) {
+                                p_guard_info->mIsJustGuardSuccess = false;
+                            }
+                            if (mDoNormalGuardTimer > 0.0f) {
+                                p_guard_info->mIsJustGuardSuccess = false;
+                            }
+                        } else {
+                            if (mDoNormalGuardTimer > 0.0f) {
+                                p_guard_info->mIsJustGuardSuccess = false;
+                            }
+                        }
+                    } else {
+                        if (mDoNormalGuardTimer > 0.0f) {
+                            p_guard_info->mIsJustGuardSuccess = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0051a540 - 0x0051a7a8 (616 bytes)
@@ -1463,20 +1523,20 @@ __attribute__((weak)) f32 cpPawnThink::getMsgWaitTime() {
 // Address: 0x005208f0 - 0x005208fb (11 bytes)
 void cpPawnThink::reqPawnTalkSituationReqRescue() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPawnTalkSituationRescueReqTimer = 60.0f;
+    mPawnTalkSituationRescueReqTimer = 60.0f;
 }
 
 // Address: 0x00520900 - 0x0052090b (11 bytes)
 void cpPawnThink::reqPawnTalkSituationReqLvUp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPawnTalkSituationLvUpReqWaitTimer = 15.0f;
+    mPawnTalkSituationLvUpReqWaitTimer = 15.0f;
 }
 
 // Address: 0x00520910 - 0x00520921 (17 bytes)
 void cpPawnThink::reqPawnTalkSituationItemUse(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPawnTalkSituationRescueItemUseTimer = 60.0f;
-    this->mPawnTalkSituationRescueItemUseReqType = type;
+    mPawnTalkSituationRescueItemUseTimer = 60.0f;
+    mPawnTalkSituationRescueItemUseReqType = type;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -1806,7 +1866,7 @@ __attribute__((weak)) bool cpPawnThink::isPawnTalkSituationDownEnemy() {
 // Address: 0x005215d0 - 0x005215d9 (9 bytes)
 f32 cpPawnThink::getGacha() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGachaRate;
+    return mGachaRate;
 }
 
 // Address: 0x0051a940 - 0x0051a9c7 (135 bytes)
@@ -1954,6 +2014,8 @@ __attribute__((weak)) f32 cpPawnThink::getTargetNearDist(uDDOModel& target, uDDO
     DDON_STUB("cpPawnThink::getTargetNearDist")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpPawnThink::MyDTI cpPawnThink::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpPawnThink.cpp at 0x00521db4-0x00521df1 (called at cpPawnThink.cpp:327)

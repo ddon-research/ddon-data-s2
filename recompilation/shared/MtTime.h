@@ -8,6 +8,7 @@ class MtString;
 class cQuestTaskParam;
 class sCaplinkManager;
 class sNetworkExt;
+class sQuestManagerExt;
 struct tm;
 
 // Declarations
@@ -31,6 +32,8 @@ class MtTime
     friend class sCaplinkManager;
     // inferred: sNetworkExt::getClanIntervalRemainTime names MtTime::mTime
     friend class sNetworkExt;
+    // inferred: sQuestManagerExt::cTimer::stopTimer names MtTime::mTime, through its enclosing class sQuestManagerExt
+    friend class sQuestManagerExt;
 public:
     MtTime();
     MtTime(t64 utc_time);
@@ -65,6 +68,12 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline MtTime::~MtTime() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in stLocalFunc::sortFunc at 0x82969a-0x8296a3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline bool MtTime::operator<(const MtTime& s) const {
+    return this->mTime < s.mTime;
 }
 
 // Inline, no code of its own: checked where it is inlined.

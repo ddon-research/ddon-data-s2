@@ -25,7 +25,7 @@ const MtDTI& rDDOModelMontageEm::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rDDOModelMontageEm::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI);
+    return MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* rDDOModelMontageEm::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rDDOModelMontageEm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI)->memAlloc(sz, align, ::rDDOModelMontageEm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memAlloc(sz, align, rDDOModelMontageEm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* rDDOModelMontageEm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rDDOModelMontageEm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,23 +63,23 @@ inline void rDDOModelMontageEm::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rDDOModelMontageEm::rDDOModelMontageEm() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpHeader = static_cast<rDDOModelMontageEm::HEADER*>(nullptr);
+    setAttribute(16u);
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065f0b0 - 0x0065f0f6 (70 bytes)
 // Also emitted as: _ZN18rDDOModelMontageEmD0Ev at 0x0065f100
 rDDOModelMontageEm::~rDDOModelMontageEm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rDDOModelMontageEm::HEADER*>(nullptr);
+    MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065f160 - 0x0065f191 (49 bytes)
 void rDDOModelMontageEm::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::rDDOModelMontageEm::getAllocator()->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rDDOModelMontageEm::HEADER*>(nullptr);
+    rDDOModelMontageEm::getAllocator()->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // Address: 0x0065f730 - 0x0065f7f0 (192 bytes)
@@ -141,6 +141,8 @@ __attribute__((weak)) void rDDOModelMontageEm::applyCore(uModel* pmod, rDDOModel
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rDDOModelMontageEm::MyDTI rDDOModelMontageEm::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rDDOModelMontageEm.cpp at 0x0065f7f0-0x0065f832 (called at rDDOModelMontageEm.cpp:22)
 //   in _GLOBAL__sub_I_rDDOModelMontageEm.cpp at 0x0065f7f0-0x0065f832 (called at rDDOModelMontageEm.h:33)
@@ -149,6 +151,6 @@ __attribute__((weak)) void rDDOModelMontageEm::applyCore(uModel* pmod, rDDOModel
 // Address: 0x0065efd0 - 0x0065f02d (93 bytes)
 MtObject* rDDOModelMontageEm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rDDOModelMontageEm;
+    return new (16u) rDDOModelMontageEm;
 }
 

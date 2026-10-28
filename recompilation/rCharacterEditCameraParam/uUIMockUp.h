@@ -220,3 +220,9 @@ public:
 private:
     static uUIMockUp* mMockUpList[5];
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIArisenCard::initMockup at 0x93a018-0x93a021; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uUIMockUp::useEmotion() {
+    this->mIsUseEmotion = true;
+}

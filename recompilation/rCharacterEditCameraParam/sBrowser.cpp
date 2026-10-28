@@ -75,7 +75,7 @@ const MtDTI& sBrowser::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sBrowser::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sBrowser::DTI);
+    return MtMemoryAllocator::getAllocator(sBrowser::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,7 +84,7 @@ inline MtAllocator* sBrowser::getAllocator() {
 // Address: 0x0072e740 - 0x0072e780 (64 bytes)
 void* sBrowser::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sBrowser::getAllocator()->memAlloc(sz, align, ::sBrowser::DTI.::MtDTI::getID());
+    return sBrowser::getAllocator()->memAlloc(sz, align, sBrowser::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,7 +99,7 @@ void* sBrowser::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sBrowser::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sBrowser::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sBrowser::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -170,10 +170,10 @@ __attribute__((weak)) void sBrowser::restart() {
 // Address: 0x0072fdd0 - 0x0072fdfa (42 bytes)
 void sBrowser::begin() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isBrowserInputEnable() == false) {
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isBrowserInputEnable()) {
         return;
     }
-    this->mIsInputEnableMenu = true;
+    mIsInputEnableMenu = true;
 }
 
 // Address: 0x0072fe00 - 0x00730130 (816 bytes)
@@ -224,8 +224,8 @@ __attribute__((weak)) void sBrowser::callJSFunction(MT_CTSTR func_str) {
 // Address: 0x007305f0 - 0x00730606 (22 bytes)
 bool sBrowser::isBusy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mRequest.::MtArray::mLength == static_cast<u32>(0)) {
-        return this->mBrowserStatus != static_cast<u32>(3);
+    if (mRequest.mLength == 0) {
+        return mBrowserStatus != 3;
     } else {
         return true;
     }
@@ -408,23 +408,23 @@ __attribute__((weak)) bool sBrowser::loadFontData() {
 void sBrowser::releaseFontData() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a call declared from its ELF symbol, its return type from the caller's use; the body oracle reports this body.
-    if (this->mpBrowserFont[0] != static_cast<void*>(nullptr)) {
-        ::elf_v_ZdlPv(this->mpBrowserFont[0]);
+    if (mpBrowserFont[0] != nullptr) {
+        elf_v_ZdlPv(mpBrowserFont[0]);
     }
-    this->mpBrowserFont[0] = static_cast<void*>(nullptr);
-    ::MtMemory::mpAllocatorType[static_cast<int>(6)]->memFree(this->mpBrowserFontBinary[0]);
-    this->mpBrowserFontBinary[0] = static_cast<void*>(nullptr);
-    if (this->mpBrowserFont[1] != static_cast<void*>(nullptr)) {
-        ::elf_v_ZdlPv(this->mpBrowserFont[1]);
+    mpBrowserFont[0] = nullptr;
+    MtMemory::mpAllocatorType[6]->memFree(mpBrowserFontBinary[0]);
+    mpBrowserFontBinary[0] = nullptr;
+    if (mpBrowserFont[1] != nullptr) {
+        elf_v_ZdlPv(mpBrowserFont[1]);
     }
-    this->mpBrowserFont[1] = static_cast<void*>(nullptr);
-    ::MtMemory::mpAllocatorType[static_cast<int>(6)]->memFree(this->mpBrowserFontBinary[1]);
-    this->mpBrowserFontBinary[1] = static_cast<void*>(nullptr);
-    if (this->mprGUIFont == static_cast<rGUIFont*>(nullptr)) {
+    mpBrowserFont[1] = nullptr;
+    MtMemory::mpAllocatorType[6]->memFree(mpBrowserFontBinary[1]);
+    mpBrowserFontBinary[1] = nullptr;
+    if (mprGUIFont == nullptr) {
         return;
     }
-    this->mprGUIFont->::cResource::release();
-    this->mprGUIFont = static_cast<rGUIFont*>(nullptr);
+    mprGUIFont->release();
+    mprGUIFont = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -521,9 +521,9 @@ void sBrowser::releaseFontData() {
 // u32 sBrowser::getFunctionButton() const;
 
 // Address: 0x0072fdb0 - 0x0072fdc6 (22 bytes)
-__attribute__((weak)) void sBrowser::setPut1Code(SNJ_BROWSER_BITMAP* dstbmp, int dstx, int dsty, int dstdrww, int dstdrwh, unsigned short cod, unsigned int col, const SNJ_BROWSER_RECT* clp, const SNJ_BROWSER_FONTINFO* fntinf, int* pResult) {
-    DDON_STUB("sBrowser::setPut1Code")
-    /* stub */
+void sBrowser::setPut1Code(SNJ_BROWSER_BITMAP* dstbmp, int dstx, int dsty, int dstdrww, int dstdrwh, unsigned short cod, unsigned int col, const SNJ_BROWSER_RECT* clp, const SNJ_BROWSER_FONTINFO* fntinf, int* pResult) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    *pResult = sBrowser::getInstance()->mIsSNJFontDisp;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (193 bytes)
@@ -591,20 +591,18 @@ __attribute__((weak)) void sBrowser::setJSCallback_jumpSetPosSize(MtObject* pThi
 // Address: 0x00730fc0 - 0x0073102b (107 bytes)
 void sBrowser::resetJSCallback_jumpSetPosSize() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mpJSCallback_jumpSetPosSize_this = static_cast<MtObject*>(nullptr);
-    this->mJSCallback_jumpSetPosSize = static_cast<sBrowser::JSCallback_jumpSetPosSize>(0);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mpJSCallback_jumpSetPosSize_this = nullptr;
+    mJSCallback_jumpSetPosSize = static_cast<sBrowser::JSCallback_jumpSetPosSize>(0);
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -668,14 +666,14 @@ __attribute__((weak)) void sBrowser::closeCore() {
 // Address: 0x0072fc40 - 0x0072fc60 (32 bytes)
 int sBrowser::setupIME(const void* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sBrowser::getInstance()->::sBrowser::setupIMECore(p);
-    return static_cast<int>(1);
+    sBrowser::getInstance()->setupIMECore(p);
+    return 1;
 }
 
 // Address: 0x0072fc60 - 0x0072fc6f (15 bytes)
 void sBrowser::moveIME() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sBrowser::getInstance()->::sBrowser::moveIMECore();
+    sBrowser::getInstance()->moveIMECore();
 }
 
 // Address: 0x0072fc70 - 0x0072fc71 (1 bytes)
@@ -687,35 +685,35 @@ __attribute__((weak)) void sBrowser::drawIME() {
 int sBrowser::setupError(int type, int kind) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x72fc91 read, used 7 times; no DWARF local holds it
-    sBrowser* t0 = ::sBrowser::getInstance();
+    sBrowser* t0 = sBrowser::getInstance();
     t0->mErrorType = type;
     t0->mErrorKind = kind;
-    t0->mErrorCategory = t0->::sBrowser::getBrowser()->::cBrowserPS4::get_error_category(type, kind);
+    t0->mErrorCategory = t0->getBrowser()->get_error_category(type, kind);
     // inferred: a temporary for the result of the call at 0x72fcc3, used twice; no DWARF local holds it
-    int t1 = t0->::sBrowser::getBrowser()->::cBrowserPS4::get_error_flowtype(t0->::sBrowser::getErrorType(), t0->::sBrowser::getErrorKind());
+    int t1 = t0->getBrowser()->get_error_flowtype(t0->getErrorType(), t0->getErrorKind());
     t0->mErrorFlowType = t1;
-    if (t1 == static_cast<int>(0)) {
-        t0->::sBrowser::getBrowser()->::cBrowserPS4::err_exit();
+    if (t1 == 0) {
+        t0->getBrowser()->err_exit();
     }
-    return static_cast<int>(1);
+    return 1;
 }
 
 // Address: 0x0072fcf0 - 0x0072fd44 (84 bytes)
 void sBrowser::moveError() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x72fcfd read, used 5 times; no DWARF local holds it
-    sBrowser* t0 = ::sBrowser::getInstance();
-    if (t0->::sBrowser::getErrorFlowType() != static_cast<int>(0)) {
-        if (t0->::sBrowser::getErrorFlowType() == static_cast<int>(1)) {
-            t0->::sBrowser::getBrowser()->::cBrowserPS4::err_exit();
+    sBrowser* t0 = sBrowser::getInstance();
+    if (t0->getErrorFlowType() != 0) {
+        if (t0->getErrorFlowType() == 1) {
+            t0->getBrowser()->err_exit();
         } else {
-            if (t0->::sBrowser::getErrorFlowType() == static_cast<int>(2)) {
-                t0->::sBrowser::getBrowser()->::cBrowserPS4::err_exit();
-                t0->::sBrowser::getBrowser()->::cBrowserPS4::goto_error_page(static_cast<int>(0));
+            if (t0->getErrorFlowType() == 2) {
+                t0->getBrowser()->err_exit();
+                t0->getBrowser()->goto_error_page(0);
             }
         }
     } else {
-        t0->::sBrowser::getBrowser()->::cBrowserPS4::err_exit();
+        t0->getBrowser()->err_exit();
     }
 }
 
@@ -727,8 +725,8 @@ __attribute__((weak)) void sBrowser::drawError() {
 // Address: 0x0072fd60 - 0x0072fd82 (34 bytes)
 int sBrowser::setupJSD(const void* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sBrowser::getInstance()->::sBrowser::getBrowser()->::cBrowserPS4::jsd_exit(static_cast<int>(0), static_cast<char*>(nullptr));
-    return static_cast<int>(1);
+    sBrowser::getInstance()->getBrowser()->jsd_exit(0, static_cast<char*>(nullptr));
+    return 1;
 }
 
 // Address: 0x0072fd90 - 0x0072fd91 (1 bytes)
@@ -740,6 +738,13 @@ __attribute__((weak)) void sBrowser::moveJSD() {
 __attribute__((weak)) void sBrowser::drawJSD() {
     // Empty in the binary (a single `ret`).
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sBrowser* sBrowser::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sBrowser::MyDTI sBrowser::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const stBrowserSizeParam sBrowser::mBrowserSizeTable[4];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sBrowser.cpp at 0x0073124f-0x0073128c (called at sBrowser.cpp:52)

@@ -28,7 +28,7 @@ const MtDTI& kTHINKDATA::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* kTHINKDATA::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::kTHINKDATA::DTI);
+    return MtMemoryAllocator::getAllocator(kTHINKDATA::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* kTHINKDATA::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* kTHINKDATA::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::kTHINKDATA::DTI)->memAlloc(sz, align, ::kTHINKDATA::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(kTHINKDATA::DTI)->memAlloc(sz, align, kTHINKDATA::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* kTHINKDATA::operator new(size_t sz, u32 align) {
 // Address: 0x006917c0 - 0x006917ea (42 bytes)
 __attribute__((weak)) void kTHINKDATA::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::kTHINKDATA::getAllocator()->memFree(p_addr);
+    kTHINKDATA::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,8 +67,8 @@ __attribute__((weak)) void kTHINKDATA::operator delete(void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline kTHINKDATA::kTHINKDATA() {
-    this->tbltype = static_cast<u32>(0);
-    ::memset(static_cast<void*>(&this->flg), static_cast<int>(0), static_cast<size_t>(152));
+    tbltype = 0;
+    memset(static_cast<void*>(&flg), 0, 152ul);
 }
 
 // No out-of-line body: 58 inlined copies in 1 function (68930 bytes)
@@ -89,40 +89,40 @@ void kTHINKDATA::load(MtDataReader& r) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->tbltype = r.readU32();
-    this->flg = r.readU64();
-    this->userflg = r.readU64();
-    this->lengA = r.readF32();
-    this->lengB = r.readF32();
-    this->angleA = r.readF32();
-    this->angleB = r.readF32();
-    this->heightA = r.readF32();
-    this->heightB = r.readF32();
-    this->actionNo = r.readS32();
-    this->thintblListIdx = r.readS32();
-    this->functype = r.readU32();
-    this->funcno = r.readU32();
-    this->exevalue = r.readU32();
-    this->exectype = r.readU32();
-    this->execfuncno = r.readU32();
-    this->value = r.readU32();
-    this->functype2 = r.readU32();
-    this->funcno2 = r.readU32();
-    this->value2 = r.readU32();
-    this->functype3 = r.readU32();
-    this->funcno3 = r.readU32();
-    this->value3 = r.readU32();
-    this->bitOnce = r.readU64();
-    this->bit = r.readU64();
-    this->freework = r.readU64();
-    this->fsys_param[0] = r.readF32();
-    this->fsys_param[1] = r.readF32();
-    this->fsys_param[2] = r.readF32();
-    this->fusr_param[0] = r.readF32();
-    this->fusr_param[1] = r.readF32();
-    this->fusr_param[2] = r.readF32();
-    this->fusr_param[3] = r.readF32();
-    this->fusr_param[4] = r.readF32();
+    tbltype = r.readU32();
+    flg = r.readU64();
+    userflg = r.readU64();
+    lengA = r.readF32();
+    lengB = r.readF32();
+    angleA = r.readF32();
+    angleB = r.readF32();
+    heightA = r.readF32();
+    heightB = r.readF32();
+    actionNo = r.readS32();
+    thintblListIdx = r.readS32();
+    functype = r.readU32();
+    funcno = r.readU32();
+    exevalue = r.readU32();
+    exectype = r.readU32();
+    execfuncno = r.readU32();
+    value = r.readU32();
+    functype2 = r.readU32();
+    funcno2 = r.readU32();
+    value2 = r.readU32();
+    functype3 = r.readU32();
+    funcno3 = r.readU32();
+    value3 = r.readU32();
+    bitOnce = r.readU64();
+    bit = r.readU64();
+    freework = r.readU64();
+    fsys_param[0] = r.readF32();
+    fsys_param[1] = r.readF32();
+    fsys_param[2] = r.readF32();
+    fusr_param[0] = r.readF32();
+    fusr_param[1] = r.readF32();
+    fusr_param[2] = r.readF32();
+    fusr_param[3] = r.readF32();
+    fusr_param[4] = r.readF32();
 }
 
 // Address: 0x01a98c40 - 0x01a98e45 (517 bytes)
@@ -131,66 +131,68 @@ void kTHINKDATA::save(MtDataWriter& w) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->tbltype);
+    nDDOIO::writeData(w, tbltype);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->flg);
+    nDDOIO::writeData(w, flg);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->userflg);
+    nDDOIO::writeData(w, userflg);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->lengA);
+    nDDOIO::writeData(w, lengA);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->lengB);
+    nDDOIO::writeData(w, lengB);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->angleA);
+    nDDOIO::writeData(w, angleA);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->angleB);
+    nDDOIO::writeData(w, angleB);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->heightA);
+    nDDOIO::writeData(w, heightA);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->heightB);
+    nDDOIO::writeData(w, heightB);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->actionNo);
+    nDDOIO::writeData(w, actionNo);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->thintblListIdx);
+    nDDOIO::writeData(w, thintblListIdx);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->functype);
+    nDDOIO::writeData(w, functype);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->funcno);
+    nDDOIO::writeData(w, funcno);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->exevalue);
+    nDDOIO::writeData(w, exevalue);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->exectype);
+    nDDOIO::writeData(w, exectype);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->execfuncno);
+    nDDOIO::writeData(w, execfuncno);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->value);
+    nDDOIO::writeData(w, value);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->functype2);
+    nDDOIO::writeData(w, functype2);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->funcno2);
+    nDDOIO::writeData(w, funcno2);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->value2);
+    nDDOIO::writeData(w, value2);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->functype3);
+    nDDOIO::writeData(w, functype3);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->funcno3);
+    nDDOIO::writeData(w, funcno3);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->value3);
+    nDDOIO::writeData(w, value3);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->bitOnce);
+    nDDOIO::writeData(w, bitOnce);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->bit);
+    nDDOIO::writeData(w, bit);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, this->freework);
-    w.writeF32(this->fsys_param[0]);
-    w.writeF32(this->fsys_param[1]);
-    w.writeF32(this->fsys_param[2]);
-    w.writeF32(this->fusr_param[0]);
-    w.writeF32(this->fusr_param[1]);
-    w.writeF32(this->fusr_param[2]);
-    w.writeF32(this->fusr_param[3]);
-    w.writeF32(this->fusr_param[4]);
+    nDDOIO::writeData(w, freework);
+    w.writeF32(fsys_param[0]);
+    w.writeF32(fsys_param[1]);
+    w.writeF32(fsys_param[2]);
+    w.writeF32(fusr_param[0]);
+    w.writeF32(fusr_param[1]);
+    w.writeF32(fusr_param[2]);
+    w.writeF32(fusr_param[3]);
+    w.writeF32(fusr_param[4]);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): kTHINKDATA::MyDTI kTHINKDATA::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rkThinkData.cpp at 0x00691e9c-0x00691ed9 (called at rkThinkData.cpp:32)
@@ -200,7 +202,7 @@ void kTHINKDATA::save(MtDataWriter& w) {
 // Address: 0x00691730 - 0x0069178d (93 bytes)
 MtObject* kTHINKDATA::MyDTI::newInstance() const {
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::kTHINKDATA;
+    return new (16u) kTHINKDATA;
 }
 
 // No out-of-line body: no code in the ELF
@@ -241,7 +243,7 @@ const MtDTI& rkThinkData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rkThinkData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rkThinkData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -314,23 +316,25 @@ MT_CTSTR rkThinkData::getExt() const {
 // Address: 0x01a98c20 - 0x01a98c32 (18 bytes)
 u32 rkThinkData::getInfoNum(s32 type) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(type) <= static_cast<unsigned int>(127)) {
-        return this->mArrayNum[type];
+    if (static_cast<unsigned int>(type) <= 127) {
+        return mArrayNum[type];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00691d10 - 0x00691d5d (77 bytes)
 kTHINKDATA* rkThinkData::getInfo(s32 type, u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(type) <= static_cast<unsigned int>(127)) {
-        if (index < this->getInfoNum(type)) {
-            return &this->mpArray[type][index];
+    if (static_cast<unsigned int>(type) <= 127) {
+        if (index < getInfoNum(type)) {
+            return &mpArray[type][index];
         }
     }
-    return static_cast<kTHINKDATA*>(nullptr);
+    return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rkThinkData::MyDTI rkThinkData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rkThinkData.cpp at 0x00691e5f-0x00691e9c (called at rkThinkData.cpp:31)

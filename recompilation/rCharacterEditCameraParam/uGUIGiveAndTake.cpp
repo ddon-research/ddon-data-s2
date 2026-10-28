@@ -38,7 +38,7 @@ const MtDTI& uGUIGiveAndTake::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGiveAndTake::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* uGUIGiveAndTake::getAllocator() {
 // Address: 0x00a9cc50 - 0x00a9cc90 (64 bytes)
 void* uGUIGiveAndTake::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGiveAndTake::getAllocator()->memAlloc(sz, align, ::uGUIGiveAndTake::DTI.::MtDTI::getID());
+    return uGUIGiveAndTake::getAllocator()->memAlloc(sz, align, uGUIGiveAndTake::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* uGUIGiveAndTake::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGiveAndTake::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,11 +93,11 @@ __attribute__((weak)) void uGUIGiveAndTake::createProperty(MtPropertyList& s) {
 // Address: 0x00a9d960 - 0x00a9da0f (175 bytes)
 bool uGUIGiveAndTake::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TRANSFER_GUI"), static_cast<u32>(129), static_cast<t64>(1436265763)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GENERAL_HANDOVER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsg;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TRANSFER_GUI"), 129u, 1436265763l))) != nullptr) {
+            if (mpGUIMsg == nullptr) {
+                if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GENERAL_HANDOVER_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsg;
                     return true;
                 } else {
                     return false;
@@ -109,9 +109,9 @@ bool uGUIGiveAndTake::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsg == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsg = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GENERAL_HANDOVER_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsg;
+        if (mpGUIMsg == nullptr) {
+            if ((mpGUIMsg = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GENERAL_HANDOVER_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsg;
                 return true;
             } else {
                 return false;
@@ -140,50 +140,50 @@ __attribute__((weak)) void uGUIGiveAndTake::setup() {
 // Address: 0x00a9f590 - 0x00a9f63d (173 bytes)
 void uGUIGiveAndTake::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    this->uGUIBase::kill();
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    if (this->mpGUIPopNumber != static_cast<uGUIPopNumber01*>(nullptr)) {
-        this->mpGUIPopNumber->kill();
-        this->mpGUIPopNumber = static_cast<uGUIPopNumber01*>(nullptr);
+    if (mpGUIPopNumber != nullptr) {
+        mpGUIPopNumber->kill();
+        mpGUIPopNumber = nullptr;
     }
-    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
-        this->mpGUIPopDetail->kill();
-        this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    if (mpGUIPopDetail != nullptr) {
+        mpGUIPopDetail->kill();
+        mpGUIPopDetail = nullptr;
     }
-    if (this->mpGUIMsg != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpGUIMsg->::cResource::release();
-        this->mpGUIMsg = static_cast<rGUIMessage*>(nullptr);
+    if (mpGUIMsg != nullptr) {
+        mpGUIMsg->release();
+        mpGUIMsg = nullptr;
     }
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a9f640 - 0x00a9f6ad (109 bytes)
 void uGUIGiveAndTake::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->mpGUISystemMsg->::cUnit::isEnable() == false) {
-            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
         }
     }
-    if (this->mpGUIPopNumber != static_cast<uGUIPopNumber01*>(nullptr)) {
-        if (this->mpGUIPopNumber->::cUnit::isEnable() == false) {
-            this->mpGUIPopNumber = static_cast<uGUIPopNumber01*>(nullptr);
+    if (mpGUIPopNumber != nullptr) {
+        if (!mpGUIPopNumber->isEnable()) {
+            mpGUIPopNumber = nullptr;
         }
     }
-    if (this->mpGUIPopDetail == static_cast<uGUIPopDetail01*>(nullptr)) {
+    if (mpGUIPopDetail == nullptr) {
         return;
     }
-    if (this->mpGUIPopDetail->::cUnit::isEnable() != false) {
+    if (mpGUIPopDetail->isEnable()) {
         return;
     }
-    this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+    mpGUIPopDetail = nullptr;
 }
 
 // Address: 0x00a9f6b0 - 0x00a9f831 (385 bytes)
@@ -191,151 +191,150 @@ void uGUIGiveAndTake::move() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; a virtual call on an object outside an inlined callee; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    this->::uGUIBase::move();
-    if (this->mFlowId <= static_cast<u32>(6)) {
-        if (((static_cast<unsigned long>(122) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
-            (&this->mBtnFinish)->update();
-            (&this->mBtnCancel)->update();
-            this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
-            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
-            this->mItemList[0].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[1].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[2].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[3].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[4].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[5].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[6].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[7].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[8].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[9].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[10].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[11].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[12].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[13].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[14].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[15].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[16].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[17].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[18].mIcon.::uGUIBase::cReferenceUIIconItem::update();
-            this->mItemList[19].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->uGUIBase::move();
+    if (mFlowId <= 6u) {
+        if (((122ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+            (&mBtnFinish)->update();
+            (&mBtnCancel)->update();
+            mCloseBtn.uGUIBase::cReferenceUICloseBtn::update();
+            mGuide.uGUIBase::cReferenceUIBtnGuide::update();
+            mItemList[0].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[1].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[2].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[3].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[4].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[5].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[6].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[7].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[8].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[9].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[10].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[11].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[12].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[13].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[14].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[15].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[16].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[17].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[18].mIcon.uGUIBase::cReferenceUIIconItem::update();
+            mItemList[19].mIcon.uGUIBase::cReferenceUIIconItem::update();
         }
     }
-    if (this->mSleep == false) {
+    if (!mSleep) {
         return;
     }
-    if (this->mFlowId == static_cast<u32>(2)) {
-    } else {
-        this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(2));
+    if (mFlowId != 2) {
+        setFlowId(2u);
     }
 }
 
 // Address: 0x00a9f950 - 0x00a9f9c0 (112 bytes)
 void uGUIGiveAndTake::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(3)) {
+    if (mFlowId != 3) {
         return;
     }
-    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCtrl->execute();
+    mCloseBtn.execute();
+    if (mpCtrl != nullptr) {
+        mpCtrl->execute();
     }
-    if (this->mpCtrlFoC != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpCtrlFoC->execute();
+    if (mpCtrlFoC != nullptr) {
+        mpCtrlFoC->execute();
     }
-    if (this->mpCtrlItemList != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-        this->mpCtrlItemList->execute();
+    if (mpCtrlItemList != nullptr) {
+        mpCtrlItemList->execute();
     }
-    this->mToggleBtnBagRef.::uGUIBase::cReferenceUIToggleBtn::execute();
+    mToggleBtnBagRef.execute();
 }
 
 // Address: 0x00a9f9c0 - 0x00a9fb2c (364 bytes)
 void uGUIGiveAndTake::moveEvent() {
     // DWARF local not rendered: const u32 uMsgIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-        case static_cast<u32>(0):
+    switch (getInputEvent() - 66u) {
+        case 0:
         {
-            if (this->mMode != static_cast<u32>(0)) {
-                this->::uGUIGiveAndTake::createDialog(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(20)));
-                this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(4));
-                this->::uGUIGiveAndTake::updateDisp();
+            if (mMode != 0) {
+                createDialog(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 20u));
+                setFlowId(4u);
+                updateDisp();
             } else {
-                this->::uGUIGiveAndTake::createDialog(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(14)));
-                this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(4));
-                this->::uGUIGiveAndTake::updateDisp();
+                createDialog(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 14u));
+                setFlowId(4u);
+                updateDisp();
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->::uGUIGiveAndTake::setupCtrl();
-            this->::uGUIGiveAndTake::updateDisp();
+            setupCtrl();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mEndParam = static_cast<u32>(1);
-            this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(7));
+            mEndParam = 1;
+            setFlowId(7u);
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            if (this->mMode != static_cast<u32>(0)) {
-                if (this->mItemGiveList.::MtArray::mLength != static_cast<u32>(0)) {
-                    this->::uGUIGiveAndTake::createDialog(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(21)));
-                    this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(5));
-                    this->::uGUIGiveAndTake::updateDisp();
+            if (mMode != 0) {
+                if (mItemGiveList.mLength != 0) {
+                    createDialog(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 21u));
+                    setFlowId(5u);
+                    updateDisp();
                 } else {
-                    this->::uGUIGiveAndTake::createDialog(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(23)));
-                    this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(5));
-                    this->::uGUIGiveAndTake::updateDisp();
+                    createDialog(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 23u));
+                    setFlowId(5u);
+                    updateDisp();
                 }
             } else {
-                this->::uGUIGiveAndTake::createDialog(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGUIMsg, static_cast<u32>(18)));
-                this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(5));
-                this->::uGUIGiveAndTake::updateDisp();
+                createDialog(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsg, 18u));
+                setFlowId(5u);
+                updateDisp();
             }
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->::uGUIGiveAndTake::updateDisp();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(5):
+        case 5:
         {
-            this->mRnoPopNumber = static_cast<u32>(0);
-            this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(6));
-            this->::uGUIGiveAndTake::updateDisp();
+            mRnoPopNumber = 0;
+            setFlowId(6u);
+            updateDisp();
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            this->::uGUIGiveAndTake::updateDisp();
+            updateDisp();
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            this->mCtrlFocus = static_cast<u32>(0);
-            if (this->mToggleBtnBagRef.mValue != static_cast<u8>(0)) {
-                this->mBagRefF = static_cast<u32>(2);
-                if (this->mMode == static_cast<u32>(1)) {
-                    this->::uGUIGiveAndTake::resetItemIcon(false);
-                    this->::uGUIGiveAndTake::setupCtrl();
-                    this->::uGUIGiveAndTake::updateDisp();
+            mCtrlFocus = 0;
+            if (mToggleBtnBagRef.mValue != 0) {
+                mBagRefF = 2;
+                if (mMode == 1) {
+                    resetItemIcon(false);
+                    setupCtrl();
+                    updateDisp();
                 } else {
-                    this->::uGUIGiveAndTake::setupCtrl();
-                    this->::uGUIGiveAndTake::updateDisp();
+                    setupCtrl();
+                    updateDisp();
                 }
             } else {
-                this->mBagRefF = static_cast<u32>(1);
-                if (this->mMode == static_cast<u32>(1)) {
-                    this->::uGUIGiveAndTake::resetItemIcon(false);
-                    this->::uGUIGiveAndTake::setupCtrl();
-                    this->::uGUIGiveAndTake::updateDisp();
+                mBagRefF = 1;
+                if (mMode == 1) {
+                    resetItemIcon(false);
+                    setupCtrl();
+                    updateDisp();
                 } else {
-                    this->::uGUIGiveAndTake::setupCtrl();
-                    this->::uGUIGiveAndTake::updateDisp();
+                    setupCtrl();
+                    updateDisp();
                 }
             }
             break;
@@ -421,32 +420,31 @@ __attribute__((weak)) void uGUIGiveAndTake::setFlowId(u32 uFlowId) {
 // Address: 0x00aa0140 - 0x00aa015e (30 bytes)
 void uGUIGiveAndTake::updateSleep() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSleep != false) {
-    } else {
-        this->::uGUIBase::mResult = static_cast<uGUIBase::GUI_RESULT>(0);
-        this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(1));
+    if (!mSleep) {
+        mResult = RESULT_NONE;
+        setFlowId(1u);
     }
 }
 
 // Address: 0x00aa00d0 - 0x00aa0121 (81 bytes)
 void uGUIGiveAndTake::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mBagF & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        this->mBagRefF = static_cast<u32>(1);
-        this->mToggleBtnBagRef.::uGUIBase::cReferenceUIToggleBtn::setValue(static_cast<u8>(0));
+    if ((mBagF & 1u) != 0) {
+        mBagRefF = 1;
+        mToggleBtnBagRef.setValue(static_cast<u8>(0));
     }
-    this->mIsFirst = true;
-    this->::uGUIGiveAndTake::resetItemIcon(true);
-    this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(3));
+    mIsFirst = true;
+    resetItemIcon(true);
+    setFlowId(3u);
 }
 
 // Address: 0x00aa0170 - 0x00aa019c (44 bytes)
 void uGUIGiveAndTake::updateWait() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCtrlFocus == static_cast<u32>(0)) {
-        this->mToggleBtnBagRef.::uGUIBase::cReferenceUIToggleBtn::update();
+    if (mCtrlFocus == 0) {
+        mToggleBtnBagRef.uGUIBase::cReferenceUIToggleBtn::update();
     }
-    this->::uGUIGiveAndTake::updateDetail();
+    updateDetail();
 }
 
 // Address: 0x00aa01a0 - 0x00aa0384 (484 bytes)
@@ -480,17 +478,17 @@ __attribute__((weak)) void uGUIGiveAndTake::updateWaitPopNumber() {
 // Address: 0x00aa0b80 - 0x00aa0b89 (9 bytes)
 void uGUIGiveAndTake::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00a9e910 - 0x00a9e931 (33 bytes)
 u32 uGUIGiveAndTake::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(10);
+    if (msg != nullptr) {
+        msg->changeSE = 10;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(1);
+    setInputEvent(66u);
+    return 1;
 }
 
 // Address: 0x00a9ec40 - 0x00a9ed04 (196 bytes)
@@ -503,43 +501,43 @@ __attribute__((weak)) u32 uGUIGiveAndTake::evCtrlMove(cControl::Message* msg) {
 // Address: 0x00a9ed10 - 0x00a9ed56 (70 bytes)
 u32 uGUIGiveAndTake::evCtrlFoCDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->current != static_cast<s32>(0)) {
-            msg->changeSE = static_cast<u32>(10);
-            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-            return static_cast<u32>(1);
+    if (msg != nullptr) {
+        if (msg->current != 0) {
+            msg->changeSE = 10;
+            setInputEvent(66u);
+            return 1;
         } else {
-            if (this->mMode != static_cast<u32>(0)) {
-                msg->changeSE = static_cast<u32>(4);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                return static_cast<u32>(1);
+            if (mMode != 0) {
+                msg->changeSE = 4;
+                setInputEvent(69u);
+                return 1;
             } else {
-                return this->::uGUIGiveAndTake::evCtrlItemTakeAllDecide(msg);
+                return evCtrlItemTakeAllDecide(msg);
             }
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00a9ed60 - 0x00a9ed7e (30 bytes)
 u32 uGUIGiveAndTake::evCtrlFoCMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00a9f010 - 0x00a9f02e (30 bytes)
 u32 uGUIGiveAndTake::evCtrlItemListMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return static_cast<u32>(0);
+    setInputEvent(72u);
+    return 0;
 }
 
 // Address: 0x00a9ef40 - 0x00a9f009 (201 bytes)
@@ -575,71 +573,62 @@ __attribute__((weak)) u32 uGUIGiveAndTake::evCtrlMouseClick(cControl::Message* m
 // Address: 0x00a9e940 - 0x00a9e991 (81 bytes)
 u32 uGUIGiveAndTake::evCtrlToggle(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mToggleBtnBagRef.mValueForbid == static_cast<u8>(2)) {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(2);
+    if (mToggleBtnBagRef.mValueForbid == 2) {
+        if (msg != nullptr) {
+            msg->changeSE = 2;
         }
     } else {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(20);
+        if (msg != nullptr) {
+            msg->changeSE = 20;
         }
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return this->::uGUIBase::evCtrlcReferenceUIToggleBtnSwitch(msg);
+    setInputEvent(73u);
+    return evCtrlcReferenceUIToggleBtnSwitch(msg);
 }
 
 // Address: 0x00a9fd10 - 0x00a9fe30 (288 bytes)
 __attribute__((weak)) void uGUIGiveAndTake::setupCtrl() {
     // DWARF local not rendered: const u8 forbid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl == static_cast<cControl*>(nullptr)) {
-    } else {
-        this->mpCtrl->mCtrlF = this->mpCtrl->mCtrlF & static_cast<u32>(4294967287);
+    if (mpCtrl != nullptr) {
+        mpCtrl->mCtrlF = mpCtrl->mCtrlF & 0xFFFFFFF7u;
     }
-    if (this->mpCtrlFoC == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-    } else {
-        this->mpCtrlFoC->::cControl::mCtrlF = this->mpCtrlFoC->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpCtrlFoC != nullptr) {
+        mpCtrlFoC->mCtrlF = mpCtrlFoC->mCtrlF | 8u;
     }
-    if (this->mpCtrlItemList == static_cast<uGUIBase::cMatrix*>(nullptr)) {
-    } else {
-        this->mpCtrlItemList->::cControl::mCtrlF = this->mpCtrlItemList->::cControl::mCtrlF | static_cast<u32>(8);
+    if (mpCtrlItemList != nullptr) {
+        mpCtrlItemList->mCtrlF = mpCtrlItemList->mCtrlF | 8u;
     }
-    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::clearGuide();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::clearPointerGuideMsg();
-    if (this->mCtrlFocus != static_cast<u32>(2)) {
-        if (this->mCtrlFocus != static_cast<u32>(1)) {
-            if (this->mCtrlFocus == static_cast<u32>(0)) {
-                if (this->mToggleBtnBagRef.mValueForbid <= static_cast<u8>(1)) {
-                } else {
-                    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(13));
+    mGuide.clearGuide();
+    static_cast<sGUIExt*>(sGUI::getInstance())->clearPointerGuideMsg();
+    if (mCtrlFocus != 2) {
+        if (mCtrlFocus != 1) {
+            if (mCtrlFocus == 0) {
+                if (mToggleBtnBagRef.mValueForbid > 1) {
+                    mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_CHANGE_TOGGLE);
                 }
-                if (this->mpCtrlItemList != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-                    this->mpCtrlItemList->setCurrentPos(static_cast<s32>(0), false);
+                if (mpCtrlItemList != nullptr) {
+                    mpCtrlItemList->setCurrentPos(0, false);
                 }
             }
         } else {
-            if (this->mpGUIPopDetail == static_cast<uGUIPopDetail01*>(nullptr)) {
-            } else {
-                if (this->mpGUIPopDetail->::cUnit::isVisible() == false) {
-                } else {
-                    if (static_cast<int>(this->mpGUIPopDetail->mRefPageDot.mDispPageNum) <= static_cast<int>(1)) {
-                    } else {
-                        this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(2));
+            if (mpGUIPopDetail != nullptr) {
+                if (mpGUIPopDetail->isVisible()) {
+                    if (static_cast<int>(mpGUIPopDetail->mRefPageDot.mDispPageNum) > 1) {
+                        mGuide.addGuide(uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_CHANGE_INFO_RU);
                     }
                 }
             }
-            if (this->mpCtrlItemList == static_cast<uGUIBase::cMatrix*>(nullptr)) {
-            } else {
-                this->mpCtrlItemList->::cControl::mCtrlF = this->mpCtrlItemList->::cControl::mCtrlF & static_cast<u32>(4294967287);
+            if (mpCtrlItemList != nullptr) {
+                mpCtrlItemList->mCtrlF = mpCtrlItemList->mCtrlF & 0xFFFFFFF7u;
             }
         }
     } else {
-        if (this->mpCtrlFoC == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        } else {
-            this->mpCtrlFoC->::cControl::mCtrlF = this->mpCtrlFoC->::cControl::mCtrlF & static_cast<u32>(4294967287);
+        if (mpCtrlFoC != nullptr) {
+            mpCtrlFoC->mCtrlF = mpCtrlFoC->mCtrlF & 0xFFFFFFF7u;
         }
-        if (this->mpCtrlItemList != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-            this->mpCtrlItemList->setCurrentPos(static_cast<s32>(15), false);
+        if (mpCtrlItemList != nullptr) {
+            mpCtrlItemList->setCurrentPos(15, false);
         }
     }
 }
@@ -740,6 +729,8 @@ __attribute__((weak)) void uGUIGiveAndTake::updateDisp() {
 //   and 9 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR uGUIGiveAndTake::getMsg(u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGiveAndTake::MyDTI uGUIGiveAndTake::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa149e-0x00aa14db (called at uGUIGiveAndTake.cpp:56)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa149e-0x00aa14db (called at uGUIGiveAndTake.h:51)
@@ -775,7 +766,7 @@ const MtDTI& uGUIGiveAndTake::cItemInfoList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* uGUIGiveAndTake::cItemInfoList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemInfoList::DTI)->memAlloc(sz, align, ::uGUIGiveAndTake::cItemInfoList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemInfoList::DTI)->memAlloc(sz, align, uGUIGiveAndTake::cItemInfoList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -789,7 +780,7 @@ inline void* uGUIGiveAndTake::cItemInfoList::operator new(size_t sz, u32 align) 
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGiveAndTake::cItemInfoList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemInfoList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemInfoList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -811,6 +802,8 @@ inline void uGUIGiveAndTake::cItemInfoList::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // uGUIGiveAndTake::cItemInfoList::~cItemInfoList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGiveAndTake::cItemInfoList::MyDTI uGUIGiveAndTake::cItemInfoList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa14db-0x00aa151b (called at uGUIGiveAndTake.cpp:57)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa14db-0x00aa151b (called at uGUIGiveAndTake.h:124)
@@ -819,7 +812,7 @@ inline void uGUIGiveAndTake::cItemInfoList::operator delete(void* p_addr) {
 // Address: 0x00a9cd00 - 0x00a9cd48 (72 bytes)
 MtObject* uGUIGiveAndTake::cItemInfoList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIGiveAndTake::cItemInfoList;
+    return new (16u) uGUIGiveAndTake::cItemInfoList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -836,7 +829,7 @@ const MtDTI& uGUIGiveAndTake::cItemGiveList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGiveAndTake::cItemGiveList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemGiveList::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemGiveList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -845,7 +838,7 @@ inline MtAllocator* uGUIGiveAndTake::cItemGiveList::getAllocator() {
 // Address: 0x00a9ce10 - 0x00a9ce50 (64 bytes)
 void* uGUIGiveAndTake::cItemGiveList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGiveAndTake::cItemGiveList::getAllocator()->memAlloc(sz, align, ::uGUIGiveAndTake::cItemGiveList::DTI.::MtDTI::getID());
+    return uGUIGiveAndTake::cItemGiveList::getAllocator()->memAlloc(sz, align, uGUIGiveAndTake::cItemGiveList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -859,7 +852,7 @@ void* uGUIGiveAndTake::cItemGiveList::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIGiveAndTake::cItemGiveList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemGiveList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemGiveList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -881,6 +874,8 @@ inline void uGUIGiveAndTake::cItemGiveList::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // uGUIGiveAndTake::cItemGiveList::~cItemGiveList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGiveAndTake::cItemGiveList::MyDTI uGUIGiveAndTake::cItemGiveList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa151b-0x00aa1554 (called at uGUIGiveAndTake.cpp:58)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa151b-0x00aa1554 (called at uGUIGiveAndTake.h:142)
@@ -889,7 +884,7 @@ inline void uGUIGiveAndTake::cItemGiveList::operator delete(void* p_addr) {
 // Address: 0x00a9cdc0 - 0x00a9ce0f (79 bytes)
 MtObject* uGUIGiveAndTake::cItemGiveList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uGUIGiveAndTake::cItemGiveList;
+    return new (16u) uGUIGiveAndTake::cItemGiveList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -951,6 +946,8 @@ uGUIGiveAndTake::cItemList::~cItemList() {
     DDON_STUB("uGUIGiveAndTake::cItemList::~cItemList")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGiveAndTake::cItemList::MyDTI uGUIGiveAndTake::cItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIGiveAndTake.cpp at 0x00aa1554-0x00aa158d (called at uGUIGiveAndTake.cpp:59)

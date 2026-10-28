@@ -30,7 +30,9 @@ namespace nWin32Detour { class eventFlag; }
 struct pthread;
 class rArchive;
 class rCollision;
+class rEffectList;
 class rNavigationMesh;
+class rSoundStreamRequest;
 class uSky;
 struct z_stream_s;
 
@@ -61,8 +63,12 @@ class sResource : public cSystem
     friend class cResource;
     // inferred: rCollision::load names sResource::mpInstance
     friend class rCollision;
+    // inferred: rEffectList::ResourceInfo::createTexture names sResource::mpInstance, through its enclosing class rEffectList
+    friend class rEffectList;
     // inferred: rNavigationMesh::load names sResource::mpInstance
     friend class rNavigationMesh;
+    // inferred: rSoundStreamRequest::SoundSource::createResource names sResource::mpInstance, through its enclosing class rSoundStreamRequest
+    friend class rSoundStreamRequest;
     // inferred: uSky::setup names sResource::mpInstance
     friend class uSky;
 public:

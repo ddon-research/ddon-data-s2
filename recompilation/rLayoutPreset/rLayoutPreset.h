@@ -102,6 +102,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cLayoutPreset::cLayoutPreset() {
-    this->mCtrlType = static_cast<u32>(255);
-    this->mID = static_cast<u32>(0);
+    this->mCtrlType = 255;
+    this->mID = 0;
 }

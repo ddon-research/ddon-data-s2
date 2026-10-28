@@ -24,7 +24,7 @@ const MtDTI& CDataGameTimeBaseInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGameTimeBaseInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGameTimeBaseInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGameTimeBaseInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataGameTimeBaseInfo::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataGameTimeBaseInfo::DTI)->memAlloc(sz, align, ::CDataGameTimeBaseInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataGameTimeBaseInfo::DTI)->memAlloc(sz, align, CDataGameTimeBaseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003db530 - 0x003db55a (42 bytes)
 __attribute__((weak)) void CDataGameTimeBaseInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGameTimeBaseInfo::getAllocator()->memFree(p_addr);
+    CDataGameTimeBaseInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataGameTimeBaseInfo::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataGameTimeBaseInfo::CDataGameTimeBaseInfo(u32, u32, u32, u32, u32, u32, s64, s64, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGameTimeBaseInfo::MyDTI CDataGameTimeBaseInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f0d0-0x0041f109 (called at WeatherImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f0d0-0x0041f109 (called at Weather.h:21)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataGameTimeBaseInfo::operator delete(void* p_addr) 
 // Address: 0x003db490 - 0x003db500 (112 bytes)
 MtObject* CDataGameTimeBaseInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGameTimeBaseInfo;
+    return new (16u) CDataGameTimeBaseInfo;
 }
 

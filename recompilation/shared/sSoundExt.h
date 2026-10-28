@@ -676,9 +676,15 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cSplitBgm::cSplitBgm() {
-    this->mThisId = static_cast<uintptr>(0);
-    this->mpAreaInfo = static_cast<rSoundAreaInfo*>(nullptr);
-    this->mAreaNo = static_cast<s32>(-1);
+    this->mThisId = 0;
+    this->mpAreaInfo = nullptr;
+    this->mAreaNo = -1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uHuman::callbackChecked at 0xc8606c-0xc86073; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline rSoundRequest* sSoundExt::getHitEnchantResource() {
+    return this->mprHitEnchantRequest;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -688,8 +694,44 @@ inline rSoundRequest* sSoundExt::getEnchantResource() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadBattleCommon at 0x84cb87-0x84cb8e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setEnchantResource(rSoundRequest* pRequest) {
+    this->mprEnchantRequest = pRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadBattleCommon at 0x84cbc5-0x84cbcc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setHitEnchantResource(rSoundRequest* pRequest) {
+    this->mprHitEnchantRequest = pRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rSoundRequest* sSoundExt::getGameBuffResource() {
     return this->mprGameBuffRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadBattleCommon at 0x84cb49-0x84cb50; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setMagicResource(rSoundRequest* pRequest) {
+    this->mprMagicRequest = pRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadGameCommon at 0x84c7c5-0x84c7cc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setGameBuffResource(rSoundRequest* pRequest) {
+    this->mprGameBuffRequest = pRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadGameCommon at 0x84c8c4-0x84c8cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setShlJobShareResource(rSoundRequest* pRequest) {
+    this->mprShlJobShareRequest = pRequest;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::loadGameCommon at 0x84c908-0x84c90f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::setEnemyShareSeResource(rSoundRequest* pRequest) {
+    this->mprEnemyShareRequest = pRequest;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -700,14 +742,14 @@ inline rSoundSubMixerSet* sSoundExt::getSoundSubMixerSetResource() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sSoundExt::cVoiceRequest::cVoiceRequest() {
-    this->mpResource = static_cast<rSoundStreamRequest*>(nullptr);
-    this->mReqNo = static_cast<u32>(4294967295);
-    this->mVoiceType = static_cast<u32>(0);
-    this->mThisId = static_cast<uintptr>(0);
+    this->mpResource = nullptr;
+    this->mReqNo = 0xFFFFFFFF;
+    this->mVoiceType = 0;
+    this->mThisId = 0;
     this->mIsPrepare = false;
-    this->mStatus = static_cast<u32>(3);
-    this->mPrio = static_cast<u32>(0);
-    this->mHandleId = static_cast<u32>(0);
+    this->mStatus = 3;
+    this->mPrio = 0;
+    this->mHandleId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

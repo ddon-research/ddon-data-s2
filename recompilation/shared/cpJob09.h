@@ -448,7 +448,7 @@ inline void cpJob09::endSpAlchemy() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpJob09::resetSpAlchemyInputStat() {
-    this->mSpAlchemyInputStat = static_cast<u32>(0);
+    this->mSpAlchemyInputStat = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -459,11 +459,48 @@ inline u32 cpJob09::getSpAlchemyJustCount() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::setSpAlchemyJustCount(const u32 lv) {
+    this->mSpAlchemyJustCount = lv;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::setMedalItemId(const u32 item_id) {
+    this->mAlchemyReleaseMedalId = item_id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob09::initElementChange at 0x4ba961-0x4ba96b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::resetTmpElementType() {
+    this->mTmpEnchantType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cPawnActInterActEnchant::updateEnchantSelectSubJob09 at 0x452237-0x45223f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::setTmpElementType(nDDOGame::ELEMENT_TYPE type) {
+    this->mTmpEnchantType = type;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob09::initElementChange at 0x4ba950-0x4ba961; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::requestGUIElementChange() {
+    this->mGUIDispState = static_cast<cpJob09::GUI_STATE>(2);
+    this->mFlgMedalSwitchAnime = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpJob09::clearGUIElementChange() {
     if (this->mGUIDispState != static_cast<cpJob09::GUI_STATE>(2)) {
         return;
     }
     this->mGUIDispState = static_cast<cpJob09::GUI_STATE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob09::initElementChange at 0x4ba95a-0x4ba961; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void cpJob09::finishMedalChangeAnime() {
+    this->mFlgMedalSwitchAnime = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -478,6 +515,36 @@ inline bool cpJob09::isGrazeEntry() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob09SecondJump::init at 0x2ca3cd-0x2ca3d3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::addSecondJumpCount() {
+    this->mCountSecondJump = this->mCountSecondJump + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob09ReleaseAlchemyPre::init at 0x2c8583-0x2c8589; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::addAirAlchemyReleaseCount() {
+    this->mCountAirAlchemyRelease = this->mCountAirAlchemyRelease + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob09Custom06AirPre::init at 0x2ce612-0x2ce618; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::addAirCS06() {
+    this->mCountAirCS06 = this->mCountAirCS06 + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob09Custom10ComAction::init at 0x2d09a7-0x2d09ad; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::addCS10Count() {
+    this->mCountCS10 = this->mCountCS10 + 1u;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cJob09Custom03Attack::createShl at 0x2ccac5-0x2ccacb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 cpJob09::getCS03StoredTargetNum() {
+    return this->mCS03StoredTarget.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpJob09::flgOnCurrentCreateCSShl() {
     this->mFlgCurrentCreateCSShl = true;
@@ -485,13 +552,20 @@ inline void cpJob09::flgOnCurrentCreateCSShl() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpJob09::cAlchemyEvaluationData::cAlchemyEvaluationData() {
-    this->mpTarget = static_cast<uCharacter*>(nullptr);
+    this->mpTarget = nullptr;
+    this->mShlCount = 0.0f;
+    this->mEvaluation = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpJob09::updateAlchemyEvaluationValue at 0x4b5ab8-0x4b5ac0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob09::cAlchemyEvaluationData::resetEvaluationDate() {
     this->mShlCount = 0.0f;
     this->mEvaluation = 0.0f;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpJob09::cJob09ShlInfo::cJob09ShlInfo() {
-    this->mpJob09Shl = static_cast<uShlBase*>(nullptr);
+    this->mpJob09Shl = nullptr;
     this->mJob09ShlType = static_cast<cpJob09::JOB09_SHL_TYPE>(0);
 }

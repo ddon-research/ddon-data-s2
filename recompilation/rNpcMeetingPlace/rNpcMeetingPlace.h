@@ -98,7 +98,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cNpcMeetingPlace::cNpcMeetingPlace() {
-    this->mNpcId = static_cast<u32>(0);
-    this->mStageNo = static_cast<s32>(-1);
-    this->mStartPosNo = static_cast<u32>(0);
+    this->mNpcId = 0;
+    this->mStageNo = -1;
+    this->mStartPosNo = 0;
 }

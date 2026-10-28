@@ -59,6 +59,10 @@ inline void nGUI::BlendState::operator delete(void* p_addr) {
 //   in nGUI::Draw::setBlendState at 0x0196f310-0x0196f325 (called at nGUIDraw.h:607)
 // const nGUI::BlendState::BLEND_DATA& nGUI::BlendState::getBlendData(nGUI::BlendState::BLEND_MODE mode);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nGUI::BlendState::MyDTI nGUI::BlendState::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const nGUI::BlendState::BLEND_DATA nGUI::BlendState::BLEND_DATA_TABLE[21];
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nGUI::BlendState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -125,6 +129,10 @@ inline void nGUI::SamplerState::operator delete(void* p_addr) {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // SO_HANDLE nGUI::SamplerState::getHandle(nGUI::SamplerState::SAMPLER_MODE mode);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nGUI::SamplerState::MyDTI nGUI::SamplerState::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const SO_HANDLE nGUI::SamplerState::SAMPLER_DATA[4];
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nGUI::SamplerState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

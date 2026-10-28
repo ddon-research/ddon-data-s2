@@ -65,3 +65,5 @@ __attribute__((weak)) void MtDebug::defaultInfoHandler(MT_CTSTR buf, void*) {
 // No out-of-line body: no code in the ELF
 // MtDebug::~MtDebug();
 
+// Not defined (no member-wise spelling: a class with constructors no initializer runs): MtDebug MtDebug::mInstance;
+

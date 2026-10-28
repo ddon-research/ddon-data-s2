@@ -31,7 +31,7 @@ const MtDTI& cpInput::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpInput::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpInput::DTI);
+    return MtMemoryAllocator::getAllocator(cpInput::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* cpInput::getAllocator() {
 // Address: 0x00490600 - 0x00490640 (64 bytes)
 void* cpInput::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpInput::getAllocator()->memAlloc(sz, align, ::cpInput::DTI.::MtDTI::getID());
+    return cpInput::getAllocator()->memAlloc(sz, align, cpInput::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* cpInput::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpInput::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpInput::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpInput::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,8 +83,8 @@ cpInput::~cpInput() {
 // Address: 0x01a5a4d0 - 0x01a5a4d9 (9 bytes)
 void cpInput::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x00490980 - 0x00490b86 (518 bytes)
@@ -98,14 +98,14 @@ __attribute__((weak)) void cpInput::setup() {
 // Address: 0x00491130 - 0x00491163 (51 bytes)
 void cpInput::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00490b90 - 0x00491118 (1416 bytes)
@@ -206,13 +206,13 @@ __attribute__((weak)) void cpInput::initLeverGacha(s32 count) {
 // Address: 0x004914e0 - 0x004914f6 (22 bytes)
 bool cpInput::checkLeverGacha() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLeverGacha.::cLeverGacha::checkLeverGacha(*this, this->mpModel);
+    return mLeverGacha.checkLeverGacha(*this, mpModel);
 }
 
 // Address: 0x00491500 - 0x00491507 (7 bytes)
 bool cpInput::isLeverGachaSuccess() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLeverGacha.mResult;
+    return mLeverGacha.mResult;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (246 bytes)
@@ -262,7 +262,7 @@ __attribute__((weak)) void cpInput::updateBtnInfoToggle(nKeyCustom::KB_CUSTOM kb
 void cpInput::clearBowTggle() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cpInput*
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) & static_cast<unsigned int>(3221225459);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) & 0xBFFFFFF3u;
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (37 bytes)
@@ -274,6 +274,8 @@ void cpInput::clearBowTggle() {
 // No out-of-line body: 1 inlined copy in 1 function (110 bytes)
 //   in cpInput::setup at 0x00490b0d-0x00490b7b (called at cpInput.cpp:251)
 // void cpInput::initKeyCmdStack();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpInput::MyDTI cpInput::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpInput.cpp at 0x0049233f-0x0049237c (called at cpInput.cpp:176)
@@ -317,19 +319,19 @@ __attribute__((weak)) MtObject* cpInput::MyDTI::newInstance() const {
 bool cpInput::cRendaInfo::isSuccess() const {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDecisionType == static_cast<cpInput::cRendaInfo::DECISION_TYPE>(1);
+    return mDecisionType == DEC_SUCCESS;
 }
 
 // Address: 0x004903a0 - 0x004903a8 (8 bytes)
 bool cpInput::cRendaInfo::isFailed() const {
     // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDecisionType == static_cast<cpInput::cRendaInfo::DECISION_TYPE>(2);
+    return mDecisionType == DEC_FAILED;
 }
 
 // Address: 0x004903b0 - 0x004903b4 (4 bytes)
 u32 cpInput::cRendaInfo::getNowRendaCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCount;
+    return mCount;
 }
 

@@ -512,5 +512,5 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uAnimal::ActBase::ActBase() {
-    this->mpAnimal = static_cast<uAnimal*>(nullptr);
+    this->mpAnimal = nullptr;
 }

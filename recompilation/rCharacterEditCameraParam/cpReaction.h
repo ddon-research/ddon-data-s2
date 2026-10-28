@@ -168,17 +168,17 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpReaction::clearChoiceActNo() {
-    this->mChoiceActNo = static_cast<u32>(4294967295);
+    this->mChoiceActNo = 0xFFFFFFFF;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cpReaction::clearChoiceOptionFlg() {
-    this->mChoiceOptionFlg = static_cast<u32>(0);
+    this->mChoiceOptionFlg = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpReaction::cTriggerFree::cTriggerFree() {
     this->mF32Free = 0.0f;
-    this->mU32Free = static_cast<u32>(0);
+    this->mU32Free = 0;
 }

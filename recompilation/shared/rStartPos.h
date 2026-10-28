@@ -137,3 +137,12 @@ protected:
     MtVector3 ofspos[7];  // offset: 0x20
     MtVector3 ofsang[7];  // offset: 0x90
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in rStartPos::getData at 0x707e28-0x707e43; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cStartPos::setAng(f32 ag) {
+    this->ang.x = 0.0f;
+    this->ang.y = ag;
+    this->ang.z = 0.0f;
+    this->ang.pad_ = 0.0f;
+}

@@ -35,7 +35,7 @@ const MtDTI& uGUIMenuComm::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMenuComm::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMenuComm::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMenuComm::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* uGUIMenuComm::getAllocator() {
 // Address: 0x00b10c30 - 0x00b10c70 (64 bytes)
 void* uGUIMenuComm::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMenuComm::getAllocator()->memAlloc(sz, align, ::uGUIMenuComm::DTI.::MtDTI::getID());
+    return uGUIMenuComm::getAllocator()->memAlloc(sz, align, uGUIMenuComm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* uGUIMenuComm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMenuComm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMenuComm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMenuComm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -84,17 +84,17 @@ uGUIMenuComm::~uGUIMenuComm() {
 // Address: 0x00b11690 - 0x00b11695 (5 bytes)
 void uGUIMenuComm::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00b116a0 - 0x00b1174f (175 bytes)
 bool uGUIMenuComm::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_COMMUNICATION_GUI"), static_cast<u32>(129), static_cast<t64>(1425607449)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGUIMsgGuide;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_COMMUNICATION_GUI"), 129u, 1425607449l))) != nullptr) {
+            if (mpGUIMsgGuide == nullptr) {
+                if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), 129u, 0l))) != nullptr) {
+                    mpGUIMsgGuide;
                     return true;
                 } else {
                     return false;
@@ -106,9 +106,9 @@ bool uGUIMenuComm::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGUIMsgGuide == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGUIMsgGuide = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGUIMsgGuide;
+        if (mpGUIMsgGuide == nullptr) {
+            if ((mpGUIMsgGuide = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_SIMPLE_COMMUNICATION_GMD"), 129u, 0l))) != nullptr) {
+                mpGUIMsgGuide;
                 return true;
             } else {
                 return false;
@@ -156,7 +156,7 @@ __attribute__((weak)) void uGUIMenuComm::kill() {
 // Address: 0x00b14880 - 0x00b14885 (5 bytes)
 void uGUIMenuComm::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (30 bytes)
@@ -168,7 +168,7 @@ void uGUIMenuComm::move() {
 // Address: 0x00b147e0 - 0x00b147fa (26 bytes)
 void uGUIMenuComm::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuComm::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuComm::updateWait);
 }
 
 // Address: 0x00b157c0 - 0x00b1598c (460 bytes)
@@ -180,7 +180,7 @@ __attribute__((weak)) void uGUIMenuComm::updateWait() {
 // Address: 0x00b15ee0 - 0x00b15ee9 (9 bytes)
 void uGUIMenuComm::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b15990 - 0x00b15d18 (904 bytes)
@@ -199,49 +199,47 @@ void uGUIMenuComm::updateWaitTmpPhrase() {
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5eec
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5eed
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ef0
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
-        if (this->mpCtrlVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 1) {
+        if (mpCtrlVLCtgr != nullptr) {
             // inferred: a temporary for the value the load at 0xb15d4f read, used 7 times; no DWARF local holds it
-            sGUI* t0 = ::sGUI::getInstance();
+            sGUI* t0 = sGUI::getInstance();
             // inferred: a temporary for the value the load at 0xb15d52 read, used once; no DWARF local holds it
-            unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpCtrlVLCtgr) + static_cast<long>(3096));
-            if (this->mScrollList.mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+            unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpCtrlVLCtgr) + 3096);
+            if (mScrollList.mpVCtrl != nullptr) {
                 // inferred: a temporary for the value the load at 0xb15d68 read, used once; no DWARF local holds it
-                s32 t2 = this->mScrollList.mpVCtrl->::cControl::getCurrentPos();
-                if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexLock(&t0->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                s32 t2 = mScrollList.mpVCtrl->getCurrentPos();
+                if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexLock(&t0->mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
-                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = static_cast<u8>(4);
+                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = 4;
                 static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mCtgr = t1;
                 static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mId = static_cast<u32>(t2);
-                if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexUnlock(&t0->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                        ::abort();
+                if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&t0->mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
             } else {
-                if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexLock(&t0->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexLock(&t0->mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
-                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = static_cast<u8>(4);
+                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = 4;
                 static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mCtgr = t1;
-                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mId = static_cast<u32>(0);
-                if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                    if (::scePthreadMutexUnlock(&t0->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                        ::abort();
+                static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mId = 0;
+                if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&t0->mCS.mCSection) != 0) {
+                        abort();
                     }
                 }
             }
         }
     } else {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(0)) {
-            this->mCsrCtgr.::uGUIBase::cReferenceUIVlCursor::update();
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 0) {
+            mCsrCtgr.uGUIBase::cReferenceUIVlCursor::update();
         }
     }
 }
@@ -254,57 +252,55 @@ void uGUIMenuComm::updateWaitEmotion() {
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5eec
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5eed
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ef0
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
-        if (this->mpCtrlVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mScrollList.mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                u32 uEmotionIdx = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionIdx(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos()), static_cast<u32>(this->mScrollList.mpVCtrl->::cControl::getCurrentPos()));
-                if (uEmotionIdx != static_cast<u32>(4294967295)) {
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 1) {
+        if (mpCtrlVLCtgr != nullptr) {
+            if (mScrollList.mpVCtrl != nullptr) {
+                u32 uEmotionIdx = static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionIdx(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos()), static_cast<u32>(mScrollList.mpVCtrl->getCurrentPos()));
+                if (uEmotionIdx != 0xFFFFFFFFu) {
                     // inferred: a temporary for the value the load at 0xb15e51 read, used 7 times; no DWARF local holds it
-                    sGUI* t0 = ::sGUI::getInstance();
+                    sGUI* t0 = sGUI::getInstance();
                     // inferred: a temporary for the value the load at 0xb15e5b read, used once; no DWARF local holds it
-                    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpCtrlVLCtgr) + static_cast<long>(3096));
-                    if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexLock(&t0->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpCtrlVLCtgr) + 3096);
+                    if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexLock(&t0->mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
-                    static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = static_cast<u8>(5);
+                    static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = 5;
                     static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mCtgr = t1;
                     static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mId = uEmotionIdx;
-                    if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexUnlock(&t0->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                            ::abort();
+                    if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&t0->mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                 }
             } else {
-                u32 uEmotionIdx = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionIdx(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos()), static_cast<u32>(0));
-                if (uEmotionIdx != static_cast<u32>(4294967295)) {
+                u32 uEmotionIdx = static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionIdx(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos()), 0u);
+                if (uEmotionIdx != 0xFFFFFFFFu) {
                     // inferred: a temporary for the value the load at 0xb15e51 read, used 7 times; no DWARF local holds it
-                    sGUI* t0 = ::sGUI::getInstance();
+                    sGUI* t0 = sGUI::getInstance();
                     // inferred: a temporary for the value the load at 0xb15e5b read, used once; no DWARF local holds it
-                    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpCtrlVLCtgr) + static_cast<long>(3096));
-                    if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexLock(&t0->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                    unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mpCtrlVLCtgr) + 3096);
+                    if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexLock(&t0->mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
-                    static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = static_cast<u8>(5);
+                    static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mType = 5;
                     static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mCtgr = t1;
                     static_cast<sGUIExt*>(t0)->mSCM.mCurrentSCCEditData.mId = uEmotionIdx;
-                    if ((t0->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexUnlock(&t0->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                            ::abort();
+                    if (t0->mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&t0->mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                 }
             }
         }
     } else {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(0)) {
-            this->mCsrCtgr.::uGUIBase::cReferenceUIVlCursor::update();
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 0) {
+            mCsrCtgr.uGUIBase::cReferenceUIVlCursor::update();
         }
     }
 }
@@ -324,7 +320,7 @@ __attribute__((weak)) void uGUIMenuComm::moveEvent() {
 // Address: 0x00b15ef0 - 0x00b15f0a (26 bytes)
 void uGUIMenuComm::evEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuComm::updateExit);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuComm::updateExit);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (100 bytes)
@@ -416,43 +412,43 @@ __attribute__((weak)) void uGUIMenuComm::evEditBtnDecide() {
 // Address: 0x00b13230 - 0x00b13242 (18 bytes)
 u32 uGUIMenuComm::evCtrlEnd(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00b13270 - 0x00b13282 (18 bytes)
 u32 uGUIMenuComm::evCtrlHLTabMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00b132f0 - 0x00b13302 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLCtgrMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(0);
+    setInputEvent(70u);
+    return 0;
 }
 
 // Address: 0x00b13290 - 0x00b132a2 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLCtgrDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b13310 - 0x00b13322 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLCtgrMouseDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b13330 - 0x00b13342 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLCtgrMouseSelect(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(71));
-    return static_cast<u32>(0);
+    setInputEvent(71u);
+    return 0;
 }
 
 // Address: 0x00b132b0 - 0x00b132e8 (56 bytes)
@@ -465,15 +461,15 @@ __attribute__((weak)) u32 uGUIMenuComm::evCtrlVLCtgrSubMenu(cControl::Message* m
 // Address: 0x00b13350 - 0x00b13362 (18 bytes)
 u32 uGUIMenuComm::evCtrlMsgCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(72));
-    return static_cast<u32>(0);
+    setInputEvent(72u);
+    return 0;
 }
 
 // Address: 0x00b13370 - 0x00b13382 (18 bytes)
 u32 uGUIMenuComm::evCtrlMsgDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(73));
-    return static_cast<u32>(0);
+    setInputEvent(73u);
+    return 0;
 }
 
 // Address: 0x00b13390 - 0x00b133e8 (88 bytes)
@@ -490,54 +486,54 @@ __attribute__((weak)) u32 uGUIMenuComm::evCtrlMsgSubMenu(cControl::Message* msg)
 // Address: 0x00b13770 - 0x00b13782 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLEditMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(78));
-    return static_cast<u32>(0);
+    setInputEvent(78u);
+    return 0;
 }
 
 // Address: 0x00b13250 - 0x00b13262 (18 bytes)
 u32 uGUIMenuComm::evCtrlVLEditCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(76));
-    return static_cast<u32>(0);
+    setInputEvent(76u);
+    return 0;
 }
 
 // Address: 0x00b13730 - 0x00b13762 (50 bytes)
 u32 uGUIMenuComm::evCtrlVLEditDecide(cControl::Message* msg) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from uGUIMenuComm*
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) != static_cast<unsigned char>(2)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(4)) {
-            if (this->mPullDownEmotCtgr.mState == static_cast<uGUIBase::cReferenceUIPullDown::STATE>(0)) {
-                if (this->mPullDownEmot.mState == static_cast<uGUIBase::cReferenceUIPullDown::STATE>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) != 2) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 4) {
+            if (mPullDownEmotCtgr.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                if (mPullDownEmot.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
+                    setInputEvent(77u);
                 }
             }
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+        setInputEvent(77u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b13790 - 0x00b137b0 (32 bytes)
 u32 uGUIMenuComm::evCtrlVLEditLClick(cControl::Message* msg) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from uGUIMenuComm*
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) != static_cast<unsigned char>(4)) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(2)) {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) != 4) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 2) {
+            setInputEvent(77u);
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+        setInputEvent(77u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b137b0 - 0x00b137c2 (18 bytes)
 u32 uGUIMenuComm::evCtrlHLEditMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(78));
-    return static_cast<u32>(0);
+    setInputEvent(78u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (85 bytes)
@@ -548,51 +544,51 @@ u32 uGUIMenuComm::evCtrlHLEditMove(cControl::Message* msg) {
 void uGUIMenuComm::updateCtgrList() {
     // DWARF local not rendered: u32 uCtgrNum;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    if (this->mpCtrlVLCtgr == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    if (mpCtrlVLCtgr == nullptr) {
         return;
     }
-    this->mpCtrlVLCtgr->mVisibleSize = static_cast<s32>(12);
-    if (this->mVarFlow == static_cast<u32>(2)) {
+    mpCtrlVLCtgr->mVisibleSize = 12;
+    if (mVarFlow == 2) {
         // inferred: a temporary for the result of the call at 0xb13804, used once; no DWARF local holds it
-        u32 t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionCtgrNum();
-        this->mpCtrlVLCtgr->::cControl::resetItemNum(static_cast<s32>(t0), static_cast<const u32*>(nullptr), static_cast<s32>(0));
-        if (this->mpCtrlVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mVarFlow == static_cast<u32>(2)) {
-                this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+        u32 t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionCtgrNum();
+        mpCtrlVLCtgr->resetItemNum(static_cast<s32>(t0), static_cast<const u32*>(nullptr), 0);
+        if (mpCtrlVLCtgr != nullptr) {
+            if (mVarFlow == 2) {
+                updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
             } else {
-                if (this->mVarFlow == static_cast<u32>(1)) {
-                    this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getTmpMessageCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+                if (mVarFlow == 1) {
+                    updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getTmpMessageCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
                 } else {
-                    this->::uGUIMenuComm::updateScrollList(static_cast<u32>(10));
+                    updateScrollList(10u);
                 }
             }
         }
     } else {
-        if (this->mVarFlow == static_cast<u32>(1)) {
+        if (mVarFlow == 1) {
             // inferred: a temporary for the result of the call at 0xb1381f, used once; no DWARF local holds it
-            u32 t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getTmpMessageCtgrNum();
-            this->mpCtrlVLCtgr->::cControl::resetItemNum(static_cast<s32>(t1), static_cast<const u32*>(nullptr), static_cast<s32>(0));
-            if (this->mpCtrlVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mVarFlow == static_cast<u32>(2)) {
-                    this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+            u32 t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getTmpMessageCtgrNum();
+            mpCtrlVLCtgr->resetItemNum(static_cast<s32>(t1), static_cast<const u32*>(nullptr), 0);
+            if (mpCtrlVLCtgr != nullptr) {
+                if (mVarFlow == 2) {
+                    updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
                 } else {
-                    if (this->mVarFlow == static_cast<u32>(1)) {
-                        this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getTmpMessageCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+                    if (mVarFlow == 1) {
+                        updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getTmpMessageCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
                     } else {
-                        this->::uGUIMenuComm::updateScrollList(static_cast<u32>(10));
+                        updateScrollList(10u);
                     }
                 }
             }
         } else {
-            this->mpCtrlVLCtgr->::cControl::resetItemNum(static_cast<s32>(6), static_cast<const u32*>(nullptr), static_cast<s32>(0));
-            if (this->mpCtrlVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mVarFlow == static_cast<u32>(2)) {
-                    this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEmotionCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+            mpCtrlVLCtgr->resetItemNum(6, static_cast<const u32*>(nullptr), 0);
+            if (mpCtrlVLCtgr != nullptr) {
+                if (mVarFlow == 2) {
+                    updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getEmotionCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
                 } else {
-                    if (this->mVarFlow == static_cast<u32>(1)) {
-                        this->::uGUIMenuComm::updateScrollList(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getTmpMessageCtgrMsgNum(static_cast<u32>(this->mpCtrlVLCtgr->::cControl::getCurrentPos())));
+                    if (mVarFlow == 1) {
+                        updateScrollList(static_cast<sGUIExt*>(sGUI::getInstance())->getTmpMessageCtgrMsgNum(static_cast<u32>(mpCtrlVLCtgr->getCurrentPos())));
                     } else {
-                        this->::uGUIMenuComm::updateScrollList(static_cast<u32>(10));
+                        updateScrollList(10u);
                     }
                 }
             }
@@ -678,6 +674,8 @@ __attribute__((weak)) void uGUIMenuComm::setScrollPos() {
     DDON_STUB("uGUIMenuComm::setScrollPos")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIMenuComm::MyDTI uGUIMenuComm::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIMenuComm.cpp at 0x00b16c5f-0x00b16c9c (called at uGUIMenuComm.cpp:57)

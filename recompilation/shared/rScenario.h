@@ -116,8 +116,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cScenarioData::cScenarioData() {
-    this->mpArg = static_cast<cScenarioArg*>(nullptr);
-    this->mpShape = static_cast<AreaHitShape*>(nullptr);
-    this->mpParam = static_cast<cScenarioParam*>(nullptr);
-    this->mIndex = static_cast<s32>(-1);
+    this->mpArg = nullptr;
+    this->mpShape = nullptr;
+    this->mpParam = nullptr;
+    this->mIndex = -1;
 }

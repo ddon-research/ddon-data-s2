@@ -32,7 +32,7 @@ const MtDTI& uGUITextHud::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUITextHud::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUITextHud::DTI);
+    return MtMemoryAllocator::getAllocator(uGUITextHud::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUITextHud::getAllocator() {
 // Address: 0x00c60ff0 - 0x00c61030 (64 bytes)
 void* uGUITextHud::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUITextHud::getAllocator()->memAlloc(sz, align, ::uGUITextHud::DTI.::MtDTI::getID());
+    return uGUITextHud::getAllocator()->memAlloc(sz, align, uGUITextHud::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUITextHud::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUITextHud::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUITextHud::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUITextHud::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,19 +75,19 @@ inline void uGUITextHud::operator delete(void* p_addr) {
 // Also emitted as: _ZN11uGUITextHudD0Ev at 0x00c61290
 uGUITextHud::~uGUITextHud() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c612f0 - 0x00c61358 (104 bytes)
 bool uGUITextHud::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_TEXT_HUD_GUI"), static_cast<u32>(129), static_cast<t64>(1447330477)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_TEXT_HUD_GUI"), 129u, 1447330477l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -104,69 +104,69 @@ void uGUITextHud::setup() {
     // DWARF local not rendered: u32 row_i;
     // DWARF local not rendered: const u32 base_obj_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
-    this->setPlay(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
-    this->mBaseObjs.elems[0].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(23)));
-    this->mBaseObjs.elems[0].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(21)));
-    this->mBaseObjs.elems[0].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(26)));
-    this->mBaseObjs.elems[1].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(24)));
-    this->mBaseObjs.elems[1].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(18)));
-    this->mBaseObjs.elems[1].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(27)));
-    this->mBaseObjs.elems[2].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(25)));
-    this->mBaseObjs.elems[2].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(22)));
-    this->mBaseObjs.elems[2].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(28)));
-    this->mpINST_msg_text = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(3), false));
-    this->mpOBJ_msg_text_m_text = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(2)));
-    if (this->mpINST_msg_text != static_cast<cGUIInstAnimation*>(nullptr)) {
-        this->mpINST_msg_text->::cGUIInstance::setVisible(false);
-        if (this->mpINST_msg_text != static_cast<cGUIInstAnimation*>(nullptr)) {
-            this->mpINST_msg_text->::cGUIInstance::setExecute(false);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(7u), true);
+    setPlay(true);
+    setFlowAndInit(3u, false);
+    mBaseObjs.elems[0].elems[0] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 23u));
+    mBaseObjs.elems[0].elems[1] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 21u));
+    mBaseObjs.elems[0].elems[2] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 26u));
+    mBaseObjs.elems[1].elems[0] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 24u));
+    mBaseObjs.elems[1].elems[1] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 18u));
+    mBaseObjs.elems[1].elems[2] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 27u));
+    mBaseObjs.elems[2].elems[0] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 25u));
+    mBaseObjs.elems[2].elems[1] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 22u));
+    mBaseObjs.elems[2].elems[2] = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 28u));
+    mpINST_msg_text = static_cast<cGUIInstAnimation*>(getInstance(3u, false));
+    mpOBJ_msg_text_m_text = static_cast<cGUIObjMessage*>(getObjectFromId(3u, 2u));
+    if (mpINST_msg_text != nullptr) {
+        mpINST_msg_text->setVisible(false);
+        if (mpINST_msg_text != nullptr) {
+            mpINST_msg_text->setExecute(false);
         }
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITextHud::updateMain);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITextHud::updateMain);
 }
 
 // Address: 0x00c615c0 - 0x00c615f1 (49 bytes)
 void uGUITextHud::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c61600 - 0x00c6161e (30 bytes)
 void uGUITextHud::setMessage(u32 hudMsgId, u32 optionHudMsgId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestHudMsgId = hudMsgId;
-    this->mRequestOptionHudMsgId = optionHudMsgId;
-    this->mRequestOptionKeyCustom = static_cast<nKeyCustom::KB_CUSTOM>(0);
-    this->mRequestOptionIsIgnoreModifier = false;
+    mRequestHudMsgId = hudMsgId;
+    mRequestOptionHudMsgId = optionHudMsgId;
+    mRequestOptionKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
+    mRequestOptionIsIgnoreModifier = false;
 }
 
 // Address: 0x00c61620 - 0x00c6163d (29 bytes)
 void uGUITextHud::setMessage(u32 hudMsgId, nKeyCustom::KB_CUSTOM keyCustom, bool isIgnoreModifier) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestHudMsgId = hudMsgId;
-    this->mRequestOptionHudMsgId = static_cast<u32>(4294967295);
-    this->mRequestOptionKeyCustom = keyCustom;
-    this->mRequestOptionIsIgnoreModifier = isIgnoreModifier;
+    mRequestHudMsgId = hudMsgId;
+    mRequestOptionHudMsgId = 0xFFFFFFFF;
+    mRequestOptionKeyCustom = keyCustom;
+    mRequestOptionIsIgnoreModifier = isIgnoreModifier;
 }
 
 // Address: 0x00c61640 - 0x00c61666 (38 bytes)
 void uGUITextHud::erase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRequestHudMsgId = static_cast<u32>(4294967295);
-    this->mRequestOptionHudMsgId = static_cast<u32>(4294967295);
-    this->mRequestOptionKeyCustom = static_cast<nKeyCustom::KB_CUSTOM>(0);
-    this->mRequestOptionIsIgnoreModifier = false;
+    mRequestHudMsgId = 0xFFFFFFFF;
+    mRequestOptionHudMsgId = 0xFFFFFFFF;
+    mRequestOptionKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
+    mRequestOptionIsIgnoreModifier = false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -202,6 +202,8 @@ __attribute__((weak)) bool uGUITextHud::updateMessage() {
     DDON_STUB("uGUITextHud::updateMessage")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUITextHud::MyDTI uGUITextHud::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUITextHud.cpp at 0x00c61c7f-0x00c61cbc (called at uGUITextHud.cpp:26)

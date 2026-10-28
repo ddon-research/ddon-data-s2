@@ -181,22 +181,28 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rSoundHitInfo::cSoundHitInfo::cSoundHitInfo() {
-    this->mEtc05 = static_cast<s32>(-1);
-    this->mEtc06 = static_cast<s32>(-1);
-    this->mEtc03 = static_cast<s32>(-1);
-    this->mEtc04 = static_cast<s32>(-1);
-    this->mEtc01 = static_cast<s32>(-1);
-    this->mEtc02 = static_cast<s32>(-1);
-    this->mWeek2 = static_cast<s32>(-1);
-    this->mEtc00 = static_cast<s32>(-1);
-    this->mIce = static_cast<s32>(-1);
-    this->mWeek1 = static_cast<s32>(-1);
-    this->mSmoke = static_cast<s32>(-1);
-    this->mAalche = static_cast<s32>(-1);
-    this->mWood = static_cast<s32>(-1);
-    this->mWater = static_cast<s32>(-1);
-    this->mIron = static_cast<s32>(-1);
-    this->mStone = static_cast<s32>(-1);
-    this->mBody = static_cast<s32>(-1);
-    this->mBone = static_cast<s32>(-1);
+    this->mEtc05 = -1;
+    this->mEtc06 = -1;
+    this->mEtc03 = -1;
+    this->mEtc04 = -1;
+    this->mEtc01 = -1;
+    this->mEtc02 = -1;
+    this->mWeek2 = -1;
+    this->mEtc00 = -1;
+    this->mIce = -1;
+    this->mWeek1 = -1;
+    this->mSmoke = -1;
+    this->mAalche = -1;
+    this->mWood = -1;
+    this->mWater = -1;
+    this->mIron = -1;
+    this->mStone = -1;
+    this->mBody = -1;
+    this->mBone = -1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpHpDamageCtrl::playDamageSe at 0x4839e0-0x4839e3; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 rSoundHitInfo::cSoundHitInfo::getEtc01() const {
+    return this->mEtc01;
 }

@@ -39,7 +39,7 @@ const MtDTI& cCraftParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCraftParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftParam::DTI)->memAlloc(sz, align, ::cCraftParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftParam::DTI)->memAlloc(sz, align, cCraftParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline void* cCraftParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void cCraftParam::operator delete(void* p_addr) {
 // Address: 0x000e0ae0 - 0x000e0b23 (67 bytes)
 cCraftParam::cCraftParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCraftParam::init();
+    init();
 }
 
 // Address: 0x000e0b30 - 0x000e0b31 (1 bytes)
@@ -87,90 +87,90 @@ __attribute__((weak)) void cCraftParam::createProperty(MtPropertyList& s) {
 void cCraftParam::init() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mCraftPlusParam = static_cast<u8>(0);
-    this->mCraftElementItemNo[2] = static_cast<unsigned int>(0);
-    this->mCraftElementItemNo[3] = static_cast<unsigned int>(0);
-    this->mCraftElementItemNo[0] = static_cast<unsigned int>(0);
-    this->mCraftElementItemNo[1] = static_cast<unsigned int>(0);
-    this->mpElementParam[3] = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mpElementParam[2] = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mpElementParam[1] = static_cast<rItemList::rItemParam*>(nullptr);
-    this->mpElementParam[0] = static_cast<rItemList::rItemParam*>(nullptr);
+    mCraftPlusParam = 0;
+    mCraftElementItemNo[2] = 0;
+    mCraftElementItemNo[3] = 0;
+    mCraftElementItemNo[0] = 0;
+    mCraftElementItemNo[1] = 0;
+    mpElementParam[3] = nullptr;
+    mpElementParam[2] = nullptr;
+    mpElementParam[1] = nullptr;
+    mpElementParam[0] = nullptr;
 }
 
 // Address: 0x000e0820 - 0x000e089f (127 bytes)
 void cCraftParam::copyParam(const cCraftParam* pSrc, rItemList::rItemParam* pItemParam) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pSrc == static_cast<const cCraftParam*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    if (pItemParam == static_cast<rItemList::rItemParam*>(nullptr)) {
+    if (pItemParam == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0xe083a read, used twice; no DWARF local holds it
     const unsigned int t0 = pSrc->mCraftElementItemNo[0];
-    this->mCraftElementItemNo[0] = t0;
-    this->mpElementParam[0] = ::sItemManager::getInstance()->::sItemManager::getItemParam(t0);
+    mCraftElementItemNo[0] = t0;
+    mpElementParam[0] = sItemManager::getInstance()->getItemParam(t0);
     // inferred: a temporary for the value the load at 0xe0854 read, used twice; no DWARF local holds it
     const unsigned int t1 = pSrc->mCraftElementItemNo[1];
-    this->mCraftElementItemNo[1] = t1;
-    this->mpElementParam[1] = ::sItemManager::getInstance()->::sItemManager::getItemParam(t1);
+    mCraftElementItemNo[1] = t1;
+    mpElementParam[1] = sItemManager::getInstance()->getItemParam(t1);
     // inferred: a temporary for the value the load at 0xe0867 read, used twice; no DWARF local holds it
     const unsigned int t2 = pSrc->mCraftElementItemNo[2];
-    this->mCraftElementItemNo[2] = t2;
-    this->mpElementParam[2] = ::sItemManager::getInstance()->::sItemManager::getItemParam(t2);
+    mCraftElementItemNo[2] = t2;
+    mpElementParam[2] = sItemManager::getInstance()->getItemParam(t2);
     // inferred: a temporary for the value the load at 0xe087a read, used twice; no DWARF local holds it
     const unsigned int t3 = pSrc->mCraftElementItemNo[3];
-    this->mCraftElementItemNo[3] = t3;
-    this->mpElementParam[3] = ::sItemManager::getInstance()->::sItemManager::getItemParam(t3);
-    this->mCraftPlusParam = pSrc->mCraftPlusParam;
+    mCraftElementItemNo[3] = t3;
+    mpElementParam[3] = sItemManager::getInstance()->getItemParam(t3);
+    mCraftPlusParam = pSrc->mCraftPlusParam;
 }
 
 // Address: 0x000e0d20 - 0x000e0d52 (50 bytes)
 void cCraftParam::setElementItemNo(u32 no, u32 itemNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no <= static_cast<u32>(3)) {
-        this->mCraftElementItemNo[no] = itemNo;
-        this->mpElementParam[no] = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemNo);
+    if (no <= 3u) {
+        mCraftElementItemNo[no] = itemNo;
+        mpElementParam[no] = sItemManager::getInstance()->getItemParam(itemNo);
     }
 }
 
 // Address: 0x000e0d60 - 0x000e0d6e (14 bytes)
 u32 cCraftParam::getElementItemNo(u32 no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no <= static_cast<u32>(3)) {
-        return this->mCraftElementItemNo[no];
+    if (no <= 3u) {
+        return mCraftElementItemNo[no];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x000e0d70 - 0x000e0d9e (46 bytes)
 void cCraftParam::setElementItemParam(u32 no, u32 itemNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no <= static_cast<u32>(3)) {
-        this->mpElementParam[no] = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemNo);
+    if (no <= 3u) {
+        mpElementParam[no] = sItemManager::getInstance()->getItemParam(itemNo);
     }
 }
 
 // Address: 0x000e0da0 - 0x000e0daf (15 bytes)
 rItemList::rItemParam* cCraftParam::getElementParam(u32 no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (no <= static_cast<u32>(3)) {
-        return this->mpElementParam[no];
+    if (no <= 3u) {
+        return mpElementParam[no];
     } else {
-        return static_cast<rItemList::rItemParam*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x000e0d10 - 0x000e0d1a (10 bytes)
 void cCraftParam::setPlusParam(u8 plus, rItemList::rItemParam* pItemParam) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pItemParam == static_cast<rItemList::rItemParam*>(nullptr)) {
+    if (pItemParam == nullptr) {
         return;
     }
-    this->mCraftPlusParam = plus;
+    mCraftPlusParam = plus;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (13 bytes)
@@ -187,6 +187,8 @@ __attribute__((weak)) u32 cCraftParam::getElementEquipNum() const {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftParam::MyDTI cCraftParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cItemParam.cpp at 0x000e0edd-0x000e0f16 (called at cItemParam.cpp:199)
 //   in _GLOBAL__sub_I_cItemParam.cpp at 0x000e0edd-0x000e0f16 (called at cItemParam.h:26)
@@ -195,7 +197,7 @@ __attribute__((weak)) u32 cCraftParam::getElementEquipNum() const {
 // Address: 0x000e09f0 - 0x000e0a64 (116 bytes)
 MtObject* cCraftParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftParam;
+    return new (16u) cCraftParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,7 +214,7 @@ const MtDTI& cItemParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cItemParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cItemParam::DTI);
+    return MtMemoryAllocator::getAllocator(cItemParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -221,7 +223,7 @@ inline MtAllocator* cItemParam::getAllocator() {
 // Address: 0x000dfd70 - 0x000dfdb0 (64 bytes)
 void* cItemParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cItemParam::getAllocator()->memAlloc(sz, align, ::cItemParam::DTI.::MtDTI::getID());
+    return cItemParam::getAllocator()->memAlloc(sz, align, cItemParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -286,13 +288,13 @@ __attribute__((weak)) void cItemParam::createProperty(MtPropertyList& s) {
 // Address: 0x0196fd50 - 0x0196fd55 (5 bytes)
 u32 cItemParam::getItemNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mItemParam.mItemNum_Guard;
+    return mItemParam.mItemNum_Guard;
 }
 
 // Address: 0x0196fd60 - 0x0196fd65 (5 bytes)
 void cItemParam::setItemNum(u32 ItemNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
+    mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,9 +393,9 @@ __attribute__((weak)) u8 cItemParam::getColorSortNo() const {
 bool cItemParam::isPlayerEquip() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mEquipCharID != static_cast<u32>(0)) {
-        if (this->mEquipCharType == static_cast<u8>(1)) {
-            if (this->mEquipCharID != static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
+    if (mEquipCharID != 0) {
+        if (mEquipCharType == 1) {
+            if (mEquipCharID != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
                 return false;
             } else {
                 return true;
@@ -410,9 +412,9 @@ bool cItemParam::isPlayerEquip() const {
 bool cItemParam::isPawnEquip() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mEquipCharID != static_cast<u32>(0)) {
-        if (this->mEquipCharType == static_cast<u8>(2)) {
-            if (this->mEquipCharID == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
+    if (mEquipCharID != 0) {
+        if (mEquipCharType == 2) {
+            if (mEquipCharID == static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
                 return false;
             } else {
                 return true;
@@ -504,14 +506,14 @@ __attribute__((weak)) u64 cItemParam::getItemPrice() {
 // Address: 0x000e0630 - 0x000e0679 (73 bytes)
 MT_CTSTR cItemParam::getItemName() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpItemResParam == static_cast<rItemList::rItemParam*>(nullptr)) {
-        if ((this->mpItemResParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(this->mItemParam.mItemNo)) != static_cast<rItemList::rItemParam*>(nullptr)) {
-            return this->mpItemResParam->::rItemList::rItemParam::getItemName();
+    if (mpItemResParam == nullptr) {
+        if ((mpItemResParam = sItemManager::getInstance()->getItemParam(mItemParam.mItemNo)) != nullptr) {
+            return mpItemResParam->getItemName();
         } else {
             return "";
         }
     } else {
-        return this->mpItemResParam->::rItemList::rItemParam::getItemName();
+        return mpItemResParam->getItemName();
     }
 }
 
@@ -537,6 +539,8 @@ __attribute__((weak)) u8 cItemParam::getElementSlot() {
 
 // No out-of-line body: no code in the ELF
 // bool cItemParam::isFlag(nCharacterData::FLAG_BIT flag) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cItemParam::MyDTI cItemParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cItemParam.cpp at 0x000e0e9d-0x000e0edd (called at cItemParam.cpp:45)

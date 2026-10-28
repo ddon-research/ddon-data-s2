@@ -36,7 +36,7 @@ const MtDTI& cPushRate::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cPushRate::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memAlloc(sz, align, ::cPushRate::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPushRate::DTI)->memAlloc(sz, align, cPushRate::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cPushRate::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cPushRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPushRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cPushRate::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPushRate::MyDTI cPushRate::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPushRate.cpp at 0x006e21b0-0x006e21f2 (called at rPushRate.cpp:23)
 //   in _GLOBAL__sub_I_rPushRate.cpp at 0x006e21b0-0x006e21f2 (called at rPushRate.h:30)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cPushRate::createProperty(MtPropertyList& s) {
 // Address: 0x006e1ad0 - 0x006e1b28 (88 bytes)
 MtObject* cPushRate::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cPushRate;
+    return new (16u) cPushRate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rPushRate::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPushRate::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPushRate::DTI)->memAlloc(sz, align, ::rPushRate::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPushRate::DTI)->memAlloc(sz, align, rPushRate::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rPushRate::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rPushRateD0Ev at 0x01aaebd4-0x01aaebf3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rPushRate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPushRate::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPushRate::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,8 +166,10 @@ MT_CTSTR rPushRate::getExt() const {
 // Address: 0x01aaed20 - 0x01aaed26 (6 bytes)
 u32 rPushRate::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPushRate::MyDTI rPushRate::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPushRate.cpp at 0x006e21f2-0x006e222f (called at rPushRate.cpp:72)
@@ -175,7 +179,7 @@ u32 rPushRate::getDataVersion() const {
 // Address: 0x006e20d0 - 0x006e2134 (100 bytes)
 MtObject* rPushRate::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPushRate;
+    return new (16u) rPushRate;
 }
 
 // Instance at 0x01aaecd0 - 0x01aaece2 (18 bytes) of the generic rTbl2<T>::getData

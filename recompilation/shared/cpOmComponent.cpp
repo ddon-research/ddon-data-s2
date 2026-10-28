@@ -28,7 +28,7 @@ const MtDTI& cpOmLadder::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpOmLadder::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpOmLadder::DTI);
+    return MtMemoryAllocator::getAllocator(cpOmLadder::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpOmLadder::getAllocator() {
 // Address: 0x004fcb90 - 0x004fcbd0 (64 bytes)
 void* cpOmLadder::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpOmLadder::getAllocator()->memAlloc(sz, align, ::cpOmLadder::DTI.::MtDTI::getID());
+    return cpOmLadder::getAllocator()->memAlloc(sz, align, cpOmLadder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpOmLadder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpOmLadder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpOmLadder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpOmLadder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,12 +68,12 @@ inline void cpOmLadder::operator delete(void* p_addr) {
 cpOmLadder::cpOmLadder() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpuOm = static_cast<uOmModel*>(nullptr);
-    this->mbSetup = false;
-    this->mHeight = static_cast<u32>(5);
-    this->mpHitNode[2] = static_cast<cHitNode*>(nullptr);
-    this->mpHitNode[1] = static_cast<cHitNode*>(nullptr);
-    this->mpHitNode[0] = static_cast<cHitNode*>(nullptr);
+    mpuOm = nullptr;
+    mbSetup = false;
+    mHeight = 5;
+    mpHitNode[2] = nullptr;
+    mpHitNode[1] = nullptr;
+    mpHitNode[0] = nullptr;
 }
 
 // Address: 0x004fcc90 - 0x004fcc95 (5 bytes)
@@ -85,21 +85,21 @@ cpOmLadder::~cpOmLadder() {
 // Address: 0x004fd2e0 - 0x004fd313 (51 bytes)
 void cpOmLadder::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpuOm == static_cast<uOmModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpuOm == nullptr) {
         return;
     }
-    if (this->mpuOm->::cUnit::isEnable() != false) {
+    if (mpuOm->isEnable()) {
         return;
     }
-    this->mpuOm = static_cast<uOmModel*>(nullptr);
+    mpuOm = nullptr;
 }
 
 // Address: 0x004fccd0 - 0x004fccd9 (9 bytes)
 void cpOmLadder::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpuOm = static_cast<uOmModel*>(pOwner);
+    mpOwner = pOwner;
+    mpuOm = static_cast<uOmModel*>(pOwner);
 }
 
 // Address: 0x004fcce0 - 0x004fce0d (301 bytes)
@@ -148,6 +148,8 @@ __attribute__((weak)) void cpOmLadder::setupModelUnit() {
 // Defined in the class (its body was written in a header).
 // void cpOmLadder::draw(cDraw* pDraw);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpOmLadder::MyDTI cpOmLadder::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (108 bytes)
 //   in _GLOBAL__sub_I_cpOmComponent.cpp at 0x00508a58-0x00508a7b, 0x00508a82-0x00508a95 (called at cpOmComponent.cpp:11432)
 //   in _GLOBAL__sub_I_cpOmComponent.cpp at 0x00508a58-0x00508a7b, 0x00508a82-0x00508a95 (called at cpOmComponent.h:2266)
@@ -156,7 +158,7 @@ __attribute__((weak)) void cpOmLadder::setupModelUnit() {
 // Address: 0x004fcb10 - 0x004fcb89 (121 bytes)
 MtObject* cpOmLadder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpOmLadder;
+    return new (16u) cpOmLadder;
 }
 
 // Instance at 0x01a5cc40 - 0x01a5cc45 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -26,7 +26,7 @@ const MtDTI& cpFsmCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpFsmCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpFsmCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpFsmCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cpFsmCtrl::getAllocator() {
 // Address: 0x0047f7f0 - 0x0047f830 (64 bytes)
 void* cpFsmCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpFsmCtrl::getAllocator()->memAlloc(sz, align, ::cpFsmCtrl::DTI.::MtDTI::getID());
+    return cpFsmCtrl::getAllocator()->memAlloc(sz, align, cpFsmCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cpFsmCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpFsmCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpFsmCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpFsmCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -238,26 +238,28 @@ cpFsmCtrl::cpFsmCtrl() {
 // Also emitted as: _ZN9cpFsmCtrlD0Ev at 0x004801a0
 cpFsmCtrl::~cpFsmCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCnsEyeBallCtrl.mL != static_cast<uCnsJointOffset*>(nullptr)) {
-        this->mCnsEyeBallCtrl.mL->remove();
-        if (this->mCnsEyeBallCtrl.mL != static_cast<uCnsJointOffset*>(nullptr)) {
-            delete this->mCnsEyeBallCtrl.mL;
-            this->mCnsEyeBallCtrl.mL = static_cast<uCnsJointOffset*>(nullptr);
+    if (mCnsEyeBallCtrl.mL != nullptr) {
+        mCnsEyeBallCtrl.mL->remove();
+        if (mCnsEyeBallCtrl.mL != nullptr) {
+            delete mCnsEyeBallCtrl.mL;
+            mCnsEyeBallCtrl.mL = nullptr;
         }
     }
-    if (this->mCnsEyeBallCtrl.mR != static_cast<uCnsJointOffset*>(nullptr)) {
-        this->mCnsEyeBallCtrl.mR->remove();
-        if (this->mCnsEyeBallCtrl.mR != static_cast<uCnsJointOffset*>(nullptr)) {
-            delete this->mCnsEyeBallCtrl.mR;
-            this->mCnsEyeBallCtrl.mR = static_cast<uCnsJointOffset*>(nullptr);
+    if (mCnsEyeBallCtrl.mR != nullptr) {
+        mCnsEyeBallCtrl.mR->remove();
+        if (mCnsEyeBallCtrl.mR != nullptr) {
+            delete mCnsEyeBallCtrl.mR;
+            mCnsEyeBallCtrl.mR = nullptr;
         }
     }
-    if (this->mpFSMUnit == static_cast<cFSMUnit*>(nullptr)) {
+    if (mpFSMUnit == nullptr) {
         return;
     }
-    delete this->mpFSMUnit;
-    this->mpFSMUnit = static_cast<cFSMUnit*>(nullptr);
+    delete mpFSMUnit;
+    mpFSMUnit = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpFsmCtrl::MyDTI cpFsmCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpFsmCtrl.cpp at 0x0048035f-0x0048039c (called at cpFsmCtrl.cpp:47)

@@ -28,7 +28,7 @@ const MtDTI& uGUIGaugeArtsV01_03::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeArtsV01_03::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeArtsV01_03::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeArtsV01_03::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIGaugeArtsV01_03::getAllocator() {
 // Address: 0x00a96130 - 0x00a96170 (64 bytes)
 void* uGUIGaugeArtsV01_03::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeArtsV01_03::getAllocator()->memAlloc(sz, align, ::uGUIGaugeArtsV01_03::DTI.::MtDTI::getID());
+    return uGUIGaugeArtsV01_03::getAllocator()->memAlloc(sz, align, uGUIGaugeArtsV01_03::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uGUIGaugeArtsV01_03::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeArtsV01_03::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeArtsV01_03::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeArtsV01_03::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,9 +138,9 @@ __attribute__((weak)) void uGUIGaugeArtsV01_03::setup() {
 // Address: 0x00a96ad0 - 0x00a96b38 (104 bytes)
 bool uGUIGaugeArtsV01_03::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_JOB_ACTN_01_03_GUI"), static_cast<u32>(129), static_cast<t64>(1471591329)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_JOB_ACTN_01_03_GUI"), 129u, 1471591329l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -153,12 +153,12 @@ bool uGUIGaugeArtsV01_03::loadResource() {
 // Address: 0x00a96b40 - 0x00a96b71 (49 bytes)
 void uGUIGaugeArtsV01_03::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00a96aa0 - 0x00a96ace (46 bytes)
@@ -166,10 +166,10 @@ void uGUIGaugeArtsV01_03::updateInit() {
     // DWARF local not rendered: cGUIObjChildAnimationRoot* pObj;
     // DWARF local not rendered: MtVector3 pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOBJ_fix_element_elms.elems[0] != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
-        this->mGaugeLimitLength = 50.0f;
+    if (mpOBJ_fix_element_elms.elems[0] != nullptr) {
+        mGaugeLimitLength = 50.0f;
     }
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeArtsV01_03::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeArtsV01_03::updateWait);
 }
 
 // Address: 0x00a96b80 - 0x00a9727c (1788 bytes)
@@ -227,6 +227,8 @@ __attribute__((weak)) void uGUIGaugeArtsV01_03::dispMedalInfo(const cpJob09* pJo
 
 // No out-of-line body: no code in the ELF
 // bool uGUIGaugeArtsV01_03::isMedalChanging() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeArtsV01_03::MyDTI uGUIGaugeArtsV01_03::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeArtsV01_03.cpp at 0x00a977bf-0x00a977fc (called at uGUIGaugeArtsV01_03.cpp:74)

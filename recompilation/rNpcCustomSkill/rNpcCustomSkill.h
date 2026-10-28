@@ -118,14 +118,14 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cNpcCustomSkill::cNpcCustomSkill() {
-    this->mThinkId = static_cast<u32>(0);
-    this->mCustomSkill1 = static_cast<u16>(255);
-    this->mCustomSkill2 = static_cast<u16>(255);
-    this->mCustomSkill3 = static_cast<u16>(255);
-    this->mCustomSkill4 = static_cast<u16>(255);
-    this->mNormalSkillBit = static_cast<u16>(0);
-    this->mCustomSkillLv1 = static_cast<u16>(0);
-    this->mCustomSkillLv2 = static_cast<u16>(0);
-    this->mCustomSkillLv3 = static_cast<u16>(0);
-    this->mCustomSkillLv4 = static_cast<u16>(0);
+    this->mThinkId = 0;
+    this->mCustomSkill1 = 255;
+    this->mCustomSkill2 = 255;
+    this->mCustomSkill3 = 255;
+    this->mCustomSkill4 = 255;
+    this->mNormalSkillBit = 0;
+    this->mCustomSkillLv1 = 0;
+    this->mCustomSkillLv2 = 0;
+    this->mCustomSkillLv3 = 0;
+    this->mCustomSkillLv4 = 0;
 }

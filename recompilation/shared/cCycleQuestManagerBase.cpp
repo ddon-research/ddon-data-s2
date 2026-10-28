@@ -49,7 +49,7 @@ const MtDTI& cCycleQuestManagerBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCycleQuestManagerBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCycleQuestManagerBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCycleQuestManagerBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ inline void cCycleQuestManagerBase::operator delete(void* p_addr) {
 // Address: 0x00074f30 - 0x00074f38 (8 bytes)
 u8 cCycleQuestManagerBase::getRno0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mR0;
+    return mR0;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (29 bytes)
@@ -79,25 +79,25 @@ u8 cCycleQuestManagerBase::getRno0() const {
 // Address: 0x00074f60 - 0x00074f6e (14 bytes)
 bool cCycleQuestManagerBase::isDemoNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mR0 == static_cast<u8>(2);
+    return mR0 == 2;
 }
 
 // Address: 0x00074f70 - 0x00074f86 (22 bytes)
 bool cCycleQuestManagerBase::isPlayNow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mR0 | static_cast<u8>(2)) != static_cast<u8>(2);
+    return (mR0 | 2) != 2;
 }
 
 // Address: 0x00074f90 - 0x00074f9b (11 bytes)
 bool cCycleQuestManagerBase::isPlayNowAll() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mR0 != static_cast<u8>(0);
+    return mR0 != 0;
 }
 
 // Address: 0x00074fa0 - 0x00074fae (14 bytes)
 bool cCycleQuestManagerBase::isPlayEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mR0 > static_cast<u8>(4);
+    return mR0 > 4;
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,7 +139,7 @@ u32 cCycleQuestManagerBase::getCyclePurposeNum() const {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return static_cast<unsigned int>((static_cast<unsigned long>(this->mCyclePurpose[0] != static_cast<int>(-1)) + static_cast<unsigned long>(this->mCyclePurpose[1] != static_cast<int>(-1))) + static_cast<unsigned long>(this->mCyclePurpose[2] != static_cast<int>(-1)));
+    return static_cast<unsigned int>((static_cast<unsigned long>(mCyclePurpose[0] != -1) + static_cast<unsigned long>(mCyclePurpose[1] != -1)) + static_cast<unsigned long>(mCyclePurpose[2] != -1));
 }
 
 // Address: 0x000752b0 - 0x000752e0 (48 bytes)
@@ -153,67 +153,67 @@ __attribute__((weak)) s32 cCycleQuestManagerBase::getCyclePurposeNo(u32 idx) con
 // Address: 0x000752e0 - 0x00075305 (37 bytes)
 void cCycleQuestManagerBase::addCyclePurposeNo(u32 purposeNo) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    int* p1 = &this->mCyclePurpose[0];
+    int* p1 = &mCyclePurpose[0];
     do {
-        if ((*p1) == static_cast<int>(-1)) {
+        if ((*p1) == -1) {
             *p1 = static_cast<int>(purposeNo);
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(2));
+    } while (i <= 2u);
 }
 
 // Address: 0x00075310 - 0x00075338 (40 bytes)
 void cCycleQuestManagerBase::removeCyclePurposeNo(u32 purposeNo) {
     // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as int
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    int* p1 = &this->mCyclePurpose[0];
+    int* p1 = &mCyclePurpose[0];
     do {
         if ((*p1) == static_cast<int>(purposeNo)) {
-            *p1 = static_cast<int>(-1);
+            *p1 = -1;
             return;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(2));
+    } while (i <= 2u);
 }
 
 // Address: 0x00075540 - 0x0007554b (11 bytes)
 void cCycleQuestManagerBase::reqPlayStartDemo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mR0 = static_cast<u8>(1);
-    this->mR1 = static_cast<u8>(0);
-    this->mNextR0 = static_cast<u8>(2);
-    this->mNextR1 = static_cast<u8>(0);
+    mR0 = 1;
+    mR1 = 0;
+    mNextR0 = 2;
+    mNextR1 = 0;
 }
 
 // Address: 0x00075550 - 0x0007555b (11 bytes)
 void cCycleQuestManagerBase::reqPlayStartDemoAfterJump() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mR0 = static_cast<u8>(1);
-    this->mR1 = static_cast<u8>(0);
-    this->mNextR0 = static_cast<u8>(2);
-    this->mNextR1 = static_cast<u8>(2);
+    mR0 = 1;
+    mR1 = 0;
+    mNextR0 = 2;
+    mNextR1 = 2;
 }
 
 // Address: 0x00075560 - 0x00075571 (17 bytes)
 void cCycleQuestManagerBase::reqPlayStart() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mR0 = static_cast<u8>(1);
-    this->mR1 = static_cast<u8>(0);
-    this->mNextR0 = static_cast<u8>(3);
+    mR0 = 1;
+    mR1 = 0;
+    mNextR0 = 3;
 }
 
 // Address: 0x00075580 - 0x0007558a (10 bytes)
 void cCycleQuestManagerBase::setRoutineEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mR0 = static_cast<u8>(8);
-    this->mR1 = static_cast<u8>(0);
+    mR0 = 8;
+    mR1 = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -300,7 +300,7 @@ __attribute__((weak)) void cCycleQuestManagerBase::mainMove() {
 // Address: 0x000762d0 - 0x000762f0 (32 bytes)
 void cCycleQuestManagerBase::initResult() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWaitResult = ::sMain::getInstance()->::sMain::getFps() * 10.0f;
+    mWaitResult = sMain::getInstance()->getFps() * 10.0f;
 }
 
 // Address: 0x000762f0 - 0x000763fe (270 bytes)
@@ -312,10 +312,10 @@ __attribute__((weak)) bool cCycleQuestManagerBase::moveWaitResult() {
 // Address: 0x00076400 - 0x00076443 (67 bytes)
 bool cCycleQuestManagerBase::drawResult() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIResult != static_cast<uGUIMissionResult*>(nullptr)) {
-        if (this->mpGUIResult->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-            this->mpGUIResult->kill();
-            this->mpGUIResult = static_cast<uGUIMissionResult*>(nullptr);
+    if (mpGUIResult != nullptr) {
+        if (mpGUIResult->mResult == uGUIBase::RESULT_EXIT) {
+            mpGUIResult->kill();
+            mpGUIResult = nullptr;
             return true;
         } else {
             return false;
@@ -356,13 +356,13 @@ bool cCycleQuestManagerBase::isStartDemo() const {
 // Address: 0x00076480 - 0x00076483 (3 bytes)
 u32 cCycleQuestManagerBase::getStartDemoStageNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00076490 - 0x00076493 (3 bytes)
 u32 cCycleQuestManagerBase::getStartDemoNo() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (99 bytes)
@@ -375,19 +375,19 @@ u32 cCycleQuestManagerBase::getStartDemoNo() const {
 // Address: 0x000762a0 - 0x000762a7 (7 bytes)
 bool cCycleQuestManagerBase::isClear() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsClear;
+    return mIsClear;
 }
 
 // Address: 0x000762b0 - 0x000762b7 (7 bytes)
 bool cCycleQuestManagerBase::isInterrupt() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsInterrupt;
+    return mIsInterrupt;
 }
 
 // Address: 0x000762c0 - 0x000762c7 (7 bytes)
 bool cCycleQuestManagerBase::isFailed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsFailed;
+    return mIsFailed;
 }
 
 // No out-of-line body: no code in the ELF
@@ -413,7 +413,7 @@ __attribute__((weak)) void cCycleQuestManagerBase::failedCycleQuest() {
 // Address: 0x00076650 - 0x00076653 (3 bytes)
 nQuest::CYCLE_CONTENTS_CATEGORY cCycleQuestManagerBase::getCycleContentsCategory() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(0);
+    return nQuest::CYCLE_CONTENTS_CATEGORY_NONE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -444,25 +444,25 @@ nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestManagerBase::getCycleContentsPeriodFrom
     // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x76880 carries; no location-less local in scope fits
-    u32 v0_8 = this->mSubCategory.::MtArray::mLength;
-    if (v0_8 != static_cast<u32>(0)) {
+    u32 v0_8 = mSubCategory.mLength;
+    if (v0_8 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x76884 read, used 3 times; no DWARF local holds it
-            MtObject* t0 = this->mSubCategory.::MtArray::mpArray[i0_3];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
-                    return static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getCycleContentsPeriod();
+            MtObject* t0 = mSubCategory.mpArray[i0_3];
+            if (t0 != nullptr) {
+                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->getSubCategoryType()) {
+                    return static_cast<cCycleQuestSubCategoryManager*>(t0)->getCycleContentsPeriod();
                 }
             }
-            if ((i0_3 + static_cast<unsigned int>(1)) < v0_8) {
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+            if ((i0_3 + 1u) < v0_8) {
+                i0_3 = i0_3 + 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(0);
+    return nQuest::CYCLE_CONTENTS_PERIOD_NONE;
 }
 
 // Address: 0x000768d0 - 0x0007699b (203 bytes)
@@ -493,20 +493,20 @@ void cCycleQuestManagerBase::setCycleContentsPeriod(nQuest::CYCLE_CONTENTS_SUB_C
     // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x76b50 carries; no location-less local in scope fits
-    u32 v0_8 = this->mSubCategory.::MtArray::mLength;
-    if (v0_8 != static_cast<u32>(0)) {
+    u32 v0_8 = mSubCategory.mLength;
+    if (v0_8 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_9 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_9 = 0;;) {
             // inferred: a temporary for the value the load at 0x76b55 read, used 3 times; no DWARF local holds it
-            MtObject* t0 = this->mSubCategory.::MtArray::mpArray[i0_9];
-            if (t0 != static_cast<MtObject*>(nullptr)) {
-                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
-                    static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::setCycleContentsPeriod(period);
+            MtObject* t0 = mSubCategory.mpArray[i0_9];
+            if (t0 != nullptr) {
+                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->getSubCategoryType()) {
+                    static_cast<cCycleQuestSubCategoryManager*>(t0)->setCycleContentsPeriod(period);
                     return;
                 }
             }
-            if ((i0_9 + static_cast<unsigned int>(1)) < v0_8) {
-                i0_9 = i0_9 + static_cast<unsigned int>(1);
+            if ((i0_9 + 1u) < v0_8) {
+                i0_9 = i0_9 + 1u;
             } else {
                 break;
             }
@@ -543,13 +543,13 @@ __attribute__((weak)) nQuest::SCHEDULE_ID cCycleQuestManagerBase::getCycleConten
 // Address: 0x00075200 - 0x00075207 (7 bytes)
 bool cCycleQuestManagerBase::isAcceptReward() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsAcceptReward;
+    return mIsAcceptReward;
 }
 
 // Address: 0x00075210 - 0x00075218 (8 bytes)
 void cCycleQuestManagerBase::setAcceptReward(bool isAcceptReward) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsAcceptReward = isAcceptReward;
+    mIsAcceptReward = isAcceptReward;
 }
 
 // No out-of-line body: no code in the ELF
@@ -558,7 +558,7 @@ void cCycleQuestManagerBase::setAcceptReward(bool isAcceptReward) {
 // Address: 0x00075230 - 0x00075238 (8 bytes)
 void cCycleQuestManagerBase::setRewardNothing(bool isRewardNothing) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsRewardNothing = isRewardNothing;
+    mIsRewardNothing = isRewardNothing;
 }
 
 // No out-of-line body: no code in the ELF
@@ -570,7 +570,7 @@ void cCycleQuestManagerBase::setRewardNothing(bool isRewardNothing) {
 // Address: 0x00075260 - 0x00075267 (7 bytes)
 u32 cCycleQuestManagerBase::getCycleContentsPoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNowResultPoint;
+    return mNowResultPoint;
 }
 
 // Address: 0x00075340 - 0x000754b2 (370 bytes)
@@ -594,25 +594,24 @@ __attribute__((weak)) MT_CTSTR cCycleQuestManagerBase::getPlaySituationName() co
 cCycleQuestSubCategoryManager* cCycleQuestManagerBase::getSubCategoryMgr(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
     // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
-    const u32 num = this->mSubCategory.::MtArray::mLength;
+    const u32 num = mSubCategory.mLength;
     // inferred: DWARF's location-less 'i' (lexical block [0x7673b, 0x76778)) is the counter this loop steps (DWARF's stale constant 0)
-    u32 i = static_cast<u32>(0);
-    if (num != static_cast<u32>(0)) {
+    u32 i = 0;
+    if (num != 0) {
         do {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x76750, held ahead of the effects the ELF orders after it
-            MtObject* * t0 = this->mSubCategory.::MtArray::mpArray;
+            MtObject* * t0 = mSubCategory.mpArray;
             // inferred: a temporary for the value the load at 0x76754 read, used 3 times; no DWARF local holds it
             MtObject* t1 = t0[i];
-            if (t1 != static_cast<MtObject*>(nullptr)) {
-                if (subCategory != static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
-                } else {
+            if (t1 != nullptr) {
+                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t1)->getSubCategoryType()) {
                     return static_cast<cCycleQuestSubCategoryManager*>(t1);
                 }
             }
-            i += static_cast<u32>(1);
+            i += 1u;
         } while (i < num);
     }
-    return static_cast<cCycleQuestSubCategoryManager*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00074fc0 - 0x00075097 (215 bytes)
@@ -741,13 +740,13 @@ __attribute__((weak)) void cCycleQuestManagerBase::deleteTaskWithoutMainTask(nQu
 // Address: 0x00077c10 - 0x00077c15 (5 bytes)
 void cCycleQuestManagerBase::deleteQuestTask(cQuestTask* pTask) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cQuestManagerBase::deleteQuestTask(pTask);
+    this->cQuestManagerBase::deleteQuestTask(pTask);
 }
 
 // Address: 0x00077c20 - 0x00077c31 (17 bytes)
 bool cCycleQuestManagerBase::isEndFlowNow() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    return static_cast<unsigned int>(this->mR0 - static_cast<int>(5)) <= static_cast<unsigned int>(5);
+    return static_cast<unsigned int>(mR0 - 5) <= 5;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (21 bytes)
@@ -769,10 +768,10 @@ __attribute__((weak)) void cCycleQuestManagerBase::calcResultPoint() {
 void cCycleQuestManagerBase::callbackGetCycleContentsPointList(u32 errorCode) {
     // DWARF local not rendered: bool isSucceeded;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (errorCode != static_cast<u32>(0)) {
+    if (errorCode != 0) {
         return;
     }
-    this->mHasPointList = true;
+    mHasPointList = true;
 }
 
 // Address: 0x00077c50 - 0x00077cdf (143 bytes)
@@ -855,17 +854,17 @@ __attribute__((weak)) bool cCycleQuestManagerBase::isDistributeSubCategory(nQues
 bool cCycleQuestManagerBase::isThereInPeriod(nQuest::CYCLE_CONTENTS_PERIOD period) const {
     // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    const u32 num = this->mSubCategory.::MtArray::mLength;
-    if (num != static_cast<u32>(0)) {
+    const u32 num = mSubCategory.mLength;
+    if (num != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x782f6, 0x78324)) is the counter this loop steps (DWARF's stale constant 0)
-        for (u32 i = static_cast<u32>(0);;) {
-            if (this->mSubCategory.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if (period == static_cast<cCycleQuestSubCategoryManager*>(this->mSubCategory.::MtArray::mpArray[i])->::cCycleQuestSubCategoryManager::getCycleContentsPeriod()) {
+        for (u32 i = 0;;) {
+            if (mSubCategory.mpArray[i] != nullptr) {
+                if (period == static_cast<cCycleQuestSubCategoryManager*>(mSubCategory.mpArray[i])->getCycleContentsPeriod()) {
                     return true;
                 }
             }
-            if ((i + static_cast<u32>(1)) < num) {
-                i = i + static_cast<u32>(1);
+            if ((i + 1u) < num) {
+                i = i + 1u;
             } else {
                 break;
             }
@@ -933,6 +932,8 @@ cCycleQuestManagerBase::~cCycleQuestManagerBase() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCycleQuestManagerBase::MyDTI cCycleQuestManagerBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cCycleQuestManagerBase.cpp at 0x00078cec-0x00078d2c (called at cCycleQuestManagerBase.cpp:118)
 //   in _GLOBAL__sub_I_cCycleQuestManagerBase.cpp at 0x00078cec-0x00078d2c (called at cCycleQuestManagerBase.h:36)
@@ -981,7 +982,7 @@ const MtDTI& cCycleQuestManagerBase::cDieEmInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22cCycleQuestManagerBase10cDieEmInfoD0Ev at 0x01963930-0x0196395a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cCycleQuestManagerBase::cDieEmInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCycleQuestManagerBase::cDieEmInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCycleQuestManagerBase::cDieEmInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1013,6 +1014,8 @@ inline void cCycleQuestManagerBase::cDieEmInfo::operator delete(void* p_addr) {
 //   in cCycleQuestManagerBase::addDieEmInfo at 0x00077d7d-0x00077d97 (called at cCycleQuestManagerBase.cpp:2143)
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cCycleQuestManagerBase::cDieEmInfo::cDieEmInfo(u32 emId);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCycleQuestManagerBase::cDieEmInfo::MyDTI cCycleQuestManagerBase::cDieEmInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCycleQuestManagerBase.cpp at 0x00078caf-0x00078cec (called at cCycleQuestManagerBase.cpp:105)

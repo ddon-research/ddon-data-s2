@@ -99,7 +99,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cStageToSpot::cStageToSpot() {
-    this->mStageNo = static_cast<u32>(0);
-    this->mSpotId = static_cast<u32>(0);
-    this->mRecommendLevel = static_cast<u8>(0);
+    this->mStageNo = 0;
+    this->mSpotId = 0;
+    this->mRecommendLevel = 0;
 }

@@ -75,6 +75,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline void cCraftSkill::init() {
-    this->mpCostResource = static_cast<rCraftSkillCost*>(nullptr);
-    this->mpSpdResource = static_cast<rCraftSkillSpd*>(nullptr);
+    this->mpCostResource = nullptr;
+    this->mpSpdResource = nullptr;
 }

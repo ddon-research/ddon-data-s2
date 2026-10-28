@@ -32,7 +32,7 @@ const MtDTI& cCharParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCharParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCharParam::DTI)->memAlloc(sz, align, ::cCharParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCharParam::DTI)->memAlloc(sz, align, cCharParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline void* cCharParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCharParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ inline void cCharParam::operator delete(void* p_addr) {
 // Address: 0x0004ced0 - 0x0004cee5 (21 bytes)
 cCharParam::cCharParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVersion = static_cast<u16>(48);
+    mVersion = 48;
 }
 
 // Defined in the class (its body was written in a header).
@@ -75,11 +75,13 @@ __attribute__((weak)) void cCharParam::createProperty(MtPropertyList& s) {
 // Address: 0x0004cf00 - 0x0004cf05 (5 bytes)
 MtUI* cCharParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Defined in the class (its body was written in a header).
 // void cCharParam::paramClassCopy(MtObject* pObject);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cCharParam::MyDTI cCharParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cCharParam.cpp at 0x0004cf10-0x0004cf52 (called at cCharParam.cpp:23)
@@ -89,6 +91,6 @@ MtUI* cCharParam::createUI(MtProperty& prop) {
 // Address: 0x0004ce10 - 0x0004ce56 (70 bytes)
 MtObject* cCharParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCharParam;
+    return new (16u) cCharParam;
 }
 

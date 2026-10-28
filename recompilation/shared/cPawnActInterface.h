@@ -503,5 +503,5 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cPawnActInterBase::cPawnActInterBase() {
     this->mLifeFrame = 150.0f;
-    this->mDisableNotice = static_cast<u32>(0);
+    this->mDisableNotice = 0;
 }

@@ -468,6 +468,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cUseCompEnemy::applyInfo at 0x868469-0x868473; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uEnemy::setEnemyEnumID(nEnemy::ENEMY_ID id) {
+    this->mEnemyResID = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpErosionEnemyBase* uEnemy::getErosionEnemyBase() const {
     return this->mpErosionEnemy;
 }
@@ -476,4 +482,11 @@ inline cpErosionEnemyBase* uEnemy::getErosionEnemyBase() const {
 // approximate: only approximate callers check this inline body
 inline rCharParamEnemy* uEnemy::getCharaParamEnemy() const {
     return this->mpCharParamEnemy;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cEmActGuardHit::preInit at 0xb01b7-0xb01c7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uEnemy::addGuardCnt() {
+    this->mContinuousGuardCnt = this->mContinuousGuardCnt + 1u;
+    this->mContinuousGuardTimer = 90.0f;
 }

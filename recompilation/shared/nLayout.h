@@ -181,11 +181,11 @@ namespace nLayout {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nLayout::stLayoutID::stLayoutID() {
-    this->mLayoutID = static_cast<u32>(0);
+    this->mLayoutID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nLayout::stSplitID::stSplitID() {
-    this->mSplitID = static_cast<u32>(0);
+    this->mSplitID = 0;
 }

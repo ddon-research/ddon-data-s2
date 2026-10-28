@@ -150,12 +150,12 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rPartnerPawnTalk::InfoBinary::InfoBinary() {
-    this->mpTalkList = static_cast<rPartnerPawnTalk::InfoBinary::TalkDataBinary*>(nullptr);
-    this->mTalkListNum = static_cast<u32>(0);
+    this->mpTalkList = nullptr;
+    this->mTalkListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline rPartnerPawnTalk::InfoBinary::TalkDataBinary::TalkDataBinary() {
-    this->mTalk = static_cast<u16>(0);
-    this->mType = static_cast<u16>(1);
+    this->mTalk = 0;
+    this->mType = 1;
 }

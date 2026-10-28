@@ -50,7 +50,7 @@ const MtDTI& rSoundSimpleCurve::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSimpleCurve::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,50 +70,50 @@ inline void rSoundSimpleCurve::operator delete(void* p_addr) {
 // Also emitted as: _ZN17rSoundSimpleCurveD0Ev at 0x006fd200
 rSoundSimpleCurve::~rSoundSimpleCurve() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mElementArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mElementArray.mLength != 0) {
         // inferred: the value the loop at 0x6fd130 carries; no location-less local in scope fits
-        u32 v0_0 = this->mElementArray.::MtArray::mLength;
+        u32 v0_0 = mElementArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mElementArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mElementArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mElementArray.::MtArray::mLength) {
-                    v0_0 = this->mElementArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mElementArray.mpArray[i0_3] != nullptr) {
+                delete mElementArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mElementArray.mLength) {
+                    v0_0 = mElementArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mElementArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mElementArray.::MtArray::mpArray));
-        this->mElementArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mElementArray.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mElementArray.::MtArray::mLength = static_cast<u32>(0);
+    if (mElementArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mElementArray.mpArray));
+        mElementArray.mpArray = nullptr;
+        mElementArray.mBufsiz = 0;
+        mElementArray.mLength = 0;
         // inferred: a temporary for the value the load at 0x6fd197 read, used once; no DWARF local holds it
-        f32* t0 = this->mpX;
-        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
+        f32* t0 = mpX;
+        MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
         // inferred: a temporary for the value the load at 0x6fd1b9 read, used once; no DWARF local holds it
-        f32* t1 = this->mpY;
-        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
+        f32* t1 = mpY;
+        MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
         return;
     } else {
-        this->mElementArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mElementArray.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mElementArray.::MtArray::mLength = static_cast<u32>(0);
+        mElementArray.mpArray = nullptr;
+        mElementArray.mBufsiz = 0;
+        mElementArray.mLength = 0;
         // inferred: a temporary for the value the load at 0x6fd197 read, used once; no DWARF local holds it
-        f32* t0 = this->mpX;
-        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
+        f32* t0 = mpX;
+        MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
         // inferred: a temporary for the value the load at 0x6fd1b9 read, used once; no DWARF local holds it
-        f32* t1 = this->mpY;
-        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
+        f32* t1 = mpY;
+        MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
         return;
     }
 }
@@ -139,15 +139,15 @@ __attribute__((weak)) void rSoundSimpleCurve::createProperty(MtPropertyList& s) 
 // Address: 0x006fd330 - 0x006fd335 (5 bytes)
 MtUI* rSoundSimpleCurve::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x006fd4f0 - 0x006fd587 (151 bytes)
 bool rSoundSimpleCurve::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
-        this->::rSoundSimpleCurve::updateData();
+    MtSerializer sz(65536);
+    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
+        updateData();
         return true;
     } else {
         return false;
@@ -157,8 +157,8 @@ bool rSoundSimpleCurve::load(MtStream& in) {
 // Address: 0x006fd590 - 0x006fd616 (134 bytes)
 bool rSoundSimpleCurve::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rSoundSimpleCurve::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rSoundSimpleCurve::DTI));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (7 bytes)
@@ -248,6 +248,8 @@ __attribute__((weak)) void rSoundSimpleCurve::updateData() {
 //   in rSoundSimpleCurve::updateData at 0x006fd3ee-0x006fd406 (called at rSoundSimpleCurve.cpp:151)
 // u32 rSoundSimpleCurve::memSize(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSimpleCurve::MyDTI rSoundSimpleCurve::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rSoundSimpleCurve.cpp at 0x006fd910-0x006fd952 (called at rSoundSimpleCurve.cpp:24)
 //   in _GLOBAL__sub_I_rSoundSimpleCurve.cpp at 0x006fd910-0x006fd952 (called at rSoundSimpleCurve.h:27)
@@ -282,7 +284,7 @@ const MtDTI& rSoundSimpleCurve::Element::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rSoundSimpleCurve::Element::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::Element::DTI)->memAlloc(sz, align, ::rSoundSimpleCurve::Element::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundSimpleCurve::Element::DTI)->memAlloc(sz, align, rSoundSimpleCurve::Element::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,7 +298,7 @@ inline void* rSoundSimpleCurve::Element::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundSimpleCurve::Element::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::Element::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSimpleCurve::Element::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -327,11 +329,13 @@ __attribute__((weak)) void rSoundSimpleCurve::Element::createProperty(MtProperty
 // Address: 0x006fd0d0 - 0x006fd0d5 (5 bytes)
 MtUI* rSoundSimpleCurve::Element::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rSoundSimpleCurve::Element::copy(rSoundSimpleCurve::Element* src);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSimpleCurve::Element::MyDTI rSoundSimpleCurve::Element::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundSimpleCurve.cpp at 0x006fd952-0x006fd98f (called at rSoundSimpleCurve.cpp:25)
@@ -341,7 +345,7 @@ MtUI* rSoundSimpleCurve::Element::createUI(MtProperty& prop) {
 // Address: 0x006fce20 - 0x006fce68 (72 bytes)
 MtObject* rSoundSimpleCurve::Element::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundSimpleCurve::Element;
+    return new (16u) rSoundSimpleCurve::Element;
 }
 
 // Instance at 0x01ab3770 - 0x01ab3775 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

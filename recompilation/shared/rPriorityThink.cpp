@@ -44,7 +44,7 @@ const MtDTI& cPrioThkCmd::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPrioThkCmd::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::DTI)->memAlloc(sz, align, ::cPrioThkCmd::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPrioThkCmd::DTI)->memAlloc(sz, align, cPrioThkCmd::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ inline void* cPrioThkCmd::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPrioThkCmd::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrioThkCmd::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -87,7 +87,7 @@ cPrioThkCmd::~cPrioThkCmd() {
 // Address: 0x006cd060 - 0x006cd063 (3 bytes)
 u32 cPrioThkCmd::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x006cd0a0 - 0x006cd0a1 (1 bytes)
@@ -499,6 +499,8 @@ __attribute__((weak)) void cPrioThkCmd::getProperTargetTarget(cPrioThkIO& io, uC
 //   in cPrioThkCmdAddCoreNearTarget::check at 0x006d3c1c-0x006d3c6b (called at rPriorityThink.cpp:6653)
 // uEnemy* cPrioThkCmd::getGeneralPointOwnerEnemy(cGeneralPoint* pGp);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrioThkCmd::MyDTI cPrioThkCmd::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e086f-0x006e08af (called at rPriorityThink.cpp:1060)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e086f-0x006e08af (called at rPriorityThink.h:485)
@@ -507,7 +509,7 @@ __attribute__((weak)) void cPrioThkCmd::getProperTargetTarget(cPrioThkIO& io, uC
 // Address: 0x006ccf50 - 0x006ccf9e (78 bytes)
 MtObject* cPrioThkCmd::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPrioThkCmd;
+    return new (16u) cPrioThkCmd;
 }
 
 // No out-of-line body: 8 inlined copies in 4 functions (580 bytes)
@@ -558,7 +560,7 @@ const MtDTI& cPrioThkCmd::cTmpResult::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11cPrioThkCmd10cTmpResultD0Ev at 0x01aaea50-0x01aaea7a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPrioThkCmd::cTmpResult::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::cTmpResult::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrioThkCmd::cTmpResult::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -576,6 +578,8 @@ inline void cPrioThkCmd::cTmpResult::operator delete(void* p_addr) {
 //   in cPrioThkCmd::cTmpResult::MyDTI::newInstance at 0x006d89bd-0x006d89f2 (called at rPriorityThink.cpp:10478)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // cPrioThkCmd::cTmpResult::cTmpResult();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrioThkCmd::cTmpResult::MyDTI cPrioThkCmd::cTmpResult::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e159e-0x006e15db (called at rPriorityThink.cpp:10478)
@@ -627,7 +631,7 @@ const MtDTI& cPrioThkCode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPrioThkCode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrioThkCode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (124 bytes)
@@ -670,7 +674,7 @@ __attribute__((weak)) u32 cPrioThkCode::check(cPrioThkIO& io, uDDOModel& owner) 
 // Address: 0x006d0610 - 0x006d061a (10 bytes)
 u32 cPrioThkCode::convID(MT_CTSTR name) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    return MtCRC::getCRC(name, 0xFFFFFFFFu);
 }
 
 // No out-of-line body: no code in the ELF
@@ -683,6 +687,8 @@ u32 cPrioThkCode::convID(MT_CTSTR name) {
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
 //   in _Z13execPrioThinkP14rPriorityThinkR10cPrioThkIOR9uDDOModel at 0x006ccd2c-0x006ccd34 (called at rPriorityThink.cpp:959)
 // bool cPrioThkCode::getShuffle() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrioThkCode::MyDTI cPrioThkCode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e08af-0x006e08e8 (called at rPriorityThink.cpp:3720)
@@ -709,7 +715,7 @@ const MtDTI& cPrioThkIO::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cPrioThkIO::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cPrioThkIO::DTI);
+    return MtMemoryAllocator::getAllocator(cPrioThkIO::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -731,7 +737,7 @@ inline MtAllocator* cPrioThkIO::getAllocator() {
 // Address: 0x006cc9d0 - 0x006cc9fa (42 bytes)
 __attribute__((weak)) void cPrioThkIO::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cPrioThkIO::getAllocator()->memFree(p_addr);
+    cPrioThkIO::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -775,6 +781,8 @@ __attribute__((weak)) void cPrioThkIO::clearResultCode() {
 //   in cPrioThkCmdRetActGroup::check at 0x006daf8a-0x006daf9a (called at rPriorityThink.cpp:11274)
 // f32 cPrioThkIO::getDataF32(u32 dataType, f32 def);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrioThkIO::MyDTI cPrioThkIO::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e0832-0x006e086f (called at rPriorityThink.cpp:506)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e0832-0x006e086f (called at rPriorityThink.h:128)
@@ -809,7 +817,7 @@ const MtDTI& rPriorityThink::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPriorityThink::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPriorityThink::DTI)->memAlloc(sz, align, ::rPriorityThink::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPriorityThink::DTI)->memAlloc(sz, align, rPriorityThink::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -824,7 +832,7 @@ inline void* rPriorityThink::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPriorityThink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPriorityThink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPriorityThink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -851,18 +859,18 @@ rPriorityThink::~rPriorityThink() {
 // Address: 0x006d0710 - 0x006d07a0 (144 bytes)
 bool rPriorityThink::loadData(MtDataReader& in, cPrioThkCode* pData) {
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    ::nDDOIO::readMtArrayEx(in, pData->mCommands);
+    nDDOIO::readMtArrayEx(in, pData->mCommands);
     pData->mPrio = in.readS32();
     pData->mID = in.readU32();
     // inferred: a temporary for the result of the call at 0x6d0750, used once; no DWARF local holds it
     u32 t0 = in.readU32();
-    in.read(static_cast<void*>(&pData->mDisableOrder), t0 * static_cast<u32>(4));
+    in.read(static_cast<void*>(&pData->mDisableOrder), t0 * 4u);
     // inferred: a temporary for the result of the call at 0x6d0770, used once; no DWARF local holds it
     u32 t1 = in.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    in.read(static_cast<void*>(&pData->mDisableTypeFlag), t1 * static_cast<u32>(4));
-    ::nDDOIO::readData(in, pData->mCodeFlag);
+    in.read(static_cast<void*>(&pData->mDisableTypeFlag), t1 * 4u);
+    nDDOIO::readData(in, pData->mCodeFlag);
     return true;
 }
 
@@ -875,7 +883,7 @@ MT_CTSTR rPriorityThink::getExt() const {
 // Address: 0x01aac970 - 0x01aac976 (6 bytes)
 u32 rPriorityThink::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(47);
+    return 47;
 }
 
 // Address: 0x006d07a0 - 0x006d0854 (180 bytes)
@@ -885,6 +893,8 @@ __attribute__((weak)) bool rPriorityThink::loadCore(MtDataReader& r) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPriorityThink::MyDTI rPriorityThink::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e08e8-0x006e0925 (called at rPriorityThink.cpp:4063)
 //   in _GLOBAL__sub_I_rPriorityThink.cpp at 0x006e08e8-0x006e0925 (called at rPriorityThink.h:804)
@@ -893,7 +903,7 @@ __attribute__((weak)) bool rPriorityThink::loadCore(MtDataReader& r) {
 // Address: 0x006d0630 - 0x006d0694 (100 bytes)
 MtObject* rPriorityThink::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPriorityThink;
+    return new (16u) rPriorityThink;
 }
 
 // Instance at 0x01aaea10 - 0x01aaea15 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

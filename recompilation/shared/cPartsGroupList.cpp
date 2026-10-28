@@ -29,7 +29,7 @@ const MtDTI& cPartsGroupList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cPartsGroupList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cPartsGroupList::DTI);
+    return MtMemoryAllocator::getAllocator(cPartsGroupList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -38,7 +38,7 @@ inline MtAllocator* cPartsGroupList::getAllocator() {
 // Address: 0x0042dc70 - 0x0042dcb0 (64 bytes)
 void* cPartsGroupList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cPartsGroupList::getAllocator()->memAlloc(sz, align, ::cPartsGroupList::DTI.::MtDTI::getID());
+    return cPartsGroupList::getAllocator()->memAlloc(sz, align, cPartsGroupList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cPartsGroupList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPartsGroupList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPartsGroupList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPartsGroupList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,38 +75,38 @@ cPartsGroupList::cPartsGroupList() {
 // Also emitted as: _ZN15cPartsGroupListD0Ev at 0x0042de50
 cPartsGroupList::~cPartsGroupList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mpGroupParamList != static_cast<rLayoutGroupParamList*>(nullptr)) {
-        this->mpGroupParamList->::cResource::release();
-        this->mpGroupParamList = static_cast<rLayoutGroupParamList*>(nullptr);
+    if (mpGroupParamList != nullptr) {
+        mpGroupParamList->release();
+        mpGroupParamList = nullptr;
     }
-    if (this->mGroupList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGroupList.mLength != 0) {
         // inferred: the value the loop at 0x42dde0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGroupList.::MtArray::mLength;
+        u32 v0_0 = mGroupList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGroupList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGroupList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroupList.::MtArray::mLength) {
-                    v0_0 = this->mGroupList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGroupList.mpArray[i0_3] != nullptr) {
+                delete mGroupList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGroupList.mLength) {
+                    v0_0 = mGroupList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGroupList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupList.::MtArray::mpArray));
+    if (mGroupList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroupList.mpArray));
     }
-    this->mGroupList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGroupList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGroupList.::MtArray::mLength = static_cast<u32>(0);
+    mGroupList.mpArray = nullptr;
+    mGroupList.mBufsiz = 0;
+    mGroupList.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -156,6 +156,8 @@ __attribute__((weak)) void cPartsGroupList::init(u32 partsGroup, u32 layerNo, u3
 //   in uStagePartsCtrl::uStageCustomCtrlUpdateLot at 0x00d3a6d3-0x00d3a6da (called at uStageParts.cpp:2117)
 //   in uStagePartsCtrl::uStageCustomCtrlUpdateLot at 0x00d3a730-0x00d3a73b (called at uStageParts.cpp:2123)
 // bool cPartsGroupList::isEnable();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPartsGroupList::MyDTI cPartsGroupList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cPartsGroupList.cpp at 0x0042e3cf-0x0042e40c (called at cPartsGroupList.cpp:25)

@@ -8,8 +8,8 @@
 // Address: 0x007c1b60 - 0x007c1b77 (23 bytes)
 nIME::CandidateDispInfo::CandidateDispInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mListNum = static_cast<u32>(0);
-    this->mListSelectIndex = static_cast<u32>(0);
+    mListNum = 0;
+    mListSelectIndex = 0;
 }
 
 // Address: 0x007c1b80 - 0x007c1b81 (1 bytes)
@@ -21,8 +21,8 @@ nIME::CandidateDispInfo::~CandidateDispInfo() {
 // Address: 0x007c1ba0 - 0x007c1ba9 (9 bytes)
 void nIME::CandidateDispInfo::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mListNum = static_cast<u32>(0);
-    this->mListSelectIndex = static_cast<u32>(0);
+    mListNum = 0;
+    mListSelectIndex = 0;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (10 bytes)

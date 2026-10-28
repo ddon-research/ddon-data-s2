@@ -36,7 +36,7 @@ const MtDTI& cCustomShlLimit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCustomShlLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memAlloc(sz, align, ::cCustomShlLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCustomShlLimit::DTI)->memAlloc(sz, align, cCustomShlLimit::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cCustomShlLimit::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCustomShlLimit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCustomShlLimit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cCustomShlLimit::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cCustomShlLimit::~cCustomShlLimit();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCustomShlLimit::MyDTI cCustomShlLimit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb829-0x006bb862 (called at rShlLimit.cpp:43)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb829-0x006bb862 (called at rShlLimit.h:73)
@@ -84,7 +86,7 @@ inline void cCustomShlLimit::operator delete(void* p_addr) {
 // Address: 0x006bb560 - 0x006bb5b1 (81 bytes)
 MtObject* cCustomShlLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCustomShlLimit;
+    return new (16u) cCustomShlLimit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -112,7 +114,7 @@ const MtDTI& cShlLimit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cShlLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memAlloc(sz, align, ::cShlLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cShlLimit::DTI)->memAlloc(sz, align, cShlLimit::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -127,7 +129,7 @@ inline void* cShlLimit::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShlLimit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShlLimit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -152,6 +154,8 @@ inline void cShlLimit::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cShlLimit::~cShlLimit();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShlLimit::MyDTI cShlLimit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb7a0-0x006bb7e9 (called at rShlLimit.cpp:40)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb7a0-0x006bb7e9 (called at rShlLimit.h:28)
@@ -160,7 +164,7 @@ inline void cShlLimit::operator delete(void* p_addr) {
 // Address: 0x006bb3c0 - 0x006bb40f (79 bytes)
 MtObject* cShlLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cShlLimit;
+    return new (16u) cShlLimit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -185,7 +189,7 @@ const MtDTI& rCustimShlLimit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCustimShlLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCustimShlLimit::DTI)->memAlloc(sz, align, ::rCustimShlLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCustimShlLimit::DTI)->memAlloc(sz, align, rCustimShlLimit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +204,7 @@ inline void* rCustimShlLimit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rCustimShlLimitD0Ev at 0x01aa5b94-0x01aa5bb3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCustimShlLimit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCustimShlLimit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCustimShlLimit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -217,16 +221,16 @@ bool rCustimShlLimit::loadData(MtDataReader& r, cCustomShlLimit* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLimitId);
+    nDDOIO::readData(r, pData->mLimitId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShlMaxNum);
+    nDDOIO::readData(r, pData->mShlMaxNum);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLimitType);
+    nDDOIO::readData(r, pData->mLimitType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mKillType);
+    nDDOIO::readData(r, pData->mKillType);
     return true;
 }
 
@@ -239,8 +243,10 @@ MT_CTSTR rCustimShlLimit::getExt() const {
 // Address: 0x01aa5ce0 - 0x01aa5ce6 (6 bytes)
 u32 rCustimShlLimit::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCustimShlLimit::MyDTI rCustimShlLimit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb862-0x006bb89b (called at rShlLimit.cpp:44)
@@ -250,7 +256,7 @@ u32 rCustimShlLimit::getDataVersion() const {
 // Address: 0x006bb630 - 0x006bb694 (100 bytes)
 MtObject* rCustimShlLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCustimShlLimit;
+    return new (16u) rCustimShlLimit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -275,7 +281,7 @@ const MtDTI& rShlLimit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShlLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShlLimit::DTI)->memAlloc(sz, align, ::rShlLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShlLimit::DTI)->memAlloc(sz, align, rShlLimit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -290,7 +296,7 @@ inline void* rShlLimit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9rShlLimitD0Ev at 0x01aa5814-0x01aa5833, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rShlLimit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShlLimit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShlLimit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -307,13 +313,13 @@ bool rShlLimit::loadData(MtDataReader& r, cShlLimit* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mShlMaxNum);
+    nDDOIO::readData(r, pData->mShlMaxNum);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLimitType);
+    nDDOIO::readData(r, pData->mLimitType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCustomShlLimitId);
+    nDDOIO::readData(r, pData->mCustomShlLimitId);
     return true;
 }
 
@@ -326,8 +332,10 @@ MT_CTSTR rShlLimit::getExt() const {
 // Address: 0x01aa5960 - 0x01aa5966 (6 bytes)
 u32 rShlLimit::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShlLimit::MyDTI rShlLimit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rShlLimit.cpp at 0x006bb7e9-0x006bb829 (called at rShlLimit.cpp:41)
@@ -337,7 +345,7 @@ u32 rShlLimit::getDataVersion() const {
 // Address: 0x006bb480 - 0x006bb4e4 (100 bytes)
 MtObject* rShlLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShlLimit;
+    return new (16u) rShlLimit;
 }
 
 // Instance at 0x01aa5c90 - 0x01aa5ca6 (22 bytes) of the generic rTbl2<T>::getData

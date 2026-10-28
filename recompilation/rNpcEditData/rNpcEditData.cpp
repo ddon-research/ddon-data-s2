@@ -45,7 +45,7 @@ const MtDTI& rNpcEditData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rNpcEditData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcEditData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcEditData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,6 +100,8 @@ __attribute__((weak)) bool rNpcEditData::save(MtStream& out) {
     DDON_STUB("rNpcEditData::save")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcEditData::MyDTI rNpcEditData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcEditData.cpp at 0x006aa750-0x006aa792 (called at rNpcEditData.cpp:25)

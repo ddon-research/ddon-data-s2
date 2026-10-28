@@ -36,7 +36,7 @@ const MtDTI& rPawnQuestTalk::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rPawnQuestTalk::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::DTI)->memAlloc(sz, align, ::rPawnQuestTalk::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPawnQuestTalk::DTI)->memAlloc(sz, align, rPawnQuestTalk::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rPawnQuestTalk::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rPawnQuestTalk::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPawnQuestTalk::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,41 +91,41 @@ MT_CTSTR rPawnQuestTalk::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rPawnQuestTalk::rPawnQuestTalk() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x006b5120 - 0x006b51d1 (177 bytes)
 // Also emitted as: _ZN14rPawnQuestTalkD0Ev at 0x006b51e0
 rPawnQuestTalk::~rPawnQuestTalk() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mTalkDataList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mTalkDataList.mLength != 0) {
         // inferred: the value the loop at 0x6b5150 carries; no location-less local in scope fits
-        u32 v0_0 = this->mTalkDataList.::MtArray::mLength;
+        u32 v0_0 = mTalkDataList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mTalkDataList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mTalkDataList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mTalkDataList.::MtArray::mLength) {
-                    v0_0 = this->mTalkDataList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mTalkDataList.mpArray[i0_3] != nullptr) {
+                delete mTalkDataList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mTalkDataList.mLength) {
+                    v0_0 = mTalkDataList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mTalkDataList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTalkDataList.::MtArray::mpArray));
+    if (mTalkDataList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTalkDataList.mpArray));
     }
-    this->mTalkDataList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mTalkDataList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mTalkDataList.::MtArray::mLength = static_cast<u32>(0);
+    mTalkDataList.mpArray = nullptr;
+    mTalkDataList.mBufsiz = 0;
+    mTalkDataList.mLength = 0;
 }
 
 // Address: 0x006b52b0 - 0x006b5393 (227 bytes)
@@ -137,7 +137,7 @@ __attribute__((weak)) void rPawnQuestTalk::createProperty(MtPropertyList& s) {
 // Address: 0x006b53a0 - 0x006b53a5 (5 bytes)
 MtUI* rPawnQuestTalk::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x006b53b0 - 0x006b5457 (167 bytes)
@@ -145,10 +145,10 @@ bool rPawnQuestTalk::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5525840)) {
-        if ((&r)->readU32() == static_cast<u32>(1)) {
-            ::nDDOIO::readMtArray(r, this->mTalkDataList);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x545150) {
+        if ((&r)->readU32() == 1) {
+            nDDOIO::readMtArray(r, mTalkDataList);
             return true;
         }
     }
@@ -162,6 +162,8 @@ __attribute__((weak)) bool rPawnQuestTalk::save(MtStream& out) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPawnQuestTalk::MyDTI rPawnQuestTalk::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rPawnQuestTalk.cpp at 0x006b5b20-0x006b5b62 (called at rPawnQuestTalk.cpp:29)
 //   in _GLOBAL__sub_I_rPawnQuestTalk.cpp at 0x006b5b20-0x006b5b62 (called at rPawnQuestTalk.h:30)
@@ -170,7 +172,7 @@ __attribute__((weak)) bool rPawnQuestTalk::save(MtStream& out) {
 // Address: 0x006b4ee0 - 0x006b4f64 (132 bytes)
 MtObject* rPawnQuestTalk::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPawnQuestTalk;
+    return new (16u) rPawnQuestTalk;
 }
 
 // No out-of-line body: no code in the ELF
@@ -198,7 +200,7 @@ const MtDTI& rPawnQuestTalk::cTalkData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rPawnQuestTalk::cTalkData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::cTalkData::DTI)->memAlloc(sz, align, ::rPawnQuestTalk::cTalkData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rPawnQuestTalk::cTalkData::DTI)->memAlloc(sz, align, rPawnQuestTalk::cTalkData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,7 +214,7 @@ void* rPawnQuestTalk::cTalkData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rPawnQuestTalk::cTalkData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::cTalkData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rPawnQuestTalk::cTalkData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,7 +234,7 @@ inline void rPawnQuestTalk::cTalkData::operator delete(void* p_addr) {
 rPawnQuestTalk::MSGTYPE rPawnQuestTalk::cTalkData::getMsgType() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u8 used as rPawnQuestTalk::MSGTYPE
-    return static_cast<rPawnQuestTalk::MSGTYPE>(this->mMsgType);
+    return static_cast<MSGTYPE>(mMsgType);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -256,12 +258,12 @@ void rPawnQuestTalk::cTalkData::load(MtDataReader& r) {
     // Approximate from the ELF: a byte stored between two folded calls (struct-path TBAA keeps a value the ELF reads again); the body oracle reports this body.
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mGroupSerial);
+    nDDOIO::readData(r, mGroupSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMsgType);
-    this->mResType = r.::MtDataReader::readU8();
-    this->mParsonality = r.::MtDataReader::readU8();
+    nDDOIO::readData(r, mMsgType);
+    mResType = r.readU8();
+    mParsonality = r.readU8();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (197 bytes)
@@ -288,8 +290,10 @@ __attribute__((weak)) void rPawnQuestTalk::cTalkData::createProperty(MtPropertyL
 // Address: 0x006b5b10 - 0x006b5b15 (5 bytes)
 MtUI* rPawnQuestTalk::cTalkData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rPawnQuestTalk::cTalkData::MyDTI rPawnQuestTalk::cTalkData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rPawnQuestTalk.cpp at 0x006b5b62-0x006b5b9f (called at rPawnQuestTalk.cpp:240)
@@ -299,7 +303,7 @@ MtUI* rPawnQuestTalk::cTalkData::createUI(MtProperty& prop) {
 // Address: 0x006b5610 - 0x006b5661 (81 bytes)
 MtObject* rPawnQuestTalk::cTalkData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rPawnQuestTalk::cTalkData;
+    return new (16u) rPawnQuestTalk::cTalkData;
 }
 
 // Instance at 0x01aa21a0 - 0x01aa21a5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

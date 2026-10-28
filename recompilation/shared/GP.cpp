@@ -27,7 +27,7 @@ const MtDTI& CDataCAPtoGPChangeElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataCAPtoGPChangeElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataCAPtoGPChangeElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataCAPtoGPChangeElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* CDataCAPtoGPChangeElement::getAllocator() {
 // Address: 0x003d1d30 - 0x003d1d70 (64 bytes)
 void* CDataCAPtoGPChangeElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataCAPtoGPChangeElement::getAllocator()->memAlloc(sz, align, ::CDataCAPtoGPChangeElement::DTI.::MtDTI::getID());
+    return CDataCAPtoGPChangeElement::getAllocator()->memAlloc(sz, align, CDataCAPtoGPChangeElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* CDataCAPtoGPChangeElement::operator new(size_t sz, u32 align) {
 // Address: 0x003d1da0 - 0x003d1dca (42 bytes)
 __attribute__((weak)) void CDataCAPtoGPChangeElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataCAPtoGPChangeElement::getAllocator()->memFree(p_addr);
+    CDataCAPtoGPChangeElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,6 +73,8 @@ __attribute__((weak)) void CDataCAPtoGPChangeElement::operator delete(void* p_ad
 // No out-of-line body: no code in the ELF
 // CDataCAPtoGPChangeElement::CDataCAPtoGPChangeElement(u32, u32, u32, const char*, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataCAPtoGPChangeElement::MyDTI CDataCAPtoGPChangeElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d450-0x0041d489 (called at GPImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d450-0x0041d489 (called at GP.h:22)
@@ -81,7 +83,7 @@ __attribute__((weak)) void CDataCAPtoGPChangeElement::operator delete(void* p_ad
 // Address: 0x003d1cd0 - 0x003d1d2f (95 bytes)
 MtObject* CDataCAPtoGPChangeElement::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataCAPtoGPChangeElement;
+    return new (16u) CDataCAPtoGPChangeElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,7 +100,7 @@ const MtDTI& CDataGPCourseAvailable::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPCourseAvailable::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseAvailable::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPCourseAvailable::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +109,7 @@ inline MtAllocator* CDataGPCourseAvailable::getAllocator() {
 // Address: 0x003d2c20 - 0x003d2c60 (64 bytes)
 void* CDataGPCourseAvailable::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPCourseAvailable::getAllocator()->memAlloc(sz, align, ::CDataGPCourseAvailable::DTI.::MtDTI::getID());
+    return CDataGPCourseAvailable::getAllocator()->memAlloc(sz, align, CDataGPCourseAvailable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ void* CDataGPCourseAvailable::operator new(size_t sz, u32 align) {
 // Address: 0x003d2c90 - 0x003d2cba (42 bytes)
 __attribute__((weak)) void CDataGPCourseAvailable::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPCourseAvailable::getAllocator()->memFree(p_addr);
+    CDataGPCourseAvailable::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,6 +146,8 @@ __attribute__((weak)) void CDataGPCourseAvailable::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataGPCourseAvailable::CDataGPCourseAvailable(u32, const char*, u64, u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPCourseAvailable::MyDTI CDataGPCourseAvailable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d735-0x0041d76e (called at GPImplement.inc:20)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d735-0x0041d76e (called at GP.h:928)
@@ -152,7 +156,7 @@ __attribute__((weak)) void CDataGPCourseAvailable::operator delete(void* p_addr)
 // Address: 0x003d2bb0 - 0x003d2c17 (103 bytes)
 MtObject* CDataGPCourseAvailable::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGPCourseAvailable;
+    return new (16u) CDataGPCourseAvailable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,7 +173,7 @@ const MtDTI& CDataGPCourseEffectParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPCourseEffectParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseEffectParam::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPCourseEffectParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,7 +182,7 @@ inline MtAllocator* CDataGPCourseEffectParam::getAllocator() {
 // Address: 0x003d3130 - 0x003d3170 (64 bytes)
 void* CDataGPCourseEffectParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPCourseEffectParam::getAllocator()->memAlloc(sz, align, ::CDataGPCourseEffectParam::DTI.::MtDTI::getID());
+    return CDataGPCourseEffectParam::getAllocator()->memAlloc(sz, align, CDataGPCourseEffectParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,7 +197,7 @@ void* CDataGPCourseEffectParam::operator new(size_t sz, u32 align) {
 // Address: 0x003d31a0 - 0x003d31ca (42 bytes)
 __attribute__((weak)) void CDataGPCourseEffectParam::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPCourseEffectParam::getAllocator()->memFree(p_addr);
+    CDataGPCourseEffectParam::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,6 +219,8 @@ __attribute__((weak)) void CDataGPCourseEffectParam::operator delete(void* p_add
 // No out-of-line body: no code in the ELF
 // CDataGPCourseEffectParam::CDataGPCourseEffectParam(u32, u32, u32, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPCourseEffectParam::MyDTI CDataGPCourseEffectParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d852-0x0041d88b (called at GPImplement.inc:25)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d852-0x0041d88b (called at GP.h:1277)
@@ -223,7 +229,7 @@ __attribute__((weak)) void CDataGPCourseEffectParam::operator delete(void* p_add
 // Address: 0x003d30e0 - 0x003d3130 (80 bytes)
 MtObject* CDataGPCourseEffectParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGPCourseEffectParam;
+    return new (16u) CDataGPCourseEffectParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -240,7 +246,7 @@ const MtDTI& CDataGPCourseInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPCourseInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPCourseInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,7 +255,7 @@ inline MtAllocator* CDataGPCourseInfo::getAllocator() {
 // Address: 0x003d3280 - 0x003d32c0 (64 bytes)
 void* CDataGPCourseInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPCourseInfo::getAllocator()->memAlloc(sz, align, ::CDataGPCourseInfo::DTI.::MtDTI::getID());
+    return CDataGPCourseInfo::getAllocator()->memAlloc(sz, align, CDataGPCourseInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -264,7 +270,7 @@ void* CDataGPCourseInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003d32f0 - 0x003d331a (42 bytes)
 __attribute__((weak)) void CDataGPCourseInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPCourseInfo::getAllocator()->memFree(p_addr);
+    CDataGPCourseInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -285,6 +291,8 @@ __attribute__((weak)) void CDataGPCourseInfo::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataGPCourseInfo::CDataGPCourseInfo(u32, const char*, b8, u8, u8, u8, const MtTypedArray<CDataCommonU32>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPCourseInfo::MyDTI CDataGPCourseInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d88b-0x0041d8c4 (called at GPImplement.inc:26)
@@ -311,7 +319,7 @@ const MtDTI& CDataGPCourseValid::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPCourseValid::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseValid::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPCourseValid::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -320,7 +328,7 @@ inline MtAllocator* CDataGPCourseValid::getAllocator() {
 // Address: 0x003d2d60 - 0x003d2da0 (64 bytes)
 void* CDataGPCourseValid::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPCourseValid::getAllocator()->memAlloc(sz, align, ::CDataGPCourseValid::DTI.::MtDTI::getID());
+    return CDataGPCourseValid::getAllocator()->memAlloc(sz, align, CDataGPCourseValid::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -335,7 +343,7 @@ void* CDataGPCourseValid::operator new(size_t sz, u32 align) {
 // Address: 0x003d2dd0 - 0x003d2dfa (42 bytes)
 __attribute__((weak)) void CDataGPCourseValid::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPCourseValid::getAllocator()->memFree(p_addr);
+    CDataGPCourseValid::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -356,6 +364,8 @@ __attribute__((weak)) void CDataGPCourseValid::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataGPCourseValid::CDataGPCourseValid(u32, u32, const char*, u32, u64, u64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPCourseValid::MyDTI CDataGPCourseValid::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d76e-0x0041d7a7 (called at GPImplement.inc:21)
@@ -382,7 +392,7 @@ const MtDTI& CDataGPDetail::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPDetail::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPDetail::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPDetail::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -391,7 +401,7 @@ inline MtAllocator* CDataGPDetail::getAllocator() {
 // Address: 0x003d1e70 - 0x003d1eb0 (64 bytes)
 void* CDataGPDetail::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPDetail::getAllocator()->memAlloc(sz, align, ::CDataGPDetail::DTI.::MtDTI::getID());
+    return CDataGPDetail::getAllocator()->memAlloc(sz, align, CDataGPDetail::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,7 +416,7 @@ void* CDataGPDetail::operator new(size_t sz, u32 align) {
 // Address: 0x003d1ee0 - 0x003d1f0a (42 bytes)
 __attribute__((weak)) void CDataGPDetail::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPDetail::getAllocator()->memFree(p_addr);
+    CDataGPDetail::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -427,6 +437,8 @@ __attribute__((weak)) void CDataGPDetail::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // CDataGPDetail::CDataGPDetail(u32, u32, b8, u32, u64, u64);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPDetail::MyDTI CDataGPDetail::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d489-0x0041d4c2 (called at GPImplement.inc:8)
@@ -453,7 +465,7 @@ const MtDTI& CDataGPPeriod::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPPeriod::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPPeriod::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPPeriod::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -462,7 +474,7 @@ inline MtAllocator* CDataGPPeriod::getAllocator() {
 // Address: 0x003d1fa0 - 0x003d1fe0 (64 bytes)
 void* CDataGPPeriod::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPPeriod::getAllocator()->memAlloc(sz, align, ::CDataGPPeriod::DTI.::MtDTI::getID());
+    return CDataGPPeriod::getAllocator()->memAlloc(sz, align, CDataGPPeriod::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -477,7 +489,7 @@ void* CDataGPPeriod::operator new(size_t sz, u32 align) {
 // Address: 0x003d2010 - 0x003d203a (42 bytes)
 __attribute__((weak)) void CDataGPPeriod::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPPeriod::getAllocator()->memFree(p_addr);
+    CDataGPPeriod::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -499,6 +511,8 @@ __attribute__((weak)) void CDataGPPeriod::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataGPPeriod::CDataGPPeriod(u32, b8, u64);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPPeriod::MyDTI CDataGPPeriod::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d4c2-0x0041d4fb (called at GPImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d4c2-0x0041d4fb (called at GP.h:184)
@@ -507,7 +521,7 @@ __attribute__((weak)) void CDataGPPeriod::operator delete(void* p_addr) {
 // Address: 0x003d1f40 - 0x003d1f93 (83 bytes)
 MtObject* CDataGPPeriod::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGPPeriod;
+    return new (16u) CDataGPPeriod;
 }
 
 // No out-of-line body: no code in the ELF
@@ -524,7 +538,7 @@ const MtDTI& CDataGPShopBuyHistoryElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPShopBuyHistoryElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPShopBuyHistoryElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPShopBuyHistoryElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -533,7 +547,7 @@ inline MtAllocator* CDataGPShopBuyHistoryElement::getAllocator() {
 // Address: 0x003d2ae0 - 0x003d2b20 (64 bytes)
 void* CDataGPShopBuyHistoryElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPShopBuyHistoryElement::getAllocator()->memAlloc(sz, align, ::CDataGPShopBuyHistoryElement::DTI.::MtDTI::getID());
+    return CDataGPShopBuyHistoryElement::getAllocator()->memAlloc(sz, align, CDataGPShopBuyHistoryElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -548,7 +562,7 @@ void* CDataGPShopBuyHistoryElement::operator new(size_t sz, u32 align) {
 // Address: 0x003d2b50 - 0x003d2b7a (42 bytes)
 __attribute__((weak)) void CDataGPShopBuyHistoryElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPShopBuyHistoryElement::getAllocator()->memFree(p_addr);
+    CDataGPShopBuyHistoryElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -570,6 +584,8 @@ __attribute__((weak)) void CDataGPShopBuyHistoryElement::operator delete(void* p
 // No out-of-line body: no code in the ELF
 // CDataGPShopBuyHistoryElement::CDataGPShopBuyHistoryElement(u32, const char*, u32, u64);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPShopBuyHistoryElement::MyDTI CDataGPShopBuyHistoryElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d6fc-0x0041d735 (called at GPImplement.inc:19)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d6fc-0x0041d735 (called at GP.h:861)
@@ -578,7 +594,7 @@ __attribute__((weak)) void CDataGPShopBuyHistoryElement::operator delete(void* p
 // Address: 0x003d2a80 - 0x003d2ade (94 bytes)
 MtObject* CDataGPShopBuyHistoryElement::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGPShopBuyHistoryElement;
+    return new (16u) CDataGPShopBuyHistoryElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -595,7 +611,7 @@ const MtDTI& CDataGPShopDisplayLineup::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPShopDisplayLineup::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPShopDisplayLineup::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPShopDisplayLineup::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -604,7 +620,7 @@ inline MtAllocator* CDataGPShopDisplayLineup::getAllocator() {
 // Address: 0x003d23f0 - 0x003d2430 (64 bytes)
 void* CDataGPShopDisplayLineup::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPShopDisplayLineup::getAllocator()->memAlloc(sz, align, ::CDataGPShopDisplayLineup::DTI.::MtDTI::getID());
+    return CDataGPShopDisplayLineup::getAllocator()->memAlloc(sz, align, CDataGPShopDisplayLineup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -619,7 +635,7 @@ void* CDataGPShopDisplayLineup::operator new(size_t sz, u32 align) {
 // Address: 0x003d2460 - 0x003d248a (42 bytes)
 __attribute__((weak)) void CDataGPShopDisplayLineup::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPShopDisplayLineup::getAllocator()->memFree(p_addr);
+    CDataGPShopDisplayLineup::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -643,6 +659,8 @@ CDataGPShopDisplayLineup::CDataGPShopDisplayLineup(u32 in_ID, u32 in_Category, u
     DDON_STUB("CDataGPShopDisplayLineup::CDataGPShopDisplayLineup")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPShopDisplayLineup::MyDTI CDataGPShopDisplayLineup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d5a6-0x0041d5df (called at GPImplement.inc:13)
@@ -669,7 +687,7 @@ const MtDTI& CDataGPShopDisplayType::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPShopDisplayType::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPShopDisplayType::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPShopDisplayType::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -678,7 +696,7 @@ inline MtAllocator* CDataGPShopDisplayType::getAllocator() {
 // Address: 0x003d2190 - 0x003d21d0 (64 bytes)
 void* CDataGPShopDisplayType::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPShopDisplayType::getAllocator()->memAlloc(sz, align, ::CDataGPShopDisplayType::DTI.::MtDTI::getID());
+    return CDataGPShopDisplayType::getAllocator()->memAlloc(sz, align, CDataGPShopDisplayType::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -693,7 +711,7 @@ void* CDataGPShopDisplayType::operator new(size_t sz, u32 align) {
 // Address: 0x003d2200 - 0x003d222a (42 bytes)
 __attribute__((weak)) void CDataGPShopDisplayType::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPShopDisplayType::getAllocator()->memFree(p_addr);
+    CDataGPShopDisplayType::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -715,6 +733,8 @@ __attribute__((weak)) void CDataGPShopDisplayType::operator delete(void* p_addr)
 // No out-of-line body: no code in the ELF
 // CDataGPShopDisplayType::CDataGPShopDisplayType(u32, const char*, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPShopDisplayType::MyDTI CDataGPShopDisplayType::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d534-0x0041d56d (called at GPImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d534-0x0041d56d (called at GP.h:297)
@@ -723,7 +743,7 @@ __attribute__((weak)) void CDataGPShopDisplayType::operator delete(void* p_addr)
 // Address: 0x003d2130 - 0x003d2186 (86 bytes)
 MtObject* CDataGPShopDisplayType::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataGPShopDisplayType;
+    return new (16u) CDataGPShopDisplayType;
 }
 
 // No out-of-line body: no code in the ELF
@@ -740,7 +760,7 @@ const MtDTI& CDataGPShopLineupElementBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPShopLineupElementBase::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementBase::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementBase::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -762,7 +782,7 @@ inline MtAllocator* CDataGPShopLineupElementBase::getAllocator() {
 // Address: 0x003d2300 - 0x003d232a (42 bytes)
 __attribute__((weak)) void CDataGPShopLineupElementBase::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPShopLineupElementBase::getAllocator()->memFree(p_addr);
+    CDataGPShopLineupElementBase::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -783,6 +803,8 @@ __attribute__((weak)) void CDataGPShopLineupElementBase::operator delete(void* p
 
 // No out-of-line body: no code in the ELF
 // CDataGPShopLineupElementBase::CDataGPShopLineupElementBase(u32, u32, u32, u32, u8, const char*, const char*, b8);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPShopLineupElementBase::MyDTI CDataGPShopLineupElementBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d56d-0x0041d5a6 (called at GPImplement.inc:12)
@@ -809,7 +831,7 @@ const MtDTI& CDataGPShopLineupElementCourse::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataGPShopLineupElementCourse::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementCourse::DTI);
+    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementCourse::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -818,7 +840,7 @@ inline MtAllocator* CDataGPShopLineupElementCourse::getAllocator() {
 // Address: 0x003d2540 - 0x003d2580 (64 bytes)
 void* CDataGPShopLineupElementCourse::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataGPShopLineupElementCourse::getAllocator()->memAlloc(sz, align, ::CDataGPShopLineupElementCourse::DTI.::MtDTI::getID());
+    return CDataGPShopLineupElementCourse::getAllocator()->memAlloc(sz, align, CDataGPShopLineupElementCourse::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -833,7 +855,7 @@ void* CDataGPShopLineupElementCourse::operator new(size_t sz, u32 align) {
 // Address: 0x003d25b0 - 0x003d25da (42 bytes)
 __attribute__((weak)) void CDataGPShopLineupElementCourse::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataGPShopLineupElementCourse::getAllocator()->memFree(p_addr);
+    CDataGPShopLineupElementCourse::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -854,6 +876,8 @@ __attribute__((weak)) void CDataGPShopLineupElementCourse::operator delete(void*
 
 // No out-of-line body: no code in the ELF
 // CDataGPShopLineupElementCourse::CDataGPShopLineupElementCourse(const CGPShopLineupElementBase&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataGPShopLineupElementCourse::MyDTI CDataGPShopLineupElementCourse::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041d5df-0x0041d618 (called at GPImplement.inc:14)

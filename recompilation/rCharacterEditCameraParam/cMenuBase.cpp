@@ -84,7 +84,7 @@ const MtDTI& cMenuActiveList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuActiveList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuActiveList::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuActiveList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -93,7 +93,7 @@ inline MtAllocator* cMenuActiveList::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuActiveList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuActiveList::DTI)->memAlloc(sz, align, ::cMenuActiveList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuActiveList::DTI)->memAlloc(sz, align, cMenuActiveList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,7 +108,7 @@ inline void* cMenuActiveList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuActiveList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuActiveList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuActiveList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -165,17 +165,17 @@ __attribute__((weak)) nMenu::MENU_RET cMenuActiveList::moveActiveList() {
 // Address: 0x0012e820 - 0x0012e8e0 (192 bytes)
 void cMenuActiveList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cMenuActiveList::getAllocator()->memFree(static_cast<void*>(this->mpSortList));
-    ::cMenuActiveList::getAllocator()->memFree(static_cast<void*>(this->mpSortCharId));
-    ::cMenuActiveList::getAllocator()->memFree(static_cast<void*>(this->mpListType));
-    ::cMenuActiveList::getAllocator()->memFree(static_cast<void*>(this->::cMenuBase::mpMenuList));
-    ::cMenuActiveList::getAllocator()->memFree(static_cast<void*>(this->::cMenuBase::mpMenuParts));
-    this->::cMenuBase::mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    this->::cMenuBase::mpMenuList = static_cast<s32*>(nullptr);
-    this->mpListType = static_cast<cMenuActiveList::LIST_TYPE*>(nullptr);
-    this->mpSortCharId = static_cast<u32*>(nullptr);
-    this->mpSortList = static_cast<u32*>(nullptr);
-    this->::cMenuBase::exitMenu();
+    cMenuActiveList::getAllocator()->memFree(static_cast<void*>(mpSortList));
+    cMenuActiveList::getAllocator()->memFree(static_cast<void*>(mpSortCharId));
+    cMenuActiveList::getAllocator()->memFree(static_cast<void*>(mpListType));
+    cMenuActiveList::getAllocator()->memFree(static_cast<void*>(mpMenuList));
+    cMenuActiveList::getAllocator()->memFree(static_cast<void*>(mpMenuParts));
+    mpMenuParts = nullptr;
+    mpMenuList = nullptr;
+    mpListType = nullptr;
+    mpSortCharId = nullptr;
+    mpSortList = nullptr;
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -253,6 +253,8 @@ __attribute__((weak)) void cMenuActiveList::updateSortList() {
 //   in cMenuActiveList::updateSortList at 0x0012e6dd-0x0012e70b, 0x0012e70e-0x0012e733, 0x0012e735-0x0012e741 (called at cMenuBase.cpp:37891)
 // void cMenuActiveList::removeMember(u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuActiveList::MyDTI cMenuActiveList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b600-0x0013b639 (called at cMenuBase.cpp:37361)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b600-0x0013b639 (called at cMenuBase.h:8177)
@@ -261,7 +263,7 @@ __attribute__((weak)) void cMenuActiveList::updateSortList() {
 // Address: 0x0012d370 - 0x0012d459 (233 bytes)
 MtObject* cMenuActiveList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuActiveList;
+    return new (16u) cMenuActiveList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -344,6 +346,8 @@ __attribute__((weak)) void cMenuApplyFriend::exitMenu() {
     DDON_STUB("cMenuApplyFriend::exitMenu")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuApplyFriend::MyDTI cMenuApplyFriend::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aea7-0x0013aee0 (called at cMenuBase.cpp:27701)
@@ -439,6 +443,8 @@ __attribute__((weak)) void cMenuApproveFriend::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuApproveFriend::MyDTI cMenuApproveFriend::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af19-0x0013af52 (called at cMenuBase.cpp:27890)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af19-0x0013af52 (called at cMenuBase.h:5760)
@@ -486,7 +492,7 @@ const MtDTI& cMenuAreaMaster::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMaster::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMaster::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMaster::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -514,24 +520,24 @@ cMenuAreaMaster::~cMenuAreaMaster() {
 // Address: 0x001225b0 - 0x0012264b (155 bytes)
 void cMenuAreaMaster::initAreaMaster() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::mMenuCursor[0] = static_cast<int>(0);
-    this->mSuppliesTalkMsgNo = static_cast<s32>(-1);
+    initMenu();
+    mMenuRno[0] = 0;
+    mMenuCursor[0] = 0;
+    mSuppliesTalkMsgNo = -1;
     // inferred: a temporary for the value the load at 0x1225db read, used twice; no DWARF local holds it
-    TICKET t0 = this->mArcTicket;
-    if (t0 != (::sArchiveManager::INVALID_TICKET)) {
+    TICKET t0 = mArcTicket;
+    if (t0 != (sArchiveManager::INVALID_TICKET)) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x1225f9, used twice; no DWARF local holds it
-    TICKET t1 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-    if (t0 == (this->mArcTicket = t1)) {
+    TICKET t1 = sArchiveManager::getInstance()->IssueTicket();
+    if (t0 == (mArcTicket = t1)) {
         return;
     }
     // inferred: a temporary for the value the load at 0x12260d read, used once; no DWARF local holds it
-    sArchiveManager* t2 = ::sArchiveManager::getInstance();
-    t2->::sArchiveManager::addTagEx(t1, ::rArchiveListArray::convTagId("uGUIAreaMaster"));
-    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mArcTicket);
+    sArchiveManager* t2 = sArchiveManager::getInstance();
+    t2->addTagEx(t1, rArchiveListArray::convTagId("uGUIAreaMaster"));
+    sArchiveManager::getInstance()->attestationTicket(mArcTicket);
 }
 
 // Address: 0x001226b0 - 0x00122ae8 (1080 bytes)
@@ -549,13 +555,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMaster::moveAreaMaster() {
 void cMenuAreaMaster::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x122668 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mArcTicket != t0) {
-        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArcTicket);
-        this->mArcTicket = static_cast<TICKET>(t0);
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArcTicket != t0) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicket);
+        mArcTicket = static_cast<TICKET>(t0);
     }
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
-    this->::cMenuBase::exitMenu();
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -565,6 +571,8 @@ void cMenuAreaMaster::exitMenu() {
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
 //   in cTalkStateAreaMaster::update at 0x001cccd0-0x001cccda (called at cTalkStateAreaMaster.cpp:239)
 // void cMenuAreaMaster::resetSuppliesTalkMsgNo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMaster::MyDTI cMenuAreaMaster::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b0e1-0x0013b11a (called at cMenuBase.cpp:30068)
@@ -600,7 +608,7 @@ const MtDTI& cMenuAreaMasterHistory::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuAreaMasterHistory::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterHistory::DTI)->memAlloc(sz, align, ::cMenuAreaMasterHistory::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuAreaMasterHistory::DTI)->memAlloc(sz, align, cMenuAreaMasterHistory::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -615,7 +623,7 @@ inline void* cMenuAreaMasterHistory::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMasterHistory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterHistory::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMasterHistory::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -655,6 +663,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterHistory::moveAreaMasterHist
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMasterHistory::MyDTI cMenuAreaMasterHistory::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b1c5-0x0013b1fe (called at cMenuBase.cpp:30838)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b1c5-0x0013b1fe (called at cMenuBase.h:6681)
@@ -663,7 +673,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterHistory::moveAreaMasterHist
 // Address: 0x00123b50 - 0x00123c39 (233 bytes)
 MtObject* cMenuAreaMasterHistory::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuAreaMasterHistory;
+    return new (16u) cMenuAreaMasterHistory;
 }
 
 // No out-of-line body: no code in the ELF
@@ -689,7 +699,7 @@ const MtDTI& cMenuAreaMasterQuestInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuAreaMasterQuestInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterQuestInfo::DTI)->memAlloc(sz, align, ::cMenuAreaMasterQuestInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuAreaMasterQuestInfo::DTI)->memAlloc(sz, align, cMenuAreaMasterQuestInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -704,7 +714,7 @@ inline void* cMenuAreaMasterQuestInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMasterQuestInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterQuestInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMasterQuestInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -744,6 +754,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterQuestInfo::moveAreaMasterQu
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMasterQuestInfo::MyDTI cMenuAreaMasterQuestInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b153-0x0013b18c (called at cMenuBase.cpp:30616)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b153-0x0013b18c (called at cMenuBase.h:6581)
@@ -752,7 +764,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterQuestInfo::moveAreaMasterQu
 // Address: 0x00123890 - 0x00123979 (233 bytes)
 MtObject* cMenuAreaMasterQuestInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuAreaMasterQuestInfo;
+    return new (16u) cMenuAreaMasterQuestInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -791,7 +803,7 @@ const MtDTI& cMenuAreaMasterRankUp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMasterRankUp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterRankUp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMasterRankUp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -845,11 +857,11 @@ __attribute__((weak)) void cMenuAreaMasterRankUp::updatePtr() {
 // Address: 0x00123790 - 0x001237c7 (55 bytes)
 void cMenuAreaMasterRankUp::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRankUp != static_cast<uGUIRankUp*>(nullptr)) {
-        this->mpGUIRankUp->kill();
-        this->mpGUIRankUp = static_cast<uGUIRankUp*>(nullptr);
+    if (mpGUIRankUp != nullptr) {
+        mpGUIRankUp->kill();
+        mpGUIRankUp = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -859,6 +871,8 @@ void cMenuAreaMasterRankUp::exitMenu() {
 // No out-of-line body: 1 inlined copy in 1 function (12 bytes)
 //   in cTalkStateAreaMaster::update at 0x001ccc8d-0x001ccc99 (called at cTalkStateAreaMaster.cpp:232)
 // void cMenuAreaMasterRankUp::resetRequestMessage();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMasterRankUp::MyDTI cMenuAreaMasterRankUp::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b11a-0x0013b153 (called at cMenuBase.cpp:30359)
@@ -894,7 +908,7 @@ const MtDTI& cMenuAreaMasterSpotInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuAreaMasterSpotInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterSpotInfo::DTI)->memAlloc(sz, align, ::cMenuAreaMasterSpotInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuAreaMasterSpotInfo::DTI)->memAlloc(sz, align, cMenuAreaMasterSpotInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -909,7 +923,7 @@ inline void* cMenuAreaMasterSpotInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMasterSpotInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterSpotInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMasterSpotInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -949,6 +963,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSpotInfo::moveAreaMasterSpo
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMasterSpotInfo::MyDTI cMenuAreaMasterSpotInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b18c-0x0013b1c5 (called at cMenuBase.cpp:30727)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b18c-0x0013b1c5 (called at cMenuBase.h:6631)
@@ -957,7 +973,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSpotInfo::moveAreaMasterSpo
 // Address: 0x001239f0 - 0x00123ad9 (233 bytes)
 MtObject* cMenuAreaMasterSpotInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuAreaMasterSpotInfo;
+    return new (16u) cMenuAreaMasterSpotInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -983,7 +999,7 @@ const MtDTI& cMenuAreaMasterSupplies::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuAreaMasterSupplies::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterSupplies::DTI)->memAlloc(sz, align, ::cMenuAreaMasterSupplies::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuAreaMasterSupplies::DTI)->memAlloc(sz, align, cMenuAreaMasterSupplies::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -998,7 +1014,7 @@ inline void* cMenuAreaMasterSupplies::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuAreaMasterSupplies::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuAreaMasterSupplies::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuAreaMasterSupplies::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1038,6 +1054,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSupplies::moveAreaMasterSup
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuAreaMasterSupplies::MyDTI cMenuAreaMasterSupplies::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b1fe-0x0013b237 (called at cMenuBase.cpp:30949)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b1fe-0x0013b237 (called at cMenuBase.h:6731)
@@ -1046,7 +1064,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSupplies::moveAreaMasterSup
 // Address: 0x00123cb0 - 0x00123d99 (233 bytes)
 MtObject* cMenuAreaMasterSupplies::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuAreaMasterSupplies;
+    return new (16u) cMenuAreaMasterSupplies;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1072,7 +1090,7 @@ const MtDTI& cMenuBaggageMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBaggageMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBaggageMenu::DTI)->memAlloc(sz, align, ::cMenuBaggageMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBaggageMenu::DTI)->memAlloc(sz, align, cMenuBaggageMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1087,7 +1105,7 @@ inline void* cMenuBaggageMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBaggageMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBaggageMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBaggageMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1137,11 +1155,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuBaggageMenu::moveBaggageMenu() {
 // Address: 0x00134230 - 0x0013425c (44 bytes)
 void cMenuBaggageMenu::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuBase::mUseGUIMenu != false) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (mUseGUIMenu) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuBaggageMenu::MyDTI cMenuBaggageMenu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ba02-0x0013ba3b (called at cMenuBase.cpp:42075)
@@ -1151,7 +1171,7 @@ void cMenuBaggageMenu::exitMenu() {
 // Address: 0x00133ca0 - 0x00133d89 (233 bytes)
 MtObject* cMenuBaggageMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBaggageMenu;
+    return new (16u) cMenuBaggageMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1177,7 +1197,7 @@ const MtDTI& cMenuBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBase::DTI)->memAlloc(sz, align, ::cMenuBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBase::DTI)->memAlloc(sz, align, cMenuBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1192,7 +1212,7 @@ inline void* cMenuBase::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1208,30 +1228,30 @@ inline void cMenuBase::operator delete(void* p_addr) {
 cMenuBase::cMenuBase() {
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a constant over array elements; folded from an approximate source (MtTypedArray<cMenuSupport>'s constructor, which only its family's generic body checks); the body oracle reports this body.
-    this->mNowMoveFlag = false;
-    this->mIsUpdateButton = false;
-    this->mIsUpdateCursor = false;
-    this->mIsUpdateTab = false;
-    this->mMenuCursor[6] = static_cast<int>(0);
-    this->mMenuCursor[4] = static_cast<int>(0);
-    this->mMenuCursor[5] = static_cast<int>(0);
-    this->mMenuCursor[2] = static_cast<int>(0);
-    this->mMenuCursor[3] = static_cast<int>(0);
-    this->mMenuCursor[0] = static_cast<int>(0);
-    this->mMenuCursor[1] = static_cast<int>(0);
-    this->mMenuRno[4] = static_cast<int>(0);
-    this->mMenuRno[5] = static_cast<int>(0);
-    this->mMenuRno[2] = static_cast<int>(0);
-    this->mMenuRno[3] = static_cast<int>(0);
-    this->mMenuRno[0] = static_cast<int>(0);
-    this->mMenuRno[1] = static_cast<int>(0);
-    this->mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    this->mpMenuList = static_cast<s32*>(nullptr);
-    this->mUseGUIMenu = false;
-    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-    this->mpRefGUI = static_cast<uGUIBase*>(nullptr);
-    this->mpGUIMenu = static_cast<uGUIBase*>(nullptr);
-    this->mMenuSupportList.::MtArray::mAutoDelete = true;
+    mNowMoveFlag = false;
+    mIsUpdateButton = false;
+    mIsUpdateCursor = false;
+    mIsUpdateTab = false;
+    mMenuCursor[6] = 0;
+    mMenuCursor[4] = 0;
+    mMenuCursor[5] = 0;
+    mMenuCursor[2] = 0;
+    mMenuCursor[3] = 0;
+    mMenuCursor[0] = 0;
+    mMenuCursor[1] = 0;
+    mMenuRno[4] = 0;
+    mMenuRno[5] = 0;
+    mMenuRno[2] = 0;
+    mMenuRno[3] = 0;
+    mMenuRno[0] = 0;
+    mMenuRno[1] = 0;
+    mpMenuParts = nullptr;
+    mpMenuList = nullptr;
+    mUseGUIMenu = false;
+    mpGUISystemMsg = nullptr;
+    mpRefGUI = nullptr;
+    mpGUIMenu = nullptr;
+    mMenuSupportList.mAutoDelete = true;
 }
 
 // Address: 0x000efdc0 - 0x000efea9 (233 bytes)
@@ -1244,7 +1264,7 @@ cMenuBase::~cMenuBase() {
 // Address: 0x000efee0 - 0x000efee5 (5 bytes)
 MtUI* cMenuBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x000efef0 - 0x000efef1 (1 bytes)
@@ -1263,7 +1283,7 @@ __attribute__((weak)) void cMenuBase::updatePtr() {
 // Address: 0x000effa0 - 0x000effb7 (23 bytes)
 bool cMenuBase::isMove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false);
+    return sMenu::getInstance()->checkMoveMenu(this, false);
 }
 
 // No out-of-line body: 239 inlined copies in 81 functions (3678 bytes)
@@ -1282,11 +1302,11 @@ bool cMenuBase::isMove() {
 // Address: 0x000effc0 - 0x000f0000 (64 bytes)
 bool cMenuBase::isUpdateCursor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
-        if (this->mBusyFlag != false) {
+    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
+        if (mBusyFlag) {
             return false;
         } else {
-            return this->mIsUpdateCursor != false;
+            return mIsUpdateCursor;
         }
     } else {
         return false;
@@ -1296,11 +1316,11 @@ bool cMenuBase::isUpdateCursor() {
 // Address: 0x000f0000 - 0x000f0040 (64 bytes)
 bool cMenuBase::isUpdateTab() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
-        if (this->mBusyFlag != false) {
+    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
+        if (mBusyFlag) {
             return false;
         } else {
-            return this->mIsUpdateTab != false;
+            return mIsUpdateTab;
         }
     } else {
         return false;
@@ -1310,11 +1330,11 @@ bool cMenuBase::isUpdateTab() {
 // Address: 0x000f0040 - 0x000f0080 (64 bytes)
 bool cMenuBase::isUpdateButton() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
-        if (this->mBusyFlag != false) {
+    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
+        if (mBusyFlag) {
             return false;
         } else {
-            return this->mIsUpdateButton != false;
+            return mIsUpdateButton;
         }
     } else {
         return false;
@@ -1395,24 +1415,44 @@ __attribute__((weak)) bool cMenuBase::isTrgCheck(sPadExt::PAD_BTN_TYPE button, u
 // Address: 0x000f0800 - 0x000f082d (45 bytes)
 bool cMenuBase::isOnCheck(sPadExt::PAD_BTN_TYPE button, u32 pad_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIMenu == static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpRefGUI != static_cast<uGUIBase*>(nullptr)) {
-            if (this->mUseGUIMenu != false) {
+    if (mpGUIMenu == nullptr) {
+        if (mpRefGUI != nullptr) {
+            if (mUseGUIMenu) {
                 return false;
             }
         }
     } else {
-        if (this->mUseGUIMenu != false) {
+        if (mUseGUIMenu) {
             return false;
         }
     }
-    return static_cast<sPadExt*>(::sPad::getInstance())->::sPadExt::isOnCheck(button, pad_id);
+    return static_cast<sPadExt*>(sPad::getInstance())->isOnCheck(button, pad_id);
 }
 
 // Address: 0x000f0830 - 0x000f08d5 (165 bytes)
-__attribute__((weak)) bool cMenuBase::reqDialog(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
-    DDON_STUB("cMenuBase::reqDialog")
-    return {};
+bool cMenuBase::reqDialog(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+        // inferred: a temporary for the result of the call at 0xf08a0, used twice; no DWARF local holds it
+        uGUISystemMsg* t0 = cGUIUtility::reqDialog(dialogType, mainMsg, defPos, choice1, choice2, choice3, choice4, static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+        if ((mpGUISystemMsg = t0) != nullptr) {
+            t0->mBasePointerPrio = getNextBasePointerPrio();
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        // inferred: a temporary for the result of the call at 0xf08a0, used twice; no DWARF local holds it
+        uGUISystemMsg* t0 = cGUIUtility::reqDialog(dialogType, mainMsg, defPos, choice1, choice2, choice3, choice4, static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+        if ((mpGUISystemMsg = t0) != nullptr) {
+            t0->mBasePointerPrio = getNextBasePointerPrio();
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1515,14 +1555,14 @@ __attribute__((weak)) bool cMenuBase::isCancelFromGUI() {
 // Address: 0x000f0300 - 0x000f0319 (25 bytes)
 bool cMenuBase::isUseGUI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIMenu == static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpRefGUI != static_cast<uGUIBase*>(nullptr)) {
-            return this->mUseGUIMenu != false;
+    if (mpGUIMenu == nullptr) {
+        if (mpRefGUI != nullptr) {
+            return mUseGUIMenu;
         } else {
             return false;
         }
     } else {
-        return this->mUseGUIMenu != false;
+        return mUseGUIMenu;
     }
 }
 
@@ -1558,59 +1598,59 @@ __attribute__((weak)) void cMenuBase::setGUIWindowActive(bool isActive) {
 __attribute__((weak)) void cMenuBase::initMenu() {
     // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a constant over array elements; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
-        this->exitMenu();
+    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
+        exitMenu();
     }
-    this->mIsUpdateCursor = false;
-    this->mIsUpdateTab = false;
-    this->mIsUpdateButton = false;
-    ::sMenu::getInstance()->::sMenu::entryMenu(this);
-    this->mBusyFlag = false;
-    this->mMenuCursor[6] = static_cast<int>(0);
-    this->mMenuCursor[4] = static_cast<int>(0);
-    this->mMenuCursor[5] = static_cast<int>(0);
-    this->mMenuCursor[2] = static_cast<int>(0);
-    this->mMenuCursor[3] = static_cast<int>(0);
-    this->mMenuCursor[0] = static_cast<int>(0);
-    this->mMenuCursor[1] = static_cast<int>(0);
-    this->mMenuRno[4] = static_cast<int>(0);
-    this->mMenuRno[5] = static_cast<int>(0);
-    this->mMenuRno[2] = static_cast<int>(0);
-    this->mMenuRno[3] = static_cast<int>(0);
-    this->mMenuRno[0] = static_cast<int>(0);
-    this->mMenuRno[1] = static_cast<int>(0);
-    this->mCustomBasePrio = static_cast<u32>(4294967295);
-    if (this->mMenuSupportList.::MtArray::mLength != static_cast<u32>(0)) {
+    mIsUpdateCursor = false;
+    mIsUpdateTab = false;
+    mIsUpdateButton = false;
+    sMenu::getInstance()->entryMenu(this);
+    mBusyFlag = false;
+    mMenuCursor[6] = 0;
+    mMenuCursor[4] = 0;
+    mMenuCursor[5] = 0;
+    mMenuCursor[2] = 0;
+    mMenuCursor[3] = 0;
+    mMenuCursor[0] = 0;
+    mMenuCursor[1] = 0;
+    mMenuRno[4] = 0;
+    mMenuRno[5] = 0;
+    mMenuRno[2] = 0;
+    mMenuRno[3] = 0;
+    mMenuRno[0] = 0;
+    mMenuRno[1] = 0;
+    mCustomBasePrio = 0xFFFFFFFF;
+    if (mMenuSupportList.mLength != 0) {
         // inferred: the value the loop at 0xf0c70 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMenuSupportList.::MtArray::mLength;
+        u32 v0_0 = mMenuSupportList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMenuSupportList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMenuSupportList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMenuSupportList.::MtArray::mLength) {
-                    v0_0 = this->mMenuSupportList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMenuSupportList.mpArray[i0_3] != nullptr) {
+                delete mMenuSupportList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMenuSupportList.mLength) {
+                    v0_0 = mMenuSupportList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMenuSupportList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMenuSupportList.::MtArray::mpArray));
+    if (mMenuSupportList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMenuSupportList.mpArray));
     }
-    this->mMenuSupportList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMenuSupportList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMenuSupportList.::MtArray::mLength = static_cast<u32>(0);
-    this->mpList = static_cast<cMenuSupportList*>(nullptr);
-    this->mpMenu = static_cast<cMenuSupportMenu*>(nullptr);
-    this->mpDialogFlow = static_cast<cMenuDialogFlow*>(nullptr);
+    mMenuSupportList.mpArray = nullptr;
+    mMenuSupportList.mBufsiz = 0;
+    mMenuSupportList.mLength = 0;
+    mpList = nullptr;
+    mpMenu = nullptr;
+    mpDialogFlow = nullptr;
 }
 
 // Address: 0x000f0d10 - 0x000f0df4 (228 bytes)
@@ -1626,46 +1666,46 @@ __attribute__((weak)) void cMenuBase::moveMenu() {
 // Address: 0x000f0e00 - 0x000f0eee (238 bytes)
 __attribute__((weak)) void cMenuBase::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->mNowMoveFlag = false;
-    this->updatePtr();
-    if (this->mMenuSupportList.::MtArray::mLength != static_cast<u32>(0)) {
+    mNowMoveFlag = false;
+    updatePtr();
+    if (mMenuSupportList.mLength != 0) {
         // inferred: the value the loop at 0xf0e30 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMenuSupportList.::MtArray::mLength;
+        u32 v0_0 = mMenuSupportList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMenuSupportList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMenuSupportList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMenuSupportList.::MtArray::mLength) {
-                    v0_0 = this->mMenuSupportList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMenuSupportList.mpArray[i0_3] != nullptr) {
+                delete mMenuSupportList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMenuSupportList.mLength) {
+                    v0_0 = mMenuSupportList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMenuSupportList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMenuSupportList.::MtArray::mpArray));
+    if (mMenuSupportList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMenuSupportList.mpArray));
     }
-    this->mMenuSupportList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMenuSupportList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMenuSupportList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mpGUIMenu != static_cast<uGUIBase*>(nullptr)) {
-        this->mpGUIMenu->kill();
-        this->mpGUIMenu = static_cast<uGUIBase*>(nullptr);
+    mMenuSupportList.mpArray = nullptr;
+    mMenuSupportList.mBufsiz = 0;
+    mMenuSupportList.mLength = 0;
+    if (mpGUIMenu != nullptr) {
+        mpGUIMenu->kill();
+        mpGUIMenu = nullptr;
     }
-    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        this->mpGUISystemMsg->kill();
-        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
     }
-    this->mpRefGUI = static_cast<uGUIBase*>(nullptr);
-    ::sMenu::getInstance()->::sMenu::eraseMenu(this);
+    mpRefGUI = nullptr;
+    sMenu::getInstance()->eraseMenu(this);
 }
 
 // No out-of-line body: 8 inlined copies in 8 functions (58 bytes)
@@ -1689,11 +1729,11 @@ __attribute__((weak)) void cMenuBase::exitMenu() {
 // Address: 0x000f0320 - 0x000f032f (15 bytes)
 void cMenuBase::setRefGUI(uGUIBase* pRefGUI, bool useGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpRefGUI = pRefGUI;
-    if (pRefGUI == static_cast<uGUIBase*>(nullptr)) {
-        this->mUseGUIMenu = false;
+    mpRefGUI = pRefGUI;
+    if (pRefGUI == nullptr) {
+        mUseGUIMenu = false;
     } else {
-        this->mUseGUIMenu = useGUI;
+        mUseGUIMenu = useGUI;
     }
 }
 
@@ -1759,46 +1799,46 @@ __attribute__((weak)) void cMenuBase::setGUIBasePointerPriority(u32 prio) {
 // Address: 0x000f0190 - 0x000f0212 (130 bytes)
 s32 cMenuBase::getMenuId(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
-        if (this->mpList == static_cast<cMenuSupportList*>(nullptr)) {
-            if (this->mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                return this->mpMenu->::cMenuSupportMenu::getMenuId(index);
+    if (sMenu::getInstance()->checkMoveMenu(this, false)) {
+        if (mpList == nullptr) {
+            if (mpMenu != nullptr) {
+                return mpMenu->getMenuId(index);
             } else {
-                if (static_cast<unsigned int>(index) < this->mMenuNum) {
-                    if (this->mpMenuList != static_cast<s32*>(nullptr)) {
-                        return this->mpMenuList[(index <= static_cast<s32>(-1)) ? static_cast<s32>(0) : index];
+                if (static_cast<unsigned int>(index) < mMenuNum) {
+                    if (mpMenuList != nullptr) {
+                        return mpMenuList[(index <= -1) ? 0 : index];
                     }
                 }
-                return static_cast<s32>(0);
+                return 0;
             }
         } else {
-            return this->mpList->::cMenuSupportMenu::getMenuId(index);
+            return mpList->getMenuId(index);
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
 // Address: 0x000f09d0 - 0x000f09e9 (25 bytes)
 s32 cMenuBase::getIndexFromMenuId(s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-        return this->mpMenu->::cMenuSupportMenu::getIndexFromMenuId(menuId);
+    if (mpMenu != nullptr) {
+        return mpMenu->getIndexFromMenuId(menuId);
     } else {
-        return this->::cMenuBase::getConvertCursorIdx(menuId);
+        return getConvertCursorIdx(menuId);
     }
 }
 
 // Address: 0x000f02a0 - 0x000f02c2 (34 bytes)
 s32 cMenuBase::getListCursor() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpList != static_cast<cMenuSupportList*>(nullptr)) {
-        return this->mpList->::cMenuSupportMenu::getCursor();
+    if (mpList != nullptr) {
+        return mpList->getCursor();
     } else {
-        if (this->mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-            return this->mpMenu->::cMenuSupportMenu::getCursor();
+        if (mpMenu != nullptr) {
+            return mpMenu->getCursor();
         } else {
-            return static_cast<s32>(0);
+            return 0;
         }
     }
 }
@@ -1806,10 +1846,10 @@ s32 cMenuBase::getListCursor() {
 // Address: 0x000f1480 - 0x000f1497 (23 bytes)
 s32 cMenuBase::getBaseListIndexNow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpList != static_cast<cMenuSupportList*>(nullptr)) {
-        return this->mpList->::cMenuSupportList::getBaseListIndexNow();
+    if (mpList != nullptr) {
+        return mpList->getBaseListIndexNow();
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -1838,11 +1878,11 @@ __attribute__((weak)) cMenuDialogFlow* cMenuBase::setupDialogFlow(u32 attr) {
 // Address: 0x000f1020 - 0x000f1044 (36 bytes)
 cMenuDialogFlow* cMenuBase::resetDialogFlow(u32 attr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-        this->mpDialogFlow->::cMenuDialogFlow::initialize(attr);
-        return this->mpDialogFlow;
+    if (mpDialogFlow != nullptr) {
+        mpDialogFlow->initialize(attr);
+        return mpDialogFlow;
     } else {
-        return static_cast<cMenuDialogFlow*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1856,10 +1896,10 @@ cMenuDialogFlow* cMenuBase::resetDialogFlow(u32 attr) {
 // Address: 0x000f1050 - 0x000f1064 (20 bytes)
 cMenuDialogFlow::RET cMenuBase::moveDialogFlow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-        return this->mpDialogFlow->::cMenuDialogFlow::moveFlow();
+    if (mpDialogFlow != nullptr) {
+        return mpDialogFlow->moveFlow();
     } else {
-        return static_cast<cMenuDialogFlow::RET>(6);
+        return cMenuDialogFlow::RET_DLG_NULL;
     }
 }
 
@@ -1880,10 +1920,10 @@ __attribute__((weak)) cMenuSupportMenu* cMenuBase::setupSupportMenu(u32 menuMax,
 // Address: 0x000f1200 - 0x000f1212 (18 bytes)
 void cMenuBase::moveSupportMenu(s32 cursorOrderId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMenu == static_cast<cMenuSupportMenu*>(nullptr)) {
+    if (mpMenu == nullptr) {
         return;
     }
-    this->mpMenu->::cMenuSupportMenu::moveMenu(cursorOrderId);
+    mpMenu->moveMenu(cursorOrderId);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (19 bytes)
@@ -1893,19 +1933,19 @@ void cMenuBase::moveSupportMenu(s32 cursorOrderId) {
 // Address: 0x000f1230 - 0x000f1242 (18 bytes)
 void cMenuBase::createMenuListTbl(const s32* pTbl, u32 menuNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMenu == static_cast<cMenuSupportMenu*>(nullptr)) {
+    if (mpMenu == nullptr) {
         return;
     }
-    this->mpMenu->::cMenuSupportMenu::createMenuListTbl(pTbl, menuNum);
+    mpMenu->createMenuListTbl(pTbl, menuNum);
 }
 
 // Address: 0x000f1250 - 0x000f1262 (18 bytes)
 void cMenuBase::addMenuList(s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMenu == static_cast<cMenuSupportMenu*>(nullptr)) {
+    if (mpMenu == nullptr) {
         return;
     }
-    this->mpMenu->::cMenuSupportMenu::addMenuList(menuId);
+    mpMenu->addMenuList(menuId);
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (89 bytes)
@@ -1918,9 +1958,9 @@ void cMenuBase::addMenuList(s32 menuId) {
 bool cMenuBase::isDecideMenu(u32 decideSe, u32 notSelectSe) {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-        if (this->mpMenu->mMenuNum != static_cast<u32>(0)) {
-            if (this->isDecideIndex(this->mpMenu->::cMenuSupportMenu::getCursor(), decideSe, notSelectSe) == false) {
+    if (mpMenu != nullptr) {
+        if (mpMenu->mMenuNum != 0) {
+            if (!isDecideIndex(mpMenu->getCursor(), decideSe, notSelectSe)) {
                 return false;
             } else {
                 return true;
@@ -1942,30 +1982,30 @@ __attribute__((weak)) cMenuSupportList* cMenuBase::setupSupportList(u32 listMax,
 // Address: 0x000f1420 - 0x000f1432 (18 bytes)
 void cMenuBase::createList(u32 length) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpList == static_cast<cMenuSupportList*>(nullptr)) {
+    if (mpList == nullptr) {
         return;
     }
-    this->mpList->::cMenuSupportList::createList(length);
+    mpList->createList(length);
 }
 
 // Address: 0x000f1440 - 0x000f1452 (18 bytes)
 void cMenuBase::moveList(u32 length) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpList == static_cast<cMenuSupportList*>(nullptr)) {
+    if (mpList == nullptr) {
         return;
     }
-    this->mpList->::cMenuSupportList::moveList(length);
+    mpList->moveList(length);
 }
 
 // Address: 0x000f1460 - 0x000f147c (28 bytes)
 void cMenuBase::setListCursor(s32 cursorPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpList == static_cast<cMenuSupportList*>(nullptr)) {
-        if (this->mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-            this->mpMenu->mListCursor = cursorPos;
+    if (mpList == nullptr) {
+        if (mpMenu != nullptr) {
+            mpMenu->mListCursor = cursorPos;
         }
     } else {
-        this->mpList->::cMenuSupportMenu::mListCursor = cursorPos;
+        mpList->mListCursor = cursorPos;
     }
 }
 
@@ -1979,6 +2019,12 @@ void cMenuBase::setListCursor(s32 cursorPos) {
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // void cMenuBase::changeMenu(cMenuSupportMenu* pMenu);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cMenuBase::MyDTI cMenuBase::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 cMenuBase::DEFAULT_GUI_LINE;
+
+// Not defined (a .ctors initializer touches it: a store of no constant): const u64 cMenuBase::DEFAULT_GUI_GROUP;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a013-0x0013a053 (called at cMenuBase.cpp:171)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a013-0x0013a053 (called at cMenuBase.h:49)
@@ -1987,7 +2033,7 @@ void cMenuBase::setListCursor(s32 cursorPos) {
 // Address: 0x000efba0 - 0x000efc89 (233 bytes)
 MtObject* cMenuBase::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBase;
+    return new (16u) cMenuBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2013,7 +2059,7 @@ const MtDTI& cMenuBazaarBuy::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBazaarBuy::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBazaarBuy::DTI)->memAlloc(sz, align, ::cMenuBazaarBuy::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBazaarBuy::DTI)->memAlloc(sz, align, cMenuBazaarBuy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2028,7 +2074,7 @@ inline void* cMenuBazaarBuy::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBazaarBuy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBazaarBuy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBazaarBuy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2060,6 +2106,8 @@ cMenuBazaarBuy::~cMenuBazaarBuy() {
 // No out-of-line body: no code in the ELF
 // nMenu::MENU_RET cMenuBazaarBuy::moveBazaarBuy();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuBazaarBuy::MyDTI cMenuBazaarBuy::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b8ac-0x0013b8e5 (called at cMenuBase.cpp:40572)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b8ac-0x0013b8e5 (called at cMenuBase.h:9050)
@@ -2068,7 +2116,7 @@ cMenuBazaarBuy::~cMenuBazaarBuy() {
 // Address: 0x00132c60 - 0x00132d49 (233 bytes)
 MtObject* cMenuBazaarBuy::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBazaarBuy;
+    return new (16u) cMenuBazaarBuy;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2094,7 +2142,7 @@ const MtDTI& cMenuBazaarMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBazaarMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBazaarMenu::DTI)->memAlloc(sz, align, ::cMenuBazaarMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBazaarMenu::DTI)->memAlloc(sz, align, cMenuBazaarMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2109,7 +2157,7 @@ inline void* cMenuBazaarMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBazaarMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBazaarMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBazaarMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2169,6 +2217,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuBazaarMenu::moveBazaarMenu() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuBazaarMenu::MyDTI cMenuBazaarMenu::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b873-0x0013b8ac (called at cMenuBase.cpp:39626)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b873-0x0013b8ac (called at cMenuBase.h:8888)
@@ -2177,7 +2227,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuBazaarMenu::moveBazaarMenu() {
 // Address: 0x00131a20 - 0x00131b09 (233 bytes)
 MtObject* cMenuBazaarMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBazaarMenu;
+    return new (16u) cMenuBazaarMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2203,7 +2253,7 @@ const MtDTI& cMenuBlackList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBlackList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBlackList::DTI)->memAlloc(sz, align, ::cMenuBlackList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBlackList::DTI)->memAlloc(sz, align, cMenuBlackList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2218,7 +2268,7 @@ inline void* cMenuBlackList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBlackList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBlackList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBlackList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2247,13 +2297,13 @@ cMenuBlackList::~cMenuBlackList() {
 // Address: 0x0012f480 - 0x0012f4fa (122 bytes)
 void cMenuBlackList::initBlackList(uGUIBase* pRefGUI) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupSupportList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getBlackListMax(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getBlackListMax(), static_cast<u32>(0));
-    if (this->::cMenuBase::mpList != static_cast<cMenuSupportList*>(nullptr)) {
-        this->::cMenuBase::mpList->::cMenuSupportList::createList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mBlackList.::MtArray::mLength);
+    initMenu();
+    mMenuRno[0] = 0;
+    setupSupportList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getBlackListMax(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getBlackListMax(), 0u);
+    if (mpList != nullptr) {
+        mpList->createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mBlackList.mLength);
     }
-    this->setRefGUI(pRefGUI, true);
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x0012f510 - 0x0012f726 (534 bytes)
@@ -2268,7 +2318,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuBlackList::moveBlackList() {
 // Address: 0x0012f730 - 0x0012f735 (5 bytes)
 void cMenuBlackList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -2276,6 +2326,8 @@ void cMenuBlackList::exitMenu() {
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuBlackList::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuBlackList::MyDTI cMenuBlackList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b6e4-0x0013b71d (called at cMenuBase.cpp:38369)
@@ -2285,7 +2337,7 @@ void cMenuBlackList::exitMenu() {
 // Address: 0x0012f320 - 0x0012f409 (233 bytes)
 MtObject* cMenuBlackList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBlackList;
+    return new (16u) cMenuBlackList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2311,7 +2363,7 @@ const MtDTI& cMenuBreakupParty::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuBreakupParty::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuBreakupParty::DTI)->memAlloc(sz, align, ::cMenuBreakupParty::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuBreakupParty::DTI)->memAlloc(sz, align, cMenuBreakupParty::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2326,7 +2378,7 @@ inline void* cMenuBreakupParty::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuBreakupParty::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuBreakupParty::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuBreakupParty::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2366,22 +2418,24 @@ __attribute__((weak)) nMenu::MENU_RET cMenuBreakupParty::moveBreakupParty() {
 // Address: 0x00106520 - 0x00106525 (5 bytes)
 void cMenuBreakupParty::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x001062f0 - 0x0010634e (94 bytes)
 bool cMenuBreakupParty::callbackCheckCloseDialog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionMemberNum(true) == static_cast<s32>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-            return ::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+            return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
         } else {
             return true;
         }
     } else {
-        return ::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1);
+        return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuBreakupParty::MyDTI cMenuBreakupParty::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a832-0x0013a86b (called at cMenuBase.cpp:9984)
@@ -2391,7 +2445,7 @@ bool cMenuBreakupParty::callbackCheckCloseDialog() {
 // Address: 0x00106180 - 0x00106269 (233 bytes)
 MtObject* cMenuBreakupParty::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuBreakupParty;
+    return new (16u) cMenuBreakupParty;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2417,7 +2471,7 @@ const MtDTI& cMenuCancelFriend::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCancelFriend::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCancelFriend::DTI)->memAlloc(sz, align, ::cMenuCancelFriend::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCancelFriend::DTI)->memAlloc(sz, align, cMenuCancelFriend::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2473,6 +2527,8 @@ __attribute__((weak)) void cMenuCancelFriend::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCancelFriend::MyDTI cMenuCancelFriend::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aee0-0x0013af19 (called at cMenuBase.cpp:27806)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aee0-0x0013af19 (called at cMenuBase.h:5712)
@@ -2481,7 +2537,7 @@ __attribute__((weak)) void cMenuCancelFriend::exitMenu() {
 // Address: 0x00120af0 - 0x00120be4 (244 bytes)
 MtObject* cMenuCancelFriend::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCancelFriend;
+    return new (16u) cMenuCancelFriend;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2507,7 +2563,7 @@ const MtDTI& cMenuChangeServer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuChangeServer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuChangeServer::DTI)->memAlloc(sz, align, ::cMenuChangeServer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuChangeServer::DTI)->memAlloc(sz, align, cMenuChangeServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2522,7 +2578,7 @@ inline void* cMenuChangeServer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuChangeServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuChangeServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuChangeServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2566,8 +2622,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuChangeServer::moveChangeServer() {
 // Address: 0x00125810 - 0x00125815 (5 bytes)
 void cMenuChangeServer::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuChangeServer::MyDTI cMenuChangeServer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b2e2-0x0013b31b (called at cMenuBase.cpp:32435)
@@ -2577,7 +2635,7 @@ void cMenuChangeServer::exitMenu() {
 // Address: 0x001256b0 - 0x00125799 (233 bytes)
 MtObject* cMenuChangeServer::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuChangeServer;
+    return new (16u) cMenuChangeServer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2603,7 +2661,7 @@ const MtDTI& cMenuCharacterList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCharacterList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCharacterList::DTI)->memAlloc(sz, align, ::cMenuCharacterList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCharacterList::DTI)->memAlloc(sz, align, cMenuCharacterList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2618,7 +2676,7 @@ inline void* cMenuCharacterList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCharacterList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCharacterList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCharacterList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2647,24 +2705,24 @@ cMenuCharacterList::~cMenuCharacterList() {
 // Address: 0x000f4d10 - 0x000f4dca (186 bytes)
 void cMenuCharacterList::initCharacterList(uGUIBase* pGUIRefMenu) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mSearchSetting.::cCharacterData::stSearchFilterSetting::setDefaultData();
-    this->mSearchSetting.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(1));
-    cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(256), static_cast<u32>(14), static_cast<u32>(15));
-    if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-        pList->mMenuTopId = static_cast<s32>(0);
-        pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(14));
+    initMenu();
+    mMenuRno[0] = 0;
+    mSearchSetting.setDefaultData();
+    mSearchSetting.initSearchFilter(1);
+    cMenuSupportList* pList = setupSupportList(256u, 14u, 15u);
+    if (pList != nullptr) {
+        pList->mMenuTopId = 0;
+        pList->cMenuSupportList::addBelowMenu(14);
         // inferred: a temporary for the result of the call at 0xf4d89, used once; no DWARF local holds it
-        nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCharacterSearchPacket();
-        if (this->::cMenuBase::mpList != static_cast<cMenuSupportList*>(nullptr)) {
-            this->::cMenuBase::mpList->::cMenuSupportList::createList(t0->m_CharacterList.::MtArray::mLength);
+        nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCharacterSearchPacket();
+        if (mpList != nullptr) {
+            mpList->createList(t0->m_CharacterList.mLength);
         }
-        this->mFirst = true;
-        this->setRefGUI(pGUIRefMenu, true);
+        mFirst = true;
+        setRefGUI(pGUIRefMenu, true);
     } else {
-        this->mFirst = true;
-        this->setRefGUI(pGUIRefMenu, true);
+        mFirst = true;
+        setRefGUI(pGUIRefMenu, true);
     }
 }
 
@@ -2680,12 +2738,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCharacterList::moveCharacterList() {
 // Address: 0x000fd860 - 0x000fd88d (45 bytes)
 void cMenuCharacterList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCharacterSearchPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCharacterSearchPacket();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // const cCharacterData::stSearchFilterSetting& cMenuCharacterList::getSearchSetting();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCharacterList::MyDTI cMenuCharacterList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a268-0x0013a2a1 (called at cMenuBase.cpp:4520)
@@ -2695,7 +2755,7 @@ void cMenuCharacterList::exitMenu() {
 // Address: 0x000fd700 - 0x000fd7e9 (233 bytes)
 MtObject* cMenuCharacterList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCharacterList;
+    return new (16u) cMenuCharacterList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2734,7 +2794,7 @@ const MtDTI& cMenuCraftColorFrame::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftColorFrame::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftColorFrame::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftColorFrame::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2783,6 +2843,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftColorFrame::moveCraftColorFrame(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftColorFrame::MyDTI cMenuCraftColorFrame::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aca6-0x0013acdf (called at cMenuBase.cpp:19127)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aca6-0x0013acdf (called at cMenuBase.h:4001)
@@ -2829,7 +2891,7 @@ const MtDTI& cMenuCraftColorFrame::cMenuCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN20cMenuCraftColorFrame9cMenuCtrlD0Ev at 0x01976340-0x0197636a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cMenuCraftColorFrame::cMenuCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftColorFrame::cMenuCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftColorFrame::cMenuCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2840,6 +2902,8 @@ inline void cMenuCraftColorFrame::cMenuCtrl::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cMenuCraftColorFrame::cMenuCtrl::operator delete[](void* p_addr, u32 align);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftColorFrame::cMenuCtrl::MyDTI cMenuCraftColorFrame::cMenuCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ac6d-0x0013aca6 (called at cMenuBase.cpp:19126)
@@ -2875,7 +2939,7 @@ const MtDTI& cMenuCraftColorItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftColorItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftColorItem::DTI)->memAlloc(sz, align, ::cMenuCraftColorItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftColorItem::DTI)->memAlloc(sz, align, cMenuCraftColorItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2890,7 +2954,7 @@ inline void* cMenuCraftColorItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftColorItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftColorItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftColorItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2945,6 +3009,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftColorItem::moveCraftColorItem() 
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftColorItem::MyDTI cMenuCraftColorItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013acdf-0x0013ad18 (called at cMenuBase.cpp:19412)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013acdf-0x0013ad18 (called at cMenuBase.h:4072)
@@ -2953,7 +3019,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftColorItem::moveCraftColorItem() 
 // Address: 0x00117d30 - 0x00117e2a (250 bytes)
 MtObject* cMenuCraftColorItem::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftColorItem;
+    return new (16u) cMenuCraftColorItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2979,7 +3045,7 @@ const MtDTI& cMenuCraftCreateItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftCreateItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftCreateItem::DTI)->memAlloc(sz, align, ::cMenuCraftCreateItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftCreateItem::DTI)->memAlloc(sz, align, cMenuCraftCreateItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2994,7 +3060,7 @@ inline void* cMenuCraftCreateItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftCreateItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftCreateItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftCreateItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3044,6 +3110,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftCreateItem::moveCraftCreateItem(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftCreateItem::MyDTI cMenuCraftCreateItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab50-0x0013ab89 (called at cMenuBase.cpp:17306)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab50-0x0013ab89 (called at cMenuBase.h:3631)
@@ -3052,7 +3120,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftCreateItem::moveCraftCreateItem(
 // Address: 0x00116db0 - 0x00116eb0 (256 bytes)
 MtObject* cMenuCraftCreateItem::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftCreateItem;
+    return new (16u) cMenuCraftCreateItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3091,7 +3159,7 @@ const MtDTI& cMenuCraftElementFrame::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftElementFrame::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftElementFrame::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftElementFrame::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3145,6 +3213,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftElementFrame::moveCraftElementFr
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftElementFrame::MyDTI cMenuCraftElementFrame::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013abfb-0x0013ac34 (called at cMenuBase.cpp:18250)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013abfb-0x0013ac34 (called at cMenuBase.h:3833)
@@ -3191,7 +3261,7 @@ const MtDTI& cMenuCraftElementFrame::cMenuCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22cMenuCraftElementFrame9cMenuCtrlD0Ev at 0x01976430-0x0197645a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cMenuCraftElementFrame::cMenuCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftElementFrame::cMenuCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftElementFrame::cMenuCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3202,6 +3272,8 @@ inline void cMenuCraftElementFrame::cMenuCtrl::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cMenuCraftElementFrame::cMenuCtrl::operator delete[](void* p_addr, u32 align);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftElementFrame::cMenuCtrl::MyDTI cMenuCraftElementFrame::cMenuCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013abc2-0x0013abfb (called at cMenuBase.cpp:18249)
@@ -3237,7 +3309,7 @@ const MtDTI& cMenuCraftElementItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftElementItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftElementItem::DTI)->memAlloc(sz, align, ::cMenuCraftElementItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftElementItem::DTI)->memAlloc(sz, align, cMenuCraftElementItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3252,7 +3324,7 @@ inline void* cMenuCraftElementItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftElementItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftElementItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftElementItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3313,6 +3385,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftElementItem::moveCraftElementIte
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftElementItem::MyDTI cMenuCraftElementItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ac34-0x0013ac6d (called at cMenuBase.cpp:18582)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ac34-0x0013ac6d (called at cMenuBase.h:3909)
@@ -3321,7 +3395,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftElementItem::moveCraftElementIte
 // Address: 0x00117990 - 0x00117a8e (254 bytes)
 MtObject* cMenuCraftElementItem::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftElementItem;
+    return new (16u) cMenuCraftElementItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3347,7 +3421,7 @@ const MtDTI& cMenuCraftGoldStoneDialog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftGoldStoneDialog::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftGoldStoneDialog::DTI)->memAlloc(sz, align, ::cMenuCraftGoldStoneDialog::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftGoldStoneDialog::DTI)->memAlloc(sz, align, cMenuCraftGoldStoneDialog::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3362,7 +3436,7 @@ inline void* cMenuCraftGoldStoneDialog::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftGoldStoneDialog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftGoldStoneDialog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftGoldStoneDialog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3404,6 +3478,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftGoldStoneDialog::moveCraftGoldSt
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftGoldStoneDialog::MyDTI cMenuCraftGoldStoneDialog::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013baad-0x0013bae6 (called at cMenuBase.cpp:42853)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013baad-0x0013bae6 (called at cMenuBase.h:9760)
@@ -3412,7 +3488,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftGoldStoneDialog::moveCraftGoldSt
 // Address: 0x00135260 - 0x0013535a (250 bytes)
 MtObject* cMenuCraftGoldStoneDialog::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftGoldStoneDialog;
+    return new (16u) cMenuCraftGoldStoneDialog;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3438,7 +3514,7 @@ const MtDTI& cMenuCraftItemSelect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftItemSelect::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftItemSelect::DTI)->memAlloc(sz, align, ::cMenuCraftItemSelect::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftItemSelect::DTI)->memAlloc(sz, align, cMenuCraftItemSelect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3453,7 +3529,7 @@ inline void* cMenuCraftItemSelect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftItemSelect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftItemSelect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftItemSelect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3516,6 +3592,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftItemSelect::moveCraftItemSelect(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftItemSelect::MyDTI cMenuCraftItemSelect::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad8a-0x0013adc3 (called at cMenuBase.cpp:22112)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad8a-0x0013adc3 (called at cMenuBase.h:4370)
@@ -3524,7 +3602,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftItemSelect::moveCraftItemSelect(
 // Address: 0x001182d0 - 0x001183cf (255 bytes)
 MtObject* cMenuCraftItemSelect::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftItemSelect;
+    return new (16u) cMenuCraftItemSelect;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3550,7 +3628,7 @@ const MtDTI& cMenuCraftMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftMenu::DTI)->memAlloc(sz, align, ::cMenuCraftMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftMenu::DTI)->memAlloc(sz, align, cMenuCraftMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3565,7 +3643,7 @@ inline void* cMenuCraftMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3623,10 +3701,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftMenu::moveCraftMenu() {
 // Address: 0x00115ff0 - 0x0011602b (59 bytes)
 void cMenuCraftMenu::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftProductInfoPacket();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftProductPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftProductInfoPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCraftProductPacket();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftMenu::MyDTI cMenuCraftMenu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a988-0x0013a9c1 (called at cMenuBase.cpp:13823)
@@ -3636,7 +3716,7 @@ void cMenuCraftMenu::exitMenu() {
 // Address: 0x00109b00 - 0x00109c13 (275 bytes)
 MtObject* cMenuCraftMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftMenu;
+    return new (16u) cMenuCraftMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3662,7 +3742,7 @@ const MtDTI& cMenuCraftMyPawnList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftMyPawnList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftMyPawnList::DTI)->memAlloc(sz, align, ::cMenuCraftMyPawnList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftMyPawnList::DTI)->memAlloc(sz, align, cMenuCraftMyPawnList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3677,7 +3757,7 @@ inline void* cMenuCraftMyPawnList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftMyPawnList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftMyPawnList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftMyPawnList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3722,6 +3802,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftMyPawnList::moveCraftMyPawnList(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftMyPawnList::MyDTI cMenuCraftMyPawnList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a9fa-0x0013aa33 (called at cMenuBase.cpp:15517)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a9fa-0x0013aa33 (called at cMenuBase.h:3367)
@@ -3730,7 +3812,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftMyPawnList::moveCraftMyPawnList(
 // Address: 0x00116420 - 0x00116514 (244 bytes)
 MtObject* cMenuCraftMyPawnList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftMyPawnList;
+    return new (16u) cMenuCraftMyPawnList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3756,7 +3838,7 @@ const MtDTI& cMenuCraftPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftPoint::DTI)->memAlloc(sz, align, ::cMenuCraftPoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftPoint::DTI)->memAlloc(sz, align, cMenuCraftPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3771,7 +3853,7 @@ inline void* cMenuCraftPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3830,6 +3912,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftPoint::moveCraftPoint() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftPoint::MyDTI cMenuCraftPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad18-0x0013ad51 (called at cMenuBase.cpp:19860)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad18-0x0013ad51 (called at cMenuBase.h:4153)
@@ -3838,7 +3922,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftPoint::moveCraftPoint() {
 // Address: 0x00117ea0 - 0x00117f9d (253 bytes)
 MtObject* cMenuCraftPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftPoint;
+    return new (16u) cMenuCraftPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3864,7 +3948,7 @@ const MtDTI& cMenuCraftProcessMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftProcessMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftProcessMenu::DTI)->memAlloc(sz, align, ::cMenuCraftProcessMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftProcessMenu::DTI)->memAlloc(sz, align, cMenuCraftProcessMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3879,7 +3963,7 @@ inline void* cMenuCraftProcessMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftProcessMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftProcessMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftProcessMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3955,6 +4039,8 @@ __attribute__((weak)) cMenuCraftMenu::CREATE_STATE cMenuCraftProcessMenu::isPric
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftProcessMenu::MyDTI cMenuCraftProcessMenu::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a9c1-0x0013a9fa (called at cMenuBase.cpp:15096)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a9c1-0x0013a9fa (called at cMenuBase.h:3295)
@@ -3963,7 +4049,7 @@ __attribute__((weak)) cMenuCraftMenu::CREATE_STATE cMenuCraftProcessMenu::isPric
 // Address: 0x00116030 - 0x00116124 (244 bytes)
 MtObject* cMenuCraftProcessMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftProcessMenu;
+    return new (16u) cMenuCraftProcessMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3989,7 +4075,7 @@ const MtDTI& cMenuCraftRecipeList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftRecipeList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftRecipeList::DTI)->memAlloc(sz, align, ::cMenuCraftRecipeList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftRecipeList::DTI)->memAlloc(sz, align, cMenuCraftRecipeList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4004,7 +4090,7 @@ inline void* cMenuCraftRecipeList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftRecipeList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftRecipeList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftRecipeList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4086,6 +4172,8 @@ __attribute__((weak)) void cMenuCraftRecipeList::errorAnnounce(cMenuCraftMenu::C
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftRecipeList::MyDTI cMenuCraftRecipeList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aa33-0x0013aa6c (called at cMenuBase.cpp:15666)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aa33-0x0013aa6c (called at cMenuBase.h:3429)
@@ -4094,7 +4182,7 @@ __attribute__((weak)) void cMenuCraftRecipeList::errorAnnounce(cMenuCraftMenu::C
 // Address: 0x00116590 - 0x00116683 (243 bytes)
 MtObject* cMenuCraftRecipeList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftRecipeList;
+    return new (16u) cMenuCraftRecipeList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4133,7 +4221,7 @@ const MtDTI& cMenuCraftSupportFrame::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftSupportFrame::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftSupportFrame::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftSupportFrame::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4187,6 +4275,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftSupportFrame::moveCraftSupportFr
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftSupportFrame::MyDTI cMenuCraftSupportFrame::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aade-0x0013ab17 (called at cMenuBase.cpp:16845)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aade-0x0013ab17 (called at cMenuBase.h:3486)
@@ -4233,7 +4323,7 @@ const MtDTI& cMenuCraftSupportFrame::cMenuCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN22cMenuCraftSupportFrame9cMenuCtrlD0Ev at 0x019765c0-0x019765ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cMenuCraftSupportFrame::cMenuCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftSupportFrame::cMenuCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftSupportFrame::cMenuCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4244,6 +4334,8 @@ inline void cMenuCraftSupportFrame::cMenuCtrl::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // void cMenuCraftSupportFrame::cMenuCtrl::operator delete[](void* p_addr, u32 align);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftSupportFrame::cMenuCtrl::MyDTI cMenuCraftSupportFrame::cMenuCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aaa5-0x0013aade (called at cMenuBase.cpp:16844)
@@ -4279,7 +4371,7 @@ const MtDTI& cMenuCraftSupportList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftSupportList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftSupportList::DTI)->memAlloc(sz, align, ::cMenuCraftSupportList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftSupportList::DTI)->memAlloc(sz, align, cMenuCraftSupportList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4294,7 +4386,7 @@ inline void* cMenuCraftSupportList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftSupportList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftSupportList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftSupportList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4328,6 +4420,8 @@ cMenuCraftSupportList::~cMenuCraftSupportList() {
 //   in cMenuCraftMenu::moveCraftMenu at 0x0010a9b7-0x0010aa13, 0x0010b451-0x0010b48c, 0x0010b4b0-0x0010b4c9, 0x0010bb30-0x0010bb4a, 0x0010bb67-0x0010bb6c (called at cMenuBase.cpp:14490)
 // nMenu::MENU_RET cMenuCraftSupportList::moveCraftSupportList(u32* slotNo);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftSupportList::MyDTI cMenuCraftSupportList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab17-0x0013ab50 (called at cMenuBase.cpp:17215)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab17-0x0013ab50 (called at cMenuBase.h:3582)
@@ -4336,7 +4430,7 @@ cMenuCraftSupportList::~cMenuCraftSupportList() {
 // Address: 0x00116c40 - 0x00116d33 (243 bytes)
 MtObject* cMenuCraftSupportList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftSupportList;
+    return new (16u) cMenuCraftSupportList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4362,7 +4456,7 @@ const MtDTI& cMenuCraftTask::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftTask::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftTask::DTI)->memAlloc(sz, align, ::cMenuCraftTask::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftTask::DTI)->memAlloc(sz, align, cMenuCraftTask::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4377,7 +4471,7 @@ inline void* cMenuCraftTask::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftTask::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftTask::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftTask::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4485,6 +4579,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftTask::moveCraftTask() {
 //   in cMenuCraftTask::moveCraftTask at 0x001140fc-0x00114105 (called at cMenuBase.cpp:21434)
 // bool cMenuCraftTask::isClassUp();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftTask::MyDTI cMenuCraftTask::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad51-0x0013ad8a (called at cMenuBase.cpp:20452)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ad51-0x0013ad8a (called at cMenuBase.h:4220)
@@ -4493,7 +4589,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftTask::moveCraftTask() {
 // Address: 0x00118010 - 0x00118117 (263 bytes)
 MtObject* cMenuCraftTask::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftTask;
+    return new (16u) cMenuCraftTask;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4519,7 +4615,7 @@ const MtDTI& cMenuCraftUpGradeItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftUpGradeItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftUpGradeItem::DTI)->memAlloc(sz, align, ::cMenuCraftUpGradeItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftUpGradeItem::DTI)->memAlloc(sz, align, cMenuCraftUpGradeItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4534,7 +4630,7 @@ inline void* cMenuCraftUpGradeItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftUpGradeItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftUpGradeItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftUpGradeItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4593,6 +4689,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeItem::moveCraftUpGradeIte
 //   in cMenuCraftMenu::moveCraftMenu at 0x0010a68e-0x0010a69b (called at cMenuBase.cpp:14554)
 // bool cMenuCraftUpGradeItem::isGradeUp();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftUpGradeItem::MyDTI cMenuCraftUpGradeItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab89-0x0013abc2 (called at cMenuBase.cpp:17793)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ab89-0x0013abc2 (called at cMenuBase.h:3769)
@@ -4601,7 +4699,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeItem::moveCraftUpGradeIte
 // Address: 0x001175f0 - 0x001176d9 (233 bytes)
 MtObject* cMenuCraftUpGradeItem::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftUpGradeItem;
+    return new (16u) cMenuCraftUpGradeItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4627,7 +4725,7 @@ const MtDTI& cMenuCraftUpGradeList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCraftUpGradeList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCraftUpGradeList::DTI)->memAlloc(sz, align, ::cMenuCraftUpGradeList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCraftUpGradeList::DTI)->memAlloc(sz, align, cMenuCraftUpGradeList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4642,7 +4740,7 @@ inline void* cMenuCraftUpGradeList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCraftUpGradeList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCraftUpGradeList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCraftUpGradeList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4709,6 +4807,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeList::moveCraftUpGradeLis
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCraftUpGradeList::MyDTI cMenuCraftUpGradeList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aa6c-0x0013aaa5 (called at cMenuBase.cpp:16327)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013aa6c-0x0013aaa5 (called at cMenuBase.h:3711)
@@ -4717,7 +4817,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeList::moveCraftUpGradeLis
 // Address: 0x00116880 - 0x0011697a (250 bytes)
 MtObject* cMenuCraftUpGradeList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCraftUpGradeList;
+    return new (16u) cMenuCraftUpGradeList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4743,7 +4843,7 @@ const MtDTI& cMenuCreateGameSession::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuCreateGameSession::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCreateGameSession::DTI)->memAlloc(sz, align, ::cMenuCreateGameSession::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCreateGameSession::DTI)->memAlloc(sz, align, cMenuCreateGameSession::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4758,7 +4858,7 @@ inline void* cMenuCreateGameSession::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCreateGameSession::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCreateGameSession::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCreateGameSession::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4787,10 +4887,10 @@ cMenuCreateGameSession::~cMenuCreateGameSession() {
 // Address: 0x000fcf10 - 0x000fcf3f (47 bytes)
 void cMenuCreateGameSession::initCreateGameSession(s32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mCreateGameSessionDialogHandle = static_cast<u32>(4294967295);
-    this->mCreateType = type;
+    initMenu();
+    mMenuRno[0] = 0;
+    mCreateGameSessionDialogHandle = 0xFFFFFFFF;
+    mCreateType = type;
 }
 
 // Address: 0x000fcf40 - 0x000fd065 (293 bytes)
@@ -4801,6 +4901,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCreateGameSession::moveCreateGameSess
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCreateGameSession::MyDTI cMenuCreateGameSession::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a715-0x0013a74e (called at cMenuBase.cpp:9544)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a715-0x0013a74e (called at cMenuBase.h:2603)
@@ -4809,7 +4911,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCreateGameSession::moveCreateGameSess
 // Address: 0x001055d0 - 0x001056b9 (233 bytes)
 MtObject* cMenuCreateGameSession::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuCreateGameSession;
+    return new (16u) cMenuCreateGameSession;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4901,6 +5003,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuCustomize::moveCustomize() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCustomize::MyDTI cMenuCustomize::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const s32 cMenuCustomize::edit_target[];
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a8dd-0x0013a916 (called at cMenuBase.cpp:11376)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a8dd-0x0013a916 (called at cMenuBase.h:4444)
@@ -4948,7 +5054,7 @@ const MtDTI& cMenuDispStatus::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuDispStatus::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuDispStatus::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuDispStatus::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5054,6 +5160,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuDispStatus::moveDispStatus() {
 // No out-of-line body: no code in the ELF
 // u32 cMenuDispStatus::getPawnOwnerCharacterId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuDispStatus::MyDTI cMenuDispStatus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b555-0x0013b58e (called at cMenuBase.cpp:36294)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b555-0x0013b58e (called at cMenuBase.h:7933)
@@ -5101,7 +5209,7 @@ const MtDTI& cMenuEditBlackList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEditBlackList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEditBlackList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEditBlackList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5149,9 +5257,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEditBlackList::moveEditBlackList() {
 // Address: 0x0012f8f0 - 0x0012f913 (35 bytes)
 void cMenuEditBlackList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::clearBaseInfo(this->mBaseInfo);
-    this->::cMenuBase::exitMenu();
+    nNet::clearBaseInfo(mBaseInfo);
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditBlackList::MyDTI cMenuEditBlackList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b71d-0x0013b756 (called at cMenuBase.cpp:38481)
@@ -5187,7 +5297,7 @@ const MtDTI& cMenuEditFavoritePawn::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuEditFavoritePawn::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditFavoritePawn::DTI)->memAlloc(sz, align, ::cMenuEditFavoritePawn::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditFavoritePawn::DTI)->memAlloc(sz, align, cMenuEditFavoritePawn::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5246,6 +5356,8 @@ __attribute__((weak)) void cMenuEditFavoritePawn::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditFavoritePawn::MyDTI cMenuEditFavoritePawn::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a6a3-0x0013a6dc (called at cMenuBase.cpp:9317)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a6a3-0x0013a6dc (called at cMenuBase.h:2498)
@@ -5254,7 +5366,7 @@ __attribute__((weak)) void cMenuEditFavoritePawn::exitMenu() {
 // Address: 0x00104dc0 - 0x00104eb4 (244 bytes)
 MtObject* cMenuEditFavoritePawn::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuEditFavoritePawn;
+    return new (16u) cMenuEditFavoritePawn;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5280,7 +5392,7 @@ const MtDTI& cMenuEntryGameSession::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuEntryGameSession::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEntryGameSession::DTI)->memAlloc(sz, align, ::cMenuEntryGameSession::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEntryGameSession::DTI)->memAlloc(sz, align, cMenuEntryGameSession::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5295,7 +5407,7 @@ inline void* cMenuEntryGameSession::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEntryGameSession::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEntryGameSession::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEntryGameSession::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5327,6 +5439,8 @@ cMenuEntryGameSession::~cMenuEntryGameSession() {
 // No out-of-line body: no code in the ELF
 // nMenu::MENU_RET cMenuEntryGameSession::moveEntryGameSession();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryGameSession::MyDTI cMenuEntryGameSession::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a787-0x0013a7c0 (called at cMenuBase.cpp:9692)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a787-0x0013a7c0 (called at cMenuBase.h:2688)
@@ -5335,7 +5449,7 @@ cMenuEntryGameSession::~cMenuEntryGameSession() {
 // Address: 0x001059e0 - 0x00105ac9 (233 bytes)
 MtObject* cMenuEntryGameSession::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuEntryGameSession;
+    return new (16u) cMenuEntryGameSession;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5423,6 +5537,8 @@ __attribute__((weak)) void cMenuFavoriteFriend::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuFavoriteFriend::MyDTI cMenuFavoriteFriend::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af8b-0x0013afc4 (called at cMenuBase.cpp:28141)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af8b-0x0013afc4 (called at cMenuBase.h:5864)
@@ -5457,7 +5573,7 @@ const MtDTI& cMenuFirstOption::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuFirstOption::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuFirstOption::DTI)->memAlloc(sz, align, ::cMenuFirstOption::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuFirstOption::DTI)->memAlloc(sz, align, cMenuFirstOption::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5472,7 +5588,7 @@ inline void* cMenuFirstOption::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuFirstOption::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuFirstOption::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuFirstOption::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5501,9 +5617,9 @@ cMenuFirstOption::~cMenuFirstOption() {
 // Address: 0x00132f40 - 0x00132f65 (37 bytes)
 void cMenuFirstOption::initFirstOption() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(0));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(0u);
 }
 
 // Address: 0x00132f70 - 0x001334dc (1388 bytes)
@@ -5524,11 +5640,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuFirstOption::moveFirstOption() {
 // Address: 0x001334f0 - 0x001334f5 (5 bytes)
 void cMenuFirstOption::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // void cMenuFirstOption::setDisableMenu();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuFirstOption::MyDTI cMenuFirstOption::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b8e5-0x0013b91e (called at cMenuBase.cpp:41176)
@@ -5538,7 +5656,7 @@ void cMenuFirstOption::exitMenu() {
 // Address: 0x00132de0 - 0x00132ec9 (233 bytes)
 MtObject* cMenuFirstOption::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuFirstOption;
+    return new (16u) cMenuFirstOption;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5555,7 +5673,7 @@ const MtDTI& cMenuFriendList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuFriendList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuFriendList::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuFriendList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5564,7 +5682,7 @@ inline MtAllocator* cMenuFriendList::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuFriendList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuFriendList::DTI)->memAlloc(sz, align, ::cMenuFriendList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuFriendList::DTI)->memAlloc(sz, align, cMenuFriendList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5579,7 +5697,7 @@ inline void* cMenuFriendList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuFriendList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuFriendList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuFriendList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5608,13 +5726,13 @@ cMenuFriendList::~cMenuFriendList() {
 // Address: 0x00120820 - 0x0012089a (122 bytes)
 void cMenuFriendList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cMenuFriendList::getAllocator()->memFree(static_cast<void*>(this->mpSortList));
-    ::cMenuFriendList::getAllocator()->memFree(static_cast<void*>(this->::cMenuBase::mpMenuList));
-    ::cMenuFriendList::getAllocator()->memFree(static_cast<void*>(this->::cMenuBase::mpMenuParts));
-    this->mpSortList = static_cast<u32*>(nullptr);
-    this->::cMenuBase::mpMenuParts = static_cast<nMenu::MENU_PARTS*>(nullptr);
-    this->::cMenuBase::mpMenuList = static_cast<s32*>(nullptr);
-    this->::cMenuBase::exitMenu();
+    cMenuFriendList::getAllocator()->memFree(static_cast<void*>(mpSortList));
+    cMenuFriendList::getAllocator()->memFree(static_cast<void*>(mpMenuList));
+    cMenuFriendList::getAllocator()->memFree(static_cast<void*>(mpMenuParts));
+    mpSortList = nullptr;
+    mpMenuParts = nullptr;
+    mpMenuList = nullptr;
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x0011fd40 - 0x0011fe88 (328 bytes)
@@ -5652,18 +5770,18 @@ __attribute__((weak)) nMenu::MENU_RET cMenuFriendList::moveFriendList() {
 // Address: 0x001207c0 - 0x00120800 (64 bytes)
 cMenuFriendList::LIST_TYPE cMenuFriendList::getListType(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mType != static_cast<u32>(1)) {
-        if (index >= static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mApplyingFriendList.::MtArray::mLength) {
-            if ((index - static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mApplyingFriendList.::MtArray::mLength) >= static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mApprovingFriendList.::MtArray::mLength) {
-                return static_cast<cMenuFriendList::LIST_TYPE>(2);
+    if (mType != 1) {
+        if (index >= static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mApplyingFriendList.mLength) {
+            if ((index - static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mApplyingFriendList.mLength) >= static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mApprovingFriendList.mLength) {
+                return LIST_TYPE_FRIEND;
             } else {
-                return static_cast<cMenuFriendList::LIST_TYPE>(1);
+                return LIST_TYPE_APPROVING;
             }
         } else {
-            return static_cast<cMenuFriendList::LIST_TYPE>(0);
+            return LIST_TYPE_APPLYING;
         }
     } else {
-        return static_cast<cMenuFriendList::LIST_TYPE>(2);
+        return LIST_TYPE_FRIEND;
     }
 }
 
@@ -5702,6 +5820,8 @@ __attribute__((weak)) void cMenuFriendList::createSortList() {
 //   in cMenuFriendList::createSortList at 0x0011ffa7-0x0011fff7 (called at cMenuBase.cpp:27656)
 // void cMenuFriendList::createMenuList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuFriendList::MyDTI cMenuFriendList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ae6e-0x0013aea7 (called at cMenuBase.cpp:27236)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ae6e-0x0013aea7 (called at cMenuBase.h:5575)
@@ -5710,7 +5830,7 @@ __attribute__((weak)) void cMenuFriendList::createSortList() {
 // Address: 0x0011fbe0 - 0x0011fcc9 (233 bytes)
 MtObject* cMenuFriendList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuFriendList;
+    return new (16u) cMenuFriendList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5736,7 +5856,7 @@ const MtDTI& cMenuGetAreaMasterInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetAreaMasterInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetAreaMasterInfo::DTI)->memAlloc(sz, align, ::cMenuGetAreaMasterInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetAreaMasterInfo::DTI)->memAlloc(sz, align, cMenuGetAreaMasterInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5751,7 +5871,7 @@ inline void* cMenuGetAreaMasterInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetAreaMasterInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetAreaMasterInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetAreaMasterInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5783,6 +5903,8 @@ cMenuGetAreaMasterInfo::~cMenuGetAreaMasterInfo() {
 // No out-of-line body: no code in the ELF
 // nMenu::MENU_RET cMenuGetAreaMasterInfo::moveGetAreaMasterInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetAreaMasterInfo::MyDTI cMenuGetAreaMasterInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b237-0x0013b270 (called at cMenuBase.cpp:31060)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b237-0x0013b270 (called at cMenuBase.h:6781)
@@ -5791,7 +5913,7 @@ cMenuGetAreaMasterInfo::~cMenuGetAreaMasterInfo() {
 // Address: 0x00123e10 - 0x00123ef9 (233 bytes)
 MtObject* cMenuGetAreaMasterInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetAreaMasterInfo;
+    return new (16u) cMenuGetAreaMasterInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5817,7 +5939,7 @@ const MtDTI& cMenuGetBlackList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetBlackList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetBlackList::DTI)->memAlloc(sz, align, ::cMenuGetBlackList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetBlackList::DTI)->memAlloc(sz, align, cMenuGetBlackList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5832,7 +5954,7 @@ inline void* cMenuGetBlackList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetBlackList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetBlackList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetBlackList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5866,6 +5988,8 @@ cMenuGetBlackList::~cMenuGetBlackList() {
 //   in cMenuUpdateCommunityList::moveUpdateCommunityList at 0x00124db8-0x00124e1d, 0x00124f52-0x00124f99 (called at cMenuBase.cpp:32388)
 // nMenu::MENU_RET cMenuGetBlackList::moveGetBlackList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetBlackList::MyDTI cMenuGetBlackList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b6ab-0x0013b6e4 (called at cMenuBase.cpp:38284)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b6ab-0x0013b6e4 (called at cMenuBase.h:8398)
@@ -5874,7 +5998,7 @@ cMenuGetBlackList::~cMenuGetBlackList() {
 // Address: 0x0012f1c0 - 0x0012f2a9 (233 bytes)
 MtObject* cMenuGetBlackList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetBlackList;
+    return new (16u) cMenuGetBlackList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5900,7 +6024,7 @@ const MtDTI& cMenuGetCharacterName::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetCharacterName::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetCharacterName::DTI)->memAlloc(sz, align, ::cMenuGetCharacterName::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetCharacterName::DTI)->memAlloc(sz, align, cMenuGetCharacterName::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -5915,7 +6039,7 @@ inline void* cMenuGetCharacterName::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetCharacterName::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetCharacterName::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetCharacterName::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5958,6 +6082,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetCharacterName::moveGetCharacterNam
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetCharacterName::MyDTI cMenuGetCharacterName::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b06f-0x0013b0a8 (called at cMenuBase.cpp:29441)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b06f-0x0013b0a8 (called at cMenuBase.h:6229)
@@ -5966,7 +6092,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetCharacterName::moveGetCharacterNam
 // Address: 0x00121fb0 - 0x00122099 (233 bytes)
 MtObject* cMenuGetCharacterName::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetCharacterName;
+    return new (16u) cMenuGetCharacterName;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5992,7 +6118,7 @@ const MtDTI& cMenuGetCraftRecipeToServer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetCraftRecipeToServer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetCraftRecipeToServer::DTI)->memAlloc(sz, align, ::cMenuGetCraftRecipeToServer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetCraftRecipeToServer::DTI)->memAlloc(sz, align, cMenuGetCraftRecipeToServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6007,7 +6133,7 @@ inline void* cMenuGetCraftRecipeToServer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetCraftRecipeToServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetCraftRecipeToServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetCraftRecipeToServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6047,107 +6173,107 @@ nMenu::MENU_RET cMenuGetCraftRecipeToServer::moveGetCraftRecipeToServer() {
     // DWARF local not rendered: cCraftRecipeControl* pControl;
     // DWARF local not rendered: cCraftRecipeControl* pControl;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[528] != static_cast<sNetworkExt::NET_STAT>(4)) {
+    moveMenu();
+    if (mMenuRno[0] == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[528] != sNetworkExt::NET_STAT_ERROR) {
             // inferred: a temporary for the result of the call at 0x133814, used 3 times; no DWARF local holds it
-            sCraftManager::cCraftRecipeControl* t0 = ::sCraftManager::getInstance()->::sCraftManager::getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-            if (t0 != static_cast<sCraftManager::cCraftRecipeControl*>(nullptr)) {
-                if (t0->::sCraftManager::cCraftRecipeControl::getLoadStatus() != static_cast<sCraftManager::cCraftRecipeControl::RECIPE_STATE>(3)) {
-                    if (t0->::sCraftManager::cCraftRecipeControl::getLoadStatus() == static_cast<sCraftManager::cCraftRecipeControl::RECIPE_STATE>(2)) {
-                        this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+            sCraftManager::cCraftRecipeControl* t0 = sCraftManager::getInstance()->getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+            if (t0 != nullptr) {
+                if (t0->getLoadStatus() != sCraftManager::cCraftRecipeControl::RECIPE_STATE_END) {
+                    if (t0->getLoadStatus() == sCraftManager::cCraftRecipeControl::RECIPE_STATE_LOAD_END) {
+                        mMenuRno[0] = 0;
                     }
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 } else {
                     // inferred: a temporary for the result of the call at 0x133875, used 3 times; no DWARF local holds it
-                    sCraftManager::RECIPE_REQ_STATE t2 = ::sCraftManager::getInstance()->::sCraftManager::reqCraftRecipeDesignate(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-                    if (t2 != static_cast<sCraftManager::RECIPE_REQ_STATE>(3)) {
-                        if (t2 != static_cast<sCraftManager::RECIPE_REQ_STATE>(2)) {
-                            if (t2 == static_cast<sCraftManager::RECIPE_REQ_STATE>(1)) {
+                    sCraftManager::RECIPE_REQ_STATE t2 = sCraftManager::getInstance()->reqCraftRecipeDesignate(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+                    if (t2 != sCraftManager::RECIPE_REQ_STATE_END) {
+                        if (t2 != sCraftManager::RECIPE_REQ_STATE_ERROR) {
+                            if (t2 == sCraftManager::RECIPE_REQ_STATE_SUCCESS) {
                                 // inferred: a temporary for the result of the call at 0x133898, used twice; no DWARF local holds it
-                                sCraftManager::cCraftRecipeControl* t3 = ::sCraftManager::getInstance()->::sCraftManager::getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-                                if (t3 != static_cast<sCraftManager::cCraftRecipeControl*>(nullptr)) {
-                                    t3->mState = static_cast<sCraftManager::cCraftRecipeControl::RECIPE_STATE>(1);
-                                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                                    return static_cast<nMenu::MENU_RET>(0);
+                                sCraftManager::cCraftRecipeControl* t3 = sCraftManager::getInstance()->getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+                                if (t3 != nullptr) {
+                                    t3->mState = sCraftManager::cCraftRecipeControl::RECIPE_STATE_LOADING;
+                                    mMenuRno[0] = 1;
+                                    return nMenu::MENU_RET_CONTINUE;
                                 } else {
-                                    return static_cast<nMenu::MENU_RET>(-1);
+                                    return nMenu::MENU_RET_FAILED;
                                 }
                             } else {
-                                return static_cast<nMenu::MENU_RET>(0);
+                                return nMenu::MENU_RET_CONTINUE;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(-1);
+                            return nMenu::MENU_RET_FAILED;
                         }
                     } else {
-                        if (this->mIsEnd == false) {
-                            this->mIsEnd = true;
-                            return static_cast<nMenu::MENU_RET>(1);
+                        if (!mIsEnd) {
+                            mIsEnd = true;
+                            return nMenu::MENU_RET_SUCCESS;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(3);
+                            return nMenu::MENU_RET_EXIT;
                         }
                     }
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(-1);
+                return nMenu::MENU_RET_FAILED;
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(-1);
+            return nMenu::MENU_RET_FAILED;
         }
     } else {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
+        if (mMenuRno[0] == 0) {
             // inferred: a temporary for the result of the call at 0x133856, used 3 times; no DWARF local holds it
-            sCraftManager::RECIPE_REQ_STATE t1 = ::sCraftManager::getInstance()->::sCraftManager::reqCraftRecipe(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-            if (t1 == static_cast<sCraftManager::RECIPE_REQ_STATE>(3)) {
+            sCraftManager::RECIPE_REQ_STATE t1 = sCraftManager::getInstance()->reqCraftRecipe(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+            if (t1 == sCraftManager::RECIPE_REQ_STATE_END) {
                 // inferred: a temporary for the result of the call at 0x133875, used 3 times; no DWARF local holds it
-                sCraftManager::RECIPE_REQ_STATE t2 = ::sCraftManager::getInstance()->::sCraftManager::reqCraftRecipeDesignate(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-                if (t2 != static_cast<sCraftManager::RECIPE_REQ_STATE>(3)) {
-                    if (t2 != static_cast<sCraftManager::RECIPE_REQ_STATE>(2)) {
-                        if (t2 == static_cast<sCraftManager::RECIPE_REQ_STATE>(1)) {
+                sCraftManager::RECIPE_REQ_STATE t2 = sCraftManager::getInstance()->reqCraftRecipeDesignate(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+                if (t2 != sCraftManager::RECIPE_REQ_STATE_END) {
+                    if (t2 != sCraftManager::RECIPE_REQ_STATE_ERROR) {
+                        if (t2 == sCraftManager::RECIPE_REQ_STATE_SUCCESS) {
                             // inferred: a temporary for the result of the call at 0x133898, used twice; no DWARF local holds it
-                            sCraftManager::cCraftRecipeControl* t3 = ::sCraftManager::getInstance()->::sCraftManager::getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-                            if (t3 != static_cast<sCraftManager::cCraftRecipeControl*>(nullptr)) {
-                                t3->mState = static_cast<sCraftManager::cCraftRecipeControl::RECIPE_STATE>(1);
-                                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                                return static_cast<nMenu::MENU_RET>(0);
+                            sCraftManager::cCraftRecipeControl* t3 = sCraftManager::getInstance()->getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+                            if (t3 != nullptr) {
+                                t3->mState = sCraftManager::cCraftRecipeControl::RECIPE_STATE_LOADING;
+                                mMenuRno[0] = 1;
+                                return nMenu::MENU_RET_CONTINUE;
                             } else {
-                                return static_cast<nMenu::MENU_RET>(-1);
+                                return nMenu::MENU_RET_FAILED;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(-1);
+                        return nMenu::MENU_RET_FAILED;
                     }
                 } else {
-                    if (this->mIsEnd == false) {
-                        this->mIsEnd = true;
-                        return static_cast<nMenu::MENU_RET>(1);
+                    if (!mIsEnd) {
+                        mIsEnd = true;
+                        return nMenu::MENU_RET_SUCCESS;
                     } else {
-                        return static_cast<nMenu::MENU_RET>(3);
+                        return nMenu::MENU_RET_EXIT;
                     }
                 }
             } else {
-                if (t1 != static_cast<sCraftManager::RECIPE_REQ_STATE>(2)) {
-                    if (t1 == static_cast<sCraftManager::RECIPE_REQ_STATE>(1)) {
+                if (t1 != sCraftManager::RECIPE_REQ_STATE_ERROR) {
+                    if (t1 == sCraftManager::RECIPE_REQ_STATE_SUCCESS) {
                         // inferred: a temporary for the result of the call at 0x133898, used twice; no DWARF local holds it
-                        sCraftManager::cCraftRecipeControl* t3 = ::sCraftManager::getInstance()->::sCraftManager::getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(this->mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(this->mCategory));
-                        if (t3 != static_cast<sCraftManager::cCraftRecipeControl*>(nullptr)) {
-                            t3->mState = static_cast<sCraftManager::cCraftRecipeControl::RECIPE_STATE>(1);
-                            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                            return static_cast<nMenu::MENU_RET>(0);
+                        sCraftManager::cCraftRecipeControl* t3 = sCraftManager::getInstance()->getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(mType), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(mCategory));
+                        if (t3 != nullptr) {
+                            t3->mState = sCraftManager::cCraftRecipeControl::RECIPE_STATE_LOADING;
+                            mMenuRno[0] = 1;
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(-1);
+                            return nMenu::MENU_RET_FAILED;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(-1);
+                    return nMenu::MENU_RET_FAILED;
                 }
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     }
 }
@@ -6155,11 +6281,13 @@ nMenu::MENU_RET cMenuGetCraftRecipeToServer::moveGetCraftRecipeToServer() {
 // Address: 0x001338f0 - 0x0013390b (27 bytes)
 void cMenuGetCraftRecipeToServer::setRecipeType(sCraftManager::RECIPE_TYPE type, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mType = static_cast<u32>(type);
-    this->mCategory = static_cast<u32>(category);
-    this->mIsEnd = false;
+    mMenuRno[0] = 0;
+    mType = static_cast<u32>(type);
+    mCategory = static_cast<u32>(category);
+    mIsEnd = false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetCraftRecipeToServer::MyDTI cMenuGetCraftRecipeToServer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b957-0x0013b990 (called at cMenuBase.cpp:41552)
@@ -6169,7 +6297,7 @@ void cMenuGetCraftRecipeToServer::setRecipeType(sCraftManager::RECIPE_TYPE type,
 // Address: 0x00133660 - 0x00133749 (233 bytes)
 MtObject* cMenuGetCraftRecipeToServer::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetCraftRecipeToServer;
+    return new (16u) cMenuGetCraftRecipeToServer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6195,7 +6323,7 @@ const MtDTI& cMenuGetFriendList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetFriendList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetFriendList::DTI)->memAlloc(sz, align, ::cMenuGetFriendList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetFriendList::DTI)->memAlloc(sz, align, cMenuGetFriendList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6210,7 +6338,7 @@ inline void* cMenuGetFriendList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetFriendList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetFriendList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetFriendList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6246,6 +6374,8 @@ cMenuGetFriendList::~cMenuGetFriendList() {
 //   in cMenuUpdateCommunityList::moveUpdateCommunityList at 0x00124a96-0x00124ad6, 0x00124e25-0x00124e4a (called at cMenuBase.cpp:32213)
 // nMenu::MENU_RET cMenuGetFriendList::moveGetFriendList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetFriendList::MyDTI cMenuGetFriendList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ae35-0x0013ae6e (called at cMenuBase.cpp:27177)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ae35-0x0013ae6e (called at cMenuBase.h:5531)
@@ -6254,7 +6384,7 @@ cMenuGetFriendList::~cMenuGetFriendList() {
 // Address: 0x0011fa60 - 0x0011fb49 (233 bytes)
 MtObject* cMenuGetFriendList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetFriendList;
+    return new (16u) cMenuGetFriendList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6280,7 +6410,7 @@ const MtDTI& cMenuGetItemBaggageListToServer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetItemBaggageListToServer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetItemBaggageListToServer::DTI)->memAlloc(sz, align, ::cMenuGetItemBaggageListToServer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetItemBaggageListToServer::DTI)->memAlloc(sz, align, cMenuGetItemBaggageListToServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6295,7 +6425,7 @@ inline void* cMenuGetItemBaggageListToServer::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetItemBaggageListToServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetItemBaggageListToServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetItemBaggageListToServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6372,17 +6502,17 @@ void cMenuGetItemBaggageListToServer::itemListGetCallBack(void* param) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from void*
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(136))) > static_cast<int>(-1)) {
-        this->mServerResult = static_cast<u32>(2);
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 136)) > -1) {
+        mServerResult = 2;
         // inferred: the value the loop at 0x133c70 carries; no location-less local in scope fits
-        sItemManager::cItemBag* v0_10 = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(48))));
-        if (v0_10 != static_cast<sItemManager::cItemBag*>(nullptr)) {
-            if (v0_10->::sItemManager::cItemBag::getItemBagNum() != static_cast<u32>(0)) {
+        sItemManager::cItemBag* v0_10 = sItemManager::getInstance()->setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 48)));
+        if (v0_10 != nullptr) {
+            if (v0_10->getItemBagNum() != 0) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                    v0_10->::sItemManager::cItemBag::getItemParam(i0_3);
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->::sItemManager::cItemBag::getItemBagNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                for (unsigned int i0_3 = 0;;) {
+                    v0_10->getItemParam(i0_3);
+                    if ((i0_3 + 1u) < v0_10->getItemBagNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -6390,9 +6520,11 @@ void cMenuGetItemBaggageListToServer::itemListGetCallBack(void* param) {
             }
         }
     } else {
-        this->mServerResult = static_cast<u32>(3);
+        mServerResult = 3;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetItemBaggageListToServer::MyDTI cMenuGetItemBaggageListToServer::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b9c9-0x0013ba02 (called at cMenuBase.cpp:41809)
@@ -6402,7 +6534,7 @@ void cMenuGetItemBaggageListToServer::itemListGetCallBack(void* param) {
 // Address: 0x00133a70 - 0x00133ba6 (310 bytes)
 MtObject* cMenuGetItemBaggageListToServer::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetItemBaggageListToServer;
+    return new (16u) cMenuGetItemBaggageListToServer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6428,7 +6560,7 @@ const MtDTI& cMenuGetItemListToServer::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetItemListToServer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetItemListToServer::DTI)->memAlloc(sz, align, ::cMenuGetItemListToServer::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetItemListToServer::DTI)->memAlloc(sz, align, cMenuGetItemListToServer::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6443,7 +6575,7 @@ inline void* cMenuGetItemListToServer::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetItemListToServer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetItemListToServer::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetItemListToServer::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6524,17 +6656,17 @@ void cMenuGetItemListToServer::itemListGetCallBack(void* param) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from void*
-    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(136))) > static_cast<int>(-1)) {
-        this->mServerResult = static_cast<u32>(2);
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 136)) > -1) {
+        mServerResult = 2;
         // inferred: the value the loop at 0x12d100 carries; no location-less local in scope fits
-        sItemManager::cItemBag* v0_10 = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(48))));
-        if (v0_10 != static_cast<sItemManager::cItemBag*>(nullptr)) {
-            if (v0_10->::sItemManager::cItemBag::getItemBagNum() != static_cast<u32>(0)) {
+        sItemManager::cItemBag* v0_10 = sItemManager::getInstance()->setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + 48)));
+        if (v0_10 != nullptr) {
+            if (v0_10->getItemBagNum() != 0) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                    v0_10->::sItemManager::cItemBag::getItemParam(i0_3);
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->::sItemManager::cItemBag::getItemBagNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                for (unsigned int i0_3 = 0;;) {
+                    v0_10->getItemParam(i0_3);
+                    if ((i0_3 + 1u) < v0_10->getItemBagNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -6542,7 +6674,7 @@ void cMenuGetItemListToServer::itemListGetCallBack(void* param) {
             }
         }
     } else {
-        this->mServerResult = static_cast<u32>(3);
+        mServerResult = 3;
     }
 }
 
@@ -6555,6 +6687,8 @@ void cMenuGetItemListToServer::itemListGetCallBack(void* param) {
 // No out-of-line body: no code in the ELF
 // void cMenuGetItemListToServer::dogmaGetCallBack(void* param);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetItemListToServer::MyDTI cMenuGetItemListToServer::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b58e-0x0013b5c7 (called at cMenuBase.cpp:36767)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b58e-0x0013b5c7 (called at cMenuBase.h:8035)
@@ -6563,7 +6697,7 @@ void cMenuGetItemListToServer::itemListGetCallBack(void* param) {
 // Address: 0x0012c2b0 - 0x0012c3ef (319 bytes)
 MtObject* cMenuGetItemListToServer::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetItemListToServer;
+    return new (16u) cMenuGetItemListToServer;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6589,7 +6723,7 @@ const MtDTI& cMenuGetMailList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetMailList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetMailList::DTI)->memAlloc(sz, align, ::cMenuGetMailList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetMailList::DTI)->memAlloc(sz, align, cMenuGetMailList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6604,7 +6738,7 @@ inline void* cMenuGetMailList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetMailList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetMailList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetMailList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6633,11 +6767,11 @@ cMenuGetMailList::~cMenuGetMailList() {
 // Address: 0x001279e0 - 0x00127a13 (51 bytes)
 void cMenuGetMailList::initGetMailList(bool newMailOnly) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuCursor[0] = static_cast<int>(0);
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mSystemMailFlag = false;
-    this->mNewMailOnly = newMailOnly;
+    initMenu();
+    mMenuCursor[0] = 0;
+    mMenuRno[0] = 0;
+    mSystemMailFlag = false;
+    mNewMailOnly = newMailOnly;
 }
 
 // Address: 0x00129180 - 0x001294a8 (808 bytes)
@@ -6647,6 +6781,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetMailList::moveGetMailList() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetMailList::MyDTI cMenuGetMailList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b38d-0x0013b3c6 (called at cMenuBase.cpp:34118)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b38d-0x0013b3c6 (called at cMenuBase.h:7425)
@@ -6655,7 +6791,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetMailList::moveGetMailList() {
 // Address: 0x0012a4f0 - 0x0012a5d9 (233 bytes)
 MtObject* cMenuGetMailList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetMailList;
+    return new (16u) cMenuGetMailList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6681,7 +6817,7 @@ const MtDTI& cMenuGetMatchingProfile::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetMatchingProfile::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetMatchingProfile::DTI)->memAlloc(sz, align, ::cMenuGetMatchingProfile::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetMatchingProfile::DTI)->memAlloc(sz, align, cMenuGetMatchingProfile::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6696,7 +6832,7 @@ inline void* cMenuGetMatchingProfile::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetMatchingProfile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetMatchingProfile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetMatchingProfile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6731,9 +6867,11 @@ cMenuGetMatchingProfile::~cMenuGetMatchingProfile() {
 // Address: 0x000f1f10 - 0x000f1f3d (45 bytes)
 void cMenuGetMatchingProfile::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearGetMatchingProfilePacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearGetMatchingProfilePacket();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetMatchingProfile::MyDTI cMenuGetMatchingProfile::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a0a0-0x0013a0d9 (called at cMenuBase.cpp:1714)
@@ -6743,7 +6881,7 @@ void cMenuGetMatchingProfile::exitMenu() {
 // Address: 0x000f1d90 - 0x000f1e79 (233 bytes)
 MtObject* cMenuGetMatchingProfile::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetMatchingProfile;
+    return new (16u) cMenuGetMatchingProfile;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6769,7 +6907,7 @@ const MtDTI& cMenuGetOrbGainExtendParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetOrbGainExtendParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetOrbGainExtendParam::DTI)->memAlloc(sz, align, ::cMenuGetOrbGainExtendParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetOrbGainExtendParam::DTI)->memAlloc(sz, align, cMenuGetOrbGainExtendParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6784,7 +6922,7 @@ inline void* cMenuGetOrbGainExtendParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetOrbGainExtendParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetOrbGainExtendParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetOrbGainExtendParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6813,8 +6951,8 @@ cMenuGetOrbGainExtendParam::~cMenuGetOrbGainExtendParam() {
 // Address: 0x0012d2c0 - 0x0012d2dc (28 bytes)
 void cMenuGetOrbGainExtendParam::initGetOrbGainExtendParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x0012d2e0 - 0x0012d36e (142 bytes)
@@ -6824,6 +6962,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetOrbGainExtendParam::moveGetOrbGain
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetOrbGainExtendParam::MyDTI cMenuGetOrbGainExtendParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b5c7-0x0013b600 (called at cMenuBase.cpp:37282)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b5c7-0x0013b600 (called at cMenuBase.h:8131)
@@ -6832,7 +6972,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetOrbGainExtendParam::moveGetOrbGain
 // Address: 0x0012d160 - 0x0012d249 (233 bytes)
 MtObject* cMenuGetOrbGainExtendParam::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetOrbGainExtendParam;
+    return new (16u) cMenuGetOrbGainExtendParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6858,7 +6998,7 @@ const MtDTI& cMenuGetPawnName::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetPawnName::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetPawnName::DTI)->memAlloc(sz, align, ::cMenuGetPawnName::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetPawnName::DTI)->memAlloc(sz, align, cMenuGetPawnName::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6873,7 +7013,7 @@ inline void* cMenuGetPawnName::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetPawnName::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetPawnName::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetPawnName::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6905,6 +7045,8 @@ cMenuGetPawnName::~cMenuGetPawnName() {
 // No out-of-line body: no code in the ELF
 // nMenu::MENU_RET cMenuGetPawnName::moveGetPawnName();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetPawnName::MyDTI cMenuGetPawnName::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b0a8-0x0013b0e1 (called at cMenuBase.cpp:29658)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b0a8-0x0013b0e1 (called at cMenuBase.h:6301)
@@ -6913,7 +7055,7 @@ cMenuGetPawnName::~cMenuGetPawnName() {
 // Address: 0x00122110 - 0x001221f9 (233 bytes)
 MtObject* cMenuGetPawnName::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetPawnName;
+    return new (16u) cMenuGetPawnName;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6939,7 +7081,7 @@ const MtDTI& cMenuGetRecentList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGetRecentList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetRecentList::DTI)->memAlloc(sz, align, ::cMenuGetRecentList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetRecentList::DTI)->memAlloc(sz, align, cMenuGetRecentList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -6954,7 +7096,7 @@ inline void* cMenuGetRecentList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetRecentList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetRecentList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetRecentList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -6988,6 +7130,8 @@ cMenuGetRecentList::~cMenuGetRecentList() {
 //   in cMenuUpdateCommunityList::moveUpdateCommunityList at 0x00124d28-0x00124d8d, 0x00124f25-0x00124f41, 0x00124fb9-0x00124fc3 (called at cMenuBase.cpp:32371)
 // nMenu::MENU_RET cMenuGetRecentList::moveGetRecentList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetRecentList::MyDTI cMenuGetRecentList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b639-0x0013b672 (called at cMenuBase.cpp:37937)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b639-0x0013b672 (called at cMenuBase.h:8277)
@@ -6996,7 +7140,7 @@ cMenuGetRecentList::~cMenuGetRecentList() {
 // Address: 0x0012e8f0 - 0x0012e9d9 (233 bytes)
 MtObject* cMenuGetRecentList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGetRecentList;
+    return new (16u) cMenuGetRecentList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7024,7 +7168,7 @@ const MtDTI& cMenuGroupChatMemberList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuGroupChatMemberList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGroupChatMemberList::DTI)->memAlloc(sz, align, ::cMenuGroupChatMemberList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGroupChatMemberList::DTI)->memAlloc(sz, align, cMenuGroupChatMemberList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7039,7 +7183,7 @@ inline void* cMenuGroupChatMemberList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGroupChatMemberList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGroupChatMemberList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGroupChatMemberList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7099,69 +7243,69 @@ __attribute__((weak)) void cMenuGroupChatMemberList::updatePtr() {
 // Address: 0x00131180 - 0x001312d8 (344 bytes)
 void cMenuGroupChatMemberList::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    ::MtMemoryAllocator::getAllocator(::cMenuGroupChatMemberList::DTI)->memFree(static_cast<void*>(this->mpSortList));
-    this->mpSortList = static_cast<u32*>(nullptr);
-    if (this->mpGUIActiveList != static_cast<uGUIBase*>(nullptr)) {
-        this->mpGUIActiveList->kill();
-        this->mpGUIActiveList = static_cast<uGUIBase*>(nullptr);
+    MtMemoryAllocator::getAllocator(cMenuGroupChatMemberList::DTI)->memFree(static_cast<void*>(mpSortList));
+    mpSortList = nullptr;
+    if (mpGUIActiveList != nullptr) {
+        mpGUIActiveList->kill();
+        mpGUIActiveList = nullptr;
     }
-    if (this->mMemberList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMemberList.mLength != 0) {
         // inferred: the value the loop at 0x1311e0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMemberList.::MtArray::mLength;
+        u32 v0_0 = mMemberList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMemberList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMemberList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMemberList.::MtArray::mLength) {
-                    v0_0 = this->mMemberList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMemberList.mpArray[i0_3] != nullptr) {
+                delete mMemberList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMemberList.mLength) {
+                    v0_0 = mMemberList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMemberList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMemberList.::MtArray::mpArray));
+    if (mMemberList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMemberList.mpArray));
     }
-    this->mMemberList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMemberList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMemberList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
+    mMemberList.mpArray = nullptr;
+    mMemberList.mBufsiz = 0;
+    mMemberList.mLength = 0;
+    if (mExcludeList.mLength != 0) {
         // inferred: the value the loop at 0x131260 carries; no location-less local in scope fits
-        u32 v2_0 = this->mExcludeList.::MtArray::mLength;
+        u32 v2_0 = mExcludeList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mExcludeList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mExcludeList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mExcludeList.::MtArray::mLength) {
-                    v2_0 = this->mExcludeList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mExcludeList.mpArray[i2_3] != nullptr) {
+                delete mExcludeList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mExcludeList.mLength) {
+                    v2_0 = mExcludeList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mExcludeList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mExcludeList.::MtArray::mpArray));
+    if (mExcludeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mExcludeList.mpArray));
     }
-    this->mExcludeList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mExcludeList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mExcludeList.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    mExcludeList.mpArray = nullptr;
+    mExcludeList.mBufsiz = 0;
+    mExcludeList.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x001312e0 - 0x00131372 (146 bytes)
@@ -7180,7 +7324,7 @@ __attribute__((weak)) u32 cMenuGroupChatMemberList::getPageNum() {
 // Address: 0x001310b0 - 0x001310b6 (6 bytes)
 u32 cMenuGroupChatMemberList::getListIndex(u32 page, u32 cursor) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (page * static_cast<u32>(15)) + cursor;
+    return (page * 15u) + cursor;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (30 bytes)
@@ -7215,89 +7359,89 @@ void cMenuGroupChatMemberList::createSortList() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x16ac
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1080 from uGUIBase*
-    this->mSortListCount = static_cast<u32>(0);
+    mSortListCount = 0;
     // inferred: the value the loop at 0x1305e0 carries; no location-less local in scope fits
-    u32* v0_3 = this->mpSortList;
-    if (v0_3 != static_cast<u32*>(nullptr)) {
+    u32* v0_3 = mpSortList;
+    if (v0_3 != nullptr) {
         // inferred: the value the loop at 0x1305e0 carries; no location-less local in scope fits
-        sNetwork* v0_1 = ::sNetwork::getInstance();
+        sNetwork* v0_1 = sNetwork::getInstance();
         // inferred: the value carried to 0x1305fa; no location-less local in scope fits
         u32 v2_0;
-        if (static_cast<sNetworkExt*>(v0_1)->mGroupChatMemberMax != static_cast<u32>(0)) {
+        if (static_cast<sNetworkExt*>(v0_1)->mGroupChatMemberMax != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_2 = static_cast<unsigned int>(0);
+            unsigned int i0_2 = 0;
             // inferred: the value carried to 0x1305f6; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                v0_3[i0_2] = static_cast<unsigned int>(0);
-                v1_0 = static_cast<sNetworkExt*>(v0_1)->::sNetworkExt::getGroupChatMemberMax();
-                if ((i0_2 + static_cast<unsigned int>(1)) < v1_0) {
-                    i0_2 += static_cast<unsigned int>(1);
+                v0_3[i0_2] = 0;
+                v1_0 = static_cast<sNetworkExt*>(v0_1)->getGroupChatMemberMax();
+                if ((i0_2 + 1u) < v1_0) {
+                    i0_2 += 1u;
                 } else {
                     break;
                 }
             }
             v2_0 = v1_0;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
         }
-        if (this->mMemberList.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mMemberList.mLength != 0) {
             // inferred: the value the loop at 0x130616 carries; no location-less local in scope fits
             u32 v3_0 = v2_0;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i3_2 = static_cast<unsigned int>(0);
+            unsigned int i3_2 = 0;
             // inferred: the value the loop at 0x130616 carries; no location-less local in scope fits
-            for (u32 v3_3 = this->mSortListCount;;) {
+            for (u32 v3_3 = mSortListCount;;) {
                 if (v3_3 >= v3_0) {
                     break;
                 } else {
                     v0_3[v3_3] = i3_2;
                     // inferred: an ordered temporary, read before a later effect: the value read at 0x130620, held ahead of the effects the ELF orders after it
-                    u32 t0 = this->mSortListCount;
-                    this->mSortListCount = t0 + static_cast<u32>(1);
-                    if ((i3_2 + static_cast<unsigned int>(1)) >= this->mMemberList.::MtArray::mLength) {
+                    u32 t0 = mSortListCount;
+                    mSortListCount = t0 + 1u;
+                    if ((i3_2 + 1u) >= mMemberList.mLength) {
                         break;
                     } else {
-                        v3_0 = static_cast<sNetworkExt*>(v0_1)->::sNetworkExt::getGroupChatMemberMax();
-                        i3_2 += static_cast<unsigned int>(1);
-                        v3_3 = t0 + static_cast<u32>(1);
+                        v3_0 = static_cast<sNetworkExt*>(v0_1)->getGroupChatMemberMax();
+                        i3_2 += 1u;
+                        v3_3 = t0 + 1u;
                     }
                 }
             }
         }
-        this->::cMenuBase::mMenuNum = static_cast<u32>(0);
+        mMenuNum = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i5_0 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i5_0 = 0;;) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x130650, held ahead of the effects the ELF orders after it
-            int t1 = this->::cMenuBase::mMenuCursor[1];
+            int t1 = mMenuCursor[1];
             // inferred: an ordered temporary, read before a later effect: the value read at 0x130656, held ahead of the effects the ELF orders after it
-            u32 t2 = this->mSortListCount;
-            if ((i5_0 + (t1 * static_cast<int>(15))) >= t2) {
+            u32 t2 = mSortListCount;
+            if ((i5_0 + (t1 * 15)) >= t2) {
                 break;
             } else {
                 // inferred: a temporary for the value the load at 0x13065e read, used twice; no DWARF local holds it
-                u32 t3 = this->::cMenuBase::mMenuNum;
-                this->::cMenuBase::mMenuNum = t3 + static_cast<u32>(1);
-                this->mMenuList[t3] = static_cast<int>(i5_0);
-                if ((i5_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(14)) {
-                    i5_0 += static_cast<unsigned int>(1);
+                u32 t3 = mMenuNum;
+                mMenuNum = t3 + 1u;
+                mMenuList[t3] = static_cast<int>(i5_0);
+                if ((i5_0 + 1u) <= 14u) {
+                    i5_0 += 1u;
                 } else {
                     break;
                 }
             }
         }
         // inferred: a temporary for the value the load at 0x130675 read, used twice; no DWARF local holds it
-        u32 t4 = this->::cMenuBase::mMenuNum;
-        this->::cMenuBase::mMenuNum = t4 + static_cast<u32>(1);
-        this->mMenuList[t4] = static_cast<int>(15);
+        u32 t4 = mMenuNum;
+        mMenuNum = t4 + 1u;
+        mMenuList[t4] = 15;
         // inferred: a temporary for the value the load at 0x130689 read, used twice; no DWARF local holds it
-        u32 t5 = this->::cMenuBase::mMenuNum;
-        this->::cMenuBase::mMenuNum = t5 + static_cast<u32>(1);
-        this->mMenuList[t5] = static_cast<int>(16);
+        u32 t5 = mMenuNum;
+        mMenuNum = t5 + 1u;
+        mMenuList[t5] = 16;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x13069d, held ahead of the effects the ELF orders after it
-        uGUIBase* t6 = this->::cMenuBase::mpGUIMenu;
-        if (t6 != static_cast<uGUIBase*>(nullptr)) {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6) + static_cast<long>(4224)) = static_cast<unsigned char>(0);
+        uGUIBase* t6 = mpGUIMenu;
+        if (t6 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t6) + 4224) = 0;
         }
     }
 }
@@ -7308,6 +7452,8 @@ void cMenuGroupChatMemberList::createSortList() {
 //   in cMenuGroupChatMemberList::setPage at 0x00131308-0x00131371 (called at cMenuBase.cpp:39405)
 // void cMenuGroupChatMemberList::createMenuList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGroupChatMemberList::MyDTI cMenuGroupChatMemberList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b801-0x0013b83a (called at cMenuBase.cpp:39067)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b801-0x0013b83a (called at cMenuBase.h:8718)
@@ -7316,7 +7462,7 @@ void cMenuGroupChatMemberList::createSortList() {
 // Address: 0x001301c0 - 0x00130319 (345 bytes)
 MtObject* cMenuGroupChatMemberList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuGroupChatMemberList;
+    return new (16u) cMenuGroupChatMemberList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7342,7 +7488,7 @@ const MtDTI& cMenuInvite::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuInvite::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuInvite::DTI)->memAlloc(sz, align, ::cMenuInvite::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuInvite::DTI)->memAlloc(sz, align, cMenuInvite::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7357,7 +7503,7 @@ inline void* cMenuInvite::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuInvite::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuInvite::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuInvite::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7410,6 +7556,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuInvite::moveInvite() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuInvite::MyDTI cMenuInvite::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013adfc-0x0013ae35 (called at cMenuBase.cpp:26886)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013adfc-0x0013ae35 (called at cMenuBase.h:5410)
@@ -7418,7 +7566,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuInvite::moveInvite() {
 // Address: 0x0011f7e0 - 0x0011f8c9 (233 bytes)
 MtObject* cMenuInvite::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuInvite;
+    return new (16u) cMenuInvite;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7503,6 +7651,8 @@ __attribute__((weak)) void cMenuInviteGroupChat::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuInviteGroupChat::MyDTI cMenuInviteGroupChat::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b756-0x0013b78f (called at cMenuBase.cpp:38663)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b756-0x0013b78f (called at cMenuBase.h:8567)
@@ -7537,7 +7687,7 @@ const MtDTI& cMenuJoinGameSession::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuJoinGameSession::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuJoinGameSession::DTI)->memAlloc(sz, align, ::cMenuJoinGameSession::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuJoinGameSession::DTI)->memAlloc(sz, align, cMenuJoinGameSession::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7552,7 +7702,7 @@ inline void* cMenuJoinGameSession::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuJoinGameSession::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuJoinGameSession::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuJoinGameSession::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7581,10 +7731,10 @@ cMenuJoinGameSession::~cMenuJoinGameSession() {
 // Address: 0x00105890 - 0x001058bf (47 bytes)
 void cMenuJoinGameSession::initJoinGameSession(u32 joinType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mJoinGameSessionDialogHandle = static_cast<u32>(4294967295);
-    this->mJoinType = joinType;
+    initMenu();
+    mMenuRno[0] = 0;
+    mJoinGameSessionDialogHandle = 0xFFFFFFFF;
+    mJoinType = joinType;
 }
 
 // Address: 0x001058c0 - 0x001059d1 (273 bytes)
@@ -7595,6 +7745,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuJoinGameSession::moveJoinGameSession(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuJoinGameSession::MyDTI cMenuJoinGameSession::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a74e-0x0013a787 (called at cMenuBase.cpp:9621)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a74e-0x0013a787 (called at cMenuBase.h:2648)
@@ -7603,7 +7755,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuJoinGameSession::moveJoinGameSession(
 // Address: 0x00105730 - 0x00105819 (233 bytes)
 MtObject* cMenuJoinGameSession::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuJoinGameSession;
+    return new (16u) cMenuJoinGameSession;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7629,7 +7781,7 @@ const MtDTI& cMenuJoinPartyFlow::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuJoinPartyFlow::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuJoinPartyFlow::DTI)->memAlloc(sz, align, ::cMenuJoinPartyFlow::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuJoinPartyFlow::DTI)->memAlloc(sz, align, cMenuJoinPartyFlow::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -7644,7 +7796,7 @@ inline void* cMenuJoinPartyFlow::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuJoinPartyFlow::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuJoinPartyFlow::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuJoinPartyFlow::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7686,12 +7838,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuJoinPartyFlow::moveJoinPartyFlow() {
 // Address: 0x00106150 - 0x0010617d (45 bytes)
 void cMenuJoinPartyFlow::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::endReadyAction();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->endReadyAction();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuJoinPartyFlow::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuJoinPartyFlow::MyDTI cMenuJoinPartyFlow::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a7f9-0x0013a832 (called at cMenuBase.cpp:9835)
@@ -7701,7 +7855,7 @@ void cMenuJoinPartyFlow::exitMenu() {
 // Address: 0x00105cf0 - 0x00105dd9 (233 bytes)
 MtObject* cMenuJoinPartyFlow::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuJoinPartyFlow;
+    return new (16u) cMenuJoinPartyFlow;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7742,7 +7896,7 @@ const MtDTI& cMenuKeyConfig::getDTI() const {
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void cMenuKeyConfig::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuKeyConfig::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuKeyConfig::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -7817,9 +7971,9 @@ __attribute__((weak)) nMenu::MENU_RET cMenuKeyConfig::move() {
 // Address: 0x001372c0 - 0x001372f1 (49 bytes)
 void cMenuKeyConfig::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sGame::getInstance()->::sGame::offDisableActionPlayer();
-    this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::release();
-    this->::cMenuBase::exitMenu();
+    sGame::getInstance()->offDisableActionPlayer();
+    mKeyCustomManagers.release();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x001369f0 - 0x00136ae2 (242 bytes)
@@ -7838,77 +7992,77 @@ __attribute__((weak)) bool cMenuKeyConfig::showGUI(uGUIKeyConfig& guiKeyConfig) 
 // Address: 0x00137300 - 0x001373fd (253 bytes)
 void cMenuKeyConfig::onClose(uGUIKeyConfig& guiKeyConfig) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistOverlap() != false) {
-        if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-            this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(2));
-            cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
-            if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
+    if (mKeyCustomManagers.isExistOverlap()) {
+        if (mpDialogFlow != nullptr) {
+            mpDialogFlow->initialize(2u);
+            cMenuDialogFlow* const dialog_flow = mpDialogFlow;
+            if (dialog_flow != nullptr) {
                 // inferred: a temporary for the result of the call at 0x137366, used once; no DWARF local holds it
-                MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(482));
+                MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 482u);
                 // inferred: a temporary for the result of the call at 0x13737f, used once; no DWARF local holds it
-                MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(483));
-                dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(2), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(4)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(5);
-                guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+                MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 483u);
+                dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_ROW_BUTTON, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 4u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                mMenuRno[0] = 5;
+                guiKeyConfig.pauseInput(true);
             } else {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(5);
-                guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+                mMenuRno[0] = 5;
+                guiKeyConfig.pauseInput(true);
             }
         } else {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(5);
-            guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+            mMenuRno[0] = 5;
+            guiKeyConfig.pauseInput(true);
         }
     } else {
-        this->::cMenuKeyConfig::finalCheckBeforeExit();
-        guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+        finalCheckBeforeExit();
+        guiKeyConfig.pauseInput(true);
     }
 }
 
 // Address: 0x00137410 - 0x001374e8 (216 bytes)
 void cMenuKeyConfig::onInitialize(uGUIKeyConfig& guiKeyConfig, u32 categoryListIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-        this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(2));
-        cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
-        if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
+    if (mpDialogFlow != nullptr) {
+        mpDialogFlow->initialize(2u);
+        cMenuDialogFlow* const dialog_flow = mpDialogFlow;
+        if (dialog_flow != nullptr) {
             // inferred: a temporary for the result of the call at 0x13745e, used once; no DWARF local holds it
-            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(490));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 490u);
             // inferred: a temporary for the result of the call at 0x137477, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
-            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
-            guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+            dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            mMenuRno[0] = 4;
+            guiKeyConfig.pauseInput(true);
         } else {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
-            guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+            mMenuRno[0] = 4;
+            guiKeyConfig.pauseInput(true);
         }
     } else {
-        this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
-        guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+        mMenuRno[0] = 4;
+        guiKeyConfig.pauseInput(true);
     }
 }
 
 // Address: 0x00137500 - 0x001375d8 (216 bytes)
 void cMenuKeyConfig::onBlankAll(uGUIKeyConfig& guiKeyConfig, u32 categoryListIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-        this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(2));
-        cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
-        if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
+    if (mpDialogFlow != nullptr) {
+        mpDialogFlow->initialize(2u);
+        cMenuDialogFlow* const dialog_flow = mpDialogFlow;
+        if (dialog_flow != nullptr) {
             // inferred: a temporary for the result of the call at 0x13754e, used once; no DWARF local holds it
-            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(500));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 500u);
             // inferred: a temporary for the result of the call at 0x137567, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
-            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(8);
-            guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
+            dialog_flow->cMenuDialogFlow::setDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            mMenuRno[0] = 8;
+            guiKeyConfig.pauseInput(true);
         } else {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(8);
-            guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+            mMenuRno[0] = 8;
+            guiKeyConfig.pauseInput(true);
         }
     } else {
-        this->::cMenuBase::mMenuRno[0] = static_cast<int>(8);
-        guiKeyConfig.::uGUIBaseExt::pauseInput(true);
+        mMenuRno[0] = 8;
+        guiKeyConfig.pauseInput(true);
     }
 }
 
@@ -8018,39 +8172,41 @@ __attribute__((weak)) void cMenuKeyConfig::finalCheckBeforeExit() {
     // DWARF local not rendered: cMenuDialogFlow* const dialog_flow;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-        if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistOverlap(i0_3) == false) {
-            if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistChange(i0_3, true) != false) {
-                if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
-                    this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(0));
+    for (unsigned int i0_3 = 0;;) {
+        if (!mKeyCustomManagers.isExistOverlap(i0_3)) {
+            if (mKeyCustomManagers.isExistChange(i0_3, true)) {
+                if (mpDialogFlow != nullptr) {
+                    mpDialogFlow->initialize(0u);
                     // inferred: a temporary for the value the load at 0x136e02 read, used twice; no DWARF local holds it
-                    cMenuDialogFlow* t0 = this->::cMenuBase::mpDialogFlow;
-                    if (t0 != static_cast<cMenuDialogFlow*>(nullptr)) {
-                        t0->::cMenuDialogFlow::setDialogNoCancel(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(497)), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+                    cMenuDialogFlow* t0 = mpDialogFlow;
+                    if (t0 != nullptr) {
+                        t0->setDialogNoCancel(nGUIExt::DIALOG_TYPE_NORMAL, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 497u), 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
                     }
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(7);
+                    mMenuRno[0] = 7;
                     return;
                 } else {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(7);
+                    mMenuRno[0] = 7;
                     return;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(2)) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) <= 2u) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         } else {
-            if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(2)) {
-                i0_3 += static_cast<unsigned int>(1);
+            if ((i0_3 + 1u) <= 2u) {
+                i0_3 += 1u;
             } else {
                 break;
             }
         }
     }
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(3);
+    mMenuRno[0] = 3;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfig::MyDTI cMenuKeyConfig::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bb58-0x0013bb91 (called at cMenuBase.cpp:43303)
@@ -8153,6 +8309,8 @@ __attribute__((weak)) void cMenuKeyConfigCopyCategory::initGUI(uGUIBase& parent)
 // No out-of-line body: 1 inlined copy in 1 function (55 bytes)
 //   in cMenuKeyConfig::move at 0x0013661f-0x00136656 (called at cMenuBase.cpp:44733)
 // nMenu::MENU_RET cMenuKeyConfigCopyCategory::waitGUI(uGUISystemMsg& dialog);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfigCopyCategory::MyDTI cMenuKeyConfigCopyCategory::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bc75-0x0013bcae (called at cMenuBase.cpp:44654)
@@ -8259,6 +8417,8 @@ __attribute__((weak)) void cMenuKeyConfigRenameCategory::initGUI(uGUIBase& paren
 //   in cMenuKeyConfigRenameCategory::move at 0x00137211-0x00137292 (called at cMenuBase.cpp:44565)
 // nMenu::MENU_RET cMenuKeyConfigRenameCategory::waitGUI(uGUIDialogTextBox& dialog);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfigRenameCategory::MyDTI cMenuKeyConfigRenameCategory::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bc3c-0x0013bc75 (called at cMenuBase.cpp:44490)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bc3c-0x0013bc75 (called at cMenuBase.h:10185)
@@ -8293,7 +8453,7 @@ const MtDTI& cMenuKeyConfigSubMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuKeyConfigSubMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuKeyConfigSubMenu::DTI)->memAlloc(sz, align, ::cMenuKeyConfigSubMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenu::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -8366,6 +8526,8 @@ cMenuKeyConfigSubMenu::~cMenuKeyConfigSubMenu() {
 // Defined in the class (its body was written in a header).
 // void cMenuKeyConfigSubMenu::onDecide(uGUIPopCmd01& subMenu);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfigSubMenu::MyDTI cMenuKeyConfigSubMenu::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bb91-0x0013bbca (called at cMenuBase.cpp:44200)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bb91-0x0013bbca (called at cMenuBase.h:10053)
@@ -8374,7 +8536,7 @@ cMenuKeyConfigSubMenu::~cMenuKeyConfigSubMenu() {
 // Address: 0x00137ef0 - 0x00137fd9 (233 bytes)
 MtObject* cMenuKeyConfigSubMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuKeyConfigSubMenu;
+    return new (16u) cMenuKeyConfigSubMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8400,7 +8562,7 @@ const MtDTI& cMenuKeyConfigSubMenuCategoryList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuKeyConfigSubMenuCategoryList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuKeyConfigSubMenuCategoryList::DTI)->memAlloc(sz, align, ::cMenuKeyConfigSubMenuCategoryList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuCategoryList::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenuCategoryList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -8428,7 +8590,7 @@ inline void* cMenuKeyConfigSubMenuCategoryList::operator new(size_t sz, u32 alig
 // Address: 0x00138580 - 0x00138642 (194 bytes)
 cMenuKeyConfigSubMenuCategoryList::cMenuKeyConfigSubMenuCategoryList() {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    this->mItemIndex = static_cast<cMenuKeyConfigSubMenuCategoryList::ITEM_INDEX>(-1);
+    mItemIndex = ITEM_INVALID;
 }
 
 // Address: 0x00138650 - 0x0013867f (47 bytes)
@@ -8451,8 +8613,8 @@ cMenuKeyConfigSubMenuCategoryList::~cMenuKeyConfigSubMenuCategoryList() {
 // Address: 0x00138680 - 0x001386b7 (55 bytes)
 void cMenuKeyConfigSubMenuCategoryList::onShow(uGUIPopCmd01& subMenu) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(57), static_cast<uGUIPopBase::MODE>(0), static_cast<s32>(-1));
-    subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(58), static_cast<uGUIPopBase::MODE>(0), static_cast<s32>(-1));
+    subMenu.addItemSystemMenu(57u, uGUIPopBase::MODE_DEFAULT, -1);
+    subMenu.addItemSystemMenu(58u, uGUIPopBase::MODE_DEFAULT, -1);
 }
 
 // Address: 0x001386c0 - 0x001386e0 (32 bytes)
@@ -8462,6 +8624,8 @@ __attribute__((weak)) void cMenuKeyConfigSubMenuCategoryList::onDecide(uGUIPopCm
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfigSubMenuCategoryList::MyDTI cMenuKeyConfigSubMenuCategoryList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bc03-0x0013bc3c (called at cMenuBase.cpp:44433)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bc03-0x0013bc3c (called at cMenuBase.h:10145)
@@ -8470,7 +8634,7 @@ __attribute__((weak)) void cMenuKeyConfigSubMenuCategoryList::onDecide(uGUIPopCm
 // Address: 0x00138410 - 0x00138503 (243 bytes)
 MtObject* cMenuKeyConfigSubMenuCategoryList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0x138580); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuKeyConfigSubMenuCategoryList;
+    return new (16u) cMenuKeyConfigSubMenuCategoryList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8496,7 +8660,7 @@ const MtDTI& cMenuKeyConfigSubMenuKeyList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuKeyConfigSubMenuKeyList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuKeyConfigSubMenuKeyList::DTI)->memAlloc(sz, align, ::cMenuKeyConfigSubMenuKeyList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuKeyList::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenuKeyList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -8524,9 +8688,9 @@ inline void* cMenuKeyConfigSubMenuKeyList::operator new(size_t sz, u32 align) {
 // Address: 0x00138250 - 0x00138320 (208 bytes)
 cMenuKeyConfigSubMenuKeyList::cMenuKeyConfigSubMenuKeyList() {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    this->mIsChangeAllowed = false;
-    this->mIsBlankAllowed = false;
-    this->mItemIndex = static_cast<cMenuKeyConfigSubMenuKeyList::ITEM_INDEX>(-1);
+    mIsChangeAllowed = false;
+    mIsBlankAllowed = false;
+    mItemIndex = ITEM_INVALID;
 }
 
 // Address: 0x00138320 - 0x0013834f (47 bytes)
@@ -8552,14 +8716,14 @@ void cMenuKeyConfigSubMenuKeyList::onShow(uGUIPopCmd01& subMenu) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as uGUIPopBase::MODE
-    if (this->mIsChangeAllowed != false) {
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(59), static_cast<uGUIPopBase::MODE>(this->mIsBlankAllowed == false), static_cast<s32>(484));
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(60), static_cast<uGUIPopBase::MODE>(0), static_cast<s32>(-1));
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(61), static_cast<uGUIPopBase::MODE>(0), static_cast<s32>(-1));
+    if (mIsChangeAllowed) {
+        subMenu.addItemSystemMenu(59u, static_cast<uGUIPopBase::MODE>(!mIsBlankAllowed), 484);
+        subMenu.addItemSystemMenu(60u, uGUIPopBase::MODE_DEFAULT, -1);
+        subMenu.addItemSystemMenu(61u, uGUIPopBase::MODE_DEFAULT, -1);
     } else {
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(59), static_cast<uGUIPopBase::MODE>(1), static_cast<s32>(501));
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(60), static_cast<uGUIPopBase::MODE>(1), static_cast<s32>(501));
-        subMenu.::uGUIPopCmd01::addItemSystemMenu(static_cast<u32>(61), static_cast<uGUIPopBase::MODE>(1), static_cast<s32>(501));
+        subMenu.addItemSystemMenu(59u, uGUIPopBase::MODE_DISABLE, 501);
+        subMenu.addItemSystemMenu(60u, uGUIPopBase::MODE_DISABLE, 501);
+        subMenu.addItemSystemMenu(61u, uGUIPopBase::MODE_DISABLE, 501);
     }
 }
 
@@ -8570,6 +8734,8 @@ __attribute__((weak)) void cMenuKeyConfigSubMenuKeyList::onDecide(uGUIPopCmd01& 
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyConfigSubMenuKeyList::MyDTI cMenuKeyConfigSubMenuKeyList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bbca-0x0013bc03 (called at cMenuBase.cpp:44343)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bbca-0x0013bc03 (called at cMenuBase.h:10102)
@@ -8578,7 +8744,7 @@ __attribute__((weak)) void cMenuKeyConfigSubMenuKeyList::onDecide(uGUIPopCmd01& 
 // Address: 0x001380d0 - 0x001381d1 (257 bytes)
 MtObject* cMenuKeyConfigSubMenuKeyList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0x138250); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuKeyConfigSubMenuKeyList;
+    return new (16u) cMenuKeyConfigSubMenuKeyList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8617,7 +8783,7 @@ const MtDTI& cMenuKeyJobLink::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuKeyJobLink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuKeyJobLink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuKeyJobLink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8705,6 +8871,8 @@ __attribute__((weak)) bool cMenuKeyJobLink::waitGUI(uGUIPopFilter& guiPopFilter)
     DDON_STUB("cMenuKeyJobLink::waitGUI")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKeyJobLink::MyDTI cMenuKeyJobLink::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bcae-0x0013bce7 (called at cMenuBase.cpp:44838)
@@ -8799,6 +8967,8 @@ __attribute__((weak)) void cMenuKickGroupChat::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuKickGroupChat::MyDTI cMenuKickGroupChat::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b7c8-0x0013b801 (called at cMenuBase.cpp:38927)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b7c8-0x0013b801 (called at cMenuBase.h:8666)
@@ -8833,7 +9003,7 @@ const MtDTI& cMenuLeaveGroupChat::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuLeaveGroupChat::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuLeaveGroupChat::DTI)->memAlloc(sz, align, ::cMenuLeaveGroupChat::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuLeaveGroupChat::DTI)->memAlloc(sz, align, cMenuLeaveGroupChat::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -8848,7 +9018,7 @@ inline void* cMenuLeaveGroupChat::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuLeaveGroupChat::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuLeaveGroupChat::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuLeaveGroupChat::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -8882,136 +9052,136 @@ cMenuLeaveGroupChat::~cMenuLeaveGroupChat() {
 nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
     // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    switch (this->::cMenuBase::mMenuRno[0]) {
-        case static_cast<int>(0):
+    moveMenu();
+    switch (mMenuRno[0]) {
+        case 0:
         {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
+            mMenuRno[0] = 1;
             // inferred: a temporary for the result of the call at 0x12fd35, used once; no DWARF local holds it
-            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(118));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 118u);
             // inferred: a temporary for the result of the call at 0x12fd4c, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
+            MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 1u);
             // inferred: a temporary for the result of the call at 0x12fd63, used once; no DWARF local holds it
-            MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2));
-            if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                this->::cMenuBase::mpGUISystemMsg->kill();
-                this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+            MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 2u);
+            if (mpGUISystemMsg != nullptr) {
+                mpGUISystemMsg->kill();
+                mpGUISystemMsg = nullptr;
                 // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
-                uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
-                if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
-                    t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
-                    return static_cast<nMenu::MENU_RET>(0);
+                uGUISystemMsg* t4 = cGUIUtility::reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+                if ((mpGUISystemMsg = t4) != nullptr) {
+                    t4->mBasePointerPrio = getNextBasePointerPrio();
+                    return nMenu::MENU_RET_CONTINUE;
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
                 // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
-                uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
-                if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
-                    t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
-                    return static_cast<nMenu::MENU_RET>(0);
+                uGUISystemMsg* t4 = cGUIUtility::reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, t0, 1, t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+                if ((mpGUISystemMsg = t4) != nullptr) {
+                    t4->mBasePointerPrio = getNextBasePointerPrio();
+                    return nMenu::MENU_RET_CONTINUE;
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             }
             break;
         }
-        case static_cast<int>(1):
+        case 1:
         {
-            if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->::cMenuBase::mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-                    s32 choice = this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1));
-                    if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                        this->::cMenuBase::mpGUISystemMsg->kill();
-                        this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                        if (choice == static_cast<s32>(0)) {
-                            this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveGroupChat();
-                            return static_cast<nMenu::MENU_RET>(0);
+            if (mpGUISystemMsg != nullptr) {
+                if (mpGUISystemMsg->mResult == uGUIBase::RESULT_EXIT) {
+                    s32 choice = mpGUISystemMsg->getChoicePos(-1);
+                    if (mpGUISystemMsg != nullptr) {
+                        mpGUISystemMsg->kill();
+                        mpGUISystemMsg = nullptr;
+                        if (choice == 0) {
+                            mMenuRno[0] = 2;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->leaveGroupChat();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(2);
+                            return nMenu::MENU_RET_CANCEL;
                         }
                     } else {
-                        if (choice == static_cast<s32>(0)) {
-                            this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveGroupChat();
-                            return static_cast<nMenu::MENU_RET>(0);
+                        if (choice == 0) {
+                            mMenuRno[0] = 2;
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->leaveGroupChat();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(2);
+                            return nMenu::MENU_RET_CANCEL;
                         }
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(2);
+                return nMenu::MENU_RET_CANCEL;
             }
             break;
         }
-        case static_cast<int>(2):
+        case 2:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[444] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(3);
-                return static_cast<nMenu::MENU_RET>(0);
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[444] == sNetworkExt::NET_STAT_ERROR) {
+                mMenuRno[0] = 3;
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[444] == static_cast<sNetworkExt::NET_STAT>(2)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[444] == sNetworkExt::NET_STAT_SUCCESS) {
+                    mMenuRno[0] = 4;
                     // inferred: a temporary for the result of the call at 0x12fecc, used once; no DWARF local holds it
-                    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(119));
-                    if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                        this->::cMenuBase::mpGUISystemMsg->kill();
-                        this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+                    MT_CTSTR t3 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 119u);
+                    if (mpGUISystemMsg != nullptr) {
+                        mpGUISystemMsg->kill();
+                        mpGUISystemMsg = nullptr;
                         // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
-                        uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t3, static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
-                        if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
-                            t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
-                            return static_cast<nMenu::MENU_RET>(0);
+                        uGUISystemMsg* t4 = cGUIUtility::reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, t3, 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+                        if ((mpGUISystemMsg = t4) != nullptr) {
+                            t4->mBasePointerPrio = getNextBasePointerPrio();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
                         // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
-                        uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t3, static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
-                        if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
-                            t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
-                            return static_cast<nMenu::MENU_RET>(0);
+                        uGUISystemMsg* t4 = cGUIUtility::reqDialog(nGUIExt::DIALOG_TYPE_NORMAL, t3, 0, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(sGUI::getInstance())->isChatMenuUISubMenu());
+                        if ((mpGUISystemMsg = t4) != nullptr) {
+                            t4->mBasePointerPrio = getNextBasePointerPrio();
+                            return nMenu::MENU_RET_CONTINUE;
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             }
             break;
         }
-        case static_cast<int>(3):
+        case 3:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() == false) {
-                return static_cast<nMenu::MENU_RET>(2);
+            if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+                return nMenu::MENU_RET_CANCEL;
             } else {
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             }
             break;
         }
-        case static_cast<int>(4):
+        case 4:
         {
-            if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-                if (this->::cMenuBase::mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-                    this->::cMenuBase::mpGUISystemMsg->kill();
-                    this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                    return static_cast<nMenu::MENU_RET>(3);
+            if (mpGUISystemMsg != nullptr) {
+                if (mpGUISystemMsg->mResult == uGUIBase::RESULT_EXIT) {
+                    mpGUISystemMsg->kill();
+                    mpGUISystemMsg = nullptr;
+                    return nMenu::MENU_RET_EXIT;
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
             break;
         }
         default:
         {
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     }
 }
@@ -9019,8 +9189,10 @@ nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
 // Address: 0x0012ff60 - 0x0012ff65 (5 bytes)
 void cMenuLeaveGroupChat::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuLeaveGroupChat::MyDTI cMenuLeaveGroupChat::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b78f-0x0013b7c8 (called at cMenuBase.cpp:38804)
@@ -9030,7 +9202,7 @@ void cMenuLeaveGroupChat::exitMenu() {
 // Address: 0x0012fb70 - 0x0012fc59 (233 bytes)
 MtObject* cMenuLeaveGroupChat::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuLeaveGroupChat;
+    return new (16u) cMenuLeaveGroupChat;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9056,7 +9228,7 @@ const MtDTI& cMenuLeaveOnTheWay::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuLeaveOnTheWay::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuLeaveOnTheWay::DTI)->memAlloc(sz, align, ::cMenuLeaveOnTheWay::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuLeaveOnTheWay::DTI)->memAlloc(sz, align, cMenuLeaveOnTheWay::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9071,7 +9243,7 @@ inline void* cMenuLeaveOnTheWay::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuLeaveOnTheWay::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuLeaveOnTheWay::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuLeaveOnTheWay::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9100,8 +9272,8 @@ cMenuLeaveOnTheWay::~cMenuLeaveOnTheWay() {
 // Address: 0x001315f0 - 0x0013160c (28 bytes)
 void cMenuLeaveOnTheWay::initLeaveOnTheWay() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x001318c0 - 0x00131a1f (351 bytes)
@@ -9114,7 +9286,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuLeaveOnTheWay::moveLeaveOnTheWay() {
 // Address: 0x00131610 - 0x00131615 (5 bytes)
 void cMenuLeaveOnTheWay::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x00131620 - 0x001318b1 (657 bytes)
@@ -9122,6 +9294,8 @@ __attribute__((weak)) void cMenuLeaveOnTheWay::createSelectDialog(u32 type) {
     DDON_STUB("cMenuLeaveOnTheWay::createSelectDialog")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuLeaveOnTheWay::MyDTI cMenuLeaveOnTheWay::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b83a-0x0013b873 (called at cMenuBase.cpp:39497)
@@ -9131,7 +9305,7 @@ __attribute__((weak)) void cMenuLeaveOnTheWay::createSelectDialog(u32 type) {
 // Address: 0x00131490 - 0x00131579 (233 bytes)
 MtObject* cMenuLeaveOnTheWay::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuLeaveOnTheWay;
+    return new (16u) cMenuLeaveOnTheWay;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9157,7 +9331,7 @@ const MtDTI& cMenuLostPawnList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuLostPawnList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuLostPawnList::DTI)->memAlloc(sz, align, ::cMenuLostPawnList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuLostPawnList::DTI)->memAlloc(sz, align, cMenuLostPawnList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9172,7 +9346,7 @@ inline void* cMenuLostPawnList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuLostPawnList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuLostPawnList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuLostPawnList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9213,6 +9387,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuLostPawnList::moveLostPawnList() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuLostPawnList::MyDTI cMenuLostPawnList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a4a2-0x0013a4db (called at cMenuBase.cpp:7556)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a4a2-0x0013a4db (called at cMenuBase.h:1930)
@@ -9221,7 +9397,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuLostPawnList::moveLostPawnList() {
 // Address: 0x00101bb0 - 0x00101c99 (233 bytes)
 MtObject* cMenuLostPawnList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuLostPawnList;
+    return new (16u) cMenuLostPawnList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9247,7 +9423,7 @@ const MtDTI& cMenuLostPawnRevive::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuLostPawnRevive::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuLostPawnRevive::DTI)->memAlloc(sz, align, ::cMenuLostPawnRevive::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuLostPawnRevive::DTI)->memAlloc(sz, align, cMenuLostPawnRevive::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9309,6 +9485,8 @@ __attribute__((weak)) void cMenuLostPawnRevive::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuLostPawnRevive::MyDTI cMenuLostPawnRevive::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a4db-0x0013a514 (called at cMenuBase.cpp:7754)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a4db-0x0013a514 (called at cMenuBase.h:1989)
@@ -9317,7 +9495,7 @@ __attribute__((weak)) void cMenuLostPawnRevive::exitMenu() {
 // Address: 0x00101fd0 - 0x001020c4 (244 bytes)
 MtObject* cMenuLostPawnRevive::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuLostPawnRevive;
+    return new (16u) cMenuLostPawnRevive;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9343,7 +9521,7 @@ const MtDTI& cMenuMail::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMail::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMail::DTI)->memAlloc(sz, align, ::cMenuMail::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMail::DTI)->memAlloc(sz, align, cMenuMail::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9358,7 +9536,7 @@ inline void* cMenuMail::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMail::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMail::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMail::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9458,18 +9636,18 @@ __attribute__((weak)) CMailInfo* cMenuMail::getMailInfo(s32 tab, s32 cursor) {
 // Address: 0x0012a460 - 0x0012a4a9 (73 bytes)
 u32 cMenuMail::getListCount(s32 tabType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tabType != static_cast<s32>(2)) {
-        if (tabType == static_cast<s32>(1)) {
-            return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMailList.::MtArray::mLength;
+    if (tabType != 2) {
+        if (tabType == 1) {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMailList.mLength;
         } else {
-            if (tabType == static_cast<s32>(0)) {
-                return this->::cMenuMail::getSortListCount();
+            if (tabType == 0) {
+                return getSortListCount();
             } else {
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     } else {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mSysMailList.::MtArray::mLength;
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mSysMailList.mLength;
     }
 }
 
@@ -9500,6 +9678,8 @@ __attribute__((weak)) void cMenuMail::deleteCheck() {
 //   and 2 more (every copy is in <bundle>.inlined.json)
 // void cMenuMail::requestListUpdate();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMail::MyDTI cMenuMail::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b354-0x0013b38d (called at cMenuBase.cpp:33328)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b354-0x0013b38d (called at cMenuBase.h:7293)
@@ -9508,7 +9688,7 @@ __attribute__((weak)) void cMenuMail::deleteCheck() {
 // Address: 0x001266b0 - 0x00126799 (233 bytes)
 MtObject* cMenuMail::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMail;
+    return new (16u) cMenuMail;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9618,6 +9798,8 @@ __attribute__((weak)) void cMenuMailCreate::eraseList(u32 index) {
 // No out-of-line body: no code in the ELF
 // CommunityCharacterBaseInfoVec& cMenuMailCreate::getAddressList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailCreate::MyDTI cMenuMailCreate::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b3ff-0x0013b438 (called at cMenuBase.cpp:34698)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b3ff-0x0013b438 (called at cMenuBase.h:7560)
@@ -9652,7 +9834,7 @@ const MtDTI& cMenuMailDelete::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailDelete::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailDelete::DTI)->memAlloc(sz, align, ::cMenuMailDelete::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailDelete::DTI)->memAlloc(sz, align, cMenuMailDelete::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9667,7 +9849,7 @@ inline void* cMenuMailDelete::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailDelete::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailDelete::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailDelete::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9707,6 +9889,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailDelete::moveMailDelete() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailDelete::MyDTI cMenuMailDelete::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b471-0x0013b4aa (called at cMenuBase.cpp:35353)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b471-0x0013b4aa (called at cMenuBase.h:7708)
@@ -9715,7 +9899,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailDelete::moveMailDelete() {
 // Address: 0x0012bb30 - 0x0012bc19 (233 bytes)
 MtObject* cMenuMailDelete::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailDelete;
+    return new (16u) cMenuMailDelete;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9741,7 +9925,7 @@ const MtDTI& cMenuMailDeleteMulti::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailDeleteMulti::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailDeleteMulti::DTI)->memAlloc(sz, align, ::cMenuMailDeleteMulti::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailDeleteMulti::DTI)->memAlloc(sz, align, cMenuMailDeleteMulti::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9756,7 +9940,7 @@ inline void* cMenuMailDeleteMulti::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailDeleteMulti::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailDeleteMulti::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailDeleteMulti::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9803,6 +9987,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailDeleteMulti::moveMailDeleteMulti(
 //   in cMenuMailDeleteMulti::moveMailDeleteMulti at 0x0012a07a-0x0012a0a6, 0x0012a361-0x0012a368 (called at cMenuBase.cpp:35559)
 // MailInfoVec& cMenuMailDeleteMulti::getMailList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailDeleteMulti::MyDTI cMenuMailDeleteMulti::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b4aa-0x0013b4e3 (called at cMenuBase.cpp:35467)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b4aa-0x0013b4e3 (called at cMenuBase.h:7760)
@@ -9811,7 +9997,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailDeleteMulti::moveMailDeleteMulti(
 // Address: 0x0012bc90 - 0x0012bd79 (233 bytes)
 MtObject* cMenuMailDeleteMulti::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailDeleteMulti;
+    return new (16u) cMenuMailDeleteMulti;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9837,7 +10023,7 @@ const MtDTI& cMenuMailDetail::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailDetail::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailDetail::DTI)->memAlloc(sz, align, ::cMenuMailDetail::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailDetail::DTI)->memAlloc(sz, align, cMenuMailDetail::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9852,7 +10038,7 @@ inline void* cMenuMailDetail::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailDetail::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailDetail::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailDetail::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -9903,8 +10089,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailDetail::moveMailDetail() {
 // Address: 0x0012b270 - 0x0012b29d (45 bytes)
 void cMenuMailDetail::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearMailDetail();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearMailDetail();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -9916,6 +10102,8 @@ void cMenuMailDetail::exitMenu() {
 //   in cMenuMailGetItem::moveMailGetItem at 0x0012b215-0x0012b228 (called at cMenuBase.cpp:35884)
 // void cMenuMailDetail::requestDispUpdate();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailDetail::MyDTI cMenuMailDetail::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b3c6-0x0013b3ff (called at cMenuBase.cpp:34340)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b3c6-0x0013b3ff (called at cMenuBase.h:7477)
@@ -9924,7 +10112,7 @@ void cMenuMailDetail::exitMenu() {
 // Address: 0x0012a650 - 0x0012a739 (233 bytes)
 MtObject* cMenuMailDetail::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailDetail;
+    return new (16u) cMenuMailDetail;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9950,7 +10138,7 @@ const MtDTI& cMenuMailGetItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailGetItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailGetItem::DTI)->memAlloc(sz, align, ::cMenuMailGetItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailGetItem::DTI)->memAlloc(sz, align, cMenuMailGetItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -9965,7 +10153,7 @@ inline void* cMenuMailGetItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailGetItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailGetItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailGetItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10033,9 +10221,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailGetItem::moveMailGetItem() {
 // Address: 0x0012bf60 - 0x0012bf8d (45 bytes)
 void cMenuMailGetItem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearGetAttachmentList();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearGetAttachmentList();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailGetItem::MyDTI cMenuMailGetItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b4e3-0x0013b51c (called at cMenuBase.cpp:35652)
@@ -10045,7 +10235,7 @@ void cMenuMailGetItem::exitMenu() {
 // Address: 0x0012be00 - 0x0012bee9 (233 bytes)
 MtObject* cMenuMailGetItem::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailGetItem;
+    return new (16u) cMenuMailGetItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10071,7 +10261,7 @@ const MtDTI& cMenuMailGetItemAll::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailGetItemAll::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailGetItemAll::DTI)->memAlloc(sz, align, ::cMenuMailGetItemAll::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailGetItemAll::DTI)->memAlloc(sz, align, cMenuMailGetItemAll::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10086,7 +10276,7 @@ inline void* cMenuMailGetItemAll::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailGetItemAll::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailGetItemAll::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailGetItemAll::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10145,9 +10335,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMailGetItemAll::moveMailGetItemAll() 
 // Address: 0x0012c0f0 - 0x0012c11d (45 bytes)
 void cMenuMailGetItemAll::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearGetAttachmentList();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearGetAttachmentList();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailGetItemAll::MyDTI cMenuMailGetItemAll::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b51c-0x0013b555 (called at cMenuBase.cpp:35942)
@@ -10157,7 +10349,7 @@ void cMenuMailGetItemAll::exitMenu() {
 // Address: 0x0012bf90 - 0x0012c079 (233 bytes)
 MtObject* cMenuMailGetItemAll::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailGetItemAll;
+    return new (16u) cMenuMailGetItemAll;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10183,7 +10375,7 @@ const MtDTI& cMenuMailToList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMailToList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMailToList::DTI)->memAlloc(sz, align, ::cMenuMailToList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMailToList::DTI)->memAlloc(sz, align, cMenuMailToList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10198,7 +10390,7 @@ inline void* cMenuMailToList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMailToList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMailToList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMailToList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10227,7 +10419,7 @@ cMenuMailToList::~cMenuMailToList() {
 // Address: 0x0012bb20 - 0x0012bb25 (5 bytes)
 void cMenuMailToList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -10248,6 +10440,8 @@ void cMenuMailToList::exitMenu() {
 // No out-of-line body: no code in the ELF
 // CommunityCharacterBaseInfoVec* cMenuMailToList::getAddressList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMailToList::MyDTI cMenuMailToList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b438-0x0013b471 (called at cMenuBase.cpp:35105)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b438-0x0013b471 (called at cMenuBase.h:7643)
@@ -10256,7 +10450,7 @@ void cMenuMailToList::exitMenu() {
 // Address: 0x0012b970 - 0x0012ba59 (233 bytes)
 MtObject* cMenuMailToList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMailToList;
+    return new (16u) cMenuMailToList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10282,7 +10476,7 @@ const MtDTI& cMenuMatchingProfile::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMatchingProfile::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMatchingProfile::DTI)->memAlloc(sz, align, ::cMenuMatchingProfile::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMatchingProfile::DTI)->memAlloc(sz, align, cMenuMatchingProfile::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10297,7 +10491,7 @@ inline void* cMenuMatchingProfile::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMatchingProfile::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMatchingProfile::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMatchingProfile::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10344,16 +10538,16 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMatchingProfile::moveMatchingProfile(
 void cMenuMatchingProfile::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
-    if (this->::cMenuBase::mpGUIMenu != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
-        if (this->::cMenuBase::mpGUIMenu != static_cast<uGUIBase*>(nullptr)) {
-            this->::cMenuBase::mpGUIMenu->kill();
-            this->::cMenuBase::mpGUIMenu = static_cast<uGUIBase*>(nullptr);
+    if (mpGUIMenu != static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu) {
+        if (mpGUIMenu != nullptr) {
+            mpGUIMenu->kill();
+            mpGUIMenu = nullptr;
         }
     } else {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
-        this->::cMenuBase::mpGUIMenu = static_cast<uGUIBase*>(nullptr);
+        static_cast<sGUIExt*>(sGUI::getInstance())->killSingletonMenu();
+        mpGUIMenu = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -10366,10 +10560,10 @@ void cMenuMatchingProfile::exitMenu() {
 // Address: 0x000f1d70 - 0x000f1d85 (21 bytes)
 s32 cMenuMatchingProfile::getEntryJobList(s32 cursor) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (cursor <= static_cast<s32>(9)) {
-        return this->mEntryJobList[cursor];
+    if (cursor <= 9) {
+        return mEntryJobList[cursor];
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
 
@@ -10428,6 +10622,14 @@ __attribute__((weak)) s32 cMenuMatchingProfile::getCursorPosFromParam(s32 listTy
 //   in uGUIPopProfile::updateDecide at 0x00bc599d-0x00bc59a4 (called at uGUIPopProfile.cpp:701)
 // void cMenuMatchingProfile::setProfileInviteWait(bool status);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMatchingProfile::MyDTI cMenuMatchingProfile::DTI;
+
+// Not defined (no member-wise spelling: an array of no extent): const s32 cMenuMatchingProfile::purposeMainSetting[];
+
+// Not defined (no member-wise spelling: an array of no extent): const s32 cMenuMatchingProfile::purposeSubSetting[];
+
+// Not defined (no member-wise spelling: an array of no extent): const s32 cMenuMatchingProfile::playStyleSetting[];
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a067-0x0013a0a0 (called at cMenuBase.cpp:1294)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a067-0x0013a0a0 (called at cMenuBase.h:352)
@@ -10436,7 +10638,7 @@ __attribute__((weak)) s32 cMenuMatchingProfile::getCursorPosFromParam(s32 listTy
 // Address: 0x000f14a0 - 0x000f1589 (233 bytes)
 MtObject* cMenuMatchingProfile::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMatchingProfile;
+    return new (16u) cMenuMatchingProfile;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10462,7 +10664,7 @@ const MtDTI& cMenuMyPawnList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuMyPawnList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuMyPawnList::DTI)->memAlloc(sz, align, ::cMenuMyPawnList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuMyPawnList::DTI)->memAlloc(sz, align, cMenuMyPawnList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10477,7 +10679,7 @@ inline void* cMenuMyPawnList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuMyPawnList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuMyPawnList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuMyPawnList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10550,6 +10752,8 @@ __attribute__((weak)) void cMenuMyPawnList::checkMenuPartsParam(cMenuSupportMenu
 //   in cMenuMyPawnList::moveMyPawnList at 0x000f3789-0x000f37b3, 0x000f388a-0x000f38a1 (called at cMenuBase.cpp:6030)
 // u32 cMenuMyPawnList::getListLength();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuMyPawnList::MyDTI cMenuMyPawnList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a3f7-0x0013a430 (called at cMenuBase.cpp:5897)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a3f7-0x0013a430 (called at cMenuBase.h:1631)
@@ -10558,7 +10762,7 @@ __attribute__((weak)) void cMenuMyPawnList::checkMenuPartsParam(cMenuSupportMenu
 // Address: 0x00100050 - 0x00100139 (233 bytes)
 MtObject* cMenuMyPawnList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuMyPawnList;
+    return new (16u) cMenuMyPawnList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10584,7 +10788,7 @@ const MtDTI& cMenuOnlineShop::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuOnlineShop::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuOnlineShop::DTI)->memAlloc(sz, align, ::cMenuOnlineShop::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuOnlineShop::DTI)->memAlloc(sz, align, cMenuOnlineShop::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10599,7 +10803,7 @@ inline void* cMenuOnlineShop::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuOnlineShop::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuOnlineShop::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuOnlineShop::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10638,25 +10842,27 @@ nMenu::MENU_RET cMenuOnlineShop::moveMenuOnlineShop() {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as nMenu::MENU_RET
-    this->::cMenuBase::moveMenu();
+    moveMenu();
     cCursor cursor;
-    if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+    if (mMenuRno[0] == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(-1);
+            return nMenu::MENU_RET_FAILED;
         }
     } else {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-            if (this->::cMenuBase::mpGUIMenu != static_cast<uGUIBase*>(nullptr)) {
-                if (this->::cMenuBase::mpGUIMenu->mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
-                    return static_cast<nMenu::MENU_RET>(static_cast<unsigned long>(::sItemManager::getInstance()->::sItemManager::getGp() != static_cast<u64>(0)) | static_cast<unsigned long>(2));
+        if (mMenuRno[0] == 0) {
+            if (mpGUIMenu != nullptr) {
+                if (mpGUIMenu->mResult == uGUIBase::RESULT_EXIT) {
+                    return static_cast<nMenu::MENU_RET>(static_cast<unsigned long>(sItemManager::getInstance()->getGp() != 0) | 2);
                 }
             }
         }
-        return static_cast<nMenu::MENU_RET>(0);
+        return nMenu::MENU_RET_CONTINUE;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuOnlineShop::MyDTI cMenuOnlineShop::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bae6-0x0013bb1f (called at cMenuBase.cpp:43075)
@@ -10666,7 +10872,7 @@ nMenu::MENU_RET cMenuOnlineShop::moveMenuOnlineShop() {
 // Address: 0x001353d0 - 0x001354c3 (243 bytes)
 MtObject* cMenuOnlineShop::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuOnlineShop;
+    return new (16u) cMenuOnlineShop;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10692,7 +10898,7 @@ const MtDTI& cMenuPartyList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPartyList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPartyList::DTI)->memAlloc(sz, align, ::cMenuPartyList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPartyList::DTI)->memAlloc(sz, align, cMenuPartyList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -10707,7 +10913,7 @@ inline void* cMenuPartyList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPartyList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPartyList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPartyList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -10737,60 +10943,60 @@ cMenuPartyList::~cMenuPartyList() {
 void cMenuPartyList::initPartyList(uGUIBase* pGUIRefMenu) {
     // DWARF local not rendered: cMenuSupportList* pList;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mSearchSetting.::cCharacterData::stSearchFilterSetting::setDefaultData();
-    this->mSearchSetting.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(0));
+    initMenu();
+    mMenuRno[0] = 0;
+    mSearchSetting.setDefaultData();
+    mSearchSetting.initSearchFilter(0);
     // inferred: the value the loop at 0xf4580 carries; no location-less local in scope fits
-    cNetGameServer* v0_10 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_10->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_10 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_10->mPartyListInfoVec.mLength != 0) {
         // inferred: the value the loop at 0xf4580 carries; no location-less local in scope fits
-        u32 v0_0 = v0_10->mPartyListInfoVec.::MtArray::mLength;
+        u32 v0_0 = v0_10->mPartyListInfoVec.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_10->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_10->mPartyListInfoVec.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->mPartyListInfoVec.::MtArray::mLength) {
-                    v0_0 = v0_10->mPartyListInfoVec.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_10->mPartyListInfoVec.mpArray[i0_3] != nullptr) {
+                delete v0_10->mPartyListInfoVec.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_10->mPartyListInfoVec.mLength) {
+                    v0_0 = v0_10->mPartyListInfoVec.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_10->mPartyListInfoVec.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_10->mPartyListInfoVec.::MtArray::mpArray));
-        v0_10->mPartyListInfoVec.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        v0_10->mPartyListInfoVec.::MtArray::mBufsiz = static_cast<u32>(0);
-        v0_10->mPartyListInfoVec.::MtArray::mLength = static_cast<u32>(0);
-        this->mFirst = true;
+    if (v0_10->mPartyListInfoVec.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_10->mPartyListInfoVec.mpArray));
+        v0_10->mPartyListInfoVec.mpArray = nullptr;
+        v0_10->mPartyListInfoVec.mBufsiz = 0;
+        v0_10->mPartyListInfoVec.mLength = 0;
+        mFirst = true;
         // inferred: a temporary for the result of the call at 0xf460d, used 3 times; no DWARF local holds it
-        cMenuSupportList* t1 = this->::cMenuBase::setupSupportList(static_cast<u32>(256), static_cast<u32>(14), static_cast<u32>(16));
-        if (t1 != static_cast<cMenuSupportList*>(nullptr)) {
-            t1->::cMenuSupportList::addBelowMenu(static_cast<s32>(14));
-            t1->::cMenuSupportList::addBelowMenu(static_cast<s32>(15));
+        cMenuSupportList* t0 = setupSupportList(256u, 14u, 16u);
+        if (t0 != nullptr) {
+            t0->addBelowMenu(14);
+            t0->addBelowMenu(15);
         }
-        this->setRefGUI(pGUIRefMenu, true);
+        setRefGUI(pGUIRefMenu, true);
         return;
     } else {
-        v0_10->mPartyListInfoVec.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        v0_10->mPartyListInfoVec.::MtArray::mBufsiz = static_cast<u32>(0);
-        v0_10->mPartyListInfoVec.::MtArray::mLength = static_cast<u32>(0);
-        this->mFirst = true;
+        v0_10->mPartyListInfoVec.mpArray = nullptr;
+        v0_10->mPartyListInfoVec.mBufsiz = 0;
+        v0_10->mPartyListInfoVec.mLength = 0;
+        mFirst = true;
         // inferred: a temporary for the result of the call at 0xf460d, used 3 times; no DWARF local holds it
-        cMenuSupportList* t1 = this->::cMenuBase::setupSupportList(static_cast<u32>(256), static_cast<u32>(14), static_cast<u32>(16));
-        if (t1 != static_cast<cMenuSupportList*>(nullptr)) {
-            t1->::cMenuSupportList::addBelowMenu(static_cast<s32>(14));
-            t1->::cMenuSupportList::addBelowMenu(static_cast<s32>(15));
+        cMenuSupportList* t0 = setupSupportList(256u, 14u, 16u);
+        if (t0 != nullptr) {
+            t0->addBelowMenu(14);
+            t0->addBelowMenu(15);
         }
-        this->setRefGUI(pGUIRefMenu, true);
+        setRefGUI(pGUIRefMenu, true);
         return;
     }
 }
@@ -10809,36 +11015,36 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPartyList::movePartyList() {
 void cMenuPartyList::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xfd430 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mPartyListInfoVec.mLength != 0) {
         // inferred: the value the loop at 0xfd430 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
+        u32 v0_0 = v0_8->mPartyListInfoVec.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mPartyListInfoVec.::MtArray::mLength) {
-                    v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mPartyListInfoVec.mpArray[i0_3] != nullptr) {
+                delete v0_8->mPartyListInfoVec.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mPartyListInfoVec.mLength) {
+                    v0_0 = v0_8->mPartyListInfoVec.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mPartyListInfoVec.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPartyListInfoVec.::MtArray::mpArray));
+    if (v0_8->mPartyListInfoVec.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPartyListInfoVec.mpArray));
     }
-    v0_8->mPartyListInfoVec.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mPartyListInfoVec.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mPartyListInfoVec.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    v0_8->mPartyListInfoVec.mpArray = nullptr;
+    v0_8->mPartyListInfoVec.mBufsiz = 0;
+    v0_8->mPartyListInfoVec.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x000fd1d0 - 0x000fd264 (148 bytes)
@@ -10862,86 +11068,86 @@ void cMenuPartyList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PA
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x15e from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x3c4 from nSessionManager::cNetSessionManager*
-    if (menuId != static_cast<s32>(15)) {
+    if (menuId != 15) {
         return;
     }
-    pParts->attr = static_cast<u32>(1);
-    if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableParty_Invite() != false) {
-        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) != static_cast<unsigned long>(0)) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(350))) == static_cast<unsigned char>(0)) {
-                if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader() != false) {
-                        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                            pParts->param = static_cast<u32>(4);
+    pParts->attr = 1;
+    if (sQuestManagerExt::getInstance()->isEnableParty_Invite()) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) != 0) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sArea::getInstance()) + 28728)) + 350)) == 0) {
+                if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader()) {
+                        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                            pParts->param = 4;
                         } else {
-                            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getPartySpaceNum() > static_cast<s32>(0)) {
-                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()) + static_cast<long>(964))) != static_cast<unsigned int>(0)) {
-                                    pParts->param = static_cast<u32>(6);
+                            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getPartySpaceNum() > 0) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()) + 964)) != 0) {
+                                    pParts->param = 6;
                                 } else {
-                                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyInvited() != false) {
-                                        pParts->param = static_cast<u32>(7);
+                                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyInvited()) {
+                                        pParts->param = 7;
                                     } else {
-                                        pParts->attr = static_cast<u32>(0);
+                                        pParts->attr = 0;
                                     }
                                 }
                             } else {
-                                pParts->param = static_cast<u32>(5);
+                                pParts->param = 5;
                             }
                         }
                     } else {
-                        pParts->param = static_cast<u32>(3);
+                        pParts->param = 3;
                     }
                 } else {
-                    pParts->param = static_cast<u32>(2);
+                    pParts->param = 2;
                 }
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader() != false) {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                        pParts->param = static_cast<u32>(4);
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader()) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                        pParts->param = 4;
                     } else {
-                        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getPartySpaceNum() > static_cast<s32>(0)) {
-                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()) + static_cast<long>(964))) != static_cast<unsigned int>(0)) {
-                                pParts->param = static_cast<u32>(6);
+                        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getPartySpaceNum() > 0) {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()) + 964)) != 0) {
+                                pParts->param = 6;
                             } else {
-                                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyInvited() != false) {
-                                    pParts->param = static_cast<u32>(7);
+                                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyInvited()) {
+                                    pParts->param = 7;
                                 } else {
-                                    pParts->attr = static_cast<u32>(0);
+                                    pParts->attr = 0;
                                 }
                             }
                         } else {
-                            pParts->param = static_cast<u32>(5);
+                            pParts->param = 5;
                         }
                     }
                 } else {
-                    pParts->param = static_cast<u32>(3);
+                    pParts->param = 3;
                 }
             }
         } else {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader() != false) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                    pParts->param = static_cast<u32>(4);
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLeader()) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                    pParts->param = 4;
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getPartySpaceNum() > static_cast<s32>(0)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()) + static_cast<long>(964))) != static_cast<unsigned int>(0)) {
-                            pParts->param = static_cast<u32>(6);
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getPartySpaceNum() > 0) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()) + 964)) != 0) {
+                            pParts->param = 6;
                         } else {
-                            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyInvited() != false) {
-                                pParts->param = static_cast<u32>(7);
+                            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyInvited()) {
+                                pParts->param = 7;
                             } else {
-                                pParts->attr = static_cast<u32>(0);
+                                pParts->attr = 0;
                             }
                         }
                     } else {
-                        pParts->param = static_cast<u32>(5);
+                        pParts->param = 5;
                     }
                 }
             } else {
-                pParts->param = static_cast<u32>(3);
+                pParts->param = 3;
             }
         }
     } else {
-        pParts->param = static_cast<u32>(1);
+        pParts->param = 1;
     }
 }
 
@@ -10949,8 +11155,8 @@ void cMenuPartyList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PA
 bool cMenuPartyList::checkListFilter(u32 sortListIndex) {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (sortListIndex < static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mPartyListInfoVec.::MtArray::mLength) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyReqOk(static_cast<s32>(sortListIndex), false, false) == false) {
+    if (sortListIndex < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mLength) {
+        if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyReqOk(static_cast<s32>(sortListIndex), false, false)) {
             return false;
         } else {
             return true;
@@ -10968,6 +11174,8 @@ bool cMenuPartyList::checkListFilter(u32 sortListIndex) {
 //   in uGUIPartyList::updateWait at 0x00b317a9-0x00b317b3 (called at uGUIPartyList.cpp:68)
 // s32 cMenuPartyList::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPartyList::MyDTI cMenuPartyList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a1f6-0x0013a22f (called at cMenuBase.cpp:3965)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a1f6-0x0013a22f (called at cMenuBase.h:1005)
@@ -10976,7 +11184,7 @@ bool cMenuPartyList::checkListFilter(u32 sortListIndex) {
 // Address: 0x000fd070 - 0x000fd159 (233 bytes)
 MtObject* cMenuPartyList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPartyList;
+    return new (16u) cMenuPartyList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11002,7 +11210,7 @@ const MtDTI& cMenuPartyListMemberInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPartyListMemberInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPartyListMemberInfo::DTI)->memAlloc(sz, align, ::cMenuPartyListMemberInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPartyListMemberInfo::DTI)->memAlloc(sz, align, cMenuPartyListMemberInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11017,7 +11225,7 @@ inline void* cMenuPartyListMemberInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPartyListMemberInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPartyListMemberInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPartyListMemberInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11053,6 +11261,8 @@ __attribute__((weak)) void cMenuPartyListMemberInfo::initPartyListMemberInfo(MtT
 //   in cMenuSubMenu::moveSubMenu at 0x000f5d70-0x000f5d9e, 0x000f65f0-0x000f6634 (called at cMenuBase.cpp:24171)
 // nMenu::MENU_RET cMenuPartyListMemberInfo::movePartyListMemberInfo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPartyListMemberInfo::MyDTI cMenuPartyListMemberInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a22f-0x0013a268 (called at cMenuBase.cpp:4410)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a22f-0x0013a268 (called at cMenuBase.h:1106)
@@ -11061,7 +11271,7 @@ __attribute__((weak)) void cMenuPartyListMemberInfo::initPartyListMemberInfo(MtT
 // Address: 0x000fd4b0 - 0x000fd599 (233 bytes)
 MtObject* cMenuPartyListMemberInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPartyListMemberInfo;
+    return new (16u) cMenuPartyListMemberInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11087,7 +11297,7 @@ const MtDTI& cMenuPartyManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPartyManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPartyManager::DTI)->memAlloc(sz, align, ::cMenuPartyManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPartyManager::DTI)->memAlloc(sz, align, cMenuPartyManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11102,7 +11312,7 @@ inline void* cMenuPartyManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPartyManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPartyManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPartyManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11152,12 +11362,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPartyManager::movePartyManager() {
 // Address: 0x000f51e0 - 0x000f51e5 (5 bytes)
 void cMenuPartyManager::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
 //   in uGUIPartyList::setup at 0x00b2f605-0x00b2f60a (called at uGUIPartyList.cpp:582)
 // s32 cMenuPartyManager::getTabNo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPartyManager::MyDTI cMenuPartyManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a0d9-0x0013a112 (called at cMenuBase.cpp:1804)
@@ -11167,7 +11379,7 @@ void cMenuPartyManager::exitMenu() {
 // Address: 0x000f1f40 - 0x000f2029 (233 bytes)
 MtObject* cMenuPartyManager::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPartyManager;
+    return new (16u) cMenuPartyManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11193,7 +11405,7 @@ const MtDTI& cMenuPartyMemberList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPartyMemberList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPartyMemberList::DTI)->memAlloc(sz, align, ::cMenuPartyMemberList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPartyMemberList::DTI)->memAlloc(sz, align, cMenuPartyMemberList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11208,7 +11420,7 @@ inline void* cMenuPartyMemberList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPartyMemberList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPartyMemberList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPartyMemberList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11296,23 +11508,23 @@ __attribute__((weak)) bool cMenuPartyMemberList::isReqMember(s32 cursorIndex) {
 s32 cMenuPartyMemberList::getPartyMemberIndex(s32 cursorIndex) {
     // DWARF local not rendered: s32 menuId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-        if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                return this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(cursorIndex);
+    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+        if (mpList == nullptr) {
+            if (mpMenu != nullptr) {
+                return mpMenu->getMenuId(cursorIndex);
             } else {
-                if (static_cast<unsigned int>(cursorIndex) < this->::cMenuBase::mMenuNum) {
-                    if (this->::cMenuBase::mpMenuList != static_cast<s32*>(nullptr)) {
-                        return this->::cMenuBase::mpMenuList[(cursorIndex <= static_cast<s32>(-1)) ? static_cast<s32>(0) : cursorIndex];
+                if (static_cast<unsigned int>(cursorIndex) < mMenuNum) {
+                    if (mpMenuList != nullptr) {
+                        return mpMenuList[(cursorIndex <= -1) ? 0 : cursorIndex];
                     }
                 }
-                return static_cast<s32>(0);
+                return 0;
             }
         } else {
-            return this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(cursorIndex);
+            return mpList->getMenuId(cursorIndex);
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -11320,23 +11532,23 @@ s32 cMenuPartyMemberList::getPartyMemberIndex(s32 cursorIndex) {
 s32 cMenuPartyMemberList::getReqMemberIndex(s32 cursorIndex) {
     // DWARF local not rendered: s32 menuId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-        if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                return this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(cursorIndex) - static_cast<s32>(8);
+    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+        if (mpList == nullptr) {
+            if (mpMenu != nullptr) {
+                return mpMenu->getMenuId(cursorIndex) - 8;
             } else {
-                if (static_cast<unsigned int>(cursorIndex) < this->::cMenuBase::mMenuNum) {
-                    if (this->::cMenuBase::mpMenuList != static_cast<s32*>(nullptr)) {
-                        return this->::cMenuBase::mpMenuList[(cursorIndex <= static_cast<s32>(-1)) ? static_cast<s32>(0) : cursorIndex] - static_cast<int>(8);
+                if (static_cast<unsigned int>(cursorIndex) < mMenuNum) {
+                    if (mpMenuList != nullptr) {
+                        return mpMenuList[(cursorIndex <= -1) ? 0 : cursorIndex] - 8;
                     }
                 }
-                return static_cast<s32>(-8);
+                return -8;
             }
         } else {
-            return this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(cursorIndex) - static_cast<s32>(8);
+            return mpList->getMenuId(cursorIndex) - 8;
         }
     } else {
-        return static_cast<s32>(-8);
+        return -8;
     }
 }
 
@@ -11359,53 +11571,53 @@ __attribute__((weak)) bool cMenuPartyMemberList::isEnableLeaveParty() {
 // Address: 0x000fa6e0 - 0x000fa7cb (235 bytes)
 void cMenuPartyMemberList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if ((menuId & static_cast<s32>(-8)) == static_cast<s32>(8)) {
+    if ((menuId & -8) == 8) {
         return;
     }
-    if (static_cast<unsigned int>(menuId) > static_cast<unsigned int>(7)) {
-        if (menuId == static_cast<s32>(17)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionMemberNum(true) <= static_cast<s32>(1)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-                    if (::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1)) {
-                        pParts->attr = static_cast<u32>(1);
-                        pParts->param = static_cast<u32>(2);
+    if (static_cast<unsigned int>(menuId) > 7) {
+        if (menuId == 17) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) <= 1) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+                    if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
+                        pParts->attr = 1;
+                        pParts->param = 2;
                     } else {
-                        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-                            pParts->attr = static_cast<u32>(1);
-                            pParts->param = static_cast<u32>(3);
+                        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+                            pParts->attr = 1;
+                            pParts->param = 3;
                         } else {
-                            if (static_cast<cEndContentsManager*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(8)))->::cEndContentsManager::isPlayNow() == false) {
-                                if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow() != false) {
-                                    pParts->attr = static_cast<u32>(1);
-                                    pParts->param = static_cast<u32>(4);
+                            if (!static_cast<cEndContentsManager*>(sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_END_CONTENTS))->isPlayNow()) {
+                                if (sQuestManagerExt::getInstance()->isCycleContentsPlayNow()) {
+                                    pParts->attr = 1;
+                                    pParts->param = 4;
                                 }
                             } else {
-                                pParts->attr = static_cast<u32>(1);
-                                pParts->param = static_cast<u32>(4);
+                                pParts->attr = 1;
+                                pParts->param = 4;
                             }
                         }
                     }
                 } else {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(1);
+                    pParts->attr = 1;
+                    pParts->param = 1;
                 }
             } else {
-                if (::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1)) {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(2);
+                if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
+                    pParts->attr = 1;
+                    pParts->param = 2;
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-                        pParts->attr = static_cast<u32>(1);
-                        pParts->param = static_cast<u32>(3);
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+                        pParts->attr = 1;
+                        pParts->param = 3;
                     } else {
-                        if (static_cast<cEndContentsManager*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(8)))->::cEndContentsManager::isPlayNow() == false) {
-                            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow() != false) {
-                                pParts->attr = static_cast<u32>(1);
-                                pParts->param = static_cast<u32>(4);
+                        if (!static_cast<cEndContentsManager*>(sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_END_CONTENTS))->isPlayNow()) {
+                            if (sQuestManagerExt::getInstance()->isCycleContentsPlayNow()) {
+                                pParts->attr = 1;
+                                pParts->param = 4;
                             }
                         } else {
-                            pParts->attr = static_cast<u32>(1);
-                            pParts->param = static_cast<u32>(4);
+                            pParts->attr = 1;
+                            pParts->param = 4;
                         }
                     }
                 }
@@ -11417,16 +11629,18 @@ void cMenuPartyMemberList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::M
 // Address: 0x000f53f0 - 0x000f544e (94 bytes)
 bool cMenuPartyMemberList::callbackCheckCloseDialog() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionMemberNum(true) == static_cast<s32>(1)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
-            return ::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1);
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true) == 1) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true)) {
+            return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
         } else {
             return true;
         }
     } else {
-        return ::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1);
+        return sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPartyMemberList::MyDTI cMenuPartyMemberList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a112-0x0013a14b (called at cMenuBase.cpp:2165)
@@ -11436,7 +11650,7 @@ bool cMenuPartyMemberList::callbackCheckCloseDialog() {
 // Address: 0x000f51f0 - 0x000f52d9 (233 bytes)
 MtObject* cMenuPartyMemberList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPartyMemberList;
+    return new (16u) cMenuPartyMemberList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11462,7 +11676,7 @@ const MtDTI& cMenuPartyReq::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPartyReq::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPartyReq::DTI)->memAlloc(sz, align, ::cMenuPartyReq::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPartyReq::DTI)->memAlloc(sz, align, cMenuPartyReq::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11477,7 +11691,7 @@ inline void* cMenuPartyReq::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPartyReq::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPartyReq::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPartyReq::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11517,6 +11731,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPartyReq::movePartyReq() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPartyReq::MyDTI cMenuPartyReq::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a1bd-0x0013a1f6 (called at cMenuBase.cpp:3830)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a1bd-0x0013a1f6 (called at cMenuBase.h:960)
@@ -11525,7 +11741,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPartyReq::movePartyReq() {
 // Address: 0x000fcdb0 - 0x000fce99 (233 bytes)
 MtObject* cMenuPartyReq::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPartyReq;
+    return new (16u) cMenuPartyReq;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11551,7 +11767,7 @@ const MtDTI& cMenuPawnDelete::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnDelete::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnDelete::DTI)->memAlloc(sz, align, ::cMenuPawnDelete::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnDelete::DTI)->memAlloc(sz, align, cMenuPawnDelete::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11566,7 +11782,7 @@ inline void* cMenuPawnDelete::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnDelete::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnDelete::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnDelete::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11603,6 +11819,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnDelete::movePawnDelete() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnDelete::MyDTI cMenuPawnDelete::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a5f8-0x0013a631 (called at cMenuBase.cpp:8903)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a5f8-0x0013a631 (called at cMenuBase.h:2327)
@@ -11611,7 +11829,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnDelete::movePawnDelete() {
 // Address: 0x00104240 - 0x00104329 (233 bytes)
 MtObject* cMenuPawnDelete::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnDelete;
+    return new (16u) cMenuPawnDelete;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11637,7 +11855,7 @@ const MtDTI& cMenuPawnFeedback::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnFeedback::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnFeedback::DTI)->memAlloc(sz, align, ::cMenuPawnFeedback::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnFeedback::DTI)->memAlloc(sz, align, cMenuPawnFeedback::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11652,7 +11870,7 @@ inline void* cMenuPawnFeedback::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnFeedback::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnFeedback::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnFeedback::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11699,7 +11917,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnFeedback::movePawnFeedback() {
 // Address: 0x00104230 - 0x00104235 (5 bytes)
 void cMenuPawnFeedback::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -11710,6 +11928,8 @@ void cMenuPawnFeedback::exitMenu() {
 //   in cMenuPawnReturn::movePawnReturn at 0x0010372d-0x00103734 (called at cMenuBase.cpp:8611)
 // nNet::stFeedbackData* cMenuPawnFeedback::getFeedbackData() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnFeedback::MyDTI cMenuPawnFeedback::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a5bf-0x0013a5f8 (called at cMenuBase.cpp:8744)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a5bf-0x0013a5f8 (called at cMenuBase.h:2260)
@@ -11718,7 +11938,7 @@ void cMenuPawnFeedback::exitMenu() {
 // Address: 0x001040d0 - 0x001041b9 (233 bytes)
 MtObject* cMenuPawnFeedback::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnFeedback;
+    return new (16u) cMenuPawnFeedback;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11744,7 +11964,7 @@ const MtDTI& cMenuPawnHistory::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnHistory::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnHistory::DTI)->memAlloc(sz, align, ::cMenuPawnHistory::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnHistory::DTI)->memAlloc(sz, align, cMenuPawnHistory::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11759,7 +11979,7 @@ inline void* cMenuPawnHistory::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnHistory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnHistory::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnHistory::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11795,37 +12015,39 @@ cMenuPawnHistory::~cMenuPawnHistory() {
 void cMenuPawnHistory::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x104840 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mPawnHistoryList.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mPawnHistoryList.mLength != 0) {
         // inferred: the value the loop at 0x104840 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mPawnHistoryList.::MtArray::mLength;
+        u32 v0_0 = v0_8->mPawnHistoryList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mPawnHistoryList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mPawnHistoryList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mPawnHistoryList.::MtArray::mLength) {
-                    v0_0 = v0_8->mPawnHistoryList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mPawnHistoryList.mpArray[i0_3] != nullptr) {
+                delete v0_8->mPawnHistoryList.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mPawnHistoryList.mLength) {
+                    v0_0 = v0_8->mPawnHistoryList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mPawnHistoryList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPawnHistoryList.::MtArray::mpArray));
+    if (v0_8->mPawnHistoryList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPawnHistoryList.mpArray));
     }
-    v0_8->mPawnHistoryList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mPawnHistoryList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mPawnHistoryList.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    v0_8->mPawnHistoryList.mpArray = nullptr;
+    v0_8->mPawnHistoryList.mBufsiz = 0;
+    v0_8->mPawnHistoryList.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnHistory::MyDTI cMenuPawnHistory::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a631-0x0013a66a (called at cMenuBase.cpp:9006)
@@ -11835,7 +12057,7 @@ void cMenuPawnHistory::exitMenu() {
 // Address: 0x00104690 - 0x00104779 (233 bytes)
 MtObject* cMenuPawnHistory::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnHistory;
+    return new (16u) cMenuPawnHistory;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11861,7 +12083,7 @@ const MtDTI& cMenuPawnManageMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnManageMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnManageMenu::DTI)->memAlloc(sz, align, ::cMenuPawnManageMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnManageMenu::DTI)->memAlloc(sz, align, cMenuPawnManageMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11876,7 +12098,7 @@ inline void* cMenuPawnManageMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnManageMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnManageMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnManageMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -11922,11 +12144,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnManageMenu::movePawnManageMenu() 
 // Address: 0x00102ff0 - 0x0010301c (44 bytes)
 void cMenuPawnManageMenu::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cMenuBase::mUseGUIMenu != false) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (mUseGUIMenu) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnManageMenu::MyDTI cMenuPawnManageMenu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a514-0x0013a54d (called at cMenuBase.cpp:7873)
@@ -11936,7 +12160,7 @@ void cMenuPawnManageMenu::exitMenu() {
 // Address: 0x00102590 - 0x00102679 (233 bytes)
 MtObject* cMenuPawnManageMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnManageMenu;
+    return new (16u) cMenuPawnManageMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11962,7 +12186,7 @@ const MtDTI& cMenuPawnManager::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnManager::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnManager::DTI)->memAlloc(sz, align, ::cMenuPawnManager::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnManager::DTI)->memAlloc(sz, align, cMenuPawnManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -11977,7 +12201,7 @@ inline void* cMenuPawnManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12029,8 +12253,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnManager::movePawnManager() {
 // Address: 0x00103180 - 0x00103185 (5 bytes)
 void cMenuPawnManager::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnManager::MyDTI cMenuPawnManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a54d-0x0013a586 (called at cMenuBase.cpp:8088)
@@ -12040,7 +12266,7 @@ void cMenuPawnManager::exitMenu() {
 // Address: 0x00103020 - 0x00103109 (233 bytes)
 MtObject* cMenuPawnManager::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnManager;
+    return new (16u) cMenuPawnManager;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12066,7 +12292,7 @@ const MtDTI& cMenuPawnPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnPoint::DTI)->memAlloc(sz, align, ::cMenuPawnPoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnPoint::DTI)->memAlloc(sz, align, cMenuPawnPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12081,7 +12307,7 @@ inline void* cMenuPawnPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12135,6 +12361,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnPoint::movePawnPoint() {
 // No out-of-line body: no code in the ELF
 // UseSupportPointVec* cMenuPawnPoint::getUseSupportPointVec();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnPoint::MyDTI cMenuPawnPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a916-0x0013a94f (called at cMenuBase.cpp:11745)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a916-0x0013a94f (called at cMenuBase.h:4547)
@@ -12143,7 +12371,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnPoint::movePawnPoint() {
 // Address: 0x00108ed0 - 0x00108ffb (299 bytes)
 MtObject* cMenuPawnPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnPoint;
+    return new (16u) cMenuPawnPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12169,7 +12397,7 @@ const MtDTI& cMenuPawnRental::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnRental::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnRental::DTI)->memAlloc(sz, align, ::cMenuPawnRental::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnRental::DTI)->memAlloc(sz, align, cMenuPawnRental::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12184,7 +12412,7 @@ inline void* cMenuPawnRental::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnRental::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnRental::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnRental::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12222,6 +12450,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnRental::movePawnRental() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnRental::MyDTI cMenuPawnRental::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a6dc-0x0013a715 (called at cMenuBase.cpp:9432)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a6dc-0x0013a715 (called at cMenuBase.h:2550)
@@ -12230,7 +12460,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnRental::movePawnRental() {
 // Address: 0x001051d0 - 0x001052b9 (233 bytes)
 MtObject* cMenuPawnRental::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnRental;
+    return new (16u) cMenuPawnRental;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12256,7 +12486,7 @@ const MtDTI& cMenuPawnReqList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnReqList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnReqList::DTI)->memAlloc(sz, align, ::cMenuPawnReqList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnReqList::DTI)->memAlloc(sz, align, cMenuPawnReqList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12271,7 +12501,7 @@ inline void* cMenuPawnReqList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnReqList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnReqList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnReqList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12317,6 +12547,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnReqList::movePawnReqList() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnReqList::MyDTI cMenuPawnReqList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a3be-0x0013a3f7 (called at cMenuBase.cpp:5771)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a3be-0x0013a3f7 (called at cMenuBase.h:1567)
@@ -12325,7 +12557,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnReqList::movePawnReqList() {
 // Address: 0x000ffed0 - 0x000fffb9 (233 bytes)
 MtObject* cMenuPawnReqList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnReqList;
+    return new (16u) cMenuPawnReqList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12351,7 +12583,7 @@ const MtDTI& cMenuPawnReqMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnReqMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnReqMenu::DTI)->memAlloc(sz, align, ::cMenuPawnReqMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnReqMenu::DTI)->memAlloc(sz, align, cMenuPawnReqMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12366,7 +12598,7 @@ inline void* cMenuPawnReqMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnReqMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnReqMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnReqMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12408,6 +12640,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnReqMenu::movePawnReqMenu() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnReqMenu::MyDTI cMenuPawnReqMenu::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a385-0x0013a3be (called at cMenuBase.cpp:5630)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a385-0x0013a3be (called at cMenuBase.h:1511)
@@ -12416,7 +12650,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnReqMenu::movePawnReqMenu() {
 // Address: 0x000ff680 - 0x000ff769 (233 bytes)
 MtObject* cMenuPawnReqMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnReqMenu;
+    return new (16u) cMenuPawnReqMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12442,7 +12676,7 @@ const MtDTI& cMenuPawnReturn::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnReturn::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnReturn::DTI)->memAlloc(sz, align, ::cMenuPawnReturn::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnReturn::DTI)->memAlloc(sz, align, cMenuPawnReturn::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12457,7 +12691,7 @@ inline void* cMenuPawnReturn::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnReturn::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnReturn::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnReturn::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12508,6 +12742,8 @@ __attribute__((weak)) void cMenuPawnReturn::checkMenuPartsParam(cMenuSupportMenu
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnReturn::MyDTI cMenuPawnReturn::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a586-0x0013a5bf (called at cMenuBase.cpp:8447)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a586-0x0013a5bf (called at cMenuBase.h:2184)
@@ -12516,7 +12752,7 @@ __attribute__((weak)) void cMenuPawnReturn::checkMenuPartsParam(cMenuSupportMenu
 // Address: 0x00103190 - 0x00103279 (233 bytes)
 MtObject* cMenuPawnReturn::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnReturn;
+    return new (16u) cMenuPawnReturn;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12542,7 +12778,7 @@ const MtDTI& cMenuPawnRevive::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnRevive::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnRevive::DTI)->memAlloc(sz, align, ::cMenuPawnRevive::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnRevive::DTI)->memAlloc(sz, align, cMenuPawnRevive::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12557,7 +12793,7 @@ inline void* cMenuPawnRevive::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnRevive::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnRevive::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnRevive::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12620,11 +12856,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnRevive::movePawnRevive(uHuman* pH
 // Address: 0x00106da0 - 0x00106dd7 (55 bytes)
 void cMenuPawnRevive::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIShop != static_cast<uGUIBase*>(nullptr)) {
-        this->mpGUIShop->kill();
-        this->mpGUIShop = static_cast<uGUIBase*>(nullptr);
+    if (mpGUIShop != nullptr) {
+        mpGUIShop->kill();
+        mpGUIShop = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x00107e50 - 0x00107f08 (184 bytes)
@@ -12636,14 +12872,14 @@ __attribute__((weak)) void cMenuPawnRevive::updatePtr() {
 // Address: 0x00107c70 - 0x00107cc3 (83 bytes)
 s32 cMenuPawnRevive::getMenuList(s32 cursor) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-        if (cursor > static_cast<s32>(-1)) {
-            return this->::cMenuBase::mpMenuList[(static_cast<unsigned int>(cursor) < this->::cMenuBase::mMenuNum) ? cursor : static_cast<s32>(0)];
+    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+        if (cursor > -1) {
+            return mpMenuList[(static_cast<unsigned int>(cursor) < mMenuNum) ? cursor : 0];
         } else {
-            return static_cast<s32>(this->::cMenuBase::mMenuNum);
+            return static_cast<s32>(mMenuNum);
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -12682,6 +12918,8 @@ __attribute__((weak)) bool cMenuPawnRevive::isDecide() {
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // u32 cMenuPawnRevive::getPawnId(uHuman* pHm);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnRevive::MyDTI cMenuPawnRevive::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a8a4-0x0013a8dd (called at cMenuBase.cpp:10538)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a8a4-0x0013a8dd (called at cMenuBase.h:2981)
@@ -12690,7 +12928,7 @@ __attribute__((weak)) bool cMenuPawnRevive::isDecide() {
 // Address: 0x00106b40 - 0x00106c29 (233 bytes)
 MtObject* cMenuPawnRevive::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnRevive;
+    return new (16u) cMenuPawnRevive;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12729,7 +12967,7 @@ const MtDTI& cMenuPawnSearch::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnSearch::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnSearch::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnSearch::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12779,116 +13017,115 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnSearch::movePawnSearch() {
 void cMenuPawnSearch::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x1019d0 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mRegisterdPawnList.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mRegisterdPawnList.mLength != 0) {
         // inferred: the value the loop at 0x1019d0 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mRegisterdPawnList.::MtArray::mLength;
+        u32 v0_0 = v0_8->mRegisterdPawnList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mRegisterdPawnList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mRegisterdPawnList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mRegisterdPawnList.::MtArray::mLength) {
-                    v0_0 = v0_8->mRegisterdPawnList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mRegisterdPawnList.mpArray[i0_3] != nullptr) {
+                delete v0_8->mRegisterdPawnList.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mRegisterdPawnList.mLength) {
+                    v0_0 = v0_8->mRegisterdPawnList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mRegisterdPawnList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mRegisterdPawnList.::MtArray::mpArray));
+    if (v0_8->mRegisterdPawnList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mRegisterdPawnList.mpArray));
     }
-    v0_8->mRegisterdPawnList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mRegisterdPawnList.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mRegisterdPawnList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
+    v0_8->mRegisterdPawnList.mpArray = nullptr;
+    v0_8->mRegisterdPawnList.mBufsiz = 0;
+    v0_8->mRegisterdPawnList.mLength = 0;
+    if (mExcludeList.mLength != 0) {
         // inferred: the value the loop at 0x101a50 carries; no location-less local in scope fits
-        u32 v2_0 = this->mExcludeList.::MtArray::mLength;
+        u32 v2_0 = mExcludeList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mExcludeList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mExcludeList.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mExcludeList.::MtArray::mLength) {
-                    v2_0 = this->mExcludeList.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mExcludeList.mpArray[i2_3] != nullptr) {
+                delete mExcludeList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mExcludeList.mLength) {
+                    v2_0 = mExcludeList.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mExcludeList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mExcludeList.::MtArray::mpArray));
+    if (mExcludeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mExcludeList.mpArray));
     }
-    this->mExcludeList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mExcludeList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mExcludeList.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mList.::MtArray::mLength != static_cast<u32>(0)) {
+    mExcludeList.mpArray = nullptr;
+    mExcludeList.mBufsiz = 0;
+    mExcludeList.mLength = 0;
+    if (mList.mLength != 0) {
         // inferred: the value the loop at 0x101ad0 carries; no location-less local in scope fits
-        u32 v4_0 = this->mList.::MtArray::mLength;
+        u32 v4_0 = mList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mList.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mList.::MtArray::mLength) {
-                    v4_0 = this->mList.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mList.mpArray[i4_3] != nullptr) {
+                delete mList.mpArray[i4_3];
+                if ((i4_3 + 1u) < mList.mLength) {
+                    v4_0 = mList.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mList.::MtArray::mpArray));
+    if (mList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mList.mpArray));
     }
-    this->mList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mList.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    mList.mpArray = nullptr;
+    mList.mBufsiz = 0;
+    mList.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x00101b50 - 0x00101ba7 (87 bytes)
 void cMenuPawnSearch::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (pMenu != this->mpCategoryMenu) {
-        if (menuId == static_cast<s32>(10)) {
-            if (pMenu == this->mpSearchList) {
-                if (this->mpCategoryMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                    if (this->mpCategoryMenu->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1)) == static_cast<s32>(0)) {
-                    } else {
-                        pParts->attr = static_cast<u32>(1);
+    if (pMenu != mpCategoryMenu) {
+        if (menuId == 10) {
+            if (pMenu == mpSearchList) {
+                if (mpCategoryMenu != nullptr) {
+                    if (mpCategoryMenu->getMenuId(-1) != 0) {
+                        pParts->attr = 1;
                     }
                 }
             }
         }
     } else {
-        if (static_cast<unsigned int>(menuId) <= static_cast<unsigned int>(7)) {
-            if (((static_cast<unsigned long>(249) >> static_cast<unsigned long>(static_cast<unsigned int>(menuId) & static_cast<unsigned int>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-                pParts->attr = static_cast<u32>(1);
+        if (static_cast<unsigned int>(menuId) <= 7) {
+            if (((249ul >> static_cast<unsigned long>(static_cast<unsigned int>(menuId) & 31)) & 1ul) == 0) {
+                pParts->attr = 1;
             }
         } else {
-            pParts->attr = static_cast<u32>(1);
+            pParts->attr = 1;
         }
     }
 }
@@ -12903,6 +13140,8 @@ __attribute__((weak)) void cMenuPawnSearch::selectCategory() {
     DDON_STUB("cMenuPawnSearch::selectCategory")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnSearch::MyDTI cMenuPawnSearch::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a469-0x0013a4a2 (called at cMenuBase.cpp:7145)
@@ -12938,7 +13177,7 @@ const MtDTI& cMenuPawnSetPartner::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnSetPartner::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnSetPartner::DTI)->memAlloc(sz, align, ::cMenuPawnSetPartner::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnSetPartner::DTI)->memAlloc(sz, align, cMenuPawnSetPartner::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -12953,7 +13192,7 @@ inline void* cMenuPawnSetPartner::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnSetPartner::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnSetPartner::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnSetPartner::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -12990,6 +13229,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnSetPartner::movePawnSetPartner() 
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnSetPartner::MyDTI cMenuPawnSetPartner::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b990-0x0013b9c9 (called at cMenuBase.cpp:41715)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b990-0x0013b9c9 (called at cMenuBase.h:9421)
@@ -12998,7 +13239,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnSetPartner::movePawnSetPartner() 
 // Address: 0x00133910 - 0x001339f9 (233 bytes)
 MtObject* cMenuPawnSetPartner::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnSetPartner;
+    return new (16u) cMenuPawnSetPartner;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13024,7 +13265,7 @@ const MtDTI& cMenuPawnShareRange::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPawnShareRange::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPawnShareRange::DTI)->memAlloc(sz, align, ::cMenuPawnShareRange::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPawnShareRange::DTI)->memAlloc(sz, align, cMenuPawnShareRange::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13039,7 +13280,7 @@ inline void* cMenuPawnShareRange::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPawnShareRange::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPawnShareRange::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPawnShareRange::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -13082,6 +13323,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnShareRange::movePawnShareRange() 
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPawnShareRange::MyDTI cMenuPawnShareRange::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a66a-0x0013a6a3 (called at cMenuBase.cpp:9129)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a66a-0x0013a6a3 (called at cMenuBase.h:2435)
@@ -13090,7 +13333,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnShareRange::movePawnShareRange() 
 // Address: 0x001048c0 - 0x001049a9 (233 bytes)
 MtObject* cMenuPawnShareRange::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPawnShareRange;
+    return new (16u) cMenuPawnShareRange;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13116,7 +13359,7 @@ const MtDTI& cMenuPlDeadMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuPlDeadMenu::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuPlDeadMenu::DTI)->memAlloc(sz, align, ::cMenuPlDeadMenu::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuPlDeadMenu::DTI)->memAlloc(sz, align, cMenuPlDeadMenu::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13131,7 +13374,7 @@ inline void* cMenuPlDeadMenu::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuPlDeadMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuPlDeadMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuPlDeadMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -13190,6 +13433,8 @@ __attribute__((weak)) bool cMenuPlDeadMenu::isDecide() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuPlDeadMenu::MyDTI cMenuPlDeadMenu::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a86b-0x0013a8a4 (called at cMenuBase.cpp:10271)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a86b-0x0013a8a4 (called at cMenuBase.h:2919)
@@ -13198,7 +13443,7 @@ __attribute__((weak)) bool cMenuPlDeadMenu::isDecide() {
 // Address: 0x00106530 - 0x00106619 (233 bytes)
 MtObject* cMenuPlDeadMenu::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuPlDeadMenu;
+    return new (16u) cMenuPlDeadMenu;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13224,7 +13469,7 @@ const MtDTI& cMenuQuickMatch::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuQuickMatch::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuQuickMatch::DTI)->memAlloc(sz, align, ::cMenuQuickMatch::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuQuickMatch::DTI)->memAlloc(sz, align, cMenuQuickMatch::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13326,34 +13571,33 @@ void cMenuQuickMatch::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_P
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     switch (static_cast<unsigned int>(menuId)) {
-        case static_cast<unsigned int>(0):
+        case 0:
         {
-            if ((static_cast<unsigned long>(this->mType) | static_cast<unsigned long>(2)) != static_cast<unsigned long>(2)) {
-            } else {
-                pParts->attr = static_cast<u32>(1);
+            if ((static_cast<unsigned long>(mType) | 2) == 2) {
+                pParts->attr = 1;
             }
             break;
         }
-        case static_cast<unsigned int>(1):
+        case 1:
         {
-            if (this->::cMenuQuickMatch::checkJobBalance() == false) {
-                pParts->attr = static_cast<u32>(1);
-                this->mJob = false;
+            if (!checkJobBalance()) {
+                pParts->attr = 1;
+                mJob = false;
             }
             break;
         }
-        case static_cast<unsigned int>(2):
+        case 2:
         {
-            if (this->::cMenuQuickMatch::checkLevelBalance() == false) {
-                pParts->attr = static_cast<u32>(1);
-                this->mLevel = false;
+            if (!checkLevelBalance()) {
+                pParts->attr = 1;
+                mLevel = false;
             }
             break;
         }
-        case static_cast<unsigned int>(4):
+        case 4:
         {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isEnableQuickParty() == false) {
-                pParts->attr = static_cast<u32>(1);
+            if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isEnableQuickParty()) {
+                pParts->attr = 1;
             }
             break;
         }
@@ -13386,6 +13630,8 @@ __attribute__((weak)) bool cMenuQuickMatch::checkJobBalance() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuQuickMatch::MyDTI cMenuQuickMatch::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a2da-0x0013a313 (called at cMenuBase.cpp:5007)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a2da-0x0013a313 (called at cMenuBase.h:1314)
@@ -13394,7 +13640,7 @@ __attribute__((weak)) bool cMenuQuickMatch::checkJobBalance() {
 // Address: 0x000fee50 - 0x000fef44 (244 bytes)
 MtObject* cMenuQuickMatch::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuQuickMatch;
+    return new (16u) cMenuQuickMatch;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13420,7 +13666,7 @@ const MtDTI& cMenuQuickMatchCancel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuQuickMatchCancel::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchCancel::DTI)->memAlloc(sz, align, ::cMenuQuickMatchCancel::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuQuickMatchCancel::DTI)->memAlloc(sz, align, cMenuQuickMatchCancel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13435,7 +13681,7 @@ inline void* cMenuQuickMatchCancel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuQuickMatchCancel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchCancel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuQuickMatchCancel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -13473,140 +13719,142 @@ __attribute__((weak)) void cMenuQuickMatchCancel::initQuickMatchCancel(uGUIBase*
 nMenu::MENU_RET cMenuQuickMatchCancel::moveQuickMatchCancel() {
     // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                this->::cMenuBase::mpMenu->::cMenuSupportMenu::moveMenu(static_cast<s32>(-1));
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            if (mpMenu != nullptr) {
+                mpMenu->moveMenu(-1);
             }
-            if (this->isCancel(static_cast<u32>(5)) == false) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchReq() != false) {
-                        if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                            if (this->::cMenuBase::mpMenu->mMenuNum != static_cast<u32>(0)) {
-                                if (this->isDecideIndex(this->::cMenuBase::mpMenu->::cMenuSupportMenu::getCursor(), static_cast<u32>(4), static_cast<u32>(20)) != false) {
-                                    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-                                        if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-                                            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
+            if (!isCancel(5u)) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchReq()) {
+                        if (mpMenu != nullptr) {
+                            if (mpMenu->mMenuNum != 0) {
+                                if (isDecideIndex(mpMenu->getCursor(), 4u, 20u)) {
+                                    if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+                                        if (mpList == nullptr) {
+                                            if (mpMenu != nullptr) {
                                                 // inferred: a temporary for the result of the call at 0xfec5c, used twice; no DWARF local holds it
-                                                s32 t0 = this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                                if (t0 != static_cast<s32>(5)) {
-                                                    if (t0 == static_cast<s32>(6)) {
-                                                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::cancelQuickMatch(true);
-                                                        return static_cast<nMenu::MENU_RET>(3);
+                                                s32 t0 = mpMenu->getMenuId(-1);
+                                                if (t0 != 5) {
+                                                    if (t0 == 6) {
+                                                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->cancelQuickMatch(true);
+                                                        return nMenu::MENU_RET_EXIT;
                                                     } else {
-                                                        return static_cast<nMenu::MENU_RET>(0);
+                                                        return nMenu::MENU_RET_CONTINUE;
                                                     }
                                                 } else {
-                                                    return static_cast<nMenu::MENU_RET>(2);
+                                                    return nMenu::MENU_RET_CANCEL;
                                                 }
                                             } else {
-                                                return static_cast<nMenu::MENU_RET>(0);
+                                                return nMenu::MENU_RET_CONTINUE;
                                             }
                                         } else {
                                             // inferred: a temporary for the result of the call at 0xfec5c, used twice; no DWARF local holds it
-                                            s32 t0 = this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                            if (t0 != static_cast<s32>(5)) {
-                                                if (t0 == static_cast<s32>(6)) {
-                                                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::cancelQuickMatch(true);
-                                                    return static_cast<nMenu::MENU_RET>(3);
+                                            s32 t0 = mpList->getMenuId(-1);
+                                            if (t0 != 5) {
+                                                if (t0 == 6) {
+                                                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->cancelQuickMatch(true);
+                                                    return nMenu::MENU_RET_EXIT;
                                                 } else {
-                                                    return static_cast<nMenu::MENU_RET>(0);
+                                                    return nMenu::MENU_RET_CONTINUE;
                                                 }
                                             } else {
-                                                return static_cast<nMenu::MENU_RET>(2);
+                                                return nMenu::MENU_RET_CANCEL;
                                             }
                                         }
                                     } else {
-                                        return static_cast<nMenu::MENU_RET>(0);
+                                        return nMenu::MENU_RET_CONTINUE;
                                     }
                                 } else {
-                                    return static_cast<nMenu::MENU_RET>(0);
+                                    return nMenu::MENU_RET_CONTINUE;
                                 }
                             } else {
-                                return static_cast<nMenu::MENU_RET>(0);
+                                return nMenu::MENU_RET_CONTINUE;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(2);
+                    return nMenu::MENU_RET_CANCEL;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(2);
+                return nMenu::MENU_RET_CANCEL;
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-            this->::cMenuBase::mpMenu->::cMenuSupportMenu::moveMenu(static_cast<s32>(-1));
+        if (mpMenu != nullptr) {
+            mpMenu->moveMenu(-1);
         }
-        if (this->isCancel(static_cast<u32>(5)) == false) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchReq() != false) {
-                    if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                        if (this->::cMenuBase::mpMenu->mMenuNum != static_cast<u32>(0)) {
-                            if (this->isDecideIndex(this->::cMenuBase::mpMenu->::cMenuSupportMenu::getCursor(), static_cast<u32>(4), static_cast<u32>(20)) != false) {
-                                if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-                                    if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-                                        if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
+        if (!isCancel(5u)) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchReq()) {
+                    if (mpMenu != nullptr) {
+                        if (mpMenu->mMenuNum != 0) {
+                            if (isDecideIndex(mpMenu->getCursor(), 4u, 20u)) {
+                                if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+                                    if (mpList == nullptr) {
+                                        if (mpMenu != nullptr) {
                                             // inferred: a temporary for the result of the call at 0xfec5c, used twice; no DWARF local holds it
-                                            s32 t0 = this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                            if (t0 != static_cast<s32>(5)) {
-                                                if (t0 == static_cast<s32>(6)) {
-                                                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::cancelQuickMatch(true);
-                                                    return static_cast<nMenu::MENU_RET>(3);
+                                            s32 t0 = mpMenu->getMenuId(-1);
+                                            if (t0 != 5) {
+                                                if (t0 == 6) {
+                                                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->cancelQuickMatch(true);
+                                                    return nMenu::MENU_RET_EXIT;
                                                 } else {
-                                                    return static_cast<nMenu::MENU_RET>(0);
+                                                    return nMenu::MENU_RET_CONTINUE;
                                                 }
                                             } else {
-                                                return static_cast<nMenu::MENU_RET>(2);
+                                                return nMenu::MENU_RET_CANCEL;
                                             }
                                         } else {
-                                            return static_cast<nMenu::MENU_RET>(0);
+                                            return nMenu::MENU_RET_CONTINUE;
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0xfec5c, used twice; no DWARF local holds it
-                                        s32 t0 = this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                        if (t0 != static_cast<s32>(5)) {
-                                            if (t0 == static_cast<s32>(6)) {
-                                                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::cancelQuickMatch(true);
-                                                return static_cast<nMenu::MENU_RET>(3);
+                                        s32 t0 = mpList->getMenuId(-1);
+                                        if (t0 != 5) {
+                                            if (t0 == 6) {
+                                                static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->cancelQuickMatch(true);
+                                                return nMenu::MENU_RET_EXIT;
                                             } else {
-                                                return static_cast<nMenu::MENU_RET>(0);
+                                                return nMenu::MENU_RET_CONTINUE;
                                             }
                                         } else {
-                                            return static_cast<nMenu::MENU_RET>(2);
+                                            return nMenu::MENU_RET_CANCEL;
                                         }
                                     }
                                 } else {
-                                    return static_cast<nMenu::MENU_RET>(0);
+                                    return nMenu::MENU_RET_CONTINUE;
                                 }
                             } else {
-                                return static_cast<nMenu::MENU_RET>(0);
+                                return nMenu::MENU_RET_CONTINUE;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(2);
+                return nMenu::MENU_RET_CANCEL;
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuQuickMatchCancel::MyDTI cMenuQuickMatchCancel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a34c-0x0013a385 (called at cMenuBase.cpp:5473)
@@ -13616,7 +13864,7 @@ nMenu::MENU_RET cMenuQuickMatchCancel::moveQuickMatchCancel() {
 // Address: 0x000ff520 - 0x000ff609 (233 bytes)
 MtObject* cMenuQuickMatchCancel::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuQuickMatchCancel;
+    return new (16u) cMenuQuickMatchCancel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13642,7 +13890,7 @@ const MtDTI& cMenuQuickMatchRetry::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuQuickMatchRetry::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchRetry::DTI)->memAlloc(sz, align, ::cMenuQuickMatchRetry::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuQuickMatchRetry::DTI)->memAlloc(sz, align, cMenuQuickMatchRetry::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13657,7 +13905,7 @@ inline void* cMenuQuickMatchRetry::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuQuickMatchRetry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchRetry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuQuickMatchRetry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -13690,128 +13938,130 @@ cMenuQuickMatchRetry::~cMenuQuickMatchRetry() {
 nMenu::MENU_RET cMenuQuickMatchRetry::moveQuickMatchRetry() {
     // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-            this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                this->::cMenuBase::mpMenu->::cMenuSupportMenu::moveMenu(static_cast<s32>(-1));
+    moveMenu();
+    if (mMenuRno[0] != 1) {
+        if (mMenuRno[0] == 0) {
+            mMenuRno[0] = 1;
+            if (mpMenu != nullptr) {
+                mpMenu->moveMenu(-1);
             }
-            if (this->isCancel(static_cast<u32>(5)) == false) {
-                if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                    if (this->::cMenuBase::mpMenu->mMenuNum != static_cast<u32>(0)) {
-                        if (this->isDecideIndex(this->::cMenuBase::mpMenu->::cMenuSupportMenu::getCursor(), static_cast<u32>(4), static_cast<u32>(20)) != false) {
-                            if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-                                if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-                                    if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
+            if (!isCancel(5u)) {
+                if (mpMenu != nullptr) {
+                    if (mpMenu->mMenuNum != 0) {
+                        if (isDecideIndex(mpMenu->getCursor(), 4u, 20u)) {
+                            if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+                                if (mpList == nullptr) {
+                                    if (mpMenu != nullptr) {
                                         // inferred: a temporary for the result of the call at 0xff4c2, used twice; no DWARF local holds it
-                                        s32 t0 = this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                        if (t0 != static_cast<s32>(1)) {
-                                            if (t0 == static_cast<s32>(0)) {
-                                                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                                return static_cast<nMenu::MENU_RET>(3);
+                                        s32 t0 = mpMenu->getMenuId(-1);
+                                        if (t0 != 1) {
+                                            if (t0 == 0) {
+                                                static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                                return nMenu::MENU_RET_EXIT;
                                             } else {
-                                                return static_cast<nMenu::MENU_RET>(0);
+                                                return nMenu::MENU_RET_CONTINUE;
                                             }
                                         } else {
-                                            return static_cast<nMenu::MENU_RET>(2);
+                                            return nMenu::MENU_RET_CANCEL;
                                         }
                                     } else {
-                                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                        return static_cast<nMenu::MENU_RET>(3);
+                                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                        return nMenu::MENU_RET_EXIT;
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0xff4c2, used twice; no DWARF local holds it
-                                    s32 t0 = this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                    if (t0 != static_cast<s32>(1)) {
-                                        if (t0 == static_cast<s32>(0)) {
-                                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                            return static_cast<nMenu::MENU_RET>(3);
+                                    s32 t0 = mpList->getMenuId(-1);
+                                    if (t0 != 1) {
+                                        if (t0 == 0) {
+                                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                            return nMenu::MENU_RET_EXIT;
                                         } else {
-                                            return static_cast<nMenu::MENU_RET>(0);
+                                            return nMenu::MENU_RET_CONTINUE;
                                         }
                                     } else {
-                                        return static_cast<nMenu::MENU_RET>(2);
+                                        return nMenu::MENU_RET_CANCEL;
                                     }
                                 }
                             } else {
-                                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                return static_cast<nMenu::MENU_RET>(3);
+                                static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                return nMenu::MENU_RET_EXIT;
                             }
                         } else {
-                            return static_cast<nMenu::MENU_RET>(0);
+                            return nMenu::MENU_RET_CONTINUE;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(3);
+                return nMenu::MENU_RET_EXIT;
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-            this->::cMenuBase::mpMenu->::cMenuSupportMenu::moveMenu(static_cast<s32>(-1));
+        if (mpMenu != nullptr) {
+            mpMenu->moveMenu(-1);
         }
-        if (this->isCancel(static_cast<u32>(5)) == false) {
-            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
-                if (this->::cMenuBase::mpMenu->mMenuNum != static_cast<u32>(0)) {
-                    if (this->isDecideIndex(this->::cMenuBase::mpMenu->::cMenuSupportMenu::getCursor(), static_cast<u32>(4), static_cast<u32>(20)) != false) {
-                        if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
-                            if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
-                                if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
+        if (!isCancel(5u)) {
+            if (mpMenu != nullptr) {
+                if (mpMenu->mMenuNum != 0) {
+                    if (isDecideIndex(mpMenu->getCursor(), 4u, 20u)) {
+                        if (sMenu::getInstance()->checkMoveMenu(static_cast<cMenuBase*>(this), false)) {
+                            if (mpList == nullptr) {
+                                if (mpMenu != nullptr) {
                                     // inferred: a temporary for the result of the call at 0xff4c2, used twice; no DWARF local holds it
-                                    s32 t0 = this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                    if (t0 != static_cast<s32>(1)) {
-                                        if (t0 == static_cast<s32>(0)) {
-                                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                            return static_cast<nMenu::MENU_RET>(3);
+                                    s32 t0 = mpMenu->getMenuId(-1);
+                                    if (t0 != 1) {
+                                        if (t0 == 0) {
+                                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                            return nMenu::MENU_RET_EXIT;
                                         } else {
-                                            return static_cast<nMenu::MENU_RET>(0);
+                                            return nMenu::MENU_RET_CONTINUE;
                                         }
                                     } else {
-                                        return static_cast<nMenu::MENU_RET>(2);
+                                        return nMenu::MENU_RET_CANCEL;
                                     }
                                 } else {
-                                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                    return static_cast<nMenu::MENU_RET>(3);
+                                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                    return nMenu::MENU_RET_EXIT;
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0xff4c2, used twice; no DWARF local holds it
-                                s32 t0 = this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(static_cast<s32>(-1));
-                                if (t0 != static_cast<s32>(1)) {
-                                    if (t0 == static_cast<s32>(0)) {
-                                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                                        return static_cast<nMenu::MENU_RET>(3);
+                                s32 t0 = mpList->getMenuId(-1);
+                                if (t0 != 1) {
+                                    if (t0 == 0) {
+                                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                                        return nMenu::MENU_RET_EXIT;
                                     } else {
-                                        return static_cast<nMenu::MENU_RET>(0);
+                                        return nMenu::MENU_RET_CONTINUE;
                                     }
                                 } else {
-                                    return static_cast<nMenu::MENU_RET>(2);
+                                    return nMenu::MENU_RET_CANCEL;
                                 }
                             }
                         } else {
-                            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::startQuickMatch(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getLastQuickType(), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mQuickPartySetting);
-                            return static_cast<nMenu::MENU_RET>(3);
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->startQuickMatch(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLastQuickType(), static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mQuickPartySetting);
+                            return nMenu::MENU_RET_EXIT;
                         }
                     } else {
-                        return static_cast<nMenu::MENU_RET>(0);
+                        return nMenu::MENU_RET_CONTINUE;
                     }
                 } else {
-                    return static_cast<nMenu::MENU_RET>(0);
+                    return nMenu::MENU_RET_CONTINUE;
                 }
             } else {
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             }
         } else {
-            return static_cast<nMenu::MENU_RET>(3);
+            return nMenu::MENU_RET_EXIT;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuQuickMatchRetry::MyDTI cMenuQuickMatchRetry::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a313-0x0013a34c (called at cMenuBase.cpp:5372)
@@ -13821,7 +14071,7 @@ nMenu::MENU_RET cMenuQuickMatchRetry::moveQuickMatchRetry() {
 // Address: 0x000ff290 - 0x000ff379 (233 bytes)
 MtObject* cMenuQuickMatchRetry::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuQuickMatchRetry;
+    return new (16u) cMenuQuickMatchRetry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13847,7 +14097,7 @@ const MtDTI& cMenuQuickMatchSelect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuQuickMatchSelect::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchSelect::DTI)->memAlloc(sz, align, ::cMenuQuickMatchSelect::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuQuickMatchSelect::DTI)->memAlloc(sz, align, cMenuQuickMatchSelect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -13862,7 +14112,7 @@ inline void* cMenuQuickMatchSelect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuQuickMatchSelect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuQuickMatchSelect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuQuickMatchSelect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -13891,15 +14141,15 @@ cMenuQuickMatchSelect::~cMenuQuickMatchSelect() {
 // Address: 0x000feca0 - 0x000fecf7 (87 bytes)
 void cMenuQuickMatchSelect::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUINews != static_cast<uGUINewspaper*>(nullptr)) {
-        this->mpGUINews->kill();
-        this->mpGUINews = static_cast<uGUINewspaper*>(nullptr);
+    if (mpGUINews != nullptr) {
+        mpGUINews->kill();
+        mpGUINews = nullptr;
     }
-    if (this->mpGUIAreaInfo != static_cast<uGUIMenuAreaInfo*>(nullptr)) {
-        this->mpGUIAreaInfo->kill();
-        this->mpGUIAreaInfo = static_cast<uGUIMenuAreaInfo*>(nullptr);
+    if (mpGUIAreaInfo != nullptr) {
+        mpGUIAreaInfo->kill();
+        mpGUIAreaInfo = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x000fd9f0 - 0x000fda62 (114 bytes)
@@ -13927,21 +14177,21 @@ __attribute__((weak)) void cMenuQuickMatchSelect::updatePtr() {
 // Address: 0x000fede0 - 0x000fee4f (111 bytes)
 void cMenuQuickMatchSelect::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId == static_cast<s32>(1)) {
-        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableMenu_Newspaper() == false) {
-            pParts->attr = static_cast<u32>(1);
-            pParts->param = static_cast<u32>(3);
+    if (menuId == 1) {
+        if (!sQuestManagerExt::getInstance()->isEnableMenu_Newspaper()) {
+            pParts->attr = 1;
+            pParts->param = 3;
         }
     } else {
-        if (menuId == static_cast<s32>(0)) {
-            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isOrderMyMainQuest() != false) {
-                if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isOrderedSoloMainQuest() != false) {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(2);
+        if (menuId == 0) {
+            if (sQuestManagerExt::getInstance()->isOrderMyMainQuest()) {
+                if (sQuestManagerExt::getInstance()->isOrderedSoloMainQuest()) {
+                    pParts->attr = 1;
+                    pParts->param = 2;
                 }
             } else {
-                pParts->attr = static_cast<u32>(1);
-                pParts->param = static_cast<u32>(1);
+                pParts->attr = 1;
+                pParts->param = 1;
             }
         }
     }
@@ -13956,6 +14206,8 @@ __attribute__((weak)) void cMenuQuickMatchSelect::setDisableMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuQuickMatchSelect::MyDTI cMenuQuickMatchSelect::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a2a1-0x0013a2da (called at cMenuBase.cpp:4711)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a2a1-0x0013a2da (called at cMenuBase.h:1229)
@@ -13964,7 +14216,7 @@ __attribute__((weak)) void cMenuQuickMatchSelect::setDisableMenu() {
 // Address: 0x000fd890 - 0x000fd979 (233 bytes)
 MtObject* cMenuQuickMatchSelect::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuQuickMatchSelect;
+    return new (16u) cMenuQuickMatchSelect;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13990,7 +14242,7 @@ const MtDTI& cMenuReadyCheck::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuReadyCheck::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuReadyCheck::DTI)->memAlloc(sz, align, ::cMenuReadyCheck::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuReadyCheck::DTI)->memAlloc(sz, align, cMenuReadyCheck::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14005,7 +14257,7 @@ inline void* cMenuReadyCheck::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuReadyCheck::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuReadyCheck::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuReadyCheck::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14034,8 +14286,8 @@ cMenuReadyCheck::~cMenuReadyCheck() {
 // Address: 0x00126670 - 0x0012669d (45 bytes)
 void cMenuReadyCheck::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::endReadyAction();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->endReadyAction();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x00125980 - 0x00125a83 (259 bytes)
@@ -14052,9 +14304,9 @@ __attribute__((weak)) void cMenuReadyCheck::initReadyCheck(u32 type) {
 // Address: 0x00125a90 - 0x00125ac1 (49 bytes)
 nMenu::MENU_RET cMenuReadyCheck::moveReadyCheck() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    nMenu::MENU_RET ret = this->::cMenuReadyCheck::moveReadyCheckCore();
-    if (ret == static_cast<nMenu::MENU_RET>(2)) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::requestJumpLobbyNoParty();
+    nMenu::MENU_RET ret = moveReadyCheckCore();
+    if (ret == nMenu::MENU_RET_CANCEL) {
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->requestJumpLobbyNoParty();
     }
     return ret;
 }
@@ -14063,7 +14315,7 @@ nMenu::MENU_RET cMenuReadyCheck::moveReadyCheck() {
 bool cMenuReadyCheck::isReadyWait() {
     // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cMenuBase::mMenuRno[0] == static_cast<int>(6);
+    return mMenuRno[0] == 6;
 }
 
 // Address: 0x00125ad0 - 0x00126404 (2356 bytes)
@@ -14092,35 +14344,35 @@ void cMenuReadyCheck::setDisableMenu() {
     // DWARF local not rendered: MT_CTSTR err_msg;
     // DWARF local not rendered: bool isMask;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
-        if (this->::cMenuBase::mMenuNum != static_cast<u32>(0)) {
+    if (mpGUISystemMsg != nullptr) {
+        if (mMenuNum != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x12645b, used twice; no DWARF local holds it
-                bool t0 = ::sMenu::getInstance()->::sMenu::isMaskMenu(this->::cMenuBase::mpMenuParts, static_cast<u32>(this->::cMenuBase::mpMenuList[i0_3]));
-                this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::setChoiceEnable(i0_3, t0 == false, static_cast<s32>(-1));
-                if ((t0 == false) == false) {
-                    if (this->::cMenuBase::mpMenuParts[this->::cMenuBase::mpMenuList[i0_3]].param == static_cast<u32>(1)) {
+                bool t0 = sMenu::getInstance()->isMaskMenu(mpMenuParts, static_cast<u32>(mpMenuList[i0_3]));
+                mpGUISystemMsg->setChoiceEnable(i0_3, !t0, -1);
+                if (!!t0) {
+                    if (mpMenuParts[mpMenuList[i0_3]].param == 1) {
                         // inferred: a temporary for the result of the call at 0x1264ae, used once; no DWARF local holds it
-                        MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(227));
-                        this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::setChoiceErrorMsg(i0_3, t1, static_cast<s32>(-1));
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->::cMenuBase::mMenuNum) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonDialog(), 227u);
+                        mpGUISystemMsg->setChoiceErrorMsg(i0_3, t1, -1);
+                        if ((i0_3 + 1u) < mMenuNum) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     } else {
-                        this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::setChoiceErrorMsg(i0_3, "", static_cast<s32>(-1));
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->::cMenuBase::mMenuNum) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        mpGUISystemMsg->setChoiceErrorMsg(i0_3, "", -1);
+                        if ((i0_3 + 1u) < mMenuNum) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     }
                 } else {
-                    this->::cMenuBase::mpGUISystemMsg->::uGUISystemMsg::setChoiceErrorMsg(i0_3, "", static_cast<s32>(-1));
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->::cMenuBase::mMenuNum) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    mpGUISystemMsg->setChoiceErrorMsg(i0_3, "", -1);
+                    if ((i0_3 + 1u) < mMenuNum) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -14144,6 +14396,8 @@ __attribute__((weak)) void cMenuReadyCheck::initEntryFlow() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuReadyCheck::MyDTI cMenuReadyCheck::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b31b-0x0013b354 (called at cMenuBase.cpp:32569)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b31b-0x0013b354 (called at cMenuBase.h:7145)
@@ -14152,7 +14406,7 @@ __attribute__((weak)) void cMenuReadyCheck::initEntryFlow() {
 // Address: 0x00125820 - 0x00125909 (233 bytes)
 MtObject* cMenuReadyCheck::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuReadyCheck;
+    return new (16u) cMenuReadyCheck;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14169,7 +14423,7 @@ const MtDTI& cMenuRecentList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cMenuRecentList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cMenuRecentList::DTI);
+    return MtMemoryAllocator::getAllocator(cMenuRecentList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14178,7 +14432,7 @@ inline MtAllocator* cMenuRecentList::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuRecentList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuRecentList::DTI)->memAlloc(sz, align, ::cMenuRecentList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuRecentList::DTI)->memAlloc(sz, align, cMenuRecentList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14193,7 +14447,7 @@ inline void* cMenuRecentList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuRecentList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuRecentList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuRecentList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14221,17 +14475,16 @@ cMenuRecentList::~cMenuRecentList() {
 
 // Address: 0x0012ebb0 - 0x0012ec63 (179 bytes)
 void cMenuRecentList::initRecentList(uGUIBase* pRefGUI) {
-    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x16a4
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuCursor[0] = static_cast<int>(0);
-    this->::cMenuBase::mMenuCursor[1] = static_cast<int>(0);
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::mpMenuList = static_cast<s32*>(::cMenuRecentList::getAllocator()->memAlloc(static_cast<size_t>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->mRecentListMax * static_cast<u32>(4)), static_cast<u32>(16)));
-    this->mpSortList = static_cast<u32*>(::cMenuRecentList::getAllocator()->memAlloc(static_cast<size_t>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->mRecentListMax * static_cast<u32>(4)), static_cast<u32>(16)));
-    this->::cMenuRecentList::createSortList();
-    this->setRefGUI(pRefGUI, true);
+    initMenu();
+    mMenuCursor[0] = 0;
+    mMenuCursor[1] = 0;
+    mMenuRno[0] = 0;
+    mpMenuList = static_cast<s32*>(cMenuRecentList::getAllocator()->memAlloc(static_cast<size_t>(static_cast<sNetworkExt*>(sNetwork::getInstance())->mRecentListMax) * 4, 16u));
+    mpSortList = static_cast<u32*>(cMenuRecentList::getAllocator()->memAlloc(static_cast<size_t>(static_cast<sNetworkExt*>(sNetwork::getInstance())->mRecentListMax) * 4, 16u));
+    createSortList();
+    setRefGUI(pRefGUI, true);
 }
 
 // Address: 0x0012ed80 - 0x0012f11d (925 bytes)
@@ -14248,11 +14501,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuRecentList::moveRecentList() {
 // Address: 0x0012f150 - 0x0012f1ad (93 bytes)
 void cMenuRecentList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cMenuRecentList::getAllocator()->memFree(static_cast<void*>(this->mpSortList));
-    ::cMenuRecentList::getAllocator()->memFree(static_cast<void*>(this->::cMenuBase::mpMenuList));
-    this->mpSortList = static_cast<u32*>(nullptr);
-    this->::cMenuBase::mpMenuList = static_cast<s32*>(nullptr);
-    this->::cMenuBase::exitMenu();
+    cMenuRecentList::getAllocator()->memFree(static_cast<void*>(mpSortList));
+    cMenuRecentList::getAllocator()->memFree(static_cast<void*>(mpMenuList));
+    mpSortList = nullptr;
+    mpMenuList = nullptr;
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -14298,6 +14551,8 @@ __attribute__((weak)) void cMenuRecentList::createSortList() {
 //   in cMenuRecentList::moveRecentList at 0x0012eee0-0x0012ef36 (called at cMenuBase.cpp:38082)
 // void cMenuRecentList::createMenuList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuRecentList::MyDTI cMenuRecentList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b672-0x0013b6ab (called at cMenuBase.cpp:38022)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b672-0x0013b6ab (called at cMenuBase.h:8322)
@@ -14306,7 +14561,7 @@ __attribute__((weak)) void cMenuRecentList::createSortList() {
 // Address: 0x0012ea50 - 0x0012eb39 (233 bytes)
 MtObject* cMenuRecentList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuRecentList;
+    return new (16u) cMenuRecentList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14390,6 +14645,8 @@ __attribute__((weak)) void cMenuRemoveFriend::exitMenu() {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuRemoveFriend::MyDTI cMenuRemoveFriend::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af52-0x0013af8b (called at cMenuBase.cpp:28032)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013af52-0x0013af8b (called at cMenuBase.h:5815)
@@ -14424,7 +14681,7 @@ const MtDTI& cMenuRentalPawnList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuRentalPawnList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuRentalPawnList::DTI)->memAlloc(sz, align, ::cMenuRentalPawnList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuRentalPawnList::DTI)->memAlloc(sz, align, cMenuRentalPawnList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14439,7 +14696,7 @@ inline void* cMenuRentalPawnList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuRentalPawnList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuRentalPawnList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuRentalPawnList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14504,6 +14761,8 @@ __attribute__((weak)) void cMenuRentalPawnList::checkMenuPartsParam(cMenuSupport
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuRentalPawnList::MyDTI cMenuRentalPawnList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a430-0x0013a469 (called at cMenuBase.cpp:6692)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a430-0x0013a469 (called at cMenuBase.h:1731)
@@ -14512,7 +14771,7 @@ __attribute__((weak)) void cMenuRentalPawnList::checkMenuPartsParam(cMenuSupport
 // Address: 0x00100570 - 0x00100659 (233 bytes)
 MtObject* cMenuRentalPawnList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuRentalPawnList;
+    return new (16u) cMenuRentalPawnList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14538,7 +14797,7 @@ const MtDTI& cMenuResetCraftPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuResetCraftPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuResetCraftPoint::DTI)->memAlloc(sz, align, ::cMenuResetCraftPoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuResetCraftPoint::DTI)->memAlloc(sz, align, cMenuResetCraftPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14553,7 +14812,7 @@ inline void* cMenuResetCraftPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuResetCraftPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuResetCraftPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuResetCraftPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14592,6 +14851,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuResetCraftPoint::moveResetCraftPoint(
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuResetCraftPoint::MyDTI cMenuResetCraftPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b91e-0x0013b957 (called at cMenuBase.cpp:41452)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b91e-0x0013b957 (called at cMenuBase.h:9314)
@@ -14600,7 +14861,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuResetCraftPoint::moveResetCraftPoint(
 // Address: 0x00133500 - 0x001335e9 (233 bytes)
 MtObject* cMenuResetCraftPoint::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuResetCraftPoint;
+    return new (16u) cMenuResetCraftPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14626,7 +14887,7 @@ const MtDTI& cMenuSearchFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuSearchFilter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSearchFilter::DTI)->memAlloc(sz, align, ::cMenuSearchFilter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSearchFilter::DTI)->memAlloc(sz, align, cMenuSearchFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14641,7 +14902,7 @@ inline void* cMenuSearchFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSearchFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSearchFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSearchFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14693,35 +14954,35 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSearchFilter::moveSearchFilter() {
 // Address: 0x000fc040 - 0x000fc0d8 (152 bytes)
 void cMenuSearchFilter::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mExcludeList.mLength != 0) {
         // inferred: the value the loop at 0xfc060 carries; no location-less local in scope fits
-        u32 v0_0 = this->mExcludeList.::MtArray::mLength;
+        u32 v0_0 = mExcludeList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mExcludeList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mExcludeList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mExcludeList.::MtArray::mLength) {
-                    v0_0 = this->mExcludeList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mExcludeList.mpArray[i0_3] != nullptr) {
+                delete mExcludeList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mExcludeList.mLength) {
+                    v0_0 = mExcludeList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mExcludeList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mExcludeList.::MtArray::mpArray));
+    if (mExcludeList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mExcludeList.mpArray));
     }
-    this->mExcludeList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mExcludeList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mExcludeList.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    mExcludeList.mpArray = nullptr;
+    mExcludeList.mBufsiz = 0;
+    mExcludeList.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (27 bytes)
@@ -14764,36 +15025,38 @@ __attribute__((weak)) void cMenuSearchFilter::initExcludeList() {
 // Address: 0x000fc0f0 - 0x000fc156 (102 bytes)
 void cMenuSearchFilter::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(42)) {
+    if (menuId != 42) {
         return;
     }
-    if (this->mType == static_cast<s32>(5)) {
-        if (this->mSearchTab == static_cast<u32>(1)) {
-            if (this->mpSetting->mCharacterName.mFirstName[0] != static_cast<char>(0)) {
-                if (this->mpSetting->mCharacterName.mLastName[0] == static_cast<char>(0)) {
-                    if ((this->mpSetting->mCommunity & static_cast<u8>(15)) == static_cast<u8>(0)) {
-                        pParts->attr = static_cast<u32>(1);
-                        pParts->param = static_cast<u32>(1);
+    if (mType == 5) {
+        if (mSearchTab == 1) {
+            if (mpSetting->mCharacterName.mFirstName[0] != 0) {
+                if (mpSetting->mCharacterName.mLastName[0] == 0) {
+                    if ((mpSetting->mCommunity & 15) == 0) {
+                        pParts->attr = 1;
+                        pParts->param = 1;
                     }
                 }
             } else {
-                if ((this->mpSetting->mCommunity & static_cast<u8>(15)) == static_cast<u8>(0)) {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(1);
+                if ((mpSetting->mCommunity & 15) == 0) {
+                    pParts->attr = 1;
+                    pParts->param = 1;
                 }
             }
         }
     } else {
-        if (this->mType == static_cast<s32>(3)) {
-            if (this->mpSetting->mCharacterName.mFirstName[0] == static_cast<char>(0)) {
-                if (this->mpSetting->mCharacterName.mLastName[0] == static_cast<char>(0)) {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(1);
+        if (mType == 3) {
+            if (mpSetting->mCharacterName.mFirstName[0] == 0) {
+                if (mpSetting->mCharacterName.mLastName[0] == 0) {
+                    pParts->attr = 1;
+                    pParts->param = 1;
                 }
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSearchFilter::MyDTI cMenuSearchFilter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a14b-0x0013a184 (called at cMenuBase.cpp:2667)
@@ -14803,7 +15066,7 @@ void cMenuSearchFilter::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU
 // Address: 0x000fa7d0 - 0x000fa8f1 (289 bytes)
 MtObject* cMenuSearchFilter::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuSearchFilter;
+    return new (16u) cMenuSearchFilter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14829,7 +15092,7 @@ const MtDTI& cMenuServerList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuServerList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuServerList::DTI)->memAlloc(sz, align, ::cMenuServerList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuServerList::DTI)->memAlloc(sz, align, cMenuServerList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -14844,7 +15107,7 @@ inline void* cMenuServerList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuServerList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuServerList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuServerList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -14890,7 +15153,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuServerList::moveServerList() {
 // Address: 0x00125330 - 0x00125335 (5 bytes)
 void cMenuServerList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (17 bytes)
@@ -14909,14 +15172,14 @@ s32 cMenuServerList::getServerIndex(u32 i) {
     // DWARF local not rendered: s32 serverIndex;
     // DWARF local not rendered: u32 sortIndex;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->::cMenuBase::mpMenuList != static_cast<s32*>(nullptr)) {
-        if (static_cast<unsigned int>((this->::cMenuBase::mMenuCursor[1] * static_cast<int>(256)) + this->::cMenuBase::mpMenuList[i]) < this->mSortListCount) {
-            return static_cast<s32>(this->mSortList[static_cast<unsigned int>((this->::cMenuBase::mMenuCursor[1] * static_cast<int>(256)) + this->::cMenuBase::mpMenuList[i])]);
+    if (mpMenuList != nullptr) {
+        if (static_cast<unsigned int>((mMenuCursor[1] * 256) + mpMenuList[i]) < mSortListCount) {
+            return static_cast<s32>(mSortList[static_cast<unsigned int>((mMenuCursor[1] * 256) + mpMenuList[i])]);
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -14976,6 +15239,8 @@ __attribute__((weak)) void cMenuServerList::createSortList() {
 //   in cMenuServerList::moveServerList at 0x0012461e-0x001246b4 (called at cMenuBase.cpp:31284)
 // void cMenuServerList::createMenuList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuServerList::MyDTI cMenuServerList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b270-0x0013b2a9 (called at cMenuBase.cpp:31190)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b270-0x0013b2a9 (called at cMenuBase.h:6839)
@@ -14984,7 +15249,7 @@ __attribute__((weak)) void cMenuServerList::createSortList() {
 // Address: 0x00123f90 - 0x00124079 (233 bytes)
 MtObject* cMenuServerList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuServerList;
+    return new (16u) cMenuServerList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15010,7 +15275,7 @@ const MtDTI& cMenuSetJob::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuSetJob::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSetJob::DTI)->memAlloc(sz, align, ::cMenuSetJob::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSetJob::DTI)->memAlloc(sz, align, cMenuSetJob::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -15025,7 +15290,7 @@ inline void* cMenuSetJob::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSetJob::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSetJob::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSetJob::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15072,7 +15337,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSetJob::moveSetJob() {
 // Address: 0x00121f50 - 0x00121f55 (5 bytes)
 void cMenuSetJob::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (4 bytes)
@@ -15109,23 +15374,23 @@ void cMenuSetJob::exitMenu() {
 void cMenuSetJob::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (static_cast<unsigned int>(menuId) <= static_cast<unsigned int>(13)) {
-        if (((static_cast<unsigned long>(12289) >> static_cast<unsigned long>(static_cast<unsigned int>(menuId) & static_cast<unsigned int>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
-            if (this->mSetting != false) {
-                if ((this->mAttr & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                    pParts->attr = static_cast<u32>(1);
+    if (static_cast<unsigned int>(menuId) <= 13) {
+        if (((12289ul >> static_cast<unsigned long>(static_cast<unsigned int>(menuId) & 31)) & 1ul) == 0) {
+            if (mSetting) {
+                if ((mAttr & 4u) != 0) {
+                    pParts->attr = 1;
                 }
             } else {
-                pParts->attr = static_cast<u32>(1);
+                pParts->attr = 1;
             }
         }
     } else {
-        if (this->mSetting != false) {
-            if ((this->mAttr & static_cast<u32>(4)) != static_cast<u32>(0)) {
-                pParts->attr = static_cast<u32>(1);
+        if (mSetting) {
+            if ((mAttr & 4u) != 0) {
+                pParts->attr = 1;
             }
         } else {
-            pParts->attr = static_cast<u32>(1);
+            pParts->attr = 1;
         }
     }
 }
@@ -15136,6 +15401,8 @@ void cMenuSetJob::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS
 // No out-of-line body: no code in the ELF
 // s32 cMenuSetJob::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSetJob::MyDTI cMenuSetJob::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b036-0x0013b06f (called at cMenuBase.cpp:29073)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b036-0x0013b06f (called at cMenuBase.h:6136)
@@ -15144,7 +15411,7 @@ void cMenuSetJob::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS
 // Address: 0x00121700 - 0x001217e9 (233 bytes)
 MtObject* cMenuSetJob::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuSetJob;
+    return new (16u) cMenuSetJob;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15170,7 +15437,7 @@ const MtDTI& cMenuSetLevel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuSetLevel::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSetLevel::DTI)->memAlloc(sz, align, ::cMenuSetLevel::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSetLevel::DTI)->memAlloc(sz, align, cMenuSetLevel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -15185,7 +15452,7 @@ inline void* cMenuSetLevel::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSetLevel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSetLevel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSetLevel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15220,7 +15487,7 @@ cMenuSetLevel::~cMenuSetLevel() {
 // Address: 0x00121560 - 0x00121565 (5 bytes)
 void cMenuSetLevel::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -15247,6 +15514,8 @@ void cMenuSetLevel::exitMenu() {
 // No out-of-line body: no code in the ELF
 // s32 cMenuSetLevel::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSetLevel::MyDTI cMenuSetLevel::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013afc4-0x0013affd (called at cMenuBase.cpp:28281)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013afc4-0x0013affd (called at cMenuBase.h:5919)
@@ -15255,7 +15524,7 @@ void cMenuSetLevel::exitMenu() {
 // Address: 0x001213e0 - 0x001214c9 (233 bytes)
 MtObject* cMenuSetLevel::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuSetLevel;
+    return new (16u) cMenuSetLevel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15281,7 +15550,7 @@ const MtDTI& cMenuSetLimitPreset::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuSetLimitPreset::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSetLimitPreset::DTI)->memAlloc(sz, align, ::cMenuSetLimitPreset::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSetLimitPreset::DTI)->memAlloc(sz, align, cMenuSetLimitPreset::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -15296,7 +15565,7 @@ inline void* cMenuSetLimitPreset::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSetLimitPreset::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSetLimitPreset::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSetLimitPreset::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15340,7 +15609,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSetLimitPreset::moveSetLimitPreset() 
 // Address: 0x001216f0 - 0x001216f5 (5 bytes)
 void cMenuSetLimitPreset::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -15355,6 +15624,12 @@ void cMenuSetLimitPreset::exitMenu() {
 // No out-of-line body: no code in the ELF
 // s32 cMenuSetLimitPreset::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSetLimitPreset::MyDTI cMenuSetLimitPreset::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cMenuSetLimitPreset::stPreset cMenuSetLimitPreset::clanLevelPresetTbl[];
+
+// Not defined (no member-wise spelling: a class outside the bundle): const cMenuSetLimitPreset::stPreset cMenuSetLimitPreset::clanMemberPresetTbl[];
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013affd-0x0013b036 (called at cMenuBase.cpp:28777)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013affd-0x0013b036 (called at cMenuBase.h:6030)
@@ -15363,7 +15638,7 @@ void cMenuSetLimitPreset::exitMenu() {
 // Address: 0x00121570 - 0x00121659 (233 bytes)
 MtObject* cMenuSetLimitPreset::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuSetLimitPreset;
+    return new (16u) cMenuSetLimitPreset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15389,7 +15664,7 @@ const MtDTI& cMenuSimplePartyReq::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuSimplePartyReq::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuSimplePartyReq::DTI)->memAlloc(sz, align, ::cMenuSimplePartyReq::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuSimplePartyReq::DTI)->memAlloc(sz, align, cMenuSimplePartyReq::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -15404,7 +15679,7 @@ inline void* cMenuSimplePartyReq::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSimplePartyReq::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSimplePartyReq::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSimplePartyReq::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15447,41 +15722,43 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSimplePartyReq::moveSimplePartyReq() 
 void cMenuSimplePartyReq::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xfcd30 carries; no location-less local in scope fits
-    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-    if (v0_8->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
+    cNetGameServer* v0_8 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+    if (v0_8->mPartyListInfoVec.mLength != 0) {
         // inferred: the value the loop at 0xfcd30 carries; no location-less local in scope fits
-        u32 v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
+        u32 v0_0 = v0_8->mPartyListInfoVec.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mPartyListInfoVec.::MtArray::mLength) {
-                    v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (v0_8->mPartyListInfoVec.mpArray[i0_3] != nullptr) {
+                delete v0_8->mPartyListInfoVec.mpArray[i0_3];
+                if ((i0_3 + 1u) < v0_8->mPartyListInfoVec.mLength) {
+                    v0_0 = v0_8->mPartyListInfoVec.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (v0_8->mPartyListInfoVec.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPartyListInfoVec.::MtArray::mpArray));
+    if (v0_8->mPartyListInfoVec.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(v0_8->mPartyListInfoVec.mpArray));
     }
-    v0_8->mPartyListInfoVec.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    v0_8->mPartyListInfoVec.::MtArray::mBufsiz = static_cast<u32>(0);
-    v0_8->mPartyListInfoVec.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    v0_8->mPartyListInfoVec.mpArray = nullptr;
+    v0_8->mPartyListInfoVec.mBufsiz = 0;
+    v0_8->mPartyListInfoVec.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (153 bytes)
 //   in cMenuSimplePartyReq::moveSimplePartyReq at 0x000fc590-0x000fc61f, 0x000fc627-0x000fc631 (called at cMenuBase.cpp:3666)
 // u32 cMenuSimplePartyReq::selectReqParty();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSimplePartyReq::MyDTI cMenuSimplePartyReq::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a184-0x0013a1bd (called at cMenuBase.cpp:3599)
@@ -15491,7 +15768,7 @@ void cMenuSimplePartyReq::exitMenu() {
 // Address: 0x000fc160 - 0x000fc249 (233 bytes)
 MtObject* cMenuSimplePartyReq::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuSimplePartyReq;
+    return new (16u) cMenuSimplePartyReq;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15517,7 +15794,7 @@ const MtDTI& cMenuStartGameSession::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuStartGameSession::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuStartGameSession::DTI)->memAlloc(sz, align, ::cMenuStartGameSession::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuStartGameSession::DTI)->memAlloc(sz, align, cMenuStartGameSession::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -15532,7 +15809,7 @@ inline void* cMenuStartGameSession::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuStartGameSession::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuStartGameSession::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuStartGameSession::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15564,6 +15841,8 @@ cMenuStartGameSession::~cMenuStartGameSession() {
 // No out-of-line body: no code in the ELF
 // nMenu::MENU_RET cMenuStartGameSession::moveStartGameSession();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuStartGameSession::MyDTI cMenuStartGameSession::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a7c0-0x0013a7f9 (called at cMenuBase.cpp:9759)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a7c0-0x0013a7f9 (called at cMenuBase.h:2728)
@@ -15572,7 +15851,7 @@ cMenuStartGameSession::~cMenuStartGameSession() {
 // Address: 0x00105b60 - 0x00105c53 (243 bytes)
 MtObject* cMenuStartGameSession::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuStartGameSession;
+    return new (16u) cMenuStartGameSession;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15611,7 +15890,7 @@ const MtDTI& cMenuSubMenu::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuSubMenu::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuSubMenu::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuSubMenu::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -15639,21 +15918,21 @@ cMenuSubMenu::~cMenuSubMenu() {
 }
 
 // Address: 0x000f54b0 - 0x000f54fd (77 bytes)
-__attribute__((weak)) void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, MT_CTSTR pName, MT_CTSTR pLastName, MT_CTSTR pClanName) {
-    DDON_STUB("cMenuSubMenu::initSubMenu")
-    /* stub */
+void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, MT_CTSTR pName, MT_CTSTR pLastName, MT_CTSTR pClanName) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    initSubMenuCore(menuType, masterId, masterType, static_cast<cPawnListParam*>(nullptr), static_cast<CDataClientPartyListInfo*>(nullptr), pName, pLastName, pClanName, static_cast<CEntryMemberData*>(nullptr), static_cast<CClanScoutEntrySearchResult*>(nullptr), 0u, false);
 }
 
 // Address: 0x000f5450 - 0x000f54a2 (82 bytes)
 void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, u32 mSubId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuSubMenu::initSubMenuCore(menuType, masterId, masterType, static_cast<cPawnListParam*>(nullptr), static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<CEntryMemberData*>(nullptr), static_cast<CClanScoutEntrySearchResult*>(nullptr), mSubId, false);
+    initSubMenuCore(menuType, masterId, masterType, static_cast<cPawnListParam*>(nullptr), static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<CEntryMemberData*>(nullptr), static_cast<CClanScoutEntrySearchResult*>(nullptr), mSubId, false);
 }
 
 // Address: 0x001003b0 - 0x00100402 (82 bytes)
 void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, cPawnListParam* pPawnParam, bool posFix) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuSubMenu::initSubMenuCore(menuType, masterId, masterType, pPawnParam, static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<CEntryMemberData*>(nullptr), static_cast<CClanScoutEntrySearchResult*>(nullptr), static_cast<u32>(0), posFix);
+    initSubMenuCore(menuType, masterId, masterType, pPawnParam, static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<CEntryMemberData*>(nullptr), static_cast<CClanScoutEntrySearchResult*>(nullptr), 0u, posFix);
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (239 bytes)
@@ -15665,7 +15944,7 @@ void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, cPawn
 // Address: 0x001194a0 - 0x001194f1 (81 bytes)
 void cMenuSubMenu::initSubMenu(s32 menuType, u32 masterId, s32 masterType, CEntryMemberData* pEntryMember) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuSubMenu::initSubMenuCore(menuType, masterId, masterType, static_cast<cPawnListParam*>(nullptr), static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), pEntryMember, static_cast<CClanScoutEntrySearchResult*>(nullptr), static_cast<u32>(0), false);
+    initSubMenuCore(menuType, masterId, masterType, static_cast<cPawnListParam*>(nullptr), static_cast<CDataClientPartyListInfo*>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), pEntryMember, static_cast<CClanScoutEntrySearchResult*>(nullptr), 0u, false);
 }
 
 // Address: 0x00119500 - 0x00119584 (132 bytes)
@@ -15987,38 +16266,38 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x11a849; no location-less local in scope fits
     cContextInstHm* v4_13;
-    if (charId == static_cast<u32>(0)) {
-        if (pawnId == static_cast<u32>(0)) {
-            return static_cast<uDDOModel*>(nullptr);
+    if (charId == 0) {
+        if (pawnId == 0) {
+            return nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i3_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x11a80a, used 4 times; no DWARF local holds it
-                cContextInstHm* t2 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i3_3, true);
-                if (t2 != static_cast<cContextInstHm*>(nullptr)) {
-                    if (::cContextInterface::getHumanType(t2) == static_cast<u8>(1)) {
-                        if (pawnId != ::cContextInterface::getPawnId(t2)) {
-                            if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                                return static_cast<uDDOModel*>(nullptr);
+                cContextInstHm* t2 = sContextManager::getInstance()->getContextPartyPlayerIndex(i3_3, true);
+                if (t2 != nullptr) {
+                    if (cContextInterface::getHumanType(t2) == 1) {
+                        if (pawnId != cContextInterface::getPawnId(t2)) {
+                            if ((i3_3 + 1u) > 7u) {
+                                return nullptr;
                             } else {
-                                i3_3 += static_cast<unsigned int>(1);
+                                i3_3 += 1u;
                             }
                         } else {
                             v4_13 = t2;
                             break;
                         }
                     } else {
-                        if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                            return static_cast<uDDOModel*>(nullptr);
+                        if ((i3_3 + 1u) > 7u) {
+                            return nullptr;
                         } else {
-                            i3_3 += static_cast<unsigned int>(1);
+                            i3_3 += 1u;
                         }
                     }
                 } else {
-                    if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                        return static_cast<uDDOModel*>(nullptr);
+                    if ((i3_3 + 1u) > 7u) {
+                        return nullptr;
                     } else {
-                        i3_3 += static_cast<unsigned int>(1);
+                        i3_3 += 1u;
                     }
                 }
             }
@@ -16026,61 +16305,61 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
     } else {
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i2_11;
-        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
-            i2_11 = static_cast<unsigned int>(0);
+        if (!static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+            i2_11 = 0;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x11a75b, used 4 times; no DWARF local holds it
-                cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPlayerIndex(i0_3, true);
-                if (t0 != static_cast<cContextInstHm*>(nullptr)) {
-                    if (::cContextInterface::getHumanType(t0) == static_cast<u8>(0)) {
-                        if (charId == ::cContextInterface::getPlCharacterId(t0)) {
+                cContextInstHm* t0 = sContextManager::getInstance()->getContextPlayerIndex(i0_3, true);
+                if (t0 != nullptr) {
+                    if (cContextInterface::getHumanType(t0) == 0) {
+                        if (charId == cContextInterface::getPlCharacterId(t0)) {
                             v4_13 = t0;
-                            return ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(v4_13);
+                            return sPlayerManager::getInstance()->getPlayer(v4_13);
                         }
                     }
                 }
-                if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(99)) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) <= 99u) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
-            i2_11 = static_cast<unsigned int>(0);
+            i2_11 = 0;
         }
         for (;;) {
             // inferred: a temporary for the result of the call at 0x11a7a2, used 4 times; no DWARF local holds it
-            cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i2_11, true);
-            if (t1 != static_cast<cContextInstHm*>(nullptr)) {
-                if (::cContextInterface::getHumanType(t1) == static_cast<u8>(0)) {
-                    if (charId != ::cContextInterface::getPlCharacterId(t1)) {
-                        if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                            return static_cast<uDDOModel*>(nullptr);
+            cContextInstHm* t1 = sContextManager::getInstance()->getContextPartyPlayerIndex(i2_11, true);
+            if (t1 != nullptr) {
+                if (cContextInterface::getHumanType(t1) == 0) {
+                    if (charId != cContextInterface::getPlCharacterId(t1)) {
+                        if ((i2_11 + 1u) > 7u) {
+                            return nullptr;
                         } else {
-                            i2_11 += static_cast<unsigned int>(1);
+                            i2_11 += 1u;
                         }
                     } else {
                         v4_13 = t1;
                         break;
                     }
                 } else {
-                    if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                        return static_cast<uDDOModel*>(nullptr);
+                    if ((i2_11 + 1u) > 7u) {
+                        return nullptr;
                     } else {
-                        i2_11 += static_cast<unsigned int>(1);
+                        i2_11 += 1u;
                     }
                 }
             } else {
-                if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
-                    return static_cast<uDDOModel*>(nullptr);
+                if ((i2_11 + 1u) > 7u) {
+                    return nullptr;
                 } else {
-                    i2_11 += static_cast<unsigned int>(1);
+                    i2_11 += 1u;
                 }
             }
         }
     }
-    return ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(v4_13);
+    return sPlayerManager::getInstance()->getPlayer(v4_13);
 }
 
 // No out-of-line body: 7 inlined copies in 1 function (197 bytes)
@@ -16089,6 +16368,8 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
 //   in cMenuSubMenu::checkMenuPartsParam at 0x0011ee6c-0x0011ee8b (called at cMenuBase.cpp:26066)
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // bool cMenuSubMenu::isOnline();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuSubMenu::MyDTI cMenuSubMenu::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013adc3-0x0013adfc (called at cMenuBase.cpp:22533)
@@ -16124,7 +16405,7 @@ const MtDTI& cMenuTraining::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuTraining::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuTraining::DTI)->memAlloc(sz, align, ::cMenuTraining::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuTraining::DTI)->memAlloc(sz, align, cMenuTraining::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16139,7 +16420,7 @@ inline void* cMenuTraining::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuTraining::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuTraining::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuTraining::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16197,6 +16478,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuTraining::moveMenuTraining() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuTraining::MyDTI cMenuTraining::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bb1f-0x0013bb58 (called at cMenuBase.cpp:43147)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013bb1f-0x0013bb58 (called at cMenuBase.h:9876)
@@ -16205,7 +16488,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuTraining::moveMenuTraining() {
 // Address: 0x00135540 - 0x00135629 (233 bytes)
 MtObject* cMenuTraining::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuTraining;
+    return new (16u) cMenuTraining;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16231,7 +16514,7 @@ const MtDTI& cMenuTreasuresLot::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuTreasuresLot::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuTreasuresLot::DTI)->memAlloc(sz, align, ::cMenuTreasuresLot::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuTreasuresLot::DTI)->memAlloc(sz, align, cMenuTreasuresLot::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16246,7 +16529,7 @@ inline void* cMenuTreasuresLot::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuTreasuresLot::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuTreasuresLot::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuTreasuresLot::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16302,25 +16585,25 @@ __attribute__((weak)) void cMenuTreasuresLot::updatePtr() {
 // Address: 0x00135030 - 0x001350e2 (178 bytes)
 void cMenuTreasuresLot::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setMoveQuestActive(true);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
-    if (this->mpGUIGPShopDialog != static_cast<uGUIGPShopDialog*>(nullptr)) {
-        this->mpGUIGPShopDialog->kill();
-        this->mpGUIGPShopDialog = static_cast<uGUIGPShopDialog*>(nullptr);
+    static_cast<sGUIExt*>(sGUI::getInstance())->setMoveQuestActive(true);
+    static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
+    if (mpGUIGPShopDialog != nullptr) {
+        mpGUIGPShopDialog->kill();
+        mpGUIGPShopDialog = nullptr;
     }
-    if (this->mpGUIBoughtBox != static_cast<uGUIBoughtBox*>(nullptr)) {
-        this->mpGUIBoughtBox->kill();
-        this->mpGUIBoughtBox = static_cast<uGUIBoughtBox*>(nullptr);
+    if (mpGUIBoughtBox != nullptr) {
+        mpGUIBoughtBox->kill();
+        mpGUIBoughtBox = nullptr;
     }
-    if (this->mpGUITopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-        this->mpGUITopSel->kill();
-        this->mpGUITopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if (mpGUITopSel != nullptr) {
+        mpGUITopSel->kill();
+        mpGUITopSel = nullptr;
     }
-    if (this->mpGUIGPShop != static_cast<uGUIGPShop*>(nullptr)) {
-        this->mpGUIGPShop->kill();
-        this->mpGUIGPShop = static_cast<uGUIGPShop*>(nullptr);
+    if (mpGUIGPShop != nullptr) {
+        mpGUIGPShop->kill();
+        mpGUIGPShop = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 7 inlined copies in 1 function (126 bytes)
@@ -16337,6 +16620,8 @@ void cMenuTreasuresLot::exitMenu() {
 //   and 10 more (every copy is in <bundle>.inlined.json)
 // void cMenuTreasuresLot::setRno(s32 rno, bool isInit);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuTreasuresLot::MyDTI cMenuTreasuresLot::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ba3b-0x0013ba74 (called at cMenuBase.cpp:42340)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ba3b-0x0013ba74 (called at cMenuBase.h:9626)
@@ -16345,7 +16630,7 @@ void cMenuTreasuresLot::exitMenu() {
 // Address: 0x00134260 - 0x00134349 (233 bytes)
 MtObject* cMenuTreasuresLot::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuTreasuresLot;
+    return new (16u) cMenuTreasuresLot;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16371,7 +16656,7 @@ const MtDTI& cMenuTreasuresLotAnnounce::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuTreasuresLotAnnounce::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuTreasuresLotAnnounce::DTI)->memAlloc(sz, align, ::cMenuTreasuresLotAnnounce::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuTreasuresLotAnnounce::DTI)->memAlloc(sz, align, cMenuTreasuresLotAnnounce::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16386,7 +16671,7 @@ inline void* cMenuTreasuresLotAnnounce::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuTreasuresLotAnnounce::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuTreasuresLotAnnounce::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuTreasuresLotAnnounce::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16423,8 +16708,10 @@ cMenuTreasuresLotAnnounce::~cMenuTreasuresLotAnnounce() {
 // Address: 0x00135250 - 0x00135255 (5 bytes)
 void cMenuTreasuresLotAnnounce::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuTreasuresLotAnnounce::MyDTI cMenuTreasuresLotAnnounce::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013ba74-0x0013baad (called at cMenuBase.cpp:42793)
@@ -16434,7 +16721,7 @@ void cMenuTreasuresLotAnnounce::exitMenu() {
 // Address: 0x001350f0 - 0x001351d9 (233 bytes)
 MtObject* cMenuTreasuresLotAnnounce::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuTreasuresLotAnnounce;
+    return new (16u) cMenuTreasuresLotAnnounce;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16460,7 +16747,7 @@ const MtDTI& cMenuUILargeSetting::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuUILargeSetting::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuUILargeSetting::DTI)->memAlloc(sz, align, ::cMenuUILargeSetting::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuUILargeSetting::DTI)->memAlloc(sz, align, cMenuUILargeSetting::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16475,7 +16762,7 @@ inline void* cMenuUILargeSetting::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuUILargeSetting::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuUILargeSetting::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuUILargeSetting::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16514,6 +16801,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuUILargeSetting::move() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuUILargeSetting::MyDTI cMenuUILargeSetting::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a94f-0x0013a988 (called at cMenuBase.cpp:12782)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013a94f-0x0013a988 (called at cMenuBase.h:4750)
@@ -16522,7 +16811,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuUILargeSetting::move() {
 // Address: 0x001096c0 - 0x001097a9 (233 bytes)
 MtObject* cMenuUILargeSetting::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuUILargeSetting;
+    return new (16u) cMenuUILargeSetting;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16548,7 +16837,7 @@ const MtDTI& cMenuUpdateCommunityList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cMenuUpdateCommunityList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuUpdateCommunityList::DTI)->memAlloc(sz, align, ::cMenuUpdateCommunityList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuUpdateCommunityList::DTI)->memAlloc(sz, align, cMenuUpdateCommunityList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -16563,7 +16852,7 @@ inline void* cMenuUpdateCommunityList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuUpdateCommunityList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuUpdateCommunityList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuUpdateCommunityList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -16592,10 +16881,10 @@ cMenuUpdateCommunityList::~cMenuUpdateCommunityList() {
 // Address: 0x001249c0 - 0x001249ec (44 bytes)
 void cMenuUpdateCommunityList::initUpdateCommunityList(bool isGetRecentList) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuCursor[0] = static_cast<int>(0);
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mIsGetRecentList = isGetRecentList;
+    initMenu();
+    mMenuCursor[0] = 0;
+    mMenuRno[0] = 0;
+    mIsGetRecentList = isGetRecentList;
 }
 
 // Address: 0x001249f0 - 0x00125058 (1640 bytes)
@@ -16609,8 +16898,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuUpdateCommunityList::moveUpdateCommun
 // Address: 0x001256a0 - 0x001256a5 (5 bytes)
 void cMenuUpdateCommunityList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuUpdateCommunityList::MyDTI cMenuUpdateCommunityList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuBase.cpp at 0x0013b2a9-0x0013b2e2 (called at cMenuBase.cpp:32159)
@@ -16620,7 +16911,7 @@ void cMenuUpdateCommunityList::exitMenu() {
 // Address: 0x00125500 - 0x001255e9 (233 bytes)
 MtObject* cMenuUpdateCommunityList::MyDTI::newInstance() const {
     // Approximate from the ELF: folded from an approximate source (its inlined callee 0xefd00); the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cMenuUpdateCommunityList;
+    return new (16u) cMenuUpdateCommunityList;
 }
 
 // Instance at 0x01974b70 - 0x01974b75 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -36,7 +36,7 @@ const MtDTI& cSndPitchLimitData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSndPitchLimitData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memAlloc(sz, align, ::cSndPitchLimitData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSndPitchLimitData::DTI)->memAlloc(sz, align, cSndPitchLimitData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cSndPitchLimitData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSndPitchLimitData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSndPitchLimitData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -100,6 +100,8 @@ __attribute__((weak)) void cSndPitchLimitData::createProperty(MtPropertyList& s)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // s32 cSndPitchLimitData::getLimitDowner();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSndPitchLimitData::MyDTI cSndPitchLimitData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rSndPitchLimit.cpp at 0x006bcf70-0x006bcfb2 (called at rSndPitchLimit.cpp:40)
 //   in _GLOBAL__sub_I_rSndPitchLimit.cpp at 0x006bcf70-0x006bcfb2 (called at rSndPitchLimit.h:32)
@@ -108,7 +110,7 @@ __attribute__((weak)) void cSndPitchLimitData::createProperty(MtPropertyList& s)
 // Address: 0x006bca40 - 0x006bca90 (80 bytes)
 MtObject* cSndPitchLimitData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSndPitchLimitData;
+    return new (16u) cSndPitchLimitData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,7 +135,7 @@ const MtDTI& rSndPitchLimit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSndPitchLimit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSndPitchLimit::DTI)->memAlloc(sz, align, ::rSndPitchLimit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSndPitchLimit::DTI)->memAlloc(sz, align, rSndPitchLimit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,7 +150,7 @@ inline void* rSndPitchLimit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rSndPitchLimitD0Ev at 0x01aa6c84-0x01aa6ca3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSndPitchLimit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSndPitchLimit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSndPitchLimit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -165,16 +167,16 @@ bool rSndPitchLimit::loadData(MtDataReader& in, cSndPitchLimitData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mVoiceType);
+    nDDOIO::readData(in, pData->mVoiceType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSex);
+    nDDOIO::readData(in, pData->mSex);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLimitUpper);
+    nDDOIO::readData(in, pData->mLimitUpper);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mLimitDowner);
+    nDDOIO::readData(in, pData->mLimitDowner);
     return true;
 }
 
@@ -187,8 +189,10 @@ MT_CTSTR rSndPitchLimit::getExt() const {
 // Address: 0x01aa6dd0 - 0x01aa6dd6 (6 bytes)
 u32 rSndPitchLimit::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSndPitchLimit::MyDTI rSndPitchLimit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSndPitchLimit.cpp at 0x006bcfb2-0x006bcfef (called at rSndPitchLimit.cpp:127)
@@ -198,7 +202,7 @@ u32 rSndPitchLimit::getDataVersion() const {
 // Address: 0x006bce40 - 0x006bcea4 (100 bytes)
 MtObject* rSndPitchLimit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSndPitchLimit;
+    return new (16u) rSndPitchLimit;
 }
 
 // Instance at 0x01aa6d80 - 0x01aa6d96 (22 bytes) of the generic rTbl2<T>::getData

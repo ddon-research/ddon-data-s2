@@ -33,7 +33,7 @@ const MtDTI& rOcdPriorityParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOcdPriorityParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOcdPriorityParam::DTI)->memAlloc(sz, align, ::rOcdPriorityParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOcdPriorityParam::DTI)->memAlloc(sz, align, rOcdPriorityParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rOcdPriorityParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17rOcdPriorityParamD0Ev at 0x01aaa3d0-0x01aaa3f1, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOcdPriorityParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOcdPriorityParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOcdPriorityParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,8 +80,10 @@ MT_CTSTR rOcdPriorityParam::getExt() const {
 // Address: 0x01aaa520 - 0x01aaa526 (6 bytes)
 u32 rOcdPriorityParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(23);
+    return 23;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOcdPriorityParam::MyDTI rOcdPriorityParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rOcdPriority.cpp at 0x006c6200-0x006c6242 (called at rOcdPriority.cpp:25)
@@ -91,7 +93,7 @@ u32 rOcdPriorityParam::getDataVersion() const {
 // Address: 0x006c5df0 - 0x006c5e54 (100 bytes)
 MtObject* rOcdPriorityParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOcdPriorityParam;
+    return new (16u) rOcdPriorityParam;
 }
 
 // Instance at 0x01aaa4d0 - 0x01aaa4e2 (18 bytes) of the generic rTbl2<T>::getData

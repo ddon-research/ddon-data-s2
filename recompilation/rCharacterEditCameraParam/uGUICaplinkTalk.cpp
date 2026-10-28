@@ -36,7 +36,7 @@ const MtDTI& uGUICaplinkTalk::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkTalk::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTalk::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkTalk::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uGUICaplinkTalk::getAllocator() {
 // Address: 0x009d6b30 - 0x009d6b70 (64 bytes)
 void* uGUICaplinkTalk::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkTalk::getAllocator()->memAlloc(sz, align, ::uGUICaplinkTalk::DTI.::MtDTI::getID());
+    return uGUICaplinkTalk::getAllocator()->memAlloc(sz, align, uGUICaplinkTalk::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uGUICaplinkTalk::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkTalk::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTalk::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkTalk::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,20 +85,20 @@ uGUICaplinkTalk::~uGUICaplinkTalk() {
 // Address: 0x009d6ef0 - 0x009d6ef5 (5 bytes)
 void uGUICaplinkTalk::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkMenuBase::createProperty(s);
+    this->uGUICaplinkMenuBase::createProperty(s);
 }
 
 // Address: 0x009d6f00 - 0x009d6f85 (133 bytes)
 bool uGUICaplinkTalk::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_TALK_GUI"), static_cast<u32>(129), static_cast<t64>(1448867480)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_TALK_GUI"), 129u, 1448867480l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -133,31 +133,31 @@ __attribute__((weak)) void uGUICaplinkTalk::kill() {
 // Address: 0x009d7070 - 0x009d7075 (5 bytes)
 void uGUICaplinkTalk::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009d7080 - 0x009d70dd (93 bytes)
 void uGUICaplinkTalk::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkMenuBase::updatePtr();
-    if (this->mpGUICaplinkFriendList != static_cast<uGUICaplinkFriendList*>(nullptr)) {
-        if (this->mpGUICaplinkFriendList->::cUnit::isEnable() == false) {
-            this->mpGUICaplinkFriendList = static_cast<uGUICaplinkFriendList*>(nullptr);
+    this->uGUICaplinkMenuBase::updatePtr();
+    if (mpGUICaplinkFriendList != nullptr) {
+        if (!mpGUICaplinkFriendList->isEnable()) {
+            mpGUICaplinkFriendList = nullptr;
         }
     }
-    if (this->mpGUICaplinkProfileEdit == static_cast<uGUICaplinkProfileEdit*>(nullptr)) {
+    if (mpGUICaplinkProfileEdit == nullptr) {
         return;
     }
-    if (this->mpGUICaplinkProfileEdit->::cUnit::isEnable() != false) {
+    if (mpGUICaplinkProfileEdit->isEnable()) {
         return;
     }
-    this->mpGUICaplinkProfileEdit = static_cast<uGUICaplinkProfileEdit*>(nullptr);
+    mpGUICaplinkProfileEdit = nullptr;
 }
 
 // Address: 0x009d70e0 - 0x009d70e5 (5 bytes)
 void uGUICaplinkTalk::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // Address: 0x009daba0 - 0x009dad74 (468 bytes)
@@ -190,85 +190,84 @@ __attribute__((weak)) void uGUICaplinkTalk::setFlowId(u32 flow_id, bool isInit) 
 // Address: 0x009dc570 - 0x009dc5f7 (135 bytes)
 void uGUICaplinkTalk::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->mFlowId | static_cast<u32>(8)) != static_cast<u32>(10)) {
+    if ((mFlowId | 8u) != 10) {
         return;
     }
-    this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpDecideCtrl->execute();
+    mMain.mClose.execute();
+    if (mpDecideCtrl != nullptr) {
+        mpDecideCtrl->execute();
     }
-    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCancelCtrl->execute();
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->execute();
     }
-    if (this->mpPageCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpPageCtrl->execute();
+    if (mpPageCtrl != nullptr) {
+        mpPageCtrl->execute();
     }
-    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        this->mpListCtrl->execute();
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->execute();
     }
-    this->mMain.mPage.::uGUIBase::cReferenceUINumPager::execute();
+    mMain.mPage.execute();
 }
 
 // Address: 0x009dc600 - 0x009dc70c (268 bytes)
 void uGUICaplinkTalk::moveEvent() {
     // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; the body oracle reports this body.
-    if (static_cast<int>(this->::uGUIBase::getInputEvent()) <= static_cast<int>(65)) {
-        if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
-        } else {
-            if ((this->mFlowId | static_cast<u32>(8)) == static_cast<u32>(10)) {
-                if (this->mpPageCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    this->mMain.mPage.mNum = this->mpPageCtrl->::cControl::getCurrentPos();
+    if (static_cast<int>(getInputEvent()) <= 65) {
+        if ((getInputEvent() - 52u) <= 1u) {
+            if ((mFlowId | 8u) == 10) {
+                if (mpPageCtrl != nullptr) {
+                    mMain.mPage.mNum = mpPageCtrl->getCurrentPos();
                 } else {
-                    this->mMain.mPage.mNum = static_cast<s32>(0);
+                    mMain.mPage.mNum = 0;
                 }
-                this->mMain.mPage.::uGUIBase::cReferenceUINumPager::changeString();
-                this->::uGUICaplinkTalk::adjustListPage();
+                mMain.mPage.changeString();
+                adjustListPage();
             }
         }
     } else {
-        switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
-            case static_cast<u32>(0):
+        switch (getInputEvent() - 66u) {
+            case 0:
             {
-                this->::uGUICaplinkTalk::eventDecide();
+                eventDecide();
                 break;
             }
-            case static_cast<u32>(1):
+            case 1:
             {
-                if (this->mFlowId == static_cast<u32>(10)) {
-                    if (this->mMode == static_cast<u32>(0)) {
-                        this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(2), true);
+                if (mFlowId == 10) {
+                    if (mMode == 0) {
+                        setFlowId(2u, true);
                     } else {
-                        this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(25), true);
+                        setFlowId(25u, true);
                     }
                 } else {
-                    if (this->mFlowId == static_cast<u32>(2)) {
-                        this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(25), true);
+                    if (mFlowId == 2) {
+                        setFlowId(25u, true);
                     }
                 }
                 break;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                if (this->mFlowId == static_cast<u32>(10)) {
-                    this->::uGUICaplinkTalk::adjustMemberListCursor();
+                if (mFlowId == 10) {
+                    adjustMemberListCursor();
                 } else {
-                    if (this->mFlowId == static_cast<u32>(2)) {
-                        this->::uGUICaplinkTalk::adjustTalkListCursor();
+                    if (mFlowId == 2) {
+                        adjustTalkListCursor();
                     }
                 }
                 break;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                if ((this->mFlowId | static_cast<u32>(8)) == static_cast<u32>(10)) {
-                    if (this->mpPageCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                        this->mMain.mPage.mNum = this->mpPageCtrl->::cControl::getCurrentPos();
-                        this->mMain.mPage.::uGUIBase::cReferenceUINumPager::changeString();
-                        this->::uGUICaplinkTalk::adjustListPage();
+                if ((mFlowId | 8u) == 10) {
+                    if (mpPageCtrl != nullptr) {
+                        mMain.mPage.mNum = mpPageCtrl->getCurrentPos();
+                        mMain.mPage.changeString();
+                        adjustListPage();
                     } else {
-                        this->mMain.mPage.mNum = static_cast<s32>(0);
-                        this->mMain.mPage.::uGUIBase::cReferenceUINumPager::changeString();
-                        this->::uGUICaplinkTalk::adjustListPage();
+                        mMain.mPage.mNum = 0;
+                        mMain.mPage.changeString();
+                        adjustListPage();
                     }
                 }
                 break;
@@ -294,7 +293,7 @@ __attribute__((weak)) void uGUICaplinkTalk::updateMove() {
 // Address: 0x009d9970 - 0x009d9979 (9 bytes)
 void uGUICaplinkTalk::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009dad90 - 0x009daf00 (368 bytes)
@@ -392,7 +391,7 @@ __attribute__((weak)) void uGUICaplinkTalk::returnFlow() {
 // Address: 0x01ae5420 - 0x01ae542f (15 bytes)
 void uGUICaplinkTalk::returnEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(25), true);
+    setFlowId(25u, true);
 }
 
 // Address: 0x009db4d0 - 0x009db983 (1203 bytes)
@@ -596,26 +595,26 @@ __attribute__((weak)) void uGUICaplinkTalk::adjustListPage() {
 // Address: 0x009dc710 - 0x009dc795 (133 bytes)
 __attribute__((weak)) void uGUICaplinkTalk::eventDecide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId == static_cast<u32>(10)) {
-        if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpListCtrl->::cControl::mCurrentPos == (this->mpListCtrl->::cControl::mItemNum - static_cast<s32>(1))) {
-                this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(24), true);
+    if (mFlowId == 10) {
+        if (mpListCtrl != nullptr) {
+            if (mpListCtrl->mCurrentPos == (mpListCtrl->mItemNum - 1)) {
+                setFlowId(24u, true);
             } else {
-                this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(12), true);
+                setFlowId(12u, true);
             }
         } else {
-            this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(12), true);
+            setFlowId(12u, true);
         }
     } else {
-        if (this->mFlowId == static_cast<u32>(2)) {
-            if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-                if (this->mpListCtrl->::cControl::mCurrentPos == (this->mpListCtrl->::cControl::mItemNum - static_cast<s32>(1))) {
-                    this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(9), true);
+        if (mFlowId == 2) {
+            if (mpListCtrl != nullptr) {
+                if (mpListCtrl->mCurrentPos == (mpListCtrl->mItemNum - 1)) {
+                    setFlowId(9u, true);
                 } else {
-                    this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(3), true);
+                    setFlowId(3u, true);
                 }
             } else {
-                this->::uGUICaplinkTalk::setFlowId(static_cast<u32>(3), true);
+                setFlowId(3u, true);
             }
         }
     }
@@ -636,86 +635,88 @@ __attribute__((weak)) void uGUICaplinkTalk::eventDecide() {
 // Address: 0x009d8190 - 0x009d8252 (194 bytes)
 __attribute__((weak)) u32 uGUICaplinkTalk::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mMain.mButton.::uGUIBase::cReferenceUIButton::isFocus() != false) {
-        if (this->mMain.mButton.mIsEnable != false) {
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                msg->changeSE = static_cast<u32>(4);
+    if (mMain.mButton.uGUIBase::cReferenceUIButton::isFocus()) {
+        if (mMain.mButton.mIsEnable) {
+            if (msg != nullptr) {
+                msg->changeSE = 4;
             }
-            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-            return static_cast<u32>(1);
+            setInputEvent(66u);
+            return 1;
         } else {
             // inferred: a temporary for the value the load at 0x9d81e7 read, used twice; no DWARF local holds it
-            sGUI* t0 = ::sGUI::getInstance();
-            static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(204)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
-            if (msg != static_cast<cControl::Message*>(nullptr)) {
-                msg->changeSE = static_cast<u32>(20);
+            sGUI* t0 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 204u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+            if (msg != nullptr) {
+                msg->changeSE = 20;
             }
-            this->::uGUIBase::setInputEvent(static_cast<u32>(2));
-            return static_cast<u32>(0);
+            setInputEvent(2u);
+            return 0;
         }
     } else {
-        if (msg != static_cast<cControl::Message*>(nullptr)) {
-            msg->changeSE = static_cast<u32>(4);
+        if (msg != nullptr) {
+            msg->changeSE = 4;
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-        return static_cast<u32>(1);
+        setInputEvent(66u);
+        return 1;
     }
 }
 
 // Address: 0x009d8170 - 0x009d818e (30 bytes)
 u32 uGUICaplinkTalk::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x009d8260 - 0x009d827e (30 bytes)
 u32 uGUICaplinkTalk::evCtrlAdjustCursor(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(2);
+    if (msg != nullptr) {
+        msg->changeSE = 2;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x009d82f0 - 0x009d8305 (21 bytes)
 u32 uGUICaplinkTalk::evCtrlAdjustPage(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(1);
+    setInputEvent(69u);
+    return 1;
 }
 
 // Address: 0x009d8280 - 0x009d82e7 (103 bytes)
 u32 uGUICaplinkTalk::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender != this->mpListCtrl) {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-                return static_cast<u32>(0);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender != mpListCtrl) {
+                setInputEvent(0u);
+                return 0;
             } else {
-                if (this->mFlowId == static_cast<u32>(10)) {
-                    this->::uGUICaplinkTalk::adjustMemberListCursor();
+                if (mFlowId == 10) {
+                    adjustMemberListCursor();
                 } else {
-                    if (this->mFlowId == static_cast<u32>(2)) {
-                        this->::uGUICaplinkTalk::adjustTalkListCursor();
+                    if (mFlowId == 2) {
+                        adjustTalkListCursor();
                     }
                 }
-                return this->::uGUICaplinkTalk::evCtrlDecide(msg);
+                return evCtrlDecide(msg);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-            return static_cast<u32>(0);
+            setInputEvent(0u);
+            return 0;
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(0));
-        return static_cast<u32>(0);
+        setInputEvent(0u);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkTalk::MyDTI uGUICaplinkTalk::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkTalk.cpp at 0x009dd35f-0x009dd39c (called at uGUICaplinkTalk.cpp:38)

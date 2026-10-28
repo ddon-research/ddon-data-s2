@@ -288,8 +288,33 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sTalkManager::notifyTalkStart at 0x85ad80-0x85ad87; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sTalkManager::setTalkTarget(uDDOModel* pUnit) {
+    this->mpTalkTarget = pUnit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u8 sTalkManager::getRno() const {
     return this->mRno0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nNetMsg::cNetMsgGameEasy::sendMessage at 0x38ad48-0x38ad4e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sTalkManager::getEventMsgType() const {
+    return this->mEventMsgType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in nNetMsg::cNetMsgGameEasy::sendMessage at 0x38ad96-0x38ad9c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sTalkManager::getEventMsgGrpNo() const {
+    return this->mEventMsgGrpNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sTalkManager::moveFSMEventMsg at 0x85bf9f-0x85bfb0; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sTalkManager::moveFSMEventMsg_DispEnd() {
+    this->mTalkType = 0;
+    this->mRno0 = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -301,6 +326,6 @@ inline sTalkManager* sTalkManager::getInstance() {
 inline sTalkManager::cTellQueueNode::cTellQueueNode() {
     this->mDispTime = 0.0f;
     this->mWaitTime = 0.0f;
-    this->mMsgType = static_cast<u32>(0);
-    this->mGroupSerialNo = static_cast<u32>(0);
+    this->mMsgType = 0;
+    this->mGroupSerialNo = 0;
 }

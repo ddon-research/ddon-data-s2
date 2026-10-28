@@ -58,6 +58,8 @@ class sScene : public cSystem
     friend class cSwing;
     // inferred: uLight::~uLight names sScene::mpInstance
     friend class uLight;
+    // inferred: uShadow::cHardwareDispCtrlShadow::update names sScene::mpInstance, through its enclosing class uShadow
+    friend class uShadow;
 public:
     enum GEOM
     {

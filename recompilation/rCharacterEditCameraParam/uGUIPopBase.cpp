@@ -78,25 +78,25 @@ __attribute__((weak)) void uGUIPopBase::move() {
 // Address: 0x00b4b0f0 - 0x00b4b139 (73 bytes)
 void uGUIPopBase::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSleepUnit != static_cast<uGUIBase*>(nullptr)) {
-        if (this->mpSleepUnit->::cUnit::isEnable() == false) {
-            this->mpSleepUnit = static_cast<uGUIBase*>(nullptr);
+    if (mpSleepUnit != nullptr) {
+        if (!mpSleepUnit->isEnable()) {
+            mpSleepUnit = nullptr;
         }
     }
-    if (this->mpGUIParent == static_cast<uGUIBase*>(nullptr)) {
+    if (mpGUIParent == nullptr) {
         return;
     }
-    if (this->mpGUIParent->::cUnit::isEnable() != false) {
+    if (mpGUIParent->isEnable()) {
         return;
     }
-    this->mpGUIParent = static_cast<uGUIBase*>(nullptr);
+    mpGUIParent = nullptr;
 }
 
 // Address: 0x01afb0f0 - 0x01afb110 (32 bytes)
 void uGUIPopBase::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    this->updatePtr();
+    this->uGUIBase::kill();
+    updatePtr();
 }
 
 // Address: 0x00b4af20 - 0x00b4af79 (89 bytes)
@@ -108,8 +108,8 @@ __attribute__((weak)) void uGUIPopBase::end() {
 // Address: 0x00b4af80 - 0x00b4afa4 (36 bytes)
 void uGUIPopBase::setSleepUnit(uGUIBase* p) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpSleepUnit = p;
-    if (p == static_cast<uGUIBase*>(nullptr)) {
+    mpSleepUnit = p;
+    if (p == nullptr) {
         return;
     }
     p->setStopAllContol(true);
@@ -140,6 +140,8 @@ __attribute__((weak)) MtSize uGUIPopBase::getWindowSize() {
 
 // No out-of-line body: no code in the ELF
 // u32 uGUIPopBase::evCtrlDummy(cControl::Message*);
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIPopBase::MyDTI uGUIPopBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIPopBase.cpp at 0x00b4b23f-0x00b4b27f (called at uGUIPopBase.cpp:13)

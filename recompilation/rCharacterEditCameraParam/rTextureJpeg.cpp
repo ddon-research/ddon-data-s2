@@ -42,7 +42,7 @@ const MtDTI& rTextureJpeg::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rTextureJpegD0Ev at 0x00e466b7-0x00e466d8, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rTextureJpeg::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTextureJpeg::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTextureJpeg::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,7 +64,7 @@ __attribute__((weak)) rTextureJpeg* rTextureJpeg::createTextureJpeg(void* pJpegB
 // Address: 0x00e467e0 - 0x00e467ec (12 bytes)
 void rTextureJpeg::deleteTextureJpeg(rTextureJpeg* pTextureJpeg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pTextureJpeg == static_cast<rTextureJpeg*>(nullptr)) {
+    if (pTextureJpeg == nullptr) {
         return;
     }
     delete pTextureJpeg;
@@ -83,16 +83,16 @@ void rTextureJpeg::deleteTextureJpeg(rTextureJpeg* pTextureJpeg) {
 // Also emitted as: _ZN12rTextureJpegD0Ev at 0x00e46690
 rTextureJpeg::~rTextureJpeg() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpJpegBuffer = static_cast<void*>(nullptr);
+    mpJpegBuffer = nullptr;
 }
 
 // Address: 0x00e467b0 - 0x00e467d6 (38 bytes)
 void rTextureJpeg::decodeJpeg(u32 meaningless) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::rTextureJpeg::decodeJpeg() != false) {
-        this->::cResource::mState = this->::cResource::mState | static_cast<u32>(1);
+    if (decodeJpeg()) {
+        mState = mState | 1u;
     } else {
-        this->mIsJpegDecodedFailed = true;
+        mIsJpegDecodedFailed = true;
     }
 }
 
@@ -127,6 +127,8 @@ __attribute__((weak)) bool rTextureJpeg::decodeJpeg() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rTextureJpeg::endDecoding(s32& ret) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTextureJpeg::MyDTI rTextureJpeg::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rTextureJpeg::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

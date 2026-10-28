@@ -28,7 +28,7 @@ const MtDTI& uGUIQuickParty::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIQuickParty::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIQuickParty::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIQuickParty::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIQuickParty::getAllocator() {
 // Address: 0x00c17990 - 0x00c179d0 (64 bytes)
 void* uGUIQuickParty::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIQuickParty::getAllocator()->memAlloc(sz, align, ::uGUIQuickParty::DTI.::MtDTI::getID());
+    return uGUIQuickParty::getAllocator()->memAlloc(sz, align, uGUIQuickParty::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* uGUIQuickParty::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIQuickParty::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIQuickParty::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIQuickParty::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,55 +71,55 @@ inline void uGUIQuickParty::operator delete(void* p_addr) {
 // Also emitted as: _ZN14uGUIQuickPartyD0Ev at 0x00c17af0
 uGUIQuickParty::~uGUIQuickParty() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c17b50 - 0x00c17bd5 (133 bytes)
 bool uGUIQuickParty::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_QUICKPARTY_GUI"), static_cast<u32>(129), static_cast<t64>(1433819021)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_QUICK_PARTY_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_QUICKPARTY_GUI"), 129u, 1433819021l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_QUICK_PARTY_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_QUICK_PARTY_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_QUICK_PARTY_RES_GMD", 0u);
     }
 }
 
 // Address: 0x00c17be0 - 0x00c17c5a (122 bytes)
 void uGUIQuickParty::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
-    this->setPlay(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(11), false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuickParty::updateWait);
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    setPlay(true);
+    setFlowAndInit(11u, false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuickParty::updateWait);
 }
 
 // Address: 0x00c17c70 - 0x00c17ca1 (49 bytes)
 void uGUIQuickParty::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00c17cb0 - 0x00c17cb5 (5 bytes)
 void uGUIQuickParty::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x00c17c60 - 0x00c17c61 (1 bytes)
@@ -129,6 +129,8 @@ __attribute__((weak)) void uGUIQuickParty::updateWait() {
 
 // No out-of-line body: no code in the ELF
 // void uGUIQuickParty::updateExit();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIQuickParty::MyDTI uGUIQuickParty::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIQuickParty.cpp at 0x00c17dcf-0x00c17e0c (called at uGUIQuickParty.cpp:34)

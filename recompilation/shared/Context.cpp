@@ -24,7 +24,7 @@ const MtDTI& CDataContextSetBase::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataContextSetBase::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataContextSetBase::DTI);
+    return MtMemoryAllocator::getAllocator(CDataContextSetBase::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* CDataContextSetBase::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* CDataContextSetBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CDataContextSetBase::DTI)->memAlloc(sz, align, ::CDataContextSetBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CDataContextSetBase::DTI)->memAlloc(sz, align, CDataContextSetBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* CDataContextSetBase::operator new(size_t sz, u32 align) {
 // Address: 0x003d95b0 - 0x003d95da (42 bytes)
 __attribute__((weak)) void CDataContextSetBase::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataContextSetBase::getAllocator()->memFree(p_addr);
+    CDataContextSetBase::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,6 +70,8 @@ __attribute__((weak)) void CDataContextSetBase::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataContextSetBase::CDataContextSetBase(u32, u32, s32, s32, s32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataContextSetBase::MyDTI CDataContextSetBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ebb1-0x0041ebea (called at ContextImplement.inc:23)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ebb1-0x0041ebea (called at Context.h:1569)
@@ -78,6 +80,6 @@ __attribute__((weak)) void CDataContextSetBase::operator delete(void* p_addr) {
 // Address: 0x003d9520 - 0x003d9577 (87 bytes)
 MtObject* CDataContextSetBase::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataContextSetBase;
+    return new (16u) CDataContextSetBase;
 }
 

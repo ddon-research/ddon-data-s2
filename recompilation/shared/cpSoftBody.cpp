@@ -28,7 +28,7 @@ const MtDTI& cpSoftBody::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpSoftBody::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpSoftBody::DTI);
+    return MtMemoryAllocator::getAllocator(cpSoftBody::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpSoftBody::getAllocator() {
 // Address: 0x00536d30 - 0x00536d70 (64 bytes)
 void* cpSoftBody::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpSoftBody::getAllocator()->memAlloc(sz, align, ::cpSoftBody::DTI.::MtDTI::getID());
+    return cpSoftBody::getAllocator()->memAlloc(sz, align, cpSoftBody::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpSoftBody::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpSoftBody::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpSoftBody::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpSoftBody::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -67,38 +67,38 @@ inline void cpSoftBody::operator delete(void* p_addr) {
 // Address: 0x00536de0 - 0x00536eae (206 bytes)
 cpSoftBody::cpSoftBody() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCollisionGroup = static_cast<u32>(0);
-    this->mprSoundPhysicsSoftBody = static_cast<rSoundPhysicsSoftBody*>(nullptr);
-    this->mprDeformWeightMap = static_cast<rDeformWeightMap*>(nullptr);
-    this->mpOwnerDDOModel = static_cast<uDDOModel*>(nullptr);
-    this->mpOwnerModel = static_cast<uModel*>(nullptr);
-    this->mpSimSoftBody = static_cast<uSimSoftBody*>(nullptr);
-    this->mMaxIterate = static_cast<u32>(3);
-    this->mColliderType = static_cast<u32>(4);
-    this->mNCGlobalWeight = 0.0f;
-    this->mWorldCoeffTrans = 1.0f;
-    this->mWorldCoeffRot = 1.0f;
-    this->mBaseJointNo = static_cast<s32>(-1);
-    this->mIsUpdateFrame = true;
-    this->mIsScrCollision = false;
-    this->mIsResetRestart = true;
-    this->mIsApproxScrCollision = false;
-    this->mIsGrassWind = false;
-    this->mIsNCollision = false;
-    this->mIsObjCollision = false;
-    this->mIsISCollision = false;
-    this->mIsSimCulling = true;
-    this->mIsUse8Weight = false;
-    this->mIsActive = false;
-    this->mIsCreateSoftBodyResource = false;
-    this->mIsCreateCollisionResource = false;
-    this->mIsStop = false;
-    this->mIsStopOld = false;
-    this->mIsCollisionActive = false;
-    this->mIsCollisionDisp = false;
-    this->mIsResetRestartSave = true;
-    this->mIsFirstUpdate = false;
-    this->mIsSameFrameFirstUpdateLimit = false;
+    mCollisionGroup = 0;
+    mprSoundPhysicsSoftBody = nullptr;
+    mprDeformWeightMap = nullptr;
+    mpOwnerDDOModel = nullptr;
+    mpOwnerModel = nullptr;
+    mpSimSoftBody = nullptr;
+    mMaxIterate = 3;
+    mColliderType = 4;
+    mNCGlobalWeight = 0.0f;
+    mWorldCoeffTrans = 1.0f;
+    mWorldCoeffRot = 1.0f;
+    mBaseJointNo = -1;
+    mIsUpdateFrame = true;
+    mIsScrCollision = false;
+    mIsResetRestart = true;
+    mIsApproxScrCollision = false;
+    mIsGrassWind = false;
+    mIsNCollision = false;
+    mIsObjCollision = false;
+    mIsISCollision = false;
+    mIsSimCulling = true;
+    mIsUse8Weight = false;
+    mIsActive = false;
+    mIsCreateSoftBodyResource = false;
+    mIsCreateCollisionResource = false;
+    mIsStop = false;
+    mIsStopOld = false;
+    mIsCollisionActive = false;
+    mIsCollisionDisp = false;
+    mIsResetRestartSave = true;
+    mIsFirstUpdate = false;
+    mIsSameFrameFirstUpdateLimit = false;
 }
 
 // Address: 0x00536eb0 - 0x00536f1b (107 bytes)
@@ -111,28 +111,28 @@ cpSoftBody::~cpSoftBody() {
 // Address: 0x00537010 - 0x0053701c (12 bytes)
 void cpSoftBody::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cpComponent::mActive == false) {
+    if (!mActive) {
         return;
     }
-    this->::cpSoftBody::update();
+    update();
 }
 
 // Address: 0x005372d0 - 0x00537321 (81 bytes)
 void cpSoftBody::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpOwnerModel != static_cast<uModel*>(nullptr)) {
-        if (this->mpOwnerModel->::cUnit::isEnable() == false) {
-            this->mpOwnerModel = static_cast<uModel*>(nullptr);
+    this->cpComponent::updatePtr();
+    if (mpOwnerModel != nullptr) {
+        if (!mpOwnerModel->isEnable()) {
+            mpOwnerModel = nullptr;
         }
     }
-    if (this->mpOwnerDDOModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwnerDDOModel == nullptr) {
         return;
     }
-    if (this->mpOwnerDDOModel->::cUnit::isEnable() != false) {
+    if (mpOwnerDDOModel->isEnable()) {
         return;
     }
-    this->mpOwnerDDOModel = static_cast<uDDOModel*>(nullptr);
+    mpOwnerDDOModel = nullptr;
 }
 
 // Address: 0x00537330 - 0x00538649 (4889 bytes)
@@ -190,29 +190,29 @@ __attribute__((weak)) void cpSoftBody::draw(cDraw* pDraw) {
 // Address: 0x005386b0 - 0x005386b5 (5 bytes)
 rDeformWeightMap* cpSoftBody::getSoftBodyResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprDeformWeightMap;
+    return mprDeformWeightMap;
 }
 
 // Address: 0x00538650 - 0x005386ad (93 bytes)
 void cpSoftBody::setSimSoftBody(uSimSoftBody* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pUnit == static_cast<uSimSoftBody*>(nullptr)) {
+    if (pUnit == nullptr) {
         return;
     }
-    if (this->mpSimSoftBody != static_cast<uSimSoftBody*>(nullptr)) {
+    if (mpSimSoftBody != nullptr) {
         return;
     }
-    if (pUnit == this->mpSimSoftBody) {
+    if (pUnit == mpSimSoftBody) {
         return;
     }
-    this->mpSimSoftBody = pUnit;
-    pUnit->::uSimSoftBody::setTargetUnit(this->mpOwnerModel);
-    pUnit->::uSimSoftBody::enableColliderCollision();
-    pUnit->mColliderType = static_cast<u32>(4);
-    if (this->mprDeformWeightMap == static_cast<rDeformWeightMap*>(nullptr)) {
+    mpSimSoftBody = pUnit;
+    pUnit->setTargetUnit(mpOwnerModel);
+    pUnit->enableColliderCollision();
+    pUnit->mColliderType = 4;
+    if (mprDeformWeightMap == nullptr) {
         return;
     }
-    this->mpSimSoftBody->::uSimSoftBody::setDeformWeightMap(this->mprDeformWeightMap);
+    mpSimSoftBody->setDeformWeightMap(mprDeformWeightMap);
 }
 
 // Address: 0x005386c0 - 0x00538709 (73 bytes)
@@ -224,7 +224,7 @@ __attribute__((weak)) void cpSoftBody::setSoftBodyResource(rDeformWeightMap* pRe
 // Address: 0x01a5fb10 - 0x01a5fb18 (8 bytes)
 void cpSoftBody::setActive(bool isFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActive = isFlag;
+    mIsActive = isFlag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -233,28 +233,28 @@ void cpSoftBody::setActive(bool isFlag) {
 // Address: 0x00538710 - 0x005387b1 (161 bytes)
 void cpSoftBody::setOwner(MtObject* pOwner) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cpComponent::mpOwner = pOwner;
+    mpOwner = pOwner;
     // inferred: a temporary for the result of the call at 0x53872a, used once; no DWARF local holds it
     const MtDTI& t0 = pOwner->getDTI();
     // inferred: the value the loop at 0x538738 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uModel::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uModel::DTI.mName;
     // inferred: the value the loop at 0x538738 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 != v0_0->mName) {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
             }
         } else {
-            this->mpOwnerModel = static_cast<uModel*>(pOwner);
+            mpOwnerModel = static_cast<uModel*>(pOwner);
             break;
         }
     }
     // inferred: a temporary for the result of the call at 0x538753, used once; no DWARF local holds it
     const MtDTI& t1 = pOwner->getDTI();
     // inferred: the value the loop at 0x538761 carries; no location-less local in scope fits
-    MT_CTSTR v2_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    MT_CTSTR v2_1 = uDDOModel::DTI.mName;
     // inferred: the value the loop at 0x538761 carries; no location-less local in scope fits
     const MtDTI* v2_0 = &t1;
     // inferred: the value the loop at 0x538790 carries; no location-less local in scope fits
@@ -263,7 +263,7 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
     MT_CTSTR v4_1;
     for (;;) {
         if (v2_1 != v2_0->mName) {
-            if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v2_0->mpParent != nullptr) {
                 v2_0 = v2_0->mpParent;
             } else {
                 return;
@@ -271,9 +271,9 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
         } else {
             // inferred: a temporary for the result of the call at 0x538778, used twice; no DWARF local holds it
             const MtDTI& t2 = pOwner->getDTI();
-            v4_1 = ::uDDOModel::DTI.::MtDTI::mName;
+            v4_1 = uDDOModel::DTI.mName;
             if (v4_1 == t2.mName) {
-                this->mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
+                mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
                 return;
             } else {
                 v4_0 = &t2;
@@ -282,8 +282,8 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
         }
     }
     for (;;) {
-        if (v4_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-            this->mpOwnerDDOModel = static_cast<uDDOModel*>(nullptr);
+        if (v4_0->mpParent == nullptr) {
+            mpOwnerDDOModel = nullptr;
             return;
         } else {
             if (v4_1 != v4_0->mpParent->mName) {
@@ -293,7 +293,7 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
             }
         }
     }
-    this->mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
+    mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // No out-of-line body: no code in the ELF
@@ -305,7 +305,7 @@ void cpSoftBody::setOwner(MtObject* pOwner) {
 // Address: 0x01a5fad0 - 0x01a5fad5 (5 bytes)
 uSimSoftBody* cpSoftBody::getSimSoftBody() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSimSoftBody;
+    return mpSimSoftBody;
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,10 +336,10 @@ uSimSoftBody* cpSoftBody::getSimSoftBody() {
 // Address: 0x01a5fae0 - 0x01a5faef (15 bytes)
 void cpSoftBody::restartSimulation(u32 LoopNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpSimSoftBody == static_cast<uSimSoftBody*>(nullptr)) {
+    if (mpSimSoftBody == nullptr) {
         return;
     }
-    this->mpSimSoftBody->::uSimSoftBody::restartSimulation(LoopNum);
+    mpSimSoftBody->restartSimulation(LoopNum);
 }
 
 // No out-of-line body: no code in the ELF
@@ -392,6 +392,8 @@ void cpSoftBody::restartSimulation(u32 LoopNum) {
 // No out-of-line body: no code in the ELF
 // bool cpSoftBody::isSameFrameFirstUpdateLimit();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpSoftBody::MyDTI cpSoftBody::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpSoftBody.cpp at 0x00538bbf-0x00538bfc (called at cpSoftBody.cpp:39)
 //   in _GLOBAL__sub_I_cpSoftBody.cpp at 0x00538bbf-0x00538bfc (called at cpSoftBody.h:35)
@@ -400,6 +402,6 @@ void cpSoftBody::restartSimulation(u32 LoopNum) {
 // Address: 0x00536c30 - 0x00536d29 (249 bytes)
 MtObject* cpSoftBody::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpSoftBody;
+    return new (16u) cpSoftBody;
 }
 

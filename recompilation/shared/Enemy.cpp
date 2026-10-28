@@ -27,7 +27,7 @@ const MtDTI& CDataNamedEnemyParamClient::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataNamedEnemyParamClient::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataNamedEnemyParamClient::DTI);
+    return MtMemoryAllocator::getAllocator(CDataNamedEnemyParamClient::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* CDataNamedEnemyParamClient::getAllocator() {
 // Address: 0x003dc8c0 - 0x003dc900 (64 bytes)
 void* CDataNamedEnemyParamClient::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataNamedEnemyParamClient::getAllocator()->memAlloc(sz, align, ::CDataNamedEnemyParamClient::DTI.::MtDTI::getID());
+    return CDataNamedEnemyParamClient::getAllocator()->memAlloc(sz, align, CDataNamedEnemyParamClient::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* CDataNamedEnemyParamClient::operator new(size_t sz, u32 align) {
 // Address: 0x003dc930 - 0x003dc95a (42 bytes)
 __attribute__((weak)) void CDataNamedEnemyParamClient::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataNamedEnemyParamClient::getAllocator()->memFree(p_addr);
+    CDataNamedEnemyParamClient::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -73,6 +73,8 @@ __attribute__((weak)) void CDataNamedEnemyParamClient::operator delete(void* p_a
 // No out-of-line body: no code in the ELF
 // CDataNamedEnemyParamClient::CDataNamedEnemyParamClient(u32, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u16, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataNamedEnemyParamClient::MyDTI CDataNamedEnemyParamClient::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f4d2-0x0041f50b (called at EnemyImplement.inc:7)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f4d2-0x0041f50b (called at Enemy.h:22)
@@ -81,7 +83,7 @@ __attribute__((weak)) void CDataNamedEnemyParamClient::operator delete(void* p_a
 // Address: 0x003dc840 - 0x003dc8b4 (116 bytes)
 MtObject* CDataNamedEnemyParamClient::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataNamedEnemyParamClient;
+    return new (16u) CDataNamedEnemyParamClient;
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,7 +100,7 @@ const MtDTI& CDataTraningRoomEnemyHeader::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataTraningRoomEnemyHeader::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataTraningRoomEnemyHeader::DTI);
+    return MtMemoryAllocator::getAllocator(CDataTraningRoomEnemyHeader::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,7 +109,7 @@ inline MtAllocator* CDataTraningRoomEnemyHeader::getAllocator() {
 // Address: 0x003dcb60 - 0x003dcba0 (64 bytes)
 void* CDataTraningRoomEnemyHeader::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataTraningRoomEnemyHeader::getAllocator()->memAlloc(sz, align, ::CDataTraningRoomEnemyHeader::DTI.::MtDTI::getID());
+    return CDataTraningRoomEnemyHeader::getAllocator()->memAlloc(sz, align, CDataTraningRoomEnemyHeader::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -122,7 +124,7 @@ void* CDataTraningRoomEnemyHeader::operator new(size_t sz, u32 align) {
 // Address: 0x003dcbd0 - 0x003dcbfa (42 bytes)
 __attribute__((weak)) void CDataTraningRoomEnemyHeader::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataTraningRoomEnemyHeader::getAllocator()->memFree(p_addr);
+    CDataTraningRoomEnemyHeader::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -144,6 +146,8 @@ __attribute__((weak)) void CDataTraningRoomEnemyHeader::operator delete(void* p_
 // No out-of-line body: no code in the ELF
 // CDataTraningRoomEnemyHeader::CDataTraningRoomEnemyHeader(u32, const char*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataTraningRoomEnemyHeader::MyDTI CDataTraningRoomEnemyHeader::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f57d-0x0041f5b6 (called at EnemyImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041f57d-0x0041f5b6 (called at Enemy.h:335)
@@ -152,7 +156,7 @@ __attribute__((weak)) void CDataTraningRoomEnemyHeader::operator delete(void* p_
 // Address: 0x003dcb10 - 0x003dcb5f (79 bytes)
 MtObject* CDataTraningRoomEnemyHeader::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataTraningRoomEnemyHeader;
+    return new (16u) CDataTraningRoomEnemyHeader;
 }
 
 // Address: 0x005b73f0 - 0x005b741c (44 bytes)
@@ -181,7 +185,7 @@ __attribute__((weak)) bool nEnemy::isEnemyGroup(nEnemy::ENEMY_GROUP grp, nEnemy:
 // Address: 0x005da040 - 0x005da068 (40 bytes)
 MT_CTSTR nEnemy::makeAltPath(u32 enemyId, MT_CHAR* path) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sprintf(path, "EM%06X", enemyId);
+    sprintf(path, "EM%06X", enemyId);
     return path;
 }
 

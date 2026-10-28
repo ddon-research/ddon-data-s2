@@ -480,6 +480,12 @@ inline uGUIGameMenu::SELECT uGUIGameMenu::getEndSelect() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::initGameMenuEndSelect at 0x7a73ac-0x7a73b6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIGameMenu::initEndSelect() {
+    this->mEndSelect = static_cast<uGUIGameMenu::SELECT>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool uGUIGameMenu::isGachaActive() {
     return this->mIsGacha;
 }

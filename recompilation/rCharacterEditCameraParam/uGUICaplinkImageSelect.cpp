@@ -30,7 +30,7 @@ const MtDTI& uGUICaplinkImageSelect::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUICaplinkImageSelect::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkImageSelect::DTI);
+    return MtMemoryAllocator::getAllocator(uGUICaplinkImageSelect::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -39,7 +39,7 @@ inline MtAllocator* uGUICaplinkImageSelect::getAllocator() {
 // Address: 0x009bfbe0 - 0x009bfc20 (64 bytes)
 void* uGUICaplinkImageSelect::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUICaplinkImageSelect::getAllocator()->memAlloc(sz, align, ::uGUICaplinkImageSelect::DTI.::MtDTI::getID());
+    return uGUICaplinkImageSelect::getAllocator()->memAlloc(sz, align, uGUICaplinkImageSelect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ void* uGUICaplinkImageSelect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUICaplinkImageSelect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUICaplinkImageSelect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUICaplinkImageSelect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,20 +79,20 @@ uGUICaplinkImageSelect::~uGUICaplinkImageSelect() {
 // Address: 0x009bfec0 - 0x009bfec5 (5 bytes)
 void uGUICaplinkImageSelect::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x009bfed0 - 0x009bff55 (133 bytes)
 bool uGUICaplinkImageSelect::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CAP_IMAGE_GUI"), static_cast<u32>(129), static_cast<t64>(1428554834)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CAP_IMAGE_GUI"), 129u, 1428554834l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_CAPLINK_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_CAPLINK_RES_GMD", 0u);
     }
 }
 
@@ -116,13 +116,13 @@ __attribute__((weak)) void uGUICaplinkImageSelect::setup() {
 // Address: 0x009bff60 - 0x009bff65 (5 bytes)
 void uGUICaplinkImageSelect::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x009bff70 - 0x009bff75 (5 bytes)
 void uGUICaplinkImageSelect::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
+    this->uGUIBase::move();
 }
 
 // Address: 0x009bff80 - 0x009bff81 (1 bytes)
@@ -133,7 +133,7 @@ __attribute__((weak)) void uGUICaplinkImageSelect::updatePtr() {
 // Address: 0x009bff90 - 0x009bff95 (5 bytes)
 void uGUICaplinkImageSelect::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::draw(pDraw);
+    this->uGUIBase::draw(pDraw);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -156,26 +156,26 @@ __attribute__((weak)) void uGUICaplinkImageSelect::setFlowId(u32 flow_id) {
 // Address: 0x009c1410 - 0x009c1495 (133 bytes)
 void uGUICaplinkImageSelect::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mFlowId != static_cast<u32>(1)) {
+    if (mFlowId != 1) {
         return;
     }
-    this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpCancelCtrl->execute();
+    mMain.mClose.execute();
+    if (mpCancelCtrl != nullptr) {
+        mpCancelCtrl->execute();
     }
-    if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
-        this->mpDecideCtrl->execute();
+    if (mpDecideCtrl != nullptr) {
+        mpDecideCtrl->execute();
     }
-    if (this->mpListCtrl != static_cast<uGUIBase::cMatrix*>(nullptr)) {
-        this->mpListCtrl->execute();
+    if (mpListCtrl != nullptr) {
+        mpListCtrl->execute();
     }
-    if (this->mpTabCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-        this->mpTabCtrl->execute();
+    if (mpTabCtrl != nullptr) {
+        mpTabCtrl->execute();
     }
-    if (this->mpButtonCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    if (mpButtonCtrl == nullptr) {
         return;
     }
-    this->mpButtonCtrl->execute();
+    mpButtonCtrl->execute();
 }
 
 // Address: 0x009c14a0 - 0x009c15cc (300 bytes)
@@ -195,7 +195,7 @@ __attribute__((weak)) void uGUICaplinkImageSelect::updateMove() {
 // Address: 0x009c1320 - 0x009c1329 (9 bytes)
 void uGUICaplinkImageSelect::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x009c1330 - 0x009c1408 (216 bytes)
@@ -279,21 +279,21 @@ __attribute__((weak)) u32 uGUICaplinkImageSelect::evCtrlDecide(cControl::Message
 // Address: 0x009c0da0 - 0x009c0dc1 (33 bytes)
 u32 uGUICaplinkImageSelect::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x009c0c80 - 0x009c0ca1 (33 bytes)
 u32 uGUICaplinkImageSelect::evCtrlClose(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(5);
+    if (msg != nullptr) {
+        msg->changeSE = 5;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(1);
+    setInputEvent(68u);
+    return 1;
 }
 
 // Address: 0x009c0dd0 - 0x009c0e90 (192 bytes)
@@ -306,36 +306,38 @@ __attribute__((weak)) u32 uGUICaplinkImageSelect::evCtrlAdjustCursor(cControl::M
 // Address: 0x009c0ef0 - 0x009c0f11 (33 bytes)
 u32 uGUICaplinkImageSelect::evCtrlAdjustTab(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        msg->changeSE = static_cast<u32>(3);
+    if (msg != nullptr) {
+        msg->changeSE = 3;
     }
-    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
-    return static_cast<u32>(1);
+    setInputEvent(70u);
+    return 1;
 }
 
 // Address: 0x009c0e90 - 0x009c0eed (93 bytes)
 u32 uGUICaplinkImageSelect::evCtrlMouseClick(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->pSender != static_cast<cControl*>(nullptr)) {
-            if (msg->pSender != this->mpListCtrl) {
-                if (msg->pSender != this->mpButtonCtrl) {
-                    return static_cast<u32>(0);
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender != mpListCtrl) {
+                if (msg->pSender != mpButtonCtrl) {
+                    return 0;
                 }
-                this->mMain.mIsSelectList = false;
+                mMain.mIsSelectList = false;
             } else {
-                this->mMain.mIsSelectList = true;
+                mMain.mIsSelectList = true;
             }
-            this->::uGUICaplinkImageSelect::adjustCursor();
-            return this->::uGUICaplinkImageSelect::evCtrlDecide(msg);
+            adjustCursor();
+            return evCtrlDecide(msg);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (115 bytes)
 //   in uGUICaplinkImageSelect::updateMove at 0x009c11db-0x009c124e (called at uGUICaplinkImageSelect.cpp:344)
 // void uGUICaplinkImageSelect::callPointer();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUICaplinkImageSelect::MyDTI uGUICaplinkImageSelect::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUICaplinkImageSelect.cpp at 0x009c19ef-0x009c1a2c (called at uGUICaplinkImageSelect.cpp:33)

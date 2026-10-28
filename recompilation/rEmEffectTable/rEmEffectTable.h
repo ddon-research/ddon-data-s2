@@ -115,3 +115,21 @@ public:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline cEmEffectTable::cEmEffectTable() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mIdx = 1;
+    this->mDieNoCall = false;
+    this->mEffectSyncBitNo = 0;
+    this->mEffectResNo = 0;
+    this->mEffectEndType = 4;
+    this->mEffectIndexNo = 0;
+    this->mEffectElementNo = 0;
+    this->mBoneNo = 255;
+    this->mOffsetPos.z = 0.0f;
+    this->mOffsetPos.pad_ = 0.0f;
+    this->mOffsetPos.x = 0.0f;
+    this->mOffsetPos.y = 0.0f;
+}

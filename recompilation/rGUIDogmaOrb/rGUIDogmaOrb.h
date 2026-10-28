@@ -101,10 +101,10 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cGUIDogmaOrbRes::cGUIDogmaOrbRes() {
-    this->mRequireOrb = static_cast<u32>(0);
-    this->mIconNo = static_cast<u32>(0);
-    this->mParamId = static_cast<u32>(0);
-    this->mParamValue = static_cast<u32>(0);
-    this->mElementId = static_cast<u32>(0);
-    this->mParamType = static_cast<u32>(0);
+    this->mRequireOrb = 0;
+    this->mIconNo = 0;
+    this->mParamId = 0;
+    this->mParamValue = 0;
+    this->mElementId = 0;
+    this->mParamType = 0;
 }

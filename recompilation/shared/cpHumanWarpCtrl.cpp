@@ -27,7 +27,7 @@ const MtDTI& cpHumanWarpCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpHumanWarpCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpHumanWarpCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpHumanWarpCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpHumanWarpCtrl::getAllocator() {
 // Address: 0x00155890 - 0x001558d0 (64 bytes)
 void* cpHumanWarpCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpHumanWarpCtrl::getAllocator()->memAlloc(sz, align, ::cpHumanWarpCtrl::DTI.::MtDTI::getID());
+    return cpHumanWarpCtrl::getAllocator()->memAlloc(sz, align, cpHumanWarpCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpHumanWarpCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpHumanWarpCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpHumanWarpCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpHumanWarpCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -90,7 +90,7 @@ __attribute__((weak)) void cpHumanWarpCtrl::kill() {
 // Address: 0x001559a0 - 0x001559a5 (5 bytes)
 void cpHumanWarpCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x00155a00 - 0x00155a01 (1 bytes)
@@ -101,7 +101,7 @@ __attribute__((weak)) void cpHumanWarpCtrl::applyWorldOffset(const MtVector3& of
 // Address: 0x00155c90 - 0x00155c95 (5 bytes)
 void cpHumanWarpCtrl::before() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpHumanWarpCtrl::beforeSubOneWayOm();
+    beforeSubOneWayOm();
 }
 
 // Address: 0x00155ca0 - 0x00155ca1 (1 bytes)
@@ -117,16 +117,16 @@ __attribute__((weak)) void cpHumanWarpCtrl::after() {
 // Address: 0x001559b0 - 0x001559fb (75 bytes)
 void cpHumanWarpCtrl::setOwner(MtObject* pOwner) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::cpComponent::mpOwner = pOwner;
+    mpOwner = pOwner;
     // inferred: a temporary for the result of the call at 0x1559c7, used twice; no DWARF local holds it
     const MtDTI& t0 = pOwner->getDTI();
     // inferred: the value the loop at 0x1559e0 carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::uHuman::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = uHuman::DTI.mName;
     if (v0_1 != t0.mName) {
         // inferred: the value the loop at 0x1559e0 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
-            if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
-                this->mpHuman = static_cast<uHuman*>(nullptr);
+            if (v0_0->mpParent == nullptr) {
+                mpHuman = nullptr;
                 return;
             } else {
                 if (v0_1 != v0_0->mpParent->mName) {
@@ -137,15 +137,15 @@ void cpHumanWarpCtrl::setOwner(MtObject* pOwner) {
             }
         }
     }
-    this->mpHuman = static_cast<uHuman*>(pOwner);
+    mpHuman = static_cast<uHuman*>(pOwner);
 }
 
 // Address: 0x00155f50 - 0x00155f81 (49 bytes)
 void cpHumanWarpCtrl::requestOneWayWarp(const MtVector3& worldPos, const f32 angle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHumanWarpInfo.elems[0].mWarpRno = static_cast<u32>(1);
-    this->mHumanWarpInfo.elems[0].mWarpWorldPos = worldPos;
-    this->mHumanWarpInfo.elems[0].mWarpAngle = angle;
+    mHumanWarpInfo.elems[0].mWarpRno = 1;
+    mHumanWarpInfo.elems[0].mWarpWorldPos = worldPos;
+    mHumanWarpInfo.elems[0].mWarpAngle = angle;
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,6 +160,8 @@ __attribute__((weak)) void cpHumanWarpCtrl::beforeSubOneWayOm() {
     DDON_STUB("cpHumanWarpCtrl::beforeSubOneWayOm")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpHumanWarpCtrl::MyDTI cpHumanWarpCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpHumanWarpCtrl.cpp at 0x0015608f-0x001560cc (called at cpHumanWarpCtrl.cpp:25)

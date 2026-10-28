@@ -175,8 +175,8 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline rNPCMotMyRoom::InfoBinary::InfoBinary() {
     this->mTransOff = false;
-    this->mpMotList = static_cast<rNPCMotMyRoom::InfoBinary::MotDataBinary*>(nullptr);
-    this->mMotListNum = static_cast<u32>(0);
+    this->mpMotList = nullptr;
+    this->mMotListNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -186,16 +186,16 @@ inline bool rNPCMotMyRoom::InfoBinary::isTransOff() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline rNPCMotMyRoom::InfoBinary::MotDataBinary::MotDataBinary() {
-    this->mMotNoM = static_cast<s16>(-1);
-    this->mMotNoW = static_cast<s16>(-1);
-    this->mWait = static_cast<s16>(-1);
-    this->mRandWait = static_cast<s16>(0);
-    this->mBankNo = static_cast<u8>(8);
-    this->mProbability = static_cast<u8>(100);
-    this->mNext = static_cast<s8>(1);
-    this->mCancel = static_cast<s8>(0);
-    this->mFrame = static_cast<s8>(-1);
-    this->mHaveItem = static_cast<u16>(0);
-    this->mItemMotNo = static_cast<s16>(-1);
-    this->mMessage = static_cast<s16>(-1);
+    this->mMotNoM = -1;
+    this->mMotNoW = -1;
+    this->mWait = -1;
+    this->mRandWait = 0;
+    this->mBankNo = 8;
+    this->mProbability = 100;
+    this->mNext = 1;
+    this->mCancel = 0;
+    this->mFrame = -1;
+    this->mHaveItem = 0;
+    this->mItemMotNo = -1;
+    this->mMessage = -1;
 }

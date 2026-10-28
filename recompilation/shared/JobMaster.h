@@ -134,14 +134,14 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataJobChangeInfo::CDataJobChangeInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucJobID = static_cast<u8>(0);
+    this->m_ucJobID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataReleaseElement::CDataReleaseElement() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucReleaseType = static_cast<u8>(0);
-    this->m_unReleaseID = static_cast<u32>(0);
-    this->m_ucReleaseLv = static_cast<u8>(0);
+    this->m_ucReleaseType = 0;
+    this->m_unReleaseID = 0;
+    this->m_ucReleaseLv = 0;
 }

@@ -1434,6 +1434,18 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sQuestManagerExt::isEnableEntryBoard at 0x813bd5-0x813bdc; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sQuestManagerExt::getNowCallCycleContentsScheduleId() {
+    return this->mNowCallCycleContentsScheduleId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sQuestManagerExt::setNowCallEntryBoardQuestID(u32 id) {
+    this->mNowCallEntryBoardQuestID = id;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool sQuestManagerExt::isSaveEntrySearchFilterSave() {
     return this->mIsSaveEntrySearchFilterSave;
 }
@@ -1451,9 +1463,9 @@ inline u32 sQuestManagerExt::cKilledEnemy::getKilledNum() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cKilledEnemy::cKilledEnemy() {
-    this->mStageNo = static_cast<u32>(0);
-    this->mEnemyId = static_cast<u32>(0);
-    this->mKilledNum = static_cast<u32>(1);
+    this->mStageNo = 0;
+    this->mEnemyId = 0;
+    this->mKilledNum = 1;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1465,7 +1477,7 @@ inline cQuestManagerBase* sQuestManagerExt::cManagerInfo::getQuestManager() {
 // Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cManagerInfo::cManagerInfo() {
     this->mType = static_cast<nQuest::QUEST_TYPE>(12);
-    this->mpMgr = static_cast<cQuestManagerBase*>(nullptr);
+    this->mpMgr = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1477,7 +1489,19 @@ inline cQuestFunctionManagerBase* sQuestManagerExt::cFunctionInfo::getFunctionMa
 // Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cFunctionInfo::cFunctionInfo() {
     this->mType = static_cast<nQuest::FUNCTION_TYPE>(13);
-    this->mpFuncMgr = static_cast<cQuestFunctionManagerBase*>(nullptr);
+    this->mpFuncMgr = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sQuestManagerExt::getCycleContentsPlayTime at 0x812419-0x81241e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sQuestManagerExt::cTimer::getMeasuringTime() const {
+    return this->mMeasuringTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sQuestManagerExt::getCycleContentsPlayTime at 0x812419-0x812423; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sQuestManagerExt::cTimer::getElapsedTime() const {
+    return this->mMeasuringTime - this->mRemainingTime;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1498,13 +1522,19 @@ inline sQuestManagerExt::cTimer::cTimer() {
     this->mMeasuringTime = 0.0f;
     this->mRemainingTime = 0.0f;
     this->mpCallbackFinish = static_cast<void(MtObject::*)()>(0);
-    this->mpCalssCallbackFinish = static_cast<MtObject*>(nullptr);
-    this->mStopTime = static_cast<t64>(0);
-    this->mFinishTime = static_cast<t64>(0);
-    this->mStartTime = static_cast<t64>(0);
+    this->mpCalssCallbackFinish = nullptr;
+    this->mStopTime = 0;
+    this->mFinishTime = 0;
+    this->mStartTime = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool sQuestManagerExt::cCallQuestAnnounce::isDelete() const {
+    return this->mIsDelete;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cUnreleasedArea::cUnreleasedArea() {
-    this->mAreaId = static_cast<u32>(0);
+    this->mAreaId = 0;
 }

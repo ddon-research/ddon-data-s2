@@ -104,7 +104,7 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCharacterEditPresetPalette::cCharacterEditPresetPalette() {
-    this->mUID = static_cast<u32>(9999);
+    this->mUID = 9999;
 }
 
 // Inline, no code of its own: checked where it is inlined.

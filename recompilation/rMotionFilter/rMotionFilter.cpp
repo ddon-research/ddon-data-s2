@@ -36,7 +36,7 @@ const MtDTI& cMotionFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMotionFilter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memAlloc(sz, align, ::cMotionFilter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMotionFilter::DTI)->memAlloc(sz, align, cMotionFilter::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cMotionFilter::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMotionFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMotionFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -76,6 +76,8 @@ inline void cMotionFilter::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cMotionFilter::~cMotionFilter();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMotionFilter::MyDTI cMotionFilter::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMotionFilter.cpp at 0x006a4e20-0x006a4e62 (called at rMotionFilter.cpp:38)
 //   in _GLOBAL__sub_I_rMotionFilter.cpp at 0x006a4e20-0x006a4e62 (called at rMotionFilter.h:45)
@@ -84,7 +86,7 @@ inline void cMotionFilter::operator delete(void* p_addr) {
 // Address: 0x006a4c30 - 0x006a4c80 (80 bytes)
 MtObject* cMotionFilter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMotionFilter;
+    return new (16u) cMotionFilter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -109,7 +111,7 @@ const MtDTI& rMotionFilter::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMotionFilter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMotionFilter::DTI)->memAlloc(sz, align, ::rMotionFilter::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMotionFilter::DTI)->memAlloc(sz, align, rMotionFilter::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ inline void* rMotionFilter::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rMotionFilterD0Ev at 0x01a9cc04-0x01a9cc23, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rMotionFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMotionFilter::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMotionFilter::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,13 +143,13 @@ bool rMotionFilter::loadData(MtDataReader& r, cMotionFilter* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mMin);
+    nDDOIO::readData(r, pData->mMin);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mMiddle);
+    nDDOIO::readData(r, pData->mMiddle);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mMax);
+    nDDOIO::readData(r, pData->mMax);
     return true;
 }
 
@@ -160,8 +162,10 @@ MT_CTSTR rMotionFilter::getExt() const {
 // Address: 0x01a9cd50 - 0x01a9cd56 (6 bytes)
 u32 rMotionFilter::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMotionFilter::MyDTI rMotionFilter::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMotionFilter.cpp at 0x006a4e62-0x006a4e9f (called at rMotionFilter.cpp:39)
@@ -171,7 +175,7 @@ u32 rMotionFilter::getDataVersion() const {
 // Address: 0x006a4cf0 - 0x006a4d54 (100 bytes)
 MtObject* rMotionFilter::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMotionFilter;
+    return new (16u) rMotionFilter;
 }
 
 // Instance at 0x01a9cd00 - 0x01a9cd16 (22 bytes) of the generic rTbl2<T>::getData

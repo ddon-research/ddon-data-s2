@@ -71,9 +71,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline uPlayer::uPlayer() {
-    this->::uHuman::mpKeyCommand = static_cast<cpKeyCommand*>(nullptr);
-    this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | static_cast<u32>(8);
-    this->mpDyingEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    this->::uHuman::mpKeyCommand = nullptr;
+    this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | 8u;
+    this->mpDyingEfcHandle = nullptr;
     this->mIsDying = false;
     this->::uHuman::mIsUpdateAbility = true;
     this->mIsTargetIconOff = false;

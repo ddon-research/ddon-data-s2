@@ -21,37 +21,37 @@
 void nCaplink::ContentAchievementRelationGetAns::init() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::nCaplink::ContextListener::init();
-    this->mTotal = static_cast<s32>(0);
-    this->mCount = static_cast<s32>(0);
-    this->mAchievementList.::MtArray::mAutoDelete = true;
-    if (this->mAchievementList.::MtArray::mLength != static_cast<u32>(0)) {
+    mTotal = 0;
+    mCount = 0;
+    mAchievementList.mAutoDelete = true;
+    if (mAchievementList.mLength != 0) {
         // inferred: the value the loop at 0x1abf540 carries; no location-less local in scope fits
-        u32 v0_0 = this->mAchievementList.::MtArray::mLength;
+        u32 v0_0 = mAchievementList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mAchievementList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mAchievementList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAchievementList.::MtArray::mLength) {
-                    v0_0 = this->mAchievementList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mAchievementList.mpArray[i0_3] != nullptr) {
+                delete mAchievementList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAchievementList.mLength) {
+                    v0_0 = mAchievementList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mAchievementList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAchievementList.::MtArray::mpArray));
+    if (mAchievementList.mpArray != nullptr) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(mAchievementList.mpArray));
     }
-    this->mAchievementList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mAchievementList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mAchievementList.::MtArray::mLength = static_cast<u32>(0);
+    mAchievementList.mpArray = nullptr;
+    mAchievementList.mBufsiz = 0;
+    mAchievementList.mLength = 0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

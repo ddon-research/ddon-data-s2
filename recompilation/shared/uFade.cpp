@@ -24,7 +24,7 @@ const MtDTI& uFade::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uFade::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uFade::DTI);
+    return MtMemoryAllocator::getAllocator(uFade::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* uFade::getAllocator() {
 // Address: 0x008fc8c0 - 0x008fc900 (64 bytes)
 void* uFade::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uFade::getAllocator()->memAlloc(sz, align, ::uFade::DTI.::MtDTI::getID());
+    return uFade::getAllocator()->memAlloc(sz, align, uFade::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* uFade::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uFade::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uFade::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uFade::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,32 +63,32 @@ inline void uFade::operator delete(void* p_addr) {
 // Address: 0x008fc970 - 0x008fca3c (204 bytes)
 uFade::uFade(s32 type, f32 time) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnd = false;
-    this->mIsStop = false;
-    this->mIsSetScreenLayer = false;
-    this->mpScheduler = static_cast<uScheduler*>(nullptr);
-    this->mFrameNow = 0.0f;
-    this->mFadeType = static_cast<s32>(-1);
-    if (this->::uFade::createScheduler(type) != false) {
+    mIsEnd = false;
+    mIsStop = false;
+    mIsSetScreenLayer = false;
+    mpScheduler = nullptr;
+    mFrameNow = 0.0f;
+    mFadeType = -1;
+    if (createScheduler(type)) {
         // inferred: a temporary for the result of the call at 0x8fc9ce, used twice; no DWARF local holds it
-        u32 t0 = this->mpScheduler->::uScheduler::getFrameMax();
+        u32 t0 = mpScheduler->getFrameMax();
         if (0.0f >= time) {
-            this->mFrameAdd = static_cast<float>(t0);
-            this->mFrameNow = this->mFrameAdd;
+            mFrameAdd = static_cast<float>(t0);
+            mFrameNow = mFrameAdd;
             // inferred: a temporary for the value the load at 0x8fca0b read, used 3 times; no DWARF local holds it
-            uScheduler* t1 = this->mpScheduler;
+            uScheduler* t1 = mpScheduler;
             // inferred: a temporary for the result of the call at 0x8fca12, used once; no DWARF local holds it
-            u32 t2 = t1->::uScheduler::getFrameMax();
-            if (t1->mpScheduler != static_cast<rScheduler*>(nullptr)) {
+            u32 t2 = t1->getFrameMax();
+            if (t1->mpScheduler != nullptr) {
                 t1->mFrame = static_cast<float>(t2);
             }
-            this->mIsEnd = true;
+            mIsEnd = true;
         } else {
-            this->mFrameAdd = static_cast<float>(t0) / time;
+            mFrameAdd = static_cast<float>(t0) / time;
         }
     } else {
-        this->mFrameAdd = 0.0f;
-        this->mIsEnd = true;
+        mFrameAdd = 0.0f;
+        mIsEnd = true;
     }
 }
 
@@ -110,18 +110,18 @@ __attribute__((weak)) void uFade::move() {
 void uFade::kill() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uFade*
-    if (this->mpScheduler != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpScheduler->::cUnit::isEnable()) {
-            this->mpScheduler->kill();
+    if (mpScheduler != nullptr) {
+        if (mpScheduler->isEnable()) {
+            mpScheduler->kill();
         } else {
-            this->mpScheduler = static_cast<uScheduler*>(nullptr);
+            mpScheduler = nullptr;
         }
     }
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) != 0) {
         return;
     }
-    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    if ((mBeFlag - 1u) <= 1u) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
     }
 }
 
@@ -153,6 +153,10 @@ __attribute__((weak)) bool uFade::createScheduler(s32 type) {
 //   in sGame::isFadeBlack at 0x00785bf4-0x00785bfa (called at sGame.cpp:3501)
 //   in sGame::isFadeOutBusy at 0x00785c2c-0x00785c33 (called at sGame.cpp:3547)
 // bool uFade::isFadeOut();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uFade::MyDTI uFade::DTI;
+
+// Not defined (relocated bytes): const MT_CTSTR uFade::mFadeSchedulerTbl[4];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uFade.cpp at 0x008fcd8f-0x008fcdcc (called at uFade.cpp:38)

@@ -48,6 +48,7 @@ namespace nDraw { class Scene; }
 namespace nDraw { struct TECHNIQUE; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
+class sGpuParticle;
 class uColorCorrectFilter;
 class uEffect2D;
 
@@ -73,6 +74,8 @@ class cDraw : public MtObject
 {
     // inferred: cInstancingCulling::beginRecord names cDraw::mJobThreadIndex
     friend class cInstancingCulling;
+    // inferred: sGpuParticle::Context::update names cDraw::mJobThreadIndex, through its enclosing class sGpuParticle
+    friend class sGpuParticle;
     // inferred: uColorCorrectFilter::draw names cDraw::mContext.pscene
     friend class uColorCorrectFilter;
     // inferred: uEffect2D::drawScene names cDraw::mJobThreadIndex
@@ -639,3 +642,9 @@ protected:
     static const u32 MIN_SORT_NUM = 1024;
     static const u32 MAX_STATE_CUE = 8192;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSkyWaterModel::draw at 0xd1f97b-0xd1f982; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline nDraw::Scene* cDraw::getScene() const {
+    return this->mContext.pscene;
+}

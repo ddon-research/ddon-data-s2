@@ -28,7 +28,7 @@ const MtDTI& cpStateManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpStateManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpStateManager::DTI);
+    return MtMemoryAllocator::getAllocator(cpStateManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* cpStateManager::getAllocator() {
 // Address: 0x00538ca0 - 0x00538ce0 (64 bytes)
 void* cpStateManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpStateManager::getAllocator()->memAlloc(sz, align, ::cpStateManager::DTI.::MtDTI::getID());
+    return cpStateManager::getAllocator()->memAlloc(sz, align, cpStateManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cpStateManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpStateManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpStateManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpStateManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,45 +74,45 @@ cpStateManager::cpStateManager() {
 // Also emitted as: _ZN14cpStateManagerD0Ev at 0x00538e70
 cpStateManager::~cpStateManager() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x538de0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mpCurrentState != static_cast<cState*>(nullptr)) {
-        delete this->mpCurrentState;
-        this->mpCurrentState = static_cast<cState*>(nullptr);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
+    if (mpCurrentState != nullptr) {
+        delete mpCurrentState;
+        mpCurrentState = nullptr;
     }
 }
 
 // Address: 0x01a5fb60 - 0x01a5fb69 (9 bytes)
 void cpStateManager::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x01ad2420 - 0x01ad251c (252 bytes)
@@ -132,37 +132,37 @@ __attribute__((weak)) void cpStateManager::setup() {
 // Address: 0x00538fc0 - 0x00538fd0 (16 bytes)
 void cpStateManager::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCurrentState == static_cast<cState*>(nullptr)) {
+    if (mpCurrentState == nullptr) {
         return;
     }
-    this->mpCurrentState->move();
+    mpCurrentState->move();
 }
 
 // Address: 0x005390d0 - 0x00539103 (51 bytes)
 void cpStateManager::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00539110 - 0x00539146 (54 bytes)
 void cpStateManager::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCurrentState == static_cast<cState*>(nullptr)) {
+    if (mpCurrentState == nullptr) {
         return;
     }
-    this->mpCurrentState->final();
-    if (this->mpCurrentState == static_cast<cState*>(nullptr)) {
+    mpCurrentState->final();
+    if (mpCurrentState == nullptr) {
         return;
     }
-    delete this->mpCurrentState;
-    this->mpCurrentState = static_cast<cState*>(nullptr);
+    delete mpCurrentState;
+    mpCurrentState = nullptr;
 }
 
 // Address: 0x00538fd0 - 0x00539092 (194 bytes)
@@ -176,18 +176,20 @@ __attribute__((weak)) void cpStateManager::setState(s32 state) {
 // Address: 0x005390a0 - 0x005390b2 (18 bytes)
 s32 cpStateManager::getStateNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCurrentState != static_cast<cState*>(nullptr)) {
-        return this->mpCurrentState->::cState::getStateNo();
+    if (mpCurrentState != nullptr) {
+        return mpCurrentState->getStateNo();
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x005390c0 - 0x005390c5 (5 bytes)
 const cState* cpStateManager::getCurrentState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpCurrentState;
+    return mpCurrentState;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpStateManager::MyDTI cpStateManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpStateManager.cpp at 0x0053924f-0x0053928c (called at cpStateManager.cpp:32)

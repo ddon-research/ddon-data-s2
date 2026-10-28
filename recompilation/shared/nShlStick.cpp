@@ -79,13 +79,13 @@ nShlStick::cStickObjectCtrl::~cStickObjectCtrl() {
 // Address: 0x00d0aef0 - 0x00d0af0f (31 bytes)
 void nShlStick::cStickObjectCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStickModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpStickModel == nullptr) {
         return;
     }
-    if (this->mpStickModel->::cUnit::isEnable() != false) {
+    if (mpStickModel->isEnable()) {
         return;
     }
-    this->mpStickModel = static_cast<uDDOModel*>(nullptr);
+    mpStickModel = nullptr;
 }
 
 // Address: 0x00d0af10 - 0x00d0b114 (516 bytes)
@@ -110,61 +110,61 @@ void nShlStick::cStickObjectCtrl::storeStickInfo(const cHitGeom* pGeom, uDDOMode
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xd0b131 read, used 3 times; no DWARF local holds it
     const u8 t0 = pGeom->mpSrcGeom->mShape;
-    this->mShape = t0;
-    this->mpStickModel = pDDOModel;
-    if (t0 == static_cast<u8>(0)) {
+    mShape = t0;
+    mpStickModel = pDDOModel;
+    if (t0 == 0) {
         // inferred: a temporary for the result of the call at 0xd0b147, used 3 times; no DWARF local holds it
-        const MtSphere* t1 = pGeom->::cHitGeom::getSphere();
-        this->mCapsule.p0.x = t1->pos.x;
-        this->mCapsule.p0.y = t1->pos.y;
-        this->mCapsule.p0.z = t1->pos.z;
-        this->mCapsule.p0.pad_ = 0.0f;
+        const MtSphere* t1 = pGeom->getSphere();
+        mCapsule.p0.x = t1->pos.x;
+        mCapsule.p0.y = t1->pos.y;
+        mCapsule.p0.z = t1->pos.z;
+        mCapsule.p0.pad_ = 0.0f;
         // inferred: a temporary for the result of the call at 0xd0b173, used 3 times; no DWARF local holds it
-        const MtSphere* t2 = pGeom->::cHitGeom::getSphere();
-        this->mCapsule.p1.x = t2->pos.x;
-        this->mCapsule.p1.y = t2->pos.y;
-        this->mCapsule.p1.z = t2->pos.z;
-        this->mCapsule.p1.pad_ = 0.0f;
-        this->mCapsule.r = pGeom->::cHitGeom::getSphere()->r;
-        this->mJoint0 = pGeom->mpSrcGeom->mJnt0;
-        this->mJoint1 = this->mJoint0;
-        this->mOffset0.x = pGeom->mpSrcGeom->mOffset0.x;
-        this->mOffset0.y = pGeom->mpSrcGeom->mOffset0.y;
-        this->mOffset0.z = pGeom->mpSrcGeom->mOffset0.z;
-        this->mOffset0.pad_ = 0.0f;
-        this->mOffset1.x = pGeom->mpSrcGeom->mOffset0.x;
-        this->mOffset1.y = pGeom->mpSrcGeom->mOffset0.y;
-        this->mOffset1.z = pGeom->mpSrcGeom->mOffset0.z;
-        this->mOffset1.pad_ = 0.0f;
+        const MtSphere* t2 = pGeom->getSphere();
+        mCapsule.p1.x = t2->pos.x;
+        mCapsule.p1.y = t2->pos.y;
+        mCapsule.p1.z = t2->pos.z;
+        mCapsule.p1.pad_ = 0.0f;
+        mCapsule.r = pGeom->getSphere()->r;
+        mJoint0 = pGeom->mpSrcGeom->mJnt0;
+        mJoint1 = mJoint0;
+        mOffset0.x = pGeom->mpSrcGeom->mOffset0.x;
+        mOffset0.y = pGeom->mpSrcGeom->mOffset0.y;
+        mOffset0.z = pGeom->mpSrcGeom->mOffset0.z;
+        mOffset0.pad_ = 0.0f;
+        mOffset1.x = pGeom->mpSrcGeom->mOffset0.x;
+        mOffset1.y = pGeom->mpSrcGeom->mOffset0.y;
+        mOffset1.z = pGeom->mpSrcGeom->mOffset0.z;
+        mOffset1.pad_ = 0.0f;
     } else {
-        if (t0 == static_cast<u8>(1)) {
+        if (t0 == 1) {
             // inferred: a temporary for the result of the call at 0xd0b21a, used 3 times; no DWARF local holds it
-            const MtCapsule* t3 = pGeom->::cHitGeom::getCapsule();
-            this->mCapsule.p0.x = t3->p0.x;
-            this->mCapsule.p0.y = t3->p0.y;
-            this->mCapsule.p0.z = t3->p0.z;
-            this->mCapsule.p0.pad_ = 0.0f;
+            const MtCapsule* t3 = pGeom->getCapsule();
+            mCapsule.p0.x = t3->p0.x;
+            mCapsule.p0.y = t3->p0.y;
+            mCapsule.p0.z = t3->p0.z;
+            mCapsule.p0.pad_ = 0.0f;
             // inferred: a temporary for the result of the call at 0xd0b246, used 3 times; no DWARF local holds it
-            const MtCapsule* t4 = pGeom->::cHitGeom::getCapsule();
-            this->mCapsule.p1.x = t4->p1.x;
-            this->mCapsule.p1.y = t4->p1.y;
-            this->mCapsule.p1.z = t4->p1.z;
-            this->mCapsule.p1.pad_ = 0.0f;
-            this->mCapsule.r = pGeom->::cHitGeom::getCapsule()->r;
-            this->mJoint0 = pGeom->mpSrcGeom->mJnt0;
-            this->mJoint1 = pGeom->mpSrcGeom->mJnt1;
-            this->mOffset0.x = pGeom->mpSrcGeom->mOffset0.x;
-            this->mOffset0.y = pGeom->mpSrcGeom->mOffset0.y;
-            this->mOffset0.z = pGeom->mpSrcGeom->mOffset0.z;
-            this->mOffset0.pad_ = 0.0f;
-            this->mOffset1.x = pGeom->mpSrcGeom->mOffset1.x;
-            this->mOffset1.y = pGeom->mpSrcGeom->mOffset1.y;
-            this->mOffset1.z = pGeom->mpSrcGeom->mOffset1.z;
-            this->mOffset1.pad_ = 0.0f;
+            const MtCapsule* t4 = pGeom->getCapsule();
+            mCapsule.p1.x = t4->p1.x;
+            mCapsule.p1.y = t4->p1.y;
+            mCapsule.p1.z = t4->p1.z;
+            mCapsule.p1.pad_ = 0.0f;
+            mCapsule.r = pGeom->getCapsule()->r;
+            mJoint0 = pGeom->mpSrcGeom->mJnt0;
+            mJoint1 = pGeom->mpSrcGeom->mJnt1;
+            mOffset0.x = pGeom->mpSrcGeom->mOffset0.x;
+            mOffset0.y = pGeom->mpSrcGeom->mOffset0.y;
+            mOffset0.z = pGeom->mpSrcGeom->mOffset0.z;
+            mOffset0.pad_ = 0.0f;
+            mOffset1.x = pGeom->mpSrcGeom->mOffset1.x;
+            mOffset1.y = pGeom->mpSrcGeom->mOffset1.y;
+            mOffset1.z = pGeom->mpSrcGeom->mOffset1.z;
+            mOffset1.pad_ = 0.0f;
         } else {
-            this->mShape = static_cast<u32>(0);
-            this->mJoint0 = static_cast<s32>(0);
-            this->mCapsule.r = 1.0f;
+            mShape = 0;
+            mJoint0 = 0;
+            mCapsule.r = 1.0f;
         }
     }
 }
@@ -202,6 +202,8 @@ __attribute__((weak)) void nShlStick::cStickObjectCtrl::copy(const nShlStick::cS
     DDON_STUB("nShlStick::cStickObjectCtrl::copy")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nShlStick::cStickObjectCtrl::MyDTI nShlStick::cStickObjectCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlStick.cpp at 0x00d0d89e-0x00d0d8db (called at uShlStick.cpp:40)

@@ -37,7 +37,7 @@ const MtDTI& cPrim::getDTI() const {
 // Address: 0x01325f40 - 0x01325f80 (64 bytes)
 void* cPrim::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::cPrim::DTI)->memAlloc(sz, align, ::cPrim::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(cPrim::DTI)->memAlloc(sz, align, cPrim::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* cPrim::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5cPrimD0Ev at 0x01326341-0x01326362, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPrim::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPrim::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPrim::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,15 +74,15 @@ cPrim::cPrim() {
 // Also emitted as: _ZN5cPrimD0Ev at 0x013262f0
 cPrim::~cPrim() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpPrimBuffer != static_cast<cPrimBuffer*>(nullptr)) {
-        delete this->mpPrimBuffer;
-        this->mpPrimBuffer = static_cast<cPrimBuffer*>(nullptr);
+    if (mpPrimBuffer != nullptr) {
+        delete mpPrimBuffer;
+        mpPrimBuffer = nullptr;
     }
-    if (this->mpPrimTagList == static_cast<cPrimTagList*>(nullptr)) {
+    if (mpPrimTagList == nullptr) {
         return;
     }
-    delete this->mpPrimTagList;
-    this->mpPrimTagList = static_cast<cPrimTagList*>(nullptr);
+    delete mpPrimTagList;
+    mpPrimTagList = nullptr;
 }
 
 // Address: 0x01326370 - 0x01326373 (3 bytes)
@@ -94,8 +94,8 @@ MtUI* cPrim::createUI(MtProperty& prop) {
 // Address: 0x01326380 - 0x013263ab (43 bytes)
 void cPrim::createProperty(MtPropertyList& prop_list) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpPrimTagList->createProperty(prop_list);
-    this->mpPrimBuffer->createProperty(prop_list);
+    mpPrimTagList->createProperty(prop_list);
+    mpPrimBuffer->createProperty(prop_list);
 }
 
 // Address: 0x013267a0 - 0x013267f9 (89 bytes)
@@ -103,28 +103,28 @@ s32 cPrim::push(bool use_vscr) {
     // DWARF local not rendered: ObjState* p_stack;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x13267b0 read, used 4 times; no DWARF local holds it
-    u32 t0 = this->mCurrentStack;
-    if (t0 <= static_cast<u32>(5)) {
-        this->mpPrimTagList->::cPrimTagList::push();
-        this->mStack[t0].p_draw = static_cast<cDraw*>(nullptr);
-        this->mStack[t0].p_model = static_cast<rModel*>(nullptr);
-        this->mStack[t0].use_vscr = use_vscr;
-        this->mCurrentStack = this->mCurrentStack + static_cast<u32>(1);
-        return static_cast<s32>(0);
+    u32 t0 = mCurrentStack;
+    if (t0 <= 5u) {
+        mpPrimTagList->push();
+        mStack[t0].p_draw = nullptr;
+        mStack[t0].p_model = nullptr;
+        mStack[t0].use_vscr = use_vscr;
+        mCurrentStack = mCurrentStack + 1u;
+        return 0;
     } else {
-        return static_cast<s32>(9);
+        return 9;
     }
 }
 
 // Address: 0x01326800 - 0x0132682f (47 bytes)
 s32 cPrim::pop() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mCurrentStack != static_cast<u32>(0)) {
-        this->mpPrimTagList->::cPrimTagList::pop();
-        this->mCurrentStack = this->mCurrentStack - static_cast<u32>(1);
-        return static_cast<s32>(0);
+    if (mCurrentStack != 0) {
+        mpPrimTagList->pop();
+        mCurrentStack = mCurrentStack - 1u;
+        return 0;
     } else {
-        return static_cast<s32>(10);
+        return 10;
     }
 }
 
@@ -207,28 +207,28 @@ void cPrim::clear() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2f0 from cPrim*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd0 from cPrim*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xcc from cPrim*
-    this->mpPrimBuffer->::cPrimBuffer::resetBuffer();
-    this->mTexHandle.mCurrentIdx = static_cast<u32>(0);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(752)) = static_cast<unsigned long>(0);
-    this->mTexHandle.mpTexture = static_cast<nPrim::Texture*>(nullptr);
-    this->mCurrentTexHandle = static_cast<u32>(0);
-    this->mTexture.p_alpha = static_cast<rTexture*>(nullptr);
-    this->mTexture.p_mask = static_cast<rTexture*>(nullptr);
-    this->mTexture.p_normal = static_cast<rTexture*>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(208)) = static_cast<unsigned long>(0);
-    this->mTexture.flags = static_cast<u32>(0);
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(204)) = static_cast<unsigned int>(0);
-    this->mCurrentStack = static_cast<u32>(0);
-    this->mMetaDataChanged = false;
-    this->mpMetaData = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[7] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[6] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[5] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[4] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[3] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[2] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[1] = static_cast<void*>(nullptr);
-    this->mMetaData.p_data[0] = static_cast<void*>(nullptr);
+    mpPrimBuffer->resetBuffer();
+    mTexHandle.mCurrentIdx = 0;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 752) = 0;
+    mTexHandle.mpTexture = nullptr;
+    mCurrentTexHandle = 0;
+    mTexture.p_alpha = nullptr;
+    mTexture.p_mask = nullptr;
+    mTexture.p_normal = nullptr;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 208) = 0;
+    mTexture.flags = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 204) = 0;
+    mCurrentStack = 0;
+    mMetaDataChanged = false;
+    mpMetaData = nullptr;
+    mMetaData.p_data[7] = nullptr;
+    mMetaData.p_data[6] = nullptr;
+    mMetaData.p_data[5] = nullptr;
+    mMetaData.p_data[4] = nullptr;
+    mMetaData.p_data[3] = nullptr;
+    mMetaData.p_data[2] = nullptr;
+    mMetaData.p_data[1] = nullptr;
+    mMetaData.p_data[0] = nullptr;
 }
 
 // Address: 0x013264a0 - 0x01326556 (182 bytes)
@@ -1068,6 +1068,8 @@ __attribute__((weak)) void cPrim::mergeTag(cPrimTagList::IndexTag* in_data, cPri
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool cPrim::clipParticle(const MtVector3& z_pos);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPrim::MyDTI cPrim::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cPrim::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

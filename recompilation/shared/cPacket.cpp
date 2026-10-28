@@ -54,13 +54,13 @@ CPacket::~CPacket() {
 // Also emitted as: _ZN11CPacketBaseD0Ev at 0x01a01c40
 CPacketBase::~CPacketBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->m_pBuffer == static_cast<unsigned char*>(nullptr)) {
+    if (m_pBuffer == nullptr) {
         return;
     }
-    if (this->mpAllocator == static_cast<MtAllocator*>(nullptr)) {
+    if (mpAllocator == nullptr) {
         return;
     }
-    this->mpAllocator->memFree(static_cast<void*>(this->m_pBuffer));
+    mpAllocator->memFree(static_cast<void*>(m_pBuffer));
 }
 
 // No out-of-line body: 101 inlined copies in 100 functions (499 bytes)
@@ -148,7 +148,7 @@ const MtDTI& CPacketDataBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* CPacketDataBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::CPacketDataBase::DTI)->memAlloc(sz, align, ::CPacketDataBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(CPacketDataBase::DTI)->memAlloc(sz, align, CPacketDataBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -162,7 +162,7 @@ inline void* CPacketDataBase::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void CPacketDataBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::CPacketDataBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(CPacketDataBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,6 +182,8 @@ inline void CPacketDataBase::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // CPacketDataBase::~CPacketDataBase();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CPacketDataBase::MyDTI CPacketDataBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418b40-0x00418b81 (called at cPacket.cpp:225)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418b40-0x00418b81 (called at cPacket.h:447)
@@ -190,19 +192,19 @@ inline void CPacketDataBase::operator delete(void* p_addr) {
 // Address: 0x003b6ab0 - 0x003b6af0 (64 bytes)
 MtObject* CPacketDataBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::CPacketDataBase;
+    return new (16u) CPacketDataBase;
 }
 
 // Address: 0x003b6140 - 0x003b615e (30 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:38
 int nPacket::Read(CPacket& packet, u8& v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(1)])) {
-        v = *packet.::CPacketBase::m_pReader;
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(1)];
-        return static_cast<int>(1);
+    if (packet.m_pWriter >= (&packet.m_pReader[1])) {
+        v = *packet.m_pReader;
+        packet.m_pReader = &packet.m_pReader[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -210,12 +212,12 @@ int nPacket::Read(CPacket& packet, u8& v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:40
 int nPacket::Read(CPacket& packet, u32& v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(4)])) {
-        v = (((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(16777216)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(65536))) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(16)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(256))) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(24)) & static_cast<unsigned int>(255));
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(4)];
-        return static_cast<int>(4);
+    if (packet.m_pWriter >= (&packet.m_pReader[4])) {
+        v = (((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 255) * 0x1000000u) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 255u) * 0x10000u)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 16) & 255u) * 256u)) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 255u);
+        packet.m_pReader = &packet.m_pReader[4];
+        return 4;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -223,12 +225,12 @@ int nPacket::Read(CPacket& packet, u32& v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:41
 int nPacket::Read(CPacket& packet, u64& v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(8)])) {
-        v = static_cast<long unsigned int>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) * static_cast<unsigned long>(72057594037927936)) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned long>(65280)) * static_cast<unsigned long>(1099511627776)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned long>(16711680)) * static_cast<unsigned long>(16777216))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) * static_cast<unsigned long>(256)) & static_cast<unsigned long>(1095216660480))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(8)) & static_cast<unsigned long>(4278190080))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(24)) & static_cast<unsigned long>(16711680))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(40)) & static_cast<unsigned long>(65280))) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(56))));
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(8)];
-        return static_cast<int>(8);
+    if (packet.m_pWriter >= (&packet.m_pReader[8])) {
+        v = static_cast<long unsigned int>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 0x100000000000000ul) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF00) * 0x10000000000ul) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF0000) * 0x1000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) & 0xFF00000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 0xFF000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 0xFF0000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 40) & 0xFF00ul)) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 56)));
+        packet.m_pReader = &packet.m_pReader[8];
+        return 8;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -237,12 +239,12 @@ int nPacket::Read(CPacket& packet, u64& v) {
 int nPacket::Read(CPacket& packet, s8& v) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned char used as signed char
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(1)])) {
-        v = static_cast<signed char>(*packet.::CPacketBase::m_pReader);
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(1)];
-        return static_cast<int>(1);
+    if (packet.m_pWriter >= (&packet.m_pReader[1])) {
+        v = static_cast<signed char>(*packet.m_pReader);
+        packet.m_pReader = &packet.m_pReader[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -253,12 +255,12 @@ int nPacket::Read(CPacket& packet, s8& v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:44
 int nPacket::Read(CPacket& packet, s32& v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(4)])) {
-        v = static_cast<int>((((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(16777216)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(65536))) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(16)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(256))) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned int>(24)) & static_cast<unsigned int>(255)));
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(4)];
-        return static_cast<int>(4);
+    if (packet.m_pWriter >= (&packet.m_pReader[4])) {
+        v = static_cast<int>((((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 255) * 0x1000000u) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 255u) * 0x10000u)) | ((([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 16) & 255u) * 256u)) | (([](const void* p) -> unsigned int { typedef const unsigned int t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 255u));
+        packet.m_pReader = &packet.m_pReader[4];
+        return 4;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -266,12 +268,12 @@ int nPacket::Read(CPacket& packet, s32& v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:45
 int nPacket::Read(CPacket& packet, s64& v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(8)])) {
-        v = static_cast<long int>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) * static_cast<unsigned long>(72057594037927936)) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned long>(65280)) * static_cast<unsigned long>(1099511627776)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) & static_cast<unsigned long>(16711680)) * static_cast<unsigned long>(16777216))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) * static_cast<unsigned long>(256)) & static_cast<unsigned long>(1095216660480))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(8)) & static_cast<unsigned long>(4278190080))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(24)) & static_cast<unsigned long>(16711680))) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(40)) & static_cast<unsigned long>(65280))) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) >> static_cast<unsigned long>(56))));
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(8)];
-        return static_cast<int>(8);
+    if (packet.m_pWriter >= (&packet.m_pReader[8])) {
+        v = static_cast<long int>(([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 0x100000000000000ul) + (((((((([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF00) * 0x10000000000ul) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) & 0xFF0000) * 0x1000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) & 0xFF00000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 8) & 0xFF000000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 24) & 0xFF0000ul)) | (([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 40) & 0xFF00ul)) | ([](const void* p) -> unsigned long { typedef const unsigned long t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) >> 56)));
+        packet.m_pReader = &packet.m_pReader[8];
+        return 8;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -280,12 +282,12 @@ int nPacket::Read(CPacket& packet, s64& v) {
 int nPacket::Read(CPacket& packet, bool& v) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: unsigned char used as bool
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(1)])) {
-        v = static_cast<bool>(*packet.::CPacketBase::m_pReader);
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(1)];
-        return static_cast<int>(1);
+    if (packet.m_pWriter >= (&packet.m_pReader[1])) {
+        v = static_cast<bool>(*packet.m_pReader);
+        packet.m_pReader = &packet.m_pReader[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -309,12 +311,12 @@ __attribute__((weak)) int nPacket::Read(CPacket& packet, f64& v) {
 int nPacket::Read(CPacket& packet, u16& v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (packet.::CPacketBase::m_pWriter >= (&packet.::CPacketBase::m_pReader[static_cast<int>(2)])) {
-        v = static_cast<unsigned short>(static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader)) * static_cast<int>(256)) | (static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.::CPacketBase::m_pReader))) >> static_cast<unsigned long>(8)));
-        packet.::CPacketBase::m_pReader = &packet.::CPacketBase::m_pReader[static_cast<int>(2)];
-        return static_cast<int>(2);
+    if (packet.m_pWriter >= (&packet.m_pReader[2])) {
+        v = static_cast<unsigned short>(static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader)) * 256) | (static_cast<unsigned long>([](const void* p) -> unsigned short { typedef const unsigned short t __attribute__((aligned(1))); return *static_cast<t*>(p); }(&(*packet.m_pReader))) >> 8));
+        packet.m_pReader = &packet.m_pReader[2];
+        return 2;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -340,12 +342,12 @@ __attribute__((weak)) int nPacket::Read(CPacket& packet, unsigned char* pBuf, in
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:131
 int nPacket::Write(CPacket& packet, u8 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (packet.::CPacketBase::m_pWriter != packet.::CPacketBase::m_pEnd) {
-        *packet.::CPacketBase::m_pWriter = v;
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(1)];
-        return static_cast<int>(1);
+    if (packet.m_pWriter != packet.m_pEnd) {
+        *packet.m_pWriter = v;
+        packet.m_pWriter = &packet.m_pWriter[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -353,12 +355,12 @@ int nPacket::Write(CPacket& packet, u8 v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:133
 int nPacket::Write(CPacket& packet, u32 v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::Capacity() > static_cast<size_t>(3)) {
-        [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(((((v & static_cast<u32>(255)) * static_cast<u32>(16777216)) | (((v >> static_cast<u32>(8)) & static_cast<u32>(255)) * static_cast<u32>(65536))) | (((v >> static_cast<u32>(16)) & static_cast<u32>(255)) * static_cast<u32>(256))) | ((v >> static_cast<u32>(24)) & static_cast<u32>(255)), &(*packet.::CPacketBase::m_pWriter));
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(4)];
-        return static_cast<int>(4);
+    if (packet.Capacity() > 3ul) {
+        [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(((((v & 255u) * 0x1000000u) | (((v >> 8) & 255u) * 0x10000u)) | (((v >> 16) & 255u) * 256u)) | ((v >> 24) & 255u), &(*packet.m_pWriter));
+        packet.m_pWriter = &packet.m_pWriter[4];
+        return 4;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -366,12 +368,12 @@ int nPacket::Write(CPacket& packet, u32 v) {
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/cPacket.cpp:134
 int nPacket::Write(CPacket& packet, u64 v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if (packet.::CPacketBase::Capacity() > static_cast<size_t>(7)) {
-        [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>((v * static_cast<u64>(72057594037927936)) + ((((((((v & static_cast<u64>(65280)) * static_cast<u64>(1099511627776)) | ((v & static_cast<u64>(16711680)) * static_cast<u64>(16777216))) | ((v * static_cast<u64>(256)) & static_cast<u64>(1095216660480))) | ((v >> static_cast<u64>(8)) & static_cast<u64>(4278190080))) | ((v >> static_cast<u64>(24)) & static_cast<u64>(16711680))) | ((v >> static_cast<u64>(40)) & static_cast<u64>(65280))) | (v >> static_cast<u64>(56)))), &(*packet.::CPacketBase::m_pWriter));
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(8)];
-        return static_cast<int>(8);
+    if (packet.Capacity() > 7ul) {
+        [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>((v * 0x100000000000000ul) + ((((((((v & 0xFF00ul) * 0x10000000000ul) | ((v & 0xFF0000ul) * 0x1000000ul)) | ((v * 256ul) & 0xFF00000000ul)) | ((v >> 8) & 0xFF000000ul)) | ((v >> 24) & 0xFF0000ul)) | ((v >> 40) & 0xFF00ul)) | (v >> 56))), &(*packet.m_pWriter));
+        packet.m_pWriter = &packet.m_pWriter[8];
+        return 8;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -380,12 +382,12 @@ int nPacket::Write(CPacket& packet, u64 v) {
 int nPacket::Write(CPacket& packet, s8 v) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s8 used as unsigned char
-    if (packet.::CPacketBase::m_pWriter != packet.::CPacketBase::m_pEnd) {
-        *packet.::CPacketBase::m_pWriter = static_cast<unsigned char>(v);
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(1)];
-        return static_cast<int>(1);
+    if (packet.m_pWriter != packet.m_pEnd) {
+        *packet.m_pWriter = static_cast<unsigned char>(v);
+        packet.m_pWriter = &packet.m_pWriter[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -397,12 +399,12 @@ int nPacket::Write(CPacket& packet, s8 v) {
 int nPacket::Write(CPacket& packet, s32 v) {
     // Approximate from the ELF: a cast to the other signedness; a read of bytes through a cast pointer; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (packet.::CPacketBase::Capacity() > static_cast<size_t>(3)) {
-        [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned int>(((static_cast<unsigned long>((v & static_cast<s32>(255)) * static_cast<s32>(16777216)) | static_cast<unsigned long>(((static_cast<unsigned int>(v) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(65536))) | static_cast<unsigned long>(((static_cast<unsigned int>(v) >> static_cast<unsigned int>(16)) & static_cast<unsigned int>(255)) * static_cast<unsigned int>(256))) | static_cast<unsigned long>((static_cast<unsigned int>(v) >> static_cast<unsigned int>(24)) & static_cast<unsigned int>(255))), &(*packet.::CPacketBase::m_pWriter));
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(4)];
-        return static_cast<int>(4);
+    if (packet.Capacity() > 3ul) {
+        [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned int>(((static_cast<unsigned long>((v & 255) * 16777216) | static_cast<unsigned long>(((static_cast<unsigned int>(v) >> 8) & 255u) * 0x10000u)) | static_cast<unsigned long>(((static_cast<unsigned int>(v) >> 16) & 255u) * 256u)) | static_cast<unsigned long>((static_cast<unsigned int>(v) >> 24) & 255u)), &(*packet.m_pWriter));
+        packet.m_pWriter = &packet.m_pWriter[4];
+        return 4;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -411,12 +413,12 @@ int nPacket::Write(CPacket& packet, s32 v) {
 int nPacket::Write(CPacket& packet, s64 v) {
     // Approximate from the ELF: a read of bytes through a cast pointer; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (packet.::CPacketBase::Capacity() > static_cast<size_t>(7)) {
-        [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }((v * static_cast<s64>(72057594037927936)) + ((((((static_cast<unsigned long>((v & static_cast<s64>(65280)) * static_cast<s64>(1099511627776)) | static_cast<unsigned long>((v & static_cast<s64>(16711680)) * static_cast<s64>(16777216))) | static_cast<unsigned long>((v * static_cast<s64>(256)) & static_cast<s64>(1095216660480))) | ((static_cast<unsigned long>(v) >> static_cast<unsigned long>(8)) & static_cast<unsigned long>(4278190080))) | ((static_cast<unsigned long>(v) >> static_cast<unsigned long>(24)) & static_cast<unsigned long>(16711680))) | ((static_cast<unsigned long>(v) >> static_cast<unsigned long>(40)) & static_cast<unsigned long>(65280))) | (static_cast<unsigned long>(v) >> static_cast<unsigned long>(56))), &(*packet.::CPacketBase::m_pWriter));
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[static_cast<int>(8)];
-        return static_cast<int>(8);
+    if (packet.Capacity() > 7ul) {
+        [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }((v * 72057594037927936l) + ((((((static_cast<unsigned long>((v & 0xFF00l) * 1099511627776l) | static_cast<unsigned long>((v & 0xFF0000l) * 16777216l)) | static_cast<unsigned long>((v * 256l) & 0xFF00000000l)) | ((static_cast<unsigned long>(v) >> 8) & 0xFF000000ul)) | ((static_cast<unsigned long>(v) >> 24) & 0xFF0000ul)) | ((static_cast<unsigned long>(v) >> 40) & 0xFF00ul)) | (static_cast<unsigned long>(v) >> 56)), &(*packet.m_pWriter));
+        packet.m_pWriter = &packet.m_pWriter[8];
+        return 8;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -426,13 +428,13 @@ int nPacket::Write(CPacket& packet, bool v) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
     // inferred: a temporary for the value the load at 0x3b6860 read, used 3 times; no DWARF local holds it
-    unsigned char* t0 = packet.::CPacketBase::m_pWriter;
-    if (t0 != packet.::CPacketBase::m_pEnd) {
+    unsigned char* t0 = packet.m_pWriter;
+    if (t0 != packet.m_pEnd) {
         *t0 = static_cast<unsigned char>(v);
-        packet.::CPacketBase::m_pWriter = &t0[static_cast<int>(1)];
-        return static_cast<int>(1);
+        packet.m_pWriter = &t0[1];
+        return 1;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 
@@ -441,12 +443,12 @@ int nPacket::Write(CPacket& packet, const unsigned char* pBuf, int size) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: size_t used as unsigned long
     // inferred: a value cast to the type its use takes: int used as unsigned long
-    if (static_cast<unsigned long>(packet.::CPacketBase::Capacity()) >= static_cast<unsigned long>(size)) {
-        ::memcpy(static_cast<void*>(packet.::CPacketBase::m_pWriter), static_cast<const void*>(pBuf), size);
-        packet.::CPacketBase::m_pWriter = &packet.::CPacketBase::m_pWriter[size];
+    if (static_cast<unsigned long>(packet.Capacity()) >= static_cast<unsigned long>(size)) {
+        memcpy(static_cast<void*>(packet.m_pWriter), static_cast<const void*>(pBuf), size);
+        packet.m_pWriter = &packet.m_pWriter[size];
         return size;
     } else {
-        return static_cast<int>(0);
+        return 0;
     }
 }
 

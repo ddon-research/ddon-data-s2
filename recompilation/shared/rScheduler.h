@@ -162,6 +162,6 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK10rScheduler5MyDTI11newInstanceEv at 0x011deca0-0x011deccd, code DWARF attributes to no inlined copy
 inline rScheduler::rScheduler() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mpHeader = static_cast<rScheduler::HEADER*>(nullptr);
+    this->::cResource::mAttr = 16;
+    this->mpHeader = nullptr;
 }

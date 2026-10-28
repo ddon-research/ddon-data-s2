@@ -132,25 +132,25 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataSupportRate::CDataSupportRate() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucStatusType = static_cast<u8>(0);
-    this->m_unRate = static_cast<u32>(0);
+    this->m_ucStatusType = 0;
+    this->m_unRate = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataUseSupportPoint::CDataUseSupportPoint() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucStatusType = static_cast<u8>(0);
-    this->m_ucCharType = static_cast<u8>(0);
-    this->m_ucJobType = static_cast<u8>(0);
-    this->m_unUsePoint = static_cast<u32>(0);
-    this->m_unCharID = static_cast<u32>(0);
+    this->m_ucStatusType = 0;
+    this->m_ucCharType = 0;
+    this->m_ucJobType = 0;
+    this->m_unUsePoint = 0;
+    this->m_unCharID = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataUseSupportPointRes::CDataUseSupportPointRes() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unAdjustPoint = static_cast<u32>(0);
-    this->m_unTotalPoint = static_cast<u32>(0);
+    this->m_unAdjustPoint = 0;
+    this->m_unTotalPoint = 0;
 }

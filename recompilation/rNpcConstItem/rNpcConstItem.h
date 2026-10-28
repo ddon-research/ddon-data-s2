@@ -101,8 +101,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cNpcConstItem::cNpcConstItem() {
-    this->mMTag = static_cast<u32>(0);
-    this->mOffset = static_cast<u32>(0);
+    this->mMTag = 0;
+    this->mOffset = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

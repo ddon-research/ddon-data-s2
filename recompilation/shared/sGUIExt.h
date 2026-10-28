@@ -581,6 +581,8 @@ public:
 public:
     class cMousePointer : public MtObject
     {
+        // inferred: sGUIExt::begin names sGUIExt::mMouse.mpGUIMOC
+        friend class sGUIExt;
         // inferred: uGUIPSStore::psstoreEventShiftStation names sGUIExt::mMouse.mIsMouseMode
         friend class uGUIPSStore;
     public:
@@ -3313,42 +3315,42 @@ inline void sGUIExt::onTouchActEnableMenu() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cHumanActTouchActBase::final at 0x247130-0x247137; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGUIExt::offTouchActEnableMenu() {
+    this->mIsTouchActEnableMenu = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rGUIMessage* sGUIExt::getMsgEnemyName() const {
     return this->mpMsgEnemyName;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgTmpMsgCtgr() const {
     return this->mpMsgTmpMsgCtgr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgTmpMsg() const {
     return this->mpMsgTmpMsg;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgEmotionCtgr() const {
     return this->mpMsgEmotionCtgr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgEmotion() const {
     return this->mpMsgEmotion;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgPawnOrderCtgr() const {
     return this->mpMsgPawnOrderCtgr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline rGUIMessage* sGUIExt::getMsgPawnOrder() const {
     return this->mpMsgPawnOrder;
 }
@@ -3374,14 +3376,44 @@ inline rGUIMessage* sGUIExt::getMsgHud() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIUtility::GetOcdName at 0x204ad1-0x204ad8; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rGUIMessage* sGUIExt::getMsgConditionName() const {
+    return this->mpMsgConditionName;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::cChatMacro::cmdHELP at 0x7bbb4c-0x7bbb53; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rGUIMessage* sGUIExt::getMsgChatMacroHelp() const {
+    return this->mpMsgChatMacroHelp;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rSoundRequest* sGUIExt::getSndReqCmn() const {
     return this->mpSndReqCmn;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIGainInfo::setSleep at 0xa9330e-0xa93316; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 sGUIExt::getGainInfoNullOffsetPosY() {
+    return this->mNullGainPosYOffset;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline bool sGUIExt::isItemDetailVisibleDetail() {
     return this->mIsItemDetailVisibleDefault;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIDogmaOrb::setParam at 0xa6f873-0xa6f87c; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getDogmaOrbInfo() {
+    return &this->mNetMgr.mData.DogmaOrb[0];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIExtNetMgr::moveNextRequest at 0xd7235-0xd723b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGUIExt::getRequestPawnContextId() {
+    return this->mPawnContextId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -3400,15 +3432,27 @@ inline uGUICommunityList* sGUIExt::getOpenCommunityList() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMenuTutorial::setup at 0xb187ac-0xb187b2; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sGUIExt::setDispGuideNo(u32 No) {
+    this->mDispGuideNo = No;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cPrioHandle::cPrioHandle() {
-    this->mPrio = static_cast<u32>(4294967295);
+    this->mPrio = 0xFFFFFFFF;
     this->mDistCam = 0.0f;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline sGUIExt::cRatingEmoteInfo::cRatingEmoteInfo() {
-    this->mEmoteNum = static_cast<u32>(0);
+    this->mEmoteNum = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sGUIExt::getEmotionCtgrMsgNumCore at 0x7a451c-0x7a451f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sGUIExt::cRatingEmoteInfo::getEmoteNum() {
+    return this->mEmoteNum;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -3418,7 +3462,7 @@ inline uGUIChat* sGUIExt::cChat::getGUIChat() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cSEPlayer::cSEPlayer() {
-    this->mpRes = static_cast<rSoundRequest*>(nullptr);
+    this->mpRes = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -3435,17 +3479,17 @@ inline f32 sGUIExt::cLifeGaugeWork::getLostTimerRate() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cWardInfo::cWardInfo() {
-    this->mCharLen = static_cast<u8>(0);
+    this->mCharLen = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cReplaceWardMap::cReplaceWardMap() {
-    this->mSrcCharLen = static_cast<u8>(0);
-    this->mDstCharLen = static_cast<u8>(0);
+    this->mSrcCharLen = 0;
+    this->mDstCharLen = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cItemTmp::cItemTmp() {
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemId = 0;
+    this->mItemNum = 0;
 }

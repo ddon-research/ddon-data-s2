@@ -45,6 +45,7 @@ namespace nCharacterData { struct stEquipData; }
 class rGUIMessage;
 class rItemList;
 class rShopGoods;
+class sCraftManager;
 
 // Declarations
 class sItemManager;
@@ -76,6 +77,10 @@ using u8 = unsigned char;
 
 class sItemManager : public cSystem
 {
+    // inferred: rItemList::rItemParam::getItemName names sItemManager::mpInstance, through its enclosing class rItemList
+    friend class rItemList;
+    // inferred: sCraftManager::cCraftPawnCtrl::isCreateGold names sItemManager::mPoint[1], through its enclosing class sCraftManager
+    friend class sCraftManager;
 public:
     enum SortType
     {
@@ -1415,9 +1420,70 @@ inline sItemManager* sItemManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88a9-0x7d88ad; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setGold(u64 Gold) {
+    this->mPoint[1] = Gold;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88b0-0x7d88b7; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setRim(u64 Rim) {
+    this->mPoint[2] = Rim;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88ba-0x7d88c1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setDogma(u64 Do) {
+    this->mPoint[3] = Do;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88c4-0x7d88cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setTicket(u64 Ticket) {
+    this->mPoint[4] = Ticket;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88ce-0x7d88d5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setSupportPt(u64 Support) {
+    this->mPoint[6] = Support;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setGoldToServer at 0x7d88d8-0x7d88df; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 2 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline void sItemManager::setCpReset(u64 CpReset) {
+    this->mPoint[8] = CpReset;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::createItemSlot at 0x7da2c5-0x7da2cb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sItemManager::getMyPawnSlotNum() {
+    return this->mMyPawnSlotNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline rGUIMessage* sItemManager::getItemNameGmd() const {
+    return this->mprItemNameGmd;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline u32 sItemManager::getShopBuyLimit() {
     return this->mShopBuyLimit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::releaseGame at 0x7d3aed-0x7d3b00; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sItemManager::initSwitchStorage() {
+    this->mSwitchStorage.mIsSwitch = false;
+    this->mSwitchStorage.mTargetStorage = static_cast<nItem::E_STORAGE_TYPE>(0);
+    this->mSwitchStorage.mChangeStorage = static_cast<nItem::E_STORAGE_TYPE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIShop::initCallBack at 0xc3e0e5-0xc3e0e9; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline MtTypedArray<cShopGoods>* sItemManager::cShop::getGoodsList() {
+    return &this->mGoods;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1428,41 +1494,52 @@ inline bool sItemManager::stRequest::getResult() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemBag::cGetItemListData::cGetItemListData() {
-    this->mStorageType = static_cast<u8>(0);
-    this->mCharType = static_cast<u8>(0);
-    this->mColor = static_cast<u8>(0);
-    this->mEquipPoint = static_cast<u32>(0);
-    this->mSlotType = static_cast<u32>(0);
-    this->mSlotNo = static_cast<u32>(0);
-    this->mEquipCharcaterId = static_cast<u32>(0);
-    this->mEquipPawnId = static_cast<u32>(0);
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mStorageType = 0;
+    this->mCharType = 0;
+    this->mColor = 0;
+    this->mEquipPoint = 0;
+    this->mSlotType = 0;
+    this->mSlotNo = 0;
+    this->mEquipCharcaterId = 0;
+    this->mEquipPawnId = 0;
+    this->mItemId = 0;
+    this->mItemNum = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemBag::cGatheringItemData::cGatheringItemData() {
-    this->mLayerNo = static_cast<u32>(0);
-    this->mPosId = static_cast<u32>(0);
-    this->mStageId = static_cast<u32>(0);
-    this->mGroupId = static_cast<u32>(0);
+    this->mLayerNo = 0;
+    this->mPosId = 0;
+    this->mStageId = 0;
+    this->mGroupId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemBag::cAreaMasterSuppyData::cAreaMasterSuppyData() {
-    this->mAreaID = static_cast<u32>(0);
+    this->mAreaID = 0;
     this->mIsCancel = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cSortParam::cSortParam() {
-    this->mSortType = static_cast<u8>(0);
-    this->mSortDir = static_cast<u8>(0);
+    this->mSortType = 0;
+    this->mSortDir = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemParamList::cItemParamList() {
-    this->mpItemParam = static_cast<cItemParam*>(nullptr);
+    this->mpItemParam = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline cItemParam* sItemManager::cItemParamList::getItemParam() {
+    return this->mpItemParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::setEquipFunc at 0x7d9143-0x7d9146; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline u32 sItemManager::cEquipList::getPawnId() {
+    return this->mPawnId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1473,28 +1550,28 @@ inline u32 sItemManager::cEquipList::getStorageType() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cEquipList::cEquipData::cEquipData() {
-    this->mCategory = static_cast<u32>(16);
-    this->mpItemParam = static_cast<cItemParam*>(nullptr);
-    this->mTargetNo = static_cast<u32>(0);
+    this->mCategory = 16;
+    this->mpItemParam = nullptr;
+    this->mTargetNo = 0;
     this->mIsNone = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cChangeJob::cChangeJob() {
-    this->mPawnId = static_cast<u32>(0);
-    this->mJob = static_cast<u8>(255);
-    this->mpPacket = static_cast<void*>(nullptr);
+    this->mPawnId = 0;
+    this->mJob = 0xFF;
+    this->mpPacket = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cHideEquip::cHideEquip() {
-    this->mPlType = static_cast<u8>(0);
-    this->mEquipType = static_cast<u8>(0);
+    this->mPlType = 0;
+    this->mEquipType = 0;
     this->mIsHideOff = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemList::cItemList() {
-    this->mItemNo = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemNo = 0;
+    this->mItemNum = 0;
 }

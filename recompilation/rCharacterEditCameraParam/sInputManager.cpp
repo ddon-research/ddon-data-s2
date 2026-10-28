@@ -38,7 +38,7 @@ const MtDTI& sInputManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sInputManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sInputManager::DTI);
+    return MtMemoryAllocator::getAllocator(sInputManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* sInputManager::getAllocator() {
 // Address: 0x007c2e80 - 0x007c2ec0 (64 bytes)
 void* sInputManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sInputManager::getAllocator()->memAlloc(sz, align, ::sInputManager::DTI.::MtDTI::getID());
+    return sInputManager::getAllocator()->memAlloc(sz, align, sInputManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* sInputManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sInputManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sInputManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sInputManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,8 +98,8 @@ sInputManager::~sInputManager() {
 // Address: 0x007c3300 - 0x007c330a (10 bytes)
 void sInputManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDisableInputGame = false;
-    this->mDisableInputGameByPauseMenu = false;
+    mDisableInputGame = false;
+    mDisableInputGameByPauseMenu = false;
 }
 
 // Address: 0x007c34b0 - 0x007c3552 (162 bytes)
@@ -111,16 +111,16 @@ __attribute__((weak)) void sInputManager::move() {
 // Address: 0x007c3310 - 0x007c3315 (5 bytes)
 void sInputManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cSystem::createProperty(s);
+    this->cSystem::createProperty(s);
 }
 
 // Address: 0x007c3320 - 0x007c3371 (81 bytes)
 void sInputManager::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    u32 tagId = ::rArchiveListArray::convTagId("key_custom");
-    u32 searchId = ::rArchiveListArray::convSearchId("RES_ID_KEY_CUSTOM_KCP");
-    this->mprCommonPresetKey = static_cast<rKeyCustomParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(tagId, searchId, static_cast<u32>(1), false));
-    this->mArcLoadFinish = true;
+    u32 tagId = rArchiveListArray::convTagId("key_custom");
+    u32 searchId = rArchiveListArray::convSearchId("RES_ID_KEY_CUSTOM_KCP");
+    mprCommonPresetKey = static_cast<rKeyCustomParam*>(sArchiveManager::getInstance()->createRes(tagId, searchId, 1u, false));
+    mArcLoadFinish = true;
 }
 
 // Address: 0x007c3120 - 0x007c3264 (324 bytes)
@@ -128,49 +128,49 @@ void sInputManager::releaseResource() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mprCommonPresetKey != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprCommonPresetKey->::cResource::release();
-        this->mprCommonPresetKey = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprCommonPresetKey != nullptr) {
+        mprCommonPresetKey->release();
+        mprCommonPresetKey = nullptr;
     }
-    if (this->mprJobPresetKey[0] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[0]->::cResource::release();
-        this->mprJobPresetKey[0] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[0] != nullptr) {
+        mprJobPresetKey[0]->cResource::release();
+        mprJobPresetKey[0] = nullptr;
     }
-    if (this->mprJobPresetKey[1] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[1]->::cResource::release();
-        this->mprJobPresetKey[1] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[1] != nullptr) {
+        mprJobPresetKey[1]->cResource::release();
+        mprJobPresetKey[1] = nullptr;
     }
-    if (this->mprJobPresetKey[2] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[2]->::cResource::release();
-        this->mprJobPresetKey[2] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[2] != nullptr) {
+        mprJobPresetKey[2]->cResource::release();
+        mprJobPresetKey[2] = nullptr;
     }
-    if (this->mprJobPresetKey[3] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[3]->::cResource::release();
-        this->mprJobPresetKey[3] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[3] != nullptr) {
+        mprJobPresetKey[3]->cResource::release();
+        mprJobPresetKey[3] = nullptr;
     }
-    if (this->mprJobPresetKey[4] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[4]->::cResource::release();
-        this->mprJobPresetKey[4] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[4] != nullptr) {
+        mprJobPresetKey[4]->cResource::release();
+        mprJobPresetKey[4] = nullptr;
     }
-    if (this->mprJobPresetKey[5] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[5]->::cResource::release();
-        this->mprJobPresetKey[5] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[5] != nullptr) {
+        mprJobPresetKey[5]->cResource::release();
+        mprJobPresetKey[5] = nullptr;
     }
-    if (this->mprJobPresetKey[6] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[6]->::cResource::release();
-        this->mprJobPresetKey[6] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[6] != nullptr) {
+        mprJobPresetKey[6]->cResource::release();
+        mprJobPresetKey[6] = nullptr;
     }
-    if (this->mprJobPresetKey[7] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[7]->::cResource::release();
-        this->mprJobPresetKey[7] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[7] != nullptr) {
+        mprJobPresetKey[7]->cResource::release();
+        mprJobPresetKey[7] = nullptr;
     }
-    if (this->mprJobPresetKey[8] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[8]->::cResource::release();
-        this->mprJobPresetKey[8] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[8] != nullptr) {
+        mprJobPresetKey[8]->cResource::release();
+        mprJobPresetKey[8] = nullptr;
     }
-    if (this->mprJobPresetKey[9] != static_cast<rKeyCustomParam*>(nullptr)) {
-        this->mprJobPresetKey[9]->::cResource::release();
-        this->mprJobPresetKey[9] = static_cast<rKeyCustomParam*>(nullptr);
+    if (mprJobPresetKey[9] != nullptr) {
+        mprJobPresetKey[9]->cResource::release();
+        mprJobPresetKey[9] = nullptr;
     }
 }
 
@@ -189,13 +189,13 @@ __attribute__((weak)) void sInputManager::init() {
 // Address: 0x007c3380 - 0x007c3384 (4 bytes)
 u32 sInputManager::getInputMode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(this->mInputMode);
+    return static_cast<u32>(mInputMode);
 }
 
 // Address: 0x007c3390 - 0x007c3394 (4 bytes)
 void sInputManager::setInputMode(u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInputMode = static_cast<s32>(mode);
+    mInputMode = static_cast<s32>(mode);
 }
 
 // No out-of-line body: 29 inlined copies in 7 functions (1467 bytes)
@@ -214,13 +214,13 @@ __attribute__((weak)) void sInputManager::setDisableInputGame(bool Disable) {
 // Address: 0x007c33b0 - 0x007c33b7 (7 bytes)
 bool sInputManager::isDisableInputGame() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDisableInputGame;
+    return mDisableInputGame;
 }
 
 // Address: 0x007c34a0 - 0x007c34a8 (8 bytes)
 void sInputManager::setDisableInputGameByPauseMenu(bool Disable) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDisableInputGameByPauseMenu = Disable;
+    mDisableInputGameByPauseMenu = Disable;
 }
 
 // Address: 0x007c33c0 - 0x007c3471 (177 bytes)
@@ -577,26 +577,26 @@ __attribute__((weak)) u32 sInputManager::getCustomKeySkillDerive(nKeyCustom::KB_
 // Address: 0x007c6200 - 0x007c62f5 (245 bytes)
 void sInputManager::writeData(MtDataWriter& w, u32 SaveVersion) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; code after the loop copied into an arm that skips it; the body oracle reports this body.
-    if (SaveVersion > static_cast<u32>(16777220)) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+    if (SaveVersion > 0x1000004u) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
-        this->mHeader.magic = static_cast<u32>(5063499);
-        this->mHeader.version = static_cast<u32>(21);
-        this->mHeader.settingNum = static_cast<u16>(3);
+        mHeader.magic = 0x4D434B;
+        mHeader.version = 21;
+        mHeader.settingNum = 3;
         if (w.mSeekPt >= w.mBufsiz) {
             w.flush();
         }
-        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(12);
-        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-        w.write(static_cast<const void*>(&this->mHeader), static_cast<u32>(12));
-        if (this->mHeader.settingNum == static_cast<u16>(0)) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
+        w.mBuffer[w.mSeekPt] = 12;
+        w.mSeekPt = w.mSeekPt + 1u;
+        w.write(static_cast<const void*>(&mHeader), 12u);
+        if (mHeader.settingNum == 0) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                     return;
                 }
             }
@@ -605,15 +605,14 @@ void sInputManager::writeData(MtDataWriter& w, u32 SaveVersion) {
     } else {
         return;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     do {
-        this->mCommonKeyCustomManager[i].::cKeyCustomManager::dataWrite(static_cast<u8>(255), w);
-        i += static_cast<u32>(1);
-    } while (i < this->mHeader.settingNum);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        mCommonKeyCustomManager[i].dataWrite(static_cast<u8>(0xFF), w);
+        i += 1u;
+    } while (i < mHeader.settingNum);
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
 }
@@ -643,19 +642,17 @@ __attribute__((weak)) void sInputManager::editCancel(cKeyCustomManager& cmn, u32
 bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, bool isCheckName) {
     // DWARF local not rendered: bool is_equal;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the result of the call at 0x7c663e, used once; no DWARF local holds it
-        bool t0 = cmn.::cKeyCustomManager::isEqual(this->mCommonKeyCustomManager[categoryNo], isCheckName);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = cmn.isEqual(mCommonKeyCustomManager[categoryNo], isCheckName);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7c6656, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -663,13 +660,12 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, bool isC
         }
     } else {
         // inferred: a temporary for the result of the call at 0x7c663e, used once; no DWARF local holds it
-        bool t0 = cmn.::cKeyCustomManager::isEqual(this->mCommonKeyCustomManager[categoryNo], isCheckName);
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        bool t0 = cmn.isEqual(mCommonKeyCustomManager[categoryNo], isCheckName);
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7c6656, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t1 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t1 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t1 != 0) {
+                abort();
             }
             return t0;
         } else {
@@ -696,40 +692,36 @@ void sInputManager::editCancel(cKeyCustomManager& cmn, u32 categoryNo, nKeyCusto
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1c from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x24 from MtObject*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-        if (cmn.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24)) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
+    if (mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb] != nullptr) {
+        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 24);
             // inferred: a temporary for the value the load at 0x7c68a9 read, used once; no DWARF local holds it
-            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8)) = t0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(28)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(28));
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(36)) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(36));
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 8);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 16);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8) = t0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 28) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 28);
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 36) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 36);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -745,40 +737,36 @@ void sInputManager::editDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CUSTOM kb
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1c from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x24 from MtObject*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-        if (cmn.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24)) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
+    if (mCommonKeyDefaultManager.mCustomArray.mpArray[kb] != nullptr) {
+        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 24);
             // inferred: a temporary for the value the load at 0x7c6957 read, used once; no DWARF local holds it
-            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16));
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8)) = t0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(28)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(28));
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(36)) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(36));
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 8);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 16);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8) = t0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 28) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 28);
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 36) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 36);
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
                 }
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
     }
@@ -799,43 +787,40 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-        if (cmn.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8))) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8)))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(9))) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(9)))) {
-                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(10))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(10)))) {
-                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(12))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(12)))) {
-                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(14))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(14)))) {
-                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16)))) {
-                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(20))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(20)))) {
+    if (mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb] != nullptr) {
+        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 8)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8))) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 9)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 9))) {
+                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 10)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 10))) {
+                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 12)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 12))) {
+                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 14)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 14))) {
+                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 16)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16))) {
+                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 20)) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 20))) {
                                         // inferred: a temporary for the value the load at 0x7c6a58 read, used once; no DWARF local holds it
-                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
+                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24);
                                         // inferred: a temporary for the value the load at 0x7c6a5b read, used once; no DWARF local holds it
-                                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyCustomManager[categoryNo].mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 24);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t2 == static_cast<int>(0)) {
-                                            } else {
-                                                ::abort();
+                                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t2 != 0) {
+                                                abort();
                                             }
                                             return t0 == t1;
                                         } else {
                                             return t0 == t1;
                                         }
                                     } else {
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t2 == static_cast<int>(0)) {
-                                            } else {
-                                                ::abort();
+                                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t2 != 0) {
+                                                abort();
                                             }
                                             return false;
                                         } else {
@@ -843,12 +828,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                                         }
                                     }
                                 } else {
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                                        int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t2 == static_cast<int>(0)) {
-                                        } else {
-                                            ::abort();
+                                        int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t2 != 0) {
+                                            abort();
                                         }
                                         return false;
                                     } else {
@@ -856,12 +840,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                                     }
                                 }
                             } else {
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                                    int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t2 == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                                    int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t2 != 0) {
+                                        abort();
                                     }
                                     return false;
                                 } else {
@@ -869,12 +852,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                                 }
                             }
                         } else {
-                            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
                                 // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                if (t2 == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t2 != 0) {
+                                    abort();
                                 }
                                 return false;
                             } else {
@@ -882,12 +864,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                             }
                         }
                     } else {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
                             // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                            if (t2 == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                            if (t2 != 0) {
+                                abort();
                             }
                             return false;
                         } else {
@@ -895,12 +876,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                         }
                     }
                 } else {
-                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
                         // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                        int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                        if (t2 == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                        int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                        if (t2 != 0) {
+                            abort();
                         }
                         return false;
                     } else {
@@ -908,12 +888,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                     }
                 }
             } else {
-                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
                     // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                    int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                    if (t2 == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                    if (t2 != 0) {
+                        abort();
                     }
                     return false;
                 } else {
@@ -921,12 +900,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
                 return false;
             } else {
@@ -934,12 +912,11 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7c6aa1, used twice; no DWARF local holds it
-            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t2 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t2 != 0) {
+                abort();
             }
             return false;
         } else {
@@ -962,43 +939,40 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-        if (cmn.mCustomArray.::MtArray::mpArray[kb] != static_cast<MtObject*>(nullptr)) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8))) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(8)))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(9))) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(9)))) {
-                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(10))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(10)))) {
-                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(12))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(12)))) {
-                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(14))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(14)))) {
-                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16))) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(16)))) {
-                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(20))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(20)))) {
+    if (mCommonKeyDefaultManager.mCustomArray.mpArray[kb] != nullptr) {
+        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 8)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8))) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 9)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 9))) {
+                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 10)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 10))) {
+                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 12)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 12))) {
+                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 14)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 14))) {
+                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 16)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16))) {
+                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 20)) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 20))) {
                                         // inferred: a temporary for the value the load at 0x7c6b74 read, used once; no DWARF local holds it
-                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
+                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24);
                                         // inferred: a temporary for the value the load at 0x7c6b77 read, used once; no DWARF local holds it
-                                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommonKeyDefaultManager.mCustomArray.::MtArray::mpArray[kb]) + static_cast<long>(24));
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 24);
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t2 == static_cast<int>(0)) {
-                                            } else {
-                                                ::abort();
+                                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t2 != 0) {
+                                                abort();
                                             }
                                             return t0 == t1;
                                         } else {
                                             return t0 == t1;
                                         }
                                     } else {
-                                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                        if (mThreadSafe || (cSystem::mJobSafe)) {
                                             // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                            if (t2 == static_cast<int>(0)) {
-                                            } else {
-                                                ::abort();
+                                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                            if (t2 != 0) {
+                                                abort();
                                             }
                                             return false;
                                         } else {
@@ -1006,12 +980,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                                         }
                                     }
                                 } else {
-                                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                    if (mThreadSafe || (cSystem::mJobSafe)) {
                                         // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                                        int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                        if (t2 == static_cast<int>(0)) {
-                                        } else {
-                                            ::abort();
+                                        int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                        if (t2 != 0) {
+                                            abort();
                                         }
                                         return false;
                                     } else {
@@ -1019,12 +992,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                                     }
                                 }
                             } else {
-                                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                                if (mThreadSafe || (cSystem::mJobSafe)) {
                                     // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                                    int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                    if (t2 == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                                    int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                    if (t2 != 0) {
+                                        abort();
                                     }
                                     return false;
                                 } else {
@@ -1032,12 +1004,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                                 }
                             }
                         } else {
-                            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                            if (mThreadSafe || (cSystem::mJobSafe)) {
                                 // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                                if (t2 == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                                if (t2 != 0) {
+                                    abort();
                                 }
                                 return false;
                             } else {
@@ -1045,12 +1016,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                             }
                         }
                     } else {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
                             // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                            if (t2 == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                            if (t2 != 0) {
+                                abort();
                             }
                             return false;
                         } else {
@@ -1058,12 +1028,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                         }
                     }
                 } else {
-                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
                         // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                        int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                        if (t2 == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                        int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                        if (t2 != 0) {
+                            abort();
                         }
                         return false;
                     } else {
@@ -1071,12 +1040,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                     }
                 }
             } else {
-                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
                     // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                    int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                    if (t2 == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                    if (t2 != 0) {
+                        abort();
                     }
                     return false;
                 } else {
@@ -1084,12 +1052,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
                 }
             }
         } else {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
                 // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-                int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-                if (t2 == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+                if (t2 != 0) {
+                    abort();
                 }
                 return false;
             } else {
@@ -1097,12 +1064,11 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
             }
         }
     } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
             // inferred: a temporary for the result of the call at 0x7c6bbc, used twice; no DWARF local holds it
-            int t2 = ::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection);
-            if (t2 == static_cast<int>(0)) {
-            } else {
-                ::abort();
+            int t2 = scePthreadMutexUnlock(&mCS.mCSection);
+            if (t2 != 0) {
+                abort();
             }
             return false;
         } else {
@@ -1399,6 +1365,11 @@ __attribute__((weak)) u32 sInputManager::getKeyCommon(nKeyCustom::KB_CUSTOM kb, 
 
 // No out-of-line body: no code in the ELF
 // void sInputManager::setPreset(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sInputManager::MyDTI sInputManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sInputManager* sInputManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sInputManager.cpp at 0x007c6cdf-0x007c6d1c (called at sInputManager.cpp:40)

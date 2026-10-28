@@ -34,7 +34,7 @@ const MtDTI& cCharacterData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cCharacterData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cCharacterData::DTI);
+    return MtMemoryAllocator::getAllocator(cCharacterData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* cCharacterData::getAllocator() {
 // Address: 0x000460b0 - 0x000460f0 (64 bytes)
 void* cCharacterData::operator new[](size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cCharacterData::getAllocator()->memAlloc(sz, align, ::cCharacterData::DTI.::MtDTI::getID());
+    return cCharacterData::getAllocator()->memAlloc(sz, align, cCharacterData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,13 +59,13 @@ void* cCharacterData::operator new[](size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCharacterData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCharacterData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCharacterData::DTI)->memFree(p_addr);
 }
 
 // Address: 0x00046120 - 0x0004614a (42 bytes)
 void cCharacterData::operator delete[](void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cCharacterData::getAllocator()->memFree(p_addr);
+    cCharacterData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -95,7 +95,7 @@ __attribute__((weak)) void cCharacterData::createProperty(MtPropertyList& s) {
 // Address: 0x00048080 - 0x00048085 (5 bytes)
 MtUI* cCharacterData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00049740 - 0x0004987a (314 bytes)
@@ -294,7 +294,7 @@ __attribute__((weak)) void cCharacterData::setMesseageSetPacket(CharacterMsgSetV
 // Address: 0x0004a030 - 0x0004a038 (8 bytes)
 void cCharacterData::setInviteWait(bool flag, bool sendFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCharData.mMatchProfile.mInviteWait = flag;
+    mCharData.mMatchProfile.mInviteWait = flag;
 }
 
 // No out-of-line body: no code in the ELF
@@ -612,8 +612,10 @@ __attribute__((weak)) void cCharacterData::copyData(const cCharacterData& src) {
 // Address: 0x0004a040 - 0x0004a05f (31 bytes)
 void cCharacterData::setKeyboardSetting(MT_CTSTR titleStr, MT_CTSTR defStr, s32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sKeyboardInterface::getInstance()->::sKeyboardInterface::setKeyboardSetting(static_cast<sKeyboardInterface::KEYBOARD_TYPE>(2), titleStr, defStr, size);
+    sKeyboardInterface::getInstance()->setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE_JAPANESE, titleStr, defStr, size);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCharacterData::MyDTI cCharacterData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cCharacterData.cpp at 0x0004cc9f-0x0004ccdc (called at cCharacterData.cpp:45)
@@ -699,10 +701,10 @@ __attribute__((weak)) u8 cCharacterData::stOptionData::stNameDisp::GetNameType(u
 // Address: 0x0004b470 - 0x0004b483 (19 bytes)
 void cCharacterData::SCM::stSCMPlt::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExecType = static_cast<u8>(0);
-    this->mF32Data = 0.0f;
-    this->mMenuId = static_cast<u32>(0);
-    this->mU32Data = static_cast<u32>(0);
+    mExecType = 0;
+    mF32Data = 0.0f;
+    mMenuId = 0;
+    this->mU32Data = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (480 bytes)
@@ -948,28 +950,28 @@ void cCharacterData::stTutorialGuide::readData(BitReader& r, u32 CurrentVersion,
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (LoadVersion > static_cast<u32>(4)) {
-        this->mFinishTutorial[0] = r.::BitReader::readU32();
-        this->mFinishTutorial[1] = r.::BitReader::readU32();
-        this->mFinishTutorial[2] = r.::BitReader::readU32();
-        this->mFinishTutorial[3] = r.::BitReader::readU32();
-        this->mFinishTutorial[4] = r.::BitReader::readU32();
-        this->mFinishTutorial[5] = r.::BitReader::readU32();
-        this->mFinishTutorial[6] = r.::BitReader::readU32();
-        this->mFinishTutorial[7] = r.::BitReader::readU32();
-        this->mFinishTutorial[8] = r.::BitReader::readU32();
-        this->mFinishTutorial[9] = r.::BitReader::readU32();
-        this->mFinishTutorial[10] = r.::BitReader::readU32();
-        this->mFinishTutorial[11] = r.::BitReader::readU32();
-        this->mFinishTutorial[12] = r.::BitReader::readU32();
-        this->mFinishTutorial[13] = r.::BitReader::readU32();
-        this->mFinishTutorial[14] = r.::BitReader::readU32();
-        this->mFinishTutorial[15] = r.::BitReader::readU32();
-        this->mLatestTutorial[0] = r.::BitReader::readU32();
-        this->mLatestTutorial[1] = r.::BitReader::readU32();
-        this->mLatestTutorial[2] = r.::BitReader::readU32();
-        this->mLatestTutorial[3] = r.::BitReader::readU32();
-        this->mLatestTutorial[4] = r.::BitReader::readU32();
+    if (LoadVersion > 4u) {
+        mFinishTutorial[0] = r.readU32();
+        mFinishTutorial[1] = r.readU32();
+        mFinishTutorial[2] = r.readU32();
+        mFinishTutorial[3] = r.readU32();
+        mFinishTutorial[4] = r.readU32();
+        mFinishTutorial[5] = r.readU32();
+        mFinishTutorial[6] = r.readU32();
+        mFinishTutorial[7] = r.readU32();
+        mFinishTutorial[8] = r.readU32();
+        mFinishTutorial[9] = r.readU32();
+        mFinishTutorial[10] = r.readU32();
+        mFinishTutorial[11] = r.readU32();
+        mFinishTutorial[12] = r.readU32();
+        mFinishTutorial[13] = r.readU32();
+        mFinishTutorial[14] = r.readU32();
+        mFinishTutorial[15] = r.readU32();
+        mLatestTutorial[0] = r.readU32();
+        mLatestTutorial[1] = r.readU32();
+        mLatestTutorial[2] = r.readU32();
+        mLatestTutorial[3] = r.readU32();
+        mLatestTutorial[4] = r.readU32();
     }
 }
 

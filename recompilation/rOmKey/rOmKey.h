@@ -144,6 +144,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rOmKey::cItem::cItem() {
-    this->mItemIndex = static_cast<s32>(-1);
-    this->mColor = static_cast<u32>(0);
+    this->mItemIndex = -1;
+    this->mColor = 0;
 }

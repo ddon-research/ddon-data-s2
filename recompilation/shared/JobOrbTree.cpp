@@ -26,7 +26,7 @@ const MtDTI& CDataJobOrbDevoteElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataJobOrbDevoteElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataJobOrbDevoteElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataJobOrbDevoteElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataJobOrbDevoteElement::getAllocator() {
 // Address: 0x003de570 - 0x003de5b0 (64 bytes)
 void* CDataJobOrbDevoteElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataJobOrbDevoteElement::getAllocator()->memAlloc(sz, align, ::CDataJobOrbDevoteElement::DTI.::MtDTI::getID());
+    return CDataJobOrbDevoteElement::getAllocator()->memAlloc(sz, align, CDataJobOrbDevoteElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataJobOrbDevoteElement::operator new(size_t sz, u32 align) {
 // Address: 0x003de5e0 - 0x003de60a (42 bytes)
 __attribute__((weak)) void CDataJobOrbDevoteElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataJobOrbDevoteElement::getAllocator()->memFree(p_addr);
+    CDataJobOrbDevoteElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,6 +71,8 @@ __attribute__((weak)) void CDataJobOrbDevoteElement::operator delete(void* p_add
 
 // No out-of-line body: no code in the ELF
 // CDataJobOrbDevoteElement::CDataJobOrbDevoteElement(u32, u8, u32, u8, u32, u32, u32, u32, b8, const MtTypedArray<CDataCommonU32>&, const MtTypedArray<CDataCommonU32>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataJobOrbDevoteElement::MyDTI CDataJobOrbDevoteElement::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fa63-0x0041fa9c (called at JobOrbTreeImplement.inc:7)
@@ -97,7 +99,7 @@ const MtDTI& CDataJobOrbTreeStatus::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataJobOrbTreeStatus::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataJobOrbTreeStatus::DTI);
+    return MtMemoryAllocator::getAllocator(CDataJobOrbTreeStatus::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataJobOrbTreeStatus::getAllocator() {
 // Address: 0x003de690 - 0x003de6d0 (64 bytes)
 void* CDataJobOrbTreeStatus::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataJobOrbTreeStatus::getAllocator()->memAlloc(sz, align, ::CDataJobOrbTreeStatus::DTI.::MtDTI::getID());
+    return CDataJobOrbTreeStatus::getAllocator()->memAlloc(sz, align, CDataJobOrbTreeStatus::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataJobOrbTreeStatus::operator new(size_t sz, u32 align) {
 // Address: 0x003de700 - 0x003de72a (42 bytes)
 __attribute__((weak)) void CDataJobOrbTreeStatus::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataJobOrbTreeStatus::getAllocator()->memFree(p_addr);
+    CDataJobOrbTreeStatus::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,6 +145,8 @@ __attribute__((weak)) void CDataJobOrbTreeStatus::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // CDataJobOrbTreeStatus::CDataJobOrbTreeStatus(u8, b8, f32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataJobOrbTreeStatus::MyDTI CDataJobOrbTreeStatus::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fa9c-0x0041fad5 (called at JobOrbTreeImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041fa9c-0x0041fad5 (called at JobOrbTree.h:137)
@@ -151,6 +155,6 @@ __attribute__((weak)) void CDataJobOrbTreeStatus::operator delete(void* p_addr) 
 // Address: 0x003de640 - 0x003de68f (79 bytes)
 MtObject* CDataJobOrbTreeStatus::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataJobOrbTreeStatus;
+    return new (16u) CDataJobOrbTreeStatus;
 }
 

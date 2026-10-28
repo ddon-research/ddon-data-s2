@@ -105,6 +105,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rAreaInfoJointArea::cAreaInfoJointArea::cAreaInfoJointArea() {
-    this->mMAJAId = static_cast<u32>(0);
-    this->mAreaId = static_cast<u32>(0);
+    this->mMAJAId = 0;
+    this->mAreaId = 0;
 }

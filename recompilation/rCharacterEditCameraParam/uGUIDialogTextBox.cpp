@@ -28,7 +28,7 @@ const MtDTI& uGUIDialogTextBox::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIDialogTextBox::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIDialogTextBox::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIDialogTextBox::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* uGUIDialogTextBox::getAllocator() {
 // Address: 0x00a68630 - 0x00a68670 (64 bytes)
 void* uGUIDialogTextBox::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIDialogTextBox::getAllocator()->memAlloc(sz, align, ::uGUIDialogTextBox::DTI.::MtDTI::getID());
+    return uGUIDialogTextBox::getAllocator()->memAlloc(sz, align, uGUIDialogTextBox::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -75,14 +75,14 @@ uGUIDialogTextBox::~uGUIDialogTextBox() {
 // Address: 0x00a68950 - 0x00a689d5 (133 bytes)
 bool uGUIDialogTextBox::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_INPUT_FORM_GUI"), static_cast<u32>(129), static_cast<t64>(1419160100)))) != static_cast<rGUI*>(nullptr)) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_DIALOGTEXTBOX_RES_GMD", static_cast<u32>(0));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_INPUT_FORM_GUI"), 129u, 1419160100l))) != nullptr) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_DIALOGTEXTBOX_RES_GMD", 0u);
         } else {
             return false;
         }
     } else {
-        return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_DIALOGTEXTBOX_RES_GMD", static_cast<u32>(0));
+        return loadGMDarc(getArcTag(0u), "RES_ID_DIALOGTEXTBOX_RES_GMD", 0u);
     }
 }
 
@@ -109,30 +109,30 @@ __attribute__((weak)) void uGUIDialogTextBox::setup() {
 // Address: 0x00a695b0 - 0x00a695b5 (5 bytes)
 void uGUIDialogTextBox::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
+    this->uGUIBase::kill();
 }
 
 // Address: 0x00a695c0 - 0x00a69627 (103 bytes)
 void uGUIDialogTextBox::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTextBox.::uGUIBase::cReferenceUITextBox::execute();
-    if (this->mTextBox.::uGUIBase::cReferenceUITextBox::isWakeupKeyboard() != false) {
+    mTextBox.execute();
+    if (mTextBox.isWakeupKeyboard()) {
         return;
     }
-    if (this->mpVL == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    if (mpVL == nullptr) {
         return;
     }
-    this->mpVL->execute();
-    if (this->mpVL == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    mpVL->execute();
+    if (mpVL == nullptr) {
         return;
     }
-    if (this->mpVL->::cControl::mCurrentPos != static_cast<s32>(1)) {
+    if (mpVL->mCurrentPos != 1) {
         return;
     }
-    if (this->mpHL == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    if (mpHL == nullptr) {
         return;
     }
-    this->mpHL->execute();
+    mpHL->execute();
 }
 
 // Address: 0x00a69630 - 0x00a69719 (233 bytes)
@@ -191,7 +191,7 @@ __attribute__((weak)) void uGUIDialogTextBox::moveEvent() {
 // Address: 0x00a69590 - 0x00a695aa (26 bytes)
 void uGUIDialogTextBox::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateWait);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateWait);
 }
 
 // Address: 0x00a69a00 - 0x00a69bb8 (440 bytes)
@@ -203,41 +203,41 @@ __attribute__((weak)) void uGUIDialogTextBox::updateWait() {
 // Address: 0x00a69be0 - 0x00a69be9 (9 bytes)
 void uGUIDialogTextBox::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00a69570 - 0x00a69582 (18 bytes)
 u32 uGUIDialogTextBox::evCtrlMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00a694f0 - 0x00a69502 (18 bytes)
 u32 uGUIDialogTextBox::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // Address: 0x00a69510 - 0x00a69567 (87 bytes)
 u32 uGUIDialogTextBox::evCtrlDecide(cControl::Message* msg) {
     // DWARF local not rendered: const s32 click_vol;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->reason == static_cast<nGUIExt::MSG_REASON>(37)) {
-            if (msg->click_vol > static_cast<s32>(-1)) {
-                if (this->mpHL != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                    this->mpHL->setCurrentPos(msg->click_vol, false);
+    if (msg != nullptr) {
+        if (msg->reason == nGUIExt::MOUSE_LCLICK) {
+            if (msg->click_vol > -1) {
+                if (mpHL != nullptr) {
+                    mpHL->setCurrentPos(msg->click_vol, false);
                 }
             }
         }
-        if (msg->current == static_cast<s32>(1)) {
-            msg->changeSE = static_cast<u32>(0);
+        if (msg->current == 1) {
+            msg->changeSE = 0;
         }
-        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+        setInputEvent(68u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (149 bytes)
@@ -266,6 +266,8 @@ __attribute__((weak)) void uGUIDialogTextBox::evDecide() {
 //   in uGUIDialogTextBox::evDecide at 0x00a69823-0x00a698b1 (called at uGUIDialogTextBox.cpp:462)
 //   in uGUIDialogTextBox::updateWait at 0x00a69a7c-0x00a69b09 (called at uGUIDialogTextBox.cpp:337)
 // void uGUIDialogTextBox::endInput();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIDialogTextBox::MyDTI uGUIDialogTextBox::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIDialogTextBox.cpp at 0x00a69cef-0x00a69d2c (called at uGUIDialogTextBox.cpp:52)

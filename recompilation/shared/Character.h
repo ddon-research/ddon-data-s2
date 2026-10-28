@@ -533,24 +533,24 @@ public:
 // approximate: only approximate callers check this inline body
 inline CDataCharacterLevelParam::CDataCharacterLevelParam() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_usConstitution = static_cast<u16>(0);
-    this->m_usGuts = static_cast<u16>(0);
-    this->m_usStrength = static_cast<u16>(0);
-    this->m_usDownPower = static_cast<u16>(0);
-    this->m_usShakePower = static_cast<u16>(0);
-    this->m_usStunPower = static_cast<u16>(0);
-    this->m_usAttack = static_cast<u16>(0);
-    this->m_usMagAttack = static_cast<u16>(0);
-    this->m_usDefence = static_cast<u16>(0);
-    this->m_usMagDefence = static_cast<u16>(0);
+    this->m_usConstitution = 0;
+    this->m_usGuts = 0;
+    this->m_usStrength = 0;
+    this->m_usDownPower = 0;
+    this->m_usShakePower = 0;
+    this->m_usStunPower = 0;
+    this->m_usAttack = 0;
+    this->m_usMagAttack = 0;
+    this->m_usDefence = 0;
+    this->m_usMagDefence = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataCharacterMessage::CDataCharacterMessage() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unMessageNo = static_cast<u32>(0);
-    this->m_unEmotion = static_cast<u32>(0);
+    this->m_unMessageNo = 0;
+    this->m_unEmotion = 0;
     this->m_bEmotoChat = false;
 }
 
@@ -558,47 +558,47 @@ inline CDataCharacterMessage::CDataCharacterMessage() {
 // approximate: only approximate callers check this inline body
 inline CDataCharacterMsgSet::CDataCharacterMsgSet() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unSetNo = static_cast<u32>(0);
+    this->m_unSetNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataCommunicationShortCut::CDataCommunicationShortCut() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unId = static_cast<u32>(0);
-    this->m_ucType = static_cast<u8>(0);
-    this->m_ucCategory = static_cast<u8>(0);
-    this->m_unPageNo = static_cast<u32>(0);
-    this->m_unButtonNo = static_cast<u32>(0);
+    this->m_unId = 0;
+    this->m_ucType = 0;
+    this->m_ucCategory = 0;
+    this->m_unPageNo = 0;
+    this->m_unButtonNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataItemStorageIndicateNum::CDataItemStorageIndicateNum() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unItemNum = static_cast<u32>(0);
-    this->m_ucStorageType = static_cast<u8>(0);
+    this->m_unItemNum = 0;
+    this->m_ucStorageType = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataMasterInfo::CDataMasterInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_unUniqueID = static_cast<u32>(0);
-    this->m_cMasterIndex = static_cast<s8>(0);
+    this->m_unUniqueID = 0;
+    this->m_cMasterIndex = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataMatchingProfile::CDataMatchingProfile() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucEntryJob = static_cast<u8>(0);
-    this->m_unEntryJobLevel = static_cast<u32>(0);
-    this->m_ucCurrentJob = static_cast<u8>(0);
-    this->m_unObjectiveType2 = static_cast<u32>(0);
-    this->m_unPlayStyle = static_cast<u32>(0);
-    this->m_unCurrentJobLevel = static_cast<u32>(0);
-    this->m_unObjectiveType1 = static_cast<u32>(0);
+    this->m_ucEntryJob = 0;
+    this->m_unEntryJobLevel = 0;
+    this->m_ucCurrentJob = 0;
+    this->m_unObjectiveType2 = 0;
+    this->m_unPlayStyle = 0;
+    this->m_unCurrentJobLevel = 0;
+    this->m_unObjectiveType1 = 0;
     this->m_bIsJoinParty = true;
 }
 
@@ -606,18 +606,18 @@ inline CDataMatchingProfile::CDataMatchingProfile() {
 // approximate: only approximate callers check this inline body
 inline CDataShortCut::CDataShortCut() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucExexType = static_cast<u8>(0);
-    this->m_unF32Data = static_cast<u32>(0);
-    this->m_unShortcutID = static_cast<u32>(0);
-    this->m_unU32Data = static_cast<u32>(0);
-    this->m_unPageNo = static_cast<u32>(0);
-    this->m_unButtonNo = static_cast<u32>(0);
+    this->m_ucExexType = 0;
+    this->m_unF32Data = 0;
+    this->m_unShortcutID = 0;
+    this->m_unU32Data = 0;
+    this->m_unPageNo = 0;
+    this->m_unButtonNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline CDataWalletPoint::CDataWalletPoint() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->m_ucType = static_cast<u8>(0);
-    this->m_unValue = static_cast<u32>(0);
+    this->m_ucType = 0;
+    this->m_unValue = 0;
 }

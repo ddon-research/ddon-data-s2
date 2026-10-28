@@ -211,7 +211,7 @@ namespace nTalk {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nTalk::cSelectData::cSelectData() {
-    this->mType = static_cast<u32>(0);
-    this->mParam0 = static_cast<u32>(0);
-    this->mParam1 = static_cast<u32>(0);
+    this->mType = 0;
+    this->mParam0 = 0;
+    this->mParam1 = 0;
 }

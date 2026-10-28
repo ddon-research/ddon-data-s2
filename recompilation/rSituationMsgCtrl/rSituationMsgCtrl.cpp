@@ -37,7 +37,7 @@ const MtDTI& rSituationMsgCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSituationMsgCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::DTI)->memAlloc(sz, align, ::rSituationMsgCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSituationMsgCtrl::DTI)->memAlloc(sz, align, rSituationMsgCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rSituationMsgCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSituationMsgCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSituationMsgCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,41 +78,41 @@ MT_CTSTR rSituationMsgCtrl::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rSituationMsgCtrl::rSituationMsgCtrl() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x006bc020 - 0x006bc0d1 (177 bytes)
 // Also emitted as: _ZN17rSituationMsgCtrlD0Ev at 0x006bc0e0
 rSituationMsgCtrl::~rSituationMsgCtrl() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x6bc050 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x006bc1b0 - 0x006bc293 (227 bytes)
@@ -126,10 +126,10 @@ bool rSituationMsgCtrl::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4410707)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mArray);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x434D53) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mArray);
             return true;
         }
     }
@@ -139,12 +139,14 @@ bool rSituationMsgCtrl::load(MtStream& in) {
 // Address: 0x006bc350 - 0x006bc3e1 (145 bytes)
 bool rSituationMsgCtrl::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(4410707));
-    (&w)->writeU32(static_cast<u32>(2));
-    ::nDDOIO::writeMtArray(w, this->mArray);
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x434D53u);
+    (&w)->writeU32(2u);
+    nDDOIO::writeMtArray(w, mArray);
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSituationMsgCtrl::MyDTI rSituationMsgCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rSituationMsgCtrl.cpp at 0x006bc9b0-0x006bc9f2 (called at rSituationMsgCtrl.cpp:30)
@@ -154,7 +156,7 @@ bool rSituationMsgCtrl::save(MtStream& out) {
 // Address: 0x006bbf10 - 0x006bbf94 (132 bytes)
 MtObject* rSituationMsgCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSituationMsgCtrl;
+    return new (16u) rSituationMsgCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -182,7 +184,7 @@ const MtDTI& rSituationMsgCtrl::cSituationData::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::cSituationData::DTI)->memAlloc(sz, align, ::rSituationMsgCtrl::cSituationData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSituationMsgCtrl::cSituationData::DTI)->memAlloc(sz, align, rSituationMsgCtrl::cSituationData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -196,7 +198,7 @@ void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSituationMsgCtrl::cSituationData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::cSituationData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSituationMsgCtrl::cSituationData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -230,25 +232,27 @@ bool rSituationMsgCtrl::cSituationData::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mGroupSerial);
+    nDDOIO::readData(r, mGroupSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mStartQuestId);
+    nDDOIO::readData(r, mStartQuestId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mIsStartQuestIdStart);
+    nDDOIO::readData(r, mIsStartQuestIdStart);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mEndQuestId);
+    nDDOIO::readData(r, mEndQuestId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mIsEndQuestIdStart);
+    nDDOIO::readData(r, mIsEndQuestIdStart);
     return true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (118 bytes)
 //   in _ZN6nDDOIO12writeMtArrayIN17rSituationMsgCtrl14cSituationDataEEEvR12MtDataWriterR12MtTypedArrayIT_E at 0x01aa6a2b-0x01aa6aa1 (called at nDDOIO.h:463)
 // bool rSituationMsgCtrl::cSituationData::save(MtDataWriter& w);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSituationMsgCtrl::cSituationData::MyDTI rSituationMsgCtrl::cSituationData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSituationMsgCtrl.cpp at 0x006bc9f2-0x006bca2f (called at rSituationMsgCtrl.cpp:135)
@@ -258,7 +262,7 @@ bool rSituationMsgCtrl::cSituationData::load(MtDataReader& r) {
 // Address: 0x006bc3f0 - 0x006bc44d (93 bytes)
 MtObject* rSituationMsgCtrl::cSituationData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSituationMsgCtrl::cSituationData(static_cast<u32>(0), static_cast<u32>(0), false, static_cast<u32>(0), false);
+    return new (16u) rSituationMsgCtrl::cSituationData(0u, 0u, false, 0u, false);
 }
 
 // Instance at 0x01aa6770 - 0x01aa6775 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

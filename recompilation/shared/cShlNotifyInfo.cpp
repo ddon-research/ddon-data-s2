@@ -45,7 +45,7 @@ const MtDTI& cShlNotifyInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cShlNotifyInfoD0Ev at 0x01a618b0-0x01a618da, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cShlNotifyInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShlNotifyInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShlNotifyInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,6 +69,8 @@ __attribute__((weak)) void cShlNotifyInfo::createParam(cHitInfo* pHitInfo) {
     DDON_STUB("cShlNotifyInfo::createParam")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShlNotifyInfo::MyDTI cShlNotifyInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cShlNotifyInfo.cpp at 0x0056d59f-0x0056d5dc (called at cShlNotifyInfo.cpp:22)

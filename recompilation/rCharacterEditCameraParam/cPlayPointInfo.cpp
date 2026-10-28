@@ -24,7 +24,7 @@ const MtDTI& cPlayPointInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cPlayPointInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::DTI);
+    return MtMemoryAllocator::getAllocator(cPlayPointInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cPlayPointInfo::getAllocator() {
 // Address: 0x00156e70 - 0x00156eb0 (64 bytes)
 void* cPlayPointInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cPlayPointInfo::getAllocator()->memAlloc(sz, align, ::cPlayPointInfo::DTI.::MtDTI::getID());
+    return cPlayPointInfo::getAllocator()->memAlloc(sz, align, cPlayPointInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cPlayPointInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cPlayPointInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlayPointInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,34 +70,34 @@ cPlayPointInfo::cPlayPointInfo() {
 // Also emitted as: _ZN14cPlayPointInfoD0Ev at 0x00157190
 cPlayPointInfo::~cPlayPointInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mJobPlayPointList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mJobPlayPointList.mLength != 0) {
         // inferred: the value the loop at 0x157120 carries; no location-less local in scope fits
-        u32 v0_0 = this->mJobPlayPointList.::MtArray::mLength;
+        u32 v0_0 = mJobPlayPointList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mJobPlayPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mJobPlayPointList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mJobPlayPointList.::MtArray::mLength) {
-                    v0_0 = this->mJobPlayPointList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mJobPlayPointList.mpArray[i0_3] != nullptr) {
+                delete mJobPlayPointList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mJobPlayPointList.mLength) {
+                    v0_0 = mJobPlayPointList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mJobPlayPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mJobPlayPointList.::MtArray::mpArray));
+    if (mJobPlayPointList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mJobPlayPointList.mpArray));
     }
-    this->mJobPlayPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mJobPlayPointList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mJobPlayPointList.::MtArray::mLength = static_cast<u32>(0);
+    mJobPlayPointList.mpArray = nullptr;
+    mJobPlayPointList.mBufsiz = 0;
+    mJobPlayPointList.mLength = 0;
 }
 
 // Address: 0x00157250 - 0x00157293 (67 bytes)
@@ -117,7 +117,7 @@ __attribute__((weak)) cPlayPointInfo::cPlayPoint* cPlayPointInfo::getMyPlayPoint
 // Address: 0x00157310 - 0x00157315 (5 bytes)
 MtTypedArray<cPlayPointInfo::cPlayPoint>& cPlayPointInfo::getPlayPointList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJobPlayPointList;
+    return mJobPlayPointList;
 }
 
 // Address: 0x00157320 - 0x00157482 (354 bytes)
@@ -160,6 +160,8 @@ __attribute__((weak)) void cPlayPointInfo::updaptePlayPointValue(u8 jobId, u32 p
 //   in uGUIPPShop::initPPShop at 0x00bd9e23-0x00bd9e26 (called at uGUIPPShop.cpp:752)
 // u32 cPlayPointInfo::getPlayPointJobLevel();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPlayPointInfo::MyDTI cPlayPointInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cPlayPointInfo.cpp at 0x0015763e-0x0015767e (called at cPlayPointInfo.cpp:23)
 //   in _GLOBAL__sub_I_cPlayPointInfo.cpp at 0x0015763e-0x0015767e (called at cPlayPointInfo.h:40)
@@ -194,7 +196,7 @@ const MtDTI& cPlayPointInfo::cPlayPoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cPlayPointInfo::cPlayPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::cPlayPoint::DTI)->memAlloc(sz, align, ::cPlayPointInfo::cPlayPoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPlayPointInfo::cPlayPoint::DTI)->memAlloc(sz, align, cPlayPointInfo::cPlayPoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,7 +211,7 @@ inline void* cPlayPointInfo::cPlayPoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14cPlayPointInfo10cPlayPointD0Ev at 0x0197bb30-0x0197bb5a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cPlayPointInfo::cPlayPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::cPlayPoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cPlayPointInfo::cPlayPoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -231,6 +233,8 @@ inline void cPlayPointInfo::cPlayPoint::operator delete(void* p_addr) {
 //   in cPlayPointInfo::cPlayPoint::MyDTI::newInstance at 0x00156f4d-0x00156f6a (called at cPlayPointInfo.h:61)
 // cPlayPointInfo::cPlayPoint::cPlayPoint();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPlayPointInfo::cPlayPoint::MyDTI cPlayPointInfo::cPlayPoint::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPlayPointInfo.cpp at 0x0015767e-0x001576b7 (called at cPlayPointInfo.cpp:24)
 //   in _GLOBAL__sub_I_cPlayPointInfo.cpp at 0x0015767e-0x001576b7 (called at cPlayPointInfo.h:49)
@@ -239,7 +243,7 @@ inline void cPlayPointInfo::cPlayPoint::operator delete(void* p_addr) {
 // Address: 0x00156f20 - 0x00156f6f (79 bytes)
 MtObject* cPlayPointInfo::cPlayPoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPlayPointInfo::cPlayPoint;
+    return new (16u) cPlayPointInfo::cPlayPoint;
 }
 
 // Instance at 0x0197bac0 - 0x0197bac5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

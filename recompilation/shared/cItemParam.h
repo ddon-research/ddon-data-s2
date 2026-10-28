@@ -16,6 +16,8 @@ class MtDTI;
 class MtPropertyList;
 class MtString;
 namespace nCharacterData { struct stItemParam; }
+class sItemManager;
+class uGUIBase;
 class uGUIPopDetail01;
 class uUIMockUp;
 
@@ -36,6 +38,8 @@ using u8 = unsigned char;
 
 class cCraftParam : public MtObject
 {
+    // inferred: uGUIBase::cReferenceUIIconItem::setItem names cItemParam::mCraftParam.mCraftPlusParam, through its enclosing class uGUIBase
+    friend class uGUIBase;
 public:
     class MyDTI;
 public:
@@ -81,6 +85,10 @@ public:
 
 class cItemParam : public MtObject
 {
+    // inferred: sItemManager::cItemBag::getItemNum names cItemParam::mItemParam.mItemNum_Guard, through its enclosing class sItemManager
+    friend class sItemManager;
+    // inferred: uGUIBase::cReferenceUIIconItem::setItem names cItemParam::mCraftParam.mCraftPlusParam, through its enclosing class uGUIBase
+    friend class uGUIBase;
     // inferred: uGUIPopDetail01::setItemParam names cItemParam::mItemParam.mItemNum_Guard
     friend class uGUIPopDetail01;
     // inferred: uUIMockUp::changeEquip names cItemParam::mColorNo

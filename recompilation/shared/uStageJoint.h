@@ -319,6 +319,12 @@ inline s32 uStageJointCtrl::getPlayerCurrentAreaNo() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uStageJointMdl::setup at 0xd2e20f-0xd2e216; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 1 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+inline rStageJoint* uStageJointCtrl::getJointArea() const {
+    return this->mpJointArea;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool uStageJointMdl::isSetResource() {
     return this->mIsSetResource;

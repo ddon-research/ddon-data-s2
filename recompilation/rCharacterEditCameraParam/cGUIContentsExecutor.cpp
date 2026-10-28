@@ -38,7 +38,7 @@ const MtDTI& cGUIContentsExecutor::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGUIContentsExecutor::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGUIContentsExecutor::DTI);
+    return MtMemoryAllocator::getAllocator(cGUIContentsExecutor::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* cGUIContentsExecutor::getAllocator() {
 // Address: 0x000d0960 - 0x000d09a0 (64 bytes)
 void* cGUIContentsExecutor::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cGUIContentsExecutor::getAllocator()->memAlloc(sz, align, ::cGUIContentsExecutor::DTI.::MtDTI::getID());
+    return cGUIContentsExecutor::getAllocator()->memAlloc(sz, align, cGUIContentsExecutor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* cGUIContentsExecutor::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIContentsExecutor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIContentsExecutor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIContentsExecutor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -100,53 +100,53 @@ cGUIContentsExecutor::~cGUIContentsExecutor() {
 // Address: 0x000d0d50 - 0x000d0d55 (5 bytes)
 void cGUIContentsExecutor::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cUIObject::createProperty(s);
+    this->cUIObject::createProperty(s);
 }
 
 // Address: 0x000d0ba0 - 0x000d0cbe (286 bytes)
 __attribute__((weak)) void cGUIContentsExecutor::release() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((::sUnit::mpInstance) != static_cast<sUnit*>(nullptr)) {
-        if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-            this->mpUnitTopSel->kill();
-            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if ((sUnit::mpInstance) != nullptr) {
+        if (mpUnitTopSel != nullptr) {
+            mpUnitTopSel->kill();
+            mpUnitTopSel = nullptr;
         }
-        if (this->mpUnitPopEventTop != static_cast<uGUIPopEventTop*>(nullptr)) {
-            this->mpUnitPopEventTop->kill();
-            this->mpUnitPopEventTop = static_cast<uGUIPopEventTop*>(nullptr);
+        if (mpUnitPopEventTop != nullptr) {
+            mpUnitPopEventTop->kill();
+            mpUnitPopEventTop = nullptr;
         }
-        if (this->mpUnitMissionResult != static_cast<uGUIMissionResult*>(nullptr)) {
-            this->mpUnitMissionResult->kill();
-            this->mpUnitMissionResult = static_cast<uGUIMissionResult*>(nullptr);
+        if (mpUnitMissionResult != nullptr) {
+            mpUnitMissionResult->kill();
+            mpUnitMissionResult = nullptr;
         }
-        if (this->mpUnitContentsBoard != static_cast<uGUIContentsBoard*>(nullptr)) {
-            this->mpUnitContentsBoard->kill();
-            this->mpUnitContentsBoard = static_cast<uGUIContentsBoard*>(nullptr);
+        if (mpUnitContentsBoard != nullptr) {
+            mpUnitContentsBoard->kill();
+            mpUnitContentsBoard = nullptr;
         }
-        if (this->mpUnitMissionInfo != static_cast<uGUIMissionInfo*>(nullptr)) {
-            this->mpUnitMissionInfo->kill();
-            this->mpUnitMissionInfo = static_cast<uGUIMissionInfo*>(nullptr);
+        if (mpUnitMissionInfo != nullptr) {
+            mpUnitMissionInfo->kill();
+            mpUnitMissionInfo = nullptr;
         }
-        if (this->mpUnitNewspaper != static_cast<uGUINewspaper*>(nullptr)) {
-            this->mpUnitNewspaper->kill();
-            this->mpUnitNewspaper = static_cast<uGUINewspaper*>(nullptr);
+        if (mpUnitNewspaper != nullptr) {
+            mpUnitNewspaper->kill();
+            mpUnitNewspaper = nullptr;
         }
-        if (this->mpUnitPopFilter != static_cast<uGUIPopFilter*>(nullptr)) {
-            this->mpUnitPopFilter->kill();
-            this->mpUnitPopFilter = static_cast<uGUIPopFilter*>(nullptr);
+        if (mpUnitPopFilter != nullptr) {
+            mpUnitPopFilter->kill();
+            mpUnitPopFilter = nullptr;
         }
     }
-    if (::sGUI::getInstance() != static_cast<sGUI*>(nullptr)) {
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    if (sGUI::getInstance() != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->deleteShopTitle();
     }
-    ::nNet::resetEntryBoardInfo(this->mBoardInfo);
-    if (::sArchiveManager::getInstance() != static_cast<sArchiveManager*>(nullptr)) {
+    nNet::resetEntryBoardInfo(mBoardInfo);
+    if (sArchiveManager::getInstance() != nullptr) {
         // inferred: a temporary for the value the load at 0xd0ca8 read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mArc != t0) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArc);
-            this->mArc = static_cast<TICKET>(t0);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mArc != t0) {
+            sArchiveManager::getInstance()->returnTicket(mArc);
+            mArc = static_cast<TICKET>(t0);
         }
     }
 }
@@ -217,52 +217,44 @@ __attribute__((weak)) void cGUIContentsExecutor::update() {
 void cGUIContentsExecutor::updateUnitPtr() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
-        if (this->mpUnitTopSel->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    if (mpUnitTopSel != nullptr) {
+        if (!mpUnitTopSel->cUnit::isEnable()) {
+            mpUnitTopSel = nullptr;
         }
     }
-    if (this->mpUnitPopEventTop != static_cast<uGUIPopEventTop*>(nullptr)) {
-        if (this->mpUnitPopEventTop->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitPopEventTop = static_cast<uGUIPopEventTop*>(nullptr);
+    if (mpUnitPopEventTop != nullptr) {
+        if (!mpUnitPopEventTop->isEnable()) {
+            mpUnitPopEventTop = nullptr;
         }
     }
-    if (this->mpUnitEntryBoardInfo != static_cast<uGUIEntryBoardInfo*>(nullptr)) {
-        if (this->mpUnitEntryBoardInfo->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitEntryBoardInfo = static_cast<uGUIEntryBoardInfo*>(nullptr);
+    if (mpUnitEntryBoardInfo != nullptr) {
+        if (!mpUnitEntryBoardInfo->isEnable()) {
+            mpUnitEntryBoardInfo = nullptr;
         }
     }
-    if (this->mpUnitMissionResult != static_cast<uGUIMissionResult*>(nullptr)) {
-        if (this->mpUnitMissionResult->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitMissionResult = static_cast<uGUIMissionResult*>(nullptr);
+    if (mpUnitMissionResult != nullptr) {
+        if (!mpUnitMissionResult->isEnable()) {
+            mpUnitMissionResult = nullptr;
         }
     }
-    if (this->mpUnitContentsBoard != static_cast<uGUIContentsBoard*>(nullptr)) {
-        if (this->mpUnitContentsBoard->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitContentsBoard = static_cast<uGUIContentsBoard*>(nullptr);
+    if (mpUnitContentsBoard != nullptr) {
+        if (!mpUnitContentsBoard->isEnable()) {
+            mpUnitContentsBoard = nullptr;
         }
     }
-    if (this->mpUnitMissionInfo != static_cast<uGUIMissionInfo*>(nullptr)) {
-        if (this->mpUnitMissionInfo->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitMissionInfo = static_cast<uGUIMissionInfo*>(nullptr);
+    if (mpUnitMissionInfo != nullptr) {
+        if (!mpUnitMissionInfo->isEnable()) {
+            mpUnitMissionInfo = nullptr;
         }
     }
-    if (this->mpUnitNewspaper != static_cast<uGUINewspaper*>(nullptr)) {
-        if (this->mpUnitNewspaper->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitNewspaper = static_cast<uGUINewspaper*>(nullptr);
+    if (mpUnitNewspaper != nullptr) {
+        if (!mpUnitNewspaper->isEnable()) {
+            mpUnitNewspaper = nullptr;
         }
     }
-    if (this->mpUnitPopFilter != static_cast<uGUIPopFilter*>(nullptr)) {
-        if (this->mpUnitPopFilter->::cUnit::isEnable()) {
-        } else {
-            this->mpUnitPopFilter = static_cast<uGUIPopFilter*>(nullptr);
+    if (mpUnitPopFilter != nullptr) {
+        if (!mpUnitPopFilter->isEnable()) {
+            mpUnitPopFilter = nullptr;
         }
     }
 }
@@ -270,11 +262,11 @@ void cGUIContentsExecutor::updateUnitPtr() {
 // Address: 0x000d0d60 - 0x000d0d7f (31 bytes)
 void cGUIContentsExecutor::start(u32 openFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOldProc = this->mProc;
-    this->mProc = static_cast<cGUIContentsExecutor::PR>(1);
-    this->mIsInit = true;
-    this->mOpenFlag = openFlag;
-    this->::cGUIContentsExecutor::release();
+    mOldProc = mProc;
+    mProc = PR_INIT;
+    mIsInit = true;
+    mOpenFlag = openFlag;
+    release();
 }
 
 // No out-of-line body: no code in the ELF
@@ -325,7 +317,7 @@ __attribute__((weak)) void cGUIContentsExecutor::checkPreProc() {
 // Address: 0x000d4680 - 0x000d4688 (8 bytes)
 void cGUIContentsExecutor::cycleContentsCallback(u32 ErrorCode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = this->mStatus & static_cast<u32>(4294967294);
+    mStatus = mStatus & 0xFFFFFFFEu;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -352,6 +344,8 @@ void cGUIContentsExecutor::cycleContentsCallback(u32 ErrorCode) {
 //   in cGUIContentsExecutor::update at 0x000d1984-0x000d198c (called at cGUIContentsExecutor.cpp:1176)
 //   and 4 more (every copy is in <bundle>.inlined.json)
 // bool cGUIContentsExecutor::isOpenFlag(u32 flag) const;
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cGUIContentsExecutor::MyDTI cGUIContentsExecutor::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGUIContentsExecutor.cpp at 0x000d479f-0x000d47dc (called at cGUIContentsExecutor.cpp:45)

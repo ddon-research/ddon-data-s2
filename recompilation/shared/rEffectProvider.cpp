@@ -51,7 +51,7 @@ const MtDTI& rEffectProvider::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEffectProvider::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +145,7 @@ __attribute__((weak)) bool rEffectProvider::save(MtStream& out) {
 // Address: 0x006650a0 - 0x006650a9 (9 bytes)
 void rEffectProvider::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInfo.mEffectInfo.::rEffectProvider::INFO_EFFECT::clear();
+    mInfo.mEffectInfo.clear();
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,6 +164,8 @@ void rEffectProvider::clear() {
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
 //   in sEffectExt::setE2DEffect at 0x007759f3-0x00775a15 (called at sEffectExt.cpp:6145)
 // u32 rEffectProvider::getE2DType(s32 index, s32 element);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::MyDTI rEffectProvider::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665382-0x006653bf (called at rEffectProvider.cpp:867)
@@ -211,7 +213,7 @@ const MtDTI& rEffectProvider::INFO_PROV::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEffectProvider9INFO_PROVD0Ev at 0x01a85a7f-0x01a85aa0, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffectProvider::INFO_PROV::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_PROV::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_PROV::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -231,6 +233,8 @@ inline void rEffectProvider::INFO_PROV::operator delete(void* p_addr) {
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
 //   in rEffectProvider::clear at 0x006650a0-0x006650a9 (called at rEffectProvider.cpp:1292)
 // void rEffectProvider::INFO_PROV::clear();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::INFO_PROV::MyDTI rEffectProvider::INFO_PROV::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665349-0x00665382 (called at rEffectProvider.cpp:844)
@@ -268,7 +272,7 @@ const MtDTI& rEffectProvider::INFO_EFFECT::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_EFFECT::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_EFFECT::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memAlloc(sz, align, rEffectProvider::INFO_EFFECT::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -283,7 +287,7 @@ inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEffectProvider::INFO_EFFECT::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_EFFECT::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -305,7 +309,7 @@ inline void rEffectProvider::INFO_EFFECT::operator delete(void* p_addr) {
 // Also emitted as: _ZN15rEffectProvider11INFO_EFFECTD0Ev at 0x00663090
 rEffectProvider::INFO_EFFECT::~INFO_EFFECT() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rEffectProvider::INFO_EFFECT::clear();
+    clear();
 }
 
 // Address: 0x00662f80 - 0x0066308a (266 bytes)
@@ -332,9 +336,20 @@ __attribute__((weak)) void rEffectProvider::INFO_EFFECT::clear() {
 // u32 rEffectProvider::INFO_EFFECT::getEffectIndexNum() const;
 
 // Address: 0x006630d0 - 0x00663115 (69 bytes)
-__attribute__((weak)) rEffectProvider::EffectElement* rEffectProvider::INFO_EFFECT::getEffectElement(s32 IndexNo, s32 ElementNo) const {
-    // local: EffectIndex* pIndex;
-    DDON_STUB("rEffectProvider::INFO_EFFECT::getEffectElement")
+rEffectProvider::EffectElement* rEffectProvider::INFO_EFFECT::getEffectElement(s32 IndexNo, s32 ElementNo) const {
+    // DWARF local not rendered: EffectIndex* pIndex;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((IndexNo | ElementNo) > -1) {
+        if (IndexNo < static_cast<int>(mEffectIndexNum)) {
+            if ((&mpEffectIndex[IndexNo]) != nullptr) {
+                if (ElementNo > -1) {
+                    if (ElementNo < static_cast<int>(mpEffectIndex[IndexNo].mEffectElementNum)) {
+                        return &mpEffectIndex[IndexNo].mpEffectElement[ElementNo];
+                    }
+                }
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -392,6 +407,8 @@ __attribute__((weak)) rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT
 //   in rEffectProvider::load at 0x0066468c-0x00664696 (called at rEffectProvider.cpp:1119)
 // void rEffectProvider::INFO_EFFECT::setEventListNum(u32 num);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::INFO_EFFECT::MyDTI rEffectProvider::INFO_EFFECT::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x0066529e-0x006652d7 (called at rEffectProvider.cpp:712)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x0066529e-0x006652d7 (called at rEffectProvider.h:1048)
@@ -400,7 +417,7 @@ __attribute__((weak)) rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT
 // Address: 0x00662e70 - 0x00662edd (109 bytes)
 MtObject* rEffectProvider::INFO_EFFECT::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rEffectProvider::INFO_EFFECT;
+    return new (16u) rEffectProvider::INFO_EFFECT;
 }
 
 // No out-of-line body: no code in the ELF
@@ -425,7 +442,7 @@ const MtDTI& rEffectProvider::INFO_BASE::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEffectProvider::INFO_BASE::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_BASE::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_BASE::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_BASE::DTI)->memAlloc(sz, align, rEffectProvider::INFO_BASE::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -440,7 +457,7 @@ inline void* rEffectProvider::INFO_BASE::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEffectProvider9INFO_BASED0Ev at 0x01a85ac0-0x01a85aea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffectProvider::INFO_BASE::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_BASE::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_BASE::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -475,6 +492,8 @@ bool rEffectProvider::INFO_BASE::fromNative() {
 // No out-of-line body: no code in the ELF
 // void rEffectProvider::INFO_BASE::clear();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::INFO_BASE::MyDTI rEffectProvider::INFO_BASE::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006651b3-0x006651f3 (called at rEffectProvider.cpp:364)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006651b3-0x006651f3 (called at rEffectProvider.h:549)
@@ -483,7 +502,7 @@ bool rEffectProvider::INFO_BASE::fromNative() {
 // Address: 0x00662330 - 0x00662370 (64 bytes)
 MtObject* rEffectProvider::INFO_BASE::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffectProvider::INFO_BASE;
+    return new (16u) rEffectProvider::INFO_BASE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -511,7 +530,7 @@ const MtDTI& rEffectProvider::EffectIndex::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEffectProvider::EffectIndex::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectIndex::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectIndex::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memAlloc(sz, align, rEffectProvider::EffectIndex::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -526,7 +545,7 @@ inline void* rEffectProvider::EffectIndex::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEffectProvider::EffectIndex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectIndex::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -577,6 +596,8 @@ rEffectProvider::EffectIndex::~EffectIndex() {
 //   in rEffectProvider::load at 0x006637d8-0x006637e0 (called at rEffectProvider.cpp:925)
 // void rEffectProvider::EffectIndex::setEffectElementNum(u32 num);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::EffectIndex::MyDTI rEffectProvider::EffectIndex::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665265-0x0066529e (called at rEffectProvider.cpp:672)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665265-0x0066529e (called at rEffectProvider.h:1003)
@@ -585,7 +606,7 @@ rEffectProvider::EffectIndex::~EffectIndex() {
 // Address: 0x00662c70 - 0x00662cbf (79 bytes)
 MtObject* rEffectProvider::EffectIndex::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffectProvider::EffectIndex;
+    return new (16u) rEffectProvider::EffectIndex;
 }
 
 // No out-of-line body: no code in the ELF
@@ -624,7 +645,7 @@ const MtDTI& rEffectProvider::EffectElement::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEffectProvider::EffectElement::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectElement::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::EffectElement::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -659,28 +680,28 @@ rEffectProvider::EffectElement::~EffectElement() {
 void rEffectProvider::EffectElement::setEffectList(rEffectList* pEffectList, u32 no) {
     // DWARF local not rendered: rEffectList* pELNat;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (no <= static_cast<u32>(7)) {
-        if (pEffectList != this->mpEffectList[no]) {
-            if (this->mpEffectList[no] != static_cast<rEffectList*>(nullptr)) {
-                this->mpEffectList[no]->::cResource::release();
-                this->mpEffectList[no] = static_cast<rEffectList*>(nullptr);
+    if (no <= 7u) {
+        if (pEffectList != mpEffectList[no]) {
+            if (mpEffectList[no] != nullptr) {
+                mpEffectList[no]->cResource::release();
+                mpEffectList[no] = nullptr;
             }
-            if (pEffectList != static_cast<rEffectList*>(nullptr)) {
-                if (pEffectList->::cResource::isIntermediate()) {
+            if (pEffectList != nullptr) {
+                if (pEffectList->isIntermediate()) {
                     // inferred: a temporary for the result of the call at 0x662c12, used 3 times; no DWARF local holds it
-                    cResource* t0 = ::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pEffectList), static_cast<u32>(1));
-                    if ((this->mpEffectList[no] = static_cast<rEffectList*>(t0)) != static_cast<rEffectList*>(nullptr)) {
-                        t0->::cResource::addRef();
-                        t0->::cResource::release();
+                    cResource* t0 = sResource::getInstance()->createNative(static_cast<cResource*>(pEffectList), 1u);
+                    if ((mpEffectList[no] = static_cast<rEffectList*>(t0)) != nullptr) {
+                        t0->addRef();
+                        t0->release();
                     }
                 } else {
-                    pEffectList->::cResource::addRef();
-                    this->mpEffectList[no] = pEffectList;
-                    pEffectList->::cResource::addRef();
-                    pEffectList->::cResource::release();
+                    pEffectList->addRef();
+                    mpEffectList[no] = pEffectList;
+                    pEffectList->addRef();
+                    pEffectList->release();
                 }
             } else {
-                this->mpEffectList[no] = static_cast<rEffectList*>(nullptr);
+                mpEffectList[no] = nullptr;
             }
         }
     }
@@ -740,6 +761,8 @@ void rEffectProvider::EffectElement::setEffectList(rEffectList* pEffectList, u32
 // No out-of-line body: no code in the ELF
 // void rEffectProvider::EffectElement::setEffectReleaseVer(u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::EffectElement::MyDTI rEffectProvider::EffectElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x0066522c-0x00665265 (called at rEffectProvider.cpp:571)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x0066522c-0x00665265 (called at rEffectProvider.h:947)
@@ -787,7 +810,7 @@ const MtDTI& rEffectProvider::EffectParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEffectProvider::EffectParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::EffectParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1169,6 +1192,8 @@ rEffectProvider::EffectParam::~EffectParam() {
 //   in rEffectProvider::load at 0x00664481-0x00664497 (called at rEffectProvider.cpp:1068)
 // void rEffectProvider::EffectParam::setFinishFadeOutFrame(f32 set);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::EffectParam::MyDTI rEffectProvider::EffectParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006651f3-0x0066522c (called at rEffectProvider.cpp:408)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006651f3-0x0066522c (called at rEffectProvider.h:714)
@@ -1202,7 +1227,7 @@ const MtDTI& rEffectProvider::EffectMotSyncParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEffectProvider::EffectMotSyncParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectMotSyncParam::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectMotSyncParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectMotSyncParam::DTI)->memAlloc(sz, align, rEffectProvider::EffectMotSyncParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1217,7 +1242,7 @@ inline void* rEffectProvider::EffectMotSyncParam::operator new(size_t sz, u32 al
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEffectProvider18EffectMotSyncParamD0Ev at 0x01a859c0-0x01a859ea, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffectProvider::EffectMotSyncParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectMotSyncParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::EffectMotSyncParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1314,6 +1339,8 @@ inline void rEffectProvider::EffectMotSyncParam::operator delete(void* p_addr) {
 //   in rEffectProvider::load at 0x00664631-0x00664643 (called at rEffectProvider.cpp:1106)
 // void rEffectProvider::EffectMotSyncParam::setSetOnceFlag(bool flag);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::EffectMotSyncParam::MyDTI rEffectProvider::EffectMotSyncParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006652d7-0x00665310 (called at rEffectProvider.cpp:802)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x006652d7-0x00665310 (called at rEffectProvider.h:654)
@@ -1322,7 +1349,7 @@ inline void rEffectProvider::EffectMotSyncParam::operator delete(void* p_addr) {
 // Address: 0x00663170 - 0x006631df (111 bytes)
 MtObject* rEffectProvider::EffectMotSyncParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffectProvider::EffectMotSyncParam;
+    return new (16u) rEffectProvider::EffectMotSyncParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1347,7 +1374,7 @@ const MtDTI& rEffectProvider::EffectEventParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEffectProvider::EffectEventParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectEventParam::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectEventParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectEventParam::DTI)->memAlloc(sz, align, rEffectProvider::EffectEventParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1362,7 +1389,7 @@ inline void* rEffectProvider::EffectEventParam::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEffectProvider16EffectEventParamD0Ev at 0x01a85a10-0x01a85a3a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEffectProvider::EffectEventParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectEventParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEffectProvider::EffectEventParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1403,6 +1430,8 @@ inline void rEffectProvider::EffectEventParam::operator delete(void* p_addr) {
 //   in rEffectProvider::load at 0x00664778-0x0066477c (called at rEffectProvider.cpp:1135)
 // void rEffectProvider::EffectEventParam::setEfcElementNo(u32 no);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEffectProvider::EffectEventParam::MyDTI rEffectProvider::EffectEventParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665310-0x00665349 (called at rEffectProvider.cpp:826)
 //   in _GLOBAL__sub_I_rEffectProvider.cpp at 0x00665310-0x00665349 (called at rEffectProvider.h:625)
@@ -1411,6 +1440,6 @@ inline void rEffectProvider::EffectEventParam::operator delete(void* p_addr) {
 // Address: 0x00663260 - 0x006632b5 (85 bytes)
 MtObject* rEffectProvider::EffectEventParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEffectProvider::EffectEventParam;
+    return new (16u) rEffectProvider::EffectEventParam;
 }
 

@@ -37,7 +37,7 @@ const MtDTI& cStatusCheck::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cStatusCheck::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memAlloc(sz, align, ::cStatusCheck::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cStatusCheck::DTI)->memAlloc(sz, align, cStatusCheck::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cStatusCheck::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cStatusCheck::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cStatusCheck::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cStatusCheck::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cStatusCheck::MyDTI cStatusCheck::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStatusCheck.cpp at 0x006c585f-0x006c589c (called at rStatusCheck.cpp:23)
 //   in _GLOBAL__sub_I_rStatusCheck.cpp at 0x006c585f-0x006c589c (called at rStatusCheck.h:34)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cStatusCheck::createProperty(MtPropertyList& s) {
 // Address: 0x006c4d70 - 0x006c4de6 (118 bytes)
 MtObject* cStatusCheck::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cStatusCheck;
+    return new (16u) cStatusCheck;
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,7 +118,7 @@ const MtDTI& rStatusCheck::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rStatusCheck::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rStatusCheck::DTI)->memAlloc(sz, align, ::rStatusCheck::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rStatusCheck::DTI)->memAlloc(sz, align, rStatusCheck::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,7 +133,7 @@ inline void* rStatusCheck::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12rStatusCheckD0Ev at 0x01aa9774-0x01aa9793, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rStatusCheck::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rStatusCheck::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rStatusCheck::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,29 +150,29 @@ bool rStatusCheck::loadData(MtDataReader& in, cStatusCheck* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGroup);
+    nDDOIO::readData(in, pData->mGroup);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mResult);
+    nDDOIO::readData(in, pData->mResult);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mType);
+    nDDOIO::readData(in, pData->mType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSystemParam[0]);
+    nDDOIO::readData(in, pData->mSystemParam[0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSystemParam[1]);
+    nDDOIO::readData(in, pData->mSystemParam[1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSystemParam[2]);
+    nDDOIO::readData(in, pData->mSystemParam[2]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mResultAdd);
+    nDDOIO::readData(in, pData->mResultAdd);
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mResultOver = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mResultOver = in.readU8() != 0;
     // inferred: a member kept in a register across a bool store is the copy's own read of it
-    pData->mTypeReverse = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->mTypeReverse = in.readU8() != 0;
     return true;
 }
 
@@ -183,8 +185,10 @@ MT_CTSTR rStatusCheck::getExt() const {
 // Address: 0x01aa98c0 - 0x01aa98c6 (6 bytes)
 u32 rStatusCheck::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rStatusCheck::MyDTI rStatusCheck::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rStatusCheck.cpp at 0x006c589c-0x006c58d9 (called at rStatusCheck.cpp:152)
@@ -194,7 +198,7 @@ u32 rStatusCheck::getDataVersion() const {
 // Address: 0x006c5680 - 0x006c56e4 (100 bytes)
 MtObject* rStatusCheck::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rStatusCheck;
+    return new (16u) rStatusCheck;
 }
 
 // Instance at 0x01aa9870 - 0x01aa9886 (22 bytes) of the generic rTbl2<T>::getData

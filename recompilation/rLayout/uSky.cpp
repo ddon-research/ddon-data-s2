@@ -50,7 +50,7 @@ const MtDTI& uSky::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4uSkyD0Ev at 0x00f990fe-0x00f9911f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSky::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSky::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSky::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,7 +80,7 @@ uSky::~uSky() {
 // Address: 0x00f9c4e0 - 0x00f9c4e5 (5 bytes)
 MtUI* uSky::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cUnit::createUI(prop);
+    return this->cUnit::createUI(prop);
 }
 
 // Address: 0x00f9a220 - 0x00f9c07e (7774 bytes)
@@ -92,12 +92,12 @@ __attribute__((weak)) void uSky::createProperty(MtPropertyList& s) {
 // Address: 0x00f99120 - 0x00f99171 (81 bytes)
 void uSky::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uSky::createBuffer();
-    this->::uSky::createStar();
-    if (this->mpStarTexture != static_cast<rTexture*>(nullptr)) {
+    createBuffer();
+    createStar();
+    if (mpStarTexture != nullptr) {
         return;
     }
-    this->mpStarTexture = static_cast<rTexture*>((::sResource::mpInstance)->create(::rTexture::DTI, "sample\\sky\\star", static_cast<u32>(1)));
+    mpStarTexture = static_cast<rTexture*>((sResource::mpInstance)->create(rTexture::DTI, "sample\\sky\\star", 1u));
 }
 
 // Address: 0x00f9c4f0 - 0x00f9d801 (4881 bytes)
@@ -124,25 +124,25 @@ __attribute__((weak)) void uSky::move() {
 // Address: 0x00f9df00 - 0x00f9df8f (143 bytes)
 void uSky::draw(cDraw* pdraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource == static_cast<rSky*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->::uSky::setConstantBuffer(pdraw);
-    ::uFilter::setSampleCount(pdraw, this->mPreComputeLoopCount);
-    if (this->mUpdateMap != false) {
-        this->::uSky::drawDepthMap(pdraw);
+    setConstantBuffer(pdraw);
+    uFilter::setSampleCount(pdraw, mPreComputeLoopCount);
+    if (mUpdateMap) {
+        drawDepthMap(pdraw);
     }
-    this->::uSky::draw1stPass(pdraw);
-    this->::uSky::draw2ndPass(pdraw);
-    this->::uSky::drawStar(pdraw);
-    this->drawSun(pdraw);
-    this->drawMoon(pdraw);
+    draw1stPass(pdraw);
+    draw2ndPass(pdraw);
+    drawStar(pdraw);
+    drawSun(pdraw);
+    drawMoon(pdraw);
 }
 
 // Address: 0x01b64e10 - 0x01b64e18 (8 bytes)
 rSky* uSky::getResource() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpResource;
+    return mpResource;
 }
 
 // Address: 0x00f9c1e0 - 0x00f9c226 (70 bytes)
@@ -157,7 +157,7 @@ __attribute__((weak)) void uSky::setResource(rSky* pres) {
 // Address: 0x00fa2250 - 0x00fa2257 (7 bytes)
 void uSky::setNorthAxis(uSky::NORTH_AXIS n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNorthAxis = static_cast<u32>(n);
+    mNorthAxis = static_cast<u32>(n);
 }
 
 // Address: 0x01b64e30 - 0x01b64e44 (20 bytes)
@@ -217,10 +217,10 @@ __attribute__((weak)) void uSky::setTime(u32 t) {
 // Address: 0x00fa2280 - 0x00fa22b1 (49 bytes)
 void uSky::setMieScattering(const MtVector3& ms) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMieScattering.x = ms.x;
-    this->mMieScattering.y = ms.y;
-    this->mMieScattering.z = ms.z;
-    this->mMieScattering.pad_ = 0.0f;
+    mMieScattering.x = ms.x;
+    mMieScattering.y = ms.y;
+    mMieScattering.z = ms.z;
+    mMieScattering.pad_ = 0.0f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -229,7 +229,7 @@ void uSky::setMieScattering(const MtVector3& ms) {
 // Address: 0x00fa22d0 - 0x00fa22d9 (9 bytes)
 void uSky::setCloudScattering(f32 cs) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudScattering = cs;
+    mCloudScattering = cs;
 }
 
 // No out-of-line body: no code in the ELF
@@ -238,7 +238,7 @@ void uSky::setCloudScattering(f32 cs) {
 // Address: 0x00fa22c0 - 0x00fa22c9 (9 bytes)
 void uSky::setMieDensity(f32 d) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMieDensity = d;
+    mMieDensity = d;
 }
 
 // No out-of-line body: no code in the ELF
@@ -247,7 +247,7 @@ void uSky::setMieDensity(f32 d) {
 // Address: 0x00fa22e0 - 0x00fa22e9 (9 bytes)
 void uSky::setCloudiness(f32 c) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudiness = c;
+    mCloudiness = c;
 }
 
 // No out-of-line body: no code in the ELF
@@ -256,7 +256,7 @@ void uSky::setCloudiness(f32 c) {
 // Address: 0x00fa22f0 - 0x00fa22f9 (9 bytes)
 void uSky::setCloudEccentricity(f32 c) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudEccentricity = c;
+    mCloudEccentricity = c;
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,7 +265,7 @@ void uSky::setCloudEccentricity(f32 c) {
 // Address: 0x00fa2300 - 0x00fa2309 (9 bytes)
 void uSky::setCloudHeight(f32 h) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudHeight = h;
+    mCloudHeight = h;
 }
 
 // No out-of-line body: no code in the ELF
@@ -274,7 +274,7 @@ void uSky::setCloudHeight(f32 h) {
 // Address: 0x00fa2310 - 0x00fa2319 (9 bytes)
 void uSky::setCloudThickness(f32 t) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCloudThickness = t;
+    mCloudThickness = t;
 }
 
 // No out-of-line body: no code in the ELF
@@ -320,7 +320,7 @@ __attribute__((weak)) MtVector3 uSky::getAmbientColor(f32 h, f32 scale) const {
 // Address: 0x00f9c270 - 0x00f9c277 (7 bytes)
 bool uSky::getUseFog() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseFog;
+    return mUseFog;
 }
 
 // Address: 0x00f9c280 - 0x00f9c350 (208 bytes)
@@ -332,7 +332,7 @@ __attribute__((weak)) void uSky::setUseFog(bool u) {
 // Address: 0x00f9c350 - 0x00f9c357 (7 bytes)
 u32 uSky::getFogUnitLine() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFogUnitLine;
+    return mFogUnitLine;
 }
 
 // Address: 0x00f9c360 - 0x00f9c41c (188 bytes)
@@ -368,7 +368,7 @@ __attribute__((weak)) void uSky::setFogUnitLine(u32 l) {
 // Address: 0x00f9c480 - 0x00f9c488 (8 bytes)
 rStarCatalog* uSky::getStarCatalog() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpStarCatalog;
+    return mpStarCatalog;
 }
 
 // Address: 0x00f9c490 - 0x00f9c4d9 (73 bytes)
@@ -380,16 +380,15 @@ __attribute__((weak)) void uSky::setStarCatalog(rStarCatalog* pres) {
 // Address: 0x00f9c450 - 0x00f9c457 (7 bytes)
 u32 uSky::getStarRandomSeed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStarRandomSeed;
+    return mStarRandomSeed;
 }
 
 // Address: 0x00f9c460 - 0x00f9c474 (20 bytes)
 void uSky::setStarRandomSeed(u32 seed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStarRandomSeed == seed) {
-    } else {
-        this->mStarRandomSeed = seed;
-        this->::uSky::createStar();
+    if (mStarRandomSeed != seed) {
+        mStarRandomSeed = seed;
+        createStar();
     }
 }
 
@@ -432,51 +431,50 @@ __attribute__((weak)) void uSky::createBuffer() {
 // Address: 0x00fa26c0 - 0x00fa270b (75 bytes)
 void uSky::setStarTexture(rTexture* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRes == this->mpStarTexture) {
+    if (pRes == mpStarTexture) {
         return;
     }
-    if (this->mpStarTexture != static_cast<rTexture*>(nullptr)) {
-        this->mpStarTexture->::cResource::release();
-        this->mpStarTexture = static_cast<rTexture*>(nullptr);
+    if (mpStarTexture != nullptr) {
+        mpStarTexture->release();
+        mpStarTexture = nullptr;
     }
-    if (pRes == static_cast<rTexture*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    this->mpStarTexture = pRes;
-    pRes->::cResource::addRef();
+    mpStarTexture = pRes;
+    pRes->addRef();
 }
 
 // Address: 0x00fa2710 - 0x00fa2719 (9 bytes)
 void uSky::setStarIntensity(f32 starIntensity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStarIntensity = starIntensity;
+    mStarIntensity = starIntensity;
 }
 
 // Address: 0x00fa2720 - 0x00fa2729 (9 bytes)
 void uSky::setStarSize(f32 starSize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStarSize = starSize;
+    mStarSize = starSize;
 }
 
 // Address: 0x00fa2730 - 0x00fa2739 (9 bytes)
 void uSky::setStarrySkyIntensity(f32 starrySkyIntensity) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStarrySkyIntensity = starrySkyIntensity;
+    mStarrySkyIntensity = starrySkyIntensity;
 }
 
 // Address: 0x00fa2740 - 0x00fa2749 (9 bytes)
 void uSky::setStarTwinkleAmplitude(f32 starTwinkleAmplitude) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTwinkleAmplitude = starTwinkleAmplitude;
+    mTwinkleAmplitude = starTwinkleAmplitude;
 }
 
 // Address: 0x00fa2750 - 0x00fa2764 (20 bytes)
 void uSky::setStarCount(u32 cnt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStarNum == cnt) {
-    } else {
-        this->mStarNum = cnt;
-        this->::uSky::createStar();
+    if (mStarNum != cnt) {
+        mStarNum = cnt;
+        createStar();
     }
 }
 
@@ -619,16 +617,15 @@ __attribute__((weak)) MtVector3 uSky::getOutScatter(f32 h, const MtVector3& ligh
 // Address: 0x00f9c420 - 0x00f9c427 (7 bytes)
 u32 uSky::getStarNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStarNum;
+    return mStarNum;
 }
 
 // Address: 0x00f9c430 - 0x00f9c444 (20 bytes)
 void uSky::setStarNum(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mStarNum == num) {
-    } else {
-        this->mStarNum = num;
-        this->::uSky::createStar();
+    if (mStarNum != num) {
+        mStarNum = num;
+        createStar();
     }
 }
 
@@ -689,34 +686,34 @@ __attribute__((weak)) MtVector3 uSky::getSunDirforMoon() {
 // Address: 0x01b64eb0 - 0x01b64eb7 (7 bytes)
 u32 uSky::getDivX() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDivX;
+    return mDivX;
 }
 
 // Address: 0x00f9c230 - 0x00f9c244 (20 bytes)
 void uSky::setDivX(u32 d) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDivX == d) {
-    } else {
-        this->mDivX = d;
-        this->::uSky::createBuffer();
+    if (mDivX != d) {
+        mDivX = d;
+        createBuffer();
     }
 }
 
 // Address: 0x01b64ec0 - 0x01b64ec7 (7 bytes)
 u32 uSky::getDivY() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDivY;
+    return mDivY;
 }
 
 // Address: 0x00f9c250 - 0x00f9c264 (20 bytes)
 void uSky::setDivY(u32 d) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mDivY == d) {
-    } else {
-        this->mDivY = d;
-        this->::uSky::createBuffer();
+    if (mDivY != d) {
+        mDivY = d;
+        createBuffer();
     }
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uSky::MyDTI uSky::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uSky::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -760,7 +757,7 @@ const MtDTI& uSkyFog::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN7uSkyFogD0Ev at 0x00f9864e-0x00f9866f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSkyFog::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSkyFog::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSkyFog::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -784,13 +781,13 @@ uSkyFog::~uSkyFog() {
 // Address: 0x00f988d0 - 0x00f988d5 (5 bytes)
 MtUI* uSkyFog::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uFog::createUI(prop);
+    return this->uFog::createUI(prop);
 }
 
 // Address: 0x00f988e0 - 0x00f988e5 (5 bytes)
 void uSkyFog::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uFog::createProperty(s);
+    this->uFog::createProperty(s);
 }
 
 // Address: 0x00f98670 - 0x00f988be (590 bytes)
@@ -798,6 +795,8 @@ __attribute__((weak)) void uSkyFog::setState(cDraw* pdraw) {
     DDON_STUB("uSkyFog::setState")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uSkyFog::MyDTI uSkyFog::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uSkyFog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

@@ -36,7 +36,7 @@ const MtDTI& cNpcCustomSkill::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cNpcCustomSkill::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memAlloc(sz, align, ::cNpcCustomSkill::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cNpcCustomSkill::DTI)->memAlloc(sz, align, cNpcCustomSkill::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cNpcCustomSkill::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cNpcCustomSkill::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cNpcCustomSkill::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -107,6 +107,8 @@ __attribute__((weak)) void cNpcCustomSkill::createProperty(MtPropertyList& s) {
 // No out-of-line body: no code in the ELF
 // u16 cNpcCustomSkill::getCustomSkillLv4();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cNpcCustomSkill::MyDTI cNpcCustomSkill::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rNpcCustomSkill.cpp at 0x006aa230-0x006aa272 (called at rNpcCustomSkill.cpp:41)
 //   in _GLOBAL__sub_I_rNpcCustomSkill.cpp at 0x006aa230-0x006aa272 (called at rNpcCustomSkill.h:34)
@@ -115,7 +117,7 @@ __attribute__((weak)) void cNpcCustomSkill::createProperty(MtPropertyList& s) {
 // Address: 0x006a97e0 - 0x006a9843 (99 bytes)
 MtObject* cNpcCustomSkill::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cNpcCustomSkill;
+    return new (16u) cNpcCustomSkill;
 }
 
 // No out-of-line body: no code in the ELF
@@ -140,7 +142,7 @@ const MtDTI& rNpcCustomSkill::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rNpcCustomSkill::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rNpcCustomSkill::DTI)->memAlloc(sz, align, ::rNpcCustomSkill::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rNpcCustomSkill::DTI)->memAlloc(sz, align, rNpcCustomSkill::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -155,7 +157,7 @@ inline void* rNpcCustomSkill::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rNpcCustomSkillD0Ev at 0x01a9e8d4-0x01a9e8f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rNpcCustomSkill::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rNpcCustomSkill::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rNpcCustomSkill::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -172,34 +174,34 @@ bool rNpcCustomSkill::loadData(MtDataReader& in, cNpcCustomSkill* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mThinkId);
+    nDDOIO::readData(in, pData->mThinkId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkill1);
+    nDDOIO::readData(in, pData->mCustomSkill1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkill2);
+    nDDOIO::readData(in, pData->mCustomSkill2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkill3);
+    nDDOIO::readData(in, pData->mCustomSkill3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkill4);
+    nDDOIO::readData(in, pData->mCustomSkill4);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkillLv1);
+    nDDOIO::readData(in, pData->mCustomSkillLv1);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkillLv2);
+    nDDOIO::readData(in, pData->mCustomSkillLv2);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkillLv3);
+    nDDOIO::readData(in, pData->mCustomSkillLv3);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCustomSkillLv4);
+    nDDOIO::readData(in, pData->mCustomSkillLv4);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNormalSkillBit);
+    nDDOIO::readData(in, pData->mNormalSkillBit);
     return true;
 }
 
@@ -212,8 +214,10 @@ MT_CTSTR rNpcCustomSkill::getExt() const {
 // Address: 0x01a9ea20 - 0x01a9ea26 (6 bytes)
 u32 rNpcCustomSkill::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rNpcCustomSkill::MyDTI rNpcCustomSkill::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rNpcCustomSkill.cpp at 0x006aa272-0x006aa2af (called at rNpcCustomSkill.cpp:549)
@@ -223,7 +227,7 @@ u32 rNpcCustomSkill::getDataVersion() const {
 // Address: 0x006aa0b0 - 0x006aa114 (100 bytes)
 MtObject* rNpcCustomSkill::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rNpcCustomSkill;
+    return new (16u) rNpcCustomSkill;
 }
 
 // Instance at 0x01a9e9d0 - 0x01a9e9e2 (18 bytes) of the generic rTbl2<T>::getData

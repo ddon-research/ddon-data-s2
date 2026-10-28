@@ -22,6 +22,8 @@
 #include "sNetwork.h"
 #include "sNetworkExt.h"
 #include "sPlayerManager.h"
+#include "sSound.h"
+#include "sSoundExt.h"
 #include "sVibration.h"
 #include "../rPawnAIAction/sVibrationExt.h"
 #include "uDDOModel.h"
@@ -45,7 +47,7 @@ const MtDTI& sEventManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sEventManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sEventManager::DTI);
+    return MtMemoryAllocator::getAllocator(sEventManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +56,7 @@ inline MtAllocator* sEventManager::getAllocator() {
 // Address: 0x0077bc50 - 0x0077bc90 (64 bytes)
 void* sEventManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEventManager::getAllocator()->memAlloc(sz, align, ::sEventManager::DTI.::MtDTI::getID());
+    return sEventManager::getAllocator()->memAlloc(sz, align, sEventManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,7 +71,7 @@ void* sEventManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEventManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEventManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEventManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,12 +110,12 @@ __attribute__((weak)) void sEventManager::move() {
 // Address: 0x0077d600 - 0x0077d63b (59 bytes)
 void sEventManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sEventManager::clear();
-    this->mLastPlayEventNo = static_cast<s32>(-1);
-    this->mIsSendBit = false;
-    this->mFinishBit = static_cast<u32>(0);
-    this->mReadyBit = static_cast<u32>(0);
-    this->mCancelBit = static_cast<u32>(0);
+    clear();
+    mLastPlayEventNo = -1;
+    mIsSendBit = false;
+    mFinishBit = 0;
+    mReadyBit = 0;
+    mCancelBit = 0;
 }
 
 // Address: 0x0077d640 - 0x0077daa4 (1124 bytes)
@@ -141,28 +143,28 @@ __attribute__((weak)) void sEventManager::createProperty(MtPropertyList& s) {
 // Address: 0x0077c490 - 0x0077c495 (5 bytes)
 MtUI* sEventManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x0077dae0 - 0x0077db7d (157 bytes)
 void sEventManager::loadCmnResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
-        this->mprEventParam->::cResource::release();
-        this->mprEventParam = static_cast<rEventParam*>(nullptr);
+    if (mprEventParam != nullptr) {
+        mprEventParam->release();
+        mprEventParam = nullptr;
     }
-    this->mprEventParam = static_cast<rEventParam*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(::rEventParam::DTI, "event\\event_list", static_cast<u32>(1), false));
-    if (this->mprVib != static_cast<rVibration*>(nullptr)) {
-        this->mprVib->::cResource::release();
-        this->mprVib = static_cast<rVibration*>(nullptr);
-        rVibration* pVib = static_cast<rVibration*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_EVENT_VIB", static_cast<u32>(1), false));
-        if (pVib != static_cast<rVibration*>(nullptr)) {
-            this->mprVib = pVib;
+    mprEventParam = static_cast<rEventParam*>(sArchiveManager::getInstance()->createRes(rEventParam::DTI, "event\\event_list", 1u, false));
+    if (mprVib != nullptr) {
+        mprVib->release();
+        mprVib = nullptr;
+        rVibration* pVib = static_cast<rVibration*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_EVENT_VIB", 1u, false));
+        if (pVib != nullptr) {
+            mprVib = pVib;
         }
     } else {
-        rVibration* pVib = static_cast<rVibration*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_EVENT_VIB", static_cast<u32>(1), false));
-        if (pVib != static_cast<rVibration*>(nullptr)) {
-            this->mprVib = pVib;
+        rVibration* pVib = static_cast<rVibration*>(sArchiveManager::getInstance()->createRes("game_common", "RES_ID_EVENT_VIB", 1u, false));
+        if (pVib != nullptr) {
+            mprVib = pVib;
         }
     }
 }
@@ -170,15 +172,15 @@ void sEventManager::loadCmnResource() {
 // Address: 0x0077db80 - 0x0077dbc8 (72 bytes)
 void sEventManager::releaseCmnResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
-        this->mprEventParam->::cResource::release();
-        this->mprEventParam = static_cast<rEventParam*>(nullptr);
+    if (mprEventParam != nullptr) {
+        mprEventParam->release();
+        mprEventParam = nullptr;
     }
-    if (this->mprVib == static_cast<rVibration*>(nullptr)) {
+    if (mprVib == nullptr) {
         return;
     }
-    this->mprVib->::cResource::release();
-    this->mprVib = static_cast<rVibration*>(nullptr);
+    mprVib->release();
+    mprVib = nullptr;
 }
 
 // Address: 0x0077dc40 - 0x0077dcd6 (150 bytes)
@@ -189,21 +191,21 @@ s32 sEventManager::getEventID(s32 stage, s32 no) {
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x77dcc4; no location-less local in scope fits
     unsigned int v2_10;
-    if (this->mprEventParam == static_cast<rEventParam*>(nullptr)) {
-        v2_10 = static_cast<unsigned int>(4294967295);
+    if (mprEventParam == nullptr) {
+        v2_10 = 0xFFFFFFFF;
     } else {
-        if (this->mprEventParam->getDataNum() == static_cast<u32>(0)) {
-            v2_10 = static_cast<unsigned int>(4294967295);
+        if (mprEventParam->getDataNum() == 0) {
+            v2_10 = 0xFFFFFFFF;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_3 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x77dc8c, used 3 times; no DWARF local holds it
-                cEventParam* t0 = this->mprEventParam->getData(i0_3);
-                if (t0 != static_cast<cEventParam*>(nullptr)) {
+                cEventParam* t0 = mprEventParam->getData(i0_3);
+                if (t0 != nullptr) {
                     if (t0->mStage == static_cast<unsigned short>(stage)) {
                         if (t0->mEvNo != static_cast<unsigned short>(no)) {
-                            if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
-                                i0_3 += static_cast<unsigned int>(1);
+                            if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
+                                i0_3 += 1u;
                             } else {
                                 break;
                             }
@@ -212,21 +214,21 @@ s32 sEventManager::getEventID(s32 stage, s32 no) {
                             return static_cast<s32>(v2_10);
                         }
                     } else {
-                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
-                            i0_3 += static_cast<unsigned int>(1);
+                        if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
+                            i0_3 += 1u;
                         } else {
                             break;
                         }
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < mprEventParam->getDataNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            v2_10 = static_cast<unsigned int>(4294967295);
+            v2_10 = 0xFFFFFFFF;
         }
     }
     return static_cast<s32>(v2_10);
@@ -236,25 +238,25 @@ s32 sEventManager::getEventID(s32 stage, s32 no) {
 void sEventManager::reqPlay(s32 no) {
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if (no > static_cast<s32>(-1)) {
-        if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
-            cEventParam* param = this->mprEventParam->getData(static_cast<u32>(no));
-            if (param != static_cast<cEventParam*>(nullptr)) {
+    if (no > -1) {
+        if (mprEventParam != nullptr) {
+            cEventParam* param = mprEventParam->getData(static_cast<u32>(no));
+            if (param != nullptr) {
                 // inferred: a temporary for the value the load at 0x77ea4c read, used 3 times; no DWARF local holds it
                 u16 t0 = param->mType;
-                if (t0 == static_cast<u16>(1)) {
-                    this->mRno = (this->mRno & static_cast<u32>(4294967040)) | static_cast<u32>(1);
-                    this->mReqEventNo = static_cast<s32>(-1);
-                    this->mEventNo = no;
-                    this->mpParam = param;
-                    this->mRno = static_cast<u32>(1);
+                if (t0 == 1) {
+                    this->mRno = (this->mRno & 0xFFFFFF00u) | 1u;
+                    mReqEventNo = -1;
+                    mEventNo = no;
+                    mpParam = param;
+                    this->mRno = 1;
                 } else {
-                    if (static_cast<unsigned char>(this->mRno) == static_cast<unsigned char>(0)) {
-                        this->mRno = static_cast<unsigned int>(((static_cast<unsigned long>(t0 == static_cast<u16>(2)) * static_cast<unsigned long>(5)) + static_cast<unsigned long>(1)) | static_cast<unsigned long>(this->mRno & static_cast<u32>(4294967040)));
-                        this->mReqEventNo = static_cast<s32>(-1);
-                        this->mEventNo = no;
-                        this->mpParam = param;
-                        this->mRno = static_cast<unsigned char>((static_cast<unsigned long>(t0 == static_cast<u16>(2)) * static_cast<unsigned long>(5)) + static_cast<unsigned long>(1));
+                    if (static_cast<unsigned char>(this->mRno) == 0) {
+                        this->mRno = static_cast<unsigned int>(((static_cast<unsigned long>(t0 == 2) * 5) + 1ul) | static_cast<unsigned long>(this->mRno & 0xFFFFFF00u));
+                        mReqEventNo = -1;
+                        mEventNo = no;
+                        mpParam = param;
+                        this->mRno = static_cast<unsigned char>((static_cast<unsigned long>(t0 == 2) * 5) + 1ul);
                     } else {
                         this->mRno = static_cast<unsigned char>(this->mRno);
                     }
@@ -267,13 +269,13 @@ void sEventManager::reqPlay(s32 no) {
 // Address: 0x0077dbd0 - 0x0077dc35 (101 bytes)
 void sEventManager::getEventStage(s32 eventID, s32& stage, s32& no) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mprEventParam == static_cast<rEventParam*>(nullptr)) {
+    if (mprEventParam == nullptr) {
         return;
     }
-    if (eventID > static_cast<s32>(-1)) {
-        if (eventID < static_cast<int>(this->mprEventParam->getDataNum())) {
-            cEventParam* param = this->mprEventParam->getData(static_cast<u32>(eventID));
-            if (param != static_cast<cEventParam*>(nullptr)) {
+    if (eventID > -1) {
+        if (eventID < static_cast<int>(mprEventParam->getDataNum())) {
+            cEventParam* param = mprEventParam->getData(static_cast<u32>(eventID));
+            if (param != nullptr) {
                 stage = param->mStage;
                 no = param->mEvNo;
             }
@@ -421,14 +423,14 @@ __attribute__((weak)) bool sEventManager::finishEvent() {
 // Address: 0x0077f700 - 0x0077f749 (73 bytes)
 cEventParam* sEventManager::getEventParam(s32 event_id) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (event_id > static_cast<s32>(-1)) {
-        if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
-            if (static_cast<unsigned int>(event_id) < this->mprEventParam->getDataNum()) {
-                return this->mprEventParam->getData(static_cast<u32>(event_id));
+    if (event_id > -1) {
+        if (mprEventParam != nullptr) {
+            if (static_cast<unsigned int>(event_id) < mprEventParam->getDataNum()) {
+                return mprEventParam->getData(static_cast<u32>(event_id));
             }
         }
     }
-    return static_cast<cEventParam*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (246 bytes)
@@ -459,59 +461,59 @@ __attribute__((weak)) bool sEventManager::isSyncEventAll(sEventManager::SYNC_FLA
 void sEventManager::setSyncReadyEvent() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x77e1f8, used twice; no DWARF local holds it
-    s32 t0 = ::sGame::getInstance()->::sGame::getSelfMemberIndex();
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() != false) {
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clrNotifySync(this->mFinishBit, t0);
-        if (t0 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-            this->mIsSendBit = true;
+    s32 t0 = sGame::getInstance()->getSelfMemberIndex();
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->isLogin()) {
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->clrNotifySync(mFinishBit, t0);
+        if (t0 == sGame::getInstance()->getSelfMemberIndex()) {
+            mIsSendBit = true;
             // inferred: a temporary for the result of the call at 0x77e243, used twice; no DWARF local holds it
-            s32 t1 = ::sGame::getInstance()->::sGame::getSelfMemberIndex();
-            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() != false) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::setNotifySync(this->mReadyBit, t1);
-                if (this->mpParam != static_cast<cEventParam*>(nullptr)) {
-                    if ((this->mpParam->mFlag & static_cast<u16>(8)) == static_cast<u16>(0)) {
-                        if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                            this->mIsSendBit = true;
+            s32 t1 = sGame::getInstance()->getSelfMemberIndex();
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->isLogin()) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->setNotifySync(mReadyBit, t1);
+                if (mpParam != nullptr) {
+                    if ((mpParam->mFlag & 8) == 0) {
+                        if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                            mIsSendBit = true;
                         }
                     }
                 } else {
-                    if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                        this->mIsSendBit = true;
+                    if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                        mIsSendBit = true;
                     }
                 }
             }
         } else {
             // inferred: a temporary for the result of the call at 0x77e243, used twice; no DWARF local holds it
-            s32 t1 = ::sGame::getInstance()->::sGame::getSelfMemberIndex();
-            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() != false) {
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::setNotifySync(this->mReadyBit, t1);
-                if (this->mpParam != static_cast<cEventParam*>(nullptr)) {
-                    if ((this->mpParam->mFlag & static_cast<u16>(8)) == static_cast<u16>(0)) {
-                        if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                            this->mIsSendBit = true;
+            s32 t1 = sGame::getInstance()->getSelfMemberIndex();
+            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->isLogin()) {
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->setNotifySync(mReadyBit, t1);
+                if (mpParam != nullptr) {
+                    if ((mpParam->mFlag & 8) == 0) {
+                        if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                            mIsSendBit = true;
                         }
                     }
                 } else {
-                    if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                        this->mIsSendBit = true;
+                    if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                        mIsSendBit = true;
                     }
                 }
             }
         }
     } else {
         // inferred: a temporary for the result of the call at 0x77e243, used twice; no DWARF local holds it
-        s32 t1 = ::sGame::getInstance()->::sGame::getSelfMemberIndex();
-        if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() != false) {
-            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::setNotifySync(this->mReadyBit, t1);
-            if (this->mpParam != static_cast<cEventParam*>(nullptr)) {
-                if ((this->mpParam->mFlag & static_cast<u16>(8)) == static_cast<u16>(0)) {
-                    if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                        this->mIsSendBit = true;
+        s32 t1 = sGame::getInstance()->getSelfMemberIndex();
+        if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getGameServer()->isLogin()) {
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->setNotifySync(mReadyBit, t1);
+            if (mpParam != nullptr) {
+                if ((mpParam->mFlag & 8) == 0) {
+                    if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                        mIsSendBit = true;
                     }
                 }
             } else {
-                if (t1 == ::sGame::getInstance()->::sGame::getSelfMemberIndex()) {
-                    this->mIsSendBit = true;
+                if (t1 == sGame::getInstance()->getSelfMemberIndex()) {
+                    mIsSendBit = true;
                 }
             }
         }
@@ -521,7 +523,7 @@ void sEventManager::setSyncReadyEvent() {
 // Address: 0x0077e2a0 - 0x0077e2a7 (7 bytes)
 bool sEventManager::isSyncReadyEventAll() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sEventManager::isSyncEventAll(static_cast<sEventManager::SYNC_FLAG>(0));
+    return isSyncEventAll(SYNC_FLAG_READY);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)
@@ -532,17 +534,17 @@ bool sEventManager::isSyncReadyEventAll() {
 bool sEventManager::isSyncFinishEventAll() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x98 from sEventManager*
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(152))) != static_cast<unsigned char>(0)) {
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 152)) != 0) {
         return false;
     } else {
-        return this->::sEventManager::isSyncEventAll(static_cast<sEventManager::SYNC_FLAG>(2));
+        return isSyncEventAll(SYNC_FLAG_FINISH);
     }
 }
 
 // Address: 0x0077e2b0 - 0x0077e2bb (11 bytes)
 void sEventManager::clearSyncFinishEvent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFinishBit = static_cast<u32>(0);
+    mFinishBit = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -729,23 +731,22 @@ void sEventManager::setEfcHandle(u32 id, cEfcHandle* pHandle, uDDOModel* pModel)
     // DWARF local not rendered: s32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    sEventManager::EvtEPV* p0 = &this->mEvtEPV[0];
+    EvtEPV* p0 = &mEvtEPV[0];
     // inferred: the counter this loop steps; no location-less local in scope fits
-    int i1 = static_cast<int>(0);
-    if (id != static_cast<u32>(0)) {
+    int i1 = 0;
+    if (id != 0) {
         do {
-            if (p0->mEfcId != static_cast<u32>(0)) {
-            } else {
-                if (i1 > static_cast<int>(-1)) {
-                    this->mEvtEPV[i1].mEfcId = id;
-                    this->mEvtEPV[i1].mpEfcHandle = pHandle;
-                    this->mEvtEPV[i1].mpEfcParent = pModel;
+            if (p0->mEfcId == 0) {
+                if (i1 > -1) {
+                    mEvtEPV[i1].mEfcId = id;
+                    mEvtEPV[i1].mpEfcHandle = pHandle;
+                    mEvtEPV[i1].mpEfcParent = pModel;
                 }
                 return;
             }
             p0 += static_cast<int>(1);
-            i1 += static_cast<int>(1);
-        } while (i1 <= static_cast<int>(31));
+            i1 += 1;
+        } while (i1 <= 31);
     }
 }
 
@@ -753,36 +754,36 @@ void sEventManager::setEfcHandle(u32 id, cEfcHandle* pHandle, uDDOModel* pModel)
 s32 sEventManager::getEfcHandleIndex(u32 id) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x77fee0, 0x77fef6)) is the counter this loop steps (DWARF's stale constant 0)
-    s32 i = static_cast<s32>(0);
+    s32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    sEventManager::EvtEPV* p2 = &this->mEvtEPV[0];
+    EvtEPV* p2 = &mEvtEPV[0];
     do {
         if (p2->mEfcId == id) {
             return i;
         }
-        i += static_cast<s32>(1);
+        i += 1;
         p2 += static_cast<int>(1);
-    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(31));
-    return static_cast<s32>(-1);
+    } while ((i + 0) <= 31);
+    return -1;
 }
 
 // Address: 0x0077c1e0 - 0x0077c210 (48 bytes)
 void sEventManager::resetEfcHandle(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(index) <= static_cast<unsigned int>(31)) {
-        this->mEvtEPV[index].mEfcId = static_cast<u32>(0);
-        this->mEvtEPV[index].mpEfcParent = static_cast<uDDOModel*>(nullptr);
-        this->mEvtEPV[index].mpEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    if (static_cast<unsigned int>(index) <= 31) {
+        mEvtEPV[index].mEfcId = 0;
+        mEvtEPV[index].mpEfcParent = nullptr;
+        mEvtEPV[index].mpEfcHandle = nullptr;
     }
 }
 
 // Address: 0x0077ff00 - 0x0077ff17 (23 bytes)
 cEfcHandle* sEventManager::getEfcHandle(s32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<unsigned int>(index) <= static_cast<unsigned int>(31)) {
-        return this->mEvtEPV[index].mpEfcHandle;
+    if (static_cast<unsigned int>(index) <= 31) {
+        return mEvtEPV[index].mpEfcHandle;
     } else {
-        return static_cast<cEfcHandle*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -815,32 +816,40 @@ __attribute__((weak)) void sEventManager::setEventSoundRequest(u32 eventId) {
 // Address: 0x0077dab0 - 0x0077dadc (44 bytes)
 void sEventManager::releaseEventSoundRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprSndReq == static_cast<rSoundRequest*>(nullptr)) {
+    if (mprSndReq == nullptr) {
         return;
     }
-    this->mprSndReq->::cResource::release();
-    this->mprSndReq = static_cast<rSoundRequest*>(nullptr);
+    mprSndReq->release();
+    mprSndReq = nullptr;
 }
 
 // Address: 0x0077f8b0 - 0x0077f8ff (79 bytes)
-__attribute__((weak)) void sEventManager::callEventSe(u32 se, uCoord* pModel, s32 jointNo) {
-    DDON_STUB("sEventManager::callEventSe")
-    /* stub */
+void sEventManager::callEventSe(u32 se, uCoord* pModel, s32 jointNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: uCoord* used as uintptr, which no DWARF type of the place gives; read with caution
+    if (mprSndReq == nullptr) {
+        return;
+    }
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(mprSndReq, se, reinterpret_cast<uintptr>(pModel), pModel, jointNo, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x0077f900 - 0x0077f94f (79 bytes)
-__attribute__((weak)) void sEventManager::callEventSe(u32 se, MtVector3& pos) {
-    DDON_STUB("sEventManager::callEventSe")
-    /* stub */
+void sEventManager::callEventSe(u32 se, MtVector3& pos) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: an integer and a pointer of one 8-byte word converted: sEventManager* used as uintptr, which no DWARF type of the place gives; read with caution
+    if (mprSndReq == nullptr) {
+        return;
+    }
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(mprSndReq, se, reinterpret_cast<uintptr>(sEventManager::getInstance()), pos, 0u, static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
 }
 
 // Address: 0x0077f950 - 0x0077f971 (33 bytes)
 void sEventManager::reqEventVib(u32 vib) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprVib == static_cast<rVibration*>(nullptr)) {
+    if (mprVib == nullptr) {
         return;
     }
-    static_cast<sVibrationExt*>(::sVibration::getInstance())->::sVibrationExt::reqVibration(vib, static_cast<u32>(255), this->mprVib);
+    static_cast<sVibrationExt*>(sVibration::getInstance())->reqVibration(vib, 255u, mprVib);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -874,10 +883,10 @@ void sEventManager::reqEventVib(u32 vib) {
 // Address: 0x0077fb60 - 0x0077fb7f (31 bytes)
 void sEventManager::callStartSubSdl(u32 sdl, bool isLoop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (sdl <= static_cast<u32>(2)) {
-        if (this->mpSchdlFSMSub[sdl] != static_cast<uScheduler*>(nullptr)) {
-            this->mpSchdlFSMSub[sdl]->mLoop = isLoop;
-            this->mpSchdlFSMSub[sdl]->::uScheduler::setPause(false);
+    if (sdl <= 2u) {
+        if (mpSchdlFSMSub[sdl] != nullptr) {
+            mpSchdlFSMSub[sdl]->mLoop = isLoop;
+            mpSchdlFSMSub[sdl]->uScheduler::setPause(false);
         }
     }
 }
@@ -885,10 +894,10 @@ void sEventManager::callStartSubSdl(u32 sdl, bool isLoop) {
 // Address: 0x0077fb80 - 0x0077fbb9 (57 bytes)
 void sEventManager::killSubSdl(u32 sdl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (sdl <= static_cast<u32>(2)) {
-        if (this->mpSchdlFSMSub[sdl] != static_cast<uScheduler*>(nullptr)) {
-            this->mpSchdlFSMSub[sdl]->kill();
-            this->mpSchdlFSMSub[sdl] = static_cast<uScheduler*>(nullptr);
+    if (sdl <= 2u) {
+        if (mpSchdlFSMSub[sdl] != nullptr) {
+            mpSchdlFSMSub[sdl]->kill();
+            mpSchdlFSMSub[sdl] = nullptr;
         }
     }
 }
@@ -919,15 +928,15 @@ __attribute__((weak)) void sEventManager::setEventEpvEx() {
 void sEventManager::releaseEventEpvEx() {
     // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprEfcPvdEx[0] != static_cast<rEffectProvider*>(nullptr)) {
-        this->mprEfcPvdEx[0]->::cResource::release();
-        this->mprEfcPvdEx[0] = static_cast<rEffectProvider*>(nullptr);
+    if (mprEfcPvdEx[0] != nullptr) {
+        mprEfcPvdEx[0]->cResource::release();
+        mprEfcPvdEx[0] = nullptr;
     }
-    if (this->mprEfcPvdEx[1] == static_cast<rEffectProvider*>(nullptr)) {
+    if (mprEfcPvdEx[1] == nullptr) {
         return;
     }
-    this->mprEfcPvdEx[1]->::cResource::release();
-    this->mprEfcPvdEx[1] = static_cast<rEffectProvider*>(nullptr);
+    mprEfcPvdEx[1]->cResource::release();
+    mprEfcPvdEx[1] = nullptr;
 }
 
 // Address: 0x0077fcc0 - 0x0077fde0 (288 bytes)
@@ -943,33 +952,33 @@ __attribute__((weak)) void sEventManager::setEventCamera(u32 eventId) {
 // Address: 0x0077c420 - 0x0077c44c (44 bytes)
 void sEventManager::releaseEventCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCamPrm == static_cast<rCameraParamList*>(nullptr)) {
+    if (mprCamPrm == nullptr) {
         return;
     }
-    this->mprCamPrm->::cResource::release();
-    this->mprCamPrm = static_cast<rCameraParamList*>(nullptr);
+    mprCamPrm->release();
+    mprCamPrm = nullptr;
 }
 
 // Address: 0x0077fde0 - 0x0077fe30 (80 bytes)
 void sEventManager::requestEventCamera(u32 no, const uDDOModel* pObj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCamPrm == static_cast<rCameraParamList*>(nullptr)) {
+    if (mprCamPrm == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x77fdfd read, used once; no DWARF local holds it
-    sCamera* t0 = ::sCamera::getInstance();
+    sCamera* t0 = sCamera::getInstance();
     // inferred: a temporary for the result of the call at 0x77fe00, used once; no DWARF local holds it
-    const cCamExParam* t1 = this->mprCamPrm->::rCameraParamList::getParam(no);
-    static_cast<sCameraExt*>(t0)->::sCameraExt::requestExGameCamera(t1, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pObj, false);
+    const cCamExParam* t1 = mprCamPrm->getParam(no);
+    static_cast<sCameraExt*>(t0)->requestExGameCamera(t1, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pObj, false);
 }
 
 // Address: 0x0077fe30 - 0x0077fe44 (20 bytes)
 const cCamExParam* sEventManager::getEventCameraParam(u32 no) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprCamPrm != static_cast<rCameraParamList*>(nullptr)) {
-        return this->mprCamPrm->::rCameraParamList::getParam(no);
+    if (mprCamPrm != nullptr) {
+        return mprCamPrm->getParam(no);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -981,6 +990,11 @@ const cCamExParam* sEventManager::getEventCameraParam(u32 no) const {
 
 // No out-of-line body: no code in the ELF
 // void sEventManager::resetOmAQCScaleForFSMEvent();
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sEventManager* sEventManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEventManager::MyDTI sEventManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sEventManager.cpp at 0x0078016f-0x007801ac (called at sEventManager.cpp:84)
@@ -1007,7 +1021,7 @@ const MtDTI& sEventManager::cNpcId::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sEventManager::cNpcId::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sEventManager::cNpcId::DTI);
+    return MtMemoryAllocator::getAllocator(sEventManager::cNpcId::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1016,7 +1030,7 @@ inline MtAllocator* sEventManager::cNpcId::getAllocator() {
 // Address: 0x0077bd50 - 0x0077bd90 (64 bytes)
 void* sEventManager::cNpcId::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEventManager::cNpcId::getAllocator()->memAlloc(sz, align, ::sEventManager::cNpcId::DTI.::MtDTI::getID());
+    return sEventManager::cNpcId::getAllocator()->memAlloc(sz, align, sEventManager::cNpcId::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1031,7 +1045,7 @@ void* sEventManager::cNpcId::operator new(size_t sz, u32 align) {
 // Address: 0x0077bdc0 - 0x0077bdea (42 bytes)
 __attribute__((weak)) void sEventManager::cNpcId::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sEventManager::cNpcId::getAllocator()->memFree(p_addr);
+    sEventManager::cNpcId::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1062,8 +1076,10 @@ __attribute__((weak)) void sEventManager::cNpcId::createProperty(MtPropertyList&
 // Address: 0x01982870 - 0x01982875 (5 bytes)
 MtUI* sEventManager::cNpcId::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEventManager::cNpcId::MyDTI sEventManager::cNpcId::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sEventManager.cpp at 0x007801ac-0x007801e9 (called at sEventManager.cpp:85)
@@ -1073,7 +1089,7 @@ MtUI* sEventManager::cNpcId::createUI(MtProperty& prop) {
 // Address: 0x0077bd00 - 0x0077bd47 (71 bytes)
 MtObject* sEventManager::cNpcId::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sEventManager::cNpcId;
+    return new (16u) sEventManager::cNpcId;
 }
 
 // Instance at 0x01ac4050 - 0x01ac4055 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

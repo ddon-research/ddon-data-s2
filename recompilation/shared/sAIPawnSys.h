@@ -150,12 +150,12 @@ inline sAIPawnSys* sAIPawnSys::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline void sAIPawnSys::clearPawnOrder() {
-    this->mReqPawnOrder.elems[0] = static_cast<unsigned int>(0);
-    this->mReqPawnOrder.elems[1] = static_cast<unsigned int>(0);
-    this->mReqPawnOrder.elems[2] = static_cast<unsigned int>(0);
+    this->mReqPawnOrder.elems[0] = 0;
+    this->mReqPawnOrder.elems[1] = 0;
+    this->mReqPawnOrder.elems[2] = 0;
     this->mAIPawnOrderTargetTime = 0.0f;
     this->mAIPawnReqPartyInDeployLimit = 0.0f;
-    this->mpPawnOrderTarget = static_cast<uDDOModel*>(nullptr);
-    this->mpPawnOwnerTargetOld = static_cast<uDDOModel*>(nullptr);
-    this->mpPawnOwnerTarget = static_cast<uDDOModel*>(nullptr);
+    this->mpPawnOrderTarget = nullptr;
+    this->mpPawnOwnerTargetOld = nullptr;
+    this->mpPawnOwnerTarget = nullptr;
 }

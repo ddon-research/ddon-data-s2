@@ -24,6 +24,7 @@ class cZoneLayout;
 namespace nCollisionUtil { struct LoadBuffer; }
 namespace nZone { class cContentsPool; }
 namespace nZone { class cLayoutElement; }
+class uSoundGenerator;
 
 // Declarations
 class rZone;
@@ -202,6 +203,8 @@ public:
 public:
     class cGroupManager : public MtObject
     {
+        // inferred: uSoundGenerator::cGeneratorGroupManager::getPlayInfomation names rZone::cGroupManager::mGroupID, through its enclosing class uSoundGenerator
+        friend class uSoundGenerator;
     public:
         class MyDTI;
     public:

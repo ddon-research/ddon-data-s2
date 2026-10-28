@@ -37,7 +37,7 @@ const MtDTI& rGeometry2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK10rGeometry25MyDTI11newInstanceEv at 0x0121d120-0x0121d14d, code DWARF attributes to no inlined copy; sz is the class's size (136), align the allocation's other whole constant (16)
 inline void* rGeometry2::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rGeometry2::DTI)->memAlloc(sz, align, ::rGeometry2::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rGeometry2::DTI)->memAlloc(sz, align, rGeometry2::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rGeometry2::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rGeometry2D0Ev at 0x0121d286-0x0121d2a7, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGeometry2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGeometry2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGeometry2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,17 +71,17 @@ inline void rGeometry2::operator delete(void* p_addr) {
 // Also emitted as: _ZN10rGeometry2D0Ev at 0x0121d250
 rGeometry2::~rGeometry2() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry == static_cast<rGeometry2::cGeometryArray*>(nullptr)) {
+    if (mpGeometry == nullptr) {
         return;
     }
-    delete this->mpGeometry;
-    this->mpGeometry = static_cast<rGeometry2::cGeometryArray*>(nullptr);
+    delete mpGeometry;
+    mpGeometry = nullptr;
 }
 
 // Address: 0x0121d2b0 - 0x0121d2b5 (5 bytes)
 MtUI* rGeometry2::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x0121d2c0 - 0x0121d597 (727 bytes)
@@ -93,25 +93,25 @@ __attribute__((weak)) void rGeometry2::createProperty(MtPropertyList& s) {
 // Address: 0x0121d5a0 - 0x0121d5c7 (39 bytes)
 void rGeometry2::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry == static_cast<rGeometry2::cGeometryArray*>(nullptr)) {
+    if (mpGeometry == nullptr) {
         return;
     }
-    delete this->mpGeometry;
-    this->mpGeometry = static_cast<rGeometry2::cGeometryArray*>(nullptr);
+    delete mpGeometry;
+    mpGeometry = nullptr;
 }
 
 // Address: 0x0121d5d0 - 0x0121d69d (205 bytes)
 bool rGeometry2::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->clear();
-    this->mMagic = static_cast<u32>(0);
-    this->mVersion = static_cast<u32>(0);
-    in.read(static_cast<void*>(&this->mMagic), static_cast<u32>(4));
-    in.read(static_cast<void*>(&this->mVersion), static_cast<u32>(4));
-    if (this->mMagic == static_cast<u32>(846161255)) {
-        if (this->mVersion == static_cast<u32>(201032100)) {
-            MtSerializer sz(static_cast<s32>(65536));
-            return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    clear();
+    mMagic = 0;
+    mVersion = 0;
+    in.read(static_cast<void*>(&mMagic), 4u);
+    in.read(static_cast<void*>(&mVersion), 4u);
+    if (mMagic == 0x326F6567) {
+        if (mVersion == 0xBFB81A4) {
+            MtSerializer sz(65536);
+            return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
         }
     }
     return false;
@@ -120,13 +120,13 @@ bool rGeometry2::load(MtStream& in) {
 // Address: 0x0121d6a0 - 0x0121d763 (195 bytes)
 bool rGeometry2::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry != static_cast<rGeometry2::cGeometryArray*>(nullptr)) {
-        this->mMagic = static_cast<u32>(846161255);
-        this->mVersion = static_cast<u32>(201032100);
-        out.write(static_cast<const void*>(&this->mMagic), static_cast<u32>(4));
-        out.write(static_cast<const void*>(&this->mVersion), static_cast<u32>(4));
-        MtSerializer sz(static_cast<s32>(65536));
-        return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+    if (mpGeometry != nullptr) {
+        mMagic = 0x326F6567;
+        mVersion = 0xBFB81A4;
+        out.write(static_cast<const void*>(&mMagic), 4u);
+        out.write(static_cast<const void*>(&mVersion), 4u);
+        MtSerializer sz(65536);
+        return sz.MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
     } else {
         return false;
     }
@@ -141,7 +141,7 @@ MT_CTSTR rGeometry2::getExt() const {
 // Address: 0x0121d780 - 0x0121d785 (5 bytes)
 const rGeometry2::cGeometryArray* rGeometry2::getGeometryArray() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpGeometry;
+    return mpGeometry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,17 +150,17 @@ const rGeometry2::cGeometryArray* rGeometry2::getGeometryArray() const {
 // Address: 0x0121d7a0 - 0x0121d7af (15 bytes)
 u32 rGeometry2::getGeometryNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGeometry != static_cast<rGeometry2::cGeometryArray*>(nullptr)) {
-        return this->mpGeometry->::nCollision::cCollisionNode::mGeometryArray.::MtArray::mLength;
+    if (mpGeometry != nullptr) {
+        return mpGeometry->mGeometryArray.mLength;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x0121d7b0 - 0x0121d7bc (12 bytes)
 bool rGeometry2::isIncludeResource() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpParentResource != static_cast<rGeometry2Group*>(nullptr);
+    return mpParentResource != nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,8 +169,10 @@ bool rGeometry2::isIncludeResource() const {
 // Address: 0x0121d7d0 - 0x0121d7d8 (8 bytes)
 void rGeometry2::setParentResource(rGeometry2Group* pRGeometryGroup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpParentResource = pRGeometryGroup;
+    mpParentResource = pRGeometryGroup;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGeometry2::MyDTI rGeometry2::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGeometry2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -178,7 +180,7 @@ void rGeometry2::setParentResource(rGeometry2Group* pRGeometryGroup) {
 // Address: 0x0121d120 - 0x0121d188 (104 bytes)
 MtObject* rGeometry2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rGeometry2;
+    return new (16u) rGeometry2;
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,7 +216,7 @@ const MtDTI& rGeometry2::cGeometryArray::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rGeometry214cGeometryArrayD0Ev at 0x0121bf76-0x0121bf97, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGeometry2::cGeometryArray::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGeometry2::cGeometryArray::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGeometry2::cGeometryArray::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -233,17 +235,17 @@ inline void rGeometry2::cGeometryArray::operator delete(void* p_addr) {
 // Also emitted as: _ZN10rGeometry214cGeometryArrayD0Ev at 0x0121bf40
 rGeometry2::cGeometryArray::~cGeometryArray() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAddonObject == static_cast<MtObject*>(nullptr)) {
+    if (mpAddonObject == nullptr) {
         return;
     }
-    delete this->mpAddonObject;
-    this->mpAddonObject = static_cast<MtObject*>(nullptr);
+    delete mpAddonObject;
+    mpAddonObject = nullptr;
 }
 
 // Address: 0x0121bfa0 - 0x0121bfa5 (5 bytes)
 MtUI* rGeometry2::cGeometryArray::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0121bfb0 - 0x0121c6e7 (1847 bytes)
@@ -290,7 +292,7 @@ __attribute__((weak)) void rGeometry2::cGeometryArray::move() {
 // Address: 0x0121cd50 - 0x0121cd55 (5 bytes)
 bool rGeometry2::cGeometryArray::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::nCollision::cObjectBase::isActive();
+    return this->nCollision::cObjectBase::isActive();
 }
 
 // Address: 0x0121cd60 - 0x0121cdc2 (98 bytes)
@@ -298,22 +300,21 @@ void rGeometry2::cGeometryArray::setActive(bool FlgSetActive) {
     // DWARF local not rendered: const u32 GeometryNum;
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cGeometry* pNowGeometry;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from rGeometry2::cGeometryArray*
-    if (this->isActive() == false) {
-        if ((FlgSetActive == false) == false) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (!isActive()) {
+        if (!!FlgSetActive) {
             // inferred: the value the loop at 0x121cd90 carries; no location-less local in scope fits
-            unsigned int v0_10 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32));
-            if (v0_10 != static_cast<unsigned int>(0)) {
+            u32 v0_10 = mGeometryArray.mLength;
+            if (v0_10 != 0) {
                 // inferred: the counter this loop steps; no location-less local in scope fits
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                for (unsigned int i0_3 = 0;;) {
                     // inferred: a temporary for the result of the call at 0x121cd95, used twice; no DWARF local holds it
-                    nCollision::cGeometry* t0 = this->::nCollision::cCollisionNode::getGeometryClass(i0_3);
-                    if (t0 != static_cast<nCollision::cGeometry*>(nullptr)) {
-                        static_cast<rGeometry2::cGeometry*>(t0)->::rGeometry2::cGeometry::updateAttachGeometry();
+                    nCollision::cGeometry* t0 = getGeometryClass(i0_3);
+                    if (t0 != nullptr) {
+                        static_cast<rGeometry2::cGeometry*>(t0)->updateAttachGeometry();
                     }
-                    if (v0_10 != (i0_3 + static_cast<unsigned int>(1))) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if (v0_10 != (i0_3 + 1u)) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
@@ -321,7 +322,7 @@ void rGeometry2::cGeometryArray::setActive(bool FlgSetActive) {
             }
         }
     }
-    this->::nCollision::cObjectBase::setActive(FlgSetActive);
+    this->nCollision::cObjectBase::setActive(FlgSetActive);
 }
 
 // Address: 0x0121ca80 - 0x0121cc4b (459 bytes)
@@ -341,7 +342,7 @@ __attribute__((weak)) void rGeometry2::cGeometryArray::copyEx(const nCollision::
 // Address: 0x0121cde0 - 0x0121cde5 (5 bytes)
 MtObject* rGeometry2::cGeometryArray::getAddonObject() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpAddonObject;
+    return mpAddonObject;
 }
 
 // No out-of-line body: no code in the ELF
@@ -351,28 +352,36 @@ MtObject* rGeometry2::cGeometryArray::getAddonObject() const {
 // void rGeometry2::cGeometryArray::setAddonObjectByDTI(const MtDTI* pDti);
 
 // Address: 0x0121ce10 - 0x0121ce29 (25 bytes)
-__attribute__((weak)) MtGeomConvex* rGeometry2::cGeometryArray::getAttachGeometry(u32 TargetGeometryIndex) const {
-    // local: const cGeometry* pTargetGeometry;
-    DDON_STUB("rGeometry2::cGeometryArray::getAttachGeometry")
-    return nullptr;
+MtGeomConvex* rGeometry2::cGeometryArray::getAttachGeometry(u32 TargetGeometryIndex) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    const cGeometry* pTargetGeometry = static_cast<const cGeometry*>(getGeometryClassConst(TargetGeometryIndex));
+    if (pTargetGeometry != nullptr) {
+        return pTargetGeometry->mpAttachGeometry;
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x0121ce30 - 0x0121ce4b (27 bytes)
 MtGeomConvex* rGeometry2::cGeometryArray::getLocalGeometry(u32 TargetGeometryIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    const rGeometry2::cGeometry* pTargetGeometry = static_cast<const rGeometry2::cGeometry*>(this->::nCollision::cCollisionNode::getGeometryClassConst(TargetGeometryIndex));
-    if (pTargetGeometry != static_cast<const rGeometry2::cGeometry*>(nullptr)) {
-        return pTargetGeometry->::nCollision::cGeometry::getRegistGeometryConst();
+    const cGeometry* pTargetGeometry = static_cast<const cGeometry*>(getGeometryClassConst(TargetGeometryIndex));
+    if (pTargetGeometry != nullptr) {
+        return pTargetGeometry->nCollision::cGeometry::getRegistGeometryConst();
     } else {
-        return static_cast<MtGeomConvex*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0121ce50 - 0x0121ce69 (25 bytes)
-__attribute__((weak)) MtObject* rGeometry2::cGeometryArray::getGeometryAddonObject(u32 TargetGeometryIndex) const {
-    // local: const cGeometry* pTargetGeometry;
-    DDON_STUB("rGeometry2::cGeometryArray::getGeometryAddonObject")
-    return nullptr;
+MtObject* rGeometry2::cGeometryArray::getGeometryAddonObject(u32 TargetGeometryIndex) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    const cGeometry* pTargetGeometry = static_cast<const cGeometry*>(getGeometryClassConst(TargetGeometryIndex));
+    if (pTargetGeometry != nullptr) {
+        return pTargetGeometry->mpAddonObject;
+    } else {
+        return nullptr;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -441,6 +450,8 @@ __attribute__((weak)) void rGeometry2::cGeometryArray::restoreSweptSphere() {
 // No out-of-line body: no code in the ELF
 // void rGeometry2::cGeometryArray::setSequenceBit(u8 NextSequenceBitIndex);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGeometry2::cGeometryArray::MyDTI rGeometry2::cGeometryArray::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGeometry2::cGeometryArray::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -483,7 +494,7 @@ const MtDTI& rGeometry2::cGeometry::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rGeometry29cGeometryD0Ev at 0x0121856d-0x0121858e, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rGeometry2::cGeometry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rGeometry2::cGeometry::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rGeometry2::cGeometry::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -502,21 +513,21 @@ inline void rGeometry2::cGeometry::operator delete(void* p_addr) {
 // Also emitted as: _ZN10rGeometry29cGeometryD0Ev at 0x01218520
 rGeometry2::cGeometry::~cGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAttachGeometry != static_cast<MtGeomConvex*>(nullptr)) {
-        delete this->mpAttachGeometry;
-        this->mpAttachGeometry = static_cast<MtGeomConvex*>(nullptr);
+    if (mpAttachGeometry != nullptr) {
+        delete mpAttachGeometry;
+        mpAttachGeometry = nullptr;
     }
-    if (this->mpAddonObject == static_cast<MtObject*>(nullptr)) {
+    if (mpAddonObject == nullptr) {
         return;
     }
-    delete this->mpAddonObject;
-    this->mpAddonObject = static_cast<MtObject*>(nullptr);
+    delete mpAddonObject;
+    mpAddonObject = nullptr;
 }
 
 // Address: 0x01218590 - 0x01218595 (5 bytes)
 MtUI* rGeometry2::cGeometry::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x012185a0 - 0x01219158 (3000 bytes)
@@ -551,28 +562,28 @@ __attribute__((weak)) bool rGeometry2::cGeometry::save(MtDataWriter& w, MtStream
 // Address: 0x0121acb0 - 0x0121acdd (45 bytes)
 void rGeometry2::cGeometry::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::nCollision::cObjectBase::mFlgActive == false) {
+    if (!mFlgActive) {
         return;
     }
-    this->::rGeometry2::cGeometry::updateAttachGeometry();
-    this->updateBoundingAABB();
+    updateAttachGeometry();
+    updateBoundingAABB();
 }
 
 // Address: 0x0121b000 - 0x0121b005 (5 bytes)
 bool rGeometry2::cGeometry::isActive() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::nCollision::cObjectBase::isActive();
+    return this->nCollision::cObjectBase::isActive();
 }
 
 // Address: 0x0121b010 - 0x0121b046 (54 bytes)
 void rGeometry2::cGeometry::setActive(bool FlgSetActive) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->isActive() == false) {
-        if ((FlgSetActive == false) == false) {
-            this->::rGeometry2::cGeometry::updateAttachGeometry();
+    if (!isActive()) {
+        if (!!FlgSetActive) {
+            updateAttachGeometry();
         }
     }
-    this->::nCollision::cObjectBase::setActive(FlgSetActive);
+    this->nCollision::cObjectBase::setActive(FlgSetActive);
 }
 
 // Address: 0x0121b050 - 0x0121b290 (576 bytes)
@@ -799,6 +810,8 @@ __attribute__((weak)) MtMatrix rGeometry2::cGeometry::getAttachMatrix(u8 JointIn
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // f32 rGeometry2::cGeometry::getAttachScaleMaxElement();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rGeometry2::cGeometry::MyDTI rGeometry2::cGeometry::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rGeometry2::cGeometry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

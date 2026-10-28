@@ -72,8 +72,8 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK12rGUIIconInfo5MyDTI11newInstanceEv at 0x01377850-0x0137788f, code DWARF attributes to no inlined copy
 inline rGUIIconInfo::rGUIIconInfo() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mVersion = static_cast<u32>(65536);
-    this->mpNameBuffer = static_cast<MT_CHAR*>(nullptr);
-    this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
+    this->::cResource::mAttr = 16;
+    this->mVersion = 0x10000;
+    this->mpNameBuffer = nullptr;
+    this->mpIconInfo = nullptr;
 }

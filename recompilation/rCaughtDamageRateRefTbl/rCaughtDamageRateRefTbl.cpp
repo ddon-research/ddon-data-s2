@@ -36,7 +36,7 @@ const MtDTI& cCaughtDamageRateReference::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCaughtDamageRateReference::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memAlloc(sz, align, ::cCaughtDamageRateReference::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCaughtDamageRateReference::DTI)->memAlloc(sz, align, cCaughtDamageRateReference::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
@@ -51,7 +51,7 @@ inline void* cCaughtDamageRateReference::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCaughtDamageRateReference::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCaughtDamageRateReference::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -87,6 +87,8 @@ __attribute__((weak)) void cCaughtDamageRateReference::createProperty(MtProperty
 // No out-of-line body: no code in the ELF
 // bool cCaughtDamageRateReference::saveData(MtDataWriter& out);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCaughtDamageRateReference::MyDTI cCaughtDamageRateReference::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCaughtDamageRateRefTbl.cpp at 0x006511a0-0x006511e2 (called at rCaughtDamageRateRefTbl.cpp:19)
 //   in _GLOBAL__sub_I_rCaughtDamageRateRefTbl.cpp at 0x006511a0-0x006511e2 (called at rCaughtDamageRateRefTbl.h:25)
@@ -95,7 +97,7 @@ __attribute__((weak)) void cCaughtDamageRateReference::createProperty(MtProperty
 // Address: 0x00650eb0 - 0x00650ef7 (71 bytes)
 MtObject* cCaughtDamageRateReference::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCaughtDamageRateReference;
+    return new (16u) cCaughtDamageRateReference;
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ const MtDTI& rCaughtDamageRateRefTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rCaughtDamageRateRefTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rCaughtDamageRateRefTbl::DTI)->memAlloc(sz, align, ::rCaughtDamageRateRefTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rCaughtDamageRateRefTbl::DTI)->memAlloc(sz, align, rCaughtDamageRateRefTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* rCaughtDamageRateRefTbl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN23rCaughtDamageRateRefTblD0Ev at 0x01a7b464-0x01a7b483, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rCaughtDamageRateRefTbl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCaughtDamageRateRefTbl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCaughtDamageRateRefTbl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,7 +152,7 @@ inline void rCaughtDamageRateRefTbl::operator delete(void* p_addr) {
 // Address: 0x00651170 - 0x00651197 (39 bytes)
 bool rCaughtDamageRateRefTbl::loadData(MtDataReader& in, cCaughtDamageRateReference* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pData != static_cast<cCaughtDamageRateReference*>(nullptr)) {
+    if (pData != nullptr) {
         pData->mReferenceIndex = in.readU32();
         return true;
     } else {
@@ -167,8 +169,10 @@ MT_CTSTR rCaughtDamageRateRefTbl::getExt() const {
 // Address: 0x01a7b5b0 - 0x01a7b5b6 (6 bytes)
 u32 rCaughtDamageRateRefTbl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCaughtDamageRateRefTbl::MyDTI rCaughtDamageRateRefTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCaughtDamageRateRefTbl.cpp at 0x006511e2-0x0065121f (called at rCaughtDamageRateRefTbl.cpp:73)
@@ -178,7 +182,7 @@ u32 rCaughtDamageRateRefTbl::getDataVersion() const {
 // Address: 0x00651090 - 0x006510f4 (100 bytes)
 MtObject* rCaughtDamageRateRefTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rCaughtDamageRateRefTbl;
+    return new (16u) rCaughtDamageRateRefTbl;
 }
 
 // Instance at 0x01a7b560 - 0x01a7b572 (18 bytes) of the generic rTbl2<T>::getData

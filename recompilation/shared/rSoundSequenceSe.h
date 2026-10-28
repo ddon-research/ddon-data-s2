@@ -196,3 +196,17 @@ protected:
     static const u32 NativeFileMagic = 1381061459;
     static const s32 NativeFileVersion = 1;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline rSoundSequenceSe::SequenceSe::SequenceSe() {
+    this->mIndex = 0;
+    this->mpToolAdrs = nullptr;
+    this->mRequestNo = 0;
+    this->mCommand.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uSoundSequenceSe::playSequenceSe at 0xd46610-0xd46613; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 rSoundSequenceSe::SequenceSe::getDataNum() {
+    return this->mCommand.::MtArray::mLength;
+}

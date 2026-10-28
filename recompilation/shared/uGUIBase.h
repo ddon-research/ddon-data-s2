@@ -66,6 +66,7 @@ class cGUIObject;
 class cGUIVariable;
 class cInputTextKeyboardHook;
 class cItemParam;
+class cMenuBase;
 class cMenuCancelClanScoutEntry;
 class cMenuLeaveGroupChat;
 class cMenuOnlineShop;
@@ -86,6 +87,7 @@ class rSoundRequest;
 class rTexture;
 class sGUIExt;
 class sTalkManager;
+class uGUIAim;
 class uGUIAreaMaster;
 class uGUIBoughtBox;
 class uGUIBoxGachaInfo;
@@ -96,9 +98,12 @@ class uGUICaplinkProfile;
 class uGUICaplinkTalk;
 class uGUICaplinkTrophyReceive;
 class uGUIChargesHUD;
+class uGUIChat;
+class uGUICommunityList;
 class uGUIContentsBoard;
 class uGUIGPShop;
 class uGUIGameMenu;
+class uGUIGaugeEnemy;
 class uGUIGaugeSkill;
 class uGUIGiveAndTake;
 class uGUIInfo;
@@ -116,6 +121,7 @@ class uGUIPhotoAlbum;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
 class uGUIQuestList;
+class uGUIRetry;
 class uGUIShopBuy;
 class uGUIShopTitle;
 class uGUISystemMsg;
@@ -152,6 +158,8 @@ class uGUIBase : public uGUI
     friend class aStage;
     // inferred: cCycleQuestManagerBase::drawResult names uGUIBase::mResult
     friend class cCycleQuestManagerBase;
+    // inferred: cMenuBase::reqDialog names uGUIBase::mBasePointerPrio
+    friend class cMenuBase;
     // inferred: cMenuCancelClanScoutEntry::moveCancelClanScoutEntry names uGUIBase::mResult
     friend class cMenuCancelClanScoutEntry;
     // inferred: cMenuLeaveGroupChat::moveLeaveGroupChat names uGUIBase::mBasePointerPrio
@@ -162,6 +170,8 @@ class uGUIBase : public uGUI
     friend class sGUIExt;
     // inferred: sTalkManager::isEndGUISingleton names uGUIBase::mResult
     friend class sTalkManager;
+    // inferred: uGUIAim::cTargetMarker::setup calls uGUIBase::ManageDuplicate, through its enclosing class uGUIAim
+    friend class uGUIAim;
     // inferred: uGUIAreaMaster::setupWindowActive names uGUIBase::mIsWindowActive
     friend class uGUIAreaMaster;
     // inferred: uGUIBoughtBox::setTitle names uGUIBase::mpGUIMsgs.elems[0]
@@ -178,8 +188,14 @@ class uGUIBase : public uGUI
     friend class uGUICaplinkTalk;
     // inferred: uGUICaplinkTrophyReceive::kill names uGUIBase::mEndType
     friend class uGUICaplinkTrophyReceive;
+    // inferred: uGUIChat::cLogItem::setup calls uGUIBase::ManageDuplicate, through its enclosing class uGUIChat
+    friend class uGUIChat;
+    // inferred: uGUICommunityList::cTabDataInData::setInstancePointer calls uGUIBase::getObjectFromId, through its enclosing class uGUICommunityList
+    friend class uGUICommunityList;
     // inferred: uGUIGPShop::kill names uGUIBase::mEndType
     friend class uGUIGPShop;
+    // inferred: uGUIGaugeEnemy::TargetIcon::setup calls uGUIBase::getInstance, through its enclosing class uGUIGaugeEnemy
+    friend class uGUIGaugeEnemy;
     // inferred: uGUIItemBase01::updateOnlineShopWait names uGUIBase::mResult
     friend class uGUIItemBase01;
     // inferred: uGUIKeyConfig::getResMsgGroup names uGUIBase::mpGUIMsgs.elems[1]
@@ -194,6 +210,8 @@ class uGUIBase : public uGUI
     friend class uGUIOption;
     // inferred: uGUIPopCmd01::addItemSystemMenu names uGUIBase::mpGUIMsgs.elems[1]
     friend class uGUIPopCmd01;
+    // inferred: uGUIRetry::updateDialog names uGUIBase::mResult
+    friend class uGUIRetry;
     // inferred: uGUIShopBuy::isMoveDialog names uGUIBase::mResult
     friend class uGUIShopBuy;
     // inferred: uGUISystemMsg::updateStop names uGUIBase::mIsWindowActive
@@ -695,6 +713,8 @@ public:
 public:
     class cScrollListItemBase : public cUIObject
     {
+        // inferred: uGUIKeyConfig::cKeySettingItem::setup names uGUIBase::cScrollListItemBase::mDefaultSeqID, through its enclosing class uGUIKeyConfig
+        friend class uGUIKeyConfig;
     public:
         class MyDTI;
     public:
@@ -795,6 +815,8 @@ public:
 public:
     class cCalcMovePos
     {
+        // inferred: uGUIBase::cReferenceUIPullDown::close names uGUIBase::cReferenceUIPullDown::mMovePos.mPos.x, through its enclosing class uGUIBase
+        friend class uGUIBase;
     public:
         cCalcMovePos();
         ~cCalcMovePos();
@@ -1520,6 +1542,8 @@ public:
 public:
     class cSupportInstAnim : public uGUIBase::cSupportBase
     {
+        // inferred: uGUIBase::cScrollList::clearCursorFocus names uGUIBase::cScrollList::mCursor.::uGUIBase::cSupportInstAnim::mpInstance, through its enclosing class uGUIBase
+        friend class uGUIBase;
         // inferred: uGUIBoxGachaInfo::setBoxFlag names uGUIBoxGachaInfo::mResetBtn.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIBoxGachaInfo;
         // inferred: uGUIBrowserBG::sleep names uGUIBrowserBG::mClose.::uGUIBase::cSupportInstAnim::mpInstance
@@ -1627,6 +1651,8 @@ public:
 public:
     class cReferenceUIVlCursor : public uGUIBase::cSupportInstAnim
     {
+        // inferred: uGUIBase::cReferenceUIPullDown::setVisibleSize names uGUIBase::cReferenceUIPullDown::mCursor.mDistY, through its enclosing class uGUIBase
+        friend class uGUIBase;
     public:
         enum TYPE
         {
@@ -4628,6 +4654,8 @@ public:
     public:
         class cObject : public uGUIBase::cSupportBase
         {
+            // inferred: uGUIBase::cReferenceUIRadioButton::setMessage names uGUIBase::cReferenceUIRadioButton::mSingleObject.mpObjMsgTitle, through its enclosing class uGUIBase
+            friend class uGUIBase;
         public:
             class MyDTI;
         public:
@@ -5052,8 +5080,14 @@ public:
 public:
     class cScrollList : public uGUIBase::cScrollCtrl
     {
+        // inferred: uGUIBase::cReferenceUIPullDown::setForbid names uGUIBase::cReferenceUIPullDown::mScrList.mpVCtrl, through its enclosing class uGUIBase
+        friend class uGUIBase;
         // inferred: uGUIBoxGachaInfo::evAdjustTab names uGUIBoxGachaInfo::mList.mListCtrl.mpOwner
         friend class uGUIBoxGachaInfo;
+        // inferred: uGUICaplinkProfile::eventAdjustCursor names uGUICaplinkProfile::mGame.mListCtrl.mpVCtrl
+        friend class uGUICaplinkProfile;
+        // inferred: uGUICommunityList::cTabData::move names uGUICommunityList::cTabData::mScrollList.mInfoArray.::MtArray::mLength, through its enclosing class uGUICommunityList
+        friend class uGUICommunityList;
         // inferred: uGUIContentsBoard::moveEvent names uGUIQuestBoardBase::mList.mListCtrl.mIsDecide
         friend class uGUIContentsBoard;
         // inferred: uGUIInfo::evCtrlMouse names uGUIInfo::mList.mListCtrl.mInfoArray.::MtArray::mLength
@@ -5214,6 +5248,8 @@ public:
 public:
     class cReferenceUIPullDown : public uGUIBase::cReferenceUIBase
     {
+        // inferred: uGUIKeyConfig::getSortType names uGUIKeyConfig::mPulldown.mCursorIdx
+        friend class uGUIKeyConfig;
         // inferred: uGUIMenuComm::evCtrlVLEditDecide names uGUIMenuComm::mPullDownEmotCtgr.mState
         friend class uGUIMenuComm;
     public:
@@ -6109,6 +6145,24 @@ inline rEmblemColorTable* uGUIBase::getEmblemColorTableRes() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIUtility::GetPawnPersonalityStr at 0x204c54-0x204c5b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rGUIMessage* uGUIBase::getMsgPawnPersonality() const {
+    return this->mpMsgPawnPersonality;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIUtility::getPawnShareRangeStr at 0x204bd4-0x204bdb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rGUIMessage* uGUIBase::getMsgPawnShareRange() const {
+    return this->mpMsgPawnShareRange;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cGUIUtility::getPawnStatusStr at 0x204b90-0x204b97; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline rGUIMessage* uGUIBase::getMsgPawnStatus() const {
+    return this->mpMsgPawnStatus;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline rGUIMessage* uGUIBase::getMsgPlayStyleItem() const {
     return this->mpMsgPlayStyleItem;
@@ -6132,8 +6186,32 @@ inline nGUIExt::stWindowActive& uGUIBase::getWindowActive() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::setGUIMove at 0x94ff30-0x94ff37; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIBase::setInputActiveReq() {
+    this->mIsReqInputActive = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 uGUIBase::getBasePointerPriority() {
     return this->mBasePointerPrio;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::setup at 0x94f933-0x94f93a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIBase::setInstNullDesign(cGUIInstNull* pInstNull) {
+    this->mpInstNullDesign = pInstNull;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::setup at 0x94f949-0x94f950; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIBase::setInstWindow(cGUIInstAnimation* pInst) {
+    this->mpInstWindow = pInst;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::cReferenceUITab::getConvertWindowCenterX at 0x964a20-0x964a28; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 uGUIBase::getTabWidth(f32 ObjectWidth) {
+    return -4.0f + ObjectWidth;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -6148,7 +6226,7 @@ inline cGUIInstAnimation* uGUIBase::cSupportInstAnim::getInstance() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIBase::cSupportBase::cSupportBase() {
-    this->mpUnit = static_cast<uGUIBase*>(nullptr);
+    this->mpUnit = nullptr;
     this->mAutoClear = false;
 }
 
@@ -6156,20 +6234,27 @@ inline uGUIBase::cSupportBase::cSupportBase() {
 // approximate: only approximate callers check this inline body
 inline uGUIBase::cScrollListItemBase::cScrollListItemBase() {
     // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
-    this->mpObjMouseCollision = static_cast<cGUIObject*>(nullptr);
-    this->mpInstMouseCollision = static_cast<cGUIInstance*>(nullptr);
-    this->mpObjPointerTarget = static_cast<cGUIObject*>(nullptr);
-    this->mpInstPointerTarget = static_cast<cGUIInstance*>(nullptr);
-    this->mpRefUIFocus = static_cast<uGUIBase::cReferenceUIBase*>(nullptr);
-    this->mpInstFocus = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpInstBase = static_cast<cGUIInstNull*>(nullptr);
-    this->mItemType = static_cast<u8>(255);
+    this->mpObjMouseCollision = nullptr;
+    this->mpInstMouseCollision = nullptr;
+    this->mpObjPointerTarget = nullptr;
+    this->mpInstPointerTarget = nullptr;
+    this->mpRefUIFocus = nullptr;
+    this->mpInstFocus = nullptr;
+    this->mpInstBase = nullptr;
+    this->mItemType = 0xFF;
     this->mIsVisible = false;
-    this->mUseIndex = static_cast<s32>(-1);
-    this->mDefaultSeqID = static_cast<u32>(1);
-    this->mFocusSeqID = static_cast<u32>(4);
-    this->mSelectSeqID = static_cast<u32>(5);
-    this->mDisableSeqID = static_cast<u32>(7);
+    this->mUseIndex = -1;
+    this->mDefaultSeqID = 1;
+    this->mFocusSeqID = 4;
+    this->mSelectSeqID = 5;
+    this->mDisableSeqID = 7;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::cReferenceUIPullDown::moveEvent at 0x96fb17-0x96fb2a; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIBase::cReferenceUIPullDown::evCancel() {
+    this->mCancel = true;
+    this->mState = static_cast<uGUIBase::cReferenceUIPullDown::STATE>(4);
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -6178,7 +6263,28 @@ inline uGUIBase::cVerticalList* uGUIBase::cScrollList::getCtrl() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool uGUIBase::cScrollList::isInputEvent() const {
+    return this->mIsInputEvent;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uGUIBase::cCalcMovePos::~cCalcMovePos() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::cVerticalList::getInputDirection at 0x95160f-0x951615; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline s32 uGUIBase::cVerticalList::getVisibleSize() const {
+    return this->mVisibleSize;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIBase::cReferenceUIBtnGuide::addBtnIcon at 0x966a2a-0x966a3d; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIBase::cReferenceUIBtnGuide::cWork::addKeyCustom(nKeyCustom::KB_CUSTOM kbCustom) {
+    if (this->mAddKeyCustomNum <= 3u) {
+        this->mAddKeyCustoms.elems[this->mAddKeyCustomNum] = kbCustom;
+        this->mAddKeyCustomNum = this->mAddKeyCustomNum + 1u;
+    }
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -6215,8 +6321,8 @@ inline s32 uGUIBase::cReferenceUINumBox::getCurrentNum() const {
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIBase::cReferenceUIPageDot::cPageDotWork::cPageDotWork() {
-    this->mpObj = static_cast<cGUIObjTexture*>(nullptr);
-    this->mpInst = static_cast<cGUIInstAnimation*>(nullptr);
+    this->mpObj = nullptr;
+    this->mpInst = nullptr;
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -37,7 +37,7 @@ const MtDTI& sEnemyManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sEnemyManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sEnemyManager::DTI);
+    return MtMemoryAllocator::getAllocator(sEnemyManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -46,7 +46,7 @@ inline MtAllocator* sEnemyManager::getAllocator() {
 // Address: 0x00778fd0 - 0x00779010 (64 bytes)
 void* sEnemyManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEnemyManager::getAllocator()->memAlloc(sz, align, ::sEnemyManager::DTI.::MtDTI::getID());
+    return sEnemyManager::getAllocator()->memAlloc(sz, align, sEnemyManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* sEnemyManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEnemyManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEnemyManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEnemyManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -83,27 +83,27 @@ sEnemyManager::sEnemyManager() {
 // Also emitted as: _ZN13sEnemyManagerD0Ev at 0x00779250
 sEnemyManager::~sEnemyManager() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sEnemyManager::releaseResource();
-    ::sEnemyManager::mpInstance = static_cast<sEnemyManager*>(nullptr);
+    releaseResource();
+    sEnemyManager::mpInstance = nullptr;
 }
 
 // Address: 0x007792b0 - 0x007792b5 (5 bytes)
 void sEnemyManager::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::createProperty(s);
+    this->sUnitManager::createProperty(s);
 }
 
 // Address: 0x007792c0 - 0x007792c5 (5 bytes)
 MtUI* sEnemyManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sUnitManager::createUI(prop);
+    return this->sUnitManager::createUI(prop);
 }
 
 // Address: 0x007792d0 - 0x007792f3 (35 bytes)
 bool sEnemyManager::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnemyDistanceInfo.::sEnemyManager::cEnemyDistanceInfo::update();
-    return this->::sUnitManager::update();
+    mEnemyDistanceInfo.update();
+    return this->sUnitManager::update();
 }
 
 // No out-of-line body: 121 inlined copies in 91 functions (1382 bytes)
@@ -127,40 +127,33 @@ __attribute__((weak)) void sEnemyManager::createResource() {
 // Address: 0x00779170 - 0x00779244 (212 bytes)
 __attribute__((weak)) void sEnemyManager::releaseResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpEmBaseInfoSv == static_cast<rEmBaseInfoSv*>(nullptr)) {
-    } else {
-        this->mpEmBaseInfoSv->::cResource::release();
-        this->mpEmBaseInfoSv = static_cast<rEmBaseInfoSv*>(nullptr);
+    if (mpEmBaseInfoSv != nullptr) {
+        mpEmBaseInfoSv->release();
+        mpEmBaseInfoSv = nullptr;
     }
-    if (this->mprHumanEmPriset == static_cast<rHumanEnemyPreset*>(nullptr)) {
-    } else {
-        this->mprHumanEmPriset->::cResource::release();
-        this->mprHumanEmPriset = static_cast<rHumanEnemyPreset*>(nullptr);
+    if (mprHumanEmPriset != nullptr) {
+        mprHumanEmPriset->release();
+        mprHumanEmPriset = nullptr;
     }
-    if (this->mprHumanEmEquip == static_cast<rHumanEnemyEquip*>(nullptr)) {
-    } else {
-        this->mprHumanEmEquip->::cResource::release();
-        this->mprHumanEmEquip = static_cast<rHumanEnemyEquip*>(nullptr);
+    if (mprHumanEmEquip != nullptr) {
+        mprHumanEmEquip->release();
+        mprHumanEmEquip = nullptr;
     }
-    if (this->mprHumanEmCustomSkill == static_cast<rHumanEnemyCustomSkill*>(nullptr)) {
-    } else {
-        this->mprHumanEmCustomSkill->::cResource::release();
-        this->mprHumanEmCustomSkill = static_cast<rHumanEnemyCustomSkill*>(nullptr);
+    if (mprHumanEmCustomSkill != nullptr) {
+        mprHumanEmCustomSkill->release();
+        mprHumanEmCustomSkill = nullptr;
     }
-    if (this->mpEnemyGroup == static_cast<rEnemyGroup*>(nullptr)) {
-    } else {
-        this->mpEnemyGroup->::cResource::release();
-        this->mpEnemyGroup = static_cast<rEnemyGroup*>(nullptr);
+    if (mpEnemyGroup != nullptr) {
+        mpEnemyGroup->release();
+        mpEnemyGroup = nullptr;
     }
-    if (this->mprShakeChanceAdj == static_cast<rAdjustParam*>(nullptr)) {
-    } else {
-        this->mprShakeChanceAdj->::cResource::release();
-        this->mprShakeChanceAdj = static_cast<rAdjustParam*>(nullptr);
+    if (mprShakeChanceAdj != nullptr) {
+        mprShakeChanceAdj->release();
+        mprShakeChanceAdj = nullptr;
     }
-    if (this->mpEnemyAdjustParam == static_cast<rAdjustParam*>(nullptr)) {
-    } else {
-        this->mpEnemyAdjustParam->::cResource::release();
-        this->mpEnemyAdjustParam = static_cast<rAdjustParam*>(nullptr);
+    if (mpEnemyAdjustParam != nullptr) {
+        mpEnemyAdjustParam->release();
+        mpEnemyAdjustParam = nullptr;
     }
 }
 
@@ -205,24 +198,24 @@ __attribute__((weak)) bool sEnemyManager::isCategoryActive(nEnemy::ENEMY_CATEGOR
 // Address: 0x01ac3ec0 - 0x01ac3ec6 (6 bytes)
 u32 sEnemyManager::getLodDistDataKindNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x00779c10 - 0x00779c5b (75 bytes)
 u32 sEnemyManager::getLodDistDataKind(uBaseModel* bm) {
     // DWARF local not rendered: uEnemy* p_em;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (bm != static_cast<uBaseModel*>(nullptr)) {
+    if (bm != nullptr) {
         // inferred: a temporary for the result of the call at 0x779c24, used once; no DWARF local holds it
         const MtDTI& t0 = bm->getDTI();
         // inferred: the value the loop at 0x779c32 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uEnemy::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uEnemy::DTI.mName;
         // inferred: the value the loop at 0x779c32 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
-                return static_cast<u32>(static_cast<uEnemy*>(bm)->::uEnemy::getBodySize());
+                return static_cast<u32>(static_cast<uEnemy*>(bm)->getBodySize());
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -230,7 +223,7 @@ u32 sEnemyManager::getLodDistDataKind(uBaseModel* bm) {
             }
         }
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00779c60 - 0x00779cdd (125 bytes)
@@ -250,9 +243,9 @@ __attribute__((weak)) void sEnemyManager::setLODDist(uBaseModel* bm) {
 // Address: 0x0077a4d0 - 0x0077a4fd (45 bytes)
 f32 sEnemyManager::getShakeChanceAdjust(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprShakeChanceAdj != static_cast<rAdjustParam*>(nullptr)) {
-        cAdjustParam* pParam = this->mprShakeChanceAdj->getData(index);
-        if (pParam != static_cast<cAdjustParam*>(nullptr)) {
+    if (mprShakeChanceAdj != nullptr) {
+        cAdjustParam* pParam = mprShakeChanceAdj->getData(index);
+        if (pParam != nullptr) {
             return pParam->mParam;
         } else {
             return 0.0f;
@@ -263,13 +256,54 @@ f32 sEnemyManager::getShakeChanceAdjust(u32 index) const {
 }
 
 // Address: 0x00779d30 - 0x00779e23 (243 bytes)
-__attribute__((weak)) const cHumanEnemyEquip* sEnemyManager::getHumanEnemyEquipData(u32 presetId) const {
-    // local: cHumanEnemyPreset* pPre;
-    // local: u32 i;
-    // local: cHumanEnemyPreset* pData;
-    // local: u32 i;
-    // local: cHumanEnemyEquip* pData;
-    DDON_STUB("sEnemyManager::getHumanEnemyEquipData")
+const cHumanEnemyEquip* sEnemyManager::getHumanEnemyEquipData(u32 presetId) const {
+    // DWARF local not rendered: cHumanEnemyPreset* pPre;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cHumanEnemyPreset* pData;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cHumanEnemyEquip* pData;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 1 goto statements as its last resort
+    if (mprHumanEmPriset != nullptr) {
+        if (mprHumanEmPriset->getDataNum() != 0) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_3 = 0;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i2_11;
+            for (;;) {
+                // inferred: the value carried to 0x779dbd; the location-less local in scope that fits is declared on no line of the value's writes
+                cHumanEnemyPreset* v1_10 = mprHumanEmPriset->getData(i0_3);
+                if (v1_10 != nullptr) {
+                    if (v1_10->mId == presetId) {
+                        if (mprHumanEmEquip->getDataNum() != 0) {
+                            i2_11 = 0;
+                            for (;;) {
+                                // inferred: a temporary for the result of the call at 0x779dcd, used twice; no DWARF local holds it
+                                cHumanEnemyEquip* t0 = mprHumanEmEquip->getData(i2_11);
+                                if (t0 != nullptr) {
+                                    if (t0->mId == v1_10->mEquipListId) {
+                                        return mprHumanEmEquip->getData(i2_11);
+                                    }
+                                }
+                                if ((i2_11 + 1u) < mprHumanEmEquip->getDataNum()) {
+                                    i2_11 += 1u;
+                                } else {
+                                    goto loop_779d70_end;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                if ((i0_3 + 1u) < mprHumanEmPriset->getDataNum()) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            loop_779d70_end:;
+        }
+    }
     return nullptr;
 }
 
@@ -281,31 +315,31 @@ const cHumanEnemyCustomSkill* sEnemyManager::getHumanEnemyCustomSkill(u32 preset
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cHumanEnemyCustomSkill* pData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mprHumanEmPriset != static_cast<rHumanEnemyPreset*>(nullptr)) {
-        if (this->mprHumanEmPriset->getDataNum() != static_cast<u32>(0)) {
+    if (mprHumanEmPriset != nullptr) {
+        if (mprHumanEmPriset->getDataNum() != 0) {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i2_11;
             for (;;) {
                 // inferred: the value the loop at 0x779ec0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                cHumanEnemyPreset* v2_10 = this->mprHumanEmPriset->getData(i0_3);
+                cHumanEnemyPreset* v2_10 = mprHumanEmPriset->getData(i0_3);
                 if (v2_10->mId != presetId) {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mprHumanEmPriset->getDataNum()) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < mprHumanEmPriset->getDataNum()) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if (v2_10 != static_cast<cHumanEnemyPreset*>(nullptr)) {
-                        if (this->mprHumanEmCustomSkill->getDataNum() != static_cast<u32>(0)) {
-                            i2_11 = static_cast<unsigned int>(0);
+                    if (v2_10 != nullptr) {
+                        if (mprHumanEmCustomSkill->getDataNum() != 0) {
+                            i2_11 = 0;
                             for (;;) {
-                                if (this->mprHumanEmCustomSkill->getData(i2_11)->mId == v2_10->mCustomSkillListId) {
-                                    return this->mprHumanEmCustomSkill->getData(i2_11);
+                                if (mprHumanEmCustomSkill->getData(i2_11)->mId == v2_10->mCustomSkillListId) {
+                                    return mprHumanEmCustomSkill->getData(i2_11);
                                 } else {
-                                    if ((i2_11 + static_cast<unsigned int>(1)) < this->mprHumanEmCustomSkill->getDataNum()) {
-                                        i2_11 += static_cast<unsigned int>(1);
+                                    if ((i2_11 + 1u) < mprHumanEmCustomSkill->getDataNum()) {
+                                        i2_11 += 1u;
                                     } else {
                                         goto loop_779e70_end;
                                     }
@@ -319,7 +353,7 @@ const cHumanEnemyCustomSkill* sEnemyManager::getHumanEnemyCustomSkill(u32 preset
             loop_779e70_end:;
         }
     }
-    return static_cast<const cHumanEnemyCustomSkill*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00779f20 - 0x00779fa7 (135 bytes)
@@ -371,10 +405,10 @@ __attribute__((weak)) bool sEnemyManager::isRageEnemy() {
 f32 sEnemyManager::getEmAdjustParam(nEnemy::EM_ADJUST_PARAM param) const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: nEnemy::EM_ADJUST_PARAM used as unsigned int
-    if (this->mpEnemyAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
-        if (static_cast<unsigned int>(param) < this->mpEnemyAdjustParam->getDataNum()) {
-            cAdjustParam* pParam = this->mpEnemyAdjustParam->getData(static_cast<u32>(param));
-            if (pParam != static_cast<cAdjustParam*>(nullptr)) {
+    if (mpEnemyAdjustParam != nullptr) {
+        if (static_cast<unsigned int>(param) < mpEnemyAdjustParam->getDataNum()) {
+            cAdjustParam* pParam = mpEnemyAdjustParam->getData(static_cast<u32>(param));
+            if (pParam != nullptr) {
                 return pParam->mParam;
             } else {
                 return 0.0f;
@@ -393,44 +427,44 @@ u32 sEnemyManager::getEnemyGroupId(u32 em_id) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x77a31e; no location-less local in scope fits
     u32 v6_1;
-    if (this->mpEnemyGroup == static_cast<rEnemyGroup*>(nullptr)) {
-        v6_1 = static_cast<u32>(0);
+    if (mpEnemyGroup == nullptr) {
+        v6_1 = 0;
     } else {
-        if (this->mpEnemyGroup->getDataNum() == static_cast<u32>(0)) {
-            v6_1 = static_cast<u32>(0);
+        if (mpEnemyGroup->getDataNum() == 0) {
+            v6_1 = 0;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_10 = static_cast<unsigned int>(0);
+            unsigned int i0_10 = 0;
             // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i1_10;
             // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
             const MtDTI* v2_0;
             for (;;) {
                 // inferred: the value the loop at 0x77a2b0 carries; no location-less local in scope fits
-                cEnemyGroup* v1_3 = this->mpEnemyGroup->getData(i0_10);
-                if (v1_3 != static_cast<cEnemyGroup*>(nullptr)) {
-                    if (v1_3->mEmList.::MtArray::mLength != static_cast<u32>(0)) {
-                        i1_10 = static_cast<unsigned int>(0);
+                cEnemyGroup* v1_3 = mpEnemyGroup->getData(i0_10);
+                if (v1_3 != nullptr) {
+                    if (v1_3->mEmList.mLength != 0) {
+                        i1_10 = 0;
                         for (;;) {
                             // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
-                            MtObject* v2_9 = v1_3->mEmList.::MtArray::mpArray[i1_10];
+                            MtObject* v2_9 = v1_3->mEmList.mpArray[i1_10];
                             // inferred: a temporary for the result of the call at 0x77a2c1, used once; no DWARF local holds it
                             const MtDTI& t0 = v2_9->getDTI();
                             // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
-                            MT_CTSTR v2_1 = ::cEnemyGroup::cEmList::DTI.::MtDTI::mName;
+                            MT_CTSTR v2_1 = cEnemyGroup::cEmList::DTI.mName;
                             v2_0 = &t0;
                             for (;;) {
                                 if (v2_1 != v2_0->mName) {
-                                    if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                                    if (v2_0->mpParent != nullptr) {
                                         v2_0 = v2_0->mpParent;
                                     } else {
                                         break;
                                     }
                                 } else {
-                                    if (v2_9 == static_cast<MtObject*>(nullptr)) {
+                                    if (v2_9 == nullptr) {
                                         break;
                                     } else {
-                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + static_cast<long>(8))) != em_id) {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) != em_id) {
                                             break;
                                         } else {
                                             v6_1 = v1_3->mEnemyGroupId;
@@ -439,21 +473,21 @@ u32 sEnemyManager::getEnemyGroupId(u32 em_id) {
                                     }
                                 }
                             }
-                            if ((i1_10 + static_cast<unsigned int>(1)) < v1_3->mEmList.::MtArray::mLength) {
-                                i1_10 += static_cast<unsigned int>(1);
+                            if ((i1_10 + 1u) < v1_3->mEmList.mLength) {
+                                i1_10 += 1u;
                             } else {
                                 break;
                             }
                         }
                     }
                 }
-                if ((i0_10 + static_cast<unsigned int>(1)) < this->mpEnemyGroup->getDataNum()) {
-                    i0_10 += static_cast<unsigned int>(1);
+                if ((i0_10 + 1u) < mpEnemyGroup->getDataNum()) {
+                    i0_10 += 1u;
                 } else {
                     break;
                 }
             }
-            v6_1 = static_cast<u32>(0);
+            v6_1 = 0;
         }
     }
     return v6_1;
@@ -465,44 +499,44 @@ s32 sEnemyManager::getMsgIndexFromEnemyId(u32 em_id) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x77a42e; no location-less local in scope fits
     u32 v6_1;
-    if (this->mpEnemyGroup == static_cast<rEnemyGroup*>(nullptr)) {
-        v6_1 = static_cast<u32>(0);
+    if (mpEnemyGroup == nullptr) {
+        v6_1 = 0;
     } else {
-        if (this->mpEnemyGroup->getDataNum() == static_cast<u32>(0)) {
-            v6_1 = static_cast<u32>(0);
+        if (mpEnemyGroup->getDataNum() == 0) {
+            v6_1 = 0;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_10 = static_cast<unsigned int>(0);
+            unsigned int i0_10 = 0;
             // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i1_10;
             // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
             const MtDTI* v2_0;
             for (;;) {
                 // inferred: the value the loop at 0x77a3c0 carries; no location-less local in scope fits
-                cEnemyGroup* v1_3 = this->mpEnemyGroup->getData(i0_10);
-                if (v1_3 != static_cast<cEnemyGroup*>(nullptr)) {
-                    if (v1_3->mEmList.::MtArray::mLength != static_cast<u32>(0)) {
-                        i1_10 = static_cast<unsigned int>(0);
+                cEnemyGroup* v1_3 = mpEnemyGroup->getData(i0_10);
+                if (v1_3 != nullptr) {
+                    if (v1_3->mEmList.mLength != 0) {
+                        i1_10 = 0;
                         for (;;) {
                             // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
-                            MtObject* v2_9 = v1_3->mEmList.::MtArray::mpArray[i1_10];
+                            MtObject* v2_9 = v1_3->mEmList.mpArray[i1_10];
                             // inferred: a temporary for the result of the call at 0x77a3d1, used once; no DWARF local holds it
                             const MtDTI& t0 = v2_9->getDTI();
                             // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
-                            MT_CTSTR v2_1 = ::cEnemyGroup::cEmList::DTI.::MtDTI::mName;
+                            MT_CTSTR v2_1 = cEnemyGroup::cEmList::DTI.mName;
                             v2_0 = &t0;
                             for (;;) {
                                 if (v2_1 != v2_0->mName) {
-                                    if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                                    if (v2_0->mpParent != nullptr) {
                                         v2_0 = v2_0->mpParent;
                                     } else {
                                         break;
                                     }
                                 } else {
-                                    if (v2_9 == static_cast<MtObject*>(nullptr)) {
+                                    if (v2_9 == nullptr) {
                                         break;
                                     } else {
-                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + static_cast<long>(8))) != em_id) {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + 8)) != em_id) {
                                             break;
                                         } else {
                                             v6_1 = v1_3->mMsgIndex;
@@ -511,21 +545,21 @@ s32 sEnemyManager::getMsgIndexFromEnemyId(u32 em_id) {
                                     }
                                 }
                             }
-                            if ((i1_10 + static_cast<unsigned int>(1)) < v1_3->mEmList.::MtArray::mLength) {
-                                i1_10 += static_cast<unsigned int>(1);
+                            if ((i1_10 + 1u) < v1_3->mEmList.mLength) {
+                                i1_10 += 1u;
                             } else {
                                 break;
                             }
                         }
                     }
                 }
-                if ((i0_10 + static_cast<unsigned int>(1)) < this->mpEnemyGroup->getDataNum()) {
-                    i0_10 += static_cast<unsigned int>(1);
+                if ((i0_10 + 1u) < mpEnemyGroup->getDataNum()) {
+                    i0_10 += 1u;
                 } else {
                     break;
                 }
             }
-            v6_1 = static_cast<u32>(0);
+            v6_1 = 0;
         }
     }
     return static_cast<s32>(v6_1);
@@ -546,6 +580,11 @@ __attribute__((weak)) s32 sEnemyManager::getMsgIndexFromEnemyGroup(u32 em_group)
 
 // No out-of-line body: no code in the ELF
 // sEnemyManager::cEnemyDistanceInfo* sEnemyManager::getEnemyDistanceInfo();
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sEnemyManager* sEnemyManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEnemyManager::MyDTI sEnemyManager::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sEnemyManager.cpp at 0x0077a69f-0x0077a6dc (called at sEnemyManager.cpp:96)

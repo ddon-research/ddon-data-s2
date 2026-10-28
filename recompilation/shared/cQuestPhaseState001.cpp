@@ -32,7 +32,7 @@ const MtDTI& cQuestPhaseState001::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cQuestPhaseState001::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseState001::DTI)->memAlloc(sz, align, ::cQuestPhaseState001::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cQuestPhaseState001::DTI)->memAlloc(sz, align, cQuestPhaseState001::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* cQuestPhaseState001::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19cQuestPhaseState001D0Ev at 0x0198005e-0x0198007f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cQuestPhaseState001::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cQuestPhaseState001::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cQuestPhaseState001::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,21 +62,21 @@ inline void cQuestPhaseState001::operator delete(void* p_addr) {
 // Address: 0x0015ecc0 - 0x0015ecc6 (6 bytes)
 u32 cQuestPhaseState001::getType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x0015ecd0 - 0x0015ecd7 (7 bytes)
 void cQuestPhaseState001::setWarpPlayerStageNoStartPos(u32 stageNo, u32 startPosNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDivideStageNo = stageNo;
-    this->mDivideStartPosNo = startPosNo;
+    mDivideStageNo = stageNo;
+    mDivideStartPosNo = startPosNo;
 }
 
 // Address: 0x0015ece0 - 0x0015eceb (11 bytes)
 void cQuestPhaseState001::getWarpPlayerStageNoStartPos(u32& stageNo, u32& startPos) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    stageNo = this->mDivideStageNo;
-    startPos = this->mDivideStartPosNo;
+    stageNo = mDivideStageNo;
+    startPos = mDivideStartPosNo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (42 bytes)
@@ -86,33 +86,33 @@ void cQuestPhaseState001::getWarpPlayerStageNoStartPos(u32& stageNo, u32& startP
 // Address: 0x0015ed00 - 0x0015ed04 (4 bytes)
 void cQuestPhaseState001::setWarpPlayerId(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPlayerId = id;
+    mPlayerId = id;
 }
 
 // Address: 0x0015ed10 - 0x0015ed14 (4 bytes)
 u32 cQuestPhaseState001::getWarpPlayerId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPlayerId;
+    return mPlayerId;
 }
 
 // Address: 0x0015ed20 - 0x0015ed28 (8 bytes)
 void cQuestPhaseState001::resetWarpPlayerId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPlayerId = static_cast<u32>(0);
+    mPlayerId = 0;
 }
 
 // Address: 0x0015ed30 - 0x0015ed3e (14 bytes)
 void cQuestPhaseState001::setAddEnemyGcd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mEnemyParamGcd <= static_cast<u32>(2)) {
-        this->mEnemyParamGcd = this->mEnemyParamGcd + static_cast<u32>(1);
+    if (mEnemyParamGcd <= 2u) {
+        mEnemyParamGcd = mEnemyParamGcd + 1u;
     }
 }
 
 // Address: 0x0015ed40 - 0x0015ed48 (8 bytes)
 void cQuestPhaseState001::resetAddEnemyGcd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEnemyParamGcd = static_cast<u32>(0);
+    mEnemyParamGcd = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,14 +121,14 @@ void cQuestPhaseState001::resetAddEnemyGcd() {
 // Address: 0x0015ed60 - 0x0015ed76 (22 bytes)
 void cQuestPhaseState001::setReturnPlayerId(u32 plId1, u32 plId2, u32 plId3) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReturnPlayerId[0] = plId1;
-    this->mReturnPlayerId[1] = plId2;
-    this->mReturnPlayerId[2] = plId3;
-    if (((plId1 | plId2) | plId3) == static_cast<u32>(0)) {
+    mReturnPlayerId[0] = plId1;
+    mReturnPlayerId[1] = plId2;
+    mReturnPlayerId[2] = plId3;
+    if (((plId1 | plId2) | plId3) == 0) {
         return;
     }
-    this->mIsReturnPlayer = true;
-    this->mIsDispAnnounce = true;
+    mIsReturnPlayer = true;
+    mIsDispAnnounce = true;
 }
 
 // Address: 0x0015ed80 - 0x0015edde (94 bytes)
@@ -143,71 +143,71 @@ __attribute__((weak)) void cQuestPhaseState001::returnPlayer(u32 characterId) {
 // Address: 0x0015ede0 - 0x0015edfc (28 bytes)
 void cQuestPhaseState001::resetReturnPlayerId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReturnPlayerId[0] = static_cast<unsigned int>(0);
-    this->mReturnPlayerId[1] = static_cast<unsigned int>(0);
-    this->mReturnPlayerId[2] = static_cast<unsigned int>(0);
-    this->mIsReturnPlayer = false;
-    this->mIsDispAnnounce = false;
+    mReturnPlayerId[0] = 0;
+    mReturnPlayerId[1] = 0;
+    mReturnPlayerId[2] = 0;
+    mIsReturnPlayer = false;
+    mIsDispAnnounce = false;
 }
 
 // Address: 0x0015ee10 - 0x0015ee34 (36 bytes)
 bool cQuestPhaseState001::isReturnPlayer(u32 characterId) const {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const unsigned int* p2 = &this->mReturnPlayerId[0];
+    const unsigned int* p2 = &mReturnPlayerId[0];
     do {
         if ((*p2) == characterId) {
             return true;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(2));
+    } while (i <= 2u);
     return false;
 }
 
 // Address: 0x0015ee40 - 0x0015ee45 (5 bytes)
 void cQuestPhaseState001::setDivideSetup(bool isSetup) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDivideSetup = isSetup;
+    mIsDivideSetup = isSetup;
 }
 
 // Address: 0x0015ee50 - 0x0015ee54 (4 bytes)
 bool cQuestPhaseState001::isDivideSetup() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDivideSetup;
+    return mIsDivideSetup;
 }
 
 // Address: 0x0015ee60 - 0x0015ee65 (5 bytes)
 void cQuestPhaseState001::setWarpPlayer(bool isWarp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsWarpPlayer = isWarp;
+    mIsWarpPlayer = isWarp;
 }
 
 // Address: 0x0015ee70 - 0x0015ee74 (4 bytes)
 bool cQuestPhaseState001::isWarpPlayer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsWarpPlayer;
+    return mIsWarpPlayer;
 }
 
 // Address: 0x0015ee80 - 0x0015ee89 (9 bytes)
 void cQuestPhaseState001::setDivideSuccess(bool isSuccess) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsDivideSuccess = isSuccess;
-    this->mHasRequestedWarpPlayer = false;
+    mIsDivideSuccess = isSuccess;
+    mHasRequestedWarpPlayer = false;
 }
 
 // Address: 0x0015ee90 - 0x0015ee94 (4 bytes)
 bool cQuestPhaseState001::isDivideSuccess() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDivideSuccess;
+    return mIsDivideSuccess;
 }
 
 // Address: 0x0015eea0 - 0x0015eeb0 (16 bytes)
 bool cQuestPhaseState001::isDivideProcess() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsDivideSetup == false) {
-        return this->mIsWarpPlayer != false;
+    if (!mIsDivideSetup) {
+        return mIsWarpPlayer;
     } else {
         return true;
     }
@@ -216,37 +216,37 @@ bool cQuestPhaseState001::isDivideProcess() const {
 // Address: 0x0015eeb0 - 0x0015eeb4 (4 bytes)
 bool cQuestPhaseState001::isReturnPlayer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsReturnPlayer;
+    return mIsReturnPlayer;
 }
 
 // Address: 0x0015eec0 - 0x0015eec4 (4 bytes)
 bool cQuestPhaseState001::isDispAnnounce() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsDispAnnounce;
+    return mIsDispAnnounce;
 }
 
 // Address: 0x0015eed0 - 0x0015eed4 (4 bytes)
 bool cQuestPhaseState001::isExistDividePlayer() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mExistDividePlayer;
+    return mExistDividePlayer;
 }
 
 // Address: 0x0015eee0 - 0x0015eee5 (5 bytes)
 void cQuestPhaseState001::setExistDividePlayer(bool isExist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExistDividePlayer = isExist;
+    mExistDividePlayer = isExist;
 }
 
 // Address: 0x0015eef0 - 0x0015eef4 (4 bytes)
 bool cQuestPhaseState001::hasRequestedWarpPlayer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHasRequestedWarpPlayer;
+    return mHasRequestedWarpPlayer;
 }
 
 // Address: 0x0015ef00 - 0x0015ef05 (5 bytes)
 void cQuestPhaseState001::requestWarpPlayer() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHasRequestedWarpPlayer = true;
+    mHasRequestedWarpPlayer = true;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
@@ -257,8 +257,10 @@ void cQuestPhaseState001::requestWarpPlayer() {
 // Address: 0x01980080 - 0x01980085 (5 bytes)
 void cQuestPhaseState001::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cQuestPhaseState::createProperty(s);
+    this->cQuestPhaseState::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cQuestPhaseState001::MyDTI cQuestPhaseState001::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cQuestPhaseState001.cpp at 0x0015ef10-0x0015ef52 (called at cQuestPhaseState001.cpp:27)
@@ -268,6 +270,6 @@ void cQuestPhaseState001::createProperty(MtPropertyList& s) {
 // Address: 0x0015ebd0 - 0x0015ec48 (120 bytes)
 MtObject* cQuestPhaseState001::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cQuestPhaseState001;
+    return new (16u) cQuestPhaseState001;
 }
 

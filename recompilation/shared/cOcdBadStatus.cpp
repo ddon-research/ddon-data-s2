@@ -33,7 +33,7 @@ const MtDTI& cOcdHolyAbsorp::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdHolyAbsorp::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdHolyAbsorp::DTI)->memAlloc(sz, align, ::cOcdHolyAbsorp::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdHolyAbsorp::DTI)->memAlloc(sz, align, cOcdHolyAbsorp::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* cOcdHolyAbsorp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cOcdHolyAbsorp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdHolyAbsorp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdHolyAbsorp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,32 +74,32 @@ cOcdHolyAbsorp::~cOcdHolyAbsorp() {
 // Address: 0x003964c0 - 0x003964c9 (9 bytes)
 void cOcdHolyAbsorp::init(bool initFlag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::init(initFlag);
+    this->cOcdBase::init(initFlag);
 }
 
 // Address: 0x003964d0 - 0x003964d5 (5 bytes)
 void cOcdHolyAbsorp::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::move();
+    this->cOcdBase::move();
 }
 
 // Address: 0x003964e0 - 0x003964e5 (5 bytes)
 void cOcdHolyAbsorp::final() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::final();
+    this->cOcdBase::final();
 }
 
 // Address: 0x003964f0 - 0x003964f5 (5 bytes)
 void cOcdHolyAbsorp::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::update();
+    this->cOcdBase::update();
 }
 
 // Address: 0x00396500 - 0x00396521 (33 bytes)
 void cOcdHolyAbsorp::callbackDamage(cHitInfoAfter* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cOcdBase::callbackDamage(pHitInfo);
-    this->::cOcdHolyAbsorp::checkHolyAbsorp(pHitInfo);
+    this->cOcdBase::callbackDamage(pHitInfo);
+    checkHolyAbsorp(pHitInfo);
 }
 
 // Address: 0x00396700 - 0x0039671e (30 bytes)
@@ -133,6 +133,8 @@ __attribute__((weak)) void cOcdHolyAbsorp::checkHolyAbsorp(cHitInfoAfter* pHitIn
 //   in cOcdHolyAbsorp::checkHolyAbsorp at 0x003965f4-0x0039663a (called at cOcdBadStatus.cpp:2084)
 // u16 cOcdHolyAbsorp::calcHealVal(cHitInfoAfter* pHitInfo) const;
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cOcdHolyAbsorp::MyDTI cOcdHolyAbsorp::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cOcdBadStatus.cpp at 0x00396df4-0x00396e2d (called at cOcdBadStatus.cpp:1935)
 //   in _GLOBAL__sub_I_cOcdBadStatus.cpp at 0x00396df4-0x00396e2d (called at cOcdBadStatus.h:475)
@@ -141,6 +143,6 @@ __attribute__((weak)) void cOcdHolyAbsorp::checkHolyAbsorp(cHitInfoAfter* pHitIn
 // Address: 0x00396400 - 0x0039644e (78 bytes)
 MtObject* cOcdHolyAbsorp::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdHolyAbsorp;
+    return new (16u) cOcdHolyAbsorp;
 }
 

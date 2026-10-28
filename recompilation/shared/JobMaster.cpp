@@ -26,7 +26,7 @@ const MtDTI& CDataJobChangeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataJobChangeInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataJobChangeInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataJobChangeInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* CDataJobChangeInfo::getAllocator() {
 // Address: 0x003da210 - 0x003da250 (64 bytes)
 void* CDataJobChangeInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataJobChangeInfo::getAllocator()->memAlloc(sz, align, ::CDataJobChangeInfo::DTI.::MtDTI::getID());
+    return CDataJobChangeInfo::getAllocator()->memAlloc(sz, align, CDataJobChangeInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* CDataJobChangeInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003da280 - 0x003da2aa (42 bytes)
 __attribute__((weak)) void CDataJobChangeInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataJobChangeInfo::getAllocator()->memFree(p_addr);
+    CDataJobChangeInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,6 +72,8 @@ __attribute__((weak)) void CDataJobChangeInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataJobChangeInfo::CDataJobChangeInfo(u8, const MtTypedArray<CDataEquipItemInfo>&);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataJobChangeInfo::MyDTI CDataJobChangeInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ed07-0x0041ed40 (called at JobMasterImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ed07-0x0041ed40 (called at JobMaster.h:223)
@@ -80,7 +82,7 @@ __attribute__((weak)) void CDataJobChangeInfo::operator delete(void* p_addr) {
 // Address: 0x003da1a0 - 0x003da20d (109 bytes)
 MtObject* CDataJobChangeInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataJobChangeInfo;
+    return new (16u) CDataJobChangeInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,7 +99,7 @@ const MtDTI& CDataPawnJobChangeInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataPawnJobChangeInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataPawnJobChangeInfo::DTI);
+    return MtMemoryAllocator::getAllocator(CDataPawnJobChangeInfo::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -106,7 +108,7 @@ inline MtAllocator* CDataPawnJobChangeInfo::getAllocator() {
 // Address: 0x003da380 - 0x003da3c0 (64 bytes)
 void* CDataPawnJobChangeInfo::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataPawnJobChangeInfo::getAllocator()->memAlloc(sz, align, ::CDataPawnJobChangeInfo::DTI.::MtDTI::getID());
+    return CDataPawnJobChangeInfo::getAllocator()->memAlloc(sz, align, CDataPawnJobChangeInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -121,7 +123,7 @@ void* CDataPawnJobChangeInfo::operator new(size_t sz, u32 align) {
 // Address: 0x003da3f0 - 0x003da41a (42 bytes)
 __attribute__((weak)) void CDataPawnJobChangeInfo::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataPawnJobChangeInfo::getAllocator()->memFree(p_addr);
+    CDataPawnJobChangeInfo::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -142,6 +144,8 @@ __attribute__((weak)) void CDataPawnJobChangeInfo::operator delete(void* p_addr)
 
 // No out-of-line body: no code in the ELF
 // CDataPawnJobChangeInfo::CDataPawnJobChangeInfo(u8, u32, const MtTypedArray<CDataJobChangeInfo>&, const MtTypedArray<CDataJobChangeInfo>&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataPawnJobChangeInfo::MyDTI CDataPawnJobChangeInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ed40-0x0041ed79 (called at JobMasterImplement.inc:11)
@@ -168,7 +172,7 @@ const MtDTI& CDataReleaseElement::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* CDataReleaseElement::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::CDataReleaseElement::DTI);
+    return MtMemoryAllocator::getAllocator(CDataReleaseElement::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -177,7 +181,7 @@ inline MtAllocator* CDataReleaseElement::getAllocator() {
 // Address: 0x003d9f80 - 0x003d9fc0 (64 bytes)
 void* CDataReleaseElement::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::CDataReleaseElement::getAllocator()->memAlloc(sz, align, ::CDataReleaseElement::DTI.::MtDTI::getID());
+    return CDataReleaseElement::getAllocator()->memAlloc(sz, align, CDataReleaseElement::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +196,7 @@ void* CDataReleaseElement::operator new(size_t sz, u32 align) {
 // Address: 0x003d9ff0 - 0x003da01a (42 bytes)
 __attribute__((weak)) void CDataReleaseElement::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::CDataReleaseElement::getAllocator()->memFree(p_addr);
+    CDataReleaseElement::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,6 +218,8 @@ __attribute__((weak)) void CDataReleaseElement::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // CDataReleaseElement::CDataReleaseElement(u8, u32, u8);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): CDataReleaseElement::MyDTI CDataReleaseElement::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ec95-0x0041ecce (called at JobMasterImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041ec95-0x0041ecce (called at JobMaster.h:96)
@@ -222,6 +228,6 @@ __attribute__((weak)) void CDataReleaseElement::operator delete(void* p_addr) {
 // Address: 0x003d9f30 - 0x003d9f7f (79 bytes)
 MtObject* CDataReleaseElement::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::CDataReleaseElement;
+    return new (16u) CDataReleaseElement;
 }
 

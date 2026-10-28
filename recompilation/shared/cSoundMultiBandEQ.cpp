@@ -42,7 +42,7 @@ const MtDTI& cSoundMultiBandEQ::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSoundMultiBandEQ::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundMultiBandEQ::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundMultiBandEQ::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,7 +151,7 @@ cSoundMultiBandEQ::~cSoundMultiBandEQ() {
 // Address: 0x012ef620 - 0x012ef627 (7 bytes)
 void cSoundMultiBandEQ::setChannelNum(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mChannelNum = num;
+    mChannelNum = num;
 }
 
 // Address: 0x012ebe90 - 0x012ebf9f (271 bytes)
@@ -169,22 +169,21 @@ __attribute__((weak)) void cSoundMultiBandEQ::setEnable(bool b) {
 // Address: 0x012ebfa0 - 0x012ebfa7 (7 bytes)
 bool cSoundMultiBandEQ::getBypass() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBypass;
+    return mBypass;
 }
 
 // Address: 0x012ec7b0 - 0x012ec7b7 (7 bytes)
 bool cSoundMultiBandEQ::getEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEnable;
+    return mEnable;
 }
 
 // Address: 0x012ec7d0 - 0x012ec7f3 (35 bytes)
 bool cSoundMultiBandEQ::isAnyEnable() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBypass != false) {
-    } else {
-        if (this->mEnable != false) {
-            return this->mUnitEnable != static_cast<u32>(0);
+    if (!mBypass) {
+        if (mEnable) {
+            return mUnitEnable != 0;
         }
     }
     return false;
@@ -199,60 +198,60 @@ __attribute__((weak)) void cSoundMultiBandEQ::setLowEnable(bool b) {
 // Address: 0x012ecbb0 - 0x012ecbbf (15 bytes)
 void cSoundMultiBandEQ::setLowFreq(f32 freq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreq.x = freq;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(0));
+    mFreq.x = freq;
+    setEQParam(0u);
 }
 
 // Address: 0x012ecbc0 - 0x012ecbcf (15 bytes)
 void cSoundMultiBandEQ::setLowGain(f32 gain) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGain.x = gain;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(0));
+    mGain.x = gain;
+    setEQParam(0u);
 }
 
 // Address: 0x012ecbd0 - 0x012ecbdf (15 bytes)
 void cSoundMultiBandEQ::setLowQ(f32 q) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQ.x = q;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(0));
+    mQ.x = q;
+    setEQParam(0u);
 }
 
 // Address: 0x012ecbe0 - 0x012ecbea (10 bytes)
 bool cSoundMultiBandEQ::getLowEnable() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mUnitEnable & static_cast<u32>(1));
+    return static_cast<bool>(mUnitEnable & 1u);
 }
 
 // Address: 0x012ecbf0 - 0x012ecbf9 (9 bytes)
 f32 cSoundMultiBandEQ::getLowFreq() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreq.x;
+    return mFreq.x;
 }
 
 // Address: 0x012ecc10 - 0x012ecc19 (9 bytes)
 f32 cSoundMultiBandEQ::getLowGain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGain.x;
+    return mGain.x;
 }
 
 // Address: 0x012ecc30 - 0x012ecc39 (9 bytes)
 f32 cSoundMultiBandEQ::getLowQ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQ.x;
+    return mQ.x;
 }
 
 // Address: 0x012ecc50 - 0x012ecc5d (13 bytes)
 void cSoundMultiBandEQ::setLowType(cSoundMultiBandEQ::EQ_FILTER_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLowType = type;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(0));
+    mLowType = type;
+    setEQParam(0u);
 }
 
 // Address: 0x012ecc60 - 0x012ecc67 (7 bytes)
 cSoundMultiBandEQ::EQ_FILTER_TYPE cSoundMultiBandEQ::getLowType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLowType;
+    return mLowType;
 }
 
 // Address: 0x012ecc70 - 0x012ed11b (1195 bytes)
@@ -285,25 +284,25 @@ bool cSoundMultiBandEQ::getMidLowEnable() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 664)) & 2) >> 1);
 }
 
 // Address: 0x012ed4c0 - 0x012ed4c9 (9 bytes)
 f32 cSoundMultiBandEQ::getMidLowFreq() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreq.y;
+    return mFreq.y;
 }
 
 // Address: 0x012ed4d0 - 0x012ed4d9 (9 bytes)
 f32 cSoundMultiBandEQ::getMidLowGain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGain.y;
+    return mGain.y;
 }
 
 // Address: 0x012ed4e0 - 0x012ed4e9 (9 bytes)
 f32 cSoundMultiBandEQ::getMidLowQ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQ.y;
+    return mQ.y;
 }
 
 // Address: 0x012ed4f0 - 0x012ed99b (1195 bytes)
@@ -336,25 +335,25 @@ bool cSoundMultiBandEQ::getMidHighEnable() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 664)) & 4) >> 2);
 }
 
 // Address: 0x012edd40 - 0x012edd49 (9 bytes)
 f32 cSoundMultiBandEQ::getMidHighFreq() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreq.z;
+    return mFreq.z;
 }
 
 // Address: 0x012edd50 - 0x012edd59 (9 bytes)
 f32 cSoundMultiBandEQ::getMidHighGain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGain.z;
+    return mGain.z;
 }
 
 // Address: 0x012edd60 - 0x012edd69 (9 bytes)
 f32 cSoundMultiBandEQ::getMidHighQ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQ.z;
+    return mQ.z;
 }
 
 // Address: 0x012edd70 - 0x012ee118 (936 bytes)
@@ -366,22 +365,22 @@ __attribute__((weak)) void cSoundMultiBandEQ::setHighEnable(bool b) {
 // Address: 0x012ee120 - 0x012ee132 (18 bytes)
 void cSoundMultiBandEQ::setHighFreq(f32 freq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFreq.w = freq;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(3));
+    mFreq.w = freq;
+    setEQParam(3u);
 }
 
 // Address: 0x012ee140 - 0x012ee152 (18 bytes)
 void cSoundMultiBandEQ::setHighGain(f32 gain) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGain.w = gain;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(3));
+    mGain.w = gain;
+    setEQParam(3u);
 }
 
 // Address: 0x012ee160 - 0x012ee172 (18 bytes)
 void cSoundMultiBandEQ::setHighQ(f32 q) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mQ.w = q;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(3));
+    mQ.w = q;
+    setEQParam(3u);
 }
 
 // Address: 0x012ee180 - 0x012ee18c (12 bytes)
@@ -390,38 +389,38 @@ bool cSoundMultiBandEQ::getHighEnable() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 664)) & 8) >> 3);
 }
 
 // Address: 0x012ee190 - 0x012ee199 (9 bytes)
 f32 cSoundMultiBandEQ::getHighFreq() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFreq.w;
+    return mFreq.w;
 }
 
 // Address: 0x012ee1a0 - 0x012ee1a9 (9 bytes)
 f32 cSoundMultiBandEQ::getHighGain() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGain.w;
+    return mGain.w;
 }
 
 // Address: 0x012ee1b0 - 0x012ee1b9 (9 bytes)
 f32 cSoundMultiBandEQ::getHighQ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mQ.w;
+    return mQ.w;
 }
 
 // Address: 0x012ee1c0 - 0x012ee1d0 (16 bytes)
 void cSoundMultiBandEQ::setHighType(cSoundMultiBandEQ::EQ_FILTER_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHighType = type;
-    this->::cSoundMultiBandEQ::setEQParam(static_cast<u32>(3));
+    mHighType = type;
+    setEQParam(3u);
 }
 
 // Address: 0x012ee1d0 - 0x012ee1d7 (7 bytes)
 cSoundMultiBandEQ::EQ_FILTER_TYPE cSoundMultiBandEQ::getHighType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mHighType;
+    return mHighType;
 }
 
 // Address: 0x012ee1e0 - 0x012ee5d5 (1013 bytes)
@@ -457,8 +456,13 @@ __attribute__((weak)) void cSoundMultiBandEQ::createProperty(MtPropertyList& s) 
 // Address: 0x012f0450 - 0x012f0455 (5 bytes)
 MtUI* cSoundMultiBandEQ::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundMultiBandEQ::MyDTI cSoundMultiBandEQ::DTI;
+
+// From the ELF: its bytes in .data (D-S1).
+s32 cSoundMultiBandEQ::mEnableUnitTable[16] = {-1, 0, 1, -1, 2, -1, -1, -1, 3, -1, -1, -1, -1, -1, -1, -1};
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cSoundMultiBandEQ::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

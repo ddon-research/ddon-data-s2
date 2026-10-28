@@ -59,7 +59,7 @@ const MtDTI& cFSMBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -74,49 +74,54 @@ inline void cFSMBase::operator delete(void* p_addr) {
 // Address: 0x001e0990 - 0x001e09a2 (18 bytes)
 void cFSMBase::callbackUpdate() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno = static_cast<u32>(0);
-    this->mIsMyQuestFlag = false;
+    mRno = 0;
+    mIsMyQuestFlag = false;
 }
 
 // Address: 0x001e0f90 - 0x001e0feb (91 bytes)
 u32 cFSMBase::stateCallMessage(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
-    if (this->mIsDispMsg == false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
-            this->mIsDispMsg = true;
+    if (!mIsDispMsg) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->isTelopFSMEnd()) {
+            mIsDispMsg = true;
         }
-        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
-                this->mIsDispMsg = true;
+        if (sArea::getInstance()->mpArea[2] != nullptr) {
+            if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mbFsmEventPlay) {
+                mIsDispMsg = true;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0f20 - 0x001e0f8c (108 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateCallMessage(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamCallMessage* pMsgParam;
-    DDON_STUB("cFSMBase::stateUpdateCallMessage")
-    return {};
+u32 cFSMBase::stateUpdateCallMessage(MtObject* pParam, MtObject* pCaller) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a downcast named by the DWARF local the source declared: pMsgParam, located in the register the access reads through
+    cParamCallMessage* pMsgParam = static_cast<cParamCallMessage*>(pParam);
+    sTalkManager::getInstance()->callFSMEventMsg(pMsgParam->mMsgType, pMsgParam->mQstNo, pMsgParam->mMsgNo, pMsgParam->mMsgDispTime, pMsgParam->mMsgWaitTime, pMsgParam->mIsUseSerial, pMsgParam->mIsHideMessage);
+    mIsDispMsg = false;
+    mFsmMesWaitTime = 0.16666667f + (pMsgParam->mMsgDispTime + pMsgParam->mMsgWaitTime);
+    mChangeCountState = mFsmMesWaitTime;
+    return 0;
 }
 
 // Address: 0x001e0ff0 - 0x001e104b (91 bytes)
 u32 cFSMBase::stateCallMessageFortDef_Common(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
-    if (this->mIsDispMsg == false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
-            this->mIsDispMsg = true;
+    if (!mIsDispMsg) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->isTelopFSMEnd()) {
+            mIsDispMsg = true;
         }
-        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
-                this->mIsDispMsg = true;
+        if (sArea::getInstance()->mpArea[2] != nullptr) {
+            if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mbFsmEventPlay) {
+                mIsDispMsg = true;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e1050 - 0x001e113e (238 bytes)
@@ -134,17 +139,17 @@ __attribute__((weak)) u32 cFSMBase::stateUpdateCallMessageFortDef_Common(MtObjec
 u32 cFSMBase::stateCallMessageFortDef_BattleStart(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
-    if (this->mIsDispMsg == false) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
-            this->mIsDispMsg = true;
+    if (!mIsDispMsg) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->isTelopFSMEnd()) {
+            mIsDispMsg = true;
         }
-        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
-                this->mIsDispMsg = true;
+        if (sArea::getInstance()->mpArea[2] != nullptr) {
+            if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mbFsmEventPlay) {
+                mIsDispMsg = true;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e11a0 - 0x001e1286 (230 bytes)
@@ -169,10 +174,10 @@ u32 cFSMBase::stateUpdateGameGlobalFlagOn(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(3), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(3u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), true, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0a10 - 0x001e0a3f (47 bytes)
@@ -180,10 +185,10 @@ u32 cFSMBase::stateUpdateGameGlobalFlagOff(MtObject* pParam, MtObject* pCaller) 
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(3), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(3u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), false, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0a40 - 0x001e0b06 (198 bytes)
@@ -202,10 +207,10 @@ u32 cFSMBase::stateUpdateSceFlagOn(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(8), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(8u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), true, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0b60 - 0x001e0b8f (47 bytes)
@@ -213,10 +218,10 @@ u32 cFSMBase::stateUpdateSceFlagOff(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(8), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(8u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), false, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0b90 - 0x001e0bc2 (50 bytes)
@@ -224,10 +229,10 @@ u32 cFSMBase::stateUpdateEvtFlagOn(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(9), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(9u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), true, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0bd0 - 0x001e0bff (47 bytes)
@@ -235,10 +240,10 @@ u32 cFSMBase::stateUpdateEvtFlagOff(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(9), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    if (pParam != nullptr) {
+        sFlag::getInstance()->setFlag(9u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), false, true, false);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001e0c00 - 0x001e0c5f (95 bytes)
@@ -275,25 +280,25 @@ __attribute__((weak)) bool cFSMBase::isEndCameraCut(u32 cutNo) const {
 // Address: 0x001e1390 - 0x001e1396 (6 bytes)
 u32 cFSMBase::getCameraCutNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(64);
+    return 64;
 }
 
 // Address: 0x001e13a0 - 0x001e13aa (10 bytes)
 bool cFSMBase::isEndCameraSdr(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return idx < this->mNowCamSdrIdx;
+    return idx < mNowCamSdrIdx;
 }
 
 // Address: 0x001e13b0 - 0x001e13b6 (6 bytes)
 u32 cFSMBase::getCameraSdrNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(16);
+    return 16;
 }
 
 // Address: 0x001e13c0 - 0x001e13ca (10 bytes)
 bool cFSMBase::isNowCameraSdr(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNowCamSdrIdx == idx;
+    return mNowCamSdrIdx == idx;
 }
 
 // Address: 0x001e1360 - 0x001e1389 (41 bytes)
@@ -318,7 +323,7 @@ __attribute__((weak)) bool cFSMBase::getGGFlag(u32 flagNo) const {
 // Address: 0x001e1420 - 0x001e1426 (6 bytes)
 u32 cFSMBase::getGGFlagNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(512);
+    return 512;
 }
 
 // Address: 0x001e1430 - 0x001e14db (171 bytes)
@@ -331,14 +336,14 @@ __attribute__((weak)) bool cFSMBase::getMyQuestFlag(u32 flagNo) const {
 // Address: 0x001e14e0 - 0x001e14fd (29 bytes)
 u32 cFSMBase::getMyQuestFlagNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mQuestType != static_cast<u32>(0)) {
-        if (this->mQuestType == static_cast<u32>(1)) {
-            return static_cast<u32>(32);
+    if (mQuestType != 0) {
+        if (mQuestType == 1) {
+            return 32;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(64);
+        return 64;
     }
 }
 
@@ -357,7 +362,7 @@ __attribute__((weak)) bool cFSMBase::getSceFlag(u32 flagNo) const {
 // Address: 0x001e1550 - 0x001e1556 (6 bytes)
 u32 cFSMBase::getSceFlagNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
 
 // Address: 0x001e1560 - 0x001e1585 (37 bytes)
@@ -369,25 +374,25 @@ __attribute__((weak)) bool cFSMBase::getEvtFlag(u32 flagNo) const {
 // Address: 0x001e1590 - 0x001e1596 (6 bytes)
 u32 cFSMBase::getEvtFlagNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(64);
+    return 64;
 }
 
 // Address: 0x019880e0 - 0x019880e7 (7 bytes)
 bool cFSMBase::isMyQuestFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsMyQuestFlag;
+    return mIsMyQuestFlag;
 }
 
 // Address: 0x01988100 - 0x01988106 (6 bytes)
 u32 cFSMBase::getMyQuestFlagArrayNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
 
 // Address: 0x019880f0 - 0x019880fa (10 bytes)
 bool cFSMBase::isMyQuestFlagArray(u32 idx) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsMyQuestFlagArray[idx];
+    return mIsMyQuestFlagArray[idx];
 }
 
 // Address: 0x001e1290 - 0x001e129f (15 bytes)
@@ -405,19 +410,19 @@ __attribute__((weak)) bool cFSMBase::isFadeOut() const {
 // Address: 0x001e12b0 - 0x001e1306 (86 bytes)
 bool cFSMBase::isMessageEnded() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isFsmEventPlay() != false) {
-            return this->::cFSMCore::mCountState >= this->mFsmMesWaitTime;
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isFsmEventPlay()) {
+            return mCountState >= mFsmMesWaitTime;
         } else {
-            if (this->mIsDispMsg != false) {
-                return ::sTalkManager::getInstance()->::sTalkManager::isEndTellMsg();
+            if (mIsDispMsg) {
+                return sTalkManager::getInstance()->isEndTellMsg();
             } else {
                 return false;
             }
         }
     } else {
-        if (this->mIsDispMsg != false) {
-            return ::sTalkManager::getInstance()->::sTalkManager::isEndTellMsg();
+        if (mIsDispMsg) {
+            return sTalkManager::getInstance()->isEndTellMsg();
         } else {
             return false;
         }
@@ -461,7 +466,7 @@ cFSMBase::~cFSMBase() {
 // Address: 0x001e18a0 - 0x001e18a5 (5 bytes)
 void cFSMBase::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cFSMCore::createProperty(s);
+    this->cFSMCore::createProperty(s);
 }
 
 // Address: 0x001e18b0 - 0x001e1903 (83 bytes)
@@ -469,21 +474,21 @@ void cFSMBase::move() {
     // DWARF local not rendered: const bool isUpdateCut;
     // DWARF local not rendered: const bool isNewAnmCam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cFSMCore::move();
-    uCameraGame* pCam = static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::getGameCamera();
-    if (pCam == static_cast<uCameraGame*>(nullptr)) {
+    this->cFSMCore::move();
+    uCameraGame* pCam = static_cast<sCameraExt*>(sCamera::getInstance())->getGameCamera();
+    if (pCam == nullptr) {
         return;
     }
-    if (pCam->::uCameraBase::isInitial() == false) {
+    if (!pCam->uCameraBase::isInitial()) {
         return;
     }
-    const u32 cutNo = pCam->::uCameraGame::getCut();
-    if (cutNo == static_cast<u32>(0)) {
-        if (this->mOldCamCutNo != static_cast<u32>(0)) {
-            this->mNowCamSdrIdx = this->mNowCamSdrIdx + static_cast<u32>(1);
+    const u32 cutNo = pCam->uCameraGame::getCut();
+    if (cutNo == 0) {
+        if (mOldCamCutNo != 0) {
+            mNowCamSdrIdx = mNowCamSdrIdx + 1u;
         }
     }
-    this->mOldCamCutNo = cutNo;
+    mOldCamCutNo = cutNo;
 }
 
 // Address: 0x001e1910 - 0x001e1fd1 (1729 bytes)
@@ -491,6 +496,8 @@ __attribute__((weak)) void cFSMBase::createPropertyFSM(MtPropertyList& s) {
     DDON_STUB("cFSMBase::createPropertyFSM")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cFSMBase::MyDTI cFSMBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cFSMBase.cpp at 0x001e20de-0x001e211b (called at cFSMBase.cpp:44)
@@ -525,7 +532,7 @@ const MtDTI& cFSMBase::cParamCallMessage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFSMBase::cParamCallMessage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessage::DTI)->memAlloc(sz, align, ::cFSMBase::cParamCallMessage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessage::DTI)->memAlloc(sz, align, cFSMBase::cParamCallMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -540,7 +547,7 @@ inline void* cFSMBase::cParamCallMessage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMBase17cParamCallMessageD0Ev at 0x0198894e-0x0198896f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMBase::cParamCallMessage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -567,8 +574,10 @@ __attribute__((weak)) void cFSMBase::cParamCallMessage::createProperty(MtPropert
 // Address: 0x01988920 - 0x01988925 (5 bytes)
 MtUI* cFSMBase::cParamCallMessage::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMBase::cParamCallMessage::MyDTI cFSMBase::cParamCallMessage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cFSMBase.cpp at 0x001e211b-0x001e2158 (called at cFSMBase.cpp:45)
@@ -578,7 +587,7 @@ MtUI* cFSMBase::cParamCallMessage::createUI(MtProperty& prop) {
 // Address: 0x001e07a0 - 0x001e0817 (119 bytes)
 MtObject* cFSMBase::cParamCallMessage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMBase::cParamCallMessage;
+    return new (16u) cFSMBase::cParamCallMessage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -616,7 +625,7 @@ const MtDTI& cFSMBase::cParamCallMessageFortDef_Common::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMBase31cParamCallMessageFortDef_CommonD0Ev at 0x0198816e-0x0198818f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMBase::cParamCallMessageFortDef_Common::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessageFortDef_Common::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessageFortDef_Common::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -642,8 +651,10 @@ __attribute__((weak)) void cFSMBase::cParamCallMessageFortDef_Common::createProp
 // Address: 0x01988190 - 0x01988195 (5 bytes)
 MtUI* cFSMBase::cParamCallMessageFortDef_Common::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMBase::cParamCallMessageFortDef_Common::MyDTI cFSMBase::cParamCallMessageFortDef_Common::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMBase.cpp at 0x001e2158-0x001e2191 (called at cFSMBase.cpp:46)

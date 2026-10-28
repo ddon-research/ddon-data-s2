@@ -60,6 +60,8 @@ public:
 public:
     class Node : public MtObject
     {
+        // inferred: cDynamicBVHCollision::unregistAllCore names cDynamicBVHCollision::Node::mpChild[1]
+        friend class cDynamicBVHCollision;
     public:
         class MyDTI;
     public:

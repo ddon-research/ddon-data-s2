@@ -103,13 +103,13 @@ __attribute__((weak)) void cOmParam::createProperty(MtPropertyList& s) {
 // Address: 0x006c6280 - 0x006c6284 (4 bytes)
 u32 cOmParam::getOmUnitID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUnitDTIID;
+    return mUnitDTIID;
 }
 
 // Address: 0x006c6260 - 0x006c6264 (4 bytes)
 u32 cOmParam::getOmFlag() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseComponent;
+    return mUseComponent;
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,14 +130,16 @@ bool cOmParam::isReqSeFlag(u32 flag) const {
 // Address: 0x006c6570 - 0x006c657b (11 bytes)
 bool cOmParam::chkVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVersion <= static_cast<u32>(8224);
+    return mVersion <= 8224u;
 }
 
 // Address: 0x006c6580 - 0x006c6587 (7 bytes)
 bool cOmParam::chkVersion(u32 targetVersion) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return targetVersion >= this->mVersion;
+    return targetVersion >= mVersion;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOmParam::MyDTI cOmParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOmParam.cpp at 0x006c70ef-0x006c712c (called at rOmParam.cpp:98)
@@ -172,7 +174,7 @@ const MtDTI& rOmParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rOmParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rOmParam::DTI)->memAlloc(sz, align, ::rOmParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rOmParam::DTI)->memAlloc(sz, align, rOmParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -187,7 +189,7 @@ inline void* rOmParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8rOmParamD0Ev at 0x01aaa86e-0x01aaa88f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rOmParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rOmParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rOmParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -201,7 +203,7 @@ inline void rOmParam::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rOmParam::rOmParam() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
+    setAttribute(16u);
 }
 
 // Address: 0x01aaaa20 - 0x01aaaa28 (8 bytes)
@@ -219,14 +221,14 @@ MT_CTSTR rOmParam::getExt() const {
 // Address: 0x01aaaa30 - 0x01aaaa36 (6 bytes)
 u16 rOmParam::getDataVersion() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u16>(56);
+    return 56;
 }
 
 // Address: 0x01aaa8b0 - 0x01aaa919 (105 bytes)
 bool rOmParam::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    return this->::rOmParam::loadData(r);
+    MtDataReader r(in, 4096u);
+    return loadData(r);
 }
 
 // Address: 0x01aaaa40 - 0x01aaadef (943 bytes)
@@ -258,103 +260,103 @@ bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mOmID);
+    nDDOIO::readData(in, pData->mOmID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrModel);
+    nDDOIO::readData(in, pData->mrModel);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrObjCollision);
+    nDDOIO::readData(in, pData->mrObjCollision);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrMotionList);
+    nDDOIO::readData(in, pData->mrMotionList);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrSoundMotionSe);
+    nDDOIO::readData(in, pData->mrSoundMotionSe);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mUnitDTIID);
+    nDDOIO::readData(in, pData->mUnitDTIID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mUseComponent);
+    nDDOIO::readData(in, pData->mUseComponent);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mOmSetType);
+    nDDOIO::readData(in, pData->mOmSetType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrEffectProvider);
+    nDDOIO::readData(in, pData->mrEffectProvider);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrSoundRequest);
+    nDDOIO::readData(in, pData->mrSoundRequest);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mReqSeFlag);
+    nDDOIO::readData(in, pData->mReqSeFlag);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mFxIndex[0]);
+    nDDOIO::readData(in, pData->mFxIndex[0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSeIndex[0]);
+    nDDOIO::readData(in, pData->mSeIndex[0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mFxIndex[1]);
+    nDDOIO::readData(in, pData->mFxIndex[1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSeIndex[1]);
+    nDDOIO::readData(in, pData->mSeIndex[1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mFxIndex[2]);
+    nDDOIO::readData(in, pData->mFxIndex[2]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSeIndex[2]);
+    nDDOIO::readData(in, pData->mSeIndex[2]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mFxIndex[3]);
+    nDDOIO::readData(in, pData->mFxIndex[3]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mSeIndex[3]);
+    nDDOIO::readData(in, pData->mSeIndex[3]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrSwingModel);
+    nDDOIO::readData(in, pData->mrSwingModel);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrSoftBody);
+    nDDOIO::readData(in, pData->mrSoftBody);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrRigidBody);
+    nDDOIO::readData(in, pData->mrRigidBody);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrBrRigidBody);
+    nDDOIO::readData(in, pData->mrBrRigidBody);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrBrModel);
+    nDDOIO::readData(in, pData->mrBrModel);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrBrSoftBody);
+    nDDOIO::readData(in, pData->mrBrSoftBody);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrCaught);
+    nDDOIO::readData(in, pData->mrCaught);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrZone);
+    nDDOIO::readData(in, pData->mrZone);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrOmZone);
+    nDDOIO::readData(in, pData->mrOmZone);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrJointInfo);
+    nDDOIO::readData(in, pData->mrJointInfo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDetailBehavior);
+    nDDOIO::readData(in, pData->mDetailBehavior);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMapIcon);
+    nDDOIO::readData(in, pData->mMapIcon);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mKillLength);
+    nDDOIO::readData(in, pData->mKillLength);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mbUseNightColor);
+    nDDOIO::readData(in, pData->mbUseNightColor);
     pData->mNightColor = in.readV3();
     pData->mRigidTime = in.readF32();
     pData->mRigidForce = in.readF32();
@@ -366,12 +368,12 @@ bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mKeyOfs = in.readV3();
-    ::nDDOIO::readData(in, pData->mbNav);
+    nDDOIO::readData(in, pData->mbNav);
     pData->mNavOBBPos = in.readV3();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mNavOBBExtent = in.readV3();
-    ::nDDOIO::readData(in, pData->mbAtk);
+    nDDOIO::readData(in, pData->mbAtk);
     pData->mShotGroup = in.readU32();
     pData->mWepType = in.readS32();
     pData->mThrowVelocity = in.readF32();
@@ -381,25 +383,25 @@ bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
     pData->mTargetOfs = in.readV3();
-    ::nDDOIO::readData(in, pData->mColliOffFrame);
+    nDDOIO::readData(in, pData->mColliOffFrame);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBlinkType);
+    nDDOIO::readData(in, pData->mBlinkType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrCollision[0][0]);
+    nDDOIO::readData(in, pData->mrCollision[0][0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrCollision[0][1]);
+    nDDOIO::readData(in, pData->mrCollision[0][1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrCollision[1][0]);
+    nDDOIO::readData(in, pData->mrCollision[1][0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mrCollision[1][1]);
+    nDDOIO::readData(in, pData->mrCollision[1][1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mVersion);
+    nDDOIO::readData(in, pData->mVersion);
     return true;
 }
 
@@ -419,6 +421,8 @@ __attribute__((weak)) bool rOmParam::saveData(MtDataWriter& out, cOmParam* pData
 // No out-of-line body: no code in the ELF
 // void rOmParam::setData(MtObject*, u32);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rOmParam::MyDTI rOmParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rOmParam.cpp at 0x006c712c-0x006c7169 (called at rOmParam.cpp:1303)
 //   in _GLOBAL__sub_I_rOmParam.cpp at 0x006c712c-0x006c7169 (called at rOmParam.h:325)
@@ -427,6 +431,6 @@ __attribute__((weak)) bool rOmParam::saveData(MtDataWriter& out, cOmParam* pData
 // Address: 0x006c6590 - 0x006c65e5 (85 bytes)
 MtObject* rOmParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rOmParam;
+    return new (16u) rOmParam;
 }
 

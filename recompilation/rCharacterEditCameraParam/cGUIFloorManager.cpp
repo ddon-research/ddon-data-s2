@@ -26,7 +26,7 @@ const MtDTI& cGUIFloorManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cGUIFloorManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::DTI);
+    return MtMemoryAllocator::getAllocator(cGUIFloorManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -35,7 +35,7 @@ inline MtAllocator* cGUIFloorManager::getAllocator() {
 // Address: 0x001fef30 - 0x001fef70 (64 bytes)
 void* cGUIFloorManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cGUIFloorManager::getAllocator()->memAlloc(sz, align, ::cGUIFloorManager::DTI.::MtDTI::getID());
+    return cGUIFloorManager::getAllocator()->memAlloc(sz, align, cGUIFloorManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ void* cGUIFloorManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIFloorManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIFloorManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -188,12 +188,12 @@ __attribute__((weak)) u32 cGUIFloorManager::getHouseTopNum(u32 idx) {
 // Address: 0x002001a0 - 0x002001be (30 bytes)
 s32 cGUIFloorManager::getFloorGroupNo(u32 idx) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (idx != static_cast<u32>(4294967295)) {
-        if (idx < this->mParamArray.::MtArray::mLength) {
-            return static_cast<cGUIFloorManager::cParam*>(this->mParamArray.::MtArray::getBuffer()[static_cast<int>(idx)])->::cGUIFloorManager::cParam::getFloorGroupNo();
+    if (idx != 0xFFFFFFFFu) {
+        if (idx < mParamArray.mLength) {
+            return static_cast<cGUIFloorManager::cParam*>(mParamArray.getBuffer()[static_cast<int>(idx)])->getFloorGroupNo();
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -266,11 +266,11 @@ __attribute__((weak)) s32 cGUIFloorManager::getFloorIdFromPos(const MtVector3& v
 void cGUIFloorManager::setFloorBaseIdOfs(u32 idx, s32 sFloorBaseIdOfs) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
-    if (idx == static_cast<u32>(4294967295)) {
+    if (idx == 0xFFFFFFFFu) {
         return;
     }
-    if (idx < this->mParamArray.::MtArray::mLength) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mParamArray.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(16)) = static_cast<unsigned int>(sFloorBaseIdOfs);
+    if (idx < mParamArray.mLength) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mParamArray.getBuffer()[static_cast<int>(idx)]) + 16) = static_cast<unsigned int>(sFloorBaseIdOfs);
     }
 }
 
@@ -287,6 +287,12 @@ void cGUIFloorManager::setFloorBaseIdOfs(u32 idx, s32 sFloorBaseIdOfs) {
 //   in cGUIFloorManager::getTextureNumY at 0x001fff80-0x001fffac (called at cGUIFloorManager.cpp:533)
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // rGUIMapSetting* cGUIFloorManager::getResPrivate(u32 idx);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIFloorManager::MyDTI cGUIFloorManager::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const s32 cGUIFloorManager::DISABLE_FLOOR;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const s32 cGUIFloorManager::DISABLE_GROUP;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cGUIFloorManager.cpp at 0x0020055e-0x0020059e (called at cGUIFloorManager.cpp:32)
@@ -323,7 +329,7 @@ const MtDTI& cGUIFloorManager::cParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cGUIFloorManager::cParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::cParam::DTI)->memAlloc(sz, align, ::cGUIFloorManager::cParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cGUIFloorManager::cParam::DTI)->memAlloc(sz, align, cGUIFloorManager::cParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -338,7 +344,7 @@ inline void* cGUIFloorManager::cParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIFloorManager::cParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::cParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIFloorManager::cParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -359,11 +365,11 @@ inline void cGUIFloorManager::cParam::operator delete(void* p_addr) {
 // Also emitted as: _ZN16cGUIFloorManager6cParamD0Ev at 0x002002e0
 cGUIFloorManager::cParam::~cParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRes == static_cast<rGUIMapSetting*>(nullptr)) {
+    if (mpRes == nullptr) {
         return;
     }
-    this->mpRes->::cResource::release();
-    this->mpRes = static_cast<rGUIMapSetting*>(nullptr);
+    mpRes->release();
+    mpRes = nullptr;
 }
 
 // Address: 0x00200330 - 0x0020044f (287 bytes)
@@ -375,7 +381,7 @@ __attribute__((weak)) void cGUIFloorManager::cParam::createProperty(MtPropertyLi
 // Address: 0x00200450 - 0x00200455 (5 bytes)
 MtUI* cGUIFloorManager::cParam::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x001ff5c0 - 0x001ff5fd (61 bytes)
@@ -387,7 +393,7 @@ __attribute__((weak)) void cGUIFloorManager::cParam::setResource(rGUIMapSetting*
 // Address: 0x0198a500 - 0x0198a505 (5 bytes)
 rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRes;
+    return mpRes;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -406,6 +412,8 @@ rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
 //   in cGUIFloorManager::getFloorGroupNo at 0x002001ba-0x002001bd (called at cGUIFloorManager.cpp:617)
 // s32 cGUIFloorManager::cParam::getFloorGroupNo();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIFloorManager::cParam::MyDTI cGUIFloorManager::cParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cGUIFloorManager.cpp at 0x0020059e-0x002005d7 (called at cGUIFloorManager.cpp:627)
 //   in _GLOBAL__sub_I_cGUIFloorManager.cpp at 0x0020059e-0x002005d7 (called at cGUIFloorManager.h:42)
@@ -414,7 +422,7 @@ rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
 // Address: 0x002001c0 - 0x00200216 (86 bytes)
 MtObject* cGUIFloorManager::cParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cGUIFloorManager::cParam;
+    return new (16u) cGUIFloorManager::cParam;
 }
 
 // Instance at 0x0198a4e0 - 0x0198a4e5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

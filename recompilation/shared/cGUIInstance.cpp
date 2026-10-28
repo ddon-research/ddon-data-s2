@@ -80,7 +80,7 @@ cGUIInstAnimControl::~cGUIInstAnimControl() {
 // Address: 0x01073d30 - 0x01073d35 (5 bytes)
 MtUI* cGUIInstAnimControl::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01073d40 - 0x01073e72 (306 bytes)
@@ -105,7 +105,7 @@ __attribute__((weak)) void cGUIInstAnimControl::init() {
 // Address: 0x01b71c40 - 0x01b71c4c (12 bytes)
 bool cGUIInstAnimControl::isAnimationEnd() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpNowAnimSection == static_cast<nGUI::ANIM_SECTION*>(nullptr);
+    return mpNowAnimSection == nullptr;
 }
 
 // Address: 0x01073f50 - 0x0107406a (282 bytes)
@@ -117,33 +117,33 @@ __attribute__((weak)) void cGUIInstAnimControl::restart() {
 // Address: 0x01b71c50 - 0x01b71c59 (9 bytes)
 void cGUIInstAnimControl::resetCurrentFrame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->restart();
+    restart();
 }
 
 // Address: 0x01074080 - 0x0107409e (30 bytes)
 void cGUIInstAnimControl::play(f32 delta) {
     // DWARF local not rendered: cGUIVariable* pVariable;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cGUIInstAnimVariable::mpVariable == static_cast<cGUIVariable*>(nullptr)) {
+    if (mpVariable == nullptr) {
         return;
     }
-    if (this->mUseSequence != false) {
-        this->::cGUIInstAnimControl::playSequence(delta);
+    if (mUseSequence) {
+        playSequence(delta);
     } else {
-        this->::cGUIInstAnimControl::playSection(delta);
+        playSection(delta);
     }
 }
 
 // Address: 0x01b71b00 - 0x01b71b08 (8 bytes)
 void cGUIInstAnimControl::setUseSequence(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mUseSequence = v;
+    mUseSequence = v;
 }
 
 // Address: 0x01b71af0 - 0x01b71af7 (7 bytes)
 bool cGUIInstAnimControl::isUseSequence() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mUseSequence;
+    return mUseSequence;
 }
 
 // Address: 0x01074970 - 0x0107518b (2075 bytes)
@@ -182,11 +182,15 @@ __attribute__((weak)) void cGUIInstAnimControl::setExtendData(void* pData) {
 }
 
 // Address: 0x010751b0 - 0x010751cb (27 bytes)
-__attribute__((weak)) void cGUIInstAnimControl::copyExtendData(cGUIInstance* pInstance) {
-    // local: cGUIInstAnimControl* pDist;
-    DDON_STUB("cGUIInstAnimControl::copyExtendData")
-    /* stub */
+void cGUIInstAnimControl::copyExtendData(cGUIInstance* pInstance) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a downcast named by the DWARF local the source declared: pDist, its location optimized out, declared in the lexical block that holds the access
+    cGUIInstAnimControl* pDist = static_cast<cGUIInstAnimControl*>(pInstance);
+    pDist->mAnimSectionNum = mAnimSectionNum;
+    pDist->mpAnimSection = mpAnimSection;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIInstAnimControl::MyDTI cGUIInstAnimControl::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstAnimControl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -259,7 +263,7 @@ cGUIInstAnimVariable::~cGUIInstAnimVariable() {
 // Address: 0x01073600 - 0x01073605 (5 bytes)
 MtUI* cGUIInstAnimVariable::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01073610 - 0x010736b3 (163 bytes)
@@ -278,18 +282,18 @@ __attribute__((weak)) void cGUIInstAnimVariable::init() {
 void cGUIInstAnimVariable::setVariableId(u32 id) {
     // DWARF local not rendered: uGUI* pUnit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mVariableId = id;
-    this->mpVariable = static_cast<cGUIVariable*>(nullptr);
-    if (this->::cGUIInstance::mpUnit == static_cast<uGUI*>(nullptr)) {
+    mVariableId = id;
+    mpVariable = nullptr;
+    if (mpUnit == nullptr) {
         return;
     }
-    this->mpVariable = this->::cGUIInstance::mpUnit->::uGUI::getVariable(id);
+    mpVariable = mpUnit->getVariable(id);
 }
 
 // Address: 0x01b71ad0 - 0x01b71ad7 (7 bytes)
 u32 cGUIInstAnimVariable::getVariableId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mVariableId;
+    return mVariableId;
 }
 
 // Address: 0x01b71e80 - 0x01b71e83 (3 bytes)
@@ -310,6 +314,8 @@ __attribute__((weak)) void cGUIInstAnimVariable::play(f32 delta) {
     DDON_STUB("cGUIInstAnimVariable::play")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIInstAnimVariable::MyDTI cGUIInstAnimVariable::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstAnimVariable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -381,7 +387,7 @@ cGUIInstAnimation::~cGUIInstAnimation() {
 // Address: 0x01071250 - 0x01071255 (5 bytes)
 MtUI* cGUIInstAnimation::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01071260 - 0x01071660 (1024 bytes)
@@ -406,100 +412,100 @@ __attribute__((weak)) void cGUIInstAnimation::init() {
 void cGUIInstAnimation::clear() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xe8 from cGUIInstAnimation*
-    this->mAnimationId = static_cast<u32>(4294967295);
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(232))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(2)) != static_cast<unsigned int>(0)) {
-        if (this->mpObjRoot != static_cast<cGUIObjRoot*>(nullptr)) {
-            delete this->mpObjRoot;
-            this->mpObjRoot = static_cast<cGUIObjRoot*>(nullptr);
+    mAnimationId = 0xFFFFFFFF;
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232)) >> 8) & 2u) != 0) {
+        if (mpObjRoot != nullptr) {
+            delete mpObjRoot;
+            mpObjRoot = nullptr;
         }
     }
-    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(232))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(4)) != static_cast<unsigned int>(0)) {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232)) >> 8) & 4u) != 0) {
         // inferred: a temporary for the value the load at 0x1071b67 read, used twice; no DWARF local holds it
-        cGUIObject* * t0 = this->mpObject;
-        if (t0 != static_cast<cGUIObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::cGUIInstance::DTI)->memFree(static_cast<void*>(t0));
-            this->mpObject = static_cast<cGUIObject* *>(nullptr);
+        cGUIObject* * t0 = mpObject;
+        if (t0 != nullptr) {
+            MtMemoryAllocator::getAllocator(cGUIInstance::DTI)->memFree(static_cast<void*>(t0));
+            mpObject = nullptr;
         }
     } else {
-        this->mpObject = static_cast<cGUIObject* *>(nullptr);
+        mpObject = nullptr;
     }
 }
 
 // Address: 0x01b718d0 - 0x01b718e5 (21 bytes)
 void cGUIInstAnimation::setMaskType(u32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaskType = v;
+    mMaskType = v;
 }
 
 // Address: 0x01b718c0 - 0x01b718ca (10 bytes)
 u32 cGUIInstAnimation::getMaskType() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaskType;
+    return mMaskType;
 }
 
 // Address: 0x01b718b0 - 0x01b718b9 (9 bytes)
 void cGUIInstAnimation::setSpeed(f32 speed) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpeed = speed;
+    mSpeed = speed;
 }
 
 // Address: 0x01b718a0 - 0x01b718a9 (9 bytes)
 f32 cGUIInstAnimation::getSpeed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSpeed;
+    return mSpeed;
 }
 
 // Address: 0x01b71900 - 0x01b7191b (27 bytes)
 void cGUIInstAnimation::setFoundation(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFoundation = v;
+    mFoundation = v;
 }
 
 // Address: 0x01b718f0 - 0x01b718f9 (9 bytes)
 bool cGUIInstAnimation::isFoundation() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFoundation;
+    return mFoundation;
 }
 
 // Address: 0x01071660 - 0x0107171c (188 bytes)
 void cGUIInstAnimation::setResourceId(u32 id) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; code after a join copied into the arms; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xe8 from cGUIInstAnimation*
-    if (this->mResourceId == id) {
+    if (mResourceId == id) {
         return;
     }
-    this->mResourceId = id;
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    mResourceId = id;
+    if (mpObjRoot == nullptr) {
         return;
     }
-    u32 animationId = this->mAnimationId;
-    if (animationId != static_cast<u32>(4294967295)) {
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(232))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(2)) != static_cast<unsigned int>(0)) {
-            delete this->mpObjRoot;
-            this->mpObjRoot = static_cast<cGUIObjRoot*>(nullptr);
+    u32 animationId = mAnimationId;
+    if (animationId != 0xFFFFFFFFu) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232)) >> 8) & 2u) != 0) {
+            delete mpObjRoot;
+            mpObjRoot = nullptr;
         }
-        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(232))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(4)) != static_cast<unsigned int>(0)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 232)) >> 8) & 4u) != 0) {
             // inferred: a temporary for the value the load at 0x10716c3 read, used twice; no DWARF local holds it
-            cGUIObject* * t0 = this->mpObject;
-            if (t0 != static_cast<cGUIObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::cGUIInstance::DTI)->memFree(static_cast<void*>(t0));
-                this->mpObject = static_cast<cGUIObject* *>(nullptr);
+            cGUIObject* * t0 = mpObject;
+            if (t0 != nullptr) {
+                MtMemoryAllocator::getAllocator(cGUIInstance::DTI)->memFree(static_cast<void*>(t0));
+                mpObject = nullptr;
             }
-            this->mAnimationId = static_cast<u32>(4294967295);
-            this->::cGUIInstAnimation::setAnimationId(animationId);
+            mAnimationId = 0xFFFFFFFF;
+            setAnimationId(animationId);
         } else {
-            this->mAnimationId = static_cast<u32>(4294967295);
-            this->::cGUIInstAnimation::setAnimationId(animationId);
+            mAnimationId = 0xFFFFFFFF;
+            setAnimationId(animationId);
         }
     } else {
-        this->::cGUIInstAnimation::setAnimationId(animationId);
+        setAnimationId(animationId);
     }
 }
 
 // Address: 0x01b71880 - 0x01b71887 (7 bytes)
 u32 cGUIInstAnimation::getResourceId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResourceId;
+    return mResourceId;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -516,7 +522,7 @@ __attribute__((weak)) void cGUIInstAnimation::setAnimationId(u32 id) {
 // Address: 0x01b71890 - 0x01b71897 (7 bytes)
 u32 cGUIInstAnimation::getAnimationId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAnimationId;
+    return mAnimationId;
 }
 
 // Address: 0x01071bb0 - 0x01071e6f (703 bytes)
@@ -535,18 +541,18 @@ __attribute__((weak)) cGUIObjRoot* cGUIInstAnimation::createAnimation(uGUI* pUni
 // Address: 0x01071920 - 0x01071962 (66 bytes)
 void cGUIInstAnimation::setSequenceId(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    if (this->mpObjRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
-        if (this->mpObjRoot->mpPlayingSequence->id != id) {
-            this->mpObjRoot->::cGUIObjRoot::setSequenceId(id);
-            this->mCurrentFrame = 0.0f;
+    if (mpObjRoot->mpPlayingSequence != nullptr) {
+        if (mpObjRoot->mpPlayingSequence->id != id) {
+            mpObjRoot->setSequenceId(id);
+            mCurrentFrame = 0.0f;
         }
     } else {
-        if (id != static_cast<u32>(4294967295)) {
-            this->mpObjRoot->::cGUIObjRoot::setSequenceId(id);
-            this->mCurrentFrame = 0.0f;
+        if (id != 0xFFFFFFFFu) {
+            mpObjRoot->setSequenceId(id);
+            mCurrentFrame = 0.0f;
         }
     }
 }
@@ -554,14 +560,14 @@ void cGUIInstAnimation::setSequenceId(u32 id) {
 // Address: 0x010718f0 - 0x01071915 (37 bytes)
 u32 cGUIInstAnimation::getSequenceId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot != static_cast<cGUIObjRoot*>(nullptr)) {
-        if (this->mpObjRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
-            return this->mpObjRoot->mpPlayingSequence->id;
+    if (mpObjRoot != nullptr) {
+        if (mpObjRoot->mpPlayingSequence != nullptr) {
+            return mpObjRoot->mpPlayingSequence->id;
         } else {
-            return static_cast<u32>(4294967295);
+            return 0xFFFFFFFF;
         }
     } else {
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
@@ -572,43 +578,43 @@ u32 cGUIInstAnimation::getSequenceId() const {
 void cGUIInstAnimation::setBillboard(u32 type) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstAnimation*
-    if (this->mBillboard == type) {
+    if (mBillboard == type) {
         return;
     }
-    this->mBillboard = type;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mBillboard = type;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71920 - 0x01b7192f (15 bytes)
 u32 cGUIInstAnimation::getBillboard() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mBillboard;
+    return mBillboard;
 }
 
 // Address: 0x01b71e30 - 0x01b71e66 (54 bytes)
 void cGUIInstAnimation::resetCurrentFrame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    if (this->mCurrentFrame == 0.0f) {
+    if (mCurrentFrame == 0.0f) {
         return;
     }
-    this->mCurrentFrame = 0.0f;
-    this->::cGUIInstAnimation::setCurrentFrame(static_cast<cGUIObject*>(this->mpObjRoot), 0.0f, false);
+    mCurrentFrame = 0.0f;
+    setCurrentFrame(static_cast<cGUIObject*>(mpObjRoot), 0.0f, false);
 }
 
 // Address: 0x01071e70 - 0x01071ea1 (49 bytes)
 void cGUIInstAnimation::setCurrentFrame(f32 frame, bool changeFixFrame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    if (this->mCurrentFrame == frame) {
+    if (mCurrentFrame == frame) {
         return;
     }
-    this->mCurrentFrame = frame;
-    this->::cGUIInstAnimation::setCurrentFrame(static_cast<cGUIObject*>(this->mpObjRoot), frame, changeFixFrame);
+    mCurrentFrame = frame;
+    setCurrentFrame(static_cast<cGUIObject*>(mpObjRoot), frame, changeFixFrame);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (41 bytes)
@@ -622,18 +628,18 @@ void cGUIInstAnimation::setCurrentFrame(f32 frame, bool changeFixFrame) {
 bool cGUIInstAnimation::isAnimationEnd() const {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpObjRoot != static_cast<cGUIObjRoot*>(nullptr)) {
-        if (this->mStopFrame >= 0.0f) {
-            if (this->mCurrentFrame >= this->mStopFrame) {
+    if (mpObjRoot != nullptr) {
+        if (mStopFrame >= 0.0f) {
+            if (mCurrentFrame >= mStopFrame) {
                 return true;
             }
         } else {
-            if (this->mpObjRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
-                if (this->mCurrentFrame >= static_cast<float>(this->mpObjRoot->mpPlayingSequence->frameCount)) {
+            if (mpObjRoot->mpPlayingSequence != nullptr) {
+                if (mCurrentFrame >= static_cast<float>(mpObjRoot->mpPlayingSequence->frameCount)) {
                     return true;
                 }
             } else {
-                if (this->mCurrentFrame >= 0.0f) {
+                if (mCurrentFrame >= 0.0f) {
                     return true;
                 }
             }
@@ -654,26 +660,26 @@ bool cGUIInstAnimation::isAnimationEnd() const {
 void cGUIInstAnimation::gotoAndPlay(f32 frame, bool changeFixFrame) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstAnimation*
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    this->mCurrentFrame = frame;
-    this->::cGUIInstAnimation::setCurrentFrame(static_cast<cGUIObject*>(this->mpObjRoot), frame, changeFixFrame);
-    this->mpObjRoot->::cGUIObjRoot::msgPlay(0.0f, true);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88))) | static_cast<unsigned char>(2);
+    mCurrentFrame = frame;
+    setCurrentFrame(static_cast<cGUIObject*>(mpObjRoot), frame, changeFixFrame);
+    mpObjRoot->msgPlay(0.0f, true);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88)) | 2;
 }
 
 // Address: 0x01071fe0 - 0x0107202c (76 bytes)
 void cGUIInstAnimation::gotoAndStop(f32 frame, bool changeFixFrame) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstAnimation*
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    this->mCurrentFrame = frame;
-    this->::cGUIInstAnimation::setCurrentFrame(static_cast<cGUIObject*>(this->mpObjRoot), frame, changeFixFrame);
-    this->mpObjRoot->::cGUIObjRoot::msgPlay(0.0f, true);
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88))) & static_cast<unsigned char>(253);
+    mCurrentFrame = frame;
+    setCurrentFrame(static_cast<cGUIObject*>(mpObjRoot), frame, changeFixFrame);
+    mpObjRoot->msgPlay(0.0f, true);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88)) & 253;
 }
 
 // No out-of-line body: no code in the ELF
@@ -721,12 +727,12 @@ void cGUIInstAnimation::gotoAndStop(f32 frame, bool changeFixFrame) {
 // Address: 0x01072060 - 0x0107207e (30 bytes)
 u32 cGUIInstAnimation::getFrameCount() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot != static_cast<cGUIObjRoot*>(nullptr)) {
-        if (this->mpObjRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
-            return this->mpObjRoot->mpPlayingSequence->frameCount;
+    if (mpObjRoot != nullptr) {
+        if (mpObjRoot->mpPlayingSequence != nullptr) {
+            return mpObjRoot->mpPlayingSequence->frameCount;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01072080 - 0x0107211a (154 bytes)
@@ -735,17 +741,17 @@ void cGUIInstAnimation::setResolutionAdjust(u32 type) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cGUIInstAnimation*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstAnimation*
     // inferred: a temporary for the value the load at 0x1072089 read, used 3 times; no DWARF local holds it
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144));
-    if (((t0 >> static_cast<unsigned int>(16)) & static_cast<unsigned int>(15)) == type) {
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144);
+    if (((t0 >> 16) & 15u) == type) {
         return;
     }
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144)) = ((type & static_cast<u32>(15)) * static_cast<u32>(65536)) | (t0 & static_cast<unsigned int>(4293984255));
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
-    this->::cGUIInstNull::setChildResolutionAdjust(static_cast<cGUIInstance*>(this), (((((((type & static_cast<u32>(15)) * static_cast<u32>(65536)) | (t0 & static_cast<unsigned int>(4293984255))) >> static_cast<u32>(16)) & static_cast<u32>(15)) == static_cast<u32>(0)) ? (t0 >> static_cast<unsigned int>(20)) : ((((type & static_cast<u32>(15)) * static_cast<u32>(65536)) | (t0 & static_cast<unsigned int>(4293984255))) >> static_cast<u32>(16))) & static_cast<unsigned int>(15));
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144) = ((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+    setChildResolutionAdjust(static_cast<cGUIInstance*>(this), (((((((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu)) >> 16) & 15u) == 0) ? (t0 >> 20) : ((((type & 15u) * 0x10000u) | (t0 & 0xFFF0FFFFu)) >> 16)) & 15u);
+    if (mpObjRoot == nullptr) {
         return;
     }
-    this->mpObjRoot->setParentResolutionAdjust((((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(16)) & static_cast<unsigned int>(15)) == static_cast<unsigned int>(0)) ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(20)) : ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(16))) & static_cast<unsigned int>(15));
+    mpObjRoot->setParentResolutionAdjust((((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 16) & 15u) == 0) ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 20) : ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 16)) & 15u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -783,44 +789,44 @@ void cGUIInstAnimation::play(f32 delta) {
     // inferred: a temporary for the value a join carries at 0x107219f, assigned on each way in; no DWARF local holds it
     f32 j0;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x1072149, held ahead of the effects the ELF orders after it
-    cGUIObjRoot* t0 = this->mpObjRoot;
-    if (t0 == static_cast<cGUIObjRoot*>(nullptr)) {
+    cGUIObjRoot* t0 = mpObjRoot;
+    if (t0 == nullptr) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0x1072159, held ahead of the effects the ELF orders after it
-    f32 t1 = this->mSpeed;
+    f32 t1 = mSpeed;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x1072161, held ahead of the effects the ELF orders after it
-    f32 t2 = this->mCurrentFrame;
+    f32 t2 = mCurrentFrame;
     if (0.0f > t2) {
-        this->mCurrentFrame = 0.0f;
+        mCurrentFrame = 0.0f;
         j0 = 0.0f;
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x107217f, held ahead of the effects the ELF orders after it
         float t3 = 65535.0f;
         if (t3 > t2) {
-            this->mCurrentFrame = t2 + (t1 * delta);
+            mCurrentFrame = t2 + (t1 * delta);
             j0 = t2 + (t1 * delta);
         } else {
             j0 = t2;
         }
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0x107219f, held ahead of the effects the ELF orders after it
-    f32 t4 = this->mStopFrame;
+    f32 t4 = mStopFrame;
     if (t4 >= 0.0f) {
         if (j0 >= t4) {
-            this->::cGUIInstAnimation::setCurrentFrame(static_cast<cGUIObject*>(t0), t4, false);
+            setCurrentFrame(static_cast<cGUIObject*>(t0), t4, false);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x10721c8, held ahead of the effects the ELF orders after it
-            cGUIObjRoot* t5 = this->mpObjRoot;
-            t5->::cGUIObjRoot::msgPlay(0.0f, false);
+            cGUIObjRoot* t5 = mpObjRoot;
+            t5->msgPlay(0.0f, false);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x10721da, held ahead of the effects the ELF orders after it
-            unsigned char t8 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88));
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(88)) = t8 & static_cast<unsigned char>(253);
-            this->mStopFrame = -1.0f;
+            unsigned char t8 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88);
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 88) = t8 & 253;
+            mStopFrame = -1.0f;
         } else {
-            t0->::cGUIObjRoot::msgPlay(t1 * delta, false);
+            t0->msgPlay(t1 * delta, false);
         }
     } else {
-        t0->::cGUIObjRoot::msgPlay(t1 * delta, false);
+        t0->msgPlay(t1 * delta, false);
     }
 }
 
@@ -859,10 +865,10 @@ __attribute__((weak)) void cGUIInstAnimation::calcMatrix(const MtMatrix& wmat) {
 // Address: 0x01072b70 - 0x01072b82 (18 bytes)
 void cGUIInstAnimation::invisible() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpObjRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+    if (mpObjRoot == nullptr) {
         return;
     }
-    this->mpObjRoot->::cGUIObject::msgInvisible();
+    mpObjRoot->msgInvisible();
 }
 
 // Address: 0x01072b90 - 0x01072dc0 (560 bytes)
@@ -894,17 +900,17 @@ __attribute__((weak)) void cGUIInstAnimation::setParentResolutionAdjust(u32 type
 // Address: 0x01071eb0 - 0x01071f39 (137 bytes)
 __attribute__((weak)) void cGUIInstAnimation::setCurrentFrame(cGUIObject* pObject, f32 frame, bool changeFixFrame) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    pObject->::cGUIObject::setCurrentFrame(frame, changeFixFrame);
+    pObject->setCurrentFrame(frame, changeFixFrame);
     // inferred: a temporary for the result of the call at 0x1071edf, used once; no DWARF local holds it
     const MtDTI& t0 = pObject->getDTI();
     // inferred: the value the loop at 0x1071eed carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::cGUIObjChildAnimationRoot::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = cGUIObjChildAnimationRoot::DTI.mName;
     // inferred: the value the loop at 0x1071eed carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
             return;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -913,10 +919,10 @@ __attribute__((weak)) void cGUIInstAnimation::setCurrentFrame(cGUIObject* pObjec
     }
     // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x1071f27 carries
     for (cGUIObject* pChild = pObject->mpChild;;) {
-        if (pChild == static_cast<cGUIObject*>(nullptr)) {
+        if (pChild == nullptr) {
             break;
         } else {
-            this->::cGUIInstAnimation::setCurrentFrame(pChild, frame, changeFixFrame);
+            setCurrentFrame(pChild, frame, changeFixFrame);
             pChild = pChild->mpNext;
         }
     }
@@ -924,6 +930,8 @@ __attribute__((weak)) void cGUIInstAnimation::setCurrentFrame(cGUIObject* pObjec
 
 // No out-of-line body: no code in the ELF
 // void cGUIInstAnimation::clearInvisibleMessage(cGUIObject* pObject, bool visible);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIInstAnimation::MyDTI cGUIInstAnimation::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstAnimation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -996,7 +1004,7 @@ cGUIInstNull::~cGUIInstNull() {
 // Address: 0x0106e660 - 0x0106e665 (5 bytes)
 MtUI* cGUIInstNull::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0106e670 - 0x0106f3a8 (3384 bytes)
@@ -1008,57 +1016,57 @@ __attribute__((weak)) void cGUIInstNull::createProperty(MtPropertyList& s) {
 // Address: 0x01b71640 - 0x01b71655 (21 bytes)
 void cGUIInstNull::setDrawPass(u32 pass) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDrawPass = pass;
+    mDrawPass = pass;
 }
 
 // Address: 0x01b71630 - 0x01b7163a (10 bytes)
 u32 cGUIInstNull::getDrawPass() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDrawPass;
+    return mDrawPass;
 }
 
 // Address: 0x01b71670 - 0x01b7168a (26 bytes)
 void cGUIInstNull::setDepthState(u32 state) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDepthState = state;
+    mDepthState = state;
 }
 
 // Address: 0x01b71660 - 0x01b7166f (15 bytes)
 u32 cGUIInstNull::getDepthState() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDepthState;
+    return mDepthState;
 }
 
 // Address: 0x0106f3b0 - 0x0106f3dc (44 bytes)
 void cGUIInstNull::setAlignment(u32 align) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mAlignment == align) {
+    if (mAlignment == align) {
         return;
     }
-    this->mAlignment = align;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mAlignment = align;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71690 - 0x01b7169f (15 bytes)
 u32 cGUIInstNull::getAlignment() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAlignment;
+    return mAlignment;
 }
 
 // Address: 0x0106f620 - 0x0106f648 (40 bytes)
 void cGUIInstNull::setColorControl(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mColorControl == type) {
+    if (mColorControl == type) {
         return;
     }
-    this->mColorControl = type;
+    mColorControl = type;
 }
 
 // Address: 0x01b717c0 - 0x01b717cf (15 bytes)
 u32 cGUIInstNull::getColorControl() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorControl;
+    return mColorControl;
 }
 
 // Address: 0x0106f660 - 0x0106f6aa (74 bytes)
@@ -1070,7 +1078,7 @@ __attribute__((weak)) void cGUIInstNull::setResolutionAdjust(u32 type) {
 // Address: 0x01b716a0 - 0x01b716ab (11 bytes)
 u32 cGUIInstNull::getResolutionAdjust() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mResolutionAdjust;
+    return mResolutionAdjust;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1088,7 +1096,7 @@ __attribute__((weak)) void cGUIInstNull::setReferencePosition(bool v) {
 // Address: 0x01b716b0 - 0x01b716b9 (9 bytes)
 bool cGUIInstNull::isReferencePosition() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferencePosition;
+    return mReferencePosition;
 }
 
 // Address: 0x0106f410 - 0x0106f43f (47 bytes)
@@ -1100,41 +1108,41 @@ __attribute__((weak)) void cGUIInstNull::setReferenceRotation(bool v) {
 // Address: 0x01b716c0 - 0x01b716cb (11 bytes)
 bool cGUIInstNull::isReferenceRotation() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferenceRotation;
+    return mReferenceRotation;
 }
 
 // Address: 0x0106f440 - 0x0106f46c (44 bytes)
 void cGUIInstNull::setReferenceScaleX(u32 type) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mReferenceScaleX == type) {
+    if (mReferenceScaleX == type) {
         return;
     }
-    this->mReferenceScaleX = type;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mReferenceScaleX = type;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b716d0 - 0x01b716df (15 bytes)
 u32 cGUIInstNull::getReferenceScaleX() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferenceScaleX;
+    return mReferenceScaleX;
 }
 
 // Address: 0x0106f470 - 0x0106f49c (44 bytes)
 void cGUIInstNull::setReferenceScaleY(u32 type) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mReferenceScaleY == type) {
+    if (mReferenceScaleY == type) {
         return;
     }
-    this->mReferenceScaleY = type;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mReferenceScaleY = type;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b716e0 - 0x01b716ef (15 bytes)
 u32 cGUIInstNull::getReferenceScaleY() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferenceScaleY;
+    return mReferenceScaleY;
 }
 
 // Address: 0x0106f4a0 - 0x0106f4c4 (36 bytes)
@@ -1142,17 +1150,17 @@ void cGUIInstNull::setReferenceScaleZ(u32 type) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cGUIInstNull*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(30)) == type) {
+    if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 144)) >> 30) == type) {
         return;
     }
-    this->mReferenceScaleZ = type;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mReferenceScaleZ = type;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b716f0 - 0x01b716fa (10 bytes)
 u32 cGUIInstNull::getReferenceScaleZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mReferenceScaleZ;
+    return mReferenceScaleZ;
 }
 
 // Address: 0x0106f740 - 0x0106f794 (84 bytes)
@@ -1172,102 +1180,102 @@ __attribute__((weak)) void cGUIInstNull::setPosition(const MtVector4& pos) {
 void cGUIInstNull::setPositionX(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mPosition.x == v) {
+    if (mPosition.x == v) {
         return;
     }
-    this->mPosition.x = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mPosition.x = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71700 - 0x01b71709 (9 bytes)
 f32 cGUIInstNull::getPositionX() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPosition.x;
+    return mPosition.x;
 }
 
 // Address: 0x0106f4f0 - 0x0106f50d (29 bytes)
 void cGUIInstNull::setPositionY(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mPosition.y == v) {
+    if (mPosition.y == v) {
         return;
     }
-    this->mPosition.y = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mPosition.y = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71710 - 0x01b71719 (9 bytes)
 f32 cGUIInstNull::getPositionY() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPosition.y;
+    return mPosition.y;
 }
 
 // Address: 0x0106f510 - 0x0106f52d (29 bytes)
 void cGUIInstNull::setPositionZ(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mPosition.z == v) {
+    if (mPosition.z == v) {
         return;
     }
-    this->mPosition.z = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mPosition.z = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71720 - 0x01b71729 (9 bytes)
 f32 cGUIInstNull::getPositionZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPosition.z;
+    return mPosition.z;
 }
 
 // Address: 0x0106f530 - 0x0106f54d (29 bytes)
 void cGUIInstNull::setScaleX(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mScale.x == v) {
+    if (mScale.x == v) {
         return;
     }
-    this->mScale.x = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mScale.x = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71730 - 0x01b71739 (9 bytes)
 f32 cGUIInstNull::getScaleX() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScale.x;
+    return mScale.x;
 }
 
 // Address: 0x0106f550 - 0x0106f56d (29 bytes)
 void cGUIInstNull::setScaleY(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mScale.y == v) {
+    if (mScale.y == v) {
         return;
     }
-    this->mScale.y = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mScale.y = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71740 - 0x01b71749 (9 bytes)
 f32 cGUIInstNull::getScaleY() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScale.y;
+    return mScale.y;
 }
 
 // Address: 0x0106f570 - 0x0106f58d (29 bytes)
 void cGUIInstNull::setScaleZ(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mScale.z == v) {
+    if (mScale.z == v) {
         return;
     }
-    this->mScale.z = v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mScale.z = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71750 - 0x01b71759 (9 bytes)
 f32 cGUIInstNull::getScaleZ() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mScale.z;
+    return mScale.z;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1280,11 +1288,11 @@ f32 cGUIInstNull::getScaleZ() const {
 void cGUIInstNull::setRotationX(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mRotation.x == (0.017453294f * v)) {
+    if (mRotation.x == (0.017453294f * v)) {
         return;
     }
-    this->mRotation.x = 0.017453294f * v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mRotation.x = 0.017453294f * v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71760 - 0x01b71771 (17 bytes)
@@ -1297,11 +1305,11 @@ __attribute__((weak)) f32 cGUIInstNull::getRotationX() const {
 void cGUIInstNull::setRotationY(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mRotation.y == (0.017453294f * v)) {
+    if (mRotation.y == (0.017453294f * v)) {
         return;
     }
-    this->mRotation.y = 0.017453294f * v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mRotation.y = 0.017453294f * v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b71780 - 0x01b71791 (17 bytes)
@@ -1314,11 +1322,11 @@ __attribute__((weak)) f32 cGUIInstNull::getRotationY() const {
 void cGUIInstNull::setRotationZ(f32 v) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5a from cGUIInstNull*
-    if (this->mRotation.z == (0.017453294f * v)) {
+    if (mRotation.z == (0.017453294f * v)) {
         return;
     }
-    this->mRotation.z = 0.017453294f * v;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(90))) | static_cast<unsigned char>(1);
+    mRotation.z = 0.017453294f * v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
 // Address: 0x01b717a0 - 0x01b717b1 (17 bytes)
@@ -1336,13 +1344,13 @@ __attribute__((weak)) void cGUIInstNull::setColorScale(const MtVector4& color) {
 // Address: 0x01b717d0 - 0x01b717e0 (16 bytes)
 MtVector4 cGUIInstNull::getColorScale() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorScale;
+    return mColorScale;
 }
 
 // Address: 0x01b717f0 - 0x01b717f9 (9 bytes)
 void cGUIInstNull::setAmbientColor(const MtColor& color) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAmbientColor.rgba = color.rgba;
+    mAmbientColor.rgba = color.rgba;
 }
 
 // Address: 0x01b717e0 - 0x01b717ec (12 bytes)
@@ -1354,13 +1362,13 @@ __attribute__((weak)) MtColor cGUIInstNull::getAmbientColor() const {
 // Address: 0x01b71810 - 0x01b71819 (9 bytes)
 void cGUIInstNull::setSaturation(f32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mColorScale.w = v;
+    mColorScale.w = v;
 }
 
 // Address: 0x01b71800 - 0x01b71809 (9 bytes)
 f32 cGUIInstNull::getSaturation() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mColorScale.w;
+    return mColorScale.w;
 }
 
 // Defined in the class (its body was written in a header).
@@ -1376,36 +1384,35 @@ __attribute__((weak)) void cGUIInstNull::beginDraw(nGUI::Draw& drawObj) {
 // Address: 0x0106f900 - 0x0106f905 (5 bytes)
 void cGUIInstNull::draw(nGUI::Draw& drawObj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cGUIInstNull::setCDrawPass(drawObj);
+    setCDrawPass(drawObj);
 }
 
 // Address: 0x0106fb20 - 0x0106fba4 (132 bytes)
 void cGUIInstNull::endDraw(nGUI::Draw& drawObj) {
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from cGUIInstNull*
-    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15)) == static_cast<unsigned int>(1)) {
-        drawObj.::nGUI::Draw::setColorAttribute(false, 0.0f);
+    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144)) >> 12) & 15u) == 1) {
+        drawObj.setColorAttribute(false, 0.0f);
     } else {
-        if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15)) == static_cast<unsigned int>(0)) {
-            if (this->mColorScale.x == ::MtVector4::One.x) {
-                if (this->mColorScale.y == ::MtVector4::One.y) {
-                    if (this->mColorScale.z == ::MtVector4::One.z) {
-                        if (this->mColorScale.w == ::MtVector4::One.w) {
-                            if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) >> static_cast<unsigned long>(32)) == static_cast<unsigned long>(0)) {
-                            } else {
-                                drawObj.::nGUI::Draw::popColorConstantBuffer();
+        if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144)) >> 12) & 15u) == 0) {
+            if (mColorScale.x == MtVector4::One.x) {
+                if (mColorScale.y == MtVector4::One.y) {
+                    if (mColorScale.z == MtVector4::One.z) {
+                        if (mColorScale.w == MtVector4::One.w) {
+                            if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144)) >> 32) != 0) {
+                                drawObj.popColorConstantBuffer();
                             }
                         } else {
-                            drawObj.::nGUI::Draw::popColorConstantBuffer();
+                            drawObj.popColorConstantBuffer();
                         }
                     } else {
-                        drawObj.::nGUI::Draw::popColorConstantBuffer();
+                        drawObj.popColorConstantBuffer();
                     }
                 } else {
-                    drawObj.::nGUI::Draw::popColorConstantBuffer();
+                    drawObj.popColorConstantBuffer();
                 }
             } else {
-                drawObj.::nGUI::Draw::popColorConstantBuffer();
+                drawObj.popColorConstantBuffer();
             }
         }
     }
@@ -1437,7 +1444,7 @@ __attribute__((weak)) void cGUIInstNull::setCDrawPass(nGUI::Draw& drawObj) {
 // Address: 0x01b71aa0 - 0x01b71aba (26 bytes)
 void cGUIInstNull::setParentResolutionAdjust(u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mParentResolutionAdjust = type;
+    mParentResolutionAdjust = type;
 }
 
 // Address: 0x0106f6b0 - 0x0106f738 (136 bytes)
@@ -1447,6 +1454,8 @@ __attribute__((weak)) void cGUIInstNull::setChildResolutionAdjust(cGUIInstance* 
     DDON_STUB("cGUIInstNull::setChildResolutionAdjust")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cGUIInstNull::MyDTI cGUIInstNull::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstNull::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1518,7 +1527,7 @@ cGUIInstScissorMask::~cGUIInstScissorMask() {
 // Address: 0x01070430 - 0x01070435 (5 bytes)
 MtUI* cGUIInstScissorMask::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x01070440 - 0x01070575 (309 bytes)
@@ -1528,9 +1537,13 @@ __attribute__((weak)) void cGUIInstScissorMask::createProperty(MtPropertyList& s
 }
 
 // Address: 0x01b71840 - 0x01b71856 (22 bytes)
-__attribute__((weak)) void cGUIInstScissorMask::setEnableScissor(bool v) {
-    DDON_STUB("cGUIInstScissorMask::setEnableScissor")
-    /* stub */
+void cGUIInstScissorMask::setEnableScissor(bool v) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a bitfield storage unit accessed whole, by byte offset from its base: unsigned int at 0xe0 from cGUIInstScissorMask*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xe0 from cGUIInstScissorMask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as unsigned int
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 224) = static_cast<unsigned int>(static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 224)) & 0xFFFFFFFEu) | static_cast<unsigned long>(v));
 }
 
 // Address: 0x01b71830 - 0x01b7183a (10 bytes)
@@ -1538,18 +1551,18 @@ bool cGUIInstScissorMask::isEnableScissor() const {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0xe0 from const cGUIInstScissorMask*
     // inferred: a value cast to the type its use takes: const unsigned int used as bool
-    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(224))) & static_cast<unsigned int>(1));
+    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 224)) & 1u);
 }
 
 // Address: 0x01070580 - 0x010705a3 (35 bytes)
 void cGUIInstScissorMask::setSize(const MtSize& size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (size.wh == this->mSize.wh) {
+    if (size.wh == mSize.wh) {
         return;
     }
-    this->mSize.w = static_cast<s32>(static_cast<unsigned int>(size.wh));
-    this->mSize.h = size.h;
-    this->mUpdateSize = static_cast<u32>(1);
+    mSize.w = static_cast<s32>(static_cast<unsigned int>(size.wh));
+    mSize.h = size.h;
+    mUpdateSize = 1;
 }
 
 // Address: 0x01b71860 - 0x01b7186e (14 bytes)
@@ -1601,6 +1614,8 @@ __attribute__((weak)) bool cGUIInstScissorMask::checkHit(const MtVector3& pt, f3
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cGUIInstScissorMask::calcScissorMask(MtRect& rect) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIInstScissorMask::MyDTI cGUIInstScissorMask::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstScissorMask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -1662,14 +1677,14 @@ cGUIInstance::~cGUIInstance() {
     // DWARF local not rendered: cGUIInstance* pChild;
     // DWARF local not rendered: cGUIInstance* pTemp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mIsDeleteChild != false) {
-        if (this->mpChild != static_cast<cGUIInstance*>(nullptr)) {
+    if (mIsDeleteChild) {
+        if (mpChild != nullptr) {
             // inferred: the value the loop at 0x106bed0 carries; no location-less local in scope fits
-            for (cGUIInstance* v0_5 = this->mpChild;;) {
+            for (cGUIInstance* v0_5 = mpChild;;) {
                 // inferred: a temporary for the value the load at 0x106bed3 read, used once; no DWARF local holds it
                 cGUIInstance* t0 = v0_5->mpNext;
                 delete v0_5;
-                if (t0 != static_cast<cGUIInstance*>(nullptr)) {
+                if (t0 != nullptr) {
                     v0_5 = t0;
                 } else {
                     break;
@@ -1682,7 +1697,7 @@ cGUIInstance::~cGUIInstance() {
 // Address: 0x0106bf60 - 0x0106bf65 (5 bytes)
 MtUI* cGUIInstance::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0106bf70 - 0x0106c293 (803 bytes)
@@ -1753,20 +1768,20 @@ __attribute__((weak)) u32 cGUIInstance::msgCheckHit(const MtVector3& pt, bool ch
 // Address: 0x0106c2c0 - 0x0106c2e4 (36 bytes)
 void cGUIInstance::setPriority(u32 prio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mPriority == prio) {
+    if (mPriority == prio) {
         return;
     }
-    this->mPriority = (prio <= static_cast<u32>(65535)) ? prio : static_cast<u32>(65535);
-    if (this->mpParent == static_cast<cGUIInstance*>(nullptr)) {
+    mPriority = (prio <= 0xFFFFu) ? prio : 0xFFFFu;
+    if (mpParent == nullptr) {
         return;
     }
-    this->mpParent->mAttr = this->mpParent->mAttr | static_cast<u32>(262144);
+    mpParent->mAttr = mpParent->mAttr | 0x40000u;
 }
 
 // Address: 0x01b71600 - 0x01b71604 (4 bytes)
 u32 cGUIInstance::getPriority() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPriority;
+    return mPriority;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1786,7 +1801,7 @@ u32 cGUIInstance::getPriority() const {
 bool cGUIInstance::isVisible() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: const u32 used as bool
-    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
+    return static_cast<bool>(mAttr & 1u);
 }
 
 // Address: 0x0106c2a0 - 0x0106c2be (30 bytes)
@@ -1801,13 +1816,13 @@ bool cGUIInstance::isPlay() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x58 from const cGUIInstance*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(88))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 88)) & 2) >> 1);
 }
 
 // Address: 0x01b715b0 - 0x01b715c5 (21 bytes)
 void cGUIInstance::setPlay(bool e) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (e == false) ? (this->mAttr & static_cast<u32>(4294967293)) : (this->mAttr | static_cast<u32>(2));
+    mAttr = !e ? (mAttr & 0xFFFFFFFDu) : (mAttr | 2u);
 }
 
 // Address: 0x01b715d0 - 0x01b715d9 (9 bytes)
@@ -1816,13 +1831,13 @@ bool cGUIInstance::isMouseReaction() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x58 from const cGUIInstance*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(88))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 88)) & 4) >> 2);
 }
 
 // Address: 0x01b715e0 - 0x01b715f5 (21 bytes)
 void cGUIInstance::setMouseReaction(bool e) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttr = (e == false) ? (this->mAttr & static_cast<u32>(4294967291)) : (this->mAttr | static_cast<u32>(4));
+    mAttr = !e ? (mAttr & 0xFFFFFFFBu) : (mAttr | 4u);
 }
 
 // No out-of-line body: 14 inlined copies in 11 functions (162 bytes)
@@ -1899,27 +1914,27 @@ __attribute__((weak)) void cGUIInstance::setExecuteTree(bool e) {
 void cGUIInstance::addChild(cGUIInstance* pInstance) {
     // DWARF local not rendered: cGUIInstance* pChild;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pInstance != static_cast<cGUIInstance*>(nullptr)) {
+    if (pInstance != nullptr) {
         pInstance->mpParent = this;
     }
     // inferred: the value the loop at 0x106cae0 carries; no location-less local in scope fits
     cGUIInstance* v0_0;
-    if (this->mpChild == static_cast<cGUIInstance*>(nullptr)) {
-        this->mpChild = pInstance;
-        this->mAttr = this->mAttr | static_cast<u32>(262144);
+    if (mpChild == nullptr) {
+        mpChild = pInstance;
+        mAttr = mAttr | 0x40000u;
         return;
     } else {
-        v0_0 = this->mpChild;
+        v0_0 = mpChild;
     }
     for (;;) {
-        if (v0_0->mpNext != static_cast<cGUIInstance*>(nullptr)) {
+        if (v0_0->mpNext != nullptr) {
             v0_0 = v0_0->mpNext;
         } else {
             break;
         }
     }
     v0_0->mpNext = pInstance;
-    this->mAttr = this->mAttr | static_cast<u32>(262144);
+    mAttr = mAttr | 0x40000u;
 }
 
 // Address: 0x0106cb00 - 0x0106cb43 (67 bytes)
@@ -1927,17 +1942,17 @@ cGUIInstance* cGUIInstance::getInstanceFromId(u32 id) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x106cb3e; the location-less local in scope that fits is declared on no line of the value's writes
     cGUIInstance* v1_0;
-    if (this->mId == id) {
+    if (mId == id) {
         v1_0 = this;
     } else {
         // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x106cb29 carries
-        for (cGUIInstance* pChild = this->mpChild;;) {
-            if (pChild == static_cast<cGUIInstance*>(nullptr)) {
-                v1_0 = static_cast<cGUIInstance*>(nullptr);
+        for (cGUIInstance* pChild = mpChild;;) {
+            if (pChild == nullptr) {
+                v1_0 = nullptr;
                 break;
             } else {
-                cGUIInstance* pInstance = pChild->::cGUIInstance::getInstanceFromId(id);
-                if (pInstance != static_cast<cGUIInstance*>(nullptr)) {
+                cGUIInstance* pInstance = pChild->cGUIInstance::getInstanceFromId(id);
+                if (pInstance != nullptr) {
                     v1_0 = pInstance;
                     break;
                 } else {
@@ -2088,7 +2103,7 @@ bool cGUIInstance::isUpdateParentMatrix() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x5a from const cGUIInstance*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(90))) >> static_cast<unsigned long>(7));
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 90)) >> 7);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -2104,12 +2119,12 @@ bool cGUIInstance::isUpdateParentMatrix() const {
 void cGUIInstance::setupParent() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x106d3e0 carries
-    for (cGUIInstance* pChild = this->mpChild;;) {
-        if (pChild == static_cast<cGUIInstance*>(nullptr)) {
+    for (cGUIInstance* pChild = mpChild;;) {
+        if (pChild == nullptr) {
             break;
         } else {
             pChild->mpParent = this;
-            pChild->::cGUIInstance::setupParent();
+            pChild->cGUIInstance::setupParent();
             pChild = pChild->mpNext;
         }
     }
@@ -2129,6 +2144,10 @@ void cGUIInstance::setupParent() {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cGUIInstance::setDeleteChild(bool IsNewDeleteChild);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIInstance::MyDTI cGUIInstance::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const nGUI::PROP_SETTER cGUIInstance::PROP_SETTER_EXECUTE;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIInstance::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

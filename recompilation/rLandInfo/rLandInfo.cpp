@@ -36,7 +36,7 @@ const MtDTI& rLandInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rLandInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLandInfo::DTI)->memAlloc(sz, align, ::rLandInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLandInfo::DTI)->memAlloc(sz, align, rLandInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rLandInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLandInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLandInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLandInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,41 +77,41 @@ MT_CTSTR rLandInfo::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rLandInfo::rLandInfo() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x00691ff0 - 0x006920a1 (177 bytes)
 // Also emitted as: _ZN9rLandInfoD0Ev at 0x006920b0
 rLandInfo::~rLandInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mLandInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mLandInfo.mLength != 0) {
         // inferred: the value the loop at 0x692020 carries; no location-less local in scope fits
-        u32 v0_0 = this->mLandInfo.::MtArray::mLength;
+        u32 v0_0 = mLandInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mLandInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mLandInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mLandInfo.::MtArray::mLength) {
-                    v0_0 = this->mLandInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mLandInfo.mpArray[i0_3] != nullptr) {
+                delete mLandInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mLandInfo.mLength) {
+                    v0_0 = mLandInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mLandInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mLandInfo.::MtArray::mpArray));
+    if (mLandInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mLandInfo.mpArray));
     }
-    this->mLandInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mLandInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mLandInfo.::MtArray::mLength = static_cast<u32>(0);
+    mLandInfo.mpArray = nullptr;
+    mLandInfo.mBufsiz = 0;
+    mLandInfo.mLength = 0;
 }
 
 // Address: 0x00692180 - 0x00692263 (227 bytes)
@@ -132,15 +132,17 @@ bool rLandInfo::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4800844)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            ::nDDOIO::readMtArray(r, this->mLandInfo);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x49414C) {
+        if ((&r)->readU32() == 2) {
+            nDDOIO::readMtArray(r, mLandInfo);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLandInfo::MyDTI rLandInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rLandInfo.cpp at 0x00692a90-0x00692ad1 (called at rLandInfo.cpp:27)
@@ -150,7 +152,7 @@ bool rLandInfo::load(MtStream& in) {
 // Address: 0x00691ee0 - 0x00691f64 (132 bytes)
 MtObject* rLandInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLandInfo;
+    return new (16u) rLandInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -178,7 +180,7 @@ const MtDTI& rLandInfo::cLandInfo::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rLandInfo::cLandInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::DTI)->memAlloc(sz, align, ::rLandInfo::cLandInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::DTI)->memAlloc(sz, align, rLandInfo::cLandInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -193,7 +195,7 @@ void* rLandInfo::cLandInfo::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rLandInfo::cLandInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,8 +215,35 @@ inline void rLandInfo::cLandInfo::operator delete(void* p_addr) {
 // Address: 0x00692550 - 0x006925ed (157 bytes)
 // Also emitted as: _ZN9rLandInfo9cLandInfoD0Ev at 0x006925f0
 rLandInfo::cLandInfo::~cLandInfo() {
-    DDON_STUB("rLandInfo::cLandInfo::~cLandInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mAreaArray.mLength != 0) {
+        // inferred: the value the loop at 0x692580 carries; no location-less local in scope fits
+        u32 v0_0 = mAreaArray.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mAreaArray.mpArray[i0_3] != nullptr) {
+                delete mAreaArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mAreaArray.mLength) {
+                    v0_0 = mAreaArray.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAreaArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaArray.mpArray));
+    }
+    mAreaArray.mpArray = nullptr;
+    mAreaArray.mBufsiz = 0;
+    mAreaArray.mLength = 0;
 }
 
 // Address: 0x006926b0 - 0x00692842 (402 bytes)
@@ -231,6 +260,8 @@ __attribute__((weak)) void rLandInfo::cLandInfo::createProperty(MtPropertyList& 
 //   in rLandInfo::save at 0x0069230e-0x00692364 (called at nDDOIO.h:463)
 // bool rLandInfo::cLandInfo::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLandInfo::cLandInfo::MyDTI rLandInfo::cLandInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rLandInfo.cpp at 0x00692ad1-0x00692b11 (called at rLandInfo.cpp:108)
 //   in _GLOBAL__sub_I_rLandInfo.cpp at 0x00692ad1-0x00692b11 (called at rLandInfo.h:89)
@@ -239,7 +270,7 @@ __attribute__((weak)) void rLandInfo::cLandInfo::createProperty(MtPropertyList& 
 // Address: 0x00692460 - 0x006924d0 (112 bytes)
 MtObject* rLandInfo::cLandInfo::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rLandInfo::cLandInfo;
+    return new (16u) rLandInfo::cLandInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -267,7 +298,7 @@ const MtDTI& rLandInfo::cLandInfo::cLandAreaInfo::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memAlloc(sz, align, ::rLandInfo::cLandInfo::cLandAreaInfo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memAlloc(sz, align, rLandInfo::cLandInfo::cLandAreaInfo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -281,7 +312,7 @@ void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rLandInfo::cLandInfo::cLandAreaInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -318,6 +349,8 @@ __attribute__((weak)) void rLandInfo::cLandInfo::cLandAreaInfo::createProperty(M
 //   in rLandInfo::save at 0x0069234b-0x0069235b (called at nDDOIO.h:463)
 // bool rLandInfo::cLandInfo::cLandAreaInfo::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rLandInfo::cLandInfo::cLandAreaInfo::MyDTI rLandInfo::cLandInfo::cLandAreaInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rLandInfo.cpp at 0x00692b11-0x00692b4a (called at rLandInfo.cpp:170)
 //   in _GLOBAL__sub_I_rLandInfo.cpp at 0x00692b11-0x00692b4a (called at rLandInfo.h:135)
@@ -326,7 +359,7 @@ __attribute__((weak)) void rLandInfo::cLandInfo::cLandAreaInfo::createProperty(M
 // Address: 0x00692870 - 0x006928b7 (71 bytes)
 MtObject* rLandInfo::cLandInfo::cLandAreaInfo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rLandInfo::cLandInfo::cLandAreaInfo;
+    return new (16u) rLandInfo::cLandInfo::cLandAreaInfo;
 }
 
 // Instance at 0x01a99140 - 0x01a99145 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

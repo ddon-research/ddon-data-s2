@@ -49,7 +49,7 @@ const MtDTI& cOcdMsgCtrl2::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOcdMsgCtrl2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdMsgCtrl2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdMsgCtrl2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,34 +81,34 @@ __attribute__((weak)) void cOcdMsgCtrl2::createProperty(MtPropertyList& s) {
 // Address: 0x00179470 - 0x0017948f (31 bytes)
 void cOcdMsgCtrl2::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x00179410 - 0x00179419 (9 bytes)
 void cOcdMsgCtrl2::setOwner(cpOcdCtrl* pOwner, uDDOModel* pModel) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpOcdCtrl = pOwner;
-    this->mpModel = pModel;
+    mpOcdCtrl = pOwner;
+    mpModel = pModel;
 }
 
 // Address: 0x00179610 - 0x00179641 (49 bytes)
 void cOcdMsgCtrl2::checkReceiveData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
+    if (mpOcdCtrl == nullptr) {
         return;
     }
-    if (this->::cOcdMsgCtrl2::isReceiveMsg() == false) {
+    if (!isReceiveMsg()) {
         return;
     }
-    this->::cOcdMsgCtrl2::receiveOcdMsgData();
-    this->mIsReceiveMsg = false;
-    this->mInitFlag = false;
+    receiveOcdMsgData();
+    mIsReceiveMsg = false;
+    mInitFlag = false;
 }
 
 // Address: 0x00179490 - 0x0017960e (382 bytes)
@@ -140,7 +140,7 @@ __attribute__((weak)) void cOcdMsgCtrl2::updateMsgData() {
 // Address: 0x00179be0 - 0x00179be8 (8 bytes)
 void cOcdMsgCtrl2::notifyEndRecover() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsRecoverEnd = true;
+    mIsRecoverEnd = true;
 }
 
 // Address: 0x00179660 - 0x0017998a (810 bytes)
@@ -174,15 +174,15 @@ void cOcdMsgCtrl2::callBackReceiveActiveLv(u32 OcdUID, u32 currentLv, u32 receiv
         if (currentLv >= receiveLv) {
             goto region_179b68;
         } else {
-            if (currentLv == static_cast<u32>(0)) {
-                this->mpOcdCtrl->::cpOcdCtrl::callbackReceiveActive(OcdUID, initFlag, isAction);
-                if (((receiveLv - currentLv) - static_cast<u32>(1)) == static_cast<u32>(0)) {
+            if (currentLv == 0) {
+                mpOcdCtrl->callbackReceiveActive(OcdUID, initFlag, isAction);
+                if (((receiveLv - currentLv) - 1u) == 0) {
                     goto region_179b68;
                 } else {
-                    v0_3 = (receiveLv - currentLv) - static_cast<u32>(1);
+                    v0_3 = (receiveLv - currentLv) - 1u;
                 }
             } else {
-                if ((receiveLv - currentLv) == static_cast<u32>(0)) {
+                if ((receiveLv - currentLv) == 0) {
                     goto region_179b68;
                 } else {
                     v0_3 = receiveLv - currentLv;
@@ -190,25 +190,24 @@ void cOcdMsgCtrl2::callBackReceiveActiveLv(u32 OcdUID, u32 currentLv, u32 receiv
             }
         }
         for (;;) {
-            this->mpOcdCtrl->::cpOcdCtrl::callMulti(OcdUID, this->mInitFlag);
-            if ((v0_3 - static_cast<u32>(1)) != static_cast<u32>(0)) {
-                v0_3 += static_cast<u32>(4294967295);
+            mpOcdCtrl->callMulti(OcdUID, mInitFlag);
+            if ((v0_3 - 1u) != 0) {
+                v0_3 += 0xFFFFFFFFu;
             } else {
                 break;
             }
         }
         region_179b68:;
-        if (receiveLv >= currentLv) {
-        } else {
-            this->mpOcdCtrl->::cpOcdCtrl::callFinal(OcdUID);
-            if (receiveLv != static_cast<u32>(0)) {
-                this->mpOcdCtrl->::cpOcdCtrl::callInit(OcdUID, this->mInitFlag);
-                if (receiveLv != static_cast<u32>(1)) {
+        if (receiveLv < currentLv) {
+            mpOcdCtrl->callFinal(OcdUID);
+            if (receiveLv != 0) {
+                mpOcdCtrl->callInit(OcdUID, mInitFlag);
+                if (receiveLv != 1) {
                     // inferred: the value the loop at 0x179ba0 carries; no location-less local in scope fits
-                    for (u32 v2_10 = receiveLv - static_cast<u32>(1);;) {
-                        this->mpOcdCtrl->::cpOcdCtrl::callMulti(OcdUID, this->mInitFlag);
-                        if ((v2_10 - static_cast<u32>(1)) != static_cast<u32>(0)) {
-                            v2_10 += static_cast<u32>(4294967295);
+                    for (u32 v2_10 = receiveLv - 1u;;) {
+                        mpOcdCtrl->callMulti(OcdUID, mInitFlag);
+                        if ((v2_10 - 1u) != 0) {
+                            v2_10 += 0xFFFFFFFFu;
                         } else {
                             break;
                         }
@@ -249,6 +248,8 @@ __attribute__((weak)) u32 cOcdMsgCtrl2::checkResetActOcd() const {
     DDON_STUB("cOcdMsgCtrl2::checkResetActOcd")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdMsgCtrl2::MyDTI cOcdMsgCtrl2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cOcdMsgCtrl2.cpp at 0x00179cef-0x00179d2c (called at cOcdMsgCtrl2.cpp:35)

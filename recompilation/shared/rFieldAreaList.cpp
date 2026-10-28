@@ -36,7 +36,7 @@ const MtDTI& rFieldAreaList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFieldAreaList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFieldAreaList::DTI)->memAlloc(sz, align, ::rFieldAreaList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memAlloc(sz, align, rFieldAreaList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rFieldAreaList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldAreaList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -86,22 +86,22 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfo(u32 field
     // DWARF local not rendered: cFieldAreaInfo* pInfo;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
-    u32 v0_0 = this->mArrayNum;
+    u32 v0_0 = mArrayNum;
     // inferred: the value carried to 0x67664b; no location-less local in scope fits
-    rFieldAreaList::cFieldAreaInfo* v2_0;
-    if (v0_0 == static_cast<u32>(0)) {
-        v2_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    cFieldAreaInfo* v2_0;
+    if (v0_0 == 0) {
+        v2_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
-        rFieldAreaList::cFieldAreaInfo* v0_3 = this->mpArray;
+        cFieldAreaInfo* v0_3 = mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x676610, 0x67664b)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
         for (u32* v0_2 = &v0_3->mFieldAreaId;;) {
             if ((*v0_2) != fieldAreaId) {
-                if ((i + static_cast<u32>(1)) < v0_0) {
-                    i = i + static_cast<u32>(1);
-                    v0_2 += static_cast<int>(22);
+                if ((i + 1u) < v0_0) {
+                    i = i + 1u;
+                    v0_2 += 22;
                 } else {
                     break;
                 }
@@ -110,7 +110,7 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfo(u32 field
                 return v2_0;
             }
         }
-        v2_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+        v2_0 = nullptr;
     }
     return v2_0;
 }
@@ -124,29 +124,29 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageN
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0x676665 carries; no location-less local in scope fits
-    u32 v0_3 = this->mArrayNum;
+    u32 v0_3 = mArrayNum;
     // inferred: the value carried to 0x6766ac; no location-less local in scope fits
-    rFieldAreaList::cFieldAreaInfo* v4_0;
-    if (v0_3 == static_cast<u32>(0)) {
-        v4_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    cFieldAreaInfo* v4_0;
+    if (v0_3 == 0) {
+        v4_0 = nullptr;
     } else {
         // inferred: the value the loop at 0x676665 carries; no location-less local in scope fits
-        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        cFieldAreaInfo* v0_4 = mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_5 = static_cast<unsigned int>(0);
+        unsigned int i0_5 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
-            if (stageNum != static_cast<u32>(0)) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            if (stageNum != 0) {
                 // inferred: the value the loop at 0x676680 carries; no location-less local in scope fits
-                MtObject* * v1_3 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
-                i1_0 = static_cast<unsigned int>(0);
+                MtObject* * v1_3 = v0_4[i0_5].mStageNoList.getBuffer();
+                i1_0 = 0;
                 for (;;) {
-                    if (v1_3[static_cast<int>(i1_0)] != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3[static_cast<int>(i1_0)]) + static_cast<long>(8))) != static_cast<unsigned int>(stageNo)) {
-                            if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
-                                i1_0 += static_cast<unsigned int>(1);
+                    if (v1_3[static_cast<int>(i1_0)] != nullptr) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3[static_cast<int>(i1_0)]) + 8)) != static_cast<unsigned int>(stageNo)) {
+                            if ((i1_0 + 1u) < stageNum) {
+                                i1_0 += 1u;
                             } else {
                                 break;
                             }
@@ -155,21 +155,21 @@ const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageN
                             return v4_0;
                         }
                     } else {
-                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
-                            i1_0 += static_cast<unsigned int>(1);
+                        if ((i1_0 + 1u) < stageNum) {
+                            i1_0 += 1u;
                         } else {
                             break;
                         }
                     }
                 }
             }
-            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
-                i0_5 += static_cast<unsigned int>(1);
+            if ((i0_5 + 1u) < v0_3) {
+                i0_5 += 1u;
             } else {
                 break;
             }
         }
-        v4_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+        v4_0 = nullptr;
     }
     return v4_0;
 }
@@ -194,59 +194,59 @@ u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0x676722 carries; no location-less local in scope fits
-    u32 v0_3 = this->mArrayNum;
-    if (v0_3 != static_cast<u32>(0)) {
+    u32 v0_3 = mArrayNum;
+    if (v0_3 != 0) {
         // inferred: the value the loop at 0x676722 carries; no location-less local in scope fits
-        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        cFieldAreaInfo* v0_4 = mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_5 = static_cast<unsigned int>(0);
+        unsigned int i0_5 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i3_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
-            if (stageNum != static_cast<u32>(0)) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            if (stageNum != 0) {
                 // inferred: the value the loop at 0x676740 carries; no location-less local in scope fits
-                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
-                i1_0 = static_cast<unsigned int>(0);
+                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.getBuffer();
+                i1_0 = 0;
                 for (;;) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + 8)) == static_cast<unsigned int>(stageNo)) {
                         return v0_4[i0_5].mFieldAreaId;
                     } else {
-                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
-                            i1_0 += static_cast<unsigned int>(1);
+                        if ((i1_0 + 1u) < stageNum) {
+                            i1_0 += 1u;
                         } else {
                             break;
                         }
                     }
                 }
             }
-            const u32 belongStageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(48));
-            if (belongStageNum != static_cast<u32>(0)) {
+            const u32 belongStageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 48);
+            if (belongStageNum != 0) {
                 // inferred: the value the loop at 0x676770 carries; no location-less local in scope fits
-                MtObject* * v3_2 = v0_4[i0_5].mBelongStageNoList.::MtArray::getBuffer();
-                i3_0 = static_cast<unsigned int>(0);
+                MtObject* * v3_2 = v0_4[i0_5].mBelongStageNoList.getBuffer();
+                i3_0 = 0;
                 for (;;) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_0)]) + 8)) == static_cast<unsigned int>(stageNo)) {
                         return v0_4[i0_5].mFieldAreaId;
                     } else {
-                        if ((i3_0 + static_cast<unsigned int>(1)) < belongStageNum) {
-                            i3_0 += static_cast<unsigned int>(1);
+                        if ((i3_0 + 1u) < belongStageNum) {
+                            i3_0 += 1u;
                         } else {
                             break;
                         }
                     }
                 }
             }
-            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
-                i0_5 += static_cast<unsigned int>(1);
+            if ((i0_5 + 1u) < v0_3) {
+                i0_5 += 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x006767a0 - 0x006767f3 (83 bytes)
@@ -258,40 +258,40 @@ u32 rFieldAreaList::getFieldAreaIdFromStageList(s32 stageNo) const {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: the value the loop at 0x6767b2 carries; no location-less local in scope fits
-    u32 v0_3 = this->mArrayNum;
-    if (v0_3 != static_cast<u32>(0)) {
+    u32 v0_3 = mArrayNum;
+    if (v0_3 != 0) {
         // inferred: the value the loop at 0x6767b2 carries; no location-less local in scope fits
-        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        cFieldAreaInfo* v0_4 = mpArray;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_5 = static_cast<unsigned int>(0);
+        unsigned int i0_5 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_0;
         for (;;) {
-            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
-            if (stageNum != static_cast<u32>(0)) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + 16);
+            if (stageNum != 0) {
                 // inferred: the value the loop at 0x6767d0 carries; no location-less local in scope fits
-                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
-                i1_0 = static_cast<unsigned int>(0);
+                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.getBuffer();
+                i1_0 = 0;
                 for (;;) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + 8)) == static_cast<unsigned int>(stageNo)) {
                         return v0_4[i0_5].mFieldAreaId;
                     } else {
-                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
-                            i1_0 += static_cast<unsigned int>(1);
+                        if ((i1_0 + 1u) < stageNum) {
+                            i1_0 += 1u;
                         } else {
                             break;
                         }
                     }
                 }
             }
-            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
-                i0_5 += static_cast<unsigned int>(1);
+            if ((i0_5 + 1u) < v0_3) {
+                i0_5 += 1u;
             } else {
                 break;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00676800 - 0x006768b3 (179 bytes)
@@ -320,9 +320,9 @@ MT_CTSTR rFieldAreaList::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rFieldAreaList::rFieldAreaList() {
-    this->mpArray = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    mpArray = nullptr;
+    mArrayNum = 0;
+    setAttribute(22u);
 }
 
 // Address: 0x006768d0 - 0x00676961 (145 bytes)
@@ -359,6 +359,8 @@ __attribute__((weak)) bool rFieldAreaList::save(MtStream& out) {
 //   in rFieldAreaList::~rFieldAreaList at 0x00676998-0x00676a05 (called at rFieldAreaList.cpp:293)
 // void rFieldAreaList::destruct();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaList::MyDTI rFieldAreaList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaList.cpp at 0x00677870-0x006778b1 (called at rFieldAreaList.cpp:29)
 //   in _GLOBAL__sub_I_rFieldAreaList.cpp at 0x00677870-0x006778b1 (called at rFieldAreaList.h:31)
@@ -367,7 +369,7 @@ __attribute__((weak)) bool rFieldAreaList::save(MtStream& out) {
 // Address: 0x00676480 - 0x006764e4 (100 bytes)
 MtObject* rFieldAreaList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFieldAreaList;
+    return new (16u) rFieldAreaList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -406,7 +408,7 @@ const MtDTI& rFieldAreaList::cFieldAreaInfo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFieldAreaList::cFieldAreaInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -421,13 +423,13 @@ inline void rFieldAreaList::cFieldAreaInfo::operator delete(void* p_addr) {
 // Address: 0x00677150 - 0x00677155 (5 bytes)
 const rFieldAreaList::cFieldAreaInfo::StageNoArray& rFieldAreaList::cFieldAreaInfo::getStageNoList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStageNoList;
+    return mStageNoList;
 }
 
 // Address: 0x00677160 - 0x00677164 (4 bytes)
 u32 rFieldAreaList::cFieldAreaInfo::getGMDIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGmdIdx;
+    return mGmdIdx;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (268 bytes)
@@ -451,8 +453,10 @@ __attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::createProperty(MtProp
 // Address: 0x00677860 - 0x00677865 (5 bytes)
 MtUI* rFieldAreaList::cFieldAreaInfo::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaList::cFieldAreaInfo::MyDTI rFieldAreaList::cFieldAreaInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaList.cpp at 0x006778b1-0x006778f1 (called at rFieldAreaList.cpp:411)
@@ -489,7 +493,7 @@ const MtDTI& rFieldAreaList::cFieldAreaInfo::cStageNo::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memAlloc(sz, align, ::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memAlloc(sz, align, rFieldAreaList::cFieldAreaInfo::cStageNo::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -504,7 +508,7 @@ void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 alig
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rFieldAreaList14cFieldAreaInfo8cStageNoD0Ev at 0x01a908e0-0x01a9090a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFieldAreaList::cFieldAreaInfo::cStageNo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -539,6 +543,8 @@ __attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::cStageNo::createPrope
 //   in rFieldAreaList::save at 0x00676dea-0x00676dfa (called at nDDOIO.h:463)
 // void rFieldAreaList::cFieldAreaInfo::cStageNo::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI rFieldAreaList::cFieldAreaInfo::cStageNo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFieldAreaList.cpp at 0x006778f1-0x0067792a (called at rFieldAreaList.cpp:412)
 //   in _GLOBAL__sub_I_rFieldAreaList.cpp at 0x006778f1-0x0067792a (called at rFieldAreaList.h:124)
@@ -547,7 +553,7 @@ __attribute__((weak)) void rFieldAreaList::cFieldAreaInfo::cStageNo::createPrope
 // Address: 0x00676f60 - 0x00676fa7 (71 bytes)
 MtObject* rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFieldAreaList::cFieldAreaInfo::cStageNo;
+    return new (16u) rFieldAreaList::cFieldAreaInfo::cStageNo;
 }
 
 // Instance at 0x01a90860 - 0x01a90865 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

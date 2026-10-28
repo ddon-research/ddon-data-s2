@@ -25,7 +25,7 @@ const MtDTI& cLayoutSetNpc::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cLayoutSetNpc::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cLayoutSetNpc::DTI);
+    return MtMemoryAllocator::getAllocator(cLayoutSetNpc::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cLayoutSetNpc::getAllocator() {
 // Address: 0x002d6080 - 0x002d60c0 (64 bytes)
 void* cLayoutSetNpc::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cLayoutSetNpc::getAllocator()->memAlloc(sz, align, ::cLayoutSetNpc::DTI.::MtDTI::getID());
+    return cLayoutSetNpc::getAllocator()->memAlloc(sz, align, cLayoutSetNpc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cLayoutSetNpc::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cLayoutSetNpc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLayoutSetNpc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLayoutSetNpc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,25 +70,25 @@ cLayoutSetNpc::cLayoutSetNpc() {
 // Also emitted as: _ZN13cLayoutSetNpcD0Ev at 0x002d6190
 cLayoutSetNpc::~cLayoutSetNpc() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::kill();
+    kill();
 }
 
 // Address: 0x002d61f0 - 0x002d61f5 (5 bytes)
 void cLayoutSetNpc::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::setup();
+    this->cLayoutSet::setup();
 }
 
 // Address: 0x002d6200 - 0x002d6205 (5 bytes)
 void cLayoutSetNpc::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::move();
+    this->cLayoutSet::move();
 }
 
 // Address: 0x002d6210 - 0x002d6216 (6 bytes)
 void cLayoutSetNpc::finish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->deleteAllUnit();
+    deleteAllUnit();
 }
 
 // Address: 0x002d61e0 - 0x002d61e1 (1 bytes)
@@ -124,20 +124,19 @@ MtObject* cLayoutSetNpc::getUnit(u32 id) {
     // DWARF local not rendered: uControlNpc* pCB;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1dc from MtObject*
-    if (this->::cLayoutSet::mUnitArray.mLength != static_cast<u32>(0)) {
+    if (mUnitArray.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x2d6870, 0x2d689d)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->::cLayoutSet::mUnitArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cLayoutSet::mUnitArray.mpArray[i]) + static_cast<long>(476))) != id) {
-                } else {
-                    return this->::cLayoutSet::mUnitArray.mpArray[i];
+            if (mUnitArray.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitArray.mpArray[i]) + 476)) == id) {
+                    return mUnitArray.mpArray[i];
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->::cLayoutSet::mUnitArray.mLength);
+            i += 1u;
+        } while (i < mUnitArray.mLength);
     }
-    return static_cast<MtObject*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x002d6370 - 0x002d650d (413 bytes)
@@ -167,6 +166,8 @@ bool cLayoutSetNpc::isUseUnitData() const {
     return false;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLayoutSetNpc::MyDTI cLayoutSetNpc::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cLayoutSetNpc.cpp at 0x002d699f-0x002d69dc (called at cLayoutSetNpc.cpp:38)
 //   in _GLOBAL__sub_I_cLayoutSetNpc.cpp at 0x002d699f-0x002d69dc (called at cLayoutSetNpc.h:27)
@@ -175,6 +176,6 @@ bool cLayoutSetNpc::isUseUnitData() const {
 // Address: 0x002d6030 - 0x002d607e (78 bytes)
 MtObject* cLayoutSetNpc::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLayoutSetNpc;
+    return new (16u) cLayoutSetNpc;
 }
 

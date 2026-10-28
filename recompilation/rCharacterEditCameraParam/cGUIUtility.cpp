@@ -33,6 +33,7 @@
 #include "../shared/sSavedataExt.h"
 #include "../shared/sUnit.h"
 #include "../shared/uGUIBase.h"
+#include "uGUISystemMsg.h"
 #include "../shared/uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -152,25 +153,25 @@ __attribute__((weak)) void cGUIUtility::makeDogmaString(s32 sDogma, MtString& rS
 // Address: 0x00202130 - 0x00202190 (96 bytes)
 void cGUIUtility::makePointString(s32 num, u32 type, MtString& rStr, bool bSigned) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (type - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (type - 1u) {
+        case 0:
         {
-            ::cGUIUtility::makeMoneyString(num, rStr, bSigned);
+            cGUIUtility::makeMoneyString(num, rStr, bSigned);
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            ::cGUIUtility::makeRimString(num, rStr, bSigned);
+            cGUIUtility::makeRimString(num, rStr, bSigned);
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            ::cGUIUtility::makeDogmaString(num, rStr, bSigned);
+            cGUIUtility::makeDogmaString(num, rStr, bSigned);
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            ::cGUIUtility::makeGpString(num, rStr, bSigned);
+            cGUIUtility::makeGpString(num, rStr, bSigned);
             break;
         }
         default:
@@ -202,9 +203,9 @@ __attribute__((weak)) void cGUIUtility::makeItemName(MtString& rStr, MT_CTSTR na
 // Address: 0x002025a0 - 0x002025ce (46 bytes)
 MT_CTSTR cGUIUtility::getItemName(u32 item_id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(item_id);
-    if (pParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-        return pParam->::rItemList::rItemParam::getItemName();
+    rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(item_id);
+    if (pParam != nullptr) {
+        return pParam->rItemList::rItemParam::getItemName();
     } else {
         return "";
     }
@@ -308,10 +309,10 @@ __attribute__((weak)) void cGUIUtility::makeCharName(MtString& rStr, nGUIExt::NA
 void cGUIUtility::makeCharName(MtString& rStr, const cContextInstHm* pContext, nGUIExt::NAME_TYPE type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x20364a, used once; no DWARF local holds it
-    MT_CTSTR t0 = ::cContextInterface::getFirstName(pContext);
+    MT_CTSTR t0 = cContextInterface::getFirstName(pContext);
     // inferred: a temporary for the result of the call at 0x203655, used once; no DWARF local holds it
-    MT_CTSTR t1 = ::cContextInterface::getLastName(pContext);
-    ::cGUIUtility::makeCharName(rStr, type, t0, t1, ::cContextInterface::getClanNickName(pContext));
+    MT_CTSTR t1 = cContextInterface::getLastName(pContext);
+    cGUIUtility::makeCharName(rStr, type, t0, t1, cContextInterface::getClanNickName(pContext));
 }
 
 // Address: 0x00203690 - 0x002036cb (59 bytes)
@@ -496,17 +497,17 @@ bool cGUIUtility::isEnableEquipIcon(u32 SlotNo, u32 JobId, u32 EquipJewelryNum) 
     // DWARF local not rendered: const u32 jewelry_no;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((SlotNo - static_cast<u32>(10)) <= static_cast<u32>(4)) {
-        if ((SlotNo - static_cast<u32>(10)) != static_cast<u32>(0)) {
-            if ((SlotNo - static_cast<u32>(10)) >= EquipJewelryNum) {
+    if ((SlotNo - 10u) <= 4u) {
+        if ((SlotNo - 10u) != 0) {
+            if ((SlotNo - 10u) >= EquipJewelryNum) {
                 return false;
             }
         }
         return true;
     } else {
-        if ((SlotNo - static_cast<u32>(17)) <= static_cast<u32>(1)) {
-            if (JobId != static_cast<u32>(3)) {
-                if (JobId == static_cast<u32>(9)) {
+        if ((SlotNo - 17u) <= 1u) {
+            if (JobId != 3) {
+                if (JobId == 9) {
                     return true;
                 } else {
                     return false;
@@ -561,14 +562,14 @@ __attribute__((weak)) f32 cGUIUtility::getQuestFrame(nQuest::QUEST_TYPE quest_ty
 // Address: 0x00204330 - 0x00204380 (80 bytes)
 void cGUIUtility::copyParameter(cGUIInstance* pDest, cGUIInstance* pOrg, s32 flag) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pOrg == static_cast<cGUIInstance*>(nullptr)) {
+    if (pOrg == nullptr) {
         return;
     }
-    if (pDest == static_cast<cGUIInstance*>(nullptr)) {
+    if (pDest == nullptr) {
         return;
     }
-    ::cGUIUtility::copyParameterlValueSet(pDest, pOrg, flag);
-    ::cGUIUtility::copyParameterLoop(pDest->::cGUIInstance::getChild(), pOrg->::cGUIInstance::getChild(), flag);
+    cGUIUtility::copyParameterlValueSet(pDest, pOrg, flag);
+    cGUIUtility::copyParameterLoop(pDest->getChild(), pOrg->getChild(), flag);
 }
 
 // Address: 0x002044d0 - 0x00204516 (70 bytes)
@@ -577,8 +578,8 @@ bool cGUIUtility::isEquipLantern() {
     // DWARF local not rendered: cEquipData& data;
     // DWARF local not rendered: u16 param;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
-        return ::cContextInterface::getContextEquip(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uDDOModel::mContextInterface.mpContextInstance).::cEquipData::getEquip(static_cast<u8>(15), static_cast<u8>(0), true) != static_cast<u16>(0);
+    if (sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+        return cContextInterface::getContextEquip(sPlayerManager::getInstance()->getMyPlayer()->mContextInterface.mpContextInstance).getEquip(static_cast<u8>(15), static_cast<u8>(0), true) != 0;
     } else {
         return false;
     }
@@ -609,11 +610,11 @@ __attribute__((weak)) void cGUIUtility::convertNormalSkillLearnList(const Normal
 // Address: 0x00207100 - 0x00207139 (57 bytes)
 const rAcquirement::cNormalSkillData* cGUIUtility::getNormalSkillData(nHuman::JOB_ENUM JobId, u32 SkillNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cAcquirement::cNormalSkillData* pskill = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getNormalSkillData(static_cast<u32>(JobId));
-    if (pskill != static_cast<cAcquirement::cNormalSkillData*>(nullptr)) {
-        return pskill->::cAcquirement::cNormalSkillData::getData(SkillNo);
+    cAcquirement::cNormalSkillData* pskill = static_cast<sGUIExt*>(sGUI::getInstance())->getNormalSkillData(static_cast<u32>(JobId));
+    if (pskill != nullptr) {
+        return pskill->cAcquirement::cNormalSkillData::getData(SkillNo);
     } else {
-        return static_cast<const rAcquirement::cNormalSkillData*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -628,16 +629,16 @@ const rAcquirement::cNormalSkillData* cGUIUtility::getNormalSkillData(nHuman::JO
 void cGUIUtility::setGUIUnitEnable(uGUIBase* pBase, bool b) {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uGUIBase*
-    if (pBase == static_cast<uGUIBase*>(nullptr)) {
+    if (pBase == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x204595 read, used 3 times; no DWARF local holds it
-    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + static_cast<long>(16));
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + static_cast<long>(16)) = (b == false) ? (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(4294950911)) : (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) | static_cast<unsigned int>(16384));
-    if ((((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(18439)) != static_cast<unsigned int>(18434)) {
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + 16);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + 16) = !b ? ((!b ? (t0 & 0xFFFFFBFFu) : (t0 | 1024u)) & 0xFFFFBFFFu) : ((!b ? (t0 & 0xFFFFFBFFu) : (t0 | 1024u)) | 16384u);
+    if (((!b ? (t0 & 0xFFFFFBFFu) : (t0 | 1024u)) & 18439u) != 18434) {
         return;
     }
-    if ((((b == false) ? (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(4294950911)) : (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) | static_cast<unsigned int>(16384))) & static_cast<unsigned int>(18439)) == static_cast<unsigned int>(18434)) {
+    if (((!b ? ((!b ? (t0 & 0xFFFFFBFFu) : (t0 | 1024u)) & 0xFFFFBFFFu) : ((!b ? (t0 & 0xFFFFFBFFu) : (t0 | 1024u)) | 16384u)) & 18439u) == 18434) {
         return;
     }
     pBase->callbackChangeVisibleTrueToFalse();
@@ -750,12 +751,12 @@ __attribute__((weak)) void cGUIUtility::setExecuteTree(cGUIInstance* p, bool b) 
 //   and 96 more (every copy is in <bundle>.inlined.json)
 // f32 cGUIUtility::getPosY(const cGUIInstNull* p);
 
-// No out-of-line body: 20 inlined copies in 15 functions (219 bytes)
-//   in uGUIAreaMaster::setup at 0x00928798-0x009287a5 (called at uGUIAreaMaster.cpp:683)
-//   in uGUIBase::cReferenceUITextBox::resetTextSize at 0x0096831d-0x00968325, 0x0096832d-0x0096833c (called at uGUIBase.cpp:14414)
-//   in uGUIBase::cReferenceUIPullDown::resetWindowSize at 0x0096cd8e-0x0096cd9b (called at uGUIBase.cpp:16508)
-//   and 17 more (every copy is in <bundle>.inlined.json)
-// f32 cGUIUtility::getPosY(const cGUIObj2D* p);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIServerUITimeEvent::initTimeEvent at 0xc375d7-0xc375df; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it; 6 of its copies unread: a parameter in memory or a frame slot at the entry (026 plan-P80, ruling D-C4), so approximate at most
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+f32 cGUIUtility::getPosY(const cGUIObj2D* p) {
+    return p->mPosition.y;
+}
 
 // No out-of-line body: 64 inlined copies in 47 functions (891 bytes)
 //   in uGUIAreaMaster::adjustScale at 0x00926e10-0x00926e15, 0x00926e19-0x00926e1e (called at uGUIAreaMaster.cpp:342)
@@ -887,13 +888,13 @@ __attribute__((weak)) void cGUIUtility::setCurrentFrameTree(cGUIObject* pObj, f3
 void cGUIUtility::setCurrentFrameTree(cGUIInstAnimation* pInstAnim, f32 frame, bool fix) {
     // DWARF local not rendered: cGUIObject* child;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (pInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
-        if (pInstAnim->::cGUIInstAnimation::getRootObject() != static_cast<cGUIObjRoot*>(nullptr)) {
+    if (pInstAnim != nullptr) {
+        if (pInstAnim->getRootObject() != nullptr) {
             // inferred: the value the loop at 0x204690 carries; no location-less local in scope fits
-            for (cGUIObjRoot* v0_3 = pInstAnim->::cGUIInstAnimation::getRootObject();;) {
-                ::cGUIUtility::setCurrentFrameTree(static_cast<cGUIObject*>(v0_3), frame, fix);
-                if (v0_3->::cGUIObject::getNext() != static_cast<cGUIObject*>(nullptr)) {
-                    v0_3 = static_cast<cGUIObjRoot*>(v0_3->::cGUIObject::getNext());
+            for (cGUIObjRoot* v0_3 = pInstAnim->getRootObject();;) {
+                cGUIUtility::setCurrentFrameTree(static_cast<cGUIObject*>(v0_3), frame, fix);
+                if (v0_3->getNext() != nullptr) {
+                    v0_3 = static_cast<cGUIObjRoot*>(v0_3->getNext());
                 } else {
                     break;
                 }
@@ -1029,9 +1030,9 @@ __attribute__((weak)) void cGUIUtility::addChildUnit(uGUIBase* pParent, uGUIBase
 MT_CTSTR cGUIUtility::GetStageName(s32 stageNo) {
     // DWARF local not rendered: const MT_CTSTR stage_msg;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
-        const u32 stage_msg_id = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::getStageMsgId(stageNo);
-        return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getStageName(stage_msg_id);
+    if (sArea::getInstance() != nullptr) {
+        const u32 stage_msg_id = static_cast<sAreaExt*>(sArea::getInstance())->getStageMsgId(stageNo);
+        return static_cast<sGUIExt*>(sGUI::getInstance())->getStageName(stage_msg_id);
     } else {
         return "";
     }
@@ -1212,23 +1213,22 @@ bool cGUIUtility::IsChargeAttributeEnable(u32 attr) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: const E_GP_COURSE_EFFECT effect;
     // Approximate from the ELF: a load the way back re-reads, read at the head of the iteration; the body oracle reports this body.
-    if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsDispCharges == false) {
+    if (!sGame::getInstance()->mCharData.mCharData.mOption.mIsDispCharges) {
         return false;
     }
-    if (attr == static_cast<u32>(0)) {
+    if (attr == 0) {
         return false;
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
+    unsigned int i3 = 0;
     do {
-        if (::sGame::getInstance()->::sGame::isChargeEffectAttr(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(i3), attr) != false) {
-            if (::sGame::getInstance()->::sGame::isChargeEffect(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(i3)) == false) {
-            } else {
+        if (sGame::getInstance()->isChargeEffectAttr(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(i3), attr)) {
+            if (sGame::getInstance()->isChargeEffect(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(i3))) {
                 return true;
             }
         }
-        i3 += static_cast<unsigned int>(1);
-    } while (i3 <= static_cast<unsigned int>(50));
+        i3 += 1u;
+    } while (i3 <= 50u);
     return false;
 }
 
@@ -1251,54 +1251,54 @@ __attribute__((weak)) MT_CTSTR cGUIUtility::getEquipPartsName(rGUIMessage* pGMDR
 // Address: 0x00207270 - 0x002073d8 (360 bytes)
 MT_CTSTR cGUIUtility::getEquipPartsNameFromCategory(rGUIMessage* pGMDRes, u32 category) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (category - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (category - 1u) {
+        case 0:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(142));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 142u);
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(143));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 143u);
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(144));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 144u);
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(145));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 145u);
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(146));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 146u);
         }
-        case static_cast<u32>(5):
+        case 5:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(147));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 147u);
         }
-        case static_cast<u32>(6):
+        case 6:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(148));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 148u);
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(149));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 149u);
         }
-        case static_cast<u32>(8):
+        case 8:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(150));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 150u);
         }
-        case static_cast<u32>(9):
+        case 9:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(151));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 151u);
         }
-        case static_cast<u32>(10):
+        case 10:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(213));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 213u);
         }
-        case static_cast<u32>(11):
+        case 11:
         {
-            return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(pGMDRes, static_cast<u32>(152));
+            return static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(pGMDRes, 152u);
         }
         default:
         {
@@ -1334,10 +1334,10 @@ __attribute__((weak)) MT_CTSTR cGUIUtility::getIconRCFromBtn(sPadExt::PAD_BTN_TY
 // Address: 0x00207c60 - 0x00207c82 (34 bytes)
 MT_CTSTR cGUIUtility::getIconRCFromKB(sKeyboard::KB_TYPE key) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (key == static_cast<sKeyboard::KB_TYPE>(33)) {
+    if (key == sKeyboard::KB_PRIOR) {
         return "w";
     } else {
-        if (key == static_cast<sKeyboard::KB_TYPE>(34)) {
+        if (key == sKeyboard::KB_NEXT) {
             return "z";
         } else {
             return "";
@@ -1360,14 +1360,14 @@ __attribute__((weak)) MT_CTSTR cGUIUtility::getRawKeyIconTag(u32 key) {
 // Address: 0x00207fd0 - 0x00208047 (119 bytes)
 MT_CTSTR cGUIUtility::getRawMouseIconTag(u32 mouse) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (static_cast<int>(mouse) <= static_cast<int>(12287)) {
-        if (static_cast<int>(mouse) <= static_cast<int>(8191)) {
-            if (static_cast<int>(mouse) <= static_cast<int>(4095)) {
-                if (mouse != static_cast<u32>(1)) {
-                    if (mouse == static_cast<u32>(2)) {
+    if (static_cast<int>(mouse) <= 12287) {
+        if (static_cast<int>(mouse) <= 8191) {
+            if (static_cast<int>(mouse) <= 4095) {
+                if (mouse != 1) {
+                    if (mouse == 2) {
                         return "<ICON MOUSE_CL_R>";
                     } else {
-                        if (mouse == static_cast<u32>(4)) {
+                        if (mouse == 4) {
                             return "<ICON MOUSE_WHL_1>";
                         } else {
                             return "";
@@ -1377,21 +1377,21 @@ MT_CTSTR cGUIUtility::getRawMouseIconTag(u32 mouse) {
                     return "<ICON MOUSE_CL_L>";
                 }
             } else {
-                if (mouse == static_cast<u32>(4096)) {
+                if (mouse == 4096) {
                     return "<ICON MOUSE_WHL_2>";
                 } else {
                     return "";
                 }
             }
         } else {
-            if (mouse == static_cast<u32>(8192)) {
+            if (mouse == 8192) {
                 return "<ICON MOUSE_WHL_3>";
             } else {
                 return "";
             }
         }
     } else {
-        if (mouse == static_cast<u32>(12288)) {
+        if (mouse == 12288) {
             return "<ICON MOUSE_WHL_4>";
         } else {
             return "";
@@ -1451,10 +1451,10 @@ __attribute__((weak)) void cGUIUtility::getKeyIconTag(nGUIExt::StringKeyCustomIc
 void cGUIUtility::getIconTag(nGUIExt::StringKeyCustomIconTag& outIconTag, nKeyCustom::KB_CUSTOM keyCustom, cGUIUtility::ICON_TAG_OUT_TYPE outType, cGUIUtility::ICON_TAG_JOINT_TYPE jointType, u32 flags) {
     // DWARF local not rendered: const u8 act_plt_type;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType == static_cast<u8>(1)) {
-        ::cGUIUtility::getKeyIconTag(outIconTag, keyCustom, outType, jointType, flags);
+    if (static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mActPltType == 1) {
+        cGUIUtility::getKeyIconTag(outIconTag, keyCustom, outType, jointType, flags);
     } else {
-        ::cGUIUtility::getPadIconTag(outIconTag, keyCustom, outType, jointType, flags);
+        cGUIUtility::getPadIconTag(outIconTag, keyCustom, outType, jointType, flags);
     }
 }
 
@@ -1527,7 +1527,7 @@ __attribute__((weak)) void cGUIUtility::getKeyText(nGUIExt::StringKeyName& outTe
 // Address: 0x002058a0 - 0x002058a6 (6 bytes)
 s32 cGUIUtility::GetJobParamNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(10);
+    return 10;
 }
 
 // Address: 0x002058b0 - 0x002058ce (30 bytes)
@@ -1549,7 +1549,7 @@ __attribute__((weak)) const nGUIExt::JobParam* cGUIUtility::GetJobParamFromJobId
 // Address: 0x00205900 - 0x00205906 (6 bytes)
 s32 cGUIUtility::GetValidJobNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<s32>(10);
+    return 10;
 }
 
 // Address: 0x00205910 - 0x00205930 (32 bytes)
@@ -1618,10 +1618,10 @@ bool cGUIUtility::IsDirectChat() {
     // DWARF local not rendered: bool is_direct_chat;
     // DWARF local not rendered: const stOptionDataSystem& option_system;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (::sSavedata::getInstance() != static_cast<sSavedata*>(nullptr)) {
+    if (sSavedata::getInstance() != nullptr) {
         // inferred: a temporary for the result of the call at 0x205b73, used twice; no DWARF local holds it
-        cStorageData& t0 = static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData();
-        if (t0.mOptionSys.mActPltType != static_cast<u8>(0)) {
+        cStorageData& t0 = static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData();
+        if (t0.mOptionSys.mActPltType != 0) {
             return false;
         } else {
             return t0.mOptionSys.mIsDirectChat;
@@ -1692,17 +1692,17 @@ bool cGUIUtility::IsPartyEntry(const cContextInstHm* contextInstHm) {
     // DWARF local not rendered: bool is_party_entry;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x205ee1 read, used once; no DWARF local holds it
-    sGame* t0 = ::sGame::getInstance();
+    sGame* t0 = sGame::getInstance();
     // inferred: a temporary for the result of the call at 0x205ee4, used twice; no DWARF local holds it
-    s32 t1 = ::cContextInterface::getMemberIndex(contextInstHm);
-    if (t1 > static_cast<s32>(-1)) {
-        if (t0->::sGame::isParty(t1) != false) {
+    s32 t1 = cContextInterface::getMemberIndex(contextInstHm);
+    if (t1 > -1) {
+        if (t0->isParty(t1)) {
             // inferred: a temporary for the value the load at 0x205f04 read, used once; no DWARF local holds it
-            cNetGameServer* t2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
-            if (t2->::cNetGameServer::isPlayEntry(::cContextInterface::getMemberIndex(contextInstHm)) != false) {
+            cNetGameServer* t2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+            if (t2->isPlayEntry(cContextInterface::getMemberIndex(contextInstHm))) {
                 // inferred: a temporary for the result of the call at 0x205f2b, used once; no DWARF local holds it
-                bool t3 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow();
-                return t3 == false;
+                bool t3 = sQuestManagerExt::getInstance()->isCycleContentsPlayNow();
+                return !t3;
             } else {
                 return false;
             }
@@ -1728,17 +1728,17 @@ __attribute__((weak)) f32 cGUIUtility::GetCurseHpRate(const uCharacter* characte
 void cGUIUtility::SetCurseGaugeObj(cGUIObject* curseGaugeObj, f32 hpRate) {
     // DWARF local not rendered: const bool is_curse;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (curseGaugeObj == static_cast<cGUIObject*>(nullptr)) {
+    if (curseGaugeObj == nullptr) {
         return;
     }
-    curseGaugeObj->::cGUIObject::setVisible(1.0f > hpRate);
+    curseGaugeObj->setVisible(1.0f > hpRate);
 }
 
 // Address: 0x00204b50 - 0x00204b66 (22 bytes)
 bool cGUIUtility::IsValidOcdId(u32 ocdId) {
     // DWARF local not rendered: const f32 icon_frame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIBase::cReferenceUIIconStatus::GetIconFrameFromOcdId(ocdId) > 0.0f;
+    return uGUIBase::cReferenceUIIconStatus::GetIconFrameFromOcdId(ocdId) > 0.0f;
 }
 
 // Address: 0x00205ff0 - 0x0020600b (27 bytes)
@@ -1748,8 +1748,8 @@ bool cGUIUtility::IsValidAccumulationOcdId(u32 ocdId) {
     // DWARF local not rendered: const u64 mask;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    if ((ocdId - static_cast<u32>(4097)) <= static_cast<u32>(30)) {
-        return ((static_cast<unsigned long>(100599799) >> static_cast<unsigned long>((ocdId - static_cast<u32>(4097)) & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    if ((ocdId - 4097u) <= 30u) {
+        return ((0x5FF07F7ul >> static_cast<unsigned long>((ocdId - 4097u) & 63u)) & 1ul) != 0;
     } else {
         return false;
     }
@@ -1758,11 +1758,11 @@ bool cGUIUtility::IsValidAccumulationOcdId(u32 ocdId) {
 // Address: 0x00206010 - 0x0020602c (28 bytes)
 u32 cGUIUtility::GetDispOcdId(u32 ocdId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ocdId == static_cast<u32>(27)) {
-        return static_cast<u32>(19);
+    if (ocdId == 27) {
+        return 19;
     } else {
-        if (ocdId == static_cast<u32>(13)) {
-            return static_cast<u32>(18);
+        if (ocdId == 13) {
+            return 18;
         } else {
             return ocdId;
         }
@@ -1870,10 +1870,13 @@ __attribute__((weak)) uGUISystemMsg* cGUIUtility::reqDialog(nGUIExt::REQ_DIALOG_
 }
 
 // Address: 0x00206950 - 0x0020698f (63 bytes)
-__attribute__((weak)) uGUISystemMsg* cGUIUtility::reqDialog(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, bool isCancelOff, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4, bool isChatSubMenu) {
-    // local: uGUISystemMsg* pGUI;
-    DDON_STUB("cGUIUtility::reqDialog")
-    return nullptr;
+uGUISystemMsg* cGUIUtility::reqDialog(nGUIExt::REQ_DIALOG_TYPE dialogType, MT_CTSTR mainMsg, s32 defPos, bool isCancelOff, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4, bool isChatSubMenu) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    uGUISystemMsg* pGUI = cGUIUtility::reqDialog(dialogType, mainMsg, defPos, choice1, choice2, choice3, choice4, isChatSubMenu);
+    if (pGUI != nullptr) {
+        pGUI->mIsCancelChoiseOff = isCancelOff;
+    }
+    return pGUI;
 }
 
 // Address: 0x00206990 - 0x00206bd1 (577 bytes)
@@ -1958,33 +1961,33 @@ __attribute__((weak)) bool cGUIUtility::copyParameterlValueSet(cGUIInstance* pDe
     // inferred: a value cast to the type its use takes: u32 used as bool
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a cGUIInstNull member read past the end of cGUIInstance, which DWARF gives no other deriving class a member at 0xb0
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a cGUIInstNull member read past the end of cGUIInstance, which DWARF gives no other deriving class a member at 0xb4
-    if (pOrg != static_cast<cGUIInstance*>(nullptr)) {
-        if (pDest != static_cast<cGUIInstance*>(nullptr)) {
-            if (pDest->::cGUIInstance::getDuplicateId() == pOrg->mId) {
-                pDest->::cGUIInstance::setExecute(static_cast<bool>((pOrg->mAttr & static_cast<u32>(8)) >> static_cast<u32>(3)));
-                if (pDest->getDTI().::MtDTI::getID() == ::cGUIInstAnimation::DTI.::MtDTI::mID) {
-                    if ((flag & static_cast<s32>(1)) != static_cast<s32>(0)) {
-                        static_cast<cGUIInstAnimation*>(pDest)->::cGUIInstAnimation::setSequenceId(static_cast<cGUIInstAnimation*>(pOrg)->::cGUIInstAnimation::getSequenceId());
+    if (pOrg != nullptr) {
+        if (pDest != nullptr) {
+            if (pDest->getDuplicateId() == pOrg->mId) {
+                pDest->setExecute(static_cast<bool>((pOrg->mAttr & 8u) >> 3));
+                if (pDest->getDTI().getID() == cGUIInstAnimation::DTI.mID) {
+                    if ((flag & 1) != 0) {
+                        static_cast<cGUIInstAnimation*>(pDest)->setSequenceId(static_cast<cGUIInstAnimation*>(pOrg)->getSequenceId());
                     }
-                    if ((flag & static_cast<s32>(2)) != static_cast<s32>(0)) {
-                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
+                    if ((flag & 2) != 0) {
+                        static_cast<cGUIInstNull*>(pDest)->setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
                     }
-                    if ((flag & static_cast<s32>(4)) != static_cast<s32>(0)) {
-                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
+                    if ((flag & 4) != 0) {
+                        static_cast<cGUIInstNull*>(pDest)->setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
                     }
-                    if ((flag & static_cast<s32>(8)) != static_cast<s32>(0)) {
-                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
+                    if ((flag & 8) != 0) {
+                        static_cast<cGUIInstNull*>(pDest)->setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
                     }
                 } else {
-                    if (pDest->getDTI().::MtDTI::getID() == ::cGUIInstNull::DTI.::MtDTI::mID) {
-                        if ((flag & static_cast<s32>(2)) != static_cast<s32>(0)) {
-                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
+                    if (pDest->getDTI().getID() == cGUIInstNull::DTI.mID) {
+                        if ((flag & 2) != 0) {
+                            static_cast<cGUIInstNull*>(pDest)->setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
                         }
-                        if ((flag & static_cast<s32>(4)) != static_cast<s32>(0)) {
-                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
+                        if ((flag & 4) != 0) {
+                            static_cast<cGUIInstNull*>(pDest)->setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
                         }
-                        if ((flag & static_cast<s32>(8)) != static_cast<s32>(0)) {
-                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
+                        if ((flag & 8) != 0) {
+                            static_cast<cGUIInstNull*>(pDest)->setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
                         }
                     }
                 }
@@ -2012,4 +2015,6 @@ __attribute__((weak)) bool cGUIUtility::copyParameterLoop(cGUIInstance* pDest, c
 // No out-of-line body: 1 inlined copy in 1 function (18 bytes)
 //   in cGUIUtility::getScaleForDefaultResolution at 0x0020a678-0x0020a68a (called at cGUIUtility.cpp:6601)
 // f32 cGUIUtility::adjustResolutionScaleNum(f32 OrgScale);
+
+// Not defined (relocated bytes): const MT_CTSTR cGUIUtility::DefaultEllipsis;
 

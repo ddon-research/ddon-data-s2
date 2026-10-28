@@ -625,12 +625,39 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK6cAIFSM4Core16ClusterDriveInfo5MyDTI11newInstanceEv at 0x01030980-0x010309df, code DWARF attributes to no inlined copy
+inline cAIFSM::Core::ClusterDriveInfo::ClusterDriveInfo() {
+    this->mConditionWaitFlag = 0;
+    this->mIsUpdated = false;
+    this->mOccurTransition = false;
+    this->mIsTransitionFromAll = false;
+    this->mPassTransitionCheck = false;
+    this->mRequestUpdateProcess = false;
+    this->mpNextNode = nullptr;
+    this->mpNode = nullptr;
+    this->mpClusterWork = nullptr;
+    this->mpCluster = nullptr;
+    this->mConditionWaitTime = -1.0f;
+    this->mDepth = 0;
+    this->mCurrentProcessNo = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: the constructor from _ZNK6cAIFSM4Core11ClusterWork5MyDTI11newInstanceEv at 0x01030a70-0x01030aa6, code DWARF attributes to no inlined copy
+inline cAIFSM::Core::ClusterWork::ClusterWork() {
+    this->mTransitionOnceStateList = nullptr;
+    this->mTransitionOnceStateListLength = 0;
+    this->mTransitionOnceStateNum = 0;
+    this->mpCluster = nullptr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK10cAIFSMData5MyDTI11newInstanceEv at 0x010319d0-0x01031a4c, code DWARF attributes to no inlined copy; approximate: only approximate callers check this inline body
 inline cAIFSMData::cAIFSMData() {
-    this->mpCore = static_cast<cAIFSMData::Core* *>(nullptr);
-    this->mStreamDataSize = static_cast<u32>(0);
-    this->mStreamData = static_cast<u32*>(nullptr);
-    this->mCoreNum = static_cast<u32>(0);
+    this->mpCore = nullptr;
+    this->mStreamDataSize = 0;
+    this->mStreamData = nullptr;
+    this->mCoreNum = 0;
     this->mFFree[6] = 0.0f;
     this->mFFree[7] = 0.0f;
     this->mFFree[4] = 0.0f;
@@ -639,12 +666,12 @@ inline cAIFSMData::cAIFSMData() {
     this->mFFree[3] = 0.0f;
     this->mFFree[0] = 0.0f;
     this->mFFree[1] = 0.0f;
-    this->mIFree[6] = static_cast<int>(0);
-    this->mIFree[7] = static_cast<int>(0);
-    this->mIFree[4] = static_cast<int>(0);
-    this->mIFree[5] = static_cast<int>(0);
-    this->mIFree[2] = static_cast<int>(0);
-    this->mIFree[3] = static_cast<int>(0);
-    this->mIFree[0] = static_cast<int>(0);
-    this->mIFree[1] = static_cast<int>(0);
+    this->mIFree[6] = 0;
+    this->mIFree[7] = 0;
+    this->mIFree[4] = 0;
+    this->mIFree[5] = 0;
+    this->mIFree[2] = 0;
+    this->mIFree[3] = 0;
+    this->mIFree[0] = 0;
+    this->mIFree[1] = 0;
 }

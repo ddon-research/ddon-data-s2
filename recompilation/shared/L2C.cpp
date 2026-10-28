@@ -40,7 +40,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::getAllocato
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -80,29 +80,28 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::oper
 // Address: 0x01a3d360 - 0x01a3d40e (174 bytes)
 s32 nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::ReadPacket(CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::nPacket::Read(*pPacket, this->m_usError) == static_cast<int>(0)) {
-        return static_cast<s32>(0);
+    if (::nPacket::Read(*pPacket, m_usError) == 0) {
+        return 0;
     }
-    if (::nPacket::Read(*pPacket, this->m_nResult) == static_cast<int>(0)) {
-        return this->m_usError != static_cast<u16>(0);
+    if (::nPacket::Read(*pPacket, m_nResult) == 0) {
+        return m_usError != 0;
     }
-    if (::nPacket::Read(*pPacket, this->m_ucPasswordSrcSize) == static_cast<int>(0)) {
-        return this->m_usError != static_cast<u16>(0);
+    if (::nPacket::Read(*pPacket, m_ucPasswordSrcSize) == 0) {
+        return m_usError != 0;
     }
-    if (::nPacket::Read(*pPacket, this->m_ucPasswordEncSize) == static_cast<int>(0)) {
-        return this->m_usError != static_cast<u16>(0);
+    if (::nPacket::Read(*pPacket, m_ucPasswordEncSize) == 0) {
+        return m_usError != 0;
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
-    unsigned int i3 = static_cast<unsigned int>(0);
+    unsigned int i3 = 0;
     do {
-        if (::nPacket::Read(*pPacket, this->m_ucPasswordEnc[i3]) != static_cast<int>(0)) {
-        } else {
-            return this->m_usError != static_cast<u16>(0);
+        if (::nPacket::Read(*pPacket, m_ucPasswordEnc[i3]) == 0) {
+            return m_usError != 0;
         }
-        i3 += static_cast<unsigned int>(1);
-    } while (i3 <= static_cast<unsigned int>(61));
-    this->m_bIsReceived = true;
-    return static_cast<s32>(1);
+        i3 += 1u;
+    } while (i3 <= 61u);
+    m_bIsReceived = true;
+    return 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (11 bytes)
@@ -124,6 +123,8 @@ s32 nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::ReadPacket(CPacket* pPacket
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::MyDTI nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e2d-0x00418e66 (called at L2CImplement.inc:14)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e2d-0x00418e66 (called at L2C.h:376)
@@ -132,7 +133,7 @@ s32 nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::ReadPacket(CPacket* pPacket
 // Address: 0x003b77e0 - 0x003b7871 (145 bytes)
 MtObject* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -158,7 +159,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::getAll
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -213,6 +214,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC:
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::MyDTI nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419067-0x004190a0 (called at L2CImplement.inc:24)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419067-0x004190a0 (called at L2C.h:846)
@@ -221,7 +224,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC:
 // Address: 0x003b8300 - 0x003b8358 (88 bytes)
 MtObject* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC;
+    return new (16u) ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -247,7 +250,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::getAll
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -302,6 +305,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES:
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::MyDTI nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041902e-0x00419067 (called at L2CImplement.inc:23)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x0041902e-0x00419067 (called at L2C.h:800)
@@ -310,7 +315,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES:
 // Address: 0x003b8210 - 0x003b8268 (88 bytes)
 MtObject* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -336,7 +341,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::getA
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -387,6 +392,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RE
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::MyDTI nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418fbc-0x00418ff5 (called at L2CImplement.inc:21)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418fbc-0x00418ff5 (called at L2C.h:718)
@@ -395,7 +402,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RE
 // Address: 0x003b8030 - 0x003b8081 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -421,7 +428,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::getAlloc
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -479,6 +486,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::o
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::MyDTI nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f83-0x00418fbc (called at L2CImplement.inc:20)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f83-0x00418fbc (called at L2C.h:667)
@@ -487,7 +496,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::o
 // Address: 0x003b7f40 - 0x003b7f99 (89 bytes)
 MtObject* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -513,7 +522,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::getAll
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -564,6 +573,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES:
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::MyDTI nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004190a0-0x004190d9 (called at L2CImplement.inc:25)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004190a0-0x004190d9 (called at L2C.h:892)
@@ -572,7 +583,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES:
 // Address: 0x003b83f0 - 0x003b8441 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -598,7 +609,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_EJECTION_NTC::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_EJECTION_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -649,6 +660,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_EJECTION_NTC::operator del
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_EJECTION_NTC::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_EJECTION_NTC::MyDTI nLoginSession::CPacket_L2C_EJECTION_NTC::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419112-0x0041914b (called at L2CImplement.inc:27)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00419112-0x0041914b (called at L2C.h:985)
@@ -657,7 +670,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_EJECTION_NTC::operator del
 // Address: 0x003b8660 - 0x003b86b2 (82 bytes)
 MtObject* nLoginSession::CPacket_L2C_EJECTION_NTC::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_EJECTION_NTC;
+    return new (16u) ::nLoginSession::CPacket_L2C_EJECTION_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -683,7 +696,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getAlloca
 // Address: 0x003b7e70 - 0x003b7eb0 (64 bytes)
 void* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI.::MtDTI::getID());
+    return ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -741,6 +754,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::op
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::MyDTI nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f4a-0x00418f83 (called at L2CImplement.inc:19)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f4a-0x00418f83 (called at L2C.h:620)
@@ -749,7 +764,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::op
 // Address: 0x003b7df0 - 0x003b7e6a (122 bytes)
 MtObject* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -775,7 +790,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAl
 // Address: 0x003b7a80 - 0x003b7ac0 (64 bytes)
 void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI.::MtDTI::getID());
+    return ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -828,6 +843,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::MyDTI nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e9f-0x00418ed8 (called at L2CImplement.inc:16)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e9f-0x00418ed8 (called at L2C.h:473)
@@ -836,7 +853,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC
 // Address: 0x003b7a00 - 0x003b7a73 (115 bytes)
 MtObject* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC;
+    return new (16u) ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -862,7 +879,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::getAl
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -913,6 +930,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::MyDTI nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e66-0x00418e9f (called at L2CImplement.inc:15)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418e66-0x00418e9f (called at L2C.h:432)
@@ -921,7 +940,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES
 // Address: 0x003b7910 - 0x003b7961 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -947,7 +966,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getAllo
 // Address: 0x003b7510 - 0x003b7550 (64 bytes)
 void* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI.::MtDTI::getID());
+    return ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1005,6 +1024,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::MyDTI nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d82-0x00418dbb (called at L2CImplement.inc:11)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d82-0x00418dbb (called at L2C.h:227)
@@ -1013,7 +1034,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::
 // Address: 0x003b7490 - 0x003b750a (122 bytes)
 MtObject* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1095,6 +1116,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::MyDTI nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418dbb-0x00418df4 (called at L2CImplement.inc:12)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418dbb-0x00418df4 (called at L2C.h:274)
@@ -1129,7 +1152,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getAllocat
 // Address: 0x003b7c00 - 0x003b7c40 (64 bytes)
 void* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI.::MtDTI::getID());
+    return ::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1187,6 +1210,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::ope
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::MyDTI nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418ed8-0x00418f11 (called at L2CImplement.inc:17)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418ed8-0x00418f11 (called at L2C.h:515)
@@ -1220,7 +1245,7 @@ const MtDTI& nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1292,6 +1317,8 @@ __attribute__((weak)) s32 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::Rea
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::MyDTI nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f11-0x00418f4a (called at L2CImplement.inc:18)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418f11-0x00418f4a (called at L2C.h:562)
@@ -1300,7 +1327,7 @@ __attribute__((weak)) s32 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::Rea
 // Address: 0x003b7cd0 - 0x003b7d7a (170 bytes)
 MtObject* nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1326,7 +1353,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_RES::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_LOGIN_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1382,6 +1409,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_RES::operator delete
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_LOGIN_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_LOGIN_RES::MyDTI nLoginSession::CPacket_L2C_LOGIN_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d10-0x00418d49 (called at L2CImplement.inc:9)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d10-0x00418d49 (called at L2C.h:140)
@@ -1390,7 +1419,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_RES::operator delete
 // Address: 0x003b72b0 - 0x003b7309 (89 bytes)
 MtObject* nLoginSession::CPacket_L2C_LOGIN_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_LOGIN_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_LOGIN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1416,7 +1445,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::getAllocator(
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1467,6 +1496,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operat
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::MyDTI nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418ff5-0x0041902e (called at L2CImplement.inc:22)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418ff5-0x0041902e (called at L2C.h:759)
@@ -1475,7 +1506,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operat
 // Address: 0x003b8120 - 0x003b8171 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC;
+    return new (16u) ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1501,7 +1532,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_LOGOUT_RES::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_LOGOUT_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1553,6 +1584,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGOUT_RES::operator delet
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_LOGOUT_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_LOGOUT_RES::MyDTI nLoginSession::CPacket_L2C_LOGOUT_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d49-0x00418d82 (called at L2CImplement.inc:10)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418d49-0x00418d82 (called at L2C.h:186)
@@ -1561,7 +1594,7 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGOUT_RES::operator delet
 // Address: 0x003b73a0 - 0x003b73f1 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_LOGOUT_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_LOGOUT_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_LOGOUT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1587,7 +1620,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getAlloc
 // Address: 0x003b8590 - 0x003b85d0 (64 bytes)
 void* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI.::MtDTI::getID());
+    return ::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1650,6 +1683,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::o
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004190d9-0x00419112 (called at L2CImplement.inc:26)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x004190d9-0x00419112 (called at L2C.h:933)
@@ -1684,7 +1719,7 @@ inline MtAllocator* nLoginSession::CPacket_L2C_PING_RES::getAllocator() {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* nLoginSession::CPacket_L2C_PING_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_PING_RES::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_PING_RES::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1736,6 +1771,8 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_PING_RES::operator delete(
 // No out-of-line body: no code in the ELF
 // bool nLoginSession::CPacket_L2C_PING_RES::isReceived() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nLoginSession::CPacket_L2C_PING_RES::MyDTI nLoginSession::CPacket_L2C_PING_RES::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418cd7-0x00418d10 (called at L2CImplement.inc:8)
 //   in _GLOBAL__sub_I_cPacket.cpp at 0x00418cd7-0x00418d10 (called at L2C.h:99)
@@ -1744,6 +1781,6 @@ __attribute__((weak)) void nLoginSession::CPacket_L2C_PING_RES::operator delete(
 // Address: 0x003b71c0 - 0x003b7211 (81 bytes)
 MtObject* nLoginSession::CPacket_L2C_PING_RES::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::nLoginSession::CPacket_L2C_PING_RES;
+    return new (16u) ::nLoginSession::CPacket_L2C_PING_RES;
 }
 

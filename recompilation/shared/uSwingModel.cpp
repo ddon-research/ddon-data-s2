@@ -45,7 +45,7 @@ const MtDTI& uSwingModel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11uSwingModelD0Ev at 0x01b6501b-0x01b6503c, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uSwingModel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uSwingModel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uSwingModel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,14 +60,14 @@ inline void uSwingModel::operator delete(void* p_addr) {
 // Address: 0x00fa3050 - 0x00fa3078 (40 bytes)
 void uSwingModel::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uBaseModel::createProperty(s);
-    this->mSwing.::cSwingModel::createProperty(s);
+    this->uBaseModel::createProperty(s);
+    mSwing.cSwingModel::createProperty(s);
 }
 
 // Address: 0x00fa3080 - 0x00fa3085 (5 bytes)
 MtUI* uSwingModel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uBaseModel::createUI(prop);
+    return this->uBaseModel::createUI(prop);
 }
 
 // Address: 0x00fa30b0 - 0x00fa32ff (591 bytes)
@@ -94,13 +94,13 @@ __attribute__((weak)) void uSwingModel::draw(cDraw* pdraw) {
 // Address: 0x00fa3090 - 0x00fa309c (12 bytes)
 void uSwingModel::setDepthBiasTexture(rTexture* p_texture) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSwing.::cSwingModel::setDepthBiasTexture(p_texture);
+    mSwing.setDepthBiasTexture(p_texture);
 }
 
 // Address: 0x00fa30a0 - 0x00fa30ac (12 bytes)
 void uSwingModel::setDepthBias(f32 bias) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSwing.::cSwingModel::setDepthBias(bias);
+    mSwing.setDepthBias(bias);
 }
 
 // No out-of-line body: no code in the ELF
@@ -174,6 +174,8 @@ __attribute__((weak)) void uSwingModel::drawModel(cDraw* pdraw, rModel* pmod, nD
     DDON_STUB("uSwingModel::drawModel")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uSwingModel::MyDTI uSwingModel::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uSwingModel::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

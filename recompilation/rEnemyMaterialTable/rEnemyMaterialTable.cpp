@@ -36,7 +36,7 @@ const MtDTI& cEnemyMaterialTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cEnemyMaterialTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memAlloc(sz, align, ::cEnemyMaterialTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyMaterialTable::DTI)->memAlloc(sz, align, cEnemyMaterialTable::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cEnemyMaterialTable::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyMaterialTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyMaterialTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -82,6 +82,8 @@ __attribute__((weak)) void cEnemyMaterialTable::createProperty(MtPropertyList& s
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyMaterialTable::MyDTI cEnemyMaterialTable::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyMaterialTable.cpp at 0x0066d44f-0x0066d48c (called at rEnemyMaterialTable.cpp:24)
 //   in _GLOBAL__sub_I_rEnemyMaterialTable.cpp at 0x0066d44f-0x0066d48c (called at rEnemyMaterialTable.h:31)
@@ -90,7 +92,7 @@ __attribute__((weak)) void cEnemyMaterialTable::createProperty(MtPropertyList& s
 // Address: 0x0066cc50 - 0x0066ccab (91 bytes)
 MtObject* cEnemyMaterialTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cEnemyMaterialTable;
+    return new (16u) cEnemyMaterialTable;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,7 +117,7 @@ const MtDTI& rEnemyMaterialTable::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyMaterialTable::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyMaterialTable::DTI)->memAlloc(sz, align, ::rEnemyMaterialTable::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyMaterialTable::DTI)->memAlloc(sz, align, rEnemyMaterialTable::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rEnemyMaterialTable::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN19rEnemyMaterialTableD0Ev at 0x01a8b6a4-0x01a8b6c3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyMaterialTable::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyMaterialTable::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyMaterialTable::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,22 +149,22 @@ bool rEnemyMaterialTable::loadData(MtDataReader& in, cEnemyMaterialTable* pData)
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mIdx);
+    nDDOIO::readData(in, pData->mIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMaterialType);
+    nDDOIO::readData(in, pData->mMaterialType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMaterialNo);
+    nDDOIO::readData(in, pData->mMaterialNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMaterialWeakPointNo);
+    nDDOIO::readData(in, pData->mMaterialWeakPointNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mMaterialAnimationType);
+    nDDOIO::readData(in, pData->mMaterialAnimationType);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mDieIsNoCall);
+    nDDOIO::readData(in, pData->mDieIsNoCall);
     return true;
 }
 
@@ -175,8 +177,10 @@ MT_CTSTR rEnemyMaterialTable::getExt() const {
 // Address: 0x01a8b7f0 - 0x01a8b7f6 (6 bytes)
 u32 rEnemyMaterialTable::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(260);
+    return 260;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyMaterialTable::MyDTI rEnemyMaterialTable::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyMaterialTable.cpp at 0x0066d48c-0x0066d4c9 (called at rEnemyMaterialTable.cpp:134)
@@ -186,7 +190,7 @@ u32 rEnemyMaterialTable::getDataVersion() const {
 // Address: 0x0066d270 - 0x0066d2d4 (100 bytes)
 MtObject* rEnemyMaterialTable::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyMaterialTable;
+    return new (16u) rEnemyMaterialTable;
 }
 
 // Instance at 0x01a8b7a0 - 0x01a8b7b2 (18 bytes) of the generic rTbl2<T>::getData

@@ -833,43 +833,43 @@ namespace nDDOUtility {
 // approximate: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported
 template <typename T>
 nDDOUtility::cNoObjectArray<T>::~cNoObjectArray() {
-    if (this->mAutoDelete != false) {
-        if (this->mLength != static_cast<u32>(0)) {
+    if (this->mAutoDelete) {
+        if (this->mLength != 0) {
             // inferred: the value the loop at 0x1adec10 carries; no location-less local in scope fits
             u32 v0_0 = this->mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                if (this->mpArray[i0_3] != static_cast<T*>(nullptr)) {
+            for (unsigned int i0_3 = 0;;) {
+                if (this->mpArray[i0_3] != nullptr) {
                     delete this->mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mLength) {
+                    if ((i0_3 + 1u) < this->mLength) {
                         v0_0 = this->mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
         }
-        if (this->mpArray != static_cast<T* *>(nullptr)) {
+        if (this->mpArray != nullptr) {
             ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mpArray));
         }
-        this->mpArray = static_cast<T* *>(nullptr);
-        this->mLength = static_cast<u32>(0);
-        this->mBufsiz = static_cast<u32>(0);
+        this->mpArray = nullptr;
+        this->mLength = 0;
+        this->mBufsiz = 0;
     } else {
-        if (this->mpArray != static_cast<T* *>(nullptr)) {
+        if (this->mpArray != nullptr) {
             ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mpArray));
         }
     }
-    this->mpArray = static_cast<T* *>(nullptr);
-    this->mLength = static_cast<u32>(0);
-    this->mBufsiz = static_cast<u32>(0);
+    this->mpArray = nullptr;
+    this->mLength = 0;
+    this->mBufsiz = 0;
 }
 
 // Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else nDDOUtility.cpp, instantiates it for the body oracle.
@@ -886,5 +886,5 @@ nDDOUtility::cRNSpline<NODE>::~cRNSpline() {
 // Generic (024 T863c): every instance's inlined copies give this body; no code of its own, checked where it is inlined (rendered.json inline_proofs).
 template <typename T>
 inline nDDOUtility::cScopedPtr<T>::cScopedPtr() {
-    this->mpInst = static_cast<T*>(nullptr);
+    this->mpInst = nullptr;
 }

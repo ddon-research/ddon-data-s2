@@ -33,7 +33,7 @@ const MtDTI& MtThread::getDTI() const {
 // Address: 0x00d6ee20 - 0x00d6ee60 (64 bytes)
 void* MtThread::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtThread::DTI)->memAlloc(sz, align, ::MtThread::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtThread::DTI)->memAlloc(sz, align, MtThread::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* MtThread::operator new(size_t sz, u32 align) {
 // Address: 0x00d6ee90 - 0x00d6eeba (42 bytes)
 __attribute__((weak)) void MtThread::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtMemoryAllocator::getAllocator(::MtThread::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtThread::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -81,19 +81,16 @@ MtThread::~MtThread() {
 // Address: 0x00d6f240 - 0x00d6f286 (70 bytes)
 void MtThread::resume() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
-    if (this->mStatus == static_cast<MtThread::STATUS>(0)) {
-        if (::scePthreadMutexUnlock(&this->mSuspendSection.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mStatus == SUSPENDED) {
+        if (scePthreadMutexUnlock(&mSuspendSection.mCSection) != 0) {
+            abort();
         }
     }
-    if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -128,24 +125,22 @@ __attribute__((weak)) void MtThread::setProcessor(u32 p) {
 // Address: 0x00d6f2f0 - 0x00d6f2f4 (4 bytes)
 MtThread::STATUS MtThread::getStatus() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStatus;
+    return mStatus;
 }
 
 // Address: 0x00d6f200 - 0x00d6f218 (24 bytes)
 void MtThread::lock() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
 // Address: 0x00d6f220 - 0x00d6f238 (24 bytes)
 void MtThread::unlock() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexUnlock(&this->mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -164,7 +159,7 @@ __attribute__((weak)) void MtThread::execute(void*) {
 // Address: 0x00d6f2d0 - 0x00d6f2d4 (4 bytes)
 bool MtThread::isRequestedTermination() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTerminate;
+    return mTerminate;
 }
 
 // Address: 0x00d6f020 - 0x00d6f0ad (141 bytes)
@@ -173,6 +168,8 @@ __attribute__((weak)) void* MtThread::innerFunction(void* pthis) {
     DDON_STUB("MtThread::innerFunction")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): MtThread::MyDTI MtThread::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtThread::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

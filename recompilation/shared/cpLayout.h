@@ -102,6 +102,12 @@ inline const cGroupParam* cpLayout::getGroupParam() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uDDOModel::setQuestId at 0x8dccfc-0x8dccff; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpLayout::setQuestId(u32 QuestId) {
+    this->mQuestId = QuestId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cpLayout::getQuestId() {
     return this->mQuestId;
 }

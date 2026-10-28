@@ -12,6 +12,7 @@
 #include "cUnit.h"
 #include "cpComponent.h"
 #include "cpEnemyThink.h"
+#include "cpIKCtrl.h"
 #include "sEnemyManager.h"
 #include "sEventManager.h"
 #include "sMain.h"
@@ -45,7 +46,7 @@ const MtDTI& cFSMUnit::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cFSMUnit::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::DTI);
+    return MtMemoryAllocator::getAllocator(cFSMUnit::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +55,7 @@ inline MtAllocator* cFSMUnit::getAllocator() {
 // Address: 0x001ef820 - 0x001ef860 (64 bytes)
 void* cFSMUnit::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cFSMUnit::getAllocator()->memAlloc(sz, align, ::cFSMUnit::DTI.::MtDTI::getID());
+    return cFSMUnit::getAllocator()->memAlloc(sz, align, cFSMUnit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,7 +70,7 @@ void* cFSMUnit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMUnitD0Ev at 0x01989ade-0x01989aff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMUnit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,9 +103,9 @@ __attribute__((weak)) void cFSMUnit::callbackUpdate() {
 // Address: 0x001ef980 - 0x001ef997 (23 bytes)
 u32 cFSMUnit::stateUpdateSetWait(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStatus = static_cast<u32>(0);
-    this->::cFSMUnit::stateSetWait(pParam, pCaller);
-    return static_cast<u32>(0);
+    mStatus = 0;
+    stateSetWait(pParam, pCaller);
+    return 0;
 }
 
 // Address: 0x001ef9a0 - 0x001efb22 (386 bytes)
@@ -144,34 +145,34 @@ __attribute__((weak)) u32 cFSMUnit::stateSetGoto(MtObject* pParam, MtObject* pCa
 u32 cFSMUnit::stateExitSetGoto(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: uNpc* pNpc;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    if (getOwner() != nullptr) {
         // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
-        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        MtObject* v0_3 = static_cast<cpComponent*>(getOwner())->getOwner();
         // inferred: a temporary for the result of the call at 0x1f068d, used once; no DWARF local holds it
         const MtDTI& t0 = v0_3->getDTI();
         // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uNpc::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uNpc::DTI.mName;
         // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 != v0_0->mName) {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                if (v0_3 != static_cast<MtObject*>(nullptr)) {
-                    if (static_cast<cUnit*>(v0_3)->::cUnit::isEnable() != false) {
-                        if (this->mIsForceWarp != false) {
-                            static_cast<uHuman*>(v0_3)->::uHuman::startChangeTrp(0.0f, 1.0f, 30.0f);
+                if (v0_3 != nullptr) {
+                    if (static_cast<cUnit*>(v0_3)->isEnable()) {
+                        if (mIsForceWarp) {
+                            static_cast<uHuman*>(v0_3)->startChangeTrp(0.0f, 1.0f, 30.0f);
                         }
                     }
                 }
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f06f0 - 0x001f07bd (205 bytes)
@@ -273,81 +274,77 @@ __attribute__((weak)) u32 cFSMUnit::stateSetNeck(MtObject* pParam, MtObject* pCa
 
 // Address: 0x001f29c0 - 0x001f2aee (302 bytes)
 u32 cFSMUnit::stateExitSetNeck(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetNeck* pParamSetNeck;
     // DWARF local not rendered: uNpc* pNpc;
     // DWARF local not rendered: uEnemy* pEnemy;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cFSMUnit::cParamSetNeck::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x8 from const MtDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uNpc::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2d from MtObject*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uEnemy::MyDTI*
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x1f29d6, used twice; no DWARF local holds it
     const MtDTI& t0 = pParam->getDTI();
     // inferred: the value the loop at 0x1f29f0 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cFSMUnit::cParamSetNeck::DTI) + static_cast<long>(8));
-    if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t0) + static_cast<long>(8)))) {
+    MT_CTSTR v0_1 = cFSMUnit::cParamSetNeck::DTI.mName;
+    if (v0_1 != t0.mName) {
         // inferred: the value the loop at 0x1f29f0 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) == static_cast<unsigned long>(0)) {
-                return static_cast<u32>(0);
+            if (v0_0->mpParent == nullptr) {
+                return 0;
             } else {
-                if (v0_1 != (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) + static_cast<long>(8)))) {
-                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != v0_0->mpParent->mName) {
+                    v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             }
         }
-        if (pParam == static_cast<MtObject*>(nullptr)) {
-            return static_cast<u32>(0);
+        if (pParam == nullptr) {
+            return 0;
         }
     }
-    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    if (getOwner() != nullptr) {
         // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
-        MtObject* v3_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        MtObject* v3_9 = static_cast<cpComponent*>(getOwner())->getOwner();
         // inferred: a temporary for the result of the call at 0x1f2a23, used once; no DWARF local holds it
         const MtDTI& t1 = v3_9->getDTI();
         // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
-        unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uNpc::DTI) + static_cast<long>(8));
+        MT_CTSTR v3_1 = uNpc::DTI.mName;
         // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
         for (const MtDTI* v3_0 = &t1;;) {
-            if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(8)))) {
-                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                    v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32)));
+            if (v3_1 != v3_0->mName) {
+                if (v3_0->mpParent != nullptr) {
+                    v3_0 = v3_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                if (v3_9 != static_cast<MtObject*>(nullptr)) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(45))) != static_cast<unsigned char>(0)) {
-                        static_cast<uNpc*>(v3_9)->::uNpc::setHeadCtrlEnable(static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))), false);
+                if (v3_9 == nullptr) {
+                    break;
+                } else {
+                    // inferred: a downcast named by the DWARF local the source declared: pParamSetNeck, its location optimized out, declared in the lexical block that holds the access
+                    cParamSetNeck* pParamSetNeck = static_cast<cParamSetNeck*>(pParam);
+                    if (pParamSetNeck->mIsAutoOffCtrl) {
+                        static_cast<uNpc*>(v3_9)->setHeadCtrlEnable(pParamSetNeck->mIsSetNeck, false);
                     }
+                    break;
                 }
-                break;
             }
         }
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
-            MtObject* v5_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v5_3 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f2a6e, used once; no DWARF local holds it
             const MtDTI& t2 = v5_3->getDTI();
             // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
-            unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uEnemy::DTI) + static_cast<long>(8));
+            MT_CTSTR v5_1 = uEnemy::DTI.mName;
             // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
             for (const MtDTI* v5_0 = &t2;;) {
-                if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32)));
+                if (v5_1 != v5_0->mName) {
+                    if (v5_0->mpParent != nullptr) {
+                        v5_0 = v5_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    if (v5_3 != static_cast<MtObject*>(nullptr)) {
-                        if (static_cast<uEnemy*>(v5_3)->::uEnemy::findcpEnemyThink() != static_cast<cpEnemyThink*>(nullptr)) {
-                            static_cast<uEnemy*>(v5_3)->::uEnemy::findcpEnemyThink()->mIsFmsTarget = false;
+                    if (v5_3 != nullptr) {
+                        if (static_cast<uEnemy*>(v5_3)->findcpEnemyThink() != nullptr) {
+                            static_cast<uEnemy*>(v5_3)->findcpEnemyThink()->mIsFmsTarget = false;
                         }
                     }
                     break;
@@ -355,12 +352,12 @@ u32 cFSMUnit::stateExitSetNeck(MtObject* pParam, MtObject* pCaller) {
             }
         }
     }
-    ::sUnit::getInstance()->::sUnit::remove(static_cast<cUnit*>(this->mpEvHeadTarget));
-    if (this->mpEvHeadTarget != static_cast<cFSMUnit::uEvHeadTarget*>(nullptr)) {
-        delete this->mpEvHeadTarget;
-        this->mpEvHeadTarget = static_cast<cFSMUnit::uEvHeadTarget*>(nullptr);
+    sUnit::getInstance()->remove(static_cast<cUnit*>(mpEvHeadTarget));
+    if (mpEvHeadTarget != nullptr) {
+        delete mpEvHeadTarget;
+        mpEvHeadTarget = nullptr;
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f2af0 - 0x001f2bf9 (265 bytes)
@@ -385,9 +382,9 @@ __attribute__((weak)) u32 cFSMUnit::stateSetEyeBall(MtObject* pParam, MtObject* 
 // Address: 0x001f2e70 - 0x001f2e87 (23 bytes)
 u32 cFSMUnit::stateUpdateSetEmDie(MtObject* pParam, MtObject* pCaller) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cFSMBase::mRno = static_cast<u32>(0);
-    this->::cFSMUnit::stateSetEmDie(pParam, pCaller);
-    return static_cast<u32>(0);
+    mRno = 0;
+    stateSetEmDie(pParam, pCaller);
+    return 0;
 }
 
 // Address: 0x001f2e90 - 0x001f3039 (425 bytes)
@@ -425,34 +422,34 @@ __attribute__((weak)) u32 cFSMUnit::stateSetWaypoint(MtObject* pParam, MtObject*
 u32 cFSMUnit::stateExitSetWaypoint(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: uNpc* pNpc;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    if (getOwner() != nullptr) {
         // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
-        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        MtObject* v0_3 = static_cast<cpComponent*>(getOwner())->getOwner();
         // inferred: a temporary for the result of the call at 0x1f354d, used once; no DWARF local holds it
         const MtDTI& t0 = v0_3->getDTI();
         // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uNpc::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uNpc::DTI.mName;
         // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 != v0_0->mName) {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                if (v0_3 != static_cast<MtObject*>(nullptr)) {
-                    if (static_cast<cUnit*>(v0_3)->::cUnit::isEnable() != false) {
-                        if (this->mIsForceWarp != false) {
-                            static_cast<uHuman*>(v0_3)->::uHuman::startChangeTrp(0.0f, 1.0f, 30.0f);
+                if (v0_3 != nullptr) {
+                    if (static_cast<cUnit*>(v0_3)->isEnable()) {
+                        if (mIsForceWarp) {
+                            static_cast<uHuman*>(v0_3)->startChangeTrp(0.0f, 1.0f, 30.0f);
                         }
                     }
                 }
-                return static_cast<u32>(0);
+                return 0;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f35b0 - 0x001f369e (238 bytes)
@@ -505,57 +502,55 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetOpenDoor(MtObject* pParam, MtO
 // Address: 0x001f3960 - 0x001f39fd (157 bytes)
 u32 cFSMUnit::stateUpdateSetDispWeapon(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: uControl* pCtrl;
-    // DWARF local not rendered: uControlNpc* pCtrlNpc;
-    // DWARF local not rendered: cParamSetDispWeapon* pParamSetDispWep;
     // DWARF local not rendered: uNpc* pNpc;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uNpc::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uControlNpc::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
-            MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v0_3 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f3985, used once; no DWARF local holds it
             const MtDTI& t0 = v0_3->getDTI();
             // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uNpc::DTI) + static_cast<long>(8));
+            MT_CTSTR v0_1 = uNpc::DTI.mName;
             // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
             const MtDTI* v0_0 = &t0;
             // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
             const MtDTI* v2_0;
             for (;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_3 == static_cast<MtObject*>(nullptr)) {
+                    if (v0_3 == nullptr) {
                         break;
                     } else {
                         // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
-                        uControl* v2_10 = static_cast<uDDOModel*>(v0_3)->::uDDOModel::getCtrl();
-                        if (v2_10 == static_cast<uControl*>(nullptr)) {
+                        uControl* v2_10 = static_cast<uDDOModel*>(v0_3)->getCtrl();
+                        if (v2_10 == nullptr) {
                             break;
                         } else {
                             // inferred: a temporary for the result of the call at 0x1f39bb, used once; no DWARF local holds it
                             const MtDTI& t2 = v2_10->getDTI();
                             // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
-                            unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uControlNpc::DTI) + static_cast<long>(8));
+                            MT_CTSTR v2_1 = uControlNpc::DTI.mName;
                             v2_0 = &t2;
                             for (;;) {
-                                if (v2_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(8)))) {
-                                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                                        v2_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(32)));
+                                if (v2_1 != v2_0->mName) {
+                                    if (v2_0->mpParent != nullptr) {
+                                        v2_0 = v2_0->mpParent;
                                     } else {
                                         break;
                                     }
                                 } else {
-                                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v2_10) + static_cast<long>(734)) = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8));
-                                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v2_10) + static_cast<long>(735)) = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(9));
+                                    // inferred: a downcast named by the DWARF local the source declared: pParamSetDispWep, its location optimized out, declared in the lexical block that holds the access
+                                    cParamSetDispWeapon* pParamSetDispWep = static_cast<cParamSetDispWeapon*>(pParam);
+                                    // inferred: a downcast named by the DWARF local the source declared: pCtrlNpc, located in the register the access reads through
+                                    uControlNpc* pCtrlNpc = static_cast<uControlNpc*>(v2_10);
+                                    pCtrlNpc->mIsDispWepMain = pParamSetDispWep->mIsDispWepMain;
+                                    pCtrlNpc->mIsDispWepSub = pParamSetDispWep->mIsDispWepSub;
                                     goto loop_1f3993_end;
                                 }
                             }
@@ -567,46 +562,48 @@ u32 cFSMUnit::stateUpdateSetDispWeapon(MtObject* pParam, MtObject* pCaller) {
             loop_1f3993_end:;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3a00 - 0x001f3a67 (103 bytes)
 u32 cFSMUnit::stateUpdateSetShadowCast(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetShadowCast* pParamSetShadowCast;
     // DWARF local not rendered: uDDOModel* pModel;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
-            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f3a22, used once; no DWARF local holds it
             const MtDTI& t0 = v0_9->getDTI();
             // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
             // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_9 != static_cast<MtObject*>(nullptr)) {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))) != static_cast<unsigned char>(0)) {
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20))) | static_cast<unsigned int>(520);
+                    if (v0_9 == nullptr) {
+                        return 0;
+                    } else {
+                        // inferred: a downcast named by the DWARF local the source declared: pParamSetShadowCast, its location optimized out, declared in the lexical block that holds the access
+                        cParamSetShadowCast* pParamSetShadowCast = static_cast<cParamSetShadowCast*>(pParam);
+                        if (pParamSetShadowCast->mIsShadowCast) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 20) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 20)) | 520u;
                         } else {
-                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20))) & static_cast<unsigned int>(4294966775);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 20) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 20)) & 0xFFFFFDF7u;
                         }
+                        return 0;
                     }
-                    return static_cast<u32>(0);
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3a70 - 0x001f3aec (124 bytes)
@@ -622,55 +619,55 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetHaveThing(MtObject* pParam, Mt
 u32 cFSMUnit::stateUpdateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
     // DWARF local not rendered: cParamSetCallSe* pParamSetCallSe;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        this->mStartFrame = ::sMain::getInstance()->::sMain::getFrameTimer();
-        this->mRnoSE = static_cast<u32>(0);
+    if (pParam != nullptr) {
+        mStartFrame = sMain::getInstance()->getFrameTimer();
+        mRnoSE = 0;
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3b20 - 0x001f3bbb (155 bytes)
 u32 cFSMUnit::stateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetCallSe* pParamSetCallSe;
     // DWARF local not rendered: u32 diffFrame;
     // DWARF local not rendered: uDDOModel* pModel;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->mRnoSE == static_cast<u32>(0)) {
-            if ((::sMain::getInstance()->::sMain::getFrameTimer() - this->mStartFrame) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(16)))) {
+    if (pParam != nullptr) {
+        if (mRnoSE == 0) {
+            // inferred: a downcast named by the DWARF local the source declared: pParamSetCallSe, its location optimized out, declared in the lexical block that holds the access
+            cParamSetCallSe* pParamSetCallSe = static_cast<cParamSetCallSe*>(pParam);
+            if ((sMain::getInstance()->getFrameTimer() - mStartFrame) < pParamSetCallSe->mDelayFrame) {
             } else {
-                if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+                if (getOwner() != nullptr) {
                     // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
-                    MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+                    MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
                     // inferred: a temporary for the result of the call at 0x1f3b6b, used once; no DWARF local holds it
                     const MtDTI& t0 = v0_9->getDTI();
                     // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
-                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&uDDOModel::DTI) + 8);
                     // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
                     for (const MtDTI* v0_0 = &t0;;) {
-                        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
                             } else {
                                 break;
                             }
                         } else {
-                            if (v0_9 != static_cast<MtObject*>(nullptr)) {
-                                ::sEventManager::getInstance()->::sEventManager::callEventSe(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), static_cast<uCoord*>(v0_9), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12))));
+                            if (v0_9 != nullptr) {
+                                sEventManager::getInstance()->callEventSe(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8), static_cast<uCoord*>(v0_9), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 12)));
                             }
                             break;
                         }
                     }
                 }
-                this->mRnoSE = this->mRnoSE + static_cast<u32>(1);
+                mRnoSE = mRnoSE + 1u;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3bc0 - 0x001f3c3b (123 bytes)
@@ -694,13 +691,15 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetParts(MtObject* pParam, MtObje
 
 // Address: 0x001f3cc0 - 0x001f3cdf (31 bytes)
 u32 cFSMUnit::stateUpdateSetVibUnit(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetVibUnit* pParamSetVibUnit;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        ::sEventManager::getInstance()->::sEventManager::reqEventVib(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pParam != nullptr) {
+        // inferred: a downcast named by the DWARF local the source declared: pParamSetVibUnit, its location optimized out, declared in the lexical block that holds the access
+        cParamSetVibUnit* pParamSetVibUnit = static_cast<cParamSetVibUnit*>(pParam);
+        sEventManager::getInstance()->reqEventVib(pParamSetVibUnit->mVib);
+        return 0;
+    } else {
+        return 0;
     }
-    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3ce0 - 0x001f3d7e (158 bytes)
@@ -715,137 +714,169 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetEmMontage(MtObject* pParam, Mt
 
 // Address: 0x001f3d80 - 0x001f3de3 (99 bytes)
 u32 cFSMUnit::stateUpdateSetHeadCtrl(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetHeadCtrl* pParamSetHeadCtrl;
     // DWARF local not rendered: uDDOModel* pModel;
     // DWARF local not rendered: uNpc* pNpc;
-    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x8 from MtObject*
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
-            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f3da2, used once; no DWARF local holds it
             const MtDTI& t0 = v0_9->getDTI();
             // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_9 != static_cast<MtObject*>(nullptr)) {
-                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::isNpc() != false) {
-                            static_cast<uNpc*>(v0_9)->::uNpc::setHeadCtrl(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))));
+                    if (v0_9 == nullptr) {
+                        return 0;
+                    } else {
+                        if (!static_cast<uDDOModel*>(v0_9)->isNpc()) {
+                            return 0;
+                        } else {
+                            // inferred: a downcast named by the DWARF local the source declared: pParamSetHeadCtrl, its location optimized out, declared in the lexical block that holds the access
+                            cParamSetHeadCtrl* pParamSetHeadCtrl = static_cast<cParamSetHeadCtrl*>(pParam);
+                            static_cast<uNpc*>(v0_9)->setHeadCtrl(pParamSetHeadCtrl->mHeadCtrl);
+                            return 0;
                         }
                     }
-                    return static_cast<u32>(0);
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3df0 - 0x001f3e5b (107 bytes)
 u32 cFSMUnit::stateUpdateSetEyeClose(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetEyeClose* pParamSetEyeClose;
     // DWARF local not rendered: uDDOModel* pModel;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
-            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f3e12, used once; no DWARF local holds it
             const MtDTI& t0 = v0_9->getDTI();
             // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_9 == static_cast<MtObject*>(nullptr)) {
-                        return static_cast<u32>(0);
+                    if (v0_9 == nullptr) {
+                        return 0;
                     } else {
-                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc() == static_cast<uControlNpc*>(nullptr)) {
-                            return static_cast<u32>(0);
+                        if (static_cast<uDDOModel*>(v0_9)->getCtrlNpc() == nullptr) {
+                            return 0;
                         } else {
                             // inferred: a temporary for the result of the call at 0x1f3e46, used once; no DWARF local holds it
-                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc();
-                            t1->mIsEyeClose = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
-                            return static_cast<u32>(0);
+                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->getCtrlNpc();
+                            // inferred: a downcast named by the DWARF local the source declared: pParamSetEyeClose, its location optimized out, declared in the lexical block that holds the access
+                            cParamSetEyeClose* pParamSetEyeClose = static_cast<cParamSetEyeClose*>(pParam);
+                            t1->mIsEyeClose = pParamSetEyeClose->mEyeClose;
+                            return 0;
                         }
                     }
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3e60 - 0x001f3ecb (107 bytes)
 u32 cFSMUnit::stateUpdateSetDispMiniMap(MtObject* pParam, MtObject* pCaller) {
-    // DWARF local not rendered: cParamSetDispMiniMap* pParamSetDispMiniMap;
     // DWARF local not rendered: uDDOModel* pModel;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    if (pParam != static_cast<MtObject*>(nullptr)) {
-        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
             // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
-            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
             // inferred: a temporary for the result of the call at 0x1f3e82, used once; no DWARF local holds it
             const MtDTI& t0 = v0_9->getDTI();
             // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
-            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
             // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
             for (const MtDTI* v0_0 = &t0;;) {
-                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_9 == static_cast<MtObject*>(nullptr)) {
-                        return static_cast<u32>(0);
+                    if (v0_9 == nullptr) {
+                        return 0;
                     } else {
-                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc() == static_cast<uControlNpc*>(nullptr)) {
-                            return static_cast<u32>(0);
+                        if (static_cast<uDDOModel*>(v0_9)->getCtrlNpc() == nullptr) {
+                            return 0;
                         } else {
                             // inferred: a temporary for the result of the call at 0x1f3eb6, used once; no DWARF local holds it
-                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc();
-                            t1->mIsDispMiniMap = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
-                            return static_cast<u32>(0);
+                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->getCtrlNpc();
+                            // inferred: a downcast named by the DWARF local the source declared: pParamSetDispMiniMap, its location optimized out, declared in the lexical block that holds the access
+                            cParamSetDispMiniMap* pParamSetDispMiniMap = static_cast<cParamSetDispMiniMap*>(pParam);
+                            t1->mIsDispMiniMap = pParamSetDispMiniMap->mIsDispMiniMap;
+                            return 0;
                         }
                     }
                 }
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x001f3ed0 - 0x001f3f38 (104 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetIK(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetIK* pParamSetIK;
-    // local: uDDOModel* pModel;
-    // local: uNpc* pNpc;
-    DDON_STUB("cFSMUnit::stateUpdateSetIK")
-    return {};
+u32 cFSMUnit::stateUpdateSetIK(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: uDDOModel* pModel;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pParam != nullptr) {
+        if (getOwner() != nullptr) {
+            // inferred: the value the loop at 0x1f3f00 carries; no location-less local in scope fits
+            MtObject* v0_9 = static_cast<cpComponent*>(getOwner())->getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3ef2, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_9->getDTI();
+            // inferred: the value the loop at 0x1f3f00 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = uDDOModel::DTI.mName;
+            // inferred: the value the loop at 0x1f3f00 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_9 == nullptr) {
+                        return 0;
+                    } else {
+                        if (!static_cast<uDDOModel*>(v0_9)->isNpc()) {
+                            return 0;
+                        } else {
+                            // inferred: a downcast named by the DWARF local the source declared: pNpc, its location optimized out, declared in the lexical block that holds the access
+                            uNpc* pNpc = static_cast<uNpc*>(v0_9);
+                            // inferred: a downcast named by the DWARF local the source declared: pParamSetIK, its location optimized out, declared in the lexical block that holds the access
+                            cParamSetIK* pParamSetIK = static_cast<cParamSetIK*>(pParam);
+                            pNpc->::uCharacter::mpIKCtrl->setActive(pParamSetIK->mActive);
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 // Address: 0x001f5510 - 0x001f55fa (234 bytes)
@@ -941,33 +972,33 @@ u32 cFSMUnit::getHp() const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x1f42de; no location-less local in scope fits
     HP_DATATYPE v2_8;
-    if (this->::cFSMBase::getOwner() == static_cast<MtObject*>(nullptr)) {
-        v2_8 = static_cast<HP_DATATYPE>(0);
+    if (getOwner() == nullptr) {
+        v2_8 = 0;
     } else {
         // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
-        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        MtObject* v0_3 = static_cast<cpComponent*>(getOwner())->getOwner();
         // inferred: a temporary for the result of the call at 0x1f42ad, used once; no DWARF local holds it
         const MtDTI& t0 = v0_3->getDTI();
         // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uCharacter::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uCharacter::DTI.mName;
         // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 != v0_0->mName) {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
                 }
             } else {
-                if (v0_3 == static_cast<MtObject*>(nullptr)) {
-                    v2_8 = static_cast<HP_DATATYPE>(0);
+                if (v0_3 == nullptr) {
+                    v2_8 = 0;
                 } else {
-                    v2_8 = static_cast<uDDOModel*>(v0_3)->::uDDOModel::getHp(static_cast<u32>(0));
+                    v2_8 = static_cast<uDDOModel*>(v0_3)->getHp(0u);
                 }
                 return static_cast<unsigned int>(v2_8);
             }
         }
-        v2_8 = static_cast<HP_DATATYPE>(0);
+        v2_8 = 0;
     }
     return static_cast<unsigned int>(v2_8);
 }
@@ -999,7 +1030,7 @@ __attribute__((weak)) f32 cFSMUnit::getDistanceToLeader() const {
 // Address: 0x001f45c0 - 0x001f45cf (15 bytes)
 bool cFSMUnit::isUpdateWaypoint() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isUpdateWaypoint();
+    return sQuestManagerExt::getInstance()->isUpdateWaypoint();
 }
 
 // Address: 0x001f4760 - 0x001f48e0 (384 bytes)
@@ -1036,7 +1067,7 @@ __attribute__((weak)) bool cFSMUnit::isDiedMogock() {
 // Address: 0x001f45d0 - 0x001f45d7 (7 bytes)
 bool cFSMUnit::isChangeMaster() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsChangeMaster;
+    return mIsChangeMaster;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -1046,7 +1077,7 @@ bool cFSMUnit::isChangeMaster() const {
 // Address: 0x001f45e0 - 0x001f45f2 (18 bytes)
 bool cFSMUnit::isExistEnemyUnit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEnemyManager::getInstance()->::sUnitManager::mRefArray.::MtArray::mLength != static_cast<u32>(0);
+    return sEnemyManager::getInstance()->mRefArray.mLength != 0;
 }
 
 // Address: 0x001f4600 - 0x001f4672 (114 bytes)
@@ -1054,22 +1085,22 @@ bool cFSMUnit::isTouchActionFromPlayer() const {
     // DWARF local not rendered: uPlayer* pPlayer;
     // DWARF local not rendered: uCharacter* pChar;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+    if (getOwner() != nullptr) {
         // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
-        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        MtObject* v0_3 = static_cast<cpComponent*>(getOwner())->getOwner();
         // inferred: a temporary for the result of the call at 0x1f461a, used once; no DWARF local holds it
         const MtDTI& t0 = v0_3->getDTI();
         // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
-        MT_CTSTR v0_1 = ::uCharacter::DTI.::MtDTI::mName;
+        MT_CTSTR v0_1 = uCharacter::DTI.mName;
         // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
         for (const MtDTI* v0_0 = &t0;;) {
             if (v0_1 == v0_0->mName) {
                 // inferred: a temporary for the value the load at 0x1f4643 read, used 3 times; no DWARF local holds it
-                uPlayer* t1 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
-                if (t1 != static_cast<uPlayer*>(nullptr)) {
-                    if (v0_3 != static_cast<MtObject*>(nullptr)) {
-                        if (t1->::uHuman::isTouchNow() != false) {
-                            if (v0_3 == t1->::uHuman::mpTouchSelectTarget) {
+                uPlayer* t1 = sPlayerManager::getInstance()->getMyPlayer();
+                if (t1 != nullptr) {
+                    if (v0_3 != nullptr) {
+                        if (t1->isTouchNow()) {
+                            if (v0_3 == t1->mpTouchSelectTarget) {
                                 return true;
                             }
                         }
@@ -1077,7 +1108,7 @@ bool cFSMUnit::isTouchActionFromPlayer() const {
                 }
                 break;
             } else {
-                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                if (v0_0->mpParent != nullptr) {
                     v0_0 = v0_0->mpParent;
                 } else {
                     break;
@@ -1208,6 +1239,8 @@ __attribute__((weak)) void cFSMUnit::createPropertyFSM(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::MyDTI cFSMUnit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd903-0x001fd940 (called at cFSMUnit.cpp:86)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd903-0x001fd940 (called at cFSMUnit.h:44)
@@ -1257,7 +1290,7 @@ const MtDTI& cFSMUnit::uEvHeadTarget::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::uEvHeadTarget::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::uEvHeadTarget::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::uEvHeadTarget::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1297,7 +1330,7 @@ __attribute__((weak)) void cFSMUnit::uEvHeadTarget::setup() {
 // Address: 0x001fd610 - 0x001fd615 (5 bytes)
 void cFSMUnit::uEvHeadTarget::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cFSMUnit::uEvHeadTarget::updateParam();
+    updateParam();
 }
 
 // Address: 0x001fd620 - 0x001fd621 (1 bytes)
@@ -1318,6 +1351,8 @@ __attribute__((weak)) void cFSMUnit::uEvHeadTarget::updateParam() {
     DDON_STUB("cFSMUnit::uEvHeadTarget::updateParam")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::uEvHeadTarget::MyDTI cFSMUnit::uEvHeadTarget::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdf4a-0x001fdf87 (called at cFSMUnit.cpp:5104)
@@ -1366,7 +1401,7 @@ const MtDTI& cFSMUnit::cParamSetMotion::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetMotion::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotion::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotion::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1404,8 +1439,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetMotion::createProperty(MtPropertyL
 // Address: 0x001f8b00 - 0x001f8b05 (5 bytes)
 MtUI* cFSMUnit::cParamSetMotion::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetMotion::MyDTI cFSMUnit::cParamSetMotion::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd9f2-0x001fda2b (called at cFSMUnit.cpp:3256)
@@ -1441,7 +1478,7 @@ const MtDTI& cFSMUnit::cParamSetAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAction::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAction::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1456,7 +1493,7 @@ inline void* cFSMUnit::cParamSetAction::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1491,8 +1528,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetAction::createProperty(MtPropertyL
 // Address: 0x001f94c0 - 0x001f94c5 (5 bytes)
 MtUI* cFSMUnit::cParamSetAction::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetAction::MyDTI cFSMUnit::cParamSetAction::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fda64-0x001fda9d (called at cFSMUnit.cpp:3602)
@@ -1502,7 +1541,7 @@ MtUI* cFSMUnit::cParamSetAction::createUI(MtProperty& prop) {
 // Address: 0x001f92e0 - 0x001f9335 (85 bytes)
 MtObject* cFSMUnit::cParamSetAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetAction;
+    return new (16u) cFSMUnit::cParamSetAction;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1541,7 +1580,7 @@ const MtDTI& cFSMUnit::cParamSetNeck::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetNeck::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetNeck::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetNeck::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1573,8 +1612,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetNeck::createProperty(MtPropertyLis
 // Address: 0x001fa3b0 - 0x001fa3b5 (5 bytes)
 MtUI* cFSMUnit::cParamSetNeck::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetNeck::MyDTI cFSMUnit::cParamSetNeck::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdad6-0x001fdb0f (called at cFSMUnit.cpp:3764)
@@ -1622,7 +1663,7 @@ const MtDTI& cFSMUnit::cParamSetWait::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMUnit13cParamSetWaitD0Ev at 0x01989c7e-0x01989c9f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMUnit::cParamSetWait::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWait::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetWait::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1647,8 +1688,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetWait::createProperty(MtPropertyLis
 // Address: 0x001f6930 - 0x001f6935 (5 bytes)
 MtUI* cFSMUnit::cParamSetWait::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetWait::MyDTI cFSMUnit::cParamSetWait::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd940-0x001fd980 (called at cFSMUnit.cpp:2994)
@@ -1696,7 +1739,7 @@ const MtDTI& cFSMUnit::cParamSetGoto::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMUnit13cParamSetGotoD0Ev at 0x01989cce-0x01989cef, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMUnit::cParamSetGoto::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGoto::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGoto::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1721,8 +1764,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetGoto::createProperty(MtPropertyLis
 // Address: 0x001f7010 - 0x001f7015 (5 bytes)
 MtUI* cFSMUnit::cParamSetGoto::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetGoto::MyDTI cFSMUnit::cParamSetGoto::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd980-0x001fd9b9 (called at cFSMUnit.cpp:3062)
@@ -1757,7 +1802,7 @@ const MtDTI& cFSMUnit::cParamSetGotoTarget::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFSMUnit::cParamSetGotoTarget::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGotoTarget::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetGotoTarget::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGotoTarget::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetGotoTarget::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1772,7 +1817,7 @@ inline void* cFSMUnit::cParamSetGotoTarget::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN8cFSMUnit19cParamSetGotoTargetD0Ev at 0x01989d1e-0x01989d3f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cFSMUnit::cParamSetGotoTarget::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGotoTarget::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetGotoTarget::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1797,8 +1842,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetGotoTarget::createProperty(MtPrope
 // Address: 0x001f7830 - 0x001f7835 (5 bytes)
 MtUI* cFSMUnit::cParamSetGotoTarget::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetGotoTarget::MyDTI cFSMUnit::cParamSetGotoTarget::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fd9b9-0x001fd9f2 (called at cFSMUnit.cpp:3156)
@@ -1808,7 +1855,7 @@ MtUI* cFSMUnit::cParamSetGotoTarget::createUI(MtProperty& prop) {
 // Address: 0x001f7020 - 0x001f709b (123 bytes)
 MtObject* cFSMUnit::cParamSetGotoTarget::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetGotoTarget;
+    return new (16u) cFSMUnit::cParamSetGotoTarget;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1847,7 +1894,7 @@ const MtDTI& cFSMUnit::cParamSetMotionGoto::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetMotionGoto::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotionGoto::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetMotionGoto::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1879,8 +1926,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetMotionGoto::createProperty(MtPrope
 // Address: 0x001f92d0 - 0x001f92d5 (5 bytes)
 MtUI* cFSMUnit::cParamSetMotionGoto::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetMotionGoto::MyDTI cFSMUnit::cParamSetMotionGoto::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fda2b-0x001fda64 (called at cFSMUnit.cpp:3478)
@@ -1916,7 +1965,7 @@ const MtDTI& cFSMUnit::cParamSetEffect::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFSMUnit::cParamSetEffect::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEffect::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEffect::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEffect::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEffect::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1931,7 +1980,7 @@ inline void* cFSMUnit::cParamSetEffect::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEffect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEffect::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEffect::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1963,8 +2012,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetEffect::createProperty(MtPropertyL
 // Address: 0x001f9b50 - 0x001f9b55 (5 bytes)
 MtUI* cFSMUnit::cParamSetEffect::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEffect::MyDTI cFSMUnit::cParamSetEffect::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fda9d-0x001fdad6 (called at cFSMUnit.cpp:3683)
@@ -1974,7 +2025,7 @@ MtUI* cFSMUnit::cParamSetEffect::createUI(MtProperty& prop) {
 // Address: 0x001f94d0 - 0x001f9532 (98 bytes)
 MtObject* cFSMUnit::cParamSetEffect::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetEffect;
+    return new (16u) cFSMUnit::cParamSetEffect;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2013,7 +2064,7 @@ const MtDTI& cFSMUnit::cParamSetEyeBall::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEyeBall::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeBall::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeBall::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2045,8 +2096,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetEyeBall::createProperty(MtProperty
 // Address: 0x001fa740 - 0x001fa745 (5 bytes)
 MtUI* cFSMUnit::cParamSetEyeBall::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEyeBall::MyDTI cFSMUnit::cParamSetEyeBall::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdb0f-0x001fdb48 (called at cFSMUnit.cpp:3871)
@@ -2082,7 +2135,7 @@ const MtDTI& cFSMUnit::cParamSetEmDie::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetEmDie::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmDie::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEmDie::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmDie::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEmDie::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2097,7 +2150,7 @@ inline void* cFSMUnit::cParamSetEmDie::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEmDie::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmDie::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmDie::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2129,8 +2182,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetEmDie::createProperty(MtPropertyLi
 // Address: 0x001fa920 - 0x001fa925 (5 bytes)
 MtUI* cFSMUnit::cParamSetEmDie::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEmDie::MyDTI cFSMUnit::cParamSetEmDie::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdb48-0x001fdb81 (called at cFSMUnit.cpp:3929)
@@ -2140,7 +2195,7 @@ MtUI* cFSMUnit::cParamSetEmDie::createUI(MtProperty& prop) {
 // Address: 0x001fa750 - 0x001fa7a5 (85 bytes)
 MtObject* cFSMUnit::cParamSetEmDie::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetEmDie;
+    return new (16u) cFSMUnit::cParamSetEmDie;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2166,7 +2221,7 @@ const MtDTI& cFSMUnit::cParamSetWaypoint::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetWaypoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWaypoint::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetWaypoint::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetWaypoint::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetWaypoint::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2181,7 +2236,7 @@ inline void* cFSMUnit::cParamSetWaypoint::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetWaypoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWaypoint::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetWaypoint::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2213,8 +2268,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetWaypoint::createProperty(MtPropert
 // Address: 0x001fabf0 - 0x001fabf5 (5 bytes)
 MtUI* cFSMUnit::cParamSetWaypoint::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetWaypoint::MyDTI cFSMUnit::cParamSetWaypoint::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdb81-0x001fdbba (called at cFSMUnit.cpp:3988)
@@ -2224,7 +2281,7 @@ MtUI* cFSMUnit::cParamSetWaypoint::createUI(MtProperty& prop) {
 // Address: 0x001fa930 - 0x001fa98c (92 bytes)
 MtObject* cFSMUnit::cParamSetWaypoint::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetWaypoint;
+    return new (16u) cFSMUnit::cParamSetWaypoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2250,7 +2307,7 @@ const MtDTI& cFSMUnit::cParamSetChangeThink::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetChangeThink::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetChangeThink::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetChangeThink::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetChangeThink::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetChangeThink::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2265,7 +2322,7 @@ inline void* cFSMUnit::cParamSetChangeThink::operator new(size_t sz, u32 align) 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetChangeThink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetChangeThink::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetChangeThink::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2297,8 +2354,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetChangeThink::createProperty(MtProp
 // Address: 0x001faec0 - 0x001faec5 (5 bytes)
 MtUI* cFSMUnit::cParamSetChangeThink::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetChangeThink::MyDTI cFSMUnit::cParamSetChangeThink::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdbba-0x001fdbf3 (called at cFSMUnit.cpp:4067)
@@ -2308,7 +2367,7 @@ MtUI* cFSMUnit::cParamSetChangeThink::createUI(MtProperty& prop) {
 // Address: 0x001fac00 - 0x001fac59 (89 bytes)
 MtObject* cFSMUnit::cParamSetChangeThink::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetChangeThink;
+    return new (16u) cFSMUnit::cParamSetChangeThink;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2334,7 +2393,7 @@ const MtDTI& cFSMUnit::cParamSetAdjustScrHit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetAdjustScrHit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAdjustScrHit::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAdjustScrHit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAdjustScrHit::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetAdjustScrHit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2349,7 +2408,7 @@ inline void* cFSMUnit::cParamSetAdjustScrHit::operator new(size_t sz, u32 align)
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetAdjustScrHit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAdjustScrHit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAdjustScrHit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2381,8 +2440,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetAdjustScrHit::createProperty(MtPro
 // Address: 0x001fb0e0 - 0x001fb0e5 (5 bytes)
 MtUI* cFSMUnit::cParamSetAdjustScrHit::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetAdjustScrHit::MyDTI cFSMUnit::cParamSetAdjustScrHit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdbf3-0x001fdc2c (called at cFSMUnit.cpp:4141)
@@ -2392,7 +2453,7 @@ MtUI* cFSMUnit::cParamSetAdjustScrHit::createUI(MtProperty& prop) {
 // Address: 0x001faed0 - 0x001faf22 (82 bytes)
 MtObject* cFSMUnit::cParamSetAdjustScrHit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetAdjustScrHit;
+    return new (16u) cFSMUnit::cParamSetAdjustScrHit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2418,7 +2479,7 @@ const MtDTI& cFSMUnit::cParamSetAttendNpc::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetAttendNpc::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAttendNpc::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAttendNpc::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAttendNpc::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetAttendNpc::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2433,7 +2494,7 @@ inline void* cFSMUnit::cParamSetAttendNpc::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetAttendNpc::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAttendNpc::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetAttendNpc::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2465,8 +2526,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetAttendNpc::createProperty(MtProper
 // Address: 0x001fb300 - 0x001fb305 (5 bytes)
 MtUI* cFSMUnit::cParamSetAttendNpc::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetAttendNpc::MyDTI cFSMUnit::cParamSetAttendNpc::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdc2c-0x001fdc65 (called at cFSMUnit.cpp:4209)
@@ -2476,7 +2539,7 @@ MtUI* cFSMUnit::cParamSetAttendNpc::createUI(MtProperty& prop) {
 // Address: 0x001fb0f0 - 0x001fb142 (82 bytes)
 MtObject* cFSMUnit::cParamSetAttendNpc::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetAttendNpc;
+    return new (16u) cFSMUnit::cParamSetAttendNpc;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2502,7 +2565,7 @@ const MtDTI& cFSMUnit::cParamSetDisableTouchAction::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetDisableTouchAction::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDisableTouchAction::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDisableTouchAction::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDisableTouchAction::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetDisableTouchAction::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2517,7 +2580,7 @@ inline void* cFSMUnit::cParamSetDisableTouchAction::operator new(size_t sz, u32 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetDisableTouchAction::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDisableTouchAction::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDisableTouchAction::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2549,8 +2612,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetDisableTouchAction::createProperty
 // Address: 0x001fb520 - 0x001fb525 (5 bytes)
 MtUI* cFSMUnit::cParamSetDisableTouchAction::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetDisableTouchAction::MyDTI cFSMUnit::cParamSetDisableTouchAction::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdc65-0x001fdc9e (called at cFSMUnit.cpp:4277)
@@ -2560,7 +2625,7 @@ MtUI* cFSMUnit::cParamSetDisableTouchAction::createUI(MtProperty& prop) {
 // Address: 0x001fb310 - 0x001fb362 (82 bytes)
 MtObject* cFSMUnit::cParamSetDisableTouchAction::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetDisableTouchAction;
+    return new (16u) cFSMUnit::cParamSetDisableTouchAction;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2586,7 +2651,7 @@ const MtDTI& cFSMUnit::cParamSetDispWeapon::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetDispWeapon::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispWeapon::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDispWeapon::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispWeapon::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetDispWeapon::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2601,7 +2666,7 @@ inline void* cFSMUnit::cParamSetDispWeapon::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetDispWeapon::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispWeapon::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispWeapon::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2630,6 +2695,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetDispWeapon::createProperty(MtPrope
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetDispWeapon::MyDTI cFSMUnit::cParamSetDispWeapon::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdc9e-0x001fdcd7 (called at cFSMUnit.cpp:4345)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdc9e-0x001fdcd7 (called at cFSMUnit.h:1223)
@@ -2638,7 +2705,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetDispWeapon::createProperty(MtPrope
 // Address: 0x001fb530 - 0x001fb584 (84 bytes)
 MtObject* cFSMUnit::cParamSetDispWeapon::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetDispWeapon;
+    return new (16u) cFSMUnit::cParamSetDispWeapon;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2664,7 +2731,7 @@ const MtDTI& cFSMUnit::cParamSetShadowCast::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetShadowCast::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetShadowCast::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetShadowCast::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetShadowCast::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetShadowCast::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2679,7 +2746,7 @@ inline void* cFSMUnit::cParamSetShadowCast::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetShadowCast::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetShadowCast::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetShadowCast::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2708,6 +2775,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetShadowCast::createProperty(MtPrope
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetShadowCast::MyDTI cFSMUnit::cParamSetShadowCast::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdcd7-0x001fdd10 (called at cFSMUnit.cpp:4384)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdcd7-0x001fdd10 (called at cFSMUnit.h:1252)
@@ -2716,7 +2785,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetShadowCast::createProperty(MtPrope
 // Address: 0x001fb7b0 - 0x001fb802 (82 bytes)
 MtObject* cFSMUnit::cParamSetShadowCast::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetShadowCast;
+    return new (16u) cFSMUnit::cParamSetShadowCast;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2742,7 +2811,7 @@ const MtDTI& cFSMUnit::cParamSetHaveThing::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetHaveThing::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHaveThing::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHaveThing::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHaveThing::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetHaveThing::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2757,7 +2826,7 @@ inline void* cFSMUnit::cParamSetHaveThing::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetHaveThing::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHaveThing::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHaveThing::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2789,8 +2858,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetHaveThing::createProperty(MtProper
 // Address: 0x001fbb90 - 0x001fbb95 (5 bytes)
 MtUI* cFSMUnit::cParamSetHaveThing::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetHaveThing::MyDTI cFSMUnit::cParamSetHaveThing::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdd10-0x001fdd49 (called at cFSMUnit.cpp:4421)
@@ -2800,7 +2871,7 @@ MtUI* cFSMUnit::cParamSetHaveThing::createUI(MtProperty& prop) {
 // Address: 0x001fb980 - 0x001fb9d5 (85 bytes)
 MtObject* cFSMUnit::cParamSetHaveThing::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetHaveThing;
+    return new (16u) cFSMUnit::cParamSetHaveThing;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2826,7 +2897,7 @@ const MtDTI& cFSMUnit::cParamSetCallSe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFSMUnit::cParamSetCallSe::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetCallSe::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetCallSe::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetCallSe::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetCallSe::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2841,7 +2912,7 @@ inline void* cFSMUnit::cParamSetCallSe::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetCallSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetCallSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetCallSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2870,6 +2941,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetCallSe::createProperty(MtPropertyL
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetCallSe::MyDTI cFSMUnit::cParamSetCallSe::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdd49-0x001fdd82 (called at cFSMUnit.cpp:4514)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdd49-0x001fdd82 (called at cFSMUnit.h:1315)
@@ -2878,7 +2951,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetCallSe::createProperty(MtPropertyL
 // Address: 0x001fbba0 - 0x001fbc03 (99 bytes)
 MtObject* cFSMUnit::cParamSetCallSe::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetCallSe;
+    return new (16u) cFSMUnit::cParamSetCallSe;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2904,7 +2977,7 @@ const MtDTI& cFSMUnit::cParamSetHakuryuStoneLevel::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetHakuryuStoneLevel::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHakuryuStoneLevel::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetHakuryuStoneLevel::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2919,7 +2992,7 @@ inline void* cFSMUnit::cParamSetHakuryuStoneLevel::operator new(size_t sz, u32 a
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetHakuryuStoneLevel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2951,8 +3024,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetHakuryuStoneLevel::createProperty(
 // Address: 0x001fc0d0 - 0x001fc0d5 (5 bytes)
 MtUI* cFSMUnit::cParamSetHakuryuStoneLevel::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetHakuryuStoneLevel::MyDTI cFSMUnit::cParamSetHakuryuStoneLevel::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdd82-0x001fddbb (called at cFSMUnit.cpp:4553)
@@ -2962,7 +3037,7 @@ MtUI* cFSMUnit::cParamSetHakuryuStoneLevel::createUI(MtProperty& prop) {
 // Address: 0x001fbf00 - 0x001fbf55 (85 bytes)
 MtObject* cFSMUnit::cParamSetHakuryuStoneLevel::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetHakuryuStoneLevel;
+    return new (16u) cFSMUnit::cParamSetHakuryuStoneLevel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2988,7 +3063,7 @@ const MtDTI& cFSMUnit::cParamSetParts::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetParts::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetParts::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetParts::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetParts::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetParts::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3003,7 +3078,7 @@ inline void* cFSMUnit::cParamSetParts::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetParts::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetParts::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetParts::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3035,8 +3110,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetParts::createProperty(MtPropertyLi
 // Address: 0x001fc360 - 0x001fc365 (5 bytes)
 MtUI* cFSMUnit::cParamSetParts::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetParts::MyDTI cFSMUnit::cParamSetParts::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fddbb-0x001fddf4 (called at cFSMUnit.cpp:4615)
@@ -3046,7 +3123,7 @@ MtUI* cFSMUnit::cParamSetParts::createUI(MtProperty& prop) {
 // Address: 0x001fc0e0 - 0x001fc136 (86 bytes)
 MtObject* cFSMUnit::cParamSetParts::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetParts;
+    return new (16u) cFSMUnit::cParamSetParts;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3072,7 +3149,7 @@ const MtDTI& cFSMUnit::cParamSetVibUnit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetVibUnit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetVibUnit::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetVibUnit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetVibUnit::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetVibUnit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3087,7 +3164,7 @@ inline void* cFSMUnit::cParamSetVibUnit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetVibUnit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetVibUnit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetVibUnit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3116,6 +3193,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetVibUnit::createProperty(MtProperty
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetVibUnit::MyDTI cFSMUnit::cParamSetVibUnit::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fddf4-0x001fde2d (called at cFSMUnit.cpp:4677)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fddf4-0x001fde2d (called at cFSMUnit.h:1412)
@@ -3124,7 +3203,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetVibUnit::createProperty(MtProperty
 // Address: 0x001fc370 - 0x001fc3c5 (85 bytes)
 MtObject* cFSMUnit::cParamSetVibUnit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetVibUnit;
+    return new (16u) cFSMUnit::cParamSetVibUnit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3150,7 +3229,7 @@ const MtDTI& cFSMUnit::cParamSetEmMontage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFSMUnit::cParamSetEmMontage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmMontage::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEmMontage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmMontage::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEmMontage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3165,7 +3244,7 @@ inline void* cFSMUnit::cParamSetEmMontage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEmMontage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmMontage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEmMontage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3197,8 +3276,10 @@ __attribute__((weak)) void cFSMUnit::cParamSetEmMontage::createProperty(MtProper
 // Address: 0x001fc890 - 0x001fc895 (5 bytes)
 MtUI* cFSMUnit::cParamSetEmMontage::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cAIResource::createUI(prop);
+    return this->cAIResource::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEmMontage::MyDTI cFSMUnit::cParamSetEmMontage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fde2d-0x001fde66 (called at cFSMUnit.cpp:4714)
@@ -3208,7 +3289,7 @@ MtUI* cFSMUnit::cParamSetEmMontage::createUI(MtProperty& prop) {
 // Address: 0x001fc540 - 0x001fc5a0 (96 bytes)
 MtObject* cFSMUnit::cParamSetEmMontage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetEmMontage;
+    return new (16u) cFSMUnit::cParamSetEmMontage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3234,7 +3315,7 @@ const MtDTI& cFSMUnit::cParamSetHeadCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetHeadCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHeadCtrl::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHeadCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHeadCtrl::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetHeadCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3249,7 +3330,7 @@ inline void* cFSMUnit::cParamSetHeadCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetHeadCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHeadCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetHeadCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3278,6 +3359,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetHeadCtrl::createProperty(MtPropert
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetHeadCtrl::MyDTI cFSMUnit::cParamSetHeadCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fde66-0x001fde9f (called at cFSMUnit.cpp:4777)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fde66-0x001fde9f (called at cFSMUnit.h:1478)
@@ -3286,7 +3369,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetHeadCtrl::createProperty(MtPropert
 // Address: 0x001fc8a0 - 0x001fc8f4 (84 bytes)
 MtObject* cFSMUnit::cParamSetHeadCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetHeadCtrl;
+    return new (16u) cFSMUnit::cParamSetHeadCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3312,7 +3395,7 @@ const MtDTI& cFSMUnit::cParamSetEyeClose::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetEyeClose::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeClose::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEyeClose::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeClose::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEyeClose::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3327,7 +3410,7 @@ inline void* cFSMUnit::cParamSetEyeClose::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEyeClose::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeClose::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEyeClose::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3356,6 +3439,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetEyeClose::createProperty(MtPropert
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEyeClose::MyDTI cFSMUnit::cParamSetEyeClose::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fde9f-0x001fded8 (called at cFSMUnit.cpp:4814)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fde9f-0x001fded8 (called at cFSMUnit.h:1506)
@@ -3364,7 +3449,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetEyeClose::createProperty(MtPropert
 // Address: 0x001fca70 - 0x001fcac2 (82 bytes)
 MtObject* cFSMUnit::cParamSetEyeClose::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetEyeClose;
+    return new (16u) cFSMUnit::cParamSetEyeClose;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3390,7 +3475,7 @@ const MtDTI& cFSMUnit::cParamSetDispMiniMap::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetDispMiniMap::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispMiniMap::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDispMiniMap::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispMiniMap::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetDispMiniMap::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3405,7 +3490,7 @@ inline void* cFSMUnit::cParamSetDispMiniMap::operator new(size_t sz, u32 align) 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetDispMiniMap::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispMiniMap::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetDispMiniMap::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3434,6 +3519,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetDispMiniMap::createProperty(MtProp
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetDispMiniMap::MyDTI cFSMUnit::cParamSetDispMiniMap::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fded8-0x001fdf11 (called at cFSMUnit.cpp:4851)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fded8-0x001fdf11 (called at cFSMUnit.h:1534)
@@ -3442,7 +3529,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetDispMiniMap::createProperty(MtProp
 // Address: 0x001fcc40 - 0x001fcc92 (82 bytes)
 MtObject* cFSMUnit::cParamSetDispMiniMap::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetDispMiniMap;
+    return new (16u) cFSMUnit::cParamSetDispMiniMap;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3468,7 +3555,7 @@ const MtDTI& cFSMUnit::cParamSetIK::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetIK::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetIK::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetIK::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetIK::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetIK::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3483,7 +3570,7 @@ inline void* cFSMUnit::cParamSetIK::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetIK::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetIK::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetIK::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3512,6 +3599,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetIK::createProperty(MtPropertyList&
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetIK::MyDTI cFSMUnit::cParamSetIK::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdf11-0x001fdf4a (called at cFSMUnit.cpp:4889)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdf11-0x001fdf4a (called at cFSMUnit.h:1563)
@@ -3520,7 +3609,7 @@ __attribute__((weak)) void cFSMUnit::cParamSetIK::createProperty(MtPropertyList&
 // Address: 0x001fce10 - 0x001fce62 (82 bytes)
 MtObject* cFSMUnit::cParamSetIK::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetIK;
+    return new (16u) cFSMUnit::cParamSetIK;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3546,7 +3635,7 @@ const MtDTI& cFSMUnit::cParamSetEnemyHP::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cFSMUnit::cParamSetEnemyHP::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEnemyHP::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEnemyHP::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEnemyHP::DTI)->memAlloc(sz, align, cFSMUnit::cParamSetEnemyHP::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3561,7 +3650,7 @@ inline void* cFSMUnit::cParamSetEnemyHP::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMUnit::cParamSetEnemyHP::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEnemyHP::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMUnit::cParamSetEnemyHP::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3590,6 +3679,8 @@ __attribute__((weak)) void cFSMUnit::cParamSetEnemyHP::createProperty(MtProperty
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMUnit::cParamSetEnemyHP::MyDTI cFSMUnit::cParamSetEnemyHP::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdf87-0x001fdfc0 (called at cFSMUnit.cpp:5275)
 //   in _GLOBAL__sub_I_cFSMUnit.cpp at 0x001fdf87-0x001fdfc0 (called at cFSMUnit.h:1637)
@@ -3598,6 +3689,6 @@ __attribute__((weak)) void cFSMUnit::cParamSetEnemyHP::createProperty(MtProperty
 // Address: 0x001fd630 - 0x001fd685 (85 bytes)
 MtObject* cFSMUnit::cParamSetEnemyHP::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFSMUnit::cParamSetEnemyHP;
+    return new (16u) cFSMUnit::cParamSetEnemyHP;
 }
 

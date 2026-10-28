@@ -27,7 +27,9 @@
 #include "rRenderTargetTexture.h"
 #include "rSoundRequest.h"
 #include "res_ptr.h"
+#include "sArchiveManager.h"
 #include "sCollision.h"
+#include "sMain.h"
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "sUnit.h"
@@ -53,7 +55,7 @@ const MtDTI& sOmManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sOmManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sOmManager::DTI);
+    return MtMemoryAllocator::getAllocator(sOmManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +64,7 @@ inline MtAllocator* sOmManager::getAllocator() {
 // Address: 0x007fa3c0 - 0x007fa400 (64 bytes)
 void* sOmManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sOmManager::getAllocator()->memAlloc(sz, align, ::sOmManager::DTI.::MtDTI::getID());
+    return sOmManager::getAllocator()->memAlloc(sz, align, sOmManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,7 +79,7 @@ void* sOmManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOmManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOmManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOmManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,29 +138,29 @@ __attribute__((weak)) void sOmManager::releaseOmArcLoaderLock(s32 omID, u32 this
 // Address: 0x00800510 - 0x008005f2 (226 bytes)
 void sOmManager::releaseOmArcLoaderAll() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArcLoader.::MtArray::mAutoDelete != false) {
+    if (mArcLoader.mAutoDelete) {
         // inferred: the value carried to 0x800569; no location-less local in scope fits
         u32 v2_0;
-        if (this->mArcLoader.::MtArray::mLength != static_cast<u32>(0)) {
+        if (mArcLoader.mLength != 0) {
             // inferred: the value the loop at 0x800540 carries; no location-less local in scope fits
-            u32 v0_0 = this->mArcLoader.::MtArray::mLength;
+            u32 v0_0 = mArcLoader.mLength;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_3 = static_cast<unsigned int>(0);
+            unsigned int i0_3 = 0;
             // inferred: the value carried to 0x800565; no location-less local in scope fits
             u32 v1_0;
             for (;;) {
-                if (this->mArcLoader.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mArcLoader.::MtArray::mpArray[i0_3];
-                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mArcLoader.::MtArray::mLength) {
-                        v0_0 = this->mArcLoader.::MtArray::mLength;
-                        i0_3 += static_cast<unsigned int>(1);
+                if (mArcLoader.mpArray[i0_3] != nullptr) {
+                    delete mArcLoader.mpArray[i0_3];
+                    if ((i0_3 + 1u) < mArcLoader.mLength) {
+                        v0_0 = mArcLoader.mLength;
+                        i0_3 += 1u;
                     } else {
-                        v1_0 = this->mArcLoader.::MtArray::mLength;
+                        v1_0 = mArcLoader.mLength;
                         break;
                     }
                 } else {
-                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                        i0_3 += static_cast<unsigned int>(1);
+                    if ((i0_3 + 1u) < v0_0) {
+                        i0_3 += 1u;
                     } else {
                         v1_0 = v0_0;
                         break;
@@ -167,26 +169,26 @@ void sOmManager::releaseOmArcLoaderAll() {
             }
             v2_0 = v1_0;
         } else {
-            v2_0 = static_cast<u32>(0);
+            v2_0 = 0;
         }
-        ::memset(static_cast<void*>(this->mArcLoader.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+        memset(static_cast<void*>(mArcLoader.mpArray), 0, static_cast<size_t>(v2_0) * 8);
     }
-    this->mArcLoader.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mbLoadNyoro != false) {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+    mArcLoader.mLength = 0;
+    if (mbLoadNyoro) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
-        this->mbLoadNyoro = false;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-                ::abort();
+        mbLoadNyoro = false;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
                 return;
             }
         }
-        (::sOmManager::mpInstance)->mArcNyoro.::cArcLoaderBase::releaseArc();
+        (sOmManager::mpInstance)->mArcNyoro.cArcLoaderBase::releaseArc();
     }
 }
 
@@ -230,29 +232,28 @@ cOmControl* sOmManager::getOmCtrl(u32 uniqueId) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
+        u32 i = 0;
         do {
-            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(224))) != uniqueId) {
-                } else {
-                    return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i)]) + 224)) == uniqueId) {
+                    return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i)]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
     }
-    return static_cast<cOmControl*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007febb0 - 0x007febc9 (25 bytes)
 cOmControl* sOmManager::getOmCtrlFromIndex(u32 index) {
     // DWARF local not rendered: u32 cnum;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (index < this->mRefOmCtrlArray.::MtArray::mLength) {
-        return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(index)]);
+    if (index < mRefOmCtrlArray.mLength) {
+        return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)]);
     } else {
-        return static_cast<cOmControl*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -346,19 +347,18 @@ uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1b0 from sOmManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x12c0 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(432))) != static_cast<unsigned int>(0)) {
-        u32 ucnt = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432)) != 0) {
+        u32 ucnt = 0;
         do {
-            if (this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]) + static_cast<long>(4800))) != static_cast<unsigned int>(omID)) {
-                } else {
-                    return static_cast<uOmSwingInstancing*>(this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]);
+            if (mpuOmIns.getBuffer()[static_cast<int>(ucnt)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpuOmIns.getBuffer()[static_cast<int>(ucnt)]) + 4800)) == static_cast<unsigned int>(omID)) {
+                    return static_cast<uOmSwingInstancing*>(mpuOmIns.getBuffer()[static_cast<int>(ucnt)]);
                 }
             }
-            ucnt += static_cast<u32>(1);
-        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(432))));
+            ucnt += 1u;
+        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 432)));
     }
-    return static_cast<uOmSwingInstancing*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007fb970 - 0x007fbc39 (713 bytes)
@@ -393,10 +393,78 @@ __attribute__((weak)) cOmTreeControl* sOmManager::createTreeInsCtrl(s32 omID) {
 }
 
 // Address: 0x007fc180 - 0x007fc27e (254 bytes)
-__attribute__((weak)) void sOmManager::releaseTreeInsCtrl(cOmTreeControl* pctrl) {
-    // local: u32 num;
-    DDON_STUB("sOmManager::releaseTreeInsCtrl")
-    /* stub */
+void sOmManager::releaseTreeInsCtrl(cOmTreeControl* pctrl) {
+    // DWARF local not rendered: u32 num;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (pctrl == nullptr) {
+        return;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    // inferred: the value the loop at 0x7fc1e0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    u32 v2_0 = mTreeIns.mLength;
+    if (v2_0 != 0) {
+        // inferred: the value the loop at 0x7fc1e0 carries; no location-less local in scope fits
+        MtObject* * v2_1 = mTreeIns.mpArray;
+        // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+        unsigned int i2_3 = 0;
+        // inferred: the value carried to 0x7fc20e; the location-less local in scope that fits is declared on no line of the value's writes
+        u32 v5_0;
+        // inferred: the value carried to 0x7fc20e; the location-less local in scope that fits is declared on no line of the value's writes
+        unsigned int v5_8;
+        // inferred: the value the loop at 0x7fc220 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        unsigned int v6_1;
+        // inferred: the value the loop at 0x7fc220 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        u32 v6_2;
+        // inferred: the value the loop at 0x7fc220 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        unsigned int v6_3;
+        for (;;) {
+            if (pctrl == v2_1[i2_3]) {
+                if (!mTreeIns.mAutoDelete) {
+                    v5_0 = v2_0;
+                } else {
+                    delete pctrl;
+                    v5_0 = mTreeIns.mLength;
+                }
+                v5_8 = i2_3 + 1u;
+                if (v5_8 < v5_0) {
+                    v6_1 = v5_8;
+                    v6_2 = v5_0;
+                    v6_3 = i2_3;
+                    for (;;) {
+                        mTreeIns.mpArray[v6_3] = mTreeIns.mpArray[v6_1];
+                        if (v6_2 != (v6_1 + 1u)) {
+                            v6_3 = v6_1;
+                            v6_1 = v6_1 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                mTreeIns.mLength = v5_0 - 1u;
+                break;
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 = i2_3 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    delete pctrl;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+        return;
+    }
+    abort();
 }
 
 // Address: 0x007fbf10 - 0x007fbf50 (64 bytes)
@@ -407,19 +475,18 @@ uOmSwingInstancing* sOmManager::getTreeInsUnit(s32 omID) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1f8 from sOmManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x12c0 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(504))) != static_cast<unsigned int>(0)) {
-        u32 ucnt = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 504)) != 0) {
+        u32 ucnt = 0;
         do {
-            if (this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]) + static_cast<long>(4800))) != static_cast<unsigned int>(omID)) {
-                } else {
-                    return static_cast<uOmSwingInstancing*>(this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]);
+            if (mpuTreeIns.getBuffer()[static_cast<int>(ucnt)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpuTreeIns.getBuffer()[static_cast<int>(ucnt)]) + 4800)) == static_cast<unsigned int>(omID)) {
+                    return static_cast<uOmSwingInstancing*>(mpuTreeIns.getBuffer()[static_cast<int>(ucnt)]);
                 }
             }
-            ucnt += static_cast<u32>(1);
-        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(504))));
+            ucnt += 1u;
+        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 504)));
     }
-    return static_cast<uOmSwingInstancing*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x007fbc40 - 0x007fbf09 (713 bytes)
@@ -448,21 +515,30 @@ __attribute__((weak)) void sOmManager::deleteTreeInsUnit(uOmSwingInstancing* pui
 // Address: 0x007fb510 - 0x007fb526 (22 bytes)
 bool sOmManager::isCreatableUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sPlayerManager::getInstance()->mpMyPlayer != static_cast<uPlayer*>(nullptr);
+    return sPlayerManager::getInstance()->mpMyPlayer != nullptr;
 }
 
 // Address: 0x007fb540 - 0x007fb564 (36 bytes)
 void sOmManager::fadeIn(f32 frame) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbBell = false;
-    this->mRnoFade = static_cast<u32>(1);
-    this->mFadeFrame = frame;
-    this->mBellTimer = 450.0f;
+    mbBell = false;
+    mRnoFade = 1;
+    mFadeFrame = frame;
+    mBellTimer = 450.0f;
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (73 bytes)
-//   in sOmManager::move at 0x007fccdf-0x007fcd28 (called at sOmManager.cpp:1835)
-// void sOmManager::moveBell();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sOmManager::move at 0x7fccdf-0x7fcd28; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sOmManager::moveBell() {
+    if ((sPlayerManager::mpInstance)->mpMyPlayer == nullptr) {
+        return;
+    }
+    if (mBellTimer > 0.0f) {
+        mBellTimer = mBellTimer - (sMain::mpInstance)->mDeltaTime;
+    } else {
+        mbBell = true;
+    }
+}
 
 // Address: 0x007fed30 - 0x007fed85 (85 bytes)
 bool sOmManager::isDoor(u32 uniqueId) {
@@ -474,22 +550,21 @@ bool sOmManager::isDoor(u32 uniqueId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from unsigned long
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0 = static_cast<unsigned int>(0);
+        unsigned int i0 = 0;
         do {
-            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueId) {
-                } else {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) != static_cast<unsigned long>(0)) {
-                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) + static_cast<long>(16))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+            if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 224)) == uniqueId) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 144)) != 0) {
+                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 144)) + 16)) & 2) >> 1);
                     } else {
                         return false;
                     }
                 }
             }
-            i0 += static_cast<unsigned int>(1);
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
     }
     return false;
 }
@@ -504,22 +579,21 @@ bool sOmManager::isCanOpenDoor(u32 uniqueId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from unsigned long
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0 = static_cast<unsigned int>(0);
+        unsigned int i0 = 0;
         do {
-            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueId) {
-                } else {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) != static_cast<unsigned long>(0)) {
-                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) + static_cast<long>(16))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+            if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 224)) == uniqueId) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 144)) != 0) {
+                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 144)) + 16)) & 2) >> 1);
                     } else {
                         return false;
                     }
                 }
             }
-            i0 += static_cast<unsigned int>(1);
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
     }
     return false;
 }
@@ -612,18 +686,17 @@ bool sOmManager::isUseItem(u32 uniqueID) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xa9 from MtObject*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
         // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-        unsigned int i0 = static_cast<unsigned int>(0);
+        unsigned int i0 = 0;
         do {
-            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueID) {
-                } else {
-                    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(169))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+            if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 224)) == uniqueID) {
+                    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0)]) + 169)) & 16) >> 4);
                 }
             }
-            i0 += static_cast<unsigned int>(1);
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
     }
     return false;
 }
@@ -675,7 +748,7 @@ __attribute__((weak)) bool sOmManager::isInAtkOm(const MtVector3& realPos, f32 l
 // Address: 0x00801900 - 0x00801907 (7 bytes)
 u32 sOmManager::getAtkOmPosNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mAtkOmPosNum;
+    return mAtkOmPosNum;
 }
 
 // Address: 0x00801910 - 0x0080192f (31 bytes)
@@ -696,41 +769,40 @@ cOmControl* sOmManager::getTarasuk() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x130 from sOmManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x30 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) != static_cast<unsigned int>(0)) {
-        u32 cnt = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 304)) != 0) {
+        u32 cnt = 0;
         do {
-            if (this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]) + static_cast<long>(48))) != static_cast<unsigned long>(0)) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]) + static_cast<long>(136))) != static_cast<unsigned int>(522940)) {
-                    } else {
-                        return static_cast<cOmControl*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]);
+            if (mFastOmCtrlArray.getBuffer()[static_cast<int>(cnt)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mFastOmCtrlArray.getBuffer()[static_cast<int>(cnt)]) + 48)) != 0) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mFastOmCtrlArray.getBuffer()[static_cast<int>(cnt)]) + 136)) == 0x7FABC) {
+                        return static_cast<cOmControl*>(mFastOmCtrlArray.getBuffer()[static_cast<int>(cnt)]);
                     }
                 }
             }
-            cnt += static_cast<u32>(1);
-        } while (cnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(304))));
+            cnt += 1u;
+        } while (cnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 304)));
     }
-    return static_cast<cOmControl*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00801980 - 0x008019d0 (80 bytes)
 void sOmManager::setTarasukSBCPartsOff(cOmControl* pctrl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pctrl == static_cast<cOmControl*>(nullptr)) {
+    if (pctrl == nullptr) {
         return;
     }
-    pctrl->::cOmControl::setActiveAllSbcParts(false);
-    pctrl->::cOmControl::setActiveSbc(true, static_cast<u32>(0), static_cast<u32>(0), static_cast<u32>(0));
-    pctrl->::cOmControl::setActiveSbc(true, static_cast<u32>(1), static_cast<u32>(0), static_cast<u32>(0));
+    pctrl->setActiveAllSbcParts(false);
+    pctrl->setActiveSbc(true, 0u, 0u, 0u);
+    pctrl->setActiveSbc(true, 1u, 0u, 0u);
 }
 
 // Address: 0x008019d0 - 0x008019e3 (19 bytes)
 void sOmManager::setSBC(cOmControl* pctrl, bool sbc_on) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pctrl == static_cast<cOmControl*>(nullptr)) {
+    if (pctrl == nullptr) {
         return;
     }
-    pctrl->::cOmControl::setActiveAllSbcParts(sbc_on);
+    pctrl->setActiveAllSbcParts(sbc_on);
 }
 
 // Address: 0x00801af0 - 0x00801b72 (130 bytes)
@@ -764,7 +836,7 @@ __attribute__((weak)) bool sOmManager::getActiveSBC(cOmControl* pctrl, u32 parts
 // Address: 0x00801bb0 - 0x00801bb7 (7 bytes)
 bool sOmManager::isMoveFloorNow() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mbMoveFloorNow;
+    return mbMoveFloorNow;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (117 bytes)
@@ -849,50 +921,47 @@ __attribute__((weak)) void sOmManager::callBackUseItemReq(void* param) {
 // Address: 0x007fff00 - 0x007fff4f (79 bytes)
 u32 sOmManager::getGatherGrp(cOmControl* pctrl) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pctrl != static_cast<cOmControl*>(nullptr)) {
-        const cOmParam* pparam = pctrl->::cOmControl::getOmParam();
-        if (pparam != static_cast<const cOmParam*>(nullptr)) {
-            if ((pparam->mUseComponent & static_cast<u32>(524288)) == static_cast<u32>(0)) {
-                if ((pparam->mUseComponent & static_cast<u32>(1048576)) != static_cast<u32>(0)) {
-                    return static_cast<u32>(2);
+    if (pctrl != nullptr) {
+        const cOmParam* pparam = pctrl->getOmParam();
+        if (pparam != nullptr) {
+            if ((pparam->mUseComponent & 0x80000u) == 0) {
+                if ((pparam->mUseComponent & 0x100000u) != 0) {
+                    return 2;
                 } else {
-                    return ((pparam->mUseComponent & static_cast<u32>(8)) == static_cast<u32>(0)) ? (pparam->mUseComponent & static_cast<u32>(4)) : static_cast<u32>(3);
+                    return ((pparam->mUseComponent & 8u) == 0) ? (pparam->mUseComponent & 4u) : 3u;
                 }
             } else {
-                return static_cast<u32>(1);
+                return 1;
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007ff420 - 0x007ff4a7 (135 bytes)
 void sOmManager::loadNyoro() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (this->mbLoadNyoro != false) {
-    } else {
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (!mbLoadNyoro) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
             }
         }
-        this->mbLoadNyoro = true;
-        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+        mbLoadNyoro = true;
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
             }
             // inferred: a temporary for the value the load at 0x7ff47c read, used once; no DWARF local holds it
-            sOmManager* t0 = ::sOmManager::getInstance();
-            t0->mArcNyoro.::cArcLoaderBase::loadReqTag(::rArchiveListArray::convTagId("EM011400"), static_cast<s16>(0));
+            sOmManager* t0 = sOmManager::getInstance();
+            t0->mArcNyoro.loadReqTag(rArchiveListArray::convTagId("EM011400"), static_cast<s16>(0));
         } else {
             // inferred: a temporary for the value the load at 0x7ff47c read, used once; no DWARF local holds it
-            sOmManager* t0 = ::sOmManager::getInstance();
-            t0->mArcNyoro.::cArcLoaderBase::loadReqTag(::rArchiveListArray::convTagId("EM011400"), static_cast<s16>(0));
+            sOmManager* t0 = sOmManager::getInstance();
+            t0->mArcNyoro.loadReqTag(rArchiveListArray::convTagId("EM011400"), static_cast<s16>(0));
         }
     }
 }
@@ -900,23 +969,21 @@ void sOmManager::loadNyoro() {
 // Address: 0x007ff4b0 - 0x007ff522 (114 bytes)
 void sOmManager::releaseNyoro() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mbLoadNyoro == false) {
+    if (!mbLoadNyoro) {
         return;
     }
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    this->mbLoadNyoro = false;
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    mbLoadNyoro = false;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    (::sOmManager::mpInstance)->mArcNyoro.::cArcLoaderBase::releaseArc();
+    (sOmManager::mpInstance)->mArcNyoro.cArcLoaderBase::releaseArc();
 }
 
 // Address: 0x007ff530 - 0x007ff631 (257 bytes)
@@ -933,39 +1000,34 @@ void sOmManager::deleteBad(u32 omID) {
     // DWARF local not rendered: u32 bnum;
     // DWARF local not rendered: u32 bcnt;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
-            ::abort();
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
         }
     }
-    if (this->mBadOmID[0] != omID) {
-    } else {
-        this->mBadOmID[0] = static_cast<unsigned int>(0);
+    if (mBadOmID[0] == omID) {
+        mBadOmID[0] = 0;
     }
-    if (this->mBadOmID[1] != omID) {
-    } else {
-        this->mBadOmID[1] = static_cast<unsigned int>(0);
+    if (mBadOmID[1] == omID) {
+        mBadOmID[1] = 0;
     }
-    if (this->mBadOmID[2] != omID) {
-    } else {
-        this->mBadOmID[2] = static_cast<unsigned int>(0);
+    if (mBadOmID[2] == omID) {
+        mBadOmID[2] = 0;
     }
-    if (this->mBadOmID[3] != omID) {
-    } else {
-        this->mBadOmID[3] = static_cast<unsigned int>(0);
+    if (mBadOmID[3] == omID) {
+        mBadOmID[3] = 0;
     }
-    if (this->mBadOmID[4] != omID) {
-    } else {
-        this->mBadOmID[4] = static_cast<unsigned int>(0);
+    if (mBadOmID[4] == omID) {
+        mBadOmID[4] = 0;
     }
-    this->mBadNum = this->mBadNum - static_cast<u32>(1);
-    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) == false) {
+    mBadNum = mBadNum - 1u;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
         return;
     }
-    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+    if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
         return;
     }
-    ::abort();
+    abort();
 }
 
 // Address: 0x007f9f00 - 0x007fa078 (376 bytes)
@@ -998,9 +1060,9 @@ __attribute__((weak)) void sOmManager::endCutscene() {
 // Address: 0x007fff50 - 0x007fff77 (39 bytes)
 void sOmManager::callBackInsSync(const COmData& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInstanceAreaData.mInsSyncUID[this->mInstanceAreaData.mInsSyncNum] = data.m_ulKey;
-    this->mInsSyncVal[this->mInstanceAreaData.mInsSyncNum] = data.m_ulValue;
-    this->mInstanceAreaData.mInsSyncNum = this->mInstanceAreaData.mInsSyncNum + static_cast<u32>(1);
+    mInstanceAreaData.mInsSyncUID[mInstanceAreaData.mInsSyncNum] = data.m_ulKey;
+    mInsSyncVal[mInstanceAreaData.mInsSyncNum] = data.m_ulValue;
+    mInstanceAreaData.mInsSyncNum = mInstanceAreaData.mInsSyncNum + 1u;
 }
 
 // Address: 0x007fff80 - 0x0080000b (139 bytes)
@@ -1081,20 +1143,19 @@ uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i1 = static_cast<unsigned int>(0);
+        unsigned int i1 = 0;
         do {
-            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(224))) != uniqueId) {
-                } else {
-                    return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)])->::cOmControl::getUnit();
+            if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i1)] != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i1)]) + 224)) == uniqueId) {
+                    return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i1)])->getUnit();
                 }
             }
-            i1 += static_cast<unsigned int>(1);
-        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+            i1 += 1u;
+        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 208)));
     }
-    return static_cast<uBaseModel*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1109,9 +1170,43 @@ uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
 // No out-of-line body: no code in the ELF
 // void sOmManager::setDefaultAQCScale();
 
-// No out-of-line body: 1 inlined copy in 1 function (329 bytes)
-//   in sOmManager::sOmManager at 0x008009df-0x00800b28 (called at sOmManager.cpp:3745)
-// void sOmManager::initAQC();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sOmManager::sOmManager at 0x8009df-0x800b28; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sOmManager::initAQC() {
+    mbEnableUnitKill = true;
+    mLoadLength = 100.0f;
+    mbAQCtrl = false;
+    mAQCKillLength = 0.0f;
+    mAQCScale = 1.0f;
+    mbSaveAQCScale = false;
+    mSaveAQCScale = 1.0f;
+    mbBaseArea = false;
+    mAQCLODScale = 1.0f;
+    mOMDispLimitLength = 40.0f;
+    mOMDispLength = 40.0f;
+    mGrassDispLength = 40.0f;
+    mInsDispLimitLength = 100.0f;
+    mInsDispLength = 200.0f;
+    mCameraFrame = 0;
+    mCameraYawDiff = 0.0f;
+    mCameraYawDiffMin = 1.0f;
+    mCameraYawDiffMax = 0.9975f;
+    mCameraYawPer = 0.0f;
+    mCameraYaw[0].x = MtVector3::Zero.x;
+    mCameraYaw[0].y = MtVector3::Zero.y;
+    mCameraYaw[0].z = MtVector3::Zero.z;
+    mCameraYaw[0].pad_ = 0.0f;
+    mCameraYaw[1].x = MtVector3::Zero.x;
+    mCameraYaw[1].y = MtVector3::Zero.y;
+    mCameraYaw[1].z = MtVector3::Zero.z;
+    mCameraYaw[1].pad_ = 0.0f;
+    mInsLODDist[0] = 1000.0f;
+    mInsLODDist[1] = 8500.0f;
+    mInsLODDist[2] = 30000.0f;
+    mInsLODDistPan[0] = 1000.0f;
+    mInsLODDistPan[1] = 8500.0f;
+    mInsLODDistPan[2] = 30000.0f;
+}
 
 // No out-of-line body: no code in the ELF
 // void sOmManager::finalAQC();
@@ -1141,18 +1236,18 @@ __attribute__((weak)) void sOmManager::setUnitGroup(bool flag, s32 omNo, u32 set
 // Address: 0x00802160 - 0x008021d9 (121 bytes)
 void sOmManager::setUnitGroup(bool flag, uBaseModel* pMdl, u32 setGroup) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pMdl == static_cast<uBaseModel*>(nullptr)) {
+    if (pMdl == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x80217e, used once; no DWARF local holds it
-    bool t0 = pMdl->::cUnit::checkUnitGroup(setGroup);
-    if (flag != false) {
-        if (t0 == false) {
-            ::sUnit::getInstance()->::sUnit::setUnitGroup(static_cast<cUnit*>(pMdl), setGroup);
+    bool t0 = pMdl->checkUnitGroup(setGroup);
+    if (flag) {
+        if (!t0) {
+            sUnit::getInstance()->setUnitGroup(static_cast<cUnit*>(pMdl), setGroup);
         }
     } else {
-        if (t0 != false) {
-            ::sUnit::getInstance()->::sUnit::removeUnitGroup(static_cast<cUnit*>(pMdl), setGroup);
+        if (t0) {
+            sUnit::getInstance()->removeUnitGroup(static_cast<cUnit*>(pMdl), setGroup);
         }
     }
 }
@@ -1250,39 +1345,39 @@ sOmManager::~sOmManager() {
 // Address: 0x00801320 - 0x00801325 (5 bytes)
 void sOmManager::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::init();
+    this->sUnitManager::init();
 }
 
 // Address: 0x00801330 - 0x0080135e (46 bytes)
 void sOmManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sUnitManager::reset();
-    this->mRnoFade = static_cast<u32>(0);
-    this->::sOmManager::releaseAllOmCtrlDirect();
-    this->::sOmManager::releaseWarpList();
+    this->sUnitManager::reset();
+    mRnoFade = 0;
+    releaseAllOmCtrlDirect();
+    releaseWarpList();
 }
 
 // Address: 0x00801360 - 0x008013d2 (114 bytes)
 void sOmManager::clear() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->::sUnitManager::clear();
-    this->mRnoFade = static_cast<u32>(0);
-    this->mLoadFrame = static_cast<u32>(0);
-    this->mbLoadArc = false;
-    this->mbLoadStart = false;
-    this->mbLoadEnd = false;
-    this->mbMoveFloorNow = false;
-    this->mbMoveFloor[0] = false;
-    this->mbMoveFloor[1] = false;
-    this->mbMoveFloor[2] = false;
-    this->mbMoveFloorReset = false;
-    this->mBadOmID[3] = static_cast<unsigned int>(0);
-    this->mBadOmID[4] = static_cast<unsigned int>(0);
-    this->mBadOmID[1] = static_cast<unsigned int>(0);
-    this->mBadOmID[2] = static_cast<unsigned int>(0);
-    this->mBadNum = static_cast<u32>(0);
-    this->mBadOmID[0] = static_cast<unsigned int>(0);
-    this->::sOmManager::releaseAllOmCtrlDirect();
+    this->sUnitManager::clear();
+    mRnoFade = 0;
+    mLoadFrame = 0;
+    mbLoadArc = false;
+    mbLoadStart = false;
+    mbLoadEnd = false;
+    mbMoveFloorNow = false;
+    mbMoveFloor[0] = false;
+    mbMoveFloor[1] = false;
+    mbMoveFloor[2] = false;
+    mbMoveFloorReset = false;
+    mBadOmID[3] = 0;
+    mBadOmID[4] = 0;
+    mBadOmID[1] = 0;
+    mBadOmID[2] = 0;
+    mBadNum = 0;
+    mBadOmID[0] = 0;
+    releaseAllOmCtrlDirect();
 }
 
 // Address: 0x007fccb0 - 0x007fddc5 (4373 bytes)
@@ -1362,11 +1457,11 @@ __attribute__((weak)) void sOmManager::moveParallel(uintptr interlockAddr) {
 // Address: 0x008013e0 - 0x0080140a (42 bytes)
 void sOmManager::startStageInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLoadFrame = static_cast<u32>(0);
-    this->mbLoadStart = true;
-    this->mbLoadEnd = false;
-    this->mbLoadArc = false;
-    this->mDelayCount = static_cast<u32>(0);
+    mLoadFrame = 0;
+    mbLoadStart = true;
+    mbLoadEnd = false;
+    mbLoadArc = false;
+    mDelayCount = 0;
 }
 
 // Address: 0x00801410 - 0x008015bf (431 bytes)
@@ -1394,11 +1489,11 @@ __attribute__((weak)) u32 sOmManager::getGatheringItem(u32 type, u32* buff, u32 
 // Address: 0x007fad20 - 0x007fad50 (48 bytes)
 bool sOmManager::isQuestFlag(cOmControl* pctrl, u32 flagNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pctrl != static_cast<cOmControl*>(nullptr)) {
-        if (pctrl->mLot.mbMyQuest != false) {
-            return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isMyQuestFlag(flagNo);
+    if (pctrl != nullptr) {
+        if (pctrl->mLot.mbMyQuest) {
+            return sQuestManagerExt::getInstance()->isMyQuestFlag(flagNo);
         } else {
-            return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isQuestFlag(flagNo);
+            return sQuestManagerExt::getInstance()->isQuestFlag(flagNo);
         }
     } else {
         return false;
@@ -1452,42 +1547,42 @@ __attribute__((weak)) void sOmManager::setShell(const MtVector3& pos, uDDOModel*
 // Address: 0x008015c0 - 0x008015fd (61 bytes)
 void sOmManager::add603000(cOmControl* pctrl) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (pctrl == static_cast<cOmControl*>(nullptr)) {
+    if (pctrl == nullptr) {
         return;
     }
-    if (this->m60300Num > static_cast<u32>(3)) {
+    if (m60300Num > 3u) {
         return;
     }
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cOmControl* * p0 = &this->mpCtrl603000[0];
-    u32 cnt = static_cast<u32>(0);
+    cOmControl* * p0 = &mpCtrl603000[0];
+    u32 cnt = 0;
     do {
-        if ((*p0) == static_cast<cOmControl*>(nullptr)) {
+        if ((*p0) == nullptr) {
             *p0 = pctrl;
-            this->m60300Num = this->m60300Num + static_cast<u32>(1);
+            m60300Num = m60300Num + 1u;
             return;
         }
         p0 += static_cast<int>(1);
-        cnt += static_cast<u32>(1);
-    } while (cnt <= static_cast<u32>(3));
+        cnt += 1u;
+    } while (cnt <= 3u);
 }
 
 // Address: 0x00801600 - 0x00801630 (48 bytes)
 void sOmManager::remove603000(cOmControl* pctrl) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    cOmControl* * p0 = &this->mpCtrl603000[0];
-    u32 cnt = static_cast<u32>(0);
-    if (pctrl != static_cast<cOmControl*>(nullptr)) {
+    cOmControl* * p0 = &mpCtrl603000[0];
+    u32 cnt = 0;
+    if (pctrl != nullptr) {
         do {
             if (pctrl == (*p0)) {
-                *p0 = static_cast<cOmControl*>(nullptr);
-                this->m60300Num = this->m60300Num - static_cast<u32>(1);
+                *p0 = nullptr;
+                m60300Num = m60300Num - 1u;
                 return;
             }
             p0 += static_cast<int>(1);
-            cnt += static_cast<u32>(1);
-        } while (cnt <= static_cast<u32>(3));
+            cnt += 1u;
+        } while (cnt <= 3u);
     }
 }
 
@@ -1608,6 +1703,11 @@ __attribute__((weak)) void sOmManager::eraseWarpArcLoader() {
 //   and 299 more (every copy is in <bundle>.inlined.json)
 // sOmManager* sOmManager::getInstance();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOmManager::MyDTI sOmManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sOmManager* sOmManager::mpInstance;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x0080439e-0x008043db (called at sOmManager.cpp:259)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x0080439e-0x008043db (called at sOmManager.h:26)
@@ -1659,7 +1759,7 @@ const MtDTI& sOmManager::cOmArcLoader::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOmManager::cOmArcLoader::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOmManager::cOmArcLoader::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOmManager::cOmArcLoader::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1713,7 +1813,7 @@ bool sOmManager::cOmArcLoader::sortFunc(const sOmManager::cOmArcLoader* pa, cons
 // Address: 0x007fa630 - 0x007fa63b (11 bytes)
 bool sOmManager::cOmArcLoader::isEnableArc() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRnoArc == static_cast<u8>(3);
+    return mRnoArc == 3;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -1739,6 +1839,8 @@ bool sOmManager::cOmArcLoader::isEnableArc() const {
 //   in sOmManager::releaseOmArcLoaderLock at 0x007fa1de-0x007fa1e7 (called at sOmManager.cpp:5041)
 //   in sOmManager::moveWarpList at 0x007fe8c2-0x007fe8c9 (called at sOmManager.cpp:7499)
 // void sOmManager::cOmArcLoader::decRefCnt();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOmManager::cOmArcLoader::MyDTI sOmManager::cOmArcLoader::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x008043db-0x0080441b (called at sOmManager.cpp:267)
@@ -1776,7 +1878,7 @@ const MtDTI& sOmManager::cWarpData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sOmManager::cWarpData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sOmManager::cWarpData::DTI)->memAlloc(sz, align, ::sOmManager::cWarpData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sOmManager::cWarpData::DTI)->memAlloc(sz, align, sOmManager::cWarpData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1790,7 +1892,7 @@ inline void* sOmManager::cWarpData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sOmManager::cWarpData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOmManager::cWarpData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOmManager::cWarpData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1812,6 +1914,8 @@ inline void sOmManager::cWarpData::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // sOmManager::cWarpData::~cWarpData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOmManager::cWarpData::MyDTI sOmManager::cWarpData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x00804962-0x0080499b (called at sOmManager.cpp:7138)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x00804962-0x0080499b (called at sOmManager.h:1747)
@@ -1820,7 +1924,7 @@ inline void sOmManager::cWarpData::operator delete(void* p_addr) {
 // Address: 0x00803340 - 0x0080339a (90 bytes)
 MtObject* sOmManager::cWarpData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sOmManager::cWarpData;
+    return new (16u) sOmManager::cWarpData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1846,7 +1950,7 @@ const MtDTI& sOmManager::cClanEmblemTextureCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sOmManager::cClanEmblemTextureCtrl::DTI)->memAlloc(sz, align, ::sOmManager::cClanEmblemTextureCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sOmManager::cClanEmblemTextureCtrl::DTI)->memAlloc(sz, align, sOmManager::cClanEmblemTextureCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1861,7 +1965,7 @@ inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, u32 ali
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sOmManager::cClanEmblemTextureCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sOmManager::cClanEmblemTextureCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sOmManager::cClanEmblemTextureCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1884,15 +1988,15 @@ inline void sOmManager::cClanEmblemTextureCtrl::operator delete(void* p_addr) {
 // Also emitted as: _ZN10sOmManager22cClanEmblemTextureCtrlD0Ev at 0x01ac8980
 sOmManager::cClanEmblemTextureCtrl::~cClanEmblemTextureCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScreenSpace != static_cast<uScreenSpace*>(nullptr)) {
-        this->mpScreenSpace->kill();
-        this->mpScreenSpace = static_cast<uScreenSpace*>(nullptr);
+    if (mpScreenSpace != nullptr) {
+        mpScreenSpace->kill();
+        mpScreenSpace = nullptr;
     }
-    if (this->mpRenderTargetTexture == static_cast<rRenderTargetTexture*>(nullptr)) {
+    if (mpRenderTargetTexture == nullptr) {
         return;
     }
-    this->mpRenderTargetTexture->::cResource::release();
-    this->mpRenderTargetTexture = static_cast<rRenderTargetTexture*>(nullptr);
+    mpRenderTargetTexture->release();
+    mpRenderTargetTexture = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (38 bytes)
@@ -1901,9 +2005,118 @@ sOmManager::cClanEmblemTextureCtrl::~cClanEmblemTextureCtrl() {
 // void sOmManager::cClanEmblemTextureCtrl::init();
 
 // Address: 0x008041b0 - 0x0080425d (173 bytes)
-__attribute__((weak)) void sOmManager::cClanEmblemTextureCtrl::setup() {
-    DDON_STUB("sOmManager::cClanEmblemTextureCtrl::setup")
-    /* stub */
+void sOmManager::cClanEmblemTextureCtrl::setup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from uScreenSpace*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xc8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd0 from unsigned long
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x8041ba, held ahead of the effects the ELF orders after it
+    rRenderTargetTexture* t0 = mpRenderTargetTexture;
+    if (t0 != nullptr) {
+        t0->release();
+        mpRenderTargetTexture = nullptr;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041d7, held ahead of the effects the ELF orders after it
+        sArchiveManager* t2 = sArchiveManager::getInstance();
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041f0, held ahead of the effects the ELF orders after it
+        cResource* t3 = t2->createRes("clankyoten", "RES_ID_CLAN_EMBLEM_TX", 1u, false);
+        mpRenderTargetTexture = static_cast<rRenderTargetTexture*>(t3);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041fc, held ahead of the effects the ELF orders after it
+        bool t5 = createScreenSpace();
+        // inferred: a temporary for the value the load at 0x804201 read, used 3 times; no DWARF local holds it
+        rRenderTargetTexture* t7 = mpRenderTargetTexture;
+        if (t7 != nullptr) {
+            // inferred: a temporary for the value the load at 0x80420a read, used 7 times; no DWARF local holds it
+            uScreenSpace* t8 = mpScreenSpace;
+            if (t8 != nullptr) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x804213, held ahead of the effects the ELF orders after it
+                rRenderTargetTexture* t9 = t8->mpRenderTarget;
+                if (t9 != nullptr) {
+                    t9->release();
+                    t8->mpRenderTarget = nullptr;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804229, held ahead of the effects the ELF orders after it
+                    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x80422f, held ahead of the effects the ELF orders after it
+                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t11) + 200);
+                    t8->releaseTexture();
+                    t8->mpRenderTarget = t7;
+                    t7->addRef();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804241, held ahead of the effects the ELF orders after it
+                    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804244, held ahead of the effects the ELF orders after it
+                    rRenderTargetTexture* t16 = t8->mpRenderTarget;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804248, held ahead of the effects the ELF orders after it
+                    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 208);
+                    t8->createDepth(t16);
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804229, held ahead of the effects the ELF orders after it
+                    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x80422f, held ahead of the effects the ELF orders after it
+                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t11) + 200);
+                    t8->releaseTexture();
+                    t8->mpRenderTarget = t7;
+                    t7->addRef();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804241, held ahead of the effects the ELF orders after it
+                    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804244, held ahead of the effects the ELF orders after it
+                    rRenderTargetTexture* t16 = t8->mpRenderTarget;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804248, held ahead of the effects the ELF orders after it
+                    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 208);
+                    t8->createDepth(t16);
+                }
+            }
+        }
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041d7, held ahead of the effects the ELF orders after it
+        sArchiveManager* t2 = sArchiveManager::getInstance();
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041f0, held ahead of the effects the ELF orders after it
+        cResource* t3 = t2->createRes("clankyoten", "RES_ID_CLAN_EMBLEM_TX", 1u, false);
+        mpRenderTargetTexture = static_cast<rRenderTargetTexture*>(t3);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8041fc, held ahead of the effects the ELF orders after it
+        bool t5 = createScreenSpace();
+        // inferred: a temporary for the value the load at 0x804201 read, used 3 times; no DWARF local holds it
+        rRenderTargetTexture* t7 = mpRenderTargetTexture;
+        if (t7 != nullptr) {
+            // inferred: a temporary for the value the load at 0x80420a read, used 7 times; no DWARF local holds it
+            uScreenSpace* t8 = mpScreenSpace;
+            if (t8 != nullptr) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x804213, held ahead of the effects the ELF orders after it
+                rRenderTargetTexture* t9 = t8->mpRenderTarget;
+                if (t9 != nullptr) {
+                    t9->release();
+                    t8->mpRenderTarget = nullptr;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804229, held ahead of the effects the ELF orders after it
+                    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x80422f, held ahead of the effects the ELF orders after it
+                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t11) + 200);
+                    t8->releaseTexture();
+                    t8->mpRenderTarget = t7;
+                    t7->addRef();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804241, held ahead of the effects the ELF orders after it
+                    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804244, held ahead of the effects the ELF orders after it
+                    rRenderTargetTexture* t16 = t8->mpRenderTarget;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804248, held ahead of the effects the ELF orders after it
+                    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 208);
+                    t8->createDepth(t16);
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804229, held ahead of the effects the ELF orders after it
+                    unsigned long t11 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x80422f, held ahead of the effects the ELF orders after it
+                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t11) + 200);
+                    t8->releaseTexture();
+                    t8->mpRenderTarget = t7;
+                    t7->addRef();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804241, held ahead of the effects the ELF orders after it
+                    unsigned long t15 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 0);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804244, held ahead of the effects the ELF orders after it
+                    rRenderTargetTexture* t16 = t8->mpRenderTarget;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x804248, held ahead of the effects the ELF orders after it
+                    unsigned long t17 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t15) + 208);
+                    t8->createDepth(t16);
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (63 bytes)
@@ -1924,16 +2137,20 @@ __attribute__((weak)) bool sOmManager::cClanEmblemTextureCtrl::createScreenSpace
 // Address: 0x00804260 - 0x008042a0 (64 bytes)
 void sOmManager::cClanEmblemTextureCtrl::release() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpScreenSpace != static_cast<uScreenSpace*>(nullptr)) {
-        this->mpScreenSpace->kill();
-        this->mpScreenSpace = static_cast<uScreenSpace*>(nullptr);
+    if (mpScreenSpace != nullptr) {
+        mpScreenSpace->kill();
+        mpScreenSpace = nullptr;
     }
-    if (this->mpRenderTargetTexture == static_cast<rRenderTargetTexture*>(nullptr)) {
+    if (mpRenderTargetTexture == nullptr) {
         return;
     }
-    this->mpRenderTargetTexture->::cResource::release();
-    this->mpRenderTargetTexture = static_cast<rRenderTargetTexture*>(nullptr);
+    mpRenderTargetTexture->release();
+    mpRenderTargetTexture = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sOmManager::cClanEmblemTextureCtrl::MyDTI sOmManager::cClanEmblemTextureCtrl::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sOmManager::cClanEmblemTextureCtrl::CLAN_EMBLEM_RENDER_TARGET_VIEW;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sOmManager.cpp at 0x0080499b-0x008049d4 (called at sOmManager.cpp:8704)
@@ -1943,6 +2160,6 @@ void sOmManager::cClanEmblemTextureCtrl::release() {
 // Address: 0x00803fe0 - 0x00804030 (80 bytes)
 MtObject* sOmManager::cClanEmblemTextureCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sOmManager::cClanEmblemTextureCtrl;
+    return new (16u) sOmManager::cClanEmblemTextureCtrl;
 }
 

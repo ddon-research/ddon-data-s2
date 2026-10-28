@@ -282,12 +282,12 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline sKeyboardExt::cKeyArray::cKeyArray() {
-    this->mKey6 = static_cast<u32>(0);
-    this->mKey7 = static_cast<u32>(0);
-    this->mKey4 = static_cast<u32>(0);
-    this->mKey5 = static_cast<u32>(0);
-    this->mKey2 = static_cast<u32>(0);
-    this->mKey3 = static_cast<u32>(0);
-    this->mKey0 = static_cast<u32>(0);
-    this->mKey1 = static_cast<u32>(0);
+    this->mKey6 = 0;
+    this->mKey7 = 0;
+    this->mKey4 = 0;
+    this->mKey5 = 0;
+    this->mKey2 = 0;
+    this->mKey3 = 0;
+    this->mKey0 = 0;
+    this->mKey1 = 0;
 }

@@ -38,7 +38,7 @@ const MtDTI& cpChantCommand::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpChantCommand::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpChantCommand::DTI);
+    return MtMemoryAllocator::getAllocator(cpChantCommand::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline MtAllocator* cpChantCommand::getAllocator() {
 // Address: 0x004573b0 - 0x004573f0 (64 bytes)
 void* cpChantCommand::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpChantCommand::getAllocator()->memAlloc(sz, align, ::cpChantCommand::DTI.::MtDTI::getID());
+    return cpChantCommand::getAllocator()->memAlloc(sz, align, cpChantCommand::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +62,7 @@ void* cpChantCommand::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpChantCommand::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpChantCommand::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpChantCommand::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -91,10 +91,10 @@ cpChantCommand::~cpChantCommand() {
 // Address: 0x00457700 - 0x00457733 (51 bytes)
 void cpChantCommand::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
-    this->mpModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
-    this->mpInput = static_cast<uDDOModel*>(this->::cpComponent::getOwner())->::uDDOModel::getInputPtr();
-    this->mpChargeCtrl = static_cast<uDDOModel*>(this->::cpComponent::getOwner())->::uDDOModel::getChargeCtrlPtr();
+    this->cpComponent::setup();
+    mpModel = static_cast<uDDOModel*>(getOwner());
+    mpInput = static_cast<uDDOModel*>(getOwner())->getInputPtr();
+    mpChargeCtrl = static_cast<uDDOModel*>(getOwner())->getChargeCtrlPtr();
 }
 
 // Address: 0x00457c00 - 0x004582c5 (1733 bytes)
@@ -121,35 +121,35 @@ __attribute__((weak)) void cpChantCommand::move() {
 // Address: 0x00457740 - 0x00457788 (72 bytes)
 void cpChantCommand::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprMagicWords != static_cast<rMagicCommandWord*>(nullptr)) {
-        this->mprMagicWords->::cResource::release();
-        this->mprMagicWords = static_cast<rMagicCommandWord*>(nullptr);
+    if (mprMagicWords != nullptr) {
+        mprMagicWords->release();
+        mprMagicWords = nullptr;
     }
-    if (this->mprMagicCommandList == static_cast<rMagicCommandList*>(nullptr)) {
+    if (mprMagicCommandList == nullptr) {
         return;
     }
-    this->mprMagicCommandList->::cResource::release();
-    this->mprMagicCommandList = static_cast<rMagicCommandList*>(nullptr);
+    mprMagicCommandList->release();
+    mprMagicCommandList = nullptr;
 }
 
 // Address: 0x00459300 - 0x00459333 (51 bytes)
 void cpChantCommand::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x004576f0 - 0x004576f9 (9 bytes)
 void cpChantCommand::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (41 bytes)
@@ -293,21 +293,21 @@ __attribute__((weak)) bool cpChantCommand::checkBegin() {
 // Address: 0x00459970 - 0x004599e4 (116 bytes)
 void cpChantCommand::clearReqReset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSpelingLockTiemr = ::sMain::getInstance()->mDeltaTime + this->mSpelingLockTiemr;
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    mSpelingLockTiemr = sMain::getInstance()->mDeltaTime + mSpelingLockTiemr;
+    if (mpModel == nullptr) {
         return;
     }
-    if ((this->mpModel->mUnitId & static_cast<u32>(16)) == static_cast<u32>(0)) {
+    if ((mpModel->mUnitId & 16u) == 0) {
         return;
     }
-    const f32 Limit = static_cast<uHuman*>(this->mpModel)->::uHuman::getJobAdjustParam(static_cast<u32>(40));
+    const f32 Limit = static_cast<uHuman*>(mpModel)->getJobAdjustParam(40u);
     if (0.0f >= Limit) {
-        this->mIsReqReset = false;
-        this->mSpelingLockTiemr = 0.0f;
+        mIsReqReset = false;
+        mSpelingLockTiemr = 0.0f;
     } else {
-        if (this->mSpelingLockTiemr > Limit) {
-            this->mIsReqReset = false;
-            this->mSpelingLockTiemr = 0.0f;
+        if (mSpelingLockTiemr > Limit) {
+            mIsReqReset = false;
+            mSpelingLockTiemr = 0.0f;
         }
     }
 }
@@ -333,56 +333,56 @@ void cpChantCommand::clearReqReset() {
 void cpChantCommand::setChantData() {
     // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mprMagicWords != static_cast<rMagicCommandWord*>(nullptr)) {
-        this->mprMagicWords->::cResource::release();
-        this->mprMagicWords = static_cast<rMagicCommandWord*>(nullptr);
+    if (mprMagicWords != nullptr) {
+        mprMagicWords->release();
+        mprMagicWords = nullptr;
     }
-    if (this->mprMagicCommandList != static_cast<rMagicCommandList*>(nullptr)) {
-        this->mprMagicCommandList->::cResource::release();
-        this->mprMagicCommandList = static_cast<rMagicCommandList*>(nullptr);
+    if (mprMagicCommandList != nullptr) {
+        mprMagicCommandList->release();
+        mprMagicCommandList = nullptr;
         // inferred: a temporary for the result of the call at 0x459855, used 4 times; no DWARF local holds it
-        cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_MAGICWORD_MCW", static_cast<u32>(1), false);
-        if (t0 != static_cast<cResource*>(nullptr)) {
-            this->mprMagicWords = static_cast<rMagicCommandWord*>(t0);
-            t0->::cResource::addRef();
-            t0->::cResource::release();
+        cResource* t0 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_MAGICWORD_MCW", 1u, false);
+        if (t0 != nullptr) {
+            mprMagicWords = static_cast<rMagicCommandWord*>(t0);
+            t0->addRef();
+            t0->release();
             // inferred: a temporary for the result of the call at 0x459892, used 4 times; no DWARF local holds it
-            cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", static_cast<u32>(1), false);
-            if (t1 != static_cast<cResource*>(nullptr)) {
-                this->mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
-                t1->::cResource::addRef();
-                t1->::cResource::release();
+            cResource* t1 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", 1u, false);
+            if (t1 != nullptr) {
+                mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
+                t1->addRef();
+                t1->release();
             }
         } else {
             // inferred: a temporary for the result of the call at 0x459892, used 4 times; no DWARF local holds it
-            cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", static_cast<u32>(1), false);
-            if (t1 != static_cast<cResource*>(nullptr)) {
-                this->mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
-                t1->::cResource::addRef();
-                t1->::cResource::release();
+            cResource* t1 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", 1u, false);
+            if (t1 != nullptr) {
+                mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
+                t1->addRef();
+                t1->release();
             }
         }
     } else {
         // inferred: a temporary for the result of the call at 0x459855, used 4 times; no DWARF local holds it
-        cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_MAGICWORD_MCW", static_cast<u32>(1), false);
-        if (t0 != static_cast<cResource*>(nullptr)) {
-            this->mprMagicWords = static_cast<rMagicCommandWord*>(t0);
-            t0->::cResource::addRef();
-            t0->::cResource::release();
+        cResource* t0 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_MAGICWORD_MCW", 1u, false);
+        if (t0 != nullptr) {
+            mprMagicWords = static_cast<rMagicCommandWord*>(t0);
+            t0->addRef();
+            t0->release();
             // inferred: a temporary for the result of the call at 0x459892, used 4 times; no DWARF local holds it
-            cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", static_cast<u32>(1), false);
-            if (t1 != static_cast<cResource*>(nullptr)) {
-                this->mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
-                t1->::cResource::addRef();
-                t1->::cResource::release();
+            cResource* t1 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", 1u, false);
+            if (t1 != nullptr) {
+                mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
+                t1->addRef();
+                t1->release();
             }
         } else {
             // inferred: a temporary for the result of the call at 0x459892, used 4 times; no DWARF local holds it
-            cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", static_cast<u32>(1), false);
-            if (t1 != static_cast<cResource*>(nullptr)) {
-                this->mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
-                t1->::cResource::addRef();
-                t1->::cResource::release();
+            cResource* t1 = sArchiveManager::getInstance()->createRes("job06", "RES_ID_CHANTCOMMAND_MGCC", 1u, false);
+            if (t1 != nullptr) {
+                mprMagicCommandList = static_cast<rMagicCommandList*>(t1);
+                t1->addRef();
+                t1->release();
             }
         }
     }
@@ -409,20 +409,20 @@ __attribute__((weak)) f32 cpChantCommand::getBounusAtkRate() {
 // Address: 0x00457790 - 0x00457812 (130 bytes)
 void cpChantCommand::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpChantFilterEfcHandle != static_cast<cEfcHandle*>(nullptr)) {
-        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpChantFilterEfcHandle) != false) {
-            this->mpChantFilterEfcHandle->mpOwner = static_cast<cUnit*>(nullptr);
-            this->mpChantFilterEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    if (mpChantFilterEfcHandle != nullptr) {
+        if (static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpChantFilterEfcHandle)) {
+            mpChantFilterEfcHandle->mpOwner = nullptr;
+            mpChantFilterEfcHandle = nullptr;
         }
     }
-    if (this->mpChantBeginEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    if (mpChantBeginEfcHandle == nullptr) {
         return;
     }
-    if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpChantBeginEfcHandle) == false) {
+    if (!static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpChantBeginEfcHandle)) {
         return;
     }
-    this->mpChantBeginEfcHandle->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mpChantBeginEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    mpChantBeginEfcHandle->mpOwner = nullptr;
+    mpChantBeginEfcHandle = nullptr;
 }
 
 // Address: 0x004598d0 - 0x00459946 (118 bytes)
@@ -460,10 +460,10 @@ __attribute__((weak)) s32 cpChantCommand::getPointNum() {
 // Address: 0x00459950 - 0x0045996b (27 bytes)
 s32 cpChantCommand::getNowWord() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprMagicWords != static_cast<rMagicCommandWord*>(nullptr)) {
-        return this->mMagicWordList[this->mNowWord];
+    if (mprMagicWords != nullptr) {
+        return mMagicWordList[mNowWord];
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -538,6 +538,8 @@ __attribute__((weak)) f32 cpChantCommand::getBounusAtkRateForGui() {
     DDON_STUB("cpChantCommand::getBounusAtkRateForGui")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpChantCommand::MyDTI cpChantCommand::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpChantCommand.cpp at 0x00459aef-0x00459b2c (called at cpChantCommand.cpp:53)

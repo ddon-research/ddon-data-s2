@@ -35,7 +35,7 @@ const MtDTI& rMapSpotStageList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMapSpotStageList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::DTI)->memAlloc(sz, align, ::rMapSpotStageList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMapSpotStageList::DTI)->memAlloc(sz, align, rMapSpotStageList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rMapSpotStageList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rMapSpotStageList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMapSpotStageList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,9 +64,9 @@ inline void rMapSpotStageList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rMapSpotStageList::rMapSpotStageList() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
-    this->mpArray = static_cast<rMapSpotStageList::Data*>(nullptr);
-    this->mArrayNum = static_cast<u32>(0);
+    setAttribute(22u);
+    mpArray = nullptr;
+    mArrayNum = 0;
 }
 
 // Address: 0x006a4900 - 0x006a4981 (129 bytes)
@@ -114,14 +114,16 @@ __attribute__((weak)) bool rMapSpotStageList::load(MtStream& in) {
 // Address: 0x01a9caf0 - 0x01a9cafb (11 bytes)
 rMapSpotStageList::Data* rMapSpotStageList::getData(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mpArray[index];
+    return &mpArray[index];
 }
 
 // Address: 0x01a9cb00 - 0x01a9cb04 (4 bytes)
 u32 rMapSpotStageList::getDataNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayNum;
+    return mArrayNum;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMapSpotStageList::MyDTI rMapSpotStageList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMapSpotStageList.cpp at 0x006a4be2-0x006a4c1f (called at rMapSpotStageList.cpp:97)
@@ -131,7 +133,7 @@ u32 rMapSpotStageList::getDataNum() const {
 // Address: 0x006a4810 - 0x006a4874 (100 bytes)
 MtObject* rMapSpotStageList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMapSpotStageList;
+    return new (16u) rMapSpotStageList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,7 +159,7 @@ const MtDTI& rMapSpotStageList::Data::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* rMapSpotStageList::Data::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::Data::DTI)->memAlloc(sz, align, ::rMapSpotStageList::Data::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMapSpotStageList::Data::DTI)->memAlloc(sz, align, rMapSpotStageList::Data::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -171,7 +173,7 @@ inline void* rMapSpotStageList::Data::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rMapSpotStageList::Data::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::Data::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMapSpotStageList::Data::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +202,7 @@ __attribute__((weak)) void rMapSpotStageList::Data::createProperty(MtPropertyLis
 // Address: 0x006a47e0 - 0x006a47e5 (5 bytes)
 MtUI* rMapSpotStageList::Data::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
@@ -210,6 +212,8 @@ MtUI* rMapSpotStageList::Data::createUI(MtProperty& prop) {
 // No out-of-line body: no code in the ELF
 // void rMapSpotStageList::Data::copy(rMapSpotStageList::Data* src);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMapSpotStageList::Data::MyDTI rMapSpotStageList::Data::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rMapSpotStageList.cpp at 0x006a4ba0-0x006a4be2 (called at rMapSpotStageList.cpp:30)
 //   in _GLOBAL__sub_I_rMapSpotStageList.cpp at 0x006a4ba0-0x006a4be2 (called at rMapSpotStageList.h:28)
@@ -218,6 +222,6 @@ MtUI* rMapSpotStageList::Data::createUI(MtProperty& prop) {
 // Address: 0x006a4620 - 0x006a4667 (71 bytes)
 MtObject* rMapSpotStageList::Data::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMapSpotStageList::Data;
+    return new (16u) rMapSpotStageList::Data;
 }
 

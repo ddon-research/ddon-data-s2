@@ -48,7 +48,7 @@ const MtDTI& cCollGeom::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCollGeom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCollGeom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCollGeom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -81,6 +81,8 @@ __attribute__((weak)) void cCollGeom::createProperty(MtPropertyList& s) {
     DDON_STUB("cCollGeom::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCollGeom::MyDTI cCollGeom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCollGeom.cpp at 0x00657750-0x00657792 (called at rCollGeom.cpp:24)

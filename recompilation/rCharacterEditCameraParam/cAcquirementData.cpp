@@ -42,7 +42,7 @@ inline MtAllocator* cAcquirement::cNormalSkillData::getAllocator() {
 // Address: 0x0001b9f0 - 0x0001ba30 (64 bytes)
 void* cAcquirement::cNormalSkillData::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cAcquirement::cNormalSkillData::getAllocator()->memAlloc(sz, align, ::cAcquirement::cNormalSkillData::DTI.::MtDTI::getID());
+    return ::cAcquirement::cNormalSkillData::getAllocator()->memAlloc(sz, align, ::cAcquirement::cNormalSkillData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,9 +85,9 @@ cAcquirement::cNormalSkillData::~cNormalSkillData() {
 // Address: 0x0001cb30 - 0x0001cb4d (29 bytes)
 bool cAcquirement::cNormalSkillData::isComplete() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpData != static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
-        if (this->mpMsgInfo != static_cast<rGUIMessage*>(nullptr)) {
-            return this->mpMsgCommand != static_cast<rGUIMessage*>(nullptr);
+    if (mpData != nullptr) {
+        if (mpMsgInfo != nullptr) {
+            return mpMsgCommand != nullptr;
         }
     }
     return false;
@@ -114,21 +114,21 @@ __attribute__((weak)) const rAcquirement::cNormalSkillData* cAcquirement::cNorma
 // Address: 0x0001c860 - 0x0001c8a2 (66 bytes)
 const rAcquirement::cNormalSkillData* cAcquirement::cNormalSkillData::getData(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpData != static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
-        if (index < this->mpData->getDataNum()) {
-            return this->mpData->getData(index);
+    if (mpData != nullptr) {
+        if (index < mpData->getDataNum()) {
+            return mpData->getData(index);
         }
     }
-    return static_cast<const rAcquirement::cNormalSkillData*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x0001c8b0 - 0x0001c8c5 (21 bytes)
 u32 cAcquirement::cNormalSkillData::length() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpData != static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
-        return this->mpData->getDataNum();
+    if (mpData != nullptr) {
+        return mpData->getDataNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -166,78 +166,80 @@ __attribute__((weak)) u32 cAcquirement::cNormalSkillData::getIconId(u32 skill_in
 // Address: 0x0001ca00 - 0x0001ca52 (82 bytes)
 void cAcquirement::cNormalSkillData::releaseResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpData != static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
-        this->mpData->::cResource::release();
-        this->mpData = static_cast<rAcquirement::rNormalSkillData*>(nullptr);
+    if (mpData != nullptr) {
+        mpData->release();
+        mpData = nullptr;
     }
-    if (this->mpMsgInfo != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpMsgInfo->::cResource::release();
-        this->mpMsgInfo = static_cast<rGUIMessage*>(nullptr);
+    if (mpMsgInfo != nullptr) {
+        mpMsgInfo->release();
+        mpMsgInfo = nullptr;
     }
-    if (this->mpMsgCommand == static_cast<rGUIMessage*>(nullptr)) {
+    if (mpMsgCommand == nullptr) {
         return;
     }
-    this->mpMsgCommand->::cResource::release();
-    this->mpMsgCommand = static_cast<rGUIMessage*>(nullptr);
+    mpMsgCommand->release();
+    mpMsgCommand = nullptr;
 }
 
 // Address: 0x0001ca60 - 0x0001cb26 (198 bytes)
 void cAcquirement::cNormalSkillData::loadResource() {
     // DWARF local not rendered: const u32 LOAD_MODE;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpData == static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
+    if (mpData == nullptr) {
         // inferred: a temporary for the value the load at 0x1ca7b read, used once; no DWARF local holds it
         sArchiveManager* t0 = ::sArchiveManager::getInstance();
         // inferred: a temporary for the value the load at 0x1ca7e read, used once; no DWARF local holds it
-        ARC_TAGID t1 = this->::cAcquirement::cSkillDataBase::mTag;
-        this->mpData = static_cast<rAcquirement::rNormalSkillData*>(t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_DATA_NSD"), static_cast<u32>(129), false));
-        if (this->mpMsgInfo == static_cast<rGUIMessage*>(nullptr)) {
+        ARC_TAGID t1 = mTag;
+        mpData = static_cast<rAcquirement::rNormalSkillData*>(t0->createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_DATA_NSD"), 129u, false));
+        if (mpMsgInfo == nullptr) {
             // inferred: a temporary for the value the load at 0x1cab5 read, used once; no DWARF local holds it
             sArchiveManager* t2 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the value the load at 0x1cab8 read, used once; no DWARF local holds it
-            ARC_TAGID t3 = this->::cAcquirement::cSkillDataBase::mTag;
-            this->mpMsgInfo = static_cast<rGUIMessage*>(t2->::sArchiveManager::createRes(t3, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_INFO_GMD"), static_cast<u32>(129), false));
-            if (this->mpMsgCommand == static_cast<rGUIMessage*>(nullptr)) {
+            ARC_TAGID t3 = mTag;
+            mpMsgInfo = static_cast<rGUIMessage*>(t2->createRes(t3, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_INFO_GMD"), 129u, false));
+            if (mpMsgCommand == nullptr) {
                 // inferred: a temporary for the value the load at 0x1caef read, used once; no DWARF local holds it
                 sArchiveManager* t4 = ::sArchiveManager::getInstance();
                 // inferred: a temporary for the value the load at 0x1caf2 read, used once; no DWARF local holds it
-                ARC_TAGID t5 = this->::cAcquirement::cSkillDataBase::mTag;
-                this->mpMsgCommand = static_cast<rGUIMessage*>(t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), static_cast<u32>(129), false));
+                ARC_TAGID t5 = mTag;
+                mpMsgCommand = static_cast<rGUIMessage*>(t4->createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), 129u, false));
             }
         } else {
-            if (this->mpMsgCommand == static_cast<rGUIMessage*>(nullptr)) {
+            if (mpMsgCommand == nullptr) {
                 // inferred: a temporary for the value the load at 0x1caef read, used once; no DWARF local holds it
                 sArchiveManager* t4 = ::sArchiveManager::getInstance();
                 // inferred: a temporary for the value the load at 0x1caf2 read, used once; no DWARF local holds it
-                ARC_TAGID t5 = this->::cAcquirement::cSkillDataBase::mTag;
-                this->mpMsgCommand = static_cast<rGUIMessage*>(t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), static_cast<u32>(129), false));
+                ARC_TAGID t5 = mTag;
+                mpMsgCommand = static_cast<rGUIMessage*>(t4->createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), 129u, false));
             }
         }
     } else {
-        if (this->mpMsgInfo == static_cast<rGUIMessage*>(nullptr)) {
+        if (mpMsgInfo == nullptr) {
             // inferred: a temporary for the value the load at 0x1cab5 read, used once; no DWARF local holds it
             sArchiveManager* t2 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the value the load at 0x1cab8 read, used once; no DWARF local holds it
-            ARC_TAGID t3 = this->::cAcquirement::cSkillDataBase::mTag;
-            this->mpMsgInfo = static_cast<rGUIMessage*>(t2->::sArchiveManager::createRes(t3, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_INFO_GMD"), static_cast<u32>(129), false));
-            if (this->mpMsgCommand == static_cast<rGUIMessage*>(nullptr)) {
+            ARC_TAGID t3 = mTag;
+            mpMsgInfo = static_cast<rGUIMessage*>(t2->createRes(t3, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_INFO_GMD"), 129u, false));
+            if (mpMsgCommand == nullptr) {
                 // inferred: a temporary for the value the load at 0x1caef read, used once; no DWARF local holds it
                 sArchiveManager* t4 = ::sArchiveManager::getInstance();
                 // inferred: a temporary for the value the load at 0x1caf2 read, used once; no DWARF local holds it
-                ARC_TAGID t5 = this->::cAcquirement::cSkillDataBase::mTag;
-                this->mpMsgCommand = static_cast<rGUIMessage*>(t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), static_cast<u32>(129), false));
+                ARC_TAGID t5 = mTag;
+                mpMsgCommand = static_cast<rGUIMessage*>(t4->createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), 129u, false));
             }
         } else {
-            if (this->mpMsgCommand == static_cast<rGUIMessage*>(nullptr)) {
+            if (mpMsgCommand == nullptr) {
                 // inferred: a temporary for the value the load at 0x1caef read, used once; no DWARF local holds it
                 sArchiveManager* t4 = ::sArchiveManager::getInstance();
                 // inferred: a temporary for the value the load at 0x1caf2 read, used once; no DWARF local holds it
-                ARC_TAGID t5 = this->::cAcquirement::cSkillDataBase::mTag;
-                this->mpMsgCommand = static_cast<rGUIMessage*>(t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), static_cast<u32>(129), false));
+                ARC_TAGID t5 = mTag;
+                mpMsgCommand = static_cast<rGUIMessage*>(t4->createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_NORMAL_SKILL_COMMAND_GMD"), 129u, false));
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAcquirement::cNormalSkillData::MyDTI cAcquirement::cNormalSkillData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cAcquirementData.cpp at 0x0001cc03-0x0001cc3c (called at cAcquirementData.cpp:26)
@@ -313,15 +315,15 @@ cAcquirement::cSkillDataBase::~cSkillDataBase() {
 // Address: 0x0001bc50 - 0x0001bc99 (73 bytes)
 void cAcquirement::cSkillDataBase::release() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->releaseResource();
+    releaseResource();
     // inferred: a temporary for the value the load at 0x1bc6b read, used twice; no DWARF local holds it
     cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mTicket != t0) {
-        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mTicket);
-        this->mTicket = static_cast<TICKET>(t0);
+    if (mTicket != t0) {
+        ::sArchiveManager::getInstance()->returnTicket(mTicket);
+        mTicket = static_cast<TICKET>(t0);
     }
-    this->mTag = static_cast<ARC_TAGID>(0);
-    this->mJobId = static_cast<u32>(0);
+    mTag = 0;
+    mJobId = 0;
 }
 
 // Address: 0x0001bca0 - 0x0001be29 (393 bytes)
@@ -336,18 +338,17 @@ bool cAcquirement::cSkillDataBase::updateLoad() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1be4c read, used 3 times; no DWARF local holds it
     cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mTicket != t0) {
-        if (::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mTicket) != false) {
-            if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-            } else {
+    if (mTicket != t0) {
+        if (::sArchiveManager::getInstance()->isTicketLoadFinish(mTicket)) {
+            if (::scePthreadMutexLock(&mCS.mCSection) != 0) {
                 ::abort();
             }
-            this->loadResource();
-            if (t0 != this->mTicket) {
-                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mTicket);
-                this->mTicket = static_cast<TICKET>(t0);
+            loadResource();
+            if (t0 != mTicket) {
+                ::sArchiveManager::getInstance()->returnTicket(mTicket);
+                mTicket = static_cast<TICKET>(t0);
             }
-            if (::scePthreadMutexUnlock(&this->mCS.mCSection) != static_cast<int>(0)) {
+            if (::scePthreadMutexUnlock(&mCS.mCSection) != 0) {
                 ::abort();
             }
             return true;
@@ -377,13 +378,15 @@ bool cAcquirement::cSkillDataBase::isComplete() const {
 // Address: 0x0001bec0 - 0x0001bedf (31 bytes)
 MT_CTSTR cAcquirement::cSkillDataBase::getMsg(rGUIMessage* pRes, u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRes != static_cast<rGUIMessage*>(nullptr)) {
+    if (pRes != nullptr) {
         if (index < pRes->mMessageNum) {
-            return pRes->::rGUIMessage::getMessage(index);
+            return pRes->getMessage(index);
         }
     }
     return "";
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAcquirement::cSkillDataBase::MyDTI cAcquirement::cSkillDataBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cAcquirementData.cpp at 0x0001cb8d-0x0001cbca (called at cAcquirementData.cpp:24)

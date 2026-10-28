@@ -35,7 +35,7 @@ const MtDTI& cCollNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cCollNode::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCollNode::DTI)->memAlloc(sz, align, ::cCollNode::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCollNode::DTI)->memAlloc(sz, align, cCollNode::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (93 bytes)
@@ -52,7 +52,7 @@ inline void* cCollNode::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCollNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCollNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCollNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -101,6 +101,8 @@ __attribute__((weak)) void cCollNode::createProperty(MtPropertyList& s) {
 //   and 15 more (every copy is in <bundle>.inlined.json)
 // u32 cCollNode::getAttr() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCollNode::MyDTI cCollNode::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rCollNode.cpp at 0x006587b0-0x006587f2 (called at rCollNode.cpp:25)
 //   in _GLOBAL__sub_I_rCollNode.cpp at 0x006587b0-0x006587f2 (called at rCollNode.h:30)
@@ -109,7 +111,7 @@ __attribute__((weak)) void cCollNode::createProperty(MtPropertyList& s) {
 // Address: 0x00657e00 - 0x00657e58 (88 bytes)
 MtObject* cCollNode::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCollNode;
+    return new (16u) cCollNode;
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,7 +128,7 @@ const MtDTI& rCollNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rCollNode::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rCollNode::DTI);
+    return MtMemoryAllocator::getAllocator(rCollNode::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline MtAllocator* rCollNode::getAllocator() {
 // Address: 0x00658550 - 0x00658590 (64 bytes)
 void* rCollNode::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rCollNode::getAllocator()->memAlloc(sz, align, ::rCollNode::DTI.::MtDTI::getID());
+    return rCollNode::getAllocator()->memAlloc(sz, align, rCollNode::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,7 +152,7 @@ void* rCollNode::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rCollNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rCollNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rCollNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -192,7 +194,7 @@ MT_CTSTR rCollNode::getExt() const {
 // Address: 0x01a809a0 - 0x01a809a6 (6 bytes)
 u32 rCollNode::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(110);
+    return 110;
 }
 
 // Address: 0x00658600 - 0x006587b0 (432 bytes)
@@ -200,6 +202,8 @@ __attribute__((weak)) bool rCollNode::loadCore(MtDataReader& r) {
     DDON_STUB("rCollNode::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rCollNode::MyDTI rCollNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rCollNode.cpp at 0x006587f2-0x0065882f (called at rCollNode.cpp:132)
@@ -209,7 +213,7 @@ __attribute__((weak)) bool rCollNode::loadCore(MtDataReader& r) {
 // Address: 0x006584c0 - 0x0065854d (141 bytes)
 MtObject* rCollNode::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rCollNode;
+    return new (16u) rCollNode;
 }
 
 // Instance at 0x01a80950 - 0x01a80962 (18 bytes) of the generic rTbl2<T>::getData

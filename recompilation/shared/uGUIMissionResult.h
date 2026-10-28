@@ -442,18 +442,24 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIMissionResult::moveEvent at 0xb2766f-0xb27688; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void uGUIMissionResult::evFinishExit() {
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateExit);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool uGUIMissionResult::isRanking() {
     return this->mResultData.mIsRanking;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIMissionResult::cChargeEffectInfo::cChargeEffectInfo() {
-    this->mCourseId = static_cast<u32>(0);
-    this->mEffectId = static_cast<u32>(0);
+    this->mCourseId = 0;
+    this->mEffectId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIMissionResult::cItemList::cItemList() {
-    this->mItemNo = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemNo = 0;
+    this->mItemNum = 0;
 }

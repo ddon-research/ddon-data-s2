@@ -48,7 +48,7 @@ const MtDTI& sItemManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -57,7 +57,7 @@ inline MtAllocator* sItemManager::getAllocator() {
 // Address: 0x007d2cd0 - 0x007d2d10 (64 bytes)
 void* sItemManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sItemManager::getAllocator()->memAlloc(sz, align, ::sItemManager::DTI.::MtDTI::getID());
+    return sItemManager::getAllocator()->memAlloc(sz, align, sItemManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,7 +72,7 @@ void* sItemManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sItemManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,9 +116,9 @@ sItemManager::~sItemManager() {
 void sItemManager::move() {
     // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::callMethod();
-    if (this->mGPControl.mRepeatWaitTime > 0.0f) {
-        this->mGPControl.mRepeatWaitTime = this->mGPControl.mRepeatWaitTime - ::sMain::getInstance()->mDeltaTime;
+    callMethod();
+    if (mGPControl.mRepeatWaitTime > 0.0f) {
+        mGPControl.mRepeatWaitTime = mGPControl.mRepeatWaitTime - sMain::getInstance()->mDeltaTime;
     }
 }
 
@@ -134,78 +134,78 @@ void sItemManager::loadResource() {
     // DWARF local not rendered: rItemList* pItemList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7d39d5 read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x7d39e0, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("base");
+    ARC_TAGID t1 = rArchiveListArray::convTagId("base");
     // inferred: a temporary for the result of the call at 0x7d3a02, used 5 times; no DWARF local holds it
-    cResource* t2 = t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_ITEM_PARAM"), static_cast<u32>(1), false);
-    if (t2 != static_cast<cResource*>(nullptr)) {
-        t2->::cResource::addRef();
-        this->mpItemParamList = static_cast<rItemList*>(t2);
-        static_cast<rItemList*>(t2)->::rItemList::createIndexTable();
-        t2->::cResource::release();
-        this->mShopArcTicket = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-        u32 tagId = ::rArchiveListArray::convTagId("sg300000");
-        ::sArchiveManager::getInstance()->::sArchiveManager::addTagEx(this->mShopArcTicket, tagId);
-        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mShopArcTicket);
+    cResource* t2 = t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_ITEM_PARAM"), 1u, false);
+    if (t2 != nullptr) {
+        t2->addRef();
+        mpItemParamList = static_cast<rItemList*>(t2);
+        static_cast<rItemList*>(t2)->createIndexTable();
+        t2->release();
+        mShopArcTicket = sArchiveManager::getInstance()->IssueTicket();
+        u32 tagId = rArchiveListArray::convTagId("sg300000");
+        sArchiveManager::getInstance()->addTagEx(mShopArcTicket, tagId);
+        sArchiveManager::getInstance()->attestationTicket(mShopArcTicket);
     } else {
-        this->mShopArcTicket = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-        u32 tagId = ::rArchiveListArray::convTagId("sg300000");
-        ::sArchiveManager::getInstance()->::sArchiveManager::addTagEx(this->mShopArcTicket, tagId);
-        ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mShopArcTicket);
+        mShopArcTicket = sArchiveManager::getInstance()->IssueTicket();
+        u32 tagId = rArchiveListArray::convTagId("sg300000");
+        sArchiveManager::getInstance()->addTagEx(mShopArcTicket, tagId);
+        sArchiveManager::getInstance()->attestationTicket(mShopArcTicket);
     }
 }
 
 // Address: 0x007d3a70 - 0x007d3ae0 (112 bytes)
 void sItemManager::releaseResource() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
-        this->mpItemParamList->::cResource::release();
-        this->mpItemParamList = static_cast<rItemList*>(nullptr);
+    if (mpItemParamList != nullptr) {
+        mpItemParamList->release();
+        mpItemParamList = nullptr;
         // inferred: a temporary for the value the load at 0x7d3aa1 read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mShopArcTicket != t0) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mShopArcTicket);
-            this->mShopArcTicket = static_cast<TICKET>(t0);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mShopArcTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mShopArcTicket);
+            mShopArcTicket = static_cast<TICKET>(t0);
             // inferred: a temporary for the value the load at 0x7d3abc read, used 4 times; no DWARF local holds it
-            sItemManager::cShop* t1 = this->mActiveShop;
-            if (t1 != static_cast<sItemManager::cShop*>(nullptr)) {
-                if (t1->mpGoodsList != static_cast<rShopGoods*>(nullptr)) {
-                    t1->mpGoodsList->::cResource::release();
-                    t1->mpGoodsList = static_cast<rShopGoods*>(nullptr);
+            cShop* t1 = mActiveShop;
+            if (t1 != nullptr) {
+                if (t1->mpGoodsList != nullptr) {
+                    t1->mpGoodsList->release();
+                    t1->mpGoodsList = nullptr;
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0x7d3abc read, used 4 times; no DWARF local holds it
-            sItemManager::cShop* t1 = this->mActiveShop;
-            if (t1 != static_cast<sItemManager::cShop*>(nullptr)) {
-                if (t1->mpGoodsList != static_cast<rShopGoods*>(nullptr)) {
-                    t1->mpGoodsList->::cResource::release();
-                    t1->mpGoodsList = static_cast<rShopGoods*>(nullptr);
+            cShop* t1 = mActiveShop;
+            if (t1 != nullptr) {
+                if (t1->mpGoodsList != nullptr) {
+                    t1->mpGoodsList->release();
+                    t1->mpGoodsList = nullptr;
                 }
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x7d3aa1 read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mShopArcTicket != t0) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mShopArcTicket);
-            this->mShopArcTicket = static_cast<TICKET>(t0);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mShopArcTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mShopArcTicket);
+            mShopArcTicket = static_cast<TICKET>(t0);
             // inferred: a temporary for the value the load at 0x7d3abc read, used 4 times; no DWARF local holds it
-            sItemManager::cShop* t1 = this->mActiveShop;
-            if (t1 != static_cast<sItemManager::cShop*>(nullptr)) {
-                if (t1->mpGoodsList != static_cast<rShopGoods*>(nullptr)) {
-                    t1->mpGoodsList->::cResource::release();
-                    t1->mpGoodsList = static_cast<rShopGoods*>(nullptr);
+            cShop* t1 = mActiveShop;
+            if (t1 != nullptr) {
+                if (t1->mpGoodsList != nullptr) {
+                    t1->mpGoodsList->release();
+                    t1->mpGoodsList = nullptr;
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0x7d3abc read, used 4 times; no DWARF local holds it
-            sItemManager::cShop* t1 = this->mActiveShop;
-            if (t1 != static_cast<sItemManager::cShop*>(nullptr)) {
-                if (t1->mpGoodsList != static_cast<rShopGoods*>(nullptr)) {
-                    t1->mpGoodsList->::cResource::release();
-                    t1->mpGoodsList = static_cast<rShopGoods*>(nullptr);
+            cShop* t1 = mActiveShop;
+            if (t1 != nullptr) {
+                if (t1->mpGoodsList != nullptr) {
+                    t1->mpGoodsList->release();
+                    t1->mpGoodsList = nullptr;
                 }
             }
         }
@@ -244,10 +244,10 @@ sItemManager::cItemBag* sItemManager::setLinkItem(nCharacterData::ITEM_BAG_TYPE 
     // DWARF local not rendered: cItemBag* pSrc;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: nCharacterData::ITEM_BAG_TYPE used as unsigned int
-    if (static_cast<unsigned int>(no) < this->mBag.::MtArray::mLength) {
-        return static_cast<sItemManager::cItemBag*>(this->mBag.::MtArray::mpArray[no]);
+    if (static_cast<unsigned int>(no) < mBag.mLength) {
+        return static_cast<cItemBag*>(mBag.mpArray[no]);
     } else {
-        return static_cast<sItemManager::cItemBag*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -264,20 +264,20 @@ __attribute__((weak)) sItemManager::cItemBag* sItemManager::setLinkItem(nItem::E
 // Address: 0x007cc0d0 - 0x007cc0eb (27 bytes)
 rItemList::rItemParam* sItemManager::getItemParam(u32 ItemNo) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
-        return this->mpItemParamList->getItemList(ItemNo);
+    if (mpItemParamList != nullptr) {
+        return mpItemParamList->getItemList(ItemNo);
     } else {
-        return static_cast<rItemList::rItemParam*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x007cfdf0 - 0x007cfe0b (27 bytes)
 rItemList::rItemParam* sItemManager::getItemParamByIndex(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
-        return this->mpItemParamList->getItemListByIndex(index);
+    if (mpItemParamList != nullptr) {
+        return mpItemParamList->getItemListByIndex(index);
     } else {
-        return static_cast<rItemList::rItemParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -307,41 +307,41 @@ __attribute__((weak)) nItem::E_STORAGE_TYPE sItemManager::getItemNetStorageType(
 // Address: 0x007da830 - 0x007da892 (98 bytes)
 nCharacterData::ITEM_BAG_TYPE sItemManager::getItemBagType(nItem::E_STORAGE_TYPE group) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (group <= static_cast<int>(219)) {
-        if (group <= static_cast<int>(29)) {
-            if (group != static_cast<nItem::E_STORAGE_TYPE>(15)) {
-                if (group == static_cast<nItem::E_STORAGE_TYPE>(17)) {
-                    return static_cast<nCharacterData::ITEM_BAG_TYPE>(2);
+    if (group <= 219) {
+        if (group <= 29) {
+            if (group != nItem::STORAGE_TYPE_POST) {
+                if (group == nItem::STORAGE_TYPE_STORAGE_EX1_ALL) {
+                    return nCharacterData::ITEM_BAG_TYPE_EX_STORAGE;
                 } else {
-                    if (group == static_cast<nItem::E_STORAGE_TYPE>(23)) {
-                        return static_cast<nCharacterData::ITEM_BAG_TYPE>(3);
+                    if (group == nItem::STORAGE_TYPE_TEMPORARY_USE_BAG) {
+                        return nCharacterData::ITEM_BAG_TYPE_TEMPORARY;
                     } else {
-                        return static_cast<nCharacterData::ITEM_BAG_TYPE>(7);
+                        return nCharacterData::ITEM_BAG_TYPE_MAX;
                     }
                 }
             } else {
-                return static_cast<nCharacterData::ITEM_BAG_TYPE>(4);
+                return nCharacterData::ITEM_BAG_TYPE_POST;
             }
         } else {
-            if (group == static_cast<nItem::E_STORAGE_TYPE>(30)) {
-                return static_cast<nCharacterData::ITEM_BAG_TYPE>(5);
+            if (group == nItem::STORAGE_TYPE_BAGGAGE_FREE) {
+                return nCharacterData::ITEM_BAG_TYPE_BAGGAGE_FREE;
             } else {
-                if (group == static_cast<nItem::E_STORAGE_TYPE>(31)) {
-                    return static_cast<nCharacterData::ITEM_BAG_TYPE>(6);
+                if (group == nItem::STORAGE_TYPE_BAGGAGE_RENTAL01) {
+                    return nCharacterData::ITEM_BAG_TYPE_BAGGAGE_RENTAL01;
                 } else {
-                    return static_cast<nCharacterData::ITEM_BAG_TYPE>(7);
+                    return nCharacterData::ITEM_BAG_TYPE_MAX;
                 }
             }
         }
     } else {
-        if (group != static_cast<nItem::E_STORAGE_TYPE>(220)) {
-            if (group == static_cast<nItem::E_STORAGE_TYPE>(221)) {
-                return static_cast<nCharacterData::ITEM_BAG_TYPE>(0);
+        if (group != nItem::STORAGE_TYPE_GROUP_BAG) {
+            if (group == nItem::STORAGE_TYPE_GROUP_STORAGE) {
+                return nCharacterData::ITEM_BAG_TYPE_STORAGE;
             } else {
-                return static_cast<nCharacterData::ITEM_BAG_TYPE>(7);
+                return nCharacterData::ITEM_BAG_TYPE_MAX;
             }
         } else {
-            return static_cast<nCharacterData::ITEM_BAG_TYPE>(1);
+            return nCharacterData::ITEM_BAG_TYPE_PL;
         }
     }
 }
@@ -389,10 +389,10 @@ __attribute__((weak)) void sItemManager::getServerStorageList(CommonU8Vec& stora
 // Address: 0x007cfdd0 - 0x007cfde8 (24 bytes)
 u32 sItemManager::getItemListNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
-        return this->mpItemParamList->getListNum();
+    if (mpItemParamList != nullptr) {
+        return mpItemParamList->getListNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -480,35 +480,35 @@ __attribute__((weak)) void sItemManager::subGoldToServer(u32 subNum, u32 totalNu
 // Address: 0x007d8890 - 0x007d8900 (112 bytes)
 void sItemManager::setGoldToServer(u32 totalNum, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    switch (type - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (type - 1u) {
+        case 0:
         {
-            this->mPoint[1] = totalNum;
+            mPoint[1] = totalNum;
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mPoint[2] = totalNum;
+            mPoint[2] = totalNum;
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mPoint[3] = totalNum;
+            mPoint[3] = totalNum;
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mPoint[4] = totalNum;
+            mPoint[4] = totalNum;
             break;
         }
-        case static_cast<u32>(5):
+        case 5:
         {
-            this->mPoint[6] = totalNum;
+            mPoint[6] = totalNum;
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
-            this->mPoint[8] = totalNum;
+            mPoint[8] = totalNum;
             break;
         }
         default:
@@ -521,8 +521,8 @@ void sItemManager::setGoldToServer(u32 totalNum, u32 type) {
 // Address: 0x007d8900 - 0x007d890f (15 bytes)
 void sItemManager::setGoldToServerDirect(u32 totalNum, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<int>(type) <= static_cast<int>(8)) {
-        this->mPoint[type] = totalNum;
+    if (static_cast<int>(type) <= 8) {
+        mPoint[type] = totalNum;
     }
 }
 
@@ -546,67 +546,60 @@ u64 sItemManager::getGp() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1120 from sNetwork*
     // inferred: a value cast to the type its use takes: u64 used as long
     // inferred: a value cast to the type its use takes: unsigned long used as long
-    if (::scePthreadMutexLock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mGPControl.mCS.mCSection) != 0) {
+        abort();
     }
-    if (this->mGPControl.mServerResult == static_cast<u8>(0)) {
-        if (this->mGPControl.mUseLimit != static_cast<u64>(0)) {
-            if (static_cast<long>(this->mGPControl.mUseLimit) < static_cast<long>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sNetwork::getInstance()) + static_cast<long>(4384)))) {
-                if (this->mGPControl.mRepeatWaitTime > 0.0f) {
+    if (mGPControl.mServerResult == 0) {
+        if (mGPControl.mUseLimit != 0) {
+            if (static_cast<long>(mGPControl.mUseLimit) < static_cast<long>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(sNetwork::getInstance()) + 4384))) {
+                if (mGPControl.mRepeatWaitTime > 0.0f) {
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGP() != false) {
-                        this->mGPControl.mServerResult = static_cast<u8>(1);
-                        this->mGPControl.mRepeatWaitTime = 30.0f;
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGP()) {
+                        mGPControl.mServerResult = 1;
+                        mGPControl.mRepeatWaitTime = 30.0f;
                     }
                 }
             }
         }
     }
-    if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexUnlock(&mGPControl.mCS.mCSection) != 0) {
+        abort();
     }
-    return this->mPoint[5];
+    return mPoint[5];
 }
 
 // Address: 0x007d8a50 - 0x007d8ae4 (148 bytes)
 u32 sItemManager::reqGetGP() {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (::scePthreadMutexLock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mGPControl.mCS.mCSection) != 0) {
+        abort();
     }
-    if (this->mGPControl.mServerResult == static_cast<u8>(0)) {
-        if (this->mGPControl.mRepeatWaitTime > 0.0f) {
-            if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-            } else {
-                ::abort();
+    if (mGPControl.mServerResult == 0) {
+        if (mGPControl.mRepeatWaitTime > 0.0f) {
+            if (scePthreadMutexUnlock(&mGPControl.mCS.mCSection) != 0) {
+                abort();
             }
-            return static_cast<u32>(1);
+            return 1;
         } else {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGP() != false) {
-                this->mGPControl.mServerResult = static_cast<u8>(1);
-                this->mGPControl.mRepeatWaitTime = 30.0f;
-                if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGP()) {
+                mGPControl.mServerResult = 1;
+                mGPControl.mRepeatWaitTime = 30.0f;
+                if (scePthreadMutexUnlock(&mGPControl.mCS.mCSection) != 0) {
+                    abort();
                 }
-                return static_cast<u32>(0);
+                return 0;
             } else {
-                if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+                if (scePthreadMutexUnlock(&mGPControl.mCS.mCSection) != 0) {
+                    abort();
                 }
-                return static_cast<u32>(2);
+                return 2;
             }
         }
     } else {
-        if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+        if (scePthreadMutexUnlock(&mGPControl.mCS.mCSection) != 0) {
+            abort();
         }
-        return static_cast<u32>(1);
+        return 1;
     }
 }
 
@@ -625,8 +618,8 @@ __attribute__((weak)) void sItemManager::updateGP(void* packet) {
 // Address: 0x007d89a0 - 0x007d89af (15 bytes)
 void sItemManager::setGpUseLimit(s64 useLimit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGPControl.mUseLimit = static_cast<u64>(useLimit);
-    this->mGPControl.mServerResult = static_cast<u8>(0);
+    mGPControl.mUseLimit = static_cast<u64>(useLimit);
+    mGPControl.mServerResult = 0;
 }
 
 // No out-of-line body: 27 inlined copies in 23 functions (235 bytes)
@@ -717,18 +710,18 @@ void sItemManager::setGpUseLimit(s64 useLimit) {
 void sItemManager::setJobEquip(nCharacterData::stEquipData& Data, u8 job) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u8 used as nHuman::JOB_ENUM
-    u32 jobIndex = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(job));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(1), ::sItemManager::equip_tbl[jobIndex].wepMain, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(2), ::sItemManager::equip_tbl[jobIndex].wepSub, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(5), ::sItemManager::equip_tbl[jobIndex].wearBody, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(8), ::sItemManager::equip_tbl[jobIndex].wearLeg, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(3), ::sItemManager::equip_tbl[jobIndex].protectHelm, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(4), ::sItemManager::equip_tbl[jobIndex].protectBody, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(6), ::sItemManager::equip_tbl[jobIndex].protectArm, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(7), ::sItemManager::equip_tbl[jobIndex].protectLeg, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(9), ::sItemManager::equip_tbl[jobIndex].accessory, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(10), ::sItemManager::equip_tbl[jobIndex].jewelry1, static_cast<u8>(0));
-    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(11), ::sItemManager::equip_tbl[jobIndex].jewelry2, static_cast<u8>(0));
+    u32 jobIndex = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(job));
+    Data.setEquip(static_cast<u8>(1), sItemManager::equip_tbl[jobIndex].wepMain, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(2), sItemManager::equip_tbl[jobIndex].wepSub, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(5), sItemManager::equip_tbl[jobIndex].wearBody, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(8), sItemManager::equip_tbl[jobIndex].wearLeg, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(3), sItemManager::equip_tbl[jobIndex].protectHelm, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(4), sItemManager::equip_tbl[jobIndex].protectBody, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(6), sItemManager::equip_tbl[jobIndex].protectArm, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(7), sItemManager::equip_tbl[jobIndex].protectLeg, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(9), sItemManager::equip_tbl[jobIndex].accessory, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(10), sItemManager::equip_tbl[jobIndex].jewelry1, static_cast<u8>(0));
+    Data.setEquip(static_cast<u8>(11), sItemManager::equip_tbl[jobIndex].jewelry2, static_cast<u8>(0));
 }
 
 // No out-of-line body: no code in the ELF
@@ -848,19 +841,19 @@ __attribute__((weak)) void sItemManager::updateHideEquip(void* packet, u32 plTyp
 // Address: 0x007d9310 - 0x007d9397 (135 bytes)
 void sItemManager::reqKeyItemGetAnnounce(u32 ItemId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sItemManager::getInstance()->mpItemParamList == static_cast<rItemList*>(nullptr)) {
+    if (sItemManager::getInstance()->mpItemParamList == nullptr) {
         return;
     }
-    rItemList::rItemParam* pItemParam = ::sItemManager::getInstance()->mpItemParamList->getItemList(ItemId);
-    if (pItemParam == static_cast<rItemList::rItemParam*>(nullptr)) {
+    rItemList::rItemParam* pItemParam = sItemManager::getInstance()->mpItemParamList->getItemList(ItemId);
+    if (pItemParam == nullptr) {
         return;
     }
-    if (pItemParam->mCategory != static_cast<u8>(4)) {
+    if (pItemParam->mCategory != 4) {
         return;
     }
     // inferred: a temporary for the value the load at 0x7d9353 read, used twice; no DWARF local holds it
-    sGUI* t0 = ::sGUI::getInstance();
-    static_cast<sGUIExt*>(t0)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->::sGUIExt::getMsgSystemLog(), static_cast<u32>(133)), static_cast<u32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), ItemId, static_cast<u32>(1), true);
+    sGUI* t0 = sGUI::getInstance();
+    static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgSystemLog(), 133u), 0u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), ItemId, 1u, true);
 }
 
 // No out-of-line body: no code in the ELF
@@ -871,34 +864,35 @@ void sItemManager::resetWaitNotice(u8 type) {
     // DWARF local not rendered: u32 length;
     // DWARF local not rendered: u32 stockNum;
     // DWARF local not rendered: u32 index;
-    // DWARF local not rendered: stRequest* pReq;
     // DWARF local not rendered: bool result;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x7d9a60 carries; the location-less local in scope that fits is declared on no line of the value's writes
-    u32 v0_1 = this->mRequest.::MtArray::mLength;
-    if (v0_1 != static_cast<u32>(0)) {
+    u32 v0_1 = mRequest.mLength;
+    if (v0_1 != 0) {
         // inferred: the value the loop at 0x7d9a60 carries; no location-less local in scope fits
-        MtObject* v0_0 = *this->mRequest.::MtArray::mpArray;
+        MtObject* v0_0 = *mRequest.mpArray;
         // inferred: DWARF's location-less 'i' (lexical block [0x7d9a47, 0x7d9a99)) is the counter this loop steps
-        u32 i = static_cast<u32>(1);
+        u32 i = 1;
         // inferred: the value the loop at 0x7d9a60 carries; the location-less local in scope that fits is declared on no line of the value's writes
         for (u32 v0_3 = v0_1;;) {
-            if (v0_0 != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
-                    if (static_cast<sItemManager::stRequest*>(v0_0)->::sItemManager::stRequest::getResult() != false) {
+            if (v0_0 != nullptr) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + 16)) != 0) {
+                    // inferred: a downcast named by the DWARF local the source declared: pReq, its location optimized out, declared in the lexical block that holds the access
+                    stRequest* pReq = static_cast<stRequest*>(v0_0);
+                    if (static_cast<sItemManager::stRequest*>(v0_0)->getResult()) {
                         if (i >= v0_1) {
                             return;
                         } else {
-                            if ((v0_3 - static_cast<u32>(1)) != static_cast<u32>(0)) {
-                                i += static_cast<u32>(1);
-                                v0_3 += static_cast<u32>(4294967295);
+                            if ((v0_3 - 1u) != 0) {
+                                i += 1u;
+                                v0_3 += 0xFFFFFFFFu;
                             } else {
                                 break;
                             }
                         }
                     } else {
-                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(150))) == type) {
-                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(151)) = static_cast<unsigned char>(0);
+                        if (pReq->mType == type) {
+                            pReq->mIsWaitNotice = false;
                         }
                         return;
                     }
@@ -906,8 +900,8 @@ void sItemManager::resetWaitNotice(u8 type) {
                     if (i >= v0_1) {
                         return;
                     } else {
-                        if (v0_3 != static_cast<u32>(0)) {
-                            i += static_cast<u32>(1);
+                        if (v0_3 != 0) {
+                            i += 1u;
                         } else {
                             break;
                         }
@@ -917,8 +911,8 @@ void sItemManager::resetWaitNotice(u8 type) {
                 if (i >= v0_1) {
                     return;
                 } else {
-                    if (v0_3 != static_cast<u32>(0)) {
-                        i += static_cast<u32>(1);
+                    if (v0_3 != 0) {
+                        i += 1u;
                     } else {
                         break;
                     }
@@ -958,16 +952,16 @@ __attribute__((weak)) void sItemManager::noticeItemUpdate(ItemUpdateResultVec& l
 void sItemManager::loadItemNameGmd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7db884 read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x7db88e, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("gui_cmn");
-    rGUIMessage* pReq = static_cast<rGUIMessage*>(t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_ITEM_NAME_GMD"), static_cast<u32>(1), false));
-    if (pReq != static_cast<rGUIMessage*>(nullptr)) {
-        this->mprItemNameGmd = pReq;
-        pReq->::cResource::addRef();
-        pReq->::cResource::release();
+    ARC_TAGID t1 = rArchiveListArray::convTagId("gui_cmn");
+    rGUIMessage* pReq = static_cast<rGUIMessage*>(t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_ITEM_NAME_GMD"), 1u, false));
+    if (pReq != nullptr) {
+        mprItemNameGmd = pReq;
+        pReq->cResource::addRef();
+        pReq->cResource::release();
     } else {
-        this->mprItemNameGmd = static_cast<rGUIMessage*>(nullptr);
+        mprItemNameGmd = nullptr;
     }
 }
 
@@ -978,11 +972,11 @@ void sItemManager::loadItemNameGmd() {
 // Address: 0x007db900 - 0x007db92c (44 bytes)
 void sItemManager::releaseItemNameGmd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprItemNameGmd == static_cast<rGUIMessage*>(nullptr)) {
+    if (mprItemNameGmd == nullptr) {
         return;
     }
-    this->mprItemNameGmd->::cResource::release();
-    this->mprItemNameGmd = static_cast<rGUIMessage*>(nullptr);
+    mprItemNameGmd->release();
+    mprItemNameGmd = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -997,11 +991,11 @@ __attribute__((weak)) rGUIMessage* sItemManager::getItemInfoGmd() const {
 // Address: 0x007db990 - 0x007db9bc (44 bytes)
 void sItemManager::releaseItemInfoGmd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprItemInfoGmd == static_cast<rGUIMessage*>(nullptr)) {
+    if (mprItemInfoGmd == nullptr) {
         return;
     }
-    this->mprItemInfoGmd->::cResource::release();
-    this->mprItemInfoGmd = static_cast<rGUIMessage*>(nullptr);
+    mprItemInfoGmd->release();
+    mprItemInfoGmd = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1133,19 +1127,19 @@ __attribute__((weak)) u8 sItemManager::getSortBinaryIndex(nCharacterData::ITEM_B
 void sItemManager::releaseSortBinary(u32 index, bool isUpdate) {
     // DWARF local not rendered: bool isRelease;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSortData[index].mpSortData == static_cast<u16*>(nullptr)) {
+    if (mSortData[index].mpSortData == nullptr) {
         return;
     }
-    if (isUpdate != false) {
-        if (this->mSortData[index].mIsUpdate == false) {
-            ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(this->mSortData[index].mpSortData));
-            this->mSortData[index].mpSortData = static_cast<u16*>(nullptr);
-            this->mSortData[index].mIsUpdate = false;
+    if (isUpdate) {
+        if (!mSortData[index].mIsUpdate) {
+            MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(mSortData[index].mpSortData));
+            mSortData[index].mpSortData = nullptr;
+            mSortData[index].mIsUpdate = false;
         }
     } else {
-        ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(this->mSortData[index].mpSortData));
-        this->mSortData[index].mpSortData = static_cast<u16*>(nullptr);
-        this->mSortData[index].mIsUpdate = false;
+        MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(mSortData[index].mpSortData));
+        mSortData[index].mpSortData = nullptr;
+        mSortData[index].mIsUpdate = false;
     }
 }
 
@@ -1227,27 +1221,27 @@ __attribute__((weak)) void sItemManager::releaseBag() {
 // Address: 0x007dcdf0 - 0x007dce04 (20 bytes)
 void sItemManager::setSwitchStorage(bool isSwitch, nItem::E_STORAGE_TYPE target, nItem::E_STORAGE_TYPE change) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSwitchStorage.mIsSwitch = isSwitch;
-    this->mSwitchStorage.mTargetStorage = target;
-    this->mSwitchStorage.mChangeStorage = change;
+    mSwitchStorage.mIsSwitch = isSwitch;
+    mSwitchStorage.mTargetStorage = target;
+    mSwitchStorage.mChangeStorage = change;
 }
 
 // Address: 0x007dce10 - 0x007dce17 (7 bytes)
 bool sItemManager::isSwitchStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSwitchStorage.mIsSwitch;
+    return mSwitchStorage.mIsSwitch;
 }
 
 // Address: 0x007dce20 - 0x007dce27 (7 bytes)
 nItem::E_STORAGE_TYPE sItemManager::getSwitchTargetStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSwitchStorage.mTargetStorage;
+    return mSwitchStorage.mTargetStorage;
 }
 
 // Address: 0x007dce30 - 0x007dce37 (7 bytes)
 nItem::E_STORAGE_TYPE sItemManager::getSwitchChangeStorage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mSwitchStorage.mChangeStorage;
+    return mSwitchStorage.mChangeStorage;
 }
 
 // Address: 0x007dce40 - 0x007dce8c (76 bytes)
@@ -1270,27 +1264,27 @@ u32 sItemManager::getWalletItemToPoint(u32 itemId, u32 num, nCharacter::E_WALLET
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from rItemList::rParam*
     // inferred: a value cast to the type its use takes: unsigned short used as nCharacter::E_WALLET_POINT_TYPE
-    walletType = static_cast<nCharacter::E_WALLET_POINT_TYPE>(0);
-    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
-        rItemList::rItemParam* pItemParam = this->mpItemParamList->getItemList(itemId);
-        if (pItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
-            rItemList::rParam* pKindParam = pItemParam->::rItemList::rItemParam::getItemParam(static_cast<rItemList::rParam::PARAM_KIND>(124));
-            if (pKindParam != static_cast<rItemList::rParam*>(nullptr)) {
-                if (pKindParam->mKindType == static_cast<s16>(124)) {
-                    if (static_cast<unsigned int>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(10))) - static_cast<int>(1)) <= static_cast<unsigned int>(4)) {
+    walletType = nCharacter::WALLET_POINT_TYPE_INVALID;
+    if (mpItemParamList != nullptr) {
+        rItemList::rItemParam* pItemParam = mpItemParamList->getItemList(itemId);
+        if (pItemParam != nullptr) {
+            rItemList::rParam* pKindParam = pItemParam->rItemList::rItemParam::getItemParam(rItemList::rParam::CURRENCY);
+            if (pKindParam != nullptr) {
+                if (pKindParam->mKindType == 124) {
+                    if (static_cast<unsigned int>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + 10)) - 1) <= 4) {
                         // inferred: a temporary for the value the load at 0x7dcf5a read, used once; no DWARF local holds it
-                        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(12));
-                        walletType = static_cast<nCharacter::E_WALLET_POINT_TYPE>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(10)));
+                        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + 12);
+                        walletType = static_cast<nCharacter::E_WALLET_POINT_TYPE>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + 10));
                         return num * t0;
                     }
                 }
             }
-            return static_cast<u32>(0);
+            return 0;
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -1779,6 +1773,13 @@ __attribute__((weak)) void sItemManager::setSortBinary(nCharacterData::ITEM_BAG_
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::MyDTI sItemManager::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const sItemManager::stJobEquipData sItemManager::equip_tbl[10];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sItemManager* sItemManager::mpInstance;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd485-0x007dd4c2 (called at sItemManager.cpp:6046)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd485-0x007dd4c2 (called at sItemManager.h:84)
@@ -1797,8 +1798,39 @@ __attribute__((weak)) MtObject* sItemManager::MyDTI::newInstance() const {
 // Address: 0x007cf720 - 0x007cf7cd (173 bytes)
 // Also emitted as: _ZN12sItemManager5cShopD0Ev at 0x007cf7d0
 sItemManager::cShop::~cShop() {
-    DDON_STUB("sItemManager::cShop::~cShop")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mpGoodsList != nullptr) {
+        mpGoodsList->release();
+        mpGoodsList = nullptr;
+    }
+    if (mGoods.mLength != 0) {
+        // inferred: the value the loop at 0x7cf760 carries; no location-less local in scope fits
+        u32 v0_0 = mGoods.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mGoods.mpArray[i0_3] != nullptr) {
+                delete mGoods.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGoods.mLength) {
+                    v0_0 = mGoods.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mGoods.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGoods.mpArray));
+    }
+    mGoods.mpArray = nullptr;
+    mGoods.mBufsiz = 0;
+    mGoods.mLength = 0;
 }
 
 // Address: 0x007d20b0 - 0x007d2193 (227 bytes)
@@ -1807,9 +1839,15 @@ __attribute__((weak)) void sItemManager::cShop::createProperty(MtPropertyList& s
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (22 bytes)
-//   in sItemManager::releaseResource at 0x007d3ac5-0x007d3adb (called at sItemManager.cpp:6616)
-// void sItemManager::cShop::releaseResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sItemManager::releaseResource at 0x7d3ac5-0x7d3adb; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sItemManager::cShop::releaseResource() {
+    if (mpGoodsList == nullptr) {
+        return;
+    }
+    mpGoodsList->release();
+    mpGoodsList = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
 //   in uGUIShop::initCallBack at 0x00c3e0e5-0x00c3e0e9 (called at uGUIShop.cpp:1153)
@@ -1864,8 +1902,8 @@ __attribute__((weak)) bool sItemManager::cShop::setGoodsList(sItemManager::stReq
 // Address: 0x007d2090 - 0x007d2098 (8 bytes)
 void sItemManager::cShop::setBusy(bool isBusy, s32 err_code) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsBusy = isBusy;
-    this->mResult = err_code;
+    mIsBusy = isBusy;
+    mResult = err_code;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1892,7 +1930,7 @@ const MtDTI& sItemManager::stRequest::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::stRequest::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::stRequest::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::stRequest::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1901,7 +1939,7 @@ inline MtAllocator* sItemManager::stRequest::getAllocator() {
 // Address: 0x007cfe50 - 0x007cfe90 (64 bytes)
 void* sItemManager::stRequest::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sItemManager::stRequest::getAllocator()->memAlloc(sz, align, ::sItemManager::stRequest::DTI.::MtDTI::getID());
+    return sItemManager::stRequest::getAllocator()->memAlloc(sz, align, sItemManager::stRequest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1978,12 +2016,14 @@ sItemManager::stRequest::~stRequest() {
 // Address: 0x007d2c80 - 0x007d2c90 (16 bytes)
 bool sItemManager::stRequest::isExit(void* ptr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ptr == this->mpParent) {
-        return this->mStatus != static_cast<u32>(1);
+    if (ptr == mpParent) {
+        return mStatus != 1;
     } else {
         return true;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::stRequest::MyDTI sItemManager::stRequest::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd44c-0x007dd485 (called at sItemManager.cpp:5987)
@@ -2034,7 +2074,7 @@ const MtDTI& sItemManager::cItemBag::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sItemManager::cItemBag::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2116,24 +2156,74 @@ __attribute__((weak)) void sItemManager::cItemBag::removeEquipList(u32 no) {
 }
 
 // Address: 0x007cb200 - 0x007cb219 (25 bytes)
-__attribute__((weak)) cItemParam* sItemManager::cItemBag::getItemParam(u32 no) {
-    // local: cItemParamList* pItemParamList;
-    DDON_STUB("sItemManager::cItemBag::getItemParam")
-    return nullptr;
+cItemParam* sItemManager::cItemBag::getItemParam(u32 no) {
+    // DWARF local not rendered: cItemParamList* pItemParamList;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mItemList.mpArray[no] != nullptr) {
+        return static_cast<sItemManager::cItemParamList*>(mItemList.mpArray[no])->getItemParam();
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x007cb220 - 0x007cb25f (63 bytes)
-__attribute__((weak)) cItemParam* sItemManager::cItemBag::getItemParamToCategory(sItemManager::cItemBag::ITEM_CATEGORY category, u32 no) {
-    // local: u32 cateIdx;
-    DDON_STUB("sItemManager::cItemBag::getItemParamToCategory")
-    return nullptr;
+cItemParam* sItemManager::cItemBag::getItemParamToCategory(sItemManager::cItemBag::ITEM_CATEGORY category, u32 no) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = 0;
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    const unsigned int* p0_1 = sItemManager::cItemBag::ItemCategoryTbl;
+    u32 cateIdx;
+    for (;;) {
+        if ((*p0_1) != static_cast<unsigned int>(category)) {
+            if ((i0_0 + 1u) <= 6u) {
+                i0_0 += 1u;
+                p0_1 += 1;
+            } else {
+                cateIdx = 0;
+                break;
+            }
+        } else {
+            cateIdx = i0_0;
+            break;
+        }
+    }
+    if (no < mItem[cateIdx].mLength) {
+        return static_cast<cItemParam*>(mItem[cateIdx].mpArray[no]);
+    } else {
+        return nullptr;
+    }
 }
 
 // Address: 0x007cb260 - 0x007cb2a5 (69 bytes)
-__attribute__((weak)) cItemParam* sItemManager::cItemBag::getItemParamToSort(sItemManager::cItemBag::ITEM_CATEGORY category, u32 no) {
-    // local: u32 cateIdx;
-    DDON_STUB("sItemManager::cItemBag::getItemParamToSort")
-    return nullptr;
+cItemParam* sItemManager::cItemBag::getItemParamToSort(sItemManager::cItemBag::ITEM_CATEGORY category, u32 no) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = 0;
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    const unsigned int* p0_1 = sItemManager::cItemBag::ItemCategoryTbl;
+    u32 cateIdx;
+    for (;;) {
+        if ((*p0_1) != static_cast<unsigned int>(category)) {
+            if ((i0_0 + 1u) <= 6u) {
+                i0_0 += 1u;
+                p0_1 += 1;
+            } else {
+                cateIdx = 0;
+                break;
+            }
+        } else {
+            cateIdx = i0_0;
+            break;
+        }
+    }
+    if (no < mItemSortData[cateIdx].mLength) {
+        return static_cast<cItemParam*>(mItemSortData[cateIdx].mpArray[no]);
+    } else {
+        return nullptr;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -2202,10 +2292,15 @@ __attribute__((weak)) u32 sItemManager::cItemBag::getItemBagNum(sItemManager::cI
 // u32 sItemManager::cItemBag::getItemBagNumToUse(sItemManager::cItemBag::ITEM_CATEGORY category);
 
 // Address: 0x007cbec0 - 0x007cbee2 (34 bytes)
-__attribute__((weak)) u32 sItemManager::cItemBag::getItemNum(u32 index) {
-    // local: cItemParam* pParam;
-    DDON_STUB("sItemManager::cItemBag::getItemNum")
-    return {};
+u32 sItemManager::cItemBag::getItemNum(u32 index) {
+    // DWARF local not rendered: cItemParam* pParam;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (mItemList.mpArray[index] != nullptr) {
+        if (static_cast<sItemManager::cItemParamList*>(mItemList.mpArray[index])->getItemParam() != nullptr) {
+            return static_cast<sItemManager::cItemParamList*>(mItemList.mpArray[index])->getItemParam()->mItemParam.mItemNum_Guard;
+        }
+    }
+    return 0;
 }
 
 // Address: 0x007cbef0 - 0x007cc0c8 (472 bytes)
@@ -2602,14 +2697,14 @@ __attribute__((weak)) bool sItemManager::cItemBag::isEmptyItemAdd(MtTypedArray<s
 // Address: 0x007cdfc0 - 0x007cdfcd (13 bytes)
 bool sItemManager::cItemBag::getItemList(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d04d0 - 0x007d04d5 (5 bytes)
 bool sItemManager::cItemBag::deleteItem(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sItemManager::cItemBag::useItem(pReq);
+    return useItem(pReq);
 }
 
 // Address: 0x007d0f70 - 0x007d1cb5 (3397 bytes)
@@ -2729,17 +2824,17 @@ __attribute__((weak)) void sItemManager::cItemBag::sortStrageItem(sItemManager::
 u32 sItemManager::cItemBag::getStorageCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
     // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const unsigned int* p2 = ::sItemManager::cItemBag::ItemCategoryTbl;
+    const unsigned int* p2 = sItemManager::cItemBag::ItemCategoryTbl;
     do {
         if ((*p2) == static_cast<unsigned int>(category)) {
             return i;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(6));
-    return static_cast<u32>(0);
+    } while (i <= 6u);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (50 bytes)
@@ -2751,23 +2846,23 @@ u32 sItemManager::cItemBag::getStorageCategoryIndex(sItemManager::cItemBag::ITEM
 u32 sItemManager::cItemBag::getCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
     // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    const unsigned int* p2 = ::sItemManager::cItemBag::ItemCategoryTbl;
+    const unsigned int* p2 = sItemManager::cItemBag::ItemCategoryTbl;
     do {
         if ((*p2) == static_cast<unsigned int>(category)) {
             return i;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p2 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(6));
-    return static_cast<u32>(0);
+    } while (i <= 6u);
+    return 0;
 }
 
 // Address: 0x007ca8c0 - 0x007ca8cd (13 bytes)
 sItemManager::cItemBag::ITEM_CATEGORY sItemManager::cItemBag::getIndexCategory(u32 cateIdx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sItemManager::cItemBag::ITEM_CATEGORY>(::sItemManager::cItemBag::ItemCategoryTbl[cateIdx]);
+    return static_cast<ITEM_CATEGORY>(sItemManager::cItemBag::ItemCategoryTbl[cateIdx]);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2846,7 +2941,7 @@ __attribute__((weak)) bool sItemManager::cItemBag::addItem(sItemManager::stReque
 // Address: 0x007d0120 - 0x007d012d (13 bytes)
 bool sItemManager::cItemBag::moveItems(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
@@ -2884,56 +2979,56 @@ __attribute__((weak)) bool sItemManager::cItemBag::useItem(sItemManager::stReque
 // Address: 0x007d04e0 - 0x007d04ed (13 bytes)
 bool sItemManager::cItemBag::slotControlItem(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d04f0 - 0x007d04fd (13 bytes)
 bool sItemManager::cItemBag::addGatheringItems(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0500 - 0x007d050d (13 bytes)
 bool sItemManager::cItemBag::addDropItems(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0510 - 0x007d051d (13 bytes)
 bool sItemManager::cItemBag::addPawnExpeditionRewardDropItems(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0520 - 0x007d052d (13 bytes)
 bool sItemManager::cItemBag::deliverItem(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0530 - 0x007d053d (13 bytes)
 bool sItemManager::cItemBag::getRewardBoxItem(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0540 - 0x007d054d (13 bytes)
 bool sItemManager::cItemBag::startCraft(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
 // Address: 0x007d0550 - 0x007d055d (13 bytes)
 bool sItemManager::cItemBag::getCraftItem(sItemManager::stRequest* pReq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sItemManager::cItemBag::resetItemListCommon(pReq);
+    resetItemListCommon(pReq);
     return true;
 }
 
@@ -3043,8 +3138,8 @@ bool sItemManager::cItemBag::getAreaMasterSupply(sItemManager::stRequest* pReq) 
 // Address: 0x007d2080 - 0x007d208e (14 bytes)
 void sItemManager::cItemBag::setBusy(bool isBusy, s32 err_code) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsBusy = isBusy;
-    this->mResult = err_code;
+    mIsBusy = isBusy;
+    mResult = err_code;
 }
 
 // Address: 0x007cdfd0 - 0x007ce690 (1728 bytes)
@@ -3123,6 +3218,14 @@ __attribute__((weak)) void sItemManager::cItemBag::sortSpaceSlot(u32 cateIdx) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::MyDTI sItemManager::cItemBag::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 sItemManager::cItemBag::ItemCategoryTbl[7];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u8 sItemManager::cItemBag::customSortPrioMaterial[8];
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u8 sItemManager::cItemBag::customSortPrioEquip[8];
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd284-0x007dd2bd (called at sItemManager.cpp:1325)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd284-0x007dd2bd (called at sItemManager.h:410)
@@ -3157,7 +3260,7 @@ const MtDTI& sItemManager::cItemBag::cGetItemListData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGetItemListData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cGetItemListData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGetItemListData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cGetItemListData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3172,7 +3275,7 @@ inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, u
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sItemManager::cItemBag::cGetItemListData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGetItemListData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGetItemListData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3195,6 +3298,8 @@ sItemManager::cItemBag::cGetItemListData::~cGetItemListData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cGetItemListData::MyDTI sItemManager::cItemBag::cGetItemListData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd2bd-0x007dd2f6 (called at sItemManager.cpp:1326)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd2bd-0x007dd2f6 (called at sItemManager.h:539)
@@ -3203,7 +3308,7 @@ sItemManager::cItemBag::cGetItemListData::~cGetItemListData() {
 // Address: 0x007c95f0 - 0x007c9668 (120 bytes)
 MtObject* sItemManager::cItemBag::cGetItemListData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cItemBag::cGetItemListData;
+    return new (16u) sItemManager::cItemBag::cGetItemListData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3220,7 +3325,7 @@ const MtDTI& sItemManager::cItemBag::cGatheringItemData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cItemBag::cGatheringItemData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGatheringItemData::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGatheringItemData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3229,7 +3334,7 @@ inline MtAllocator* sItemManager::cItemBag::cGatheringItemData::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sItemManager::cItemBag::cGatheringItemData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGatheringItemData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cGatheringItemData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGatheringItemData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cGatheringItemData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3244,7 +3349,7 @@ inline void* sItemManager::cItemBag::cGatheringItemData::operator new(size_t sz,
 // Address: 0x007c9760 - 0x007c978a (42 bytes)
 __attribute__((weak)) void sItemManager::cItemBag::cGatheringItemData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sItemManager::cItemBag::cGatheringItemData::getAllocator()->memFree(p_addr);
+    sItemManager::cItemBag::cGatheringItemData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3297,6 +3402,8 @@ __attribute__((weak)) void sItemManager::cItemBag::cGatheringItemData::operator 
 // No out-of-line body: no code in the ELF
 // u32 sItemManager::cItemBag::cGatheringItemData::getPosId();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cGatheringItemData::MyDTI sItemManager::cItemBag::cGatheringItemData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd2f6-0x007dd32f (called at sItemManager.cpp:1327)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd2f6-0x007dd32f (called at sItemManager.h:906)
@@ -3305,7 +3412,7 @@ __attribute__((weak)) void sItemManager::cItemBag::cGatheringItemData::operator 
 // Address: 0x007c96e0 - 0x007c9730 (80 bytes)
 MtObject* sItemManager::cItemBag::cGatheringItemData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cItemBag::cGatheringItemData;
+    return new (16u) sItemManager::cItemBag::cGatheringItemData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3322,7 +3429,7 @@ const MtDTI& sItemManager::cItemBag::cCraftStartData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cItemBag::cCraftStartData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftStartData::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftStartData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3344,7 +3451,7 @@ inline MtAllocator* sItemManager::cItemBag::cCraftStartData::getAllocator() {
 // Address: 0x007c9850 - 0x007c987a (42 bytes)
 __attribute__((weak)) void sItemManager::cItemBag::cCraftStartData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sItemManager::cItemBag::cCraftStartData::getAllocator()->memFree(p_addr);
+    sItemManager::cItemBag::cCraftStartData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3356,12 +3463,16 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftStartData::operator del
 // No out-of-line body: no code in the ELF
 // void sItemManager::cItemBag::cCraftStartData::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (162 bytes)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755db6-0x00755de5 (called at sCraftManager.cpp:140)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755db6-0x00755de5 (called at sItemManager.h:1185)
-//   in sItemManager::cItemBag::cCraftStartData::MyDTI::newInstance at 0x007c97ed-0x007c980f (called at sItemManager.cpp:1328)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// sItemManager::cItemBag::cCraftStartData::cCraftStartData();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+sItemManager::cItemBag::cCraftStartData::cCraftStartData() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mToppingUID.value = nullptr;
+    mRecipeId = 0;
+    mMainPawnId = 0;
+    mCreateCount = 1;
+}
 
 // Address: 0x01ac1e50 - 0x01ac1ecb (123 bytes)
 // Also emitted as: _ZN12sItemManager8cItemBag15cCraftStartDataD0Ev at 0x01ac27c0
@@ -3402,6 +3513,8 @@ sItemManager::cItemBag::cCraftStartData::~cCraftStartData() {
 // No out-of-line body: no code in the ELF
 // u8 sItemManager::cItemBag::cCraftStartData::getCreateCount();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cCraftStartData::MyDTI sItemManager::cItemBag::cCraftStartData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd32f-0x007dd368 (called at sItemManager.cpp:1328)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd32f-0x007dd368 (called at sItemManager.h:1172)
@@ -3427,7 +3540,7 @@ const MtDTI& sItemManager::cItemBag::cCraftUpGradeData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cItemBag::cCraftUpGradeData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftUpGradeData::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftUpGradeData::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3449,7 +3562,7 @@ inline MtAllocator* sItemManager::cItemBag::cCraftUpGradeData::getAllocator() {
 // Address: 0x007c9930 - 0x007c995a (42 bytes)
 __attribute__((weak)) void sItemManager::cItemBag::cCraftUpGradeData::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sItemManager::cItemBag::cCraftUpGradeData::getAllocator()->memFree(p_addr);
+    sItemManager::cItemBag::cCraftUpGradeData::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3461,12 +3574,14 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftUpGradeData::operator d
 // No out-of-line body: no code in the ELF
 // void sItemManager::cItemBag::cCraftUpGradeData::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (136 bytes)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755de5-0x00755e0c (called at sCraftManager.cpp:140)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755de5-0x00755e0c (called at sItemManager.h:1304)
-//   in sItemManager::cItemBag::cCraftUpGradeData::MyDTI::newInstance at 0x007c98dd-0x007c98fa (called at sItemManager.cpp:1329)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// sItemManager::cItemBag::cCraftUpGradeData::cCraftUpGradeData();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+sItemManager::cItemBag::cCraftUpGradeData::cCraftUpGradeData() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mMainPawnId = 0;
+    mUID.value = nullptr;
+}
 
 // Address: 0x01ac1dd0 - 0x01ac1e4b (123 bytes)
 // Also emitted as: _ZN12sItemManager8cItemBag17cCraftUpGradeDataD0Ev at 0x01ac2860
@@ -3498,6 +3613,8 @@ sItemManager::cItemBag::cCraftUpGradeData::~cCraftUpGradeData() {
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // MT_CTSTR sItemManager::cItemBag::cCraftUpGradeData::getUID();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cCraftUpGradeData::MyDTI sItemManager::cItemBag::cCraftUpGradeData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd368-0x007dd3a1 (called at sItemManager.cpp:1329)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd368-0x007dd3a1 (called at sItemManager.h:1295)
@@ -3523,7 +3640,7 @@ const MtDTI& sItemManager::cItemBag::cCraftColorChange::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cItemBag::cCraftColorChange::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftColorChange::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftColorChange::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3545,7 +3662,7 @@ inline MtAllocator* sItemManager::cItemBag::cCraftColorChange::getAllocator() {
 // Address: 0x007c9a20 - 0x007c9a4a (42 bytes)
 __attribute__((weak)) void sItemManager::cItemBag::cCraftColorChange::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sItemManager::cItemBag::cCraftColorChange::getAllocator()->memFree(p_addr);
+    sItemManager::cItemBag::cCraftColorChange::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3557,12 +3674,15 @@ __attribute__((weak)) void sItemManager::cItemBag::cCraftColorChange::operator d
 // No out-of-line body: no code in the ELF
 // void sItemManager::cItemBag::cCraftColorChange::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (158 bytes)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755e0c-0x00755e3a (called at sCraftManager.cpp:140)
-//   in sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl at 0x00755e0c-0x00755e3a (called at sItemManager.h:1471)
-//   in sItemManager::cItemBag::cCraftColorChange::MyDTI::newInstance at 0x007c99bd-0x007c99de (called at sItemManager.cpp:1330)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// sItemManager::cItemBag::cCraftColorChange::cCraftColorChange();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+sItemManager::cItemBag::cCraftColorChange::cCraftColorChange() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtString() (only stores of constants, dead under this body's; ruling D-P69b)
+    mMainPawnId = 0;
+    mColor = 0;
+    mUID.value = nullptr;
+}
 
 // Address: 0x01ac1d50 - 0x01ac1dcb (123 bytes)
 // Also emitted as: _ZN12sItemManager8cItemBag17cCraftColorChangeD0Ev at 0x01ac2900
@@ -3594,6 +3714,8 @@ sItemManager::cItemBag::cCraftColorChange::~cCraftColorChange() {
 //   in sItemManager::cItemBag::startCraftColorChange at 0x007d0e93-0x007d0e9d (called at sItemManager.cpp:4966)
 //   in sItemManager::startCraftColorChangeFunc at 0x007d6f0e-0x007d6f19, 0x007d6f20-0x007d6f2e, 0x007d6ff5-0x007d7001, 0x007d70ac-0x007d70b3 (called at sItemManager.cpp:9999)
 // MT_CTSTR sItemManager::cItemBag::cCraftColorChange::getUID();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cCraftColorChange::MyDTI sItemManager::cItemBag::cCraftColorChange::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd3a1-0x007dd3da (called at sItemManager.cpp:1330)
@@ -3629,7 +3751,7 @@ const MtDTI& sItemManager::cItemBag::cAreaMasterSuppyData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sItemManager::cItemBag::cAreaMasterSuppyData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cAreaMasterSuppyData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cAreaMasterSuppyData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3643,7 +3765,7 @@ inline void* sItemManager::cItemBag::cAreaMasterSuppyData::operator new(size_t s
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sItemManager::cItemBag::cAreaMasterSuppyData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3686,6 +3808,8 @@ __attribute__((weak)) void sItemManager::cItemBag::cAreaMasterSuppyData::createP
 //   in sItemManager::getAreaMasterSupplyFunc at 0x007d985a-0x007d9861 (called at sItemManager.cpp:12472)
 // bool sItemManager::cItemBag::cAreaMasterSuppyData::isCancel();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemBag::cAreaMasterSuppyData::MyDTI sItemManager::cItemBag::cAreaMasterSuppyData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd3da-0x007dd413 (called at sItemManager.cpp:1331)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd3da-0x007dd413 (called at sItemManager.h:1931)
@@ -3694,7 +3818,7 @@ __attribute__((weak)) void sItemManager::cItemBag::cAreaMasterSuppyData::createP
 // Address: 0x007c9a80 - 0x007c9acb (75 bytes)
 MtObject* sItemManager::cItemBag::cAreaMasterSuppyData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cItemBag::cAreaMasterSuppyData;
+    return new (16u) sItemManager::cItemBag::cAreaMasterSuppyData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3719,7 +3843,7 @@ const MtDTI& sItemManager::cSortParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sItemManager::cSortParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cSortParam::DTI)->memAlloc(sz, align, ::sItemManager::cSortParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cSortParam::DTI)->memAlloc(sz, align, sItemManager::cSortParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3734,7 +3858,7 @@ inline void* sItemManager::cSortParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12sItemManager10cSortParamD0Ev at 0x01ac6040-0x01ac606a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sItemManager::cSortParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cSortParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cSortParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3834,6 +3958,8 @@ __attribute__((weak)) bool sItemManager::cSortParam::sortByCustomSort(const cIte
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cSortParam::MyDTI sItemManager::cSortParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd24b-0x007dd284 (called at sItemManager.cpp:499)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd24b-0x007dd284 (called at sItemManager.h:215)
@@ -3842,7 +3968,7 @@ __attribute__((weak)) bool sItemManager::cSortParam::sortByCustomSort(const cIte
 // Address: 0x007c84d0 - 0x007c8516 (70 bytes)
 MtObject* sItemManager::cSortParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cSortParam;
+    return new (16u) sItemManager::cSortParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3869,7 +3995,7 @@ const MtDTI& sItemManager::cItemParamList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sItemManager::cItemParamList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemParamList::DTI)->memAlloc(sz, align, ::sItemManager::cItemParamList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemParamList::DTI)->memAlloc(sz, align, sItemManager::cItemParamList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3883,7 +4009,7 @@ inline void* sItemManager::cItemParamList::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sItemManager::cItemParamList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemParamList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cItemParamList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3919,6 +4045,8 @@ inline void sItemManager::cItemParamList::operator delete(void* p_addr) {
 //   and 22 more (every copy is in <bundle>.inlined.json)
 // cItemParam* sItemManager::cItemParamList::getItemParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemParamList::MyDTI sItemManager::cItemParamList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd1d9-0x007dd212 (called at sItemManager.cpp:490)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd1d9-0x007dd212 (called at sItemManager.h:372)
@@ -3927,7 +4055,7 @@ inline void sItemManager::cItemParamList::operator delete(void* p_addr) {
 // Address: 0x007c82f0 - 0x007c8338 (72 bytes)
 MtObject* sItemManager::cItemParamList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cItemParamList;
+    return new (16u) sItemManager::cItemParamList;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3944,7 +4072,7 @@ const MtDTI& sItemManager::cEquipList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cEquipList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cEquipList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3953,7 +4081,7 @@ inline MtAllocator* sItemManager::cEquipList::getAllocator() {
 // Address: 0x007c7ad0 - 0x007c7b10 (64 bytes)
 void* sItemManager::cEquipList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sItemManager::cEquipList::getAllocator()->memAlloc(sz, align, ::sItemManager::cEquipList::DTI.::MtDTI::getID());
+    return sItemManager::cEquipList::getAllocator()->memAlloc(sz, align, sItemManager::cEquipList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -3968,7 +4096,7 @@ void* sItemManager::cEquipList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sItemManager::cEquipList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cEquipList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3989,8 +4117,63 @@ sItemManager::cEquipList::cEquipList() {
 // Address: 0x007c7c00 - 0x007c7d20 (288 bytes)
 // Also emitted as: _ZN12sItemManager10cEquipListD0Ev at 0x007c7d20
 sItemManager::cEquipList::~cEquipList() {
-    DDON_STUB("sItemManager::cEquipList::~cEquipList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mEquipList.mLength != 0) {
+        // inferred: the value the loop at 0x7c7c30 carries; no location-less local in scope fits
+        u32 v0_0 = mEquipList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mEquipList.mpArray[i0_3] != nullptr) {
+                delete mEquipList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mEquipList.mLength) {
+                    v0_0 = mEquipList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mEquipList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mEquipList.mpArray));
+    }
+    mEquipList.mpArray = nullptr;
+    mEquipList.mBufsiz = 0;
+    mEquipList.mLength = 0;
+    if (mServerEquipList.mLength != 0) {
+        // inferred: the value the loop at 0x7c7ca0 carries; no location-less local in scope fits
+        u32 v2_0 = mServerEquipList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = 0;;) {
+            if (mServerEquipList.mpArray[i2_3] != nullptr) {
+                delete mServerEquipList.mpArray[i2_3];
+                if ((i2_3 + 1u) < mServerEquipList.mLength) {
+                    v2_0 = mServerEquipList.mLength;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mServerEquipList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mServerEquipList.mpArray));
+    }
+    mServerEquipList.mpArray = nullptr;
+    mServerEquipList.mBufsiz = 0;
+    mServerEquipList.mLength = 0;
 }
 
 // Address: 0x007c7d50 - 0x007c7eec (412 bytes)
@@ -4025,6 +4208,8 @@ __attribute__((weak)) bool sItemManager::cEquipList::addEquipList(cItemParam* pI
 //   in sItemManager::setEquipFunc at 0x007d9146-0x007d9149 (called at sItemManager.cpp:11929)
 // u32 sItemManager::cEquipList::getStorageType();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cEquipList::MyDTI sItemManager::cEquipList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd12e-0x007dd167 (called at sItemManager.cpp:414)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd12e-0x007dd167 (called at sItemManager.h:261)
@@ -4058,7 +4243,7 @@ const MtDTI& sItemManager::cEquipList::cEquipData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sItemManager::cEquipList::cEquipData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::cEquipData::DTI)->memAlloc(sz, align, ::sItemManager::cEquipList::cEquipData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cEquipList::cEquipData::DTI)->memAlloc(sz, align, sItemManager::cEquipList::cEquipData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4073,7 +4258,7 @@ inline void* sItemManager::cEquipList::cEquipData::operator new(size_t sz, u32 a
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN12sItemManager10cEquipList10cEquipDataD0Ev at 0x01ac6000-0x01ac602a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sItemManager::cEquipList::cEquipData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::cEquipData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cEquipList::cEquipData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4113,6 +4298,8 @@ inline void sItemManager::cEquipList::cEquipData::operator delete(void* p_addr) 
 // No out-of-line body: no code in the ELF
 // bool sItemManager::cEquipList::cEquipData::isNone();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cEquipList::cEquipData::MyDTI sItemManager::cEquipList::cEquipData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd0ee-0x007dd12e (called at sItemManager.cpp:398)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd0ee-0x007dd12e (called at sItemManager.h:267)
@@ -4121,7 +4308,7 @@ inline void sItemManager::cEquipList::cEquipData::operator delete(void* p_addr) 
 // Address: 0x007c7940 - 0x007c799a (90 bytes)
 MtObject* sItemManager::cEquipList::cEquipData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cEquipList::cEquipData;
+    return new (16u) sItemManager::cEquipList::cEquipData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4147,7 +4334,7 @@ const MtDTI& sItemManager::cChangeJob::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sItemManager::cChangeJob::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cChangeJob::DTI)->memAlloc(sz, align, ::sItemManager::cChangeJob::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cChangeJob::DTI)->memAlloc(sz, align, sItemManager::cChangeJob::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4161,7 +4348,7 @@ inline void* sItemManager::cChangeJob::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sItemManager::cChangeJob::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cChangeJob::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cChangeJob::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4213,6 +4400,8 @@ inline void sItemManager::cChangeJob::operator delete(void* p_addr) {
 //   in sItemManager::cItemBag::changeJob at 0x007d1d78-0x007d1d7f (called at sItemManager.cpp:5322)
 // void* sItemManager::cChangeJob::getPacket();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cChangeJob::MyDTI sItemManager::cChangeJob::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd167-0x007dd1a0 (called at sItemManager.cpp:471)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd167-0x007dd1a0 (called at sItemManager.h:316)
@@ -4221,7 +4410,7 @@ inline void sItemManager::cChangeJob::operator delete(void* p_addr) {
 // Address: 0x007c7ef0 - 0x007c7f43 (83 bytes)
 MtObject* sItemManager::cChangeJob::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cChangeJob;
+    return new (16u) sItemManager::cChangeJob;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4260,7 +4449,7 @@ const MtDTI& sItemManager::cGPDetail::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sItemManager::cGPDetail::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cGPDetail::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cGPDetail::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4305,6 +4494,8 @@ sItemManager::cGPDetail::~cGPDetail() {
 //   in sItemManager::getGp at 0x007d89f5-0x007d8a28 (called at sItemManager.cpp:5922)
 //   in sItemManager::reqGetGP at 0x007d8a76-0x007d8ac5 (called at sItemManager.cpp:5954)
 // u32 sItemManager::cGPDetail::reqGetGPCore();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cGPDetail::MyDTI sItemManager::cGPDetail::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd413-0x007dd44c (called at sItemManager.cpp:5858)
@@ -4357,7 +4548,7 @@ const MtDTI& sItemManager::cHideEquip::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sItemManager::cHideEquip::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cHideEquip::DTI)->memAlloc(sz, align, ::sItemManager::cHideEquip::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sItemManager::cHideEquip::DTI)->memAlloc(sz, align, sItemManager::cHideEquip::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4371,7 +4562,7 @@ inline void* sItemManager::cHideEquip::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sItemManager::cHideEquip::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sItemManager::cHideEquip::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sItemManager::cHideEquip::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4411,6 +4602,8 @@ __attribute__((weak)) void sItemManager::cHideEquip::createProperty(MtPropertyLi
 //   in sItemManager::updateHideEquipFunc at 0x007d94b7-0x007d94ba (called at sItemManager.cpp:12137)
 // bool sItemManager::cHideEquip::isHideOff();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cHideEquip::MyDTI sItemManager::cHideEquip::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd1a0-0x007dd1d9 (called at sItemManager.cpp:476)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd1a0-0x007dd1d9 (called at sItemManager.h:340)
@@ -4419,7 +4612,7 @@ __attribute__((weak)) void sItemManager::cHideEquip::createProperty(MtPropertyLi
 // Address: 0x007c7fc0 - 0x007c800a (74 bytes)
 MtObject* sItemManager::cHideEquip::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cHideEquip;
+    return new (16u) sItemManager::cHideEquip;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4436,7 +4629,7 @@ const MtDTI& sItemManager::cItemList::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sItemManager::cItemList::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemList::DTI);
+    return MtMemoryAllocator::getAllocator(sItemManager::cItemList::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4445,7 +4638,7 @@ inline MtAllocator* sItemManager::cItemList::getAllocator() {
 // Address: 0x007c8400 - 0x007c8440 (64 bytes)
 void* sItemManager::cItemList::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sItemManager::cItemList::getAllocator()->memAlloc(sz, align, ::sItemManager::cItemList::DTI.::MtDTI::getID());
+    return sItemManager::cItemList::getAllocator()->memAlloc(sz, align, sItemManager::cItemList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -4460,7 +4653,7 @@ void* sItemManager::cItemList::operator new(size_t sz, u32 align) {
 // Address: 0x007c8470 - 0x007c849a (42 bytes)
 __attribute__((weak)) void sItemManager::cItemList::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sItemManager::cItemList::getAllocator()->memFree(p_addr);
+    sItemManager::cItemList::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4510,6 +4703,8 @@ __attribute__((weak)) void sItemManager::cItemList::operator delete(void* p_addr
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // u32 sItemManager::cItemList::getItemNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sItemManager::cItemList::MyDTI sItemManager::cItemList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd212-0x007dd24b (called at sItemManager.cpp:495)
 //   in _GLOBAL__sub_I_sItemManager.cpp at 0x007dd212-0x007dd24b (called at sItemManager.h:388)
@@ -4518,7 +4713,7 @@ __attribute__((weak)) void sItemManager::cItemList::operator delete(void* p_addr
 // Address: 0x007c83b0 - 0x007c83f8 (72 bytes)
 MtObject* sItemManager::cItemList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sItemManager::cItemList;
+    return new (16u) sItemManager::cItemList;
 }
 
 // Instance at 0x01ac5b40 - 0x01ac5b45 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

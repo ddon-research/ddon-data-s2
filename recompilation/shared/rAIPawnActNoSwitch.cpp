@@ -52,7 +52,7 @@ const MtDTI& cAIPawnActNoSwitch::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnActNoSwitch::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnActNoSwitch::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -80,6 +80,8 @@ cAIPawnActNoSwitch::~cAIPawnActNoSwitch() {
     DDON_STUB("cAIPawnActNoSwitch::~cAIPawnActNoSwitch")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnActNoSwitch::MyDTI cAIPawnActNoSwitch::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnActNoSwitch.cpp at 0x0063f04f-0x0063f08c (called at rAIPawnActNoSwitch.cpp:55)
@@ -115,7 +117,7 @@ const MtDTI& rAIPawnActNoSwitch::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnActNoSwitch::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::rAIPawnActNoSwitch::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnActNoSwitch::DTI)->memAlloc(sz, align, rAIPawnActNoSwitch::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ inline void* rAIPawnActNoSwitch::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAIPawnActNoSwitch::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAIPawnActNoSwitch::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAIPawnActNoSwitch::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -167,7 +169,7 @@ bool rAIPawnActNoSwitch::loadData(MtDataReader& r, cAIPawnActNoSwitch* pData) {
     pData->mPwActNo = r.readU32();
     // inferred: a temporary for the result of the call at 0x63eea1, used once; no DWARF local holds it
     u32 t0 = r.readU32();
-    r.read(static_cast<void*>(&pData->mTypeFlag), t0 * static_cast<u32>(4));
+    r.read(static_cast<void*>(&pData->mTypeFlag), t0 * 4u);
     return true;
 }
 
@@ -180,7 +182,7 @@ MT_CTSTR rAIPawnActNoSwitch::getExt() const {
 // Address: 0x01a71540 - 0x01a71546 (6 bytes)
 u32 rAIPawnActNoSwitch::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(5);
+    return 5;
 }
 
 // Address: 0x0063eec0 - 0x0063ef42 (130 bytes)
@@ -194,6 +196,8 @@ __attribute__((weak)) const cAIPawnActNoSwitch* rAIPawnActNoSwitch::searchAIPawn
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnActNoSwitch::MyDTI rAIPawnActNoSwitch::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnActNoSwitch.cpp at 0x0063f08c-0x0063f0c9 (called at rAIPawnActNoSwitch.cpp:56)
 //   in _GLOBAL__sub_I_rAIPawnActNoSwitch.cpp at 0x0063f08c-0x0063f0c9 (called at rAIPawnActNoSwitch.h:117)
@@ -202,7 +206,7 @@ __attribute__((weak)) const cAIPawnActNoSwitch* rAIPawnActNoSwitch::searchAIPawn
 // Address: 0x0063e830 - 0x0063e894 (100 bytes)
 MtObject* rAIPawnActNoSwitch::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnActNoSwitch;
+    return new (16u) rAIPawnActNoSwitch;
 }
 
 // Instance at 0x01a714f0 - 0x01a71506 (22 bytes) of the generic rTbl2<T>::getData

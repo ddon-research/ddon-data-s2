@@ -44,7 +44,7 @@ const MtDTI& uStageJointCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uStageJointCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uStageJointCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(uStageJointCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ inline MtAllocator* uStageJointCtrl::getAllocator() {
 // Address: 0x00d30a90 - 0x00d30ad0 (64 bytes)
 void* uStageJointCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uStageJointCtrl::getAllocator()->memAlloc(sz, align, ::uStageJointCtrl::DTI.::MtDTI::getID());
+    return uStageJointCtrl::getAllocator()->memAlloc(sz, align, uStageJointCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ void* uStageJointCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageJointCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageJointCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageJointCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,38 +130,38 @@ void uStageJointCtrl::updatePtr() {
     // DWARF local not rendered: cSplitLot* pSplitLot;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xd33030 carries; no location-less local in scope fits
-    u32 v0_0 = this->mJointMdlAry.::MtArray::mLength;
-    if (v0_0 != static_cast<u32>(0)) {
+    u32 v0_0 = mJointMdlAry.mLength;
+    if (v0_0 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
-            if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<cUnit*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_1)])->::cUnit::isEnable() == false) {
-                    this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] = static_cast<MtObject*>(nullptr);
+        for (unsigned int i0_1 = 0;;) {
+            if (mJointMdlAry.getBuffer()[static_cast<int>(i0_1)] != nullptr) {
+                if (!static_cast<cUnit*>(mJointMdlAry.getBuffer()[static_cast<int>(i0_1)])->isEnable()) {
+                    mJointMdlAry.getBuffer()[static_cast<int>(i0_1)] = nullptr;
                 }
             }
-            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
-                i0_1 += static_cast<unsigned int>(1);
+            if ((i0_1 + 1u) < v0_0) {
+                i0_1 += 1u;
             } else {
                 break;
             }
         }
     }
-    if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSplitLotAry.mLength != 0) {
         // inferred: the value the loop at 0xd33070 carries; no location-less local in scope fits
-        u32 v2_0 = this->mSplitLotAry.::MtArray::mLength;
+        u32 v2_0 = mSplitLotAry.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cSplitLot*>(this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cSplitLot::updatePtr();
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mSplitLotAry.::MtArray::mLength) {
-                    v2_0 = this->mSplitLotAry.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mSplitLotAry.getBuffer()[static_cast<int>(i2_3)] != nullptr) {
+                static_cast<cSplitLot*>(mSplitLotAry.getBuffer()[static_cast<int>(i2_3)])->updatePtr();
+                if ((i2_3 + 1u) < mSplitLotAry.mLength) {
+                    v2_0 = mSplitLotAry.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
@@ -254,26 +254,25 @@ bool uStageJointCtrl::isSetup() {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x68 from uStageJointCtrl*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x16c from MtObject*
-    if (this->mIsSetup == false) {
+    if (!mIsSetup) {
         return false;
     }
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) == static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)) == 0) {
         return false;
     }
-    u32 idx = static_cast<u32>(0);
+    u32 idx = 0;
     do {
-        if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)] != static_cast<MtObject*>(nullptr)) {
-            if (static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)])->::uStageJointMdl::isSetResource() != false) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(364))) == static_cast<unsigned int>(2)) {
-                } else {
+        if (mJointMdlAry.getBuffer()[static_cast<int>(idx)] != nullptr) {
+            if (static_cast<uStageJointMdl*>(mJointMdlAry.getBuffer()[static_cast<int>(idx)])->isSetResource()) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJointMdlAry.getBuffer()[static_cast<int>(idx)]) + 364)) != 2) {
                     return false;
                 }
             } else {
                 return false;
             }
         }
-        idx += static_cast<u32>(1);
-    } while (idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))));
+        idx += 1u;
+    } while (idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)));
     return true;
 }
 
@@ -304,21 +303,20 @@ bool uStageJointCtrl::isSbc(s32 areaNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x158 from MtObject*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x16c from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)) != 0) {
+        u32 i = 0;
         do {
-            if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(344))) == static_cast<unsigned int>(areaNo)) {
-                    if (static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)])->::uStageJointMdl::isSetResource() != false) {
-                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(364))) != static_cast<unsigned int>(2)) {
-                        } else {
+            if (mJointMdlAry.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJointMdlAry.getBuffer()[static_cast<int>(i)]) + 344)) == static_cast<unsigned int>(areaNo)) {
+                    if (static_cast<uStageJointMdl*>(mJointMdlAry.getBuffer()[static_cast<int>(i)])->isSetResource()) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJointMdlAry.getBuffer()[static_cast<int>(i)]) + 364)) == 2) {
                             return true;
                         }
                     }
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 104)));
     }
     return false;
 }
@@ -416,50 +414,50 @@ void uStageJointCtrl::stopMoveUnitLight(bool sleep) {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cUnit* pUnit;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mJointMdlAry.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mJointMdlAry.mLength != 0) {
         // inferred: the value the loop at 0xd33dc0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mJointMdlAry.::MtArray::mLength;
+        u32 v0_0 = mJointMdlAry.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_9 = static_cast<unsigned int>(0);
+        unsigned int i0_9 = 0;
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i1_3;
         // inferred: the value carried to 0xd33e42; no location-less local in scope fits
         u32 v3_0;
         for (;;) {
-            if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_9)] == static_cast<MtObject*>(nullptr)) {
+            if (mJointMdlAry.getBuffer()[static_cast<int>(i0_9)] == nullptr) {
                 v3_0 = v0_0;
             } else {
-                uScheduler* pSchdl = static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_9)])->::uStageJointMdl::getLightSdl();
-                if (pSchdl == static_cast<uScheduler*>(nullptr)) {
+                uScheduler* pSchdl = static_cast<uStageJointMdl*>(mJointMdlAry.getBuffer()[static_cast<int>(i0_9)])->getLightSdl();
+                if (pSchdl == nullptr) {
                     v3_0 = v0_0;
                 } else {
-                    if (pSchdl->::uScheduler::getUnitNum() != static_cast<u32>(0)) {
-                        i1_3 = static_cast<unsigned int>(0);
+                    if (pSchdl->uScheduler::getUnitNum() != 0) {
+                        i1_3 = 0;
                         for (;;) {
                             // inferred: a temporary for the result of the call at 0xd33df5, used 3 times; no DWARF local holds it
-                            cUnit* t0 = pSchdl->::uScheduler::getUnit(i1_3);
-                            if (t0 != static_cast<cUnit*>(nullptr)) {
-                                if (t0->::cUnit::isEnable()) {
-                                    if (sleep != false) {
-                                        ::sUnit::getInstance()->::sUnit::setUnitGroup(t0, static_cast<u32>(55));
+                            cUnit* t0 = pSchdl->uScheduler::getUnit(i1_3);
+                            if (t0 != nullptr) {
+                                if (t0->isEnable()) {
+                                    if (sleep) {
+                                        sUnit::getInstance()->setUnitGroup(t0, 55u);
                                     } else {
-                                        ::sUnit::getInstance()->::sUnit::removeUnitGroup(t0, static_cast<u32>(55));
+                                        sUnit::getInstance()->removeUnitGroup(t0, 55u);
                                     }
                                 }
                             }
-                            if ((i1_3 + static_cast<unsigned int>(1)) < pSchdl->::uScheduler::getUnitNum()) {
-                                i1_3 += static_cast<unsigned int>(1);
+                            if ((i1_3 + 1u) < pSchdl->uScheduler::getUnitNum()) {
+                                i1_3 += 1u;
                             } else {
                                 break;
                             }
                         }
                     }
-                    v3_0 = this->mJointMdlAry.::MtArray::mLength;
+                    v3_0 = mJointMdlAry.mLength;
                 }
             }
-            if ((i0_9 + static_cast<unsigned int>(1)) < v3_0) {
+            if ((i0_9 + 1u) < v3_0) {
                 v0_0 = v3_0;
-                i0_9 += static_cast<unsigned int>(1);
+                i0_9 += 1u;
             } else {
                 break;
             }
@@ -647,6 +645,8 @@ __attribute__((weak)) bool uStageJointCtrl::updateArc(bool isBlocking, bool upda
 //   in uStageJointCtrl::updateLot at 0x00d31870-0x00d3188d, 0x00d318e1-0x00d3193d (called at uStageJoint.cpp:2762)
 // bool uStageJointCtrl::isBlockArcLoadOk(s32 x, s32 z);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageJointCtrl::MyDTI uStageJointCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageJoint.cpp at 0x00d3409c-0x00d340d9 (called at uStageJoint.cpp:1179)
 //   in _GLOBAL__sub_I_uStageJoint.cpp at 0x00d3409c-0x00d340d9 (called at uStageJoint.h:216)
@@ -699,7 +699,7 @@ const MtDTI& uStageJointMdl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uStageJointMdl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uStageJointMdl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uStageJointMdl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -803,42 +803,32 @@ __attribute__((weak)) void uStageJointMdl::kill() {
 // Address: 0x00d30590 - 0x00d30650 (192 bytes)
 void uStageJointMdl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMdlSchdl == static_cast<uScheduler*>(nullptr)) {
-    } else {
-        if (this->mpMdlSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpMdlSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpMdlSchdl != nullptr) {
+        if (!mpMdlSchdl->isEnable()) {
+            mpMdlSchdl = nullptr;
         }
     }
-    if (this->mpLightSchdl == static_cast<uScheduler*>(nullptr)) {
-    } else {
-        if (this->mpLightSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpLightSchdl != nullptr) {
+        if (!mpLightSchdl->isEnable()) {
+            mpLightSchdl = nullptr;
         }
     }
-    if (this->mpSoundTrigger == static_cast<uSoundTrigger*>(nullptr)) {
-    } else {
-        if (this->mpSoundTrigger->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+    if (mpSoundTrigger != nullptr) {
+        if (!mpSoundTrigger->isEnable()) {
+            mpSoundTrigger = nullptr;
         }
     }
-    if (this->mpSoundGenerator == static_cast<uSoundGenerator*>(nullptr)) {
-    } else {
-        if (this->mpSoundGenerator->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+    if (mpSoundGenerator != nullptr) {
+        if (!mpSoundGenerator->isEnable()) {
+            mpSoundGenerator = nullptr;
         }
     }
-    if (this->mpSoundOcclusion == static_cast<uSoundOcclusion*>(nullptr)) {
-    } else {
-        if (this->mpSoundOcclusion->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+    if (mpSoundOcclusion != nullptr) {
+        if (!mpSoundOcclusion->isEnable()) {
+            mpSoundOcclusion = nullptr;
         }
     }
-    this->mStageEpvCtrl.::cStageEpvCtrl::updatePtr();
+    mStageEpvCtrl.updatePtr();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -974,40 +964,34 @@ __attribute__((weak)) void uStageJointMdl::reserveSbcReposition() {
 void uStageJointMdl::finishSbcReposition() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mScrSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mScrSbcHandle[0], true);
+    if (mScrSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mScrSbcHandle[0], true);
     }
-    if (this->mEffSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mEffSbcHandle[0], true);
+    if (mEffSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mEffSbcHandle[0], true);
     }
-    if (this->mScrSbcHandle[1] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mScrSbcHandle[1], true);
+    if (mScrSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mScrSbcHandle[1], true);
     }
-    if (this->mEffSbcHandle[1] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mEffSbcHandle[1], true);
+    if (mEffSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mEffSbcHandle[1], true);
     }
-    if (this->mScrSbcHandle[2] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mScrSbcHandle[2], true);
+    if (mScrSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mScrSbcHandle[2], true);
     }
-    if (this->mEffSbcHandle[2] == static_cast<unsigned int>(4294967295)) {
-    } else {
-        ::sCollision::getInstance()->::sCollision::setActive(this->mEffSbcHandle[2], true);
+    if (mEffSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->setActive(mEffSbcHandle[2], true);
     }
-    if (this->mSbcStatus != static_cast<u32>(1)) {
-    } else {
-        this->mSbcStatus = static_cast<u32>(2);
+    if (mSbcStatus == 1) {
+        mSbcStatus = 2;
     }
-    if (this->mpSbcGeometry == static_cast<uScrollCollisionGeometry*>(nullptr)) {
-    } else {
-        this->mpSbcGeometry->kill();
-        this->mpSbcGeometry = static_cast<uScrollCollisionGeometry*>(nullptr);
+    if (mpSbcGeometry != nullptr) {
+        mpSbcGeometry->kill();
+        mpSbcGeometry = nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uStageJointMdl::MyDTI uStageJointMdl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uStageJoint.cpp at 0x00d3405f-0x00d3409c (called at uStageJoint.cpp:64)

@@ -54,7 +54,7 @@ const MtDTI& sMain::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5sMainD0Ev at 0x01246dfe-0x01246e1f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sMain::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sMain::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sMain::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,7 +103,7 @@ bool sMain::close() {
 // Address: 0x01246bd0 - 0x01246bd5 (5 bytes)
 void sMain::exit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mExit = true;
+    mExit = true;
 }
 
 // Address: 0x01246be0 - 0x01246d61 (385 bytes)
@@ -128,7 +128,7 @@ __attribute__((weak)) void sMain::createProperty(MtPropertyList& s) {
 // Address: 0x01247f30 - 0x01247f35 (5 bytes)
 MtUI* sMain::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x012484f0 - 0x01248738 (584 bytes)
@@ -273,17 +273,17 @@ __attribute__((weak)) u32 sMain::getDelayJobThreadIndex() {
 // Address: 0x01247ee0 - 0x01247f03 (35 bytes)
 void sMain::setFrameWait(bool f) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFrameWait = f;
-    this->mIdealCounter = this->mRealCounter;
-    this->mPrevCounter = static_cast<s64>(0);
-    this->mDeltaTime = 1.0f;
-    this->mDelayFrame = 0.0f;
+    mFrameWait = f;
+    mIdealCounter = mRealCounter;
+    mPrevCounter = 0;
+    mDeltaTime = 1.0f;
+    mDelayFrame = 0.0f;
 }
 
 // Address: 0x01b9fe60 - 0x01b9fe64 (4 bytes)
 bool sMain::isFrameWait() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mFrameWait;
+    return mFrameWait;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -324,13 +324,13 @@ bool sMain::isFrameWait() const {
 // Address: 0x01b9fe70 - 0x01b9fe76 (6 bytes)
 f32 sMain::getDeltaTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mDeltaTime;
+    return mDeltaTime;
 }
 
 // Address: 0x01b9fe40 - 0x01b9fe46 (6 bytes)
 void sMain::setDeltaTime(f32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDeltaTime = NewValue;
+    mDeltaTime = NewValue;
 }
 
 // No out-of-line body: no code in the ELF
@@ -351,10 +351,10 @@ void sMain::setDeltaTime(f32 NewValue) {
 // Address: 0x01247f10 - 0x01247f2f (31 bytes)
 void sMain::resetFrame() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIdealCounter = this->mRealCounter;
-    this->mPrevCounter = static_cast<s64>(0);
-    this->mDeltaTime = 1.0f;
-    this->mDelayFrame = 0.0f;
+    mIdealCounter = mRealCounter;
+    mPrevCounter = 0;
+    mDeltaTime = 1.0f;
+    mDelayFrame = 0.0f;
 }
 
 // Address: 0x01246b40 - 0x01246bb7 (119 bytes)
@@ -377,13 +377,13 @@ __attribute__((weak)) void sMain::resetTimer() {
 // Address: 0x01b9fe80 - 0x01b9fe84 (4 bytes)
 bool sMain::isPausePrivate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPause;
+    return mPause;
 }
 
 // Address: 0x01b9fe30 - 0x01b9fe35 (5 bytes)
 void sMain::setPausePrivate(bool NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPause = NewValue;
+    mPause = NewValue;
 }
 
 // No out-of-line body: no code in the ELF
@@ -392,16 +392,16 @@ void sMain::setPausePrivate(bool NewValue) {
 // Address: 0x01248740 - 0x012487c4 (132 bytes)
 bool sMain::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeXML(out, "XFramework Scene 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<MtSerializer::ENCODING>(0));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeXML(out, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO);
 }
 
 // Address: 0x012487d0 - 0x01248867 (151 bytes)
 bool sMain::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (in.isReadable() != false) {
-        MtSerializer sz(static_cast<s32>(65536));
-        return sz.::MtSerializer::deserializeXML(in, "XFramework Scene 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<MtSerializer::ENCODING>(0)) != static_cast<MtObject*>(nullptr);
+    if (in.isReadable()) {
+        MtSerializer sz(65536);
+        return sz.MtSerializer::deserializeXML(in, "XFramework Scene 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_STATE, MtSerializer::ENCODING_AUTO) != nullptr;
     } else {
         return false;
     }
@@ -410,16 +410,16 @@ bool sMain::load(MtStream& in) {
 // Address: 0x01248870 - 0x012488f7 (135 bytes)
 bool sMain::saveConfig(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeXML(out, "XFramework Config 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(1), static_cast<MtSerializer::ENCODING>(0));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeXML(out, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO);
 }
 
 // Address: 0x01248900 - 0x0124899a (154 bytes)
 bool sMain::loadConfig(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (in.isReadable() != false) {
-        MtSerializer sz(static_cast<s32>(65536));
-        return sz.::MtSerializer::deserializeXML(in, "XFramework Config 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(1), static_cast<MtSerializer::ENCODING>(0)) != static_cast<MtObject*>(nullptr);
+    if (in.isReadable()) {
+        MtSerializer sz(65536);
+        return sz.MtSerializer::deserializeXML(in, "XFramework Config 1.0", static_cast<MtObject*>(this), MtSerializer::MODE_CONFIG, MtSerializer::ENCODING_AUTO) != nullptr;
     } else {
         return false;
     }
@@ -428,7 +428,7 @@ bool sMain::loadConfig(MtStream& in) {
 // Address: 0x01b9fe50 - 0x01b9fe57 (7 bytes)
 u32 sMain::getNextJobThreadNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNextJobThreadNum;
+    return mNextJobThreadNum;
 }
 
 // Address: 0x01248ba0 - 0x01248d8d (493 bytes)
@@ -462,32 +462,32 @@ __attribute__((weak)) void sMain::createDelayJobThread(u32 thread_num) {
 // Address: 0x01246ed0 - 0x01246eee (30 bytes)
 void sMain::freeDefaultMemory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    (::sApp::mpInstance)->::sApp::finalAppInStableMem();
-    ::MtPropertyList::releaseElementPool();
-    ::MtMemory::terminateAllocator();
+    (sApp::mpInstance)->sApp::finalAppInStableMem();
+    MtPropertyList::releaseElementPool();
+    MtMemory::terminateAllocator();
 }
 
 // Address: 0x01246e20 - 0x01246ecf (175 bytes)
 void sMain::initMemory() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x1246e34, used once; no DWARF local holds it
-    MtAllocator* t0 = ::MtMemoryAllocator::getAllocator(::cResource::DTI);
-    t0->mAttr = ::MtMemoryAllocator::getAllocator(::cResource::DTI)->mAttr | static_cast<u16>(2);
+    MtAllocator* t0 = MtMemoryAllocator::getAllocator(cResource::DTI);
+    t0->mAttr = MtMemoryAllocator::getAllocator(cResource::DTI)->mAttr | 2;
     // inferred: a temporary for the result of the call at 0x1246e5a, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cSystem::DTI);
-    t1->mAttr = ::MtMemoryAllocator::getAllocator(::cSystem::DTI)->mAttr | static_cast<u16>(2);
-    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->mAttr = ::MtMemory::mpAllocatorType[static_cast<int>(7)]->mAttr | static_cast<u16>(2);
-    (::MtString::mpAllocator)->mAttr = (::MtString::mpAllocator)->mAttr | static_cast<u16>(2);
+    MtAllocator* t1 = MtMemoryAllocator::getAllocator(cSystem::DTI);
+    t1->mAttr = MtMemoryAllocator::getAllocator(cSystem::DTI)->mAttr | 2;
+    MtMemory::mpAllocatorType[7]->mAttr = MtMemory::mpAllocatorType[7]->mAttr | 2;
+    (MtString::mpAllocator)->mAttr = (MtString::mpAllocator)->mAttr | 2;
     // inferred: a temporary for the result of the call at 0x1246e9f, used once; no DWARF local holds it
-    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-    t2->mAttr = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->mAttr | static_cast<u16>(2);
-    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->mAttr = ::MtMemory::mpAllocatorType[static_cast<int>(1)]->mAttr | static_cast<u16>(2);
+    MtAllocator* t2 = MtMemoryAllocator::getAllocator(MtArray::DTI);
+    t2->mAttr = MtMemoryAllocator::getAllocator(MtArray::DTI)->mAttr | 2;
+    MtMemory::mpAllocatorType[1]->mAttr = MtMemory::mpAllocatorType[1]->mAttr | 2;
 }
 
 // Address: 0x01b9fe90 - 0x01b9fe98 (8 bytes)
 void sMain::skip() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSkip = static_cast<u32>(2);
+    mSkip = 2;
 }
 
 // Address: 0x012493c0 - 0x0124943b (123 bytes)
@@ -565,6 +565,13 @@ __attribute__((weak)) sMain::JOB_WORK_PARAM* sMain::getDelayJob(JOBHANDLE* phand
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void sMain::getPerfomance();
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sMain::MyDTI sMain::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sMain* sMain::mpInstance;
+
+// Not defined (relocated bytes): MT_CTSTR sMain::mBuildVersion;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sMain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

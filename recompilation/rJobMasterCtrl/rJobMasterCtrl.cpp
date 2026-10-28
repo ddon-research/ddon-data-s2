@@ -36,7 +36,7 @@ const MtDTI& cJobMasterCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cJobMasterCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memAlloc(sz, align, ::cJobMasterCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cJobMasterCtrl::DTI)->memAlloc(sz, align, cJobMasterCtrl::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
@@ -51,7 +51,7 @@ inline void* cJobMasterCtrl::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cJobMasterCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cJobMasterCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (120 bytes)
@@ -83,6 +83,8 @@ __attribute__((weak)) void cJobMasterCtrl::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cJobMasterCtrl::MyDTI cJobMasterCtrl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJobMasterCtrl.cpp at 0x0068e772-0x0068e7af (called at rJobMasterCtrl.cpp:24)
 //   in _GLOBAL__sub_I_rJobMasterCtrl.cpp at 0x0068e772-0x0068e7af (called at rJobMasterCtrl.h:43)
@@ -91,7 +93,7 @@ __attribute__((weak)) void cJobMasterCtrl::createProperty(MtPropertyList& s) {
 // Address: 0x0068dd20 - 0x0068dd87 (103 bytes)
 MtObject* cJobMasterCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cJobMasterCtrl;
+    return new (16u) cJobMasterCtrl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -117,7 +119,7 @@ const MtDTI& rJobMasterCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJobMasterCtrl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJobMasterCtrl::DTI)->memAlloc(sz, align, ::rJobMasterCtrl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJobMasterCtrl::DTI)->memAlloc(sz, align, rJobMasterCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline void* rJobMasterCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rJobMasterCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJobMasterCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJobMasterCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,31 +162,31 @@ bool rJobMasterCtrl::loadData(MtDataReader& r, cJobMasterCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJobId);
+    nDDOIO::readData(r, pData->mJobId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mStartJobLevel);
+    nDDOIO::readData(r, pData->mStartJobLevel);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mFirstTalkGrpSerial);
+    nDDOIO::readData(r, pData->mFirstTalkGrpSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mTraningTalkGrpSerial);
+    nDDOIO::readData(r, pData->mTraningTalkGrpSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mFirstOrderTalkGrpSerial);
+    nDDOIO::readData(r, pData->mFirstOrderTalkGrpSerial);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJobTutorialQuestId);
+    nDDOIO::readData(r, pData->mJobTutorialQuestId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mJobMasterTutorialQuestId);
+    nDDOIO::readData(r, pData->mJobMasterTutorialQuestId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mAreaId);
+    nDDOIO::readData(r, pData->mAreaId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mAreaRank);
+    nDDOIO::readData(r, pData->mAreaRank);
     return true;
 }
 
@@ -192,23 +194,23 @@ bool rJobMasterCtrl::loadData(MtDataReader& r, cJobMasterCtrl* pData) {
 bool rJobMasterCtrl::saveData(MtDataWriter& w, cJobMasterCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mJobId);
+    nDDOIO::writeData(w, pData->mJobId);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mStartJobLevel);
+    nDDOIO::writeData(w, pData->mStartJobLevel);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mFirstTalkGrpSerial);
+    nDDOIO::writeData(w, pData->mFirstTalkGrpSerial);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mTraningTalkGrpSerial);
+    nDDOIO::writeData(w, pData->mTraningTalkGrpSerial);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mFirstOrderTalkGrpSerial);
+    nDDOIO::writeData(w, pData->mFirstOrderTalkGrpSerial);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mJobTutorialQuestId);
+    nDDOIO::writeData(w, pData->mJobTutorialQuestId);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mJobMasterTutorialQuestId);
+    nDDOIO::writeData(w, pData->mJobMasterTutorialQuestId);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mAreaId);
+    nDDOIO::writeData(w, pData->mAreaId);
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::writeData(w, pData->mAreaRank);
+    nDDOIO::writeData(w, pData->mAreaRank);
     return true;
 }
 
@@ -221,8 +223,10 @@ MT_CTSTR rJobMasterCtrl::getExt() const {
 // Address: 0x01a960a0 - 0x01a960a6 (6 bytes)
 u32 rJobMasterCtrl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(256);
+    return 256;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJobMasterCtrl::MyDTI rJobMasterCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJobMasterCtrl.cpp at 0x0068e730-0x0068e772 (called at rJobMasterCtrl.cpp:23)
@@ -232,7 +236,7 @@ u32 rJobMasterCtrl::getDataVersion() const {
 // Address: 0x0068dc40 - 0x0068dca4 (100 bytes)
 MtObject* rJobMasterCtrl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJobMasterCtrl;
+    return new (16u) rJobMasterCtrl;
 }
 
 // Instance at 0x01a96050 - 0x01a96066 (22 bytes) of the generic rTbl2<T>::getData

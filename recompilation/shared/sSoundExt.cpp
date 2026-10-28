@@ -23,9 +23,12 @@
 #include "../rWeaponResTable/rWeaponResTable.h"
 #include "../rWepCateResTbl/rWepCateResTbl.h"
 #include "sArchiveManager.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "sCollision.h"
 #include "sGame.h"
 #include "sSound.h"
+#include "../rCharacterEditCameraParam/uSoundOcclusion.h"
 #include "../rSoundAttributeSe/uSoundSubMixer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -54,7 +57,7 @@ const MtDTI& cSplitBgm::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSplitBgm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSplitBgm::DTI)->memAlloc(sz, align, ::cSplitBgm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSplitBgm::DTI)->memAlloc(sz, align, cSplitBgm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,7 +72,7 @@ inline void* cSplitBgm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN9cSplitBgmD0Ev at 0x01acf7d0-0x01acf7fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cSplitBgm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSplitBgm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSplitBgm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -116,6 +119,8 @@ inline void cSplitBgm::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // bool cSplitBgm::isBgmChange(rSoundStreamRequest* pResource);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSplitBgm::MyDTI cSplitBgm::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x008531f4-0x0085322d (called at sSoundExt.cpp:222)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x008531f4-0x0085322d (called at sSoundExt.h:35)
@@ -124,7 +129,7 @@ inline void cSplitBgm::operator delete(void* p_addr) {
 // Address: 0x0084a140 - 0x0084a197 (87 bytes)
 MtObject* cSplitBgm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSplitBgm;
+    return new (16u) cSplitBgm;
 }
 
 // No out-of-line body: no code in the ELF
@@ -141,7 +146,7 @@ const MtDTI& sSoundExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sSoundExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sSoundExt::DTI);
+    return MtMemoryAllocator::getAllocator(sSoundExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,7 +155,7 @@ inline MtAllocator* sSoundExt::getAllocator() {
 // Address: 0x0084a090 - 0x0084a0d0 (64 bytes)
 void* sSoundExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sSoundExt::getAllocator()->memAlloc(sz, align, ::sSoundExt::DTI.::MtDTI::getID());
+    return sSoundExt::getAllocator()->memAlloc(sz, align, sSoundExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -165,7 +170,7 @@ void* sSoundExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSoundExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSoundExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSoundExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -184,62 +189,62 @@ inline void sSoundExt::operator delete(void* p_addr) {
 // Also emitted as: _ZN9sSoundExtD0Ev at 0x0084b6a0
 sSoundExt::~sSoundExt() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mVoiceRequest.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mVoiceRequest.mLength != 0) {
         // inferred: the value the loop at 0x84b560 carries; no location-less local in scope fits
-        u32 v0_0 = this->mVoiceRequest.::MtArray::mLength;
+        u32 v0_0 = mVoiceRequest.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mVoiceRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mVoiceRequest.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mVoiceRequest.::MtArray::mLength) {
-                    v0_0 = this->mVoiceRequest.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mVoiceRequest.mpArray[i0_3] != nullptr) {
+                delete mVoiceRequest.mpArray[i0_3];
+                if ((i0_3 + 1u) < mVoiceRequest.mLength) {
+                    v0_0 = mVoiceRequest.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mVoiceRequest.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mVoiceRequest.::MtArray::mpArray));
+    if (mVoiceRequest.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mVoiceRequest.mpArray));
     }
-    this->mVoiceRequest.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mVoiceRequest.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mVoiceRequest.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
+    mVoiceRequest.mpArray = nullptr;
+    mVoiceRequest.mBufsiz = 0;
+    mVoiceRequest.mLength = 0;
+    if (mStageSplitAreaResource.mLength != 0) {
         // inferred: the value the loop at 0x84b5f0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
+        u32 v2_0 = mStageSplitAreaResource.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mStageSplitAreaResource.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mStageSplitAreaResource.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mStageSplitAreaResource.::MtArray::mLength) {
-                    v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mStageSplitAreaResource.mpArray[i2_3] != nullptr) {
+                delete mStageSplitAreaResource.mpArray[i2_3];
+                if ((i2_3 + 1u) < mStageSplitAreaResource.mLength) {
+                    v2_0 = mStageSplitAreaResource.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mStageSplitAreaResource.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mStageSplitAreaResource.::MtArray::mpArray));
+    if (mStageSplitAreaResource.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStageSplitAreaResource.mpArray));
     }
-    this->mStageSplitAreaResource.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mStageSplitAreaResource.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mStageSplitAreaResource.::MtArray::mLength = static_cast<u32>(0);
+    mStageSplitAreaResource.mpArray = nullptr;
+    mStageSplitAreaResource.mBufsiz = 0;
+    mStageSplitAreaResource.mLength = 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (493 bytes)
@@ -258,69 +263,69 @@ __attribute__((weak)) void sSoundExt::move() {
 // Address: 0x0084b6e0 - 0x0084b6e5 (5 bytes)
 void sSoundExt::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::setup();
+    this->sSound::setup();
 }
 
 // Address: 0x0084bf70 - 0x0084c088 (280 bytes)
 void sSoundExt::reset() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mVoiceRequest.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mVoiceRequest.mLength != 0) {
         // inferred: the value the loop at 0x84bf90 carries; no location-less local in scope fits
-        u32 v0_0 = this->mVoiceRequest.::MtArray::mLength;
+        u32 v0_0 = mVoiceRequest.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mVoiceRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mVoiceRequest.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mVoiceRequest.::MtArray::mLength) {
-                    v0_0 = this->mVoiceRequest.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mVoiceRequest.mpArray[i0_3] != nullptr) {
+                delete mVoiceRequest.mpArray[i0_3];
+                if ((i0_3 + 1u) < mVoiceRequest.mLength) {
+                    v0_0 = mVoiceRequest.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mVoiceRequest.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mVoiceRequest.::MtArray::mpArray));
+    if (mVoiceRequest.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mVoiceRequest.mpArray));
     }
-    this->mVoiceRequest.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mVoiceRequest.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mVoiceRequest.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
+    mVoiceRequest.mpArray = nullptr;
+    mVoiceRequest.mBufsiz = 0;
+    mVoiceRequest.mLength = 0;
+    if (mStageSplitAreaResource.mLength != 0) {
         // inferred: the value the loop at 0x84c010 carries; no location-less local in scope fits
-        u32 v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
+        u32 v2_0 = mStageSplitAreaResource.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mStageSplitAreaResource.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mStageSplitAreaResource.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mStageSplitAreaResource.::MtArray::mLength) {
-                    v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mStageSplitAreaResource.mpArray[i2_3] != nullptr) {
+                delete mStageSplitAreaResource.mpArray[i2_3];
+                if ((i2_3 + 1u) < mStageSplitAreaResource.mLength) {
+                    v2_0 = mStageSplitAreaResource.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mStageSplitAreaResource.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mStageSplitAreaResource.::MtArray::mpArray));
+    if (mStageSplitAreaResource.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mStageSplitAreaResource.mpArray));
     }
-    this->mStageSplitAreaResource.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mStageSplitAreaResource.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mStageSplitAreaResource.::MtArray::mLength = static_cast<u32>(0);
-    this->::sSound::reset();
+    mStageSplitAreaResource.mpArray = nullptr;
+    mStageSplitAreaResource.mBufsiz = 0;
+    mStageSplitAreaResource.mLength = 0;
+    this->sSound::reset();
 }
 
 // Address: 0x0084e9e0 - 0x0084eb38 (344 bytes)
@@ -406,25 +411,25 @@ void sSoundExt::keyOffSe(rSoundRequest* pRequest, const u32 reqNo, const uintptr
     // DWARF local not rendered: rSoundRequest* pReq;
     // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (searchKey != static_cast<sSoundExt::SE_SEARCH_KEY>(0)) {
-        if (searchKey == static_cast<sSoundExt::SE_SEARCH_KEY>(2)) {
-            this->::sSound::keyOffSe(static_cast<rSoundRequest*>(nullptr), static_cast<u32>(4294967295), thisId, false);
+    if (searchKey != SE_SEARCH_KEY_RESOURCE) {
+        if (searchKey == SE_SEARCH_KEY_THISID) {
+            this->sSound::keyOffSe(static_cast<rSoundRequest*>(nullptr), 0xFFFFFFFFu, thisId, false);
         } else {
-            if (searchKey != static_cast<sSoundExt::SE_SEARCH_KEY>(1)) {
-                this->::sSound::keyOffSe(pRequest, reqNo, thisId, false);
+            if (searchKey != SE_SEARCH_KEY_RESOURCE_REQNO) {
+                this->sSound::keyOffSe(pRequest, reqNo, thisId, false);
             } else {
-                this->::sSound::keyOffSe(pRequest, reqNo, static_cast<uintptr>(-1), false);
+                this->sSound::keyOffSe(pRequest, reqNo, 0xFFFFFFFFFFFFFFFFul, false);
             }
         }
     } else {
-        this->::sSound::keyOffSe(pRequest, static_cast<u32>(4294967295), static_cast<uintptr>(-1), false);
+        this->sSound::keyOffSe(pRequest, 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, false);
     }
 }
 
 // Address: 0x00850180 - 0x00850196 (22 bytes)
 void sSoundExt::stopAllSe() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::keyOffSe(static_cast<rSoundRequest*>(nullptr), static_cast<const u32>(4294967295), static_cast<const uintptr>(-1), false);
+    this->sSound::keyOffSe(static_cast<rSoundRequest*>(nullptr), 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, false);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (70 bytes)
@@ -520,28 +525,28 @@ __attribute__((weak)) uintptr sSoundExt::requestStream(rSoundStreamRequest* pReq
 // Address: 0x00850940 - 0x00850980 (64 bytes)
 void sSoundExt::stopStream(rSoundStreamRequest* pRequest, const u32 reqNo, const uintptr thisId, sSoundExt::STREAM_SEARCH_KEY searchKey) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pRequest == nullptr) {
         return;
     }
-    if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(0)) {
-        if (searchKey == static_cast<sSoundExt::STREAM_SEARCH_KEY>(2)) {
-            this->::sSound::fadeOutStream(pRequest, static_cast<u32>(4294967295), thisId, static_cast<u32>(300), false);
+    if (searchKey != STREAM_SEARCH_KEY_RESOURCE) {
+        if (searchKey == STREAM_SEARCH_KEY_THISID) {
+            this->sSound::fadeOutStream(pRequest, 0xFFFFFFFFu, thisId, 300u, false);
         } else {
-            if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(1)) {
-                this->::sSound::fadeOutStream(pRequest, reqNo, thisId, static_cast<u32>(300), false);
+            if (searchKey != STREAM_SEARCH_KEY_RESOURCE_REQNO) {
+                this->sSound::fadeOutStream(pRequest, reqNo, thisId, 300u, false);
             } else {
-                this->::sSound::fadeOutStream(pRequest, reqNo, static_cast<uintptr>(-1), static_cast<u32>(300), false);
+                this->sSound::fadeOutStream(pRequest, reqNo, 0xFFFFFFFFFFFFFFFFul, 300u, false);
             }
         }
     } else {
-        this->::sSound::fadeOutStream(pRequest, static_cast<u32>(4294967295), static_cast<uintptr>(-1), static_cast<u32>(300), false);
+        this->sSound::fadeOutStream(pRequest, 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, 300u, false);
     }
 }
 
 // Address: 0x008509a0 - 0x008509b6 (22 bytes)
 void sSoundExt::stopAllStream() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::stopStream(static_cast<rSoundStreamRequest*>(nullptr), static_cast<const u32>(4294967295), static_cast<const uintptr>(-1), false);
+    this->sSound::stopStream(static_cast<rSoundStreamRequest*>(nullptr), 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, false);
 }
 
 // Address: 0x00850850 - 0x008508fb (171 bytes)
@@ -557,28 +562,28 @@ void sSoundExt::fadeOutStream(rSoundStreamRequest* pRequest, const u32 reqNo, co
     // DWARF local not rendered: u32 w_reqNo;
     // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pRequest == nullptr) {
         return;
     }
-    if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(0)) {
-        if (searchKey == static_cast<sSoundExt::STREAM_SEARCH_KEY>(2)) {
-            this->::sSound::fadeOutStream(pRequest, static_cast<u32>(4294967295), thisId, fadeSpd, false);
+    if (searchKey != STREAM_SEARCH_KEY_RESOURCE) {
+        if (searchKey == STREAM_SEARCH_KEY_THISID) {
+            this->sSound::fadeOutStream(pRequest, 0xFFFFFFFFu, thisId, fadeSpd, false);
         } else {
-            if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(1)) {
-                this->::sSound::fadeOutStream(pRequest, reqNo, thisId, fadeSpd, false);
+            if (searchKey != STREAM_SEARCH_KEY_RESOURCE_REQNO) {
+                this->sSound::fadeOutStream(pRequest, reqNo, thisId, fadeSpd, false);
             } else {
-                this->::sSound::fadeOutStream(pRequest, reqNo, static_cast<uintptr>(-1), fadeSpd, false);
+                this->sSound::fadeOutStream(pRequest, reqNo, 0xFFFFFFFFFFFFFFFFul, fadeSpd, false);
             }
         }
     } else {
-        this->::sSound::fadeOutStream(pRequest, static_cast<u32>(4294967295), static_cast<uintptr>(-1), fadeSpd, false);
+        this->sSound::fadeOutStream(pRequest, 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, fadeSpd, false);
     }
 }
 
 // Address: 0x00850980 - 0x0085099f (31 bytes)
 void sSoundExt::stopAllStreamToFade() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::fadeOutStream(static_cast<rSoundStreamRequest*>(nullptr), static_cast<const u32>(4294967295), static_cast<const uintptr>(-1), static_cast<u32>(300), false);
+    this->sSound::fadeOutStream(static_cast<rSoundStreamRequest*>(nullptr), 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, 300u, false);
 }
 
 // Address: 0x00850eb0 - 0x00850f7d (205 bytes)
@@ -597,10 +602,10 @@ __attribute__((weak)) u32 sSoundExt::getPlayPos(rSoundStreamRequest* pr, const u
 // Address: 0x00850f80 - 0x00850f9f (31 bytes)
 void sSoundExt::setPlayPos(rSoundStreamRequest* pr, const u32 reqNo, const uintptr thisId, u32 playPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pr == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pr == nullptr) {
         return;
     }
-    ::sSound::getInstance()->::sSound::setStreamPlayPosition(pr, reqNo, static_cast<uintptr>(-1), playPos, false);
+    sSound::getInstance()->setStreamPlayPosition(pr, reqNo, 0xFFFFFFFFFFFFFFFFul, playPos, false);
 }
 
 // No out-of-line body: no code in the ELF
@@ -611,21 +616,21 @@ void sSoundExt::pauseStream(rSoundStreamRequest* pRequest, const u32 reqNo, cons
     // DWARF local not rendered: u32 w_reqNo;
     // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pRequest == nullptr) {
         return;
     }
-    if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(0)) {
-        if (searchKey == static_cast<sSoundExt::STREAM_SEARCH_KEY>(2)) {
-            this->::sSound::pauseStream(pRequest, static_cast<u32>(4294967295), thisId, false);
+    if (searchKey != STREAM_SEARCH_KEY_RESOURCE) {
+        if (searchKey == STREAM_SEARCH_KEY_THISID) {
+            this->sSound::pauseStream(pRequest, 0xFFFFFFFFu, thisId, false);
         } else {
-            if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(1)) {
-                this->::sSound::pauseStream(pRequest, reqNo, thisId, false);
+            if (searchKey != STREAM_SEARCH_KEY_RESOURCE_REQNO) {
+                this->sSound::pauseStream(pRequest, reqNo, thisId, false);
             } else {
-                this->::sSound::pauseStream(pRequest, reqNo, static_cast<uintptr>(-1), false);
+                this->sSound::pauseStream(pRequest, reqNo, 0xFFFFFFFFFFFFFFFFul, false);
             }
         }
     } else {
-        this->::sSound::pauseStream(pRequest, static_cast<u32>(4294967295), static_cast<uintptr>(-1), false);
+        this->sSound::pauseStream(pRequest, 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, false);
     }
 }
 
@@ -634,21 +639,21 @@ void sSoundExt::resumeStream(rSoundStreamRequest* pRequest, const u32 reqNo, con
     // DWARF local not rendered: u32 w_reqNo;
     // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (pRequest == nullptr) {
         return;
     }
-    if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(0)) {
-        if (searchKey == static_cast<sSoundExt::STREAM_SEARCH_KEY>(2)) {
-            this->::sSound::resumeStream(pRequest, static_cast<u32>(4294967295), thisId, false);
+    if (searchKey != STREAM_SEARCH_KEY_RESOURCE) {
+        if (searchKey == STREAM_SEARCH_KEY_THISID) {
+            this->sSound::resumeStream(pRequest, 0xFFFFFFFFu, thisId, false);
         } else {
-            if (searchKey != static_cast<sSoundExt::STREAM_SEARCH_KEY>(1)) {
-                this->::sSound::resumeStream(pRequest, reqNo, thisId, false);
+            if (searchKey != STREAM_SEARCH_KEY_RESOURCE_REQNO) {
+                this->sSound::resumeStream(pRequest, reqNo, thisId, false);
             } else {
-                this->::sSound::resumeStream(pRequest, reqNo, static_cast<uintptr>(-1), false);
+                this->sSound::resumeStream(pRequest, reqNo, 0xFFFFFFFFFFFFFFFFul, false);
             }
         }
     } else {
-        this->::sSound::resumeStream(pRequest, static_cast<u32>(4294967295), static_cast<uintptr>(-1), false);
+        this->sSound::resumeStream(pRequest, 0xFFFFFFFFu, 0xFFFFFFFFFFFFFFFFul, false);
     }
 }
 
@@ -699,10 +704,10 @@ rSoundAttributeSe* sSoundExt::loadAttributeSeResource() {
     // DWARF local not rendered: rSoundAttributeSe* pAttRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x84d12e read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x84d138, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("sound_game_common");
-    return static_cast<rSoundAttributeSe*>(t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_MT_ATR_ASER"), static_cast<u32>(1), false));
+    ARC_TAGID t1 = rArchiveListArray::convTagId("sound_game_common");
+    return static_cast<rSoundAttributeSe*>(t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_MT_ATR_ASER"), 1u, false));
 }
 
 // Address: 0x00851a70 - 0x00851c65 (501 bytes)
@@ -721,18 +726,31 @@ __attribute__((weak)) u32 sSoundExt::getSoundAttSeIndex(sCollision::TriangleInfo
 }
 
 // Address: 0x0084de60 - 0x0084dea6 (70 bytes)
-__attribute__((weak)) rSoundHitInfo::cSoundHitInfo* sSoundExt::getHitSeTableResource(u32 wepCategory, u32 attackType, u32 attackLevel, u32 attackReaction, u32 emCategory, bool isThrust) {
-    DDON_STUB("sSoundExt::getHitSeTableResource")
+rSoundHitInfo::cSoundHitInfo* sSoundExt::getHitSeTableResource(u32 wepCategory, u32 attackType, u32 attackLevel, u32 attackReaction, u32 emCategory, bool isThrust) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (emCategory != 0xFFFFFFFFu) {
+        if (emCategory <= 2u) {
+            if (mprHitInfoEmResource[emCategory] != nullptr) {
+                return mprHitInfoEmResource[emCategory]->rSoundHitInfo::getHitInfo(attackType, attackLevel, attackReaction, isThrust);
+            }
+        }
+    } else {
+        if (wepCategory <= 14u) {
+            if (mprHitInfoResource[wepCategory] != nullptr) {
+                return mprHitInfoResource[wepCategory]->rSoundHitInfo::getHitInfo(attackType, attackLevel, attackReaction, isThrust);
+            }
+        }
+    }
     return nullptr;
 }
 
 // Address: 0x0084de40 - 0x0084de52 (18 bytes)
 rSoundRequest* sSoundExt::getHitSeSrqResource(u32 Surface) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Surface <= static_cast<u32>(11)) {
-        return this->mprHitSeRequest[Surface];
+    if (Surface <= 11u) {
+        return mprHitSeRequest[Surface];
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -766,57 +784,57 @@ void sSoundExt::releaseHitSeSrqResource() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mprHitSeRequest[0] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[0]->::cResource::release();
-        this->mprHitSeRequest[0] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[0] != nullptr) {
+        mprHitSeRequest[0]->cResource::release();
+        mprHitSeRequest[0] = nullptr;
     }
-    if (this->mprHitSeRequest[1] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[1]->::cResource::release();
-        this->mprHitSeRequest[1] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[1] != nullptr) {
+        mprHitSeRequest[1]->cResource::release();
+        mprHitSeRequest[1] = nullptr;
     }
-    if (this->mprHitSeRequest[2] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[2]->::cResource::release();
-        this->mprHitSeRequest[2] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[2] != nullptr) {
+        mprHitSeRequest[2]->cResource::release();
+        mprHitSeRequest[2] = nullptr;
     }
-    if (this->mprHitSeRequest[3] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[3]->::cResource::release();
-        this->mprHitSeRequest[3] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[3] != nullptr) {
+        mprHitSeRequest[3]->cResource::release();
+        mprHitSeRequest[3] = nullptr;
     }
-    if (this->mprHitSeRequest[4] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[4]->::cResource::release();
-        this->mprHitSeRequest[4] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[4] != nullptr) {
+        mprHitSeRequest[4]->cResource::release();
+        mprHitSeRequest[4] = nullptr;
     }
-    if (this->mprHitSeRequest[5] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[5]->::cResource::release();
-        this->mprHitSeRequest[5] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[5] != nullptr) {
+        mprHitSeRequest[5]->cResource::release();
+        mprHitSeRequest[5] = nullptr;
     }
-    if (this->mprHitSeRequest[6] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[6]->::cResource::release();
-        this->mprHitSeRequest[6] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[6] != nullptr) {
+        mprHitSeRequest[6]->cResource::release();
+        mprHitSeRequest[6] = nullptr;
     }
-    if (this->mprHitSeRequest[7] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[7]->::cResource::release();
-        this->mprHitSeRequest[7] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[7] != nullptr) {
+        mprHitSeRequest[7]->cResource::release();
+        mprHitSeRequest[7] = nullptr;
     }
-    if (this->mprHitSeRequest[8] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[8]->::cResource::release();
-        this->mprHitSeRequest[8] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[8] != nullptr) {
+        mprHitSeRequest[8]->cResource::release();
+        mprHitSeRequest[8] = nullptr;
     }
-    if (this->mprHitSeRequest[9] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[9]->::cResource::release();
-        this->mprHitSeRequest[9] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[9] != nullptr) {
+        mprHitSeRequest[9]->cResource::release();
+        mprHitSeRequest[9] = nullptr;
     }
-    if (this->mprHitSeRequest[10] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[10]->::cResource::release();
-        this->mprHitSeRequest[10] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[10] != nullptr) {
+        mprHitSeRequest[10]->cResource::release();
+        mprHitSeRequest[10] = nullptr;
     }
-    if (this->mprHitSeRequest[11] != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSeRequest[11]->::cResource::release();
-        this->mprHitSeRequest[11] = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSeRequest[11] != nullptr) {
+        mprHitSeRequest[11]->cResource::release();
+        mprHitSeRequest[11] = nullptr;
     }
-    if (this->mprHitSePlAddRequest != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprHitSePlAddRequest->::cResource::release();
-        this->mprHitSePlAddRequest = static_cast<rSoundRequest*>(nullptr);
+    if (mprHitSePlAddRequest != nullptr) {
+        mprHitSePlAddRequest->release();
+        mprHitSePlAddRequest = nullptr;
     }
 }
 
@@ -827,10 +845,10 @@ void sSoundExt::releaseHitSeSrqResource() {
 // Address: 0x0084e780 - 0x0084e792 (18 bytes)
 rSoundRequest* sSoundExt::getArmorSeSrqResource(u32 SeType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (SeType <= static_cast<u32>(7)) {
-        return this->mprArmorSeRequest[SeType];
+    if (SeType <= 7u) {
+        return mprArmorSeRequest[SeType];
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -842,45 +860,37 @@ rSoundRequest* sSoundExt::getArmorSeSrqResource(u32 SeType) {
 __attribute__((weak)) void sSoundExt::releaseArmorSeSrqResource() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprArmorSeRequest[0] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[0]->::cResource::release();
-        this->mprArmorSeRequest[0] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[0] != nullptr) {
+        mprArmorSeRequest[0]->cResource::release();
+        mprArmorSeRequest[0] = nullptr;
     }
-    if (this->mprArmorSeRequest[1] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[1]->::cResource::release();
-        this->mprArmorSeRequest[1] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[1] != nullptr) {
+        mprArmorSeRequest[1]->cResource::release();
+        mprArmorSeRequest[1] = nullptr;
     }
-    if (this->mprArmorSeRequest[2] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[2]->::cResource::release();
-        this->mprArmorSeRequest[2] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[2] != nullptr) {
+        mprArmorSeRequest[2]->cResource::release();
+        mprArmorSeRequest[2] = nullptr;
     }
-    if (this->mprArmorSeRequest[3] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[3]->::cResource::release();
-        this->mprArmorSeRequest[3] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[3] != nullptr) {
+        mprArmorSeRequest[3]->cResource::release();
+        mprArmorSeRequest[3] = nullptr;
     }
-    if (this->mprArmorSeRequest[4] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[4]->::cResource::release();
-        this->mprArmorSeRequest[4] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[4] != nullptr) {
+        mprArmorSeRequest[4]->cResource::release();
+        mprArmorSeRequest[4] = nullptr;
     }
-    if (this->mprArmorSeRequest[5] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[5]->::cResource::release();
-        this->mprArmorSeRequest[5] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[5] != nullptr) {
+        mprArmorSeRequest[5]->cResource::release();
+        mprArmorSeRequest[5] = nullptr;
     }
-    if (this->mprArmorSeRequest[6] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[6]->::cResource::release();
-        this->mprArmorSeRequest[6] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[6] != nullptr) {
+        mprArmorSeRequest[6]->cResource::release();
+        mprArmorSeRequest[6] = nullptr;
     }
-    if (this->mprArmorSeRequest[7] == static_cast<rSoundRequest*>(nullptr)) {
-    } else {
-        this->mprArmorSeRequest[7]->::cResource::release();
-        this->mprArmorSeRequest[7] = static_cast<rSoundRequest*>(nullptr);
+    if (mprArmorSeRequest[7] != nullptr) {
+        mprArmorSeRequest[7]->cResource::release();
+        mprArmorSeRequest[7] = nullptr;
     }
 }
 
@@ -907,9 +917,15 @@ __attribute__((weak)) void sSoundExt::requestEnchantSe(u32 enchantType, nWeapon:
 //   in sSoundExt::loadBattleCommon at 0x0084cb87-0x0084cb8e (called at sSoundExt.cpp:1493)
 // void sSoundExt::setEnchantResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseBattleCommon at 0x0084cf57-0x0084cf73 (called at sSoundExt.cpp:1521)
-// void sSoundExt::releaseEnchantResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseBattleCommon at 0x84cf57-0x84cf73; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseEnchantResource() {
+    if (mprEnchantRequest == nullptr) {
+        return;
+    }
+    mprEnchantRequest->release();
+    mprEnchantRequest = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (73 bytes)
 //   in sSoundExt::requestEnchantSe at 0x008511ea-0x00851233 (called at sSoundExt.cpp:4468)
@@ -919,9 +935,15 @@ __attribute__((weak)) void sSoundExt::requestEnchantSe(u32 enchantType, nWeapon:
 //   in sSoundExt::loadBattleCommon at 0x0084cbc5-0x0084cbcc (called at sSoundExt.cpp:1499)
 // void sSoundExt::setHitEnchantResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseBattleCommon at 0x0084cf73-0x0084cf8f (called at sSoundExt.cpp:1523)
-// void sSoundExt::releaseHitEnchantResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseBattleCommon at 0x84cf73-0x84cf8f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseHitEnchantResource() {
+    if (mprHitEnchantRequest == nullptr) {
+        return;
+    }
+    mprHitEnchantRequest->release();
+    mprHitEnchantRequest = nullptr;
+}
 
 // Address: 0x0084c720 - 0x0084c91e (510 bytes)
 __attribute__((weak)) void sSoundExt::loadGameCommon() {
@@ -941,71 +963,71 @@ __attribute__((weak)) void sSoundExt::loadBgmResource(bool isLobby, bool isSplit
 void sSoundExt::loadBattleCommon() {
     // DWARF local not rendered: rSoundRequest* pReq;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::sSoundExt::loadHitSeSrqResource();
-    this->::sSoundExt::loadHitSeTableResource();
+    loadHitSeSrqResource();
+    loadHitSeTableResource();
     // inferred: a temporary for the value the load at 0x84cb12 read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x84cb1d, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("sound_battle_common");
+    ARC_TAGID t1 = rArchiveListArray::convTagId("sound_battle_common");
     // inferred: a temporary for the result of the call at 0x84cb3f, used twice; no DWARF local holds it
-    cResource* t2 = t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_MAGIC_CAST_SRQR"), static_cast<u32>(1), false);
-    if (t2 != static_cast<cResource*>(nullptr)) {
-        this->mprMagicRequest = static_cast<rSoundRequest*>(t2);
+    cResource* t2 = t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_MAGIC_CAST_SRQR"), 1u, false);
+    if (t2 != nullptr) {
+        mprMagicRequest = static_cast<rSoundRequest*>(t2);
         // inferred: a temporary for the value the load at 0x84cb50 read, used once; no DWARF local holds it
-        sArchiveManager* t3 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x84cb5b, used once; no DWARF local holds it
-        ARC_TAGID t4 = ::rArchiveListArray::convTagId("sound_battle_common");
+        ARC_TAGID t4 = rArchiveListArray::convTagId("sound_battle_common");
         // inferred: a temporary for the result of the call at 0x84cb7d, used twice; no DWARF local holds it
-        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
-        if (t5 != static_cast<cResource*>(nullptr)) {
-            this->mprEnchantRequest = static_cast<rSoundRequest*>(t5);
+        cResource* t5 = t3->createRes(t4, rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), 1u, false);
+        if (t5 != nullptr) {
+            mprEnchantRequest = static_cast<rSoundRequest*>(t5);
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t6 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t8 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
+            cResource* t8 = t6->createRes(t7, rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), 1u, false);
+            if (t8 != nullptr) {
+                mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         } else {
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t6 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t8 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
+            cResource* t8 = t6->createRes(t7, rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), 1u, false);
+            if (t8 != nullptr) {
+                mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x84cb50 read, used once; no DWARF local holds it
-        sArchiveManager* t3 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x84cb5b, used once; no DWARF local holds it
-        ARC_TAGID t4 = ::rArchiveListArray::convTagId("sound_battle_common");
+        ARC_TAGID t4 = rArchiveListArray::convTagId("sound_battle_common");
         // inferred: a temporary for the result of the call at 0x84cb7d, used twice; no DWARF local holds it
-        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
-        if (t5 != static_cast<cResource*>(nullptr)) {
-            this->mprEnchantRequest = static_cast<rSoundRequest*>(t5);
+        cResource* t5 = t3->createRes(t4, rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), 1u, false);
+        if (t5 != nullptr) {
+            mprEnchantRequest = static_cast<rSoundRequest*>(t5);
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t6 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t8 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
+            cResource* t8 = t6->createRes(t7, rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), 1u, false);
+            if (t8 != nullptr) {
+                mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         } else {
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t6 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t8 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
+            cResource* t8 = t6->createRes(t7, rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), 1u, false);
+            if (t8 != nullptr) {
+                mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         }
     }
@@ -1014,42 +1036,42 @@ void sSoundExt::loadBattleCommon() {
 // Address: 0x0084c940 - 0x0084c9e4 (164 bytes)
 void sSoundExt::releaseGameCommon() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHmParamOfs != static_cast<rSoundParamOfs*>(nullptr)) {
-        this->mprHmParamOfs->::cResource::release();
-        this->mprHmParamOfs = static_cast<rSoundParamOfs*>(nullptr);
+    if (mprHmParamOfs != nullptr) {
+        mprHmParamOfs->release();
+        mprHmParamOfs = nullptr;
     }
-    if (this->mprGameBuffRequest != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprGameBuffRequest->::cResource::release();
-        this->mprGameBuffRequest = static_cast<rSoundRequest*>(nullptr);
+    if (mprGameBuffRequest != nullptr) {
+        mprGameBuffRequest->release();
+        mprGameBuffRequest = nullptr;
     }
-    this->::sSoundExt::releaseArmorSeSrqResource();
-    if (this->mprFsmEvBgmRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mprFsmEvBgmRequest->::cResource::release();
-        this->mprFsmEvBgmRequest = static_cast<rSoundStreamRequest*>(nullptr);
+    releaseArmorSeSrqResource();
+    if (mprFsmEvBgmRequest != nullptr) {
+        mprFsmEvBgmRequest->release();
+        mprFsmEvBgmRequest = nullptr;
     }
-    if (this->mprShlJobShareRequest != static_cast<rSoundRequest*>(nullptr)) {
-        this->mprShlJobShareRequest->::cResource::release();
-        this->mprShlJobShareRequest = static_cast<rSoundRequest*>(nullptr);
+    if (mprShlJobShareRequest != nullptr) {
+        mprShlJobShareRequest->release();
+        mprShlJobShareRequest = nullptr;
     }
-    if (this->mprEnemyShareRequest == static_cast<rSoundRequest*>(nullptr)) {
+    if (mprEnemyShareRequest == nullptr) {
         return;
     }
-    this->mprEnemyShareRequest->::cResource::release();
-    this->mprEnemyShareRequest = static_cast<rSoundRequest*>(nullptr);
+    mprEnemyShareRequest->release();
+    mprEnemyShareRequest = nullptr;
 }
 
 // Address: 0x0084dcf0 - 0x0084dd38 (72 bytes)
 void sSoundExt::releaseBgmResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprStageBgmRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
-        this->mprStageBgmRequest->::cResource::release();
-        this->mprStageBgmRequest = static_cast<rSoundStreamRequest*>(nullptr);
+    if (mprStageBgmRequest != nullptr) {
+        mprStageBgmRequest->release();
+        mprStageBgmRequest = nullptr;
     }
-    if (this->mprBattleBgmRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (mprBattleBgmRequest == nullptr) {
         return;
     }
-    this->mprBattleBgmRequest->::cResource::release();
-    this->mprBattleBgmRequest = static_cast<rSoundStreamRequest*>(nullptr);
+    mprBattleBgmRequest->release();
+    mprBattleBgmRequest = nullptr;
 }
 
 // Address: 0x0084cea0 - 0x0084cf94 (244 bytes)
@@ -1075,7 +1097,7 @@ __attribute__((weak)) rSoundStreamRequest* sSoundExt::getEventBgmResource() {
 // Address: 0x0084de30 - 0x0084de38 (8 bytes)
 rSoundStreamRequest* sSoundExt::getFsmEvBgmResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mprFsmEvBgmRequest;
+    return mprFsmEvBgmRequest;
 }
 
 // No out-of-line body: 51 inlined copies in 36 functions (484 bytes)
@@ -1106,33 +1128,57 @@ rSoundStreamRequest* sSoundExt::getFsmEvBgmResource() {
 //   in sSoundExt::loadBattleCommon at 0x0084cb49-0x0084cb50 (called at sSoundExt.cpp:1487)
 // void sSoundExt::setMagicResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseBattleCommon at 0x0084cf3b-0x0084cf57 (called at sSoundExt.cpp:1518)
-// void sSoundExt::releaseMagicResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseBattleCommon at 0x84cf3b-0x84cf57; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseMagicResource() {
+    if (mprMagicRequest == nullptr) {
+        return;
+    }
+    mprMagicRequest->release();
+    mprMagicRequest = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in sSoundExt::loadGameCommon at 0x0084c7c5-0x0084c7cc (called at sSoundExt.cpp:1414)
 // void sSoundExt::setGameBuffResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseGameCommon at 0x0084c965-0x0084c981 (called at sSoundExt.cpp:1454)
-// void sSoundExt::releaseGameBuffResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseGameCommon at 0x84c965-0x84c981; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseGameBuffResource() {
+    if (mprGameBuffRequest == nullptr) {
+        return;
+    }
+    mprGameBuffRequest->release();
+    mprGameBuffRequest = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in sSoundExt::loadGameCommon at 0x0084c8c4-0x0084c8cb (called at sSoundExt.cpp:1429)
 // void sSoundExt::setShlJobShareResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseGameCommon at 0x0084c9a5-0x0084c9c1 (called at sSoundExt.cpp:1463)
-// void sSoundExt::releaseShlJobShareResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseGameCommon at 0x84c9a5-0x84c9c1; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseShlJobShareResource() {
+    if (mprShlJobShareRequest == nullptr) {
+        return;
+    }
+    mprShlJobShareRequest->release();
+    mprShlJobShareRequest = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
 //   in sSoundExt::loadGameCommon at 0x0084c908-0x0084c90f (called at sSoundExt.cpp:1435)
 // void sSoundExt::setEnemyShareSeResource(rSoundRequest* pRequest);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseGameCommon at 0x0084c9c1-0x0084c9dd (called at sSoundExt.cpp:1466)
-// void sSoundExt::releaseEnemyShareSeResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseGameCommon at 0x84c9c1-0x84c9dd; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseEnemyShareSeResource() {
+    if (mprEnemyShareRequest == nullptr) {
+        return;
+    }
+    mprEnemyShareRequest->release();
+    mprEnemyShareRequest = nullptr;
+}
 
 // Address: 0x00852a60 - 0x00852b3f (223 bytes)
 __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfo(const MtVector3& targetPos) {
@@ -1176,16 +1222,16 @@ __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfoToInn() {
 rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
     // DWARF local not rendered: rSoundRequest* prResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cWepCateResTbl* pRes = ::sGame::getInstance()->::sGame::getWepCateResData(wepCategory);
-    if (pRes != static_cast<cWepCateResTbl*>(nullptr)) {
-        u64 resId = pRes->::cWepCateResTbl::getSndResId();
-        if (resId != static_cast<u64>(0)) {
-            return static_cast<rSoundRequest*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(resId, static_cast<u32>(1), false));
+    cWepCateResTbl* pRes = sGame::getInstance()->getWepCateResData(wepCategory);
+    if (pRes != nullptr) {
+        u64 resId = pRes->cWepCateResTbl::getSndResId();
+        if (resId != 0) {
+            return static_cast<rSoundRequest*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
-            return static_cast<rSoundRequest*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1193,16 +1239,16 @@ rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
 rSoundRequest* sSoundExt::getSndWepResource(u32 itemId, u32 sex) {
     // DWARF local not rendered: rSoundRequest* prResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cWeaponResTable* pWepRes = ::cPlayerLoadManager::getWeaponArcTagEx(static_cast<unsigned short>(itemId), sex);
-    if (pWepRes != static_cast<cWeaponResTable*>(nullptr)) {
-        u64 resId = pWepRes->::cWeaponResTable::getSndResId();
-        if (resId != static_cast<u64>(0)) {
-            return static_cast<rSoundRequest*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(resId, static_cast<u32>(1), false));
+    cWeaponResTable* pWepRes = cPlayerLoadManager::getWeaponArcTagEx(static_cast<unsigned short>(itemId), sex);
+    if (pWepRes != nullptr) {
+        u64 resId = pWepRes->cWeaponResTable::getSndResId();
+        if (resId != 0) {
+            return static_cast<rSoundRequest*>(sArchiveManager::getInstance()->createRes(resId, 1u, false));
         } else {
-            return static_cast<rSoundRequest*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<rSoundRequest*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1230,43 +1276,43 @@ __attribute__((weak)) void sSoundExt::loadCommonData() {
 // Address: 0x0084c480 - 0x0084c559 (217 bytes)
 void sSoundExt::releaseCommonData() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    this->::sSound::setSoundCurveSet(static_cast<rSoundCurveSet*>(nullptr));
-    this->::sSound::setSoundDirectionalSet(static_cast<rSoundDirectionalSet*>(nullptr));
-    this->::sSound::setReverb(static_cast<rSoundReverb*>(nullptr));
-    this->::sSound::setEQ(static_cast<rSoundEQ*>(nullptr));
-    if (this->mpSoundSubMixer != static_cast<uSoundSubMixer*>(nullptr)) {
-        delete this->mpSoundSubMixer;
-        this->mpSoundSubMixer = static_cast<uSoundSubMixer*>(nullptr);
+    setSoundCurveSet(static_cast<rSoundCurveSet*>(nullptr));
+    setSoundDirectionalSet(static_cast<rSoundDirectionalSet*>(nullptr));
+    setReverb(static_cast<rSoundReverb*>(nullptr));
+    setEQ(static_cast<rSoundEQ*>(nullptr));
+    if (mpSoundSubMixer != nullptr) {
+        delete mpSoundSubMixer;
+        mpSoundSubMixer = nullptr;
     }
-    if (this->mprSoundSubMixer != static_cast<rSoundSubMixer*>(nullptr)) {
-        this->mprSoundSubMixer->::cResource::release();
-        this->mprSoundSubMixer = static_cast<rSoundSubMixer*>(nullptr);
+    if (mprSoundSubMixer != nullptr) {
+        mprSoundSubMixer->release();
+        mprSoundSubMixer = nullptr;
     }
-    if (this->mprSoundSubMixerSet != static_cast<rSoundSubMixerSet*>(nullptr)) {
-        this->mprSoundSubMixerSet->::cResource::release();
-        this->mprSoundSubMixerSet = static_cast<rSoundSubMixerSet*>(nullptr);
-        this->::sSoundExt::releaseNoStopStreamAll();
+    if (mprSoundSubMixerSet != nullptr) {
+        mprSoundSubMixerSet->release();
+        mprSoundSubMixerSet = nullptr;
+        releaseNoStopStreamAll();
         // inferred: a temporary for the value the load at 0x84c51a read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mBgmSystemTicket != t1) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mBgmSystemTicket);
-            this->mBgmSystemTicket = static_cast<TICKET>(t1);
+        cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
+        if (mBgmSystemTicket != t1) {
+            sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
+            mBgmSystemTicket = static_cast<TICKET>(t1);
         }
-        if (this->mprOptionData != static_cast<rSoundOptData*>(nullptr)) {
-            this->mprOptionData->::cResource::release();
-            this->mprOptionData = static_cast<rSoundOptData*>(nullptr);
+        if (mprOptionData != nullptr) {
+            mprOptionData->release();
+            mprOptionData = nullptr;
         }
     } else {
-        this->::sSoundExt::releaseNoStopStreamAll();
+        releaseNoStopStreamAll();
         // inferred: a temporary for the value the load at 0x84c51a read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mBgmSystemTicket != t1) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mBgmSystemTicket);
-            this->mBgmSystemTicket = static_cast<TICKET>(t1);
+        cArcLoaderBase* const t1 = sArchiveManager::INVALID_TICKET;
+        if (mBgmSystemTicket != t1) {
+            sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
+            mBgmSystemTicket = static_cast<TICKET>(t1);
         }
-        if (this->mprOptionData != static_cast<rSoundOptData*>(nullptr)) {
-            this->mprOptionData->::cResource::release();
-            this->mprOptionData = static_cast<rSoundOptData*>(nullptr);
+        if (mprOptionData != nullptr) {
+            mprOptionData->release();
+            mprOptionData = nullptr;
         }
     }
 }
@@ -1281,9 +1327,15 @@ void sSoundExt::releaseCommonData() {
 //   in sSoundExt::loadGameCommon at 0x0084c731-0x0084c78f, 0x0084c7f0-0x0084c7f7, 0x0084c83f-0x0084c846, 0x0084c887-0x0084c88e, 0x0084c8cb-0x0084c8d2 (called at sSoundExt.cpp:1409)
 // void sSoundExt::loadHmParamOfsResource();
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseGameCommon at 0x0084c949-0x0084c965 (called at sSoundExt.cpp:1451)
-// void sSoundExt::releaseHmParamOfsResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseGameCommon at 0x84c949-0x84c965; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseHmParamOfsResource() {
+    if (mprHmParamOfs == nullptr) {
+        return;
+    }
+    mprHmParamOfs->release();
+    mprHmParamOfs = nullptr;
+}
 
 // Address: 0x0084eb40 - 0x0084ec0d (205 bytes)
 __attribute__((weak)) u32 sSoundExt::getKindParamOfs(uModel* pModel) {
@@ -1330,68 +1382,68 @@ __attribute__((weak)) void sSoundExt::setExVolumeParamOfs(rSoundRequest* pReques
 // Address: 0x0084e290 - 0x0084e3b0 (288 bytes)
 f32 sSoundExt::getParamOfsData(s32 index, u32 param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mprHmParamOfs != static_cast<rSoundParamOfs*>(nullptr)) {
-        if (static_cast<unsigned int>(index) < this->mprHmParamOfs->getDataNum()) {
-            cSoundParamOfs* pParam = this->mprHmParamOfs->getData(static_cast<u32>(index));
-            if (pParam != static_cast<cSoundParamOfs*>(nullptr)) {
+    if (mprHmParamOfs != nullptr) {
+        if (static_cast<unsigned int>(index) < mprHmParamOfs->getDataNum()) {
+            cSoundParamOfs* pParam = mprHmParamOfs->getData(static_cast<u32>(index));
+            if (pParam != nullptr) {
                 switch (param) {
-                    case static_cast<u32>(0):
+                    case 0:
                     {
-                        return pParam->::cSoundParamOfs::getVolume();
+                        return pParam->cSoundParamOfs::getVolume();
                     }
-                    case static_cast<u32>(1):
+                    case 1:
                     {
                         return static_cast<float>(pParam->mPitchShift);
                     }
-                    case static_cast<u32>(2):
+                    case 2:
                     {
                         return static_cast<float>(pParam->mProgramNo);
                     }
-                    case static_cast<u32>(3):
+                    case 3:
                     {
                         return static_cast<float>(pParam->mPriority);
                     }
-                    case static_cast<u32>(4):
+                    case 4:
                     {
                         return static_cast<float>(pParam->mGlobal);
                     }
-                    case static_cast<u32>(5):
+                    case 5:
                     {
                         return static_cast<float>(pParam->mID1);
                     }
-                    case static_cast<u32>(6):
+                    case 6:
                     {
                         return static_cast<float>(pParam->mID2);
                     }
-                    case static_cast<u32>(7):
+                    case 7:
                     {
                         return static_cast<float>(pParam->mID3);
                     }
-                    case static_cast<u32>(8):
+                    case 8:
                     {
                         return static_cast<float>(pParam->mLimit);
                     }
-                    case static_cast<u32>(9):
+                    case 9:
                     {
                         return static_cast<float>(pParam->mCenterVol);
                     }
-                    case static_cast<u32>(10):
+                    case 10:
                     {
                         return static_cast<float>(pParam->mVolCurveId);
                     }
-                    case static_cast<u32>(11):
+                    case 11:
                     {
                         return static_cast<float>(pParam->mEffectCurveId);
                     }
-                    case static_cast<u32>(12):
+                    case 12:
                     {
                         return static_cast<float>(pParam->mLfeCurveId);
                     }
-                    case static_cast<u32>(13):
+                    case 13:
                     {
                         return static_cast<float>(pParam->mDirectionalCurveId);
                     }
-                    case static_cast<u32>(14):
+                    case 14:
                     {
                         return static_cast<float>(pParam->mSubmixer);
                     }
@@ -1602,28 +1654,37 @@ cSplitBgm* sSoundExt::getSplitAreaBgmInfo(s8 areaNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from MtObject*
     // inferred: a value cast to the type its use takes: unsigned char used as unsigned int
     // inferred: a value cast to the type its use takes: s8 used as unsigned int
-    if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mStageSplitAreaResource.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x84dca9, 0x84dcdc)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mStageSplitAreaResource.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mStageSplitAreaResource.::MtArray::mpArray[i]) + static_cast<long>(24))) != static_cast<unsigned int>(areaNo)) {
-                } else {
-                    return static_cast<cSplitBgm*>(this->mStageSplitAreaResource.::MtArray::mpArray[i]);
+            if (mStageSplitAreaResource.mpArray[i] != nullptr) {
+                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mStageSplitAreaResource.mpArray[i]) + 24)) == static_cast<unsigned int>(areaNo)) {
+                    return static_cast<cSplitBgm*>(mStageSplitAreaResource.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mStageSplitAreaResource.::MtArray::mLength);
+            i += 1u;
+        } while (i < mStageSplitAreaResource.mLength);
     }
-    return static_cast<cSplitBgm*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
 // rSoundStreamRequest* sSoundExt::getNowAreaBgmSrq(u64 resID);
 
-// No out-of-line body: 1 inlined copy in 1 function (63 bytes)
-//   in sSoundExt::move at 0x0084b787-0x0084b7c6 (called at sSoundExt.cpp:745)
-// void sSoundExt::moveArea();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::move at 0x84b787-0x84b7c6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::moveArea() {
+    if (mpuOCC != nullptr) {
+        if ((mpuOCC->mBeFlag - 1u) > 1u) {
+            mpuOCC = nullptr;
+        }
+    }
+    if ((sArea::mpInstance) == nullptr) {
+        return;
+    }
+    mpuOCC = static_cast<sAreaExt*>(sArea::mpInstance)->getSoundOcclusion();
+}
 
 // Address: 0x0084d920 - 0x0084d9e3 (195 bytes)
 __attribute__((weak)) void sSoundExt::setSePause(bool bpause) {
@@ -1666,8 +1727,8 @@ __attribute__((weak)) void sSoundExt::moveShareNG() {
 // Address: 0x00851180 - 0x00851195 (21 bytes)
 void sSoundExt::setEQDistToArea(u32 i, f32 dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (i <= static_cast<u32>(3)) {
-        this->mEqLength[i] = dist * dist;
+    if (i <= 3u) {
+        mEqLength[i] = dist * dist;
     }
 }
 
@@ -1704,13 +1765,13 @@ void sSoundExt::changeSubMixer(u32 no) {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
     rSoundSubMixerSet::BasicSubMixers* pBasicSubMixer;
-    if (this->mpSoundSubMixer != static_cast<uSoundSubMixer*>(nullptr)) {
-        pBasicSubMixer = this->::sSoundExt::getSoundSubMixerSetResource()->::rSoundSubMixerSet::getBasicSubMixers(no);
-        if (pBasicSubMixer != static_cast<rSoundSubMixerSet::BasicSubMixers*>(nullptr)) {
-            if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource0() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (mpSoundSubMixer != nullptr) {
+        pBasicSubMixer = getSoundSubMixerSetResource()->getBasicSubMixers(no);
+        if (pBasicSubMixer != nullptr) {
+            if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource0() != nullptr) {
                 // inferred: a temporary for the value the load at 0x850ff0 read, used once; no DWARF local holds it
-                uSoundSubMixer* t0 = this->mpSoundSubMixer;
-                t0->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(0), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource0());
+                uSoundSubMixer* t0 = mpSoundSubMixer;
+                t0->mergeSubMixer(static_cast<u8>(0), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource0());
             }
         } else {
             return;
@@ -1718,40 +1779,40 @@ void sSoundExt::changeSubMixer(u32 no) {
     } else {
         return;
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource1() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource1() != nullptr) {
         // inferred: a temporary for the value the load at 0x851019 read, used once; no DWARF local holds it
-        uSoundSubMixer* t1 = this->mpSoundSubMixer;
-        t1->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(1), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource1());
+        uSoundSubMixer* t1 = mpSoundSubMixer;
+        t1->mergeSubMixer(static_cast<u8>(1), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource1());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource2() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource2() != nullptr) {
         // inferred: a temporary for the value the load at 0x851045 read, used once; no DWARF local holds it
-        uSoundSubMixer* t2 = this->mpSoundSubMixer;
-        t2->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(2), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource2());
+        uSoundSubMixer* t2 = mpSoundSubMixer;
+        t2->mergeSubMixer(static_cast<u8>(2), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource2());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource3() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource3() != nullptr) {
         // inferred: a temporary for the value the load at 0x851071 read, used once; no DWARF local holds it
-        uSoundSubMixer* t3 = this->mpSoundSubMixer;
-        t3->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(3), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource3());
+        uSoundSubMixer* t3 = mpSoundSubMixer;
+        t3->mergeSubMixer(static_cast<u8>(3), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource3());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource4() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource4() != nullptr) {
         // inferred: a temporary for the value the load at 0x85109d read, used once; no DWARF local holds it
-        uSoundSubMixer* t4 = this->mpSoundSubMixer;
-        t4->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(4), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource4());
+        uSoundSubMixer* t4 = mpSoundSubMixer;
+        t4->mergeSubMixer(static_cast<u8>(4), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource4());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource5() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource5() != nullptr) {
         // inferred: a temporary for the value the load at 0x8510c9 read, used once; no DWARF local holds it
-        uSoundSubMixer* t5 = this->mpSoundSubMixer;
-        t5->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(5), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource5());
+        uSoundSubMixer* t5 = mpSoundSubMixer;
+        t5->mergeSubMixer(static_cast<u8>(5), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource5());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource6() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource6() != nullptr) {
         // inferred: a temporary for the value the load at 0x8510f5 read, used once; no DWARF local holds it
-        uSoundSubMixer* t6 = this->mpSoundSubMixer;
-        t6->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(6), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource6());
+        uSoundSubMixer* t6 = mpSoundSubMixer;
+        t6->mergeSubMixer(static_cast<u8>(6), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource6());
     }
-    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource7() != static_cast<rSoundSubMixer*>(nullptr)) {
+    if (pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource7() != nullptr) {
         // inferred: a temporary for the value the load at 0x851121 read, used once; no DWARF local holds it
-        uSoundSubMixer* t7 = this->mpSoundSubMixer;
-        t7->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(7), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource7());
+        uSoundSubMixer* t7 = mpSoundSubMixer;
+        t7->mergeSubMixer(static_cast<u8>(7), pBasicSubMixer->rSoundSubMixerSet::BasicSubMixers::getResource7());
         return;
     }
 }
@@ -1789,9 +1850,15 @@ __attribute__((weak)) void sSoundExt::setSubMixerResource() {
 //   in sSoundExt::loadCommonData at 0x0084c2e6-0x0084c2ff (called at sSoundExt.cpp:1356)
 // void sSoundExt::setSoundSubMixerSetResource(rSoundSubMixerSet* pResource);
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseCommonData at 0x0084c4e8-0x0084c504 (called at sSoundExt.cpp:1383)
-// void sSoundExt::releaseSoundSubMixerSetResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseCommonData at 0x84c4e8-0x84c504; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseSoundSubMixerSetResource() {
+    if (mprSoundSubMixerSet == nullptr) {
+        return;
+    }
+    mprSoundSubMixerSet->release();
+    mprSoundSubMixerSet = nullptr;
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (57 bytes)
 //   in sSoundExt::releaseCommonData at 0x0084c4af-0x0084c4e8 (called at sSoundExt.cpp:1382)
@@ -1873,19 +1940,19 @@ __attribute__((weak)) void sSoundExt::moveListeningPosition() {
 // Address: 0x00853010 - 0x00853019 (9 bytes)
 void sSoundExt::setSeVolumeRatio(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::setSeVolumeRatio(pRequest, reqNo, thisId, volume, isLink);
+    this->sSound::setSeVolumeRatio(pRequest, reqNo, thisId, volume, isLink);
 }
 
 // Address: 0x00853020 - 0x00853029 (9 bytes)
 void sSoundExt::setSeEffectVolumeRatio(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::setSeEffectVolumeRatio(pRequest, reqNo, thisId, volume, isLink);
+    this->sSound::setSeEffectVolumeRatio(pRequest, reqNo, thisId, volume, isLink);
 }
 
 // Address: 0x00853030 - 0x00853039 (9 bytes)
 void sSoundExt::setSeVolumeOfAllRatio(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sSound::setSeVolumeOfAllRatio(pRequest, reqNo, thisId, volume, isLink);
+    this->sSound::setSeVolumeOfAllRatio(pRequest, reqNo, thisId, volume, isLink);
 }
 
 // Address: 0x00850aa0 - 0x00850ad0 (48 bytes)
@@ -1899,28 +1966,28 @@ __attribute__((weak)) rSoundStreamRequest* sSoundExt::getNoStopStream(const MtDT
 void sSoundExt::addNoStopStreamArcTicket(ARC_TAGID tagId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x8509ea, used twice; no DWARF local holds it
-    TICKET t0 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
-    this->mBgmSystemTicket = t0;
-    ::sArchiveManager::getInstance()->::sArchiveManager::addTagEx(t0, tagId);
-    ::sArchiveManager::getInstance()->::sArchiveManager::attestationTicket(this->mBgmSystemTicket);
+    TICKET t0 = sArchiveManager::getInstance()->IssueTicket();
+    mBgmSystemTicket = t0;
+    sArchiveManager::getInstance()->addTagEx(t0, tagId);
+    sArchiveManager::getInstance()->attestationTicket(mBgmSystemTicket);
 }
 
 // Address: 0x00850a20 - 0x00850a39 (25 bytes)
 bool sSoundExt::isNoStopStreamArcLoadFinish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mBgmSystemTicket);
+    return sArchiveManager::getInstance()->isTicketLoadFinish(mBgmSystemTicket);
 }
 
 // Address: 0x0084c6d0 - 0x0084c70b (59 bytes)
 void sSoundExt::returnTicketNoStopAtream() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x84c6e8 read, used twice; no DWARF local holds it
-    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-    if (this->mBgmSystemTicket == t0) {
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mBgmSystemTicket == t0) {
         return;
     }
-    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mBgmSystemTicket);
-    this->mBgmSystemTicket = static_cast<TICKET>(t0);
+    sArchiveManager::getInstance()->returnTicket(mBgmSystemTicket);
+    mBgmSystemTicket = static_cast<TICKET>(t0);
 }
 
 // Address: 0x00850a40 - 0x00850a9e (94 bytes)
@@ -1953,22 +2020,21 @@ __attribute__((weak)) void sSoundExt::releaseNoStopStreamAll() {
 sSoundExt::cNonStopStream* sSoundExt::checkNoStopStream(rSoundStreamRequest* pRequest) {
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     // inferred: DWARF's location-less 'i' (lexical block [0x850b43, 0x850b76)) is the counter this loop steps
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    sSoundExt::cNonStopStream* p2 = &this->mNoStopStream[0];
-    if (pRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
+    cNonStopStream* p2 = &mNoStopStream[0];
+    if (pRequest != nullptr) {
         do {
-            if (p2->::sSoundExt::cNonStopStream::getStreamRequest() != static_cast<rSoundStreamRequest*>(nullptr)) {
-                if (p2->::sSoundExt::cNonStopStream::getStreamRequest()->::cResource::getID() != pRequest->::cResource::mID) {
-                } else {
+            if (p2->getStreamRequest() != nullptr) {
+                if (p2->getStreamRequest()->getID() == pRequest->mID) {
                     return p2;
                 }
             }
-            i += static_cast<u32>(1);
+            i += 1u;
             p2 += static_cast<int>(1);
-        } while (i <= static_cast<u32>(7));
+        } while (i <= 7u);
     }
-    return static_cast<sSoundExt::cNonStopStream*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00850b90 - 0x00850d00 (368 bytes)
@@ -2030,12 +2096,12 @@ __attribute__((weak)) void sSoundExt::setOptVolumeFromSaveData() {
 // Address: 0x0084b4f0 - 0x0084b52d (61 bytes)
 void sSoundExt::initMasterVolumeParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGameVolCtrlFadeStatus = static_cast<u32>(0);
-    this->mGameVolCtrlFadeTime = 0.0f;
-    this->mGameVolCtrlFadeTargetVolume = 0.0f;
-    this->mGameVolCtrlFadeVolume = 0.0f;
-    this->mGameVolCtrlVolume = 1.0f;
-    this->mGameVolCtrlFadeVolumeRatio = 1.0f;
+    mGameVolCtrlFadeStatus = 0;
+    mGameVolCtrlFadeTime = 0.0f;
+    mGameVolCtrlFadeTargetVolume = 0.0f;
+    mGameVolCtrlFadeVolume = 0.0f;
+    mGameVolCtrlVolume = 1.0f;
+    mGameVolCtrlFadeVolumeRatio = 1.0f;
 }
 
 // Address: 0x00851410 - 0x0085150a (250 bytes)
@@ -2058,9 +2124,15 @@ __attribute__((weak)) void sSoundExt::setOptVolume(u32 category, u32 item, f32 v
 //   in sSoundExt::loadCommonData at 0x0084c307-0x0084c366 (called at sSoundExt.cpp:1361)
 // void sSoundExt::loadOptionDataResource();
 
-// No out-of-line body: 1 inlined copy in 1 function (28 bytes)
-//   in sSoundExt::releaseCommonData at 0x0084c538-0x0084c554 (called at sSoundExt.cpp:1394)
-// void sSoundExt::releaseOptionDataResource();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in sSoundExt::releaseCommonData at 0x84c538-0x84c554; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sSoundExt::releaseOptionDataResource() {
+    if (mprOptionData == nullptr) {
+        return;
+    }
+    mprOptionData->release();
+    mprOptionData = nullptr;
+}
 
 // No out-of-line body: 3 inlined copies in 2 functions (316 bytes)
 //   in sSoundExt::calcOptionVolumeRate at 0x00852d3a-0x00852da7, 0x00852e9d-0x00852ea3 (called at sSoundExt.cpp:7145)
@@ -2073,6 +2145,8 @@ __attribute__((weak)) void sSoundExt::setOptVolume(u32 category, u32 item, f32 v
 //   in sSoundExt::calcOptionVolumeRate at 0x00852e80-0x00852e9d (called at sSoundExt.cpp:7147)
 //   in sSoundExt::calcOptionVolumeRate at 0x00852fad-0x00852fc6 (called at sSoundExt.cpp:7205)
 // f32 sSoundExt::getOptVolume(u32 category, u32 item);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSoundExt::MyDTI sSoundExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x008531b7-0x008531f4 (called at sSoundExt.cpp:221)
@@ -2109,7 +2183,7 @@ const MtDTI& sSoundExt::cVoiceRequest::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sSoundExt::cVoiceRequest::DTI)->memAlloc(sz, align, ::sSoundExt::cVoiceRequest::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sSoundExt::cVoiceRequest::DTI)->memAlloc(sz, align, sSoundExt::cVoiceRequest::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2124,7 +2198,7 @@ inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sSoundExt::cVoiceRequest::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSoundExt::cVoiceRequest::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSoundExt::cVoiceRequest::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2145,11 +2219,11 @@ inline void sSoundExt::cVoiceRequest::operator delete(void* p_addr) {
 // Also emitted as: _ZN9sSoundExt13cVoiceRequestD0Ev at 0x00849fc0
 sSoundExt::cVoiceRequest::~cVoiceRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource == static_cast<rSoundStreamRequest*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->mpResource->::cResource::release();
-    this->mpResource = static_cast<rSoundStreamRequest*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (12 bytes)
@@ -2225,6 +2299,8 @@ __attribute__((weak)) bool sSoundExt::cVoiceRequest::sortByPrio(const sSoundExt:
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSoundExt::cVoiceRequest::MyDTI sSoundExt::cVoiceRequest::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x0085313e-0x0085317e (called at sSoundExt.cpp:177)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x0085313e-0x0085317e (called at sSoundExt.h:623)
@@ -2233,7 +2309,7 @@ __attribute__((weak)) bool sSoundExt::cVoiceRequest::sortByPrio(const sSoundExt:
 // Address: 0x00849dd0 - 0x00849e41 (113 bytes)
 MtObject* sSoundExt::cVoiceRequest::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sSoundExt::cVoiceRequest;
+    return new (16u) sSoundExt::cVoiceRequest;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2271,7 +2347,7 @@ const MtDTI& sSoundExt::cNonStopStream::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sSoundExt::cNonStopStream::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sSoundExt::cNonStopStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sSoundExt::cNonStopStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2308,6 +2384,8 @@ inline void sSoundExt::cNonStopStream::operator delete(void* p_addr) {
 // No out-of-line body: 1 inlined copy in 1 function (12 bytes)
 //   in sSoundExt::stopAllStreamEx at 0x00850bd1-0x00850bdd (called at sSoundExt.cpp:3582)
 // const MtDTI* sSoundExt::cNonStopStream::getDTI();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sSoundExt::cNonStopStream::MyDTI sSoundExt::cNonStopStream::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sSoundExt.cpp at 0x0085317e-0x008531b7 (called at sSoundExt.cpp:178)

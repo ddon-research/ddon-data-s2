@@ -226,11 +226,11 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 // inferred: the constructor from _ZNK8rArchive5MyDTI11newInstanceEv at 0x011c0d20-0x011c0d6d, code DWARF attributes to no inlined copy
 inline rArchive::rArchive() {
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mbCrypted = static_cast<u32>(0);
-    this->mCurrentSize = static_cast<u32>(0);
+    this->::cResource::mAttr = 16;
+    this->mbCrypted = 0;
+    this->mCurrentSize = 0;
     this->mElapsedTime = 0.0f;
-    this->mResourceNum = static_cast<u32>(0);
-    this->mTotalSize = static_cast<u32>(0);
-    this->mpResource = static_cast<cResource* *>(nullptr);
+    this->mResourceNum = 0;
+    this->mTotalSize = 0;
+    this->mpResource = nullptr;
 }

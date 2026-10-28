@@ -1269,43 +1269,79 @@ inline sCraftManager::cCraftRankUp* sCraftManager::getCraftRankUp() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cNetGameServer::OnPacket_S2C_START_EQUIP_GRADE_UP_RES at 0x37034b-0x370352; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline sCraftManager::cCraftUpGrade* sCraftManager::getCraftUpGrade() {
+    return &this->mCraftUpGrade;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x10a091-0x10a09b; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void sCraftManager::resetCraftMenuType() {
+    this->mCraftMenuType = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x109e11-0x109e17; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline sCraftManager::COLOR_REGULATE_STATE sCraftManager::getCraftColorRegulateState() {
+    return this->mCraftColorRegulateState;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cMenuCraftMenu::moveCraftMenu at 0x109ef9-0x109eff; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline sCraftManager::IR_REDUCTION_DATA_STATE sCraftManager::getCraftIrReductionDataState() {
+    return this->mCraftIrReductionDataState;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 sCraftManager::getPlusItemListNum() {
+    return this->mAddItemList.::MtArray::mLength;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::cCraftFinishNotice::cCraftFinishNotice() {
-    this->mPawnId = static_cast<u32>(0);
+    this->mPawnId = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::cAddExp::cAddExp() {
-    this->mRno = static_cast<u32>(0);
+    this->mRno = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::RecordRecipe::RecordRecipe() {
-    this->mRecipeNo = static_cast<u32>(0);
+    this->mRecipeNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sCraftManager::cCraftPawnCtrl::initCraftProgressList() {
-    this->mCraftTaskRno = static_cast<u32>(0);
+    this->mCraftTaskRno = 0;
     this->mIsCraftProgressComplete = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::cCraftRankUp::cCraftRankUp() {
     this->mIsRankUp = false;
-    this->mBonusExp = static_cast<u32>(0);
-    this->mTotalExp = static_cast<u32>(0);
-    this->mPawnId = static_cast<u32>(0);
-    this->mAddExp = static_cast<u32>(0);
-    this->mTotalCraftPoint = static_cast<u32>(0);
+    this->mBonusExp = 0;
+    this->mTotalExp = 0;
+    this->mPawnId = 0;
+    this->mAddExp = 0;
+    this->mTotalCraftPoint = 0;
     this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
-    this->mCraftRank = static_cast<u32>(0);
-    this->mAddCraftPoint = static_cast<u32>(0);
+    this->mCraftRank = 0;
+    this->mAddCraftPoint = 0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in stSort::sort at 0x763692-0x763695; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 sCraftManager::cCraftUpGradeItemList::getItemNum() const {
+    return this->mItemNum;
 }
 
 // Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::cCraftIrReductionData::cCraftIrReductionData() {
-    this->mRate = static_cast<u8>(100);
+    this->mRate = 100;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1323,9 +1359,9 @@ inline sCraftManager::stRecipeRequest::stRecipeRequest() {
 // Inline, no code of its own: checked where it is inlined.
 inline sCraftManager::PawnCost::PawnCost() {
     this->mIsNoLimitCostSkill = false;
-    this->mState = static_cast<u8>(0);
-    this->mCraftCount = static_cast<u32>(0);
-    this->mRank = static_cast<u32>(0);
-    this->mPawnId = static_cast<u32>(0);
-    this->mCostLv = static_cast<u32>(0);
+    this->mState = 0;
+    this->mCraftCount = 0;
+    this->mRank = 0;
+    this->mPawnId = 0;
+    this->mCostLv = 0;
 }

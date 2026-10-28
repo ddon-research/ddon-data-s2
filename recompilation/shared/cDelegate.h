@@ -424,6 +424,6 @@ inline cDelegateBase::cDelegateBase() {
 
 // Inline, no code of its own: checked where it is inlined.
 inline cDelegateBase::cNode::cNode() {
-    this->mpThis = static_cast<MtObject*>(nullptr);
+    this->mpThis = nullptr;
     this->mFuncName = "";
 }

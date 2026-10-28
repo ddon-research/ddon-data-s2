@@ -28,28 +28,28 @@ __attribute__((weak)) u16 MtNetByteOrder::hostToNet16(u16 host_u16) {
 u32 MtNetByteOrder::netToHost32(u32 net_u32) {
     // DWARF local not rendered: u32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((((net_u32 & static_cast<u32>(255)) * static_cast<u32>(16777216)) | (((net_u32 >> static_cast<u32>(8)) & static_cast<u32>(255)) * static_cast<u32>(65536))) | (((net_u32 >> static_cast<u32>(16)) & static_cast<u32>(255)) * static_cast<u32>(256))) | ((net_u32 >> static_cast<u32>(24)) & static_cast<u32>(255));
+    return ((((net_u32 & 255u) * 0x1000000u) | (((net_u32 >> 8) & 255u) * 0x10000u)) | (((net_u32 >> 16) & 255u) * 256u)) | ((net_u32 >> 24) & 255u);
 }
 
 // Address: 0x00db6240 - 0x00db6245 (5 bytes)
 u32 MtNetByteOrder::hostToNet32(u32 host_u32) {
     // DWARF local not rendered: u32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((((host_u32 & static_cast<u32>(255)) * static_cast<u32>(16777216)) | (((host_u32 >> static_cast<u32>(8)) & static_cast<u32>(255)) * static_cast<u32>(65536))) | (((host_u32 >> static_cast<u32>(16)) & static_cast<u32>(255)) * static_cast<u32>(256))) | ((host_u32 >> static_cast<u32>(24)) & static_cast<u32>(255));
+    return ((((host_u32 & 255u) * 0x1000000u) | (((host_u32 >> 8) & 255u) * 0x10000u)) | (((host_u32 >> 16) & 255u) * 256u)) | ((host_u32 >> 24) & 255u);
 }
 
 // Address: 0x00db6250 - 0x00db6257 (7 bytes)
 u64 MtNetByteOrder::netToHost64(u64 net_u64) {
     // DWARF local not rendered: u64 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((((((((net_u64 & static_cast<u64>(255)) * static_cast<u64>(72057594037927936)) | (((net_u64 >> static_cast<u64>(8)) & static_cast<u64>(255)) * static_cast<u64>(281474976710656))) | (((net_u64 >> static_cast<u64>(16)) & static_cast<u64>(255)) * static_cast<u64>(1099511627776))) | (((net_u64 >> static_cast<u64>(24)) & static_cast<u64>(255)) * static_cast<u64>(4294967296))) | (((net_u64 >> static_cast<u64>(32)) & static_cast<u64>(255)) * static_cast<u64>(16777216))) | (((net_u64 >> static_cast<u64>(40)) & static_cast<u64>(255)) * static_cast<u64>(65536))) | (((net_u64 >> static_cast<u64>(48)) & static_cast<u64>(255)) * static_cast<u64>(256))) | ((net_u64 >> static_cast<u64>(56)) & static_cast<u64>(255));
+    return ((((((((net_u64 & 255ul) * 0x100000000000000ul) | (((net_u64 >> 8) & 255ul) * 0x1000000000000ul)) | (((net_u64 >> 16) & 255ul) * 0x10000000000ul)) | (((net_u64 >> 24) & 255ul) * 0x100000000ul)) | (((net_u64 >> 32) & 255ul) * 0x1000000ul)) | (((net_u64 >> 40) & 255ul) * 0x10000ul)) | (((net_u64 >> 48) & 255ul) * 256ul)) | ((net_u64 >> 56) & 255ul);
 }
 
 // Address: 0x00db6260 - 0x00db6267 (7 bytes)
 u64 MtNetByteOrder::hostToNet64(u64 host_u64) {
     // DWARF local not rendered: u64 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ((((((((host_u64 & static_cast<u64>(255)) * static_cast<u64>(72057594037927936)) | (((host_u64 >> static_cast<u64>(8)) & static_cast<u64>(255)) * static_cast<u64>(281474976710656))) | (((host_u64 >> static_cast<u64>(16)) & static_cast<u64>(255)) * static_cast<u64>(1099511627776))) | (((host_u64 >> static_cast<u64>(24)) & static_cast<u64>(255)) * static_cast<u64>(4294967296))) | (((host_u64 >> static_cast<u64>(32)) & static_cast<u64>(255)) * static_cast<u64>(16777216))) | (((host_u64 >> static_cast<u64>(40)) & static_cast<u64>(255)) * static_cast<u64>(65536))) | (((host_u64 >> static_cast<u64>(48)) & static_cast<u64>(255)) * static_cast<u64>(256))) | ((host_u64 >> static_cast<u64>(56)) & static_cast<u64>(255));
+    return ((((((((host_u64 & 255ul) * 0x100000000000000ul) | (((host_u64 >> 8) & 255ul) * 0x1000000000000ul)) | (((host_u64 >> 16) & 255ul) * 0x10000000000ul)) | (((host_u64 >> 24) & 255ul) * 0x100000000ul)) | (((host_u64 >> 32) & 255ul) * 0x1000000ul)) | (((host_u64 >> 40) & 255ul) * 0x10000ul)) | (((host_u64 >> 48) & 255ul) * 256ul)) | ((host_u64 >> 56) & 255ul);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,13 +64,13 @@ u64 MtNetByteOrder::hostToNet64(u64 host_u64) {
 // Address: 0x00db62c0 - 0x00db62c4 (4 bytes)
 void MtNetLog::setLevel(s32 level) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLevel = level;
+    mLevel = level;
 }
 
 // Address: 0x00db62d0 - 0x00db62d4 (4 bytes)
 s32 MtNetLog::getLevel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mLevel;
+    return mLevel;
 }
 
 // No out-of-line body: no code in the ELF
@@ -115,6 +115,8 @@ MtNetLog::~MtNetLog() {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: a store of no constant): MtNetLog MtNetLog::mInstance;
+
 // No out-of-line body: no code in the ELF
 // MtDTI* MtNetServiceError::getMyDTIPtr();
 
@@ -136,7 +138,7 @@ const MtDTI& MtNetServiceError::getDTI() const {
 // Address: 0x00db6950 - 0x00db6990 (64 bytes)
 void* MtNetServiceError::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::MtNetServiceError::DTI)->memAlloc(sz, align, ::MtNetServiceError::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(MtNetServiceError::DTI)->memAlloc(sz, align, MtNetServiceError::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -151,7 +153,7 @@ void* MtNetServiceError::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17MtNetServiceErrorD0Ev at 0x00db6c7a-0x00db6c9b, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void MtNetServiceError::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtNetServiceError::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(MtNetServiceError::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -181,7 +183,7 @@ MtNetServiceError::MtNetServiceError() {
 // Also emitted as: _ZN17MtNetServiceErrorD0Ev at 0x00db6c50
 MtNetServiceError::~MtNetServiceError() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::MtNetServiceError::mpInstance = static_cast<MtNetServiceError*>(nullptr);
+    MtNetServiceError::mpInstance = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +202,7 @@ __attribute__((weak)) void MtNetServiceError::add(s32 level, MtNetError* err, co
 // Address: 0x00db6e00 - 0x00db6e08 (8 bytes)
 bool MtNetServiceError::isExist() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mInfo[0].mLevel != static_cast<s32>(0);
+    return mInfo[0].mLevel != 0;
 }
 
 // Address: 0x00db6e10 - 0x00db6e96 (134 bytes)
@@ -246,6 +248,13 @@ __attribute__((weak)) void MtNetServiceError::removeTarget(const void* obj) {
 // No out-of-line body: no code in the ELF
 // void MtNetServiceError::setInternalError(s32 no, s32 cause, s32 native);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtNetServiceError::MyDTI MtNetServiceError::DTI;
+
+// Not defined (no member-wise spelling: a pointer, reference or function): const void* MtNetServiceError::TARGET_ANYBODY;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtNetServiceError* MtNetServiceError::mpInstance;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtNetServiceError::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -270,7 +279,7 @@ __attribute__((weak)) void MtNetTime::updateTime() {
 // Address: 0x00db6160 - 0x00db6165 (5 bytes)
 MtNetTime::Total MtNetTime::getTotalTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTotalTime;
+    return mTotalTime;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -282,4 +291,6 @@ MtNetTime::~MtNetTime() {
     DDON_STUB("MtNetTime::~MtNetTime")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: a store of no constant): MtNetTime MtNetTime::mInstance;
 

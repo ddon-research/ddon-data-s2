@@ -36,7 +36,7 @@ const MtDTI& cThinkMgrName::cTargetLink::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cThinkMgrName::cTargetLink::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memAlloc(sz, align, ::cThinkMgrName::cTargetLink::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memAlloc(sz, align, ::cThinkMgrName::cTargetLink::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -139,6 +139,8 @@ __attribute__((weak)) void cThinkMgrName::cTargetLink::createProperty(MtProperty
 //   in cThinkMgrName::cThinkMgr::thinkScriptSet at 0x0058d757-0x0058d75f (called at cThinkMgr.cpp:5646)
 // bool cThinkMgrName::cTargetLink::getMode();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cThinkMgrName::cTargetLink::MyDTI cThinkMgrName::cTargetLink::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dbb6-0x0058dbef (called at cThinkMgr.cpp:75)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dbb6-0x0058dbef (called at cThinkMgr.h:2379)
@@ -147,7 +149,7 @@ __attribute__((weak)) void cThinkMgrName::cTargetLink::createProperty(MtProperty
 // Address: 0x00584620 - 0x00584680 (96 bytes)
 MtObject* cThinkMgrName::cTargetLink::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cThinkMgrName::cTargetLink;
+    return new (16u) ::cThinkMgrName::cTargetLink;
 }
 
 // No out-of-line body: no code in the ELF
@@ -283,11 +285,11 @@ __attribute__((weak)) bool cThinkMgrName::cThinkMgr::setMainThinkTbl(s32 thinktb
 // Address: 0x00586140 - 0x0058616d (45 bytes)
 void cThinkMgrName::cThinkMgr::checkStartTbl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cThinkMgrName::cThinkMgr::isStartTbl()) {
-        if (this->mbComboFlg == false) {
-            if (this->mpThinkTblReset != static_cast<u8*>(nullptr)) {
-                this->mpThinkTbl = this->mpThinkTblReset;
-                this->mpTopSelectThinkTbl = this->mpThinkTbl;
+    if (isStartTbl()) {
+        if (!mbComboFlg) {
+            if (mpThinkTblReset != nullptr) {
+                mpThinkTbl = mpThinkTblReset;
+                mpTopSelectThinkTbl = mpThinkTbl;
             }
         }
     }
@@ -534,7 +536,7 @@ bool cThinkMgrName::cThinkMgr::usrThinkCheck(const kTHINKDATA& tbl) {
 // Address: 0x00585a30 - 0x00585a37 (7 bytes)
 u32 cThinkMgrName::cThinkMgr::getBit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTblBitCtrl;
+    return mTblBitCtrl;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (25 bytes)
@@ -985,6 +987,8 @@ __attribute__((weak)) bool cThinkMgrName::cThinkMgr::thinkScriptFlgCheck_Sub(con
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // cThinkMgrName::cThinkTblList* cThinkMgrName::cThinkMgr::getThinkTblList();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cThinkMgrName::cThinkMgr::MyDTI cThinkMgrName::cThinkMgr::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dc28-0x0058dc61 (called at cThinkMgr.cpp:799)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dc28-0x0058dc61 (called at cThinkMgr.h:3383)
@@ -1043,12 +1047,39 @@ inline void cThinkMgrName::cThinkMgrTargetData::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cThinkMgrName::cThinkMgrTargetData::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 34 inlined copies in 10 functions (5080 bytes)
-//   in cEnemyThinkName::cEnemyThink::actTrace at 0x000c2617-0x000c264c (called at cEnemyThink.cpp:2659)
-//   in cEnemyThinkName::cEnemyThink::actTrace at 0x000c2617-0x000c264c (called at cThinkMgr.h:2205)
-//   in cEnemyThinkName::cEnemyThink::actSetTargetDataNoBattlePoint at 0x000c28f9-0x000c2945 (called at cEnemyThink.cpp:2815)
-//   and 31 more (every copy is in <bundle>.inlined.json)
-// cThinkMgrName::cThinkMgrTargetData::cThinkMgrTargetData();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cThinkMgrName::cThinkMgrTargetData::cThinkMgrTargetData() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    mTargetPos.pad_ = 0.0f;
+    mMyPos.x = ::MtVector3::Zero.x;
+    mMyPos.y = ::MtVector3::Zero.y;
+    mMyPos.z = ::MtVector3::Zero.z;
+    mMyPos.pad_ = 0.0f;
+    mTargetPos.x = ::MtVector3::Zero.x;
+    mTargetPos.y = ::MtVector3::Zero.y;
+    mTargetPos.z = ::MtVector3::Zero.z;
+    mYLength = 0.0f;
+    mAngle = 0.0f;
+    mXyzLength = 0.0f;
+    mXzLength = 0.0f;
+    mTargetPos.pad_ = 0.0f;
+    mTargetAngleY = 0.0f;
+    mMotState = 0;
+    mPriority = 0.0f;
+    mId = 0;
+    mStatusBefore = 0;
+    mStatus = 0;
+    this->mIsTargetDataAll = 0;
+    mIsTargetType = 0;
+    mTargetId = 0;
+    mpTargetChar = nullptr;
+    mTargetHandlingTypeThink = 1;
+    mTargetHandlingType = 1;
+    mLinkID = 0;
+    mLinkIdx = 0;
+}
 
 // Defined in the class (its body was written in a header).
 // cThinkMgrName::cThinkMgrTargetData::~cThinkMgrTargetData();
@@ -1090,30 +1121,30 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::createProperty(Mt
 
 // Address: 0x005848f0 - 0x005849a3 (179 bytes)
 void cThinkMgrName::cThinkMgrTargetData::init() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2c from cThinkMgrName::cThinkMgrTargetData*
-    this->mMyPos = ::MtVector3::Zero;
-    this->mTargetPos.x = ::MtVector3::Zero.x;
-    this->mTargetPos.y = ::MtVector3::Zero.y;
-    this->mTargetPos.z = ::MtVector3::Zero.z;
-    this->mYLength = 0.0f;
-    this->mAngle = 0.0f;
-    this->mXyzLength = 0.0f;
-    this->mXzLength = 0.0f;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(44)) = static_cast<unsigned long>(0);
-    this->mMotState = static_cast<u32>(0);
-    this->mPriority = 0.0f;
-    this->mId = static_cast<u32>(0);
-    this->mStatusBefore = static_cast<u64>(0);
-    this->mStatus = static_cast<u64>(0);
-    this->mIsTargetDataAll = static_cast<u32>(0);
-    this->mIsTargetType = static_cast<u32>(0);
-    this->mTargetId = static_cast<u32>(0);
-    this->mpTargetChar = static_cast<MtObject*>(nullptr);
-    this->mTargetHandlingTypeThink = static_cast<u32>(1);
-    this->mTargetHandlingType = static_cast<u32>(1);
-    this->mLinkID = static_cast<u32>(0);
-    this->mLinkIdx = static_cast<u32>(0);
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    mMyPos = ::MtVector3::Zero;
+    mTargetPos.x = ::MtVector3::Zero.x;
+    mTargetPos.y = ::MtVector3::Zero.y;
+    mTargetPos.z = ::MtVector3::Zero.z;
+    mYLength = 0.0f;
+    mAngle = 0.0f;
+    mXyzLength = 0.0f;
+    mXzLength = 0.0f;
+    mTargetPos.pad_ = 0.0f;
+    mTargetAngleY = 0.0f;
+    mMotState = 0;
+    mPriority = 0.0f;
+    mId = 0;
+    mStatusBefore = 0;
+    mStatus = 0;
+    this->mIsTargetDataAll = 0;
+    mIsTargetType = 0;
+    mTargetId = 0;
+    mpTargetChar = nullptr;
+    mTargetHandlingTypeThink = 1;
+    mTargetHandlingType = 1;
+    mLinkID = 0;
+    mLinkIdx = 0;
 }
 
 // No out-of-line body: 45 inlined copies in 7 functions (800 bytes)
@@ -1151,14 +1182,14 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::recalculationTarg
 __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::updatePtr() {
     // DWARF local not rendered: uDDOModel* pObjModel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTargetChar == static_cast<MtObject*>(nullptr)) {
+    if (mpTargetChar == nullptr) {
         return;
     }
-    if (static_cast<cUnit*>(this->mpTargetChar)->::cUnit::isEnable() != false) {
+    if (static_cast<cUnit*>(mpTargetChar)->isEnable()) {
         return;
     }
-    this->mpTargetChar = static_cast<MtObject*>(nullptr);
-    this->mIsTargetDataAll = this->mIsTargetDataAll & static_cast<u32>(4294967294);
+    mpTargetChar = nullptr;
+    this->mIsTargetDataAll = this->mIsTargetDataAll & 0xFFFFFFFEu;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (164 bytes)
@@ -1207,6 +1238,8 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::updatePtr() {
 
 // No out-of-line body: no code in the ELF
 // void cThinkMgrName::cThinkMgrTargetData::setTargetId(u32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cThinkMgrName::cThinkMgrTargetData::MyDTI cThinkMgrName::cThinkMgrTargetData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058db00-0x0058db44 (called at cThinkMgr.cpp:70)
@@ -1285,29 +1318,29 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::createProperty(MtP
 void cThinkMgrName::cThinkMgrTargetMgr::updatePtr() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetData[0].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[1].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[2].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[3].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[4].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[5].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[6].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[7].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[8].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[9].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[10].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[11].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[12].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[13].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[14].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[15].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[16].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[17].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[18].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[19].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[20].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[21].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
-    this->mTargetData[22].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
+    mTargetData[0].updatePtr();
+    mTargetData[1].updatePtr();
+    mTargetData[2].updatePtr();
+    mTargetData[3].updatePtr();
+    mTargetData[4].updatePtr();
+    mTargetData[5].updatePtr();
+    mTargetData[6].updatePtr();
+    mTargetData[7].updatePtr();
+    mTargetData[8].updatePtr();
+    mTargetData[9].updatePtr();
+    mTargetData[10].updatePtr();
+    mTargetData[11].updatePtr();
+    mTargetData[12].updatePtr();
+    mTargetData[13].updatePtr();
+    mTargetData[14].updatePtr();
+    mTargetData[15].updatePtr();
+    mTargetData[16].updatePtr();
+    mTargetData[17].updatePtr();
+    mTargetData[18].updatePtr();
+    mTargetData[19].updatePtr();
+    mTargetData[20].updatePtr();
+    mTargetData[21].updatePtr();
+    mTargetData[22].updatePtr();
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (200 bytes)
@@ -1383,20 +1416,20 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::initAllTargetData(
 void cThinkMgrName::cThinkMgrTargetMgr::recalculationTargetData(MtVector3& myPos, f32 myAngleYRad) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetData[9].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[10].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[11].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[12].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[13].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[14].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[15].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[16].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[17].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[18].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[19].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[20].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[21].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
-    this->mTargetData[22].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[9].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[10].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[11].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[12].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[13].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[14].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[15].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[16].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[17].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[18].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[19].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[20].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[21].recalculationTargetVectorData(myPos, myAngleYRad);
+    mTargetData[22].recalculationTargetVectorData(myPos, myAngleYRad);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (230 bytes)
@@ -1502,6 +1535,8 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::calcTargetData() {
 //   in cThinkMgrName::cThinkMgr::GetActionNo at 0x00586974-0x0058697f (called at cThinkMgr.cpp:2638)
 // void cThinkMgrName::cThinkMgrTargetMgr::clrLinkID();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cThinkMgrName::cThinkMgrTargetMgr::MyDTI cThinkMgrName::cThinkMgrTargetMgr::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058db44-0x0058db7d (called at cThinkMgr.cpp:71)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058db44-0x0058db7d (called at cThinkMgr.h:2501)
@@ -1536,7 +1571,7 @@ const MtDTI& cThinkMgrName::cThinkTblList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cThinkMgrName::cThinkTblList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkTblList::DTI.::MtDTI::getID());
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkTblList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1574,11 +1609,11 @@ inline void cThinkMgrName::cThinkTblList::operator delete(void* p_addr) {
 // Also emitted as: _ZN13cThinkMgrName13cThinkTblListD0Ev at 0x01a654f0
 cThinkMgrName::cThinkTblList::~cThinkTblList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpThinkTblRes == static_cast<rkThinkData*>(nullptr)) {
+    if (mpThinkTblRes == nullptr) {
         return;
     }
-    this->mpThinkTblRes->::cResource::release();
-    this->mpThinkTblRes = static_cast<rkThinkData*>(nullptr);
+    mpThinkTblRes->release();
+    mpThinkTblRes = nullptr;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (87 bytes)
@@ -1598,18 +1633,18 @@ __attribute__((weak)) void cThinkMgrName::cThinkTblList::createProperty(MtProper
 // Address: 0x005847d0 - 0x0058482c (92 bytes)
 void cThinkMgrName::cThinkTblList::setThinkTblList(rkThinkData* tblList) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpThinkTblList = static_cast<kTHINKDATA* *>(nullptr);
-    this->mtblListNum = static_cast<u32>(0);
-    if (this->mpThinkTblRes != static_cast<rkThinkData*>(nullptr)) {
-        this->mpThinkTblRes->::cResource::release();
-        this->mpThinkTblRes = static_cast<rkThinkData*>(nullptr);
+    mpThinkTblList = nullptr;
+    mtblListNum = 0;
+    if (mpThinkTblRes != nullptr) {
+        mpThinkTblRes->release();
+        mpThinkTblRes = nullptr;
     }
-    if (tblList != static_cast<rkThinkData*>(nullptr)) {
-        tblList->::cResource::addRef();
-        this->mpThinkTblRes = tblList;
-        this->mtblListNum = tblList->mArrayListNum;
+    if (tblList != nullptr) {
+        tblList->addRef();
+        mpThinkTblRes = tblList;
+        mtblListNum = tblList->mArrayListNum;
     } else {
-        this->mpThinkTblRes = static_cast<rkThinkData*>(nullptr);
+        mpThinkTblRes = nullptr;
     }
 }
 
@@ -1629,6 +1664,8 @@ void cThinkMgrName::cThinkTblList::setThinkTblList(rkThinkData* tblList) {
 // No out-of-line body: no code in the ELF
 // u32 cThinkMgrName::cThinkTblList::getThinkListNum();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cThinkMgrName::cThinkTblList::MyDTI cThinkMgrName::cThinkTblList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dbef-0x0058dc28 (called at cThinkMgr.cpp:84)
 //   in _GLOBAL__sub_I_cThinkMgr.cpp at 0x0058dbef-0x0058dc28 (called at cThinkMgr.h:2053)
@@ -1637,6 +1674,6 @@ void cThinkMgrName::cThinkTblList::setThinkTblList(rkThinkData* tblList) {
 // Address: 0x005846f0 - 0x00584747 (87 bytes)
 MtObject* cThinkMgrName::cThinkTblList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cThinkMgrName::cThinkTblList;
+    return new (16u) ::cThinkMgrName::cThinkTblList;
 }
 

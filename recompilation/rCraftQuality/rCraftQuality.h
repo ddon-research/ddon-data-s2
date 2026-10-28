@@ -108,8 +108,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cCraftQualityData::cCraftQualityData() {
-    this->mItemNo = static_cast<u32>(0);
-    this->mBonus = static_cast<u32>(0);
-    this->mRankLimit = static_cast<u16>(0);
-    this->mLv = static_cast<u8>(1);
+    this->mItemNo = 0;
+    this->mBonus = 0;
+    this->mRankLimit = 0;
+    this->mLv = 1;
 }

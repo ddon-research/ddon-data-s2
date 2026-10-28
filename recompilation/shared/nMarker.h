@@ -284,8 +284,8 @@ namespace nMarker {
 
 // Inline, no code of its own: checked where it is inlined.
 inline nMarker::cMarkerInfo::cCtrlFlag::cCtrlFlag() {
-    this->mQuestId = static_cast<u32>(0);
-    this->mFlagNo = static_cast<u32>(0);
+    this->mQuestId = 0;
+    this->mFlagNo = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

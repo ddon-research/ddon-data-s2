@@ -157,3 +157,9 @@ protected:
     static MT_CTSTR HARDUMMY_MESSAGE;
     static const u32 MAX_HASH = 256;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUIPhoto::initCommon at 0xb3dacf-0xb3dad5; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline u32 rGUIMessage::getIndexNum() const {
+    return this->mIndexNum;
+}

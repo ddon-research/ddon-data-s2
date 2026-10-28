@@ -109,6 +109,6 @@ inline cCraftSkillCostData::cCraftSkillCostData() {
     this->mCostRate4 = 0.0f;
     this->mCostRate2 = 0.0f;
     this->mCostRate3 = 0.0f;
-    this->mTotal = static_cast<u32>(0);
+    this->mTotal = 0;
     this->mCostRate1 = 0.0f;
 }

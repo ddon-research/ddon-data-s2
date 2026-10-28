@@ -36,7 +36,7 @@ const MtDTI& rTutorialQuestGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTutorialQuestGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::DTI)->memAlloc(sz, align, ::rTutorialQuestGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::DTI)->memAlloc(sz, align, rTutorialQuestGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rTutorialQuestGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTutorialQuestGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -69,20 +69,19 @@ const rTutorialQuestGroup::cGroup* rTutorialQuestGroup::getGroup(u32 groupId) co
     // DWARF local not rendered: cGroup* pGroup;
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from MtObject*
-    if (this->mGroups.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGroups.mLength != 0) {
         // inferred: DWARF's location-less 'i' (lexical block [0x70ef66, 0x70ef98)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         do {
-            if (this->mGroups.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mGroups.::MtArray::mpArray[i]) + static_cast<long>(40))) != groupId) {
-                } else {
-                    return static_cast<const rTutorialQuestGroup::cGroup*>(this->mGroups.::MtArray::mpArray[i]);
+            if (mGroups.mpArray[i] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mGroups.mpArray[i]) + 40)) == groupId) {
+                    return static_cast<const cGroup*>(mGroups.mpArray[i]);
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < this->mGroups.::MtArray::mLength);
+            i += 1u;
+        } while (i < mGroups.mLength);
     }
-    return static_cast<const rTutorialQuestGroup::cGroup*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,41 +98,41 @@ MT_CTSTR rTutorialQuestGroup::getExt() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rTutorialQuestGroup::rTutorialQuestGroup() {
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    setAttribute(22u);
 }
 
 // Address: 0x0070eff0 - 0x0070f0a1 (177 bytes)
 // Also emitted as: _ZN19rTutorialQuestGroupD0Ev at 0x0070f0b0
 rTutorialQuestGroup::~rTutorialQuestGroup() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mGroups.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mGroups.mLength != 0) {
         // inferred: the value the loop at 0x70f020 carries; no location-less local in scope fits
-        u32 v0_0 = this->mGroups.::MtArray::mLength;
+        u32 v0_0 = mGroups.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mGroups.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mGroups.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroups.::MtArray::mLength) {
-                    v0_0 = this->mGroups.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mGroups.mpArray[i0_3] != nullptr) {
+                delete mGroups.mpArray[i0_3];
+                if ((i0_3 + 1u) < mGroups.mLength) {
+                    v0_0 = mGroups.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mGroups.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroups.::MtArray::mpArray));
+    if (mGroups.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mGroups.mpArray));
     }
-    this->mGroups.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mGroups.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mGroups.::MtArray::mLength = static_cast<u32>(0);
+    mGroups.mpArray = nullptr;
+    mGroups.mBufsiz = 0;
+    mGroups.mLength = 0;
 }
 
 // Address: 0x0070f180 - 0x0070f263 (227 bytes)
@@ -154,15 +153,17 @@ bool rTutorialQuestGroup::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u16 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(4673876)) {
-        if ((&r)->readU16() == static_cast<u16>(1)) {
-            ::nDDOIO::readMtArray(r, this->mGroups);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x475154) {
+        if ((&r)->readU16() == 1) {
+            nDDOIO::readMtArray(r, mGroups);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialQuestGroup::MyDTI rTutorialQuestGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rTutorialQuestGroup.cpp at 0x0070fb40-0x0070fb81 (called at rTutorialQuestGroup.cpp:70)
@@ -172,7 +173,7 @@ bool rTutorialQuestGroup::load(MtStream& in) {
 // Address: 0x0070ee60 - 0x0070eee4 (132 bytes)
 MtObject* rTutorialQuestGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTutorialQuestGroup;
+    return new (16u) rTutorialQuestGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +201,7 @@ const MtDTI& rTutorialQuestGroup::cGroup::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::DTI)->memAlloc(sz, align, ::rTutorialQuestGroup::cGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::DTI)->memAlloc(sz, align, rTutorialQuestGroup::cGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,7 +216,7 @@ void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTutorialQuestGroup::cGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,9 +233,8 @@ inline void rTutorialQuestGroup::cGroup::operator delete(void* p_addr) {
 
 // Address: 0x0070f4e0 - 0x0070f4e4 (4 bytes)
 u32 rTutorialQuestGroup::cGroup::getQuestIdNum() const {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const rTutorialQuestGroup::cGroup*
-    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return mQuestIds.mLength;
 }
 
 // Address: 0x0070f4f0 - 0x0070f50f (31 bytes)
@@ -254,8 +254,35 @@ __attribute__((weak)) u32 rTutorialQuestGroup::cGroup::getQuestId(u32 idx) const
 // Address: 0x0070f540 - 0x0070f5dd (157 bytes)
 // Also emitted as: _ZN19rTutorialQuestGroup6cGroupD0Ev at 0x0070f5e0
 rTutorialQuestGroup::cGroup::~cGroup() {
-    DDON_STUB("rTutorialQuestGroup::cGroup::~cGroup")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mQuestIds.mLength != 0) {
+        // inferred: the value the loop at 0x70f570 carries; no location-less local in scope fits
+        u32 v0_0 = mQuestIds.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mQuestIds.mpArray[i0_3] != nullptr) {
+                delete mQuestIds.mpArray[i0_3];
+                if ((i0_3 + 1u) < mQuestIds.mLength) {
+                    v0_0 = mQuestIds.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mQuestIds.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mQuestIds.mpArray));
+    }
+    mQuestIds.mpArray = nullptr;
+    mQuestIds.mBufsiz = 0;
+    mQuestIds.mLength = 0;
 }
 
 // Address: 0x0070f6a0 - 0x0070f832 (402 bytes)
@@ -275,9 +302,11 @@ void rTutorialQuestGroup::cGroup::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mGroupId);
-    ::nDDOIO::readMtArray(r, this->mQuestIds);
+    nDDOIO::readData(r, mGroupId);
+    nDDOIO::readMtArray(r, mQuestIds);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialQuestGroup::cGroup::MyDTI rTutorialQuestGroup::cGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rTutorialQuestGroup.cpp at 0x0070fb81-0x0070fbc1 (called at rTutorialQuestGroup.cpp:230)
@@ -287,7 +316,7 @@ void rTutorialQuestGroup::cGroup::load(MtDataReader& r) {
 // Address: 0x0070f400 - 0x0070f470 (112 bytes)
 MtObject* rTutorialQuestGroup::cGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTutorialQuestGroup::cGroup;
+    return new (16u) rTutorialQuestGroup::cGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -329,7 +358,7 @@ const MtDTI& rTutorialQuestGroup::cGroup::cQuestId::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rTutorialQuestGroup::cGroup::cQuestId::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::cQuestId::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::cQuestId::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -369,15 +398,17 @@ __attribute__((weak)) void rTutorialQuestGroup::cGroup::cQuestId::createProperty
 // Address: 0x0070fb00 - 0x0070fb11 (17 bytes)
 void rTutorialQuestGroup::cGroup::cQuestId::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nDDOIO::writeData(w, this->mId);
+    nDDOIO::writeData(w, mId);
 }
 
 // Address: 0x0070fb20 - 0x0070fb3c (28 bytes)
 void rTutorialQuestGroup::cGroup::cQuestId::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
-    ::nDDOIO::readData(r, this->mId);
+    nDDOIO::readData(r, mId);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialQuestGroup::cGroup::cQuestId::MyDTI rTutorialQuestGroup::cGroup::cQuestId::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rTutorialQuestGroup.cpp at 0x0070fbc1-0x0070fbfa (called at rTutorialQuestGroup.cpp:357)

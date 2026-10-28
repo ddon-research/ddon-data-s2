@@ -725,8 +725,8 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline uGUIBoxGachaInfo::cItemInfo::cItemInfo() {
     this->mProbability = 0.0;
-    this->mItemGrade = static_cast<u32>(0);
-    this->mItemDrawOne = static_cast<u32>(0);
-    this->mItemId = static_cast<u32>(0);
-    this->mItemNum = static_cast<u32>(0);
+    this->mItemGrade = 0;
+    this->mItemDrawOne = 0;
+    this->mItemId = 0;
+    this->mItemNum = 0;
 }

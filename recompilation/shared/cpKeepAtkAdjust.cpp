@@ -25,7 +25,7 @@ const MtDTI& cpKeepAtkAdjust::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpKeepAtkAdjust::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::DTI);
+    return MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cpKeepAtkAdjust::getAllocator() {
 // Address: 0x004bfcb0 - 0x004bfcf0 (64 bytes)
 void* cpKeepAtkAdjust::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpKeepAtkAdjust::getAllocator()->memAlloc(sz, align, ::cpKeepAtkAdjust::DTI.::MtDTI::getID());
+    return cpKeepAtkAdjust::getAllocator()->memAlloc(sz, align, cpKeepAtkAdjust::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cpKeepAtkAdjust::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpKeepAtkAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -76,14 +76,14 @@ cpKeepAtkAdjust::~cpKeepAtkAdjust() {
 // Address: 0x004bff60 - 0x004bff65 (5 bytes)
 void cpKeepAtkAdjust::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x004bff70 - 0x004bff79 (9 bytes)
 void cpKeepAtkAdjust::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (89 bytes)
@@ -114,10 +114,10 @@ void cpKeepAtkAdjust::setOwner(MtObject* pOwner) {
 // Address: 0x004bffb0 - 0x004bffca (26 bytes)
 u16 cpKeepAtkAdjust::getCurrentUniqueId() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mActive != false) {
-        return this->mNowUniqueId;
+    if (mActive) {
+        return mNowUniqueId;
     } else {
-        return static_cast<u16>(0);
+        return 0;
     }
 }
 
@@ -133,52 +133,52 @@ u16 cpKeepAtkAdjust::getCurrentUniqueId() {
 void cpKeepAtkAdjust::setAtkAdjust(f32 atkRate, f32 blowRate, f32 shrinkRate) {
     // DWARF local not rendered: cAtkAdjust* pAdjust;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    this->mActive = true;
+    mActive = true;
     // inferred: a temporary for the value the load at 0x4bffd7 read, used 5 times; no DWARF local holds it
-    u32 t0 = this->mNowIndex;
-    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    u32 t0 = mNowIndex;
+    mKeepAtkAdjust[t0].mType = 0;
     // inferred: a temporary for the value the load at 0x4bffed read, used twice; no DWARF local holds it
-    u16 t1 = this->mNowUniqueId;
-    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
-    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
-    this->mKeepAtkAdjust[t0].mAtkRate = atkRate;
-    this->mKeepAtkAdjust[t0].mBlowRate = blowRate;
-    this->mKeepAtkAdjust[t0].mShrinkRate = shrinkRate;
-    this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
+    u16 t1 = mNowUniqueId;
+    mNowUniqueId = (static_cast<unsigned short>(t1 + 1) == 0) ? static_cast<unsigned short>(t1 + 2) : static_cast<unsigned short>(t1 + 1);
+    mKeepAtkAdjust[t0].mUniqueId = mNowUniqueId;
+    mKeepAtkAdjust[t0].mAtkRate = atkRate;
+    mKeepAtkAdjust[t0].mBlowRate = blowRate;
+    mKeepAtkAdjust[t0].mShrinkRate = shrinkRate;
+    mNowIndex = ((mNowIndex + 1u) <= 31u) ? (mNowIndex + 1u) : 0u;
 }
 
 // Address: 0x004c0040 - 0x004c0095 (85 bytes)
 void cpKeepAtkAdjust::setMgcAdjust(f32 mgcRate) {
     // DWARF local not rendered: cAtkAdjust* pAdjust;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mActive = true;
+    mActive = true;
     // inferred: a temporary for the value the load at 0x4c0047 read, used 4 times; no DWARF local holds it
-    u32 t0 = this->mNowIndex;
-    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    u32 t0 = mNowIndex;
+    mKeepAtkAdjust[t0].mType = 0;
     // inferred: a temporary for the value the load at 0x4c005d read, used twice; no DWARF local holds it
-    u16 t1 = this->mNowUniqueId;
-    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
-    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
-    this->mKeepAtkAdjust[t0].mMgcRate = mgcRate;
-    this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+    u16 t1 = mNowUniqueId;
+    mNowUniqueId = (static_cast<unsigned short>(t1 + 1) == 0) ? static_cast<unsigned short>(t1 + 2) : static_cast<unsigned short>(t1 + 1);
+    mKeepAtkAdjust[t0].mUniqueId = mNowUniqueId;
+    mKeepAtkAdjust[t0].mMgcRate = mgcRate;
+    mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
 }
 
 // Address: 0x004c00a0 - 0x004c0109 (105 bytes)
 void cpKeepAtkAdjust::setMgcBowAdjust(f32 atkRate, f32 healRate, f32 ocdRate) {
     // DWARF local not rendered: cAtkAdjust* pAdjust;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    this->mActive = true;
+    mActive = true;
     // inferred: a temporary for the value the load at 0x4c00a7 read, used 5 times; no DWARF local holds it
-    u32 t0 = this->mNowIndex;
-    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    u32 t0 = mNowIndex;
+    mKeepAtkAdjust[t0].mType = 0;
     // inferred: a temporary for the value the load at 0x4c00bd read, used twice; no DWARF local holds it
-    u16 t1 = this->mNowUniqueId;
-    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
-    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
-    this->mKeepAtkAdjust[t0].mMgcBowMAtkRate = atkRate;
-    this->mKeepAtkAdjust[t0].mMgcBowHealRate = healRate;
-    this->mKeepAtkAdjust[t0].mMgcBowOcdRate = ocdRate;
-    this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
+    u16 t1 = mNowUniqueId;
+    mNowUniqueId = (static_cast<unsigned short>(t1 + 1) == 0) ? static_cast<unsigned short>(t1 + 2) : static_cast<unsigned short>(t1 + 1);
+    mKeepAtkAdjust[t0].mUniqueId = mNowUniqueId;
+    mKeepAtkAdjust[t0].mMgcBowMAtkRate = atkRate;
+    mKeepAtkAdjust[t0].mMgcBowHealRate = healRate;
+    mKeepAtkAdjust[t0].mMgcBowOcdRate = ocdRate;
+    mNowIndex = ((mNowIndex + 1u) <= 31u) ? (mNowIndex + 1u) : 0u;
 }
 
 // Address: 0x004c0110 - 0x004c015b (75 bytes)
@@ -220,48 +220,48 @@ __attribute__((weak)) f32 cpKeepAtkAdjust::getShrinkRate(u16 uniqueId) const {
 void cpKeepAtkAdjust::setOcdAdjust(f32 value, u32 type) {
     // DWARF local not rendered: cAtkAdjust* pAdjust;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    this->mActive = true;
+    mActive = true;
     // inferred: a temporary for the value the load at 0x4c02d7 read, used 4 times; no DWARF local holds it
-    u32 t0 = this->mNowIndex;
-    this->mKeepAtkAdjust[t0].mType = type;
+    u32 t0 = mNowIndex;
+    mKeepAtkAdjust[t0].mType = type;
     // inferred: a temporary for the value the load at 0x4c02ea read, used twice; no DWARF local holds it
-    u16 t1 = this->mNowUniqueId;
-    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
-    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
-    switch (type - static_cast<u32>(2)) {
-        case static_cast<u32>(0):
+    u16 t1 = mNowUniqueId;
+    mNowUniqueId = (static_cast<unsigned short>(t1 + 1) == 0) ? static_cast<unsigned short>(t1 + 2) : static_cast<unsigned short>(t1 + 1);
+    mKeepAtkAdjust[t0].mUniqueId = mNowUniqueId;
+    switch (type - 2u) {
+        case 0:
         {
-            this->mKeepAtkAdjust[t0].mPoisonValue = value;
-            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            mKeepAtkAdjust[t0].mPoisonValue = value;
+            mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
-            this->mKeepAtkAdjust[t0].mOilValue = value;
-            this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
+            mKeepAtkAdjust[t0].mOilValue = value;
+            mNowIndex = ((mNowIndex + 1u) <= 31u) ? (mNowIndex + 1u) : 0u;
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
-            this->mKeepAtkAdjust[t0].mSleepValue = value;
-            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            mKeepAtkAdjust[t0].mSleepValue = value;
+            mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
-            this->mKeepAtkAdjust[t0].mSilentValue = value;
-            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            mKeepAtkAdjust[t0].mSilentValue = value;
+            mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
-            this->mKeepAtkAdjust[t0].mSlowValue = value;
-            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            mKeepAtkAdjust[t0].mSlowValue = value;
+            mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
             break;
         }
         default:
         {
-            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            mNowIndex = ((t0 + 1u) <= 31u) ? (t0 + 1u) : 0u;
             break;
         }
     }
@@ -279,6 +279,8 @@ __attribute__((weak)) f32 cpKeepAtkAdjust::getOcdValue(u16 uniqueId, u32 type) c
 
 // No out-of-line body: no code in the ELF
 // void cpKeepAtkAdjust::getEnchantAdjust(u16 uniqueId, f32& EnchantTime, f32& EnchantRate, f32& AilmentDamage) const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpKeepAtkAdjust::MyDTI cpKeepAtkAdjust::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpKeepAtkAdjust.cpp at 0x004c0460-0x004c04a2 (called at cpKeepAtkAdjust.cpp:22)
@@ -314,7 +316,7 @@ const MtDTI& cpKeepAtkAdjust::cAtkAdjust::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cpKeepAtkAdjust::cAtkAdjust::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::cAtkAdjust::DTI)->memAlloc(sz, align, ::cpKeepAtkAdjust::cAtkAdjust::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::cAtkAdjust::DTI)->memAlloc(sz, align, cpKeepAtkAdjust::cAtkAdjust::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -328,7 +330,7 @@ inline void* cpKeepAtkAdjust::cAtkAdjust::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cpKeepAtkAdjust::cAtkAdjust::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::cAtkAdjust::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::cAtkAdjust::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -350,6 +352,8 @@ inline void cpKeepAtkAdjust::cAtkAdjust::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // cpKeepAtkAdjust::cAtkAdjust::~cAtkAdjust();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpKeepAtkAdjust::cAtkAdjust::MyDTI cpKeepAtkAdjust::cAtkAdjust::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpKeepAtkAdjust.cpp at 0x004c04a2-0x004c04df (called at cpKeepAtkAdjust.cpp:23)
 //   in _GLOBAL__sub_I_cpKeepAtkAdjust.cpp at 0x004c04a2-0x004c04df (called at cpKeepAtkAdjust.h:79)
@@ -358,6 +362,6 @@ inline void cpKeepAtkAdjust::cAtkAdjust::operator delete(void* p_addr) {
 // Address: 0x004bfd60 - 0x004bfdeb (139 bytes)
 MtObject* cpKeepAtkAdjust::cAtkAdjust::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpKeepAtkAdjust::cAtkAdjust;
+    return new (16u) cpKeepAtkAdjust::cAtkAdjust;
 }
 

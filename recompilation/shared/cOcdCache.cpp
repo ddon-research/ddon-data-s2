@@ -33,7 +33,7 @@ const MtDTI& cOcdCache::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cOcdCache::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cOcdCache::DTI)->memAlloc(sz, align, ::cOcdCache::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cOcdCache::DTI)->memAlloc(sz, align, cOcdCache::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +47,7 @@ inline void* cOcdCache::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cOcdCache::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cOcdCache::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cOcdCache::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,9 +62,9 @@ inline void cOcdCache::operator delete(void* p_addr) {
 // Address: 0x00179060 - 0x0017907b (27 bytes)
 cOcdCache::cOcdCache() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActive = false;
-    this->mReason = static_cast<nObjCondition::OCD_REASON>(0);
-    this->mTimer = 0.0f;
+    mIsActive = false;
+    mReason = nObjCondition::OCD_REASON_NONE;
+    mTimer = 0.0f;
 }
 
 // Address: 0x00179090 - 0x00179091 (1 bytes)
@@ -102,29 +102,31 @@ __attribute__((weak)) void cOcdCache::createProperty(MtPropertyList& s) {
 // Address: 0x00179080 - 0x0017908d (13 bytes)
 void cOcdCache::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActive = false;
-    this->mReason = static_cast<nObjCondition::OCD_REASON>(0);
-    this->mTimer = 0.0f;
+    mIsActive = false;
+    mReason = nObjCondition::OCD_REASON_NONE;
+    mTimer = 0.0f;
 }
 
 // Address: 0x001790f0 - 0x0017911b (43 bytes)
 void cOcdCache::update(f32 deltaTime) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTimer = this->mTimer - deltaTime;
-    if (0.0f > this->mTimer) {
-        this->mTimer = 0.0f;
-        this->mIsActive = false;
-        this->mReason = static_cast<nObjCondition::OCD_REASON>(0);
+    mTimer = mTimer - deltaTime;
+    if (0.0f > mTimer) {
+        mTimer = 0.0f;
+        mIsActive = false;
+        mReason = nObjCondition::OCD_REASON_NONE;
     }
 }
 
 // Address: 0x001790d0 - 0x001790e7 (23 bytes)
 void cOcdCache::copy(const cOcdCache& src) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsActive = src.mIsActive;
-    this->mReason = src.mReason;
-    this->mTimer = src.mTimer;
+    mIsActive = src.mIsActive;
+    mReason = src.mReason;
+    mTimer = src.mTimer;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cOcdCache::MyDTI cOcdCache::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cOcdCache.cpp at 0x00179130-0x00179172 (called at cOcdCache.cpp:19)
@@ -134,6 +136,6 @@ void cOcdCache::copy(const cOcdCache& src) {
 // Address: 0x00178fa0 - 0x00178fec (76 bytes)
 MtObject* cOcdCache::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cOcdCache;
+    return new (16u) cOcdCache;
 }
 

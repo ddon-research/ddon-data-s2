@@ -150,6 +150,8 @@ __attribute__((weak)) void cShlParamBase::copy(const cShlParamBase* pParam) {
 //   and 10 more (every copy is in <bundle>.inlined.json)
 // const cShlGroupParam* cShlParamBase::getGroupParam() const;
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cShlParamBase::MyDTI cShlParamBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uShlBase.cpp at 0x00ccdd9b-0x00ccdddb (called at uShlBase.cpp:79)
 //   in _GLOBAL__sub_I_uShlBase.cpp at 0x00ccdd9b-0x00ccdddb (called at uShlBase.h:809)
@@ -197,7 +199,7 @@ const MtDTI& uShlBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uShlBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,7 +214,7 @@ inline void uShlBase::operator delete(void* p_addr) {
 // Address: 0x00cc2440 - 0x00cc2448 (8 bytes)
 const cShlParamBase* uShlBase::getShlParam() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpShlParam2;
+    return mpShlParam2;
 }
 
 // Address: 0x00cc2490 - 0x00cc2c24 (1940 bytes)
@@ -290,7 +292,7 @@ __attribute__((weak)) void uShlBase::updatePtr() {
 // Address: 0x00cc5240 - 0x00cc5248 (8 bytes)
 void uShlBase::before() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsCreateDamageShl = false;
+    mIsCreateDamageShl = false;
 }
 
 // Address: 0x00cc5250 - 0x00cc606e (3614 bytes)
@@ -322,35 +324,35 @@ __attribute__((weak)) void uShlBase::updateSub() {
 // Address: 0x00cc6d30 - 0x00cc6d4c (28 bytes)
 void uShlBase::after() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::setCollision();
-    this->::uShlBase::setNoticeCollision();
+    setCollision();
+    setNoticeCollision();
 }
 
 // Address: 0x00cc7090 - 0x00cc7095 (5 bytes)
 void uShlBase::sync() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::sync();
+    this->uDDOModel::sync();
 }
 
 // Address: 0x00cc70a0 - 0x00cc7137 (151 bytes)
 void uShlBase::moveAfter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::moveAfter();
-    if (this->::uShlBase::getShlParamBase()->dmgShlNo > static_cast<s32>(0)) {
-        if (this->mDamageShlIntervalTime > 0.0f) {
-            this->mDamageShlIntervalTime = this->mDamageShlIntervalTime - this->::cUnit::mDeltaTime;
+    this->uDDOModel::moveAfter();
+    if (getShlParamBase()->dmgShlNo > 0) {
+        if (mDamageShlIntervalTime > 0.0f) {
+            mDamageShlIntervalTime = mDamageShlIntervalTime - mDeltaTime;
         }
-        if (this->mIsCreateDamageShl != false) {
-            this->mIsCreateDamageShl = false;
-            this->::uShlBase::createNextShl(static_cast<u32>(this->::uShlBase::getShlParamBase()->dmgShlNo), static_cast<u32>(0), false);
-            this->mDamageShlIntervalTime = this->::uShlBase::getShlParamBase()->dmgShlInterval;
+        if (mIsCreateDamageShl) {
+            mIsCreateDamageShl = false;
+            createNextShl(static_cast<u32>(getShlParamBase()->dmgShlNo), 0u, false);
+            mDamageShlIntervalTime = getShlParamBase()->dmgShlInterval;
         }
     }
-    if (this->mIsKillReq == false) {
+    if (!mIsKillReq) {
         return;
     }
-    this->mIsKillReq = false;
-    this->kill();
+    mIsKillReq = false;
+    kill();
 }
 
 // Address: 0x00cc50c0 - 0x00cc5232 (370 bytes)
@@ -362,17 +364,17 @@ __attribute__((weak)) void uShlBase::updateEfcHandle() {
 // Address: 0x00cc7060 - 0x00cc7084 (36 bytes)
 void uShlBase::updateMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
 
 // Address: 0x00cc7030 - 0x00cc705f (47 bytes)
 void uShlBase::setMaster(bool is_master) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpOwner != static_cast<uDDOModel*>(nullptr)) {
-        this->::uDDOModel::setMaster(this->mpOwner->::uDDOModel::isMaster());
+    if (mpOwner != nullptr) {
+        this->uDDOModel::setMaster(mpOwner->isMaster());
     } else {
-        this->::uDDOModel::setMaster(false);
+        this->uDDOModel::setMaster(false);
     }
 }
 
@@ -386,7 +388,7 @@ __attribute__((weak)) void uShlBase::createComponent() {
 // Address: 0x00cc2f40 - 0x00cc2f45 (5 bytes)
 void uShlBase::setupComponentPtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::setupComponentPtr();
+    this->uDDOModel::setupComponentPtr();
 }
 
 // Address: 0x00cc92b0 - 0x00cc940c (348 bytes)
@@ -460,10 +462,10 @@ __attribute__((weak)) void uShlBase::callbackHeal(cHitInfo* pHitInfo) {
 // Address: 0x00cc8e20 - 0x00cc8e7c (92 bytes)
 void uShlBase::callbackGuarded(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uDDOModel::callbackGuarded(pHitInfo);
-    this->mHitResultFlag = this->mHitResultFlag | static_cast<u32>(8);
-    this->mHitPos = pHitInfo->mHitPos;
-    this->mHitEfctFlag = static_cast<u32>(1);
+    this->uDDOModel::callbackGuarded(pHitInfo);
+    mHitResultFlag = mHitResultFlag | 8u;
+    mHitPos = pHitInfo->mHitPos;
+    mHitEfctFlag = 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -491,22 +493,22 @@ __attribute__((weak)) void uShlBase::setShotCoord(const MtVector3& pos, const Mt
 // Address: 0x00cc74f0 - 0x00cc7579 (137 bytes)
 void uShlBase::setShotCoord(const MtVector3& pos, const MtVector3& dir, const MtMatrix& mat) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpShlParam2 == static_cast<const cShlParamBase*>(nullptr)) {
+    if (mpShlParam2 == nullptr) {
         return;
     }
-    this->::uCoord::mPos.x = pos.x;
-    this->::uCoord::mPos.y = pos.y;
-    this->::uCoord::mPos.z = pos.z;
-    this->::uCoord::mPos.pad_ = 0.0f;
-    this->mShlMoveDir.x = dir.x;
-    this->mShlMoveDir.y = dir.y;
-    this->mShlMoveDir.z = dir.z;
-    this->mShlMoveDir.pad_ = 0.0f;
-    this->mLookPos.x = this->::uCoord::mPos.x;
-    this->mLookPos.y = this->::uCoord::mPos.y;
-    this->mLookPos.z = this->::uCoord::mPos.z;
-    this->mLookPos.pad_ = 0.0f;
-    this->::uShlBase::setAngle(mat);
+    mPos.x = pos.x;
+    mPos.y = pos.y;
+    mPos.z = pos.z;
+    mPos.pad_ = 0.0f;
+    mShlMoveDir.x = dir.x;
+    mShlMoveDir.y = dir.y;
+    mShlMoveDir.z = dir.z;
+    mShlMoveDir.pad_ = 0.0f;
+    mLookPos.x = mPos.x;
+    mLookPos.y = mPos.y;
+    mLookPos.z = mPos.z;
+    mLookPos.pad_ = 0.0f;
+    setAngle(mat);
 }
 
 // Address: 0x00cc3f20 - 0x00cc439c (1148 bytes)
@@ -553,7 +555,7 @@ __attribute__((weak)) void uShlBase::setAngle(const MtMatrix& mat) {
 // Address: 0x00cc9870 - 0x00cc9878 (8 bytes)
 const MtVector3& uShlBase::getTargetPos() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTargetPos;
+    return mTargetPos;
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (172 bytes)
@@ -621,17 +623,17 @@ f32 uShlBase::calcSpeed(f32 spd, f32 accel, f32 max, f32 deltaTime) {
 // Address: 0x00cc9820 - 0x00cc984a (42 bytes)
 void uShlBase::inheritParent(uShlBase* pParent) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsInherit = true;
-    if (this->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    mIsInherit = true;
+    if (getObjCollisionPtr() == nullptr) {
         return;
     }
-    if (pParent == static_cast<uShlBase*>(nullptr)) {
+    if (pParent == nullptr) {
         return;
     }
-    if (pParent->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+    if (pParent->getObjCollisionPtr() == nullptr) {
         return;
     }
-    this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::copySharedUID(pParent->::uDDOModel::getObjCollisionPtr());
+    getObjCollisionPtr()->copySharedUID(pParent->getObjCollisionPtr());
 }
 
 // Address: 0x00cc7870 - 0x00cc78dd (109 bytes)
@@ -768,60 +770,60 @@ __attribute__((weak)) void uShlBase::setCollision() {
     // DWARF local not rendered: s32 shared_uid;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 1 goto statements as its last resort
-    if (this->mpParent != static_cast<uDDOModel*>(nullptr)) {
-        if (this->mpOwner != static_cast<uDDOModel*>(nullptr)) {
+    if (mpParent != nullptr) {
+        if (mpOwner != nullptr) {
             goto region_cc43fe;
         }
     }
-    if (this->mIsCreateColOnce != false) {
-        this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(0), static_cast<u32>(this->mCreateSeqNo));
+    if (mIsCreateColOnce) {
+        getObjCollisionPtr()->killNode(0u, static_cast<u32>(mCreateSeqNo));
     }
     region_cc43fe:;
-    if (this->mpOwner == static_cast<uDDOModel*>(nullptr)) {
+    if (mpOwner == nullptr) {
         return;
     } else {
-        if (this->::uDDOModel::getObjCollisionPtr()->mpResource[0] == static_cast<rObjCollision*>(nullptr)) {
+        if (getObjCollisionPtr()->mpResource[0] == nullptr) {
             return;
         } else {
-            if (this->::uDDOModel::getObjCollisionPtr()->mpResource[0]->::cResource::isUsage() == false) {
+            if (!getObjCollisionPtr()->mpResource[0]->cResource::isUsage()) {
                 return;
             } else {
                 // inferred: a temporary for the result of the call at 0xcc4433, used twice; no DWARF local holds it
-                u32 t0 = this->getCollisionIndex();
+                u32 t0 = getCollisionIndex();
                 // inferred: the value carried to 0xcc449d; no location-less local in scope fits
                 const s32* v2_0;
                 // inferred: the value carried to 0xcc449d; no location-less local in scope fits
                 const s32* v2_1;
                 // inferred: the value carried to 0xcc449d; no location-less local in scope fits
                 const s32* v2_2;
-                if (t0 != static_cast<u32>(2)) {
-                    if (t0 == static_cast<u32>(1)) {
-                        v2_0 = &this->::uShlBase::getShlParamBase()->at_1;
-                        v2_1 = &this->::uShlBase::getShlParamBase()->seq_1;
-                        v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_1;
+                if (t0 != 2) {
+                    if (t0 == 1) {
+                        v2_0 = &getShlParamBase()->at_1;
+                        v2_1 = &getShlParamBase()->seq_1;
+                        v2_2 = &getShlParamBase()->shared_uid_1;
                     } else {
-                        v2_0 = &this->::uShlBase::getShlParamBase()->at_0;
-                        v2_1 = &this->::uShlBase::getShlParamBase()->seq_0;
-                        v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_0;
+                        v2_0 = &getShlParamBase()->at_0;
+                        v2_1 = &getShlParamBase()->seq_0;
+                        v2_2 = &getShlParamBase()->shared_uid_0;
                     }
                 } else {
-                    v2_0 = &this->::uShlBase::getShlParamBase()->at_2;
-                    v2_1 = &this->::uShlBase::getShlParamBase()->seq_2;
-                    v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_2;
+                    v2_0 = &getShlParamBase()->at_2;
+                    v2_1 = &getShlParamBase()->seq_2;
+                    v2_2 = &getShlParamBase()->shared_uid_2;
                 }
                 // inferred: the value carried to 0xcc44c1; no location-less local in scope fits
                 int v3_9 = *v2_1;
-                if (v3_9 == static_cast<int>(-1)) {
+                if (v3_9 == -1) {
                     return;
                 } else {
                     // inferred: the value carried to 0xcc44c1; no location-less local in scope fits
                     int v3_10 = *v2_2;
-                    if ((*v2_0) != static_cast<int>(-1)) {
-                        if (this->mpAtkNode != static_cast<cHitNode*>(nullptr)) {
-                            this->mpAtkNode->::cHitNode::setAttackParamFromAttackNo(static_cast<u32>(*v2_0));
+                    if ((*v2_0) != -1) {
+                        if (mpAtkNode != nullptr) {
+                            mpAtkNode->setAttackParamFromAttackNo(static_cast<u32>(*v2_0));
                         }
                     }
-                    this->setCollisionSub(v3_9, static_cast<s32>(0), static_cast<s32>(0), v3_10);
+                    setCollisionSub(v3_9, 0, 0, v3_10);
                     return;
                 }
             }
@@ -833,22 +835,22 @@ __attribute__((weak)) void uShlBase::setCollision() {
 void uShlBase::setCollisionSub(s32 seqNo, s32 groupNo, s32 attackNo, s32 shared_uid) {
     // DWARF local not rendered: u32 uid;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mCreateSeqNo == seqNo) {
+    if (mCreateSeqNo == seqNo) {
         return;
     }
-    if (this->mIsCreateColOnce != false) {
-        this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(0), static_cast<u32>(this->mCreateSeqNo));
+    if (mIsCreateColOnce) {
+        getObjCollisionPtr()->killNode(0u, static_cast<u32>(mCreateSeqNo));
     }
-    this->mIsCreateColOnce = true;
-    this->mCreateSeqNo = seqNo;
-    this->mInterPos.x = this->::uDDOModel::mOldPos.x;
-    this->mInterPos.y = this->::uDDOModel::mOldPos.y;
-    this->mInterPos.z = this->::uDDOModel::mOldPos.z;
-    this->mInterPos.pad_ = 0.0f;
-    if (shared_uid > static_cast<s32>(-1)) {
-        this->mpAtkNode = this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(0), seqNo, false, this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::getSharedUID(static_cast<unsigned int>(shared_uid)));
+    mIsCreateColOnce = true;
+    mCreateSeqNo = seqNo;
+    mInterPos.x = mOldPos.x;
+    mInterPos.y = mOldPos.y;
+    mInterPos.z = mOldPos.z;
+    mInterPos.pad_ = 0.0f;
+    if (shared_uid > -1) {
+        mpAtkNode = getObjCollisionPtr()->createNodeFromIndex(0u, seqNo, false, getObjCollisionPtr()->getSharedUID(static_cast<unsigned int>(shared_uid)));
     } else {
-        this->mpAtkNode = this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(0), seqNo, false, static_cast<u32>(4294967295));
+        mpAtkNode = getObjCollisionPtr()->createNodeFromIndex(0u, seqNo, false, 0xFFFFFFFFu);
     }
 }
 
@@ -866,13 +868,13 @@ __attribute__((weak)) void uShlBase::setNoticeCollision() {
 // Address: 0x00cc7e90 - 0x00cc7ec8 (56 bytes)
 u32 uShlBase::getCollisionIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uShlBase::getShlParamBase()->colTimer_0 > this->mTimer) {
-        return static_cast<u32>(0);
+    if (getShlParamBase()->colTimer_0 > mTimer) {
+        return 0;
     } else {
-        if (this->::uShlBase::getShlParamBase()->colTimer_1 > this->mTimer) {
-            return static_cast<u32>(1);
+        if (getShlParamBase()->colTimer_1 > mTimer) {
+            return 1;
         } else {
-            return static_cast<u32>(2);
+            return 2;
         }
     }
 }
@@ -922,14 +924,14 @@ __attribute__((weak)) f32 uShlBase::homingDir(MtVector3& moveVec, const MtVector
 void uShlBase::calcMoveVector(MtVector3& vec, s32 joint) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x1b0b265 read, used once; no DWARF local holds it
-    f32 t0 = this->::uCoord::mPos.y;
+    f32 t0 = mPos.y;
     // inferred: a temporary for the value the load at 0x1b0b272 read, used once; no DWARF local holds it
-    f32 t1 = this->::uDDOModel::mOldPos.y;
+    f32 t1 = mOldPos.y;
     // inferred: a temporary for the value the load at 0x1b0b27a read, used once; no DWARF local holds it
-    f32 t2 = this->::uCoord::mPos.z;
+    f32 t2 = mPos.z;
     // inferred: a temporary for the value the load at 0x1b0b27f read, used once; no DWARF local holds it
-    f32 t3 = this->::uDDOModel::mOldPos.z;
-    vec.x = this->::uCoord::mPos.x - this->::uDDOModel::mOldPos.x;
+    f32 t3 = mOldPos.z;
+    vec.x = mPos.x - mOldPos.x;
     vec.y = t0 - t1;
     vec.z = t2 - t3;
     vec.pad_ = 0.0f;
@@ -941,7 +943,7 @@ void uShlBase::calcMoveVector(MtVector3& vec, s32 joint) {
 // Address: 0x00cc7930 - 0x00cc793e (14 bytes)
 s32 uShlBase::getEpvIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uShlBase::getShlParamBase()->epvIndex;
+    return getShlParamBase()->epvIndex;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)
@@ -979,10 +981,10 @@ s32 uShlBase::getEpvIndex() const {
 // Address: 0x00cc9850 - 0x00cc9865 (21 bytes)
 nShlBase::LIMIT_ID uShlBase::getLimitID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uShlBase::getShlParamBase() != static_cast<const cShlParamBase*>(nullptr)) {
-        return this->::uShlBase::getShlParamBase()->limitID;
+    if (getShlParamBase() != nullptr) {
+        return getShlParamBase()->limitID;
     } else {
-        return static_cast<nShlBase::LIMIT_ID>(-1);
+        return nShlBase::LIMIT_ID_NONE;
     }
 }
 
@@ -1098,36 +1100,35 @@ void uShlBase::addShlDamage(cHitInfo* pHitInfo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2488 from uDDOModel*
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
     // inferred: the value carried to 0xcc8935; no location-less local in scope fits
-    const cShlParamBase* v0_1 = this->::uShlBase::getShlParamBase();
+    const cShlParamBase* v0_1 = getShlParamBase();
     // inferred: the value carried to 0xcc8935; no location-less local in scope fits
     u32 v0_0 = v0_1->shlOption;
-    if (((v0_0 >> static_cast<u32>(8)) & static_cast<u32>(4)) != static_cast<u32>(0)) {
-        if (pHitInfo->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
-            if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) != static_cast<u32>(0)) {
-                if (static_cast<unsigned int>(v0_1->noDamageShlID) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + static_cast<long>(9352)))) {
+    if (((v0_0 >> 8) & 4u) != 0) {
+        if (pHitInfo->mpAtkModel != nullptr) {
+            if ((pHitInfo->mpAtkModel->mUnitId & 32u) != 0) {
+                if (static_cast<unsigned int>(v0_1->noDamageShlID) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + 9352))) {
                     return;
                 }
             }
         }
     }
-    if (v0_1->dmgShlNo <= static_cast<s32>(0)) {
-    } else {
-        if (0.0f >= this->mDamageShlIntervalTime) {
-            this->mIsCreateDamageShl = true;
+    if (v0_1->dmgShlNo > 0) {
+        if (0.0f >= mDamageShlIntervalTime) {
+            mIsCreateDamageShl = true;
         }
     }
-    if ((v0_0 & static_cast<u32>(16)) == static_cast<u32>(0)) {
-        this->executeAddDamage();
+    if ((v0_0 & 16u) == 0) {
+        executeAddDamage();
         return;
     }
     // inferred: the value carried to 0xcc8972; no location-less local in scope fits
     uDDOModel* v3_3;
-    if (pHitInfo->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
-        if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) == static_cast<u32>(0)) {
+    if (pHitInfo->mpAtkModel != nullptr) {
+        if ((pHitInfo->mpAtkModel->mUnitId & 32u) == 0) {
             v3_3 = pHitInfo->mpAtkModel;
         } else {
-            if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner() != static_cast<uDDOModel*>(nullptr)) {
-                v3_3 = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner();
+            if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->getOwner() != nullptr) {
+                v3_3 = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->getOwner();
             } else {
                 return;
             }
@@ -1135,8 +1136,8 @@ void uShlBase::addShlDamage(cHitInfo* pHitInfo) {
     } else {
         return;
     }
-    if (v3_3->::uDDOModel::isMaster() != false) {
-        this->executeAddDamage();
+    if (v3_3->isMaster()) {
+        executeAddDamage();
         return;
     }
 }
@@ -1144,7 +1145,7 @@ void uShlBase::addShlDamage(cHitInfo* pHitInfo) {
 // Address: 0x00cc89a0 - 0x00cc89b9 (25 bytes)
 void uShlBase::executeAddDamage() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDamage = this->mDamage + 1.0f;
+    mDamage = mDamage + 1.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (68 bytes)
@@ -1231,8 +1232,8 @@ __attribute__((weak)) cEfcHandle* uShlBase::setEffect(s32 epvNo, sEffectExt::Efc
 // Address: 0x00cc7940 - 0x00cc795b (27 bytes)
 uDDOModel* uShlBase::getEfctParent() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((this->::uShlBase::getShlParamBase()->efOption & static_cast<u32>(1)) != static_cast<u32>(0)) {
-        return this->mpOwner;
+    if ((getShlParamBase()->efOption & 1u) != 0) {
+        return mpOwner;
     } else {
         return this;
     }
@@ -1322,7 +1323,7 @@ __attribute__((weak)) void uShlBase::requestShlVibration(u32 type) {
 // Address: 0x01b0b250 - 0x01b0b256 (6 bytes)
 u32 uShlBase::getHitLightToModel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x01b0b2b0 - 0x01b0b2b3 (3 bytes)
@@ -1348,6 +1349,8 @@ __attribute__((weak)) void uShlBase::adjustDirToMove() {
     DDON_STUB("uShlBase::adjustDirToMove")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uShlBase::MyDTI uShlBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlBase.cpp at 0x00ccdd5e-0x00ccdd9b (called at uShlBase.cpp:78)

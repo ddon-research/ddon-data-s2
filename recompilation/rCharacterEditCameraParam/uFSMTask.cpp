@@ -24,7 +24,7 @@ const MtDTI& cFSMTaskCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cFSMTaskCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cFSMTaskCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cFSMTaskCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* cFSMTaskCtrl::getAllocator() {
 // Address: 0x008fd130 - 0x008fd170 (64 bytes)
 void* cFSMTaskCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cFSMTaskCtrl::getAllocator()->memAlloc(sz, align, ::cFSMTaskCtrl::DTI.::MtDTI::getID());
+    return cFSMTaskCtrl::getAllocator()->memAlloc(sz, align, cFSMTaskCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* cFSMTaskCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cFSMTaskCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFSMTaskCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFSMTaskCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -162,6 +162,8 @@ __attribute__((weak)) void cFSMTaskCtrl::move() {
     DDON_STUB("cFSMTaskCtrl::move")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFSMTaskCtrl::MyDTI cFSMTaskCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uFSMTask.cpp at 0x008fdfff-0x008fe03c (called at uFSMTask.cpp:39)

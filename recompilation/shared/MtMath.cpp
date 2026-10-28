@@ -45,6 +45,12 @@
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool MtFloat2::operator!=(const MtFloat2& s) const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat2 MtFloat2::Zero;
+alignas(4) unsigned char MtFloat2_Zero_bytes[8] __asm__("_ZN8MtFloat24ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat2 MtFloat2::One;
+alignas(4) unsigned char MtFloat2_One_bytes[8] __asm__("_ZN8MtFloat23OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
+
 // No out-of-line body: no code in the ELF
 // MtFloat3::MtFloat3();
 
@@ -87,6 +93,12 @@
 // No out-of-line body: no code in the ELF
 // bool MtFloat3::operator!=(const MtFloat3&) const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat3 MtFloat3::Zero;
+alignas(4) unsigned char MtFloat3_Zero_bytes[12] __asm__("_ZN8MtFloat34ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat3 MtFloat3::One;
+alignas(4) unsigned char MtFloat3_One_bytes[12] __asm__("_ZN8MtFloat33OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
+
 // No out-of-line body: no code in the ELF
 // MtFloat3A::MtFloat3A();
 
@@ -108,6 +120,12 @@
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // const MtFloat3A& MtFloat3A::operator=(const MtVector4& v);
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat3A MtFloat3A::Zero;
+alignas(4) unsigned char MtFloat3A_Zero_bytes[12] __asm__("_ZN9MtFloat3A4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat3A MtFloat3A::One;
+alignas(4) unsigned char MtFloat3A_One_bytes[12] __asm__("_ZN9MtFloat3A3OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
 
 // No out-of-line body: no code in the ELF
 // MtFloat3x3::MtFloat3x3();
@@ -165,6 +183,12 @@
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool MtFloat4::operator!=(const MtFloat4& s) const;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat4 MtFloat4::Zero;
+alignas(4) unsigned char MtFloat4_Zero_bytes[16] __asm__("_ZN8MtFloat44ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtFloat4 MtFloat4::One;
+alignas(4) unsigned char MtFloat4_One_bytes[16] __asm__("_ZN8MtFloat43OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
 
 // No out-of-line body: no code in the ELF
 // MtFloat4x3::MtFloat4x3();
@@ -783,6 +807,18 @@ __attribute__((weak)) void MtMatrix::setReflection(const MtVector4& _plane) {
 //   and 31 more (every copy is in <bundle>.inlined.json)
 // MtVector3 MtMatrix::pos() const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtMatrix MtMatrix::Zero;
+alignas(16) unsigned char MtMatrix_Zero_bytes[64] __asm__("_ZN8MtMatrix4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtMatrix MtMatrix::Identity;
+alignas(16) unsigned char MtMatrix_Identity_bytes[64] __asm__("_ZN8MtMatrix8IdentityE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtMatrix MtMatrix::RGB2YCbCr;
+alignas(16) unsigned char MtMatrix_RGB2YCbCr_bytes[64] __asm__("_ZN8MtMatrix9RGB2YCbCrE") = {0xbb, 0x0a, 0x99, 0x3e, 0x2e, 0xca, 0x2c, 0xbe, 0x00, 0x00, 0x00, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x13, 0x2c, 0x16, 0x3f, 0xe9, 0x9a, 0xa9, 0xbe, 0x89, 0x5e, 0xd6, 0xbe, 0x00, 0x00, 0x00, 0x00, 0x7e, 0x74, 0xea, 0x3d, 0x00, 0x00, 0x00, 0x3f, 0xdb, 0x85, 0xa6, 0xbd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtMatrix MtMatrix::YCbCr2RGB;
+alignas(16) unsigned char MtMatrix_YCbCr2RGB_bytes[64] __asm__("_ZN8MtMatrix9YCbCr2RGBE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1e, 0x33, 0xb0, 0xbe, 0xe5, 0xd0, 0xe2, 0x3f, 0x00, 0x00, 0x00, 0x00, 0xbc, 0x74, 0xb3, 0x3f, 0xe1, 0xd1, 0x36, 0xbf, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
 // No out-of-line body: no code in the ELF
 // MtQuaternion::MtQuaternion();
 
@@ -1083,6 +1119,12 @@ __attribute__((weak)) void MtQuaternion::setRotationMatrix(const MtMatrix& mat) 
 // No out-of-line body: no code in the ELF
 // u64 MtQuaternion::toInteger56(const MtQuaternion& _q);
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtQuaternion MtQuaternion::Identity;
+alignas(16) unsigned char MtQuaternion_Identity_bytes[16] __asm__("_ZN12MtQuaternion8IdentityE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtQuaternion MtQuaternion::Zero;
+alignas(16) unsigned char MtQuaternion_Zero_bytes[16] __asm__("_ZN12MtQuaternion4ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtVector2::MtVector2();
 
@@ -1378,6 +1420,24 @@ __attribute__((weak)) void MtQuaternion::setRotationMatrix(const MtMatrix& mat) 
 
 // No out-of-line body: no code in the ELF
 // u32 MtVector2::closestAxis() const;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::Zero;
+alignas(8) unsigned char MtVector2_Zero_bytes[8] __asm__("_ZN9MtVector24ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::One;
+alignas(8) unsigned char MtVector2_One_bytes[8] __asm__("_ZN9MtVector23OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::AxisX;
+alignas(8) unsigned char MtVector2_AxisX_bytes[8] __asm__("_ZN9MtVector25AxisXE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::AxisY;
+alignas(8) unsigned char MtVector2_AxisY_bytes[8] __asm__("_ZN9MtVector25AxisYE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::Min;
+alignas(8) unsigned char MtVector2_Min_bytes[8] __asm__("_ZN9MtVector23MinE") = {0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector2 MtVector2::Max;
+alignas(8) unsigned char MtVector2_Max_bytes[8] __asm__("_ZN9MtVector23MaxE") = {0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f};
 
 // No out-of-line body: 1676 inlined copies in 645 functions (39140 bytes)
 //   in aStage::aStage at 0x000072f5-0x00007316 (called at aStage.cpp:288)
@@ -1759,6 +1819,33 @@ __attribute__((weak)) void MtQuaternion::setRotationMatrix(const MtMatrix& mat) 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 MtVector3::closestAxis() const;
 
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::Zero;
+alignas(16) unsigned char MtVector3_Zero_bytes[16] __asm__("_ZN9MtVector34ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::One;
+alignas(16) unsigned char MtVector3_One_bytes[16] __asm__("_ZN9MtVector33OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::NegativeOne;
+alignas(16) unsigned char MtVector3_NegativeOne_bytes[16] __asm__("_ZN9MtVector311NegativeOneE") = {0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::AxisX;
+alignas(16) unsigned char MtVector3_AxisX_bytes[16] __asm__("_ZN9MtVector35AxisXE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::AxisY;
+alignas(16) unsigned char MtVector3_AxisY_bytes[16] __asm__("_ZN9MtVector35AxisYE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::AxisZ;
+alignas(16) unsigned char MtVector3_AxisZ_bytes[16] __asm__("_ZN9MtVector35AxisZE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::Min;
+alignas(16) unsigned char MtVector3_Min_bytes[16] __asm__("_ZN9MtVector33MinE") = {0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::Max;
+alignas(16) unsigned char MtVector3_Max_bytes[16] __asm__("_ZN9MtVector33MaxE") = {0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector3 MtVector3::Epsilon;
+alignas(16) unsigned char MtVector3_Epsilon_bytes[16] __asm__("_ZN9MtVector37EpsilonE") = {0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x00};
+
 // No out-of-line body: no code in the ELF
 // MtVector4::MtVector4();
 
@@ -2084,4 +2171,37 @@ __attribute__((weak)) void MtQuaternion::setRotationMatrix(const MtMatrix& mat) 
 
 // No out-of-line body: no code in the ELF
 // MtVector4 MtVector4::pow(const MtVector4&) const;
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::Zero;
+alignas(16) unsigned char MtVector4_Zero_bytes[16] __asm__("_ZN9MtVector44ZeroE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::One;
+alignas(16) unsigned char MtVector4_One_bytes[16] __asm__("_ZN9MtVector43OneE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::NegativeOne;
+alignas(16) unsigned char MtVector4_NegativeOne_bytes[16] __asm__("_ZN9MtVector411NegativeOneE") = {0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x80, 0xbf, 0x00, 0x00, 0x80, 0xbf};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::Identity;
+alignas(16) unsigned char MtVector4_Identity_bytes[16] __asm__("_ZN9MtVector48IdentityE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::AxisX;
+alignas(16) unsigned char MtVector4_AxisX_bytes[16] __asm__("_ZN9MtVector45AxisXE") = {0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::AxisY;
+alignas(16) unsigned char MtVector4_AxisY_bytes[16] __asm__("_ZN9MtVector45AxisYE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::AxisZ;
+alignas(16) unsigned char MtVector4_AxisZ_bytes[16] __asm__("_ZN9MtVector45AxisZE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::AxisW;
+alignas(16) unsigned char MtVector4_AxisW_bytes[16] __asm__("_ZN9MtVector45AxisWE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::Min;
+alignas(16) unsigned char MtVector4_Min_bytes[16] __asm__("_ZN9MtVector43MinE") = {0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff, 0xff, 0xff, 0x7f, 0xff};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::Max;
+alignas(16) unsigned char MtVector4_Max_bytes[16] __asm__("_ZN9MtVector43MaxE") = {0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f, 0xff, 0xff, 0x7f, 0x7f};
+
+// inferred: the bytes the constant stores of its .ctors initializer _GLOBAL__sub_I_MtMath.cpp leave in .bss, under its symbol (D-S1b): const MtVector4 MtVector4::Epsilon;
+alignas(16) unsigned char MtVector4_Epsilon_bytes[16] __asm__("_ZN9MtVector47EpsilonE") = {0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x34, 0x00, 0x00, 0x00, 0x34};
 

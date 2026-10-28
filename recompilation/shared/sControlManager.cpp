@@ -34,7 +34,7 @@ const MtDTI& sControlManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sControlManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sControlManager::DTI);
+    return MtMemoryAllocator::getAllocator(sControlManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -43,7 +43,7 @@ inline MtAllocator* sControlManager::getAllocator() {
 // Address: 0x0074f5e0 - 0x0074f620 (64 bytes)
 void* sControlManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sControlManager::getAllocator()->memAlloc(sz, align, ::sControlManager::DTI.::MtDTI::getID());
+    return sControlManager::getAllocator()->memAlloc(sz, align, sControlManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,7 +58,7 @@ void* sControlManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sControlManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sControlManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sControlManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,46 +92,45 @@ __attribute__((weak)) void sControlManager::createProperty(MtPropertyList& s) {
 // Address: 0x00750ed0 - 0x00750ed5 (5 bytes)
 MtUI* sControlManager::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x00750ee0 - 0x00751007 (295 bytes)
 void sControlManager::init() {
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sControlManager*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x40 from sControlManager*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from sControlManager*
-    // inferred: a value cast to the type its use takes: u32 used as size_t
-    if (this->mRefArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRefArray.::MtArray::mpArray));
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    if (mRefArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRefArray.mpArray));
     }
-    this->mRefArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
-    if (this->mAddArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAddArray.::MtArray::mpArray));
+    mRefArray.mpArray = nullptr;
+    mRefArray.mLength = 0;
+    mRefArray.mBufsiz = 0;
+    if (mAddArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddArray.mpArray));
     }
-    this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
-    if (this->mDelArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDelArray.::MtArray::mpArray));
+    mAddArray.mpArray = nullptr;
+    mAddArray.mLength = 0;
+    mAddArray.mBufsiz = 0;
+    if (mDelArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDelArray.mpArray));
     }
-    this->mDelArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(96)) = static_cast<unsigned long>(0);
-    if (this->mDispArray.::MtArray::mBufsiz <= static_cast<u32>(99)) {
+    mDelArray.mpArray = nullptr;
+    mDelArray.mLength = 0;
+    mDelArray.mBufsiz = 0;
+    if (mDispArray.mBufsiz <= 99u) {
         // inferred: a temporary for the result of the call at 0x750fa5, used 3 times; no DWARF local holds it
-        void* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memAlloc(static_cast<size_t>(800), static_cast<u32>(16));
-        ::memset(t0, static_cast<int>(0), static_cast<size_t>(800));
-        ::memcpy(t0, static_cast<const void*>(this->mDispArray.::MtArray::mpArray), static_cast<size_t>(this->mDispArray.::MtArray::mLength * static_cast<u32>(8)));
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDispArray.::MtArray::mpArray));
-        this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(t0);
-        this->mDispArray.::MtArray::mBufsiz = static_cast<u32>(100);
+        void* t0 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(800ul, 16u);
+        memset(t0, 0, 800ul);
+        memcpy(t0, static_cast<const void*>(mDispArray.mpArray), static_cast<size_t>(mDispArray.mLength) * 8);
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDispArray.mpArray));
+        mDispArray.mpArray = static_cast<MtObject* *>(t0);
+        mDispArray.mBufsiz = 100;
     }
 }
 
 // Address: 0x00751010 - 0x00751015 (5 bytes)
 void sControlManager::reset() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sControlManager::releaseUnitAll();
+    releaseUnitAll();
 }
 
 // Address: 0x00751130 - 0x00751233 (259 bytes)
@@ -180,7 +179,7 @@ __attribute__((weak)) void sControlManager::addUnit(uControl* p, u32 unique_id, 
 // Address: 0x00751960 - 0x0075197a (26 bytes)
 void sControlManager::addUnit(uControl* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sControlManager::addUnit(pUnit, pUnit->::uControl::getUniqueId(), static_cast<u32>(6), pUnit->::cUnit::getUnitGroup(), static_cast<u32>(1));
+    addUnit(pUnit, pUnit->getUniqueId(), 6u, pUnit->getUnitGroup(), 1u);
 }
 
 // No out-of-line body: no code in the ELF
@@ -215,18 +214,18 @@ void sControlManager::releaseUnitAllFromType(s32 Type, bool IsDeleteContext) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sControlManager*
     // inferred: a value cast to the type its use takes: s32 used as unsigned int
-    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32));
-    if (num != static_cast<u32>(0)) {
+    u32 num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32);
+    if (num != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRefArray.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
-                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mRefArray.::MtArray::getBuffer()[static_cast<int>(i0_3)]) + static_cast<long>(104))) == static_cast<unsigned int>(Type)) {
-                    this->releaseUnit(static_cast<uControl*>(this->mRefArray.::MtArray::getBuffer()[static_cast<int>(i0_3)]));
-                    this->mRefArray.::MtArray::getBuffer()[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRefArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mRefArray.getBuffer()[static_cast<int>(i0_3)]) + 104)) == static_cast<unsigned int>(Type)) {
+                    releaseUnit(static_cast<uControl*>(mRefArray.getBuffer()[static_cast<int>(i0_3)]));
+                    mRefArray.getBuffer()[static_cast<int>(i0_3)] = nullptr;
                 }
             }
-            if (num != (i0_3 + static_cast<unsigned int>(1))) {
-                i0_3 += static_cast<unsigned int>(1);
+            if (num != (i0_3 + 1u)) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -246,175 +245,175 @@ __attribute__((weak)) void sControlManager::releaseUnitAll() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x40 from sControlManager*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from sControlManager*
     // inferred: an ordered temporary, read before a later effect: the value read at 0x75102d, held ahead of the effects the ELF orders after it
-    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x751030, held ahead of the effects the ELF orders after it
-    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(96));
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96);
     // inferred: an ordered temporary, read before a later effect: the value read at 0x751030, held ahead of the effects the ELF orders after it
-    bool t1 = this->update();
-    u32 num = this->mRefArray.::MtArray::mLength;
-    if (num != static_cast<u32>(0)) {
+    bool t1 = update();
+    u32 num = mRefArray.mLength;
+    if (num != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x751043, held ahead of the effects the ELF orders after it
-            MtObject* * t4 = this->mRefArray.::MtArray::getBuffer();
+            MtObject* * t4 = mRefArray.getBuffer();
             uControl* p = static_cast<uControl*>(t4[static_cast<int>(i0_3)]);
-            if (p != static_cast<uControl*>(nullptr)) {
+            if (p != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x751050, held ahead of the effects the ELF orders after it
-                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(0));
+                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x751056, held ahead of the effects the ELF orders after it
-                unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(104));
-                this->releaseUnit(p);
+                unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 104);
+                releaseUnit(p);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x751059, held ahead of the effects the ELF orders after it
-                MtObject* * t8 = this->mRefArray.::MtArray::getBuffer();
-                t8[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
-                if (num != (i0_3 + static_cast<unsigned int>(1))) {
-                    i0_3 += static_cast<unsigned int>(1);
+                MtObject* * t8 = mRefArray.getBuffer();
+                t8[static_cast<int>(i0_3)] = nullptr;
+                if (num != (i0_3 + 1u)) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                t4[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
-                if (num != (i0_3 + static_cast<unsigned int>(1))) {
-                    i0_3 += static_cast<unsigned int>(1);
+                t4[static_cast<int>(i0_3)] = nullptr;
+                if (num != (i0_3 + 1u)) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    this->mbModify = true;
+    mbModify = true;
     // inferred: an ordered temporary, read before a later effect: the value read at 0x751074, held ahead of the effects the ELF orders after it
-    MtObject* * t9 = this->mRefArray.::MtArray::mpArray;
-    if (t9 != static_cast<MtObject* *>(nullptr)) {
+    MtObject* * t9 = mRefArray.mpArray;
+    if (t9 != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x751082, held ahead of the effects the ELF orders after it
-        MtAllocator* t10 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+        MtAllocator* t10 = MtMemoryAllocator::getAllocator(MtArray::DTI);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x751087, held ahead of the effects the ELF orders after it
-        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(0));
+        unsigned long t12 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + 0);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x75108a, held ahead of the effects the ELF orders after it
-        MtObject* * t13 = this->mRefArray.::MtArray::mpArray;
+        MtObject* * t13 = mRefArray.mpArray;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x751091, held ahead of the effects the ELF orders after it
-        unsigned long t16 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + static_cast<long>(112));
+        unsigned long t16 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t12) + 112);
         t10->memFree(static_cast<void*>(t13));
-        this->mRefArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mRefArray.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mRefArray.::MtArray::mLength = static_cast<u32>(0);
+        mRefArray.mpArray = nullptr;
+        mRefArray.mBufsiz = 0;
+        mRefArray.mLength = 0;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ac, held ahead of the effects the ELF orders after it
-        MtObject* * t17 = this->mAddArray.::MtArray::mpArray;
-        if (t17 != static_cast<MtObject* *>(nullptr)) {
+        MtObject* * t17 = mAddArray.mpArray;
+        if (t17 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ba, held ahead of the effects the ELF orders after it
-            MtAllocator* t18 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+            MtAllocator* t18 = MtMemoryAllocator::getAllocator(MtArray::DTI);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510bf, held ahead of the effects the ELF orders after it
-            unsigned long t20 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + static_cast<long>(0));
+            unsigned long t20 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510c2, held ahead of the effects the ELF orders after it
-            MtObject* * t21 = this->mAddArray.::MtArray::mpArray;
+            MtObject* * t21 = mAddArray.mpArray;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510c9, held ahead of the effects the ELF orders after it
-            unsigned long t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t20) + static_cast<long>(112));
+            unsigned long t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t20) + 112);
             t18->memFree(static_cast<void*>(t21));
-            this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+            mAddArray.mpArray = nullptr;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 0;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510dc, held ahead of the effects the ELF orders after it
-            MtObject* * t25 = this->mDispArray.::MtArray::mpArray;
-            if (t25 != static_cast<MtObject* *>(nullptr)) {
+            MtObject* * t25 = mDispArray.mpArray;
+            if (t25 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ed, held ahead of the effects the ELF orders after it
-                MtAllocator* t26 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                MtAllocator* t26 = MtMemoryAllocator::getAllocator(MtArray::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f2, held ahead of the effects the ELF orders after it
-                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + static_cast<long>(0));
+                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f5, held ahead of the effects the ELF orders after it
-                MtObject* * t29 = this->mDispArray.::MtArray::mpArray;
+                MtObject* * t29 = mDispArray.mpArray;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ff, held ahead of the effects the ELF orders after it
-                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + static_cast<long>(112));
+                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + 112);
                 t26->memFree(static_cast<void*>(t29));
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             } else {
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             }
         } else {
-            this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+            mAddArray.mpArray = nullptr;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 0;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510dc, held ahead of the effects the ELF orders after it
-            MtObject* * t25 = this->mDispArray.::MtArray::mpArray;
-            if (t25 != static_cast<MtObject* *>(nullptr)) {
+            MtObject* * t25 = mDispArray.mpArray;
+            if (t25 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ed, held ahead of the effects the ELF orders after it
-                MtAllocator* t26 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                MtAllocator* t26 = MtMemoryAllocator::getAllocator(MtArray::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f2, held ahead of the effects the ELF orders after it
-                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + static_cast<long>(0));
+                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f5, held ahead of the effects the ELF orders after it
-                MtObject* * t29 = this->mDispArray.::MtArray::mpArray;
+                MtObject* * t29 = mDispArray.mpArray;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ff, held ahead of the effects the ELF orders after it
-                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + static_cast<long>(112));
+                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + 112);
                 t26->memFree(static_cast<void*>(t29));
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             } else {
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             }
         }
     } else {
-        this->mRefArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mRefArray.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mRefArray.::MtArray::mLength = static_cast<u32>(0);
+        mRefArray.mpArray = nullptr;
+        mRefArray.mBufsiz = 0;
+        mRefArray.mLength = 0;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ac, held ahead of the effects the ELF orders after it
-        MtObject* * t17 = this->mAddArray.::MtArray::mpArray;
-        if (t17 != static_cast<MtObject* *>(nullptr)) {
+        MtObject* * t17 = mAddArray.mpArray;
+        if (t17 != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ba, held ahead of the effects the ELF orders after it
-            MtAllocator* t18 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+            MtAllocator* t18 = MtMemoryAllocator::getAllocator(MtArray::DTI);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510bf, held ahead of the effects the ELF orders after it
-            unsigned long t20 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + static_cast<long>(0));
+            unsigned long t20 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 0);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510c2, held ahead of the effects the ELF orders after it
-            MtObject* * t21 = this->mAddArray.::MtArray::mpArray;
+            MtObject* * t21 = mAddArray.mpArray;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510c9, held ahead of the effects the ELF orders after it
-            unsigned long t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t20) + static_cast<long>(112));
+            unsigned long t24 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t20) + 112);
             t18->memFree(static_cast<void*>(t21));
-            this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+            mAddArray.mpArray = nullptr;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 0;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510dc, held ahead of the effects the ELF orders after it
-            MtObject* * t25 = this->mDispArray.::MtArray::mpArray;
-            if (t25 != static_cast<MtObject* *>(nullptr)) {
+            MtObject* * t25 = mDispArray.mpArray;
+            if (t25 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ed, held ahead of the effects the ELF orders after it
-                MtAllocator* t26 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                MtAllocator* t26 = MtMemoryAllocator::getAllocator(MtArray::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f2, held ahead of the effects the ELF orders after it
-                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + static_cast<long>(0));
+                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f5, held ahead of the effects the ELF orders after it
-                MtObject* * t29 = this->mDispArray.::MtArray::mpArray;
+                MtObject* * t29 = mDispArray.mpArray;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ff, held ahead of the effects the ELF orders after it
-                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + static_cast<long>(112));
+                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + 112);
                 t26->memFree(static_cast<void*>(t29));
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             } else {
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             }
         } else {
-            this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+            mAddArray.mpArray = nullptr;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 0;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7510dc, held ahead of the effects the ELF orders after it
-            MtObject* * t25 = this->mDispArray.::MtArray::mpArray;
-            if (t25 != static_cast<MtObject* *>(nullptr)) {
+            MtObject* * t25 = mDispArray.mpArray;
+            if (t25 != nullptr) {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ed, held ahead of the effects the ELF orders after it
-                MtAllocator* t26 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                MtAllocator* t26 = MtMemoryAllocator::getAllocator(MtArray::DTI);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f2, held ahead of the effects the ELF orders after it
-                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + static_cast<long>(0));
+                unsigned long t28 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t26) + 0);
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510f5, held ahead of the effects the ELF orders after it
-                MtObject* * t29 = this->mDispArray.::MtArray::mpArray;
+                MtObject* * t29 = mDispArray.mpArray;
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x7510ff, held ahead of the effects the ELF orders after it
-                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + static_cast<long>(112));
+                unsigned long t32 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t28) + 112);
                 t26->memFree(static_cast<void*>(t29));
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             } else {
-                this->mDispArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(128)) = static_cast<unsigned long>(0);
+                mDispArray.mpArray = nullptr;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 128) = 0;
                 return;
             }
         }
@@ -599,9 +598,9 @@ __attribute__((weak)) uDDOModel* sControlManager::getUnitFSMDemo(u32 type, u32 g
 // Address: 0x0074fad0 - 0x0074faef (31 bytes)
 void sControlManager::setTotalDispUnitNum(u32 num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTotalDispUnitNum = static_cast<u32>(80);
-    this->mRealDispUnitMaxNum = static_cast<u32>(40);
-    this->mLoadCtrlMaxNum = static_cast<u32>(40);
+    mTotalDispUnitNum = 80;
+    mRealDispUnitMaxNum = 40;
+    mLoadCtrlMaxNum = 40;
 }
 
 // No out-of-line body: no code in the ELF
@@ -610,7 +609,7 @@ void sControlManager::setTotalDispUnitNum(u32 num) {
 // Address: 0x0074fb00 - 0x0074fb09 (9 bytes)
 void sControlManager::setDispMaxDist(f32 dist) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDispMaxDist = dist;
+    mDispMaxDist = dist;
 }
 
 // No out-of-line body: no code in the ELF
@@ -640,8 +639,8 @@ void sControlManager::setDispMaxDist(f32 dist) {
 // Address: 0x00751ed0 - 0x00751ee7 (23 bytes)
 bool sControlManager::isEnableUnit(uControl* pUnit) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pUnit != static_cast<uControl*>(nullptr)) {
-        return pUnit->::cUnit::isEnable();
+    if (pUnit != nullptr) {
+        return pUnit->isEnable();
     } else {
         return false;
     }
@@ -670,27 +669,27 @@ void sControlManager::dispPlayerModel(uControl* pCtrl) {
     MT_CTSTR v0_1;
     // inferred: the value the loop at 0x753aa0 carries; no location-less local in scope fits
     cContextInstance* v0_3;
-    if (pCtrl != static_cast<uControl*>(nullptr)) {
-        if (::sBakingJointOrder::getInstance()->::sBakingJointOrder::isBakingJoint() != false) {
-            if (this->mNoBakedUnit > static_cast<u32>(1)) {
+    if (pCtrl != nullptr) {
+        if (sBakingJointOrder::getInstance()->isBakingJoint()) {
+            if (mNoBakedUnit > 1u) {
                 return;
             } else {
-                v0_3 = pCtrl->::uControl::getContextInst();
-                if (v0_3 != static_cast<cContextInstance*>(nullptr)) {
+                v0_3 = pCtrl->getContextInst();
+                if (v0_3 != nullptr) {
                     // inferred: a temporary for the result of the call at 0x753a92, used once; no DWARF local holds it
                     const MtDTI& t0 = v0_3->getDTI();
-                    v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+                    v0_1 = cContextInstHm::DTI.mName;
                     v0_0 = &t0;
                 } else {
                     return;
                 }
             }
         } else {
-            v0_3 = pCtrl->::uControl::getContextInst();
-            if (v0_3 != static_cast<cContextInstance*>(nullptr)) {
+            v0_3 = pCtrl->getContextInst();
+            if (v0_3 != nullptr) {
                 // inferred: a temporary for the result of the call at 0x753a92, used once; no DWARF local holds it
                 const MtDTI& t0 = v0_3->getDTI();
-                v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+                v0_1 = cContextInstHm::DTI.mName;
                 v0_0 = &t0;
             } else {
                 return;
@@ -705,17 +704,17 @@ void sControlManager::dispPlayerModel(uControl* pCtrl) {
             p_hm_inst = static_cast<cContextInstHm*>(v0_3);
             break;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
-                p_hm_inst = static_cast<cContextInstHm*>(nullptr);
+                p_hm_inst = nullptr;
                 break;
             }
         }
     }
-    ::sPlayerManager::playerSyncLoadCoreSub(p_hm_inst);
-    if (::cContextInterface::getPlayerLoadMgr(pCtrl->mContextInterface.mpContextInstance).::cPlayerLoadManager::isLoadFinish() != false) {
-        this->::sControlManager::createPlayerModel(pCtrl);
+    sPlayerManager::playerSyncLoadCoreSub(p_hm_inst);
+    if (cContextInterface::getPlayerLoadMgr(pCtrl->mContextInterface.mpContextInstance).isLoadFinish()) {
+        createPlayerModel(pCtrl);
         return;
     }
 }
@@ -883,6 +882,11 @@ __attribute__((weak)) void sControlManager::initDispPriorityData() {
     /* stub */
 }
 
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sControlManager* sControlManager::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sControlManager::MyDTI sControlManager::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sControlManager.cpp at 0x0075579f-0x007557dc (called at sControlManager.cpp:74)
 //   in _GLOBAL__sub_I_sControlManager.cpp at 0x0075579f-0x007557dc (called at sControlManager.h:60)
@@ -918,7 +922,7 @@ const MtDTI& sControlManager::cDispPriorityData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* sControlManager::cDispPriorityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sControlManager::cDispPriorityData::DTI)->memAlloc(sz, align, ::sControlManager::cDispPriorityData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sControlManager::cDispPriorityData::DTI)->memAlloc(sz, align, sControlManager::cDispPriorityData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -932,7 +936,7 @@ inline void* sControlManager::cDispPriorityData::operator new(size_t sz, u32 ali
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sControlManager::cDispPriorityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sControlManager::cDispPriorityData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sControlManager::cDispPriorityData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -954,6 +958,8 @@ inline void sControlManager::cDispPriorityData::operator delete(void* p_addr) {
 // Defined in the class (its body was written in a header).
 // sControlManager::cDispPriorityData::~cDispPriorityData();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sControlManager::cDispPriorityData::MyDTI sControlManager::cDispPriorityData::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sControlManager.cpp at 0x007557dc-0x00755819 (called at sControlManager.cpp:75)
 //   in _GLOBAL__sub_I_sControlManager.cpp at 0x007557dc-0x00755819 (called at sControlManager.h:305)
@@ -962,7 +968,7 @@ inline void sControlManager::cDispPriorityData::operator delete(void* p_addr) {
 // Address: 0x0074f690 - 0x0074f6de (78 bytes)
 MtObject* sControlManager::cDispPriorityData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sControlManager::cDispPriorityData;
+    return new (16u) sControlManager::cDispPriorityData;
 }
 
 // Instance at 0x01ac1c00 - 0x01ac1c05 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

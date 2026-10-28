@@ -25,7 +25,7 @@ const MtDTI& cPawnEnableArea::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cPawnEnableArea::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cPawnEnableArea::DTI);
+    return MtMemoryAllocator::getAllocator(cPawnEnableArea::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cPawnEnableArea::getAllocator() {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cPawnEnableArea::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cPawnEnableArea::DTI)->memAlloc(sz, align, ::cPawnEnableArea::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cPawnEnableArea::DTI)->memAlloc(sz, align, cPawnEnableArea::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ inline void* cPawnEnableArea::operator new(size_t sz, u32 align) {
 // Address: 0x006232f0 - 0x0062331a (42 bytes)
 __attribute__((weak)) void cPawnEnableArea::operator delete(void* p_addr) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cPawnEnableArea::getAllocator()->memFree(p_addr);
+    cPawnEnableArea::getAllocator()->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -97,11 +97,11 @@ bool cPawnEnableArea::isEnableAreaY(const MtVector3& ownerPos, const f32 targetY
     // DWARF local not rendered: f32 height;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if ((this->mMaxY - this->mMinY) > 1.1920929e-7f) {
-        if (this->mMinY > (ownerPos.y - targetY)) {
+    if ((mMaxY - mMinY) > 1.1920929e-7f) {
+        if (mMinY > (ownerPos.y - targetY)) {
             return false;
         } else {
-            if ((ownerPos.y - targetY) > this->mMaxY) {
+            if ((ownerPos.y - targetY) > mMaxY) {
                 return false;
             } else {
                 return true;
@@ -117,19 +117,19 @@ void cPawnEnableArea::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMinXZ);
+    nDDOIO::readData(r, mMinXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMaxXZ);
+    nDDOIO::readData(r, mMaxXZ);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMinY);
+    nDDOIO::readData(r, mMinY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mMaxY);
+    nDDOIO::readData(r, mMaxY);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mRadius);
+    nDDOIO::readData(r, mRadius);
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,6 +148,8 @@ __attribute__((weak)) void cPawnEnableArea::copy(const cPawnEnableArea& src) {
 //   and 7 more (every copy is in <bundle>.inlined.json)
 // void cPawnEnableArea::resetArea();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cPawnEnableArea::MyDTI cPawnEnableArea::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_nPawn.cpp at 0x0062bb21-0x0062bb5e (called at nPawn.cpp:1793)
 //   in _GLOBAL__sub_I_nPawn.cpp at 0x0062bb21-0x0062bb5e (called at nPawn.h:850)
@@ -156,6 +158,6 @@ __attribute__((weak)) void cPawnEnableArea::copy(const cPawnEnableArea& src) {
 // Address: 0x00623250 - 0x006232b3 (99 bytes)
 MtObject* cPawnEnableArea::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cPawnEnableArea;
+    return new (16u) cPawnEnableArea;
 }
 

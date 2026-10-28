@@ -107,7 +107,13 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cAITargetInfo::cAITargetInfo() {
-    this->mpTargetUnit = static_cast<uDDOModel*>(nullptr);
+    this->mpTargetUnit = nullptr;
     this->mEnableFrame = 0.0f;
     this->mEvaluation = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cpPawnThink::getNpcEnemyEvaFunc at 0x518029-0x51802e; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline f32 cAITargetInfoArray::getMaxEvaluation() const {
+    return this->mMaxEvaluation;
 }

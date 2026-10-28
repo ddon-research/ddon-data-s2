@@ -136,8 +136,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rGUIMapSetting::cData::cData() {
-    this->mpShape = static_cast<AreaHitShape*>(nullptr);
-    this->mFloorId = static_cast<u32>(0);
-    this->mShapeType = static_cast<s32>(9);
+    this->mpShape = nullptr;
+    this->mFloorId = 0;
+    this->mShapeType = 9;
     this->mVisible = true;
 }

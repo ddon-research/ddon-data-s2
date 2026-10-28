@@ -34,7 +34,7 @@ const MtDTI& cCraftPlusItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cCraftPlusItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cCraftPlusItem::DTI)->memAlloc(sz, align, ::cCraftPlusItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cCraftPlusItem::DTI)->memAlloc(sz, align, cCraftPlusItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* cCraftPlusItem::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cCraftPlusItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCraftPlusItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCraftPlusItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ inline void cCraftPlusItem::operator delete(void* p_addr) {
 // Address: 0x0006f400 - 0x0006f417 (23 bytes)
 cCraftPlusItem::cCraftPlusItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cCraftPlusItem::init();
+    init();
 }
 
 // Address: 0x0006f430 - 0x0006f431 (1 bytes)
@@ -95,17 +95,19 @@ __attribute__((weak)) cCraftQualityData* cCraftPlusItem::getQualityResource(u32 
 // Address: 0x0006f4b0 - 0x0006f4d6 (38 bytes)
 void cCraftPlusItem::releaseQualityResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpQualityResource == static_cast<rCraftQuality*>(nullptr)) {
+    if (mpQualityResource == nullptr) {
         return;
     }
-    this->mpQualityResource->::cResource::release();
-    this->mpQualityResource = static_cast<rCraftQuality*>(nullptr);
+    mpQualityResource->release();
+    mpQualityResource = nullptr;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (16 bytes)
 //   in cCraftPlusItem::MyDTI::newInstance at 0x0006f37b-0x0006f383 (called at cCraftPlusItem.cpp:55)
 //   in cCraftPlusItem::cCraftPlusItem at 0x0006f40e-0x0006f416 (called at cCraftPlusItem.cpp:55)
 // void cCraftPlusItem::init();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCraftPlusItem::MyDTI cCraftPlusItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cCraftPlusItem.cpp at 0x0006f550-0x0006f592 (called at cCraftPlusItem.cpp:42)
@@ -115,6 +117,6 @@ void cCraftPlusItem::releaseQualityResource() {
 // Address: 0x0006f340 - 0x0006f388 (72 bytes)
 MtObject* cCraftPlusItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cCraftPlusItem;
+    return new (16u) cCraftPlusItem;
 }
 

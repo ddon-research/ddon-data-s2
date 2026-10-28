@@ -31,7 +31,7 @@ const MtDTI& sTutorialGuide::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sTutorialGuide::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sTutorialGuide::DTI);
+    return MtMemoryAllocator::getAllocator(sTutorialGuide::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -40,7 +40,7 @@ inline MtAllocator* sTutorialGuide::getAllocator() {
 // Address: 0x00865c80 - 0x00865cc0 (64 bytes)
 void* sTutorialGuide::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sTutorialGuide::getAllocator()->memAlloc(sz, align, ::sTutorialGuide::DTI.::MtDTI::getID());
+    return sTutorialGuide::getAllocator()->memAlloc(sz, align, sTutorialGuide::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -55,7 +55,7 @@ void* sTutorialGuide::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sTutorialGuide::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sTutorialGuide::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sTutorialGuide::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -70,7 +70,7 @@ inline void sTutorialGuide::operator delete(void* p_addr) {
 // Address: 0x00866600 - 0x00866605 (5 bytes)
 const MtTypedArray<sTutorialGuide::cOpenGuideNo>& sTutorialGuide::getOpenGuideList() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOpenGuideList;
+    return mOpenGuideList;
 }
 
 // Address: 0x008660a0 - 0x00866294 (500 bytes)
@@ -94,23 +94,23 @@ bool sTutorialGuide::guideSort(const sTutorialGuide::cOpenGuideNo* a, const sTut
 // Address: 0x008667e0 - 0x0086687d (157 bytes)
 void sTutorialGuide::createResouce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rTutorialList* pList = static_cast<rTutorialList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_LIST", static_cast<u32>(1), false));
-    if (pList != static_cast<rTutorialList*>(nullptr)) {
-        this->mpTutorialList = pList;
-        pList->::cResource::addRef();
-        pList->::cResource::release();
-        rGUIMessage* pName = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", static_cast<u32>(1), false));
-        if (pName != static_cast<rGUIMessage*>(nullptr)) {
-            this->mpTutorialName = pName;
-            pName->::cResource::addRef();
-            pName->::cResource::release();
+    rTutorialList* pList = static_cast<rTutorialList*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_LIST", 1u, false));
+    if (pList != nullptr) {
+        mpTutorialList = pList;
+        pList->cResource::addRef();
+        pList->cResource::release();
+        rGUIMessage* pName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", 1u, false));
+        if (pName != nullptr) {
+            mpTutorialName = pName;
+            pName->cResource::addRef();
+            pName->cResource::release();
         }
     } else {
-        rGUIMessage* pName = static_cast<rGUIMessage*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", static_cast<u32>(1), false));
-        if (pName != static_cast<rGUIMessage*>(nullptr)) {
-            this->mpTutorialName = pName;
-            pName->::cResource::addRef();
-            pName->::cResource::release();
+        rGUIMessage* pName = static_cast<rGUIMessage*>(sArchiveManager::getInstance()->createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_NAME", 1u, false));
+        if (pName != nullptr) {
+            mpTutorialName = pName;
+            pName->cResource::addRef();
+            pName->cResource::release();
         }
     }
 }
@@ -141,13 +141,12 @@ bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != GuideNo) {
-            } else {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
-                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(16))) == static_cast<unsigned long>(0)) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 8)) == GuideNo) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 24)) != 0) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 16)) == 0) {
                         return false;
                     } else {
                         return true;
@@ -156,8 +155,8 @@ bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
                     return false;
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)));
     }
     return false;
 }
@@ -170,9 +169,16 @@ __attribute__((weak)) void sTutorialGuide::createGuideData(u32 GuideNo) {
     /* stub */
 }
 
-// No out-of-line body: 1 inlined copy in 1 function (22 bytes)
-//   in uGUITutorialPop::kill at 0x00c65c19-0x00c65c2f (called at uGUITutorialPop.cpp:281)
-// void sTutorialGuide::releaseGuideData();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in uGUITutorialPop::kill at 0xc65c19-0xc65c2f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void sTutorialGuide::releaseGuideData() {
+    if (mpTutorialDetail == nullptr) {
+        return;
+    }
+    mpTutorialDetail->release();
+    mpTutorialDetail = nullptr;
+}
 
 // No out-of-line body: 7 inlined copies in 6 functions (402 bytes)
 //   in sTutorialGuide::move at 0x00865df2-0x00865e09, 0x00865e24-0x00865e47 (called at sTutorialGuide.cpp:442)
@@ -186,16 +192,16 @@ sTutorialGuide::cOpenGuideNo* sTutorialGuide::getOpenGuideData(u32 GuideNo) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sTutorialGuide*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == GuideNo) {
-                return static_cast<sTutorialGuide::cOpenGuideNo*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]) + 8)) == GuideNo) {
+                return static_cast<cOpenGuideNo*>(mOpenGuideList.getBuffer()[static_cast<int>(i)]);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 32)));
     }
-    return static_cast<sTutorialGuide::cOpenGuideNo*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00866540 - 0x00866593 (83 bytes)
@@ -203,24 +209,24 @@ MT_CTSTR sTutorialGuide::getGuideName(u32 GuideNo) {
     // DWARF local not rendered: cTutorialNode* pNode;
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rTutorialList*
-    if (this->mpTutorialList != static_cast<rTutorialList*>(nullptr)) {
+    if (mpTutorialList != nullptr) {
         // inferred: the value the loop at 0x866560 carries; no location-less local in scope fits
-        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTutorialList) + static_cast<long>(120));
-        if (v0_3 != static_cast<unsigned int>(0)) {
+        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTutorialList) + 120);
+        if (v0_3 != 0) {
             // inferred: the value the loop at 0x866560 carries; no location-less local in scope fits
-            MtObject* * v0_1 = this->mpTutorialList->mArray.::MtArray::getBuffer();
+            MtObject* * v0_1 = mpTutorialList->mArray.getBuffer();
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) == GuideNo) {
-                    if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
-                        if (this->mpTutorialName != static_cast<rGUIMessage*>(nullptr)) {
-                            return this->mpTutorialName->::rGUIMessage::getMessage(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(16)));
+            for (unsigned int i0_2 = 0;;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 8)) == GuideNo) {
+                    if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                        if (mpTutorialName != nullptr) {
+                            return mpTutorialName->getMessage(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 16));
                         }
                     }
                     return "";
                 } else {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_3) {
-                        i0_2 += static_cast<unsigned int>(1);
+                    if ((i0_2 + 1u) < v0_3) {
+                        i0_2 += 1u;
                     } else {
                         break;
                     }
@@ -242,34 +248,34 @@ u32 sTutorialGuide::getCategory(u32 GuideNo) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rTutorialList*
     // inferred: the value carried to 0x8665f1; no location-less local in scope fits
     unsigned int v2_0;
-    if (this->mpTutorialList == static_cast<rTutorialList*>(nullptr)) {
-        v2_0 = static_cast<unsigned int>(0);
+    if (mpTutorialList == nullptr) {
+        v2_0 = 0;
     } else {
         // inferred: the value the loop at 0x8665d0 carries; no location-less local in scope fits
-        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTutorialList) + static_cast<long>(120));
-        if (v0_3 == static_cast<unsigned int>(0)) {
-            v2_0 = static_cast<unsigned int>(0);
+        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpTutorialList) + 120);
+        if (v0_3 == 0) {
+            v2_0 = 0;
         } else {
             // inferred: the value the loop at 0x8665d0 carries; no location-less local in scope fits
-            MtObject* * v0_1 = this->mpTutorialList->mArray.::MtArray::getBuffer();
+            MtObject* * v0_1 = mpTutorialList->mArray.getBuffer();
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) != GuideNo) {
-                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_3) {
-                        i0_2 += static_cast<unsigned int>(1);
+            for (unsigned int i0_2 = 0;;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 8)) != GuideNo) {
+                    if ((i0_2 + 1u) < v0_3) {
+                        i0_2 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if (v0_1[static_cast<int>(i0_2)] == static_cast<MtObject*>(nullptr)) {
-                        v2_0 = static_cast<unsigned int>(0);
+                    if (v0_1[static_cast<int>(i0_2)] == nullptr) {
+                        v2_0 = 0;
                     } else {
-                        v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(20));
+                        v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 20);
                     }
                     return v2_0;
                 }
             }
-            v2_0 = static_cast<unsigned int>(0);
+            v2_0 = 0;
         }
     }
     return v2_0;
@@ -353,35 +359,35 @@ sTutorialGuide::sTutorialGuide() {
 // Also emitted as: _ZN14sTutorialGuideD0Ev at 0x00866c00
 sTutorialGuide::~sTutorialGuide() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mOpenGuideList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mOpenGuideList.mLength != 0) {
         // inferred: the value the loop at 0x866b70 carries; no location-less local in scope fits
-        u32 v0_0 = this->mOpenGuideList.::MtArray::mLength;
+        u32 v0_0 = mOpenGuideList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mOpenGuideList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mOpenGuideList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mOpenGuideList.::MtArray::mLength) {
-                    v0_0 = this->mOpenGuideList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mOpenGuideList.mpArray[i0_3] != nullptr) {
+                delete mOpenGuideList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mOpenGuideList.mLength) {
+                    v0_0 = mOpenGuideList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mOpenGuideList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mOpenGuideList.::MtArray::mpArray));
+    if (mOpenGuideList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mOpenGuideList.mpArray));
     }
-    this->mOpenGuideList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mOpenGuideList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mOpenGuideList.::MtArray::mLength = static_cast<u32>(0);
-    ::sTutorialGuide::mpInstance = static_cast<sTutorialGuide*>(nullptr);
+    mOpenGuideList.mpArray = nullptr;
+    mOpenGuideList.mBufsiz = 0;
+    mOpenGuideList.mLength = 0;
+    sTutorialGuide::mpInstance = nullptr;
 }
 
 // Address: 0x00866cd0 - 0x00866db3 (227 bytes)
@@ -389,6 +395,11 @@ __attribute__((weak)) void sTutorialGuide::createProperty(MtPropertyList& s) {
     DDON_STUB("sTutorialGuide::createProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sTutorialGuide::MyDTI sTutorialGuide::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sTutorialGuide* sTutorialGuide::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sTutorialGuide.cpp at 0x008671df-0x0086721c (called at sTutorialGuide.cpp:37)
@@ -439,7 +450,7 @@ const MtDTI& sTutorialGuide::cOpenGuideNo::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sTutorialGuide::cOpenGuideNo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sTutorialGuide::cOpenGuideNo::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sTutorialGuide::cOpenGuideNo::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -471,25 +482,25 @@ inline void sTutorialGuide::cOpenGuideNo::operator delete(void* p_addr) {
 // Also emitted as: _ZN14sTutorialGuide12cOpenGuideNoD0Ev at 0x00866f20
 sTutorialGuide::cOpenGuideNo::~cOpenGuideNo() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpMessage != static_cast<rGUIMessage*>(nullptr)) {
-        this->mpMessage->::cResource::release();
-        this->mpMessage = static_cast<rGUIMessage*>(nullptr);
+    if (mpMessage != nullptr) {
+        mpMessage->release();
+        mpMessage = nullptr;
     }
-    if (this->mpDialogMsg != static_cast<rTutorialDialogMessage*>(nullptr)) {
-        this->mpDialogMsg->::cResource::release();
-        this->mpDialogMsg = static_cast<rTutorialDialogMessage*>(nullptr);
+    if (mpDialogMsg != nullptr) {
+        mpDialogMsg->release();
+        mpDialogMsg = nullptr;
         // inferred: a temporary for the value the load at 0x866eff read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mArcTicket != t0) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArcTicket);
-            this->mArcTicket = static_cast<TICKET>(t0);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mArcTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mArcTicket);
+            mArcTicket = static_cast<TICKET>(t0);
         }
     } else {
         // inferred: a temporary for the value the load at 0x866eff read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mArcTicket != t0) {
-            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArcTicket);
-            this->mArcTicket = static_cast<TICKET>(t0);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mArcTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mArcTicket);
+            mArcTicket = static_cast<TICKET>(t0);
         }
     }
 }
@@ -531,15 +542,16 @@ __attribute__((weak)) void sTutorialGuide::cOpenGuideNo::move() {
 // Address: 0x008670b0 - 0x008670d5 (37 bytes)
 u32 sTutorialGuide::cOpenGuideNo::getImageId(u32 PageIdx) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from rTutorialDialogMessage*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    if (this->mpDialogMsg != static_cast<rTutorialDialogMessage*>(nullptr)) {
-        if (PageIdx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpDialogMsg) + static_cast<long>(128)))) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpDialogMsg->mPageInfo.::MtArray::getBuffer()[static_cast<int>(PageIdx)]) + static_cast<long>(12));
+    if (mpDialogMsg != nullptr) {
+        if (PageIdx < mpDialogMsg->mPageInfo.mLength) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpDialogMsg->mPageInfo.getBuffer()[static_cast<int>(PageIdx)]) + 12);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sTutorialGuide::cOpenGuideNo::MyDTI sTutorialGuide::cOpenGuideNo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sTutorialGuide.cpp at 0x0086721c-0x00867259 (called at sTutorialGuide.cpp:745)

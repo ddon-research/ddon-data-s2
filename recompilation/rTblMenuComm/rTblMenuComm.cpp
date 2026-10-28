@@ -35,7 +35,7 @@ const MtDTI& rTblMenuComm::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTblMenuComm::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTblMenuComm::DTI)->memAlloc(sz, align, ::rTblMenuComm::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTblMenuComm::DTI)->memAlloc(sz, align, rTblMenuComm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -50,7 +50,7 @@ inline void* rTblMenuComm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTblMenuComm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTblMenuComm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,43 +64,43 @@ inline void rTblMenuComm::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rTblMenuComm::rTblMenuComm() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mResourceType = static_cast<u32>(0);
-    this->mArray.::MtArray::mAutoDelete = true;
+    setAttribute(18u);
+    mResourceType = 0;
+    mArray.mAutoDelete = true;
 }
 
 // Address: 0x0070a0d0 - 0x0070a18a (186 bytes)
 // Also emitted as: _ZN12rTblMenuCommD0Ev at 0x0070a190
 rTblMenuComm::~rTblMenuComm() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x70a100 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // Address: 0x01ab5d90 - 0x01ab5d98 (8 bytes)
@@ -124,48 +124,48 @@ __attribute__((weak)) void rTblMenuComm::createProperty(MtPropertyList& s) {
 // Address: 0x0070a410 - 0x0070a491 (129 bytes)
 bool rTblMenuComm::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
+    MtSerializer sz(65536);
+    return sz.MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr;
 }
 
 // Address: 0x0070a4a0 - 0x0070a526 (134 bytes)
 bool rTblMenuComm::save(MtStream& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rTblMenuComm::DTI));
+    MtSerializer sz(65536);
+    return sz.MtSerializer::serializeBinary(out, static_cast<u16>(3), static_cast<MtObject*>(this), MtSerializer::MODE_STATE, static_cast<const MtDTI*>(&rTblMenuComm::DTI));
 }
 
 // Address: 0x0070a530 - 0x0070a5c1 (145 bytes)
 void rTblMenuComm::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mArray.mLength != 0) {
         // inferred: the value the loop at 0x70a550 carries; no location-less local in scope fits
-        u32 v0_0 = this->mArray.::MtArray::mLength;
+        u32 v0_0 = mArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
-                    v0_0 = this->mArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mArray.mpArray[i0_3] != nullptr) {
+                delete mArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mArray.mLength) {
+                    v0_0 = mArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    if (mArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mArray.mpArray));
     }
-    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mArray.::MtArray::mLength = static_cast<u32>(0);
+    mArray.mpArray = nullptr;
+    mArray.mBufsiz = 0;
+    mArray.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -218,19 +218,21 @@ __attribute__((weak)) u32 rTblMenuComm::searchMsgIdFromVoiceId(u32 uVoiceId, boo
 // Address: 0x0070a800 - 0x0070a807 (7 bytes)
 u32 rTblMenuComm::getCtgrNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArray.::MtArray::mLength;
+    return mArray.mLength;
 }
 
 // Address: 0x0070a810 - 0x0070a82c (28 bytes)
 u32 rTblMenuComm::getMsgNum(u32 uCtgrIdx) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
-    if (uCtgrIdx < this->mArray.::MtArray::mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(uCtgrIdx)]) + static_cast<long>(24));
+    if (uCtgrIdx < mArray.mLength) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(uCtgrIdx)]) + 24);
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTblMenuComm::MyDTI rTblMenuComm::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTblMenuComm.cpp at 0x0070b10e-0x0070b14b (called at rTblMenuComm.cpp:31)
@@ -240,7 +242,7 @@ u32 rTblMenuComm::getMsgNum(u32 uCtgrIdx) {
 // Address: 0x00709fb0 - 0x0070a041 (145 bytes)
 MtObject* rTblMenuComm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTblMenuComm;
+    return new (16u) rTblMenuComm;
 }
 
 // No out-of-line body: no code in the ELF
@@ -279,7 +281,7 @@ const MtDTI& rTblMenuComm::cDataList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTblMenuComm::cDataList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cDataList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTblMenuComm::cDataList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -298,8 +300,35 @@ inline void rTblMenuComm::cDataList::operator delete(void* p_addr) {
 // Address: 0x0070acf0 - 0x0070ad8d (157 bytes)
 // Also emitted as: _ZN12rTblMenuComm9cDataListD0Ev at 0x0070ad90
 rTblMenuComm::cDataList::~cDataList() {
-    DDON_STUB("rTblMenuComm::cDataList::~cDataList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mList.mLength != 0) {
+        // inferred: the value the loop at 0x70ad20 carries; no location-less local in scope fits
+        u32 v0_0 = mList.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mList.mpArray[i0_3] != nullptr) {
+                delete mList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mList.mLength) {
+                    v0_0 = mList.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mList.mpArray));
+    }
+    mList.mpArray = nullptr;
+    mList.mBufsiz = 0;
+    mList.mLength = 0;
 }
 
 // Address: 0x0070ae50 - 0x0070afe2 (402 bytes)
@@ -319,6 +348,8 @@ bool rTblMenuComm::cDataList::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTblMenuComm::cDataList::MyDTI rTblMenuComm::cDataList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rTblMenuComm.cpp at 0x0070b18b-0x0070b1c4 (called at rTblMenuComm.cpp:478)
@@ -354,7 +385,7 @@ const MtDTI& rTblMenuComm::cData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rTblMenuComm::cData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cData::DTI)->memAlloc(sz, align, ::rTblMenuComm::cData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTblMenuComm::cData::DTI)->memAlloc(sz, align, rTblMenuComm::cData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -368,7 +399,7 @@ inline void* rTblMenuComm::cData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rTblMenuComm::cData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTblMenuComm::cData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -411,13 +442,15 @@ bool rTblMenuComm::cData::save(MtDataWriter& w) {
 // Address: 0x0070abe0 - 0x0070abf8 (24 bytes)
 void rTblMenuComm::cData::copy(rTblMenuComm::cData* pSrc, bool isXml) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pSrc == static_cast<rTblMenuComm::cData*>(nullptr)) {
+    if (pSrc == nullptr) {
         return;
     }
-    this->mId = pSrc->mId;
-    this->mId2 = pSrc->mId2;
-    this->mVoiceId = pSrc->mVoiceId;
+    mId = pSrc->mId;
+    mId2 = pSrc->mId2;
+    mVoiceId = pSrc->mVoiceId;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTblMenuComm::cData::MyDTI rTblMenuComm::cData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rTblMenuComm.cpp at 0x0070b14b-0x0070b18b (called at rTblMenuComm.cpp:286)
@@ -427,7 +460,7 @@ void rTblMenuComm::cData::copy(rTblMenuComm::cData* pSrc, bool isXml) {
 // Address: 0x0070a830 - 0x0070a885 (85 bytes)
 MtObject* rTblMenuComm::cData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTblMenuComm::cData;
+    return new (16u) rTblMenuComm::cData;
 }
 
 // Instance at 0x01ab5d40 - 0x01ab5d45 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

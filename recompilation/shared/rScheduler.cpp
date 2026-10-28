@@ -33,7 +33,7 @@ const MtDTI& rScheduler::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: operator new from _ZNK10rScheduler5MyDTI11newInstanceEv at 0x011dec70-0x011dec9d, code DWARF attributes to no inlined copy; sz is the class's size (120), align the allocation's other whole constant (16)
 inline void* rScheduler::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rScheduler::DTI)->memAlloc(sz, align, ::rScheduler::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(rScheduler::DTI)->memAlloc(sz, align, rScheduler::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* rScheduler::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN10rSchedulerD0Ev at 0x011dee3e-0x011dee5f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rScheduler::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rScheduler::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rScheduler::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -72,32 +72,32 @@ MT_CTSTR rScheduler::getExt() const {
 // Address: 0x01b93190 - 0x01b931a0 (16 bytes)
 u32 rScheduler::getTrackNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader != static_cast<rScheduler::HEADER*>(nullptr)) {
-        return this->mpHeader->track_num;
+    if (mpHeader != nullptr) {
+        return mpHeader->track_num;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x01b931a0 - 0x01b931b4 (20 bytes)
 u32 rScheduler::getFrameMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader != static_cast<rScheduler::HEADER*>(nullptr)) {
-        return this->mpHeader->frame_max;
+    if (mpHeader != nullptr) {
+        return mpHeader->frame_max;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x011dee60 - 0x011dee83 (35 bytes)
 rScheduler::TRACK* rScheduler::getBaseTrack() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader != static_cast<rScheduler::HEADER*>(nullptr)) {
-        if (this->mpHeader->base_track != static_cast<u32>(0)) {
-            return &this->mpHeader->track[this->mpHeader->base_track];
+    if (mpHeader != nullptr) {
+        if (mpHeader->base_track != 0) {
+            return &mpHeader->track[mpHeader->base_track];
         }
     }
-    return static_cast<rScheduler::TRACK*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -107,8 +107,8 @@ rScheduler::TRACK* rScheduler::getBaseTrack() const {
 bool rScheduler::isFloorFrame() const {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: u32 used as bool
-    if (this->mpHeader != static_cast<rScheduler::HEADER*>(nullptr)) {
-        return static_cast<bool>(this->mpHeader->floor_frame);
+    if (mpHeader != nullptr) {
+        return static_cast<bool>(mpHeader->floor_frame);
     } else {
         return false;
     }
@@ -150,12 +150,14 @@ rScheduler::~rScheduler() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void rScheduler::memFree(void* p_addr);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rScheduler::MyDTI rScheduler::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rScheduler::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011dec70 - 0x011deccd (93 bytes)
 MtObject* rScheduler::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rScheduler;
+    return new (16u) rScheduler;
 }
 

@@ -110,3 +110,20 @@ public:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cEmSoundTable::cEmSoundTable() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mIdx = 1;
+    this->mSoundResNo = 0;
+    this->mSoundNo = 0;
+    this->mAttachFlag = false;
+    this->mRequestType = 0;
+    this->mBoneNo = -1;
+    this->mDieIsNoCall = false;
+    this->mOffsetPos.z = 0.0f;
+    this->mOffsetPos.pad_ = 0.0f;
+    this->mOffsetPos.x = 0.0f;
+    this->mOffsetPos.y = 0.0f;
+}

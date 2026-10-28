@@ -36,7 +36,7 @@ const MtDTI& rFreeF32Tbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFreeF32Tbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFreeF32Tbl::DTI)->memAlloc(sz, align, ::rFreeF32Tbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI)->memAlloc(sz, align, rFreeF32Tbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* rFreeF32Tbl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rFreeF32Tbl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFreeF32Tbl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -65,19 +65,19 @@ inline void rFreeF32Tbl::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rFreeF32Tbl::rFreeF32Tbl() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mpHeader = static_cast<rFreeF32Tbl::stHeader*>(nullptr);
+    setAttribute(16u);
+    mpHeader = nullptr;
 }
 
 // Address: 0x006794e0 - 0x0067952d (77 bytes)
 // Also emitted as: _ZN11rFreeF32TblD0Ev at 0x00679540
 rFreeF32Tbl::~rFreeF32Tbl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader == static_cast<rFreeF32Tbl::stHeader*>(nullptr)) {
+    if (mpHeader == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::rFreeF32Tbl::DTI)->memFree(static_cast<void*>(this->mpHeader));
-    this->mpHeader = static_cast<rFreeF32Tbl::stHeader*>(nullptr);
+    MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI)->memFree(static_cast<void*>(mpHeader));
+    mpHeader = nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (79 bytes)
@@ -95,10 +95,10 @@ rFreeF32Tbl::~rFreeF32Tbl() {
 f32 rFreeF32Tbl::getIndexF32(u32 idx, f32 def) {
     // DWARF local not rendered: f32* p_top;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHeader != static_cast<rFreeF32Tbl::stHeader*>(nullptr)) {
-        if (idx < this->mpHeader->TagNum) {
-            if (this->mpHeader->Tags[idx].pVal != static_cast<f32*>(nullptr)) {
-                return *this->mpHeader->Tags[idx].pVal;
+    if (mpHeader != nullptr) {
+        if (idx < mpHeader->TagNum) {
+            if (mpHeader->Tags[idx].pVal != nullptr) {
+                return *mpHeader->Tags[idx].pVal;
             }
         }
     }
@@ -124,8 +124,8 @@ f32 rFreeF32Tbl::getTagF32(u32 tag, f32 def) {
     // DWARF local not rendered: u32 idx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x6796b1, used once; no DWARF local holds it
-    u32 t0 = this->getTagIndex(tag);
-    return this->getIndexF32(t0, def);
+    u32 t0 = getTagIndex(tag);
+    return getIndexF32(t0, def);
 }
 
 // Address: 0x006796e0 - 0x00679724 (68 bytes)
@@ -165,25 +165,25 @@ u32 rFreeF32Tbl::getTagIndex(u32 tag) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x679990; no location-less local in scope fits
     u32 v2_0;
-    if (this->mpHeader == static_cast<rFreeF32Tbl::stHeader*>(nullptr)) {
-        v2_0 = static_cast<u32>(0);
+    if (mpHeader == nullptr) {
+        v2_0 = 0;
     } else {
         // inferred: the value the loop at 0x679980 carries; no location-less local in scope fits
-        u32 v0_2 = this->mpHeader->TagNum;
-        if (v0_2 == static_cast<u32>(0)) {
-            v2_0 = static_cast<u32>(0);
+        u32 v0_2 = mpHeader->TagNum;
+        if (v0_2 == 0) {
+            v2_0 = 0;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            unsigned int i0_0 = static_cast<unsigned int>(0);
+            unsigned int i0_0 = 0;
             // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-            for (rFreeF32Tbl::stTag* p0_1 = &this->mpHeader->Tags[0];;) {
+            for (stTag* p0_1 = &mpHeader->Tags[0];;) {
                 if (p0_1->Tag == tag) {
                     v2_0 = i0_0;
                     return v2_0;
                 } else {
-                    if ((i0_0 + static_cast<unsigned int>(1)) < v0_2) {
-                        i0_0 += static_cast<unsigned int>(1);
-                        p0_1 += static_cast<int>(1);
+                    if ((i0_0 + 1u) < v0_2) {
+                        i0_0 += 1u;
+                        p0_1 += 1;
                     } else {
                         break;
                     }
@@ -219,6 +219,8 @@ __attribute__((weak)) bool rFreeF32Tbl::load(MtStream& in) {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFreeF32Tbl::MyDTI rFreeF32Tbl::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rFreeF32Tbl.cpp at 0x006799a0-0x006799e2 (called at rFreeF32Tbl.cpp:48)
 //   in _GLOBAL__sub_I_rFreeF32Tbl.cpp at 0x006799a0-0x006799e2 (called at rFreeF32Tbl.h:29)
@@ -227,6 +229,6 @@ __attribute__((weak)) bool rFreeF32Tbl::load(MtStream& in) {
 // Address: 0x00679400 - 0x0067945d (93 bytes)
 MtObject* rFreeF32Tbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFreeF32Tbl;
+    return new (16u) rFreeF32Tbl;
 }
 

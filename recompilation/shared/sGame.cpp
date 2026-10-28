@@ -88,7 +88,7 @@ const MtDTI& cChargeEffectUID::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cChargeEffectUID::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memAlloc(sz, align, ::cChargeEffectUID::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memAlloc(sz, align, cChargeEffectUID::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -103,7 +103,7 @@ inline void* cChargeEffectUID::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cChargeEffectUID::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,19 +118,19 @@ inline void cChargeEffectUID::operator delete(void* p_addr) {
 // Address: 0x00788430 - 0x0078844e (30 bytes)
 cChargeEffectUID::cChargeEffectUID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpRefChargeEffectUID = static_cast<u8*>(nullptr);
-    this->mNum = static_cast<u32>(0);
+    mpRefChargeEffectUID = nullptr;
+    mNum = 0;
 }
 
 // Address: 0x00788450 - 0x0078849d (77 bytes)
 // Also emitted as: _ZN16cChargeEffectUIDD0Ev at 0x007884a0
 cChargeEffectUID::~cChargeEffectUID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRefChargeEffectUID != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memFree(static_cast<void*>(this->mpRefChargeEffectUID));
-        this->mpRefChargeEffectUID = static_cast<u8*>(nullptr);
+    if (mpRefChargeEffectUID != nullptr) {
+        MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memFree(static_cast<void*>(mpRefChargeEffectUID));
+        mpRefChargeEffectUID = nullptr;
     }
-    this->mNum = static_cast<u32>(0);
+    mNum = 0;
 }
 
 // Address: 0x007820d0 - 0x007820d1 (1 bytes)
@@ -141,27 +141,27 @@ __attribute__((weak)) void cChargeEffectUID::createProperty(MtPropertyList& s) {
 // Address: 0x00788510 - 0x00788515 (5 bytes)
 MtUI* cChargeEffectUID::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00788520 - 0x0078852d (13 bytes)
 u32 cChargeEffectUID::getUIDNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRefChargeEffectUID != static_cast<u8*>(nullptr)) {
-        return this->mNum;
+    if (mpRefChargeEffectUID != nullptr) {
+        return mNum;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00781660 - 0x0078169f (63 bytes)
 void cChargeEffectUID::clearRefChargeEffect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpRefChargeEffectUID != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memFree(static_cast<void*>(this->mpRefChargeEffectUID));
-        this->mpRefChargeEffectUID = static_cast<u8*>(nullptr);
+    if (mpRefChargeEffectUID != nullptr) {
+        MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memFree(static_cast<void*>(mpRefChargeEffectUID));
+        mpRefChargeEffectUID = nullptr;
     }
-    this->mNum = static_cast<u32>(0);
+    mNum = 0;
 }
 
 // Address: 0x00784a80 - 0x00784b12 (146 bytes)
@@ -176,13 +176,13 @@ void cChargeEffectUID::resetChargeCount() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; no location-less local in scope fits
-    for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
-        if (this->mpRefChargeEffectUID != static_cast<u8*>(nullptr)) {
-            if (i0_0 >= this->mNum) {
+    for (unsigned int i0_0 = 0;;) {
+        if (mpRefChargeEffectUID != nullptr) {
+            if (i0_0 >= mNum) {
                 break;
             } else {
-                this->mpRefChargeEffectUID[i0_0] = static_cast<unsigned char>(0);
-                i0_0 += static_cast<unsigned int>(1);
+                mpRefChargeEffectUID[i0_0] = 0;
+                i0_0 += 1u;
             }
         } else {
             break;
@@ -246,6 +246,8 @@ __attribute__((weak)) void cChargeEffectUID::setChargeEffectUID(u32 chargeUID, b
 //   and 6 more (every copy is in <bundle>.inlined.json)
 // void cChargeEffectUID::setRefChargeEffectUID(const u8& NewValue, u32 index);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cChargeEffectUID::MyDTI cChargeEffectUID::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sGame.cpp at 0x0078877c-0x007887b9 (called at sGame.cpp:140)
 //   in _GLOBAL__sub_I_sGame.cpp at 0x0078877c-0x007887b9 (called at sGame.h:51)
@@ -254,7 +256,7 @@ __attribute__((weak)) void cChargeEffectUID::setChargeEffectUID(u32 chargeUID, b
 // Address: 0x00780960 - 0x007809af (79 bytes)
 MtObject* cChargeEffectUID::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cChargeEffectUID;
+    return new (16u) cChargeEffectUID;
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,7 +273,7 @@ const MtDTI& sGame::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sGame::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sGame::DTI);
+    return MtMemoryAllocator::getAllocator(sGame::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -280,7 +282,7 @@ inline MtAllocator* sGame::getAllocator() {
 // Address: 0x007808b0 - 0x007808f0 (64 bytes)
 void* sGame::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sGame::getAllocator()->memAlloc(sz, align, ::sGame::DTI.::MtDTI::getID());
+    return sGame::getAllocator()->memAlloc(sz, align, sGame::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -295,7 +297,7 @@ void* sGame::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sGame::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sGame::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sGame::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -331,7 +333,7 @@ __attribute__((weak)) void sGame::createProperty(MtPropertyList& s) {
 // Address: 0x007820e0 - 0x007820e5 (5 bytes)
 MtUI* sGame::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x007820f0 - 0x007821f4 (260 bytes)
@@ -367,18 +369,18 @@ void sGame::initDecideCharacter() {
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1688
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1838
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x9948
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearAllEntryBoardInfo();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearMyClanInfo();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearFriendInfo();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJob = static_cast<s32>(-1);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mPartyMatchType = static_cast<sNetworkExt::MATCH_TYPE>(0);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsCycleContentsPlayStart = false;
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mDeathPenaltyWait = false;
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setServerOption();
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::updateClanSetting(::sGame::getInstance()->mCharData.mCharData.mOption.mIsClanNtc);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->mDispGuideNo = static_cast<u32>(0);
-    ::sItemManager::getInstance()->::sItemManager::releseRequestCommand();
-    this->mIsGameOverLobby = false;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->clearAllEntryBoardInfo();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->clearMyClanInfo();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->clearFriendInfo();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->mReserveJob = -1;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->mPartyMatchType = sNetworkExt::MATCH_TYPE_UNKNOWN;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->mIsCycleContentsPlayStart = false;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mDeathPenaltyWait = false;
+    static_cast<sGUIExt*>(sGUI::getInstance())->setServerOption();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->updateClanSetting(sGame::getInstance()->mCharData.mCharData.mOption.mIsClanNtc);
+    static_cast<sGUIExt*>(sGUI::getInstance())->mDispGuideNo = 0;
+    sItemManager::getInstance()->releseRequestCommand();
+    mIsGameOverLobby = false;
 }
 
 // Address: 0x00782400 - 0x00782401 (1 bytes)
@@ -389,24 +391,24 @@ __attribute__((weak)) void sGame::initJoinLobby() {
 // Address: 0x00782410 - 0x00782467 (87 bytes)
 void sGame::reflectContextMyPlayer(cCharacterData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
-    if (pContext == static_cast<cContextInstHm*>(nullptr)) {
+    cContextInstHm* pContext = sContextManager::getInstance()->getContextMyPlayer();
+    if (pContext == nullptr) {
         return;
     }
-    if (pData == static_cast<cCharacterData*>(nullptr)) {
+    if (pData == nullptr) {
         return;
     }
-    ::sContextManager::getInstance()->::sContextManager::setContextCharacter(*pData, *pContext, static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCharacterId(), true);
+    sContextManager::getInstance()->setContextCharacter(*pData, *pContext, static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getCharacterId(), true);
 }
 
 // Address: 0x00783f70 - 0x00783f91 (33 bytes)
 s32 sGame::getPlayerMemberIndex(uHuman* pPl) {
     // DWARF local not rendered: const cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pPl != static_cast<uHuman*>(nullptr)) {
-        return ::cContextInterface::getMemberIndex(static_cast<const cContextInstHm*>(pPl->::uDDOModel::getContextInst()));
+    if (pPl != nullptr) {
+        return cContextInterface::getMemberIndex(static_cast<const cContextInstHm*>(pPl->getContextInst()));
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -417,10 +419,10 @@ s32 sGame::getPlayerMemberIndex(uHuman* pPl) {
 void sGame::createPlayerInstance() {
     // DWARF local not rendered: bool isLobby;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
-        this->::sGame::createPlayerInstance_Lobby();
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
+        createPlayerInstance_Lobby();
     } else {
-        this->::sGame::createPlayerInstance_Party();
+        createPlayerInstance_Party();
     }
 }
 
@@ -507,14 +509,14 @@ __attribute__((weak)) void sGame::createPlayerInstance_Party() {
 s32 sGame::getNextStage() {
     // DWARF local not rendered: s32 stageNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
-        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() != false) {
-            return static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getNextStage();
+    if (sArea::getInstance() != nullptr) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
+            return static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getNextStage();
         } else {
-            return ::sGame::getInstance()->::sGame::getReqStageNo();
+            return sGame::getInstance()->getReqStageNo();
         }
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
@@ -535,20 +537,20 @@ s32 sGame::getNextStage() {
 // Address: 0x00782470 - 0x0078248b (27 bytes)
 void sGame::reqJumpStageFromLobby(s32 stageNo, s32 posNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsReqJumpStageFromLobby = true;
-    this->mGuardData.mReqStageNo = stageNo;
-    this->mGuardData.mReqStartPosNo = posNo;
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLoadingAreaNo(stageNo, posNo, false);
+    mIsReqJumpStageFromLobby = true;
+    mGuardData.mReqStageNo = stageNo;
+    mGuardData.mReqStartPosNo = posNo;
+    static_cast<sGUIExt*>(sGUI::getInstance())->setLoadingAreaNo(stageNo, posNo, false);
 }
 
 // Address: 0x00782490 - 0x007824e3 (83 bytes)
 void sGame::reqJumpStageFromStage(s32 stageNo, s32 posNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sArea::getInstance()->mpArea[2] == static_cast<cArea*>(nullptr)) {
+    if (sArea::getInstance()->mpArea[2] == nullptr) {
         return;
     }
-    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::requestStageJump(stageNo, static_cast<u32>(posNo), static_cast<u32>(0), false);
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLoadingAreaNo(stageNo, posNo, true);
+    static_cast<aStage*>(sArea::getInstance()->mpArea[2])->requestStageJump(stageNo, static_cast<u32>(posNo), 0u, false);
+    static_cast<sGUIExt*>(sGUI::getInstance())->setLoadingAreaNo(stageNo, posNo, true);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (10 bytes)
@@ -689,21 +691,21 @@ __attribute__((weak)) uHuman* sGame::createPlayerUnit(uControl* pCtrl) {
 // Address: 0x007845f0 - 0x00784683 (147 bytes)
 void sGame::initPlayerUnit(uHuman* pPl, const cContextInstHm* pContext, MtVector3& Pos, MtVector3& Angle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pPl == static_cast<uHuman*>(nullptr)) {
+    if (pPl == nullptr) {
         return;
     }
-    pPl->::uCoord::mPos.x = Pos.x;
-    pPl->::uCoord::mPos.y = Pos.y;
-    pPl->::uCoord::mPos.z = Pos.z;
-    pPl->::uCoord::mPos.pad_ = 0.0f;
-    pPl->::uCoord::setAngle(Angle);
-    pPl->::uDDOModel::setFinalAngleY(Angle.y, -1.0f);
+    pPl->mPos.x = Pos.x;
+    pPl->mPos.y = Pos.y;
+    pPl->mPos.z = Pos.z;
+    pPl->mPos.pad_ = 0.0f;
+    pPl->setAngle(Angle);
+    pPl->setFinalAngleY(Angle.y, -1.0f);
     pPl->updateLocalMatrix();
     pPl->updateWorldMatrix();
-    if (pContext == static_cast<const cContextInstHm*>(nullptr)) {
+    if (pContext == nullptr) {
         return;
     }
-    pPl->mSex = ::cContextInterface::getSex(pContext);
+    pPl->mSex = cContextInterface::getSex(pContext);
 }
 
 // No out-of-line body: 10 inlined copies in 10 functions (48 bytes)
@@ -726,33 +728,33 @@ void sGame::initPlayerUnit(uHuman* pPl, const cContextInstHm* pContext, MtVector
 // Address: 0x01ac4140 - 0x01ac4144 (4 bytes)
 s32 sGame::getReqStageNoPrivate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardData.mReqStageNo;
+    return mGuardData.mReqStageNo;
 }
 
 // Address: 0x01ac4100 - 0x01ac4104 (4 bytes)
 void sGame::setReqStageNoPrivate(s32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardData.mReqStageNo = NewValue;
+    mGuardData.mReqStageNo = NewValue;
 }
 
 // Address: 0x01ac4150 - 0x01ac4154 (4 bytes)
 s32 sGame::getReqStartPosNoPrivate() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardData.mReqStartPosNo;
+    return mGuardData.mReqStartPosNo;
 }
 
 // Address: 0x01ac4110 - 0x01ac4114 (4 bytes)
 void sGame::setReqStartPosNoPrivate(s32 NewValue) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGuardData.mReqStartPosNo = NewValue;
+    mGuardData.mReqStartPosNo = NewValue;
 }
 
 // Address: 0x00783250 - 0x0078327a (42 bytes)
 f32 sGame::getBaseParam(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpBaseParam != static_cast<rAdjustParam*>(nullptr)) {
-        cAdjustParam* pPar = this->mpBaseParam->getData(index);
-        if (pPar != static_cast<cAdjustParam*>(nullptr)) {
+    if (mpBaseParam != nullptr) {
+        cAdjustParam* pPar = mpBaseParam->getData(index);
+        if (pPar != nullptr) {
             return pPar->mParam;
         } else {
             return 0.0f;
@@ -775,52 +777,52 @@ __attribute__((weak)) const cAbilityData* sGame::getAbilityData(nAbility::ABILIT
 // Address: 0x007832a0 - 0x007832b8 (24 bytes)
 cPlayerExpTable* sGame::getPlayerExpTable(u32 level) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
-        return this->mpExpTable->getData(level);
+    if (mpExpTable != nullptr) {
+        return mpExpTable->getData(level);
     } else {
-        return static_cast<cPlayerExpTable*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x007832c0 - 0x007832d5 (21 bytes)
 u32 sGame::getPlayerLvMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
-        return this->mpExpTable->getDataNum();
+    if (mpExpTable != nullptr) {
+        return mpExpTable->getDataNum();
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00786900 - 0x00786983 (131 bytes)
 void sGame::LoadPlayerExpTable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
+    if (mpExpTable != nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x78691b read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x786925, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("game_common");
-    cResource* pRes = t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_PLAYEREXPTABLE_EXP"), static_cast<u32>(1), false);
-    if (pRes == static_cast<cResource*>(nullptr)) {
+    ARC_TAGID t1 = rArchiveListArray::convTagId("game_common");
+    cResource* pRes = t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_PLAYEREXPTABLE_EXP"), 1u, false);
+    if (pRes == nullptr) {
         return;
     }
-    if (pRes->::cResource::isUsage()) {
-        this->mpExpTable = static_cast<rPlayerExpTable*>(pRes);
-        pRes->::cResource::addRef();
+    if (pRes->cResource::isUsage()) {
+        mpExpTable = static_cast<rPlayerExpTable*>(pRes);
+        pRes->cResource::addRef();
     }
-    pRes->::cResource::release();
+    pRes->cResource::release();
 }
 
 // Address: 0x00786990 - 0x007869b6 (38 bytes)
 void sGame::ReleasePlayerExpTable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpExpTable == static_cast<rPlayerExpTable*>(nullptr)) {
+    if (mpExpTable == nullptr) {
         return;
     }
-    this->mpExpTable->::cResource::release();
-    this->mpExpTable = static_cast<rPlayerExpTable*>(nullptr);
+    mpExpTable->release();
+    mpExpTable = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -843,20 +845,20 @@ void sGame::ReleasePlayerExpTable() {
 // Address: 0x007834e0 - 0x007834ef (15 bytes)
 void sGame::callbackEntryLobby(u32 characterId, u32 pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::sContextManager::getInstance()->::sContextManager::entryContextPlayer(characterId, pawnId);
+    sContextManager::getInstance()->entryContextPlayer(characterId, pawnId);
 }
 
 // Address: 0x007834f0 - 0x00783521 (49 bytes)
 void sGame::callbackLeaveLobby(u32 characterId, u32 pawnId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId == characterId) {
-        if (pawnId == static_cast<u32>(0)) {
-            ::sContextManager::getInstance()->::sContextManager::removeAllContextPlayer();
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId == characterId) {
+        if (pawnId == 0) {
+            sContextManager::getInstance()->removeAllContextPlayer();
         } else {
-            ::sContextManager::getInstance()->::sContextManager::removeContextPlayer(characterId, pawnId);
+            sContextManager::getInstance()->removeContextPlayer(characterId, pawnId);
         }
     } else {
-        ::sContextManager::getInstance()->::sContextManager::removeContextPlayer(characterId, pawnId);
+        sContextManager::getInstance()->removeContextPlayer(characterId, pawnId);
     }
 }
 
@@ -904,17 +906,17 @@ __attribute__((weak)) void sGame::callbackLeaveParty(s32 memberIndex) {
 // Address: 0x007832f0 - 0x00783332 (66 bytes)
 bool sGame::isMySelfPartyMemberIndex(s32 memberIndex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isSessionOnline(static_cast<s32>(0)) != false) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isGameSessionMySelf(memberIndex);
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getSessionManager()->isSessionOnline(0)) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isGameSessionMySelf(memberIndex);
     } else {
-        return memberIndex == static_cast<s32>(0);
+        return memberIndex == 0;
     }
 }
 
 // Address: 0x00783340 - 0x0078335b (27 bytes)
 bool sGame::isMySelfCharacterId(u32 characterId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId == characterId;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId == characterId;
 }
 
 // Address: 0x00783360 - 0x007833c7 (103 bytes)
@@ -926,31 +928,31 @@ __attribute__((weak)) bool sGame::isPawn(s32 memberIndex) {
 // Address: 0x007833d0 - 0x00783427 (87 bytes)
 s32 sGame::getSelfMemberIndex() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isSessionOnline(static_cast<s32>(0)) != false) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getSelfIndex(static_cast<s32>(0)) > static_cast<s32>(-1)) {
-            return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getSelfIndex(static_cast<s32>(0));
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getSessionManager()->isSessionOnline(0)) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getSelfIndex(0) > -1) {
+            return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getSelfIndex(0);
         }
     }
-    return static_cast<s32>(0);
+    return 0;
 }
 
 // Address: 0x00783430 - 0x00783475 (69 bytes)
 s32 sGame::getMemberNum(bool isBeforeJoinMember) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isSessionOnline(static_cast<s32>(0)) != false) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionMemberNum(isBeforeJoinMember);
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getSessionManager()->isSessionOnline(0)) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(isBeforeJoinMember);
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
 
 // Address: 0x00783480 - 0x007834c5 (69 bytes)
 s32 sGame::getPlayerMemberNum(bool isBeforeJoinMember) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isSessionOnline(static_cast<s32>(0)) != false) {
-        return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionPlayerMemberNum(isBeforeJoinMember);
+    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->getSessionManager()->isSessionOnline(0)) {
+        return static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionPlayerMemberNum(isBeforeJoinMember);
     } else {
-        return static_cast<s32>(1);
+        return 1;
     }
 }
 
@@ -1079,15 +1081,15 @@ u8 sGame::getReviveStock() {
     // DWARF local not rendered: cContextInstHm* pInst;
     // DWARF local not rendered: u8 reviveStock;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cContextInterface::getReviveStock(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
+    return cContextInterface::getReviveStock(sContextManager::getInstance()->getContextMyPlayer());
 }
 
 // Address: 0x007831c0 - 0x007831f1 (49 bytes)
 void sGame::setReviveStock(u8 stock) {
     // DWARF local not rendered: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::cContextInterface::setReviveStock(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer(), stock);
-    this->mCharData.mCharData.mReviveStock = stock;
+    cContextInterface::setReviveStock(sContextManager::getInstance()->getContextMyPlayer(), stock);
+    mCharData.mCharData.mReviveStock = stock;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1107,10 +1109,10 @@ void sGame::setReviveStock(u8 stock) {
 // Address: 0x00783220 - 0x0078324b (43 bytes)
 void sGame::sendContextFreeMarker() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpNetRpc == static_cast<nNetBase::cNetBase*>(nullptr)) {
+    if (mpNetRpc == nullptr) {
         return;
     }
-    this->mpNetRpc->sendNetGame(static_cast<nNetMsgData::nGame::NET_MSG_ID_GAME>(12), static_cast<nNetMsg::MSG_PRIO>(16), static_cast<nNetMsg::MSG_ADR>(1), static_cast<u32>(0));
+    mpNetRpc->sendNetGame(nNetMsgData::nGame::NET_MSG_ID_GAME_FREEMARKER, nNetMsg::MSG_PRIO_MAX, nNetMsg::MSG_ADR_ALL, 0u);
 }
 
 // Address: 0x00781200 - 0x0078128d (141 bytes)
@@ -1123,62 +1125,62 @@ __attribute__((weak)) void sGame::resetChargeFlagAll() {
 // Address: 0x00784690 - 0x007847a1 (273 bytes)
 void sGame::clearChargeCourse() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPacketGPCourseInfo.m_CourseInfo.mLength != 0) {
         // inferred: the value the loop at 0x7846b0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength;
+        u32 v0_0 = mPacketGPCourseInfo.m_CourseInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength) {
-                    v0_0 = this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPacketGPCourseInfo.m_CourseInfo.mpArray[i0_3] != nullptr) {
+                delete mPacketGPCourseInfo.m_CourseInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPacketGPCourseInfo.m_CourseInfo.mLength) {
+                    v0_0 = mPacketGPCourseInfo.m_CourseInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray));
+    if (mPacketGPCourseInfo.m_CourseInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPacketGPCourseInfo.m_CourseInfo.mpArray));
     }
-    this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength != static_cast<u32>(0)) {
+    mPacketGPCourseInfo.m_CourseInfo.mpArray = nullptr;
+    mPacketGPCourseInfo.m_CourseInfo.mBufsiz = 0;
+    mPacketGPCourseInfo.m_CourseInfo.mLength = 0;
+    if (mPacketGPCourseInfo.m_Effects.mLength != 0) {
         // inferred: the value the loop at 0x784730 carries; no location-less local in scope fits
-        u32 v2_0 = this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength;
+        u32 v2_0 = mPacketGPCourseInfo.m_Effects.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength) {
-                    v2_0 = this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mPacketGPCourseInfo.m_Effects.mpArray[i2_3] != nullptr) {
+                delete mPacketGPCourseInfo.m_Effects.mpArray[i2_3];
+                if ((i2_3 + 1u) < mPacketGPCourseInfo.m_Effects.mLength) {
+                    v2_0 = mPacketGPCourseInfo.m_Effects.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray));
+    if (mPacketGPCourseInfo.m_Effects.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPacketGPCourseInfo.m_Effects.mpArray));
     }
-    this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPacketGPCourseInfo.m_Effects.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength = static_cast<u32>(0);
+    mPacketGPCourseInfo.m_Effects.mpArray = nullptr;
+    mPacketGPCourseInfo.m_Effects.mBufsiz = 0;
+    mPacketGPCourseInfo.m_Effects.mLength = 0;
 }
 
 // Address: 0x007847b0 - 0x00784a71 (705 bytes)
@@ -1216,25 +1218,25 @@ sGame::chargeCourseParam* sGame::getChargeCourse(u32 courseId) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == courseId) {
-                return static_cast<sGame::chargeCourseParam*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i)]) + 8)) == courseId) {
+                return static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i)]);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
     }
-    return static_cast<sGame::chargeCourseParam*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00784b60 - 0x00784b79 (25 bytes)
 sGame::chargeCourseParam* sGame::getChargeCourseIndex(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (index < this->mChargeCourseParam.::MtArray::mLength) {
-        return static_cast<sGame::chargeCourseParam*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)]);
+    if (index < mChargeCourseParam.mLength) {
+        return static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(index)]);
     } else {
-        return static_cast<sGame::chargeCourseParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1252,22 +1254,21 @@ u64 sGame::getChargeCourseEndTime(u32 courseId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i1 = static_cast<unsigned int>(0);
+        unsigned int i1 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(8))) != courseId) {
-            } else {
-                if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)] != static_cast<MtObject*>(nullptr)) {
-                    return static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(24)));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i1)]) + 8)) == courseId) {
+                if (mChargeCourseParam.getBuffer()[static_cast<int>(i1)] != nullptr) {
+                    return static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i1)]) + 24));
                 } else {
-                    return static_cast<u64>(0);
+                    return 0;
                 }
             }
-            i1 += static_cast<unsigned int>(1);
-        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+            i1 += 1u;
+        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
     }
-    return static_cast<u64>(0);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1280,20 +1281,19 @@ bool sGame::isChargeCourseEnable(u32 courseId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0 = static_cast<unsigned int>(0);
+        unsigned int i0 = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(8))) != courseId) {
-            } else {
-                if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
-                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(12))) != static_cast<unsigned char>(0);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0)]) + 8)) == courseId) {
+                if (mChargeCourseParam.getBuffer()[static_cast<int>(i0)] != nullptr) {
+                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0)]) + 12)) != 0;
                 } else {
                     return false;
                 }
             }
-            i0 += static_cast<unsigned int>(1);
-        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+            i0 += 1u;
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472)));
     }
     return false;
 }
@@ -1304,9 +1304,9 @@ bool sGame::isChargeCourseEnableIndex(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from MtObject*
-    if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472)))) {
-        if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)] != static_cast<MtObject*>(nullptr)) {
-            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(12))) != static_cast<unsigned char>(0);
+    if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 13472))) {
+        if (mChargeCourseParam.getBuffer()[static_cast<int>(index)] != nullptr) {
+            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(index)]) + 12)) != 0;
         }
     }
     return false;
@@ -1335,13 +1335,13 @@ __attribute__((weak)) void sGame::setChargeCourseEnd() {
 // Address: 0x00785200 - 0x00785208 (8 bytes)
 const GPCourseInfoVec& sGame::getGPCourseInfoVec() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPacketGPCourseInfo.m_CourseInfo;
+    return mPacketGPCourseInfo.m_CourseInfo;
 }
 
 // Address: 0x00785420 - 0x00785428 (8 bytes)
 const GPCourseEffectParamVec& sGame::getGPCourseEffectParamVec() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPacketGPCourseInfo.m_Effects;
+    return mPacketGPCourseInfo.m_Effects;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (156 bytes)
@@ -1370,7 +1370,7 @@ __attribute__((weak)) sGame::ANNOUNCE_TIME sGame::checkChargeAnnounceTime(u64 en
 // Address: 0x007854a0 - 0x007854ac (12 bytes)
 bool sGame::isChargeEffect(nGpCourse::E_GP_COURSE_EFFECT chargeId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mChargeEffectUID.::cChargeEffectUID::isChargeEffect(static_cast<s32>(chargeId));
+    return mChargeEffectUID.isChargeEffect(static_cast<s32>(chargeId));
 }
 
 // No out-of-line body: 8 inlined copies in 4 functions (370 bytes)
@@ -1387,17 +1387,17 @@ bool sGame::isChargeEffect(nGpCourse::E_GP_COURSE_EFFECT chargeId) const {
 // Address: 0x007855c0 - 0x0078562f (111 bytes)
 bool sGame::isChargeEffectAttr(nGpCourse::E_GP_COURSE_EFFECT chargeId, u32 attr) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((::sGame::mChargeEffectParam[chargeId].mAttr & static_cast<u32>(67108864)) != static_cast<u32>(0)) {
-        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow() != false) {
+    if ((sGame::mChargeEffectParam[chargeId].mAttr & 0x4000000u) != 0) {
+        if (sQuestManagerExt::getInstance()->isCycleContentsPlayNow()) {
             return false;
         }
     }
-    if ((::sGame::mChargeEffectParam[chargeId].mAttr & static_cast<u32>(134217728)) != static_cast<u32>(0)) {
-        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEndContentsPlayNow() != false) {
+    if ((sGame::mChargeEffectParam[chargeId].mAttr & 0x8000000u) != 0) {
+        if (sQuestManagerExt::getInstance()->isEndContentsPlayNow()) {
             return false;
         }
     }
-    return (attr & ::sGame::mChargeEffectParam[chargeId].mAttr) != static_cast<u32>(0);
+    return (attr & sGame::mChargeEffectParam[chargeId].mAttr) != 0;
 }
 
 // Address: 0x00785630 - 0x007856d4 (164 bytes)
@@ -1454,12 +1454,12 @@ __attribute__((weak)) const CGPCourseEffectParam* sGame::getChargeEffectUID(u32 
 // Address: 0x007858f0 - 0x0078590d (29 bytes)
 bool sGame::isChargeAnnounce(nGpCourse::E_GP_COURSE_ANNOUNCE_TYPE type, bool isParty) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (type != static_cast<nGpCourse::E_GP_COURSE_ANNOUNCE_TYPE>(0)) {
-        if (type == static_cast<nGpCourse::E_GP_COURSE_ANNOUNCE_TYPE>(2)) {
-            if (isParty != false) {
+    if (type != nGpCourse::GP_COURSE_ANNOUNCE_TYPE_ENABLE) {
+        if (type == nGpCourse::GP_COURSE_ANNOUNCE_TYPE_ENABLE_LOGIN) {
+            if (isParty) {
                 return false;
             } else {
-                return this->mIsLobbyIn != false;
+                return mIsLobbyIn;
             }
         } else {
             return false;
@@ -1597,13 +1597,13 @@ __attribute__((weak)) void sGame::reqGameTime(u32 msec) {
 // Address: 0x00785920 - 0x00785930 (16 bytes)
 void sGame::setGameTimePause(bool b) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGameTime.::cGameTime::setGameTimePause(b);
+    mGameTime.setGameTimePause(b);
 }
 
 // Address: 0x00785930 - 0x0078593c (12 bytes)
 u32 sGame::getGameTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cGameTime&>(this->mGameTime).::cGameTime::getGameTimeMSec();
+    return static_cast<const cGameTime&>(mGameTime).getGameTimeMSec();
 }
 
 // Address: 0x00785940 - 0x00785981 (65 bytes)
@@ -1628,7 +1628,7 @@ __attribute__((weak)) u32 sGame::getGameMinute() const {
 // Address: 0x00785a10 - 0x00785a1c (12 bytes)
 u32 sGame::getWeatherID() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cGameWeather&>(this->mGameWeather).::cGameWeather::getWeatherID();
+    return static_cast<const cGameWeather&>(mGameWeather).getWeatherID();
 }
 
 // Address: 0x00785a00 - 0x00785a01 (1 bytes)
@@ -1639,7 +1639,7 @@ __attribute__((weak)) void sGame::reqWeatherID(u32 id) {
 // Address: 0x00785a20 - 0x00785a2c (12 bytes)
 s32 sGame::getMoonAge() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::cGameMoonAge&>(this->mGameMoonAge).::cGameMoonAge::getMoonAge();
+    return static_cast<const cGameMoonAge&>(mGameMoonAge).getMoonAge();
 }
 
 // Address: 0x00785a30 - 0x00785a31 (1 bytes)
@@ -1680,7 +1680,7 @@ __attribute__((weak)) void sGame::fadeIn(f32 frame, u32 type) {
 // Address: 0x00782320 - 0x00782338 (24 bytes)
 bool sGame::isFadeEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mpFade == static_cast<uFade*>(nullptr)) || (this->mpFade->::uFade::isEnd() != false);
+    return (mpFade == nullptr) || mpFade->isEnd();
 }
 
 // Address: 0x00785b90 - 0x00785bad (29 bytes)
@@ -1688,9 +1688,9 @@ bool sGame::isFadeOut() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from uFade*
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpFade != static_cast<uFade*>(nullptr)) {
-        if (this->mpFade->::uFade::isEnd() != false) {
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFade) + static_cast<long>(84))) <= static_cast<int>(1)) {
+    if (mpFade != nullptr) {
+        if (mpFade->isEnd()) {
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpFade) + 84)) <= 1) {
                 return false;
             } else {
                 return true;
@@ -1706,11 +1706,11 @@ bool sGame::isFadeOut() {
 // Address: 0x00785bb0 - 0x00785be0 (48 bytes)
 void sGame::eraseFade() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFade == static_cast<uFade*>(nullptr)) {
+    if (mpFade == nullptr) {
         return;
     }
-    this->mpFade->kill();
-    this->mpFade = static_cast<uFade*>(nullptr);
+    mpFade->kill();
+    mpFade = nullptr;
 }
 
 // Address: 0x00785be0 - 0x00785bfd (29 bytes)
@@ -1718,9 +1718,9 @@ bool sGame::isFadeBlack() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from uFade*
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpFade != static_cast<uFade*>(nullptr)) {
-        if (this->mpFade->::uFade::isEnd() != false) {
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFade) + static_cast<long>(84))) <= static_cast<int>(1)) {
+    if (mpFade != nullptr) {
+        if (mpFade->isEnd()) {
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpFade) + 84)) <= 1) {
                 return false;
             } else {
                 return true;
@@ -1736,8 +1736,8 @@ bool sGame::isFadeBlack() {
 // Address: 0x00785c00 - 0x00785c17 (23 bytes)
 bool sGame::isFadeIn() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFade != static_cast<uFade*>(nullptr)) {
-        return this->mpFade->::uFade::isFadeIn();
+    if (mpFade != nullptr) {
+        return mpFade->isFadeIn();
     } else {
         return false;
     }
@@ -1746,8 +1746,8 @@ bool sGame::isFadeIn() {
 // Address: 0x00785c20 - 0x00785c37 (23 bytes)
 bool sGame::isFadeOutBusy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFade != static_cast<uFade*>(nullptr)) {
-        return this->mpFade->::uFade::isFadeOut();
+    if (mpFade != nullptr) {
+        return mpFade->isFadeOut();
     } else {
         return false;
     }
@@ -1813,12 +1813,12 @@ __attribute__((weak)) void sGame::setContextPawn(const cCharacterData::stPawnDat
 void sGame::leavePawn(u32 pawnMemIndex) {
     // DWARF local not rendered: const cContextInstHm* hum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>(pawnMemIndex)) == static_cast<cContextInstHm*>(nullptr)) {
+    if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(static_cast<s32>(pawnMemIndex)) == nullptr) {
         return;
     }
-    ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(static_cast<s32>(pawnMemIndex));
-    ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(static_cast<s32>(pawnMemIndex), true);
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(pawnMemIndex);
+    sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(static_cast<s32>(pawnMemIndex));
+    sContextManager::getInstance()->removeContextPartyPlayer(static_cast<s32>(pawnMemIndex), true);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(pawnMemIndex);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (126 bytes)
@@ -1829,79 +1829,79 @@ void sGame::leavePawn(u32 pawnMemIndex) {
 // Address: 0x00786440 - 0x00786477 (55 bytes)
 void sGame::lostPawn(uDDOModel* pLostPawn) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pLostPawn == static_cast<uDDOModel*>(nullptr)) {
+    if (pLostPawn == nullptr) {
         return;
     }
-    if ((pLostPawn->mUnitId & static_cast<u32>(64)) == static_cast<u32>(0)) {
+    if ((pLostPawn->mUnitId & 64u) == 0) {
         return;
     }
-    this->::sGame::lostPawn(pLostPawn->::uDDOModel::getContextInst());
+    lostPawn(pLostPawn->getContextInst());
 }
 
 // Address: 0x00786480 - 0x00786591 (273 bytes)
 __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x786491, used once; no DWARF local holds it
-    u8 t0 = ::cContextInterface::getPawnType(pLostPawn);
+    u8 t0 = cContextInterface::getPawnType(pLostPawn);
     // inferred: a temporary for the value the load at 0x7864a4 read, used once; no DWARF local holds it
-    cNetGameServer* t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+    cNetGameServer* t1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
     // inferred: a temporary for the result of the call at 0x7864ae, used once; no DWARF local holds it
-    u32 t2 = ::cContextInterface::getPawnId(pLostPawn);
-    if (t0 == static_cast<u8>(1)) {
-        t1->::cNetGameServer::pawnLost(t2);
-        ::sQuestManagerExt::getInstance()->::sQuestManagerExt::notifyLostMainPawn();
-        s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
-        if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
-            if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
-                ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
+    u32 t2 = cContextInterface::getPawnId(pLostPawn);
+    if (t0 == 1) {
+        t1->pawnLost(t2);
+        sQuestManagerExt::getInstance()->notifyLostMainPawn();
+        s32 memberIndex = cContextInterface::getMemberIndex(pLostPawn);
+        if (cContextInterface::isPawnOwner(pLostPawn)) {
+            if (!cContextInterface::getPawnTalkSituationFlag(pLostPawn, 12u)) {
+                cContextInterface::setPawnTalkSituationFlag(pLostPawn, 12u, true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t3 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t3, static_cast<u32>(25));
-                if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                    ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                    ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+                s32 t3 = cContextInterface::getMemberIndex(pLostPawn);
+                sAIPawnTalkMgr::getInstance()->reqPawnTalk(t3, 25u);
+                if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                    sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                    sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
                 }
             } else {
-                if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                    ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                    ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+                if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                    sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                    sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
                 }
             }
         } else {
-            if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+            if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
             }
         }
     } else {
-        t1->::cNetGameServer::rentalPawnLost(t2);
-        s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
-        if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
-            if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
-                ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
+        t1->rentalPawnLost(t2);
+        s32 memberIndex = cContextInterface::getMemberIndex(pLostPawn);
+        if (cContextInterface::isPawnOwner(pLostPawn)) {
+            if (!cContextInterface::getPawnTalkSituationFlag(pLostPawn, 12u)) {
+                cContextInterface::setPawnTalkSituationFlag(pLostPawn, 12u, true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t3 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t3, static_cast<u32>(25));
-                if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                    ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                    ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+                s32 t3 = cContextInterface::getMemberIndex(pLostPawn);
+                sAIPawnTalkMgr::getInstance()->reqPawnTalk(t3, 25u);
+                if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                    sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                    sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
                 }
             } else {
-                if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                    ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                    ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+                if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                    sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                    sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
                 }
             }
         } else {
-            if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
-                ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
+            if (sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(memberIndex) != nullptr) {
+                sAIPawnTalkMgr::getInstance()->releasePawnTalkInfo(memberIndex);
+                sContextManager::getInstance()->removeContextPartyPlayer(memberIndex, true);
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->removeUserListPartyMemberIndex(static_cast<u32>(memberIndex));
             }
         }
     }
@@ -1910,23 +1910,22 @@ __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
 // Address: 0x007865b0 - 0x00786629 (121 bytes)
 void sGame::reqPawnTalkLost(uDDOModel* pLostPawn) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pLostPawn == static_cast<uDDOModel*>(nullptr)) {
+    if (pLostPawn == nullptr) {
         return;
     }
-    if ((pLostPawn->mUnitId & static_cast<u32>(64)) == static_cast<u32>(0)) {
+    if ((pLostPawn->mUnitId & 64u) == 0) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x7865c7, used 4 times; no DWARF local holds it
-    cContextInstance* t0 = pLostPawn->::uDDOModel::getContextInst();
-    if (::cContextInterface::isPawnOwner(t0) == false) {
+    cContextInstance* t0 = pLostPawn->getContextInst();
+    if (!cContextInterface::isPawnOwner(t0)) {
         return;
     }
-    if (::cContextInterface::getPawnTalkSituationFlag(t0, static_cast<u32>(12)) != false) {
-    } else {
-        ::cContextInterface::setPawnTalkSituationFlag(t0, static_cast<u32>(12), true);
+    if (!cContextInterface::getPawnTalkSituationFlag(t0, 12u)) {
+        cContextInterface::setPawnTalkSituationFlag(t0, 12u, true);
         // inferred: a temporary for the result of the call at 0x786608, used once; no DWARF local holds it
-        s32 t1 = ::cContextInterface::getMemberIndex(t0);
-        ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t1, static_cast<u32>(25));
+        s32 t1 = cContextInterface::getMemberIndex(t0);
+        sAIPawnTalkMgr::getInstance()->reqPawnTalk(t1, 25u);
     }
 }
 
@@ -1950,10 +1949,10 @@ void sGame::returnCharEdit() {
     // DWARF local not rendered: u32 stage_no;
     // DWARF local not rendered: u32 ret_pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCharEditReturnArea != static_cast<const MtDTI*>(nullptr)) {
-        ::sArea::getInstance()->jump(*this->mpCharEditReturnArea);
+    if (mpCharEditReturnArea != nullptr) {
+        sArea::getInstance()->jump(*mpCharEditReturnArea);
     } else {
-        static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::jumpStage(static_cast<s32>(this->mCharEditStageNo), static_cast<s32>(this->mCharEditRetPosNo));
+        static_cast<sAreaExt*>(sArea::getInstance())->jumpStage(static_cast<s32>(mCharEditStageNo), static_cast<s32>(mCharEditRetPosNo));
     }
 }
 
@@ -2023,7 +2022,7 @@ __attribute__((weak)) u32 sGame::getPartnerPawnPersonality() const {
 // Address: 0x00785d60 - 0x00785d67 (7 bytes)
 void sGame::setPartnerPawnPersonality(u32 personality) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPartnerPawnPersonality = personality;
+    mPartnerPawnPersonality = personality;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2092,72 +2091,72 @@ void sGame::deleteHumanParam() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpBaseParam != static_cast<rAdjustParam*>(nullptr)) {
-        this->mpBaseParam->::cResource::release();
-        this->mpBaseParam = static_cast<rAdjustParam*>(nullptr);
+    if (mpBaseParam != nullptr) {
+        mpBaseParam->release();
+        mpBaseParam = nullptr;
     }
-    if (this->mpJobBaseParam != static_cast<rJobBaseParam*>(nullptr)) {
-        this->mpJobBaseParam->::cResource::release();
-        this->mpJobBaseParam = static_cast<rJobBaseParam*>(nullptr);
+    if (mpJobBaseParam != nullptr) {
+        mpJobBaseParam->release();
+        mpJobBaseParam = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[0] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[0]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[0] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[0] != nullptr) {
+        mpJobLevelUpTbl2.elems[0]->cResource::release();
+        mpJobLevelUpTbl2.elems[0] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[1] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[1]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[1] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[1] != nullptr) {
+        mpJobLevelUpTbl2.elems[1]->cResource::release();
+        mpJobLevelUpTbl2.elems[1] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[2] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[2]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[2] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[2] != nullptr) {
+        mpJobLevelUpTbl2.elems[2]->cResource::release();
+        mpJobLevelUpTbl2.elems[2] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[3] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[3]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[3] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[3] != nullptr) {
+        mpJobLevelUpTbl2.elems[3]->cResource::release();
+        mpJobLevelUpTbl2.elems[3] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[4] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[4]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[4] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[4] != nullptr) {
+        mpJobLevelUpTbl2.elems[4]->cResource::release();
+        mpJobLevelUpTbl2.elems[4] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[5] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[5]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[5] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[5] != nullptr) {
+        mpJobLevelUpTbl2.elems[5]->cResource::release();
+        mpJobLevelUpTbl2.elems[5] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[6] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[6]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[6] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[6] != nullptr) {
+        mpJobLevelUpTbl2.elems[6]->cResource::release();
+        mpJobLevelUpTbl2.elems[6] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[7] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[7]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[7] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[7] != nullptr) {
+        mpJobLevelUpTbl2.elems[7]->cResource::release();
+        mpJobLevelUpTbl2.elems[7] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[8] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[8]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[8] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[8] != nullptr) {
+        mpJobLevelUpTbl2.elems[8]->cResource::release();
+        mpJobLevelUpTbl2.elems[8] = nullptr;
     }
-    if (this->mpJobLevelUpTbl2.elems[9] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
-        this->mpJobLevelUpTbl2.elems[9]->::cResource::release();
-        this->mpJobLevelUpTbl2.elems[9] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    if (mpJobLevelUpTbl2.elems[9] != nullptr) {
+        mpJobLevelUpTbl2.elems[9]->cResource::release();
+        mpJobLevelUpTbl2.elems[9] = nullptr;
     }
-    if (this->mpAblityList != static_cast<rAbilityList*>(nullptr)) {
-        this->mpAblityList->::cResource::release();
-        this->mpAblityList = static_cast<rAbilityList*>(nullptr);
+    if (mpAblityList != nullptr) {
+        mpAblityList->release();
+        mpAblityList = nullptr;
     }
-    if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
-        this->mpExpTable->::cResource::release();
-        this->mpExpTable = static_cast<rPlayerExpTable*>(nullptr);
+    if (mpExpTable != nullptr) {
+        mpExpTable->release();
+        mpExpTable = nullptr;
     }
 }
 
 // Address: 0x00786b30 - 0x00786b5a (42 bytes)
 rWeaponResTable* sGame::getWepResTable() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
-        this->mpWepResTable->::cResource::addRef();
-        return this->mpWepResTable;
+    if (mpWepResTable != nullptr) {
+        mpWepResTable->addRef();
+        return mpWepResTable;
     } else {
-        return static_cast<rWeaponResTable*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -2166,38 +2165,38 @@ void sGame::createWepArcParam() {
     // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x786b75 read, used once; no DWARF local holds it
-    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x786b80, used once; no DWARF local holds it
-    ARC_TAGID t1 = ::rArchiveListArray::convTagId("wep_res_table");
+    ARC_TAGID t1 = rArchiveListArray::convTagId("wep_res_table");
     // inferred: a temporary for the result of the call at 0x786ba2, used 4 times; no DWARF local holds it
-    cResource* t2 = t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_PARAM"), static_cast<u32>(1), false);
-    if (t2 != static_cast<cResource*>(nullptr)) {
-        this->mpWepResTable = static_cast<rWeaponResTable*>(t2);
-        t2->::cResource::addRef();
-        this->::sGame::createWepResIndex();
-        t2->::cResource::release();
+    cResource* t2 = t0->createRes(t1, rArchiveListArray::convSearchId("RES_ID_PARAM"), 1u, false);
+    if (t2 != nullptr) {
+        mpWepResTable = static_cast<rWeaponResTable*>(t2);
+        t2->addRef();
+        createWepResIndex();
+        t2->release();
         // inferred: a temporary for the value the load at 0x786bce read, used once; no DWARF local holds it
-        sArchiveManager* t3 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x786bd9, used once; no DWARF local holds it
-        ARC_TAGID t4 = ::rArchiveListArray::convTagId("wep_res_table");
+        ARC_TAGID t4 = rArchiveListArray::convTagId("wep_res_table");
         // inferred: a temporary for the result of the call at 0x786bfb, used 4 times; no DWARF local holds it
-        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
-        if (t5 != static_cast<cResource*>(nullptr)) {
-            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
-            t5->::cResource::addRef();
-            t5->::cResource::release();
+        cResource* t5 = t3->createRes(t4, rArchiveListArray::convSearchId("RES_ID_CATEGORY"), 1u, false);
+        if (t5 != nullptr) {
+            mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
+            t5->addRef();
+            t5->release();
         }
     } else {
         // inferred: a temporary for the value the load at 0x786bce read, used once; no DWARF local holds it
-        sArchiveManager* t3 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x786bd9, used once; no DWARF local holds it
-        ARC_TAGID t4 = ::rArchiveListArray::convTagId("wep_res_table");
+        ARC_TAGID t4 = rArchiveListArray::convTagId("wep_res_table");
         // inferred: a temporary for the result of the call at 0x786bfb, used 4 times; no DWARF local holds it
-        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
-        if (t5 != static_cast<cResource*>(nullptr)) {
-            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
-            t5->::cResource::addRef();
-            t5->::cResource::release();
+        cResource* t5 = t3->createRes(t4, rArchiveListArray::convSearchId("RES_ID_CATEGORY"), 1u, false);
+        if (t5 != nullptr) {
+            mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
+            t5->addRef();
+            t5->release();
         }
     }
 }
@@ -2205,19 +2204,19 @@ void sGame::createWepArcParam() {
 // Address: 0x00786d40 - 0x00786db9 (121 bytes)
 void sGame::deleteWepArcParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpWepResIndexTbl != static_cast<u32*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::sGame::DTI)->memFree(static_cast<void*>(this->mpWepResIndexTbl));
-        this->mpWepResIndexTbl = static_cast<u32*>(nullptr);
+    if (mpWepResIndexTbl != nullptr) {
+        MtMemoryAllocator::getAllocator(sGame::DTI)->memFree(static_cast<void*>(mpWepResIndexTbl));
+        mpWepResIndexTbl = nullptr;
     }
-    if (this->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
-        this->mpWepResTable->::cResource::release();
-        this->mpWepResTable = static_cast<rWeaponResTable*>(nullptr);
+    if (mpWepResTable != nullptr) {
+        mpWepResTable->release();
+        mpWepResTable = nullptr;
     }
-    if (this->mpWepCateResTbl == static_cast<rWepCateResTbl*>(nullptr)) {
+    if (mpWepCateResTbl == nullptr) {
         return;
     }
-    this->mpWepCateResTbl->::cResource::release();
-    this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(nullptr);
+    mpWepCateResTbl->release();
+    mpWepCateResTbl = nullptr;
 }
 
 // Address: 0x00786c30 - 0x00786d31 (257 bytes)
@@ -2238,30 +2237,30 @@ __attribute__((weak)) void sGame::createWepResIndex() {
 cWeaponResTable* sGame::getWepResData(u32 tagId, u32 sex) {
     // DWARF local not rendered: cWeaponResTable* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->mpWepResIndexTbl != static_cast<u32*>(nullptr)) {
-        if (this->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
+    if (mpWepResIndexTbl != nullptr) {
+        if (mpWepResTable != nullptr) {
             // inferred: a temporary for the value the load at 0x786de5 read, used 3 times; no DWARF local holds it
-            unsigned int t0 = this->mpWepResIndexTbl[tagId * static_cast<u32>(3)];
-            if (t0 == static_cast<unsigned int>(0)) {
+            unsigned int t0 = mpWepResIndexTbl[tagId * 3u];
+            if (t0 == 0) {
                 // inferred: a temporary for the value the load at 0x786df2 read, used twice; no DWARF local holds it
-                unsigned int t1 = this->mpWepResIndexTbl[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
-                if (t1 < this->mpWepResTable->getDataNum()) {
-                    return this->mpWepResTable->getData(t1);
+                unsigned int t1 = mpWepResIndexTbl[((tagId * 3u) + sex) + 1u];
+                if (t1 < mpWepResTable->getDataNum()) {
+                    return mpWepResTable->getData(t1);
                 } else {
-                    return static_cast<cWeaponResTable*>(nullptr);
+                    return nullptr;
                 }
             } else {
-                if (t0 < this->mpWepResTable->getDataNum()) {
-                    return this->mpWepResTable->getData(t0);
+                if (t0 < mpWepResTable->getDataNum()) {
+                    return mpWepResTable->getData(t0);
                 } else {
-                    return static_cast<cWeaponResTable*>(nullptr);
+                    return nullptr;
                 }
             }
         } else {
-            return static_cast<cWeaponResTable*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<cWeaponResTable*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -2269,40 +2268,40 @@ cWeaponResTable* sGame::getWepResData(u32 tagId, u32 sex) {
 cWeaponResTable* sGame::getWepResData(rWeaponResTable* pWepResTable, u32 tagId, u32 sex) {
     // DWARF local not rendered: cWeaponResTable* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (pWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
-        if (tagId != static_cast<u32>(0)) {
+    if (pWepResTable != nullptr) {
+        if (tagId != 0) {
             // inferred: a temporary for the value the load at 0x786e57 read, used 6 times; no DWARF local holds it
-            sGame* t0 = ::sGame::getInstance();
-            if (t0->::sGame::getWepResIndexTbl() != static_cast<u32*>(nullptr)) {
-                if (t0->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
+            sGame* t0 = sGame::getInstance();
+            if (t0->getWepResIndexTbl() != nullptr) {
+                if (t0->mpWepResTable != nullptr) {
                     // inferred: a temporary for the value the load at 0x786e75 read, used 3 times; no DWARF local holds it
-                    unsigned int t1 = t0->::sGame::getWepResIndexTbl()[tagId * static_cast<u32>(3)];
-                    if (t1 == static_cast<unsigned int>(0)) {
+                    unsigned int t1 = t0->getWepResIndexTbl()[tagId * 3u];
+                    if (t1 == 0) {
                         // inferred: a temporary for the value the load at 0x786e82 read, used twice; no DWARF local holds it
-                        unsigned int t2 = t0->::sGame::getWepResIndexTbl()[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
+                        unsigned int t2 = t0->getWepResIndexTbl()[((tagId * 3u) + sex) + 1u];
                         if (t2 < t0->mpWepResTable->getDataNum()) {
                             return t0->mpWepResTable->getData(t2);
                         } else {
-                            return static_cast<cWeaponResTable*>(nullptr);
+                            return nullptr;
                         }
                     } else {
                         if (t1 < t0->mpWepResTable->getDataNum()) {
                             return t0->mpWepResTable->getData(t1);
                         } else {
-                            return static_cast<cWeaponResTable*>(nullptr);
+                            return nullptr;
                         }
                     }
                 } else {
-                    return static_cast<cWeaponResTable*>(nullptr);
+                    return nullptr;
                 }
             } else {
-                return static_cast<cWeaponResTable*>(nullptr);
+                return nullptr;
             }
         } else {
-            return static_cast<cWeaponResTable*>(nullptr);
+            return nullptr;
         }
     } else {
-        return static_cast<cWeaponResTable*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -2340,39 +2339,39 @@ __attribute__((weak)) void sGame::createAreaInfoResource() {
 // Address: 0x00787100 - 0x00787180 (128 bytes)
 void sGame::releaseAreaInfoResrouce() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAreaInfo != static_cast<rAreaInfo*>(nullptr)) {
-        this->mpAreaInfo->::cResource::release();
-        this->mpAreaInfo = static_cast<rAreaInfo*>(nullptr);
+    if (mpAreaInfo != nullptr) {
+        mpAreaInfo->release();
+        mpAreaInfo = nullptr;
     }
-    if (this->mpAreaInfoJointArea != static_cast<rAreaInfoJointArea*>(nullptr)) {
-        this->mpAreaInfoJointArea->::cResource::release();
-        this->mpAreaInfoJointArea = static_cast<rAreaInfoJointArea*>(nullptr);
+    if (mpAreaInfoJointArea != nullptr) {
+        mpAreaInfoJointArea->release();
+        mpAreaInfoJointArea = nullptr;
     }
-    if (this->mpAreaInfoStage != static_cast<rAreaInfoStage*>(nullptr)) {
-        this->mpAreaInfoStage->::cResource::release();
-        this->mpAreaInfoStage = static_cast<rAreaInfoStage*>(nullptr);
+    if (mpAreaInfoStage != nullptr) {
+        mpAreaInfoStage->release();
+        mpAreaInfoStage = nullptr;
     }
-    if (this->mpLandInfo == static_cast<rLandInfo*>(nullptr)) {
+    if (mpLandInfo == nullptr) {
         return;
     }
-    this->mpLandInfo->::cResource::release();
-    this->mpLandInfo = static_cast<rLandInfo*>(nullptr);
+    mpLandInfo->release();
+    mpLandInfo = nullptr;
 }
 
 // Address: 0x00787180 - 0x00787192 (18 bytes)
 u32 sGame::getAreaNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpAreaInfo != static_cast<rAreaInfo*>(nullptr)) {
-        return this->mpAreaInfo->mAreaInfo.::MtArray::mLength;
+    if (mpAreaInfo != nullptr) {
+        return mpAreaInfo->mAreaInfo.mLength;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x007871a0 - 0x007871ae (14 bytes)
 u32 sGame::getArea(MtVector3* pPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sGame::getArea(this->mStageNo, pPos);
+    return getArea(mStageNo, pPos);
 }
 
 // Address: 0x007871b0 - 0x00787361 (433 bytes)
@@ -2393,12 +2392,12 @@ __attribute__((weak)) u32 sGame::getArea(s32 stageNo, MtVector3* pPos) {
 u32 sGame::getAreaIdFromIdx(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mpAreaInfo != static_cast<rAreaInfo*>(nullptr)) {
-        if (index < this->mpAreaInfo->mAreaInfo.::MtArray::mLength) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpAreaInfo->mAreaInfo.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(8));
+    if (mpAreaInfo != nullptr) {
+        if (index < mpAreaInfo->mAreaInfo.mLength) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpAreaInfo->mAreaInfo.getBuffer()[static_cast<int>(index)]) + 8);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x007873b0 - 0x007873e5 (53 bytes)
@@ -2408,23 +2407,23 @@ u32 sGame::getAreaIndexFromId(u32 AreaId) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAreaInfo*
     // inferred: the value carried to 0x7873e4; no location-less local in scope fits
     u32 v2_0;
-    if (this->mpAreaInfo == static_cast<rAreaInfo*>(nullptr)) {
-        v2_0 = static_cast<u32>(0);
+    if (mpAreaInfo == nullptr) {
+        v2_0 = 0;
     } else {
-        const u32 area_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpAreaInfo) + static_cast<long>(120));
-        if (area_num == static_cast<u32>(0)) {
-            v2_0 = static_cast<u32>(0);
+        const u32 area_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpAreaInfo) + 120);
+        if (area_num == 0) {
+            v2_0 = 0;
         } else {
             // inferred: the value the loop at 0x7873d0 carries; no location-less local in scope fits
-            MtObject* * v0_2 = this->mpAreaInfo->mAreaInfo.::MtArray::getBuffer();
+            MtObject* * v0_2 = mpAreaInfo->mAreaInfo.getBuffer();
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_0)]) + static_cast<long>(8))) == AreaId) {
+            for (unsigned int i0_0 = 0;;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_0)]) + 8)) == AreaId) {
                     v2_0 = i0_0;
                     return v2_0;
                 } else {
-                    if ((i0_0 + static_cast<unsigned int>(1)) < area_num) {
-                        i0_0 += static_cast<unsigned int>(1);
+                    if ((i0_0 + 1u) < area_num) {
+                        i0_0 += 1u;
                     } else {
                         break;
                     }
@@ -2447,10 +2446,10 @@ __attribute__((weak)) MtVector2 sGame::getNewsMapPoint(u32 areaId) {
 // Address: 0x00787470 - 0x00787482 (18 bytes)
 u32 sGame::getLandNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLandInfo != static_cast<rLandInfo*>(nullptr)) {
-        return this->mpLandInfo->mLandInfo.::MtArray::mLength;
+    if (mpLandInfo != nullptr) {
+        return mpLandInfo->mLandInfo.mLength;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2487,12 +2486,12 @@ __attribute__((weak)) u32 sGame::getEnableAreaNumInLand(u32 landId) {
 u32 sGame::getLandIdFromIdx(u32 index) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if (this->mpLandInfo != static_cast<rLandInfo*>(nullptr)) {
-        if (index < this->mpLandInfo->mLandInfo.::MtArray::mLength) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpLandInfo->mLandInfo.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(8));
+    if (mpLandInfo != nullptr) {
+        if (index < mpLandInfo->mLandInfo.mLength) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpLandInfo->mLandInfo.getBuffer()[static_cast<int>(index)]) + 8);
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x007876b0 - 0x00787752 (162 bytes)
@@ -2508,100 +2507,100 @@ void sGame::loadCommonData() {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from cTalkMsgData*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from unsigned long
     // inferred: an ordered temporary, read before a later effect: the value read at 0x78776e, held ahead of the effects the ELF orders after it
-    cTalkMsgData* t0 = this->mpCommonMsgData;
-    if (t0 != static_cast<cTalkMsgData*>(nullptr)) {
+    cTalkMsgData* t0 = mpCommonMsgData;
+    if (t0 != nullptr) {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x78777b, held ahead of the effects the ELF orders after it
-        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 0);
         // inferred: an ordered temporary, read before a later effect: the value read at 0x78777e, held ahead of the effects the ELF orders after it
-        unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(8));
+        unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + 8);
         delete t0;
-        this->mpCommonMsgData = static_cast<cTalkMsgData*>(nullptr);
+        mpCommonMsgData = nullptr;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x78778d, held ahead of the effects the ELF orders after it
-        rStageToSpot* t4 = this->mpStageToSpot;
-        if (t4 != static_cast<rStageToSpot*>(nullptr)) {
-            t4->::cResource::release();
-            this->mpStageToSpot = static_cast<rStageToSpot*>(nullptr);
+        rStageToSpot* t4 = mpStageToSpot;
+        if (t4 != nullptr) {
+            t4->release();
+            mpStageToSpot = nullptr;
         }
-        if ((this->mpCommonMsgData = new (static_cast<u32>(16)) ::cTalkMsgData) != static_cast<cTalkMsgData*>(nullptr)) {
+        if ((mpCommonMsgData = new (16u) cTalkMsgData) != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7877dd, held ahead of the effects the ELF orders after it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->createRes(rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", 1u, false));
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787801, held ahead of the effects the ELF orders after it
-            cTalkMsgData* t11 = this->mpCommonMsgData;
-            t11->::cTalkMsgData::setMsgData(pMsgData);
+            cTalkMsgData* t11 = mpCommonMsgData;
+            t11->setMsgData(pMsgData);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787811, held ahead of the effects the ELF orders after it
-            sArchiveManager* t13 = ::sArchiveManager::getInstance();
-            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->::sArchiveManager::createRes(::rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            sArchiveManager* t13 = sArchiveManager::getInstance();
+            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->createRes(rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", 1u, false));
             // inferred: an ordered temporary, read before a later effect: the value read at 0x78782e, held ahead of the effects the ELF orders after it
-            cTalkMsgData* t15 = this->mpCommonMsgData;
-            t15->::cTalkMsgData::setMsgSetData(pMsgSetData);
-            if (pMsgData != static_cast<rGUIMessage*>(nullptr)) {
-                pMsgData->::cResource::release();
+            cTalkMsgData* t15 = mpCommonMsgData;
+            t15->setMsgSetData(pMsgSetData);
+            if (pMsgData != nullptr) {
+                pMsgData->cResource::release();
             }
-            if (pMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-                pMsgSetData->::cResource::release();
+            if (pMsgSetData != nullptr) {
+                pMsgSetData->cResource::release();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                sArchiveManager* t19 = sArchiveManager::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+                cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+                mpStageToSpot = static_cast<rStageToSpot*>(t20);
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                sArchiveManager* t19 = sArchiveManager::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+                cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+                mpStageToSpot = static_cast<rStageToSpot*>(t20);
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-            sArchiveManager* t19 = ::sArchiveManager::getInstance();
+            sArchiveManager* t19 = sArchiveManager::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-            cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-            this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+            mpStageToSpot = static_cast<rStageToSpot*>(t20);
         }
     } else {
         // inferred: an ordered temporary, read before a later effect: the value read at 0x78778d, held ahead of the effects the ELF orders after it
-        rStageToSpot* t4 = this->mpStageToSpot;
-        if (t4 != static_cast<rStageToSpot*>(nullptr)) {
-            t4->::cResource::release();
-            this->mpStageToSpot = static_cast<rStageToSpot*>(nullptr);
+        rStageToSpot* t4 = mpStageToSpot;
+        if (t4 != nullptr) {
+            t4->release();
+            mpStageToSpot = nullptr;
         }
-        if ((this->mpCommonMsgData = new (static_cast<u32>(16)) ::cTalkMsgData) != static_cast<cTalkMsgData*>(nullptr)) {
+        if ((mpCommonMsgData = new (16u) cTalkMsgData) != nullptr) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x7877dd, held ahead of the effects the ELF orders after it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->createRes(rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", 1u, false));
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787801, held ahead of the effects the ELF orders after it
-            cTalkMsgData* t11 = this->mpCommonMsgData;
-            t11->::cTalkMsgData::setMsgData(pMsgData);
+            cTalkMsgData* t11 = mpCommonMsgData;
+            t11->setMsgData(pMsgData);
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787811, held ahead of the effects the ELF orders after it
-            sArchiveManager* t13 = ::sArchiveManager::getInstance();
-            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->::sArchiveManager::createRes(::rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            sArchiveManager* t13 = sArchiveManager::getInstance();
+            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->createRes(rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", 1u, false));
             // inferred: an ordered temporary, read before a later effect: the value read at 0x78782e, held ahead of the effects the ELF orders after it
-            cTalkMsgData* t15 = this->mpCommonMsgData;
-            t15->::cTalkMsgData::setMsgSetData(pMsgSetData);
-            if (pMsgData != static_cast<rGUIMessage*>(nullptr)) {
-                pMsgData->::cResource::release();
+            cTalkMsgData* t15 = mpCommonMsgData;
+            t15->setMsgSetData(pMsgSetData);
+            if (pMsgData != nullptr) {
+                pMsgData->cResource::release();
             }
-            if (pMsgSetData != static_cast<rMsgSet*>(nullptr)) {
-                pMsgSetData->::cResource::release();
+            if (pMsgSetData != nullptr) {
+                pMsgSetData->cResource::release();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                sArchiveManager* t19 = sArchiveManager::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+                cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+                mpStageToSpot = static_cast<rStageToSpot*>(t20);
             } else {
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                sArchiveManager* t19 = sArchiveManager::getInstance();
                 // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+                cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+                mpStageToSpot = static_cast<rStageToSpot*>(t20);
             }
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
-            sArchiveManager* t19 = ::sArchiveManager::getInstance();
+            sArchiveManager* t19 = sArchiveManager::getInstance();
             // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
-            cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
-            this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            cResource* t20 = t19->createRes(rStageToSpot::DTI, "param\\stage_to_spot", 1u, false);
+            mpStageToSpot = static_cast<rStageToSpot*>(t20);
         }
     }
 }
@@ -2609,15 +2608,15 @@ void sGame::loadCommonData() {
 // Address: 0x00787890 - 0x007878d9 (73 bytes)
 void sGame::releaseCommonData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCommonMsgData != static_cast<cTalkMsgData*>(nullptr)) {
-        delete this->mpCommonMsgData;
-        this->mpCommonMsgData = static_cast<cTalkMsgData*>(nullptr);
+    if (mpCommonMsgData != nullptr) {
+        delete mpCommonMsgData;
+        mpCommonMsgData = nullptr;
     }
-    if (this->mpStageToSpot == static_cast<rStageToSpot*>(nullptr)) {
+    if (mpStageToSpot == nullptr) {
         return;
     }
-    this->mpStageToSpot->::cResource::release();
-    this->mpStageToSpot = static_cast<rStageToSpot*>(nullptr);
+    mpStageToSpot->release();
+    mpStageToSpot = nullptr;
 }
 
 // No out-of-line body: 17 inlined copies in 12 functions (119 bytes)
@@ -2634,26 +2633,26 @@ cStageToSpot* sGame::getStageToSpot(u32 stageNo) {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0x787c5a; no location-less local in scope fits
     cStageToSpot* v1_0;
-    if (this->mpStageToSpot == static_cast<rStageToSpot*>(nullptr)) {
-        v1_0 = static_cast<cStageToSpot*>(nullptr);
+    if (mpStageToSpot == nullptr) {
+        v1_0 = nullptr;
     } else {
-        if (this->mpStageToSpot->getDataNum() == static_cast<u32>(0)) {
-            v1_0 = static_cast<cStageToSpot*>(nullptr);
+        if (mpStageToSpot->getDataNum() == 0) {
+            v1_0 = nullptr;
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            for (unsigned int i0_2 = 0;;) {
                 // inferred: a temporary for the result of the call at 0x787c2c, used 3 times; no DWARF local holds it
-                cStageToSpot* t0 = this->mpStageToSpot->getData(i0_2);
-                if (t0 != static_cast<cStageToSpot*>(nullptr)) {
+                cStageToSpot* t0 = mpStageToSpot->getData(i0_2);
+                if (t0 != nullptr) {
                     if (t0->mStageNo == stageNo) {
                         v1_0 = t0;
                         break;
                     }
                 }
-                if ((i0_2 + static_cast<unsigned int>(1)) < this->mpStageToSpot->getDataNum()) {
-                    i0_2 += static_cast<unsigned int>(1);
+                if ((i0_2 + 1u) < mpStageToSpot->getDataNum()) {
+                    i0_2 += 1u;
                 } else {
-                    v1_0 = static_cast<cStageToSpot*>(nullptr);
+                    v1_0 = nullptr;
                     break;
                 }
             }
@@ -2670,30 +2669,29 @@ cStageToSpot* sGame::getStageToSpot(u32 stageNo) {
 void sGame::setOpeningMovieLook(bool isLook, bool isSave) {
     // DWARF local not rendered: stTitle* pTitleData;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    this->mIsOpeningMovieLook = isLook;
-    if (isLook == false) {
+    mIsOpeningMovieLook = isLook;
+    if (!isLook) {
         return;
     }
-    if (isSave == false) {
+    if (!isSave) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x787900, used twice; no DWARF local holds it
-    cStorageData& t0 = static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData();
-    if (t0.mTitle.mLookOpMovie != static_cast<u8>(0)) {
-    } else {
-        t0.mTitle.mLookOpMovie = static_cast<u8>(1);
-        static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::saveData(static_cast<SAVEDATA_TYPE>(0));
+    cStorageData& t0 = static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData();
+    if (t0.mTitle.mLookOpMovie == 0) {
+        t0.mTitle.mLookOpMovie = 1;
+        static_cast<sSavedataExt*>(sSavedata::getInstance())->saveData(SAVEDATA_TYPE_MAIN);
     }
 }
 
 // Address: 0x00787930 - 0x00787969 (57 bytes)
 void sGame::updateLastBase(u32 baseId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mLastBaseId == baseId) {
+    if (mLastBaseId == baseId) {
         return;
     }
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::updateLastBase(baseId);
-    this->mLastBaseId = baseId;
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->updateLastBase(baseId);
+    mLastBaseId = baseId;
 }
 
 // Address: 0x00787970 - 0x007879b8 (72 bytes)
@@ -2724,13 +2722,13 @@ __attribute__((weak)) u32 sGame::getPartyWarpLimit() {
 // Address: 0x007879f0 - 0x00787a08 (24 bytes)
 u32 sGame::getClanPoint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyClanParam.m_ClanServerParam.m_unMoneyClanPoint;
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyClanParam.m_ClanServerParam.m_unMoneyClanPoint;
 }
 
 // Address: 0x00787a10 - 0x00787a26 (22 bytes)
 void sGame::setClanPoint(u32 cp) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::setMyMoneyClanPoint(cp);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->setMyMoneyClanPoint(cp);
 }
 
 // Address: 0x00787aa0 - 0x00787ab9 (25 bytes)
@@ -2752,7 +2750,7 @@ __attribute__((weak)) const u32* sGame::getFromRoleToJob(nHuman::ROLE_ENUM roleI
 // Address: 0x00787b20 - 0x00787b27 (7 bytes)
 bool sGame::isEnableLobbyLanternShadow() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mIsEnableLobbyLanternShadow;
+    return mIsEnableLobbyLanternShadow;
 }
 
 // Address: 0x00787b30 - 0x00787bdf (175 bytes)
@@ -2783,24 +2781,24 @@ __attribute__((weak)) bool sGame::keepArc(rArchive* arc_ptr) {
 bool sGame::releaseKeepArc(rArchive* arc_ptr) {
     // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    if (arc_ptr == static_cast<rArchive*>(nullptr)) {
+    if (arc_ptr == nullptr) {
         return false;
     }
-    if (arc_ptr->::cResource::isUsage() == false) {
+    if (!arc_ptr->isUsage()) {
         return false;
     }
-    u32 i = static_cast<u32>(0);
+    u32 i = 0;
     // inferred: the pointer this loop steps by one element; no location-less local in scope fits
-    rArchive* * p1 = &this->mKeepArc[0];
+    rArchive* * p1 = &mKeepArc[0];
     do {
         if (arc_ptr == (*p1)) {
-            arc_ptr->::cResource::release();
-            *p1 = static_cast<rArchive*>(nullptr);
+            arc_ptr->release();
+            *p1 = nullptr;
             return true;
         }
-        i += static_cast<u32>(1);
+        i += 1u;
         p1 += static_cast<int>(1);
-    } while (i <= static_cast<u32>(7));
+    } while (i <= 7u);
     return false;
 }
 
@@ -2808,45 +2806,37 @@ bool sGame::releaseKeepArc(rArchive* arc_ptr) {
 void sGame::releaseKeepArc() {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mKeepArc[0] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[0]->::cResource::release();
-        this->mKeepArc[0] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[0] != nullptr) {
+        mKeepArc[0]->cResource::release();
+        mKeepArc[0] = nullptr;
     }
-    if (this->mKeepArc[1] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[1]->::cResource::release();
-        this->mKeepArc[1] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[1] != nullptr) {
+        mKeepArc[1]->cResource::release();
+        mKeepArc[1] = nullptr;
     }
-    if (this->mKeepArc[2] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[2]->::cResource::release();
-        this->mKeepArc[2] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[2] != nullptr) {
+        mKeepArc[2]->cResource::release();
+        mKeepArc[2] = nullptr;
     }
-    if (this->mKeepArc[3] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[3]->::cResource::release();
-        this->mKeepArc[3] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[3] != nullptr) {
+        mKeepArc[3]->cResource::release();
+        mKeepArc[3] = nullptr;
     }
-    if (this->mKeepArc[4] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[4]->::cResource::release();
-        this->mKeepArc[4] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[4] != nullptr) {
+        mKeepArc[4]->cResource::release();
+        mKeepArc[4] = nullptr;
     }
-    if (this->mKeepArc[5] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[5]->::cResource::release();
-        this->mKeepArc[5] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[5] != nullptr) {
+        mKeepArc[5]->cResource::release();
+        mKeepArc[5] = nullptr;
     }
-    if (this->mKeepArc[6] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[6]->::cResource::release();
-        this->mKeepArc[6] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[6] != nullptr) {
+        mKeepArc[6]->cResource::release();
+        mKeepArc[6] = nullptr;
     }
-    if (this->mKeepArc[7] == static_cast<rArchive*>(nullptr)) {
-    } else {
-        this->mKeepArc[7]->::cResource::release();
-        this->mKeepArc[7] = static_cast<rArchive*>(nullptr);
+    if (mKeepArc[7] != nullptr) {
+        mKeepArc[7]->cResource::release();
+        mKeepArc[7] = nullptr;
     }
 }
 
@@ -2895,80 +2885,89 @@ __attribute__((weak)) void sGame::keepArcOm() {
 void sGame::releaseKeepOm() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mKeepOm.::MtArray::mLength == static_cast<u32>(0)) {
-        if (this->mKeepOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mKeepOm.::MtArray::mpArray));
+    if (mKeepOm.mLength == 0) {
+        if (mKeepOm.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mKeepOm.mpArray));
         }
-        this->mKeepOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-        this->mKeepOm.::MtArray::mBufsiz = static_cast<u32>(0);
-        this->mKeepOm.::MtArray::mLength = static_cast<u32>(0);
+        mKeepOm.mpArray = nullptr;
+        mKeepOm.mBufsiz = 0;
+        mKeepOm.mLength = 0;
         return;
     } else {
         // inferred: the value the loop at 0x787e00 carries; no location-less local in scope fits
-        u32 v0_0 = this->mKeepOm.::MtArray::mLength;
+        u32 v0_0 = mKeepOm.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        unsigned int i0_3 = static_cast<unsigned int>(0);
+        unsigned int i0_3 = 0;
         // inferred: the value carried to 0x787e34; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
-            if (this->mKeepOm.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
-                static_cast<cResource*>(this->mKeepOm.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cResource::release();
-                this->mKeepOm.::MtArray::getBuffer()[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mKeepOm.::MtArray::mLength) {
-                    v0_0 = this->mKeepOm.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+            if (mKeepOm.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cResource*>(mKeepOm.getBuffer()[static_cast<int>(i0_3)])->release();
+                mKeepOm.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+                if ((i0_3 + 1u) < mKeepOm.mLength) {
+                    v0_0 = mKeepOm.mLength;
+                    i0_3 += 1u;
                 } else {
-                    v1_0 = this->mKeepOm.::MtArray::mLength;
+                    v1_0 = mKeepOm.mLength;
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     v1_0 = v0_0;
                     break;
                 }
             }
         }
-        if (v1_0 == static_cast<u32>(0)) {
-            if (this->mKeepOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mKeepOm.::MtArray::mpArray));
+        if (v1_0 == 0) {
+            if (mKeepOm.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mKeepOm.mpArray));
             }
-            this->mKeepOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mKeepOm.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mKeepOm.::MtArray::mLength = static_cast<u32>(0);
+            mKeepOm.mpArray = nullptr;
+            mKeepOm.mBufsiz = 0;
+            mKeepOm.mLength = 0;
             return;
         } else {
             // inferred: the value the loop at 0x787e50 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
             // inferred: the counter this loop steps; no location-less local in scope fits
-            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                if (this->mKeepOm.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                    delete this->mKeepOm.::MtArray::mpArray[i2_3];
-                    if ((i2_3 + static_cast<unsigned int>(1)) < this->mKeepOm.::MtArray::mLength) {
-                        v2_0 = this->mKeepOm.::MtArray::mLength;
-                        i2_3 += static_cast<unsigned int>(1);
+            for (unsigned int i2_3 = 0;;) {
+                if (mKeepOm.mpArray[i2_3] != nullptr) {
+                    delete mKeepOm.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mKeepOm.mLength) {
+                        v2_0 = mKeepOm.mLength;
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 } else {
-                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                        i2_3 += static_cast<unsigned int>(1);
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
                     } else {
                         break;
                     }
                 }
             }
-            if (this->mKeepOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mKeepOm.::MtArray::mpArray));
+            if (mKeepOm.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mKeepOm.mpArray));
             }
-            this->mKeepOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mKeepOm.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mKeepOm.::MtArray::mLength = static_cast<u32>(0);
+            mKeepOm.mpArray = nullptr;
+            mKeepOm.mBufsiz = 0;
+            mKeepOm.mLength = 0;
             return;
         }
     }
 }
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sGame* sGame::mpInstance;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sGame::MyDTI sGame::DTI;
+
+// Not defined (no member-wise spelling: a class with constructors or bases): sGame::chargeEffectParam sGame::mChargeEffectParam[51];
+
+// Not defined (no member-wise spelling: an array of no extent): const sGame::chargeEffectSetting sGame::mChargeEffectDefault[];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sGame.cpp at 0x0078873f-0x0078877c (called at sGame.cpp:139)

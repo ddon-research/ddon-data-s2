@@ -100,6 +100,6 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cStartPosArea::cStartPosArea() {
-    this->mStartPosNo = static_cast<u16>(0);
-    this->mAreaId = static_cast<u16>(0);
+    this->mStartPosNo = 0;
+    this->mAreaId = 0;
 }

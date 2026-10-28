@@ -36,7 +36,7 @@ const MtDTI& cSoundOptData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cSoundOptData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memAlloc(sz, align, ::cSoundOptData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSoundOptData::DTI)->memAlloc(sz, align, cSoundOptData::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cSoundOptData::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cSoundOptData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSoundOptData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -90,12 +90,14 @@ __attribute__((weak)) void cSoundOptData::createProperty(MtPropertyList& s) {
 // Address: 0x006bd730 - 0x006bd741 (17 bytes)
 s32 cSoundOptData::getChannel(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index <= static_cast<u32>(5)) {
-        return this->mChannel[index];
+    if (index <= 5u) {
+        return mChannel[index];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSoundOptData::MyDTI cSoundOptData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundOptData.cpp at 0x006bd8bf-0x006bd8fc (called at rSoundOptData.cpp:41)
@@ -105,7 +107,7 @@ s32 cSoundOptData::getChannel(u32 index) {
 // Address: 0x006bd000 - 0x006bd060 (96 bytes)
 MtObject* cSoundOptData::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cSoundOptData;
+    return new (16u) cSoundOptData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ const MtDTI& rSoundOptData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rSoundOptData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rSoundOptData::DTI)->memAlloc(sz, align, ::rSoundOptData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rSoundOptData::DTI)->memAlloc(sz, align, rSoundOptData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +147,7 @@ inline void* rSoundOptData::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rSoundOptDataD0Ev at 0x01aa7154-0x01aa7173, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rSoundOptData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundOptData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundOptData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -162,28 +164,28 @@ bool rSoundOptData::loadData(MtDataReader& in, cSoundOptData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mCategory);
+    nDDOIO::readData(in, pData->mCategory);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mItem);
+    nDDOIO::readData(in, pData->mItem);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[0]);
+    nDDOIO::readData(in, pData->mChannel[0]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[1]);
+    nDDOIO::readData(in, pData->mChannel[1]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[2]);
+    nDDOIO::readData(in, pData->mChannel[2]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[3]);
+    nDDOIO::readData(in, pData->mChannel[3]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[4]);
+    nDDOIO::readData(in, pData->mChannel[4]);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mChannel[5]);
+    nDDOIO::readData(in, pData->mChannel[5]);
     return true;
 }
 
@@ -196,8 +198,10 @@ MT_CTSTR rSoundOptData::getExt() const {
 // Address: 0x01aa72a0 - 0x01aa72a6 (6 bytes)
 u32 rSoundOptData::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundOptData::MyDTI rSoundOptData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rSoundOptData.cpp at 0x006bd8fc-0x006bd939 (called at rSoundOptData.cpp:251)
@@ -207,7 +211,7 @@ u32 rSoundOptData::getDataVersion() const {
 // Address: 0x006bd750 - 0x006bd7b4 (100 bytes)
 MtObject* rSoundOptData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rSoundOptData;
+    return new (16u) rSoundOptData;
 }
 
 // Instance at 0x01aa7250 - 0x01aa7266 (22 bytes) of the generic rTbl2<T>::getData

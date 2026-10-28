@@ -14,33 +14,33 @@
 MtDataWriter::MtDataWriter(MtStream& out, u32 bufsiz, u32 labelsiz) : mStream(out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the mem-initializer mStream(out): the constructor stores out into this+0x8 once, before anything reads it; a reference member is bound only there
-    this->mBufsizMax = bufsiz;
-    this->mSeekPt = static_cast<u32>(0);
-    this->mBufsiz = this->mBufsizMax;
-    this->mBuffer = static_cast<u8*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(bufsiz, static_cast<u32>(16)));
-    this->mLabel = static_cast<MtDataWriter::Label*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(static_cast<size_t>(labelsiz) * static_cast<size_t>(16), static_cast<u32>(16)));
-    this->mLabelMax = labelsiz;
-    this->mFramePt = static_cast<s32>(0);
-    this->mFrame = &this->mFrameStack[0];
-    this->mFrameStack[0].base = static_cast<u32>(0);
-    this->mFrameStack[0].pt = static_cast<u32>(0);
-    this->mFrameStack[0].offset = static_cast<u32>(0);
+    mBufsizMax = bufsiz;
+    mSeekPt = 0;
+    mBufsiz = mBufsizMax;
+    mBuffer = static_cast<u8*>(MtMemory::mpAllocatorType[7]->memAlloc(bufsiz, 16u));
+    mLabel = static_cast<Label*>(MtMemory::mpAllocatorType[7]->memAlloc(static_cast<size_t>(labelsiz) * 16, 16u));
+    mLabelMax = labelsiz;
+    mFramePt = 0;
+    mFrame = &mFrameStack[0];
+    mFrameStack[0].base = 0;
+    mFrameStack[0].pt = 0;
+    mFrameStack[0].offset = 0;
 }
 
 // Address: 0x00dc23c0 - 0x00dc242e (110 bytes)
 // Also emitted as: _ZN12MtDataWriterD0Ev at 0x00dc2430
 MtDataWriter::~MtDataWriter() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mBuffer == static_cast<u8*>(nullptr)) {
+    if (mBuffer == nullptr) {
         return;
     }
-    if (this->mSeekPt != static_cast<u32>(0)) {
-        this->mStream.write(static_cast<const void*>(this->mBuffer), this->mSeekPt);
-        this->mSeekPt = static_cast<u32>(0);
+    if (mSeekPt != 0) {
+        mStream.write(static_cast<const void*>(mBuffer), mSeekPt);
+        mSeekPt = 0;
     }
-    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(this->mBuffer));
-    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(this->mLabel));
-    this->mSeekPt = static_cast<u32>(0);
+    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(mBuffer));
+    MtMemory::mpAllocatorType[7]->memFree(static_cast<void*>(mLabel));
+    mSeekPt = 0;
 }
 
 // No out-of-line body: 196 inlined copies in 49 functions (7835 bytes)
@@ -60,132 +60,132 @@ MtDataWriter::~MtDataWriter() {
 // Address: 0x00dc24a0 - 0x00dc24da (58 bytes)
 void MtDataWriter::writeU16(u16 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 1u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
+    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 2u;
 }
 
 // Address: 0x00dc2500 - 0x00dc2537 (55 bytes)
 void MtDataWriter::writeU32(u32 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 3u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 4u;
 }
 
 // Address: 0x00dc2540 - 0x00dc2579 (57 bytes)
 void MtDataWriter::writeU64(u64 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 7u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 8u;
 }
 
 // Address: 0x00dc2580 - 0x00dc25ba (58 bytes)
 void MtDataWriter::writeS16(s16 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 1u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned short>(n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
+    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned short>(n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 2u;
 }
 
 // Address: 0x00dc25c0 - 0x00dc25f7 (55 bytes)
 void MtDataWriter::writeS32(s32 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 3u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned int>(n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned int>(n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 4u;
 }
 
 // Address: 0x00dc2600 - 0x00dc2639 (57 bytes)
 void MtDataWriter::writeS64(s64 n) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 7u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 8u;
 }
 
 // Address: 0x00dc2640 - 0x00dc2679 (57 bytes)
 void MtDataWriter::writeF32(f32 n) {
     // DWARF local not rendered: u32 v;
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 3u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned int*>(&n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned int*>(&n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 4u;
 }
 
 // Address: 0x00dc2680 - 0x00dc26bb (59 bytes)
 void MtDataWriter::writeF64(f64 n) {
     // DWARF local not rendered: u64 v;
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
-        this->flush();
+    if ((mSeekPt + 7u) >= mBufsiz) {
+        flush();
     }
-    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned long*>(&n), &this->mBuffer[this->mSeekPt]);
-    this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned long*>(&n), &mBuffer[mSeekPt]);
+    mSeekPt = mSeekPt + 8u;
 }
 
 // Address: 0x00dc26c0 - 0x00dc26c9 (9 bytes)
 void MtDataWriter::writeUPtr(uintptr n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->writeU64(n);
+    writeU64(n);
 }
 
 // Address: 0x00dc26d0 - 0x00dc26d9 (9 bytes)
 void MtDataWriter::writeSPtr(intptr n) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->writeS64(n);
+    writeS64(n);
 }
 
 // Address: 0x00dc2db0 - 0x00dc2ded (61 bytes)
 void MtDataWriter::writeV3(const MtFloat3& ft3) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->writeF32(ft3.x);
-    this->writeF32(ft3.y);
-    this->writeF32(ft3.z);
+    writeF32(ft3.x);
+    writeF32(ft3.y);
+    writeF32(ft3.z);
 }
 
 // Address: 0x00dc2df0 - 0x00dc2e3c (76 bytes)
 void MtDataWriter::writeV4(const MtFloat4& ft4) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->writeF32(ft4.x);
-    this->writeF32(ft4.y);
-    this->writeF32(ft4.z);
-    this->writeF32(ft4.w);
+    writeF32(ft4.x);
+    writeF32(ft4.y);
+    writeF32(ft4.z);
+    writeF32(ft4.w);
 }
 
 // Address: 0x00dc26e0 - 0x00dc2717 (55 bytes)
 void MtDataWriter::writeString(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->write(static_cast<const void*>(str), static_cast<unsigned int>(::strlen(str) + static_cast<size_t>(1)));
+    write(static_cast<const void*>(str), static_cast<unsigned int>(strlen(str) + 1ul));
 }
 
 // Address: 0x00dc2720 - 0x00dc2795 (117 bytes)
 u32 MtDataWriter::write(const void* ptr, u32 bytes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((bytes + this->mSeekPt) >= this->mBufsiz) {
-        this->flush();
+    if ((bytes + mSeekPt) >= mBufsiz) {
+        flush();
     }
-    if (bytes < this->mBufsiz) {
-        ::memcpy(static_cast<void*>(&this->mBuffer[this->mSeekPt]), ptr, bytes);
-        this->mSeekPt = bytes + this->mSeekPt;
+    if (bytes < mBufsiz) {
+        memcpy(static_cast<void*>(&mBuffer[mSeekPt]), ptr, bytes);
+        mSeekPt = bytes + mSeekPt;
         return bytes;
     } else {
-        return this->mStream.write(ptr, bytes);
+        return mStream.write(ptr, bytes);
     }
 }
 
@@ -207,24 +207,24 @@ __attribute__((weak)) void MtDataWriter::writeFormat(const void* ptr, MT_CTSTR f
 // Address: 0x00dc29b0 - 0x00dc29df (47 bytes)
 void MtDataWriter::flush() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mSeekPt == static_cast<u32>(0)) {
+    if (mSeekPt == 0) {
         return;
     }
-    this->mStream.write(static_cast<const void*>(this->mBuffer), this->mSeekPt);
-    this->mSeekPt = static_cast<u32>(0);
+    mStream.write(static_cast<const void*>(mBuffer), mSeekPt);
+    mSeekPt = 0;
 }
 
 // Address: 0x00dc2990 - 0x00dc29ad (29 bytes)
 u32 MtDataWriter::getPosition() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStream.getPosition() + this->mSeekPt;
+    return mStream.getPosition() + mSeekPt;
 }
 
 // Address: 0x00dc2950 - 0x00dc2989 (57 bytes)
 u32 MtDataWriter::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->flush();
-    return this->mStream.seek(offset, origin);
+    flush();
+    return mStream.seek(offset, origin);
 }
 
 // Address: 0x00dc2a80 - 0x00dc2c70 (496 bytes)
@@ -250,25 +250,25 @@ __attribute__((weak)) void MtDataWriter::writeLabel(const void* addr) {
 void MtDataWriter::pushLabel() {
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xdc29e9 read, used twice; no DWARF local holds it
-    s32 t0 = this->mFramePt;
-    this->mFrameStack[t0 + static_cast<s32>(1)] = this->mFrameStack[t0];
+    s32 t0 = mFramePt;
+    mFrameStack[t0 + 1] = mFrameStack[t0];
     // inferred: a temporary for the value the load at 0xdc2a10 read, used 3 times; no DWARF local holds it
-    s32 t1 = this->mFramePt;
-    this->mFramePt = t1 + static_cast<s32>(1);
-    this->mFrame = &this->mFrameStack[t1 + static_cast<s32>(1)];
-    this->mFrameStack[t1 + static_cast<s32>(1)].base = this->mFrameStack[t1 + static_cast<s32>(1)].pt;
+    s32 t1 = mFramePt;
+    mFramePt = t1 + 1;
+    mFrame = &mFrameStack[t1 + 1];
+    mFrameStack[t1 + 1].base = mFrameStack[t1 + 1].pt;
     // inferred: a temporary for the result of the call at 0xdc2a3b, used once; no DWARF local holds it
-    u32 t2 = this->getPosition();
-    this->mFrame->offset = t2;
+    u32 t2 = getPosition();
+    mFrame->offset = t2;
 }
 
 // Address: 0x00dc2a50 - 0x00dc2a71 (33 bytes)
 void MtDataWriter::popLabel() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xdc2a50 read, used twice; no DWARF local holds it
-    s32 t0 = this->mFramePt;
-    this->mFramePt = t0 - static_cast<s32>(1);
-    this->mFrame = &this->mFrameStack[t0 - static_cast<s32>(1)];
+    s32 t0 = mFramePt;
+    mFramePt = t0 - 1;
+    mFrame = &mFrameStack[t0 - 1];
 }
 
 // Address: 0x00dc2c70 - 0x00dc2cd0 (96 bytes)
@@ -282,7 +282,7 @@ __attribute__((weak)) void MtDataWriter::align(u32 n) {
 // Address: 0x01b4ec60 - 0x01b4ec6d (13 bytes)
 u32 MtDataWriter::getLength() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mStream.getLength();
+    return mStream.getLength();
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (32 bytes)
@@ -293,13 +293,13 @@ u32 MtDataWriter::getLength() {
 // Address: 0x00dc24e0 - 0x00dc24ea (10 bytes)
 void MtDataWriter::setU32(u32 bufofs, u32 value) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(value, &this->mBuffer[bufofs]);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(value, &mBuffer[bufofs]);
 }
 
 // Address: 0x00dc24f0 - 0x00dc24fb (11 bytes)
 void MtDataWriter::setU64(u32 bufofs, u64 value) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(value), &this->mBuffer[bufofs]);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(value), &mBuffer[bufofs]);
 }
 
 // No out-of-line body: no code in the ELF

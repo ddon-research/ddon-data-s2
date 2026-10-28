@@ -23,6 +23,7 @@ class MtString;
 class MtTime;
 class MtUI;
 namespace nCharacterData { struct stMessageSet; }
+class sGUIExt;
 
 // Declarations
 class sChat;
@@ -40,6 +41,8 @@ using u8 = unsigned char;
 
 class sChat : public cSystem
 {
+    // inferred: sGUIExt::cChat::setChatArea names sChat::mChatArea, through its enclosing class sGUIExt
+    friend class sGUIExt;
 public:
     enum INPUT_RNO
     {
@@ -299,7 +302,6 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline sChat* sChat::getInstance() {
     return ::sChat::mpInstance;
 }

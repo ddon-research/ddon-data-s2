@@ -8,6 +8,8 @@
 #include "../shared/MtString.h"
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/nDDOUtility.h"
@@ -38,7 +40,7 @@ const MtDTI& uGUIGaugeEnemy::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGaugeEnemy::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeEnemy::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGaugeEnemy::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -47,7 +49,7 @@ inline MtAllocator* uGUIGaugeEnemy::getAllocator() {
 // Address: 0x00b5c910 - 0x00b5c950 (64 bytes)
 void* uGUIGaugeEnemy::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGaugeEnemy::getAllocator()->memAlloc(sz, align, ::uGUIGaugeEnemy::DTI.::MtDTI::getID());
+    return uGUIGaugeEnemy::getAllocator()->memAlloc(sz, align, uGUIGaugeEnemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -62,7 +64,7 @@ void* uGUIGaugeEnemy::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGaugeEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGaugeEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGaugeEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -126,12 +128,12 @@ bool uGUIGaugeEnemy::IsDispAngerGauge(const uEnemy* enemy) {
     // DWARF local not rendered: const bool is_chance_down;
     // DWARF local not rendered: const bool is_swayed;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (enemy != static_cast<const uEnemy*>(nullptr)) {
-        if (enemy->::uEnemy::isShakedActionEnemy() != false) {
-            if ((enemy->::uDDOModel::mObjStatus & static_cast<u64>(2147614720)) != static_cast<u64>(0)) {
+    if (enemy != nullptr) {
+        if (enemy->isShakedActionEnemy()) {
+            if ((enemy->mObjStatus & 0x80020000ul) != 0) {
                 return false;
             } else {
-                return enemy->::uEnemy::isStatusRage();
+                return enemy->isStatusRage();
             }
         } else {
             return false;
@@ -163,19 +165,19 @@ __attribute__((weak)) void uGUIGaugeEnemy::CenteringName(cGUIObjMessage* pOBJ_ms
 // Also emitted as: _ZN14uGUIGaugeEnemyD0Ev at 0x00b5d320
 uGUIGaugeEnemy::~uGUIGaugeEnemy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b5d380 - 0x00b5d3e8 (104 bytes)
 bool uGUIGaugeEnemy::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GAUGE_ENEMY01_GUI"), static_cast<u32>(129), static_cast<t64>(1474016577)))) != static_cast<rGUI*>(nullptr)) {
-            this->mpGUIRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GAUGE_ENEMY01_GUI"), 129u, 1474016577l))) != nullptr) {
+            mpGUIRes;
             return true;
         } else {
             return false;
@@ -202,19 +204,19 @@ __attribute__((weak)) void uGUIGaugeEnemy::setup() {
 // Address: 0x00b5db40 - 0x00b5db71 (49 bytes)
 void uGUIGaugeEnemy::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b5db80 - 0x00b5dbcc (76 bytes)
 void uGUIGaugeEnemy::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::move();
-    this->mWorldOffset = ::MtVector3::Zero;
+    this->uGUIBase::move();
+    mWorldOffset = MtVector3::Zero;
 }
 
 // Address: 0x00b5dbd0 - 0x00b5dc0d (61 bytes)
@@ -227,32 +229,31 @@ __attribute__((weak)) void uGUIGaugeEnemy::moveAfter() {
 void uGUIGaugeEnemy::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a0
-    if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
-        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mEventBusy != false) {
-        } else {
-            this->::uGUIBase::draw(pDraw);
+    if (sArea::getInstance()->mpArea[2] != nullptr) {
+        if (!static_cast<aStage*>(sArea::getInstance()->mpArea[2])->mEventBusy) {
+            this->uGUIBase::draw(pDraw);
         }
     } else {
-        this->::uGUIBase::draw(pDraw);
+        this->uGUIBase::draw(pDraw);
     }
 }
 
 // Address: 0x00b5dc40 - 0x00b5dc65 (37 bytes)
 void uGUIGaugeEnemy::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCharacter == static_cast<uCharacter*>(nullptr)) {
+    if (mpCharacter == nullptr) {
         return;
     }
-    if (this->mpCharacter->::cUnit::isEnable() != false) {
+    if (mpCharacter->isEnable()) {
         return;
     }
-    this->mpCharacter = static_cast<uCharacter*>(nullptr);
+    mpCharacter = nullptr;
 }
 
 // Address: 0x00b5dc70 - 0x00b5dca1 (49 bytes)
 void uGUIGaugeEnemy::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset = offset;
+    mWorldOffset = offset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -261,13 +262,13 @@ void uGUIGaugeEnemy::applyWorldOffset(const MtVector3& offset, const MtVector3& 
 // Address: 0x00b5daf0 - 0x00b5db34 (68 bytes)
 void uGUIGaugeEnemy::setCharacter(uCharacter* pCharacter) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pCharacter != static_cast<uCharacter*>(nullptr)) {
-        if ((pCharacter->::uDDOModel::mUnitId & static_cast<u32>(1026)) != static_cast<u32>(0)) {
-            this->mOmCtrledType = ::sOmManager::getInstance()->::sOmManager::isCtrledEM(pCharacter);
-            this->mpCharacter = pCharacter;
+    if (pCharacter != nullptr) {
+        if ((pCharacter->uDDOModel::mUnitId & 1026u) != 0) {
+            mOmCtrledType = sOmManager::getInstance()->isCtrledEM(pCharacter);
+            mpCharacter = pCharacter;
         }
     } else {
-        this->mpCharacter = pCharacter;
+        mpCharacter = pCharacter;
     }
 }
 
@@ -281,7 +282,7 @@ void uGUIGaugeEnemy::setCharacter(uCharacter* pCharacter) {
 // Address: 0x00b5dcb0 - 0x00b5dcbb (11 bytes)
 void uGUIGaugeEnemy::startForceDisp() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mForceDispTime = 8.0f;
+    mForceDispTime = 8.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (191 bytes)
@@ -320,14 +321,14 @@ __attribute__((weak)) void uGUIGaugeEnemy::updateName() {
 // Address: 0x00b5dcc0 - 0x00b5dcc9 (9 bytes)
 void uGUIGaugeEnemy::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b5dac0 - 0x00b5daee (46 bytes)
 void uGUIGaugeEnemy::updateInit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIGaugeEnemy::updateDisp();
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeEnemy::updateWait);
+    updateDisp();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeEnemy::updateWait);
 }
 
 // Address: 0x00b5e2b0 - 0x00b5e7dc (1324 bytes)
@@ -405,6 +406,10 @@ __attribute__((weak)) void uGUIGaugeEnemy::setDispState(bool isVisible, f32 z) {
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGaugeEnemy::MyDTI uGUIGaugeEnemy::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const f32 uGUIGaugeEnemy::OCD_ICON_ACCUMULATING_ALPHA;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGaugeEnemy.cpp at 0x00b5f55f-0x00b5f59c (called at uGUIGaugeEnemy.cpp:104)
 //   in _GLOBAL__sub_I_uGUIGaugeEnemy.cpp at 0x00b5f55f-0x00b5f59c (called at uGUIGaugeEnemy.h:25)
@@ -417,9 +422,24 @@ __attribute__((weak)) MtObject* uGUIGaugeEnemy::MyDTI::newInstance() const {
 }
 
 // Address: 0x00b5d940 - 0x00b5d999 (89 bytes)
-__attribute__((weak)) void uGUIGaugeEnemy::TargetIcon::setup(uGUIBase* base, u32 instId, u32 pawnIconSeqId) {
-    DDON_STUB("uGUIGaugeEnemy::TargetIcon::setup")
-    /* stub */
+void uGUIGaugeEnemy::TargetIcon::setup(uGUIBase* base, u32 instId, u32 pawnIconSeqId) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (base == nullptr) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0xb5d95e, used twice; no DWARF local holds it
+    cGUIInstance* t0 = base->getInstance(instId, false);
+    mpINST_fix_target = static_cast<cGUIInstAnimation*>(t0);
+    mType = TYPE_NONE;
+    mPawnIconSeqId = pawnIconSeqId;
+    if (mpINST_fix_target == nullptr) {
+        return;
+    }
+    t0->setVisible(false);
+    if (mpINST_fix_target == nullptr) {
+        return;
+    }
+    mpINST_fix_target->setExecute(false);
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (268 bytes)
@@ -429,9 +449,26 @@ __attribute__((weak)) void uGUIGaugeEnemy::TargetIcon::setup(uGUIBase* base, u32
 // void uGUIGaugeEnemy::TargetIcon::set(uGUIGaugeEnemy::TargetIcon::TYPE targetIconType);
 
 // Address: 0x00b5d9a0 - 0x00b5da1c (124 bytes)
-__attribute__((weak)) void uGUIGaugeEnemy::HateIcon::setup(uGUIBase* base, u32 instId_fix_hate, u32 instId_hate_anim00) {
-    DDON_STUB("uGUIGaugeEnemy::HateIcon::setup")
-    /* stub */
+void uGUIGaugeEnemy::HateIcon::setup(uGUIBase* base, u32 instId_fix_hate, u32 instId_hate_anim00) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (base != nullptr) {
+        mpINST_fix_hate = static_cast<cGUIInstAnimation*>(base->getInstance(instId_fix_hate, false));
+        // inferred: a temporary for the result of the call at 0xb5d9d8, used twice; no DWARF local holds it
+        cGUIInstance* t0 = base->getInstance(instId_hate_anim00, false);
+        if ((mpINST_hate_anim00 = static_cast<cGUIInstAnimation*>(t0)) != nullptr) {
+            t0->setVisible(false);
+            if (mpINST_hate_anim00 != nullptr) {
+                mpINST_hate_anim00->setExecute(false);
+            }
+        }
+        mLastEvaluationPercent = 0.0f;
+        mEvaluationPercent = 0.0f;
+        mFrame = 0.0f;
+    } else {
+        mLastEvaluationPercent = 0.0f;
+        mEvaluationPercent = 0.0f;
+        mFrame = 0.0f;
+    }
 }
 
 // Address: 0x00b5e900 - 0x00b5e9a1 (161 bytes)
@@ -448,9 +485,9 @@ __attribute__((weak)) void uGUIGaugeEnemy::HateIcon::updateEvaluationPoint(uChar
 // Address: 0x00b5f1f0 - 0x00b5f200 (16 bytes)
 void uGUIGaugeEnemy::HateIcon::resetEvaluationPoint() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLastEvaluationPercent = 0.0f;
-    this->mEvaluationPercent = 0.0f;
-    this->mFrame = 0.0f;
+    mLastEvaluationPercent = 0.0f;
+    mEvaluationPercent = 0.0f;
+    mFrame = 0.0f;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (172 bytes)
@@ -464,16 +501,37 @@ void uGUIGaugeEnemy::HateIcon::resetEvaluationPoint() {
 // Address: 0x00b5f200 - 0x00b5f21f (31 bytes)
 uGUIGaugeEnemy::RageShrinkIcon::RageShrinkIcon() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mState = static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
-    this->mpOBJ_fix_angericon_f_gauge = static_cast<cGUIObjPolygon*>(nullptr);
-    this->mpINST_angericon = static_cast<cGUIInstAnimation*>(nullptr);
-    this->mpINST_Null_angericon = static_cast<cGUIInstNull*>(nullptr);
+    mState = STATE_OFF;
+    mpOBJ_fix_angericon_f_gauge = nullptr;
+    mpINST_angericon = nullptr;
+    mpINST_Null_angericon = nullptr;
 }
 
 // Address: 0x00b5da20 - 0x00b5dab3 (147 bytes)
-__attribute__((weak)) void uGUIGaugeEnemy::RageShrinkIcon::setup(uGUIBase* base, u32 instId_null_angericon, u32 instId_angericon) {
-    DDON_STUB("uGUIGaugeEnemy::RageShrinkIcon::setup")
-    /* stub */
+void uGUIGaugeEnemy::RageShrinkIcon::setup(uGUIBase* base, u32 instId_null_angericon, u32 instId_angericon) {
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    if (base != nullptr) {
+        mpINST_Null_angericon = static_cast<cGUIInstNull*>(base->getInstance(instId_null_angericon, false));
+        // inferred: a temporary for the result of the call at 0xb5da59, used twice; no DWARF local holds it
+        cGUIInstance* t0 = base->getInstance(instId_angericon, false);
+        mpINST_angericon = static_cast<cGUIInstAnimation*>(t0);
+        mpOBJ_fix_angericon_f_gauge = static_cast<cGUIObjPolygon*>(base->getObjectFromId(t0, 8u));
+        mState = STATE_OFF;
+        if (mpINST_Null_angericon != nullptr) {
+            mpINST_Null_angericon->setVisible(false);
+            if (mpINST_Null_angericon != nullptr) {
+                mpINST_Null_angericon->setExecute(false);
+            }
+        }
+    } else {
+        mState = STATE_OFF;
+        if (mpINST_Null_angericon != nullptr) {
+            mpINST_Null_angericon->setVisible(false);
+            if (mpINST_Null_angericon != nullptr) {
+                mpINST_Null_angericon->setExecute(false);
+            }
+        }
+    }
 }
 
 // Address: 0x00b5eef0 - 0x00b5f1ec (764 bytes)
@@ -505,22 +563,22 @@ uGUIGaugeEnemy::RageShrinkIcon::STATE uGUIGaugeEnemy::RageShrinkIcon::checkState
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as uGUIGaugeEnemy::RageShrinkIcon::STATE
-    if (character != static_cast<const uCharacter*>(nullptr)) {
-        if ((character->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            if (static_cast<const uEnemy*>(character)->::uEnemy::isActiveRageShrink() != false) {
-                if (static_cast<const uEnemy*>(character)->::uEnemy::isActiveShakeChanceTime(static_cast<nObjCollision::SHAKE_CHANCE_TYPE>(1)) != false) {
-                    return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(static_cast<unsigned long>(isAngerDamage) | static_cast<unsigned long>(2));
+    if (character != nullptr) {
+        if ((character->uDDOModel::mUnitId & 2u) != 0) {
+            if (static_cast<const uEnemy*>(character)->isActiveRageShrink()) {
+                if (static_cast<const uEnemy*>(character)->isActiveShakeChanceTime(nObjCollision::SHAKE_CHANCE_TYPE_SHRINK)) {
+                    return static_cast<STATE>(static_cast<unsigned long>(isAngerDamage) | 2);
                 } else {
-                    return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(1);
+                    return STATE_RAGE;
                 }
             } else {
-                return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+                return STATE_OFF;
             }
         } else {
-            return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+            return STATE_OFF;
         }
     } else {
-        return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+        return STATE_OFF;
     }
 }
 
@@ -538,7 +596,7 @@ uGUIGaugeEnemy::RageShrinkIcon::STATE uGUIGaugeEnemy::RageShrinkIcon::checkState
 // Address: 0x00b5f280 - 0x00b5f286 (6 bytes)
 u32 uGUIGaugeEnemy::IOcdIcon::getOcdIconParamNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(2);
+    return 2;
 }
 
 // Address: 0x00b5f290 - 0x00b5f2a7 (23 bytes)
@@ -558,7 +616,7 @@ __attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeEnemy::IOcdIcon::refOcdIco
 // Address: 0x00b5f2d0 - 0x00b5f2d9 (9 bytes)
 bool uGUIGaugeEnemy::IOcdIcon::isOcdActive(u32 ocdId) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mCharacter.::uDDOModel::isAbnormalConditionActive(ocdId);
+    return mCharacter.isAbnormalConditionActive(ocdId);
 }
 
 // Address: 0x00b5f2e0 - 0x00b5f30f (47 bytes)

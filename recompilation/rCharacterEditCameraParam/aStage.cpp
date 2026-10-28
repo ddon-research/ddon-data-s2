@@ -110,7 +110,7 @@ const MtDTI& aStage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void aStage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::aStage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(aStage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -208,10 +208,10 @@ __attribute__((weak)) void aStage::move() {
 // Address: 0x00007830 - 0x00007846 (22 bytes)
 MT_CTSTR aStage::getShaderSegment() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTrueStageNo > static_cast<s32>(59)) {
+    if (mTrueStageNo > 59) {
         return "root";
     } else {
-        return this->::cArea::getShaderSegment();
+        return this->cArea::getShaderSegment();
     }
 }
 
@@ -219,14 +219,14 @@ MT_CTSTR aStage::getShaderSegment() {
 bool aStage::isRnoMain() {
     // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from aStage*
-    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(1);
+    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 8)) == 1;
 }
 
 // Address: 0x0194e990 - 0x0194e9ac (28 bytes)
 bool aStage::isRno0MainRno1Main() {
     // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
-    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(1)) {
-        return (this->::cArea::mRno & static_cast<u32>(65280)) == static_cast<u32>(256);
+    if (static_cast<unsigned char>(this->cArea::mRno) == 1) {
+        return (this->cArea::mRno & 0xFF00u) == 256;
     } else {
         return false;
     }
@@ -388,38 +388,38 @@ __attribute__((weak)) void aStage::execGameMenuOpen() {
 // Address: 0x00012a30 - 0x00012ad0 (160 bytes)
 bool aStage::execGameMenuMsg() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEndSelectGameMenu() != static_cast<u32>(0)) {
-        switch (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getEndSelectGameMenu() - static_cast<u32>(1)) {
-            case static_cast<u32>(0):
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->getEndSelectGameMenu() != 0) {
+        switch (static_cast<sGUIExt*>(sGUI::getInstance())->getEndSelectGameMenu() - 1u) {
+            case 0:
             {
-                this->::cArea::mRno = static_cast<u32>(2);
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::initGameMenuEndSelect();
+                this->cArea::mRno = 2;
+                static_cast<sGUIExt*>(sGUI::getInstance())->initGameMenuEndSelect();
                 return true;
             }
-            case static_cast<u32>(2):
+            case 2:
             {
-                this->::cArea::mRno = static_cast<u32>(5);
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::initGameMenuEndSelect();
+                this->cArea::mRno = 5;
+                static_cast<sGUIExt*>(sGUI::getInstance())->initGameMenuEndSelect();
                 return true;
             }
-            case static_cast<u32>(3):
+            case 3:
             {
-                this->::cArea::mRno = static_cast<u32>(7);
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::initGameMenuEndSelect();
+                this->cArea::mRno = 7;
+                static_cast<sGUIExt*>(sGUI::getInstance())->initGameMenuEndSelect();
                 return true;
             }
-            case static_cast<u32>(4):
+            case 4:
             {
-                if (this->mGuardData.mJmpStatus == static_cast<s32>(0)) {
-                    this->mIsExecuteMenuJump = true;
-                    this->mGuardData.mJmpStatus = static_cast<s32>(3);
+                if (mGuardData.mJmpStatus == 0) {
+                    mIsExecuteMenuJump = true;
+                    mGuardData.mJmpStatus = 3;
                 }
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::initGameMenuEndSelect();
+                static_cast<sGUIExt*>(sGUI::getInstance())->initGameMenuEndSelect();
                 return true;
             }
             default:
             {
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::initGameMenuEndSelect();
+                static_cast<sGUIExt*>(sGUI::getInstance())->initGameMenuEndSelect();
                 return true;
             }
         }
@@ -467,7 +467,7 @@ __attribute__((weak)) const MtDTI& aStage::getParentType() {
 // Address: 0x00013ca0 - 0x00013ca5 (5 bytes)
 void aStage::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cArea::createProperty(s);
+    this->cArea::createProperty(s);
 }
 
 // No out-of-line body: 16 inlined copies in 14 functions (112 bytes)
@@ -508,17 +508,17 @@ __attribute__((weak)) void aStage::createGUIUnit() {
 s32 aStage::getNextStage() {
     // DWARF local not rendered: s32 next;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (static_cast<unsigned int>(this->::aStage::getJmpStatus() - static_cast<s32>(1)) <= static_cast<unsigned int>(1)) {
-        return this->::aStage::getJmpStageNo();
+    if (static_cast<unsigned int>(getJmpStatus() - 1) <= 1) {
+        return getJmpStageNo();
     } else {
-        if (this->::aStage::getJmpStatus() == static_cast<s32>(0)) {
-            if (this->::cArea::isInit() != false) {
-                return this->mTrueStageNo;
+        if (getJmpStatus() == 0) {
+            if (isInit()) {
+                return mTrueStageNo;
             } else {
-                return ::sGame::getInstance()->::sGame::getReqStageNo();
+                return sGame::getInstance()->getReqStageNo();
             }
         } else {
-            return static_cast<s32>(-1);
+            return -1;
         }
     }
 }
@@ -564,119 +564,102 @@ __attribute__((weak)) void aStage::setRno1(u8 r1, u8 r2) {
 void aStage::updatePtr() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    this->mStageEpvCtrl.::cStageEpvCtrl::updatePtr();
+    mStageEpvCtrl.updatePtr();
     // inferred: the value carried to 0xc8c0; no location-less local in scope fits
     uScheduler* v0_0;
-    if (this->mpLightSchdl == static_cast<uScheduler*>(nullptr)) {
-        v0_0 = static_cast<uScheduler*>(nullptr);
+    if (mpLightSchdl == nullptr) {
+        v0_0 = nullptr;
     } else {
-        if (this->mpLightSchdl->::cUnit::isEnable()) {
-            v0_0 = this->mpLightSchdl;
+        if (mpLightSchdl->isEnable()) {
+            v0_0 = mpLightSchdl;
         } else {
-            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
-            v0_0 = static_cast<uScheduler*>(nullptr);
+            mpLightSchdl = nullptr;
+            v0_0 = nullptr;
         }
     }
-    if (this->mpGUIQuickParty != static_cast<uGUIQuickParty*>(nullptr)) {
-        if (this->mpGUIQuickParty->::cUnit::isEnable()) {
-        } else {
-            this->mpGUIQuickParty = static_cast<uGUIQuickParty*>(nullptr);
+    if (mpGUIQuickParty != nullptr) {
+        if (!mpGUIQuickParty->isEnable()) {
+            mpGUIQuickParty = nullptr;
         }
     }
-    if (this->mpScrSchdl != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpScrSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpScrSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpScrSchdl != nullptr) {
+        if (!mpScrSchdl->isEnable()) {
+            mpScrSchdl = nullptr;
         }
     }
-    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpFltrSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpFltrSchdl != nullptr) {
+        if (!mpFltrSchdl->isEnable()) {
+            mpFltrSchdl = nullptr;
         }
     }
-    if (this->mpEffSchdl != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpEffSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpEffSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpEffSchdl != nullptr) {
+        if (!mpEffSchdl->isEnable()) {
+            mpEffSchdl = nullptr;
         }
     }
-    if (this->mpLanternSchdl != static_cast<uScheduler*>(nullptr)) {
-        if (this->mpLanternSchdl->::cUnit::isEnable()) {
-        } else {
-            this->mpLanternSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpLanternSchdl != nullptr) {
+        if (!mpLanternSchdl->isEnable()) {
+            mpLanternSchdl = nullptr;
         }
     }
-    if (v0_0 != static_cast<uScheduler*>(nullptr)) {
-        if (v0_0->::cUnit::isEnable()) {
-        } else {
-            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+    if (v0_0 != nullptr) {
+        if (!v0_0->isEnable()) {
+            mpLightSchdl = nullptr;
         }
     }
-    if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
-        if (this->mpStageJointCtrl->::cUnit::isEnable()) {
-        } else {
-            this->mpStageJointCtrl = static_cast<uStageJointCtrl*>(nullptr);
+    if (mpStageJointCtrl != nullptr) {
+        if (!mpStageJointCtrl->isEnable()) {
+            mpStageJointCtrl = nullptr;
         }
     }
-    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-        if (this->mpStageFieldCtrl->::cUnit::isEnable()) {
-        } else {
-            this->mpStageFieldCtrl = static_cast<uStageFieldCtrl*>(nullptr);
+    if (mpStageFieldCtrl != nullptr) {
+        if (!mpStageFieldCtrl->isEnable()) {
+            mpStageFieldCtrl = nullptr;
         }
     }
-    if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-        if (this->mpStagePartsCtrl->::cUnit::isEnable()) {
-        } else {
-            this->mpStagePartsCtrl = static_cast<uStagePartsCtrl*>(nullptr);
+    if (mpStagePartsCtrl != nullptr) {
+        if (!mpStagePartsCtrl->isEnable()) {
+            mpStagePartsCtrl = nullptr;
         }
     }
-    if (this->mpStageRevivalPawn != static_cast<uStageRevivalPawn*>(nullptr)) {
-        if (this->mpStageRevivalPawn->::cUnit::isEnable()) {
-        } else {
-            this->mpStageRevivalPawn = static_cast<uStageRevivalPawn*>(nullptr);
+    if (mpStageRevivalPawn != nullptr) {
+        if (!mpStageRevivalPawn->isEnable()) {
+            mpStageRevivalPawn = nullptr;
         }
     }
-    if (this->mpStageCraftPawnCtrl != static_cast<uStageCraftPawnCtrl*>(nullptr)) {
-        if (this->mpStageCraftPawnCtrl->::cUnit::isEnable()) {
-        } else {
-            this->mpStageCraftPawnCtrl = static_cast<uStageCraftPawnCtrl*>(nullptr);
+    if (mpStageCraftPawnCtrl != nullptr) {
+        if (!mpStageCraftPawnCtrl->isEnable()) {
+            mpStageCraftPawnCtrl = nullptr;
         }
     }
-    if (this->mpStageMyRoom != static_cast<uStageMyRoom*>(nullptr)) {
-        if (this->mpStageMyRoom->::cUnit::isEnable()) {
-        } else {
-            this->mpStageMyRoom = static_cast<uStageMyRoom*>(nullptr);
+    if (mpStageMyRoom != nullptr) {
+        if (!mpStageMyRoom->isEnable()) {
+            mpStageMyRoom = nullptr;
         }
     }
-    if (this->mpSoundTrigger != static_cast<uSoundTrigger*>(nullptr)) {
-        if (this->mpSoundTrigger->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+    if (mpSoundTrigger != nullptr) {
+        if (!mpSoundTrigger->isEnable()) {
+            mpSoundTrigger = nullptr;
         }
     }
-    if (this->mpSoundOcclusion != static_cast<uSoundOcclusion*>(nullptr)) {
-        if (this->mpSoundOcclusion->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+    if (mpSoundOcclusion != nullptr) {
+        if (!mpSoundOcclusion->isEnable()) {
+            mpSoundOcclusion = nullptr;
         }
     }
-    if (this->mpSoundGenerator != static_cast<uSoundGenerator*>(nullptr)) {
-        if (this->mpSoundGenerator->::cUnit::isEnable()) {
-        } else {
-            this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+    if (mpSoundGenerator != nullptr) {
+        if (!mpSoundGenerator->isEnable()) {
+            mpSoundGenerator = nullptr;
         }
     }
-    if (this->mpColorCorrectFilter != static_cast<uColorCorrectFilter*>(nullptr)) {
-        if (this->mpColorCorrectFilter->::cUnit::isEnable()) {
-        } else {
-            this->mpColorCorrectFilter = static_cast<uColorCorrectFilter*>(nullptr);
+    if (mpColorCorrectFilter != nullptr) {
+        if (!mpColorCorrectFilter->isEnable()) {
+            mpColorCorrectFilter = nullptr;
         }
     }
-    if (this->mpLargeCamera != static_cast<uLargeEnemyCamera*>(nullptr)) {
-        if (this->mpLargeCamera->::cUnit::isEnable()) {
-        } else {
-            this->mpLargeCamera = static_cast<uLargeEnemyCamera*>(nullptr);
+    if (mpLargeCamera != nullptr) {
+        if (!mpLargeCamera->isEnable()) {
+            mpLargeCamera = nullptr;
         }
     }
 }
@@ -693,28 +676,28 @@ __attribute__((weak)) void aStage::initStageArchive(s32 stgNo) {
 // Address: 0x0000aa00 - 0x0000aaab (171 bytes)
 bool aStage::isLoadStageArchive() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
-        if (this->mLotArcTicket != (::sArchiveManager::INVALID_TICKET)) {
-            if (::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mLotArcTicket) != false) {
-                if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
-                    if (this->mpStageJointCtrl->::uStageJointCtrl::isBlockArcLoadOk() != false) {
-                        if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-                            if (this->mpStageFieldCtrl->::uStageFieldCtrl::isBlockArcLoadOk() == false) {
+    if (mpStageInfo != nullptr) {
+        if (mLotArcTicket != (sArchiveManager::INVALID_TICKET)) {
+            if (sArchiveManager::getInstance()->isTicketLoadFinish(mLotArcTicket)) {
+                if (mpStageJointCtrl != nullptr) {
+                    if (mpStageJointCtrl->isBlockArcLoadOk()) {
+                        if (mpStageFieldCtrl != nullptr) {
+                            if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
                                 return false;
                             } else {
-                                ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                                 return true;
                             }
                         } else {
-                            if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-                                if (this->mpStagePartsCtrl->::uStagePartsCtrl::isBlockArcLoadOk() != false) {
-                                    ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                            if (mpStagePartsCtrl != nullptr) {
+                                if (mpStagePartsCtrl->isBlockArcLoadOk()) {
+                                    sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                                     return true;
                                 } else {
                                     return false;
                                 }
                             } else {
-                                ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                                 return true;
                             }
                         }
@@ -722,23 +705,23 @@ bool aStage::isLoadStageArchive() {
                         return false;
                     }
                 } else {
-                    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-                        if (this->mpStageFieldCtrl->::uStageFieldCtrl::isBlockArcLoadOk() == false) {
+                    if (mpStageFieldCtrl != nullptr) {
+                        if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
                             return false;
                         } else {
-                            ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                             return true;
                         }
                     } else {
-                        if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-                            if (this->mpStagePartsCtrl->::uStagePartsCtrl::isBlockArcLoadOk() != false) {
-                                ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                        if (mpStagePartsCtrl != nullptr) {
+                            if (mpStagePartsCtrl->isBlockArcLoadOk()) {
+                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                                 return true;
                             } else {
                                 return false;
                             }
                         } else {
-                            ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                             return true;
                         }
                     }
@@ -747,25 +730,25 @@ bool aStage::isLoadStageArchive() {
                 return false;
             }
         } else {
-            if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
-                if (this->mpStageJointCtrl->::uStageJointCtrl::isBlockArcLoadOk() != false) {
-                    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-                        if (this->mpStageFieldCtrl->::uStageFieldCtrl::isBlockArcLoadOk() == false) {
+            if (mpStageJointCtrl != nullptr) {
+                if (mpStageJointCtrl->isBlockArcLoadOk()) {
+                    if (mpStageFieldCtrl != nullptr) {
+                        if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
                             return false;
                         } else {
-                            ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                             return true;
                         }
                     } else {
-                        if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-                            if (this->mpStagePartsCtrl->::uStagePartsCtrl::isBlockArcLoadOk() != false) {
-                                ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                        if (mpStagePartsCtrl != nullptr) {
+                            if (mpStagePartsCtrl->isBlockArcLoadOk()) {
+                                sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                                 return true;
                             } else {
                                 return false;
                             }
                         } else {
-                            ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                             return true;
                         }
                     }
@@ -773,23 +756,23 @@ bool aStage::isLoadStageArchive() {
                     return false;
                 }
             } else {
-                if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-                    if (this->mpStageFieldCtrl->::uStageFieldCtrl::isBlockArcLoadOk() == false) {
+                if (mpStageFieldCtrl != nullptr) {
+                    if (!mpStageFieldCtrl->isBlockArcLoadOk()) {
                         return false;
                     } else {
-                        ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                        sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                         return true;
                     }
                 } else {
-                    if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-                        if (this->mpStagePartsCtrl->::uStagePartsCtrl::isBlockArcLoadOk() != false) {
-                            ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                    if (mpStagePartsCtrl != nullptr) {
+                        if (mpStagePartsCtrl->isBlockArcLoadOk()) {
+                            sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                             return true;
                         } else {
                             return false;
                         }
                     } else {
-                        ::sNpcManager::getInstance()->::sNpcManager::isFinishLoadCoMotionArc();
+                        sNpcManager::getInstance()->isFinishLoadCoMotionArc();
                         return true;
                     }
                 }
@@ -835,100 +818,100 @@ void aStage::releaseStageResource() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a constant over array elements; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
-        this->mpStageInfo->::cResource::release();
-        this->mpStageInfo = static_cast<rStageInfo*>(nullptr);
+    if (mpStageInfo != nullptr) {
+        mpStageInfo->release();
+        mpStageInfo = nullptr;
     }
-    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
-        this->mpFltrSchdl->kill();
-        this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpFltrSchdl != nullptr) {
+        mpFltrSchdl->kill();
+        mpFltrSchdl = nullptr;
     }
-    if (this->mpScrSchdl != static_cast<uScheduler*>(nullptr)) {
-        this->mpScrSchdl->kill();
-        this->mpScrSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpScrSchdl != nullptr) {
+        mpScrSchdl->kill();
+        mpScrSchdl = nullptr;
     }
-    this->mEffSbcHandle[1] = static_cast<unsigned int>(4294967295);
-    this->mEffSbcHandle[2] = static_cast<unsigned int>(4294967295);
-    this->mScrSbcHandle[2] = static_cast<unsigned int>(4294967295);
-    this->mEffSbcHandle[0] = static_cast<unsigned int>(4294967295);
-    this->mScrSbcHandle[0] = static_cast<unsigned int>(4294967295);
-    this->mScrSbcHandle[1] = static_cast<unsigned int>(4294967295);
-    ::sCollision::getInstance()->::sCollision::unregistResourceAll();
-    if (this->mprOCC != static_cast<rOccluderEx*>(nullptr)) {
-        this->mprOCC->::cResource::release();
-        this->mprOCC = static_cast<rOccluderEx*>(nullptr);
+    mEffSbcHandle[1] = 0xFFFFFFFF;
+    mEffSbcHandle[2] = 0xFFFFFFFF;
+    mScrSbcHandle[2] = 0xFFFFFFFF;
+    mEffSbcHandle[0] = 0xFFFFFFFF;
+    mScrSbcHandle[0] = 0xFFFFFFFF;
+    mScrSbcHandle[1] = 0xFFFFFFFF;
+    sCollision::getInstance()->unregistResourceAll();
+    if (mprOCC != nullptr) {
+        mprOCC->release();
+        mprOCC = nullptr;
     }
-    if (this->mprStartPos != static_cast<rStartPos*>(nullptr)) {
-        this->mprStartPos->::cResource::release();
-        this->mprStartPos = static_cast<rStartPos*>(nullptr);
+    if (mprStartPos != nullptr) {
+        mprStartPos->release();
+        mprStartPos = nullptr;
     }
-    this->mStageEpvCtrl.::cStageEpvCtrl::releaseEpvCtrl();
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::releaseEfcZoneAll();
+    mStageEpvCtrl.releaseEpvCtrl();
+    static_cast<sEffectExt*>(sEffect::getInstance())->releaseEfcZoneAll();
     // inferred: a temporary for the value the load at 0x139c3 read, used twice; no DWARF local holds it
-    const unsigned int t0 = ::cZoneLayout::INVALID_HANDLE;
-    if (t0 != this->mEfcEpvZoneGene) {
-        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::eraseZoneEffectProvider(this->mEfcEpvZoneGene);
-        this->mEfcEpvZoneGene = t0;
+    const unsigned int t0 = cZoneLayout::INVALID_HANDLE;
+    if (t0 != mEfcEpvZoneGene) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->eraseZoneEffectProvider(mEfcEpvZoneGene);
+        mEfcEpvZoneGene = t0;
     }
-    if (this->mpEffSchdl != static_cast<uScheduler*>(nullptr)) {
-        this->mpEffSchdl->kill();
-        this->mpEffSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpEffSchdl != nullptr) {
+        mpEffSchdl->kill();
+        mpEffSchdl = nullptr;
     }
-    if (this->mpLanternSchdl != static_cast<uScheduler*>(nullptr)) {
-        this->mpLanternSchdl->kill();
-        this->mpLanternSchdl = static_cast<uScheduler*>(nullptr);
+    if (mpLanternSchdl != nullptr) {
+        mpLanternSchdl->kill();
+        mpLanternSchdl = nullptr;
     }
-    if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
-        this->mpStageJointCtrl->kill();
-        this->mpStageJointCtrl = static_cast<uStageJointCtrl*>(nullptr);
+    if (mpStageJointCtrl != nullptr) {
+        mpStageJointCtrl->kill();
+        mpStageJointCtrl = nullptr;
     }
-    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
-        this->mpStageFieldCtrl->kill();
-        this->mpStageFieldCtrl = static_cast<uStageFieldCtrl*>(nullptr);
+    if (mpStageFieldCtrl != nullptr) {
+        mpStageFieldCtrl->kill();
+        mpStageFieldCtrl = nullptr;
     }
-    if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
-        this->mpStagePartsCtrl->kill();
-        this->mpStagePartsCtrl = static_cast<uStagePartsCtrl*>(nullptr);
+    if (mpStagePartsCtrl != nullptr) {
+        mpStagePartsCtrl->kill();
+        mpStagePartsCtrl = nullptr;
     }
-    if (this->mpStageRevivalPawn != static_cast<uStageRevivalPawn*>(nullptr)) {
-        this->mpStageRevivalPawn->kill();
-        this->mpStageRevivalPawn = static_cast<uStageRevivalPawn*>(nullptr);
+    if (mpStageRevivalPawn != nullptr) {
+        mpStageRevivalPawn->kill();
+        mpStageRevivalPawn = nullptr;
     }
-    if (this->mpStageCraftPawnCtrl != static_cast<uStageCraftPawnCtrl*>(nullptr)) {
-        this->mpStageCraftPawnCtrl->kill();
-        this->mpStageCraftPawnCtrl = static_cast<uStageCraftPawnCtrl*>(nullptr);
+    if (mpStageCraftPawnCtrl != nullptr) {
+        mpStageCraftPawnCtrl->kill();
+        mpStageCraftPawnCtrl = nullptr;
     }
-    if (this->mpStageMyRoom != static_cast<uStageMyRoom*>(nullptr)) {
-        this->mpStageMyRoom->kill();
-        this->mpStageMyRoom = static_cast<uStageMyRoom*>(nullptr);
+    if (mpStageMyRoom != nullptr) {
+        mpStageMyRoom->kill();
+        mpStageMyRoom = nullptr;
     }
-    if (this->mpStageConnect != static_cast<rStageConnect*>(nullptr)) {
-        this->mpStageConnect->::cResource::release();
-        this->mpStageConnect = static_cast<rStageConnect*>(nullptr);
+    if (mpStageConnect != nullptr) {
+        mpStageConnect->release();
+        mpStageConnect = nullptr;
     }
-    if (this->mpSoundTrigger != static_cast<uSoundTrigger*>(nullptr)) {
-        this->mpSoundTrigger->kill();
-        this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+    if (mpSoundTrigger != nullptr) {
+        mpSoundTrigger->kill();
+        mpSoundTrigger = nullptr;
     }
-    if (this->mpSoundOcclusion != static_cast<uSoundOcclusion*>(nullptr)) {
-        this->mpSoundOcclusion->kill();
-        this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+    if (mpSoundOcclusion != nullptr) {
+        mpSoundOcclusion->kill();
+        mpSoundOcclusion = nullptr;
     }
-    if (this->mpSoundGenerator != static_cast<uSoundGenerator*>(nullptr)) {
-        this->mpSoundGenerator->kill();
-        this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+    if (mpSoundGenerator != nullptr) {
+        mpSoundGenerator->kill();
+        mpSoundGenerator = nullptr;
     }
-    if (this->mprSoundAttribute != static_cast<rSoundAttributeSe*>(nullptr)) {
-        this->mprSoundAttribute->::cResource::release();
-        this->mprSoundAttribute = static_cast<rSoundAttributeSe*>(nullptr);
+    if (mprSoundAttribute != nullptr) {
+        mprSoundAttribute->release();
+        mprSoundAttribute = nullptr;
     }
-    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::releaseBgmResource();
-    if (this->mStageType != static_cast<u32>(1)) {
-        static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::releaseBattleCommon();
+    static_cast<sSoundExt*>(sSound::getInstance())->releaseBgmResource();
+    if (mStageType != 1) {
+        static_cast<sSoundExt*>(sSound::getInstance())->releaseBattleCommon();
     }
-    if (this->mpStageMsgData != static_cast<cTalkMsgData*>(nullptr)) {
-        delete this->mpStageMsgData;
-        this->mpStageMsgData = static_cast<cTalkMsgData*>(nullptr);
+    if (mpStageMsgData != nullptr) {
+        delete mpStageMsgData;
+        mpStageMsgData = nullptr;
     }
 }
 
@@ -967,11 +950,11 @@ __attribute__((weak)) bool aStage::requestStageJump(s32 stageNo, u32 posNo, u32 
 // Address: 0x00012ad0 - 0x00012af0 (32 bytes)
 bool aStage::requestMenuJump() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mGuardData.mJmpStatus != static_cast<s32>(0)) {
+    if (mGuardData.mJmpStatus != 0) {
         return false;
     } else {
-        this->mIsExecuteMenuJump = true;
-        this->mGuardData.mJmpStatus = static_cast<s32>(3);
+        mIsExecuteMenuJump = true;
+        mGuardData.mJmpStatus = 3;
         return true;
     }
 }
@@ -985,7 +968,7 @@ bool aStage::requestMenuJump() {
 // Address: 0x00013cc0 - 0x00013ccb (11 bytes)
 bool aStage::isRequestJump() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mGuardData.mJmpStatus != static_cast<s32>(0);
+    return mGuardData.mJmpStatus != 0;
 }
 
 // Address: 0x00014b80 - 0x00014bfa (122 bytes)
@@ -1068,10 +1051,10 @@ __attribute__((weak)) bool aStage::isSplitSbc(const MtVector3& pos) {
 void aStage::updateCraftPawn() {
     // DWARF local not rendered: uStageCraftPawnCtrl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::aStage::getCraftPawnCtrl() == static_cast<uStageCraftPawnCtrl*>(nullptr)) {
+    if (getCraftPawnCtrl() == nullptr) {
         return;
     }
-    this->::aStage::getCraftPawnCtrl()->::uStageCraftPawnCtrl::requestUpdatePawn();
+    getCraftPawnCtrl()->requestUpdatePawn();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (18 bytes)
@@ -1088,28 +1071,28 @@ void aStage::updateCraftPawn() {
 // Address: 0x00014ea0 - 0x00014efc (92 bytes)
 void aStage::requestCameraEvt(u32 no, const uDDOModel* pObj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo == static_cast<rStageInfo*>(nullptr)) {
+    if (mpStageInfo == nullptr) {
         return;
     }
-    rCameraParamList* pCpl = this->mpStageInfo->mprCmrPrmLstEvt;
-    if (pCpl == static_cast<rCameraParamList*>(nullptr)) {
+    rCameraParamList* pCpl = mpStageInfo->mprCmrPrmLstEvt;
+    if (pCpl == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x14ec9 read, used once; no DWARF local holds it
-    sCamera* t0 = ::sCamera::getInstance();
+    sCamera* t0 = sCamera::getInstance();
     // inferred: a temporary for the result of the call at 0x14ecc, used once; no DWARF local holds it
-    const cCamExParam* t1 = pCpl->::rCameraParamList::getParam(no);
-    static_cast<sCameraExt*>(t0)->::sCameraExt::requestExGameCamera(t1, static_cast<const uDDOModel*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()), pObj, false);
+    const cCamExParam* t1 = pCpl->rCameraParamList::getParam(no);
+    static_cast<sCameraExt*>(t0)->requestExGameCamera(t1, static_cast<const uDDOModel*>(sPlayerManager::getInstance()->getMyPlayer()), pObj, false);
 }
 
 // Address: 0x00014f00 - 0x00014f1b (27 bytes)
 const cCamExParam* aStage::getCameraParamFld(u32 no) const {
     // DWARF local not rendered: rCameraParamList* pCpl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo->mprCmrPrmLstFld != static_cast<rCameraParamList*>(nullptr)) {
-        return this->mpStageInfo->mprCmrPrmLstFld->::rCameraParamList::getParam(no);
+    if (mpStageInfo->mprCmrPrmLstFld != nullptr) {
+        return mpStageInfo->mprCmrPrmLstFld->getParam(no);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1117,10 +1100,10 @@ const cCamExParam* aStage::getCameraParamFld(u32 no) const {
 const cCamExParam* aStage::getCameraParamEvt(u32 no) const {
     // DWARF local not rendered: rCameraParamList* pCpl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo->mprCmrPrmLstEvt != static_cast<rCameraParamList*>(nullptr)) {
-        return this->mpStageInfo->mprCmrPrmLstEvt->::rCameraParamList::getParam(no);
+    if (mpStageInfo->mprCmrPrmLstEvt != nullptr) {
+        return mpStageInfo->mprCmrPrmLstEvt->getParam(no);
     } else {
-        return static_cast<const cCamExParam*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -1134,21 +1117,21 @@ const cCamExParam* aStage::getCameraParamEvt(u32 no) const {
 // Address: 0x00013cd0 - 0x00013cda (10 bytes)
 bool aStage::isEnableJointArea(s32 areaNo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mJointAreaNoPl == areaNo;
+    return mJointAreaNoPl == areaNo;
 }
 
 // Address: 0x000125c0 - 0x000125fd (61 bytes)
 s32 aStage::getJointAreaNo(MtVector3& pos) {
     // DWARF local not rendered: uStageJointCtrl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
-        if ((this->mpStageInfo->mFlag & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageJointCtrl() != static_cast<uStageJointCtrl*>(nullptr)) {
-                return static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageJointCtrl()->::uStageJointCtrl::getInsideAreaNo(pos);
+    if (mpStageInfo != nullptr) {
+        if ((mpStageInfo->mFlag & 2u) != 0) {
+            if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageJointCtrl() != nullptr) {
+                return static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageJointCtrl()->getInsideAreaNo(pos);
             }
         }
     }
-    return static_cast<s32>(-1);
+    return -1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -1183,7 +1166,7 @@ s32 aStage::getJointAreaNo(MtVector3& pos) {
 // Address: 0x00010d00 - 0x00010d08 (8 bytes)
 void aStage::callNormalStageBGM() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbInitSound = true;
+    mbInitSound = true;
 }
 
 // Address: 0x000152e0 - 0x0001535c (124 bytes)
@@ -1199,24 +1182,24 @@ __attribute__((weak)) cDayNightColorFogParam aStage::getColorFogPD() {
 rStageCustomPartsEx::HemiSphLight* aStage::getHemiSphLightPD() {
     // DWARF local not rendered: uStagePartsCtrl* pPtsCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::aStage::getStagePartsCtrl() != static_cast<uStagePartsCtrl*>(nullptr)) {
-        if (this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::isLightFogZone() != false) {
-            return this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::getHemiSphLight();
+    if (getStagePartsCtrl() != nullptr) {
+        if (getStagePartsCtrl()->isLightFogZone()) {
+            return getStagePartsCtrl()->getHemiSphLight();
         }
     }
-    return static_cast<rStageCustomPartsEx::HemiSphLight*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00015390 - 0x000153b1 (33 bytes)
 rStageCustomPartsEx::InfiLight* aStage::getInfiLightPD() {
     // DWARF local not rendered: uStagePartsCtrl* pPtsCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::aStage::getStagePartsCtrl() != static_cast<uStagePartsCtrl*>(nullptr)) {
-        if (this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::isLightFogZone() != false) {
-            return this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::getInfiLight();
+    if (getStagePartsCtrl() != nullptr) {
+        if (getStagePartsCtrl()->isLightFogZone()) {
+            return getStagePartsCtrl()->getInfiLight();
         }
     }
-    return static_cast<rStageCustomPartsEx::InfiLight*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (35 bytes)
@@ -1319,25 +1302,25 @@ __attribute__((weak)) void aStage::loadResStageWeather() {
 // Address: 0x00013bf0 - 0x00013c87 (151 bytes)
 void aStage::releaseStageWeather() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (::sWeatherManager::getInstance() == static_cast<sWeatherManager*>(nullptr)) {
+    if (sWeatherManager::getInstance() == nullptr) {
         return;
     }
-    ::sWeatherManager::getInstance()->::sWeatherManager::clearWeatherStageUnit();
-    ::sWeatherManager::getInstance()->::sWeatherManager::setEnvMapSkyForce(false);
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseLightZoneRes();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseSoundAmbientRes();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseZoneIndoorRes();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseWeatherEffectParam();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseWeatherParamEfcInfo();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseWeatherStageInfo();
-    ::sWeatherManager::getInstance()->::sWeatherManager::releaseWeatherParamInfoTbl();
-    ::sWeatherManager::getInstance()->::sWeatherManager::setGrassWindOff(false);
-    ::sWeatherManager::getInstance()->::sWeatherManager::resetGrassFadeDistanceStage();
-    if (this->mpLightSchdl == static_cast<uScheduler*>(nullptr)) {
+    sWeatherManager::getInstance()->clearWeatherStageUnit();
+    sWeatherManager::getInstance()->setEnvMapSkyForce(false);
+    sWeatherManager::getInstance()->releaseLightZoneRes();
+    sWeatherManager::getInstance()->releaseSoundAmbientRes();
+    sWeatherManager::getInstance()->releaseZoneIndoorRes();
+    sWeatherManager::getInstance()->releaseWeatherEffectParam();
+    sWeatherManager::getInstance()->releaseWeatherParamEfcInfo();
+    sWeatherManager::getInstance()->releaseWeatherStageInfo();
+    sWeatherManager::getInstance()->releaseWeatherParamInfoTbl();
+    sWeatherManager::getInstance()->setGrassWindOff(false);
+    sWeatherManager::getInstance()->resetGrassFadeDistanceStage();
+    if (mpLightSchdl == nullptr) {
         return;
     }
-    this->mpLightSchdl->kill();
-    this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+    mpLightSchdl->kill();
+    mpLightSchdl = nullptr;
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (28 bytes)
@@ -1393,7 +1376,7 @@ __attribute__((weak)) bool aStage::isJointStage() {
 // Address: 0x00014f40 - 0x00014f4f (15 bytes)
 bool aStage::isLestaniaStage() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLestaniaStage();
+    return static_cast<sAreaExt*>(sArea::getInstance())->isLestaniaStage();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
@@ -1449,7 +1432,7 @@ __attribute__((weak)) bool aStage::isMyRoomStage() {
 // Address: 0x00014fd0 - 0x00014fde (14 bytes)
 bool aStage::isTrainingRoomStage() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTrueStageNo == static_cast<s32>(212);
+    return mTrueStageNo == 212;
 }
 
 // Address: 0x00014fe0 - 0x00014ff9 (25 bytes)
@@ -1461,9 +1444,9 @@ __attribute__((weak)) bool aStage::isPartyOnlyStage() {
 // Address: 0x00015000 - 0x0001502d (45 bytes)
 bool aStage::isUnitGroupStop() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cArea::isInit() != false) {
-        if (this->mbOmInitFlag != false) {
-            return ::sUnit::getInstance()->::sUnit::isGroupMove(static_cast<u32>(57)) == false;
+    if (isInit()) {
+        if (mbOmInitFlag) {
+            return !sUnit::getInstance()->isGroupMove(57u);
         }
     }
     return true;
@@ -1478,25 +1461,25 @@ bool aStage::isUnitGroupStop() {
 cSplitBgm* aStage::getJointStageBgmType() {
     // DWARF local not rendered: bool isSplit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
-        if ((this->mpStageInfo->mFlag & static_cast<u32>(2)) != static_cast<u32>(0)) {
-            if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
-                return this->mpStageJointCtrl->::uStageJointCtrl::getSplitBgmInfo();
+    if (mpStageInfo != nullptr) {
+        if ((mpStageInfo->mFlag & 2u) != 0) {
+            if (mpStageJointCtrl != nullptr) {
+                return mpStageJointCtrl->getSplitBgmInfo();
             }
         }
     }
-    return static_cast<cSplitBgm*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00015060 - 0x000150a2 (66 bytes)
 u32 aStage::getSoundAttributeRequestSeNo(u32 reqNo, u32 attrId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    rSoundAttributeSe* pAttrSe = this->::aStage::getSoundAttributeSe();
-    if (pAttrSe != static_cast<rSoundAttributeSe*>(nullptr)) {
-        u32 aserNo = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::getScrAttributeSeIdfromBase(attrId);
-        return pAttrSe->::rSoundAttributeSe::getAttributeSeData_reqID(static_cast<s32>(reqNo), aserNo);
+    rSoundAttributeSe* pAttrSe = getSoundAttributeSe();
+    if (pAttrSe != nullptr) {
+        u32 aserNo = static_cast<sSoundExt*>(sSound::getInstance())->getScrAttributeSeIdfromBase(attrId);
+        return pAttrSe->rSoundAttributeSe::getAttributeSeData_reqID(static_cast<s32>(reqNo), aserNo);
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -1543,17 +1526,16 @@ __attribute__((weak)) void aStage::loadStageFixFsm() {
 bool aStage::addFSMOrderFromName(MT_CTSTR filePath, u32 starter) {
     // DWARF local not rendered: bool isSuccess;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mpFSMTaskCtrl != static_cast<cFSMTaskCtrl*>(nullptr)) {
-        if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mpFSMTaskCtrl != nullptr) {
+        if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the result of the call at 0x12b6b, used once; no DWARF local holds it
-        bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskOrderFromName(filePath, starter);
+        bool t0 = mpFSMTaskCtrl->addFSMTaskOrderFromName(filePath, starter);
         // inferred: a temporary for the result of the call at 0x12b75, used twice; no DWARF local holds it
-        int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-        if (t1 != static_cast<int>(0)) {
-            ::abort();
+        int t1 = scePthreadMutexUnlock(&mCs.mCSection);
+        if (t1 != 0) {
+            abort();
         }
         return t0;
     } else {
@@ -1565,17 +1547,16 @@ bool aStage::addFSMOrderFromName(MT_CTSTR filePath, u32 starter) {
 bool aStage::addFSMEventFromName(MT_CTSTR filePath) {
     // DWARF local not rendered: bool isSuccess;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mpFSMTaskCtrl != static_cast<cFSMTaskCtrl*>(nullptr)) {
-        if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-        } else {
-            ::abort();
+    if (mpFSMTaskCtrl != nullptr) {
+        if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+            abort();
         }
         // inferred: a temporary for the result of the call at 0x12bd4, used once; no DWARF local holds it
-        bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskEventFromName(filePath);
+        bool t0 = mpFSMTaskCtrl->addFSMTaskEventFromName(filePath);
         // inferred: a temporary for the result of the call at 0x12bde, used twice; no DWARF local holds it
-        int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-        if (t1 != static_cast<int>(0)) {
-            ::abort();
+        int t1 = scePthreadMutexUnlock(&mCs.mCSection);
+        if (t1 != 0) {
+            abort();
         }
         return t0;
     } else {
@@ -1596,81 +1577,72 @@ bool aStage::addFSMCamEvFromName(MT_CTSTR filePath) {
     // DWARF local not rendered: uHuman* pPl;
     // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    if (this->mpFSMTaskCtrl != static_cast<cFSMTaskCtrl*>(nullptr)) {
-        if (::sSoundManager::getInstance()->::sSoundManager::getBattleState() == static_cast<sBattleState::SYS_BATTLE_STATE>(1)) {
+    if (mpFSMTaskCtrl != nullptr) {
+        if (sSoundManager::getInstance()->getBattleState() == sBattleState::SYS_STATE_BATTLE) {
             return false;
         } else {
-            if (::sGame::getInstance()->mIsGameOverLobby != false) {
+            if (sGame::getInstance()->mIsGameOverLobby) {
                 return false;
             } else {
                 // inferred: a temporary for the value the load at 0x12d31 read, used 5 times; no DWARF local holds it
-                uPlayer* t0 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
-                if (t0 != static_cast<uPlayer*>(nullptr)) {
-                    if (t0->::cUnit::isEnable()) {
-                        if (t0->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-                            if (t0->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(224)) {
-                            } else {
-                                if (::cContextInterface::getActNo(t0->::uDDOModel::mContextInterface.mpContextInstance, t0->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(0)) != static_cast<u32>(224)) {
-                                    if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                uPlayer* t0 = sPlayerManager::getInstance()->getMyPlayer();
+                if (t0 != nullptr) {
+                    if (t0->isEnable()) {
+                        if (t0->getActMgrPtr() != nullptr) {
+                            if (t0->getActMgrPtr()->getActionNo() != 224) {
+                                if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
+                                    if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                                        abort();
                                     }
                                     // inferred: a temporary for the result of the call at 0x12d9e, used once; no DWARF local holds it
-                                    bool t1 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskCamEvFromName(filePath);
+                                    bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
                                     // inferred: a temporary for the result of the call at 0x12da8, used twice; no DWARF local holds it
-                                    int t2 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-                                    if (t2 == static_cast<int>(0)) {
-                                    } else {
-                                        ::abort();
+                                    int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+                                    if (t2 != 0) {
+                                        abort();
                                     }
                                     return t1;
                                 }
                             }
                         } else {
-                            if (::cContextInterface::getActNo(t0->::uDDOModel::mContextInterface.mpContextInstance, t0->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(0)) != static_cast<u32>(224)) {
-                                if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                            if (cContextInterface::getActNo(t0->mContextInterface.mpContextInstance, t0->mContextInterface.mpContextCharacter, 0u) != 224) {
+                                if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                                    abort();
                                 }
                                 // inferred: a temporary for the result of the call at 0x12d9e, used once; no DWARF local holds it
-                                bool t1 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskCamEvFromName(filePath);
+                                bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
                                 // inferred: a temporary for the result of the call at 0x12da8, used twice; no DWARF local holds it
-                                int t2 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-                                if (t2 == static_cast<int>(0)) {
-                                } else {
-                                    ::abort();
+                                int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+                                if (t2 != 0) {
+                                    abort();
                                 }
                                 return t1;
                             }
                         }
                         return false;
                     } else {
-                        if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                        if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                            abort();
                         }
                         // inferred: a temporary for the result of the call at 0x12d9e, used once; no DWARF local holds it
-                        bool t1 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskCamEvFromName(filePath);
+                        bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
                         // inferred: a temporary for the result of the call at 0x12da8, used twice; no DWARF local holds it
-                        int t2 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-                        if (t2 == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                        int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+                        if (t2 != 0) {
+                            abort();
                         }
                         return t1;
                     }
                 } else {
-                    if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+                        abort();
                     }
                     // inferred: a temporary for the result of the call at 0x12d9e, used once; no DWARF local holds it
-                    bool t1 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskCamEvFromName(filePath);
+                    bool t1 = mpFSMTaskCtrl->addFSMTaskCamEvFromName(filePath);
                     // inferred: a temporary for the result of the call at 0x12da8, used twice; no DWARF local holds it
-                    int t2 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-                    if (t2 == static_cast<int>(0)) {
-                    } else {
-                        ::abort();
+                    int t2 = scePthreadMutexUnlock(&mCs.mCSection);
+                    if (t2 != 0) {
+                        abort();
                     }
                     return t1;
                 }
@@ -1711,12 +1683,12 @@ bool aStage::isPlayEvent() {
 // Address: 0x00012df0 - 0x00012e40 (80 bytes)
 void aStage::requestEventPlay(nStage::stEventParam* param) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mEventBusy != false) {
+    if (mEventBusy) {
         return;
     }
-    this->mEventBusy = true;
-    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(4), false, true, false);
-    this->mReqEventId = param->mEventId;
+    mEventBusy = true;
+    sFlag::getInstance()->setFlag(4u, 4u, false, true, false);
+    mReqEventId = param->mEventId;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (122 bytes)
@@ -1762,8 +1734,8 @@ void aStage::requestEventPlay(nStage::stEventParam* param) {
 bool aStage::isEventMove() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(10)) {
-        if ((((this->::cArea::mRno >> static_cast<u32>(8)) & static_cast<u32>(255)) - static_cast<u32>(2)) > static_cast<u32>(6)) {
+    if (static_cast<unsigned char>(this->cArea::mRno) == 10) {
+        if ((((this->cArea::mRno >> 8) & 255u) - 2u) > 6u) {
             return false;
         } else {
             return true;
@@ -1777,8 +1749,8 @@ bool aStage::isEventMove() {
 bool aStage::isFsmEventMove() {
     // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
     // inferred: a branching shape written through regions, with 0 goto statements as its last resort
-    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(11)) {
-        if ((((this->::cArea::mRno >> static_cast<u32>(8)) & static_cast<u32>(255)) - static_cast<u32>(2)) > static_cast<u32>(13)) {
+    if (static_cast<unsigned char>(this->cArea::mRno) == 11) {
+        if ((((this->cArea::mRno >> 8) & 255u) - 2u) > 13u) {
             return false;
         } else {
             return true;
@@ -1791,22 +1763,20 @@ bool aStage::isFsmEventMove() {
 // Address: 0x00012030 - 0x0001209d (109 bytes)
 void aStage::setFsmEvent(bool sleep) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
-    if (this->mbFsmEvent == sleep) {
+    if (mbFsmEvent == sleep) {
         return;
     }
-    if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    if (scePthreadMutexLock(&mCs.mCSection) != 0) {
+        abort();
     }
-    if (sleep != false) {
-        ::sScenario::getInstance()->::sScenario::evEventStart();
+    if (sleep) {
+        sScenario::getInstance()->evEventStart();
     } else {
-        ::sScenario::getInstance()->::sScenario::evEventFinish();
+        sScenario::getInstance()->evEventFinish();
     }
-    this->mbFsmEvent = sleep;
-    if (::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-    } else {
-        ::abort();
+    mbFsmEvent = sleep;
+    if (scePthreadMutexUnlock(&mCs.mCSection) != 0) {
+        abort();
     }
 }
 
@@ -1939,8 +1909,8 @@ __attribute__((weak)) void aStage::reqLoadEvArc(u8 fsm) {
 // Address: 0x000152c0 - 0x000152d7 (23 bytes)
 bool aStage::isLargeCamera() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLargeCamera != static_cast<uLargeEnemyCamera*>(nullptr)) {
-        return this->mpLargeCamera->::uLargeEnemyCamera::isLargeCamera() != false;
+    if (mpLargeCamera != nullptr) {
+        return mpLargeCamera->isLargeCamera();
     } else {
         return false;
     }
@@ -1973,34 +1943,34 @@ __attribute__((weak)) void aStage::setTutorialEquip() {
 // Address: 0x00015190 - 0x00015235 (165 bytes)
 void aStage::resetTutorialEquip() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
+    if (!static_cast<sAreaExt*>(sArea::getInstance())->isLobby()) {
         return;
     }
-    if (::sGame::getInstance()->::sGame::getStageNoOld() != static_cast<s32>(101)) {
-        if (::sGame::getInstance()->::sGame::getStageNoOld() == static_cast<s32>(423)) {
-            cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
-            if (pContext != static_cast<cContextInstHm*>(nullptr)) {
-                ::cContextInterface::getContextEquip(pContext).::cEquipData::setEquipFromCharacterData((::sGame::mpInstance)->mCharData.mCharData.mEquipData);
-                ::sPlayerManager::getInstance()->::sPlayerManager::recoveryPrologueStatus();
+    if (sGame::getInstance()->getStageNoOld() != 101) {
+        if (sGame::getInstance()->getStageNoOld() == 423) {
+            cContextInstHm* pContext = sContextManager::getInstance()->getContextMyPlayer();
+            if (pContext != nullptr) {
+                cContextInterface::getContextEquip(pContext).setEquipFromCharacterData((sGame::mpInstance)->mCharData.mCharData.mEquipData);
+                sPlayerManager::getInstance()->recoveryPrologueStatus();
                 // inferred: a temporary for the result of the call at 0x15208, used 4 times; no DWARF local holds it
-                cContextPlayerInfo* t0 = ::cContextInterface::getContextPlayerInfo(pContext);
-                t0->::cContextPlayerInfo::recoverBadStatus();
-                t0->::cContextPlayerInfo::recoverHP();
-                t0->mBaseInfo.mStamina_pri = t0->::cContextPlayerInfo::getFinalMaxStamina();
-                t0->mBaseInfo.mLostNum_pri = t0->::cContextPlayerInfo::getMaxLostNum();
+                cContextPlayerInfo* t0 = cContextInterface::getContextPlayerInfo(pContext);
+                t0->recoverBadStatus();
+                t0->recoverHP();
+                t0->mBaseInfo.mStamina_pri = t0->getFinalMaxStamina();
+                t0->mBaseInfo.mLostNum_pri = t0->getMaxLostNum();
             }
         }
     } else {
-        cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
-        if (pContext != static_cast<cContextInstHm*>(nullptr)) {
-            ::cContextInterface::getContextEquip(pContext).::cEquipData::setEquipFromCharacterData((::sGame::mpInstance)->mCharData.mCharData.mEquipData);
-            ::sPlayerManager::getInstance()->::sPlayerManager::recoveryPrologueStatus();
+        cContextInstHm* pContext = sContextManager::getInstance()->getContextMyPlayer();
+        if (pContext != nullptr) {
+            cContextInterface::getContextEquip(pContext).setEquipFromCharacterData((sGame::mpInstance)->mCharData.mCharData.mEquipData);
+            sPlayerManager::getInstance()->recoveryPrologueStatus();
             // inferred: a temporary for the result of the call at 0x15208, used 4 times; no DWARF local holds it
-            cContextPlayerInfo* t0 = ::cContextInterface::getContextPlayerInfo(pContext);
-            t0->::cContextPlayerInfo::recoverBadStatus();
-            t0->::cContextPlayerInfo::recoverHP();
-            t0->mBaseInfo.mStamina_pri = t0->::cContextPlayerInfo::getFinalMaxStamina();
-            t0->mBaseInfo.mLostNum_pri = t0->::cContextPlayerInfo::getMaxLostNum();
+            cContextPlayerInfo* t0 = cContextInterface::getContextPlayerInfo(pContext);
+            t0->recoverBadStatus();
+            t0->recoverHP();
+            t0->mBaseInfo.mStamina_pri = t0->getFinalMaxStamina();
+            t0->mBaseInfo.mLostNum_pri = t0->getMaxLostNum();
         }
     }
 }
@@ -2008,9 +1978,9 @@ void aStage::resetTutorialEquip() {
 // Address: 0x00012340 - 0x00012373 (51 bytes)
 void aStage::requestWarp(s32 startPosNo, u32 type) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWarpStartPosNo = startPosNo;
-    this->mWarpType = static_cast<s32>(type);
-    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(9), true, true, false);
+    mWarpStartPosNo = startPosNo;
+    mWarpType = static_cast<s32>(type);
+    sFlag::getInstance()->setFlag(4u, 9u, true, true, false);
 }
 
 // Address: 0x000120b0 - 0x00012324 (628 bytes)
@@ -2119,7 +2089,7 @@ __attribute__((weak)) void aStage::moveLocation() {
 // Address: 0x000152a0 - 0x000152b7 (23 bytes)
 bool aStage::isEndCreditGUI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return (this->mpGUICredit != static_cast<uGUICredit*>(nullptr)) && (this->mpGUICredit->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1));
+    return (mpGUICredit != nullptr) && (mpGUICredit->mResult == uGUIBase::RESULT_EXIT);
 }
 
 // No out-of-line body: 5 inlined copies in 3 functions (56 bytes)
@@ -2147,19 +2117,19 @@ void aStage::setStageFeature(const CommonU32Vec& featureVec) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x8 from const MtTypedArray<CDataCommonU32>*
-    this->mStageFeature[4] = static_cast<unsigned int>(0);
-    this->mStageFeature[2] = static_cast<unsigned int>(0);
-    this->mStageFeature[3] = static_cast<unsigned int>(0);
-    this->mStageFeature[0] = static_cast<unsigned int>(0);
-    this->mStageFeature[1] = static_cast<unsigned int>(0);
-    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    mStageFeature[4] = 0;
+    mStageFeature[2] = 0;
+    mStageFeature[3] = 0;
+    mStageFeature[0] = 0;
+    mStageFeature[1] = 0;
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + 8)) != 0) {
+        u32 i = 0;
         do {
-            if (i <= static_cast<u32>(4)) {
-                this->mStageFeature[i] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+            if (i <= 4u) {
+                mStageFeature[i] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&featureVec) + 24)) + static_cast<unsigned long>(i * 8u)) + 0)) + 8);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(8))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + 8)));
     }
 }
 
@@ -2171,10 +2141,10 @@ void aStage::setStageFeature(const CommonU32Vec& featureVec) {
 // Address: 0x000154f0 - 0x00015501 (17 bytes)
 u32 aStage::getStageFeature(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (idx <= static_cast<u32>(4)) {
-        return this->mStageFeature[idx];
+    if (idx <= 4u) {
+        return mStageFeature[idx];
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -2184,7 +2154,7 @@ u32 aStage::getStageFeatureNum() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
-    return static_cast<unsigned char>((((static_cast<unsigned long>(this->mStageFeature[0] != static_cast<unsigned int>(0)) + static_cast<unsigned long>(this->mStageFeature[1] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[2] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[3] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[4] != static_cast<unsigned int>(0)));
+    return static_cast<unsigned char>((((static_cast<unsigned long>(mStageFeature[0] != 0) + static_cast<unsigned long>(mStageFeature[1] != 0)) + static_cast<unsigned long>(mStageFeature[2] != 0)) + static_cast<unsigned long>(mStageFeature[3] != 0)) + static_cast<unsigned long>(mStageFeature[4] != 0));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (92 bytes)
@@ -2247,6 +2217,10 @@ __attribute__((weak)) void aStage::releaseKeepStage() {
     DDON_STUB("aStage::releaseKeepStage")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): aStage::MyDTI aStage::DTI;
+
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 aStage::mTutorialEquip[10][15];
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_aStage.cpp at 0x0001560f-0x0001564c (called at aStage.cpp:236)

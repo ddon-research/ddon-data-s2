@@ -54,3 +54,5 @@ __attribute__((weak)) u32 MtCRC::getCRC(MT_CTSTR str, u32 crc32) {
 // Defined in the class as `{}`: no code anywhere in the ELF.
 // MtCRC::~MtCRC();
 
+// Not defined (no member-wise spelling: a const object, whose value its unit's bodies would fold): const u32 MtCRC::mCRCtable[256];
+

@@ -35,7 +35,7 @@ const MtDTI& uGUIPopCmd01::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIPopCmd01::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIPopCmd01::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIPopCmd01::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -44,7 +44,7 @@ inline MtAllocator* uGUIPopCmd01::getAllocator() {
 // Address: 0x00b984c0 - 0x00b98500 (64 bytes)
 void* uGUIPopCmd01::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIPopCmd01::getAllocator()->memAlloc(sz, align, ::uGUIPopCmd01::DTI.::MtDTI::getID());
+    return uGUIPopCmd01::getAllocator()->memAlloc(sz, align, uGUIPopCmd01::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -59,7 +59,7 @@ void* uGUIPopCmd01::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIPopCmd01::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIPopCmd01::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIPopCmd01::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,25 +78,25 @@ inline void uGUIPopCmd01::operator delete(void* p_addr) {
 // Also emitted as: _ZN12uGUIPopCmd01D0Ev at 0x00b987b0
 uGUIPopCmd01::~uGUIPopCmd01() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b98820 - 0x00b988cc (172 bytes)
 bool uGUIPopCmd01::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_POP_CMD01_GUI"), static_cast<u32>(129), static_cast<t64>(1447310709)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POP_CMD_RES_GMD", static_cast<u32>(0)) != false) {
-                return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SUBMENU_RES_GMD", static_cast<u32>(1));
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_POP_CMD01_GUI"), 129u, 1447310709l))) != nullptr) {
+            if (loadGMDarc(getArcTag(0u), "RES_ID_POP_CMD_RES_GMD", 0u)) {
+                return loadGMDarc(getArcTag(0u), "RES_ID_SUBMENU_RES_GMD", 1u);
             }
         }
     } else {
-        if (this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_POP_CMD_RES_GMD", static_cast<u32>(0)) != false) {
-            return this->::uGUIBase::loadGMDarc(this->::uGUIBase::getArcTag(static_cast<u32>(0)), "RES_ID_SUBMENU_RES_GMD", static_cast<u32>(1));
+        if (loadGMDarc(getArcTag(0u), "RES_ID_POP_CMD_RES_GMD", 0u)) {
+            return loadGMDarc(getArcTag(0u), "RES_ID_SUBMENU_RES_GMD", 1u);
         }
     }
     return false;
@@ -119,54 +119,54 @@ __attribute__((weak)) void uGUIPopCmd01::setup() {
 // Address: 0x00b99510 - 0x00b99563 (83 bytes)
 void uGUIPopCmd01::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::kill();
-    this->updatePtr();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(23));
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+    this->uGUIBase::kill();
+    updatePtr();
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 23u);
+    if (mpGUIRes == nullptr) {
         return;
     }
-    this->mpGUIRes->::cResource::release();
-    this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    mpGUIRes->release();
+    mpGUIRes = nullptr;
 }
 
 // Address: 0x00b99570 - 0x00b99575 (5 bytes)
 void uGUIPopCmd01::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopBase::move();
+    this->uGUIPopBase::move();
 }
 
 // Address: 0x01afc290 - 0x01afc321 (145 bytes)
 void uGUIPopCmd01::deleteDuplicateAll() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    this->::uGUIBase::deleteDuplicateInstanceAll();
-    if (this->mItems.::MtArray::mLength != static_cast<u32>(0)) {
+    this->uGUIBase::deleteDuplicateInstanceAll();
+    if (mItems.mLength != 0) {
         // inferred: the value the loop at 0x1afc2b0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mItems.::MtArray::mLength;
+        u32 v0_0 = mItems.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mItems.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mItems.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mItems.::MtArray::mLength) {
-                    v0_0 = this->mItems.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mItems.mpArray[i0_3] != nullptr) {
+                delete mItems.mpArray[i0_3];
+                if ((i0_3 + 1u) < mItems.mLength) {
+                    v0_0 = mItems.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mItems.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mItems.::MtArray::mpArray));
+    if (mItems.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mItems.mpArray));
     }
-    this->mItems.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mItems.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mItems.::MtArray::mLength = static_cast<u32>(0);
+    mItems.mpArray = nullptr;
+    mItems.mBufsiz = 0;
+    mItems.mLength = 0;
 }
 
 // Address: 0x00b99580 - 0x00b99623 (163 bytes)
@@ -185,7 +185,7 @@ __attribute__((weak)) void uGUIPopCmd01::moveEvent() {
 // Address: 0x00b99e90 - 0x00b99ed8 (72 bytes)
 void uGUIPopCmd01::addItemSystemMenu(u32 msgId, uGUIPopBase::MODE mode, s32 errMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopCmd01::_addItem2(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[1], msgId), mode, errMsg);
+    _addItem2(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], msgId), mode, errMsg);
 }
 
 // Address: 0x01afc330 - 0x01afc34f (31 bytes)
@@ -260,10 +260,10 @@ __attribute__((weak)) MtSize uGUIPopCmd01::getWindowSize() {
 // Address: 0x00b9a160 - 0x00b9a175 (21 bytes)
 s32 uGUIPopCmd01::getSMenuCursorY() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        return this->mpCtrl->::cControl::getCurrentPos();
+    if (mpCtrl != nullptr) {
+        return mpCtrl->getCurrentPos();
     } else {
-        return static_cast<s32>(0);
+        return 0;
     }
 }
 
@@ -279,24 +279,37 @@ __attribute__((weak)) void uGUIPopCmd01::updateInit() {
 }
 
 // Address: 0x00b99630 - 0x00b996ad (125 bytes)
-__attribute__((weak)) void uGUIPopCmd01::updateWait() {
-    // local: u32 i;
-    // local: cItem* pItem;
-    DDON_STUB("uGUIPopCmd01::updateWait")
-    /* stub */
+void uGUIPopCmd01::updateWait() {
+    // DWARF local not rendered: cItem* pItem;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from MtObject*
+    // inferred: an integer and a pointer of one 8-byte word converted: unsigned long used as cGUIObject*, which no DWARF type of the place gives; read with caution
+    executeWindow(true);
+    u32 i = 0;
+    if (mItems.mLength != 0) {
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 128)) != 0) {
+                setMessageColor(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 32)), sGUIExt::FONT_COLOR_DISABLE);
+            } else {
+                setMessageColor(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 32)), sGUIExt::FONT_COLOR_DEFAULT);
+            }
+            i += 1u;
+        } while (i < mItems.mLength);
+    }
 }
 
 // Address: 0x00b99b80 - 0x00b99bb0 (48 bytes)
 void uGUIPopCmd01::updateAutoKill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIPopCmd01::executeWindow(false);
-    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateExit);
+    executeWindow(false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateExit);
 }
 
 // Address: 0x00b99bb0 - 0x00b99bb9 (9 bytes)
 void uGUIPopCmd01::updateExit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->end();
+    end();
 }
 
 // Address: 0x00b99920 - 0x00b99b75 (597 bytes)
@@ -336,19 +349,19 @@ __attribute__((weak)) u32 uGUIPopCmd01::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00b991d0 - 0x00b991f2 (34 bytes)
 u32 uGUIPopCmd01::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mExecMode == static_cast<uGUIPopCmd01::EXEC_MODE>(1)) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(5));
+    if (mExecMode == EXEC_MODE_SYSTEM_MENU) {
+        setInputEvent(5u);
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        setInputEvent(66u);
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00b99160 - 0x00b99172 (18 bytes)
 u32 uGUIPopCmd01::evCtrlMove(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-    return static_cast<u32>(0);
+    setInputEvent(68u);
+    return 0;
 }
 
 // Address: 0x00b99200 - 0x00b99250 (80 bytes)
@@ -367,6 +380,8 @@ __attribute__((weak)) u32 uGUIPopCmd01::evCtrlClick(cControl::Message* msg) {
 
 // No out-of-line body: no code in the ELF
 // void uGUIPopCmd01::evMove();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopCmd01::MyDTI uGUIPopCmd01::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopCmd01.cpp at 0x00b9a3cf-0x00b9a40c (called at uGUIPopCmd01.cpp:23)
@@ -446,6 +461,8 @@ __attribute__((weak)) void uGUIPopCmd01::cItem::load(uGUIPopCmd01* pPopUnit, cCo
     DDON_STUB("uGUIPopCmd01::cItem::load")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIPopCmd01::cItem::MyDTI uGUIPopCmd01::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIPopCmd01.cpp at 0x00b9a40c-0x00b9a449 (called at uGUIPopCmd01.cpp:711)

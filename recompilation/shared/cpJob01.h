@@ -102,3 +102,9 @@ inline cpJob01::cpJob01() {
     this->mJustGuardTimer = 0.0f;
     this->mGuardModeNoCancelTimer = 0.0f;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cStateJob01Guard::init at 0x57c32a-0x57c32f; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cpJob01::setGuardModeNoCancelTimer(f32 time) {
+    this->mGuardModeNoCancelTimer = time;
+}

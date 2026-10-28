@@ -98,3 +98,15 @@ public:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cEmScaleTable::cEmScaleTable() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mBoneNo = 0;
+    this->mFrame = 0.0f;
+    this->mScale.x = 1.0f;
+    this->mScale.y = 1.0f;
+    this->mScale.z = 1.0f;
+    this->mScale.pad_ = 0.0f;
+}

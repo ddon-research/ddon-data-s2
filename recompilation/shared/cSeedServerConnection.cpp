@@ -8,6 +8,7 @@
 #include "MtObject.h"
 #include "MtStream.h"
 #include "MtSynchronize.h"
+#include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -46,7 +47,7 @@ const MtDTI& cSeedServerConnection::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSeedServerConnection::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSeedServerConnection::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSeedServerConnection::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,7 +132,7 @@ __attribute__((weak)) void cSeedServerConnection::moveConnected() {
 // Address: 0x0055b9e0 - 0x0055b9e5 (5 bytes)
 cSeedServerStream* cSeedServerConnection::moveConnected_decrypt(u32 aReadSize) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpReadStream;
+    return mpReadStream;
 }
 
 // Address: 0x0055b9f0 - 0x0055b9f1 (1 bytes)
@@ -142,17 +143,17 @@ __attribute__((weak)) void cSeedServerConnection::moveDisconnecting() {
 // Address: 0x0055ba00 - 0x0055ba34 (52 bytes)
 void cSeedServerConnection::moveDisconnected() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpReadStream->getLength() > static_cast<u32>(4096)) {
-        this->::cSeedServerConnection::garbageReadStream(false);
+    if (mpReadStream->getLength() > 4096u) {
+        garbageReadStream(false);
     }
 }
 
 // Address: 0x0055bb40 - 0x0055bb7c (60 bytes)
 void cSeedServerConnection::moveError() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mSendBlockStartTime = static_cast<MtNetTime::Total>(0);
-    if (this->mpReadStream->getLength() > static_cast<u32>(4096)) {
-        this->::cSeedServerConnection::garbageReadStream(false);
+    mSendBlockStartTime = 0;
+    if (mpReadStream->getLength() > 4096u) {
+        garbageReadStream(false);
     }
 }
 
@@ -184,13 +185,13 @@ __attribute__((weak)) s32 cSeedServerConnection::analyzePacket(s32 totalRead) {
 // Address: 0x01a60890 - 0x01a60893 (3 bytes)
 BOOL cSeedServerConnection::callOnPacketFunc(u32 index, CPacket* pPacket) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<BOOL>(0);
+    return 0;
 }
 
 // Address: 0x01a608a0 - 0x01a608a3 (3 bytes)
 u32 cSeedServerConnection::getOnPacketFuncNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0055b520 - 0x0055b743 (547 bytes)
@@ -342,19 +343,19 @@ bool cSeedServerConnection::isNoCipher(u16 command) {
 // Address: 0x01a608d0 - 0x01a608d3 (3 bytes)
 u32 cSeedServerConnection::getHandShakeSendCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01a608e0 - 0x01a608e3 (3 bytes)
 u32 cSeedServerConnection::getHandShakeRecvCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01a3e420 - 0x01a3e423 (3 bytes)
 u32 cSeedServerConnection::getLogoutRecvCommandNo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x01a3e430 - 0x01a3e433 (3 bytes)
@@ -430,6 +431,8 @@ bool cSeedServerConnection::isCarryOver(u32 command) {
 //   in cSeedServerConnection::cSeedServerConnection at 0x0055a76b-0x0055a772 (called at cSeedServerConnection.cpp:170)
 // void cSeedServerConnection::setEnableCipherPrivate(bool NewValue);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cSeedServerConnection::MyDTI cSeedServerConnection::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cSeedServerConnection.cpp at 0x0055c36b-0x0055c3ab (called at cSeedServerConnection.cpp:30)
 //   in _GLOBAL__sub_I_cSeedServerConnection.cpp at 0x0055c36b-0x0055c3ab (called at cSeedServerConnection.h:65)
@@ -452,24 +455,34 @@ MtObject* cSeedServerConnection::MyDTI::newInstance() const {
 // Address: 0x01a609e0 - 0x01a60a17 (55 bytes)
 void cSeedServerConnection::cCalcBps::init() {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->mTotalByte[9] = static_cast<int>(0);
-    this->mTotalByte[7] = static_cast<int>(0);
-    this->mTotalByte[8] = static_cast<int>(0);
-    this->mTotalByte[5] = static_cast<int>(0);
-    this->mTotalByte[6] = static_cast<int>(0);
-    this->mTotalByte[3] = static_cast<int>(0);
-    this->mTotalByte[4] = static_cast<int>(0);
-    this->mTotalByte[1] = static_cast<int>(0);
-    this->mTotalByte[2] = static_cast<int>(0);
-    this->mCurrentIndex = static_cast<s32>(0);
-    this->mTotalByte[0] = static_cast<int>(0);
-    this->mTime = -1.0f;
+    mTotalByte[9] = 0;
+    mTotalByte[7] = 0;
+    mTotalByte[8] = 0;
+    mTotalByte[5] = 0;
+    mTotalByte[6] = 0;
+    mTotalByte[3] = 0;
+    mTotalByte[4] = 0;
+    mTotalByte[1] = 0;
+    mTotalByte[2] = 0;
+    mCurrentIndex = 0;
+    mTotalByte[0] = 0;
+    mTime = -1.0f;
 }
 
 // Address: 0x01a606c0 - 0x01a6071a (90 bytes)
-__attribute__((weak)) void cSeedServerConnection::cCalcBps::update(s32 byte, s32 sec) {
-    DDON_STUB("cSeedServerConnection::cCalcBps::update")
-    /* stub */
+void cSeedServerConnection::cCalcBps::update(s32 byte, s32 sec) {
+    // Approximate from the ELF: a cast to the other signedness; a load named after a store only its type keeps apart; the body oracle reports this body.
+    mTime = mTime - sMain::getInstance()->mDeltaTime;
+    if (0.0f > mTime) {
+        mTime = sMain::getInstance()->mFps * static_cast<float>(sec);
+        // inferred: a temporary for the value the load at 0x1a606f5 read, used twice; no DWARF local holds it
+        s32 t0 = mCurrentIndex;
+        mCurrentIndex = static_cast<s32>((t0 <= 8) ? static_cast<unsigned int>(t0 + 1) : 0u);
+        mTotalByte[static_cast<int>((t0 <= 8) ? static_cast<unsigned int>(t0 + 1) : 0u)] = 0;
+        mTotalByte[mCurrentIndex] = byte + mTotalByte[mCurrentIndex];
+    } else {
+        mTotalByte[mCurrentIndex] = byte + mTotalByte[mCurrentIndex];
+    }
 }
 
 // Address: 0x01a60a20 - 0x01a60a58 (56 bytes)
@@ -483,7 +496,7 @@ __attribute__((weak)) s32 cSeedServerConnection::cCalcBps::getBps(s32 value) {
 // Address: 0x01a60a60 - 0x01a60a69 (9 bytes)
 s32 cSeedServerConnection::cCalcBps::getNowSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mTotalByte[this->mCurrentIndex];
+    return mTotalByte[mCurrentIndex];
 }
 
 // No out-of-line body: no code in the ELF
@@ -550,7 +563,7 @@ const MtDTI& cSeedServerStream::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN17cSeedServerStreamD0Ev at 0x01a60a7e-0x01a60a9f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void cSeedServerStream::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSeedServerStream::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSeedServerStream::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -585,6 +598,8 @@ inline void cSeedServerStream::operator delete(void* p_addr) {
 
 // No out-of-line body: no code in the ELF
 // u32 cSeedServerStream::operator<<(const cSeedServerStream&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSeedServerStream::MyDTI cSeedServerStream::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSeedServerConnection.cpp at 0x0055c32e-0x0055c36b (called at cSeedServerConnection.cpp:29)

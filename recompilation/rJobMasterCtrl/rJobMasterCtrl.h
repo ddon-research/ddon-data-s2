@@ -108,15 +108,15 @@ private:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cJobMasterCtrl::cJobMasterCtrl() {
-    this->mAreaRank = static_cast<u32>(0);
-    this->mJobMasterTutorialQuestId = static_cast<u32>(0);
-    this->mAreaId = static_cast<u32>(0);
-    this->mFirstOrderTalkGrpSerial = static_cast<u32>(0);
-    this->mJobTutorialQuestId = static_cast<u32>(0);
-    this->mFirstTalkGrpSerial = static_cast<u32>(0);
-    this->mTraningTalkGrpSerial = static_cast<u32>(0);
-    this->mJobId = static_cast<u32>(0);
-    this->mStartJobLevel = static_cast<u32>(0);
+    this->mAreaRank = 0;
+    this->mJobMasterTutorialQuestId = 0;
+    this->mAreaId = 0;
+    this->mFirstOrderTalkGrpSerial = 0;
+    this->mJobTutorialQuestId = 0;
+    this->mFirstTalkGrpSerial = 0;
+    this->mTraningTalkGrpSerial = 0;
+    this->mJobId = 0;
+    this->mStartJobLevel = 0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

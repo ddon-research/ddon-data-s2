@@ -30,8 +30,11 @@ const MtDTI& rAIPathBase::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAIPathBase::setAllocator(u32);
 
-// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
-// void* rAIPathBase::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK11rAIPathBase5MyDTI11newInstanceEv at 0x011e86f0-0x011e871d, code DWARF attributes to no inlined copy; sz is the class's size (128), align the allocation's other whole constant (16)
+inline void* rAIPathBase::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memAlloc(sz, align, rAIPathBase::DTI.mID);
+}
 
 // No out-of-line body: no code in the ELF
 // void* rAIPathBase::operator new[](size_t sz, u32 align);
@@ -57,11 +60,11 @@ const MtDTI& rAIPathBase::getDTI() const {
 // Address: 0x011e87d0 - 0x011e880f (63 bytes)
 rAIPathBase::rAIPathBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::mAttr = static_cast<u32>(16);
-    this->mNumberOfTotalAreaLink = static_cast<u16>(0);
-    this->mNumberOfArea = static_cast<u16>(0);
-    this->mNumberOfTotalAreaChild = static_cast<u16>(0);
-    this->mpHierarchyArea = static_cast<rAIPathBase::HierarchyArea* *>(nullptr);
+    mAttr = 16;
+    mNumberOfTotalAreaLink = 0;
+    mNumberOfArea = 0;
+    mNumberOfTotalAreaChild = 0;
+    mpHierarchyArea = nullptr;
 }
 
 // Address: 0x011e8810 - 0x011e8888 (120 bytes)
@@ -98,7 +101,7 @@ __attribute__((weak)) void rAIPathBase::createProperty(MtPropertyList& s) {
 // Address: 0x011e8be0 - 0x011e8be5 (5 bytes)
 MtUI* rAIPathBase::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x011e8bf0 - 0x011e917d (1421 bytes)
@@ -148,7 +151,7 @@ __attribute__((weak)) void rAIPathBase::setNumberOfArea(u32 size) {
 // Address: 0x01b94260 - 0x01b94265 (5 bytes)
 u32 rAIPathBase::getNumberOfArea() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfArea;
+    return mNumberOfArea;
 }
 
 // No out-of-line body: no code in the ELF
@@ -157,21 +160,21 @@ u32 rAIPathBase::getNumberOfArea() {
 // Address: 0x011e8af0 - 0x011e8b08 (24 bytes)
 void rAIPathBase::setArea(rAIPathBase::HierarchyArea* area, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpHierarchyArea == static_cast<rAIPathBase::HierarchyArea* *>(nullptr)) {
+    if (mpHierarchyArea == nullptr) {
         return;
     }
-    if (index < this->mNumberOfArea) {
-        this->mpHierarchyArea[index] = area;
+    if (index < mNumberOfArea) {
+        mpHierarchyArea[index] = area;
     }
 }
 
 // Address: 0x011e8ad0 - 0x011e8ae5 (21 bytes)
 rAIPathBase::HierarchyArea* rAIPathBase::getArea(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfArea) {
-        return this->mpHierarchyArea[index];
+    if (index < mNumberOfArea) {
+        return mpHierarchyArea[index];
     } else {
-        return static_cast<rAIPathBase::HierarchyArea*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -193,13 +196,15 @@ rAIPathBase::HierarchyArea* rAIPathBase::getArea(u32 index) {
 // No out-of-line body: no code in the ELF
 // void rAIPathBase::setNumberOfAreaResize(u32 size);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): rAIPathBase::MyDTI rAIPathBase::DTI;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rAIPathBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x011e86f0 - 0x011e875a (106 bytes)
-__attribute__((weak)) MtObject* rAIPathBase::MyDTI::newInstance() const {
-    DDON_STUB("rAIPathBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAIPathBase::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) rAIPathBase;
 }
 
 // No out-of-line body: no code in the ELF
@@ -235,7 +240,7 @@ const MtDTI& rAIPathBase::HierarchyArea::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN11rAIPathBase13HierarchyAreaD0Ev at 0x011e7bde-0x011e7bff, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rAIPathBase::HierarchyArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -267,7 +272,7 @@ __attribute__((weak)) void rAIPathBase::HierarchyArea::createProperty(MtProperty
 // Address: 0x011e8660 - 0x011e8665 (5 bytes)
 MtUI* rAIPathBase::HierarchyArea::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -290,24 +295,24 @@ __attribute__((weak)) void rAIPathBase::HierarchyArea::setNumberOfGeometry(u32 n
 // Address: 0x01b94140 - 0x01b94145 (5 bytes)
 u32 rAIPathBase::HierarchyArea::getNumberOfGeometry() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfGeometry;
+    return mNumberOfGeometry;
 }
 
 // Address: 0x01b94120 - 0x01b94133 (19 bytes)
 void rAIPathBase::HierarchyArea::setGeometry(MtGeometry* geom, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfGeometry) {
-        this->mpGeometryList[index] = geom;
+    if (index < mNumberOfGeometry) {
+        mpGeometryList[index] = geom;
     }
 }
 
 // Address: 0x01b94100 - 0x01b94115 (21 bytes)
 MtGeometry* rAIPathBase::HierarchyArea::getGeometry(u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfGeometry) {
-        return this->mpGeometryList[index];
+    if (index < mNumberOfGeometry) {
+        return mpGeometryList[index];
     } else {
-        return static_cast<MtGeometry*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -344,41 +349,41 @@ MtGeometry* rAIPathBase::HierarchyArea::getGeometry(u32 index) {
 // Address: 0x011e8500 - 0x011e8513 (19 bytes)
 void rAIPathBase::HierarchyArea::setChild(u32 id, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfChild) {
-        this->mpChild[index] = static_cast<unsigned char>(id);
+    if (index < mNumberOfChild) {
+        mpChild[index] = static_cast<unsigned char>(id);
     }
 }
 
 // Address: 0x011e84e0 - 0x011e84f8 (24 bytes)
 s32 rAIPathBase::HierarchyArea::getChild(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (id < this->mNumberOfChild) {
-        return this->mpChild[id];
+    if (id < mNumberOfChild) {
+        return mpChild[id];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x011e8520 - 0x011e8595 (117 bytes)
 void rAIPathBase::HierarchyArea::setNumberOfChild(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpChild != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memFree(static_cast<void*>(this->mpChild));
+    if (mpChild != nullptr) {
+        MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memFree(static_cast<void*>(mpChild));
     }
-    if (size == static_cast<u32>(0)) {
+    if (size == 0) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x11e8572, used twice; no DWARF local holds it
-    void* t0 = ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memAlloc(size, static_cast<u32>(16));
-    this->mpChild = static_cast<u8*>(t0);
-    ::memset(t0, static_cast<int>(0), size);
-    this->mNumberOfChild = static_cast<unsigned char>(size);
+    void* t0 = MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memAlloc(size, 16u);
+    mpChild = static_cast<u8*>(t0);
+    memset(t0, 0, size);
+    mNumberOfChild = static_cast<unsigned char>(size);
 }
 
 // Address: 0x01b94230 - 0x01b94235 (5 bytes)
 u32 rAIPathBase::HierarchyArea::getNumberOfChild() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfChild;
+    return mNumberOfChild;
 }
 
 // No out-of-line body: no code in the ELF
@@ -393,41 +398,41 @@ u32 rAIPathBase::HierarchyArea::getNumberOfChild() {
 // Address: 0x011e85c0 - 0x011e85d3 (19 bytes)
 void rAIPathBase::HierarchyArea::setLink(u32 id, u32 index) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->mNumberOfLink) {
-        this->mpLink[index] = static_cast<unsigned char>(id);
+    if (index < mNumberOfLink) {
+        mpLink[index] = static_cast<unsigned char>(id);
     }
 }
 
 // Address: 0x011e85a0 - 0x011e85b8 (24 bytes)
 s32 rAIPathBase::HierarchyArea::getLink(u32 id) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (id < this->mNumberOfLink) {
-        return this->mpLink[id];
+    if (id < mNumberOfLink) {
+        return mpLink[id];
     } else {
-        return static_cast<s32>(-1);
+        return -1;
     }
 }
 
 // Address: 0x011e85e0 - 0x011e8655 (117 bytes)
 void rAIPathBase::HierarchyArea::setNumberOfLink(u32 size) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpLink != static_cast<u8*>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memFree(static_cast<void*>(this->mpLink));
+    if (mpLink != nullptr) {
+        MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memFree(static_cast<void*>(mpLink));
     }
-    if (size == static_cast<u32>(0)) {
+    if (size == 0) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x11e8632, used twice; no DWARF local holds it
-    void* t0 = ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memAlloc(size, static_cast<u32>(16));
-    this->mpLink = static_cast<u8*>(t0);
-    ::memset(t0, static_cast<int>(0), size);
-    this->mNumberOfLink = static_cast<unsigned char>(size);
+    void* t0 = MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memAlloc(size, 16u);
+    mpLink = static_cast<u8*>(t0);
+    memset(t0, 0, size);
+    mNumberOfLink = static_cast<unsigned char>(size);
 }
 
 // Address: 0x01b94240 - 0x01b94245 (5 bytes)
 u32 rAIPathBase::HierarchyArea::getNumberOfLink() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNumberOfLink;
+    return mNumberOfLink;
 }
 
 // No out-of-line body: no code in the ELF
@@ -441,6 +446,8 @@ u32 rAIPathBase::HierarchyArea::getNumberOfLink() {
 
 // No out-of-line body: no code in the ELF
 // void rAIPathBase::HierarchyArea::setNumberOfChildResize(u32 size);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPathBase::HierarchyArea::MyDTI rAIPathBase::HierarchyArea::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rAIPathBase::HierarchyArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

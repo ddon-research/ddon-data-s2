@@ -69,7 +69,7 @@ cGUIVarInt::~cGUIVarInt() {
 // Address: 0x0108f310 - 0x0108f315 (5 bytes)
 MtUI* cGUIVarInt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x0108f320 - 0x0108f761 (1089 bytes)
@@ -94,7 +94,7 @@ __attribute__((weak)) const MT_CTSTR* cGUIVarInt::getEventPropertyTooltip() {
 // Address: 0x01b739d0 - 0x01b739d4 (4 bytes)
 s32 cGUIVarInt::getS32() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mValue;
+    return mValue;
 }
 
 // Address: 0x0108f970 - 0x0108f9c0 (80 bytes)
@@ -106,7 +106,7 @@ __attribute__((weak)) void cGUIVarInt::set(s32 value, bool forceUpdate) {
 // Address: 0x01b73800 - 0x01b73804 (4 bytes)
 s32 cGUIVarInt::get() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mValue;
+    return mValue;
 }
 
 // Address: 0x01b73820 - 0x01b73821 (1 bytes)
@@ -117,43 +117,43 @@ __attribute__((weak)) void cGUIVarInt::setOld(s32 value) {
 // Address: 0x01b73810 - 0x01b73814 (4 bytes)
 s32 cGUIVarInt::getOld() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mOldValue;
+    return mOldValue;
 }
 
 // Address: 0x01b73840 - 0x01b73844 (4 bytes)
 void cGUIVarInt::setInit(s32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInitValue = value;
+    mInitValue = value;
 }
 
 // Address: 0x01b73830 - 0x01b73834 (4 bytes)
 s32 cGUIVarInt::getInit() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mInitValue;
+    return mInitValue;
 }
 
 // Address: 0x01b737f0 - 0x01b737f4 (4 bytes)
 void cGUIVarInt::setMax(s32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMaxValue = value;
+    mMaxValue = value;
 }
 
 // Address: 0x01b737e0 - 0x01b737e4 (4 bytes)
 s32 cGUIVarInt::getMax() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMaxValue;
+    return mMaxValue;
 }
 
 // Address: 0x01b737d0 - 0x01b737d4 (4 bytes)
 void cGUIVarInt::setMin(s32 value) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMinValue = value;
+    mMinValue = value;
 }
 
 // Address: 0x01b737c0 - 0x01b737c4 (4 bytes)
 s32 cGUIVarInt::getMin() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mMinValue;
+    return mMinValue;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -179,6 +179,8 @@ __attribute__((weak)) void cGUIVarInt::decrementForProperty() {
     DDON_STUB("cGUIVarInt::decrementForProperty")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIVarInt::MyDTI cGUIVarInt::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIVarInt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
@@ -273,9 +275,9 @@ const MT_CTSTR* cGUIVariable::getEventPropertyTooltip() {
 void cGUIVariable::setLoopValue(bool v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (v) {
-        this->mAttr = this->mAttr | static_cast<u32>(2);
+        mAttr = mAttr | 2u;
     } else {
-        this->mAttr = this->mAttr & static_cast<u32>(65533);
+        mAttr = mAttr & 65533u;
     }
 }
 
@@ -285,7 +287,7 @@ bool cGUIVariable::isLoopValue() const {
     // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xc from const cGUIVariable*
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(12))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + 12)) & 2) >> 1);
 }
 
 // No out-of-line body: no code in the ELF
@@ -296,6 +298,8 @@ bool cGUIVariable::isLoopValue() const {
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // void cGUIVariable::setDynamic(bool v);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIVariable::MyDTI cGUIVariable::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // cGUIVariable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

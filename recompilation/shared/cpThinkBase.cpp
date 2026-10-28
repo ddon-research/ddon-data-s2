@@ -33,7 +33,7 @@ const MtDTI& cpThinkBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cpThinkBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cpThinkBase::DTI)->memAlloc(sz, align, ::cpThinkBase::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cpThinkBase::DTI)->memAlloc(sz, align, cpThinkBase::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline void* cpThinkBase::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpThinkBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpThinkBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpThinkBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,7 +92,7 @@ f32 cpThinkBase::getMoveSpeed() {
 // Address: 0x0053e140 - 0x0053e143 (3 bytes)
 u32 cpThinkBase::getMoveType() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0053e150 - 0x0053e155 (5 bytes)
@@ -110,7 +110,7 @@ __attribute__((weak)) const MtVector3& cpThinkBase::getTargetPos() {
 // Address: 0x0053e170 - 0x0053e173 (3 bytes)
 u32 cpThinkBase::getTargetUID() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x0053e180 - 0x0053e181 (1 bytes)
@@ -123,6 +123,8 @@ __attribute__((weak)) void cpThinkBase::setTargetUID(u32) {
     // Empty in the binary (a single `ret`).
 }
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cpThinkBase::MyDTI cpThinkBase::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpThinkBase.cpp at 0x0053e1a0-0x0053e1e2 (called at cpThinkBase.cpp:39)
 //   in _GLOBAL__sub_I_cpThinkBase.cpp at 0x0053e1a0-0x0053e1e2 (called at cpThinkBase.h:28)
@@ -131,6 +133,6 @@ __attribute__((weak)) void cpThinkBase::setTargetUID(u32) {
 // Address: 0x0053dfe0 - 0x0053e02e (78 bytes)
 MtObject* cpThinkBase::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpThinkBase;
+    return new (16u) cpThinkBase;
 }
 

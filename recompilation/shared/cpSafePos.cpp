@@ -27,7 +27,7 @@ const MtDTI& cpSafePos::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpSafePos::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpSafePos::DTI);
+    return MtMemoryAllocator::getAllocator(cpSafePos::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpSafePos::getAllocator() {
 // Address: 0x0052b620 - 0x0052b660 (64 bytes)
 void* cpSafePos::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpSafePos::getAllocator()->memAlloc(sz, align, ::cpSafePos::DTI.::MtDTI::getID());
+    return cpSafePos::getAllocator()->memAlloc(sz, align, cpSafePos::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpSafePos::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpSafePos::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpSafePos::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpSafePos::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -78,8 +78,8 @@ cpSafePos::~cpSafePos() {
 // Address: 0x01a5f2e0 - 0x01a5f2e9 (9 bytes)
 void cpSafePos::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uDDOModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // Address: 0x0052b840 - 0x0052b9ea (426 bytes)
@@ -92,14 +92,14 @@ __attribute__((weak)) void cpSafePos::setup() {
 // Address: 0x0052be50 - 0x0052be83 (51 bytes)
 void cpSafePos::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
-    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+    this->cpComponent::updatePtr();
+    if (mpModel == nullptr) {
         return;
     }
-    if (this->mpModel->::cUnit::isEnable() != false) {
+    if (mpModel->isEnable()) {
         return;
     }
-    this->mpModel = static_cast<uDDOModel*>(nullptr);
+    mpModel = nullptr;
 }
 
 // Address: 0x0052c120 - 0x0052c16f (79 bytes)
@@ -179,6 +179,8 @@ __attribute__((weak)) void cpSafePos::requestSafePosSetLand() {
 //   in cpSafePos::forceUpdateSafePos at 0x0052c198-0x0052c241 (called at cpSafePos.cpp:260)
 //   in cpSafePos::requestSafePosSetLand at 0x0052c458-0x0052c516 (called at cpSafePos.cpp:300)
 // void cpSafePos::updateSafePos(const MtVector3& pos);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpSafePos::MyDTI cpSafePos::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpSafePos.cpp at 0x0052c65f-0x0052c69c (called at cpSafePos.cpp:25)

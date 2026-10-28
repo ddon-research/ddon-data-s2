@@ -37,7 +37,7 @@ const MtDTI& cMagicCommand::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 inline void* cMagicCommand::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMagicCommand::DTI)->memAlloc(sz, align, ::cMagicCommand::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMagicCommand::DTI)->memAlloc(sz, align, cMagicCommand::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ inline void* cMagicCommand::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cMagicCommand::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMagicCommand::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMagicCommand::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -98,6 +98,8 @@ __attribute__((weak)) void cMagicCommand::createProperty(MtPropertyList& proplis
 //   in cMagicCommandList::exportBinary at 0x006a142d-0x006a143c (called at rMagicCommand.cpp:196)
 // bool cMagicCommand::exportBinary(MtDataWriter& writer);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMagicCommand::MyDTI cMagicCommand::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rMagicCommand.cpp at 0x006a1cfe-0x006a1d3e (called at rMagicCommand.cpp:18)
 //   in _GLOBAL__sub_I_rMagicCommand.cpp at 0x006a1cfe-0x006a1d3e (called at rMagicCommand.h:26)
@@ -106,7 +108,7 @@ __attribute__((weak)) void cMagicCommand::createProperty(MtPropertyList& proplis
 // Address: 0x006a08e0 - 0x006a0927 (71 bytes)
 MtObject* cMagicCommand::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMagicCommand;
+    return new (16u) cMagicCommand;
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,7 +149,7 @@ const MtDTI& cMagicCommandList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMagicCommandList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMagicCommandList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMagicCommandList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,90 +181,90 @@ __attribute__((weak)) void cMagicCommandList::createProperty(MtPropertyList& pro
 // Address: 0x01a9c140 - 0x01a9c29c (348 bytes)
 void cMagicCommandList::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMagicCommandListEasy.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMagicCommandListEasy.mLength != 0) {
         // inferred: the value the loop at 0x1a9c160 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMagicCommandListEasy.::MtArray::mLength;
+        u32 v0_0 = mMagicCommandListEasy.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMagicCommandListEasy.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMagicCommandListEasy.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMagicCommandListEasy.::MtArray::mLength) {
-                    v0_0 = this->mMagicCommandListEasy.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMagicCommandListEasy.mpArray[i0_3] != nullptr) {
+                delete mMagicCommandListEasy.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMagicCommandListEasy.mLength) {
+                    v0_0 = mMagicCommandListEasy.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMagicCommandListEasy.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMagicCommandListEasy.::MtArray::mpArray));
+    if (mMagicCommandListEasy.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMagicCommandListEasy.mpArray));
     }
-    this->mMagicCommandListEasy.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMagicCommandListEasy.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMagicCommandListEasy.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mMagicCommandListNormal.::MtArray::mLength != static_cast<u32>(0)) {
+    mMagicCommandListEasy.mpArray = nullptr;
+    mMagicCommandListEasy.mBufsiz = 0;
+    mMagicCommandListEasy.mLength = 0;
+    if (mMagicCommandListNormal.mLength != 0) {
         // inferred: the value the loop at 0x1a9c1d0 carries; no location-less local in scope fits
-        u32 v2_0 = this->mMagicCommandListNormal.::MtArray::mLength;
+        u32 v2_0 = mMagicCommandListNormal.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMagicCommandListNormal.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMagicCommandListNormal.::MtArray::mpArray[i2_3];
-                if ((i2_3 + static_cast<unsigned int>(1)) < this->mMagicCommandListNormal.::MtArray::mLength) {
-                    v2_0 = this->mMagicCommandListNormal.::MtArray::mLength;
-                    i2_3 += static_cast<unsigned int>(1);
+        for (unsigned int i2_3 = 0;;) {
+            if (mMagicCommandListNormal.mpArray[i2_3] != nullptr) {
+                delete mMagicCommandListNormal.mpArray[i2_3];
+                if ((i2_3 + 1u) < mMagicCommandListNormal.mLength) {
+                    v2_0 = mMagicCommandListNormal.mLength;
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
-                    i2_3 += static_cast<unsigned int>(1);
+                if ((i2_3 + 1u) < v2_0) {
+                    i2_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMagicCommandListNormal.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMagicCommandListNormal.::MtArray::mpArray));
+    if (mMagicCommandListNormal.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMagicCommandListNormal.mpArray));
     }
-    this->mMagicCommandListNormal.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMagicCommandListNormal.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMagicCommandListNormal.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mMagicCommandListHard.::MtArray::mLength != static_cast<u32>(0)) {
+    mMagicCommandListNormal.mpArray = nullptr;
+    mMagicCommandListNormal.mBufsiz = 0;
+    mMagicCommandListNormal.mLength = 0;
+    if (mMagicCommandListHard.mLength != 0) {
         // inferred: the value the loop at 0x1a9c240 carries; no location-less local in scope fits
-        u32 v4_0 = this->mMagicCommandListHard.::MtArray::mLength;
+        u32 v4_0 = mMagicCommandListHard.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMagicCommandListHard.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMagicCommandListHard.::MtArray::mpArray[i4_3];
-                if ((i4_3 + static_cast<unsigned int>(1)) < this->mMagicCommandListHard.::MtArray::mLength) {
-                    v4_0 = this->mMagicCommandListHard.::MtArray::mLength;
-                    i4_3 += static_cast<unsigned int>(1);
+        for (unsigned int i4_3 = 0;;) {
+            if (mMagicCommandListHard.mpArray[i4_3] != nullptr) {
+                delete mMagicCommandListHard.mpArray[i4_3];
+                if ((i4_3 + 1u) < mMagicCommandListHard.mLength) {
+                    v4_0 = mMagicCommandListHard.mLength;
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
-                    i4_3 += static_cast<unsigned int>(1);
+                if ((i4_3 + 1u) < v4_0) {
+                    i4_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMagicCommandListHard.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMagicCommandListHard.::MtArray::mpArray));
+    if (mMagicCommandListHard.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMagicCommandListHard.mpArray));
     }
-    this->mMagicCommandListHard.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMagicCommandListHard.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMagicCommandListHard.::MtArray::mLength = static_cast<u32>(0);
+    mMagicCommandListHard.mpArray = nullptr;
+    mMagicCommandListHard.mBufsiz = 0;
+    mMagicCommandListHard.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -316,6 +318,8 @@ __attribute__((weak)) bool cMagicCommandList::exportBinary(MtDataWriter& writer)
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMagicCommandList::MyDTI cMagicCommandList::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rMagicCommand.cpp at 0x006a1d3e-0x006a1d77 (called at rMagicCommand.cpp:74)
 //   in _GLOBAL__sub_I_rMagicCommand.cpp at 0x006a1d3e-0x006a1d77 (called at rMagicCommand.h:61)
@@ -350,7 +354,7 @@ const MtDTI& rMagicCommandList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rMagicCommandList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rMagicCommandList::DTI)->memAlloc(sz, align, ::rMagicCommandList::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rMagicCommandList::DTI)->memAlloc(sz, align, rMagicCommandList::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -365,7 +369,7 @@ inline void* rMagicCommandList::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rMagicCommandList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rMagicCommandList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rMagicCommandList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -379,42 +383,42 @@ inline void rMagicCommandList::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rMagicCommandList::rMagicCommandList() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->mMagicCommandList.::MtArray::mAutoDelete = true;
+    setAttribute(18u);
+    mMagicCommandList.mAutoDelete = true;
 }
 
 // Address: 0x006a1560 - 0x006a1611 (177 bytes)
 // Also emitted as: _ZN17rMagicCommandListD0Ev at 0x006a1620
 rMagicCommandList::~rMagicCommandList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMagicCommandList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMagicCommandList.mLength != 0) {
         // inferred: the value the loop at 0x6a1590 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMagicCommandList.::MtArray::mLength;
+        u32 v0_0 = mMagicCommandList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMagicCommandList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMagicCommandList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMagicCommandList.::MtArray::mLength) {
-                    v0_0 = this->mMagicCommandList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMagicCommandList.mpArray[i0_3] != nullptr) {
+                delete mMagicCommandList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMagicCommandList.mLength) {
+                    v0_0 = mMagicCommandList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMagicCommandList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMagicCommandList.::MtArray::mpArray));
+    if (mMagicCommandList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMagicCommandList.mpArray));
     }
-    this->mMagicCommandList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMagicCommandList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMagicCommandList.::MtArray::mLength = static_cast<u32>(0);
+    mMagicCommandList.mpArray = nullptr;
+    mMagicCommandList.mBufsiz = 0;
+    mMagicCommandList.mLength = 0;
 }
 
 // Address: 0x006a16f0 - 0x006a17d8 (232 bytes)
@@ -437,15 +441,15 @@ __attribute__((weak)) bool rMagicCommandList::load(MtStream& in) {
 bool rMagicCommandList::save(MtStream& out) {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    MtDataWriter writer(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    u32 size1 = this->mMagicCommandList.::MtArray::size();
+    MtDataWriter writer(out, 4096u, 4096u);
+    u32 size1 = mMagicCommandList.size();
     (&writer)->writeU32(size1);
-    if (size1 != static_cast<u32>(0)) {
+    if (size1 != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            static_cast<cMagicCommandList*>(this->mMagicCommandList.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cMagicCommandList::exportBinary(writer);
-            if (size1 != (i0_3 + static_cast<unsigned int>(1))) {
-                i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            static_cast<cMagicCommandList*>(mMagicCommandList.getBuffer()[static_cast<int>(i0_3)])->exportBinary(writer);
+            if (size1 != (i0_3 + 1u)) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -463,34 +467,34 @@ MT_CTSTR rMagicCommandList::getExt() const {
 // Address: 0x01a9c340 - 0x01a9c3c8 (136 bytes)
 void rMagicCommandList::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mMagicCommandList.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mMagicCommandList.mLength != 0) {
         // inferred: the value the loop at 0x1a9c360 carries; no location-less local in scope fits
-        u32 v0_0 = this->mMagicCommandList.::MtArray::mLength;
+        u32 v0_0 = mMagicCommandList.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mMagicCommandList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mMagicCommandList.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMagicCommandList.::MtArray::mLength) {
-                    v0_0 = this->mMagicCommandList.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mMagicCommandList.mpArray[i0_3] != nullptr) {
+                delete mMagicCommandList.mpArray[i0_3];
+                if ((i0_3 + 1u) < mMagicCommandList.mLength) {
+                    v0_0 = mMagicCommandList.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mMagicCommandList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMagicCommandList.::MtArray::mpArray));
+    if (mMagicCommandList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mMagicCommandList.mpArray));
     }
-    this->mMagicCommandList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mMagicCommandList.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mMagicCommandList.::MtArray::mLength = static_cast<u32>(0);
+    mMagicCommandList.mpArray = nullptr;
+    mMagicCommandList.mBufsiz = 0;
+    mMagicCommandList.mLength = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -499,12 +503,14 @@ void rMagicCommandList::clear() {
 // Address: 0x006a1be0 - 0x006a1bf5 (21 bytes)
 cMagicCommandList* rMagicCommandList::getMagicCommandList(u32 tblIndex) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (tblIndex < this->mMagicCommandList.::MtArray::mLength) {
-        return static_cast<cMagicCommandList*>(this->mMagicCommandList.::MtArray::mpArray[tblIndex]);
+    if (tblIndex < mMagicCommandList.mLength) {
+        return static_cast<cMagicCommandList*>(mMagicCommandList.mpArray[tblIndex]);
     } else {
-        return static_cast<cMagicCommandList*>(nullptr);
+        return nullptr;
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rMagicCommandList::MyDTI rMagicCommandList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rMagicCommand.cpp at 0x006a1d77-0x006a1db4 (called at rMagicCommand.cpp:203)
@@ -514,7 +520,7 @@ cMagicCommandList* rMagicCommandList::getMagicCommandList(u32 tblIndex) const {
 // Address: 0x006a1450 - 0x006a14d4 (132 bytes)
 MtObject* rMagicCommandList::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rMagicCommandList;
+    return new (16u) rMagicCommandList;
 }
 
 // Instance at 0x01a9c2a0 - 0x01a9c2a5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

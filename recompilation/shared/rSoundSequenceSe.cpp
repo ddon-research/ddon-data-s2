@@ -51,7 +51,7 @@ const MtDTI& rSoundSequenceSe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSequenceSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSequenceSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,37 +71,37 @@ inline void rSoundSequenceSe::operator delete(void* p_addr) {
 // Also emitted as: _ZN16rSoundSequenceSeD0Ev at 0x006fbff0
 rSoundSequenceSe::~rSoundSequenceSe() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mSeqSe.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mSeqSe.mLength != 0) {
         // inferred: the value the loop at 0x6fbf40 carries; no location-less local in scope fits
-        u32 v0_0 = this->mSeqSe.::MtArray::mLength;
+        u32 v0_0 = mSeqSe.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSeqSe.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mSeqSe.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSeqSe.::MtArray::mLength) {
-                    v0_0 = this->mSeqSe.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mSeqSe.mpArray[i0_3] != nullptr) {
+                delete mSeqSe.mpArray[i0_3];
+                if ((i0_3 + 1u) < mSeqSe.mLength) {
+                    v0_0 = mSeqSe.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mSeqSe.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSeqSe.::MtArray::mpArray));
+    if (mSeqSe.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSeqSe.mpArray));
     }
-    this->mSeqSe.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mSeqSe.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mSeqSe.::MtArray::mLength = static_cast<u32>(0);
-    if (this->mpRequest != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpRequest->::cResource::release();
-        this->mpRequest = static_cast<rSoundRequest*>(nullptr);
+    mSeqSe.mpArray = nullptr;
+    mSeqSe.mBufsiz = 0;
+    mSeqSe.mLength = 0;
+    if (mpRequest != nullptr) {
+        mpRequest->release();
+        mpRequest = nullptr;
     }
 }
 
@@ -114,20 +114,20 @@ __attribute__((weak)) void rSoundSequenceSe::createProperty(MtPropertyList& s) {
 // Address: 0x006fc2f0 - 0x006fc2f5 (5 bytes)
 MtUI* rSoundSequenceSe::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cResource::createUI(prop);
+    return this->cResource::createUI(prop);
 }
 
 // Address: 0x006fc300 - 0x006fc3c1 (193 bytes)
 bool rSoundSequenceSe::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtSerializer sz(static_cast<s32>(65536));
-    if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
+    MtSerializer sz(65536);
+    if (sz.MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), MtSerializer::MODE_STATE) != nullptr) {
         // inferred: a temporary for the value the load at 0x6fc35b read, used 4 times; no DWARF local holds it
-        rSoundRequest* t0 = this->mpRequest;
-        if (t0 != static_cast<rSoundRequest*>(nullptr)) {
-            if (t0->::cResource::isIntermediate()) {
-                this->mpRequest = static_cast<rSoundRequest*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(t0), static_cast<u32>(1)));
-                t0->::cResource::release();
+        rSoundRequest* t0 = mpRequest;
+        if (t0 != nullptr) {
+            if (t0->isIntermediate()) {
+                mpRequest = static_cast<rSoundRequest*>(sResource::getInstance()->createNative(static_cast<cResource*>(t0), 1u));
+                t0->release();
             }
         }
         return true;
@@ -166,32 +166,32 @@ rSoundSequenceSe::SequenceSe* rSoundSequenceSe::getSequenceSe(u32 index) {
     // DWARF local not rendered: u32 dataNum;
     // DWARF local not rendered: SequenceSe* pData;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (this->mSeqSe.::MtArray::mLength != static_cast<u32>(0)) {
-        if (index < this->mSeqSe.::MtArray::mLength) {
-            return static_cast<rSoundSequenceSe::SequenceSe*>(this->mSeqSe.::MtArray::getBuffer()[static_cast<int>(index)]);
+    if (mSeqSe.mLength != 0) {
+        if (index < mSeqSe.mLength) {
+            return static_cast<SequenceSe*>(mSeqSe.getBuffer()[static_cast<int>(index)]);
         }
     }
-    return static_cast<rSoundSequenceSe::SequenceSe*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x01ab3660 - 0x01ab3665 (5 bytes)
 rSoundRequest* rSoundSequenceSe::getSoundRequest() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRequest;
+    return mpRequest;
 }
 
 // Address: 0x006fc2b0 - 0x006fc2e9 (57 bytes)
 void rSoundSequenceSe::setSoundRequest(rSoundRequest* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pRes == static_cast<rSoundRequest*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    if (this->mpRequest != static_cast<rSoundRequest*>(nullptr)) {
-        this->mpRequest->::cResource::release();
-        this->mpRequest = static_cast<rSoundRequest*>(nullptr);
+    if (mpRequest != nullptr) {
+        mpRequest->release();
+        mpRequest = nullptr;
     }
-    pRes->::cResource::addRef();
-    this->mpRequest = pRes;
+    pRes->addRef();
+    mpRequest = pRes;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -204,6 +204,8 @@ void rSoundSequenceSe::setSoundRequest(rSoundRequest* pRes) {
 
 // No out-of-line body: no code in the ELF
 // void rSoundSequenceSe::checkToIntermediateResource();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSequenceSe::MyDTI rSoundSequenceSe::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_rSoundSequenceSe.cpp at 0x006fcbe0-0x006fcc21 (called at rSoundSequenceSe.cpp:27)
@@ -236,9 +238,11 @@ const MtDTI& rSoundSequenceSe::SequenceSe::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rSoundSequenceSe::SequenceSe::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rSoundSequenceSe::SequenceSe::MyDTI::newInstance at 0x006fc414-0x006fc43d (called at rSoundSequenceSe.cpp:191)
-// void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::DTI)->memAlloc(sz, align, rSoundSequenceSe::SequenceSe::DTI.getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rSoundSequenceSe::SequenceSe::operator new[](size_t sz, u32 align);
@@ -252,7 +256,7 @@ const MtDTI& rSoundSequenceSe::SequenceSe::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rSoundSequenceSe::SequenceSe::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::SequenceSe::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,8 +275,35 @@ inline void rSoundSequenceSe::SequenceSe::operator delete(void* p_addr) {
 // Address: 0x006fc510 - 0x006fc5ad (157 bytes)
 // Also emitted as: _ZN16rSoundSequenceSe10SequenceSeD0Ev at 0x006fc5b0
 rSoundSequenceSe::SequenceSe::~SequenceSe() {
-    DDON_STUB("rSoundSequenceSe::SequenceSe::~SequenceSe")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (mCommand.mLength != 0) {
+        // inferred: the value the loop at 0x6fc540 carries; no location-less local in scope fits
+        u32 v0_0 = mCommand.mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = 0;;) {
+            if (mCommand.mpArray[i0_3] != nullptr) {
+                delete mCommand.mpArray[i0_3];
+                if ((i0_3 + 1u) < mCommand.mLength) {
+                    v0_0 = mCommand.mLength;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mCommand.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCommand.mpArray));
+    }
+    mCommand.mpArray = nullptr;
+    mCommand.mBufsiz = 0;
+    mCommand.mLength = 0;
 }
 
 // Address: 0x006fc670 - 0x006fc802 (402 bytes)
@@ -284,21 +315,20 @@ __attribute__((weak)) void rSoundSequenceSe::SequenceSe::createProperty(MtProper
 // Address: 0x006fc810 - 0x006fc815 (5 bytes)
 MtUI* rSoundSequenceSe::SequenceSe::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x006fc820 - 0x006fc839 (25 bytes)
 rSoundSequenceSe::SequenceSe::Command* rSoundSequenceSe::SequenceSe::getCommand(u32 index) {
     // DWARF local not rendered: u32 dataNum;
     // DWARF local not rendered: Command* pCommand;
-    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from rSoundSequenceSe::SequenceSe*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
-        if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32)))) {
-            return static_cast<rSoundSequenceSe::SequenceSe::Command*>(this->mCommand.::MtArray::getBuffer()[static_cast<int>(index)]);
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (mCommand.mLength != 0) {
+        if (index < mCommand.mLength) {
+            return static_cast<Command*>(mCommand.getBuffer()[static_cast<int>(index)]);
         }
     }
-    return static_cast<rSoundSequenceSe::SequenceSe::Command*>(nullptr);
+    return nullptr;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)
@@ -332,15 +362,17 @@ rSoundSequenceSe::SequenceSe::Command* rSoundSequenceSe::SequenceSe::getCommand(
 // No out-of-line body: no code in the ELF
 // void rSoundSequenceSe::SequenceSe::setToolAdrs(MtObject*);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSequenceSe::SequenceSe::MyDTI rSoundSequenceSe::SequenceSe::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rSoundSequenceSe.cpp at 0x006fcc21-0x006fcc61 (called at rSoundSequenceSe.cpp:191)
 //   in _GLOBAL__sub_I_rSoundSequenceSe.cpp at 0x006fcc21-0x006fcc61 (called at rSoundSequenceSe.h:92)
 // rSoundSequenceSe::SequenceSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006fc410 - 0x006fc48d (125 bytes)
-__attribute__((weak)) MtObject* rSoundSequenceSe::SequenceSe::MyDTI::newInstance() const {
-    DDON_STUB("rSoundSequenceSe::SequenceSe::MyDTI::newInstance")
-    return nullptr;
+MtObject* rSoundSequenceSe::SequenceSe::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (16u) rSoundSequenceSe::SequenceSe;
 }
 
 // No out-of-line body: no code in the ELF
@@ -378,7 +410,7 @@ const MtDTI& rSoundSequenceSe::SequenceSe::Command::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rSoundSequenceSe::SequenceSe::Command::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::SequenceSe::Command::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::Command::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -409,11 +441,13 @@ __attribute__((weak)) void rSoundSequenceSe::SequenceSe::Command::createProperty
 // Address: 0x006fcbc0 - 0x006fcbc5 (5 bytes)
 MtUI* rSoundSequenceSe::SequenceSe::Command::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
 // MtColor rSoundSequenceSe::SequenceSe::Command::getValueLabelColor();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rSoundSequenceSe::SequenceSe::Command::MyDTI rSoundSequenceSe::SequenceSe::Command::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rSoundSequenceSe.cpp at 0x006fcc61-0x006fcc9a (called at rSoundSequenceSe.cpp:300)

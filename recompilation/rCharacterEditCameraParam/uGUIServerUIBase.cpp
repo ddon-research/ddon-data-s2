@@ -51,7 +51,7 @@ const MtDTI& uGUIServerUIBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIServerUIBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIServerUIBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIServerUIBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,24 +77,24 @@ uGUIServerUIBase::~uGUIServerUIBase() {
 // Address: 0x00c34870 - 0x00c3488b (27 bytes)
 bool uGUIServerUIBase::setupBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    return this->::uGUIBase::mIsEndLoadResource;
+    this->uGUIBase::setup();
+    return mIsEndLoadResource;
 }
 
 // Address: 0x00c34890 - 0x00c3489c (12 bytes)
 void uGUIServerUIBase::end() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableServerUI = false;
-    this->::uGUIBase::end();
+    mIsEnableServerUI = false;
+    this->uGUIBase::end();
 }
 
 // Address: 0x00c348a0 - 0x00c348b7 (23 bytes)
 bool uGUIServerUIBase::isEnableServerUI() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mIsRequestCommand != false) {
+    if (mIsRequestCommand) {
         return false;
     } else {
-        return this->mIsEnableServerUI != false;
+        return mIsEnableServerUI;
     }
 }
 
@@ -106,13 +106,13 @@ bool uGUIServerUIBase::isEnableServerUI() {
 // Address: 0x00c348c0 - 0x00c348c8 (8 bytes)
 void uGUIServerUIBase::enableControl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableServerUI = true;
+    mIsEnableServerUI = true;
 }
 
 // Address: 0x00c348d0 - 0x00c348d8 (8 bytes)
 void uGUIServerUIBase::disableControl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsEnableServerUI = false;
+    mIsEnableServerUI = false;
 }
 
 // Address: 0x00c348e0 - 0x00c35006 (1830 bytes)
@@ -136,16 +136,16 @@ CDataUIListCommand* uGUIServerUIBase::getCommnadInfo(u32 commnadId) {
     // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8f0 from uGUIServerUIBase*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(2288))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2288)) != 0) {
+        u32 i = 0;
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommandList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == commnadId) {
-                return static_cast<CDataUIListCommand*>(this->mCommandList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommandList.getBuffer()[static_cast<int>(i)]) + 8)) == commnadId) {
+                return static_cast<CDataUIListCommand*>(mCommandList.getBuffer()[static_cast<int>(i)]);
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(2288))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 2288)));
     }
-    return static_cast<CDataUIListCommand*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00c35050 - 0x00c35136 (230 bytes)
@@ -157,28 +157,30 @@ __attribute__((weak)) bool uGUIServerUIBase::startRequest(u32 serverUICommand) {
 // Address: 0x00c35140 - 0x00c3517a (58 bytes)
 bool uGUIServerUIBase::requestUICommand() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqServerUICommand(this->mServerUIId, this->mCommandInfo.mCommandId, this->mCommandInfo.mArgNum1, this->mCommandInfo.mArgNum2);
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->reqServerUICommand(mServerUIId, mCommandInfo.mCommandId, mCommandInfo.mArgNum1, mCommandInfo.mArgNum2);
     return true;
 }
 
 // Address: 0x00c35180 - 0x00c351ce (78 bytes)
 void uGUIServerUIBase::callbackUICommand() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpServerUIControl != static_cast<cServerUIClientControl*>(nullptr)) {
-        if (this->mCommandInfo.mEndType != static_cast<u32>(3)) {
-            if (this->mCommandInfo.mEndType == static_cast<u32>(2)) {
-                this->mpServerUIControl->::cServerUIClientControl::closeServerUIAll();
+    if (mpServerUIControl != nullptr) {
+        if (mCommandInfo.mEndType != 3) {
+            if (mCommandInfo.mEndType == 2) {
+                mpServerUIControl->closeServerUIAll();
             } else {
-                if (this->mCommandInfo.mEndType == static_cast<u32>(1)) {
-                    this->mpServerUIControl->::cServerUIClientControl::closeServerUI(this);
+                if (mCommandInfo.mEndType == 1) {
+                    mpServerUIControl->closeServerUI(this);
                 }
             }
         } else {
-            this->mpServerUIControl->::cServerUIClientControl::closeServerUIChild();
+            mpServerUIControl->closeServerUIChild();
         }
     }
-    this->mIsRequestCommand = false;
+    mIsRequestCommand = false;
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uGUIServerUIBase::MyDTI uGUIServerUIBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIServerUIBase.cpp at 0x00c352cf-0x00c3530f (called at uGUIServerUIBase.cpp:24)

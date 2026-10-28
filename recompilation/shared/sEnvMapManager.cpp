@@ -28,7 +28,7 @@ const MtDTI& sEnvMapManager::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sEnvMapManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sEnvMapManager::DTI);
+    return MtMemoryAllocator::getAllocator(sEnvMapManager::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -37,7 +37,7 @@ inline MtAllocator* sEnvMapManager::getAllocator() {
 // Address: 0x0077a730 - 0x0077a770 (64 bytes)
 void* sEnvMapManager::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sEnvMapManager::getAllocator()->memAlloc(sz, align, ::sEnvMapManager::DTI.::MtDTI::getID());
+    return sEnvMapManager::getAllocator()->memAlloc(sz, align, sEnvMapManager::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ void* sEnvMapManager::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEnvMapManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEnvMapManager::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -77,13 +77,13 @@ sEnvMapManager::sEnvMapManager() {
 sEnvMapManager::~sEnvMapManager() {
     // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mapManagedEnvMap[0] != static_cast<sEnvMapManager::cManageEnvMapBase*>(nullptr)) {
-        delete this->mapManagedEnvMap[0];
+    if (mapManagedEnvMap[0] != nullptr) {
+        delete mapManagedEnvMap[0];
     }
-    if (this->mapManagedEnvMap[1] != static_cast<sEnvMapManager::cManageEnvMapBase*>(nullptr)) {
-        delete this->mapManagedEnvMap[1];
+    if (mapManagedEnvMap[1] != nullptr) {
+        delete mapManagedEnvMap[1];
     }
-    ::sEnvMapManager::mpInstance = static_cast<sEnvMapManager*>(nullptr);
+    sEnvMapManager::mpInstance = nullptr;
 }
 
 // Address: 0x0077b980 - 0x0077bb38 (440 bytes)
@@ -102,6 +102,11 @@ __attribute__((weak)) void sEnvMapManager::move() {
 
 // No out-of-line body: no code in the ELF
 // sEnvMapManager* sEnvMapManager::getInstance();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEnvMapManager::MyDTI sEnvMapManager::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sEnvMapManager* sEnvMapManager::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (130 bytes)
 //   in _GLOBAL__sub_I_sEnvMapManager.cpp at 0x0077bb40-0x0077bb81 (called at sEnvMapManager.cpp:44)
@@ -148,7 +153,7 @@ const MtDTI& sEnvMapManager::cManageEnvMapBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEnvMapManager::cManageEnvMapBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::cManageEnvMapBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEnvMapManager::cManageEnvMapBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -169,15 +174,15 @@ inline void sEnvMapManager::cManageEnvMapBase::operator delete(void* p_addr) {
 // Also emitted as: _ZN14sEnvMapManager17cManageEnvMapBaseD0Ev at 0x0077a9f0
 sEnvMapManager::cManageEnvMapBase::~cManageEnvMapBase() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpTexture != static_cast<rTexture*>(nullptr)) {
-        this->mpTexture->::cResource::release();
-        this->mpTexture = static_cast<rTexture*>(nullptr);
+    if (mpTexture != nullptr) {
+        mpTexture->release();
+        mpTexture = nullptr;
     }
-    if (this->mpRtt == static_cast<rRenderTargetTexture*>(nullptr)) {
+    if (mpRtt == nullptr) {
         return;
     }
-    this->mpRtt->::cResource::release();
-    this->mpRtt = static_cast<rRenderTargetTexture*>(nullptr);
+    mpRtt->release();
+    mpRtt = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -189,33 +194,33 @@ sEnvMapManager::cManageEnvMapBase::~cManageEnvMapBase() {
 // Address: 0x0077aa60 - 0x0077aa9e (62 bytes)
 void sEnvMapManager::cManageEnvMapBase::setRenderTargetTexture(rRenderTargetTexture* prtt) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (prtt == this->mpRtt) {
+    if (prtt == mpRtt) {
         return;
     }
-    if (this->mpRtt != static_cast<rRenderTargetTexture*>(nullptr)) {
-        this->mpRtt->::cResource::release();
-        this->mpRtt = static_cast<rRenderTargetTexture*>(nullptr);
+    if (mpRtt != nullptr) {
+        mpRtt->release();
+        mpRtt = nullptr;
     }
-    if (prtt != static_cast<rRenderTargetTexture*>(nullptr)) {
-        prtt->::cResource::addRef();
+    if (prtt != nullptr) {
+        prtt->addRef();
     }
-    this->mpRtt = prtt;
+    mpRtt = prtt;
 }
 
 // Address: 0x0077aaa0 - 0x0077aade (62 bytes)
 void sEnvMapManager::cManageEnvMapBase::setTexture(rTexture* ptex) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (ptex == this->mpTexture) {
+    if (ptex == mpTexture) {
         return;
     }
-    if (this->mpTexture != static_cast<rTexture*>(nullptr)) {
-        this->mpTexture->::cResource::release();
-        this->mpTexture = static_cast<rTexture*>(nullptr);
+    if (mpTexture != nullptr) {
+        mpTexture->release();
+        mpTexture = nullptr;
     }
-    if (ptex != static_cast<rTexture*>(nullptr)) {
-        ptex->::cResource::addRef();
+    if (ptex != nullptr) {
+        ptex->addRef();
     }
-    this->mpTexture = ptex;
+    mpTexture = ptex;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (350 bytes)
@@ -236,6 +241,10 @@ __attribute__((weak)) void sEnvMapManager::cManageEnvMapBase::raiseDraw(MtObject
 
 // Defined in the class (its body was written in a header).
 // void sEnvMapManager::cManageEnvMapBase::draw(cDraw* pdraw);
+
+// Not defined (no member-wise spelling: a class outside the bundle): const sEnvMapManager::cManageEnvMapBase::CUBIC_BLUR_VERTEX sEnvMapManager::cManageEnvMapBase::maBlurVertex[];
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEnvMapManager::cManageEnvMapBase::MyDTI sEnvMapManager::cManageEnvMapBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sEnvMapManager.cpp at 0x0077bb81-0x0077bbc1 (called at sEnvMapManager.cpp:45)
@@ -286,7 +295,7 @@ const MtDTI& sEnvMapManager::cManageEnvMapField::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sEnvMapManager::cManageEnvMapField::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::cManageEnvMapField::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sEnvMapManager::cManageEnvMapField::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -331,7 +340,7 @@ __attribute__((weak)) void sEnvMapManager::cManageEnvMapField::createProperty(Mt
 // Address: 0x0077b610 - 0x0077b615 (5 bytes)
 MtUI* sEnvMapManager::cManageEnvMapField::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: no code in the ELF
@@ -348,6 +357,8 @@ MtUI* sEnvMapManager::cManageEnvMapField::createUI(MtProperty& prop) {
 
 // No out-of-line body: no code in the ELF
 // void sEnvMapManager::cManageEnvMapField::setBaseBlendColor(const MtVector3&);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sEnvMapManager::cManageEnvMapField::MyDTI sEnvMapManager::cManageEnvMapField::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sEnvMapManager.cpp at 0x0077bbc1-0x0077bbfa (called at sEnvMapManager.cpp:46)

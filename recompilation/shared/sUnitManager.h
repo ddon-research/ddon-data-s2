@@ -173,5 +173,5 @@ public:
 inline sUnitManager::cLODDistData::cLODDistData() {
     this->mLow = 3000.0f;
     this->mMed = 1000.0f;
-    this->mpOwner = static_cast<sUnitManager*>(nullptr);
+    this->mpOwner = nullptr;
 }

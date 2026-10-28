@@ -48,7 +48,7 @@ const MtDTI& cGUIObjTextureRef::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cGUIObjTextureRef::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cGUIObjTextureRef::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cGUIObjTextureRef::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,14 +68,14 @@ inline void cGUIObjTextureRef::operator delete(void* p_addr) {
 // Also emitted as: _ZN17cGUIObjTextureRefD0Ev at 0x00200d10
 cGUIObjTextureRef::~cGUIObjTextureRef() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTexReplace.pTexture != static_cast<rTexture*>(nullptr)) {
-        this->mTexReplace.pTexture->::cResource::release();
-        this->mTexReplace.pTexture = static_cast<rTexture*>(nullptr);
+    if (mTexReplace.pTexture != nullptr) {
+        mTexReplace.pTexture->release();
+        mTexReplace.pTexture = nullptr;
     }
-    if (this->mpTextureOrigin == static_cast<nGUI::TEXTURE*>(nullptr)) {
+    if (mpTextureOrigin == nullptr) {
         return;
     }
-    this->::cGUIObjTexture::mpTexture = this->mpTextureOrigin;
+    mpTexture = mpTextureOrigin;
 }
 
 // Address: 0x00200d80 - 0x00200f1b (411 bytes)
@@ -90,27 +90,29 @@ __attribute__((weak)) void cGUIObjTextureRef::setReferenceTexture(rTexture* pTex
 // Address: 0x00200f20 - 0x00200f25 (5 bytes)
 void cGUIObjTextureRef::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cGUIObjTexture::createProperty(s);
+    this->cGUIObjTexture::createProperty(s);
 }
 
 // Address: 0x00200f30 - 0x00200f63 (51 bytes)
 void cGUIObjTextureRef::draw(nGUI::Draw& drawObj) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mTexReplace.pTexture != static_cast<rTexture*>(nullptr)) {
-        if (this->mTexReplace.pTexture->::cResource::isUsage()) {
-            this->::cGUIObjTexture::mpTexture = &this->mTexReplace;
+    if (mTexReplace.pTexture != nullptr) {
+        if (mTexReplace.pTexture->isUsage()) {
+            mpTexture = &mTexReplace;
         } else {
-            if (this->mpTextureOrigin != static_cast<nGUI::TEXTURE*>(nullptr)) {
-                this->::cGUIObjTexture::mpTexture = this->mpTextureOrigin;
+            if (mpTextureOrigin != nullptr) {
+                mpTexture = mpTextureOrigin;
             }
         }
     } else {
-        if (this->mpTextureOrigin != static_cast<nGUI::TEXTURE*>(nullptr)) {
-            this->::cGUIObjTexture::mpTexture = this->mpTextureOrigin;
+        if (mpTextureOrigin != nullptr) {
+            mpTexture = mpTextureOrigin;
         }
     }
-    this->::cGUIObjTexture::draw(drawObj);
+    this->cGUIObjTexture::draw(drawObj);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cGUIObjTextureRef::MyDTI cGUIObjTextureRef::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cGUIObjTextureRef.cpp at 0x0020106f-0x002010ac (called at cGUIObjTextureRef.cpp:41)

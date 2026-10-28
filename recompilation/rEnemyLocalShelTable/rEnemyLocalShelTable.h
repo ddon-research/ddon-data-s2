@@ -99,8 +99,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline cEnemyLocalShelTable::cEnemyLocalShelTable() {
-    this->mIdx = static_cast<u32>(1);
-    this->mShellNo = static_cast<u32>(0);
+    this->mIdx = 1;
+    this->mShellNo = 0;
     this->mDieIsNoCall = true;
-    this->mSyncFlagMax32 = static_cast<u32>(0);
+    this->mSyncFlagMax32 = 0;
 }

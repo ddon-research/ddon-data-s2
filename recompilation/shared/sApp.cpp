@@ -36,7 +36,7 @@ const MtDTI& sApp::getDTI() const {
 // Address: 0x01222c10 - 0x01222c50 (64 bytes)
 void* sApp::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sApp::DTI)->memAlloc(sz, align, ::sApp::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sApp::DTI)->memAlloc(sz, align, sApp::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* sApp::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4sAppD0Ev at 0x01222e5e-0x01222e7f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sApp::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sApp::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sApp::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -99,7 +99,7 @@ __attribute__((weak)) void sApp::createProperty(MtPropertyList& s) {
 // Address: 0x012246d0 - 0x012246d5 (5 bytes)
 MtUI* sApp::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (19 bytes)
@@ -128,11 +128,11 @@ __attribute__((weak)) void sApp::init(const MtDTI& dti, s32 argc, const char* * 
 // Address: 0x012239e0 - 0x01223a27 (71 bytes)
 void sApp::execute() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpMain->mExit == false) {
+    if (!mpMain->mExit) {
         do {
-            (::sRender::mpInstance)->::sRender::resetDevice();
-            this->mpMain->move();
-        } while (this->mpMain->mExit == false);
+            (sRender::mpInstance)->sRender::resetDevice();
+            mpMain->move();
+        } while (!mpMain->mExit);
     }
 }
 
@@ -233,38 +233,31 @@ __attribute__((weak)) void sApp::saveItem() {
 void sApp::setItemGroupKeyword(u32 group, MT_CTSTR keyword) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if ((group & static_cast<u32>(1)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[0][0], keyword);
+    if ((group & 1u) != 0) {
+        strcpy(&mItemGroupKeyword[0][0], keyword);
     }
-    if ((group & static_cast<u32>(2)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[1][0], keyword);
+    if ((group & 2u) != 0) {
+        strcpy(&mItemGroupKeyword[1][0], keyword);
     }
-    if ((group & static_cast<u32>(8)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[2][0], keyword);
+    if ((group & 8u) != 0) {
+        strcpy(&mItemGroupKeyword[2][0], keyword);
     }
-    if ((group & static_cast<u32>(16)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[3][0], keyword);
+    if ((group & 16u) != 0) {
+        strcpy(&mItemGroupKeyword[3][0], keyword);
     }
-    if ((group & static_cast<u32>(32)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[4][0], keyword);
+    if ((group & 32u) != 0) {
+        strcpy(&mItemGroupKeyword[4][0], keyword);
     }
-    if ((group & static_cast<u32>(4)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[5][0], keyword);
+    if ((group & 4u) != 0) {
+        strcpy(&mItemGroupKeyword[5][0], keyword);
     }
-    if ((group & static_cast<u32>(64)) == static_cast<u32>(0)) {
-    } else {
-        ::strcpy(&this->mItemGroupKeyword[6][0], keyword);
+    if ((group & 64u) != 0) {
+        strcpy(&mItemGroupKeyword[6][0], keyword);
     }
-    if ((group & static_cast<u32>(128)) == static_cast<u32>(0)) {
+    if ((group & 128u) == 0) {
         return;
     }
-    ::strcpy(&this->mItemGroupKeyword[7][0], keyword);
+    strcpy(&mItemGroupKeyword[7][0], keyword);
 }
 
 // No out-of-line body: no code in the ELF
@@ -316,6 +309,19 @@ __attribute__((weak)) void sApp::finalAppInStableMem() {
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sApp::Item* sApp::addItem(sApp::Item::TYPE type, u32 group, MtProperty& prop, MT_MFUNC isenable, u32 attr);
 
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): sApp::MyDTI sApp::DTI;
+
+// Not defined (no member-wise spelling: a class outside the bundle): const MT_ENUM sApp::mItemGroup[];
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sApp* sApp::mpInstance;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+s32 sApp::mArgumentCount;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MT_CHAR* * sApp::mArgumentVector;
+
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sApp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
@@ -358,7 +364,7 @@ const MtDTI& sApp::Item::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN4sApp4ItemD0Ev at 0x01b9e730-0x01b9e75a, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sApp::Item::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sApp::Item::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sApp::Item::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -389,7 +395,7 @@ __attribute__((weak)) void sApp::Item::createMenu(MtPropertyList& s) {
 // Address: 0x01224110 - 0x01224115 (5 bytes)
 MtUI* sApp::Item::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -429,16 +435,16 @@ __attribute__((weak)) bool sApp::Item::check(s32 v) {
 // Address: 0x01223db0 - 0x01223dde (46 bytes)
 void sApp::Item::setInt(s32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sApp::Item::check(v) == false) {
+    if (!check(v)) {
         return;
     }
-    this->mProp.::MtProperty::setInteger(v);
+    mProp.setInteger(v);
 }
 
 // Address: 0x01223da0 - 0x01223da9 (9 bytes)
 s32 sApp::Item::getInt() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::MtProperty&>(this->mProp).::MtProperty::getInteger();
+    return static_cast<const MtProperty&>(mProp).getInteger();
 }
 
 // Address: 0x01223d50 - 0x01223d9f (79 bytes)
@@ -450,7 +456,7 @@ __attribute__((weak)) void sApp::Item::setBool(bool v) {
 // Address: 0x01223d40 - 0x01223d49 (9 bytes)
 bool sApp::Item::getBool() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::MtProperty&>(this->mProp).::MtProperty::getBool();
+    return static_cast<const MtProperty&>(mProp).getBool();
 }
 
 // Address: 0x01223df0 - 0x01223e76 (134 bytes)
@@ -462,7 +468,7 @@ __attribute__((weak)) void sApp::Item::setFloat(f32 v) {
 // Address: 0x01223de0 - 0x01223de9 (9 bytes)
 f32 sApp::Item::getFloat() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<const ::MtProperty&>(this->mProp).::MtProperty::getF32();
+    return static_cast<const MtProperty&>(mProp).getF32();
 }
 
 // Address: 0x01223140 - 0x0122338c (588 bytes)
@@ -510,10 +516,10 @@ __attribute__((weak)) void sApp::Item::fromString(MT_CTSTR str) {
 // Address: 0x01223ee0 - 0x01223f0e (46 bytes)
 void sApp::Item::setEnumValue(s32 v) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::sApp::Item::check(v) == false) {
+    if (!check(v)) {
         return;
     }
-    this->mProp.::MtProperty::setInteger(v);
+    mProp.setInteger(v);
 }
 
 // Address: 0x01223e80 - 0x01223ee0 (96 bytes)
@@ -528,6 +534,8 @@ __attribute__((weak)) MT_CTSTR sApp::Item::getEnumName() {
 __attribute__((weak)) void sApp::Item::setEnumName(MT_CTSTR) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sApp::Item::MyDTI sApp::Item::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sApp::Item::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

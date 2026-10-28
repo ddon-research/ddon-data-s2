@@ -27,7 +27,7 @@ const MtDTI& cpJointOrder::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpJointOrder::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpJointOrder::DTI);
+    return MtMemoryAllocator::getAllocator(cpJointOrder::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -36,7 +36,7 @@ inline MtAllocator* cpJointOrder::getAllocator() {
 // Address: 0x00193fa0 - 0x00193fe0 (64 bytes)
 void* cpJointOrder::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpJointOrder::getAllocator()->memAlloc(sz, align, ::cpJointOrder::DTI.::MtDTI::getID());
+    return cpJointOrder::getAllocator()->memAlloc(sz, align, cpJointOrder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -51,7 +51,7 @@ void* cpJointOrder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpJointOrder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpJointOrder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpJointOrder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -66,32 +66,32 @@ inline void cpJointOrder::operator delete(void* p_addr) {
 // Address: 0x00194050 - 0x00194083 (51 bytes)
 cpJointOrder::cpJointOrder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpResource = static_cast<rJointOrder*>(nullptr);
-    this->mpModel = static_cast<uModel*>(nullptr);
+    mpResource = nullptr;
+    mpModel = nullptr;
 }
 
 // Address: 0x00194090 - 0x001940cb (59 bytes)
 // Also emitted as: _ZN12cpJointOrderD0Ev at 0x001940d0
 cpJointOrder::~cpJointOrder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource == static_cast<rJointOrder*>(nullptr)) {
+    if (mpResource == nullptr) {
         return;
     }
-    this->mpResource->::cResource::release();
-    this->mpResource = static_cast<rJointOrder*>(nullptr);
+    mpResource->release();
+    mpResource = nullptr;
 }
 
 // Address: 0x00194140 - 0x00194145 (5 bytes)
 void cpJointOrder::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::setup();
+    this->cpComponent::setup();
 }
 
 // Address: 0x00194150 - 0x00194159 (9 bytes)
 void cpJointOrder::setOwner(MtObject* pOwner) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::mpOwner = pOwner;
-    this->mpModel = static_cast<uModel*>(pOwner);
+    mpOwner = pOwner;
+    mpModel = static_cast<uModel*>(pOwner);
 }
 
 // Address: 0x00194130 - 0x00194131 (1 bytes)
@@ -102,15 +102,15 @@ __attribute__((weak)) void cpJointOrder::setupComponentPtr() {
 // Address: 0x00194160 - 0x0019419d (61 bytes)
 void cpJointOrder::setResource(rJointOrder* pRes) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpResource != static_cast<rJointOrder*>(nullptr)) {
-        this->mpResource->::cResource::release();
-        this->mpResource = static_cast<rJointOrder*>(nullptr);
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
     }
-    if (pRes == static_cast<rJointOrder*>(nullptr)) {
+    if (pRes == nullptr) {
         return;
     }
-    this->mpResource = pRes;
-    pRes->::cResource::addRef();
+    mpResource = pRes;
+    pRes->addRef();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (12 bytes)
@@ -118,6 +118,8 @@ void cpJointOrder::setResource(rJointOrder* pRes) {
 //   in uEnemy::calcWorldMatrix at 0x008f650d-0x008f6511 (called at uEnemy.cpp:2911)
 //   in uHuman::calcWorldMatrix at 0x00c6dead-0x00c6deb1 (called at uHuman.cpp:1481)
 // rJointOrder* cpJointOrder::getResource();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpJointOrder::MyDTI cpJointOrder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_cpJointOrder.cpp at 0x001941a0-0x001941e2 (called at cpJointOrder.cpp:23)
@@ -127,6 +129,6 @@ void cpJointOrder::setResource(rJointOrder* pRes) {
 // Address: 0x00193f40 - 0x00193f9e (94 bytes)
 MtObject* cpJointOrder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cpJointOrder;
+    return new (16u) cpJointOrder;
 }
 

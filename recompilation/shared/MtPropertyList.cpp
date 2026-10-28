@@ -54,7 +54,7 @@ const MtDTI& MtPropertyList::getDTI() const {
 // Address: 0x00d6cca0 - 0x00d6ccb7 (23 bytes)
 MtPropertyList::MtPropertyList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mpElement = static_cast<MtProperty*>(nullptr);
+    mpElement = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
@@ -85,13 +85,13 @@ MtProperty* MtPropertyList::find(MT_CTSTR name) const {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value carried to 0xd6d39d; the location-less local in scope that fits is declared on no line of the value's writes
     MtProperty* v2_8;
-    if (this->mpElement == static_cast<MtProperty*>(nullptr)) {
-        v2_8 = static_cast<MtProperty*>(nullptr);
+    if (mpElement == nullptr) {
+        v2_8 = nullptr;
     } else {
         // inferred: DWARF's location-less 'pe' (function scope) is the value the loop at 0xd6d380 carries
-        for (MtProperty* pe = this->mpElement;;) {
-            if (::strcmp(pe->mName, name) != static_cast<int>(0)) {
-                if (pe->mpPrev != static_cast<MtProperty*>(nullptr)) {
+        for (MtProperty* pe = mpElement;;) {
+            if (strcmp(pe->mName, name) != 0) {
+                if (pe->mpPrev != nullptr) {
                     pe = pe->mpPrev;
                 } else {
                     break;
@@ -101,7 +101,7 @@ MtProperty* MtPropertyList::find(MT_CTSTR name) const {
                 return v2_8;
             }
         }
-        v2_8 = static_cast<MtProperty*>(nullptr);
+        v2_8 = nullptr;
     }
     return v2_8;
 }
@@ -112,12 +112,12 @@ MtProperty* MtPropertyList::operator[](int index) {
     // DWARF local not rendered: Iterator it;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xd6d2a0 carries; no location-less local in scope fits
-    MtProperty* v0_1 = this->mpElement;
+    MtProperty* v0_1 = mpElement;
     for (;;) {
-        if (v0_1 == static_cast<MtProperty*>(nullptr)) {
-            return static_cast<MtProperty*>(nullptr);
+        if (v0_1 == nullptr) {
+            return nullptr;
         } else {
-            if (v0_1->mpPrev != static_cast<MtProperty*>(nullptr)) {
+            if (v0_1->mpPrev != nullptr) {
                 v0_1 = v0_1->mpPrev;
             } else {
                 break;
@@ -127,19 +127,19 @@ MtProperty* MtPropertyList::operator[](int index) {
     // inferred: the value the loop at 0xd6d2c0 carries; no location-less local in scope fits
     MtProperty* v2_0 = v0_1;
     // inferred: the value the loop at 0xd6d2c0 carries; no location-less local in scope fits
-    for (unsigned int v2_2 = index + static_cast<int>(1);;) {
-        if ((v2_2 - static_cast<unsigned int>(1)) == static_cast<unsigned int>(0)) {
+    for (unsigned int v2_2 = index + 1;;) {
+        if ((v2_2 - 1u) == 0) {
             return v2_0;
         } else {
-            if (v2_0->mpNext != static_cast<MtProperty*>(nullptr)) {
+            if (v2_0->mpNext != nullptr) {
                 v2_0 = v2_0->mpNext;
-                v2_2 += static_cast<unsigned int>(4294967295);
+                v2_2 += 0xFFFFFFFFu;
             } else {
                 break;
             }
         }
     }
-    return static_cast<MtProperty*>(nullptr);
+    return nullptr;
 }
 
 // Address: 0x00d6d130 - 0x00d6d1c2 (146 bytes)
@@ -155,13 +155,13 @@ u32 MtPropertyList::length() {
     // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
-    unsigned int i0_0 = static_cast<unsigned int>(0);
+    unsigned int i0_0 = 0;
     // inferred: DWARF's location-less 'pe' (function scope) is the value the loop at 0xd6d2f6 carries
-    for (MtProperty* pe = this->mpElement;;) {
-        if (pe == static_cast<MtProperty*>(nullptr)) {
+    for (MtProperty* pe = mpElement;;) {
+        if (pe == nullptr) {
             break;
         } else {
-            i0_0 += static_cast<unsigned int>(1);
+            i0_0 += 1u;
             pe = pe->mpPrev;
         }
     }
@@ -173,15 +173,15 @@ MtProperty* MtPropertyList::begin() const {
     // DWARF local not rendered: MtProperty* pe;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0xd6ccf0 carries; no location-less local in scope fits
-    MtProperty* v0_2 = this->mpElement;
+    MtProperty* v0_2 = mpElement;
     // inferred: the value carried to 0xd6cd09; no location-less local in scope fits
     MtProperty* v1_0;
     for (;;) {
-        if (v0_2 == static_cast<MtProperty*>(nullptr)) {
-            v1_0 = static_cast<MtProperty*>(nullptr);
+        if (v0_2 == nullptr) {
+            v1_0 = nullptr;
             break;
         } else {
-            if (v0_2->mpPrev != static_cast<MtProperty*>(nullptr)) {
+            if (v0_2->mpPrev != nullptr) {
                 v0_2 = v0_2->mpPrev;
             } else {
                 v1_0 = v0_2;
@@ -260,6 +260,23 @@ __attribute__((weak)) MtProperty* MtPropertyList::newElement() {
     DDON_STUB("MtPropertyList::newElement")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtPropertyList::MyDTI MtPropertyList::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtProperty* MtPropertyList::mpEmpty;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+MtPropertyList::poolChain* MtPropertyList::mpPool;
+
+// Not defined (a .ctors initializer touches it: its address is held across a branch target): MtProperty MtPropertyList::mBasePool[2048];
+
+// Not defined (no member-wise spelling: a class outside the bundle): MtPropertyList::poolChain MtPropertyList::mBaseChain;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+u32 MtPropertyList::mMaxUsed;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): MtCriticalSection MtPropertyList::mCS;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // MtPropertyList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

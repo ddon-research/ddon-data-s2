@@ -35,7 +35,7 @@ const MtDTI& cSetInfoEnemy::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cSetInfoEnemy::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cSetInfoEnemy::DTI)->memAlloc(sz, align, ::cSetInfoEnemy::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cSetInfoEnemy::DTI)->memAlloc(sz, align, cSetInfoEnemy::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -53,7 +53,7 @@ void* cSetInfoEnemy::operator new(size_t sz, void* p_addr) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cSetInfoEnemy::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cSetInfoEnemy::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cSetInfoEnemy::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,11 +68,11 @@ inline void cSetInfoEnemy::operator delete(void* p_addr) {
 // Address: 0x0055da60 - 0x0055daa3 (67 bytes)
 cSetInfoEnemy::cSetInfoEnemy() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPresetKind = static_cast<s32>(0);
-    this->mGroup = static_cast<s32>(-1);
-    this->mEmReactNo = static_cast<u32>(2);
-    this->mSubGroupNo = static_cast<s32>(-1);
-    this->mReturnPoint2nd = false;
+    mPresetKind = 0;
+    mGroup = -1;
+    mEmReactNo = 2;
+    mSubGroupNo = -1;
+    mReturnPoint2nd = false;
 }
 
 // Address: 0x0055dab0 - 0x0055dab5 (5 bytes)
@@ -97,18 +97,18 @@ __attribute__((weak)) bool cSetInfoEnemy::load(MtDataReader& r) {
 bool cSetInfoEnemy::save(MtDataWriter& w) {
     // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as unsigned char
-    w.writeS32(this->mGroup);
-    w.writeS32(this->mPresetKind);
-    w.writeU32(this->mEmReactNo);
-    w.writeS32(this->mSubGroupNo);
+    w.writeS32(mGroup);
+    w.writeS32(mPresetKind);
+    w.writeU32(mEmReactNo);
+    w.writeS32(mSubGroupNo);
     // inferred: a temporary for the value the load at 0x55dfc4 read, used once; no DWARF local holds it
-    bool t0 = this->mReturnPoint2nd;
+    bool t0 = mReturnPoint2nd;
     if (w.mSeekPt >= w.mBufsiz) {
         w.flush();
     }
     w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    return this->::cSetInfoCharacter::save(w);
+    w.mSeekPt = w.mSeekPt + 1u;
+    return this->cSetInfoCharacter::save(w);
 }
 
 // Address: 0x0055e000 - 0x0055e169 (361 bytes)
@@ -123,32 +123,31 @@ __attribute__((weak)) bool cSetInfoEnemy::applyInfo(cUnit* pu) const {
 
 // Address: 0x0055e170 - 0x0055e1be (78 bytes)
 void cSetInfoEnemy::copy(cSetInfo* p) {
-    // DWARF local not rendered: cSetInfoEnemy* pSie;
-    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; a vector copy split into members it may not keep apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a vector copy split into members it may not keep apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoEnemy::MyDTI*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x44 from cSetInfo*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x48 from cSetInfo*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4c from cSetInfo*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x50 from cSetInfo*
-    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cSetInfo*
-    // inferred: a value cast to the type its use takes: unsigned char used as bool
-    this->::cSetInfoCharacter::copy(p);
+    this->cSetInfoCharacter::copy(p);
     // inferred: a temporary for the result of the call at 0x55e188, used once; no DWARF local holds it
     const MtDTI& t0 = p->getDTI();
     // inferred: the value the loop at 0x55e196 carries; no location-less local in scope fits
-    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoEnemy::DTI) + static_cast<long>(8));
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&cSetInfoEnemy::DTI) + 8);
     // inferred: the value the loop at 0x55e196 carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
-        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
-            this->mPresetKind = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(68));
-            this->mGroup = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(72));
-            this->mEmReactNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(76));
-            this->mSubGroupNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(80));
-            this->mReturnPoint2nd = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(84)));
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 8))) {
+            mPresetKind = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 68);
+            mGroup = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 72);
+            mEmReactNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 76);
+            mSubGroupNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + 80);
+            // inferred: a downcast named by the DWARF local the source declared: pSie, located in the register the access reads through
+            cSetInfoEnemy* pSie = static_cast<cSetInfoEnemy*>(p);
+            mReturnPoint2nd = pSie->mReturnPoint2nd;
             return;
         } else {
-            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
-                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32)) != 0) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + 32));
             } else {
                 break;
             }
@@ -163,6 +162,8 @@ void cSetInfoEnemy::copy(cSetInfo* p) {
 //   in cLayoutSetEnemy::moveSetUnitSever at 0x002d3fcd-0x002d3fd0 (called at cLayoutSetEnemy.cpp:294)
 // s32 cSetInfoEnemy::getSubGroupNo() const;
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cSetInfoEnemy::MyDTI cSetInfoEnemy::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cSetInfoEnemy.cpp at 0x0055e2bf-0x0055e2fc (called at cSetInfoEnemy.cpp:36)
 //   in _GLOBAL__sub_I_cSetInfoEnemy.cpp at 0x0055e2bf-0x0055e2fc (called at cSetInfoEnemy.h:25)
@@ -171,6 +172,6 @@ void cSetInfoEnemy::copy(cSetInfo* p) {
 // Address: 0x0055d980 - 0x0055d9ee (110 bytes)
 MtObject* cSetInfoEnemy::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cSetInfoEnemy;
+    return new (16u) cSetInfoEnemy;
 }
 

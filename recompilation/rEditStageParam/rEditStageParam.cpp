@@ -39,7 +39,7 @@ const MtDTI& rEditStageParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEditStageParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEditStageParam::DTI)->memAlloc(sz, align, ::rEditStageParam::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEditStageParam::DTI)->memAlloc(sz, align, rEditStageParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ inline void* rEditStageParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rEditStageParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEditStageParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEditStageParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,19 +68,19 @@ inline void rEditStageParam::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rEditStageParam::rEditStageParam() {
-    this->::cResource::setAttribute(static_cast<u32>(18));
-    this->::cResource::clear();
-    this->mpArrayInfo = static_cast<rEditStageParam::Info*>(nullptr);
-    this->mArrayInfoNum = static_cast<u32>(0);
-    this->mpArrayList = static_cast<rEditStageParam::List*>(nullptr);
-    this->mArrayListNum = static_cast<u32>(0);
+    setAttribute(18u);
+    this->cResource::clear();
+    mpArrayInfo = nullptr;
+    mArrayInfoNum = 0;
+    mpArrayList = nullptr;
+    mArrayListNum = 0;
 }
 
 // Address: 0x00661780 - 0x006617aa (42 bytes)
 // Also emitted as: _ZN15rEditStageParamD0Ev at 0x00661890
 rEditStageParam::~rEditStageParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::rEditStageParam::destruct();
+    destruct();
 }
 
 // Address: 0x01a853d0 - 0x01a853d8 (8 bytes)
@@ -133,33 +133,33 @@ __attribute__((weak)) bool rEditStageParam::save(MtStream& out) {
 // Address: 0x01a853e0 - 0x01a8540f (47 bytes)
 rEditStageParam::Info* rEditStageParam::getInfo(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getNum()) {
-        return &this->mpArrayInfo[index];
+    if (index < getNum()) {
+        return &mpArrayInfo[index];
     } else {
-        return static_cast<rEditStageParam::Info*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01a85410 - 0x01a85414 (4 bytes)
 u32 rEditStageParam::getNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayInfoNum;
+    return mArrayInfoNum;
 }
 
 // Address: 0x01a85420 - 0x01a85452 (50 bytes)
 rEditStageParam::List* rEditStageParam::getList(u32 index) const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (index < this->getListNum()) {
-        return &this->mpArrayList[index];
+    if (index < getListNum()) {
+        return &mpArrayList[index];
     } else {
-        return static_cast<rEditStageParam::List*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x01a85460 - 0x01a85467 (7 bytes)
 u32 rEditStageParam::getListNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArrayListNum;
+    return mArrayListNum;
 }
 
 // Address: 0x00661e00 - 0x00661f6f (367 bytes)
@@ -199,6 +199,8 @@ __attribute__((weak)) ARC_TAGID rEditStageParam::getStageArcTagId(u32 type, u32 
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEditStageParam::MyDTI rEditStageParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEditStageParam.cpp at 0x006622e0-0x0066231d (called at rEditStageParam.cpp:484)
 //   in _GLOBAL__sub_I_rEditStageParam.cpp at 0x006622e0-0x0066231d (called at rEditStageParam.h:201)
@@ -207,7 +209,7 @@ __attribute__((weak)) ARC_TAGID rEditStageParam::getStageArcTagId(u32 type, u32 
 // Address: 0x00661670 - 0x006616f1 (129 bytes)
 MtObject* rEditStageParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEditStageParam;
+    return new (16u) rEditStageParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -245,7 +247,7 @@ const MtDTI& rEditStageParam::Info::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEditStageParam4InfoD0Ev at 0x01a85480-0x01a854aa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEditStageParam::Info::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEditStageParam::Info::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,51 +273,51 @@ __attribute__((weak)) void rEditStageParam::Info::createProperty(MtPropertyList&
 // Address: 0x006610f0 - 0x006610f5 (5 bytes)
 MtUI* rEditStageParam::Info::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
 
 // Address: 0x00661100 - 0x006612a8 (424 bytes)
 bool rEditStageParam::Info::load(MtDataReader& r) {
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    r.::MtDataReader::readString(&this->mModelSdl[0], static_cast<u32>(64));
-    r.::MtDataReader::readString(&this->mFilterSdl[0], static_cast<u32>(64));
-    r.::MtDataReader::readString(&this->mLightSdl[0], static_cast<u32>(64));
-    r.::MtDataReader::readString(&this->mOmListSdl[0], static_cast<u32>(64));
-    this->mReverb = r.readU32();
+    r.readString(&mModelSdl[0], 64u);
+    r.readString(&mFilterSdl[0], 64u);
+    r.readString(&mLightSdl[0], 64u);
+    r.readString(&mOmListSdl[0], 64u);
+    mReverb = r.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    this->mPlPos = r.readV3();
-    ::nDDOIO::readData(r, this->mPlRotY);
-    r.::MtDataReader::readString(&this->mWeatherStageInfo[0], static_cast<u32>(64));
-    r.::MtDataReader::readString(&this->mWeatherParamInfo[0], static_cast<u32>(64));
-    this->mWeatherData[0].mWeatherID = r.readU32();
-    this->mWeatherData[0].mHour = r.readU32();
-    this->mWeatherData[0].mMinite = r.readU32();
-    this->mWeatherData[1].mWeatherID = r.readU32();
-    this->mWeatherData[1].mHour = r.readU32();
-    this->mWeatherData[1].mMinite = r.readU32();
+    mPlPos = r.readV3();
+    nDDOIO::readData(r, mPlRotY);
+    r.readString(&mWeatherStageInfo[0], 64u);
+    r.readString(&mWeatherParamInfo[0], 64u);
+    mWeatherData[0].mWeatherID = r.readU32();
+    mWeatherData[0].mHour = r.readU32();
+    mWeatherData[0].mMinite = r.readU32();
+    mWeatherData[1].mWeatherID = r.readU32();
+    mWeatherData[1].mHour = r.readU32();
+    mWeatherData[1].mMinite = r.readU32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mpSkyWep);
+    nDDOIO::readData(r, mpSkyWep);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mpRoomWep);
+    nDDOIO::readData(r, mpRoomWep);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mpEpv);
+    nDDOIO::readData(r, mpEpv);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mEpvIndexAlways);
+    nDDOIO::readData(r, mEpvIndexAlways);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mEpvIndexDay);
+    nDDOIO::readData(r, mEpvIndexDay);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mEpvIndexNight);
+    nDDOIO::readData(r, mEpvIndexNight);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, this->mFlag);
+    nDDOIO::readData(r, mFlag);
     return true;
 }
 
@@ -335,7 +337,7 @@ __attribute__((weak)) void rEditStageParam::Info::setModelName(const MtString& n
 // Address: 0x01a852c0 - 0x01a852c5 (5 bytes)
 MT_CTSTR rEditStageParam::Info::getModelName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mModelSdl[0];
+    return &mModelSdl[0];
 }
 
 // Address: 0x00661000 - 0x0066102c (44 bytes)
@@ -347,7 +349,7 @@ __attribute__((weak)) void rEditStageParam::Info::setFilterName(const MtString& 
 // Address: 0x01a852d0 - 0x01a852d5 (5 bytes)
 MT_CTSTR rEditStageParam::Info::getFilterName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mFilterSdl[0];
+    return &mFilterSdl[0];
 }
 
 // Address: 0x00661030 - 0x0066105f (47 bytes)
@@ -359,7 +361,7 @@ __attribute__((weak)) void rEditStageParam::Info::setLightName(const MtString& n
 // Address: 0x01a852e0 - 0x01a852e8 (8 bytes)
 MT_CTSTR rEditStageParam::Info::getLightName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mLightSdl[0];
+    return &mLightSdl[0];
 }
 
 // Address: 0x00661060 - 0x0066108f (47 bytes)
@@ -371,7 +373,7 @@ __attribute__((weak)) void rEditStageParam::Info::setOmListName(const MtString& 
 // Address: 0x01a852f0 - 0x01a852f8 (8 bytes)
 MT_CTSTR rEditStageParam::Info::getOmListName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mOmListSdl[0];
+    return &mOmListSdl[0];
 }
 
 // Address: 0x00661090 - 0x006610bf (47 bytes)
@@ -383,7 +385,7 @@ __attribute__((weak)) void rEditStageParam::Info::setWeatherStageInfoName(const 
 // Address: 0x01a85300 - 0x01a85308 (8 bytes)
 MT_CTSTR rEditStageParam::Info::getWeatherStageInfoName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mWeatherStageInfo[0];
+    return &mWeatherStageInfo[0];
 }
 
 // Address: 0x006610c0 - 0x006610ef (47 bytes)
@@ -395,7 +397,7 @@ __attribute__((weak)) void rEditStageParam::Info::setWeatherParamInfoName(const 
 // Address: 0x01a85310 - 0x01a85318 (8 bytes)
 MT_CTSTR rEditStageParam::Info::getWeatherParamInfoName() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return &this->mWeatherParamInfo[0];
+    return &mWeatherParamInfo[0];
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (19 bytes)
@@ -419,37 +421,37 @@ MT_CTSTR rEditStageParam::Info::getWeatherParamInfoName() const {
 // Address: 0x00661470 - 0x00661478 (8 bytes)
 u64 rEditStageParam::Info::getSkyWepResId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpSkyWep.::cResPathBase::getResId();
+    return mpSkyWep.getResId();
 }
 
 // Address: 0x00661480 - 0x00661488 (8 bytes)
 u64 rEditStageParam::Info::getRoomWepResId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpRoomWep.::cResPathBase::getResId();
+    return mpRoomWep.getResId();
 }
 
 // Address: 0x00661490 - 0x00661498 (8 bytes)
 u64 rEditStageParam::Info::getEpvResId() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mpEpv.::cResPathBase::getResId();
+    return mpEpv.getResId();
 }
 
 // Address: 0x006614a0 - 0x006614a7 (7 bytes)
 s32 rEditStageParam::Info::getEpvIndexAlways() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEpvIndexAlways;
+    return mEpvIndexAlways;
 }
 
 // Address: 0x006614b0 - 0x006614b7 (7 bytes)
 s32 rEditStageParam::Info::getEpvIndexDay() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEpvIndexDay;
+    return mEpvIndexDay;
 }
 
 // Address: 0x006614c0 - 0x006614c7 (7 bytes)
 s32 rEditStageParam::Info::getEpvIndexNight() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEpvIndexNight;
+    return mEpvIndexNight;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)
@@ -461,8 +463,10 @@ bool rEditStageParam::Info::isChangeTime() {
     // DWARF local not rendered: u32 hour;
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mWeatherData[0].mHour != this->mWeatherData[1].mHour;
+    return mWeatherData[0].mHour != mWeatherData[1].mHour;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEditStageParam::Info::MyDTI rEditStageParam::Info::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rEditStageParam.cpp at 0x0066222e-0x0066226e (called at rEditStageParam.cpp:34)
@@ -498,7 +502,7 @@ const MtDTI& rEditStageParam::Info::WeatherData::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEditStageParam::Info::WeatherData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::WeatherData::DTI)->memAlloc(sz, align, ::rEditStageParam::Info::WeatherData::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEditStageParam::Info::WeatherData::DTI)->memAlloc(sz, align, rEditStageParam::Info::WeatherData::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -512,7 +516,7 @@ inline void* rEditStageParam::Info::WeatherData::operator new(size_t sz, u32 ali
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rEditStageParam::Info::WeatherData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::WeatherData::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEditStageParam::Info::WeatherData::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -543,8 +547,10 @@ __attribute__((weak)) void rEditStageParam::Info::WeatherData::createProperty(Mt
 // Address: 0x01a85550 - 0x01a85555 (5 bytes)
 MtUI* rEditStageParam::Info::WeatherData::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEditStageParam::Info::WeatherData::MyDTI rEditStageParam::Info::WeatherData::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEditStageParam.cpp at 0x0066226e-0x006622a7 (called at rEditStageParam.cpp:35)
@@ -554,7 +560,7 @@ MtUI* rEditStageParam::Info::WeatherData::createUI(MtProperty& prop) {
 // Address: 0x00660790 - 0x006607e5 (85 bytes)
 MtObject* rEditStageParam::Info::WeatherData::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEditStageParam::Info::WeatherData;
+    return new (16u) rEditStageParam::Info::WeatherData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -592,7 +598,7 @@ const MtDTI& rEditStageParam::List::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rEditStageParam4ListD0Ev at 0x01a854d0-0x01a854fa, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEditStageParam::List::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEditStageParam::List::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEditStageParam::List::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -626,25 +632,27 @@ __attribute__((weak)) void rEditStageParam::List::createProperty(MtPropertyList&
 // Address: 0x01a85330 - 0x01a85338 (8 bytes)
 s8 rEditStageParam::List::getListNo(u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mListTbl[idx];
+    return mListTbl[idx];
 }
 
 // Address: 0x01a85340 - 0x01a85348 (8 bytes)
 void rEditStageParam::List::setListNo(s8 no, u32 idx) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mListTbl[idx] = no;
+    mListTbl[idx] = no;
 }
 
 // Address: 0x01a85350 - 0x01a85356 (6 bytes)
 u32 rEditStageParam::List::getListNoNum() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(8);
+    return 8;
 }
 
 // Address: 0x01a85360 - 0x01a85361 (1 bytes)
 __attribute__((weak)) void rEditStageParam::List::setListNoNum(u32) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEditStageParam::List::MyDTI rEditStageParam::List::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rEditStageParam.cpp at 0x006622a7-0x006622e0 (called at rEditStageParam.cpp:417)

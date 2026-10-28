@@ -39,7 +39,7 @@ const MtDTI& uBakuenseSpark::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* uBakuenseSpark::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::uBakuenseSpark::DTI)->memAlloc(sz, align, ::uBakuenseSpark::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(uBakuenseSpark::DTI)->memAlloc(sz, align, uBakuenseSpark::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -54,7 +54,7 @@ inline void* uBakuenseSpark::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uBakuenseSpark::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uBakuenseSpark::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uBakuenseSpark::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,40 +79,40 @@ uBakuenseSpark::~uBakuenseSpark() {
 // Address: 0x00cc1b00 - 0x00cc1b05 (5 bytes)
 void uBakuenseSpark::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::setup();
+    this->uShlBase::setup();
 }
 
 // Address: 0x00cc1b10 - 0x00cc1b2c (28 bytes)
 void uBakuenseSpark::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::update();
-    this->mRequestSetCollision = false;
+    this->uShlBase::update();
+    mRequestSetCollision = false;
 }
 
 // Address: 0x00cc1b30 - 0x00cc1b35 (5 bytes)
 void uBakuenseSpark::after() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::after();
+    this->uShlBase::after();
 }
 
 // Address: 0x00cc1b40 - 0x00cc1b64 (36 bytes)
 void uBakuenseSpark::updateMatrix() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    updateLocalMatrix();
+    updateWorldMatrix();
 }
 
 // Address: 0x00cc1b70 - 0x00cc1ba9 (57 bytes)
 void uBakuenseSpark::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlBase::updatePtr();
-    if (this->mpOwner == static_cast<uShlBakuensen*>(nullptr)) {
+    this->uShlBase::updatePtr();
+    if (mpOwner == nullptr) {
         return;
     }
-    if (this->mpOwner->::cUnit::isEnable() != false) {
+    if (mpOwner->isEnable()) {
         return;
     }
-    this->mpOwner = static_cast<uShlBakuensen*>(nullptr);
+    mpOwner = nullptr;
 }
 
 // Address: 0x00cc1bb0 - 0x00cc1c05 (85 bytes)
@@ -128,6 +128,8 @@ __attribute__((weak)) void uBakuenseSpark::createComponent() {
 // No out-of-line body: no code in the ELF
 // void uBakuenseSpark::requesetSetCollision();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uBakuenseSpark::MyDTI uBakuenseSpark::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlBakuensen.cpp at 0x00cc1e86-0x00cc1ec3 (called at uShlBakuensen.cpp:739)
 //   in _GLOBAL__sub_I_uShlBakuensen.cpp at 0x00cc1e86-0x00cc1ec3 (called at uShlBakuensen.h:204)
@@ -136,7 +138,7 @@ __attribute__((weak)) void uBakuenseSpark::createComponent() {
 // Address: 0x00cc19e0 - 0x00cc1a40 (96 bytes)
 MtObject* uBakuenseSpark::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::uBakuenseSpark;
+    return new (16u) uBakuenseSpark;
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,7 +177,7 @@ const MtDTI& uShlBakuensen::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uShlBakuensen::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uShlBakuensen::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uShlBakuensen::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -208,59 +210,59 @@ __attribute__((weak)) const MtDTI* uShlBakuensen::getLogNodeDTI() {
 // Also emitted as: _ZN13uShlBakuensenD0Ev at 0x00cc0860
 uShlBakuensen::~uShlBakuensen() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpFireUnitDummy == static_cast<uBakuenseSpark*>(nullptr)) {
+    if (mpFireUnitDummy == nullptr) {
         return;
     }
-    ::sUnit::getInstance()->::sUnit::remove(static_cast<cUnit*>(this->mpFireUnitDummy));
-    if (this->mpFireUnitDummy == static_cast<uBakuenseSpark*>(nullptr)) {
+    sUnit::getInstance()->remove(static_cast<cUnit*>(mpFireUnitDummy));
+    if (mpFireUnitDummy == nullptr) {
         return;
     }
-    delete this->mpFireUnitDummy;
-    this->mpFireUnitDummy = static_cast<uBakuenseSpark*>(nullptr);
+    delete mpFireUnitDummy;
+    mpFireUnitDummy = nullptr;
 }
 
 // Address: 0x00cc08e0 - 0x00cc08e5 (5 bytes)
 void uShlBakuensen::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::setup();
+    this->uShlKeepOwnerLog::setup();
 }
 
 // Address: 0x00cc09e0 - 0x00cc0a20 (64 bytes)
 void uShlBakuensen::kill() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::kill();
-    if (this->mpBakuenEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    this->uShlKeepOwnerLog::kill();
+    if (mpBakuenEfcHandle == nullptr) {
         return;
     }
-    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpBakuenEfcHandle, static_cast<u32>(1));
-    this->mpBakuenEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpBakuenEfcHandle, 1u);
+    mpBakuenEfcHandle = nullptr;
 }
 
 // Address: 0x00cc0a20 - 0x00cc0a59 (57 bytes)
 void uShlBakuensen::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::updatePtr();
-    if (this->mpFireUnitDummy == static_cast<uBakuenseSpark*>(nullptr)) {
+    this->uShlKeepOwnerLog::updatePtr();
+    if (mpFireUnitDummy == nullptr) {
         return;
     }
-    if (this->mpFireUnitDummy->::cUnit::isEnable() != false) {
+    if (mpFireUnitDummy->isEnable()) {
         return;
     }
-    this->mpFireUnitDummy = static_cast<uBakuenseSpark*>(nullptr);
+    mpFireUnitDummy = nullptr;
 }
 
 // Address: 0x00cc0a60 - 0x00cc0aae (78 bytes)
 void uShlBakuensen::updateEfcHandle() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::updateEfcHandle();
-    if (this->mpBakuenEfcHandle == static_cast<cEfcHandle*>(nullptr)) {
+    this->uShlKeepOwnerLog::updateEfcHandle();
+    if (mpBakuenEfcHandle == nullptr) {
         return;
     }
-    if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpBakuenEfcHandle) == false) {
+    if (!static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpBakuenEfcHandle)) {
         return;
     }
-    this->mpBakuenEfcHandle->mpOwner = static_cast<cUnit*>(nullptr);
-    this->mpBakuenEfcHandle = static_cast<cEfcHandle*>(nullptr);
+    mpBakuenEfcHandle->mpOwner = nullptr;
+    mpBakuenEfcHandle = nullptr;
 }
 
 // Address: 0x00cc08f0 - 0x00cc09db (235 bytes)
@@ -272,7 +274,7 @@ __attribute__((weak)) void uShlBakuensen::createProperty(MtPropertyList& s) {
 // Address: 0x00cc0ab0 - 0x00cc0ab5 (5 bytes)
 void uShlBakuensen::draw(cDraw* pDraw) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::draw(pDraw);
+    this->uShlKeepOwnerLog::draw(pDraw);
 }
 
 // Address: 0x00cc0ac0 - 0x00cc0af6 (54 bytes)
@@ -290,8 +292,8 @@ __attribute__((weak)) void uShlBakuensen::updateSub() {
 // Address: 0x00cc1590 - 0x00cc15a5 (21 bytes)
 void uShlBakuensen::requestIgnite() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uShlKeepOwnerLog::mLogPhase = static_cast<nShlKeepLog::KEEP_LOG_PHASE>(1);
-    this->mBakuenPhase = static_cast<nShlBakuensen::BAKUENSEN_PHASE>(2);
+    mLogPhase = nShlKeepLog::MODE_STOP;
+    mBakuenPhase = nShlBakuensen::MODE_BAKUEN_SET_UP_REVERSE;
 }
 
 // Address: 0x00cc0be0 - 0x00cc0cfb (283 bytes)
@@ -357,6 +359,8 @@ __attribute__((weak)) void uShlBakuensen::shotBakuensen() {
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
 //   in uShlBakuensen::updateReverse at 0x00cc12ef-0x00cc1311 (called at uShlBakuensen.cpp:522)
 // void uShlBakuensen::killFireUnitDummy();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uShlBakuensen::MyDTI uShlBakuensen::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uShlBakuensen.cpp at 0x00cc1e0c-0x00cc1e49 (called at uShlBakuensen.cpp:96)

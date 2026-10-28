@@ -25,7 +25,7 @@ const MtDTI& cAttackParam::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 MtAllocator* cAttackParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI);
+    return MtMemoryAllocator::getAllocator(cAttackParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ MtAllocator* cAttackParam::getAllocator() {
 // Address: 0x006465d0 - 0x00646610 (64 bytes)
 void* cAttackParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cAttackParam::getAllocator()->memAlloc(sz, align, ::cAttackParam::DTI.::MtDTI::getID());
+    return cAttackParam::getAllocator()->memAlloc(sz, align, cAttackParam::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (89 bytes)
@@ -50,7 +50,7 @@ void* cAttackParam::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cAttackParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAttackParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -69,101 +69,101 @@ inline void cAttackParam::operator delete(void* p_addr) {
 // Address: 0x00646680 - 0x006468ff (639 bytes)
 cAttackParam::cAttackParam() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mAttackType2 = static_cast<u8>(0);
-    this->mIndex = static_cast<u16>(0);
-    this->mPhysAttack2 = static_cast<u16>(0);
-    this->mPhysAttackRate = 0.0f;
-    this->mWeaponBadStatusRate = 1.0f;
-    this->mIsPhysAttackOnly = false;
-    this->mMgcAttack2 = static_cast<u16>(0);
-    this->mMgcAttackRate = 0.0f;
-    this->mElementType2 = static_cast<u8>(1);
-    this->mElement = 0.0f;
-    this->mShrinkRate = 1.0f;
-    this->mShrinkType2 = static_cast<u8>(1);
-    this->mBlowRate = 1.0f;
-    this->mBlowType2 = static_cast<u8>(1);
-    this->mDownRate = 1.0f;
-    this->mShakesRate = 0.0f;
-    this->mClimbAttackFlag2 = static_cast<u8>(0);
-    this->mClimbBonusRate = 1.0f;
-    this->mSPReactionType2 = static_cast<u8>(0);
-    this->mStaminaUp = 0.0f;
-    this->mStaminaUpRate = 0.0f;
-    this->mHpUp = 0.0f;
-    this->mHpUpRate = 0.0f;
-    this->mClimbBonusRateShake = 0.0f;
-    this->mClimbBonusRateDown = 0.0f;
-    this->mClimbBonusRateShrink = 0.0f;
-    this->mClimbBonusRateBlow = 0.0f;
-    this->mWindReactionLv2 = static_cast<u8>(1);
-    this->mWindReactionSpeedY = 0.0f;
-    this->mWindReactionGravityY = 0.0f;
-    this->mWindReactionSpeedZ = 0.0f;
-    this->mWindReactionAccelerateZ = 0.0f;
-    this->mRangeType2 = static_cast<u8>(1);
-    this->mHitStopFlag2 = static_cast<u8>(0);
-    this->mDamageFlag = static_cast<u32>(0);
-    this->mHitSlowRate = 0.0f;
-    this->mDamageAngle = 0.0f;
-    this->mWork2 = static_cast<u16>(0);
-    this->mAttackID = static_cast<u16>(0);
-    this->mHitStopTime = 0.0f;
-    this->mGroundShrinkLv2 = static_cast<u8>(1);
-    this->mGroundShrinkSpeedZ = 5.0f;
-    this->mGroundShrinkAccelerateZ = -0.1f;
-    this->mGroundShrinkSpeedY = 0.0f;
-    this->mGroundShrinkGravityY = -2.0f;
-    this->mAirShrinkLv2 = static_cast<u8>(1);
-    this->mAirShrinkSpeedZ = 5.0f;
-    this->mAirShrinkAccelerateZ = 0.0f;
-    this->mAirShrinkSpeedY = 5.0f;
-    this->mAirShrinkGravityY = -2.0f;
-    this->mGroundBlowLv2 = static_cast<u8>(1);
-    this->mGroundBlowSpeedZ = 20.0f;
-    this->mGroundBlowAccelerateZ = -1.0f;
-    this->mGroundBlowSpeedY = 0.0f;
-    this->mGroundBlowGravityY = -2.0f;
-    this->mAirBlowLv2 = static_cast<u8>(1);
-    this->mAirBlowSpeedZ = 20.0f;
-    this->mAirBlowAccelerateZ = -1.0f;
-    this->mAirBlowSpeedY = 20.0f;
-    this->mAirBlowGravityY = -2.0f;
-    this->mBadStatusFlag2 = static_cast<u64>(0);
-    this->mGuardAngle = static_cast<u32>(0);
-    this->mGuardFlag2 = static_cast<u8>(0);
-    this->mOcdEndurance_5 = static_cast<u16>(0);
-    this->mOcdEndurance_2 = static_cast<u16>(0);
-    this->mOcdEndurance_1 = static_cast<u16>(0);
-    this->mOcdEndurance_3 = static_cast<u16>(0);
-    this->mOcdEndurance_4 = static_cast<u16>(0);
-    this->mBadOcdUID_5 = static_cast<u32>(0);
-    this->mGoodStatusFlag = static_cast<u32>(0);
-    this->mBadOcdUID_3 = static_cast<u32>(0);
-    this->mBadOcdUID_4 = static_cast<u32>(0);
-    this->mBadOcdUID_1 = static_cast<u32>(0);
-    this->mBadOcdUID_2 = static_cast<u32>(0);
-    this->mGuardActionRate = 1.0f;
-    this->mGuardDefence2 = static_cast<u16>(0);
-    this->mGuardAttackerReaction2 = static_cast<u8>(0);
-    this->mMultiHit = false;
-    this->mMultiHitResetTime2 = static_cast<u16>(5);
-    this->mHitCollisionFlag2 = static_cast<u16>(0);
-    this->mEffectType2 = static_cast<u8>(0);
-    this->mEffectAngle2 = static_cast<u8>(1);
-    this->mEffectFlag2 = static_cast<u16>(0);
-    this->mSeType2 = static_cast<u8>(1);
-    this->mSeSize2 = static_cast<u8>(0);
-    this->mWepCategory2 = static_cast<u8>(1);
-    this->mSeFlag2 = static_cast<u16>(0);
-    this->mFlag3 = static_cast<u64>(0);
-    this->mFlag2 = static_cast<u32>(0);
-    this->mCatchType = static_cast<u8>(0);
-    this->mCatchFlag2 = static_cast<u8>(1);
-    this->mCorePointDispTime2 = static_cast<u16>(450);
-    this->mAbilityAttackFlag = static_cast<u32>(0);
-    this->mFreeBit = static_cast<u8>(0);
-    this->mDamageMin2 = static_cast<u16>(0);
+    mAttackType2 = 0;
+    mIndex = 0;
+    mPhysAttack2 = 0;
+    mPhysAttackRate = 0.0f;
+    mWeaponBadStatusRate = 1.0f;
+    mIsPhysAttackOnly = false;
+    mMgcAttack2 = 0;
+    mMgcAttackRate = 0.0f;
+    mElementType2 = 1;
+    mElement = 0.0f;
+    mShrinkRate = 1.0f;
+    mShrinkType2 = 1;
+    mBlowRate = 1.0f;
+    mBlowType2 = 1;
+    mDownRate = 1.0f;
+    mShakesRate = 0.0f;
+    mClimbAttackFlag2 = 0;
+    mClimbBonusRate = 1.0f;
+    mSPReactionType2 = 0;
+    mStaminaUp = 0.0f;
+    mStaminaUpRate = 0.0f;
+    mHpUp = 0.0f;
+    mHpUpRate = 0.0f;
+    mClimbBonusRateShake = 0.0f;
+    mClimbBonusRateDown = 0.0f;
+    mClimbBonusRateShrink = 0.0f;
+    mClimbBonusRateBlow = 0.0f;
+    mWindReactionLv2 = 1;
+    mWindReactionSpeedY = 0.0f;
+    mWindReactionGravityY = 0.0f;
+    mWindReactionSpeedZ = 0.0f;
+    mWindReactionAccelerateZ = 0.0f;
+    mRangeType2 = 1;
+    mHitStopFlag2 = 0;
+    mDamageFlag = 0;
+    mHitSlowRate = 0.0f;
+    mDamageAngle = 0.0f;
+    mWork2 = 0;
+    mAttackID = 0;
+    mHitStopTime = 0.0f;
+    mGroundShrinkLv2 = 1;
+    mGroundShrinkSpeedZ = 5.0f;
+    mGroundShrinkAccelerateZ = -0.1f;
+    mGroundShrinkSpeedY = 0.0f;
+    mGroundShrinkGravityY = -2.0f;
+    mAirShrinkLv2 = 1;
+    mAirShrinkSpeedZ = 5.0f;
+    mAirShrinkAccelerateZ = 0.0f;
+    mAirShrinkSpeedY = 5.0f;
+    mAirShrinkGravityY = -2.0f;
+    mGroundBlowLv2 = 1;
+    mGroundBlowSpeedZ = 20.0f;
+    mGroundBlowAccelerateZ = -1.0f;
+    mGroundBlowSpeedY = 0.0f;
+    mGroundBlowGravityY = -2.0f;
+    mAirBlowLv2 = 1;
+    mAirBlowSpeedZ = 20.0f;
+    mAirBlowAccelerateZ = -1.0f;
+    mAirBlowSpeedY = 20.0f;
+    mAirBlowGravityY = -2.0f;
+    mBadStatusFlag2 = 0;
+    mGuardAngle = 0;
+    mGuardFlag2 = 0;
+    mOcdEndurance_5 = 0;
+    mOcdEndurance_2 = 0;
+    mOcdEndurance_1 = 0;
+    mOcdEndurance_3 = 0;
+    mOcdEndurance_4 = 0;
+    mBadOcdUID_5 = 0;
+    mGoodStatusFlag = 0;
+    mBadOcdUID_3 = 0;
+    mBadOcdUID_4 = 0;
+    mBadOcdUID_1 = 0;
+    mBadOcdUID_2 = 0;
+    mGuardActionRate = 1.0f;
+    mGuardDefence2 = 0;
+    mGuardAttackerReaction2 = 0;
+    mMultiHit = false;
+    mMultiHitResetTime2 = 5;
+    mHitCollisionFlag2 = 0;
+    mEffectType2 = 0;
+    mEffectAngle2 = 1;
+    mEffectFlag2 = 0;
+    mSeType2 = 1;
+    mSeSize2 = 0;
+    mWepCategory2 = 1;
+    mSeFlag2 = 0;
+    mFlag3 = 0;
+    mFlag2 = 0;
+    mCatchType = 0;
+    mCatchFlag2 = 1;
+    mCorePointDispTime2 = 450;
+    mAbilityAttackFlag = 0;
+    mFreeBit = 0;
+    mDamageMin2 = 0;
 }
 
 // Address: 0x00646900 - 0x00646c27 (807 bytes)
@@ -175,6 +175,8 @@ __attribute__((weak)) void cAttackParam::copy(const cAttackParam& src) {
 // Defined in the class (its body was written in a header).
 // cAttackParam::~cAttackParam();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAttackParam::MyDTI cAttackParam::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAttackParam.cpp at 0x00647b5f-0x00647b9c (called at rAttackParam.cpp:31)
 //   in _GLOBAL__sub_I_rAttackParam.cpp at 0x00647b5f-0x00647b9c (called at rAttackParam.h:29)
@@ -183,7 +185,7 @@ __attribute__((weak)) void cAttackParam::copy(const cAttackParam& src) {
 // Address: 0x00646320 - 0x006465d0 (688 bytes)
 MtObject* cAttackParam::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cAttackParam;
+    return new (16u) cAttackParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -200,7 +202,7 @@ const MtDTI& rAttackParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* rAttackParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::rAttackParam::DTI);
+    return MtMemoryAllocator::getAllocator(rAttackParam::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -209,7 +211,7 @@ inline MtAllocator* rAttackParam::getAllocator() {
 // Address: 0x006475d0 - 0x00647610 (64 bytes)
 void* rAttackParam::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::rAttackParam::getAllocator()->memAlloc(sz, align, ::rAttackParam::DTI.::MtDTI::getID());
+    return rAttackParam::getAllocator()->memAlloc(sz, align, rAttackParam::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -224,7 +226,7 @@ void* rAttackParam::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAttackParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAttackParam::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAttackParam::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -265,7 +267,7 @@ MT_CTSTR rAttackParam::getExt() const {
 // Address: 0x01a76650 - 0x01a76656 (6 bytes)
 u32 rAttackParam::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(110);
+    return 110;
 }
 
 // Address: 0x00647680 - 0x00647a55 (981 bytes)
@@ -273,6 +275,8 @@ __attribute__((weak)) bool rAttackParam::loadCore(MtDataReader& r) {
     DDON_STUB("rAttackParam::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAttackParam::MyDTI rAttackParam::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAttackParam.cpp at 0x00647b9c-0x00647bd9 (called at rAttackParam.cpp:1375)
@@ -282,7 +286,7 @@ __attribute__((weak)) bool rAttackParam::loadCore(MtDataReader& r) {
 // Address: 0x00647540 - 0x006475cd (141 bytes)
 MtObject* rAttackParam::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rAttackParam;
+    return new (16u) rAttackParam;
 }
 
 // Instance at 0x01a76600 - 0x01a76616 (22 bytes) of the generic rTbl2<T>::getData

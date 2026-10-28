@@ -42,7 +42,7 @@ const MtDTI& uScrollCollision::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16uScrollCollisionD0Ev at 0x013099be-0x013099df, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void uScrollCollision::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uScrollCollision::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uScrollCollision::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -64,6 +64,8 @@ uScrollCollision::uScrollCollision() {
 uScrollCollision::~uScrollCollision() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): uScrollCollision::MyDTI uScrollCollision::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // uScrollCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

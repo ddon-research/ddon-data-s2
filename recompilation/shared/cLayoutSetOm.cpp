@@ -32,7 +32,7 @@ const MtDTI& cLayoutSetOm::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cLayoutSetOm::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cLayoutSetOm::DTI);
+    return MtMemoryAllocator::getAllocator(cLayoutSetOm::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* cLayoutSetOm::getAllocator() {
 // Address: 0x002d6a50 - 0x002d6a90 (64 bytes)
 void* cLayoutSetOm::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cLayoutSetOm::getAllocator()->memAlloc(sz, align, ::cLayoutSetOm::DTI.::MtDTI::getID());
+    return cLayoutSetOm::getAllocator()->memAlloc(sz, align, cLayoutSetOm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* cLayoutSetOm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cLayoutSetOm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cLayoutSetOm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cLayoutSetOm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,14 +71,14 @@ inline void cLayoutSetOm::operator delete(void* p_addr) {
 // Address: 0x002d6b00 - 0x002d6b2d (45 bytes)
 cLayoutSetOm::cLayoutSetOm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLotType = static_cast<rLayout::TYPE>(0);
+    mLotType = rLayout::TYPE_SCR;
 }
 
 // Address: 0x002d6b30 - 0x002d6b5a (42 bytes)
 // Also emitted as: _ZN12cLayoutSetOmD0Ev at 0x002d6b60
 cLayoutSetOm::~cLayoutSetOm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::kill();
+    kill();
 }
 
 // Address: 0x002d6bc0 - 0x002d6ce4 (292 bytes)
@@ -94,13 +94,13 @@ __attribute__((weak)) void cLayoutSetOm::setup() {
 // Address: 0x002d6cf0 - 0x002d6cf5 (5 bytes)
 void cLayoutSetOm::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cLayoutSet::move();
+    this->cLayoutSet::move();
 }
 
 // Address: 0x002d6d00 - 0x002d6d06 (6 bytes)
 void cLayoutSetOm::finish() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->deleteAllUnit();
+    deleteAllUnit();
 }
 
 // Address: 0x002d6d10 - 0x002d6d11 (1 bytes)
@@ -116,18 +116,18 @@ __attribute__((weak)) void cLayoutSetOm::createProperty(MtPropertyList& s) {
 // Address: 0x002d7550 - 0x002d7579 (41 bytes)
 MtObject* cLayoutSetOm::setLayoutUnit(rLayout* pLayout, u32 no, bool isForceSet, u32 mode) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pLayout != static_cast<rLayout*>(nullptr)) {
-        if (this->::cLayoutSet::getGroupParam() != static_cast<cGroupParam*>(nullptr)) {
-            if (this->::cLayoutSet::getGroupParam()->mKillAreaType != static_cast<cGroupParam::KILL_AREA_TYPE>(0)) {
-                return this->::cLayoutSetOm::setLayoutUnitSever(pLayout, no, false, mode);
+    if (pLayout != nullptr) {
+        if (getGroupParam() != nullptr) {
+            if (getGroupParam()->mKillAreaType != cGroupParam::KILL_AREA_ALL) {
+                return setLayoutUnitSever(pLayout, no, false, mode);
             } else {
-                return this->::cLayoutSetOm::setLayoutUnitClient(pLayout, no, isForceSet, mode);
+                return setLayoutUnitClient(pLayout, no, isForceSet, mode);
             }
         } else {
-            return this->::cLayoutSetOm::setLayoutUnitSever(pLayout, no, false, mode);
+            return setLayoutUnitSever(pLayout, no, false, mode);
         }
     } else {
-        return static_cast<MtObject*>(nullptr);
+        return nullptr;
     }
 }
 
@@ -184,14 +184,14 @@ void cLayoutSetOm::deleteUnit(MtObject* pObj) {
     // inferred: a temporary for the result of the call at 0x2d7c3f, used once; no DWARF local holds it
     const MtDTI& t0 = pObj->getDTI();
     // inferred: the value the loop at 0x2d7c4d carries; no location-less local in scope fits
-    MT_CTSTR v0_1 = ::cOmControl::DTI.::MtDTI::mName;
+    MT_CTSTR v0_1 = cOmControl::DTI.mName;
     // inferred: the value the loop at 0x2d7c4d carries; no location-less local in scope fits
     for (const MtDTI* v0_0 = &t0;;) {
         if (v0_1 == v0_0->mName) {
-            ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(static_cast<cOmControl*>(pObj));
+            sOmManager::getInstance()->releaseOmCtrl(static_cast<cOmControl*>(pObj));
             return;
         } else {
-            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+            if (v0_0->mpParent != nullptr) {
                 v0_0 = v0_0->mpParent;
             } else {
                 break;
@@ -246,20 +246,20 @@ bool cLayoutSetOm::isLoadAreaChangeSet() const {
 // Address: 0x002d6de0 - 0x002d6e56 (118 bytes)
 void cLayoutSetOm::moveSetUnit() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::cLayoutSet::mpRsrc == static_cast<rLayout*>(nullptr)) {
+    if (mpRsrc == nullptr) {
         return;
     }
-    if (this->::cLayoutSet::mpRsrc->::cResource::isUsage()) {
-        if (this->canSetUnit() != false) {
-            if (this->::cLayoutSet::mpGroupParam != static_cast<cGroupParam*>(nullptr)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::isLogin() != false) {
-                    if (this->::cLayoutSet::getGroupParam()->mKillAreaType != static_cast<cGroupParam::KILL_AREA_TYPE>(0)) {
-                        this->::cLayoutSetOm::moveSetUnitSever();
+    if (mpRsrc->isUsage()) {
+        if (canSetUnit()) {
+            if (mpGroupParam != nullptr) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+                    if (getGroupParam()->mKillAreaType != cGroupParam::KILL_AREA_ALL) {
+                        moveSetUnitSever();
                     } else {
-                        this->::cLayoutSetOm::moveSetUnitClient();
+                        moveSetUnitClient();
                     }
                 } else {
-                    this->::cLayoutSetOm::moveSetUnitClient();
+                    moveSetUnitClient();
                 }
             }
         }
@@ -310,6 +310,8 @@ __attribute__((weak)) cOmControl* cLayoutSetOm::createUnitOm(const rLayout::SetI
     return nullptr;
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cLayoutSetOm::MyDTI cLayoutSetOm::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cLayoutSetOm.cpp at 0x002d7eaf-0x002d7eec (called at cLayoutSetOm.cpp:40)
 //   in _GLOBAL__sub_I_cLayoutSetOm.cpp at 0x002d7eaf-0x002d7eec (called at cLayoutSetOm.h:28)
@@ -318,6 +320,6 @@ __attribute__((weak)) cOmControl* cLayoutSetOm::createUnitOm(const rLayout::SetI
 // Address: 0x002d69f0 - 0x002d6a48 (88 bytes)
 MtObject* cLayoutSetOm::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cLayoutSetOm;
+    return new (16u) cLayoutSetOm;
 }
 

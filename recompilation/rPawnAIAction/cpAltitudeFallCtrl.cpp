@@ -25,7 +25,7 @@ const MtDTI& cpAltitudeFallCtrl::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* cpAltitudeFallCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cpAltitudeFallCtrl::DTI);
+    return MtMemoryAllocator::getAllocator(cpAltitudeFallCtrl::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -34,7 +34,7 @@ inline MtAllocator* cpAltitudeFallCtrl::getAllocator() {
 // Address: 0x0042cf10 - 0x0042cf50 (64 bytes)
 void* cpAltitudeFallCtrl::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::cpAltitudeFallCtrl::getAllocator()->memAlloc(sz, align, ::cpAltitudeFallCtrl::DTI.::MtDTI::getID());
+    return cpAltitudeFallCtrl::getAllocator()->memAlloc(sz, align, cpAltitudeFallCtrl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -49,7 +49,7 @@ void* cpAltitudeFallCtrl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cpAltitudeFallCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cpAltitudeFallCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cpAltitudeFallCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -88,7 +88,7 @@ __attribute__((weak)) void cpAltitudeFallCtrl::setup() {
 // Address: 0x0042d610 - 0x0042d615 (5 bytes)
 void cpAltitudeFallCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cpComponent::updatePtr();
+    this->cpComponent::updatePtr();
 }
 
 // Address: 0x0042d270 - 0x0042d5cc (860 bytes)
@@ -168,6 +168,8 @@ __attribute__((weak)) void cpAltitudeFallCtrl::callbackFall() {
 //   in cpAltitudeFallCtrl::after at 0x0042d478-0x0042d53d (called at cpAltitudeFallCtrl.cpp:168)
 //   in cpAltitudeFallCtrl::callbackHitLand at 0x0042d828-0x0042d944 (called at cpAltitudeFallCtrl.cpp:223)
 // f32 cpAltitudeFallCtrl::getDamageHeightWithAbility();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cpAltitudeFallCtrl::MyDTI cpAltitudeFallCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_cpAltitudeFallCtrl.cpp at 0x0042db6f-0x0042dbac (called at cpAltitudeFallCtrl.cpp:32)

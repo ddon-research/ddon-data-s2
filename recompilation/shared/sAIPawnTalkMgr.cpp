@@ -39,7 +39,7 @@ const MtDTI& sAIPawnTalkMgr::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sAIPawnTalkMgr::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sAIPawnTalkMgr::DTI);
+    return MtMemoryAllocator::getAllocator(sAIPawnTalkMgr::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ inline MtAllocator* sAIPawnTalkMgr::getAllocator() {
 // Address: 0x0071cdd0 - 0x0071ce10 (64 bytes)
 void* sAIPawnTalkMgr::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sAIPawnTalkMgr::getAllocator()->memAlloc(sz, align, ::sAIPawnTalkMgr::DTI.::MtDTI::getID());
+    return sAIPawnTalkMgr::getAllocator()->memAlloc(sz, align, sAIPawnTalkMgr::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ void* sAIPawnTalkMgr::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sAIPawnTalkMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sAIPawnTalkMgr::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sAIPawnTalkMgr::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -153,11 +153,11 @@ __attribute__((weak)) void sAIPawnTalkMgr::reqPawnTalkCore(sAIPawnTalkMgr::cAIPa
 void sAIPawnTalkMgr::receivePawnTalk(u32 talkPawnMemberIndex, u32 msgNo) {
     // DWARF local not rendered: bool disable_leave;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    sAIPawnTalkMgr::cAIPawnTalkInfo* p_info = this->::sAIPawnTalkMgr::findPawnTalkInfo(static_cast<s32>(talkPawnMemberIndex), msgNo != static_cast<u32>(25));
-    if (p_info == static_cast<sAIPawnTalkMgr::cAIPawnTalkInfo*>(nullptr)) {
+    cAIPawnTalkInfo* p_info = findPawnTalkInfo(static_cast<s32>(talkPawnMemberIndex), msgNo != 25);
+    if (p_info == nullptr) {
         return;
     }
-    this->::sAIPawnTalkMgr::reqPawnTalkCore(*p_info, msgNo, true);
+    reqPawnTalkCore(*p_info, msgNo, true);
 }
 
 // Address: 0x0071d760 - 0x0071d9d6 (630 bytes)
@@ -306,30 +306,30 @@ __attribute__((weak)) u32 sAIPawnTalkMgr::getPawnTalkMotionGroup(cAIPawnTalkMotG
 void sAIPawnTalkMgr::setPawnTalkSituationQuest(bool success) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x71f0d5, used once; no DWARF local holds it
-    f32 t0 = ::sAIPawnSys::getInstance()->::sAIPawnSys::getPawnPrmF32("PAWN_TALK_QUEST_TIMER", 90.0f);
-    if (success != false) {
-        this->mPawnTalkQuestSuccsessTimer = t0;
+    f32 t0 = sAIPawnSys::getInstance()->getPawnPrmF32("PAWN_TALK_QUEST_TIMER", 90.0f);
+    if (success) {
+        mPawnTalkQuestSuccsessTimer = t0;
     } else {
-        this->mPawnTalkQuestFailedTimer = t0;
+        mPawnTalkQuestFailedTimer = t0;
     }
 }
 
 // Address: 0x0071f100 - 0x0071f114 (20 bytes)
 bool sAIPawnTalkMgr::isPawnTalkSituationQuestSuccess() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPawnTalkQuestSuccsessTimer > 0.0f;
+    return mPawnTalkQuestSuccsessTimer > 0.0f;
 }
 
 // Address: 0x0071f120 - 0x0071f134 (20 bytes)
 bool sAIPawnTalkMgr::isPawnTalkSituationQuestFailed() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPawnTalkQuestFailedTimer > 0.0f;
+    return mPawnTalkQuestFailedTimer > 0.0f;
 }
 
 // Address: 0x0071f140 - 0x0071f154 (20 bytes)
 bool sAIPawnTalkMgr::isPawnTalkSituationFieldIn() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mPawnTalkFieldInTimer > 0.0f;
+    return mPawnTalkFieldInTimer > 0.0f;
 }
 
 // Address: 0x0071f160 - 0x0071f174 (20 bytes)
@@ -357,15 +357,15 @@ __attribute__((weak)) u32 sAIPawnTalkMgr::convTalkSituationFromMot(u32 motSituat
 // Address: 0x0071f1a0 - 0x0071f1d4 (52 bytes)
 u32 sAIPawnTalkMgr::lotAIPawnTalkMotioin(uDDOModel* pPawn, u32 motSituation, u32* pDstMoveType) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cAIPawnAutoMotionNode* p_node = this->::sAIPawnTalkMgr::lotPawnTalkMotNode(pPawn, motSituation);
-    if (p_node != static_cast<cAIPawnAutoMotionNode*>(nullptr)) {
-        u32 mot_act_no = p_node->::cAIPawnAutoMotionNode::getEMotActionNo();
-        if (pDstMoveType != static_cast<u32*>(nullptr)) {
+    cAIPawnAutoMotionNode* p_node = lotPawnTalkMotNode(pPawn, motSituation);
+    if (p_node != nullptr) {
+        u32 mot_act_no = p_node->cAIPawnAutoMotionNode::getEMotActionNo();
+        if (pDstMoveType != nullptr) {
             *pDstMoveType = p_node->mWaitMoveType;
         }
         return mot_act_no;
     } else {
-        return static_cast<u32>(4294967295);
+        return 0xFFFFFFFF;
     }
 }
 
@@ -387,14 +387,14 @@ f32 sAIPawnTalkMgr::lotAIPawnTalkWaitFrame(uDDOModel* pPawn, u32 motSituation) {
     // DWARF local not rendered: f32 add_rnd;
     // DWARF local not rendered: f32 frame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    cAIPawnAutoMotionNode* p_node = this->::sAIPawnTalkMgr::lotPawnTalkMotNode(pPawn, motSituation);
-    if (p_node != static_cast<cAIPawnAutoMotionNode*>(nullptr)) {
+    cAIPawnAutoMotionNode* p_node = lotPawnTalkMotNode(pPawn, motSituation);
+    if (p_node != nullptr) {
         // inferred: a temporary for the value the load at 0x71f673 read, used once; no DWARF local holds it
         f32 t0 = p_node->mBeginMaxFrame;
         // inferred: a temporary for the value the load at 0x71f678 read, used once; no DWARF local holds it
         f32 t1 = p_node->mBeginMinFrame;
         // inferred: a temporary for the result of the call at 0x71f689, used once; no DWARF local holds it
-        u32 t2 = ::MtRandom::instance.::MtRandom::nrand();
+        u32 t2 = MtRandom::instance.nrand();
         return p_node->mBeginMinFrame + ((t0 - t1) * (2.3283064e-10f * static_cast<float>(t2)));
     } else {
         return 210.0f;
@@ -489,6 +489,11 @@ __attribute__((weak)) cAIPawnAutoMotionNode* sAIPawnTalkMgr::lotPawnTalkMotNode(
     DDON_STUB("sAIPawnTalkMgr::lotPawnTalkMotNode")
     return nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAIPawnTalkMgr::MyDTI sAIPawnTalkMgr::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sAIPawnTalkMgr* sAIPawnTalkMgr::mpInstance;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_sAIPawnTalkMgr.cpp at 0x0071fb37-0x0071fb74 (called at sAIPawnTalkMgr.cpp:544)
@@ -594,235 +599,235 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
     // DWARF local not rendered: u32 search_id_gmd;
     // DWARF local not rendered: u32 search_id_mss;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    switch (this->mPawnPersonality - static_cast<u32>(1)) {
-        case static_cast<u32>(0):
+    switch (mPawnPersonality - 1u) {
+        case 0:
         {
             // inferred: a temporary for the result of the call at 0x71c9a0, used once; no DWARF local holds it
-            ARC_SEARCHID t0 = ::rArchiveListArray::convSearchId("RES_ID_TALK01_GMD");
+            ARC_SEARCHID t0 = rArchiveListArray::convSearchId("RES_ID_TALK01_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK01_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK01_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t0, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t0, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(1):
+        case 1:
         {
             // inferred: a temporary for the result of the call at 0x71c9bb, used once; no DWARF local holds it
-            ARC_SEARCHID t1 = ::rArchiveListArray::convSearchId("RES_ID_TALK02_GMD");
+            ARC_SEARCHID t1 = rArchiveListArray::convSearchId("RES_ID_TALK02_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK02_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK02_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t1, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t1, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(2):
+        case 2:
         {
             // inferred: a temporary for the result of the call at 0x71c9d6, used once; no DWARF local holds it
-            ARC_SEARCHID t2 = ::rArchiveListArray::convSearchId("RES_ID_TALK03_GMD");
+            ARC_SEARCHID t2 = rArchiveListArray::convSearchId("RES_ID_TALK03_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK03_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK03_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t2, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t2, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(3):
+        case 3:
         {
             // inferred: a temporary for the result of the call at 0x71c9ee, used once; no DWARF local holds it
-            ARC_SEARCHID t3 = ::rArchiveListArray::convSearchId("RES_ID_TALK04_GMD");
+            ARC_SEARCHID t3 = rArchiveListArray::convSearchId("RES_ID_TALK04_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK04_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK04_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t3, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t3, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(4):
+        case 4:
         {
             // inferred: a temporary for the result of the call at 0x71ca06, used once; no DWARF local holds it
-            ARC_SEARCHID t4 = ::rArchiveListArray::convSearchId("RES_ID_TALK05_GMD");
+            ARC_SEARCHID t4 = rArchiveListArray::convSearchId("RES_ID_TALK05_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK05_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK05_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t4, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t4, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(5):
+        case 5:
         {
             // inferred: a temporary for the result of the call at 0x71ca1e, used once; no DWARF local holds it
-            ARC_SEARCHID t5 = ::rArchiveListArray::convSearchId("RES_ID_TALK06_GMD");
+            ARC_SEARCHID t5 = rArchiveListArray::convSearchId("RES_ID_TALK06_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK06_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK06_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t5, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t5, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(6):
+        case 6:
         {
             // inferred: a temporary for the result of the call at 0x71ca36, used once; no DWARF local holds it
-            ARC_SEARCHID t6 = ::rArchiveListArray::convSearchId("RES_ID_TALK07_GMD");
+            ARC_SEARCHID t6 = rArchiveListArray::convSearchId("RES_ID_TALK07_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK07_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK07_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t6, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t6, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
         }
-        case static_cast<u32>(7):
+        case 7:
         {
             // inferred: a temporary for the result of the call at 0x71ca4e, used once; no DWARF local holds it
-            ARC_SEARCHID t7 = ::rArchiveListArray::convSearchId("RES_ID_TALK08_GMD");
+            ARC_SEARCHID t7 = rArchiveListArray::convSearchId("RES_ID_TALK08_GMD");
             // inferred: a temporary for the result of the call at 0x71ca5d, used once; no DWARF local holds it
-            ARC_SEARCHID t8 = ::rArchiveListArray::convSearchId("RES_ID_TALK08_MSS");
+            ARC_SEARCHID t8 = rArchiveListArray::convSearchId("RES_ID_TALK08_MSS");
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t7, static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), t7, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), t8, static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), t8, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
@@ -830,24 +835,24 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
         default:
         {
             // inferred: a temporary for the value the load at 0x71ca6c read, used once; no DWARF local holds it
-            sArchiveManager* t9 = ::sArchiveManager::getInstance();
-            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), static_cast<ARC_SEARCHID>(0), static_cast<u32>(1), false));
+            sArchiveManager* t9 = sArchiveManager::getInstance();
+            rGUIMessage* p_gmd = static_cast<rGUIMessage*>(t9->createRes(rArchiveListArray::convTagId("pawn_sys"), 0u, 1u, false));
             // inferred: a temporary for the value the load at 0x71ca96 read, used once; no DWARF local holds it
-            sArchiveManager* t10 = ::sArchiveManager::getInstance();
-            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->::sArchiveManager::createRes(::rArchiveListArray::convTagId("pawn_sys"), static_cast<ARC_SEARCHID>(0), static_cast<u32>(1), false));
-            if (p_gmd != static_cast<rGUIMessage*>(nullptr)) {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    this->mTalkMsgData.::cTalkMsgData::reset();
-                    this->mTalkMsgData.::cTalkMsgData::setMsgData(p_gmd);
-                    this->mTalkMsgData.::cTalkMsgData::setMsgSetData(p_mss);
-                    p_gmd->::cResource::release();
-                    p_mss->::cResource::release();
+            sArchiveManager* t10 = sArchiveManager::getInstance();
+            rMsgSet* p_mss = static_cast<rMsgSet*>(t10->createRes(rArchiveListArray::convTagId("pawn_sys"), 0u, 1u, false));
+            if (p_gmd != nullptr) {
+                if (p_mss != nullptr) {
+                    mTalkMsgData.reset();
+                    mTalkMsgData.setMsgData(p_gmd);
+                    mTalkMsgData.setMsgSetData(p_mss);
+                    p_gmd->cResource::release();
+                    p_mss->cResource::release();
                 } else {
-                    p_gmd->::cResource::release();
+                    p_gmd->cResource::release();
                 }
             } else {
-                if (p_mss != static_cast<rMsgSet*>(nullptr)) {
-                    p_mss->::cResource::release();
+                if (p_mss != nullptr) {
+                    p_mss->cResource::release();
                 }
             }
             break;
@@ -866,6 +871,8 @@ void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
 //   in sAIPawnTalkMgr::~sAIPawnTalkMgr at 0x0071d187-0x0071d192 (called at sAIPawnTalkMgr.cpp:443)
 //   and 11 more (every copy is in <bundle>.inlined.json)
 // void sAIPawnTalkMgr::cAIPawnTalkInfo::decRefCntPawnTalkInfo();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAIPawnTalkMgr::cAIPawnTalkInfo::MyDTI sAIPawnTalkMgr::cAIPawnTalkInfo::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_sAIPawnTalkMgr.cpp at 0x0071fabe-0x0071fafe (called at sAIPawnTalkMgr.cpp:91)
@@ -964,6 +971,8 @@ sAIPawnTalkMgr::cAIPawnTalkWaitNode::~cAIPawnTalkWaitNode() {
 //   in sAIPawnTalkMgr::updatePawnTalkMessageNode at 0x0071e89c-0x0071e8a0 (called at sAIPawnTalkMgr.h:206)
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // const sAIPawnTalkMgr::cAIPawnTalkInfo* sAIPawnTalkMgr::cAIPawnTalkWaitNode::getTalkInfoCore() const;
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sAIPawnTalkMgr::cAIPawnTalkWaitNode::MyDTI sAIPawnTalkMgr::cAIPawnTalkWaitNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sAIPawnTalkMgr.cpp at 0x0071fafe-0x0071fb37 (called at sAIPawnTalkMgr.cpp:400)

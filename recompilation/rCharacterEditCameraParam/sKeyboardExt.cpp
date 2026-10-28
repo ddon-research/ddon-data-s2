@@ -24,7 +24,7 @@ const MtDTI& sKeyboardExt::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* sKeyboardExt::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::sKeyboardExt::DTI);
+    return MtMemoryAllocator::getAllocator(sKeyboardExt::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -33,7 +33,7 @@ inline MtAllocator* sKeyboardExt::getAllocator() {
 // Address: 0x007dd530 - 0x007dd570 (64 bytes)
 void* sKeyboardExt::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::sKeyboardExt::getAllocator()->memAlloc(sz, align, ::sKeyboardExt::DTI.::MtDTI::getID());
+    return sKeyboardExt::getAllocator()->memAlloc(sz, align, sKeyboardExt::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -48,7 +48,7 @@ void* sKeyboardExt::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void sKeyboardExt::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sKeyboardExt::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sKeyboardExt::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -63,7 +63,7 @@ inline void sKeyboardExt::operator delete(void* p_addr) {
 // Address: 0x007dd6b0 - 0x007dd6dd (45 bytes)
 sKeyboardExt::sKeyboardExt() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mKeyStateClearNum = static_cast<u32>(0);
+    mKeyStateClearNum = 0;
 }
 
 // Address: 0x007dd6e0 - 0x007dd6e5 (5 bytes)
@@ -76,32 +76,32 @@ sKeyboardExt::~sKeyboardExt() {
 void sKeyboardExt::move() {
     // DWARF local not rendered: u32 currentType;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    this->::sKeyboard::move();
-    if (this->mKeyStateClearNum != static_cast<u32>(0)) {
-        this->::sKeyboard::mKeyState[6] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[7] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[4] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[5] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[2] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[3] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[0] = static_cast<unsigned int>(0);
-        this->::sKeyboard::mKeyState[1] = static_cast<unsigned int>(0);
-        this->::sKeyboard::clearKeyState();
-        this->mKeyStateClearNum = this->mKeyStateClearNum - static_cast<u32>(1);
+    this->sKeyboard::move();
+    if (mKeyStateClearNum != 0) {
+        mKeyState[6] = 0;
+        mKeyState[7] = 0;
+        mKeyState[4] = 0;
+        mKeyState[5] = 0;
+        mKeyState[2] = 0;
+        mKeyState[3] = 0;
+        mKeyState[0] = 0;
+        mKeyState[1] = 0;
+        clearKeyState();
+        mKeyStateClearNum = mKeyStateClearNum - 1u;
     }
-    this->::sKeyboard::getCurrentType();
+    getCurrentType();
 }
 
 // Address: 0x007dd720 - 0x007dd725 (5 bytes)
 void sKeyboardExt::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::sKeyboard::createProperty(s);
+    this->sKeyboard::createProperty(s);
 }
 
 // Address: 0x007dd730 - 0x007dd735 (5 bytes)
 MtUI* sKeyboardExt::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sKeyboard::createUI(prop);
+    return this->sKeyboard::createUI(prop);
 }
 
 // Address: 0x007dd7a0 - 0x007dd800 (96 bytes)
@@ -115,7 +115,7 @@ __attribute__((weak)) bool sKeyboardExt::isKbGetOn() {
 // Address: 0x007dd800 - 0x007dd807 (7 bytes)
 bool sKeyboardExt::isConnect() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sKeyboard::mIsConnected;
+    return mIsConnected;
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,13 +148,15 @@ bool sKeyboardExt::isConnect() {
 // Address: 0x007dd810 - 0x007dd81f (15 bytes)
 void sKeyboardExt::setKeyStateClearNum(u32 keyStateClearNum) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mKeyStateClearNum < keyStateClearNum) {
-        this->mKeyStateClearNum = keyStateClearNum;
+    if (mKeyStateClearNum < keyStateClearNum) {
+        mKeyStateClearNum = keyStateClearNum;
     }
 }
 
 // No out-of-line body: no code in the ELF
 // void sKeyboardExt::evChangeType();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sKeyboardExt::MyDTI sKeyboardExt::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_sKeyboardExt.cpp at 0x007dd830-0x007dd872 (called at sKeyboardExt.cpp:23)
@@ -164,7 +166,7 @@ void sKeyboardExt::setKeyStateClearNum(u32 keyStateClearNum) {
 // Address: 0x007dd4d0 - 0x007dd528 (88 bytes)
 MtObject* sKeyboardExt::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sKeyboardExt;
+    return new (16u) sKeyboardExt;
 }
 
 // No out-of-line body: no code in the ELF
@@ -190,7 +192,7 @@ const MtDTI& sKeyboardExt::cKeyArray::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* sKeyboardExt::cKeyArray::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::sKeyboardExt::cKeyArray::DTI)->memAlloc(sz, align, ::sKeyboardExt::cKeyArray::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(sKeyboardExt::cKeyArray::DTI)->memAlloc(sz, align, sKeyboardExt::cKeyArray::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -204,7 +206,7 @@ inline void* sKeyboardExt::cKeyArray::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void sKeyboardExt::cKeyArray::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sKeyboardExt::cKeyArray::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sKeyboardExt::cKeyArray::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,6 +241,8 @@ inline void sKeyboardExt::cKeyArray::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void sKeyboardExt::cKeyArray::clearKey(sKeyboard::KB_TYPE);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sKeyboardExt::cKeyArray::MyDTI sKeyboardExt::cKeyArray::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_sKeyboardExt.cpp at 0x007dd872-0x007dd8ab (called at sKeyboardExt.cpp:26)
 //   in _GLOBAL__sub_I_sKeyboardExt.cpp at 0x007dd872-0x007dd8ab (called at sKeyboardExt.h:250)
@@ -247,6 +251,6 @@ inline void sKeyboardExt::cKeyArray::operator delete(void* p_addr) {
 // Address: 0x007dd5e0 - 0x007dd640 (96 bytes)
 MtObject* sKeyboardExt::cKeyArray::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::sKeyboardExt::cKeyArray;
+    return new (16u) sKeyboardExt::cKeyArray;
 }
 

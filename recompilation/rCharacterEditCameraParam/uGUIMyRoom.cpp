@@ -36,7 +36,7 @@ const MtDTI& uGUIMyRoom::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMyRoom::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMyRoom::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -45,7 +45,7 @@ inline MtAllocator* uGUIMyRoom::getAllocator() {
 // Address: 0x00b29c30 - 0x00b29c70 (64 bytes)
 void* uGUIMyRoom::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMyRoom::getAllocator()->memAlloc(sz, align, ::uGUIMyRoom::DTI.::MtDTI::getID());
+    return uGUIMyRoom::getAllocator()->memAlloc(sz, align, uGUIMyRoom::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -60,7 +60,7 @@ void* uGUIMyRoom::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMyRoom::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMyRoom::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -102,16 +102,16 @@ __attribute__((weak)) void uGUIMyRoom::setListItems(const nGUIMyRoom::cListItems
 // Address: 0x00b2a540 - 0x00b2a548 (8 bytes)
 void uGUIMyRoom::setInputEventHandler(nGUIMyRoom::cListInputEventHandler* listInputEventHandler) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mListInputEventHandler = listInputEventHandler;
+    mListInputEventHandler = listInputEventHandler;
 }
 
 // Address: 0x00b2a550 - 0x00b2a565 (21 bytes)
 u32 uGUIMyRoom::getItemIndex() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mList.mScrollList.mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        return static_cast<u32>(this->mList.mScrollList.mpVCtrl->::cControl::getCurrentPos());
+    if (mList.mScrollList.mpVCtrl != nullptr) {
+        return static_cast<u32>(mList.mScrollList.mpVCtrl->getCurrentPos());
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -124,10 +124,10 @@ __attribute__((weak)) void uGUIMyRoom::setupAfterLoad() {
 // Address: 0x00b2ab20 - 0x00b2ab63 (67 bytes)
 void uGUIMyRoom::onMoveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::offAllFocus();
-    this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), true);
-    this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::moveInput();
-    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::execute();
+    mControlMgr.offAllFocus();
+    mControlMgr.setCategoryFocus(0u, true);
+    mControlMgr.moveInput();
+    mCloseButton.execute();
 }
 
 // Address: 0x00b2ab70 - 0x00b2acea (378 bytes)
@@ -140,31 +140,31 @@ __attribute__((weak)) void uGUIMyRoom::onMoveEvent() {
 // Address: 0x00b2ad30 - 0x00b2ada2 (114 bytes)
 void uGUIMyRoom::onShow() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    if (this->::uGUIMyRoomBase::mpINST_Null_main != static_cast<cGUIInstNull*>(nullptr)) {
-        this->::uGUIMyRoomBase::mpINST_Null_main->::cGUIInstance::setVisible(true);
-        if (this->::uGUIMyRoomBase::mpINST_Null_main != static_cast<cGUIInstNull*>(nullptr)) {
-            this->::uGUIMyRoomBase::mpINST_Null_main->::cGUIInstance::setExecute(true);
+    if (mpINST_Null_main != nullptr) {
+        mpINST_Null_main->setVisible(true);
+        if (mpINST_Null_main != nullptr) {
+            mpINST_Null_main->setExecute(true);
         }
     }
-    if (this->mListInputEventHandler == static_cast<nGUIMyRoom::cListInputEventHandler*>(nullptr)) {
+    if (mListInputEventHandler == nullptr) {
         return;
     }
     // inferred: a temporary for the result of the call at 0xb2ad7b, used once; no DWARF local holds it
-    s32 t0 = this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1));
-    this->mListInputEventHandler->onListInputEventSelect(*this, static_cast<u32>(t0));
+    s32 t0 = mControlMgr.getCurrentPos(1u);
+    mListInputEventHandler->onListInputEventSelect(*this, static_cast<u32>(t0));
 }
 
 // Address: 0x00b2adb0 - 0x00b2adec (60 bytes)
 void uGUIMyRoom::onHide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIMyRoomBase::mpINST_Null_main == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpINST_Null_main == nullptr) {
         return;
     }
-    this->::uGUIMyRoomBase::mpINST_Null_main->::cGUIInstance::setVisible(false);
-    if (this->::uGUIMyRoomBase::mpINST_Null_main == static_cast<cGUIInstNull*>(nullptr)) {
+    mpINST_Null_main->setVisible(false);
+    if (mpINST_Null_main == nullptr) {
         return;
     }
-    this->::uGUIMyRoomBase::mpINST_Null_main->::cGUIInstance::setExecute(false);
+    mpINST_Null_main->setExecute(false);
 }
 
 // Address: 0x00b2adf0 - 0x00b2ae44 (84 bytes)
@@ -197,8 +197,8 @@ __attribute__((weak)) u32 uGUIMyRoom::evCtrlDecide(cControl::Message* msg) {
 // Address: 0x00b2ae60 - 0x00b2ae72 (18 bytes)
 u32 uGUIMyRoom::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (36 bytes)
@@ -230,6 +230,8 @@ __attribute__((weak)) void uGUIMyRoom::hideListItem(uGUIBase::cScrollListItemBas
     DDON_STUB("uGUIMyRoom::hideListItem")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoom::MyDTI uGUIMyRoom::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e440-0x00b2e479 (called at uGUIMyRoom.cpp:178)
@@ -384,7 +386,7 @@ const MtDTI& uGUIMyRoom::cList::cItem::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void uGUIMyRoom::cList::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::cList::cItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMyRoom::cList::cItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -421,6 +423,8 @@ __attribute__((weak)) void uGUIMyRoom::cList::cItem::setup(uGUIMyRoom& owner, cG
 // No out-of-line body: 1 inlined copy in 1 function (16 bytes)
 //   in uGUIMyRoom::hideListItem at 0x00b2b025-0x00b2b035 (called at uGUIMyRoom.cpp:872)
 // void uGUIMyRoom::cList::cItem::hide();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoom::cList::cItem::MyDTI uGUIMyRoom::cList::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e4b9-0x00b2e4f9 (called at uGUIMyRoom.cpp:912)
@@ -503,6 +507,8 @@ uGUIMyRoom::cList::cInfo::~cInfo() {
 //   in uGUIMyRoom::cList::setItems at 0x00b2a30f-0x00b2a3c9 (called at uGUIMyRoom.cpp:807)
 // void uGUIMyRoom::cList::cInfo::setString(MT_CTSTR str);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoom::cList::cInfo::MyDTI uGUIMyRoom::cList::cInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e479-0x00b2e4b9 (called at uGUIMyRoom.cpp:889)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e479-0x00b2e4b9 (called at uGUIMyRoom.h:239)
@@ -550,7 +556,7 @@ const MtDTI& uGUIMyRoomBase::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMyRoomBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomBase::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMyRoomBase::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -591,7 +597,7 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIMyRoomBase::getGuiResInfo(
 // Address: 0x00b29980 - 0x00b29986 (6 bytes)
 t64 uGUIMyRoomBase::getGuiResUpdateTime() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<t64>(1473313874);
+    return 1473313874;
 }
 
 // Address: 0x00b29990 - 0x00b299a0 (16 bytes)
@@ -604,39 +610,41 @@ __attribute__((weak)) const nGUIBaseExt::ResInfo* uGUIMyRoomBase::getGmdResInfo(
 // Address: 0x00b299a0 - 0x00b299a6 (6 bytes)
 u32 uGUIMyRoomBase::getGmdResNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // Address: 0x00b299b0 - 0x00b29a8c (220 bytes)
 void uGUIMyRoomBase::setupAfterLoad() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
-    this->setPlay(true);
-    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
-    this->mpINST_Null_main = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(347), false));
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    setPlay(true);
+    setFlowAndInit(3u, false);
+    mpINST_Null_main = static_cast<cGUIInstNull*>(getInstance(347u, false));
     // inferred: a temporary for the result of the call at 0xb29a23, used twice; no DWARF local holds it
-    cGUIInstance* t0 = this->getInstance(static_cast<u32>(348), false);
-    this->mpINST_Null_pop = static_cast<cGUIInstNull*>(t0);
-    if (this->mpINST_Null_main != static_cast<cGUIInstNull*>(nullptr)) {
-        this->mpINST_Null_main->::cGUIInstance::setVisible(false);
-        if (this->mpINST_Null_main != static_cast<cGUIInstNull*>(nullptr)) {
-            this->mpINST_Null_main->::cGUIInstance::setExecute(false);
+    cGUIInstance* t0 = getInstance(348u, false);
+    mpINST_Null_pop = static_cast<cGUIInstNull*>(t0);
+    if (mpINST_Null_main != nullptr) {
+        mpINST_Null_main->setVisible(false);
+        if (mpINST_Null_main != nullptr) {
+            mpINST_Null_main->setExecute(false);
         }
-        if (this->mpINST_Null_pop != static_cast<cGUIInstNull*>(nullptr)) {
-            this->mpINST_Null_pop->::cGUIInstance::setVisible(false);
-            if (this->mpINST_Null_pop != static_cast<cGUIInstNull*>(nullptr)) {
-                this->mpINST_Null_pop->::cGUIInstance::setExecute(false);
+        if (mpINST_Null_pop != nullptr) {
+            mpINST_Null_pop->setVisible(false);
+            if (mpINST_Null_pop != nullptr) {
+                mpINST_Null_pop->setExecute(false);
             }
         }
     } else {
-        if (this->mpINST_Null_pop != static_cast<cGUIInstNull*>(nullptr)) {
-            t0->::cGUIInstance::setVisible(false);
-            if (this->mpINST_Null_pop != static_cast<cGUIInstNull*>(nullptr)) {
-                this->mpINST_Null_pop->::cGUIInstance::setExecute(false);
+        if (mpINST_Null_pop != nullptr) {
+            t0->setVisible(false);
+            if (mpINST_Null_pop != nullptr) {
+                mpINST_Null_pop->setExecute(false);
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoomBase::MyDTI uGUIMyRoomBase::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (124 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e402-0x00b2e440 (called at uGUIMyRoom.cpp:52)
@@ -663,7 +671,7 @@ const MtDTI& uGUIMyRoomPopup::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIMyRoomPopup::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -672,7 +680,7 @@ inline MtAllocator* uGUIMyRoomPopup::getAllocator() {
 // Address: 0x00b2bc50 - 0x00b2bc90 (64 bytes)
 void* uGUIMyRoomPopup::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIMyRoomPopup::getAllocator()->memAlloc(sz, align, ::uGUIMyRoomPopup::DTI.::MtDTI::getID());
+    return uGUIMyRoomPopup::getAllocator()->memAlloc(sz, align, uGUIMyRoomPopup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -687,7 +695,7 @@ void* uGUIMyRoomPopup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMyRoomPopup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -715,16 +723,16 @@ uGUIMyRoomPopup::~uGUIMyRoomPopup() {
 // Address: 0x00b2c150 - 0x00b2c1a2 (82 bytes)
 void uGUIMyRoomPopup::setTitle(MT_CTSTR title) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    if (this->::uGUIBase::isAttachedResource() == false) {
+    if (!isAttachedResource()) {
         return;
     }
     // inferred: a temporary for the value the load at 0xb2c163 read, used twice; no DWARF local holds it
-    cGUIObjMessage* t0 = this->mTitle.mpOBJ_msg_poptitile_m_poptitle;
-    if (t0 == static_cast<cGUIObjMessage*>(nullptr)) {
+    cGUIObjMessage* t0 = mTitle.mpOBJ_msg_poptitile_m_poptitle;
+    if (t0 == nullptr) {
         return;
     }
-    if (title != static_cast<MT_CTSTR>(nullptr)) {
-        t0->::cGUIObjMessage::setMessage(title, static_cast<unsigned int>(::strlen(title)));
+    if (title != nullptr) {
+        t0->setMessage(title, static_cast<unsigned int>(strlen(title)));
     } else {
         t0->clearMessage();
     }
@@ -741,7 +749,7 @@ __attribute__((weak)) void uGUIMyRoomPopup::setListItems(const nGUIMyRoom::cPopu
 // Address: 0x00b2c6b0 - 0x00b2c6b8 (8 bytes)
 void uGUIMyRoomPopup::setInputEventHandler(nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPopupListInputEventHandler = popupListInputEventHandler;
+    mPopupListInputEventHandler = popupListInputEventHandler;
 }
 
 // Address: 0x00b2c6c0 - 0x00b2c7d7 (279 bytes)
@@ -772,14 +780,14 @@ __attribute__((weak)) void uGUIMyRoomPopup::onShow() {
 // Address: 0x00b2d1c0 - 0x00b2d1fc (60 bytes)
 void uGUIMyRoomPopup::onHide() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->::uGUIMyRoomBase::mpINST_Null_pop == static_cast<cGUIInstNull*>(nullptr)) {
+    if (mpINST_Null_pop == nullptr) {
         return;
     }
-    this->::uGUIMyRoomBase::mpINST_Null_pop->::cGUIInstance::setVisible(false);
-    if (this->::uGUIMyRoomBase::mpINST_Null_pop == static_cast<cGUIInstNull*>(nullptr)) {
+    mpINST_Null_pop->setVisible(false);
+    if (mpINST_Null_pop == nullptr) {
         return;
     }
-    this->::uGUIMyRoomBase::mpINST_Null_pop->::cGUIInstance::setExecute(false);
+    mpINST_Null_pop->setExecute(false);
 }
 
 // Address: 0x00b2d200 - 0x00b2d254 (84 bytes)
@@ -803,8 +811,8 @@ __attribute__((weak)) void uGUIMyRoomPopup::setupControls() {
 // Address: 0x00b2d3a0 - 0x00b2d3b2 (18 bytes)
 u32 uGUIMyRoomPopup::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-    return static_cast<u32>(0);
+    setInputEvent(66u);
+    return 0;
 }
 
 // Address: 0x00b2cfd0 - 0x00b2d0b8 (232 bytes)
@@ -818,8 +826,8 @@ __attribute__((weak)) void uGUIMyRoomPopup::evDecide() {
 // Address: 0x00b2d3c0 - 0x00b2d3d2 (18 bytes)
 u32 uGUIMyRoomPopup::evCtrlCancel(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-    return static_cast<u32>(0);
+    setInputEvent(67u);
+    return 0;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (57 bytes)
@@ -831,30 +839,30 @@ u32 uGUIMyRoomPopup::evCtrlCancel(cControl::Message* msg) {
 u32 uGUIMyRoomPopup::evCtrlMoveLayout(cControl::Message* msg) {
     // DWARF local not rendered: u32 input_event_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        const s32 old_layout_id = this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::getOldPos(static_cast<u32>(1));
-        const s32 current_layout_id = this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1));
+    if (msg != nullptr) {
+        const s32 old_layout_id = mControlMgr.getOldPos(1u);
+        const s32 current_layout_id = mControlMgr.getCurrentPos(1u);
         if (old_layout_id != current_layout_id) {
-            if (current_layout_id == static_cast<s32>(0)) {
-                if (msg->reason == static_cast<nGUIExt::MSG_REASON>(1)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+            if (current_layout_id == 0) {
+                if (msg->reason == nGUIExt::TRG_DOWN) {
+                    setInputEvent(70u);
                 } else {
-                    if (msg->reason == static_cast<nGUIExt::MSG_REASON>(0)) {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+                    if (msg->reason == nGUIExt::BTN_START) {
+                        setInputEvent(71u);
                     } else {
-                        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+                        setInputEvent(68u);
                     }
                 }
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+                setInputEvent(68u);
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+            setInputEvent(68u);
         }
-        return static_cast<u32>(0);
+        return 0;
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
-        return static_cast<u32>(0);
+        setInputEvent(68u);
+        return 0;
     }
 }
 
@@ -864,8 +872,8 @@ u32 uGUIMyRoomPopup::evCtrlMoveLayout(cControl::Message* msg) {
 // Address: 0x00b2d470 - 0x00b2d482 (18 bytes)
 u32 uGUIMyRoomPopup::evCtrlMoveButton(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-    return static_cast<u32>(0);
+    setInputEvent(69u);
+    return 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -875,27 +883,27 @@ u32 uGUIMyRoomPopup::evCtrlMoveButton(cControl::Message* msg) {
 u32 uGUIMyRoomPopup::evCtrlButtonMouseDecide(cControl::Message* msg) {
     // DWARF local not rendered: u32 input_event_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (msg != static_cast<cControl::Message*>(nullptr)) {
-        if (msg->reason == static_cast<nGUIExt::MSG_REASON>(37)) {
+    if (msg != nullptr) {
+        if (msg->reason == nGUIExt::MOUSE_LCLICK) {
             const s32 click_vol = msg->click_vol;
-            if (click_vol > static_cast<s32>(-1)) {
-                const s32 layout_id = this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1));
+            if (click_vol > -1) {
+                const s32 layout_id = mControlMgr.getCurrentPos(1u);
                 if (click_vol != layout_id) {
-                    this->::uGUIMyRoomBase::mControlMgr.::cGUIControlMgr::setCurrentPos(static_cast<u32>(1), click_vol);
+                    mControlMgr.setCurrentPos(1u, click_vol);
                 }
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-                return static_cast<u32>(0);
+                setInputEvent(66u);
+                return 0;
             } else {
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                return static_cast<u32>(0);
+                setInputEvent(69u);
+                return 0;
             }
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-            return static_cast<u32>(0);
+            setInputEvent(69u);
+            return 0;
         }
     } else {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-        return static_cast<u32>(0);
+        setInputEvent(69u);
+        return 0;
     }
 }
 
@@ -941,6 +949,8 @@ __attribute__((weak)) void uGUIMyRoomPopup::hideListItem(uGUIBase::cScrollListIt
     DDON_STUB("uGUIMyRoomPopup::hideListItem")
     /* stub */
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoomPopup::MyDTI uGUIMyRoomPopup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e4f9-0x00b2e532 (called at uGUIMyRoom.cpp:989)
@@ -1068,10 +1078,13 @@ __attribute__((weak)) void uGUIMyRoomPopup::cList::setItems(const nGUIMyRoom::cP
 //   in uGUIMyRoomPopup::cList::setup at 0x00b2ca48-0x00b2ca7a (called at uGUIMyRoom.cpp:1833)
 // void uGUIMyRoomPopup::cList::resetList();
 
-// No out-of-line body: 2 inlined copies in 2 functions (119 bytes)
-//   in uGUIMyRoomPopup::cList::cItem::moveEvent at 0x00b2dfac-0x00b2dfe8 (called at uGUIMyRoom.cpp:2393)
-//   in uGUIMyRoomPopup::cList::cItem::onDecide at 0x00b2e0f2-0x00b2e12d (called at uGUIMyRoom.cpp:2442)
-// void uGUIMyRoomPopup::cList::resetDisp();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a parameter's register held from a copy's entry: 2 of the copies' parameters DWARF locates in a register only after the copy's entry, bound from the entry where every instruction to there falls through and none writes it (026 plan-P80); then inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUIMyRoomPopup::cList::resetDisp() {
+    mScrollList.setupList(mMaskHeight, mMaskHeight, false);
+    mScrollList.setSliderPos(mScrollList.getSliderPos(), true);
+    mScrollList.setListPos(true);
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (42 bytes)
 //   in uGUIMyRoomPopup::evDecide at 0x00b2d030-0x00b2d05a (called at uGUIMyRoom.cpp:1884)
@@ -1205,6 +1218,8 @@ __attribute__((weak)) void uGUIMyRoomPopup::cList::cInfo::setListString(u32 list
 //   and 1 more (every copy is in <bundle>.inlined.json)
 // uGUIMyRoomPopup::cList::cItem* uGUIMyRoomPopup::cList::cInfo::getItem();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoomPopup::cList::cInfo::MyDTI uGUIMyRoomPopup::cList::cInfo::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e532-0x00b2e56b (called at uGUIMyRoom.cpp:2083)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e532-0x00b2e56b (called at uGUIMyRoom.h:502)
@@ -1252,7 +1267,7 @@ const MtDTI& uGUIMyRoomPopup::cList::cItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIMyRoomPopup::cList::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::cList::cItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::cList::cItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1346,6 +1361,8 @@ __attribute__((weak)) void uGUIMyRoomPopup::cList::cItem::show(uGUIMyRoomPopup::
 //   in uGUIMyRoomPopup::cList::cItem::moveEvent at 0x00b2df9b-0x00b2dfa4, 0x00b2dfa7-0x00b2dfac (called at uGUIMyRoom.cpp:2391)
 //   in uGUIMyRoomPopup::cList::cItem::onDecide at 0x00b2e0df-0x00b2e0e8, 0x00b2e0ed-0x00b2e0f2 (called at uGUIMyRoom.cpp:2440)
 // void uGUIMyRoomPopup::cList::cItem::setNullPriority(u32 priority);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIMyRoomPopup::cList::cItem::MyDTI uGUIMyRoomPopup::cList::cItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_uGUIMyRoom.cpp at 0x00b2e56b-0x00b2e5a4 (called at uGUIMyRoom.cpp:2231)

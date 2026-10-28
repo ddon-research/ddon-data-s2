@@ -43,7 +43,7 @@ const MtDTI& cTalkState::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cTalkState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cTalkState::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cTalkState::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -58,70 +58,70 @@ inline void cTalkState::operator delete(void* p_addr) {
 // Address: 0x001cb1a0 - 0x001cb1a5 (5 bytes)
 u8 cTalkState::getRno0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno0;
+    return mRno0;
 }
 
 // Address: 0x001cb1b0 - 0x001cb1b5 (5 bytes)
 u8 cTalkState::getRno1() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mRno1;
+    return mRno1;
 }
 
 // Address: 0x001cb1c0 - 0x001cb1c5 (5 bytes)
 u8 cTalkState::getNextRno0() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNextRno0;
+    return mNextRno0;
 }
 
 // Address: 0x001cb1d0 - 0x001cb1d4 (4 bytes)
 nTalk::TALK_STATE cTalkState::getNextState() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mNextState;
+    return mNextState;
 }
 
 // Address: 0x001cb1e0 - 0x001cb1e3 (3 bytes)
 nTalk::TALK_STATE cTalkState::getState() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<nTalk::TALK_STATE>(0);
+    return nTalk::TALK_STATE_NONE;
 }
 
 // Address: 0x001cb1f0 - 0x001cb20c (28 bytes)
 bool cTalkState::shouldTransition() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x1cb1fc, used once; no DWARF local holds it
-    nTalk::TALK_STATE t0 = this->getState();
-    return this->mNextState != t0;
+    nTalk::TALK_STATE t0 = getState();
+    return mNextState != t0;
 }
 
 // Address: 0x001cb210 - 0x001cb218 (8 bytes)
 void cTalkState::setRno0(u8 r0, u8 r1) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno0 = r0;
-    this->mRno1 = r1;
+    mRno0 = r0;
+    mRno1 = r1;
 }
 
 // Address: 0x001cb220 - 0x001cb225 (5 bytes)
 void cTalkState::setRno1(u8 r1) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mRno1 = r1;
+    mRno1 = r1;
 }
 
 // Address: 0x001cb230 - 0x001cb235 (5 bytes)
 void cTalkState::setNextRno0(u8 r0) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextRno0 = r0;
+    mNextRno0 = r0;
 }
 
 // Address: 0x001cb240 - 0x001cb244 (4 bytes)
 void cTalkState::setNextState(nTalk::TALK_STATE talkState) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextState = talkState;
+    mNextState = talkState;
 }
 
 // Address: 0x001cb250 - 0x001cb269 (25 bytes)
 void cTalkState::initialize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextState = this->getState();
+    mNextState = getState();
 }
 
 // Address: 0x001cb270 - 0x001cb271 (1 bytes)
@@ -142,25 +142,25 @@ __attribute__((weak)) void cTalkState::updateUnitPtr() {
 // Address: 0x001cb2a0 - 0x001cb2a8 (8 bytes)
 void cTalkState::talkEnd() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextState = static_cast<nTalk::TALK_STATE>(0);
+    mNextState = nTalk::TALK_STATE_NONE;
 }
 
 // Address: 0x001cb2b0 - 0x001cb2d0 (32 bytes)
 cTalkState::cTalkState() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextRno0 = static_cast<u8>(0);
-    this->mRno0 = static_cast<u8>(0);
-    this->mRno1 = static_cast<u8>(0);
-    this->mNextState = static_cast<nTalk::TALK_STATE>(0);
+    mNextRno0 = 0;
+    mRno0 = 0;
+    mRno1 = 0;
+    mNextState = nTalk::TALK_STATE_NONE;
 }
 
 // Address: 0x001cb2d0 - 0x001cb2f2 (34 bytes)
 cTalkState::cTalkState(u8 r0) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mNextState = static_cast<nTalk::TALK_STATE>(0);
-    this->mRno0 = r0;
-    this->mRno1 = static_cast<u8>(0);
-    this->mNextRno0 = static_cast<u8>(0);
+    mNextState = nTalk::TALK_STATE_NONE;
+    mRno0 = r0;
+    mRno1 = 0;
+    mNextRno0 = 0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -176,6 +176,8 @@ cTalkState::~cTalkState() {
 __attribute__((weak)) void cTalkState::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: two .ctors functions name it): cTalkState::MyDTI cTalkState::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cTalkState.cpp at 0x001cb45f-0x001cb49f (called at cTalkState.cpp:27)

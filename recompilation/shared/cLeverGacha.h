@@ -74,3 +74,17 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: a single inlined copy's body: the copy inlined in cLeverGacha::initLeverGacha at 0x2d81c0-0x2d81e6; it may reflect that caller's specialization (constants folded in, dead stores dropped), so read it with caution (026 plan-P76, ruling D-C2); approximate: no recompile checks it
+inline void cLeverGacha::commandReset(s32 param) {
+    this->mCntMax = param;
+    this->mResult = false;
+    this->mOldMouseZ = 0;
+    this->mOldMouseX = 0;
+    this->mOldMouseY = 0;
+    this->mOldLvLx = 0.0f;
+    this->mOldLvLy = 0.0f;
+    this->mCnt = 0.0f;
+    this->mOldAngleType = 0;
+}

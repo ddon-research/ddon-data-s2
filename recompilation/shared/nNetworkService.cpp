@@ -93,27 +93,27 @@ __attribute__((weak)) void nNetwork::Context::move() {
 // Address: 0x01366da0 - 0x01366e27 (135 bytes)
 void nNetwork::Context::reset() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    if (this->mpContext != static_cast<MtNetContext*>(nullptr)) {
-        delete this->mpContext;
-        this->mpContext = static_cast<MtNetContext*>(nullptr);
+    if (mpContext != nullptr) {
+        delete mpContext;
+        mpContext = nullptr;
     }
-    ::memset(static_cast<void*>(&this->mInviteSessionInfo), static_cast<int>(0), static_cast<size_t>(532));
-    this->mServiceError.mNative = static_cast<s32>(0);
-    this->mServiceError.mNo = static_cast<s32>(0);
-    this->mServiceError.mCause = static_cast<s32>(0);
-    this->mpFriendList = static_cast<MtNetFriendList*>(nullptr);
-    this->mStart = false;
-    this->mFinal = false;
-    this->mIsFriendListChange = false;
-    this->mIsSignInChange = false;
-    this->mInviteState = static_cast<s32>(0);
-    this->mReqStart = static_cast<u32>(0);
-    this->mReqFinal = static_cast<u32>(0);
-    if (this->mState == static_cast<s32>(0)) {
+    ::memset(static_cast<void*>(&mInviteSessionInfo), 0, 532ul);
+    mServiceError.mNative = 0;
+    mServiceError.mNo = 0;
+    mServiceError.mCause = 0;
+    mpFriendList = nullptr;
+    mStart = false;
+    mFinal = false;
+    mIsFriendListChange = false;
+    mIsSignInChange = false;
+    mInviteState = 0;
+    mReqStart = 0;
+    mReqFinal = 0;
+    if (mState == 0) {
         return;
     }
-    this->mState = static_cast<s32>(0);
-    (::sNetwork::mpInstance)->::sNetwork::notifyServiceStateChange(this->mUserIndex, static_cast<s32>(0), static_cast<const MtNetError*>(nullptr));
+    mState = 0;
+    (::sNetwork::mpInstance)->::sNetwork::notifyServiceStateChange(mUserIndex, 0, static_cast<const MtNetError*>(nullptr));
 }
 
 // Address: 0x01367ac0 - 0x01367c37 (375 bytes)
@@ -128,16 +128,15 @@ __attribute__((weak)) void nNetwork::Context::bootup() {
 // Address: 0x01367c40 - 0x01367c91 (81 bytes)
 void nNetwork::Context::shutdown() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mState == static_cast<s32>(0)) {
+    if (mState == 0) {
         return;
     }
-    if (this->mState == static_cast<s32>(5)) {
-    } else {
-        if (this->mpContext != static_cast<MtNetContext*>(nullptr)) {
-            this->mpContext->isFatal();
+    if (mState != 5) {
+        if (mpContext != nullptr) {
+            mpContext->isFatal();
         }
-        this->mState = static_cast<s32>(5);
-        (::sNetwork::mpInstance)->::sNetwork::notifyServiceStateChange(this->mUserIndex, static_cast<s32>(5), static_cast<const MtNetError*>(nullptr));
+        mState = 5;
+        (::sNetwork::mpInstance)->::sNetwork::notifyServiceStateChange(mUserIndex, 5, static_cast<const MtNetError*>(nullptr));
     }
 }
 
@@ -240,21 +239,21 @@ __attribute__((weak)) void nNetwork::Context::onNtcSignInChange(s32 sign_in_leve
 // Address: 0x013681f0 - 0x013681f9 (9 bytes)
 void nNetwork::Context::onNtcFriendListChange(MtNetFriendList* friend_list) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIsFriendListChange = true;
-    this->mpFriendList = friend_list;
+    mIsFriendListChange = true;
+    mpFriendList = friend_list;
 }
 
 // Address: 0x01368210 - 0x01368218 (8 bytes)
 void nNetwork::Context::onNtcInviteAccept() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInviteState = static_cast<s32>(1);
+    mInviteState = 1;
 }
 
 // Address: 0x01368230 - 0x0136824b (27 bytes)
 void nNetwork::Context::onNtcInviteAcceptSucceed(MtNetSessionInfo* info) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mInviteState = static_cast<s32>(2);
-    ::memcpy(static_cast<void*>(&this->mInviteSessionInfo), static_cast<const void*>(info), static_cast<size_t>(520));
+    mInviteState = 2;
+    ::memcpy(static_cast<void*>(&mInviteSessionInfo), static_cast<const void*>(info), 520ul);
 }
 
 // Address: 0x01368270 - 0x0136828b (27 bytes)
@@ -266,9 +265,9 @@ __attribute__((weak)) void nNetwork::Context::onNtcInviteAcceptFail(MtNetError* 
 // Address: 0x01368430 - 0x01368446 (22 bytes)
 void nNetwork::Context::onAnsStartSucceed(u32 req_seq, s32 sign_in_level) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mReqStart = static_cast<u32>(0);
-    this->mStart = true;
-    this->::nNetwork::Context::updateServiceState(sign_in_level, static_cast<MtNetError*>(nullptr));
+    mReqStart = 0;
+    mStart = true;
+    updateServiceState(sign_in_level, static_cast<MtNetError*>(nullptr));
 }
 
 // Address: 0x01368470 - 0x013684f5 (133 bytes)
@@ -280,8 +279,10 @@ __attribute__((weak)) void nNetwork::Context::onAnsStartFail(u32 req_seq, MtNetE
 // Address: 0x01368590 - 0x01368595 (5 bytes)
 void nNetwork::Context::onAnsFinalize(u32 req_seq) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFinal = false;
+    mFinal = false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): nNetwork::Context::MyDTI nNetwork::Context::DTI;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // nNetwork::Context::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

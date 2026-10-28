@@ -54,7 +54,7 @@ const MtDTI& cAIPawnAutoMotionNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnAutoMotionNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnAutoMotionNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnAutoMotionNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -82,12 +82,14 @@ cAIPawnAutoMotionNode::~cAIPawnAutoMotionNode() {
 u32 cAIPawnAutoMotionNode::getEMotActionNo() {
     // DWARF local not rendered: u32 act_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mEMotActionNo;
+    return mEMotActionNo;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (132 bytes)
 //   in _ZN6nDDOIO11readMtArrayI21cAIPawnAutoMotionNodeEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a71b5e-0x01a71be2 (called at nDDOIO.h:451)
 // void cAIPawnAutoMotionNode::load(MtDataReader& r);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnAutoMotionNode::MyDTI cAIPawnAutoMotionNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (136 bytes)
 //   in _GLOBAL__sub_I_rAIPawnAutoWordTbl.cpp at 0x0063f870-0x0063f8b4 (called at rAIPawnAutoWordTbl.cpp:164)
@@ -139,7 +141,7 @@ const MtDTI& cAIPawnAutoWordNode::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cAIPawnAutoWordNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cAIPawnAutoWordNode::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -164,6 +166,8 @@ inline void cAIPawnAutoWordNode::operator delete(void* p_addr) {
 cAIPawnAutoWordNode::~cAIPawnAutoWordNode() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cAIPawnAutoWordNode::MyDTI cAIPawnAutoWordNode::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rAIPawnAutoWordTbl.cpp at 0x0063f8f1-0x0063f92a (called at rAIPawnAutoWordTbl.cpp:944)
@@ -199,7 +203,7 @@ const MtDTI& rAIPawnAutoMotionTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnAutoMotionTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnAutoMotionTbl::DTI)->memAlloc(sz, align, ::rAIPawnAutoMotionTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnAutoMotionTbl::DTI)->memAlloc(sz, align, rAIPawnAutoMotionTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,7 +218,7 @@ inline void* rAIPawnAutoMotionTbl::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rAIPawnAutoMotionTbl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAIPawnAutoMotionTbl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rAIPawnAutoMotionTbl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -228,8 +232,8 @@ inline void rAIPawnAutoMotionTbl::operator delete(void* p_addr) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline rAIPawnAutoMotionTbl::rAIPawnAutoMotionTbl() {
-    this->::cResource::setAttribute(static_cast<u32>(16));
-    this->mArray.::MtArray::mAutoDelete = true;
+    setAttribute(16u);
+    mArray.mAutoDelete = true;
 }
 
 // Address: 0x0063f360 - 0x0063f38e (46 bytes)
@@ -246,19 +250,18 @@ bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAIPawnAutoMotionTbl*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
-        u32 i = static_cast<u32>(0);
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)) != 0) {
+        u32 i = 0;
         do {
-            if (this->mArray.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12))) == motGroup) {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != motType) {
-                    } else {
+            if (mArray.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(i)]) + 12)) == motGroup) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(i)]) + 8)) == motType) {
                         return true;
                     }
                 }
             }
-            i += static_cast<u32>(1);
-        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))));
+            i += 1u;
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 120)));
     }
     return false;
 }
@@ -266,17 +269,17 @@ bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
 // Address: 0x0063f430 - 0x0063f446 (22 bytes)
 cAIPawnAutoMotionNode* rAIPawnAutoMotionTbl::getData(u32 idx) {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    if (idx < this->mArray.::MtArray::mLength) {
-        return static_cast<cAIPawnAutoMotionNode*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    if (idx < mArray.mLength) {
+        return static_cast<cAIPawnAutoMotionNode*>(mArray.getBuffer()[static_cast<int>(idx)]);
     } else {
-        return static_cast<cAIPawnAutoMotionNode*>(nullptr);
+        return nullptr;
     }
 }
 
 // Address: 0x0063f450 - 0x0063f454 (4 bytes)
 u32 rAIPawnAutoMotionTbl::getDataNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->mArray.::MtArray::mLength;
+    return mArray.mLength;
 }
 
 // Address: 0x01a71d30 - 0x01a71d38 (8 bytes)
@@ -290,12 +293,14 @@ bool rAIPawnAutoMotionTbl::load(MtStream& in) {
     // DWARF local not rendered: u32 version;
     // DWARF local not rendered: u32 magic;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
+    MtDataReader r(in, 4096u);
     (&r)->readU32();
     (&r)->readU32();
-    ::nDDOIO::readMtArray(r, this->mArray);
+    nDDOIO::readMtArray(r, mArray);
     return true;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnAutoMotionTbl::MyDTI rAIPawnAutoMotionTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnAutoWordTbl.cpp at 0x0063f8b4-0x0063f8f1 (called at rAIPawnAutoWordTbl.cpp:546)
@@ -305,7 +310,7 @@ bool rAIPawnAutoMotionTbl::load(MtStream& in) {
 // Address: 0x0063f250 - 0x0063f2d4 (132 bytes)
 MtObject* rAIPawnAutoMotionTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnAutoMotionTbl;
+    return new (16u) rAIPawnAutoMotionTbl;
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,7 +335,7 @@ const MtDTI& rAIPawnAutoWordTbl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rAIPawnAutoWordTbl::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAIPawnAutoWordTbl::DTI)->memAlloc(sz, align, ::rAIPawnAutoWordTbl::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rAIPawnAutoWordTbl::DTI)->memAlloc(sz, align, rAIPawnAutoWordTbl::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -390,8 +395,10 @@ MT_CTSTR rAIPawnAutoWordTbl::getExt() const {
 // Address: 0x01a71fb0 - 0x01a71fb6 (6 bytes)
 u32 rAIPawnAutoWordTbl::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(4);
+    return 4;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rAIPawnAutoWordTbl::MyDTI rAIPawnAutoWordTbl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rAIPawnAutoWordTbl.cpp at 0x0063f92a-0x0063f967 (called at rAIPawnAutoWordTbl.cpp:1108)
@@ -401,7 +408,7 @@ u32 rAIPawnAutoWordTbl::getDataVersion() const {
 // Address: 0x0063f660 - 0x0063f6c4 (100 bytes)
 MtObject* rAIPawnAutoWordTbl::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rAIPawnAutoWordTbl;
+    return new (16u) rAIPawnAutoWordTbl;
 }
 
 // Instance at 0x01a719c0 - 0x01a719c5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

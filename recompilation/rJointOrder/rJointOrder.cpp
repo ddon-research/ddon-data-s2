@@ -35,7 +35,7 @@ const MtDTI& cJointOrder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cJointOrder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memAlloc(sz, align, ::cJointOrder::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cJointOrder::DTI)->memAlloc(sz, align, cJointOrder::DTI.getID());
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (88 bytes)
@@ -52,7 +52,7 @@ inline void* cJointOrder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cJointOrder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cJointOrder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (144 bytes)
@@ -79,12 +79,14 @@ inline void cJointOrder::operator delete(void* p_addr) {
 // Also emitted as: _ZN11cJointOrderD0Ev at 0x01a97590
 cJointOrder::~cJointOrder() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpJointTable == static_cast<u8*>(nullptr)) {
+    if (mpJointTable == nullptr) {
         return;
     }
-    ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memFree(static_cast<void*>(this->mpJointTable));
-    this->mpJointTable = static_cast<u8*>(nullptr);
+    MtMemoryAllocator::getAllocator(cJointOrder::DTI)->memFree(static_cast<void*>(mpJointTable));
+    mpJointTable = nullptr;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cJointOrder::MyDTI cJointOrder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rJointOrder.cpp at 0x00690010-0x00690052 (called at rJointOrder.cpp:41)
@@ -94,7 +96,7 @@ cJointOrder::~cJointOrder() {
 // Address: 0x0068fb90 - 0x0068fbdf (79 bytes)
 MtObject* cJointOrder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cJointOrder;
+    return new (16u) cJointOrder;
 }
 
 // No out-of-line body: no code in the ELF
@@ -120,7 +122,7 @@ const MtDTI& rJointOrder::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rJointOrder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rJointOrder::DTI)->memAlloc(sz, align, ::rJointOrder::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rJointOrder::DTI)->memAlloc(sz, align, rJointOrder::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -135,7 +137,7 @@ inline void* rJointOrder::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rJointOrder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rJointOrder::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rJointOrder::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -175,7 +177,7 @@ MT_CTSTR rJointOrder::getExt() const {
 // Address: 0x01a973c0 - 0x01a973c6 (6 bytes)
 u32 rJointOrder::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(3);
+    return 3;
 }
 
 // Address: 0x0068fe40 - 0x0069000c (460 bytes)
@@ -183,6 +185,8 @@ __attribute__((weak)) bool rJointOrder::loadCore(MtDataReader& r) {
     DDON_STUB("rJointOrder::loadCore")
     return {};
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rJointOrder::MyDTI rJointOrder::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rJointOrder.cpp at 0x00690052-0x0069008f (called at rJointOrder.cpp:42)
@@ -192,7 +196,7 @@ __attribute__((weak)) bool rJointOrder::loadCore(MtDataReader& r) {
 // Address: 0x0068fc50 - 0x0068fcb4 (100 bytes)
 MtObject* rJointOrder::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rJointOrder;
+    return new (16u) rJointOrder;
 }
 
 // Instance at 0x01a97370 - 0x01a97386 (22 bytes) of the generic rTbl2<T>::getData

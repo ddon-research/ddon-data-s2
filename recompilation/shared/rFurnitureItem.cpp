@@ -36,7 +36,7 @@ const MtDTI& cFurnitureGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFurnitureGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFurnitureGroup::DTI)->memAlloc(sz, align, ::cFurnitureGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFurnitureGroup::DTI)->memAlloc(sz, align, cFurnitureGroup::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -51,7 +51,7 @@ inline void* cFurnitureGroup::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFurnitureGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurnitureGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurnitureGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -85,8 +85,10 @@ __attribute__((weak)) void cFurnitureGroup::createProperty(MtPropertyList& s) {
 // Address: 0x0067aab0 - 0x0067aab5 (5 bytes)
 MtUI* cFurnitureGroup::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurnitureGroup::MyDTI cFurnitureGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (146 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b6d0-0x0067b719 (called at rFurnitureItem.cpp:21)
@@ -96,7 +98,7 @@ MtUI* cFurnitureGroup::createUI(MtProperty& prop) {
 // Address: 0x0067a6b0 - 0x0067a703 (83 bytes)
 MtObject* cFurnitureGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFurnitureGroup;
+    return new (16u) cFurnitureGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -124,7 +126,7 @@ const MtDTI& cFurnitureItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFurnitureItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFurnitureItem::DTI)->memAlloc(sz, align, ::cFurnitureItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFurnitureItem::DTI)->memAlloc(sz, align, cFurnitureItem::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -139,7 +141,7 @@ inline void* cFurnitureItem::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFurnitureItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurnitureItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurnitureItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -173,8 +175,10 @@ __attribute__((weak)) void cFurnitureItem::createProperty(MtPropertyList& s) {
 // Address: 0x0067b5a0 - 0x0067b5a5 (5 bytes)
 MtUI* cFurnitureItem::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurnitureItem::MyDTI cFurnitureItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b7cb-0x0067b804 (called at rFurnitureItem.cpp:136)
@@ -184,7 +188,7 @@ MtUI* cFurnitureItem::createUI(MtProperty& prop) {
 // Address: 0x0067b270 - 0x0067b2bf (79 bytes)
 MtObject* cFurnitureItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFurnitureItem;
+    return new (16u) cFurnitureItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,7 +216,7 @@ const MtDTI& cFurnitureLayout::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cFurnitureLayout::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cFurnitureLayout::DTI)->memAlloc(sz, align, ::cFurnitureLayout::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cFurnitureLayout::DTI)->memAlloc(sz, align, cFurnitureLayout::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -227,7 +231,7 @@ inline void* cFurnitureLayout::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cFurnitureLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cFurnitureLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cFurnitureLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -261,8 +265,10 @@ __attribute__((weak)) void cFurnitureLayout::createProperty(MtPropertyList& s) {
 // Address: 0x0067b0e0 - 0x0067b0e5 (5 bytes)
 MtUI* cFurnitureLayout::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::MtObject::createUI(prop);
+    return this->MtObject::createUI(prop);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cFurnitureLayout::MyDTI cFurnitureLayout::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b759-0x0067b792 (called at rFurnitureItem.cpp:77)
@@ -272,7 +278,7 @@ MtUI* cFurnitureLayout::createUI(MtProperty& prop) {
 // Address: 0x0067ac10 - 0x0067ac65 (85 bytes)
 MtObject* cFurnitureLayout::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cFurnitureLayout;
+    return new (16u) cFurnitureLayout;
 }
 
 // No out-of-line body: no code in the ELF
@@ -297,7 +303,7 @@ const MtDTI& rFurnitureGroup::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFurnitureGroup::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFurnitureGroup::DTI)->memAlloc(sz, align, ::rFurnitureGroup::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFurnitureGroup::DTI)->memAlloc(sz, align, rFurnitureGroup::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -312,7 +318,7 @@ inline void* rFurnitureGroup::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN15rFurnitureGroupD0Ev at 0x01a919d4-0x01a919f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFurnitureGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFurnitureGroup::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFurnitureGroup::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -329,16 +335,16 @@ bool rFurnitureGroup::loadData(MtDataReader& r, cFurnitureGroup* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mID);
+    nDDOIO::readData(r, pData->mID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mCameraNo);
+    nDDOIO::readData(r, pData->mCameraNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGmdIdx);
+    nDDOIO::readData(r, pData->mGmdIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSortNo);
+    nDDOIO::readData(r, pData->mSortNo);
     return true;
 }
 
@@ -351,8 +357,10 @@ MT_CTSTR rFurnitureGroup::getExt() const {
 // Address: 0x01a91b20 - 0x01a91b26 (6 bytes)
 u32 rFurnitureGroup::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFurnitureGroup::MyDTI rFurnitureGroup::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b719-0x0067b759 (called at rFurnitureItem.cpp:72)
@@ -362,7 +370,7 @@ u32 rFurnitureGroup::getDataVersion() const {
 // Address: 0x0067ab30 - 0x0067ab94 (100 bytes)
 MtObject* rFurnitureGroup::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFurnitureGroup;
+    return new (16u) rFurnitureGroup;
 }
 
 // No out-of-line body: no code in the ELF
@@ -387,7 +395,7 @@ const MtDTI& rFurnitureItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFurnitureItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFurnitureItem::DTI)->memAlloc(sz, align, ::rFurnitureItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFurnitureItem::DTI)->memAlloc(sz, align, rFurnitureItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -402,7 +410,7 @@ inline void* rFurnitureItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN14rFurnitureItemD0Ev at 0x01a920d4-0x01a920f3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFurnitureItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFurnitureItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFurnitureItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -419,13 +427,13 @@ bool rFurnitureItem::loadData(MtDataReader& r, cFurnitureItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mItemId);
+    nDDOIO::readData(r, pData->mItemId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mLayoutId);
+    nDDOIO::readData(r, pData->mLayoutId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mOmId);
+    nDDOIO::readData(r, pData->mOmId);
     return true;
 }
 
@@ -438,8 +446,10 @@ MT_CTSTR rFurnitureItem::getExt() const {
 // Address: 0x01a92220 - 0x01a92226 (6 bytes)
 u32 rFurnitureItem::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFurnitureItem::MyDTI rFurnitureItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b804-0x0067b83d (called at rFurnitureItem.cpp:184)
@@ -449,7 +459,7 @@ u32 rFurnitureItem::getDataVersion() const {
 // Address: 0x0067b5f0 - 0x0067b654 (100 bytes)
 MtObject* rFurnitureItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFurnitureItem;
+    return new (16u) rFurnitureItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -474,7 +484,7 @@ const MtDTI& rFurnitureLayout::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rFurnitureLayout::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rFurnitureLayout::DTI)->memAlloc(sz, align, ::rFurnitureLayout::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rFurnitureLayout::DTI)->memAlloc(sz, align, rFurnitureLayout::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -489,7 +499,7 @@ inline void* rFurnitureLayout::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN16rFurnitureLayoutD0Ev at 0x01a91d54-0x01a91d73, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rFurnitureLayout::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rFurnitureLayout::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rFurnitureLayout::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -506,19 +516,19 @@ bool rFurnitureLayout::loadData(MtDataReader& r, cFurnitureLayout* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mID);
+    nDDOIO::readData(r, pData->mID);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mIsRemovable);
+    nDDOIO::readData(r, pData->mIsRemovable);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGroupId);
+    nDDOIO::readData(r, pData->mGroupId);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mGmdIdx);
+    nDDOIO::readData(r, pData->mGmdIdx);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(r, pData->mSortNo);
+    nDDOIO::readData(r, pData->mSortNo);
     return true;
 }
 
@@ -531,8 +541,10 @@ MT_CTSTR rFurnitureLayout::getExt() const {
 // Address: 0x01a91ea0 - 0x01a91ea6 (6 bytes)
 u32 rFurnitureLayout::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(1);
+    return 1;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rFurnitureLayout::MyDTI rFurnitureLayout::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_rFurnitureItem.cpp at 0x0067b792-0x0067b7cb (called at rFurnitureItem.cpp:131)
@@ -542,7 +554,7 @@ u32 rFurnitureLayout::getDataVersion() const {
 // Address: 0x0067b190 - 0x0067b1f4 (100 bytes)
 MtObject* rFurnitureLayout::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rFurnitureLayout;
+    return new (16u) rFurnitureLayout;
 }
 
 // Instance at 0x01a91ad0 - 0x01a91ae6 (22 bytes) of the generic rTbl2<T>::getData

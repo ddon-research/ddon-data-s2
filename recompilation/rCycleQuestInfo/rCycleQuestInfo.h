@@ -151,8 +151,8 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rCycleQuestInfo::cCycleQuestSituationInfo::cCycleQuestSituationInfo() {
-    this->mSituationStateIdx = static_cast<u32>(0);
-    this->mSituationDetailIdx = static_cast<u32>(0);
-    this->mSituationNo = static_cast<u32>(0);
-    this->mSituationNameIdx = static_cast<u32>(0);
+    this->mSituationStateIdx = 0;
+    this->mSituationDetailIdx = 0;
+    this->mSituationNo = 0;
+    this->mSituationNameIdx = 0;
 }

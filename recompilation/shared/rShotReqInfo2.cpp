@@ -51,7 +51,7 @@ const MtDTI& cShotReqInfo2::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cShotReqInfo2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cShotReqInfo2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cShotReqInfo2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -83,6 +83,8 @@ inline void cShotReqInfo2::operator delete(void* p_addr) {
 __attribute__((weak)) void cShotReqInfo2::createProperty(MtPropertyList& s) {
     // Empty in the binary (a single `ret`).
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cShotReqInfo2::MyDTI cShotReqInfo2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rShotReqInfo2.cpp at 0x006bbe80-0x006bbec2 (called at rShotReqInfo2.cpp:30)
@@ -117,7 +119,7 @@ const MtDTI& rShotReqInfo2::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rShotReqInfo2::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rShotReqInfo2::DTI)->memAlloc(sz, align, ::rShotReqInfo2::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rShotReqInfo2::DTI)->memAlloc(sz, align, rShotReqInfo2::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -132,7 +134,7 @@ inline void* rShotReqInfo2::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN13rShotReqInfo2D0Ev at 0x01aa61c4-0x01aa61e3, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rShotReqInfo2::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rShotReqInfo2::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rShotReqInfo2::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -160,14 +162,16 @@ MT_CTSTR rShotReqInfo2::getExt() const {
 // Address: 0x01aa6310 - 0x01aa6316 (6 bytes)
 u32 rShotReqInfo2::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(9);
+    return 9;
 }
 
 // Address: 0x006bbe70 - 0x006bbe75 (5 bytes)
 void rShotReqInfo2::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cResource::createProperty(s);
+    this->cResource::createProperty(s);
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rShotReqInfo2::MyDTI rShotReqInfo2::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rShotReqInfo2.cpp at 0x006bbec2-0x006bbeff (called at rShotReqInfo2.cpp:31)
@@ -177,7 +181,7 @@ void rShotReqInfo2::createProperty(MtPropertyList& s) {
 // Address: 0x006bbb80 - 0x006bbbe4 (100 bytes)
 MtObject* rShotReqInfo2::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rShotReqInfo2;
+    return new (16u) rShotReqInfo2;
 }
 
 // Instance at 0x01aa62c0 - 0x01aa62d5 (21 bytes) of the generic rTbl2<T>::getData

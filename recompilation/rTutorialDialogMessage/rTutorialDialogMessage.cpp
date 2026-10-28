@@ -37,7 +37,7 @@ const MtDTI& rTutorialDialogMessage::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* rTutorialDialogMessage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::DTI)->memAlloc(sz, align, ::rTutorialDialogMessage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialDialogMessage::DTI)->memAlloc(sz, align, rTutorialDialogMessage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -52,7 +52,7 @@ inline void* rTutorialDialogMessage::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void rTutorialDialogMessage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialDialogMessage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -79,43 +79,43 @@ MT_CTSTR rTutorialDialogMessage::getExt() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline rTutorialDialogMessage::rTutorialDialogMessage() {
-    this->mTitleGmdIdx = static_cast<u32>(0);
-    this->mCategoryGmdIdx = static_cast<u32>(0);
-    this->::cResource::setAttribute(static_cast<u32>(22));
+    mTitleGmdIdx = 0;
+    mCategoryGmdIdx = 0;
+    setAttribute(22u);
 }
 
 // Address: 0x0070d9c0 - 0x0070da7a (186 bytes)
 // Also emitted as: _ZN22rTutorialDialogMessageD0Ev at 0x0070da80
 rTutorialDialogMessage::~rTutorialDialogMessage() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mPageInfo.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mPageInfo.mLength != 0) {
         // inferred: the value the loop at 0x70d9f0 carries; no location-less local in scope fits
-        u32 v0_0 = this->mPageInfo.::MtArray::mLength;
+        u32 v0_0 = mPageInfo.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mPageInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mPageInfo.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPageInfo.::MtArray::mLength) {
-                    v0_0 = this->mPageInfo.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mPageInfo.mpArray[i0_3] != nullptr) {
+                delete mPageInfo.mpArray[i0_3];
+                if ((i0_3 + 1u) < mPageInfo.mLength) {
+                    v0_0 = mPageInfo.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mPageInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPageInfo.::MtArray::mpArray));
+    if (mPageInfo.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mPageInfo.mpArray));
     }
-    this->mPageInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mPageInfo.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mPageInfo.::MtArray::mLength = static_cast<u32>(0);
+    mPageInfo.mpArray = nullptr;
+    mPageInfo.mBufsiz = 0;
+    mPageInfo.mLength = 0;
 }
 
 // Address: 0x0070db60 - 0x0070ddc1 (609 bytes)
@@ -130,21 +130,21 @@ bool rTutorialDialogMessage::save(MtStream& out) {
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from rTutorialDialogMessage*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
-    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
-    (&w)->writeU32(static_cast<u32>(5063764));
-    (&w)->writeU32(static_cast<u32>(2));
-    (&w)->writeU32(this->mTitleGmdIdx);
-    (&w)->writeU32(this->mCategoryGmdIdx);
-    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128)));
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128))) != static_cast<unsigned int>(0)) {
+    MtDataWriter w(out, 4096u, 4096u);
+    (&w)->writeU32(0x4D4454u);
+    (&w)->writeU32(2u);
+    (&w)->writeU32(mTitleGmdIdx);
+    (&w)->writeU32(mCategoryGmdIdx);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128)) != 0) {
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+        for (unsigned int i0_3 = 0;;) {
             // inferred: a temporary for the value the load at 0x70de8b read, used twice; no DWARF local holds it
-            MtObject* t5 = this->mPageInfo.::MtArray::getBuffer()[static_cast<int>(i0_3)];
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + static_cast<long>(8)));
-            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + static_cast<long>(12)));
-            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128)))) {
-                i0_3 += static_cast<unsigned int>(1);
+            MtObject* t5 = mPageInfo.getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + 8));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + 12));
+            if ((i0_3 + 1u) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 128))) {
+                i0_3 += 1u;
             } else {
                 break;
             }
@@ -158,17 +158,19 @@ bool rTutorialDialogMessage::load(MtStream& in) {
     // DWARF local not rendered: u32 header;
     // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    MtDataReader r(in, static_cast<u32>(4096));
-    if ((&r)->readU32() == static_cast<u32>(5063764)) {
-        if ((&r)->readU32() == static_cast<u32>(2)) {
-            this->mTitleGmdIdx = (&r)->readU32();
-            this->mCategoryGmdIdx = (&r)->readU32();
-            ::nDDOIO::readMtArray(r, this->mPageInfo);
+    MtDataReader r(in, 4096u);
+    if ((&r)->readU32() == 0x4D4454) {
+        if ((&r)->readU32() == 2) {
+            mTitleGmdIdx = (&r)->readU32();
+            mCategoryGmdIdx = (&r)->readU32();
+            nDDOIO::readMtArray(r, mPageInfo);
             return true;
         }
     }
     return false;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialDialogMessage::MyDTI rTutorialDialogMessage::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rTutorialDialogMessage.cpp at 0x0070e290-0x0070e2d2 (called at rTutorialDialogMessage.cpp:28)
@@ -178,7 +180,7 @@ bool rTutorialDialogMessage::load(MtStream& in) {
 // Address: 0x0070d8a0 - 0x0070d938 (152 bytes)
 MtObject* rTutorialDialogMessage::MyDTI::newInstance() const {
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::rTutorialDialogMessage;
+    return new (16u) rTutorialDialogMessage;
 }
 
 // No out-of-line body: no code in the ELF
@@ -206,7 +208,7 @@ const MtDTI& rTutorialDialogMessage::cDialogPage::getDTI() const {
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
 // Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
 void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::cDialogPage::DTI)->memAlloc(sz, align, ::rTutorialDialogMessage::cDialogPage::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rTutorialDialogMessage::cDialogPage::DTI)->memAlloc(sz, align, rTutorialDialogMessage::cDialogPage::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -220,7 +222,7 @@ void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void rTutorialDialogMessage::cDialogPage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::cDialogPage::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rTutorialDialogMessage::cDialogPage::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -257,6 +259,8 @@ __attribute__((weak)) void rTutorialDialogMessage::cDialogPage::createProperty(M
 //   in rTutorialDialogMessage::save at 0x0070de8f-0x0070deb1 (called at nDDOIO.h:463)
 // bool rTutorialDialogMessage::cDialogPage::save(MtDataWriter& w);
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rTutorialDialogMessage::cDialogPage::MyDTI rTutorialDialogMessage::cDialogPage::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rTutorialDialogMessage.cpp at 0x0070e2d2-0x0070e30f (called at rTutorialDialogMessage.cpp:135)
 //   in _GLOBAL__sub_I_rTutorialDialogMessage.cpp at 0x0070e2d2-0x0070e30f (called at rTutorialDialogMessage.h:96)
@@ -265,7 +269,7 @@ __attribute__((weak)) void rTutorialDialogMessage::cDialogPage::createProperty(M
 // Address: 0x0070dfc0 - 0x0070e008 (72 bytes)
 MtObject* rTutorialDialogMessage::cDialogPage::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rTutorialDialogMessage::cDialogPage;
+    return new (16u) rTutorialDialogMessage::cDialogPage;
 }
 
 // Instance at 0x01ab62e0 - 0x01ab62e5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

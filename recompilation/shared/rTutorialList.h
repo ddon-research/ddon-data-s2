@@ -108,9 +108,9 @@ public:
 
 // Inline, no code of its own: checked where it is inlined.
 inline rTutorialList::cTutorialNode::cTutorialNode() {
-    this->mOpenQuestId = static_cast<u32>(0);
-    this->mTitleGmdIdx = static_cast<u32>(0);
-    this->mCategory = static_cast<u32>(0);
-    this->mId = static_cast<u32>(0);
-    this->mSortNo = static_cast<u32>(0);
+    this->mOpenQuestId = 0;
+    this->mTitleGmdIdx = 0;
+    this->mCategory = 0;
+    this->mId = 0;
+    this->mSortNo = 0;
 }

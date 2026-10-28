@@ -46,7 +46,7 @@ const MtDTI& sZone::getDTI() const {
 // Address: 0x012b0990 - 0x012b09d0 (64 bytes)
 void* sZone::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::MtMemoryAllocator::getAllocator(::sZone::DTI)->memAlloc(sz, align, ::sZone::DTI.::MtDTI::mID);
+    return MtMemoryAllocator::getAllocator(sZone::DTI)->memAlloc(sz, align, sZone::DTI.mID);
 }
 
 // No out-of-line body: no code in the ELF
@@ -61,7 +61,7 @@ void* sZone::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN5sZoneD0Ev at 0x012b102e-0x012b104f, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void sZone::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::sZone::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(sZone::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -89,7 +89,7 @@ sZone::~sZone() {
 // Address: 0x012b1050 - 0x012b1055 (5 bytes)
 MtUI* sZone::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::cSystem::createUI(prop);
+    return this->cSystem::createUI(prop);
 }
 
 // Address: 0x012b1060 - 0x012b1148 (232 bytes)
@@ -101,34 +101,34 @@ __attribute__((weak)) void sZone::createProperty(MtPropertyList& s) {
 // Address: 0x012b1150 - 0x012b11cc (124 bytes)
 void sZone::reset() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mZoneLayoutArray.mLength != 0) {
         // inferred: the value the loop at 0x12b1170 carries; no location-less local in scope fits
-        u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
+        u32 v0_0 = mZoneLayoutArray.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mZoneLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mZoneLayoutArray.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mZoneLayoutArray.::MtArray::mLength) {
-                    v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mZoneLayoutArray.mpArray[i0_3] != nullptr) {
+                delete mZoneLayoutArray.mpArray[i0_3];
+                if ((i0_3 + 1u) < mZoneLayoutArray.mLength) {
+                    v0_0 = mZoneLayoutArray.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mZoneLayoutArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mZoneLayoutArray.::MtArray::mpArray));
+    if (mZoneLayoutArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mZoneLayoutArray.mpArray));
     }
-    this->mZoneLayoutArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mZoneLayoutArray.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mZoneLayoutArray.::MtArray::mLength = static_cast<u32>(0);
+    mZoneLayoutArray.mpArray = nullptr;
+    mZoneLayoutArray.mBufsiz = 0;
+    mZoneLayoutArray.mLength = 0;
 }
 
 // Address: 0x012b11e0 - 0x012b122d (77 bytes)
@@ -136,23 +136,23 @@ void sZone::move() {
     // DWARF local not rendered: const u32 ZoneLayoutNum;
     // DWARF local not rendered: cZoneLayout* pNowZoneLayout;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mZoneLayoutArray.mLength != 0) {
         // inferred: the value the loop at 0x12b1207 carries; no location-less local in scope fits
-        u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
+        u32 v0_0 = mZoneLayoutArray.mLength;
         // inferred: DWARF's location-less 'i' (lexical block [0x12b11f1, 0x12b1222)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         // inferred: the value the loop at 0x12b1207 carries; no location-less local in scope fits
-        for (u32 v0_8 = this->mZoneLayoutArray.::MtArray::mLength - static_cast<u32>(1);;) {
+        for (u32 v0_8 = mZoneLayoutArray.mLength - 1u;;) {
             if (i < v0_0) {
-                if (this->mZoneLayoutArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i])->::cZoneLayout::move();
+                if (mZoneLayoutArray.mpArray[i] != nullptr) {
+                    static_cast<cZoneLayout*>(mZoneLayoutArray.mpArray[i])->move();
                 }
             }
             if (i == v0_8) {
                 break;
             } else {
-                v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-                i = i + static_cast<u32>(1);
+                v0_0 = mZoneLayoutArray.mLength;
+                i = i + 1u;
             }
         }
     }
@@ -163,23 +163,23 @@ void sZone::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_
     // DWARF local not rendered: const u32 ZoneLayoutNum;
     // DWARF local not rendered: cZoneLayout* pZoneLayout;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mZoneLayoutArray.mLength != 0) {
         // inferred: the value the loop at 0x12b1267 carries; no location-less local in scope fits
-        u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
+        u32 v0_0 = mZoneLayoutArray.mLength;
         // inferred: DWARF's location-less 'i' (lexical block [0x12b124b, 0x12b1288)) is the counter this loop steps (DWARF's stale constant 0)
-        u32 i = static_cast<u32>(0);
+        u32 i = 0;
         // inferred: the value the loop at 0x12b1267 carries; no location-less local in scope fits
-        for (u32 v0_8 = this->mZoneLayoutArray.::MtArray::mLength - static_cast<u32>(1);;) {
+        for (u32 v0_8 = mZoneLayoutArray.mLength - 1u;;) {
             if (i < v0_0) {
-                if (this->mZoneLayoutArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i])->::cZoneLayout::applyWorldOffset(offset, absolute_offset);
+                if (mZoneLayoutArray.mpArray[i] != nullptr) {
+                    static_cast<cZoneLayout*>(mZoneLayoutArray.mpArray[i])->applyWorldOffset(offset, absolute_offset);
                 }
             }
             if (i == v0_8) {
                 break;
             } else {
-                v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-                i = i + static_cast<u32>(1);
+                v0_0 = mZoneLayoutArray.mLength;
+                i = i + 1u;
             }
         }
     }
@@ -207,9 +207,9 @@ void sZone::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_
 void sZone::setQuaternion(u32 TargetZoneHandle, const MtQuaternion& NewZoneQuaternion) {
     // DWARF local not rendered: cZoneLayout* pTargetLayout;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (TargetZoneHandle < this->mZoneLayoutArray.::MtArray::mLength) {
-        if (this->mZoneLayoutArray.::MtArray::mpArray[TargetZoneHandle] != static_cast<MtObject*>(nullptr)) {
-            static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[TargetZoneHandle])->::cZoneLayout::setQuaternion(NewZoneQuaternion);
+    if (TargetZoneHandle < mZoneLayoutArray.mLength) {
+        if (mZoneLayoutArray.mpArray[TargetZoneHandle] != nullptr) {
+            static_cast<cZoneLayout*>(mZoneLayoutArray.mpArray[TargetZoneHandle])->setQuaternion(NewZoneQuaternion);
         }
     }
 }
@@ -244,58 +244,53 @@ __attribute__((weak)) void sZone::setup() {
 // Address: 0x012b1320 - 0x012b13b6 (150 bytes)
 u32 sZone::addZoneLayout(rZone* pSourceResource, const MtDTI* pGroupManagerDTI) {
     // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
-    u32 retHandle = ::cZoneLayout::INVALID_HANDLE;
-    if (pSourceResource != static_cast<rZone*>(nullptr)) {
-        if (this->mFlgRuntimeLock[0] != false) {
-            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                } else {
-                    ::abort();
+    u32 retHandle = cZoneLayout::INVALID_HANDLE;
+    if (pSourceResource != nullptr) {
+        if (mFlgRuntimeLock[0]) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
                 }
-                cZoneLayout* pZoneLayout = this->::sZone::createZoneLayout(pSourceResource, pGroupManagerDTI);
-                if (pZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
+                cZoneLayout* pZoneLayout = createZoneLayout(pSourceResource, pGroupManagerDTI);
+                if (pZoneLayout != nullptr) {
                     // inferred: a temporary for the value the load at 0x12b137a read, used once; no DWARF local holds it
                     u32 t0 = pZoneLayout->mIndex;
-                    if (this->mFlgRuntimeLock[0] != false) {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                    if (mFlgRuntimeLock[0]) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                         }
                     }
                     return t0;
                 } else {
-                    if (this->mFlgRuntimeLock[0] != false) {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                    if (mFlgRuntimeLock[0]) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                         }
                     }
                     return retHandle;
                 }
             } else {
-                cZoneLayout* pZoneLayout = this->::sZone::createZoneLayout(pSourceResource, pGroupManagerDTI);
-                if (pZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
+                cZoneLayout* pZoneLayout = createZoneLayout(pSourceResource, pGroupManagerDTI);
+                if (pZoneLayout != nullptr) {
                     // inferred: a temporary for the value the load at 0x12b137a read, used once; no DWARF local holds it
                     u32 t0 = pZoneLayout->mIndex;
-                    if (this->mFlgRuntimeLock[0] != false) {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                    if (mFlgRuntimeLock[0]) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                         }
                     }
                     return t0;
                 } else {
-                    if (this->mFlgRuntimeLock[0] != false) {
-                        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                            } else {
-                                ::abort();
+                    if (mFlgRuntimeLock[0]) {
+                        if (mThreadSafe || (cSystem::mJobSafe)) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
                             }
                         }
                     }
@@ -303,25 +298,23 @@ u32 sZone::addZoneLayout(rZone* pSourceResource, const MtDTI* pGroupManagerDTI) 
                 }
             }
         } else {
-            cZoneLayout* pZoneLayout = this->::sZone::createZoneLayout(pSourceResource, pGroupManagerDTI);
-            if (pZoneLayout != static_cast<cZoneLayout*>(nullptr)) {
+            cZoneLayout* pZoneLayout = createZoneLayout(pSourceResource, pGroupManagerDTI);
+            if (pZoneLayout != nullptr) {
                 // inferred: a temporary for the value the load at 0x12b137a read, used once; no DWARF local holds it
                 u32 t0 = pZoneLayout->mIndex;
-                if (this->mFlgRuntimeLock[0] != false) {
-                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                if (mFlgRuntimeLock[0]) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                 }
                 return t0;
             } else {
-                if (this->mFlgRuntimeLock[0] != false) {
-                    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
-                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
-                        } else {
-                            ::abort();
+                if (mFlgRuntimeLock[0]) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
                         }
                     }
                 }
@@ -339,7 +332,7 @@ u32 sZone::addZoneLayout(rZone* pSourceResource, const MtDTI* pGroupManagerDTI) 
 // Address: 0x012b1510 - 0x012b1515 (5 bytes)
 bool sZone::deleteZoneHandle(u32 handle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::sZone::deleteZoneHandleByIndex(handle);
+    return deleteZoneHandleByIndex(handle);
 }
 
 // Address: 0x012b1520 - 0x012b1624 (260 bytes)
@@ -390,8 +383,8 @@ __attribute__((weak)) bool sZone::deleteZoneHandleByIndex(u32 index) {
 // Address: 0x012b1670 - 0x012b1684 (20 bytes)
 bool sZone::addListener(cZoneListener* pTargetListener, u32 HitTargetZoneHandle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pTargetListener != static_cast<cZoneListener*>(nullptr)) {
-        return this->::sZone::addListener(*pTargetListener, HitTargetZoneHandle);
+    if (pTargetListener != nullptr) {
+        return addListener(*pTargetListener, HitTargetZoneHandle);
     } else {
         return false;
     }
@@ -420,10 +413,10 @@ __attribute__((weak)) bool sZone::addListener(cZoneListener& TargetListener, u32
 // Address: 0x012b1780 - 0x012b178e (14 bytes)
 void sZone::removeListener(cZoneListener* pTargetListener) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pTargetListener == static_cast<cZoneListener*>(nullptr)) {
+    if (pTargetListener == nullptr) {
         return;
     }
-    pTargetListener->::cZoneListener::unregisterTargetZoneLayout();
+    pTargetListener->unregisterTargetZoneLayout();
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -438,8 +431,8 @@ void sZone::removeListener(cZoneListener* pTargetListener) {
 // Address: 0x012b17c0 - 0x012b17d4 (20 bytes)
 bool sZone::moveListener(cZoneListener* pListener) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pListener != static_cast<cZoneListener*>(nullptr)) {
-        return this->::sZone::moveListener(*pListener);
+    if (pListener != nullptr) {
+        return moveListener(*pListener);
     } else {
         return false;
     }
@@ -459,8 +452,8 @@ __attribute__((weak)) bool sZone::moveListener(cZoneListener& Listener) {
 // Address: 0x012b19e0 - 0x012b19f4 (20 bytes)
 bool sZone::moveListenerLineSegment(cZoneListener* pListener) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pListener != static_cast<cZoneListener*>(nullptr)) {
-        return this->::sZone::moveListenerLineSegment(*pListener);
+    if (pListener != nullptr) {
+        return moveListenerLineSegment(*pListener);
     } else {
         return false;
     }
@@ -673,6 +666,11 @@ __attribute__((weak)) bool sZone::moveListenerMainForNonBroadPhase(sZone::Search
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // u32 sZone::checkPriority(cZoneListener& TargetListener, nZone::cLayoutElement& TargetElement, MtTypedArray<nZone::cLayoutElement>& hitLayoutArray);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): sZone::MyDTI sZone::DTI;
+
+// From the ELF: .bss, which no .ctors initializer writes (D-S1).
+sZone* sZone::mpInstance;
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // sZone::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);

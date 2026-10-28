@@ -53,7 +53,7 @@ const MtDTI& cMenuContentsExecutor::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuContentsExecutor::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuContentsExecutor::DTI)->memAlloc(sz, align, ::cMenuContentsExecutor::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuContentsExecutor::DTI)->memAlloc(sz, align, cMenuContentsExecutor::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -68,7 +68,7 @@ inline void* cMenuContentsExecutor::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuContentsExecutor::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuContentsExecutor::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuContentsExecutor::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -118,11 +118,11 @@ __attribute__((weak)) nMenu::MENU_RET cMenuContentsExecutor::moveContentsExecuto
 // Address: 0x0014df80 - 0x0014dfb4 (52 bytes)
 void cMenuContentsExecutor::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIContentsExecutor != static_cast<cGUIContentsExecutor*>(nullptr)) {
-        delete this->mpGUIContentsExecutor;
-        this->mpGUIContentsExecutor = static_cast<cGUIContentsExecutor*>(nullptr);
+    if (mpGUIContentsExecutor != nullptr) {
+        delete mpGUIContentsExecutor;
+        mpGUIContentsExecutor = nullptr;
     }
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x0014de50 - 0x0014df7d (301 bytes)
@@ -140,6 +140,8 @@ __attribute__((weak)) bool cMenuContentsExecutor::settingScheduleQuestID() {
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuContentsExecutor::MyDTI cMenuContentsExecutor::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e89c-0x0014e8d5 (called at cMenuEntryBoard.cpp:3453)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e89c-0x0014e8d5 (called at cMenuEntryBoard.h:1126)
@@ -148,7 +150,7 @@ __attribute__((weak)) bool cMenuContentsExecutor::settingScheduleQuestID() {
 // Address: 0x0014d650 - 0x0014d69e (78 bytes)
 MtObject* cMenuContentsExecutor::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuContentsExecutor;
+    return new (16u) cMenuContentsExecutor;
 }
 
 // No out-of-line body: no code in the ELF
@@ -174,7 +176,7 @@ const MtDTI& cMenuCreateEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuCreateEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuCreateEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuCreateEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuCreateEntryBoardItem::DTI)->memAlloc(sz, align, cMenuCreateEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -189,7 +191,7 @@ inline void* cMenuCreateEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuCreateEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuCreateEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuCreateEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -227,12 +229,14 @@ cMenuCreateEntryBoardItem::~cMenuCreateEntryBoardItem() {
 // Address: 0x00149ef0 - 0x00149f13 (35 bytes)
 void cMenuCreateEntryBoardItem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    ::nNet::resetEntryBoardInfo(this->mBoardInfo);
-    this->::cMenuBase::exitMenu();
+    nNet::resetEntryBoardInfo(mBoardInfo);
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuCreateEntryBoardItem::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuCreateEntryBoardItem::MyDTI cMenuCreateEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e57e-0x0014e5b7 (called at cMenuEntryBoard.cpp:1293)
@@ -242,7 +246,7 @@ void cMenuCreateEntryBoardItem::exitMenu() {
 // Address: 0x00149e00 - 0x00149e5a (90 bytes)
 MtObject* cMenuCreateEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuCreateEntryBoardItem;
+    return new (16u) cMenuCreateEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -268,7 +272,7 @@ const MtDTI& cMenuEditCommentEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEditCommentEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEditCommentEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuEditCommentEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEditCommentEntryBoardItem::DTI)->memAlloc(sz, align, cMenuEditCommentEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -310,10 +314,10 @@ cMenuEditCommentEntryBoardItem::~cMenuEditCommentEntryBoardItem() {
 // Address: 0x0014b750 - 0x0014b780 (48 bytes)
 void cMenuEditCommentEntryBoardItem::initEditCommentEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mpDlTextBox = static_cast<uGUIDialogTextBox*>(nullptr);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(0));
+    initMenu();
+    mMenuRno[0] = 0;
+    mpDlTextBox = nullptr;
+    setupDialogFlow(0u);
 }
 
 // Address: 0x0014b7c0 - 0x0014bbfc (1084 bytes)
@@ -333,18 +337,20 @@ __attribute__((weak)) void cMenuEditCommentEntryBoardItem::exitMenu() {
 // Address: 0x0014b780 - 0x0014b7b9 (57 bytes)
 void cMenuEditCommentEntryBoardItem::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::updatePtr();
-    if (this->mpDlTextBox == static_cast<uGUIDialogTextBox*>(nullptr)) {
+    this->cMenuBase::updatePtr();
+    if (mpDlTextBox == nullptr) {
         return;
     }
-    if (this->mpDlTextBox->::cUnit::isEnable() != false) {
+    if (mpDlTextBox->isEnable()) {
         return;
     }
-    this->mpDlTextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+    mpDlTextBox = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuEditCommentEntryBoardItem::leaveRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEditCommentEntryBoardItem::MyDTI cMenuEditCommentEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e77f-0x0014e7b8 (called at cMenuEntryBoard.cpp:2092)
@@ -354,7 +360,7 @@ void cMenuEditCommentEntryBoardItem::updatePtr() {
 // Address: 0x0014b680 - 0x0014b6d9 (89 bytes)
 MtObject* cMenuEditCommentEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEditCommentEntryBoardItem;
+    return new (16u) cMenuEditCommentEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -446,6 +452,8 @@ __attribute__((weak)) void cMenuEntryBoardInvite::exitMenu() {
 //   in cMenuEntryBoardInvite::moveEntryBoardInvite at 0x0014d2c9-0x0014d328, 0x0014d440-0x0014d448 (called at cMenuEntryBoard.cpp:3346)
 //   in cMenuEntryBoardInvite::moveEntryBoardInvite at 0x0014d3ec-0x0014d440 (called at cMenuEntryBoard.cpp:3355)
 // u32 cMenuEntryBoardInvite::getNextMember(s32& index);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryBoardInvite::MyDTI cMenuEntryBoardInvite::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e863-0x0014e89c (called at cMenuEntryBoard.cpp:3255)
@@ -616,50 +624,50 @@ void cMenuEntryBoardItem::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::ME
     // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as u32
     // inferred: a temporary for the value the load at 0x149d60 read, used twice; no DWARF local holds it
-    s32 t0 = this->mType;
-    pParts->attr = static_cast<u32>(t0 == static_cast<s32>(1));
+    s32 t0 = mType;
+    pParts->attr = static_cast<u32>(t0 == 1);
     switch (static_cast<unsigned int>(menuId)) {
-        case static_cast<unsigned int>(0):
+        case 0:
         {
-            if (t0 == static_cast<s32>(2)) {
-                if (this->mpBoardInfo->isPassword == false) {
-                    pParts->attr = static_cast<u32>(1);
+            if (t0 == 2) {
+                if (!mpBoardInfo->isPassword) {
+                    pParts->attr = 1;
                 }
             }
             break;
         }
-        case static_cast<unsigned int>(3):
+        case 3:
         {
-            if (t0 == static_cast<s32>(2)) {
-                pParts->attr = static_cast<u32>(1);
+            if (t0 == 2) {
+                pParts->attr = 1;
             }
             break;
         }
-        case static_cast<unsigned int>(4):
+        case 4:
         {
-            if (t0 == static_cast<s32>(2)) {
-                pParts->attr = static_cast<u32>(1);
+            if (t0 == 2) {
+                pParts->attr = 1;
             }
             break;
         }
-        case static_cast<unsigned int>(5):
+        case 5:
         {
-            if (t0 == static_cast<s32>(2)) {
-                pParts->attr = static_cast<u32>(1);
+            if (t0 == 2) {
+                pParts->attr = 1;
             }
             break;
         }
-        case static_cast<unsigned int>(7):
+        case 7:
         {
-            if (t0 == static_cast<s32>(2)) {
-                pParts->attr = static_cast<u32>(1);
+            if (t0 == 2) {
+                pParts->attr = 1;
             }
             break;
         }
-        case static_cast<unsigned int>(10):
+        case 10:
         {
-            if (t0 == static_cast<s32>(1)) {
-                pParts->attr = static_cast<u32>(0);
+            if (t0 == 1) {
+                pParts->attr = 0;
             }
             break;
         }
@@ -672,6 +680,8 @@ void cMenuEntryBoardItem::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::ME
 
 // No out-of-line body: no code in the ELF
 // void cMenuEntryBoardItem::setCursor(s32);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryBoardItem::MyDTI cMenuEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e53e-0x0014e57e (called at cMenuEntryBoard.cpp:425)
@@ -720,7 +730,7 @@ const MtDTI& cMenuEntryBoardItemList::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEntryBoardItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardItemList::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEntryBoardItemList::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -749,54 +759,54 @@ cMenuEntryBoardItemList::~cMenuEntryBoardItemList() {
 // Address: 0x0014bd90 - 0x0014bf24 (404 bytes)
 void cMenuEntryBoardItemList::initEntryBoardItemList(u64 boardId, bool solo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->mBoardId = boardId;
-    this->mIsSolo = solo;
-    if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isSaveEntrySearchFilterSave() != false) {
-        ::sQuestManagerExt::getInstance()->::sQuestManagerExt::loadEntrySearchFilter(this->mSearchSetting);
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemListPacket();
-        ::nNet::resetEntryBoardInfo(this->mBoardInfo);
-        this->::cMenuBase::mpGUIMenu = this->::cMenuBase::registerGUI(::uGUIEntryBoard::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
-        cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(100), static_cast<u32>(7), static_cast<u32>(9));
-        if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(7));
-            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
-            this->::cMenuBase::createList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getEntryBoardItemListPacket()->m_EntryItemList.::MtArray::mLength);
+    initMenu();
+    mMenuRno[0] = 0;
+    mBoardId = boardId;
+    mIsSolo = solo;
+    if (sQuestManagerExt::getInstance()->isSaveEntrySearchFilterSave()) {
+        sQuestManagerExt::getInstance()->loadEntrySearchFilter(mSearchSetting);
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearEntryBoardItemListPacket();
+        nNet::resetEntryBoardInfo(mBoardInfo);
+        mpGUIMenu = registerGUI(uGUIEntryBoard::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
+        cMenuSupportList* pList = setupSupportList(100u, 7u, 9u);
+        if (pList != nullptr) {
+            pList->cMenuSupportList::addBelowMenu(7);
+            pList->cMenuSupportList::addBelowMenu(8);
+            createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getEntryBoardItemListPacket()->m_EntryItemList.mLength);
         }
-        this->::cMenuBase::setListCursor(this->::cMenuBase::getIndexFromMenuId(static_cast<s32>(7)));
-        this->mRecruitPos.x = ::MtVector3::Zero.x;
-        this->mRecruitPos.y = ::MtVector3::Zero.y;
-        this->mRecruitPos.z = ::MtVector3::Zero.z;
-        this->mRecruitPos.pad_ = 0.0f;
-        this->mSearchPos.x = ::MtVector3::Zero.x;
-        this->mSearchPos.y = ::MtVector3::Zero.y;
+        setListCursor(getIndexFromMenuId(7));
+        mRecruitPos.x = MtVector3::Zero.x;
+        mRecruitPos.y = MtVector3::Zero.y;
+        mRecruitPos.z = MtVector3::Zero.z;
+        mRecruitPos.pad_ = 0.0f;
+        mSearchPos.x = MtVector3::Zero.x;
+        mSearchPos.y = MtVector3::Zero.y;
     } else {
-        this->mSearchSetting.::cCharacterData::stSearchFilterSetting::setDefaultData();
-        this->mSearchSetting.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(5));
-        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemListPacket();
-        ::nNet::resetEntryBoardInfo(this->mBoardInfo);
-        this->::cMenuBase::mpGUIMenu = this->::cMenuBase::registerGUI(::uGUIEntryBoard::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
-        cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(100), static_cast<u32>(7), static_cast<u32>(9));
-        if (pList != static_cast<cMenuSupportList*>(nullptr)) {
-            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(7));
-            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
-            this->::cMenuBase::createList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getEntryBoardItemListPacket()->m_EntryItemList.::MtArray::mLength);
+        mSearchSetting.setDefaultData();
+        mSearchSetting.initSearchFilter(5);
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearEntryBoardItemListPacket();
+        nNet::resetEntryBoardInfo(mBoardInfo);
+        mpGUIMenu = registerGUI(uGUIEntryBoard::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
+        cMenuSupportList* pList = setupSupportList(100u, 7u, 9u);
+        if (pList != nullptr) {
+            pList->cMenuSupportList::addBelowMenu(7);
+            pList->cMenuSupportList::addBelowMenu(8);
+            createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getEntryBoardItemListPacket()->m_EntryItemList.mLength);
         }
-        this->::cMenuBase::setListCursor(this->::cMenuBase::getIndexFromMenuId(static_cast<s32>(7)));
-        this->mRecruitPos.x = ::MtVector3::Zero.x;
-        this->mRecruitPos.y = ::MtVector3::Zero.y;
-        this->mRecruitPos.z = ::MtVector3::Zero.z;
-        this->mRecruitPos.pad_ = 0.0f;
-        this->mSearchPos.x = ::MtVector3::Zero.x;
-        this->mSearchPos.y = ::MtVector3::Zero.y;
+        setListCursor(getIndexFromMenuId(7));
+        mRecruitPos.x = MtVector3::Zero.x;
+        mRecruitPos.y = MtVector3::Zero.y;
+        mRecruitPos.z = MtVector3::Zero.z;
+        mRecruitPos.pad_ = 0.0f;
+        mSearchPos.x = MtVector3::Zero.x;
+        mSearchPos.y = MtVector3::Zero.y;
     }
-    this->mSearchPos.z = ::MtVector3::Zero.z;
-    this->mSearchPos.pad_ = 0.0f;
-    this->mbJumpMemberList = false;
-    this->mbReturnList = false;
-    this->mBeforeSearch = true;
-    this->mbEnableCtrl = true;
+    mSearchPos.z = MtVector3::Zero.z;
+    mSearchPos.pad_ = 0.0f;
+    mbJumpMemberList = false;
+    mbReturnList = false;
+    mBeforeSearch = true;
+    mbEnableCtrl = true;
 }
 
 // Address: 0x0014bf30 - 0x0014c710 (2016 bytes)
@@ -816,9 +826,9 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEntryBoardItemList::moveEntryBoardIte
 // Address: 0x0014c710 - 0x0014c749 (57 bytes)
 void cMenuEntryBoardItemList::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemListPacket();
-    ::nNet::resetEntryBoardInfo(this->mBoardInfo);
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearEntryBoardItemListPacket();
+    nNet::resetEntryBoardInfo(mBoardInfo);
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -864,30 +874,32 @@ void cMenuEntryBoardItemList::exitMenu() {
 void cMenuEntryBoardItemList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // DWARF local not rendered: uGUIEntryBoard* pGUIEntryBoard;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId == static_cast<s32>(8)) {
+    if (menuId == 8) {
         return;
     }
-    if (menuId == static_cast<s32>(7)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-            pParts->attr = static_cast<u32>(1);
-            pParts->param = static_cast<u32>(1);
+    if (menuId == 7) {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+            pParts->attr = 1;
+            pParts->param = 1;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
-            pParts->attr = static_cast<u32>(1);
-            pParts->param = static_cast<u32>(2);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isNowQuickMatchFlow()) {
+            pParts->attr = 1;
+            pParts->param = 2;
         } else {
             // inferred: a temporary for the value the load at 0x14c7af read, used twice; no DWARF local holds it
-            uGUIBase* t0 = this->::cMenuBase::mpGUIMenu;
-            if (t0 != static_cast<uGUIBase*>(nullptr)) {
-                if (static_cast<uGUIEntryBoard*>(t0)->::uGUIEntryBoard::isItemEnable(static_cast<u32>(this->::cMenuBase::getIndexFromMenuId(menuId))) == false) {
-                    pParts->attr = static_cast<u32>(1);
-                    pParts->param = static_cast<u32>(3);
+            uGUIBase* t0 = mpGUIMenu;
+            if (t0 != nullptr) {
+                if (!static_cast<uGUIEntryBoard*>(t0)->isItemEnable(static_cast<u32>(getIndexFromMenuId(menuId)))) {
+                    pParts->attr = 1;
+                    pParts->param = 3;
                 }
             }
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryBoardItemList::MyDTI cMenuEntryBoardItemList::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e7b8-0x0014e7f1 (called at cMenuEntryBoard.cpp:2230)
@@ -923,7 +935,7 @@ const MtDTI& cMenuEntryBoardMember::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEntryBoardMember::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardMember::DTI)->memAlloc(sz, align, ::cMenuEntryBoardMember::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEntryBoardMember::DTI)->memAlloc(sz, align, cMenuEntryBoardMember::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -938,7 +950,7 @@ inline void* cMenuEntryBoardMember::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEntryBoardMember::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardMember::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEntryBoardMember::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -978,16 +990,16 @@ __attribute__((weak)) nMenu::MENU_RET cMenuEntryBoardMember::moveEntryBoardMembe
 // Address: 0x0014ca70 - 0x0014ca75 (5 bytes)
 void cMenuEntryBoardMember::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // Address: 0x0014ca80 - 0x0014ca8b (11 bytes)
 void cMenuEntryBoardMember::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(0)) {
+    if (menuId != 0) {
         return;
     }
-    pParts->attr = static_cast<u32>(1);
+    pParts->attr = 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -995,6 +1007,8 @@ void cMenuEntryBoardMember::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuEntryBoardMember::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryBoardMember::MyDTI cMenuEntryBoardMember::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e82a-0x0014e863 (called at cMenuEntryBoard.cpp:3058)
@@ -1004,7 +1018,7 @@ void cMenuEntryBoardMember::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::
 // Address: 0x0014c9b0 - 0x0014c9fe (78 bytes)
 MtObject* cMenuEntryBoardMember::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEntryBoardMember;
+    return new (16u) cMenuEntryBoardMember;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1030,7 +1044,7 @@ const MtDTI& cMenuEntryBoardRecruit::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuEntryBoardRecruit::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardRecruit::DTI)->memAlloc(sz, align, ::cMenuEntryBoardRecruit::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuEntryBoardRecruit::DTI)->memAlloc(sz, align, cMenuEntryBoardRecruit::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1045,7 +1059,7 @@ inline void* cMenuEntryBoardRecruit::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuEntryBoardRecruit::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardRecruit::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuEntryBoardRecruit::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1098,35 +1112,35 @@ __attribute__((weak)) void cMenuEntryBoardRecruit::refreshEntryBoardRecruit(MtTy
 // Address: 0x0014c900 - 0x0014c998 (152 bytes)
 void cMenuEntryBoardRecruit::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    if (this->mRecruitData.::MtArray::mLength != static_cast<u32>(0)) {
+    if (mRecruitData.mLength != 0) {
         // inferred: the value the loop at 0x14c920 carries; no location-less local in scope fits
-        u32 v0_0 = this->mRecruitData.::MtArray::mLength;
+        u32 v0_0 = mRecruitData.mLength;
         // inferred: the counter this loop steps; no location-less local in scope fits
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mRecruitData.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                delete this->mRecruitData.::MtArray::mpArray[i0_3];
-                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRecruitData.::MtArray::mLength) {
-                    v0_0 = this->mRecruitData.::MtArray::mLength;
-                    i0_3 += static_cast<unsigned int>(1);
+        for (unsigned int i0_3 = 0;;) {
+            if (mRecruitData.mpArray[i0_3] != nullptr) {
+                delete mRecruitData.mpArray[i0_3];
+                if ((i0_3 + 1u) < mRecruitData.mLength) {
+                    v0_0 = mRecruitData.mLength;
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
-                    i0_3 += static_cast<unsigned int>(1);
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 += 1u;
                 } else {
                     break;
                 }
             }
         }
     }
-    if (this->mRecruitData.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRecruitData.::MtArray::mpArray));
+    if (mRecruitData.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRecruitData.mpArray));
     }
-    this->mRecruitData.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-    this->mRecruitData.::MtArray::mBufsiz = static_cast<u32>(0);
-    this->mRecruitData.::MtArray::mLength = static_cast<u32>(0);
-    this->::cMenuBase::exitMenu();
+    mRecruitData.mpArray = nullptr;
+    mRecruitData.mBufsiz = 0;
+    mRecruitData.mLength = 0;
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (321 bytes)
@@ -1146,10 +1160,10 @@ void cMenuEntryBoardRecruit::exitMenu() {
 // Address: 0x0014c9a0 - 0x0014c9ab (11 bytes)
 void cMenuEntryBoardRecruit::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (menuId != static_cast<s32>(0)) {
+    if (menuId != 0) {
         return;
     }
-    pParts->attr = static_cast<u32>(1);
+    pParts->attr = 1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1157,6 +1171,8 @@ void cMenuEntryBoardRecruit::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu:
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuEntryBoardRecruit::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuEntryBoardRecruit::MyDTI cMenuEntryBoardRecruit::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e7f1-0x0014e82a (called at cMenuEntryBoard.cpp:2705)
@@ -1166,7 +1182,7 @@ void cMenuEntryBoardRecruit::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu:
 // Address: 0x0014c7e0 - 0x0014c866 (134 bytes)
 MtObject* cMenuEntryBoardRecruit::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuEntryBoardRecruit;
+    return new (16u) cMenuEntryBoardRecruit;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1192,7 +1208,7 @@ const MtDTI& cMenuExtendEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuExtendEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuExtendEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuExtendEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuExtendEntryBoardItem::DTI)->memAlloc(sz, align, cMenuExtendEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1207,7 +1223,7 @@ inline void* cMenuExtendEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuExtendEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuExtendEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuExtendEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1235,8 +1251,8 @@ cMenuExtendEntryBoardItem::~cMenuExtendEntryBoardItem() {
 // Address: 0x0014b0c0 - 0x0014b0dc (28 bytes)
 void cMenuExtendEntryBoardItem::initExtendEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x0014b0e0 - 0x0014b170 (144 bytes)
@@ -1244,32 +1260,34 @@ nMenu::MENU_RET cMenuExtendEntryBoardItem::moveExtendEntryBoardItem() {
     // DWARF local not rendered: s32& baseRno;
     // DWARF local not rendered: u32 statusId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[402] != static_cast<sNetworkExt::NET_STAT>(2)) {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[402] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] == 1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[402] != sNetworkExt::NET_STAT_SUCCESS) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[402] == sNetworkExt::NET_STAT_ERROR) {
+                    mMenuRno[0] = 2;
                 }
-                return static_cast<nMenu::MENU_RET>(0);
+                return nMenu::MENU_RET_CONTINUE;
             } else {
-                return static_cast<nMenu::MENU_RET>(1);
+                return nMenu::MENU_RET_SUCCESS;
             }
         } else {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::extendEntryBoardItem();
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->extendEntryBoardItem();
             }
-            return static_cast<nMenu::MENU_RET>(0);
+            return nMenu::MENU_RET_CONTINUE;
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuExtendEntryBoardItem::MyDTI cMenuExtendEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e6d4-0x0014e70d (called at cMenuEntryBoard.cpp:1866)
@@ -1279,7 +1297,7 @@ nMenu::MENU_RET cMenuExtendEntryBoardItem::moveExtendEntryBoardItem() {
 // Address: 0x0014b000 - 0x0014b04e (78 bytes)
 MtObject* cMenuExtendEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuExtendEntryBoardItem;
+    return new (16u) cMenuExtendEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1305,7 +1323,7 @@ const MtDTI& cMenuGetEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuGetEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuGetEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuGetEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuGetEntryBoardItem::DTI)->memAlloc(sz, align, cMenuGetEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1320,7 +1338,7 @@ inline void* cMenuGetEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuGetEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuGetEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuGetEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1362,12 +1380,14 @@ __attribute__((weak)) nMenu::MENU_RET cMenuGetEntryBoardItem::moveGetEntryBoardI
 // Address: 0x0014a150 - 0x0014a17d (45 bytes)
 void cMenuGetEntryBoardItem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemInfoPacket();
-    this->::cMenuBase::exitMenu();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearEntryBoardItemInfoPacket();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuGetEntryBoardItem::getRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuGetEntryBoardItem::MyDTI cMenuGetEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e5b7-0x0014e5f0 (called at cMenuEntryBoard.cpp:1380)
@@ -1377,7 +1397,7 @@ void cMenuGetEntryBoardItem::exitMenu() {
 // Address: 0x00149f20 - 0x00149f6e (78 bytes)
 MtObject* cMenuGetEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuGetEntryBoardItem;
+    return new (16u) cMenuGetEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1403,7 +1423,7 @@ const MtDTI& cMenuInviteEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuInviteEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuInviteEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuInviteEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuInviteEntryBoardItem::DTI)->memAlloc(sz, align, cMenuInviteEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1418,7 +1438,7 @@ inline void* cMenuInviteEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuInviteEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuInviteEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuInviteEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1451,20 +1471,20 @@ void cMenuInviteEntryBoardItem::initInviteEntryBoardItem(nNet::stEntryBoardItemI
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1828
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x147d from uGUIBase*
     // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x148c from uGUIBase*
-    this->::cMenuBase::initMenu();
-    this->mpBoardInfo = pDstInfo;
-    this->mIsJumpMemberList = false;
-    this->mIsActiveOld = false;
-    this->mBoardId = static_cast<sNetworkExt*>(::sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryBoardId;
-    this->mEntryId = static_cast<sNetworkExt*>(::sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryId;
+    initMenu();
+    mpBoardInfo = pDstInfo;
+    mIsJumpMemberList = false;
+    mIsActiveOld = false;
+    mBoardId = static_cast<sNetworkExt*>(sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryBoardId;
+    mEntryId = static_cast<sNetworkExt*>(sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryId;
     // inferred: a temporary for the result of the call at 0x14e0e3, used 3 times; no DWARF local holds it
-    uGUIBase* t0 = this->::cMenuBase::registerGUI(::uGUIMissionInfo::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
-    if ((this->::cMenuBase::mpGUIMenu = t0) != static_cast<uGUIBase*>(nullptr)) {
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(5245)) = static_cast<unsigned char>(1);
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(5260)) = static_cast<unsigned char>(1);
+    uGUIBase* t0 = registerGUI(uGUIMissionInfo::DTI, cMenuBase::DEFAULT_GUI_LINE, cMenuBase::DEFAULT_GUI_GROUP);
+    if ((mpGUIMenu = t0) != nullptr) {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 5245) = 1;
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 5260) = 1;
     }
-    this->::cMenuBase::setGUIWindowActive(false);
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    setGUIWindowActive(false);
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x0014e120 - 0x0014e42c (780 bytes)
@@ -1481,7 +1501,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuInviteEntryBoardItem::moveInviteEntry
 // Address: 0x0014e430 - 0x0014e435 (5 bytes)
 void cMenuInviteEntryBoardItem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (20 bytes)
@@ -1493,6 +1513,8 @@ void cMenuInviteEntryBoardItem::exitMenu() {
 //   in cGUIContentsExecutor::update at 0x000d29ce-0x000d29d4 (called at cGUIContentsExecutor.cpp:677)
 // s32 cMenuInviteEntryBoardItem::getRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuInviteEntryBoardItem::MyDTI cMenuInviteEntryBoardItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e8d5-0x0014e90e (called at cMenuEntryBoard.cpp:3800)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e8d5-0x0014e90e (called at cMenuEntryBoard.h:1210)
@@ -1501,7 +1523,7 @@ void cMenuInviteEntryBoardItem::exitMenu() {
 // Address: 0x0014dfc0 - 0x0014e00e (78 bytes)
 MtObject* cMenuInviteEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuInviteEntryBoardItem;
+    return new (16u) cMenuInviteEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1527,7 +1549,7 @@ const MtDTI& cMenuJoinEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuJoinEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuJoinEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuJoinEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuJoinEntryBoardItem::DTI)->memAlloc(sz, align, cMenuJoinEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1587,18 +1609,20 @@ __attribute__((weak)) void cMenuJoinEntryBoardItem::exitMenu() {
 // Address: 0x0014a260 - 0x0014a299 (57 bytes)
 void cMenuJoinEntryBoardItem::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::updatePtr();
-    if (this->mpDlTextBox == static_cast<uGUIDialogTextBox*>(nullptr)) {
+    this->cMenuBase::updatePtr();
+    if (mpDlTextBox == nullptr) {
         return;
     }
-    if (this->mpDlTextBox->::cUnit::isEnable() != false) {
+    if (mpDlTextBox->isEnable()) {
         return;
     }
-    this->mpDlTextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+    mpDlTextBox = nullptr;
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuJoinEntryBoardItem::joinRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuJoinEntryBoardItem::MyDTI cMenuJoinEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e5f0-0x0014e629 (called at cMenuEntryBoard.cpp:1481)
@@ -1608,7 +1632,7 @@ void cMenuJoinEntryBoardItem::updatePtr() {
 // Address: 0x0014a180 - 0x0014a1d9 (89 bytes)
 MtObject* cMenuJoinEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuJoinEntryBoardItem;
+    return new (16u) cMenuJoinEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1634,7 +1658,7 @@ const MtDTI& cMenuLeaveEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuLeaveEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuLeaveEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuLeaveEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuLeaveEntryBoardItem::DTI)->memAlloc(sz, align, cMenuLeaveEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1676,9 +1700,9 @@ cMenuLeaveEntryBoardItem::~cMenuLeaveEntryBoardItem() {
 // Address: 0x0014a800 - 0x0014a828 (40 bytes)
 void cMenuLeaveEntryBoardItem::initLeaveEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(3));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(3u);
 }
 
 // Address: 0x0014a830 - 0x0014aba4 (884 bytes)
@@ -1701,6 +1725,8 @@ __attribute__((weak)) void cMenuLeaveEntryBoardItem::exitMenu() {
 // No out-of-line body: no code in the ELF
 // s32 cMenuLeaveEntryBoardItem::leaveRno();
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuLeaveEntryBoardItem::MyDTI cMenuLeaveEntryBoardItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e629-0x0014e662 (called at cMenuEntryBoard.cpp:1624)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e629-0x0014e662 (called at cMenuEntryBoard.h:435)
@@ -1709,7 +1735,7 @@ __attribute__((weak)) void cMenuLeaveEntryBoardItem::exitMenu() {
 // Address: 0x0014a730 - 0x0014a789 (89 bytes)
 MtObject* cMenuLeaveEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuLeaveEntryBoardItem;
+    return new (16u) cMenuLeaveEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1735,7 +1761,7 @@ const MtDTI& cMenuReadyEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuReadyEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuReadyEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuReadyEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuReadyEntryBoardItem::DTI)->memAlloc(sz, align, cMenuReadyEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1750,7 +1776,7 @@ inline void* cMenuReadyEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuReadyEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuReadyEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuReadyEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1778,8 +1804,8 @@ cMenuReadyEntryBoardItem::~cMenuReadyEntryBoardItem() {
 // Address: 0x0014ad00 - 0x0014ad1c (28 bytes)
 void cMenuReadyEntryBoardItem::initReadyEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    initMenu();
+    mMenuRno[0] = 0;
 }
 
 // Address: 0x0014ad20 - 0x0014adb9 (153 bytes)
@@ -1788,43 +1814,45 @@ nMenu::MENU_RET cMenuReadyEntryBoardItem::moveReadyEntryBoardItem() {
     // DWARF local not rendered: u32 statusId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167b
-    this->::cMenuBase::moveMenu();
-    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
-        if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
-            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
-                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::readyEntryBoardItem();
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+    moveMenu();
+    if (mMenuRno[0] != 2) {
+        if (mMenuRno[0] != 1) {
+            if (mMenuRno[0] == 0) {
+                mMenuRno[0] = 1;
+                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->readyEntryBoardItem();
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[400] == sNetworkExt::NET_STAT_ERROR) {
+                    mMenuRno[0] = 2;
                 } else {
-                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(2)) {
-                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady = true;
-                        return static_cast<nMenu::MENU_RET>(1);
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[400] == sNetworkExt::NET_STAT_SUCCESS) {
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->mEntryBoardReady = true;
+                        return nMenu::MENU_RET_SUCCESS;
                     }
                 }
             }
         } else {
-            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(4)) {
-                this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[400] == sNetworkExt::NET_STAT_ERROR) {
+                mMenuRno[0] = 2;
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(2)) {
-                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady = true;
-                    return static_cast<nMenu::MENU_RET>(1);
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[400] == sNetworkExt::NET_STAT_SUCCESS) {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mEntryBoardReady = true;
+                    return nMenu::MENU_RET_SUCCESS;
                 }
             }
         }
-        return static_cast<nMenu::MENU_RET>(0);
+        return nMenu::MENU_RET_CONTINUE;
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
-            return static_cast<nMenu::MENU_RET>(0);
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+            return nMenu::MENU_RET_CONTINUE;
         } else {
-            return static_cast<nMenu::MENU_RET>(2);
+            return nMenu::MENU_RET_CANCEL;
         }
     }
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuReadyEntryBoardItem::readyRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuReadyEntryBoardItem::MyDTI cMenuReadyEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e662-0x0014e69b (called at cMenuEntryBoard.cpp:1724)
@@ -1834,7 +1862,7 @@ nMenu::MENU_RET cMenuReadyEntryBoardItem::moveReadyEntryBoardItem() {
 // Address: 0x0014ac40 - 0x0014ac8e (78 bytes)
 MtObject* cMenuReadyEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuReadyEntryBoardItem;
+    return new (16u) cMenuReadyEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1860,7 +1888,7 @@ const MtDTI& cMenuRecreateEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuRecreateEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuRecreateEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuRecreateEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuRecreateEntryBoardItem::DTI)->memAlloc(sz, align, cMenuRecreateEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1875,7 +1903,7 @@ inline void* cMenuRecreateEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuRecreateEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuRecreateEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuRecreateEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1903,9 +1931,9 @@ cMenuRecreateEntryBoardItem::~cMenuRecreateEntryBoardItem() {
 // Address: 0x0014b230 - 0x0014b258 (40 bytes)
 void cMenuRecreateEntryBoardItem::initRecreateEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(7));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(7u);
 }
 
 // Address: 0x0014b260 - 0x0014b3ec (396 bytes)
@@ -1915,6 +1943,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuRecreateEntryBoardItem::moveRecreateE
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuRecreateEntryBoardItem::MyDTI cMenuRecreateEntryBoardItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e70d-0x0014e746 (called at cMenuEntryBoard.cpp:1936)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e70d-0x0014e746 (called at cMenuEntryBoard.h:633)
@@ -1923,7 +1953,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuRecreateEntryBoardItem::moveRecreateE
 // Address: 0x0014b170 - 0x0014b1be (78 bytes)
 MtObject* cMenuRecreateEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuRecreateEntryBoardItem;
+    return new (16u) cMenuRecreateEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1949,7 +1979,7 @@ const MtDTI& cMenuReleasePassEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuReleasePassEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuReleasePassEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuReleasePassEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuReleasePassEntryBoardItem::DTI)->memAlloc(sz, align, cMenuReleasePassEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1964,7 +1994,7 @@ inline void* cMenuReleasePassEntryBoardItem::operator new(size_t sz, u32 align) 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuReleasePassEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuReleasePassEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuReleasePassEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1992,9 +2022,9 @@ cMenuReleasePassEntryBoardItem::~cMenuReleasePassEntryBoardItem() {
 // Address: 0x0014b4b0 - 0x0014b4d8 (40 bytes)
 void cMenuReleasePassEntryBoardItem::initReleasePassEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(7));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(7u);
 }
 
 // Address: 0x0014b4e0 - 0x0014b66c (396 bytes)
@@ -2007,11 +2037,13 @@ __attribute__((weak)) nMenu::MENU_RET cMenuReleasePassEntryBoardItem::moveReleas
 // Address: 0x0014b670 - 0x0014b675 (5 bytes)
 void cMenuReleasePassEntryBoardItem::exitMenu() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::exitMenu();
+    this->cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
 // s32 cMenuReleasePassEntryBoardItem::leaveRno();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuReleasePassEntryBoardItem::MyDTI cMenuReleasePassEntryBoardItem::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e746-0x0014e77f (called at cMenuEntryBoard.cpp:2010)
@@ -2021,7 +2053,7 @@ void cMenuReleasePassEntryBoardItem::exitMenu() {
 // Address: 0x0014b3f0 - 0x0014b43e (78 bytes)
 MtObject* cMenuReleasePassEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuReleasePassEntryBoardItem;
+    return new (16u) cMenuReleasePassEntryBoardItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2047,7 +2079,7 @@ const MtDTI& cMenuStartEntryBoardItem::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* cMenuStartEntryBoardItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cMenuStartEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuStartEntryBoardItem::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cMenuStartEntryBoardItem::DTI)->memAlloc(sz, align, cMenuStartEntryBoardItem::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -2062,7 +2094,7 @@ inline void* cMenuStartEntryBoardItem::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cMenuStartEntryBoardItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMenuStartEntryBoardItem::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cMenuStartEntryBoardItem::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2090,9 +2122,9 @@ cMenuStartEntryBoardItem::~cMenuStartEntryBoardItem() {
 // Address: 0x0014ae80 - 0x0014aea8 (40 bytes)
 void cMenuStartEntryBoardItem::initStartEntryBoardItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::cMenuBase::initMenu();
-    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
-    this->::cMenuBase::setupDialogFlow(static_cast<u32>(3));
+    initMenu();
+    mMenuRno[0] = 0;
+    setupDialogFlow(3u);
 }
 
 // Address: 0x0014aeb0 - 0x0014aff4 (324 bytes)
@@ -2102,6 +2134,8 @@ __attribute__((weak)) nMenu::MENU_RET cMenuStartEntryBoardItem::moveStartEntryBo
     return {};
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cMenuStartEntryBoardItem::MyDTI cMenuStartEntryBoardItem::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e69b-0x0014e6d4 (called at cMenuEntryBoard.cpp:1794)
 //   in _GLOBAL__sub_I_cMenuEntryBoard.cpp at 0x0014e69b-0x0014e6d4 (called at cMenuEntryBoard.h:538)
@@ -2110,7 +2144,7 @@ __attribute__((weak)) nMenu::MENU_RET cMenuStartEntryBoardItem::moveStartEntryBo
 // Address: 0x0014adc0 - 0x0014ae0e (78 bytes)
 MtObject* cMenuStartEntryBoardItem::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::cMenuStartEntryBoardItem;
+    return new (16u) cMenuStartEntryBoardItem;
 }
 
 // Instance at 0x0197adc0 - 0x0197adc5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

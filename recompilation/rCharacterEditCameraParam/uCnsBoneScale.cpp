@@ -49,7 +49,7 @@ const MtDTI& cCnsBoneScaleCtrl::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void cCnsBoneScaleCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cCnsBoneScaleCtrl::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cCnsBoneScaleCtrl::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,27 +71,27 @@ cCnsBoneScaleCtrl::cCnsBoneScaleCtrl() {
 // Also emitted as: _ZN17cCnsBoneScaleCtrlD0Ev at 0x008ad950
 cCnsBoneScaleCtrl::~cCnsBoneScaleCtrl() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsBoneScale == static_cast<uCnsBoneScale*>(nullptr)) {
+    if (mpCnsBoneScale == nullptr) {
         return;
     }
-    this->mpCnsBoneScale->remove();
-    if (this->mpCnsBoneScale == static_cast<uCnsBoneScale*>(nullptr)) {
+    mpCnsBoneScale->remove();
+    if (mpCnsBoneScale == nullptr) {
         return;
     }
-    delete this->mpCnsBoneScale;
-    this->mpCnsBoneScale = static_cast<uCnsBoneScale*>(nullptr);
+    delete mpCnsBoneScale;
+    mpCnsBoneScale = nullptr;
 }
 
 // Address: 0x008ad9c0 - 0x008ad9df (31 bytes)
 void cCnsBoneScaleCtrl::updatePtr() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCnsBoneScale == static_cast<uCnsBoneScale*>(nullptr)) {
+    if (mpCnsBoneScale == nullptr) {
         return;
     }
-    if (this->mpCnsBoneScale->::cUnit::isEnable() != false) {
+    if (mpCnsBoneScale->isEnable()) {
         return;
     }
-    this->mpCnsBoneScale = static_cast<uCnsBoneScale*>(nullptr);
+    mpCnsBoneScale = nullptr;
 }
 
 // Address: 0x008ada90 - 0x008add91 (769 bytes)
@@ -116,54 +116,54 @@ void cCnsBoneScaleCtrl::update(f32 deltatime) {
     // DWARF local not rendered: f32 per;
     // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
     // inferred: an ordered temporary, read before a later effect: the value read at 0x8ad9e0, held ahead of the effects the ELF orders after it
-    bool t0 = this->mbEnable;
-    if (t0 == false) {
+    bool t0 = mbEnable;
+    if (!t0) {
         return;
     }
     // inferred: an ordered temporary, read before a later effect: the value read at 0x8ad9ea, held ahead of the effects the ELF orders after it
-    uCnsBoneScale* t1 = this->mpCnsBoneScale;
-    if (t1 == static_cast<uCnsBoneScale*>(nullptr)) {
+    uCnsBoneScale* t1 = mpCnsBoneScale;
+    if (t1 == nullptr) {
         return;
     }
     // inferred: a temporary for the value the load at 0x8ad9f7 read, used 4 times; no DWARF local holds it
-    f32 t2 = this->mFrame;
-    this->mFrame = t2 + deltatime;
+    f32 t2 = mFrame;
+    mFrame = t2 + deltatime;
     // inferred: a temporary for the value the load at 0x8ada01 read, used 5 times; no DWARF local holds it
-    f32 t3 = this->mFrameMax;
-    if (this->mFrame > t3) {
-        this->mFrame = t3;
+    f32 t3 = mFrameMax;
+    if (mFrame > t3) {
+        mFrame = t3;
         // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada15, held ahead of the effects the ELF orders after it
         float t4 = 1.0f;
-        if (this->mFrame > t4) {
+        if (mFrame > t4) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
-            f32 t5 = this->mStartScale.x;
+            f32 t5 = mStartScale.x;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
-            f32 t6 = this->mScale.x;
+            f32 t6 = mScale.x;
             // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
-            f32 t7 = this->mStartScale.y;
+            f32 t7 = mStartScale.y;
             // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
-            f32 t8 = this->mScale.y;
+            f32 t8 = mScale.y;
             // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
-            f32 t9 = this->mStartScale.z;
+            f32 t9 = mStartScale.z;
             // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
-            f32 t10 = this->mScale.z;
+            f32 t10 = mScale.z;
             t1->mScl.x = (t5 * (t4 - (t3 / t3))) + (t6 * (t3 / t3));
             t1->mScl.y = (t7 * (t4 - (t3 / t3))) + (t8 * (t3 / t3));
             t1->mScl.z = (t9 * (t4 - (t3 / t3))) + (t10 * (t3 / t3));
             t1->mScl.pad_ = 0.0f;
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
-            f32 t5 = this->mStartScale.x;
+            f32 t5 = mStartScale.x;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
-            f32 t6 = this->mScale.x;
+            f32 t6 = mScale.x;
             // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
-            f32 t7 = this->mStartScale.y;
+            f32 t7 = mStartScale.y;
             // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
-            f32 t8 = this->mScale.y;
+            f32 t8 = mScale.y;
             // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
-            f32 t9 = this->mStartScale.z;
+            f32 t9 = mStartScale.z;
             // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
-            f32 t10 = this->mScale.z;
+            f32 t10 = mScale.z;
             t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
             t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
             t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
@@ -174,34 +174,34 @@ void cCnsBoneScaleCtrl::update(f32 deltatime) {
         float t4 = 1.0f;
         if (t3 > t4) {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
-            f32 t5 = this->mStartScale.x;
+            f32 t5 = mStartScale.x;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
-            f32 t6 = this->mScale.x;
+            f32 t6 = mScale.x;
             // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
-            f32 t7 = this->mStartScale.y;
+            f32 t7 = mStartScale.y;
             // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
-            f32 t8 = this->mScale.y;
+            f32 t8 = mScale.y;
             // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
-            f32 t9 = this->mStartScale.z;
+            f32 t9 = mStartScale.z;
             // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
-            f32 t10 = this->mScale.z;
+            f32 t10 = mScale.z;
             t1->mScl.x = (t5 * (t4 - ((t2 + deltatime) / t3))) + (t6 * ((t2 + deltatime) / t3));
             t1->mScl.y = (t7 * (t4 - ((t2 + deltatime) / t3))) + (t8 * ((t2 + deltatime) / t3));
             t1->mScl.z = (t9 * (t4 - ((t2 + deltatime) / t3))) + (t10 * ((t2 + deltatime) / t3));
             t1->mScl.pad_ = 0.0f;
         } else {
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
-            f32 t5 = this->mStartScale.x;
+            f32 t5 = mStartScale.x;
             // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
-            f32 t6 = this->mScale.x;
+            f32 t6 = mScale.x;
             // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
-            f32 t7 = this->mStartScale.y;
+            f32 t7 = mStartScale.y;
             // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
-            f32 t8 = this->mScale.y;
+            f32 t8 = mScale.y;
             // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
-            f32 t9 = this->mStartScale.z;
+            f32 t9 = mStartScale.z;
             // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
-            f32 t10 = this->mScale.z;
+            f32 t10 = mScale.z;
             t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
             t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
             t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
@@ -223,6 +223,8 @@ void cCnsBoneScaleCtrl::update(f32 deltatime) {
 
 // No out-of-line body: no code in the ELF
 // bool cCnsBoneScaleCtrl::isNo(u32 no);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cCnsBoneScaleCtrl::MyDTI cCnsBoneScaleCtrl::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uCnsBoneScale.cpp at 0x008ae042-0x008ae07f (called at uCnsBoneScale.cpp:357)
@@ -275,7 +277,7 @@ const MtDTI& uCnsBoneScale::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uCnsBoneScale::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uCnsBoneScale::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uCnsBoneScale::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -328,26 +330,26 @@ __attribute__((weak)) void uCnsBoneScale::adjust(uModel::Joint* pJnt, uModel* pM
 // Address: 0x008ad290 - 0x008ad295 (5 bytes)
 void uCnsBoneScale::remove() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::removeConstraint();
+    removeConstraint();
 }
 
 // Address: 0x008ad260 - 0x008ad289 (41 bytes)
 void uCnsBoneScale::update() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // Address: 0x008ad2a0 - 0x008ad2f8 (88 bytes)
 void uCnsBoneScale::evSetJoints(uModel::Joint* * pJnts, u32 Num) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (Num == static_cast<u32>(0)) {
+    if (Num == 0) {
         return;
     }
-    this->mJoint = (*pJnts)->mNo;
-    if (this->getModel() == static_cast<uModel*>(nullptr)) {
+    mJoint = (*pJnts)->mNo;
+    if (getModel() == nullptr) {
         return;
     }
-    this->::uConstraint::setConstraint(this->getModel(), static_cast<s32>(this->mJoint));
+    setConstraint(getModel(), static_cast<s32>(mJoint));
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (174 bytes)
@@ -368,7 +370,7 @@ __attribute__((weak)) void uCnsBoneScale::createProperty(MtPropertyList& s) {
 // Address: 0x008ad230 - 0x008ad235 (5 bytes)
 MtUI* uCnsBoneScale::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uConstraint::createUI(prop);
+    return this->uConstraint::createUI(prop);
 }
 
 // Address: 0x008ad730 - 0x008ad731 (1 bytes)
@@ -380,6 +382,8 @@ __attribute__((weak)) void uCnsBoneScale::draw(cDraw* pDraw) {
 //   in cCnsBoneScaleCtrl::setScaleCtrl at 0x008add26-0x008add80 (called at uCnsBoneScale.cpp:497)
 //   in cCnsBoneScaleCtrl::setScaleCtrl at 0x008adf81-0x008adfd9 (called at uCnsBoneScale.cpp:567)
 // void uCnsBoneScale::set(uModel* pModel, u32 JntNo, u32 Pri);
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uCnsBoneScale::MyDTI uCnsBoneScale::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_uCnsBoneScale.cpp at 0x008ae000-0x008ae042 (called at uCnsBoneScale.cpp:32)

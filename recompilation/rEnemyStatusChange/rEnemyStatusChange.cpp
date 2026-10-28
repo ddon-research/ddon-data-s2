@@ -37,7 +37,7 @@ const MtDTI& cEnemyStatusChange::getDTI() const {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
 inline void* cEnemyStatusChange::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memAlloc(sz, align, ::cEnemyStatusChange::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(cEnemyStatusChange::DTI)->memAlloc(sz, align, cEnemyStatusChange::DTI.getID());
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
@@ -52,7 +52,7 @@ inline void* cEnemyStatusChange::operator new(size_t sz, u32 align) {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline void cEnemyStatusChange::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(cEnemyStatusChange::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
@@ -80,11 +80,11 @@ bool cEnemyStatusChange::IsTypeCheckMaster(u32 type, u32 changeStatus) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
     // inferred: a value cast to the type its use takes: unsigned long used as bool
-    if (type == static_cast<u32>(13)) {
+    if (type == 13) {
         return false;
     } else {
-        if ((changeStatus - static_cast<u32>(1)) <= static_cast<u32>(8)) {
-            return static_cast<bool>((static_cast<unsigned long>(94) >> static_cast<unsigned long>(static_cast<unsigned char>(changeStatus + static_cast<u32>(255)) & static_cast<unsigned char>(31))) & static_cast<unsigned long>(1));
+        if ((changeStatus - 1u) <= 8u) {
+            return static_cast<bool>((94ul >> static_cast<unsigned long>(static_cast<unsigned char>(changeStatus + 255u) & 31)) & 1ul);
         } else {
             return true;
         }
@@ -97,6 +97,8 @@ __attribute__((weak)) void cEnemyStatusChange::createProperty(MtPropertyList& s)
     /* stub */
 }
 
+// Not defined (a .ctors initializer touches it: its address is used otherwise): cEnemyStatusChange::MyDTI cEnemyStatusChange::DTI;
+
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)
 //   in _GLOBAL__sub_I_rEnemyStatusChange.cpp at 0x0066f090-0x0066f0d2 (called at rEnemyStatusChange.cpp:25)
 //   in _GLOBAL__sub_I_rEnemyStatusChange.cpp at 0x0066f090-0x0066f0d2 (called at rEnemyStatusChange.h:31)
@@ -105,7 +107,7 @@ __attribute__((weak)) void cEnemyStatusChange::createProperty(MtPropertyList& s)
 // Address: 0x0066e090 - 0x0066e128 (152 bytes)
 MtObject* cEnemyStatusChange::MyDTI::newInstance() const {
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
-    return new (static_cast<u32>(16)) ::cEnemyStatusChange;
+    return new (16u) cEnemyStatusChange;
 }
 
 // No out-of-line body: no code in the ELF
@@ -130,7 +132,7 @@ const MtDTI& rEnemyStatusChange::getDTI() const {
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
 inline void* rEnemyStatusChange::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rEnemyStatusChange::DTI)->memAlloc(sz, align, ::rEnemyStatusChange::DTI.::MtDTI::getID());
+    return MtMemoryAllocator::getAllocator(rEnemyStatusChange::DTI)->memAlloc(sz, align, rEnemyStatusChange::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -145,7 +147,7 @@ inline void* rEnemyStatusChange::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // inferred: operator delete from _ZN18rEnemyStatusChangeD0Ev at 0x01a8c074-0x01a8c093, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
 inline void rEnemyStatusChange::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rEnemyStatusChange::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(rEnemyStatusChange::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -164,16 +166,16 @@ bool rEnemyStatusChange::loadData(MtDataReader& in, cEnemyStatusChange* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGroupNo);
+    nDDOIO::readData(in, pData->mGroupNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mGroupSubNo);
+    nDDOIO::readData(in, pData->mGroupSubNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNextGroupSubNo);
+    nDDOIO::readData(in, pData->mNextGroupSubNo);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mNextGroupSubOneGo);
+    nDDOIO::readData(in, pData->mNextGroupSubOneGo);
     pData->mSelectNo = in.readU32();
     pData->mType = in.readU32();
     pData->mRepeatSetting = in.readU32();
@@ -186,10 +188,10 @@ bool rEnemyStatusChange::loadData(MtDataReader& in, cEnemyStatusChange* pData) {
     pData->mSystemParam[2] = in.readF32();
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mBitContrlCommand);
+    nDDOIO::readData(in, pData->mBitContrlCommand);
     // inferred: reference argument from the copy's one access
     // inferred: argument from a callee-saved register at the copy's entry
-    ::nDDOIO::readData(in, pData->mTypeReverse);
+    nDDOIO::readData(in, pData->mTypeReverse);
     return true;
 }
 
@@ -202,8 +204,10 @@ MT_CTSTR rEnemyStatusChange::getExt() const {
 // Address: 0x01a8c1c0 - 0x01a8c1c6 (6 bytes)
 u32 rEnemyStatusChange::getDataVersion() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return static_cast<u32>(9);
+    return 9;
 }
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): rEnemyStatusChange::MyDTI rEnemyStatusChange::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_rEnemyStatusChange.cpp at 0x0066f0d2-0x0066f10f (called at rEnemyStatusChange.cpp:341)
@@ -213,7 +217,7 @@ u32 rEnemyStatusChange::getDataVersion() const {
 // Address: 0x0066efb0 - 0x0066f014 (100 bytes)
 MtObject* rEnemyStatusChange::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return new (static_cast<u32>(16)) ::rEnemyStatusChange;
+    return new (16u) rEnemyStatusChange;
 }
 
 // Instance at 0x01a8c170 - 0x01a8c186 (22 bytes) of the generic rTbl2<T>::getData

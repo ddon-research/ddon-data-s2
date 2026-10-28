@@ -32,7 +32,7 @@ const MtDTI& uGUIGPConfirm::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 inline MtAllocator* uGUIGPConfirm::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::uGUIGPConfirm::DTI);
+    return MtMemoryAllocator::getAllocator(uGUIGPConfirm::DTI);
 }
 
 // No out-of-line body: no code in the ELF
@@ -41,7 +41,7 @@ inline MtAllocator* uGUIGPConfirm::getAllocator() {
 // Address: 0x00aa16d0 - 0x00aa1710 (64 bytes)
 void* uGUIGPConfirm::operator new(size_t sz, u32 align) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return ::uGUIGPConfirm::getAllocator()->memAlloc(sz, align, ::uGUIGPConfirm::DTI.::MtDTI::getID());
+    return uGUIGPConfirm::getAllocator()->memAlloc(sz, align, uGUIGPConfirm::DTI.getID());
 }
 
 // No out-of-line body: no code in the ELF
@@ -56,7 +56,7 @@ void* uGUIGPConfirm::operator new(size_t sz, u32 align) {
 // Inline, no code of its own: checked where it is inlined.
 // approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
 inline void uGUIGPConfirm::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::uGUIGPConfirm::DTI)->memFree(p_addr);
+    MtMemoryAllocator::getAllocator(uGUIGPConfirm::DTI)->memFree(p_addr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -71,23 +71,23 @@ inline void uGUIGPConfirm::operator delete(void* p_addr) {
 // Address: 0x00aa2f30 - 0x00aa2fa8 (120 bytes)
 void uGUIGPConfirm::setItemInfo(MT_CTSTR pCategoryName, MT_CTSTR pItemName, u32 Price, u32 IconId, u32 LineupId) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setMsgAnalyzerWork(static_cast<u32>(0), pCategoryName);
-    this->::uGUIBase::setMsgAnalyzerWork(static_cast<u32>(1), pItemName);
-    this->::uGUIBase::setMsgAnalyzerWork(static_cast<u32>(2), static_cast<s32>(Price));
-    this->mPrice = Price;
-    this->mIconId = IconId;
-    this->mLineupId = LineupId;
-    this->mType = static_cast<u32>(0);
+    setMsgAnalyzerWork(0u, pCategoryName);
+    setMsgAnalyzerWork(1u, pItemName);
+    setMsgAnalyzerWork(2u, static_cast<s32>(Price));
+    mPrice = Price;
+    mIconId = IconId;
+    mLineupId = LineupId;
+    mType = 0;
 }
 
 // Address: 0x00aa2fb0 - 0x00aa3003 (83 bytes)
 void uGUIGPConfirm::setGoldStoneInfo(u32 GoldStoneNum, u32 Price) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setMsgAnalyzerWork(static_cast<u32>(0), static_cast<s32>(GoldStoneNum));
-    this->::uGUIBase::setMsgAnalyzerWork(static_cast<u32>(1), static_cast<s32>(Price));
-    this->mPrice = GoldStoneNum;
-    this->mIconId = static_cast<u32>(0);
-    this->mType = static_cast<u32>(1);
+    setMsgAnalyzerWork(0u, static_cast<s32>(GoldStoneNum));
+    setMsgAnalyzerWork(1u, static_cast<s32>(Price));
+    mPrice = GoldStoneNum;
+    mIconId = 0;
+    mType = 1;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (26 bytes)
@@ -102,37 +102,37 @@ void uGUIGPConfirm::setGoldStoneInfo(u32 GoldStoneNum, u32 Price) {
 // Also emitted as: _ZN13uGUIGPConfirmD0Ev at 0x00aa18f0
 uGUIGPConfirm::~uGUIGPConfirm() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
-        this->mpGUIRes->::cResource::release();
-        this->mpGUIRes = static_cast<rGUI*>(nullptr);
+    if (mpGUIRes != nullptr) {
+        mpGUIRes->release();
+        mpGUIRes = nullptr;
     }
-    if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
+    if (mpGMDRes == nullptr) {
         return;
     }
-    this->mpGMDRes->::cResource::release();
-    this->mpGMDRes = static_cast<rGUIMessage*>(nullptr);
+    mpGMDRes->release();
+    mpGMDRes = nullptr;
 }
 
 // Address: 0x00aa1980 - 0x00aa1985 (5 bytes)
 void uGUIGPConfirm::createProperty(MtPropertyList& s) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUI::createProperty(s);
+    this->uGUI::createProperty(s);
 }
 
 // Address: 0x00aa1990 - 0x00aa1995 (5 bytes)
 MtUI* uGUIGPConfirm::createUI(MtProperty& prop) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    return this->::uGUI::createUI(prop);
+    return this->uGUI::createUI(prop);
 }
 
 // Address: 0x00aa19a0 - 0x00aa1a4f (175 bytes)
 bool uGUIGPConfirm::loadResource() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
-        if ((this->mpGUIRes = static_cast<rGUI*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_CONFIRM_GUI"), static_cast<u32>(129), static_cast<t64>(1441199666)))) != static_cast<rGUI*>(nullptr)) {
-            if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-                if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPCONFIRM_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                    this->mpGMDRes;
+    if (mpGUIRes == nullptr) {
+        if ((mpGUIRes = static_cast<rGUI*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_CONFIRM_GUI"), 129u, 1441199666l))) != nullptr) {
+            if (mpGMDRes == nullptr) {
+                if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPCONFIRM_RES_GMD"), 129u, 0l))) != nullptr) {
+                    mpGMDRes;
                     return true;
                 } else {
                     return false;
@@ -144,9 +144,9 @@ bool uGUIGPConfirm::loadResource() {
             return false;
         }
     } else {
-        if (this->mpGMDRes == static_cast<rGUIMessage*>(nullptr)) {
-            if ((this->mpGMDRes = static_cast<rGUIMessage*>(this->::uGUIBase::uiCreateResource(this->::uGUIBase::getArcTag(static_cast<u32>(0)), ::rArchiveListArray::convSearchId("RES_ID_GPCONFIRM_RES_GMD"), static_cast<u32>(129), static_cast<t64>(0)))) != static_cast<rGUIMessage*>(nullptr)) {
-                this->mpGMDRes;
+        if (mpGMDRes == nullptr) {
+            if ((mpGMDRes = static_cast<rGUIMessage*>(uiCreateResource(getArcTag(0u), rArchiveListArray::convSearchId("RES_ID_GPCONFIRM_RES_GMD"), 129u, 0l))) != nullptr) {
+                mpGMDRes;
                 return true;
             } else {
                 return false;
@@ -165,14 +165,14 @@ __attribute__((weak)) void uGUIGPConfirm::updatePtr() {
 // Address: 0x00aa1a60 - 0x00aa1acc (108 bytes)
 void uGUIGPConfirm::setup() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->::uGUIBase::setup();
-    if (this->::uGUIBase::mIsEndLoadResource == false) {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
         return;
     }
-    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
-    this->setPlay(true);
-    this->::uGUIGPConfirm::initConfirm();
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(9));
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    setPlay(true);
+    initConfirm();
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 9u);
 }
 
 // Address: 0x00aa2460 - 0x00aa2520 (192 bytes)
@@ -192,11 +192,11 @@ __attribute__((weak)) void uGUIGPConfirm::adjustScale() {
 // Address: 0x00aa25f0 - 0x00aa2624 (52 bytes)
 void uGUIGPConfirm::moveInput() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mClose.::uGUIBase::cReferenceUICloseBtn::execute();
-    if (this->mpCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    mClose.execute();
+    if (mpCtrl == nullptr) {
         return;
     }
-    this->mpCtrl->execute();
+    mpCtrl->execute();
 }
 
 // Address: 0x00aa2630 - 0x00aa2824 (500 bytes)
@@ -234,13 +234,13 @@ __attribute__((weak)) void uGUIGPConfirm::initConfirm() {
 // Address: 0x00aa2d00 - 0x00aa2d43 (67 bytes)
 u32 uGUIGPConfirm::evCtrlCancel(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
-        this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+        setInputEvent(68u);
     } else {
-        this->mIsPushOK = false;
-        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        mIsPushOK = false;
+        setInputEvent(66u);
     }
-    return static_cast<u32>(1);
+    return 1;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)
@@ -250,40 +250,40 @@ u32 uGUIGPConfirm::evCtrlCancel(cControl::Message* pMsg) {
 // Address: 0x00aa2d60 - 0x00aa2dd0 (112 bytes)
 u32 uGUIGPConfirm::evCtrlDecide(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() == false) {
-            if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(1)) {
-                this->mIsPushOK = this->mCursorX == static_cast<s32>(0);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
-                return static_cast<u32>(1);
+    if (mpCtrl != nullptr) {
+        if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+            if (mpCtrl->getCurrentPos() == 1) {
+                mIsPushOK = mCursorX == 0;
+                setInputEvent(66u);
+                return 1;
             } else {
-                if (this->mpCtrl->::cControl::getCurrentPos() == static_cast<s32>(0)) {
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
-                    return static_cast<u32>(1);
+                if (mpCtrl->getCurrentPos() == 0) {
+                    setInputEvent(67u);
+                    return 1;
                 } else {
-                    return static_cast<u32>(0);
+                    return 0;
                 }
             }
         } else {
-            return static_cast<u32>(0);
+            return 0;
         }
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
 // Address: 0x00aa2dd0 - 0x00aa2e27 (87 bytes)
 u32 uGUIGPConfirm::evCtrlCursorUD(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
-            this->mpCtrl->setCurrentPos(static_cast<s32>(0), false);
+    if (mpCtrl != nullptr) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+            mpCtrl->setCurrentPos(0, false);
         } else {
-            this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+            setInputEvent(69u);
         }
-        return static_cast<u32>(1);
+        return 1;
     } else {
-        return static_cast<u32>(0);
+        return 0;
     }
 }
 
@@ -291,36 +291,36 @@ u32 uGUIGPConfirm::evCtrlCursorUD(cControl::Message* pMsg) {
 u32 uGUIGPConfirm::evCtrlCursorLR(cControl::Message* pMsg) {
     // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
     // inferred: a value cast to the type its use takes: bool used as s32
-    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() == false) {
-        if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (this->mpCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
-                this->mCursorX = static_cast<s32>(this->mCursorX == static_cast<s32>(0));
-                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
-                return static_cast<u32>(1);
+    if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+        if (mpCtrl != nullptr) {
+            if (mpCtrl->mCurrentPos != 0) {
+                mCursorX = static_cast<s32>(mCursorX == 0);
+                setInputEvent(69u);
+                return 1;
             }
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // Address: 0x00aa2ea0 - 0x00aa2f21 (129 bytes)
 u32 uGUIGPConfirm::evCtrlMouseClick(cControl::Message* pMsg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
-        if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
-            if (pMsg->mouse_hit_id != static_cast<s32>(0)) {
-                this->mIsPushOK = pMsg->click_vol == static_cast<s32>(0);
-                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+    if (pMsg != nullptr) {
+        if (mpCtrl != nullptr) {
+            if (pMsg->mouse_hit_id != 0) {
+                mIsPushOK = pMsg->click_vol == 0;
+                setInputEvent(70u);
             } else {
-                if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() == false) {
-                    this->mpCtrl->setCurrentPos(static_cast<s32>(0), false);
-                    this->::uGUIBase::setInputEvent(static_cast<u32>(67));
+                if (!static_cast<sGUIExt*>(sGUI::getInstance())->isEnableBrowser()) {
+                    mpCtrl->setCurrentPos(0, false);
+                    setInputEvent(67u);
                 }
             }
-            return static_cast<u32>(1);
+            return 1;
         }
     }
-    return static_cast<u32>(0);
+    return 0;
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (292 bytes)
@@ -341,6 +341,8 @@ __attribute__((weak)) void uGUIGPConfirm::updateBrowserPointer() {
 //   in uGUIGPConfirm::kill at 0x00aa246e-0x00aa24ce (called at uGUIGPConfirm.cpp:222)
 //   in uGUIGPConfirm::moveEvent at 0x00aa2773-0x00aa27d3 (called at uGUIGPConfirm.cpp:290)
 // void uGUIGPConfirm::endBrowser();
+
+// Not defined (a .ctors initializer touches it: its address is used otherwise): uGUIGPConfirm::MyDTI uGUIGPConfirm::DTI;
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
 //   in _GLOBAL__sub_I_uGUIGPConfirm.cpp at 0x00aa310f-0x00aa314c (called at uGUIGPConfirm.cpp:28)
